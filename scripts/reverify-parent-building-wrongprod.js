@@ -10,18 +10,19 @@
  *
  * Usage:
  *   node scripts/reverify-parent-building-wrongprod.js --count-only
- *   node scripts/reverify-parent-building-wrongprod.js [--show=ID] [--limit=N] [--parent="Young Vic"]
+ *   node scripts/reverify-parent-building-wrongprod.js [--fetch] [--show=ID] [--limit=N] [--parent="Young Vic"]
+ * --fetch (BRO-6946): for stub-text candidates, fetch the live page via fetchPage and verify it.
  * Env: ANTHROPIC_API_KEY (not needed with --count-only).
  */
 const fs = require('fs');
 const path = require('path');
 const { hasHelpFlag } = require('./lib/cli-help.js');
-const USAGE = 'reverify-parent-building-wrongprod.js [--count-only] [--show=ID] [--limit=N] [--parent=NAME]\n';
+const USAGE = 'reverify-parent-building-wrongprod.js [--count-only] [--show=ID] [--limit=N] [--parent=NAME] [--fetch]\n';
 if (hasHelpFlag(process.argv.slice(2))) { process.stdout.write(USAGE); process.exit(0); }
 
 const { MAIN_REPO_ROOT: MAIN_REPO } = require('./lib/repo-root');
 const { resolveReviewTextsDir } = require('./lib/review-texts-dir');
-const { parentBuildingFlagCandidate } = require('./lib/parent-building-wrongprod');
+const { parentBuildingFlagCandidate, shortCandidateDecision } = require('./lib/parent-building-wrongprod');
 
 const args = process.argv.slice(2);
 const opt = (n) => (args.find((a) => a.startsWith(`--${n}=`)) || '').split('=').slice(1).join('=');
@@ -29,6 +30,8 @@ const COUNT_ONLY = args.includes('--count-only');
 const LIMIT = parseInt(opt('limit'), 10) || 0;
 const ONLY_SHOW = opt('show');
 const ONLY_PARENT = opt('parent');
+const FETCH = args.includes('--fetch');
+const stripTags = (h) => String(h).replace(/<(script|style)[\s\S]*?<\/\1>/gi, ' ').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
 
 (async () => {
   const dir = resolveReviewTextsDir();
@@ -56,15 +59,32 @@ const ONLY_PARENT = opt('parent');
 
   const { verifyContent } = require('./lib/content-verifier');
   const actions = [];
-  let n = 0, upheld = 0, errors = 0, short = 0;
+  let n = 0, upheld = 0, errors = 0, short = 0, fetchFailed = 0;
+  // The ManualClear marker stops the rebuild's CV pre-pass re-promoting a stale
+  // contentVerification.wrongProduction === true back onto the file.
+  const clearActions = (c, description) => [
+    { type: 'review-field-edit', file: `${c.show.id}/${c.file}`, field: 'wrongProduction', oldValue: true, newValue: false, description },
+    { type: 'review-field-edit', file: `${c.show.id}/${c.file}`, field: 'wrongProductionManualClear', oldValue: null, newValue: true, description },
+  ];
   for (const c of cands) {
     if (LIMIT && n >= LIMIT) break;
-    if (!c.d.fullText || c.d.fullText.trim().length < 200) { short++; continue; }
+    let text = c.d.fullText;
+    if (!text || text.trim().length < 200) {
+      // BRO-6946: stored text is a stub. Metadata cannot clear the flag; with
+      // --fetch, pull the live page and verify that text instead (never stored).
+      const m = shortCandidateDecision(c.show, c.d);
+      if (m.decision !== 'fetch' || !FETCH) { short++; console.log(`[SHORT-HOLD] ${c.show.id}/${c.file} (${c.parent}) ${m.decision === 'fetch' ? 'run with --fetch to verify' : m.why}`); continue; }
+      try {
+        const page = await require('./lib/scraper').fetchPage(c.d.url);
+        text = stripTags((page && page.content) || '').slice(0, 20000);
+      } catch (e) { text = ''; }
+      if (text.trim().length < 200) { short++; fetchFailed++; console.log(`[SHORT-HOLD] ${c.show.id}/${c.file} (${c.parent}) fetch returned no usable text`); continue; }
+    }
     n++;
     let cv;
     try {
       cv = await verifyContent({
-        scrapedText: c.d.fullText, showTitle: c.show.title, criticName: c.d.criticName || null,
+        scrapedText: text, showTitle: c.show.title, criticName: c.d.criticName || null,
         outletName: c.d.outlet || null, url: c.d.url || null, venue: c.show.venue || null,
         openingDate: c.show.openingDate || null, publishDate: c.d.publishDate || null,
         market: c.show.category || 'broadway', show: c.show,
@@ -75,14 +95,9 @@ const ONLY_PARENT = opt('parent');
     console.log(`[${clean ? 'CLEAR' : 'UPHELD'}] ${c.show.id}/${c.file} (${c.parent}) valid=${cv?.isValid} wp=${cv?.wrongProduction}`);
     if (!clean) { upheld++; continue; }
     const description = `BRO-6923: ${c.show.venue} is a stage inside ${c.parent}; the flag reason named the building. Alias-aware re-verify: valid, not wrong production.`;
-    // The ManualClear marker stops the rebuild's CV pre-pass re-promoting a stale
-    // contentVerification.wrongProduction === true back onto the file.
-    actions.push(
-      { type: 'review-field-edit', file: `${c.show.id}/${c.file}`, field: 'wrongProduction', oldValue: true, newValue: false, description },
-      { type: 'review-field-edit', file: `${c.show.id}/${c.file}`, field: 'wrongProductionManualClear', oldValue: null, newValue: true, description },
-    );
+    actions.push(...clearActions(c, description));
   }
-  console.log(`SUMMARY: verified=${n} clear=${actions.length / 2} upheld=${upheld} errors=${errors} tooShort=${short}`);
+  console.log(`SUMMARY: verified=${n} clear=${actions.length / 2} upheld=${upheld} errors=${errors} tooShortHeld=${short} fetchFailed=${fetchFailed}`);
   // 24 actions (12 files) per chunk: plans split at 25 and a file's two edits stay together.
   for (let i = 0, k = 1; i < actions.length; i += 24, k++) {
     console.log(`PLAN-ACTIONS-BEGIN ${k}`);

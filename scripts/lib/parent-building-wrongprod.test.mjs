@@ -30,3 +30,21 @@ test('a human-confirmed flag (true) or human-cleared (false) is never a candidat
 test('other national companies are not the National Theatre', () => {
   assert.equal(pick({ venue: 'Lyttelton Theatre', category: 'west-end' }, flagged('National Theatre of Scotland production')).candidate, false);
 });
+
+// BRO-6946: too-short candidates are triaged for a full-text fetch, never cleared by metadata
+const { shortCandidateDecision: decide } = require('./parent-building-wrongprod.js');
+const run = { previewsStartDate: '2025-07-10', openingDate: '2025-07-23', closingDate: '2025-09-13' };
+const rec = (publishDate, reason = 'Review of Inter Alia at the National Theatre, wrong venue', url = 'https://example.com/r') => ({ wrongProduction: true, publishDate, wrongProductionReason: reason, url });
+test('short: in-window or undated with a url is worth fetching; never a direct clear', () => {
+  assert.equal(decide(run, rec('2025-07-24')).decision, 'fetch');
+  assert.equal(decide(run, rec(undefined)).decision, 'fetch');
+  for (const d of ['2025-07-24', undefined]) assert.notEqual(decide(run, rec(d)).decision, 'clear');
+});
+test('short: out-of-window date, no url, or other-production wording holds', () => {
+  assert.equal(decide(run, rec('2024-12-06')).decision, 'hold');
+  assert.equal(decide(run, rec('2026-10-28')).decision, 'hold');
+  assert.equal(decide(run, rec('2025-07-24', undefined, '')).decision, 'hold');
+  assert.equal(decide(run, rec('2025-07-24', "National Theatre's 2018 production")).decision, 'hold');
+  assert.equal(decide(run, rec('2025-07-24', 'a UK touring production')).decision, 'hold');
+  assert.equal(decide(run, rec('2025-07-24', 'anticipatory_pre_opening_post National Theatre')).decision, 'hold');
+});
