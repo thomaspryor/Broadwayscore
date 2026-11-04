@@ -924,6 +924,11 @@ jobs:
               SCORE_DEFERRED=$((SCORE_DEFERRED + 1))
               continue
             fi
+            # BRO-6968: a not_a_review verdict judged on the page blurb before the
+            # full text arrived (Theatre and Tonic, The Bridge) blocked the review
+            # until llm-ensemble-score.yml's scheduled sweep, 3h later. Clear it
+            # here, per show, so the scorer below re-judges the new text this poll.
+            node scripts/clear-stale-automated-text-verdicts.js --apply --show="$SHOW_ID" 2>&1 || true
             SCORE_RC=0
             npx ts-node scripts/llm-scoring/index.ts --show="$SHOW_ID" --ensemble --time-budget-min="$(score_budget_min)" 2>&1 || SCORE_RC=$?
             # Rescore reviews first scored off a roundup excerpt whose full
