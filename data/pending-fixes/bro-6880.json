@@ -1,0 +1,25 @@
+{
+  "issueNumber": "bro-6880",
+  "planId": "2d41a387-0473-4527-a143-2981b34679d7",
+  "status": "pending",
+  "createdAt": "2026-11-04T07:34:29.234Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6880: recompute contentTier on the WaPo Imaginary Invalid section whose wrongShow was cleared by a verified retry but kept its invalid tier.",
+    "steps": [
+      "BRO-6880: the targeted collect stored only this show's section of the WaPo three-show column, it passed content verification (columnSectionIsolated) and the retry cleared the verifier-set wrongShow, but contentTier stayed 'invalid' ('Wrong show') and incompleteReason wrong_content, so the rebuild drops it. Recompute the tier from the stored 925-char section (classifyContentTier gives truncated, 137 words) and drop the stale wrong_content reason. Same class as BRO-5356 l/m/n; consent-refetch.js now does this at clear time."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "run-script",
+        "description": "BRO-6880: the targeted collect stored only this show's section of the WaPo three-show column, it passed content verification (columnSectionIsolated) and the retry cleared the verifier-set wrongShow, but contentTier stayed 'invalid' ('Wrong show') and incompleteReason wrong_content, so the rebuild drops it. Recompute the tier from the stored 925-char section (classifyContentTier gives truncated, 137 words) and drop the stale wrong_content reason. Same class as BRO-5356 l/m/n; consent-refetch.js now does this at clear time.",
+        "script": "reclassify-invalid-reviews.js",
+        "args": "--file=the-imaginary-invalid-2026/washpost--thomas-floyd.json --apply"
+      }
+    ]
+  }
+}
