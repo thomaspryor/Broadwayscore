@@ -58,3 +58,8 @@ test('market: a lane feed never files a show in a market the outlet is not in', 
   assert.equal(laneFeedAccepts(cfg, 'westendtheatre', { url: 'https://westend.example/review-x', headline: 'Review: X' }, BROADWAY), false);
   assert.equal(laneFeedAccepts(cfg, 'westendtheatre', { url: 'https://westend.example/review-x', headline: 'Review: X' }, WEST_END), true);
 });
+
+test('DAILY_LANE_FEEDS_DISABLED=1 adds nothing', () => {
+  process.env.DAILY_LANE_FEEDS_DISABLED = '1';
+  try { assert.deepEqual(dailyLaneFeedConfigs({}), {}); } finally { delete process.env.DAILY_LANE_FEEDS_DISABLED; }
+});

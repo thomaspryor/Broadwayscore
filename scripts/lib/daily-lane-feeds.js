@@ -17,6 +17,8 @@ const { hasReviewSignal, headlineIsShowTitle } = require('./opening-night-lane/d
  */
 function dailyLaneFeedConfigs(configured, skipOutlets = new Set()) {
   const out = {};
+  // Kill switch: DAILY_LANE_FEEDS_DISABLED=1 puts the poller back on its own feed list.
+  if (process.env.DAILY_LANE_FEEDS_DISABLED === '1') return out;
   for (const f of LANE_FEEDS) {
     if (configured[f.outletId] || skipOutlets.has(f.outletId)) continue;
     out[f.outletId] = {
