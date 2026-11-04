@@ -46,3 +46,10 @@ test('a head too short for the word list still needs its raw token', () => {
   assert.equal(operaTitleMatch('rigoletto-english-national-opera', w, 2), false);
   assert.equal(operaTitleMatch('io-english-national-opera-review', w, 2), true);
 });
+
+test('BRO-6954: a short title word counts only as a whole token', () => {
+  assert.equal(operaTitleMatch('rigoletto-review-london-coliseum', operaTitleWords('Don Carlo'), 1), false);
+  assert.equal(operaTitleMatch('don-carlo-review-met-opera', operaTitleWords('Don Carlo'), 1), true);
+  assert.equal(operaTitleMatch('tristan-isolde-review', operaTitleWords('Tristan und Isolde'), 2), true);
+  assert.equal(operaTitleMatch('latraviata-review', operaTitleWords('La Traviata'), 1), true);
+});

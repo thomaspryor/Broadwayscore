@@ -159,13 +159,17 @@ function _operaTokens(text) {
  */
 function operaTitleMatch(text, titleWords, minHits) {
   const t = String(text || '');
-  const hits = titleWords.filter(w => t.includes(w)).length;
+  const tokens = new Set(_operaTokens(t));
+  // A short word counts only as a whole token: "don" (Don Carlo, Don Pasquale)
+  // sat inside every "london" slug, so a 1-hit outlet attached any London opera
+  // review to a Don X show (BRO-6954). Words of 5+ letters still match inside a
+  // longer token ("latraviata", "isoldes"), where a false hit is implausible.
+  const hits = titleWords.filter(w => tokens.has(w) || (w.length >= 5 && t.includes(w))).length;
   if (hits < minHits) return false;
   if (process.env.DISABLE_OPERA_HEAD_WORD_MATCH === 'true') return true;
   const head = titleWords.headWords;
   if (!head) return true;
   // Whole tokens: "don" must not match inside "london", "tosca" inside "toscanini".
-  const tokens = new Set(_operaTokens(t));
   return head.some(w => tokens.has(w));
 }
 
