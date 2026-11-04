@@ -158,6 +158,38 @@ test('guardian: SVG star widget with different generated hashes still resolves (
   assert.equal(result.normalizedScore, 80);
 });
 
+// BRO-6966: all three reported 5/5 pages omit the unused empty-star CSS
+// rule. Keep fixtures synthetic so no article text enters the public repo.
+function guardianFilledOnlyHtml(count) {
+  return '<style>.dcr-filled{display:flex;background-color:var(--star-rating-background);}</style>' +
+    '<div data-gu-name="headline"><h1>A Play</h1>' +
+    guardianStarWidget(count, 0, 'dcr-filled', 'dcr-empty') + '</div>';
+}
+
+test('guardian: five filled stars without unused empty-star CSS resolve to 5/5 (BRO-6966)', () => {
+  const result = extractScore(guardianFilledOnlyHtml(5), '', 'guardian');
+  assert.deepEqual(result, {
+    originalScore: '5/5 stars', normalizedScore: 100, source: 'guardian-star-svg', outlet: 'guardian'
+  });
+});
+
+test('guardian: filled-only 5/5 widget also works without the headline marker', () => {
+  const html = guardianFilledOnlyHtml(5).replace(' data-gu-name="headline"', '');
+  assert.equal(extractScore(html, '', 'guardian')?.originalScore, '5/5 stars');
+});
+
+test('guardian: missing empty-star CSS does not relax the exact-five guard', () => {
+  for (const count of [1, 3, 4, 6, 10]) {
+    assert.equal(extractScore(guardianFilledOnlyHtml(count), '', 'guardian'), null, `${count} filled icons`);
+  }
+});
+
+test('guardian: filled-only 5/5 count remains scoped away from related reviews', () => {
+  const html = guardianFilledOnlyHtml(5) + 'x'.repeat(9000) +
+    guardianStarWidget(5, 0, 'dcr-filled', 'dcr-empty');
+  assert.equal(extractScore(html, '', 'guardian')?.originalScore, '5/5 stars');
+});
+
 test('guardian: a non-review page (no star-rating CSS vars at all) does not false-positive', () => {
   const html = '<style>.dcr-xyz{color:red;}</style><h1>Some unrelated news article</h1><p>Body text.</p>';
   const result = extractScore(html, 'Some unrelated news article body text.', 'guardian');

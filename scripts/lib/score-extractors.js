@@ -23,7 +23,7 @@
 // "no score found" flags are retried after extractor changes.
 const { isGalleryCounterAt } = require('./gallery-counter');
 
-const EXTRACTOR_VERSION = 7;  // v7 (BRO-922): NY Post css-stars re-scoped to rating__stars DOM boundary (was v6: Guardian class-attribute anchoring, Radio Times <use>-anchored SVG matching)
+const EXTRACTOR_VERSION = 8;  // v8 (BRO-6966): Guardian 5/5 widgets can omit unused empty-star CSS
 
 /**
  * Remove star glyphs that sit inside <style>…</style> blocks: icon CSS draws
@@ -577,11 +577,14 @@ function extractGuardianScore(html, text) {
       new RegExp(`\\.(dcr-[a-z0-9]+)\\{[^}]*background-color\\s*:\\s*var\\(--${varName}\\b[^)]*\\)[^}]*\\}`);
     const filledClassMatch = html.match(cssPropPattern('star-rating-background'));
     const emptyClassMatch = html.match(cssPropPattern('star-rating-empty-background'));
-    if (filledClassMatch && emptyClassMatch && filledClassMatch[1] !== emptyClassMatch[1]) {
+    // BRO-6966: 5/5 pages do not render empty stars, so Emotion omits
+    // their CSS rule entirely. Still require exactly five icons below.
+    if (filledClassMatch && (!emptyClassMatch || filledClassMatch[1] !== emptyClassMatch[1])) {
       const headlineIdx = html.indexOf('data-gu-name="headline"');
       const scoped = headlineIdx > -1 ? html.slice(headlineIdx, headlineIdx + 6000) : html;
       const filledCount = (scoped.match(new RegExp(`class="${filledClassMatch[1]}"`, 'g')) || []).length;
-      const emptyCount = (scoped.match(new RegExp(`class="${emptyClassMatch[1]}"`, 'g')) || []).length;
+      const emptyCount = emptyClassMatch
+        ? (scoped.match(new RegExp(`class="${emptyClassMatch[1]}"`, 'g')) || []).length : 0;
       const total = filledCount + emptyCount;
       if (filledCount >= 1 && total === 5) {
         return {
