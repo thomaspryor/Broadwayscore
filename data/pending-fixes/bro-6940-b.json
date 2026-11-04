@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6940-b",
   "planId": "01d22688-9f1d-476a-acf6-5df14a868be6",
-  "status": "pending",
+  "status": "partial",
   "createdAt": "2026-11-04T00:30:40.787Z",
   "submitter": {
     "name": null,
@@ -213,5 +213,146 @@
         "destPath": "days-of-wine-and-roses-off-broadway-2023/theater-pizzazz--carole-di-tosti.json"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-04T00:44:58.457Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved beetlejuice-tour-2022/stir--janet-smith.json → beetlejuice-tour-2022/stir--vince-kanasoot.json",
+      "cleared": []
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "birthday-candles-2022/theater-pizzazz--unknown.json criticName: \"Unknown\" -> \"Sandi Durell\""
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved birthday-candles-2022/theater-pizzazz--unknown.json → birthday-candles-2022/theater-pizzazz--sandi-durell.json",
+      "cleared": []
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "blood-of-my-blood-west-end-2026/camdennewjournal--unknown.json criticName: \"Unknown\" -> \"Lucy Popescu\""
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved blood-of-my-blood-west-end-2026/camdennewjournal--unknown.json → blood-of-my-blood-west-end-2026/camdennewjournal--lucy-popescu.json",
+      "cleared": []
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "brokeback-mountain-west-end-2023/camdennewjournal--unknown.json criticName: \"Unknown\" -> \"Lucy Popescu\""
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved brokeback-mountain-west-end-2023/camdennewjournal--unknown.json → brokeback-mountain-west-end-2023/camdennewjournal--lucy-popescu.json",
+      "cleared": []
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "camp-siegfried-west-end-2021/camdennewjournal--unknown.json criticName: \"Unknown\" -> \"Lucy Popescu\""
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved camp-siegfried-west-end-2021/camdennewjournal--unknown.json → camp-siegfried-west-end-2021/camdennewjournal--lucy-popescu.json",
+      "cleared": []
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "celebrity-autobiography-2026/talkinbroadway--unknown.json criticName: \"Unknown\" -> \"Howard Miller\""
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved celebrity-autobiography-2026/talkinbroadway--unknown.json → celebrity-autobiography-2026/talkinbroadway--howard-miller.json",
+      "cleared": []
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "clifford-odets-waiting-for-lefty-off-broadway-2026/nysr--frank-scheck.json criticName: \"Frank Scheck\" -> \"Michael Sommers\""
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved clifford-odets-waiting-for-lefty-off-broadway-2026/nysr--frank-scheck.json → clifford-odets-waiting-for-lefty-off-broadway-2026/nysr--michael-sommers.json",
+      "cleared": []
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "Review file not found: clifford-odets-waiting-for-lefty-off-broadway-2026/theater-pizzazz--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": false,
+      "reason": "Source not found: clifford-odets-waiting-for-lefty-off-broadway-2026/theater-pizzazz--unknown.json"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cornelia-street-off-broadway-2023/newyorker--conde-nast.json criticName: \"Condé Nast\" -> \"Helen Shaw\""
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved cornelia-street-off-broadway-2023/newyorker--conde-nast.json → cornelia-street-off-broadway-2023/newyorker--helen-shaw.json",
+      "cleared": []
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cyrano-regional-2026/san-diego-jewish-world--unknown.json criticName: \"Unknown\" -> \"Sandi Masori\""
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved cyrano-regional-2026/san-diego-jewish-world--unknown.json → cyrano-regional-2026/san-diego-jewish-world--sandi-masori.json",
+      "cleared": []
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "dancing-at-lughnasa-west-end-2023/camdennewjournal--unknown.json criticName: \"Unknown\" -> \"Lucy Popescu\""
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved dancing-at-lughnasa-west-end-2023/camdennewjournal--unknown.json → dancing-at-lughnasa-west-end-2023/camdennewjournal--lucy-popescu.json",
+      "cleared": []
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "dark-noon-off-broadway-2024/stageandcinema--gregory-fletcher.json criticName: \"Gregory Fletcher\" -> \"Gregory Bernard\""
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved dark-noon-off-broadway-2024/stageandcinema--gregory-fletcher.json → dark-noon-off-broadway-2024/stageandcinema--gregory-bernard.json",
+      "cleared": []
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "days-of-wine-and-roses-off-broadway-2023/theater-pizzazz--peter-marks.json criticName: \"Peter Marks\" -> \"Carole Di Tosti\""
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved days-of-wine-and-roses-off-broadway-2023/theater-pizzazz--peter-marks.json → days-of-wine-and-roses-off-broadway-2023/theater-pizzazz--carole-di-tosti.json",
+      "cleared": []
+    }
+  ],
+  "executedIn": "ci"
 }
