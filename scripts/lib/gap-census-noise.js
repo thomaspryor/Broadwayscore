@@ -141,13 +141,16 @@ function titleOnlyAsOtherVenue(text, show, tokensOf) {
   if (!tokens.length) return false;
   const wordsOf = (s) => foldDiacritics(String(s || '')).toLowerCase().split(/[^a-z0-9]+/).filter(Boolean);
   const words = wordsOf(text);
-  const ownVenue = ` ${wordsOf(show.venue).join(' ')} `;
+  // New York spells it "theater" for its own houses (Apollo, Lyric): fold only off New York.
+  const fold = !['broadway', 'off-broadway'].includes(show.category);
+  const nounOf = (w) => (fold && w === 'theater' ? 'theatre' : w);
+  const ownVenue = ` ${wordsOf(show.venue).map(nounOf).join(' ')} `;
   let venueUses = 0;
   for (let i = 0; i + tokens.length <= words.length; i++) {
     if (!tokens.every((t, k) => words[i + k] === t)) continue;
-    const next = words[i + tokens.length];
-    // "bug-theatre-review" is the outlet's section label, not a house.
-    if (!VENUE_NOUN.has(next) || !isKnownLondonHouse(`${tokens.join(' ')} ${next.replace(/^theater$/, 'theatre')}`)) return false;
+    const next = nounOf(words[i + tokens.length]);
+    // Not a known London house ("bug-theatre-review", "othello-theatre-royal"): not another venue.
+    if (!VENUE_NOUN.has(next) || !isKnownLondonHouse(`${tokens.join(' ')} ${next}`)) return false;
     // "the-bridge-theatre-review" / "The Bridge, theatre review": the outlet's label after the title.
     if (/^reviews?$/.test(words[i + tokens.length + 1] || '')) return false;
     if (ownVenue.includes(` ${tokens.join(' ')} ${next} `)) return false;

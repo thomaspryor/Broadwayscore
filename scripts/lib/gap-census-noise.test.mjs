@@ -252,6 +252,12 @@ test('a title used only as another house\'s name is not this show', () => {
   assert.equal(u('https://x.com/the-bridge-theatre-review'), false);
   assert.equal(noise.titleOnlyAsOtherVenue('/stage/x The Bridge, theatre review: a quiet triumph', show, titleTokens), false);
   assert.equal(u('https://variety.com/2026/legit/reviews/into-the-woods-review-bridge-theater-1234/'), true);
+  // Trade-off pinned: a "theatre review" label after the house keeps the row (an extra gap, never a hidden review).
+  assert.equal(u('https://x.com/guys-and-dolls-at-the-bridge-theatre-review'), false);
+  // Own house spelled "theater" by a US outlet stays this show's.
+  assert.equal(noise.titleOnlyAsOtherVenueInUrl('https://variety.com/x-bridge-theater-1234', { title: 'Bridge', venue: 'Bridge Theatre', category: 'off-west-end' }, titleTokens), false);
+  // A New York show's "theater" is its own spelling, never a London house.
+  assert.equal(noise.titleOnlyAsOtherVenueInUrl('https://x.com/show-apollo-theater-harlem', { title: 'Apollo', venue: 'Booth Theatre', category: 'broadway' }, titleTokens), false);
   // A show whose own house carries the name keeps those reviews.
   const own = { title: 'Lyric', venue: 'Lyric Theatre', openingDate: '2026-11-03' };
   assert.equal(noise.titleOnlyAsOtherVenueInUrl('https://x.co.uk/lyric-lyric-theatre-review', own, titleTokens), false);
