@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-11-04T04:40:52.972Z",
+  "generatedAt": "2026-11-04T08:12:47.609Z",
   "date": "2026-11-04",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 209357,
+  "entryCount": 224465,
   "shows": [
     {
       "showId": "memoirs-of-amorous-gentlemen-off-broadway-2026",
@@ -96,13 +96,13 @@
     },
     {
       "showId": "the-lives-of-others-west-end-2026",
-      "reviewCount": 25,
+      "reviewCount": 26,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 2118926,
-        "scored-to-rebuilt": 485298,
+        "scored-to-rebuilt": 487726,
         "rebuilt-to-deployed": 67276648
       },
       "reviews_over_15min": 0,
@@ -282,7 +282,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 1193014,
-        "scored-to-rebuilt": 642226,
+        "scored-to-rebuilt": 616752,
         "rebuilt-to-deployed": 43421233
       },
       "reviews_over_15min": 0,
@@ -378,7 +378,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 624739,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -408,7 +408,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 540770,
+        "scored-to-rebuilt": 584724,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -1662,13 +1662,13 @@
     },
     {
       "showId": "the-imaginary-invalid-2026",
-      "reviewCount": 26,
+      "reviewCount": 27,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": 4947757,
-        "scored-to-rebuilt": 286572,
+        "collected-to-scored": 53759032,
+        "scored-to-rebuilt": 460528,
         "rebuilt-to-deployed": 57297923
       },
       "reviews_over_15min": 0,
@@ -6978,13 +6978,13 @@
     },
     {
       "showId": "rope-off-broadway-2026",
-      "reviewCount": 3,
+      "reviewCount": 8,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": 904458,
+        "collected-to-scored": 690740,
+        "scored-to-rebuilt": 309901,
         "rebuilt-to-deployed": 53098564
       },
       "reviews_over_15min": 0,
@@ -7233,7 +7233,7 @@
     },
     {
       "showId": "ha-ha-ha-ha-ha-ha-ha-regional-2026",
-      "reviewCount": 2,
+      "reviewCount": 3,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -7623,13 +7623,13 @@
     },
     {
       "showId": "tosca-english-national-opera-west-end-2026",
-      "reviewCount": 12,
+      "reviewCount": 13,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 645270,
-        "scored-to-rebuilt": 136438,
+        "scored-to-rebuilt": 139102,
         "rebuilt-to-deployed": 49840087
       },
       "reviews_over_15min": 0,
@@ -12822,6 +12822,36 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 1540649,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "well-see-off-broadway-2026",
+      "reviewCount": 1,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": 596944,
+        "scored-to-rebuilt": 572031,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "the-invention-of-love-off-broadway-2026",
+      "reviewCount": 13,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
