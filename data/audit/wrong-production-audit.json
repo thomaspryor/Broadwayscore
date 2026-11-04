@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-04T19:58:31.804Z",
+  "timestamp": "2026-11-04T20:19:01.971Z",
   "stats": {
-    "totalReviews": 80142,
+    "totalReviews": 80144,
     "alreadyFlagged": 22016,
     "dateGuardCatches": 217,
     "directorMismatch": 3500,
-    "tvFilmSignals": 2275,
+    "tvFilmSignals": 2277,
     "londonSignals": 3608,
     "offBroadwaySignals": 735,
     "yearMismatch": 361,
-    "noPublishDate": 8509
+    "noPublishDate": 8507
   },
   "findings": [
     {
@@ -41430,6 +41430,20 @@
     },
     {
       "showId": "memoirs-of-amorous-gentlemen-off-broadway-2026",
+      "file": "mashable--unknown.json",
+      "score": 78,
+      "publishDate": "2026-10-31",
+      "url": "https://mashable.com/entertainment/memoirs-of-amorous-gentlemen-review",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"hbo max\""
+        }
+      ]
+    },
+    {
+      "showId": "memoirs-of-amorous-gentlemen-off-broadway-2026",
       "file": "nytimes--elisabeth-vincentelli.json",
       "score": 45,
       "publishDate": "2026-10-16",
@@ -65085,6 +65099,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "the-curious-case-of-benjamin-button-off-broadway-2026",
+      "file": "mashable--unknown.json",
+      "score": 39,
+      "publishDate": "2026-11-01",
+      "url": "https://mashable.com/entertainment/the-curious-case-of-benjamin-button-the-musical",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"hbo max\""
         }
       ]
     },
@@ -124742,7 +124770,7 @@
     {
       "showId": "the-bridge-off-west-end-2026",
       "file": "artsdesk--unknown.json",
-      "score": 60,
+      "score": 55,
       "publishDate": "2026-11-04",
       "url": "https://theartsdesk.com/theatre/bridge-bush-theatre-review-entertaining-stand-one-sided-theatre",
       "findings": [
@@ -129969,7 +129997,7 @@
     {
       "showId": "the-lives-of-others-west-end-2026",
       "file": "the-morning-star--unknown.json",
-      "score": 66,
+      "score": 67,
       "publishDate": "2026-11-02",
       "url": "https://morningstaronline.co.uk/article/lives-others-review-art-vs-socialism",
       "findings": [
