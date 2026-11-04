@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-04T00:02:48.526Z",
+  "generatedAt": "2026-11-04T01:10:57.905Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -133,34 +133,14 @@
   "feedsFailed": [
     {
       "outletId": "front-row-center",
-      "error": "HTTP 202 for https://thefrontrowcenter.com/feed"
+      "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
     {
       "outletId": "slantmagazine",
       "error": "direct fetch returned a non-rss page"
-    },
-    {
-      "outletId": "cote-notices",
-      "error": "HTTP 403 for https://davidcote1.substack.com/feed"
-    },
-    {
-      "outletId": "theartsdispatch",
-      "error": "HTTP 403 for https://theartsdispatch.substack.com/feed"
-    },
-    {
-      "outletId": "rolandcat",
-      "error": "HTTP 403 for https://rolandcat.substack.com/feed"
-    },
-    {
-      "outletId": "matineemouse",
-      "error": "HTTP 403 for https://matineemouse.substack.com/feed"
-    },
-    {
-      "outletId": "londontheatre1",
-      "error": "HTTP 202 for https://www.londontheatre1.com/wp-json/wp/v2/posts?categories=14&per_page=50&orderby=date&order=desc&after="
     }
   ],
-  "itemsScanned": 767,
+  "itemsScanned": 813,
   "matchedGaps": 10,
   "possibleGaps": 13,
   "gaps": [
