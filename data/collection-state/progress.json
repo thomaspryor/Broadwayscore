@@ -1,13 +1,11 @@
 {
   "processed": [
     "kelly-mccaughan-catholic-guilt-off-broadway-2026/broadway-baby--unknown.json",
-    "tosca-english-national-opera-west-end-2026/sunday-telegraph--nicholas-kenyon.json",
-    "ceilidh-the-musical-off-west-end-2026/guardian--emma-john.json",
-    "ceilidh-the-musical-off-west-end-2026/guardian--unknown.json"
+    "a-few-good-men-2026/bobs-theater-blog--unknown.json",
+    "other-desert-cities-2026/bobs-theater-blog--unknown.json"
   ],
   "failed": [
     "a-few-good-men-2026/variety--anna-tingley.json",
-    "a-few-good-men-2026/bobs-theater-blog--unknown.json",
     "a-few-good-men-2026/goldderby--ethan-alter.json",
     "medea-off-broadway-2026/express-uk--neil-norman.json",
     "medea-off-broadway-2026/bachtrack--susan-stempleski.json",
@@ -37,8 +35,8 @@
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "ceilidh-the-musical-off-west-end-2026/guardian--emma-john.json",
-      "ceilidh-the-musical-off-west-end-2026/guardian--unknown.json"
+      "a-few-good-men-2026/bobs-theater-blog--unknown.json",
+      "other-desert-cities-2026/bobs-theater-blog--unknown.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -52,7 +50,7 @@
     "archive": []
   },
   "startTime": "2026-11-04T07:33:00.437Z",
-  "lastProcessed": "ceilidh-the-musical-off-west-end-2026/musical-theatre-review--angela-thomas.json",
+  "lastProcessed": "other-desert-cities-2026/bobs-theater-blog--unknown.json",
   "log": [
     {
       "t": "2026-11-04T07:44:01.921Z",
@@ -107,5 +105,8 @@
       "session": "ba4abf97",
       "url": "https://bachtrack.com/review-nozze-figaro-pountney-conta-bucharest-national-oper"
     }
+  ],
+  "recoveredAfterFailure": [
+    "a-few-good-men-2026/bobs-theater-blog--unknown.json"
   ]
 }
