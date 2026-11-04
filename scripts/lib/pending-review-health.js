@@ -43,6 +43,21 @@ const STALE_PENDING_CHECK = 'stale_pending';
 // Fields written by replay-pending-bylines.js / sweeps that must survive a
 // re-discovery rewrite of the same pending file. Losing promoteSkippedReason
 // made replay re-fetch every judged-junk URL on every run.
+// Exclusion flags (BRO-6960): a re-discovery rewrite that drops them is undone
+// by push-with-retry's protected-field restore (they are in MANUAL_FIELDS), so
+// the pushed file equals its base and content-survival fails every attempt.
+// Carried from the existing stub only when the incoming record does not set one.
+const CARRIED_EXCLUSION_FIELDS = [
+  'wrongProduction',
+  'wrongProductionNote',
+  'wrongShow',
+  'wrongShowReason',
+  'wrongShowNote',
+  'humanReviewedWrongProduction',
+  'wrongProductionManualClear',
+  'wrongShowManualClear',
+];
+
 const PRESERVED_PENDING_FIELDS = [
   'firstSeenAt',
   'promoteSkippedReason',
@@ -174,6 +189,9 @@ function mergePendingRecord(existing, incoming, nowIso = new Date().toISOString(
     for (const k of PRESERVED_PENDING_FIELDS) {
       if (existing[k] !== undefined && existing[k] !== null) merged[k] = existing[k];
     }
+    for (const k of CARRIED_EXCLUSION_FIELDS) {
+      if (merged[k] === undefined && existing[k] !== undefined && existing[k] !== null) merged[k] = existing[k];
+    }
     if (hasText(existing.fullText) && !hasText(incoming && incoming.fullText)) {
       for (const k of ['fullText', 'contentTier', 'contentTierReason', 'isFullReview', 'wordCount', 'textStatus',
         'fetchMethod', 'textFetchedAt']) {
@@ -213,6 +231,7 @@ function buildRefetchedPendingRecord(stub, patch, nowIso = new Date().toISOStrin
 }
 
 module.exports = {
+  CARRIED_EXCLUSION_FIELDS,
   DEFAULT_STALE_HOURS,
   POST_OPENING_WINDOW_DAYS,
   STALE_PENDING_CHECK,

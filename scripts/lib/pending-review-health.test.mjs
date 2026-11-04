@@ -53,6 +53,17 @@ test('mergePendingRecord keeps firstSeenAt + replay bookkeeping across re-discov
   assert.equal(again.contentTier, 'complete');
 });
 
+test('mergePendingRecord carries exclusion flags the incoming record omits (BRO-6960)', () => {
+  const existing = { url: 'u', wrongProduction: true, wrongProductionNote: 'Auto-flagged', firstSeenAt: '2026-10-10T00:00:00Z' };
+  const again = h.mergePendingRecord(existing, { url: 'u', criticName: 'Unknown' }, '2026-10-12T00:00:00Z');
+  assert.equal(again.wrongProduction, true, 'rewrite must not drop the flag push-with-retry would restore');
+  assert.equal(again.wrongProductionNote, 'Auto-flagged');
+  const cleared = h.mergePendingRecord(existing, { url: 'u', wrongProduction: false }, '2026-10-12T00:00:00Z');
+  assert.equal(cleared.wrongProduction, false, 'an explicit incoming value wins');
+  assert.equal(h.mergePendingRecord(null, { url: 'u' }).wrongProduction, undefined);
+  for (const k of h.CARRIED_EXCLUSION_FIELDS) assert.ok(typeof k === 'string');
+});
+
 test('gather-reviews pending writer goes through mergePendingRecord (no from-scratch rewrite)', () => {
   const src = fs.readFileSync(new URL('../gather-reviews.js', import.meta.url), 'utf8');
   assert.match(src, /mergePendingRecord\(existingPending, review\)/);
