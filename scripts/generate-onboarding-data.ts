@@ -161,7 +161,26 @@ async function main() {
       artByTitle.set(k, { poster: art.img!.po!, showId: art.id, days: prods.reduce((n, p) => n + daysInWindow(p), 0) });
     }
   }
-  const tourInput = { tours, art: (t: string) => artByTitle.get(norm(t)) ?? null, badPoster: isBad, today: ymd(today), windowStart: ymd(windowStart) };
+  // BRO-6914 item 4: Broadway key art carries Broadway-only text ("ON BROADWAY", closing dates, anniversary
+  // badges). scripts/audit-tour-art.js vision-checks each tour's candidate posters and records the first clean
+  // one (or null = none clean, so the title is left out rather than shown with wrong art).
+  const tourArt: Record<string, string | null> = fs.existsSync(path.join(ROOT, 'src/config/onboarding-tour-art.json'))
+    ? JSON.parse(fs.readFileSync(path.join(ROOT, 'src/config/onboarding-tour-art.json'), 'utf8')) : {};
+  const cleanByTitle = new Map<string, string | null>();
+  for (const t of tours) {
+    if (!(t.id in tourArt)) continue;
+    const k = norm(t.title);
+    if (!cleanByTitle.get(k)) cleanByTitle.set(k, tourArt[t.id]);
+  }
+  const artFor = (t: string): TitleArt | null => {
+    const k = norm(t);
+    const base = artByTitle.get(k) ?? null;
+    if (!cleanByTitle.has(k)) return base;
+    const clean = cleanByTitle.get(k);
+    if (!clean) return null;
+    return { poster: clean, showId: base?.showId ?? '', days: base?.days ?? 0 };
+  };
+  const tourInput = { tours, art: artFor, badPoster: isBad, today: ymd(today), windowStart: ymd(windowStart) };
   const topUp = nationalTopTours(tourInput);
   const want: Record<string, WantRow[]> = {};
   const chicagoLocalWant: WantRow[] = shows
