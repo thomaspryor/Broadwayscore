@@ -12,6 +12,7 @@ const { decodeHtmlEntities } = require('./text-cleaning');
  */
 
 const https = require('https');
+require('./ipv4-connections'); // BRO-6872: see that file
 const http = require('http');
 const { foldDiacritics } = require('./title-match');
 const { passesGenericTitleIdentity } = require('./generic-title-guard');
@@ -89,7 +90,9 @@ const ENTERTAINMENT_FEEDS = [
   // { url: 'https://www.vulture.com/feed/rss/index.xml', outletId: 'vulture', name: 'Vulture', needsFilter: true },
   { url: 'https://www.hollywoodreporter.com/feed/', outletId: 'hollywood-reporter', name: 'THR', needsFilter: true, trackRecoupment: true },
   { url: 'https://deadline.com/feed/', outletId: 'deadline', name: 'Deadline', needsFilter: true, trackRecoupment: true },
-  { url: 'https://feeds.content.dowjones.io/public/rss/RSSLifestyle', outletId: 'wsj', name: 'WSJ Lifestyle', needsFilter: true },
+  // WSJ files theater reviews under Arts & Culture; its Lifestyle feed carries cars and gadgets, and wsj.com/arts-culture
+  // answers runners with 401. The Arts & Culture feed listed the A Few Good Men and Imaginary Invalid reviews (BRO-6872).
+  { url: 'https://feeds.content.dowjones.io/public/rss/RSSArtsCulture', outletId: 'wsj', name: 'WSJ Arts & Culture', needsFilter: true },
   { url: 'https://www.latimes.com/entertainment-arts/rss2.0.xml', outletId: 'latimes', name: 'LA Times Entertainment', needsFilter: true },
   { url: 'https://feeds.washingtonpost.com/rss/entertainment', outletId: 'washpost', name: 'WashPost Entertainment', needsFilter: true },
   { url: 'https://www.newyorker.com/feed/culture', outletId: 'newyorker', name: 'New Yorker Culture', needsFilter: true },

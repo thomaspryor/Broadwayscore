@@ -21,7 +21,7 @@ test('unconfigured lane factory sweeps T1 indexes using free requests', async ()
   await index.discover({ show: { title: 'Test', category: 'broadway' }, fetchText: async (url, opts) => {
     calls.push({ url, opts }); return '<main></main>';
   } });
-  assert.ok(calls.some(c => c.url === 'https://www.nytimes.com/section/theater'));
+  assert.ok(calls.some(c => c.url === 'https://www.vulture.com/theater/'));
   assert.ok(calls.every(c => c.opts.directOnly === true));
 });
 

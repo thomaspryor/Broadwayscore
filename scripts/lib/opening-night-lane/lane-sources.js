@@ -32,9 +32,10 @@ function outletInMarket(outletId, market) {
 
 // Explicit section URLs, never inferred from article URLs. Vulture and Variety reuse the sections swept by
 // site-search-discovery.js. Tier-1 pages are read for tier-1 outlets the registry places in the show's market.
+// Not here: nytimes.com/section/theater (403) and wsj.com/arts-culture (401) refused the runners on 177 of 178 reads
+// in the 2026-11-04 replays (and refuse our own user agent too), each holding a pinned slot the rotating pages need.
+// Their feeds find the reviews: NYT's Theater RSS and WSJ's Arts & Culture RSS (rss-discovery.js ALL_FEEDS), BRO-6872.
 const T1_SECTION_INDEXES = {
-  nytimes: 'https://www.nytimes.com/section/theater',
-  wsj: 'https://www.wsj.com/arts-culture',
   vulture: 'https://www.vulture.com/theater/',
   variety: 'https://variety.com/v/legit/reviews/',
   guardian: 'https://www.theguardian.com/stage',
