@@ -56,8 +56,8 @@ test('replay: slow Talkin\' Broadway indexes do not cost the named-page review, 
   const { keys, calls } = await replayNight({ passes: 4, everyMin: 2, fetchOpts: { slowTbIndexMs: 30 } });
   assert.ok(keys.has(d.canonicalUrl(E.talkinbroadway)));
   // Found in the first pass and cached, so the four candidate names are probed once, not once per pass: two misses, then
-  // the hit (3 reads), plus the one read the lane makes to score the review.
-  assert.equal(calls.filter((u) => u.includes('/page/world/TheImaginaryInvalid')).length, 4, 'two misses, the hit, the scoring fetch; never again');
+  // the hit (3 reads). The lane scores the hit's page as fetched, with no read of its own (BRO-6872 p17).
+  assert.equal(calls.filter((u) => u.includes('/page/world/TheImaginaryInvalid')).length, 3, 'two misses and the hit; never again');
 });
 
 test('replay graded like a press night: same-night completeness PASS (S4-T6)', async () => {

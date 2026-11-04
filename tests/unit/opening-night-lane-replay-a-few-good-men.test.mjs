@@ -32,7 +32,8 @@ test('replay of 2026-10-29: the lane scores all 22 published reviews, Talkin\' B
   assert.deepEqual(r.failed, [], 'nothing failed for good');
   // Every Browserbase read was Talkin' Broadway, discovery and review fetch alike, in one session.
   assert.ok(r.browserbase.reads.length > 0 && r.browserbase.reads.every((u) => /talkinbroadway\.com/.test(u)), r.browserbase.reads.join(', '));
-  assert.ok(r.browserbase.reads.filter((u) => d.canonicalUrl(u) === d.canonicalUrl(U.talkinbroadway)).length >= 2, 'probed, then fetched for scoring');
+  // The probe's page is scored as fetched, not fetched a second time (BRO-6872 p17: a second TB fetch draws a challenge).
+  assert.equal(r.browserbase.reads.filter((u) => d.canonicalUrl(u) === d.canonicalUrl(U.talkinbroadway)).length, 1, 'probed once, scored from that page');
   assert.equal(r.browserbase.sessions(), 1);
   // The production publish path ran (not a dry run): every score was published (in batches) and written to the review-texts dir.
   assert.ok(r.published.length > 0, 'at least one publish batch'); assert.deepEqual(r.unpublished, [], 'nothing scored was left unpublished');

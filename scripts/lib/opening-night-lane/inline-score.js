@@ -29,7 +29,7 @@
 // nothing in this file writes a venue to a data file.
 const failures = require('./lane-failures');
 const trust = require('./trust-model');
-const { canonicalUrl, hasReviewSignal } = require('./discovery');
+const { canonicalUrl, hasReviewSignal, PREFETCHED_PAGE } = require('./discovery');
 const { laneNonReviewReason, multiShowColumnReason, nearbyShowTitles } = require('./lane-guards');
 const { BODY_GATE_CHARS, MIN_SHORT_PARTIAL_CHARS } = require('../scorable-text');
 const { EXCERPT_FIELDS } = require('../excerpt-fields');
@@ -129,6 +129,7 @@ function createInlineScoring({
   const maxAttempts = retryMs.length + 1;
   const fetched = new Map(); // key -> the fetch result, so a score retry never pays for the page again
   const shortLen = new Map(); // key -> length of the last under-the-floor extraction
+  const usedCarried = new Set(); // keys whose discovery-fetched page was already scored once
   const teaserVerdict = new Map(); // key -> the scorer's not_a_review on a paywall teaser, waiting for an aggregator excerpt
   // Rebuild retry state from the night's failure record (a restart must not reset attempts or reopen terminal verdicts).
   for (const f of failures.readFailures(ledgerDir, show.id, night).failures) {
@@ -192,7 +193,14 @@ function createInlineScoring({
     const withExcerpts = (o) => (Object.keys(excerpts).length ? { ...o, excerpts } : o);
     const fallback = (why) => withExcerpts({ outlet: undefined, criticName: null, publishDate: null, fullText: '', aggregator, fallbackReason: why, ...excerptTier });
     try {
-      const page = await fetchPage(candidate.fetchUrl || candidate.url);
+      // The page discovery already fetched is scored as is, once: fetching the same Talkin' Broadway page a second time drew
+      // a challenge five times running in the p17 replays. Not on a paywall host, whose rules read how the page was fetched
+      // (sourceMethod), and not on a retry, which may be retrying exactly because the carried copy was short.
+      const carried = candidate[PREFETCHED_PAGE];
+      const useCarried = typeof carried === 'string' && carried.length > 0 && !usedCarried.has(key) && !excerptMayScore(candidate.url)
+        && !getHardPaywallDomain(candidate.url) && !SOFT_PAYWALL_MIN_CHARS[hostOf(candidate.url)];
+      if (useCarried) usedCarried.add(key);
+      const page = useCarried ? { content: carried } : await fetchPage(candidate.fetchUrl || candidate.url);
       const html = page && typeof page.content === 'string' ? page.content : '';
       if (!html) throw new Error('fetchPage returned no content');
       const sourceMethod = page.source || page.via || null; // what the old path's paywall rule keys on (SCRAPED_SOURCE_METHODS)

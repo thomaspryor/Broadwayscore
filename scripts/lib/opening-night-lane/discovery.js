@@ -1049,7 +1049,7 @@ function talkinBroadwayAdapter({
       // meta-tag extractor does not.
       const tbDate = verdict.publishDate instanceof Date && !isNaN(verdict.publishDate) ? verdict.publishDate.toISOString() : null;
       const publishDate = extractPublishDate(html) || tbDate;
-      const hit = { url, title: show.title, source: 'outlet-index', publishDate, needsDate: !publishDate, reviewSignalGiven: true, via: 'talkin-broadway-named-page', outletId: 'talkinbroadway' };
+      const hit = { url, title: show.title, source: 'outlet-index', publishDate, needsDate: !publishDate, reviewSignalGiven: true, via: 'talkin-broadway-named-page', outletId: 'talkinbroadway', [PREFETCHED_PAGE]: html };
       // Only a dated page ends the probing. An undated one (an older production's page, say) is kept as a fallback and
       // the later names are still tried, so it cannot shadow the dated page every pass.
       if (publishDate) { found = hit; return [hit]; }
@@ -1220,6 +1220,12 @@ const DATE_CHECKS_IN_FLIGHT = Symbol('dateChecksInFlight');
 // Date checks open at most this many pages at once, across passes (a carried check keeps its slot). A burst of ten paid
 // fetches can trip a provider's concurrency limit, and that refusal reads as a real failure: a strike (BRO-6872 review).
 const DATE_CHECK_CONCURRENCY = 3;
+// The review page discovery already fetched (a date check, Talkin' Broadway's named-page probe), carried on the candidate so
+// the lane scores it instead of fetching it again. A symbol key: object spread copies it through candidate merges, and
+// JSON.stringify skips it, so page text never reaches a ledger, report or artifact. p17 replay: all three Talkin' Broadway
+// reviews (School Girls, The Imaginary Invalid, Other Desert Cities) were found and dated, then lost because the second
+// fetch of the same page, for scoring, drew a challenge five times running.
+const PREFETCHED_PAGE = Symbol('prefetchedPage');
 // Paid date checks a pending find (listed once, not listed since) may time out before it is dropped for the night.
 const PENDING_MAX_TIMEOUTS = 3;
 const dateFailsOf = (m) => (!m ? 0 : m.dateFails !== undefined ? m.dateFails : m.reason === 'date-check-failed' ? m.attempts : 0);
@@ -1298,6 +1304,7 @@ async function runDiscoveryPass({
         for (const flag of TRUST_FLAGS) if (other[flag] === true) kept[flag] = true;
         if (!kept.publishDate && other.publishDate) { kept.publishDate = other.publishDate; kept.needsDate = false; }
         if (!kept.outletId && other.outletId) kept.outletId = other.outletId;
+        if (!kept[PREFETCHED_PAGE] && other[PREFETCHED_PAGE]) kept[PREFETCHED_PAGE] = other[PREFETCHED_PAGE];
       }
       byKey.set(key, kept);
     }
@@ -1338,10 +1345,10 @@ async function runDiscoveryPass({
   const { checks: inFlight, pending, timeouts, limit: limitDateCheck } = memo[DATE_CHECKS_IN_FLIGHT];
   const adapterCaps = new Map(adapters.filter((a) => a.fetchTimeoutMs).map((a) => [a.name, a.fetchTimeoutMs]));
   const checks = [];
-  const judge = (c, key, publishDate) => {
+  const judge = (c, key, publishDate, page = c[PREFETCHED_PAGE]) => {
     pending.delete(key);
     const verdict = admitLaneCandidate({ source: c.source, aggregatorCited: c.aggregatorCited === true, publishDate, night, ...(timeZone ? { timeZone } : {}) });
-    if (verdict.admit) admitted.push({ url: c.fetchUrl || c.url, key, source: c.source, adapter: c.adapter, via: c.via, publishDate, outletId: c.outletId || (resolveOutletFromUrl(c.url) || {}).outletId || null, reason: verdict.reason, ...(c.excerpts ? { excerpts: c.excerpts } : {}) });
+    if (verdict.admit) admitted.push({ url: c.fetchUrl || c.url, key, source: c.source, adapter: c.adapter, via: c.via, publishDate, outletId: c.outletId || (resolveOutletFromUrl(c.url) || {}).outletId || null, reason: verdict.reason, ...(c.excerpts ? { excerpts: c.excerpts } : {}), ...(typeof page === 'string' && page ? { [PREFETCHED_PAGE]: page } : {}) });
     else reject(c, key, verdict.reason);
   };
   const reject = (c, key, reason) => {
@@ -1459,7 +1466,7 @@ async function runDiscoveryPass({
             deferredDateChecks.push(c.url);
             continue;
           }
-          judge(c, key, publishDate);
+          judge(c, key, publishDate, outcome.html);
         }
       } finally { clearTimeout(timer); }
     }
@@ -1512,5 +1519,5 @@ module.exports = {
   NON_REVIEW_HOSTS, WRAPPER_HOSTS, canonicalUrl, bodyScope, playbillArticleBody, bwwRoundupBody, storyCitedLinks, extractAnchors, citedExcerpts, extractCitedLinks, extractPublishDate,
   nonReviewReason, SECTION_INDEX_PARSERS, headlineIsShowTitle, hasReviewSignal, hostSignalsReview, REVIEW_WITHOUT_WORD_HOSTS, pageDatedNear, dtliSitemapPages, defaultLaneFeeds, bwwRoundupAdapter, dtliAdapter, rssAdapter, PAID_FEED_REST_PASSES, PAID_FEED_MAX_FAILS, PAID_FEED_RUN_MAX, CHAIN_FEED_MAX_FAILS, CHAIN_FEED_REST_PASSES, unreachableFromRunner, sectionIndexAdapter, showScoreAdapter, playbillVerdictAdapter, googleNewsAdapter, GOOGLE_NEWS_SITE_QUERY_HOSTS, GOOGLE_NEWS_FETCH_TIMEOUT_MS, GOOGLE_NEWS_SEARCH_TIMEOUT_MS, GOOGLE_NEWS_MIN_UNWRAP_MS, GOOGLE_NEWS_UNWRAP_CONCURRENCY, talkinBroadwayAdapter, TB_PROBE_BATCH, TB_MAX_CARRIES, tbFetchWasBlocked, serpAdapter,
   publisherUrlFromWrapperPage, parseFeedEntries, fetchTextFrom, serpAllowed, memoPath, loadMemo, saveMemo,
-  runDiscoveryPass, loadSeen, recordDiscovered,
+  runDiscoveryPass, loadSeen, recordDiscovered, PREFETCHED_PAGE,
 };
