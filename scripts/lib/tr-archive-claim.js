@@ -46,12 +46,13 @@ function aliasMapFromShows(shows) {
 const SHOWS_PATH = path.join(__dirname, '..', '..', 'data', 'shows.json');
 const cache = new Map();
 function loadCoverageClaims(file = COVERAGE_PATH, showsFile = SHOWS_PATH) {
-  if (cache.has(file)) return cache.get(file);
+  const key = `${file}\0${showsFile}`;
+  if (cache.has(key)) return cache.get(key);
   let claims = [];
   let aliasToId = null;
   try { aliasToId = aliasMapFromShows(JSON.parse(fs.readFileSync(showsFile, 'utf8'))); } catch (_) { /* no shows.json: claims keep their recorded ids */ }
   try { claims = claimsFromCoverage(JSON.parse(fs.readFileSync(file, 'utf8')), aliasToId); } catch (e) { console.warn(`[tr-archive-claim] no coverage claims (${e.code || e.message}); claim guard off`); }
-  cache.set(file, claims);
+  cache.set(key, claims);
   return claims;
 }
 

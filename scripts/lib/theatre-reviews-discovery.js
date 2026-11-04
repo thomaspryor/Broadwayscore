@@ -55,7 +55,10 @@ function pickTheatreReviewsRoundup(posts, showTitle) {
  */
 function titleWordsOnlyInVenue(rawTitle, want) {
   // Drop the "Theatre reviews roundup:" / "Reviews Roundup -" prefix so its dash is not read as the venue cut.
-  const t = String(rawTitle || '').replace(/^.*?\broundup\s*[:\-–—]\s*/i, '');
+  // Same for a trailing "- Reviews Roundup" / "- Theatre Reviews with Paul Seven" site suffix.
+  const t = String(rawTitle || '')
+    .replace(/^.*?\broundup\s*[:\-–—]\s*/i, '')
+    .replace(/\s+[-–—]\s+(?:theatre\s+)?reviews?\b.*$/i, '');
   const cut = Math.max(t.search(/\s+at\s+(?!.*\s+at\s+)/i), t.search(/\s+[-–—]\s+(?!.*\s+[-–—]\s+)/));
   if (cut <= 0) return false;
   const has = (s) => { const h = ` ${normalizeTitle(s)} `; return want.every((w) => h.includes(` ${w} `)); };
