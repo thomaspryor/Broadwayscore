@@ -65,7 +65,7 @@ try {
   const audited = read('src/config/onboarding-tour-art.json'), tourDefs = read('data/shows.json').shows.filter(x => x.category === 'tour');
   const unaudited = tourDefs.filter(x => !(x.id in audited) && x.status !== 'closed').map(x => x.id);
   if (unaudited.length) console.warn(`::warning::tours not yet art-audited (run node scripts/audit-tour-art.js): ${unaudited.join(', ')}`);
-} catch { /* shows.json is gitignored and may be absent */ }
+} catch (e) { if (e.code !== 'ENOENT') throw e; /* shows.json is gitignored and may be absent */ }
 const tourCities = cities.filter(c => c.kind === 'tour');
 assert(tourCities.every(c => typeof c.stops === 'number'), 'every touring city carries its stop count');
 assert(tourCities.filter(c => hits[c.id]).length >= tourCities.length * 0.9, '>=90% of touring cities have their own Seen list');
