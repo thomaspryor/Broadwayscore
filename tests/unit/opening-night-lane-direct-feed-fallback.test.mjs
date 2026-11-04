@@ -70,3 +70,41 @@ test('fetchTextFrom names the network cause so the shadow recording says why', a
   const fetchText = d.fetchTextFrom(async () => { throw networkError(); });
   await assert.rejects(fetchText(FEED, { directOnly: true }), (e) => e.message === 'fetch failed (ECONNRESET)' && d.unreachableFromRunner(e));
 });
+
+test('a feed Bright Data also fails stops paying after PAID_FEED_MAX_FAILS reads in a row', async () => {
+  let paidCalls = 0;
+  const fetchText = async (url, opts = {}) => { if (opts.directOnly) throw networkError(); paidCalls += 1; throw new Error('All scraping methods failed'); };
+  const adapter = d.rssAdapter({ feeds });
+  for (let i = 0; i < d.PAID_FEED_REST_PASSES * (d.PAID_FEED_MAX_FAILS + 3); i++) await adapter.discover({ show: SHOW, fetchText });
+  assert.equal(paidCalls, d.PAID_FEED_MAX_FAILS);
+});
+
+test('one run pays for at most PAID_FEED_RUN_MAX rested reads across all feeds', async () => {
+  const many = Array.from({ length: 12 }, (_, i) => ({ url: `https://blog${i}.example.com/feed`, outletId: `b${i}`, directOnly: true }));
+  let paidCalls = 0;
+  const fetchText = async (url, opts = {}) => { if (opts.directOnly) throw networkError(); paidCalls += 1; return '<rss><channel></channel></rss>'; };
+  const adapter = d.rssAdapter({ feeds: many });
+  for (let i = 0; i < 200; i++) await adapter.discover({ show: SHOW, fetchText });
+  assert.equal(paidCalls, d.PAID_FEED_RUN_MAX);
+});
+
+test('the paid read gets the slow budget, not the cheap 15 s cap (a cut-off Bright Data read is billed anyway)', async () => {
+  const fetchText = async (url, opts = {}) => {
+    if (opts.directOnly) throw networkError();
+    await new Promise((r) => setTimeout(r, 120));
+    return url === FEED ? XML : '<html><head><meta property="article:published_time" content="2026-10-30T03:00:00Z"></head><body><article><h1>Review: A Few Good Men</h1><p>review</p></article></body></html>';
+  };
+  const T0 = Date.parse('2026-10-30T02:00:00Z');
+  const r = await d.runDiscoveryPass({ show: SHOW, night: '2026-10-29', now: T0 + 3600e3, startedAt: T0, adapters: [d.rssAdapter({ feeds })], fetchText, fetchTimeoutMs: 50 });
+  assert.ok(JSON.stringify(r).includes(ITEM), JSON.stringify(r).slice(0, 400));
+});
+
+test('a recorded timeout replayed from its message alone still counts as unreachable', () => {
+  assert.equal(d.unreachableFromRunner(new Error('The operation was aborted due to timeout')), true);
+  assert.equal(d.unreachableFromRunner(new Error('This operation was aborted')), true);
+});
+
+test('the cause code is added to direct reads only (Talkin\' Broadway reads ECONNRESET as blocked)', async () => {
+  const fetchText = d.fetchTextFrom(async () => { throw networkError(); });
+  await assert.rejects(fetchText('https://www.talkinbroadway.com/page/world/x.html'), (e) => e.message === 'fetch failed');
+});

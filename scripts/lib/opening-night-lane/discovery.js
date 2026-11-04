@@ -52,10 +52,14 @@ const MAX_SOURCES_PER_ADAPTER = 12; // index pages per pass (Talkin' Broadway, s
 // apart from the rested read of a feed the runner cannot reach (PAID_FEED_REST_PASSES).
 const MAX_FEEDS_PER_PASS = 12;
 // A direct-only feed the runner cannot reach at all (connection refused or reset, DNS, timeout: JK's, Bob's and four more
-// in every 2026-11-03 shadow, while they answer from anywhere else) is read through Bright Data instead, at most once
-// every this many passes per feed (about 10 minutes at 2 minutes a pass), so a feed that blocks the runner costs a few
-// dozen paid reads a night rather than none found. An HTTP refusal (403, 404) stays free and unfound, as before (BRO-6872).
+// in every 2026-11-03 shadow, while they answer from anywhere else) is read through Bright Data instead, then rests at
+// least this many passes (10 minutes or more: with over 12 direct feeds each is in every other pass's window). A feed
+// Bright Data also fails PAID_FEED_MAX_FAILS times in a row stops paying, and one run pays for at most PAID_FEED_RUN_MAX
+// such reads, so a degraded runner network cannot run the night's Bright Data reserve down. An HTTP refusal (403, 404)
+// or challenge page stays free and unfound, as before (BRO-6872). Certificate errors also read as "fetch failed".
 const PAID_FEED_REST_PASSES = 5;
+const PAID_FEED_MAX_FAILS = 3;
+const PAID_FEED_RUN_MAX = 90;
 const PAID_FEED_TIERS = ['brightdata'];
 const MAX_DATE_CHECK_ATTEMPTS = 3;
 const MAX_UNWRAP_TRIES = 3;
@@ -539,7 +543,8 @@ function defaultLaneSectionIndexes(show) {
 function unreachableFromRunner(e) {
   if (!e) return false;
   if (e.name === 'TimeoutError' || e.name === 'AbortError') return true;
-  return /^fetch failed\b/.test(String(e.message || ''));
+  // By message too: a recorded night replays errors from their message alone (recording-night.js replayFetchFrom).
+  return /^fetch failed\b|^(?:The|This) operation was aborted/.test(String(e.message || ''));
 }
 
 function rotatingWindow(max) {
@@ -568,18 +573,27 @@ function laneMissingOutlets({ show, seen, adaptersConfig = {} }) {
 function rssAdapter({ feeds } = {}) {
   const nextRegular = rotatingWindow(MAX_FEEDS_PER_PASS);
   const nextDirect = rotatingWindow(MAX_FEEDS_PER_PASS);
-  const paidAt = new Map(); // feed url -> pass of its last paid read
-  let pass = 0;
+  const paid = new Map(); // feed url -> { at: pass of its last paid read, fails: paid reads failed in a row }
+  let pass = 0; let paidReads = 0;
   return {
     name: 'rss', kind: 'feed', phase: 'cheap',
-    async discover({ show, fetchText }) {
+    async discover({ show, fetchText, slowFetchText }) {
       const readDirectFeed = async (url) => {
         try {
           return await fetchText(url, { directOnly: true });
         } catch (e) {
-          if (!unreachableFromRunner(e) || (paidAt.has(url) && pass - paidAt.get(url) < PAID_FEED_REST_PASSES)) throw e;
-          paidAt.set(url, pass);
-          return fetchText(url, { tiers: PAID_FEED_TIERS });
+          const p = paid.get(url) || { at: -Infinity, fails: 0 };
+          if (!unreachableFromRunner(e) || pass - p.at < PAID_FEED_REST_PASSES || p.fails >= PAID_FEED_MAX_FAILS || paidReads >= PAID_FEED_RUN_MAX) throw e;
+          p.at = pass; paidReads += 1; paid.set(url, p);
+          // Bright Data can take longer than the cheap 15 s cap, and a read cut off there is billed all the same.
+          try {
+            const body = await (slowFetchText || fetchText)(url, { tiers: PAID_FEED_TIERS });
+            p.fails = 0;
+            return body;
+          } catch (paidErr) {
+            p.fails += 1;
+            throw paidErr;
+          }
         }
       };
       const out = [];
@@ -1102,7 +1116,8 @@ function fetchTextFrom(fetchPage) {
     } catch (e) {
       // undici says only "fetch failed"; the cause code (ECONNRESET, ENOTFOUND, UND_ERR_CONNECT_TIMEOUT) goes into the
       // shadow's fetch recording, so a feed the runner cannot reach says why.
-      const code = e && e.cause && (e.cause.code || e.cause.name);
+      // Direct reads only: Talkin' Broadway's blocked check (tbFetchWasBlocked) reads ECONNRESET in a message as blocked.
+      const code = pageOpts.directOnly && e && e.cause && (e.cause.code || e.cause.name);
       if (code && typeof e.message === 'string' && !e.message.includes(code)) { try { e.message = `${e.message} (${code})`; } catch { /* frozen */ } }
       throw e;
     }
@@ -1185,8 +1200,10 @@ async function runDiscoveryPass({
   // An adapter may set `fetchTimeoutMs` for sources that are slow but do answer; the pass deadline still caps it.
   const cheap = adapters.filter((x) => x.phase !== 'serp');
   const settled = await Promise.allSettled(cheap.map((a) => {
-    const fetchForAdapter = a.fetchTimeoutMs ? withTimeout(rawFetch, a.fetchTimeoutMs, () => deadlineMs - (Date.now() - startedMs)) : fetchText;
-    return Promise.resolve().then(() => a.discover({ show, night, fetchText: fetchForAdapter, timeZone }));
+    const remaining = () => deadlineMs - (Date.now() - startedMs);
+    const fetchForAdapter = a.fetchTimeoutMs ? withTimeout(rawFetch, a.fetchTimeoutMs, remaining) : fetchText;
+    const slowFetchText = withTimeout(rawFetch, SLOW_AGGREGATOR_TIMEOUT_MS, remaining);
+    return Promise.resolve().then(() => a.discover({ show, night, fetchText: fetchForAdapter, slowFetchText, timeZone }));
   }));
   settled.forEach((r, i) => {
     if (r.status === 'fulfilled') collect(r.value, cheap[i].name);
@@ -1304,7 +1321,7 @@ function recordDiscovered(ledgerDir, { show, night, admitted, now = Date.now() }
 module.exports = {
   SERP_AFTER_MS, SERP_COOLDOWN_MS, SERP_NIGHT_MAX, defaultLaneMissingOutlets, defaultLaneSectionIndexes, laneMissingOutlets,
   NON_REVIEW_HOSTS, WRAPPER_HOSTS, canonicalUrl, bodyScope, playbillArticleBody, bwwRoundupBody, storyCitedLinks, extractAnchors, citedExcerpts, extractCitedLinks, extractPublishDate,
-  nonReviewReason, SECTION_INDEX_PARSERS, headlineIsShowTitle, hasReviewSignal, hostSignalsReview, REVIEW_WITHOUT_WORD_HOSTS, pageDatedNear, dtliSitemapPages, defaultLaneFeeds, bwwRoundupAdapter, dtliAdapter, rssAdapter, PAID_FEED_REST_PASSES, unreachableFromRunner, sectionIndexAdapter, showScoreAdapter, playbillVerdictAdapter, googleNewsAdapter, GOOGLE_NEWS_SITE_QUERY_HOSTS, talkinBroadwayAdapter, TB_PROBE_BATCH, TB_MAX_CARRIES, tbFetchWasBlocked, serpAdapter,
+  nonReviewReason, SECTION_INDEX_PARSERS, headlineIsShowTitle, hasReviewSignal, hostSignalsReview, REVIEW_WITHOUT_WORD_HOSTS, pageDatedNear, dtliSitemapPages, defaultLaneFeeds, bwwRoundupAdapter, dtliAdapter, rssAdapter, PAID_FEED_REST_PASSES, PAID_FEED_MAX_FAILS, PAID_FEED_RUN_MAX, unreachableFromRunner, sectionIndexAdapter, showScoreAdapter, playbillVerdictAdapter, googleNewsAdapter, GOOGLE_NEWS_SITE_QUERY_HOSTS, talkinBroadwayAdapter, TB_PROBE_BATCH, TB_MAX_CARRIES, tbFetchWasBlocked, serpAdapter,
   publisherUrlFromWrapperPage, parseFeedEntries, fetchTextFrom, serpAllowed, memoPath, loadMemo, saveMemo,
   runDiscoveryPass, loadSeen, recordDiscovered,
 };
