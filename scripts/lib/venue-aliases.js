@@ -198,6 +198,32 @@ const PARENT_BUILDINGS = [
     parentNames: ['Royal Court Theatre', 'Royal Court'],
     stages: ['Jerwood Theatre Downstairs', 'Jerwood Theatre Upstairs'],
     stageKeys: ['jerwood theatre downstairs', 'jerwood theatre upstairs', 'royal court jerwood'] },
+  // BRO-6945: NYC multi-stage buildings. Keys avoid bare generic words
+  // ("newman", "stage 2", "griffin") that other NYC venues also use.
+  { parent: 'Lincoln Center Theater', region: 'nyc',
+    parentNames: ['Lincoln Center Theater', 'Lincoln Center'],
+    stages: ['Vivian Beaumont Theater', 'Mitzi E. Newhouse Theater', 'Claire Tow Theater'],
+    stageKeys: ['vivian beaumont', 'mitzi e. newhouse', 'mitzi e newhouse', 'newhouse theater', 'newhouse theatre', 'claire tow'] },
+  { parent: 'The Public Theater', region: 'nyc',
+    parentNames: ['The Public Theater', 'Public Theater', 'Joseph Papp Public Theater'],
+    stages: ['Anspacher Theater', 'Newman Theater', 'Martinson Hall', 'LuEsther Hall', 'Shiva Theater', 'Barbaralee Theater', 'Delacorte Theater'],
+    stageKeys: ['anspacher', 'luesther', 'martinson hall', 'martinson theater', 'shiva theater', 'barbaralee', 'delacorte', 'public theater/newman', 'public theater - newman', 'public theater newman'] },
+  { parent: 'Pershing Square Signature Center', region: 'nyc',
+    parentNames: ['Pershing Square Signature Center', 'The Pershing Square Signature Center', 'Signature Center', 'The Pershing Square Signature Theatre Center'],
+    stages: ['Irene Diamond Stage', 'Alice Griffin Jewel Box Theater', 'Romulus Linney Courtyard Theater'],
+    stageKeys: ['irene diamond', 'alice griffin', 'jewel box', 'romulus linney'] },
+  { parent: 'Atlantic Theater Company', region: 'nyc',
+    parentNames: ['Atlantic Theater Company', 'Atlantic Theater', 'Atlantic Theatre Company'],
+    stages: ['Linda Gross Theater', 'Atlantic Stage 2'],
+    stageKeys: ['linda gross', 'atlantic stage 2', 'atlantic theater company/stage 2', 'atlantic theater company - stage 2', 'atlantic theater company stage 2'] },
+  { parent: 'Robert W. Wilson MCC Theater Space', region: 'nyc',
+    parentNames: ['MCC Theater Space', 'Robert W. Wilson MCC Theater Space', 'The Robert W. Wilson MCC Theater Space', 'MCC Theater', 'MCC Theatre'],
+    stages: ['Newman Mills Theater', 'Susan & Ronald Frankel Theater'],
+    stageKeys: ['newman mills', 'ronald frankel', 'frankel theater'] },
+  { parent: 'The Shed', region: 'nyc',
+    parentNames: ['The Shed', 'Shed'],
+    stages: ['The Griffin Theater', 'The Kenneth C. Griffin Theater'],
+    stageKeys: ['griffin theater at the shed', 'griffin theatre at the shed', 'griffin at the shed', 'kenneth c. griffin theater', 'kenneth c griffin theater'] },
 ];
 
 function _stageKeyMatches(normVenue, key) {
