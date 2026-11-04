@@ -1,7 +1,7 @@
 {
-  "generated": "2026-11-04T04:26:13.922Z",
+  "generated": "2026-11-04T06:50:12.901Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 41,
+  "count": 42,
   "orphans": [
     {
       "showId": "33-variations-2009",
@@ -18,7 +18,7 @@
       "field": "duplicateOf"
     },
     {
-      "showId": "a-midsummer-nights-dream-globe-west-end-2026",
+      "showId": "a-midsummer-nights-dream-globe-off-west-end-2026",
       "loserFile": "whatsonstage--alun-hood.json",
       "targetFile": "whatsonstage--james-fitzgerald.json",
       "reason": "orphaned-duplicate-heal: whatsonstage--james-fitzgerald.json was flagged invalid after whatsonstage--alun-hood.json was pointed at it",
@@ -67,7 +67,7 @@
       "field": "duplicateOf"
     },
     {
-      "showId": "end-of-the-rainbow-west-end-2026",
+      "showId": "end-of-the-rainbow-off-west-end-2026",
       "loserFile": "guardian--unknown.json",
       "targetFile": "guardian--emma-brockes.json",
       "reason": "orphaned-duplicate-heal: guardian--emma-brockes.json was flagged invalid after guardian--unknown.json was pointed at it",
@@ -281,6 +281,13 @@
       "loserFile": "variety--matt-windman.json",
       "targetFile": "variety--marilyn-stasio.json",
       "reason": "orphaned-duplicate-heal: variety--marilyn-stasio.json was flagged invalid after variety--matt-windman.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
+      "showId": "translations-west-end-2018",
+      "loserFile": "timeout-london--tom-wicker.json",
+      "targetFile": "timeout-london--andrzej-lukowski.json",
+      "reason": "orphaned-duplicate-heal: timeout-london--andrzej-lukowski.json was flagged invalid after timeout-london--tom-wicker.json was pointed at it",
       "field": "duplicateOf"
     },
     {

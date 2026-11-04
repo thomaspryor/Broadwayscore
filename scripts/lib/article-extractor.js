@@ -962,8 +962,71 @@ const PROMO_BOILERPLATE_PATTERNS = [
   /\brecaptcha (?:privacy policy|terms of service)\b/i,
 ];
 
+// The standfirst (dek): the sentence an outlet prints under the headline, e.g. TheaterMania's "Bill Irwin and a starry
+// cast can't find the comedic pulse of Molière's medical satire." Body patterns start below the title block, so it was
+// dropped, while the browser path (dom-article-extractor's <article>/<main> fallback) kept it. The two copies of one
+// review then scored 57/48 on the site and 62 in the opening-night lane (BRO-6872 p12 replay, The Imaginary Invalid).
+// Two signals must agree before a paragraph counts: it sits directly under an <h1>, and its text is the page's own
+// declared description (og:/twitter:/meta description). A first body paragraph or SEO blurb alone never qualifies.
+const STANDFIRST_MIN = 30;
+const STANDFIRST_MAX = 400;
+const { decodeHTML } = require('entities');
+// Tags out first, then entities decoded (stripHtml alone blanks named ones such as &egrave;, and a meta content
+// attribute is entity-encoded where the printed dek is not).
+const standfirstText = (s) => decodeHTML(String(s || '').replace(/<[^>]+>/g, ' ')).replace(/\s+/g, ' ').trim();
+const standfirstKey = (s) => foldDiacritics(String(s || '')).toLowerCase().replace(/[^a-z0-9]+/g, '');
+
+// Returns { text, keys }: the decoded dek, plus its normalized keys under both decoders (entities decoded, and
+// stripHtml's, which blanks unlisted named entities such as &egrave;) so the "body already has it" check matches either.
+function findStandfirst(html) {
+  if (!html || typeof html !== 'string') return null;
+  const described = new Set();
+  const metaRe = /<meta\b[^>]*>/gi;
+  let m;
+  while ((m = metaRe.exec(html))) {
+    const tag = m[0];
+    if (!/\b(?:name|property)\s*=\s*["'](?:description|og:description|twitter:description)["']/i.test(tag)) continue;
+    const c = tag.match(/\bcontent\s*=\s*"([^"]*)"|\bcontent\s*=\s*'([^']*)'/i);
+    const key = c ? standfirstKey(standfirstText(c[1] != null ? c[1] : c[2])) : '';
+    if (key.length >= STANDFIRST_MIN) described.add(key);
+  }
+  if (!described.size) return null;
+  const underHeadline = /<\/h1>\s*<p\b[^>]*>([\s\S]*?)<\/p>/gi;
+  while ((m = underHeadline.exec(html))) {
+    const text = standfirstText(m[1]);
+    if (text.length < STANDFIRST_MIN || text.length > STANDFIRST_MAX) continue;
+    if (described.has(standfirstKey(text))) return { text, keys: [standfirstKey(text), standfirstKey(stripHtml(m[1]))] };
+  }
+  return null;
+}
+
+function extractStandfirst(html) {
+  const found = findStandfirst(html);
+  return found ? found.text : null;
+}
+
+// Only a full-length body on a non-paywalled host gains its dek. Under the scorer's body gate the copy is a teaser or a
+// stub, and on a hard or soft paywall host up to 400 more chars must not lift a teaser over that host's length floor
+// (inline-score.js and paywall-completeness.js judge completeness by length).
+function onPaywallHost(hostname) {
+  const host = String(hostname || '').toLowerCase().replace(/^[a-z]+:\/\//, '').split(/[/?#:]/)[0].replace(/^www\./, '');
+  if (!host) return false;
+  const { HARD_PAYWALL_DOMAINS, SOFT_PAYWALL_MIN_CHARS } = require('./paywall-completeness');
+  return [...HARD_PAYWALL_DOMAINS, ...Object.keys(SOFT_PAYWALL_MIN_CHARS)].some((d) => host === d || host.endsWith(`.${d}`));
+}
+
+function withStandfirst(html, text, hostname) {
+  if (!text || text.length < require('./scorable-text').BODY_GATE_CHARS || onPaywallHost(hostname)) return text;
+  const found = findStandfirst(html);
+  if (!found) return text;
+  const body = standfirstKey(text);
+  if (found.keys.some((k) => k && body.includes(k))) return text;
+  return `${found.text}\n\n${text}`;
+}
+
 function extractArticleText(html, hostname, criticHint) {
-  const text = extractArticleTextUnchecked(html, hostname, criticHint);
+  // The dek joins first so the Radio Times promotion guard below judges the text callers actually get.
+  const text = withStandfirst(html, extractArticleTextUnchecked(html, hostname, criticHint), hostname);
   const host = String(hostname || '').toLowerCase();
   const isRadioTimes = host === 'radiotimes.com' || host.endsWith('.radiotimes.com');
   // Reject Radio Times promotions before any caller can save or score them.
@@ -1407,4 +1470,4 @@ function isDedicatedExtractorHost(urlOrHost) {
   return DEDICATED_EXTRACTOR_HOSTS.some((d) => h.includes(d));
 }
 
-module.exports = { isDedicatedExtractorHost, extractArticleText, extractArticleTextFromUrl, extractPublishDate, stripHtml, extractLsaByline, extractZoxNewsBody, extractVarietyBody, extractNubNewsBody, extractLondonTheatreBody, extractToledoBladeBody, extractCurtainUpBody, extractDailyMailBody, dailyMailVerdictValues };
+module.exports = { isDedicatedExtractorHost, extractArticleText, extractStandfirst, extractArticleTextFromUrl, extractPublishDate, stripHtml, extractLsaByline, extractZoxNewsBody, extractVarietyBody, extractNubNewsBody, extractLondonTheatreBody, extractToledoBladeBody, extractCurtainUpBody, extractDailyMailBody, dailyMailVerdictValues };

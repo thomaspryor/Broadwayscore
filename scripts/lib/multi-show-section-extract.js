@@ -130,14 +130,11 @@ function isMultiShowPostUrl(url) {
  *   refuse = a multi-section post in which this show's section can't be found
  *   uniquely: store nothing rather than another show's text.
  */
-function isolateMultiShowSection(url, text, showTitle, aliases = [], knownTitles = null) {
-  // BRO-6880: T1/T2 critic columns (washingtonpost.com) have no photo-caption
-  // headings; their sections are found from the titles each paragraph opens with.
-  const column = require('./column-section-extract');
-  if (text && column.isColumnPostUrl(url)) {
-    const r = column.isolateColumnSection(text, showTitle, { aliases, knownTitles: knownTitles || allShowTitles() });
-    return r.action === 'single-section' ? { action: 'single-section', text } : { action: r.action, text: r.text, reason: r.reason };
-  }
+function isolateMultiShowSection(url, text, showTitle, aliases = []) {
+  // Critic columns (washingtonpost.com, BRO-6880) are NOT cut here: this gate
+  // runs on every write, and title-based sectioning truncated single-show
+  // reviews. They are isolated only after the verifier rejects the page as a
+  // multi-show roundup (column-section-extract.js columnSectionAfterRoundupRejection).
   if (!text || !isMultiShowPostUrl(url)) return { action: 'not-multi-show', text };
   if (findSectionHeadings(text).length < 2) return { action: 'single-section', text };
   const sec = extractShowSection(text, showTitle, aliases);
@@ -170,6 +167,7 @@ function isolatedSectionWriteFields(iso, showTitle, ownerShowIds) {
   return distinct ? { allowCrossShowUrl: true } : {};
 }
 
+/** Every show title in shows.json (the titles a critic column's sections may open with). */
 function allShowTitles() {
   showTitleFor('');
   return [...new Set(_titles.values())].filter(Boolean);
@@ -189,7 +187,7 @@ function showTitleFor(showId) {
 
 /** Same gate, for writers that only know the showId (recovery scripts). */
 function isolateMultiShowSectionForShowId(url, text, showId) {
-  if (!isMultiShowPostUrl(url) && !require('./column-section-extract').isColumnPostUrl(url)) return { action: 'not-multi-show', text };
+  if (!isMultiShowPostUrl(url)) return { action: 'not-multi-show', text };
   return isolateMultiShowSection(url, text, showTitleFor(showId));
 }
 
@@ -199,5 +197,5 @@ const MULTI_SHOW_NOT_FOUND_REASON = 'multi_show_section_not_found';
 
 module.exports = {
   extractShowSection, findSectionHeadings, headingShowName, normSectionText: norm, sectionTitleVariants, isMultiShowPostUrl, isolateMultiShowSection,
-  isolateMultiShowSectionForShowId, isolatedSectionWriteFields, MULTI_SHOW_NOT_FOUND_REASON,
+  isolateMultiShowSectionForShowId, isolatedSectionWriteFields, MULTI_SHOW_NOT_FOUND_REASON, allShowTitles,
 };

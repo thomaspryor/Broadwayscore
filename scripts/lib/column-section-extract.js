@@ -13,6 +13,9 @@
  *
  * A true roundup (the page quotes OTHER critics' verdicts) is never isolated:
  * action 'refuse' stores nothing, as for any multi-show post we cannot split.
+ *
+ * Only columnSectionAfterRoundupRejection (bottom) may apply this to stored text:
+ * see the preconditions there.
  */
 
 const { sectionTitleVariants, normSectionText: norm } = require('./multi-show-section-extract');
@@ -252,7 +255,17 @@ function isolateFlatColumnSection(text, showTitle, { aliases = [], knownTitles =
     const distinct = new Set(window.map((x) => x.key));
     if (distinct.size !== 1) return null;
     const key = window[0].key;
-    return (counts.get(key) || 0) >= MIN_TITLE_MENTIONS ? key : null;
+    if ((counts.get(key) || 0) >= MIN_TITLE_MENTIONS) return key;
+    // BRO-6880: a short closing capsule names its show once (the real 10-23 column's Imaginary Invalid capsule).
+    // One mention owns the section only when no other show is named in it AND the show is the first quoted title of
+    // the section: the Charlie and the Chocolate Factory aside sits in a section whose first quoted title is
+    // "Giant" (a one-word title the matcher does not count), so it still owns nothing.
+    if (counts.size !== 1) return null;
+    const firstQuoted = sec.match(/[“"]([^”"]{2,120}?)[,.]?[”"]/);
+    const qWords = firstQuoted && flatTitleWords(firstQuoted[1]);
+    const def = defs.find((d) => d.key === key);
+    const sig = qWords && qWords.join(' ').toLowerCase();
+    return sig && def && def.variants.some((v) => v.join(' ').toLowerCase() === sig) ? key : null;
   });
   const mine = owners.map((o, i) => (o === targetKey ? i : -1)).filter((i) => i >= 0);
   if (mine.length === 0) return { action: 'refuse', text: null, reason: 'show-not-found', sectionCount: sections.length };
@@ -266,4 +279,54 @@ function isolateFlatColumnSection(text, showTitle, { aliases = [], knownTitles =
   return { action: 'isolated', text: out, sectionCount: sections.length };
 }
 
-module.exports = { COLUMN_POST_HOSTS, isColumnPostUrl, isolateColumnSection, countOtherCriticAttributions, isolateFlatColumnSection, splitSentences };
+// ---------------------------------------------------------------------------------------------------------------
+// When the isolation runs (BRO-6880 v2). Title-based sectioning is a heuristic: run over every stored Washington Post
+// text it cut or refused ~70 of 393 single-show reviews (everyday-word titles open fake sections). So it never runs on
+// the write path. It runs only when all of these hold, i.e. on a page that would otherwise be thrown away:
+//   1. the page is on a column host;
+//   2. the content verifier REJECTED it as a multi-show page (not as a quote roundup, which stays refused);
+//   3. the page names two or more other New York shows opening within the same weeks (the lane's column detector,
+//      measured on the stored Washington Post corpus);
+//   4. the extractor finds a section owned by this show alone.
+// The caller then re-verifies the section and stores it only if that verdict passes.
+
+// Verdict text (issues + reasoning) that says the page covers several shows.
+const MULTI_SHOW_VERDICT_RE = /\bmulti[- ]?show\b|\bround[- ]?up\b|\b(?:multiple|several|various|two|three|four|five|six)\s+(?:different\s+|other\s+|separate\s+)?(?:shows|productions|plays|musicals)\b|\bother shows\b/i;
+// A page built from OTHER critics' verdicts is a true roundup: no section of it is this critic's review.
+// Bare "aggregation" is NOT enough: the real Imaginary Invalid verdict called the column a "multi-show
+// roundup/aggregation" that "aggregates brief reviews of several Broadway productions" (the critic's own reviews).
+const QUOTE_ROUNDUP_VERDICT_RE = /\b(?:other|multiple|several|various|different)\s+critics\b|\bcritics['’]\s+(?:quotes|opinions|reviews|verdicts|assessments)\b|\bpull[- ]?quotes?\b|\breview aggregator\b|\bcompilation of\b[^.|]*\bquotes\b/i;
+
+/** The verifier rejected this page because it covers several shows (and not because it quotes other critics). */
+function isMultiShowRejection(cv) {
+  if (!cv || cv.isValid !== false) return false;
+  const said = [...(Array.isArray(cv.issues) ? cv.issues : []), cv.reasoning || ''].join(' | ');
+  return MULTI_SHOW_VERDICT_RE.test(said) && !QUOTE_ROUNDUP_VERDICT_RE.test(said);
+}
+
+/**
+ * This show's section of a critic column the verifier rejected as a multi-show page.
+ * @param {{url:string, text:string, show:{id?:string,title:string,openingDate?:string}, allShows:object[],
+ *          verdict:object, aliases?:string[]}} args
+ * @returns {{ isolated: true, text: string, sectionCount?: number } | { isolated: false, reason: string }}
+ *   isolated:false = keep the verifier's rejection; reason says which precondition did not hold.
+ */
+function columnSectionAfterRoundupRejection({ url, text, show, allShows = [], verdict, aliases = [] } = {}) {
+  if (!text || !show || !show.title) return { isolated: false, reason: 'no-text' };
+  if (!isColumnPostUrl(url)) return { isolated: false, reason: 'not-column-host' };
+  if (!isMultiShowRejection(verdict)) return { isolated: false, reason: 'not-multi-show-rejection' };
+  // Lazy: lane-guards pulls in review-guards and roundup-digest, which this module must not load at require time.
+  const lane = require('./opening-night-lane/lane-guards');
+  if (!lane.multiShowColumnReason({ url, fullText: text }, lane.nearbyShowTitles(show, allShows))) {
+    return { isolated: false, reason: 'not-a-column' };
+  }
+  const knownTitles = [...new Set(allShows.map((s) => s && s.title).filter(Boolean))];
+  const r = isolateColumnSection(text, show.title, { aliases, knownTitles });
+  if (r.action !== 'isolated' || !r.text) return { isolated: false, reason: r.reason || 'no-sections' };
+  return { isolated: true, text: r.text, sectionCount: r.sectionCount };
+}
+
+module.exports = {
+  COLUMN_POST_HOSTS, isColumnPostUrl, isolateColumnSection, countOtherCriticAttributions, isolateFlatColumnSection, splitSentences,
+  isMultiShowRejection, columnSectionAfterRoundupRejection,
+};

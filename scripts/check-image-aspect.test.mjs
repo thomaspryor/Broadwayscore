@@ -8,7 +8,7 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const sharp = require('sharp');
-const { checkFile } = require('./check-image-aspect');
+const { checkFile, pathsFromNameStatus } = require('./check-image-aspect');
 const { getImageDimensions } = require('./lib/image-dimensions');
 const { downloadImage } = require('./enrich-west-end-shows');
 const { hasChanges, buildDigestItems } = require('./send-daily-digest');
@@ -28,7 +28,7 @@ async function image(file, width, height) {
 
 function scratch(t) {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro4734-'));
-  t.after(() => fs.rmSync(dir, { recursive: true, force: true }));
+  t.after(() => fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
   return dir;
 }
 
@@ -123,4 +123,30 @@ test('non-closed shows in the real catalog have zero poster violations (direct C
   const result = run(['--audit', '--active-posters'], { IMAGE_ASPECT_SHOWS_PATH: file });
   assert.equal(result.status, 0, result.stdout + result.stderr);
   assert.match(result.stdout, /Checked [1-9]\d* non-closed poster files/);
+});
+
+test('pathsFromNameStatus skips pure renames but keeps adds, edits and edited renames (BRO-4315)', t => {
+  const out = [
+    'R100\tpublic/images/shows/old-west-end-2026/poster.jpg\tpublic/images/shows/old-off-west-end-2026/poster.jpg',
+    'R087\tpublic/images/shows/a/poster.jpg\tpublic/images/shows/b/poster.jpg',
+    'A\tpublic/images/shows/new/poster.jpg',
+    'M\tpublic/images/shows/m/thumbnail.webp',
+    '',
+  ].join('\n');
+  assert.deepEqual(pathsFromNameStatus(out), [
+    'public/images/shows/b/poster.jpg',
+    'public/images/shows/new/poster.jpg',
+    'public/images/shows/m/thumbnail.webp',
+  ]);
+  // Real git output: a moved file shows as R100, a moved-and-edited one does not.
+  const repo = scratch(t);
+  const git = (...a) => spawnSync('git', ['-C', repo, '-c', 'user.name=t', '-c', 'user.email=t@t', ...a], { encoding: 'utf8' });
+  git('init', '-q');
+  fs.mkdirSync(path.join(repo, 'x'));
+  fs.writeFileSync(path.join(repo, 'x/poster.jpg'), 'same bytes '.repeat(50));
+  git('add', '-A'); git('commit', '-qm', 'one');
+  git('mv', 'x', 'y');
+  const status = git('diff', '--cached', '--name-status', '-M', '--diff-filter=ACMR').stdout;
+  assert.match(status, /^R100\tx\/poster\.jpg\ty\/poster\.jpg/);
+  assert.deepEqual(pathsFromNameStatus(status), []);
 });

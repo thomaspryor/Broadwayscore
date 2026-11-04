@@ -131,6 +131,7 @@ const { isLongRunningProduction: _isLongRunner } = require('./lib/long-runner-re
 
 // Content quality detection (garbage/invalid content filter)
 const { isolateMultiShowSection, MULTI_SHOW_NOT_FOUND_REASON } = require('./lib/multi-show-section-extract');
+const { columnSectionAfterRoundupRejection } = require('./lib/column-section-extract');
 const { laneBypasses } = require('./lib/opening-night-lane/trust-model');
 const { assessTextQuality, qualityOptsFor, isGarbageContent, validateShowMentioned, validateContentMentionsShow, extractByline, matchesCritic, computeContentFingerprint, classifyContentTier, verifyFullTextContent, extractAuthorFromHtml, extractHighConfidenceAuthor, URL_CONTENT_CHECK_VERSION } = require('./lib/content-quality');
 const { chooseArticleBody, SHORT_JSONLD_MAX: JSONLD_TEASER_MAX } = require('./lib/jsonld-body-choice');
@@ -5588,6 +5589,8 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
       // via `...result` spreads — this keeps the main ingestion path in sync.
       urlYearConflict: contentVerification.urlYearConflict || null,
       reviewedVenue: contentVerification.reviewedVenue || null,
+      // BRO-6880: the verdict is on this show's section of a multi-show column.
+      ...(contentVerification.columnSectionIsolated ? { columnSectionIsolated: true } : {}),
       // BRO-4563: a "not a review" verdict on a fetch cut off after the lede
       // of a /review/ URL. Rebuild reads this as advisory
       // (isCvVerdictFromPartialWindow), the collector below keeps the text.
@@ -7260,7 +7263,7 @@ async function verifyFetchedContent(review, result, validation, { discoveredUrl 
         console.log('  LLM Verification skipped: multi-show post has no unique section for this show');
         return null;
       }
-      contentVerification = await verifyContent({
+      const cvArgs = {
         scrapedText: stored.text || result.text,
         excerpt: excerpt,
         showTitle: showMeta?.title || showId.replace(/-\d{4}$/, '').replace(/-/g, ' '),
@@ -7313,7 +7316,33 @@ async function verifyFetchedContent(review, result, validation, { discoveredUrl 
         // that doesn't match show.creativeTeam directors AND the actual director
         // isn't mentioned ≥2x in scrapedText, keep wrongProduction at full confidence.
         show: showMeta || null,
+      };
+      contentVerification = await verifyContent(cvArgs);
+
+      // BRO-6880: a critic column (Washington Post) covering several shows is
+      // rejected as a multi-show page. Only then, cut out this show's section and
+      // verify THAT; on a pass the section replaces the fetched text for the save
+      // path. Texts the verifier accepts are never cut (title sectioning truncated
+      // single-show reviews when it ran on every write).
+      const column = columnSectionAfterRoundupRejection({
+        url: discoveredUrl || reviewData.url || review.url,
+        text: cvArgs.scrapedText,
+        show: showMeta,
+        allShows: _showsJsonCache?.shows || [],
+        verdict: contentVerification,
       });
+      if (column.isolated) {
+        console.log(`  [COLUMN] verifier rejected a multi-show column; re-verifying this show's section (${column.text.length} of ${cvArgs.scrapedText.length} chars)`);
+        const sectionVerdict = await verifyContent({ ...cvArgs, scrapedText: column.text });
+        if (sectionVerdict && sectionVerdict.isValid) {
+          console.log('  [COLUMN] section verified: storing this show\'s section only');
+          result.text = column.text;
+          Object.assign(validation, validateReviewText(column.text, review));
+          contentVerification = { ...sectionVerdict, columnSectionIsolated: true };
+        } else {
+          console.log('  [COLUMN] section also rejected: keeping the rejection');
+        }
+      }
 
       const verifier = contentVerification.verifiedBy?.startsWith('llm:') ? `LLM (${contentVerification.verifiedBy.split(':')[1]})` : 'Heuristic';
       console.log(`  ${verifier} Verify: ${contentVerification.isValid ? 'VALID' : 'REJECTED'} (${contentVerification.confidence} confidence)`);
@@ -8508,7 +8537,7 @@ function exitIfStuckAfterMain(graceMs = 20000) {
 }
 
 module.exports = {
-  reviewTimeoutMs, pushReviewTextsCheckpoint, commitChanges, extractTextFromHtml, findReviewsToProcess, dropLeasedReviews, updateReviewJson };
+  reviewTimeoutMs, pushReviewTextsCheckpoint, commitChanges, extractTextFromHtml, findReviewsToProcess, dropLeasedReviews, updateReviewJson, verifyFetchedContent };
 
 // Run (guarded so scripts/collect-review-texts.test.mjs can require() this
 // file for pushReviewTextsCheckpoint() without kicking off a real collection

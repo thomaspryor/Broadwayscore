@@ -112,6 +112,10 @@ const EXEMPT_NEVER_CI = {
   // accumulates history. Run by autonomous-acceptance-recheck.js at its
   // RECHECK-AFTER date, never by CI. Lives in scripts/, not tests/unit/.
   'scripts/verify-provider-spend-streak.test.mjs': '3ae637c5-416f-81bb',
+  // Deferred-effect acceptance probe (BRO-6959): asserts a live score post
+  // since 2026-11-04 was AI-written; data-state, run only by
+  // autonomous-acceptance-recheck.js after its RECHECK-AFTER date.
+  'scripts/verify-social-ai-live-post.test.mjs': 'BRO-6959',
   // Deferred-effect acceptance probe (task #419, card 3a7637c5-416f-81fd):
   // asserts the "SEO: health" digest condition doesn't fire on the next
   // weekly check-seo-health.yml run. Run by autonomous-acceptance-recheck.js
