@@ -1,8 +1,24 @@
 {
   "processed": [
-    "the-imaginary-invalid-2026/washpost--thomas-floyd.json"
+    "the-imaginary-invalid-2026/washpost--thomas-floyd.json",
+    "kelly-mccaughan-catholic-guilt-off-broadway-2026/broadway-baby--unknown.json"
   ],
-  "failed": [],
+  "failed": [
+    "medea-off-broadway-2026/express-uk--neil-norman.json",
+    "medea-off-broadway-2026/bachtrack--susan-stempleski.json",
+    "a-few-good-men-2026/variety--anna-tingley.json",
+    "the-heart-off-broadway-2026/variety--cynthia-littleton.json",
+    "a-few-good-men-2026/bobs-theater-blog--unknown.json",
+    "a-few-good-men-2026/goldderby--ethan-alter.json",
+    "the-heart-off-broadway-2026/bobs-theater-blog--unknown.json",
+    "the-heart-off-broadway-2026/frontmezzjunkies--unknown.json",
+    "the-heart-off-broadway-2026/jks-theatre-scene--unknown.json",
+    "in-the-heights-off-broadway-2026/nypost--clive-barnes.json",
+    "in-the-heights-off-broadway-2026/bloomberg--john-simon.json",
+    "i-became-we-off-broadway-2026/timeout--unknown.json",
+    "hospital-hour-off-broadway-2026/broadway-baby--unknown.json",
+    "hospital-hour-off-broadway-2026/one-minute-critic--unknown.json"
+  ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [],
@@ -16,10 +32,12 @@
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [],
-    "archive": []
+    "archive": [
+      "kelly-mccaughan-catholic-guilt-off-broadway-2026/broadway-baby--unknown.json"
+    ]
   },
   "startTime": "2026-11-04T06:31:28.267Z",
-  "lastProcessed": "the-imaginary-invalid-2026/washpost--thomas-floyd.json",
+  "lastProcessed": "hospital-hour-off-broadway-2026/one-minute-critic--unknown.json",
   "log": [
     {
       "t": "2026-11-04T06:31:40.082Z",
@@ -31,6 +49,12 @@
       "t": "2026-11-04T06:31:40.584Z",
       "event": "bb-cookie-inject",
       "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-11-04T06:36:19.922Z",
+      "event": "bb-session",
+      "session": "d5ea36b9",
+      "url": "https://bachtrack.com/review-medea-yoncheva-spyres-met-opera-new-york-october-20"
     }
   ]
 }

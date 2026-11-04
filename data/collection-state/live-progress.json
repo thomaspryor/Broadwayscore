@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-11-04T06:32:04.517Z",
-  "processed": 1,
-  "failed": 0,
-  "successRate": "100.0%",
+  "updatedAt": "2026-11-04T06:45:16.980Z",
+  "processed": 2,
+  "failed": 14,
+  "successRate": "12.5%",
   "tierBreakdown": {
     "playwright": 0,
     "amp": 0,
@@ -12,7 +12,7 @@
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 0
+    "archive": 1
   },
   "browserbaseSessions": 1,
   "recentActivity": [
@@ -26,6 +26,12 @@
       "t": "2026-11-04T06:31:40.584Z",
       "event": "bb-cookie-inject",
       "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-11-04T06:36:19.922Z",
+      "event": "bb-session",
+      "session": "d5ea36b9",
+      "url": "https://bachtrack.com/review-medea-yoncheva-spyres-met-opera-new-york-october-20"
     }
   ]
 }
