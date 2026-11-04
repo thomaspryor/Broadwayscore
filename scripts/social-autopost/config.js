@@ -162,10 +162,10 @@ const BACKFILL = {
 };
 
 // AI-written score posts (BRO-6959): Claude writes, code and GPT-5.5 check, the template stands in
-// on any failure (ai-captions.js). OFF until a dispatched dry run (input ai_captions) shows good
-// drafts; the repo variable SOCIAL_AI_CAPTIONS_DISABLED=true stops it without a commit.
+// on any failure (ai-captions.js). ON since 2026-11-04 after three dispatched dry runs (input ai_captions) drafted good posts
+// the repo variable SOCIAL_AI_CAPTIONS_DISABLED=true stops it without a commit.
 const AI_CAPTIONS = {
-  enabled: false,
+  enabled: true,
   runBudgetMs: 8 * 60e3, // all drafts in one run; after this every show gets the template
 };
 

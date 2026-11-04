@@ -80,7 +80,7 @@ function buildFactPool(show, ctx, now) {
     const pos = t.rave + t.positive, neg = t.negative;
     const allPos = pos === tn, allNeg = neg === tn;
     add('top-tier', allPos || allNeg ? 3 : (pos && neg ? 2 : 1),
-      `Top-tier critics (${tn} of them): ${t.rave} rave, ${t.positive} positive, ${t.mixed} mixed, ${t.negative} negative.${allPos ? ' Every one was positive.' : allNeg ? ' Every one was negative.' : ''} ${Object.keys(named).length ? ` Outlets you may name (the site labels these reviews the same way; the list may be shorter than the counts, so never pair a count with this list): ${Object.entries(named).map(([k, v]) => `${k}: ${[...new Set(v)].join(', ')}`).join('; ')}.` : ''}`,
+      `Top-tier critics (${tn} of them): ${t.rave} rave, ${t.positive} positive, ${t.mixed} mixed, ${t.negative} negative.${allPos ? ' Every one was positive.' : allNeg ? ' Every one was negative.' : ''}${Object.keys(named).length ? ` Outlets you may name (the site labels these reviews the same way; the list may be shorter than the counts, so never pair a count with this list): ${Object.entries(named).map(([k, v]) => `${k}: ${[...new Set(v)].join(', ')}`).join('; ')}.` : ''}`,
       [tn, t.rave, t.positive, t.mixed, t.negative, pos, t.mixed + t.negative]);
   }
   if (total(b) >= 15 && b.negative === 0) add('no-negatives', b.mixed === 0 ? 3 : 2, b.mixed === 0 ? `Not one of the ${pub.rc} reviews was mixed or negative.` : `None of the ${pub.rc} reviews was negative.`, [pub.rc]);

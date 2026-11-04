@@ -87,7 +87,7 @@ Write one post about the show below for Facebook, Threads and Instagram (200 to 
 Hard rules:
 1. Use only the facts given. Every number you write must appear in the facts. Add nothing from memory: no awards, names, history or opinions that are not listed.
 2. A rank must keep its qualifier exactly as the fact states it (which shows, since when, how many reviews). Never say "of the shows that opened" with a count unless the fact says that count opened.
-3. Audiences get a letter grade only ("audiences give it a B+"). Never a number, percentage or point gap for audiences.
+3. Audiences get a letter grade only ("audiences give it a B+"). Never a number, percentage or point gap for audiences. Never put another number in the same sentence as the audience grade; give seat sales their own sentence and do not introduce a fact with filler like "Separately".
 4. Say "top-tier critics". Name an outlet only where the facts name it, and call outlets by name, never "papers".
 5. Opinions about the show belong to critics ("critics praised the lead"), never to us.
 6. No dashes as punctuation, no hashtags, emoji, links or quotation marks. No quotes from reviews.
