@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-11-04T02:53:24.672Z",
+  "timestamp": "2026-11-04T03:15:18.355Z",
   "stats": {
-    "totalReviews": 79993,
-    "alreadyFlagged": 22051,
+    "totalReviews": 80037,
+    "alreadyFlagged": 22053,
     "dateGuardCatches": 217,
-    "directorMismatch": 3462,
-    "tvFilmSignals": 2269,
+    "directorMismatch": 3475,
+    "tvFilmSignals": 2271,
     "londonSignals": 3603,
     "offBroadwaySignals": 736,
     "yearMismatch": 361,
@@ -7165,6 +7165,19 @@
     },
     {
       "showId": "back-to-the-future-tour-2024",
+      "file": "splash-magazines--beverly-cohn.json",
+      "publishDate": "2024-11-13",
+      "url": "https://splashmags.com/2024/11/back-to-the-future-the-musical-onstage-at-the-hollywood-pantages-theatre/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"john rando\" from back-to-the-future-2023"
+        }
+      ]
+    },
+    {
+      "showId": "back-to-the-future-tour-2024",
       "file": "the-artswire-weekly--mateo-moreno.json",
       "score": 79,
       "publishDate": "2025-04-03",
@@ -7229,6 +7242,19 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"john rando\" from back-to-the-future-2023"
+        }
+      ]
+    },
+    {
+      "showId": "back-to-the-future-tour-2024",
+      "file": "weliveentertainment--kevin-taft.json",
+      "publishDate": "2024-11-08",
+      "url": "https://weliveentertainment.com/we-live-entertainment/theater-review-back-future-musical-will-please-general-audiences-looking-familiar-comfort-food/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
@@ -9265,6 +9291,24 @@
     },
     {
       "showId": "book-of-mormon-tour-2022",
+      "file": "orlando-weekly--seth-kubersky.json",
+      "publishDate": "2024-10-23",
+      "url": "https://www.orlandoweekly.com/arts/broadway-in-orlando-review-scatological-satire-the-book-of-mormon-hasnt-lost-its-bite-38068085/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"trey parker\" from book-of-mormon-2011"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"casey nicholaw\" from book-of-mormon-2011"
+        }
+      ]
+    },
+    {
+      "showId": "book-of-mormon-tour-2022",
       "file": "palm-beach-daily-news--mary-damiano.json",
       "score": 89,
       "publishDate": "2025-03-12",
@@ -9377,6 +9421,24 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"trey parker\" from book-of-mormon-2011"
+        }
+      ]
+    },
+    {
+      "showId": "book-of-mormon-tour-2022",
+      "file": "thescotsreviewer--callum-stott.json",
+      "publishDate": "2024-10-18",
+      "url": "https://www.thescotsreviewer.com/post/the-book-of-mormon-review",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"trey parker\" from book-of-mormon-2011"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"casey nicholaw\" from book-of-mormon-2011"
         }
       ]
     },
@@ -9983,6 +10045,7 @@
     {
       "showId": "buena-vista-social-club-off-broadway-2023",
       "file": "nysr--frank-scheck.json",
+      "score": 83,
       "publishDate": "2023-12-13",
       "url": "https://nystagereview.com/2023/12/13/buena-vista-social-club-from-album-to-screen-to-triumphant-musical/",
       "findings": [
@@ -16169,6 +16232,19 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2026 (3x) more than 2024 (0x). 2026 matches production: dear-evan-hansen-regional-2026"
+        }
+      ]
+    },
+    {
+      "showId": "dear-evan-hansen-tour-2024",
+      "file": "the-blade--lillian-king.json",
+      "publishDate": "2024-11-07",
+      "url": "https://www.toledoblade.com/a-e/music-theater-dance/2024/11/07/dear-evan-hansen-closes-the-generation-gap-during-one-day-valentine-stop/stories/20241107011",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"hulu\""
         }
       ]
     },
@@ -22473,6 +22549,7 @@
     {
       "showId": "flex-off-broadway-2023",
       "file": "thewrap--robert-hofler.json",
+      "score": 63,
       "publishDate": "2023-07-21T09:42:54+00:00",
       "url": "https://www.thewrap.com/flex-off-broadway-review-candrice-jones-play/",
       "findings": [
@@ -23635,6 +23712,7 @@
     {
       "showId": "gatz-off-broadway-2024",
       "file": "nysr--david-finkle.json",
+      "score": 81,
       "publishDate": "2024-11-08",
       "url": "https://nystagereview.com/2024/11/08/gatz-fitzgerald-classic-word-for-word-from-elevator-repair-service/",
       "findings": [
@@ -28413,6 +28491,7 @@
     {
       "showId": "hangmen-off-broadway-2018",
       "file": "nysr--steven-suskin.json",
+      "score": 97,
       "publishDate": "2018-02-05",
       "url": "https://nystagereview.com/2018/02/05/stage-review-learning-the-ropes/",
       "findings": [
@@ -39154,6 +39233,7 @@
     {
       "showId": "lights-out-nat-king-cole-off-broadway-2025",
       "file": "nysr--david-finkle.json",
+      "score": 38,
       "publishDate": "2025-05-20",
       "url": "https://nystagereview.com/2025/05/20/lights-out-nat-king-cole-keep-this-musicals-lights-shut-off/",
       "findings": [
@@ -42660,6 +42740,19 @@
     },
     {
       "showId": "moulin-rouge-tour-2022",
+      "file": "broadwayworld--samantha-wu.json",
+      "publishDate": "2024-11-22",
+      "url": "https://www.broadwayworld.com/toronto/article/Review-MOULIN-ROUGE-THE-MUSICAL-at-CAA-Ed-Mirvish-Theatre-20241122",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"alex timbers\" from moulin-rouge-2019"
+        }
+      ]
+    },
+    {
+      "showId": "moulin-rouge-tour-2022",
       "file": "broadwayworld--shanti-m-kennedy.json",
       "publishDate": "2025-03-19",
       "url": "https://www.broadwayworld.com/sarasota/article/Review-MOULIN-ROUGE-THE-MUSICAL-at-Van-Wezel-20250319",
@@ -42755,6 +42848,19 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2019 (3x) more than 2022 (0x). 2019 matches production: moulin-rouge-2019"
+        }
+      ]
+    },
+    {
+      "showId": "moulin-rouge-tour-2022",
+      "file": "thegreekpress--james-karas.json",
+      "publishDate": "2024-11-30",
+      "url": "https://thegreekpress.ca/moulin-rouge-the-musical-review-of-spectacular-musical-at-the-caa-ed-mirvish-theatre/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"alex timbers\" from moulin-rouge-2019"
         }
       ]
     },
@@ -43888,7 +43994,7 @@
     {
       "showId": "my-brilliant-friend-part-1-part-2-west-end-2019",
       "file": "london-theatre--mark-shenton.json",
-      "score": null,
+      "score": 56,
       "publishDate": "2022-01-25",
       "url": "https://www.londontheatre.co.uk/reviews/review-my-brilliant-friend-at-the-national-theatre",
       "findings": [
@@ -53545,7 +53651,7 @@
     {
       "showId": "rockets-and-blue-lights-west-end-2021",
       "file": "whatsonstage--sarah-crompton.json",
-      "score": null,
+      "score": 93,
       "publishDate": "September 3rd, 2021",
       "url": "https://www.whatsonstage.com/london-theatre/reviews/rockets-and-blue-lights-national_54823.html",
       "findings": [
@@ -54755,6 +54861,7 @@
     {
       "showId": "shit-meet-fan-off-broadway-2024",
       "file": "nysr--frank-scheck.json",
+      "score": 58,
       "publishDate": "2024-11-18",
       "url": "https://nystagereview.com/2024/11/18/shit-meet-fan-play-meet-speed-bumps/",
       "findings": [
@@ -56441,6 +56548,45 @@
     },
     {
       "showId": "some-like-it-hot-tour-2024",
+      "file": "chicago-sun-times--steven-oxman.json",
+      "publishDate": "2024-10-24",
+      "url": "https://chicago.suntimes.com/theater/2024/10/24/some-like-it-hot-review-cadillac-palace-tour-chicago-musical",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"casey nicholaw\" from some-like-it-hot-2022"
+        }
+      ]
+    },
+    {
+      "showId": "some-like-it-hot-tour-2024",
+      "file": "chicagotribune--chris-jones.json",
+      "publishDate": "2024-10-24",
+      "url": "https://www.chicagotribune.com/2024/10/24/review-the-first-national-tour-of-some-like-it-hot-has-lively-retro-jazz-music/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"casey nicholaw\" from some-like-it-hot-2022"
+        }
+      ]
+    },
+    {
+      "showId": "some-like-it-hot-tour-2024",
+      "file": "cleveland-plain-dealer--joey-morona.json",
+      "publishDate": "2024-11-07",
+      "url": "https://www.cleveland.com/entertainment/2024/11/some-like-it-hot-combines-dazzling-musical-numbers-with-a-feel-good-message-at-playhouse-square.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"casey nicholaw\" from some-like-it-hot-2022"
+        }
+      ]
+    },
+    {
+      "showId": "some-like-it-hot-tour-2024",
       "file": "dc-theater-arts--jennifer-georgia.json",
       "score": 92,
       "publishDate": "2025-11-28",
@@ -56736,6 +56882,45 @@
       "score": 78,
       "publishDate": "2024-11-27",
       "url": "https://www.thecharlotteledger.com/p/some-like-it-hot-and-im-among-them",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"casey nicholaw\" from some-like-it-hot-2022"
+        }
+      ]
+    },
+    {
+      "showId": "some-like-it-hot-tour-2024",
+      "file": "the-news-herald--mark-meszoros.json",
+      "publishDate": "2024-11-01",
+      "url": "https://www.news-herald.com/2024/11/01/costume-designer-gregg-barnes-talks-playhouse-square-bound-some-like-it-hot/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"casey nicholaw\" from some-like-it-hot-2022"
+        }
+      ]
+    },
+    {
+      "showId": "some-like-it-hot-tour-2024",
+      "file": "thefourthwalsh--unknown.json",
+      "publishDate": "2024-10-25",
+      "url": "https://thefourthwalsh.com/2024/10/review-some-like-it-hot-broadway-in-chicago-madcap-magic/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"casey nicholaw\" from some-like-it-hot-2022"
+        }
+      ]
+    },
+    {
+      "showId": "some-like-it-hot-tour-2024",
+      "file": "third-coast-review--unknown.json",
+      "publishDate": "2024-10-26",
+      "url": "https://thirdcoastreview.com/stages/2024/10/26/stages-review-some-like-it-hot",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -75345,6 +75530,7 @@
     {
       "showId": "the-weir-off-broadway-2025",
       "file": "nysr--david-finkle.json",
+      "score": 82,
       "publishDate": "2025-07-17",
       "url": "https://nystagereview.com/2025/07/17/the-weir-the-conor-mcpherson-bar-play-easily-vaults-a-high-bar/",
       "findings": [
@@ -117916,7 +118102,7 @@
     {
       "showId": "rockets-and-blue-lights-west-end-2021",
       "file": "independent--paul-taylor.json",
-      "score": 96,
+      "score": 97,
       "publishDate": "2021-09-03",
       "url": "https://www.independent.co.uk/independentpremium/culture/rockets-and-blue-lights-review-national-theatre-b1913865.html",
       "findings": [
@@ -118322,6 +118508,7 @@
     {
       "showId": "rope-off-broadway-2026",
       "file": "culturesauce--thom-geier.json",
+      "score": 39,
       "publishDate": "2026-11-04",
       "url": "https://culturesauce.com/rope-hitchcock-play-adaptation-off-broadway-review/",
       "findings": [
@@ -132326,7 +132513,7 @@
     {
       "showId": "the-shitheads-west-end-2026",
       "file": "whatsonstage--sarah-crompton.json",
-      "score": null,
+      "score": 64,
       "publishDate": "February 13th, 2026",
       "url": "https://www.whatsonstage.com/news/the-shtheads-at-the-royal-court-review_1712175/",
       "findings": [
@@ -136224,6 +136411,7 @@
     {
       "showId": "under-milk-wood-west-end-2021",
       "file": "standard--unknown.json",
+      "score": 84,
       "publishDate": "June 25th, 2021",
       "url": "https://www.standard.co.uk/culture/theatre/under-milk-wood-at-national-theatre-review-dylan-thomas-michael-sheen-b942368.html",
       "findings": [

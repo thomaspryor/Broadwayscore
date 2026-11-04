@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-04T02:53:45.503Z",
+  "generatedAt": "2026-11-04T03:15:32.666Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -764,17 +764,17 @@
       "status": "open",
       "slug": "the-bridge-off-west-end",
       "thumbnail": "/images/shows/the-bridge-off-west-end-2026/thumbnail.webp",
-      "siteScore": 77.38,
+      "siteScore": 77.48,
       "liveScore": 77,
-      "scoreDrift": -0.37999999999999545,
+      "scoreDrift": -0.480000000000004,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 13,
+      "total": 14,
       "t1": 3,
       "t2": 4,
-      "t3": 6,
-      "positive": 13,
+      "t3": 7,
+      "positive": 14,
       "mixed": 0,
       "negative": 0,
       "readiness": {
@@ -944,6 +944,18 @@
           "m": 0,
           "n": 0,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-11-04T03:15:32.666Z",
+          "rc": 14,
+          "s": 77.48,
+          "t1": 3,
+          "t2": 4,
+          "t3": 7,
+          "p": 14,
+          "m": 0,
+          "n": 0,
+          "bc": "waiting"
         }
       ]
     },
@@ -976,9 +988,9 @@
           "2/12 total",
           "T1:0/3",
           "T2:0/3",
-          "hi-conf:1/8"
+          "hi-conf:2/8"
         ],
-        "highConfidence": 1,
+        "highConfidence": 2,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
