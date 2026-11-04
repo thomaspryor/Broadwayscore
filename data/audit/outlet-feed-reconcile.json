@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-04T01:36:03.246Z",
+  "generatedAt": "2026-11-04T02:32:49.542Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -129,8 +129,12 @@
       "reason": "no data/review-texts directory for this show"
     }
   ],
-  "feedsChecked": 76,
+  "feedsChecked": 78,
   "feedsFailed": [
+    {
+      "outletId": "theater-life",
+      "error": "Timeout fetching https://theaterlife.com/feed"
+    },
     {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
@@ -156,19 +160,10 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 800,
-  "matchedGaps": 9,
-  "possibleGaps": 13,
+  "itemsScanned": 813,
+  "matchedGaps": 7,
+  "possibleGaps": 14,
   "gaps": [
-    {
-      "showId": "rope-off-broadway-2026",
-      "title": "Rope",
-      "level": "matched",
-      "outletId": "culturesauce",
-      "url": "https://culturesauce.com/rope-hitchcock-play-adaptation-off-broadway-review/",
-      "headline": "Hitchcock&#8217;s &#8216;Rope&#8217; gets a queerer, bloodier makeover that goes for shock over suspense (Off Broadway review)",
-      "publishDate": "2026-11-04"
-    },
     {
       "showId": "the-bridge-off-west-end-2026",
       "title": "The Bridge",
@@ -222,15 +217,6 @@
       "url": "https://playstosee.com/reviews/tosca-17/?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=tosca-17",
       "headline": "TOSCA",
       "publishDate": "2026-10-31"
-    },
-    {
-      "showId": "tosca-off-broadway-2026",
-      "title": "Tosca",
-      "level": "matched",
-      "outletId": "london-unattached",
-      "url": "https://www.london-unattached.com/tosca-english-national-opera/",
-      "headline": "Tosca, English National Opera",
-      "publishDate": "2026-11-01"
     },
     {
       "showId": "tosca-off-broadway-2026",
@@ -357,6 +343,15 @@
       "url": "https://www.theguardian.com/stage/2026/oct/31/theatre-horror-play-paranormal-activity-blackout-silence-lambs-haunting-hill-house",
       "headline": "Jump scares, leather gloves and squeaking moth noises: theatre horror masters on how they make their shows so scary",
       "publishDate": "2026-10-31"
+    },
+    {
+      "showId": "tosca-off-broadway-2026",
+      "title": "Tosca",
+      "level": "possible",
+      "outletId": "london-unattached",
+      "url": "https://www.london-unattached.com/tosca-english-national-opera/",
+      "headline": "Tosca, English National Opera",
+      "publishDate": "2026-11-01"
     }
   ]
 }
