@@ -4,7 +4,11 @@
     "a-few-good-men-2026/bobs-theater-blog--unknown.json",
     "other-desert-cities-2026/bobs-theater-blog--unknown.json",
     "phyl-off-broadway-2026/theater-life--paulanne-simmons.json",
-    "billy-crystal-860-2026/the-100-word-review--unknown.json"
+    "billy-crystal-860-2026/the-100-word-review--unknown.json",
+    "tosca-english-national-opera-west-end-2026/sunday-telegraph--nicholas-kenyon.json",
+    "ceilidh-the-musical-off-west-end-2026/guardian--emma-john.json",
+    "ceilidh-the-musical-off-west-end-2026/guardian--unknown.json",
+    "ceilidh-the-musical-off-west-end-2026/daily-echo--william-dalgleish.json"
   ],
   "failed": [
     "a-few-good-men-2026/variety--anna-tingley.json",
@@ -33,8 +37,7 @@
     "tosca-english-national-opera-west-end-2026/times-uk--richard-morrison.json",
     "ceilidh-the-musical-off-west-end-2026/musical-theatre-review--angela-thomas.json",
     "the-curious-case-of-benjamin-button-off-broadway-2026/timeout--unknown.json",
-    "the-visitors-off-broadway-2026/bobs-theater-blog--unknown.json",
-    "the-unbelievers-off-broadway-2026/bobs-theater-blog--unknown.json"
+    "ceilidh-the-musical-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -42,7 +45,9 @@
       "a-few-good-men-2026/bobs-theater-blog--unknown.json",
       "other-desert-cities-2026/bobs-theater-blog--unknown.json",
       "phyl-off-broadway-2026/theater-life--paulanne-simmons.json",
-      "billy-crystal-860-2026/the-100-word-review--unknown.json"
+      "billy-crystal-860-2026/the-100-word-review--unknown.json",
+      "ceilidh-the-musical-off-west-end-2026/guardian--emma-john.json",
+      "ceilidh-the-musical-off-west-end-2026/guardian--unknown.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -53,10 +58,12 @@
     ],
     "brightdata": [],
     "archiveToday": [],
-    "archive": []
+    "archive": [
+      "ceilidh-the-musical-off-west-end-2026/daily-echo--william-dalgleish.json"
+    ]
   },
   "startTime": "2026-11-04T07:33:00.437Z",
-  "lastProcessed": "the-unbelievers-off-broadway-2026/bobs-theater-blog--unknown.json",
+  "lastProcessed": "ceilidh-the-musical-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
   "log": [
     {
       "t": "2026-11-04T07:44:01.921Z",
@@ -127,6 +134,42 @@
       "t": "2026-11-04T09:26:36.335Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-04T09:43:49.969Z",
+      "event": "bb-session",
+      "session": "2f1b2607",
+      "url": "https://bachtrack.com/review-lorfeo-william-kentridge-greek-national-opera-athen"
+    },
+    {
+      "t": "2026-11-04T09:44:51.523Z",
+      "event": "bb-session",
+      "session": "3f2402a0",
+      "url": "https://bachtrack.com/review-shostakovich-cherry-town-ahlbom-dutch-national-oper"
+    },
+    {
+      "t": "2026-11-04T09:44:59.924Z",
+      "event": "bb-session",
+      "session": "52abf954",
+      "url": "https://bachtrack.com/review-shostakovich-cherry-town-ahlbom-dutch-national-oper"
+    },
+    {
+      "t": "2026-11-04T09:46:17.411Z",
+      "event": "bb-session",
+      "session": "54d540b7",
+      "url": "https://bachtrack.com/review-tosca-miskimmon-glassberg-fanyo-english-national-op"
+    },
+    {
+      "t": "2026-11-04T09:47:19.042Z",
+      "event": "bb-session",
+      "session": "37e7b9f9",
+      "url": "https://bachtrack.com/review-nozze-figaro-pountney-conta-bucharest-national-oper"
+    },
+    {
+      "t": "2026-11-04T09:47:29.071Z",
+      "event": "bb-session",
+      "session": "2d6d98ba",
+      "url": "https://bachtrack.com/review-nozze-figaro-pountney-conta-bucharest-national-oper"
     }
   ],
   "recoveredAfterFailure": [
