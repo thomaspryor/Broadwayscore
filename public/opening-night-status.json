@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-04T18:33:44.706Z",
+  "generatedAt": "2026-11-04T18:51:42.210Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -388,25 +388,24 @@
       "status": "open",
       "slug": "well-see-off-broadway",
       "thumbnail": "/images/shows/well-see-off-broadway-2026/thumbnail.jpg",
-      "siteScore": null,
-      "liveScore": 80,
-      "scoreDrift": null,
-      "belowThreshold": true,
-      "reviewsNeeded": 1,
+      "siteScore": 83.92,
+      "liveScore": 84,
+      "scoreDrift": 0.0799999999999983,
+      "belowThreshold": false,
+      "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 2,
+      "total": 4,
       "t1": 0,
-      "t2": 1,
+      "t2": 3,
       "t3": 1,
-      "positive": 2,
+      "positive": 4,
       "mixed": 0,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "2/12 total",
+          "4/12 total",
           "T1:0/3",
-          "T2:1/3",
           "hi-conf:2/8"
         ],
         "highConfidence": 2,
@@ -498,10 +497,6 @@
         },
         {
           "name": "amNewYork",
-          "isDualMarket": false
-        },
-        {
-          "name": "New York Stage Review",
           "isDualMarket": false
         },
         {
@@ -773,6 +768,18 @@
           "m": 0,
           "n": 0,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-11-04T18:51:42.210Z",
+          "rc": 4,
+          "s": 83.92,
+          "t1": 0,
+          "t2": 3,
+          "t3": 1,
+          "p": 4,
+          "m": 0,
+          "n": 0,
+          "bc": "waiting"
         }
       ]
     },
@@ -815,10 +822,6 @@
         "detail": "Ready — awaiting send"
       },
       "missingT1": [
-        {
-          "name": "The Guardian",
-          "isDualMarket": true
-        },
         {
           "name": "Observer",
           "isDualMarket": true
@@ -868,10 +871,6 @@
         {
           "name": "New York Theatre Guide",
           "isDualMarket": true
-        },
-        {
-          "name": "The Arts Desk",
-          "isDualMarket": false
         },
         {
           "name": "British Theatre Guide",
@@ -1303,10 +1302,6 @@
         },
         {
           "name": "Slate",
-          "isDualMarket": false
-        },
-        {
-          "name": "Theater Life",
           "isDualMarket": false
         },
         {
@@ -3424,10 +3419,6 @@
         },
         {
           "name": "Theatrely",
-          "isDualMarket": false
-        },
-        {
-          "name": "Talkin' Broadway",
           "isDualMarket": false
         },
         {
