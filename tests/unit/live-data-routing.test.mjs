@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
-const { planLiveDataRouting, KEY_PREFIX, conditionKeyFor } = require('../../scripts/lib/live-data-routing.js');
+const { planLiveDataRouting, splitNewAndKnown, KEY_PREFIX, conditionKeyFor } = require('../../scripts/lib/live-data-routing.js');
 const { parseTapOutput } = require('../../scripts/lib/tap-failure-parser.js');
 
 const TAP = `TAP version 13
@@ -27,7 +27,8 @@ test('each failing leaf test is its own routed condition; containers skipped', (
   const p = parseTapOutput(TAP, '/r');
   const plan = planLiveDataRouting(p.failures, [], p, 1);
   assert.deepEqual(plan.route.map((r) => r.conditionKey), [conditionKeyFor('tests/unit/a.test.mjs::ceiling holds')]);
-  assert.equal(plan.route[0].disposition, 'digest');
+  assert.equal(plan.route[0].disposition, 'auto'); // BRO-6983: persistent failures get one card
+  assert.equal(plan.route[0].deferFilingHours, 72);
 });
 test('green tests resolve open keys; foreign keys untouched', () => {
   const p = parseTapOutput(TAP, '/r');
@@ -58,4 +59,37 @@ test('open keys of a file that failed this run are not resolved', () => {
   const p = parseTapOutput(TAP, '/r');
   const plan = planLiveDataRouting(p.failures, [conditionKeyFor('tests/unit/a.test.mjs::renamed test')], p, 1);
   assert.deepEqual(plan.resolve, []);
+});
+
+// BRO-6983: the job is red only for NEW failures.
+const NOW = Date.parse('2026-11-04T12:00:00Z');
+const hoursAgo = (h) => new Date(NOW - h * 3600000).toISOString();
+const route = (...names) => names.map((n) => ({ conditionKey: conditionKeyFor(`tests/unit/a.test.mjs::${n}`) }));
+
+test('split: a first-sighting failure is NEW', () => {
+  const { newKeys, knownKeys } = splitNewAndKnown(route('x'), {}, NOW);
+  assert.equal(newKeys.length, 1);
+  assert.equal(knownKeys.length, 0);
+});
+test('split: open past 72h, or carrying a card, is known; a fresh open incident is still new', () => {
+  const [a, b, c] = route('old', 'carded', 'fresh');
+  const conditions = {
+    [a.conditionKey]: { status: 'open', incidentOpenedAt: hoursAgo(80) },
+    [b.conditionKey]: { status: 'open', incidentOpenedAt: hoursAgo(5), linearIdentifier: 'BRO-1' },
+    [c.conditionKey]: { status: 'open', incidentOpenedAt: hoursAgo(5) },
+  };
+  const { newKeys, knownKeys } = splitNewAndKnown([a, b, c], conditions, NOW);
+  assert.deepEqual(knownKeys, [a.conditionKey, b.conditionKey]);
+  assert.deepEqual(newKeys, [c.conditionKey]);
+});
+test('split: a resolved condition that fails again is NEW', () => {
+  const [a] = route('back');
+  const { newKeys } = splitNewAndKnown([a], { [a.conditionKey]: { status: 'resolved', incidentOpenedAt: hoursAgo(500) } }, NOW);
+  assert.deepEqual(newKeys, [a.conditionKey]);
+});
+test('split: the class-A cross-market leak never counts as known, however old', () => {
+  const key = conditionKeyFor('scripts/verify-contamination-gate.test.mjs::no class-A cross-market leaks (a show showing another production\'s reviews)');
+  const { newKeys, knownKeys } = splitNewAndKnown([{ conditionKey: key }], { [key]: { status: 'open', incidentOpenedAt: hoursAgo(900), linearIdentifier: 'BRO-6891' } }, NOW);
+  assert.deepEqual(newKeys, [key]);
+  assert.deepEqual(knownKeys, []);
 });

@@ -1,0 +1,27 @@
+{
+  "issueNumber": "bro-6983",
+  "planId": "01936feb-3315-43cb-8c26-ab325d2969d0",
+  "status": "pending",
+  "createdAt": "2026-11-04T19:50:43.359Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Allowlist maybe-happy-ending-2024/theatrely--joey-sims.json for the class-A audit: it is a Broadway (Belasco) replacement-cast piece dated 2026-10-05, which only coincides with the 2026 tour opening",
+    "steps": [
+      "maybe-happy-ending-2024/theatrely--joey-sims.json: _auditAllowCrossMarket"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "maybe-happy-ending-2024/theatrely--joey-sims.json",
+        "field": "_auditAllowCrossMarket",
+        "oldValue": null,
+        "newValue": true,
+        "description": "maybe-happy-ending-2024/theatrely--joey-sims.json: _auditAllowCrossMarket"
+      }
+    ]
+  }
+}

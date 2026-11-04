@@ -455,6 +455,10 @@ jobs:
       - name: Live-data assertions (moved from test.yml unit batch)
         id: livedata
         if: always()
+        # BRO-6983: pass/fail is decided by the last step, "Fail on NEW live-data failures",
+        # so a failure that already has an owner stops reddening the job. steps.livedata.outcome
+        # still reports the raw result for the routing step below.
+        continue-on-error: true
         # BRO-5788: bounded so the routing + ledger-commit steps below still fit the job timeout.
         timeout-minutes: 22
         env:
@@ -494,6 +498,7 @@ jobs:
       # "Commit and push audit" does earlier in the job cannot see these writes,
       # hence the second commit step.
       - name: Route live-data failures to owner-alert-router (BRO-5788)
+        id: route
         if: always() && contains(fromJSON('["success","failure"]'), steps.livedata.outcome)
         continue-on-error: true # routing is best-effort; the live-data step stays the sole pass/fail
         timeout-minutes: 3
@@ -516,3 +521,23 @@ jobs:
             git commit -m "audit: live-data alert routing (corpus-drift, BRO-5788) [skip ci]"
             bash scripts/lib/push-with-retry.sh
           fi
+
+      # BRO-6983: the verdict. Red only for a failure with no owner yet (first seen under 72h,
+      # or the zero-tolerance class-A leak). Older failures have a card filed by the router
+      # (deferFilingHours 72) and are listed in the routing step's log as "known".
+      # An empty new_failures output (routing step crashed) fails safe: the job stays red.
+      # gate-arm-ok: strictly narrower than the step it replaces, which failed on every red test
+      - name: Fail on NEW live-data failures (BRO-6983)
+        if: always()
+        run: |
+          if [ '${{ steps.livedata.outcome }}' != failure ]; then
+            echo "live-data assertions: ${{ steps.livedata.outcome }}"
+            exit 0
+          fi
+          NEW='${{ steps.route.outputs.new_failures }}'
+          if [ "$NEW" = "0" ]; then
+            echo "Live-data assertions are red, but every failure is already owned (see 'known' lines in the routing step). Not failing the job."
+            exit 0
+          fi
+          echo "::error::Live-data assertions: new_failures='${NEW:-unknown}'. A failure with no owner yet, or the routing step did not report."
+          exit 1
