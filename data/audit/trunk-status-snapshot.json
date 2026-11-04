@@ -1,57 +1,30 @@
 {
-  "generatedAt": "2026-11-04T02:16:15.815Z",
+  "generatedAt": "2026-11-04T09:45:49.004Z",
   "workflow": "test.yml",
   "branch": "main",
-  "latestRunHeadSha": "d189cb5872b6159470a4e6fd58b771a9d26fc662",
-  "state": "RED",
-  "consecutiveFailures": 6,
-  "consecutiveSuccesses": 0,
-  "greenSince": null,
-  "greenForHours": null,
+  "latestRunHeadSha": "5514972e9efa8cf42975c65e66021b0b5bcd0ee8",
+  "state": "GREEN",
+  "consecutiveFailures": 0,
+  "consecutiveSuccesses": 10,
+  "greenSince": "2026-11-04T05:47:00Z",
+  "greenForHours": 3.980278888888889,
   "greenDurationIsFloor": false,
-  "redSince": "2026-11-04T00:52:17Z",
-  "redForHours": 1.3996708333333334,
+  "redSince": null,
+  "redForHours": null,
   "redDurationIsFloor": false,
-  "lastSuccessAt": "2026-11-04T00:02:19Z",
-  "latestFailedRunId": "41756092247",
-  "latestFailedRunUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41756092247",
-  "decidedRuns": 74,
+  "lastSuccessAt": "2026-11-04T09:17:48Z",
+  "latestFailedRunId": null,
+  "latestFailedRunUrl": null,
+  "decidedRuns": 72,
   "verdictLag": {
-    "verdictSha": "d189cb5872b6159470a4e6fd58b771a9d26fc662",
-    "verdictAt": "2026-11-04T01:44:22Z",
-    "verdictAgeHours": 0.5316152777777777,
-    "newerHeads": 5,
-    "runsInFlight": 5,
-    "lagging": true
+    "verdictSha": "5514972e9efa8cf42975c65e66021b0b5bcd0ee8",
+    "verdictAt": "2026-11-04T09:17:48Z",
+    "verdictAgeHours": 0.46694555555555556,
+    "newerHeads": 0,
+    "runsInFlight": 0,
+    "lagging": false
   },
-  "failingJobs": [
-    {
-      "name": "Data Validation",
-      "steps": [
-        "Audit review contamination",
-        "Audit outlet-registry gaps"
-      ]
-    },
-    {
-      "name": "Unit Tests",
-      "steps": [
-        "Run scripts/lib tests (visual-qa transcript-scan etc.)"
-      ]
-    },
-    {
-      "name": "Test Summary",
-      "steps": [
-        "Check results"
-      ]
-    }
-  ],
-  "failingPaths": [
-    {
-      "path": "scripts/lib/audit-ledger-merge-attrs.test.mjs",
-      "job": "Unit Tests",
-      "step": "Run scripts/lib tests (visual-qa transcript-scan etc.)",
-      "evidence": "not ok 635 - REGRESSION: every real tracked *.jsonl (repo-wide) is either merge=union or a documented exemption"
-    }
-  ],
-  "topFailingJob": "Unit Tests"
+  "failingJobs": [],
+  "failingPaths": [],
+  "topFailingJob": null
 }

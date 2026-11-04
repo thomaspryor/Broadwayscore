@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-04T02:16:26.686Z",
+  "generatedAt": "2026-11-04T09:45:51.865Z",
   "scope": "2 opening window(s): parcel-from-america-off-broadway-2026 (2026-11-04), well-see-off-broadway-2026 (2026-11-03)",
   "degraded": null,
   "windows": [
@@ -17,14 +17,14 @@
     }
   ],
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "logEntryCount": 199807,
+  "logEntryCount": 232326,
   "logOldestEntryAt": "2026-11-02T02:48:19.611Z",
   "publishTimesLoaded": 0,
   "verdict": {
     "verdict": "insufficient-data",
     "pass": false,
     "evaluated": 0,
-    "inFlight": 0,
+    "inFlight": 1,
     "compliant": 0,
     "compliancePct": null,
     "p50Ms": null,
@@ -35,5 +35,17 @@
     "breaches": [],
     "byBasis": {}
   },
-  "records": []
+  "records": [
+    {
+      "showId": "well-see-off-broadway-2026",
+      "outletId": "culturesauce",
+      "reviewKey": "culturesauce:thom-geier:https://culturesauce.com/well-see-richard-nelson-apple-off-broadway-review/",
+      "basis": null,
+      "firstSeenAt": "2026-11-04T04:04:31.998Z",
+      "liveAt": null,
+      "pipelineMinutes": null,
+      "publishedToLiveMinutes": null,
+      "stuckAtStage": "rebuilt"
+    }
+  ]
 }
