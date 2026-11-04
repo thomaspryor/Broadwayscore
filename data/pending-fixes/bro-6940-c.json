@@ -1,0 +1,219 @@
+{
+  "issueNumber": "bro-6940-c",
+  "planId": "3863654e-7c36-412f-ab19-525d788ead49",
+  "status": "pending",
+  "createdAt": "2026-11-04T00:30:40.787Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6940: re-credit review files whose printed byline names a different critic (Waiting for Lefty NYSR: Frank Scheck -> Michael Sommers) and fill unnamed files from their printed byline (part 3 of 10)",
+    "steps": [
+      "BRO-6940: article byline prints Sandi Masori; file was credited to Unknown",
+      "review-file-op",
+      "BRO-6940: article byline prints Neil Durham; file was credited to Unknown",
+      "review-file-op",
+      "BRO-6940: article byline prints Neil Durham; file was credited to Unknown",
+      "review-file-op",
+      "BRO-6940: article byline prints Samuel L. Leiter; file was credited to Unknown",
+      "review-file-op",
+      "BRO-6940: article byline prints Lucy Popescu; file was credited to Unknown",
+      "review-file-op",
+      "BRO-6940: article byline prints Marilyn Lester; file was credited to Unknown",
+      "review-file-op",
+      "BRO-6940: article byline prints Neil Durham; file was credited to Unknown",
+      "review-file-op",
+      "BRO-6940: article byline prints Sipora Levy; file was credited to Unknown",
+      "review-file-op",
+      "BRO-6940: article byline prints Christopher Kelly; file was credited to Unknown",
+      "review-file-op",
+      "BRO-6940: article byline prints Sandi Masori; file was credited to Unknown",
+      "review-file-op",
+      "BRO-6940: article byline prints Mark Kennedy; file was credited to AP Drama Writer",
+      "review-file-op",
+      "BRO-6940: article byline prints Megan O'Neill; file was credited to Written by",
+      "review-file-op",
+      "BRO-6940: article byline prints Neil Durham; file was credited to Unknown"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "dear-evan-hansen-cygnet-regional-2026/san-diego-jewish-world--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Sandi Masori",
+        "description": "BRO-6940: article byline prints Sandi Masori; file was credited to Unknown"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "dear-evan-hansen-cygnet-regional-2026/san-diego-jewish-world--unknown.json",
+        "destPath": "dear-evan-hansen-cygnet-regional-2026/san-diego-jewish-world--sandi-masori.json"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "death-note-the-musical-west-end-2026/monstagigz--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Neil Durham",
+        "description": "BRO-6940: article byline prints Neil Durham; file was credited to Unknown"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "death-note-the-musical-west-end-2026/monstagigz--unknown.json",
+        "destPath": "death-note-the-musical-west-end-2026/monstagigz--neil-durham.json"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "electra-persona-west-end-2026/monstagigz--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Neil Durham",
+        "description": "BRO-6940: article byline prints Neil Durham; file was credited to Unknown"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "electra-persona-west-end-2026/monstagigz--unknown.json",
+        "destPath": "electra-persona-west-end-2026/monstagigz--neil-durham.json"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "empire-the-musical-off-broadway-2024/theater-pizzazz--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Samuel L. Leiter",
+        "description": "BRO-6940: article byline prints Samuel L. Leiter; file was credited to Unknown"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "empire-the-musical-off-broadway-2024/theater-pizzazz--unknown.json",
+        "destPath": "empire-the-musical-off-broadway-2024/theater-pizzazz--samuel-l-leiter.json"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "end-west-end-2025/camdennewjournal--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Lucy Popescu",
+        "description": "BRO-6940: article byline prints Lucy Popescu; file was credited to Unknown"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "end-west-end-2025/camdennewjournal--unknown.json",
+        "destPath": "end-west-end-2025/camdennewjournal--lucy-popescu.json"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "english-off-broadway-2022/theater-pizzazz--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Marilyn Lester",
+        "description": "BRO-6940: article byline prints Marilyn Lester; file was credited to Unknown"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "english-off-broadway-2022/theater-pizzazz--unknown.json",
+        "destPath": "english-off-broadway-2022/theater-pizzazz--marilyn-lester.json"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "equus-west-end-2026/monstagigz--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Neil Durham",
+        "description": "BRO-6940: article byline prints Neil Durham; file was credited to Unknown"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "equus-west-end-2026/monstagigz--unknown.json",
+        "destPath": "equus-west-end-2026/monstagigz--neil-durham.json"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "girl-from-the-north-country-west-end-2017/camdennewjournal--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Sipora Levy",
+        "description": "BRO-6940: article byline prints Sipora Levy; file was credited to Unknown"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "girl-from-the-north-country-west-end-2017/camdennewjournal--unknown.json",
+        "destPath": "girl-from-the-north-country-west-end-2017/camdennewjournal--sipora-levy.json"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "gypsy-2024/njcom--httpswwwfacebookcomseptimushodge.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Christopher Kelly",
+        "description": "BRO-6940: article byline prints Christopher Kelly; file was credited to Unknown"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "gypsy-2024/njcom--httpswwwfacebookcomseptimushodge.json",
+        "destPath": "gypsy-2024/njcom--christopher-kelly.json"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "hairspray-regional-2026/san-diego-jewish-world--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Sandi Masori",
+        "description": "BRO-6940: article byline prints Sandi Masori; file was credited to Unknown"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "hairspray-regional-2026/san-diego-jewish-world--unknown.json",
+        "destPath": "hairspray-regional-2026/san-diego-jewish-world--sandi-masori.json"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "hand-to-god-2015/ap--ap-drama-writer.json",
+        "field": "criticName",
+        "oldValue": "AP Drama Writer",
+        "newValue": "Mark Kennedy",
+        "description": "BRO-6940: article byline prints Mark Kennedy; file was credited to AP Drama Writer"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "hand-to-god-2015/ap--ap-drama-writer.json",
+        "destPath": "hand-to-god-2015/ap--mark-kennedy.json"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "high-school-musical-off-west-end-2026/unmissabletheatre--unknown.json",
+        "field": "criticName",
+        "oldValue": "Written by",
+        "newValue": "Megan O'Neill",
+        "description": "BRO-6940: article byline prints Megan O'Neill; file was credited to Written by"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "high-school-musical-off-west-end-2026/unmissabletheatre--unknown.json",
+        "destPath": "high-school-musical-off-west-end-2026/unmissabletheatre--megan-oneill.json"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "ilford-boy-west-end-2026/monstagigz--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Neil Durham",
+        "description": "BRO-6940: article byline prints Neil Durham; file was credited to Unknown"
+      }
+    ]
+  }
+}

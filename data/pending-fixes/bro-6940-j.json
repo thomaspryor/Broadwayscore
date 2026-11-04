@@ -1,0 +1,41 @@
+{
+  "issueNumber": "bro-6940-j",
+  "planId": "f655f19e-1568-4e7d-af50-653818de13cf",
+  "status": "pending",
+  "createdAt": "2026-11-04T00:30:40.787Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6940: re-credit review files whose printed byline names a different critic (Waiting for Lefty NYSR: Frank Scheck -> Michael Sommers) and fill unnamed files from their printed byline (part 10 of 10)",
+    "steps": [
+      "review-file-op",
+      "BRO-6940: article byline prints Neil Durham; file was credited to Unknown",
+      "review-file-op"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "whos-afraid-of-virginia-woolf-west-end-2026/camdennewjournal--unknown.json",
+        "destPath": "whos-afraid-of-virginia-woolf-west-end-2026/camdennewjournal--lucy-popescu.json"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "why-am-i-so-single-west-end-2024/monstagigz--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Neil Durham",
+        "description": "BRO-6940: article byline prints Neil Durham; file was credited to Unknown"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "why-am-i-so-single-west-end-2024/monstagigz--unknown.json",
+        "destPath": "why-am-i-so-single-west-end-2024/monstagigz--neil-durham.json"
+      }
+    ]
+  }
+}

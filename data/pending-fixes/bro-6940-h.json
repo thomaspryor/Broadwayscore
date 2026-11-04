@@ -1,0 +1,217 @@
+{
+  "issueNumber": "bro-6940-h",
+  "planId": "533b2c54-7a6c-4be0-aa37-b561720644e1",
+  "status": "pending",
+  "createdAt": "2026-11-04T00:30:40.787Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6940: re-credit review files whose printed byline names a different critic (Waiting for Lefty NYSR: Frank Scheck -> Michael Sommers) and fill unnamed files from their printed byline (part 8 of 10)",
+    "steps": [
+      "review-file-op",
+      "BRO-6940: article byline prints Carole Di Tosti; file was credited to Unknown",
+      "review-file-op",
+      "BRO-6940: article byline prints Mark Kennedy; file was credited to AP Drama Writer",
+      "review-file-op",
+      "BRO-6940: article byline prints Tim Bano; file was credited to Time Out",
+      "review-file-op",
+      "BRO-6940: article byline prints Samuel L. Leiter; file was credited to JK Clarke",
+      "review-file-op",
+      "BRO-6940: article byline prints Lucy Popescu; file was credited to Unknown",
+      "review-file-op",
+      "BRO-6940: article byline prints Brian Scott Lipton; file was credited to Unknown",
+      "review-file-op",
+      "BRO-6940: article byline prints Rikki Lee Travolta; file was credited to News Room",
+      "review-file-op",
+      "BRO-6940: article byline prints Sandi Masori; file was credited to Unknown",
+      "review-file-op",
+      "BRO-6940: article byline prints Anna Moloney; file was credited to Adam Bloodworth",
+      "review-file-op",
+      "BRO-6940: article byline prints Howard Miller; file was credited to Unknown",
+      "review-file-op",
+      "BRO-6940: article byline prints Vince Kanasoot; file was credited to Janet Smith",
+      "review-file-op",
+      "BRO-6940: article byline prints Sandi Masori; file was credited to Unknown",
+      "review-file-op"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "sweat-off-broadway-2016/talkinbroadway--unknown.json",
+        "destPath": "sweat-off-broadway-2016/talkinbroadway--matthew-murray.json"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "swept-away-2024/theater-pizzazz--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Carole Di Tosti",
+        "description": "BRO-6940: article byline prints Carole Di Tosti; file was credited to Unknown"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "swept-away-2024/theater-pizzazz--unknown.json",
+        "destPath": "swept-away-2024/theater-pizzazz--carole-di-tosti.json"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "sylvia-2015/ap--ap-drama-writer.json",
+        "field": "criticName",
+        "oldValue": "AP Drama Writer",
+        "newValue": "Mark Kennedy",
+        "description": "BRO-6940: article byline prints Mark Kennedy; file was credited to AP Drama Writer"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "sylvia-2015/ap--ap-drama-writer.json",
+        "destPath": "sylvia-2015/ap--mark-kennedy.json"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "tartuffe-remixed-off-west-end-2026/timeout-london--time-out.json",
+        "field": "criticName",
+        "oldValue": "Time Out",
+        "newValue": "Tim Bano",
+        "description": "BRO-6940: article byline prints Tim Bano; file was credited to Time Out"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "tartuffe-remixed-off-west-end-2026/timeout-london--time-out.json",
+        "destPath": "tartuffe-remixed-off-west-end-2026/timeout-london--tim-bano.json"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "teeth-playwrights-horizons-off-broadway-2024/theater-pizzazz--jk-clarke.json",
+        "field": "criticName",
+        "oldValue": "JK Clarke",
+        "newValue": "Samuel L. Leiter",
+        "description": "BRO-6940: article byline prints Samuel L. Leiter; file was credited to JK Clarke"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "teeth-playwrights-horizons-off-broadway-2024/theater-pizzazz--jk-clarke.json",
+        "destPath": "teeth-playwrights-horizons-off-broadway-2024/theater-pizzazz--samuel-l-leiter.json"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-authenticator-west-end-2026/camdennewjournal--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Lucy Popescu",
+        "description": "BRO-6940: article byline prints Lucy Popescu; file was credited to Unknown"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "the-authenticator-west-end-2026/camdennewjournal--unknown.json",
+        "destPath": "the-authenticator-west-end-2026/camdennewjournal--lucy-popescu.json"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-bedwetter-off-broadway-2022/cititour--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Brian Scott Lipton",
+        "description": "BRO-6940: article byline prints Brian Scott Lipton; file was credited to Unknown"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "the-bedwetter-off-broadway-2022/cititour--unknown.json",
+        "destPath": "the-bedwetter-off-broadway-2022/cititour--brian-scott-lipton.json"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-curious-incident-of-the-dog-in-the-night-time-regional-2024/lifeandtimes--news-room.json",
+        "field": "criticName",
+        "oldValue": "News Room",
+        "newValue": "Rikki Lee Travolta",
+        "description": "BRO-6940: article byline prints Rikki Lee Travolta; file was credited to News Room"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "the-curious-incident-of-the-dog-in-the-night-time-regional-2024/lifeandtimes--news-room.json",
+        "destPath": "the-curious-incident-of-the-dog-in-the-night-time-regional-2024/lifeandtimes--rikki-lee-travolta.json"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-hombres-regional-2026/san-diego-jewish-world--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Sandi Masori",
+        "description": "BRO-6940: article byline prints Sandi Masori; file was credited to Unknown"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "the-hombres-regional-2026/san-diego-jewish-world--unknown.json",
+        "destPath": "the-hombres-regional-2026/san-diego-jewish-world--sandi-masori.json"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-hunger-games-on-stage-west-end-2025/city-am--adam-bloodworth.json",
+        "field": "criticName",
+        "oldValue": "Adam Bloodworth",
+        "newValue": "Anna Moloney",
+        "description": "BRO-6940: article byline prints Anna Moloney; file was credited to Adam Bloodworth"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "the-hunger-games-on-stage-west-end-2025/city-am--adam-bloodworth.json",
+        "destPath": "the-hunger-games-on-stage-west-end-2025/city-am--anna-moloney.json"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-lifespan-of-a-fact-2018/talkinbroadway--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Howard Miller",
+        "description": "BRO-6940: article byline prints Howard Miller; file was credited to Unknown"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "the-lifespan-of-a-fact-2018/talkinbroadway--unknown.json",
+        "destPath": "the-lifespan-of-a-fact-2018/talkinbroadway--howard-miller.json"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-lion-king-tour-2021/stir--janet-smith.json",
+        "field": "criticName",
+        "oldValue": "Janet Smith",
+        "newValue": "Vince Kanasoot",
+        "description": "BRO-6940: article byline prints Vince Kanasoot; file was credited to Janet Smith"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "the-lion-king-tour-2021/stir--janet-smith.json",
+        "destPath": "the-lion-king-tour-2021/stir--vince-kanasoot.json"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-monsters-regional-2026/san-diego-jewish-world--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Sandi Masori",
+        "description": "BRO-6940: article byline prints Sandi Masori; file was credited to Unknown"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "the-monsters-regional-2026/san-diego-jewish-world--unknown.json",
+        "destPath": "the-monsters-regional-2026/san-diego-jewish-world--sandi-masori.json"
+      }
+    ]
+  }
+}
