@@ -1,0 +1,96 @@
+{
+  "schemaVersion": 1,
+  "showId": "well-see-off-broadway-2026",
+  "night": "2026-11-03",
+  "market": "off-broadway",
+  "embargoAt": "2026-11-04T03:00:00.000Z",
+  "embargoSource": "market-default",
+  "probe": {
+    "startedAt": "2026-11-04T02:30:05.072Z",
+    "endedAt": null,
+    "intervalMin": 5,
+    "samples": 30,
+    "failedSamples": 0,
+    "lastSampleAt": "2026-11-04T04:55:11.200Z",
+    "lastOkSampleAt": "2026-11-04T04:55:11.200Z"
+  },
+  "firstLiveAt": null,
+  "firstLiveBaseline": false,
+  "lastLiveAt": null,
+  "liveCount": 0,
+  "liveCountAt": {
+    "1h": 0,
+    "2h": null,
+    "6h": null
+  },
+  "liveCountSampleAt": {
+    "1h": "2026-11-04T04:00:09.038Z",
+    "2h": null,
+    "6h": null
+  },
+  "firstOutletPublishAt": {
+    "at": null,
+    "precision": "unknown",
+    "source": "prod-rv-publishDate",
+    "tierScope": null
+  },
+  "perReview": [],
+  "dropped": [],
+  "reference": {
+    "2h": {
+      "status": "no-census-yet",
+      "source": null,
+      "count": 0,
+      "covered": null,
+      "coverage": null,
+      "missing": [],
+      "liveCount": 1,
+      "fetchedAt": "2026-11-04T05:00:26.062Z",
+      "censusNote": "no BWW roundup found"
+    }
+  },
+  "manualActions": [],
+  "publishedBy": {
+    "path": "regular",
+    "method": "lane-only-decision",
+    "checks": [
+      {
+        "at": "2026-11-04T05:00:26.148Z",
+        "label": "2h",
+        "standDown": false,
+        "reason": "market not lane-only"
+      }
+    ]
+  },
+  "fileState": {
+    "capturedAt": "2026-11-04T05:00:30.320Z",
+    "files": [
+      {
+        "file": "culturesauce--thom-geier.json",
+        "outletId": "culturesauce",
+        "outlet": "Culture Sauce",
+        "critic": "Thom Geier",
+        "firstSeenAt": "2026-11-04T04:04:31.920Z",
+        "scoredAt": "2026-11-04T04:38:08.963Z",
+        "publishDate": "2026-11-03",
+        "url": "culturesauce.com/well-see-richard-nelson-apple-off-broadway-review",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "guardian--juan-a-ramirez.json",
+        "outletId": "guardian",
+        "outlet": "The Guardian",
+        "critic": "Juan A Ramírez",
+        "firstSeenAt": "2026-11-03T15:33:02.810Z",
+        "scoredAt": null,
+        "publishDate": "2026-11-03",
+        "url": "theguardian.com/stage/2026/nov/03/well-see-play-midterm-elections",
+        "includable": false,
+        "reason": "rejectionReason",
+        "syndicatedUnder": null
+      }
+    ]
+  }
+}
