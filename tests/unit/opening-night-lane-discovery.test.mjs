@@ -1071,6 +1071,8 @@ const LANE_SOURCE_SAMPLE_REVIEW = {
   dailybeast: 'https://www.thedailybeast.com/jersey-boys-refuse-to-grow-up-review-of-gettin-the-band-back-together',
   mashable: 'https://mashable.com/article/be-more-chill-review-broadway',
   'the-interested-bystander': 'https://www.interestedbystander.com/2026/07/theater-review-walk-on-moon-is-old.html',
+  'jks-theatre-scene': 'https://www.jkstheatrescene.com/2026/10/review-few-good-men.html',
+  'bobs-theater-blog': 'https://gotham-playgoer.blogspot.com/2026/10/a-few-good-men.html',
 };
 test('guard: every lane index and feed outlet has a real review URL the path gate admits as its adapter offers it', () => {
   const ls = require('../../scripts/lib/opening-night-lane/lane-sources.js');
@@ -1116,4 +1118,19 @@ test('a feed item on a sister host the registry maps to the feed\'s outlet is th
   const out = await d.rssAdapter({ feeds: [{ url: FEED, outletId: 'culturesauce', name: 'Culture Sauce' }] }).discover({ show: SHOW, fetchText: async () => xml });
   assert.equal(out[0].outletId, 'culturesauce');
   assert.equal(out[0].vettedOutlet, true);
+});
+
+test("Bob's Theater Blog: a post headed with the show title alone is a review; a show-named bulletin is not", async () => {
+  const FEED = 'https://gotham-playgoer.blogspot.com/feeds/posts/default?alt=rss';
+  const REVIEW = 'https://gotham-playgoer.blogspot.com/2026/10/other-desert-cities.html';
+  const BULLETIN = 'https://gotham-playgoer.blogspot.com/2026/10/theater-bulletin-other-desert-cities-extends.html';
+  const it = (title, link) => `<item><title>${title}</title><link>${link}</link><pubDate>Sun, 18 Oct 2026 23:30:00 GMT</pubDate></item>`;
+  const xml = `<?xml version="1.0"?><rss><channel>${it('Other Desert Cities', REVIEW)}${it('Theater Bulletin: &quot;Other Desert Cities&quot; Extends', BULLETIN)}</channel></rss>`;
+  const ls = require('../../scripts/lib/opening-night-lane/lane-sources.js');
+  const feed = ls.laneFeeds({ title: 'Other Desert Cities', category: 'broadway' }).find((f) => f.outletId === 'bobs-theater-blog');
+  assert.ok(feed && feed.titledReviews, 'the lane reads the feed with the show-title rule');
+  const r = await d.runDiscoveryPass({ show: SHOW, night: NIGHT, now: T0 + 2 * HOUR, startedAt: T0, adapters: [d.rssAdapter({ feeds: [feed] })], fetchText: async () => xml });
+  assert.deepEqual(r.admitted.map((a) => a.key), [d.canonicalUrl(REVIEW)]);
+  assert.ok(r.rejected.some((x) => x.url === d.canonicalUrl(BULLETIN)), 'the bulletin is refused');
+  assert.equal(FEED, feed.url);
 });

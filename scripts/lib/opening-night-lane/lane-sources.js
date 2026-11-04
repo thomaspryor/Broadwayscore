@@ -80,6 +80,11 @@ const LANE_FEEDS = [
   { url: 'https://www.thedailybeast.com/arc/outboundfeeds/rss/articles/', outletId: 'dailybeast', name: 'The Daily Beast' },
   { url: 'https://mashable.com/feeds/rss/entertainment', outletId: 'mashable', name: 'Mashable Entertainment' },
   { url: 'https://www.interestedbystander.com/feeds/posts/default', outletId: 'the-interested-bystander', name: 'The Interested Bystander' },
+  // Blogger feeds probed 2026-11-04 (200, 25 items each), both missed on time in the 2026 shadow replays (A Few Good Men,
+  // The Imaginary Invalid). Bob's titles each review with the show alone ("A Few Good Men") and also posts show-named
+  // news ("Theater Bulletin: ..."), so its items count as reviews only when the headline is the show title by itself.
+  { url: 'https://www.jkstheatrescene.com/feeds/posts/default?alt=rss', outletId: 'jks-theatre-scene', name: "JK's Theatre Scene" },
+  { url: 'https://gotham-playgoer.blogspot.com/feeds/posts/default?alt=rss', outletId: 'bobs-theater-blog', name: "Bob's Theater Blog", titledReviews: true },
 ];
 
 // On-time outlets the lane cannot poll for free, and what finds them instead. A gap needs a reason a reader can check.
@@ -109,7 +114,7 @@ function laneFeeds(show) {
   for (const f of LANE_FEEDS) {
     if (haveOutlet.has(f.outletId) || haveUrl.has(f.url) || !outletInMarket(f.outletId, market)) continue;
     haveOutlet.add(f.outletId); haveUrl.add(f.url);
-    base.push({ url: f.url, outletId: f.outletId, name: f.name, directOnly: true });
+    base.push({ url: f.url, outletId: f.outletId, name: f.name, directOnly: true, ...(f.titledReviews ? { titledReviews: true } : {}) });
   }
   return base;
 }

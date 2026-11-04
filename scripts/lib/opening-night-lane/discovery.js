@@ -201,6 +201,18 @@ function hostSignalsReview(url, title, showTitle) {
   return titleMatchesShow(title || '', showTitle, { fuzzy: true }) || urlSlugMatchesShow(url, showTitle, { fuzzy: true });
 }
 
+/**
+ * The headline is the show's title alone, give or take a trailing "(Broadway)" or star marks: how a titledReviews feed
+ * (Bob's Theater Blog) heads its reviews. "Theater Bulletin: 'School Girls' To Livestream..." is not.
+ */
+function headlineIsShowTitle(headline, showTitle) {
+  const { cleanSearchTitle } = require('../title-normalization');
+  const norm = (t) => cleanSearchTitle(String(t || '').replace(/&quot;|&#39;|&#8217;/g, "'").replace(/&amp;/g, '&').replace(/\s*\([^)]*\)\s*$/, '').replace(/[*\u2605]+\s*$/, '').trim())
+    .normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+  const h = norm(headline);
+  return !!h && h === norm(showTitle);
+}
+
 /** A positive review signal in the URL or the headline: required for feed and index finds. */
 function hasReviewSignal(url, title) {
   return REVIEW_SIGNAL.test(`${title || ''} ${(() => { try { return decodeURIComponent(new URL(url).pathname); } catch { return ''; } })()}`.replace(/[-_]+/g, ' '));
@@ -560,7 +572,7 @@ function rssAdapter({ feeds } = {}) {
           // culturesauce.net, its reviews on culturesauce.com; Theater Scene's on .net and .com).
           const ownHost = hostOf(it.link) === hostOf(feed.url) || (!!feed.outletId && (resolveOutletFromUrl(it.link) || {}).outletId === feed.outletId);
           // A reviews-only feed's own item is a review whatever its headline says; a link off the feed's host is not vouched for.
-          out.push({ url: it.link, title: it.title, source: 'outlet-index', ...it.date, via: feed.name || feed.url, outletId: ownHost ? feed.outletId : undefined, ...(ownHost ? { vettedOutlet: true } : {}), ...(ownHost && feed.reviewsOnly ? { reviewSignalGiven: true } : {}) });
+          out.push({ url: it.link, title: it.title, source: 'outlet-index', ...it.date, via: feed.name || feed.url, outletId: ownHost ? feed.outletId : undefined, ...(ownHost ? { vettedOutlet: true } : {}), ...(ownHost && (feed.reviewsOnly || (feed.titledReviews && headlineIsShowTitle(it.title, show.title))) ? { reviewSignalGiven: true } : {}) });
         }
       }
       return out;
@@ -1254,7 +1266,7 @@ function recordDiscovered(ledgerDir, { show, night, admitted, now = Date.now() }
 module.exports = {
   SERP_AFTER_MS, SERP_COOLDOWN_MS, SERP_NIGHT_MAX, defaultLaneMissingOutlets, defaultLaneSectionIndexes, laneMissingOutlets,
   NON_REVIEW_HOSTS, WRAPPER_HOSTS, canonicalUrl, bodyScope, playbillArticleBody, bwwRoundupBody, storyCitedLinks, extractAnchors, citedExcerpts, extractCitedLinks, extractPublishDate,
-  nonReviewReason, SECTION_INDEX_PARSERS, hasReviewSignal, hostSignalsReview, REVIEW_WITHOUT_WORD_HOSTS, pageDatedNear, dtliSitemapPages, defaultLaneFeeds, bwwRoundupAdapter, dtliAdapter, rssAdapter, sectionIndexAdapter, showScoreAdapter, playbillVerdictAdapter, googleNewsAdapter, GOOGLE_NEWS_SITE_QUERY_HOSTS, talkinBroadwayAdapter, TB_PROBE_BATCH, TB_MAX_CARRIES, tbFetchWasBlocked, serpAdapter,
+  nonReviewReason, SECTION_INDEX_PARSERS, headlineIsShowTitle, hasReviewSignal, hostSignalsReview, REVIEW_WITHOUT_WORD_HOSTS, pageDatedNear, dtliSitemapPages, defaultLaneFeeds, bwwRoundupAdapter, dtliAdapter, rssAdapter, sectionIndexAdapter, showScoreAdapter, playbillVerdictAdapter, googleNewsAdapter, GOOGLE_NEWS_SITE_QUERY_HOSTS, talkinBroadwayAdapter, TB_PROBE_BATCH, TB_MAX_CARRIES, tbFetchWasBlocked, serpAdapter,
   publisherUrlFromWrapperPage, parseFeedEntries, fetchTextFrom, serpAllowed, memoPath, loadMemo, saveMemo,
   runDiscoveryPass, loadSeen, recordDiscovered,
 };
