@@ -1,13 +1,17 @@
 {
-  "generatedAt": "2026-11-04T09:24:02.606Z",
+  "generatedAt": "2026-11-04T12:35:27.638Z",
   "night": "2026-11-03",
   "counts": {
     "total": 3,
-    "passed": 1,
-    "failed": 2,
+    "passed": 0,
+    "failed": 3,
     "notGraded": 0
   },
   "lines": [
+    {
+      "verdict": "FAIL",
+      "line": "Rope: published by the regular pipeline; 7 of 7 reviews live by 12:00am; Reddit draft emailed to you is out of date (score 58 from 8 reviews, the site shows score 60 from 9 reviews). Failed."
+    },
     {
       "verdict": "FAIL",
       "line": "The Bridge: published by the regular pipeline; 0 of 17 reviews live by 6:00pm; All That Dazzles (UK) went live at 6:12pm (late); Financial Times went live at 6:12pm (late); Liam O'Dell went live at 6:12pm (late); London Theatre went live at 6:12pm (late); Pink Prince Theatre went live at 6:12pm (late); Theatre and Tonic not live by 9:57pm; The Reviews Hub went live at 6:12pm (late); The Stage went live at 6:12pm (late); WhatsOnStage went live at 6:12pm (late); BroadwayWorld went live at 6:12pm (late); Time Out New York not live by 9:57pm; The Times (UK) not live by 9:57pm; The Guardian not live by 9:57pm; The Telegraph not live by 9:57pm; The Independent not live by 9:57pm; Evening Standard went live at 6:12pm (late); Noel Coward Theatre not live by 9:57pm. Failed."
@@ -15,10 +19,6 @@
     {
       "verdict": "FAIL",
       "line": "We'll See: published by the regular pipeline; 1 of 1 review live by 12:48am; reviews came out at 10:48pm, not the expected 10:00pm, so they were timed from 10:48pm; the first review was not live until 11:58pm (70 min after release). Failed."
-    },
-    {
-      "verdict": "PASS",
-      "line": "Rope: published by the regular pipeline; 7 of 7 reviews live by 12:00am; emails ready, passed."
     }
   ],
   "scoreboard": {
@@ -27,6 +27,7 @@
     "passedOnOwn": 1
   },
   "missFirstSeen": {
+    "rope-off-broadway-2026|2026-11-03|email:reddit:stale": "2026-11-04T12:35:27.638Z",
     "the-bridge-off-west-end-2026|2026-11-03|review:all-that-dazzles-uk:Sam Waite": "2026-11-04T08:13:04.959Z",
     "the-bridge-off-west-end-2026|2026-11-03|review:financialtimes:Sarah Hemming": "2026-11-04T08:13:04.959Z",
     "the-bridge-off-west-end-2026|2026-11-03|review:liamodell:Liam O’Dell": "2026-11-04T08:13:04.959Z",
