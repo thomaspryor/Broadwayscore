@@ -26,3 +26,9 @@ test('no_url and fabricated always search; dateless hold never does', () => {
   assert.equal(needsSerpUrlDiscovery({ incompleteReason: 'no_url', _datelessDateRetry: true }), false);
   assert.equal(needsSerpUrlDiscovery({ incompleteReason: null, url }), false);
 });
+test('DISABLE_MANUAL_CLEAR_URL_FETCH restores the search', () => {
+  process.env.DISABLE_MANUAL_CLEAR_URL_FETCH = 'true';
+  try {
+    assert.equal(needsSerpUrlDiscovery({ incompleteReason: 'wrong_content', url, wrongProductionManualClear: true }), true);
+  } finally { delete process.env.DISABLE_MANUAL_CLEAR_URL_FETCH; }
+});

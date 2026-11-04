@@ -22,6 +22,8 @@ function needsSerpUrlDiscovery(review) {
   if (review.fabricatedEntry) return true;
   if (review.incompleteReason === 'no_url') return true;
   if (review.incompleteReason === 'wrong_content') {
+    // Kill switch: restores the old always-search behaviour.
+    if (process.env.DISABLE_MANUAL_CLEAR_URL_FETCH === 'true') return true;
     // Only for a file no flag still marks: a live wrongProduction/wrongShow/
     // wrongAttribution beside the clear (56 such files on 2026-11-04, e.g. old
     // London reviews on Broadway shows) keeps the old search behaviour.

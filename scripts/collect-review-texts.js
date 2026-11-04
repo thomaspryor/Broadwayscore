@@ -6767,6 +6767,14 @@ function findReviewsToProcess() {
           fetchAttempts: fileAttempts,
           wrongShow: data.wrongShow || false,
           wrongShowReason: data.wrongShowReason || null,
+          // Read only by needsSerpUrlDiscovery (BRO-6924): a manual clear on an
+          // unflagged file means fetch the stored url instead of searching.
+          // Kept apart so no other check sees new fields on the queued review.
+          _serpGateFields: {
+            wrongProduction: !!data.wrongProduction,
+            wrongAttribution: !!data.wrongAttribution,
+            wrongProductionManualClear: data.wrongProductionManualClear === true,
+          },
           // Retry markers set by the gates above. They were never copied onto
           // the queued review, so the post-fetch outcome handler (clear on
           // success, cooldown stamp on failure) only ran for the SERP path.
@@ -7349,7 +7357,9 @@ async function processReview(review) {
   // Reason-aware URL discovery: no_url, wrong_content, and fabricated entries need SERP search before fetch
   // A dateless-revival hold (BRO-4430) needs only its stored url's date: no SERP.
   // A wrong_content verdict a person overruled fetches its stored url (BRO-6924).
-  const needsSerpDiscovery = needsSerpUrlDiscovery(review);
+  const needsSerpDiscovery = needsSerpUrlDiscovery({ ...review, ...(review._serpGateFields || {}) });
+  // Its stale incompleteReason is cleared on a successful fetch below, as a discovered url's is.
+  if (!needsSerpDiscovery && review.incompleteReason === 'wrong_content') review._manualClearUrlFetch = true;
   if (needsSerpDiscovery && review.filePath) {
     const reason = review.fabricatedEntry ? 'fabricated' : review.incompleteReason;
     console.log(`  [${reason}] Attempting URL discovery before fetch...`);
@@ -7736,7 +7746,7 @@ async function processReview(review) {
     // DoaS Apr 9-10 #11: also clear stale rejection metadata so the file isn't permanently
     // skipped on next run. Without clearing incompleteReason/incompleteDetail/contentTier,
     // the next collect cycle would re-skip the file via line 5067's isWrongContent guard.
-    if (review.incompleteReason === 'wrong_content' && review._urlDiscovered && review.filePath) {
+    if (review.incompleteReason === 'wrong_content' && (review._urlDiscovered || review._manualClearUrlFetch) && review.filePath) {
       try {
         const postData = readReviewForUpdate(review.filePath);
         // BRO-2828: this recovery answers ONE question — did re-fetching from
