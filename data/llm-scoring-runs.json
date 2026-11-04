@@ -1097796,40 +1097796,56 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-11-04T02:39:06.724Z",
-    "completedAt": "2026-11-04T02:39:12.198Z",
-    "totalReviews": 6,
-    "processed": 0,
-    "skipped": 4,
-    "errors": 0,
+    "startedAt": "2026-11-04T02:40:28.922Z",
+    "completedAt": "2026-11-04T02:43:23.660Z",
+    "totalReviews": 80249,
+    "processed": 42,
+    "skipped": 80201,
+    "errors": 3,
     "tokensUsed": {
-      "input": 9041,
-      "output": 238,
-      "cacheRead": 7614,
-      "cacheWrite": 0,
-      "total": 25234
+      "input": 255557,
+      "output": 14574,
+      "cacheRead": 132202,
+      "cacheWrite": 37655,
+      "total": 655135
     },
-    "costUsd": 0.0314345,
-    "runId": "41761384118",
+    "costUsd": 0.5929495749999999,
+    "runId": "41761343555",
     "source": "index",
-    "errorDetails": []
+    "errorDetails": [
+      {
+        "showId": "an-enemy-of-the-people-west-end-2024",
+        "outletId": "times-uk",
+        "error": "Review text too short or missing"
+      },
+      {
+        "showId": "alterations-west-end-2025",
+        "outletId": "thestage",
+        "error": "Review text too short or missing"
+      },
+      {
+        "showId": "the-years-west-end-2025",
+        "outletId": "thestage",
+        "error": "Review text too short or missing"
+      }
+    ]
   },
   {
-    "startedAt": "2026-11-04T02:44:11.476Z",
-    "completedAt": "2026-11-04T02:44:11.483Z",
-    "totalReviews": 0,
-    "processed": 0,
+    "startedAt": "2026-11-04T02:45:54.061Z",
+    "completedAt": "2026-11-04T02:46:18.014Z",
+    "totalReviews": 8,
+    "processed": 8,
     "skipped": 0,
     "errors": 0,
     "tokensUsed": {
-      "input": 0,
-      "output": 0,
+      "input": 22826,
+      "output": 1725,
       "cacheRead": 0,
       "cacheWrite": 0,
-      "total": 0
+      "total": 24551
     },
-    "costUsd": 0,
-    "runId": "41761384118",
+    "costUsd": 0.06196600000000001,
+    "runId": "41761343555",
     "source": "comparative-rescore",
     "errorDetails": []
   }
