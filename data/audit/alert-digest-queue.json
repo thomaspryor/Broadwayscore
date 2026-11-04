@@ -1069,5 +1069,36 @@
       }
     ],
     "queuedAt": "2026-11-04T00:15:20.599Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6930-hub-pill-b",
+    "title": "Landing blocked: unit-tests-tsx red on land/bro-6930-hub-pill-b",
+    "description": "land.yml did not land land/bro-6930-hub-pill-b: the unit-tests-tsx gate went red at 58daae5967. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/41743278087",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6930-hub-pill-b"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-tsx"
+      },
+      {
+        "name": "tip",
+        "value": "58daae596764dd6be2e58b20033dedc0fcc1aa84"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41743278087"
+      }
+    ],
+    "queuedAt": "2026-11-04T00:25:43.343Z"
   }
 ]
