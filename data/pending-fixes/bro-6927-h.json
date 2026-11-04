@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6927-h",
   "planId": "1a0abb31-ddbd-40e5-8572-0eb358cf6d33",
-  "status": "pending",
+  "status": "partial",
   "createdAt": "2026-11-03T22:44:29.693Z",
   "submitter": {
     "name": null,
@@ -166,5 +166,134 @@
         "description": "BRO-6927 gap: Naveen Kumar (Variety) review of cost-of-living-2022, listed on Show Score but missing from reviews.json"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-04T00:02:36.071Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=sunset-boulevard-west-end-2023 --url=https://www.thetimes.co.uk/article/sunset-boulevard-review-nicole-scherzinger-seductive-close-up-v2hx2dfrx --critic=\"Clive Davis\" --publish-date=2023-10-13"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=the-crucible-west-end-2023 --url=https://www.thetimes.co.uk/article/the-crucible-review-aura-of-terror-grips-only-intermittently-2zq9vpn5m --critic=\"Clive Davis\" --publish-date=2023-06-16"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=the-devil-wears-prada-west-end-2024 --url=https://www.thetimes.com/article/8f457a78-ae1d-4ee0-afe2-1f22ff7c4904 --critic=\"Clive Davis\" --publish-date=2024-12-06"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=the-glow-west-end-2022 --url=https://www.thetimes.co.uk/article/the-glow-review-jerwood-theatre-downstairs-royal-court-23jp06d67 --critic=\"Clive Davis\" --publish-date=2022-01-28"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=the-pillowman-west-end-2023 --url=https://www.thetimes.co.uk/article/the-pillowman-review-tale-of-art-and-suffering-is-a-struggle-to-sit-through-dzn92lwrh --critic=\"Clive Davis\" --publish-date=2023-06-22"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=the-tempest-west-end-2024 --url=https://www.thetimes.com/article/890670f5-3b75-41f3-b137-ae7a03528931 --critic=\"Clive Davis\" --publish-date=2024-12-20"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=the-years-west-end-2025 --url=https://www.thetimes.com/article/b924b786-7679-4a35-9c28-8743f2b7d059 --critic=\"Clive Davis\" --publish-date=2025-02-10"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=underdog-the-other-other-bronte-west-end-2024 --url=https://www.thetimes.co.uk/article/underdog-the-other-other-bronte-review-hyperactive-literary-burlesque-ffxbqmtfk --critic=\"Clive Davis\" --publish-date=2024-04-05"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=word-play-west-end-2023 --url=https://www.thetimes.co.uk/article/word-play-review-another-blandly-middle-class-flop-for-the-royal-court-8w2ls59v7 --critic=\"Clive Davis\" --publish-date=2023-07-27"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=eclipsed-2016 --url=http://nypost.com/2016/03/10/lupita-nyongo-and-michelle-williams-star-in-amazing-broadway-shows-about-strong-women/ --critic=\"Elisabeth Vincentelli\" --publish-date=2016-03-10"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=eclipsed-2016 --url=http://www.vulture.com/2016/03/theater-reviews-eclipsed.html --critic=\"Jesse Green\" --publish-date=2016-03-06"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=between-two-knees-off-broadway-2024 --url=https://www.nytimes.com/2024/02/14/theater/between-two-knees-review.html --critic=\"Naveen Kumar\" --publish-date=2024-02-14"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=call-me-izzy-2025 --url=https://www.washingtonpost.com/entertainment/theater/2025/06/12/call-me-izzy-angry-alan-jean-smart-john-krasinski/ --critic=\"Naveen Kumar\" --publish-date=2025-06-12"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    }
+  ],
+  "executedIn": "ci"
 }
