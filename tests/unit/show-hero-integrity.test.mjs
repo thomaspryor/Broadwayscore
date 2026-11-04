@@ -157,8 +157,8 @@ for (const c of KNOWN_BAD_QUOTES) {
 // So the guard is on the bytes the field serves, not on the field being set.
 const REJECTED_IMAGE_FIELDS = [
   ['hangmen-2022', 'hero'],
-  ['the-snowman-west-end-2026', 'hero'],
-  ['the-snowman-west-end-2026', 'poster'],
+  ['the-snowman-off-west-end-2026', 'hero'],
+  ['the-snowman-off-west-end-2026', 'poster'],
 ];
 test('shows.json no longer points rejected hero/poster fields at missing or rejected bytes', (t) => {
   const file = path.join(ROOT, 'data', 'shows.json');
