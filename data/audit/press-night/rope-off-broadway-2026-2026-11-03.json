@@ -7,29 +7,29 @@
   "embargoSource": "market-default",
   "probe": {
     "startedAt": "2026-11-04T02:30:04.806Z",
-    "endedAt": null,
+    "endedAt": "2026-11-04T09:00:41.585Z",
     "intervalMin": 5,
-    "samples": 30,
+    "samples": 78,
     "failedSamples": 0,
-    "lastSampleAt": "2026-11-04T04:55:12.970Z",
-    "lastOkSampleAt": "2026-11-04T04:55:12.970Z"
+    "lastSampleAt": "2026-11-04T08:59:30.658Z",
+    "lastOkSampleAt": "2026-11-04T08:59:30.658Z"
   },
   "firstLiveAt": "2026-11-04T02:30:04.806Z",
   "firstLiveBaseline": true,
-  "lastLiveAt": "2026-11-04T03:45:09.413Z",
-  "liveCount": 3,
+  "lastLiveAt": "2026-11-04T05:04:17.923Z",
+  "liveCount": 8,
   "liveCountAt": {
     "1h": 3,
-    "2h": null,
+    "2h": 8,
     "6h": null
   },
   "liveCountSampleAt": {
     "1h": "2026-11-04T04:00:10.357Z",
-    "2h": null,
+    "2h": "2026-11-04T05:04:17.923Z",
     "6h": null
   },
   "firstOutletPublishAt": {
-    "at": "2026-11-04",
+    "at": "2026-11-03",
     "precision": "approx",
     "source": "prod-rv-publishDate",
     "tierScope": "T1-T2"
@@ -70,6 +70,66 @@
       "prevOkSampleAt": "2026-11-04T03:40:08.946Z",
       "baseline": false,
       "liveNow": true
+    },
+    {
+      "key": "exeunt magazine|lane williamson",
+      "outlet": "Exeunt Magazine",
+      "critic": "Lane Williamson",
+      "tier": 2,
+      "publishAt": "2026-11-03",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-04T05:04:17.923Z",
+      "prevOkSampleAt": "2026-11-04T04:55:12.970Z",
+      "baseline": false,
+      "liveNow": true
+    },
+    {
+      "key": "new york theatre guide|kyle turner",
+      "outlet": "New York Theatre Guide",
+      "critic": "Kyle Turner",
+      "tier": 2,
+      "publishAt": "2026-11-03",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-04T05:04:17.923Z",
+      "prevOkSampleAt": "2026-11-04T04:55:12.970Z",
+      "baseline": false,
+      "liveNow": true
+    },
+    {
+      "key": "new york theater|jonathan mandell",
+      "outlet": "New York Theater",
+      "critic": "Jonathan Mandell",
+      "tier": 2,
+      "publishAt": "2026-11-03",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-04T05:04:17.923Z",
+      "prevOkSampleAt": "2026-11-04T04:55:12.970Z",
+      "baseline": false,
+      "liveNow": true
+    },
+    {
+      "key": "new york stage review|michael sommers",
+      "outlet": "New York Stage Review",
+      "critic": "Michael Sommers",
+      "tier": 2,
+      "publishAt": "2026-11-03",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-04T05:04:17.923Z",
+      "prevOkSampleAt": "2026-11-04T04:55:12.970Z",
+      "baseline": false,
+      "liveNow": true
+    },
+    {
+      "key": "theater pizzazz|ron fassler",
+      "outlet": "Theater Pizzazz",
+      "critic": "Ron Fassler",
+      "tier": 3,
+      "publishAt": null,
+      "publishPrecision": "unknown",
+      "firstLiveAt": "2026-11-04T05:04:17.923Z",
+      "prevOkSampleAt": "2026-11-04T04:55:12.970Z",
+      "baseline": false,
+      "liveNow": true
     }
   ],
   "dropped": [],
@@ -87,6 +147,20 @@
       "liveCount": 8,
       "fetchedAt": "2026-11-04T05:00:27.672Z",
       "censusNote": "archive + live BWW roundup (6 rows): https://www.broadwayworld.com/article/Review-Roundup-Elizabeth-Gillies-and-More-Star-in-ROPE-Off-Broadway-20261103"
+    },
+    "end": {
+      "status": "complete",
+      "source": [
+        "bww-roundup-live"
+      ],
+      "count": 6,
+      "covered": 6,
+      "coverage": 1,
+      "missing": [],
+      "suppressedMissing": [],
+      "liveCount": 8,
+      "fetchedAt": "2026-11-04T09:00:36.661Z",
+      "censusNote": "archive + live BWW roundup (6 rows): https://www.broadwayworld.com/article/Review-Roundup-Elizabeth-Gillies-and-More-Star-in-ROPE-Off-Broadway-20261103"
     }
   },
   "manualActions": [],
@@ -99,11 +173,17 @@
         "label": "2h",
         "standDown": false,
         "reason": "market not lane-only"
+      },
+      {
+        "at": "2026-11-04T09:00:36.734Z",
+        "label": "end",
+        "standDown": false,
+        "reason": "market not lane-only"
       }
     ]
   },
   "fileState": {
-    "capturedAt": "2026-11-04T05:00:31.302Z",
+    "capturedAt": "2026-11-04T09:00:41.531Z",
     "files": [
       {
         "file": "acsntn--august-cosentino.json",
@@ -221,6 +301,73 @@
         "includable": true,
         "reason": null,
         "syndicatedUnder": null
+      }
+    ]
+  },
+  "laneShadow": {
+    "importedAt": "2026-11-04T09:00:31.331Z",
+    "runId": "41761140920",
+    "startedAt": "2026-11-04T02:32:41.730Z",
+    "pollMin": 2,
+    "pollFailures": 0,
+    "firstDiscoveredAt": "2026-11-04T02:33:48.520Z",
+    "discoveredByOutlet": {
+      "nyt-theater": "2026-11-04T02:33:48.520Z",
+      "nytg": "2026-11-04T02:33:48.520Z",
+      "exeunt-magazine": "2026-11-04T02:33:48.520Z",
+      "theatermania": "2026-11-04T02:33:48.520Z",
+      "nysr": "2026-11-04T02:33:48.520Z",
+      "culturesauce": "2026-11-04T02:33:48.520Z"
+    },
+    "bwwRoundupUrl": null,
+    "liveFirstSeen": [
+      {
+        "outlet": "Acsntn",
+        "url": "https://acsntn.substack.com/p/theatre-rope-theatre-at-st-clements",
+        "at": "2026-11-04T02:32:41.962Z",
+        "baseline": true
+      },
+      {
+        "outlet": "Culture Sauce",
+        "url": "https://culturesauce.com/rope-hitchcock-play-adaptation-off-broadway-review/",
+        "at": "2026-11-04T03:02:44.617Z",
+        "baseline": false
+      },
+      {
+        "outlet": "TheaterMania",
+        "url": "https://www.theatermania.com/news/review-as-a-thiller-gordon-greenbergs-rope-isnt-all-that-taut_1858790/",
+        "at": "2026-11-04T03:42:44.760Z",
+        "baseline": false
+      },
+      {
+        "outlet": "Exeunt Magazine",
+        "url": "https://exeuntnyc.com/reviews/review-rope-at-the-theatre-at-st-clements/",
+        "at": "2026-11-04T04:58:46.478Z",
+        "baseline": false
+      },
+      {
+        "outlet": "New York Theatre Guide",
+        "url": "https://www.newyorktheatreguide.com/reviews/rope-off-broadway-review",
+        "at": "2026-11-04T04:58:46.478Z",
+        "baseline": false
+      },
+      {
+        "outlet": "New York Theater",
+        "url": "https://newyorktheater.me/2026/11/03/rope-review/",
+        "at": "2026-11-04T04:58:46.478Z",
+        "baseline": false
+      },
+      {
+        "outlet": "New York Stage Review",
+        "url": "https://nystagereview.com/2026/11/03/rope-murders-most-foul/",
+        "at": "2026-11-04T04:58:46.478Z",
+        "baseline": false
+      },
+      {
+        "outlet": "Theater Pizzazz",
+        "url": "https://theaterpizzazz.com/rope-winds-up-on-the-ropes/",
+        "at": "2026-11-04T04:58:46.478Z",
+        "baseline": false
       }
     ]
   }
