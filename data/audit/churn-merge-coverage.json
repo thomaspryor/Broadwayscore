@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-11-04T00:46:13.785Z",
+    "generatedAt": "2026-11-04T01:48:09.457Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": true,
@@ -10,8 +10,8 @@
     "minChurn": 30,
     "flaggedCount": 0,
     "exemptCount": 1,
-    "coveredCount": 2,
-    "highChurnTracked": 3
+    "coveredCount": 0,
+    "highChurnTracked": 1
   },
   "flagged": [],
   "exempt": [
@@ -20,16 +20,5 @@
       "churn": 76
     }
   ],
-  "covered": [
-    {
-      "path": "data/audit/scraper-spend-ledger.jsonl",
-      "churn": 34,
-      "mergeAttr": "union"
-    },
-    {
-      "path": "data/audit/stage-latency.jsonl",
-      "churn": 33,
-      "mergeAttr": "union"
-    }
-  ]
+  "covered": []
 }
