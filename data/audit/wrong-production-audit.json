@@ -1,9 +1,9 @@
 {
-  "timestamp": "2026-11-04T07:01:08.070Z",
+  "timestamp": "2026-11-04T07:49:31.737Z",
   "stats": {
     "totalReviews": 80035,
-    "alreadyFlagged": 22032,
-    "dateGuardCatches": 218,
+    "alreadyFlagged": 22033,
+    "dateGuardCatches": 217,
     "directorMismatch": 3479,
     "tvFilmSignals": 2272,
     "londonSignals": 3604,
@@ -93289,19 +93289,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"royal court\""
-        }
-      ]
-    },
-    {
-      "showId": "cranford-off-west-end-2026",
-      "file": "theatre-weekly--unknown.json",
-      "publishDate": "2026-09-18",
-      "url": "https://theatreweekly.com/orange-tree-theatre-reveals-full-cast-for-cranford-starring-tamsin-greig/",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 46d before show (2026-09-18 vs 2026-11-03)"
         }
       ]
     },
