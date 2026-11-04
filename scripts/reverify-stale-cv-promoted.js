@@ -193,7 +193,7 @@ async function main() {
         show,
       });
 
-      console.log(`  New: isValid=${result.isValid} wrongArticle=${result.wrongArticle} wrongProduction=${result.wrongProduction} isFilmTv=${result.isFilmTv} confidence=${result.confidence}`);
+      console.log(`  New: isValid=${result.isValid} wrongArticle=${result.wrongArticle} articleType=${result.articleType}/${result.articleTypeConfidence} wrongProduction=${result.wrongProduction} isFilmTv=${result.isFilmTv} confidence=${result.confidence}`);
       if (fileArg) console.log(`  issues=${JSON.stringify(result.issues || [])} reasoning=${String(result.reasoning || '').slice(0, 400)}`);
 
       // DETERMINISTIC REFUSAL GATE (2026-08-15 incident, six CI errors incl. a

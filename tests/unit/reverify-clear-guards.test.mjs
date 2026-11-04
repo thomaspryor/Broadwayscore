@@ -343,3 +343,27 @@ test('GUARD 2 REFUSES (BRO-6745): VERBATIM mismatches still caught after the "no
   assert.equal(detectTitleMismatch({ reasoning: "It reviews 'Juniper Blood' at the Court; this is not a different production.", showTitle: 'Blood of my Blood' }), null,
     'a negated contrast is the opposite claim');
 });
+
+// BRO-6745: fresh verdicts whose booleans said clean while their own articleType
+// or reasoning said news / interview / roundup. Verbatim corpus verdicts.
+test('GUARD 6 REFUSES (BRO-6745): clean booleans with a non-review articleType', () => {
+  const base = { filePath: '/nonexistent/bug-2026/broadwaynews--logan-culwell-block.json', data: {}, show: null, showTitle: 'Bug' };
+  const news = { ...HIGH, articleType: 'news', articleTypeConfidence: 'high',
+    reasoning: "The article reports on the extension of the play's run, casting, and production details." };
+  const { safe, refusals } = assessClearSafety({ ...base, result: news });
+  assert.equal(safe, false);
+  assert.ok(refusals.some(r => r.code === 'article-type-not-review'));
+  assert.equal(assessClearSafety({ ...base, result: { ...HIGH, articleType: 'review' } }).safe, true);
+  assert.equal(assessClearSafety({ ...base, result: HIGH }).safe, true, 'missing articleType is the review default');
+});
+
+test('GUARD 4 REFUSES (BRO-6745): VERBATIM interview and roundup verdicts returned clean', () => {
+  for (const reasoning of [
+    "The article is an interview with Joey Arias, discussing his views on 'drag' and the history of 'Arias With a Twist', rather than a critical evaluation of the current performance.",
+    "The content is a compilation of critical assessments from various outlets for 'Broad Strokes' by Cat Cohen, explicitly stating it's playing Off-Broadway at the Lucille Lortel Theatre.",
+    "This is a review roundup article, which compiles excerpts from multiple critics' reviews of 'Cats: The Jellicle Ball' on Broadway",
+  ]) {
+    assert.ok(detectNonReviewAdmission({ reasoning }), reasoning);
+  }
+  assert.equal(detectNonReviewAdmission({ reasoning: 'A clear review, not a compilation of critical assessments.' }), null);
+});

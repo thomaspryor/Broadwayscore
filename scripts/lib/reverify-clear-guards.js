@@ -246,6 +246,13 @@ const NON_REVIEW_ADMISSIONS = [
   'reads as promotional material',
   'promotional material or a preview',
   'is not a review',
+  // BRO-6745: clean verdicts on an interview and two review roundups.
+  'rather than a critical evaluation',
+  'is an interview',
+  'compilation of critical assessments',
+  'collection of excerpts',
+  'excerpts from multiple critics',
+  'assessments from various outlets',
 ];
 
 function detectNonReviewAdmission({ reasoning }) {
@@ -259,7 +266,7 @@ function detectNonReviewAdmission({ reasoning }) {
       from = i + phrase.length;
       // Discard a negated occurrence: "not a preview", "isn't a roundup".
       const before = lower.slice(Math.max(0, i - 14), i);
-      if (/\b(?:not|isn'?t|n'?t|never)\s+$/.test(before)) continue;
+      if (/\b(?:not|isn'?t|n'?t|never)\s+(?:an?\s+)?$/.test(before)) continue;
       // Discard a phrase that is only a PREFIX of a longer word: "is a feature"
       // must not fire on "is a feature-length review", and "is a preview" must
       // not fire on "is a previewing". A refusal here strands a legitimately
@@ -399,6 +406,18 @@ function assessClearSafety({ filePath, data, show, result, showTitle, fsImpl }) 
     refusals.push({
       code: 'non-llm-verdict',
       detail: `verdict verifiedBy=${verifiedBy == null ? 'missing' : verifiedBy} (only an llm:* verdict may clear an exclusion)`,
+    });
+  }
+
+  // GUARD 6 (BRO-6745) — the verdict's own articleType says it is not a review
+  // while its booleans say clean. "news/high" with isValid:true,
+  // wrongArticle:false reached a Broadway News extension story (bug-2026).
+  // A missing articleType is the verifier's 'review' default, not a contradiction.
+  const articleType = result && result.articleType;
+  if (typeof articleType === 'string' && articleType && articleType !== 'review') {
+    refusals.push({
+      code: 'article-type-not-review',
+      detail: `verdict articleType=${articleType} contradicts its clean booleans`,
     });
   }
 
