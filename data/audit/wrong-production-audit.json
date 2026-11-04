@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-04T00:39:49.443Z",
+  "timestamp": "2026-11-04T00:54:30.973Z",
   "stats": {
-    "totalReviews": 79968,
+    "totalReviews": 79980,
     "alreadyFlagged": 22050,
     "dateGuardCatches": 216,
-    "directorMismatch": 3458,
+    "directorMismatch": 3459,
     "tvFilmSignals": 2267,
     "londonSignals": 3603,
     "offBroadwaySignals": 735,
     "yearMismatch": 361,
-    "noPublishDate": 8490
+    "noPublishDate": 8494
   },
   "findings": [
     {
@@ -1356,7 +1356,7 @@
     },
     {
       "showId": "a-beautiful-noise-the-neil-diamond-musical-tour-2024",
-      "file": "stage-raw--steven-morris.json",
+      "file": "stage-raw--f-kathleen-foley.json",
       "score": 76,
       "publishDate": "2025-07-14",
       "url": "https://stageraw.com/a-beautiful-noise-the-neil-diamond-musical/",
@@ -15232,6 +15232,20 @@
       "score": 77,
       "publishDate": "2023-06-13",
       "url": "https://theaterlife.com/days-of-wine-and-roses/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael greif\" from days-of-wine-and-roses-2024"
+        }
+      ]
+    },
+    {
+      "showId": "days-of-wine-and-roses-off-broadway-2023",
+      "file": "theater-pizzazz--carole-di-tosti.json",
+      "score": 81,
+      "publishDate": "2023-06-06",
+      "url": "https://www.theaterpizzazz.com/days-of-wine-and-roses/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -85920,7 +85934,7 @@
     },
     {
       "showId": "all-my-sons-west-end-2025",
-      "file": "monstagigz--unknown.json",
+      "file": "monstagigz--neil-durham.json",
       "score": 95,
       "publishDate": "2025-11-16",
       "url": "https://monstagigz.com/2025/11/16/theatre-review-all-my-sons-starring-bryan-cranston-marianne-jean-baptiste-paapa-essiedu-at-the-wyndhams-theatre/",
@@ -98557,7 +98571,7 @@
     {
       "showId": "girls-off-west-end-2026",
       "file": "theatre-weekly--matthew-plampton.json",
-      "score": null,
+      "score": 82,
       "publishDate": "2026-10-27",
       "url": "https://theatreweekly.com/review-girls-at-young-vic-maria-theatre/",
       "findings": [
