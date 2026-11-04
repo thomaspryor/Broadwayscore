@@ -147,4 +147,4 @@ function _precededByCreditVerb(padded, at, marker) {
   return CREDIT_VERBS.includes(prev);
 }
 
-module.exports = { normalizeForAttestation, isBylineAttestedInText, BYLINE_MARKERS, CREDIT_VERBS };
+module.exports = { normalizeForAttestation, isBylineAttestedInText, BYLINE_MARKERS, CREDIT_VERBS, precededByCreditVerb: _precededByCreditVerb };

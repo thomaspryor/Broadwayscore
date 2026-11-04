@@ -453,6 +453,16 @@ jobs:
         timeout-minutes: 1
         run: node scripts/audit-default-critic-diversity.js --strict
 
+      # BRO-6940: review files credited to one critic whose article prints a byline naming another critic
+      # known at that outlet (Waiting for Lefty's NYSR review credited to Frank Scheck, article says
+      # "By Michael Sommers"), plus unnamed files that print a known critic. Advisory first (CLAUDE.md rule 19):
+      # exit 1 lists the files; continue-on-error keeps the job green until the corpus has been seen clean.
+      - name: Printed byline conflict audit
+        if: always()
+        continue-on-error: true
+        timeout-minutes: 3
+        run: node scripts/audit-printed-byline-conflicts.js --tier=known --limit=40
+
       # BRO-5769: early or carried publish dates no page read has confirmed (counts only, digest row).
       # Advisory: exit 1 means the daily backfill-review-dates recheck is behind; continue-on-error keeps the job green.
       - name: Early publish date audit

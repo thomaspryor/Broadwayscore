@@ -180,6 +180,7 @@ const {
 const { shouldRetryGarbageConsentWall, storedTextNeedsConsentRefetch, shouldReleaseConsentLayerNonReview, salvageConsentPrefixedStoredText, salvageSourceHash, applyVerifiedRetryOutcome } = require('./lib/consent-refetch');
 const { shouldRetryDatelessHoldFetch } = require('./lib/review-slot-guards');
 const { isProvisionalPublishDate, isReplaceableByPageDate, needsOpeningWindowDateRecheck, resolvePageDateReplacement, htmlDateSourceFor, bodyPublishDateFallback, ingestGateDate } = require('./lib/publish-date-provenance');
+const { decidePrintedByline, buildKnownCriticsIndex, knownCriticsForOutlet } = require('./lib/printed-byline-conflict');
 const { checkBrowserbaseCaps, countBrowserbaseAttempt, resolveMaxSessionsPerDay, resolveRecoveryReserve, resolveUseReserve, isDeniedHost, isTier1RecoveryHost, tier1BoostForCaller, resolveExemptScripts: resolveBbExemptScripts } = require('./lib/browserbase-caps');
 const { isExemptCaller: isBbExemptCaller } = require('./lib/brightdata-caps');
 
@@ -618,6 +619,15 @@ function loadOutletRegistryForDedupe() {
     }
   }
   return _dedupeOutletRegistry;
+}
+
+// BRO-6940: outlet -> critics the registry lists, for the printed-byline check (1B-v). Read once, lazily.
+let _printedBylineIndex;
+function getPrintedBylineIndex() {
+  if (_printedBylineIndex === undefined) {
+    _printedBylineIndex = buildKnownCriticsIndex(loadOutletRegistryForDedupe());
+  }
+  return _printedBylineIndex;
 }
 
 // BRO-4807: opening-night lane reviews (provenance + productionVerified:"aggregator") stand down for the
@@ -5420,6 +5430,37 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
       // data.duplicateOf on conflict and validate-review-texts skips the file.
       // Removing the merge eliminates the line-5069 corruption surface.
       renameReviewFileForCriticOverride(review, data, extractedAuthor);
+    }
+  }
+
+  // 1B-v. PRINTED-BYLINE CONFLICT (BRO-6940). Per-critic SERP discovery names the critic from the search
+  // QUERY, so a colleague's review lands under the queried critic; extractByline above only reads a byline
+  // at the start of a line and misses one-line headers ("<date> <title> By Michael Sommers"), and it only
+  // flags the text, never re-credits. When the head prints "By <a critic this outlet is known for>" and the
+  // credited critic is not printed there, the print wins. Unnamed files ("Unknown") are filled the same way,
+  // except at outlets whose pages list editors or several critics.
+  if (cleanedText) {
+    const bylineOutlet = normalizeOutlet(data.outletId || data.outlet);
+    const creditedNow = data.criticName || review.critic || '';
+    const printedHit = decidePrintedByline({
+      criticName: creditedNow,
+      outletId: bylineOutlet,
+      fullText: cleanedText,
+      knownCritics: knownCriticsForOutlet(getPrintedBylineIndex(), bylineOutlet),
+      locked: !!(data.criticNameManual || data._locked),
+    });
+    if (printedHit) {
+      console.log(`    → Printed byline override: "${creditedNow || 'Unknown'}" → "${printedHit.printedName}"`);
+      data.criticName = printedHit.printedName;
+      data.criticEnrichedFrom = 'printed-byline';
+      data._priorCriticName = creditedNow;
+      delete data.misattributedFullText;
+      delete data.extractedByline;
+      delete data.expectedCritic;
+      delete data.fullTextWrongAuthor;
+      delete data.fullTextWrongAuthorAt;
+      delete data._authorMismatch;
+      renameReviewFileForCriticOverride(review, data, printedHit.printedName);
     }
   }
 
