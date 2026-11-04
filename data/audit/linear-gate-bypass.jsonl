@@ -35,3 +35,4 @@
 {"at":"2026-10-11T14:01:13.821Z","identifier":"BRO-5061","gate":"done","mechanism":"force","reason":"weekly retro record, no code change to verify","targetState":"Done"}
 {"at":"2026-10-19T05:10:23.772Z","identifier":"BRO-5235","gate":"done","mechanism":"force","reason":"verify passed when run directly (run 39200568009 success); gate's fresh checkout lacks gh auth","targetState":"Done"}
 {"at":"2026-11-01T23:02:08.510Z","identifier":"BRO-6660","gate":"done","mechanism":"force","reason":"VERIFY is a job-level proxy (full ~23k-test suite) that exceeds the done-gate 180s timeout; authoritative CI Unit Tests job is green on 5 consecutive main runs 41339954079..41357267281","targetState":"Done"}
+{"at":"2026-11-04T19:36:46.116Z","identifier":"BRO-6919","gate":"done","mechanism":"force","reason":"acceptance test lives in BroadwayScorecard-app repo (main 05dbb66), not the web repo; passed there 4/4","targetState":"Done"}
