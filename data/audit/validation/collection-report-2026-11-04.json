@@ -1,48 +1,48 @@
 {
-  "runDate": "2026-11-04T19:27:43.642Z",
+  "runDate": "2026-11-04T20:54:23.598Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
     "priority": "all",
-    "showFilter": "august-osage-county-2007,born-yesterday-1989,cats-the-jellicle-ball-off-broadway-2024,china-doll-2015",
+    "showFilter": "well-see-off-broadway-2026,clifford-odets-waiting-for-lefty-off-broadway-2026,tosca-off-broadway-2026,the-bridge-off-west-end-2026,rope-off-broadway-2026,the-morbs-off-broadway-2026,the-blue-violinist-over-west-end-avenue-off-broadway-2026,slanted-floors-off-broadway-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 8,
-    "failed": 2,
+    "processed": 0,
+    "failed": 1,
     "skipped": 0,
-    "successRate": "80.0%"
+    "successRate": "0%"
   },
   "tierBreakdown": {
-    "playwright": 3,
-    "amp": 2,
+    "playwright": 0,
+    "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
     "scrapingdog": 0,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 4
+    "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 5,
-    "tier1Success": 4,
-    "ampAttempts": 1,
-    "ampSuccess": 1,
+    "tier1Attempts": 1,
+    "tier1Success": 1,
+    "ampAttempts": 0,
+    "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier1_9Attempts": 1,
+    "tier1_9Attempts": 0,
     "tier1_9Success": 0,
-    "tier2Attempts": 1,
+    "tier2Attempts": 0,
     "tier2Success": 0,
     "tier3Attempts": 0,
     "tier3Success": 0,
     "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 1,
+    "tier4Attempts": 0,
     "tier4Success": 0,
     "totalFailed": 1,
     "scrapingBeePageCredits": 0,
@@ -54,11 +54,10 @@
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 8,
-    "failed": 2,
+    "processed": 0,
+    "failed": 1,
     "shows": [
-      "august-osage-county-2007",
-      "china-doll-2015"
+      "the-bridge-off-west-end-2026"
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
@@ -66,58 +65,26 @@
       "failed": 0
     }
   },
-  "processed": [
-    "china-doll-2015/abc-news--mark-kennedy.json",
-    "china-doll-2015/timeout--david-cote.json",
-    "china-doll-2015/financialtimes--brendan-lemon.json",
-    "china-doll-2015/njcom--christopher-kelly.json",
-    "china-doll-2015/talkinbroadway--matthew-murray.json",
-    "china-doll-2015/financialtimes--ellen-brait.json",
-    "china-doll-2015/lighting-and-sound-america--david-barbour.json",
-    "august-osage-county-2007/ew--unknown.json"
-  ],
+  "processed": [],
   "failed": [
-    "china-doll-2015/american-theater-web--andy-propst.json",
-    "august-osage-county-2007/theatermania--unknown.json"
+    "the-bridge-off-west-end-2026/theatreandtonic--emmie-newitt.json"
   ],
   "cumulativeResumedState": {
-    "processed": [
-      "china-doll-2015/abc-news--mark-kennedy.json",
-      "china-doll-2015/timeout--david-cote.json",
-      "china-doll-2015/financialtimes--brendan-lemon.json",
-      "china-doll-2015/njcom--christopher-kelly.json",
-      "china-doll-2015/talkinbroadway--matthew-murray.json",
-      "china-doll-2015/financialtimes--ellen-brait.json",
-      "china-doll-2015/lighting-and-sound-america--david-barbour.json",
-      "august-osage-county-2007/ew--unknown.json"
-    ],
+    "processed": [],
     "failed": [
-      "china-doll-2015/american-theater-web--andy-propst.json",
-      "august-osage-county-2007/theatermania--unknown.json"
+      "the-bridge-off-west-end-2026/theatreandtonic--emmie-newitt.json"
     ]
   },
   "tierDetails": {
-    "playwright": [
-      "china-doll-2015/timeout--david-cote.json",
-      "china-doll-2015/financialtimes--brendan-lemon.json",
-      "august-osage-county-2007/ew--unknown.json"
-    ],
-    "amp": [
-      "data/review-texts/china-doll-2015/lighting-and-sound-america--david-barbour.json",
-      "china-doll-2015/lighting-and-sound-america--david-barbour.json"
-    ],
+    "playwright": [],
+    "amp": [],
     "browserbase": [],
     "directCookies": [],
     "scrapingdog": [],
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [],
-    "archive": [
-      "china-doll-2015/abc-news--mark-kennedy.json",
-      "china-doll-2015/american-theater-web--andy-propst.json",
-      "china-doll-2015/njcom--christopher-kelly.json",
-      "china-doll-2015/talkinbroadway--matthew-murray.json"
-    ]
+    "archive": []
   },
   "failuresByOutlet": {},
   "urlDiscoveries": []
