@@ -2,7 +2,9 @@
   "processed": [
     "kelly-mccaughan-catholic-guilt-off-broadway-2026/broadway-baby--unknown.json",
     "a-few-good-men-2026/bobs-theater-blog--unknown.json",
-    "other-desert-cities-2026/bobs-theater-blog--unknown.json"
+    "other-desert-cities-2026/bobs-theater-blog--unknown.json",
+    "phyl-off-broadway-2026/theater-life--paulanne-simmons.json",
+    "billy-crystal-860-2026/the-100-word-review--unknown.json"
   ],
   "failed": [
     "a-few-good-men-2026/variety--anna-tingley.json",
@@ -21,7 +23,6 @@
     "love-me-off-broadway-2026/daily-mail--codie-bullen.json",
     "the-imaginary-invalid-2026/thewrap--robert-hofler.json",
     "phyl-off-broadway-2026/phusionpassenger--unknown.json",
-    "phyl-off-broadway-2026/theater-life--paulanne-simmons.json",
     "the-imaginary-invalid-2026/washpost--thomas-floyd.json",
     "the-bridge-off-west-end-2026/theatreandtonic--emmie-newitt.json",
     "tosca-english-national-opera-west-end-2026/bachtrack--anna-bogdanova.json",
@@ -30,13 +31,16 @@
     "tosca-english-national-opera-west-end-2026/bachtrack--peter-quantrill.json",
     "tosca-english-national-opera-west-end-2026/cherylmarkosky--cherylmarkosky.json",
     "tosca-english-national-opera-west-end-2026/times-uk--richard-morrison.json",
-    "ceilidh-the-musical-off-west-end-2026/musical-theatre-review--angela-thomas.json"
+    "ceilidh-the-musical-off-west-end-2026/musical-theatre-review--angela-thomas.json",
+    "the-curious-case-of-benjamin-button-off-broadway-2026/timeout--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
       "a-few-good-men-2026/bobs-theater-blog--unknown.json",
-      "other-desert-cities-2026/bobs-theater-blog--unknown.json"
+      "other-desert-cities-2026/bobs-theater-blog--unknown.json",
+      "phyl-off-broadway-2026/theater-life--paulanne-simmons.json",
+      "billy-crystal-860-2026/the-100-word-review--unknown.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -50,7 +54,7 @@
     "archive": []
   },
   "startTime": "2026-11-04T07:33:00.437Z",
-  "lastProcessed": "other-desert-cities-2026/bobs-theater-blog--unknown.json",
+  "lastProcessed": "the-curious-case-of-benjamin-button-off-broadway-2026/timeout--unknown.json",
   "log": [
     {
       "t": "2026-11-04T07:44:01.921Z",
@@ -104,9 +108,27 @@
       "event": "bb-session",
       "session": "ba4abf97",
       "url": "https://bachtrack.com/review-nozze-figaro-pountney-conta-bucharest-national-oper"
+    },
+    {
+      "t": "2026-11-04T09:21:49.277Z",
+      "event": "bb-session",
+      "session": "f272fb1a",
+      "url": "https://bachtrack.com/review-medea-yoncheva-spyres-met-opera-new-york-october-20"
+    },
+    {
+      "t": "2026-11-04T09:26:35.469Z",
+      "event": "bb-session",
+      "session": "9737fe18",
+      "url": "https://hermes.talkinbroadway.com/allthatchat_new/d.php?id=2655044"
+    },
+    {
+      "t": "2026-11-04T09:26:36.335Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ],
   "recoveredAfterFailure": [
-    "a-few-good-men-2026/bobs-theater-blog--unknown.json"
+    "a-few-good-men-2026/bobs-theater-blog--unknown.json",
+    "phyl-off-broadway-2026/theater-life--paulanne-simmons.json"
   ]
 }
