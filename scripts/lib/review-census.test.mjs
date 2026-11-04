@@ -228,6 +228,24 @@ test('wrongRoundup: a War Horse archive that is actually the Equus roundup is re
   assert.equal(census.zeroExtract.length, 0, 'parser never ran — not flagged broken');
 });
 
+test('BRO-6968: a round-up claimed by another show is rejected even when its title passes (Into The Woods at The Bridge)', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'census-claim-'));
+  fs.mkdirSync(path.join(dir, 'theatre-reviews'));
+  fs.writeFileSync(path.join(dir, 'theatre-reviews', 'the-bridge-off-west-end-2026.html'), TR('Into The Woods at The Bridge', 'Bridge Theatre'));
+  const sources = [{ name: 'theatre-reviews', dir: 'theatre-reviews', validate: true, claim: true,
+    fn: () => ([{ outletId: 'guardian', outlet: 'The Guardian', critic: 'Arifa Akbar', url: 'https://x/into-the-woods' }]) }];
+  const show = { title: 'The Bridge', venue: 'Bush Theatre' };
+  const url = 'https://theatre.reviews/reviews-roundup/into-the-woods-at-the-bridge-reviews/';
+  const census = buildCensusFromArchives('the-bridge-off-west-end-2026', {
+    archiveDir: dir, sources, show, trClaims: [{ showId: 'into-the-woods-off-west-end-2025', url }] });
+  assert.equal(census.count, 0);
+  assert.deepEqual(census.wrongRoundup, ['theatre-reviews']);
+  const own = buildCensusFromArchives('the-bridge-off-west-end-2026', {
+    archiveDir: dir, sources, show, trClaims: [{ showId: 'the-bridge-off-west-end-2026', url }] });
+  assert.equal(own.count, 1, 'a page this show owns is kept');
+  assert.ok(sourceExtractors('west-end').find((x) => x.name === 'theatre-reviews').claim, 'the real TR source runs the claim check');
+});
+
 test('a genuine roundup whose entries are STAR/headline slugs is kept (no false-drop)', () => {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'census-cab-'));
   fs.mkdirSync(path.join(dir, 'theatre-reviews'));

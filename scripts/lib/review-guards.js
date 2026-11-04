@@ -2067,6 +2067,42 @@ function cvNonReviewHumanCleared(data) {
  * but of a different production), 'nonReview' when it did not (not a review at
  * all: preview/interview/feature), null when CV raised no wrongArticle.
  */
+// BRO-6973: articleType values a clean-boolean verdict (isValid, no wrongArticle)
+// can carry that still prove the page is not a critic's review. 'preview' and
+// 'feature' are deliberately absent: the verifier labels real previews-period
+// reviews 'preview' (allegiance-2015 huffpost 'preview night') and long-form
+// reviews 'feature', so those need a per-row read, not a blanket exclusion.
+const CV_ARTICLE_TYPE_NON_REVIEW = new Set(['interview', 'news', 'box-office', 'obituary']);
+
+/**
+ * True when the verdict's OWN articleType (high articleType confidence, high or
+ * medium overall — the pre-pass confidence gate) says the page is an
+ * interview/news/box-office/obituary piece even though wrongArticle is false.
+ * Callers apply the high/medium overall-confidence gate (this helper does not).
+ * The rebuild only promoted isNonReview from wrongArticle, so these stayed live
+ * (chess-2025 AP interview scored 88). Routed through cvWrongArticlePromotion,
+ * so ensemble-says-review, partial-window, human-clear and lane holds still apply.
+ */
+function cvArticleTypeNonReview(cv) {
+  return !!cv && cv.isValid === true && cv.wrongArticle !== true && cv.wrongProduction !== true
+    && cv.articleTypeConfidence === 'high' && CV_ARTICLE_TYPE_NON_REVIEW.has(cv.articleType);
+}
+
+/**
+ * BRO-6973: the head-of-article / truncated-fetch advisory for the articleType-only
+ * path. Kept OUT of isCvVerdictFromPartialWindow itself because that predicate also
+ * feeds isCvPartialWindowAdvisory, whose demotion use would then lift an existing
+ * CV-promoted isNonReview off a clean-verdict roundup (the-reservoir playbill row).
+ * Only 'news' is head-ambiguous (HEAD_AMBIGUOUS_ARTICLE_TYPES), so a news verdict on a
+ * long or cut-off fetch stays advisory while interview/box-office/obituary promote.
+ */
+function cvArticleTypeVerdictIsPartialWindow(cv, data) {
+  if (!cvArticleTypeNonReview(cv)) return false;
+  const cvLib = require('./content-verifier'); // lazy: content-verifier requires this module
+  const asWrongArticle = { ...cv, wrongArticle: true };
+  return cvLib.isCvVerdictFromPartialWindow(asWrongArticle, data && data.fullText, data);
+}
+
 function cvWrongArticleFamily(cv) {
   if (!cv || cv.wrongArticle !== true) return null;
   return cv.wrongProduction === true ? 'wrongShow' : 'nonReview';
@@ -2092,8 +2128,9 @@ function cvWrongArticleFamily(cv) {
  * @param {(guard: string) => boolean} [ctx.laneHolds] opening-night lane hold (BRO-4806)
  */
 function cvWrongArticlePromotion(data, cv, ctx = {}) {
-  const family = cvWrongArticleFamily(cv);
+  const family = cvWrongArticleFamily(cv) || (cvArticleTypeNonReview(cv) ? 'nonReview' : null);
   if (!data || !family) return null;
+  if (cv.wrongArticle !== true && cvArticleTypeVerdictIsPartialWindow(cv, data)) return null;
   const { cvPartialWindow = false, skipLondon = false, laneHolds = () => false } = ctx;
   const ensembleSaysReview = hasHighConfidenceLlmScore(data);
   const blocked = ensembleSaysReview || skipLondon || data.allowEarlyDate || data.allowCrossMarket;
@@ -6843,6 +6880,9 @@ module.exports = {
   isCvWrongArticleHighConfidence,
   cvNonReviewHumanCleared,
   cvWrongArticleFamily,
+  cvArticleTypeNonReview,
+  cvArticleTypeVerdictIsPartialWindow,
+  CV_ARTICLE_TYPE_NON_REVIEW,
   cvWrongArticlePromotion,
   wrongShowCleared,
   wrongShowExplicitlyCleared,

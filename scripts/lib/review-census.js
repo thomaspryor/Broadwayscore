@@ -229,7 +229,10 @@ function sourceExtractors(market = 'west-end') {
     // Equus, 2026-06): the poller's verifyAggregatorUrl guard was added after some
     // archives were already cached, and the census reads cached archives without
     // re-checking. Re-validating here closes that gap.
-    { name: 'theatre-reviews', dir: 'theatre-reviews', fn: extractReviews, validate: true },
+    // claim → BRO-6968: the page's canonical URL must not be a round-up the TR matcher assigned to
+    // another show (tr-archive-claim, BRO-6089). gather-reviews quarantines those at read time; the
+    // census read them anyway (Into The Woods at The Bridge counted as The Bridge's census).
+    { name: 'theatre-reviews', dir: 'theatre-reviews', fn: extractReviews, validate: true, claim: true },
   ];
   let extractLbo = null;
   try { ({ extractReviewsFromLBO: extractLbo } = require('../scrape-london-box-office-roundups')); } catch (_) {}
@@ -354,6 +357,10 @@ function buildCensusFromArchives(showId, opts = {}) {
       // and let extraction + outlet-union be the safety net, rather than nuking a
       // genuine roundup we simply can't verify.
       if (!v.isValid && v.rejectReason !== 'no-significant-title-tokens') { wrongRoundup.push(s.name); continue; }
+    }
+    if (s.claim) {
+      const { checkTrArchiveClaim, loadCoverageClaims } = require('./tr-archive-claim');
+      if (!checkTrArchiveClaim(html, showId, opts.trClaims || loadCoverageClaims()).ok) { wrongRoundup.push(s.name); continue; }
     }
     let reviews = [];
     try { reviews = s.fn(html, showId) || []; } catch (_) { reviews = []; }

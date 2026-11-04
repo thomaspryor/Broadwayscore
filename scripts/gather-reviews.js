@@ -5096,7 +5096,19 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
               }, res => { if (res.statusCode !== 200) { r(null); return; } let d = ''; res.on('data', c => d += c); res.on('end', () => r(d)); }).on('error', () => r(null)).setTimeout(30000, function () { this.destroy(new Error('timeout')); }); // BRO-5261
             });
 
+            // BRO-6968: the same page checks the archive read applies (above) and the
+            // poller's write applies. Without them a live fetch of another show's
+            // round-up ("Into The Woods at The Bridge" for The Bridge) fed its outlets in
+            // as found reviews and re-wrote the archive the read path had quarantined.
+            let trLiveOk = !!trPageHtml;
             if (trPageHtml) {
+              const trLiveVal = checkArchiveCategory(trPageHtml, show, siblingCategoriesByShowId()[showId]);
+              const trClaimLib = require('./lib/tr-archive-claim');
+              const trLiveClaim = trLiveVal.ok ? trClaimLib.checkTrArchiveClaim(trPageHtml, showId, trClaimLib.loadCoverageClaims()) : { ok: true };
+              if (!trLiveVal.ok) { console.log(`    ✗ TR live page-title mismatch (${trLiveVal.reason}) — not using`); trLiveOk = false; }
+              else if (!trLiveClaim.ok) { console.log(`    ✗ TR live page is another production's round-up (${trLiveClaim.reason}) — not using`); trLiveOk = false; }
+            }
+            if (trLiveOk) {
               const trReviews = extractTR(trPageHtml, showId);
               const trLiveDate = extractRoundupDateFromHtml(trPageHtml);
               if (trReviews.length > 0) {

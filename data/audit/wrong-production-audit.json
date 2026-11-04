@@ -1,10 +1,10 @@
 {
-  "timestamp": "2026-11-04T14:42:32.423Z",
+  "timestamp": "2026-11-04T15:54:47.906Z",
   "stats": {
-    "totalReviews": 80018,
-    "alreadyFlagged": 22011,
+    "totalReviews": 80022,
+    "alreadyFlagged": 22013,
     "dateGuardCatches": 217,
-    "directorMismatch": 3497,
+    "directorMismatch": 3499,
     "tvFilmSignals": 2275,
     "londonSignals": 3606,
     "offBroadwaySignals": 736,
@@ -53876,6 +53876,19 @@
       ]
     },
     {
+      "showId": "romeo-and-juliet-off-broadway-2026",
+      "file": "frontmezzjunkies--ross.json",
+      "publishDate": "2026-06-09",
+      "url": "https://frontmezzjunkies.com/2026/06/09/every-journey-needs-one-moment-where-we-believe-fate-can-change-in-romeo-and-juliet/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"robert icke\" from romeo-and-juliet-west-end-2026"
+        }
+      ]
+    },
+    {
       "showId": "romeo-and-juliet-west-end-2026",
       "file": "britishtheatrecom--anita-marguerite-butler.json",
       "score": 84,
@@ -76742,6 +76755,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "three-days-of-rain-2006",
+      "file": "hollywood-reporter--caitlin-huston.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/francois-arnaud-david-corenswet-three-days-of-rain-broadway-1236630809/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"anna d. shapiro\" from three-days-of-rain-2026"
         }
       ]
     },
