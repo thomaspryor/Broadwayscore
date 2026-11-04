@@ -61,6 +61,7 @@ const { describeSkip } = require('./lib/ingest-skip-classify');
 const {
   findMatchingShows,
   findPageConfirmCandidates,
+  itemReadsAsReview,
   pageConfirmsShow,
   pageText,
   pageNamesTitle,
@@ -291,6 +292,24 @@ const WP_API_CONFIG = {
     params: 'categories=157&per_page=100&_fields=link,date,title&orderby=date&order=desc',
     urlFilter: /\/news\/review-/,
     reviewsOnly: true,
+  },
+  // Times Square Chronicles and Gay City News (BRO-6921 follow-up) had no feed and
+  // were SERP-only, so a review whose headline had no "review" word (TSC's Phyl,
+  // 2026-10-23) was never seen. Their categories (TSC 504 Theater, 298 Off Broadway,
+  // 283 Broadway; GCN 24 Theater) mix reviews with news, so not reviewsOnly: a
+  // headline counts as a review when it leads with the title (titleLedReviews),
+  // and the page check still has to find the title plus a credit.
+  'times-square-chronicles': {
+    apiBase: 'https://t2conline.com/wp-json/wp/v2/posts',
+    params: 'categories=504,298,283&per_page=100&_fields=link,date,title&orderby=date&order=desc',
+    titleLedReviews: true,
+    keepSerp: true,
+  },
+  'gay-city-news': {
+    apiBase: 'https://gaycitynews.com/wp-json/wp/v2/posts',
+    params: 'categories=24&per_page=50&_fields=link,date,title&orderby=date&order=desc',
+    titleLedReviews: true,
+    keepSerp: true,
   },
   'nyt-theater': {
     apiBase: 'https://newyorktheater.me/wp-json/wp/v2/posts',
@@ -579,11 +598,18 @@ async function fetchViaRss(outletId, config, cutoff, { proxyRetry = true, health
   return items;
 }
 
+function looksLikeWpPostList(body) {
+  try { return Array.isArray(JSON.parse(String(body || '').trim())); } catch { return false; }
+}
+
 async function fetchViaWpApi(outletId, config, cutoff) {
   const after = cutoff.toISOString();
   const url = `${config.apiBase}?${config.params}&after=${encodeURIComponent(after)}`;
   console.log(`  [wp-api] Fetching ${url}`);
-  const json = await fetchSimple(url);
+  // A bot challenge in place of the JSON (t2conline.com's SiteGround "sg-captcha"
+  // answers Node's TLS client with HTTP 202 while curl gets 200) retries through
+  // fetchPage, like the RSS and sitemap strategies.
+  const json = await fetchXmlWithProxyRetry(url, 'wp-api', looksLikeWpPostList);
   const posts = JSON.parse(json);
   if (!Array.isArray(posts)) return [];
   let items = parseWpApiPosts(posts, cutoff);
@@ -901,7 +927,20 @@ async function main() {
       } catch (err) {
         console.warn(`  ⚠ WP API failed for ${outletId}: ${err.message}`);
         outletsFailed++;
-        continue;
+        if (!(WP_API_CONFIG[outletId].keepSerp && domain)) continue;
+      }
+      // keepSerp: a mixed review/news feed only admits review-shaped headlines
+      // (titleLedReviews), so the SERP sweep this outlet had before keeps running
+      // beside it and still finds the reviews titled any other way.
+      if (WP_API_CONFIG[outletId].keepSerp && domain) {
+        try {
+          const seen = new Set(articles.map(a => a.url));
+          for (const a of await fetchViaSerp(outletId, domain, cutoff, opts)) {
+            if (!seen.has(a.url)) { seen.add(a.url); articles.push({ ...a, viaSerp: true }); }
+          }
+        } catch (err) {
+          console.warn(`  ⚠ SERP (keepSerp) failed for ${outletId}: ${err.message}`);
+        }
       }
 
     } else {
@@ -962,18 +1001,23 @@ async function main() {
     // --- Match each article to shows ---
     let outletNewStubs = 0;
 
-    for (const { url, headline, publishDate, description } of articles) {
+    for (const { url, headline, publishDate, description, viaSerp: itemViaSerp } of articles) {
       const urlSlug = (() => { try { return new URL(url).pathname; } catch { return url; } })();
       const outletCfg = WP_API_CONFIG[outletId] || OUTLET_STRATEGY_CONFIG[outletId] || {};
-      const feedMatched = findMatchingShows(headline, urlSlug, activeShows, description, { publishDate });
+      const fromFeed = !viaSerp && !itemViaSerp;
+      let feedMatched = findMatchingShows(headline, urlSlug, activeShows, description, { publishDate });
+      // A mixed review/news feed: a match must also read as a review (BRO-6921 follow-up).
+      if (fromFeed && outletCfg.titleLedReviews) {
+        feedMatched = feedMatched.filter(show => itemReadsAsReview({ url, headline, description }, show));
+      }
       // pageConfirmAll outlets: feed matches go through the page check too.
       const matchedShows = outletCfg.pageConfirmAll ? [] : feedMatched;
 
       // BRO-6921: subtitled or short titles the headline alone cannot prove.
-      const reviewOnlyFeed = !viaSerp && !!outletCfg.reviewsOnly;
+      const reviewOnlyFeed = fromFeed && !!outletCfg.reviewsOnly;
       const candidates = [
         ...(outletCfg.pageConfirmAll ? feedMatched.map(show => ({ show, form: 'feed-match' })) : []),
-        ...findPageConfirmCandidates({ url, headline, publishDate, description }, activeShows, { alreadyMatched: feedMatched, reviewOnlyFeed }),
+        ...findPageConfirmCandidates({ url, headline, publishDate, description }, activeShows, { alreadyMatched: feedMatched, reviewOnlyFeed, titleLedReviews: fromFeed && !!outletCfg.titleLedReviews }),
       ]
         .filter(c => !alreadyFiled(c.show.id, outletId, url) && !isRejectedCached(url, c.show.id)
           && !isUnconfirmedCached(unconfirmedCache, url, c.show.id));
@@ -1134,7 +1178,7 @@ if (require.main === module) {
 
 // Exported for scripts/probe-outlet-feeds.js (lists SERP-only outlets) and tests.
 module.exports = {
-  SKIP_OUTLETS, OUTLET_STRATEGY_CONFIG, WP_API_CONFIG, isSameUrlFlaggedTarget,
+  SKIP_OUTLETS, OUTLET_STRATEGY_CONFIG, WP_API_CONFIG, isSameUrlFlaggedTarget, looksLikeWpPostList,
   // feed fetchers, reused by scripts/outlet-feed-reconcile.js (BRO-5358)
   fetchViaRss, fetchViaWpApi, fetchViaSitemap, fetchViaListingHtml, fetchViaListingConfig,
   confirmOnPage, loadUnconfirmedCache, isUnconfirmedCached,
