@@ -5448,6 +5448,7 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
       fullText: cleanedText,
       knownCritics: knownCriticsForOutlet(getPrintedBylineIndex(), bylineOutlet),
       locked: !!(data.criticNameManual || data._locked),
+      excluded: !!(data.isRoundupArticle || data.wrongShow || data.wrongProduction || data.duplicateOf),
     });
     if (printedHit) {
       console.log(`    → Printed byline override: "${creditedNow || 'Unknown'}" → "${printedHit.printedName}"`);

@@ -39,6 +39,7 @@ const path = require('path');
 const { resolveReviewTextsDir } = require('./lib/review-texts-dir');
 const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const { generateReviewFilename, normalizeOutlet } = require('./lib/review-normalization');
+const { isPlausiblePersonName } = require('./lib/byline-recovery');
 const {
   findPrintedBylineConflict,
   findPrintedKnownByline,
@@ -58,7 +59,14 @@ const TIER = flag('tier') || 'all';
 const ACTIONS_OUT = flag('actions-out');
 const LIMIT = Number(flag('limit')) || 0;
 // show/file paths a human reviewed and rejected (roundup pages, scrape chrome): never given an action.
-const EXCLUDE = new Set((flag('exclude') || '').split(',').map((x) => x.trim()).filter(Boolean));
+// Reviewed in BRO-6940 and rejected for good, so the daily audit can go green: a New Yorker "Goings On"
+// roundup page (the printed name is another writer's blurb) and a London Theatre Direct ticket page
+// credited to the company itself.
+const REJECTED = [
+  'liberation-2025/newyorker--helen-shaw.json',
+  'ceilidh-the-musical-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json',
+];
+const EXCLUDE = new Set([...REJECTED, ...(flag('exclude') || '').split(',').map((x) => x.trim()).filter(Boolean)]);
 
 // A corpus critic counts as "known at the outlet" with this much evidence.
 const CORPUS_MIN_FILES = 3;
@@ -89,7 +97,7 @@ function buildKnown(recs, registryIndex) {
   const counts = new Map(); // outlet -> name -> { files, shows:Set }
   for (const rec of recs) {
     const name = rec.r.criticName;
-    if (isPlaceholderName(name)) continue;
+    if (isPlaceholderName(name) || !isPlausiblePersonName(name)) continue;
     const o = outletOf(rec);
     if (!counts.has(o)) counts.set(o, new Map());
     const m = counts.get(o);
@@ -201,7 +209,11 @@ function main() {
       console.log(`  [${f.kind}] ${f.show}/${f.file}: ${f.credited} -> ${f.printed}${tags ? ` (${tags})` : ''} src=${f.source}`);
     }
   }
-  process.exit(knownN > 0 ? 1 : 0);
+  // Exit 1 only for conflicts a plan can fix: locked, excluded and destination-exists rows are listed
+  // for triage but can never go green, so counting them would keep the advisory check red forever.
+  const actionableN = findings.filter((f) => f.kind === 'known' && !f.locked && !f.excluded && !f.destExists).length;
+  if (!JSON_OUT) console.log(`actionable (re-creditable by a plan): ${actionableN}`);
+  process.exitCode = actionableN > 0 ? 1 : 0; // not process.exit(): a large --json write to a pipe would truncate
 }
 
 if (require.main === module) main();
