@@ -183,7 +183,7 @@ function run(show, context) {
         const d = JSON.parse(fs.readFileSync(path.join(showDir, f), 'utf8'));
         if (d.wrongProduction !== true) {
           siblingKeys.add(`${d.url}::${d.outletId}::${d.criticName}`);
-          if (d.url) siblingUrls.add(d.url);
+          if (d.url) siblingUrls.add(`${d.url}::${d.outletId}`);
         }
       } catch { /* unreadable file: cannot vouch for a row */ }
     }
@@ -216,7 +216,7 @@ function run(show, context) {
     const matchedRows = shippedReviews.filter(r => (data.url && r.url === data.url)
       || (r.outletId === data.outletId && r.criticName === data.criticName));
     const exactShipped = matchedRows.length === 0 || matchedRows.some(r => (!siblingKeys.has(
-      `${r.url}::${r.outletId}::${r.criticName}`) && !(r.url && r.url !== data.url && siblingUrls.has(r.url))) || (r.url === data.url
+      `${r.url}::${r.outletId}::${r.criticName}`) && !(data.url && r.url && r.url !== data.url && siblingUrls.has(`${r.url}::${data.outletId}`))) || (r.url === data.url
       && r.outletId === data.outletId && r.criticName === data.criticName));
     // BRO-4427: judged before the sweep's set-aside so the lifetime audit counts them.
     if (isCorroboratedTemporalOverride(data, show)) {
