@@ -30,7 +30,7 @@ const path = require('path');
 const crypto = require('crypto');
 const { getScoreTierId, getScoreTierLabel, getReviewBreakdownTierId } = require('../lib/score-tiers');
 const { roundupFillOrder, findBackfillEvents, findScoreEvents, findLondonCompareEvents, findRoundupEvents, findClosingSoonEvents, roundupLookback, closingSoonLookback, briefCoversPair, londonCompareLookback, scheduleEvents, splitBacklog, isEligibleShow, morningAfter, inWindow, nextWindowSlot, zonedTime } = require('./select');
-const { buildCaptions, postMarkers, compareMarkers, pathMarker, validateHook, strayNumbers, productionLabel, monthDay, roundupMarkers, buildRoundupCaptions, roundupAllowedNumbers, closingMarkers, buildClosingCaptions, closingAllowedNumbers } = require('./captions');
+const { buildCaptions, postMarkers, compareMarkers, movedMarkers, pathMarker, validateHook, strayNumbers, productionLabel, monthDay, roundupMarkers, buildRoundupCaptions, roundupAllowedNumbers, closingMarkers, buildClosingCaptions, closingAllowedNumbers } = require('./captions');
 const { resolvePoster, minPosterWidth } = require('./art');
 const { renderCard, renderCompareCard, renderRoundupCard, closeBrowser, COMPARE_POSTER_PX, ROW_POSTER_PX, MAX_ROWS } = require('./render');
 const { CHANNEL_SETS, MARKETS, marketOf, SCORE_LOOKBACK_DAYS, WEEKLY_ROUNDUP, CLOSING_SOON, BACKFILL } = require('./config');
@@ -172,6 +172,7 @@ const entryName = p => p.showId || p.id;
 function entryMarkers(p) {
   if (p.type === 'weekly-roundup') return roundupMarkers(p.first, p.last, p.set);
   if (p.type === 'closing-soon') return closingMarkers({ id: p.showId, slug: p.slug });
+  if (p.type === 'brief' && p.template === 'moved') return movedMarkers({ slug: p.slug }, p.olderLabel);
   return p.type === 'brief' || p.type === 'london-compare' ? compareMarkers({ slug: p.slug }, p.olderLabel) : postMarkers({ id: p.showId, slug: p.slug });
 }
 
@@ -564,11 +565,16 @@ async function runBrief(hash, { ctx, buffer, channels, now, summary, problems })
   }
   const newer = shows.find(s => s.id === manifest.newer);
   if (!newer) throw new Error(`brief ${hash}: manifest names no newer production`);
-  const olderLabel = productionLabel(shows.find(s => s !== newer));
+  const [a, b] = manifest.ids.map(id => shows.find(s => s.id === id));
+  const order = briefs.ORDER[manifest.template];
+  if (!order) throw new Error(`brief ${hash}: unknown template ${manifest.template}`);
+  order(a, b); // the pair must still qualify for its template
+  const olderLabel = manifest.olderLabel || briefs.olderLabelFor(manifest.template, shows.find(s => s !== newer)); // the preview's label: a venue edited since then must not change the dedupe markers
 
   await postCompare({
     label: `brief ${hash}`, shows, newer, olderLabel, captions: manifest.captions, imageUrl: manifest.imageUrl,
     ctx, buffer, channels, now, summary, problems,
+    markers: manifest.template === 'moved' ? movedMarkers(newer, olderLabel) : undefined,
     note: `(${manifest.template}: ${pair}); approved: "${approval.words}"`,
     entry: { type: 'brief', id: `brief:${hash}`, hash, template: manifest.template, pair, approved: String(approval.words).slice(0, 300), approvedAt: approval.at || null },
   });

@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6940-i",
   "planId": "98ee4349-2fce-4e32-b6af-ed1c76bd4dea",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-04T00:30:40.787Z",
   "submitter": {
     "name": null,
@@ -215,5 +215,146 @@
         "description": "BRO-6940: article byline prints Lucy Popescu; file was credited to Unknown"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-04T01:29:30.360Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-notebook-tour-2025/stage-raw--steven-morris.json criticName: \"Steven Morris\" -> \"Joel Beers\""
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved the-notebook-tour-2025/stage-raw--steven-morris.json → the-notebook-tour-2025/stage-raw--joel-beers.json",
+      "cleared": []
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-pianist-off-west-end-2026/monstagigz--unknown.json criticName: \"Unknown\" -> \"Neil Durham\""
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved the-pianist-off-west-end-2026/monstagigz--unknown.json → the-pianist-off-west-end-2026/monstagigz--neil-durham.json",
+      "cleared": []
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-pillowman-west-end-2023/camdennewjournal--unknown.json criticName: \"Unknown\" -> \"Lucy Popescu\""
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved the-pillowman-west-end-2023/camdennewjournal--unknown.json → the-pillowman-west-end-2023/camdennewjournal--lucy-popescu.json",
+      "cleared": []
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-price-off-broadway-2025/theater-pizzazz--unknown.json criticName: \"Unknown\" -> \"Carole Di Tosti\""
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved the-price-off-broadway-2025/theater-pizzazz--unknown.json → the-price-off-broadway-2025/theater-pizzazz--carole-di-tosti.json",
+      "cleared": []
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-revlon-girl-off-west-end-2026/all-that-dazzles-uk--unknown.json criticName: \"Unknown\" -> \"Sam Waite\""
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved the-revlon-girl-off-west-end-2026/all-that-dazzles-uk--unknown.json → the-revlon-girl-off-west-end-2026/all-that-dazzles-uk--sam-waite.json",
+      "cleared": []
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-standard-of-living-west-end-2026/camdennewjournal--unknown.json criticName: \"Unknown\" -> \"Lucy Popescu\""
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved the-standard-of-living-west-end-2026/camdennewjournal--unknown.json → the-standard-of-living-west-end-2026/camdennewjournal--lucy-popescu.json",
+      "cleared": []
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "time-and-the-conways-2017/talkinbroadway--unknown.json criticName: \"Unknown\" -> \"Michael Portantiere\""
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved time-and-the-conways-2017/talkinbroadway--unknown.json → time-and-the-conways-2017/talkinbroadway--michael-portantiere.json",
+      "cleared": []
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "vardy-v-rooney-the-wagatha-christie-trial-west-end-2023/camdennewjournal--unknown.json criticName: \"Unknown\" -> \"Lucy Popescu\""
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved vardy-v-rooney-the-wagatha-christie-trial-west-end-2023/camdennewjournal--unknown.json → vardy-v-rooney-the-wagatha-christie-trial-west-end-2023/camdennewjournal--lucy-popescu.json",
+      "cleared": []
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "water-for-elephants-tour-2025/stage-raw--steven-morris.json criticName: \"Steven Morris\" -> \"Asa Fris\""
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved water-for-elephants-tour-2025/stage-raw--steven-morris.json → water-for-elephants-tour-2025/stage-raw--asa-fris.json",
+      "cleared": []
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "we-live-in-cairo-off-broadway-2024/talkinbroadway--unknown.json criticName: \"Unknown\" -> \"Marc Miller\""
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved we-live-in-cairo-off-broadway-2024/talkinbroadway--unknown.json → we-live-in-cairo-off-broadway-2024/talkinbroadway--marc-miller.json",
+      "cleared": []
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "west-side-story-2009/nytg--joe-dziemianowicz.json criticName: \"Joe Dziemianowicz\" -> \"Tulis McCall\""
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved west-side-story-2009/nytg--joe-dziemianowicz.json → west-side-story-2009/nytg--tulis-mccall.json",
+      "cleared": []
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "what-the-animals-say-off-west-end-2026/theatreandtonic--sarah-p.json criticName: \"Sarah P\" -> \"Penny Walshe\""
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved what-the-animals-say-off-west-end-2026/theatreandtonic--sarah-p.json → what-the-animals-say-off-west-end-2026/theatreandtonic--penny-walshe.json",
+      "cleared": []
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "whos-afraid-of-virginia-woolf-west-end-2026/camdennewjournal--unknown.json criticName: \"Unknown\" -> \"Lucy Popescu\""
+    }
+  ],
+  "executedIn": "ci"
 }

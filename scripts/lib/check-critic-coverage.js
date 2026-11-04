@@ -34,7 +34,7 @@ function urlKey(u) {
     const x = new URL(u);
     const base = x.hostname.replace(/^www\./, '') + x.pathname.replace(/\/$/, '').split('?')[0];
     const ids = [...x.searchParams.entries()]
-      .filter(([k]) => ARTICLE_ID_QUERY_KEY.test(k))
+      .filter(([k]) => ARTICLE_ID_QUERY_KEY.test(k) && !/^utm_/i.test(k))
       .map(([k, v]) => `${k.toLowerCase()}=${v}`)
       .sort();
     return ids.length ? `${base}?${ids.join('&')}` : base;

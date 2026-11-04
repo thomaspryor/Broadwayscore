@@ -4,10 +4,11 @@
     "ceilidh-the-musical-off-west-end-2026/guardian--emma-john.json",
     "ceilidh-the-musical-off-west-end-2026/guardian--unknown.json",
     "ceilidh-the-musical-off-west-end-2026/daily-echo--william-dalgleish.json",
-    "the-lives-of-others-west-end-2026/londontheatredirect--andrew-papadopoulos.json"
+    "the-lives-of-others-west-end-2026/londontheatredirect--andrew-papadopoulos.json",
+    "tosca-english-national-opera-west-end-2026/sunday-telegraph--nicholas-kenyon.json",
+    "girls-off-west-end-2026/londonlivinglarge--london-living-large.json"
   ],
   "failed": [
-    "tosca-english-national-opera-west-end-2026/sunday-telegraph--nicholas-kenyon.json",
     "tosca-english-national-opera-west-end-2026/theatre-weekly--unknown.json",
     "tosca-english-national-opera-west-end-2026/times-uk--richard-morrison.json",
     "tosca-english-national-opera-west-end-2026/bachtrack--mark-pullinger.json",
@@ -15,8 +16,7 @@
     "ceilidh-the-musical-off-west-end-2026/musical-theatre-review--angela-thomas.json",
     "ceilidh-the-musical-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
     "ceilidh-the-musical-off-west-end-2026/theatre-south-east--unknown.json",
-    "the-lives-of-others-west-end-2026/whatsonstage--alex-wood.json",
-    "girls-off-west-end-2026/londonlivinglarge--london-living-large.json"
+    "the-lives-of-others-west-end-2026/whatsonstage--alex-wood.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -24,21 +24,31 @@
       "tosca-english-national-opera-west-end-2026/thereviewshub--unknown.json",
       "ceilidh-the-musical-off-west-end-2026/guardian--emma-john.json",
       "ceilidh-the-musical-off-west-end-2026/guardian--unknown.json",
-      "the-lives-of-others-west-end-2026/londontheatredirect--andrew-papadopoulos.json"
+      "the-lives-of-others-west-end-2026/londontheatredirect--andrew-papadopoulos.json",
+      "girls-off-west-end-2026/londonlivinglarge--london-living-large.json"
     ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
     "scrapingdog": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "tosca-english-national-opera-west-end-2026/sunday-telegraph--nicholas-kenyon.json"
+    ],
     "brightdata": [],
     "archiveToday": [],
     "archive": [
-      "ceilidh-the-musical-off-west-end-2026/daily-echo--william-dalgleish.json"
+      "ceilidh-the-musical-off-west-end-2026/daily-echo--william-dalgleish.json",
+      "long-days-journey-into-night-west-end-2024/times-uk--clive-davis.json",
+      "kelly-mccaughan-catholic-guilt-off-broadway-2026/broadway-baby--unknown.json",
+      "derren-brown-only-human-west-end-2026/lbc--johnny-jenkins.json",
+      "billy-crystal-860-2026/one-minute-critic--matthew-wexler.json",
+      "murder-cathedral-off-west-end-2026/lbc--johnny-jenkins.json",
+      "other-desert-cities-2026/new-york-city-theatre--unknown.json",
+      "cadel-lungs-on-legs-west-end-2026/reviewsgate--william-russell.json"
     ]
   },
   "startTime": "2026-11-04T00:11:34.063Z",
-  "lastProcessed": "girls-off-west-end-2026/londonlivinglarge--london-living-large.json",
+  "lastProcessed": "midnight-off-broadway-2026/new-york-notebook--sandy-macdonald.json",
   "log": [
     {
       "t": "2026-11-04T00:23:51.736Z",
@@ -51,9 +61,29 @@
       "event": "bb-session",
       "session": "b288399d",
       "url": "https://bachtrack.com/review-kolomiiets-mothers-of-kherson-polish-national-opera"
+    },
+    {
+      "t": "2026-11-04T02:00:17.389Z",
+      "event": "bb-session",
+      "session": "d72427c2",
+      "url": "https://bachtrack.com/review-tosca-miskimmon-glassberg-fanyo-english-national-op"
+    },
+    {
+      "t": "2026-11-04T02:01:20.647Z",
+      "event": "bb-session",
+      "session": "803b7a8d",
+      "url": "https://bachtrack.com/review-kolomiiets-mothers-of-kherson-polish-national-opera"
+    },
+    {
+      "t": "2026-11-04T02:01:27.388Z",
+      "event": "bb-session",
+      "session": "7f229a0e",
+      "url": "https://bachtrack.com/review-kolomiiets-mothers-of-kherson-polish-national-opera"
     }
   ],
   "recoveredAfterFailure": [
-    "tosca-english-national-opera-west-end-2026/thereviewshub--unknown.json"
+    "tosca-english-national-opera-west-end-2026/thereviewshub--unknown.json",
+    "tosca-english-national-opera-west-end-2026/sunday-telegraph--nicholas-kenyon.json",
+    "girls-off-west-end-2026/londonlivinglarge--london-living-large.json"
   ]
 }

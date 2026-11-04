@@ -1,11 +1,11 @@
 {
-  "updatedAt": "2026-11-03T09:54:38.642Z",
-  "scanned": 4749,
+  "updatedAt": "2026-11-04T02:12:52.805Z",
+  "scanned": 4752,
   "showsWithViolations": 171,
   "totalViolations": 225,
-  "newSinceLastRun": 3,
+  "newSinceLastRun": 1,
   "handled": {
-    "temporal-override-low-confidence": 938,
+    "temporal-override-low-confidence": 954,
     "not-shipped": 54,
     "duplicate-not-shipped": 54,
     "rebuild-skip-audit": 32,
@@ -13,9 +13,7 @@
     "prior-run-or-tour-leg": 43
   },
   "newViolationKeys": [
-    "a-world-elsewhere-off-west-end-2026::guardian--miriam-gillinson.json",
-    "love-love-love-off-broadway-2016::cititour--brian-scott-lipton.json",
-    "love-love-love-off-broadway-2016::show-showdown--elizabeth-wollman.json"
+    "the-hairy-ape-irish-repertory-theatre-off-broadway-2026::amny--matt-windman.json"
   ],
   "violationKeys": [
     "cats-the-jellicle-ball-2026::nytg--kyle-turner.json",
@@ -173,6 +171,7 @@
     "vanya-off-broadway-2025::thewrap--robert-hofler.json",
     "vanya-off-broadway-2025::vulture--sara-holdren.json",
     "primary-trust-off-broadway-2023::cititour--brian-scott-lipton.json",
+    "the-hairy-ape-irish-repertory-theatre-off-broadway-2026::amny--matt-windman.json",
     "les-miserables-arena-concert-spectacular-off-broadway-2026::cititour--brian-scott-lipton.json",
     "les-miserables-arena-concert-spectacular-off-broadway-2026::nypost--johnny-oleksinski.json",
     "a-small-and-quiet-light-off-west-end-2026::artsdesk--aleks-sierz.json",
@@ -207,7 +206,6 @@
     "old-friends-west-end-2023::whatsonstage--sarah-crompton.json",
     "plaza-suite-west-end-2024::whatsonstage--sarah-crompton.json",
     "a-mirror-west-end-2024::thestage--anya-ryan.json",
-    "nye-west-end-2024::broadwayworld--persson-gary-naylor.json",
     "harry-clarke-west-end-2024::whatsonstage--sarah-crompton.json",
     "red-pitch-west-end-2024::thestage--sam-marlowe.json",
     "romeo-and-juliet-west-end-2024::thestage--sam-marlowe.json",
@@ -3139,6 +3137,27 @@
       ]
     },
     {
+      "showId": "the-hairy-ape-irish-repertory-theatre-off-broadway-2026",
+      "title": "The Hairy Ape",
+      "openingDate": "2026-10-04",
+      "message": "amny/Matt Windman (amny--matt-windman.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 7d of opening, likely correct production] This review evaluates a 2017 staging of 'The Hairy Ap — http://www.amny.com/entertainment/the-hairy-ape-review-a-stunning-staging-of-an-expressionist-classic-1.13351233",
+      "violations": [
+        {
+          "filename": "amny--matt-windman.json",
+          "url": "http://www.amny.com/entertainment/the-hairy-ape-review-a-stunning-staging-of-an-expressionist-classic-1.13351233",
+          "outletId": "amny",
+          "criticName": "Matt Windman",
+          "matchedBy": "outlet+critic",
+          "cvConfidence": "low",
+          "cvReasoning": "[OVERRIDE: review within 7d of opening, likely correct production] This review evaluates a 2017 staging of 'The Hairy Ap",
+          "cvIssues": [
+            "Review describes production at Park Avenue Armory (2017), not Irish Repertory Theatre",
+            "Review publish date (2017) does not match expected Off-Broadway opening date (2026-10-04)"
+          ]
+        }
+      ]
+    },
+    {
       "showId": "les-miserables-arena-concert-spectacular-off-broadway-2026",
       "title": "Les Misérables: The Arena Concert Spectacular",
       "openingDate": "2026-07-28",
@@ -3250,7 +3269,7 @@
       "showId": "a-world-elsewhere-off-west-end-2026",
       "title": "A World Elsewhere",
       "openingDate": "2026-07-25",
-      "message": "guardian/Miriam Gillinson (guardian--miriam-gillinson.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This is a valid review (opinion-bearing critique of a live theatrical performance), but it reviews the wrong production. — https://www.theguardian.com/stage/2026/jul/31/a-world-elsewhere-review-sam-wanamaker-theatre-globe",
+      "message": "guardian/Miriam Gillinson (guardian--miriam-gillinson.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: The scraped review describes a family show at the Globe Theatre in London (co-production with Splendid Productions, feat — https://www.theguardian.com/stage/2026/jul/31/a-world-elsewhere-review-sam-wanamaker-theatre-globe",
       "violations": [
         {
           "filename": "guardian--miriam-gillinson.json",
@@ -3259,10 +3278,10 @@
           "criticName": "Miriam Gillinson",
           "matchedBy": "url",
           "cvConfidence": "high",
-          "cvReasoning": "This is a valid review (opinion-bearing critique of a live theatrical performance), but it reviews the wrong production.",
+          "cvReasoning": "The scraped review describes a family show at the Globe Theatre in London (co-production with Splendid Productions, feat",
           "cvIssues": [
-            "Reviewed venue is Globe theatre, not Sam Wanamaker Playhouse as expected",
-            "Review describes a Globe theatre and Splendid Productions co-production, not an Off-West End production at Sam Wanamaker Playhouse"
+            "Review is of a Globe Theatre production, not Sam Wanamaker Playhouse",
+            "Show title mismatch: review is of an unnamed family show co-produced by Globe theatre and Splendid Productions, not 'A World Elsewhere'"
           ]
         }
       ]
@@ -3766,27 +3785,6 @@
           "cvIssues": [
             "Review does not name any theater venue where the performance was seen",
             "Playwright is identified as Sam Holcroft, but 'A Mirror' is by Sam Holcroft and reviews of this play do not match the expected critic (Anya Ryan) or expected outlet (The Stage) in available records"
-          ]
-        }
-      ]
-    },
-    {
-      "showId": "nye-west-end-2024",
-      "title": "Nye",
-      "openingDate": "2024-03-06",
-      "message": "broadwayworld/Gary Naylor (broadwayworld--persson-gary-naylor.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This is a legitimate review of 'Nye', but it reviews the National Theatre production (explicitly named in the closing li — https://www.broadwayworld.com/westend/article/Review-NYE-National-Theatre-20240307",
-      "violations": [
-        {
-          "filename": "broadwayworld--persson-gary-naylor.json",
-          "url": "https://www.broadwayworld.com/westend/article/Review-NYE-National-Theatre-20240307",
-          "outletId": "broadwayworld",
-          "criticName": "Gary Naylor",
-          "matchedBy": "url",
-          "cvConfidence": "high",
-          "cvReasoning": "This is a legitimate review of 'Nye', but it reviews the National Theatre production (explicitly named in the closing li",
-          "cvIssues": [
-            "Review describes production at The National Theatre, not the Olivier Theatre (West End)",
-            "Review publish date (2026-10-11) is 2.5+ years after West End opening date (2024-03-06), suggesting review is of a different production or anachronistic metadata"
           ]
         }
       ]
@@ -4427,7 +4425,7 @@
       "showId": "sunny-afternoon-west-end-2014",
       "title": "Sunny Afternoon",
       "openingDate": "2014-10-28",
-      "message": "standard/Fiona Mountford (standard--fiona-mountford.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 259d of opening, likely correct production] This is a review of the Hampstead Theatre productio — https://www.standard.co.uk/culture/theatre/sunny-afternoon-harold-pinter-theatre-theatre-review-the-perfect-showcase-for-the-kinks-back-catalogue-of-unrivalled-riches-9824654.html",
+      "message": "standard/Fiona Mountford (standard--fiona-mountford.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 259d of opening, likely correct production] This is a pre-West-End tryout review of Sunny After — https://www.standard.co.uk/culture/theatre/sunny-afternoon-harold-pinter-theatre-theatre-review-the-perfect-showcase-for-the-kinks-back-catalogue-of-unrivalled-riches-9824654.html",
       "violations": [
         {
           "filename": "standard--fiona-mountford.json",
@@ -4436,10 +4434,10 @@
           "criticName": "Fiona Mountford",
           "matchedBy": "url",
           "cvConfidence": "low",
-          "cvReasoning": "[OVERRIDE: review within 259d of opening, likely correct production] This is a review of the Hampstead Theatre productio",
+          "cvReasoning": "[OVERRIDE: review within 259d of opening, likely correct production] This is a pre-West-End tryout review of Sunny After",
           "cvIssues": [
-            "Review evaluates the Hampstead Theatre production (April premiere), not the West End production",
-            "Text states 'this show, which premiered at Hampstead Theatre in April, has now arrived to be A Well Respected Man in the West End' — the critic is reviewing the Hampstead staging and discussing the West End arrival as a future event, not evaluating a performance the critic attended at Harold Pinter Theatre"
+            "Review evaluates the Hampstead Theatre production (April premiere), not the West End run. Opening sentence states 'this show, which premiered at Hampstead Theatre in April, has now arrived to be A Well Respected Man in the West End' — the critic is reviewing the Hampstead production that 'has now arrived' at West End, not the West End staging itself.",
+            "Critic's opinion-bearing content (production quality, momentum, script assessment) describes the Hampstead Theatre version, not the Harold Pinter Theatre West End run."
           ]
         }
       ]

@@ -1,30 +1,57 @@
 {
-  "generatedAt": "2026-11-03T09:57:31.029Z",
+  "generatedAt": "2026-11-04T02:16:15.815Z",
   "workflow": "test.yml",
   "branch": "main",
-  "latestRunHeadSha": "422f03e01bab639923b7ae8675f7b1e87d0933ed",
-  "state": "GREEN",
-  "consecutiveFailures": 0,
-  "consecutiveSuccesses": 24,
-  "greenSince": "2026-11-03T00:50:49Z",
-  "greenForHours": 9.111674722222222,
+  "latestRunHeadSha": "d189cb5872b6159470a4e6fd58b771a9d26fc662",
+  "state": "RED",
+  "consecutiveFailures": 6,
+  "consecutiveSuccesses": 0,
+  "greenSince": null,
+  "greenForHours": null,
   "greenDurationIsFloor": false,
-  "redSince": null,
-  "redForHours": null,
+  "redSince": "2026-11-04T00:52:17Z",
+  "redForHours": 1.3996708333333334,
   "redDurationIsFloor": false,
-  "lastSuccessAt": "2026-11-03T08:15:17Z",
-  "latestFailedRunId": null,
-  "latestFailedRunUrl": null,
-  "decidedRuns": 100,
+  "lastSuccessAt": "2026-11-04T00:02:19Z",
+  "latestFailedRunId": "41756092247",
+  "latestFailedRunUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41756092247",
+  "decidedRuns": 74,
   "verdictLag": {
-    "verdictSha": "422f03e01bab639923b7ae8675f7b1e87d0933ed",
-    "verdictAt": "2026-11-03T08:15:17Z",
-    "verdictAgeHours": 1.7038969444444445,
-    "newerHeads": 0,
-    "runsInFlight": 0,
-    "lagging": false
+    "verdictSha": "d189cb5872b6159470a4e6fd58b771a9d26fc662",
+    "verdictAt": "2026-11-04T01:44:22Z",
+    "verdictAgeHours": 0.5316152777777777,
+    "newerHeads": 5,
+    "runsInFlight": 5,
+    "lagging": true
   },
-  "failingJobs": [],
-  "failingPaths": [],
-  "topFailingJob": null
+  "failingJobs": [
+    {
+      "name": "Data Validation",
+      "steps": [
+        "Audit review contamination",
+        "Audit outlet-registry gaps"
+      ]
+    },
+    {
+      "name": "Unit Tests",
+      "steps": [
+        "Run scripts/lib tests (visual-qa transcript-scan etc.)"
+      ]
+    },
+    {
+      "name": "Test Summary",
+      "steps": [
+        "Check results"
+      ]
+    }
+  ],
+  "failingPaths": [
+    {
+      "path": "scripts/lib/audit-ledger-merge-attrs.test.mjs",
+      "job": "Unit Tests",
+      "step": "Run scripts/lib tests (visual-qa transcript-scan etc.)",
+      "evidence": "not ok 635 - REGRESSION: every real tracked *.jsonl (repo-wide) is either merge=union or a documented exemption"
+    }
+  ],
+  "topFailingJob": "Unit Tests"
 }

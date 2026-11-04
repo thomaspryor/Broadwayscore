@@ -56,6 +56,8 @@ on:
       # push-review-texts-scoring-file-list.test.mjs cover these.
       - 'scripts/score-new-press-night-reviews.js'
       - '.github/actions/push-review-texts/**'
+      # BRO-6941: tests/unit/push-review-texts-resolve.test.mjs covers this resolver.
+      - 'scripts/lib/resolve-modify-delete.js'
       # BRO-6622: tests/unit/lane-rollback.test.mjs runs the CLI refusals and pins the switch workflow.
       - 'scripts/lane-switch.js'
       - 'scripts/email/profitability-launch.mjs' # BRO-6772 launch email, tested by tests/unit/profitability-launch-email.test.mjs

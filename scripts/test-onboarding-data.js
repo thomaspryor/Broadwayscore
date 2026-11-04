@@ -12,6 +12,10 @@ const GENRES = ['comedy', 'drama', 'thriller', 'romance', 'classic-musical', 'ju
 
 let failed = 0;
 const assert = (c, m) => { if (c) console.log(`  ✅ ${m}`); else { console.error(`  ❌ FAIL: ${m}`); failed++; } };
+// BRO-6925: genre coverage feeds the mobile feed's `gn`, not the city or hit lists, so a coverage
+// shortfall must never block publishing them. Advisory unless --strict-genres (tag-genres.js heals it).
+const STRICT_GENRES = process.argv.includes('--strict-genres');
+const genreAssert = (c, m) => { if (c || STRICT_GENRES) assert(c, m); else console.warn(`::warning::genre coverage (advisory, BRO-6925): ${m}`); };
 
 const mobile = read('public/data/mobile-shows.json').shows;
 const ids = new Set(mobile.map(s => s.id));
@@ -21,9 +25,9 @@ const entries = Object.entries(tags);
 assert(entries.every(([, v]) => Array.isArray(v) && v.length <= 3 && v.every(g => GENRES.includes(g))), 'every tag is a known genre, max 3 per show');
 const live = mobile.filter(s => ['open', 'previews', 'upcoming'].includes(s.st) && s.syn);
 const covered = live.filter(s => s.id in tags).length;
-assert(covered / live.length >= 0.9, `>=90% of live shows with a synopsis are tagged (${covered}/${live.length})`);
+genreAssert(covered / live.length >= 0.9, `>=90% of live shows with a synopsis are tagged (${covered}/${live.length})`);
 const empty = entries.filter(([, v]) => v.length === 0).length;
-assert(empty / entries.length < 0.1, `<10% of tagged shows have no genre (${empty}/${entries.length})`);
+genreAssert(empty / entries.length < 0.1, `<10% of tagged shows have no genre (${empty}/${entries.length})`);
 
 const { cities } = read('public/data/onboarding-cities.json');
 assert(cities.some(c => c.id === 'nyc') && cities.some(c => c.id === 'london'), 'nyc and london present');
@@ -56,6 +60,12 @@ for (const [city, rows] of Object.entries(want)) {
   assert(rows.every(r => (ids.has(r.showId) || tourIds.has(r.showId)) && r.poster && r.title), `want ${city}: every row is a real show or tour with a poster`);
   assert(rows.every(r => !mobile.some(s => s.id === r.showId && (s.cat === undefined || s.cat === 'broadway'))), `want ${city}: no Broadway production`);
 }
+// Tours added after the last audit-tour-art.js run fall back to Broadway art (BRO-6914 item 4): flag them.
+try {
+  const audited = read('src/config/onboarding-tour-art.json'), tourDefs = read('data/shows.json').shows.filter(x => x.category === 'tour');
+  const unaudited = tourDefs.filter(x => !(x.id in audited) && x.status !== 'closed').map(x => x.id);
+  if (unaudited.length) console.warn(`::warning::tours not yet art-audited (run node scripts/audit-tour-art.js): ${unaudited.join(', ')}`);
+} catch (e) { if (e.code !== 'ENOENT') throw e; /* shows.json is gitignored and may be absent */ }
 const tourCities = cities.filter(c => c.kind === 'tour');
 assert(tourCities.every(c => typeof c.stops === 'number'), 'every touring city carries its stop count');
 assert(tourCities.filter(c => hits[c.id]).length >= tourCities.length * 0.9, '>=90% of touring cities have their own Seen list');

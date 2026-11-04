@@ -4,7 +4,8 @@
  * (/social-post), built from a template and posted only after the owner approves
  * the exact image and captions.
  *
- *   node scripts/social-autopost/brief.js --preview --template=compare --a=ID --b=ID [--hook="..."]
+ *   node scripts/social-autopost/brief.js --preview --template=compare|moved --a=ID --b=ID [--hook="..."]
+ *       (moved: the same show reopened at a new theatre in one city)
  *       Builds the card and the five captions, hosts the image, stores the manifest
  *       in Supabase and prints the image URL, the captions and the brief's hash.
  *       Add --local to render and print only (nothing hosted or stored).
@@ -47,12 +48,12 @@ async function preview() {
     if (!s) throw new Error(`${id}: not in data/shows.json`);
     return s;
   };
-  const built = briefs.buildCompare({ descA: run.describe(find(arg('a')), ctx), descB: run.describe(find(arg('b')), ctx), hook: arg('hook') || '', now });
+  const built = briefs.buildBrief(template, { descA: run.describe(find(arg('a')), ctx), descB: run.describe(find(arg('b')), ctx), hook: arg('hook') || '', now });
   const { older, newer } = built;
 
   const outDir = arg('out') || path.join(require('os').tmpdir(), 'social-brief');
   fs.mkdirSync(outDir, { recursive: true });
-  const png = path.join(outDir, `compare-${older.show.id}--${newer.show.id}.png`);
+  const png = path.join(outDir, `${template}-${older.show.id}--${newer.show.id}.png`);
   try {
     await run.renderCompareFor(built, ctx, png);
   } finally {
@@ -70,7 +71,7 @@ async function preview() {
   // Everything the workflow posts, and nothing it does not: the hash covers it all.
   const manifest = {
     v: 1, template, ids: [older.show.id, newer.show.id], older: older.show.id, newer: newer.show.id,
-    hook: (arg('hook') || '').trim(), captions: built.captions, facts: built.facts, delta: built.delta, imageUrl,
+    hook: (arg('hook') || '').trim(), ...(template === 'moved' ? { olderLabel: briefs.olderLabelFor(template, older.show) } : {}), captions: built.captions, facts: built.facts, delta: built.delta, imageUrl,
   };
   const hash = briefs.hashManifest(manifest);
   await putBriefFile(hash, 'manifest.json', manifest);

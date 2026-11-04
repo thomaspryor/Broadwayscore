@@ -64,9 +64,9 @@ export default function FooterExploreCards() {
     </Link>
   ));
   const operaCard = (
-    <Link key="opera" href="/opera" className="flex-auto p-3 sm:p-4 rounded-xl border border-white/[0.08] bg-white/[0.02] hover:border-amber-400/30 hover:bg-amber-400/[0.03] transition-colors text-center group">
+    <Link key="opera" href="/opera" className="flex-auto p-3 sm:p-4 rounded-xl border border-white/[0.08] bg-white/[0.02] hover:border-[#e0485f]/30 hover:bg-[#e0485f]/[0.03] transition-colors text-center group">
       <div className="text-xl mb-1">&#127914;</div>
-      <div className="text-sm font-bold text-white group-hover:text-amber-400 transition-colors whitespace-nowrap">Opera</div>
+      <div className="text-sm font-bold text-white group-hover:text-[#f0627a] transition-colors whitespace-nowrap">Opera</div>
       <div className="text-[10px] text-fg-muted">Met Opera</div>
     </Link>
   );

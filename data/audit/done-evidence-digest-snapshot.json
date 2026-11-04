@@ -1,17 +1,7 @@
 {
-  "generatedAt": "2026-11-03T09:45:24.757Z",
-  "bannerText": "146/161 Done(14d) verified on main · 7 FAILED · 0 vacuous · 14 stuck-but-done · 2 mis-armed, needs re-arming (BRO-6269, BRO-6804)",
+  "generatedAt": "2026-11-04T02:00:06.342Z",
+  "bannerText": "86/200 Done(14d) verified on main · 11 FAILED · 0 vacuous · 6 stuck-but-done · 8 mis-armed, needs re-arming (BRO-6768, BRO-6681, BRO-6269, +5 more) — PARTIAL RUN: 82 checks not re-run (ran out of time), so these numbers understate the board",
   "items": [
-    {
-      "title": "FAILED BRO-6323 — BSC Daily: main test.yml STILL red — auto-dispatch did not resolve it",
-      "detail": "[check-health-row-absent] FAIL: \"main test.yml STILL red — auto-dispatch did not resolve it\" still listed in the 2026-11-03T09:35:39.349Z health snapshot",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6323/bsc-daily-main-testyml-still-red-auto-dispatch-did-not-resolve-it"
-    },
-    {
-      "title": "FAILED BRO-5749 — BSC Daily: Commercial model drift",
-      "detail": "[check-health-row-absent] --live FAIL: \"Commercial model drift\" still flagged (warn): modelDesignationFlag contradictions up 1 (2 → 3)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5749/bsc-daily-commercial-model-drift"
-    },
     {
       "title": "FAILED BRO-6788 — UX audit: The 'Add a show' button in 'mobile__watchlist_grid' doesn't clearly indicate its interactivity.",
       "detail": "FAIL UX resolution: LINEAR_API_KEY not set in .env or environment",
@@ -21,6 +11,11 @@
       "title": "FAILED BRO-6787 — UX audit: Inconsistent button label for adding a show. Uses '+ Add show' on 'desktop__watchlist_grid' and '+ Create a li",
       "detail": "FAIL UX resolution: LINEAR_API_KEY not set in .env or environment",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-6787/ux-audit-inconsistent-button-label-for-adding-a-show-uses-add-show-on"
+    },
+    {
+      "title": "FAILED BRO-6779 — BSC Daily: Quality: star-vs-score mismatch",
+      "detail": "[check-health-row-absent] FAIL: \"Quality: star-vs-score mismatch\" still listed in the 2026-11-04T01:48:45.535Z health snapshot",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6779/bsc-daily-quality-star-vs-score-mismatch"
     },
     {
       "title": "FAILED BRO-6767 — Opera: past premiere-run pages + reviews for current Met revivals",
@@ -33,15 +28,20 @@
       "url": "https://linear.app/broadway-scorecard/issue/BRO-6766/opera-expansion-b-premieres-at-major-houses-beyond-the-met-roh-first"
     },
     {
-      "title": "FAILED BRO-6464 — BSC Daily: Live-data test failing: no class-A cross-market leaks (a show showing another production's reviews) (scripts/verify-contamination-gate.test.mjs)",
-      "detail": "[check-health-row-absent] FAIL: \"Live-data test failing: no class-A cross-market leaks (a show showing another production's reviews) (scripts/verify-cont\" still listed in the 2026…",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6464/bsc-daily-live-data-test-failing-no-class-a-cross-market-leaks-a-show"
+      "title": "FAILED BRO-6706 — BSC Daily: Data quality: revival-unverified lifetime sweep",
+      "detail": "[check-health-row-absent] FAIL: \"Data quality: revival-unverified lifetime sweep\" still listed in the 2026-11-04T01:48:45.535Z health snapshot",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6706/bsc-daily-data-quality-revival-unverified-lifetime-sweep"
     },
     {
-      "title": "STUCK BRO-6386 — Time-bomb test armed: tests/unit/opening-night-orchestrator-cron.test.mjs — an earlier all-market run started 5h ago does not cover us",
-      "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6386/time-bomb-test-armed-testsunitopening-night-orchestrator-crontestmjs"
+      "title": "FAILED BRO-6594 — Auto-fix (second try): Opening Night Poller Failed",
+      "detail": "(gh not authenticated; read runs from the public GitHub API) opening-night-poller.yml: MISMATCH — most recent run concluded 'in_progress', expected 'success' (https://github.com/t…",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6594/auto-fix-second-try-opening-night-poller-failed"
+    },
+    {
+      "title": "FAILED BRO-6460 — BSC Daily: Codex runner: landing cards",
+      "detail": "[check-health-row-absent] FAIL: \"Codex runner: landing cards\" still listed in the 2026-11-04T01:48:45.535Z health snapshot",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6460/bsc-daily-codex-runner-landing-cards"
     }
   ],
-  "moreCount": 13
+  "moreCount": 9
 }

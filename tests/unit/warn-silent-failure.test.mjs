@@ -62,6 +62,9 @@ for (const source of sources) {
 
   test(`${source}: short, empty and failed fetches stay quiet`, async t => {
     for (const content of ['x'.repeat(4999), '', null, new Error('network failure')]) {
+      // BRO-6927: a failed Muck Rack page 1 throws so the coverage audit records
+      // a failed source instead of a clean "0 missing".
+      if (source === 'muckrack') { await assert.rejects(run(t, source, [content]), /muckrack/); continue; }
       const result = await run(t, source, [content]);
       assert.deepEqual(result.articles, []);
       assert.equal(result.warnings.length, 0);

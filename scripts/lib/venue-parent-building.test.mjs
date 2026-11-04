@@ -67,3 +67,40 @@ test('Other Palace studio does not list itself; National Theatre of Scotland is 
   assert.match(buildParentBuildingNote('The Other Palace - Studio', 'off-west-end'), /other stages: The Other Palace Main Auditorium\)/);
   assert.deepEqual(stagesOfBuilding('National Theatre of Scotland'), []);
 });
+
+// BRO-6945: NYC buildings, real shows.json venue strings.
+test('NYC stages resolve to their building (real venue strings)', () => {
+  const cases = [
+    ['Vivian Beaumont Theater', 'Lincoln Center Theater'], ['Lincoln Center Theater - Mitzi E. Newhouse Theater', 'Lincoln Center Theater'],
+    ['Mitzi E. Newhouse Theatre', 'Lincoln Center Theater'], ['LCT3 at the Claire Tow Theater', 'Lincoln Center Theater'],
+    ['The Public Theater – LuEsther Hall', 'The Public Theater'], ['Public Theater/Newman Theater', 'The Public Theater'],
+    ['Martinson Theater at Joseph Papp Public Theater', 'The Public Theater'], ['Public Theater/Delacorte Theater', 'The Public Theater'],
+    ['The Irene Diamond Stage at the Pershing Square Signature Center', 'Pershing Square Signature Center'],
+    ['The Pershing Square Signature Center/Alice Griffin Jewel Box Theatre', 'Pershing Square Signature Center'],
+    ['The Romulus Linney Courtyard Theatre at The Pershing Square Signature Center', 'Pershing Square Signature Center'],
+    ['Atlantic Theater Company - Linda Gross Theater', 'Atlantic Theater Company'], ['Atlantic Stage 2', 'Atlantic Theater Company'],
+    ['Atlantic Theater Company/Stage 2', 'Atlantic Theater Company'],
+    ['MCC Theater – Newman Mills Theater', 'Robert W. Wilson MCC Theater Space'],
+    ['Susan & Ronald Frankel Theater at the Robert W. Wilson MCC Theatre Space - NYC', 'Robert W. Wilson MCC Theater Space'],
+    ['The Griffin Theater at The Shed', 'The Shed'],
+  ];
+  for (const [venue, parent] of cases) assert.equal(parentBuildingOf(venue, 'broadway')?.parent, parent, venue);
+});
+
+test('NYC buildings themselves and unrelated venues are not stages; London unaffected', () => {
+  for (const v of ['The Public Theater', 'Public Theater', 'Pershing Square Signature Center', 'Signature Center', 'Atlantic Theater Company',
+    'MCC Theater', 'The Shed', 'Lincoln Center Theater', 'Second Stage Theater/Tony Kiser Theater', 'New York City Center – Stage II',
+    'The Laura Pels Theatre at the Harold and Miriam Steinberg Center for Theatre', 'Signature Theatre, Arlington, VA', 'Marriott Theatre, Lincolnshire, IL'])
+    assert.equal(parentBuildingOf(v, 'broadway'), null, v);
+  assert.equal(parentBuildingOf('Vivian Beaumont Theater', 'west-end'), null);
+  assert.equal(parentBuildingOf('Vivian Beaumont Theater', 'regional'), null);
+  assert.equal(parentBuildingOf('Olivier Theatre', 'west-end')?.parent, 'National Theatre');
+});
+
+test('NYC reverse lookup lists all stages; note does not list venue as its own other stage', () => {
+  assert.equal(stagesOfBuilding('The Public Theater', 'off-broadway').length, 7);
+  assert.deepEqual(stagesOfBuilding('Lincoln Center Theater', 'broadway').length, 3);
+  const n = buildParentBuildingNote('Vivian Beaumont Theater', 'broadway');
+  assert.match(n, /one stage inside Lincoln Center Theater/);
+  assert.doesNotMatch(n, /other stages:.*Vivian/);
+});

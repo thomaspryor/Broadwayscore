@@ -14,9 +14,9 @@
 const crypto = require('crypto');
 const C = require('./config');
 const { foldDiacritics } = require('../lib/title-match');
-const { buildCompareCaptions, validateHook, strayNumbers, productionLabel, CITY, LIMITS } = require('./captions');
+const { buildCompareCaptions, buildMovedCaptions, validateHook, strayNumbers, productionLabel, venueOf, CITY, LIMITS } = require('./captions');
 
-const TEMPLATES = ['compare'];
+const TEMPLATES = ['compare', 'moved'];
 const HASH_RE = /^[0-9a-f]{12}$/;
 const DAY_MS = 864e5;
 const MIN_MS = 60e3;
@@ -59,6 +59,28 @@ function orderCompare(a, b) {
   return startDate(a) <= startDate(b) ? { older: a, newer: b } : { older: b, newer: a };
 }
 
+/**
+ * Moved template (BRO-6934): the same production in the same city, reopened at a new theatre.
+ * The older run must have closed before the newer one opened. Returns {older, newer} or throws.
+ */
+function orderMoved(a, b) {
+  if (!a || !b) throw new Error('moved needs two shows that exist in shows.json');
+  if (a.id === b.id) throw new Error('moved needs two different productions');
+  for (const s of [a, b]) if (!CITY[s.category]) throw new Error(`${s.id}: moved covers Broadway, Off-Broadway, West End and Off-West End only (got ${s.category})`);
+  if (normTitle(a.title) !== normTitle(b.title)) throw new Error(`moved needs the same title at both theatres ("${a.title}" vs "${b.title}")`);
+  if (CITY[a.category] !== CITY[b.category]) throw new Error(`moved needs two productions in one city (${CITY[a.category]} and ${CITY[b.category]}); use compare for two cities`);
+  if (!startDate(a) || !startDate(b)) throw new Error('moved needs an opening or previews date for both productions');
+  if (!venueOf(a) || !venueOf(b)) throw new Error('moved needs a venue for both productions');
+  if (normTitle(venueOf(a)) === normTitle(venueOf(b))) throw new Error(`moved needs two different theatres (both are at the ${venueOf(a)})`);
+  const [older, newer] = startDate(a) <= startDate(b) ? [a, b] : [b, a];
+  const newerFirst = String(newer.previewsStartDate || newer.openingDate || '').slice(0, 10); // previews count: a run that overlaps the new one's previews is not a move
+  const closed = older.closingDate ? String(older.closingDate).slice(0, 10) <= newerFirst : older.status === 'closed';
+  if (!closed) throw new Error(`moved needs the older run (${older.id}) to have closed before the newer one (${newer.id}) opened`);
+  return { older, newer };
+}
+
+const ORDER = { compare: orderCompare, moved: orderMoved };
+
 function isSoFar(show, now) {
   if (!show.openingDate) return false;
   const opened = Date.parse(`${String(show.openingDate).slice(0, 10)}T00:00:00Z`);
@@ -73,7 +95,8 @@ function factsOf(descs) {
 /** The only numbers a caption may carry: the facts, the gap, each production's year and digits in the title. */
 function allowedNumbers(shows, facts, delta) {
   return [...Object.values(facts).flatMap(f => [f.score, f.reviewCount]), delta,
-    ...shows.map(s => startDate(s).slice(0, 4)), ...shows.flatMap(s => String(s.title || '').match(/\d+/g) || [])];
+    ...shows.map(s => startDate(s).slice(0, 4)), ...shows.flatMap(s => String(s.title || '').match(/\d+/g) || []),
+    ...shows.flatMap(s => String(s.venue || '').match(/\d+/g) || [])]; // venue digits (Studio 54, Stage 42) are names, not facts
 }
 
 /** Facts that differ between the manifest and the site now, as readable lines. */
@@ -88,17 +111,20 @@ function factChanges(was, now) {
 }
 
 /**
- * Everything a compare post shows, from two run.js describe() results.
+ * Everything a brief post shows, from two run.js describe() results.
  * Throws when the hook breaks the rules or a caption carries a number that is not a fact.
+ * `template` picks the pairing rules, the captions and how the card labels each side.
  */
-function buildCompare({ descA, descB, hook = '', now }) {
-  const { older: olderShow } = orderCompare(descA.show, descB.show);
+function buildBrief(template, { descA, descB, hook = '', now }) {
+  if (!ORDER[template]) throw new Error(`unknown template ${template}`);
+  const { older: olderShow } = ORDER[template](descA.show, descB.show);
   const [older, newer] = olderShow === descA.show ? [descA, descB] : [descB, descA];
   const hookProblem = validateHook(hook);
   if (hookProblem) throw new Error(hookProblem);
   const side = d => ({ show: d.show, score: d.score, reviewCount: d.reviewCount, soFar: isSoFar(d.show, now) });
   const p = { newer: side(newer), older: side(older), hook: hook ? hook.trim() : '' };
-  const captions = buildCompareCaptions(p);
+  const moved = template === 'moved';
+  const captions = (moved ? buildMovedCaptions : buildCompareCaptions)(p);
   const delta = Math.abs(newer.score - older.score);
   const facts = factsOf([older, newer]);
   const allowed = allowedNumbers([older.show, newer.show], facts, delta);
@@ -111,9 +137,18 @@ function buildCompare({ descA, descB, hook = '', now }) {
   }
   const card = {
     title: newer.show.title, market: newer.show.category, delta,
-    sides: [older, newer].map(d => ({ market: d.show.category, label: productionLabel(d.show), score: d.score, tierId: d.tierId, reviewCount: d.reviewCount, soFar: isSoFar(d.show, now) })),
+    sides: [older, newer].map(d => ({ market: d.show.category, label: moved ? venueOf(d.show) : productionLabel(d.show), score: d.score, tierId: d.tierId, reviewCount: d.reviewCount, soFar: isSoFar(d.show, now) })),
+    ...(moved ? { kicker: 'Same show, new theatre', sameText: 'The same score at both theatres' } : {}),
   };
   return { older, newer, captions, card, delta, facts };
+}
+
+const buildCompare = args => buildBrief('compare', args);
+const buildMoved = args => buildBrief('moved', args);
+
+/** The label that tells the older run's captions apart from another pair's: "London 2024" for compare, the venue for moved. */
+function olderLabelFor(template, olderShow) {
+  return template === 'moved' ? venueOf(olderShow) : productionLabel(olderShow);
 }
 
 /** Ledger entries that block this brief: the same hash ever, or the same pair in 30 days. */
@@ -155,5 +190,5 @@ function pickBriefSlot({ now, earliest = 0, tz, shows, taken, inWindow, nextWind
 
 module.exports = {
   TEMPLATES, HASH_RE, PAIR_DEDUPE_DAYS, SO_FAR_DAYS, MAX_SLOT_DAYS,
-  stableStringify, hashManifest, pairKey, orderCompare, isSoFar, factsOf, allowedNumbers, factChanges, buildCompare, briefConflicts, pickBriefSlot,
+  stableStringify, hashManifest, pairKey, orderCompare, orderMoved, ORDER, olderLabelFor, isSoFar, factsOf, allowedNumbers, factChanges, buildBrief, buildCompare, buildMoved, briefConflicts, pickBriefSlot,
 };

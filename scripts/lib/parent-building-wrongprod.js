@@ -35,4 +35,53 @@ function parentBuildingFlagCandidate(show, record) {
   return { candidate: true, parent: p.parent };
 }
 
-module.exports = { parentBuildingFlagCandidate };
+const DAY = 86400000;
+const PRE_DAYS = 7;   // press can run ahead of the first preview
+const POST_DAYS = 14; // late reviews after closing
+// Reason wording saying the review is of a DIFFERENT production, not just a
+// building-name mismatch. Metadata alone cannot overrule these.
+const OTHER_PRODUCTION_RE = /\b(tour|touring|revival|previous|earlier|prior|original|film|movie|different|another|fiasco|anticipatory|gielgud|transfer|workshop|tryout|concert|festival|regional)(?![a-z])/i;
+
+function _ms(s) {
+  const t = typeof s === 'string' && /^\d{4}-\d{2}-\d{2}/.test(s) ? Date.parse(s.slice(0, 10)) : NaN;
+  return Number.isFinite(t) ? t : NaN;
+}
+
+/**
+ * BRO-6946: triage a candidate whose stored text is too short for the content
+ * verifier. Metadata can NOT clear a flag (a building name in the reason is
+ * often not the real defect: wrong show, TV interview, other venue), so this
+ * only picks which candidates are worth fetching the full text for. 'hold' =
+ * the metadata already points at a different production; leave flagged.
+ * @returns {{ decision: 'fetch'|'hold', why: string }}
+ */
+function shortCandidateDecision(show, record) {
+  if (!record || typeof record.url !== 'string' || !/^https?:\/\//.test(record.url)) return { decision: 'hold', why: 'no url to fetch' };
+  const start = _ms(show && (show.previewsStartDate || show.openingDate));
+  const close = _ms(show && show.closingDate);
+  const pub = _ms(record.publishDate);
+  if (!Number.isNaN(pub) && !Number.isNaN(start)
+      && (pub < start - PRE_DAYS * DAY || (!Number.isNaN(close) && pub > close + POST_DAYS * DAY))) return { decision: 'hold', why: 'publishDate outside production window' };
+  const reason = _reasonText(record);
+  if (OTHER_PRODUCTION_RE.test(reason)) return { decision: 'hold', why: 'flag reason describes a different production' };
+  const years = (reason.match(/\b(?:19|20)\d\d\b/g) || []).map(Number);
+  if (!Number.isNaN(start)) {
+    const y0 = new Date(start).getUTCFullYear();
+    const y1 = Number.isNaN(close) ? new Date().getUTCFullYear() : new Date(close).getUTCFullYear();
+    if (years.some((y) => y < y0 || y > y1)) return { decision: 'hold', why: 'flag reason cites a year outside the run' };
+  }
+  return { decision: 'fetch', why: 'publishDate not contradicting the run; reason names only the building' };
+}
+
+/**
+ * Strict clear predicate for a content-verifier result: explicit booleans only
+ * (the verifier defaults missing fields to success, and the string "true" is
+ * !== true), real LLM verdict, not low confidence.
+ */
+function isCleanVerdict(cv) {
+  return !!cv && cv.isValid === true && cv.wrongProduction === false && cv.wrongArticle !== true
+    && cv.isFilmTv !== true && (cv.confidence === 'high' || cv.confidence === 'medium')
+    && typeof cv.verifiedBy === 'string' && cv.verifiedBy.startsWith('llm');
+}
+
+module.exports = { parentBuildingFlagCandidate, shortCandidateDecision, isCleanVerdict };

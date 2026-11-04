@@ -185,8 +185,12 @@ test('the dateless-hold fetch is cooled down and ends once a date or no url', ()
 
 test('collect-review-texts skips SERP rediscovery for a dateless hold', () => {
   const src = fs.readFileSync(new URL('../collect-review-texts.js', import.meta.url), 'utf8');
-  assert.match(src, /const needsSerpDiscovery = !review\._datelessDateRetry/);
+  // BRO-6924: the decision lives in serp-discovery-gate.js; the collector must call it.
+  assert.match(src, /const needsSerpDiscovery = needsSerpUrlDiscovery\(/);
   assert.match(src, /_datelessDateRetry: data\._datelessDateRetry === true/);
+  const { needsSerpUrlDiscovery } = require('./serp-discovery-gate.js');
+  assert.equal(needsSerpUrlDiscovery({ _datelessDateRetry: true, incompleteReason: 'no_url' }), false);
+  assert.equal(needsSerpUrlDiscovery({ _datelessDateRetry: true, fabricatedEntry: true }), false);
 });
 
 // ── Wrong page served for the right url (Golden Boy BroadwayWorld) ──

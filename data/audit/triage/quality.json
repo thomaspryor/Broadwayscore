@@ -1,7 +1,7 @@
 {
   "system": "quality",
   "status": "warn",
-  "lastChecked": "2026-11-03T09:35:35.556Z",
+  "lastChecked": "2026-11-04T01:48:36.002Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -13,23 +13,23 @@
     },
     {
       "name": "Quality: star-vs-score mismatch",
-      "status": "pass",
-      "message": "No new star/score contradictions (31 known/baselined)"
+      "status": "warn",
+      "message": "1 NEW review(s) whose explicit rating contradicts the score (worst: american-buffalo-west-end-2015 Evening Standard 1/5→20 vs LLM 75, gap 55)"
     },
     {
       "name": "Quality: scored review ratio",
       "status": "pass",
-      "message": "96.5% scored (48265/50012)"
+      "message": "98.1% scored (48942/49901)"
     },
     {
       "name": "Quality: corpus drift",
       "status": "pass",
-      "message": "26 audit(s) drifting, each reported on its own card or the digest FYI line (5h ago)"
+      "message": "27 audit(s) drifting, each reported on its own card or the digest FYI line (1h ago)"
     },
     {
       "name": "Quality: DMARC deliverability",
       "status": "pass",
-      "message": "17847 messages, 0 auth failures (p=reject)"
+      "message": "17869 messages, 0 auth failures (p=reject)"
     },
     {
       "name": "Quality: missing contentTier",
@@ -39,7 +39,7 @@
     {
       "name": "Quality: outlet domain moves",
       "status": "pass",
-      "message": "No probable domain moves in 291 unregistered host(s)"
+      "message": "No probable domain moves in 293 unregistered host(s)"
     },
     {
       "name": "Quality: Show Score gap",
@@ -49,12 +49,12 @@
     {
       "name": "Quality: outlet stub rate",
       "status": "pass",
-      "message": "No broken-extractor signature in 1837 outlet(s), 79762 review(s)"
+      "message": "No broken-extractor signature in 1840 outlet(s), 79950 review(s)"
     },
     {
       "name": "Quality: outlet invalid-content rate",
-      "status": "warn",
-      "message": "1 outlet(s) show a broken-extractor signature (worst: portsmouth-news — 4/4 recent invalid, 100% vs 0% baseline)"
+      "status": "pass",
+      "message": "No broken-extractor signature in 1840 outlet(s), 79950 review(s)"
     },
     {
       "name": "Quality: standingCoverage drift",
@@ -69,7 +69,7 @@
     {
       "name": "Quality: outlet-heartbeat red flags",
       "status": "pass",
-      "message": "148 outlet×market rows checked, none NEW silent 2+ consecutive weeks (31 known/baselined, 14h ago)"
+      "message": "148 outlet×market rows checked, none NEW silent 2+ consecutive weeks (31 known/baselined, 1d ago)"
     },
     {
       "name": "Quality: outlet feed staleness",

@@ -174,3 +174,34 @@ describe('cv-wrongproduction-unhandled handled classes (BRO-5437)', () => {
     assert.equal(check.handledReason(d, SHOW, '/nonexistent/x.json'), null);
   });
 });
+
+// BRO-6459: the flagged file's outlet+critic matched a row that a sibling file
+// (same url, critic not yet re-credited) actually shipped. Not a bypass.
+describe('cv-wrongproduction-unhandled sibling-url shipped row (BRO-6459)', () => {
+  const show = { ...SHOW, id: 'sibling-url-fixture-2026' };
+  const run = (flaggedUrl, shippedUrl, siblingUrl) => {
+    const root = fs.mkdtempSync(path.join(os.tmpdir(), 'cv-wp-sibling-'));
+    try {
+      const dir = path.join(root, show.id);
+      fs.mkdirSync(dir, { recursive: true });
+      const flagged = file('amny', { url: flaggedUrl, criticName: 'Matt Windman', wrongProduction: true,
+        contentVerification: { wrongProduction: true, confidence: 'high', reasoning: 'Other staging.', issues: [] } });
+      const sibling = { showId: show.id, outletId: 'amny', criticName: 'Unknown', url: siblingUrl, publishDate: '2026-04-21' };
+      fs.writeFileSync(path.join(dir, 'amny--matt-windman.json'), JSON.stringify(flagged));
+      fs.writeFileSync(path.join(dir, 'amny--unknown.json'), JSON.stringify(sibling));
+      const row = { showId: show.id, outletId: 'amny', criticName: 'Matt Windman', url: shippedUrl };
+      return check.run(show, { reviewTextsRoot: root, reviewsDoc: { [show.id]: [row] }, setAsideHandled: true });
+    } finally { fs.rmSync(root, { recursive: true, force: true }); }
+  };
+
+  it('sets aside a flagged file whose outlet+critic row was shipped by a sibling url', () => {
+    const r = run('https://example.com/old-2017', 'https://example.com/new-2026', 'https://example.com/new-2026');
+    assert.equal(r.severity, 'ok');
+    assert.equal(r.details.handledCounts['not-shipped'], 1);
+  });
+
+  it('still reports the flagged file when its own url is the shipped row', () => {
+    const r = run('https://example.com/same', 'https://example.com/same', 'https://example.com/other');
+    assert.equal(r.severity, 'error');
+  });
+});

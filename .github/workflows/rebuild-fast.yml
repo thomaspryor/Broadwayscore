@@ -286,6 +286,15 @@ jobs:
       # wrapper guarantees detail+index never regenerate apart again; this step
       # stages both in the has_changes commit below.
       # See cloud-memory/feedback_mobile_index_committed_artifact.md.
+      # BRO-6925: tag newly opened shows (rules + LLM over the synopsis) so genre coverage keeps up.
+      # Advisory: a failure leaves the tags as committed. Runs before the mobile index so `gn` sees them.
+      - name: Tag genres for new shows
+        if: always() && steps.rebuild.outcome == 'success' && steps.staleness.outputs.safe_to_publish == 'true'
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: node scripts/tag-genres.js --limit=60
+        continue-on-error: true
+
       - name: Regenerate mobile artifacts (detail + index)
         if: always() && steps.rebuild.outcome == 'success' && steps.staleness.outputs.safe_to_publish == 'true'
         run: bash scripts/generate-mobile-artifacts.sh
@@ -405,6 +414,11 @@ jobs:
             PUBLIC_CHANGED=true
             echo "Changes detected in public show JSONs"
             git diff --stat public/data/shows/ | tail -5
+          fi
+          # BRO-6925: newly written genre tags must persist even when no show JSON changed.
+          if [ -n "$(git status --porcelain src/config/genre-tags.json 2>/dev/null)" ]; then
+            PUBLIC_CHANGED=true
+            echo "Changes detected in src/config/genre-tags.json"
           fi
           # BRO-3598: the daily exclusion totals feed the digest trend; persist
           # them even on a no-diff rebuild (the file only changes when a count does).
@@ -528,6 +542,7 @@ jobs:
           git add public/data/stats-canon.json public/data/stats-reviews.json 2>/dev/null || true
           # iOS quiz onboarding data (BRO-6647), regenerated after the mobile index.
           git add public/data/onboarding-cities.json public/data/onboarding-hits.json 2>/dev/null || true
+          git add src/config/genre-tags.json 2>/dev/null || true  # BRO-6925
           # Lock audit-trail snapshot (Lost Boys 2026-04-27 Gap #6).
           # Without this stage step, /admin/locks SSR ships an empty page —
           # locks.json regenerates locally each rebuild but never lands in

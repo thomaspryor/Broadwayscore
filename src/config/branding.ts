@@ -43,6 +43,14 @@ export const MARKET_BRAND = {
     emailColor: '#d4a574',
     gradientClass: 'text-gradient',
   },
+  /** Opera Scorecard (BRO-6791): rose-red, matching the social kit (scripts/generate-opera-brand-kit.js RED). */
+  opera: {
+    logoPrefix: 'Opera',
+    logoSuffix: 'Scorecard',
+    siteName: 'Opera Scorecard',
+    emailColor: '#e0485f',
+    gradientClass: 'bg-gradient-to-r from-[#f0627a] to-[#c4213f] bg-clip-text text-transparent',
+  },
 } as const;
 
 export type MarketKey = keyof typeof MARKET_BRAND;
