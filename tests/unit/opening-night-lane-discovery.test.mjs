@@ -1156,3 +1156,12 @@ test('BRO-6872: Google News items dated outside the night window are never decod
   await d.googleNewsAdapter({ decodeImpl: async (l) => { dated.push(l); return null; }, maxUnwrap: 0, maxDecode: 5 }).discover({ show: SHOW, night: NIGHT, fetchText: track.fetchText });
   assert.deepEqual(dated.sort(), [GN_LINK, UNDATED].sort());
 });
+
+test('BRO-6872: an old Google date no longer claims a URL, so a feed sighting of the same review in the window is admitted', async () => {
+  const gn = `<rss><channel><item><title>Other Desert Cities review - The New York Times</title><link>${GN_LINK}</link><pubDate>Tue, 11 Jan 2011 03:00:00 GMT</pubDate><source url="https://www.nytimes.com">The New York Times</source></item></channel></rss>`;
+  const feed = `<rss><channel><item><title>Review: Other Desert Cities</title><link>${NYT_RAW}</link><pubDate>Mon, 19 Oct 2026 03:00:00 GMT</pubDate></item></channel></rss>`;
+  const FEED = 'https://rss.nytimes.com/services/xml/rss/nyt/Theater.xml';
+  const r = await d.runDiscoveryPass({ show: SHOW, night: NIGHT, now: T0 + 2 * HOUR, startedAt: T0, ...pages({ [GN_FEED_URL]: gn, [FEED]: feed }),
+    adapters: [d.googleNewsAdapter({ decodeImpl: async () => NYT_RAW, maxUnwrap: 0, maxDecode: 5 }), d.rssAdapter({ feeds: [{ url: FEED, outletId: 'nytimes', name: 'NYT' }] })] });
+  assert.deepEqual(r.admitted.map((a) => a.key), [NYT], JSON.stringify(r.rejected));
+});

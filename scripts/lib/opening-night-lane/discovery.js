@@ -842,11 +842,13 @@ function googleNewsAdapter({ maxUnwrap = 8, decodeImpl = null, maxDecode = 3 * m
           if (site) {
             if (!hostMatches(hostOf(sourceUrl), [site])) continue; // a site search keeps only that outlet's items
           } else if (!headlineNamesShow(title, show)) continue; // listing title, or a press title plus a listing word ("New Balance 860" is not 860)
-          seenLinks.add(link);
-          // Google's own date is the date the night window judges this find by (feedDateInfo below), so an item already
-          // outside the window is never opened: the School Girls replay's New York Sun review sat behind about 40 such
-          // items (2017 Variety, 2023 Guardian, unrelated Sun stories) and waited three passes for a decode (BRO-6872).
+          // An item Google dates outside the night window is never opened (BRO-6872). The School Girls replay's New York
+          // Sun review sat behind about 40 such items (2017 Variety, 2023 Guardian, unrelated Sun stories) and waited three
+          // passes for a decode. It also stops an old Google date from claiming a URL first: decoded, that find was kept
+          // over a later feed or section-index sighting and refused for good as outside-night-window, so the in-window
+          // sighting was never judged. Checked before seenLinks, so a skipped copy cannot shadow a same-link copy.
           if (outsideNightWindow(grab('pubDate'), night, timeZone)) continue;
+          seenLinks.add(link);
           items.push({ title, link, sourceUrl, pubDate: grab('pubDate'), tier: outletTier(outlet.outletId), siteQuery: !!site });
         }
       }
