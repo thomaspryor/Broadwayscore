@@ -21,18 +21,36 @@ const { archiveUrlOf, sameRoundupUrl } = require('./tr-reconcile');
 
 const COVERAGE_PATH = path.join(__dirname, '..', '..', 'data', 'audit', 'theatre-reviews-coverage.json');
 
-/** [{showId, roundupUrl}] -> claims usable by checkTrArchiveClaim. */
-function claimsFromCoverage(coverage) {
+/**
+ * [{showId, roundupUrl}] -> claims usable by checkTrArchiveClaim. aliasToId maps a renamed show's old id
+ * to its current one (shows.json `aliases`): BRO-6968 found 28 claims still under pre-rename ids
+ * (mass-west-end-2026 for mass-off-west-end-2026), which made each show's own round-up read as another
+ * show's. An unknown id is kept as-is (a deleted show's claim still marks the page as not this show's).
+ */
+function claimsFromCoverage(coverage, aliasToId = null) {
+  const canon = (id) => (aliasToId && aliasToId.get(id)) || id;
   return ((coverage && coverage.shows) || [])
     .filter((e) => e && e.showId && e.roundupUrl && !e.skipped) // skipped = guard-rejected / unfetched, not a trusted claim
-    .map((e) => ({ showId: e.showId, url: e.roundupUrl }));
+    .map((e) => ({ showId: canon(e.showId), url: e.roundupUrl }));
 }
 
+/** old id -> current id, from shows.json `aliases`. */
+function aliasMapFromShows(shows) {
+  const m = new Map();
+  for (const s of (Array.isArray(shows) ? shows : (shows && shows.shows)) || []) {
+    for (const a of (s && Array.isArray(s.aliases) ? s.aliases : [])) if (typeof a === 'string' && a !== s.id) m.set(a, s.id);
+  }
+  return m;
+}
+
+const SHOWS_PATH = path.join(__dirname, '..', '..', 'data', 'shows.json');
 const cache = new Map();
-function loadCoverageClaims(file = COVERAGE_PATH) {
+function loadCoverageClaims(file = COVERAGE_PATH, showsFile = SHOWS_PATH) {
   if (cache.has(file)) return cache.get(file);
   let claims = [];
-  try { claims = claimsFromCoverage(JSON.parse(fs.readFileSync(file, 'utf8'))); } catch (e) { console.warn(`[tr-archive-claim] no coverage claims (${e.code || e.message}); claim guard off`); }
+  let aliasToId = null;
+  try { aliasToId = aliasMapFromShows(JSON.parse(fs.readFileSync(showsFile, 'utf8'))); } catch (_) { /* no shows.json: claims keep their recorded ids */ }
+  try { claims = claimsFromCoverage(JSON.parse(fs.readFileSync(file, 'utf8')), aliasToId); } catch (e) { console.warn(`[tr-archive-claim] no coverage claims (${e.code || e.message}); claim guard off`); }
   cache.set(file, claims);
   return claims;
 }
@@ -72,4 +90,4 @@ function quarantineClaimedOrphans(archiveDir, orphanIds, claims, { dryRun = fals
   return out;
 }
 
-module.exports = { claimsFromCoverage, loadCoverageClaims, checkTrArchiveClaim, quarantineClaimedOrphans };
+module.exports = { claimsFromCoverage, aliasMapFromShows, loadCoverageClaims, checkTrArchiveClaim, quarantineClaimedOrphans };
