@@ -16,8 +16,8 @@ export const LIST_KEY = 'bsc_local_watchlist';
 const PROMPTED_KEY = 'bsc_local_watchlist_prompted_at';
 export const LOCAL_WATCHLIST_SYNC = 'local-watchlist-sync';
 
-/** The sign-in sheet appears right after this many local saves (the save happens first)… */
-export const PROMPT_AT_COUNT = 1;
+/** The sign-in sheet appears right after this many local saves (the save happens first). Saves before it get only a quiet inline note… */
+export const PROMPT_AT_COUNT = 3;
 /** …and not again for this long after it was shown. */
 export const PROMPT_COOLDOWN_MS = 3 * 24 * 60 * 60 * 1000;
 /** Bound the list so a runaway loop can't fill storage. */

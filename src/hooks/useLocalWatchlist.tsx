@@ -22,7 +22,7 @@ import {
  * used to open the sign-in modal.
  *
  * The save always happens first. Then the sign-in sheet opens (at most once per
- * cooldown); other saves get a toast with a "Keep it everywhere" sign-in link.
+ * cooldown); other saves get a toast with a quiet "Saved. Sign in to keep it on every device" note.
  * Funnel sources: 'watchlist_toast' (toast link) and 'watchlist_saved' (sheet).
  */
 export function useLocalWatchlist() {
@@ -68,13 +68,13 @@ export function useLocalWatchlist() {
     }
     showToast?.(
       <>
-        Added to your list.{' '}
+        Saved. Sign in to keep it on every device.{' '}
         <button
           type="button"
           onClick={() => showSignIn('watchlist_local', 'watchlist_toast')}
           className="underline font-semibold hover:text-white/90"
         >
-          Keep it everywhere
+          Sign in
         </button>
       </>,
       'success',
