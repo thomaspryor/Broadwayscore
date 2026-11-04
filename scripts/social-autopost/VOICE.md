@@ -15,6 +15,15 @@ This file governs captions written by code (`captions.js`), hooks written by a s
 7. On X and Bluesky the question outranks the caveat and the lead-in. Fit order: drop the hook, drop the caveat, shorten the title, shorten the question, and only then drop the question.
 8. Audience reception is a letter grade, never a number (owner rule 2026-11-03). Say "audiences give it an A-" or "audiences are Loving It", from `getAudienceGrade` with the site's minimum-review gate. Never "audiences give it 82" and never a critic-versus-audience point gap.
 
+## AI-written score posts (BRO-6959)
+
+Score posts are written by Claude (`ai-captions.js`, model `SOCIAL_WRITER`) from a ranked fact pool (`facts.js`) that code computes from the site data. Owner feedback that shaped it: template data sentences read as robotic, pull quotes are generic, and the post should show what only the site has (the weighted score, how the top-tier critics split, the full tally, a precise season rank, critics against audiences).
+
+9. Lead with the most unusual fact in the pool (season rank, a lopsided top-tier split, critics and audiences disagreeing, an earlier production that scored differently, a sell-out despite weak reviews). Always give the Critic Score with its label and, in the long post, the full tally.
+10. A rank keeps its qualifier ("of the 5 Broadway shows that opened since September 1 and have at least 8 reviews"). Say "top-tier critics", never "critics we weight most" or "papers". No quotes from reviews. Opinions belong to critics.
+11. Every post must say "Critic Score": it is how the duplicate-post guard finds a score post (`SCORE_SENTENCE`).
+12. Code refuses any draft with a number not in the pool (digits or words), an audience number, a dash, a stock opener or a slop word; GPT-5.5 then reads the post beside the facts and refuses any claim they don't support. One rewrite with the reasons, then the template caption posts instead. On/off: `AI_CAPTIONS.enabled` in `config.js` (a dispatched dry run with the `ai_captions` input drafts with it while it is off). Kill switch without a commit: repo variable `SOCIAL_AI_CAPTIONS_DISABLED=true`.
+
 ## Examples by post type
 
 **Score post** (tier or split picks the angle)

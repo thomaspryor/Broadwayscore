@@ -161,8 +161,16 @@ const BACKFILL = {
   minDaysLeft: 2, // a show closing sooner than this is not worth a post
 };
 
+// AI-written score posts (BRO-6959): Claude writes, code and GPT-5.5 check, the template stands in
+// on any failure (ai-captions.js). OFF until a dispatched dry run (input ai_captions) shows good
+// drafts; the repo variable SOCIAL_AI_CAPTIONS_DISABLED=true stops it without a commit.
+const AI_CAPTIONS = {
+  enabled: false,
+  runBudgetMs: 8 * 60e3, // all drafts in one run; after this every show gets the template
+};
+
 module.exports = {
-  WEEKLY_ROUNDUP, CLOSING_SOON, BACKFILL,
+  WEEKLY_ROUNDUP, CLOSING_SOON, BACKFILL, AI_CAPTIONS,
   MARKETS, marketOf, OPERA_HOUSE_TAGS, operaHouseTag, CHANNELS, CHANNEL_SETS, MARKET_CHANNEL_SET, BROADWAY_FALLBACK_CATEGORIES, HIGH_PROFILE, SCORE_FLOORS, COMPLETE_COVERAGE_FLOORS, ELIGIBLE_CATEGORIES, SKIP_TYPES,
   SCORE_POST_LOCAL_HOUR, SCORE_POST_WINDOW, CREATE_LEAD_MINUTES,
   SCORE_LOOKBACK_DAYS, FIRST_RUN_FRESH_DAYS, STAGGER_MINUTES, LONDON_COMPARE_LOOKBACK_DAYS,

@@ -33,6 +33,11 @@ on:
         required: false
         type: string
         default: ''
+      ai_captions:
+        description: 'Dry runs only: draft score posts with the AI writer even while it is off in config (BRO-6959)'
+        required: false
+        type: boolean
+        default: false
       self_test:
         description: 'Create a draft on every channel, then delete it (checks the Buffer connection)'
         required: false
@@ -127,6 +132,11 @@ jobs:
           INPUT_SELF_TEST: ${{ inputs.self_test }}
           INPUT_CANCEL: ${{ inputs.cancel_queued }}
           INPUT_BRIEF: ${{ inputs.brief }}
+          # BRO-6959: AI-written score posts. Keys on this step only (not npm ci or setup).
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          SOCIAL_AI_CAPTIONS_DISABLED: ${{ vars.SOCIAL_AI_CAPTIONS_DISABLED }}
+          SOCIAL_AI_CAPTIONS_FORCE: ${{ inputs.ai_captions }}
         run: |
           ARGS=(--out=/tmp/social-autopost)
           if [ -n "$INPUT_BRIEF" ]; then ARGS+=("--brief=$INPUT_BRIEF")

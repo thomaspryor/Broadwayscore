@@ -37,9 +37,7 @@ function pathMarker(show) {
  * the score sentence. buffer.js findExistingPost matches on them so the same post
  * is never created twice.
  */
-// The score post's sentence. No other post type may use it (social-autopost.test.mjs),
-// so a score post's dedupe never mistakes a brief post for itself, and the reverse.
-const SCORE_SENTENCE = /has a Critic Score of \d/;
+// SCORE_SENTENCE (defined below the other post types' sentences) is the score post's marker.
 
 function postMarkers(show) {
   return [pathMarker(show), SCORE_SENTENCE];
@@ -427,6 +425,13 @@ const monthDay = ymd => `${MONTHS[+String(ymd).slice(5, 7) - 1]} ${+String(ymd).
 const ROUNDUP_SENTENCE = /New openings, [A-Z][a-z]{2} \d{1,2} to [A-Z][a-z]{2} \d{1,2}, Critic Scores:/;
 const CLOSING_SENTENCE = / closes [A-Z][a-z]{2} \d{1,2}, with a Critic Score of \d/;
 
+// The score post's marker: "Critic Score" and none of the other post types' sentences. Template
+// posts say "has a Critic Score of 61"; AI-written posts (BRO-6959, ai-captions.js) word it freely
+// but must say "Critic Score", and the checks there refuse a draft that reads as another type.
+// No other post type may match it (social-autopost.test.mjs), so a score post's dedupe never
+// mistakes a brief, compare, roundup or closing post for itself, and the reverse.
+const SCORE_SENTENCE = new RegExp(`^(?![\\s\\S]*(?:${[COMPARE_SENTENCE, MOVED_SENTENCE, ROUNDUP_SENTENCE, CLOSING_SENTENCE].map(r => r.source).join('|')}))[\\s\\S]*\\bCritic Score\\b`);
+
 const SET_DOMAIN = { broadway: 'broadwayscorecard.com', 'west-end': 'westendscorecard.com' };
 const rootUrl = (set, network) => `https://${SET_DOMAIN[set]}/?utm_source=${network}&utm_medium=social&utm_campaign=roundup`;
 
@@ -553,7 +558,7 @@ function closingAllowedNumbers(p) {
 
 module.exports = {
   scoreQuestion, scoreAllowedNumbers, compareQuestion, roundupQuestion, closingQuestion,
-  buildCaptions, showUrl, postMarkers, LIMITS,
+  buildCaptions, showUrl, showPath, hashtagLine, postMarkers, LIMITS, SHORT_BUDGET,
   buildCompareCaptions, buildMovedCaptions, theVenue, movedQuestion, movedMarkers, venueOf, MOVED_SENTENCE, compareCaveat, compareMarkers, validateHook, audienceNumber, strayNumbers, productionLabel, pathMarker, CITY, SCORE_SENTENCE, COMPARE_SENTENCE,
   monthDay, ROUNDUP_SENTENCE, CLOSING_SENTENCE, roundupHeader, roundupMarkers, buildRoundupCaptions, roundupAllowedNumbers, closingMarkers, buildClosingCaptions, closingAllowedNumbers, SET_DOMAIN,
 };

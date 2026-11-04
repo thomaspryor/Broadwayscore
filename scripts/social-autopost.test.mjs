@@ -1054,7 +1054,8 @@ test('closing captions: facts only, every limit, no em dashes, closing marker, n
     assert.doesNotMatch(text, /[—–]/);
     assert.deepEqual(cap.strayNumbers(text, cap.closingAllowedNumbers(p)), [], net);
     if (net !== 'altText') for (const re of cap.closingMarkers(s)) assert.match(text, re, `${net} marker`);
-    assert.doesNotMatch(text, cap.SCORE_SENTENCE);
+    // Dedupe reads the post text only (buffer.js findExistingPost), never the image's alt text.
+    if (net !== 'altText') assert.doesNotMatch(text, cap.SCORE_SENTENCE);
     assert.doesNotMatch(text, cap.COMPARE_SENTENCE);
   }
   assert.match(caps.threads, /closes Nov 10, with a Critic Score of 84/);
@@ -1506,4 +1507,169 @@ test('moved: venue digits, a leading "The", very long venues and previews overla
   for (const net of ['twitter', 'bluesky']) assert.ok(xLength(net, long.captions[net]) <= LIMITS[net], `${net} over its limit`);
   // a run that overlaps the new run's previews is not a move
   assert.throws(() => briefs.orderMoved({ ...oldRun, closingDate: '2026-10-01' }, ny('Studio 54', { openingDate: '2026-10-16', previewsStartDate: '2026-09-20' })), /closed before/);
+});
+
+// ---- AI-written score posts (BRO-6959) ----
+const ai = require('./social-autopost/ai-captions.js');
+const facts = require('./social-autopost/facts.js');
+
+// Six Broadway openings this fall plus an older production of the first title. All offline.
+const AI_NOW = Date.parse('2026-11-04T15:00:00Z');
+function aiFixture() {
+  const rv = (n, v, t = 3) => Array.from({ length: n }, (_, i) => ({ o: `Outlet ${v} ${i}`, v, s: { rave: 95, positive: 80, mixed: 60, negative: 40 }[v], b: v[0].toUpperCase() + v.slice(1), t }));
+  const mk = (id, title, opening, cs, extra = {}) => ({
+    show: { id, slug: id, title, type: 'play', category: 'broadway', openingDate: opening, status: 'open' },
+    pub: { cs, rc: 20, rv: [...rv(2, 'positive', 1), ...rv(4, 'negative', 1), ...rv(1, 'rave'), ...rv(8, 'positive'), ...rv(5, 'mixed')], ...extra },
+  });
+  const rows = [
+    mk('good-men-2026', 'Good Men', '2026-10-29', 61, { au: { score: 88, sources: { mezzanine: { c: 400 } } }, bo: { tw: { c: 100 } } }),
+    mk('b-2026', 'Show B', '2026-09-20', 80), mk('c-2026', 'Show C', '2026-10-01', 75),
+    mk('d-2026', 'Show D', '2026-10-10', 70), mk('e-2026', 'Show E', '2026-10-20', 66),
+    mk('good-men-1989', 'Good Men', '1989-11-15', 85),
+  ];
+  const shows = rows.map(r => r.show), slim = Object.fromEntries(rows.map(r => [r.show.id, r.pub]));
+  const desc = { show: shows[0], score: 61, tierId: 'mixed', tierLabel: 'Mixed', reviewCount: 20, breakdown: { rave: 1, positive: 10, mixed: 5, negative: 4 } };
+  return { ctx: { shows, slim }, desc };
+}
+const GOOD = {
+  lead: 'season-rank',
+  post: 'Of the 5 Broadway shows that opened since September 1 and have at least 8 reviews, Good Men has the lowest Critic Score: 61 (Mixed).\n\nThe top-tier critics were rough on it. Only 2 of 6 were positive, and 4 were negative.\n\nAll 20 reviews: 1 rave, 10 positive, 5 mixed, 4 negative.',
+  x: 'Good Men has the lowest Critic Score of the 5 Broadway shows that opened since September 1 with at least 8 reviews: 61 (Mixed). Only 2 of 6 top-tier critics were positive.',
+};
+
+test('ai fact pool: the season rank keeps its qualifier, audiences get a grade only, an earlier production is offered', () => {
+  const { ctx, desc } = aiFixture();
+  const pool = facts.buildFactPool(desc.show, ctx, AI_NOW);
+  const rank = pool.facts.find(f => f.tag === 'season-rank');
+  assert.match(rank.text, /the lowest of the 5 Broadway shows that opened since September 1 and have at least 8 reviews/);
+  assert.equal(rank.weight, 3);
+  const aud = pool.facts.find(f => f.tag === 'audience');
+  assert.match(aud.text, /Audience grade: [A-F][+-]?\./);
+  assert.equal(cap.audienceNumber(aud.text.split('.')[0]), null);
+  assert.ok(!pool.numbers.has('88'), 'the audience score is never an allowed number');
+  assert.match(pool.facts.find(f => f.tag === 'earlier-production').text, /Broadway 1989, Critic Score 85/);
+  assert.ok(facts.factSheet(pool).startsWith('SHOW: Good Men (Broadway)'));
+});
+
+test('ai checkDraft: a faithful draft passes; numbers, audience scores, dashes and stock phrases are refused', () => {
+  const { ctx, desc } = aiFixture();
+  const pool = facts.buildFactPool(desc.show, ctx, AI_NOW);
+  assert.deepEqual(ai.checkDraft(GOOD, pool, 'Good Men'), []);
+  const bad = (field, text) => ai.checkDraft({ ...GOOD, [field]: text }, pool, 'Good Men').join(' | ');
+  assert.match(bad('x', `${GOOD.x} Up 12 points.`), /not in the facts: 12/);
+  assert.match(bad('x', `${GOOD.x} Twenty-seven critics agree.`), /not in the facts: 27/);
+  assert.match(bad('post', `${GOOD.post} Audiences give it 88%.`), /gives audiences a number/);
+  assert.match(bad('post', GOOD.post.replace('. Only', ', only') + ' Critics — split.'), /dash/);
+  assert.match(bad('x', `The reviews are in. ${GOOD.x}`.slice(0, 250)), /stock opener/);
+  assert.match(bad('x', 'Good Men opened to mixed reviews from top-tier critics.'), /must say "Critic Score"/);
+  assert.match(bad('x', 'Good Men closes Nov 10, with a Critic Score of 61 (Mixed).'), /must not read like/);
+  assert.match(bad('post', GOOD.post.replace('Good Men', 'The show')), /must name the show/);
+  assert.deepEqual(ai.wordNumbers('twenty-six reviews, no one, one of them, the second highest, nine critics'), ['26', '2', '9']);
+});
+
+test('ai writeScoreCaptions: an approved draft fills every network within limits and keeps the dedupe markers', async () => {
+  const { ctx, desc } = aiFixture();
+  let checked = 0;
+  const r = await ai.writeScoreCaptions(desc, ctx, AI_NOW, { writer: async () => GOOD, checker: async () => { checked++; return { supported: true, problems: [] }; } });
+  assert.equal(r.meta.writer, 'ai');
+  assert.equal(r.meta.lead, 'season-rank');
+  assert.equal(checked, 1);
+  for (const [net, text] of Object.entries(r.captions)) {
+    if (LIMITS[net]) assert.ok(xLength(net, text) <= LIMITS[net], `${net} ${xLength(net, text)}`);
+    if (net !== 'altText') for (const re of postMarkers(desc.show)) assert.match(text, re, `${net} keeps the dedupe marker`);
+  }
+  assert.ok(r.captions.facebook.startsWith(GOOD.post));
+  assert.match(r.captions.instagram, /\(link in bio\)/);
+});
+
+test('ai writeScoreCaptions: a rejected draft is rewritten once, then the template stands in; errors never throw', async () => {
+  const { ctx, desc } = aiFixture();
+  const template = buildCaptions(desc);
+  const prompts = [];
+  // First draft has a stray number; the rewrite (which sees the problem) is clean.
+  const drafts = [{ ...GOOD, x: `${GOOD.x} Up 12.` }, GOOD];
+  const r1 = await ai.writeScoreCaptions(desc, ctx, AI_NOW, { writer: async p => { prompts.push(p); return drafts.shift(); }, checker: async () => ({ supported: true, problems: [] }) });
+  assert.equal(r1.meta.writer, 'ai');
+  assert.equal(r1.meta.attempts, 2);
+  assert.match(prompts[1], /not in the facts: 12/);
+  // The fact checker objects both times: template.
+  const r2 = await ai.writeScoreCaptions(desc, ctx, AI_NOW, { writer: async () => GOOD, checker: async () => ({ supported: false, problems: ['"rough" overstates it'] }) });
+  assert.equal(r2.meta.writer, 'template');
+  assert.deepEqual(r2.captions, template);
+  assert.match(r2.meta.problems[0], /fact check/);
+  // The writer is down: template, with the reason.
+  const r3 = await ai.writeScoreCaptions(desc, ctx, AI_NOW, { writer: async () => { throw new Error('Claude writer HTTP 529'); }, checker: async () => ({ supported: true, problems: [] }) });
+  assert.equal(r3.meta.writer, 'template');
+  assert.match(r3.meta.fallback, /529/);
+  assert.deepEqual(r3.captions, template);
+});
+
+test('ai writer switch: off by default; on when config enables it or a dry run forces it; kill switch and missing keys win', () => {
+  const keys = { ANTHROPIC_API_KEY: 'x', OPENAI_API_KEY: 'y' };
+  assert.match(ai.aiDisabledReason(keys), /enabled is false/);
+  assert.equal(ai.aiDisabledReason(keys, { enabled: true }), null);
+  assert.equal(ai.aiDisabledReason({ ...keys, SOCIAL_AI_CAPTIONS_FORCE: 'true' }, { dryRun: true }), null);
+  assert.match(ai.aiDisabledReason({ ...keys, SOCIAL_AI_CAPTIONS_FORCE: 'true' }, { dryRun: false }), /enabled is false/, 'force never turns it on for live posts');
+  assert.match(ai.aiDisabledReason({ ANTHROPIC_API_KEY: 'x' }, { enabled: true }), /OPENAI/);
+  assert.match(ai.aiDisabledReason({ OPENAI_API_KEY: 'y' }, { enabled: true }), /ANTHROPIC/);
+  assert.match(ai.aiDisabledReason({ ...keys, SOCIAL_AI_CAPTIONS_DISABLED: 'true' }, { enabled: true }), /DISABLED/);
+});
+
+test('ai writeScoreCaptions: a "supported" verdict that lists a problem is a rejection; a spent run budget means template', async () => {
+  const { ctx, desc } = aiFixture();
+  const r = await ai.writeScoreCaptions(desc, ctx, AI_NOW, { writer: async () => GOOD, checker: async () => ({ supported: true, problems: ['"rough" overstates it'] }) });
+  assert.equal(r.meta.writer, 'template');
+  assert.equal(r.meta.attempts, 2);
+  let called = 0;
+  const late = await ai.writeScoreCaptions(desc, ctx, AI_NOW, { deadline: Date.now() - 1, writer: async () => { called++; return GOOD; }, checker: async () => ({ supported: true, problems: [] }) });
+  assert.equal(late.meta.writer, 'template');
+  assert.match(late.meta.fallback, /budget/);
+  assert.equal(called, 0);
+});
+
+test('ai fact pool: ranks use the shown (rounded) score, so equal scores are a tie', () => {
+  const { ctx, desc } = aiFixture();
+  ctx.slim['b-2026'].cs = 61.4; // shows as 61, same as Good Men; nothing lower
+  const rank = facts.buildFactPool(desc.show, ctx, AI_NOW).facts.find(f => f.tag === 'season-rank');
+  assert.match(rank.text, /tied for the lowest of the 5 Broadway shows/);
+});
+
+test('ai fact pool: an earlier production outside a social market (a tour) is skipped, not a crash', () => {
+  const { ctx, desc } = aiFixture();
+  const tour = { id: 'good-men-tour-2020', slug: 'good-men-tour-2020', title: 'Good Men', type: 'play', category: 'tour', openingDate: '2020-01-10' };
+  ctx.shows.push(tour); ctx.slim[tour.id] = { cs: 50, rc: 12, rv: [] };
+  const pool = facts.buildFactPool(desc.show, ctx, AI_NOW);
+  assert.match(pool.facts.find(f => f.tag === 'earlier-production').text, /Broadway 1989/);
+});
+
+test('ai writeScoreCaptions: a kept draft is reused only while the fact sheet is unchanged', async () => {
+  const { ctx, desc } = aiFixture();
+  const cache = {}; let writes = 0;
+  const deps = { cache, writer: async () => { writes++; return GOOD; }, checker: async () => ({ supported: true, problems: [] }) };
+  await ai.writeScoreCaptions(desc, ctx, AI_NOW, deps);
+  const again = await ai.writeScoreCaptions(desc, ctx, AI_NOW, deps);
+  assert.equal(again.meta.reused, true);
+  assert.equal(writes, 1);
+  ctx.slim['good-men-2026'].bo.tw.c = 91; // a fact changed: draft again
+  const fresh = await ai.writeScoreCaptions(desc, ctx, AI_NOW, deps);
+  assert.ok(!fresh.meta.reused);
+  assert.equal(writes, 2);
+});
+
+test('ai fact pool: an earlier production of another type (an opera vs the play) is not offered; closing days count New York calendar days', () => {
+  const { ctx, desc } = aiFixture();
+  ctx.shows.find(s => s.id === 'good-men-1989').type = 'opera';
+  assert.ok(!facts.buildFactPool(desc.show, ctx, AI_NOW).facts.some(f => f.tag === 'earlier-production'));
+  desc.show.closingDate = '2026-11-20'; // AI_NOW is 10am New York on Nov 4
+  assert.match(facts.buildFactPool(desc.show, ctx, AI_NOW).facts.find(f => f.tag === 'closing').text, /16 days after this post/);
+});
+
+test('ai checkDraft: a number in the title never vouches for a claim; decimals are refused', () => {
+  const { ctx, desc } = aiFixture();
+  const pool = facts.buildFactPool(desc.show, ctx, AI_NOW);
+  const t = 'Good Men 13';
+  const d = { post: GOOD.post.replace(/Good Men/g, t), x: GOOD.x.replace('Good Men', t) };
+  assert.deepEqual(ai.checkDraft(d, pool, t), []);
+  assert.match(ai.checkDraft({ ...d, x: `${d.x} 13 raves.` }, pool, t).join(' | '), /not in the facts: 13/);
+  assert.match(ai.checkDraft({ ...d, x: d.x.replace('61 (Mixed)', '61.4 (Mixed)') }, pool, t).join(' | '), /decimal/);
 });
