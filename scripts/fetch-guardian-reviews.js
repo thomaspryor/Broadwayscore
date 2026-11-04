@@ -330,14 +330,18 @@ function updateReviewFile(review, apiResult) {
 
   // Extract star rating from API (Guardian uses 1-5 stars)
   if (apiResult.starRating && !data.originalScore) {
-    require('./lib/rescore-flagging').queueRescoreForLateRating(data, 'guardian-api');
     const routed = setExtractedScore(data, {
       value: `${apiResult.starRating}/5 stars`,
       normalizedValue: Math.round((apiResult.starRating / 5) * 100),
       source: 'guardian-api',
     });
-    data.scoreSource = 'guardian-api';
-    data.scoreExtractedFrom = 'api-metadata';
+    if (routed.field === 'originalScore') {
+      // setExtractedScore leaves scoreSource alone, so queue (reads the LLM source) before restamping it.
+      // Only when the star actually landed (a cleared row returns 'blocked').
+      require('./lib/rescore-flagging').queueRescoreForLateRating(data, 'guardian-api');
+      data.scoreSource = 'guardian-api';
+      data.scoreExtractedFrom = 'api-metadata';
+    }
     console.log(`  ★ Star rating: ${apiResult.starRating}/5 → ${Math.round((apiResult.starRating / 5) * 100)}/100 [${routed.field}]`);
   }
 

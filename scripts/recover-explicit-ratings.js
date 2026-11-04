@@ -500,14 +500,16 @@ async function fetchGuardianRatings(reviews) {
             console.log(`    [${i + 1}/${toProcess.length}] ★ ${review.showId}: ${rating}/5 stars`);
 
             if (!DRY_RUN) {
-              require('./lib/rescore-flagging').queueRescoreForLateRating(review.data, 'guardian-api');
-              setExtractedScore(review.data, {
+              const routed = setExtractedScore(review.data, {
                 value: `${rating}/5 stars`,
                 normalizedValue: Math.round((rating / 5) * 100),
                 source: 'guardian-api',
               });
-              review.data.scoreSource = 'guardian-api';
-              review.data.scoreExtractedFrom = 'api-metadata';
+              if (routed.field === 'originalScore') {
+                require('./lib/rescore-flagging').queueRescoreForLateRating(review.data, 'guardian-api');
+                review.data.scoreSource = 'guardian-api';
+                review.data.scoreExtractedFrom = 'api-metadata';
+              }
               review.data.scoreRecoveredAt = new Date().toISOString();
               persistReviewSnapshot(review);
             }

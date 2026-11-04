@@ -40,3 +40,18 @@ test('BRO-6964: a late star on an llm-v6 file queues the anchored rescore; a hum
   assert.equal(queueRescoreForLateRating(human, 'guardian-api'), false);
   assert.equal(human.needsRescore, undefined);
 });
+
+test('excluded rows and api-has-no-star rows are not fetched again (BRO-6964 review)', () => {
+  const text = 'x'.repeat(500);
+  assert.equal(guardianFetchEligibility({ fullText: text, url: 'u', wrongProduction: true }).eligible, false);
+  assert.equal(guardianFetchEligibility({ fullText: text, url: 'u', wrongShow: true }).eligible, false);
+  assert.equal(guardianFetchEligibility({ fullText: text, url: 'u', duplicateOf: 'a.json' }).eligible, false);
+  const r = guardianFetchEligibility({ fullText: text, url: 'u', guardianApi: { fetchedAt: '2026-01-01', starRating: null } });
+  assert.equal(r.eligible, false);
+  assert.equal(r.reason, 'api-has-no-star');
+});
+
+test('queueRescoreForLateRating leaves human-review rows alone', () => {
+  const { queueRescoreForLateRating } = require('./rescore-flagging.js');
+  assert.equal(queueRescoreForLateRating({ scoreSource: 'llm-v6', humanReviewScore: 62 }, 'x'), false);
+});

@@ -26,8 +26,13 @@ function hasRecordedRating(data) {
  */
 function guardianFetchEligibility(data, { minTextLength = 200 } = {}) {
   const hasText = !!(data.fullText && data.fullText.length > minTextLength);
+  if (data.wrongProduction || data.wrongShow || data.duplicateOf) return { eligible: false, reason: 'excluded-row' };
   if (hasText && hasRecordedRating(data)) return { eligible: false, reason: 'has-text-and-rating' };
   if (!data.url) return { eligible: false, reason: 'no-url' };
+  // Rating-only: the API already answered "no star" for this row. Do not ask again every run.
+  if (hasText && data.guardianApi && data.guardianApi.fetchedAt && !data.guardianApi.starRating) {
+    return { eligible: false, reason: 'api-has-no-star' };
+  }
   return { eligible: true, mode: hasText ? 'rating-only' : 'fetch-text' };
 }
 

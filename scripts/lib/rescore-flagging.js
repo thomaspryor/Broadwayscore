@@ -239,6 +239,7 @@ function markRescoreNeeded(fileData, reason, flaggedAt, { requeue = false } = {}
 function queueRescoreForLateRating(data, via) {
   if (!data || typeof data !== 'object') return false;
   if (!data.scoreSource || !isLlmScoreSource(data.scoreSource)) return false;
+  if (data.humanReviewScore != null) return false;
   markRescoreNeeded(data, `outlet rating landed after the score (${via || 'late rating'}; BRO-6964)`, undefined, { requeue: true });
   return true;
 }
