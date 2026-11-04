@@ -1,13 +1,13 @@
 {
-  "timestamp": "2026-11-03T23:32:30.873Z",
+  "timestamp": "2026-11-04T00:06:52.185Z",
   "stats": {
-    "totalReviews": 79971,
-    "alreadyFlagged": 22067,
+    "totalReviews": 79967,
+    "alreadyFlagged": 22054,
     "dateGuardCatches": 216,
     "directorMismatch": 3457,
-    "tvFilmSignals": 2263,
-    "londonSignals": 3593,
-    "offBroadwaySignals": 734,
+    "tvFilmSignals": 2264,
+    "londonSignals": 3596,
+    "offBroadwaySignals": 735,
     "yearMismatch": 361,
     "noPublishDate": 8496
   },
@@ -22458,6 +22458,19 @@
       ]
     },
     {
+      "showId": "flex-off-broadway-2023",
+      "file": "thewrap--robert-hofler.json",
+      "publishDate": "2023-07-21T09:42:54+00:00",
+      "url": "https://www.thewrap.com/flex-off-broadway-review-candrice-jones-play/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
       "showId": "flyby-off-west-end-2026",
       "file": "theatre-weekly--greg-stewart.json",
       "score": 39,
@@ -28189,6 +28202,11 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"matthew dunster\" from hangmen-2022"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
         }
       ]
     },
@@ -116292,6 +116310,20 @@
     },
     {
       "showId": "player-kings-west-end-2024",
+      "file": "standard--nick-curtis.json",
+      "score": 76,
+      "publishDate": "April 11th, 2024",
+      "url": "https://www.standard.co.uk/culture/theatre/player-kings-noel-coward-theatre-review-ian-mckellen-toheeb-jimoh-b1150748.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"noel coward theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "player-kings-west-end-2024",
       "file": "times-uk--dominic-maxwell.json",
       "score": 90,
       "publishDate": "2024-04-21",
@@ -135816,6 +135848,20 @@
       ]
     },
     {
+      "showId": "turn-me-loose-off-broadway-2016",
+      "file": "nydailynews--joe-dziemianowicz.json",
+      "score": 80,
+      "publishDate": "May 19th, 2016",
+      "url": "https://www.nydailynews.com/entertainment/theater-arts/60s-comic-dick-gregory-oscar-wilde-stage-off-broadway-article-1.2643055",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"bam\""
+        }
+      ]
+    },
+    {
       "showId": "twelfth-night-west-end-2017",
       "file": "whatsonstage--holly-williams.json",
       "score": 78,
@@ -135923,6 +135969,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "under-milk-wood-west-end-2021",
+      "file": "standard--unknown.json",
+      "publishDate": "June 25th, 2021",
+      "url": "https://www.standard.co.uk/culture/theatre/under-milk-wood-at-national-theatre-review-dylan-thomas-michael-sheen-b942368.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
