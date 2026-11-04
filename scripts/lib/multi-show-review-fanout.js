@@ -852,11 +852,30 @@ function headerSections(text, shows, ownShowId, publishDate) {
     // One header style per article: a post mixing both is not a column we can cut.
     if (new Set(heads.map((h) => h.listing)).size > 1) return none;
   }
+  // Interested Bystander "<Title> (c) <Photographer>Theater: <Title> <venue>"
+  // headings whose venue is not "At <Venue>" ("... Ma-Yi Theater Company at the
+  // Public", BRO-6736: the Liberation post stayed whole under a wrong-production
+  // flag). The section extractor's own headings bound every section; the show
+  // name is the heading text before " at ".
+  if (heads.length < 2) {
+    const { findSectionHeadings } = require('./multi-show-section-extract');
+    const bys = findSectionHeadings(text);
+    // A generic heading the bystander headings do not cover is a boundary the
+    // fallback would drop (ship-check): mixed formats are not cut.
+    const covered = heads.every((h) => bys.some((b) => h.at >= b.start && h.at - b.start < 300));
+    if (bys.length >= 2 && covered) {
+      heads = bys.map((b) => {
+        const title = b.title.split(/\s+at\s+/i)[0].trim();
+        return { at: b.start, end: b.start, start: b.start, title, listing: false, bystander: true };
+      });
+    }
+  }
   heads.sort((a, b) => a.at - b.at);
   if (heads.length < 2) return none;
   // Pull each header back over the photo that opens its section: a
   // "<Title> (c) Photographer" caption, or a WordPress [caption]...[/caption].
   heads.forEach((h, i) => {
+    if (h.bystander) return; // already opens at its caption
     h.start = h.at;
     const floor = i ? heads[i - 1].end : 0;
     const before = text.slice(floor, h.at);
@@ -915,7 +934,14 @@ function headerSections(text, shows, ownShowId, publishDate) {
   const sections = [];
   const seen = new Set();
   heads.forEach((h, i) => {
-    const show = byTitle.get(normalizeTitle(h.title));
+    let show = byTitle.get(normalizeTitle(h.title));
+    // A bystander heading runs on into its venue ("Did You Eat? Ma-Yi Theater
+    // Company"): the one tracked title it starts with, as the extractor does.
+    if (!show && h.bystander) {
+      const n = normalizeTitle(h.title);
+      const hits = [...new Set([...byTitle.keys()].filter((k) => k.length >= 4 && n.startsWith(k + ' ')).map((k) => byTitle.get(k)))];
+      if (hits.length === 1) show = hits[0];
+    }
     if (!show || seen.has(show.id)) return;
     const sectionText = text.slice(h.start, i + 1 < heads.length ? heads[i + 1].start : text.length).trim();
     if (sectionText.length < MIN_SECTION_CHARS) return;

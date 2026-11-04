@@ -606,6 +606,11 @@ function replaceAllTokens(cmd, from, to) {
 // tests/unit/ so the loop can't scatter them outside the repo's convention.
 function resolveCheckPaths(checkableDone, opts = {}) {
   const repoRoot = opts.repoRoot || REPO_ROOT;
+  // BRO-6736: a backfill check naming a year-less "id" (a title, a market,
+  // "all") fails forever ("show missing"), which bounced a finished card back
+  // to a second worker. Title near misses only warn (card-arming-warning.js).
+  const idMiss = require('./backfill-show-id-check').backfillShowIdNearMisses(checkableDone, { repoRoot });
+  if (idMiss && idMiss.blocking) return { ok: false, reason: idMiss.reason };
   const paths = extractCheckPaths(checkableDone);
   if (paths.length === 0) return { ok: true, checkableDone }; // tsc/lint forms carry no file args
   // isFile, not existsSync: `test -f scripts/lib` and `node --test tests/unit`

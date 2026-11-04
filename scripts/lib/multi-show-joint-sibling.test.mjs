@@ -153,3 +153,43 @@ test('side-by-side reviews with no shared lede split (New Yorker Marjorie Prime 
   const compare = `Appropriately enough, “Marjorie Prime” has been here before. ${filler('prime', 14)} Unlike “Anna Christie,” it keeps quiet. ${filler('prime', 4)}`;
   assert.equal(planMultiShowFanout(base({ showId: 'marjorie-prime-x', fullText: compare, publishDate: '2025-12-14' }), SHOWS, { joint: true }), null);
 });
+
+// Interested Bystander post whose other heading names its venue with a
+// lowercase " at " ("Ma-Yi Theater Company at the Public"): the generic
+// "Label: Title At Venue" header pattern saw one heading, so the post stayed
+// whole under a wrong-production flag (Liberation, BRO-6736).
+test('bystander post with a lowercase-venue heading trims the flagged file to its own section', () => {
+  const shows = [...SHOWS, { id: 'liberation-x', title: 'Liberation', category: 'broadway', openingDate: '2025-10-28' },
+    { id: 'did-you-eat-x', title: 'Did You Eat?', category: 'broadway', openingDate: '2025-10-20' }];
+  const post = [
+    `Did You Eat? (c) Emma ZordanTheater: Did You Eat? Ma-Yi Theater Company at the Public Theater ${filler('hunger', 8)}`,
+    `Liberation (c) Little FangBroadway: Liberation At the James Earl Jones Theatre ${filler('liberation', 8)}`,
+  ].join(' ');
+  const data = { ...base({ showId: 'liberation-x', url: 'https://www.interestedbystander.com/2025/10/x.html', publishDate: null }),
+    contentTier: 'invalid', isRoundupArticle: true, wrongProduction: true, fullText: '', wrongFullText: post };
+  const p = planMultiShowFanout(data, shows, { joint: true });
+  assert.ok(p, 'planned');
+  assert.equal(p.strategy, 'header');
+  assert.equal(p.ownSection.showId, 'liberation-x');
+  assert.match(p.ownSection.sectionText, /^Liberation \(c\) Little Fang/);
+  assert.doesNotMatch(p.ownSection.sectionText, /hunger/);
+  // The lowercase-venue heading still resolves to its show (prefix match).
+  assert.deepEqual(p.otherSections.map((x) => x.showId), ['did-you-eat-x']);
+  assert.match(p.otherSections[0].sectionText, /^Did You Eat\? \(c\)/);
+});
+
+test('bystander fallback never drops a generic heading it does not cover', () => {
+  const shows = [...SHOWS, { id: 'alpha-x', title: 'Alpha', category: 'broadway', openingDate: '2025-10-20' },
+    { id: 'beta-x', title: 'Beta Show', category: 'broadway', openingDate: '2025-10-20' },
+    { id: 'gamma-x', title: 'Gamma Show', category: 'broadway', openingDate: '2025-10-20' }];
+  const post = [
+    `Beta Show (c) A PhotogTheater: Beta Show at the Public ${filler('beta', 8)}`,
+    `Broadway: Alpha At the Shubert ${filler('alpha', 8)}`,
+    `Gamma Show (c) B PhotogTheater: Gamma Show at the Atlantic ${filler('gamma', 8)}`,
+  ].join(' ');
+  const data = { ...base({ showId: 'beta-x', url: 'https://www.interestedbystander.com/2025/10/y.html', publishDate: '2025-10-25' }), fullText: post };
+  const p = planMultiShowFanout(data, shows, { joint: true });
+  if (p) for (const sec of [p.ownSection, ...p.otherSections]) {
+    if (sec.showId !== 'alpha-x') assert.doesNotMatch(sec.sectionText, /alpha passage/);
+  }
+});

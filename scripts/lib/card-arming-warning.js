@@ -166,7 +166,18 @@ function armingWarning(notesStr, deps = {}) {
     // Shape-valid — but does it name a location that could ever exist?
     const repoRoot = deps.repoRoot || path.resolve(__dirname, '..', '..');
     const bad = fabricatedPathReason(verdict.cmd, repoRoot, deps);
-    if (!bad) return null;
+    if (!bad) {
+      // BRO-6736: a show id that looks like a guess at a real one warns here
+      // only; it may be a new production, so dispatch never refuses it.
+      let near = null;
+      try { near = require('./backfill-show-id-check.js').backfillShowIdNearMisses(verdict.cmd, { repoRoot }); } catch { near = null; }
+      if (!near) return null;
+      return '⚠️  ACCEPTANCE COMMAND NAMES SHOW IDS THAT DO NOT EXIST.\n\n' +
+        `  ${verdict.cmd}\n  ${near.reason}\n\n` +
+        'verify-data-backfill.js prints "show missing" for any id not in data/shows.json, so the card\n' +
+        'can never pass and stuck-card-closer bounces it after the work is done. Use the real ids\n' +
+        '(ignore this only when the card creates that show).';
+    }
     return (
       '\u26a0\ufe0f  ACCEPTANCE COMMAND NAMES A LOCATION THAT DOES NOT EXIST.\n\n' +
       `  ${verdict.cmd}\n` +
