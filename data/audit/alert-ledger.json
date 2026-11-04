@@ -249,7 +249,7 @@
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
       "incidentOpenedAt": "2026-11-04T12:57:12.085Z",
-      "lastSeen": "2026-11-04T14:24:59.899Z",
+      "lastSeen": "2026-11-04T14:25:44.917Z",
       "lastNotifiedAt": "2026-11-04T12:57:12.085Z",
       "lastSurfacedAt": "2026-11-04T12:57:12.085Z",
       "notifyCount": 206,
@@ -257,7 +257,7 @@
       "linearIdentifier": null,
       "notifyCountAtRelease": 192,
       "sweptTracker": "BRO-6656",
-      "silentRefires": 3
+      "silentRefires": 2
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -36689,11 +36689,8 @@
       "linearIdentifier": "BRO-6975",
       "absentRunIds": [
         "41834071119",
-        "41839879565",
-        "41843736717"
-      ],
-      "resolvedAt": "2026-11-04T14:24:59.859Z",
-      "resolveReason": "stale-signature"
+        "41842512459"
+      ]
     },
     "review-gap:opening-window:pulman-and-stilgoe-hooray-for-hollywood-off-west-end-2026": {
       "status": "open",
@@ -36715,7 +36712,7 @@
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"every verified gap id still exists in shows.json (a rename would silently empty the checks below)\"",
       "firstSeen": "2026-11-04T13:21:39.602Z",
       "incidentOpenedAt": "2026-11-04T13:21:39.602Z",
-      "lastSeen": "2026-11-04T14:24:59.883Z",
+      "lastSeen": "2026-11-04T14:25:44.881Z",
       "lastNotifiedAt": "2026-11-04T13:21:39.602Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
@@ -36727,7 +36724,7 @@
         "runId": "41834071119",
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41834071119"
       },
-      "silentRefires": 2
+      "silentRefires": 1
     },
     "land:land/codex-bro-6966": {
       "status": "open",
