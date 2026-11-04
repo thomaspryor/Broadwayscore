@@ -31,6 +31,21 @@ test('empty or invalid workflow copy is deleted', () => {
   assert.equal(resolveModifyDelete({ baseRaw: base, oursRaw: null }), 'delete');
 });
 
+test('record without fullText on either side is left to the action (skip)', () => {
+  assert.equal(resolveModifyDelete({ baseRaw: '{"blocked":["a"]}', oursRaw: '{"blocked":["a","b"]}' }), 'skip');
+  assert.equal(resolveModifyDelete({ baseRaw: '[]', oursRaw: '[{"x":1}]' }), 'skip');
+});
+
+test('_recreatedAfterDelete stamp keeps the workflow copy even with unchanged text', () => {
+  const base = rev({ fullText: 'body' });
+  const ours = rev({ fullText: 'body', _recreatedAfterDelete: { fixId: 'f', at: 't' } });
+  assert.equal(resolveModifyDelete({ baseRaw: base, oursRaw: ours }), 'keep');
+});
+
+test('whitespace-only fullText differences do not count as a content change', () => {
+  assert.equal(resolveModifyDelete({ baseRaw: rev({ fullText: 'a  b\n' }), oursRaw: rev({ fullText: 'a b' }) }), 'delete');
+});
+
 test('missing base with real text keeps workflow copy', () => {
   assert.equal(resolveModifyDelete({ baseRaw: null, oursRaw: rev({ fullText: 'new' }) }), 'keep');
 });
@@ -62,12 +77,14 @@ for (const committed of [false, true]) test(`e2e: stale writer rewriting a file 
     fs.writeFileSync(path.join(dir, 'doomed.json'), body({ rejectedBy: null }));
     fs.writeFileSync(path.join(dir, 'real-change.json'), body({}));
     fs.writeFileSync(path.join(dir, 'other.json'), body({ n: 1 }));
+    fs.writeFileSync(path.join(dir, 'spaced name.json'), body({ rejectedBy: null }));
+    fs.writeFileSync(path.join(dir, '_blocklist.json'), '{"blocked":["a"]}\n');
     git(seed, 'add', '-A'); git(seed, 'commit', '-qm', 'base'); git(seed, 'push', '-q', 'origin', 'HEAD:main');
     git(tmp, 'clone', '-q', '--depth', '1', '--branch', 'main', `file://${origin}`, rt);
     git(rt, 'config', 'user.email', 't@t'); git(rt, 'config', 'user.name', 't');
 
     // Writer A (fix plan) deletes both files and pushes.
-    git(seed, 'rm', '-q', 'show-a/doomed.json', 'show-a/real-change.json');
+    git(seed, 'rm', '-q', 'show-a/doomed.json', 'show-a/real-change.json', 'show-a/spaced name.json', 'show-a/_blocklist.json');
     git(seed, 'commit', '-qm', 'approved fix: delete'); git(seed, 'push', '-q', 'origin', 'HEAD:main');
 
     // Stale writer B rewrites them from its pre-delete checkout.
@@ -75,6 +92,8 @@ for (const committed of [false, true]) test(`e2e: stale writer rewriting a file 
     fs.writeFileSync(path.join(d, 'doomed.json'), body({ rejectedBy: 'ensemble-scoreability-check' }));
     fs.writeFileSync(path.join(d, 'real-change.json'), body({ fullText: 'A genuinely re-fetched, different body.' }));
     fs.writeFileSync(path.join(d, 'other.json'), body({ n: 2 }));
+    fs.writeFileSync(path.join(d, 'spaced name.json'), body({ rejectedBy: 'ensemble-scoreability-check' }));
+    fs.writeFileSync(path.join(d, '_blocklist.json'), '{"blocked":["a","b"]}\n');
     if (committed) { git(rt, 'add', '-A'); git(rt, 'commit', '-qm', 'stale rewrite'); }
 
     const out = path.join(tmp, 'gh-output');
@@ -92,6 +111,8 @@ for (const committed of [false, true]) test(`e2e: stale writer rewriting a file 
     assert.doesNotMatch(tree, /show-a\/doomed\.json/, 'stale rewrite must not resurrect the deleted file');
     assert.match(tree, /show-a\/real-change\.json/, 'a real content change is kept');
     assert.match(tree, /show-a\/other\.json/);
+    assert.doesNotMatch(tree, /spaced name\.json/, 'paths with spaces are handled');
+    assert.match(tree, /show-a\/_blocklist\.json/, 'sidecar edits are never dropped by the review resolver');
   } finally {
     fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }

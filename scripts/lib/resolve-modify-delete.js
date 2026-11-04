@@ -25,38 +25,52 @@
  *   node resolve-modify-delete.js
  */
 
+const fs = require('fs');
 const path = require('path');
 const { execFileSync } = require('child_process');
 
-function _fullText(raw) {
-  if (typeof raw !== 'string' || !raw.trim()) return '';
+function _parse(raw) {
+  if (typeof raw !== 'string' || !raw.trim()) return null;
   try {
     const d = JSON.parse(raw);
-    return d && typeof d.fullText === 'string' ? d.fullText.replace(/\s+/g, ' ').trim() : '';
-  } catch { return ''; }
+    return d && typeof d === 'object' && !Array.isArray(d) ? d : null;
+  } catch { return null; }
+}
+const _hasFullText = (d) => !!d && typeof d.fullText === 'string';
+function _fullText(raw) {
+  const d = _parse(raw);
+  return _hasFullText(d) ? d.fullText.replace(/\s+/g, ' ').trim() : '';
 }
 
 /**
  * @param {{baseRaw: string|null, oursRaw: string|null}} p raw file contents
  *   (null when absent) of the common base and this workflow's modified copy
- * @returns {'delete'|'keep'}
+ * @returns {'delete'|'keep'|'skip'} 'skip' = not a review-text record (no
+ *   fullText on either side); the action's own rules decide
  */
 function resolveModifyDelete({ baseRaw, oursRaw }) {
+  // execute-approved-fix stamps a deliberate delete-then-rewrite
+  // `_recreatedAfterDelete` (rename-identity.js): never discard that.
+  const o = _parse(oursRaw);
+  if (o && o._recreatedAfterDelete) return 'keep';
   const ours = _fullText(oursRaw);
+  if (!_hasFullText(o) && !_hasFullText(_parse(baseRaw))) return 'skip';
   if (!ours) return 'delete';
   if (ours === _fullText(baseRaw)) return 'delete';
   return 'keep';
 }
 
-// Review-text JSON only: failed-fetches.json and non-review files have no
-// fullText and keep their own merge rules in the action.
-const isReviewJson = (p) => p.endsWith('.json') && path.basename(p) !== 'failed-fetches.json';
+// Review-text JSON only: sidecars (_blocklist.json, failed-fetches.json, ...)
+// keep their own merge rules in the action.
+const { isReviewTextFile } = require('./review-text-sidecars');
+const isReviewJson = (p) => isReviewTextFile(path.basename(p));
 
 function _git(args, opts = {}) {
   return execFileSync('git', args, { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'], maxBuffer: 64 * 1024 * 1024, ...opts });
 }
+// The stage exists (ls-files said so): a read failure is an error, never "absent".
 function _stage(n, p) {
-  try { return _git(['show', `:${n}:${p}`]); } catch { return null; }
+  return _git(['show', `:${n}:${p}`]);
 }
 
 function main() {
@@ -71,17 +85,25 @@ function main() {
   }
   for (const [p, s] of stages) {
     if (s.has('2') || !s.has('1') || !s.has('3') || !isReviewJson(p)) continue;
-    const oursRaw = _stage(3, p);
-    const decision = resolveModifyDelete({ baseRaw: _stage(1, p), oursRaw });
-    if (decision === 'delete') {
-      _git(['rm', '-q', '-f', '--', p]);
-    } else {
-      // Write the workflow's (stage 3) copy explicitly; the work tree may have
-      // been touched by an earlier step.
-      require('fs').writeFileSync(p, oursRaw);
-      _git(['add', '--', p]);
+    try {
+      const oursRaw = _stage(3, p);
+      const decision = resolveModifyDelete({ baseRaw: _stage(1, p), oursRaw });
+      if (decision === 'skip') continue;
+      if (decision === 'delete') {
+        _git(['rm', '-q', '-f', '--', p]);
+        process.stderr.write(`::notice::resolve-modify-delete: ${p} deleted upstream, stale rewrite dropped\n`);
+      } else {
+        // Write the workflow's (stage 3) copy explicitly; the work tree may have
+        // been touched by an earlier step.
+        fs.mkdirSync(path.dirname(p), { recursive: true });
+        fs.writeFileSync(p, oursRaw);
+        _git(['add', '--', p]);
+      }
+      process.stdout.write(`${p}\t${decision}\n`);
+    } catch (e) {
+      // One bad path must not abort the rest; it stays unmerged for the caller's fallback.
+      process.stderr.write(`::warning::resolve-modify-delete: ${p} left unresolved: ${e.message}\n`);
     }
-    process.stdout.write(`${p}\t${decision}\n`);
   }
 }
 
