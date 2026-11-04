@@ -12,7 +12,8 @@
 #         refused by the entry guard (the fix must not weaken BRO-142).
 # Run: bash scripts/lib/push-with-retry.orphan-rebase-head.test.sh
 set -uo pipefail
-export PUSH_FAILURE_LOG=/dev/null DISK_PREFLIGHT_FLOOR_GB=0
+export PUSH_FAILURE_LOG="${PUSH_FAILURE_LOG:-/dev/null}"
+export DISK_PREFLIGHT_FLOOR_GB=0
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PUSH="$SCRIPT_DIR/push-with-retry.sh"
 FAIL=0
