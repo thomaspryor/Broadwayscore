@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-11-04T07:49:31.737Z",
+  "timestamp": "2026-11-04T08:08:58.279Z",
   "stats": {
-    "totalReviews": 80035,
-    "alreadyFlagged": 22033,
+    "totalReviews": 80039,
+    "alreadyFlagged": 22035,
     "dateGuardCatches": 217,
     "directorMismatch": 3479,
-    "tvFilmSignals": 2272,
+    "tvFilmSignals": 2273,
     "londonSignals": 3604,
     "offBroadwaySignals": 736,
     "yearMismatch": 361,
@@ -73988,6 +73988,19 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2026 (10x) more than 2016 (1x). 2026 matches production: the-royale-regional-2026"
+        }
+      ]
+    },
+    {
+      "showId": "the-royale-regional-2026",
+      "file": "buzznews--bill-esler.json",
+      "publishDate": "2026-11-02",
+      "url": "https://www.buzznews.net/theatre/theatre-reviews/item/6815-remarkable-production-makes-the-royale-a-knockout-show.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
