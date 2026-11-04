@@ -976,7 +976,9 @@ const { decodeHTML } = require('entities');
 const standfirstText = (s) => decodeHTML(String(s || '').replace(/<[^>]+>/g, ' ')).replace(/\s+/g, ' ').trim();
 const standfirstKey = (s) => foldDiacritics(String(s || '')).toLowerCase().replace(/[^a-z0-9]+/g, '');
 
-function extractStandfirst(html) {
+// Returns { text, keys }: the decoded dek, plus its normalized keys under both decoders (entities decoded, and
+// stripHtml's, which blanks unlisted named entities such as &egrave;) so the "body already has it" check matches either.
+function findStandfirst(html) {
   if (!html || typeof html !== 'string') return null;
   const described = new Set();
   const metaRe = /<meta\b[^>]*>/gi;
@@ -993,20 +995,38 @@ function extractStandfirst(html) {
   while ((m = underHeadline.exec(html))) {
     const text = standfirstText(m[1]);
     if (text.length < STANDFIRST_MIN || text.length > STANDFIRST_MAX) continue;
-    if (described.has(standfirstKey(text))) return text;
+    if (described.has(standfirstKey(text))) return { text, keys: [standfirstKey(text), standfirstKey(stripHtml(m[1]))] };
   }
   return null;
 }
 
-function withStandfirst(html, text) {
-  if (!text) return text;
-  const dek = extractStandfirst(html);
-  if (!dek || standfirstKey(text).includes(standfirstKey(dek))) return text;
-  return `${dek}\n\n${text}`;
+function extractStandfirst(html) {
+  const found = findStandfirst(html);
+  return found ? found.text : null;
+}
+
+// Only a full-length body on a non-paywalled host gains its dek. Under the scorer's body gate the copy is a teaser or a
+// stub, and on a hard or soft paywall host up to 400 more chars must not lift a teaser over that host's length floor
+// (inline-score.js and paywall-completeness.js judge completeness by length).
+function onPaywallHost(hostname) {
+  const host = String(hostname || '').toLowerCase().replace(/^[a-z]+:\/\//, '').split(/[/?#:]/)[0].replace(/^www\./, '');
+  if (!host) return false;
+  const { HARD_PAYWALL_DOMAINS, SOFT_PAYWALL_MIN_CHARS } = require('./paywall-completeness');
+  return [...HARD_PAYWALL_DOMAINS, ...Object.keys(SOFT_PAYWALL_MIN_CHARS)].some((d) => host === d || host.endsWith(`.${d}`));
+}
+
+function withStandfirst(html, text, hostname) {
+  if (!text || text.length < require('./scorable-text').BODY_GATE_CHARS || onPaywallHost(hostname)) return text;
+  const found = findStandfirst(html);
+  if (!found) return text;
+  const body = standfirstKey(text);
+  if (found.keys.some((k) => k && body.includes(k))) return text;
+  return `${found.text}\n\n${text}`;
 }
 
 function extractArticleText(html, hostname, criticHint) {
-  const text = extractArticleTextUnchecked(html, hostname, criticHint);
+  // The dek joins first so the Radio Times promotion guard below judges the text callers actually get.
+  const text = withStandfirst(html, extractArticleTextUnchecked(html, hostname, criticHint), hostname);
   const host = String(hostname || '').toLowerCase();
   const isRadioTimes = host === 'radiotimes.com' || host.endsWith('.radiotimes.com');
   // Reject Radio Times promotions before any caller can save or score them.
@@ -1014,7 +1034,7 @@ function extractArticleText(html, hostname, criticHint) {
   if (isRadioTimes && text && PROMO_BOILERPLATE_PATTERNS.some((pattern) => pattern.test(text))) {
     return null;
   }
-  return withStandfirst(html, text);
+  return text;
 }
 
 function extractArticleTextUnchecked(html, hostname, criticHint) {
