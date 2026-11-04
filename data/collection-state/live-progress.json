@@ -1,19 +1,38 @@
 {
-  "updatedAt": "2026-11-04T12:58:59.828Z",
-  "processed": 43,
-  "failed": 47,
-  "successRate": "47.8%",
+  "updatedAt": "2026-11-04T13:23:09.092Z",
+  "processed": 45,
+  "failed": 54,
+  "successRate": "45.5%",
   "tierBreakdown": {
-    "playwright": 26,
+    "playwright": 27,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
     "scrapingdog": 5,
     "scrapingbee": 2,
-    "brightdata": 2,
+    "brightdata": 3,
     "archiveToday": 0,
     "archive": 6
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 3,
+  "recentActivity": [
+    {
+      "t": "2026-11-04T13:14:06.971Z",
+      "event": "bb-session",
+      "session": "aacdc5d8",
+      "url": "https://bachtrack.com/review-lorfeo-william-kentridge-greek-national-opera-athen"
+    },
+    {
+      "t": "2026-11-04T13:16:26.641Z",
+      "event": "bb-session",
+      "session": "a3f03cc0",
+      "url": "https://bachtrack.com/review-tosca-miskimmon-glassberg-fanyo-english-national-op"
+    },
+    {
+      "t": "2026-11-04T13:17:56.984Z",
+      "event": "bb-session",
+      "session": "6a989128",
+      "url": "https://bachtrack.com/review-nozze-figaro-pountney-conta-bucharest-national-oper"
+    }
+  ]
 }
