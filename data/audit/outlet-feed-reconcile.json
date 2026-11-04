@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-04T12:02:59.854Z",
+  "generatedAt": "2026-11-04T13:49:15.826Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -138,7 +138,7 @@
     },
     {
       "outletId": "front-row-center",
-      "error": "HTTP 202 for https://thefrontrowcenter.com/feed"
+      "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
     {
       "outletId": "slantmagazine",
@@ -159,20 +159,21 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
-    },
-    {
-      "outletId": "times-square-chronicles",
-      "error": "fetchPage returned an unexpected page for https://t2conline.com/wp-json/wp/v2/posts?categories=504,298,283&per_page=100&"
-    },
-    {
-      "outletId": "londontheatre1",
-      "error": "fetchPage returned an unexpected page for https://www.londontheatre1.com/wp-json/wp/v2/posts?categories=14&per_page=50&o"
     }
   ],
-  "itemsScanned": 762,
-  "matchedGaps": 7,
-  "possibleGaps": 11,
+  "itemsScanned": 811,
+  "matchedGaps": 8,
+  "possibleGaps": 10,
   "gaps": [
+    {
+      "showId": "a-few-good-men-2026",
+      "title": "A Few Good Men",
+      "level": "matched",
+      "outletId": "times-square-chronicles",
+      "url": "https://t2conline.com/a-few-good-men-michael-ardens-brilliant-broadway-revival-is-a-masterclass-in-theatrical-precision/",
+      "headline": "A Few Good Men: Michael Arden’s Brilliant Broadway Revival Is a Masterclass in Theatrical Precision",
+      "publishDate": "2026-11-04"
+    },
     {
       "showId": "the-bridge-off-west-end-2026",
       "title": "The Bridge",
@@ -298,15 +299,6 @@
       "url": "https://www.thereviewshub.com/hansel-gretel-and-the-witch-northern-stage-newcastle/",
       "headline": "Hansel &#038; Gretel and the Witch &#8211; Northern Stage, Newcastle",
       "publishDate": "2026-10-30"
-    },
-    {
-      "showId": "the-heart-off-broadway-2026",
-      "title": "The Heart",
-      "level": "possible",
-      "outletId": "west-end-best-friend",
-      "url": "https://www.westendbestfriend.co.uk/news/review-birmingham-royal-ballets-swan-lake-sadlers-wells",
-      "headline": "Review: Birmingham Royal Ballet’s SWAN LAKE, Sadler’s Wells",
-      "publishDate": "2026-10-29"
     },
     {
       "showId": "the-moth-off-west-end-2026",
