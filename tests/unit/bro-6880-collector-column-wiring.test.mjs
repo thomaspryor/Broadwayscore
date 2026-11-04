@@ -1,6 +1,7 @@
 // BRO-6880 v2: the collector cuts a Washington Post multi-show column down to this show's section ONLY after the
 // content verifier rejects the whole page as multi-show, re-verifies the section, and hands the section to the save
 // path. A page the verifier accepts is stored as fetched. The verifier is stubbed (no LLM call); synthetic prose only.
+// TESTS-VS-DERIVED-DATA-EXEMPT: writes its own fixture data/shows.json in a temp dir; reads no real derived data.
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
