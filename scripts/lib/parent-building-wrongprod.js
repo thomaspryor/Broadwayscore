@@ -43,8 +43,25 @@ const POST_DAYS = 14; // late reviews after closing
 const OTHER_PRODUCTION_RE = /\b(tour|touring|revival|previous|earlier|prior|original|film|movie|different|another|fiasco|anticipatory|gielgud|transfer|workshop|tryout|concert|festival|regional)(?![a-z])/i;
 
 function _ms(s) {
-  const t = typeof s === 'string' && /^\d{4}-\d{2}-\d{2}/.test(s) ? Date.parse(s.slice(0, 10)) : NaN;
+  if (typeof s !== 'string') return NaN;
+  const t = /^\d{4}-\d{2}-\d{2}/.test(s) ? Date.parse(s.slice(0, 10)) : Date.parse(`${s} UTC`);
   return Number.isFinite(t) ? t : NaN;
+}
+
+/**
+ * BRO-6983: a review dated outside this production's run (previews - 7d to
+ * closing + 14d) is about another production, whatever venue the article names.
+ * Two stages of one building host different productions of the same title
+ * (Oslo: Newhouse 2016 Off-Broadway, Vivian Beaumont 2017 Broadway), so an
+ * alias-aware verifier cannot tell them apart; the date can. Applies to every
+ * candidate, not only stub-text ones (BRO-6951 cleared two such files).
+ */
+function publishDateOutsideRun(show, record) {
+  const start = _ms(show && (show.previewsStartDate || show.openingDate));
+  const close = _ms(show && show.closingDate);
+  const pub = _ms(record && record.publishDate);
+  if (Number.isNaN(pub) || Number.isNaN(start)) return false;
+  return pub < start - PRE_DAYS * DAY || (!Number.isNaN(close) && pub > close + POST_DAYS * DAY);
 }
 
 /**
@@ -57,11 +74,9 @@ function _ms(s) {
  */
 function shortCandidateDecision(show, record) {
   if (!record || typeof record.url !== 'string' || !/^https?:\/\//.test(record.url)) return { decision: 'hold', why: 'no url to fetch' };
+  if (publishDateOutsideRun(show, record)) return { decision: 'hold', why: 'publishDate outside production window' };
   const start = _ms(show && (show.previewsStartDate || show.openingDate));
   const close = _ms(show && show.closingDate);
-  const pub = _ms(record.publishDate);
-  if (!Number.isNaN(pub) && !Number.isNaN(start)
-      && (pub < start - PRE_DAYS * DAY || (!Number.isNaN(close) && pub > close + POST_DAYS * DAY))) return { decision: 'hold', why: 'publishDate outside production window' };
   const reason = _reasonText(record);
   if (OTHER_PRODUCTION_RE.test(reason)) return { decision: 'hold', why: 'flag reason describes a different production' };
   const years = (reason.match(/\b(?:19|20)\d\d\b/g) || []).map(Number);
@@ -84,4 +99,4 @@ function isCleanVerdict(cv) {
     && typeof cv.verifiedBy === 'string' && cv.verifiedBy.startsWith('llm');
 }
 
-module.exports = { parentBuildingFlagCandidate, shortCandidateDecision, isCleanVerdict };
+module.exports = { parentBuildingFlagCandidate, shortCandidateDecision, isCleanVerdict, publishDateOutsideRun };

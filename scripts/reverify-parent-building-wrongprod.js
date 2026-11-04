@@ -22,7 +22,7 @@ if (hasHelpFlag(process.argv.slice(2))) { process.stdout.write(USAGE); process.e
 
 const { MAIN_REPO_ROOT: MAIN_REPO } = require('./lib/repo-root');
 const { resolveReviewTextsDir } = require('./lib/review-texts-dir');
-const { parentBuildingFlagCandidate, shortCandidateDecision, isCleanVerdict } = require('./lib/parent-building-wrongprod');
+const { parentBuildingFlagCandidate, shortCandidateDecision, isCleanVerdict, publishDateOutsideRun } = require('./lib/parent-building-wrongprod');
 
 const args = process.argv.slice(2);
 const opt = (n) => (args.find((a) => a.startsWith(`--${n}=`)) || '').split('=').slice(1).join('=');
@@ -68,6 +68,8 @@ const stripTags = (h) => String(h).replace(/<(script|style)[\s\S]*?<\/\1>/gi, ' 
   ];
   for (const c of cands) {
     if (LIMIT && n + fetchAttempts >= LIMIT) break;
+    // BRO-6983: dated outside this production's run = another production; never clear on venue alias alone.
+    if (publishDateOutsideRun(c.show, c.d)) { console.log(`[DATE-HOLD] ${c.show.id}/${c.file} (${c.parent}) publishDate outside production run`); upheld++; continue; }
     let text = c.d.fullText;
     let fetched = false;
     if (!text || text.trim().length < 200) {

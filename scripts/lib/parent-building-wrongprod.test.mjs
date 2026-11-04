@@ -4,6 +4,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const { parentBuildingFlagCandidate: pick } = require('./parent-building-wrongprod.js');
+const { publishDateOutsideRun } = require('./parent-building-wrongprod.js');
 
 const girls = { venue: 'The Maria Theatre', category: 'off-west-end' };
 const flagged = (reason, extra = {}) => ({ wrongProduction: true, wrongProductionReason: reason, ...extra });
@@ -58,4 +59,27 @@ test('clean verdict needs explicit booleans from a real LLM verdict', () => {
   assert.equal(clean({ ...ok, confidence: 'low' }), false);
   assert.equal(clean({ ...ok, verifiedBy: 'heuristic' }), false);
   assert.equal(clean(null), false);
+});
+
+// BRO-6983: BRO-6951 cleared two flags on reviews dated outside the run because
+// the verifier saw "Vivian Beaumont / Lincoln Center" and the venue alias matched.
+// Real shows.json windows.
+test('publishDateOutsideRun: Oslo 2017 review is outside the 2016 Newhouse run, inside the 2017 Broadway run', () => {
+  const offB = { previewsStartDate: '2016-06-16', openingDate: '2016-07-11', closingDate: '2016-08-28' };
+  const bway = { previewsStartDate: '2017-03-23', openingDate: '2017-04-13', closingDate: '2017-07-16' };
+  assert.equal(publishDateOutsideRun(offB, { publishDate: '2017-05-04' }), true);
+  assert.equal(publishDateOutsideRun(bway, { publishDate: '2017-05-04' }), false);
+});
+
+test('publishDateOutsideRun: prose dates parse; South Pacific 2014 is outside the 2008-2010 run', () => {
+  const sp = { previewsStartDate: '2008-03-01', openingDate: '2008-04-03', closingDate: '2010-08-22' };
+  assert.equal(publishDateOutsideRun(sp, { publishDate: 'April 22, 2014' }), true);
+  assert.equal(publishDateOutsideRun(sp, { publishDate: 'April 7, 2008' }), false);
+});
+
+test('publishDateOutsideRun: missing or unparseable dates never hold (no false positive)', () => {
+  const s = { previewsStartDate: '2024-04-03', openingDate: '2024-04-24', closingDate: '2024-06-16' };
+  assert.equal(publishDateOutsideRun(s, {}), false);
+  assert.equal(publishDateOutsideRun(s, { publishDate: 'not a date' }), false);
+  assert.equal(publishDateOutsideRun({}, { publishDate: '2024-05-01' }), false);
 });
