@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6736",
   "planId": "904b810d-e817-40e3-907a-3907669d303a",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-04T18:26:49.598Z",
   "submitter": {
     "name": null,
@@ -84,5 +84,59 @@
         "args": "--show=from-the-heart-west-end-2026 --url=https://1minutecritic.com/the-heart-musical-roundabout-review/ --reason=BRO-6736:review-of-the-heart-off-broadway-2026-not-From-The-Heart-West-End"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-04T20:54:21.897Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran copy-multishow-section.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran copy-multishow-section.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran copy-multishow-section.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran copy-multishow-section.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran block-review.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran block-review.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran block-review.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran block-review.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran block-review.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran block-review.js successfully"
+    }
+  ],
+  "executedIn": "ci"
 }
