@@ -216,4 +216,25 @@ for mode in merge clash regen; do
   else echo "PASS[10 $mode]: JSON restore ($mode)"; fi
 done
 
+# ── Case 11: append-only array log (BRO-4688, autostash=append) ─────────────
+for mode in append plain; do
+  n="c11$mode"; setup "$n"
+  [ "$mode" = append ] && printf 'runs.json autostash=append\n' > "$TMP/$n-work/.gitattributes"
+  printf '[\n  {\n    "id": 1\n  }\n]\n' > "$TMP/$n-work/runs.json"
+  git -C "$TMP/$n-work" add -A; git -C "$TMP/$n-work" commit -q -m runs; git -C "$TMP/$n-work" push -q origin HEAD:main
+  git -C "$TMP/$n-racer" fetch -q origin && git -C "$TMP/$n-racer" reset -q --hard origin/main
+  printf '[\n  {\n    "id": 1\n  },\n  {\n    "id": 2\n  }\n]\n' > "$TMP/$n-racer/runs.json"
+  printf '[\n  {\n    "id": 1\n  },\n  {\n    "id": 3\n  }\n]\n' > "$TMP/$n-work/runs.json.new"
+  race "$n"
+  printf 'local2\n' > "$TMP/$n-work/local2.txt"; git -C "$TMP/$n-work" add local2.txt; git -C "$TMP/$n-work" commit -q -m local2
+  mv "$TMP/$n-work/runs.json.new" "$TMP/$n-work/runs.json"
+  out=$( cd "$TMP/$n-work" && GITHUB_ACTIONS=true PUSH_FAILURE_LOG="$TMP/$n-fail.jsonl" bash "$PUSH_SCRIPT" 3 main 2>&1 ); rc=$?
+  if [ "$rc" -ne 0 ]; then echo "FAIL[11 $mode]: rc=$rc"; echo "$out" | tail -5; fail=1
+  elif [ "$mode" = append ] && { ! grep -q '"id": 2' "$TMP/$n-work/runs.json" || ! grep -q '"id": 3' "$TMP/$n-work/runs.json" || grep -q '"autostash-conflict"' "$TMP/$n-fail.jsonl" 2>/dev/null; }; then
+    echo "FAIL[11 append]: both sides' rows must survive without a conflict row"; cat "$TMP/$n-work/runs.json"; fail=1
+  elif [ "$mode" = plain ] && ! grep -q '"autostash-conflict"' "$TMP/$n-fail.jsonl" 2>/dev/null; then
+    echo "FAIL[11 plain]: without the attribute an array clash must still be recorded"; fail=1
+  else echo "PASS[11 $mode]: append-only array restore ($mode)"; fi
+done
+
 exit $fail

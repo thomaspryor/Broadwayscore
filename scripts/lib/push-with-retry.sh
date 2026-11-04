@@ -1291,6 +1291,9 @@ restore_autostash() {
     # stage-latency.jsonl): plain merge-file reports every both-sides append as
     # a conflict, which would drop the caller's rows.
     union=""
+    # autostash=append (BRO-4688): append-only JSON array logs; the key-wise merge may union both sides' new rows.
+    append_arrays=""
+    case "$(git check-attr autostash -- "$p" 2>/dev/null)" in *": autostash: append") append_arrays="--append-arrays" ;; esac
     case "$(git check-attr merge -- "$p" 2>/dev/null)" in *": merge: union") union="--union" ;; esac
     if git merge-file -q $union "$ours_f" "$base_f" "$theirs_f" 2>/dev/null; then
       if cp -f "$ours_f" "$p" 2>/dev/null; then merged=1; restored+=("$p"); else kept=1; fi
@@ -1298,7 +1301,7 @@ restore_autostash() {
          && ! autostash_is_regenerated "$p" \
          && command -v node >/dev/null 2>&1 \
          && git show "$AUTOSTASH_SHA:$p" >"$tmpd/ours.json" 2>/dev/null \
-         && _timeout 30 node "$SCRIPT_DIR/json-three-way-merge.js" "$base_f" "$tmpd/ours.json" "$theirs_f" "$tmpd/merged.json" 2>/dev/null \
+         && _timeout 30 node "$SCRIPT_DIR/json-three-way-merge.js" "$base_f" "$tmpd/ours.json" "$theirs_f" "$tmpd/merged.json" $append_arrays 2>/dev/null \
          && cp -f "$tmpd/merged.json" "$p" 2>/dev/null; then
       # BRO-4688: a JSON file that conflicts as text but where no single value
       # changed on both sides (two rebuilds each auto-registering an outlet in
