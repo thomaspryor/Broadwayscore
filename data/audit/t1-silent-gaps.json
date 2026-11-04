@@ -1,28 +1,8 @@
 {
-  "generatedAt": "2026-11-04T13:45:55.536Z",
+  "generatedAt": "2026-11-04T15:35:04.416Z",
   "windowDays": 45,
-  "showsScanned": 243,
+  "showsScanned": 244,
   "gaps": [
-    {
-      "showId": "tosca-english-national-opera-west-end-2026",
-      "title": "Tosca - English National Opera",
-      "openingDate": "2026-10-30",
-      "file": "times-uk--richard-morrison.json",
-      "outletId": "times-uk",
-      "tier": 1,
-      "type": "empty-body",
-      "recoverable": false,
-      "url": "https://www.thetimes.com/culture/classical-opera/article/tosca-review-london-coliseum-nqwpdjr9t",
-      "recovery": null,
-      "recoveryCount": 0,
-      "forumLinkRecoveryCount": 0,
-      "fix": "node scripts/ingest-review-from-url.js --show=tosca-english-national-opera-west-end-2026 --url=https://www.thetimes.com/culture/classical-opera/article/tosca-review-london-coliseum-nqwpdjr9t --outlet=times-uk --critic=\"Richard Morrison\"   # run LOCALLY (cookie jar lives on the Mac)",
-      "firstSeen": "2026-11-01T17:45:55.242Z",
-      "fileAgeHours": 67.99857527777777,
-      "gapSeenAt": "2026-11-04T01:35:35.724Z",
-      "nonTerminalAgeHours": 12.172169722222222,
-      "needsManualRecovery": false
-    },
     {
       "showId": "lincoln-in-the-bardo-off-broadway-2026",
       "title": "Lincoln in the Bardo",
@@ -41,9 +21,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=lincoln-in-the-bardo-off-broadway-2026",
       "firstSeen": "2026-10-25T17:52:33.957Z",
-      "fileAgeHours": 235.8879986111111,
+      "fileAgeHours": 237.70711166666666,
       "gapSeenAt": "2026-10-26T08:25:16.367Z",
-      "nonTerminalAgeHours": 221.34421333333333,
+      "nonTerminalAgeHours": 223.16334694444444,
       "needsManualRecovery": true
     }
   ],
