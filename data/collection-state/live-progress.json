@@ -1,18 +1,18 @@
 {
-  "updatedAt": "2026-11-04T00:32:20.226Z",
-  "processed": 5,
-  "failed": 10,
-  "successRate": "33.3%",
+  "updatedAt": "2026-11-04T01:58:46.513Z",
+  "processed": 49,
+  "failed": 52,
+  "successRate": "48.5%",
   "tierBreakdown": {
-    "playwright": 4,
+    "playwright": 33,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingdog": 0,
-    "scrapingbee": 0,
+    "scrapingdog": 2,
+    "scrapingbee": 2,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 1
+    "archive": 8
   },
   "browserbaseSessions": 2,
   "recentActivity": [
@@ -27,6 +27,23 @@
       "event": "bb-session",
       "session": "b288399d",
       "url": "https://bachtrack.com/review-kolomiiets-mothers-of-kherson-polish-national-opera"
+    },
+    {
+      "t": "2026-11-04T01:34:53.136Z",
+      "event": "bb-session",
+      "session": "e8e39b01",
+      "url": "http://www.talkinbroadway.com/ob/8_24_15.html"
+    },
+    {
+      "t": "2026-11-04T01:34:53.602Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-04T01:41:43.140Z",
+      "event": "bb-session",
+      "session": "ac9ade00",
+      "url": "https://www.londontheatre1.com/.well-known/captcha/?y=ipr:20.83.175.21:179330283"
     }
   ]
 }
