@@ -1,0 +1,98 @@
+{
+  "issueNumber": "bro-6493-5",
+  "planId": "21298315-8b2b-48fb-a355-c98f6cbd4206",
+  "status": "pending",
+  "createdAt": "2026-11-04T13:22:59.096Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6493: finish wider inventory opening confirmations and correct Job Connelly opening",
+    "steps": [
+      "BRO-6493: 2024 Connelly Theater engagement listing explicitly separates January 19 first preview and January 25 opening. This is the return engagement, not the September 2023 SoHo premiere or Broadway transfer. Sources: https://www.theatermania.com/shows/new-york-city-theater/off-broadway/job_1723966/",
+      "BRO-6493: 2024 Connelly Theater engagement listing explicitly separates January 19 first preview and January 25 opening. This is the return engagement, not the September 2023 SoHo premiere or Broadway transfer. Sources: https://www.theatermania.com/shows/new-york-city-theater/off-broadway/job_1723966/",
+      "BRO-6493: 2024 Flea Theater engagement listing explicitly identifies August 17 opening night, matching the run start independently listed by TDF. Contemporary opening-night photo coverage published August 19 corroborates that opening celebration. Sources: https://www.theatermania.com/shows/new-york-city-theater/off-broadway/pretty-perfect-lives_1747015/ https://www.tdf.org/shows/21912/pretty-perfect-lives/ https://playbill.com/article/photos-pretty-perfect-lives-hits-the-red-carpet-for-opening-night",
+      "BRO-6493: Producer Write Act Repertory retrospective explicitly says the Actors Temple NYC production opened July 6, 2021 at 7 PM. TheaterMania independently identifies that opening date. The earlier announcement called the same date previews; use the producers retrospective opening account, not a guessed later date. Sources: https://www.writeactrep.org/events--announcements.html https://www.theatermania.com/shows/new-york-city-theater/off-broadway/the-importance-of-being-earnestly-lgbtq_358945/",
+      "BRO-6493: Official producer page explicitly labels Sunday September 20, 2026 at 9 PM the inaugural performance and supplies all nine showtimes through October 5. Contemporary Playbill announcement independently confirms this limited engagement. Sources: https://apologytourlive.com/ https://playbill.com/article/ana-gasteyer-will-be-september-l-davis-live-off-broadway-for-9-performances-only",
+      "BRO-6493: Studio Seaview 2026 Andrew Scott engagement listing explicitly identifies October 16 opening, matching the first performance. The September film announcement identifies the same short stage engagement, not the 2019 Broadway production. Sources: https://www.theatermania.com/shows/new-york-city-theater/off-broadway/sea-wall_1853595/ https://www.broadwayworld.com/article/Andrew-Scott-Will-Lead-SEA-WALL-Film-Captured-Live-on-Stage-20260914",
+      "BRO-6493: Official venue show page lists the complete two-date NYC visiting engagement October 17 and 20, 2026. Local opening coincides with the first advertised public performance of the Edinburgh production; this is not the separate Virginia production opening September 19. Sources: https://www.sohoplayhouse.com/shows/the-second-best-school-shooting https://www.sohoplayhouse.com/calendar/the-second-best-school-shooting",
+      "BRO-6493: 2026 Players Theatre listing explicitly identifies September 26 opening. Contemporary Literally Alive cast announcement independently dates the first public performance September 26; this is the Michael Sgouros and Brenda Bell family musical. Sources: https://www.theatermania.com/shows/new-york-city-theater/off-broadway/alice-in-wonderland_1840832/ https://www.broadwayworld.com/off-broadway/article/alice-in-wonderland-the-musical-sets-cast-at-literally-alive-20260831"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "job-off-broadway-2024",
+        "field": "openingDate",
+        "oldValue": "2024-01-19",
+        "newValue": "2024-01-25",
+        "description": "BRO-6493: 2024 Connelly Theater engagement listing explicitly separates January 19 first preview and January 25 opening. This is the return engagement, not the September 2023 SoHo premiere or Broadway transfer. Sources: https://www.theatermania.com/shows/new-york-city-theater/off-broadway/job_1723966/"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "job-off-broadway-2024",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "theatermania",
+        "description": "BRO-6493: 2024 Connelly Theater engagement listing explicitly separates January 19 first preview and January 25 opening. This is the return engagement, not the September 2023 SoHo premiere or Broadway transfer. Sources: https://www.theatermania.com/shows/new-york-city-theater/off-broadway/job_1723966/"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "pretty-perfect-lives-off-broadway-2024",
+        "field": "openingDateSource",
+        "oldValue": "playbill-ob-historical",
+        "newValue": "theatermania:no-previews",
+        "description": "BRO-6493: 2024 Flea Theater engagement listing explicitly identifies August 17 opening night, matching the run start independently listed by TDF. Contemporary opening-night photo coverage published August 19 corroborates that opening celebration. Sources: https://www.theatermania.com/shows/new-york-city-theater/off-broadway/pretty-perfect-lives_1747015/ https://www.tdf.org/shows/21912/pretty-perfect-lives/ https://playbill.com/article/photos-pretty-perfect-lives-hits-the-red-carpet-for-opening-night"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-importance-of-being-earnestly-lgbtq-off-broadway-2021",
+        "field": "openingDateSource",
+        "oldValue": "playbill-ob-historical",
+        "newValue": "producer-page:write-act:opening-confirmed",
+        "description": "BRO-6493: Producer Write Act Repertory retrospective explicitly says the Actors Temple NYC production opened July 6, 2021 at 7 PM. TheaterMania independently identifies that opening date. The earlier announcement called the same date previews; use the producers retrospective opening account, not a guessed later date. Sources: https://www.writeactrep.org/events--announcements.html https://www.theatermania.com/shows/new-york-city-theater/off-broadway/the-importance-of-being-earnestly-lgbtq_358945/"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "september-l-davis-the-apology-tour-off-broadway-2026",
+        "field": "openingDateSource",
+        "oldValue": "playbill-production-page",
+        "newValue": "producer-page:boundary-road:no-previews",
+        "description": "BRO-6493: Official producer page explicitly labels Sunday September 20, 2026 at 9 PM the inaugural performance and supplies all nine showtimes through October 5. Contemporary Playbill announcement independently confirms this limited engagement. Sources: https://apologytourlive.com/ https://playbill.com/article/ana-gasteyer-will-be-september-l-davis-live-off-broadway-for-9-performances-only"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "sea-wall-off-broadway-2026",
+        "field": "openingDateSource",
+        "oldValue": "playbill",
+        "newValue": "theatermania:no-previews",
+        "description": "BRO-6493: Studio Seaview 2026 Andrew Scott engagement listing explicitly identifies October 16 opening, matching the first performance. The September film announcement identifies the same short stage engagement, not the 2019 Broadway production. Sources: https://www.theatermania.com/shows/new-york-city-theater/off-broadway/sea-wall_1853595/ https://www.broadwayworld.com/article/Andrew-Scott-Will-Lead-SEA-WALL-Film-Captured-Live-on-Stage-20260914"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-second-best-school-shooting-off-broadway-2026",
+        "field": "openingDateSource",
+        "oldValue": "first-performance-no-press-night",
+        "newValue": "venue-page:soho-playhouse:no-previews",
+        "description": "BRO-6493: Official venue show page lists the complete two-date NYC visiting engagement October 17 and 20, 2026. Local opening coincides with the first advertised public performance of the Edinburgh production; this is not the separate Virginia production opening September 19. Sources: https://www.sohoplayhouse.com/shows/the-second-best-school-shooting https://www.sohoplayhouse.com/calendar/the-second-best-school-shooting"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "alice-in-wonderland-off-broadway-2026",
+        "field": "openingDateSource",
+        "oldValue": "first-performance-no-press-night",
+        "newValue": "theatermania:no-previews",
+        "description": "BRO-6493: 2026 Players Theatre listing explicitly identifies September 26 opening. Contemporary Literally Alive cast announcement independently dates the first public performance September 26; this is the Michael Sgouros and Brenda Bell family musical. Sources: https://www.theatermania.com/shows/new-york-city-theater/off-broadway/alice-in-wonderland_1840832/ https://www.broadwayworld.com/off-broadway/article/alice-in-wonderland-the-musical-sets-cast-at-literally-alive-20260831"
+      }
+    ]
+  }
+}

@@ -1,0 +1,148 @@
+{
+  "issueNumber": "bro-6493-3",
+  "planId": "77f27b87-241a-44a4-b0aa-218f1e5724c1",
+  "status": "pending",
+  "createdAt": "2026-11-04T13:14:34.834Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6493: second-source dates and producer-confirmed same-day openings in the wider closed-row inventory",
+    "steps": [
+      "BRO-6493: 2026 Flea listing explicitly distinguishes September 10 first preview from September 18 opening. Existing first-performance-no-press-night attribution is incorrect. Sources: https://www.tdf.org/shows/23354/beyond-the-stardust/",
+      "BRO-6493: 2026 Flea listing explicitly distinguishes September 10 first preview from September 18 opening. Existing first-performance-no-press-night attribution is incorrect. Sources: https://www.tdf.org/shows/23354/beyond-the-stardust/",
+      "BRO-6493: Playwrights Horizons 2026 production record explicitly distinguishes April 14 preview and April 22 opening. Venue, year, cast and production match; contemporary April 22 review corroborates the engagement but was not used to infer the opening date. Sources: https://theatricalindex.com/show/rheology/rheology-playwrights-2026 https://dctheaterarts.org/2026/04/22/physics-meets-theater-in-rheology-off-broadway-at-playwrights-horizons/",
+      "BRO-6493: Playwrights Horizons 2026 production record explicitly distinguishes April 14 preview and April 22 opening. Venue, year, cast and production match; contemporary April 22 review corroborates the engagement but was not used to infer the opening date. Sources: https://theatricalindex.com/show/rheology/rheology-playwrights-2026 https://dctheaterarts.org/2026/04/22/physics-meets-theater-in-rheology-off-broadway-at-playwrights-horizons/",
+      "BRO-6493: Producer 2026 casting notice explicitly dates opening September 26, closing October 25 and rehearsals from September 8; complete performance schedule follows tech and begins September 26. TodayTix corroborates that run. Sources: https://www.dance.nyc/for-artists/listings/2026/06/TYA-92NY-RED-RIDING-HOOD/ https://www.todaytix.com/nyc/shows/45226-red-riding-hood",
+      "BRO-6493: Hostos 2026 engagement listing explicitly dates October 11 opening and supplies all three performances October 11, 14 and 15. Rights-holder schedule independently confirms the October 11 to 15 Hostos engagement. Sources: https://www.theatermania.com/shows/bronx/quarter-rican_1856201/ https://www.theatricalrights.com/show/quarter-rican/",
+      "BRO-6493: Official producer schedule dates the six regular performances October 22 to 31, 2026, Thursday to Saturday at 7:30 PM, plus separate October 27 gala. TheaterMania independently explicitly identifies October 22 opening night, not the gala date. Sources: https://www.heartbeatopera.org/queeneytodd https://www.theatermania.com/shows/new-york-city-theater/off-broadway/queeney-todd-the-demon-bottom-of-fleet-street_1855164/",
+      "BRO-6493: Public Theater 2026 free pop-up premiere listing explicitly identifies October 8 opening night; contemporary season announcement dates the short play October 8 to 18. This is not the separate Almeida production. Sources: https://www.theatermania.com/shows/new-york-city-theater/off-broadway/triumph_1857424/ https://www.broadwayworld.com/article/triumph-world-premiere-and-more-set-for-the-public-theaters-springsummer-2026-27-season-20260930",
+      "BRO-6493: 2026 Gene Frankel Theatre listing explicitly identifies October 21 opening night and October 31 closing. Event listing also identifies October 21 as the first performance of the four-play evening. Sources: https://www.theatermania.com/shows/new-york-city-theater/off-broadway/tales-of-urban-hysteria-is-an-evening-of-four-short-plays-by-award-winning-playwright-mark-borkowski_1856874/",
+      "BRO-6493: Official Encores program dates the City Center engagement June 17 to 28, 2026. Contemporary Broadway News calendar explicitly identifies June 17 at 7:30 PM as opening night; TheaterMania agrees. Sources: https://www.nycitycenter.org/globalassets/__pdps/2025-2026/encores/la-cage/encores-la-cage-aux-folles-program.pdf https://www.broadwaynews.com/broadway-itinerary-week-of-6-15-2/ https://www.theatermania.com/shows/new-york-city-theater/off-broadway/la-cage-aux-folles_1783010/",
+      "BRO-6493: Producer ticket page explicitly dates the Cell Gallery Space return September 13 to October 9, 2026. TDF and BroadwayWorld independently identify September 13 opening, matching first performance of this return engagement. Sources: https://www.tickettailor.com/events/bigfeelingstheplay/2361498 https://www.tdf.org/shows/23323/big-feelings/ https://www.broadwayworld.com/shows/big-feelings-336331.html",
+      "BRO-6493: 2026 Minetta Lane return engagement listing explicitly identifies March 17 opening night. Contemporary return announcement and TDF independently confirm March 17 run start and opening; do not reuse the 2025 premiere date. Sources: https://www.theatermania.com/shows/new-york-city-theater/off-broadway/sexual-misconduct-of-the-middle-classes_1826315/ https://www.theatermania.com/news/hugh-jackman-and-ella-beatty-return-in-sexual-misconduct-of-the-middle-classes_1826301/ https://www.tdf.org/shows/22474/sexual-misconduct-of-the-middle-classes/",
+      "BRO-6493: Theatre owner Reading International explicitly states in its filed 2023 Form 10-K that Izzards Hamlet opened at the Orpheum March 19, 2024. Contemporary Playbill report confirms reopening that day following the Greenwich House run, rather than the original February premiere. Sources: https://www.sec.gov/Archives/edgar/data/716634/000071663424000009/rdi-20231231x10k.htm https://playbill.com/article/eddie-izzards-solo-hamlet-reopens-at-the-orpheum-theatre-march-19"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "beyond-the-stardust-off-broadway-2026",
+        "field": "openingDate",
+        "oldValue": "2026-09-10",
+        "newValue": "2026-09-18",
+        "description": "BRO-6493: 2026 Flea listing explicitly distinguishes September 10 first preview from September 18 opening. Existing first-performance-no-press-night attribution is incorrect. Sources: https://www.tdf.org/shows/23354/beyond-the-stardust/"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "beyond-the-stardust-off-broadway-2026",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "tdf",
+        "description": "BRO-6493: 2026 Flea listing explicitly distinguishes September 10 first preview from September 18 opening. Existing first-performance-no-press-night attribution is incorrect. Sources: https://www.tdf.org/shows/23354/beyond-the-stardust/"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "rheology-off-broadway-2026",
+        "field": "openingDate",
+        "oldValue": "2026-04-14",
+        "newValue": "2026-04-22",
+        "description": "BRO-6493: Playwrights Horizons 2026 production record explicitly distinguishes April 14 preview and April 22 opening. Venue, year, cast and production match; contemporary April 22 review corroborates the engagement but was not used to infer the opening date. Sources: https://theatricalindex.com/show/rheology/rheology-playwrights-2026 https://dctheaterarts.org/2026/04/22/physics-meets-theater-in-rheology-off-broadway-at-playwrights-horizons/"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "rheology-off-broadway-2026",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "theatrical-index",
+        "description": "BRO-6493: Playwrights Horizons 2026 production record explicitly distinguishes April 14 preview and April 22 opening. Venue, year, cast and production match; contemporary April 22 review corroborates the engagement but was not used to infer the opening date. Sources: https://theatricalindex.com/show/rheology/rheology-playwrights-2026 https://dctheaterarts.org/2026/04/22/physics-meets-theater-in-rheology-off-broadway-at-playwrights-horizons/"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "red-riding-hood-off-broadway-2026",
+        "field": "openingDateSource",
+        "oldValue": "previews-fallback",
+        "newValue": "producer-schedule:92ny:no-previews",
+        "description": "BRO-6493: Producer 2026 casting notice explicitly dates opening September 26, closing October 25 and rehearsals from September 8; complete performance schedule follows tech and begins September 26. TodayTix corroborates that run. Sources: https://www.dance.nyc/for-artists/listings/2026/06/TYA-92NY-RED-RIDING-HOOD/ https://www.todaytix.com/nyc/shows/45226-red-riding-hood"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "quarter-rican-off-broadway-2026",
+        "field": "openingDateSource",
+        "oldValue": "previews-fallback",
+        "newValue": "theatermania:no-previews",
+        "description": "BRO-6493: Hostos 2026 engagement listing explicitly dates October 11 opening and supplies all three performances October 11, 14 and 15. Rights-holder schedule independently confirms the October 11 to 15 Hostos engagement. Sources: https://www.theatermania.com/shows/bronx/quarter-rican_1856201/ https://www.theatricalrights.com/show/quarter-rican/"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026",
+        "field": "openingDateSource",
+        "oldValue": "first-performance-no-press-night",
+        "newValue": "producer-page:heartbeat-opera:no-previews",
+        "description": "BRO-6493: Official producer schedule dates the six regular performances October 22 to 31, 2026, Thursday to Saturday at 7:30 PM, plus separate October 27 gala. TheaterMania independently explicitly identifies October 22 opening night, not the gala date. Sources: https://www.heartbeatopera.org/queeneytodd https://www.theatermania.com/shows/new-york-city-theater/off-broadway/queeney-todd-the-demon-bottom-of-fleet-street_1855164/"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "triumph-off-broadway-2026",
+        "field": "openingDateSource",
+        "oldValue": "playbill-production-page",
+        "newValue": "theatermania:no-previews",
+        "description": "BRO-6493: Public Theater 2026 free pop-up premiere listing explicitly identifies October 8 opening night; contemporary season announcement dates the short play October 8 to 18. This is not the separate Almeida production. Sources: https://www.theatermania.com/shows/new-york-city-theater/off-broadway/triumph_1857424/ https://www.broadwayworld.com/article/triumph-world-premiere-and-more-set-for-the-public-theaters-springsummer-2026-27-season-20260930"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "tales-of-urban-hysteria-is-an-evening-of-four-short-plays-by-award-winning-playwright-mark-borkowski-off-broadway-2026",
+        "field": "openingDateSource",
+        "oldValue": "previews-fallback",
+        "newValue": "theatermania:no-previews",
+        "description": "BRO-6493: 2026 Gene Frankel Theatre listing explicitly identifies October 21 opening night and October 31 closing. Event listing also identifies October 21 as the first performance of the four-play evening. Sources: https://www.theatermania.com/shows/new-york-city-theater/off-broadway/tales-of-urban-hysteria-is-an-evening-of-four-short-plays-by-award-winning-playwright-mark-borkowski_1856874/"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "encores-la-cage-aux-folles-off-broadway-2026",
+        "field": "openingDateSource",
+        "oldValue": "playbill-production-page",
+        "newValue": "venue-program:new-york-city-center:no-previews",
+        "description": "BRO-6493: Official Encores program dates the City Center engagement June 17 to 28, 2026. Contemporary Broadway News calendar explicitly identifies June 17 at 7:30 PM as opening night; TheaterMania agrees. Sources: https://www.nycitycenter.org/globalassets/__pdps/2025-2026/encores/la-cage/encores-la-cage-aux-folles-program.pdf https://www.broadwaynews.com/broadway-itinerary-week-of-6-15-2/ https://www.theatermania.com/shows/new-york-city-theater/off-broadway/la-cage-aux-folles_1783010/"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "big-feelings-off-broadway-2026",
+        "field": "openingDateSource",
+        "oldValue": "first-performance-no-press-night",
+        "newValue": "producer-tickets:most-unwanted:no-previews",
+        "description": "BRO-6493: Producer ticket page explicitly dates the Cell Gallery Space return September 13 to October 9, 2026. TDF and BroadwayWorld independently identify September 13 opening, matching first performance of this return engagement. Sources: https://www.tickettailor.com/events/bigfeelingstheplay/2361498 https://www.tdf.org/shows/23323/big-feelings/ https://www.broadwayworld.com/shows/big-feelings-336331.html"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "sexual-misconduct-of-the-middle-classes-off-broadway-2026",
+        "field": "openingDateSource",
+        "oldValue": "ibdb",
+        "newValue": "theatermania:encore:no-previews",
+        "description": "BRO-6493: 2026 Minetta Lane return engagement listing explicitly identifies March 17 opening night. Contemporary return announcement and TDF independently confirm March 17 run start and opening; do not reuse the 2025 premiere date. Sources: https://www.theatermania.com/shows/new-york-city-theater/off-broadway/sexual-misconduct-of-the-middle-classes_1826315/ https://www.theatermania.com/news/hugh-jackman-and-ella-beatty-return-in-sexual-misconduct-of-the-middle-classes_1826301/ https://www.tdf.org/shows/22474/sexual-misconduct-of-the-middle-classes/"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "hamlet-off-broadway-2024",
+        "field": "openingDateSource",
+        "oldValue": "playbill-ob-historical",
+        "newValue": "venue-owner-report:reading-international:no-previews",
+        "description": "BRO-6493: Theatre owner Reading International explicitly states in its filed 2023 Form 10-K that Izzards Hamlet opened at the Orpheum March 19, 2024. Contemporary Playbill report confirms reopening that day following the Greenwich House run, rather than the original February premiere. Sources: https://www.sec.gov/Archives/edgar/data/716634/000071663424000009/rdi-20231231x10k.htm https://playbill.com/article/eddie-izzards-solo-hamlet-reopens-at-the-orpheum-theatre-march-19"
+      }
+    ]
+  }
+}
