@@ -44,7 +44,7 @@ const TOKEN = 'test-token';
 const CLEAN_ENV = Object.fromEntries(Object.entries(process.env).filter(([k]) => !/^GIT_(DIR|WORK_TREE|INDEX_FILE|OBJECT_DIRECTORY|COMMON_DIR|PREFIX)$/.test(k)));
 const git = (cwd, ...a) => execFileSync('git', a, { cwd, env: CLEAN_ENV, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] }).trim();
 
-test('e2e: stale writer rewriting a file upstream deleted does not resurrect it', { timeout: 180000 }, () => {
+for (const committed of [false, true]) test(`e2e: stale writer rewriting a file upstream deleted does not resurrect it (${committed ? 'push-loop rebase' : 'autostash pop'})`, { timeout: 180000 }, () => {
   const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'push-rt-resolve-'));
   try {
     const origin = path.join(tmp, 'origin.git');
@@ -75,6 +75,7 @@ test('e2e: stale writer rewriting a file upstream deleted does not resurrect it'
     fs.writeFileSync(path.join(d, 'doomed.json'), body({ rejectedBy: 'ensemble-scoreability-check' }));
     fs.writeFileSync(path.join(d, 'real-change.json'), body({ fullText: 'A genuinely re-fetched, different body.' }));
     fs.writeFileSync(path.join(d, 'other.json'), body({ n: 2 }));
+    if (committed) { git(rt, 'add', '-A'); git(rt, 'commit', '-qm', 'stale rewrite'); }
 
     const out = path.join(tmp, 'gh-output');
     fs.writeFileSync(out, '');

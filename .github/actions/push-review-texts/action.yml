@@ -98,6 +98,11 @@ runs:
           # restore could not bring back publishDate/fetchMethod/needsRefetch.
           node "$GITHUB_WORKSPACE/scripts/lib/review-json-three-way-merge.js" --tie=workflow >/dev/null \
             || echo "::warning::push-review-texts: review JSON three-way merge crashed (falling back to whole-file)"
+          # BRO-6941: upstream deleted a file this stale stash modified: keep the
+          # deletion unless the stash made a real fullText change (else
+          # `checkout --theirs` below resurrects it).
+          node "$GITHUB_WORKSPACE/scripts/lib/resolve-modify-delete.js" \
+            || echo "::warning::push-review-texts: modify/delete resolver crashed (falling back to whole-file)"
           git checkout --theirs -- . 2>/dev/null || true
           git add -A
         fi
@@ -452,6 +457,13 @@ runs:
               # skips those and handles the rest (delete/modify, bad JSON).
               node ../../scripts/lib/review-json-three-way-merge.js --tie=upstream >/dev/null \
                 || echo "::warning::push-review-texts: review JSON three-way merge crashed (falling back to whole-file)"
+
+              # BRO-6941: upstream deleted a file we modified: the deletion
+              # stands unless we made a real fullText change. Without this the
+              # length compare below sees the deleted side as 0 chars and always
+              # keeps ours, resurrecting the file.
+              node ../../scripts/lib/resolve-modify-delete.js \
+                || echo "::warning::push-review-texts: modify/delete resolver crashed (falling back to length compare)"
 
               while IFS= read -r f; do
                 [ -n "$(git ls-files -u -- "$f")" ] || continue

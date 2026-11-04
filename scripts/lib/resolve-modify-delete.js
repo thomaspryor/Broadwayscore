@@ -20,18 +20,19 @@
  *
  * CLI (inside the data repo, mid-rebase): for every unmerged path with no
  * stage 2 (upstream deleted it) but stages 1 and 3, apply the decision
- * (`git rm` or keep this workflow's copy and `git add`). Prints each path as
+ * (`git rm` or keep this workflow's copy and `git add`); review *.json only. Prints each path as
  * `<path>\tdelete|keep`.
  *   node resolve-modify-delete.js
  */
 
+const path = require('path');
 const { execFileSync } = require('child_process');
 
 function _fullText(raw) {
   if (typeof raw !== 'string' || !raw.trim()) return '';
   try {
     const d = JSON.parse(raw);
-    return d && typeof d.fullText === 'string' ? d.fullText : '';
+    return d && typeof d.fullText === 'string' ? d.fullText.replace(/\s+/g, ' ').trim() : '';
   } catch { return ''; }
 }
 
@@ -46,6 +47,10 @@ function resolveModifyDelete({ baseRaw, oursRaw }) {
   if (ours === _fullText(baseRaw)) return 'delete';
   return 'keep';
 }
+
+// Review-text JSON only: failed-fetches.json and non-review files have no
+// fullText and keep their own merge rules in the action.
+const isReviewJson = (p) => p.endsWith('.json') && path.basename(p) !== 'failed-fetches.json';
 
 function _git(args, opts = {}) {
   return execFileSync('git', args, { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'], maxBuffer: 64 * 1024 * 1024, ...opts });
@@ -65,11 +70,15 @@ function main() {
     stages.get(p).add(stage);
   }
   for (const [p, s] of stages) {
-    if (s.has('2') || !s.has('1') || !s.has('3')) continue;
-    const decision = resolveModifyDelete({ baseRaw: _stage(1, p), oursRaw: _stage(3, p) });
+    if (s.has('2') || !s.has('1') || !s.has('3') || !isReviewJson(p)) continue;
+    const oursRaw = _stage(3, p);
+    const decision = resolveModifyDelete({ baseRaw: _stage(1, p), oursRaw });
     if (decision === 'delete') {
       _git(['rm', '-q', '-f', '--', p]);
     } else {
+      // Write the workflow's (stage 3) copy explicitly; the work tree may have
+      // been touched by an earlier step.
+      require('fs').writeFileSync(p, oursRaw);
       _git(['add', '--', p]);
     }
     process.stdout.write(`${p}\t${decision}\n`);
