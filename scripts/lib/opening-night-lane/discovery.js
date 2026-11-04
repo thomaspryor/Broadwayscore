@@ -1217,6 +1217,22 @@ const AGGREGATOR_FINAL = new Set(['non-review-path', 'non-review-slug', 'homepag
 // `rejected`). Talkin' Broadway answers a date check in 35-40 s through Bright Data; with the pass cut at 15 s, or at the
 // pass deadline, the School Girls review was fetched, dated 2026-09-28, and thrown away twice (BRO-6872, p15 replay).
 const DATE_CHECKS_IN_FLIGHT = Symbol('dateChecksInFlight');
+// Date checks open at most this many pages at once, across passes (a carried check keeps its slot). A burst of ten paid
+// fetches can trip a provider's concurrency limit, and that refusal reads as a real failure: a strike (BRO-6872 review).
+const DATE_CHECK_CONCURRENCY = 3;
+
+/** A FIFO limiter: run(fn) starts fn once fewer than `max` are running, and settles with it. */
+function makeLimiter(max) {
+  let running = 0;
+  const queue = [];
+  const next = () => {
+    if (running >= max || !queue.length) return;
+    running++;
+    const { fn, resolve, reject } = queue.shift();
+    Promise.resolve().then(fn).then(resolve, reject).finally(() => { running--; next(); });
+  };
+  return (fn) => new Promise((resolve, reject) => { queue.push({ fn, resolve, reject }); next(); });
+}
 
 /** The not-review-like test: a sighting with no review signal from its source, its url/title, or its host. */
 function looksReviewLike(c, show) {
@@ -1304,8 +1320,8 @@ async function runDiscoveryPass({
   const admitted = [];
   const deferredDateChecks = [];
   let dateChecks = 0;
-  if (!memo[DATE_CHECKS_IN_FLIGHT]) Object.defineProperty(memo, DATE_CHECKS_IN_FLIGHT, { value: new Map(), enumerable: false });
-  const inFlight = memo[DATE_CHECKS_IN_FLIGHT];
+  if (!memo[DATE_CHECKS_IN_FLIGHT]) Object.defineProperty(memo, DATE_CHECKS_IN_FLIGHT, { value: { checks: new Map(), limit: makeLimiter(DATE_CHECK_CONCURRENCY) }, enumerable: false });
+  const { checks: inFlight, limit: limitDateCheck } = memo[DATE_CHECKS_IN_FLIGHT];
   const adapterCaps = new Map(adapters.filter((a) => a.fetchTimeoutMs).map((a) => [a.name, a.fetchTimeoutMs]));
   const checks = [];
   const judge = (c, key, publishDate) => {
@@ -1362,8 +1378,11 @@ async function runDiscoveryPass({
         // The check runs under its adapter's own cap (TB: 75 s), not the pass's 15 s, and outlives the pass: a page that
         // answers after the pass deadline is read on the next pass instead of fetched (and paid for) all over again.
         const capMs = (adapterCaps.get(c.adapter) || fetchTimeoutMs);
-        check = withTimeout(rawFetch, capMs, undefined, { unref: true })(c.fetchUrl || c.url, { recordAs: 'date-check' });
-        check.catch(() => {}); // settled later, or never read: no unhandled rejection either way
+        // The cap starts when the page is opened, not while the check waits for a slot.
+        const fetching = limitDateCheck(() => withTimeout(rawFetch, capMs, undefined, { unref: true })(c.fetchUrl || c.url, { recordAs: 'date-check' }));
+        // `outcome` is set the moment the check settles, so a pass reads a finished check even after its deadline fired.
+        check = { outcome: null };
+        check.done = fetching.then((html) => { check.outcome = { html }; return check.outcome; }, (error) => { check.outcome = { error }; return check.outcome; });
         inFlight.set(key, check);
       }
       checks.push({ c, key, check });
@@ -1378,7 +1397,7 @@ async function runDiscoveryPass({
     const deadline = new Promise((resolve) => { timer = setTimeout(() => resolve(null), Math.max(0, deadlineMs - (Date.now() - startedMs))); });
     try {
       for (const { c, key, check } of checks) {
-        const outcome = await Promise.race([check.then((html) => ({ html }), (error) => ({ error })), deadline]);
+        const outcome = check.outcome || await Promise.race([check.done, deadline]) || check.outcome;
         if (!outcome) { deadlineHit = true; deferredDateChecks.push(c.url); continue; } // still running: read next pass, no strike
         inFlight.delete(key);
         let publishDate;

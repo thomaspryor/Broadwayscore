@@ -86,3 +86,24 @@ test('date checks run side by side: two slow pages both answer inside one pass (
   assert.deepEqual(r.admitted.map((a) => a.key).sort(), urls.map((u) => d.canonicalUrl(u)).sort());
   assert.equal(r.deadlineHit, false);
 });
+
+const many = (urls) => ({ name: 'talkin-broadway', kind: 'outlet-index', phase: 'cheap', fetchTimeoutMs: 1000,
+  discover: async () => urls.map((url) => ({ url, title: 'School Girls review', source: 'outlet-index', publishDate: null, needsDate: true })) });
+const tbUrl = (i) => `https://www.talkinbroadway.com/page/world/SchoolGirls${i}.html`;
+
+test('no more than DATE_CHECK_CONCURRENCY date checks are open at once, so a burst cannot trip a provider limit (BRO-6872 review)', async () => {
+  const urls = Array.from({ length: 6 }, (_, i) => tbUrl(i));
+  let open = 0; let most = 0;
+  const fetchText = async () => { open++; most = Math.max(most, open); await sleep(30); open--; return PAGE; };
+  const r = await d.runDiscoveryPass({ show: SHOW, night: NIGHT, now: T0 + 3600000, startedAt: T0, adapters: [many(urls)], fetchText, memo: { rejected: {} }, deadlineMs: 2000 });
+  assert.equal(most, 3);
+  assert.equal(r.admitted.length, 6);
+});
+
+test('a check that finished before the deadline is read even when an earlier one is cut (BRO-6872 review)', async () => {
+  const slow = tbUrl('slow'); const fast = tbUrl('fast');
+  const fetchText = async (url) => { await sleep(url === slow ? 300 : 10); return PAGE; };
+  const r = await d.runDiscoveryPass({ show: SHOW, night: NIGHT, now: T0 + 3600000, startedAt: T0, adapters: [many([slow, fast])], fetchText, memo: { rejected: {} }, deadlineMs: 80 });
+  assert.deepEqual(r.admitted.map((a) => a.key), [d.canonicalUrl(fast)]);
+  assert.deepEqual(r.deferredDateChecks, [d.canonicalUrl(slow)]);
+});
