@@ -42,3 +42,21 @@ test('markUncoveredShows reads real review dirs (one scored, one empty, one miss
   const q = markUncoveredShows([{ showId: 'covered' }, { showId: 'fresh' }, { showId: 'missing' }, { showId: 'fresh' }], root);
   assert.deepEqual(q.map((r) => r.showUncovered), [false, true, true, true]);
 });
+
+test('flagged files with stale scores do not cover a show', () => {
+  assert.equal(isShowUncovered([{ assignedScore: 80, wrongShow: true }, { llmScore: { score: 1 }, duplicateOf: 'x' }]), true);
+});
+
+test('collect-review-texts gates the boost on PRIORITIZE_UNCOVERED and re-lifts after the promotions', async () => {
+  const fs = await import('node:fs');
+  const src = fs.readFileSync(new URL('../collect-review-texts.js', import.meta.url), 'utf8');
+  assert.match(src, /process\.env\.PRIORITIZE_UNCOVERED === '1'/);
+  assert.ok(src.indexOf('promoteNeedsRefetch(reviews)') < src.indexOf('Re-lift uncovered-show items'));
+});
+
+test('opening-night poller enables PRIORITIZE_UNCOVERED on its collect step', async () => {
+  const fs = await import('node:fs');
+  for (const w of ['opening-night-poller.yml']) {
+    assert.match(fs.readFileSync(new URL(`../../.github/workflows/${w}`, import.meta.url), 'utf8'), /PRIORITIZE_UNCOVERED: '1'/, w);
+  }
+});

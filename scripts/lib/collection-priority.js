@@ -226,8 +226,14 @@ function promoteAgedStubs(queue, cap = AGED_STUB_DRAIN_PER_RUN, seed = drainRota
  *
  * @param {Array<object>} reviewFiles
  */
+// Scored and not excluded by the rebuild (flagged files can carry stale scores).
+function isLiveScored(d) {
+  if (d.duplicateOf || d.wrongShow || d.wrongProduction || d.isRoundupArticle || d.fabricatedEntry) return false;
+  return typeof d.assignedScore === 'number' || (d.llmScore !== undefined && d.llmScore !== null);
+}
+
 function isShowUncovered(reviewFiles) {
-  return !(reviewFiles || []).some((d) => d && (typeof d.assignedScore === 'number' || (d.llmScore !== undefined && d.llmScore !== null)));
+  return !(reviewFiles || []).some((d) => d && isLiveScored(d));
 }
 
 /**
@@ -241,13 +247,17 @@ function markUncoveredShows(reviews, reviewTextsDir) {
   for (const r of reviews) {
     if (!byShow.has(r.showId)) {
       const dir = path.join(reviewTextsDir, r.showId);
-      let files = [];
+      let uncovered = true;
       try {
-        files = fs.readdirSync(dir).filter((f) => f.endsWith('.json')).map((f) => {
-          try { return JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8')); } catch { return null; }
-        });
-      } catch { /* unreadable */ }
-      byShow.set(r.showId, isShowUncovered(files));
+        // Stop at the first live-scored file: covered shows are the common case.
+        for (const f of fs.readdirSync(dir)) {
+          if (!f.endsWith('.json')) continue;
+          let d = null;
+          try { d = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8')); } catch { /* skip */ }
+          if (d && isLiveScored(d)) { uncovered = false; break; }
+        }
+      } catch { /* unreadable dir: uncovered */ }
+      byShow.set(r.showId, uncovered);
     }
     r.showUncovered = byShow.get(r.showId);
   }
