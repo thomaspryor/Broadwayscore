@@ -231,6 +231,18 @@ function markRescoreNeeded(fileData, reason, flaggedAt, { requeue = false } = {}
   return fileData;
 }
 
+/**
+ * BRO-6964: a rating just landed on a file whose score was produced by a model without it (llm-v6 etc.).
+ * Queue the normal anchored rescore so the score is read against the critic's band, not just clamped by the
+ * rebuild. Call BEFORE the writer overwrites scoreSource. Returns true when it flagged the file.
+ */
+function queueRescoreForLateRating(data, via) {
+  if (!data || typeof data !== 'object') return false;
+  if (!data.scoreSource || !isLlmScoreSource(data.scoreSource)) return false;
+  markRescoreNeeded(data, `outlet rating landed after the score (${via || 'late rating'}; BRO-6964)`, undefined, { requeue: true });
+  return true;
+}
+
 const CV_PARTIAL_WINDOW_RESCORE_REASON = 'CV not-a-review verdict from the head of a longer article is newer than the score (BRO-6225)';
 
 /**
@@ -245,4 +257,4 @@ function queueRescoreForCvPartialWindow(data, show, filePath) {
   return true;
 }
 
-module.exports = { CV_PARTIAL_WINDOW_RESCORE_REASON, queueRescoreForCvPartialWindow, isFalseTruncationScore, isBotStubContaminatedScore, BOT_STUB_FIX_AT, BOT_STUB_TIGHTENED_AT, BOT_STUB_RESCORE_REASON, isStaleScoreInput, isTruncatedScoreNowComplete, markRescoreNeeded, needsRescoreForCvPartialWindow };
+module.exports = { CV_PARTIAL_WINDOW_RESCORE_REASON, queueRescoreForCvPartialWindow, isFalseTruncationScore, isBotStubContaminatedScore, BOT_STUB_FIX_AT, BOT_STUB_TIGHTENED_AT, BOT_STUB_RESCORE_REASON, isStaleScoreInput, isTruncatedScoreNowComplete, markRescoreNeeded, needsRescoreForCvPartialWindow, queueRescoreForLateRating, isLlmScoreSource };
