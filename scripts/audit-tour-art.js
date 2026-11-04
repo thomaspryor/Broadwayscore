@@ -16,12 +16,13 @@ const { hasHelpFlag } = require('./lib/cli-help.js');
 if (hasHelpFlag(process.argv.slice(2))) { console.log('Usage: node scripts/audit-tour-art.js [--dry] [--tour=ID] [--redo]'); process.exit(0); }
 const { GoogleGenerativeAI } = require('@google/generative-ai');
 const { GEMINI_FLASH } = require('./lib/models');
+const { foldDiacritics } = require('./lib/title-match');
 
 const root = path.join(__dirname, '..');
 const OUT = path.join(root, 'src', 'config', 'onboarding-tour-art.json');
 const args = process.argv.slice(2);
 const only = (args.find(a => a.startsWith('--tour=')) || '').split('=')[1];
-const norm = t => t.toLowerCase().replace(/^the\s+/, '').replace(/[^a-z0-9]+/g, ' ').trim();
+const norm = t => foldDiacritics(String(t || '')).toLowerCase().replace(/^the\s+/, '').replace(/[^a-z0-9]+/g, ' ').trim();
 const rawShows = JSON.parse(fs.readFileSync(path.join(root, 'data', 'shows.json'), 'utf8'));
 const all = rawShows.shows || rawShows;
 const mobile = JSON.parse(fs.readFileSync(path.join(root, 'public', 'data', 'mobile-shows.json'), 'utf8')).shows;
@@ -57,7 +58,7 @@ async function judge(model, file) {
 }
 
 async function main() {
-  const model = new GoogleGenerativeAI(process.env.GEMINI_API_KEY).getGenerativeModel({ model: GEMINI_FLASH, generationConfig: { responseMimeType: 'application/json' } });
+  const model = new GoogleGenerativeAI(process.env.GEMINI_API_KEY).getGenerativeModel({ model: GEMINI_FLASH, generationConfig: { responseMimeType: 'application/json', thinkingConfig: { thinkingBudget: 0 } } });
   const out = { ...prior };
   const report = [];
   for (const t of tours) {
