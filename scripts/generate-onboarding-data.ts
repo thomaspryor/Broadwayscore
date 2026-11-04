@@ -52,7 +52,7 @@ const daysInWindow = (s: Show) => {
 
 // Posters that are blur-padded landscape art (BRO-6734), filled in by main() before any list is built.
 const badPosters = new Set<string>();
-const isBad = (poster: string | undefined) => !!poster && badPosters.has(poster);
+const isBad = (poster: string | undefined) => !!poster && (badPosters.has(poster) || badPosters.has(poster.split('?')[0]));
 
 function hitsFor(match: (s: Show) => boolean) {
   const byTitle = new Map<string, Show[]>();
@@ -91,7 +91,7 @@ async function main() {
       if (!fs.existsSync(file)) continue;
       try {
         const { data, info } = await sharp(file).greyscale().raw().toBuffer({ resolveWithObject: true });
-        if (isLetterboxed(new Uint8Array(data.buffer, data.byteOffset, data.length), info.width, info.height, s.cat === 'regional')) badPosters.add(p);
+        if (isLetterboxed(new Uint8Array(data.buffer, data.byteOffset, data.length), info.width, info.height, s.cat === 'regional')) { badPosters.add(p); badPosters.add(p.split('?')[0]); }
       } catch { /* unreadable image: leave it to the existing checks */ }
     }
   }

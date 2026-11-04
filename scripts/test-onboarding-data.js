@@ -60,6 +60,12 @@ for (const [city, rows] of Object.entries(want)) {
   assert(rows.every(r => (ids.has(r.showId) || tourIds.has(r.showId)) && r.poster && r.title), `want ${city}: every row is a real show or tour with a poster`);
   assert(rows.every(r => !mobile.some(s => s.id === r.showId && (s.cat === undefined || s.cat === 'broadway'))), `want ${city}: no Broadway production`);
 }
+// Tours added after the last audit-tour-art.js run fall back to Broadway art (BRO-6914 item 4): flag them.
+try {
+  const audited = read('src/config/onboarding-tour-art.json'), tourDefs = read('data/shows.json').shows.filter(x => x.category === 'tour');
+  const unaudited = tourDefs.filter(x => !(x.id in audited) && x.status !== 'closed').map(x => x.id);
+  if (unaudited.length) console.warn(`::warning::tours not yet art-audited (run node scripts/audit-tour-art.js): ${unaudited.join(', ')}`);
+} catch { /* shows.json is gitignored and may be absent */ }
 const tourCities = cities.filter(c => c.kind === 'tour');
 assert(tourCities.every(c => typeof c.stops === 'number'), 'every touring city carries its stop count');
 assert(tourCities.filter(c => hits[c.id]).length >= tourCities.length * 0.9, '>=90% of touring cities have their own Seen list');
