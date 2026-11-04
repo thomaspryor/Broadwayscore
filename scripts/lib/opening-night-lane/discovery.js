@@ -1221,17 +1221,28 @@ const DATE_CHECKS_IN_FLIGHT = Symbol('dateChecksInFlight');
 // fetches can trip a provider's concurrency limit, and that refusal reads as a real failure: a strike (BRO-6872 review).
 const DATE_CHECK_CONCURRENCY = 3;
 
-/** A FIFO limiter: run(fn) starts fn once fewer than `max` are running, and settles with it. */
+/**
+ * A FIFO limiter: run(fn, tag) starts fn once fewer than `max` are running, and settles with it. dropQueued() removes
+ * every entry not yet started and returns their tags, so a pass that ends leaves nothing queued to start a paid fetch
+ * after the lane has stopped asking (BRO-6872 review). Started ones run to their cap and carry to the next pass.
+ */
 function makeLimiter(max) {
   let running = 0;
-  const queue = [];
+  let queue = [];
   const next = () => {
     if (running >= max || !queue.length) return;
     running++;
     const { fn, resolve, reject } = queue.shift();
     Promise.resolve().then(fn).then(resolve, reject).finally(() => { running--; next(); });
   };
-  return (fn) => new Promise((resolve, reject) => { queue.push({ fn, resolve, reject }); next(); });
+  const run = (fn, tag) => new Promise((resolve, reject) => { queue.push({ fn, resolve, reject, tag }); next(); });
+  run.dropQueued = () => {
+    const dropped = queue;
+    queue = [];
+    for (const e of dropped) e.reject(new Error('pass deadline reached before the date check started'));
+    return dropped.map((e) => e.tag);
+  };
+  return run;
 }
 
 /** The not-review-like test: a sighting with no review signal from its source, its url/title, or its host. */
@@ -1379,7 +1390,7 @@ async function runDiscoveryPass({
         // answers after the pass deadline is read on the next pass instead of fetched (and paid for) all over again.
         const capMs = (adapterCaps.get(c.adapter) || fetchTimeoutMs);
         // The cap starts when the page is opened, not while the check waits for a slot.
-        const fetching = limitDateCheck(() => withTimeout(rawFetch, capMs, undefined, { unref: true })(c.fetchUrl || c.url, { recordAs: 'date-check' }));
+        const fetching = limitDateCheck(() => withTimeout(rawFetch, capMs, undefined, { unref: true })(c.fetchUrl || c.url, { recordAs: 'date-check' }), key);
         // `outcome` is set the moment the check settles, so a pass reads a finished check even after its deadline fired.
         check = { outcome: null };
         check.done = fetching.then((html) => { check.outcome = { html }; return check.outcome; }, (error) => { check.outcome = { error }; return check.outcome; });
@@ -1415,7 +1426,11 @@ async function runDiscoveryPass({
         }
         judge(c, key, publishDate);
       }
-    } finally { clearTimeout(timer); }
+    } finally {
+      clearTimeout(timer);
+      // Checks still waiting for a slot are dropped, not left to start later: they are asked again next pass, no strike.
+      for (const key of limitDateCheck.dropQueued()) inFlight.delete(key);
+    }
   }
   return { admitted, rejected, unknownHosts: [...unknownHosts].filter(Boolean).sort(), errors, deferredDateChecks, serpRan, deadlineHit };
 }

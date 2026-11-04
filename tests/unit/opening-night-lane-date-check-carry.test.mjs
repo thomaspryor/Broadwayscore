@@ -107,3 +107,18 @@ test('a check that finished before the deadline is read even when an earlier one
   assert.deepEqual(r.admitted.map((a) => a.key), [d.canonicalUrl(fast)]);
   assert.deepEqual(r.deferredDateChecks, [d.canonicalUrl(slow)]);
 });
+
+test('a check still waiting for a slot when the pass ends is dropped, never started afterwards (BRO-6872 review)', async () => {
+  const urls = Array.from({ length: 5 }, (_, i) => tbUrl(`q${i}`));
+  const started = [];
+  const fetchText = async (url) => { started.push(url); await sleep(100); return PAGE; };
+  const memo = { rejected: {} };
+  const r = await d.runDiscoveryPass({ show: SHOW, night: NIGHT, now: T0 + 3600000, startedAt: T0, adapters: [many(urls)], fetchText, memo, deadlineMs: 40 });
+  assert.equal(r.admitted.length, 0);
+  await sleep(350); // the three started checks finish; nothing queued may start now
+  assert.equal(started.length, 3);
+  assert.deepEqual(memo.rejected, {}, 'no strikes');
+  const next = await d.runDiscoveryPass({ show: SHOW, night: NIGHT, now: T0 + 3600000, startedAt: T0, adapters: [many(urls)], fetchText, memo, deadlineMs: 1000 });
+  assert.equal(next.admitted.length, 5, 'three read from the carry, two dropped ones asked again');
+  assert.equal(started.length, 5);
+});
