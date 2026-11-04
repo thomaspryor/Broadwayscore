@@ -243,7 +243,7 @@
       "resolveReason": "absent"
     },
     "test-yml:main-streak-escalation": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
@@ -257,7 +257,8 @@
       "linearIdentifier": null,
       "notifyCountAtRelease": 192,
       "sweptTracker": "BRO-6656",
-      "silentRefires": 9
+      "silentRefires": 9,
+      "resolvedAt": "2026-11-04T20:21:36.178Z"
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -36715,7 +36716,7 @@
       "silentRefires": 5
     },
     "test-yml:red:Unit Tests:2a99ef21": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"every verified gap id still exists in shows.json (a rename would silently empty the checks below)\"",
       "firstSeen": "2026-11-04T13:21:39.602Z",
@@ -36732,7 +36733,9 @@
         "runId": "41834071119",
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41834071119"
       },
-      "silentRefires": 4
+      "silentRefires": 4,
+      "resolvedAt": "2026-11-04T20:21:35.960Z",
+      "resolveReason": "job-green"
     },
     "land:land/codex-bro-6966": {
       "status": "open",
