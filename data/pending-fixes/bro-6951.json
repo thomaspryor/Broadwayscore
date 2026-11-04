@@ -1,0 +1,90 @@
+{
+  "issueNumber": "bro-6951",
+  "planId": "b6b98214-d395-4f1b-988e-19d838d5d263",
+  "status": "pending",
+  "createdAt": "2026-11-04T17:07:28.906Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6951: clear wrongProduction on 4 NYC reviews whose flag named a parent building (Lincoln Center Theater) while the show is at one of its stages. Alias-aware re-verify in CI found each valid.",
+    "steps": [
+      "BRO-6923: Vivian Beaumont Theater is a stage inside Lincoln Center Theater; the flag reason named the building. Alias-aware re-verify: valid, not wrong production.",
+      "BRO-6923: Vivian Beaumont Theater is a stage inside Lincoln Center Theater; the flag reason named the building. Alias-aware re-verify: valid, not wrong production.",
+      "BRO-6923: Vivian Beaumont Theater is a stage inside Lincoln Center Theater; the flag reason named the building. Alias-aware re-verify: valid, not wrong production.",
+      "BRO-6923: Vivian Beaumont Theater is a stage inside Lincoln Center Theater; the flag reason named the building. Alias-aware re-verify: valid, not wrong production.",
+      "BRO-6923: Vivian Beaumont Theater is a stage inside Lincoln Center Theater; the flag reason named the building. Alias-aware re-verify: valid, not wrong production.",
+      "BRO-6923: Vivian Beaumont Theater is a stage inside Lincoln Center Theater; the flag reason named the building. Alias-aware re-verify: valid, not wrong production.",
+      "BRO-6923: Mitzi E. Newhouse Theater is a stage inside Lincoln Center Theater; the flag reason named the building. Alias-aware re-verify: valid, not wrong production.",
+      "BRO-6923: Mitzi E. Newhouse Theater is a stage inside Lincoln Center Theater; the flag reason named the building. Alias-aware re-verify: valid, not wrong production."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "ragtime-2025/america-magazine--weinert-kendt.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-6923: Vivian Beaumont Theater is a stage inside Lincoln Center Theater; the flag reason named the building. Alias-aware re-verify: valid, not wrong production."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "ragtime-2025/america-magazine--weinert-kendt.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-6923: Vivian Beaumont Theater is a stage inside Lincoln Center Theater; the flag reason named the building. Alias-aware re-verify: valid, not wrong production."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "uncle-vanya-2024/observer--david-cote.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-6923: Vivian Beaumont Theater is a stage inside Lincoln Center Theater; the flag reason named the building. Alias-aware re-verify: valid, not wrong production."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "uncle-vanya-2024/observer--david-cote.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-6923: Vivian Beaumont Theater is a stage inside Lincoln Center Theater; the flag reason named the building. Alias-aware re-verify: valid, not wrong production."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "south-pacific-2008/newsday--unknown.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-6923: Vivian Beaumont Theater is a stage inside Lincoln Center Theater; the flag reason named the building. Alias-aware re-verify: valid, not wrong production."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "south-pacific-2008/newsday--unknown.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-6923: Vivian Beaumont Theater is a stage inside Lincoln Center Theater; the flag reason named the building. Alias-aware re-verify: valid, not wrong production."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "oslo-off-broadway-2016/times-square-chronicles--suzanna-bowling.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-6923: Mitzi E. Newhouse Theater is a stage inside Lincoln Center Theater; the flag reason named the building. Alias-aware re-verify: valid, not wrong production."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "oslo-off-broadway-2016/times-square-chronicles--suzanna-bowling.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-6923: Mitzi E. Newhouse Theater is a stage inside Lincoln Center Theater; the flag reason named the building. Alias-aware re-verify: valid, not wrong production."
+      }
+    ]
+  }
+}
