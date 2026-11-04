@@ -1,13 +1,32 @@
 {
-  "generatedAt": "2026-11-04T04:20:35.626Z",
+  "generatedAt": "2026-11-04T05:30:54.812Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 317,
+  "checked": 318,
   "clean": 317,
-  "defective": 0,
-  "byType": {},
-  "shows": [],
+  "defective": 1,
+  "byType": {
+    "score-drift": 1
+  },
+  "shows": [
+    {
+      "showId": "rope-off-broadway-2026",
+      "title": "Rope",
+      "openingDate": "2026-11-03",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 58.11 vs local 58.66 (Δ0.55)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 8,
+      "deployedCount": 8,
+      "firstDefectAt": "2026-11-04T05:30:50.342Z"
+    }
+  ],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }
