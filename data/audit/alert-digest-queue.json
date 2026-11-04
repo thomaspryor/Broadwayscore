@@ -626,20 +626,6 @@
     "queuedAt": "2026-11-04T13:39:59.374Z"
   },
   {
-    "conditionKey": "corpus-drift:monitor-only",
-    "title": "Data-quality monitors drifting from baseline: 20 (backfill-everybodys-talking-about-jamie-show-exists, pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, +14 more). Checked 2026-11-04.",
-    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-04T15:37:09.242Z"
-  },
-  {
     "conditionKey": "review-gap:opening-window:king-hedley-ii-regional-2026",
     "title": "Review gap — \"King Hedley II\" missing 1 cited review(s)",
     "description": "King Hedley II (king-hedley-ii-regional-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=king-hedley-ii-regional-2026 --checkpoint --ingest-missing",
@@ -666,6 +652,20 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-04T15:49:25.713Z"
+  },
+  {
+    "conditionKey": "corpus-drift:monitor-only",
+    "title": "Data-quality monitors drifting from baseline: 20 (backfill-everybodys-talking-about-jamie-show-exists, pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, +14 more). Checked 2026-11-04.",
+    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-04T16:46:12.098Z"
   },
   {
     "conditionKey": "review-gap:opening-window:tosca-english-national-opera-west-end-2026",
