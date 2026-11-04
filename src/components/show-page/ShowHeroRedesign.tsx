@@ -853,19 +853,38 @@ function Inner({
       {/* Signed-out rating, kept on this device until sign-in. Same row as the
           signed-in "Your rating" card so it reads as the same design. */}
       {userFeaturesEnabled && localRating && !hasRating && !ratePanelOpen && (
-        <PlanRow
-          testId="local-rating-note"
-          onClick={() => showSignIn('rating', 'show_rating_note')}
-          tile={<StarTile />}
-          title="Your rating"
-          subtitle="Saved on this device"
-          ariaLabel="Your rating, saved on this device. Sign in to keep it on every device."
-        >
-          <span className="flex items-center gap-2 mt-1">
-            <MiniStars rating={localRating.rating} />
-            <span className="text-sm font-bold text-amber-400 tabular-nums">{localRating.rating.toFixed(1)}<span className="sr-only"> out of 5</span></span>
-          </span>
-        </PlanRow>
+        <div className="card flex flex-col gap-3 p-3" data-testid="local-rating-note">
+          <div className="flex items-center gap-3">
+            <StarTile />
+            <div className="min-w-0 flex-1">
+              <p className="text-sm sm:text-base font-semibold text-white">
+                Your rating
+                <span className="mt-1 block w-fit sm:mt-0 sm:ml-2 sm:inline-block whitespace-nowrap align-middle rounded-full bg-amber-400/15 px-2 py-0.5 text-[11px] font-bold uppercase tracking-wide text-amber-300">On this device</span>
+              </p>
+              <span className="flex items-center gap-2 mt-1">
+                <MiniStars rating={localRating.rating} />
+                <span className="text-sm font-bold text-amber-400 tabular-nums">{localRating.rating.toFixed(1)}<span className="sr-only"> out of 5</span></span>
+              </span>
+            </div>
+            <button
+              type="button"
+              onClick={() => showSignIn('rating', 'show_rating_note')}
+              className="btn-primary text-sm whitespace-nowrap sm:hidden"
+            >
+              Keep it
+            </button>
+          </div>
+          <p className="hidden sm:block text-sm text-gray-400">
+            Saved on this device. Sign in to keep it, see it on your phone and laptop, and build your diary.
+          </p>
+          <button
+            type="button"
+            onClick={() => showSignIn('rating', 'show_rating_note')}
+            className="btn-primary hidden sm:block w-full text-sm"
+          >
+            Sign in to keep it
+          </button>
+        </div>
       )}
 
       {/* Rating editor — bottom-sheet on mobile, inline card on desktop. Adjustable
