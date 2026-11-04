@@ -90,3 +90,9 @@ test('nor on a soft-paywall host (Vulture), whose length floor reads how the pag
     assert.equal(fetches, 1);
   } finally { s.cleanup(); }
 });
+
+test('a date-check page with no date of its own (dated by the index\'s fallback day) is not carried: it may be a challenge page', async () => {
+  const r = await pass([tbIndex({ fallbackDate: '2026-09-28T12:00:00Z' })], async () => '<html><title>Just a moment...</title><body>checking your browser</body></html>');
+  assert.equal(r.admitted.length, 1, 'still admitted on the index\'s day');
+  assert.equal(r.admitted[0][d.PREFETCHED_PAGE], undefined);
+});

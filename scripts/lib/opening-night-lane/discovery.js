@@ -1440,9 +1440,12 @@ async function runDiscoveryPass({
           if (!outcome) { deadlineHit = true; deferredDateChecks.push(c.url); continue; } // still running: read next pass, no strike
           inFlight.delete(key);
           let publishDate;
+          let pageDated = false;
           try {
             if (outcome.error) throw outcome.error;
-            publishDate = extractPublishDate(outcome.html) || c.fallbackDate || null;
+            const pageDate = extractPublishDate(outcome.html);
+            pageDated = !!pageDate;
+            publishDate = pageDate || c.fallbackDate || null;
           } catch (e) {
             errors.push({ adapter: c.adapter, error: `date check ${c.url}: ${String((e && e.message) || e).slice(0, 150)}` });
             deferredDateChecks.push(c.url);
@@ -1466,7 +1469,9 @@ async function runDiscoveryPass({
             deferredDateChecks.push(c.url);
             continue;
           }
-          judge(c, key, publishDate, outcome.html);
+          // Only a page that dates itself is carried for scoring: one dated by the index's fallback day may be a challenge
+          // or interstitial page (BRO-6872 review).
+          judge(c, key, publishDate, pageDated ? outcome.html : undefined);
         }
       } finally { clearTimeout(timer); }
     }
