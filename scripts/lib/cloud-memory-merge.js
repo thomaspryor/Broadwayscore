@@ -51,14 +51,10 @@
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
+const { CONFLICT_DIR, publishConflictReport } = require('./cloud-memory-conflicts.js');
 
 const MANIFEST_VERSION = 1;
 const MANIFEST_BASENAME = 'cloud-memory-sync-manifest.json';
-
-// Where a mirror-side version that lost a conflict is parked. A subdirectory of
-// the local source, so it is NOT itself mirrored (only root-level *.md is) and
-// cannot start a ping-pong of conflict files between the two sides.
-const CONFLICT_DIR = '_conflicts';
 
 // Files that are never adopted from the mirror into the local memory dir even
 // when the mirror's copy is the changed one. MEMORY.md is the auto-loaded
@@ -362,6 +358,9 @@ function applySync({ src, dest, manifestPath, dryRun = false, now = new Date(), 
     const target = path.join(conflictDir, conflictCopyName(name, now));
     copyAtomic(fromPath, target);
     conflictCopies.push(target);
+    // Publish before overwriting the mirror, including when a later sync
+    // operation fails and the shell takes its no-deletion fallback.
+    publishConflictReport({ src, dest, now });
     return target;
   };
 
@@ -406,6 +405,9 @@ function applySync({ src, dest, manifestPath, dryRun = false, now = new Date(), 
     }
     fs.rmSync(target, { force: true });
   }
+
+  // Also inventory old conflict copies and clear the count after review.
+  publishConflictReport({ src, dest, now });
 
   // Recompute rather than trusting the plan's projection: the manifest must
   // describe what is actually on disk now, or the next run's deletion

@@ -87,6 +87,7 @@ const { readBoardGateFailopen } = require('./lib/summarize-board-gate-failopen.j
 const { collectCmuxTriage, renderCmuxTriageLine } = require('./lib/cmux-triage-digest.js');
 const { codexLineFromStatus } = require('./lib/codex-status-line.js');
 const { collectMoneySignups, renderMoneySignups } = require('./lib/money-signups-digest.js');
+const { readConflictDigest } = require('./lib/cloud-memory-conflicts.js');
 
 // Task #1220/BRO-230: data/audit/digest-autofix-ledger.jsonl is git-tracked,
 // but CI's snapshot of it can lag the dispatch host by days, so health-check.js
@@ -667,6 +668,9 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
     view.reviewQueue ? renderNamedDigestBlock('Review queue', view.reviewQueue, { actionCards: true, showBanner: true }) : '',
   ].filter(Boolean).join('\n');
   head.push(renderOwnerTopBlock(view, { decisionBlocksHtml, overnightLine }));
+  if (sections.memoryConflicts) {
+    head.push(renderNamedDigestBlock('Saved memory conflicts', sections.memoryConflicts));
+  }
   // Last night's openings (BRO-6645): one grade per press night, reviews live
   // and opening-night emails ready. Nights with no openings render nothing.
   try {
@@ -1028,6 +1032,9 @@ async function main() {
   }
 
   const { sections, problems } = readAllSnapshots();
+  // The sync's existing cloud-memory commit carries this inventory to both
+  // senders, including the Action's --skip-mac-local path. Never auto-resolve.
+  sections.memoryConflicts = readConflictDigest(path.join(REPO, 'cloud-memory'));
   sections.moneySignups = await collectMoneySignups();
 
   // Task #1641: strip forbidden-telemetry queue rows (e.g. "T1 Coverage
