@@ -1,10 +1,10 @@
 {
-  "timestamp": "2026-11-04T14:42:32.423Z",
+  "timestamp": "2026-11-04T15:02:37.587Z",
   "stats": {
-    "totalReviews": 80018,
-    "alreadyFlagged": 22011,
+    "totalReviews": 80019,
+    "alreadyFlagged": 22012,
     "dateGuardCatches": 217,
-    "directorMismatch": 3497,
+    "directorMismatch": 3498,
     "tvFilmSignals": 2275,
     "londonSignals": 3606,
     "offBroadwaySignals": 736,
@@ -53872,6 +53872,19 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"estelle parsons\" from romeo-and-juliet-1986"
+        }
+      ]
+    },
+    {
+      "showId": "romeo-and-juliet-off-broadway-2026",
+      "file": "frontmezzjunkies--ross.json",
+      "publishDate": "2026-06-09",
+      "url": "https://frontmezzjunkies.com/2026/06/09/every-journey-needs-one-moment-where-we-believe-fate-can-change-in-romeo-and-juliet/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"robert icke\" from romeo-and-juliet-west-end-2026"
         }
       ]
     },
