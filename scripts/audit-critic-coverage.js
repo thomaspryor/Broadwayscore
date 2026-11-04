@@ -183,8 +183,8 @@ async function processCritic(c) {
   });
 
   const fetchStatus = criticFetchStatus(externalArts.length, errors, sourceCalls.length);
-  if (fetchStatus === 'all-sources-failed') {
-    REPORT.push({ ...c, error: 'all-sources-failed', errors });
+  if (fetchStatus === 'all-sources-failed' || fetchStatus === 'fetch-failed') {
+    REPORT.push({ ...c, error: fetchStatus, errors });
     return;
   }
   if (externalArts.length === 0 && errors.length === 0) {
@@ -304,8 +304,8 @@ async function runOutletHeartbeat() {
   fs.writeFileSync(outPath, JSON.stringify(REPORT, null, 2));
   console.error(`\nWrote ${outPath}`);
   console.error(`Total review-looking gaps: ${REPORT.reduce((s,r)=>s+(r.missingCount||0),0)}`);
-  const blind = REPORT.filter(r => r.error === 'all-sources-failed');
-  if (blind.length) console.error(`::warning::${blind.length} critic(s) had every source fail, so their gaps are unknown, not zero: ${blind.map(r => r.name).slice(0, 20).join(', ')}`);
+  const blind = REPORT.filter(r => r.error === 'all-sources-failed' || r.error === 'fetch-failed');
+  if (blind.length) console.error(`::warning::${blind.length} critic(s) returned no articles because sources failed, so their gaps are unknown, not zero: ${blind.map(r => r.name).slice(0, 20).join(', ')}`);
 
   // Outlet heartbeat runs alongside the default weekly sweep only — historical
   // mode and single-critic debug runs (--only) don't touch the shared state file.
