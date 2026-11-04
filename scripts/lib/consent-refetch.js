@@ -194,7 +194,33 @@ function applyVerifiedRetryOutcome(data, nowIso) {
     out.clearedWrongProduction = true;
   }
   if (data.wrongShow !== true) delete data.wrongShowRetryAt;
+  if (out.clearedWrongShow || out.clearedWrongProduction) releaseStaleWrongContentState(data);
   return out;
+}
+
+/**
+ * BRO-6880: the save path classified the tier while the flag was still set, so a
+ * cleared flag left contentTier 'invalid' ("Wrong show"/"Wrong production") and
+ * incompleteReason 'wrong_content' behind, and the rebuild kept excluding a
+ * review that had just passed verification (the Washington Post Imaginary
+ * Invalid section, 2026-11-04). Re-derive the tier now the flag is gone, and drop
+ * the wrong_content reason once no wrong-content flag remains. Mutates `data`.
+ */
+function releaseStaleWrongContentState(data) {
+  const STALE = new Set(['Wrong show', 'Wrong production']);
+  if (data.contentTier === 'invalid' && STALE.has(data.contentTierReason || data.tierReason)) {
+    const tier = require('./content-quality').classifyContentTier(data);
+    data.contentTier = tier.contentTier;
+    data.tierReason = tier.tierReason;
+    data.contentTierReason = tier.tierReason;
+    data.wordCount = tier.wordCount;
+    data.truncationSignals = tier.truncationSignals;
+    data.isFullReview = tier.contentTier === 'complete';
+  }
+  if (data.incompleteReason === 'wrong_content' && data.wrongShow !== true && data.wrongProduction !== true) {
+    delete data.incompleteReason;
+    delete data.incompleteDetail;
+  }
 }
 
 module.exports = {

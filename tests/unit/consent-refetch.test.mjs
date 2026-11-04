@@ -213,6 +213,23 @@ describe('applyVerifiedRetryOutcome', () => {
     assert.equal(applyVerifiedRetryOutcome(s, NOW).clearedWrongShow, false);
     assert.equal(s.wrongShow, true);
   });
+  it('a cleared flag re-derives the stale invalid tier and drops wrong_content (BRO-6880)', () => {
+    const body = 'If a veteran clown is going to stage the farce, he may as well star in it. '.repeat(20);
+    const d = {
+      wrongShow: true, wrongShowReason: 'Collector LLM: not a review', contentVerification: clean, fullText: body,
+      contentTier: 'invalid', contentTierReason: 'Wrong show', tierReason: 'Wrong show',
+      incompleteReason: 'wrong_content', incompleteDetail: 'Collector LLM: not a review',
+    };
+    assert.equal(applyVerifiedRetryOutcome(d, NOW).clearedWrongShow, true);
+    assert.notEqual(d.contentTier, 'invalid');
+    assert.notEqual(d.contentTierReason, 'Wrong show');
+    assert.equal(d.incompleteReason, undefined);
+    assert.equal(d.incompleteDetail, undefined);
+    // an invalid tier from something else (garbage) is left alone
+    const g = { ...d, wrongShow: true, contentTier: 'invalid', contentTierReason: 'Marked as garbage', incompleteReason: 'wrong_content' };
+    applyVerifiedRetryOutcome(g, NOW);
+    assert.equal(g.contentTier, 'invalid');
+  });
   it('a failed verdict starts the cooldown and clears nothing', () => {
     const d = { wrongShow: true, wrongShowReason: 'Collector LLM: x', contentVerification: { ...clean, isValid: false } };
     applyVerifiedRetryOutcome(d, NOW);
