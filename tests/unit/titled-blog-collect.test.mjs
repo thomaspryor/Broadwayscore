@@ -22,11 +22,15 @@ test('a short Bob\'s post titled with the show is waived (real check rejects it 
   assert.equal(titledBlogMentionWaiver(BOBS, sanity, 'Other Desert Cities'), true);
 });
 
-test('waiver needs the title to be exactly the show, a titled blog host, and one mention', () => {
-  const ok = { htmlTitleMatch: true, mentionCount: 1, htmlTitle: 'Gotham Playgoer: Other Desert Cities' };
-  assert.equal(titledBlogMentionWaiver(BOBS, ok, 'Other Desert Cities'), true);
-  assert.equal(titledBlogMentionWaiver(BOBS, { ...ok, htmlTitle: 'Gotham Playgoer: Theater Bulletin Other Desert Cities Roundup' }, 'Other Desert Cities'), false);
-  assert.equal(titledBlogMentionWaiver(BOBS, { ...ok, mentionCount: 0 }, 'Other Desert Cities'), true);
-  assert.equal(titledBlogMentionWaiver(BOBS, { ...ok, htmlTitleMatch: false }, 'Other Desert Cities'), false);
-  assert.equal(titledBlogMentionWaiver('https://www.nytimes.com/x', ok, 'Other Desert Cities'), false);
+test('waiver needs a single post, an exact "Blog: Show" title, no roundup wording', () => {
+  const ok = { htmlTitleMatch: true, mentionCount: 0, htmlTitle: 'Gotham Playgoer: Other Desert Cities' };
+  const S = 'Other Desert Cities';
+  assert.equal(titledBlogMentionWaiver(BOBS, ok, S), true);
+  for (const t of ['Gotham Playgoer: Other Desert Cities - and more', 'Gotham Playgoer: Other Desert Cities | Roundup',
+    'Gotham Playgoer: Theater Bulletin: Other Desert Cities', 'Other Desert Cities', 'Gotham Playgoer: Hamlet']) {
+    assert.equal(titledBlogMentionWaiver(BOBS, { ...ok, htmlTitle: t }, S), false, t);
+  }
+  assert.equal(titledBlogMentionWaiver('https://gotham-playgoer.blogspot.com/search/label/Other%20Desert%20Cities', ok, S), false);
+  assert.equal(titledBlogMentionWaiver(BOBS, { ...ok, htmlTitleMatch: false }, S), false);
+  assert.equal(titledBlogMentionWaiver('https://www.nytimes.com/2026/10/x.html', ok, S), false);
 });

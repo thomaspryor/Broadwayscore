@@ -26,13 +26,25 @@ function isTitledBlogUrl(url) {
   return TITLED_BLOG_HOSTS.has(hostOf(url));
 }
 
+const POST_PATH = /\/\d{4}\/\d{2}\/[^/]+\.html$/;
+const ROUNDUP_TITLE = /\b(roundup|round-up|and more|this week|top \d+|\d+ shows|best of|bulletin|things to do)\b/i;
+
 /**
- * A failed mention check may be waived when the post is on a titledReviews blog and one
- * segment of its page <title> ("Blog name: Show") is exactly the show's title.
+ * A failed mention check may be waived when the post is a single Blogger post (dated .html path, not a
+ * label or archive page) on a titledReviews blog and its page <title> is exactly "Blog name: Show".
+ * That title is the proof the URL is the right post (the lane admits the feed item on the same test), so a
+ * post that never repeats the title in its body (A Few Good Men: 0 mentions) still passes. Roundup wording
+ * and any extra title segment ("Blog: Theater Bulletin: Chicago") refuse.
  */
 function titledBlogMentionWaiver(url, sanity, showTitle) {
   if (!isTitledBlogUrl(url) || !sanity || sanity.htmlTitleMatch !== true) return false;
-  return String(sanity.htmlTitle || '').split(/\s*(?:[:|–—]|\s-\s)\s*/).some((seg) => headlineIsShowTitle(seg, showTitle));
+  let path = '';
+  try { path = new URL(url).pathname; } catch { return false; }
+  if (!POST_PATH.test(path)) return false;
+  const title = String(sanity.htmlTitle || '');
+  if (ROUNDUP_TITLE.test(title)) return false;
+  const segs = title.split(/\s*:\s*/).filter(Boolean);
+  return segs.length === 2 && headlineIsShowTitle(segs[1], showTitle);
 }
 
 module.exports = { isTitledBlogUrl, titledBlogMentionWaiver, TITLED_BLOG_HOSTS };
