@@ -128,3 +128,13 @@ test('INTERNAL_WORKFLOWS: every entry is a real workflow name in .github/workflo
   }
   for (const wf of INTERNAL_WORKFLOWS) assert.ok(names.has(wf), `"${wf}" is not a workflow name`);
 });
+
+// BRO-6983: the 2026-11-04 digest listed a manual-dispatch migration retry under
+// "minor issues visitors could notice". Manual-only workflows belong in INTERNAL_WORKFLOWS.
+test('a failing manual-dispatch Rename Show IDs run is internal, not a visitor issue', () => {
+  assert.equal(classifyHealthCheck('Workflow repeat-failure: Rename Show IDs / rename / Validate data before the rename'), 'internal');
+  assert.equal(classifyHealthCheck('Cron failed: Rename Show IDs'), 'internal');
+});
+test('Check Corpus Drift stays visitor-facing (a data break there can reach pages)', () => {
+  assert.equal(classifyHealthCheck('Workflow repeat-failure: Check Corpus Drift / x / y'), 'visitors');
+});
