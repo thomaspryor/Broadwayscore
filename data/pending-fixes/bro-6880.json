@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6880",
   "planId": "2d41a387-0473-4527-a143-2981b34679d7",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-04T07:34:29.234Z",
   "submitter": {
     "name": null,
@@ -21,5 +21,14 @@
         "args": "--file=the-imaginary-invalid-2026/washpost--thomas-floyd.json --apply"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-04T09:22:13.089Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran reclassify-invalid-reviews.js successfully"
+    }
+  ],
+  "executedIn": "ci"
 }
