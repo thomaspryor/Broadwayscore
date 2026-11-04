@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-03T21:15:33.581Z",
+  "generatedAt": "2026-11-04T21:24:19.324Z",
   "promoted": [],
   "rejected": [
     {
@@ -595,6 +595,14 @@
       "reason": "already in shows.json as goblin-off-west-end-2026 (normalized-equal)"
     },
     {
+      "title": "It's Beginning To Look A Lot Like...",
+      "venue": "Park Theatre",
+      "source": "venue-page:park-theatre",
+      "sourceUrl": null,
+      "kind": "skip-unconfirmed",
+      "reason": "venue's dated listing does not confirm a run: not a production (one-night event (2026-12-21))"
+    },
+    {
       "title": "Jimmy",
       "venue": "Park Theatre",
       "source": "venue-page:park-theatre",
@@ -800,7 +808,7 @@
       "source": "venue-page:king-s-head-theatre",
       "sourceUrl": null,
       "kind": "skip-duplicate",
-      "reason": "already in shows.json as dick-whittington-and-his-cat-west-end-2026 (normalized-equal)"
+      "reason": "already in shows.json as dick-whittington-and-his-cat-off-west-end-2026 (normalized-equal)"
     },
     {
       "title": "Dick Whittington: ADULTS ONLY",
@@ -928,7 +936,7 @@
       "source": "venue-page:lyric-hammersmith",
       "sourceUrl": null,
       "kind": "skip-duplicate",
-      "reason": "already in shows.json as jajas-african-hair-braiding-west-end-2026 (normalized-equal)"
+      "reason": "already in shows.json as jajas-african-hair-braiding-off-west-end-2026 (normalized-equal)"
     },
     {
       "title": "Live at the Lyric: A Comedy Gala",
@@ -1120,7 +1128,7 @@
       "source": "venue-page:riverside-studios",
       "sourceUrl": null,
       "kind": "skip-duplicate",
-      "reason": "already in shows.json as cadel-lungs-on-legs-west-end-2026 (normalized-equal)"
+      "reason": "already in shows.json as cadel-lungs-on-legs-off-west-end-2026 (normalized-equal)"
     },
     {
       "title": "Cradle: Stories of Iran, Exile & Belonging",
@@ -1240,7 +1248,7 @@
       "source": "venue-page:rose-theatre-kingston",
       "sourceUrl": null,
       "kind": "skip-duplicate",
-      "reason": "already in shows.json as frankenstein-west-end-2027 (london-pool-title-equal (venue \"Rose Theatre Kingston\" vs \"Rose Theatre\"))"
+      "reason": "already in shows.json as frankenstein-off-west-end-2027 (london-pool-title-equal (venue \"Rose Theatre Kingston\" vs \"Rose Theatre\"))"
     },
     {
       "title": "A Christmas Carol In Words and Music",
@@ -1352,7 +1360,7 @@
       "source": "venue-page:wilton-s-music-hall",
       "sourceUrl": null,
       "kind": "skip-duplicate",
-      "reason": "already in shows.json as the-little-match-girl-west-end-2026 (normalized-equal)"
+      "reason": "already in shows.json as the-little-match-girl-off-west-end-2026 (normalized-equal)"
     },
     {
       "title": "Top Gunchained",
@@ -1401,6 +1409,14 @@
       "sourceUrl": null,
       "kind": "skip-duplicate",
       "reason": "already in shows.json as high-school-musical-off-west-end-2026 (normalized-equal)"
+    },
+    {
+      "title": "Robin Hood Press Night",
+      "venue": "Theatre Royal Stratford East",
+      "source": "venue-page:theatre-royal-stratford-east",
+      "sourceUrl": null,
+      "kind": "skip-unconfirmed",
+      "reason": "venue's dated listing does not confirm a run: not a production (one-night event (2026-11-27))"
     }
   ]
 }
