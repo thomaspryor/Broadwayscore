@@ -1,21 +1,111 @@
 {
-  "processed": [],
+  "processed": [
+    "kelly-mccaughan-catholic-guilt-off-broadway-2026/broadway-baby--unknown.json",
+    "tosca-english-national-opera-west-end-2026/sunday-telegraph--nicholas-kenyon.json",
+    "ceilidh-the-musical-off-west-end-2026/guardian--emma-john.json",
+    "ceilidh-the-musical-off-west-end-2026/guardian--unknown.json"
+  ],
   "failed": [
-    "the-bridge-off-west-end-2026/theatreandtonic--emmie-newitt.json"
+    "a-few-good-men-2026/variety--anna-tingley.json",
+    "a-few-good-men-2026/bobs-theater-blog--unknown.json",
+    "a-few-good-men-2026/goldderby--ethan-alter.json",
+    "medea-off-broadway-2026/express-uk--neil-norman.json",
+    "medea-off-broadway-2026/bachtrack--susan-stempleski.json",
+    "the-heart-off-broadway-2026/variety--cynthia-littleton.json",
+    "the-heart-off-broadway-2026/frontmezzjunkies--unknown.json",
+    "in-the-heights-off-broadway-2026/nypost--clive-barnes.json",
+    "in-the-heights-off-broadway-2026/bloomberg--john-simon.json",
+    "i-became-we-off-broadway-2026/timeout--unknown.json",
+    "hospital-hour-off-broadway-2026/broadway-baby--unknown.json",
+    "hospital-hour-off-broadway-2026/one-minute-critic--unknown.json",
+    "aftermath-art-new-york-off-broadway-2026/talkinbroadway--unknown.json",
+    "love-me-off-broadway-2026/consequence--unknown.json",
+    "love-me-off-broadway-2026/daily-mail--codie-bullen.json",
+    "the-imaginary-invalid-2026/thewrap--robert-hofler.json",
+    "phyl-off-broadway-2026/phusionpassenger--unknown.json",
+    "phyl-off-broadway-2026/theater-life--paulanne-simmons.json",
+    "the-imaginary-invalid-2026/washpost--thomas-floyd.json",
+    "the-bridge-off-west-end-2026/theatreandtonic--emmie-newitt.json",
+    "tosca-english-national-opera-west-end-2026/bachtrack--anna-bogdanova.json",
+    "tosca-english-national-opera-west-end-2026/bachtrack--clare-varney.json",
+    "tosca-english-national-opera-west-end-2026/bachtrack--mark-pullinger.json",
+    "tosca-english-national-opera-west-end-2026/bachtrack--peter-quantrill.json",
+    "tosca-english-national-opera-west-end-2026/cherylmarkosky--cherylmarkosky.json",
+    "tosca-english-national-opera-west-end-2026/times-uk--richard-morrison.json",
+    "ceilidh-the-musical-off-west-end-2026/musical-theatre-review--angela-thomas.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "ceilidh-the-musical-off-west-end-2026/guardian--emma-john.json",
+      "ceilidh-the-musical-off-west-end-2026/guardian--unknown.json"
+    ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
     "scrapingdog": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "tosca-english-national-opera-west-end-2026/sunday-telegraph--nicholas-kenyon.json"
+    ],
     "brightdata": [],
     "archiveToday": [],
     "archive": []
   },
-  "startTime": "2026-11-04T08:48:39.389Z",
-  "lastProcessed": "the-bridge-off-west-end-2026/theatreandtonic--emmie-newitt.json",
-  "log": []
+  "startTime": "2026-11-04T07:33:00.437Z",
+  "lastProcessed": "ceilidh-the-musical-off-west-end-2026/musical-theatre-review--angela-thomas.json",
+  "log": [
+    {
+      "t": "2026-11-04T07:44:01.921Z",
+      "event": "bb-session",
+      "session": "467b36ca",
+      "url": "https://bachtrack.com/review-medea-yoncheva-spyres-met-opera-new-york-october-20"
+    },
+    {
+      "t": "2026-11-04T07:47:49.446Z",
+      "event": "bb-session",
+      "session": "1dcc4321",
+      "url": "https://hermes.talkinbroadway.com/allthatchat_new/d.php?id=2655044"
+    },
+    {
+      "t": "2026-11-04T07:47:50.118Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-04T08:40:47.495Z",
+      "event": "bb-session",
+      "session": "a4bd176e",
+      "url": "https://bachtrack.com/review-lorfeo-william-kentridge-greek-national-opera-athen"
+    },
+    {
+      "t": "2026-11-04T08:41:49.082Z",
+      "event": "bb-session",
+      "session": "66fe194f",
+      "url": "https://bachtrack.com/review-shostakovich-cherry-town-ahlbom-dutch-national-oper"
+    },
+    {
+      "t": "2026-11-04T08:41:57.048Z",
+      "event": "bb-session",
+      "session": "525b1eaf",
+      "url": "https://bachtrack.com/review-shostakovich-cherry-town-ahlbom-dutch-national-oper"
+    },
+    {
+      "t": "2026-11-04T08:43:48.718Z",
+      "event": "bb-session",
+      "session": "3693566d",
+      "url": "https://bachtrack.com/review-tosca-miskimmon-glassberg-fanyo-english-national-op"
+    },
+    {
+      "t": "2026-11-04T08:44:49.578Z",
+      "event": "bb-session",
+      "session": "3f8da788",
+      "url": "https://bachtrack.com/review-nozze-figaro-pountney-conta-bucharest-national-oper"
+    },
+    {
+      "t": "2026-11-04T08:44:58.475Z",
+      "event": "bb-session",
+      "session": "ba4abf97",
+      "url": "https://bachtrack.com/review-nozze-figaro-pountney-conta-bucharest-national-oper"
+    }
+  ]
 }
