@@ -1,22 +1,22 @@
 {
-  "generatedAt": "2026-11-04T22:31:22.172Z",
+  "generatedAt": "2026-11-04T23:47:57.166Z",
   "windowDays": 1095,
-  "targets": 920,
-  "auditedThisRun": 9,
-  "carriedForward": 2020,
+  "targets": 925,
+  "auditedThisRun": 11,
+  "carriedForward": 2019,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 631,
-    "missingCurrentRun": 1173,
+    "withGap": 632,
+    "missingCurrentRun": 1175,
     "totalCitedNoUrl": 0,
-    "totalFlaggedMisses": 924,
-    "totalRecoverable": 58,
-    "totalRecovered": 94,
+    "totalFlaggedMisses": 921,
+    "totalRecoverable": 57,
+    "totalRecovered": 93,
     "humanExcluded": 27,
-    "automatedExcluded": 1028,
-    "automatedExcludedListed": 743,
-    "priorProductionCitations": 6120
+    "automatedExcluded": 1024,
+    "automatedExcludedListed": 740,
+    "priorProductionCitations": 6114
   },
   "results": [
     {
@@ -12252,6 +12252,7 @@
       "openingDate": "2024-11-11",
       "status": "closed",
       "category": "broadway",
+      "previewsStartDate": "2024-10-16",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
         "https://www.nytimes.com/2024/11/11/theater/a-wonderful-world-review-louis-armstrong.html",
@@ -12262,15 +12263,32 @@
         "https://nypost.com/2024/11/11/entertainment/a-wonderful-world-the-louis-armstrong-musical-review/",
         "https://www.theatermania.com/news/review-a-wonderful-world-asks-what-if-six-was-about-louis-armstrongs-wives_1755256/",
         "http://www.lightingandsoundamerica.com/news/story.asp?ID=-F7YMXX",
+        "https://talkinbroadway.com/page/world/AWonderfulWorld.html",
         "https://www.theaterscene.net/musicals/broadway/a-wonderful-world-the-louis-armstrong-musical/joseph-pisano/",
         "https://newyorktheater.me/2024/11/11/a-wonderful-world-the-louis-armstrong-musical-review/",
         "https://culturesauce.com/2024/11/11/wonderful-world-louis-armstrong-broadway-review/",
-        "https://slleiter.blogspot.com/2024/11/34-wonderful-world-louis-armstrong.html"
+        "https://www.interestedbystander.com/2024/11/theater-reviews-capsule-reviews-of-drag.html",
+        "https://slleiter.blogspot.com/2024/11/34-wonderful-world-louis-armstrong.html",
+        "https://pagesonstages.wordpress.com/2024/11/11/wonderful-world/"
       ],
-      "dirFiles": 30,
-      "dirClean": 24,
-      "inReviewsJson": 24,
-      "missing": [],
+      "dirFiles": 33,
+      "dirClean": 28,
+      "inReviewsJson": 28,
+      "missing": [
+        {
+          "url": "https://www.interestedbystander.com/2024/11/theater-reviews-capsule-reviews-of-drag.html",
+          "host": "interestedbystander.com",
+          "knownOutletId": "the-interested-bystander",
+          "sources": [
+            {
+              "source": "show-score",
+              "sourceUrl": "https://www.show-score.com/broadway-shows/a-wonderful-world-the-louis-armstrong-musical"
+            }
+          ],
+          "listingDate": "2024-11-13",
+          "listingSource": "show-score"
+        }
+      ],
       "dirOnly": [
         {
           "host": "broadwaynews.com",
@@ -12297,6 +12315,10 @@
           "count": 1
         },
         {
+          "host": "frontmezzjunkies.com",
+          "count": 1
+        },
+        {
           "host": "nysun.com",
           "count": 1
         },
@@ -12309,11 +12331,15 @@
           "count": 1
         },
         {
-          "host": "talkinbroadway.com",
+          "host": "stagebuddy.com",
           "count": 1
         },
         {
           "host": "thekomisarscoop.com",
+          "count": 1
+        },
+        {
+          "host": "theatrely.com",
           "count": 1
         },
         {
@@ -12326,28 +12352,6 @@
         }
       ],
       "flaggedMisses": [
-        {
-          "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-F7YMXX",
-          "host": "lightingandsoundamerica.com",
-          "knownOutletId": "lighting-and-sound-america",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "lighting-and-sound-america--david-barbour.json",
-              "flag": "wrongShow",
-              "urlInDir": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-F7YMXX"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongShow"
-          ],
-          "reverify": true
-        },
         {
           "url": "https://slleiter.blogspot.com/2024/11/34-wonderful-world-louis-armstrong.html",
           "host": "slleiter.blogspot.com",
@@ -12368,7 +12372,18 @@
           "basis": [
             "wrongProduction"
           ],
-          "serpCensus": true,
+          "sources": [
+            {
+              "source": "show-score",
+              "sourceUrl": "https://www.show-score.com/broadway-shows/a-wonderful-world-the-louis-armstrong-musical"
+            },
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
+          "listingDate": "2024-11-09",
+          "listingSource": "show-score",
           "reverify": true
         }
       ],
@@ -12379,23 +12394,47 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 3,
-        "byReason": {
-          "news-article": 3
-        }
+        "count": 0,
+        "byReason": {}
       },
-      "dedupedVariants": [],
-      "automatedExcludedListed": 2,
+      "dedupedVariants": [
+        {
+          "url": "https://pagesonstages.wordpress.com/2024/11/11/wonderful-world/",
+          "host": "pagesonstages.wordpress.com",
+          "matchedUrl": "http://pagesonstages.com/2024/11/11/wonderful-world/",
+          "outletId": "pages-on-stages",
+          "reason": "same outlet \"pages-on-stages\" already held at pagesonstages.com; pagesonstages.wordpress.com is a registered alias of it"
+        }
+      ],
+      "automatedExcludedListed": 1,
       "unextractable": [],
+      "ingestResults": [
+        {
+          "url": "https://www.interestedbystander.com/2024/11/theater-reviews-capsule-reviews-of-drag.html",
+          "host": "interestedbystander.com",
+          "outletId": "the-interested-bystander",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "lighting-and-sound-america",
-            "outlet": "lighting-and-sound-america",
+            "outletId": "the-interested-bystander",
+            "outlet": "the-interested-bystander",
             "critic": "Unknown",
             "stars": null,
-            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-F7YMXX"
+            "url": "https://www.interestedbystander.com/2024/11/theater-reviews-capsule-reviews-of-drag.html"
           },
           {
             "outletId": "theatres-leiter-side",
@@ -12450,6 +12489,18 @@
             "firstSeenAt": "2026-08-16T15:15:17.003Z"
           },
           {
+            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-F7YMXX",
+            "outletId": "lightingandsoundamerica.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-16T15:15:17.003Z"
+          },
+          {
+            "url": "https://talkinbroadway.com/page/world/AWonderfulWorld.html",
+            "outletId": "talkinbroadway.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-04T23:47:57.166Z"
+          },
+          {
             "url": "https://www.theaterscene.net/musicals/broadway/a-wonderful-world-the-louis-armstrong-musical/joseph-pisano/",
             "outletId": "theaterscene.net",
             "state": "live",
@@ -12468,11 +12519,17 @@
             "firstSeenAt": "2026-08-16T15:15:17.003Z"
           },
           {
-            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-F7YMXX",
-            "outletId": "lighting-and-sound-america",
+            "url": "https://pagesonstages.wordpress.com/2024/11/11/wonderful-world/",
+            "outletId": "pagesonstages.wordpress.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-04T23:47:57.166Z"
+          },
+          {
+            "url": "https://www.interestedbystander.com/2024/11/theater-reviews-capsule-reviews-of-drag.html",
+            "outletId": "the-interested-bystander",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-08-16T15:15:17.003Z"
+            "firstSeenAt": "2026-11-04T23:47:57.166Z"
           },
           {
             "url": "https://slleiter.blogspot.com/2024/11/34-wonderful-world-louis-armstrong.html",
@@ -12484,10 +12541,10 @@
         ],
         "censusSchema": 4,
         "excluded": [],
-        "liveCount": 10,
-        "candidateCount": 12
+        "liveCount": 13,
+        "candidateCount": 15
       },
-      "computedAt": "2026-10-19T18:05:32.145Z"
+      "computedAt": "2026-11-04T23:47:57.166Z"
     },
     {
       "showId": "a-world-elsewhere-off-west-end-2026",
@@ -62524,10 +62581,11 @@
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
         "https://www.tkqlhce.com/click-8360975-13869954",
+        "http://www.stagetopage.co.uk/2026/11/ceilidh-new-musical-review.html",
+        "https://www.whatsonstage.com/news/ceilidh-the-musical-at-shoreditch-town-hall-and-on-tour-review_1736207/",
         "https://everything-theatre.co.uk/2026/11/review-ceilidh-the-musical-shoreditch-town-hall/",
         "https://www.londontheatre.co.uk/reviews/ceilidh-the-musical-review-shoreditch-town-hall",
         "https://www.westendbestfriend.co.uk/news/review-ceilidh-the-musical-shoreditch-town-hall",
-        "https://www.whatsonstage.com/news/ceilidh-the-musical-at-shoreditch-town-hall-and-on-tour-review_1736207/",
         "https://thespyinthestalls.com/2026/10/ceilidh/",
         "https://www.londonbornandbred.co.uk/post/ceilidh-a-new-musical",
         "https://www.thestage.co.uk/reviews/ceilidh-the-musical-review",
@@ -62541,7 +62599,6 @@
         "https://www.thereviewshub.com/ceilidh-shoreditch-town-hall-london/",
         "https://therecs.co.uk/ceilidh-the-musical-touring/",
         "https://firstnightmagazine.com/2026/11/02/review-of-ceilidh-unconventional-scottish-musical-isnt-that-brave-but-it-teems-with-heart/",
-        "http://www.stagetopage.co.uk/2026/11/ceilidh-new-musical-review.html",
         "https://www.timeout.com/london/theatre/ceilidh-the-musical",
         "https://musicaltheatrereview.com/ceilidh-a-new-musical-shoreditch-town-hall-and-touring/",
         "https://www.bestoftheatre.co.uk/blog/post/circa-duck-pond-ceilidh-the-musical-brighton-dome-christmas-2026",
@@ -62552,9 +62609,9 @@
         "https://theatresoutheast.com/tag/ceilidh-the-musical/",
         "https://www.londontheatrereviews.co.uk/post.cfm?p=29488"
       ],
-      "dirFiles": 36,
-      "dirClean": 18,
-      "inReviewsJson": 18,
+      "dirFiles": 37,
+      "dirClean": 20,
+      "inReviewsJson": 20,
       "missing": [
         {
           "url": "https://www.tkqlhce.com/click-8360975-13869954",
@@ -62566,18 +62623,6 @@
               "sourceUrl": "https://www.show-score.com/uk/london/west-end-shows/ceilidh-the-musical"
             }
           ]
-        },
-        {
-          "url": "http://www.stagetopage.co.uk/2026/11/ceilidh-new-musical-review.html",
-          "host": "stagetopage.co.uk",
-          "knownOutletId": "stagetopage",
-          "serpCensus": true,
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ]
         }
       ],
       "dirOnly": [
@@ -62587,46 +62632,6 @@
         }
       ],
       "flaggedMisses": [
-        {
-          "url": "https://musicaltheatrereview.com/ceilidh-a-new-musical-shoreditch-town-hall-and-touring/",
-          "host": "musicaltheatrereview.com",
-          "knownOutletId": "musical-theatre-review",
-          "recoverable": true,
-          "recoverableFile": "musical-theatre-review--unknown.json",
-          "recoverableOutletId": "musical-theatre-review",
-          "recoverableCritic": "Unknown",
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "musical-theatre-review--unknown.json",
-              "flag": "emptyBody",
-              "urlInDir": "https://musicaltheatrereview.com/ceilidh-a-new-musical-shoreditch-town-hall-and-touring/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "noTextOrScoreSignal"
-          ],
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            },
-            {
-              "source": "bestoftheatre",
-              "sourceUrl": "https://www.bestoftheatre.co.uk/blog/post/review-roundup-ceilidh-the-musical-shoreditch-town-hall"
-            }
-          ],
-          "listingDate": "2026-10-31",
-          "listingSource": "bestoftheatre",
-          "weRef": true,
-          "weRefSources": [
-            "bestoftheatre"
-          ],
-          "weRefStars": 5,
-          "weRefStarsSource": "bestoftheatre",
-          "reverify": true
-        },
         {
           "url": "https://www.bestoftheatre.co.uk/blog/post/circa-duck-pond-ceilidh-the-musical-brighton-dome-christmas-2026",
           "host": "bestoftheatre.co.uk",
@@ -62844,21 +62849,83 @@
         },
         "allSourcesFailed": false,
         "currentRunRows": 17,
-        "corroborated": 16,
+        "corroborated": 17,
         "perSource": {
           "bestoftheatre": {
             "cited": 17,
-            "corroborated": 16
+            "corroborated": 17
           }
         }
       },
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Ceilidh The Musical\" West End review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Ceilidh The Musical\" West End review 2026",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 8,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Ceilidh The Musical\" review shoreditch",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 8,
+            "accepted": 3,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Ceilidh The Musical Shoreditch Town Hall review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 8,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Ceilidh The Musical Shoreditch Town Hall review",
+            "page": 1,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Ceilidh The Musical Shoreditch Town Hall review",
+            "page": 2,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 4,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 39,
+        "byReason": {
+          "non-review-host": 9,
+          "not-http-url": 28,
+          "no-review-evidence": 1,
+          "ticket-seller-product-page": 1
+        }
       },
       "dedupedVariants": [],
       "nonReviewCandidates": [
@@ -62870,7 +62937,7 @@
           "nonReviewDetail": "unauthored-and-pre-opening"
         }
       ],
-      "automatedExcludedListed": 7,
+      "automatedExcludedListed": 6,
       "unextractable": [],
       "weIngestBlocked": [
         {
@@ -62881,37 +62948,8 @@
           "censusGateOn": true
         }
       ],
-      "ingestResults": [
-        {
-          "url": "http://www.stagetopage.co.uk/2026/11/ceilidh-new-musical-review.html",
-          "host": "stagetopage.co.uk",
-          "outletId": "stagetopage",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": null
-        }
-      ],
+      "ingestResults": [],
       "ingestSkippedByCap": [],
-      "recoveryResults": [
-        {
-          "url": "https://musicaltheatrereview.com/ceilidh-a-new-musical-shoreditch-town-hall-and-touring/",
-          "host": "musicaltheatrereview.com",
-          "file": "musical-theatre-review--unknown.json",
-          "recovered": true,
-          "skipped": false,
-          "provisional": false,
-          "starFallback": false,
-          "reason": null,
-          "recoveryCount": 0
-        }
-      ],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
@@ -62921,20 +62959,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.tkqlhce.com/click-8360975-13869954"
-          },
-          {
-            "outletId": "stagetopage",
-            "outlet": "stagetopage",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "http://www.stagetopage.co.uk/2026/11/ceilidh-new-musical-review.html"
-          },
-          {
-            "outletId": "musical-theatre-review",
-            "outlet": "musical-theatre-review",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://musicaltheatrereview.com/ceilidh-a-new-musical-shoreditch-town-hall-and-touring/"
           },
           {
             "outletId": "bestoftheatre",
@@ -62982,6 +63006,18 @@
         "suppressedMissing": [],
         "candidates": [
           {
+            "url": "http://www.stagetopage.co.uk/2026/11/ceilidh-new-musical-review.html",
+            "outletId": "stagetopage.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-11-04T15:34:33.700Z"
+          },
+          {
+            "url": "https://www.whatsonstage.com/news/ceilidh-the-musical-at-shoreditch-town-hall-and-on-tour-review_1736207/",
+            "outletId": "whatsonstage.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T17:07:08.919Z"
+          },
+          {
             "url": "https://everything-theatre.co.uk/2026/11/review-ceilidh-the-musical-shoreditch-town-hall/",
             "outletId": "everything-theatre.co.uk",
             "state": "live",
@@ -62996,12 +63032,6 @@
           {
             "url": "https://www.westendbestfriend.co.uk/news/review-ceilidh-the-musical-shoreditch-town-hall",
             "outletId": "westendbestfriend.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-10-31T17:07:08.919Z"
-          },
-          {
-            "url": "https://www.whatsonstage.com/news/ceilidh-the-musical-at-shoreditch-town-hall-and-on-tour-review_1736207/",
-            "outletId": "whatsonstage.com",
             "state": "live",
             "firstSeenAt": "2026-10-31T17:07:08.919Z"
           },
@@ -63090,6 +63120,12 @@
             "firstSeenAt": "2026-10-22T14:24:48.125Z"
           },
           {
+            "url": "https://musicaltheatrereview.com/ceilidh-a-new-musical-shoreditch-town-hall-and-touring/",
+            "outletId": "musicaltheatrereview.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-04T15:34:33.700Z"
+          },
+          {
             "url": "https://www.londontheatrereviews.co.uk/post.cfm?p=29488",
             "outletId": "londontheatrereviews.co.uk",
             "state": "live",
@@ -63101,20 +63137,6 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-11-02T22:17:21.424Z"
-          },
-          {
-            "url": "http://www.stagetopage.co.uk/2026/11/ceilidh-new-musical-review.html",
-            "outletId": "stagetopage",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-11-04T15:34:33.700Z"
-          },
-          {
-            "url": "https://musicaltheatrereview.com/ceilidh-a-new-musical-shoreditch-town-hall-and-touring/",
-            "outletId": "musical-theatre-review",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-11-04T15:34:33.700Z"
           },
           {
             "url": "https://www.bestoftheatre.co.uk/blog/post/circa-duck-pond-ceilidh-the-musical-brighton-dome-christmas-2026",
@@ -63167,10 +63189,10 @@
             "reason": "timeout-listing-blurb"
           }
         ],
-        "liveCount": 18,
+        "liveCount": 20,
         "candidateCount": 27
       },
-      "computedAt": "2026-11-04T19:31:35.837Z"
+      "computedAt": "2026-11-04T23:47:57.166Z"
     },
     {
       "showId": "celebrity-autobiography-2026",
@@ -72251,75 +72273,12 @@
         "perSource": {}
       },
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"Cranford\" West End review",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"Cranford\" West End review",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"Cranford\" review orange",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 0,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "Cranford Orange Tree Theatre review",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "Cranford Orange Tree Theatre review",
-            "page": 1,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "Cranford Orange Tree Theatre review",
-            "page": 2,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          }
-        ],
-        "queriesOk": 5,
-        "queriesTotal": 5,
-        "resultCount": 1,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 13,
-        "byReason": {
-          "non-review-host": 9,
-          "aggregator-internal-nav": 1,
-          "bare-host": 1,
-          "tag-index-page": 1,
-          "review-hub-page": 1
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 0,
@@ -72368,7 +72327,7 @@
         "liveCount": 0,
         "candidateCount": 1
       },
-      "computedAt": "2026-11-04T19:31:35.837Z"
+      "computedAt": "2026-11-04T23:47:57.166Z"
     },
     {
       "showId": "crazy-mama-a-true-story-of-love-and-madness-off-broadway-2026",
@@ -172619,15 +172578,42 @@
       "category": "off-broadway",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
+        "https://www.broadstreetreview.com/articles/kelly-mccaughan-presents-catholic-guilt",
+        "https://theweereview.com/review/kelly-mccaughan-catholic-guilt/",
         "https://broadwaybaby.com/shows/kelly-mccaughan-catholic-guilt/808297",
         "https://theaterpizzazz.com/catholic-guilt-odd-theology-makes-for-comedy-gold/",
-        "https://list.co.uk/news/kelly-mccaughan-catholic-guilt-comedy-review-wild-ride-about-religious-dogma-45286",
-        "https://theweereview.com/review/kelly-mccaughan-catholic-guilt/"
+        "https://list.co.uk/news/kelly-mccaughan-catholic-guilt-comedy-review-wild-ride-about-religious-dogma-45286"
       ],
       "dirFiles": 2,
       "dirClean": 1,
       "inReviewsJson": 1,
       "missing": [
+        {
+          "url": "https://www.broadstreetreview.com/articles/kelly-mccaughan-presents-catholic-guilt",
+          "host": "broadstreetreview.com",
+          "knownOutletId": "broadstreetreview",
+          "serpCensus": true,
+          "priorRun": true,
+          "priorRunSource": "pending-file-date:2017-12-15",
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ]
+        },
+        {
+          "url": "https://theweereview.com/review/kelly-mccaughan-catholic-guilt/",
+          "host": "theweereview.com",
+          "knownOutletId": "theweereview",
+          "serpCensus": true,
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ]
+        },
         {
           "url": "https://theaterpizzazz.com/catholic-guilt-odd-theology-makes-for-comedy-gold/",
           "host": "theaterpizzazz.com",
@@ -172651,18 +172637,6 @@
               "sourceUrl": null
             }
           ]
-        },
-        {
-          "url": "https://theweereview.com/review/kelly-mccaughan-catholic-guilt/",
-          "host": "theweereview.com",
-          "knownOutletId": "theweereview",
-          "serpCensus": true,
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ]
         }
       ],
       "dirOnly": [],
@@ -172670,21 +172644,104 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Kelly McCaughan: Catholic Guilt\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Kelly McCaughan: Catholic Guilt\" Off-Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 9,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Kelly McCaughan: Catholic Guilt\" review soho",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 8,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped2",
+            "query": "\"Kelly McCaughan: Catholic Guilt\" McCaughan review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 9,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Kelly McCaughan: Catholic Guilt SoHo Playhouse review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Kelly McCaughan: Catholic Guilt SoHo Playhouse review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Kelly McCaughan: Catholic Guilt SoHo Playhouse review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          }
+        ],
+        "queriesOk": 6,
+        "queriesTotal": 6,
+        "resultCount": 2,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 50,
+        "byReason": {
+          "non-review-host": 9,
+          "not-http-url": 30,
+          "aggregator-internal-nav": 7,
+          "write-path-blocked": 1,
+          "venue-production-page": 2,
+          "ticketing-listing": 1
+        }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 0,
       "unextractable": [],
+      "weIngestBlocked": [
+        {
+          "url": "https://www.broadstreetreview.com/articles/kelly-mccaughan-presents-catholic-guilt",
+          "host": "broadstreetreview.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        }
+      ],
       "ingestResults": [
         {
-          "url": "https://theaterpizzazz.com/catholic-guilt-odd-theology-makes-for-comedy-gold/",
-          "host": "theaterpizzazz.com",
-          "outletId": "theater-pizzazz",
+          "url": "https://theweereview.com/review/kelly-mccaughan-catholic-guilt/",
+          "host": "theweereview.com",
+          "outletId": "theweereview",
           "provisional": false,
           "ok": false,
           "noop": true,
@@ -172694,7 +172751,22 @@
           "expectedReason": "publish-date-unresolved",
           "unclassified": false,
           "zeroChar": false,
-          "reason": "kelly-mccaughan-catholic-guilt-off-broadway-2026: https://theaterpizzazz.com/catholic-guilt-odd-theology-makes-for-comedy-gold/ has no readable publish date and this show has an earlier-dated citation (a prior production), so the undated page was refused rather than filed where it could be scored as this run's review. Expected rejection; if it IS this production's review, ingest it with --publish-date=YYYY-MM-DD."
+          "reason": "kelly-mccaughan-catholic-guilt-off-broadway-2026: https://theweereview.com/review/kelly-mccaughan-catholic-guilt/ has no readable publish date and this show has an earlier-dated citation (a prior production), so the undated page was refused rather than filed where it could be scored as this run's review. Expected rejection; if it IS this production's review, ingest it with --publish-date=YYYY-MM-DD."
+        },
+        {
+          "url": "https://theaterpizzazz.com/catholic-guilt-odd-theology-makes-for-comedy-gold/",
+          "host": "theaterpizzazz.com",
+          "outletId": "theater-pizzazz",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": true,
+          "reason": "⚠️  Scrapingdog pace (~163273/day) projects exhaustion in ~29d, before the 29d-out renewal — still using SD (prepaid credits beat BD's ~17x cost); health-check tracks the burn\nArticle extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS."
         },
         {
           "url": "https://list.co.uk/news/kelly-mccaughan-catholic-guilt-comedy-review-wild-ride-about-religious-dogma-45286",
@@ -172710,27 +172782,19 @@
           "unclassified": false,
           "zeroChar": false,
           "reason": "kelly-mccaughan-catholic-guilt-off-broadway-2026: https://list.co.uk/news/kelly-mccaughan-catholic-guilt-comedy-review-wild-ride-about-religious-dogma-45286 has no readable publish date and this show has an earlier-dated citation (a prior production), so the undated page was refused rather than filed where it could be scored as this run's review. Expected rejection; if it IS this production's review, ingest it with --publish-date=YYYY-MM-DD."
-        },
-        {
-          "url": "https://theweereview.com/review/kelly-mccaughan-catholic-guilt/",
-          "host": "theweereview.com",
-          "outletId": "theweereview",
-          "provisional": false,
-          "ok": false,
-          "noop": true,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": true,
-          "expectedReason": "publish-date-unresolved",
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "kelly-mccaughan-catholic-guilt-off-broadway-2026: https://theweereview.com/review/kelly-mccaughan-catholic-guilt/ has no readable publish date and this show has an earlier-dated citation (a prior production), so the undated page was refused rather than filed where it could be scored as this run's review. Expected rejection; if it IS this production's review, ingest it with --publish-date=YYYY-MM-DD."
         }
       ],
       "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
+          {
+            "outletId": "theweereview",
+            "outlet": "theweereview",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://theweereview.com/review/kelly-mccaughan-catholic-guilt/"
+          },
           {
             "outletId": "theater-pizzazz",
             "outlet": "theater-pizzazz",
@@ -172744,13 +172808,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://list.co.uk/news/kelly-mccaughan-catholic-guilt-comedy-review-wild-ride-about-religious-dogma-45286"
-          },
-          {
-            "outletId": "theweereview",
-            "outlet": "theweereview",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://theweereview.com/review/kelly-mccaughan-catholic-guilt/"
           }
         ],
         "suppressedMissing": [],
@@ -172760,6 +172817,13 @@
             "outletId": "broadwaybaby.com",
             "state": "live",
             "firstSeenAt": "2026-10-29T07:30:38.899Z"
+          },
+          {
+            "url": "https://theweereview.com/review/kelly-mccaughan-catholic-guilt/",
+            "outletId": "theweereview",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-11-02T05:01:54.129Z"
           },
           {
             "url": "https://theaterpizzazz.com/catholic-guilt-odd-theology-makes-for-comedy-gold/",
@@ -172774,13 +172838,6 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-10-29T19:29:04.194Z"
-          },
-          {
-            "url": "https://theweereview.com/review/kelly-mccaughan-catholic-guilt/",
-            "outletId": "theweereview",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-11-02T05:01:54.129Z"
           }
         ],
         "censusSchema": 4,
@@ -172788,7 +172845,7 @@
         "liveCount": 1,
         "candidateCount": 4
       },
-      "computedAt": "2026-11-04T19:31:35.837Z"
+      "computedAt": "2026-11-04T23:47:57.166Z"
     },
     {
       "showId": "kenrex-off-broadway-2026",
@@ -216089,6 +216146,7 @@
       "category": "regional",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
+        "https://therealchrisparkle.com/2026/11/01/review-middlemarch-parts-one-and-two-royal-shakespeare-company-at-the-swan-theatre-stratford-upon-avon-31st-october-2026/amp/",
         "https://broadwaybaby.com/shows/middlemarch-parts-1-2/839401",
         "https://www.the-independent.com/arts-entertainment/theatre-dance/reviews/middlemarch-play-rsc-review-george-eliot-b3075797.html",
         "https://www.broadwayworld.com/westend/article/Review-MIDDLEMARCH-PARTS-1-2-Swan-Theatre-20261029",
@@ -216098,7 +216156,6 @@
         "https://www.whatsonstage.com/news/middlemarch-at-the-rscs-swan-theatre-review_1736116/",
         "https://therealchrisparkle.com/2026/11/01/review-middlemarch-parts-one-and-two-royal-shakespeare-company-at-the-swan-theatre-stratford-upon-avon-31st-october-2026/",
         "https://www.telegraph.co.uk/theatre/what-to-see/rsc-middlemarch-review/",
-        "https://therealchrisparkle.com/2026/11/01/review-middlemarch-parts-one-and-two-royal-shakespeare-company-at-the-swan-theatre-stratford-upon-avon-31st-october-2026/amp/",
         "https://www.britishtheatreguide.info/reviews/middlemarch-par-swan-theatre-s-26160"
       ],
       "dirFiles": 14,
@@ -216127,12 +216184,75 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Middlemarch\" Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Middlemarch\" Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 5,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Middlemarch\" review shakespeare",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 8,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Middlemarch Royal Shakespeare Theatre, Stratford-upon-Avon review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 7,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Middlemarch Royal Shakespeare Theatre, Stratford-upon-Avon review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Middlemarch Royal Shakespeare Theatre, Stratford-upon-Avon review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 1,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 38,
+        "byReason": {
+          "non-review-host": 4,
+          "not-http-url": 30,
+          "no-review-evidence": 1,
+          "aggregator-internal-nav": 2,
+          "review-hub-page": 1
+        }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 0,
@@ -216142,6 +216262,12 @@
         "missing": [],
         "suppressedMissing": [],
         "candidates": [
+          {
+            "url": "https://therealchrisparkle.com/2026/11/01/review-middlemarch-parts-one-and-two-royal-shakespeare-company-at-the-swan-theatre-stratford-upon-avon-31st-october-2026/amp/",
+            "outletId": "therealchrisparkle.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-03T22:38:02.538Z"
+          },
           {
             "url": "https://broadwaybaby.com/shows/middlemarch-parts-1-2/839401",
             "outletId": "broadwaybaby.com",
@@ -216197,12 +216323,6 @@
             "firstSeenAt": "2026-10-30T22:24:22.326Z"
           },
           {
-            "url": "https://therealchrisparkle.com/2026/11/01/review-middlemarch-parts-one-and-two-royal-shakespeare-company-at-the-swan-theatre-stratford-upon-avon-31st-october-2026/amp/",
-            "outletId": "therealchrisparkle.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-03T22:38:02.538Z"
-          },
-          {
             "url": "https://www.britishtheatreguide.info/reviews/middlemarch-par-swan-theatre-s-26160",
             "outletId": "britishtheatreguide.info",
             "state": "live",
@@ -216214,7 +216334,7 @@
         "liveCount": 9,
         "candidateCount": 9
       },
-      "computedAt": "2026-11-04T19:31:35.837Z"
+      "computedAt": "2026-11-04T23:47:57.166Z"
     },
     {
       "showId": "midnight-a-new-original-musical-by-todrick-hall-off-west-end-2026",
@@ -264883,11 +265003,9 @@
       "previewsStartDate": "2026-11-03",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://broadwaybaby.com/shows/pulman-and-stilgoe-hooray-for-hollywood/839240",
-        "https://list.co.uk/event/pulman-and-stilgoe-hooray-for-hollywood-644634",
         "https://theoxfordmagazine.com/event/pulman-stilgoe-hooray-for-hollywood/",
         "https://www.uktw.co.uk/Tour/Concert/Liza-Pulman-and-Joe-Stilgoe-Hooray-for-Hollywood/T983397770/",
-        "https://oazis.app/en/event/pulman-and-stilgoe-hooray-for-hollywood"
+        "https://broadwaybaby.com/shows/pulman-and-stilgoe-hooray-for-hollywood/839240"
       ],
       "dirFiles": 6,
       "dirClean": 2,
@@ -264957,72 +265075,6 @@
           ],
           "serpCensus": true,
           "reverify": true
-        },
-        {
-          "url": "https://list.co.uk/event/pulman-and-stilgoe-hooray-for-hollywood-644634",
-          "host": "list.co.uk",
-          "knownOutletId": "the-list",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "the-list--unknown.json",
-              "flag": "clean",
-              "urlInDir": "https://list.co.uk/event/pulman-and-stilgoe-hooray-for-hollywood-644634"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "rejectionReason"
-          ],
-          "confirmedNonReview": true,
-          "confirmedBasis": [
-            "non-review"
-          ],
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ],
-          "serpCensus": true,
-          "reverify": false
-        },
-        {
-          "url": "https://oazis.app/en/event/pulman-and-stilgoe-hooray-for-hollywood",
-          "host": "oazis.app",
-          "knownOutletId": "oazis",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "oazis--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://oazis.app/en/event/pulman-and-stilgoe-hooray-for-hollywood"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "confirmedNonReview": true,
-          "confirmedBasis": [
-            "non-review"
-          ],
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ],
-          "serpCensus": true,
-          "reverify": false
         }
       ],
       "citedNoUrl": [],
@@ -265071,75 +265123,12 @@
         "perSource": {}
       },
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"Pulman and Stilgoe: Hooray For Hollywood\" West End review",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"Pulman and Stilgoe: Hooray For Hollywood\" West End review",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 9,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"Pulman and Stilgoe: Hooray For Hollywood\" review wilton",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 4,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "Pulman and Stilgoe: Hooray For Hollywood Wilton's Music Hall review",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 3,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "Pulman and Stilgoe: Hooray For Hollywood Wilton's Music Hall review",
-            "page": 1,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "Pulman and Stilgoe: Hooray For Hollywood Wilton's Music Hall review",
-            "page": 2,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          }
-        ],
-        "queriesOk": 5,
-        "queriesTotal": 5,
-        "resultCount": 5,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 26,
-        "byReason": {
-          "non-review-host": 12,
-          "aggregator-internal-nav": 1,
-          "no-review-evidence": 3,
-          "non-review-path": 1,
-          "ticketing-reseller": 9
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 1,
@@ -265167,7 +265156,7 @@
           "expectedReason": null,
           "unclassified": false,
           "zeroChar": true,
-          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS."
+          "reason": "⚠️  Scrapingdog pace (~163429/day) projects exhaustion in ~29d, before the 29d-out renewal — still using SD (prepaid credits beat BD's ~17x cost); health-check tracks the burn\nArticle extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS."
         }
       ],
       "ingestSkippedByCap": [],
@@ -265221,22 +265210,11 @@
           }
         ],
         "censusSchema": 4,
-        "excluded": [
-          {
-            "url": "https://list.co.uk/event/pulman-and-stilgoe-hooray-for-hollywood-644634",
-            "host": "list.co.uk",
-            "reason": "confirmed-non-review"
-          },
-          {
-            "url": "https://oazis.app/en/event/pulman-and-stilgoe-hooray-for-hollywood",
-            "host": "oazis.app",
-            "reason": "confirmed-non-review"
-          }
-        ],
+        "excluded": [],
         "liveCount": 0,
         "candidateCount": 3
       },
-      "computedAt": "2026-11-04T19:31:35.837Z"
+      "computedAt": "2026-11-04T23:47:57.166Z"
     },
     {
       "showId": "pulman-and-stilgoe-hooray-for-hollywood-west-end-2026",
@@ -316202,26 +316180,12 @@
       "openingDate": "2024-11-14",
       "status": "closed",
       "category": "broadway",
+      "previewsStartDate": "2024-10-19",
       "aggregatorArticles": [
-        "https://playbill.com/article/reviews-what-do-critics-think-of-elton-johns-new-tammy-faye-musical",
         "https://www.broadwayworld.com/article/Review-Roundup-TAMMY-FAYE-Opens-On-Broadway-20241114",
         "https://www.broadwayworld.com/article/Review-Roundup-Critics-Weigh-In-On-the-TAMMY-FAYE-From-Elton-John-and-Jake-Shears-At-Almeida-Theatre-20221026"
       ],
       "aggregatorListedUrls": [
-        "https://www.allthatdazzles.co.uk/post/review-tammy-faye-almeida-theatre",
-        "https://theartsdesk.com/theatre/tammy-faye-almeida-theatre-review-elton-johns-often-dazzling-new-musical",
-        "https://www.broadwayworld.com/article/Review-TAMMY-FAYE-Almeida-Theatre-20221026",
-        "https://www.standard.co.uk/culture/theatre/tammy-faye-at-almeida-theatre-review-a-religious-riot-elton-john-james-graham-b1035566.html",
-        "https://www.theguardian.com/stage/2022/oct/27/tammy-faye-a-new-musical-review-elton-john-almeida-theatre-bakker-televangelists",
-        "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/tammy-faye-show-review-almeida-b2211640.html",
-        "https://inews.co.uk/culture/arts/tammy-faye-almeida-review-elton-john-musical-1937059",
-        "https://www.londontheatre.co.uk/reviews/tammy-faye-review-almeida-theatre-elton-john",
-        "https://nypost.com/2022/10/26/elton-johns-lacking-tammy-faye-musical-needs-a-prayer/",
-        "https://www.thestage.co.uk/long-reviews/tammy-faye-review-at-the-almeida-theatre-london-from-james-graham-elton-john-and-jake-shears",
-        "https://www.telegraph.co.uk/theatre/what-to-see/tammy-faye-almeida-theatre-review-elton-johns-new-musical-famous/",
-        "https://www.thetimes.co.uk/article/tammy-faye-review-not-much-to-praise-the-lord-about-in-eltons-show-vttv3fj07",
-        "https://www.timeout.com/london/theatre/tammy-faye-review",
-        "https://www.whatsonstage.com/london-theatre/reviews/tammy-faye-review-elton-john-jake-shears-and-james_57692.html",
         "https://www.nytimes.com/2024/11/14/theater/tammy-faye-review.html",
         "https://www.chicagotribune.com/2024/11/14/review-tammy-faye-musical-on-broadway-pokes-fun-of-some-all-too-easy-targets/",
         "https://ew.com/tammy-faye-review-broadway-musical-elton-john-8743171",
@@ -316236,27 +316200,41 @@
         "https://nystagereview.com/2024/11/14/tammy-faye-brit-tuner-sings-the-red-white-and-boo-hoo-blues/",
         "https://nypost.com/2024/11/14/entertainment/tammy-faye-review-elton-johns-broadway-show-is-a-disaster-of-biblical-proportions/",
         "https://www.nytimes.com/2022/10/27/theater/tammy-faye-review-almeida.html",
+        "https://nypost.com/2022/10/26/elton-johns-lacking-tammy-faye-musical-needs-a-prayer/",
+        "https://www.whatsonstage.com/london-theatre/reviews/tammy-faye-review-elton-john-jake-shears-and-james_57692.html",
+        "https://www.telegraph.co.uk/theatre/what-to-see/tammy-faye-almeida-theatre-review-elton-johns-new-musical-famous/",
+        "https://www.thetimes.co.uk/article/tammy-faye-review-not-much-to-praise-the-lord-about-in-eltons-show-vttv3fj07",
+        "https://www.theguardian.com/stage/2022/oct/27/tammy-faye-a-new-musical-review-elton-john-almeida-theatre-bakker-televangelists",
+        "https://www.londontheatre.co.uk/reviews/tammy-faye-review-almeida-theatre-elton-john",
         "https://www.newyorktheatreguide.com/reviews/tammy-faye-broadway-review-elton-john",
         "https://www.nydailynews.com/2024/11/14/broadway-review-tammy-faye-musical-elton-john-tv-evangelist/",
         "https://www.washingtonpost.com/entertainment/theater/2024/11/14/tammy-faye-a-wonderful-world-review/",
         "https://www.theatermania.com/news/review-tammy-faye-a-broadway-musical-about-the-televangelist-turned-gay-icon_1755638/",
+        "https://www.talkinbroadway.com/page/world/TammyFaye.html",
         "https://www.theaterscene.net/musicals/broadway/tammy-faye/victor-gluck/",
         "https://www.theatrereviews.com/broadway-review-tammy-faye-at-the-palace-theatre-currently-on/",
         "https://newyorktheater.me/2024/11/14/tammy-faye-broadway-review/",
         "https://culturesauce.com/2024/11/14/tammy-faye-musical-elton-john-broadway-review/",
         "https://twi-ny.com/2024/12/06/the-wrong-kind-of-faith-tammy-faye-on-broadway/",
-        "https://pagesonstages.com/2024/11/14/tammy-faye/"
+        "https://pagesonstages.com/2024/11/14/tammy-faye/",
+        "https://www.interestedbystander.com/2024/11/broadway-reviews-death-becomes-her-is.html"
       ],
-      "dirFiles": 62,
-      "dirClean": 26,
-      "inReviewsJson": 26,
+      "dirFiles": 66,
+      "dirClean": 27,
+      "inReviewsJson": 27,
       "missing": [
         {
-          "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/tammy-faye-show-review-almeida-b2211640.html",
-          "host": "independent.co.uk",
-          "knownOutletId": "independent",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
+          "url": "https://www.interestedbystander.com/2024/11/broadway-reviews-death-becomes-her-is.html",
+          "host": "interestedbystander.com",
+          "knownOutletId": "the-interested-bystander",
+          "sources": [
+            {
+              "source": "show-score",
+              "sourceUrl": "https://www.show-score.com/broadway-shows/tammy-faye-broadway"
+            }
+          ],
+          "listingDate": "2024-11-21",
+          "listingSource": "show-score"
         }
       ],
       "dirOnly": [
@@ -316269,7 +316247,11 @@
           "count": 1
         },
         {
-          "host": "talkinbroadway.com",
+          "host": "frontmezzjunkies.com",
+          "count": 1
+        },
+        {
+          "host": "inews.co.uk",
           "count": 1
         },
         {
@@ -316279,9 +316261,9 @@
       ],
       "flaggedMisses": [
         {
-          "url": "https://www.allthatdazzles.co.uk/post/review-tammy-faye-almeida-theatre",
-          "host": "allthatdazzles.co.uk",
-          "knownOutletId": "all-that-dazzles-uk",
+          "url": "https://www.thedailybeast.com/broadway-review-elton-johns-tammy-faye-musical-is-far-from-heaven/",
+          "host": "thedailybeast.com",
+          "knownOutletId": "dailybeast",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -316289,9 +316271,71 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "all-that-dazzles-uk--daz-gale.json",
+              "file": "dailybeast--tim-teeman.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://www.allthatdazzles.co.uk/post/review-tammy-faye-almeida-theatre"
+              "urlInDir": "https://www.thedailybeast.com/broadway-review-elton-johns-tammy-faye-musical-is-far-from-heaven/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-TAMMY-FAYE-Opens-On-Broadway-20241114"
+            },
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
+          "reverify": true
+        },
+        {
+          "url": "https://www.whatsonstage.com/london-theatre/reviews/tammy-faye-review-elton-john-jake-shears-and-james_57692.html",
+          "host": "whatsonstage.com",
+          "knownOutletId": "whatsonstage",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "whatsonstage--sarah-crompton.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.whatsonstage.com/london-theatre/reviews/tammy-faye-review-elton-john-jake-shears-and-james_57692.html"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Critics-Weigh-In-On-the-TAMMY-FAYE-From-Elton-John-and-Jake-Shears-At-Almeida-Theatre-20221026"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
+        },
+        {
+          "url": "https://www.telegraph.co.uk/theatre/what-to-see/tammy-faye-almeida-theatre-review-elton-johns-new-musical-famous/",
+          "host": "telegraph.co.uk",
+          "knownOutletId": "sunday-telegraph",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "telegraph--dominic-cavendish.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.telegraph.co.uk/theatre/what-to-see/tammy-faye-almeida-theatre-review-elton-johns-new-musical-famous/"
             }
           ],
           "exclusion": "automatedExcluded",
@@ -316300,75 +316344,39 @@
           ],
           "priorRun": true,
           "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Critics-Weigh-In-On-the-TAMMY-FAYE-From-Elton-John-and-Jake-Shears-At-Almeida-Theatre-20221026"
+            }
+          ],
           "reverify": false
         },
         {
-          "url": "https://theartsdesk.com/theatre/tammy-faye-almeida-theatre-review-elton-johns-often-dazzling-new-musical",
-          "host": "theartsdesk.com",
-          "knownOutletId": "artsdesk",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
+          "url": "https://www.thetimes.co.uk/article/tammy-faye-review-not-much-to-praise-the-lord-about-in-eltons-show-vttv3fj07",
+          "host": "thetimes.co.uk",
+          "knownOutletId": "sunday-times",
+          "recoverable": true,
+          "recoverableFile": "times-uk--clive-davis.json",
+          "recoverableOutletId": "times-uk",
+          "recoverableCritic": "Clive Davis",
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "artsdesk--gary-naylor.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://theartsdesk.com/theatre/tammy-faye-almeida-theatre-review-elton-johns-often-dazzling-new-musical"
+              "file": "times-uk--clive-davis.json",
+              "flag": "emptyBody",
+              "urlInDir": "https://www.thetimes.co.uk/article/tammy-faye-review-not-much-to-praise-the-lord-about-in-eltons-show-vttv3fj07"
             }
           ],
           "exclusion": "automatedExcluded",
           "basis": [
-            "wrongProduction"
+            "noTextOrScoreSignal"
           ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date",
-          "reverify": false
-        },
-        {
-          "url": "https://www.broadwayworld.com/article/Review-TAMMY-FAYE-Almeida-Theatre-20221026",
-          "host": "broadwayworld.com",
-          "knownOutletId": "broadwayworld",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
+          "sources": [
             {
-              "file": "broadwayworld--cindy-marcolina.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.broadwayworld.com/article/Review-TAMMY-FAYE-Almeida-Theatre-20221026"
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Critics-Weigh-In-On-the-TAMMY-FAYE-From-Elton-John-and-Jake-Shears-At-Almeida-Theatre-20221026"
             }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date",
-          "reverify": false
-        },
-        {
-          "url": "https://www.standard.co.uk/culture/theatre/tammy-faye-at-almeida-theatre-review-a-religious-riot-elton-john-james-graham-b1035566.html",
-          "host": "standard.co.uk",
-          "knownOutletId": "standard",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "standard--nick-curtis.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.standard.co.uk/culture/theatre/tammy-faye-at-almeida-theatre-review-a-religious-riot-elton-john-james-graham-b1035566.html"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
           ],
           "priorRun": true,
           "priorRunSource": "aggregator-article-date",
@@ -316400,6 +316408,12 @@
             "unverifiableWebSearchRow",
             "wrongProduction"
           ],
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Critics-Weigh-In-On-the-TAMMY-FAYE-From-Elton-John-and-Jake-Shears-At-Almeida-Theatre-20221026"
+            }
+          ],
           "priorRun": true,
           "priorRunSource": "aggregator-article-date",
           "reverify": false
@@ -316424,151 +316438,15 @@
           "basis": [
             "wrongProduction"
           ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date",
-          "reverify": false
-        },
-        {
-          "url": "https://www.thestage.co.uk/long-reviews/tammy-faye-review-at-the-almeida-theatre-london-from-james-graham-elton-john-and-jake-shears",
-          "host": "thestage.co.uk",
-          "knownOutletId": "thestage",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
+          "sources": [
             {
-              "file": "thestage--sam-marlowe.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.thestage.co.uk/long-reviews/tammy-faye-review-at-the-almeida-theatre-london-from-james-graham-elton-john-and-jake-shears"
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Critics-Weigh-In-On-the-TAMMY-FAYE-From-Elton-John-and-Jake-Shears-At-Almeida-Theatre-20221026"
             }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
           ],
           "priorRun": true,
           "priorRunSource": "aggregator-article-date",
           "reverify": false
-        },
-        {
-          "url": "https://www.telegraph.co.uk/theatre/what-to-see/tammy-faye-almeida-theatre-review-elton-johns-new-musical-famous/",
-          "host": "telegraph.co.uk",
-          "knownOutletId": "sunday-telegraph",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "telegraph--dominic-cavendish.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.telegraph.co.uk/theatre/what-to-see/tammy-faye-almeida-theatre-review-elton-johns-new-musical-famous/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date",
-          "reverify": false
-        },
-        {
-          "url": "https://www.thetimes.co.uk/article/tammy-faye-review-not-much-to-praise-the-lord-about-in-eltons-show-vttv3fj07",
-          "host": "thetimes.co.uk",
-          "knownOutletId": "sunday-times",
-          "recoverable": true,
-          "recoverableFile": "times-uk--clive-davis.json",
-          "recoverableOutletId": "times-uk",
-          "recoverableCritic": "Clive Davis",
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "times-uk--clive-davis.json",
-              "flag": "emptyBody",
-              "urlInDir": "https://www.thetimes.co.uk/article/tammy-faye-review-not-much-to-praise-the-lord-about-in-eltons-show-vttv3fj07"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "noTextOrScoreSignal"
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date",
-          "reverify": false
-        },
-        {
-          "url": "https://www.timeout.com/london/theatre/tammy-faye-review",
-          "host": "timeout.com",
-          "knownOutletId": "timeout-london",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "timeout-london--andrzej-lukowski.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.timeout.com/london/theatre/tammy-faye-review"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date",
-          "reverify": false
-        },
-        {
-          "url": "https://www.whatsonstage.com/london-theatre/reviews/tammy-faye-review-elton-john-jake-shears-and-james_57692.html",
-          "host": "whatsonstage.com",
-          "knownOutletId": "whatsonstage",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "whatsonstage--sarah-crompton.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.whatsonstage.com/london-theatre/reviews/tammy-faye-review-elton-john-jake-shears-and-james_57692.html"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date",
-          "reverify": false
-        },
-        {
-          "url": "https://www.thedailybeast.com/broadway-review-elton-johns-tammy-faye-musical-is-far-from-heaven/",
-          "host": "thedailybeast.com",
-          "knownOutletId": "dailybeast",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "dailybeast--tim-teeman.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.thedailybeast.com/broadway-review-elton-johns-tammy-faye-musical-is-far-from-heaven/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "reverify": true
         },
         {
           "url": "https://www.nydailynews.com/2024/11/14/broadway-review-tammy-faye-musical-elton-john-tv-evangelist/",
@@ -316590,7 +316468,24 @@
           "basis": [
             "knownSyndicationSecondary"
           ],
-          "reverify": true
+          "confirmedNonReview": true,
+          "confirmedBasis": [
+            "syndication-primary-held"
+          ],
+          "copyOfLiveReview": true,
+          "sources": [
+            {
+              "source": "show-score",
+              "sourceUrl": "https://www.show-score.com/broadway-shows/tammy-faye-broadway"
+            },
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
+          "listingDate": "2024-11-14",
+          "listingSource": "show-score",
+          "reverify": false
         }
       ],
       "citedNoUrl": [],
@@ -316600,73 +316495,63 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 785,
+        "count": 561,
         "byReason": {
-          "non-review-host": 50,
-          "aggregator-internal-nav": 582,
-          "not-http-url": 108,
-          "production-database-listing": 26,
-          "aggregator-section-root": 14,
-          "write-path-blocked": 1,
-          "roundup-page": 4
+          "non-review-host": 30,
+          "not-http-url": 105,
+          "aggregator-internal-nav": 410,
+          "aggregator-section-root": 11,
+          "non-stage-review": 4,
+          "podcast-episode": 1
         }
       },
       "dedupedVariants": [],
       "priorRunArticles": [
         {
-          "url": "https://playbill.com/article/reviews-what-do-critics-think-of-elton-johns-new-tammy-faye-musical",
-          "publishDate": "2022-10-27"
-        },
-        {
           "url": "https://www.broadwayworld.com/article/Review-Roundup-Critics-Weigh-In-On-the-TAMMY-FAYE-From-Elton-John-and-Jake-Shears-At-Almeida-Theatre-20221026",
           "publishDate": "2022-10-26"
         }
       ],
-      "automatedExcludedListed": 2,
+      "automatedExcludedListed": 1,
       "unextractable": [],
-      "weIngestBlocked": [
+      "ingestResults": [
         {
-          "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/tammy-faye-show-review-almeida-b2211640.html",
-          "host": "independent.co.uk",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
+          "url": "https://www.interestedbystander.com/2024/11/broadway-reviews-death-becomes-her-is.html",
+          "host": "interestedbystander.com",
+          "outletId": "the-interested-bystander",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
         }
       ],
-      "ingestResults": [],
       "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
+          {
+            "outletId": "the-interested-bystander",
+            "outlet": "the-interested-bystander",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.interestedbystander.com/2024/11/broadway-reviews-death-becomes-her-is.html"
+          },
           {
             "outletId": "dailybeast",
             "outlet": "dailybeast",
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.thedailybeast.com/broadway-review-elton-johns-tammy-faye-musical-is-far-from-heaven/"
-          },
-          {
-            "outletId": "nydailynews",
-            "outlet": "nydailynews",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.nydailynews.com/2024/11/14/broadway-review-tammy-faye-musical-elton-john-tv-evangelist/"
           }
         ],
         "suppressedMissing": [],
         "candidates": [
-          {
-            "url": "https://inews.co.uk/culture/arts/tammy-faye-almeida-review-elton-john-musical-1937059",
-            "outletId": "inews.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-08-16T15:15:17.003Z"
-          },
-          {
-            "url": "https://nypost.com/2022/10/26/elton-johns-lacking-tammy-faye-musical-needs-a-prayer/",
-            "outletId": "nypost.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-16T15:15:17.003Z"
-          },
           {
             "url": "https://www.nytimes.com/2024/11/14/theater/tammy-faye-review.html",
             "outletId": "nytimes.com",
@@ -316746,6 +316631,12 @@
             "firstSeenAt": "2026-08-31T14:43:54.309Z"
           },
           {
+            "url": "https://nypost.com/2022/10/26/elton-johns-lacking-tammy-faye-musical-needs-a-prayer/",
+            "outletId": "nypost.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-16T15:15:17.003Z"
+          },
+          {
             "url": "https://www.newyorktheatreguide.com/reviews/tammy-faye-broadway-review-elton-john",
             "outletId": "newyorktheatreguide.com",
             "state": "live",
@@ -316762,6 +316653,12 @@
             "outletId": "theatermania.com",
             "state": "live",
             "firstSeenAt": "2026-08-16T15:15:17.003Z"
+          },
+          {
+            "url": "https://www.talkinbroadway.com/page/world/TammyFaye.html",
+            "outletId": "talkinbroadway.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-04T23:47:57.166Z"
           },
           {
             "url": "https://www.theaterscene.net/musicals/broadway/tammy-faye/victor-gluck/",
@@ -316800,26 +316697,32 @@
             "firstSeenAt": "2026-08-16T15:15:17.003Z"
           },
           {
+            "url": "https://www.interestedbystander.com/2024/11/broadway-reviews-death-becomes-her-is.html",
+            "outletId": "the-interested-bystander",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-11-04T23:47:57.166Z"
+          },
+          {
             "url": "https://www.thedailybeast.com/broadway-review-elton-johns-tammy-faye-musical-is-far-from-heaven/",
             "outletId": "dailybeast",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-31T14:43:54.309Z"
-          },
-          {
-            "url": "https://www.nydailynews.com/2024/11/14/broadway-review-tammy-faye-musical-elton-john-tv-evangelist/",
-            "outletId": "nydailynews",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-16T15:15:17.003Z"
           }
         ],
         "censusSchema": 4,
-        "excluded": [],
+        "excluded": [
+          {
+            "url": "https://www.nydailynews.com/2024/11/14/broadway-review-tammy-faye-musical-elton-john-tv-evangelist/",
+            "host": "nydailynews.com",
+            "reason": "confirmed-non-review"
+          }
+        ],
         "liveCount": 21,
         "candidateCount": 23
       },
-      "computedAt": "2026-10-19T18:05:32.145Z"
+      "computedAt": "2026-11-04T23:47:57.166Z"
     },
     {
       "showId": "tango-after-dark-west-end-2026",
@@ -340335,12 +340238,74 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"The Greatest Story Ever\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"The Greatest Story Ever\" Off-Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 8,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"The Greatest Story Ever\" review mama",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 8,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "The Greatest Story Ever La Mama Experimental Theatre Club review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 8,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "The Greatest Story Ever La Mama Experimental Theatre Club review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "The Greatest Story Ever La Mama Experimental Theatre Club review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 0,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 41,
+        "byReason": {
+          "non-review-host": 8,
+          "not-http-url": 31,
+          "aggregator-internal-nav": 1,
+          "write-path-blocked": 1
+        }
       },
       "dedupedVariants": [],
       "unextractable": [],
@@ -340354,7 +340319,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-11-04T19:31:35.837Z"
+      "computedAt": "2026-11-04T23:47:57.166Z"
     },
     {
       "showId": "the-gruffalo-west-end-2026",
@@ -385220,6 +385185,44 @@
       "computedAt": "2026-10-31T17:07:08.919Z"
     },
     {
+      "showId": "the-winters-tale-royal-shakespeare-regional-2025",
+      "title": "The Winter's Tale",
+      "openingDate": "2025-07-23",
+      "status": "closed",
+      "category": "regional",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "unextractable": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 4,
+        "excluded": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-11-04T23:47:57.166Z"
+    },
+    {
       "showId": "the-witness-room-off-broadway-2024",
       "title": "The Witness Room",
       "openingDate": "2024-09-21",
@@ -389973,36 +389976,141 @@
       "category": "off-broadway",
       "previewsStartDate": "2026-10-30",
       "aggregatorArticles": [],
-      "aggregatorListedUrls": [],
+      "aggregatorListedUrls": [
+        "https://jerseykids.net/2026/10/25/one-times-square-with-kids/"
+      ],
       "dirFiles": 0,
       "dirClean": 0,
       "inReviewsJson": 0,
-      "missing": [],
+      "missing": [
+        {
+          "url": "https://jerseykids.net/2026/10/25/one-times-square-with-kids/",
+          "host": "jerseykids.net",
+          "knownOutletId": null,
+          "serpCensus": true,
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ]
+        }
+      ],
       "dirOnly": [],
       "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Times Square Skywalk\" Off-Broadway review",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Times Square Skywalk\" Off-Broadway review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 8,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Times Square Skywalk\" review times",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 9,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Times Square Skywalk One Times Square review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 8,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Times Square Skywalk One Times Square review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Times Square Skywalk One Times Square review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 1,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 43,
+        "byReason": {
+          "non-review-host": 10,
+          "not-http-url": 28,
+          "no-review-evidence": 4,
+          "aggregator-internal-nav": 1
+        }
       },
       "dedupedVariants": [],
+      "automatedExcludedListed": 0,
       "unextractable": [],
+      "weIngestBlocked": [
+        {
+          "url": "https://jerseykids.net/2026/10/25/one-times-square-with-kids/",
+          "host": "jerseykids.net",
+          "priorRun": false,
+          "reason": "unregistered-host",
+          "censusGateOn": true
+        }
+      ],
+      "ingestResults": [],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "no-census-yet",
-        "missing": [],
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "jerseykids.net",
+            "outlet": "jerseykids.net",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://jerseykids.net/2026/10/25/one-times-square-with-kids/"
+          }
+        ],
         "suppressedMissing": [],
-        "candidates": [],
+        "candidates": [
+          {
+            "url": "https://jerseykids.net/2026/10/25/one-times-square-with-kids/",
+            "outletId": "jerseykids.net",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-11-04T23:47:57.166Z"
+          }
+        ],
         "censusSchema": 4,
         "excluded": [],
         "liveCount": 0,
-        "candidateCount": 0
+        "candidateCount": 1
       },
-      "computedAt": "2026-11-04T19:31:35.837Z"
+      "computedAt": "2026-11-04T23:47:57.166Z"
     },
     {
       "showId": "tina-2019",
@@ -394958,12 +395066,74 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Traitorz: The Unauthorized Musical Parody\" Off-Broadway review",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Traitorz: The Unauthorized Musical Parody\" Off-Broadway review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 1,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Traitorz: The Unauthorized Musical Parody\" review luke",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 1,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Traitorz: The Unauthorized Musical Parody St. Luke's Theatre review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 9,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Traitorz: The Unauthorized Musical Parody St. Luke's Theatre review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Traitorz: The Unauthorized Musical Parody St. Luke's Theatre review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 0,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 30,
+        "byReason": {
+          "non-review-host": 4,
+          "not-http-url": 23,
+          "venue-production-page": 1,
+          "census-junk-host": 2
+        }
       },
       "dedupedVariants": [],
       "unextractable": [],
@@ -394977,7 +395147,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-11-04T19:31:35.837Z"
+      "computedAt": "2026-11-04T23:47:57.166Z"
     },
     {
       "showId": "transcendency-rising-short-plays-about-defying-limitations-off-broadway-2026",
@@ -420459,25 +420629,26 @@
     }
   ],
   "staleness": {
-    "at": "2026-11-04T22:31:22.171Z",
+    "at": "2026-11-04T23:47:57.165Z",
     "reserveEvery": 4,
     "reservedAttempted": [
-      "seussical-theatre-young-audiences-off-broadway-2026"
+      "tammy-faye-2024",
+      "a-wonderful-world-the-louis-armstrong-musical-2024"
     ],
     "catalogueReserveEvery": 8,
     "catalogueAttempted": [
-      "true-west-regional-2025"
+      "the-winters-tale-royal-shakespeare-regional-2025"
     ],
-    "neverAuditedDueAtStart": 662,
+    "neverAuditedDueAtStart": 661,
     "oldestDueRowAtStart": {
       "showId": "tammy-faye-2024",
       "computedAt": "2026-10-19T18:05:32.145Z",
-      "ageHours": 388.1
+      "ageHours": 389.4
     },
     "oldestDueRowAfterRun": {
-      "showId": "tammy-faye-2024",
+      "showId": "romeo-juliet-2024",
       "computedAt": "2026-10-19T18:05:32.145Z",
-      "ageHours": 388.4
+      "ageHours": 389.7
     }
   }
 }
