@@ -70,7 +70,7 @@ async function gatherFeedItems(lookbackDays) {
   const cutoff = new Date(Date.now() - lookbackDays * 24 * 60 * 60 * 1000);
   const jobs = [];
   for (const [outletId, sc] of Object.entries(poller.OUTLET_STRATEGY_CONFIG)) {
-    if (poller.SKIP_OUTLETS.has(outletId)) continue;
+    if (poller.SKIP_OUTLETS.has(outletId) || sc.laneRules) continue; // lane feeds need laneFeedAccepts, which this plain matcher lacks (BRO-6965)
     // proxyRetry off (rss + sitemap): this step is plain HTTP by design (no scraper secrets, 5-min budget).
     if (sc.strategy === 'rss') jobs.push([outletId, () => poller.fetchViaRss(outletId, sc, cutoff, { proxyRetry: false })]);
     else if (sc.strategy === 'sitemap') jobs.push([outletId, () => poller.fetchViaSitemap(outletId, sc, cutoff, { proxyRetry: false })]);
