@@ -48,7 +48,7 @@ export default function MarketNav({ stats }: { stats: MarketStats }) {
   const isRegional = marketId === 'regional';
   // National tours (BRO-4211): own pill label; dropdown links to the tours browse page.
   // Flag-checked: with the flag off a /show/*-tour-YYYY URL is a 404 and must not read as "Tours".
-  // Non-hub tour city pages (/tours/boston-ma, ...) read as Tours too, not Broadway; hub pages name their city instead.
+  // Non-hub tour city pages (any other /tours/<city>) read as Tours too, not Broadway; hub pages name their city instead.
   const isTourCityPath = pathname.startsWith('/tours/') && !activeHub;
   const isTour = (marketId === 'tour' || isTourCityPath) && featureFlags.tour;
   // Don't apply opera domain branding when user has explicitly navigated to
