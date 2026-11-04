@@ -2264,6 +2264,17 @@ function wrongShowExplicitlyCleared(data) {
   return !!data && (data.wrongShowManualClear === true || data.wrongShowOverride === true);
 }
 
+/**
+ * A not_a_review rejection a person has since overruled (nonReviewManualClear), by the scorer's own rule
+ * (human-cleared-rejection.js), so the rebuild and the scorer agree. Only an explicit not_a_review reason: a bare
+ * rejectedAt does not say which verdict it stamped, and a non-review clear says nothing about garbage text or the
+ * wrong production.
+ */
+function nonReviewRejectionHumanCleared(data) {
+  if (!data || data.rejectionReason !== 'not_a_review') return false;
+  return require('./human-cleared-rejection').humanClearOverridingRejection(data, 'not_a_review') === 'non-review';
+}
+
 function rejectedAtHumanCleared(data) {
   if (!data) return false;
   if (
@@ -5211,6 +5222,10 @@ function isRejectedByReasonExclusion(data, opts) {
     // honours it for the rejectedAt stamp. Without this the clear only worked
     // if a second plan also nulled rejectionReason (BRO-4891 theupcoming).
     if (data.rejectionReason === 'wrong_production' && rejectedAtHumanCleared(data)) return false;
+    // A person said the file IS a review (nonReviewManualClear): an ensemble not_a_review stamp on it predates that
+    // clear, since the scorer no longer re-stamps cleared files (human-cleared-rejection.js, BRO-4838). Without this the
+    // clear only worked if a second plan also nulled rejectionReason (BRO-6910: Theatrely on Waiting for Lefty).
+    if (nonReviewRejectionHumanCleared(data)) return false;
     const isJsonLdStarNotAReview = data.rejectionReason === 'not_a_review' &&
       (data.originalScoreSource === 'json-ld' || data.aggregatorStarsSource === 'json-ld') &&
       require('./score-extractors').KNOWN_STAR_OUTLETS.has(data.outletId);
@@ -5272,7 +5287,7 @@ function isRejectedAtExclusion(data) {
   if (!data) return false;
   if (data.rejectedAt && typeof data.rejectedAt === 'string') {
     const reFetched = isTimestampAfter(data.textFetchedAt, data.rejectedAt);
-    const wpCleared = rejectedAtHumanCleared(data) || isFreshWpAutoCleared(data);
+    const wpCleared = rejectedAtHumanCleared(data) || isFreshWpAutoCleared(data) || nonReviewRejectionHumanCleared(data);
     // Exception 3: matches the rejectionReason exception — not_a_review + json-ld star
     // from a known star outlet clears the rejectedAt gate as well.
     const isJsonLdStarNotAReview = data.rejectionReason === 'not_a_review' &&
@@ -6837,6 +6852,7 @@ module.exports = {
   evaluateDirectorGuard,
   setMultiProdGuardShows,
   rejectedAtHumanCleared,
+  nonReviewRejectionHumanCleared,
   isTimestampAfter,
   isLikelyStaleSuspectedMisattribution,
   getCriticRegistry,
