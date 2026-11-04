@@ -219,7 +219,14 @@
     "wicked-west-end-2021/west-end-wilma--unknown.json",
     "wicked-2003/theatrely--kobi-kassal.json",
     "mamma-mia-west-end-2021/standard--jessie-thompson.json",
-    "the-lion-king-1997/timeout--adam-feldman.json"
+    "the-lion-king-1997/timeout--adam-feldman.json",
+    "parcel-from-america-off-broadway-2026/nitelifeexchange-com--nitelife-exchange.json",
+    "rope-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+    "rope-off-broadway-2026/nytg--kyle-turner.json",
+    "rope-off-broadway-2026/exeunt-magazine--lane-williamson.json",
+    "rope-off-broadway-2026/nysr--michael-sommers.json",
+    "rope-off-broadway-2026/theater-pizzazz--ron-fassler.json",
+    "well-see-off-broadway-2026/culturesauce--thom-geier.json"
   ],
   "failed": [
     "tosca-english-national-opera-west-end-2026/theatre-weekly--unknown.json",
@@ -365,7 +372,17 @@
     "wicked-2003/broadwayworld--jay-irwin.json",
     "wicked-2003/rough-draft-atlanta--sammie-purcell.json",
     "wicked-2003/trib-live--alexis-papalia.json",
-    "the-lion-king-1997/calgary-herald--louis-b-hobson.json"
+    "the-lion-king-1997/calgary-herald--louis-b-hobson.json",
+    "medea-off-broadway-2026/bachtrack--susan-stempleski.json",
+    "a-few-good-men-2026/variety--anna-tingley.json",
+    "the-heart-off-broadway-2026/variety--cynthia-littleton.json",
+    "a-few-good-men-2026/goldderby--ethan-alter.json",
+    "i-became-we-off-broadway-2026/timeout--unknown.json",
+    "hospital-hour-off-broadway-2026/broadway-baby--unknown.json",
+    "hospital-hour-off-broadway-2026/one-minute-critic--unknown.json",
+    "aftermath-art-new-york-off-broadway-2026/talkinbroadway--unknown.json",
+    "love-me-off-broadway-2026/consequence--unknown.json",
+    "love-me-off-broadway-2026/daily-mail--codie-bullen.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -477,7 +494,14 @@
       "wicked-west-end-2021/firstnightmagazine--unknown.json",
       "wicked-west-end-2021/stagedtheatre--karen-jemison.json",
       "wicked-west-end-2021/west-end-wilma--unknown.json",
-      "the-lion-king-1997/timeout--adam-feldman.json"
+      "the-lion-king-1997/timeout--adam-feldman.json",
+      "parcel-from-america-off-broadway-2026/nitelifeexchange-com--nitelife-exchange.json",
+      "rope-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+      "rope-off-broadway-2026/nytg--kyle-turner.json",
+      "rope-off-broadway-2026/exeunt-magazine--lane-williamson.json",
+      "rope-off-broadway-2026/nysr--michael-sommers.json",
+      "rope-off-broadway-2026/theater-pizzazz--ron-fassler.json",
+      "well-see-off-broadway-2026/culturesauce--thom-geier.json"
     ],
     "amp": [],
     "browserbase": [
@@ -585,7 +609,7 @@
     ]
   },
   "startTime": "2026-11-04T00:11:34.063Z",
-  "lastProcessed": "the-lion-king-1997/calgary-herald--louis-b-hobson.json",
+  "lastProcessed": "love-me-off-broadway-2026/daily-mail--codie-bullen.json",
   "log": [
     {
       "t": "2026-11-04T00:23:51.736Z",
@@ -718,6 +742,23 @@
       "event": "bb-session",
       "session": "88d179e7",
       "url": "https://bachtrack.com/review-nozze-figaro-pountney-conta-bucharest-national-oper"
+    },
+    {
+      "t": "2026-11-04T04:28:59.191Z",
+      "event": "bb-session",
+      "session": "b089858f",
+      "url": "https://bachtrack.com/review-medea-yoncheva-spyres-met-opera-new-york-october-20"
+    },
+    {
+      "t": "2026-11-04T04:33:59.749Z",
+      "event": "bb-session",
+      "session": "59e15a8c",
+      "url": "https://hermes.talkinbroadway.com/allthatchat_new/d.php?id=2655044"
+    },
+    {
+      "t": "2026-11-04T04:34:00.461Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ],
   "recoveredAfterFailure": [
