@@ -180,7 +180,7 @@ export function useWatchlist(userId: string | null) {
       }
       return result;
     } catch (e) {
-      const msg = e instanceof Error ? e.message : 'Failed to load watchlist';
+      const msg = e instanceof Error ? e.message : 'Failed to load your To See list';
       setError(msg);
       return [];
     } finally {

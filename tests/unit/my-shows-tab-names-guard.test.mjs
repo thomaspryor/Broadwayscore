@@ -29,6 +29,7 @@ const RETIRED = [
   /My Watched Shows/,
   /Tap Watchlist on/,
   /Keep a watchlist/i,
+  /Failed to load watchlist/i,
   /^\s*Watchlist\s*$/,
 ];
 
