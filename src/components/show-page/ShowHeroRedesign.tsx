@@ -69,6 +69,8 @@ import { saveLocalRating } from '@/lib/local-ratings';
 import { useLocalRatings } from '@/hooks/useLocalRatings';
 import { LOCAL_RATINGS_MIGRATED_EVENT } from '@/components/user/LocalRatingsMigrator';
 import { supabaseRestInsert, supabaseRestUpdate } from '@/lib/supabase-rest';
+import { uploadReviewPhoto, emitReviewPhotosChanged } from '@/lib/review-photos';
+import { newPhotoId } from '@/lib/review-photo-model';
 import { featureFlags } from '@/config/feature-flags';
 import { getOptimizedImageUrl } from '@/lib/images';
 import { getCurrencySymbol, getRegionalLabel } from '@/lib/market-utils';
@@ -424,7 +426,7 @@ function Inner({
       if (!updated) throw new Error('This rating no longer exists. It may have been deleted elsewhere.');
       showToast?.(<>Updated in <a href="/my-shows" className="underline hover:text-white/90">My Ratings &amp; Reviews</a></>, 'success');
     } else {
-      const { error } = await supabaseRestInsert('reviews', {
+      const { data: inserted, error } = await supabaseRestInsert<{ id?: string }>('reviews', {
         user_id: user.id,
         show_id: show.id,
         rating: data.rating,
@@ -434,6 +436,19 @@ function Inner({
       });
       if (error) throw new Error(error.message);
       showToast?.(<>Added to <a href="/my-shows" className="underline hover:text-white/90">My Ratings &amp; Reviews</a></>, 'success');
+      // Photos staged on a brand-new rating (BRO-6963, app parity): the review
+      // exists now, so upload them. The rating is already saved, so a failed
+      // photo is a toast, never a failed save.
+      if (data.photos?.length) {
+        const newReviewId = inserted?.id;
+        let failed = 0;
+        for (const file of data.photos) {
+          if (!newReviewId) { failed++; continue; }
+          try { await uploadReviewPhoto({ userId: user.id, reviewId: newReviewId, photoId: newPhotoId(), file }); } catch { failed++; }
+        }
+        if (newReviewId) emitReviewPhotosChanged(newReviewId);
+        if (failed) showToast?.(`${failed === 1 ? 'A photo' : `${failed} photos`} didn’t upload. Add ${failed === 1 ? 'it' : 'them'} from your entry in My Ratings & Reviews.`, 'error');
+      }
       // Watchlist = shows you WANT to see. Rating a show means you've seen it,
       // so drop any watchlist entry (owner rule 2026-07-12 — replaces the old
       // "watchlist and rating are independent" decision). Non-fatal: the rating
@@ -907,6 +922,7 @@ function Inner({
           initialSeat={editingReview ? editingReview.seat ?? null : pendingDraft?.seat ?? null}
           suggestedShowtime={editingReview ? null : planShowtime}
           mode={editingReview || pendingDraft?.reviewId ? 'edit' : hasRating ? 'append' : 'new'}
+          stagePhotos={!!user}
           onSave={handleSaveReview}
           onSaved={handleRateSaved}
           onCancel={handleCancelRate}

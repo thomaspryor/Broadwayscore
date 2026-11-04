@@ -26,6 +26,8 @@ export interface RatingEditorSaveData {
    * have, or had, a value: spread it into the insert/update payload.
    */
   showtimeSeat?: Partial<ShowtimeSeat>;
+  /** Photos staged on a brand-new rating (only when `stagePhotos`); the caller uploads them once the review has an id. */
+  photos?: File[];
 }
 
 interface RatingEditorProps {
@@ -64,6 +66,8 @@ interface RatingEditorProps {
   onDelete?: () => void;
   /** Force a presentation; default 'auto' = bottom-sheet on mobile, inline card on desktop. */
   presentation?: 'auto' | 'inline' | 'modal';
+  /** Offer a Photos field on a brand-new rating; the files come back in `onSave` data (BRO-6963). */
+  stagePhotos?: boolean;
   /** Where the editor was opened from + which show; drives rating_* analytics events. */
   analytics?: { source: string; showId: string };
 }
@@ -75,6 +79,7 @@ const ShowtimeSegmented = dynamic(() => import('./ShowtimeSegmented'), { ssr: fa
 
 // Diary photos for an existing entry (BRO-6170). Lazy: the field (upload
 // pipeline, photo list) only loads when an editor opens on a saved review.
+const StagedPhotosField = dynamic(() => import('./StagedPhotosField'), { ssr: false });
 const ReviewPhotosField = dynamic(() => import('@/components/my-shows/feed/ReviewPhotosField'), { ssr: false });
 
 const HEADER_COPY: Record<NonNullable<RatingEditorProps['mode']>, string> = {
@@ -102,6 +107,7 @@ export default function RatingEditor({
   onCancel,
   onDelete,
   presentation = 'auto',
+  stagePhotos = false,
   analytics,
 }: RatingEditorProps) {
   const today = localToday();
@@ -112,6 +118,7 @@ export default function RatingEditor({
   // (La Cage aux Folles report, 2026-07-13).
   const maxDate = today;
 
+  const [stagedFiles, setStagedFiles] = useState<File[]>([]);
   const [rating, setRating] = useState<number>(() => sanitizeRating(initialRating));
   const [reviewText, setReviewText] = useState<string>(initialReviewText || '');
   const [dateSeen, setDateSeen] = useState<string>(() => {
@@ -214,6 +221,7 @@ export default function RatingEditor({
         timeSlot: current.time_slot,
         curtainTime: current.curtain_time,
         seat: current.seat,
+        ...(stagePhotos && !reviewId && stagedFiles.length ? { photos: stagedFiles } : {}),
         showtimeSeat: buildShowtimeSeatPatch(
           reviewId ? { time_slot: initialTimeSlot, curtain_time: initialCurtainTime, seat: initialSeat } : null,
           current,
@@ -240,6 +248,7 @@ export default function RatingEditor({
           has_date_seen: !!dateSeen,
           has_showtime: !!(dateSeen && showtime.time_slot),
           has_seat: !!normalizeSeat(seat),
+          photo_count: stagePhotos && !reviewId ? stagedFiles.length : 0,
           is_edit: !!reviewId,
         });
       }
@@ -258,7 +267,7 @@ export default function RatingEditor({
       setError(message);
       setSaving(false);
     }
-  }, [saving, isOverLimit, rating, reviewText, dateSeen, reviewId, onSave, onSaved, analytics, mode, showtime, seat, initialTimeSlot, initialCurtainTime, initialSeat]);
+  }, [saving, isOverLimit, rating, reviewText, dateSeen, reviewId, stagePhotos, stagedFiles, onSave, onSaved, analytics, mode, showtime, seat, initialTimeSlot, initialCurtainTime, initialSeat]);
 
   // Time: which performance (BRO-6783). Only meaningful once a date is set.
   const timeRow = showId && dateSeen && (
@@ -403,9 +412,10 @@ export default function RatingEditor({
         </div>
 
       {/* Photos attach to a saved review (user_review_photos.review_id is a
-          FK), so a brand-new rating gets them after its first save, from
-          this editor or the Feed. */}
+          FK). An existing entry uploads straight away; a brand-new rating
+          (stagePhotos) holds them here and the caller uploads after its insert. */}
       {reviewId && <ReviewPhotosField reviewId={reviewId} showTitle={showTitle} />}
+      {!reviewId && stagePhotos && <StagedPhotosField files={stagedFiles} onChange={setStagedFiles} showTitle={showTitle} />}
 
       {/* Inline error — save failed, nothing was lost */}
       {error && (
