@@ -42,6 +42,7 @@
 const fs = require('fs');
 const path = require('path');
 const { execFileSync } = require('child_process');
+const { isDeepStrictEqual } = require('util');
 const { SHOW_ID_KEYED_FILES } = require('./show-id-keyed-files');
 
 const REPO_ROOT = path.join(__dirname, '..', '..');
@@ -285,6 +286,13 @@ function applyShape(doc, entry, ctx) {
           if (entry.onCollision === 'drop-orphan-target' && !ctx.resume) {
             delete container[renamed];
             edits.push({ op: 'drop-orphan', at: joinPath(base, renamed), from: renamed, to: null });
+          } else if (ctx.resume && isDeepStrictEqual(container[key], container[renamed])) {
+            // Resume after a half-applied rename (BRO-4315 batch 3): both keys
+            // exist and hold the same value, so the old key is a leftover copy.
+            // Dropping it loses nothing; differing values still refuse below.
+            delete container[key];
+            edits.push({ op: 'drop-duplicate-source', at: joinPath(base, key), from: key, to: renamed });
+            continue;
           } else {
             const err = new Error(`key ${JSON.stringify(renamed)} already exists at ${base || '<root>'}`);
             err.code = 'KEY_COLLISION';

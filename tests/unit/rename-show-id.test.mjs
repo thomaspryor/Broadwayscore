@@ -517,3 +517,16 @@ test('buildSqlMigration emits one UPDATE per confirmed show_id table and documen
   assert.equal(sql.jsonbStatements.length, 2);
   assert.ok(sql.jsonbStatements.every((s) => sql.text.includes(`-- ${s}`)), 'jsonb rewrites are commented, never live');
 });
+
+test('resume: an identical leftover old key is dropped, a differing one still refuses (BRO-4315 batch 3)', () => {
+  const ctx = { oldId: 'x-west-end-2026', newId: 'x-off-west-end-2026', slugChanged: false, resume: true };
+  const plain = { ...SHOW_ID_KEYED_FILES.find((e) => e.path === 'audience-history'), onCollision: undefined };
+  const same = { shows: { 'x-west-end-2026': { wins: [1] }, 'x-off-west-end-2026': { wins: [1] }, other: {} } };
+  const edits = applyShape(same, plain, ctx);
+  assert.deepEqual(Object.keys(same.shows), ['x-off-west-end-2026', 'other']);
+  assert.deepEqual(edits.map((e) => e.op), ['drop-duplicate-source']);
+  const differ = { shows: { 'x-west-end-2026': { wins: [1] }, 'x-off-west-end-2026': { wins: [2] } } };
+  assert.throws(() => applyShape(differ, plain, ctx), (e) => e.code === 'KEY_COLLISION');
+  const fresh = { shows: { 'x-west-end-2026': { wins: [1] }, 'x-off-west-end-2026': { wins: [1] } } };
+  assert.throws(() => applyShape(fresh, plain, { ...ctx, resume: false }), (e) => e.code === 'KEY_COLLISION');
+});
