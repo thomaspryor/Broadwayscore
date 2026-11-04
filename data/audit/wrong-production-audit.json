@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-04T16:14:26.834Z",
+  "timestamp": "2026-11-04T17:08:46.730Z",
   "stats": {
-    "totalReviews": 80035,
-    "alreadyFlagged": 22016,
-    "dateGuardCatches": 217,
+    "totalReviews": 80091,
+    "alreadyFlagged": 22013,
+    "dateGuardCatches": 218,
     "directorMismatch": 3499,
-    "tvFilmSignals": 2274,
+    "tvFilmSignals": 2275,
     "londonSignals": 3606,
     "offBroadwaySignals": 735,
     "yearMismatch": 361,
-    "noPublishDate": 8465
+    "noPublishDate": 8513
   },
   "findings": [
     {
@@ -70328,7 +70328,7 @@
       "showId": "the-new-one-2018",
       "file": "newsday--barbara-schuler.json",
       "score": 80,
-      "publishDate": null,
+      "publishDate": "2018-11-11T19:59:18-05:00",
       "url": "https://www.newsday.com/entertainment/theater/the-new-one-mike-birbiglia-1.23170467",
       "findings": [
         {
@@ -70344,6 +70344,20 @@
       "score": 80,
       "publishDate": "2018-11-11",
       "url": "https://www.nytimes.com/2018/11/11/theater/the-new-one-review-mike-birbiglia.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "the-new-one-2018",
+      "file": "vulture--david-fox.json",
+      "score": 78,
+      "publishDate": "2018-11-11T19:59:18-05:00",
+      "url": "https://www.vulture.com/2018/11/is-mike-birbiglias-the-new-one-a-broadway-show-or-standup.html",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -136347,6 +136361,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "tristan-and-yseult-off-broadway-2026",
+      "file": "times-uk--dominic-maxwell.json",
+      "score": 100,
+      "publishDate": "2026-09-23",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/emma-rices-tristan-and-yseult-review-t8jmccphs",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 39d before show (2026-09-23 vs 2026-11-01)"
         }
       ]
     },
