@@ -6,6 +6,7 @@ import {
   buildDailyReport,
   decideDayViolation,
   decideDayMissing,
+  recoveredMissingKeys,
 } from './scheduled-email-count-rules.js';
 
 test('classifySubject matches each known scheduled sender', () => {
@@ -268,4 +269,38 @@ test('decideDayViolation: an event-driven sender flags only a repeated identical
   const repeated = decideDayViolation(two(['Reddit post ready: Show A (80/100) for r/Broadway', 'Reddit post ready: Show A (80/100) for r/Broadway']), '2026-10-08');
   assert.equal(repeated.violation, true);
   assert.deepEqual(repeated.duplicateKeys, ['reddit-post-ready']);
+});
+
+// BRO-6157: dated missing-sender rows were never resolved (deadlock with the
+// router's Done-only absence rule), so their cards' VERIFY could never pass.
+const dayWith = (...senders) => ({ senders: new Map(senders.map((k) => [k, { label: k, subjects: ['x'] }])), other: [] });
+
+test('recoveredMissingKeys resolves an open dated row once that sender delivered on a later day', () => {
+  const conditions = {
+    'scheduled-email-missing:opening-digest:2026-10-23': { status: 'open', lastSeen: '2026-10-24T17:47:33Z' },
+  };
+  const days = new Map([['2026-11-03', dayWith('morning-digest', 'opening-digest')], ['2026-11-04', dayWith('morning-digest')]]);
+  assert.deepEqual(recoveredMissingKeys(conditions, days, { judgedDay: '2026-11-03' }), [
+    { key: 'scheduled-email-missing:opening-digest:2026-10-23', sender: 'opening-digest', missedDay: '2026-10-23', recoveredOn: '2026-11-03' },
+  ]);
+});
+
+test('recoveredMissingKeys keeps a row when only a DIFFERENT sender delivered, or only on/before the missed day', () => {
+  const conditions = {
+    'scheduled-email-missing:opening-digest:2026-11-02': { status: 'open' },
+    'scheduled-email-missing:morning-digest:2026-11-03': { status: 'open' },
+  };
+  const days = new Map([['2026-11-02', dayWith('opening-digest')], ['2026-11-03', dayWith('morning-digest')]]);
+  assert.deepEqual(recoveredMissingKeys(conditions, days, { judgedDay: '2026-11-04' }), []);
+});
+
+test('recoveredMissingKeys never clears the day this run judges, resolved rows, or other key families', () => {
+  const conditions = {
+    'scheduled-email-missing:opening-digest:2026-11-03': { status: 'open' },
+    'scheduled-email-missing:morning-digest:2026-11-01': { status: 'resolved' },
+    'scheduled-email-count:dup-opening-digest': { status: 'open' },
+  };
+  const days = new Map([['2026-11-04', dayWith('morning-digest', 'opening-digest')]]);
+  assert.deepEqual(recoveredMissingKeys(conditions, days, { judgedDay: '2026-11-03' }), []);
+  assert.deepEqual(recoveredMissingKeys(conditions, null), []);
 });
