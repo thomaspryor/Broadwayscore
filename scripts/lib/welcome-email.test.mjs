@@ -254,11 +254,3 @@ test('footer tells new account holders they also get the opening night emails (B
   assert.match(text, /also gets our opening night emails/);
   assert.match(html, /also gets our opening night emails/);
 });
-
-test('critics who opted out of the list are not told they get opening night emails', () => {
-  const on = w.buildWelcomeEmail({ displayName: 'Ada', email: EMAIL });
-  const off = w.buildWelcomeEmail({ displayName: 'Ada', email: EMAIL, onMailingList: false });
-  assert.match(on.text, /opening night emails/);
-  assert.doesNotMatch(off.text, /opening night emails/);
-  assert.doesNotMatch(off.html, /opening night emails/);
-});

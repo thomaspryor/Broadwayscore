@@ -6,7 +6,7 @@ import { getSupabaseClient, hasStoredSupabaseSession, isSupabaseConfigured, onSu
 import { isAuthCallbackPath } from '@/lib/analytics/redact-url';
 import { saveReturnUrl, clearReturnUrl, clearPendingAction, safeReturnPath, takeSignInParam } from '@/lib/deferred-auth';
 import { oauthRedirectUrl } from '@/lib/auth-redirect';
-import { autoSubscribeOnSignIn, markCriticSignInStarted, clearCriticSignInStarted, criticOptOutToRecord, markCriticOptOutRecorded, type AutoSubscribeUser } from '@/lib/auto-subscribe';
+import { autoSubscribeOnSignIn } from '@/lib/auto-subscribe';
 import type { UserProfile } from '@/types/user';
 import SignInModal from '@/components/auth/SignInModal';
 import { signInWithAppleSDK } from '@/lib/apple-auth';
@@ -110,21 +110,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     let unsubscribe: (() => void) | undefined;
     let cancelled = false;
 
-    // Critic sign-ins skip the mailing list (owner 2026-11-04); rules live in
-    // src/lib/auto-subscribe.ts. Order matters: record the opt-out (which
-    // moves the pending attempt onto this user id) before deciding to post.
-    const syncAutoSubscribe = (client: SupabaseClient, u: AutoSubscribeUser) => {
-      if (criticOptOutToRecord(u)) {
-        // Deferred: never await Supabase inside onAuthStateChange (deadlock note below).
-        setTimeout(() => {
-          client.auth.updateUser({ data: { no_autosub: true } })
-            .then(({ error }) => { if (!error) markCriticOptOutRecorded(); })
-            .catch(() => { /* kept on this device; retried on the next load */ });
-        }, 0);
-      }
-      if (u.email) autoSubscribeOnSignIn(u.email, u);
-    };
-
     const attach = (client: SupabaseClient) => {
       if (cancelled || unsubscribe) return;
       // Get existing session
@@ -136,7 +121,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           // Restored sessions too (not just fresh SIGNED_IN): users who signed
           // up before auto-subscribe shipped must still land on the list.
           // Fire-and-forget; internally idempotent.
-          syncAutoSubscribe(client, session.user);
+          if (session.user.email) autoSubscribeOnSignIn(session.user.email);
         }
         setLoading(false);
       });
@@ -156,7 +141,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           loadProfile(session.user.id);
           // Signing in = joining the main mailing list (owner decision 2026-07-13).
           // Also fire-and-forget — never await inside this callback (deadlock note above).
-          syncAutoSubscribe(client, session.user);
+          if (session.user.email) autoSubscribeOnSignIn(session.user.email);
           setModalOpen(false);
           setSignInLoading(false);
 
@@ -398,7 +383,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     if (!client) return;
 
     trackUgc('sign_out');
-    clearCriticSignInStarted();
     // This device only. The default ('global') revokes every session the
     // account has, so signing out of the iOS app or another browser silently
     // signed the owner's phone out too (BRO-4822).
@@ -447,7 +431,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const src = source || context;
     setSignInError(null);
     setModalContext(context);
-    if (context === 'critic') markCriticSignInStarted(); else clearCriticSignInStarted();
     setModalSource(src);
     setModalReturnTo(options?.returnTo ?? null);
     setModalOpen(true);
@@ -482,7 +465,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   );
 
   const handleModalClose = useCallback(() => {
-    clearCriticSignInStarted();
     setModalOpen(false);
     setModalReturnTo(null);
     trackUgc('sign_in_prompt_dismissed', { context: modalContext, source: modalSource });

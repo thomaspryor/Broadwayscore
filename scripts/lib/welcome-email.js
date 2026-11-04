@@ -74,11 +74,8 @@ function headingFor(displayName) {
   return first ? `Welcome, ${first}.` : 'Welcome to Broadway Scorecard.';
 }
 
-// onMailingList=false for critics who signed up from "Claim this page": that
-// popup promises no mailing list (user_metadata.no_autosub, owner 2026-11-04).
-function footerText(email, onMailingList = true) {
-  const list = onMailingList ? ' Your account also gets our opening night emails, and each one has its own unsubscribe link.' : '';
-  return `You're getting this one-time email because you created a Broadway Scorecard account with ${email}.${list} To delete your account, open the menu on broadwayscorecard.com and choose Delete account.`;
+function footerText(email) {
+  return `You're getting this one-time email because you created a Broadway Scorecard account with ${email}. Your account also gets our opening night emails, and each one has its own unsubscribe link. To delete your account, open the menu on broadwayscorecard.com and choose Delete account.`;
 }
 
 function buildStepRowsHtml() {
@@ -98,7 +95,7 @@ function buildStepRowsHtml() {
   }).join('\n      ');
 }
 
-function buildWelcomeEmailHtml({ displayName, email, onMailingList = true }) {
+function buildWelcomeEmailHtml({ displayName, email }) {
   const market = 'broadway';
   return `<!DOCTYPE html>
 <html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><meta name="color-scheme" content="light dark"><meta name="supported-color-schemes" content="light dark"><title>${escapeHtml(SUBJECT)}</title></head>
@@ -135,14 +132,14 @@ function buildWelcomeEmailHtml({ displayName, email, onMailingList = true }) {
   </td></tr>
   ${buildSocialRowHtml(market)}
   <tr><td style="padding-top:20px;border-top:1px solid rgba(255,255,255,0.06);">
-    <p style="margin:0;font-size:12px;color:rgba(255,255,255,0.55);line-height:1.6;font-family:${FONT};">${escapeHtml(footerText(email, onMailingList))}</p>
+    <p style="margin:0;font-size:12px;color:rgba(255,255,255,0.55);line-height:1.6;font-family:${FONT};">${escapeHtml(footerText(email))}</p>
   </td></tr>
 </table>
 </td></tr></table>
 </body></html>`;
 }
 
-function buildWelcomeEmailText({ displayName, email, onMailingList = true }) {
+function buildWelcomeEmailText({ displayName, email }) {
   const steps = STEPS.map((s, i) => `${i + 1}. ${s.title}\n   ${s.body}`).join('\n\n');
   return [
     headingFor(displayName),
@@ -161,16 +158,16 @@ function buildWelcomeEmailText({ displayName, email, onMailingList = true }) {
     'Broadway Scorecard',
     '',
     '--',
-    footerText(email, onMailingList),
+    footerText(email),
     '',
   ].join('\n');
 }
 
-function buildWelcomeEmail({ displayName, email, onMailingList = true }) {
+function buildWelcomeEmail({ displayName, email }) {
   return {
     subject: SUBJECT,
-    html: buildWelcomeEmailHtml({ displayName, email, onMailingList }),
-    text: buildWelcomeEmailText({ displayName, email, onMailingList }),
+    html: buildWelcomeEmailHtml({ displayName, email }),
+    text: buildWelcomeEmailText({ displayName, email }),
   };
 }
 

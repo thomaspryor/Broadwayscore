@@ -66,56 +66,15 @@ test('an older marker still counts as sent (no second post after 10+ min)', asyn
   assert.equal(store.get(m.INFLIGHT_KEY), undefined);
 });
 
-// Owner 2026-11-04: critics who sign in from "Claim this page" are told they
-// won't be added to a mailing list. The skip is scoped to that one attempt.
-test('critic sign-in in progress never joins the mailing list', async () => {
+// Owner 2026-11-04 (reversed the same day): critics who sign in from "Claim
+// this page" join the list like everyone else. Devices that ran the brief
+// opt-out may still hold its keys; they must not block the post.
+test('leftover critic opt-out keys from the reverted skip do not block joining', async () => {
   const m = await import('../../src/lib/auto-subscribe');
   m.__resetForNewPage();
-  m.markCriticSignInStarted();
-  const u = { id: 'u1', email: 'critic@example.com' };
-  assert.equal(m.criticOptOutToRecord(u), true); // moves onto the user id
-  await m.autoSubscribeOnSignIn(u.email, u);
-  assert.equal(posts, 0);
-  // Next page load, metadata write not yet confirmed: still skipped, still to record.
-  m.__resetForNewPage();
-  assert.equal(m.criticOptOutToRecord(u), true);
-  await m.autoSubscribeOnSignIn(u.email, u);
-  assert.equal(posts, 0);
-});
-
-test('account with no_autosub skips on a fresh device', async () => {
-  const m = await import('../../src/lib/auto-subscribe');
-  m.__resetForNewPage();
-  const u = { id: 'u2', email: 'critic2@example.com', user_metadata: { no_autosub: true } };
-  assert.equal(m.criticOptOutToRecord(u), false);
-  await m.autoSubscribeOnSignIn(u.email, u);
-  assert.equal(posts, 0);
-});
-
-test('peeking at Claim, then dismissing, still joins on a normal sign-in', async () => {
-  const m = await import('../../src/lib/auto-subscribe');
-  m.__resetForNewPage();
-  m.markCriticSignInStarted();
-  m.clearCriticSignInStarted(); // popup dismissed
-  const u = { id: 'u3', email: 'reader@example.com' };
-  assert.equal(m.criticOptOutToRecord(u), false);
-  await m.autoSubscribeOnSignIn(u.email, u);
-  assert.equal(posts, 1);
-});
-
-test('a stale critic attempt (over 15 min) does not block a later sign-in', async () => {
-  const m = await import('../../src/lib/auto-subscribe');
-  m.__resetForNewPage();
-  m.markCriticSignInStarted(Date.now() - 16 * 60 * 1000);
-  const u = { id: 'u4', email: 'reader2@example.com' };
-  assert.equal(m.shouldSkipAutoSubscribe(u), false);
-  await m.autoSubscribeOnSignIn(u.email, u);
-  assert.equal(posts, 1);
-});
-
-test('without any critic flag, sign-in still joins the list', async () => {
-  const m = await import('../../src/lib/auto-subscribe');
-  m.__resetForNewPage();
-  await m.autoSubscribeOnSignIn('reader3@example.com', { id: 'u5' });
+  respond = 'ok';
+  store.set('bsc_autosub_skip', String(Date.now()));
+  store.set('bsc_autosub_skip_user', 'u1');
+  await m.autoSubscribeOnSignIn('critic@example.com');
   assert.equal(posts, 1);
 });

@@ -153,9 +153,7 @@ export default function SignInModal({ isOpen, onClose, onSignIn, onSendEmailCode
 
         {/* Footer */}
         <p className="mt-5 text-center text-xs text-gray-400 leading-relaxed">
-          {context === 'critic'
-            ? <>New here? This creates your free account. We won&apos;t add you to any mailing list. By continuing, you agree to our{' '}</>
-            : <>New here? This creates your free account. You&apos;ll also get our Broadway opening night emails; unsubscribe anytime. By continuing, you agree to our{' '}</>}
+          New here? This creates your free account. You&apos;ll also get our Broadway opening night emails; unsubscribe anytime. By continuing, you agree to our{' '}
           <Link href="/terms" target="_blank" className="underline hover:text-gray-200">Terms</Link> and{' '}
           <Link href="/privacy" target="_blank" className="underline hover:text-gray-200">Privacy Policy</Link>.
         </p>
