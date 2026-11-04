@@ -56,6 +56,7 @@ data/audit/breaker-transitions.jsonl merge=union
 # the other append-only ledgers above.
 data/audit/scraper-spend-ledger.jsonl merge=union
 data/audit/gemini-usage-ledger.jsonl merge=union
+data/audit/cross-show-url-holds.jsonl merge=union
 # BRO-5080: sourced fact-check sample answers, one row per checked show (append-only).
 data/audit/fact-check/*.jsonl merge=union
 # BRO-6713: keyed cross-model audit rows (readRows dedupes by key), append-only.
