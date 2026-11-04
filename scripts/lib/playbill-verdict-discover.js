@@ -345,11 +345,12 @@ function findVerdictArticleByPressTitle(articles, show) {
   if (!akaTitles.length) return null;
   const { headlineNamesPressTitle } = require('./google-news-rss');
   const press = { ...show, akaTitles };
-  const start = Date.parse(show.previewsStartDate || show.openingDate || '');
+  const { toDateMs } = require('./date-utils');
+  const start = toDateMs(show.previewsStartDate || show.openingDate);
   const earliest = Number.isFinite(start) ? start - PRESS_TITLE_LEAD_DAYS * 86400000 : null;
   const hit = articles.find((article) => {
     if (!article.title || !headlineNamesPressTitle(article.title, press)) return false;
-    const published = article.publishDate ? Date.parse(article.publishDate) : NaN;
+    const published = toDateMs(article.publishDate);
     return earliest == null || !Number.isFinite(published) || published >= earliest;
   });
   return hit ? { articleUrl: hit.url, articleTitle: hit.title } : null;
