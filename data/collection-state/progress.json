@@ -11,7 +11,10 @@
     "tosca-english-national-opera-west-end-2026/seen-and-heard-international--unknown.json",
     "ceilidh-the-musical-off-west-end-2026/guardian--emma-john.json",
     "ceilidh-the-musical-off-west-end-2026/guardian--unknown.json",
-    "ceilidh-the-musical-off-west-end-2026/daily-echo--william-dalgleish.json"
+    "ceilidh-the-musical-off-west-end-2026/daily-echo--william-dalgleish.json",
+    "well-see-off-broadway-2026/nytg--amelia-merrill.json",
+    "the-blue-violinist-over-west-end-avenue-off-broadway-2026/talkinbroadway--unknown.json",
+    "kelly-mccaughan-catholic-guilt-off-broadway-2026/broadway-baby--unknown.json"
   ],
   "failed": [
     "china-doll-2015/american-theater-web--andy-propst.json",
@@ -22,7 +25,23 @@
     "tosca-english-national-opera-west-end-2026/bachtrack--mark-pullinger.json",
     "tosca-english-national-opera-west-end-2026/bachtrack--peter-quantrill.json",
     "tosca-english-national-opera-west-end-2026/cherylmarkosky--cherylmarkosky.json",
-    "tosca-english-national-opera-west-end-2026/times-uk--richard-morrison.json"
+    "tosca-english-national-opera-west-end-2026/times-uk--richard-morrison.json",
+    "medea-off-broadway-2026/express-uk--neil-norman.json",
+    "medea-off-broadway-2026/bachtrack--susan-stempleski.json",
+    "a-few-good-men-2026/variety--anna-tingley.json",
+    "the-heart-off-broadway-2026/variety--cynthia-littleton.json",
+    "a-few-good-men-2026/goldderby--ethan-alter.json",
+    "the-heart-off-broadway-2026/frontmezzjunkies--unknown.json",
+    "in-the-heights-off-broadway-2026/nypost--clive-barnes.json",
+    "in-the-heights-off-broadway-2026/bloomberg--john-simon.json",
+    "in-the-heights-off-broadway-2026/talkinbroadway--unknown.json",
+    "i-became-we-off-broadway-2026/timeout--unknown.json",
+    "hospital-hour-off-broadway-2026/broadway-baby--unknown.json",
+    "hospital-hour-off-broadway-2026/one-minute-critic--unknown.json",
+    "aftermath-art-new-york-off-broadway-2026/talkinbroadway--unknown.json",
+    "love-me-off-broadway-2026/consequence--unknown.json",
+    "love-me-off-broadway-2026/daily-mail--codie-bullen.json",
+    "the-imaginary-invalid-2026/thewrap--robert-hofler.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -31,7 +50,8 @@
       "china-doll-2015/financialtimes--brendan-lemon.json",
       "august-osage-county-2007/ew--unknown.json",
       "ceilidh-the-musical-off-west-end-2026/guardian--emma-john.json",
-      "ceilidh-the-musical-off-west-end-2026/guardian--unknown.json"
+      "ceilidh-the-musical-off-west-end-2026/guardian--unknown.json",
+      "well-see-off-broadway-2026/nytg--amelia-merrill.json"
     ],
     "amp": [
       "data/review-texts/china-doll-2015/lighting-and-sound-america--david-barbour.json",
@@ -44,18 +64,21 @@
     "directCookies": [],
     "scrapingdog": [],
     "scrapingbee": [],
-    "brightdata": [],
+    "brightdata": [
+      "the-blue-violinist-over-west-end-avenue-off-broadway-2026/talkinbroadway--unknown.json"
+    ],
     "archiveToday": [],
     "archive": [
       "china-doll-2015/abc-news--mark-kennedy.json",
       "china-doll-2015/american-theater-web--andy-propst.json",
       "china-doll-2015/njcom--christopher-kelly.json",
       "china-doll-2015/talkinbroadway--matthew-murray.json",
-      "ceilidh-the-musical-off-west-end-2026/daily-echo--william-dalgleish.json"
+      "ceilidh-the-musical-off-west-end-2026/daily-echo--william-dalgleish.json",
+      "kelly-mccaughan-catholic-guilt-off-broadway-2026/broadway-baby--unknown.json"
     ]
   },
   "startTime": "2026-11-04T19:23:53.664Z",
-  "lastProcessed": "ceilidh-the-musical-off-west-end-2026/daily-echo--william-dalgleish.json",
+  "lastProcessed": "the-imaginary-invalid-2026/thewrap--robert-hofler.json",
   "log": [
     {
       "t": "2026-11-04T19:32:57.657Z",
@@ -86,6 +109,34 @@
       "event": "bb-session",
       "session": "939acbe6",
       "url": "https://seenandheard-international.com/2026/11/a-new-tosca-at-the-eno-when-the-m"
+    },
+    {
+      "t": "2026-11-04T19:50:07.457Z",
+      "event": "bb-session",
+      "session": "9790b261",
+      "url": "https://bachtrack.com/review-medea-yoncheva-spyres-met-opera-new-york-october-20"
+    },
+    {
+      "t": "2026-11-04T19:54:18.257Z",
+      "event": "bb-session",
+      "session": "873127fb",
+      "url": "https://www.talkinbroadway.com/page/ob/11_02_26c.html"
+    },
+    {
+      "t": "2026-11-04T19:54:19.116Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-04T19:54:51.208Z",
+      "event": "bb-session",
+      "session": "7a2f21e4",
+      "url": "https://hermes.talkinbroadway.com/allthatchat_new/d.php?id=2655044"
+    },
+    {
+      "t": "2026-11-04T19:54:51.966Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }

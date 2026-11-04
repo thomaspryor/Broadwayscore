@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-11-04T19:41:07.981Z",
-  "processed": 12,
-  "failed": 9,
-  "successRate": "57.1%",
+  "updatedAt": "2026-11-04T19:57:54.536Z",
+  "processed": 15,
+  "failed": 25,
+  "successRate": "37.5%",
   "tierBreakdown": {
-    "playwright": 5,
+    "playwright": 6,
     "amp": 2,
     "browserbase": 2,
     "directCookies": 0,
     "scrapingdog": 0,
     "scrapingbee": 0,
-    "brightdata": 0,
+    "brightdata": 1,
     "archiveToday": 0,
-    "archive": 5
+    "archive": 6
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
       "t": "2026-11-04T19:32:57.657Z",
@@ -45,6 +45,34 @@
       "event": "bb-session",
       "session": "939acbe6",
       "url": "https://seenandheard-international.com/2026/11/a-new-tosca-at-the-eno-when-the-m"
+    },
+    {
+      "t": "2026-11-04T19:50:07.457Z",
+      "event": "bb-session",
+      "session": "9790b261",
+      "url": "https://bachtrack.com/review-medea-yoncheva-spyres-met-opera-new-york-october-20"
+    },
+    {
+      "t": "2026-11-04T19:54:18.257Z",
+      "event": "bb-session",
+      "session": "873127fb",
+      "url": "https://www.talkinbroadway.com/page/ob/11_02_26c.html"
+    },
+    {
+      "t": "2026-11-04T19:54:19.116Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-04T19:54:51.208Z",
+      "event": "bb-session",
+      "session": "7a2f21e4",
+      "url": "https://hermes.talkinbroadway.com/allthatchat_new/d.php?id=2655044"
+    },
+    {
+      "t": "2026-11-04T19:54:51.966Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
