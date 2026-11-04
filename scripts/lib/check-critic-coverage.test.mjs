@@ -14,6 +14,7 @@ test('urlKey keeps article-id query params (BRO-6927: LSA story.asp?ID=)', () =>
   assert.equal(a, 'lightingandsoundamerica.com/news/story.asp?id=5FYBTJ');
   assert.notEqual(a, b);
   assert.equal(urlKey('https://www.talkinbroadway.com/d.php?id=12&utm_source=x'), 'talkinbroadway.com/d.php?id=12');
+  assert.equal(urlKey('https://x.com/a?utm_id=5'), 'x.com/a');
 });
 
 test('urlKey returns null for unparseable input', () => {

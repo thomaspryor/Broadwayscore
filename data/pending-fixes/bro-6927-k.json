@@ -1,0 +1,236 @@
+{
+  "issueNumber": "bro-6927-k",
+  "planId": "533d63ff-63b5-4653-a0f3-68a8c9b62bf6",
+  "status": "pending",
+  "createdAt": "2026-11-03T23:41:44.832Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6927 critic gap fill (NYSR archive): ingest 36 New York Stage Review reviews by outreach critics missing from their critic pages.",
+    "steps": [
+      "Ingest each review URL with ingest-review-from-url.js under the named critic",
+      "Next rebuild and scheduled scoring pick them up"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=bug-2026 --url=https://nystagereview.com/2026/01/08/bug-tracy-letts-shocker-lands-on-broadway/ --critic=\"Frank Scheck\" --publish-date=2026-01-08",
+        "description": "BRO-6927 gap: Frank Scheck (New York Stage Review) review of bug-2026, on the NYSR author archive but missing from the critic page"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=kyoto-off-broadway-2025 --url=https://nystagereview.com/2025/11/03/kyoto-climate-negotiations-made-fun/ --critic=\"Frank Scheck\" --publish-date=2025-11-03",
+        "description": "BRO-6927 gap: Frank Scheck (New York Stage Review) review of kyoto-off-broadway-2025, on the NYSR author archive but missing from the critic page"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=caroline-off-broadway-2026 --url=https://nystagereview.com/2025/09/30/caroline-a-quiet-gem/ --critic=\"Frank Scheck\" --publish-date=2025-09-30",
+        "description": "BRO-6927 gap: Frank Scheck (New York Stage Review) review of caroline-off-broadway-2026, on the NYSR author archive but missing from the critic page"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=shit-meet-fan-off-broadway-2024 --url=https://nystagereview.com/2024/11/18/shit-meet-fan-play-meet-speed-bumps/ --critic=\"Frank Scheck\" --publish-date=2024-11-18",
+        "description": "BRO-6927 gap: Frank Scheck (New York Stage Review) review of shit-meet-fan-off-broadway-2024, on the NYSR author archive but missing from the critic page"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-beacon-off-broadway-2024 --url=https://nystagereview.com/2024/09/22/the-beacon-irish-drama-sheds-more-heat-than-light/ --critic=\"Frank Scheck\" --publish-date=2024-09-22",
+        "description": "BRO-6927 gap: Frank Scheck (New York Stage Review) review of the-beacon-off-broadway-2024, on the NYSR author archive but missing from the critic page"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=buena-vista-social-club-off-broadway-2023 --url=https://nystagereview.com/2023/12/13/buena-vista-social-club-from-album-to-screen-to-triumphant-musical/ --critic=\"Frank Scheck\" --publish-date=2023-12-13",
+        "description": "BRO-6927 gap: Frank Scheck (New York Stage Review) review of buena-vista-social-club-off-broadway-2023, on the NYSR author archive but missing from the critic page"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=cornelia-street-off-broadway-2023 --url=https://nystagereview.com/2023/02/14/cornelia-street-not-yet-a-destination-musical/ --critic=\"Frank Scheck\" --publish-date=2023-02-14",
+        "description": "BRO-6927 gap: Frank Scheck (New York Stage Review) review of cornelia-street-off-broadway-2023, on the NYSR author archive but missing from the critic page"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-loved-ones-off-broadway-2026 --url=https://nystagereview.com/2026/06/23/the-loved-ones-four-smart-women-talk-things-over-wisely/ --critic=\"David Finkle\" --publish-date=2026-06-23",
+        "description": "BRO-6927 gap: David Finkle (New York Stage Review) review of the-loved-ones-off-broadway-2026, on the NYSR author archive but missing from the critic page"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=hamlet-off-broadway-2026 --url=https://nystagereview.com/2026/05/04/hamlet-to-be-or-not-to-be-seen-definitely-to-be/ --critic=\"David Finkle\" --publish-date=2026-05-04",
+        "description": "BRO-6927 gap: David Finkle (New York Stage Review) review of hamlet-off-broadway-2026, on the NYSR author archive but missing from the critic page"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-weir-off-broadway-2025 --url=https://nystagereview.com/2025/07/17/the-weir-the-conor-mcpherson-bar-play-easily-vaults-a-high-bar/ --critic=\"David Finkle\" --publish-date=2025-07-17",
+        "description": "BRO-6927 gap: David Finkle (New York Stage Review) review of the-weir-off-broadway-2025, on the NYSR author archive but missing from the critic page"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=lights-out-nat-king-cole-off-broadway-2025 --url=https://nystagereview.com/2025/05/20/lights-out-nat-king-cole-keep-this-musicals-lights-shut-off/ --critic=\"David Finkle\" --publish-date=2025-05-20",
+        "description": "BRO-6927 gap: David Finkle (New York Stage Review) review of lights-out-nat-king-cole-off-broadway-2025, on the NYSR author archive but missing from the critic page"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=ghosts-off-broadway-2025 --url=https://nystagereview.com/2025/03/10/ghosts-ibsens-beautifully-acted-classic-oddly-gives-up-the-ghost/ --critic=\"David Finkle\" --publish-date=2025-03-10",
+        "description": "BRO-6927 gap: David Finkle (New York Stage Review) review of ghosts-off-broadway-2025, on the NYSR author archive but missing from the critic page"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=curse-of-the-starving-class-off-broadway-2025 --url=https://nystagereview.com/2025/02/25/curse-of-the-starving-class-curses-the-sam-shepard-classic-declassifies-itself/ --critic=\"David Finkle\" --publish-date=2025-02-25",
+        "description": "BRO-6927 gap: David Finkle (New York Stage Review) review of curse-of-the-starving-class-off-broadway-2025, on the NYSR author archive but missing from the critic page"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=gatz-off-broadway-2024 --url=https://nystagereview.com/2024/11/08/gatz-fitzgerald-classic-word-for-word-from-elevator-repair-service/ --critic=\"David Finkle\" --publish-date=2024-11-08",
+        "description": "BRO-6927 gap: David Finkle (New York Stage Review) review of gatz-off-broadway-2024, on the NYSR author archive but missing from the critic page"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=good-bones-off-broadway-2024 --url=https://nystagereview.com/2024/10/03/good-bones-james-ijames-sophisticated-fat-ham-successor/ --critic=\"David Finkle\" --publish-date=2024-10-03",
+        "description": "BRO-6927 gap: David Finkle (New York Stage Review) review of good-bones-off-broadway-2024, on the NYSR author archive but missing from the critic page"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=n-a-off-broadway-2024 --url=https://nystagereview.com/2024/06/27/n-a-pelosi-ocasio-cortez-go-at-it-toe-to-toe/ --critic=\"David Finkle\" --publish-date=2024-06-27",
+        "description": "BRO-6927 gap: David Finkle (New York Stage Review) review of n-a-off-broadway-2024, on the NYSR author archive but missing from the critic page"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-wiz-2024 --url=https://nystagereview.com/2024/04/17/the-wiz-revival-doesnt-ease-down-the-road-easily/ --critic=\"David Finkle\" --publish-date=2024-04-17",
+        "description": "BRO-6927 gap: David Finkle (New York Stage Review) review of the-wiz-2024, on the NYSR author archive but missing from the critic page"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-seven-year-disappear-off-broadway-2024 --url=https://nystagereview.com/2024/02/26/the-seven-year-disappear-a-not-always-straight-forward-look-at-manhattans-art-world/ --critic=\"David Finkle\" --publish-date=2024-02-26",
+        "description": "BRO-6927 gap: David Finkle (New York Stage Review) review of the-seven-year-disappear-off-broadway-2024, on the NYSR author archive but missing from the critic page"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=good-night-oscar-2023 --url=https://nystagereview.com/2023/04/24/good-night-oscar-sean-hayes-is-the-famed-ivories-tickler/ --critic=\"David Finkle\" --publish-date=2023-04-24",
+        "description": "BRO-6927 gap: David Finkle (New York Stage Review) review of good-night-oscar-2023, on the NYSR author archive but missing from the critic page"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=sumo-off-broadway-2025 --url=https://nystagereview.com/2025/03/05/sumo-wrestling-with-higher-desires/ --critic=\"Michael Sommers\" --publish-date=2025-03-05",
+        "description": "BRO-6927 gap: Michael Sommers (New York Stage Review) review of sumo-off-broadway-2025, on the NYSR author archive but missing from the critic page"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=grangeville-off-broadway-2026 --url=https://nystagereview.com/2025/02/24/grangeville-no-thanks-for-the-memories/ --critic=\"Michael Sommers\" --publish-date=2025-02-24",
+        "description": "BRO-6927 gap: Michael Sommers (New York Stage Review) review of grangeville-off-broadway-2026, on the NYSR author archive but missing from the critic page"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=garsides-career-off-broadway-2025 --url=https://nystagereview.com/2025/02/20/garsides-career-the-rise-and-fall-of-a-silver-tongued-speaker/ --critic=\"Michael Sommers\" --publish-date=2025-02-20",
+        "description": "BRO-6927 gap: Michael Sommers (New York Stage Review) review of garsides-career-off-broadway-2025, on the NYSR author archive but missing from the critic page"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=babe-off-broadway-2024 --url=https://nystagereview.com/2024/11/20/babe-sex-rock-and-gen-z-in-a-tik-tok-workplace/ --critic=\"Michael Sommers\" --publish-date=2024-11-20",
+        "description": "BRO-6927 gap: Michael Sommers (New York Stage Review) review of babe-off-broadway-2024, on the NYSR author archive but missing from the critic page"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=aint-no-mo-2022 --url=https://nystagereview.com/2022/12/15/aint-no-mo-satirical-beauty-languishes-amid-a-beastly-broadway/ --critic=\"Michael Sommers\" --publish-date=2022-12-15",
+        "description": "BRO-6927 gap: Michael Sommers (New York Stage Review) review of aint-no-mo-2022, on the NYSR author archive but missing from the critic page"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-disappear-off-broadway-2026 --url=https://nystagereview.com/2026/01/15/the-disappear-art-isnt-easy/ --critic=\"Melissa Rose Bernardo\" --publish-date=2026-01-15",
+        "description": "BRO-6927 gap: Melissa Rose Bernardo (New York Stage Review) review of the-disappear-off-broadway-2026, on the NYSR author archive but missing from the critic page"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-brothers-size-off-broadway-2025 --url=https://nystagereview.com/2025/09/10/the-brothers-size-a-heart-rending-tale-of-family-and-trauma/ --critic=\"Melissa Rose Bernardo\" --publish-date=2025-09-10",
+        "description": "BRO-6927 gap: Melissa Rose Bernardo (New York Stage Review) review of the-brothers-size-off-broadway-2025, on the NYSR author archive but missing from the critic page"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=danny-and-the-deep-blue-sea-off-broadway-2023 --url=https://nystagereview.com/2023/11/14/danny-and-the-deep-blue-sea-stale-pretzels-cheap-beer-and-dive-bar-dreams/ --critic=\"Melissa Rose Bernardo\" --publish-date=2023-11-14",
+        "description": "BRO-6927 gap: Melissa Rose Bernardo (New York Stage Review) review of danny-and-the-deep-blue-sea-off-broadway-2023, on the NYSR author archive but missing from the critic page"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-piano-lesson-2022 --url=https://nystagereview.com/2022/10/13/the-piano-lesson-a-starry-but-off-key-rendition/ --critic=\"Melissa Rose Bernardo\" --publish-date=2022-10-13",
+        "description": "BRO-6927 gap: Melissa Rose Bernardo (New York Stage Review) review of the-piano-lesson-2022, on the NYSR author archive but missing from the critic page"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-chinese-lady-off-broadway-2022 --url=https://nystagereview.com/2022/03/08/the-chinese-lady-for-your-education-entertainment-and-discomfort/ --critic=\"Melissa Rose Bernardo\" --publish-date=2022-03-08",
+        "description": "BRO-6927 gap: Melissa Rose Bernardo (New York Stage Review) review of the-chinese-lady-off-broadway-2022, on the NYSR author archive but missing from the critic page"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=clydes-2021 --url=https://nystagereview.com/2021/11/23/clydes-lynn-nottage-cooks-up-a-sharp-kitchen-set-comedy/ --critic=\"Melissa Rose Bernardo\" --publish-date=2021-11-23",
+        "description": "BRO-6927 gap: Melissa Rose Bernardo (New York Stage Review) review of clydes-2021, on the NYSR author archive but missing from the critic page"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=betrayal-2019 --url=https://nystagereview.com/2019/09/05/betrayal-less-is-more-in-this-london-born-revival/ --critic=\"Melissa Rose Bernardo\" --publish-date=2019-09-05",
+        "description": "BRO-6927 gap: Melissa Rose Bernardo (New York Stage Review) review of betrayal-2019, on the NYSR author archive but missing from the critic page"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-bedwetter-off-broadway-2022 --url=https://nystagereview.com/2022/06/07/the-bedwetter-a-laughing-matter-from-sarah-silverman/ --critic=\"Steven Suskin\" --publish-date=2022-06-07",
+        "description": "BRO-6927 gap: Steven Suskin (New York Stage Review) review of the-bedwetter-off-broadway-2022, on the NYSR author archive but missing from the critic page"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=hangmen-off-broadway-2018 --url=https://nystagereview.com/2018/02/05/stage-review-learning-the-ropes/ --critic=\"Steven Suskin\" --publish-date=2018-02-05",
+        "description": "BRO-6927 gap: Steven Suskin (New York Stage Review) review of hangmen-off-broadway-2018, on the NYSR author archive but missing from the critic page"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-doctor-off-broadway-2023 --url=https://nystagereview.com/2023/06/15/the-doctor-from-london-a-scathing-societal-diagnosis-and-a-meditation-on-faith/ --critic=\"Elysa Gardner\" --publish-date=2023-06-15",
+        "description": "BRO-6927 gap: Elysa Gardner (New York Stage Review) review of the-doctor-off-broadway-2023, on the NYSR author archive but missing from the critic page"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=angels-in-america-2018 --url=https://nystagereview.com/2018/03/25/angels-in-america-arriving-via-london-this-angel-soars/ --critic=\"Elysa Gardner\" --publish-date=2018-03-25",
+        "description": "BRO-6927 gap: Elysa Gardner (New York Stage Review) review of angels-in-america-2018, on the NYSR author archive but missing from the critic page"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=bad-krey-l-off-broadway-2026 --url=https://nystagereview.com/2024/10/28/bad-kreyol-good-writing-about-a-culture-clash-in-haiti/ --critic=\"Roma Torre\" --publish-date=2024-10-28",
+        "description": "BRO-6927 gap: Roma Torre (New York Stage Review) review of bad-krey-l-off-broadway-2026, on the NYSR author archive but missing from the critic page"
+      }
+    ]
+  }
+}
