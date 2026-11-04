@@ -221,9 +221,9 @@ export default function CriticDetailClient({ critic, profile }: { critic: Critic
               )}
             </h1>
             {profile?.jobTitle && <p className="text-sm text-fg-muted">{profile.jobTitle}</p>}
-            <div className="flex items-center gap-2 text-sm text-gray-400">
+            <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-gray-400">
               {critic.outlets[0] && (
-                <Link href={`/critics/outlets/${critic.reviews.find(r => r.outlet === critic.outlets[0])?.outletSlug || ''}`} className="hover:text-brand transition-colors">
+                <Link href={`/critics/outlets/${critic.reviews.find(r => r.outlet === critic.outlets[0])?.outletSlug || ''}`} className="min-h-0 min-w-0 hover:text-brand transition-colors">
                   {critic.primaryOutlet}
                 </Link>
               )}
