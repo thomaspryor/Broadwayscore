@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6927-l",
   "planId": "c4bdfe77-d081-418d-adaa-cfd50a185c1e",
-  "status": "pending",
+  "status": "partial",
   "createdAt": "2026-11-03T23:41:44.832Z",
   "submitter": {
     "name": null,
@@ -82,5 +82,64 @@
         "description": "BRO-6927 gap: Roma Torre (New York Stage Review) review of bad-krey-l-off-broadway-2026, on the NYSR author archive but missing from the critic page"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-04T01:15:55.724Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=danny-and-the-deep-blue-sea-off-broadway-2023 --url=https://nystagereview.com/2023/11/14/danny-and-the-deep-blue-sea-stale-pretzels-cheap-beer-and-dive-bar-dreams/ --critic=\"Melissa Rose Bernardo\" --publish-date=2023-11-14"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=the-piano-lesson-2022 --url=https://nystagereview.com/2022/10/13/the-piano-lesson-a-starry-but-off-key-rendition/ --critic=\"Melissa Rose Bernardo\" --publish-date=2022-10-13"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=clydes-2021 --url=https://nystagereview.com/2021/11/23/clydes-lynn-nottage-cooks-up-a-sharp-kitchen-set-comedy/ --critic=\"Melissa Rose Bernardo\" --publish-date=2021-11-23"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=betrayal-2019 --url=https://nystagereview.com/2019/09/05/betrayal-less-is-more-in-this-london-born-revival/ --critic=\"Melissa Rose Bernardo\" --publish-date=2019-09-05"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=angels-in-america-2018 --url=https://nystagereview.com/2018/03/25/angels-in-america-arriving-via-london-this-angel-soars/ --critic=\"Elysa Gardner\" --publish-date=2018-03-25"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    }
+  ],
+  "executedIn": "ci"
 }
