@@ -47,7 +47,8 @@ async function setup(t) {
       hasStoredSupabaseSession: () => false, urlHasAuthResult: () => false, onSupabaseClientReady: () => () => {},
     };
     if (name === '@/lib/ugc-analytics' || name === './ugc-analytics') return analytics;
-    if (name === '@/lib/auto-subscribe') return { autoSubscribeOnSignIn() {} };
+    // Real module with only the network post stubbed, so new exports never break this mock.
+    if (name === '@/lib/auto-subscribe') return { ...require('../../src/lib/auto-subscribe.ts'), autoSubscribeOnSignIn() {} };
     if (name === '@/components/show-cards') return {
       Modal: require('../../src/components/show-cards/Modal.tsx').default,
       ModalCloseButton: ({ onClick }) => React.createElement('button', { onClick, 'aria-label': 'Close' }, 'Close'),

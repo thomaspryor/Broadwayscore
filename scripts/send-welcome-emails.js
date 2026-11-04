@@ -78,6 +78,7 @@ async function onMailingList(userId) {
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_SUPABASE_URL}/auth/v1/admin/users/${encodeURIComponent(userId)}`, {
       headers: { apikey: process.env.SUPABASE_SERVICE_ROLE_KEY, Authorization: `Bearer ${process.env.SUPABASE_SERVICE_ROLE_KEY}` },
+      signal: AbortSignal.timeout(15000),
     });
     if (!res.ok) return false;
     const u = await res.json();
