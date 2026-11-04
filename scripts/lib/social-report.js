@@ -359,7 +359,7 @@ function skippedShows({ ctx, ledger, now }) {
   const gaveUp = gaveUpIds(ledger);
   const out = [];
   for (const show of ctx.shows) {
-    if (!isEligibleShow(show, { allowOpera: true })) continue;
+    if (!isEligibleShow(show, { allowOpera: true, allowTouring: true, shows: ctx.shows })) continue;
     const slot = morningAfter(show);
     if (slot > now || now - slot > Math.max(lookbackMs, backfillMs) + 7 * DAY_MS) continue;
     // Aged out before go-live: only the quiet-day backfill can still post it.
@@ -457,7 +457,7 @@ function upcomingPosts({ scheduled = [], ctx, ledger, now }) {
     const done = doneKeys(ledger);
     const gaveUp = gaveUpIds(ledger);
     for (const show of ctx.shows) {
-      if (!isEligibleShow(show, { allowOpera: true }) || done.has(`score:${show.id}`) || gaveUp.has(show.id) || inBuffer.has(show.slug || show.id)) continue;
+      if (!isEligibleShow(show, { allowOpera: true, allowTouring: true, shows: ctx.shows }) || done.has(`score:${show.id}`) || gaveUp.has(show.id) || inBuffer.has(show.slug || show.id)) continue;
       const slot = morningAfter(show);
       if (slot <= now || slot > end) continue;
       out.push({ title: showName(show), due: slot, line: `${localTime(slot, C.MARKETS[show.category].tz)}, score post on every network if the score is ready by then` });

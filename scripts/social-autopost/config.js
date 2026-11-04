@@ -15,6 +15,10 @@ const MARKETS = {
   // Opera Scorecard (BRO-6770): a show's market is 'opera' when its type is opera (marketOf), whatever its category.
   // Opera shows live under /opera/<title slug> on broadwayscorecard.com (operascorecard.com redirects there).
   opera: { label: 'Opera', tz: 'America/New_York', domain: 'broadwayscorecard.com', brand: '#e0485f', logo: 'opera-wordmark-transparent.png', hashtags: ['Opera'] },
+  // Touring and out-of-town shows on the Broadway accounts (BRO-6935). Which of these post is decided by
+  // touringEligible (select.js); these entries give them a label, time zone and hashtags.
+  regional: { label: 'Regional', tz: 'America/New_York', domain: 'broadwayscorecard.com', brand: '#d4a574', logo: 'broadway-wordmark-transparent.png', hashtags: ['PreBroadway', 'BroadwayReviews'] },
+  tour: { label: 'National Tour', tz: 'America/New_York', domain: 'broadwayscorecard.com', brand: '#d4a574', logo: 'broadway-wordmark-transparent.png', hashtags: ['BroadwayTour', 'BroadwayReviews'] },
   'off-west-end': { label: 'Off-West End', tz: 'Europe/London', domain: 'westendscorecard.com', brand: '#f472b6', logo: 'west-end-wordmark-transparent.png', hashtags: ['OffWestEnd', 'LondonTheatre'] },
 };
 
@@ -50,7 +54,7 @@ const CHANNELS = CHANNEL_SETS.broadway; // the original set; kept for callers th
 
 // Which channel set is a show's home. Broadway and Off-Broadway post to the Broadway
 // accounts, West End and Off-West End to the West End accounts.
-const MARKET_CHANNEL_SET = { broadway: 'broadway', 'off-broadway': 'broadway', 'west-end': 'west-end', 'off-west-end': 'west-end' };
+const MARKET_CHANNEL_SET = { broadway: 'broadway', 'off-broadway': 'broadway', regional: 'broadway', tour: 'broadway', 'west-end': 'west-end', 'off-west-end': 'west-end' };
 // Categories whose shows post to the Broadway accounts while their own set is not
 // configured. Off-West End is not one (owner, BRO-6932: fringe London shows do not
 // belong on the Broadway accounts); it waits for the West End accounts.
@@ -88,6 +92,10 @@ const HIGH_PROFILE = {
 // openings, so 3 tier-1 is common there).
 const SCORE_FLOORS = {
   'off-broadway': { total: 8, t1: 0, t2: 2, highConfidence: 6 },
+  // BRO-6935: out-of-town and touring shows are never looser than Off-Broadway, and ask for
+  // one tier-1 critic so 839 regional productions do not flood the Broadway accounts.
+  regional: { total: 8, t1: 1, t2: 2, highConfidence: 6 },
+  tour: { total: 8, t1: 1, t2: 2, highConfidence: 6 },
 };
 // "All its reviews are in" floors (BRO-6932): a show under its SCORE_FLOORS still posts
 // when the review-coverage census says no known review is missing (slim cov.state

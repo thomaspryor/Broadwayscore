@@ -1675,3 +1675,39 @@ test('ai checkDraft: a number in the title never vouches for a claim; decimals a
   assert.match(ai.checkDraft({ ...d, x: `${d.x} 13 raves.` }, pool, t).join(' | '), /not in the facts: 13/);
   assert.match(ai.checkDraft({ ...d, x: d.x.replace('61 (Mixed)', '61.4 (Mixed)') }, pool, t).join(' | '), /decimal/);
 });
+
+// BRO-6935: touring and out-of-town shows post on the Broadway accounts, score lane only.
+test('touring: US tryouts post, UK regional, local-only and tour legs do not', () => {
+  const reg = over => show({ id: 'r-2026', category: 'regional', venue: 'Goodman Theatre, Chicago, IL', ...over });
+  assert.equal(sel.touringEligible(reg(), [reg()]), true);
+  assert.equal(sel.touringEligible(reg({ venue: 'Royal Shakespeare Theatre, Stratford-upon-Avon' })), false, 'UK flagship house');
+  assert.equal(sel.touringEligible(reg({ localOnly: true })), false);
+  assert.equal(sel.touringEligible(reg({ tourParent: 'big-tour' })), false, 'one leg of a multi-venue tour');
+});
+
+test('touring: only the first national tour launch with launch evidence posts', () => {
+  const tour = over => show({ id: 'a-tour-2024', category: 'tour', tourOf: 'a-2019', tourLaunchEvidence: 'roundup 2024', openingDate: '2024-10-20', ...over });
+  const first = tour(), relaunch = tour({ id: 'a-tour-2027', openingDate: '2027-01-12' });
+  assert.equal(sel.touringEligible(first, [first, relaunch]), true);
+  assert.equal(sel.touringEligible(relaunch, [first, relaunch]), false, 'a relaunch is not the first launch');
+  assert.equal(sel.touringEligible(tour({ tourLaunchEvidence: undefined }), []), false, 'no launch evidence');
+  assert.equal(sel.touringEligible(tour({ tourParent: 'p' }), []), false);
+});
+
+test('touring: score lane only, routed to the Broadway set, floors stricter than Off-Broadway', () => {
+  const C = require('./social-autopost/config.js');
+  const tour = show({ id: 't-tour-2026', category: 'tour', tourOf: 't-2020', tourLaunchEvidence: 'x' });
+  assert.equal(sel.isEligibleShow(tour), false, 'roundups, closing-soon and backfill never pick touring shows');
+  assert.equal(sel.isEligibleShow(tour, { allowTouring: true, shows: [tour] }), true);
+  assert.deepEqual(routing.targetSets(tour, NONE), ['broadway']);
+  for (const cat of ['regional', 'tour']) {
+    assert.ok(C.SCORE_FLOORS[cat].t1 >= 1 && C.SCORE_FLOORS[cat].total >= C.SCORE_FLOORS['off-broadway'].total, cat);
+  }
+  // a 1 tier-1 review show clears the floor; a show with none does not
+  const s = { ...tour, openingDate: '2026-10-01' };
+  const ok = sel.scoreSettled(s, { reviewsByShow: { [s.id]: reviews(1, 3, 6) }, slim: { [s.id]: { cs: 80, rc: 10 } }, getOutletTier, shows: [s] });
+  const none = sel.scoreSettled(s, { reviewsByShow: { [s.id]: reviews(0, 3, 8) }, slim: { [s.id]: { cs: 80, rc: 11 } }, getOutletTier, shows: [s] });
+  assert.equal(ok.ok, true);
+  assert.equal(none.ok, false);
+  assert.equal(sel.scoreDecision(tour, { ...base(tour), done: new Set(), now: Date.parse('2026-11-06T15:00:00Z') }).why === 'ineligible', false);
+});

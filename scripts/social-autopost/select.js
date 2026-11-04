@@ -13,6 +13,8 @@ const { hasEnoughReviews } = require('../lib/min-reviews');
 const { priorRunClassifier } = require('../lib/prior-run-sibling');
 const { findLondonRun } = require('../lib/transfer-detection');
 const C = require('./config');
+const { isUkRegionalVenue } = require('../lib/market-label');
+const { isLocalOnlyShow } = require('../lib/local-market');
 const { homeSet, targetSets, operaConfigured, postsToOwnSet } = require('./routing');
 
 const DAY_MS = 864e5;
@@ -43,14 +45,34 @@ function addDaysYmd(ymd, n) {
   return d.toISOString().slice(0, 10);
 }
 
-function isEligibleShow(show, { allowOpera = false } = {}) {
+const TOURING_CATEGORIES = new Set(['regional', 'tour']);
+
+/**
+ * Touring and out-of-town shows that may post a score (BRO-6935). Regional: a US tryout
+ * (the Pre-Broadway shelf rule: not a UK flagship house, not local-only, not one leg of a
+ * multi-venue tour). Tour: the first national tour launch of a production, with launch
+ * evidence, never a later city stop or relaunch. `shows` (all shows) finds the earlier tour.
+ */
+function touringEligible(show, shows) {
+  if (show.tourParent) return false;
+  if (show.category === 'regional') return !isUkRegionalVenue(show.venue) && !isLocalOnlyShow(show);
+  if (show.category !== 'tour' || !show.tourLaunchEvidence) return false;
+  if (!show.tourOf || !Array.isArray(shows)) return true;
+  const at = Date.parse(show.openingDate);
+  return !shows.some(o => o.id !== show.id && o.category === 'tour' && o.tourOf === show.tourOf && o.tourLaunchEvidence && !o.tourParent
+    && (Date.parse(o.openingDate) < at || (Date.parse(o.openingDate) === at && o.id < show.id)));
+}
+
+/** allowTouring: the score lane only. Roundups, closing-soon and the quiet-day backfill never pick touring shows. */
+function isEligibleShow(show, { allowOpera = false, allowTouring = false, shows = null } = {}) {
   if (!show || !show.id || !show.openingDate) return false;
   if (!C.ELIGIBLE_CATEGORIES.includes(show.category)) return false;
+  if (TOURING_CATEGORIES.has(show.category) && !(allowTouring && touringEligible(show, shows))) return false;
   // No accounts to post to (Off-West End before the West End accounts exist, BRO-6932).
   if (C.marketOf(show) !== 'opera' && !targetSets(show, []).length) return false;
   const operaOk = allowOpera && C.marketOf(show) === 'opera' && operaConfigured();
   if (show.type && C.SKIP_TYPES.has(String(show.type).toLowerCase()) && !operaOk) return false;
-  if (show.provisional) return false;
+  if (show.provisional && show.category !== 'tour') return false; // tours are created automatically from a roundup and stay provisional; the score gate decides (isTourListed)
   if (['cancelled', 'canceled', 'postponed'].includes(show.status)) return false;
   return true;
 }
@@ -147,7 +169,7 @@ function scoreSettled(show, { reviewsByShow, slim, getOutletTier, shows, now = D
  */
 function scoreDecision(show, ctx, { ignoreAge = false } = {}) {
   const { done, now } = ctx;
-  if (!isEligibleShow(show, { allowOpera: true })) return { due: false, why: 'ineligible' };
+  if (!isEligibleShow(show, { allowOpera: true, allowTouring: true, shows: ctx.shows })) return { due: false, why: 'ineligible' };
   if (done.has(`score:${show.id}`)) return { due: false, why: 'done' };
   const slot = morningAfter(show);
   if (now < slot - C.CREATE_LEAD_MINUTES * MIN_MS) return { due: false, why: 'not-yet', slot };
@@ -510,4 +532,4 @@ function closingSoonLookback({ shows, ledger, now, reviewsByShow, slim, getOutle
   return out.sort((a, b) => a.firstDay.localeCompare(b.firstDay) || a.show.id.localeCompare(b.show.id));
 }
 
-module.exports = { backfillCandidate, backfillDoneKeys, backfillWindow, findBackfillEvents, scoreSettled, roundupDay, roundupFillOrder, roundupWindow, roundupCandidates, findRoundupEvents, roundupLookback, closingDecision, findClosingSoonEvents, closingSoonLookback, ymdDays, addDaysYmd, findLondonCompareEvents, londonCompareDecision, londonCompareLookback, hasSiteScore, sentScoreEntry, briefCoversPair, findScoreEvents, scoreDecision, doneKeys, scheduleEvents, splitBacklog, morningAfter, nextWindowSlot, inWindow, zonedTime, localParts, isEligibleShow, newReviewCountFor };
+module.exports = { touringEligible, backfillCandidate, backfillDoneKeys, backfillWindow, findBackfillEvents, scoreSettled, roundupDay, roundupFillOrder, roundupWindow, roundupCandidates, findRoundupEvents, roundupLookback, closingDecision, findClosingSoonEvents, closingSoonLookback, ymdDays, addDaysYmd, findLondonCompareEvents, londonCompareDecision, londonCompareLookback, hasSiteScore, sentScoreEntry, briefCoversPair, findScoreEvents, scoreDecision, doneKeys, scheduleEvents, splitBacklog, morningAfter, nextWindowSlot, inWindow, zonedTime, localParts, isEligibleShow, newReviewCountFor };

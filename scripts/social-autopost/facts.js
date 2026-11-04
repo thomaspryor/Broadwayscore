@@ -6,6 +6,7 @@ const { getScoreTierId, getScoreTierLabel, getReviewBreakdownTierId } = require(
 const { getAudienceGrade, totalAudienceReviews, MIN_AUDIENCE_REVIEWS } = require('../lib/audience-grade.js');
 const { sameTitle, findLondonRun } = require('../lib/transfer-detection.js');
 const { MARKETS, marketOf } = require('./config');
+const TOURING = new Set(['regional', 'tour']); // posting markets since BRO-6935, but never cited as an "earlier production"
 
 const MIN_RANK_REVIEWS = 8; // a show needs this many reviews to be ranked against its peers
 const MIN_PEERS = 4; // a rank among fewer shows says nothing
@@ -130,7 +131,7 @@ function buildFactPool(show, ctx, now) {
   // Same score rule as select.js hasSiteScore, so the run the compare post covers is the one left out.
   const london = findLondonRun(show, ctx.shows, { hasScore: id => { const p = ctx.slim[id]; return !!p && Number.isFinite(p.cs) && !!p.rc; } }).london;
   const earlier = ctx.shows
-    .filter(s => s.id !== show.id && (!london || s.id !== london.id) && MARKETS[marketOf(s)] && s.type && s.type === show.type && opened(s) < opened(show) && sameTitle(s.title, show.title) && hasRankableScore(ctx.slim[s.id]))
+    .filter(s => s.id !== show.id && (!london || s.id !== london.id) && MARKETS[marketOf(s)] && !TOURING.has(s.category) && s.type && s.type === show.type && opened(s) < opened(show) && sameTitle(s.title, show.title) && hasRankableScore(ctx.slim[s.id]))
     .sort((x, y) => opened(y) - opened(x))[0];
   if (earlier) {
     const e = ctx.slim[earlier.id], es = Math.round(e.cs), yr = String(earlier.openingDate).slice(0, 4);
