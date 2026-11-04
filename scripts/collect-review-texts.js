@@ -152,6 +152,7 @@ const {
   AGED_STUB_DRAIN_PER_RUN,
   isAgedNeverAttemptedStub,
   promoteAgedStubs,
+  markUncoveredShows,
 } = require('./lib/collection-priority');
 
 // NYT Critics' Pick lookup — lazy-loaded once per run from authoritative URL list.
@@ -6814,6 +6815,12 @@ function findReviewsToProcess() {
   // then never-attempted before previously-attempted,
   // then by outlet tier priority
   const closedShowMode = process.env.CLOSED_SHOW_MODE === 'true';
+  // BRO-6972: SHOW_FILTER runs (opening-night poller) collect a show with no scored review
+  // yet before shows that already have some, so its first review goes live first. Bulk runs
+  // skip this: it reads every review file of each queued show.
+  if (isShowFilterActive(CONFIG.showFilterSet, CONFIG.showFilter)) {
+    markUncoveredShows(reviews, CONFIG.reviewTextsDir);
+  }
   reviews.sort((a, b) => compareReviewPriority(a, b, { closedShowMode }));
   // BRO-6648 S1-T2: the opening-night lane writes the shows it holds. Drop them before the reserved
   // slices and per-run caps below, so a held review never takes a slot.

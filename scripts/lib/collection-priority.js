@@ -72,6 +72,12 @@ function compareReviewPriority(a, b, { closedShowMode = false } = {}) {
   if (!closedShowMode && a.isOpenShow !== b.isOpenShow) {
     return a.isOpenShow ? -1 : 1;
   }
+  // BRO-6972: a show with no scored review yet goes first. Its first review is what
+  // the first-live SLA times; We'll See's sat 8th of 8 (~3 min each) behind shows that
+  // already had reviews live. Only set for SHOW_FILTER runs (opening-night poller).
+  if (!closedShowMode && Boolean(a.showUncovered) !== Boolean(b.showUncovered)) {
+    return a.showUncovered ? -1 : 1;
+  }
   // Newest shows first — a show that opened last night outranks one from 2003.
   if (a.recencyDate !== b.recencyDate) {
     return String(b.recencyDate).localeCompare(String(a.recencyDate));
@@ -214,7 +220,43 @@ function promoteAgedStubs(queue, cap = AGED_STUB_DRAIN_PER_RUN, seed = drainRota
   return [...chosen, ...queue.filter(r => !promoted.has(r))];
 }
 
+/**
+ * True when no review file in `reviewFiles` (parsed review JSONs of one show) carries a
+ * score yet. An empty list counts as uncovered.
+ *
+ * @param {Array<object>} reviewFiles
+ */
+function isShowUncovered(reviewFiles) {
+  return !(reviewFiles || []).some((d) => d && (typeof d.assignedScore === 'number' || (d.llmScore !== undefined && d.llmScore !== null)));
+}
+
+/**
+ * Sets `showUncovered` on every queue entry from its show's review files on disk.
+ * One directory read per distinct show; an unreadable directory counts as uncovered.
+ */
+function markUncoveredShows(reviews, reviewTextsDir) {
+  const fs = require('fs');
+  const path = require('path');
+  const byShow = new Map();
+  for (const r of reviews) {
+    if (!byShow.has(r.showId)) {
+      const dir = path.join(reviewTextsDir, r.showId);
+      let files = [];
+      try {
+        files = fs.readdirSync(dir).filter((f) => f.endsWith('.json')).map((f) => {
+          try { return JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8')); } catch { return null; }
+        });
+      } catch { /* unreadable */ }
+      byShow.set(r.showId, isShowUncovered(files));
+    }
+    r.showUncovered = byShow.get(r.showId);
+  }
+  return reviews;
+}
+
 module.exports = {
+  isShowUncovered,
+  markUncoveredShows,
   AGED_STUB_DRAIN_PER_RUN,
   AGED_STUB_MIN_AGE_HOURS,
   isAgedNeverAttemptedStub,
