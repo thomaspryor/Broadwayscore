@@ -61,8 +61,8 @@ const PAID_FEED_REST_PASSES = 5;
 const PAID_FEED_MAX_FAILS = 3;
 const PAID_FEED_RUN_MAX = 90;
 const PAID_FEED_TIERS = ['brightdata'];
-// A regular feed (read through the paid chain) that fails CHAIN_FEED_MAX_FAILS reads in a row rests CHAIN_FEED_REST_PASSES
-// passes, then gets one read; another failure rests it again. feeds.washingtonpost.com answered 502 to every read of
+// A regular feed (read through the paid chain) that fails CHAIN_FEED_MAX_FAILS reads in a row is read again on the
+// CHAIN_FEED_REST_PASSES-th pass after the failure (it sits out the CHAIN_FEED_REST_PASSES - 1 passes between); another failure rests it again. feeds.washingtonpost.com answered 502 to every read of
 // every 2026-11-03/04 shadow while Bright Data billed each one (56 of 56 in one five-show rerun) (BRO-6872).
 const CHAIN_FEED_MAX_FAILS = 3;
 const CHAIN_FEED_REST_PASSES = 10;
@@ -73,7 +73,12 @@ const MAX_UNWRAP_TRIES = 3;
 // five-show replays every unwrap that reached a publisher settled at 17.9-18.5 s and was thrown away (the New York
 // Sun's A Few Good Men review three times, then given up for the night) (BRO-6872). The wrappers are opened
 // GOOGLE_NEWS_UNWRAP_CONCURRENCY at a time, as in google-news-rss.js, so the longer cap still fits the 90 s pass.
+// The cap is for the wrapper pages only. The RSS searches keep the pass default (GOOGLE_NEWS_SEARCH_TIMEOUT_MS), so one
+// slow Google answer cannot eat the unwrap time. An unwrap is not started with less than GOOGLE_NEWS_MIN_UNWRAP_MS left
+// in the pass: cut off by the deadline it earns no strike, and its orphaned fetch would carry on into the paid tiers.
 const GOOGLE_NEWS_FETCH_TIMEOUT_MS = 35000;
+const GOOGLE_NEWS_SEARCH_TIMEOUT_MS = DEFAULT_FETCH_TIMEOUT_MS;
+const GOOGLE_NEWS_MIN_UNWRAP_MS = 20000;
 const GOOGLE_NEWS_UNWRAP_CONCURRENCY = 3;
 // DTLI and Show Score hit the 15 s cap in 14 and 6 passes of the 2026-10-22 shadow; the pass deadline still bounds them.
 const SLOW_AGGREGATOR_TIMEOUT_MS = 45000;
@@ -840,22 +845,23 @@ function outsideNightWindow(rawDate, night, timeZone) {
   return !!publishDate && !admitLaneCandidate({ source: 'outlet-index', publishDate, night, ...(timeZone ? { timeZone } : {}) }).admit;
 }
 
-function googleNewsAdapter({ maxUnwrap = 8, decodeImpl = null, maxDecode = 3 * maxUnwrap, decodeBudgetMs = 30000, now = Date.now, siteQueryHosts = GOOGLE_NEWS_SITE_QUERY_HOSTS, fetchTimeoutMs = GOOGLE_NEWS_FETCH_TIMEOUT_MS, unwrapConcurrency = GOOGLE_NEWS_UNWRAP_CONCURRENCY, log = (m) => console.log(m) } = {}) {
+function googleNewsAdapter({ maxUnwrap = 8, decodeImpl = null, maxDecode = 3 * maxUnwrap, decodeBudgetMs = 30000, now = Date.now, siteQueryHosts = GOOGLE_NEWS_SITE_QUERY_HOSTS, fetchTimeoutMs = GOOGLE_NEWS_FETCH_TIMEOUT_MS, unwrapConcurrency = GOOGLE_NEWS_UNWRAP_CONCURRENCY, minUnwrapMs = GOOGLE_NEWS_MIN_UNWRAP_MS, searchTimeoutMs = GOOGLE_NEWS_SEARCH_TIMEOUT_MS, log = (m) => console.log(m) } = {}) {
   const resolved = new Map(); // wrapper link -> { url|null, tries }
   return {
     name: 'google-news', kind: 'feed', phase: 'cheap', fetchTimeoutMs,
-    async discover({ show, fetchText, night, timeZone }) {
+    async discover({ show, fetchText, night, timeZone, remainingMs = () => Infinity }) {
       const london = /west[-\s]?end|london/i.test(String(show.category || ''));
+      const searchFetch = withTimeout(fetchText, searchTimeoutMs);
       // Press titles too (show.akaTitles): critics reviewed Billy Crystal 860 as "860", and the listing-title search
       // found 1 of 13 (BRO-5891 fixed it in the regular pipeline's google-news-rss.js; BRO-5993 here).
       const { searchTitles, headlineNamesShow } = require('../google-news-rss');
       const titles = searchTitles(show);
       const locale = { hl: london ? 'en-GB' : 'en-US', gl: london ? 'GB' : 'US', ceid: london ? 'GB:en' : 'US:en' };
       const q = new URLSearchParams({ q: `${titles.map((t) => `"${t}"`).join(' OR ')} review`, ...locale });
-      const xml = await fetchText(`https://news.google.com/rss/search?${q}`);
+      const xml = await searchFetch(`https://news.google.com/rss/search?${q}`);
       const sites = london ? [] : siteQueryHosts;
       // A site search that fails costs only its own outlet this pass; the main search failing still fails the adapter.
-      const siteXml = await Promise.all(sites.map((host) => fetchText(`https://news.google.com/rss/search?${new URLSearchParams({ q: `"${show.title}" site:${host}`, ...locale })}`).catch(() => '')));
+      const siteXml = await Promise.all(sites.map((host) => searchFetch(`https://news.google.com/rss/search?${new URLSearchParams({ q: `"${show.title}" site:${host}`, ...locale })}`).catch(() => '')));
       const items = [];
       const seenLinks = new Set();
       for (const [feedXml, site] of [[xml, null], ...siteXml.map((x, i) => [x, sites[i]])]) {
@@ -908,7 +914,7 @@ function googleNewsAdapter({ maxUnwrap = 8, decodeImpl = null, maxDecode = 3 * m
       let unwrappedOk = 0;
       const unwrapOne = async (it) => {
         const prior = resolved.get(it.link);
-        const startedAt = Date.now();
+        if (remainingMs() < minUnwrapMs) return; // too late in the pass; no strike, opened next pass
         let url = null;
         try {
           const page = await fetchText(it.link, {
@@ -919,10 +925,11 @@ function googleNewsAdapter({ maxUnwrap = 8, decodeImpl = null, maxDecode = 3 * m
           });
           url = typeof page === 'string' ? publisherUrlFromWrapperPage(page, it.sourceUrl, null, { vettedOutlet: true }) : publisherUrlFromWrapperPage(page && page.content, it.sourceUrl, page && page.finalUrl, { vettedOutlet: true });
         } catch (e) {
-          // Cut off by the pass deadline (not started, or stopped before its own cap): that says nothing about the
-          // wrapper, so it is no strike (three strikes give the item up for the night).
+          // Cut off by the pass deadline (not started, or given less than its own cap, as withTimeout's message says):
+          // that says nothing about the wrapper, so it is no strike (three strikes give the item up for the night).
           const msg = String((e && e.message) || e);
-          if (/deadline reached/.test(msg) || (/timed out/.test(msg) && Date.now() - startedAt < fetchTimeoutMs * 0.9)) return;
+          const granted = Number((msg.match(/timed out after (\d+)ms/) || [])[1]);
+          if (/deadline reached/.test(msg) || (granted && granted < fetchTimeoutMs)) return;
         }
         if (url) unwrappedOk++;
         resolved.set(it.link, { url, tries: ((prior && prior.tries) || 0) + 1 });
@@ -1259,7 +1266,7 @@ async function runDiscoveryPass({
     const remaining = () => deadlineMs - (Date.now() - startedMs);
     const fetchForAdapter = a.fetchTimeoutMs ? withTimeout(rawFetch, a.fetchTimeoutMs, remaining) : fetchText;
     const slowFetchText = withTimeout(rawFetch, SLOW_AGGREGATOR_TIMEOUT_MS, remaining);
-    return Promise.resolve().then(() => a.discover({ show, night, fetchText: fetchForAdapter, slowFetchText, timeZone }));
+    return Promise.resolve().then(() => a.discover({ show, night, fetchText: fetchForAdapter, slowFetchText, timeZone, remainingMs: remaining }));
   }));
   settled.forEach((r, i) => {
     if (r.status === 'fulfilled') collect(r.value, cheap[i].name);
@@ -1377,7 +1384,7 @@ function recordDiscovered(ledgerDir, { show, night, admitted, now = Date.now() }
 module.exports = {
   SERP_AFTER_MS, SERP_COOLDOWN_MS, SERP_NIGHT_MAX, defaultLaneMissingOutlets, defaultLaneSectionIndexes, laneMissingOutlets,
   NON_REVIEW_HOSTS, WRAPPER_HOSTS, canonicalUrl, bodyScope, playbillArticleBody, bwwRoundupBody, storyCitedLinks, extractAnchors, citedExcerpts, extractCitedLinks, extractPublishDate,
-  nonReviewReason, SECTION_INDEX_PARSERS, headlineIsShowTitle, hasReviewSignal, hostSignalsReview, REVIEW_WITHOUT_WORD_HOSTS, pageDatedNear, dtliSitemapPages, defaultLaneFeeds, bwwRoundupAdapter, dtliAdapter, rssAdapter, PAID_FEED_REST_PASSES, PAID_FEED_MAX_FAILS, PAID_FEED_RUN_MAX, CHAIN_FEED_MAX_FAILS, CHAIN_FEED_REST_PASSES, unreachableFromRunner, sectionIndexAdapter, showScoreAdapter, playbillVerdictAdapter, googleNewsAdapter, GOOGLE_NEWS_SITE_QUERY_HOSTS, GOOGLE_NEWS_FETCH_TIMEOUT_MS, GOOGLE_NEWS_UNWRAP_CONCURRENCY, talkinBroadwayAdapter, TB_PROBE_BATCH, TB_MAX_CARRIES, tbFetchWasBlocked, serpAdapter,
+  nonReviewReason, SECTION_INDEX_PARSERS, headlineIsShowTitle, hasReviewSignal, hostSignalsReview, REVIEW_WITHOUT_WORD_HOSTS, pageDatedNear, dtliSitemapPages, defaultLaneFeeds, bwwRoundupAdapter, dtliAdapter, rssAdapter, PAID_FEED_REST_PASSES, PAID_FEED_MAX_FAILS, PAID_FEED_RUN_MAX, CHAIN_FEED_MAX_FAILS, CHAIN_FEED_REST_PASSES, unreachableFromRunner, sectionIndexAdapter, showScoreAdapter, playbillVerdictAdapter, googleNewsAdapter, GOOGLE_NEWS_SITE_QUERY_HOSTS, GOOGLE_NEWS_FETCH_TIMEOUT_MS, GOOGLE_NEWS_SEARCH_TIMEOUT_MS, GOOGLE_NEWS_MIN_UNWRAP_MS, GOOGLE_NEWS_UNWRAP_CONCURRENCY, talkinBroadwayAdapter, TB_PROBE_BATCH, TB_MAX_CARRIES, tbFetchWasBlocked, serpAdapter,
   publisherUrlFromWrapperPage, parseFeedEntries, fetchTextFrom, serpAllowed, memoPath, loadMemo, saveMemo,
   runDiscoveryPass, loadSeen, recordDiscovered,
 };

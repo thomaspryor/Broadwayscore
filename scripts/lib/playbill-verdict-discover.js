@@ -312,19 +312,47 @@ async function searchPlaybillVerdict(show, opts = {}) {
   // guard; the per-show path just fails open and moves on.
   const articles = html ? extractArticlesFromCategoryPage(html) : [];
   const hit = findVerdictArticle(articles, show, { matchTitleToShow, matchSlugToShow });
-  if (hit || opts.skipSitemap) return hit;
+  if (hit) return hit;
+  if (opts.skipSitemap) return findVerdictArticleByPressTitle(articles, show);
 
   // BRO-6682: the category page's first paint lists only ~27-30 articles. On a
   // night with dozens of openings (In the Heights, 2026-10-29) a show's Verdict
   // article scrolls off that list while its critics are still being added, and
   // every poll said "no matching article". The site-wide sitemap still lists
   // it, so fall back to it for this one show.
+  let sitemapArticles = [];
   try {
-    const xml = await cachedSitemap(fetchHtml);
-    return findVerdictArticle(extractArticlesFromSitemap(xml), show, { matchTitleToShow, matchSlugToShow });
-  } catch (_) {
-    return null;
-  }
+    sitemapArticles = extractArticlesFromSitemap(await cachedSitemap(fetchHtml));
+    const sitemapHit = findVerdictArticle(sitemapArticles, show, { matchTitleToShow, matchSlugToShow });
+    if (sitemapHit) return sitemapHit;
+  } catch (_) { /* fall through to the press-title pass over what was read */ }
+  return findVerdictArticleByPressTitle([...articles, ...sitemapArticles], show);
+}
+
+// Press titles (show.akaTitles), tried only after the listing title has failed on both the category page and the
+// sitemap, so a loose hit can never stand in for a strict one. Playbill titled the 860 roundup "Reviews: What Do the
+// Critics Think of Billy Crystal's Solo Show 860 on Broadway?", which neither strict matcher takes, so the opening-night
+// lane never opened it and missed Cititour, which it cited (BRO-6872). headlineNamesPressTitle is the press-title half of
+// the Google News headline test (a short press title must come with a listing-title word, "Billy" or "Crystal"); its
+// listing-title half is a looser 80%-of-words test than matchTitleToShow and is left out. The sitemap goes back years, so
+// a dated roundup from before this production's run (an earlier production of the same title) is skipped.
+const PRESS_TITLE_LEAD_DAYS = 60;
+function findVerdictArticleByPressTitle(articles, show) {
+  if (!articles || !articles.length || !Array.isArray(show.akaTitles) || !show.akaTitles.length) return null;
+  // An aka that is the listing title in other letter case ("Los Soles Truncos") is only the loose listing test again.
+  const key = (t) => String(t || '').toLowerCase().normalize('NFKD').replace(/[^a-z0-9]+/g, ' ').trim();
+  const akaTitles = show.akaTitles.filter((t) => key(t) && key(t) !== key(show.title));
+  if (!akaTitles.length) return null;
+  const { headlineNamesPressTitle } = require('./google-news-rss');
+  const press = { ...show, akaTitles };
+  const start = Date.parse(show.previewsStartDate || show.openingDate || '');
+  const earliest = Number.isFinite(start) ? start - PRESS_TITLE_LEAD_DAYS * 86400000 : null;
+  const hit = articles.find((article) => {
+    if (!article.title || !headlineNamesPressTitle(article.title, press)) return false;
+    const published = article.publishDate ? Date.parse(article.publishDate) : NaN;
+    return earliest == null || !Number.isFinite(published) || published >= earliest;
+  });
+  return hit ? { articleUrl: hit.url, articleTitle: hit.title } : null;
 }
 
 function findVerdictArticle(articles, show, { matchTitleToShow, matchSlugToShow }) {
@@ -350,15 +378,6 @@ function findVerdictArticle(articles, show, { matchTitleToShow, matchSlugToShow 
     if (match && (match.confidence === 'high' || match.confidence === 'medium')) {
       return { articleUrl: article.url, articleTitle: article.title };
     }
-  }
-  // Press titles (show.akaTitles), after every listing-title match has failed: Playbill titled the 860 roundup "Reviews:
-  // What Do the Critics Think of Billy Crystal's Solo Show 860 on Broadway?", which neither matcher above takes, so the
-  // opening-night lane never opened it and missed Cititour, which it cited (BRO-6872). headlineNamesShow is the Google
-  // News headline test: a short press title must come with a listing-title word ("Billy", "Crystal").
-  if (Array.isArray(show.akaTitles) && show.akaTitles.length) {
-    const { headlineNamesShow } = require('./google-news-rss');
-    const hit = articles.find((article) => article.title && headlineNamesShow(article.title, show));
-    if (hit) return { articleUrl: hit.url, articleTitle: hit.title };
   }
   return null;
 }

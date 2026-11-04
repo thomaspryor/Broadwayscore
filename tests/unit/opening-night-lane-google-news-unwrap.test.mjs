@@ -62,7 +62,8 @@ test('wrappers are opened GOOGLE_NEWS_UNWRAP_CONCURRENCY at a time, so a full bu
 });
 
 test('a wrapper cut off by the pass deadline is no strike: it is opened again on later passes', async () => {
-  const adapter = d.googleNewsAdapter({ ...quiet, fetchTimeoutMs: 1000 });
+  // minUnwrapMs 0: this test is about the cut, not the late-start guard below.
+  const adapter = d.googleNewsAdapter({ ...quiet, fetchTimeoutMs: 1000, minUnwrapMs: 0 });
   const { fetchText, seen } = slowWrappers(1, 150);
   // Passes whose deadline stops the wrapper before its own cap, more of them than MAX_UNWRAP_TRIES (3). A pass whose
   // deadline is spent before the wrapper starts (first-pass module loading) does not open it at all.
@@ -100,4 +101,22 @@ test('a wrapper fetch that errors (not a deadline cut) is a strike', async () =>
   };
   for (let i = 0; i < 6; i++) await pass(adapter, fetchText);
   assert.equal(calls, 3);
+});
+
+test('an unwrap is not started late in the pass (BRO-6872 review): no strike, and no orphaned paid fetch', async () => {
+  const adapter = d.googleNewsAdapter({ ...quiet, fetchTimeoutMs: 1000, minUnwrapMs: 500 });
+  const { fetchText, seen } = slowWrappers(1, 5);
+  // Pass deadline 300 ms, under minUnwrapMs: the wrapper is never opened, however many passes run.
+  for (let i = 0; i < 5; i++) await pass(adapter, fetchText, { deadlineMs: 300 });
+  assert.equal(seen.calls.length, 0);
+  const ok = await pass(adapter, fetchText);
+  assert.deepEqual(ok.admitted.map((a) => a.url), [article(0)], 'opened once a pass has time, with no strikes spent');
+});
+
+test('the RSS searches keep the short cap, so a slow Google answer cannot eat the unwrap time (BRO-6872 review)', async () => {
+  const fetchText = async (url) => { if (url === FEED_URL) { await sleep(200); return feed(1); } if (/rss\/search/.test(url)) return '<rss></rss>'; return { content: '', finalUrl: article(0) }; };
+  const r = await pass(d.googleNewsAdapter({ ...quiet, fetchTimeoutMs: 1000, searchTimeoutMs: 50 }), fetchText);
+  assert.equal(r.admitted.length, 0);
+  assert.ok(r.errors.some((e) => e.adapter === 'google-news' && /timed out after 50ms/.test(e.error)), JSON.stringify(r.errors));
+  assert.equal(d.GOOGLE_NEWS_SEARCH_TIMEOUT_MS, 15000);
 });

@@ -29,7 +29,11 @@ function searchTitles(show) {
 // or "New Balance 860 v15 Review" passes for Billy Crystal 860.
 const words = (t) => String(t || '').toLowerCase().normalize('NFKD').replace(/[^a-z0-9 ]+/g, ' ').split(/\s+/).filter((w) => w.length >= 3);
 function headlineNamesShow(headline, show) {
-  if (titleMatchesShow(headline, show.title, { fuzzy: true })) return true;
+  return titleMatchesShow(headline, show.title, { fuzzy: true }) || headlineNamesPressTitle(headline, show);
+}
+// The press-title half of headlineNamesShow on its own, for callers whose listing-title test is stricter than this
+// fuzzy one (playbill-verdict-discover.js, BRO-6872).
+function headlineNamesPressTitle(headline, show) {
   const listing = words(show.title);
   const head = new Set(words(headline));
   return searchTitles(show).slice(1).some((aka) => {
@@ -233,4 +237,4 @@ async function discoverGoogleNewsReviews(show, options = {}) {
   return results;
 }
 
-module.exports = { searchTitles, headlineNamesShow, discoverGoogleNewsReviews, googleNewsRssUrl, parseGoogleNewsItems, publisherUrlFromPage, isReviewHeadline };
+module.exports = { searchTitles, headlineNamesShow, headlineNamesPressTitle, discoverGoogleNewsReviews, googleNewsRssUrl, parseGoogleNewsItems, publisherUrlFromPage, isReviewHeadline };
