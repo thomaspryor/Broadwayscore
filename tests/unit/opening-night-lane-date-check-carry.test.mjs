@@ -122,3 +122,53 @@ test('a check still waiting for a slot when the pass ends is dropped, never star
   assert.equal(next.admitted.length, 5, 'three read from the carry, two dropped ones asked again');
   assert.equal(started.length, 5);
 });
+
+// p16 replay, Other Desert Cities: the TB index listed OtherDesertCities26.html once, its date check answered (2026-10-18)
+// after that pass's deadline, and every later index fetch came back as a challenge page, so the answer was never read.
+test('an undated index find whose index never loads again is still read and admitted on a later pass', async () => {
+  let calls = 0; let listed = 0;
+  const once = { name: 'talkin-broadway', kind: 'outlet-index', phase: 'cheap', fetchTimeoutMs: 1000,
+    discover: async () => (listed++ === 0 ? [{ url: TB, title: 'School Girls review', source: 'outlet-index', publishDate: null, needsDate: true }] : []) };
+  const fetchText = async (url) => { if (url !== TB) throw new Error('404'); calls++; await sleep(150); return PAGE; };
+  const memo = { rejected: {} };
+  const run = () => d.runDiscoveryPass({ show: SHOW, night: NIGHT, now: T0 + 3600000, startedAt: T0, adapters: [once], fetchText, memo, deadlineMs: 60 });
+  assert.equal((await run()).admitted.length, 0);
+  await sleep(200);
+  const second = await run();
+  assert.deepEqual(second.admitted.map((a) => a.key), [KEY], 'read without a second sighting');
+  assert.equal(calls, 1);
+  const third = await run();
+  assert.equal(third.admitted.length, 0, 'admitted once, then dropped from the pending set');
+  assert.equal(calls, 1);
+});
+
+test('an undated find deferred by the date-check cap is checked on a later pass without a second sighting', async () => {
+  let listed = 0;
+  const once = { name: 'talkin-broadway', kind: 'outlet-index', phase: 'cheap', fetchTimeoutMs: 1000,
+    discover: async () => (listed++ === 0 ? [{ url: TB, title: 'School Girls review', source: 'outlet-index', publishDate: null, needsDate: true }] : []) };
+  const memo = { rejected: {} };
+  const run = (maxDateChecks) => d.runDiscoveryPass({ show: SHOW, night: NIGHT, now: T0 + 3600000, startedAt: T0, adapters: [once], fetchText: async () => PAGE, memo, maxDateChecks });
+  assert.deepEqual((await run(0)).deferredDateChecks, [KEY]);
+  assert.deepEqual((await run(10)).admitted.map((a) => a.key), [KEY]);
+});
+
+test('a pending find that keeps failing is given up after three date-check failures, not retried forever', async () => {
+  let calls = 0; let listed = 0;
+  const once = { name: 'talkin-broadway', kind: 'outlet-index', phase: 'cheap', fetchTimeoutMs: 1000,
+    discover: async () => (listed++ === 0 ? [{ url: TB, title: 'School Girls review', source: 'outlet-index', publishDate: null, needsDate: true }] : []) };
+  const fetchText = async () => { calls++; throw new Error('All scraping methods failed'); };
+  const memo = { rejected: {} };
+  for (let i = 0; i < 6; i++) await d.runDiscoveryPass({ show: SHOW, night: NIGHT, now: T0 + 3600000, startedAt: T0, adapters: [once], fetchText, memo });
+  assert.equal(calls, 3);
+  assert.deepEqual(memo.rejected[KEY], { reason: 'date-check-failed', attempts: 3 });
+});
+
+test('a not-review-like strike from another sighting does not count toward the three date-check failures', async () => {
+  const memo = { rejected: { [KEY]: { reason: 'not-review-like', attempts: 1 } } };
+  let calls = 0;
+  const signalled = { name: 'talkin-broadway', kind: 'outlet-index', phase: 'cheap', fetchTimeoutMs: 1000,
+    discover: async () => [{ url: TB, title: 'School Girls', source: 'outlet-index', publishDate: null, needsDate: true, reviewSignalGiven: true }] };
+  const fetchText = async () => { calls++; throw new Error('All scraping methods failed'); };
+  for (let i = 0; i < 6; i++) await d.runDiscoveryPass({ show: SHOW, night: NIGHT, now: T0 + 3600000, startedAt: T0, adapters: [signalled], fetchText, memo });
+  assert.equal(calls, 3, 'three date-check tries, the earlier strike aside');
+});
