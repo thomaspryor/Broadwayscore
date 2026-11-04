@@ -1,13 +1,48 @@
 {
-  "generatedAt": "2026-11-04T06:42:07.615Z",
+  "generatedAt": "2026-11-04T07:53:24.958Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 318,
-  "clean": 318,
-  "defective": 0,
-  "byType": {},
-  "shows": [],
+  "clean": 316,
+  "defective": 2,
+  "byType": {
+    "score-drift": 2
+  },
+  "shows": [
+    {
+      "showId": "the-imaginary-invalid-2026",
+      "title": "The Imaginary Invalid",
+      "openingDate": "2026-10-22",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 67.17 vs local 67.41 (Δ0.24)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 26,
+      "deployedCount": 26,
+      "firstDefectAt": "2026-11-04T07:53:20.652Z"
+    },
+    {
+      "showId": "murder-cathedral-off-west-end-2026",
+      "title": "Murder in the Cathedral",
+      "openingDate": "2026-10-19",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 84.28 vs local 84.21 (Δ0.07)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 24,
+      "deployedCount": 24,
+      "firstDefectAt": "2026-11-04T07:53:20.652Z"
+    }
+  ],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }

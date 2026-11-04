@@ -899,34 +899,6 @@
     "queuedAt": "2026-11-04T05:30:14.257Z"
   },
   {
-    "conditionKey": "review-gap:opening-window:tristan-and-yseult-off-broadway-2026",
-    "title": "Review gap — \"Tristan & Yseult\" missing 2 cited review(s)",
-    "description": "Tristan & Yseult (tristan-and-yseult-off-broadway-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=tristan-and-yseult-off-broadway-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-04T05:30:14.301Z"
-  },
-  {
-    "conditionKey": "t1-gaps:needs-manual-recovery",
-    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (Lincoln in the Bardo (washpost)). Checked 2026-11-04.",
-    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-04T06:38:56.871Z"
-  },
-  {
     "conditionKey": "outlet-ground-truth:king-lear-off-broadway-2026:https://www.theatermania.com/news/review-anon-the-one-about-the-maga-neighbor-and-the-ugly-flag_1857163/",
     "title": "Missing review from a tracked outlet: king-lear-off-broadway-2026 — theatermania",
     "description": "theatermania lists a review we don't hold (https://www.theatermania.com/news/review-anon-the-one-about-the-maga-neighbor-and-the-ugly-flag_1857163/), and automatic ingest did not recover it.",
@@ -1082,6 +1054,20 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-04T07:10:12.739Z"
+  },
+  {
+    "conditionKey": "t1-gaps:needs-manual-recovery",
+    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (Lincoln in the Bardo (washpost)). Checked 2026-11-04.",
+    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-04T07:52:58.788Z"
   },
   {
     "conditionKey": "land:land/bro-6965-collect",
