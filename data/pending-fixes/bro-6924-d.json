@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6924-d",
   "planId": "1a2970ad-b13c-4a42-bfca-4686720265d3",
-  "status": "pending",
+  "status": "partial",
   "createdAt": "2026-11-04T02:05:02.561Z",
   "submitter": {
     "name": null,
@@ -57,5 +57,34 @@
       "BRO-6924: wrong_production for the Met Tosca, set while this file sat under tosca-off-broadway-2026; it is the ENO Coliseum review and now lives in the ENO folder (wrongProductionManualClear already true).",
       "BRO-6924: wrong_production for the Met Tosca, set while this file sat under tosca-off-broadway-2026; it is the ENO Coliseum review and now lives in the ENO folder (wrongProductionManualClear already true)."
     ]
-  }
+  },
+  "executedAt": "2026-11-04T02:41:00.510Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted tosca-english-national-opera-west-end-2026/bachtrack--peter-quantrill.json"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "tosca-english-national-opera-west-end-2026/guardian--flora-willson.json wrongProduction: write guard kept true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "tosca-english-national-opera-west-end-2026/guardian--flora-willson.json wrongProductionReason: write guard kept \"CV-promoted: This is a legitimate theater review evaluating a Tosca production, but it reviews the English National Opera staging at the Coliseum in London, not the Met Opera production at the Metropolitan Opera H\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "Field \"incompleteReason\" not allowed for review-field-edit"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "Field \"incompleteDetail\" not allowed for review-field-edit"
+    }
+  ],
+  "executedIn": "ci"
 }
