@@ -65,3 +65,23 @@ test('an older marker still counts as sent (no second post after 10+ min)', asyn
   assert.equal(store.get('bsc_email_subscribed_broadway'), 'true');
   assert.equal(store.get(m.INFLIGHT_KEY), undefined);
 });
+
+// Owner 2026-11-04: critics who sign in from "Claim this page" are told they
+// won't be added to a mailing list, so auto-subscribe must not post for them.
+test('critic sign-in (skip flag) never joins the mailing list', async () => {
+  const m = await import('../../src/lib/auto-subscribe');
+  m.__resetForNewPage();
+  respond = 'ok';
+  m.markNoAutoSubscribe();
+  await m.autoSubscribeOnSignIn('critic@example.com');
+  assert.equal(posts, 0);
+  assert.equal(m.autoSubscribeSkipped(), true);
+});
+
+test('without the skip flag, sign-in still joins the list', async () => {
+  const m = await import('../../src/lib/auto-subscribe');
+  m.__resetForNewPage();
+  respond = 'ok';
+  await m.autoSubscribeOnSignIn('reader@example.com');
+  assert.equal(posts, 1);
+});

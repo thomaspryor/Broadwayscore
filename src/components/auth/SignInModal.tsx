@@ -6,7 +6,7 @@ import { Modal, ModalCloseButton } from '@/components/show-cards';
 import { prepareAppleSignIn } from '@/lib/apple-auth';
 import EmailCodeForm, { type EmailAuthResult } from './EmailCodeForm';
 
-type SignInContext = 'rating' | 'watchlist' | 'watchlist_local' | 'generic';
+type SignInContext = 'rating' | 'watchlist' | 'watchlist_local' | 'generic' | 'critic';
 
 interface SignInModalProps {
   isOpen: boolean;
@@ -27,6 +27,8 @@ const CONTEXT_HEADLINES: Record<SignInContext, string> = {
   // "Sign in" alone read as "for people who already have an account", and
   // email-list members assumed they did (BRO-4893).
   generic: 'Sign in or create a free account',
+  // Critics claiming their page (owner 2026-11-04): speak to them, not to theatergoers.
+  critic: 'Sign in to claim your page',
 };
 
 const CONTEXT_SUBTEXT: Record<SignInContext, string> = {
@@ -34,6 +36,7 @@ const CONTEXT_SUBTEXT: Record<SignInContext, string> = {
   watchlist: 'Your To See list will be saved automatically after sign-in.',
   watchlist_local: "Your list is on this device for now. Sign in to see it on your phone and computer, and we'll move it over for you.",
   generic: 'Track the shows you’ve seen and the ones you want to see.',
+  critic: 'A free account lets you add a photo, bio and links to your critic page.',
 };
 
 export default function SignInModal({ isOpen, onClose, onSignIn, onSendEmailCode, onVerifyEmailCode, context = 'generic', loading = false, error = null }: SignInModalProps) {
@@ -150,7 +153,9 @@ export default function SignInModal({ isOpen, onClose, onSignIn, onSendEmailCode
 
         {/* Footer */}
         <p className="mt-5 text-center text-xs text-gray-400 leading-relaxed">
-          New here? This creates your free account. You&apos;ll also get our Broadway opening night emails; unsubscribe anytime. By continuing, you agree to our{' '}
+          {context === 'critic'
+            ? <>New here? This creates your free account. We won&apos;t add you to any mailing list. By continuing, you agree to our{' '}</>
+            : <>New here? This creates your free account. You&apos;ll also get our Broadway opening night emails; unsubscribe anytime. By continuing, you agree to our{' '}</>}
           <Link href="/terms" target="_blank" className="underline hover:text-gray-200">Terms</Link> and{' '}
           <Link href="/privacy" target="_blank" className="underline hover:text-gray-200">Privacy Policy</Link>.
         </p>

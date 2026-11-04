@@ -35,6 +35,17 @@ import { buildSignupBody } from '@/lib/signup-city';
 const FORM_ID = process.env.NEXT_PUBLIC_FORMSPREE_SUBSCRIBER_FORM_ID || '';
 
 export const INFLIGHT_KEY = 'bsc_autosub_inflight';
+/** Set when sign-in started from a critic's "Claim this page" (owner 2026-11-04):
+ *  critics are told they won't be added to a mailing list, so never auto-join. */
+export const SKIP_KEY = 'bsc_autosub_skip';
+
+export function markNoAutoSubscribe(): void {
+  try { localStorage.setItem(SKIP_KEY, '1'); } catch { /* storage unavailable */ }
+}
+
+export function autoSubscribeSkipped(): boolean {
+  try { return localStorage.getItem(SKIP_KEY) === '1'; } catch { return false; }
+}
 
 let attemptedThisSession = false;
 
@@ -66,6 +77,7 @@ export async function autoSubscribeOnSignIn(email: string): Promise<void> {
   // admin, injected into bsc_auth) must never reach the real subscriber
   // pipeline — every test run would add a junk email to the list.
   if (email.endsWith('@bsc-test.dev')) return;
+  if (autoSubscribeSkipped()) return;
   // Check the broadway (main) list SPECIFICALLY — a WE-only subscriber who
   // signs in still belongs on the main list (owner rule: sign-in = main list).
   if (isFormspreeSubscribed('broadway')) return;

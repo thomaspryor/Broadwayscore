@@ -291,12 +291,13 @@ export default function CriticDetailClient({ critic, profile }: { critic: Critic
         ]} />
 
         {/* Ranks */}
-        <div className="flex flex-wrap gap-3 text-sm text-gray-400">
+        {/* Separator dots wrapped onto their own line on phones ("· ranks
+            across all reviews" read as broken, critic review 2026-11-04). */}
+        <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm text-gray-400">
           <span>{ordinalSuffix(critic.volumeRank)} most prolific critic</span>
-          <span aria-hidden="true" className="text-white/25">·</span>
           <span>{ordinalSuffix(critic.generosityRank)} most generous scorer</span>
           {marketFilter !== 'all' && (
-            <span className="text-fg-muted">· ranks across all reviews</span>
+            <span className="text-fg-muted">(ranks count all reviews)</span>
           )}
         </div>
       </div>

@@ -87,7 +87,7 @@ export default function CriticClaimPanel({ slug, name, outlet, claimed, reviewOp
   if (me.state === 'unavailable' || claimsOff) return null;
 
   const start = () => {
-    if (!isAuthenticated) { showSignIn('generic', 'critic_claim', { returnTo: `/critics/${slug}` }); return; }
+    if (!isAuthenticated) { showSignIn('critic', 'critic_claim', { returnTo: `/critics/${slug}` }); return; }
     setClaimOpen(true);
   };
 

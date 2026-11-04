@@ -6,7 +6,7 @@ import { getSupabaseClient, hasStoredSupabaseSession, isSupabaseConfigured, onSu
 import { isAuthCallbackPath } from '@/lib/analytics/redact-url';
 import { saveReturnUrl, clearReturnUrl, clearPendingAction, safeReturnPath, takeSignInParam } from '@/lib/deferred-auth';
 import { oauthRedirectUrl } from '@/lib/auth-redirect';
-import { autoSubscribeOnSignIn } from '@/lib/auto-subscribe';
+import { autoSubscribeOnSignIn, markNoAutoSubscribe, autoSubscribeSkipped } from '@/lib/auto-subscribe';
 import type { UserProfile } from '@/types/user';
 import SignInModal from '@/components/auth/SignInModal';
 import { signInWithAppleSDK } from '@/lib/apple-auth';
@@ -19,7 +19,7 @@ import {
   markSignInCompleted,
 } from '@/lib/ugc-analytics';
 
-type ModalContext = 'rating' | 'watchlist' | 'watchlist_local' | 'generic';
+type ModalContext = 'rating' | 'watchlist' | 'watchlist_local' | 'generic' | 'critic';
 
 export type DeleteAccountResult = 'deleted' | 'session_expired' | 'failed';
 
@@ -110,6 +110,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     let unsubscribe: (() => void) | undefined;
     let cancelled = false;
 
+    // Critic sign-ins skip the mailing list (owner 2026-11-04). The choice is
+    // kept on the account too, so their other devices respect it.
+    const syncAutoSubscribe = (client: SupabaseClient, u: { email?: string; user_metadata?: Record<string, unknown> }) => {
+      const onAccount = u.user_metadata?.no_autosub === true;
+      if (onAccount) markNoAutoSubscribe();
+      else if (autoSubscribeSkipped()) {
+        // Deferred: never await Supabase inside onAuthStateChange (deadlock note below).
+        setTimeout(() => { void client.auth.updateUser({ data: { no_autosub: true } }).catch(() => {}); }, 0);
+      }
+      if (u.email) autoSubscribeOnSignIn(u.email);
+    };
+
     const attach = (client: SupabaseClient) => {
       if (cancelled || unsubscribe) return;
       // Get existing session
@@ -121,7 +133,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           // Restored sessions too (not just fresh SIGNED_IN): users who signed
           // up before auto-subscribe shipped must still land on the list.
           // Fire-and-forget; internally idempotent.
-          if (session.user.email) autoSubscribeOnSignIn(session.user.email);
+          syncAutoSubscribe(client, session.user);
         }
         setLoading(false);
       });
@@ -141,7 +153,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           loadProfile(session.user.id);
           // Signing in = joining the main mailing list (owner decision 2026-07-13).
           // Also fire-and-forget — never await inside this callback (deadlock note above).
-          if (session.user.email) autoSubscribeOnSignIn(session.user.email);
+          syncAutoSubscribe(client, session.user);
           setModalOpen(false);
           setSignInLoading(false);
 
@@ -431,6 +443,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const src = source || context;
     setSignInError(null);
     setModalContext(context);
+    if (context === 'critic') markNoAutoSubscribe();
     setModalSource(src);
     setModalReturnTo(options?.returnTo ?? null);
     setModalOpen(true);
