@@ -351,6 +351,15 @@ function findVerdictArticle(articles, show, { matchTitleToShow, matchSlugToShow 
       return { articleUrl: article.url, articleTitle: article.title };
     }
   }
+  // Press titles (show.akaTitles), after every listing-title match has failed: Playbill titled the 860 roundup "Reviews:
+  // What Do the Critics Think of Billy Crystal's Solo Show 860 on Broadway?", which neither matcher above takes, so the
+  // opening-night lane never opened it and missed Cititour, which it cited (BRO-6872). headlineNamesShow is the Google
+  // News headline test: a short press title must come with a listing-title word ("Billy", "Crystal").
+  if (Array.isArray(show.akaTitles) && show.akaTitles.length) {
+    const { headlineNamesShow } = require('./google-news-rss');
+    const hit = articles.find((article) => article.title && headlineNamesShow(article.title, show));
+    if (hit) return { articleUrl: hit.url, articleTitle: hit.title };
+  }
   return null;
 }
 

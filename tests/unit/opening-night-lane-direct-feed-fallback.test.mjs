@@ -108,3 +108,36 @@ test('the cause code is added to direct reads only (Talkin\' Broadway reads ECON
   const fetchText = d.fetchTextFrom(async () => { throw networkError(); });
   await assert.rejects(fetchText('https://www.talkinbroadway.com/page/world/x.html'), (e) => e.message === 'fetch failed');
 });
+
+test('a regular feed that keeps failing rests between reads instead of paying on every pass (WaPo 502, BRO-6872)', async () => {
+  const WAPO = 'https://feeds.washingtonpost.com/rss/entertainment';
+  const reads = [];
+  const fetchText = async (url) => { reads.push(url); if (url === WAPO) throw new Error('All scraping methods failed'); return XML; };
+  const adapter = d.rssAdapter({ feeds: [{ url: WAPO, outletId: 'washpost' }, { url: 'https://variety.com/feed', outletId: 'variety' }] });
+  const passes = d.CHAIN_FEED_MAX_FAILS + d.CHAIN_FEED_REST_PASSES * 2;
+  for (let i = 0; i < passes; i++) await adapter.discover({ show: SHOW, fetchText });
+  const wapo = reads.filter((u) => u === WAPO).length;
+  assert.equal(wapo, d.CHAIN_FEED_MAX_FAILS + 2, `read ${wapo} times in ${passes} passes`);
+  assert.equal(reads.filter((u) => u !== WAPO).length, passes, 'the other feed is read every pass');
+});
+
+test('a regular feed that answers again is read every pass again', async () => {
+  const FEED = 'https://variety.com/feed';
+  let down = true; const reads = [];
+  const fetchText = async (url) => { reads.push(url); if (down) throw new Error('All scraping methods failed'); return XML; };
+  const adapter = d.rssAdapter({ feeds: [{ url: FEED, outletId: 'variety' }] });
+  for (let i = 0; i < d.CHAIN_FEED_MAX_FAILS; i++) await adapter.discover({ show: SHOW, fetchText });
+  down = false;
+  for (let i = 0; i < d.CHAIN_FEED_REST_PASSES + 4; i++) await adapter.discover({ show: SHOW, fetchText });
+  // 3 failures, a rest of CHAIN_FEED_REST_PASSES - 1 skipped passes, then a good read and every pass after it.
+  assert.equal(reads.length, d.CHAIN_FEED_MAX_FAILS + 5, reads.length);
+});
+
+test('two failures in a row do not rest a feed', async () => {
+  const FEED = 'https://variety.com/feed';
+  let n = 0;
+  const fetchText = async () => { n += 1; if (n % 3 !== 0) throw new Error('All scraping methods failed'); return XML; };
+  const adapter = d.rssAdapter({ feeds: [{ url: FEED, outletId: 'variety' }] });
+  for (let i = 0; i < 12; i++) await adapter.discover({ show: SHOW, fetchText });
+  assert.equal(n, 12);
+});

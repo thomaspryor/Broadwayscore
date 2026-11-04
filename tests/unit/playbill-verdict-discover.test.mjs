@@ -136,6 +136,23 @@ describe('searchPlaybillVerdict — per-show matching', () => {
     assert.strictEqual(hit.articleUrl, REAL_ARTICLE_URLS.fiddler);
   });
 
+  it('matches a roundup titled with the press title (BRO-6872: Billy Crystal 860)', async () => {
+    // The real Playbill title. Neither matchSlugToShow nor matchTitleToShow takes it, so the opening-night lane never
+    // opened the roundup and missed Cititour, which it cited.
+    const url860 = 'https://playbill.com/article/reviews-what-do-the-critics-think-of-billy-crystals-solo-show-860-on-broadway';
+    const categoryHtml = `
+      <a href="${REAL_ARTICLE_URLS.burnoutPara}">Read the Reviews for Pony Cam's Burnout Paradise Off-Broadway</a>
+      <a href="${url860}">Reviews: What Do the Critics Think of Billy Crystal’s Solo Show 860 on Broadway?</a>
+    `;
+    const show = { id: 'billy-crystal-860-2026', title: 'Billy Crystal 860', akaTitles: ['860'], slug: 'billy-crystal-860', category: 'broadway', openingDate: '2026-10-21' };
+    const hit = await searchPlaybillVerdict(show, { fetchHtml: async () => categoryHtml, skipSitemap: true });
+    assert.ok(hit, 'expected a match for 860');
+    assert.strictEqual(hit.articleUrl, url860);
+    // A short press title alone, with no listing-title word, is not this show.
+    const decoy = `<a href="https://playbill.com/article/reviews-860-sneakers">Reviews: What Do the Critics Think of New Balance 860?</a>`;
+    assert.strictEqual(await searchPlaybillVerdict(show, { fetchHtml: async () => decoy, skipSitemap: true }), null);
+  });
+
   it('returns null when no article matches the show', async () => {
     const categoryHtml = `<a href="${REAL_ARTICLE_URLS.burnoutPara}">Burnout Paradise Off-Broadway</a>`;
     const show = { id: 'hamilton', title: 'Hamilton', category: 'broadway', openingDate: '2015-08-06' };

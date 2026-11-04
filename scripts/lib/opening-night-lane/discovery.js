@@ -61,8 +61,20 @@ const PAID_FEED_REST_PASSES = 5;
 const PAID_FEED_MAX_FAILS = 3;
 const PAID_FEED_RUN_MAX = 90;
 const PAID_FEED_TIERS = ['brightdata'];
+// A regular feed (read through the paid chain) that fails CHAIN_FEED_MAX_FAILS reads in a row rests CHAIN_FEED_REST_PASSES
+// passes, then gets one read; another failure rests it again. feeds.washingtonpost.com answered 502 to every read of
+// every 2026-11-03/04 shadow while Bright Data billed each one (56 of 56 in one five-show rerun) (BRO-6872).
+const CHAIN_FEED_MAX_FAILS = 3;
+const CHAIN_FEED_REST_PASSES = 10;
 const MAX_DATE_CHECK_ATTEMPTS = 3;
 const MAX_UNWRAP_TRIES = 3;
+// A Google News wrapper opened in Playwright takes about 18 s: navigation, then fetchPage's own 15 s waitForSelector
+// (scripts/lib/scraper.js), then the consent check. Under the 15 s default cap each was cut off: in the 2026-11-04
+// five-show replays every unwrap that reached a publisher settled at 17.9-18.5 s and was thrown away (the New York
+// Sun's A Few Good Men review three times, then given up for the night) (BRO-6872). The wrappers are opened
+// GOOGLE_NEWS_UNWRAP_CONCURRENCY at a time, as in google-news-rss.js, so the longer cap still fits the 90 s pass.
+const GOOGLE_NEWS_FETCH_TIMEOUT_MS = 35000;
+const GOOGLE_NEWS_UNWRAP_CONCURRENCY = 3;
 // DTLI and Show Score hit the 15 s cap in 14 and 6 passes of the 2026-10-22 shadow; the pass deadline still bounds them.
 const SLOW_AGGREGATOR_TIMEOUT_MS = 45000;
 
@@ -574,6 +586,7 @@ function rssAdapter({ feeds } = {}) {
   const nextRegular = rotatingWindow(MAX_FEEDS_PER_PASS);
   const nextDirect = rotatingWindow(MAX_FEEDS_PER_PASS);
   const paid = new Map(); // feed url -> { at: pass of its last paid read, fails: paid reads failed in a row }
+  const chain = new Map(); // regular feed url -> { fails: reads failed in a row, restUntil: first pass it is read again }
   let pass = 0; let paidReads = 0;
   return {
     name: 'rss', kind: 'feed', phase: 'cheap',
@@ -598,11 +611,25 @@ function rssAdapter({ feeds } = {}) {
       };
       const out = [];
       const all = feeds || defaultLaneFeeds(show);
-      const batch = [...nextRegular(all.filter((f) => !f.directOnly)), ...nextDirect(all.filter((f) => f.directOnly))];
+      pass += 1;
+      const resting = (f) => !f.directOnly && (chain.get(f.url)?.restUntil ?? 0) > pass;
+      const batch = [...nextRegular(all.filter((f) => !f.directOnly)), ...nextDirect(all.filter((f) => f.directOnly))].filter((f) => !resting(f));
+      const readChainFeed = async (url) => {
+        const c = chain.get(url) || { fails: 0, restUntil: 0 };
+        try {
+          const body = await fetchText(url);
+          chain.delete(url);
+          return body;
+        } catch (e) {
+          c.fails += 1;
+          if (c.fails >= CHAIN_FEED_MAX_FAILS) c.restUntil = pass + CHAIN_FEED_REST_PASSES;
+          chain.set(url, c);
+          throw e;
+        }
+      };
       // Side by side: one after another, a dozen slow feeds could use up the pass deadline and starve the date checks that
       // run after the adapters (ship-check). A dead feed never hides the others.
-      pass += 1;
-      const bodies = await Promise.allSettled(batch.map((feed) => (feed.directOnly ? readDirectFeed(feed.url) : fetchText(feed.url))));
+      const bodies = await Promise.allSettled(batch.map((feed) => (feed.directOnly ? readDirectFeed(feed.url) : readChainFeed(feed.url))));
       for (const [i, feed] of batch.entries()) {
         if (bodies[i].status !== 'fulfilled') continue;
         let items;
@@ -813,10 +840,10 @@ function outsideNightWindow(rawDate, night, timeZone) {
   return !!publishDate && !admitLaneCandidate({ source: 'outlet-index', publishDate, night, ...(timeZone ? { timeZone } : {}) }).admit;
 }
 
-function googleNewsAdapter({ maxUnwrap = 8, decodeImpl = null, maxDecode = 3 * maxUnwrap, decodeBudgetMs = 30000, now = Date.now, siteQueryHosts = GOOGLE_NEWS_SITE_QUERY_HOSTS } = {}) {
+function googleNewsAdapter({ maxUnwrap = 8, decodeImpl = null, maxDecode = 3 * maxUnwrap, decodeBudgetMs = 30000, now = Date.now, siteQueryHosts = GOOGLE_NEWS_SITE_QUERY_HOSTS, fetchTimeoutMs = GOOGLE_NEWS_FETCH_TIMEOUT_MS, unwrapConcurrency = GOOGLE_NEWS_UNWRAP_CONCURRENCY, log = (m) => console.log(m) } = {}) {
   const resolved = new Map(); // wrapper link -> { url|null, tries }
   return {
-    name: 'google-news', kind: 'feed', phase: 'cheap',
+    name: 'google-news', kind: 'feed', phase: 'cheap', fetchTimeoutMs,
     async discover({ show, fetchText, night, timeZone }) {
       const london = /west[-\s]?end|london/i.test(String(show.category || ''));
       // Press titles too (show.akaTitles): critics reviewed Billy Crystal 860 as "860", and the listing-title search
@@ -861,38 +888,54 @@ function googleNewsAdapter({ maxUnwrap = 8, decodeImpl = null, maxDecode = 3 * m
       // for a pass; keeping national retries first would let failing paywalled wrappers starve the feed again.
       const triesOf = (it) => { const r = resolved.get(it.link); return r && !r.url ? r.tries : 0; };
       items.sort((a, b) => triesOf(a) - triesOf(b) || a.tier - b.tier);
-      const out = [];
-      let unwrapped = 0;
       // Decodes call Google directly, outside the pass deadline's fetch wrapper, so they get their own count and time cap.
       let decodes = 0;
+      let decoded = 0;
       const decodeUntil = now() + decodeBudgetMs;
+      const toUnwrap = [];
       for (const it of items) {
         let r = resolved.get(it.link);
         // BRO-6589: Google's own two-request HTTP decode first (~150 ms, no browser, not counted against maxUnwrap);
         // the result must still land on the item's source host. The driver passes decodeGoogleNewsLink; tests stay offline.
         if (decodeImpl && (!r || (!r.url && r.tries < MAX_UNWRAP_TRIES)) && decodes < maxDecode && now() < decodeUntil) {
           decodes++;
-          const decoded = await decodeImpl(it.link).catch(() => null);
-          const url = decoded ? publisherUrlFromWrapperPage('', it.sourceUrl, decoded, { vettedOutlet: true }) : null;
-          if (url) { r = { url, tries: ((r && r.tries) || 0) + 1 }; resolved.set(it.link, r); }
+          const raw = await decodeImpl(it.link).catch(() => null);
+          const url = raw ? publisherUrlFromWrapperPage('', it.sourceUrl, raw, { vettedOutlet: true }) : null;
+          if (url) { decoded++; r = { url, tries: ((r && r.tries) || 0) + 1 }; resolved.set(it.link, r); }
         }
-        if (!r || (!r.url && r.tries < MAX_UNWRAP_TRIES)) {
-          if (unwrapped >= maxUnwrap) continue;
-          unwrapped++;
-          let url = null;
-          try {
-            const page = await fetchText(it.link, {
-              preferPlaywright: true, skipVerify: true, withFinalUrl: true,
-              // Wait for the publisher (or the interstitial's link to it), not the destination's network-idle, which
-              // often never settles. Same selector google-news-rss.js uses.
-              playwrightWaitForSelector: waitForPublisher(hostOf(it.sourceUrl)),
-            });
-            url = typeof page === 'string' ? publisherUrlFromWrapperPage(page, it.sourceUrl, null, { vettedOutlet: true }) : publisherUrlFromWrapperPage(page && page.content, it.sourceUrl, page && page.finalUrl, { vettedOutlet: true });
-          } catch { /* counted below */ }
-          r = { url, tries: ((r && r.tries) || 0) + 1 };
-          resolved.set(it.link, r);
+        if ((!r || (!r.url && r.tries < MAX_UNWRAP_TRIES)) && toUnwrap.length < maxUnwrap) toUnwrap.push(it);
+      }
+      let unwrappedOk = 0;
+      const unwrapOne = async (it) => {
+        const prior = resolved.get(it.link);
+        const startedAt = Date.now();
+        let url = null;
+        try {
+          const page = await fetchText(it.link, {
+            preferPlaywright: true, skipVerify: true, withFinalUrl: true,
+            // Wait for the publisher (or the interstitial's link to it), not the destination's network-idle, which
+            // often never settles. Same selector google-news-rss.js uses.
+            playwrightWaitForSelector: waitForPublisher(hostOf(it.sourceUrl)),
+          });
+          url = typeof page === 'string' ? publisherUrlFromWrapperPage(page, it.sourceUrl, null, { vettedOutlet: true }) : publisherUrlFromWrapperPage(page && page.content, it.sourceUrl, page && page.finalUrl, { vettedOutlet: true });
+        } catch (e) {
+          // Cut off by the pass deadline (not started, or stopped before its own cap): that says nothing about the
+          // wrapper, so it is no strike (three strikes give the item up for the night).
+          const msg = String((e && e.message) || e);
+          if (/deadline reached/.test(msg) || (/timed out/.test(msg) && Date.now() - startedAt < fetchTimeoutMs * 0.9)) return;
         }
-        if (!r.url) continue;
+        if (url) unwrappedOk++;
+        resolved.set(it.link, { url, tries: ((prior && prior.tries) || 0) + 1 });
+      };
+      let next = 0;
+      const worker = async () => { while (next < toUnwrap.length) await unwrapOne(toUnwrap[next++]); };
+      await Promise.all(Array.from({ length: Math.min(Math.max(1, unwrapConcurrency), toUnwrap.length) }, worker));
+      // Decoder and browser results, so a decoder Google has started refusing shows in the job log (google-news-decode.js).
+      if (decodes || toUnwrap.length) log(`  google-news: decoded ${decoded}/${decodes}, unwrapped ${unwrappedOk}/${toUnwrap.length} wrapper link(s)`);
+      const out = [];
+      for (const it of items) {
+        const r = resolved.get(it.link);
+        if (!r || !r.url) continue;
         const date = feedDateInfo(it.pubDate, { atom: false });
         out.push({ url: r.url, title: it.title, source: 'outlet-index', ...date, via: it.siteQuery ? 'google-news-site' : 'google-news', vettedOutlet: true, ...(it.siteQuery ? { reviewSignalGiven: true } : {}) });
       }
@@ -1334,7 +1377,7 @@ function recordDiscovered(ledgerDir, { show, night, admitted, now = Date.now() }
 module.exports = {
   SERP_AFTER_MS, SERP_COOLDOWN_MS, SERP_NIGHT_MAX, defaultLaneMissingOutlets, defaultLaneSectionIndexes, laneMissingOutlets,
   NON_REVIEW_HOSTS, WRAPPER_HOSTS, canonicalUrl, bodyScope, playbillArticleBody, bwwRoundupBody, storyCitedLinks, extractAnchors, citedExcerpts, extractCitedLinks, extractPublishDate,
-  nonReviewReason, SECTION_INDEX_PARSERS, headlineIsShowTitle, hasReviewSignal, hostSignalsReview, REVIEW_WITHOUT_WORD_HOSTS, pageDatedNear, dtliSitemapPages, defaultLaneFeeds, bwwRoundupAdapter, dtliAdapter, rssAdapter, PAID_FEED_REST_PASSES, PAID_FEED_MAX_FAILS, PAID_FEED_RUN_MAX, unreachableFromRunner, sectionIndexAdapter, showScoreAdapter, playbillVerdictAdapter, googleNewsAdapter, GOOGLE_NEWS_SITE_QUERY_HOSTS, talkinBroadwayAdapter, TB_PROBE_BATCH, TB_MAX_CARRIES, tbFetchWasBlocked, serpAdapter,
+  nonReviewReason, SECTION_INDEX_PARSERS, headlineIsShowTitle, hasReviewSignal, hostSignalsReview, REVIEW_WITHOUT_WORD_HOSTS, pageDatedNear, dtliSitemapPages, defaultLaneFeeds, bwwRoundupAdapter, dtliAdapter, rssAdapter, PAID_FEED_REST_PASSES, PAID_FEED_MAX_FAILS, PAID_FEED_RUN_MAX, CHAIN_FEED_MAX_FAILS, CHAIN_FEED_REST_PASSES, unreachableFromRunner, sectionIndexAdapter, showScoreAdapter, playbillVerdictAdapter, googleNewsAdapter, GOOGLE_NEWS_SITE_QUERY_HOSTS, GOOGLE_NEWS_FETCH_TIMEOUT_MS, GOOGLE_NEWS_UNWRAP_CONCURRENCY, talkinBroadwayAdapter, TB_PROBE_BATCH, TB_MAX_CARRIES, tbFetchWasBlocked, serpAdapter,
   publisherUrlFromWrapperPage, parseFeedEntries, fetchTextFrom, serpAllowed, memoPath, loadMemo, saveMemo,
   runDiscoveryPass, loadSeen, recordDiscovered,
 };
