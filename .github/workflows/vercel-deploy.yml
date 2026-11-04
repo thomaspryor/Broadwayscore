@@ -345,7 +345,7 @@ jobs:
           # Fetch the before commit so diff works (shallow clone only has HEAD)
           git_net 180 fetch --depth=2 origin "$BEFORE" 2>/dev/null || true
           CHANGED=$(git diff --name-only "$BEFORE"..HEAD 2>/dev/null)
-          if [ -z "$CHANGED" ] || echo "$CHANGED" | grep -qE '^(data/|public/data/|content/reviews/)'; then
+          if [ -z "$CHANGED" ] || grep -qE '^(data/|public/data/|content/reviews/)' <<<"$CHANGED"; then
             echo "data_changed=true" >> "$GITHUB_OUTPUT"
             echo "Data files changed (or diff unavailable) — full prebuild"
           else

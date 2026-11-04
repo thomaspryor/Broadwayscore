@@ -170,7 +170,7 @@ jobs:
           # of it. `|| true` keeps `bash -e` from killing the step before the
           # ::error:: annotation below can explain what went wrong.
           BD_RATE=$(node -e "const {usdFor}=require('./scripts/lib/provider-pricing');process.stdout.write(String(usdFor('brightdata',1)))" 2>/dev/null || true)
-          if echo "$BD_RATE" | grep -qE '^[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?$'; then
+          if grep -qE '^[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?$' <<<"$BD_RATE"; then
             BD_COST=$(echo "scale=2; $BD_TOTAL * $BD_RATE" | bc)
           else
             # Report an unknown rate as unknown. Do NOT exit: this step's whole
@@ -280,10 +280,10 @@ jobs:
           SB_COLOR="#6b7280"
           if [ -n "$HEALTH_RUN" ]; then
             SB_RAW=$(gh run view "$HEALTH_RUN" --log 2>&1 | grep -oP 'ScrapingBee: .*' | head -1 || echo "")
-            if echo "$SB_RAW" | grep -qi "exhausted\|0%\|fail"; then
+            if grep -qi "exhausted\|0%\|fail" <<<"$SB_RAW"; then
               SB_STATUS="Exhausted — renews $SB_RENEWAL"
               SB_COLOR="#dc2626"
-            elif echo "$SB_RAW" | grep -qi "warn\|90%"; then
+            elif grep -qi "warn\|90%" <<<"$SB_RAW"; then
               SB_STATUS=$(echo "$SB_RAW" | sed 's/ScrapingBee: //')
               SB_COLOR="#f59e0b"
             elif [ -n "$SB_RAW" ]; then

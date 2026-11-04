@@ -59,7 +59,7 @@ jobs:
           # the count below default to 0 and this monitor would silently
           # report "healthy" while dispatch is actually off — the exact
           # silent-starvation failure mode this workflow exists to catch.
-          if echo "$OUT" | grep -q 'LINEAR_NEXT_DISABLED=1'; then
+          if grep -q 'LINEAR_NEXT_DISABLED=1' <<<"$OUT"; then
             echo "::warning::linear-drain-parked.js reports LINEAR_NEXT_DISABLED=1 — dispatch is switched off repo-wide"
             exit 1
           fi

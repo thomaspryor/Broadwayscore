@@ -58,7 +58,7 @@ jobs:
           [ "$DRY_RUN" = "true" ] && ARGS="$ARGS --dry-run"
           # Validate before use: workflow_dispatch input reaches a shell.
           if [ -n "$CHECK_DATE" ]; then
-            echo "$CHECK_DATE" | grep -qE '^[0-9]{4}-[0-9]{2}-[0-9]{2}$' || { echo "bad date"; exit 2; }
+            grep -qE '^[0-9]{4}-[0-9]{2}-[0-9]{2}$' <<<"$CHECK_DATE" || { echo "bad date"; exit 2; }
             ARGS="$ARGS --date=$CHECK_DATE"
           fi
           node scripts/check-morning-digest-sent.js $ARGS

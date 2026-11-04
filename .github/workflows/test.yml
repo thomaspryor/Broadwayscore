@@ -4326,7 +4326,7 @@ jobs:
         run: |
           OUT=$(node scripts/audit-playwright-count-assertions.js || true)
           echo "$OUT"
-          if echo "$OUT" | grep -q "unguarded count() assignment"; then
+          if grep -q "unguarded count() assignment" <<<"$OUT"; then
             echo "::warning::Playwright count()-without-assertion pattern found — a selector drift here would silently pass having checked nothing. Run: node scripts/audit-playwright-count-assertions.js"
           fi
 

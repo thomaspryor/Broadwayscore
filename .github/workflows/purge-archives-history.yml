@@ -224,7 +224,7 @@ jobs:
               if [ "$RC" -eq 0 ]; then
                 return 0
               fi
-              if echo "$OUT" | grep -qiE "stale info|rejected"; then
+              if grep -qiE "stale info|rejected" <<<"$OUT"; then
                 echo "  ABORT: $name moved on origin during the rewrite (lease rejected) — leaving it untouched, not retrying with a stale lease"
                 return 1
               fi

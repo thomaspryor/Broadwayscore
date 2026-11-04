@@ -382,7 +382,7 @@ jobs:
                      gh run list --workflow=press-night-probe.yml --status queued --json displayTitle --jq '.[].displayTitle') 2>/dev/null || true)
           while read -r SHOW NIGHT MARKET EMBARGO; do
             [ -z "$SHOW" ] && continue
-            if echo "$ACTIVE" | grep -qF "Press night probe $SHOW $NIGHT"; then
+            if grep -qF "Press night probe $SHOW $NIGHT" <<<"$ACTIVE"; then
               echo "Probe already queued or running for $SHOW $NIGHT"
               continue
             fi

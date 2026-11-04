@@ -205,7 +205,7 @@ jobs:
           # silently re-accumulating until the next manual sweep.
           OUT=$(node scripts/audit-review-url-clusters.js --threshold=3 || true)
           echo "$OUT"
-          if echo "$OUT" | grep -q "byline-explosion cluster"; then
+          if grep -q "byline-explosion cluster" <<<"$OUT"; then
             N=$(echo "$OUT" | head -1 | grep -oE '[0-9]+' | head -1)
             echo "::warning::review-url-cluster audit found $N byline-explosion cluster(s) — reviews likely buried/unscored. Run: node scripts/audit-review-url-clusters.js"
           fi
