@@ -6,6 +6,7 @@
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const { planAudienceSync, readAllContactPages } = require('./audience.js');
+const { createAudienceRequest } = require('../lib/money-audience-request.js');
 const { hasHelpFlag } = require('../lib/cli-help.js');
 
 if (hasHelpFlag(process.argv.slice(2))) {
@@ -22,7 +23,7 @@ if (APPLY && !MONEY_ID) throw new Error('--apply needs RESEND_MONEY_AUDIENCE_ID 
 if (APPLY && MONEY_ID === GENERAL_ID) throw new Error('refusing to write to the General audience');
 
 const mask = (e) => e.replace(/(.{2}).*(@.*)/, '$1***$2');
-const delay = (ms) => new Promise((r) => setTimeout(r, ms));
+const resendRequest = createAudienceRequest();
 
 async function readSignups() {
   const rows = [];
@@ -43,7 +44,7 @@ async function readAudience(id) {
   // someone who unsubscribed, or double-mail a General contact.
   return readAllContactPages(async (after) => {
     const qs = `limit=100${after ? `&after=${encodeURIComponent(after)}` : ''}`;
-    const res = await fetch(`https://api.resend.com/audiences/${id}/contacts?${qs}`, { signal: AbortSignal.timeout(30000), headers: { Authorization: `Bearer ${rk}` } });
+    const res = await resendRequest(() => fetch(`https://api.resend.com/audiences/${id}/contacts?${qs}`, { signal: AbortSignal.timeout(30000), headers: { Authorization: `Bearer ${rk}` } }));
     if (!res.ok) throw new Error(`Resend contacts read failed for ${id.slice(0, 8)}: ${res.status}`);
     return res.json();
   });
@@ -60,24 +61,22 @@ if (!APPLY) {
 }
 let added = 0; let errors = 0;
 for (const email of plan.toAdd) {
-  const res = await fetch(`https://api.resend.com/audiences/${MONEY_ID}/contacts`, {
+  const res = await resendRequest(() => fetch(`https://api.resend.com/audiences/${MONEY_ID}/contacts`, {
     method: 'POST', signal: AbortSignal.timeout(30000),
     headers: { Authorization: `Bearer ${rk}`, 'Content-Type': 'application/json' },
     body: JSON.stringify({ email }), // no subscribe flag: sending one could resubscribe someone
-  });
+  }));
   if (res.ok) added++; else { errors++; if (errors <= 3) console.error(`add failed for ${mask(email)}: ${res.status}`); }
-  await delay(200);
 }
 // BRO-6309: someone who unsubscribed via the welcome email must also stop getting the monthly.
 let unsubscribed = 0;
 for (const c of plan.toUnsubscribe) {
-  const res = await fetch(`https://api.resend.com/audiences/${MONEY_ID}/contacts/${c.id}`, {
+  const res = await resendRequest(() => fetch(`https://api.resend.com/audiences/${MONEY_ID}/contacts/${c.id}`, {
     method: 'PATCH', signal: AbortSignal.timeout(30000),
     headers: { Authorization: `Bearer ${rk}`, 'Content-Type': 'application/json' },
     body: JSON.stringify({ unsubscribed: true }),
-  });
+  }));
   if (res.ok) unsubscribed++; else { errors++; console.error(`unsubscribe failed: ${res.status}`); }
-  await delay(200);
 }
 console.log(`added=${added} unsubscribed=${unsubscribed} errors=${errors}`);
 if (errors) process.exit(1);
