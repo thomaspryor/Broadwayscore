@@ -80,6 +80,8 @@ function createBrowserbaseFetcher({
   const fresh = (s) => s && s.browser.isConnected() && now() - s.createdAt < rotateAfterMs;
 
   async function open() {
+    // close() may run while a reconnect is pending; its fallback must not bill a session nobody will use.
+    if (offReason) throw new BrowserbaseUnavailable(offReason);
     if (created >= maxSessions) { offReason = `run cap of ${maxSessions} sessions used`; throw new BrowserbaseUnavailable(offReason); }
     created++;
     let session;
@@ -133,7 +135,7 @@ function createBrowserbaseFetcher({
 
   /**
    * A dropped connection does not end the Browserbase session at once (they ran on for minutes on 2026-11-04), and a
-   * new session spends one of the night's allowance. Try the old one first, once; it keeps its age, so it still rotates.
+   * new session spends one of the night's allowance. Try the old one first, once per drop; it keeps its age, so it still rotates.
    */
   async function reconnect(old) {
     if (!old.connectUrl || now() - old.createdAt >= rotateAfterMs) throw new Error('not reconnectable');
@@ -161,7 +163,9 @@ function createBrowserbaseFetcher({
     if (!pending) {
       const old = dropped;
       dropped = null;
-      pending = (old ? reconnect(old).catch(() => open()) : open())
+      // A dropped session that is not taken back keeps billing until its timeout, so it is ended before a new one opens.
+      const replace = () => { releaseSession(old.id).catch(() => {}); return open(); };
+      pending = (old ? reconnect(old).catch(replace) : open())
         .then((s) => { current = s; return s; }).finally(() => { pending = null; });
     }
     return pending;
@@ -178,24 +182,29 @@ function createBrowserbaseFetcher({
     const s = await session();
     counts.fetches++;
     s.pages++;
-    let page = null; let timer; let warmupDone = null;
+    let page = null; let timer; let warmupDone = null; let cleared = false;
+    const deadline = new Promise((_, reject) => { timer = setTimeout(() => reject(new Error(`browserbase fetch timed out after ${fetchTimeoutMs}ms: ${url}`)), fetchTimeoutMs); });
+    deadline.catch(() => {});
     try {
       // A new session clears TB's Cloudflare check with one page before opening more. On 2026-11-04 every shadow run's
       // first pass opened six pages at once in a fresh session and only 2 of the 30 loaded (26 still showed the challenge after 26 s); once
-      // one page had cleared it, later pages loaded in about 7 s. The rest wait for the first to settle, pass or fail.
-      if (!s.cleared) {
-        if (s.warmup) await s.warmup;
-        else s.warmup = new Promise((resolve) => { warmupDone = resolve; });
+      // one page had cleared it, later pages loaded in about 7 s. The rest wait for the first to settle; if it stayed
+      // behind the challenge, the next waiter becomes the warm-up, so a session that never cleared never gets the burst.
+      while (!s.cleared) {
+        if (s.warmup) { await Promise.race([s.warmup, deadline]); continue; }
+        s.warmup = new Promise((resolve) => { warmupDone = resolve; });
+        break;
       }
-      page = await s.context.newPage();
-      const deadline = new Promise((_, reject) => { timer = setTimeout(() => reject(new Error(`browserbase fetch timed out after ${fetchTimeoutMs}ms: ${url}`)), fetchTimeoutMs); });
+      const opening = s.context.newPage();
+      try { page = await Promise.race([opening, deadline]); } catch (e) { opening.then((p) => p && p.close()).catch(() => {}); throw e; }
       const r = await Promise.race([readPage(page, url, { timeoutMs: Math.max(5000, fetchTimeoutMs - 15000) }), deadline]);
+      cleared = !r.challenge;
       if (r.challenge) throw Object.assign(new Error(`403 still behind the Cloudflare challenge: ${url}`), { status: 403 });
       if (r.status === 404 || r.status === 410) throw Object.assign(new Error(`${r.status} not found: ${url}`), { status: r.status });
       return { content: r.html, finalUrl: r.finalUrl && r.finalUrl !== url ? r.finalUrl : null, status: r.status, via: 'browserbase' };
     } finally {
       clearTimeout(timer);
-      if (warmupDone) { s.cleared = true; warmupDone(); }
+      if (warmupDone) { if (cleared) s.cleared = true; s.warmup = null; warmupDone(); }
       if (page) page.close().catch(() => {});
       s.pages--;
       if (retired.has(s) && !s.pages) retire(s);

@@ -114,3 +114,55 @@ test('a dropped session already due for rotation is replaced, not reconnected', 
   await fetcher.fetch(TB);
   assert.deepEqual(st.connects, ['wss://bb/1', 'wss://bb/2']);
 });
+
+test('after a warm-up that stayed behind the challenge, the next page warms up alone: no burst on a session that never cleared', async () => {
+  const { fetcher, st } = harness({ read: async (url) => { await sleep(10); return /\?1$/.test(url) ? { status: 403, html: 'Just a moment', challenge: true } : { status: 200, finalUrl: url, html: 'review', challenge: false }; } });
+  await Promise.allSettled([1, 2, 3, 4].map((i) => fetcher.fetch(`${TB}?${i}`)));
+  const kinds = st.events.map((e) => e.split(' ')[0]);
+  assert.deepEqual(kinds.slice(0, 4), ['start', 'end', 'start', 'end'], st.events.join(' | '));
+  assert.deepEqual(kinds.slice(4), ['start', 'start', 'end', 'end'], 'once one page cleared, the rest run together');
+});
+
+test('a warm-up whose page never opens times out instead of holding the session, and the next page warms up', async () => {
+  let opened = 0;
+  const { fetcher } = harness({
+    fetchTimeoutMs: 40,
+    connect: async (_url, mk) => { const b = mk(); b.contexts = () => [{ newPage: () => (opened++ === 0 ? new Promise(() => {}) : Promise.resolve({ close: async () => {} })) }]; return b; },
+  });
+  const out = await Promise.allSettled([1, 2].map((i) => fetcher.fetch(`${TB}?${i}`)));
+  assert.ok(/timed out/.test(out[0].reason.message), 'the hung page is bounded by the fetch deadline');
+  assert.equal(out[1].status, 'rejected', 'a waiter is bounded by its own deadline too');
+  const next = await fetcher.fetch(`${TB}?3`);
+  assert.equal(next.status, 200, 'the session is not left waiting on a dead warm-up');
+});
+
+test('a dropped session that is not taken back is released before a new one opens', async () => {
+  const released = [];
+  let n = 0;
+  const { fetcher, st } = harness({
+    releaseSession: async (id) => { released.push(id); },
+    connect: async (_url, mk) => { n++; if (n === 2) throw new Error('gone'); return mk(); },
+  });
+  await fetcher.fetch(TB);
+  st.browsers[0].drop();
+  await fetcher.fetch(TB);
+  assert.deepEqual(released, ['sess1aaaa']);
+  assert.equal(st.sessions, 2);
+});
+
+test('close() during a pending reconnect does not open (and bill) a new session', async () => {
+  let n = 0;
+  const { fetcher, st } = harness({
+    reconnectTimeoutMs: 30,
+    connect: async (_url, mk) => { n++; if (n === 2) { await sleep(200); } return mk(); },
+  });
+  await fetcher.fetch(TB);
+  st.browsers[0].drop();
+  const pendingFetch = fetcher.fetch(TB).catch((e) => e);
+  await sleep(5);
+  await fetcher.close();
+  const e = await pendingFetch;
+  assert.ok(e && e.bbUnavailable, String(e));
+  assert.equal(st.sessions, 1);
+  assert.equal(fetcher.stats().off, 'closed');
+});
