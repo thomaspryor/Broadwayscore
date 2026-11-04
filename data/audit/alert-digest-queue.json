@@ -1252,5 +1252,36 @@
       }
     ],
     "queuedAt": "2026-11-04T01:27:20.862Z"
+  },
+  {
+    "conditionKey": "land:land/critic-signin-standing",
+    "title": "Landing blocked: unit-tests-node red on land/critic-signin-standing",
+    "description": "land.yml did not land land/critic-signin-standing: the unit-tests-node gate went red at 808d8f151f. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/41752413523",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/critic-signin-standing"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "808d8f151fa713e3bec199502fd084676f87bb4f"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41752413523"
+      }
+    ],
+    "queuedAt": "2026-11-04T01:41:45.201Z"
   }
 ]
