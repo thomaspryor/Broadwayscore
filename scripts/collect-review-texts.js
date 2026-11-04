@@ -2878,7 +2878,7 @@ async function fetchWithDirectCookies(url) {
     clearTimeout(timeout);
 
     if (resp.status === 403 || resp.status === 401) {
-      throw new Error(`Auth rejected (HTTP ${resp.status}) — cookies may be expired`);
+      throw new Error(cookieHeader ? `Auth rejected (HTTP ${resp.status}) — cookies may be expired` : `Blocked (HTTP ${resp.status}) on cookie-less public fetch`);
     }
     if (resp.status === 404) {
       throw new Error(`404 Not Found`);
