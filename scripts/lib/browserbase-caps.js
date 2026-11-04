@@ -238,11 +238,34 @@ function tier1BoostForCaller(host, { exempt = false, ...opts } = {}) {
  * Kill switch: BROWSERBASE_CALLER_ALLOWANCES_DISABLED=true.
  */
 const CALLER_ALLOWANCES = Object.freeze({
-  'probe-talkinbroadway-browserbase.js': Object.freeze({ sessionsPerDay: 3, until: '2026-11-19T00:00:00Z' }),
-  'collect-talkinbroadway-index.js': Object.freeze({ sessionsPerDay: 8, until: '2026-11-19T00:00:00Z' }),
+  // Extended 2026-11-04 (BRO-6872), from the sessions API by userMetadata.caller: 1/day every day since 10-22
+  // (4-6/day 10-19..21). The account reached its non-reserve limit by ~07:14Z that day, so without this the
+  // collector is refused for the rest of the day.
+  'collect-talkinbroadway-index.js': Object.freeze({ sessionsPerDay: 8, until: '2027-01-19T00:00:00Z' }),
   // The opening-night lane reads TB through one session at a time, rotated hourly: a 5 h night is ~6 (BRO-6073).
-  'opening-night-lane': Object.freeze({ sessionsPerDay: 8, until: '2026-11-19T00:00:00Z' }),
+  // Extended 2026-11-04 (BRO-6872): 2 on 10-30, 2 on 11-02, 6 on 11-03; the old 11-19 date was Much Ado's opening night.
+  'opening-night-lane': Object.freeze({ sessionsPerDay: 8, until: '2027-01-19T00:00:00Z' }),
+  // probe-talkinbroadway-browserbase.js (3/day) retired 2026-11-04: unused since 10-22.
 });
+
+/** Warn this many days before an allowance ends (scripts/check-provider-spend.js files the card). */
+const ALLOWANCE_WARN_DAYS = 14;
+
+/**
+ * Listed allowances that end within `withinDays` of `now`, or have already ended while still listed.
+ * An ended entry stays in the result until someone extends it with evidence or deletes it, so its alert
+ * cannot close itself on the day the lapse happens.
+ * @returns {Array<{ caller: string, until: string, daysLeft: number, expired: boolean }>}
+ */
+function expiringCallerAllowances({ now = new Date(), withinDays = ALLOWANCE_WARN_DAYS, allowances = CALLER_ALLOWANCES } = {}) {
+  const out = [];
+  for (const [caller, entry] of Object.entries(allowances)) {
+    const ms = Date.parse(entry.until) - now.getTime();
+    if (ms > withinDays * 86400e3) continue;
+    out.push({ caller, until: entry.until, daysLeft: Math.max(0, Math.ceil(ms / 86400e3)), expired: ms <= 0 });
+  }
+  return out;
+}
 
 /** Sessions/day this caller may spend from its allowance (0 if unlisted, expired or disabled). */
 function callerAllowance(caller, { now = new Date(), env = process.env } = {}) {
@@ -328,6 +351,8 @@ module.exports = {
   tier1BoostForCaller,
   CALLER_ALLOWANCES,
   callerAllowance,
+  ALLOWANCE_WARN_DAYS,
+  expiringCallerAllowances,
   DEFAULT_DENY_HOSTS,
   resolveDenyHosts,
   hostMatchesAny,

@@ -16,7 +16,7 @@
  * temp HTML handed to it.
  *
  * Spend: one Browserbase session per run, held to the caller allowance in
- * scripts/lib/browserbase-caps.js (8/day, expires 2026-11-19).
+ * scripts/lib/browserbase-caps.js (8/day, expires 2027-01-19; a warning card is filed 14 days ahead).
  *
  * Usage:
  *   node scripts/collect-talkinbroadway-index.js [--dry-run]

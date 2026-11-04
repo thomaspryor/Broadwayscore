@@ -240,6 +240,11 @@ async function main() {
     console.log(`[provider-spend] ${DAY}: attribution gap — ${gap.provider} ${gap.pcts.map((p) => `${Math.round(p * 100)}%`).join(', ')} (< ${Math.round(attributionAlertMin * 100)}%)`);
   }
 
+  const expiringAllowances = require('./lib/browserbase-caps').expiringCallerAllowances();
+  for (const a of expiringAllowances) {
+    console.log(`[provider-spend] Browserbase allowance for ${a.caller} ${a.expired ? 'ended' : `ends in ${a.daysLeft} day(s)`} (${a.until})`);
+  }
+
   if (DRY_RUN) {
     console.log('[provider-spend] --dry-run: no writes, no alerts');
     return;
@@ -342,6 +347,12 @@ async function main() {
     console.log(`::warning::attribution-gap alerting failed: ${err.message}`);
   }
 
+  try {
+    await runAllowanceExpiryAlerts({ expiring: expiringAllowances, router: require('./lib/owner-alert-router') });
+  } catch (err) {
+    console.log(`::warning::Browserbase allowance expiry alerting failed: ${err.message}`);
+  }
+
   // BRO-3227: fires independently of the overspend/unmeasured breach above —
   // a stale/discontinuous ledger is a "the truth layer itself is broken"
   // condition, not a spend condition, so it gets its own conditionKey and
@@ -377,6 +388,48 @@ if (require.main === module) {
 
 const RESOLVE_CLEAR_DAYS = 3;
 
+const ALLOWANCE_KEY_PREFIX = 'browserbase:caller-allowance-expiring:';
+/** Card acceptance: runs the real CALLER_ALLOWANCES against today's date. Kept out of every unit manifest. */
+const VERIFY_NO_EXPIRING_ALLOWANCE = 'VERIFY: node --test tests/live/browserbase-allowance-no-expiring.test.mjs';
+
+/**
+ * BRO-6872: a Browserbase caller allowance (browserbase-caps.js CALLER_ALLOWANCES) ending soon, or already ended
+ * while still listed, files one card per caller. On 2026-11-04 the lane's and the TB collector's allowances were
+ * found set to end on 2026-11-19, Much Ado About Nothing's opening night, with nothing to warn anyone. Modeled on
+ * audit-dependencies.js runAlerts: every open key this run does not report is swept-resolved, so an extended or
+ * deleted entry closes its own card, and an ended entry keeps it open.
+ * @param {{ expiring: Array<{caller,until,daysLeft,expired}>, router: { routeAlert, resolveCondition, loadLedger } }} p
+ * @returns {Promise<string[]>} the condition keys routed this run
+ */
+async function runAllowanceExpiryAlerts({ expiring, router }) {
+  const { routeAlert, resolveCondition, loadLedger } = router;
+  const current = new Set(expiring.map((a) => ALLOWANCE_KEY_PREFIX + a.caller));
+  const conditions = (loadLedger() || {}).conditions || {};
+  for (const [key, c] of Object.entries(conditions)) {
+    if (key.startsWith(ALLOWANCE_KEY_PREFIX) && c && c.status === 'open' && !current.has(key)) {
+      resolveCondition(key, { reason: 'allowance extended or deleted' });
+    }
+  }
+  const routed = [];
+  for (const a of expiring) {
+    const key = ALLOWANCE_KEY_PREFIX + a.caller;
+    const when = a.expired ? `ended on ${a.until.slice(0, 10)}` : `ends on ${a.until.slice(0, 10)} (${a.daysLeft} day(s))`;
+    await routeAlert({
+      conditionKey: key,
+      title: `Browserbase allowance for ${a.caller} ${when}: extend with evidence or delete`,
+      description: `${a.expired ? 'Since that date' : 'From that date'} ${a.caller} gets no reserved Browserbase sessions, so once the account passes its non-reserve limit (often by mid-morning UTC) it is refused for the rest of the day. For the opening-night lane and the Talkin' Broadway collector that means Talkin' Broadway reviews go unread. A helper session handles this; the owner does not need to act.\n\nTechnical: CALLER_ALLOWANCES['${a.caller}'] in scripts/lib/browserbase-caps.js, until ${a.until}.`,
+      hint: `Count the caller's sessions per day over the last 2-3 weeks: GET https://api.browserbase.com/v1/sessions?q=user_metadata['caller']:'${a.caller}' (X-BB-API-Key). Post the per-day counts on the card. If it is still used, extend \`until\` by at most 90 days with a one-line evidence comment; if not, delete the entry (and move any tests that use it).`,
+      severity: a.expired ? 'error' : 'warning',
+      disposition: 'auto',
+      cardAction: a.expired ? 'Fix' : 'Investigate',
+      cooldownHours: 72,
+      verify: { line: VERIFY_NO_EXPIRING_ALLOWANCE, note: 'passes when no listed allowance ends within 14 days' },
+    });
+    routed.push(key);
+  }
+  return routed;
+}
+
 /**
  * Resolve the budget conditions once the last RESOLVE_CLEAR_DAYS consecutive calendar
  * days (ending at `day`) are all recorded and clean. An unmeasured day is unproven, so
@@ -402,6 +455,6 @@ function resolveClearedBudgetConditions(series, thresholds, day, resolveConditio
 }
 
 module.exports = {
-  resolveClearedBudgetConditions,
+  resolveClearedBudgetConditions, runAllowanceExpiryAlerts, ALLOWANCE_KEY_PREFIX,
   ledgerFreshnessHours, missingLedgerDays, STALE_HOURS_THRESHOLD, CONTINUITY_WINDOW_DAYS,
 };
