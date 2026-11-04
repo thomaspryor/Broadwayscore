@@ -1,18 +1,48 @@
 {
-  "generatedAt": "2026-11-03T09:45:07.550Z",
+  "generatedAt": "2026-11-04T01:59:46.393Z",
   "shadow": true,
-  "checkoutSha": "ab0168a4331bd41337b2ed4bad9a4a7f98d906f4",
-  "totalCandidates": 396,
-  "eligibleCandidates": 115,
-  "checked": 30,
+  "checkoutSha": "4c254124b3c38a0a80b6dd8cb8ca0d59aa2eb85d",
+  "totalCandidates": 392,
+  "eligibleCandidates": 94,
+  "checked": 28,
   "truncated": true,
   "fetchError": null,
   "counts": {
-    "pass": 19,
-    "fail": 4,
-    "unverifiable": 7
+    "pass": 21,
+    "fail": 3,
+    "unverifiable": 4
   },
   "alreadyDone": [
+    {
+      "id": "BRO-6951",
+      "name": "Run paired-clear plan for NYC parent-building wrongProduction candidates (65 reviews)",
+      "verifyCmd": "node --test scripts/lib/venue-parent-building.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-6935",
+      "name": "Social autopost: allow reviewed US tours and pre-Broadway/US regional shows on the Broadway accounts",
+      "verifyCmd": "node --test scripts/social-autopost.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-6916",
+      "name": "West End lane: capture the real Lives of Others pages into the private recordings archive",
+      "verifyCmd": "node --test tests/unit/west-end-fixture-replay.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-6906",
+      "name": "Replace echo|grep -q with here-strings in workflows (pipefail EPIPE cousins of BRO-4297)",
+      "verifyCmd": "node --test scripts/lib/no-echo-pipe-grep-q.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-6886",
+      "name": "P1: Opening night miss: Clifford Odets’ Waiting for Lefty (2026-11-02)",
+      "verifyCmd": "node --test tests/unit/press-night-scoring-dispatch.test.mjs",
+      "detail": null
+    },
     {
       "id": "BRO-6880",
       "name": "Multi-show newspaper columns: isolate this show's section instead of rejecting as roundup (WaPo Imaginary Invalid)",
@@ -32,15 +62,9 @@
       "detail": null
     },
     {
-      "id": "BRO-6840",
-      "name": "registrableDomain in review-normalization.js keeps its own ccTLD regex; use multipartSuffixOf",
-      "verifyCmd": "node --test scripts/lib/host-suffix-lists.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-6839",
-      "name": "Digest: report-only rows covered by a differently-titled work card still read 'no automatic fix confirmed'",
-      "verifyCmd": "node --test scripts/lib/digest-autofix.test.mjs",
+      "id": "BRO-6848",
+      "name": "77 Observer reviews filed as guardian-- (scored at Guardian tier 1, not Observer)",
+      "verifyCmd": "node scripts/scoring-delta.js",
       "detail": null
     },
     {
@@ -53,18 +77,6 @@
       "id": "BRO-6801",
       "name": "Make OB/OWE press-night search actually fire + prove Stagedoor fix on a real London opening",
       "verifyCmd": "node --test tests/unit/press-window-serp.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-6792",
-      "name": "Opening-date audit: 1 show need review (2026-11-01)",
-      "verifyCmd": "node scripts/lib/verify-data-backfill.js --show=billy-crystal-860-2026",
-      "detail": null
-    },
-    {
-      "id": "BRO-6785",
-      "name": "Live in HD polish: keep date in meta description, fix post-expiry title/hero mismatch",
-      "verifyCmd": "node --test tests/unit/live-in-hd.test.mjs",
       "detail": null
     },
     {
@@ -98,15 +110,15 @@
       "detail": null
     },
     {
-      "id": "BRO-6750",
-      "name": "Audience grade gate still counts sources the combined score ignores (sub-10 Theatr, sub-50 Reddit, non-US Broadway.com)",
-      "verifyCmd": "node --test tests/unit/audience-grade-min.test.mjs",
-      "detail": null
-    },
-    {
       "id": "BRO-6737",
       "name": "Video captions: tagged link on Facebook, link in bio on TikTok/Instagram, YouTube description link (per-channel)",
       "verifyCmd": "node --test scripts/test-video-captions.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-6736",
+      "name": "Joint reviews (one article covering two shows) only go live on the first show: 30 cited-not-live rows",
+      "verifyCmd": "node scripts/lib/verify-data-backfill.js --show=the-ask-off-broadway-2026,slam-frank-off-broadway-2026,school-girls-or-the-african-mean-girls-play-2026,laowang-a-chinatown-king-lear-off-broadway-2025,oedipus-2025,queen-versailles-2025,silver-manhattan-off-broadway-2026,bughouse-off-broadway-2026,burnout-paradise-off-broadway-2026,night-side-songs-off-broadway-2026,bigfoot-off-broadway-2026,the-dinosaurs-off-broadway-2026,the-monsters-off-broadway-2026,marjorie-prime-2025,anna-christie-off-broadway-2025,lowcountry-off-broadway-2025,goddess-off-broadway-2025,bowl-ep-off-broadway-2025,the-lonely-few-off-broadway-2024,good-bones-off-broadway-2024,the-coast-starlight-off-broadway-2023,the-fears-off-broadway-2023,orlando-off-broadway-2026,what-became-of-us-off-broadway-2024,liberation-2025 --reviews=1",
       "detail": null
     },
     {
@@ -122,9 +134,9 @@
       "detail": null
     },
     {
-      "id": "BRO-6599",
-      "name": "audit-cross-show-url.js: 109 non-London unhandled hits are title-overlap false positives (A Beautiful Noise vs Beautiful etc.); teach it to skip them",
-      "verifyCmd": "node --test scripts/lib/cross-show-url.test.mjs",
+      "id": "BRO-6616",
+      "name": "Cutover 0: lane shadow commits its own scraper-spend ledger lines to main",
+      "verifyCmd": "node --test tests/unit/lane-spend-ledger-commit.test.mjs",
       "detail": null
     }
   ],
@@ -136,69 +148,59 @@
       "detail": "OPEN: pending row indecent-2017 still waits\n"
     },
     {
+      "id": "BRO-6710",
+      "name": "UK regional: lift the 20 new venue-season shows and remaining below-bar shows to 3 reviews",
+      "verifyCmd": "node scripts/lib/verify-data-backfill.js --show=329 --reviews=3",
+      "detail": "FAIL 329: show missing; scored reviews 0 < 3\n"
+    },
+    {
       "id": "BRO-6688",
       "name": "Delete stale failed land branch land/bro-6682-opening-night-leftovers",
       "verifyCmd": "node scripts/check-remote-branch-absent.js --branch=land/bro-6682-opening-night-leftovers",
       "detail": "[check-remote-branch-absent] FAIL: land/bro-6682-opening-night-leftovers is still on origin\n"
-    },
-    {
-      "id": "BRO-6590",
-      "name": "Renew the NYT login cookie on the Mac Studio (NYT-S / nyt-a expired by 2026-10-27, poller NYT reviews cut at the paywall)",
-      "verifyCmd": "node scripts/check-workflow-run-status.js --workflow=check-cookie-health.yml --expect=success",
-      "detail": "(gh not authenticated; read runs from the public GitHub API)\ncheck-cookie-health.yml: MISMATCH — most recent run concluded 'failure', expected 'success' (https://github.com/thomaspryor/Broadwayscore/actions/runs/41566254276)\n"
-    },
-    {
-      "id": "BRO-6586",
-      "name": "Re-extract truncated/stub BroadwayWorld review files with the new JSON-LD articleBody extractor",
-      "verifyCmd": "node scripts/lib/verify-data-backfill.js --show=broadwayworld --reviews=3",
-      "detail": "FAIL broadwayworld: show missing; scored reviews 0 < 3\n"
     }
   ],
   "unverifiable": [
     {
-      "id": "BRO-6800",
-      "name": "Opera hub page text still names only the Met and Royal Opera House (needs owner visual OK)",
-      "verifyCmd": "node --test tests/unit/opera-hub-text-expansion.test.mjs",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/opera-hub-text-expansion.test.mjs"
+      "id": "BRO-6932",
+      "name": "Social autopost: quiet-day backfill of older settled shows (Off-Broadway mostly)",
+      "verifyCmd": "node --test scripts/verify-bro-6932-recheck.test.mjs",
+      "detail": "ran no passing tests (all skipped or none ran)"
     },
     {
-      "id": "BRO-6791",
-      "name": "Opera brand colour: site header is amber, social kit is rose-red",
-      "verifyCmd": "node --test scripts/opera-brand-colour.test.mjs",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/opera-brand-colour.test.mjs"
-    },
-    {
-      "id": "BRO-6768",
-      "name": "iOS nightly E2E failures reach no one: auto-file one Linear card when the scheduled Maestro run fails",
-      "verifyCmd": "node --test tests/unit/e2e-failure-alert.test.mjs",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/e2e-failure-alert.test.mjs"
+      "id": "BRO-6862",
+      "name": "Lottery/rush: 'special' key from bwayrush scraper never shown (MTC $35, HipTix)",
+      "verifyCmd": "node --test tests/unit/lottery-rush-special-key.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/lottery-rush-special-key.test.mjs"
     },
     {
       "id": "BRO-6724",
       "name": "Pre-existing red checks seen during BRO-6716: cross-outlet attribution suspect tests + audit-regex-patterns --full overages",
       "verifyCmd": "node scripts/run-unit-tests.js",
-      "detail": "check killed by SIGTERM after 132839ms (timeout — no verdict)"
-    },
-    {
-      "id": "BRO-6681",
-      "name": "iOS: share my diary link from the Watched tab (web already has it)",
-      "verifyCmd": "node --test tests/unit/diary-share.test.mjs",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/diary-share.test.mjs"
-    },
-    {
-      "id": "BRO-6674",
-      "name": "Audit the 15 workflows whose failure alert is low severity (digest only): which should file a fix card like verify-schema",
-      "verifyCmd": "node --test scripts/audit-low-severity-workflows.test.mjs",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/audit-low-severity-workflows.test.mjs"
+      "detail": "check killed by SIGTERM after 128298ms (timeout — no verdict)"
     },
     {
       "id": "BRO-6602",
       "name": "main test.yml red: Unit Tests / scripts/lib tests — matchSlugToShow 20 real fixtures + BRO-2281 Hackney Empire venue",
       "verifyCmd": "node scripts/run-unit-tests.js",
-      "detail": "check killed by SIGTERM after 62092ms (timeout — no verdict)"
+      "detail": "check killed by SIGTERM after 31250ms (timeout — no verdict)"
     }
   ],
   "landedButOpen": [
+    {
+      "id": "BRO-6886",
+      "name": "P1: Opening night miss: Clifford Odets’ Waiting for Lefty (2026-11-02)",
+      "branch": "land/job/linear-BRO-6886-mw0wu2u3",
+      "sha": "2fe919987307807ee5b3394bcf028e425ce04a71",
+      "landedAt": "2026-11-03T18:49:53.149Z"
+    },
+    {
+      "id": "BRO-6880",
+      "name": "Multi-show newspaper columns: isolate this show's section instead of rejecting as roundup (WaPo Imaginary Invalid)",
+      "branch": "land/bro-6880-wapo-columns",
+      "sha": "4bf50bafc99a5ee9a4b11de8e3a951e336532f81",
+      "landedAt": "2026-11-03T12:33:13.865Z"
+    },
     {
       "id": "BRO-6877",
       "name": "Keep past showtimes: archive every week's schedule and use it for diary entries",
@@ -263,6 +265,13 @@
       "landedAt": "2026-11-01T15:07:57.966Z"
     },
     {
+      "id": "BRO-6736",
+      "name": "Joint reviews (one article covering two shows) only go live on the first show: 30 cited-not-live rows",
+      "branch": "land/job/linear-BRO-6736-mvxsck8q",
+      "sha": "34d8c6cc7cee2c15bcedc60c27f708cd9702a56b",
+      "landedAt": "2026-11-01T13:41:40.264Z"
+    },
+    {
       "id": "BRO-6666",
       "name": "verify-schema failed 2 days (unapplied migration) with nobody acting: auto-file a fix card on failure",
       "branch": "land/bro-6666-schema-drift-card",
@@ -270,11 +279,11 @@
       "landedAt": "2026-10-30T22:48:34.402Z"
     },
     {
-      "id": "BRO-6599",
-      "name": "audit-cross-show-url.js: 109 non-London unhandled hits are title-overlap false positives (A Beautiful Noise vs Beautiful etc.); teach it to skip them",
-      "branch": "land/bro-6599-cross-show-canon",
-      "sha": "88819d77d5934cc5eebb2b9dbbd8f56d813e1fa3",
-      "landedAt": "2026-11-01T04:44:16.715Z"
+      "id": "BRO-6616",
+      "name": "Cutover 0: lane shadow commits its own scraper-spend ledger lines to main",
+      "branch": "land/bro-6616-guard",
+      "sha": "40eaf7691c28fa714768d170e62ded32b4e1edd9",
+      "landedAt": "2026-11-03T17:17:20.140Z"
     }
   ]
 }
