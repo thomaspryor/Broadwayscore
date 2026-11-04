@@ -1524,11 +1524,16 @@ function pageChainOrder(flags) {
  * @param {string} [options.countryCode] - 2-letter geo pin (SD country / SB country_code)
  * @returns {Promise<{content: string, format: string, source: string}>}
  */
+/** The name every free (direct) request sends: plain, identifying, never a browser's (BRO-6872). */
+const DIRECT_USER_AGENT = 'BroadwayScorecard/1.0';
+
 async function fetchPage(url, options = {}) {
   _lastUrlMismatchUrl = null; // BRO-6089: per-call state, never leaks from an earlier fetch
   url = require('./review-url-entity-decode').decodeUrlEntities(unwrapRedirectUrl(url)); // BRO-4403
   if (options.directOnly) {
-    const response = await fetch(url, { signal: AbortSignal.timeout(10000) });
+    // Our own name, as tryDirect sends: with none (undici's "node") The Stage answers 200 with an empty page, which read
+    // as "blocked" on all 193 lane reads of its reviews page in the 2026-11-04 replays (BRO-6872).
+    const response = await fetch(url, { headers: { 'User-Agent': DIRECT_USER_AGENT }, signal: AbortSignal.timeout(10000) });
     if (!response.ok) throw new Error(`Direct fetch failed: ${response.status}`);
     const content = await response.text();
     if (!content.trim() || _isChallengeOrGarbage(content)) throw new Error('Direct fetch returned empty or blocked content');
@@ -1603,7 +1608,7 @@ async function fetchPage(url, options = {}) {
       /^\/shows\/[^/]+\/?$/.test(requestedUrl.pathname)) {
     console.log('  → Trying direct DTLI fetch...');
     try {
-      const response = await fetch(url, { signal: AbortSignal.timeout(10000) });
+      const response = await fetch(url, { headers: { 'User-Agent': DIRECT_USER_AGENT }, signal: AbortSignal.timeout(10000) });
       if (response.ok) {
         const content = await response.text();
         if (!_isChallengeOrGarbage(content) && /<\/html\s*>/i.test(content) &&
@@ -1924,7 +1929,7 @@ async function fetchJSON(url, options = {}) {
     const proto = url.startsWith('https') ? https : require('http');
     const DIRECT_TIMEOUT_MS = 15000;
     const response = await new Promise((resolve, reject) => {
-      const req = proto.get(url, { headers: { 'User-Agent': 'BroadwayScorecard/1.0', ...headers }, timeout: DIRECT_TIMEOUT_MS }, (res) => {
+      const req = proto.get(url, { headers: { 'User-Agent': DIRECT_USER_AGENT, ...headers }, timeout: DIRECT_TIMEOUT_MS }, (res) => {
         if ([301, 302, 307, 308].includes(res.statusCode)) {
           // Resolve against the original URL (handles relative Location headers)
           // and pick the protocol client from the RESOLVED target, not the
@@ -1939,7 +1944,7 @@ async function fetchJSON(url, options = {}) {
           }
           const redirectUrl = redirectUrlObj.toString();
           const redirectProto = redirectUrlObj.protocol === 'https:' ? https : require('http');
-          const req2 = redirectProto.get(redirectUrl, { headers: { 'User-Agent': 'BroadwayScorecard/1.0', ...headers }, timeout: DIRECT_TIMEOUT_MS }, (res2) => {
+          const req2 = redirectProto.get(redirectUrl, { headers: { 'User-Agent': DIRECT_USER_AGENT, ...headers }, timeout: DIRECT_TIMEOUT_MS }, (res2) => {
             let d = ''; res2.on('data', c => d += c); res2.on('end', () => {
               if (res2.statusCode === 200) resolve(d); else reject(new Error(`HTTP ${res2.statusCode}`));
             });
