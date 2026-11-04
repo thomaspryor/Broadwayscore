@@ -248,10 +248,10 @@
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "incidentOpenedAt": "2026-11-04T02:13:42.255Z",
-      "lastSeen": "2026-11-04T02:13:42.255Z",
-      "lastNotifiedAt": "2026-11-04T02:13:42.255Z",
-      "lastSurfacedAt": "2026-11-04T02:13:42.255Z",
+      "incidentOpenedAt": "2026-11-04T02:14:57.243Z",
+      "lastSeen": "2026-11-04T02:14:57.243Z",
+      "lastNotifiedAt": "2026-11-04T02:14:57.243Z",
+      "lastSurfacedAt": "2026-11-04T02:14:57.243Z",
       "notifyCount": 205,
       "cardId": null,
       "linearIdentifier": null,
@@ -29923,22 +29923,21 @@
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run scripts/lib tests (visual-qa transcript-scan etc.) — \"REGRESSION: every real tracked *.jsonl (repo-wide) is either merge=union or a documented exemption\"",
       "firstSeen": "2026-10-29T13:53:54.915Z",
-      "incidentOpenedAt": "2026-11-04T02:13:40.765Z",
-      "lastSeen": "2026-11-04T02:13:40.765Z",
-      "lastNotifiedAt": "2026-11-04T02:13:40.765Z",
+      "incidentOpenedAt": "2026-11-04T01:40:32.203Z",
+      "lastSeen": "2026-11-04T02:14:57.223Z",
+      "lastNotifiedAt": "2026-11-04T01:40:32.203Z",
       "lastSurfacedAt": null,
       "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": "BRO-6955",
-      "absentRunIds": [
-        "40927871048"
-      ],
+      "linearIdentifier": "BRO-6952",
+      "absentRunIds": [],
       "dispatch": {
         "requestedAt": "2026-11-04T02:13:40.765Z",
         "mode": "dispatch-at-filing",
-        "runId": "41754944251",
-        "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41754944251"
-      }
+        "runId": "41751619358",
+        "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41751619358"
+      },
+      "silentRefires": 1
     },
     "land:land/bro-6485-timeout-author": {
       "status": "open",
