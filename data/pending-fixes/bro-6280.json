@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6280",
   "planId": "3cd85659-8149-4f42-a349-898db869a5af",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-04T05:05:59.080Z",
   "submitter": {
     "name": null,
@@ -23,5 +23,14 @@
         "reason": "Same ENO production at the London Coliseum (6-14 Nov 2026) minted twice under two titles; keep the dated row with the ticket link (BRO-6280)"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-04T05:23:57.452Z",
+  "results": [
+    {
+      "action": "retire-show",
+      "ok": true,
+      "msg": "retired iphigenie-en-tauride-west-end-2026 (\"Iphigénie En Tauride\" @ London Coliseum)"
+    }
+  ],
+  "executedIn": "ci"
 }
