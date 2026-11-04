@@ -22,7 +22,7 @@ if (hasHelpFlag(process.argv.slice(2))) { process.stdout.write(USAGE); process.e
 
 const { MAIN_REPO_ROOT: MAIN_REPO } = require('./lib/repo-root');
 const { resolveReviewTextsDir } = require('./lib/review-texts-dir');
-const { parentBuildingFlagCandidate, shortCandidateDecision } = require('./lib/parent-building-wrongprod');
+const { parentBuildingFlagCandidate, shortCandidateDecision, isCleanVerdict } = require('./lib/parent-building-wrongprod');
 
 const args = process.argv.slice(2);
 const opt = (n) => (args.find((a) => a.startsWith(`--${n}=`)) || '').split('=').slice(1).join('=');
@@ -59,7 +59,7 @@ const stripTags = (h) => String(h).replace(/<(script|style)[\s\S]*?<\/\1>/gi, ' 
 
   const { verifyContent } = require('./lib/content-verifier');
   const actions = [];
-  let n = 0, upheld = 0, errors = 0, short = 0, fetchFailed = 0;
+  let n = 0, upheld = 0, errors = 0, short = 0, fetchFailed = 0, fetchAttempts = 0;
   // The ManualClear marker stops the rebuild's CV pre-pass re-promoting a stale
   // contentVerification.wrongProduction === true back onto the file.
   const clearActions = (c, description) => [
@@ -67,18 +67,26 @@ const stripTags = (h) => String(h).replace(/<(script|style)[\s\S]*?<\/\1>/gi, ' 
     { type: 'review-field-edit', file: `${c.show.id}/${c.file}`, field: 'wrongProductionManualClear', oldValue: null, newValue: true, description },
   ];
   for (const c of cands) {
-    if (LIMIT && n >= LIMIT) break;
+    if (LIMIT && n + fetchAttempts >= LIMIT) break;
     let text = c.d.fullText;
+    let fetched = false;
     if (!text || text.trim().length < 200) {
       // BRO-6946: stored text is a stub. Metadata cannot clear the flag; with
       // --fetch, pull the live page and verify that text instead (never stored).
       const m = shortCandidateDecision(c.show, c.d);
       if (m.decision !== 'fetch' || !FETCH) { short++; console.log(`[SHORT-HOLD] ${c.show.id}/${c.file} (${c.parent}) ${m.decision === 'fetch' ? 'run with --fetch to verify' : m.why}`); continue; }
+      fetchAttempts++;
+      fetched = true;
+      let why = '';
       try {
-        const page = await require('./lib/scraper').fetchPage(c.d.url);
-        text = stripTags((page && page.content) || '').slice(0, 20000);
-      } catch (e) { text = ''; }
-      if (text.trim().length < 200) { short++; fetchFailed++; console.log(`[SHORT-HOLD] ${c.show.id}/${c.file} (${c.parent}) fetch returned no usable text`); continue; }
+        const scraper = require('./lib/scraper');
+        const page = await scraper.fetchPage(c.d.url);
+        const moved = page && page.finalUrl && page.finalUrl.replace(/[?#].*$/, '').replace(/\/$/, '') !== c.d.url.replace(/[?#].*$/, '').replace(/\/$/, '');
+        if (moved || (scraper.wasUrlMismatch && scraper.wasUrlMismatch(c.d.url))) why = 'redirected or URL mismatch';
+        else text = stripTags((page && page.content) || '').slice(0, 20000);
+      } catch (e) { why = `fetch error: ${String(e.message).slice(0, 80)}`; }
+      if (!why && text.trim().length < 800) why = 'fetched text too short to be an article';
+      if (why) { short++; fetchFailed++; console.log(`[SHORT-HOLD] ${c.show.id}/${c.file} (${c.parent}) ${why}`); continue; }
     }
     n++;
     let cv;
@@ -90,11 +98,10 @@ const stripTags = (h) => String(h).replace(/<(script|style)[\s\S]*?<\/\1>/gi, ' 
         market: c.show.category || 'broadway', show: c.show,
       });
     } catch (e) { errors++; console.log(`[ERROR] ${c.show.id}/${c.file}: ${e.message}`); continue; }
-    const clean = cv && cv.isValid === true && cv.wrongProduction !== true && cv.wrongArticle !== true
-      && cv.isFilmTv !== true && cv.confidence !== 'low' && typeof cv.verifiedBy === 'string' && cv.verifiedBy.startsWith('llm');
+    const clean = isCleanVerdict(cv);
     console.log(`[${clean ? 'CLEAR' : 'UPHELD'}] ${c.show.id}/${c.file} (${c.parent}) valid=${cv?.isValid} wp=${cv?.wrongProduction}`);
     if (!clean) { upheld++; continue; }
-    const description = `BRO-6923: ${c.show.venue} is a stage inside ${c.parent}; the flag reason named the building. Alias-aware re-verify: valid, not wrong production.`;
+    const description = `${fetched ? 'BRO-6946 (verified on live-fetched text): ' : ''}BRO-6923: ${c.show.venue} is a stage inside ${c.parent}; the flag reason named the building. Alias-aware re-verify: valid, not wrong production.`;
     actions.push(...clearActions(c, description));
   }
   console.log(`SUMMARY: verified=${n} clear=${actions.length / 2} upheld=${upheld} errors=${errors} tooShortHeld=${short} fetchFailed=${fetchFailed}`);

@@ -40,7 +40,7 @@ const PRE_DAYS = 7;   // press can run ahead of the first preview
 const POST_DAYS = 14; // late reviews after closing
 // Reason wording saying the review is of a DIFFERENT production, not just a
 // building-name mismatch. Metadata alone cannot overrule these.
-const OTHER_PRODUCTION_RE = /\b(tour|touring|revival|previous|earlier|prior|original|film|movie|different|another|fiasco|anticipatory|gielgud)(?![a-z])/i;
+const OTHER_PRODUCTION_RE = /\b(tour|touring|revival|previous|earlier|prior|original|film|movie|different|another|fiasco|anticipatory|gielgud|transfer|workshop|tryout|concert|festival|regional)(?![a-z])/i;
 
 function _ms(s) {
   const t = typeof s === 'string' && /^\d{4}-\d{2}-\d{2}/.test(s) ? Date.parse(s.slice(0, 10)) : NaN;
@@ -60,17 +60,28 @@ function shortCandidateDecision(show, record) {
   const start = _ms(show && (show.previewsStartDate || show.openingDate));
   const close = _ms(show && show.closingDate);
   const pub = _ms(record.publishDate);
-  if (!Number.isNaN(pub) && !Number.isNaN(start) && !Number.isNaN(close)
-      && (pub < start - PRE_DAYS * DAY || pub > close + POST_DAYS * DAY)) return { decision: 'hold', why: 'publishDate outside production window' };
+  if (!Number.isNaN(pub) && !Number.isNaN(start)
+      && (pub < start - PRE_DAYS * DAY || (!Number.isNaN(close) && pub > close + POST_DAYS * DAY))) return { decision: 'hold', why: 'publishDate outside production window' };
   const reason = _reasonText(record);
   if (OTHER_PRODUCTION_RE.test(reason)) return { decision: 'hold', why: 'flag reason describes a different production' };
   const years = (reason.match(/\b(?:19|20)\d\d\b/g) || []).map(Number);
-  if (!Number.isNaN(start) && !Number.isNaN(close)) {
+  if (!Number.isNaN(start)) {
     const y0 = new Date(start).getUTCFullYear();
-    const y1 = new Date(close).getUTCFullYear();
+    const y1 = Number.isNaN(close) ? new Date().getUTCFullYear() : new Date(close).getUTCFullYear();
     if (years.some((y) => y < y0 || y > y1)) return { decision: 'hold', why: 'flag reason cites a year outside the run' };
   }
   return { decision: 'fetch', why: 'publishDate not contradicting the run; reason names only the building' };
 }
 
-module.exports = { parentBuildingFlagCandidate, shortCandidateDecision };
+/**
+ * Strict clear predicate for a content-verifier result: explicit booleans only
+ * (the verifier defaults missing fields to success, and the string "true" is
+ * !== true), real LLM verdict, not low confidence.
+ */
+function isCleanVerdict(cv) {
+  return !!cv && cv.isValid === true && cv.wrongProduction === false && cv.wrongArticle !== true
+    && cv.isFilmTv !== true && (cv.confidence === 'high' || cv.confidence === 'medium')
+    && typeof cv.verifiedBy === 'string' && cv.verifiedBy.startsWith('llm');
+}
+
+module.exports = { parentBuildingFlagCandidate, shortCandidateDecision, isCleanVerdict };

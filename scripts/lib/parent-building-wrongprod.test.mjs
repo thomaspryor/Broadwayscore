@@ -48,3 +48,14 @@ test('short: out-of-window date, no url, or other-production wording holds', () 
   assert.equal(decide(run, rec('2025-07-24', 'a UK touring production')).decision, 'hold');
   assert.equal(decide(run, rec('2025-07-24', 'anticipatory_pre_opening_post National Theatre')).decision, 'hold');
 });
+const { isCleanVerdict: clean } = require('./parent-building-wrongprod.js');
+const ok = { isValid: true, wrongProduction: false, confidence: 'high', verifiedBy: 'llm:x' };
+test('clean verdict needs explicit booleans from a real LLM verdict', () => {
+  assert.equal(clean(ok), true);
+  assert.equal(clean({ ...ok, wrongProduction: undefined }), false);
+  assert.equal(clean({ ...ok, wrongProduction: 'true' }), false);
+  assert.equal(clean({ ...ok, isValid: 'true' }), false);
+  assert.equal(clean({ ...ok, confidence: 'low' }), false);
+  assert.equal(clean({ ...ok, verifiedBy: 'heuristic' }), false);
+  assert.equal(clean(null), false);
+});
