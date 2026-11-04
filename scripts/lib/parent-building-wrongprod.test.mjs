@@ -83,3 +83,15 @@ test('publishDateOutsideRun: missing or unparseable dates never hold (no false p
   assert.equal(publishDateOutsideRun(s, { publishDate: 'not a date' }), false);
   assert.equal(publishDateOutsideRun({}, { publishDate: '2024-05-01' }), false);
 });
+
+test('publishDateOutsideRun: year-only, month-only, season and bare-number dates are unknown, never held', () => {
+  const s = { previewsStartDate: '2024-04-03', openingDate: '2024-04-24', closingDate: '2024-06-16' };
+  for (const d of ['2024', 'October 2024', 'Fall 2024', '12']) assert.equal(publishDateOutsideRun(s, { publishDate: d }), false, d);
+});
+
+test('publishDateOutsideRun: ordinals, day-first dates and trailing times parse like date-utils', () => {
+  const s = { previewsStartDate: '2024-04-03', openingDate: '2024-04-24', closingDate: '2024-06-16' };
+  assert.equal(publishDateOutsideRun(s, { publishDate: 'January 5th, 2024' }), true);
+  assert.equal(publishDateOutsideRun(s, { publishDate: 'Jan 5, 2024 10:00 PM EST' }), true);
+  assert.equal(publishDateOutsideRun(s, { publishDate: '5 May 2024' }), false);
+});

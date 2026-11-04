@@ -72,16 +72,29 @@ test('split: a first-sighting failure is NEW', () => {
   assert.equal(newKeys.length, 1);
   assert.equal(knownKeys.length, 0);
 });
-test('split: open past 72h, or carrying a card, is known; a fresh open incident is still new', () => {
-  const [a, b, c] = route('old', 'carded', 'fresh');
+test('split: a card on a legacy row, or a deferred row past 72h, is known; everything else is still new', () => {
+  const [a, b, c, d] = route('aged-with-card', 'legacy-carded', 'fresh', 'aged-no-card');
   const conditions = {
-    [a.conditionKey]: { status: 'open', incidentOpenedAt: hoursAgo(80), deferredAuto: true, ...seen(2) },
+    [a.conditionKey]: { status: 'open', incidentOpenedAt: hoursAgo(80), deferredAuto: true, linearIdentifier: 'BRO-2', ...seen(2) },
     [b.conditionKey]: { status: 'open', incidentOpenedAt: hoursAgo(5), linearIdentifier: 'BRO-1', ...seen(2) },
     [c.conditionKey]: { status: 'open', incidentOpenedAt: hoursAgo(5), ...seen(2) },
+    // Past 72h but the router has not filed the card yet (or filing keeps failing): the job stays red.
+    [d.conditionKey]: { status: 'open', incidentOpenedAt: hoursAgo(80), deferredAuto: true, ...seen(2) },
   };
-  const { newKeys, knownKeys } = splitNewAndKnown([a, b, c], conditions, NOW);
+  const { newKeys, knownKeys } = splitNewAndKnown([a, b, c, d], conditions, NOW);
   assert.deepEqual(knownKeys, [a.conditionKey, b.conditionKey]);
-  assert.deepEqual(newKeys, [c.conditionKey]);
+  assert.deepEqual(newKeys, [c.conditionKey, d.conditionKey]);
+});
+test('split: a deferred row that kept the PREVIOUS incident\'s card is NEW until its own 72h passes', () => {
+  const [a] = route('recurred');
+  const { newKeys } = splitNewAndKnown([a], { [a.conditionKey]: { status: 'open', incidentOpenedAt: hoursAgo(10), deferredAuto: true, linearIdentifier: 'BRO-OLD', ...seen(1) } }, NOW);
+  assert.deepEqual(newKeys, [a.conditionKey]);
+});
+test('split: a crashed suite (run-crashed) never counts as known, however old and carded', () => {
+  const key = `${KEY_PREFIX}run-crashed`;
+  const { newKeys, knownKeys } = splitNewAndKnown([{ conditionKey: key }], { [key]: { status: 'open', incidentOpenedAt: hoursAgo(900), deferredAuto: true, linearIdentifier: 'BRO-9', ...seen(1) } }, NOW);
+  assert.deepEqual(newKeys, [key]);
+  assert.deepEqual(knownKeys, []);
 });
 test('split: a resolved condition that fails again is NEW', () => {
   const [a] = route('back');
