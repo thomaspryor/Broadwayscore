@@ -1,66 +1,70 @@
 {
-  "updatedAt": "2026-11-04T17:30:21.093Z",
-  "processed": 103,
-  "failed": 82,
-  "successRate": "55.7%",
+  "updatedAt": "2026-11-04T17:33:27.024Z",
+  "processed": 349,
+  "failed": 191,
+  "successRate": "64.6%",
   "tierBreakdown": {
-    "playwright": 65,
+    "playwright": 181,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 5,
     "directCookies": 0,
-    "scrapingdog": 22,
-    "scrapingbee": 2,
-    "brightdata": 0,
+    "scrapingdog": 31,
+    "scrapingbee": 18,
+    "brightdata": 4,
     "archiveToday": 0,
-    "archive": 19
+    "archive": 87
   },
   "browserbaseSessions": 4,
   "recentActivity": [
     {
-      "t": "2026-11-04T16:02:44.959Z",
+      "t": "2026-11-04T13:41:57.353Z",
       "event": "bb-session",
-      "session": "3e92b248",
-      "url": "https://www.londontheatre1.com/.well-known/captcha/?y=ipr:20.83.175.21:179330283"
+      "session": "b357aed1",
+      "url": "https://www.nytimes.com/2026/08/25/theater/paranormal-activity-review-broadway.h"
     },
     {
-      "t": "2026-11-04T16:58:38.024Z",
-      "event": "bb-session",
-      "session": "a2f78204",
-      "url": "https://bachtrack.com/review-medea-yoncheva-spyres-met-opera-new-york-october-20"
-    },
-    {
-      "t": "2026-11-04T17:02:06.807Z",
-      "event": "bb-session",
-      "session": "7d07d78a",
-      "url": "https://hermes.talkinbroadway.com/allthatchat_new/d.php?id=2655044"
-    },
-    {
-      "t": "2026-11-04T17:02:07.612Z",
+      "t": "2026-11-04T13:41:57.700Z",
       "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
+      "domain": "nytimes.com"
     },
     {
-      "t": "2026-11-04T17:22:13.676Z",
+      "t": "2026-11-04T13:43:20.196Z",
       "event": "bb-session",
-      "session": "91d85233",
+      "session": "df08d4a2",
+      "url": "https://www.nytimes.com/2026/09/26/theater/jake-shears-scissor-sisters-rocky-hor"
+    },
+    {
+      "t": "2026-11-04T13:43:20.477Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-04T13:44:16.241Z",
+      "event": "bb-session",
+      "session": "930463f4",
+      "url": "https://www.nytimes.com/2026/10/06/theater/dirty-dancing-broadway.html"
+    },
+    {
+      "t": "2026-11-04T13:44:16.593Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-04T14:14:44.124Z",
+      "event": "bb-session",
+      "session": "d5cd55e4",
       "url": "https://bachtrack.com/review-lorfeo-william-kentridge-greek-national-opera-athen"
     },
     {
-      "t": "2026-11-04T17:23:14.803Z",
+      "t": "2026-11-04T14:16:14.197Z",
       "event": "bb-session",
-      "session": "1e06efc0",
+      "session": "311ccede",
       "url": "https://bachtrack.com/review-shostakovich-cherry-town-ahlbom-dutch-national-oper"
     },
     {
-      "t": "2026-11-04T17:23:22.767Z",
+      "t": "2026-11-04T14:17:39.023Z",
       "event": "bb-session",
-      "session": "3981c60c",
-      "url": "https://bachtrack.com/review-shostakovich-cherry-town-ahlbom-dutch-national-oper"
-    },
-    {
-      "t": "2026-11-04T17:24:39.917Z",
-      "event": "bb-session",
-      "session": "6fddd8bf",
+      "session": "a16d61c2",
       "url": "https://bachtrack.com/review-tosca-miskimmon-glassberg-fanyo-english-national-op"
     }
   ]
