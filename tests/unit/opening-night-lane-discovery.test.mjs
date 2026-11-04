@@ -1079,8 +1079,41 @@ test('guard: every lane index and feed outlet has a real review URL the path gat
     const url = LANE_SOURCE_SAMPLE_REVIEW[id];
     assert.ok(url, `lane source ${id} has no sample review URL: add one from reviews.json and check the gate admits it`);
     const outletListed = Object.prototype.hasOwnProperty.call(d.SECTION_INDEX_PARSERS, id);
-    // As runDiscoveryPass applies it: the vetted rule counts only for a host the outlet registry resolves.
-    const vettedOutlet = !!resolveOutletFromUrl(url);
+    // As the adapters and runDiscoveryPass apply it: vetted only for the source's own outlet (same host as the feed or
+    // index page, or a host the registry maps to that outlet) and a host the registry resolves.
+    const feed = ls.LANE_FEEDS.find((f) => f.outletId === id);
+    const sourceUrl = ls.LANE_SECTION_INDEXES[id] || (feed && feed.url);
+    const own = new URL(url).hostname.replace(/^www\./, '') === new URL(sourceUrl).hostname.replace(/^www\./, '') || (resolveOutletFromUrl(url) || {}).outletId === id;
+    const vettedOutlet = own && !!resolveOutletFromUrl(url);
     assert.equal(d.nonReviewReason(url, { vettedOutlet, outletListed }), null, `${id}: ${url} (vetted ${vettedOutlet})`);
   }
+});
+
+test('a Google News sighting of an L&SA story first keeps the parser\'s listing claim, and a stale path memo is re-judged', async () => {
+  const STORY = 'http://www.lightingandsoundamerica.com/news/story.asp?ID=TNQ36D';
+  const html = lsaPage([lsaCard('TNQ36D', '10/18/2026', 'Other Desert Cities', 'Hayes Theater')]);
+  const gn = { name: 'google-news', kind: 'outlet-index', phase: 'cheap', discover: async () => [{ url: STORY, title: 'Theatre in Review: Other Desert Cities', source: 'outlet-index', publishDate: null, needsDate: true, vettedOutlet: true }] };
+  const lsa = d.sectionIndexAdapter({ outlets: [{ outletId: 'lighting-and-sound-america', indexUrl: LSA_INDEX }] });
+  const fetchText = async (u) => { if (u === LSA_INDEX) return html; throw new Error(`404 ${u}`); };
+  const r = await d.runDiscoveryPass({ show: SHOW, night: NIGHT, now: T0 + 2 * HOUR, startedAt: T0, adapters: [gn, lsa], fetchText });
+  assert.deepEqual(r.admitted.map((a) => [a.key, a.publishDate]), [['https://lightingandsoundamerica.com/news/story.asp?ID=TNQ36D', '2026-10-18']]);
+  const memo = { rejected: { 'https://lightingandsoundamerica.com/news/story.asp?ID=TNQ36D': { reason: 'non-review-path', attempts: 1 } } };
+  const again = await d.runDiscoveryPass({ show: SHOW, night: NIGHT, now: T0 + 2 * HOUR, startedAt: T0, adapters: [lsa], fetchText, memo });
+  assert.equal(again.admitted.length, 1, 'a rejection written before the parser existed does not stand for the night');
+});
+
+test('vetted /news/ slugs that recap or round up are still refused', () => {
+  for (const u of ['https://www.theatermania.com/news/review-the-year-in-theater-2026_1/', 'https://www.theatermania.com/news/review-of-the-week-broadway-openings_2/', 'https://www.amny.com/news/review-recap-podcast/']) {
+    assert.equal(d.nonReviewReason(u, { vettedOutlet: true }), 'non-review-path', u);
+  }
+  assert.equal(d.nonReviewReason('https://www.theatermania.com/news/review-other-desert-cities_3/', { vettedOutlet: true }), null);
+});
+
+test('a feed item on a sister host the registry maps to the feed\'s outlet is that outlet\'s own item', async () => {
+  const FEED = 'https://culturesauce.net/feed';
+  const ITEM = 'https://culturesauce.com/other-desert-cities-broadway-review/';
+  const xml = `<?xml version="1.0"?><rss><channel><item><title>Other Desert Cities</title><link>${ITEM}</link><pubDate>Sun, 18 Oct 2026 23:30:00 GMT</pubDate></item></channel></rss>`;
+  const out = await d.rssAdapter({ feeds: [{ url: FEED, outletId: 'culturesauce', name: 'Culture Sauce' }] }).discover({ show: SHOW, fetchText: async () => xml });
+  assert.equal(out[0].outletId, 'culturesauce');
+  assert.equal(out[0].vettedOutlet, true);
 });

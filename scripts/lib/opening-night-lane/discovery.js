@@ -159,6 +159,8 @@ function extractAnchors(html, pageUrl) {
  * /news/ only for a slug that leads with the review ("review-860-...", "broadway-review-..."), never "week-in-review".
  */
 const VETTED_NEWS_REVIEW_SLUG = /^(?:(?:off )?broadway |theat(?:er|re) )?review\b|\b(?:broadway|theat(?:er|re)) review\b/;
+// Review-word slugs that are not one production's review ("review-the-year-in-theater", "review-of-the-week", "recap").
+const VETTED_NEWS_NOT_REVIEW = /\b(?:year in|of the week|week in|recaps?|best of|podcast)\b/;
 function nonReviewReason(url, { aggregatorCited = false, vettedOutlet = false, outletListed = false } = {}) {
   let u;
   try { u = new URL(url); } catch { return 'unparseable-url'; }
@@ -169,7 +171,7 @@ function nonReviewReason(url, { aggregatorCited = false, vettedOutlet = false, o
   // a registry outlet by its source (Google News <source url>): Time Out and TheaterMania file reviews under /news/, and
   // the regular pipeline refuses /news/ only for unvetted SERP sources (domain-filters.js). BRO-6872.
   const lastSlug = segs[segs.length - 1].replace(/[-_]+/g, ' ');
-  const newsReviewSlug = aggregatorCited ? /\breview\b/.test(lastSlug) : vettedOutlet && VETTED_NEWS_REVIEW_SLUG.test(lastSlug);
+  const newsReviewSlug = aggregatorCited ? /\breview\b/.test(lastSlug) : vettedOutlet && VETTED_NEWS_REVIEW_SLUG.test(lastSlug) && !VETTED_NEWS_NOT_REVIEW.test(lastSlug);
   const citedNewsReview = (s) => s === 'news' && newsReviewSlug && !ROUNDUP_SLUG.test(words);
   // A /features/ section whose path names a review is a review (The Independent files its Broadway reviews under
   // /theatre-dance/features/; A Few Good Men 2026 was lost to this rule, BRO-6066). The regular pipeline's rule
@@ -554,7 +556,9 @@ function rssAdapter({ feeds } = {}) {
           if (!it.link) continue;
           // fuzzy: an outlet's own typo in headline + slug (CATERINA, BRO-4001).
           if (!titleMatchesShow(it.title, show.title, { fuzzy: true }) && !urlSlugMatchesShow(it.link, show.title, { fuzzy: true })) continue;
-          const ownHost = hostOf(it.link) === hostOf(feed.url);
+          // The feed's own item: same host, or a host the registry maps to the feed's outlet (Culture Sauce's feed is on
+          // culturesauce.net, its reviews on culturesauce.com; Theater Scene's on .net and .com).
+          const ownHost = hostOf(it.link) === hostOf(feed.url) || (!!feed.outletId && (resolveOutletFromUrl(it.link) || {}).outletId === feed.outletId);
           // A reviews-only feed's own item is a review whatever its headline says; a link off the feed's host is not vouched for.
           out.push({ url: it.link, title: it.title, source: 'outlet-index', ...it.date, via: feed.name || feed.url, outletId: ownHost ? feed.outletId : undefined, ...(ownHost ? { vettedOutlet: true } : {}), ...(ownHost && feed.reviewsOnly ? { reviewSignalGiven: true } : {}) });
         }
@@ -1070,6 +1074,8 @@ function withTimeout(fetchText, ms, remainingMs = () => Infinity) {
 }
 
 // Final rejections are remembered so they are not re-fetched every 2 minutes; a dateless candidate gets a few tries.
+// Per-URL claims a source can vouch for; collect() keeps them from every source that saw the URL.
+const TRUST_FLAGS = ['vettedOutlet', 'outletListed', 'reviewSignalGiven'];
 const FINAL_REASONS = new Set(['outside-night-window', 'non-review-path', 'non-review-slug', 'homepage', 'not-review-like', 'unknown-outlet-host', 'wrapped-url', 'unknown-source', 'not-cited-by-an-aggregator']);
 const AGGREGATOR_FINAL = new Set(['non-review-path', 'non-review-slug', 'homepage', 'wrapped-url', 'unknown-outlet-host']);
 
@@ -1109,8 +1115,17 @@ async function runDiscoveryPass({
       // The same article from several sources keeps the strongest claim: an aggregator citation beats an index sighting.
       // Every source's excerpt is kept, whichever claim wins: each is one more quote the scorer can read.
       const excerpts = (prior && (prior.excerpts || c.excerpts)) ? { ...(prior.excerpts || {}), ...(c.excerpts || {}) } : undefined;
-      if (!prior || (!prior.aggregatorCited && c.aggregatorCited)) byKey.set(key, excerpts ? { ...next, excerpts } : next);
-      else if (excerpts) prior.excerpts = excerpts;
+      const kept = (!prior || (!prior.aggregatorCited && c.aggregatorCited)) ? next : prior;
+      const other = kept === next ? prior : next;
+      if (excerpts) kept.excerpts = excerpts;
+      // What one source vouches for about the URL holds whichever source's claim is kept: a Google News sighting of an L&SA
+      // story first must not drop the L&SA parser's outletListed and turn the find into a night-long 'non-review-path'.
+      if (other) {
+        for (const flag of TRUST_FLAGS) if (other[flag] === true) kept[flag] = true;
+        if (!kept.publishDate && other.publishDate) { kept.publishDate = other.publishDate; kept.needsDate = false; }
+        if (!kept.outletId && other.outletId) kept.outletId = other.outletId;
+      }
+      byKey.set(key, kept);
     }
   };
 
@@ -1158,8 +1173,10 @@ async function runDiscoveryPass({
     // A path rejected for an uncited sighting (a /news/ review Google News found first) is judged again now that it is
     // cited, since a citation is what lets a /news/ review through (BRO-6066).
     const citedNow = c.aggregatorCited && memoed && memoed.reason === 'non-review-path' && !nonReviewReason(c.url, { aggregatorCited: true });
-    // Same for a vetted Google News find of a /news/ review an RSS feed or section index saw first (BRO-6872).
-    const vettedNow = c.vettedOutlet === true && memoed && memoed.reason === 'non-review-path' && !!resolveOutletFromUrl(c.url) && !nonReviewReason(c.url, { vettedOutlet: true });
+    // Same for a vetted Google News, own-feed or own-index find, or an outlet parser's listing (outletListed), of a /news/
+    // review another sighting saw first, or that an earlier deploy's code refused.
+    const vettedNow = (c.vettedOutlet === true || c.outletListed === true) && memoed && memoed.reason === 'non-review-path'
+      && !nonReviewReason(c.url, { vettedOutlet: c.vettedOutlet === true && !!resolveOutletFromUrl(c.url), outletListed: c.outletListed === true });
     const stands = memoed && !citedNow && !vettedNow && (c.aggregatorCited ? AGGREGATOR_FINAL.has(memoed.reason) : FINAL_REASONS.has(memoed.reason));
     if (stands || (memoed && memoed.attempts >= MAX_DATE_CHECK_ATTEMPTS && !c.aggregatorCited && !vettedNow)) continue; // decided before
     // The deadline guards fetches only (the date check below). The checks before it are synchronous, so a candidate an
