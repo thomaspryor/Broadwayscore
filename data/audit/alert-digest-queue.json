@@ -1099,5 +1099,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-04T08:12:45.713Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6965-collect2",
+    "title": "Landing blocked: unit-tests-tsx red on land/bro-6965-collect2",
+    "description": "land.yml did not land land/bro-6965-collect2: the unit-tests-tsx gate went red at 164a9b1793. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/41795091439",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6965-collect2"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-tsx"
+      },
+      {
+        "name": "tip",
+        "value": "164a9b17936b3e53404518414cd8665d791aa5ad"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41795091439"
+      }
+    ],
+    "queuedAt": "2026-11-04T08:18:42.493Z"
   }
 ]
