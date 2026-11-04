@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-11-04T02:08:44.367Z",
-  "processed": 7,
-  "failed": 8,
-  "successRate": "46.7%",
+  "updatedAt": "2026-11-04T02:32:18.697Z",
+  "processed": 140,
+  "failed": 71,
+  "successRate": "66.4%",
   "tierBreakdown": {
-    "playwright": 5,
+    "playwright": 76,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 4,
     "directCookies": 0,
-    "scrapingdog": 0,
-    "scrapingbee": 1,
+    "scrapingdog": 10,
+    "scrapingbee": 4,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 8
+    "archive": 30
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
       "t": "2026-11-04T00:23:51.736Z",
@@ -43,8 +43,41 @@
     {
       "t": "2026-11-04T02:01:27.388Z",
       "event": "bb-session",
-      "session": "7f229a0e",
-      "url": "https://bachtrack.com/review-kolomiiets-mothers-of-kherson-polish-national-opera"
+      "session": "ac9ade00",
+      "url": "https://www.londontheatre1.com/.well-known/captcha/?y=ipr:20.83.175.21:179330283"
+    },
+    {
+      "t": "2026-11-04T02:18:16.166Z",
+      "event": "bb-session",
+      "session": "d7301355",
+      "url": "https://www.talkinbroadway.com/regional/minn/minn1534.html"
+    },
+    {
+      "t": "2026-11-04T02:18:16.632Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-04T02:27:12.929Z",
+      "event": "bb-session",
+      "session": "6a9e368b",
+      "url": "https://www.nytimes.com/2026/08/25/theater/paranormal-activity-review-broadway.h"
+    },
+    {
+      "t": "2026-11-04T02:27:13.423Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-04T02:28:43.656Z",
+      "event": "bb-session",
+      "session": "84b86e5a",
+      "url": "https://www.nytimes.com/2026/10/06/theater/dirty-dancing-broadway.html"
+    },
+    {
+      "t": "2026-11-04T02:28:44.078Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
