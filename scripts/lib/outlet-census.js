@@ -780,6 +780,7 @@ function catalogGapMarkdown(groups, topPlaces = 25) {
 }
 
 module.exports = {
+  LONDON_SIGNAL_RE,
   catalogGapMarkdown,
   groupCatalogGaps,
   slugHeadline,

@@ -123,6 +123,42 @@ function titleExtendedInUrl(url, show, tokensOf) {
   return false;
 }
 
+// BRO-6968: "The Bridge" (Bush Theatre) is also the name of a London house, so the
+// census took Into the Woods and Guys and Dolls reviews "at the Bridge Theatre" as
+// reviews of the play. True when every place the title appears in `text` is
+// followed by a venue noun naming a known London house ("bridge theatre") that is
+// not this show's. Any other "<title> theatre" ("bug-theatre-review", THR's
+// "-theater-1234" slugs, "othello-theatre-royal") is the outlet's label, not a house.
+const VENUE_NOUN = new Set(['theatre', 'theater', 'playhouse']);
+let _knownHouseRe = null;
+function isKnownLondonHouse(phrase) {
+  if (!_knownHouseRe) _knownHouseRe = new RegExp(`^(?:${require('./outlet-census').LONDON_SIGNAL_RE.source})$`, 'i');
+  return _knownHouseRe.test(phrase);
+}
+function titleOnlyAsOtherVenue(text, show, tokensOf) {
+  if (!text || !show || !show.title || typeof tokensOf !== 'function') return false;
+  const tokens = tokensOf(show.title);
+  if (!tokens.length) return false;
+  const wordsOf = (s) => foldDiacritics(String(s || '')).toLowerCase().split(/[^a-z0-9]+/).filter(Boolean);
+  const words = wordsOf(text);
+  const ownVenue = ` ${wordsOf(show.venue).join(' ')} `;
+  let venueUses = 0;
+  for (let i = 0; i + tokens.length <= words.length; i++) {
+    if (!tokens.every((t, k) => words[i + k] === t)) continue;
+    const next = words[i + tokens.length];
+    // "bug-theatre-review" is the outlet's section label, not a house.
+    if (!VENUE_NOUN.has(next) || !isKnownLondonHouse(`${tokens.join(' ')} ${next}`)) return false;
+    if (ownVenue.includes(` ${tokens.join(' ')} ${next} `)) return false;
+    venueUses++;
+  }
+  return venueUses > 0;
+}
+function titleOnlyAsOtherVenueInUrl(url, show, tokensOf) {
+  let p;
+  try { p = decodeURIComponent(new URL(url).pathname); } catch { return false; }
+  return titleOnlyAsOtherVenue(p, show, tokensOf);
+}
+
 /**
  * Why a not-yet-collected URL is not an owed review, decidable from the URL and
  * how it was found alone; null when it stays a candidate. Only SERP-census-only
@@ -139,6 +175,7 @@ function missingNoiseReason(m, ctx = {}) {
   if (ctx.show && ukTourLegUrl(m.url, ctx.show)) return 'uk-tour-leg';
   if (ctx.show && isUrlMonthBeforeRun(m.url, ctx.show)) return 'url-date-before-run';
   if (ctx.show && titleExtendedInUrl(m.url, ctx.show, ctx.tokensOf)) return 'longer-title-collision';
+  if (ctx.show && titleOnlyAsOtherVenueInUrl(m.url, ctx.show, ctx.tokensOf)) return 'title-is-other-venue';
   return null;
 }
 
@@ -273,6 +310,8 @@ module.exports = {
   isTimeoutListingShape,
   missingNoiseReason,
   titleExtendedInUrl,
+  titleOnlyAsOtherVenue,
+  titleOnlyAsOtherVenueInUrl,
   ukTourLegUrl,
   isPortalHost,
   censusExclusionReason,

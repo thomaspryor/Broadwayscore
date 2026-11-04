@@ -617,7 +617,7 @@ function dropRoundupsOwnedByOtherShows(urls, showId, owners) {
 
 const { titleTokens, titleVariantInfo, venueTokens, labelledSiblings, proofInSegments } = require('./lib/show-title-tokens');
 const { foldDiacritics } = require('./lib/title-match');
-const { titleExtendedInUrl, vetTimeoutListingCandidates, vetTourCandidatesByPageDate } = require('./lib/gap-census-noise');
+const { titleExtendedInUrl, titleOnlyAsOtherVenue, vetTimeoutListingCandidates, vetTourCandidatesByPageDate } = require('./lib/gap-census-noise');
 
 function urlMatchesShow(href, tokens) {
   if (tokens.length === 0) return true; // no tokens → accept everything
@@ -952,6 +952,8 @@ function acceptSerpCensusResult(sr, { show, showInfo, priorVetted = false }) {
   if (isUrlMonthBeforeRun(u, show)) return null;
   // BRO-6804: a slug reading as a longer title (The Girls / School Girls vs Girls).
   if (titleExtendedInUrl(u, show, titleTokens)) return null;
+  // BRO-6968: the title appears only as another house's name ("into-the-woods-review-bridge-theatre").
+  if (titleOnlyAsOtherVenue(`${new URL(u).pathname} ${sr.title || ''} ${sr.snippet || ''}`, show, titleTokens)) return null;
   // Same-title production elsewhere (BRO-4190): the URL or SERP title names
   // another market's edition or a London house on a New York show.
   if (otherProductionUrlSignal(u, show, sr.title, { census: true }) || edinburghFringeUrlSignal(u, show) || phillyFringeUrlSignal(u, show)) return null;

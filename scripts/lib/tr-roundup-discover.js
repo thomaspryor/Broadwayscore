@@ -32,6 +32,15 @@ const { cleanSearchTitle } = require('./title-normalization');
 
 const { foldDiacritics } = require('./title-match');
 
+// BRO-6968: verifyAggregatorUrl is token-based, so "The Bridge" passed the Bridge Theatre's
+// "Into The Woods at The Bridge" round-up. A page the TR matcher already assigned to another
+// show (tr-archive-claim, BRO-6089) is rejected for every caller (poller, gap audit, lane).
+function claimedByOtherShow(html, show, opts) {
+  const lib = require('./tr-archive-claim');
+  const v = lib.checkTrArchiveClaim(html, show.id, opts.trClaims || lib.loadCoverageClaims());
+  return v.ok ? null : v.reason;
+}
+
 async function discoverTrRoundupHtml(show, opts = {}) {
   const fetchPage = opts.fetchPage || require('./scraper').fetchPage;
   const fetchJSON = opts.fetchJSON || require('./scraper').fetchJSON;
@@ -76,6 +85,11 @@ async function discoverTrRoundupHtml(show, opts = {}) {
           log(`    ✗ TR ${trUrl} rejected: ${v.rejectReason} (cross-show guard)`);
           continue;
         }
+        const owned = claimedByOtherShow(result.content, show, opts);
+        if (owned) {
+          log(`    ✗ TR ${trUrl} rejected: ${owned}`);
+          continue;
+        }
         log(`    Found at: ${trUrl} (via ${result.source})`);
         return { html: result.content, url: trUrl };
       }
@@ -107,10 +121,11 @@ async function discoverTrRoundupHtml(show, opts = {}) {
         const pageResult = await fetchPage(roundup.link, { renderJs: false });
         if (pageResult && pageResult.content && pageResult.content.length > 1000) {
           const v = verifyAggregatorUrl({ url: roundup.link, html: pageResult.content, show, openingDate: show.openingDate });
-          if (v.isValid) {
+          const owned = v.isValid ? claimedByOtherShow(pageResult.content, show, opts) : null;
+          if (v.isValid && !owned) {
             return { html: pageResult.content, url: roundup.link };
           }
-          log(`    ✗ TR WP-API ${roundup.link} rejected: ${v.rejectReason} (cross-show guard)`);
+          log(`    ✗ TR WP-API ${roundup.link} rejected: ${owned || `${v.rejectReason} (cross-show guard)`}`);
         }
       }
     }

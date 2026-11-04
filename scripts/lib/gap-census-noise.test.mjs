@@ -233,3 +233,23 @@ test('BRO-5489: a UK-market show page-date vets every census candidate (Buffy Re
     assert.equal(o.nonReview.length, 1, category);
   }
 });
+
+// BRO-6968: The Bridge (Bush Theatre) census held Into the Woods / Guys and Dolls "at the Bridge Theatre".
+test('a title used only as another house\'s name is not this show', () => {
+  const show = { title: 'The Bridge', venue: 'Bush Theatre', category: 'off-west-end', openingDate: '2026-11-03' };
+  const u = (url) => noise.titleOnlyAsOtherVenueInUrl(url, show, titleTokens);
+  assert.equal(u('https://www.thetimes.com/culture/theatre-dance/article/into-the-woods-review-bridge-theatre-gzw6h6f8b'), true);
+  assert.equal(u('https://www.timeout.com/london/news/review-into-the-woods-bridge-theatre-121125'), true);
+  assert.equal(u('https://variety.com/2023/legit/reviews/guys-and-dolls-review-london-nicholas-hytner-bridge-theatre-1235553744/'), true);
+  assert.equal(u('https://www.theguardian.com/culture/2026/aug/30/the-bridge-review-alaa-shehada'), false);
+  assert.equal(u('https://www.bestoftheatre.co.uk/blog/post/review-roundup-the-bridge-bush-theatre'), false);
+  assert.equal(u('https://www.timeout.com/london/theatre/the-bridge-4'), false);
+  // SERP title/snippet: the noel-coward URL carried "bridge" only in its snippet.
+  assert.equal(noise.titleOnlyAsOtherVenue('/article/into-woods-review-noel-coward-theatre Into the Woods review: the Bridge Theatre transfer', show, titleTokens), true);
+  assert.equal(noise.titleOnlyAsOtherVenue('/stage/x The Bridge review, Bush Theatre', show, titleTokens), false);
+  assert.equal(noise.missingNoiseReason({ url: 'https://www.timeout.com/london/news/review-into-the-woods-bridge-theatre-121125', serpCensus: true }, { show, tokensOf: titleTokens }), 'title-is-other-venue');
+  // A show whose own house carries the name keeps those reviews.
+  const own = { title: 'Lyric', venue: 'Lyric Theatre', openingDate: '2026-11-03' };
+  assert.equal(noise.titleOnlyAsOtherVenueInUrl('https://x.co.uk/lyric-lyric-theatre-review', own, titleTokens), false);
+  assert.equal(noise.titleOnlyAsOtherVenueInUrl('https://x.co.uk/review-at-the-lyric-theatre', own, titleTokens), false);
+});
