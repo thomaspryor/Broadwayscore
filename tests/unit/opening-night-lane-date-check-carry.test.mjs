@@ -59,7 +59,7 @@ test('a carried check that is still running is waited on again, and a carried fa
   const second = await pass(fetchText, memo, { deadlineMs: 500 });
   assert.equal(calls, 1, 'the second pass waited on the first pass\'s fetch');
   assert.equal(second.admitted.length, 0);
-  assert.deepEqual(memo.rejected[KEY], { reason: 'date-check-failed', attempts: 1 });
+  assert.deepEqual(memo.rejected[KEY], { reason: 'date-check-failed', attempts: 1, dateFails: 1 });
   await pass(fetchText, memo, { deadlineMs: 500 });
   assert.equal(calls, 2, 'a settled check is not reused: the next pass fetches afresh');
 });
@@ -160,7 +160,7 @@ test('a pending find that keeps failing is given up after three date-check failu
   const memo = { rejected: {} };
   for (let i = 0; i < 6; i++) await d.runDiscoveryPass({ show: SHOW, night: NIGHT, now: T0 + 3600000, startedAt: T0, adapters: [once], fetchText, memo });
   assert.equal(calls, 3);
-  assert.deepEqual(memo.rejected[KEY], { reason: 'date-check-failed', attempts: 3 });
+  assert.deepEqual(memo.rejected[KEY], { reason: 'date-check-failed', attempts: 3, dateFails: 3 });
 });
 
 test('a not-review-like strike from another sighting does not count toward the three date-check failures', async () => {
@@ -171,4 +171,53 @@ test('a not-review-like strike from another sighting does not count toward the t
   const fetchText = async () => { calls++; throw new Error('All scraping methods failed'); };
   for (let i = 0; i < 6; i++) await d.runDiscoveryPass({ show: SHOW, night: NIGHT, now: T0 + 3600000, startedAt: T0, adapters: [signalled], fetchText, memo });
   assert.equal(calls, 3, 'three date-check tries, the earlier strike aside');
+});
+
+// BRO-6872 review of the pending fix: each of these spent paid fetches without end, or lost the find again.
+const listedOnce = (extra = {}) => { let n = 0; return { name: 'talkin-broadway', kind: 'outlet-index', phase: 'cheap', fetchTimeoutMs: 1000,
+  discover: async () => (n++ === 0 ? [{ url: TB, title: 'School Girls review', source: 'outlet-index', publishDate: null, needsDate: true, ...extra }] : []) }; };
+const runWith = (adapter, fetchText, memo, opts = {}) => d.runDiscoveryPass({ show: SHOW, night: NIGHT, now: T0 + 3600000, startedAt: T0, adapters: [adapter], fetchText, memo, ...opts });
+
+test('sightings that alternate between a bare title and a review signal stop after three failed date checks', async () => {
+  let calls = 0; let i = 0;
+  const alternating = { name: 'talkin-broadway', kind: 'outlet-index', phase: 'cheap', fetchTimeoutMs: 1000,
+    discover: async () => [{ url: TB, title: 'School Girls', source: 'outlet-index', publishDate: null, needsDate: true, ...(i++ % 2 === 0 ? { reviewSignalGiven: true } : {}) }] };
+  const memo = { rejected: {} };
+  for (let p = 0; p < 12; p++) await runWith(alternating, async () => { calls++; throw new Error('All scraping methods failed'); }, memo);
+  assert.equal(calls, 3);
+});
+
+test('a pending find no index lists again is dropped after PENDING_MAX_TIMEOUTS timed-out date checks', async () => {
+  let calls = 0;
+  const memo = { rejected: {} };
+  const slow = async () => { calls++; await sleep(80); return PAGE; };
+  // The adapter's 1000 ms cap is replaced by 30 ms so each check times out inside the pass.
+  const adapter = { ...listedOnce(), fetchTimeoutMs: 30 };
+  for (let p = 0; p < 8; p++) await runWith(adapter, slow, memo);
+  assert.equal(calls, 4, 'the listed pass plus three pending-only timeouts');
+  assert.deepEqual(memo.rejected, {}, 'timeouts are no strike');
+});
+
+test('a challenge page from the date check (no date on it) is a strike and the find stays pending until the page answers', async () => {
+  let calls = 0;
+  const memo = { rejected: {} };
+  const fetchText = async () => (++calls === 1 ? '<html><title>Just a moment...</title></html>' : PAGE);
+  assert.equal((await runWith(listedOnce(), fetchText, memo)).admitted.length, 0);
+  assert.deepEqual(memo.rejected[KEY], { reason: 'date-check-failed', attempts: 1, dateFails: 1 });
+  assert.deepEqual((await runWith(listedOnce(), fetchText, memo)).admitted.map((a) => a.key), [KEY]);
+});
+
+test('a dated find admitted without a date check leaves the pending set', async () => {
+  const memo = { rejected: {} };
+  let calls = 0;
+  const fetchText = async () => { calls++; throw new Error('no fetch expected'); };
+  // First pass: listed undated, check cut by the cap (deferred, pending). Second pass: listed again with a date.
+  let n = 0;
+  const adapter = { name: 'talkin-broadway', kind: 'outlet-index', phase: 'cheap', fetchTimeoutMs: 1000,
+    discover: async () => (n++ === 0 ? [{ url: TB, title: 'School Girls review', source: 'outlet-index', publishDate: null, needsDate: true }]
+      : n === 2 ? [{ url: TB, title: 'School Girls review', source: 'outlet-index', publishDate: '2026-09-28T23:00:00Z' }] : []) };
+  await runWith(adapter, fetchText, memo, { maxDateChecks: 0 });
+  assert.equal((await runWith(adapter, fetchText, memo)).admitted.length, 1);
+  assert.equal((await runWith(adapter, fetchText, memo)).admitted.length, 0, 'not re-entered from pending');
+  assert.equal(calls, 0);
 });

@@ -1220,6 +1220,9 @@ const DATE_CHECKS_IN_FLIGHT = Symbol('dateChecksInFlight');
 // Date checks open at most this many pages at once, across passes (a carried check keeps its slot). A burst of ten paid
 // fetches can trip a provider's concurrency limit, and that refusal reads as a real failure: a strike (BRO-6872 review).
 const DATE_CHECK_CONCURRENCY = 3;
+// Paid date checks a pending find (listed once, not listed since) may time out before it is dropped for the night.
+const PENDING_MAX_TIMEOUTS = 3;
+const dateFailsOf = (m) => (!m ? 0 : m.dateFails !== undefined ? m.dateFails : m.reason === 'date-check-failed' ? m.attempts : 0);
 
 /**
  * A FIFO limiter: run(fn, tag) starts fn once fewer than `max` are running, and settles with it. dropQueued() removes
@@ -1331,11 +1334,12 @@ async function runDiscoveryPass({
   const admitted = [];
   const deferredDateChecks = [];
   let dateChecks = 0;
-  if (!memo[DATE_CHECKS_IN_FLIGHT]) Object.defineProperty(memo, DATE_CHECKS_IN_FLIGHT, { value: { checks: new Map(), pending: new Map(), limit: makeLimiter(DATE_CHECK_CONCURRENCY) }, enumerable: false });
-  const { checks: inFlight, pending, limit: limitDateCheck } = memo[DATE_CHECKS_IN_FLIGHT];
+  if (!memo[DATE_CHECKS_IN_FLIGHT]) Object.defineProperty(memo, DATE_CHECKS_IN_FLIGHT, { value: { checks: new Map(), pending: new Map(), timeouts: new Map(), limit: makeLimiter(DATE_CHECK_CONCURRENCY) }, enumerable: false });
+  const { checks: inFlight, pending, timeouts, limit: limitDateCheck } = memo[DATE_CHECKS_IN_FLIGHT];
   const adapterCaps = new Map(adapters.filter((a) => a.fetchTimeoutMs).map((a) => [a.name, a.fetchTimeoutMs]));
   const checks = [];
   const judge = (c, key, publishDate) => {
+    pending.delete(key);
     const verdict = admitLaneCandidate({ source: c.source, aggregatorCited: c.aggregatorCited === true, publishDate, night, ...(timeZone ? { timeZone } : {}) });
     if (verdict.admit) admitted.push({ url: c.fetchUrl || c.url, key, source: c.source, adapter: c.adapter, via: c.via, publishDate, outletId: c.outletId || (resolveOutletFromUrl(c.url) || {}).outletId || null, reason: verdict.reason, ...(c.excerpts ? { excerpts: c.excerpts } : {}) });
     else reject(c, key, verdict.reason);
@@ -1344,13 +1348,22 @@ async function runDiscoveryPass({
     pending.delete(key);
     rejected.push({ url: c.url, adapter: c.adapter, reason });
     const prev = memo.rejected[key] || { attempts: 0 };
-    memo.rejected[key] = { reason, attempts: prev.attempts + 1 };
+    memo.rejected[key] = { reason, attempts: prev.attempts + 1, ...(prev.dateFails ? { dateFails: prev.dateFails } : {}) };
+  };
+  // A date check that failed or read no date (a challenge page has none) is a strike, and the find stays pending. Date
+  // failures have their own count, carried through other rejections, so a find re-judged after a bare-title sighting
+  // still gets three date checks and no more (BRO-6872 review: alternating sightings must not retry forever).
+  const dateFail = (key) => {
+    const prev = memo.rejected[key] || { attempts: 0 };
+    memo.rejected[key] = { reason: 'date-check-failed', attempts: prev.attempts + 1, dateFails: dateFailsOf(prev) + 1 };
   };
   // Candidates not tried yet go first, so the date-check cap rotates through the backlog instead of re-checking the
   // same first few every pass.
   // An undated index find stays a candidate until its date is read, whether or not its index page loads again. Talkin'
   // Broadway's indexes come back as a challenge page on most passes: Other Desert Cities' review was listed, its date
   // check answered (2026-10-18) after the pass deadline, and no later pass listed it again to read the answer (p16 replay).
+  // Pending finds live on the in-memory memo only: a lane restart forgets them until an index lists them again.
+  const listed = new Set(byKey.keys());
   for (const [key, c] of pending) if (!byKey.has(key)) byKey.set(key, c);
   const ordered = [...byKey.entries()].sort(([ka], [kb]) => ((memo.rejected[ka] || {}).attempts || 0) - ((memo.rejected[kb] || {}).attempts || 0));
   try {
@@ -1371,7 +1384,8 @@ async function runDiscoveryPass({
       const reviewLikeNow = memoed && memoed.reason === 'not-review-like' && c.source !== 'aggregator' && looksReviewLike(c, show);
       const rejudge = citedNow || vettedNow || reviewLikeNow;
       const stands = memoed && !rejudge && (c.aggregatorCited ? AGGREGATOR_FINAL.has(memoed.reason) : FINAL_REASONS.has(memoed.reason));
-      if (stands || (memoed && memoed.attempts >= MAX_DATE_CHECK_ATTEMPTS && !c.aggregatorCited && !rejudge)) { pending.delete(key); continue; } // decided before
+      const tries = memoed && (memoed.reason === 'date-check-failed' ? dateFailsOf(memoed) : memoed.attempts);
+      if (stands || (memoed && tries >= MAX_DATE_CHECK_ATTEMPTS && !c.aggregatorCited && !rejudge)) { pending.delete(key); continue; } // decided before
       // The deadline guards fetches only (the date check below). The checks before it are synchronous, so a candidate an
       // aggregator already cites is admitted even when the adapters ran long. Deferring every candidate on a late pass
       // starved the lane: each pass re-runs every adapter, so a night whose adapters take more than 90 s never admitted
@@ -1387,8 +1401,8 @@ async function runDiscoveryPass({
       }
 
       if (c.source === 'outlet-index' && !c.publishDate && c.needsDate) {
-        pending.set(key, c); // until its date is read or it is given up, also when the date-check cap defers it
         let check = inFlight.get(key);
+        pending.set(key, c); // until its date is read or it is given up, also when the date-check cap defers it
         if (!check) {
           if (dateChecks >= maxDateChecks) { deferredDateChecks.push(c.url); continue; } // tried first next pass: attempts is still 0
           if (overDeadline()) { deadlineHit = true; deferredDateChecks.push(c.url); continue; }
@@ -1424,16 +1438,27 @@ async function runDiscoveryPass({
             publishDate = extractPublishDate(outcome.html) || c.fallbackDate || null;
           } catch (e) {
             errors.push({ adapter: c.adapter, error: `date check ${c.url}: ${String((e && e.message) || e).slice(0, 150)}` });
+            deferredDateChecks.push(c.url);
             // A timeout or the pass deadline says nothing about the article: no strike (three strikes end the candidate for the night).
-            if (/timed out|deadline reached/.test(String(e && e.message))) { deferredDateChecks.push(c.url); continue; }
-            // Only date-check failures count toward the three: an earlier 'not-review-like' strike from another adapter's
-            // bare-title sighting (Other Desert Cities, p16) left the page one failure from being given up.
-            const prev = memo.rejected[key];
-            memo.rejected[key] = { reason: 'date-check-failed', attempts: (prev && prev.reason === 'date-check-failed' ? prev.attempts : 0) + 1 };
+            if (/timed out|deadline reached/.test(String(e && e.message))) {
+              // A find no index listed this pass is fetched again only PENDING_MAX_TIMEOUTS times (each is a paid fetch);
+              // a listed one keeps the adapter's own limits (TB: TB_MAX_CARRIES).
+              if (/timed out/.test(String(e && e.message)) && !listed.has(key)) {
+                const n = (timeouts.get(key) || 0) + 1;
+                timeouts.set(key, n);
+                if (n >= PENDING_MAX_TIMEOUTS) pending.delete(key);
+              }
+              continue;
+            }
+            dateFail(key);
+            continue;
+          }
+          if (!publishDate) { // reported as before, but a strike that keeps the find pending: a challenge page has no date either
+            rejected.push({ url: c.url, adapter: c.adapter, reason: 'no-publish-date' });
+            dateFail(key);
             deferredDateChecks.push(c.url);
             continue;
           }
-          pending.delete(key);
           judge(c, key, publishDate);
         }
       } finally { clearTimeout(timer); }
