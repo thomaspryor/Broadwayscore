@@ -8,7 +8,7 @@
     "email": null
   },
   "plan": {
-    "summary": "BRO-6927 critic gap fill (NYSR archive): ingest 36 New York Stage Review reviews by outreach critics missing from their critic pages.",
+    "summary": "BRO-6927 critic gap fill (NYSR archive): ingest 36 New York Stage Review reviews by outreach critics missing from their critic pages. (part 1 of 2)",
     "steps": [
       "Ingest each review URL with ingest-review-from-url.js under the named critic",
       "Next rebuild and scheduled scoring pick them up"
@@ -164,72 +164,6 @@
         "script": "ingest-review-from-url.js",
         "args": "--show=the-disappear-off-broadway-2026 --url=https://nystagereview.com/2026/01/15/the-disappear-art-isnt-easy/ --critic=\"Melissa Rose Bernardo\" --publish-date=2026-01-15",
         "description": "BRO-6927 gap: Melissa Rose Bernardo (New York Stage Review) review of the-disappear-off-broadway-2026, on the NYSR author archive but missing from the critic page"
-      },
-      {
-        "type": "run-script",
-        "script": "ingest-review-from-url.js",
-        "args": "--show=the-brothers-size-off-broadway-2025 --url=https://nystagereview.com/2025/09/10/the-brothers-size-a-heart-rending-tale-of-family-and-trauma/ --critic=\"Melissa Rose Bernardo\" --publish-date=2025-09-10",
-        "description": "BRO-6927 gap: Melissa Rose Bernardo (New York Stage Review) review of the-brothers-size-off-broadway-2025, on the NYSR author archive but missing from the critic page"
-      },
-      {
-        "type": "run-script",
-        "script": "ingest-review-from-url.js",
-        "args": "--show=danny-and-the-deep-blue-sea-off-broadway-2023 --url=https://nystagereview.com/2023/11/14/danny-and-the-deep-blue-sea-stale-pretzels-cheap-beer-and-dive-bar-dreams/ --critic=\"Melissa Rose Bernardo\" --publish-date=2023-11-14",
-        "description": "BRO-6927 gap: Melissa Rose Bernardo (New York Stage Review) review of danny-and-the-deep-blue-sea-off-broadway-2023, on the NYSR author archive but missing from the critic page"
-      },
-      {
-        "type": "run-script",
-        "script": "ingest-review-from-url.js",
-        "args": "--show=the-piano-lesson-2022 --url=https://nystagereview.com/2022/10/13/the-piano-lesson-a-starry-but-off-key-rendition/ --critic=\"Melissa Rose Bernardo\" --publish-date=2022-10-13",
-        "description": "BRO-6927 gap: Melissa Rose Bernardo (New York Stage Review) review of the-piano-lesson-2022, on the NYSR author archive but missing from the critic page"
-      },
-      {
-        "type": "run-script",
-        "script": "ingest-review-from-url.js",
-        "args": "--show=the-chinese-lady-off-broadway-2022 --url=https://nystagereview.com/2022/03/08/the-chinese-lady-for-your-education-entertainment-and-discomfort/ --critic=\"Melissa Rose Bernardo\" --publish-date=2022-03-08",
-        "description": "BRO-6927 gap: Melissa Rose Bernardo (New York Stage Review) review of the-chinese-lady-off-broadway-2022, on the NYSR author archive but missing from the critic page"
-      },
-      {
-        "type": "run-script",
-        "script": "ingest-review-from-url.js",
-        "args": "--show=clydes-2021 --url=https://nystagereview.com/2021/11/23/clydes-lynn-nottage-cooks-up-a-sharp-kitchen-set-comedy/ --critic=\"Melissa Rose Bernardo\" --publish-date=2021-11-23",
-        "description": "BRO-6927 gap: Melissa Rose Bernardo (New York Stage Review) review of clydes-2021, on the NYSR author archive but missing from the critic page"
-      },
-      {
-        "type": "run-script",
-        "script": "ingest-review-from-url.js",
-        "args": "--show=betrayal-2019 --url=https://nystagereview.com/2019/09/05/betrayal-less-is-more-in-this-london-born-revival/ --critic=\"Melissa Rose Bernardo\" --publish-date=2019-09-05",
-        "description": "BRO-6927 gap: Melissa Rose Bernardo (New York Stage Review) review of betrayal-2019, on the NYSR author archive but missing from the critic page"
-      },
-      {
-        "type": "run-script",
-        "script": "ingest-review-from-url.js",
-        "args": "--show=the-bedwetter-off-broadway-2022 --url=https://nystagereview.com/2022/06/07/the-bedwetter-a-laughing-matter-from-sarah-silverman/ --critic=\"Steven Suskin\" --publish-date=2022-06-07",
-        "description": "BRO-6927 gap: Steven Suskin (New York Stage Review) review of the-bedwetter-off-broadway-2022, on the NYSR author archive but missing from the critic page"
-      },
-      {
-        "type": "run-script",
-        "script": "ingest-review-from-url.js",
-        "args": "--show=hangmen-off-broadway-2018 --url=https://nystagereview.com/2018/02/05/stage-review-learning-the-ropes/ --critic=\"Steven Suskin\" --publish-date=2018-02-05",
-        "description": "BRO-6927 gap: Steven Suskin (New York Stage Review) review of hangmen-off-broadway-2018, on the NYSR author archive but missing from the critic page"
-      },
-      {
-        "type": "run-script",
-        "script": "ingest-review-from-url.js",
-        "args": "--show=the-doctor-off-broadway-2023 --url=https://nystagereview.com/2023/06/15/the-doctor-from-london-a-scathing-societal-diagnosis-and-a-meditation-on-faith/ --critic=\"Elysa Gardner\" --publish-date=2023-06-15",
-        "description": "BRO-6927 gap: Elysa Gardner (New York Stage Review) review of the-doctor-off-broadway-2023, on the NYSR author archive but missing from the critic page"
-      },
-      {
-        "type": "run-script",
-        "script": "ingest-review-from-url.js",
-        "args": "--show=angels-in-america-2018 --url=https://nystagereview.com/2018/03/25/angels-in-america-arriving-via-london-this-angel-soars/ --critic=\"Elysa Gardner\" --publish-date=2018-03-25",
-        "description": "BRO-6927 gap: Elysa Gardner (New York Stage Review) review of angels-in-america-2018, on the NYSR author archive but missing from the critic page"
-      },
-      {
-        "type": "run-script",
-        "script": "ingest-review-from-url.js",
-        "args": "--show=bad-krey-l-off-broadway-2026 --url=https://nystagereview.com/2024/10/28/bad-kreyol-good-writing-about-a-culture-clash-in-haiti/ --critic=\"Roma Torre\" --publish-date=2024-10-28",
-        "description": "BRO-6927 gap: Roma Torre (New York Stage Review) review of bad-krey-l-off-broadway-2026, on the NYSR author archive but missing from the critic page"
       }
     ]
   }
