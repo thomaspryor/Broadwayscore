@@ -109,3 +109,16 @@ describe('poller config and WP fetch check', () => {
     assert.equal(poller.looksLikeWpPostList('{"code":"rest_no_route"}'), false);
   });
 });
+
+describe('a title inside a longer matched title', () => {
+  const TWO_GIRLS = { id: 'two-girls-off-broadway-2026', title: 'Two Girls', status: 'open', previewsStartDate: '2026-10-01', openingDate: '2026-10-15' };
+  test('"Two Girls" review files to Two Girls only, not Girls', () => {
+    const ids = findMatchingShows('Review: Two Girls, an Interrogation of a Memory of a Brazilian Porno',
+      '/news/review-two-girls-an-interrogation-of-a-memory-of-a-brazilian-porno_1857490/', [GIRLS, TWO_GIRLS], '', { publishDate: '2026-10-20' }).map((s) => s.id);
+    assert.deepEqual(ids, [TWO_GIRLS.id]);
+  });
+  test('two distinct titles in one headline still both match', () => {
+    const ids = findMatchingShows('A Few Good Men and Memoirs of Amorous Gentlemen review', '/x/', [FEW_GOOD_MEN, MEMOIRS], '', { publishDate: '2026-10-23' }).map((s) => s.id);
+    assert.deepEqual(ids.sort(), [MEMOIRS.id, FEW_GOOD_MEN.id].sort());
+  });
+});

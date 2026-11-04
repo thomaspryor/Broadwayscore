@@ -297,8 +297,24 @@ function findMatchingShows(headline, urlSlug, activeShows, creditText = '', { no
 
   // A venue credit is void when another show at the same venue matched on its
   // own title: "Hamlet at St. Luke's Theatre ... soon" belongs to Hamlet.
-  return matches.filter((show) => !venueOnly.has(show)
+  const kept = matches.filter((show) => !venueOnly.has(show)
     || !matches.some((o) => o !== show && !venueOnly.has(o) && venuePhrase(o) === venuePhrase(show)));
+  return dropTitlesInsideLongerMatch(kept);
+}
+
+// A title found only as part of a longer matched title is that longer show:
+// TheaterMania's "Review: Two Girls, an Interrogation..." also matched "Girls"
+// (a West End show), and TSC's "School Girls; Or, ..." did the same (BRO-6921).
+function dropTitlesInsideLongerMatch(shows) {
+  if (shows.length < 2) return shows;
+  const norm = (s) => hyphenSpaced(String(s.title || '').replace(/[_/]+/g, ' '));
+  return shows.filter((show) => {
+    const n = norm(show);
+    return !shows.some((o) => {
+      const on = norm(o);
+      return on.length > n.length && ` ${on} `.includes(` ${n} `);
+    });
+  });
 }
 
 // --- Page-confirmed matches (BRO-6921) ---
