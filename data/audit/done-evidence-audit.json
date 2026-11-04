@@ -1,65 +1,65 @@
 {
-  "generatedAt": "2026-11-03T09:45:24.757Z",
+  "generatedAt": "2026-11-04T02:00:06.342Z",
   "shadow": true,
   "windowDays": 14,
   "truncated": false,
   "fetchError": null,
-  "checkoutSha": "b4fe417a7559b10006bef30091678da4e7e530e0",
-  "notReRun": 0,
+  "checkoutSha": "97c7f84fb18e7ab8c08f651d1e7917ad247dbe33",
+  "notReRun": 82,
   "unresolvedProbes": 0,
-  "sweepOffset": 138,
+  "sweepOffset": 82,
   "slowDemoted": [
     "BRO-6660"
   ],
   "slowDemotedSince": {
     "BRO-6660": "2026-11-03T09:45:24.757Z"
   },
-  "elapsedMs": 439495,
+  "elapsedMs": 623101,
   "timeBudgetMs": 600000,
   "slowestChecks": [
     {
-      "id": "BRO-6660",
-      "cmd": "node scripts/run-unit-tests.js",
-      "ms": 60013
+      "id": "BRO-5745",
+      "cmd": "node --test scripts/lib/push-with-retry.test.mjs",
+      "ms": 120053
     },
     {
-      "id": "BRO-6819",
+      "id": "BRO-6507",
       "cmd": "node scripts/validate-data.js --strict",
-      "ms": 31310
+      "ms": 52426
     },
     {
-      "id": "BRO-6513",
+      "id": "BRO-6474",
       "cmd": "node scripts/validate-data.js --strict",
-      "ms": 30812
+      "ms": 51981
     },
     {
-      "id": "BRO-6881",
+      "id": "BRO-6182",
       "cmd": "node scripts/validate-data.js --strict",
-      "ms": 30718
+      "ms": 51688
     },
     {
-      "id": "BRO-6749",
+      "id": "BRO-6221",
       "cmd": "node scripts/validate-data.js --strict",
-      "ms": 30158
+      "ms": 51157
     }
   ],
   "counts": {
-    "VERIFIED": 146,
-    "FAILED": 7,
-    "STUCK": 14,
+    "VERIFIED": 86,
+    "FAILED": 11,
+    "STUCK": 6,
     "VACUOUS": 0,
-    "UNVERIFIABLE": 21,
-    "total": 188
+    "UNVERIFIABLE": 130,
+    "total": 233
   },
-  "doneVerified": 146,
-  "doneTotal": 161,
+  "doneVerified": 86,
+  "doneTotal": 200,
   "results": [
     {
-      "id": "BRO-6391",
-      "name": "Scraper cost report: file worker cards instead of asking the owner to investigate",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6391/scraper-cost-report-file-worker-cards-instead-of-asking-the-owner-to",
+      "id": "BRO-6791",
+      "name": "Opera brand colour: site header is amber, social kit is rose-red",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6791/opera-brand-colour-site-header-is-amber-social-kit-is-rose-red",
       "state": "Done",
-      "cmd": "node --test scripts/lib/cost-report-alerts.test.mjs",
+      "cmd": "node --test scripts/opera-brand-colour.test.mjs",
       "verdict": "VERIFIED",
       "evidence": "holds",
       "detail": null,
@@ -67,1330 +67,7 @@
         "pr-evidence",
         "verify-command"
       ],
-      "ms": 697
-    },
-    {
-      "id": "BRO-6386",
-      "name": "Time-bomb test armed: tests/unit/opening-night-orchestrator-cron.test.mjs — an earlier all-market run started 5h ago does not cover us",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6386/time-bomb-test-armed-testsunitopening-night-orchestrator-crontestmjs",
-      "state": "In Review",
-      "cmd": "node scripts/check-alert-condition-absent.js --key-b64 dGltZS1ib21iLXRlc3RzOnVuaXQ6dGVzdHMvdW5pdC9vcGVuaW5nLW5pZ2h0LW9yY2hlc3RyYXRvci1jcm9uLnRlc3QubWpzOjphbiBlYXJsaWVyIGFsbC1tYXJrZXQgcnVuIHN0YXJ0ZWQgNWggYWdvIGRvZXMg",
-      "verdict": "STUCK",
-      "evidence": "holds",
-      "detail": "its own evidence holds on main — looks finished",
-      "channels": [
-        "verify-command"
-      ],
-      "ms": 36
-    },
-    {
-      "id": "BRO-6384",
-      "name": "Time-bomb test armed: tests/unit/fantasy-roster-privacy.test.ts — teams the database hid still count",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6384/time-bomb-test-armed-testsunitfantasy-roster-privacytestts-teams-the",
-      "state": "In Progress",
-      "cmd": "node scripts/check-alert-condition-absent.js --key-b64 dGltZS1ib21iLXRlc3RzOnVuaXQtdHN4OnRlc3RzL3VuaXQvZmFudGFzeS1yb3N0ZXItcHJpdmFjeS50ZXN0LnRzOjp0ZWFtcyB0aGUgZGF0YWJhc2UgaGlkIHN0aWxsIGNvdW50",
-      "verdict": "STUCK",
-      "evidence": "holds",
-      "detail": "its own evidence holds on main — looks finished",
-      "channels": [
-        "verify-command"
-      ],
-      "ms": 35
-    },
-    {
-      "id": "BRO-6382",
-      "name": "Time-bomb test armed: scripts/backlog-drain.test.mjs — reconcileAndAppend: lock busy skips the tick instead of appending",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6382/time-bomb-test-armed-scriptsbacklog-draintestmjs-reconcileandappend",
-      "state": "In Review",
-      "cmd": "node scripts/check-alert-condition-absent.js --key-b64 dGltZS1ib21iLXRlc3RzOnVuaXQ6c2NyaXB0cy9iYWNrbG9nLWRyYWluLnRlc3QubWpzOjpyZWNvbmNpbGVBbmRBcHBlbmQ6IGxvY2sgYnVzeSBza2lwcyB0aGUgdGljayBpbnN0ZWFkIG9mIGFwcGVuZGluZw",
-      "verdict": "STUCK",
-      "evidence": "holds",
-      "detail": "its own evidence holds on main — looks finished",
-      "channels": [
-        "verify-command"
-      ],
-      "ms": 36
-    },
-    {
-      "id": "BRO-6381",
-      "name": "Time-bomb test armed: scripts/backlog-drain.test.mjs — main: tick lock releases on empty tasks and errors; help never acquires it",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6381/time-bomb-test-armed-scriptsbacklog-draintestmjs-main-tick-lock",
-      "state": "In Review",
-      "cmd": "node scripts/check-alert-condition-absent.js --key-b64 dGltZS1ib21iLXRlc3RzOnVuaXQ6c2NyaXB0cy9iYWNrbG9nLWRyYWluLnRlc3QubWpzOjptYWluOiB0aWNrIGxvY2sgcmVsZWFzZXMgb24gZW1wdHkgdGFza3MgYW5kIGVycm9yczsgaGVscCBuZXZlciBhY3F1",
-      "verdict": "STUCK",
-      "evidence": "holds",
-      "detail": "its own evidence holds on main — looks finished",
-      "channels": [
-        "verify-command"
-      ],
-      "ms": 37
-    },
-    {
-      "id": "BRO-6372",
-      "name": "Email-list monitor: confirm sign-in joins from Formspree auth-auto submissions, not just sign_in_completed",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6372/email-list-monitor-confirm-sign-in-joins-from-formspree-auth-auto",
-      "state": "Done",
-      "cmd": "node --test scripts/lib/email-gate-funnel-rules.test.mjs",
-      "verdict": "VERIFIED",
-      "evidence": "holds",
-      "detail": null,
-      "channels": [
-        "verify-command"
-      ],
-      "ms": 96
-    },
-    {
-      "id": "BRO-6355",
-      "name": "Model two-part productions: recoupment model reads sourced non-recouper above 100%",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6355/model-two-part-productions-recoupment-model-reads-sourced-non-recouper",
-      "state": "Done",
-      "cmd": "node --test scripts/lib/star-play-loss-side.test.mjs",
-      "verdict": "VERIFIED",
-      "evidence": "holds",
-      "detail": null,
-      "channels": [
-        "verify-command"
-      ],
-      "ms": 408
-    },
-    {
-      "id": "BRO-6323",
-      "name": "BSC Daily: main test.yml STILL red — auto-dispatch did not resolve it",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6323/bsc-daily-main-testyml-still-red-auto-dispatch-did-not-resolve-it",
-      "state": "Done",
-      "cmd": "node scripts/check-health-row-absent.js --row-b64 bWFpbiB0ZXN0LnltbCBTVElMTCByZWQg4oCUIGF1dG8tZGlzcGF0Y2ggZGlkIG5vdCByZXNvbHZlIGl0",
-      "verdict": "FAILED",
-      "evidence": "broken",
-      "detail": "[check-health-row-absent] FAIL: \"main test.yml STILL red — auto-dispatch did not resolve it\" still listed in the 2026-11-03T09:35:39.349Z health snapshot\n",
-      "channels": [
-        "verify-command"
-      ],
-      "ms": 636
-    },
-    {
-      "id": "BRO-6322",
-      "name": "BSC Daily: Live-data test failing: BRO-3887: repo Actions cache stays below the size that evicts the SERP cache (tests/unit/bro3887-cache-fix-acceptance.test.mjs)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6322/bsc-daily-live-data-test-failing-bro-3887-repo-actions-cache-stays",
-      "state": "Done",
-      "cmd": "node scripts/check-health-row-absent.js --row-b64 TGl2ZS1kYXRhIHRlc3QgZmFpbGluZzogQlJPLTM4ODc6IHJlcG8gQWN0aW9ucyBjYWNoZSBzdGF5cyBiZWxvdyB0aGUgc2l6ZSB0aGF0IGV2aWN0cyB0aGUgU0VSUCBjYWNoZSAodGVzdHMvdW5pdC9icm8zODg3",
-      "verdict": "VERIFIED",
-      "evidence": "holds",
-      "detail": null,
-      "channels": [
-        "verify-command"
-      ],
-      "ms": 28
-    },
-    {
-      "id": "BRO-6318",
-      "name": "BSC Daily: Bright Data daily breaker TRIPPED: web_unlocker2 (1871/1750 reqs)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6318/bsc-daily-bright-data-daily-breaker-tripped-web-unlocker2-18711750",
-      "state": "Done",
-      "cmd": "node scripts/check-health-row-absent.js --row-b64 QnJpZ2h0IERhdGEgZGFpbHkgYnJlYWtlciBUUklQUEVEOiB3ZWJfdW5sb2NrZXIyICgxODcxLzE3NTAgcmVxcyk",
-      "verdict": "VERIFIED",
-      "evidence": "holds",
-      "detail": null,
-      "channels": [
-        "verify-command"
-      ],
-      "ms": 29
-    },
-    {
-      "id": "BRO-6317",
-      "name": "BSC Daily: LLM scoring daily spend over budget",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6317/bsc-daily-llm-scoring-daily-spend-over-budget",
-      "state": "Done",
-      "cmd": "node scripts/check-health-row-absent.js --row-b64 TExNIHNjb3JpbmcgZGFpbHkgc3BlbmQgb3ZlciBidWRnZXQ",
-      "verdict": "VERIFIED",
-      "evidence": "holds",
-      "detail": null,
-      "channels": [
-        "verify-command"
-      ],
-      "ms": 28
-    },
-    {
-      "id": "BRO-6309",
-      "name": "Money Scorecard welcome email for new sign-ups (ready, ship on owner go)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6309/money-scorecard-welcome-email-for-new-sign-ups-ready-ship-on-owner-go",
-      "state": "In Progress",
-      "cmd": "node --test scripts/send-money-welcome.test.mjs",
-      "verdict": "UNVERIFIABLE",
-      "evidence": "unknown",
-      "detail": "still open and its check does not pass yet — expected for unfinished work, not a defect",
-      "channels": [],
-      "ms": 0
-    },
-    {
-      "id": "BRO-6293",
-      "name": "T1/T2 review stuck >24h: High School Musical — daily-mail",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6293/t1t2-review-stuck-24h-high-school-musical-daily-mail",
-      "state": "Done",
-      "cmd": "node scripts/check-alert-condition-absent.js --key-b64 YmFja3N0b3A6aGlnaC1zY2hvb2wtbXVzaWNhbC1vZmYtd2VzdC1lbmQtMjAyNi9kYWlseS1tYWlsLS1wYXRyaWNrLW1hcm1pb24uanNvbg",
-      "verdict": "VERIFIED",
-      "evidence": "holds",
-      "detail": null,
-      "channels": [
-        "verify-command"
-      ],
-      "ms": 37
-    },
-    {
-      "id": "BRO-6269",
-      "name": "iOS: iPhone-only for the public App Store launch (supportsTablet false)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6269/ios-iphone-only-for-the-public-app-store-launch-supportstablet-false",
-      "state": "Done",
-      "cmd": "node --test tests/unit/ios-tablet-support.test.mjs",
-      "verdict": "UNVERIFIABLE",
-      "evidence": "unknown",
-      "misArmed": true,
-      "detail": "its own check names tests/unit/ios-tablet-support.test.mjs, which has never existed in this repo — the acceptance criterion is wrong, so nothing can verify this card either way",
-      "channels": [],
-      "ms": 687
-    },
-    {
-      "id": "BRO-6263",
-      "name": "Codex trust ladder: unlock more access automatically as its record holds, relock on regression",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6263/codex-trust-ladder-unlock-more-access-automatically-as-its-record",
-      "state": "Done",
-      "cmd": "node --test tests/unit/codex-trust-ladder.test.mjs tests/unit/codex-runner.test.mjs",
-      "verdict": "VERIFIED",
-      "evidence": "holds",
-      "detail": null,
-      "channels": [
-        "pr-evidence",
-        "verify-command"
-      ],
-      "ms": 2451
-    },
-    {
-      "id": "BRO-6236",
-      "name": "Codex model trial: pin the model and A/B 'extra-high' reasoning effort on one lane vs 'high', decide by landed rate",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6236/codex-model-trial-pin-the-model-and-ab-extra-high-reasoning-effort-on",
-      "state": "Done",
-      "cmd": "node --test tests/unit/codex-runner.test.mjs",
-      "verdict": "VERIFIED",
-      "evidence": "holds",
-      "detail": null,
-      "channels": [
-        "pr-evidence",
-        "verify-command"
-      ],
-      "ms": 2722
-    },
-    {
-      "id": "BRO-6223",
-      "name": "Redate trade/producer cost anchors still on a guessed date (dateBasis migrated) to the period each source measured",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6223/redate-tradeproducer-cost-anchors-still-on-a-guessed-date-datebasis",
-      "state": "Done",
-      "cmd": "node scripts/validate-data.js --strict",
-      "verdict": "VERIFIED",
-      "evidence": "holds",
-      "detail": null,
-      "channels": [
-        "verify-command"
-      ],
-      "ms": 29316
-    },
-    {
-      "id": "BRO-6201",
-      "name": "BSC Daily: Check Corpus Drift",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6201/bsc-daily-check-corpus-drift",
-      "state": "Done",
-      "cmd": "node scripts/check-health-row-absent.js --row-b64 V29ya2Zsb3cgcmVwZWF0LWZhaWx1cmU6IENoZWNrIENvcnB1cyBEcmlmdA",
-      "verdict": "VERIFIED",
-      "evidence": "holds",
-      "detail": null,
-      "channels": [
-        "verify-command"
-      ],
-      "ms": 32
-    },
-    {
-      "id": "BRO-6144",
-      "name": "Codex is fed unworkable cards: route by bounce reason (close already-fixed; owner/Mac/credential/workflow cards out of the Codex lane) instead of a time-based ban",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6144/codex-is-fed-unworkable-cards-route-by-bounce-reason-close-already",
-      "state": "Done",
-      "cmd": "node --test tests/unit/codex-runner.test.mjs",
-      "verdict": "VERIFIED",
-      "evidence": "holds",
-      "detail": null,
-      "channels": [
-        "verify-command"
-      ],
-      "ms": 1792
-    },
-    {
-      "id": "BRO-6130",
-      "name": "Card routing: --self disposition for own-work cards, refuse wrongful technical parks, digest counts only real work, dated logs out of Linear",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6130/card-routing-self-disposition-for-own-work-cards-refuse-wrongful",
-      "state": "Done",
-      "cmd": "node --test scripts/lib/card-disposition.test.mjs",
-      "verdict": "VERIFIED",
-      "evidence": "holds",
-      "detail": null,
-      "channels": [
-        "pr-evidence",
-        "verify-command"
-      ],
-      "ms": 719
-    },
-    {
-      "id": "BRO-6121",
-      "name": "Star-band detector: 35 review(s) flagged for anchored re-score",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6121/star-band-detector-35-reviews-flagged-for-anchored-re-score",
-      "state": "In Review",
-      "cmd": "node scripts/check-alert-condition-absent.js --key-b64 c3Rhci1iYW5kOnJlZ3Jlc3Npb25z",
-      "verdict": "UNVERIFIABLE",
-      "evidence": "unknown",
-      "detail": "still open and its check does not pass yet — expected for unfinished work, not a defect",
-      "channels": [],
-      "openCheckFails": true,
-      "failDetail": "[check-alert-condition-absent] FAIL: \"star-band:regressions\" still firing — open, last fired 2026-11-03T07:21:46.692Z (2.4h ago, within 168h)\n",
-      "ms": 77
-    },
-    {
-      "id": "BRO-6114",
-      "name": "BSC Daily: Main: red streak",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6114/bsc-daily-main-red-streak",
-      "state": "Done",
-      "cmd": "node scripts/check-health-row-absent.js --row-b64 TWFpbjogcmVkIHN0cmVhaw",
-      "verdict": "VERIFIED",
-      "evidence": "holds",
-      "detail": null,
-      "channels": [
-        "pr-evidence",
-        "verify-command"
-      ],
-      "ms": 525
-    },
-    {
-      "id": "BRO-6099",
-      "name": "Bound the 60 inline git clone/fetch/pull/push calls rule (z) now flags (BRO-6029 follow-up)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6099/bound-the-60-inline-git-clonefetchpullpush-calls-rule-z-now-flags-bro",
-      "state": "Done",
-      "cmd": "node --test tests/unit/audit-workflow-hygiene-unbounded-clone.test.mjs",
-      "verdict": "VERIFIED",
-      "evidence": "holds",
-      "detail": null,
-      "channels": [
-        "verify-command"
-      ],
-      "ms": 161
-    },
-    {
-      "id": "BRO-6060",
-      "name": "BSC Daily: Unhandled CV.wrongProduction",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6060/bsc-daily-unhandled-cvwrongproduction",
-      "state": "Done",
-      "cmd": "node scripts/check-alert-condition-absent.js --key-b64 b3BlbmluZy1uaWdodC1jdi13cm9uZ3Byb2R1Y3Rpb24tdW5oYW5kbGVkLWRlcnJlbi1icm93bi1vbmx5LWh1bWFuLXdlc3QtZW5kLTIwMjY",
-      "verdict": "VERIFIED",
-      "evidence": "holds",
-      "detail": null,
-      "channels": [
-        "verify-command"
-      ],
-      "ms": 38
-    },
-    {
-      "id": "BRO-6042",
-      "name": "Review gap — \"Fences\" missing 1 cited review(s)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6042/review-gap-fences-missing-1-cited-reviews",
-      "state": "Done",
-      "cmd": "node scripts/check-alert-condition-absent.js --key-b64 cmV2aWV3LWdhcDpvcGVuaW5nLXdpbmRvdzpmZW5jZXMtb2ZmLXdlc3QtZW5kLTIwMjY",
-      "verdict": "VERIFIED",
-      "evidence": "holds",
-      "detail": null,
-      "channels": [
-        "verify-command"
-      ],
-      "ms": 37
-    },
-    {
-      "id": "BRO-6033",
-      "name": "Opening-night poller: publish main-stage first wave without waiting for Off-Broadway/fringe front shows",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6033/opening-night-poller-publish-main-stage-first-wave-without-waiting-for",
-      "state": "Done",
-      "cmd": "node --test scripts/lib/poller-loop-budget.test.mjs",
-      "verdict": "VERIFIED",
-      "evidence": "holds",
-      "detail": null,
-      "channels": [
-        "pr-evidence",
-        "verify-command"
-      ],
-      "ms": 1124
-    },
-    {
-      "id": "BRO-6014",
-      "name": "Cloud dev loop: npm run build dirties ~17 tracked data files (swept into commits); land-local-check keeps no per-gate failure output",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6014/cloud-dev-loop-npm-run-build-dirties-17-tracked-data-files-swept-into",
-      "state": "In Progress",
-      "cmd": "node --test scripts/lib/land-local-check.test.mjs",
-      "verdict": "STUCK",
-      "evidence": "holds",
-      "detail": "its own evidence holds on main — looks finished",
-      "channels": [
-        "verify-command"
-      ],
-      "ms": 230
-    },
-    {
-      "id": "BRO-5983",
-      "name": "SEO: refresh data/seo-search-landings.json on a schedule (PostHog 90-day window)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5983/seo-refresh-dataseo-search-landingsjson-on-a-schedule-posthog-90-day",
-      "state": "Done",
-      "cmd": "node --test tests/unit/seo-search-landings.test.mjs",
-      "verdict": "VERIFIED",
-      "evidence": "holds",
-      "detail": null,
-      "channels": [
-        "verify-command"
-      ],
-      "ms": 100
-    },
-    {
-      "id": "BRO-5966",
-      "name": "Season page: hide 'N of M recouped' headline when a season has under 5 tracked shows",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5966/season-page-hide-n-of-m-recouped-headline-when-a-season-has-under-5",
-      "state": "Done",
-      "cmd": "npx tsc --noEmit",
-      "verdict": "VERIFIED",
-      "evidence": "holds",
-      "detail": null,
-      "channels": [
-        "pr-evidence"
-      ],
-      "ms": 603
-    },
-    {
-      "id": "BRO-5927",
-      "name": "BSC Daily: Data: published scores outside the critic's rating",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5927/bsc-daily-data-published-scores-outside-the-critics-rating",
-      "state": "Done",
-      "cmd": "node scripts/check-health-row-absent.js --row-b64 RGF0YTogcHVibGlzaGVkIHNjb3JlcyBvdXRzaWRlIHRoZSBjcml0aWMncyByYXRpbmc",
-      "verdict": "VERIFIED",
-      "evidence": "holds",
-      "detail": null,
-      "channels": [
-        "verify-command"
-      ],
-      "ms": 30
-    },
-    {
-      "id": "BRO-5899",
-      "name": "manual/auto review ingest leaves llmScore=null and nothing queues the file for scoring",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5899/manualauto-review-ingest-leaves-llmscorenull-and-nothing-queues-the",
-      "state": "Done",
-      "cmd": "node --test scripts/lib/ingest-scoring-queue.test.mjs",
-      "verdict": "VERIFIED",
-      "evidence": "holds",
-      "detail": null,
-      "channels": [
-        "verify-command"
-      ],
-      "ms": 723
-    },
-    {
-      "id": "BRO-5818",
-      "name": "BSC Daily: Workflow repeat-failure: Test Suite",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5818/bsc-daily-workflow-repeat-failure-test-suite",
-      "state": "Done",
-      "cmd": "node scripts/check-health-row-absent.js --row-b64 V29ya2Zsb3cgcmVwZWF0LWZhaWx1cmU6IFRlc3QgU3VpdGU",
-      "verdict": "VERIFIED",
-      "evidence": "holds",
-      "detail": null,
-      "channels": [
-        "verify-command"
-      ],
-      "ms": 31
-    },
-    {
-      "id": "BRO-5749",
-      "name": "BSC Daily: Commercial model drift",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5749/bsc-daily-commercial-model-drift",
-      "state": "Done",
-      "cmd": "node scripts/check-health-row-absent.js --row-b64 Q29tbWVyY2lhbCBtb2RlbCBkcmlmdA --live",
-      "verdict": "FAILED",
-      "evidence": "broken",
-      "detail": "[check-health-row-absent] --live FAIL: \"Commercial model drift\" still flagged (warn): modelDesignationFlag contradictions up 1 (2 → 3)\n",
-      "channels": [
-        "verify-command"
-      ],
-      "ms": 7777
-    },
-    {
-      "id": "BRO-5720",
-      "name": "Time-bomb test armed: tests/unit/broadway-fantasy-league.test.mjs — draftable show catalog (data/fantasy-league.json)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5720/time-bomb-test-armed-testsunitbroadway-fantasy-leaguetestmjs-draftable",
-      "state": "Done",
-      "cmd": "node scripts/check-alert-condition-absent.js --key-b64 dGltZS1ib21iLXRlc3RzOnVuaXQ6dGVzdHMvdW5pdC9icm9hZHdheS1mYW50YXN5LWxlYWd1ZS50ZXN0Lm1qczo6ZHJhZnRhYmxlIHNob3cgY2F0YWxvZyAoZGF0YS9mYW50YXN5LWxlYWd1ZS5qc29uKQ",
-      "verdict": "VERIFIED",
-      "evidence": "holds",
-      "detail": null,
-      "channels": [
-        "verify-command"
-      ],
-      "ms": 41
-    },
-    {
-      "id": "BRO-5641",
-      "name": "Windfall/Trickle split for recouped shows with no reported return multiple (win-side twin of Did Not Recoup)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5641/windfalltrickle-split-for-recouped-shows-with-no-reported-return",
-      "state": "Done",
-      "cmd": "node --test tests/unit/win-designations.test.mjs",
-      "verdict": "VERIFIED",
-      "evidence": "holds",
-      "detail": null,
-      "channels": [
-        "pr-evidence",
-        "verify-command"
-      ],
-      "ms": 950
-    },
-    {
-      "id": "BRO-5585",
-      "name": "Search is used as primary navigation (about 9 searches per user): review browse/nav entry points",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5585/search-is-used-as-primary-navigation-about-9-searches-per-user-review",
-      "state": "Done",
-      "cmd": "test -f docs/search-navigation-review.md",
-      "verdict": "VERIFIED",
-      "evidence": "holds",
-      "detail": null,
-      "channels": [
-        "verify-command"
-      ],
-      "ms": 611
-    },
-    {
-      "id": "BRO-5526",
-      "name": "Scraping spend over budget",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5526/scraping-spend-over-budget",
-      "state": "Done",
-      "cmd": "node scripts/check-alert-condition-absent.js --key-b64 cHJvdmlkZXItc3BlbmQ6b3ZlcnNwZW5k",
-      "verdict": "VERIFIED",
-      "evidence": "holds",
-      "detail": null,
-      "channels": [
-        "verify-command"
-      ],
-      "ms": 41
-    },
-    {
-      "id": "BRO-5516",
-      "name": "Review-gap audit refused to write — 61.9% of shows changed coverage state",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5516/review-gap-audit-refused-to-write-619percent-of-shows-changed-coverage",
-      "state": "In Review",
-      "cmd": "node scripts/check-alert-condition-absent.js --key-b64 cmV2aWV3LWdhcDpibGFzdC1yYWRpdXMtcmVmdXNlZA",
-      "verdict": "UNVERIFIABLE",
-      "evidence": "unknown",
-      "detail": "still open and its check does not pass yet — expected for unfinished work, not a defect",
-      "channels": [],
-      "openCheckFails": true,
-      "failDetail": "[check-alert-condition-absent] FAIL: \"review-gap:blast-radius-refused\" still firing — open, last fired 2026-11-02T10:12:55.497Z (23.6h ago, within 168h)\n",
-      "ms": 78
-    },
-    {
-      "id": "BRO-5500",
-      "name": "Roundup gaps: 2 listed review(s) not captured across 2 show(s)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5500/roundup-gaps-2-listed-reviews-not-captured-across-2-shows",
-      "state": "In Progress",
-      "cmd": "node scripts/check-alert-condition-absent.js --key-b64 cm91bmR1cC1nYXA6YWxs",
-      "verdict": "UNVERIFIABLE",
-      "evidence": "unknown",
-      "detail": "still open and its check does not pass yet — expected for unfinished work, not a defect",
-      "channels": [],
-      "ms": 38
-    },
-    {
-      "id": "BRO-5436",
-      "name": "BSC Daily: Data: T1/T2 silent review gaps",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5436/bsc-daily-data-t1t2-silent-review-gaps",
-      "state": "Done",
-      "cmd": "node scripts/check-health-row-absent.js --row-b64 RGF0YTogVDEvVDIgc2lsZW50IHJldmlldyBnYXBz",
-      "verdict": "VERIFIED",
-      "evidence": "holds",
-      "detail": null,
-      "channels": [
-        "verify-command"
-      ],
-      "ms": 30
-    },
-    {
-      "id": "BRO-5290",
-      "name": "Promote two advisory gates to blocking: test.yml Ledger isolation check and the MCP visual-QA gate",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5290/promote-two-advisory-gates-to-blocking-testyml-ledger-isolation-check",
-      "state": "Done",
-      "cmd": "node --test scripts/tests/github-mcp-push-gates.test.mjs",
-      "verdict": "VERIFIED",
-      "evidence": "holds",
-      "detail": null,
-      "channels": [
-        "verify-command"
-      ],
-      "ms": 4519
-    },
-    {
-      "id": "BRO-5151",
-      "name": "Wire LINEAR_API_KEY / RESEND_API_KEY / OWNER_EMAIL into the ~150 workflow steps the secret-gap audit still flags",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5151/wire-linear-api-key-resend-api-key-owner-email-into-the-150-workflow",
-      "state": "Done",
-      "cmd": "node --test tests/unit/workflow-secret-gaps-budget.test.mjs",
-      "verdict": "VERIFIED",
-      "evidence": "holds",
-      "detail": null,
-      "channels": [
-        "verify-command"
-      ],
-      "ms": 1889
-    },
-    {
-      "id": "BRO-5003",
-      "name": "Recoupment model: running shows with an announced closing count future weeks as played",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5003/recoupment-model-running-shows-with-an-announced-closing-count-future",
-      "state": "Done",
-      "cmd": "node --test tests/unit/run-window.test.mjs",
-      "verdict": "VERIFIED",
-      "evidence": "holds",
-      "detail": null,
-      "channels": [
-        "verify-command"
-      ],
-      "ms": 110
-    },
-    {
-      "id": "BRO-4291",
-      "name": "P2: show pages for provisional / zero-review rows need a 'reviews syncing' state instead of a bare empty score",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-4291/p2-show-pages-for-provisional-zero-review-rows-need-a-reviews-syncing",
-      "state": "Done",
-      "cmd": "npx tsx --test tests/unit/show-page-provisional-state.test.ts",
-      "verdict": "VERIFIED",
-      "evidence": "holds",
-      "detail": null,
-      "channels": [
-        "verify-command"
-      ],
-      "ms": 632
-    },
-    {
-      "id": "BRO-4279",
-      "name": "Tour routing: catch The Guardian's UK stage reviews for tour targets",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-4279/tour-routing-catch-the-guardians-uk-stage-reviews-for-tour-targets",
-      "state": "Done",
-      "cmd": "node --test tests/unit/market-routing.test.mjs",
-      "verdict": "VERIFIED",
-      "evidence": "holds",
-      "detail": null,
-      "channels": [
-        "verify-command"
-      ],
-      "ms": 122
-    },
-    {
-      "id": "BRO-3699",
-      "name": "Audit pre-existing TICKETING_PLATFORMS entries for resale-vs-primary misclassification",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-3699/audit-pre-existing-ticketing-platforms-entries-for-resale-vs-primary",
-      "state": "Done",
-      "cmd": "node --test tests/unit/ticketing-platforms-resale.test.mjs",
-      "verdict": "VERIFIED",
-      "evidence": "holds",
-      "detail": null,
-      "channels": [
-        "verify-command"
-      ],
-      "ms": 101
-    },
-    {
-      "id": "BRO-3651",
-      "name": "enrich-west-end-dates.js has no audit-trail log (data/audit/date-enrichment-corrections.json), unlike OB sibling",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-3651/enrich-west-end-datesjs-has-no-audit-trail-log-dataauditdate",
-      "state": "Done",
-      "cmd": "node --test tests/unit/enrich-west-end-dates-audit-log.test.mjs",
-      "verdict": "VERIFIED",
-      "evidence": "holds",
-      "detail": null,
-      "channels": [
-        "verify-command"
-      ],
-      "ms": 1609
-    },
-    {
-      "id": "BRO-3461",
-      "name": "P2: rank() specificity in recheck comment-correction (BRO-3446) ignores coverage and timestamp",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-3461/p2-rank-specificity-in-recheck-comment-correction-bro-3446-ignores",
-      "state": "Done",
-      "cmd": "node --test tests/unit/recheck-comment-rank.test.mjs",
-      "verdict": "VERIFIED",
-      "evidence": "holds",
-      "detail": null,
-      "channels": [
-        "verify-command"
-      ],
-      "ms": 120
-    },
-    {
-      "id": "BRO-266",
-      "name": "Rules & memory overhaul for the Linear world (CLAUDE.md rewrite, index prune)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-266/rules-and-memory-overhaul-for-the-linear-world-claudemd-rewrite-index",
-      "state": "Done",
-      "cmd": "node --test scripts/memory-index-integrity.test.mjs",
-      "verdict": "VERIFIED",
-      "evidence": "holds",
-      "detail": null,
-      "channels": [
-        "verify-command"
-      ],
-      "ms": 94
-    },
-    {
-      "id": "BRO-27",
-      "name": "Commercial Scorecard: signup-gate the entire card (blur + preview for signed-out users)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-27/commercial-scorecard-signup-gate-the-entire-card-blur-preview-for",
-      "state": "Done",
-      "cmd": "node --test tests/unit/money-gate.test.mjs",
-      "verdict": "VERIFIED",
-      "evidence": "holds",
-      "detail": null,
-      "channels": [
-        "verify-command"
-      ],
-      "ms": 699
-    },
-    {
-      "id": "BRO-6881",
-      "name": "validate-data --strict red: 5 LA regional rows (BRO-6855) reference missing image files",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6881/validate-data-strict-red-5-la-regional-rows-bro-6855-reference-missing",
-      "state": "Done",
-      "cmd": "node scripts/validate-data.js --strict",
-      "verdict": "VERIFIED",
-      "evidence": "holds",
-      "detail": null,
-      "channels": [
-        "pr-evidence",
-        "verify-command"
-      ],
-      "ms": 30718
-    },
-    {
-      "id": "BRO-6879",
-      "name": "Roma Torre critic page: add bio naming her host of 5th Row Center",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6879/roma-torre-critic-page-add-bio-naming-her-host-of-5th-row-center",
-      "state": "Done",
-      "cmd": null,
-      "verdict": "UNVERIFIABLE",
-      "evidence": "unknown",
-      "detail": "could not resolve https://broadwayscorecard.com/critics/roma-torre](<https://broadwayscorecard.com/critics/roma-torre>)) against main this run",
-      "channels": [],
-      "ms": 0
-    },
-    {
-      "id": "BRO-6878",
-      "name": "visual-approval request: refuse when the diff touches no UI files (owner asked to approve a data-only fix)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6878/visual-approval-request-refuse-when-the-diff-touches-no-ui-files-owner",
-      "state": "Done",
-      "cmd": "node --test scripts/lib/visual-approval.test.mjs",
-      "verdict": "VERIFIED",
-      "evidence": "holds",
-      "detail": null,
-      "channels": [
-        "verify-command"
-      ],
-      "ms": 252
-    },
-    {
-      "id": "BRO-6876",
-      "name": "Visual-approval asks: refuse non-UI diffs, one small screenshot in email (BRO-6862 spurious ask)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6876/visual-approval-asks-refuse-non-ui-diffs-one-small-screenshot-in-email",
-      "state": "In Progress",
-      "cmd": null,
-      "verdict": "UNVERIFIABLE",
-      "evidence": "unknown",
-      "detail": "no PR-EVIDENCE line and no runnable acceptance command",
-      "channels": [],
-      "ms": 0
-    },
-    {
-      "id": "BRO-6875",
-      "name": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"no two unrelated shows serve byte-identical hero images\"",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6875/main-testyml-red-unit-tests-run-unit-tests-no-data-dependency-no-two",
-      "state": "Done",
-      "cmd": "node --test tests/unit/show-hero-integrity.test.mjs",
-      "verdict": "VERIFIED",
-      "evidence": "holds",
-      "detail": null,
-      "channels": [
-        "verify-command"
-      ],
-      "ms": 1375
-    },
-    {
-      "id": "BRO-6872",
-      "name": "Quarantined live test: run the opening-night lane (shadow, empty ledger) on past Broadway nights and grade vs the aggregator census",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6872/quarantined-live-test-run-the-opening-night-lane-shadow-empty-ledger",
-      "state": "In Progress",
-      "cmd": null,
-      "verdict": "UNVERIFIABLE",
-      "evidence": "unknown",
-      "detail": "no PR-EVIDENCE line and no runnable acceptance command",
-      "channels": [],
-      "ms": 0
-    },
-    {
-      "id": "BRO-6871",
-      "name": "Money email: list only capitalization figures published inside the month",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6871/money-email-list-only-capitalization-figures-published-inside-the",
-      "state": "Done",
-      "cmd": "node --test tests/unit/money-monthly.test.mjs",
-      "verdict": "VERIFIED",
-      "evidence": "holds",
-      "detail": null,
-      "channels": [
-        "pr-evidence",
-        "verify-command"
-      ],
-      "ms": 686
-    },
-    {
-      "id": "BRO-6870",
-      "name": "Morning email board table: group rows, plain words, fix duplicate Stuck tile and stale footnote",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6870/morning-email-board-table-group-rows-plain-words-fix-duplicate-stuck",
-      "state": "Done",
-      "cmd": "node --test scripts/lib/board-categories.test.mjs",
-      "verdict": "VERIFIED",
-      "evidence": "holds",
-      "detail": null,
-      "channels": [
-        "pr-evidence",
-        "verify-command"
-      ],
-      "ms": 774
-    },
-    {
-      "id": "BRO-6869",
-      "name": "iPhone app batch: work the 16 app-repo cards (owner chose A, 2026-11-02)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6869/iphone-app-batch-work-the-16-app-repo-cards-owner-chose-a-2026-11-02",
-      "state": "In Progress",
-      "cmd": null,
-      "verdict": "UNVERIFIABLE",
-      "evidence": "unknown",
-      "detail": "no PR-EVIDENCE line and no runnable acceptance command",
-      "channels": [],
-      "ms": 0
-    },
-    {
-      "id": "BRO-6868",
-      "name": "Related-shows monitor: stop weekly false CRITICAL email, rewrite in plain English",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6868/related-shows-monitor-stop-weekly-false-critical-email-rewrite-in",
-      "state": "Done",
-      "cmd": "node --test scripts/lib/related-shows-ab-monitor-rules.test.mjs",
-      "verdict": "VERIFIED",
-      "evidence": "holds",
-      "detail": null,
-      "channels": [
-        "pr-evidence",
-        "verify-command"
-      ],
-      "ms": 675
-    },
-    {
-      "id": "BRO-6864",
-      "name": "Board follow-up to BRO-6856: actually move idle started cards, give iPhone-app cards a lane, auto-write VERIFY for no-safe-check cards",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6864/board-follow-up-to-bro-6856-actually-move-idle-started-cards-give",
-      "state": "Done",
-      "cmd": "node --test scripts/lib/board-categories.test.mjs",
-      "verdict": "VERIFIED",
-      "evidence": "holds",
-      "detail": null,
-      "channels": [
-        "verify-command"
-      ],
-      "ms": 188
-    },
-    {
-      "id": "BRO-6857",
-      "name": "Board: prose date-waits never resume, Codex bounce loop, 86 cards older than 30 days",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6857/board-prose-date-waits-never-resume-codex-bounce-loop-86-cards-older",
-      "state": "Done",
-      "cmd": "node --test scripts/lib/board-categories.test.mjs",
-      "verdict": "VERIFIED",
-      "evidence": "holds",
-      "detail": null,
-      "channels": [
-        "verify-command"
-      ],
-      "ms": 200
-    },
-    {
-      "id": "BRO-6856",
-      "name": "Board: stale In Progress cards, broken Waiting-on-you tile, and the Other row (app cards, no-safe-verify)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6856/board-stale-in-progress-cards-broken-waiting-on-you-tile-and-the-other",
-      "state": "Done",
-      "cmd": "node --test scripts/lib/board-categories.test.mjs",
-      "verdict": "VERIFIED",
-      "evidence": "holds",
-      "detail": null,
-      "channels": [
-        "verify-command"
-      ],
-      "ms": 202
-    },
-    {
-      "id": "BRO-6855",
-      "name": "Los Angeles city hub from Theatre In LA, short history",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6855/los-angeles-city-hub-from-theatre-in-la-short-history",
-      "state": "Done",
-      "cmd": "npx tsx --test tests/unit/city-hub-wiring.test.ts",
-      "verdict": "VERIFIED",
-      "evidence": "holds",
-      "detail": null,
-      "channels": [
-        "verify-command"
-      ],
-      "ms": 553
-    },
-    {
-      "id": "BRO-6854",
-      "name": "San Diego + Boston city hubs: multi-source review finder (no roundup site), short history",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6854/san-diego-boston-city-hubs-multi-source-review-finder-no-roundup-site",
-      "state": "Done",
-      "cmd": "npx tsx --test tests/unit/city-hub-wiring.test.ts",
-      "verdict": "VERIFIED",
-      "evidence": "holds",
-      "detail": null,
-      "channels": [
-        "verify-command"
-      ],
-      "ms": 479
-    },
-    {
-      "id": "BRO-6853",
-      "name": "Board: date-passed row is mislabeled and the recheck never reaches 15 of 28 due cards",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6853/board-date-passed-row-is-mislabeled-and-the-recheck-never-reaches-15",
-      "state": "Done",
-      "cmd": "node --test scripts/lib/board-categories.test.mjs",
-      "verdict": "VERIFIED",
-      "evidence": "holds",
-      "detail": null,
-      "channels": [
-        "pr-evidence",
-        "verify-command"
-      ],
-      "ms": 740
-    },
-    {
-      "id": "BRO-6852",
-      "name": "Sweep owner-worded holds with no question: Claude decides and releases (owner chose A)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6852/sweep-owner-worded-holds-with-no-question-claude-decides-and-releases",
-      "state": "Done",
-      "cmd": "node --test scripts/lib/board-categories.test.mjs",
-      "verdict": "VERIFIED",
-      "evidence": "holds",
-      "detail": null,
-      "channels": [
-        "verify-command"
-      ],
-      "ms": 198
-    },
-    {
-      "id": "BRO-6851",
-      "name": "AEO: question-style FAQ answers on show pages (owner chose A)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6851/aeo-question-style-faq-answers-on-show-pages-owner-chose-a",
-      "state": "Done",
-      "cmd": "npx tsc --noEmit",
-      "verdict": "UNVERIFIABLE",
-      "evidence": "unknown",
-      "detail": "could not resolve https://broadwayscorecard.com/show/love-letters-2014) against main this run; `npx tsc --noEmit` is green on main for every card at once — it cannot show whether THIS work was done",
-      "channels": [],
-      "ms": 0
-    },
-    {
-      "id": "BRO-6850",
-      "name": "validate-data --strict fails: 14 wrong-production-by-date errors on carmen/don-giovanni off-broadway-2025",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6850/validate-data-strict-fails-14-wrong-production-by-date-errors-on",
-      "state": "Done",
-      "cmd": "node scripts/validate-data.js --strict",
-      "verdict": "VERIFIED",
-      "evidence": "holds",
-      "detail": null,
-      "channels": [
-        "verify-command"
-      ],
-      "ms": 29861
-    },
-    {
-      "id": "BRO-6842",
-      "name": "Main CI red: audit-review-contamination --gate fails (1 cross-market leak class A + 3 strict vs floor 25)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6842/main-ci-red-audit-review-contamination-gate-fails-1-cross-market-leak",
-      "state": "Done",
-      "cmd": "node scripts/audit-review-contamination.js --gate",
-      "verdict": "UNVERIFIABLE",
-      "evidence": "unknown",
-      "detail": "its check needs the private review-texts corpus, which this sandbox does not have — cannot verify either way",
-      "channels": [],
-      "ms": 6494
-    },
-    {
-      "id": "BRO-6841",
-      "name": "AEO: weekly AI visibility tracker (replace check-ai-citations.js)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6841/aeo-weekly-ai-visibility-tracker-replace-check-ai-citationsjs",
-      "state": "Done",
-      "cmd": null,
-      "verdict": "VERIFIED",
-      "evidence": "holds",
-      "detail": null,
-      "channels": [
-        "pr-evidence"
-      ],
-      "ms": 579
-    },
-    {
-      "id": "BRO-6838",
-      "name": "AEO: allow AI training crawlers (owner chose Option B)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6838/aeo-allow-ai-training-crawlers-owner-chose-option-b",
-      "state": "Done",
-      "cmd": null,
-      "verdict": "VERIFIED",
-      "evidence": "holds",
-      "detail": null,
-      "channels": [
-        "pr-evidence"
-      ],
-      "ms": 498
-    },
-    {
-      "id": "BRO-6837",
-      "name": "Morning digest 2026-11-02: false 'no automatic fix confirmed' rows + root fixes (baseline drift, domain moves)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6837/morning-digest-2026-11-02-false-no-automatic-fix-confirmed-rows-root",
-      "state": "Done",
-      "cmd": "node --test scripts/lib/scheduled-closings.test.mjs",
-      "verdict": "VERIFIED",
-      "evidence": "holds",
-      "detail": null,
-      "channels": [
-        "pr-evidence",
-        "verify-command"
-      ],
-      "ms": 565
-    },
-    {
-      "id": "BRO-6835",
-      "name": "Show the saved showtime and seat on diary entries (web + iOS), not only inside the editor",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6835/show-the-saved-showtime-and-seat-on-diary-entries-web-ios-not-only",
-      "state": "Done",
-      "cmd": "npx tsx --test tests/unit/review-showtime.test.ts",
-      "verdict": "VERIFIED",
-      "evidence": "holds",
-      "detail": null,
-      "channels": [
-        "verify-command"
-      ],
-      "ms": 547
-    },
-    {
-      "id": "BRO-6834",
-      "name": "US city review census: reviews per show and scoreable shows per year for LA, Boston, SF Bay Area, San Diego",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6834/us-city-review-census-reviews-per-show-and-scoreable-shows-per-year",
-      "state": "Done",
-      "cmd": null,
-      "verdict": "VERIFIED",
-      "evidence": "holds",
-      "detail": null,
-      "channels": [
-        "pr-evidence"
-      ],
-      "ms": 511
-    },
-    {
-      "id": "BRO-6833",
-      "name": "City hubs on rails: one registry entry adds a US city (web menu/footer/stats, app market, feed city slug, runbook, wiring test)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6833/city-hubs-on-rails-one-registry-entry-adds-a-us-city-web",
-      "state": "Done",
-      "cmd": "npx tsx --test tests/unit/city-hub-wiring.test.ts",
-      "verdict": "VERIFIED",
-      "evidence": "holds",
-      "detail": null,
-      "channels": [
-        "pr-evidence",
-        "verify-command"
-      ],
-      "ms": 1069
-    },
-    {
-      "id": "BRO-6832",
-      "name": "CANARY: touch data/audit/canary-2026-11-02.marker",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6832/canary-touch-dataauditcanary-2026-11-02marker",
-      "state": "Done",
-      "cmd": "node scripts/check-canary-marker.js --date=2026-11-02",
-      "verdict": "VERIFIED",
-      "evidence": "holds",
-      "detail": null,
-      "channels": [
-        "verify-command"
-      ],
-      "ms": 26
-    },
-    {
-      "id": "BRO-6823",
-      "name": "BSC Daily: Quality: opening date vs review dates",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6823/bsc-daily-quality-opening-date-vs-review-dates",
-      "state": "Done",
-      "cmd": "node scripts/check-health-row-absent.js --row-b64 UXVhbGl0eTogb3BlbmluZyBkYXRlIHZzIHJldmlldyBkYXRlcw",
-      "verdict": "VERIFIED",
-      "evidence": "holds",
-      "detail": null,
-      "channels": [
-        "verify-command"
-      ],
-      "ms": 32
-    },
-    {
-      "id": "BRO-6822",
-      "name": "BSC Daily: Autofix: daily canary (dispatch pipeline proof)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6822/bsc-daily-autofix-daily-canary-dispatch-pipeline-proof",
-      "state": "In Progress",
-      "cmd": "node scripts/check-health-row-absent.js --row-b64 QXV0b2ZpeDogZGFpbHkgY2FuYXJ5IChkaXNwYXRjaCBwaXBlbGluZSBwcm9vZik",
-      "verdict": "STUCK",
-      "evidence": "holds",
-      "detail": "its own evidence holds on main — looks finished",
-      "channels": [
-        "verify-command"
-      ],
-      "ms": 31
-    },
-    {
-      "id": "BRO-6821",
-      "name": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"don-giovanni-off-broadway-2025 keeps its backfilled coverage (was 7)\"",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6821/main-testyml-red-unit-tests-run-unit-tests-no-data-dependency-don",
-      "state": "Done",
-      "cmd": "node --test tests/unit/serp-discovery-backfill.test.mjs",
-      "verdict": "VERIFIED",
-      "evidence": "holds",
-      "detail": null,
-      "channels": [
-        "verify-command"
-      ],
-      "ms": 329
-    },
-    {
-      "id": "BRO-6819",
-      "name": "P1: Opening night miss: Tosca (2026-11-01)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6819/p1-opening-night-miss-tosca-2026-11-01",
-      "state": "Done",
-      "cmd": "node scripts/validate-data.js --strict",
-      "verdict": "VERIFIED",
-      "evidence": "holds",
-      "detail": null,
-      "channels": [
-        "verify-command"
-      ],
-      "ms": 31310
-    },
-    {
-      "id": "BRO-6818",
-      "name": "Check 6 single old reviews on 5 shows (Gruffalo, Immigrant, Beauty and the Beast tour, Gang of Three, SIX 2021) for wrong-run dates",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6818/check-6-single-old-reviews-on-5-shows-gruffalo-immigrant-beauty-and",
-      "state": "Done",
-      "cmd": null,
-      "verdict": "VERIFIED",
-      "evidence": "holds",
-      "detail": null,
-      "channels": [
-        "pr-evidence"
-      ],
-      "ms": 551
-    },
-    {
-      "id": "BRO-6815",
-      "name": "BSC Daily: Data quality: stale announced shows",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6815/bsc-daily-data-quality-stale-announced-shows",
-      "state": "Done",
-      "cmd": "node scripts/check-health-row-absent.js --row-b64 RGF0YSBxdWFsaXR5OiBzdGFsZSBhbm5vdW5jZWQgc2hvd3M",
-      "verdict": "VERIFIED",
-      "evidence": "holds",
-      "detail": null,
-      "channels": [
-        "verify-command"
-      ],
-      "ms": 31
-    },
-    {
-      "id": "BRO-6811",
-      "name": "P1: Past-run opera reviews mixed into live Met revival scores (Tosca, Samson, Medea, Otello) against BRO-6767 owner rule",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6811/p1-past-run-opera-reviews-mixed-into-live-met-revival-scores-tosca",
-      "state": "Done",
-      "cmd": null,
-      "verdict": "VERIFIED",
-      "evidence": "holds",
-      "detail": null,
-      "channels": [
-        "pr-evidence"
-      ],
-      "ms": 580
-    },
-    {
-      "id": "BRO-6809",
-      "name": "Press-night clock hardening: re-read embargo data before each kick; use sleepPlan in the workflow instead of duplicated bash",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6809/press-night-clock-hardening-re-read-embargo-data-before-each-kick-use",
-      "state": "Done",
-      "cmd": "node --test tests/unit/press-night-clock.test.mjs",
-      "verdict": "VERIFIED",
-      "evidence": "holds",
-      "detail": null,
-      "channels": [
-        "pr-evidence",
-        "verify-command"
-      ],
-      "ms": 890
-    },
-    {
-      "id": "BRO-6808",
-      "name": "1,454 show images lack sm/ list variants: cards 404 on thumbnail.webp.webp before falling back",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6808/1454-show-images-lack-sm-list-variants-cards-404-on-thumbnailwebpwebp",
-      "state": "Done",
-      "cmd": null,
-      "verdict": "VERIFIED",
-      "evidence": "holds",
-      "detail": null,
-      "channels": [
-        "pr-evidence"
-      ],
-      "ms": 613
-    },
-    {
-      "id": "BRO-6806",
-      "name": "Othello 2022 WhatsOnStage review links the 2025 Haymarket article (URL inherited from wrongProduction duplicate)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6806/othello-2022-whatsonstage-review-links-the-2025-haymarket-article-url",
-      "state": "Done",
-      "cmd": "node --test scripts/lib/sibling-rating-inherit.test.js",
-      "verdict": "VERIFIED",
-      "evidence": "holds",
-      "detail": null,
-      "channels": [
-        "verify-command"
-      ],
-      "ms": 117
-    },
-    {
-      "id": "BRO-6805",
-      "name": "Opening digest: show regional, tryout, tour, Chicago and DC openings",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6805/opening-digest-show-regional-tryout-tour-chicago-and-dc-openings",
-      "state": "Done",
-      "cmd": "node --test tests/unit/opening-digest-regions.test.mjs",
-      "verdict": "VERIFIED",
-      "evidence": "holds",
-      "detail": null,
-      "channels": [
-        "pr-evidence",
-        "verify-command"
-      ],
-      "ms": 724
-    },
-    {
-      "id": "BRO-6804",
-      "name": "Review-gap audit: false 'missing' reviews hide real misses (Time Out listings, album reviews, other productions)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6804/review-gap-audit-false-missing-reviews-hide-real-misses-time-out",
-      "state": "Done",
-      "cmd": "node --test scripts/audit-review-gap.test.mjs",
-      "verdict": "UNVERIFIABLE",
-      "evidence": "unknown",
-      "misArmed": true,
-      "detail": "its own check names scripts/audit-review-gap.test.mjs, which has never existed in this repo — the acceptance criterion is wrong, so nothing can verify this card either way",
-      "channels": [],
-      "ms": 1215
-    },
-    {
-      "id": "BRO-6803",
-      "name": "Opera: SFO The Monkey King has 3 unscored review files; score them or retire the row",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6803/opera-sfo-the-monkey-king-has-3-unscored-review-files-score-them-or",
-      "state": "Done",
-      "cmd": "test -f scripts/linear-brain.js",
-      "verdict": "VERIFIED",
-      "evidence": "holds",
-      "detail": null,
-      "channels": [
-        "pr-evidence"
-      ],
-      "ms": 1261
-    },
-    {
-      "id": "BRO-6799",
-      "name": "Opera: LLM classifier prompt says every opera is at the Met (SFO, ENO, ROH reviews risk wrong_production flags)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6799/opera-llm-classifier-prompt-says-every-opera-is-at-the-met-sfo-eno-roh",
-      "state": "Done",
-      "cmd": "node --test scripts/lib/opera-house-url-markers.test.mjs",
-      "verdict": "VERIFIED",
-      "evidence": "holds",
-      "detail": null,
-      "channels": [
-        "verify-command"
-      ],
-      "ms": 118
-    },
-    {
-      "id": "BRO-6798",
-      "name": "main test.yml red: Unit Tests / Run scripts/lib tests (visual-qa transcript-scan etc.) — \"BRO-5626: owner wording in the body and wait reasons hold the card (ported from linear-promote-parked)\"",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6798/main-testyml-red-unit-tests-run-scriptslib-tests-visual-qa-transcript",
-      "state": "Done",
-      "cmd": "node --test scripts/lib/linear-drain-parked.test.mjs",
-      "verdict": "VERIFIED",
-      "evidence": "holds",
-      "detail": null,
-      "channels": [
-        "verify-command"
-      ],
-      "ms": 490
-    },
-    {
-      "id": "BRO-6797",
-      "name": "DC hub: find missing reviews for unrated DC shows (7 of 12 now playing read TBD)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6797/dc-hub-find-missing-reviews-for-unrated-dc-shows-7-of-12-now-playing",
-      "state": "Done",
-      "cmd": null,
-      "verdict": "UNVERIFIABLE",
-      "evidence": "unknown",
-      "detail": "no PR-EVIDENCE line and no runnable acceptance command",
-      "channels": [],
-      "ms": 0
-    },
-    {
-      "id": "BRO-6796",
-      "name": "City hubs label local Chicago/DC productions 'in tryout'",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6796/city-hubs-label-local-chicagodc-productions-in-tryout",
-      "state": "Done",
-      "cmd": null,
-      "verdict": "VERIFIED",
-      "evidence": "holds",
-      "detail": null,
-      "channels": [
-        "pr-evidence"
-      ],
-      "ms": 588
-    },
-    {
-      "id": "BRO-6795",
-      "name": "DC reviews: backfill missing critic bylines (27 MD Theatre Guide, 3 Georgetown Dish) and 3 null publish dates",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6795/dc-reviews-backfill-missing-critic-bylines-27-md-theatre-guide-3",
-      "state": "Done",
-      "cmd": null,
-      "verdict": "VERIFIED",
-      "evidence": "holds",
-      "detail": null,
-      "channels": [
-        "pr-evidence"
-      ],
-      "ms": 614
-    },
-    {
-      "id": "BRO-6794",
-      "name": "Older-years sweep remainder: 1,835 never-audited older shows + blocked-host fetch failures",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6794/older-years-sweep-remainder-1835-never-audited-older-shows-blocked",
-      "state": "In Progress",
-      "cmd": "node scripts/lib/verify-data-backfill.js --show=broadway,west-end,regional,tour --reviews=1835",
-      "verdict": "UNVERIFIABLE",
-      "evidence": "unknown",
-      "detail": "still open and its check does not pass yet — expected for unfinished work, not a defect",
-      "channels": [],
-      "ms": 316
+      "ms": 728
     },
     {
       "id": "BRO-6789",
@@ -1404,7 +81,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 193
+      "ms": 309
     },
     {
       "id": "BRO-6788",
@@ -1418,7 +95,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 80
+      "ms": 118
     },
     {
       "id": "BRO-6787",
@@ -1432,7 +109,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 79
+      "ms": 116
     },
     {
       "id": "BRO-6786",
@@ -1446,7 +123,21 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 188
+      "ms": 294
+    },
+    {
+      "id": "BRO-6785",
+      "name": "Live in HD polish: keep date in meta description, fix post-expiry title/hero mismatch",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6785/live-in-hd-polish-keep-date-in-meta-description-fix-post-expiry",
+      "state": "Done",
+      "cmd": "node --test tests/unit/live-in-hd.test.mjs",
+      "verdict": "VERIFIED",
+      "evidence": "holds",
+      "detail": null,
+      "channels": [
+        "verify-command"
+      ],
+      "ms": 5237
     },
     {
       "id": "BRO-6784",
@@ -1460,7 +151,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 136
+      "ms": 222
     },
     {
       "id": "BRO-6783",
@@ -1474,7 +165,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 596
+      "ms": 934
     },
     {
       "id": "BRO-6782",
@@ -1488,7 +179,7 @@
       "channels": [
         "pr-evidence"
       ],
-      "ms": 532
+      "ms": 537
     },
     {
       "id": "BRO-6781",
@@ -1502,7 +193,7 @@
       "channels": [
         "pr-evidence"
       ],
-      "ms": 581
+      "ms": 554
     },
     {
       "id": "BRO-6780",
@@ -1516,7 +207,21 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 98
+      "ms": 151
+    },
+    {
+      "id": "BRO-6779",
+      "name": "BSC Daily: Quality: star-vs-score mismatch",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6779/bsc-daily-quality-star-vs-score-mismatch",
+      "state": "Done",
+      "cmd": "node scripts/check-health-row-absent.js --row-b64 UXVhbGl0eTogc3Rhci12cy1zY29yZSBtaXNtYXRjaA",
+      "verdict": "FAILED",
+      "evidence": "broken",
+      "detail": "[check-health-row-absent] FAIL: \"Quality: star-vs-score mismatch\" still listed in the 2026-11-04T01:48:45.535Z health snapshot\n",
+      "channels": [
+        "verify-command"
+      ],
+      "ms": 89
     },
     {
       "id": "BRO-6777",
@@ -1530,7 +235,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 101
+      "ms": 147
     },
     {
       "id": "BRO-6776",
@@ -1544,7 +249,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 535
+      "ms": 857
     },
     {
       "id": "BRO-6775",
@@ -1559,7 +264,7 @@
         "pr-evidence",
         "verify-command"
       ],
-      "ms": 614
+      "ms": 667
     },
     {
       "id": "BRO-6772",
@@ -1574,7 +279,7 @@
         "pr-evidence",
         "verify-command"
       ],
-      "ms": 1278
+      "ms": 1502
     },
     {
       "id": "BRO-6771",
@@ -1588,7 +293,7 @@
       "channels": [
         "pr-evidence"
       ],
-      "ms": 581
+      "ms": 555
     },
     {
       "id": "BRO-6770",
@@ -1602,7 +307,7 @@
       "channels": [
         "pr-evidence"
       ],
-      "ms": 627
+      "ms": 612
     },
     {
       "id": "BRO-6769",
@@ -1616,7 +321,20 @@
       "channels": [
         "pr-evidence"
       ],
-      "ms": 578
+      "ms": 563
+    },
+    {
+      "id": "BRO-6768",
+      "name": "iOS nightly E2E failures reach no one: auto-file one Linear card when the scheduled Maestro run fails",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6768/ios-nightly-e2e-failures-reach-no-one-auto-file-one-linear-card-when",
+      "state": "Done",
+      "cmd": "node --test tests/unit/e2e-failure-alert.test.mjs",
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "misArmed": true,
+      "detail": "its own check names tests/unit/e2e-failure-alert.test.mjs, which has never existed in this repo — the acceptance criterion is wrong, so nothing can verify this card either way",
+      "channels": [],
+      "ms": 681
     },
     {
       "id": "BRO-6767",
@@ -1630,7 +348,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 669
+      "ms": 972
     },
     {
       "id": "BRO-6766",
@@ -1644,7 +362,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 193
+      "ms": 274
     },
     {
       "id": "BRO-6764",
@@ -1659,7 +377,7 @@
         "pr-evidence",
         "verify-command"
       ],
-      "ms": 1131
+      "ms": 941
     },
     {
       "id": "BRO-6760",
@@ -1685,61 +403,21 @@
       "channels": [
         "pr-evidence"
       ],
-      "ms": 541
+      "ms": 524
     },
     {
-      "id": "BRO-6751",
-      "name": "Gap audit runs ~4-8x/day, not hourly: daily slow-market rechecks and the 30-day cap can't hold at ~13 shows/run",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6751/gap-audit-runs-4-8xday-not-hourly-daily-slow-market-rechecks-and-the",
-      "state": "In Progress",
-      "cmd": "node --test scripts/verify-bro-6751-cadence.test.mjs",
-      "verdict": "UNVERIFIABLE",
-      "evidence": "unknown",
-      "detail": "still open and its check does not pass yet — expected for unfinished work, not a defect",
-      "channels": [],
-      "ms": 1
-    },
-    {
-      "id": "BRO-6749",
-      "name": "validate-data --strict red: duplicate slug richard-iii-regional-2022, 30 missing regional hero/poster images, 2 same-URL duplicate reviews",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6749/validate-data-strict-red-duplicate-slug-richard-iii-regional-2022-30",
+      "id": "BRO-6750",
+      "name": "Audience grade gate still counts sources the combined score ignores (sub-10 Theatr, sub-50 Reddit, non-US Broadway.com)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6750/audience-grade-gate-still-counts-sources-the-combined-score-ignores",
       "state": "Done",
-      "cmd": "node scripts/validate-data.js --strict",
+      "cmd": "node --test tests/unit/audience-grade-min.test.mjs",
       "verdict": "VERIFIED",
       "evidence": "holds",
       "detail": null,
       "channels": [
         "verify-command"
       ],
-      "ms": 30158
-    },
-    {
-      "id": "BRO-6748",
-      "name": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"no two unrelated shows serve byte-identical hero images\"",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6748/main-testyml-red-unit-tests-run-unit-tests-no-data-dependency-no-two",
-      "state": "Done",
-      "cmd": "node --test tests/unit/show-hero-integrity.test.mjs",
-      "verdict": "VERIFIED",
-      "evidence": "holds",
-      "detail": null,
-      "channels": [
-        "verify-command"
-      ],
-      "ms": 1431
-    },
-    {
-      "id": "BRO-6747",
-      "name": "Refetch never replaces a longer cookie-banner body (WhatsOnStage Manic Street Creature)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6747/refetch-never-replaces-a-longer-cookie-banner-body-whatsonstage-manic",
-      "state": "Done",
-      "cmd": null,
-      "verdict": "VERIFIED",
-      "evidence": "holds",
-      "detail": null,
-      "channels": [
-        "pr-evidence"
-      ],
-      "ms": 581
+      "ms": 705
     },
     {
       "id": "BRO-6746",
@@ -1753,7 +431,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 247
+      "ms": 378
     },
     {
       "id": "BRO-6745",
@@ -1767,22 +445,7 @@
       "channels": [
         "pr-evidence"
       ],
-      "ms": 774
-    },
-    {
-      "id": "BRO-6744",
-      "name": "Combined multi-show reviews (Interested Bystander, La Voce, Vulture doubles) drop the per-show review",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6744/combined-multi-show-reviews-interested-bystander-la-voce-vulture",
-      "state": "Done",
-      "cmd": "node scripts/scoring-delta.js",
-      "verdict": "VERIFIED",
-      "evidence": "holds",
-      "detail": null,
-      "channels": [
-        "pr-evidence",
-        "verify-command"
-      ],
-      "ms": 962
+      "ms": 758
     },
     {
       "id": "BRO-6743",
@@ -1797,7 +460,7 @@
         "pr-evidence",
         "verify-command"
       ],
-      "ms": 748
+      "ms": 885
     },
     {
       "id": "BRO-6742",
@@ -1812,35 +475,7 @@
         "pr-evidence",
         "verify-command"
       ],
-      "ms": 990
-    },
-    {
-      "id": "BRO-6741",
-      "name": "UK regional: resolve 2 duplicate-blocked opening-date moves (High Life Dundee Rep, Alright Sunshine Tron)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6741/uk-regional-resolve-2-duplicate-blocked-opening-date-moves-high-life",
-      "state": "Done",
-      "cmd": "node --test scripts/reconcile-uk-regional-opening-dates.test.mjs",
-      "verdict": "VERIFIED",
-      "evidence": "holds",
-      "detail": null,
-      "channels": [
-        "verify-command"
-      ],
-      "ms": 103
-    },
-    {
-      "id": "BRO-6740",
-      "name": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"no two unrelated shows serve byte-identical hero images\"",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6740/main-testyml-red-unit-tests-run-unit-tests-no-data-dependency-no-two",
-      "state": "Done",
-      "cmd": "node --test tests/unit/show-hero-integrity.test.mjs",
-      "verdict": "VERIFIED",
-      "evidence": "holds",
-      "detail": null,
-      "channels": [
-        "verify-command"
-      ],
-      "ms": 1409
+      "ms": 1313
     },
     {
       "id": "BRO-6739",
@@ -1854,7 +489,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 2206
+      "ms": 3303
     },
     {
       "id": "BRO-6738",
@@ -1869,36 +504,7 @@
         "pr-evidence",
         "verify-command"
       ],
-      "ms": 1007
-    },
-    {
-      "id": "BRO-6736",
-      "name": "Joint reviews (one article covering two shows) only go live on the first show: 30 cited-not-live rows",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6736/joint-reviews-one-article-covering-two-shows-only-go-live-on-the-first",
-      "state": "In Review",
-      "cmd": "node scripts/lib/verify-data-backfill.js --show=the-ask-off-broadway-2026,slam-frank-off-broadway-2026,school-girls-or-the-african-mean-girls-play-2026,laowang-a-chinatown-king-lear-off-broadway-2025,oedipus-2025,queen-versailles-2025,silver-manhattan-off-broadway-2026,bughouse-off-broadway-2026,burnout-paradise-off-broadway-2026,night-side-songs-off-broadway-2026,bigfoot-off-broadway-2026,the-dinosaurs-off-broadway-2026,the-monsters-off-broadway-2026,marjorie-prime-2025,anna-christie-off-broadway-2025,lowcountry-off-broadway-2025,goddess-off-broadway-2025,bowl-ep-off-broadway-2025,the-lonely-few-off-broadway-2024,good-bones-off-broadway-2024,the-coast-starlight-off-broadway-2023,the-fears-off-broadway-2023,orlando-off-broadway-2026,what-became-of-us-off-broadway-2024,liberation-2025 --reviews=1",
-      "verdict": "STUCK",
-      "evidence": "holds",
-      "detail": "its own evidence holds on main — looks finished",
-      "channels": [
-        "verify-command"
-      ],
-      "ms": 332
-    },
-    {
-      "id": "BRO-6735",
-      "name": "Audience grade: lower minimum review count from 15 to 10 (+ 'based on N reviews' note)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6735/audience-grade-lower-minimum-review-count-from-15-to-10-based-on-n",
-      "state": "Done",
-      "cmd": "node --test tests/unit/audience-grade-min.test.mjs",
-      "verdict": "VERIFIED",
-      "evidence": "holds",
-      "detail": null,
-      "channels": [
-        "pr-evidence",
-        "verify-command"
-      ],
-      "ms": 761
+      "ms": 1299
     },
     {
       "id": "BRO-6733",
@@ -1912,21 +518,21 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 1982
+      "ms": 3098
     },
     {
-      "id": "BRO-6727",
-      "name": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"NO MATCH: \"Reviews of Mamma Mia! The Party\"\"",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6727/main-testyml-red-unit-tests-run-unit-tests-no-data-dependency-no-match",
+      "id": "BRO-6728",
+      "name": "National tour pages show wrong information: 31 page problem(s) (city-row-unknown-show)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6728/national-tour-pages-show-wrong-information-31-page-problems-city-row",
       "state": "Done",
-      "cmd": "node --test tests/unit/wet-title-extraction.test.mjs",
+      "cmd": "node --test scripts/lib/tour-page-audit.test.mjs",
       "verdict": "VERIFIED",
       "evidence": "holds",
       "detail": null,
       "channels": [
         "verify-command"
       ],
-      "ms": 2006
+      "ms": 383
     },
     {
       "id": "BRO-6725",
@@ -1940,7 +546,22 @@
       "channels": [
         "pr-evidence"
       ],
-      "ms": 562
+      "ms": 599
+    },
+    {
+      "id": "BRO-6717",
+      "name": "Child sessions go idle with jobs still 'running' and the parent never finds out",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6717/child-sessions-go-idle-with-jobs-still-running-and-the-parent-never",
+      "state": "Done",
+      "cmd": "node --test scripts/lib/child-idle-watch.test.mjs",
+      "verdict": "VERIFIED",
+      "evidence": "holds",
+      "detail": null,
+      "channels": [
+        "pr-evidence",
+        "verify-command"
+      ],
+      "ms": 2504
     },
     {
       "id": "BRO-6716",
@@ -1955,16 +576,18 @@
       "ms": 0
     },
     {
-      "id": "BRO-6710",
-      "name": "UK regional: lift the 20 new venue-season shows and remaining below-bar shows to 3 reviews",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6710/uk-regional-lift-the-20-new-venue-season-shows-and-remaining-below-bar",
-      "state": "In Progress",
-      "cmd": "node scripts/lib/verify-data-backfill.js --show=329 --reviews=3",
-      "verdict": "UNVERIFIABLE",
-      "evidence": "unknown",
-      "detail": "still open and its check does not pass yet — expected for unfinished work, not a defect",
-      "channels": [],
-      "ms": 319
+      "id": "BRO-6715",
+      "name": "Owner answers act immediately: inline answer buttons on every digest card, fast Linear replies, answered cards wake a worker",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6715/owner-answers-act-immediately-inline-answer-buttons-on-every-digest",
+      "state": "Done",
+      "cmd": "node --test tests/unit/digest-inline-answers.test.mjs",
+      "verdict": "VERIFIED",
+      "evidence": "holds",
+      "detail": null,
+      "channels": [
+        "verify-command"
+      ],
+      "ms": 181
     },
     {
       "id": "BRO-6706",
@@ -1972,13 +595,13 @@
       "url": "https://linear.app/broadway-scorecard/issue/BRO-6706/bsc-daily-data-quality-revival-unverified-lifetime-sweep",
       "state": "Done",
       "cmd": "node scripts/check-health-row-absent.js --row-b64 RGF0YSBxdWFsaXR5OiByZXZpdmFsLXVudmVyaWZpZWQgbGlmZXRpbWUgc3dlZXA",
-      "verdict": "VERIFIED",
-      "evidence": "holds",
-      "detail": null,
+      "verdict": "FAILED",
+      "evidence": "broken",
+      "detail": "[check-health-row-absent] FAIL: \"Data quality: revival-unverified lifetime sweep\" still listed in the 2026-11-04T01:48:45.535Z health snapshot\n",
       "channels": [
         "verify-command"
       ],
-      "ms": 33
+      "ms": 86
     },
     {
       "id": "BRO-6697",
@@ -1992,14 +615,14 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 30
+      "ms": 48
     },
     {
-      "id": "BRO-6694",
-      "name": "Triage 19 leftover WestEndTheatre archives (13 post-predates-run, 6 unknown-show) and duplicate Guardian texts on Jagged Little Pill and Mean Girls",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6694/triage-19-leftover-westendtheatre-archives-13-post-predates-run-6",
+      "id": "BRO-6692",
+      "name": "UK regional phase 5: venue-season scrapers and WhatsOnStage/British Theatre Guide ingest",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6692/uk-regional-phase-5-venue-season-scrapers-and-whatsonstagebritish",
       "state": "Done",
-      "cmd": "node --test tests/unit/wet-archive-guard.test.mjs",
+      "cmd": "node scripts/validate-data.js --strict",
       "verdict": "VERIFIED",
       "evidence": "holds",
       "detail": null,
@@ -2007,36 +630,7 @@
         "pr-evidence",
         "verify-command"
       ],
-      "ms": 734
-    },
-    {
-      "id": "BRO-6693",
-      "name": "Intake guard: refuse Show Score Off-Broadway listings that TDF tags Off-Off-Broadway (Peter Panto class)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6693/intake-guard-refuse-show-score-off-broadway-listings-that-tdf-tags-off",
-      "state": "Done",
-      "cmd": "node --test scripts/lib/retire-show-action.test.mjs",
-      "verdict": "VERIFIED",
-      "evidence": "holds",
-      "detail": null,
-      "channels": [
-        "verify-command"
-      ],
-      "ms": 111
-    },
-    {
-      "id": "BRO-6685",
-      "name": "Auto-ingest admitted a scraper site and a review roundup as A Few Good Men reviews (BRO-6585 follow-up)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6685/auto-ingest-admitted-a-scraper-site-and-a-review-roundup-as-a-few-good",
-      "state": "Done",
-      "cmd": "node --test scripts/lib/non-review-url-patterns.test.mjs",
-      "verdict": "VERIFIED",
-      "evidence": "holds",
-      "detail": null,
-      "channels": [
-        "pr-evidence",
-        "verify-command"
-      ],
-      "ms": 1060
+      "ms": 49172
     },
     {
       "id": "BRO-6684",
@@ -2050,28 +644,27 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 120
+      "ms": 185
     },
     {
-      "id": "BRO-6682",
-      "name": "Opening-night leftovers from BRO-6676: BWW roundup registration, Playbill Verdict timing, short-title matcher, ledger 27/33, WET ITH 2015 mismatch",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6682/opening-night-leftovers-from-bro-6676-bww-roundup-registration",
+      "id": "BRO-6681",
+      "name": "iOS: share my diary link from the Watched tab (web already has it)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6681/ios-share-my-diary-link-from-the-watched-tab-web-already-has-it",
       "state": "Done",
-      "cmd": null,
-      "verdict": "VERIFIED",
-      "evidence": "holds",
-      "detail": null,
-      "channels": [
-        "pr-evidence"
-      ],
-      "ms": 512
+      "cmd": "node --test tests/unit/diary-share.test.mjs",
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "misArmed": true,
+      "detail": "its own check names tests/unit/diary-share.test.mjs, which has never existed in this repo — the acceptance criterion is wrong, so nothing can verify this card either way",
+      "channels": [],
+      "ms": 679
     },
     {
-      "id": "BRO-6678",
-      "name": "Populate show castBilling so Reddit posts can name the first-billed cast (66 open shows get none)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6678/populate-show-castbilling-so-reddit-posts-can-name-the-first-billed",
+      "id": "BRO-6674",
+      "name": "Audit the 15 workflows whose failure alert is low severity (digest only): which should file a fix card like verify-schema",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6674/audit-the-15-workflows-whose-failure-alert-is-low-severity-digest-only",
       "state": "Done",
-      "cmd": "node --test scripts/lib/reddit-opening-post.test.mjs scripts/lib/playbill-cast-billing.test.mjs",
+      "cmd": "node --test scripts/audit-low-severity-workflows.test.mjs",
       "verdict": "VERIFIED",
       "evidence": "holds",
       "detail": null,
@@ -2079,21 +672,7 @@
         "pr-evidence",
         "verify-command"
       ],
-      "ms": 770
-    },
-    {
-      "id": "BRO-6677",
-      "name": "check-provider-spend --day=<old day> silently wipes that day's durable spend aggregate once the raw ledger has rotated",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6677/check-provider-spend-dayold-day-silently-wipes-that-days-durable-spend",
-      "state": "Done",
-      "cmd": "node --test scripts/tests/provider-spend-ledger-commit-ordering.test.mjs",
-      "verdict": "VERIFIED",
-      "evidence": "holds",
-      "detail": null,
-      "channels": [
-        "verify-command"
-      ],
-      "ms": 95
+      "ms": 720
     },
     {
       "id": "BRO-6663",
@@ -2107,36 +686,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 369
-    },
-    {
-      "id": "BRO-6661",
-      "name": "Press-night probe: auto-log hand fixes (manualActions) from review-texts commits during the night",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6661/press-night-probe-auto-log-hand-fixes-manualactions-from-review-texts",
-      "state": "Done",
-      "cmd": "node --test tests/unit/press-night-digest-line.test.mjs tests/unit/press-night-manual-actions.test.mjs",
-      "verdict": "VERIFIED",
-      "evidence": "holds",
-      "detail": null,
-      "channels": [
-        "pr-evidence",
-        "verify-command"
-      ],
-      "ms": 1264
-    },
-    {
-      "id": "BRO-6650",
-      "name": "Plan v2 Step 5: recorded replays run on every lane merge; 48h pre-press-night lane-code freeze check",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6650/plan-v2-step-5-recorded-replays-run-on-every-lane-merge-48h-pre-press",
-      "state": "Done",
-      "cmd": "node --test tests/unit/lane-code-freeze.test.mjs",
-      "verdict": "VERIFIED",
-      "evidence": "holds",
-      "detail": null,
-      "channels": [
-        "verify-command"
-      ],
-      "ms": 315
+      "ms": 550
     },
     {
       "id": "BRO-6646",
@@ -2150,22 +700,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 37
-    },
-    {
-      "id": "BRO-6643",
-      "name": "Move remaining ORCHESTRATOR_PAUSED reads (express 142/695, poller 1456, orchestrator 906) onto read-actions-variable.sh",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6643/move-remaining-orchestrator-paused-reads-express-142695-poller-1456",
-      "state": "Done",
-      "cmd": "node --test tests/unit/orchestrator-pause-read.test.mjs",
-      "verdict": "VERIFIED",
-      "evidence": "holds",
-      "detail": null,
-      "channels": [
-        "pr-evidence",
-        "verify-command"
-      ],
-      "ms": 912
+      "ms": 57
     },
     {
       "id": "BRO-6637",
@@ -2179,7 +714,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 42
+      "ms": 58
     },
     {
       "id": "BRO-6630",
@@ -2193,7 +728,7 @@
       "channels": [
         "pr-evidence"
       ],
-      "ms": 599
+      "ms": 610
     },
     {
       "id": "BRO-6625",
@@ -2207,36 +742,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 106
-    },
-    {
-      "id": "BRO-6616",
-      "name": "Cutover 0: lane shadow commits its own scraper-spend ledger lines to main",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6616/cutover-0-lane-shadow-commits-its-own-scraper-spend-ledger-lines-to",
-      "state": "In Review",
-      "cmd": "node --test tests/unit/lane-spend-ledger-commit.test.mjs",
-      "verdict": "STUCK",
-      "evidence": "holds",
-      "detail": "its own evidence holds on main — looks finished",
-      "channels": [
-        "verify-command"
-      ],
-      "ms": 110
-    },
-    {
-      "id": "BRO-6611",
-      "name": "BSC Daily: Data: reviewed shows missing from shows.json",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6611/bsc-daily-data-reviewed-shows-missing-from-showsjson",
-      "state": "Done",
-      "cmd": "node scripts/check-health-row-absent.js --row-b64 RGF0YTogcmV2aWV3ZWQgc2hvd3MgbWlzc2luZyBmcm9tIHNob3dzLmpzb24",
-      "verdict": "VERIFIED",
-      "evidence": "holds",
-      "detail": null,
-      "channels": [
-        "pr-evidence",
-        "verify-command"
-      ],
-      "ms": 558
+      "ms": 164
     },
     {
       "id": "BRO-6608",
@@ -2244,69 +750,27 @@
       "url": "https://linear.app/broadway-scorecard/issue/BRO-6608/bsc-daily-test-suite",
       "state": "In Review",
       "cmd": "node scripts/check-health-row-absent.js --row-b64 V29ya2Zsb3cgcmVwZWF0LWZhaWx1cmU6IFRlc3QgU3VpdGUgLyBVbml0IFRlc3RzIC8gUnVuIHNjcmlwdHMvbGliIHRlc3RzICh2aXN1YWwtcWEgdHJhbnNjcmlwdC1zY2FuIGV0Yy4p",
-      "verdict": "STUCK",
-      "evidence": "holds",
-      "detail": "its own evidence holds on main — looks finished",
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "still open and its check does not pass yet — expected for unfinished work, not a defect",
+      "channels": [],
+      "openCheckFails": true,
+      "failDetail": "[check-health-row-absent] FAIL: \"Workflow repeat-failure: Test Suite / Unit Tests / Run scripts/lib tests (visual-qa transcript-scan etc.)\" still listed in the 2026-11-04T01:48:45.535Z health snapshot\n",
+      "ms": 92
+    },
+    {
+      "id": "BRO-6594",
+      "name": "Auto-fix (second try): Opening Night Poller Failed",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6594/auto-fix-second-try-opening-night-poller-failed",
+      "state": "Done",
+      "cmd": "node scripts/check-workflow-run-status.js --workflow=opening-night-poller.yml --expect=success",
+      "verdict": "FAILED",
+      "evidence": "broken",
+      "detail": "(gh not authenticated; read runs from the public GitHub API)\nopening-night-poller.yml: MISMATCH — most recent run concluded 'in_progress', expected 'success' (https://github.com/thomaspryor/Broadwayscore/actions/runs/41752544965)\n",
       "channels": [
         "verify-command"
       ],
-      "ms": 30
-    },
-    {
-      "id": "BRO-6606",
-      "name": "UK regional coverage phase 4: reach 450 productions and 60% scoreable",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6606/uk-regional-coverage-phase-4-reach-450-productions-and-60percent",
-      "state": "Done",
-      "cmd": null,
-      "verdict": "VERIFIED",
-      "evidence": "holds",
-      "detail": null,
-      "channels": [
-        "pr-evidence"
-      ],
-      "ms": 578
-    },
-    {
-      "id": "BRO-6585",
-      "name": "A Few Good Men opening night: get all reviews live + opening-night system postmortem",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6585/a-few-good-men-opening-night-get-all-reviews-live-opening-night-system",
-      "state": "Done",
-      "cmd": "node --test scripts/lib/bro-6585-opening-night-guards.test.mjs scripts/lib/review-file-writer-top-level-date.test.mjs",
-      "verdict": "VERIFIED",
-      "evidence": "holds",
-      "detail": null,
-      "channels": [
-        "verify-command"
-      ],
-      "ms": 489
-    },
-    {
-      "id": "BRO-6582",
-      "name": "Check 6 live shows whose type disagrees with their TodayTix category",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6582/check-6-live-shows-whose-type-disagrees-with-their-todaytix-category",
-      "state": "Done",
-      "cmd": "node --test scripts/audit-type-todaytix-category-drift.test.mjs",
-      "verdict": "VERIFIED",
-      "evidence": "holds",
-      "detail": null,
-      "channels": [
-        "verify-command"
-      ],
-      "ms": 96
-    },
-    {
-      "id": "BRO-6581",
-      "name": "Image pipeline: verify all three TodayTix art slots; record wrong URLs when a noReliableArt marker is written",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6581/image-pipeline-verify-all-three-todaytix-art-slots-record-wrong-urls",
-      "state": "Done",
-      "cmd": "node --test scripts/lib/no-reliable-art.test.mjs scripts/fetch-show-images-auto.test.mjs",
-      "verdict": "VERIFIED",
-      "evidence": "holds",
-      "detail": null,
-      "channels": [
-        "verify-command"
-      ],
-      "ms": 119
+      "ms": 807
     },
     {
       "id": "BRO-6571",
@@ -2320,22 +784,7 @@
       "channels": [],
       "openCheckFails": true,
       "failDetail": "FAIL birmingham-uk: show missing; scored reviews 0 < 3\nFAIL liverpool-uk: show missing; scored reviews 0 < 3\n",
-      "ms": 622
-    },
-    {
-      "id": "BRO-6570",
-      "name": "Outlet id alias split: 1 review filed under 'timeoutlondon' instead of 'timeout-london'",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6570/outlet-id-alias-split-1-review-filed-under-timeoutlondon-instead-of",
-      "state": "Done",
-      "cmd": "node --test scripts/outlet-timeout-london-alias.test.mjs",
-      "verdict": "VERIFIED",
-      "evidence": "holds",
-      "detail": null,
-      "channels": [
-        "pr-evidence",
-        "verify-command"
-      ],
-      "ms": 665
+      "ms": 924
     },
     {
       "id": "BRO-6548",
@@ -2349,7 +798,21 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 99
+      "ms": 151
+    },
+    {
+      "id": "BRO-6538",
+      "name": "London census: CDX pass for guardian, observer, thestage archive + T1 newspaper probes",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6538/london-census-cdx-pass-for-guardian-observer-thestage-archive-t1",
+      "state": "Done",
+      "cmd": "node scripts/validate-data.js --strict",
+      "verdict": "VERIFIED",
+      "evidence": "holds",
+      "detail": null,
+      "channels": [
+        "verify-command"
+      ],
+      "ms": 50224
     },
     {
       "id": "BRO-6532",
@@ -2363,35 +826,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 105
-    },
-    {
-      "id": "BRO-6525",
-      "name": "BSC Daily: SEO: health",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6525/bsc-daily-seo-health",
-      "state": "Done",
-      "cmd": "node scripts/check-health-row-absent.js --row-b64 U0VPOiBoZWFsdGg",
-      "verdict": "VERIFIED",
-      "evidence": "holds",
-      "detail": null,
-      "channels": [
-        "verify-command"
-      ],
-      "ms": 31
-    },
-    {
-      "id": "BRO-6520",
-      "name": "main test.yml red: Lint Workflows / Audit — no submitter PII in committed data/audit files",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6520/main-testyml-red-lint-workflows-audit-no-submitter-pii-in-committed",
-      "state": "Done",
-      "cmd": "node scripts/lint-committed-pii.js",
-      "verdict": "VERIFIED",
-      "evidence": "holds",
-      "detail": null,
-      "channels": [
-        "verify-command"
-      ],
-      "ms": 5512
+      "ms": 157
     },
     {
       "id": "BRO-6518",
@@ -2405,7 +840,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 369
+      "ms": 564
     },
     {
       "id": "BRO-6513",
@@ -2419,7 +854,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 30812
+      "ms": 50417
     },
     {
       "id": "BRO-6507",
@@ -2434,64 +869,7 @@
         "pr-evidence",
         "verify-command"
       ],
-      "ms": 29742
-    },
-    {
-      "id": "BRO-6506",
-      "name": "NYC show builders default unknown type to 'play': ~15 Off-Broadway musicals stored as plays (BRO-6489 audit)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6506/nyc-show-builders-default-unknown-type-to-play-15-off-broadway",
-      "state": "Done",
-      "cmd": "node scripts/lib/verify-data-backfill.js --show=kilgallen-off-broadway-2026,the-connector-off-broadway-2024,wesley-off-broadway-2025",
-      "verdict": "VERIFIED",
-      "evidence": "holds",
-      "detail": null,
-      "channels": [
-        "verify-command"
-      ],
-      "ms": 94
-    },
-    {
-      "id": "BRO-6505",
-      "name": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"classify-market-routing parity vs committed baseline (95 samples)\"",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6505/main-testyml-red-unit-tests-run-unit-tests-no-data-dependency-classify",
-      "state": "Done",
-      "cmd": "node --test tests/unit/classify-market-routing-parity.test.mjs",
-      "verdict": "VERIFIED",
-      "evidence": "holds",
-      "detail": null,
-      "channels": [
-        "verify-command"
-      ],
-      "ms": 183
-    },
-    {
-      "id": "BRO-6500",
-      "name": "Investigate UK regional theatre hubs: which markets, competitors, plan, cost, time, current-year vs backfill",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6500/investigate-uk-regional-theatre-hubs-which-markets-competitors-plan",
-      "state": "Done",
-      "cmd": "test -f memory/expansion-playbook.md",
-      "verdict": "VERIFIED",
-      "evidence": "holds",
-      "detail": null,
-      "channels": [
-        "verify-command"
-      ],
-      "ms": 603
-    },
-    {
-      "id": "BRO-6498",
-      "name": "Investigate US city hubs (Chicago, DC, LA): inventory, competitors, plan",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6498/investigate-us-city-hubs-chicago-dc-la-inventory-competitors-plan",
-      "state": "Done",
-      "cmd": "test -f memory/us-city-hubs-report.md",
-      "verdict": "VERIFIED",
-      "evidence": "holds",
-      "detail": null,
-      "channels": [
-        "pr-evidence",
-        "verify-command"
-      ],
-      "ms": 1087
+      "ms": 52426
     },
     {
       "id": "BRO-6491",
@@ -2506,7 +884,22 @@
         "pr-evidence",
         "verify-command"
       ],
-      "ms": 733
+      "ms": 753
+    },
+    {
+      "id": "BRO-6488",
+      "name": "Outlet-first review census for London outlets, 2012 to now (T1-T3), matched to West End/Off-West End shows",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6488/outlet-first-review-census-for-london-outlets-2012-to-now-t1-t3",
+      "state": "Done",
+      "cmd": "node scripts/audit-london-census-coverage.js",
+      "verdict": "VERIFIED",
+      "evidence": "holds",
+      "detail": null,
+      "channels": [
+        "pr-evidence",
+        "verify-command"
+      ],
+      "ms": 611
     },
     {
       "id": "BRO-6474",
@@ -2521,7 +914,7 @@
         "pr-evidence",
         "verify-command"
       ],
-      "ms": 29963
+      "ms": 51981
     },
     {
       "id": "BRO-6464",
@@ -2529,13 +922,14 @@
       "url": "https://linear.app/broadway-scorecard/issue/BRO-6464/bsc-daily-live-data-test-failing-no-class-a-cross-market-leaks-a-show",
       "state": "Done",
       "cmd": "node scripts/check-health-row-absent.js --row-b64 TGl2ZS1kYXRhIHRlc3QgZmFpbGluZzogbm8gY2xhc3MtQSBjcm9zcy1tYXJrZXQgbGVha3MgKGEgc2hvdyBzaG93aW5nIGFub3RoZXIgcHJvZHVjdGlvbidzIHJldmlld3MpIChzY3JpcHRzL3ZlcmlmeS1jb250",
-      "verdict": "FAILED",
-      "evidence": "broken",
-      "detail": "[check-health-row-absent] FAIL: \"Live-data test failing: no class-A cross-market leaks (a show showing another production's reviews) (scripts/verify-cont\" still listed in the 2026-11-03T09:35:39.349Z health snapshot\n",
+      "verdict": "VERIFIED",
+      "evidence": "holds",
+      "detail": null,
       "channels": [
+        "pr-evidence",
         "verify-command"
       ],
-      "ms": 567
+      "ms": 646
     },
     {
       "id": "BRO-6461",
@@ -2549,7 +943,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 32
+      "ms": 47
     },
     {
       "id": "BRO-6460",
@@ -2557,13 +951,25 @@
       "url": "https://linear.app/broadway-scorecard/issue/BRO-6460/bsc-daily-codex-runner-landing-cards",
       "state": "Done",
       "cmd": "node scripts/check-health-row-absent.js --row-b64 Q29kZXggcnVubmVyOiBsYW5kaW5nIGNhcmRz",
-      "verdict": "VERIFIED",
-      "evidence": "holds",
-      "detail": null,
+      "verdict": "FAILED",
+      "evidence": "broken",
+      "detail": "[check-health-row-absent] FAIL: \"Codex runner: landing cards\" still listed in the 2026-11-04T01:48:45.535Z health snapshot\n",
       "channels": [
         "verify-command"
       ],
-      "ms": 33
+      "ms": 93
+    },
+    {
+      "id": "BRO-6459",
+      "name": "BSC Daily: Data quality: cv-wrongproduction lifetime sweep",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6459/bsc-daily-data-quality-cv-wrongproduction-lifetime-sweep",
+      "state": "In Progress",
+      "cmd": "node scripts/check-health-row-absent.js --row-b64 RGF0YSBxdWFsaXR5OiBjdi13cm9uZ3Byb2R1Y3Rpb24gbGlmZXRpbWUgc3dlZXA",
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "still open and its check does not pass yet — expected for unfinished work, not a defect",
+      "channels": [],
+      "ms": 44
     },
     {
       "id": "BRO-6449",
@@ -2578,6 +984,21 @@
       "ms": 0
     },
     {
+      "id": "BRO-6448",
+      "name": "WE 2012-13: lift displayable share from 0.58 to 0.70 (BRO-6428 follow-up)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6448/we-2012-13-lift-displayable-share-from-058-to-070-bro-6428-follow-up",
+      "state": "Done",
+      "cmd": "node scripts/lib/verify-data-backfill.js --show=hedda-gabler-west-end-2012,the-ladykillers-west-end-2013,once-west-end-2013,alan-bennetts-untold-stories-west-end-2013,monty-pythons-spamalot-west-end-2012 --reviews=5",
+      "verdict": "VERIFIED",
+      "evidence": "holds",
+      "detail": null,
+      "channels": [
+        "pr-evidence",
+        "verify-command"
+      ],
+      "ms": 980
+    },
+    {
       "id": "BRO-6445",
       "name": "Land Dependabot PR #1165: chore(deps): Bump the all-updates group with 7 updates",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-6445/land-dependabot-pr-1165-choredeps-bump-the-all-updates-group-with-7",
@@ -2590,7 +1011,22 @@
         "pr-evidence",
         "verify-command"
       ],
-      "ms": 547
+      "ms": 653
+    },
+    {
+      "id": "BRO-6443",
+      "name": "findOwnerDecisions misses heading-style DECISION NEEDED and owner-gated cards with no question (board shows 0 waiting on owner)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6443/findownerdecisions-misses-heading-style-decision-needed-and-owner",
+      "state": "Done",
+      "cmd": "node --test scripts/lib/owner-decision-notify.test.mjs scripts/lib/board-categories.test.mjs",
+      "verdict": "VERIFIED",
+      "evidence": "holds",
+      "detail": null,
+      "channels": [
+        "pr-evidence",
+        "verify-command"
+      ],
+      "ms": 955
     },
     {
       "id": "BRO-6441",
@@ -2604,7 +1040,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 37
+      "ms": 60
     },
     {
       "id": "BRO-6438",
@@ -2618,7 +1054,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 29
+      "ms": 45
     },
     {
       "id": "BRO-6437",
@@ -2632,7 +1068,21 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 31
+      "ms": 45
+    },
+    {
+      "id": "BRO-6436",
+      "name": "BSC Daily: Corpus drift: exclusion flag whose own stated basis (a date-guard claim) is contradicted by the current record (zero-tolerance)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6436/bsc-daily-corpus-drift-exclusion-flag-whose-own-stated-basis-a-date",
+      "state": "Done",
+      "cmd": "node scripts/check-health-row-absent.js --row-b64 Q29ycHVzIGRyaWZ0OiBleGNsdXNpb24gZmxhZyB3aG9zZSBvd24gc3RhdGVkIGJhc2lzIChhIGRhdGUtZ3VhcmQgY2xhaW0pIGlzIGNvbnRyYWRpY3RlZCBieSB0aGUgY3VycmVudCByZWNvcmQgKHplcm8tdG9s",
+      "verdict": "VERIFIED",
+      "evidence": "holds",
+      "detail": null,
+      "channels": [
+        "verify-command"
+      ],
+      "ms": 48
     },
     {
       "id": "BRO-6434",
@@ -2640,13 +1090,13 @@
       "url": "https://linear.app/broadway-scorecard/issue/BRO-6434/bsc-daily-corpus-drift-one-show-score-url-mapped-to-2-showids-baseline",
       "state": "Done",
       "cmd": "node scripts/check-health-row-absent.js --row-b64 Q29ycHVzIGRyaWZ0OiBvbmUgU2hvdyBTY29yZSBVUkwgbWFwcGVkIHRvIDIrIHNob3dJZHMgKGJhc2VsaW5lLWRpZmYp",
-      "verdict": "VERIFIED",
-      "evidence": "holds",
-      "detail": null,
+      "verdict": "FAILED",
+      "evidence": "broken",
+      "detail": "[check-health-row-absent] FAIL: \"Corpus drift: one Show Score URL mapped to 2+ showIds (baseline-diff)\" still listed in the 2026-11-04T01:48:45.535Z health snapshot\n",
       "channels": [
         "verify-command"
       ],
-      "ms": 29
+      "ms": 91
     },
     {
       "id": "BRO-6433",
@@ -2660,7 +1110,7 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 31
+      "ms": 44
     },
     {
       "id": "BRO-6430",
@@ -2674,7 +1124,1965 @@
       "channels": [
         "verify-command"
       ],
-      "ms": 31
+      "ms": 45
+    },
+    {
+      "id": "BRO-6428",
+      "name": "West End history: seasons 2013-14 and 2012-13 (list-first + Guardian/WOS supply)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6428/west-end-history-seasons-2013-14-and-2012-13-list-first-guardianwos",
+      "state": "In Progress",
+      "cmd": "node scripts/lib/verify-data-backfill.js --show=2013-2014,2012-2013",
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "still open and its check does not pass yet — expected for unfinished work, not a defect",
+      "channels": [],
+      "ms": 763
+    },
+    {
+      "id": "BRO-6391",
+      "name": "Scraper cost report: file worker cards instead of asking the owner to investigate",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6391/scraper-cost-report-file-worker-cards-instead-of-asking-the-owner-to",
+      "state": "Done",
+      "cmd": "node --test scripts/lib/cost-report-alerts.test.mjs",
+      "verdict": "VERIFIED",
+      "evidence": "holds",
+      "detail": null,
+      "channels": [
+        "pr-evidence",
+        "verify-command"
+      ],
+      "ms": 724
+    },
+    {
+      "id": "BRO-6386",
+      "name": "Time-bomb test armed: tests/unit/opening-night-orchestrator-cron.test.mjs — an earlier all-market run started 5h ago does not cover us",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6386/time-bomb-test-armed-testsunitopening-night-orchestrator-crontestmjs",
+      "state": "Done",
+      "cmd": "node scripts/check-alert-condition-absent.js --key-b64 dGltZS1ib21iLXRlc3RzOnVuaXQ6dGVzdHMvdW5pdC9vcGVuaW5nLW5pZ2h0LW9yY2hlc3RyYXRvci1jcm9uLnRlc3QubWpzOjphbiBlYXJsaWVyIGFsbC1tYXJrZXQgcnVuIHN0YXJ0ZWQgNWggYWdvIGRvZXMg",
+      "verdict": "VERIFIED",
+      "evidence": "holds",
+      "detail": null,
+      "channels": [
+        "verify-command"
+      ],
+      "ms": 61
+    },
+    {
+      "id": "BRO-6384",
+      "name": "Time-bomb test armed: tests/unit/fantasy-roster-privacy.test.ts — teams the database hid still count",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6384/time-bomb-test-armed-testsunitfantasy-roster-privacytestts-teams-the",
+      "state": "In Progress",
+      "cmd": "node scripts/check-alert-condition-absent.js --key-b64 dGltZS1ib21iLXRlc3RzOnVuaXQtdHN4OnRlc3RzL3VuaXQvZmFudGFzeS1yb3N0ZXItcHJpdmFjeS50ZXN0LnRzOjp0ZWFtcyB0aGUgZGF0YWJhc2UgaGlkIHN0aWxsIGNvdW50",
+      "verdict": "STUCK",
+      "evidence": "holds",
+      "detail": "its own evidence holds on main — looks finished",
+      "channels": [
+        "verify-command"
+      ],
+      "ms": 61
+    },
+    {
+      "id": "BRO-6382",
+      "name": "Time-bomb test armed: scripts/backlog-drain.test.mjs — reconcileAndAppend: lock busy skips the tick instead of appending",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6382/time-bomb-test-armed-scriptsbacklog-draintestmjs-reconcileandappend",
+      "state": "Done",
+      "cmd": "node scripts/check-alert-condition-absent.js --key-b64 dGltZS1ib21iLXRlc3RzOnVuaXQ6c2NyaXB0cy9iYWNrbG9nLWRyYWluLnRlc3QubWpzOjpyZWNvbmNpbGVBbmRBcHBlbmQ6IGxvY2sgYnVzeSBza2lwcyB0aGUgdGljayBpbnN0ZWFkIG9mIGFwcGVuZGluZw",
+      "verdict": "VERIFIED",
+      "evidence": "holds",
+      "detail": null,
+      "channels": [
+        "verify-command"
+      ],
+      "ms": 59
+    },
+    {
+      "id": "BRO-6381",
+      "name": "Time-bomb test armed: scripts/backlog-drain.test.mjs — main: tick lock releases on empty tasks and errors; help never acquires it",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6381/time-bomb-test-armed-scriptsbacklog-draintestmjs-main-tick-lock",
+      "state": "Done",
+      "cmd": "node scripts/check-alert-condition-absent.js --key-b64 dGltZS1ib21iLXRlc3RzOnVuaXQ6c2NyaXB0cy9iYWNrbG9nLWRyYWluLnRlc3QubWpzOjptYWluOiB0aWNrIGxvY2sgcmVsZWFzZXMgb24gZW1wdHkgdGFza3MgYW5kIGVycm9yczsgaGVscCBuZXZlciBhY3F1",
+      "verdict": "VERIFIED",
+      "evidence": "holds",
+      "detail": null,
+      "channels": [
+        "verify-command"
+      ],
+      "ms": 57
+    },
+    {
+      "id": "BRO-6372",
+      "name": "Email-list monitor: confirm sign-in joins from Formspree auth-auto submissions, not just sign_in_completed",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6372/email-list-monitor-confirm-sign-in-joins-from-formspree-auth-auto",
+      "state": "Done",
+      "cmd": "node --test scripts/lib/email-gate-funnel-rules.test.mjs",
+      "verdict": "VERIFIED",
+      "evidence": "holds",
+      "detail": null,
+      "channels": [
+        "verify-command"
+      ],
+      "ms": 166
+    },
+    {
+      "id": "BRO-6364",
+      "name": "Cron stale 3+ consecutive days: Update Lottery/Rush",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6364/cron-stale-3-consecutive-days-update-lotteryrush",
+      "state": "Done",
+      "cmd": "node scripts/check-alert-condition-absent.js --key-b64 Y3Jvbi1oZWFsdGgtY2hyb25pYzpVcGRhdGUgTG90dGVyeS9SdXNo",
+      "verdict": "VERIFIED",
+      "evidence": "holds",
+      "detail": null,
+      "channels": [
+        "verify-command"
+      ],
+      "ms": 59
+    },
+    {
+      "id": "BRO-6348",
+      "name": "Missing show: Hundred Days",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6348/missing-show-hundred-days",
+      "state": "Done",
+      "cmd": "node --test tests/unit/missing-show-hundred-days.test.mjs",
+      "verdict": "VERIFIED",
+      "evidence": "holds",
+      "detail": null,
+      "channels": [
+        "pr-evidence",
+        "verify-command"
+      ],
+      "ms": 839
+    },
+    {
+      "id": "BRO-6323",
+      "name": "BSC Daily: main test.yml STILL red — auto-dispatch did not resolve it",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6323/bsc-daily-main-testyml-still-red-auto-dispatch-did-not-resolve-it",
+      "state": "Done",
+      "cmd": "node scripts/check-health-row-absent.js --row-b64 bWFpbiB0ZXN0LnltbCBTVElMTCByZWQg4oCUIGF1dG8tZGlzcGF0Y2ggZGlkIG5vdCByZXNvbHZlIGl0",
+      "verdict": "VERIFIED",
+      "evidence": "holds",
+      "detail": null,
+      "channels": [
+        "pr-evidence",
+        "verify-command"
+      ],
+      "ms": 656
+    },
+    {
+      "id": "BRO-6322",
+      "name": "BSC Daily: Live-data test failing: BRO-3887: repo Actions cache stays below the size that evicts the SERP cache (tests/unit/bro3887-cache-fix-acceptance.test.mjs)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6322/bsc-daily-live-data-test-failing-bro-3887-repo-actions-cache-stays",
+      "state": "Done",
+      "cmd": "node scripts/check-health-row-absent.js --row-b64 TGl2ZS1kYXRhIHRlc3QgZmFpbGluZzogQlJPLTM4ODc6IHJlcG8gQWN0aW9ucyBjYWNoZSBzdGF5cyBiZWxvdyB0aGUgc2l6ZSB0aGF0IGV2aWN0cyB0aGUgU0VSUCBjYWNoZSAodGVzdHMvdW5pdC9icm8zODg3",
+      "verdict": "FAILED",
+      "evidence": "broken",
+      "detail": "[check-health-row-absent] FAIL: \"Live-data test failing: BRO-3887: repo Actions cache stays below the size that evicts the SERP cache (tests/unit/bro3887\" still listed in the 2026-11-04T01:48:45.535Z health snapshot\n",
+      "channels": [
+        "verify-command"
+      ],
+      "ms": 90
+    },
+    {
+      "id": "BRO-6321",
+      "name": "BSC Daily: 6 review(s) for baby-off-west-end-2026 stuck in _pending with no text and no byline",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6321/bsc-daily-6-reviews-for-baby-off-west-end-2026-stuck-in-pending-with",
+      "state": "Done",
+      "cmd": "node scripts/check-health-row-absent.js --row-b64 NiByZXZpZXcocykgZm9yIGJhYnktb2ZmLXdlc3QtZW5kLTIwMjYgc3R1Y2sgaW4gX3BlbmRpbmcgd2l0aCBubyB0ZXh0IGFuZCBubyBieWxpbmU",
+      "verdict": "VERIFIED",
+      "evidence": "holds",
+      "detail": null,
+      "channels": [
+        "verify-command"
+      ],
+      "ms": 46
+    },
+    {
+      "id": "BRO-6320",
+      "name": "BSC Daily: 1 review(s) for dirty-dancing-the-classic-story-on-stage-west-end-2026 stuck in _pending with no text and no byline",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6320/bsc-daily-1-reviews-for-dirty-dancing-the-classic-story-on-stage-west",
+      "state": "Done",
+      "cmd": "node scripts/check-health-row-absent.js --row-b64 MSByZXZpZXcocykgZm9yIGRpcnR5LWRhbmNpbmctdGhlLWNsYXNzaWMtc3Rvcnktb24tc3RhZ2Utd2VzdC1lbmQtMjAyNiBzdHVjayBpbiBfcGVuZGluZyB3aXRoIG5vIHRleHQgYW5kIG5vIGJ5bGluZQ",
+      "verdict": "VERIFIED",
+      "evidence": "holds",
+      "detail": null,
+      "channels": [
+        "verify-command"
+      ],
+      "ms": 48
+    },
+    {
+      "id": "BRO-6318",
+      "name": "BSC Daily: Bright Data daily breaker TRIPPED: web_unlocker2 (1871/1750 reqs)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6318/bsc-daily-bright-data-daily-breaker-tripped-web-unlocker2-18711750",
+      "state": "Done",
+      "cmd": "node scripts/check-health-row-absent.js --row-b64 QnJpZ2h0IERhdGEgZGFpbHkgYnJlYWtlciBUUklQUEVEOiB3ZWJfdW5sb2NrZXIyICgxODcxLzE3NTAgcmVxcyk",
+      "verdict": "VERIFIED",
+      "evidence": "holds",
+      "detail": null,
+      "channels": [
+        "verify-command"
+      ],
+      "ms": 51
+    },
+    {
+      "id": "BRO-6317",
+      "name": "BSC Daily: LLM scoring daily spend over budget",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6317/bsc-daily-llm-scoring-daily-spend-over-budget",
+      "state": "Done",
+      "cmd": "node scripts/check-health-row-absent.js --row-b64 TExNIHNjb3JpbmcgZGFpbHkgc3BlbmQgb3ZlciBidWRnZXQ",
+      "verdict": "VERIFIED",
+      "evidence": "holds",
+      "detail": null,
+      "channels": [
+        "verify-command"
+      ],
+      "ms": 45
+    },
+    {
+      "id": "BRO-6269",
+      "name": "iOS: iPhone-only for the public App Store launch (supportsTablet false)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6269/ios-iphone-only-for-the-public-app-store-launch-supportstablet-false",
+      "state": "Done",
+      "cmd": "node --test tests/unit/ios-tablet-support.test.mjs",
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "misArmed": true,
+      "detail": "its own check names tests/unit/ios-tablet-support.test.mjs, which has never existed in this repo — the acceptance criterion is wrong, so nothing can verify this card either way",
+      "channels": [],
+      "ms": 748
+    },
+    {
+      "id": "BRO-6263",
+      "name": "Codex trust ladder: unlock more access automatically as its record holds, relock on regression",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6263/codex-trust-ladder-unlock-more-access-automatically-as-its-record",
+      "state": "Done",
+      "cmd": "node --test tests/unit/codex-trust-ladder.test.mjs tests/unit/codex-runner.test.mjs",
+      "verdict": "VERIFIED",
+      "evidence": "holds",
+      "detail": null,
+      "channels": [
+        "pr-evidence",
+        "verify-command"
+      ],
+      "ms": 2813
+    },
+    {
+      "id": "BRO-6249",
+      "name": "Three-tier planning rule: substantial = plan + /plan-review + owner yes; moderate = /second-opinion; simple = go (rule text + advisory hook)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6249/three-tier-planning-rule-substantial-plan-plan-review-owner-yes",
+      "state": "Done",
+      "cmd": "node --test scripts/lib/review-gate.test.mjs",
+      "verdict": "VERIFIED",
+      "evidence": "holds",
+      "detail": null,
+      "channels": [
+        "verify-command"
+      ],
+      "ms": 147
+    },
+    {
+      "id": "BRO-6247",
+      "name": "iOS: Your favorites (three ranked shows) on the Stats tab",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6247/ios-your-favorites-three-ranked-shows-on-the-stats-tab",
+      "state": "Done",
+      "cmd": "node --test tests/unit/favorite-shows.test.mjs",
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "misArmed": true,
+      "detail": "its own check names tests/unit/favorite-shows.test.mjs, which has never existed in this repo — the acceptance criterion is wrong, so nothing can verify this card either way",
+      "channels": [],
+      "ms": 635
+    },
+    {
+      "id": "BRO-6233",
+      "name": "Hand-review long review bodies still parked in wrongFullText by head-of-article CV verdicts (BRO-6225 follow-up)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6233/hand-review-long-review-bodies-still-parked-in-wrongfulltext-by-head",
+      "state": "Done",
+      "cmd": "node --test scripts/lib/content-verifier.test.mjs",
+      "verdict": "VERIFIED",
+      "evidence": "holds",
+      "detail": null,
+      "channels": [
+        "verify-command"
+      ],
+      "ms": 294
+    },
+    {
+      "id": "BRO-6232",
+      "name": "iOS: Guides and tools list at the bottom of Home",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6232/ios-guides-and-tools-list-at-the-bottom-of-home",
+      "state": "Done",
+      "cmd": "node --test tests/unit/home-guides.test.mjs",
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "misArmed": true,
+      "detail": "its own check names tests/unit/home-guides.test.mjs, which has never existed in this repo — the acceptance criterion is wrong, so nothing can verify this card either way",
+      "channels": [],
+      "ms": 735
+    },
+    {
+      "id": "BRO-6224",
+      "name": "iOS Stats: 'Critic nemesis' can be a 70% match or the same critic shown as a closest/rising match",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6224/ios-stats-critic-nemesis-can-be-a-70percent-match-or-the-same-critic",
+      "state": "Done",
+      "cmd": "node --test tests/unit/aisle-mates.test.mjs",
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "misArmed": true,
+      "detail": "its own check names tests/unit/aisle-mates.test.mjs, which has never existed in this repo — the acceptance criterion is wrong, so nothing can verify this card either way",
+      "channels": [],
+      "ms": 623
+    },
+    {
+      "id": "BRO-6223",
+      "name": "Redate trade/producer cost anchors still on a guessed date (dateBasis migrated) to the period each source measured",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6223/redate-tradeproducer-cost-anchors-still-on-a-guessed-date-datebasis",
+      "state": "Done",
+      "cmd": "node scripts/validate-data.js --strict",
+      "verdict": "VERIFIED",
+      "evidence": "holds",
+      "detail": null,
+      "channels": [
+        "verify-command"
+      ],
+      "ms": 50670
+    },
+    {
+      "id": "BRO-6221",
+      "name": "shows.json lists poster/thumbnail paths for ~272 shows whose image files don't exist (404 on prod)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6221/showsjson-lists-posterthumbnail-paths-for-272-shows-whose-image-files",
+      "state": "Done",
+      "cmd": "node scripts/validate-data.js --strict",
+      "verdict": "VERIFIED",
+      "evidence": "holds",
+      "detail": null,
+      "channels": [
+        "pr-evidence",
+        "verify-command"
+      ],
+      "ms": 51157
+    },
+    {
+      "id": "BRO-6201",
+      "name": "BSC Daily: Check Corpus Drift",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6201/bsc-daily-check-corpus-drift",
+      "state": "Done",
+      "cmd": "node scripts/check-health-row-absent.js --row-b64 V29ya2Zsb3cgcmVwZWF0LWZhaWx1cmU6IENoZWNrIENvcnB1cyBEcmlmdA",
+      "verdict": "VERIFIED",
+      "evidence": "holds",
+      "detail": null,
+      "channels": [
+        "verify-command"
+      ],
+      "ms": 45
+    },
+    {
+      "id": "BRO-6200",
+      "name": "Split the 'historical' tag: backfill marker collides with the 'historical' theme tag",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6200/split-the-historical-tag-backfill-marker-collides-with-the-historical",
+      "state": "Done",
+      "cmd": "node --test scripts/lib/ob-historical-cohort.test.mjs",
+      "verdict": "VERIFIED",
+      "evidence": "holds",
+      "detail": null,
+      "channels": [
+        "verify-command"
+      ],
+      "ms": 219
+    },
+    {
+      "id": "BRO-6199",
+      "name": "Add call-site tests for sanitizePlainLanguageText (autonomous-email.js) and redactEmails (send-welcome-emails.js)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6199/add-call-site-tests-for-sanitizeplainlanguagetext-autonomous-emailjs",
+      "state": "Done",
+      "cmd": "node --test scripts/autonomous-email.test.mjs",
+      "verdict": "VERIFIED",
+      "evidence": "holds",
+      "detail": null,
+      "channels": [
+        "verify-command"
+      ],
+      "ms": 248
+    },
+    {
+      "id": "BRO-6182",
+      "name": "Bucknell import remainder: 41 shows with no readable press source, plus 4 data follow-ups",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6182/bucknell-import-remainder-41-shows-with-no-readable-press-source-plus",
+      "state": "Done",
+      "cmd": "node scripts/validate-data.js --strict",
+      "verdict": "VERIFIED",
+      "evidence": "holds",
+      "detail": null,
+      "channels": [
+        "verify-command"
+      ],
+      "ms": 51688
+    },
+    {
+      "id": "BRO-6144",
+      "name": "Codex is fed unworkable cards: route by bounce reason (close already-fixed; owner/Mac/credential/workflow cards out of the Codex lane) instead of a time-based ban",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6144/codex-is-fed-unworkable-cards-route-by-bounce-reason-close-already",
+      "state": "Done",
+      "cmd": "node --test tests/unit/codex-runner.test.mjs",
+      "verdict": "VERIFIED",
+      "evidence": "holds",
+      "detail": null,
+      "channels": [
+        "verify-command"
+      ],
+      "ms": 2170
+    },
+    {
+      "id": "BRO-6121",
+      "name": "Star-band detector: 35 review(s) flagged for anchored re-score",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6121/star-band-detector-35-reviews-flagged-for-anchored-re-score",
+      "state": "In Review",
+      "cmd": "node scripts/check-alert-condition-absent.js --key-b64 c3Rhci1iYW5kOnJlZ3Jlc3Npb25z",
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "still open and its check does not pass yet — expected for unfinished work, not a defect",
+      "channels": [],
+      "openCheckFails": true,
+      "failDetail": "[check-alert-condition-absent] FAIL: \"star-band:regressions\" still firing — open, last fired 2026-11-03T19:56:20.449Z (6.2h ago, within 168h)\n",
+      "ms": 116
+    },
+    {
+      "id": "BRO-6114",
+      "name": "BSC Daily: Main: red streak",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6114/bsc-daily-main-red-streak",
+      "state": "Done",
+      "cmd": "node scripts/check-health-row-absent.js --row-b64 TWFpbjogcmVkIHN0cmVhaw",
+      "verdict": "VERIFIED",
+      "evidence": "holds",
+      "detail": null,
+      "channels": [
+        "pr-evidence",
+        "verify-command"
+      ],
+      "ms": 625
+    },
+    {
+      "id": "BRO-6095",
+      "name": "Video reviews: match UK creators' reviews and London runs (465 undated YouTube reviews never re-matched)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6095/video-reviews-match-uk-creators-reviews-and-london-runs-465-undated",
+      "state": "Done",
+      "cmd": "node --test tests/unit/youtube-captions.test.mjs",
+      "verdict": "VERIFIED",
+      "evidence": "holds",
+      "detail": null,
+      "channels": [
+        "verify-command"
+      ],
+      "ms": 205
+    },
+    {
+      "id": "BRO-6060",
+      "name": "BSC Daily: Unhandled CV.wrongProduction",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6060/bsc-daily-unhandled-cvwrongproduction",
+      "state": "Done",
+      "cmd": "node scripts/check-alert-condition-absent.js --key-b64 b3BlbmluZy1uaWdodC1jdi13cm9uZ3Byb2R1Y3Rpb24tdW5oYW5kbGVkLWRlcnJlbi1icm93bi1vbmx5LWh1bWFuLXdlc3QtZW5kLTIwMjY",
+      "verdict": "VERIFIED",
+      "evidence": "holds",
+      "detail": null,
+      "channels": [
+        "verify-command"
+      ],
+      "ms": 62
+    },
+    {
+      "id": "BRO-6042",
+      "name": "Review gap — \"Fences\" missing 1 cited review(s)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6042/review-gap-fences-missing-1-cited-reviews",
+      "state": "Done",
+      "cmd": "node scripts/check-alert-condition-absent.js --key-b64 cmV2aWV3LWdhcDpvcGVuaW5nLXdpbmRvdzpmZW5jZXMtb2ZmLXdlc3QtZW5kLTIwMjY",
+      "verdict": "VERIFIED",
+      "evidence": "holds",
+      "detail": null,
+      "channels": [
+        "verify-command"
+      ],
+      "ms": 59
+    },
+    {
+      "id": "BRO-6033",
+      "name": "Opening-night poller: publish main-stage first wave without waiting for Off-Broadway/fringe front shows",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6033/opening-night-poller-publish-main-stage-first-wave-without-waiting-for",
+      "state": "Done",
+      "cmd": "node --test scripts/lib/poller-loop-budget.test.mjs",
+      "verdict": "VERIFIED",
+      "evidence": "holds",
+      "detail": null,
+      "channels": [
+        "pr-evidence",
+        "verify-command"
+      ],
+      "ms": 1500
+    },
+    {
+      "id": "BRO-6014",
+      "name": "Cloud dev loop: npm run build dirties ~17 tracked data files (swept into commits); land-local-check keeps no per-gate failure output",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6014/cloud-dev-loop-npm-run-build-dirties-17-tracked-data-files-swept-into",
+      "state": "Done",
+      "cmd": "node --test scripts/lib/land-local-check.test.mjs",
+      "verdict": "VERIFIED",
+      "evidence": "holds",
+      "detail": null,
+      "channels": [
+        "verify-command"
+      ],
+      "ms": 691
+    },
+    {
+      "id": "BRO-5986",
+      "name": "iOS: users with a planned date get two 'How was X?' reminders (local 10pm + server push)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5986/ios-users-with-a-planned-date-get-two-how-was-x-reminders-local-10pm",
+      "state": "Done",
+      "cmd": "node --test scripts/lib/reminder-deduplication.test.mjs",
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "misArmed": true,
+      "detail": "its own check names scripts/lib/reminder-deduplication.test.mjs, which has never existed in this repo — the acceptance criterion is wrong, so nothing can verify this card either way",
+      "channels": [],
+      "ms": 769
+    },
+    {
+      "id": "BRO-5966",
+      "name": "Season page: hide 'N of M recouped' headline when a season has under 5 tracked shows",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5966/season-page-hide-n-of-m-recouped-headline-when-a-season-has-under-5",
+      "state": "Done",
+      "cmd": "npx tsc --noEmit",
+      "verdict": "VERIFIED",
+      "evidence": "holds",
+      "detail": null,
+      "channels": [
+        "pr-evidence"
+      ],
+      "ms": 576
+    },
+    {
+      "id": "BRO-5956",
+      "name": "Opening-night lane: West End fixture and adapters (WET, theatre.reviews, Stagedoor, The Stage, LBO) captured from The Lives of Others",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5956/opening-night-lane-west-end-fixture-and-adapters-wet-theatrereviews",
+      "state": "Done",
+      "cmd": "node --test tests/unit/west-end-fixture-replay.test.mjs",
+      "verdict": "VERIFIED",
+      "evidence": "holds",
+      "detail": null,
+      "channels": [
+        "pr-evidence",
+        "verify-command"
+      ],
+      "ms": 2192
+    },
+    {
+      "id": "BRO-5927",
+      "name": "BSC Daily: Data: published scores outside the critic's rating",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5927/bsc-daily-data-published-scores-outside-the-critics-rating",
+      "state": "Done",
+      "cmd": "node scripts/check-health-row-absent.js --row-b64 RGF0YTogcHVibGlzaGVkIHNjb3JlcyBvdXRzaWRlIHRoZSBjcml0aWMncyByYXRpbmc",
+      "verdict": "VERIFIED",
+      "evidence": "holds",
+      "detail": null,
+      "channels": [
+        "verify-command"
+      ],
+      "ms": 50
+    },
+    {
+      "id": "BRO-5818",
+      "name": "BSC Daily: Workflow repeat-failure: Test Suite",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5818/bsc-daily-workflow-repeat-failure-test-suite",
+      "state": "Done",
+      "cmd": "node scripts/check-health-row-absent.js --row-b64 V29ya2Zsb3cgcmVwZWF0LWZhaWx1cmU6IFRlc3QgU3VpdGU",
+      "verdict": "VERIFIED",
+      "evidence": "holds",
+      "detail": null,
+      "channels": [
+        "verify-command"
+      ],
+      "ms": 45
+    },
+    {
+      "id": "BRO-5813",
+      "name": "iOS app: deep links that arrive during startup are dropped (root layout renders null until onboarding check + PostHog init)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5813/ios-app-deep-links-that-arrive-during-startup-are-dropped-root-layout",
+      "state": "In Progress",
+      "cmd": "node --test tests/e2e/ios_maestro_coverage.test.mjs",
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "still open and its check does not pass yet — expected for unfinished work, not a defect",
+      "channels": [],
+      "ms": 0
+    },
+    {
+      "id": "BRO-5806",
+      "name": "iOS app CI never runs its website-parity contracts (no Broadwayscore checkout): add an advisory parity job",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5806/ios-app-ci-never-runs-its-website-parity-contracts-no-broadwayscore",
+      "state": "Done",
+      "cmd": "node --test tests/unit/web-repo.test.mjs",
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "misArmed": true,
+      "detail": "its own check names tests/unit/web-repo.test.mjs, which has never existed in this repo — the acceptance criterion is wrong, so nothing can verify this card either way",
+      "channels": [],
+      "ms": 649
+    },
+    {
+      "id": "BRO-5745",
+      "name": "Poller review-texts push burns 20 attempts on a false rename/delete conflict (git pairs unrelated _pending files)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5745/poller-review-texts-push-burns-20-attempts-on-a-false-renamedelete",
+      "state": "Done",
+      "cmd": "node --test scripts/lib/push-with-retry.test.mjs",
+      "verdict": "FAILED",
+      "evidence": "broken",
+      "detail": "TAP version 13\n",
+      "channels": [
+        "verify-command"
+      ],
+      "ms": 120053
+    },
+    {
+      "id": "BRO-5720",
+      "name": "Time-bomb test armed: tests/unit/broadway-fantasy-league.test.mjs — draftable show catalog (data/fantasy-league.json)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5720/time-bomb-test-armed-testsunitbroadway-fantasy-leaguetestmjs-draftable",
+      "state": "Done",
+      "cmd": "node scripts/check-alert-condition-absent.js --key-b64 dGltZS1ib21iLXRlc3RzOnVuaXQ6dGVzdHMvdW5pdC9icm9hZHdheS1mYW50YXN5LWxlYWd1ZS50ZXN0Lm1qczo6ZHJhZnRhYmxlIHNob3cgY2F0YWxvZyAoZGF0YS9mYW50YXN5LWxlYWd1ZS5qc29uKQ",
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "its check was not re-run this sweep",
+      "channels": [],
+      "ms": 0
+    },
+    {
+      "id": "BRO-5682",
+      "name": "audit-aggregator-gap.yml: 'Run gap audit' step fails (05:14Z, 03:44Z runs); ODC census entry stale with junk candidates",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5682/audit-aggregator-gapyml-run-gap-audit-step-fails-0514z-0344z-runs-odc",
+      "state": "Done",
+      "cmd": "node --test scripts/lib/gap-census-noise.test.mjs scripts/lib/review-census.test.mjs",
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "its check was not re-run this sweep",
+      "channels": [],
+      "ms": 0
+    },
+    {
+      "id": "BRO-5662",
+      "name": "iOS app To Be Rated hides a past rewatch of an already-rated show",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5662/ios-app-to-be-rated-hides-a-past-rewatch-of-an-already-rated-show",
+      "state": "Done",
+      "cmd": "node --test scripts/lib/is-watchlist-entry-rated.test.mjs",
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "its check was not re-run this sweep",
+      "channels": [],
+      "ms": 0
+    },
+    {
+      "id": "BRO-5605",
+      "name": "Closed shows: the analyst's % recouped may leave out the NY tax credit (8 shows)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5605/closed-shows-the-analysts-percent-recouped-may-leave-out-the-ny-tax",
+      "state": "Done",
+      "cmd": "npx tsx --test tests/unit/commercial-display.test.mjs",
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "its check was not re-run this sweep",
+      "channels": [],
+      "ms": 0
+    },
+    {
+      "id": "BRO-5526",
+      "name": "Scraping spend over budget",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5526/scraping-spend-over-budget",
+      "state": "Done",
+      "cmd": "node scripts/check-alert-condition-absent.js --key-b64 cHJvdmlkZXItc3BlbmQ6b3ZlcnNwZW5k",
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "its check was not re-run this sweep",
+      "channels": [],
+      "ms": 0
+    },
+    {
+      "id": "BRO-5516",
+      "name": "Review-gap audit refused to write — 61.9% of shows changed coverage state",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5516/review-gap-audit-refused-to-write-619percent-of-shows-changed-coverage",
+      "state": "In Review",
+      "cmd": "node scripts/check-alert-condition-absent.js --key-b64 cmV2aWV3LWdhcDpibGFzdC1yYWRpdXMtcmVmdXNlZA",
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "its check was not re-run this sweep",
+      "channels": [],
+      "ms": 0
+    },
+    {
+      "id": "BRO-5500",
+      "name": "Roundup gaps: 2 listed review(s) not captured across 2 show(s)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5500/roundup-gaps-2-listed-reviews-not-captured-across-2-shows",
+      "state": "In Progress",
+      "cmd": "node scripts/check-alert-condition-absent.js --key-b64 cm91bmR1cC1nYXA6YWxs",
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "its check was not re-run this sweep",
+      "channels": [],
+      "ms": 0
+    },
+    {
+      "id": "BRO-5436",
+      "name": "BSC Daily: Data: T1/T2 silent review gaps",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5436/bsc-daily-data-t1t2-silent-review-gaps",
+      "state": "Done",
+      "cmd": "node scripts/check-health-row-absent.js --row-b64 RGF0YTogVDEvVDIgc2lsZW50IHJldmlldyBnYXBz",
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "its check was not re-run this sweep",
+      "channels": [],
+      "ms": 0
+    },
+    {
+      "id": "BRO-5406",
+      "name": "Decide how combined-credit creative pages (Comden and Green) relate to individual pages",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5406/decide-how-combined-credit-creative-pages-comden-and-green-relate-to",
+      "state": "Done",
+      "cmd": "node --test tests/unit/seo-canonical-self.test.mjs",
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "its check was not re-run this sweep",
+      "channels": [],
+      "ms": 1
+    },
+    {
+      "id": "BRO-5290",
+      "name": "Promote two advisory gates to blocking: test.yml Ledger isolation check and the MCP visual-QA gate",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5290/promote-two-advisory-gates-to-blocking-testyml-ledger-isolation-check",
+      "state": "Done",
+      "cmd": "node --test scripts/tests/github-mcp-push-gates.test.mjs",
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "its check was not re-run this sweep",
+      "channels": [],
+      "ms": 0
+    },
+    {
+      "id": "BRO-5188",
+      "name": "Rage clicks on homepage search input suggest broken search UX",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5188/rage-clicks-on-homepage-search-input-suggest-broken-search-ux",
+      "state": "Done",
+      "cmd": "node --test tests/unit/homepage-search-input-focus.test.mjs",
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "its check was not re-run this sweep",
+      "channels": [],
+      "ms": 0
+    },
+    {
+      "id": "BRO-5151",
+      "name": "Wire LINEAR_API_KEY / RESEND_API_KEY / OWNER_EMAIL into the ~150 workflow steps the secret-gap audit still flags",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5151/wire-linear-api-key-resend-api-key-owner-email-into-the-150-workflow",
+      "state": "Done",
+      "cmd": "node --test tests/unit/workflow-secret-gaps-budget.test.mjs",
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "its check was not re-run this sweep",
+      "channels": [],
+      "ms": 0
+    },
+    {
+      "id": "BRO-5003",
+      "name": "Recoupment model: running shows with an announced closing count future weeks as played",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5003/recoupment-model-running-shows-with-an-announced-closing-count-future",
+      "state": "Done",
+      "cmd": "node --test tests/unit/run-window.test.mjs",
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "its check was not re-run this sweep",
+      "channels": [],
+      "ms": 0
+    },
+    {
+      "id": "BRO-4681",
+      "name": "Hook markRescoreNeeded into clear-stale-wrong-production/show-flags.js (BRO-2407 cousin)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4681/hook-markrescoreneeded-into-clear-stale-wrong-productionshow-flagsjs",
+      "state": "Done",
+      "cmd": "node --test tests/unit/rescore-flagging.test.mjs",
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "its check was not re-run this sweep",
+      "channels": [],
+      "ms": 0
+    },
+    {
+      "id": "BRO-4670",
+      "name": "iOS app: log sign_in_started and sign_in_completed under the same PostHog distinct_id",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4670/ios-app-log-sign-in-started-and-sign-in-completed-under-the-same",
+      "state": "Done",
+      "cmd": "node --test scripts/lib/posthog-funnel-consistency.test.mjs",
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "its check was not re-run this sweep",
+      "channels": [],
+      "ms": 0
+    },
+    {
+      "id": "BRO-4607",
+      "name": "land.yml header wrongly says test.yml has no workflow_dispatch (it does, line ~3322); update comment + mention BRO-2884 dispatch fallback",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4607/landyml-header-wrongly-says-testyml-has-no-workflow-dispatch-it-does",
+      "state": "Done",
+      "cmd": "node --test scripts/lib/landing-ci-coverage.test.mjs",
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "could not resolve https://github.com/thomaspryor/Broadwayscore/commit/0f5f4f1f2d9f0051f642169d439e63c83a4856a9) against main this run; its check was not re-run this sweep",
+      "channels": [],
+      "ms": 0
+    },
+    {
+      "id": "BRO-4559",
+      "name": "iOS app: show the 'Most reviews from N years ago' caveat the website shows",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4559/ios-app-show-the-most-reviews-from-n-years-ago-caveat-the-website",
+      "state": "Done",
+      "cmd": "node --test tests/unit/review-age-caveat.test.mjs",
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "its check was not re-run this sweep",
+      "channels": [],
+      "ms": 0
+    },
+    {
+      "id": "BRO-4531",
+      "name": "iOS privacy-details.md (App Store privacy labels) is stale vs the BRO-4525 privacy policy",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4531/ios-privacy-detailsmd-app-store-privacy-labels-is-stale-vs-the-bro",
+      "state": "Done",
+      "cmd": "node --test scripts/verify-privacy-labels.test.mjs",
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "its check was not re-run this sweep",
+      "channels": [],
+      "ms": 0
+    },
+    {
+      "id": "BRO-4297",
+      "name": "Cousins of the 2026-09-29 guard fixes: blank env read as zero in bsc-runner disk floor; echo|grep -q under pipefail in gate scripts",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4297/cousins-of-the-2026-09-29-guard-fixes-blank-env-read-as-zero-in-bsc",
+      "state": "Done",
+      "cmd": "node --test scripts/lib/bsc-runner.test.mjs",
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "its check was not re-run this sweep",
+      "channels": [],
+      "ms": 0
+    },
+    {
+      "id": "BRO-4291",
+      "name": "P2: show pages for provisional / zero-review rows need a 'reviews syncing' state instead of a bare empty score",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4291/p2-show-pages-for-provisional-zero-review-rows-need-a-reviews-syncing",
+      "state": "Done",
+      "cmd": "npx tsx --test tests/unit/show-page-provisional-state.test.ts",
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "its check was not re-run this sweep",
+      "channels": [],
+      "ms": 0
+    },
+    {
+      "id": "BRO-4269",
+      "name": "main Unit Tests permanently red: branch-protection live check runs in CI (gh auth now succeeds there) and fails by design",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4269/main-unit-tests-permanently-red-branch-protection-live-check-runs-in",
+      "state": "Done",
+      "cmd": "node --test tests/unit/branch-protection.test.mjs",
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "its check was not re-run this sweep",
+      "channels": [],
+      "ms": 0
+    },
+    {
+      "id": "BRO-4126",
+      "name": "createOrMergeReviewFile tests: sweep for missing reviewTextsDir hermeticity (BRO-4125 pattern)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4126/createormergereviewfile-tests-sweep-for-missing-reviewtextsdir",
+      "state": "Done",
+      "cmd": "node --test scripts/gather-reviews-named-non-review.test.mjs scripts/lib/aggregator-outlet-refinement.test.mjs scripts/lib/aggregator-url-write-chokepoint.test.mjs scripts/lib/dtli-extract-outlet-refinement.test.mjs",
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "its check was not re-run this sweep",
+      "channels": [],
+      "ms": 0
+    },
+    {
+      "id": "BRO-3975",
+      "name": "Duplicate 'T1 coverage scoreboard' step in audit-aggregator-gap.yml",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-3975/duplicate-t1-coverage-scoreboard-step-in-audit-aggregator-gapyml",
+      "state": "Done",
+      "cmd": "node --test tests/unit/workflow-duplicate-steps.test.mjs",
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "its check was not re-run this sweep",
+      "channels": [],
+      "ms": 0
+    },
+    {
+      "id": "BRO-3916",
+      "name": "P1: 2,511 dead pages are stored as reviews and mislabelled isNonReview — detector landed, corpus sweep not run",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-3916/p1-2511-dead-pages-are-stored-as-reviews-and-mislabelled-isnonreview",
+      "state": "Done",
+      "cmd": "node --test tests/unit/cross-show-excerpt-sweep.test.mjs tests/unit/nonreview-slug-coverage.test.mjs",
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "its check was not re-run this sweep",
+      "channels": [],
+      "ms": 0
+    },
+    {
+      "id": "BRO-3651",
+      "name": "enrich-west-end-dates.js has no audit-trail log (data/audit/date-enrichment-corrections.json), unlike OB sibling",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-3651/enrich-west-end-datesjs-has-no-audit-trail-log-dataauditdate",
+      "state": "Done",
+      "cmd": "node --test tests/unit/enrich-west-end-dates-audit-log.test.mjs",
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "its check was not re-run this sweep",
+      "channels": [],
+      "ms": 0
+    },
+    {
+      "id": "BRO-3323",
+      "name": "audit-outlet-registry.js wrong-production exclusion requires rejectedAt, but audit-cross-show-url.js --fix can set rejectionReason without it",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-3323/audit-outlet-registryjs-wrong-production-exclusion-requires-rejectedat",
+      "state": "Done",
+      "cmd": "npx tsc --noEmit",
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "`npx tsc --noEmit` is green on main for every card at once — it cannot show whether THIS work was done",
+      "channels": [],
+      "ms": 0
+    },
+    {
+      "id": "BRO-2437",
+      "name": "P2: detect-show-changes.js critic-consensus lookup lacks slug fallback",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-2437/p2-detect-show-changesjs-critic-consensus-lookup-lacks-slug-fallback",
+      "state": "Done",
+      "cmd": "node --test tests/unit/detect-show-changes.test.mjs",
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "its check was not re-run this sweep",
+      "channels": [],
+      "ms": 0
+    },
+    {
+      "id": "BRO-2262",
+      "name": "audit-cross-show-url-collisions.js Tiers 1-14 use weaker shouldSkipWrongShow, not the CV-aware shouldSkipCrossShowUrlFlag",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-2262/audit-cross-show-url-collisionsjs-tiers-1-14-use-weaker",
+      "state": "Done",
+      "cmd": "node --test scripts/audit-cross-show-url-collisions.test.mjs",
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "its check was not re-run this sweep",
+      "channels": [],
+      "ms": 0
+    },
+    {
+      "id": "BRO-266",
+      "name": "Rules & memory overhaul for the Linear world (CLAUDE.md rewrite, index prune)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-266/rules-and-memory-overhaul-for-the-linear-world-claudemd-rewrite-index",
+      "state": "Done",
+      "cmd": "node --test scripts/memory-index-integrity.test.mjs",
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "its check was not re-run this sweep",
+      "channels": [],
+      "ms": 0
+    },
+    {
+      "id": "BRO-27",
+      "name": "Commercial Scorecard: signup-gate the entire card (blur + preview for signed-out users)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-27/commercial-scorecard-signup-gate-the-entire-card-blur-preview-for",
+      "state": "Done",
+      "cmd": "node --test tests/unit/money-gate.test.mjs",
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "its check was not re-run this sweep",
+      "channels": [],
+      "ms": 0
+    },
+    {
+      "id": "BRO-6952",
+      "name": "main test.yml red: Unit Tests / Run scripts/lib tests (visual-qa transcript-scan etc.) — \"REGRESSION: every real tracked *.jsonl (repo-wide) is either merge=union or a documented exemption\"",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6952/main-testyml-red-unit-tests-run-scriptslib-tests-visual-qa-transcript",
+      "state": "In Progress",
+      "cmd": "node --test scripts/lib/audit-ledger-merge-attrs.test.mjs",
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "its check was not re-run this sweep",
+      "channels": [],
+      "ms": 0
+    },
+    {
+      "id": "BRO-6949",
+      "name": "x",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6949/x",
+      "state": "In Progress",
+      "cmd": null,
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "no PR-EVIDENCE line and no runnable acceptance command",
+      "channels": [],
+      "ms": 0
+    },
+    {
+      "id": "BRO-6948",
+      "name": "Web vs app parity audit and fixes (labels, scores, cards, sorts, one-sided features)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6948/web-vs-app-parity-audit-and-fixes-labels-scores-cards-sorts-one-sided",
+      "state": "In Progress",
+      "cmd": null,
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "no PR-EVIDENCE line and no runnable acceptance command",
+      "channels": [],
+      "ms": 0
+    },
+    {
+      "id": "BRO-6946",
+      "name": "Re-verify parent-building wrongProduction flags the CV skipped as too short (59 of 76 candidates)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6946/re-verify-parent-building-wrongproduction-flags-the-cv-skipped-as-too",
+      "state": "Done",
+      "cmd": "node --test scripts/lib/parent-building-wrongprod.test.mjs",
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "its check was not re-run this sweep",
+      "channels": [],
+      "ms": 0
+    },
+    {
+      "id": "BRO-6945",
+      "name": "Parent buildings for NYC multi-stage venues (Lincoln Center, Public, Signature Center, Atlantic, MCC, Shed)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6945/parent-buildings-for-nyc-multi-stage-venues-lincoln-center-public",
+      "state": "Done",
+      "cmd": "node --test scripts/lib/venue-parent-building.test.mjs",
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "its check was not re-run this sweep",
+      "channels": [],
+      "ms": 0
+    },
+    {
+      "id": "BRO-6943",
+      "name": "Critic claim: sign-in popup speaks to critics, no auto email list",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6943/critic-claim-sign-in-popup-speaks-to-critics-no-auto-email-list",
+      "state": "In Progress",
+      "cmd": null,
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "no PR-EVIDENCE line and no runnable acceptance command",
+      "channels": [],
+      "ms": 0
+    },
+    {
+      "id": "BRO-6942",
+      "name": "Web: carry the iOS date ribbon and seen ticket stub to poster cards (web has no planned date on its bookmark)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6942/web-carry-the-ios-date-ribbon-and-seen-ticket-stub-to-poster-cards-web",
+      "state": "In Progress",
+      "cmd": null,
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "no PR-EVIDENCE line and no runnable acceptance command",
+      "channels": [],
+      "ms": 0
+    },
+    {
+      "id": "BRO-6941",
+      "name": "Stale review-texts writer resurrects deleted files and reverts concurrent edits (push-review-texts conflict resolution)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6941/stale-review-texts-writer-resurrects-deleted-files-and-reverts",
+      "state": "Done",
+      "cmd": "node --test tests/unit/push-review-texts-resolve.test.mjs",
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "its check was not re-run this sweep",
+      "channels": [],
+      "ms": 0
+    },
+    {
+      "id": "BRO-6940",
+      "name": "Waiting for Lefty: NYSR review misattributed to Frank Scheck (byline is Michael Sommers); fix + root cause + corpus sweep",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6940/waiting-for-lefty-nysr-review-misattributed-to-frank-scheck-byline-is",
+      "state": "In Progress",
+      "cmd": "node scripts/validate-data.js",
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "its check was not re-run this sweep",
+      "channels": [],
+      "ms": 0
+    },
+    {
+      "id": "BRO-6936",
+      "name": "Quiz onboarding QA round 3: touring/UK users see Broadway numbers, closing counts disagree, Hamilton 91 vs 87",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6936/quiz-onboarding-qa-round-3-touringuk-users-see-broadway-numbers",
+      "state": "In Progress",
+      "cmd": null,
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "no PR-EVIDENCE line and no runnable acceptance command",
+      "channels": [],
+      "ms": 0
+    },
+    {
+      "id": "BRO-6934",
+      "name": "Brief post template 'moved': same show, new theatre (Jesus Christ Superstar Palladium → Drury Lane)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6934/brief-post-template-moved-same-show-new-theatre-jesus-christ-superstar",
+      "state": "Done",
+      "cmd": "node --test scripts/social-autopost.test.mjs",
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "could not resolve https://github.com/thomaspryor/Broadwayscore/commit/60ed36b5abddcebb1e96b6277f8524d52864c078) against main this run; its check was not re-run this sweep",
+      "channels": [],
+      "ms": 0
+    },
+    {
+      "id": "BRO-6933",
+      "name": "iOS: tell Seen vs To See shows apart on poster ribbons (design options)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6933/ios-tell-seen-vs-to-see-shows-apart-on-poster-ribbons-design-options",
+      "state": "Done",
+      "cmd": null,
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "could not resolve https://github.com/thomaspryor/Broadwayscore/commit/5d826d5303fee0d54424bf936d0b6d760f700bac) against main this run",
+      "channels": [],
+      "ms": 0
+    },
+    {
+      "id": "BRO-6930",
+      "name": "Web: city-hub pages show 'Broadway' in the market pill (parity with iOS city-switch fixes)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6930/web-city-hub-pages-show-broadway-in-the-market-pill-parity-with-ios",
+      "state": "Done",
+      "cmd": "npx tsx --test tests/unit/hub-pill.test.ts",
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "could not resolve https://github.com/thomaspryor/Broadwayscore/commit/6677c4e5cdca2cfce9efbf66a650977b891567e1) against main this run; its check was not re-run this sweep",
+      "channels": [],
+      "ms": 0
+    },
+    {
+      "id": "BRO-6929",
+      "name": "Backfill city tags for past email signups and tag Resend contacts",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6929/backfill-city-tags-for-past-email-signups-and-tag-resend-contacts",
+      "state": "Done",
+      "cmd": "npx tsx --test tests/unit/signup-city.test.ts",
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "could not resolve https://github.com/thomaspryor/Broadwayscore/commit/a5ab68bd1bd9588d2126040c07f0187eedd87d29; against main this run; its check was not re-run this sweep",
+      "channels": [],
+      "ms": 0
+    },
+    {
+      "id": "BRO-6927",
+      "name": "Audit the 50 outreach critics for missing reviews and fill gaps",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6927/audit-the-50-outreach-critics-for-missing-reviews-and-fill-gaps",
+      "state": "In Progress",
+      "cmd": null,
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "no PR-EVIDENCE line and no runnable acceptance command",
+      "channels": [],
+      "ms": 0
+    },
+    {
+      "id": "BRO-6925",
+      "name": "Onboarding data stops refreshing: the genre-tag coverage check fails (340/389), so new city lists never publish",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6925/onboarding-data-stops-refreshing-the-genre-tag-coverage-check-fails",
+      "state": "In Progress",
+      "cmd": null,
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "no PR-EVIDENCE line and no runnable acceptance command",
+      "channels": [],
+      "ms": 0
+    },
+    {
+      "id": "BRO-6924",
+      "name": "Router treats 'Tosca - English National Opera' and the Met's 'Tosca' as unrelated, so London reviews pile up under the Met show",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6924/router-treats-tosca-english-national-opera-and-the-mets-tosca-as",
+      "state": "In Progress",
+      "cmd": "node --test tests/unit/url-cross-production-yield.test.mjs tests/unit/gap-audit-title-variants.test.mjs",
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "its check was not re-run this sweep",
+      "channels": [],
+      "ms": 0
+    },
+    {
+      "id": "BRO-6923",
+      "name": "Reviews rejected as wrong production when the show is listed at a stage inside a bigger building (Maria/Young Vic, Lyttelton/National)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6923/reviews-rejected-as-wrong-production-when-the-show-is-listed-at-a",
+      "state": "Done",
+      "cmd": null,
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "could not resolve https://github.com/thomaspryor/Broadwayscore/commit/6c2ed7dc3ab916eb6c470eeb7023b63f2218a904) against main this run",
+      "channels": [],
+      "ms": 0
+    },
+    {
+      "id": "BRO-6922",
+      "name": "Social voice: audience reception is a letter grade, never a number (rule + test)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6922/social-voice-audience-reception-is-a-letter-grade-never-a-number-rule",
+      "state": "Done",
+      "cmd": "node --test scripts/social-autopost.test.mjs",
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "could not resolve https://github.com/thomaspryor/Broadwayscore/commit/5d5f55e09786f0fc1857ce2e918ba464eb99f8ab) against main this run; its check was not re-run this sweep",
+      "channels": [],
+      "ms": 0
+    },
+    {
+      "id": "BRO-6920",
+      "name": "Social autopost: loosen Off-Broadway / Off-West End score-post floors",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6920/social-autopost-loosen-off-broadway-off-west-end-score-post-floors",
+      "state": "Done",
+      "cmd": null,
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "could not resolve https://github.com/thomaspryor/Broadwayscore/commit/aa70a3b8050171860bcb4620e93f75d98b999a52) against main this run",
+      "channels": [],
+      "ms": 0
+    },
+    {
+      "id": "BRO-6917",
+      "name": "Web sign-up flow: light-touch onboarding (anonymous ratings, quieter bookmark prompt, opt-in quiz after Sign-in-button sign-ups)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6917/web-sign-up-flow-light-touch-onboarding-anonymous-ratings-quieter",
+      "state": "In Progress",
+      "cmd": null,
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "no PR-EVIDENCE line and no runnable acceptance command",
+      "channels": [],
+      "ms": 0
+    },
+    {
+      "id": "BRO-6912",
+      "name": "Tag email signups by city (Chicago, DC)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6912/tag-email-signups-by-city-chicago-dc",
+      "state": "Done",
+      "cmd": "npx tsx --test tests/unit/signup-city.test.ts",
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "could not resolve https://github.com/thomaspryor/Broadwayscore/commit/b0f5ecab2a7a15f9e4396bfb35c950412c4e460f) against main this run; its check was not re-run this sweep",
+      "channels": [],
+      "ms": 0
+    },
+    {
+      "id": "BRO-6910",
+      "name": "Cross-show URL guard drops real reviews silently (Waiting for Lefty, BRO-6909)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6910/cross-show-url-guard-drops-real-reviews-silently-waiting-for-lefty-bro",
+      "state": "In Progress",
+      "cmd": null,
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "no PR-EVIDENCE line and no runnable acceptance command",
+      "channels": [],
+      "ms": 0
+    },
+    {
+      "id": "BRO-6909",
+      "name": "Waiting for Lefty lost Vulture/NYSR/Pizzazz/Cititour to the cross-show URL guard (author-credit title vs closed 2024 regional)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6909/waiting-for-lefty-lost-vulturenysrpizzazzcititour-to-the-cross-show",
+      "state": "In Progress",
+      "cmd": null,
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "no PR-EVIDENCE line and no runnable acceptance command",
+      "channels": [],
+      "ms": 0
+    },
+    {
+      "id": "BRO-6908",
+      "name": "Scraper spend: route EW site-search to Scrapingdog plain page (SB render only as fallback)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6908/scraper-spend-route-ew-site-search-to-scrapingdog-plain-page-sb-render",
+      "state": "Done",
+      "cmd": "node --test scripts/lib/site-search-discovery.test.mjs",
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "could not resolve https://github.com/thomaspryor/Broadwayscore/commit/00d786687) against main this run; its check was not re-run this sweep",
+      "channels": [],
+      "ms": 0
+    },
+    {
+      "id": "BRO-6903",
+      "name": "Quiz onboarding round 3: apply Flo/Sparks quiz lessons (problem-first narrative, proof every few screens, rate-one-show habit, plan reveal before save)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6903/quiz-onboarding-round-3-apply-flosparks-quiz-lessons-problem-first",
+      "state": "Done",
+      "cmd": null,
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "could not resolve https://github.com/thomaspryor/BroadwayScorecard-app/actions/runs/41714045822) against main this run",
+      "channels": [],
+      "ms": 0
+    },
+    {
+      "id": "BRO-6902",
+      "name": "iOS Home: easy city/location switcher (3 design options)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6902/ios-home-easy-citylocation-switcher-3-design-options",
+      "state": "Done",
+      "cmd": null,
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "could not resolve https://github.com/thomaspryor/BroadwayScorecard-app/commit/3f1101c3da054286ced50845dccd01c092f1a8f4) against main this run",
+      "channels": [],
+      "ms": 0
+    },
+    {
+      "id": "BRO-6900",
+      "name": "Daily Mail 'X out of five stars' rating dropped/misread → wrong scores (Murder in the Cathedral 4★ shown as 62)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6900/daily-mail-x-out-of-five-stars-rating-droppedmisread-wrong-scores",
+      "state": "Done",
+      "cmd": null,
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "could not resolve https://github.com/thomaspryor/Broadwayscore/commit/bed7661ec8f162653bed04e1054c9e98b43f74d9) against main this run",
+      "channels": [],
+      "ms": 0
+    },
+    {
+      "id": "BRO-6899",
+      "name": "Rename user show tabs: Seen / To See / Photos (app + web)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6899/rename-user-show-tabs-seen-to-see-photos-app-web",
+      "state": "Done",
+      "cmd": null,
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "could not resolve https://github.com/thomaspryor/Broadwayscore/commit/66e5f81405c4590e3ddd0ec183dd9a38ecffef3f). against main this run",
+      "channels": [],
+      "ms": 0
+    },
+    {
+      "id": "BRO-6898",
+      "name": "Scraper spend: SB site-search waste (telegraph-search 97% HTTP 500), BD SERP 55% ok, correct cost-monitor claims",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6898/scraper-spend-sb-site-search-waste-telegraph-search-97percent-http-500",
+      "state": "Done",
+      "cmd": null,
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "could not resolve https://github.com/thomaspryor/Broadwayscore/commit/7306cfba22c8bcba63b20e26482ddb3554301cb8) against main this run",
+      "channels": [],
+      "ms": 0
+    },
+    {
+      "id": "BRO-6895",
+      "name": "Critic page claiming: claim form emails owner, critics add photo/bio/links (phases 1-3)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6895/critic-page-claiming-claim-form-emails-owner-critics-add-photobiolinks",
+      "state": "Done",
+      "cmd": null,
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "could not resolve https://github.com/thomaspryor/Broadwayscore/commit/219f3ff1f6130facc169af8663137ba720c0cfe9) against main this run",
+      "channels": [],
+      "ms": 0
+    },
+    {
+      "id": "BRO-6881",
+      "name": "validate-data --strict red: 5 LA regional rows (BRO-6855) reference missing image files",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6881/validate-data-strict-red-5-la-regional-rows-bro-6855-reference-missing",
+      "state": "Done",
+      "cmd": "node scripts/validate-data.js --strict",
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "could not resolve https://github.com/thomaspryor/Broadwayscore/commit/422f03e01bab639923b7ae8675f7b1e87d0933ed) against main this run; its check was not re-run this sweep",
+      "channels": [],
+      "ms": 0
+    },
+    {
+      "id": "BRO-6879",
+      "name": "Roma Torre critic page: add bio naming her host of 5th Row Center",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6879/roma-torre-critic-page-add-bio-naming-her-host-of-5th-row-center",
+      "state": "Done",
+      "cmd": null,
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "could not resolve https://broadwayscorecard.com/critics/roma-torre](<https://broadwayscorecard.com/critics/roma-torre>)) against main this run",
+      "channels": [],
+      "ms": 0
+    },
+    {
+      "id": "BRO-6878",
+      "name": "visual-approval request: refuse when the diff touches no UI files (owner asked to approve a data-only fix)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6878/visual-approval-request-refuse-when-the-diff-touches-no-ui-files-owner",
+      "state": "Done",
+      "cmd": "node --test scripts/lib/visual-approval.test.mjs",
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "could not resolve https://broadwayscorecard.com/show/school-girls-or-the-african-mean-girls-play) against main this run; its check was not re-run this sweep",
+      "channels": [],
+      "ms": 0
+    },
+    {
+      "id": "BRO-6876",
+      "name": "Visual-approval asks: refuse non-UI diffs, one small screenshot in email (BRO-6862 spurious ask)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6876/visual-approval-asks-refuse-non-ui-diffs-one-small-screenshot-in-email",
+      "state": "Done",
+      "cmd": "node --test scripts/lib/visual-approval.test.mjs",
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "its check was not re-run this sweep",
+      "channels": [],
+      "ms": 0
+    },
+    {
+      "id": "BRO-6875",
+      "name": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"no two unrelated shows serve byte-identical hero images\"",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6875/main-testyml-red-unit-tests-run-unit-tests-no-data-dependency-no-two",
+      "state": "Done",
+      "cmd": "node --test tests/unit/show-hero-integrity.test.mjs",
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "its check was not re-run this sweep",
+      "channels": [],
+      "ms": 0
+    },
+    {
+      "id": "BRO-6872",
+      "name": "Quarantined live test: run the opening-night lane (shadow, empty ledger) on past Broadway nights and grade vs the aggregator census",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6872/quarantined-live-test-run-the-opening-night-lane-shadow-empty-ledger",
+      "state": "In Progress",
+      "cmd": "test -f memory/opening-night-lane-shadow-grades.md",
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "its check was not re-run this sweep",
+      "channels": [],
+      "ms": 0
+    },
+    {
+      "id": "BRO-6871",
+      "name": "Money email: list only capitalization figures published inside the month",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6871/money-email-list-only-capitalization-figures-published-inside-the",
+      "state": "Done",
+      "cmd": "node --test tests/unit/money-monthly.test.mjs",
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "could not resolve https://github.com/thomaspryor/Broadwayscore/commit/35317a695be2d9d4ab2ce54151cf8315c4211d7e) against main this run; its check was not re-run this sweep",
+      "channels": [],
+      "ms": 0
+    },
+    {
+      "id": "BRO-6870",
+      "name": "Morning email board table: group rows, plain words, fix duplicate Stuck tile and stale footnote",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6870/morning-email-board-table-group-rows-plain-words-fix-duplicate-stuck",
+      "state": "Done",
+      "cmd": "node --test scripts/lib/board-categories.test.mjs",
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "could not resolve https://github.com/thomaspryor/Broadwayscore/commit/c378a84e69f238479a7aa54877a6070e8058fa5c) against main this run; its check was not re-run this sweep",
+      "channels": [],
+      "ms": 0
+    },
+    {
+      "id": "BRO-6869",
+      "name": "iPhone app batch: work the 16 app-repo cards (owner chose A, 2026-11-02)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6869/iphone-app-batch-work-the-16-app-repo-cards-owner-chose-a-2026-11-02",
+      "state": "Done",
+      "cmd": "node scripts/check-review-item-resolved.js --held-empty",
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "its check was not re-run this sweep",
+      "channels": [],
+      "ms": 0
+    },
+    {
+      "id": "BRO-6868",
+      "name": "Related-shows monitor: stop weekly false CRITICAL email, rewrite in plain English",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6868/related-shows-monitor-stop-weekly-false-critical-email-rewrite-in",
+      "state": "Done",
+      "cmd": "node --test scripts/lib/related-shows-ab-monitor-rules.test.mjs",
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "could not resolve https://github.com/thomaspryor/Broadwayscore/commit/82f4ee197df605f622211695fccd4b273f800e7e) against main this run; its check was not re-run this sweep",
+      "channels": [],
+      "ms": 0
+    },
+    {
+      "id": "BRO-6864",
+      "name": "Board follow-up to BRO-6856: actually move idle started cards, give iPhone-app cards a lane, auto-write VERIFY for no-safe-check cards",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6864/board-follow-up-to-bro-6856-actually-move-idle-started-cards-give",
+      "state": "Done",
+      "cmd": "node --test scripts/lib/board-categories.test.mjs",
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "could not resolve https://github.com/thomaspryor/Broadwayscore/actions/runs/41533130632) against main this run; its check was not re-run this sweep",
+      "channels": [],
+      "ms": 0
+    },
+    {
+      "id": "BRO-6860",
+      "name": "BSC Daily: Data quality: cross-outlet attribution drift",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6860/bsc-daily-data-quality-cross-outlet-attribution-drift",
+      "state": "In Progress",
+      "cmd": "node scripts/check-health-row-absent.js --row-b64 RGF0YSBxdWFsaXR5OiBjcm9zcy1vdXRsZXQgYXR0cmlidXRpb24gZHJpZnQ",
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "its check was not re-run this sweep",
+      "channels": [],
+      "ms": 0
+    },
+    {
+      "id": "BRO-6857",
+      "name": "Board: prose date-waits never resume, Codex bounce loop, 86 cards older than 30 days",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6857/board-prose-date-waits-never-resume-codex-bounce-loop-86-cards-older",
+      "state": "Done",
+      "cmd": "node --test scripts/lib/board-categories.test.mjs",
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "could not resolve https://github.com/thomaspryor/Broadwayscore/actions/runs/41535028467) against main this run; its check was not re-run this sweep",
+      "channels": [],
+      "ms": 0
+    },
+    {
+      "id": "BRO-6856",
+      "name": "Board: stale In Progress cards, broken Waiting-on-you tile, and the Other row (app cards, no-safe-verify)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6856/board-stale-in-progress-cards-broken-waiting-on-you-tile-and-the-other",
+      "state": "Done",
+      "cmd": "node --test scripts/lib/board-categories.test.mjs",
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "could not resolve https://github.com/thomaspryor/Broadwayscore/actions/runs/41526903512) against main this run; its check was not re-run this sweep",
+      "channels": [],
+      "ms": 0
+    },
+    {
+      "id": "BRO-6855",
+      "name": "Los Angeles city hub from Theatre In LA, short history",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6855/los-angeles-city-hub-from-theatre-in-la-short-history",
+      "state": "Done",
+      "cmd": "npx tsx --test tests/unit/city-hub-wiring.test.ts",
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "could not resolve https://broadwayscorecard.com/tours/los-angeles-ca) against main this run; its check was not re-run this sweep",
+      "channels": [],
+      "ms": 0
+    },
+    {
+      "id": "BRO-6854",
+      "name": "San Diego + Boston city hubs: multi-source review finder (no roundup site), short history",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6854/san-diego-boston-city-hubs-multi-source-review-finder-no-roundup-site",
+      "state": "Done",
+      "cmd": "npx tsx --test tests/unit/city-hub-wiring.test.ts",
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "its check was not re-run this sweep",
+      "channels": [],
+      "ms": 0
+    },
+    {
+      "id": "BRO-6853",
+      "name": "Board: date-passed row is mislabeled and the recheck never reaches 15 of 28 due cards",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6853/board-date-passed-row-is-mislabeled-and-the-recheck-never-reaches-15",
+      "state": "Done",
+      "cmd": "node --test scripts/lib/board-categories.test.mjs",
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "could not resolve https://github.com/thomaspryor/Broadwayscore/commit/9a7d7f17892a6bcce000cb2e570591d80b877271) against main this run; its check was not re-run this sweep",
+      "channels": [],
+      "ms": 0
+    },
+    {
+      "id": "BRO-6852",
+      "name": "Sweep owner-worded holds with no question: Claude decides and releases (owner chose A)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6852/sweep-owner-worded-holds-with-no-question-claude-decides-and-releases",
+      "state": "Done",
+      "cmd": "node --test scripts/lib/board-categories.test.mjs",
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "could not resolve https://github.com/thomaspryor/Broadwayscore/actions/runs/41538084552) against main this run; its check was not re-run this sweep",
+      "channels": [],
+      "ms": 0
+    },
+    {
+      "id": "BRO-6851",
+      "name": "AEO: question-style FAQ answers on show pages (owner chose A)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6851/aeo-question-style-faq-answers-on-show-pages-owner-chose-a",
+      "state": "Done",
+      "cmd": "npx tsc --noEmit",
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "could not resolve https://broadwayscorecard.com/show/love-letters-2014) against main this run; `npx tsc --noEmit` is green on main for every card at once — it cannot show whether THIS work was done",
+      "channels": [],
+      "ms": 0
+    },
+    {
+      "id": "BRO-6850",
+      "name": "validate-data --strict fails: 14 wrong-production-by-date errors on carmen/don-giovanni off-broadway-2025",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6850/validate-data-strict-fails-14-wrong-production-by-date-errors-on",
+      "state": "Done",
+      "cmd": "node scripts/validate-data.js --strict",
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "its check was not re-run this sweep",
+      "channels": [],
+      "ms": 0
+    },
+    {
+      "id": "BRO-6842",
+      "name": "Main CI red: audit-review-contamination --gate fails (1 cross-market leak class A + 3 strict vs floor 25)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6842/main-ci-red-audit-review-contamination-gate-fails-1-cross-market-leak",
+      "state": "Done",
+      "cmd": "node scripts/audit-review-contamination.js --gate",
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "its check was not re-run this sweep",
+      "channels": [],
+      "ms": 0
+    },
+    {
+      "id": "BRO-6841",
+      "name": "AEO: weekly AI visibility tracker (replace check-ai-citations.js)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6841/aeo-weekly-ai-visibility-tracker-replace-check-ai-citationsjs",
+      "state": "Done",
+      "cmd": null,
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "could not resolve https://github.com/thomaspryor/Broadwayscore/commit/7126c23c4) against main this run",
+      "channels": [],
+      "ms": 0
+    },
+    {
+      "id": "BRO-6840",
+      "name": "registrableDomain in review-normalization.js keeps its own ccTLD regex; use multipartSuffixOf",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6840/registrabledomain-in-review-normalizationjs-keeps-its-own-cctld-regex",
+      "state": "Done",
+      "cmd": "node --test scripts/lib/host-suffix-lists.test.mjs",
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "its check was not re-run this sweep",
+      "channels": [],
+      "ms": 0
+    },
+    {
+      "id": "BRO-6839",
+      "name": "Digest: report-only rows covered by a differently-titled work card still read 'no automatic fix confirmed'",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6839/digest-report-only-rows-covered-by-a-differently-titled-work-card",
+      "state": "Done",
+      "cmd": "node --test scripts/lib/digest-autofix.test.mjs",
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "its check was not re-run this sweep",
+      "channels": [],
+      "ms": 0
+    },
+    {
+      "id": "BRO-6838",
+      "name": "AEO: allow AI training crawlers (owner chose Option B)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6838/aeo-allow-ai-training-crawlers-owner-chose-option-b",
+      "state": "Done",
+      "cmd": null,
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "could not resolve https://github.com/thomaspryor/Broadwayscore/commit/3b77c02146f343a5abfb38e3ba013845406ace13) against main this run",
+      "channels": [],
+      "ms": 0
+    },
+    {
+      "id": "BRO-6837",
+      "name": "Morning digest 2026-11-02: false 'no automatic fix confirmed' rows + root fixes (baseline drift, domain moves)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6837/morning-digest-2026-11-02-false-no-automatic-fix-confirmed-rows-root",
+      "state": "Done",
+      "cmd": "node --test scripts/lib/scheduled-closings.test.mjs",
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "could not resolve https://github.com/thomaspryor/Broadwayscore/commit/c82b43a4f74556a10b47b6b4d511f0d647960e02) against main this run; its check was not re-run this sweep",
+      "channels": [],
+      "ms": 0
+    },
+    {
+      "id": "BRO-6835",
+      "name": "Show the saved showtime and seat on diary entries (web + iOS), not only inside the editor",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6835/show-the-saved-showtime-and-seat-on-diary-entries-web-ios-not-only",
+      "state": "Done",
+      "cmd": "npx tsx --test tests/unit/review-showtime.test.ts",
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "its check was not re-run this sweep",
+      "channels": [],
+      "ms": 0
+    },
+    {
+      "id": "BRO-6834",
+      "name": "US city review census: reviews per show and scoreable shows per year for LA, Boston, SF Bay Area, San Diego",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6834/us-city-review-census-reviews-per-show-and-scoreable-shows-per-year",
+      "state": "Done",
+      "cmd": null,
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "could not resolve https://github.com/thomaspryor/Broadwayscore/commit/67b658bb30653d1c04b45a958ba1c597bf9177b4) against main this run",
+      "channels": [],
+      "ms": 0
+    },
+    {
+      "id": "BRO-6833",
+      "name": "City hubs on rails: one registry entry adds a US city (web menu/footer/stats, app market, feed city slug, runbook, wiring test)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6833/city-hubs-on-rails-one-registry-entry-adds-a-us-city-web",
+      "state": "Done",
+      "cmd": "npx tsx --test tests/unit/city-hub-wiring.test.ts",
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "could not resolve https://github.com/thomaspryor/Broadwayscore/commit/4c1240b7bb5f7c20bf24ee702a69b391c20b4d3c) against main this run; its check was not re-run this sweep",
+      "channels": [],
+      "ms": 0
+    },
+    {
+      "id": "BRO-6832",
+      "name": "CANARY: touch data/audit/canary-2026-11-02.marker",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6832/canary-touch-dataauditcanary-2026-11-02marker",
+      "state": "Done",
+      "cmd": "node scripts/check-canary-marker.js --date=2026-11-02",
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "its check was not re-run this sweep",
+      "channels": [],
+      "ms": 0
+    },
+    {
+      "id": "BRO-6823",
+      "name": "BSC Daily: Quality: opening date vs review dates",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6823/bsc-daily-quality-opening-date-vs-review-dates",
+      "state": "Done",
+      "cmd": "node scripts/check-health-row-absent.js --row-b64 UXVhbGl0eTogb3BlbmluZyBkYXRlIHZzIHJldmlldyBkYXRlcw",
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "its check was not re-run this sweep",
+      "channels": [],
+      "ms": 0
+    },
+    {
+      "id": "BRO-6822",
+      "name": "BSC Daily: Autofix: daily canary (dispatch pipeline proof)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6822/bsc-daily-autofix-daily-canary-dispatch-pipeline-proof",
+      "state": "In Progress",
+      "cmd": "node scripts/check-health-row-absent.js --row-b64 QXV0b2ZpeDogZGFpbHkgY2FuYXJ5IChkaXNwYXRjaCBwaXBlbGluZSBwcm9vZik",
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "its check was not re-run this sweep",
+      "channels": [],
+      "ms": 0
+    },
+    {
+      "id": "BRO-6821",
+      "name": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"don-giovanni-off-broadway-2025 keeps its backfilled coverage (was 7)\"",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6821/main-testyml-red-unit-tests-run-unit-tests-no-data-dependency-don",
+      "state": "Done",
+      "cmd": "node --test tests/unit/serp-discovery-backfill.test.mjs",
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "PR-EVIDENCE line names no commit or PR to re-check; its check was not re-run this sweep",
+      "channels": [],
+      "ms": 0
+    },
+    {
+      "id": "BRO-6819",
+      "name": "P1: Opening night miss: Tosca (2026-11-01)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6819/p1-opening-night-miss-tosca-2026-11-01",
+      "state": "Done",
+      "cmd": "node scripts/validate-data.js --strict",
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "its check was not re-run this sweep",
+      "channels": [],
+      "ms": 0
+    },
+    {
+      "id": "BRO-6818",
+      "name": "Check 6 single old reviews on 5 shows (Gruffalo, Immigrant, Beauty and the Beast tour, Gang of Three, SIX 2021) for wrong-run dates",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6818/check-6-single-old-reviews-on-5-shows-gruffalo-immigrant-beauty-and",
+      "state": "Done",
+      "cmd": null,
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "could not resolve https://github.com/thomaspryor/Broadwayscore/commit/f15384b6307d8b00877871aef7ff3e41f17d99d3) against main this run",
+      "channels": [],
+      "ms": 0
+    },
+    {
+      "id": "BRO-6815",
+      "name": "BSC Daily: Data quality: stale announced shows",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6815/bsc-daily-data-quality-stale-announced-shows",
+      "state": "Done",
+      "cmd": "node scripts/check-health-row-absent.js --row-b64 RGF0YSBxdWFsaXR5OiBzdGFsZSBhbm5vdW5jZWQgc2hvd3M",
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "its check was not re-run this sweep",
+      "channels": [],
+      "ms": 0
+    },
+    {
+      "id": "BRO-6811",
+      "name": "P1: Past-run opera reviews mixed into live Met revival scores (Tosca, Samson, Medea, Otello) against BRO-6767 owner rule",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6811/p1-past-run-opera-reviews-mixed-into-live-met-revival-scores-tosca",
+      "state": "Done",
+      "cmd": null,
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "could not resolve https://github.com/thomaspryor/Broadwayscore/commit/b224334f45fcea98d2c38897a801ffd7e3cc162f) against main this run",
+      "channels": [],
+      "ms": 0
+    },
+    {
+      "id": "BRO-6809",
+      "name": "Press-night clock hardening: re-read embargo data before each kick; use sleepPlan in the workflow instead of duplicated bash",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6809/press-night-clock-hardening-re-read-embargo-data-before-each-kick-use",
+      "state": "Done",
+      "cmd": "node --test tests/unit/press-night-clock.test.mjs",
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "could not resolve https://github.com/thomaspryor/Broadwayscore/commit/58a0f9172) against main this run; its check was not re-run this sweep",
+      "channels": [],
+      "ms": 0
+    },
+    {
+      "id": "BRO-6808",
+      "name": "1,454 show images lack sm/ list variants: cards 404 on thumbnail.webp.webp before falling back",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6808/1454-show-images-lack-sm-list-variants-cards-404-on-thumbnailwebpwebp",
+      "state": "Done",
+      "cmd": null,
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "could not resolve https://github.com/thomaspryor/Broadwayscore/commit/e78eba6492 against main this run",
+      "channels": [],
+      "ms": 0
+    },
+    {
+      "id": "BRO-6806",
+      "name": "Othello 2022 WhatsOnStage review links the 2025 Haymarket article (URL inherited from wrongProduction duplicate)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6806/othello-2022-whatsonstage-review-links-the-2025-haymarket-article-url",
+      "state": "Done",
+      "cmd": "node --test scripts/lib/sibling-rating-inherit.test.js",
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "its check was not re-run this sweep",
+      "channels": [],
+      "ms": 0
+    },
+    {
+      "id": "BRO-6805",
+      "name": "Opening digest: show regional, tryout, tour, Chicago and DC openings",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6805/opening-digest-show-regional-tryout-tour-chicago-and-dc-openings",
+      "state": "Done",
+      "cmd": "node --test tests/unit/opening-digest-regions.test.mjs",
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "could not resolve https://github.com/thomaspryor/Broadwayscore/commit/d9e6cba6bd04cb8a4623b75901eadb9a26ac30b8) against main this run; its check was not re-run this sweep",
+      "channels": [],
+      "ms": 0
+    },
+    {
+      "id": "BRO-6804",
+      "name": "Review-gap audit: false 'missing' reviews hide real misses (Time Out listings, album reviews, other productions)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6804/review-gap-audit-false-missing-reviews-hide-real-misses-time-out",
+      "state": "Done",
+      "cmd": "node --test scripts/audit-review-gap.test.mjs",
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "could not resolve https://github.com/thomaspryor/Broadwayscore/commit/63027e0c5) against main this run; its check was not re-run this sweep",
+      "channels": [],
+      "ms": 0
+    },
+    {
+      "id": "BRO-6803",
+      "name": "Opera: SFO The Monkey King has 3 unscored review files; score them or retire the row",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6803/opera-sfo-the-monkey-king-has-3-unscored-review-files-score-them-or",
+      "state": "Done",
+      "cmd": "test -f scripts/linear-brain.js",
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "could not resolve https://github.com/thomaspryor/Broadwayscore/commit/6d92759589a42195b3a0c4b3c6148326f1a8e96e) against main this run; its check was not re-run this sweep",
+      "channels": [],
+      "ms": 0
+    },
+    {
+      "id": "BRO-6800",
+      "name": "Opera hub page text still names only the Met and Royal Opera House (needs owner visual OK)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6800/opera-hub-page-text-still-names-only-the-met-and-royal-opera-house",
+      "state": "Done",
+      "cmd": "node --test tests/unit/opera-hub-text-expansion.test.mjs",
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "its check was not re-run this sweep",
+      "channels": [],
+      "ms": 0
+    },
+    {
+      "id": "BRO-6799",
+      "name": "Opera: LLM classifier prompt says every opera is at the Met (SFO, ENO, ROH reviews risk wrong_production flags)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6799/opera-llm-classifier-prompt-says-every-opera-is-at-the-met-sfo-eno-roh",
+      "state": "Done",
+      "cmd": "node --test scripts/lib/opera-house-url-markers.test.mjs",
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "its check was not re-run this sweep",
+      "channels": [],
+      "ms": 0
+    },
+    {
+      "id": "BRO-6798",
+      "name": "main test.yml red: Unit Tests / Run scripts/lib tests (visual-qa transcript-scan etc.) — \"BRO-5626: owner wording in the body and wait reasons hold the card (ported from linear-promote-parked)\"",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6798/main-testyml-red-unit-tests-run-scriptslib-tests-visual-qa-transcript",
+      "state": "Done",
+      "cmd": "node --test scripts/lib/linear-drain-parked.test.mjs",
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "its check was not re-run this sweep",
+      "channels": [],
+      "ms": 0
+    },
+    {
+      "id": "BRO-6797",
+      "name": "DC hub: find missing reviews for unrated DC shows (7 of 12 now playing read TBD)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6797/dc-hub-find-missing-reviews-for-unrated-dc-shows-7-of-12-now-playing",
+      "state": "Done",
+      "cmd": null,
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "no PR-EVIDENCE line and no runnable acceptance command",
+      "channels": [],
+      "ms": 0
+    },
+    {
+      "id": "BRO-6796",
+      "name": "City hubs label local Chicago/DC productions 'in tryout'",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6796/city-hubs-label-local-chicagodc-productions-in-tryout",
+      "state": "Done",
+      "cmd": null,
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "could not resolve https://github.com/thomaspryor/Broadwayscore/commit/5322bf1e7ce124813bb3d21b89e391b5dcd4c35d) against main this run",
+      "channels": [],
+      "ms": 0
+    },
+    {
+      "id": "BRO-6795",
+      "name": "DC reviews: backfill missing critic bylines (27 MD Theatre Guide, 3 Georgetown Dish) and 3 null publish dates",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6795/dc-reviews-backfill-missing-critic-bylines-27-md-theatre-guide-3",
+      "state": "Done",
+      "cmd": null,
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "could not resolve https://github.com/thomaspryor/Broadwayscore/commit/bcfc3137e588525ba64e34fd256ddf6671777699) against main this run",
+      "channels": [],
+      "ms": 0
+    },
+    {
+      "id": "BRO-6794",
+      "name": "Older-years sweep remainder: 1,835 never-audited older shows + blocked-host fetch failures",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6794/older-years-sweep-remainder-1835-never-audited-older-shows-blocked",
+      "state": "In Progress",
+      "cmd": "node scripts/lib/verify-data-backfill.js --show=broadway,west-end,regional,tour --reviews=1835",
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "its check was not re-run this sweep",
+      "channels": [],
+      "ms": 0
+    },
+    {
+      "id": "BRO-6792",
+      "name": "Opening-date audit: 1 show need review (2026-11-01)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6792/opening-date-audit-1-show-need-review-2026-11-01",
+      "state": "Done",
+      "cmd": "node scripts/lib/verify-data-backfill.js --show=billy-crystal-860-2026",
+      "verdict": "UNVERIFIABLE",
+      "evidence": "unknown",
+      "detail": "its check was not re-run this sweep",
+      "channels": [],
+      "ms": 0
     },
     {
       "id": "BRO-6660",
@@ -2684,9 +3092,9 @@
       "cmd": "node scripts/run-unit-tests.js",
       "verdict": "UNVERIFIABLE",
       "evidence": "unknown",
-      "detail": "check killed by SIGTERM after 60000ms (timeout — no verdict)",
+      "detail": "its check was not re-run this sweep",
       "channels": [],
-      "ms": 60013
+      "ms": 0
     }
   ]
 }
