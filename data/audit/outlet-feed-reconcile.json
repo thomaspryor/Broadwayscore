@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-04T17:08:11.973Z",
+  "generatedAt": "2026-11-04T18:16:44.645Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -133,16 +133,36 @@
   "feedsChecked": 78,
   "feedsFailed": [
     {
+      "outletId": "theater-life",
+      "error": "Timeout fetching https://theaterlife.com/feed"
+    },
+    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
     {
       "outletId": "slantmagazine",
       "error": "direct fetch returned a non-rss page"
+    },
+    {
+      "outletId": "cote-notices",
+      "error": "HTTP 403 for https://davidcote1.substack.com/feed"
+    },
+    {
+      "outletId": "theartsdispatch",
+      "error": "HTTP 403 for https://theartsdispatch.substack.com/feed"
+    },
+    {
+      "outletId": "rolandcat",
+      "error": "HTTP 403 for https://rolandcat.substack.com/feed"
+    },
+    {
+      "outletId": "matineemouse",
+      "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 840,
-  "matchedGaps": 11,
+  "itemsScanned": 822,
+  "matchedGaps": 14,
   "possibleGaps": 11,
   "gaps": [
     {
@@ -155,12 +175,30 @@
       "publishDate": "2026-11-04"
     },
     {
+      "showId": "a-few-good-men-2026",
+      "title": "A Few Good Men",
+      "level": "matched",
+      "outletId": "theater-pizzazz",
+      "url": "https://theaterpizzazz.com/tell-it-to-the-marines-a-few-good-men-is-revived/",
+      "headline": "TELL IT TO THE MARINES: “A FEW GOOD MEN” IS REVIVED",
+      "publishDate": "2026-11-04"
+    },
+    {
       "showId": "ceilidh-the-musical-off-west-end-2026",
       "title": "Ceilidh The Musical",
       "level": "matched",
       "outletId": "musical-theatre-review",
       "url": "https://musicaltheatrereview.com/ceilidh-a-new-musical-shoreditch-town-hall-and-touring/",
       "headline": "Ceilidh: A New Musical – Shoreditch Town Hall and Touring",
+      "publishDate": "2026-11-04"
+    },
+    {
+      "showId": "the-bridge-off-west-end-2026",
+      "title": "The Bridge",
+      "level": "matched",
+      "outletId": "firstnightmagazine",
+      "url": "https://firstnightmagazine.com/2026/11/04/review-of-the-bridge-palestinian-play-exposes-major-conflict-but-ultimately-lacks-one-of-its-own/",
+      "headline": "Review of &#8216;The Bridge&#8217;: &#8220;Palestinian play exposes major conflict but ultimately lacks one of its own&#8221;",
       "publishDate": "2026-11-04"
     },
     {
@@ -209,15 +247,6 @@
       "publishDate": "2026-10-29"
     },
     {
-      "showId": "the-moth-off-west-end-2026",
-      "title": "The Moth",
-      "level": "matched",
-      "outletId": "plays-to-see",
-      "url": "https://playstosee.com/reviews/uk-reviews/the-moth/?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=the-moth",
-      "headline": "The Moth",
-      "publishDate": "2026-11-03"
-    },
-    {
       "showId": "tosca-off-broadway-2026",
       "title": "Tosca",
       "level": "matched",
@@ -245,12 +274,21 @@
       "publishDate": "2026-10-31"
     },
     {
-      "showId": "rope-off-broadway-2026",
-      "title": "Rope",
-      "level": "possible",
-      "outletId": "theater-life",
-      "url": "https://theaterlife.com/rope/",
-      "headline": "Rope **",
+      "showId": "well-see-off-broadway-2026",
+      "title": "We'll See",
+      "level": "matched",
+      "outletId": "nysr",
+      "url": "https://nystagereview.com/2026/11/04/well-see-sitting-down-to-dinner-once-again-with-our-beloved-apple-family/",
+      "headline": "We’ll See: Sitting Down to Dinner, Once Again, With Our Beloved Apple Family",
+      "publishDate": "2026-11-04"
+    },
+    {
+      "showId": "well-see-off-broadway-2026",
+      "title": "We'll See",
+      "level": "matched",
+      "outletId": "nysr",
+      "url": "https://nystagereview.com/2026/11/04/well-see-sweating-election-night-with-the-apples/",
+      "headline": "We’ll See: Sweating Election Night with the Apples",
       "publishDate": "2026-11-04"
     },
     {
@@ -278,6 +316,15 @@
       "outletId": "standard",
       "url": "https://standard.co.uk/culture/theatre/the-oresteia-at-the-bridge-review-b1290028.html",
       "headline": "The Oresteia at the Bridge: Thrillingly stripped back and bloody",
+      "publishDate": null
+    },
+    {
+      "showId": "the-bridge-off-west-end-2026",
+      "title": "The Bridge",
+      "level": "possible",
+      "outletId": "artsdesk",
+      "url": "https://theartsdesk.com/theatre/bridge-bush-theatre-review-entertaining-stand-one-sided-theatre",
+      "headline": "The Bridge, Bush Theatre review – entertaining as stand up, one-sided as theatre",
       "publishDate": null
     },
     {
