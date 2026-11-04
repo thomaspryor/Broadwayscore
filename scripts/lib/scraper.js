@@ -22,6 +22,7 @@ const { isTransientScrapingdogError, parseScrapingdogHttpError } = require('./sd
 
 const https = require('https');
 require('./cloud-proxy'); // BRO-6258: route ScrapingBee through the cloud egress proxy
+require('./ipv4-connections'); // BRO-6872: no 250 ms happy-eyeballs cut-off (runners cannot reach IPv6)
 const path = require('path');
 const fs = require('fs');
 // playwright is lazy-loaded inside fetchWithPlaywright() so that merely

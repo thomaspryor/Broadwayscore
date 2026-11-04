@@ -92,7 +92,9 @@ test('market: a West End night does not poll New York-only sources, a Broadway n
 test('tier-1 section pages are pinned: read on every pass while the extra pages rotate', async () => {
   const pages = d.defaultLaneSectionIndexes(BROADWAY);
   const pinned = pages.filter((o) => o.pinned).map((o) => o.indexUrl);
-  assert.ok(pinned.length >= 5 && pinned.includes('https://www.nytimes.com/section/theater'));
+  assert.ok(pinned.length >= 4 && pinned.includes('https://www.vulture.com/theater/'));
+  // BRO-6872: the NYT and WSJ section pages refuse the runners (403/401); their feeds stand in, so no pinned slot is spent on them.
+  assert.ok(!pinned.some((u) => /nytimes\.com\/section|wsj\.com\/arts-culture/.test(u)), pinned.join(' '));
   const adapter = d.sectionIndexAdapter();
   const seen = new Set();
   for (let p = 0; p < 4; p++) {
@@ -106,7 +108,7 @@ test('tier-1 section pages are pinned: read on every pass while the extra pages 
 
 test('tier-1 section pages keep their old eligibility; extra pages follow the market', () => {
   const pages = d.defaultLaneSectionIndexes(BROADWAY);
-  for (const id of ['nytimes', 'vulture', 'variety', 'lighting-and-sound-america', 'theatrely', 'nytg', 'timeout']) {
+  for (const id of ['vulture', 'variety', 'lighting-and-sound-america', 'theatrely', 'nytg', 'timeout']) {
     assert.ok(pages.some((o) => o.outletId === id), id);
   }
 });
@@ -158,4 +160,13 @@ test('copied poller URLs have not drifted from scripts/outlet-listing-poller.js 
     if (p && p.strategy === 'listing-html' && p.url && p.url !== url) drift.push(`${id}: poller ${p.url}, lane ${url}`);
   }
   assert.deepEqual(drift, []);
+});
+
+test('NYT and WSJ are found through feeds: WSJ Arts & Culture (where its theater reviews are filed), not Lifestyle', () => {
+  const wsj = ALL_FEEDS.filter((f) => f.outletId === 'wsj').map((f) => f.url);
+  assert.deepEqual(wsj, ['https://feeds.content.dowjones.io/public/rss/RSSArtsCulture']);
+  const cov = ls.laneSourceCoverage(['wsj', 'nytimes'], BROADWAY);
+  assert.deepEqual(cov.missing, []);
+  assert.ok(cov.covered.wsj.some((s) => s.startsWith('feed ') && s.includes('RSSArtsCulture')), JSON.stringify(cov.covered.wsj));
+  assert.ok(cov.covered.nytimes.some((s) => s.startsWith('feed ')), JSON.stringify(cov.covered.nytimes));
 });
