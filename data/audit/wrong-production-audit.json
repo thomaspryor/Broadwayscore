@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-11-04T08:22:53.702Z",
+  "timestamp": "2026-11-04T08:42:29.037Z",
   "stats": {
-    "totalReviews": 80039,
+    "totalReviews": 80044,
     "alreadyFlagged": 22035,
     "dateGuardCatches": 217,
     "directorMismatch": 3479,
-    "tvFilmSignals": 2273,
+    "tvFilmSignals": 2274,
     "londonSignals": 3604,
     "offBroadwaySignals": 736,
     "yearMismatch": 361,
@@ -30240,6 +30240,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "hedda-royal-bath-regional-2025",
+      "file": "ap--lindsey-bahr.json",
+      "publishDate": "2025-10-20",
+      "url": "https://apnews.com/article/movie-review-hedda-39f35c5ee94f4393d6fbac12e95a2dcc",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"amazon prime\""
         }
       ]
     },
