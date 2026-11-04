@@ -15,14 +15,16 @@ const MAX_KEY_LEN = 200;
 // with deferFilingHours files ONE card once the same incident has stayed open
 // that long; shorter blips stay a digest line (owner-alert-router BRO-4487).
 const OWNED_AFTER_HOURS = 72;
+// Mirrors owner-alert-router INCIDENT_GAP_RESET_HOURS.
+const INCIDENT_GAP_RESET_HOURS = 96;
 const OWNED_AFTER_PERSISTING = { disposition: 'auto', deferFilingHours: OWNED_AFTER_HOURS, cooldownHours: 24 };
 // Zero-tolerance conditions never count as "known": they keep the job red.
 const ALWAYS_NEW = /class-A cross-market/i;
 
 /**
  * PURE. Split this run's routed failures into NEW (job stays red) and KNOWN
- * (already owned: a card exists, or the incident has been open past
- * OWNED_AFTER_HOURS so a card is due). The job is red only for NEW ones.
+ * (already owned: a card exists, or the router has the condition on its
+ * deferred-card path and the incident has been open past OWNED_AFTER_HOURS, so a card is due). The job is red only for NEW ones.
  * @param {{conditionKey:string}[]} route plan.route from planLiveDataRouting
  * @param {Record<string,object>} conditions owner-alert-router ledger conditions, read BEFORE routing
  */
@@ -32,8 +34,11 @@ function splitNewAndKnown(route, conditions, nowMs = Date.now()) {
   for (const r of route) {
     const c = (conditions || {})[r.conditionKey];
     const openedMs = c ? Date.parse(c.incidentOpenedAt || c.firstSeen || '') : NaN;
-    const owned = !!c && c.status === 'open'
-      && (!!(c.linearIdentifier || c.cardId) || (Number.isFinite(openedMs) && (nowMs - openedMs) / 3600000 >= OWNED_AFTER_HOURS));
+    // Not seen for INCIDENT_GAP_RESET_HOURS: the router starts a fresh incident (and a fresh 72h defer).
+    const lastSeenMs = c ? Date.parse(c.lastSeen || '') : NaN;
+    const sameIncident = Number.isFinite(lastSeenMs) && (nowMs - lastSeenMs) / 3600000 <= INCIDENT_GAP_RESET_HOURS;
+    const owned = !!c && c.status === 'open' && sameIncident
+      && (!!(c.linearIdentifier || c.cardId) || (c.deferredAuto === true && Number.isFinite(openedMs) && (nowMs - openedMs) / 3600000 >= OWNED_AFTER_HOURS));
     (owned && !ALWAYS_NEW.test(r.conditionKey) ? knownKeys : newKeys).push(r.conditionKey);
   }
   return { newKeys, knownKeys };

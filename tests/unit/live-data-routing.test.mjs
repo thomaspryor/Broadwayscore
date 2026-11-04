@@ -64,6 +64,7 @@ test('open keys of a file that failed this run are not resolved', () => {
 // BRO-6983: the job is red only for NEW failures.
 const NOW = Date.parse('2026-11-04T12:00:00Z');
 const hoursAgo = (h) => new Date(NOW - h * 3600000).toISOString();
+const seen = (h) => ({ lastSeen: hoursAgo(h) });
 const route = (...names) => names.map((n) => ({ conditionKey: conditionKeyFor(`tests/unit/a.test.mjs::${n}`) }));
 
 test('split: a first-sighting failure is NEW', () => {
@@ -74,9 +75,9 @@ test('split: a first-sighting failure is NEW', () => {
 test('split: open past 72h, or carrying a card, is known; a fresh open incident is still new', () => {
   const [a, b, c] = route('old', 'carded', 'fresh');
   const conditions = {
-    [a.conditionKey]: { status: 'open', incidentOpenedAt: hoursAgo(80) },
-    [b.conditionKey]: { status: 'open', incidentOpenedAt: hoursAgo(5), linearIdentifier: 'BRO-1' },
-    [c.conditionKey]: { status: 'open', incidentOpenedAt: hoursAgo(5) },
+    [a.conditionKey]: { status: 'open', incidentOpenedAt: hoursAgo(80), deferredAuto: true, ...seen(2) },
+    [b.conditionKey]: { status: 'open', incidentOpenedAt: hoursAgo(5), linearIdentifier: 'BRO-1', ...seen(2) },
+    [c.conditionKey]: { status: 'open', incidentOpenedAt: hoursAgo(5), ...seen(2) },
   };
   const { newKeys, knownKeys } = splitNewAndKnown([a, b, c], conditions, NOW);
   assert.deepEqual(knownKeys, [a.conditionKey, b.conditionKey]);
@@ -92,4 +93,14 @@ test('split: the class-A cross-market leak never counts as known, however old', 
   const { newKeys, knownKeys } = splitNewAndKnown([{ conditionKey: key }], { [key]: { status: 'open', incidentOpenedAt: hoursAgo(900), linearIdentifier: 'BRO-6891' } }, NOW);
   assert.deepEqual(newKeys, [key]);
   assert.deepEqual(knownKeys, []);
+});
+test('split: an open condition not seen for over 96h is a fresh incident, so NEW', () => {
+  const [a] = route('stale');
+  const { newKeys } = splitNewAndKnown([a], { [a.conditionKey]: { status: 'open', incidentOpenedAt: hoursAgo(300), linearIdentifier: 'BRO-1', ...seen(120) } }, NOW);
+  assert.deepEqual(newKeys, [a.conditionKey]);
+});
+test('split: an old open row from before the deferred-card path (no deferredAuto, no card) is still NEW', () => {
+  const [a] = route('legacy');
+  const { newKeys } = splitNewAndKnown([a], { [a.conditionKey]: { status: 'open', incidentOpenedAt: hoursAgo(200), ...seen(2) } }, NOW);
+  assert.deepEqual(newKeys, [a.conditionKey]);
 });

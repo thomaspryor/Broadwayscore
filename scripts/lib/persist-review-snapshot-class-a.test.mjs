@@ -89,3 +89,20 @@ test('a show with no same-title sibling can never trip it', () => {
   persistReviewSnapshot({ filePath: file, data }, () => {});
   assert.equal(JSON.parse(fs.readFileSync(file, 'utf8')).wrongProduction, undefined);
 });
+
+// Review finding (BRO-6983): the audit exempts tour productions (BRO-6114); so must this.
+test('a tour production is exempt, as in the audit', () => {
+  _setShowsCacheForTest(new Map([
+    ['hp-tour-2024', { id: 'hp-tour-2024', title: 'Harry Potter', openingDate: '2024-09-01', category: 'tour' }],
+    ['hp-west-end-2026', { id: 'hp-west-end-2026', title: 'Harry Potter', openingDate: '2026-10-21', category: 'west-end' }],
+  ]));
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'persist-tour-'));
+  const dir = path.join(root, 'hp-tour-2024');
+  fs.mkdirSync(dir, { recursive: true });
+  const file = path.join(dir, 'a--b.json');
+  fs.writeFileSync(file, JSON.stringify({ criticName: 'B', outletId: 'a', url: 'https://example.com/z' }));
+  const data = readReviewForUpdate(file);
+  data.publishDate = '2026-10-25';
+  persistReviewSnapshot({ filePath: file, data }, () => {});
+  assert.equal(JSON.parse(fs.readFileSync(file, 'utf8')).wrongProduction, undefined);
+});

@@ -530,9 +530,16 @@ jobs:
       - name: Fail on NEW live-data failures (BRO-6983)
         if: always()
         run: |
-          if [ '${{ steps.livedata.outcome }}' != failure ]; then
-            echo "live-data assertions: ${{ steps.livedata.outcome }}"
+          OUTCOME='${{ steps.livedata.outcome }}'
+          if [ "$OUTCOME" = success ]; then
+            echo "live-data assertions: success"
             exit 0
+          fi
+          # failure, cancelled (a step timeout reports cancelled, .github/workflows/CLAUDE.md) or skipped:
+          # only "failure with every failure already owned" is allowed through.
+          if [ "$OUTCOME" != failure ]; then
+            echo "::error::Live-data assertions did not finish (outcome=$OUTCOME), e.g. the 22-minute step timeout. Treated as a new failure."
+            exit 1
           fi
           NEW='${{ steps.route.outputs.new_failures }}'
           if [ "$NEW" = "0" ]; then

@@ -1825,7 +1825,7 @@ function safeWriteReview(filePath, newData, options = {}) {
         // allowlist) opts a file out here too.
         if (!alreadyFlaggedThisWrite && newData && newData.publishDate && !newData._auditAllowCrossMarket && !(onDiskRecord && onDiskRecord._auditAllowCrossMarket)) {
           const sibOpenings = _getSiblingOpenings(parentDirName);
-          if (sibOpenings.length) {
+          if (sibOpenings.length && require('./cross-market-contamination').classAApplies(show)) {
             const { classifyClassAContamination } = require('./cross-market-contamination');
             const xv = classifyClassAContamination(
               new Date(require('./date-utils').toDateMs(newData.publishDate)),
@@ -3946,8 +3946,8 @@ function _urlCorroboration(url, record) {
  * Mutates `record` (the merged record about to be written) in place: stamps
  * wrongProduction with the same note shape as the in-guard stamp. Stamps, never
  * quarantines, because the file already exists and the writer is mid-update.
- * Uses the same predicate (classifyClassAContamination) and the same opt-outs
- * as the audit and the in-guard check, so detector and preventer cannot drift.
+ * Uses the same predicate (classifyClassAContamination), the tour exemption
+ * (classAApplies) and the same opt-outs as the audit and the in-guard check, so detector and preventer cannot drift.
  * A date that was already class A before this write is left alone: the audit
  * owns pre-existing contamination, and re-stamping every enrichment would undo
  * a human's _auditAllowCrossMarket / override decision.
@@ -3967,9 +3967,11 @@ function flagSiblingEraDateOnPersist(filePath, priorRecord, record) {
     || (priorRecord && (priorRecord._auditAllowCrossMarket || priorRecord._locked === true))) return none;
   const show = _getShowById(parentDirName);
   if (!show || !show.openingDate) return none;
+  const { classifyClassAContamination, classAApplies } = require('./cross-market-contamination');
+  // Same exemption as the audit: tour stops legitimately carry dates near a sibling's opening (BRO-6114).
+  if (!classAApplies(show)) return none;
   const sibOpenings = _getSiblingOpenings(parentDirName);
   if (!sibOpenings.length) return none;
-  const { classifyClassAContamination } = require('./cross-market-contamination');
   const { toDateMs } = require('./date-utils');
   const classify = (d) => classifyClassAContamination(new Date(toDateMs(d)), new Date(show.openingDate), sibOpenings);
   const xv = classify(record.publishDate);
