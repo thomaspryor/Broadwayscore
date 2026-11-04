@@ -892,6 +892,8 @@ export interface OutletProfile {
   lowScore: number;
   volumeRank: number;
   generosityRank: number;
+  generosityPool?: number;
+  peerMedianAvg?: number;
   criticCount: number;
   logoDomain: string | null;
   logoColor: string | null;
@@ -912,6 +914,8 @@ export interface CriticProfile {
   lowScore: number;
   volumeRank: number;
   generosityRank: number;
+  generosityPool?: number;
+  peerMedianAvg?: number;
 }
 
 // Creative team page types

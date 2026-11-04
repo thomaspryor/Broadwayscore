@@ -1,4 +1,5 @@
 import videoCreatorsData from '@/../data/video-creators.json';
+import { assignPositivityRanks } from './critic-standing';
 import videoReviewsData from '@/../data/video-reviews.json';
 import showsData from '@/../data/shows.json';
 import { versionedImagePath } from './versioned-image-path';
@@ -18,6 +19,8 @@ export interface VideoCreatorProfile {
   lowScore: number;
   volumeRank: number;
   generosityRank: number;
+  generosityPool?: number;
+  peerMedianAvg?: number;
   reviews: VideoCreatorReview[];
 }
 
@@ -133,8 +136,7 @@ const RANK_MIN_REVIEWS = 10;
   const byVolume = [...eligible].sort((a, b) => b.reviewCount - a.reviewCount);
   byVolume.forEach((p, i) => { p.volumeRank = i + 1; });
 
-  const byGenerosity = [...eligible].sort((a, b) => b.avgScore - a.avgScore);
-  byGenerosity.forEach((p, i) => { p.generosityRank = i + 1; });
+  assignPositivityRanks(eligible, RANK_MIN_REVIEWS);
 }
 
 export function getVideoCreatorBySlug(slug: string): VideoCreatorProfile | null {

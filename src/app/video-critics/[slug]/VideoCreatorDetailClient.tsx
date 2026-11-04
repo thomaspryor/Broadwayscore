@@ -4,7 +4,8 @@ import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import type { VideoCreatorProfile, VideoCreatorReview } from '@/lib/data-video-critics';
 import { getOptimizedImageUrl } from '@/lib/images';
-import { getScoreTextColor, ordinalSuffix } from '@/lib/critic-page-utils';
+import { getScoreTextColor } from '@/lib/critic-page-utils';
+import { positivityPhrase, volumePhrase } from '@/lib/critic-standing';
 import { ToggleBar, StatGrid, ScoreBadge } from '@/components/show-cards';
 import Breadcrumb from '@/components/Breadcrumb';
 import { nestQuotes } from '@/lib/nest-quotes';
@@ -237,11 +238,9 @@ export default function VideoCreatorDetailClient({ creator }: { creator: VideoCr
             ranked pool (10+). Below that, the ranks are computed but set to 0 in
             data-video-critics.ts so we just hide them here — saves screenshots
             from showing "1st most generous" off n=4. */}
-        {creator.volumeRank > 0 && creator.generosityRank > 0 && (
-          <div className="flex flex-wrap gap-3 text-sm text-gray-400">
-            <span>{ordinalSuffix(creator.volumeRank)} most prolific video critic</span>
-            <span aria-hidden="true" className="text-white/25">·</span>
-            <span>{ordinalSuffix(creator.generosityRank)} most generous scorer</span>
+        {creator.volumeRank > 0 && (
+          <div className="flex flex-col gap-1 text-sm text-gray-400">
+            {[volumePhrase(creator.volumeRank, 'video critic', 'video critics'), positivityPhrase(creator, 'video critics')].filter(Boolean).map(l => <span key={l}>{l}</span>)}
           </div>
         )}
       </div>

@@ -4,7 +4,8 @@ import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import type { OutletProfile, ProfileReview } from '@/lib/data-types';
 import { getOptimizedImageUrl } from '@/lib/images';
-import { getScoreClass, getScoreTextColor, formatDate, ordinalSuffix } from '@/lib/critic-page-utils';
+import { getScoreClass, getScoreTextColor, formatDate } from '@/lib/critic-page-utils';
+import { positivityPhrase, volumePhrase } from '@/lib/critic-standing';
 import { ToggleBar, StatGrid, OutletTierChip } from '@/components/show-cards';
 import Breadcrumb from '@/components/Breadcrumb';
 import { getReviewKey } from '../../../../../scripts/lib/review-list-key';
@@ -166,12 +167,9 @@ export default function OutletDetailClient({ outlet }: { outlet: OutletProfile }
           { label: 'Lowest', value: outlet.lowScore },
         ]} />
 
-        {/* Ranks */}
-        <div className="flex flex-wrap gap-3 text-sm text-gray-400">
-          <span>{ordinalSuffix(outlet.volumeRank)} most prolific outlet</span>
-          <span aria-hidden="true" className="text-white/25">·</span>
-          <span>{ordinalSuffix(outlet.generosityRank)} most generous scorer</span>
-          <span aria-hidden="true" className="text-white/25">·</span>
+        {/* Plain-words standing (src/lib/critic-standing.ts, owner 2026-11-04). */}
+        <div className="flex flex-col gap-1 text-sm text-gray-400">
+          {[volumePhrase(outlet.volumeRank, 'outlet', 'outlets'), positivityPhrase(outlet, 'outlets')].filter(Boolean).map(l => <span key={l}>{l}</span>)}
           <span>{outlet.criticCount} different critic{outlet.criticCount !== 1 ? 's' : ''}</span>
         </div>
       </div>

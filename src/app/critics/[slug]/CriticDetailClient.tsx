@@ -2,9 +2,10 @@
 
 import { useState, useMemo, useEffect } from 'react';
 import Link from 'next/link';
+import { positivityPhrase, volumePhrase } from '@/lib/critic-standing';
 import type { CriticProfile, ProfileReview } from '@/lib/data-types';
 import { getOptimizedImageUrl } from '@/lib/images';
-import { getScoreClass, getScoreTextColor, formatDate, ordinalSuffix } from '@/lib/critic-page-utils';
+import { getScoreClass, getScoreTextColor, formatDate } from '@/lib/critic-page-utils';
 import { ToggleBar, StatGrid } from '@/components/show-cards';
 import AvatarImage from '@/components/AvatarImage';
 import Breadcrumb from '@/components/Breadcrumb';
@@ -291,15 +292,15 @@ export default function CriticDetailClient({ critic, profile }: { critic: Critic
         ]} />
 
         {/* Ranks */}
-        {/* Separator dots wrapped onto their own line on phones ("· ranks
-            across all reviews" read as broken, critic review 2026-11-04). */}
-        <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm text-gray-400">
-          <span>{ordinalSuffix(critic.volumeRank)} most prolific critic</span>
-          <span>{ordinalSuffix(critic.generosityRank)} most generous scorer</span>
-          {marketFilter !== 'all' && (
-            <span className="text-fg-muted">(ranks count all reviews)</span>
-          )}
-        </div>
+        {/* Plain-words standing (src/lib/critic-standing.ts, owner 2026-11-04). */}
+        {(() => {
+          const lines = [volumePhrase(critic.volumeRank, 'critic', 'critics'), positivityPhrase(critic, 'critics')].filter(Boolean);
+          return lines.length > 0 && (
+            <div className="flex flex-col gap-1 text-sm text-gray-400">
+              {lines.map(l => <span key={l}>{l}</span>)}
+            </div>
+          );
+        })()}
       </div>
 
       {/* Market Filter — only when critic spans 2+ markets with ≥3 reviews each */}
