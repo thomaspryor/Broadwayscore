@@ -8,6 +8,7 @@ import { useToastSafe } from '@/components/ui/Toast';
 import { getPendingAction, clearPendingAction } from '@/lib/deferred-auth';
 import { useLocalWatchlist } from '@/hooks/useLocalWatchlist';
 import { featureFlags } from '@/config/feature-flags';
+import { toLocalYMD, isPastPlannedDate, formatBookmarkDate, spokenBookmarkDate } from '@/lib/bookmark-date-label';
 
 interface ShowPageBookmarkProps {
   showId: string;
@@ -38,6 +39,58 @@ const SIZES = {
   compact: { button: CORNER_BUTTON, icon: 'w-7 h-8' },
 };
 
+// Dated ribbon, identical to the iOS BookmarkOverlay (BroadwayScorecard-app):
+// fixed 36x42 box, two-line date at 12px bold, never grows. Upcoming = gold
+// bookmark; seen (planned date in the past, not yet rated) = cream ticket stub.
+const DATED_W = 36;
+const DATED_H = 42;
+const DATED_BUTTON = "top-1 right-1 p-0 min-h-0 min-w-0 after:content-[''] after:absolute after:top-0 after:right-0 after:-left-4 after:-bottom-3";
+const BOOKMARK_PATH = 'M3 1 H33 Q35 1 35 3 V41 L18 33.5 L1 41 V3 Q1 1 3 1 Z';
+// Seen: flat bottom, a small bite out of each side, between the two date lines.
+const STUB_PATH = 'M3 1 H33 Q35 1 35 3 V17 A3.5 3.5 0 0 0 35 24 V39 Q35 41 33 41 H3 Q1 41 1 39 V24 A3.5 3.5 0 0 0 1 17 V3 Q1 1 3 1 Z';
+const SEEN_FILL = '#F3EBDD';
+const SEEN_INK = '#2A2114';
+
+/**
+ * The dated ribbon itself (presentational, so the /test fixture can render
+ * every state). Upcoming = gold bookmark, past = cream ticket stub.
+ */
+export function DatedBookmarkButton({ plannedDate, today, onClick, loading = false }: {
+  plannedDate: string;
+  today: string;
+  onClick?: (e: React.MouseEvent) => void;
+  loading?: boolean;
+}) {
+  const label = formatBookmarkDate(plannedDate, today);
+  if (!label) return null;
+  const [top, bottom] = label.split(' ');
+  const seen = isPastPlannedDate(plannedDate, today);
+  const spoken = spokenBookmarkDate(plannedDate, today);
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      disabled={loading}
+      className={`absolute ${DATED_BUTTON} z-10 flex items-center justify-center rounded-md transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-white/80 ${loading ? 'opacity-50' : ''}`}
+      style={{ width: DATED_W, height: DATED_H }}
+      aria-label={seen ? `Planned for ${spoken}, past. Remove from To See` : `Remove from To See, planned ${spoken}`}
+      data-bookmark-state={seen ? 'seen' : 'upcoming'}
+    >
+      <svg width={DATED_W} height={DATED_H} viewBox={`0 0 ${DATED_W} ${DATED_H}`} className="drop-shadow-lg" aria-hidden="true">
+        <path d={seen ? STUB_PATH : BOOKMARK_PATH} fill={seen ? SEEN_FILL : '#FFD700'} stroke={seen ? SEEN_FILL : '#FFD700'} strokeWidth={1.5} strokeLinejoin="round" />
+      </svg>
+      <span
+        className="pointer-events-none absolute left-0 top-2 flex flex-col items-center text-xs font-bold leading-[13px] tabular-nums"
+        style={{ width: DATED_W, color: seen ? SEEN_INK : '#1A1200' }}
+        aria-hidden="true"
+      >
+        <span>{top}</span>
+        <span>{bottom}</span>
+      </span>
+    </button>
+  );
+}
+
 /**
  * Bookmark icon overlaid on show poster/thumbnail images.
  * Outline when not watchlisted, filled gold when watchlisted.
@@ -46,7 +99,7 @@ const SIZES = {
 export default function ShowPageBookmark({ showId, size = 'md' }: ShowPageBookmarkProps) {
   const { user, isAuthenticated, loading: authLoading } = useAuth();
   const { isSavedLocally, toggleLocal } = useLocalWatchlist();
-  const { isWatchlisted, addToWatchlist, removeFromWatchlist, getWatchlist } = useWatchlist(user?.id || null);
+  const { isWatchlisted, addToWatchlist, removeFromWatchlist, getWatchlist, watchlist } = useWatchlist(user?.id || null);
   const { showToast } = useToastSafe();
   const [loading, setLoading] = useState(false);
   const myRating = useMyRating(user?.id || null, showId);
@@ -120,6 +173,16 @@ export default function ShowPageBookmark({ showId, size = 'md' }: ShowPageBookma
 
   const watched = isAuthenticated ? isWatchlisted(showId) : isSavedLocally(showId);
   const s = SIZES[size];
+
+  // Planned date rides on the ribbon (signed-in entries only; local saves have none).
+  const plannedDate = isAuthenticated && watched
+    ? watchlist.find(w => w.show_id === showId)?.planned_date ?? null
+    : null;
+  const today = toLocalYMD(new Date());
+  const dateLabel = formatBookmarkDate(plannedDate, today);
+  if (watched && dateLabel && plannedDate) {
+    return <DatedBookmarkButton plannedDate={plannedDate} today={today} onClick={handleToggle} loading={loading} />;
+  }
 
   return (
     <button
