@@ -24,6 +24,7 @@ import { getVisibleTicketLinks } from '../../src/lib/ticket-utils.ts';
 
 const require = createRequire(import.meta.url);
 const { isRegionMismatch } = require('../lib/ticket-link-discovery.js');
+const { findShowByIdOrAlias } = require('../lib/find-show-by-id.js');
 const showsData = require('../../data/shows.json');
 const shows = showsData.shows;
 
@@ -85,9 +86,8 @@ const VERIFIED_TM_GAP = {
 // show-id-rename.js writes the old id into). A recorded rename, e.g.
 // derren-brown-only-human-west-end-2026 -> ...-off-west-end-2026 (BRO-6979),
 // must not turn main red; only an id that matches nothing at all should.
-function findShow(list, id) {
-  return list.find(s => s.id === id) || list.find(s => (s.aliases || []).includes(id));
-}
+// Shared with show-hero-integrity via scripts/lib/find-show-by-id.js (BRO-6975).
+const findShow = findShowByIdOrAlias;
 
 // These assertions follow the live data, so they must only fail on a real
 // loss. A verified show that closes, or that gains TodayTix (Derren Brown did

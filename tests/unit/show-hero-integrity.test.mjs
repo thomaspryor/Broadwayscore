@@ -22,6 +22,7 @@ import { createRequire } from 'node:module';
 import { fileURLToPath } from 'node:url';
 
 const { related } = createRequire(import.meta.url)('../../scripts/lib/show-title-family.js');
+const { findShowByIdOrAlias } = createRequire(import.meta.url)('../../scripts/lib/find-show-by-id.js');
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 const PUBLIC = path.join(ROOT, 'public');
 const SHOWS_DIR = path.join(PUBLIC, 'data', 'shows');
@@ -167,8 +168,8 @@ test('shows.json no longer points rejected hero/poster fields at missing or reje
   const shows = Array.isArray(raw) ? raw : raw.shows;
   const bad = [];
   for (const [id, field] of REJECTED_IMAGE_FIELDS) {
-    const s = shows.find((x) => x.id === id);
-    assert.ok(s, `${id} missing from shows.json (renamed? update this guard)`);
+    const s = findShowByIdOrAlias(shows, id);
+    assert.ok(s, `${id} is in neither id nor aliases of shows.json (update this guard)`);
     const ref = s.images && s.images[field];
     if (!ref) continue;
     if (/^https?:/.test(ref)) { bad.push(`${id}.images.${field} = ${ref} (remote, not archived)`); continue; }
