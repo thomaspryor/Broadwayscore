@@ -1,18 +1,60 @@
 {
-  "generatedAt": "2026-11-03T12:58:15.199Z",
-  "total": 399,
-  "armedCount": 390,
-  "refusedCount": 9,
+  "generatedAt": "2026-11-04T13:12:06.334Z",
+  "total": 379,
+  "armedCount": 365,
+  "refusedCount": 14,
   "byKind": {
-    "shape": 9
+    "no-section": 2,
+    "shape": 11,
+    "no-command": 1
   },
   "refused": [
     {
-      "id": "BRO-6858",
-      "name": "Broadway press night hardening before Wanted (Nov 8): old-path watchdog, fast owner alert, fresh embargo, faster first-2h polling, credit preflight",
+      "id": "BRO-6974",
+      "name": "Opening-night audit 2026-11-04",
       "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6858/broadway-press-night-hardening-before-wanted-nov-8-old-path-watchdog",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/press-night-record.js --show=wanted-2022 --night=2026-11-08 --check)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6974/opening-night-audit-2026-11-04",
+      "reason": "card has no acceptance-criteria section or VERIFY line",
+      "kind": "no-section"
+    },
+    {
+      "id": "BRO-6957",
+      "name": "iOS E2E: signed-out sweep, every sign-in prompt opens and closes cleanly",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6957/ios-e2e-signed-out-sweep-every-sign-in-prompt-opens-and-closes-cleanly",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: npm run test:e2e-coverage (BroadwayScorecard-app) passes; nightly maestro-e2e.yml run after 2026-11-08 includes signed-o)",
+      "kind": "shape"
+    },
+    {
+      "id": "BRO-6956",
+      "name": "Critic coverage audit is blind in cloud: Muck Rack fetch fails for every critic",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6956/critic-coverage-audit-is-blind-in-cloud-muck-rack-fetch-fails-for",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/audit-critic-coverage.js --limit=3 prints no FETCH FAILED (muckrack) lines.)",
+      "kind": "shape"
+    },
+    {
+      "id": "BRO-6949",
+      "name": "x",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6949/x",
+      "reason": "card has no acceptance-criteria section or VERIFY line",
+      "kind": "no-section"
+    },
+    {
+      "id": "BRO-6944",
+      "name": "iOS: signed-out rating Save shows no sign-in sheet and strands the user on the show page",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6944/ios-signed-out-rating-save-shows-no-sign-in-sheet-and-strands-the-user",
+      "reason": "acceptance criteria names no runnable command (prose only)",
+      "kind": "no-command"
+    },
+    {
+      "id": "BRO-6939",
+      "name": "Onboarding follow-ups: audit new tours' art in CI, keep genre tags through a lost-push redo",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6939/onboarding-follow-ups-audit-new-tours-art-in-ci-keep-genre-tags",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/test-onboarding-data.js)",
       "kind": "shape"
     },
     {
@@ -81,20 +123,66 @@
     }
   ],
   "ownerJudgmentLimbo": {
-    "total": 329,
-    "checked": 329,
+    "total": 299,
+    "checked": 299,
     "complete": true,
-    "cards": [
-      {
-        "id": "BRO-6642",
-        "name": "Email sign-in: add a captcha (Cloudflare Turnstile) to code sends",
-        "priority": 3,
-        "url": "https://linear.app/broadway-scorecard/issue/BRO-6642/email-sign-in-add-a-captcha-cloudflare-turnstile-to-code-sends",
-        "source": "description"
-      }
-    ]
+    "cards": []
   },
   "missingCheckPaths": [
+    {
+      "id": "BRO-6963",
+      "name": "Web/app parity leftovers: toast wording, planned-date format, small-sample audience note, curated-historical min, photos on new rating",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6963/webapp-parity-leftovers-toast-wording-planned-date-format-small-sample",
+      "cmd": "node --test tests/unit/web-app-leftovers-parity.test.mjs",
+      "missingPaths": [
+        "tests/unit/web-app-leftovers-parity.test.mjs"
+      ]
+    },
+    {
+      "id": "BRO-6919",
+      "name": "iOS eas-build: manual builds get silently cancelled when a CI push queues behind the shared Supabase fixture lock",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6919/ios-eas-build-manual-builds-get-silently-cancelled-when-a-ci-push",
+      "cmd": "node --test scripts/verify-eas-build-gate-concurrency.test.mjs",
+      "missingPaths": [
+        "scripts/verify-eas-build-gate-concurrency.test.mjs"
+      ]
+    },
+    {
+      "id": "BRO-6917",
+      "name": "Web sign-up flow: light-touch onboarding (anonymous ratings, quieter bookmark prompt, opt-in quiz after Sign-in-button sign-ups)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6917/web-sign-up-flow-light-touch-onboarding-anonymous-ratings-quieter",
+      "cmd": "node --test tests/unit/web-signup-onboarding.test.mjs",
+      "missingPaths": [
+        "tests/unit/web-signup-onboarding.test.mjs"
+      ]
+    },
+    {
+      "id": "BRO-6915",
+      "name": "DECISION NEEDED: approve these critic outreach notes",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6915/decision-needed-approve-these-critic-outreach-notes",
+      "cmd": "test -f memory/critic-outreach-approved.txt",
+      "missingPaths": [
+        "memory/critic-outreach-approved.txt"
+      ]
+    },
+    {
+      "id": "BRO-6914",
+      "name": "Quiz follow-ups the BRO-6734 reviewer found outside its scope",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6914/quiz-follow-ups-the-bro-6734-reviewer-found-outside-its-scope",
+      "cmd": "node --test scripts/dispatch-follow-ups.test.mjs",
+      "missingPaths": [
+        "scripts/dispatch-follow-ups.test.mjs"
+      ]
+    },
+    {
+      "id": "BRO-6909",
+      "name": "Waiting for Lefty lost Vulture/NYSR/Pizzazz/Cititour to the cross-show URL guard (author-credit title vs closed 2024 regional)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6909/waiting-for-lefty-lost-vulturenysrpizzazzcititour-to-the-cross-show",
+      "cmd": "node --test tests/unit/cross-show-url-guard.test.mjs",
+      "missingPaths": [
+        "tests/unit/cross-show-url-guard.test.mjs"
+      ]
+    },
     {
       "id": "BRO-6872",
       "name": "Quarantined live test: run the opening-night lane (shadow, empty ledger) on past Broadway nights and grade vs the aggregator census",
@@ -138,51 +226,6 @@
       "cmd": "test -f memory/next-city-hub-decision.md",
       "missingPaths": [
         "memory/next-city-hub-decision.md"
-      ]
-    },
-    {
-      "id": "BRO-6800",
-      "name": "Opera hub page text still names only the Met and Royal Opera House (needs owner visual OK)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6800/opera-hub-page-text-still-names-only-the-met-and-royal-opera-house",
-      "cmd": "node --test tests/unit/opera-hub-text-expansion.test.mjs",
-      "missingPaths": [
-        "tests/unit/opera-hub-text-expansion.test.mjs"
-      ]
-    },
-    {
-      "id": "BRO-6791",
-      "name": "Opera brand colour: site header is amber, social kit is rose-red",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6791/opera-brand-colour-site-header-is-amber-social-kit-is-rose-red",
-      "cmd": "node --test scripts/opera-brand-colour.test.mjs",
-      "missingPaths": [
-        "scripts/opera-brand-colour.test.mjs"
-      ]
-    },
-    {
-      "id": "BRO-6768",
-      "name": "iOS nightly E2E failures reach no one: auto-file one Linear card when the scheduled Maestro run fails",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6768/ios-nightly-e2e-failures-reach-no-one-auto-file-one-linear-card-when",
-      "cmd": "node --test tests/unit/e2e-failure-alert.test.mjs",
-      "missingPaths": [
-        "tests/unit/e2e-failure-alert.test.mjs"
-      ]
-    },
-    {
-      "id": "BRO-6681",
-      "name": "iOS: share my diary link from the Watched tab (web already has it)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6681/ios-share-my-diary-link-from-the-watched-tab-web-already-has-it",
-      "cmd": "node --test tests/unit/diary-share.test.mjs",
-      "missingPaths": [
-        "tests/unit/diary-share.test.mjs"
-      ]
-    },
-    {
-      "id": "BRO-6674",
-      "name": "Audit the 15 workflows whose failure alert is low severity (digest only): which should file a fix card like verify-schema",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6674/audit-the-15-workflows-whose-failure-alert-is-low-severity-digest-only",
-      "cmd": "node --test scripts/audit-low-severity-workflows.test.mjs",
-      "missingPaths": [
-        "scripts/audit-low-severity-workflows.test.mjs"
       ]
     },
     {
@@ -312,42 +355,6 @@
       ]
     },
     {
-      "id": "BRO-6249",
-      "name": "Three-tier planning rule: substantial = plan + /plan-review + owner yes; moderate = /second-opinion; simple = go (rule text + advisory hook)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6249/three-tier-planning-rule-substantial-plan-plan-review-owner-yes",
-      "cmd": "node --test scripts/lib/review-gate.test.mjs",
-      "missingPaths": [
-        "scripts/lib/review-gate.test.mjs"
-      ]
-    },
-    {
-      "id": "BRO-6247",
-      "name": "iOS: Your favorites (three ranked shows) on the Stats tab",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6247/ios-your-favorites-three-ranked-shows-on-the-stats-tab",
-      "cmd": "node --test tests/unit/favorite-shows.test.mjs",
-      "missingPaths": [
-        "tests/unit/favorite-shows.test.mjs"
-      ]
-    },
-    {
-      "id": "BRO-6232",
-      "name": "iOS: Guides and tools list at the bottom of Home",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6232/ios-guides-and-tools-list-at-the-bottom-of-home",
-      "cmd": "node --test tests/unit/home-guides.test.mjs",
-      "missingPaths": [
-        "tests/unit/home-guides.test.mjs"
-      ]
-    },
-    {
-      "id": "BRO-6224",
-      "name": "iOS Stats: 'Critic nemesis' can be a 70% match or the same critic shown as a closest/rising match",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6224/ios-stats-critic-nemesis-can-be-a-70percent-match-or-the-same-critic",
-      "cmd": "node --test tests/unit/aisle-mates.test.mjs",
-      "missingPaths": [
-        "tests/unit/aisle-mates.test.mjs"
-      ]
-    },
-    {
       "id": "BRO-6219",
       "name": "iOS alerts v2: fix reviews-in + rate duplicate, prefs, closing alerts (plan-reviewed)",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-6219/ios-alerts-v2-fix-reviews-in-rate-duplicate-prefs-closing-alerts-plan",
@@ -411,24 +418,6 @@
       ]
     },
     {
-      "id": "BRO-5986",
-      "name": "iOS: users with a planned date get two 'How was X?' reminders (local 10pm + server push)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5986/ios-users-with-a-planned-date-get-two-how-was-x-reminders-local-10pm",
-      "cmd": "node --test scripts/lib/reminder-deduplication.test.mjs",
-      "missingPaths": [
-        "scripts/lib/reminder-deduplication.test.mjs"
-      ]
-    },
-    {
-      "id": "BRO-5956",
-      "name": "Opening-night lane: West End fixture and adapters (WET, theatre.reviews, Stagedoor, The Stage, LBO) captured from The Lives of Others",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5956/opening-night-lane-west-end-fixture-and-adapters-wet-theatrereviews",
-      "cmd": "node --test tests/unit/west-end-fixture-replay.test.mjs",
-      "missingPaths": [
-        "tests/unit/west-end-fixture-replay.test.mjs"
-      ]
-    },
-    {
       "id": "BRO-5898",
       "name": "Mac Studio: clear the backlog of owner-blocked cloud-session TODO emails",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-5898/mac-studio-clear-the-backlog-of-owner-blocked-cloud-session-todo",
@@ -483,15 +472,6 @@
       ]
     },
     {
-      "id": "BRO-5806",
-      "name": "iOS app CI never runs its website-parity contracts (no Broadwayscore checkout): add an advisory parity job",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5806/ios-app-ci-never-runs-its-website-parity-contracts-no-broadwayscore",
-      "cmd": "node --test tests/unit/web-repo.test.mjs",
-      "missingPaths": [
-        "tests/unit/web-repo.test.mjs"
-      ]
-    },
-    {
       "id": "BRO-5804",
       "name": "Weekly-gross history: check 4 missing weeks for three 2017-2022 revivals so their all-time totals can fill",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-5804/weekly-gross-history-check-4-missing-weeks-for-three-2017-2022",
@@ -507,15 +487,6 @@
       "cmd": "node --test scripts/verify-bro-5384-codex-throughput.test.mjs",
       "missingPaths": [
         "scripts/verify-bro-5384-codex-throughput.test.mjs"
-      ]
-    },
-    {
-      "id": "BRO-5662",
-      "name": "iOS app To Be Rated hides a past rewatch of an already-rated show",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5662/ios-app-to-be-rated-hides-a-past-rewatch-of-an-already-rated-show",
-      "cmd": "node --test scripts/lib/is-watchlist-entry-rated.test.mjs",
-      "missingPaths": [
-        "scripts/lib/is-watchlist-entry-rated.test.mjs"
       ]
     },
     {
@@ -681,39 +652,12 @@
       ]
     },
     {
-      "id": "BRO-4670",
-      "name": "iOS app: log sign_in_started and sign_in_completed under the same PostHog distinct_id",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-4670/ios-app-log-sign-in-started-and-sign-in-completed-under-the-same",
-      "cmd": "node --test scripts/lib/posthog-funnel-consistency.test.mjs",
-      "missingPaths": [
-        "scripts/lib/posthog-funnel-consistency.test.mjs"
-      ]
-    },
-    {
       "id": "BRO-4602",
       "name": "Deploy's Google sitemap submission gets 403 (service account lacks Search Console permission)",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-4602/deploys-google-sitemap-submission-gets-403-service-account-lacks",
       "cmd": "node --test tests/unit/vercel-deploy-no-sitemap-submit.test.mjs",
       "missingPaths": [
         "tests/unit/vercel-deploy-no-sitemap-submit.test.mjs"
-      ]
-    },
-    {
-      "id": "BRO-4559",
-      "name": "iOS app: show the 'Most reviews from N years ago' caveat the website shows",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-4559/ios-app-show-the-most-reviews-from-n-years-ago-caveat-the-website",
-      "cmd": "node --test tests/unit/review-age-caveat.test.mjs",
-      "missingPaths": [
-        "tests/unit/review-age-caveat.test.mjs"
-      ]
-    },
-    {
-      "id": "BRO-4531",
-      "name": "iOS privacy-details.md (App Store privacy labels) is stale vs the BRO-4525 privacy policy",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-4531/ios-privacy-detailsmd-app-store-privacy-labels-is-stale-vs-the-bro",
-      "cmd": "node --test scripts/verify-privacy-labels.test.mjs",
-      "missingPaths": [
-        "scripts/verify-privacy-labels.test.mjs"
       ]
     },
     {
@@ -951,5 +895,18 @@
       ]
     }
   ],
-  "vacuousChecks": []
+  "vacuousChecks": [
+    {
+      "id": "BRO-6965",
+      "name": "Regular pipeline reads the lane's 24 outlet feeds daily (Bob's Theater Blog reviews missing for AGM, ODC)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6965/regular-pipeline-reads-the-lanes-24-outlet-feeds-daily-bobs-theater",
+      "cmd": "test -f scripts/lib/titled-blog-collect.js",
+      "kind": "test-f-satisfied",
+      "polarity": "never-fails",
+      "paths": [
+        "scripts/lib/titled-blog-collect.js"
+      ],
+      "reason": "`test -f scripts/lib/titled-blog-collect.js` already passes on origin/main, so re-running it at Done time cannot distinguish finished work from untouched work"
+    }
+  ]
 }
