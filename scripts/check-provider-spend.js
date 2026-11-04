@@ -419,7 +419,7 @@ async function runAllowanceExpiryAlerts({ expiring, router }) {
       conditionKey: key,
       title: `Browserbase allowance for ${a.caller} ${when}: extend with evidence or delete`,
       description: `${a.expired ? 'Since that date' : 'From that date'} ${a.caller} gets no reserved Browserbase sessions, so once the account passes its non-reserve limit (often by mid-morning UTC) it is refused for the rest of the day. For the opening-night lane and the Talkin' Broadway collector that means Talkin' Broadway reviews go unread. A helper session handles this; the owner does not need to act.\n\nTechnical: CALLER_ALLOWANCES['${a.caller}'] in scripts/lib/browserbase-caps.js, until ${a.until}.`,
-      hint: `Count the caller's sessions per day over the last 2-3 weeks: GET https://api.browserbase.com/v1/sessions?q=user_metadata['caller']:'${a.caller}' (X-BB-API-Key). Post the per-day counts on the card. If it is still used, extend \`until\` by at most 90 days with a one-line evidence comment; if not, delete the entry (and move any tests that use it).`,
+      hint: `Count the caller's sessions per day over the last 2-3 weeks from the Browserbase sessions list, filtered by user_metadata.caller (scripts/lib/browserbase-live-usage.js counts it the same way). Post the per-day counts on the card. If it is still used, extend \`until\` by at most 90 days with a one-line evidence comment; if not, delete the entry (and move any tests that use it).`,
       severity: a.expired ? 'error' : 'warning',
       disposition: 'auto',
       cardAction: a.expired ? 'Fix' : 'Investigate',
