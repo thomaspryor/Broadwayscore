@@ -1,0 +1,219 @@
+{
+  "issueNumber": "bro-6940",
+  "planId": "46c05d01-f96b-4dfb-8d73-dfdcf3277252",
+  "status": "pending",
+  "createdAt": "2026-11-04T00:30:40.787Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6940: re-credit review files whose printed byline names a different critic (Waiting for Lefty NYSR: Frank Scheck -> Michael Sommers) and fill unnamed files from their printed byline (part 1 of 10)",
+    "steps": [
+      "BRO-6940: article byline prints F. Kathleen Foley; file was credited to Steven Morris",
+      "review-file-op",
+      "BRO-6940: article byline prints Lucy Popescu; file was credited to Unknown",
+      "review-file-op",
+      "BRO-6940: article byline prints Neil Durham; file was credited to Unknown",
+      "review-file-op",
+      "BRO-6940: article byline prints Lucy Popescu; file was credited to Unknown",
+      "review-file-op",
+      "BRO-6940: article byline prints Neil Durham; file was credited to Unknown",
+      "review-file-op",
+      "BRO-6940: article byline prints Tim Teeman; file was credited to Unknown",
+      "review-file-op",
+      "BRO-6940: article byline prints Samuel L. Leiter; file was credited to JK Clarke",
+      "review-file-op",
+      "BRO-6940: article byline prints Carol Rocamora; file was credited to Unknown",
+      "review-file-op",
+      "BRO-6940: article byline prints Seth Wilby; file was credited to Unknown",
+      "review-file-op",
+      "BRO-6940: article byline prints Lucy Popescu; file was credited to Unknown",
+      "review-file-op",
+      "BRO-6940: article byline prints Carole Di Tosti; file was credited to Unknown",
+      "review-file-op",
+      "BRO-6940: article byline prints Marc Miller; file was credited to Unknown",
+      "review-file-op",
+      "BRO-6940: article byline prints Vince Kanasoot; file was credited to Janet Smith"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "a-beautiful-noise-the-neil-diamond-musical-tour-2024/stage-raw--steven-morris.json",
+        "field": "criticName",
+        "oldValue": "Steven Morris",
+        "newValue": "F. Kathleen Foley",
+        "description": "BRO-6940: article byline prints F. Kathleen Foley; file was credited to Steven Morris"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "a-beautiful-noise-the-neil-diamond-musical-tour-2024/stage-raw--steven-morris.json",
+        "destPath": "a-beautiful-noise-the-neil-diamond-musical-tour-2024/stage-raw--f-kathleen-foley.json"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-month-in-the-country-west-end-2026/camdennewjournal--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Lucy Popescu",
+        "description": "BRO-6940: article byline prints Lucy Popescu; file was credited to Unknown"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "a-month-in-the-country-west-end-2026/camdennewjournal--unknown.json",
+        "destPath": "a-month-in-the-country-west-end-2026/camdennewjournal--lucy-popescu.json"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-view-from-the-bridge-west-end-2024/monstagigz--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Neil Durham",
+        "description": "BRO-6940: article byline prints Neil Durham; file was credited to Unknown"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "a-view-from-the-bridge-west-end-2024/monstagigz--unknown.json",
+        "destPath": "a-view-from-the-bridge-west-end-2024/monstagigz--neil-durham.json"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "accidental-death-of-an-anarchist-west-end-2023/camdennewjournal--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Lucy Popescu",
+        "description": "BRO-6940: article byline prints Lucy Popescu; file was credited to Unknown"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "accidental-death-of-an-anarchist-west-end-2023/camdennewjournal--unknown.json",
+        "destPath": "accidental-death-of-an-anarchist-west-end-2023/camdennewjournal--lucy-popescu.json"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "all-my-sons-west-end-2025/monstagigz--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Neil Durham",
+        "description": "BRO-6940: article byline prints Neil Durham; file was credited to Unknown"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "all-my-sons-west-end-2025/monstagigz--unknown.json",
+        "destPath": "all-my-sons-west-end-2025/monstagigz--neil-durham.json"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "amid-falling-walls-tsvishn-falndike-vent-off-broadway-2023/dailybeast--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Tim Teeman",
+        "description": "BRO-6940: article byline prints Tim Teeman; file was credited to Unknown"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "amid-falling-walls-tsvishn-falndike-vent-off-broadway-2023/dailybeast--unknown.json",
+        "destPath": "amid-falling-walls-tsvishn-falndike-vent-off-broadway-2023/dailybeast--tim-teeman.json"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "amid-falling-walls-tsvishn-falndike-vent-off-broadway-2023/theater-pizzazz--jk-clarke.json",
+        "field": "criticName",
+        "oldValue": "JK Clarke",
+        "newValue": "Samuel L. Leiter",
+        "description": "BRO-6940: article byline prints Samuel L. Leiter; file was credited to JK Clarke"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "amid-falling-walls-tsvishn-falndike-vent-off-broadway-2023/theater-pizzazz--jk-clarke.json",
+        "destPath": "amid-falling-walls-tsvishn-falndike-vent-off-broadway-2023/theater-pizzazz--samuel-l-leiter.json"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "are-you-now-or-have-you-ever-been-off-broadway-2026/theater-pizzazz--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Carol Rocamora",
+        "description": "BRO-6940: article byline prints Carol Rocamora; file was credited to Unknown"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "are-you-now-or-have-you-ever-been-off-broadway-2026/theater-pizzazz--unknown.json",
+        "destPath": "are-you-now-or-have-you-ever-been-off-broadway-2026/theater-pizzazz--carol-rocamora.json"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "art-royal-bath-regional-2024/all-that-dazzles-uk--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Seth Wilby",
+        "description": "BRO-6940: article byline prints Seth Wilby; file was credited to Unknown"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "art-royal-bath-regional-2024/all-that-dazzles-uk--unknown.json",
+        "destPath": "art-royal-bath-regional-2024/all-that-dazzles-uk--seth-wilby.json"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "baghdaddy-west-end-2022/camdennewjournal--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Lucy Popescu",
+        "description": "BRO-6940: article byline prints Lucy Popescu; file was credited to Unknown"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "baghdaddy-west-end-2022/camdennewjournal--unknown.json",
+        "destPath": "baghdaddy-west-end-2022/camdennewjournal--lucy-popescu.json"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "beckett-briefs-off-broadway-2025/theater-pizzazz--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Carole Di Tosti",
+        "description": "BRO-6940: article byline prints Carole Di Tosti; file was credited to Unknown"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "beckett-briefs-off-broadway-2025/theater-pizzazz--unknown.json",
+        "destPath": "beckett-briefs-off-broadway-2025/theater-pizzazz--carole-di-tosti.json"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "becoming-eve-off-broadway-2025/talkinbroadway--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Marc Miller",
+        "description": "BRO-6940: article byline prints Marc Miller; file was credited to Unknown"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "becoming-eve-off-broadway-2025/talkinbroadway--unknown.json",
+        "destPath": "becoming-eve-off-broadway-2025/talkinbroadway--marc-miller.json"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "beetlejuice-tour-2022/stir--janet-smith.json",
+        "field": "criticName",
+        "oldValue": "Janet Smith",
+        "newValue": "Vince Kanasoot",
+        "description": "BRO-6940: article byline prints Vince Kanasoot; file was credited to Janet Smith"
+      }
+    ]
+  }
+}

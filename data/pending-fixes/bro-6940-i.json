@@ -1,0 +1,219 @@
+{
+  "issueNumber": "bro-6940-i",
+  "planId": "98ee4349-2fce-4e32-b6af-ed1c76bd4dea",
+  "status": "pending",
+  "createdAt": "2026-11-04T00:30:40.787Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6940: re-credit review files whose printed byline names a different critic (Waiting for Lefty NYSR: Frank Scheck -> Michael Sommers) and fill unnamed files from their printed byline (part 9 of 10)",
+    "steps": [
+      "BRO-6940: article byline prints Joel Beers; file was credited to Steven Morris",
+      "review-file-op",
+      "BRO-6940: article byline prints Neil Durham; file was credited to Unknown",
+      "review-file-op",
+      "BRO-6940: article byline prints Lucy Popescu; file was credited to Unknown",
+      "review-file-op",
+      "BRO-6940: article byline prints Carole Di Tosti; file was credited to Unknown",
+      "review-file-op",
+      "BRO-6940: article byline prints Sam Waite; file was credited to Unknown",
+      "review-file-op",
+      "BRO-6940: article byline prints Lucy Popescu; file was credited to Unknown",
+      "review-file-op",
+      "BRO-6940: article byline prints Michael Portantiere; file was credited to Unknown",
+      "review-file-op",
+      "BRO-6940: article byline prints Lucy Popescu; file was credited to Unknown",
+      "review-file-op",
+      "BRO-6940: article byline prints Asa Fris; file was credited to Steven Morris",
+      "review-file-op",
+      "BRO-6940: article byline prints Marc Miller; file was credited to Unknown",
+      "review-file-op",
+      "BRO-6940: article byline prints Tulis McCall; file was credited to Joe Dziemianowicz",
+      "review-file-op",
+      "BRO-6940: article byline prints Penny Walshe; file was credited to Sarah P",
+      "review-file-op",
+      "BRO-6940: article byline prints Lucy Popescu; file was credited to Unknown"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "the-notebook-tour-2025/stage-raw--steven-morris.json",
+        "field": "criticName",
+        "oldValue": "Steven Morris",
+        "newValue": "Joel Beers",
+        "description": "BRO-6940: article byline prints Joel Beers; file was credited to Steven Morris"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "the-notebook-tour-2025/stage-raw--steven-morris.json",
+        "destPath": "the-notebook-tour-2025/stage-raw--joel-beers.json"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-pianist-off-west-end-2026/monstagigz--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Neil Durham",
+        "description": "BRO-6940: article byline prints Neil Durham; file was credited to Unknown"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "the-pianist-off-west-end-2026/monstagigz--unknown.json",
+        "destPath": "the-pianist-off-west-end-2026/monstagigz--neil-durham.json"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-pillowman-west-end-2023/camdennewjournal--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Lucy Popescu",
+        "description": "BRO-6940: article byline prints Lucy Popescu; file was credited to Unknown"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "the-pillowman-west-end-2023/camdennewjournal--unknown.json",
+        "destPath": "the-pillowman-west-end-2023/camdennewjournal--lucy-popescu.json"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-price-off-broadway-2025/theater-pizzazz--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Carole Di Tosti",
+        "description": "BRO-6940: article byline prints Carole Di Tosti; file was credited to Unknown"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "the-price-off-broadway-2025/theater-pizzazz--unknown.json",
+        "destPath": "the-price-off-broadway-2025/theater-pizzazz--carole-di-tosti.json"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-revlon-girl-off-west-end-2026/all-that-dazzles-uk--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Sam Waite",
+        "description": "BRO-6940: article byline prints Sam Waite; file was credited to Unknown"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "the-revlon-girl-off-west-end-2026/all-that-dazzles-uk--unknown.json",
+        "destPath": "the-revlon-girl-off-west-end-2026/all-that-dazzles-uk--sam-waite.json"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-standard-of-living-west-end-2026/camdennewjournal--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Lucy Popescu",
+        "description": "BRO-6940: article byline prints Lucy Popescu; file was credited to Unknown"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "the-standard-of-living-west-end-2026/camdennewjournal--unknown.json",
+        "destPath": "the-standard-of-living-west-end-2026/camdennewjournal--lucy-popescu.json"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "time-and-the-conways-2017/talkinbroadway--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Michael Portantiere",
+        "description": "BRO-6940: article byline prints Michael Portantiere; file was credited to Unknown"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "time-and-the-conways-2017/talkinbroadway--unknown.json",
+        "destPath": "time-and-the-conways-2017/talkinbroadway--michael-portantiere.json"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "vardy-v-rooney-the-wagatha-christie-trial-west-end-2023/camdennewjournal--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Lucy Popescu",
+        "description": "BRO-6940: article byline prints Lucy Popescu; file was credited to Unknown"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "vardy-v-rooney-the-wagatha-christie-trial-west-end-2023/camdennewjournal--unknown.json",
+        "destPath": "vardy-v-rooney-the-wagatha-christie-trial-west-end-2023/camdennewjournal--lucy-popescu.json"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "water-for-elephants-tour-2025/stage-raw--steven-morris.json",
+        "field": "criticName",
+        "oldValue": "Steven Morris",
+        "newValue": "Asa Fris",
+        "description": "BRO-6940: article byline prints Asa Fris; file was credited to Steven Morris"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "water-for-elephants-tour-2025/stage-raw--steven-morris.json",
+        "destPath": "water-for-elephants-tour-2025/stage-raw--asa-fris.json"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "we-live-in-cairo-off-broadway-2024/talkinbroadway--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Marc Miller",
+        "description": "BRO-6940: article byline prints Marc Miller; file was credited to Unknown"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "we-live-in-cairo-off-broadway-2024/talkinbroadway--unknown.json",
+        "destPath": "we-live-in-cairo-off-broadway-2024/talkinbroadway--marc-miller.json"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "west-side-story-2009/nytg--joe-dziemianowicz.json",
+        "field": "criticName",
+        "oldValue": "Joe Dziemianowicz",
+        "newValue": "Tulis McCall",
+        "description": "BRO-6940: article byline prints Tulis McCall; file was credited to Joe Dziemianowicz"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "west-side-story-2009/nytg--joe-dziemianowicz.json",
+        "destPath": "west-side-story-2009/nytg--tulis-mccall.json"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "what-the-animals-say-off-west-end-2026/theatreandtonic--sarah-p.json",
+        "field": "criticName",
+        "oldValue": "Sarah P",
+        "newValue": "Penny Walshe",
+        "description": "BRO-6940: article byline prints Penny Walshe; file was credited to Sarah P"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "what-the-animals-say-off-west-end-2026/theatreandtonic--sarah-p.json",
+        "destPath": "what-the-animals-say-off-west-end-2026/theatreandtonic--penny-walshe.json"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "whos-afraid-of-virginia-woolf-west-end-2026/camdennewjournal--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Lucy Popescu",
+        "description": "BRO-6940: article byline prints Lucy Popescu; file was credited to Unknown"
+      }
+    ]
+  }
+}

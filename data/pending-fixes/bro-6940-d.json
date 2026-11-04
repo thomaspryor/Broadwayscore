@@ -1,0 +1,217 @@
+{
+  "issueNumber": "bro-6940-d",
+  "planId": "20d6ad02-0a62-4968-9d81-c36c7f413056",
+  "status": "pending",
+  "createdAt": "2026-11-04T00:30:40.787Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6940: re-credit review files whose printed byline names a different critic (Waiting for Lefty NYSR: Frank Scheck -> Michael Sommers) and fill unnamed files from their printed byline (part 4 of 10)",
+    "steps": [
+      "review-file-op",
+      "BRO-6940: article byline prints Neil Durham; file was credited to Unknown",
+      "review-file-op",
+      "BRO-6940: article byline prints Isobel Lewis; file was credited to Time Out",
+      "review-file-op",
+      "BRO-6940: article byline prints Carole Di Tosti; file was credited to Unknown",
+      "review-file-op",
+      "BRO-6940: article byline prints Neil Durham; file was credited to Unknown",
+      "review-file-op",
+      "BRO-6940: article byline prints Carole Di Tosti; file was credited to Unknown",
+      "review-file-op",
+      "BRO-6940: article byline prints Andrzej Lukowski; file was credited to Time Out",
+      "review-file-op",
+      "BRO-6940: article byline prints Emmie Newitt; file was credited to Stephen Gilchrist",
+      "review-file-op",
+      "BRO-6940: article byline prints Tulis McCall; file was credited to Unknown",
+      "review-file-op",
+      "BRO-6940: article byline prints Jude Cramer; file was credited to Matthew Wexler",
+      "review-file-op",
+      "BRO-6940: article byline prints Lucy Popescu; file was credited to Unknown",
+      "review-file-op",
+      "BRO-6940: article byline prints Matt Windman; file was credited to Unknown",
+      "review-file-op",
+      "BRO-6940: article byline prints Frank Scheck; file was credited to Unknown",
+      "review-file-op"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "ilford-boy-west-end-2026/monstagigz--unknown.json",
+        "destPath": "ilford-boy-west-end-2026/monstagigz--neil-durham.json"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "im-every-woman-off-west-end-2026/monstagigz--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Neil Durham",
+        "description": "BRO-6940: article byline prints Neil Durham; file was credited to Unknown"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "im-every-woman-off-west-end-2026/monstagigz--unknown.json",
+        "destPath": "im-every-woman-off-west-end-2026/monstagigz--neil-durham.json"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "im-every-woman-off-west-end-2026/timeout-london--time-out.json",
+        "field": "criticName",
+        "oldValue": "Time Out",
+        "newValue": "Isobel Lewis",
+        "description": "BRO-6940: article byline prints Isobel Lewis; file was credited to Time Out"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "im-every-woman-off-west-end-2026/timeout-london--time-out.json",
+        "destPath": "im-every-woman-off-west-end-2026/timeout-london--isobel-lewis.json"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "in-the-amazon-warehouse-parking-lot-off-broadway-2024/theater-pizzazz--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Carole Di Tosti",
+        "description": "BRO-6940: article byline prints Carole Di Tosti; file was credited to Unknown"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "in-the-amazon-warehouse-parking-lot-off-broadway-2024/theater-pizzazz--unknown.json",
+        "destPath": "in-the-amazon-warehouse-parking-lot-off-broadway-2024/theater-pizzazz--carole-di-tosti.json"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "into-the-woods-west-end-2025/monstagigz--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Neil Durham",
+        "description": "BRO-6940: article byline prints Neil Durham; file was credited to Unknown"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "into-the-woods-west-end-2025/monstagigz--unknown.json",
+        "destPath": "into-the-woods-west-end-2025/monstagigz--neil-durham.json"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "irishtown-off-broadway-2025/theater-pizzazz--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Carole Di Tosti",
+        "description": "BRO-6940: article byline prints Carole Di Tosti; file was credited to Unknown"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "irishtown-off-broadway-2025/theater-pizzazz--unknown.json",
+        "destPath": "irishtown-off-broadway-2025/theater-pizzazz--carole-di-tosti.json"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "jane-eyre-off-west-end-2026/timeout-london--time-out.json",
+        "field": "criticName",
+        "oldValue": "Time Out",
+        "newValue": "Andrzej Lukowski",
+        "description": "BRO-6940: article byline prints Andrzej Lukowski; file was credited to Time Out"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "jane-eyre-off-west-end-2026/timeout-london--time-out.json",
+        "destPath": "jane-eyre-off-west-end-2026/timeout-london--andrzej-lukowski.json"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "jeeves-takes-charge-west-end-2026/theatreandtonic--stephen-gilchrist.json",
+        "field": "criticName",
+        "oldValue": "Stephen Gilchrist",
+        "newValue": "Emmie Newitt",
+        "description": "BRO-6940: article byline prints Emmie Newitt; file was credited to Stephen Gilchrist"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "jeeves-takes-charge-west-end-2026/theatreandtonic--stephen-gilchrist.json",
+        "destPath": "jeeves-takes-charge-west-end-2026/theatreandtonic--emmie-newitt.json"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "jitney-2017/nytg--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Tulis McCall",
+        "description": "BRO-6940: article byline prints Tulis McCall; file was credited to Unknown"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "jitney-2017/nytg--unknown.json",
+        "destPath": "jitney-2017/nytg--tulis-mccall.json"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "john-proctor-is-the-villain-2025/one-minute-critic--matthew-wexler.json",
+        "field": "criticName",
+        "oldValue": "Matthew Wexler",
+        "newValue": "Jude Cramer",
+        "description": "BRO-6940: article byline prints Jude Cramer; file was credited to Matthew Wexler"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "john-proctor-is-the-villain-2025/one-minute-critic--matthew-wexler.json",
+        "destPath": "john-proctor-is-the-villain-2025/one-minute-critic--jude-cramer.json"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "john-proctor-is-the-villain-west-end-2026/camdennewjournal--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Lucy Popescu",
+        "description": "BRO-6940: article byline prints Lucy Popescu; file was credited to Unknown"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "john-proctor-is-the-villain-west-end-2026/camdennewjournal--unknown.json",
+        "destPath": "john-proctor-is-the-villain-west-end-2026/camdennewjournal--lucy-popescu.json"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "julius-caesar-off-broadway-2017/amny--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Matt Windman",
+        "description": "BRO-6940: article byline prints Matt Windman; file was credited to Unknown"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "julius-caesar-off-broadway-2017/amny--unknown.json",
+        "destPath": "julius-caesar-off-broadway-2017/amny--matt-windman.json"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "julius-caesar-off-broadway-2017/hollywood-reporter--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Frank Scheck",
+        "description": "BRO-6940: article byline prints Frank Scheck; file was credited to Unknown"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "julius-caesar-off-broadway-2017/hollywood-reporter--unknown.json",
+        "destPath": "julius-caesar-off-broadway-2017/hollywood-reporter--frank-scheck.json"
+      }
+    ]
+  }
+}

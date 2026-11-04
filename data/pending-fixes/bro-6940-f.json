@@ -1,0 +1,217 @@
+{
+  "issueNumber": "bro-6940-f",
+  "planId": "465669e7-2b94-43e8-b4e6-972cc4489f07",
+  "status": "pending",
+  "createdAt": "2026-11-04T00:30:40.787Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6940: re-credit review files whose printed byline names a different critic (Waiting for Lefty NYSR: Frank Scheck -> Michael Sommers) and fill unnamed files from their printed byline (part 6 of 10)",
+    "steps": [
+      "review-file-op",
+      "BRO-6940: article byline prints Sandi Masori; file was credited to Unknown",
+      "review-file-op",
+      "BRO-6940: article byline prints Adam Cohen; file was credited to Unknown",
+      "review-file-op",
+      "BRO-6940: article byline prints Elyse Sommer; file was credited to Unknown",
+      "review-file-op",
+      "BRO-6940: article byline prints Sandi Masori; file was credited to Unknown",
+      "review-file-op",
+      "BRO-6940: article byline prints Lucy Popescu; file was credited to Unknown",
+      "review-file-op",
+      "BRO-6940: article byline prints Lucy Popescu; file was credited to Unknown",
+      "review-file-op",
+      "BRO-6940: article byline prints Matthew Murray; file was credited to Unknown",
+      "review-file-op",
+      "BRO-6940: article byline prints Tom Storch; file was credited to Unknown",
+      "review-file-op",
+      "BRO-6940: article byline prints Ron Fassler; file was credited to Unknown",
+      "review-file-op",
+      "BRO-6940: article byline prints Samuel L. Leiter; file was credited to Unknown",
+      "review-file-op",
+      "BRO-6940: article byline prints Daz Gale; file was credited to Unknown",
+      "review-file-op",
+      "BRO-6940: article byline prints Sandi Masori; file was credited to Unknown",
+      "review-file-op"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway-2026/talkinbroadway--unknown.json",
+        "destPath": "mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway-2026/talkinbroadway--moshe-a-bloxenheim.json"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "much-ado-about-nothing-regional-2026/san-diego-jewish-world--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Sandi Masori",
+        "description": "BRO-6940: article byline prints Sandi Masori; file was credited to Unknown"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "much-ado-about-nothing-regional-2026/san-diego-jewish-world--unknown.json",
+        "destPath": "much-ado-about-nothing-regional-2026/san-diego-jewish-world--sandi-masori.json"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "mystic-pizza-regional-2025/theater-pizzazz--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Adam Cohen",
+        "description": "BRO-6940: article byline prints Adam Cohen; file was credited to Unknown"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "mystic-pizza-regional-2025/theater-pizzazz--unknown.json",
+        "destPath": "mystic-pizza-regional-2025/theater-pizzazz--adam-cohen.json"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "nine-2003/curtainup--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Elyse Sommer",
+        "description": "BRO-6940: article byline prints Elyse Sommer; file was credited to Unknown"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "nine-2003/curtainup--unknown.json",
+        "destPath": "nine-2003/curtainup--elyse-sommer.json"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "north-by-northwest-old-regional-2026/san-diego-jewish-world--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Sandi Masori",
+        "description": "BRO-6940: article byline prints Sandi Masori; file was credited to Unknown"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "north-by-northwest-old-regional-2026/san-diego-jewish-world--unknown.json",
+        "destPath": "north-by-northwest-old-regional-2026/san-diego-jewish-world--sandi-masori.json"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "oedipus-west-end-2024/camdennewjournal--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Lucy Popescu",
+        "description": "BRO-6940: article byline prints Lucy Popescu; file was credited to Unknown"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "oedipus-west-end-2024/camdennewjournal--unknown.json",
+        "destPath": "oedipus-west-end-2024/camdennewjournal--lucy-popescu.json"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "oklahoma-west-end-2023/camdennewjournal--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Lucy Popescu",
+        "description": "BRO-6940: article byline prints Lucy Popescu; file was credited to Unknown"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "oklahoma-west-end-2023/camdennewjournal--unknown.json",
+        "destPath": "oklahoma-west-end-2023/camdennewjournal--lucy-popescu.json"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "oslo-off-broadway-2016/talkinbroadway--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Matthew Murray",
+        "description": "BRO-6940: article byline prints Matthew Murray; file was credited to Unknown"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "oslo-off-broadway-2016/talkinbroadway--unknown.json",
+        "destPath": "oslo-off-broadway-2016/talkinbroadway--matthew-murray.json"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "othello-off-broadway-2026/front-row-center--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Tom Storch",
+        "description": "BRO-6940: article byline prints Tom Storch; file was credited to Unknown"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "othello-off-broadway-2026/front-row-center--unknown.json",
+        "destPath": "othello-off-broadway-2026/front-row-center--tom-storch.json"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "other-desert-cities-2026/theater-pizzazz--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Ron Fassler",
+        "description": "BRO-6940: article byline prints Ron Fassler; file was credited to Unknown"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "other-desert-cities-2026/theater-pizzazz--unknown.json",
+        "destPath": "other-desert-cities-2026/theater-pizzazz--ron-fassler.json"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "patriots-2024/theater-pizzazz--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Samuel L. Leiter",
+        "description": "BRO-6940: article byline prints Samuel L. Leiter; file was credited to Unknown"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "patriots-2024/theater-pizzazz--unknown.json",
+        "destPath": "patriots-2024/theater-pizzazz--samuel-l-leiter.json"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "please-please-me-west-end-2026/all-that-dazzles-uk--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Daz Gale",
+        "description": "BRO-6940: article byline prints Daz Gale; file was credited to Unknown"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "please-please-me-west-end-2026/all-that-dazzles-uk--unknown.json",
+        "destPath": "please-please-me-west-end-2026/all-that-dazzles-uk--daz-gale.json"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "purpose-lajolla-regional-2026/san-diego-jewish-world--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Sandi Masori",
+        "description": "BRO-6940: article byline prints Sandi Masori; file was credited to Unknown"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "purpose-lajolla-regional-2026/san-diego-jewish-world--unknown.json",
+        "destPath": "purpose-lajolla-regional-2026/san-diego-jewish-world--sandi-masori.json"
+      }
+    ]
+  }
+}

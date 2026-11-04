@@ -1,0 +1,217 @@
+{
+  "issueNumber": "bro-6940-b",
+  "planId": "01d22688-9f1d-476a-acf6-5df14a868be6",
+  "status": "pending",
+  "createdAt": "2026-11-04T00:30:40.787Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6940: re-credit review files whose printed byline names a different critic (Waiting for Lefty NYSR: Frank Scheck -> Michael Sommers) and fill unnamed files from their printed byline (part 2 of 10)",
+    "steps": [
+      "review-file-op",
+      "BRO-6940: article byline prints Sandi Durell; file was credited to Unknown",
+      "review-file-op",
+      "BRO-6940: article byline prints Lucy Popescu; file was credited to Unknown",
+      "review-file-op",
+      "BRO-6940: article byline prints Lucy Popescu; file was credited to Unknown",
+      "review-file-op",
+      "BRO-6940: article byline prints Lucy Popescu; file was credited to Unknown",
+      "review-file-op",
+      "BRO-6940: article byline prints Howard Miller; file was credited to Unknown",
+      "review-file-op",
+      "BRO-6940: article byline prints Michael Sommers; file was credited to Frank Scheck",
+      "review-file-op",
+      "BRO-6940: article byline prints Ron Fassler; file was credited to Unknown",
+      "review-file-op",
+      "BRO-6940: article byline prints Helen Shaw; file was credited to Condé Nast",
+      "review-file-op",
+      "BRO-6940: article byline prints Sandi Masori; file was credited to Unknown",
+      "review-file-op",
+      "BRO-6940: article byline prints Lucy Popescu; file was credited to Unknown",
+      "review-file-op",
+      "BRO-6940: article byline prints Gregory Bernard; file was credited to Gregory Fletcher",
+      "review-file-op",
+      "BRO-6940: article byline prints Carole Di Tosti; file was credited to Peter Marks",
+      "review-file-op"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "beetlejuice-tour-2022/stir--janet-smith.json",
+        "destPath": "beetlejuice-tour-2022/stir--vince-kanasoot.json"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "birthday-candles-2022/theater-pizzazz--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Sandi Durell",
+        "description": "BRO-6940: article byline prints Sandi Durell; file was credited to Unknown"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "birthday-candles-2022/theater-pizzazz--unknown.json",
+        "destPath": "birthday-candles-2022/theater-pizzazz--sandi-durell.json"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "blood-of-my-blood-west-end-2026/camdennewjournal--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Lucy Popescu",
+        "description": "BRO-6940: article byline prints Lucy Popescu; file was credited to Unknown"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "blood-of-my-blood-west-end-2026/camdennewjournal--unknown.json",
+        "destPath": "blood-of-my-blood-west-end-2026/camdennewjournal--lucy-popescu.json"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "brokeback-mountain-west-end-2023/camdennewjournal--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Lucy Popescu",
+        "description": "BRO-6940: article byline prints Lucy Popescu; file was credited to Unknown"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "brokeback-mountain-west-end-2023/camdennewjournal--unknown.json",
+        "destPath": "brokeback-mountain-west-end-2023/camdennewjournal--lucy-popescu.json"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "camp-siegfried-west-end-2021/camdennewjournal--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Lucy Popescu",
+        "description": "BRO-6940: article byline prints Lucy Popescu; file was credited to Unknown"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "camp-siegfried-west-end-2021/camdennewjournal--unknown.json",
+        "destPath": "camp-siegfried-west-end-2021/camdennewjournal--lucy-popescu.json"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "celebrity-autobiography-2026/talkinbroadway--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Howard Miller",
+        "description": "BRO-6940: article byline prints Howard Miller; file was credited to Unknown"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "celebrity-autobiography-2026/talkinbroadway--unknown.json",
+        "destPath": "celebrity-autobiography-2026/talkinbroadway--howard-miller.json"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "clifford-odets-waiting-for-lefty-off-broadway-2026/nysr--frank-scheck.json",
+        "field": "criticName",
+        "oldValue": "Frank Scheck",
+        "newValue": "Michael Sommers",
+        "description": "BRO-6940: article byline prints Michael Sommers; file was credited to Frank Scheck"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "clifford-odets-waiting-for-lefty-off-broadway-2026/nysr--frank-scheck.json",
+        "destPath": "clifford-odets-waiting-for-lefty-off-broadway-2026/nysr--michael-sommers.json"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "clifford-odets-waiting-for-lefty-off-broadway-2026/theater-pizzazz--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Ron Fassler",
+        "description": "BRO-6940: article byline prints Ron Fassler; file was credited to Unknown"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "clifford-odets-waiting-for-lefty-off-broadway-2026/theater-pizzazz--unknown.json",
+        "destPath": "clifford-odets-waiting-for-lefty-off-broadway-2026/theater-pizzazz--ron-fassler.json"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cornelia-street-off-broadway-2023/newyorker--conde-nast.json",
+        "field": "criticName",
+        "oldValue": "Condé Nast",
+        "newValue": "Helen Shaw",
+        "description": "BRO-6940: article byline prints Helen Shaw; file was credited to Condé Nast"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "cornelia-street-off-broadway-2023/newyorker--conde-nast.json",
+        "destPath": "cornelia-street-off-broadway-2023/newyorker--helen-shaw.json"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cyrano-regional-2026/san-diego-jewish-world--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Sandi Masori",
+        "description": "BRO-6940: article byline prints Sandi Masori; file was credited to Unknown"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "cyrano-regional-2026/san-diego-jewish-world--unknown.json",
+        "destPath": "cyrano-regional-2026/san-diego-jewish-world--sandi-masori.json"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "dancing-at-lughnasa-west-end-2023/camdennewjournal--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Lucy Popescu",
+        "description": "BRO-6940: article byline prints Lucy Popescu; file was credited to Unknown"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "dancing-at-lughnasa-west-end-2023/camdennewjournal--unknown.json",
+        "destPath": "dancing-at-lughnasa-west-end-2023/camdennewjournal--lucy-popescu.json"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "dark-noon-off-broadway-2024/stageandcinema--gregory-fletcher.json",
+        "field": "criticName",
+        "oldValue": "Gregory Fletcher",
+        "newValue": "Gregory Bernard",
+        "description": "BRO-6940: article byline prints Gregory Bernard; file was credited to Gregory Fletcher"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "dark-noon-off-broadway-2024/stageandcinema--gregory-fletcher.json",
+        "destPath": "dark-noon-off-broadway-2024/stageandcinema--gregory-bernard.json"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "days-of-wine-and-roses-off-broadway-2023/theater-pizzazz--peter-marks.json",
+        "field": "criticName",
+        "oldValue": "Peter Marks",
+        "newValue": "Carole Di Tosti",
+        "description": "BRO-6940: article byline prints Carole Di Tosti; file was credited to Peter Marks"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "days-of-wine-and-roses-off-broadway-2023/theater-pizzazz--peter-marks.json",
+        "destPath": "days-of-wine-and-roses-off-broadway-2023/theater-pizzazz--carole-di-tosti.json"
+      }
+    ]
+  }
+}
