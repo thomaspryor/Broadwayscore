@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-11-04T15:49:26.301Z",
+  "generatedAt": "2026-11-04T18:03:38.418Z",
   "date": "2026-11-04",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 257586,
+  "entryCount": 268353,
   "shows": [
     {
       "showId": "memoirs-of-amorous-gentlemen-off-broadway-2026",
@@ -281,8 +281,8 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": 1193014,
-        "scored-to-rebuilt": 616752,
+        "collected-to-scored": 685815,
+        "scored-to-rebuilt": 604339,
         "rebuilt-to-deployed": 123306512
       },
       "reviews_over_15min": 0,
@@ -1752,7 +1752,7 @@
     },
     {
       "showId": "matilda-the-musical-west-end-2021",
-      "reviewCount": 18,
+      "reviewCount": 19,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -4294,13 +4294,13 @@
     },
     {
       "showId": "in-the-heights-off-broadway-2026",
-      "reviewCount": 6,
+      "reviewCount": 7,
       "median_e2e_ms": 156375497,
       "p90_e2e_ms": 156375905,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": 538363,
-        "scored-to-rebuilt": 543629,
+        "collected-to-scored": 547008,
+        "scored-to-rebuilt": 548616,
         "rebuilt-to-deployed": 154982547
       },
       "reviews_over_15min": 2,
@@ -6063,13 +6063,13 @@
     },
     {
       "showId": "king-hedley-ii-regional-2026",
-      "reviewCount": 8,
+      "reviewCount": 9,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 521856,
+        "scored-to-rebuilt": 519125,
         "rebuilt-to-deployed": 84799749
       },
       "reviews_over_15min": 0,
@@ -6978,13 +6978,13 @@
     },
     {
       "showId": "rope-off-broadway-2026",
-      "reviewCount": 9,
+      "reviewCount": 10,
       "median_e2e_ms": 42395926,
       "p90_e2e_ms": 42396943,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 690740,
-        "scored-to-rebuilt": 312566,
+        "scored-to-rebuilt": 309901,
         "rebuilt-to-deployed": 38112468
       },
       "reviews_over_15min": 6,
@@ -8360,13 +8360,13 @@
     },
     {
       "showId": "clifford-odets-waiting-for-lefty-off-broadway-2026",
-      "reviewCount": 10,
+      "reviewCount": 13,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": 677207,
-        "scored-to-rebuilt": 615844,
+        "collected-to-scored": 647068,
+        "scored-to-rebuilt": 608570,
         "rebuilt-to-deployed": 55569290
       },
       "reviews_over_15min": 0,
@@ -8375,13 +8375,13 @@
     },
     {
       "showId": "the-bridge-off-west-end-2026",
-      "reviewCount": 15,
+      "reviewCount": 17,
       "median_e2e_ms": 73166296,
       "p90_e2e_ms": 102558299,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 520984,
-        "scored-to-rebuilt": 820475,
+        "scored-to-rebuilt": 815829,
         "rebuilt-to-deployed": 72334509
       },
       "reviews_over_15min": 5,
@@ -8461,7 +8461,7 @@
     },
     {
       "showId": "maybe-tomorrow-oran-mor-regional-2025",
-      "reviewCount": 1,
+      "reviewCount": 2,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -8506,14 +8506,14 @@
     },
     {
       "showId": "macbeth-leeds-regional-2024",
-      "reviewCount": 5,
+      "reviewCount": 4,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 692869,
-        "rebuilt-to-deployed": 86248927
+        "scored-to-rebuilt": 1183658,
+        "rebuilt-to-deployed": 101541632
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -11056,7 +11056,7 @@
     },
     {
       "showId": "shrek-the-musical-west-end-2011",
-      "reviewCount": 8,
+      "reviewCount": 7,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -11700,21 +11700,6 @@
       "slowest_reviews": []
     },
     {
-      "showId": "arcadia-west-end-2026",
-      "reviewCount": 25,
-      "median_e2e_ms": null,
-      "p90_e2e_ms": null,
-      "per_stage_median_ms": {
-        "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": 2147817,
-        "rebuilt-to-deployed": 69010487
-      },
-      "reviews_over_15min": 0,
-      "reviews_over_60min": 0,
-      "slowest_reviews": []
-    },
-    {
       "showId": "punch-2025",
       "reviewCount": 29,
       "median_e2e_ms": null,
@@ -12136,13 +12121,13 @@
     },
     {
       "showId": "the-morbs-off-broadway-2026",
-      "reviewCount": 1,
+      "reviewCount": 2,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": 620383,
-        "scored-to-rebuilt": 854851,
+        "collected-to-scored": 420193,
+        "scored-to-rebuilt": 724871,
         "rebuilt-to-deployed": 67107496
       },
       "reviews_over_15min": 0,
@@ -12871,13 +12856,13 @@
     },
     {
       "showId": "well-see-off-broadway-2026",
-      "reviewCount": 1,
+      "reviewCount": 2,
       "median_e2e_ms": 36091002,
       "p90_e2e_ms": 36091002,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 596944,
-        "scored-to-rebuilt": 572031,
+        "scored-to-rebuilt": 308676,
         "rebuilt-to-deployed": 33501964
       },
       "reviews_over_15min": 1,
@@ -13409,6 +13394,66 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 2142324,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "witness-for-the-prosecution-off-west-end-2022",
+      "reviewCount": 23,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "stories-the-tap-dance-sensation-off-west-end-2026",
+      "reviewCount": 14,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "alvin-ailey-american-dance-theater-new-works-off-west-end-2026",
+      "reviewCount": 13,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "a-month-in-the-country-off-west-end-2026",
+      "reviewCount": 32,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
