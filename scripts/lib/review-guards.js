@@ -2078,6 +2078,7 @@ const CV_ARTICLE_TYPE_NON_REVIEW = new Set(['interview', 'news', 'box-office', '
  * True when the verdict's OWN articleType (high articleType confidence, high or
  * medium overall — the pre-pass confidence gate) says the page is an
  * interview/news/box-office/obituary piece even though wrongArticle is false.
+ * Callers apply the high/medium overall-confidence gate (this helper does not).
  * The rebuild only promoted isNonReview from wrongArticle, so these stayed live
  * (chess-2025 AP interview scored 88). Routed through cvWrongArticlePromotion,
  * so ensemble-says-review, partial-window, human-clear and lane holds still apply.
@@ -6864,6 +6865,7 @@ module.exports = {
   cvNonReviewHumanCleared,
   cvWrongArticleFamily,
   cvArticleTypeNonReview,
+  CV_ARTICLE_TYPE_NON_REVIEW,
   cvWrongArticlePromotion,
   wrongShowCleared,
   wrongShowExplicitlyCleared,

@@ -110,3 +110,11 @@ test('BRO-6973: preview/feature, medium articleType confidence, ensemble score a
   assert.equal(guards.cvWrongArticlePromotion({ ...cleanBase, ...scored }, cvCleanInterview), 'advisory');
   assert.equal(decideInclusion({ ...cleanBase, nonReviewManualClear: true }, show, guards).included, true);
 });
+
+test('BRO-6973: a head-of-article "news" verdict on a long clean-boolean row stays advisory', () => {
+  const cv = { ...cvCleanInterview, articleType: 'news' };
+  const cvLib = require('./lib/content-verifier.js');
+  const long = { ...base, fullText: 'The production is a triumph. '.repeat(400), contentVerification: cv };
+  assert.equal(cvLib.isCvVerdictFromPartialWindow(cv, long.fullText, long), true);
+  assert.equal(guards.cvWrongArticlePromotion(long, cv, { cvPartialWindow: true }), null);
+});
