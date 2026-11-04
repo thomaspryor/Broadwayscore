@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-04T04:38:01.400Z",
+  "timestamp": "2026-11-04T05:31:05.336Z",
   "stats": {
-    "totalReviews": 80041,
-    "alreadyFlagged": 22055,
+    "totalReviews": 80024,
+    "alreadyFlagged": 22033,
     "dateGuardCatches": 217,
     "directorMismatch": 3479,
     "tvFilmSignals": 2272,
     "londonSignals": 3604,
     "offBroadwaySignals": 736,
     "yearMismatch": 361,
-    "noPublishDate": 8468
+    "noPublishDate": 8469
   },
   "findings": [
     {
@@ -2310,7 +2310,7 @@
       ]
     },
     {
-      "showId": "a-life-in-four-seasons-west-end-2026",
+      "showId": "a-life-in-four-seasons-off-west-end-2026",
       "file": "thereviewshub--phoebe-taplin.json",
       "score": 91,
       "publishDate": "2026-06-13",
@@ -2380,7 +2380,7 @@
       ]
     },
     {
-      "showId": "a-month-in-the-country-west-end-2026",
+      "showId": "a-month-in-the-country-off-west-end-2026",
       "file": "monstagigz--neil-durham.json",
       "score": 84,
       "publishDate": "2026-08-25",
@@ -5256,6 +5256,39 @@
       ]
     },
     {
+      "showId": "an-ideal-husband-off-west-end-2026",
+      "file": "london-box-office--stuart-king.json",
+      "score": 53,
+      "publishDate": "2026-05-17",
+      "url": "https://www.londonboxoffice.co.uk/news/post/an-ideal-husband-lyric-hammersmith-review",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"peter hall\" from an-ideal-husband-1996"
+        }
+      ]
+    },
+    {
+      "showId": "an-ideal-husband-off-west-end-2026",
+      "file": "thereviewshub--the-reviews-hub-london.json",
+      "score": 80,
+      "publishDate": "2026-05-14",
+      "url": "https://www.thereviewshub.com/an-ideal-husband-lyric-hammersmith-london/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "an-ideal-husband-west-end-2010",
       "file": "guardian--michael-billington.json",
       "score": 57,
@@ -5284,40 +5317,7 @@
       ]
     },
     {
-      "showId": "an-ideal-husband-west-end-2026",
-      "file": "london-box-office--stuart-king.json",
-      "score": 53,
-      "publishDate": "2026-05-17",
-      "url": "https://www.londonboxoffice.co.uk/news/post/an-ideal-husband-lyric-hammersmith-review",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"peter hall\" from an-ideal-husband-1996"
-        }
-      ]
-    },
-    {
-      "showId": "an-ideal-husband-west-end-2026",
-      "file": "thereviewshub--the-reviews-hub-london.json",
-      "score": 80,
-      "publishDate": "2026-05-14",
-      "url": "https://www.thereviewshub.com/an-ideal-husband-lyric-hammersmith-london/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "anansi-the-spider-west-end-2026",
+      "showId": "anansi-the-spider-off-west-end-2026",
       "file": "birmingham-rep--unknown.json",
       "publishDate": null,
       "url": "https://www.birmingham-rep.co.uk/whats-on/anansi-the-spider-2/",
@@ -11596,6 +11596,146 @@
       ]
     },
     {
+      "showId": "cats-off-west-end-2026",
+      "file": "artsdesk--unknown.json",
+      "score": 82,
+      "publishDate": "2026-08-08",
+      "url": "http://www.theartsdesk.com/theatre/cats-regents-park-open-air-theatre-review-contemporary-makeover-gives-classic-added-lustre?amp",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"trevor nunn\" from cats-2016"
+        }
+      ]
+    },
+    {
+      "showId": "cats-off-west-end-2026",
+      "file": "firstnightmagazine--unknown.json",
+      "score": 55,
+      "publishDate": "2026-08-09",
+      "url": "https://firstnightmagazine.com/2026/08/09/review-of-cats-2026-regents-open-air-theatre-impurrfect-production-passes-by-a-whisker/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"trevor nunn\" from cats-2016"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "cats-off-west-end-2026",
+      "file": "jonathan-baz--jonathan-baz.json",
+      "score": 95,
+      "publishDate": null,
+      "url": "https://www.jonathanbaz.com/2026/08/cats-review.html?m=0",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"trevor nunn\" from cats-2016"
+        }
+      ]
+    },
+    {
+      "showId": "cats-off-west-end-2026",
+      "file": "london-unattached--jeanne-horak.json",
+      "score": 92,
+      "publishDate": "2026-08-08",
+      "url": "https://www.london-unattached.com/cats-regents-park-open-air-theatre/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"trevor nunn\" from cats-2016"
+        }
+      ]
+    },
+    {
+      "showId": "cats-off-west-end-2026",
+      "file": "nytimes--helen-shaw.json",
+      "publishDate": "2026-08-08",
+      "url": "https://www.nytimes.com/2026/08/08/opinion/cats-jellicle-ball-closing-webber-de-shields.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"zhailon levingston\" from cats-the-jellicle-ball-2026"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bill rauch\" from cats-the-jellicle-ball-2026"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "cats-off-west-end-2026",
+      "file": "standard--nick-curtis.json",
+      "score": 60,
+      "publishDate": "2026-08-11",
+      "url": "https://www.standard.co.uk/culture/theatre/cats-at-regent-s-park-open-air-theatre-review-b1292992.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"trevor nunn\" from cats-2016"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "cats-off-west-end-2026",
+      "file": "standard--west-end-theatre.json",
+      "publishDate": "2026-08-11",
+      "url": "https://www.standard.co.uk/culture/theatre/cats-at-regent-s-park-open-air-theatre-review-b1292992.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"trevor nunn\" from cats-2016"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "cats-off-west-end-2026",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "score": 59,
+      "publishDate": "2026-08-07T07:46:52-04:00",
+      "url": "https://www.timeout.com/london/news/cats-regents-park-open-air-theatre-2026-review-080726",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"trevor nunn\" from cats-2016"
+        }
+      ]
+    },
+    {
       "showId": "cats-the-jellicle-ball-2026",
       "file": "culturesauce--thom-geier.json",
       "score": 81,
@@ -12308,146 +12448,6 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2026 (4x) more than 2015 (1x). 2026 matches production: cats-the-jellicle-ball-2026"
-        }
-      ]
-    },
-    {
-      "showId": "cats-west-end-2026",
-      "file": "artsdesk--unknown.json",
-      "score": 82,
-      "publishDate": "2026-08-08",
-      "url": "http://www.theartsdesk.com/theatre/cats-regents-park-open-air-theatre-review-contemporary-makeover-gives-classic-added-lustre?amp",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"trevor nunn\" from cats-2016"
-        }
-      ]
-    },
-    {
-      "showId": "cats-west-end-2026",
-      "file": "firstnightmagazine--unknown.json",
-      "score": 55,
-      "publishDate": "2026-08-09",
-      "url": "https://firstnightmagazine.com/2026/08/09/review-of-cats-2026-regents-open-air-theatre-impurrfect-production-passes-by-a-whisker/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"trevor nunn\" from cats-2016"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "cats-west-end-2026",
-      "file": "jonathan-baz--jonathan-baz.json",
-      "score": 95,
-      "publishDate": null,
-      "url": "https://www.jonathanbaz.com/2026/08/cats-review.html?m=0",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"trevor nunn\" from cats-2016"
-        }
-      ]
-    },
-    {
-      "showId": "cats-west-end-2026",
-      "file": "london-unattached--jeanne-horak.json",
-      "score": 92,
-      "publishDate": "2026-08-08",
-      "url": "https://www.london-unattached.com/cats-regents-park-open-air-theatre/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"trevor nunn\" from cats-2016"
-        }
-      ]
-    },
-    {
-      "showId": "cats-west-end-2026",
-      "file": "nytimes--helen-shaw.json",
-      "publishDate": "2026-08-08",
-      "url": "https://www.nytimes.com/2026/08/08/opinion/cats-jellicle-ball-closing-webber-de-shields.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"zhailon levingston\" from cats-the-jellicle-ball-2026"
-        },
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"bill rauch\" from cats-the-jellicle-ball-2026"
-        },
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv series\""
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "cats-west-end-2026",
-      "file": "standard--nick-curtis.json",
-      "score": 60,
-      "publishDate": "2026-08-11",
-      "url": "https://www.standard.co.uk/culture/theatre/cats-at-regent-s-park-open-air-theatre-review-b1292992.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"trevor nunn\" from cats-2016"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "cats-west-end-2026",
-      "file": "standard--west-end-theatre.json",
-      "publishDate": "2026-08-11",
-      "url": "https://www.standard.co.uk/culture/theatre/cats-at-regent-s-park-open-air-theatre-review-b1292992.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"trevor nunn\" from cats-2016"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "cats-west-end-2026",
-      "file": "timeout-london--andrzej-lukowski.json",
-      "score": 59,
-      "publishDate": "2026-08-07T07:46:52-04:00",
-      "url": "https://www.timeout.com/london/news/cats-regents-park-open-air-theatre-2026-review-080726",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"trevor nunn\" from cats-2016"
         }
       ]
     },
@@ -15892,7 +15892,7 @@
       ]
     },
     {
-      "showId": "dear-england-new-wimbledon-theatre-west-end-2026",
+      "showId": "dear-england-new-wimbledon-theatre-off-west-end-2026",
       "file": "all-that-dazzles-uk--sam-waite.json",
       "score": 97,
       "publishDate": "February 25th, 2026",
@@ -18681,7 +18681,7 @@
       ]
     },
     {
-      "showId": "dog-man-the-musical-west-end-2026",
+      "showId": "dog-man-the-musical-off-west-end-2026",
       "file": "whatsonstage--theo-bosanquet.json",
       "score": 55,
       "publishDate": "2026-08-04",
@@ -19066,6 +19066,25 @@
       ]
     },
     {
+      "showId": "driftwood-off-west-end-2026",
+      "file": "whatsonstage--alison-brinkworth.json",
+      "score": 74,
+      "publishDate": "2026-04-29",
+      "url": null,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 35d before show (2026-04-29 vs 2026-06-03)"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
       "showId": "driftwood-royal-shakespeare-regional-2026",
       "file": "guardian--david-jays.json",
       "score": 66,
@@ -19075,7 +19094,7 @@
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
-          "detail": "Mentions director \"justin audibert\" from driftwood-west-end-2026"
+          "detail": "Mentions director \"justin audibert\" from driftwood-off-west-end-2026"
         }
       ]
     },
@@ -19089,7 +19108,7 @@
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
-          "detail": "Mentions director \"justin audibert\" from driftwood-west-end-2026"
+          "detail": "Mentions director \"justin audibert\" from driftwood-off-west-end-2026"
         }
       ]
     },
@@ -19103,7 +19122,7 @@
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
-          "detail": "Mentions director \"justin audibert\" from driftwood-west-end-2026"
+          "detail": "Mentions director \"justin audibert\" from driftwood-off-west-end-2026"
         },
         {
           "type": "LONDON_SIGNAL",
@@ -19122,26 +19141,7 @@
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
-          "detail": "Mentions director \"justin audibert\" from driftwood-west-end-2026"
-        },
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
-      "showId": "driftwood-west-end-2026",
-      "file": "whatsonstage--alison-brinkworth.json",
-      "score": 74,
-      "publishDate": "2026-04-29",
-      "url": null,
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 35d before show (2026-04-29 vs 2026-06-03)"
+          "detail": "Mentions director \"justin audibert\" from driftwood-off-west-end-2026"
         },
         {
           "type": "TV_FILM_SIGNAL",
@@ -19598,6 +19598,44 @@
       ]
     },
     {
+      "showId": "end-of-the-rainbow-off-west-end-2026",
+      "file": "jacktheladmag--simon-webb.json",
+      "score": 81,
+      "publishDate": "2026-05-22",
+      "url": "https://www.jacktheladmag.com/theatre-reviews/end-of-the-rainbow",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"season 7\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "end-of-the-rainbow-off-west-end-2026",
+      "file": "radio-times--joanna-magill.json",
+      "score": 88,
+      "publishDate": "2026-05-22",
+      "url": "https://www.radiotimes.com/going-out/going-out-reviews/end-of-the-rainbow-review-jinkx-monsoon/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"season 7\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "end-of-the-rainbow-west-end-2010",
       "file": "guardian--michael-billington.json",
       "score": 56,
@@ -19627,44 +19665,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"terry johnson\" from end-of-the-rainbow-2012"
-        }
-      ]
-    },
-    {
-      "showId": "end-of-the-rainbow-west-end-2026",
-      "file": "jacktheladmag--simon-webb.json",
-      "score": 81,
-      "publishDate": "2026-05-22",
-      "url": "https://www.jacktheladmag.com/theatre-reviews/end-of-the-rainbow",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"season 7\""
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "end-of-the-rainbow-west-end-2026",
-      "file": "radio-times--joanna-magill.json",
-      "score": 88,
-      "publishDate": "2026-05-22",
-      "url": "https://www.radiotimes.com/going-out/going-out-reviews/end-of-the-rainbow-review-jinkx-monsoon/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"season 7\""
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -20014,7 +20014,7 @@
       ]
     },
     {
-      "showId": "equus-west-end-2026",
+      "showId": "equus-off-west-end-2026",
       "file": "british-theatre--unknown.json",
       "score": 62,
       "publishDate": "2026-05-21",
@@ -20028,7 +20028,7 @@
       ]
     },
     {
-      "showId": "equus-west-end-2026",
+      "showId": "equus-off-west-end-2026",
       "file": "london-theatre--matt-wolf.json",
       "score": 83,
       "publishDate": "2026-05-19",
@@ -20042,7 +20042,7 @@
       ]
     },
     {
-      "showId": "equus-west-end-2026",
+      "showId": "equus-off-west-end-2026",
       "file": "monstagigz--neil-durham.json",
       "score": 90,
       "publishDate": "2026-05-10",
@@ -20145,7 +20145,7 @@
       ]
     },
     {
-      "showId": "evening-all-afternoon-west-end-2026",
+      "showId": "evening-all-afternoon-off-west-end-2026",
       "file": "south-london--christopher-peacock.json",
       "score": 77,
       "publishDate": "2026-02-26",
@@ -20509,7 +20509,7 @@
       ]
     },
     {
-      "showId": "everybodys-talking-about-jamie-west-end-2024",
+      "showId": "everybodys-talking-about-jamie-off-west-end-2024",
       "file": "london-theatre--julia-rank.json",
       "score": 87,
       "publishDate": "2024-02-16",
@@ -84693,7 +84693,7 @@
       ]
     },
     {
-      "showId": "a-midsummer-nights-dream-west-end-2026",
+      "showId": "a-midsummer-nights-dream-off-west-end-2026",
       "file": "thereviewshub--richard-maguire.json",
       "score": 58,
       "publishDate": "2026-06-30",
@@ -84721,7 +84721,7 @@
       ]
     },
     {
-      "showId": "a-month-in-the-country-west-end-2026",
+      "showId": "a-month-in-the-country-off-west-end-2026",
       "file": "afisha--unknown.json",
       "publishDate": null,
       "url": "https://afisha.london/en/event/turgenev-s-a-month-in-the-country-at-donmar-warehouse/",
@@ -84734,7 +84734,7 @@
       ]
     },
     {
-      "showId": "a-month-in-the-country-west-end-2026",
+      "showId": "a-month-in-the-country-off-west-end-2026",
       "file": "all-that-dazzles-uk--sam-woodward.json",
       "score": 82,
       "publishDate": "2026-09-04",
@@ -84748,7 +84748,7 @@
       ]
     },
     {
-      "showId": "a-month-in-the-country-west-end-2026",
+      "showId": "a-month-in-the-country-off-west-end-2026",
       "file": "british-theatre--vera-liber.json",
       "score": 57,
       "publishDate": "2026-09-05",
@@ -84762,7 +84762,7 @@
       ]
     },
     {
-      "showId": "a-month-in-the-country-west-end-2026",
+      "showId": "a-month-in-the-country-off-west-end-2026",
       "file": "broadwayworld--cindy-marcolina.json",
       "score": 82,
       "publishDate": "2026-09-03",
@@ -84776,7 +84776,7 @@
       ]
     },
     {
-      "showId": "a-month-in-the-country-west-end-2026",
+      "showId": "a-month-in-the-country-off-west-end-2026",
       "file": "cultural-capital--unknown.json",
       "score": 78,
       "publishDate": "2026-08-31",
@@ -84790,7 +84790,7 @@
       ]
     },
     {
-      "showId": "a-month-in-the-country-west-end-2026",
+      "showId": "a-month-in-the-country-off-west-end-2026",
       "file": "ents24--unknown.json",
       "publishDate": "2026-08-22",
       "url": "https://www.ents24.com/london-events/donmar-warehouse/a-month-in-the-country/7458547",
@@ -84803,7 +84803,7 @@
       ]
     },
     {
-      "showId": "a-month-in-the-country-west-end-2026",
+      "showId": "a-month-in-the-country-off-west-end-2026",
       "file": "london-box-office--stuart-king.json",
       "score": 76,
       "publishDate": "2026-09-05",
@@ -84817,7 +84817,7 @@
       ]
     },
     {
-      "showId": "a-month-in-the-country-west-end-2026",
+      "showId": "a-month-in-the-country-off-west-end-2026",
       "file": "lovelondonloveculture--unknown.json",
       "score": 87,
       "publishDate": "2026-09-03",
@@ -84831,7 +84831,7 @@
       ]
     },
     {
-      "showId": "a-month-in-the-country-west-end-2026",
+      "showId": "a-month-in-the-country-off-west-end-2026",
       "file": "plays-international--neil-dowden.json",
       "score": 79,
       "publishDate": "2026-09-07",
@@ -84845,7 +84845,7 @@
       ]
     },
     {
-      "showId": "a-month-in-the-country-west-end-2026",
+      "showId": "a-month-in-the-country-off-west-end-2026",
       "file": "plays-international--unknown.json",
       "score": 79,
       "publishDate": "2026-09-07",
@@ -84859,7 +84859,7 @@
       ]
     },
     {
-      "showId": "a-month-in-the-country-west-end-2026",
+      "showId": "a-month-in-the-country-off-west-end-2026",
       "file": "theartsdispatch--the-arts-dispatch.json",
       "score": 80,
       "publishDate": "2026-09-13",
@@ -84873,7 +84873,7 @@
       ]
     },
     {
-      "showId": "a-month-in-the-country-west-end-2026",
+      "showId": "a-month-in-the-country-off-west-end-2026",
       "file": "theatre-weekly--greg-stewart.json",
       "score": 86,
       "publishDate": "2026-09-02",
@@ -84887,7 +84887,7 @@
       ]
     },
     {
-      "showId": "a-month-in-the-country-west-end-2026",
+      "showId": "a-month-in-the-country-off-west-end-2026",
       "file": "theatreandtonic--emmie-newitt.json",
       "publishDate": "2026-08-26",
       "url": "https://theatreandtonic.co.uk/blog/jessica-brindle-a-month-in-the-country-donmar-warehouse-interview",
@@ -84900,7 +84900,7 @@
       ]
     },
     {
-      "showId": "a-month-in-the-country-west-end-2026",
+      "showId": "a-month-in-the-country-off-west-end-2026",
       "file": "thelondoner--unknown.json",
       "publishDate": null,
       "url": "https://www.thelondoner.com/exclusive-offers/a-month-in-the-country",
@@ -84913,7 +84913,7 @@
       ]
     },
     {
-      "showId": "a-month-in-the-country-west-end-2026",
+      "showId": "a-month-in-the-country-off-west-end-2026",
       "file": "tickpick--tickpick.json",
       "publishDate": "2026-09-24",
       "url": "https://www.tickpick.com/buy-a-month-in-the-country-tickets-donmar-warehouse-theatre-9-24-26-2pm/8224727/",
@@ -84926,7 +84926,7 @@
       ]
     },
     {
-      "showId": "a-month-in-the-country-west-end-2026",
+      "showId": "a-month-in-the-country-off-west-end-2026",
       "file": "west-end-best-friend--mike-askew.json",
       "score": 86,
       "publishDate": "2026-09-04",
@@ -86530,7 +86530,7 @@
       ]
     },
     {
-      "showId": "alvin-ailey-american-dance-theater-new-works-west-end-2026",
+      "showId": "alvin-ailey-american-dance-theater-new-works-off-west-end-2026",
       "file": "jazzwise--kevin-le-gendre.json",
       "score": 90,
       "publishDate": "2026-09-22",
@@ -86877,7 +86877,7 @@
       ]
     },
     {
-      "showId": "anansi-the-spider-west-end-2026",
+      "showId": "anansi-the-spider-off-west-end-2026",
       "file": "theatreandtonic--cathie.json",
       "score": 82,
       "publishDate": "2026-08-19",
@@ -87970,7 +87970,7 @@
       ]
     },
     {
-      "showId": "as-you-like-it-globe-west-end-2026",
+      "showId": "as-you-like-it-globe-off-west-end-2026",
       "file": "bestoftheatre--arthur-fisher.json",
       "score": 71,
       "publishDate": "2026-08-22",
@@ -87984,7 +87984,7 @@
       ]
     },
     {
-      "showId": "as-you-like-it-globe-west-end-2026",
+      "showId": "as-you-like-it-globe-off-west-end-2026",
       "file": "liamodell--liam-odell.json",
       "score": 39,
       "publishDate": "2026-08-22",
@@ -90928,7 +90928,7 @@
       ]
     },
     {
-      "showId": "bronco-billy-the-musical-west-end-2024",
+      "showId": "bronco-billy-the-musical-off-west-end-2024",
       "file": "whatsonstage--theo-bosanquet.json",
       "score": 76,
       "publishDate": null,
@@ -91067,7 +91067,7 @@
       ]
     },
     {
-      "showId": "burlesque-west-end-2026",
+      "showId": "burlesque-off-west-end-2026",
       "file": "city-am--adam-bloodworth.json",
       "score": 78,
       "publishDate": "2025-07-23",
@@ -91081,7 +91081,7 @@
       ]
     },
     {
-      "showId": "burlesque-west-end-2026",
+      "showId": "burlesque-off-west-end-2026",
       "file": "daily-mail--patrick-marmion.json",
       "score": 18,
       "publishDate": "2025-07-23",
@@ -91095,7 +91095,7 @@
       ]
     },
     {
-      "showId": "burlesque-west-end-2026",
+      "showId": "burlesque-off-west-end-2026",
       "file": "radio-times--joanna-magill.json",
       "score": 82,
       "publishDate": "2025-07-23",
@@ -91109,7 +91109,7 @@
       ]
     },
     {
-      "showId": "burlesque-west-end-2026",
+      "showId": "burlesque-off-west-end-2026",
       "file": "whatsonstage--alex-wood.json",
       "score": 58,
       "publishDate": "2025-07-23",
@@ -91346,7 +91346,7 @@
       ]
     },
     {
-      "showId": "care-west-end-2026",
+      "showId": "care-off-west-end-2026",
       "file": "british-theatre--shiroma-silva.json",
       "score": 77,
       "publishDate": "2026-06-14",
@@ -91360,7 +91360,7 @@
       ]
     },
     {
-      "showId": "care-west-end-2026",
+      "showId": "care-off-west-end-2026",
       "file": "daily-mail--patrick-marmion.json",
       "score": 63,
       "publishDate": "2026-05-22",
@@ -91374,7 +91374,7 @@
       ]
     },
     {
-      "showId": "care-west-end-2026",
+      "showId": "care-off-west-end-2026",
       "file": "everything-theatre--annie-sutton.json",
       "score": 98,
       "publishDate": "2026-05-25",
@@ -91388,7 +91388,7 @@
       ]
     },
     {
-      "showId": "care-west-end-2026",
+      "showId": "care-off-west-end-2026",
       "file": "guardian--arifa-akbar.json",
       "score": 82,
       "publishDate": "2026-05-21",
@@ -91402,7 +91402,7 @@
       ]
     },
     {
-      "showId": "care-west-end-2026",
+      "showId": "care-off-west-end-2026",
       "file": "london-box-office--stuart-king.json",
       "score": 76,
       "publishDate": "2026-05-21",
@@ -91416,7 +91416,7 @@
       ]
     },
     {
-      "showId": "care-west-end-2026",
+      "showId": "care-off-west-end-2026",
       "file": "london-theatre--holly-omahony.json",
       "score": 81,
       "publishDate": "2026-05-20",
@@ -91430,7 +91430,7 @@
       ]
     },
     {
-      "showId": "care-west-end-2026",
+      "showId": "care-off-west-end-2026",
       "file": "times-uk--clive-davis.json",
       "score": 76,
       "publishDate": null,
@@ -91444,7 +91444,7 @@
       ]
     },
     {
-      "showId": "care-west-end-2026",
+      "showId": "care-off-west-end-2026",
       "file": "west-end-best-friend--chris-abbott.json",
       "score": 90,
       "publishDate": "2026-05-20",
@@ -91959,6 +91959,155 @@
       ]
     },
     {
+      "showId": "cats-off-west-end-2026",
+      "file": "bestoftheatre--unknown.json",
+      "publishDate": null,
+      "url": "https://www.bestoftheatre.co.uk/cats",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "cats-off-west-end-2026",
+      "file": "lovelondonloveculture--unknown.json",
+      "publishDate": "2026-08-08",
+      "url": "https://lovelondonloveculture.com/2026/08/08/review-round-up-cats-regents-park-open-air-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "cats-off-west-end-2026",
+      "file": "musical-theatre-review--ron-cohen.json",
+      "score": 95,
+      "publishDate": null,
+      "url": "https://musicaltheatrereview.com/cats-regents-park-open-air-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "cats-off-west-end-2026",
+      "file": "openairtheatre--unknown.json",
+      "publishDate": null,
+      "url": "https://openairtheatre.com/production/cats",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "cats-off-west-end-2026",
+      "file": "podcastrex--unknown.json",
+      "publishDate": "2026-08-08",
+      "url": "https://podcastrex.com/shows/mickeyjotheatre/cats-regents-park-open-air-theatre-london-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "cats-off-west-end-2026",
+      "file": "seatplan--stuart-james.json",
+      "score": 90,
+      "publishDate": "2026-08-07T07:46:52-04:00",
+      "url": "https://seatplan.com/london/news/cats-review-regents-park-open-air-theatre-london/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "cats-off-west-end-2026",
+      "file": "sunday-telegraph--tim-robey.json",
+      "publishDate": "2026-07-23",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/new-staging-cats-escape-taint-of-the-film/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "cats-off-west-end-2026",
+      "file": "telegraph--james-hall.json",
+      "score": 81,
+      "publishDate": "2026-08-06",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/cats-regents-park-open-air-theatre-review/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "cats-off-west-end-2026",
+      "file": "telegraph--unknown.json",
+      "score": null,
+      "publishDate": "2026-08-06",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/cats-regents-park-open-air-theatre-review/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "cats-off-west-end-2026",
+      "file": "theatreandtonic--emmie-newitt.json",
+      "score": 89,
+      "publishDate": "2026-08-07",
+      "url": "https://theatreandtonic.co.uk/blog/cats-regents-park-open-air-theatre-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "cats-off-west-end-2026",
+      "file": "theatrecat--libby-purves.json",
+      "score": 91,
+      "publishDate": "2026-08-08",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "cats-the-jellicle-ball-2026",
       "file": "thewrap--robert-hofler.json",
       "score": 56,
@@ -91997,155 +92146,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"almeida\""
-        }
-      ]
-    },
-    {
-      "showId": "cats-west-end-2026",
-      "file": "bestoftheatre--unknown.json",
-      "publishDate": null,
-      "url": "https://www.bestoftheatre.co.uk/cats",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "cats-west-end-2026",
-      "file": "lovelondonloveculture--unknown.json",
-      "publishDate": "2026-08-08",
-      "url": "https://lovelondonloveculture.com/2026/08/08/review-round-up-cats-regents-park-open-air-theatre/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"old vic\""
-        }
-      ]
-    },
-    {
-      "showId": "cats-west-end-2026",
-      "file": "musical-theatre-review--ron-cohen.json",
-      "score": 95,
-      "publishDate": null,
-      "url": "https://musicaltheatrereview.com/cats-regents-park-open-air-theatre/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "cats-west-end-2026",
-      "file": "openairtheatre--unknown.json",
-      "publishDate": null,
-      "url": "https://openairtheatre.com/production/cats",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "cats-west-end-2026",
-      "file": "podcastrex--unknown.json",
-      "publishDate": "2026-08-08",
-      "url": "https://podcastrex.com/shows/mickeyjotheatre/cats-regents-park-open-air-theatre-london-review",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"barbican\""
-        }
-      ]
-    },
-    {
-      "showId": "cats-west-end-2026",
-      "file": "seatplan--stuart-james.json",
-      "score": 90,
-      "publishDate": "2026-08-07T07:46:52-04:00",
-      "url": "https://seatplan.com/london/news/cats-review-regents-park-open-air-theatre-london/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "cats-west-end-2026",
-      "file": "sunday-telegraph--tim-robey.json",
-      "publishDate": "2026-07-23",
-      "url": "https://www.telegraph.co.uk/theatre/what-to-see/new-staging-cats-escape-taint-of-the-film/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "cats-west-end-2026",
-      "file": "telegraph--james-hall.json",
-      "score": 81,
-      "publishDate": "2026-08-06",
-      "url": "https://www.telegraph.co.uk/theatre/what-to-see/cats-regents-park-open-air-theatre-review/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "cats-west-end-2026",
-      "file": "telegraph--unknown.json",
-      "score": null,
-      "publishDate": "2026-08-06",
-      "url": "https://www.telegraph.co.uk/theatre/what-to-see/cats-regents-park-open-air-theatre-review/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "cats-west-end-2026",
-      "file": "theatreandtonic--emmie-newitt.json",
-      "score": 89,
-      "publishDate": "2026-08-07",
-      "url": "https://theatreandtonic.co.uk/blog/cats-regents-park-open-air-theatre-review",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"almeida\""
-        }
-      ]
-    },
-    {
-      "showId": "cats-west-end-2026",
-      "file": "theatrecat--libby-purves.json",
-      "score": 91,
-      "publishDate": "2026-08-08",
-      "url": null,
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -92944,7 +92944,7 @@
       ]
     },
     {
-      "showId": "copenhagen-west-end-2026",
+      "showId": "copenhagen-off-west-end-2026",
       "file": "artsdesk--demetrios-matheou.json",
       "score": 67,
       "publishDate": "2026-04-09",
@@ -92958,7 +92958,7 @@
       ]
     },
     {
-      "showId": "copenhagen-west-end-2026",
+      "showId": "copenhagen-off-west-end-2026",
       "file": "artsdesk--unknown.json",
       "score": null,
       "publishDate": null,
@@ -92972,7 +92972,7 @@
       ]
     },
     {
-      "showId": "copenhagen-west-end-2026",
+      "showId": "copenhagen-off-west-end-2026",
       "file": "guardian--arifa-akbar.json",
       "score": 57,
       "publishDate": "2026-04-08",
@@ -94729,7 +94729,7 @@
       ]
     },
     {
-      "showId": "deep-azure-globe-west-end-2026",
+      "showId": "deep-azure-globe-off-west-end-2026",
       "file": "london-theatre--matt-wolf.json",
       "score": 63,
       "publishDate": "2026-02-18",
@@ -94743,7 +94743,7 @@
       ]
     },
     {
-      "showId": "deep-azure-globe-west-end-2026",
+      "showId": "deep-azure-globe-off-west-end-2026",
       "file": "nytimes--alex-marshall.json",
       "score": 76,
       "publishDate": "2026-03-05",
@@ -95437,7 +95437,7 @@
       ]
     },
     {
-      "showId": "driftwood-west-end-2026",
+      "showId": "driftwood-off-west-end-2026",
       "file": "financialtimes--sarah-hemming.json",
       "score": 78,
       "publishDate": "2026-04-29",
@@ -96175,7 +96175,7 @@
       ]
     },
     {
-      "showId": "end-of-the-rainbow-west-end-2026",
+      "showId": "end-of-the-rainbow-off-west-end-2026",
       "file": "all-that-dazzles-uk--daz-gale.json",
       "score": 92,
       "publishDate": "2026-05-22",
@@ -96189,7 +96189,7 @@
       ]
     },
     {
-      "showId": "end-of-the-rainbow-west-end-2026",
+      "showId": "end-of-the-rainbow-off-west-end-2026",
       "file": "whatsonstage--alun-hood.json",
       "score": 60,
       "publishDate": "2026-05-22",
@@ -96455,7 +96455,7 @@
       ]
     },
     {
-      "showId": "equus-west-end-2026",
+      "showId": "equus-off-west-end-2026",
       "file": "theatreandtonic--cathie.json",
       "score": 93,
       "publishDate": "2026-05-21",
@@ -96635,7 +96635,7 @@
       ]
     },
     {
-      "showId": "evening-all-afternoon-west-end-2026",
+      "showId": "evening-all-afternoon-off-west-end-2026",
       "file": "guardian--arifa-akbar.json",
       "score": 60,
       "publishDate": "2026-02-25",
@@ -96649,7 +96649,7 @@
       ]
     },
     {
-      "showId": "evening-all-afternoon-west-end-2026",
+      "showId": "evening-all-afternoon-off-west-end-2026",
       "file": "london-theatre--holly-omahony.json",
       "score": 58,
       "publishDate": "February 25th, 2026",
@@ -96663,7 +96663,7 @@
       ]
     },
     {
-      "showId": "evening-all-afternoon-west-end-2026",
+      "showId": "evening-all-afternoon-off-west-end-2026",
       "file": "plays-international--maryam-philpott.json",
       "score": 55,
       "publishDate": "2026-02-25",
@@ -96677,7 +96677,7 @@
       ]
     },
     {
-      "showId": "evening-all-afternoon-west-end-2026",
+      "showId": "evening-all-afternoon-off-west-end-2026",
       "file": "standard--nick-curits.json",
       "score": 62,
       "publishDate": "2026-02-25",
@@ -96691,7 +96691,7 @@
       ]
     },
     {
-      "showId": "evening-all-afternoon-west-end-2026",
+      "showId": "evening-all-afternoon-off-west-end-2026",
       "file": "theatre-weekly--greg-stewart.json",
       "score": 80,
       "publishDate": "February 24th, 2026",
@@ -96705,7 +96705,7 @@
       ]
     },
     {
-      "showId": "evening-all-afternoon-west-end-2026",
+      "showId": "evening-all-afternoon-off-west-end-2026",
       "file": "thestage--unknown.json",
       "score": 78,
       "publishDate": "2026-02-27",
@@ -96719,7 +96719,7 @@
       ]
     },
     {
-      "showId": "evening-all-afternoon-west-end-2026",
+      "showId": "evening-all-afternoon-off-west-end-2026",
       "file": "times-uk--clive-davis.json",
       "score": 84,
       "publishDate": "2026-02-25",
@@ -118590,7 +118590,7 @@
     {
       "showId": "rope-off-broadway-2026",
       "file": "culturesauce--thom-geier.json",
-      "score": 39,
+      "score": 38,
       "publishDate": "2026-11-04",
       "url": "https://culturesauce.com/rope-hitchcock-play-adaptation-off-broadway-review/",
       "findings": [
