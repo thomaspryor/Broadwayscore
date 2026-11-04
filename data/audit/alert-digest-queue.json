@@ -581,9 +581,9 @@
   {
     "conditionKey": "test-yml:main-streak-escalation",
     "title": "main test.yml STILL red — auto-dispatch did not resolve it",
-    "description": "main test.yml is STILL red after 7 consecutive pushes — the auto-dispatch card(s) filed at the 2nd failure have not resolved it. Currently failing: Unit Tests. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
+    "description": "main test.yml is STILL red after 8 consecutive pushes — the auto-dispatch card(s) filed at the 2nd failure have not resolved it. Currently failing: unknown (job-set lookup unavailable). Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
     "severity": "error",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41757595376",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41758008694",
     "decision": false,
     "info": false,
     "decisionPrompt": null,
@@ -592,22 +592,22 @@
     "fields": [
       {
         "name": "This failed run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/41757595376)"
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/41758008694)"
       },
       {
         "name": "Previous failed run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/41756092247)"
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/41757595376)"
       },
       {
         "name": "Consecutive failures",
-        "value": "7"
+        "value": "8"
       },
       {
         "name": "Currently failing job(s)",
-        "value": "Unit Tests"
+        "value": "unknown (job-set lookup unavailable)"
       }
     ],
-    "queuedAt": "2026-11-04T02:25:33.432Z"
+    "queuedAt": "2026-11-04T02:43:00.658Z"
   },
   {
     "conditionKey": "pending-unrecoverable:the-pianist-off-west-end-2026",
@@ -709,20 +709,6 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-04T02:32:01.273Z"
-  },
-  {
-    "conditionKey": "t1-gaps:needs-manual-recovery",
-    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (Lincoln in the Bardo (washpost)). Checked 2026-11-04.",
-    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-04T02:32:24.360Z"
   },
   {
     "conditionKey": "land:land/job/linear-BRO-6945-mw1ek36b",
