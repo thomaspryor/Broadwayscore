@@ -1522,7 +1522,10 @@ function decideInclusion(review, show, guards, filePath) {
       // wrongArticleManualClear / humanReviewedWrongArticle /
       // nonReviewManualClear and, for the wrongShow family, wrongShowManualClear /
       // wrongShowOverride (wrongShowCleared); all are FLAG_FIELDS.
-      if (cv.wrongArticle === true) {
+      // BRO-6973: a clean verdict whose own articleType says interview/news routes the same way. Read off the
+      // per-side guards module so a baseline that predates the helper replays the old behaviour (live).
+      const cvArticleTypeNonReview = typeof guards.cvArticleTypeNonReview === 'function' && guards.cvArticleTypeNonReview(cv);
+      if (cv.wrongArticle === true || cvArticleTypeNonReview) {
         const promote = typeof guards.cvWrongArticlePromotion === 'function'
           ? guards.cvWrongArticlePromotion
           : require('./lib/review-guards').cvWrongArticlePromotion;

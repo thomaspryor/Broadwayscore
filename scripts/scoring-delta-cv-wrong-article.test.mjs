@@ -90,3 +90,23 @@ test('both rebuild CV pre-passes use the shared routing and rescore helpers', ()
   assert.equal((src.match(/\bqueueRescoreForCvPartialWindow\(/g) || []).length, 2, 'main + upcoming-show pre-pass');
   assert.ok(!/\bneedsRescoreForCvPartialWindow\(/.test(src), 'call queueRescoreForCvPartialWindow, not the bare predicate');
 });
+
+// BRO-6973: a clean-boolean verdict whose own articleType says interview/news is excluded too.
+const cvCleanInterview = { isValid: true, wrongArticle: false, wrongProduction: false, articleType: 'interview', articleTypeConfidence: 'high', confidence: 'high', verifiedAt: '2026-03-26T00:00:00Z', reasoning: 'Interview with the choreographer.' };
+const cleanBase = { ...base, contentVerification: cvCleanInterview };
+
+test('BRO-6973: clean isValid verdict with high-confidence interview/news articleType is promoted to nonReview', () => {
+  for (const articleType of ['interview', 'news', 'box-office', 'obituary']) {
+    const cv = { ...cvCleanInterview, articleType };
+    assert.equal(guards.cvWrongArticlePromotion({ ...base, contentVerification: cv }, cv), 'nonReview', articleType);
+  }
+  assert.deepEqual(decideInclusion(cleanBase, show, guards), { included: false, reason: 'cv-promoted wrongArticle (nonReview)' });
+});
+
+test('BRO-6973: preview/feature, medium articleType confidence, ensemble score and human clear stay live', () => {
+  for (const cv of [{ ...cvCleanInterview, articleType: 'preview' }, { ...cvCleanInterview, articleType: 'feature' }, { ...cvCleanInterview, articleTypeConfidence: 'medium' }, { ...cvCleanInterview, articleType: 'review' }, { ...cvCleanInterview, isValid: false }]) {
+    assert.equal(guards.cvWrongArticlePromotion({ ...base, contentVerification: cv }, cv), null, JSON.stringify(cv));
+  }
+  assert.equal(guards.cvWrongArticlePromotion({ ...cleanBase, ...scored }, cvCleanInterview), 'advisory');
+  assert.equal(decideInclusion({ ...cleanBase, nonReviewManualClear: true }, show, guards).included, true);
+});
