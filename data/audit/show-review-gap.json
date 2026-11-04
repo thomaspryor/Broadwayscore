@@ -1,22 +1,22 @@
 {
-  "generatedAt": "2026-11-04T19:31:35.837Z",
+  "generatedAt": "2026-11-04T20:32:02.077Z",
   "windowDays": 1095,
-  "targets": 924,
-  "auditedThisRun": 24,
-  "carriedForward": 2000,
+  "targets": 913,
+  "auditedThisRun": 13,
+  "carriedForward": 2014,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 632,
-    "missingCurrentRun": 1173,
+    "withGap": 631,
+    "missingCurrentRun": 1169,
     "totalCitedNoUrl": 0,
-    "totalFlaggedMisses": 923,
+    "totalFlaggedMisses": 924,
     "totalRecoverable": 58,
     "totalRecovered": 94,
     "humanExcluded": 27,
-    "automatedExcluded": 1023,
-    "automatedExcludedListed": 742,
-    "priorProductionCitations": 6073
+    "automatedExcluded": 1028,
+    "automatedExcludedListed": 743,
+    "priorProductionCitations": 6084
   },
   "results": [
     {
@@ -468,7 +468,7 @@
         "liveCount": 0,
         "candidateCount": 1
       },
-      "computedAt": "2026-11-04T17:07:25.311Z"
+      "computedAt": "2026-11-04T20:32:02.077Z"
     },
     {
       "showId": "3-summers-of-lincoln-regional-2025",
@@ -45655,6 +45655,44 @@
       "computedAt": "2026-11-01T06:15:48.014Z"
     },
     {
+      "showId": "billie-jean-regional-2025",
+      "title": "Billie Jean",
+      "openingDate": "2025-07-25",
+      "status": "closed",
+      "category": "regional",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "unextractable": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 4,
+        "excluded": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-11-04T20:32:02.077Z"
+    },
+    {
       "showId": "billy-crystal-860-2026",
       "title": "Billy Crystal 860",
       "openingDate": "2026-10-21",
@@ -55375,6 +55413,265 @@
         "candidateCount": 0
       },
       "computedAt": "2026-10-31T17:07:08.919Z"
+    },
+    {
+      "showId": "cadel-lungs-on-legs-off-west-end-2026",
+      "title": "Cadel: Lungs On Legs",
+      "openingDate": "2026-10-16",
+      "status": "open",
+      "category": "off-west-end",
+      "previewsStartDate": "2026-10-13",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [
+        "https://www.allthatdazzles.co.uk/post/review-cadel-lungs-on-legs-riverside-studios",
+        "https://theatreandtonic.co.uk/blog/cadel-lungs-on-legs-at-riverside-studios-review",
+        "https://www.broadwayworld.com/westend/article/Review-CADEL-LUNGS-ON-LEGS-Riverside-Studios-20261016",
+        "https://number9reviews.blogspot.com/2026/10/theatre-review-cadel-lungs-on-legs.html",
+        "https://liamodell.com/2026/10/18/cadel-lungs-on-legs-review-riverside-studios-hammersmith-london-cadel-evans-tour-de-france/",
+        "https://www.londonboxoffice.co.uk/news/post/cadel-lungs-on-legs-riverside-studios-review",
+        "https://ayoungishperspective.co.uk/2026/10/17/review-cadel-lungs-on-legs/",
+        "https://loureviews.blog/2026/10/16/play-review-cadel-lungs-on-legs-at-riverside-studios/",
+        "https://www.broadwayworld.com/article/Review-CADEL-LUNGS-ON-LEGS-Riverside-Studios-20261016",
+        "https://www.londontheatre1.com/reviews/cadel-lungs-on-legs-riverside-studios/",
+        "https://www.reviewsgate.co.uk/all-reviews/cadel-lungs-on-legs-by-connor-delves-amp-steve-mcmahon-riverside-studios-101-queen-caroline-street-london-w6-until-15-november-2026-review-by-william-russell",
+        "https://www.london-unattached.com/cadel-lungs-on-legs-riverside-studios/"
+      ],
+      "dirFiles": 31,
+      "dirClean": 15,
+      "inReviewsJson": 16,
+      "missing": [],
+      "dirOnly": [
+        {
+          "host": "londonlivinglarge.com",
+          "count": 1
+        },
+        {
+          "host": "londonpubtheatres.com",
+          "count": 1
+        },
+        {
+          "host": "list.co.uk",
+          "count": 1
+        },
+        {
+          "host": "thetimes.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": {
+        "rowCount": 12,
+        "sources": {
+          "westendtheatre": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "fetchErrors": 0
+          },
+          "theatre-reviews": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "fetchErrors": 0
+          },
+          "lbo-roundup": {
+            "found": true,
+            "rows": 1,
+            "emptyParse": false,
+            "error": null,
+            "fetchErrors": 0
+          },
+          "bestoftheatre": {
+            "found": true,
+            "rows": 11,
+            "emptyParse": false,
+            "error": null,
+            "fetchErrors": 0
+          },
+          "thestage-archive": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "passive": true
+          }
+        },
+        "allSourcesFailed": false,
+        "currentRunRows": 12,
+        "corroborated": 11,
+        "perSource": {
+          "lbo-roundup": {
+            "cited": 1,
+            "corroborated": 1
+          },
+          "bestoftheatre": {
+            "cited": 11,
+            "corroborated": 11
+          }
+        }
+      },
+      "serpCensus": {
+        "ran": true,
+        "complete": true,
+        "query": "\"Cadel: Lungs On Legs\" West End review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Cadel: Lungs On Legs\" West End review 2026",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 8,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Cadel: Lungs On Legs\" review riverside",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 9,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Cadel: Lungs On Legs Riverside Studios review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 8,
+            "accepted": 5,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Cadel: Lungs On Legs Riverside Studios review",
+            "page": 1,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Cadel: Lungs On Legs Riverside Studios review",
+            "page": 2,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 5,
+        "error": null
+      },
+      "candidatesRejected": {
+        "count": 40,
+        "byReason": {
+          "not-http-url": 27,
+          "non-review-host": 8,
+          "bare-host": 1,
+          "write-path-blocked": 2,
+          "no-review-evidence": 1,
+          "ticketing-reseller": 1
+        }
+      },
+      "dedupedVariants": [],
+      "automatedExcludedListed": 0,
+      "unextractable": [],
+      "censusVerdict": {
+        "verdict": "complete",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "https://www.allthatdazzles.co.uk/post/review-cadel-lungs-on-legs-riverside-studios",
+            "outletId": "allthatdazzles.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-11-04T20:32:02.077Z"
+          },
+          {
+            "url": "https://theatreandtonic.co.uk/blog/cadel-lungs-on-legs-at-riverside-studios-review",
+            "outletId": "theatreandtonic.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-11-04T20:32:02.077Z"
+          },
+          {
+            "url": "https://www.broadwayworld.com/westend/article/Review-CADEL-LUNGS-ON-LEGS-Riverside-Studios-20261016",
+            "outletId": "broadwayworld.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-04T20:32:02.077Z"
+          },
+          {
+            "url": "https://number9reviews.blogspot.com/2026/10/theatre-review-cadel-lungs-on-legs.html",
+            "outletId": "number9reviews.blogspot.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-04T20:32:02.077Z"
+          },
+          {
+            "url": "https://liamodell.com/2026/10/18/cadel-lungs-on-legs-review-riverside-studios-hammersmith-london-cadel-evans-tour-de-france/",
+            "outletId": "liamodell.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-04T20:32:02.077Z"
+          },
+          {
+            "url": "https://www.londonboxoffice.co.uk/news/post/cadel-lungs-on-legs-riverside-studios-review",
+            "outletId": "londonboxoffice.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-11-04T20:32:02.077Z"
+          },
+          {
+            "url": "https://ayoungishperspective.co.uk/2026/10/17/review-cadel-lungs-on-legs/",
+            "outletId": "ayoungishperspective.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-11-04T20:32:02.077Z"
+          },
+          {
+            "url": "https://loureviews.blog/2026/10/16/play-review-cadel-lungs-on-legs-at-riverside-studios/",
+            "outletId": "loureviews.blog",
+            "state": "live",
+            "firstSeenAt": "2026-11-04T20:32:02.077Z"
+          },
+          {
+            "url": "https://www.broadwayworld.com/article/Review-CADEL-LUNGS-ON-LEGS-Riverside-Studios-20261016",
+            "outletId": "broadwayworld.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-04T20:32:02.077Z"
+          },
+          {
+            "url": "https://www.londontheatre1.com/reviews/cadel-lungs-on-legs-riverside-studios/",
+            "outletId": "londontheatre1.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-04T20:32:02.077Z"
+          },
+          {
+            "url": "https://www.reviewsgate.co.uk/all-reviews/cadel-lungs-on-legs-by-connor-delves-amp-steve-mcmahon-riverside-studios-101-queen-caroline-street-london-w6-until-15-november-2026-review-by-william-russell",
+            "outletId": "reviewsgate.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-11-04T20:32:02.077Z"
+          },
+          {
+            "url": "https://www.london-unattached.com/cadel-lungs-on-legs-riverside-studios/",
+            "outletId": "london-unattached.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-04T20:32:02.077Z"
+          }
+        ],
+        "censusSchema": 4,
+        "excluded": [],
+        "liveCount": 11,
+        "candidateCount": 11
+      },
+      "computedAt": "2026-11-04T20:32:02.077Z"
     },
     {
       "showId": "cadel-lungs-on-legs-west-end-2026",
@@ -65184,33 +65481,10 @@
         "https://www.timeout.com/newyork/news/theater-review-waiting-for-lefty-takes-a-swing-for-workers-110426",
         "https://www.vulture.com/article/theater-reviews-waiting-for-lefty-odets-specky-clark-doherty.html"
       ],
-      "dirFiles": 12,
-      "dirClean": 11,
-      "inReviewsJson": 11,
-      "missing": [
-        {
-          "url": "https://thefrontrowcenter.com/2026/11/waiting-for-lefty/",
-          "host": "thefrontrowcenter.com",
-          "knownOutletId": "front-row-center",
-          "sources": [
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://playbill.com/article/what-do-reviews-think-of-waiting-for-lefty-at-classic-stage-company"
-            }
-          ]
-        },
-        {
-          "url": "https://www.timeout.com/newyork/news/theater-review-waiting-for-lefty-takes-a-swing-for-workers-110426",
-          "host": "timeout.com",
-          "knownOutletId": "timeout",
-          "sources": [
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://playbill.com/article/what-do-reviews-think-of-waiting-for-lefty-at-classic-stage-company"
-            }
-          ]
-        }
-      ],
+      "dirFiles": 14,
+      "dirClean": 13,
+      "inReviewsJson": 13,
+      "missing": [],
       "dirOnly": [
         {
           "host": "theatermania.com",
@@ -65225,146 +65499,26 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"Clifford Odets’ Waiting for Lefty\" Off-Broadway review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"Clifford Odets’ Waiting for Lefty\" Off-Broadway review 2026",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 9,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"Clifford Odets’ Waiting for Lefty\" review classic",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "scoped2",
-            "query": "\"Clifford Odets’ Waiting for Lefty\" Odets review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "Clifford Odets’ Waiting for Lefty Classic Stage Company review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 9,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "Clifford Odets’ Waiting for Lefty Classic Stage Company review",
-            "page": 1,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "Clifford Odets’ Waiting for Lefty Classic Stage Company review",
-            "page": 2,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          }
-        ],
-        "queriesOk": 6,
-        "queriesTotal": 6,
-        "resultCount": 2,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 137,
+        "count": 95,
         "byReason": {
-          "census-junk-host": 11,
-          "aggregator-internal-nav": 42,
-          "news-roundup-site": 3,
-          "non-review-host": 40,
+          "aggregator-internal-nav": 39,
           "not-http-url": 20,
-          "production-database-listing": 10,
+          "production-database-listing": 9,
           "aggregator-section-root": 5,
-          "non-stage-review": 1,
-          "roundup-page": 3,
-          "show-listing-page": 1,
-          "ticketing-listing": 1
+          "non-review-host": 21,
+          "non-stage-review": 1
         }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 0,
       "unextractable": [],
-      "ingestResults": [
-        {
-          "url": "https://thefrontrowcenter.com/2026/11/waiting-for-lefty/",
-          "host": "thefrontrowcenter.com",
-          "outletId": "front-row-center",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": null
-        },
-        {
-          "url": "https://www.timeout.com/newyork/news/theater-review-waiting-for-lefty-takes-a-swing-for-workers-110426",
-          "host": "timeout.com",
-          "outletId": "timeout",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": null
-        }
-      ],
-      "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "incomplete",
-        "missing": [
-          {
-            "outletId": "front-row-center",
-            "outlet": "front-row-center",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://thefrontrowcenter.com/2026/11/waiting-for-lefty/"
-          },
-          {
-            "outletId": "timeout",
-            "outlet": "timeout",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.timeout.com/newyork/news/theater-review-waiting-for-lefty-takes-a-swing-for-workers-110426"
-          }
-        ],
+        "verdict": "complete",
+        "missing": [],
         "suppressedMissing": [],
         "candidates": [
           {
@@ -65378,6 +65532,12 @@
             "outletId": "culturesauce.com",
             "state": "live",
             "firstSeenAt": "2026-11-03T12:40:56.402Z"
+          },
+          {
+            "url": "https://thefrontrowcenter.com/2026/11/waiting-for-lefty/",
+            "outletId": "thefrontrowcenter.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-04T17:07:25.311Z"
           },
           {
             "url": "https://nystagereview.com/2026/11/02/waiting-for-lefty-the-play-has-aged-the-injustice-has-not/",
@@ -65416,32 +65576,24 @@
             "firstSeenAt": "2026-11-03T23:57:50.737Z"
           },
           {
+            "url": "https://www.timeout.com/newyork/news/theater-review-waiting-for-lefty-takes-a-swing-for-workers-110426",
+            "outletId": "timeout.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-04T17:07:25.311Z"
+          },
+          {
             "url": "https://www.vulture.com/article/theater-reviews-waiting-for-lefty-odets-specky-clark-doherty.html",
             "outletId": "vulture.com",
             "state": "live",
             "firstSeenAt": "2026-11-03T23:57:50.737Z"
-          },
-          {
-            "url": "https://thefrontrowcenter.com/2026/11/waiting-for-lefty/",
-            "outletId": "front-row-center",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-11-04T17:07:25.311Z"
-          },
-          {
-            "url": "https://www.timeout.com/newyork/news/theater-review-waiting-for-lefty-takes-a-swing-for-workers-110426",
-            "outletId": "timeout",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-11-04T17:07:25.311Z"
           }
         ],
         "censusSchema": 4,
         "excluded": [],
-        "liveCount": 8,
+        "liveCount": 10,
         "candidateCount": 10
       },
-      "computedAt": "2026-11-04T17:07:25.311Z"
+      "computedAt": "2026-11-04T20:32:02.077Z"
     },
     {
       "showId": "clinamen-off-broadway-2026",
@@ -86874,6 +87026,230 @@
         "candidateCount": 0
       },
       "computedAt": "2026-09-14T23:04:15.991Z"
+    },
+    {
+      "showId": "dirty-dancing-the-classic-story-on-stage-off-west-end-2026",
+      "title": "Dirty Dancing: The Classic Story on Stage",
+      "openingDate": "2026-10-16",
+      "status": "open",
+      "category": "off-west-end",
+      "previewsStartDate": "2026-10-16",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [
+        "https://musicaltheatrereview.com/london-venue-change-for-dirty-dancing-the-classic-story-on-stage/",
+        "https://www.londontheatre.co.uk/reviews/dirty-dancing-the-classic-story-on-stage-review-dominion-theatre"
+      ],
+      "dirFiles": 15,
+      "dirClean": 1,
+      "inReviewsJson": 1,
+      "missing": [],
+      "dirOnly": [
+        {
+          "host": "thereviewshub.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [
+        {
+          "url": "https://musicaltheatrereview.com/london-venue-change-for-dirty-dancing-the-classic-story-on-stage/",
+          "host": "musicaltheatrereview.com",
+          "knownOutletId": "musical-theatre-review",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "musical-theatre-review--angela-thomas.json",
+              "flag": "clean",
+              "urlInDir": "https://musicaltheatrereview.com/london-venue-change-for-dirty-dancing-the-classic-story-on-stage/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "rejectionReason"
+          ],
+          "confirmedNonReview": true,
+          "confirmedBasis": [
+            "non-review"
+          ],
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
+          "serpCensus": true,
+          "reverify": false
+        },
+        {
+          "url": "https://www.londontheatre.co.uk/reviews/dirty-dancing-the-classic-story-on-stage-review-dominion-theatre",
+          "host": "londontheatre.co.uk",
+          "knownOutletId": "london-theatre",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "london-theatre--sophie-thomas.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.londontheatre.co.uk/reviews/dirty-dancing-the-classic-story-on-stage-review-dominion-theatre"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "flagged-file-date:January 26th, 2023",
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
+          "serpCensus": true,
+          "reverify": false
+        }
+      ],
+      "citedNoUrl": [],
+      "weReference": {
+        "rowCount": 0,
+        "sources": {
+          "westendtheatre": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "fetchErrors": 0
+          },
+          "theatre-reviews": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "fetchErrors": 0
+          },
+          "lbo-roundup": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "fetchErrors": 0
+          },
+          "bestoftheatre": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "fetchErrors": 0
+          },
+          "thestage-archive": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "passive": true
+          }
+        },
+        "allSourcesFailed": false,
+        "currentRunRows": 0,
+        "corroborated": 0,
+        "perSource": {}
+      },
+      "serpCensus": {
+        "ran": true,
+        "complete": true,
+        "query": "\"Dirty Dancing: The Classic Story on Stage\" West End review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Dirty Dancing: The Classic Story on Stage\" West End review 2026",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 8,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Dirty Dancing: The Classic Story on Stage\" review capital",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 9,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Dirty Dancing: The Classic Story on Stage Capital Theatre review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 9,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Dirty Dancing: The Classic Story on Stage Capital Theatre review",
+            "page": 1,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Dirty Dancing: The Classic Story on Stage Capital Theatre review",
+            "page": 2,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 2,
+        "error": null
+      },
+      "candidatesRejected": {
+        "count": 35,
+        "byReason": {
+          "not-http-url": 28,
+          "non-review-host": 5,
+          "census-junk-host": 1,
+          "show-hub": 1
+        }
+      },
+      "dedupedVariants": [],
+      "automatedExcludedListed": 0,
+      "unextractable": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 4,
+        "excluded": [
+          {
+            "url": "https://musicaltheatrereview.com/london-venue-change-for-dirty-dancing-the-classic-story-on-stage/",
+            "host": "musicaltheatrereview.com",
+            "reason": "confirmed-non-review"
+          }
+        ],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-11-04T20:32:02.077Z"
     },
     {
       "showId": "dirty-dancing-the-classic-story-on-stage-west-end-2026",
@@ -211648,60 +212024,50 @@
       "category": "off-broadway",
       "previewsStartDate": "2026-09-25",
       "aggregatorArticles": [
-        "https://www.broadwayworld.com/article/Review-Roundup-MEMOIRS-OF-AMOROUS-GENTLEMEN-Opens-Off-Broadway-20261015",
-        "https://playbill.com/article/reviews-what-do-the-critics-think-of-new-manga-musical-memoirs-of-amorous-gentlemen"
+        "https://playbill.com/article/reviews-what-do-the-critics-think-of-new-manga-musical-memoirs-of-amorous-gentlemen",
+        "https://www.broadwayworld.com/article/Review-Roundup-MEMOIRS-OF-AMOROUS-GENTLEMEN-Opens-Off-Broadway-20261015"
       ],
       "aggregatorListedUrls": [
-        "https://www.nytimes.com/2026/10/16/theater/memoirs-of-amorous-gentlemen-review-duncan-sheik.html",
-        "https://www.vulture.com/article/reviews-memoirs-of-amorous-gentlemen-and-a-ghost-in-your-ear.html",
-        "https://www.newyorktheatreguide.com/reviews/memoirs-of-amorous-gentlemen-off-broadway-review",
-        "https://culturesauce.com/duncan-sheik-memoirs-of-amorous-gentlemen-off-broadway-review/",
         "https://1minutecritic.com/memoirs-of-amorous-gentlemen-duncan-sheik-review/",
         "https://cititour.com/NYC_News/Will-You-Love-Memoirs-of-Amorous-Gentlemen/11121",
+        "https://culturesauce.com/duncan-sheik-memoirs-of-amorous-gentlemen-off-broadway-review/",
         "https://nystagereview.com/2026/10/15/memoirs-of-amorous-gentlemen-tuned-up-bawdy-house-fun/",
         "https://newyorktheater.me/2026/10/15/memoirs-of-amorous-gentlemen-review/",
+        "https://www.newyorktheatreguide.com/reviews/memoirs-of-amorous-gentlemen-off-broadway-review",
+        "https://www.nytimes.com/2026/10/16/theater/memoirs-of-amorous-gentlemen-review-duncan-sheik.html",
         "https://www.theatermania.com/news/review-memoirs-of-amorous-gentlemen-duncan-sheiks-dark-swan-song_1857256/",
         "https://t2conline.com/memoirs-of-amorous-gentlemen-a-beautifully-decadent-world-with-a-star-at-its-center/",
+        "https://www.vulture.com/article/reviews-memoirs-of-amorous-gentlemen-and-a-ghost-in-your-ear.html",
         "https://www.thewrap.com/creative-content/theater/memoirs-of-amorous-gentlemen-off-broadway-review/",
         "https://pagesonstages.com/2026/10/15/memoirs-of-amorous-gentlemen/",
+        "https://www.offoffonline.com/offoffonline/2026/10/30/memoirs-of-amorous-gentlemen",
         "https://www.interestedbystander.com/2026/10/theater-reviews-lauren-yees-king-of.html",
-        "https://thefrontrowcenter.com/2026/10/memoirs-of-amorous-gentlemen/",
         "https://exeuntnyc.com/reviews/review-memoirs-of-amorous-gentlemen-at-the-culture-club/",
+        "https://t2conline.com/memoirs-of-amorous-gentlemen-offers-a-first-look-at-one-of-duncan-sheiks-final-musicals/",
         "https://joshatthemovies.com/2026/10/24/theater-review-memoirs-of-amorous-gentlemen/",
-        "https://www.theatermania.com/news/finishing-memoirs-of-amorous-gentlemen-after-duncan-sheiks-death_1856138/",
-        "https://nypost.com/2026/10/17/entertainment/memoirs-of-amorous-gentlemen-review-the-musical-duncan-sheik-was-working-on-when-he-died-is-an-awkward-letdown/",
         "https://joshatthemovies.com/tag/memoirs-of-amorous-gentlemen/",
+        "https://culturesauce.com/tag/memoirs-of-an-amorous-gentleman/",
+        "https://thefrontrowcenter.com/2026/10/memoirs-of-amorous-gentlemen/",
+        "https://nypost.com/2026/10/17/entertainment/memoirs-of-amorous-gentlemen-review-the-musical-duncan-sheik-was-working-on-when-he-died-is-an-awkward-letdown/",
         "https://www.theatermania.com/news/sophia-anne-caruso-to-star-in-duncan-sheik-musical-memoirs-of-amorous-gentlemen_1848982/",
-        "https://openingnight.online/memoirs-of-amorous-gentlemen-off-broadway-review-new-manga-musical-wants-you-to-watch-new-york-theatre-guide/"
+        "https://openingnight.online/memoirs-of-amorous-gentlemen-off-broadway-review-new-manga-musical-wants-you-to-watch-new-york-theatre-guide/",
+        "https://www.theatermania.com/news/finishing-memoirs-of-amorous-gentlemen-after-duncan-sheiks-death_1856138/"
       ],
-      "dirFiles": 34,
-      "dirClean": 21,
+      "dirFiles": 35,
+      "dirClean": 22,
       "inReviewsJson": 21,
-      "missing": [
-        {
-          "url": "https://openingnight.online/memoirs-of-amorous-gentlemen-off-broadway-review-new-manga-musical-wants-you-to-watch-new-york-theatre-guide/",
-          "host": "openingnight.online",
-          "knownOutletId": "openingnight",
-          "serpCensus": true,
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ]
-        }
-      ],
+      "missing": [],
       "dirOnly": [
         {
           "host": "lightingandsoundamerica.com",
           "count": 1
         },
         {
-          "host": "nysun.com",
+          "host": "mashable.com",
           "count": 1
         },
         {
-          "host": "offoffonline.com",
+          "host": "nysun.com",
           "count": 1
         },
         {
@@ -211710,6 +212076,39 @@
         }
       ],
       "flaggedMisses": [
+        {
+          "url": "https://t2conline.com/memoirs-of-amorous-gentlemen-offers-a-first-look-at-one-of-duncan-sheiks-final-musicals/",
+          "host": "t2conline.com",
+          "knownOutletId": "times-square-chronicles",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "times-square-chronicles--genevieve-rafter-keddy.json",
+              "flag": "clean",
+              "urlInDir": "https://t2conline.com/memoirs-of-amorous-gentlemen-offers-a-first-look-at-one-of-duncan-sheiks-final-musicals/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "rejectionReason"
+          ],
+          "confirmedNonReview": true,
+          "confirmedBasis": [
+            "non-review"
+          ],
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
+          "serpCensus": true,
+          "reverify": false
+        },
         {
           "url": "https://www.theatermania.com/news/finishing-memoirs-of-amorous-gentlemen-after-duncan-sheiks-death_1856138/",
           "host": "theatermania.com",
@@ -211754,7 +212153,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 5,
             "error": null
           },
           {
@@ -211763,8 +212162,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 10,
-            "accepted": 7,
+            "results": 9,
+            "accepted": 2,
             "error": null
           },
           {
@@ -211774,7 +212173,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           },
           {
@@ -211794,37 +212193,51 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 4,
+            "accepted": 2,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 14,
+        "resultCount": 12,
         "error": null
       },
       "candidatesRejected": {
-        "count": 420,
+        "count": 424,
         "byReason": {
-          "roundup-page": 4,
-          "non-review-host": 50,
-          "ticketing-listing": 1,
-          "bare-host": 3,
-          "write-path-blocked": 2,
-          "no-review-evidence": 2,
-          "census-junk-host": 4,
+          "aggregator-internal-nav": 246,
           "not-http-url": 89,
-          "aggregator-internal-nav": 243,
-          "aggregator-section-root": 10,
-          "podcast-episode": 1,
           "production-database-listing": 9,
+          "aggregator-section-root": 10,
+          "non-review-host": 47,
           "non-stage-review": 1,
-          "news-roundup-site": 1
+          "bare-host": 2,
+          "roundup-page": 4,
+          "podcast-episode": 1,
+          "write-path-blocked": 3,
+          "census-junk-host": 8,
+          "no-review-evidence": 2,
+          "venue-production-page": 1,
+          "merch-store": 1
         }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 1,
-      "unextractable": [],
+      "unextractable": [
+        {
+          "url": "https://openingnight.online/memoirs-of-amorous-gentlemen-off-broadway-review-new-manga-musical-wants-you-to-watch-new-york-theatre-guide/",
+          "host": "openingnight.online",
+          "knownOutletId": "openingnight",
+          "serpCensus": true,
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
+          "zeroCharAttempts": 3
+        }
+      ],
       "ingestResults": [
         {
           "url": "https://openingnight.online/memoirs-of-amorous-gentlemen-off-broadway-review-new-manga-musical-wants-you-to-watch-new-york-theatre-guide/",
@@ -211847,13 +212260,6 @@
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "openingnight",
-            "outlet": "openingnight",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://openingnight.online/memoirs-of-amorous-gentlemen-off-broadway-review-new-manga-musical-wants-you-to-watch-new-york-theatre-guide/"
-          },
-          {
             "outletId": "theatermania",
             "outlet": "theatermania",
             "critic": "Unknown",
@@ -211863,30 +212269,6 @@
         ],
         "suppressedMissing": [],
         "candidates": [
-          {
-            "url": "https://www.nytimes.com/2026/10/16/theater/memoirs-of-amorous-gentlemen-review-duncan-sheik.html",
-            "outletId": "nytimes.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-16T17:15:02.578Z"
-          },
-          {
-            "url": "https://www.vulture.com/article/reviews-memoirs-of-amorous-gentlemen-and-a-ghost-in-your-ear.html",
-            "outletId": "vulture.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-16T05:39:49.231Z"
-          },
-          {
-            "url": "https://www.newyorktheatreguide.com/reviews/memoirs-of-amorous-gentlemen-off-broadway-review",
-            "outletId": "newyorktheatreguide.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-16T05:39:49.231Z"
-          },
-          {
-            "url": "https://culturesauce.com/duncan-sheik-memoirs-of-amorous-gentlemen-off-broadway-review/",
-            "outletId": "culturesauce.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-16T05:39:49.231Z"
-          },
           {
             "url": "https://1minutecritic.com/memoirs-of-amorous-gentlemen-duncan-sheik-review/",
             "outletId": "1minutecritic.com",
@@ -211898,6 +212280,12 @@
             "outletId": "cititour.com",
             "state": "live",
             "firstSeenAt": "2026-10-16T17:15:02.578Z"
+          },
+          {
+            "url": "https://culturesauce.com/duncan-sheik-memoirs-of-amorous-gentlemen-off-broadway-review/",
+            "outletId": "culturesauce.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-16T05:39:49.231Z"
           },
           {
             "url": "https://nystagereview.com/2026/10/15/memoirs-of-amorous-gentlemen-tuned-up-bawdy-house-fun/",
@@ -211912,6 +212300,18 @@
             "firstSeenAt": "2026-10-16T05:39:49.231Z"
           },
           {
+            "url": "https://www.newyorktheatreguide.com/reviews/memoirs-of-amorous-gentlemen-off-broadway-review",
+            "outletId": "newyorktheatreguide.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-16T05:39:49.231Z"
+          },
+          {
+            "url": "https://www.nytimes.com/2026/10/16/theater/memoirs-of-amorous-gentlemen-review-duncan-sheik.html",
+            "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-16T17:15:02.578Z"
+          },
+          {
             "url": "https://www.theatermania.com/news/review-memoirs-of-amorous-gentlemen-duncan-sheiks-dark-swan-song_1857256/",
             "outletId": "theatermania.com",
             "state": "live",
@@ -211922,6 +212322,12 @@
             "outletId": "t2conline.com",
             "state": "live",
             "firstSeenAt": "2026-10-16T17:15:02.578Z"
+          },
+          {
+            "url": "https://www.vulture.com/article/reviews-memoirs-of-amorous-gentlemen-and-a-ghost-in-your-ear.html",
+            "outletId": "vulture.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-16T05:39:49.231Z"
           },
           {
             "url": "https://www.thewrap.com/creative-content/theater/memoirs-of-amorous-gentlemen-off-broadway-review/",
@@ -211936,16 +212342,16 @@
             "firstSeenAt": "2026-10-19T18:05:32.145Z"
           },
           {
+            "url": "https://www.offoffonline.com/offoffonline/2026/10/30/memoirs-of-amorous-gentlemen",
+            "outletId": "offoffonline.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-04T20:32:02.077Z"
+          },
+          {
             "url": "https://www.interestedbystander.com/2026/10/theater-reviews-lauren-yees-king-of.html",
             "outletId": "interestedbystander.com",
             "state": "live",
             "firstSeenAt": "2026-11-02T17:01:17.727Z"
-          },
-          {
-            "url": "https://thefrontrowcenter.com/2026/10/memoirs-of-amorous-gentlemen/",
-            "outletId": "thefrontrowcenter.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-20T21:11:21.454Z"
           },
           {
             "url": "https://exeuntnyc.com/reviews/review-memoirs-of-amorous-gentlemen-at-the-culture-club/",
@@ -211960,29 +212366,34 @@
             "firstSeenAt": "2026-10-31T17:07:08.919Z"
           },
           {
-            "url": "https://nypost.com/2026/10/17/entertainment/memoirs-of-amorous-gentlemen-review-the-musical-duncan-sheik-was-working-on-when-he-died-is-an-awkward-letdown/",
-            "outletId": "nypost.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-18T08:32:02.058Z"
-          },
-          {
             "url": "https://joshatthemovies.com/tag/memoirs-of-amorous-gentlemen/",
             "outletId": "joshatthemovies.com",
             "state": "live",
             "firstSeenAt": "2026-11-02T02:40:23.651Z"
           },
           {
+            "url": "https://culturesauce.com/tag/memoirs-of-an-amorous-gentleman/",
+            "outletId": "culturesauce.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-04T20:32:02.077Z"
+          },
+          {
+            "url": "https://thefrontrowcenter.com/2026/10/memoirs-of-amorous-gentlemen/",
+            "outletId": "thefrontrowcenter.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-20T21:11:21.454Z"
+          },
+          {
+            "url": "https://nypost.com/2026/10/17/entertainment/memoirs-of-amorous-gentlemen-review-the-musical-duncan-sheik-was-working-on-when-he-died-is-an-awkward-letdown/",
+            "outletId": "nypost.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-18T08:32:02.058Z"
+          },
+          {
             "url": "https://www.theatermania.com/news/sophia-anne-caruso-to-star-in-duncan-sheik-musical-memoirs-of-amorous-gentlemen_1848982/",
             "outletId": "theatermania.com",
             "state": "live",
             "firstSeenAt": "2026-11-03T05:31:53.105Z"
-          },
-          {
-            "url": "https://openingnight.online/memoirs-of-amorous-gentlemen-off-broadway-review-new-manga-musical-wants-you-to-watch-new-york-theatre-guide/",
-            "outletId": "openingnight",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-11-03T18:35:27.526Z"
           },
           {
             "url": "https://www.theatermania.com/news/finishing-memoirs-of-amorous-gentlemen-after-duncan-sheiks-death_1856138/",
@@ -211993,11 +212404,17 @@
           }
         ],
         "censusSchema": 4,
-        "excluded": [],
-        "liveCount": 17,
+        "excluded": [
+          {
+            "url": "https://t2conline.com/memoirs-of-amorous-gentlemen-offers-a-first-look-at-one-of-duncan-sheiks-final-musicals/",
+            "host": "t2conline.com",
+            "reason": "confirmed-non-review"
+          }
+        ],
+        "liveCount": 18,
         "candidateCount": 19
       },
-      "computedAt": "2026-11-04T07:52:26.614Z"
+      "computedAt": "2026-11-04T20:32:02.077Z"
     },
     {
       "showId": "memoriam-off-west-end-2026",
@@ -215667,6 +216084,7 @@
       "previewsStartDate": "2026-09-25",
       "aggregatorArticles": [
         "https://www.broadwayworld.com/article/Review-Roundup-What-Did-Critics-Think-of-Todrick-Halls-MIDNIGHT-Off-Broadway-20261015",
+        "https://www.broadwayworld.com/article/Review-Roundup-11-TO-MIDNIGHT-Opens-at-the-Orpheum-Theatre-20260211",
         "https://playbill.com/article/reviews-are-in-for-todrick-hall-musical-midnight-off-broadway"
       ],
       "aggregatorListedUrls": [
@@ -215687,6 +216105,8 @@
         "https://enspiremag.com/2026/10/todrick-halls-midnight-brilliant-artistry-but-did-the-story-lose-its-soul/",
         "https://cititour.com/NYC_News/Midnight-Strikes-a-Chord/11120",
         "https://t2conline.com/midnight-todrick-hall-has-created-a-musical-masterpiece-that-broadway-cannot-afford-to-ignore/",
+        "https://www.newyorktheatreguide.com/reviews/11-to-midnight-off-broadway-review-cost-n-mayor",
+        "https://1minutecritic.com/11-to-midnight-review-cost-n-mayor/",
         "https://www.vulture.com/article/new-musicals-reviewed-the-heart-midnight-and-i-became-we.html",
         "https://newyorknotebook.substack.com/p/midnight",
         "https://outinjersey.net/todrick-hall-is-spectacular-in-multiple-areas-in-midnight/",
@@ -215728,7 +216148,38 @@
           "count": 1
         }
       ],
-      "flaggedMisses": [],
+      "flaggedMisses": [
+        {
+          "url": "https://1minutecritic.com/11-to-midnight-review-cost-n-mayor/",
+          "host": "1minutecritic.com",
+          "knownOutletId": "one-minute-critic",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "one-minute-critic--ryan-leeds.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://1minutecritic.com/11-to-midnight-review-cost-n-mayor/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-11-TO-MIDNIGHT-Opens-at-the-Orpheum-Theatre-20260211"
+            }
+          ],
+          "reverify": false
+        }
+      ],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
@@ -215742,7 +216193,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 10,
+            "results": 8,
             "accepted": 0,
             "error": null
           },
@@ -215752,7 +216203,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 10,
+            "results": 8,
             "accepted": 0,
             "error": null
           },
@@ -215762,7 +216213,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 10,
+            "results": 6,
             "accepted": 1,
             "error": null
           },
@@ -215773,7 +216224,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 1,
             "error": null
           },
           {
@@ -215783,35 +216234,38 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 4,
+            "accepted": 1,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 7,
+        "resultCount": 3,
         "error": null
       },
       "candidatesRejected": {
-        "count": 413,
+        "count": 700,
         "byReason": {
-          "roundup-page": 4,
-          "non-review-host": 59,
-          "bare-host": 1,
-          "write-path-blocked": 2,
-          "census-junk-host": 6,
-          "not-http-url": 66,
-          "aggregator-internal-nav": 249,
-          "aggregator-section-root": 10,
-          "podcast-episode": 2,
+          "aggregator-internal-nav": 458,
+          "not-http-url": 154,
           "production-database-listing": 8,
+          "aggregator-section-root": 16,
+          "non-review-host": 55,
           "non-stage-review": 1,
-          "news-roundup-site": 1,
-          "ticketing-reseller": 3,
-          "show-listing-page": 1
+          "bare-host": 1,
+          "roundup-page": 3,
+          "podcast-episode": 2,
+          "ticketing-reseller": 1,
+          "news-roundup-site": 1
         }
       },
       "dedupedVariants": [],
+      "priorRunArticles": [
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-11-TO-MIDNIGHT-Opens-at-the-Orpheum-Theatre-20260211",
+          "publishDate": "2026-02-11"
+        }
+      ],
       "automatedExcludedListed": 0,
       "unextractable": [],
       "weIngestBlocked": [
@@ -215941,6 +216395,12 @@
             "firstSeenAt": "2026-10-16T17:15:02.578Z"
           },
           {
+            "url": "https://www.newyorktheatreguide.com/reviews/11-to-midnight-off-broadway-review-cost-n-mayor",
+            "outletId": "newyorktheatreguide.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-04T20:32:02.077Z"
+          },
+          {
             "url": "https://www.vulture.com/article/new-musicals-reviewed-the-heart-midnight-and-i-became-we.html",
             "outletId": "vulture.com",
             "state": "live",
@@ -216001,7 +216461,7 @@
         "liveCount": 23,
         "candidateCount": 24
       },
-      "computedAt": "2026-11-04T07:52:26.614Z"
+      "computedAt": "2026-11-04T20:32:02.077Z"
     },
     {
       "showId": "mike-birbiglia-the-old-man-and-the-pool-2022",
@@ -321871,21 +322331,82 @@
       "aggregatorListedUrls": [
         "https://www.theatermania.com/news/review-the-blue-violinist-over-west-end-avenue-shouting-about-israel-on-the-upper-west-side_1858817/"
       ],
-      "dirFiles": 3,
-      "dirClean": 1,
+      "dirFiles": 4,
+      "dirClean": 2,
       "inReviewsJson": 1,
       "missing": [],
-      "dirOnly": [],
+      "dirOnly": [
+        {
+          "host": "talkinbroadway.com",
+          "count": 1
+        }
+      ],
       "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"The Blue Violinist Over West End Avenue\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"The Blue Violinist Over West End Avenue\" Off-Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 9,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "The Blue Violinist Over West End Avenue Theatre Row review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 9,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "The Blue Violinist Over West End Avenue Theatre Row review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "The Blue Violinist Over West End Avenue Theatre Row review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 4,
+        "queriesTotal": 4,
+        "resultCount": 0,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 36,
+        "byReason": {
+          "aggregator-internal-nav": 1,
+          "not-http-url": 23,
+          "production-database-listing": 1,
+          "non-review-host": 6,
+          "bare-host": 1,
+          "census-junk-host": 2,
+          "venue-production-page": 1,
+          "merch-store": 1
+        }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 0,
@@ -321907,7 +322428,7 @@
         "liveCount": 1,
         "candidateCount": 1
       },
-      "computedAt": "2026-11-04T17:07:25.311Z"
+      "computedAt": "2026-11-04T20:32:02.077Z"
     },
     {
       "showId": "the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026",
@@ -371230,12 +371751,11 @@
         "http://www.nydailynews.com/entertainment/theater-arts/royale-draws-life-boxing-champ-jack-johnson-article-1.2555782",
         "http://deadline.com/2016/03/boxing-drama-the-royale-review-1201715898/",
         "https://aroundthetownchicago.com/theatre-reviews/the-royale-2/",
-        "https://www.conversationswithedtracy.com/picksinsix/2026/11/1/picksinsix-review-the-royale-writers-theatre",
-        "https://www.chicagotribune.com/2026/11/02/review-royale-writers-theatre/",
-        "https://evanstonroundtable.com/2026/11/02/the-royale-at-writers-theatre-delivers-a-knockout-punch/",
-        "https://www.chicagostageandscreen.com/post/stunning-powerful-royale-at-writers",
         "https://chicago.suntimes.com/theater/2026/11/02/review-writers-theatre-the-royale",
-        "https://www.buzznews.net/theatre/theatre-reviews/item/6815-remarkable-production-makes-the-royale-a-knockout-show.html"
+        "https://www.chicagotribune.com/2026/11/02/review-royale-writers-theatre/",
+        "https://www.conversationswithedtracy.com/picksinsix/2026/11/1/picksinsix-review-the-royale-writers-theatre",
+        "https://www.chicagostageandscreen.com/post/stunning-powerful-royale-at-writers",
+        "https://evanstonroundtable.com/2026/11/02/the-royale-at-writers-theatre-delivers-a-knockout-punch/"
       ],
       "dirFiles": 10,
       "dirClean": 10,
@@ -371309,6 +371829,10 @@
       ],
       "dirOnly": [
         {
+          "host": "buzznews.net",
+          "count": 1
+        },
+        {
           "host": "chicagotheatrereview.com",
           "count": 1
         },
@@ -371325,76 +371849,16 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"The Royale\" Broadway review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"The Royale\" Broadway review 2026",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 8,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"The Royale\" review writers",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 9,
-            "accepted": 5,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "The Royale Writers Theatre, Glencoe, IL review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "The Royale Writers Theatre, Glencoe, IL review",
-            "page": 1,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "The Royale Writers Theatre, Glencoe, IL review",
-            "page": 2,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 1,
-            "error": null
-          }
-        ],
-        "queriesOk": 5,
-        "queriesTotal": 5,
-        "resultCount": 7,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 307,
+        "count": 281,
         "byReason": {
-          "census-junk-host": 3,
           "aggregator-internal-nav": 224,
-          "news-roundup-site": 2,
-          "non-review-host": 34,
-          "bare-host": 1,
           "not-http-url": 38,
-          "aggregator-section-root": 5
+          "aggregator-section-root": 4,
+          "non-review-host": 15
         }
       },
       "dedupedVariants": [],
@@ -371481,12 +371945,6 @@
             "firstSeenAt": "2026-11-04T07:52:26.614Z"
           },
           {
-            "url": "https://chicago.suntimes.com/theater/2026/11/02/review-writers-theatre-the-royale",
-            "outletId": "chicago.suntimes.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-02T23:10:09.112Z"
-          },
-          {
             "url": "https://evanstonroundtable.com/2026/11/02/the-royale-at-writers-theatre-delivers-a-knockout-punch/",
             "outletId": "evanstonroundtable.com",
             "state": "live",
@@ -371495,10 +371953,10 @@
         ],
         "censusSchema": 4,
         "excluded": [],
-        "liveCount": 7,
-        "candidateCount": 7
+        "liveCount": 6,
+        "candidateCount": 6
       },
-      "computedAt": "2026-11-04T17:07:25.311Z"
+      "computedAt": "2026-11-04T20:32:02.077Z"
     },
     {
       "showId": "the-saviors-off-broadway-2026",
@@ -392120,13 +392578,10 @@
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
         "https://www.broadwayworld.com/translate/ru/Review-TOSCA-London-Coliseum-20261031",
-        "https://weave-news.lovable.app/en/culture/tosca-review-eno-s-new-staging-abandons-puccini-s-realism-for-baffling-and-near--8536cdf3",
         "https://www.londontheatre.co.uk/reviews/tosca-review-london-coliseum",
-        "https://bachtrack.com/review-tosca-miskimmon-glassberg-fanyo-english-national-opera-london-october-2026",
         "https://www.thereviewshub.com/eno-tosca-london-coliseum/",
         "https://www.musicomh.com/classical/opera-reviews/tosca-review-puccini-english-national-opera-coliseum",
         "https://theatreweekly.com/review-tosca-at-london-coliseum/",
-        "https://theoperacritic.com/English_National_Opera/eno",
         "https://www.broadwayworld.com/westend/article/Review-TOSCA-London-Coliseum-20261031",
         "https://www.classicalsource.com/concert/english-national-opera-tosca/",
         "https://www.london-unattached.com/tosca-english-national-opera-review/",
@@ -392135,39 +392590,17 @@
         "https://www.thestage.co.uk/reviews/tosca-review-london-coliseum-puccini-annilese-miskimmon",
         "https://cherylmarkosky.com/2026/10/31/london-theatre-review-tosca-english-national-opera-the-coliseum/",
         "https://bachtrack.com/review-tosca-eno-malfitano",
-        "https://bachtrack.com/es_ES/review-tosca-miskimmon-glassberg-fanyo-english-national-opera-london-october-2026"
+        "https://weave-news.lovable.app/en/culture/tosca-review-eno-s-new-staging-abandons-puccini-s-realism-for-baffling-and-near--8536cdf3",
+        "https://bachtrack.com/es_ES/review-tosca-miskimmon-glassberg-fanyo-english-national-opera-london-october-2026",
+        "https://bachtrack.com/review-tosca-miskimmon-glassberg-fanyo-english-national-opera-london-october-2026"
       ],
-      "dirFiles": 20,
-      "dirClean": 14,
-      "inReviewsJson": 14,
+      "dirFiles": 22,
+      "dirClean": 16,
+      "inReviewsJson": 16,
       "missing": [
-        {
-          "url": "https://theoperacritic.com/English_National_Opera/eno",
-          "host": "theoperacritic.com",
-          "knownOutletId": null,
-          "serpCensus": true,
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ]
-        },
         {
           "url": "https://weave-news.lovable.app/en/culture/tosca-review-eno-s-new-staging-abandons-puccini-s-realism-for-baffling-and-near--8536cdf3",
           "host": "lovable.app",
-          "knownOutletId": null,
-          "serpCensus": true,
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ]
-        },
-        {
-          "url": "https://theoperacritic.com/English_National_Opera/eno",
-          "host": "theoperacritic.com",
           "knownOutletId": null,
           "serpCensus": true,
           "sources": [
@@ -392204,7 +392637,15 @@
           "count": 1
         },
         {
+          "host": "markaspen.com",
+          "count": 1
+        },
+        {
           "host": "playstosee.com",
+          "count": 1
+        },
+        {
+          "host": "seenandheard-international.com",
           "count": 1
         },
         {
@@ -392289,79 +392730,12 @@
         "perSource": {}
       },
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"Tosca - English National Opera\" West End review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"Tosca - English National Opera\" West End review 2026",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 2,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"Tosca - English National Opera\" review london",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 9,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "Tosca - English National Opera London Coliseum review",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 9,
-            "accepted": 4,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "Tosca - English National Opera London Coliseum review",
-            "page": 1,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 5,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "Tosca - English National Opera London Coliseum review",
-            "page": 2,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          }
-        ],
-        "queriesOk": 5,
-        "queriesTotal": 5,
-        "resultCount": 12,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 29,
-        "byReason": {
-          "census-junk-host": 1,
-          "no-review-evidence": 3,
-          "non-review-path": 3,
-          "non-review-host": 12,
-          "tag-index-page": 1,
-          "roundup-page": 2,
-          "ticketing-listing": 3,
-          "event-listing": 2,
-          "show-hub": 2
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
       "nonReviewCandidates": [
@@ -392386,22 +392760,8 @@
       "unextractable": [],
       "weIngestBlocked": [
         {
-          "url": "https://theoperacritic.com/English_National_Opera/eno",
-          "host": "theoperacritic.com",
-          "priorRun": false,
-          "reason": "unregistered-host",
-          "censusGateOn": true
-        },
-        {
           "url": "https://weave-news.lovable.app/en/culture/tosca-review-eno-s-new-staging-abandons-puccini-s-realism-for-baffling-and-near--8536cdf3",
           "host": "lovable.app",
-          "priorRun": false,
-          "reason": "unregistered-host",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://theoperacritic.com/English_National_Opera/eno",
-          "host": "theoperacritic.com",
           "priorRun": false,
           "reason": "unregistered-host",
           "censusGateOn": true
@@ -392421,7 +392781,7 @@
           "expectedReason": null,
           "unclassified": false,
           "zeroChar": false,
-          "reason": "Article extraction returned 124 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS."
+          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=bachtrack.com): Scrapingdog HTTP 503: <html><body><h1>503 Service Unavailable</h1>No server is available to handle this request.</body></html>\nArticle extraction returned 124 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS."
         }
       ],
       "ingestSkippedByCap": [],
@@ -392434,13 +392794,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://weave-news.lovable.app/en/culture/tosca-review-eno-s-new-staging-abandons-puccini-s-realism-for-baffling-and-near--8536cdf3"
-          },
-          {
-            "outletId": "theoperacritic.com",
-            "outlet": "theoperacritic.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://theoperacritic.com/English_National_Opera/eno"
           },
           {
             "outletId": "bachtrack",
@@ -392545,13 +392898,6 @@
             "firstSeenAt": "2026-11-04T16:42:04.576Z"
           },
           {
-            "url": "https://theoperacritic.com/English_National_Opera/eno",
-            "outletId": "theoperacritic.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-11-04T17:07:25.311Z"
-          },
-          {
             "url": "https://bachtrack.com/es_ES/review-tosca-miskimmon-glassberg-fanyo-english-national-opera-london-october-2026",
             "outletId": "bachtrack",
             "state": "GAP",
@@ -392580,9 +392926,9 @@
           }
         ],
         "liveCount": 11,
-        "candidateCount": 14
+        "candidateCount": 13
       },
-      "computedAt": "2026-11-04T17:07:25.311Z"
+      "computedAt": "2026-11-04T20:32:02.077Z"
     },
     {
       "showId": "tosca-off-broadway-2026",
@@ -392599,23 +392945,87 @@
           "inheritReviews": false
         }
       ],
-      "aggregatorArticles": [],
+      "aggregatorArticles": [
+        "https://playbill.com/article/what-did-critics-think-of-the-metropolitan-operas-new-production-of-tosca"
+      ],
       "aggregatorListedUrls": [
-        "https://www.theguardian.com/music/2026/nov/01/tosca-review-axelle-fanyo-christopher-purves",
+        "http://newyorkclassicalreview.com/2018/01/yoncheva-triumphs-in-premiere-of-mets-new-and-dazzling-tosca/",
+        "https://www.nytimes.com/2018/01/01/arts/music/tosca-metropolitan-opera.html",
+        "http://www.zealnyc.com/review-a-traditional-tosca-returns-with-cheers-to-the-met/",
+        "https://princetoninfo.com/artsandentertainment/princeton-festival-opera-review-tosca/",
+        "https://indieopera.com/review-the-drama-of-tosca/",
+        "https://www.britishtheatreguide.info/reviews/tosca-metropolitan-op-19674",
+        "https://www.newyorker.com/goings-on-about-town/classical-music/the-met-tosca-review-2",
         "https://www.britishtheatreguide.info/reviews/tosca-metropolitan-op-15428",
-        "https://www.express.co.uk/entertainment/theatre/911185/Puccini-Tosca-opera-Royal-Opera-House-Jonathan-Kent-Paul-Brown-Covent-Garden",
-        "https://operacanada.ca/metropolitan-opera-tosca-something-very-special-is-going-on/",
-        "https://aroundthetownchicago.com/theatre-reviews/tosca-reviewed-by-jacob-davis/",
         "https://aatmanvakil.substack.com/p/review-tosca-at-the-metropolitan",
-        "https://bachtrack.com/review-tosca-terfel-giannattasio-pirgu-oxford-interational-opera-september-2026",
+        "https://www.classicalsource.com/concert/the-metropolitan-opera-tosca-sondra-radvanovsky-marcelo-alvarez-falk-struckmann/",
+        "https://operacanada.ca/metropolitan-opera-tosca-something-very-special-is-going-on/",
         "https://interclassical.com/review-puccinis-tosca-metropolitan-opera/",
+        "https://www.broadwayworld.com/bwwopera/article/Review-TOSCA-at-Des-Moines-Metro-Opera-20260629",
+        "https://www.express.co.uk/entertainment/theatre/911185/Puccini-Tosca-opera-Royal-Opera-House-Jonathan-Kent-Paul-Brown-Covent-Garden",
+        "https://aroundthetownchicago.com/theatre-reviews/tosca-reviewed-by-jacob-davis/",
+        "https://bachtrack.com/review-tosca-terfel-giannattasio-pirgu-oxford-interational-opera-september-2026",
         "https://groups.io/g/crusting-pipe/topic/tosca_review_it_s/119464695",
-        "https://www.viewlogue.com/film/the-metropolitan-opera-tosca"
+        "https://www.viewlogue.com/film/the-metropolitan-opera-tosca",
+        "https://www.theguardian.com/music/2026/nov/01/tosca-review-axelle-fanyo-christopher-purves"
       ],
       "dirFiles": 14,
       "dirClean": 1,
       "inReviewsJson": 1,
       "missing": [
+        {
+          "url": "https://www.nytimes.com/2018/01/01/arts/music/tosca-metropolitan-opera.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/what-did-critics-think-of-the-metropolitan-operas-new-production-of-tosca"
+            }
+          ]
+        },
+        {
+          "url": "https://princetoninfo.com/artsandentertainment/princeton-festival-opera-review-tosca/",
+          "host": "princetoninfo.com",
+          "knownOutletId": "princetoninfo",
+          "serpCensus": true,
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ]
+        },
+        {
+          "url": "https://indieopera.com/review-the-drama-of-tosca/",
+          "host": "indieopera.com",
+          "knownOutletId": "indie-opera",
+          "serpCensus": true,
+          "priorRun": true,
+          "priorRunSource": "pending-file-date:2021-06-22",
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ]
+        },
+        {
+          "url": "https://www.britishtheatreguide.info/reviews/tosca-metropolitan-op-19674",
+          "host": "britishtheatreguide.info",
+          "knownOutletId": "british-theatre",
+          "serpCensus": true,
+          "priorRun": true,
+          "priorRunSource": "pending-file-date:2020-12-31",
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ]
+        },
         {
           "url": "https://www.britishtheatreguide.info/reviews/tosca-metropolitan-op-15428",
           "host": "britishtheatreguide.info",
@@ -392629,10 +393039,24 @@
           ]
         },
         {
-          "url": "https://www.express.co.uk/entertainment/theatre/911185/Puccini-Tosca-opera-Royal-Opera-House-Jonathan-Kent-Paul-Brown-Covent-Garden",
-          "host": "express.co.uk",
-          "knownOutletId": "sunday-express",
+          "url": "https://aatmanvakil.substack.com/p/review-tosca-at-the-metropolitan",
+          "host": "aatmanvakil.substack.com",
+          "knownOutletId": null,
           "serpCensus": true,
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ]
+        },
+        {
+          "url": "https://www.classicalsource.com/concert/the-metropolitan-opera-tosca-sondra-radvanovsky-marcelo-alvarez-falk-struckmann/",
+          "host": "classicalsource.com",
+          "knownOutletId": "classical-source",
+          "serpCensus": true,
+          "priorRun": true,
+          "priorRunSource": "pending-file-date:2011-01-14",
           "sources": [
             {
               "source": "serp-census",
@@ -392655,6 +393079,30 @@
           ]
         },
         {
+          "url": "https://interclassical.com/review-puccinis-tosca-metropolitan-opera/",
+          "host": "interclassical.com",
+          "knownOutletId": null,
+          "serpCensus": true,
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ]
+        },
+        {
+          "url": "https://www.express.co.uk/entertainment/theatre/911185/Puccini-Tosca-opera-Royal-Opera-House-Jonathan-Kent-Paul-Brown-Covent-Garden",
+          "host": "express.co.uk",
+          "knownOutletId": "sunday-express",
+          "serpCensus": true,
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ]
+        },
+        {
           "url": "https://aroundthetownchicago.com/theatre-reviews/tosca-reviewed-by-jacob-davis/",
           "host": "aroundthetownchicago.com",
           "knownOutletId": "around-the-town-chicago",
@@ -392667,33 +393115,9 @@
           ]
         },
         {
-          "url": "https://aatmanvakil.substack.com/p/review-tosca-at-the-metropolitan",
-          "host": "aatmanvakil.substack.com",
-          "knownOutletId": null,
-          "serpCensus": true,
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ]
-        },
-        {
           "url": "https://bachtrack.com/review-tosca-terfel-giannattasio-pirgu-oxford-interational-opera-september-2026",
           "host": "bachtrack.com",
           "knownOutletId": "bachtrack",
-          "serpCensus": true,
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ]
-        },
-        {
-          "url": "https://interclassical.com/review-puccinis-tosca-metropolitan-opera/",
-          "host": "interclassical.com",
-          "knownOutletId": null,
           "serpCensus": true,
           "sources": [
             {
@@ -392727,13 +393151,100 @@
           ]
         }
       ],
-      "dirOnly": [
-        {
-          "host": "newyorkclassicalreview.com",
-          "count": 1
-        }
-      ],
+      "dirOnly": [],
       "flaggedMisses": [
+        {
+          "url": "http://www.zealnyc.com/review-a-traditional-tosca-returns-with-cheers-to-the-met/",
+          "host": "zealnyc.com",
+          "knownOutletId": "zeal-nyc",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "zeal-nyc--herman-spencer.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://www.zealnyc.com/review-a-traditional-tosca-returns-with-cheers-to-the-met/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/what-did-critics-think-of-the-metropolitan-operas-new-production-of-tosca"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
+        },
+        {
+          "url": "https://www.newyorker.com/goings-on-about-town/classical-music/the-met-tosca-review-2",
+          "host": "newyorker.com",
+          "knownOutletId": "newyorker",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "newyorker--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.newyorker.com/goings-on-about-town/classical-music/the-met-tosca-review-2"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "flagged-file-date:2018-04-26",
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
+          "serpCensus": true,
+          "reverify": false
+        },
+        {
+          "url": "https://www.broadwayworld.com/bwwopera/article/Review-TOSCA-at-Des-Moines-Metro-Opera-20260629",
+          "host": "broadwayworld.com",
+          "knownOutletId": "broadwayworld",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "broadwayworld--aliya-al-hassan.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.broadwayworld.com/bwwopera/article/Review-TOSCA-at-Des-Moines-Metro-Opera-20260629"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "flagged-file-date:2026-06-29",
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
+          "serpCensus": true,
+          "reverify": false
+        },
         {
           "url": "https://www.theguardian.com/music/2026/nov/01/tosca-review-axelle-fanyo-christopher-purves",
           "host": "theguardian.com",
@@ -392767,20 +393278,110 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Tosca\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Tosca\" Off-Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 2,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Tosca\" review metropolitan",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 3,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Tosca Metropolitan Opera House review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Tosca Metropolitan Opera House review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 2,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Tosca Metropolitan Opera House review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 2,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 10,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 126,
+        "byReason": {
+          "aggregator-internal-nav": 56,
+          "not-http-url": 8,
+          "production-database-listing": 10,
+          "aggregator-section-root": 4,
+          "non-review-host": 32,
+          "non-stage-review": 3,
+          "roundup-page": 4,
+          "census-junk-host": 1,
+          "no-review-evidence": 4,
+          "ticketing-reseller": 2,
+          "tag-index-page": 1,
+          "show-listing-page": 1
+        }
       },
       "dedupedVariants": [],
+      "priorRunArticles": [
+        {
+          "url": "https://playbill.com/article/what-did-critics-think-of-the-metropolitan-operas-new-production-of-tosca",
+          "publishDate": "2018-01-02"
+        }
+      ],
       "automatedExcludedListed": 1,
       "unextractable": [],
       "weIngestBlocked": [
         {
-          "url": "https://operacanada.ca/metropolitan-opera-tosca-something-very-special-is-going-on/",
-          "host": "operacanada.ca",
+          "url": "https://www.nytimes.com/2018/01/01/arts/music/tosca-metropolitan-opera.html",
+          "host": "nytimes.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://indieopera.com/review-the-drama-of-tosca/",
+          "host": "indieopera.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.britishtheatreguide.info/reviews/tosca-metropolitan-op-19674",
+          "host": "britishtheatreguide.info",
           "priorRun": true,
           "reason": "prior-run",
           "censusGateOn": true
@@ -392790,6 +393391,20 @@
           "host": "aatmanvakil.substack.com",
           "priorRun": false,
           "reason": "unregistered-host",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.classicalsource.com/concert/the-metropolitan-opera-tosca-sondra-radvanovsky-marcelo-alvarez-falk-struckmann/",
+          "host": "classicalsource.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://operacanada.ca/metropolitan-opera-tosca-something-very-special-is-going-on/",
+          "host": "operacanada.ca",
+          "priorRun": true,
+          "reason": "prior-run",
           "censusGateOn": true
         },
         {
@@ -392816,19 +393431,19 @@
       ],
       "ingestResults": [
         {
-          "url": "https://bachtrack.com/review-tosca-terfel-giannattasio-pirgu-oxford-interational-opera-september-2026",
-          "host": "bachtrack.com",
-          "outletId": "bachtrack",
+          "url": "https://princetoninfo.com/artsandentertainment/princeton-festival-opera-review-tosca/",
+          "host": "princetoninfo.com",
+          "outletId": "princetoninfo",
           "provisional": false,
           "ok": false,
-          "noop": false,
+          "noop": true,
           "conflict": false,
           "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
+          "expected": true,
+          "expectedReason": "prior-production-quarantined",
           "unclassified": false,
           "zeroChar": false,
-          "reason": "Article extraction returned 140 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS."
+          "reason": "tosca-off-broadway-2026: https://princetoninfo.com/artsandentertainment/princeton-festival-opera-review-tosca/ dated 2025-06-18 predates this run; quarantined to _pending/ as the earlier production's review. Expected, no action needed."
         },
         {
           "url": "https://www.britishtheatreguide.info/reviews/tosca-metropolitan-op-15428",
@@ -392874,6 +393489,21 @@
           "unclassified": false,
           "zeroChar": false,
           "reason": "tosca-off-broadway-2026: https://aroundthetownchicago.com/theatre-reviews/tosca-reviewed-by-jacob-davis/ has no readable publish date and this show has an earlier-dated citation (a prior production), so the undated page was refused rather than filed where it could be scored as this run's review. Expected rejection; if it IS this production's review, ingest it with --publish-date=YYYY-MM-DD."
+        },
+        {
+          "url": "https://bachtrack.com/review-tosca-terfel-giannattasio-pirgu-oxford-interational-opera-september-2026",
+          "host": "bachtrack.com",
+          "outletId": "bachtrack",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "Article extraction returned 140 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS."
         }
       ],
       "ingestSkippedByCap": [],
@@ -392881,11 +393511,32 @@
         "verdict": "incomplete",
         "missing": [
           {
+            "outletId": "princetoninfo",
+            "outlet": "princetoninfo",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://princetoninfo.com/artsandentertainment/princeton-festival-opera-review-tosca/"
+          },
+          {
             "outletId": "british-theatre",
             "outlet": "british-theatre",
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.britishtheatreguide.info/reviews/tosca-metropolitan-op-15428"
+          },
+          {
+            "outletId": "aatmanvakil.substack.com",
+            "outlet": "aatmanvakil.substack.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://aatmanvakil.substack.com/p/review-tosca-at-the-metropolitan"
+          },
+          {
+            "outletId": "interclassical.com",
+            "outlet": "interclassical.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://interclassical.com/review-puccinis-tosca-metropolitan-opera/"
           },
           {
             "outletId": "sunday-express",
@@ -392902,25 +393553,11 @@
             "url": "https://aroundthetownchicago.com/theatre-reviews/tosca-reviewed-by-jacob-davis/"
           },
           {
-            "outletId": "aatmanvakil.substack.com",
-            "outlet": "aatmanvakil.substack.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://aatmanvakil.substack.com/p/review-tosca-at-the-metropolitan"
-          },
-          {
             "outletId": "bachtrack",
             "outlet": "bachtrack",
             "critic": "Unknown",
             "stars": null,
             "url": "https://bachtrack.com/review-tosca-terfel-giannattasio-pirgu-oxford-interational-opera-september-2026"
-          },
-          {
-            "outletId": "interclassical.com",
-            "outlet": "interclassical.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://interclassical.com/review-puccinis-tosca-metropolitan-opera/"
           },
           {
             "outletId": "groups.io",
@@ -392947,11 +393584,38 @@
         "suppressedMissing": [],
         "candidates": [
           {
+            "url": "http://newyorkclassicalreview.com/2018/01/yoncheva-triumphs-in-premiere-of-mets-new-and-dazzling-tosca/",
+            "outletId": "newyorkclassicalreview.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-04T20:32:02.077Z"
+          },
+          {
+            "url": "https://princetoninfo.com/artsandentertainment/princeton-festival-opera-review-tosca/",
+            "outletId": "princetoninfo",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-11-04T20:32:02.077Z"
+          },
+          {
             "url": "https://www.britishtheatreguide.info/reviews/tosca-metropolitan-op-15428",
             "outletId": "british-theatre",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-11-02T06:46:27.997Z"
+          },
+          {
+            "url": "https://aatmanvakil.substack.com/p/review-tosca-at-the-metropolitan",
+            "outletId": "aatmanvakil.substack.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-11-01T23:23:22.746Z"
+          },
+          {
+            "url": "https://interclassical.com/review-puccinis-tosca-metropolitan-opera/",
+            "outletId": "interclassical.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-11-01T05:20:32.260Z"
           },
           {
             "url": "https://www.express.co.uk/entertainment/theatre/911185/Puccini-Tosca-opera-Royal-Opera-House-Jonathan-Kent-Paul-Brown-Covent-Garden",
@@ -392968,25 +393632,11 @@
             "firstSeenAt": "2026-11-01T15:55:41.663Z"
           },
           {
-            "url": "https://aatmanvakil.substack.com/p/review-tosca-at-the-metropolitan",
-            "outletId": "aatmanvakil.substack.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-11-01T23:23:22.746Z"
-          },
-          {
             "url": "https://bachtrack.com/review-tosca-terfel-giannattasio-pirgu-oxford-interational-opera-september-2026",
             "outletId": "bachtrack",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-11-01T23:23:22.746Z"
-          },
-          {
-            "url": "https://interclassical.com/review-puccinis-tosca-metropolitan-opera/",
-            "outletId": "interclassical.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-11-01T05:20:32.260Z"
           },
           {
             "url": "https://groups.io/g/crusting-pipe/topic/tosca_review_it_s/119464695",
@@ -393012,10 +393662,10 @@
         ],
         "censusSchema": 4,
         "excluded": [],
-        "liveCount": 0,
-        "candidateCount": 9
+        "liveCount": 1,
+        "candidateCount": 11
       },
-      "computedAt": "2026-11-04T17:07:25.311Z"
+      "computedAt": "2026-11-04T20:32:02.077Z"
     },
     {
       "showId": "touch-off-broadway-2026",
@@ -393944,18 +394594,51 @@
       "previewsStartDate": "2026-11-01",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
+        "https://corrblimey.uk/2026/10/23/review-tristan-yseult-the-royal-lyceum-theatre/",
+        "https://artsfuse.org/123965/fuse-theater-review-kneehigh-wows-with-tristan-yseult-love-raucous-and-romantic/",
+        "https://www.ayoungertheatre.com/review-on-tour-tristan-and-yseult-kneehigh-theatre-bristol-old-vic/",
+        "https://www.lisainthetheatre.com/post/tristan-yseult-review",
+        "https://www.timeout.com/newyork/theater/tristan-yseult",
+        "https://fairypoweredproductions.com/tristan-yseult-review/",
         "https://www.thetimes.com/culture/theatre-dance/article/emma-rices-tristan-and-yseult-review-t8jmccphs",
         "https://www.theguardian.com/stage/2026/sep/19/tristan-and-yseult-review-theatre-royal-bath-kneehigh-emma-rice",
         "https://www.whatsonstage.com/news/tristan-yseult-at-theatre-royal-bath-and-on-tour-review_1731590/",
         "https://ayoungishperspective.co.uk/2026/10/02/review-tristan-yseult/",
         "https://www.thereviewshub.com/tristan-yseult-theatr-clwyd-mold/",
-        "https://fairypoweredproductions.com/tristan-yseult-review/",
         "https://www.newyorker.com/goings-on-about-town/theatre/tristan-yseult-2"
       ],
       "dirFiles": 8,
-      "dirClean": 1,
+      "dirClean": 0,
       "inReviewsJson": 0,
       "missing": [
+        {
+          "url": "https://artsfuse.org/123965/fuse-theater-review-kneehigh-wows-with-tristan-yseult-love-raucous-and-romantic/",
+          "host": "artsfuse.org",
+          "knownOutletId": "artsfuse",
+          "serpCensus": true,
+          "priorRun": true,
+          "priorRunSource": "pending-file-date:2015-03-08",
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ]
+        },
+        {
+          "url": "https://www.timeout.com/newyork/theater/tristan-yseult",
+          "host": "timeout.com",
+          "knownOutletId": "timeout",
+          "serpCensus": true,
+          "priorRun": true,
+          "priorRunSource": "pending-file-date:2014-11-26",
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ]
+        },
         {
           "url": "https://www.theguardian.com/stage/2026/sep/19/tristan-and-yseult-review-theatre-royal-bath-kneehigh-emma-rice",
           "host": "theguardian.com",
@@ -393983,6 +394666,130 @@
       ],
       "dirOnly": [],
       "flaggedMisses": [
+        {
+          "url": "https://corrblimey.uk/2026/10/23/review-tristan-yseult-the-royal-lyceum-theatre/",
+          "host": "corrblimey.uk",
+          "knownOutletId": "corrblimey",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "corrblimey--unknown.json",
+              "flag": "clean",
+              "urlInDir": "https://corrblimey.uk/2026/10/23/review-tristan-yseult-the-royal-lyceum-theatre/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "rejectionReason"
+          ],
+          "confirmedNonReview": true,
+          "confirmedBasis": [
+            "ensemble-3-agree"
+          ],
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
+          "serpCensus": true,
+          "reverify": false
+        },
+        {
+          "url": "https://www.lisainthetheatre.com/post/tristan-yseult-review",
+          "host": "lisainthetheatre.com",
+          "knownOutletId": "lisa-in-the-theatre",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "lisa-in-the-theatre--lisa-in-the-theatre.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.lisainthetheatre.com/post/tristan-yseult-review"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "confirmedNonReview": true,
+          "confirmedBasis": [
+            "ensemble-3-agree"
+          ],
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
+          "serpCensus": true,
+          "reverify": false
+        },
+        {
+          "url": "https://fairypoweredproductions.com/tristan-yseult-review/",
+          "host": "fairypoweredproductions.com",
+          "knownOutletId": "fairypoweredproductions",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "fairypoweredproductions--heather-chalkley.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://fairypoweredproductions.com/tristan-yseult-review/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
+          "serpCensus": true,
+          "reverify": true
+        },
+        {
+          "url": "https://www.thetimes.com/culture/theatre-dance/article/emma-rices-tristan-and-yseult-review-t8jmccphs",
+          "host": "thetimes.com",
+          "knownOutletId": "sunday-times",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "times-uk--dominic-maxwell.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.thetimes.com/culture/theatre-dance/article/emma-rices-tristan-and-yseult-review-t8jmccphs"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
+          "serpCensus": true,
+          "reverify": true
+        },
         {
           "url": "https://ayoungishperspective.co.uk/2026/10/02/review-tristan-yseult/",
           "host": "ayoungishperspective.co.uk",
@@ -394042,35 +394849,6 @@
           "reverify": true
         },
         {
-          "url": "https://fairypoweredproductions.com/tristan-yseult-review/",
-          "host": "fairypoweredproductions.com",
-          "knownOutletId": "fairypoweredproductions",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "fairypoweredproductions--heather-chalkley.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://fairypoweredproductions.com/tristan-yseult-review/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ],
-          "serpCensus": true,
-          "reverify": true
-        },
-        {
           "url": "https://www.newyorker.com/goings-on-about-town/theatre/tristan-yseult-2",
           "host": "newyorker.com",
           "knownOutletId": "newyorker",
@@ -394103,16 +394881,123 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Tristan and Yseult\" Off-Broadway review",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Tristan and Yseult\" Off-Broadway review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 7,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Tristan and Yseult\" review warehouse",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped2",
+            "query": "\"Tristan and Yseult\" Rice review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 2,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Tristan and Yseult St. Ann's Warehouse review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 2,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Tristan and Yseult St. Ann's Warehouse review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Tristan and Yseult St. Ann's Warehouse review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 3,
+            "error": null
+          }
+        ],
+        "queriesOk": 6,
+        "queriesTotal": 6,
+        "resultCount": 6,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 31,
+        "byReason": {
+          "aggregator-internal-nav": 7,
+          "non-review-host": 16,
+          "bare-host": 1,
+          "write-path-blocked": 1,
+          "census-junk-host": 1,
+          "no-review-evidence": 1,
+          "non-review-path": 1,
+          "static-asset": 1,
+          "ticketing-reseller": 2
+        }
       },
       "dedupedVariants": [],
-      "automatedExcludedListed": 4,
-      "unextractable": [],
+      "automatedExcludedListed": 5,
+      "unextractable": [
+        {
+          "url": "https://www.ayoungertheatre.com/review-on-tour-tristan-and-yseult-kneehigh-theatre-bristol-old-vic/",
+          "host": "ayoungertheatre.com",
+          "knownOutletId": "a-younger-theatre",
+          "serpCensus": true,
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
+          "zeroCharAttempts": 5
+        }
+      ],
+      "weIngestBlocked": [
+        {
+          "url": "https://artsfuse.org/123965/fuse-theater-review-kneehigh-wows-with-tristan-yseult-love-raucous-and-romantic/",
+          "host": "artsfuse.org",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.timeout.com/newyork/theater/tristan-yseult",
+          "host": "timeout.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        }
+      ],
       "ingestResults": [
         {
           "url": "https://www.theguardian.com/stage/2026/sep/19/tristan-and-yseult-review-theatre-royal-bath-kneehigh-emma-rice",
@@ -394164,6 +395049,20 @@
             "url": "https://www.whatsonstage.com/news/tristan-yseult-at-theatre-royal-bath-and-on-tour-review_1731590/"
           },
           {
+            "outletId": "fairypoweredproductions",
+            "outlet": "fairypoweredproductions",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://fairypoweredproductions.com/tristan-yseult-review/"
+          },
+          {
+            "outletId": "sunday-times",
+            "outlet": "sunday-times",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.thetimes.com/culture/theatre-dance/article/emma-rices-tristan-and-yseult-review-t8jmccphs"
+          },
+          {
             "outletId": "a-youngish-perspective",
             "outlet": "a-youngish-perspective",
             "critic": "Unknown",
@@ -394176,13 +395075,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.thereviewshub.com/tristan-yseult-theatr-clwyd-mold/"
-          },
-          {
-            "outletId": "fairypoweredproductions",
-            "outlet": "fairypoweredproductions",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://fairypoweredproductions.com/tristan-yseult-review/"
           }
         ],
         "suppressedMissing": [
@@ -394196,12 +395088,6 @@
         ],
         "candidates": [
           {
-            "url": "https://www.thetimes.com/culture/theatre-dance/article/emma-rices-tristan-and-yseult-review-t8jmccphs",
-            "outletId": "thetimes.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-04T12:02:15.310Z"
-          },
-          {
             "url": "https://www.theguardian.com/stage/2026/sep/19/tristan-and-yseult-review-theatre-royal-bath-kneehigh-emma-rice",
             "outletId": "guardian",
             "state": "IN_FLIGHT",
@@ -394214,6 +395100,20 @@
             "state": "IN_FLIGHT",
             "reason": "within-grace",
             "firstSeenAt": "2026-11-03T10:44:11.039Z"
+          },
+          {
+            "url": "https://fairypoweredproductions.com/tristan-yseult-review/",
+            "outletId": "fairypoweredproductions",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-11-01T15:05:11.876Z"
+          },
+          {
+            "url": "https://www.thetimes.com/culture/theatre-dance/article/emma-rices-tristan-and-yseult-review-t8jmccphs",
+            "outletId": "sunday-times",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-11-04T12:02:15.310Z"
           },
           {
             "url": "https://ayoungishperspective.co.uk/2026/10/02/review-tristan-yseult/",
@@ -394230,13 +395130,6 @@
             "firstSeenAt": "2026-11-01T15:05:11.876Z"
           },
           {
-            "url": "https://fairypoweredproductions.com/tristan-yseult-review/",
-            "outletId": "fairypoweredproductions",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-11-01T15:05:11.876Z"
-          },
-          {
             "url": "https://www.newyorker.com/goings-on-about-town/theatre/tristan-yseult-2",
             "outletId": "newyorker",
             "state": "SUPPRESSED",
@@ -394245,11 +395138,22 @@
           }
         ],
         "censusSchema": 4,
-        "excluded": [],
-        "liveCount": 1,
+        "excluded": [
+          {
+            "url": "https://corrblimey.uk/2026/10/23/review-tristan-yseult-the-royal-lyceum-theatre/",
+            "host": "corrblimey.uk",
+            "reason": "confirmed-non-review"
+          },
+          {
+            "url": "https://www.lisainthetheatre.com/post/tristan-yseult-review",
+            "host": "lisainthetheatre.com",
+            "reason": "confirmed-non-review"
+          }
+        ],
+        "liveCount": 0,
         "candidateCount": 7
       },
-      "computedAt": "2026-11-04T17:07:25.311Z"
+      "computedAt": "2026-11-04T20:32:02.077Z"
     },
     {
       "showId": "tristan-and-yseult-royal-bath-regional-2026",
@@ -402544,81 +403448,12 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"Violet’s Magic Glasses\" Off-Broadway review",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"Violet’s Magic Glasses\" Off-Broadway review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 8,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"Violet’s Magic Glasses\" review 92ny",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "Violet’s Magic Glasses 92NY Buttenwieser Hall review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "Violet’s Magic Glasses 92NY Buttenwieser Hall review",
-            "page": 1,
-            "geo": "us",
-            "ok": true,
-            "results": 9,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "Violet’s Magic Glasses 92NY Buttenwieser Hall review",
-            "page": 2,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          }
-        ],
-        "queriesOk": 5,
-        "queriesTotal": 5,
-        "resultCount": 0,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 24,
-        "byReason": {
-          "census-junk-host": 2,
-          "no-review-evidence": 2,
-          "non-review-path": 1,
-          "aggregator-internal-nav": 5,
-          "news-roundup-site": 1,
-          "non-review-host": 3,
-          "blog-label-index": 1,
-          "write-path-blocked": 1,
-          "bare-host": 4,
-          "review-hub-page": 3,
-          "tag-index-page": 1
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
       "unextractable": [],
@@ -402632,7 +403467,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-11-04T17:07:25.311Z"
+      "computedAt": "2026-11-04T20:32:02.077Z"
     },
     {
       "showId": "vladimir-regional-2026",
@@ -418303,29 +419138,26 @@
     }
   ],
   "staleness": {
-    "at": "2026-11-04T19:31:35.836Z",
+    "at": "2026-11-04T20:32:02.076Z",
     "reserveEvery": 4,
     "reservedAttempted": [
-      "eureka-day-2024",
-      "swept-away-2024",
-      "elf-2024"
+      "memoirs-of-amorous-gentlemen-off-broadway-2026",
+      "midnight-off-broadway-2026"
     ],
     "catalogueReserveEvery": 8,
     "catalogueAttempted": [
-      "the-kings-critique-off-broadway-2026",
-      "lord-nil-7-deadly-sins-off-broadway-2025",
-      "top-hat-chichester-festival-regional-2025"
+      "billie-jean-regional-2025"
     ],
-    "neverAuditedDueAtStart": 671,
+    "neverAuditedDueAtStart": 666,
     "oldestDueRowAtStart": {
-      "showId": "eureka-day-2024",
-      "computedAt": "2026-10-19T14:57:03.324Z",
-      "ageHours": 388.3
+      "showId": "tammy-faye-2024",
+      "computedAt": "2026-10-19T18:05:32.145Z",
+      "ageHours": 386.1
     },
     "oldestDueRowAfterRun": {
       "showId": "tammy-faye-2024",
       "computedAt": "2026-10-19T18:05:32.145Z",
-      "ageHours": 385.4
+      "ageHours": 386.4
     }
   }
 }

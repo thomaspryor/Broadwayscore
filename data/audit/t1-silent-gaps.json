@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-04T19:32:48.241Z",
+  "generatedAt": "2026-11-04T20:32:36.533Z",
   "windowDays": 45,
   "showsScanned": 244,
   "gaps": [
@@ -22,9 +22,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=in-the-heights-off-broadway-2026 --url=https://www.talkinbroadway.com/page/ob/11_02_26c.html --outlet=talkinbroadway   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-11-04T18:25:04.999Z",
-      "fileAgeHours": 1.121596388888889,
+      "fileAgeHours": 2.1238508333333335,
       "gapSeenAt": "2026-11-04T19:32:48.241Z",
-      "nonTerminalAgeHours": 0,
+      "nonTerminalAgeHours": 0.9967477777777778,
       "needsManualRecovery": false
     },
     {
@@ -45,34 +45,10 @@
       "forumLinkRecoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=lincoln-in-the-bardo-off-broadway-2026",
       "firstSeen": "2026-10-25T17:52:33.957Z",
-      "fileAgeHours": 241.66380694444445,
+      "fileAgeHours": 242.66613416666667,
       "gapSeenAt": "2026-10-26T08:25:16.367Z",
-      "nonTerminalAgeHours": 227.12552055555557,
+      "nonTerminalAgeHours": 228.12226833333332,
       "needsManualRecovery": true
-    },
-    {
-      "showId": "the-blue-violinist-over-west-end-avenue-off-broadway-2026",
-      "title": "The Blue Violinist Over West End Avenue",
-      "openingDate": "2026-11-01",
-      "file": "talkinbroadway--unknown.json",
-      "outletId": "talkinbroadway",
-      "tier": 2,
-      "type": "empty-body",
-      "recoverable": true,
-      "url": "https://talkinbroadway.com/page/ob/11_03_26.html",
-      "recovery": {
-        "attempted": true,
-        "ok": false,
-        "reason": "Fetch failed: fetch failed: All scraping methods failed; no archive.org capture"
-      },
-      "recoveryCount": 0,
-      "forumLinkRecoveryCount": 0,
-      "fix": "node scripts/ingest-review-from-url.js --show=the-blue-violinist-over-west-end-avenue-off-broadway-2026 --url=https://talkinbroadway.com/page/ob/11_03_26.html --outlet=talkinbroadway   # run LOCALLY (cookie jar lives on the Mac)",
-      "firstSeen": "2026-11-04T18:25:05.018Z",
-      "fileAgeHours": 1.1283569444444443,
-      "gapSeenAt": "2026-11-04T19:32:48.241Z",
-      "nonTerminalAgeHours": 0,
-      "needsManualRecovery": false
     }
   ],
   "contradictions": []
