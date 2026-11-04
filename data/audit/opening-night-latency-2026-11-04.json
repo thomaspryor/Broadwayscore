@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-11-04T08:12:47.609Z",
+  "generatedAt": "2026-11-04T09:23:41.874Z",
   "date": "2026-11-04",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 224465,
+  "entryCount": 231554,
   "shows": [
     {
       "showId": "memoirs-of-amorous-gentlemen-off-broadway-2026",
@@ -6078,13 +6078,13 @@
     },
     {
       "showId": "the-royale-regional-2026",
-      "reviewCount": 9,
+      "reviewCount": 10,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 1325363,
+        "scored-to-rebuilt": 1189454,
         "rebuilt-to-deployed": 57297921
       },
       "reviews_over_15min": 0,
@@ -7638,13 +7638,13 @@
     },
     {
       "showId": "lincoln-in-the-bardo-off-broadway-2026",
-      "reviewCount": 15,
+      "reviewCount": 16,
       "median_e2e_ms": 47295550,
       "p90_e2e_ms": 47295550,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 449116,
+        "scored-to-rebuilt": 444641,
         "rebuilt-to-deployed": 44642168
       },
       "reviews_over_15min": 1,
@@ -8319,13 +8319,13 @@
     },
     {
       "showId": "the-heart-off-broadway-2026",
-      "reviewCount": 18,
+      "reviewCount": 20,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 607006,
+        "scored-to-rebuilt": 556916,
         "rebuilt-to-deployed": 40913357
       },
       "reviews_over_15min": 0,
@@ -8349,13 +8349,13 @@
     },
     {
       "showId": "the-bridge-off-west-end-2026",
-      "reviewCount": 14,
+      "reviewCount": 15,
       "median_e2e_ms": 15340566,
       "p90_e2e_ms": 22068299,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 520984,
-        "scored-to-rebuilt": 823379,
+        "scored-to-rebuilt": 820475,
         "rebuilt-to-deployed": 5182858
       },
       "reviews_over_15min": 2,
