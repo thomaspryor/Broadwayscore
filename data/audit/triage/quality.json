@@ -1,7 +1,7 @@
 {
   "system": "quality",
   "status": "warn",
-  "lastChecked": "2026-11-04T01:48:36.002Z",
+  "lastChecked": "2026-11-04T09:18:28.500Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -19,12 +19,12 @@
     {
       "name": "Quality: scored review ratio",
       "status": "pass",
-      "message": "98.1% scored (48942/49901)"
+      "message": "98.0% scored (49196/50193)"
     },
     {
       "name": "Quality: corpus drift",
       "status": "pass",
-      "message": "27 audit(s) drifting, each reported on its own card or the digest FYI line (1h ago)"
+      "message": "28 audit(s) drifting, each reported on its own card or the digest FYI line (1h ago)"
     },
     {
       "name": "Quality: DMARC deliverability",
@@ -39,7 +39,7 @@
     {
       "name": "Quality: outlet domain moves",
       "status": "pass",
-      "message": "No probable domain moves in 293 unregistered host(s)"
+      "message": "No probable domain moves in 284 unregistered host(s)"
     },
     {
       "name": "Quality: Show Score gap",
@@ -49,12 +49,12 @@
     {
       "name": "Quality: outlet stub rate",
       "status": "pass",
-      "message": "No broken-extractor signature in 1840 outlet(s), 79950 review(s)"
+      "message": "No broken-extractor signature in 1850 outlet(s), 80004 review(s)"
     },
     {
       "name": "Quality: outlet invalid-content rate",
       "status": "pass",
-      "message": "No broken-extractor signature in 1840 outlet(s), 79950 review(s)"
+      "message": "No broken-extractor signature in 1850 outlet(s), 80004 review(s)"
     },
     {
       "name": "Quality: standingCoverage drift",
@@ -69,12 +69,12 @@
     {
       "name": "Quality: outlet-heartbeat red flags",
       "status": "pass",
-      "message": "148 outlet×market rows checked, none NEW silent 2+ consecutive weeks (31 known/baselined, 1d ago)"
+      "message": "148 outlet×market rows checked, none NEW silent 2+ consecutive weeks (31 known/baselined, 2d ago)"
     },
     {
       "name": "Quality: outlet feed staleness",
       "status": "warn",
-      "message": "Of 64 feed(s), outlet still publishing but feed 1 failing: slantmagazine (All scraping methods failed)"
+      "message": "Of 66 feed(s), outlet still publishing but feed 1 failing: slantmagazine (All scraping methods failed)"
     }
   ]
 }
