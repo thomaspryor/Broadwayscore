@@ -52,7 +52,8 @@ t('no raw new Date(<publishDate>) left in scripts/lib', () => {
   const fs = require('fs'), path = require('path');
   const dir = path.join(__dirname, 'lib');
   const bad = [];
-  const files = fs.readdirSync(dir).filter(f => f.endsWith('.js')).map(f => [f, path.join(dir, f)]).concat([['validate-data.js', path.join(__dirname, 'validate-data.js')]]);
+  // Subfolders too (opening-night-lane/ and the rest): the top-level-only scan let them through (BRO-6872).
+  const files = fs.readdirSync(dir, { recursive: true }).filter(f => String(f).endsWith('.js')).map(f => [String(f), path.join(dir, String(f))]).concat([['validate-data.js', path.join(__dirname, 'validate-data.js')]]);
   for (const [f, fp] of files) {
     fs.readFileSync(fp, 'utf8').split('\n').forEach((l, i) => {
       if (/(new Date|Date\.parse)\([\w.]*publishDate\b/.test(l) && !/^\s*(\/\/|\*)/.test(l) && !/BRO-2836-ok/.test(l)) bad.push(`${f}:${i + 1}`);
