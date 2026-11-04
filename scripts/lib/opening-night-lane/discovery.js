@@ -912,9 +912,10 @@ function googleNewsAdapter({ maxUnwrap = 8, decodeImpl = null, maxDecode = 3 * m
         if ((!r || (!r.url && r.tries < MAX_UNWRAP_TRIES)) && toUnwrap.length < maxUnwrap) toUnwrap.push(it);
       }
       let unwrappedOk = 0;
+      let lateSkipped = 0;
       const unwrapOne = async (it) => {
         const prior = resolved.get(it.link);
-        if (remainingMs() < minUnwrapMs) return; // too late in the pass; no strike, opened next pass
+        if (remainingMs() < minUnwrapMs) { lateSkipped++; return; } // too late in the pass; no strike, opened next pass
         let url = null;
         try {
           const page = await fetchText(it.link, {
@@ -928,7 +929,7 @@ function googleNewsAdapter({ maxUnwrap = 8, decodeImpl = null, maxDecode = 3 * m
           // Cut off by the pass deadline (not started, or given less than its own cap, as withTimeout's message says):
           // that says nothing about the wrapper, so it is no strike (three strikes give the item up for the night).
           const msg = String((e && e.message) || e);
-          const granted = Number((msg.match(/timed out after (\d+)ms/) || [])[1]);
+          const granted = Number((msg.match(/^fetch timed out after (\d+)ms/) || [])[1]);
           if (/deadline reached/.test(msg) || (granted && granted < fetchTimeoutMs)) return;
         }
         if (url) unwrappedOk++;
@@ -938,7 +939,9 @@ function googleNewsAdapter({ maxUnwrap = 8, decodeImpl = null, maxDecode = 3 * m
       const worker = async () => { while (next < toUnwrap.length) await unwrapOne(toUnwrap[next++]); };
       await Promise.all(Array.from({ length: Math.min(Math.max(1, unwrapConcurrency), toUnwrap.length) }, worker));
       // Decoder and browser results, so a decoder Google has started refusing shows in the job log (google-news-decode.js).
-      if (decodes || toUnwrap.length) log(`  google-news: decoded ${decoded}/${decodes}, unwrapped ${unwrappedOk}/${toUnwrap.length} wrapper link(s)`);
+      // Wrappers left for the next pass because too little of this one remained are counted apart, so a pass whose searches
+      // keep eating the time shows as such instead of as failed unwraps.
+      if (decodes || toUnwrap.length) log(`  google-news: decoded ${decoded}/${decodes}, unwrapped ${unwrappedOk}/${toUnwrap.length - lateSkipped} wrapper link(s)${lateSkipped ? `, ${lateSkipped} left for the next pass (under ${Math.round(minUnwrapMs / 1000)} s left)` : ''}`);
       const out = [];
       for (const it of items) {
         const r = resolved.get(it.link);

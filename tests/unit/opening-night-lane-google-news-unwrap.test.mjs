@@ -109,6 +109,9 @@ test('an unwrap is not started late in the pass (BRO-6872 review): no strike, an
   // Pass deadline 300 ms, under minUnwrapMs: the wrapper is never opened, however many passes run.
   for (let i = 0; i < 5; i++) await pass(adapter, fetchText, { deadlineMs: 300 });
   assert.equal(seen.calls.length, 0);
+  const lines = [];
+  await pass(d.googleNewsAdapter({ log: (m) => lines.push(m), fetchTimeoutMs: 1000, minUnwrapMs: 500 }), fetchText, { deadlineMs: 300 });
+  assert.deepEqual(lines, ['  google-news: decoded 0/0, unwrapped 0/0 wrapper link(s), 1 left for the next pass (under 1 s left)']);
   const ok = await pass(adapter, fetchText);
   assert.deepEqual(ok.admitted.map((a) => a.url), [article(0)], 'opened once a pass has time, with no strikes spent');
 });
@@ -119,4 +122,16 @@ test('the RSS searches keep the short cap, so a slow Google answer cannot eat th
   assert.equal(r.admitted.length, 0);
   assert.ok(r.errors.some((e) => e.adapter === 'google-news' && /timed out after 50ms/.test(e.error)), JSON.stringify(r.errors));
   assert.equal(d.GOOGLE_NEWS_SEARCH_TIMEOUT_MS, 15000);
+});
+
+test('a lower layer\'s own "timed out after" message is not read as a deadline cut (BRO-6872 review)', async () => {
+  const adapter = d.googleNewsAdapter({ ...quiet, fetchTimeoutMs: 1000 });
+  let calls = 0;
+  const fetchText = async (url) => {
+    if (url === FEED_URL) return feed(1);
+    if (!/CBMiT/.test(url)) return '<rss></rss>';
+    calls++; throw new Error('Browserbase: navigation timed out after 500ms');
+  };
+  for (let i = 0; i < 6; i++) await pass(adapter, fetchText);
+  assert.equal(calls, 3);
 });
