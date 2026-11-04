@@ -617,7 +617,7 @@ function dropRoundupsOwnedByOtherShows(urls, showId, owners) {
 
 const { titleTokens, titleVariantInfo, venueTokens, labelledSiblings, proofInSegments } = require('./lib/show-title-tokens');
 const { foldDiacritics } = require('./lib/title-match');
-const { titleExtendedInUrl, titleOnlyAsOtherVenue, vetTimeoutListingCandidates, vetTourCandidatesByPageDate } = require('./lib/gap-census-noise');
+const { titleExtendedInUrl, titleOnlyAsOtherVenue, crossShowDropsOwedHere, vetTimeoutListingCandidates, vetTourCandidatesByPageDate } = require('./lib/gap-census-noise');
 
 function urlMatchesShow(href, tokens) {
   if (tokens.length === 0) return true; // no tokens → accept everything
@@ -1384,16 +1384,15 @@ async function auditShow(show, opts = {}) {
   // show is a citation the site does not carry. Feeding it in as a source makes
   // a dropped review MISSING (slow-market-grade FAILs) unless it went live some
   // other way, instead of the drop vanishing from every audit.
-  // A row whose URL is live under the show the guard named was a correct drop
-  // (real contamination, owned elsewhere), so it is not a gap here.
+  // A row whose URL is live under another show was a correct drop (real
+  // contamination, owned elsewhere), so it is not a gap here. Any other show, not
+  // only the one the guard named: BRO-6968's guard named Into the Woods 2022
+  // (Broadway) for London reviews live under the Bridge Theatre production.
   const crossShowDrops = readCrossShowUrlRows({ showId: show.id });
   if (crossShowDrops.length) {
-    const ownedElsewhere = new Set(loadReviews()
-      .filter(r => r && r.url && crossShowDrops.some(d => d.matchedShowId && d.matchedShowId === r.showId))
-      .map(r => `${r.showId}|${canonicalizeUrlForDedup(r.url) || r.url}`));
-    for (const row of crossShowDrops) {
-      if (!row.url || !isReviewUrl(row.url)) continue;
-      if (ownedElsewhere.has(`${row.matchedShowId}|${canonicalizeUrlForDedup(row.url) || row.url}`)) continue;
+    const canon = (u) => canonicalizeUrlForDedup(u) || u;
+    for (const row of crossShowDropsOwedHere(crossShowDrops, loadReviews(), show.id, canon, { show, tokensOf: titleTokens })) {
+      if (!isReviewUrl(row.url)) continue;
       addSourceUrl(normalizeReviewUrl(row.url), 'cross-show-url-drop', row.sourceUrl || null);
     }
   }

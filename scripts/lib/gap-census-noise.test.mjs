@@ -253,3 +253,16 @@ test('a title used only as another house\'s name is not this show', () => {
   assert.equal(noise.titleOnlyAsOtherVenueInUrl('https://x.co.uk/lyric-lyric-theatre-review', own, titleTokens), false);
   assert.equal(noise.titleOnlyAsOtherVenueInUrl('https://x.co.uk/review-at-the-lyric-theatre', own, titleTokens), false);
 });
+
+test('a cross-show drop live under any other show is not owed here (BRO-6968)', () => {
+  const ITW = 'https://www.timeout.com/london/news/review-into-the-woods-bridge-theatre-121125';
+  const OWN = 'https://www.theguardian.com/culture/2026/aug/30/the-bridge-review-alaa-shehada';
+  const drops = [{ url: ITW, matchedShowId: 'into-the-woods-2022' }, { url: OWN, matchedShowId: 'bridge-2019' }, { url: null }];
+  const reviews = [{ showId: 'into-the-woods-off-west-end-2025', url: `${ITW}/` }, { showId: 'the-bridge-off-west-end-2026', url: OWN }];
+  const canon = (u) => u.replace(/\/+$/, '');
+  assert.deepEqual(noise.crossShowDropsOwedHere(drops, reviews, 'the-bridge-off-west-end-2026', canon).map((d) => d.url), [OWN]);
+  const JC = 'https://www.thetimes.com/culture/theatre-dance/article/theatre-review-julius-caesar-bridge-theatre-david-morrissey-ben-whishaw-8f6fcfxnh';
+  const show = { title: 'The Bridge', venue: 'Bush Theatre' };
+  assert.deepEqual(noise.crossShowDropsOwedHere([{ url: JC }, { url: OWN }], [], 'the-bridge-off-west-end-2026', canon, { show, tokensOf: titleTokens }).map((d) => d.url), [OWN]);
+  assert.equal(noise.crossShowDropsOwedHere([{ url: JC }], [], 'x', canon).length, 1);
+});

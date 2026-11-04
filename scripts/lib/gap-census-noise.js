@@ -160,6 +160,27 @@ function titleOnlyAsOtherVenueInUrl(url, show, tokensOf) {
 }
 
 /**
+ * BRO-6910 feeds every URL the cross-show guard dropped for a show back into its
+ * gap audit, so a wrongly dropped review stays owed. A URL live under ANY other
+ * show was a correct drop. BRO-6968: the guard named Into the Woods 2022
+ * (Broadway) for London reviews live under the Bridge Theatre production, so
+ * checking only the named show kept them "missing" from The Bridge.
+ * @param {Array<{url?:string}>} drops cross-show ledger rows for showId
+ * @param {Array<{showId:string,url?:string}>} reviews reviews.json rows
+ * @param {string} showId
+ * @param {(u:string)=>string} canon URL identity
+ * @param {{show?:object, tokensOf?:Function}} [ctx] enables the other-house slug check
+ * @returns {Array} the drops still owed to showId
+ */
+function crossShowDropsOwedHere(drops, reviews, showId, canon = (u) => u, { show = null, tokensOf = null } = {}) {
+  const elsewhere = new Set((reviews || []).filter((r) => r && r.url && r.showId !== showId).map((r) => canon(r.url)));
+  return (drops || []).filter((d) => d && d.url && !elsewhere.has(canon(d.url))
+    // Not live anywhere, but the slug uses the title only as another house's name
+    // ("julius-caesar-bridge-theatre"): the guard was right.
+    && !(show && titleOnlyAsOtherVenueInUrl(d.url, show, tokensOf)));
+}
+
+/**
  * Why a not-yet-collected URL is not an owed review, decidable from the URL and
  * how it was found alone; null when it stays a candidate. Only SERP-census-only
  * rows are judged here: an aggregator vouched for the others.
@@ -312,6 +333,7 @@ module.exports = {
   titleExtendedInUrl,
   titleOnlyAsOtherVenue,
   titleOnlyAsOtherVenueInUrl,
+  crossShowDropsOwedHere,
   ukTourLegUrl,
   isPortalHost,
   censusExclusionReason,
