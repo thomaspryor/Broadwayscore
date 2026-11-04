@@ -1,19 +1,35 @@
 {
-  "timestamp": "2026-10-31T15:01:45.773Z",
+  "timestamp": "2026-11-04T16:44:51.375Z",
   "summary": {
-    "eventsAdded": 16,
+    "eventsAdded": 37,
     "eventsUpgraded": 0,
-    "eventsCleaned": 0,
+    "eventsCleaned": 1,
     "showsCleaned": 0,
-    "totalChanges": 16,
+    "totalChanges": 38,
     "errors": 0
   },
   "changes": [
     {
-      "showId": "just-in-time-2025",
+      "showId": "harry-potter-2021",
+      "changeType": "applied-departure",
+      "eventType": "departure",
+      "name": "Tom Felton",
+      "role": "Draco Malfoy",
+      "date": "2026-11-01"
+    },
+    {
+      "showId": "the-rocky-horror-show-2026",
       "changeType": "added",
       "eventType": "arrival",
-      "name": "Valeria Yamin",
+      "name": "Margaret Cho",
+      "role": "Unknown",
+      "source": "playbill-cast"
+    },
+    {
+      "showId": "the-rocky-horror-show-2026",
+      "changeType": "added",
+      "eventType": "arrival",
+      "name": "Tassy Kirbas",
       "role": "Unknown",
       "source": "playbill-cast"
     },
@@ -21,63 +37,15 @@
       "showId": "stranger-things-2024",
       "changeType": "added",
       "eventType": "departure",
-      "name": "Dora Dolphin",
-      "role": "Karen Childress",
+      "name": "Jennie Harney-Fleming",
+      "role": "Patty's Mom",
       "source": "playbill-cast"
     },
     {
       "showId": "stranger-things-2024",
       "changeType": "added",
       "eventType": "departure",
-      "name": "John Zdrojeski",
-      "role": "Dr. Brenner",
-      "source": "playbill-cast"
-    },
-    {
-      "showId": "stranger-things-2024",
-      "changeType": "added",
-      "eventType": "departure",
-      "name": "Antoinette Comer",
-      "role": "Unknown",
-      "source": "playbill-cast"
-    },
-    {
-      "showId": "stranger-things-2024",
-      "changeType": "added",
-      "eventType": "departure",
-      "name": "Patrick Scott McDermott",
-      "role": "Unknown",
-      "source": "playbill-cast"
-    },
-    {
-      "showId": "stranger-things-2024",
-      "changeType": "added",
-      "eventType": "arrival",
-      "name": "Taylor Sage Evans",
-      "role": "Unknown",
-      "source": "playbill-cast"
-    },
-    {
-      "showId": "stranger-things-2024",
-      "changeType": "added",
-      "eventType": "arrival",
-      "name": "Drew Redington",
-      "role": "Unknown",
-      "source": "playbill-cast"
-    },
-    {
-      "showId": "stranger-things-2024",
-      "changeType": "added",
-      "eventType": "arrival",
-      "name": "Kala Ross",
-      "role": "Unknown",
-      "source": "playbill-cast"
-    },
-    {
-      "showId": "stranger-things-2024",
-      "changeType": "added",
-      "eventType": "arrival",
-      "name": "Evan Alexander Smith",
+      "name": "Tom D'Agustino",
       "role": "Unknown",
       "source": "playbill-cast"
     },
@@ -85,23 +53,215 @@
       "showId": "the-great-gatsby-2024",
       "changeType": "added",
       "eventType": "arrival",
-      "name": "Ryan McCartan",
+      "name": "Sara Sheperd",
       "role": "Unknown",
       "source": "playbill-cast"
     },
     {
-      "showId": "the-great-gatsby-2024",
-      "changeType": "added",
-      "eventType": "arrival",
-      "name": "Naturi Naughton-Lewis",
-      "role": "Unknown",
-      "source": "playbill-cast"
-    },
-    {
-      "showId": "hamilton-2015",
+      "showId": "and-juliet-2022",
       "changeType": "added",
       "eventType": "departure",
-      "name": "Erin Ramirez",
+      "name": "Alison Luff",
+      "role": "Anne",
+      "source": "playbill-cast"
+    },
+    {
+      "showId": "and-juliet-2022",
+      "changeType": "added",
+      "eventType": "departure",
+      "name": "Jeannette Bayardelle",
+      "role": "Unknown",
+      "source": "playbill-cast"
+    },
+    {
+      "showId": "and-juliet-2022",
+      "changeType": "added",
+      "eventType": "departure",
+      "name": "Nathan Levy",
+      "role": "François",
+      "source": "playbill-cast"
+    },
+    {
+      "showId": "and-juliet-2022",
+      "changeType": "added",
+      "eventType": "departure",
+      "name": "Romy Vuksan",
+      "role": "Viola",
+      "source": "playbill-cast"
+    },
+    {
+      "showId": "and-juliet-2022",
+      "changeType": "added",
+      "eventType": "arrival",
+      "name": "James Monroe Iglehart",
+      "role": "Unknown",
+      "source": "playbill-cast"
+    },
+    {
+      "showId": "and-juliet-2022",
+      "changeType": "added",
+      "eventType": "arrival",
+      "name": "Aly Michalka",
+      "role": "Unknown",
+      "source": "playbill-cast"
+    },
+    {
+      "showId": "and-juliet-2022",
+      "changeType": "added",
+      "eventType": "arrival",
+      "name": "Tichina Arnola",
+      "role": "Unknown",
+      "source": "playbill-cast"
+    },
+    {
+      "showId": "and-juliet-2022",
+      "changeType": "added",
+      "eventType": "arrival",
+      "name": "Ava Noble",
+      "role": "Unknown",
+      "source": "playbill-cast"
+    },
+    {
+      "showId": "mj-2022",
+      "changeType": "added",
+      "eventType": "departure",
+      "name": "Matte Martinez",
+      "role": "MJ (Michael Jackson)",
+      "source": "playbill-cast"
+    },
+    {
+      "showId": "mj-2022",
+      "changeType": "added",
+      "eventType": "departure",
+      "name": "Blake Channing Taylor",
+      "role": "Little Marlon",
+      "source": "playbill-cast"
+    },
+    {
+      "showId": "mj-2022",
+      "changeType": "added",
+      "eventType": "departure",
+      "name": "Kellie Drobnick",
+      "role": "Unknown",
+      "source": "playbill-cast"
+    },
+    {
+      "showId": "mj-2022",
+      "changeType": "added",
+      "eventType": "departure",
+      "name": "Chelsea Mitchell-Bonsu",
+      "role": "Unknown",
+      "source": "playbill-cast"
+    },
+    {
+      "showId": "mj-2022",
+      "changeType": "added",
+      "eventType": "departure",
+      "name": "Ryan VanDenBoom",
+      "role": "Unknown",
+      "source": "playbill-cast"
+    },
+    {
+      "showId": "mj-2022",
+      "changeType": "added",
+      "eventType": "arrival",
+      "name": "Dasia Amos",
+      "role": "Unknown",
+      "source": "playbill-cast"
+    },
+    {
+      "showId": "mj-2022",
+      "changeType": "added",
+      "eventType": "arrival",
+      "name": "Alex Aquilino",
+      "role": "Unknown",
+      "source": "playbill-cast"
+    },
+    {
+      "showId": "mj-2022",
+      "changeType": "added",
+      "eventType": "arrival",
+      "name": "JoJo Carmichael",
+      "role": "Unknown",
+      "source": "playbill-cast"
+    },
+    {
+      "showId": "mj-2022",
+      "changeType": "added",
+      "eventType": "arrival",
+      "name": "Skye Jackson-Williams",
+      "role": "Unknown",
+      "source": "playbill-cast"
+    },
+    {
+      "showId": "hadestown-2019",
+      "changeType": "added",
+      "eventType": "departure",
+      "name": "Gary Dourdan",
+      "role": "Hades",
+      "source": "playbill-cast"
+    },
+    {
+      "showId": "hadestown-2019",
+      "changeType": "added",
+      "eventType": "departure",
+      "name": "J. Harrison Ghee",
+      "role": "Hermes",
+      "source": "playbill-cast"
+    },
+    {
+      "showId": "hadestown-2019",
+      "changeType": "added",
+      "eventType": "departure",
+      "name": "Gaby Moreno",
+      "role": "Persephone",
+      "source": "playbill-cast"
+    },
+    {
+      "showId": "hadestown-2019",
+      "changeType": "added",
+      "eventType": "departure",
+      "name": "Jordan Tyson",
+      "role": "Eurydice",
+      "source": "playbill-cast"
+    },
+    {
+      "showId": "hadestown-2019",
+      "changeType": "added",
+      "eventType": "departure",
+      "name": "John-Michael Lyles",
+      "role": "Orpheus",
+      "source": "playbill-cast"
+    },
+    {
+      "showId": "hadestown-2019",
+      "changeType": "added",
+      "eventType": "departure",
+      "name": "Geno Segers",
+      "role": "Hades",
+      "source": "playbill-cast"
+    },
+    {
+      "showId": "hadestown-2019",
+      "changeType": "added",
+      "eventType": "arrival",
+      "name": "Ben Davis",
+      "role": "Unknown",
+      "source": "playbill-cast"
+    },
+    {
+      "showId": "harry-potter-2021",
+      "changeType": "added",
+      "eventType": "arrival",
+      "name": "Tom Felton",
+      "role": "Unknown",
+      "source": "playbill-cast"
+    },
+    {
+      "showId": "aladdin-2014",
+      "changeType": "added",
+      "eventType": "departure",
+      "name": "Ryan Gregory Thurman",
       "role": "Unknown",
       "source": "playbill-cast"
     },
@@ -109,23 +269,23 @@
       "showId": "aladdin-2014",
       "changeType": "added",
       "eventType": "arrival",
-      "name": "Katie Terza",
+      "name": "Frank Viveros",
       "role": "Unknown",
       "source": "playbill-cast"
     },
     {
-      "showId": "aladdin-2014",
+      "showId": "book-of-mormon-2011",
       "changeType": "added",
-      "eventType": "arrival",
-      "name": "Alec Varcas",
+      "eventType": "departure",
+      "name": "Andrew Stevens Purdy",
       "role": "Unknown",
       "source": "playbill-cast"
     },
     {
-      "showId": "wicked-2003",
+      "showId": "book-of-mormon-2011",
       "changeType": "added",
       "eventType": "arrival",
-      "name": "Tristan Hill",
+      "name": "Blake Morgan Ferris",
       "role": "Unknown",
       "source": "playbill-cast"
     },
@@ -133,7 +293,23 @@
       "showId": "the-lion-king-1997",
       "changeType": "added",
       "eventType": "departure",
-      "name": "Sihle Ngema",
+      "name": "Caleb Beltran",
+      "role": "Young Simba",
+      "source": "playbill-cast"
+    },
+    {
+      "showId": "chicago-1996",
+      "changeType": "added",
+      "eventType": "departure",
+      "name": "Sophie Carmen-Jones",
+      "role": "Velma Kelly",
+      "source": "playbill-cast"
+    },
+    {
+      "showId": "chicago-1996",
+      "changeType": "added",
+      "eventType": "arrival",
+      "name": "Lissa deGuzman",
       "role": "Unknown",
       "source": "playbill-cast"
     }
@@ -145,11 +321,11 @@
     "redditSearches": 0,
     "redditPostsAnalyzed": 0,
     "officialSitesChecked": 0,
-    "eventsAdded": 16,
+    "eventsAdded": 37,
     "eventsUpgraded": 0,
-    "eventsCleaned": 0,
+    "eventsCleaned": 1,
     "showsCleaned": 0,
-    "billingUpdated": 29,
+    "billingUpdated": 8,
     "errors": []
   }
 }
