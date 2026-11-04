@@ -68,6 +68,10 @@ data/audit/landings.jsonl merge=union
 # BRO-4851: one row per West End historical promotion/revert (append-only;
 # promote-historical-we.js --revert reads it back).
 data/audit/we-historical-promotion-log.jsonl merge=union
+# BRO-6952/BRO-6910: cross-show URL drop ledger, append-only, one row per (showId,url).
+# readCrossShowUrlRows only filters (no sum, no order dependence); every gather shard
+# commits it concurrently, plus mergeCrossShowUrlLedger covers the push-reconcile path.
+data/audit/cross-show-url-holds.jsonl merge=union
 # Newline-delimited registry of unit-test files, appended to by nearly every
 # worker that adds a test (BRO-181, BRO-2319, BRO-65 all did so this week).
 # Two branches each registering a different test past a common ancestor is a
