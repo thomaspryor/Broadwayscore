@@ -56,6 +56,7 @@ const { pointsAtFile, planCanonicalPointerClear, applyCanonicalPointerClear } = 
 const { quarantineBody } = require('./lib/quarantine-body');
 const { withTimeout: sharedWithTimeout } = require('./lib/with-timeout');
 const { guardianContentToResult, titleHtmlFor, guardianMentionWaiver } = require('./lib/guardian-api-result');
+const { isTitledBlogUrl, titledBlogMentionWaiver } = require('./lib/titled-blog-collect');
 const fs = require('fs');
 const { readReviewForUpdate, persistReviewSnapshot, renameReviewSnapshot } = require('./lib/persist-review-snapshot');
 const path = require('path');
@@ -2836,11 +2837,12 @@ async function fetchWithScrapingBee(url, useStealth = false) {
  */
 async function fetchWithDirectCookies(url) {
   const cookieHeader = buildCookieHeaderForUrl(url);
-  if (!cookieHeader) {
+  // A titledReviews blog (BRO-6965) is public: a plain request works where Playwright meets a Google block page.
+  if (!cookieHeader && !isTitledBlogUrl(url)) {
     throw new Error('No cookies available for this domain');
   }
 
-  console.log(`    Direct HTTP fetch (+cookies, ${cookieHeader.length} chars)...`);
+  console.log(`    Direct HTTP fetch (${cookieHeader ? `+cookies, ${cookieHeader.length} chars` : 'no cookies, public blog'})...`);
 
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), 30000);
@@ -2853,7 +2855,7 @@ async function fetchWithDirectCookies(url) {
     const resp = await fetch(url, {
       headers: {
         'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
-        'Cookie': cookieHeader,
+        ...(cookieHeader ? { 'Cookie': cookieHeader } : {}),
         'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8',
         'Accept-Language': 'en-US,en;q=0.9',
         'Accept-Encoding': 'gzip, deflate, br',
@@ -3719,7 +3721,7 @@ function buildTierChain(ctx, review) {
       label: 'Direct HTTP fetch with cookies',
       shouldRun: () => {
         // Only run if we have cookies for this domain AND previous tiers failed
-        if (!ctx.hasCookiesLoaded) return false;
+        if (!ctx.hasCookiesLoaded && !isTitledBlogUrl(review.url)) return false;
         return ctx.anyTierFailed || ctx.sawPaywall || ctx.sawCaptcha;
       },
       execute: (url) => fetchWithDirectCookies(url),
@@ -7625,6 +7627,10 @@ async function processReview(review) {
         console.log(`  ↪ Mention check (${sanity.reason}) waived: Guardian API headline leads with the show title ("${result.pageTitle}")`);
         sanity.valid = true;
       }
+      if (!sanity.valid && titledBlogMentionWaiver(review.url, sanity, canonicalTitle)) {
+        console.log(`  ↪ Mention check (${sanity.reason}) waived: titledReviews blog, page title is the show title ("${sanity.htmlTitle}")`);
+        sanity.valid = true;
+      }
       if (!sanity.valid && !laneHeld(review, 'headlineBackstop')) {
         console.log(`  ✗ URL→CONTENT MISMATCH: ${sanity.reason}`);
         if (sanity.htmlTitle) console.log(`    HTML <title>: "${sanity.htmlTitle}"`);
@@ -7914,6 +7920,10 @@ async function processReview(review) {
           );
           if (!retrySanity.valid && guardianMentionWaiver(retryResult, retryCanonicalTitle)) {
             console.log(`  ↪ Mention check (${retrySanity.reason}) waived: Guardian API headline leads with the show title ("${retryResult.pageTitle}")`);
+            retrySanity.valid = true;
+          }
+          if (!retrySanity.valid && titledBlogMentionWaiver(review.url, retrySanity, retryCanonicalTitle)) {
+            console.log(`  ↪ Mention check (${retrySanity.reason}) waived: titledReviews blog, page title is the show title`);
             retrySanity.valid = true;
           }
           if (!retrySanity.valid && !laneHeld(review, 'headlineBackstop')) {
