@@ -134,6 +134,12 @@ function adoptSnapshot(review, merged) {
 
 function persistReviewSnapshot(review, log = console.log) {
   const { merged, ...result } = prepareReviewSnapshot(review, log);
+  // BRO-6983: this write bypasses safeWriteReview, so run its cross-market (class A)
+  // check here. Without it a collector-filled page date from a sibling production's
+  // run landed live (maybe-happy-ending-2024 / theatrely--joey-sims).
+  let priorOnDisk = null;
+  try { priorOnDisk = JSON.parse(fs.readFileSync(review.filePath, 'utf8')); } catch { /* new file */ }
+  require('./review-write-guard').flagSiblingEraDateOnPersist(review.filePath, priorOnDisk, merged);
   fs.writeFileSync(review.filePath, JSON.stringify(merged, null, 2) + (review.trailingNewline ? '\n' : ''));
   adoptSnapshot(review, merged);
   return result;

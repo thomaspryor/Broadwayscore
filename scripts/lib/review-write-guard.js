@@ -3932,4 +3932,56 @@ function _urlCorroboration(url, record) {
   return n;
 }
 
-module.exports = { safeWriteReview, safeRenameReview, safeUnlinkReview, checkForDataLoss, getEffectiveProtectedFields, checkUrlCollision, isExcludedIgnoringDuplicate, shouldMarkUrlCollisionDuplicate, shouldMarkPostCorrectionDuplicate, wouldFormDuplicateCycle, coerceAssignedScore, shouldSkipPollerUpdate, shouldSkipLockedEnrichment, hasPlaceholderUrlPattern, preserveFlaggedFields, protectStagedDeletions, PROTECTED_FIELDS, CLEAR_BREADCRUMBS, CLEARABLE_VERDICT_FLAGS, isIntentionalClear, invalidateWrongProductionAutoClear, retractScriptWrongProductionClear, isScriptWrongProductionClear, WRONG_PRODUCTION_CLEAR_MARKERS, retractScriptWrongShowClear, isScriptWrongShowClear, WRONG_SHOW_CLEAR_MARKERS, isFreshWrongProductionAutoClear: _freshWrongProductionAutoClear, invalidateWrongShowAutoClear, isFreshWrongShowAutoClear: _freshWrongShowAutoClear, _setShowsCacheForTest, SUBSTANTIVE_BODY_CHARS, NEAR_EMPTY_BODY_CHARS, _flipFlopShouldTakeIncoming, writeReviewOrThrow };
+/**
+ * Class-A (cross-market) stamp for writers that persist an EXISTING review
+ * file without going through safeWriteReview (persistReviewSnapshot, used by
+ * the collector and 10+ backfills, writes with a bare fs.writeFileSync).
+ *
+ * Why this exists (BRO-6983): collect-review-texts.js filled in the page date
+ * of maybe-happy-ending-2024/theatrely--joey-sims.json on 2026-11-03 through
+ * persistReviewSnapshot, so safeWriteReview's class-A check never ran and the
+ * review (dated 22d from the 2026 tour's opening, 692d from the folder show's)
+ * landed live. The audit re-reddened main twice in two days.
+ *
+ * Mutates `record` (the merged record about to be written) in place: stamps
+ * wrongProduction with the same note shape as the in-guard stamp. Stamps, never
+ * quarantines, because the file already exists and the writer is mid-update.
+ * Uses the same predicate (classifyClassAContamination) and the same opt-outs
+ * as the audit and the in-guard check, so detector and preventer cannot drift.
+ * A date that was already class A before this write is left alone: the audit
+ * owns pre-existing contamination, and re-stamping every enrichment would undo
+ * a human's _auditAllowCrossMarket / override decision.
+ *
+ * @returns {{flagged:boolean, detail?:string}}
+ */
+function flagSiblingEraDateOnPersist(filePath, priorRecord, record) {
+  const none = { flagged: false };
+  if (!record || !record.publishDate) return none;
+  if (priorRecord && priorRecord.publishDate === record.publishDate) return none;
+  const parentDirName = path.basename(path.dirname(filePath));
+  const grandparentDirName = path.basename(path.dirname(path.dirname(filePath)));
+  if (!parentDirName || parentDirName.startsWith('_') || parentDirName.startsWith('.') || grandparentDirName === '_pending') return none;
+  if (record.wrongProduction || record.wrongShow || record.isRoundupArticle || record.wrongAttribution
+    || record.duplicateOf || record.isNonReview || record._auditAllowCrossMarket
+    || record._locked === true || record.wrongProductionOverride === true || record.wrongProductionManualClear === true
+    || (priorRecord && (priorRecord._auditAllowCrossMarket || priorRecord._locked === true))) return none;
+  const show = _getShowById(parentDirName);
+  if (!show || !show.openingDate) return none;
+  const sibOpenings = _getSiblingOpenings(parentDirName);
+  if (!sibOpenings.length) return none;
+  const { classifyClassAContamination } = require('./cross-market-contamination');
+  const { toDateMs } = require('./date-utils');
+  const classify = (d) => classifyClassAContamination(new Date(toDateMs(d)), new Date(show.openingDate), sibOpenings);
+  const xv = classify(record.publishDate);
+  if (!xv.isClassA) return none;
+  if (priorRecord && priorRecord.publishDate && classify(priorRecord.publishDate).isClassA) return none;
+  if (laneBypasses(record, 'wrongProduction', { openingDate: show.openingDate })) return none;
+  const detail = `publishDate ${record.publishDate} is ${Math.round(xv.sibDiff)}d from a same-title sibling production's opening but ${Math.round(xv.thisDiff)}d from this show's, so it belongs to the sibling`;
+  record.wrongProduction = true;
+  record.wrongProductionNote = `Auto-flagged (cross-market): ${detail}`;
+  invalidateWrongProductionAutoClear(record);
+  console.warn(`[review-write-guard] ${parentDirName}/${path.basename(filePath)} → auto-flagged wrongProduction at persist (date arrived through a non-guard writer): ${detail}`);
+  return { flagged: true, detail };
+}
+
+module.exports = { safeWriteReview, flagSiblingEraDateOnPersist, safeRenameReview, safeUnlinkReview, checkForDataLoss, getEffectiveProtectedFields, checkUrlCollision, isExcludedIgnoringDuplicate, shouldMarkUrlCollisionDuplicate, shouldMarkPostCorrectionDuplicate, wouldFormDuplicateCycle, coerceAssignedScore, shouldSkipPollerUpdate, shouldSkipLockedEnrichment, hasPlaceholderUrlPattern, preserveFlaggedFields, protectStagedDeletions, PROTECTED_FIELDS, CLEAR_BREADCRUMBS, CLEARABLE_VERDICT_FLAGS, isIntentionalClear, invalidateWrongProductionAutoClear, retractScriptWrongProductionClear, isScriptWrongProductionClear, WRONG_PRODUCTION_CLEAR_MARKERS, retractScriptWrongShowClear, isScriptWrongShowClear, WRONG_SHOW_CLEAR_MARKERS, isFreshWrongProductionAutoClear: _freshWrongProductionAutoClear, invalidateWrongShowAutoClear, isFreshWrongShowAutoClear: _freshWrongShowAutoClear, _setShowsCacheForTest, SUBSTANTIVE_BODY_CHARS, NEAR_EMPTY_BODY_CHARS, _flipFlopShouldTakeIncoming, writeReviewOrThrow };

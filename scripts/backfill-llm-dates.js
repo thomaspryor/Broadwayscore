@@ -132,8 +132,11 @@ async function run() {
           extracted++;
 
           if (!DRY_RUN) {
+            const _priorDate = data.publishDate;
             data.publishDate = llmDate;
             data.dateSource = 'text-llm';
+            // BRO-6983: this write skips safeWriteReview, so run its cross-market (class A) check.
+            require('./lib/review-write-guard').flagSiblingEraDateOnPersist(filePath, { publishDate: _priorDate }, data);
             fs.writeFileSync(filePath, JSON.stringify(data, null, 2) + '\n');
           }
         }
