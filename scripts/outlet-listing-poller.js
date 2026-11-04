@@ -56,6 +56,7 @@ const {
   isFlaggedMergeTarget,
 } = require('./lib/review-normalization');
 const { normalizeUrl } = require('./lib/url-utils');
+const { dailyLaneFeedConfigs, laneFeedAccepts } = require('./lib/daily-lane-feeds');
 const { extractPublishDate } = require('./lib/article-extractor');
 const { describeSkip } = require('./lib/ingest-skip-classify');
 const {
@@ -327,6 +328,11 @@ const WP_API_CONFIG = {
     params: 'categories=135&per_page=20&orderby=date&order=desc',
   },
 };
+
+// BRO-6965: every feed the opening-night lane reads is also read here, daily, on the lane's rules
+// (market, review word, reviewsOnly, titledReviews). Derived from LANE_FEEDS so the two lists cannot drift;
+// tests/unit/daily-lane-feeds.test.mjs fails when a LANE_FEEDS outlet is not read here.
+Object.assign(OUTLET_STRATEGY_CONFIG, dailyLaneFeedConfigs({ ...OUTLET_STRATEGY_CONFIG, ...WP_API_CONFIG }, SKIP_OUTLETS));
 
 // ---------------------------------------------------------------------------
 // CLI args
@@ -1019,6 +1025,10 @@ async function main() {
         // Amorous Gentlemen Offers a First Look ..."): keep its old recall, minus news.
         feedMatched = [];
       }
+      // Feeds taken from LANE_FEEDS (BRO-6965) file only what the lane would file.
+      if (fromFeed && outletCfg.laneRules) {
+        feedMatched = feedMatched.filter(show => laneFeedAccepts(outletCfg, outletId, { url, headline }, show));
+      }
       // pageConfirmAll outlets: feed matches go through the page check too.
       const matchedShows = outletCfg.pageConfirmAll ? [] : feedMatched;
 
@@ -1027,7 +1037,7 @@ async function main() {
       const candidates = [
         ...(outletCfg.pageConfirmAll ? feedMatched.map(show => ({ show, form: 'feed-match' })) : []),
         ...findPageConfirmCandidates({ url, headline, publishDate, description }, activeShows, { alreadyMatched: feedMatched, reviewOnlyFeed, titleLedReviews: fromFeed && !!outletCfg.titleLedReviews }),
-      ]
+      ].filter(c => !(fromFeed && outletCfg.laneRules) || laneFeedAccepts(outletCfg, outletId, { url, headline }, c.show))
         .filter(c => !alreadyFiled(c.show.id, outletId, url) && !isRejectedCached(url, c.show.id)
           && !isUnconfirmedCached(unconfirmedCache, url, c.show.id));
       let stubDate = publishDate;
