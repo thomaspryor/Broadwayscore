@@ -47,5 +47,11 @@ mkdir -p "$(git rev-parse --git-path rebase-merge)"
 git rev-parse HEAD > "$(git rev-parse --git-path REBASE_HEAD)"
 bash "$PUSH" 3 main >out3.log 2>&1; rc=$?
 [ $rc -ne 0 ] && grep -q "existing REBASE_HEAD found" out3.log && ok "case2: live rebase still refused" || bad "case2: live rebase not refused (rc=$rc)"
+[ -f "$(git rev-parse --git-path REBASE_HEAD)" ] && [ -d "$(git rev-parse --git-path rebase-merge)" ] && ok "case2: refusal left the live marker untouched" || bad "case2: marker removed"
+
+# Case 3: an orphan REBASE_HEAD present at entry is still refused (BRO-142 partial-cleanup detection) and kept.
+rmdir "$(git rev-parse --git-path rebase-merge)"
+bash "$PUSH" 3 main >out4.log 2>&1; rc=$?
+[ $rc -ne 0 ] && grep -q "existing REBASE_HEAD found" out4.log && [ -f "$(git rev-parse --git-path REBASE_HEAD)" ] && ok "case3: entry-time orphan refused, not silently deleted" || bad "case3: rc=$rc"
 
 exit $FAIL

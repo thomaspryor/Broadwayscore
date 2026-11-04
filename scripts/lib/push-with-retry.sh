@@ -1152,7 +1152,7 @@ fi
 # against a half-restored tree). Same `command -v` guard as above: the stale-marker
 # exit below fires before it is defined. `|| true` is load-bearing: under set -e a
 # failing statement inside an EXIT trap aborts the trap before `exit $rc`.
-trap 'rc=$?; { [ "$rc" -ne 0 ] && announce_unpushed_work; } || true; _drop_orphan_rebase_head || true; { [ "$rc" -ne 0 ] && rescue_unpushed_review_texts; } || true; { [ "$rc" -ne 0 ] && command -v restore_head_if_moved >/dev/null 2>&1 && restore_head_if_moved "trap-nonzero-exit-$rc"; } || true; { command -v restore_autostash >/dev/null 2>&1 && restore_autostash; } || true; push_mutex_release; exit $rc' EXIT
+trap 'rc=$?; { [ "$rc" -ne 0 ] && announce_unpushed_work; } || true; [ -n "${_BRO142_REFUSED:-}" ] || _drop_orphan_rebase_head || true; { [ "$rc" -ne 0 ] && rescue_unpushed_review_texts; } || true; { [ "$rc" -ne 0 ] && command -v restore_head_if_moved >/dev/null 2>&1 && restore_head_if_moved "trap-nonzero-exit-$rc"; } || true; { command -v restore_autostash >/dev/null 2>&1 && restore_autostash; } || true; push_mutex_release; exit $rc' EXIT
 
 # BRO-142 (generalized to REBASE_HEAD/CHERRY_PICK_HEAD/REVERT_HEAD by task
 # #1558): refuse to fetch/rebase/merge on top of an in-progress-operation
@@ -1183,6 +1183,7 @@ if [ -f "$SCRIPT_DIR/detect-stale-merge-head.sh" ]; then
     _bro142_result=$(marker_staleness "$(pwd)" "$_bro142_marker")
     _bro142_status="${_bro142_result%% *}"
     if [ "$_bro142_status" != "none" ]; then
+      _BRO142_REFUSED=1  # the EXIT trap must not tidy the marker we are refusing on
       echo "::error::push-with-retry: existing $_bro142_marker found before this run touched anything — refusing to fetch/rebase/merge on top of it." >&2
       marker_staleness_message "$(pwd)" "$_bro142_marker" "$_bro142_status" "${_bro142_result#* }" >&2
       exit 1
@@ -2795,7 +2796,7 @@ for i in $(seq 1 "$MAX_RETRIES"); do
         if GIT_EDITOR=true git -c "$(_keep_run_driver B)" rebase --continue 2>/dev/null; then
           rebase_ok=true
           RESOLUTION_PATH="rebase-resolved(${_round} round(s))"
-          _drop_orphan_rebase_head
+          _drop_orphan_rebase_head || true
           echo "  Rebase completed after $_round round(s) of conflict resolution"
           restore_protected_fields
           reconcile_merged_json
