@@ -8,7 +8,7 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const sharp = require('sharp');
-const { checkFile, pathsFromNameStatus } = require('./check-image-aspect');
+const { checkFile, pathsFromNameStatus, blobsFromLsTree, dropKnownBlobs } = require('./check-image-aspect');
 const { getImageDimensions } = require('./lib/image-dimensions');
 const { downloadImage } = require('./enrich-west-end-shows');
 const { hasChanges, buildDigestItems } = require('./send-daily-digest');
@@ -149,4 +149,22 @@ test('pathsFromNameStatus skips pure renames but keeps adds, edits and edited re
   const status = git('diff', '--cached', '--name-status', '-M', '--diff-filter=ACMR').stdout;
   assert.match(status, /^R100\tx\/poster\.jpg\ty\/poster\.jpg/);
   assert.deepEqual(pathsFromNameStatus(status), []);
+});
+
+test('staged images whose bytes are already in HEAD are skipped, new bytes are still checked (BRO-4315 batch 4)', t => {
+  const repo = scratch(t);
+  const git = (...a) => spawnSync('git', ['-C', repo, '-c', 'user.name=t', '-c', 'user.email=t@t', ...a], { encoding: 'utf8' });
+  git('init', '-q');
+  fs.mkdirSync(path.join(repo, 'public/images/shows/old'), { recursive: true });
+  fs.writeFileSync(path.join(repo, 'public/images/shows/old/poster.jpg'), 'landscape bytes '.repeat(40));
+  git('add', '-A'); git('commit', '-qm', 'one');
+  const known = blobsFromLsTree(git('ls-tree', '-r', 'HEAD', '--', 'public/images/shows').stdout);
+  assert.equal(known.size, 1);
+  fs.mkdirSync(path.join(repo, 'public/images/shows/new'), { recursive: true });
+  fs.writeFileSync(path.join(repo, 'public/images/shows/new/poster.jpg'), 'landscape bytes '.repeat(40));
+  fs.writeFileSync(path.join(repo, 'public/images/shows/new/thumbnail.jpg'), 'fresh bytes '.repeat(40));
+  git('add', '-A');
+  const blobOf = (f) => git('rev-parse', `:${f}`).stdout.trim();
+  const kept = dropKnownBlobs(['public/images/shows/new/poster.jpg', 'public/images/shows/new/thumbnail.jpg'], known, blobOf);
+  assert.deepEqual(kept, ['public/images/shows/new/thumbnail.jpg']);
 });
