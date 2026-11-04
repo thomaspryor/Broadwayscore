@@ -1,4 +1,4 @@
--- Critic correction requests (BRO-6984).
+-- Critic correction requests and owner-only reach (BRO-6984).
 --
 -- A critic who owns their page (approved claim) can now flag any problem with
 -- one of their reviews (wrong score, not my review, wrong show, other) and
@@ -17,6 +17,7 @@
 --   DELETE FROM public.critic_requests WHERE kind <> 'score_flag';
 --   ALTER TABLE public.critic_requests DROP CONSTRAINT IF EXISTS critic_requests_kind_check;
 --   ALTER TABLE public.critic_requests ADD CONSTRAINT critic_requests_kind_check CHECK (kind IN ('score_flag'));
+--   DROP TABLE IF EXISTS public.critic_reach;
 
 ALTER TABLE public.critic_requests DROP CONSTRAINT IF EXISTS critic_requests_kind_check;
 ALTER TABLE public.critic_requests ADD CONSTRAINT critic_requests_kind_check
@@ -24,3 +25,17 @@ ALTER TABLE public.critic_requests ADD CONSTRAINT critic_requests_kind_check
 
 ALTER TABLE public.critic_requests ENABLE ROW LEVEL SECURITY;
 CREATE INDEX IF NOT EXISTS critic_requests_slug_created ON public.critic_requests (critic_slug, created_at DESC);
+
+-- Reach: unique people who visited show pages featuring a critic's reviews in
+-- the last 30 days (PostHog). Written daily by scripts/critic-reach.ts
+-- (critic-reach.yml, service role) for claimed pages only; read by
+-- /api/critics/me (service role) and shown only to the page's owner.
+-- Counts only, no personal data. RLS on with no client policies.
+CREATE TABLE IF NOT EXISTS public.critic_reach (
+  critic_slug text PRIMARY KEY CHECK (critic_slug ~ '^[a-z0-9][a-z0-9-]{0,99}$'),
+  people      integer NOT NULL CHECK (people >= 0),
+  views       integer NOT NULL DEFAULT 0 CHECK (views >= 0),
+  show_pages  integer NOT NULL DEFAULT 0 CHECK (show_pages >= 0),
+  computed_at timestamptz NOT NULL DEFAULT now()
+);
+ALTER TABLE public.critic_reach ENABLE ROW LEVEL SECURITY;

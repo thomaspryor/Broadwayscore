@@ -7,13 +7,14 @@ import { getSupabaseClient } from '@/lib/supabase';
 import Modal from '@/components/show-cards/Modal';
 import { MissingReviewModal } from './CriticRequestModals';
 import CriticProfileEditor, { type EditableProfile } from './CriticProfileEditor';
+import { reachPhrase } from '@/lib/critic-reach';
 
 // BRO-6895: the "Are you X? Claim this page" prompt and the owner's edit entry.
 // Reads nothing about scores; it only moves a request to /api/critics/*.
 
 type Me =
   | { state: 'loading' | 'signed-out' | 'none' | 'pending' | 'unavailable' }
-  | { state: 'owner'; profile: EditableProfile | null; notifyOpeningNight: boolean; views30?: number };
+  | { state: 'owner'; profile: EditableProfile | null; notifyOpeningNight: boolean; views30?: number; reachPeople?: number | null };
 
 export async function accessToken(): Promise<string | null> {
   const client = await getSupabaseClient();
@@ -28,9 +29,12 @@ const btnPrimary = 'px-4 py-2 bg-brand text-gray-900 text-sm font-semibold round
  * Dev-only preview of the owner view (`?devCriticOwner=1` on `next dev`), for
  * screenshots without a real account. Compiled out of production builds.
  */
-function devOwnerPreview(): boolean {
-  if (process.env.NODE_ENV === 'production') return false;
-  try { return new URLSearchParams(window.location.search).get('devCriticOwner') === '1'; } catch { return false; }
+function devOwnerPreview(): { reachPeople: number | null } | null {
+  if (process.env.NODE_ENV === 'production') return null;
+  try {
+    const q = new URLSearchParams(window.location.search);
+    return q.get('devCriticOwner') === '1' ? { reachPeople: q.has('devReach') ? Number(q.get('devReach')) : null } : null;
+  } catch { return null; }
 }
 
 export default function CriticClaimPanel({ slug, name, outlet, claimed, reviewOptions, onOwnerChange, onFlag }: {
@@ -64,7 +68,8 @@ export default function CriticClaimPanel({ slug, name, outlet, claimed, reviewOp
   }, [slug]);
 
   useEffect(() => {
-    if (devOwnerPreview()) { setMe({ state: 'owner', profile: null, notifyOpeningNight: false }); return; }
+    const dev = devOwnerPreview();
+    if (dev) { setMe({ state: 'owner', profile: null, notifyOpeningNight: false, reachPeople: dev.reachPeople }); return; }
     if (loading) return;
     if (!isAuthenticated) { setMe({ state: 'signed-out' }); return; }
     refresh();
@@ -76,12 +81,14 @@ export default function CriticClaimPanel({ slug, name, outlet, claimed, reviewOp
   if (!featureFlags.userAccounts) return null;
 
   if (me.state === 'owner') {
+    const reach = reachPhrase(me.reachPeople);
     return (
       <>
         <div className="mb-4 flex items-center justify-between gap-3 rounded-lg border border-brand/30 bg-brand/10 px-4 py-3 text-sm">
           <span className="text-white">This is your page. Scores and reviews come from your published work and can&apos;t be edited here.</span>
           <button type="button" onClick={() => setEditOpen(true)} className={btnPrimary}>Edit your page</button>
         </div>
+        {reach && <p className="mb-4 -mt-2 text-sm text-gray-300">{reach}. <span className="text-fg-muted">Only you can see this.</span></p>}
         <div className="mb-4 -mt-2 flex flex-wrap gap-x-5 gap-y-1 text-sm">
           <button type="button" onClick={() => setAddOpen(true)} className="text-brand hover:underline">Missing a review? Tell us</button>
           {onFlag && <button type="button" onClick={onFlag} className="text-brand hover:underline">Flag a problem</button>}
