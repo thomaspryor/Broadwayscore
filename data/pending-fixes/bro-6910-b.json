@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6910-b",
   "planId": "70951166-e35e-490f-a170-d80d079c6440",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-03T23:59:35Z",
   "submitter": {
     "name": null,
@@ -23,5 +23,14 @@
         "description": "Byline on the page reads: Review by Ron Fassler"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-04T00:23:08.726Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "clifford-odets-waiting-for-lefty-off-broadway-2026/theater-pizzazz--unknown.json criticName: \"Unknown\" -> \"Ron Fassler\""
+    }
+  ],
+  "executedIn": "ci"
 }
