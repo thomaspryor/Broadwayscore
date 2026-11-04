@@ -1,10 +1,10 @@
 {
-  "timestamp": "2026-11-04T15:02:37.587Z",
+  "timestamp": "2026-11-04T15:54:47.906Z",
   "stats": {
-    "totalReviews": 80019,
-    "alreadyFlagged": 22012,
+    "totalReviews": 80022,
+    "alreadyFlagged": 22013,
     "dateGuardCatches": 217,
-    "directorMismatch": 3498,
+    "directorMismatch": 3499,
     "tvFilmSignals": 2275,
     "londonSignals": 3606,
     "offBroadwaySignals": 736,
@@ -76755,6 +76755,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "three-days-of-rain-2006",
+      "file": "hollywood-reporter--caitlin-huston.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/francois-arnaud-david-corenswet-three-days-of-rain-broadway-1236630809/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"anna d. shapiro\" from three-days-of-rain-2026"
         }
       ]
     },
