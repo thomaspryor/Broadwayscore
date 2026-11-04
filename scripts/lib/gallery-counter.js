@@ -16,7 +16,17 @@
  */
 
 // A line holding only "1/N" (optional spaces), N = 1..99.
-const COUNTER_LINE_RE = /^[ \t]*1[ \t]*\/[ \t]*(\d{1,2})[ \t]*$/gm;
+const COUNTER_LINE_RE = /^[ \t]*1[ \t]*\/[ \t]*(\d{1,2})[ \t\r]*$/gm;
+
+// A label line just above ("Rating:", "Our verdict", "Stars:") makes the 1/N its value.
+const RATING_LABEL_RE = /\b(?:rating|rated|verdict|score|stars?|grade)\s*:?\s*$/i;
+
+/** True when the nearest non-blank line before `lineStart` is a rating label. */
+function followsRatingLabel(text, lineStart) {
+  const before = text.slice(Math.max(0, lineStart - 200), lineStart).replace(/\s+$/, '');
+  const prevLine = before.slice(before.lastIndexOf('\n') + 1);
+  return RATING_LABEL_RE.test(prevLine);
+}
 
 /** True when `text` holds a standalone "1/<denominator>" line. */
 function hasCounterLine(text, denominator) {
@@ -36,21 +46,32 @@ function isGalleryCounterAt(text, index, length) {
   const lineStart = text.lastIndexOf('\n', index - 1) + 1;
   let lineEnd = text.indexOf('\n', index + length);
   if (lineEnd < 0) lineEnd = text.length;
-  return /^[ \t]*1[ \t]*\/[ \t]*\d{1,2}[ \t]*$/.test(text.slice(lineStart, lineEnd));
+  // \r stays in the slice on CRLF text; treat it as line whitespace.
+  if (!/^[ \t\r]*1[ \t]*\/[ \t]*\d{1,2}[ \t\r]*$/.test(text.slice(lineStart, lineEnd))) return false;
+  return !followsRatingLabel(text, lineStart);
 }
 
 /**
  * True when a rating string (an LLM `raw`, or a stored originalScore) is a bare
- * "1/N" fraction with no rating words or star glyphs, and that fraction appears
- * in `text` only as a standalone counter line.
+ * "1/N" fraction (optionally "stars"), and that fraction appears in `text` only
+ * as a standalone counter line with no rating label above it.
  */
 function isGalleryCounterRating(rating, text) {
-  if (typeof rating !== 'string') return false;
-  const m = /^\s*1\s*\/\s*(\d{1,2})\s*$/.exec(rating);
+  if (typeof rating !== 'string' || typeof text !== 'string') return false;
+  // The LLM's raw and the stored string often add "stars" the page never printed.
+  const m = /^\s*1\s*\/\s*(\d{1,2})(?:\s*stars?)?\s*$/i.exec(rating);
   if (!m) return false;
-  if (!hasCounterLine(text, m[1])) return false;
-  // The same fraction used inside a sentence ("1/5 stars", "rated 1/5") is a real rating.
-  const inline = new RegExp(`\\S[ \\t]*1[ \\t]*\\/[ \\t]*${m[1]}(?!\\d)|(?<!\\d)1[ \\t]*\\/[ \\t]*${m[1]}[ \\t]*\\S`);
+  // Every standalone 1/N line must be a counter (not a "Rating:" label's value).
+  let counter = false;
+  for (const c of text.matchAll(COUNTER_LINE_RE)) {
+    if (Number(c[1]) !== Number(m[1])) continue;
+    if (followsRatingLabel(text, c.index)) return false;
+    counter = true;
+  }
+  if (!counter) return false;
+  // The same fraction inside a sentence ("I give it 1/5", "1/5 stars") is a real rating. Digit,
+  // slash and letter boundaries keep run dates ("Until 11/5", "1/5/2015") and "1/5th" out.
+  const inline = new RegExp(`(?<![\\d/])1[ \\t]*\\/[ \\t]*${m[1]}(?![\\d/A-Za-z])`);
   return !inline.test(text.replace(COUNTER_LINE_RE, ''));
 }
 

@@ -181,7 +181,7 @@ function evaluateReview(review, opts = {}) {
   // whatever the gap. An anchored rescore pulls the LLM read into the junk
   // star's band (Lehman Trilogy: 1/10 → LLM 20 on a warm review), so the gap
   // that normally exposes a misread is zero exactly when the star won.
-  const galleryCounter = isGalleryCounterRating(String(originalRating).replace(/\s*stars?\s*$/i, ''), review.fullText);
+  const galleryCounter = isGalleryCounterRating(String(originalRating), review.fullText);
   if (worstGap <= threshold && !galleryCounter) return null;
 
   return {

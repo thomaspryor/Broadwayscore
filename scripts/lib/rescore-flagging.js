@@ -253,9 +253,17 @@ function queueRescoreForLateRating(data, via) {
  */
 function queueRescoreForClearedRating(data, why) {
   if (!data || typeof data !== 'object') return false;
-  if (!data.scoreSource || !isLlmScoreSource(data.scoreSource)) return false;
-  if (data.humanReviewScore != null) return false;
+  // An anchored read (llmScore.band) counts even after an extractor relabelled scoreSource
+  // (rebuild-helpers getBestScore reads those too).
+  const anchored = !!(data.llmScore && data.llmScore.band);
+  if (!anchored && (!data.scoreSource || !isLlmScoreSource(data.scoreSource))) return false;
+  // A provisional human score is still replaced by the LLM read (rebuild-helpers P0), so it does not block.
+  if (data.humanReviewScore != null && data.humanReviewScoreProvisional !== true) return false;
   if (data.needsRescore === true) return false;
+  // Same safety as isFalseTruncationScore: a _locked file is restored at push (paid rescore every pass),
+  // and the needsRescore => isScoreable invariant must hold or the flag is stuck.
+  if (data._locked === true) return false;
+  if (!isScoreable(data)) return false;
   markRescoreNeeded(data, `outlet rating cleared after the score (${why || 'cleared rating'}; BRO-305)`);
   return true;
 }
