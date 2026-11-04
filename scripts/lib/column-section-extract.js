@@ -255,7 +255,17 @@ function isolateFlatColumnSection(text, showTitle, { aliases = [], knownTitles =
     const distinct = new Set(window.map((x) => x.key));
     if (distinct.size !== 1) return null;
     const key = window[0].key;
-    return (counts.get(key) || 0) >= MIN_TITLE_MENTIONS ? key : null;
+    if ((counts.get(key) || 0) >= MIN_TITLE_MENTIONS) return key;
+    // BRO-6880: a short closing capsule names its show once (the real 10-23 column's Imaginary Invalid capsule).
+    // One mention owns the section only when no other show is named in it AND the show is the first quoted title of
+    // the section: the Charlie and the Chocolate Factory aside sits in a section whose first quoted title is
+    // "Giant" (a one-word title the matcher does not count), so it still owns nothing.
+    if (counts.size !== 1) return null;
+    const firstQuoted = sec.match(/[“"]([^”"]{2,120}?)[,.]?[”"]/);
+    const qWords = firstQuoted && flatTitleWords(firstQuoted[1]);
+    const def = defs.find((d) => d.key === key);
+    const sig = qWords && qWords.join(' ').toLowerCase();
+    return sig && def && def.variants.some((v) => v.join(' ').toLowerCase() === sig) ? key : null;
   });
   const mine = owners.map((o, i) => (o === targetKey ? i : -1)).filter((i) => i >= 0);
   if (mine.length === 0) return { action: 'refuse', text: null, reason: 'show-not-found', sectionCount: sections.length };

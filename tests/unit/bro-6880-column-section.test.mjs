@@ -264,3 +264,16 @@ test('corpus: stored Washington Post texts change only when they are verifier-re
     }
   }
 });
+
+test('flattened column: a closing capsule that names its show once owns its section; a one-off aside does not', () => {
+  // The real 10-23 column's Imaginary Invalid capsule names the show once, as the section's first quoted title.
+  const capsule = `If a veteran clown is going to stage Moliere's farce “The Imaginary Invalid,” he may as well star in it. ${filler('TII', 6)} Sometimes that is just what the doctor ordered. ${foot('tii')}`;
+  const col = [FLAT_ODC, FLAT_SG, capsule].join(' ');
+  const r = isolateColumnSection(col, 'The Imaginary Invalid', { knownTitles: FLAT_TITLES });
+  assert.equal(r.action, 'isolated');
+  assert.match(r.text, /veteran clown/);
+  // The same single mention inside a section whose first quoted title is another (one-word) show owns nothing.
+  const aside = `Much of the talk around “Giant,” a play about a famous author, is its star. It nods to “The Imaginary Invalid” once. ${filler('GI', 6)} ${foot('gi')}`;
+  const r2 = isolateColumnSection([FLAT_ODC, FLAT_SG, aside].join(' '), 'The Imaginary Invalid', { knownTitles: FLAT_TITLES });
+  assert.equal(r2.action, 'refuse');
+});
