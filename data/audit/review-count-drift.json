@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-11-03T17:00:42.040Z",
+  "generatedAt": "2026-11-04T16:55:45.207Z",
   "summary": {
-    "reviewsJsonLastUpdated": "2026-11-03T16:39:54.990Z",
-    "reviewsJsonAgeHours": 0.3,
+    "reviewsJsonLastUpdated": "2026-11-04T16:51:12.452Z",
+    "reviewsJsonAgeHours": 0.1,
     "freshnessBreach": false,
-    "showsScanned": 32,
-    "allShowsScanned": 4748,
-    "filesScanned": 79904,
+    "showsScanned": 30,
+    "allShowsScanned": 4753,
+    "filesScanned": 80052,
     "showsOverThreshold": 0,
     "newOffenders": 0,
     "blindShows": 24,
@@ -58,15 +58,7 @@
     {
       "showDir": "a-few-good-men-2026",
       "actual": 26,
-      "scanned": 44,
-      "suppressedCount": 0,
-      "suppressed": [],
-      "overThreshold": false
-    },
-    {
-      "showDir": "all-the-worlds-a-stage-regional-2026",
-      "actual": 4,
-      "scanned": 4,
+      "scanned": 46,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
@@ -81,24 +73,8 @@
     },
     {
       "showDir": "clifford-odets-waiting-for-lefty-off-broadway-2026",
-      "actual": 3,
-      "scanned": 4,
-      "suppressedCount": 0,
-      "suppressed": [],
-      "overThreshold": false
-    },
-    {
-      "showDir": "dogstar-off-west-end-2026",
-      "actual": 1,
-      "scanned": 4,
-      "suppressedCount": 0,
-      "suppressed": [],
-      "overThreshold": false
-    },
-    {
-      "showDir": "in-the-heights-off-broadway-2026",
-      "actual": 6,
-      "scanned": 15,
+      "actual": 11,
+      "scanned": 12,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
@@ -121,16 +97,16 @@
     },
     {
       "showDir": "middlemarch-rsc-regional-2026",
-      "actual": 12,
-      "scanned": 13,
+      "actual": 13,
+      "scanned": 14,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
     },
     {
       "showDir": "rope-off-broadway-2026",
-      "actual": 1,
-      "scanned": 2,
+      "actual": 10,
+      "scanned": 11,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
@@ -138,6 +114,14 @@
     {
       "showDir": "showstopper-the-kids-show-off-west-end-2026",
       "actual": 1,
+      "scanned": 3,
+      "suppressedCount": 0,
+      "suppressed": [],
+      "overThreshold": false
+    },
+    {
+      "showDir": "slanted-floors-off-broadway-2026",
+      "actual": 2,
       "scanned": 3,
       "suppressedCount": 0,
       "suppressed": [],
@@ -160,25 +144,49 @@
       "overThreshold": false
     },
     {
+      "showDir": "the-blue-violinist-over-west-end-avenue-off-broadway-2026",
+      "actual": 1,
+      "scanned": 3,
+      "suppressedCount": 0,
+      "suppressed": [],
+      "overThreshold": false
+    },
+    {
       "showDir": "the-bridge-off-west-end-2026",
-      "actual": 6,
-      "scanned": 16,
+      "actual": 15,
+      "scanned": 27,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
     },
     {
       "showDir": "the-heart-off-broadway-2026",
-      "actual": 18,
-      "scanned": 45,
+      "actual": 20,
+      "scanned": 48,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
     },
     {
       "showDir": "the-lives-of-others-west-end-2026",
-      "actual": 24,
-      "scanned": 37,
+      "actual": 26,
+      "scanned": 41,
+      "suppressedCount": 1,
+      "suppressed": [
+        {
+          "file": "standard--unknown.json",
+          "outletId": "standard",
+          "criticName": "Unknown",
+          "publishDate": "2026-11-02",
+          "url": "https://standard.co.uk/culture/theatre/the-lives-of-others-adelphi-theatre-review-keira-knightley-b1302949.html"
+        }
+      ],
+      "overThreshold": false
+    },
+    {
+      "showDir": "the-morbs-off-broadway-2026",
+      "actual": 2,
+      "scanned": 4,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
@@ -192,25 +200,17 @@
       "overThreshold": false
     },
     {
-      "showDir": "the-revlon-girl-off-west-end-2026",
-      "actual": 17,
-      "scanned": 19,
-      "suppressedCount": 0,
-      "suppressed": [],
-      "overThreshold": false
-    },
-    {
       "showDir": "the-royale-regional-2026",
-      "actual": 6,
-      "scanned": 6,
+      "actual": 10,
+      "scanned": 10,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
     },
     {
       "showDir": "tosca-english-national-opera-west-end-2026",
-      "actual": 3,
-      "scanned": 7,
+      "actual": 14,
+      "scanned": 20,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
@@ -218,9 +218,25 @@
     {
       "showDir": "tosca-off-broadway-2026",
       "actual": 1,
-      "scanned": 26,
+      "scanned": 14,
       "suppressedCount": 0,
       "suppressed": [],
+      "overThreshold": false
+    },
+    {
+      "showDir": "well-see-off-broadway-2026",
+      "actual": 1,
+      "scanned": 3,
+      "suppressedCount": 1,
+      "suppressed": [
+        {
+          "file": "theatermania--david-gordon.json",
+          "outletId": "theatermania",
+          "criticName": "David Gordon",
+          "publishDate": "2026-11-04",
+          "url": "https://www.theatermania.com/news/review-richard-nelsons-apple-family-confront-the-end-of-history-in-well-see_1858880/"
+        }
+      ],
       "overThreshold": false
     }
   ]
