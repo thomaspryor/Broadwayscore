@@ -796,21 +796,6 @@ function Inner({
       {/* Membership caption — one line gathering ALL list membership: the
           Watchlist link first (the "On your list" button is a TOGGLE and must
           not navigate), then custom lists. Owner design pick, 2026-07-19. */}
-      {userFeaturesEnabled && localRating && (
-        <p className="text-xs text-fg-muted flex items-start gap-1.5" data-testid="local-rating-note">
-          <span className="flex shrink-0 items-center pt-px"><MiniStars rating={localRating.rating} /></span>
-          <span>
-            Your rating, saved on this device.{' '}
-            <button
-              type="button"
-              onClick={() => showSignIn('rating', 'show_rating_note')}
-              className="underline hover:text-white/90"
-            >
-              Keep it everywhere
-            </button>
-          </span>
-        </p>
-      )}
 
       {userFeaturesEnabled && (onWatchlist || firstListContainingShow) && (
         <p className="text-xs text-fg-muted flex items-center gap-1.5">
@@ -863,6 +848,24 @@ function Inner({
           reviews={sortedReviews}
           onEditReview={(r) => { setEditingReview(r); setRatePanelOpen(true); }}
         />
+      )}
+
+      {/* Signed-out rating, kept on this device until sign-in. Same row as the
+          signed-in "Your rating" card so it reads as the same design. */}
+      {userFeaturesEnabled && localRating && !hasRating && !ratePanelOpen && (
+        <PlanRow
+          testId="local-rating-note"
+          onClick={() => showSignIn('rating', 'show_rating_note')}
+          tile={<StarTile />}
+          title="Your rating"
+          subtitle="Saved on this device"
+          ariaLabel="Your rating, saved on this device. Sign in to keep it on every device."
+        >
+          <span className="flex items-center gap-2 mt-1">
+            <MiniStars rating={localRating.rating} />
+            <span className="text-sm font-bold text-amber-400 tabular-nums">{localRating.rating.toFixed(1)}<span className="sr-only"> out of 5</span></span>
+          </span>
+        </PlanRow>
       )}
 
       {/* Rating editor — bottom-sheet on mobile, inline card on desktop. Adjustable
