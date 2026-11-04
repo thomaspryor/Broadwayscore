@@ -299,21 +299,25 @@ function findMatchingShows(headline, urlSlug, activeShows, creditText = '', { no
   // own title: "Hamlet at St. Luke's Theatre ... soon" belongs to Hamlet.
   const kept = matches.filter((show) => !venueOnly.has(show)
     || !matches.some((o) => o !== show && !venueOnly.has(o) && venuePhrase(o) === venuePhrase(show)));
-  return dropTitlesInsideLongerMatch(kept);
+  return dropTitlesInsideLongerMatch(kept, combined);
 }
 
 // A title found only as part of a longer matched title is that longer show:
-// TheaterMania's "Review: Two Girls, an Interrogation..." also matched "Girls"
-// (a West End show), and TSC's "School Girls; Or, ..." did the same (BRO-6921).
-function dropTitlesInsideLongerMatch(shows) {
+// TheaterMania's "Review: Two Girls, ..." also matched "Girls" (a West End
+// show), and TSC's "School Girls; Or, ..." did the same (BRO-6921). The shorter
+// show is dropped only when every mention of it sits inside the longer title,
+// so "Girls and Two Girls: a double bill" keeps both.
+function dropTitlesInsideLongerMatch(shows, combined) {
   if (shows.length < 2) return shows;
   const norm = (s) => hyphenSpaced(String(s.title || '').replace(/[_/]+/g, ' '));
+  const hay = ` ${combined} `;
   return shows.filter((show) => {
     const n = norm(show);
-    return !shows.some((o) => {
-      const on = norm(o);
-      return on.length > n.length && ` ${on} `.includes(` ${n} `);
-    });
+    const longer = shows.map(norm).filter((on) => on.length > n.length && ` ${on} `.includes(` ${n} `));
+    if (!longer.length || !hay.includes(` ${n} `)) return true;
+    let rest = hay;
+    for (const on of longer.sort((a, b) => b.length - a.length)) rest = rest.split(` ${on} `).join(' | ');
+    return rest.includes(` ${n} `);
   });
 }
 

@@ -934,9 +934,10 @@ async function main() {
       // beside it and still finds the reviews titled any other way.
       if (WP_API_CONFIG[outletId].keepSerp && domain) {
         try {
-          const seen = new Set(articles.map(a => a.url));
+          const key = (u) => { try { return normalizeUrl(u); } catch { return u; } };
+          const seen = new Set(articles.map(a => key(a.url)));
           for (const a of await fetchViaSerp(outletId, domain, cutoff, opts)) {
-            if (!seen.has(a.url)) { seen.add(a.url); articles.push({ ...a, viaSerp: true }); }
+            if (!seen.has(key(a.url))) { seen.add(key(a.url)); articles.push({ ...a, viaSerp: true }); }
           }
         } catch (err) {
           console.warn(`  ⚠ SERP (keepSerp) failed for ${outletId}: ${err.message}`);

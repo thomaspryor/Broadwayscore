@@ -122,3 +122,9 @@ describe('a title inside a longer matched title', () => {
     assert.deepEqual(ids.sort(), [MEMOIRS.id, FEW_GOOD_MEN.id].sort());
   });
 });
+
+test('a short title mentioned on its own besides a longer one still matches', () => {
+  const TWO_GIRLS = { id: 'two-girls-off-broadway-2026', title: 'Two Girls', status: 'open', previewsStartDate: '2026-10-01', openingDate: '2026-10-15' };
+  const ids = findMatchingShows('Girls and Two Girls: a double bill review', '/x/', [GIRLS, TWO_GIRLS], '', { publishDate: '2026-10-20' }).map((s) => s.id);
+  assert.deepEqual(ids.sort(), [GIRLS.id, TWO_GIRLS.id].sort());
+});
