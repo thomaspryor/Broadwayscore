@@ -933,6 +933,37 @@
     "queuedAt": "2026-11-03T23:54:01.524Z"
   },
   {
+    "conditionKey": "land:land/bro-6934-moved-template",
+    "title": "Landing blocked: rebase red on land/bro-6934-moved-template",
+    "description": "land.yml did not land land/bro-6934-moved-template: the rebase gate went red at 66eff81773. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-6934-moved-template @ 66eff81773 (origin/land/bro-6934-moved-template) → origin/main @ b46141e8f8 REFUSED: rebase: branch would not rebase cleanly onto origin/main @ b46141e8f8: Rebasing (1/1) error: could not apply 66eff817736... feat(social): 'moved' brief template, same show reopened at a new theatre (BRO-6934) hint: Resolve all conflicts manually, mark them as resolved with hin Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/41741380335",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6934-moved-template"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "66eff817736f5728ff48857d8f3f5c76b17c09f0"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41741380335"
+      }
+    ],
+    "queuedAt": "2026-11-04T00:16:39.503Z"
+  },
+  {
     "conditionKey": "land:land/job/linear-BRO-6934-mw1bfx8v",
     "title": "Landing blocked: rebase red on land/job/linear-BRO-6934-mw1bfx8v",
     "description": "land.yml did not land land/job/linear-BRO-6934-mw1bfx8v: the rebase gate went red at 04458facc0. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/job/linear-BRO-6934-mw1bfx8v @ 04458facc0 (origin/land/job/linear-BRO-6934-mw1bfx8v) → origin/main @ a60928b896 REFUSED: rebase: branch would not rebase cleanly onto origin/main @ 41928da768: Rebasing (1/4) error: could not apply bf3ab23f78f... social-autopost: 'moved' brief template, same show new theatre (BRO-6934) hint: Resolve all conflicts manually, mark them as resolved with hint Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/41739983968",
