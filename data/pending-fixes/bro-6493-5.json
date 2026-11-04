@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6493-5",
   "planId": "21298315-8b2b-48fb-a355-c98f6cbd4206",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-04T13:22:59.096Z",
   "submitter": {
     "name": null,
@@ -94,5 +94,49 @@
         "description": "BRO-6493: 2026 Players Theatre listing explicitly identifies September 26 opening. Contemporary Literally Alive cast announcement independently dates the first public performance September 26; this is the Michael Sgouros and Brenda Bell family musical. Sources: https://www.theatermania.com/shows/new-york-city-theater/off-broadway/alice-in-wonderland_1840832/ https://www.broadwayworld.com/off-broadway/article/alice-in-wonderland-the-musical-sets-cast-at-literally-alive-20260831"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-04T14:55:03.175Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for job-off-broadway-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for job-off-broadway-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for pretty-perfect-lives-off-broadway-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for the-importance-of-being-earnestly-lgbtq-off-broadway-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for september-l-davis-the-apology-tour-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for sea-wall-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for the-second-best-school-shooting-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for alice-in-wonderland-off-broadway-2026"
+    }
+  ],
+  "executedIn": "ci"
 }
