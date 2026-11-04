@@ -30,6 +30,17 @@ export interface CorrectionDeps {
 
 export interface CorrectionResult { status: number; body: { ok: true } | { error: string } }
 
+/**
+ * Stores the row; if a newer kind is refused (the 20261104 migration that
+ * allows it is not applied yet), stores it as the original 'score_flag' kind
+ * with the intended kind in the payload, so nothing a critic sends is lost.
+ */
+async function store(d: CorrectionDeps, row: CorrectionRow): Promise<boolean> {
+  if (await d.insert(row)) return true;
+  if (row.kind === 'score_flag') return false;
+  return d.insert({ ...row, kind: 'score_flag', payload: { ...row.payload, intendedKind: row.kind } });
+}
+
 const esc = (s: string) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c] as string));
 
 /** wrong_score keeps the original 'score_flag' kind; every other reason is a 'review_flag'. */
@@ -45,7 +56,7 @@ export async function submitCorrection(body: unknown, d: CorrectionDeps): Promis
     const input = sanitizeMissingReviewInput(b);
     if ('error' in input) return { status: 400, body: { error: input.error } };
     if (input.slug !== d.slug) return { status: 400, body: { error: 'Unknown page.' } };
-    const stored = await d.insert({ critic_slug: d.slug, user_id: d.user.id, kind: 'missing_review', payload: { reviewUrl: input.reviewUrl, note: input.note } });
+    const stored = await store(d, { critic_slug: d.slug, user_id: d.user.id, kind: 'missing_review', payload: { reviewUrl: input.reviewUrl, note: input.note } });
     if (!stored) return { status: 502, body: { error: 'Could not send that. Please try again.' } };
     await d.emailOwner(`Critic says a review is missing: ${d.criticName}`,
       `<p><b>${esc(d.criticName)}</b> says this review is missing from their page:</p>
@@ -60,7 +71,7 @@ ${footer}`, d.user.email);
   if (input.slug !== d.slug) return { status: 400, body: { error: 'Unknown page.' } };
   const review = d.ownReviews.get(input.reviewKey)!;
   const reasonLabel = FLAG_REASONS[input.reason];
-  const stored = await d.insert({
+  const stored = await store(d, {
     critic_slug: d.slug, user_id: d.user.id, kind: kindForReason(input.reason),
     payload: { reviewKey: input.reviewKey, reason: input.reason, note: input.note, show: review.showTitle, outlet: review.outlet, score: review.reviewScore, url: review.url },
   });

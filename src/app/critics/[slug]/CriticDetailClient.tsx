@@ -109,7 +109,7 @@ function ReviewCard({ review, showYear, loading = 'lazy', consensus, onFlag }: {
           <div className="mt-1.5 flex items-baseline justify-between gap-3 text-xs text-fg-muted">
             <span>{vs?.phrase}</span>
             {onFlag && (
-              <button type="button" onClick={onFlag} className="shrink-0 hover:text-brand transition-colors">Flag a problem</button>
+              <button type="button" onClick={onFlag} className="shrink-0 -my-2 py-2 px-1 hover:text-brand transition-colors">Flag a problem</button>
             )}
           </div>
         )}
@@ -162,6 +162,19 @@ export default function CriticDetailClient({ critic, profile, consensus = NO_CON
     return availableMarkets[0];
   })();
   const [marketFilter, setMarketFilter] = useState<MarketFilter>(defaultMarket);
+  // The summary uses all reviews, so name revivals by year across all of them.
+  const crowdLine = useMemo(() => {
+    if (crowdGaps.length === 0) return null;
+    const slugsByTitle = new Map<string, Set<string>>();
+    for (const r of critic.reviews) slugsByTitle.set(r.showTitle, (slugsByTitle.get(r.showTitle) || new Set()).add(r.showSlug));
+    const name = (g: { showSlug: string; showTitle: string }) => {
+      const review = (slugsByTitle.get(g.showTitle)?.size ?? 0) > 1 ? critic.reviews.find(r => r.showSlug === g.showSlug) : undefined;
+      const year = review ? getShowYear(review) : null;
+      return year ? `${g.showTitle} (${year})` : g.showTitle;
+    };
+    const list = crowdGaps.map(g => `${name(g)} (${signedGap(g.diff)})`).join(', ');
+    return `${marketFilter !== 'all' ? 'Across all their reviews, went' : 'Went'} against the crowd most on: ${list}`;
+  }, [crowdGaps, critic.reviews, marketFilter]);
 
   const filteredReviews = useMemo(() => {
     if (marketFilter === 'all') return critic.reviews;
@@ -336,7 +349,7 @@ export default function CriticDetailClient({ critic, profile, consensus = NO_CON
             volumePhrase(critic.volumeRank, 'critic', 'critics'),
             positivity && marketFilter !== 'all' ? `Across all their reviews: ${positivity.charAt(0).toLowerCase()}${positivity.slice(1)}` : positivity,
             // BRO-6984: the shows where this critic was furthest from the Critic Score.
-            crowdGaps.length > 0 ? `Went against the crowd most on: ${crowdGaps.map(g => `${g.showTitle} (${signedGap(g.diff)})`).join(', ')}` : null,
+            crowdLine,
           ].filter(Boolean);
           return lines.length > 0 && (
             <div className="flex flex-col gap-1 text-sm text-gray-400">

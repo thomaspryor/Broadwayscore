@@ -88,6 +88,11 @@ async function main() {
   if (dry) { console.log(`--dry-run: ${rows.length} rows not written`); }
   else if (rows.length) {
     const res = await sb('/rest/v1/critic_reach?on_conflict=critic_slug', { method: 'POST', headers: { Prefer: 'resolution=merge-duplicates,return=minimal' }, body: JSON.stringify(rows) });
+    if (res.status === 404) {
+      // The critic_reach table comes from migration 20261104; until it is applied, warn and skip.
+      console.warn('::warning::critic_reach table not found (migration 20261104_critic_requests_kinds.sql not applied yet); counts not stored.');
+      return;
+    }
     if (!res.ok) throw new Error(`critic_reach upsert failed: HTTP ${res.status} ${(await res.text()).slice(0, 300)}`);
     console.log(`Stored ${rows.length} rows in critic_reach.`);
   }

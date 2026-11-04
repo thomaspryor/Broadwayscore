@@ -75,11 +75,11 @@ export function volumePhrase(volumeRank: number, singular: string, plural: strin
 // includes this critic's own review; that is the number the site shows, so it
 // is the number we compare against.
 
-/** A show needs this many scored reviews before "the critic average" means anything. */
+/** A show needs this many scored reviews before comparing with its Critic Score means anything. */
 export const CONSENSUS_MIN_REVIEWS = 5;
 /** Within this many points (either way) reads as "in line". */
 export const CONSENSUS_IN_LINE_BAND = 5;
-/** The "went against the crowd" summary needs this many compared reviews... */
+/** The "went against the crowd" summary needs this many compared shows... */
 export const AGAINST_CROWD_MIN_REVIEWS = 5;
 /** ...and only lists gaps at least this big. */
 export const AGAINST_CROWD_MIN_GAP = 10;
@@ -94,7 +94,7 @@ export interface ConsensusComparison {
   phrase: string;
 }
 
-/** "12 points above the critic average (71)", "In line with other critics (68)", or null when there is no meaningful consensus. */
+/** "12 points above the show's Critic Score (71)", "In line with the show's Critic Score (68)", or null when there is no meaningful consensus. */
 export function compareToConsensus(reviewScore: number, consensus: ShowConsensus | null | undefined): ConsensusComparison | null {
   if (!consensus || !Number.isFinite(consensus.score) || !Number.isFinite(reviewScore)) return null;
   if (consensus.reviewCount < CONSENSUS_MIN_REVIEWS) return null;
@@ -102,8 +102,8 @@ export function compareToConsensus(reviewScore: number, consensus: ShowConsensus
   const diff = Math.round(reviewScore) - c;
   const n = Math.abs(diff);
   const phrase = n <= CONSENSUS_IN_LINE_BAND
-    ? `In line with other critics (${c})`
-    : `${n} points ${diff > 0 ? 'above' : 'below'} the critic average (${c})`;
+    ? `In line with the show's Critic Score (${c})`
+    : `${n} points ${diff > 0 ? 'above' : 'below'} the show's Critic Score (${c})`;
   return { diff, consensus: c, phrase };
 }
 
@@ -111,7 +111,7 @@ export interface CrowdGap { showSlug: string; showTitle: string; diff: number }
 
 /**
  * The reviews where this critic was furthest from the consensus, biggest gap
- * first, one per show. Empty when fewer than AGAINST_CROWD_MIN_REVIEWS reviews
+ * first, one per show. Empty when fewer than AGAINST_CROWD_MIN_REVIEWS shows
  * can be compared or no gap reaches AGAINST_CROWD_MIN_GAP.
  */
 export function againstTheCrowd(
@@ -120,15 +120,13 @@ export function againstTheCrowd(
   limit = 2,
 ): CrowdGap[] {
   const best = new Map<string, CrowdGap>();
-  let compared = 0;
   for (const r of reviews) {
     const cmp = compareToConsensus(r.reviewScore, consensusBySlug[r.showSlug]);
     if (!cmp) continue;
-    compared++;
     const prev = best.get(r.showSlug);
     if (!prev || Math.abs(cmp.diff) > Math.abs(prev.diff)) best.set(r.showSlug, { showSlug: r.showSlug, showTitle: r.showTitle, diff: cmp.diff });
   }
-  if (compared < AGAINST_CROWD_MIN_REVIEWS) return [];
+  if (best.size < AGAINST_CROWD_MIN_REVIEWS) return []; // shows, not reviews
   return [...best.values()]
     .filter(g => Math.abs(g.diff) >= AGAINST_CROWD_MIN_GAP)
     .sort((a, b) => Math.abs(b.diff) - Math.abs(a.diff) || a.showTitle.localeCompare(b.showTitle))

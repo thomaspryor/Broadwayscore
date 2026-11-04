@@ -308,7 +308,7 @@ export function sanitizeMissingReviewInput(body: unknown): MissingReviewInput | 
   const slug = typeof b.slug === 'string' && SLUG_RE.test(b.slug) ? b.slug : null;
   if (!slug) return { error: 'Unknown page.' };
   const reviewUrl = cleanUrl(b.reviewUrl);
-  if (!reviewUrl) return { error: 'Please paste a link to the review that starts with https://.' };
+  if (!reviewUrl) return { error: 'Please paste a full link to the review (starting with https://).' };
   const note = cleanText(b.note, FLAG_NOTE_MAX);
   if (note && countUrls(note) > MAX_NOTE_URLS) return { error: 'Please keep the note to two links at most.' };
   return { slug, reviewUrl, note };

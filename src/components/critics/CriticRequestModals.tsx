@@ -123,7 +123,7 @@ export function MissingReviewModal({ open, onClose, slug, criticName, outlet }: 
     try {
       const fd = new FormData();
       fd.set('review_url', url); fd.set('show_name', ''); fd.set('outlet_name', outlet); fd.set('critic_name', criticName);
-      fd.set('notes', 'Submitted by the critic from their claimed page.');
+      fd.set('notes', `Submitted by the critic from their claimed page.${note.trim() ? ` Note: ${note.trim()}` : ''}`);
       await fetch('/api/submit-review', { method: 'POST', body: fd });
     } catch { /* the owner already has it */ }
     setBusy(false); setDone(true);

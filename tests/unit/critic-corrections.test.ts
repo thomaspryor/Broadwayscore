@@ -71,3 +71,20 @@ test('nothing is stored or emailed for a bad request, and no email when storing 
   assert.equal(r.status, 502);
   assert.equal(emails.length, 0);
 });
+
+test('before the kinds migration: a refused new kind is stored as score_flag with the intended kind, not lost', async () => {
+  const rows: CorrectionRow[] = [];
+  const emails: string[] = [];
+  const d = { ...deps().d,
+    insert: async (row: CorrectionRow) => { rows.push(row); return row.kind === 'score_flag'; },
+    emailOwner: async (subject: string) => { emails.push(subject); return true; } };
+  const flag = await submitCorrection({ slug: 'jordan-ellis', reviewKey: 'wicked-def', reason: 'not_mine' }, d);
+  assert.equal(flag.status, 200);
+  assert.deepEqual(rows.map(r => r.kind), ['review_flag', 'score_flag']);
+  assert.equal(rows[1].payload.intendedKind, 'review_flag');
+  const missing = await submitCorrection({ kind: 'missing', slug: 'jordan-ellis', reviewUrl: 'https://example.com/r' }, d);
+  assert.equal(missing.status, 200);
+  assert.equal(rows[3].kind, 'score_flag');
+  assert.equal(rows[3].payload.intendedKind, 'missing_review');
+  assert.equal(emails.length, 2);
+});

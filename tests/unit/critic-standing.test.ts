@@ -49,18 +49,18 @@ test('extreme tiers need 10+ reviews', () => {
 // ---- BRO-6984: you vs. the consensus ----
 
 test('consensus line: above, below and in line, using the rounded Critic Score', () => {
-  assert.equal(compareToConsensus(83, { score: 71, reviewCount: 20 })?.phrase, '12 points above the critic average (71)');
-  assert.equal(compareToConsensus(65, { score: 80, reviewCount: 20 })?.phrase, '15 points below the critic average (80)');
-  assert.equal(compareToConsensus(70, { score: 67.6, reviewCount: 20 })?.phrase, 'In line with other critics (68)');
+  assert.equal(compareToConsensus(83, { score: 71, reviewCount: 20 })?.phrase, "12 points above the show's Critic Score (71)");
+  assert.equal(compareToConsensus(65, { score: 80, reviewCount: 20 })?.phrase, "15 points below the show's Critic Score (80)");
+  assert.equal(compareToConsensus(70, { score: 67.6, reviewCount: 20 })?.phrase, "In line with the show's Critic Score (68)");
   assert.equal(compareToConsensus(68, { score: 68, reviewCount: 20 })?.diff, 0);
 });
 
 test('consensus band edges: exactly the band is in line, one more is not', () => {
   const c = { score: 70, reviewCount: 9 };
-  assert.equal(compareToConsensus(70 + CONSENSUS_IN_LINE_BAND, c)?.phrase, 'In line with other critics (70)');
-  assert.equal(compareToConsensus(70 - CONSENSUS_IN_LINE_BAND, c)?.phrase, 'In line with other critics (70)');
-  assert.equal(compareToConsensus(70 + CONSENSUS_IN_LINE_BAND + 1, c)?.phrase, '6 points above the critic average (70)');
-  assert.equal(compareToConsensus(63.6, c)?.phrase, '6 points below the critic average (70)'); // 64 vs 70 as displayed
+  assert.equal(compareToConsensus(70 + CONSENSUS_IN_LINE_BAND, c)?.phrase, "In line with the show's Critic Score (70)");
+  assert.equal(compareToConsensus(70 - CONSENSUS_IN_LINE_BAND, c)?.phrase, "In line with the show's Critic Score (70)");
+  assert.equal(compareToConsensus(70 + CONSENSUS_IN_LINE_BAND + 1, c)?.phrase, "6 points above the show's Critic Score (70)");
+  assert.equal(compareToConsensus(63.6, c)?.phrase, "6 points below the show's Critic Score (70)"); // 64 vs 70 as displayed
 });
 
 test('consensus line is hidden with too few reviews or no score', () => {
@@ -93,6 +93,8 @@ test('against the crowd: biggest gaps first, one per show, needs 5 compared revi
     { showSlug: 'a', showTitle: 'A', diff: 18 },
   ]);
   assert.deepEqual(againstTheCrowd(reviews.slice(0, 4), cons), []); // only 4 comparable
+  // two reviews of one show count as one show toward the floor
+  assert.deepEqual(againstTheCrowd([...reviews.slice(0, 4), { showSlug: 'a', showTitle: 'A', reviewScore: 50 }], cons), []);
   assert.equal(signedGap(18), '+18');
   assert.equal(signedGap(-22), '−22');
 });
