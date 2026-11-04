@@ -6,38 +6,246 @@
   "embargoAt": "2026-11-03T21:00:00.000Z",
   "embargoSource": "market-default",
   "probe": {
-    "startedAt": null,
-    "endedAt": null,
+    "startedAt": "2026-11-03T23:12:46.827Z",
+    "endedAt": "2026-11-04T03:00:33.520Z",
     "intervalMin": 5,
-    "samples": 0,
+    "samples": 46,
     "failedSamples": 0,
-    "lastSampleAt": null,
-    "lastOkSampleAt": null
+    "lastSampleAt": "2026-11-04T02:57:59.603Z",
+    "lastOkSampleAt": "2026-11-04T02:57:59.603Z"
   },
-  "firstLiveAt": null,
-  "firstLiveBaseline": false,
-  "lastLiveAt": null,
-  "liveCount": 0,
+  "firstLiveAt": "2026-11-03T23:12:46.827Z",
+  "firstLiveBaseline": true,
+  "lastLiveAt": "2026-11-03T23:12:46.827Z",
+  "liveCount": 13,
   "liveCountAt": {
     "1h": null,
     "2h": null,
     "6h": null
   },
   "liveCountSampleAt": {
-    "1h": null,
-    "2h": null,
+    "1h": "2026-11-03T23:12:46.827Z",
+    "2h": "2026-11-03T23:12:46.827Z",
     "6h": null
   },
   "firstOutletPublishAt": {
-    "at": null,
-    "precision": "unknown",
+    "at": "2026-11-03",
+    "precision": "approx",
     "source": "prod-rv-publishDate",
-    "tierScope": null
+    "tierScope": "T1-T2"
   },
-  "perReview": [],
+  "perReview": [
+    {
+      "key": "the stage|siobhan murphy",
+      "outlet": "The Stage",
+      "critic": "Siobhan Murphy",
+      "tier": 1,
+      "publishAt": "2026-11-03",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-03T23:12:46.827Z",
+      "prevOkSampleAt": null,
+      "baseline": true,
+      "liveNow": true
+    },
+    {
+      "key": "financial times|sarah hemming",
+      "outlet": "Financial Times",
+      "critic": "Sarah Hemming",
+      "tier": 1,
+      "publishAt": "2026-11-03",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-03T23:12:46.827Z",
+      "prevOkSampleAt": null,
+      "baseline": true,
+      "liveNow": true
+    },
+    {
+      "key": "evening standard|nick curtis",
+      "outlet": "Evening Standard",
+      "critic": "Nick Curtis",
+      "tier": 1,
+      "publishAt": "2026-11-03",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-03T23:12:46.827Z",
+      "prevOkSampleAt": null,
+      "baseline": true,
+      "liveNow": true
+    },
+    {
+      "key": "whatsonstage|aliya al-hassan",
+      "outlet": "WhatsOnStage",
+      "critic": "Aliya Al-Hassan",
+      "tier": 2,
+      "publishAt": "2026-11-03",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-03T23:12:46.827Z",
+      "prevOkSampleAt": null,
+      "baseline": true,
+      "liveNow": true
+    },
+    {
+      "key": "the reviews hub|john cutler",
+      "outlet": "The Reviews Hub",
+      "critic": "John Cutler",
+      "tier": 2,
+      "publishAt": "2026-11-03",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-03T23:12:46.827Z",
+      "prevOkSampleAt": null,
+      "baseline": true,
+      "liveNow": true
+    },
+    {
+      "key": "london theatre|cheryl markosky",
+      "outlet": "London Theatre",
+      "critic": "Cheryl Markosky",
+      "tier": 2,
+      "publishAt": "2026-11-03",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-03T23:12:46.827Z",
+      "prevOkSampleAt": null,
+      "baseline": true,
+      "liveNow": true
+    },
+    {
+      "key": "broadwayworld|josh maughan",
+      "outlet": "BroadwayWorld",
+      "critic": "Josh Maughan",
+      "tier": 2,
+      "publishAt": "2026-11-03",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-03T23:12:46.827Z",
+      "prevOkSampleAt": null,
+      "baseline": true,
+      "liveNow": true
+    },
+    {
+      "key": "all that dazzles (uk)|sam waite",
+      "outlet": "All That Dazzles (UK)",
+      "critic": "Sam Waite",
+      "tier": 3,
+      "publishAt": "2026-11-03",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-03T23:12:46.827Z",
+      "prevOkSampleAt": null,
+      "baseline": true,
+      "liveNow": true
+    },
+    {
+      "key": "theatre weekly|maggie o'shea",
+      "outlet": "Theatre Weekly",
+      "critic": "Maggie O'Shea",
+      "tier": 3,
+      "publishAt": "2026-11-02",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-03T23:12:46.827Z",
+      "prevOkSampleAt": null,
+      "baseline": true,
+      "liveNow": true
+    },
+    {
+      "key": "everything theatre|matilda beaumont",
+      "outlet": "Everything Theatre",
+      "critic": "Matilda Beaumont",
+      "tier": 3,
+      "publishAt": "2026-11-03",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-03T23:12:46.827Z",
+      "prevOkSampleAt": null,
+      "baseline": true,
+      "liveNow": true
+    },
+    {
+      "key": "liam o'dell|liam o'dell",
+      "outlet": "Liam O'Dell",
+      "critic": "Liam O'Dell",
+      "tier": 3,
+      "publishAt": "2026-11-03",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-03T23:12:46.827Z",
+      "prevOkSampleAt": null,
+      "baseline": true,
+      "liveNow": true
+    },
+    {
+      "key": "the chiswick calendar|simon thomsett",
+      "outlet": "The Chiswick Calendar",
+      "critic": "Simon Thomsett",
+      "tier": 3,
+      "publishAt": "2026-11-03",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-03T23:12:46.827Z",
+      "prevOkSampleAt": null,
+      "baseline": true,
+      "liveNow": true
+    },
+    {
+      "key": "pink prince theatre|neill kovacic-clarke",
+      "outlet": "Pink Prince Theatre",
+      "critic": "Neill Kovacic-Clarke",
+      "tier": 4,
+      "publishAt": "2026-11-03",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-03T23:12:46.827Z",
+      "prevOkSampleAt": null,
+      "baseline": true,
+      "liveNow": true
+    }
+  ],
   "dropped": [],
   "reference": {
     "2h": {
+      "status": "incomplete",
+      "source": [
+        "theatre-reviews"
+      ],
+      "count": 11,
+      "covered": 0,
+      "coverage": 0,
+      "missing": [
+        "thestage",
+        "london-theatre",
+        "whatsonstage",
+        "broadwayworld",
+        "timeout",
+        "times-uk",
+        "guardian",
+        "telegraph",
+        "independent",
+        "standard",
+        "noel-coward-theatre"
+      ],
+      "suppressedMissing": [],
+      "liveCount": 0,
+      "fetchedAt": "2026-11-04T03:00:32.269Z",
+      "asOf": "2026-11-03T23:00:00.000Z",
+      "method": "timeline",
+      "notYetPublished": [],
+      "discoveredAfter": [],
+      "censusNote": "archive only"
+    },
+    "end": {
+      "status": "incomplete",
+      "source": [
+        "theatre-reviews"
+      ],
+      "count": 11,
+      "covered": 5,
+      "coverage": 0.455,
+      "missing": [
+        "timeout",
+        "times-uk",
+        "guardian",
+        "telegraph",
+        "independent",
+        "noel-coward-theatre"
+      ],
+      "suppressedMissing": [],
+      "liveCount": 13,
+      "fetchedAt": "2026-11-04T03:00:32.269Z",
+      "censusNote": "archive only"
+    },
+    "2h-live": {
       "status": "no-census-yet",
       "source": null,
       "count": 0,
@@ -59,11 +267,17 @@
         "label": "2h",
         "standDown": false,
         "reason": "market not lane-only"
+      },
+      {
+        "at": "2026-11-04T03:00:32.342Z",
+        "label": "end",
+        "standDown": false,
+        "reason": "market not lane-only"
       }
     ]
   },
   "fileState": {
-    "capturedAt": "2026-11-03T23:09:02.770Z",
+    "capturedAt": "2026-11-04T03:00:33.303Z",
     "files": [
       {
         "file": "a-youngish-perspective--unknown.json",
@@ -84,7 +298,7 @@
         "outlet": "All That Dazzles (UK)",
         "critic": "Sam Waite",
         "firstSeenAt": "2026-11-03T18:24:21.589Z",
-        "scoredAt": "2026-11-03T20:11:11.588Z",
+        "scoredAt": "2026-11-03T23:28:24.996Z",
         "publishDate": "2026-11-03",
         "url": "allthatdazzles.co.uk/post/review-the-bridge-bush-theatre",
         "includable": true,
@@ -100,8 +314,8 @@
         "scoredAt": "2026-11-03T20:11:11.588Z",
         "publishDate": "2026-11-03",
         "url": "allthatdazzles.co.uk/post/review-the-bridge-bush-theatre",
-        "includable": true,
-        "reason": null,
+        "includable": false,
+        "reason": "duplicateOf",
         "syndicatedUnder": null
       },
       {
@@ -188,7 +402,7 @@
         "outlet": "Financial Times",
         "critic": "Sarah Hemming",
         "firstSeenAt": "2026-11-03T17:46:36.020Z",
-        "scoredAt": "2026-11-03T20:11:16.471Z",
+        "scoredAt": "2026-11-03T23:28:30.356Z",
         "publishDate": "2026-11-03",
         "url": "ft.com/content/55190116-d0dd-499d-b295-df93bbf0ed37?syn-25a6b1a6=1",
         "includable": true,
@@ -334,8 +548,8 @@
         "scoredAt": null,
         "publishDate": "2026-11-03",
         "url": "theatreandtonic.co.uk/blog/the-bridge-bush-theatre-london-review",
-        "includable": false,
-        "reason": "rejectionReason",
+        "includable": true,
+        "reason": null,
         "syndicatedUnder": null
       },
       {
