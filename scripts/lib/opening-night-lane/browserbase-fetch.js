@@ -59,18 +59,21 @@ class BrowserbaseUnavailable extends Error {
  * @param {number} [p.sessionTimeoutSec] - Browserbase session timeout; the session is replaced 5 min before it
  * @param {number} [p.fetchTimeoutMs] - one fetch, navigation and challenge wait together
  * @param {number} [p.cooldownMs] - pause after a refusal that may lift (reserve held, day cap, API error)
+ * @param {number} [p.reconnectTimeoutMs] - how long a reconnect to a dropped, still-running session may take
  */
 function createBrowserbaseFetcher({
   createSession, connect, readPage, releaseSession = async () => {}, env = process.env, now = Date.now, log = () => {},
   caller = CALLER, maxSessions = 8, sessionTimeoutSec = 3600, fetchTimeoutMs = 60000, cooldownMs = 15 * 60 * 1000,
+  reconnectTimeoutMs = 15000,
 }) {
   let offReason = env.BROWSERBASE_API_KEY && env.BROWSERBASE_PROJECT_ID ? null : 'BROWSERBASE_API_KEY / BROWSERBASE_PROJECT_ID not set';
   let pausedUntil = 0;
   let created = 0;
   let current = null; // { browser, context, createdAt }
   let pending = null; // the in-flight create, shared by every fetch waiting on it
+  let dropped = null; // the last session whose connection closed without us closing it
   const retired = new Set();
-  const counts = { sessions: 0, fetches: 0, refusals: 0 };
+  const counts = { sessions: 0, fetches: 0, refusals: 0, drops: 0, reconnects: 0 };
 
   const available = () => !offReason && now() >= pausedUntil;
   const rotateAfterMs = (sessionTimeoutSec - Math.min(300, sessionTimeoutSec / 2)) * 1000;
@@ -105,24 +108,69 @@ function createBrowserbaseFetcher({
       throw new BrowserbaseUnavailable(`connect failed: ${e && e.message}`);
     }
     counts.sessions++;
-    const s = { browser, context, createdAt: now(), pages: 0 };
-    browser.on('disconnected', () => { if (current === s) current = null; retired.delete(s); });
+    const s = adopt(browser, context, { id: session.id, connectUrl: session.connectUrl, createdAt: now(), cleared: false });
     log(`browserbase: session ${String(session.id).slice(0, 8)} (${created}/${maxSessions} this run)`);
     return s;
+  }
+
+  /**
+   * Track a connected browser. A connection that closes without the lane closing it is logged with the session's age:
+   * on 2026-11-04 three of five shadow sessions dropped within minutes with no trace in the run log (BRO-6872).
+   */
+  function adopt(browser, context, meta) {
+    const s = { browser, context, pages: 0, warmup: null, closing: false, ...meta };
+    browser.on('disconnected', () => {
+      if (!s.closing) {
+        counts.drops++;
+        log(`browserbase: session ${String(s.id).slice(0, 8)} dropped after ${Math.round((now() - s.createdAt) / 1000)} s (${s.pages} pages open)`);
+        if (current === s) dropped = s;
+      }
+      if (current === s) current = null;
+      retired.delete(s);
+    });
+    return s;
+  }
+
+  /**
+   * A dropped connection does not end the Browserbase session at once (they ran on for minutes on 2026-11-04), and a
+   * new session spends one of the night's allowance. Try the old one first, once; it keeps its age, so it still rotates.
+   */
+  async function reconnect(old) {
+    if (!old.connectUrl || now() - old.createdAt >= rotateAfterMs) throw new Error('not reconnectable');
+    let timer;
+    const attempt = connect(old.connectUrl);
+    let browser;
+    try {
+      browser = await Promise.race([attempt, new Promise((_, reject) => { timer = setTimeout(() => reject(new Error('reconnect timed out')), reconnectTimeoutMs); })]);
+    } catch (e) {
+      attempt.then((b) => b && b.close()).catch(() => {}); // a late connection is not left open
+      log(`browserbase: reconnect to ${String(old.id).slice(0, 8)} failed (${e && e.message}); opening a new session`);
+      throw e;
+    } finally { clearTimeout(timer); }
+    let context;
+    try { context = browser.contexts()[0] || await browser.newContext(); } catch (e) { browser.close().catch(() => {}); throw e; }
+    counts.reconnects++;
+    log(`browserbase: reconnected to session ${String(old.id).slice(0, 8)}`);
+    return adopt(browser, context, { id: old.id, connectUrl: old.connectUrl, createdAt: old.createdAt, cleared: old.cleared });
   }
 
   async function session() {
     if (fresh(current)) return current;
     if (current) retire(current);
     current = null;
-    if (!pending) pending = open().then((s) => { current = s; return s; }).finally(() => { pending = null; });
+    if (!pending) {
+      const old = dropped;
+      dropped = null;
+      pending = (old ? reconnect(old).catch(() => open()) : open())
+        .then((s) => { current = s; return s; }).finally(() => { pending = null; });
+    }
     return pending;
   }
 
   /** Close a replaced session once its open pages are done (or straight away if none are). */
   function retire(s) {
     retired.add(s);
-    if (!s.pages) { retired.delete(s); s.browser.close().catch(() => {}); }
+    if (!s.pages) { retired.delete(s); s.closing = true; s.browser.close().catch(() => {}); }
   }
 
   async function fetch(url) {
@@ -130,8 +178,15 @@ function createBrowserbaseFetcher({
     const s = await session();
     counts.fetches++;
     s.pages++;
-    let page = null; let timer;
+    let page = null; let timer; let warmupDone = null;
     try {
+      // A new session clears TB's Cloudflare check with one page before opening more. On 2026-11-04 every shadow run's
+      // first pass opened six pages at once in a fresh session and only 2 of the 30 loaded (26 still showed the challenge after 26 s); once
+      // one page had cleared it, later pages loaded in about 7 s. The rest wait for the first to settle, pass or fail.
+      if (!s.cleared) {
+        if (s.warmup) await s.warmup;
+        else s.warmup = new Promise((resolve) => { warmupDone = resolve; });
+      }
       page = await s.context.newPage();
       const deadline = new Promise((_, reject) => { timer = setTimeout(() => reject(new Error(`browserbase fetch timed out after ${fetchTimeoutMs}ms: ${url}`)), fetchTimeoutMs); });
       const r = await Promise.race([readPage(page, url, { timeoutMs: Math.max(5000, fetchTimeoutMs - 15000) }), deadline]);
@@ -140,6 +195,7 @@ function createBrowserbaseFetcher({
       return { content: r.html, finalUrl: r.finalUrl && r.finalUrl !== url ? r.finalUrl : null, status: r.status, via: 'browserbase' };
     } finally {
       clearTimeout(timer);
+      if (warmupDone) { s.cleared = true; warmupDone(); }
       if (page) page.close().catch(() => {});
       s.pages--;
       if (retired.has(s) && !s.pages) retire(s);
@@ -150,7 +206,8 @@ function createBrowserbaseFetcher({
     offReason = 'closed';
     if (pending) await pending.catch(() => {}); // a create still in flight lands in `current` and is closed below
     const all = [current, ...retired].filter(Boolean);
-    current = null; retired.clear();
+    for (const s of all) s.closing = true;
+    current = null; retired.clear(); dropped = null;
     await Promise.all(all.map((s) => s.browser.close().catch(() => {})));
   }
 
