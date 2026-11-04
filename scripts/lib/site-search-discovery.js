@@ -137,9 +137,19 @@ function operaTitleWords(title) {
   // national/opera, so "polish-national-opera" scored 2 hits with no "tosca".
   // The head words ride along so operaTitleMatch can require the opera itself.
   const split = splitLabelledTitle(title);
-  const headWords = split ? _operaWords(split.head) : [];
-  if (headWords.length) Object.defineProperty(words, 'headWords', { value: headWords });
+  if (split) {
+    // A short or stopword head ("Io", "La Cid") still needs a head word: fall
+    // back to its raw tokens, and an empty list rejects every match.
+    let headWords = _operaWords(split.head);
+    if (!headWords.length) headWords = _operaTokens(split.head);
+    Object.defineProperty(words, 'headWords', { value: headWords });
+  }
   return words;
+}
+
+function _operaTokens(text) {
+  return String(text || '').toLowerCase().normalize('NFD').replace(/\p{Diacritic}/gu, '')
+    .split(/[^a-z0-9]+/).filter(Boolean);
 }
 
 /**
@@ -153,7 +163,10 @@ function operaTitleMatch(text, titleWords, minHits) {
   if (hits < minHits) return false;
   if (process.env.DISABLE_OPERA_HEAD_WORD_MATCH === 'true') return true;
   const head = titleWords.headWords;
-  return !head || head.some(w => t.includes(w));
+  if (!head) return true;
+  // Whole tokens: "don" must not match inside "london", "tosca" inside "toscanini".
+  const tokens = new Set(_operaTokens(t));
+  return head.some(w => tokens.has(w));
 }
 
 function _operaWords(title) {

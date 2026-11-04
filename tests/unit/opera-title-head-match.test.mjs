@@ -32,3 +32,17 @@ test('DISABLE_OPERA_HEAD_WORD_MATCH restores the old rule', () => {
     assert.equal(operaTitleMatch('polish-national-opera-warsaw', eno, 2), true);
   } finally { delete process.env.DISABLE_OPERA_HEAD_WORD_MATCH; }
 });
+
+test('head words match whole tokens only ("don" is not in "london")', () => {
+  const w = operaTitleWords('Don Giovanni - English National Opera');
+  assert.equal(operaTitleMatch('rigoletto-english-national-opera-london-coliseum', w, 1), false);
+  assert.equal(operaTitleMatch('don-giovanni-english-national-opera-london-coliseum', w, 2), true);
+  const t = operaTitleWords('Tosca - English National Opera');
+  assert.equal(operaTitleMatch('toscanini-tribute-english-national-opera', t, 1), false);
+});
+
+test('a head too short for the word list still needs its raw token', () => {
+  const w = operaTitleWords('Io - English National Opera');
+  assert.equal(operaTitleMatch('rigoletto-english-national-opera', w, 2), false);
+  assert.equal(operaTitleMatch('io-english-national-opera-review', w, 2), true);
+});
