@@ -46,8 +46,12 @@ const { normalizeTitle } = require('./title-match');
  * reasoning that quotes a venue, a critic pull-quote, or the show's own title
  * does not trip the guard.
  */
+// A bare "not " is NOT in this list (BRO-6745): anywhere in a 90-char window it
+// hit "is not truncated", "does not appear", "cannot", and the word "Not" inside
+// the quoted pull-quote itself, so clean verdicts on real reviews (Guardian, The
+// Stage, DC Theater Arts) were refused as title mismatches. "not" counts only
+// through NOT_CONTRAST_RE, where it negates a quoted name or the show itself.
 const CONTRAST_CUES = [
-  'not ',
   'rather than',
   'instead of',
   'different show',
@@ -55,6 +59,9 @@ const CONTRAST_CUES = [
   'different musical',
   'different play',
   'different title',
+  'unrelated show',
+  'another show',
+  'separate review',
   'does not match',
   "doesn't match",
   'mismatch',
@@ -88,6 +95,12 @@ const DOUBLE_QUOTED_RE = /["“”]([^"“”\n]{2,80})["“”]/g;
 const SINGLE_QUOTED_RE = /(?:^|[^\w'’])['‘]([^'’\n]{2,80})['’](?![\w])/g;
 
 const CUE_WINDOW = 90;
+// "'X', not 'Y'" / "not the specified show" / "not a theater review of 'Y'" /
+// "not the Broadway production": the negation is about WHICH work this is.
+const NOT_CONTRAST_RE = /\bnot\s+(?:["“'‘]|(?:a|an|the)\s+(?:[\w-]+\s+){0,2}?(?:review|show|production|play|musical|title|staging)s?\b)/;
+// A cue that is itself negated ("nor does it review a different production",
+// "is not the wrong show") says the opposite of a mismatch.
+const NEGATED_CUE_RE = /\b(?:not|nor|no|never|neither|without)\b(?:\s+[\w'’-]+){0,3}\s*$/;
 
 function _norm(s) {
   if (!s || typeof s !== 'string') return '';
@@ -115,11 +128,24 @@ function _titlesAgree(a, b) {
 
 function _hasCueNear(text, index, length) {
   const lower = text.toLowerCase();
-  const start = Math.max(0, index - CUE_WINDOW);
-  const end = Math.min(lower.length, index + length + CUE_WINDOW);
-  const window = lower.slice(start, end);
-  for (const cue of CONTRAST_CUES) {
-    if (window.includes(cue)) return cue;
+  // The quoted span itself is excluded: a pull-quote that contains "not" or
+  // "actually" is the critic's prose, not the verdict contrasting two titles.
+  const parts = [
+    { str: lower.slice(Math.max(0, index - CUE_WINDOW), index), offset: Math.max(0, index - CUE_WINDOW) },
+    { str: lower.slice(index + length, Math.min(lower.length, index + length + CUE_WINDOW)), offset: index + length },
+  ];
+  for (const { str, offset } of parts) {
+    for (const cue of CONTRAST_CUES) {
+      let from = 0;
+      for (;;) {
+        const i = str.indexOf(cue, from);
+        if (i === -1) break;
+        from = i + cue.length;
+        if (NEGATED_CUE_RE.test(lower.slice(Math.max(0, offset + i - 30), offset + i))) continue;
+        return cue;
+      }
+    }
+    if (NOT_CONTRAST_RE.test(str)) return 'not ';
   }
   return null;
 }
