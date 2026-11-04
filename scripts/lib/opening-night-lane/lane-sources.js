@@ -103,7 +103,8 @@ const hostOf = (u) => { try { return new URL(u).hostname.replace(/^www\./, ''); 
 /**
  * Feeds the lane reads for this show: rss-discovery.js ALL_FEEDS for the market (as before), then LANE_FEEDS for outlets
  * in the market. Extra feeds are fetched direct only (`directOnly`), so a feed that
- * blocks us costs nothing per pass; the ALL_FEEDS entries keep the regular fallback chain.
+ * refuses us costs nothing per pass (one the runner cannot reach at all gets a rested paid read, discovery.js
+ * PAID_FEED_REST_PASSES); the ALL_FEEDS entries keep the regular fallback chain.
  */
 function laneFeeds(show) {
   const market = laneMarket(show);

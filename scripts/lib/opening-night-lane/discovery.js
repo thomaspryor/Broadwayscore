@@ -48,8 +48,15 @@ const DEFAULT_FETCH_TIMEOUT_MS = 15000;
 const DEFAULT_PASS_DEADLINE_MS = 90000;
 const MAX_SOURCES_PER_ADAPTER = 12; // index pages per pass (Talkin' Broadway, section indexes)
 // Feeds per pass, per kind: regular feeds (which may fall back to paid fetchers) keep the old cap of 12, and the lane's
-// direct-only feeds get 12 of their own, so the added feeds never raise paid fetches per pass (ship-check, BRO-6872).
+// direct-only feeds get 12 of their own, so the added feeds never raise paid fetches per pass (ship-check, BRO-6872),
+// apart from the rested read of a feed the runner cannot reach (PAID_FEED_REST_PASSES).
 const MAX_FEEDS_PER_PASS = 12;
+// A direct-only feed the runner cannot reach at all (connection refused or reset, DNS, timeout: JK's, Bob's and four more
+// in every 2026-11-03 shadow, while they answer from anywhere else) is read through Bright Data instead, at most once
+// every this many passes per feed (about 10 minutes at 2 minutes a pass), so a feed that blocks the runner costs a few
+// dozen paid reads a night rather than none found. An HTTP refusal (403, 404) stays free and unfound, as before (BRO-6872).
+const PAID_FEED_REST_PASSES = 5;
+const PAID_FEED_TIERS = ['brightdata'];
 const MAX_DATE_CHECK_ATTEMPTS = 3;
 const MAX_UNWRAP_TRIES = 3;
 // DTLI and Show Score hit the 15 s cap in 14 and 6 passes of the 2026-10-22 shadow; the pass deadline still bounds them.
@@ -525,6 +532,16 @@ function defaultLaneSectionIndexes(show) {
  * The next window of at most `max` sources, moving on each call, so a list longer than the cap is read in turn, a window
  * per pass, and every source is read within ceil(n / max) passes.
  */
+/**
+ * True when a direct fetch never got an HTTP answer: undici's "fetch failed" (refused, reset, DNS) or the 10 s direct
+ * timeout. An HTTP status, a challenge page or the lane's own pass deadline is an answer, so it is false.
+ */
+function unreachableFromRunner(e) {
+  if (!e) return false;
+  if (e.name === 'TimeoutError' || e.name === 'AbortError') return true;
+  return /^fetch failed\b/.test(String(e.message || ''));
+}
+
 function rotatingWindow(max) {
   let turn = 0;
   return (all) => {
@@ -551,15 +568,27 @@ function laneMissingOutlets({ show, seen, adaptersConfig = {} }) {
 function rssAdapter({ feeds } = {}) {
   const nextRegular = rotatingWindow(MAX_FEEDS_PER_PASS);
   const nextDirect = rotatingWindow(MAX_FEEDS_PER_PASS);
+  const paidAt = new Map(); // feed url -> pass of its last paid read
+  let pass = 0;
   return {
     name: 'rss', kind: 'feed', phase: 'cheap',
     async discover({ show, fetchText }) {
+      const readDirectFeed = async (url) => {
+        try {
+          return await fetchText(url, { directOnly: true });
+        } catch (e) {
+          if (!unreachableFromRunner(e) || (paidAt.has(url) && pass - paidAt.get(url) < PAID_FEED_REST_PASSES)) throw e;
+          paidAt.set(url, pass);
+          return fetchText(url, { tiers: PAID_FEED_TIERS });
+        }
+      };
       const out = [];
       const all = feeds || defaultLaneFeeds(show);
       const batch = [...nextRegular(all.filter((f) => !f.directOnly)), ...nextDirect(all.filter((f) => f.directOnly))];
       // Side by side: one after another, a dozen slow feeds could use up the pass deadline and starve the date checks that
       // run after the adapters (ship-check). A dead feed never hides the others.
-      const bodies = await Promise.allSettled(batch.map((feed) => (feed.directOnly ? fetchText(feed.url, { directOnly: true }) : fetchText(feed.url))));
+      pass += 1;
+      const bodies = await Promise.allSettled(batch.map((feed) => (feed.directOnly ? readDirectFeed(feed.url) : fetchText(feed.url))));
       for (const [i, feed] of batch.entries()) {
         if (bodies[i].status !== 'fulfilled') continue;
         let items;
@@ -1067,7 +1096,16 @@ function serpAllowed({ startedAt, now, missingOutlets = [], afterMs = SERP_AFTER
 function fetchTextFrom(fetchPage) {
   return async (url, opts = {}) => {
     const { withFinalUrl, recordAs, ...pageOpts } = opts || {}; // recordAs is for the fetch recorder (fetch-recording.js), not the fetcher
-    const r = await fetchPage(url, pageOpts);
+    let r;
+    try {
+      r = await fetchPage(url, pageOpts);
+    } catch (e) {
+      // undici says only "fetch failed"; the cause code (ECONNRESET, ENOTFOUND, UND_ERR_CONNECT_TIMEOUT) goes into the
+      // shadow's fetch recording, so a feed the runner cannot reach says why.
+      const code = e && e.cause && (e.cause.code || e.cause.name);
+      if (code && typeof e.message === 'string' && !e.message.includes(code)) { try { e.message = `${e.message} (${code})`; } catch { /* frozen */ } }
+      throw e;
+    }
     if (!r || !r.content) throw new Error(`fetchText: no content for ${url}`);
     return withFinalUrl ? { content: r.content, finalUrl: r.finalUrl || null } : r.content;
   };
@@ -1266,7 +1304,7 @@ function recordDiscovered(ledgerDir, { show, night, admitted, now = Date.now() }
 module.exports = {
   SERP_AFTER_MS, SERP_COOLDOWN_MS, SERP_NIGHT_MAX, defaultLaneMissingOutlets, defaultLaneSectionIndexes, laneMissingOutlets,
   NON_REVIEW_HOSTS, WRAPPER_HOSTS, canonicalUrl, bodyScope, playbillArticleBody, bwwRoundupBody, storyCitedLinks, extractAnchors, citedExcerpts, extractCitedLinks, extractPublishDate,
-  nonReviewReason, SECTION_INDEX_PARSERS, headlineIsShowTitle, hasReviewSignal, hostSignalsReview, REVIEW_WITHOUT_WORD_HOSTS, pageDatedNear, dtliSitemapPages, defaultLaneFeeds, bwwRoundupAdapter, dtliAdapter, rssAdapter, sectionIndexAdapter, showScoreAdapter, playbillVerdictAdapter, googleNewsAdapter, GOOGLE_NEWS_SITE_QUERY_HOSTS, talkinBroadwayAdapter, TB_PROBE_BATCH, TB_MAX_CARRIES, tbFetchWasBlocked, serpAdapter,
+  nonReviewReason, SECTION_INDEX_PARSERS, headlineIsShowTitle, hasReviewSignal, hostSignalsReview, REVIEW_WITHOUT_WORD_HOSTS, pageDatedNear, dtliSitemapPages, defaultLaneFeeds, bwwRoundupAdapter, dtliAdapter, rssAdapter, PAID_FEED_REST_PASSES, unreachableFromRunner, sectionIndexAdapter, showScoreAdapter, playbillVerdictAdapter, googleNewsAdapter, GOOGLE_NEWS_SITE_QUERY_HOSTS, talkinBroadwayAdapter, TB_PROBE_BATCH, TB_MAX_CARRIES, tbFetchWasBlocked, serpAdapter,
   publisherUrlFromWrapperPage, parseFeedEntries, fetchTextFrom, serpAllowed, memoPath, loadMemo, saveMemo,
   runDiscoveryPass, loadSeen, recordDiscovered,
 };
