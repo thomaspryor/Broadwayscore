@@ -298,7 +298,7 @@ export default function CriticDetailClient({ critic, profile }: { critic: Critic
           // Standing counts every market; say so when the page is filtered to one.
           const lines = [
             volumePhrase(critic.volumeRank, 'critic', 'critics'),
-            positivity && marketFilter !== 'all' ? `${positivity}, across all their reviews` : positivity,
+            positivity && marketFilter !== 'all' ? `Across all their reviews: ${positivity.charAt(0).toLowerCase()}${positivity.slice(1)}` : positivity,
           ].filter(Boolean);
           return lines.length > 0 && (
             <div className="flex flex-col gap-1 text-sm text-gray-400">
