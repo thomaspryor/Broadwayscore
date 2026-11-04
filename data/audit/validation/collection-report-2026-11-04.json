@@ -1,0 +1,97 @@
+{
+  "runDate": "2026-11-04T00:13:57.162Z",
+  "config": {
+    "batchSize": 10,
+    "maxReviews": 1000,
+    "priority": "all",
+    "showFilter": "tosca-english-national-opera-west-end-2026",
+    "aggressive": false,
+    "scrapingBeeEnabled": true,
+    "brightDataEnabled": true,
+    "stealthPluginLoaded": true
+  },
+  "summary": {
+    "processed": 0,
+    "failed": 4,
+    "skipped": 0,
+    "successRate": "0%"
+  },
+  "tierBreakdown": {
+    "playwright": 0,
+    "amp": 0,
+    "browserbase": 0,
+    "directCookies": 0,
+    "scrapingdog": 0,
+    "scrapingbee": 0,
+    "brightdata": 0,
+    "archiveToday": 0,
+    "archive": 0
+  },
+  "statistics": {
+    "tier1Attempts": 0,
+    "tier1Success": 0,
+    "ampAttempts": 0,
+    "ampSuccess": 0,
+    "tier1_5Attempts": 0,
+    "tier1_5Success": 0,
+    "tier1_9Attempts": 0,
+    "tier1_9Success": 0,
+    "tier2Attempts": 0,
+    "tier2Success": 0,
+    "tier3Attempts": 0,
+    "tier3Success": 0,
+    "tier3_6Attempts": 0,
+    "tier3_6Success": 0,
+    "tier4Attempts": 0,
+    "tier4Success": 0,
+    "totalFailed": 4,
+    "scrapingBeePageCredits": 0,
+    "scrapingBeeSerpCredits": 0,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 4,
+    "urlDiscoverySuccess": 0,
+    "urlDiscoveryCapped": 0
+  },
+  "thisRun": {
+    "processed": 0,
+    "failed": 4,
+    "shows": [
+      "tosca-english-national-opera-west-end-2026"
+    ],
+    "outOfScopeShows": [],
+    "inheritedFromResume": {
+      "processed": 0,
+      "failed": 0
+    }
+  },
+  "processed": [],
+  "failed": [
+    "tosca-english-national-opera-west-end-2026/thereviewshub--unknown.json",
+    "tosca-english-national-opera-west-end-2026/sunday-telegraph--nicholas-kenyon.json",
+    "tosca-english-national-opera-west-end-2026/theatre-weekly--unknown.json",
+    "tosca-english-national-opera-west-end-2026/times-uk--richard-morrison.json"
+  ],
+  "cumulativeResumedState": {
+    "processed": [],
+    "failed": [
+      "tosca-english-national-opera-west-end-2026/thereviewshub--unknown.json",
+      "tosca-english-national-opera-west-end-2026/sunday-telegraph--nicholas-kenyon.json",
+      "tosca-english-national-opera-west-end-2026/theatre-weekly--unknown.json",
+      "tosca-english-national-opera-west-end-2026/times-uk--richard-morrison.json"
+    ]
+  },
+  "tierDetails": {
+    "playwright": [],
+    "amp": [],
+    "browserbase": [],
+    "directCookies": [],
+    "scrapingdog": [],
+    "scrapingbee": [],
+    "brightdata": [],
+    "archiveToday": [],
+    "archive": []
+  },
+  "failuresByOutlet": {},
+  "urlDiscoveries": []
+}

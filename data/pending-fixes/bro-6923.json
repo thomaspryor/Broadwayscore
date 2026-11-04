@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6923",
   "planId": "20aebe0d-e3b3-4995-a316-b9952dace4ee",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-03T23:47:26.347Z",
   "submitter": {
     "name": null,
@@ -111,5 +111,69 @@
         "description": "BRO-6923: Dorfman Theatre is a stage inside National Theatre; the flag reason named the building. Alias-aware re-verify: valid, not wrong production."
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-04T00:20:34.100Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "girls-off-west-end-2026/theatre-weekly--matthew-plampton.json wrongProduction: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "girls-off-west-end-2026/theatre-weekly--matthew-plampton.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "nye-west-end-2024/broadwayworld--persson-gary-naylor.json wrongProduction: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "nye-west-end-2024/broadwayworld--persson-gary-naylor.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "rockets-and-blue-lights-west-end-2021/artsdesk--aleks-sierz.json wrongProduction: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "rockets-and-blue-lights-west-end-2021/artsdesk--aleks-sierz.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "my-brilliant-friend-part-1-part-2-west-end-2019/london-theatre--mark-shenton.json wrongProduction: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "my-brilliant-friend-part-1-part-2-west-end-2019/london-theatre--mark-shenton.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "translations-west-end-2018/timeout-london--unknown.json wrongProduction: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "translations-west-end-2018/timeout-london--unknown.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "home-im-darling-west-end-2018/guardian--unknown.json wrongProduction: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "home-im-darling-west-end-2018/guardian--unknown.json wrongProductionManualClear: null -> true"
+    }
+  ],
+  "executedIn": "ci"
 }

@@ -1,7 +1,7 @@
 {
-  "generated": "2026-11-03T23:53:14.040Z",
+  "generated": "2026-11-04T00:27:03.756Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 41,
+  "count": 42,
   "orphans": [
     {
       "showId": "33-variations-2009",
@@ -281,6 +281,13 @@
       "loserFile": "variety--matt-windman.json",
       "targetFile": "variety--marilyn-stasio.json",
       "reason": "orphaned-duplicate-heal: variety--marilyn-stasio.json was flagged invalid after variety--matt-windman.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
+      "showId": "translations-west-end-2018",
+      "loserFile": "timeout-london--unknown.json",
+      "targetFile": "timeout-london--andrzej-lukowski.json",
+      "reason": "orphaned-duplicate-heal: timeout-london--andrzej-lukowski.json was flagged invalid after timeout-london--unknown.json was pointed at it",
       "field": "duplicateOf"
     },
     {

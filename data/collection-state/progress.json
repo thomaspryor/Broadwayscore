@@ -1,14 +1,31 @@
 {
-  "processed": [],
-  "failed": [
+  "processed": [
     "tosca-english-national-opera-west-end-2026/thereviewshub--unknown.json",
+    "ceilidh-the-musical-off-west-end-2026/guardian--emma-john.json",
+    "ceilidh-the-musical-off-west-end-2026/guardian--unknown.json",
+    "ceilidh-the-musical-off-west-end-2026/daily-echo--william-dalgleish.json",
+    "the-lives-of-others-west-end-2026/londontheatredirect--andrew-papadopoulos.json"
+  ],
+  "failed": [
     "tosca-english-national-opera-west-end-2026/sunday-telegraph--nicholas-kenyon.json",
     "tosca-english-national-opera-west-end-2026/theatre-weekly--unknown.json",
-    "tosca-english-national-opera-west-end-2026/times-uk--richard-morrison.json"
+    "tosca-english-national-opera-west-end-2026/times-uk--richard-morrison.json",
+    "tosca-english-national-opera-west-end-2026/bachtrack--mark-pullinger.json",
+    "tosca-english-national-opera-west-end-2026/bachtrack--peter-quantrill.json",
+    "ceilidh-the-musical-off-west-end-2026/musical-theatre-review--angela-thomas.json",
+    "ceilidh-the-musical-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
+    "ceilidh-the-musical-off-west-end-2026/theatre-south-east--unknown.json",
+    "the-lives-of-others-west-end-2026/whatsonstage--alex-wood.json",
+    "girls-off-west-end-2026/londonlivinglarge--london-living-large.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "tosca-english-national-opera-west-end-2026/thereviewshub--unknown.json",
+      "ceilidh-the-musical-off-west-end-2026/guardian--emma-john.json",
+      "ceilidh-the-musical-off-west-end-2026/guardian--unknown.json",
+      "the-lives-of-others-west-end-2026/londontheatredirect--andrew-papadopoulos.json"
+    ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
@@ -16,9 +33,27 @@
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [],
-    "archive": []
+    "archive": [
+      "ceilidh-the-musical-off-west-end-2026/daily-echo--william-dalgleish.json"
+    ]
   },
   "startTime": "2026-11-04T00:11:34.063Z",
-  "lastProcessed": "tosca-english-national-opera-west-end-2026/times-uk--richard-morrison.json",
-  "log": []
+  "lastProcessed": "girls-off-west-end-2026/londonlivinglarge--london-living-large.json",
+  "log": [
+    {
+      "t": "2026-11-04T00:23:51.736Z",
+      "event": "bb-session",
+      "session": "8b91b520",
+      "url": "https://bachtrack.com/review-tosca-miskimmon-glassberg-fanyo-english-national-op"
+    },
+    {
+      "t": "2026-11-04T00:25:22.709Z",
+      "event": "bb-session",
+      "session": "b288399d",
+      "url": "https://bachtrack.com/review-kolomiiets-mothers-of-kherson-polish-national-opera"
+    }
+  ],
+  "recoveredAfterFailure": [
+    "tosca-english-national-opera-west-end-2026/thereviewshub--unknown.json"
+  ]
 }
