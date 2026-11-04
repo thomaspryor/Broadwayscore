@@ -1441,6 +1441,7 @@ function unsplitArticle(filePath, data, reviewTextsDir, ownShowId) {
 module.exports = {
   fanoutMovesText,
   heldSiblingNeedsTrim,
+  isHumanJudged,
   verdictNamesOtherSection,
   urlKey,
   planMultiShowFanout,

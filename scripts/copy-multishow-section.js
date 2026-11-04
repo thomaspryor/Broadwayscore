@@ -15,6 +15,13 @@
  * the source row down to ITS section too, so neither row scores the other
  * show's verdict (BRO-5924). Both rows are queued for a rescore.
  *
+ * Held trim (BRO-6736): when the --to-show row is already this article's split
+ * parent naming the --from show as its child (the fan-out split it, but the
+ * --from slot already held the whole article), only the --from row is cut to
+ * its --own-start/--own-end section; the target is not written. An automated
+ * wrong-show/production verdict naming the target show, or an automated
+ * round-up flag, was read off the whole article and is retired with the trim.
+ *
  * --dir=<review-texts root> and --shows=<shows.json> point it at fixtures
  * (scripts/copy-multishow-section.test.mjs); production uses the defaults.
  *
@@ -26,7 +33,7 @@
 const fs = require('fs');
 const path = require('path');
 const { createRequire } = require('module');
-const { planSectionCopy, sectionByMarkers } = require('./lib/multishow-section-copy');
+const { planSectionCopy, sectionByMarkers, isHeldSplitSibling } = require('./lib/multishow-section-copy');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
 const USAGE = `copy-multishow-section.js — copy one show's section of a multi-review column into its own row
@@ -47,6 +54,15 @@ function loadSectionExtractor(showsPath) {
     const target = shows.find((s) => s.id === showId);
     return target ? vbs.extractVenueBoxSection(text, target, shows) : { ok: false, reason: 'unknown show', boxes: 0 };
   };
+}
+
+// The target show's title, for a held source whose automated verdict names it (BRO-6736).
+function showTitle(showsPath, showId) {
+  try {
+    const raw = JSON.parse(fs.readFileSync(showsPath || path.join(__dirname, '..', 'data', 'shows.json'), 'utf8'));
+    const s = (raw.shows || raw).find((x) => x.id === showId);
+    return s ? s.title : null;
+  } catch { return null; }
 }
 
 function main() {
@@ -84,6 +100,12 @@ function main() {
     console.log(`ALREADY FILED ${from} -> ${toShow}/${fileName}: marker split already applied`);
     return 0;
   }
+  // BRO-6736 held trim re-run: the source was already cut to its own section.
+  if (method === 'markers' && source.multiShowHeldTrim && source.multiShowHeldTrim.targetShowId === toShow
+    && isHeldSplitSibling(target, source, sourceShowId)) {
+    console.log(`ALREADY TRIMMED ${from}: ${toShow}/${fileName} holds its section, source already cut to its own`);
+    return 0;
+  }
   const section = method === 'markers'
     ? sectionByMarkers(source.fullText || '', arg('expect-start'), arg('expect-end'))
     : loadSectionExtractor(showsPath)(source.fullText || '', toShow);
@@ -94,7 +116,7 @@ function main() {
   if (method === 'markers' && !ownStart) { console.error('--method=markers needs --own-start and --own-end'); return 2; }
   const ownSection = ownStart ? sectionByMarkers(source.fullText || '', ownStart, ownEnd) : null;
   const plan = planSectionCopy({
-    source, sourceShowId, section, target, targetShowId: toShow,
+    source, sourceShowId, section, target, targetShowId: toShow, targetTitle: showTitle(showsPath, toShow),
     expectStart: arg('expect-start'), expectEnd: arg('expect-end'), method, ownSection,
   });
   if (!plan.ok) { console.error(`REFUSED ${toShow}/${fileName}: ${plan.reason}`); return 1; }
@@ -103,6 +125,12 @@ function main() {
   if (!apply) return 0;
 
   const { safeWriteReview } = require('./lib/review-write-guard');
+  // Held trim (BRO-6736): the target already holds its section; only the source is cut.
+  if (!plan.row) {
+    const h = safeWriteReview(sourcePath, plan.parent, { merge: false, force: true });
+    if (h && h.wrote === false) { console.error(`source trim write refused: ${JSON.stringify(h)}`); return 1; }
+    return 0;
+  }
   fs.mkdirSync(targetDir, { recursive: true });
   // safeWriteReview mutates the record it is handed (the url-change clear).
   const columnDate = plan.row.publishDate || null;

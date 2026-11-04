@@ -129,3 +129,74 @@ test('a re-run on a row already filed from this column only refreshes its proven
   // A different section in that row is still refused.
   assert.match(planSectionCopy(base({ target: { ...filed, fullText: 'z'.repeat(900) } })).reason, /already holds/);
 });
+
+// BRO-6736: the fan-out split the joint article from the TARGET's copy and named
+// the source show as its child, but the source slot already held the whole
+// article, so it stayed whole. The held trim cuts only the source.
+const OWN = 'The first play is a tight thriller about a farm town and its bully. ' + 'The two actors play every role with speed. '.repeat(25) + 'I wanted more of a point.';
+const OWN_START = 'The_first_play_is';
+const OWN_END = 'wanted_more_of_a_point';
+const { sectionByMarkers, isHeldSplitSibling } = require('../../scripts/lib/multishow-section-copy.js');
+const heldSource = (over = {}) => ({ ...source(), fullText: `${OWN} ${SECTION} Tags: newsletter footer`, ...over });
+const heldTarget = (over = {}) => ({
+  showId: 'target-show', url: 'https://wsj.com/article/SB123.html/', fullText: SECTION, contentTier: 'complete',
+  multiShowSplitParent: true, multiShowSplitProcessed: '2026-05-01T00:00:00Z', multiShowSplitChildShowIds: ['col-show'], ...over,
+});
+const heldBase = (src, tgt, over = {}) => base({
+  source: src, target: tgt, method: 'markers', targetTitle: 'Target Show',
+  section: sectionByMarkers(src.fullText, START, END), ownSection: sectionByMarkers(src.fullText, OWN_START, OWN_END), ...over,
+});
+
+test('held trim: the target already holds its split section, so only the source is cut to its own section', () => {
+  const r = planSectionCopy(heldBase(heldSource(), heldTarget()));
+  assert.equal(r.ok, true, r.reason);
+  assert.equal(r.action, 'held-trim');
+  assert.equal(r.row, null, 'the target is not written');
+  assert.equal(r.parent.fullText, OWN);
+  assert.equal(r.parent.multiShowSplitMethod, 'markers');
+  assert.equal(r.parent.multiShowSplitAnchorKind, 'markers');
+  assert.deepEqual(r.parent.multiShowSplitChildShowIds, ['target-show']);
+  assert.equal(r.parent.needsRescore, true);
+  assert.equal(r.parent.llmScore, undefined, 'the whole-article score is dropped');
+  assert.equal(r.parent.multiShowHeldTrim.targetShowId, 'target-show');
+});
+
+test('held trim needs the source\'s own section and a real held sibling', () => {
+  assert.match(planSectionCopy(heldBase(heldSource(), heldTarget(), { ownSection: null })).reason, /own section/);
+  // Not a split parent naming the source, or a different URL: the old refusal stands.
+  assert.match(planSectionCopy(heldBase(heldSource(), heldTarget({ multiShowSplitChildShowIds: ['someone-else'] }))).reason, /already holds/);
+  assert.match(planSectionCopy(heldBase(heldSource(), heldTarget({ url: 'https://www.wsj.com/article/OTHER.html' }))).reason, /already holds/);
+  assert.equal(isHeldSplitSibling(heldTarget({ multiShowSplitChild: true }), heldSource(), 'col-show'), false);
+});
+
+test('held trim retires an automated whole-article verdict that names the target show (american-son-2018 shape)', () => {
+  const src = heldSource({
+    contentTier: 'invalid', contentTierReason: 'Wrong show', wrongShow: true, wrongProduction: true,
+    wrongShowReason: 'CV-promoted: The scraped content is a review of "Target Show", not "Col Show".',
+    contentVerification: { wrongArticle: true, wrongProduction: true },
+  });
+  const r = planSectionCopy(heldBase(src, heldTarget()));
+  assert.equal(r.ok, true, r.reason);
+  assert.equal(r.parent.wrongShow, undefined);
+  assert.equal(r.parent.wrongProduction, undefined);
+  assert.equal(r.parent.contentTier, 'complete');
+  assert.equal(r.parent.contentVerification.staleWholePostVerdict, true);
+  assert.equal(r.parent.multiShowHeldTrim.wholePostVerdict, true);
+});
+
+test('held trim keeps a verdict that names neither show, a human verdict, or a non-held source flagged wrong show', () => {
+  const otherVerdict = heldSource({ wrongShow: true, wrongShowReason: 'review of "Unrelated Play"' });
+  assert.match(planSectionCopy(heldBase(otherVerdict, heldTarget())).reason, /source is wrongShow/);
+  const human = heldSource({ wrongShow: true, wrongShowReason: 'review of "Target Show"', wrongShowSource: 'manual' });
+  assert.match(planSectionCopy(heldBase(human, heldTarget())).reason, /source is wrongShow/);
+  const notHeld = heldSource({ wrongShow: true, wrongShowReason: 'review of "Target Show"' });
+  assert.match(planSectionCopy(heldBase(notHeld, null)).reason, /source is wrongShow/);
+});
+
+test('held trim clears an automated round-up flag on a two-show joint review (chi-mt shape)', () => {
+  const r = planSectionCopy(heldBase(heldSource({ isRoundupArticle: true }), heldTarget()));
+  assert.equal(r.ok, true, r.reason);
+  assert.equal(r.parent.isRoundupArticle, false);
+  assert.match(planSectionCopy(heldBase(heldSource({ isRoundupArticle: true }), null)).reason, /source is isRoundupArticle/);
+  assert.match(planSectionCopy(heldBase(heldSource({ isRoundupArticle: true, roundupFlagNote: 'owner checked' }), heldTarget())).reason, /source is isRoundupArticle/);
+});

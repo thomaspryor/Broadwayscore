@@ -145,3 +145,36 @@ test('marker mismatch refuses: a plan can not file the wrong stretch of the colu
   assert.equal(fs.existsSync(path.join(fx.root, 'of-mice-and-men-2014')), false);
   assert.deepEqual(snapshot(fx), before);
 });
+
+// BRO-6736 (kenrex-off-broadway-2026 / rheology-off-broadway-2026 shape): the act-one
+// slot already holds its split section and names of-mice-and-men-2014 as its child,
+// while of-mice-and-men's slot still holds the WHOLE column. The held trim cuts only
+// of-mice-and-men's row; a re-run is a no-op.
+test('held trim: a whole column under the second show is cut to its own section, the held sibling is untouched', (t) => {
+  const fx = fixture();
+  t.after(() => fs.rmSync(fx.dir, { recursive: true, force: true }));
+  const url = 'https://www.wsj.com/articles/act-one-2014-column';
+  const act = `Act One opens on a bare stage. ${ACTONE}The memoir finally ends at midnight.`;
+  const whole = `${act} ${MICE} Tags: newsletter`;
+  fs.mkdirSync(path.join(fx.root, 'of-mice-and-men-2014'), { recursive: true });
+  fs.writeFileSync(path.join(fx.root, 'of-mice-and-men-2014/wsj--terry-teachout.json'), JSON.stringify({
+    ...column('of-mice-and-men-2014', whole, '2014-04-18'), url, llmScore: { score: 70 },
+  }));
+  fs.writeFileSync(path.join(fx.root, 'act-one-2014/wsj--terry-teachout.json'), JSON.stringify({
+    ...column('act-one-2014', act, '2014-04-18'), url,
+    multiShowSplitParent: true, multiShowSplitProcessed: '2026-05-01T00:00:00Z', multiShowSplitChildShowIds: ['of-mice-and-men-2014'],
+  }));
+  const args = ['--from=of-mice-and-men-2014/wsj--terry-teachout.json', '--to-show=act-one-2014', '--method=markers',
+    '--expect-start=Act_One_opens_on', '--expect-end=finally_ends_at_midnight', '--own-start=Of_Mice_and_Men_returns', '--own-end=trip_for_the_ending'];
+  const sibling = snapshot(fx)['act-one-2014/wsj--terry-teachout.json'];
+  const r = run(fx, [...args, '--apply']);
+  assert.equal(r.status, 0, r.stderr);
+  assert.match(r.stdout, /held-trim/);
+  const row = read(fx, 'of-mice-and-men-2014/wsj--terry-teachout.json');
+  assert.equal(row.fullText, MICE.trim());
+  assert.equal(row.llmScore, undefined);
+  assert.equal(snapshot(fx)['act-one-2014/wsj--terry-teachout.json'], sibling, 'held sibling is not rewritten');
+  const again = run(fx, [...args, '--apply']);
+  assert.equal(again.status, 0, again.stderr);
+  assert.match(again.stdout, /ALREADY TRIMMED/);
+});
