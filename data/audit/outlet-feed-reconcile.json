@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-04T21:30:45.702Z",
+  "generatedAt": "2026-11-04T22:32:17.192Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -133,6 +133,10 @@
   "feedsChecked": 78,
   "feedsFailed": [
     {
+      "outletId": "theater-life",
+      "error": "Timeout fetching https://theaterlife.com/feed"
+    },
+    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
@@ -157,8 +161,8 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 832,
-  "matchedGaps": 5,
+  "itemsScanned": 816,
+  "matchedGaps": 7,
   "possibleGaps": 10,
   "gaps": [
     {
@@ -178,6 +182,15 @@
       "url": "https://frontmezzjunkies.com/2026/10/29/rent-still-has-my-heart-thirty-years-later/",
       "headline": "“Rent” Still Has My Heart, Thirty Years Later",
       "publishDate": "2026-10-29"
+    },
+    {
+      "showId": "the-heart-off-broadway-2026",
+      "title": "The Heart",
+      "level": "matched",
+      "outletId": "nypost",
+      "url": "https://nypost.com/2026/11/04/entertainment/the-heart-review-touching-edm-musical-blends-the-pitt-with-broadway/",
+      "headline": "&#8216;The Heart&#8217; review: Touching EDM musical blends &#8216;The Pitt&#8217; with Broadway",
+      "publishDate": "2026-11-04"
     },
     {
       "showId": "tosca-off-broadway-2026",
@@ -207,6 +220,15 @@
       "publishDate": "2026-10-31"
     },
     {
+      "showId": "well-see-off-broadway-2026",
+      "title": "We'll See",
+      "level": "matched",
+      "outletId": "nyt-theater",
+      "url": "https://newyorktheater.me/2026/11/04/well-see-review-election-night-back-with-the-apple-family/",
+      "headline": "We’ll See Review. Election Night back with the Apple Family",
+      "publishDate": "2026-11-04"
+    },
+    {
       "showId": "the-bridge-off-west-end-2026",
       "title": "The Bridge",
       "level": "possible",
@@ -219,19 +241,19 @@
       "showId": "the-bridge-off-west-end-2026",
       "title": "The Bridge",
       "level": "possible",
-      "outletId": "onin",
-      "url": "https://onin.london/theatre-initiative-writers-block-wins-high-profile-support-to-help-playaweights-afford-time-in-london/?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=theatre-initiative-writers-block-wins-high-profile-support-to-help-playaweights-afford-time-in-london",
-      "headline": "Theatre Initiative ‘Writers Block’ Wins High Profile Support To Help Playaweights Afford Time in London",
-      "publishDate": "2026-11-03"
-    },
-    {
-      "showId": "the-bridge-off-west-end-2026",
-      "title": "The Bridge",
-      "level": "possible",
       "outletId": "standard",
       "url": "https://standard.co.uk/culture/theatre/the-oresteia-at-the-bridge-review-b1290028.html",
       "headline": "The Oresteia at the Bridge: Thrillingly stripped back and bloody",
       "publishDate": null
+    },
+    {
+      "showId": "the-heart-off-broadway-2026",
+      "title": "The Heart",
+      "level": "possible",
+      "outletId": "onin",
+      "url": "https://onin.london/eve-bar-review/?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=eve-bar-review",
+      "headline": "Eve Bar Review",
+      "publishDate": "2026-11-04"
     },
     {
       "showId": "the-heart-off-broadway-2026",
