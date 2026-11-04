@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-04T00:54:30.973Z",
+  "timestamp": "2026-11-04T01:28:27.454Z",
   "stats": {
-    "totalReviews": 79980,
+    "totalReviews": 79989,
     "alreadyFlagged": 22050,
-    "dateGuardCatches": 216,
-    "directorMismatch": 3459,
-    "tvFilmSignals": 2267,
+    "dateGuardCatches": 217,
+    "directorMismatch": 3462,
+    "tvFilmSignals": 2269,
     "londonSignals": 3603,
     "offBroadwaySignals": 735,
     "yearMismatch": 361,
-    "noPublishDate": 8494
+    "noPublishDate": 8489
   },
   "findings": [
     {
@@ -9982,6 +9982,19 @@
     },
     {
       "showId": "buena-vista-social-club-off-broadway-2023",
+      "file": "nysr--frank-scheck.json",
+      "publishDate": "2023-12-13",
+      "url": "https://nystagereview.com/2023/12/13/buena-vista-social-club-from-album-to-screen-to-triumphant-musical/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"saheem ali\" from buena-vista-social-club-2025"
+        }
+      ]
+    },
+    {
+      "showId": "buena-vista-social-club-off-broadway-2023",
       "file": "nytg--gillian-russo.json",
       "score": 79,
       "publishDate": "2023-12-14",
@@ -15256,20 +15269,6 @@
     },
     {
       "showId": "days-of-wine-and-roses-off-broadway-2023",
-      "file": "theater-pizzazz--peter-marks.json",
-      "score": 81,
-      "publishDate": "2023-06-06",
-      "url": "https://www.theaterpizzazz.com/days-of-wine-and-roses/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"michael greif\" from days-of-wine-and-roses-2024"
-        }
-      ]
-    },
-    {
-      "showId": "days-of-wine-and-roses-off-broadway-2023",
       "file": "theater-scene--victor-gluck.json",
       "score": 46,
       "publishDate": "2023-06-14",
@@ -16462,7 +16461,7 @@
     },
     {
       "showId": "death-note-the-musical-west-end-2026",
-      "file": "monstagigz--unknown.json",
+      "file": "monstagigz--neil-durham.json",
       "score": 44,
       "publishDate": "2026-08-03",
       "url": "https://monstagigz.com/2026/08/03/theatre-review-death-note-the-musical-at-barbican-centre/",
@@ -19782,7 +19781,7 @@
     },
     {
       "showId": "english-off-broadway-2022",
-      "file": "theater-pizzazz--unknown.json",
+      "file": "theater-pizzazz--marilyn-lester.json",
       "score": 89,
       "publishDate": null,
       "url": "https://theaterpizzazz.com/english/",
@@ -19941,7 +19940,7 @@
     },
     {
       "showId": "equus-west-end-2026",
-      "file": "monstagigz--unknown.json",
+      "file": "monstagigz--neil-durham.json",
       "score": 90,
       "publishDate": "2026-05-10",
       "url": "https://monstagigz.com/2026/05/10/theatre-review-equus-starring-toby-stephens-amanda-abbington-noah-valentine-at-menier-chocolate-factory/",
@@ -23635,6 +23634,19 @@
     },
     {
       "showId": "gatz-off-broadway-2024",
+      "file": "nysr--david-finkle.json",
+      "publishDate": "2024-11-08",
+      "url": "https://nystagereview.com/2024/11/08/gatz-fitzgerald-classic-word-for-word-from-elevator-repair-service/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"john collins\" from gatz-west-end-2012"
+        }
+      ]
+    },
+    {
+      "showId": "gatz-off-broadway-2024",
       "file": "nysr--michael-sommers.json",
       "score": 96,
       "publishDate": "2024-11-08",
@@ -26181,7 +26193,7 @@
     },
     {
       "showId": "gypsy-2024",
-      "file": "njcom--httpswwwfacebookcomseptimushodge.json",
+      "file": "njcom--christopher-kelly.json",
       "score": 96,
       "publishDate": "2024-12-20",
       "url": "https://www.nj.com/entertainment/2024/12/gypsy-on-broadway-review-audra-macdonald-gives-a-performance-for-the-ages.html",
@@ -28390,6 +28402,19 @@
       "score": 89,
       "publishDate": "2018-02-05",
       "url": "http://www.ny1.com/nyc/all-boroughs/news/2018/02/06/atlantic-theater-company-debut-hangmen-martin-mcdonagh-play",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"matthew dunster\" from hangmen-2022"
+        }
+      ]
+    },
+    {
+      "showId": "hangmen-off-broadway-2018",
+      "file": "nysr--steven-suskin.json",
+      "publishDate": "2018-02-05",
+      "url": "https://nystagereview.com/2018/02/05/stage-review-learning-the-ropes/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -35292,7 +35317,7 @@
     },
     {
       "showId": "john-proctor-is-the-villain-west-end-2026",
-      "file": "camdennewjournal--unknown.json",
+      "file": "camdennewjournal--lucy-popescu.json",
       "score": 77,
       "publishDate": null,
       "url": "https://www.camdennewjournal.co.uk/article/review-john-proctor-is-the-villain-at-royal-court-theatre",
@@ -36578,7 +36603,7 @@
     },
     {
       "showId": "kims-convenience-regional-2026",
-      "file": "san-diego-jewish-world--unknown.json",
+      "file": "san-diego-jewish-world--sandi-masori.json",
       "score": 86,
       "publishDate": null,
       "url": "https://www.sdjewishworld.com/2026/05/24/television-sit-com-kims-convenience-comes-to-old-globe-stage/",
@@ -37365,7 +37390,7 @@
     },
     {
       "showId": "la-cage-aux-folles-1983",
-      "file": "talkinbroadway--unknown.json",
+      "file": "talkinbroadway--matthew-murray.json",
       "score": null,
       "publishDate": null,
       "url": "https://www.talkinbroadway.com/world/LaCageauxFolles.html",
@@ -39128,6 +39153,19 @@
     },
     {
       "showId": "lights-out-nat-king-cole-off-broadway-2025",
+      "file": "nysr--david-finkle.json",
+      "publishDate": "2025-05-20",
+      "url": "https://nystagereview.com/2025/05/20/lights-out-nat-king-cole-keep-this-musicals-lights-shut-off/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "lights-out-nat-king-cole-off-broadway-2025",
       "file": "theatermania--pete-hempstead.json",
       "score": 63,
       "publishDate": null,
@@ -40744,7 +40782,7 @@
     },
     {
       "showId": "maybe-happy-ending-2024",
-      "file": "showbiz411--httpswwwfacebookcomshowbiz411.json",
+      "file": "showbiz411--roger-friedman.json",
       "score": 91,
       "publishDate": "2024-11-12",
       "url": "https://www.showbiz411.com/2024/11/12/broadway-glee-star-darren-criss-opens-in-charming-original-musical-maybe-happy-ending",
@@ -44699,7 +44737,7 @@
     },
     {
       "showId": "nine-2003",
-      "file": "curtainup--unknown.json",
+      "file": "curtainup--elyse-sommer.json",
       "score": 78,
       "publishDate": null,
       "url": "http://www.curtainup.com/nine.html",
@@ -45003,7 +45041,7 @@
     },
     {
       "showId": "north-by-northwest-old-regional-2026",
-      "file": "san-diego-jewish-world--unknown.json",
+      "file": "san-diego-jewish-world--sandi-masori.json",
       "publishDate": null,
       "url": "https://www.sdjewishworld.com/2026/07/19/north-by-northwest-not-exactly-a-musical-something-else-altogether/",
       "findings": [
@@ -47216,7 +47254,7 @@
     },
     {
       "showId": "oslo-off-broadway-2016",
-      "file": "talkinbroadway--unknown.json",
+      "file": "talkinbroadway--matthew-murray.json",
       "score": 66,
       "publishDate": "2016-07-11",
       "url": "http://www.talkinbroadway.com/page/ob/7_11_16.html",
@@ -47594,7 +47632,7 @@
     },
     {
       "showId": "other-desert-cities-2026",
-      "file": "theater-pizzazz--unknown.json",
+      "file": "theater-pizzazz--ron-fassler.json",
       "score": 79,
       "publishDate": "2026-10-23",
       "url": "https://theaterpizzazz.com/other-desert-cities-makes-a-welcome-return-to-broadway/",
@@ -52961,7 +52999,7 @@
     },
     {
       "showId": "ragtime-2025",
-      "file": "theater-pizzazz--unknown.json",
+      "file": "theater-pizzazz--ron-fassler.json",
       "score": 93,
       "publishDate": "2025-10-16",
       "url": "http://theaterpizzazz.com/ragtime-meets-the-moment-in-a-thrilling-revival/",
@@ -53623,7 +53661,7 @@
     },
     {
       "showId": "romeo-and-juliet-west-end-2026",
-      "file": "monstagigz--unknown.json",
+      "file": "monstagigz--neil-durham.json",
       "score": 89,
       "publishDate": "2026-03-31",
       "url": "https://monstagigz.com/2026/03/28/theatre-review-romeo-and-juliet-starring-sadie-sink-at-the-harold-pinter-theatre/",
@@ -54711,6 +54749,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "shit-meet-fan-off-broadway-2024",
+      "file": "nysr--frank-scheck.json",
+      "publishDate": "2024-11-18",
+      "url": "https://nystagereview.com/2024/11/18/shit-meet-fan-play-meet-speed-bumps/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"apple tv\""
         }
       ]
     },
@@ -59292,7 +59343,7 @@
     },
     {
       "showId": "suffs-tour-2025",
-      "file": "stage-raw--steven-morris.json",
+      "file": "stage-raw--f-kathleen-foley.json",
       "score": 87,
       "publishDate": "2025-11-24",
       "url": "https://stageraw.com/suffs/",
@@ -60441,7 +60492,7 @@
     },
     {
       "showId": "sweat-off-broadway-2016",
-      "file": "talkinbroadway--unknown.json",
+      "file": "talkinbroadway--matthew-murray.json",
       "score": 81,
       "publishDate": "2016-11-03",
       "url": "http://www.talkinbroadway.com/page/ob/11_03_16.html",
@@ -75283,6 +75334,19 @@
       "score": 82,
       "publishDate": null,
       "url": "https://frontmezzjunkies.com/2025/08/31/acton-says-scary-stories-to-tell-in-the-dark-in-irish-repertory-theatres-the-weir/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"conor mcpherson\" from the-weir-west-end-2025"
+        }
+      ]
+    },
+    {
+      "showId": "the-weir-off-broadway-2025",
+      "file": "nysr--david-finkle.json",
+      "publishDate": "2025-07-17",
+      "url": "https://nystagereview.com/2025/07/17/the-weir-the-conor-mcpherson-bar-play-easily-vaults-a-high-bar/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -95566,7 +95630,7 @@
     },
     {
       "showId": "electra-persona-west-end-2026",
-      "file": "monstagigz--unknown.json",
+      "file": "monstagigz--neil-durham.json",
       "score": 77,
       "publishDate": "2026-08-23",
       "url": "https://monstagigz.com/2026/08/23/theatre-review-electra-persona-starring-cate-blanchett-nina-hoss-at-national-theatre/",
@@ -96012,7 +96076,7 @@
     },
     {
       "showId": "end-west-end-2025",
-      "file": "camdennewjournal--unknown.json",
+      "file": "camdennewjournal--lucy-popescu.json",
       "score": null,
       "publishDate": "2025-11-28",
       "url": "https://www.camdennewjournal.co.uk/article/review-end-at-dorfman-national-theatre",
@@ -103442,7 +103506,7 @@
     },
     {
       "showId": "ilford-boy-west-end-2026",
-      "file": "monstagigz--unknown.json",
+      "file": "monstagigz--neil-durham.json",
       "score": 88,
       "publishDate": "2026-10-13",
       "url": "https://monstagigz.com/2026/10/13/theatre-review-ilford-boy-starring-leo-whitfield-harris-craig-steen-ria-zmitrowicz-lindsey-coulson-at-the-donmar-warehouse/",
@@ -105027,7 +105091,7 @@
     },
     {
       "showId": "jeeves-takes-charge-west-end-2026",
-      "file": "theatreandtonic--stephen-gilchrist.json",
+      "file": "theatreandtonic--emmie-newitt.json",
       "score": 97,
       "publishDate": "2026-08-19",
       "url": "https://theatreandtonic.co.uk/blog/jeeves-takes-charge-charing-cross-theatre-review",
@@ -109161,7 +109225,7 @@
     },
     {
       "showId": "man-to-man-west-end-2026",
-      "file": "monstagigz--unknown.json",
+      "file": "monstagigz--neil-durham.json",
       "score": 69,
       "publishDate": "2026-10-24",
       "url": "https://monstagigz.com/2026/10/24/theatre-review-man-to-man-starring-tilda-swinton-at-the-royal-court-theatre/",
@@ -110191,7 +110255,7 @@
     },
     {
       "showId": "mass-west-end-2026",
-      "file": "all-that-dazzles-uk--unknown.json",
+      "file": "all-that-dazzles-uk--daz-gale.json",
       "score": 95,
       "publishDate": "2026-05-01",
       "url": "https://www.allthatdazzles.co.uk/post/review-mass-donmar-warehouse",
@@ -113858,7 +113922,7 @@
     },
     {
       "showId": "oklahoma-west-end-2023",
-      "file": "camdennewjournal--unknown.json",
+      "file": "camdennewjournal--lucy-popescu.json",
       "score": 68,
       "publishDate": "2023-03-09",
       "url": "https://www.camdennewjournal.co.uk/article/review-oklahoma-at-wyndhams-theatre",
@@ -114938,6 +115002,19 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"mitzi newhouse\""
+        }
+      ]
+    },
+    {
+      "showId": "othello-bedlam-off-broadway-2026",
+      "file": "theater-scene--victor-gluck.json",
+      "publishDate": "2026-05-11",
+      "url": "https://www.theaterscene.net/plays/offbway-plays/othello-bedlam/victor-gluck/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 180d before show (2026-05-11 vs 2026-11-07)"
         }
       ]
     },
