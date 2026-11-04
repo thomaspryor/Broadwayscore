@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-04T01:10:57.905Z",
+  "generatedAt": "2026-11-04T01:36:03.246Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -138,10 +138,26 @@
     {
       "outletId": "slantmagazine",
       "error": "direct fetch returned a non-rss page"
+    },
+    {
+      "outletId": "cote-notices",
+      "error": "HTTP 403 for https://davidcote1.substack.com/feed"
+    },
+    {
+      "outletId": "theartsdispatch",
+      "error": "HTTP 403 for https://theartsdispatch.substack.com/feed"
+    },
+    {
+      "outletId": "rolandcat",
+      "error": "HTTP 403 for https://rolandcat.substack.com/feed"
+    },
+    {
+      "outletId": "matineemouse",
+      "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 813,
-  "matchedGaps": 10,
+  "itemsScanned": 800,
+  "matchedGaps": 9,
   "possibleGaps": 13,
   "gaps": [
     {
@@ -152,15 +168,6 @@
       "url": "https://culturesauce.com/rope-hitchcock-play-adaptation-off-broadway-review/",
       "headline": "Hitchcock&#8217;s &#8216;Rope&#8217; gets a queerer, bloodier makeover that goes for shock over suspense (Off Broadway review)",
       "publishDate": "2026-11-04"
-    },
-    {
-      "showId": "slanted-floors-off-broadway-2026",
-      "title": "Slanted Floors",
-      "level": "matched",
-      "outletId": "one-minute-critic",
-      "url": "https://1minutecritic.com/slanted-floors-apartment-play-review/",
-      "headline": "&#8216;Slanted Floors&#8217; invites you to pull up a chair in a gay couple’s living room. Stare if you must.",
-      "publishDate": "2026-11-03"
     },
     {
       "showId": "the-bridge-off-west-end-2026",
