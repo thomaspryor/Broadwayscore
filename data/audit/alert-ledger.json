@@ -34838,10 +34838,10 @@
       "title": "Cron's latest run failed (not yet stale): Secret Scan (gitleaks)",
       "firstSeen": "2026-11-01T17:29:47.370Z",
       "incidentOpenedAt": "2026-11-01T17:29:47.370Z",
-      "lastSeen": "2026-11-02T21:15:33.525Z",
-      "lastNotifiedAt": "2026-11-02T21:15:33.525Z",
-      "lastSurfacedAt": "2026-11-02T21:15:33.525Z",
-      "notifyCount": 2,
+      "lastSeen": "2026-11-04T19:12:59.213Z",
+      "lastNotifiedAt": "2026-11-04T19:12:59.213Z",
+      "lastSurfacedAt": "2026-11-04T19:12:59.213Z",
+      "notifyCount": 3,
       "cardId": null,
       "linearIdentifier": null
     },
@@ -35474,12 +35474,13 @@
       "title": "Cron stale 3+ consecutive days: Replay Push Rescue",
       "firstSeen": "2026-11-02T21:15:33.632Z",
       "incidentOpenedAt": "2026-11-02T21:15:33.632Z",
-      "lastSeen": "2026-11-02T21:15:33.632Z",
+      "lastSeen": "2026-11-04T19:12:59.361Z",
       "lastNotifiedAt": "2026-11-02T21:15:33.632Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-6859"
+      "linearIdentifier": "BRO-6859",
+      "silentRefires": 1
     },
     "land:land/bro-6857": {
       "status": "open",
