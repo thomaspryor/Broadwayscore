@@ -5312,6 +5312,13 @@ jobs:
         if: always()  # independent suite — don't let an earlier red step skip it
         run: bash scripts/lib/push-with-retry.rebase-refusal.test.sh
 
+      - name: Run push-with-retry orphan REBASE_HEAD test (bash integration)
+        # BRO-6986. A conflict-resolved rebase --continue leaves .git/REBASE_HEAD
+        # with no rebase dir; the next push-with-retry.sh in the same job then
+        # refused on the BRO-142 stale-marker guard and failed the poller run.
+        if: always()  # independent suite — don't let an earlier red step skip it
+        run: bash scripts/lib/push-with-retry.orphan-rebase-head.test.sh
+
       - name: Run push-with-retry autostash test (bash integration)
         # BRO-3668/3669/3667/3687. A caller that arrives with tracked files
         # modified but uncommitted had them silently destroyed by the script's
