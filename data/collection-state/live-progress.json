@@ -1,38 +1,53 @@
 {
-  "updatedAt": "2026-11-04T13:31:04.776Z",
-  "processed": 106,
-  "failed": 64,
-  "successRate": "62.4%",
+  "updatedAt": "2026-11-04T14:03:25.053Z",
+  "processed": 175,
+  "failed": 85,
+  "successRate": "67.3%",
   "tierBreakdown": {
-    "playwright": 56,
+    "playwright": 89,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 5,
     "directCookies": 0,
-    "scrapingdog": 13,
-    "scrapingbee": 4,
+    "scrapingdog": 16,
+    "scrapingbee": 8,
     "brightdata": 2,
     "archiveToday": 0,
-    "archive": 21
+    "archive": 41
   },
   "browserbaseSessions": 3,
   "recentActivity": [
     {
-      "t": "2026-11-04T13:14:06.971Z",
+      "t": "2026-11-04T13:41:57.353Z",
       "event": "bb-session",
-      "session": "aacdc5d8",
-      "url": "https://bachtrack.com/review-lorfeo-william-kentridge-greek-national-opera-athen"
+      "session": "b357aed1",
+      "url": "https://www.nytimes.com/2026/08/25/theater/paranormal-activity-review-broadway.h"
     },
     {
-      "t": "2026-11-04T13:16:26.641Z",
-      "event": "bb-session",
-      "session": "a3f03cc0",
-      "url": "https://bachtrack.com/review-tosca-miskimmon-glassberg-fanyo-english-national-op"
+      "t": "2026-11-04T13:41:57.700Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     },
     {
-      "t": "2026-11-04T13:17:56.984Z",
+      "t": "2026-11-04T13:43:20.196Z",
       "event": "bb-session",
-      "session": "6a989128",
-      "url": "https://bachtrack.com/review-nozze-figaro-pountney-conta-bucharest-national-oper"
+      "session": "df08d4a2",
+      "url": "https://www.nytimes.com/2026/09/26/theater/jake-shears-scissor-sisters-rocky-hor"
+    },
+    {
+      "t": "2026-11-04T13:43:20.477Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-04T13:44:16.241Z",
+      "event": "bb-session",
+      "session": "930463f4",
+      "url": "https://www.nytimes.com/2026/10/06/theater/dirty-dancing-broadway.html"
+    },
+    {
+      "t": "2026-11-04T13:44:16.593Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
