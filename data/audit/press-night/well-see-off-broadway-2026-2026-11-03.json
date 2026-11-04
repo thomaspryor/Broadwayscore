@@ -7,34 +7,47 @@
   "embargoSource": "market-default",
   "probe": {
     "startedAt": "2026-11-04T02:30:05.072Z",
-    "endedAt": null,
+    "endedAt": "2026-11-04T09:00:38.227Z",
     "intervalMin": 5,
-    "samples": 30,
+    "samples": 77,
     "failedSamples": 0,
-    "lastSampleAt": "2026-11-04T04:55:11.200Z",
-    "lastOkSampleAt": "2026-11-04T04:55:11.200Z"
+    "lastSampleAt": "2026-11-04T08:56:34.328Z",
+    "lastOkSampleAt": "2026-11-04T08:56:34.328Z"
   },
-  "firstLiveAt": null,
+  "firstLiveAt": "2026-11-04T05:06:21.953Z",
   "firstLiveBaseline": false,
-  "lastLiveAt": null,
-  "liveCount": 0,
+  "lastLiveAt": "2026-11-04T05:06:21.953Z",
+  "liveCount": 1,
   "liveCountAt": {
     "1h": 0,
-    "2h": null,
+    "2h": 1,
     "6h": null
   },
   "liveCountSampleAt": {
     "1h": "2026-11-04T04:00:09.038Z",
-    "2h": null,
+    "2h": "2026-11-04T05:06:21.953Z",
     "6h": null
   },
   "firstOutletPublishAt": {
-    "at": null,
-    "precision": "unknown",
+    "at": "2026-11-03",
+    "precision": "approx",
     "source": "prod-rv-publishDate",
-    "tierScope": null
+    "tierScope": "any"
   },
-  "perReview": [],
+  "perReview": [
+    {
+      "key": "culture sauce|thom geier",
+      "outlet": "Culture Sauce",
+      "critic": "Thom Geier",
+      "tier": 3,
+      "publishAt": "2026-11-03",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-04T05:06:21.953Z",
+      "prevOkSampleAt": "2026-11-04T04:55:11.200Z",
+      "baseline": false,
+      "liveNow": true
+    }
+  ],
   "dropped": [],
   "reference": {
     "2h": {
@@ -46,6 +59,17 @@
       "missing": [],
       "liveCount": 1,
       "fetchedAt": "2026-11-04T05:00:26.062Z",
+      "censusNote": "no BWW roundup found"
+    },
+    "end": {
+      "status": "no-census-yet",
+      "source": null,
+      "count": 0,
+      "covered": null,
+      "coverage": null,
+      "missing": [],
+      "liveCount": 1,
+      "fetchedAt": "2026-11-04T09:00:34.602Z",
       "censusNote": "no BWW roundup found"
     }
   },
@@ -59,11 +83,17 @@
         "label": "2h",
         "standDown": false,
         "reason": "market not lane-only"
+      },
+      {
+        "at": "2026-11-04T09:00:34.655Z",
+        "label": "end",
+        "standDown": false,
+        "reason": "market not lane-only"
       }
     ]
   },
   "fileState": {
-    "capturedAt": "2026-11-04T05:00:30.320Z",
+    "capturedAt": "2026-11-04T09:00:38.166Z",
     "files": [
       {
         "file": "culturesauce--thom-geier.json",
@@ -90,6 +120,26 @@
         "includable": false,
         "reason": "rejectionReason",
         "syndicatedUnder": null
+      }
+    ]
+  },
+  "laneShadow": {
+    "importedAt": "2026-11-04T09:00:30.012Z",
+    "runId": "41761141450",
+    "startedAt": "2026-11-04T02:32:48.300Z",
+    "pollMin": 2,
+    "pollFailures": 0,
+    "firstDiscoveredAt": "2026-11-04T03:48:51.270Z",
+    "discoveredByOutlet": {
+      "culturesauce": "2026-11-04T03:48:51.270Z"
+    },
+    "bwwRoundupUrl": null,
+    "liveFirstSeen": [
+      {
+        "outlet": "Culture Sauce",
+        "url": "https://culturesauce.com/well-see-richard-nelson-apple-off-broadway-review/",
+        "at": "2026-11-04T04:58:52.109Z",
+        "baseline": false
       }
     ]
   }
