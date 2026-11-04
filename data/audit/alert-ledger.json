@@ -29914,21 +29914,26 @@
       "linearIdentifier": null
     },
     "test-yml:red:Unit Tests:045ee448": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run scripts/lib tests (visual-qa transcript-scan etc.) — \"REGRESSION: every real tracked *.jsonl (repo-wide) is either merge=union or a documented exemption\"",
       "firstSeen": "2026-10-29T13:53:54.915Z",
-      "incidentOpenedAt": "2026-10-29T13:53:54.915Z",
-      "lastSeen": "2026-10-29T17:41:31.623Z",
-      "lastNotifiedAt": "2026-10-29T13:53:54.915Z",
+      "incidentOpenedAt": "2026-11-04T01:40:32.203Z",
+      "lastSeen": "2026-11-04T01:40:32.203Z",
+      "lastNotifiedAt": "2026-11-04T01:40:32.203Z",
       "lastSurfacedAt": null,
-      "notifyCount": 1,
+      "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": "BRO-6522",
-      "silentRefires": 1,
+      "linearIdentifier": "BRO-6952",
       "absentRunIds": [
         "40927871048"
-      ]
+      ],
+      "dispatch": {
+        "requestedAt": "2026-11-04T01:40:32.203Z",
+        "mode": "dispatch-at-filing",
+        "runId": "41751619358",
+        "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41751619358"
+      }
     },
     "land:land/bro-6485-timeout-author": {
       "status": "open",
