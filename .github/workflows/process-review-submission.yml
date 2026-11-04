@@ -14,6 +14,13 @@ on:
         description: 'GitHub Issue number to process'
         required: true
         type: string
+      notify:
+        # BRO-6978: false re-checks an old issue without emailing the submitter.
+        # Issue-opened runs have no inputs; the email steps treat that as true.
+        description: 'Email the submitter about the result'
+        required: false
+        type: boolean
+        default: true
 
 # Per-issue group, not shared: GitHub cancels a PENDING run in a concurrency
 # group the moment a third run for that same group arrives, regardless of
@@ -76,6 +83,22 @@ jobs:
           # Fetch issue body from API (works for both trigger types)
           gh api "repos/${{ github.repository }}/issues/$ISSUE_NUM" --jq '.body' > .issue-body.txt
           echo "Resolved issue #$ISSUE_NUM"
+
+      # BRO-6978: a hand re-check of a closed, rejected issue must reopen it and
+      # drop the stale `invalid` label, or a needs-manual-review result stays
+      # closed where the sweep and the morning digest (open issues only) never see it.
+      - name: Reopen issue for a re-check
+        if: github.event_name == 'workflow_dispatch'
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7
+        env:
+          ISSUE_NUMBER: ${{ steps.resolve.outputs.issue_number }}
+        with:
+          github-token: ${{ secrets.GH_DISPATCH_TOKEN || secrets.GITHUB_TOKEN }}
+          script: |
+            const issue_number = parseInt(process.env.ISSUE_NUMBER);
+            const { owner, repo } = context.repo;
+            await github.rest.issues.removeLabel({ owner, repo, issue_number, name: 'invalid' }).catch(() => {});
+            await github.rest.issues.update({ owner, repo, issue_number, state: 'open' });
 
       - name: Setup Node.js
         uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
@@ -145,7 +168,7 @@ jobs:
             }).catch(() => {});
 
       - name: Notify submitter - Approved
-        if: steps.validate.outputs.recommendation == 'approve'
+        if: steps.validate.outputs.recommendation == 'approve' && (github.event_name != 'workflow_dispatch' || inputs.notify)
         env:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
@@ -203,13 +226,18 @@ jobs:
               state: 'closed'
             });
 
+      # BRO-6978: the old text listed three generic "common reasons" (one was
+      # "an outlet we do not currently track") and went to a NYSR critic whose
+      # review was already live. Reviews we already list are now
+      # `already-listed`, and the text names the one reason that applies.
       - name: Notify submitter - Rejected
-        if: steps.validate.outputs.recommendation == 'reject'
+        if: steps.validate.outputs.recommendation == 'reject' && (github.event_name != 'workflow_dispatch' || inputs.notify)
         env:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
           # BRO-4454: decrypts the sealed submitter contact (key derived from this secret).
           APPROVAL_HMAC_SECRET: ${{ secrets.APPROVAL_HMAC_SECRET }}
+          REJECT_KIND: ${{ steps.validate.outputs.reject_kind }}
         run: |
           # Prints the address or nothing. Never echo it: this repo's logs are public.
           EMAIL=$(node scripts/lib/submitter-contact-cli.js extract .issue-body.txt) || {
@@ -224,14 +252,59 @@ jobs:
           export EMAIL
           export REVIEW_URL=$(grep -A1 '### Review URL' .issue-body.txt | tail -1 | tr -d '[:space:]')
           # Payload built in node so a quote in the URL cannot break the JSON.
-          PAYLOAD=$(node -e 'const e=process.env;process.stdout.write(JSON.stringify({
+          PAYLOAD=$(node -e 'const e=process.env;const d=require("./scripts/lib/submission-decision.js");process.stdout.write(JSON.stringify({
             from:"Broadway Scorecard <noreply@broadwayscorecard.com>",to:[e.EMAIL],reply_to:e.OWNER_EMAIL,
-            subject:"Your review submission was not approved",
-            text:"We reviewed the URL you submitted to Broadway Scorecard but were unable to add it to our database.\n\nURL: "+e.REVIEW_URL+"\n\nCommon reasons: the review is from an outlet we do not currently track, the URL did not resolve to a review of a Broadway or West End production, or the content did not meet our scoring criteria. If you think this is an error, you can reply to this email.\n\nThanks for your submission."}))')
+            subject:"About the review you sent to Broadway Scorecard",
+            text:d.rejectEmailText(e.REJECT_KIND,e.REVIEW_URL)}))')
           curl -s -o /dev/null -w "%{http_code}" -X POST https://api.resend.com/emails \
             -H "Authorization: Bearer $RESEND_API_KEY" \
             -H "Content-Type: application/json" \
             -d "$PAYLOAD" | grep -qE '^2' || echo "::warning::Resend rejected notification failed"
+
+      - name: Close - Already listed
+        if: steps.validate.outputs.recommendation == 'already-listed'
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7
+        env:
+          ISSUE_NUMBER: ${{ steps.resolve.outputs.issue_number }}
+        with:
+          github-token: ${{ secrets.GH_DISPATCH_TOKEN || secrets.GITHUB_TOKEN }}
+          script: |
+            const issue_number = parseInt(process.env.ISSUE_NUMBER);
+            const { owner, repo } = context.repo;
+            await github.rest.issues.addLabels({ owner, repo, issue_number, labels: ['validated', 'already-listed'] });
+            for (const name of ['needs-validation', 'invalid', 'needs-manual-review', 'approved']) {
+              await github.rest.issues.removeLabel({ owner, repo, issue_number, name }).catch(() => {});
+            }
+            await github.rest.issues.update({ owner, repo, issue_number, state: 'closed' });
+
+      - name: Notify submitter - Already listed
+        if: steps.validate.outputs.recommendation == 'already-listed' && (github.event_name != 'workflow_dispatch' || inputs.notify)
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          APPROVAL_HMAC_SECRET: ${{ secrets.APPROVAL_HMAC_SECRET }}
+          SHOW_URL: ${{ steps.validate.outputs.show_url }}
+        run: |
+          # Prints the address or nothing. Never echo it: this repo's logs are public.
+          EMAIL=$(node scripts/lib/submitter-contact-cli.js extract .issue-body.txt) || {
+            echo "::warning::Sealed submitter contact did not decrypt (APPROVAL_HMAC_SECRET missing or rotated?); submitter not notified"
+            EMAIL=""
+          }
+          if [[ -z "$EMAIL" ]]; then
+            echo "No deliverable submitter email, skipping notification"
+            exit 0
+          fi
+          echo "::add-mask::$EMAIL"
+          export EMAIL
+          export REVIEW_URL=$(grep -A1 '### Review URL' .issue-body.txt | tail -1 | tr -d '[:space:]')
+          PAYLOAD=$(node -e 'const e=process.env;const d=require("./scripts/lib/submission-decision.js");process.stdout.write(JSON.stringify({
+            from:"Broadway Scorecard <noreply@broadwayscorecard.com>",to:[e.EMAIL],reply_to:e.OWNER_EMAIL,
+            subject:"Your review is already on Broadway Scorecard",
+            text:d.alreadyListedEmailText(e.REVIEW_URL,e.SHOW_URL)}))')
+          curl -s -o /dev/null -w "%{http_code}" -X POST https://api.resend.com/emails \
+            -H "Authorization: Bearer $RESEND_API_KEY" \
+            -H "Content-Type: application/json" \
+            -d "$PAYLOAD" | grep -qE '^2' || echo "::warning::Resend already-listed notification failed"
 
       - name: Add label - Needs Manual Review
         if: steps.validate.outputs.recommendation == 'needs-manual-review'

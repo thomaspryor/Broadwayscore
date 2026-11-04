@@ -28,6 +28,7 @@ import reviewGuards from './lib/review-guards.js';
 import submissionShowMatch from './lib/submission-show-match.js';
 import reviewSubmissionIssue from './lib/review-submission-issue.js';
 import nonReviewUrlPatterns from './lib/non-review-url-patterns.js';
+import submissionDecision from './lib/submission-decision.js';
 
 const { lookupOutletForHost } = outletCanonicalize;
 const { resolveOutletFromUrlIfPathInformed } = reviewNormalization;
@@ -35,6 +36,7 @@ const { canonicalizeUrlForDedup } = reviewGuards;
 const { findMatchingShows: findMatchingShowsIn } = submissionShowMatch;
 const { parseIssueBody } = reviewSubmissionIssue;
 const { submissionNonReviewReason } = nonReviewUrlPatterns;
+const { alreadyListedResult, finalizeLlmRecommendation, rejectKind, ALREADY_LISTED } = submissionDecision;
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -267,7 +269,8 @@ async function validateSubmission(issueBody) {
     return {
       isValid: false,
       error: 'No review URL found in submission',
-      recommendation: 'reject'
+      recommendation: 'reject',
+      rejectKind: 'no-url',
     };
   }
 
@@ -284,6 +287,7 @@ async function validateSubmission(issueBody) {
       isValid: false,
       error: 'This URL is on a known non-review domain (ticket/listing/social/reference/venue/PR-firm site), not a theater review outlet.',
       recommendation: 'reject',
+      rejectKind: 'not-a-review-page',
       submissionData,
     };
   }
@@ -299,6 +303,7 @@ async function validateSubmission(issueBody) {
       isValid: false,
       error: `This URL is not a review page (${nonReviewReason}): it looks like a listing, database, ticketing or press page.`,
       recommendation: 'reject',
+      rejectKind: 'not-a-review-page',
       submissionData,
     };
   }
@@ -306,12 +311,10 @@ async function validateSubmission(issueBody) {
   // Check for duplicate
   const duplicateCheck = checkDuplicateReview(submissionData.reviewUrl);
   if (duplicateCheck.isDuplicate) {
+    // BRO-6978: already listed is good news, never a reject.
     return {
-      isValid: false,
-      error: `This review is already in our database at ${duplicateCheck.location}`,
-      recommendation: 'reject',
-      isDuplicate: true,
-      existingLocation: duplicateCheck.location
+      ...alreadyListedResult(duplicateCheck, shows.find(s => s.id === duplicateCheck.showId)),
+      submissionData,
     };
   }
 
@@ -329,11 +332,8 @@ async function validateSubmission(issueBody) {
         const showDuplicateCheck = checkDuplicateReview(submissionData.reviewUrl, candidate.id);
         if (showDuplicateCheck.isDuplicate) {
           return {
-            isValid: false,
-            error: `This review is already in our database at ${showDuplicateCheck.location}`,
-            recommendation: 'reject',
-            isDuplicate: true,
-            existingLocation: showDuplicateCheck.location
+            ...alreadyListedResult(showDuplicateCheck, shows.find(s => s.id === showDuplicateCheck.showId) || candidate),
+            submissionData,
           };
         }
       }
@@ -351,9 +351,11 @@ async function validateSubmission(issueBody) {
 
   // Use Claude API for intelligent validation
   console.log('Validating with Claude API...');
-  const claudeValidation = await validateWithClaude(submissionData, matchedShowCandidates, matchedOutlet, matchedCritic);
+  const rawClaudeValidation = await validateWithClaude(submissionData, matchedShowCandidates, matchedOutlet, matchedCritic);
 
-  console.log('Claude validation result:', JSON.stringify(claudeValidation, null, 2));
+  console.log('Claude validation result:', JSON.stringify(rawClaudeValidation, null, 2));
+  // BRO-6978: the classifier may not close out a registered outlet's review.
+  const claudeValidation = finalizeLlmRecommendation(rawClaudeValidation, matchedOutlet);
 
   // Guard: an 'approve' recommendation must resolve to a real database show id,
   // otherwise the downstream scrape job (which gates on approve and needs a
@@ -418,6 +420,17 @@ You'll see updates on this issue as the process completes. This issue will be au
 *Validated by automated system • ${new Date().toISOString()}*`;
   }
 
+  if (result.recommendation === ALREADY_LISTED) {
+    return `## ✅ Already on the site
+
+This review is already listed on Broadway Scorecard${result.extractedData?.showTitle ? ` for **${result.extractedData.showTitle}**` : ''}.
+${result.showUrl ? `\n${result.showUrl}\n` : ''}
+If we have the submitter's contact, they get an email saying it is already listed (never a rejection).
+
+---
+*Validated by automated system • ${new Date().toISOString()}*`;
+  }
+
   if (result.recommendation === 'reject') {
     return `## ❌ Submission Rejected
 
@@ -429,8 +442,6 @@ Thank you for your submission, but we cannot accept this review for the followin
 ${result.validationDetails ? Object.entries(result.validationDetails)
   .map(([key, value]) => `- ${key}: ${value ? '✓' : '✗'}`)
   .join('\n') : ''}
-
-${result.isDuplicate ? `\n**This review already exists in our database:**\n- Location: \`${result.existingLocation}\`\n` : ''}
 
 If you believe this is an error, please reply to this issue with additional context.
 
@@ -491,6 +502,14 @@ async function main() {
         process.env.GITHUB_OUTPUT,
         `review_url=${result.submissionData?.reviewUrl || ''}\n`
       );
+      fs.appendFileSync(
+        process.env.GITHUB_OUTPUT,
+        `show_url=${result.showUrl || ''}\n`
+      );
+      fs.appendFileSync(
+        process.env.GITHUB_OUTPUT,
+        `reject_kind=${rejectKind(result)}\n`
+      );
 
       // Write comment to file for GitHub Actions to read
       const commentPath = path.join(__dirname, '../.github-comment.md');
@@ -502,7 +521,8 @@ async function main() {
     }
 
     // Exit with appropriate code
-    process.exit(result.recommendation === 'approve' ? 0 : 1);
+    // already-listed is a good outcome, not a failure (BRO-6978).
+    process.exit(result.recommendation === 'approve' || result.recommendation === ALREADY_LISTED ? 0 : 1);
 
   } catch (error) {
     console.error('Validation error:', error);
