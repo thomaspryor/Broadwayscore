@@ -19,7 +19,7 @@ const crypto = require('crypto');
 const { GEMINI_FLASH, GPT4O_MINI, CLAUDE_HAIKU, CLAUDE_SONNET } = require('./models');
 const { foldDiacritics } = require('./title-match');
 const { isLondonMarket, isSpecialEngagementVenue } = require('./venue-classification');
-const { applyTemporalOverrides, applyVenueClassificationCarveout, cvArticleTypeNonReview } = require('./review-guards');
+const { applyTemporalOverrides, applyVenueClassificationCarveout } = require('./review-guards');
 const { applyOwnVenueTourCarveout } = require('./tour-stop-carveout');
 const { buildVenueContext: _expandVenueContext } = require('./venue-aliases');
 const { companiesInBuilding } = require('./nonprofit-venues');
@@ -1140,8 +1140,7 @@ function shouldDeferCvWrongShow(reviewData) {
  * actionable since those are identifiable from the head.
  */
 function isCvVerdictFromPartialWindow(cv, fullText, review = null) {
-  // BRO-6973: a clean verdict whose own articleType says not-a-review is the same weak head-of-article signal.
-  if (!cv || (cv.wrongArticle !== true && !cvArticleTypeNonReview(cv))) return false;
+  if (!cv || cv.wrongArticle !== true) return false;
   // wrongProduction evidence (different show named in the head) is not a
   // truncation artifact; only the "is this an evaluation at all" call is.
   if (cv.wrongProduction === true) return false;
@@ -1177,7 +1176,7 @@ const CV_TRUNCATION_TEXT = /\btruncat|\bcut off\b|\bcuts off\b|\bpaywall|\bonly 
  * path names the page a review.
  */
 function isCvVerdictFromTruncatedFetch(cv, text, url) {
-  if (!cv || (cv.wrongArticle !== true && !cvArticleTypeNonReview(cv)) || cv.wrongProduction === true) return false;
+  if (!cv || cv.wrongArticle !== true || cv.wrongProduction === true) return false;
   if (!HEAD_AMBIGUOUS_ARTICLE_TYPES.has(cv.articleType)) return false;
   const said = [...(Array.isArray(cv.issues) ? cv.issues : []), cv.reasoning || ''].join(' ');
   if (cv.truncated !== true && !CV_TRUNCATION_TEXT.test(said)) return false;

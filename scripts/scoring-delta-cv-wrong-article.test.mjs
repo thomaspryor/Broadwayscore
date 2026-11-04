@@ -111,10 +111,13 @@ test('BRO-6973: preview/feature, medium articleType confidence, ensemble score a
   assert.equal(decideInclusion({ ...cleanBase, nonReviewManualClear: true }, show, guards).included, true);
 });
 
-test('BRO-6973: a head-of-article "news" verdict on a long clean-boolean row stays advisory', () => {
+test('BRO-6973: the articleType path does not make a clean verdict a demotion-side partial-window advisory', () => {
   const cv = { ...cvCleanInterview, articleType: 'news' };
   const cvLib = require('./lib/content-verifier.js');
   const long = { ...base, fullText: 'The production is a triumph. '.repeat(400), contentVerification: cv };
-  assert.equal(cvLib.isCvVerdictFromPartialWindow(cv, long.fullText, long), true);
-  assert.equal(guards.cvWrongArticlePromotion(long, cv, { cvPartialWindow: true }), null);
+  assert.equal(cvLib.isCvVerdictFromPartialWindow(cv, long.fullText, long), false, 'predicate stays wrongArticle-only (isCvPartialWindowAdvisory depends on it)');
+  assert.equal(guards.cvArticleTypeVerdictIsPartialWindow(cv, long), true);
+  assert.equal(guards.cvWrongArticlePromotion(long, cv), null);
+  const short = { ...base, fullText: 'x'.repeat(1500), contentVerification: cv };
+  assert.equal(guards.cvWrongArticlePromotion(short, cv), 'nonReview');
 });

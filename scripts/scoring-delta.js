@@ -1878,6 +1878,7 @@ function main() {
         && (baseline.cvWrongArticlePromotion?.toString() || '') === (working.cvWrongArticlePromotion?.toString() || '')
         && (baseline.cvWrongArticleFamily?.toString() || '') === (working.cvWrongArticleFamily?.toString() || '')
         && (baseline.cvArticleTypeNonReview?.toString() || '') === (working.cvArticleTypeNonReview?.toString() || '')
+        && (baseline.cvArticleTypeVerdictIsPartialWindow?.toString() || '') === (working.cvArticleTypeVerdictIsPartialWindow?.toString() || '')
         && [...(baseline.CV_ARTICLE_TYPE_NON_REVIEW || [])].sort().join() === [...(working.CV_ARTICLE_TYPE_NON_REVIEW || [])].sort().join()
         && (baseline.cvNonReviewHumanCleared?.toString() || '') === (working.cvNonReviewHumanCleared?.toString() || '')
         && (baseline.cvWrongArticleManuallyCleared?.toString() || '') === (working.cvWrongArticleManuallyCleared?.toString() || '')

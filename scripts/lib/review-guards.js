@@ -2088,6 +2088,21 @@ function cvArticleTypeNonReview(cv) {
     && cv.articleTypeConfidence === 'high' && CV_ARTICLE_TYPE_NON_REVIEW.has(cv.articleType);
 }
 
+/**
+ * BRO-6973: the head-of-article / truncated-fetch advisory for the articleType-only
+ * path. Kept OUT of isCvVerdictFromPartialWindow itself because that predicate also
+ * feeds isCvPartialWindowAdvisory, whose demotion use would then lift an existing
+ * CV-promoted isNonReview off a clean-verdict roundup (the-reservoir playbill row).
+ * Only 'news' is head-ambiguous (HEAD_AMBIGUOUS_ARTICLE_TYPES), so a news verdict on a
+ * long or cut-off fetch stays advisory while interview/box-office/obituary promote.
+ */
+function cvArticleTypeVerdictIsPartialWindow(cv, data) {
+  if (!cvArticleTypeNonReview(cv)) return false;
+  const cvLib = require('./content-verifier'); // lazy: content-verifier requires this module
+  const asWrongArticle = { ...cv, wrongArticle: true };
+  return cvLib.isCvVerdictFromPartialWindow(asWrongArticle, data && data.fullText, data);
+}
+
 function cvWrongArticleFamily(cv) {
   if (!cv || cv.wrongArticle !== true) return null;
   return cv.wrongProduction === true ? 'wrongShow' : 'nonReview';
@@ -2115,6 +2130,7 @@ function cvWrongArticleFamily(cv) {
 function cvWrongArticlePromotion(data, cv, ctx = {}) {
   const family = cvWrongArticleFamily(cv) || (cvArticleTypeNonReview(cv) ? 'nonReview' : null);
   if (!data || !family) return null;
+  if (cv.wrongArticle !== true && cvArticleTypeVerdictIsPartialWindow(cv, data)) return null;
   const { cvPartialWindow = false, skipLondon = false, laneHolds = () => false } = ctx;
   const ensembleSaysReview = hasHighConfidenceLlmScore(data);
   const blocked = ensembleSaysReview || skipLondon || data.allowEarlyDate || data.allowCrossMarket;
@@ -6865,6 +6881,7 @@ module.exports = {
   cvNonReviewHumanCleared,
   cvWrongArticleFamily,
   cvArticleTypeNonReview,
+  cvArticleTypeVerdictIsPartialWindow,
   CV_ARTICLE_TYPE_NON_REVIEW,
   cvWrongArticlePromotion,
   wrongShowCleared,
