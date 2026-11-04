@@ -206,7 +206,7 @@ const PARENT_BUILDINGS = [
     stageKeys: ['vivian beaumont', 'mitzi e. newhouse', 'mitzi e newhouse', 'newhouse theater', 'newhouse theatre', 'claire tow'] },
   { parent: 'The Public Theater', region: 'nyc',
     parentNames: ['The Public Theater', 'Public Theater', 'Joseph Papp Public Theater'],
-    stages: ['Anspacher Theater', 'Newman Theater', 'Martinson Hall', 'LuEsther Hall', 'Shiva Theater', 'Barbaralee Theater', 'Delacorte Theater'],
+    stages: ['Anspacher Theater', 'Newman Theater', 'Martinson', 'LuEsther Hall', 'Shiva Theater', 'Barbaralee Theater', 'Delacorte Theater'],
     stageKeys: ['anspacher', 'luesther', 'martinson hall', 'martinson theater', 'shiva theater', 'barbaralee', 'delacorte', 'public theater/newman', 'public theater - newman', 'public theater newman'] },
   { parent: 'Pershing Square Signature Center', region: 'nyc',
     parentNames: ['Pershing Square Signature Center', 'The Pershing Square Signature Center', 'Signature Center', 'The Pershing Square Signature Theatre Center'],
@@ -214,15 +214,15 @@ const PARENT_BUILDINGS = [
     stageKeys: ['irene diamond', 'alice griffin', 'jewel box', 'romulus linney'] },
   { parent: 'Atlantic Theater Company', region: 'nyc',
     parentNames: ['Atlantic Theater Company', 'Atlantic Theater', 'Atlantic Theatre Company'],
-    stages: ['Linda Gross Theater', 'Atlantic Stage 2'],
+    stages: ['Linda Gross Theater', 'Stage 2'],
     stageKeys: ['linda gross', 'atlantic stage 2', 'atlantic theater company/stage 2', 'atlantic theater company - stage 2', 'atlantic theater company stage 2'] },
   { parent: 'Robert W. Wilson MCC Theater Space', region: 'nyc',
     parentNames: ['MCC Theater Space', 'Robert W. Wilson MCC Theater Space', 'The Robert W. Wilson MCC Theater Space', 'MCC Theater', 'MCC Theatre'],
     stages: ['Newman Mills Theater', 'Susan & Ronald Frankel Theater'],
-    stageKeys: ['newman mills', 'ronald frankel', 'frankel theater'] },
+    stageKeys: ['newman mills', 'ronald frankel'] },
   { parent: 'The Shed', region: 'nyc',
     parentNames: ['The Shed', 'Shed'],
-    stages: ['The Griffin Theater', 'The Kenneth C. Griffin Theater'],
+    stages: ['The Griffin Theater', 'The McCourt'],
     stageKeys: ['griffin theater at the shed', 'griffin theatre at the shed', 'griffin at the shed', 'kenneth c. griffin theater', 'kenneth c griffin theater'] },
 ];
 
@@ -237,7 +237,7 @@ function _stageKeyMatches(normVenue, key) {
 
 // "Dorfman (Cottesloe)" must not list "Dorfman Theatre" as an OTHER stage.
 function _stageCore(x) {
-  return _normalize(x).replace(/\b(the|theatre)\b/g, ' ').replace(/[()-]/g, ' ').replace(/\s+/g, ' ').trim();
+  return _normalize(x).replace(/\b(the|theatre|theater)\b/g, ' ').replace(/[()-]/g, ' ').replace(/\s+/g, ' ').trim();
 }
 
 function _regionOk(entry, market) {

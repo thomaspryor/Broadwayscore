@@ -104,3 +104,14 @@ test('NYC reverse lookup lists all stages; note does not list venue as its own o
   assert.match(n, /one stage inside Lincoln Center Theater/);
   assert.doesNotMatch(n, /other stages:.*Vivian/);
 });
+
+test('NYC note never lists the venue itself as an other stage (theater/theatre spelling), Gene Frankel is not MCC', () => {
+  for (const v of ['Mitzi E. Newhouse Theatre', 'The Pershing Square Signature Center/Alice Griffin Jewel Box Theatre', 'Atlantic Theater Company/Stage 2', 'Martinson Theater at Joseph Papp Public Theater', 'The Griffin Theater at The Shed']) {
+    const p = parentBuildingOf(v, 'broadway');
+    const m = buildParentBuildingNote(v, 'broadway').match(/other stages: (.*)\)\. A review/);
+    assert.ok(p && m, v);
+    const own = p.stages.filter((s) => !m[1].split(', ').includes(s));
+    assert.equal(own.length, 1, `${v}: exactly one stage (itself) omitted, got ${own}`);
+  }
+  assert.equal(parentBuildingOf('Gene Frankel Theater', 'off-broadway'), null);
+});
