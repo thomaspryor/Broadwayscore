@@ -179,6 +179,7 @@ const {
 } = require('./lib/wrong-production-autoclear');
 const { shouldRetryGarbageConsentWall, storedTextNeedsConsentRefetch, shouldReleaseConsentLayerNonReview, salvageConsentPrefixedStoredText, salvageSourceHash, applyVerifiedRetryOutcome } = require('./lib/consent-refetch');
 const { shouldRetryDatelessHoldFetch } = require('./lib/review-slot-guards');
+const { needsSerpUrlDiscovery } = require('./lib/serp-discovery-gate');
 const { isProvisionalPublishDate, isReplaceableByPageDate, needsOpeningWindowDateRecheck, resolvePageDateReplacement, htmlDateSourceFor, bodyPublishDateFallback, ingestGateDate } = require('./lib/publish-date-provenance');
 const { decidePrintedByline, buildKnownCriticsIndex, knownCriticsForOutlet } = require('./lib/printed-byline-conflict');
 const { checkBrowserbaseCaps, countBrowserbaseAttempt, resolveMaxSessionsPerDay, resolveRecoveryReserve, resolveUseReserve, isDeniedHost, isTier1RecoveryHost, tier1BoostForCaller, resolveExemptScripts: resolveBbExemptScripts } = require('./lib/browserbase-caps');
@@ -7347,8 +7348,8 @@ async function processReview(review) {
 
   // Reason-aware URL discovery: no_url, wrong_content, and fabricated entries need SERP search before fetch
   // A dateless-revival hold (BRO-4430) needs only its stored url's date: no SERP.
-  const needsSerpDiscovery = !review._datelessDateRetry
-    && (review.incompleteReason === 'no_url' || review.incompleteReason === 'wrong_content' || review.fabricatedEntry);
+  // A wrong_content verdict a person overruled fetches its stored url (BRO-6924).
+  const needsSerpDiscovery = needsSerpUrlDiscovery(review);
   if (needsSerpDiscovery && review.filePath) {
     const reason = review.fabricatedEntry ? 'fabricated' : review.incompleteReason;
     console.log(`  [${reason}] Attempting URL discovery before fetch...`);
