@@ -1,9 +1,27 @@
 {
-  "processed": [],
+  "processed": [
+    "kelly-mccaughan-catholic-guilt-off-broadway-2026/broadway-baby--unknown.json"
+  ],
   "failed": [
     "a-few-good-men-2026/variety--anna-tingley.json",
     "a-few-good-men-2026/bobs-theater-blog--unknown.json",
-    "a-few-good-men-2026/goldderby--ethan-alter.json"
+    "a-few-good-men-2026/goldderby--ethan-alter.json",
+    "medea-off-broadway-2026/express-uk--neil-norman.json",
+    "medea-off-broadway-2026/bachtrack--susan-stempleski.json",
+    "the-heart-off-broadway-2026/variety--cynthia-littleton.json",
+    "the-heart-off-broadway-2026/frontmezzjunkies--unknown.json",
+    "in-the-heights-off-broadway-2026/nypost--clive-barnes.json",
+    "in-the-heights-off-broadway-2026/bloomberg--john-simon.json",
+    "i-became-we-off-broadway-2026/timeout--unknown.json",
+    "hospital-hour-off-broadway-2026/broadway-baby--unknown.json",
+    "hospital-hour-off-broadway-2026/one-minute-critic--unknown.json",
+    "aftermath-art-new-york-off-broadway-2026/talkinbroadway--unknown.json",
+    "love-me-off-broadway-2026/consequence--unknown.json",
+    "love-me-off-broadway-2026/daily-mail--codie-bullen.json",
+    "the-imaginary-invalid-2026/thewrap--robert-hofler.json",
+    "phyl-off-broadway-2026/phusionpassenger--unknown.json",
+    "phyl-off-broadway-2026/theater-life--paulanne-simmons.json",
+    "the-imaginary-invalid-2026/washpost--thomas-floyd.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -15,9 +33,29 @@
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [],
-    "archive": []
+    "archive": [
+      "kelly-mccaughan-catholic-guilt-off-broadway-2026/broadway-baby--unknown.json"
+    ]
   },
   "startTime": "2026-11-04T07:33:00.437Z",
-  "lastProcessed": "a-few-good-men-2026/goldderby--ethan-alter.json",
-  "log": []
+  "lastProcessed": "the-imaginary-invalid-2026/washpost--thomas-floyd.json",
+  "log": [
+    {
+      "t": "2026-11-04T07:44:01.921Z",
+      "event": "bb-session",
+      "session": "467b36ca",
+      "url": "https://bachtrack.com/review-medea-yoncheva-spyres-met-opera-new-york-october-20"
+    },
+    {
+      "t": "2026-11-04T07:47:49.446Z",
+      "event": "bb-session",
+      "session": "1dcc4321",
+      "url": "https://hermes.talkinbroadway.com/allthatchat_new/d.php?id=2655044"
+    },
+    {
+      "t": "2026-11-04T07:47:50.118Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    }
+  ]
 }
