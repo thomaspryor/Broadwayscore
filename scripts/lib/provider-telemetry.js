@@ -177,12 +177,27 @@ function trimLedgerLines(lines, max = MAX_LEDGER_LINES, now = new Date(), hardMa
 const TRIM_EVERY_APPENDS = 1000;
 let _trimState = { path: null, appendsSinceTrim: 0 };
 
+// Another writer (git checkout, merge-scraper-spend-ledger, a second process's
+// trim) may leave the file without a final newline; a plain append would then
+// glue two rows into one unparseable line. One-byte read, no full scan.
+function _endsWithoutNewline(file) {
+  let fd;
+  try {
+    fd = fs.openSync(file, 'r');
+    const { size } = fs.fstatSync(fd);
+    if (size === 0) return false;
+    const b = Buffer.alloc(1);
+    fs.readSync(fd, b, 0, 1, size - 1);
+    return b[0] !== 0x0a;
+  } catch { return false; } finally { if (fd !== undefined) try { fs.closeSync(fd); } catch { /* ignore */ } }
+}
+
 function _appendLedgerLine(record) {
   const ledgerPath = _ledgerPath();
   try {
     const line = JSON.stringify(record);
     if (_trimState.path === ledgerPath && _trimState.appendsSinceTrim < TRIM_EVERY_APPENDS) {
-      fs.appendFileSync(ledgerPath, line + '\n');
+      fs.appendFileSync(ledgerPath, (_endsWithoutNewline(ledgerPath) ? '\n' : '') + line + '\n');
       _trimState.appendsSinceTrim++;
       return;
     }

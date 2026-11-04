@@ -73,3 +73,14 @@ test('a ledger deleted mid-run is recreated by the next append', () => {
   assert.equal(rows().length, 1);
   fs.unlinkSync(LEDGER);
 });
+
+test('an append after another writer dropped the final newline does not glue rows', () => {
+  _resetLedgerTrimStateForTests();
+  quiet(() => recordBdCall({ host: 'f.example', success: true })); // full write, append mode from here
+  fs.appendFileSync(LEDGER, '{"ts":"2026-11-01T00:00:02.000Z","other":1}'); // other writer, no newline
+  quiet(() => recordBdCall({ host: 'g.example', success: true }));
+  const r = rows();
+  assert.equal(r.length, 3);
+  for (const l of r) JSON.parse(l);
+  fs.unlinkSync(LEDGER);
+});
