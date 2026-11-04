@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-11-04T02:00:06.342Z",
-  "bannerText": "86/200 Done(14d) verified on main · 11 FAILED · 0 vacuous · 6 stuck-but-done · 8 mis-armed, needs re-arming (BRO-6768, BRO-6681, BRO-6269, +5 more) — PARTIAL RUN: 82 checks not re-run (ran out of time), so these numbers understate the board",
+  "generatedAt": "2026-11-04T09:29:06.896Z",
+  "bannerText": "101/174 Done(14d) verified on main · 9 FAILED · 0 vacuous · 9 stuck-but-done · 15 mis-armed, needs re-arming (BRO-6804, BRO-6768, BRO-6681, +12 more) — PARTIAL RUN: 34 checks not re-run (ran out of time), so these numbers understate the board",
   "items": [
     {
       "title": "FAILED BRO-6788 — UX audit: The 'Add a show' button in 'mobile__watchlist_grid' doesn't clearly indicate its interactivity.",
@@ -14,7 +14,7 @@
     },
     {
       "title": "FAILED BRO-6779 — BSC Daily: Quality: star-vs-score mismatch",
-      "detail": "[check-health-row-absent] FAIL: \"Quality: star-vs-score mismatch\" still listed in the 2026-11-04T01:48:45.535Z health snapshot",
+      "detail": "[check-health-row-absent] FAIL: \"Quality: star-vs-score mismatch\" still listed in the 2026-11-04T09:18:33.330Z health snapshot",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-6779/bsc-daily-quality-star-vs-score-mismatch"
     },
     {
@@ -28,20 +28,20 @@
       "url": "https://linear.app/broadway-scorecard/issue/BRO-6766/opera-expansion-b-premieres-at-major-houses-beyond-the-met-roh-first"
     },
     {
-      "title": "FAILED BRO-6706 — BSC Daily: Data quality: revival-unverified lifetime sweep",
-      "detail": "[check-health-row-absent] FAIL: \"Data quality: revival-unverified lifetime sweep\" still listed in the 2026-11-04T01:48:45.535Z health snapshot",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6706/bsc-daily-data-quality-revival-unverified-lifetime-sweep"
+      "title": "FAILED BRO-6464 — BSC Daily: Live-data test failing: no class-A cross-market leaks (a show showing another production's reviews) (scripts/verify-contamination-gate.test.mjs)",
+      "detail": "[check-health-row-absent] FAIL: \"Live-data test failing: no class-A cross-market leaks (a show showing another production's reviews) (scripts/verify-cont\" still listed in the 2026…",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6464/bsc-daily-live-data-test-failing-no-class-a-cross-market-leaks-a-show"
     },
     {
-      "title": "FAILED BRO-6594 — Auto-fix (second try): Opening Night Poller Failed",
-      "detail": "(gh not authenticated; read runs from the public GitHub API) opening-night-poller.yml: MISMATCH — most recent run concluded 'in_progress', expected 'success' (https://github.com/t…",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6594/auto-fix-second-try-opening-night-poller-failed"
+      "title": "FAILED BRO-6459 — BSC Daily: Data quality: cv-wrongproduction lifetime sweep",
+      "detail": "[check-health-row-absent] FAIL: \"Data quality: cv-wrongproduction lifetime sweep\" still listed in the 2026-11-04T09:18:33.330Z health snapshot",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6459/bsc-daily-data-quality-cv-wrongproduction-lifetime-sweep"
     },
     {
-      "title": "FAILED BRO-6460 — BSC Daily: Codex runner: landing cards",
-      "detail": "[check-health-row-absent] FAIL: \"Codex runner: landing cards\" still listed in the 2026-11-04T01:48:45.535Z health snapshot",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6460/bsc-daily-codex-runner-landing-cards"
+      "title": "FAILED BRO-6437 — BSC Daily: Live-data test failing: live corpus scan: no NEW same-show/same-outlet critic-name near-duplicate beyond the known backlog (tests/unit/critic-spelling-duplicates-live-data.test.mjs)",
+      "detail": "[check-health-row-absent] FAIL: \"Live-data test failing: live corpus scan: no NEW same-show/same-outlet critic-name near-duplicate beyond the known backl\" still listed in the 2026…",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6437/bsc-daily-live-data-test-failing-live-corpus-scan-no-new-same-showsame"
     }
   ],
-  "moreCount": 9
+  "moreCount": 10
 }
