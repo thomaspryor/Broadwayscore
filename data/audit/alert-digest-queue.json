@@ -475,5 +475,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-04T11:14:50.895Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6872-gn-unwrap",
+    "title": "Landing blocked: toplevel-regression red on land/bro-6872-gn-unwrap",
+    "description": "land.yml did not land land/bro-6872-gn-unwrap: the toplevel-regression gate went red at 94115219d3. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/41817727357",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6872-gn-unwrap"
+      },
+      {
+        "name": "gate",
+        "value": "toplevel-regression"
+      },
+      {
+        "name": "tip",
+        "value": "94115219d39b0c5da657dc5de2d1ae98f9bea9f0"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41817727357"
+      }
+    ],
+    "queuedAt": "2026-11-04T11:26:34.131Z"
   }
 ]
