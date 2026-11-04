@@ -17,8 +17,8 @@
  *     stamps like `lastUpdated`; the earlier stamp is the one dropped value)
  *   - (opt-in: --append-arrays / opts.appendArrays) both changed, all three arrays, and each side only appended to base
  *     (base is a prefix of both) -> theirs, then the entries only ours added
- *     (append-only run logs such as data/llm-scoring-runs.json). A capped log
- *     that dropped its oldest rows is no longer a prefix, so it still conflicts.
+ *     (append-only run logs such as data/llm-scoring-runs.json). A side may also have dropped
+ *     a leading run of base (writer cap) as long as some base rows remain.
  *   - anything else                   -> conflict; the whole merge fails
  * Apart from that stamp, no side's change is dropped: a true clash fails and
  * the caller keeps reporting the conflict. Unlike the core-data-merge-registry mergers (built
@@ -69,13 +69,24 @@ function mergeValue(base, ours, theirs, opts) {
   return CONFLICT;
 }
 
-// Both sides only appended to base: keep theirs, add ours' new rows once.
+// Both sides only appended to base, possibly after the writer's cap dropped a
+// leading run of base rows (data/llm-scoring-runs.json is capped at 100): a side
+// is base.slice(k) + its own new rows. Keep theirs, add ours' new rows once.
+// With appendArrays on, this applies to every nested array in the document.
+function newRows(base, side) {
+  for (let k = 0; k < Math.max(base.length, 1); k++) {
+    const keep = base.length - k;
+    if (side.length >= keep && base.slice(k).every((v, i) => same(v, side[i]))) return side.slice(keep);
+  }
+  return null; // no overlap with base: not an append
+}
+
 function mergeAppendOnly(base, ours, theirs) {
-  const isPrefix = (arr) => arr.length >= base.length && base.every((v, i) => same(v, arr[i]));
-  if (!isPrefix(ours) || !isPrefix(theirs)) return null;
-  const seen = new Set(theirs.slice(base.length).map((v) => JSON.stringify(v)));
-  const extra = ours.slice(base.length).filter((v) => !seen.has(JSON.stringify(v)));
-  return [...theirs, ...extra];
+  const o = newRows(base, ours);
+  const t = newRows(base, theirs);
+  if (!o || !t) return null;
+  const seen = new Set(t.map((v) => JSON.stringify(v)));
+  return [...theirs, ...o.filter((v) => !seen.has(JSON.stringify(v)))];
 }
 
 function mergeObject(base, ours, theirs, opts) {
