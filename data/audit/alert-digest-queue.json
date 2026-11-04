@@ -1100,5 +1100,36 @@
       }
     ],
     "queuedAt": "2026-11-04T00:25:43.343Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6925-onboarding-genre-gate",
+    "title": "Landing blocked: unit-tests-node red on land/bro-6925-onboarding-genre-gate",
+    "description": "land.yml did not land land/bro-6925-onboarding-genre-gate: the unit-tests-node gate went red at 3bc644df5d. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/41745721076",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6925-onboarding-genre-gate"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "3bc644df5d09202053d9bec567ebc386609f0d67"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41745721076"
+      }
+    ],
+    "queuedAt": "2026-11-04T00:37:02.194Z"
   }
 ]
