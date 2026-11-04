@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6940-g",
   "planId": "74730229-c251-4822-8bb1-e1e37a2e0a4a",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-04T00:30:40.787Z",
   "submitter": {
     "name": null,
@@ -215,5 +215,146 @@
         "description": "BRO-6940: article byline prints Matthew Murray; file was credited to Unknown"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-04T01:13:59.064Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "ragtime-2025/theater-pizzazz--unknown.json criticName: \"Unknown\" -> \"Ron Fassler\""
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved ragtime-2025/theater-pizzazz--unknown.json → ragtime-2025/theater-pizzazz--ron-fassler.json",
+      "cleared": []
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "rent-west-end-2026/camdennewjournal--unknown.json criticName: \"Unknown\" -> \"Lucy Popescu\""
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved rent-west-end-2026/camdennewjournal--unknown.json → rent-west-end-2026/camdennewjournal--lucy-popescu.json",
+      "cleared": []
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026/theater-mirror--shelley-a.json criticName: \"Shelley A.\" -> \"Mike Hoban\""
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026/theater-mirror--shelley-a.json → rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026/theater-mirror--mike-hoban.json",
+      "cleared": []
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "rock-n-roll-2007/talkinbroadway--unknown.json criticName: \"Unknown\" -> \"Matthew Murray\""
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved rock-n-roll-2007/talkinbroadway--unknown.json → rock-n-roll-2007/talkinbroadway--matthew-murray.json",
+      "cleared": []
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "romeo-and-juliet-west-end-2026/monstagigz--unknown.json criticName: \"Unknown\" -> \"Neil Durham\""
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved romeo-and-juliet-west-end-2026/monstagigz--unknown.json → romeo-and-juliet-west-end-2026/monstagigz--neil-durham.json",
+      "cleared": []
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "seussical-regional-2026/san-diego-jewish-world--unknown.json criticName: \"Unknown\" -> \"Sandi Masori\""
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved seussical-regional-2026/san-diego-jewish-world--unknown.json → seussical-regional-2026/san-diego-jewish-world--sandi-masori.json",
+      "cleared": []
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "six-tour-2022/stage-raw--steven-morris.json criticName: \"Steven Morris\" -> \"F. Kathleen Foley\""
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved six-tour-2022/stage-raw--steven-morris.json → six-tour-2022/stage-raw--f-kathleen-foley.json",
+      "cleared": []
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "skeleton-crew-2022/theater-pizzazz--unknown.json criticName: \"Unknown\" -> \"Carol Rocamora\""
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved skeleton-crew-2022/theater-pizzazz--unknown.json → skeleton-crew-2022/theater-pizzazz--carol-rocamora.json",
+      "cleared": []
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "someone-spectacular-off-broadway-2024/talkinbroadway--unknown.json criticName: \"Unknown\" -> \"James Wilson\""
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved someone-spectacular-off-broadway-2024/talkinbroadway--unknown.json → someone-spectacular-off-broadway-2024/talkinbroadway--james-wilson.json",
+      "cleared": []
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "spamalot-tour-2025/stage-raw--steven-morris.json criticName: \"Steven Morris\" -> \"F. Kathleen Foley\""
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved spamalot-tour-2025/stage-raw--steven-morris.json → spamalot-tour-2025/stage-raw--f-kathleen-foley.json",
+      "cleared": []
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "strictly-ballroom-west-end-2018/camdennewjournal--unknown.json criticName: \"Unknown\" -> \"Catherine Usher\""
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved strictly-ballroom-west-end-2018/camdennewjournal--unknown.json → strictly-ballroom-west-end-2018/camdennewjournal--catherine-usher.json",
+      "cleared": []
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "suffs-tour-2025/stage-raw--steven-morris.json criticName: \"Steven Morris\" -> \"F. Kathleen Foley\""
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved suffs-tour-2025/stage-raw--steven-morris.json → suffs-tour-2025/stage-raw--f-kathleen-foley.json",
+      "cleared": []
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "sweat-off-broadway-2016/talkinbroadway--unknown.json criticName: \"Unknown\" -> \"Matthew Murray\""
+    }
+  ],
+  "executedIn": "ci"
 }
