@@ -526,6 +526,8 @@ jobs:
       # or the zero-tolerance class-A leak). Older failures have a card filed by the router
       # (deferFilingHours 72) and are listed in the routing step's log as "known".
       # An empty new_failures output (routing step crashed) fails safe: the job stays red.
+      # Ownership is per failing test name: new breakage inside a test that already has an owner does not
+      # redden the job (its card and the digest carry it). A crashed suite (run-crashed) and class-A leaks never count as owned.
       # gate-arm-ok: strictly narrower than the step it replaces, which failed on every red test
       - name: Fail on NEW live-data failures (BRO-6983)
         if: always()

@@ -42,10 +42,14 @@ const POST_DAYS = 14; // late reviews after closing
 // building-name mismatch. Metadata alone cannot overrule these.
 const OTHER_PRODUCTION_RE = /\b(tour|touring|revival|previous|earlier|prior|original|film|movie|different|another|fiasco|anticipatory|gielgud|transfer|workshop|tryout|concert|festival|regional)(?![a-z])/i;
 
+// Full calendar dates only. Year-only, month-only and season strings ("2024", "October 2024",
+// "Fall 2024") are unknown, never Jan 1 / the 1st: they would hold a real review.
+const _PROSE_DATE = /\b(?:[A-Za-z]{3,9}\.?\s+\d{1,2}(?:st|nd|rd|th)?,?\s+\d{4}|\d{1,2}(?:st|nd|rd|th)?\s+[A-Za-z]{3,9}\.?,?\s+\d{4})\b/;
 function _ms(s) {
   if (typeof s !== 'string') return NaN;
-  const t = /^\d{4}-\d{2}-\d{2}/.test(s) ? Date.parse(s.slice(0, 10)) : Date.parse(`${s} UTC`);
-  return Number.isFinite(t) ? t : NaN;
+  if (/^\d{4}-\d{2}-\d{2}/.test(s)) { const t = Date.parse(s.slice(0, 10)); return Number.isFinite(t) ? t : NaN; }
+  const m = _PROSE_DATE.exec(s);
+  return m ? require('./date-utils').toDateMs(m[0]) : NaN;
 }
 
 /**

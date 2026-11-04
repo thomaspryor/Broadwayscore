@@ -3964,7 +3964,9 @@ function flagSiblingEraDateOnPersist(filePath, priorRecord, record) {
   if (record.wrongProduction || record.wrongShow || record.isRoundupArticle || record.wrongAttribution
     || record.duplicateOf || record.isNonReview || record._auditAllowCrossMarket
     || record._locked === true || record.wrongProductionOverride === true || record.wrongProductionManualClear === true
-    || (priorRecord && (priorRecord._auditAllowCrossMarket || priorRecord._locked === true))) return none;
+    || record.humanReviewedWrongProduction === false || !!record.humanReviewScore
+    || (priorRecord && (priorRecord._auditAllowCrossMarket || priorRecord._locked === true
+      || priorRecord.humanReviewedWrongProduction === false || !!priorRecord.humanReviewScore))) return none;
   const show = _getShowById(parentDirName);
   if (!show || !show.openingDate) return none;
   const { classifyClassAContamination, classAApplies } = require('./cross-market-contamination');

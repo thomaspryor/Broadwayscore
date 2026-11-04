@@ -77,6 +77,11 @@ test('a human override or lock is respected', () => {
   assert.equal(persistDate({ _locked: true }, '2024-04-11').wrongProduction, undefined);
 });
 
+test('a human verdict (humanReviewScore, humanReviewedWrongProduction=false) is respected, as in the in-guard path', () => {
+  assert.equal(persistDate({ humanReviewScore: 80 }, '2024-04-11').wrongProduction, undefined);
+  assert.equal(persistDate({ humanReviewedWrongProduction: false }, '2024-04-11').wrongProduction, undefined);
+});
+
 test('a show with no same-title sibling can never trip it', () => {
   _setShowsCacheForTest(new Map([['solo-show-2024', { id: 'solo-show-2024', title: 'Solo Show', openingDate: '2024-01-10' }]]));
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'persist-solo-'));

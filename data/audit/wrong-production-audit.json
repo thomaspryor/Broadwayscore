@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-04T22:27:27.191Z",
+  "timestamp": "2026-11-04T22:52:00.491Z",
   "stats": {
-    "totalReviews": 80145,
-    "alreadyFlagged": 22019,
+    "totalReviews": 80152,
+    "alreadyFlagged": 22020,
     "dateGuardCatches": 217,
     "directorMismatch": 3500,
-    "tvFilmSignals": 2277,
+    "tvFilmSignals": 2279,
     "londonSignals": 3608,
     "offBroadwaySignals": 734,
     "yearMismatch": 361,
-    "noPublishDate": 8502
+    "noPublishDate": 8497
   },
   "findings": [
     {
@@ -21308,6 +21308,19 @@
     },
     {
       "showId": "fences-leeds-regional-2026",
+      "file": "british-theatre--david-chadderton.json",
+      "publishDate": "2026-11-04",
+      "url": "https://www.britishtheatreguide.info/reviews/fences-home-manchester-26184",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"daniel bailey\" from fences-off-west-end-2026"
+        }
+      ]
+    },
+    {
+      "showId": "fences-leeds-regional-2026",
       "file": "broadwayworld--gary-naylor.json",
       "score": 94,
       "publishDate": "2026-09-18",
@@ -41430,6 +41443,20 @@
     },
     {
       "showId": "memoirs-of-amorous-gentlemen-off-broadway-2026",
+      "file": "mashable--kristy-puchko.json",
+      "score": 78,
+      "publishDate": "2026-10-31",
+      "url": "https://mashable.com/entertainment/memoirs-of-amorous-gentlemen-review",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"hbo max\""
+        }
+      ]
+    },
+    {
+      "showId": "memoirs-of-amorous-gentlemen-off-broadway-2026",
       "file": "mashable--unknown.json",
       "score": 78,
       "publishDate": "2026-10-31",
@@ -45259,7 +45286,7 @@
     },
     {
       "showId": "noises-off-west-end-2011",
-      "file": "variety--unknown.json",
+      "file": "variety--david-benedict.json",
       "score": 76,
       "publishDate": "2011-12-15",
       "url": "https://variety.com/2011/legit/reviews/noises-off-1117946761/",
@@ -47504,7 +47531,7 @@
     },
     {
       "showId": "oslo-off-broadway-2016",
-      "file": "financialtimes--unknown.json",
+      "file": "financialtimes--max-mcguinness.json",
       "score": 74,
       "publishDate": "2016-07-12",
       "url": "https://next.ft.com/content/adaccc22-4813-11e6-8d68-72e9211e86ab",
@@ -47578,20 +47605,6 @@
       "score": 78,
       "publishDate": "2016-07-12",
       "url": "http://www.theatrereviews.com/off-broadway-review-oslo-enacts-history-on-stage-at-lincoln-centers-mitzi-e-newhouse-theater/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"bartlett sher\" from oslo-2017"
-        }
-      ]
-    },
-    {
-      "showId": "oslo-off-broadway-2016",
-      "file": "times-square-chronicles--suzanna-bowling.json",
-      "score": 74,
-      "publishDate": "2017-05-04",
-      "url": "http://t2conline.com/she-says-oslo-proves-when-talking-peace-it-is-never-short-or-easy/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -65099,6 +65112,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "the-curious-case-of-benjamin-button-off-broadway-2026",
+      "file": "mashable--kristy-puchko.json",
+      "score": 39,
+      "publishDate": "2026-11-01",
+      "url": "https://mashable.com/entertainment/the-curious-case-of-benjamin-button-the-musical",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"hbo max\""
         }
       ]
     },
@@ -113106,7 +113133,7 @@
     },
     {
       "showId": "network-west-end-2017",
-      "file": "artsdesk--unknown.json",
+      "file": "artsdesk--matt-wolf.json",
       "score": 81,
       "publishDate": null,
       "url": "https://theartsdesk.com/theatre/network-national-theatre-review-bryan-cranstons-searing-london-stage-debut",
@@ -116869,7 +116896,7 @@
     },
     {
       "showId": "pinocchio-west-end-2017",
-      "file": "artsdesk--unknown.json",
+      "file": "artsdesk--david-benedict.json",
       "score": 68,
       "publishDate": null,
       "url": "https://theartsdesk.com/theatre/pinocchio-national-theatre-review-boy-puppet-lifts-eventually",

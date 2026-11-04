@@ -19,7 +19,8 @@ const OWNED_AFTER_HOURS = 72;
 const INCIDENT_GAP_RESET_HOURS = 96;
 const OWNED_AFTER_PERSISTING = { disposition: 'auto', deferFilingHours: OWNED_AFTER_HOURS, cooldownHours: 24 };
 // Zero-tolerance conditions never count as "known": they keep the job red.
-const ALWAYS_NEW = /class-A cross-market/i;
+// run-crashed: a dead suite proves nothing, so it never goes quiet (a card is still filed after 72h).
+const ALWAYS_NEW = /class-A cross-market|run-crashed/i;
 
 /**
  * PURE. Split this run's routed failures into NEW (job stays red) and KNOWN
@@ -37,8 +38,14 @@ function splitNewAndKnown(route, conditions, nowMs = Date.now()) {
     // Not seen for INCIDENT_GAP_RESET_HOURS: the router starts a fresh incident (and a fresh 72h defer).
     const lastSeenMs = c ? Date.parse(c.lastSeen || '') : NaN;
     const sameIncident = Number.isFinite(lastSeenMs) && (nowMs - lastSeenMs) / 3600000 <= INCIDENT_GAP_RESET_HOURS;
-    const owned = !!c && c.status === 'open' && sameIncident
-      && (!!(c.linearIdentifier || c.cardId) || (c.deferredAuto === true && Number.isFinite(openedMs) && (nowMs - openedMs) / 3600000 >= OWNED_AFTER_HOURS));
+    // Owned = a card exists for THIS incident. A deferred row (deferredAuto) keeps the previous
+    // incident's linearIdentifier (resolveCondition), so its card only counts once the incident
+    // is OWNED_AFTER_HOURS old: the router files (or refiles) the card at that age. Before that
+    // the row is NEW, and the first run past 72h stays red once until the card actually exists.
+    // Legacy rows without deferredAuto were carded by the old rules, so any card counts.
+    const hasCard = !!(c && (c.linearIdentifier || c.cardId));
+    const oldEnough = Number.isFinite(openedMs) && (nowMs - openedMs) / 3600000 >= OWNED_AFTER_HOURS;
+    const owned = !!c && c.status === 'open' && sameIncident && hasCard && (c.deferredAuto !== true || oldEnough);
     (owned && !ALWAYS_NEW.test(r.conditionKey) ? knownKeys : newKeys).push(r.conditionKey);
   }
   return { newKeys, knownKeys };
