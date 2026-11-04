@@ -5998,32 +5998,30 @@
       "reviewedBy": "BRO-6336"
     },
     "indecent-2017": {
-      "capitalization": 3800000,
-      "capitalizationSource": "Broadway Journal reporting an SEC filing said Indecent was capitalized at $3.8 million",
+      "capitalization": 3417500,
+      "capitalizationSource": "SEC Form D/A for Indecent Broadway Ltd Liability Co; clarification states 'Offering capitalized at $3,417,500' (maximum capitalization $3,750,000).",
       "weeklyRunningCost": null,
       "costMethodology": null,
       "recouped": true,
       "recoupedDate": "2017-08",
-      "recoupedSource": "American Theatre interview with Daryl Roth saying the extension sold out and the production ended up breaking even",
-      "estimatedRecoupmentPct": null,
-      "designation": "Easy Winner",
-      "notes": "[PLAUSIBILITY WARNING: Capitalization > 60% of all-time gross for recouped show] Public sources verified a $3.8M capitalization and a break-even outcome, but I could not confirm a show-specific weekly nut.",
+      "recoupedSource": "American Theatre (2019-03-06) reported that the extension through Aug. 6 sold out and the production ended up breaking even. https://www.americantheatre.org/2019/03/06/daryl-roth-producing-with-a-purpose/",
+      "estimatedRecoupmentPct": [
+        100,
+        100
+      ],
+      "designation": "Trickle",
+      "notes": "Public SEC filing shows the show's actual capitalization at $3.4175M. Trade coverage says the extended run broke even, so it is recouped; no public weekly running cost was found in the sources checked.",
       "confidence": "medium",
       "sources": [
         {
-          "type": "trade",
-          "url": "https://www.broadwayjournal.com/p/from-oslo-to-come-from-away-tonys-provide-bounce",
-          "date": "2017-06-26"
+          "type": "sec",
+          "url": "https://www.sec.gov/Archives/edgar/data/1689492/000168949217000001/primary_doc.xml",
+          "date": "2017-05-11"
         },
         {
           "type": "trade",
           "url": "https://www.americantheatre.org/2019/03/06/daryl-roth-producing-with-a-purpose/",
           "date": "2019-03-06"
-        },
-        {
-          "type": "trade",
-          "url": "https://playbill.com/article/indecent-closes-on-broadway-august-6",
-          "date": "2017-08-06"
         }
       ],
       "_recoupedClaim": true,
@@ -6032,17 +6030,20 @@
       "slug": "indecent-2017",
       "openingDate": "2017-04-18",
       "status": "closed",
-      "researchedAt": "2026-10-26T11:35:32.583Z",
+      "researchedAt": "2026-10-31T22:30:54.893Z",
       "model": "gpt-5.4-mini",
-      "researchTrigger": "manual",
+      "researchTrigger": "backlog",
       "autoApplyBlocked": "recoupment claim: a person must confirm it against the cited source",
-      "autoApplyBlockedAt": "2026-10-26T18:05:23.512Z",
-      "ownerDigestSentAt": "2026-10-26T18:05:50.989Z",
-      "rejectedSources": [],
-      "archivedAt": "2026-10-26T22:59:11.306Z",
-      "archivedReason": "reviewed-rejected",
-      "archivedDetail": "Cited American Theatre interview only says the run broke even; breaking even is not a reported recoupment and Broadway Journal (Jun 2017) called it a flop. No quotable recoupment citation, so recouped stays false.",
-      "reviewedBy": "BRO-6336"
+      "autoApplyBlockedAt": "2026-11-01T09:21:09.578Z",
+      "verifyAttempts": 1,
+      "lastVerifyAttemptAt": "2026-11-02T22:45:45.091Z",
+      "reviewedBy": "BRO-6865",
+      "archivedAt": "2026-11-04T07:38:42.646Z",
+      "archivedReason": "rejected-recouped-claim",
+      "archivedDetail": "BRO-6865: Read Diep Tran, Daryl Roth: Producing With a Purpose, American Theatre, March 6, 2019, https://www.americantheatre.org/2019/03/06/daryl-roth-producing-with-a-purpose/. The article explicitly identifies the 2017 Broadway production at the Cort and says it ended up breaking even after the extension through August 6. It does not specify repayment of the original investor capitalization or a recoupment date. This is insufficient to mark the production recouped or confirm the claimed 2017-08 date; retain TBD pending explicit capital-return evidence. This preserves the BRO-6336 review decision and records the previously omitted claim URL. The SEC capitalization citation is not rejected.",
+      "rejectedSources": [
+        "https://www.americantheatre.org/2019/03/06/daryl-roth-producing-with-a-purpose"
+      ]
     },
     "groundhog-day-2017": {
       "capitalization": 16500000,
@@ -7402,5 +7403,5 @@
       "archivedDetail": "no trusted cited page states the capitalization figure"
     }
   },
-  "lastUpdated": "2026-11-04T01:50:26.543Z"
+  "lastUpdated": "2026-11-04T07:38:42.646Z"
 }

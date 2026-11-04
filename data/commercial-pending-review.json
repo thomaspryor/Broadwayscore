@@ -89,47 +89,6 @@
       "autoApplyBlocked": "the record carries a human-reviewed designation: a person must decide",
       "autoApplyBlockedAt": "2026-11-01T09:19:51.020Z"
     },
-    "indecent-2017": {
-      "capitalization": 3417500,
-      "capitalizationSource": "SEC Form D/A for Indecent Broadway Ltd Liability Co; clarification states 'Offering capitalized at $3,417,500' (maximum capitalization $3,750,000).",
-      "weeklyRunningCost": null,
-      "costMethodology": null,
-      "recouped": true,
-      "recoupedDate": "2017-08",
-      "recoupedSource": "American Theatre (2019-03-06) reported that the extension through Aug. 6 sold out and the production ended up breaking even.",
-      "estimatedRecoupmentPct": [
-        100,
-        100
-      ],
-      "designation": "Trickle",
-      "notes": "Public SEC filing shows the show's actual capitalization at $3.4175M. Trade coverage says the extended run broke even, so it is recouped; no public weekly running cost was found in the sources checked.",
-      "confidence": "medium",
-      "sources": [
-        {
-          "type": "sec",
-          "url": "https://www.sec.gov/Archives/edgar/data/1689492/000168949217000001/primary_doc.xml",
-          "date": "2017-05-11"
-        },
-        {
-          "type": "trade",
-          "url": "https://www.americantheatre.org/2019/03/06/daryl-roth-producing-with-a-purpose/",
-          "date": "2019-03-06"
-        }
-      ],
-      "_recoupedClaim": true,
-      "_recoupedNote": "AI claimed recouped — requires human verification with citation before applying",
-      "title": "Indecent",
-      "slug": "indecent-2017",
-      "openingDate": "2017-04-18",
-      "status": "closed",
-      "researchedAt": "2026-10-31T22:30:54.893Z",
-      "model": "gpt-5.4-mini",
-      "researchTrigger": "backlog",
-      "autoApplyBlocked": "recoupment claim: a person must confirm it against the cited source",
-      "autoApplyBlockedAt": "2026-11-01T09:21:09.578Z",
-      "verifyAttempts": 1,
-      "lastVerifyAttemptAt": "2026-11-02T22:45:45.091Z"
-    },
     "springsteen-on-broadway-2021": {
       "capitalization": null,
       "capitalizationSource": null,
@@ -684,7 +643,7 @@
       "autoApplyBlockedAt": "2026-11-03T09:41:03.451Z"
     }
   },
-  "lastUpdated": "2026-11-04T01:50:26.545Z",
+  "lastUpdated": "2026-11-04T07:38:42.646Z",
   "hardTruthFindings": {
     "collectedAt": "2026-10-11",
     "card": "BRO-5017",
