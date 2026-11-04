@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6493-4",
   "planId": "f30bbb46-738c-46af-96aa-b0d060f366da",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-04T13:18:36.639Z",
   "submitter": {
     "name": null,
@@ -144,5 +144,74 @@
         "description": "BRO-6493: Venue identifies this as the annual Youth Company Performance Lab culmination and lists all six free public showcase performances April 10, 11, 16, 17, 18 and 19, 2026. First public showcase date is April 10, not stored April 11; no separate press-night date is identified. This records the opening as the first public showcase rather than inventing a press night. Sources: https://mcctheater.org/tix/uncensored-no-need-to-overthink-it/"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-04T14:46:55.776Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for safe-house-off-broadway-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for safe-house-off-broadway-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for the-maids-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for the-maids-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for im-almost-there-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for im-almost-there-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for the-ford-hill-project-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for touch-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for touch-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for touch-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for uncensored-no-need-to-overthink-it-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for uncensored-no-need-to-overthink-it-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for uncensored-no-need-to-overthink-it-off-broadway-2026"
+    }
+  ],
+  "executedIn": "ci"
 }
