@@ -1,0 +1,149 @@
+{
+  "issueNumber": "bro-6981",
+  "planId": "eeeb0af1-39b4-410a-af2d-02ed1f00bd43",
+  "status": "pending",
+  "createdAt": "2026-11-04T20:04:35.194Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Critic-page audit (Michael Sommers, Dan Rubins): fix misattributed bylines, wrong-show rows, self-repeated URLs, a false non-review flag and two wrong-byline duplicate files",
+    "steps": [
+      "sumo-off-broadway-2025/nysr--unknown.json: criticName",
+      "macbeth-2008/njcom--anthony-venutolo.json: criticName",
+      "annie-west-end-2017/a-younger-theatre--unknown.json: criticName",
+      "evita-west-end-2017/a-younger-theatre--unknown.json: criticName",
+      "queen-anne-west-end-2017/a-younger-theatre--unknown.json: criticName",
+      "the-ritz-2007/new-jersey-newsroom--michael-sommers.json: wrongShow",
+      "the-ritz-2007/ap--mark-kennedy.json: wrongShow",
+      "fefu-and-her-friends-off-broadway-2019/theatre-is-easy--dan-rubins.json: wrongShow",
+      "aint-no-mo-2022/nysr--michael-sommers.json: nonReviewManualClear",
+      "aint-no-mo-2022/nysr--michael-sommers.json: isNonReview",
+      "giulia-the-poison-queen-of-palermo-off-broadway-2026/nysr--michael-sommers.json: url",
+      "mrs-warrens-profession-2010/nytimes--ben-brantley.json: url",
+      "south-pacific-2008/newyorker--john-lahr.json: url",
+      "Same-URL copy of new-jersey-newsroom--michael-sommers.json under the wrong byline (NJ Newsroom review is by Michael Sommers). Rebuild already dedupes it; delete so the wrong byline cannot win a later dedupe.",
+      "Same-URL copy of new-jersey-newsroom--michael-sommers.json under the wrong byline (Michael Musto never wrote for NJ Newsroom; the review is Sommers'). Rebuild already dedupes it."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "sumo-off-broadway-2025/nysr--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Michael Sommers",
+        "description": "sumo-off-broadway-2025/nysr--unknown.json: criticName"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "macbeth-2008/njcom--anthony-venutolo.json",
+        "field": "criticName",
+        "oldValue": "Anthony Venutolo",
+        "newValue": "Michael Sommers",
+        "description": "macbeth-2008/njcom--anthony-venutolo.json: criticName"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "annie-west-end-2017/a-younger-theatre--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Dan Rubins",
+        "description": "annie-west-end-2017/a-younger-theatre--unknown.json: criticName"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "evita-west-end-2017/a-younger-theatre--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Dan Rubins",
+        "description": "evita-west-end-2017/a-younger-theatre--unknown.json: criticName"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "queen-anne-west-end-2017/a-younger-theatre--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Dan Rubins",
+        "description": "queen-anne-west-end-2017/a-younger-theatre--unknown.json: criticName"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-ritz-2007/new-jersey-newsroom--michael-sommers.json",
+        "field": "wrongShow",
+        "oldValue": null,
+        "newValue": true,
+        "description": "the-ritz-2007/new-jersey-newsroom--michael-sommers.json: wrongShow"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-ritz-2007/ap--mark-kennedy.json",
+        "field": "wrongShow",
+        "oldValue": null,
+        "newValue": true,
+        "description": "the-ritz-2007/ap--mark-kennedy.json: wrongShow"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "fefu-and-her-friends-off-broadway-2019/theatre-is-easy--dan-rubins.json",
+        "field": "wrongShow",
+        "oldValue": null,
+        "newValue": true,
+        "description": "fefu-and-her-friends-off-broadway-2019/theatre-is-easy--dan-rubins.json: wrongShow"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "aint-no-mo-2022/nysr--michael-sommers.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "aint-no-mo-2022/nysr--michael-sommers.json: nonReviewManualClear"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "aint-no-mo-2022/nysr--michael-sommers.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": false,
+        "description": "aint-no-mo-2022/nysr--michael-sommers.json: isNonReview"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "giulia-the-poison-queen-of-palermo-off-broadway-2026/nysr--michael-sommers.json",
+        "field": "url",
+        "oldValue": "https://nystagereview.com/2026/07/10/giulia-the-poison-queen-of-palermo-jennifer-nettles-brews-a-tasty-mass-murder-musical/https://nystagereview.com/2026/07/10/giulia-the-poison-queen-of-palermo-jennifer-nettles-brews-a-tasty-mass-murder-musical/",
+        "newValue": "https://nystagereview.com/2026/07/10/giulia-the-poison-queen-of-palermo-jennifer-nettles-brews-a-tasty-mass-murder-musical/",
+        "description": "giulia-the-poison-queen-of-palermo-off-broadway-2026/nysr--michael-sommers.json: url"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "mrs-warrens-profession-2010/nytimes--ben-brantley.json",
+        "field": "url",
+        "oldValue": "https://theater.nytimes.com/2010/10/04/theater/reviews/04mrs.html?ref=theaterhttp://theater.nytimes.com/2010/10/04/theater/reviews/04mrs.html?ref=theaterhttp://theater.nytimes.com/2010/10/04/theater/reviews/04mrs.html?ref=theater",
+        "newValue": "https://theater.nytimes.com/2010/10/04/theater/reviews/04mrs.html?ref=theater",
+        "description": "mrs-warrens-profession-2010/nytimes--ben-brantley.json: url"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "south-pacific-2008/newyorker--john-lahr.json",
+        "field": "url",
+        "oldValue": "https://www.newyorker.com/arts/critics/theatre/2008/04/14/080414crth_theatre_lahrhttp://www.newyorker.com/arts/critics/theatre/2008/04/14/080414crth_theatre_lahr",
+        "newValue": "https://www.newyorker.com/arts/critics/theatre/2008/04/14/080414crth_theatre_lahr",
+        "description": "south-pacific-2008/newyorker--john-lahr.json: url"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "a-free-man-of-color-2010/new-jersey-newsroom--garrett-morrison.json",
+        "description": "Same-URL copy of new-jersey-newsroom--michael-sommers.json under the wrong byline (NJ Newsroom review is by Michael Sommers). Rebuild already dedupes it; delete so the wrong byline cannot win a later dedupe."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "newsies-the-musical-2012/new-jersey-newsroom--michael-musto.json",
+        "description": "Same-URL copy of new-jersey-newsroom--michael-sommers.json under the wrong byline (Michael Musto never wrote for NJ Newsroom; the review is Sommers'). Rebuild already dedupes it."
+      }
+    ]
+  }
+}

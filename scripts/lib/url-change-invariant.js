@@ -230,6 +230,9 @@ function urlCanonicallyChanged(existingUrl, newUrl) {
  * The BWW host is only inferred when the new url is on broadwayworld.com.
  */
 function isMalformedUrlRepair(existingUrl, newUrl, normalizeUrl) {
+  // BRO-6981: a url glued to a copy of itself is absolute but still malformed.
+  const doubled = require('./relative-review-url').collapseRepeatedUrl(existingUrl);
+  if (doubled) return normalizeUrl(doubled) === normalizeUrl(newUrl);
   if (/^https?:\/\//i.test(existingUrl)) return false;
   let outletId = null;
   try { if (/(^|\.)broadwayworld\.com$/i.test(new URL(newUrl).hostname)) outletId = 'broadwayworld'; } catch { return false; }

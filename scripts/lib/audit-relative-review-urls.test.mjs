@@ -97,3 +97,21 @@ test('field edit + real write guard: the repair keeps score and wrongProduction'
   assert.equal(after.wrongProduction, true);
   assert.equal(after._urlChangedClear, undefined);
 });
+
+// BRO-6981: a url glued to a copy of itself (NYSR Giulia, NYT Mrs. Warren's Profession).
+test('classifier: a self-repeated url collapses to its first copy; urls that carry another url do not', () => {
+  const g = 'https://nystagereview.com/2026/07/10/giulia-x/';
+  assert.deepEqual(classifyRelativeUrl(`${g}${g}`, 'nysr'), { category: 'doubled', fixedUrl: g });
+  const n = 'https://theater.nytimes.com/2010/10/04/theater/reviews/04mrs.html?ref=theater';
+  assert.equal(classifyRelativeUrl(`${n}${n.replace('https', 'http')}http://`, 'nytimes').fixedUrl, n);
+  assert.equal(classifyRelativeUrl('https://web.archive.org/web/20121108174124/http://www.villagevoice.com/2000-04-11/theater/x/', 'village-voice').category, 'ok');
+  assert.equal(classifyRelativeUrl('http://online.wsj.com/articles/x-1403230337?mg=reno64-wsj&url=http://online.wsj.com/article/SB1000142405', 'wsj').category, 'ok');
+  assert.equal(classifyRelativeUrl('https://bway.ly/04r8b#http://nypost.com/2016/09/29/x/', 'nypost').category, 'ok');
+});
+
+test('invariant: collapsing a self-repeated url keeps the article; another url is still a change', () => {
+  const { urlCanonicallyChanged } = require('./url-change-invariant.js');
+  const g = 'https://nystagereview.com/2026/07/10/giulia-x/';
+  assert.equal(urlCanonicallyChanged(`${g}${g}`, g), false);
+  assert.equal(urlCanonicallyChanged(`${g}${g}`, 'https://nystagereview.com/2026/07/10/other/'), true);
+});
