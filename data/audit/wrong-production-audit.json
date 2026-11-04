@@ -1,10 +1,10 @@
 {
-  "timestamp": "2026-11-04T14:10:10.962Z",
+  "timestamp": "2026-11-04T14:42:32.423Z",
   "stats": {
-    "totalReviews": 80017,
-    "alreadyFlagged": 22010,
+    "totalReviews": 80018,
+    "alreadyFlagged": 22011,
     "dateGuardCatches": 217,
-    "directorMismatch": 3479,
+    "directorMismatch": 3497,
     "tvFilmSignals": 2275,
     "londonSignals": 3606,
     "offBroadwaySignals": 736,
@@ -41192,6 +41192,159 @@
       ]
     },
     {
+      "showId": "medea-off-broadway-2022",
+      "file": "classical-source--lisa-stone-ford.json",
+      "score": 79,
+      "publishDate": "2022-09-27",
+      "url": "https://www.classicalsource.com/concert/metropolitan-operas-opening-night-david-mcvicars-production-of-cherubinis-medea-sondra-radvanovsky-janai-brugger-ekaterina-gubanova-matthew/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"david mcvicar\" from medea-off-broadway-2026"
+        }
+      ]
+    },
+    {
+      "showId": "medea-off-broadway-2022",
+      "file": "financialtimes--george-loomis.json",
+      "score": 56,
+      "publishDate": "2022-09-28",
+      "url": "https://www.ft.com/content/c29b7c78-ad3e-4e15-be61-0b9c25db1a19",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"david mcvicar\" from medea-off-broadway-2026"
+        }
+      ]
+    },
+    {
+      "showId": "medea-off-broadway-2022",
+      "file": "indie-opera--gregory-moomjy.json",
+      "score": 77,
+      "publishDate": "2022-10-01",
+      "url": "https://indieopera.com/review-medea/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"david mcvicar\" from medea-off-broadway-2026"
+        }
+      ]
+    },
+    {
+      "showId": "medea-off-broadway-2022",
+      "file": "new-york-classical-review--rick-perdian.json",
+      "score": 93,
+      "publishDate": null,
+      "url": "https://newyorkclassicalreview.com/2022/09/radvanovsky-triumphs-in-mets-season-opening-medea/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"david mcvicar\" from medea-off-broadway-2026"
+        }
+      ]
+    },
+    {
+      "showId": "medea-off-broadway-2022",
+      "file": "nytimes--joshua-barone.json",
+      "publishDate": "2022-09-25",
+      "url": "https://www.nytimes.com/2022/09/25/arts/music/met-opera-medea.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"david mcvicar\" from medea-off-broadway-2026"
+        }
+      ]
+    },
+    {
+      "showId": "medea-off-broadway-2022",
+      "file": "nytimes--zachary-woolfe.json",
+      "score": 60,
+      "publishDate": "2022-09-28",
+      "url": "https://www.nytimes.com/2022/09/28/arts/music/review-medea-met-opera.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"david mcvicar\" from medea-off-broadway-2026"
+        }
+      ]
+    },
+    {
+      "showId": "medea-off-broadway-2022",
+      "file": "observer--gabrielle-ferrari.json",
+      "score": 86,
+      "publishDate": "2022-09-28",
+      "url": "https://observer.com/2022/09/review-soprano-sondra-radvanovsky-brings-back-medea-with-vengeance/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"david mcvicar\" from medea-off-broadway-2026"
+        }
+      ]
+    },
+    {
+      "showId": "medea-off-broadway-2022",
+      "file": "operacanada--patrick-dillon.json",
+      "score": 82,
+      "publishDate": "2022-10-13",
+      "url": "https://operacanada.ca/the-metropolitan-opera-medea-sondra-radvanovsky-giving-one-of-the-most-fully-immersive-performances-ive-ever-seen-on-an-opera-stage/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"david mcvicar\" from medea-off-broadway-2026"
+        }
+      ]
+    },
+    {
+      "showId": "medea-off-broadway-2022",
+      "file": "operawire--david-salazar.json",
+      "score": 93,
+      "publishDate": "2022-09-28",
+      "url": "https://operawire.com/metropolitan-opera-2022-23-review-medea/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"david mcvicar\" from medea-off-broadway-2026"
+        }
+      ]
+    },
+    {
+      "showId": "medea-off-broadway-2022",
+      "file": "parterre-box--eli-jacobson.json",
+      "score": 80,
+      "publishDate": "2022-09-28",
+      "url": "https://parterre.com/2022/09/28/how-do-you-solve-a-problem-like-medea-2/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"david mcvicar\" from medea-off-broadway-2026"
+        }
+      ]
+    },
+    {
+      "showId": "medea-off-broadway-2022",
+      "file": "wsj--heidi-waleson.json",
+      "score": 56,
+      "publishDate": "2022-09-28",
+      "url": "https://www.wsj.com/articles/medea-review-luigi-cherubini-metropolitan-opera-sondra-radvanosky-david-mcvicar-matthew-polenzani-francois-benoit-hoffman-carlo-zangarini-janai-brugger-michele-pertusi-carlo-rizzi-ekaterina-gubanova-11664398172",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"david mcvicar\" from medea-off-broadway-2026"
+        }
+      ]
+    },
+    {
       "showId": "meet-the-cartozians-off-broadway-2025",
       "file": "culturesauce--thom-geier.json",
       "score": 77,
@@ -77631,15 +77784,104 @@
     },
     {
       "showId": "tristan-and-yseult-royal-bath-regional-2026",
+      "file": "british-theatre--graeme-strachan.json",
+      "score": 84,
+      "publishDate": "2026-10-23",
+      "url": "https://www.britishtheatreguide.info/reviews/tristan-yseul-royal-lyceum-th-26150",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"emma rice\" from tristan-and-yseult-off-broadway-2026"
+        }
+      ]
+    },
+    {
+      "showId": "tristan-and-yseult-royal-bath-regional-2026",
+      "file": "broadwayworld--cheryl-markosky.json",
+      "score": 97,
+      "publishDate": "2026-09-18",
+      "url": "https://www.broadwayworld.com/westend/article/Review-TRISTAN-YSEULT-Theatre-Royal-Bath-20260918",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"emma rice\" from tristan-and-yseult-off-broadway-2026"
+        }
+      ]
+    },
+    {
+      "showId": "tristan-and-yseult-royal-bath-regional-2026",
+      "file": "guardian--arifa-akbar.json",
+      "score": 85,
+      "publishDate": "2026-09-19",
+      "url": "https://www.theguardian.com/stage/2026/sep/19/tristan-and-yseult-review-theatre-royal-bath-kneehigh-emma-rice",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"emma rice\" from tristan-and-yseult-off-broadway-2026"
+        }
+      ]
+    },
+    {
+      "showId": "tristan-and-yseult-royal-bath-regional-2026",
       "file": "soz6--unknown.json",
       "score": 85,
       "publishDate": "2026-09-19",
       "url": "https://soz6.com/news/tristan-yseult-review-kneehigh-s-lovers-still-soar-with-giddy-glory",
       "findings": [
         {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"emma rice\" from tristan-and-yseult-off-broadway-2026"
+        },
+        {
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "tristan-and-yseult-royal-bath-regional-2026",
+      "file": "theatre-weekly--james-hattan.json",
+      "score": 88,
+      "publishDate": "2026-09-18",
+      "url": "https://theatreweekly.com/review-tristan-yseult-at-theatre-royal-bath/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"emma rice\" from tristan-and-yseult-off-broadway-2026"
+        }
+      ]
+    },
+    {
+      "showId": "tristan-and-yseult-royal-bath-regional-2026",
+      "file": "thestage--holly-omahony.json",
+      "score": 78,
+      "publishDate": "2026-09-18",
+      "url": "https://www.thestage.co.uk/reviews/tristan-yseult-review-theatre-royal-bath",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"emma rice\" from tristan-and-yseult-off-broadway-2026"
+        }
+      ]
+    },
+    {
+      "showId": "tristan-and-yseult-royal-bath-regional-2026",
+      "file": "whatsonstage--kris-hallett.json",
+      "score": 85,
+      "publishDate": "2026-09-18",
+      "url": "https://www.whatsonstage.com/news/tristan-yseult-at-theatre-royal-bath-and-on-tour-review_1731590/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"emma rice\" from tristan-and-yseult-off-broadway-2026"
         }
       ]
     },
@@ -91272,20 +91514,6 @@
       ]
     },
     {
-      "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
-      "file": "whatsonstage--sarah-crompton.json",
-      "score": 99,
-      "publishDate": "December 12th, 2021",
-      "url": "https://www.whatsonstage.com/london-theatre/reviews/cabaret-eddie-redmayne-buckley-west-end_55529.html",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
       "showId": "cadel-lungs-on-legs-off-west-end-2026",
       "file": "theatre-weekly--greg-stewart.json",
       "publishDate": "2026-10-08",
@@ -99180,6 +99408,20 @@
       "file": "anothermag--another.json",
       "publishDate": "2026-09-08",
       "url": "https://www.anothermag.com/design-living/17447/josh-oconnor-golden-boy-sam-yates-interview-almeida-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "golden-boy-off-west-end-2026",
+      "file": "aviewfromrowjay--jay.json",
+      "score": 90,
+      "publishDate": "2026-09-26",
+      "url": "https://www.aviewfromrowjay.com/p/review-golden-boy",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -124458,7 +124700,7 @@
     {
       "showId": "the-bridge-off-west-end-2026",
       "file": "theatreandtonic--emmie-newitt.json",
-      "score": 80,
+      "score": 82,
       "publishDate": "2026-11-03",
       "url": "https://theatreandtonic.co.uk/blog/the-bridge-bush-theatre-london-review",
       "findings": [
