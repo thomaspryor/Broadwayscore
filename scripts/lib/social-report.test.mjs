@@ -96,12 +96,16 @@ test('monthlySuggestion: too few posts says so; a dead network with 5+ posts is 
   assert.ok(lines.some((l) => /dropping X/.test(l)));
 });
 
-test('monthlySuggestion compares AI-written and template score posts once both have enough posts (BRO-6959)', () => {
-  const row = (writer, visits, i) => ({ lane: 'score', writer, service: 'threads', visits, interactions: 1, id: `${writer}${i}` });
-  const few = monthlySuggestion([row('ai', 4, 0), ...[0, 1, 2].map((i) => row('template', 1, i))]);
-  assert.ok(!few.some((l) => /AI-written/.test(l)), 'one AI post is too few to judge');
-  const lines = monthlySuggestion([...[0, 1, 2].map((i) => row('ai', 4, i)), ...[0, 1, 2].map((i) => row('template', 1, i))]);
-  assert.ok(lines.some((l) => /AI-written score posts: 4\.0 visits .* against 1\.0 .* \(3 and 3 posts\)/.test(l)), lines.join(' | '));
+test('monthlySuggestion compares AI-written and template score posts: 3+ shows each, posts a week old (BRO-6959)', () => {
+  const NOW = Date.parse('2026-12-01T12:00:00Z'), old = '2026-11-10T12:00:00Z', fresh = '2026-11-28T12:00:00Z';
+  const row = (writer, visits, slug, sentAt = old, service = 'threads') => ({ lane: 'score', writer, slug, sentAt, service, visits, interactions: 1, id: `${writer}${slug}${service}` });
+  const tpl = ['a', 'b', 'c'].map((s) => row('template', 1, s));
+  const oneShowFiveNets = ['threads', 'twitter', 'bluesky', 'facebook', 'instagram'].map((n) => row('ai', 4, 'x', old, n));
+  assert.ok(!monthlySuggestion([...oneShowFiveNets, ...tpl], NOW).some((l) => /AI-written/.test(l)), 'one show cross-posted is too few');
+  const tooNew = ['x', 'y', 'z'].map((s) => row('ai', 4, s, fresh));
+  assert.ok(!monthlySuggestion([...tooNew, ...tpl], NOW).some((l) => /AI-written/.test(l)), 'posts under a week old do not count');
+  const lines = monthlySuggestion([...['x', 'y', 'z'].map((s) => row('ai', 4, s)), ...tpl], NOW);
+  assert.ok(lines.some((l) => /AI-written score posts: 4\.0 visits .* against 1\.0 .* \(3 shows and 3 shows, posts at least a week old\)/.test(l)), lines.join(' | '));
 });
 
 test('buildPostRows tags score posts with their writer; older entries count as template; other lanes get none', () => {

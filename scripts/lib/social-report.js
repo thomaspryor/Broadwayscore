@@ -249,7 +249,7 @@ function groupStats(rows, keyFn) {
 }
 
 /** Monthly keep/drop suggestion over `rows` (the last 30 days). */
-function monthlySuggestion(rows) {
+function monthlySuggestion(rows, now = Date.now()) {
   const judged = (groups, nameFn) => Object.entries(groups)
     .filter(([, g]) => g.posts >= MIN_POSTS_TO_JUDGE)
     .map(([k, g]) => ({ key: k, name: nameFn(k), ...g, perPost: (g.visits * 3 + g.interactions) / g.posts }))
@@ -262,12 +262,18 @@ function monthlySuggestion(rows) {
   } else if (lanes.length === 1) {
     lines.push(`Only ${lanes[0].name} have enough posts to judge so far (${lanes[0].posts}); keep going and next month can compare.`);
   }
-  // BRO-6959: are the AI-written score posts earning more than the template ones?
-  const writers = judged(groupStats(rows.filter((r) => r.writer), (r) => r.writer), (k) => (k === 'ai' ? 'AI-written score posts' : 'template score posts'));
-  if (writers.length === 2) {
-    const ai = writers.find((w) => w.key === 'ai'), tpl = writers.find((w) => w.key === 'template');
+  // BRO-6959: are the AI-written score posts earning more than the template ones? Only posts at
+  // least a week old count (newer AI posts have had less time to collect visits), and each side
+  // needs MIN_POSTS_TO_JUDGE different shows, since one show cross-posted to five networks is five rows.
+  const aged = rows.filter((r) => r.writer && now - Date.parse(r.sentAt) >= 7 * DAY_MS);
+  const side = (w) => {
+    const rs = aged.filter((r) => r.writer === w);
+    return { posts: rs.length, shows: new Set(rs.map((r) => r.slug)).size, visits: rs.reduce((n, r) => n + r.visits, 0), interactions: rs.reduce((n, r) => n + r.interactions, 0) };
+  };
+  const ai = side('ai'), tpl = side('template');
+  if (ai.shows >= MIN_POSTS_TO_JUDGE && tpl.shows >= MIN_POSTS_TO_JUDGE) {
     const per = (g) => (g.visits / g.posts).toFixed(1), likes = (g) => (g.interactions / g.posts).toFixed(1);
-    lines.push(`AI-written score posts: ${per(ai)} visits and ${likes(ai)} likes or shares per post, against ${per(tpl)} and ${likes(tpl)} for template ones (${ai.posts} and ${tpl.posts} posts).`);
+    lines.push(`AI-written score posts: ${per(ai)} visits and ${likes(ai)} likes or shares per post, against ${per(tpl)} and ${likes(tpl)} for template ones (${plural(ai.shows, 'show')} and ${plural(tpl.shows, 'show')}, posts at least a week old).`);
   }
   if (nets.length) {
     lines.push(`Best network: ${nets[0].name} (${plural(nets[0].visits, 'visit')}, ${plural(nets[0].interactions, 'like or share', 'likes and shares')} from ${plural(nets[0].posts, 'post')}).`);
@@ -545,7 +551,7 @@ function buildSocialReport({ bufferPosts, ledger, utmRows, bioRows, bioPageViews
   };
   if (new Date(now).getUTCDate() <= 7) {
     const monthRows = rows.filter((r) => now - Date.parse(r.sentAt) <= 30 * DAY_MS);
-    report.monthly = { posts: monthRows.length, lines: monthlySuggestion(monthRows) };
+    report.monthly = { posts: monthRows.length, lines: monthlySuggestion(monthRows, now) };
   }
   return report;
 }
