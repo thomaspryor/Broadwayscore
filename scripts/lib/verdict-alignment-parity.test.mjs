@@ -130,3 +130,9 @@ test('both inline and lazy review lists receive the verdict from their writer', 
     assert.match(read(file), /getReviewListItems\(show\)/);
   }
 });
+
+test('mobile detail bd uses the shared verdict counter, not score bands (BRO-6729)', () => {
+  const source = read('scripts/generate-mobile-show-details.js');
+  assert.match(source, /const breakdown = countReviewVerdicts\(\s*showReviews\.map\(r => \(\{ verdict: r\.verdict, reviewScore: r\.assignedScore \}\)\),\s*show\.category\s*\)/);
+  assert.doesNotMatch(source, /assignedScore >= (75|55)/);
+});

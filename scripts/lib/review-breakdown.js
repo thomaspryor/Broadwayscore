@@ -1,8 +1,9 @@
 const { getReviewBreakdownTierId, getGoldThreshold, RECOMMENDED_MIN, MIXED_MIN } = require('./score-tiers');
 
 // BRO-6729 decision, owner-hold sweep BRO-6852 (2026-11-02): align the web
-// counters and review badges with the critic verdict. Mobile bd stays parked
-// until the iOS consumer can be checked in its own repository.
+// counters and review badges with the critic verdict. Mobile bd now uses the
+// same counter (the iOS app builds its bar from review scores and ignores the
+// extra rave key).
 function countReviewVerdicts(reviews, category) {
   const counts = { rave: 0, positive: 0, mixed: 0, negative: 0 };
   for (const review of reviews) {

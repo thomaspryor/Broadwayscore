@@ -22,6 +22,7 @@ const { getTier: getAuthoritativeTier } = require('./lib/outlet-tiers');
 const { computeSlimCriticScore } = require('./lib/slim-critic-score');
 const { consensusDisplayCount } = require('./lib/consensus-display-count');
 const { publicCoverageVerdict } = require('./lib/public-coverage-verdict');
+const { countReviewVerdicts } = require('./lib/review-breakdown');
 const { isHiddenFromAppFeed } = require('./lib/markets');
 const { mayServeDiskImage } = require('./lib/image-source-match');
 const { versionedImagePath } = require('./lib/versioned-image-path');
@@ -541,13 +542,13 @@ for (const show of visibleShows) {
   const { showReviews, scoreResult: criticScoreResult, cs: slimCs, rc: slimRc } = computeSlimCriticScore(show, allShowReviews, outletRegistry);
   const buzz = audienceBuzz[show.id];
 
-  // Score breakdown — Positive = Recommended+ (75+), Mixed = Worth Seeing/Skippable (55-74), Negative = Critical Miss (<55)
-  const breakdown = { positive: 0, mixed: 0, negative: 0 };
-  for (const r of showReviews) {
-    if (r.assignedScore >= 75) breakdown.positive++;
-    else if (r.assignedScore >= 55) breakdown.mixed++;
-    else breakdown.negative++;
-  }
+  // Score breakdown follows the critic's verdict, same as the show-page bar (BRO-6729,
+  // owner-hold sweep BRO-6852). Reviews with no verdict fall back to score bands.
+  // Rave is its own bucket; the iOS app ignores unknown keys.
+  const breakdown = countReviewVerdicts(
+    showReviews.map(r => ({ verdict: r.verdict, reviewScore: r.assignedScore })),
+    show.category
+  );
 
   // Individual reviews — sorted by tier (T1 first), then score descending
   const reviewEntries = showReviews
