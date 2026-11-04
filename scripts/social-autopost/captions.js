@@ -336,6 +336,85 @@ function buildCompareCaptions(p) {
 }
 
 // ---------------------------------------------------------------------------
+// Moved post (BRO-6934): the same production in the same city, reopened at a new theatre.
+// The two runs are told apart by venue, not by market, so the lines read "At the London
+// Palladium: Critic Score 74 from 28 critics." and there is no cross-city caveat.
+
+// The venue line, in every moved caption: "At the <venue>: " then the score and critic count.
+const MOVED_SENTENCE = /\bAt the [^:\n]{2,60}: (?:Critic Score )?\d+ from \d+ critics\b/;
+const venueOf = show => String(show.venue || '').trim();
+/** "the Palladium", never "the The Public Theater": the venue with its article, for running text. */
+const theVenue = v => `the ${String(v).trim().replace(/^the\s+/i, '')}`;
+
+/** Markers every caption of a moved post carries: the newer show's path, the moved sentence and the older venue's line. */
+function movedMarkers(newerShow, olderVenue) {
+  const out = [pathMarker(newerShow), MOVED_SENTENCE];
+  if (olderVenue) out.push(new RegExp(`(?:^|\\n)At ${escapeRe(theVenue(olderVenue))}: `));
+  return out;
+}
+
+/** Closing question of a moved post, from the size and direction of the gap (the gap is allowed in briefs.allowedNumbers as `delta`). */
+function movedQuestion(newer, older) {
+  const gap = Math.abs(newer.score - older.score);
+  if (gap <= 3) return { long: 'Same show, new theatre, and the critics largely agree. What do you think carried over so well?', short: 'New theatre, critics agree. What carried over?', tiny: 'What carried over?' };
+  const warmer = newer.score > older.score ? newer : older, v = theVenue(venueOf(warmer.show));
+  return { long: `Same show, new theatre, ${an(gap)} ${gap}-point gap. Why do you think critics warmed to it more at ${v}?`, short: `${cap1(an(gap))} ${gap}-point gap. Why did critics warm to it more at ${v}?`, tiny: `Why did critics warm to it more at ${v}?` };
+}
+
+/** Moved post captions. p: { newer, older, hook } where newer/older = { show, score, reviewCount, soFar }. */
+function buildMovedCaptions(p) {
+  const { newer, older } = p;
+  const q = movedQuestion(newer, older);
+  const lead = title => `${title} has moved from ${theVenue(venueOf(older.show))} to ${theVenue(venueOf(newer.show))}.`;
+  const fact = d => `At ${theVenue(venueOf(d.show))}: Critic Score ${d.score} from ${d.reviewCount} critics${d.soFar ? ' so far' : ''}.`;
+  // clip: shorten the venue names in the fact lines, the last resort for very long theatre names on X and Bluesky.
+  const shortFact = (d, clip = Infinity) => `At ${theVenue(clipTitle(venueOf(d.show), clip))}: ${d.score} from ${d.reviewCount} critics${d.soFar ? ' so far' : ''}`;
+  const facts = `${fact(older)}\n${fact(newer)}`;
+  const hook = p.hook ? `${p.hook.trim()}\n\n` : '';
+  const title = newer.show.title;
+  const long = `${hook}${lead(title)}\n\n${facts}\n\n${q.long}`;
+  const links = network => `${venueOf(older.show)} reviews: ${showUrl(older.show, network, 'brief')}\n${venueOf(newer.show)} reviews: ${showUrl(newer.show, network, 'brief')}`;
+
+  // X and Bluesky carry the newer show's link only. Fit order: drop the hook, shorten the title,
+  // shorten the question; the facts and the link never. X counts any link as 23 characters (t.co).
+  const fitShort = network => {
+    const url = showUrl(newer.show, network, 'brief');
+    const linkCost = network === 'twitter' ? 23 : url.length;
+    const budget = LIMITS[network] - 4 - linkCost - 1;
+    const body = (t, { withHook = false, ask = q.long, bare = false, clip = Infinity } = {}) =>
+      `${withHook ? hook : ''}${bare ? t : lead(t)}\n${shortFact(older, clip)}\n${shortFact(newer, clip)}${ask ? `\n${ask}` : ''}`;
+    const t = firstFit(budget, [
+      body(title, { withHook: true }), body(title), body(title, { ask: q.short }),
+      body(title, { ask: q.short, bare: true }), body(title, { ask: q.tiny, bare: true }),
+      ...CLIPS.map(n => body(clipTitle(title, n), { ask: q.short, bare: true })),
+      body(clipTitle(title, 14), { ask: null, bare: true }),
+      ...[30, 22, 16].map(n => body(clipTitle(title, 24), { ask: q.tiny, bare: true, clip: n })),
+    ]);
+    return `${t}\n${url}`;
+  };
+  const fitThreads = () => {
+    const noHook = `${lead(title)}\n\n${facts}\n\n${q.long}`;
+    const tries = [`${long}\n\n${links('threads')}`, `${noHook}\n\n${links('threads')}`, `${noHook}\n\n${showUrl(newer.show, 'threads', 'brief')}`,
+      `${lead(title)}\n\n${facts}\n\n${showUrl(newer.show, 'threads', 'brief')}`,
+      // very long theatre names: the compact fact lines, then clipped names
+      ...[Infinity, 40, 28].map(clip => `${lead(title)}\n${shortFact(older, clip)}\n${shortFact(newer, clip)}\n${q.short}\n${showUrl(newer.show, 'threads', 'brief')}`)];
+    return tries.find(t => [...t].length <= LIMITS.threads) || tries[tries.length - 1];
+  };
+  const tags = [...new Set([...MARKETS[newer.show.category].hashtags, ...MARKETS[older.show.category].hashtags, 'Theatre'])].map(t => `#${t}`).join(' ');
+  const site = d => `${MARKETS[d.show.category].domain}${showPath(d.show)}`;
+  const altFact = d => `at ${theVenue(venueOf(d.show))}, ${d.score} from ${d.reviewCount} critics${d.soFar ? ' so far' : ''}`;
+
+  return {
+    twitter: fitShort('twitter'),
+    bluesky: fitShort('bluesky'),
+    threads: fitThreads(),
+    instagram: `${long}\n\nFull reviews: ${site(newer)} and ${site(older)} (link in bio)\n\n${tags}`,
+    facebook: `${long}\n\n${links('facebook')}`,
+    altText: `Critic Scores for ${title}, which moved from ${theVenue(venueOf(older.show))} to ${theVenue(venueOf(newer.show))}: ${altFact(older)}; ${altFact(newer)}.`,
+  };
+}
+
+// ---------------------------------------------------------------------------
 // Weekly roundup and closing soon (BRO-6413). Like every caption here these are
 // templates over the site's numbers; the only words are fixed.
 
@@ -475,6 +554,6 @@ function closingAllowedNumbers(p) {
 module.exports = {
   scoreQuestion, scoreAllowedNumbers, compareQuestion, roundupQuestion, closingQuestion,
   buildCaptions, showUrl, postMarkers, LIMITS,
-  buildCompareCaptions, compareCaveat, compareMarkers, validateHook, audienceNumber, strayNumbers, productionLabel, pathMarker, CITY, SCORE_SENTENCE, COMPARE_SENTENCE,
+  buildCompareCaptions, buildMovedCaptions, theVenue, movedQuestion, movedMarkers, venueOf, MOVED_SENTENCE, compareCaveat, compareMarkers, validateHook, audienceNumber, strayNumbers, productionLabel, pathMarker, CITY, SCORE_SENTENCE, COMPARE_SENTENCE,
   monthDay, ROUNDUP_SENTENCE, CLOSING_SENTENCE, roundupHeader, roundupMarkers, buildRoundupCaptions, roundupAllowedNumbers, closingMarkers, buildClosingCaptions, closingAllowedNumbers, SET_DOMAIN,
 };

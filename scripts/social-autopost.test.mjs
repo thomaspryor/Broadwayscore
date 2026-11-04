@@ -1396,3 +1396,114 @@ test('quiet-day backfill candidates: open, not closing soon, recent, unposted, s
   const ready = sel.scheduleEvents(ev, empty, Date.parse('2026-11-03T19:05:00Z'));
   assert.deepEqual(ready.map(e => e.show.id), ['z-2026'], 'the newest goes first; the second waits 90 minutes for a later run');
 });
+
+// ---- moved template (BRO-6934): same show, same city, new theatre ----
+const jcsOld = show({ id: 'jcs-west-end-2026', slug: 'jcs-west-end-2026', title: 'Jesus Christ Superstar', category: 'west-end', status: 'closed', venue: 'London Palladium', openingDate: '2026-07-07', previewsStartDate: '2026-06-20', closingDate: '2026-09-05' });
+const jcsNew = show({ id: 'jcs-drury-lane-west-end-2026', slug: 'jcs-drury-lane-west-end-2026', title: 'Jesus Christ Superstar', category: 'west-end', status: 'open', venue: 'Theatre Royal Drury Lane', openingDate: '2026-10-16', previewsStartDate: '2026-10-16', closingDate: '2027-01-09' });
+const moved = (a = jcsOld, b = jcsNew, sa = [74, 28], sb = [76, 32], hook = '') =>
+  briefs.buildMoved({ descA: desc(a, ...sa), descB: desc(b, ...sb), hook, now: Date.parse('2026-11-03T15:00:00Z') });
+
+test('moved: only the same title, one city, two theatres, older run closed first', () => {
+  assert.equal(briefs.orderMoved(jcsNew, jcsOld).older.id, jcsOld.id);
+  assert.ok(briefs.TEMPLATES.includes('moved'));
+  assert.throws(() => briefs.orderCompare(jcsOld, jcsNew), /one New York and one London/); // compare still refuses a same-city pair
+  assert.throws(() => briefs.orderMoved(london, offb), /one city/);
+  assert.throws(() => briefs.orderMoved(jcsOld, { ...jcsNew, title: 'Hamilton' }), /same title/);
+  assert.throws(() => briefs.orderMoved(jcsOld, { ...jcsNew, venue: 'london palladium' }), /different theatres/);
+  assert.throws(() => briefs.orderMoved(jcsOld, { ...jcsNew, venue: '' }), /venue/);
+  assert.throws(() => briefs.orderMoved(jcsOld, { ...jcsOld, id: 'z' }), /different theatres/);
+  assert.throws(() => briefs.orderMoved(jcsOld, jcsOld), /two different/);
+  assert.throws(() => briefs.orderMoved({ ...jcsOld, closingDate: '2026-11-01' }, jcsNew), /closed before/); // overlapping runs are not a move
+  assert.throws(() => briefs.orderMoved({ ...jcsOld, closingDate: null, status: 'open' }, jcsNew), /closed before/);
+  assert.equal(briefs.orderMoved({ ...jcsOld, closingDate: null }, jcsNew).older.id, jcsOld.id); // closed status without a date is enough
+});
+
+test('moved: captions state venue facts, no cross-city caveat, every limit, no stray numbers', () => {
+  const m = moved();
+  assert.equal(m.older.show.id, jcsOld.id);
+  assert.equal(m.delta, 2);
+  assert.deepEqual(m.card.sides.map(s => s.label), ['London Palladium', 'Theatre Royal Drury Lane']);
+  assert.equal(m.card.kicker, 'Same show, new theatre');
+  for (const [net, text] of Object.entries(m.captions)) {
+    if (net === 'altText') continue;
+    assert.ok(xLength(net, text) <= LIMITS[net], `${net} over its limit`);
+    assert.ok(!/[—–]/.test(text), `${net} has a dash`);
+    assert.match(text, /At the London Palladium: (Critic Score )?74 from 28 critics/);
+    assert.match(text, /At the Theatre Royal Drury Lane: (Critic Score )?76 from 32 critics(?! so far)/);
+    if (!['twitter', 'bluesky'].includes(net)) assert.match(text, /moved from the London Palladium to the Theatre Royal Drury Lane/); // the short networks shrink the lead-in to the title
+    assert.ok(!/different cities|like-for-like|also reviewed in/.test(text), `${net} carries a cross-city line`);
+    assert.ok(cap.movedMarkers(jcsNew, 'London Palladium').every(mk => mk.test(text)), `${net} misses a moved marker`);
+    assert.ok(!cap.COMPARE_SENTENCE.test(text) && !cap.SCORE_SENTENCE.test(text), `${net} reuses another post type's sentence`);
+    assert.match(text, /\?(\n|$|\s*\n?https)/, `${net} does not end on its question`);
+    assert.deepEqual(cap.strayNumbers(text, [74, 28, 76, 32, 2, 2026]), []);
+  }
+  assert.match(m.captions.facebook, /westendscorecard\.com\/show\/jcs-west-end-2026\?/);
+  assert.match(m.captions.facebook, /westendscorecard\.com\/show\/jcs-drury-lane-west-end-2026\?/);
+  assert.match(m.captions.twitter, /critics largely agree|carried over/); // a 2-point gap asks about agreement
+  assert.match(m.captions.altText, /moved from the London Palladium to the Theatre Royal Drury Lane/);
+});
+
+test('moved: a wide gap names the warmer theatre; a new run says "so far"; the hook rules still apply', () => {
+  const m = moved(jcsOld, jcsNew, [88, 28], [76, 32]);
+  assert.match(m.captions.facebook, /12-point gap\. Why do you think critics warmed to it more at the London Palladium\?/);
+  const fresh = briefs.buildMoved({ descA: desc(jcsOld, 74, 28), descB: desc(jcsNew, 76, 6), now: Date.parse('2026-10-20T15:00:00Z') });
+  assert.match(fresh.captions.twitter, /76 from 6 critics so far/);
+  assert.throws(() => moved(jcsOld, jcsNew, [74, 28], [76, 32], 'It is better now.'), /comparison word/);
+  assert.match(moved(jcsOld, jcsNew, [74, 28], [76, 32], 'Same cast, new stage.').captions.facebook, /^Same cast, new stage\./);
+  assert.throws(() => briefs.buildMoved({ descA: desc(london, 85, 26), descB: desc(offb, 77, 24), now: NOW }), /one city/);
+});
+
+test('moved: a long venue still fits X and Bluesky with the facts and link kept', () => {
+  const long = { ...jcsNew, venue: 'The Royal Shakespeare Company Theatre at the Barbican Centre' };
+  const m = moved(jcsOld, long);
+  for (const net of ['twitter', 'bluesky']) {
+    assert.ok(xLength(net, m.captions[net]) <= LIMITS[net], `${net} over its limit`);
+    assert.match(m.captions[net], /74 from 28 critics/);
+    assert.match(m.captions[net], /https:\/\/westendscorecard\.com\/show\//);
+  }
+});
+
+test('moved: the card labels sides by theatre, and the ledger entry gets moved markers', () => {
+  const html = buildCompareHtml(moved().card);
+  assert.match(html, />London Palladium</);
+  assert.match(html, />Theatre Royal Drury Lane</);
+  assert.match(html, /Same show, new theatre/);
+  assert.ok(!/Reviewed in two cities/.test(html));
+  assert.match(buildCompareHtml({ ...moved().card, delta: 0 }), /The same score at both theatres/);
+  assert.equal(briefs.olderLabelFor('moved', jcsOld), 'London Palladium');
+  assert.equal(briefs.olderLabelFor('compare', jcsOld), 'London 2026');
+  const mk = entryMarkers({ type: 'brief', template: 'moved', slug: jcsNew.slug, olderLabel: 'London Palladium' });
+  assert.ok(mk.every(r => r.test(moved().captions.facebook)));
+  // another pair with the same newer production never matches this pair's posts
+  assert.ok(!entryMarkers({ type: 'brief', template: 'moved', slug: jcsNew.slug, olderLabel: 'Adelphi Theatre' }).every(r => r.test(moved().captions.facebook)));
+  // a compare entry keeps its compare markers
+  assert.ok(entryMarkers({ type: 'brief', template: 'compare', slug: offb.slug, olderLabel: 'London 2024' }).some(r => r === cap.COMPARE_SENTENCE));
+});
+
+test('moved: the same pair dedupes like a compare pair', () => {
+  const pair = briefs.pairKey([jcsOld.id, jcsNew.id]);
+  const ledger = { posts: [{ type: 'brief', hash: 'aaaaaaaaaaaa', pair, dueAt: '2026-11-04T15:00:00Z' }] };
+  const c = briefs.briefConflicts(ledger, { hash: 'bbbbbbbbbbbb', pair }, Date.parse('2026-11-10T00:00:00Z'));
+  assert.equal(c.samePair.hash, 'aaaaaaaaaaaa');
+  assert.equal(briefs.briefConflicts(ledger, { hash: 'aaaaaaaaaaaa', pair }, Date.now()).sameHash.hash, 'aaaaaaaaaaaa');
+});
+
+test('moved: venue digits, a leading "The", very long venues and previews overlap (ship-check findings)', () => {
+  const ny = (venue, over = {}) => show({ id: `p-${venue.length}`, slug: `p-${venue.length}`, title: 'Proof', category: 'off-broadway', venue, status: 'open', openingDate: '2026-10-16', previewsStartDate: '2026-10-16', ...over });
+  const oldRun = show({ id: 'p-old', slug: 'p-old', title: 'Proof', category: 'off-broadway', venue: 'The Public Theater', status: 'closed', openingDate: '2026-07-07', previewsStartDate: '2026-06-20', closingDate: '2026-09-05' });
+  // digits in a venue name are not stray numbers
+  const studio = briefs.buildMoved({ descA: desc(oldRun, 74, 28), descB: desc(ny('Studio 54'), 76, 32), now: NOW });
+  assert.match(studio.captions.facebook, /At Studio 54 ?|At the Studio 54: Critic Score 76/);
+  // no "the The"
+  const the = briefs.buildMoved({ descA: desc(oldRun, 74, 28), descB: desc(ny('The Shed'), 76, 32), now: NOW });
+  for (const [net, text] of Object.entries(the.captions)) assert.ok(!/the The\b/i.test(text), `${net} says "the The"`);
+  assert.match(the.captions.facebook, /moved from the Public Theater to the Shed\./);
+  assert.ok(cap.movedMarkers(ny('The Shed'), 'The Public Theater').every(mk => mk.test(the.captions.facebook)));
+  // very long venue names still fit Bluesky and X
+  const longOld = { ...oldRun, venue: 'Laura Pels Theatre at the Harold and Miriam Steinberg Center for Theatre' };
+  const longNew = ny('Second Stage Theater at the Irene Diamond Stage and Education Center');
+  const long = briefs.buildMoved({ descA: desc(longOld, 74, 28), descB: desc(longNew, 76, 32), now: NOW });
+  for (const net of ['twitter', 'bluesky']) assert.ok(xLength(net, long.captions[net]) <= LIMITS[net], `${net} over its limit`);
+  // a run that overlaps the new run's previews is not a move
+  assert.throws(() => briefs.orderMoved({ ...oldRun, closingDate: '2026-10-01' }, ny('Studio 54', { openingDate: '2026-10-16', previewsStartDate: '2026-09-20' })), /closed before/);
+});
