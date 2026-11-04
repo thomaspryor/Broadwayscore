@@ -15,6 +15,10 @@
  *   - both changed, both objects      -> recurse key by key
  *   - both changed, both ISO-8601 timestamps -> the later one (freshness
  *     stamps like `lastUpdated`; the earlier stamp is the one dropped value)
+ *   - (opt-in: --append-arrays / opts.appendArrays) both changed, all three arrays, and each side only appended to base
+ *     (base is a prefix of both) -> theirs, then the entries only ours added
+ *     (append-only run logs such as data/llm-scoring-runs.json). A capped log
+ *     that dropped its oldest rows is no longer a prefix, so it still conflicts.
  *   - anything else                   -> conflict; the whole merge fails
  * Apart from that stamp, no side's change is dropped: a true clash fails and
  * the caller keeps reporting the conflict. Unlike the core-data-merge-registry mergers (built
@@ -24,7 +28,7 @@
  *
  * Key order follows `theirs`, with keys only `ours` has appended in its order.
  *
- * CLI: node json-three-way-merge.js <base> <ours> <theirs> <out>
+ * CLI: node json-three-way-merge.js <base> <ours> <theirs> <out> [--append-arrays]
  *   Writes the merge to <out> in theirs' layout (indent, trailing newline) and
  *   exits 0; exits 1 on a conflict or any read/parse error (writes nothing).
  *   Also exits 1 when ours or theirs would not re-serialize byte-identically
@@ -46,12 +50,16 @@ function same(a, b) {
   return JSON.stringify(a) === JSON.stringify(b);
 }
 
-function mergeValue(base, ours, theirs) {
+function mergeValue(base, ours, theirs, opts) {
   if (same(ours, theirs)) return ours;
   if (same(ours, base)) return theirs;
   if (same(theirs, base)) return ours;
   if (isPlainObject(ours) && isPlainObject(theirs)) {
-    return mergeObject(isPlainObject(base) ? base : {}, ours, theirs);
+    return mergeObject(isPlainObject(base) ? base : {}, ours, theirs, opts);
+  }
+  if (opts.appendArrays && Array.isArray(base) && Array.isArray(ours) && Array.isArray(theirs)) {
+    const merged = mergeAppendOnly(base, ours, theirs);
+    if (merged) return merged;
   }
   if (typeof ours === 'string' && typeof theirs === 'string' && ISO_RE.test(ours) && ISO_RE.test(theirs)) {
     const a = Date.parse(ours);
@@ -61,7 +69,16 @@ function mergeValue(base, ours, theirs) {
   return CONFLICT;
 }
 
-function mergeObject(base, ours, theirs) {
+// Both sides only appended to base: keep theirs, add ours' new rows once.
+function mergeAppendOnly(base, ours, theirs) {
+  const isPrefix = (arr) => arr.length >= base.length && base.every((v, i) => same(v, arr[i]));
+  if (!isPrefix(ours) || !isPrefix(theirs)) return null;
+  const seen = new Set(theirs.slice(base.length).map((v) => JSON.stringify(v)));
+  const extra = ours.slice(base.length).filter((v) => !seen.has(JSON.stringify(v)));
+  return [...theirs, ...extra];
+}
+
+function mergeObject(base, ours, theirs, opts) {
   const has = (o, k) => Object.prototype.hasOwnProperty.call(o, k);
   // Insertion-ordered Set: theirs' keys, then ours-only, then base-only (a key
   // both sides deleted; merges to undefined and is dropped).
@@ -71,7 +88,7 @@ function mergeObject(base, ours, theirs) {
     const b = has(base, k) ? base[k] : undefined;
     const o = has(ours, k) ? ours[k] : undefined;
     const t = has(theirs, k) ? theirs[k] : undefined;
-    const m = mergeValue(b, o, t);
+    const m = mergeValue(b, o, t, opts);
     if (m === CONFLICT) return CONFLICT;
     // defineProperty: a literal "__proto__" key must stay a key.
     if (m !== undefined) Object.defineProperty(out, k, { value: m, enumerable: true, writable: true, configurable: true });
@@ -82,8 +99,8 @@ function mergeObject(base, ours, theirs) {
 /**
  * @returns {{ok: true, merged: any} | {ok: false}}
  */
-function mergeJson(base, ours, theirs) {
-  const m = mergeValue(base, ours, theirs);
+function mergeJson(base, ours, theirs, opts = {}) {
+  const m = mergeValue(base, ours, theirs, opts);
   return m === CONFLICT ? { ok: false } : { ok: true, merged: m };
 }
 
@@ -103,6 +120,7 @@ function roundTrips(text, value) {
 
 function main(argv) {
   const [baseP, oursP, theirsP, outP] = argv;
+  const opts = { appendArrays: argv.includes('--append-arrays') };
   if (!outP) return 1;
   try {
     const baseText = fs.existsSync(baseP) ? fs.readFileSync(baseP, 'utf8') : '';
@@ -112,7 +130,7 @@ function main(argv) {
     const theirs = JSON.parse(theirsText);
     if (!roundTrips(oursText, ours) || !roundTrips(theirsText, theirs)) return 1;
     const base = baseText.trim() ? JSON.parse(baseText) : (isPlainObject(theirs) ? {} : null);
-    const res = mergeJson(base, ours, theirs);
+    const res = mergeJson(base, ours, theirs, opts);
     if (!res.ok) return 1;
     fs.writeFileSync(outP, serialize(res.merged, theirsText));
     return 0;

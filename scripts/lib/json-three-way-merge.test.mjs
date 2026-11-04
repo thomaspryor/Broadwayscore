@@ -83,3 +83,17 @@ test('a literal __proto__ key survives as a key', () => {
   assert.deepEqual(Object.keys(r.merged), ['t', '__proto__']);
   assert.equal(JSON.stringify(r.merged), '{"t":1,"__proto__":{"x":1}}');
 });
+
+test('append-only arrays: both sides appended -> union, theirs first', () => {
+  const r = mergeJson([{ id: 1 }], [{ id: 1 }, { id: 2 }], [{ id: 1 }, { id: 3 }], { appendArrays: true });
+  assert.equal(mergeJson([{ id: 1 }], [{ id: 1 }, { id: 2 }], [{ id: 1 }, { id: 3 }]).ok, false); // opt-in only
+  assert.equal(r.ok, true);
+  assert.deepEqual(r.merged, [{ id: 1 }, { id: 3 }, { id: 2 }]);
+  // same row appended on both sides is not duplicated
+  assert.deepEqual(mergeJson([], [{ id: 2 }], [{ id: 2 }, { id: 3 }], { appendArrays: true }).merged, [{ id: 2 }, { id: 3 }]);
+});
+
+test('arrays that are not pure appends (capped, edited, reordered) still conflict', () => {
+  assert.equal(mergeJson([1, 2, 3], [2, 3, 4], [1, 2, 3, 5], { appendArrays: true }).ok, false);
+  assert.equal(mergeJson([1, 2], [1, 9], [1, 2, 5], { appendArrays: true }).ok, false);
+});
