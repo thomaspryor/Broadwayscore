@@ -147,7 +147,9 @@ function titleOnlyAsOtherVenue(text, show, tokensOf) {
     if (!tokens.every((t, k) => words[i + k] === t)) continue;
     const next = words[i + tokens.length];
     // "bug-theatre-review" is the outlet's section label, not a house.
-    if (!VENUE_NOUN.has(next) || !isKnownLondonHouse(`${tokens.join(' ')} ${next}`)) return false;
+    if (!VENUE_NOUN.has(next) || !isKnownLondonHouse(`${tokens.join(' ')} ${next.replace(/^theater$/, 'theatre')}`)) return false;
+    // "the-bridge-theatre-review" / "The Bridge, theatre review": the outlet's label after the title.
+    if (/^reviews?$/.test(words[i + tokens.length + 1] || '')) return false;
     if (ownVenue.includes(` ${tokens.join(' ')} ${next} `)) return false;
     venueUses++;
   }

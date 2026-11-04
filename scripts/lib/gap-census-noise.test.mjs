@@ -248,6 +248,10 @@ test('a title used only as another house\'s name is not this show', () => {
   assert.equal(noise.titleOnlyAsOtherVenue('/article/into-woods-review-noel-coward-theatre Into the Woods review: the Bridge Theatre transfer', show, titleTokens), true);
   assert.equal(noise.titleOnlyAsOtherVenue('/stage/x The Bridge review, Bush Theatre', show, titleTokens), false);
   assert.equal(noise.missingNoiseReason({ url: 'https://www.timeout.com/london/news/review-into-the-woods-bridge-theatre-121125', serpCensus: true }, { show, tokensOf: titleTokens }), 'title-is-other-venue');
+  // The title followed by the outlet's "theatre review" label is this show (review finding).
+  assert.equal(u('https://x.com/the-bridge-theatre-review'), false);
+  assert.equal(noise.titleOnlyAsOtherVenue('/stage/x The Bridge, theatre review: a quiet triumph', show, titleTokens), false);
+  assert.equal(u('https://variety.com/2026/legit/reviews/into-the-woods-review-bridge-theater-1234/'), true);
   // A show whose own house carries the name keeps those reviews.
   const own = { title: 'Lyric', venue: 'Lyric Theatre', openingDate: '2026-11-03' };
   assert.equal(noise.titleOnlyAsOtherVenueInUrl('https://x.co.uk/lyric-lyric-theatre-review', own, titleTokens), false);
