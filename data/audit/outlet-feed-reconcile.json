@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-04T16:43:08.883Z",
+  "generatedAt": "2026-11-04T17:08:11.973Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -133,37 +133,17 @@
   "feedsChecked": 78,
   "feedsFailed": [
     {
-      "outletId": "theater-life",
-      "error": "Timeout fetching https://theaterlife.com/feed"
-    },
-    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
     {
       "outletId": "slantmagazine",
       "error": "direct fetch returned a non-rss page"
-    },
-    {
-      "outletId": "cote-notices",
-      "error": "HTTP 403 for https://davidcote1.substack.com/feed"
-    },
-    {
-      "outletId": "theartsdispatch",
-      "error": "HTTP 403 for https://theartsdispatch.substack.com/feed"
-    },
-    {
-      "outletId": "rolandcat",
-      "error": "HTTP 403 for https://rolandcat.substack.com/feed"
-    },
-    {
-      "outletId": "matineemouse",
-      "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 817,
-  "matchedGaps": 12,
-  "possibleGaps": 10,
+  "itemsScanned": 840,
+  "matchedGaps": 11,
+  "possibleGaps": 11,
   "gaps": [
     {
       "showId": "a-few-good-men-2026",
@@ -191,15 +171,6 @@
       "url": "https://revstanstheatreblog.co.uk/2026/11/03/review-the-bridge-bush-theatre/",
       "headline": "Review: The Bridge, Bush Theatre",
       "publishDate": "2026-11-03"
-    },
-    {
-      "showId": "the-bridge-off-west-end-2026",
-      "title": "The Bridge",
-      "level": "matched",
-      "outletId": "londontheatre1",
-      "url": "https://www.londontheatre1.com/reviews/the-bridge-bush-theatre/",
-      "headline": "The Bridge | Bush Theatre",
-      "publishDate": "2026-11-04"
     },
     {
       "showId": "the-bridge-off-west-end-2026",
@@ -272,6 +243,15 @@
       "url": "https://www.thereviewshub.com/eno-tosca-london-coliseum/",
       "headline": "ENO: Tosca &#8211; London Coliseum",
       "publishDate": "2026-10-31"
+    },
+    {
+      "showId": "rope-off-broadway-2026",
+      "title": "Rope",
+      "level": "possible",
+      "outletId": "theater-life",
+      "url": "https://theaterlife.com/rope/",
+      "headline": "Rope **",
+      "publishDate": "2026-11-04"
     },
     {
       "showId": "the-bridge-off-west-end-2026",
