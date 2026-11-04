@@ -98,6 +98,9 @@ function bucketOf(score) {
 function consensusFingerprint(reviews) {
   const rows = reviews || [];
   const scored = rows.filter(r => typeof r.score === 'number');
+  // Internal change-detection fingerprint over raw score bands. Not shown to
+  // readers, and the generator inputs carry no verdict (BRO-6729: user-facing
+  // counters use the verdict via scripts/lib/review-breakdown.js).
   const bucketBreakdown = { positive: 0, mixed: 0, negative: 0 };
   for (const r of scored) bucketBreakdown[bucketOf(r.score)]++;
   return {

@@ -1,0 +1,27 @@
+{
+  "issueNumber": "bro-6280",
+  "planId": "3cd85659-8149-4f42-a349-898db869a5af",
+  "status": "pending",
+  "createdAt": "2026-11-04T05:05:59.080Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Retire the duplicate Iphigenie en Tauride (ENO, London Coliseum) row that trips the corpus-drift duplicate-shows audit",
+    "steps": [
+      "Retire duplicate Iphigenie en Tauride row"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "retire-show",
+        "description": "Retire duplicate Iphigenie en Tauride row",
+        "id": "iphigenie-en-tauride-west-end-2026",
+        "expectTitle": "Iphigénie En Tauride",
+        "duplicateOf": "iphigenie-en-tauride-english-national-opera-west-end-2026",
+        "reason": "Same ENO production at the London Coliseum (6-14 Nov 2026) minted twice under two titles; keep the dated row with the ticket link (BRO-6280)"
+      }
+    ]
+  }
+}

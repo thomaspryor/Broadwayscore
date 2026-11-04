@@ -266,7 +266,7 @@ function checkSite() {
     );
     if (found) {
       console.log(`\n✅ LIVE: ${outletName} — ${found.s} ${found.b}`);
-      console.log(`   Total reviews: ${d.rv.length} | Pos: ${d.bd.positive} | Mix: ${d.bd.mixed}`);
+      console.log(`   Total reviews: ${d.rv.length} | Pos: ${(d.bd.rave || 0) + d.bd.positive} | Mix: ${d.bd.mixed}`);
       return true;
     }
   } catch {}
