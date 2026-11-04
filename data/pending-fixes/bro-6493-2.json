@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6493-2",
   "planId": "21336974-a9ad-4f91-ab58-8b359aeb9ae5",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-04T13:10:40.052Z",
   "submitter": {
     "name": null,
@@ -264,5 +264,134 @@
         "description": "BRO-6493: Contemporary transfer announcement explicitly separates September 10, 2022 Cherry Lane first performance from September 20 opening; DTLI also identifies September 20 opening. Sources: https://www.broadwayworld.com/off-broadway/article/THIS-BEAUTIFUL-FUTURE-Transfers-Off-Broadway-to-the-Cherry-Lane-Theatre-in-September-20220728 https://didtheylikeit.com/shows/this-beautiful-future/"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-04T14:35:15.074Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for hold-on-to-your-butts-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for ice-queen-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for youre-a-good-man-charlie-brown-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for messy-millie-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for walk-on-through-confessions-of-a-museum-novice-off-broadway-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for walk-on-through-confessions-of-a-museum-novice-off-broadway-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for make-me-gorgeous-off-broadway-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for make-me-gorgeous-off-broadway-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for waiting-for-godot-off-broadway-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for waiting-for-godot-off-broadway-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for i-love-you-so-much-i-could-die-off-broadway-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for i-love-you-so-much-i-could-die-off-broadway-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for public-obscenities-off-broadway-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for public-obscenities-off-broadway-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for lone-star-off-broadway-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for lone-star-off-broadway-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for david-blaine-presents-asi-winds-inner-circle-off-broadway-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for david-blaine-presents-asi-winds-inner-circle-off-broadway-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for remember-this-the-lesson-of-jan-karski-off-broadway-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for remember-this-the-lesson-of-jan-karski-off-broadway-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for des-moines-off-broadway-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for des-moines-off-broadway-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: venue updated for silver-manhattan-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for this-beautiful-future-off-broadway-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for this-beautiful-future-off-broadway-2022"
+    }
+  ],
+  "executedIn": "ci"
 }
