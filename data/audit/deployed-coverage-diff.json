@@ -1,32 +1,13 @@
 {
-  "generatedAt": "2026-11-04T02:32:49.128Z",
+  "generatedAt": "2026-11-04T04:20:35.626Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 317,
-  "clean": 316,
-  "defective": 1,
-  "byType": {
-    "score-drift": 1
-  },
-  "shows": [
-    {
-      "showId": "some-woman-west-end-2026",
-      "title": "Some Woman",
-      "openingDate": "2026-10-15",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 69.21 vs local 69.02 (Δ0.19)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 34,
-      "deployedCount": 34,
-      "firstDefectAt": "2026-11-04T02:32:44.929Z"
-    }
-  ],
+  "clean": 317,
+  "defective": 0,
+  "byType": {},
+  "shows": [],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }

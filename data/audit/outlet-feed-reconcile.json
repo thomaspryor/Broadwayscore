@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-04T02:32:49.542Z",
+  "generatedAt": "2026-11-04T04:20:36.006Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -84,6 +84,11 @@
       "openingDate": "2026-11-03"
     },
     {
+      "id": "parcel-from-america-off-broadway-2026",
+      "title": "Parcel from America",
+      "openingDate": "2026-11-04"
+    },
+    {
       "id": "the-morbs-off-broadway-2026",
       "title": "The Morbs",
       "openingDate": "2026-11-02"
@@ -121,20 +126,12 @@
   ],
   "skipped": [
     {
-      "showId": "parcel-from-america-off-broadway-2026",
-      "reason": "no data/review-texts directory for this show"
-    },
-    {
       "showId": "the-greatest-story-ever-off-broadway-2026",
       "reason": "no data/review-texts directory for this show"
     }
   ],
   "feedsChecked": 78,
   "feedsFailed": [
-    {
-      "outletId": "theater-life",
-      "error": "Timeout fetching https://theaterlife.com/feed"
-    },
     {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
@@ -160,10 +157,19 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 813,
-  "matchedGaps": 7,
-  "possibleGaps": 14,
+  "itemsScanned": 821,
+  "matchedGaps": 9,
+  "possibleGaps": 13,
   "gaps": [
+    {
+      "showId": "a-few-good-men-2026",
+      "title": "A Few Good Men",
+      "level": "matched",
+      "outletId": "times-square-chronicles",
+      "url": "https://t2conline.com/a-few-good-men-michael-ardens-brilliant-broadway-revival-is-a-masterclass-in-theatrical-precision/",
+      "headline": "A Few Good Men: Michael Arden’s Brilliant Broadway Revival Is a Masterclass in Theatrical Precision",
+      "publishDate": "2026-11-03"
+    },
     {
       "showId": "the-bridge-off-west-end-2026",
       "title": "The Bridge",
@@ -228,6 +234,15 @@
       "publishDate": "2026-10-31"
     },
     {
+      "showId": "well-see-off-broadway-2026",
+      "title": "We'll See",
+      "level": "matched",
+      "outletId": "culturesauce",
+      "url": "https://culturesauce.com/well-see-richard-nelson-apple-off-broadway-review/",
+      "headline": "&#8216;We&#8217;ll See&#8217; revisits the Apple family amid the ongoing MAGA migraine (Off Broadway review)",
+      "publishDate": "2026-11-03"
+    },
+    {
       "showId": "rope-off-broadway-2026",
       "title": "Rope",
       "level": "possible",
@@ -243,15 +258,6 @@
       "outletId": "theater-pizzazz",
       "url": "https://theaterpizzazz.com/rope-winds-up-on-the-ropes/",
       "headline": "“ROPE” WINDS UP ON THE ROPES",
-      "publishDate": "2026-11-03"
-    },
-    {
-      "showId": "rope-off-broadway-2026",
-      "title": "Rope",
-      "level": "possible",
-      "outletId": "theatermania",
-      "url": "https://www.theatermania.com/news/review-as-a-thiller-gordon-greenbergs-rope-isnt-all-that-taut_1858790/",
-      "headline": "Review: As a Thiller, Gordon Greenberg’s Rope Isn’t All That Taut",
       "publishDate": "2026-11-03"
     },
     {
