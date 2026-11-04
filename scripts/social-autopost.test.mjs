@@ -1601,13 +1601,15 @@ test('ai writeScoreCaptions: a rejected draft is rewritten once, then the templa
   const r3 = await ai.writeScoreCaptions(desc, ctx, AI_NOW, { writer: async () => { throw new Error('Claude writer HTTP 529'); }, checker: async () => ({ supported: true, problems: [] }) });
   assert.equal(r3.meta.writer, 'template');
   assert.match(r3.meta.fallback, /529/);
+  assert.equal(r3.meta.outage, true, 'an API failure is flagged so run.js reports it');
   assert.deepEqual(r3.captions, template);
 });
 
-test('ai writer switch: off by default; on when config enables it or a dry run forces it; kill switch and missing keys win', () => {
+test('ai writer switch: live follows config; dry runs draft only when forced; kill switch and missing keys win', () => {
   const keys = { ANTHROPIC_API_KEY: 'x', OPENAI_API_KEY: 'y' };
   assert.match(ai.aiDisabledReason(keys), /enabled is false/);
   assert.equal(ai.aiDisabledReason(keys, { enabled: true }), null);
+  assert.match(ai.aiDisabledReason(keys, { enabled: true, dryRun: true }), /dry run/, 'a preview never pays unless forced');
   assert.equal(ai.aiDisabledReason({ ...keys, SOCIAL_AI_CAPTIONS_FORCE: 'true' }, { dryRun: true }), null);
   assert.match(ai.aiDisabledReason({ ...keys, SOCIAL_AI_CAPTIONS_FORCE: 'true' }, { dryRun: false }), /enabled is false/, 'force never turns it on for live posts');
   assert.match(ai.aiDisabledReason({ ANTHROPIC_API_KEY: 'x' }, { enabled: true }), /OPENAI/);

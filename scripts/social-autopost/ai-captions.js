@@ -169,12 +169,15 @@ function captionsFromDraft(desc, draft) {
 }
 
 /**
- * Why the AI writer is off for this run, or null when it may run. Off unless config enables it
- * or a dry run forces it (workflow input ai_captions); the kill switch beats both.
+ * Why the AI writer is off for this run, or null when it may run. Live posts follow config
+ * (AI_CAPTIONS.enabled); dry runs and previews draft only when forced (workflow input
+ * ai_captions), so a preview never pays for drafts by accident. The kill switch beats both.
  */
 function aiDisabledReason(env = process.env, { enabled = false, dryRun = false } = {}) {
-  if (/^(1|true|yes)$/i.test(env.SOCIAL_AI_CAPTIONS_DISABLED || '')) return 'SOCIAL_AI_CAPTIONS_DISABLED';
-  if (!enabled && !(dryRun && /^(1|true|yes)$/i.test(env.SOCIAL_AI_CAPTIONS_FORCE || ''))) return 'AI_CAPTIONS.enabled is false';
+  const yes = v => /^(1|true|yes)$/i.test(v || '');
+  if (yes(env.SOCIAL_AI_CAPTIONS_DISABLED)) return 'SOCIAL_AI_CAPTIONS_DISABLED';
+  if (dryRun && !yes(env.SOCIAL_AI_CAPTIONS_FORCE)) return 'dry run without the ai_captions input';
+  if (!dryRun && !enabled) return 'AI_CAPTIONS.enabled is false';
   if (!env.ANTHROPIC_API_KEY) return 'no ANTHROPIC_API_KEY';
   if (!env.OPENAI_API_KEY) return 'no OPENAI_API_KEY (posts are never sent unchecked)';
   return null;
@@ -185,7 +188,7 @@ function aiDisabledReason(env = process.env, { enabled = false, dryRun = false }
  * @param {{shows, slim}} ctx
  * @param {number} now
  * @param {{writer?, checker?, log?, deadline?, cache?}} deps  writer/checker stubs for tests; cache is
- *   ledger._meta.aiDrafts: an approved draft is reused only while the fact sheet is byte-identical
+ *   ledger._meta.aiDrafts: an approved draft is reused only while the fact sheet and the prompt are byte-identical
  * @returns {Promise<{captions, meta: {writer: 'ai'|'template', lead?, attempts, fallback?, problems?}}>}
  *   Never throws: any failure returns the template captions with the reason.
  */
@@ -199,7 +202,7 @@ async function writeScoreCaptions(desc, ctx, now, deps = {}) {
   try { pool = buildFactPool(desc.show, ctx, now); sheet = factSheet(pool); } catch (e) {
     return { captions: template(), meta: { writer: 'template', attempts: 0, fallback: `fact pool: ${e.message}` } };
   }
-  const cache = deps.cache, sheetHash = crypto.createHash('sha1').update(sheet).digest('hex').slice(0, 16);
+  const cache = deps.cache, sheetHash = crypto.createHash('sha1').update(writerPrompt(sheet, null)).digest('hex').slice(0, 16); // the facts and the prompt: a prompt change drops kept drafts
   const kept = cache && cache[desc.show.id];
   if (kept && kept.sheetHash === sheetHash) return { captions: kept.captions, meta: { ...kept.meta, reused: true } };
   let feedback = null, attempts = 0, outOfTime = false;
@@ -225,7 +228,7 @@ async function writeScoreCaptions(desc, ctx, now, deps = {}) {
     }
     return { captions: template(), meta: { writer: 'template', attempts, fallback: outOfTime ? 'run time budget for drafts used up' : 'drafts failed checks', ...(feedback ? { problems: feedback.slice(0, 5) } : {}) } };
   } catch (e) {
-    return { captions: template(), meta: { writer: 'template', attempts, fallback: String(e.message || e).slice(0, 200) } };
+    return { captions: template(), meta: { writer: 'template', attempts, fallback: String(e.message || e).slice(0, 200), outage: true } }; // an API or key failure, not a refused draft: run.js reports it
   }
 }
 

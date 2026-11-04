@@ -898,6 +898,9 @@ async function main() {
           ? { captions: buildCaptions(desc), meta: { writer: 'template', attempts: 0, fallback: aiOff } }
           : await writeScoreCaptions(desc, ctx, ev.dueAt.getTime(), { log: console.log, deadline: aiDeadline, cache: live ? (ctx.ledger._meta.aiDrafts = ctx.ledger._meta.aiDrafts || {}) : undefined });
         if (live && writer.writer === 'ai' && !writer.reused) writeLedger(ctx.ledger);
+        // The post still goes out (template wording), but a missing key or a failing API would otherwise
+        // turn the AI writer off unnoticed: put it in the digest. Refused drafts are normal and stay quiet.
+        if (live && AI_CAPTIONS.enabled && (writer.outage || /API_KEY/.test(aiOff || ''))) problems.push(`${ev.show.id}: AI writer unavailable, posted the template wording (${writer.fallback})`);
         console.log(`  writer: ${writer.writer}${writer.lead ? ` (lead: ${writer.lead})` : ''}${writer.fallback ? ` (template because: ${writer.fallback})` : ''}`);
         console.log(`  X: ${captions.twitter.replace(/\n/g, ' | ')}`);
         if (!live) { console.log(`  Facebook: ${captions.facebook.replace(/\n/g, ' | ')}`); continue; }
