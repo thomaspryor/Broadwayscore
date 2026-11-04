@@ -5,7 +5,7 @@ import { featureFlags } from '@/config/feature-flags';
 import { useAuth } from '@/contexts/AuthContext';
 import { getSupabaseClient } from '@/lib/supabase';
 import Modal from '@/components/show-cards/Modal';
-import { FlagScoreModal, AddReviewModal } from './CriticRequestModals';
+import { MissingReviewModal } from './CriticRequestModals';
 import CriticProfileEditor, { type EditableProfile } from './CriticProfileEditor';
 
 // BRO-6895: the "Are you X? Claim this page" prompt and the owner's edit entry.
@@ -24,18 +24,30 @@ export async function accessToken(): Promise<string | null> {
 const inputClasses = 'w-full px-3 py-2.5 bg-surface-overlay border border-white/10 rounded-lg text-white placeholder:text-fg-muted focus:ring-2 focus:ring-brand focus:border-transparent';
 const btnPrimary = 'px-4 py-2 bg-brand text-gray-900 text-sm font-semibold rounded-lg hover:bg-brand-hover transition-colors disabled:opacity-50';
 
-export default function CriticClaimPanel({ slug, name, outlet, claimed, reviewOptions }: {
+/**
+ * Dev-only preview of the owner view (`?devCriticOwner=1` on `next dev`), for
+ * screenshots without a real account. Compiled out of production builds.
+ */
+function devOwnerPreview(): boolean {
+  if (process.env.NODE_ENV === 'production') return false;
+  try { return new URLSearchParams(window.location.search).get('devCriticOwner') === '1'; } catch { return false; }
+}
+
+export default function CriticClaimPanel({ slug, name, outlet, claimed, reviewOptions, onOwnerChange, onFlag }: {
   slug: string;
   name: string;
   outlet: string;
   claimed: boolean;
   reviewOptions: { key: string; label: string }[];
+  /** Told whether the signed-in account owns this page (gates per-review "Flag a problem"). */
+  onOwnerChange?: (isOwner: boolean) => void;
+  /** Opens "Flag a problem" with no review chosen yet. */
+  onFlag?: () => void;
 }) {
   const { user, loading, isAuthenticated, showSignIn } = useAuth();
   const [me, setMe] = useState<Me>({ state: 'loading' });
   const [claimOpen, setClaimOpen] = useState(false);
   const [editOpen, setEditOpen] = useState(false);
-  const [flagOpen, setFlagOpen] = useState(false);
   const [addOpen, setAddOpen] = useState(false);
   const [claimsOff, setClaimsOff] = useState(false);
   useEffect(() => {
@@ -52,10 +64,14 @@ export default function CriticClaimPanel({ slug, name, outlet, claimed, reviewOp
   }, [slug]);
 
   useEffect(() => {
+    if (devOwnerPreview()) { setMe({ state: 'owner', profile: null, notifyOpeningNight: false }); return; }
     if (loading) return;
     if (!isAuthenticated) { setMe({ state: 'signed-out' }); return; }
     refresh();
   }, [loading, isAuthenticated, refresh]);
+
+  const isOwner = me.state === 'owner';
+  useEffect(() => { onOwnerChange?.(isOwner); }, [isOwner, onOwnerChange]);
 
   if (!featureFlags.userAccounts) return null;
 
@@ -67,11 +83,10 @@ export default function CriticClaimPanel({ slug, name, outlet, claimed, reviewOp
           <button type="button" onClick={() => setEditOpen(true)} className={btnPrimary}>Edit your page</button>
         </div>
         <div className="mb-4 -mt-2 flex flex-wrap gap-x-5 gap-y-1 text-sm">
-          <button type="button" onClick={() => setAddOpen(true)} className="text-brand hover:underline">Add a missing review</button>
-          <button type="button" onClick={() => setFlagOpen(true)} className="text-brand hover:underline">Flag a score</button>
+          <button type="button" onClick={() => setAddOpen(true)} className="text-brand hover:underline">Missing a review? Tell us</button>
+          {onFlag && <button type="button" onClick={onFlag} className="text-brand hover:underline">Flag a problem</button>}
         </div>
-        <FlagScoreModal open={flagOpen} onClose={() => setFlagOpen(false)} slug={slug} reviewOptions={reviewOptions} />
-        <AddReviewModal open={addOpen} onClose={() => setAddOpen(false)} criticName={name} outlet={outlet} />
+        <MissingReviewModal open={addOpen} onClose={() => setAddOpen(false)} slug={slug} criticName={name} outlet={outlet} />
         <CriticProfileEditor
           open={editOpen} onClose={() => setEditOpen(false)} slug={slug} profile={me.profile}
           notifyOpeningNight={me.notifyOpeningNight} views30={me.views30 ?? 0} reviewOptions={reviewOptions}
