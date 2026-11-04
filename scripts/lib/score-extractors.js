@@ -21,6 +21,8 @@
 // Bump this when extractors are added or improved.
 // recollect-for-scores.js stamps this on _noScoreOnHtml so stale
 // "no score found" flags are retried after extractor changes.
+const { isGalleryCounterAt } = require('./gallery-counter');
+
 const EXTRACTOR_VERSION = 7;  // v7 (BRO-922): NY Post css-stars re-scoped to rating__stars DOM boundary (was v6: Guardian class-attribute anchoring, Radio Times <use>-anchored SVG matching)
 
 /**
@@ -1074,6 +1076,8 @@ function extractUKStarRating(html, text) {
       if (/https?:\/\/|\.(jpg|jpeg|png|webp|gif|svg)\b|\bcdn\b|\bstatic\b|\bassets\b|\/\d{4}\/\d{2}\/\d{2}\/|\/\d{2,4}x\d{2,4}\b/i.test(ctx)) continue;
       // Position anchor for the bare "X/5" form
       if (needsAnchor && !(pos <= len * 0.15 || pos >= len * 0.85)) continue;
+      // BRO-305: a "1/5" alone on its line is a gallery slide counter.
+      if (needsAnchor && isGalleryCounterAt(text, pos, match[0].length)) continue;
       return {
         originalScore: `${rating}/5 stars`,
         normalizedScore: starsToNumeric(rating, 5),
@@ -1273,6 +1277,9 @@ function extractGenericStarRating(html, text) {
     // REJECT (BRO-6779): a run-dates listing — "Through 3/5: Thu-Sat", "runs until 2/5",
     // "opens 4/5" — is a month/day date, not a rating.
     if (/\b(?:through|thru|until|till|closes|closing|opens|opening|runs?|extended\s+to)\s*$/i.test(beforeMatch)) continue;
+
+    // REJECT (BRO-305): "1/5" alone on its line is a photo-gallery slide counter.
+    if (isGalleryCounterAt(text, pos, xOf5Match[0].length)) continue;
 
     return {
       originalScore: `${rating}/5`,

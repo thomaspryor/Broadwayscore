@@ -244,6 +244,22 @@ function queueRescoreForLateRating(data, via) {
   return true;
 }
 
+/**
+ * BRO-305: the counterpart of queueRescoreForLateRating. A star was just CLEARED from a file whose
+ * score an LLM produced with that star in its prompt (anchored-v6 holds the score inside the star's
+ * band), so the score is still the junk star's. Lehman Trilogy (Evening Standard): a gallery counter
+ * "1/10" was cleared, but the anchored 20 would have kept shipping on a warm review. Not a requeue:
+ * a rescore already queued reads the file after the clear anyway. Returns true when it flagged.
+ */
+function queueRescoreForClearedRating(data, why) {
+  if (!data || typeof data !== 'object') return false;
+  if (!data.scoreSource || !isLlmScoreSource(data.scoreSource)) return false;
+  if (data.humanReviewScore != null) return false;
+  if (data.needsRescore === true) return false;
+  markRescoreNeeded(data, `outlet rating cleared after the score (${why || 'cleared rating'}; BRO-305)`);
+  return true;
+}
+
 const CV_PARTIAL_WINDOW_RESCORE_REASON = 'CV not-a-review verdict from the head of a longer article is newer than the score (BRO-6225)';
 
 /**
@@ -258,4 +274,4 @@ function queueRescoreForCvPartialWindow(data, show, filePath) {
   return true;
 }
 
-module.exports = { CV_PARTIAL_WINDOW_RESCORE_REASON, queueRescoreForCvPartialWindow, isFalseTruncationScore, isBotStubContaminatedScore, BOT_STUB_FIX_AT, BOT_STUB_TIGHTENED_AT, BOT_STUB_RESCORE_REASON, isStaleScoreInput, isTruncatedScoreNowComplete, markRescoreNeeded, needsRescoreForCvPartialWindow, queueRescoreForLateRating, isLlmScoreSource };
+module.exports = { CV_PARTIAL_WINDOW_RESCORE_REASON, queueRescoreForCvPartialWindow, isFalseTruncationScore, isBotStubContaminatedScore, BOT_STUB_FIX_AT, BOT_STUB_TIGHTENED_AT, BOT_STUB_RESCORE_REASON, isStaleScoreInput, isTruncatedScoreNowComplete, markRescoreNeeded, needsRescoreForCvPartialWindow, queueRescoreForLateRating, queueRescoreForClearedRating, isLlmScoreSource };

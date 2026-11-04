@@ -39,6 +39,7 @@ const { listShowDirs } = require('./list-show-dirs');
 const { isIntentionalClear } = require('./review-write-guard');
 const { detectBandFromReviewFile, isUncorroboratedGenericStar } = require('./star-reliability');
 const { getSyndicationPrimaries } = require('./syndication-pairs');
+const { isGalleryCounterRating } = require('./gallery-counter');
 
 // A gap this large between an explicit critic rating and the site's independent
 // read almost always means the rating was mis-extracted (wrong show in a combined
@@ -176,7 +177,12 @@ function evaluateReview(review, opts = {}) {
   const gapAssigned = assigned !== null ? Math.abs(expected - assigned) : null;
   const worstGap = Math.max(gapLLM == null ? 0 : gapLLM, gapAssigned == null ? 0 : gapAssigned);
 
-  if (worstGap <= threshold) return null;
+  // BRO-305: a stored "1/N" that is the page's gallery slide counter alerts
+  // whatever the gap. An anchored rescore pulls the LLM read into the junk
+  // star's band (Lehman Trilogy: 1/10 → LLM 20 on a warm review), so the gap
+  // that normally exposes a misread is zero exactly when the star won.
+  const galleryCounter = isGalleryCounterRating(String(originalRating).replace(/\s*stars?\s*$/i, ''), review.fullText);
+  if (worstGap <= threshold && !galleryCounter) return null;
 
   return {
     originalRating,
@@ -192,6 +198,7 @@ function evaluateReview(review, opts = {}) {
     // (likely wrong) star WON routing and is hiding in the final score — the
     // Birthright shape. Surface it so triage prioritizes these.
     starWonHidingContradiction: gapLLM != null && gapLLM > threshold && (gapAssigned == null || gapAssigned <= 10),
+    galleryCounter,
   };
 }
 

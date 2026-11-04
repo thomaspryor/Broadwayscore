@@ -1357,10 +1357,11 @@ function checkQuality() {
       }
       const worst = findings[0];
       const hidden = findings.filter(f => f.starWonHidingContradiction).length;
+      const counters = findings.filter(f => f.galleryCounter).length;
       return {
         name: 'Quality: star-vs-score mismatch',
         status: 'warn',
-        message: `${findings.length} NEW review(s) whose explicit rating contradicts the score (worst: ${worst.showId} ${worst.outlet} ${worst.originalRating}→${worst.expected} vs LLM ${worst.llm}, gap ${worst.worstGap})${hidden ? `; ${hidden} star-won-hiding` : ''}${expiryNote}`,
+        message: `${findings.length} NEW review(s) whose explicit rating contradicts the score (worst: ${worst.showId} ${worst.outlet} ${worst.originalRating}→${worst.expected} vs LLM ${worst.llm}, gap ${worst.worstGap})${hidden ? `; ${hidden} star-won-hiding` : ''}${counters ? `; ${counters} gallery-counter "1/N" read as a rating` : ''}${expiryNote}`,
         hint: 'Run `node scripts/audit-star-score-mismatch.js` — likely a mis-extracted star (wrong show in a combined review column). Fix originalScore in review-texts + rescore, then `--write-baseline` to ack (acks expire after 90 days; `--renew-baseline=<key>` re-acks one key, bare `--renew-baseline` every listed key).',
       };
     }),
