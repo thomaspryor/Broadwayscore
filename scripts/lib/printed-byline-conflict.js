@@ -205,6 +205,9 @@ function findPrintedKnownByline({ fullText, knownCritics }) {
 function _firstPrintedKnown({ fullText, knownCritics, creditedName }) {
   if (!fullText || typeof fullText !== 'string' || fullText.length < 50) return null;
   if (!Array.isArray(knownCritics) || knownCritics.length === 0) return null;
+  // Tag and listing pages ("Displaying all articles tagged...") print one byline per teaser in the head.
+  // The first one is not the author of anything on the page, so two printed bylines means no verdict.
+  if (looksLikeListingHead(fullText)) return null;
   const head = _paddedHead(fullText);
   const rawHead = String(fullText).slice(0, HEAD_CHARS);
   let best = null;
@@ -235,6 +238,33 @@ const HEADER_BYLINE_RE = new RegExp(
     CAP_TOKEN + "(?:\\s+(?:van|von|der|de|le|da|di|del|la)\\s+" + CAP_TOKEN + "|\\s+" + CAP_TOKEN + "){1,3})",
   'u'
 );
+
+/**
+ * True when the head prints "By <Name>" twice or more (the same writer or different ones): a listing, tag
+ * or roundup page rather than one article. A byline repeated inside 600 characters is one teaser per
+ * article, and a co-review set out as two bylines also lands here, which is the safe direction (no verdict).
+ * @param {string} fullText
+ * @returns {boolean}
+ */
+function looksLikeListingHead(fullText) {
+  if (!fullText || typeof fullText !== 'string') return false;
+  const head = fullText.slice(0, HEAD_CHARS);
+  const re = new RegExp(HEADER_BYLINE_RE.source, 'gu');
+  const names = [];
+  let m;
+  while ((m = re.exec(head))) {
+    const kept = [];
+    for (const tok of m[1].trim().split(/\s+/)) {
+      if (NAME_STOP.has(tok.toLowerCase().replace(/[.,]/g, ''))) break;
+      kept.push(tok);
+      if (kept.length === 3) break;
+    }
+    if (kept.length < 2) continue;
+    names.push(kept.join(' '));
+    if (names.length >= 2) return true;
+  }
+  return false;
+}
 
 /**
  * Best-effort printed byline from the head for "unlisted" triage: the first
@@ -316,10 +346,11 @@ function knownCriticsForOutlet(index, outletId) {
  * @param {string} a.fullText    cleaned article text
  * @param {string[]} a.knownCritics critics the registry lists for the outlet
  * @param {boolean} [a.locked]   criticNameManual or _locked: a human set the credit, never override it
+ * @param {boolean} [a.excluded] roundup, wrong show/production or duplicate file: not a review to re-credit
  * @returns {{ printedName: string, unnamed: boolean } | null}
  */
-function decidePrintedByline({ criticName, outletId, fullText, knownCritics, locked }) {
-  if (locked || !fullText || !Array.isArray(knownCritics) || knownCritics.length === 0) return null;
+function decidePrintedByline({ criticName, outletId, fullText, knownCritics, locked, excluded }) {
+  if (locked || excluded || !fullText || !Array.isArray(knownCritics) || knownCritics.length === 0) return null;
   const unnamed = isPlaceholderName(criticName);
   if (unnamed && NO_FILL_OUTLETS.has(outletId)) return null;
   const hit = unnamed
@@ -330,6 +361,7 @@ function decidePrintedByline({ criticName, outletId, fullText, knownCritics, loc
 
 module.exports = {
   decidePrintedByline,
+  looksLikeListingHead,
   NO_FILL_OUTLETS,
   knownCriticsForOutlet,
   HEAD_CHARS,

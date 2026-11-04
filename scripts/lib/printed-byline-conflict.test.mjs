@@ -21,6 +21,7 @@ const {
   creditedCriticPrinted,
   NO_FILL_OUTLETS,
   decidePrintedByline,
+  looksLikeListingHead,
 } = require('./printed-byline-conflict.js');
 
 const FILLER = ' The company plays the old protest piece straight and the room responds to it with real heat from the first scene to the last.'.repeat(3);
@@ -126,6 +127,27 @@ test('placeholder detection and the no-fill outlet set', () => {
   assert.ok(!isPlaceholderName('Michael Sommers'));
   assert.ok(NO_FILL_OUTLETS.has('playbill') && NO_FILL_OUTLETS.has('broadwayworld'));
   assert.ok(creditedCriticPrinted('Michael Sommers', 'By Michael Sommers'));
+});
+
+test('listing and tag pages print several bylines and are never re-credited', () => {
+  const listing = `Displaying all articles tagged: A Winter Revival theater review Dec. 4, 2025 A Revival Tries Something New. Plus a second show. By Sara Holdren bah humbug Oct. 23, 2025 A Star Reportedly in Talks. By Jennifer Zhan lists Dec. 5, 2024 A Monster Returns. By Fran Hoepfner${FILLER}`;
+  const known = ['Sara Holdren', 'Jackson McHenry'];
+  assert.ok(looksLikeListingHead(listing));
+  assert.equal(findPrintedBylineConflict({ criticName: 'Jackson McHenry', fullText: listing, knownCritics: known }), null);
+  assert.equal(findPrintedKnownByline({ fullText: listing, knownCritics: known }), null);
+  assert.equal(decidePrintedByline({ criticName: 'Unknown', outletId: 'vulture', fullText: listing, knownCritics: known }), null);
+  // one writer's tag page repeats the same byline once per teaser
+  assert.ok(looksLikeListingHead(`First Title. Subtitle line. By Sara Holdren theater review Feb. 24, 2026 Second Title. Subtitle line. By Sara Holdren theater review Feb. 22, 2026${FILLER}`));
+  // a single article head with one byline is not a listing
+  assert.ok(!looksLikeListingHead(`Review. A Title. By Sara Holdren ${FILLER}`));
+  assert.ok(!looksLikeListingHead(''));
+});
+
+test('decidePrintedByline skips excluded files (roundup, wrong show, duplicate)', () => {
+  const text = `11/02/26 Waiting for Lefty at Classic Stage Company By Michael Sommers${FILLER}`;
+  const base = { outletId: 'nysr', fullText: text, knownCritics: NYSR, criticName: 'Frank Scheck' };
+  assert.deepEqual(decidePrintedByline(base), { printedName: 'Michael Sommers', unnamed: false });
+  assert.equal(decidePrintedByline({ ...base, excluded: true }), null);
 });
 
 test('decidePrintedByline: the pipeline decision (conflict, fill, locked, no-fill outlet)', () => {
