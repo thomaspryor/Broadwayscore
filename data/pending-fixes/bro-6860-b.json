@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6860-b",
   "planId": "98849622-9426-44ec-bf10-838159d6ed6f",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-04T01:48:17.737Z",
   "submitter": {
     "name": null,
@@ -120,5 +120,70 @@
         "destPath": "peer-gynt-off-broadway-2016/bobs-theater-blog--robert-sholiton.json"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-04T02:15:11.531Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-streetcar-named-desire-2012/washpost--mark-kennedy.json crossOutletVerifiedNote: null -> \"BRO-6860: The review URL is on washingtonpost.com, the outlet it is credited to; Mark Kennedy's AP review carried there.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-streetcar-named-desire-2012/washpost--mark-kennedy.json crossOutletVerified: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "attack-of-the-elvis-impersonators-off-broadway-2017/curtainup--elizabeth-ahlfors.json crossOutletVerifiedNote: null -> \"BRO-6860: The review URL is on curtainup.com and Elizabeth Ahlfors is a CurtainUp critic (4 files in corpus).\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "attack-of-the-elvis-impersonators-off-broadway-2017/curtainup--elizabeth-ahlfors.json crossOutletVerified: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "how-to-transcend-a-happy-marriage-off-broadway-2017/curtainup--elizabeth-ahlfors.json crossOutletVerifiedNote: null -> \"BRO-6860: The review URL is on curtainup.com and Elizabeth Ahlfors is a CurtainUp critic (4 files in corpus).\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "how-to-transcend-a-happy-marriage-off-broadway-2017/curtainup--elizabeth-ahlfors.json crossOutletVerified: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "marry-harry-off-broadway-2017/curtainup--elizabeth-ahlfors.json crossOutletVerifiedNote: null -> \"BRO-6860: The review URL is on curtainup.com and Elizabeth Ahlfors is a CurtainUp critic (4 files in corpus).\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "marry-harry-off-broadway-2017/curtainup--elizabeth-ahlfors.json crossOutletVerified: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "sweetee-off-broadway-2017/curtainup--elizabeth-ahlfors.json crossOutletVerifiedNote: null -> \"BRO-6860: The review URL is on curtainup.com and Elizabeth Ahlfors is a CurtainUp critic (4 files in corpus).\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "sweetee-off-broadway-2017/curtainup--elizabeth-ahlfors.json crossOutletVerified: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "peer-gynt-off-broadway-2016/bobs-theater-blog--samuel-l-leiter.json criticName: \"Samuel L. Leiter\" -> \"Robert Sholiton\""
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved peer-gynt-off-broadway-2016/bobs-theater-blog--samuel-l-leiter.json → peer-gynt-off-broadway-2016/bobs-theater-blog--robert-sholiton.json",
+      "cleared": []
+    }
+  ],
+  "executedIn": "ci"
 }
