@@ -1193,12 +1193,16 @@ function fetchTextFrom(fetchPage) {
 }
 
 /** Wrap a fetch so one hung request cannot hang the pass. The orphaned request is left to finish on its own. */
-function withTimeout(fetchText, ms, remainingMs = () => Infinity) {
+// unref: for a fetch that may outlive its pass (a carried date check), so its cap timer cannot hold the process open.
+function withTimeout(fetchText, ms, remainingMs = () => Infinity, { unref = false } = {}) {
   return (url, opts) => {
     const budget = Math.min(ms, remainingMs());
     if (budget <= 0) return Promise.reject(new Error(`pass deadline reached before fetching ${url}`));
     let timer;
-    const timeout = new Promise((_, reject) => { timer = setTimeout(() => reject(new Error(`fetch timed out after ${budget}ms: ${url}`)), budget); });
+    const timeout = new Promise((_, reject) => {
+      timer = setTimeout(() => reject(new Error(`fetch timed out after ${budget}ms: ${url}`)), budget);
+      if (unref && timer.unref) timer.unref();
+    });
     // The timer is cleared on settle, so it never keeps the process alive past a finished fetch.
     return Promise.race([Promise.resolve().then(() => fetchText(url, opts)), timeout]).finally(() => clearTimeout(timer));
   };
@@ -1303,6 +1307,12 @@ async function runDiscoveryPass({
   if (!memo[DATE_CHECKS_IN_FLIGHT]) Object.defineProperty(memo, DATE_CHECKS_IN_FLIGHT, { value: new Map(), enumerable: false });
   const inFlight = memo[DATE_CHECKS_IN_FLIGHT];
   const adapterCaps = new Map(adapters.filter((a) => a.fetchTimeoutMs).map((a) => [a.name, a.fetchTimeoutMs]));
+  const checks = [];
+  const judge = (c, key, publishDate) => {
+    const verdict = admitLaneCandidate({ source: c.source, aggregatorCited: c.aggregatorCited === true, publishDate, night, ...(timeZone ? { timeZone } : {}) });
+    if (verdict.admit) admitted.push({ url: c.fetchUrl || c.url, key, source: c.source, adapter: c.adapter, via: c.via, publishDate, outletId: c.outletId || (resolveOutletFromUrl(c.url) || {}).outletId || null, reason: verdict.reason, ...(c.excerpts ? { excerpts: c.excerpts } : {}) });
+    else reject(c, key, verdict.reason);
+  };
   const reject = (c, key, reason) => {
     rejected.push({ url: c.url, adapter: c.adapter, reason });
     const prev = memo.rejected[key] || { attempts: 0 };
@@ -1343,8 +1353,7 @@ async function runDiscoveryPass({
       reject(c, key, 'not-review-like'); continue;
     }
 
-    let publishDate = c.publishDate || null;
-    if (c.source === 'outlet-index' && !publishDate && c.needsDate) {
+    if (c.source === 'outlet-index' && !c.publishDate && c.needsDate) {
       let check = inFlight.get(key);
       if (!check) {
         if (dateChecks >= maxDateChecks) { deferredDateChecks.push(c.url); continue; } // tried first next pass: attempts is still 0
@@ -1353,33 +1362,41 @@ async function runDiscoveryPass({
         // The check runs under its adapter's own cap (TB: 75 s), not the pass's 15 s, and outlives the pass: a page that
         // answers after the pass deadline is read on the next pass instead of fetched (and paid for) all over again.
         const capMs = (adapterCaps.get(c.adapter) || fetchTimeoutMs);
-        check = withTimeout(rawFetch, capMs)(c.fetchUrl || c.url, { recordAs: 'date-check' });
+        check = withTimeout(rawFetch, capMs, undefined, { unref: true })(c.fetchUrl || c.url, { recordAs: 'date-check' });
         check.catch(() => {}); // settled later, or never read: no unhandled rejection either way
         inFlight.set(key, check);
       }
-      const waitMs = deadlineMs - (Date.now() - startedMs);
-      const outcome = await Promise.race([
-        check.then((html) => ({ html }), (error) => ({ error })),
-        new Promise((resolve) => { const t = setTimeout(() => resolve(null), Math.max(0, waitMs)); if (t.unref) t.unref(); }),
-      ]);
-      if (!outcome) { deadlineHit = true; deferredDateChecks.push(c.url); continue; } // still running: read next pass, no strike
-      inFlight.delete(key);
-      try {
-        if (outcome.error) throw outcome.error;
-        publishDate = extractPublishDate(outcome.html) || c.fallbackDate || null;
-      } catch (e) {
-        errors.push({ adapter: c.adapter, error: `date check ${c.url}: ${String((e && e.message) || e).slice(0, 150)}` });
-        // A timeout or the pass deadline says nothing about the article: no strike (three strikes end the candidate for the night).
-        if (/timed out|deadline reached/.test(String(e && e.message))) { deferredDateChecks.push(c.url); continue; }
-        const prev = memo.rejected[key] || { attempts: 0 };
-        memo.rejected[key] = { reason: 'date-check-failed', attempts: prev.attempts + 1 };
-        deferredDateChecks.push(c.url);
-        continue;
-      }
+      checks.push({ c, key, check });
+      continue;
     }
-    const verdict = admitLaneCandidate({ source: c.source, aggregatorCited: c.aggregatorCited === true, publishDate, night, ...(timeZone ? { timeZone } : {}) });
-    if (verdict.admit) admitted.push({ url: c.fetchUrl || c.url, key, source: c.source, adapter: c.adapter, via: c.via, publishDate, outletId: c.outletId || (resolveOutletFromUrl(c.url) || {}).outletId || null, reason: verdict.reason, ...(c.excerpts ? { excerpts: c.excerpts } : {}) });
-    else reject(c, key, verdict.reason);
+    judge(c, key, c.publishDate || null);
+  }
+  // The date checks run side by side and are read in candidate order: one after another, two 40 s Talkin' Broadway checks
+  // filled the 90 s pass and deferred every undated candidate behind them.
+  if (checks.length) {
+    let timer;
+    const deadline = new Promise((resolve) => { timer = setTimeout(() => resolve(null), Math.max(0, deadlineMs - (Date.now() - startedMs))); });
+    try {
+      for (const { c, key, check } of checks) {
+        const outcome = await Promise.race([check.then((html) => ({ html }), (error) => ({ error })), deadline]);
+        if (!outcome) { deadlineHit = true; deferredDateChecks.push(c.url); continue; } // still running: read next pass, no strike
+        inFlight.delete(key);
+        let publishDate;
+        try {
+          if (outcome.error) throw outcome.error;
+          publishDate = extractPublishDate(outcome.html) || c.fallbackDate || null;
+        } catch (e) {
+          errors.push({ adapter: c.adapter, error: `date check ${c.url}: ${String((e && e.message) || e).slice(0, 150)}` });
+          // A timeout or the pass deadline says nothing about the article: no strike (three strikes end the candidate for the night).
+          if (/timed out|deadline reached/.test(String(e && e.message))) { deferredDateChecks.push(c.url); continue; }
+          const prev = memo.rejected[key] || { attempts: 0 };
+          memo.rejected[key] = { reason: 'date-check-failed', attempts: prev.attempts + 1 };
+          deferredDateChecks.push(c.url);
+          continue;
+        }
+        judge(c, key, publishDate);
+      }
+    } finally { clearTimeout(timer); }
   }
   return { admitted, rejected, unknownHosts: [...unknownHosts].filter(Boolean).sort(), errors, deferredDateChecks, serpRan, deadlineHit };
 }

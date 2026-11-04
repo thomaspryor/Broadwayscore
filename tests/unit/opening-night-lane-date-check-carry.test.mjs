@@ -73,3 +73,16 @@ test('a not-review-like memo is judged again when a later sighting carries a rev
   assert.equal((await run(false)).admitted.length, 0, 'the same signal-less sighting stays rejected');
   assert.deepEqual((await run(true)).admitted.map((a) => a.key), [d.canonicalUrl(ODC)]);
 });
+
+test('date checks run side by side: two slow pages both answer inside one pass (BRO-6872 review)', async () => {
+  const urls = [TB, 'https://www.talkinbroadway.com/page/world/SchoolGirlsOr.html'];
+  const two = { name: 'talkin-broadway', kind: 'outlet-index', phase: 'cheap', fetchTimeoutMs: 1000,
+    discover: async () => urls.map((url) => ({ url, title: 'School Girls review', source: 'outlet-index', publishDate: null, needsDate: true })) };
+  let inFlightNow = 0; let most = 0;
+  const fetchText = async () => { inFlightNow++; most = Math.max(most, inFlightNow); await sleep(120); inFlightNow--; return PAGE; };
+  // Deadline 200 ms: one after another (240 ms) the second would be cut.
+  const r = await d.runDiscoveryPass({ show: SHOW, night: NIGHT, now: T0 + 3600000, startedAt: T0, adapters: [two], fetchText, memo: { rejected: {} }, deadlineMs: 200 });
+  assert.equal(most, 2);
+  assert.deepEqual(r.admitted.map((a) => a.key).sort(), urls.map((u) => d.canonicalUrl(u)).sort());
+  assert.equal(r.deadlineHit, false);
+});
