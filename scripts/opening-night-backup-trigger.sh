@@ -15,6 +15,16 @@
 # errors only reached this log file — network failures (dial tcp, 2026-07-06/07)
 # were invisible. Errors now also route through owner-alert-router.
 
+#
+# BRO-6968: the 9 PM ET firing is after the whole West End probe window
+# (probeDue: embargo 21:00 London -150/+180 min, i.e. ~1:30-7 PM ET), so WE
+# nights had NO backup and the probe waited on a GitHub cron that ran 5h late
+# (The Bridge 2026-11-03: probe started 23:12Z, every review graded late).
+# A second launchd job (com.bwsc.opening-night-backup-trigger-we, 3 PM ET)
+# passes "west-end"; the 9 PM job passes "broadway". No argument = both markets.
+# scripts/lib/opening-night-backup-window.test.mjs checks both plists' hours
+# land inside probeDue for their markets across DST.
+
 set -uo pipefail
 
 export PATH="/Users/tompryor/.local/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin"
@@ -23,10 +33,11 @@ REPO="/Users/tompryor/Broadwayscore"
 LOG="$REPO/data/opening-night-monitor/backup-trigger.log"
 mkdir -p "$(dirname "$LOG")"
 
-echo "$(date): Backup trigger firing" >> "$LOG"
+echo "$(date): Backup trigger firing (${1:-all markets})" >> "$LOG"
 
+MARKETS="${1:-broadway west-end}"
 FAILED_MARKETS=""
-for MARKET in broadway west-end; do
+for MARKET in $MARKETS; do
   if gh workflow run opening-night-orchestrator.yml \
     -R thomaspryor/Broadwayscore \
     -f market="$MARKET" 2>>"$LOG"; then
