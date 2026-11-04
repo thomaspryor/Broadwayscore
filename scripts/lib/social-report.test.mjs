@@ -96,6 +96,24 @@ test('monthlySuggestion: too few posts says so; a dead network with 5+ posts is 
   assert.ok(lines.some((l) => /dropping X/.test(l)));
 });
 
+test('monthlySuggestion compares AI-written and template score posts once both have enough posts (BRO-6959)', () => {
+  const row = (writer, visits, i) => ({ lane: 'score', writer, service: 'threads', visits, interactions: 1, id: `${writer}${i}` });
+  const few = monthlySuggestion([row('ai', 4, 0), ...[0, 1, 2].map((i) => row('template', 1, i))]);
+  assert.ok(!few.some((l) => /AI-written/.test(l)), 'one AI post is too few to judge');
+  const lines = monthlySuggestion([...[0, 1, 2].map((i) => row('ai', 4, i)), ...[0, 1, 2].map((i) => row('template', 1, i))]);
+  assert.ok(lines.some((l) => /AI-written score posts: 4\.0 visits .* against 1\.0 .* \(3 and 3 posts\)/.test(l)), lines.join(' | '));
+});
+
+test('buildPostRows tags score posts with their writer; older entries count as template; other lanes get none', () => {
+  const ledger = { posts: [
+    { type: 'score', title: 'A', slug: 'a', text: '', writer: 'ai', channels: { threads: { postId: 'p1' } } },
+    { title: 'B', slug: 'b', text: '', channels: { threads: { postId: 'p2' } } },
+    { type: 'closing-soon', title: 'C', slug: 'c', text: '', channels: { threads: { postId: 'p3' } } },
+  ] };
+  const rows = buildPostRows(['p1', 'p2', 'p3'].map((id) => ({ id, sentAt: '2026-11-04T12:00:00Z', service: 'threads', text: 'x' })), ledger);
+  assert.deepEqual(rows.map((r) => r.writer), ['ai', 'template', null]);
+});
+
 test('suggestedReply never invents a link for an unknown post', () => {
   assert.doesNotMatch(suggestedReply({ lane: 'other' }), /http|\.com\/show/);
 });
