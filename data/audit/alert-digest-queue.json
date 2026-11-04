@@ -683,34 +683,6 @@
     "queuedAt": "2026-11-04T01:27:20.862Z"
   },
   {
-    "conditionKey": "review-gap:opening-window:rope-off-broadway-2026",
-    "title": "Review gap — \"Rope\" missing 1 cited review(s)",
-    "description": "Rope (rope-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=rope-off-broadway-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-04T02:32:01.233Z"
-  },
-  {
-    "conditionKey": "review-gap:opening-window:the-lives-of-others-west-end-2026",
-    "title": "Review gap — \"The Lives of Others\" missing 1 cited review(s)",
-    "description": "The Lives of Others (the-lives-of-others-west-end-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-lives-of-others-west-end-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-04T02:32:01.273Z"
-  },
-  {
     "conditionKey": "land:land/job/linear-BRO-6945-mw1ek36b",
     "title": "Landing blocked: resolve red on land/job/linear-BRO-6945-mw1ek36b",
     "description": "land.yml did not land land/job/linear-BRO-6945-mw1ek36b: the resolve gate went red at 48c0e2d5bc. The branch ref was left in place and nothing was pushed to main. First failure: REFUSED: resolve: land/job/linear-BRO-6945-mw1ek36b tip is 447299b1cb (origin/land/job/linear-BRO-6945-mw1ek36b), not the verified tip 48c0e2d5bc — a newer push superseded this landing; nothing pushed (attempts 0, 1.9s) Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/41756462345",
@@ -952,7 +924,21 @@
     "model": null,
     "tracked": null,
     "fields": [],
-    "queuedAt": "2026-11-04T05:30:27.535Z"
+    "queuedAt": "2026-11-04T06:38:56.871Z"
+  },
+  {
+    "conditionKey": "outlet-ground-truth:king-lear-off-broadway-2026:https://www.theatermania.com/news/review-anon-the-one-about-the-maga-neighbor-and-the-ugly-flag_1857163/",
+    "title": "Missing review from a tracked outlet: king-lear-off-broadway-2026 — theatermania",
+    "description": "theatermania lists a review we don't hold (https://www.theatermania.com/news/review-anon-the-one-about-the-maga-neighbor-and-the-ugly-flag_1857163/), and automatic ingest did not recover it.",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-04T06:41:38.163Z"
   },
   {
     "conditionKey": "land:land/bro-4315-image-gate-renames",

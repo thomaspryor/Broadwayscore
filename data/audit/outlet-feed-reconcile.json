@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-04T05:30:55.218Z",
+  "generatedAt": "2026-11-04T06:42:08.047Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -133,6 +133,10 @@
   "feedsChecked": 78,
   "feedsFailed": [
     {
+      "outletId": "theater-life",
+      "error": "Timeout fetching https://theaterlife.com/feed"
+    },
+    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
@@ -143,6 +147,14 @@
     {
       "outletId": "cote-notices",
       "error": "HTTP 403 for https://davidcote1.substack.com/feed"
+    },
+    {
+      "outletId": "south-london",
+      "error": "Timeout fetching https://southlondon.co.uk/feed/"
+    },
+    {
+      "outletId": "theatre-vibe",
+      "error": "AggregateError"
     },
     {
       "outletId": "theartsdispatch",
@@ -157,7 +169,7 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 823,
+  "itemsScanned": 814,
   "matchedGaps": 8,
   "possibleGaps": 11,
   "gaps": [
