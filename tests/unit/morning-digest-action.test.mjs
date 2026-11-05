@@ -56,6 +56,7 @@ test('digest workflow: wake sources are pinned and each names a real workflow (B
   const m = WF.match(/^ {2}workflow_run:\n {4}workflows: \[([^\]]*)\]/m);
   assert.ok(m, 'workflow_run.workflows list not found');
   const names = [...m[1].matchAll(/'([^']+)'/g)].map((x) => x[1]);
+  assert.equal(m[1].split(',').length, names.length, 'list entries must be single-quoted strings');
   // Exact list: Test Suite is push-driven and can be silent for 2h at the 07:45 ET gate opening
   // (2026-11-05), Deploy to Vercel finishes every 10-20 min. Cron re-dispatch is excluded on purpose
   // (woken by Test Suite itself = no independence, and at the 3-level workflow_run chain limit).
@@ -63,7 +64,7 @@ test('digest workflow: wake sources are pinned and each names a real workflow (B
   const dir = path.join(ROOT, '.github/workflows');
   const topNames = fs.readdirSync(dir).filter((f) => /\.ya?ml$/.test(f)).map((f) => {
     const line = read(`.github/workflows/${f}`).split('\n').find((l) => /^name:/.test(l)) || '';
-    return line.replace(/^name:\s*['"]?/, '').replace(/['"]?\s*$/, '');
+    return line.replace(/\s+#.*$/, '').replace(/^name:\s*['"]?/, '').replace(/['"]?\s*$/, '');
   });
   for (const n of names) assert.equal(topNames.filter((x) => x === n).length, 1, `"${n}" must be the top-level name of exactly one workflow`);
 });
