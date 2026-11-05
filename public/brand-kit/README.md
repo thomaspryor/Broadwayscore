@@ -6,7 +6,7 @@ Complete asset suite for social, marketing, and partner use. All PNGs (the opera
 
 Go to **https://broadwayscorecard.com/brand** → scroll to Downloads.
 
-- **Download Entire Brand Kit** button grabs everything as one zip (59 PNGs + this README; the zip itself still holds the original 52, the opera files are in the folders).
+- **Download Entire Brand Kit** button grabs everything as one zip (59 PNGs, including the 7 opera assets, plus this README and the palette SVG).
 - Or click any individual tile (logo, badge, social template) to download just that one PNG.
 - Transparent variants have an alpha channel — drop them onto any background in Canva, Buffer, PowerPoint, email, etc.
 
