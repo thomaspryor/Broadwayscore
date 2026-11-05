@@ -615,5 +615,24 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-05T20:49:55.620Z"
+  },
+  {
+    "conditionKey": "mezzanine:transient-failure",
+    "title": "Mezzanine Scraper Failed — Transient API Failure",
+    "description": "The Mezzanine audience data update failed mid-run (likely ECONNRESET, timeout, or server error from theaterdiary.com). The script already retried transient errors 3× with backoff. No token action required — the next scheduled run usually recovers on its own. Investigate only if 2+ consecutive failures.",
+    "severity": "warning",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42109232088",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/42109232088)"
+      }
+    ],
+    "queuedAt": "2026-11-05T21:05:17.073Z"
   }
 ]
