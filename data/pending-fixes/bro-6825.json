@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6825",
   "planId": "8ca0b32f-22d9-48ac-ba71-bf6868178717",
-  "status": "pending",
+  "status": "applied",
   "submitter": {
     "name": null,
     "email": null
@@ -21,5 +21,14 @@
         "description": "Remove showScore from audience-buzz.json for shows recorded under _productionMismatch (combinedScore recomputed, source tombstoned)."
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-05T19:19:26.158Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran purge-wrong-production-show-score.js successfully"
+    }
+  ],
+  "executedIn": "ci"
 }
