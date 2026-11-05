@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-05T03:55:54.933Z",
+  "timestamp": "2026-11-05T04:27:18.326Z",
   "stats": {
     "totalReviews": 80183,
-    "alreadyFlagged": 22029,
+    "alreadyFlagged": 22021,
     "dateGuardCatches": 217,
     "directorMismatch": 3507,
-    "tvFilmSignals": 2280,
-    "londonSignals": 3612,
-    "offBroadwaySignals": 736,
+    "tvFilmSignals": 2281,
+    "londonSignals": 3614,
+    "offBroadwaySignals": 737,
     "yearMismatch": 361,
-    "noPublishDate": 8479
+    "noPublishDate": 8483
   },
   "findings": [
     {
@@ -52942,6 +52942,25 @@
       ]
     },
     {
+      "showId": "punch-2025",
+      "file": "deadline--greg-evans.json",
+      "score": 45,
+      "publishDate": "September 29, 2025",
+      "url": "https://deadline.com/2025/09/punch-broadway-review-1236564771/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
       "showId": "punch-west-end-2025",
       "file": "all-that-dazzles-uk--all-that-dazzles.json",
       "score": 100,
@@ -94509,6 +94528,20 @@
       ]
     },
     {
+      "showId": "dead-outlaw-2025",
+      "file": "observer--david-cote.json",
+      "score": 92,
+      "publishDate": null,
+      "url": "https://observer.com/2025/04/review-dead-outlaw-is-an-exquisite-corpse-and-killer-close-to-the-broadway-season/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"minetta lane\""
+        }
+      ]
+    },
+    {
       "showId": "deaf-republic-west-end-2025",
       "file": "london-theatre--unknown.json",
       "score": 90,
@@ -109490,6 +109523,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"signature theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "mamma-mia-2025",
+      "file": "observer--david-cote.json",
+      "score": 44,
+      "publishDate": null,
+      "url": "https://observer.com/2025/08/there-it-goes-again-jukebox-musical-mamma-mia-returns-to-broadway/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
