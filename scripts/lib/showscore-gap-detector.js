@@ -16,15 +16,18 @@ const CATEGORIES = new Set(['broadway', 'off-broadway']);
 // BRO-7023: a transfer with no NYC Show Score page yet is served London's page at the NYC slug.
 // The scraper refuses it on purpose and re-checks every run, so the gap is expected and clears
 // itself when the NYC page appears. Quiet only while the scraper keeps confirming that state.
-const UK_WAIT_FRESH_MS = 3 * 24 * 60 * 60 * 1000;
+// The marker is refreshed by every real scrape (weekly cron at minimum), so it stays quiet for 9 days.
+// The pre-marker fallback (tombstone plus a recent attempt) is a short bridge for old records only.
+const UK_WAIT_FRESH_MS = 9 * 24 * 60 * 60 * 1000;
+const UK_TOMBSTONE_FRESH_MS = 3 * 24 * 60 * 60 * 1000;
 
 function waitingOnNycPage(rec, now) {
   if (!rec) return false;
-  const fresh = (iso) => { const t = Date.parse(iso); return Number.isFinite(t) && now - t <= UK_WAIT_FRESH_MS; };
-  if (fresh(rec.showScoreUkPageAt)) return true;
+  const fresh = (iso, ms) => { const t = Date.parse(iso); return Number.isFinite(t) && now - t <= ms; };
+  if (fresh(rec.showScoreUkPageAt, UK_WAIT_FRESH_MS)) return true;
   // Older records: the tombstone the scraper wrote when it cleared London's rating, plus a fresh attempt.
   const tomb = rec.sourcesRemoved && rec.sourcesRemoved.showScore;
-  return typeof tomb === 'string' && /UK production page/.test(tomb) && fresh(rec.showScoreLastAttempted);
+  return typeof tomb === 'string' && /UK production page/.test(tomb) && fresh(rec.showScoreLastAttempted, UK_TOMBSTONE_FRESH_MS);
 }
 
 /**
