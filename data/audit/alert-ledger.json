@@ -22764,7 +22764,7 @@
       "resolvedAt": "2026-10-20T22:22:57.440Z"
     },
     "live-data-test:tests/unit/review-pullquotes-live-data.test.mjs::no review missing a pullQuote has a recoverable excerpt sitting unused in review-texts": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "Live-data test failing: no review missing a pullQuote has a recoverable excerpt sitting unused in review-texts (tests/unit/review-pullquotes-live-data.test.mjs)",
       "firstSeen": "2026-10-20T21:59:17.665Z",
@@ -22776,7 +22776,9 @@
       "notifyCount": 13,
       "cardId": null,
       "linearIdentifier": "BRO-7012",
-      "silentRefires": 1
+      "silentRefires": 1,
+      "resolvedAt": "2026-11-05T16:55:41.678Z",
+      "resolveReason": "live-data test green"
     },
     "land:land/bro-5776-commercial-coverage": {
       "status": "resolved",
@@ -24080,13 +24082,13 @@
       "firstSeen": "2026-10-22T11:49:37.833Z",
       "incidentOpenedAt": "2026-11-04T07:10:12.665Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-05T14:53:02.370Z",
+      "lastSeen": "2026-11-05T16:55:37.106Z",
       "lastNotifiedAt": "2026-11-05T12:32:04.294Z",
       "lastSurfacedAt": "2026-11-05T12:32:04.294Z",
       "notifyCount": 10,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "land:land/bro-5325-wsj-section": {
       "status": "resolved",
@@ -24862,13 +24864,13 @@
       "firstSeen": "2026-10-22T20:59:52.372Z",
       "incidentOpenedAt": "2026-10-22T20:59:52.372Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-05T14:53:02.113Z",
+      "lastSeen": "2026-11-05T16:55:36.832Z",
       "lastNotifiedAt": "2026-11-05T02:45:26.544Z",
       "lastSurfacedAt": "2026-11-05T02:45:26.544Z",
       "notifyCount": 13,
       "cardId": null,
       "linearIdentifier": "BRO-6993",
-      "silentRefires": 3
+      "silentRefires": 4
     },
     "land:land/bro-5969-index-bloat-v3": {
       "status": "resolved",
@@ -26819,13 +26821,13 @@
       "firstSeen": "2026-10-24T23:08:26.440Z",
       "incidentOpenedAt": "2026-10-31T00:35:50.727Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-05T14:53:02.700Z",
+      "lastSeen": "2026-11-05T16:55:41.543Z",
       "lastNotifiedAt": "2026-11-05T12:32:07.725Z",
       "lastSurfacedAt": "2026-11-05T12:32:07.725Z",
       "notifyCount": 10,
       "cardId": null,
       "linearIdentifier": "BRO-7013",
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "test-yml:red:Unit Tests:196541b4": {
       "status": "resolved",
@@ -32050,28 +32052,27 @@
       "firstSeen": "2026-10-29T23:10:05.391Z",
       "incidentOpenedAt": "2026-10-29T23:10:05.391Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-05T14:53:02.394Z",
+      "lastSeen": "2026-11-05T16:55:37.119Z",
       "lastNotifiedAt": "2026-11-05T12:32:04.319Z",
       "lastSurfacedAt": "2026-11-05T12:32:04.319Z",
       "notifyCount": 7,
       "cardId": null,
       "linearIdentifier": "BRO-7011",
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "live-data-test:tests/unit/duplicate-images-live-data.test.mjs::real data: no byte-identical art across unrelated, unlinked shows": {
       "status": "open",
-      "disposition": "digest",
+      "disposition": "auto",
       "title": "Live-data test failing: real data: no byte-identical art across unrelated, unlinked shows (tests/unit/duplicate-images-live-data.test.mjs)",
       "firstSeen": "2026-10-29T23:10:05.416Z",
       "incidentOpenedAt": "2026-11-03T03:38:58.182Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-05T14:53:02.535Z",
-      "lastNotifiedAt": "2026-11-05T12:32:05.698Z",
-      "lastSurfacedAt": "2026-11-05T12:32:05.698Z",
-      "notifyCount": 6,
+      "lastSeen": "2026-11-05T16:55:37.287Z",
+      "lastNotifiedAt": "2026-11-05T16:55:37.287Z",
+      "lastSurfacedAt": "2026-11-05T16:55:37.287Z",
+      "notifyCount": 7,
       "cardId": null,
-      "linearIdentifier": null,
-      "silentRefires": 1
+      "linearIdentifier": "BRO-7020"
     },
     "land:land/bro-6546-voidfix": {
       "status": "open",
@@ -35912,18 +35913,17 @@
     },
     "live-data-test:tests/unit/outlet-domain-validation-live-data.test.mjs::at most the 2 known real instances are flagged across the full corpus": {
       "status": "open",
-      "disposition": "digest",
+      "disposition": "auto",
       "title": "Live-data test failing: at most the 2 known real instances are flagged across the full corpus (tests/unit/outlet-domain-validation-live-data.test.mjs)",
       "firstSeen": "2026-11-03T04:48:41.826Z",
       "incidentOpenedAt": "2026-11-03T04:48:41.826Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-05T14:53:02.553Z",
-      "lastNotifiedAt": "2026-11-05T12:32:05.716Z",
-      "lastSurfacedAt": "2026-11-05T12:32:05.716Z",
-      "notifyCount": 3,
+      "lastSeen": "2026-11-05T16:55:39.043Z",
+      "lastNotifiedAt": "2026-11-05T16:55:39.043Z",
+      "lastSurfacedAt": "2026-11-05T16:55:39.043Z",
+      "notifyCount": 4,
       "cardId": null,
-      "linearIdentifier": null,
-      "silentRefires": 1
+      "linearIdentifier": "BRO-7021"
     },
     "opening-night-revival-unverified-clifford-odets-waiting-for-lefty-off-broadway-2026": {
       "status": "open",
