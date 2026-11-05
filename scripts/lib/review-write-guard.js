@@ -2493,8 +2493,13 @@ function safeWriteReview(filePath, newData, options = {}) {
           ? shouldMarkPostCorrectionDuplicate(newData, colliderData)
           : shouldMarkUrlCollisionDuplicate(newData, colliderData)) {
         console.warn(`[review-write-guard] URL collision: ${path.basename(filePath)} shares URL with ${collider} — marking as duplicate`);
+        // BRO-6905: a file that already points at this collider keeps the
+        // reason it was marked with (e.g. criticName-override-collided-at-rename,
+        // which syndication-pairs.js keys on). Restamping it turned an unrelated
+        // field edit into a duplicateReason change the fix executor refuses.
+        const alreadyMarked = newData.duplicateOf === collider && !_isEmptyValue(newData.duplicateReason);
         newData.duplicateOf = collider;
-        newData.duplicateReason = 'url-collision-detected-at-write';
+        if (!alreadyMarked) newData.duplicateReason = 'url-collision-detected-at-write';
         // Clear any stale clear-breadcrumb from a prior heal — this file is now a
         // live duplicate again, so a leftover duplicateClearReason would lie about
         // its state (and the push-review-texts restore exception keys on that

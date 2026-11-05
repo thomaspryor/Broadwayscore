@@ -105,6 +105,47 @@ const GAP = '(?:\\s|&nbsp;|&#160;|<[^>]*>)+';
 const OUT_OF_FIVE_WORD_STARS = new RegExp(`\\b(one|two|three|four|five)${GAP}out${GAP}of${GAP}(?:five|5)${GAP}stars?\\s*(?:[!.,;:\\)<]|$)`, 'im');
 const BARE_WORD_STARS = new RegExp(`(?<!out${GAP}of${GAP})\\b(one|two|three|four|five)\\s+stars?\\s*(?:[!.,;:\\)<]|$)`, 'im');
 
+// BRO-6905: a news roundup relays OTHER critics' stars ("The Telegraph awarded
+// the production four out of five stars", "The Independent's Tim Bano gave the
+// adaption two out of five stars"). Those are not the article's own rating; PA
+// syndications of the Game of Thrones: The Mad King roundup and Metro's Romeo
+// and Juliet roundup were stored as 5/5 word-stars. A spelled-out star match is
+// relayed when its own sentence, before the match, carries a giving verb with a
+// non-first-person subject. "I'd give it four stars." stays the critic's own.
+// Case-sensitive on purpose: lowercase "awards" is the verb ("he awards the
+// play four stars"), capitalised "Awards" is the noun in "the upcoming Tony
+// Awards, and it garners four out of five stars" (the critic's own rating).
+const RELAYED_STAR_VERB = /\b(?:[Gg]ave|[Gg]ives|[Gg]iven|[Gg]iving|[Aa]warded|awards|[Aa]warding|[Hh]anded|hands|[Bb]estowed|[Rr]ated|rates|[Ss]cored)\b/;
+const FIRST_PERSON_SUBJECT = /\b(?:I|I'd|I'm|I'll|I've|we|we'd|we're|we'll|this\s+reviewer|this\s+critic)\b/;
+function isRelayedStarRating(source, matchIndex) {
+  if (!source || !(matchIndex > 0)) return false;
+  const before = source.slice(Math.max(0, matchIndex - 240), matchIndex);
+  const sentenceStart = Math.max(before.lastIndexOf('. '), before.lastIndexOf('! '), before.lastIndexOf('? '), before.lastIndexOf('\n'), before.lastIndexOf('>'));
+  const clause = sentenceStart >= 0 ? before.slice(sentenceStart + 1) : before;
+  if (!RELAYED_STAR_VERB.test(clause)) return false;
+  return !FIRST_PERSON_SUBJECT.test(clause);
+}
+
+// First spelled-out star rating across `sources` that is not relayed from
+// another critic. Pattern order is outer (out-of-five before bare), then
+// source order, so callers keep their historical precedence. `anchored`
+// limits matches to the verdict positions (first/last 15% of each source).
+function findOwnWordStars(sources, { anchored = false } = {}) {
+  for (const pat of [OUT_OF_FIVE_WORD_STARS, BARE_WORD_STARS]) {
+    for (const source of sources) {
+      if (!source) continue;
+      const srcLen = source.length;
+      for (const m of source.matchAll(new RegExp(pat.source, pat.flags + 'g'))) {
+        if (anchored && !(m.index <= srcLen * 0.15 || m.index >= srcLen * 0.85)) continue;
+        if (isRelayedStarRating(source, m.index)) continue;
+        const rating = WORD_STAR_NUM[m[1].toLowerCase()];
+        if (rating) return rating;
+      }
+    }
+  }
+  return null;
+}
+
 // Star rating to numeric (out of 5)
 function starsToNumeric(filled, total = 5) {
   return Math.round((filled / total) * 100);
@@ -1013,22 +1054,15 @@ function extractUKStarRating(html, text) {
   // is packed with talent" (celebrity headliners, not a 2-star rating) matched
   // at the 75% mark and corrupted iceboy-regional-2026's Allie and the After
   // Party rating (card #806, 2026-08-02).
+  // BRO-6905: skips stars relayed from another critic (findOwnWordStars).
   {
-    for (const pat of [OUT_OF_FIVE_WORD_STARS, BARE_WORD_STARS]) for (const source of [html, text]) {
-      const srcLen = source.length;
-      const wsMatches = [...source.matchAll(new RegExp(pat.source, pat.flags + 'g'))];
-      for (const wsMatch of wsMatches) {
-        const pos = wsMatch.index;
-        if (srcLen > 0 && !(pos <= srcLen * 0.15 || pos >= srcLen * 0.85)) continue;
-        const rating = WORD_STAR_NUM[wsMatch[1].toLowerCase()];
-        if (rating) {
-          return {
-            originalScore: `${rating}/5 stars`,
-            normalizedScore: starsToNumeric(rating, 5),
-            source: 'word-stars'
-          };
-        }
-      }
+    const rating = findOwnWordStars([html, text], { anchored: true });
+    if (rating) {
+      return {
+        originalScore: `${rating}/5 stars`,
+        normalizedScore: starsToNumeric(rating, 5),
+        source: 'word-stars'
+      };
     }
   }
 
@@ -1237,11 +1271,10 @@ function extractGenericStarRating(html, text) {
   }
 
   // Spelled-out star ratings: "Five stars!", "Three Stars</p>"
+  // BRO-6905: a star relayed from another critic is skipped, not taken.
   {
-    const ws = text.match(OUT_OF_FIVE_WORD_STARS) || html.match(OUT_OF_FIVE_WORD_STARS) ||
-      text.match(BARE_WORD_STARS) || html.match(BARE_WORD_STARS);
-    if (ws) {
-      const rating = WORD_STAR_NUM[ws[1].toLowerCase()];
+    const rating = findOwnWordStars([text, html]);
+    {
       if (rating) {
         return {
           originalScore: `${rating}/5 stars`,
@@ -2218,6 +2251,7 @@ module.exports = {
   extractNYPostScore,
   extractCultureSauceScore,
   extractGenericStarRating,
+  isRelayedStarRating,
   extractGenericLetterGrade,
   extractUKStarRating,
   extractUSATodayScore,

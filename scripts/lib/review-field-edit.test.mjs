@@ -275,6 +275,36 @@ test('FT pair: the plan actions succeed through the real write guard and leave H
   assert.equal(bano.duplicateOf, H, 'the Bano copy is the duplicate');
 });
 
+// BRO-6905: an originalScore clear on a file that is ALREADY a same-url
+// duplicate of its sibling was refused: the guard restamped duplicateReason
+// (criticName-override-collided-at-rename -> url-collision-detected-at-write),
+// which the executor reports as an unexpected change. The existing reason must survive.
+test('originalScore clear on an existing same-url duplicate keeps its duplicateReason', async () => {
+  const fs = await import('node:fs');
+  const os = await import('node:os');
+  process.env.EXCLUSION_LOGGER_AUDIT_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'rfe-audit-'));
+  const { safeWriteReview } = require('./review-write-guard.js');
+  const { unexpectedChanges } = require('./review-field-edit.js');
+  const dir = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'rfe-dup-')), 'some-show-regional-2026');
+  fs.mkdirSync(dir, { recursive: true });
+  const base = { showId: 'some-show-regional-2026', outlet: 'Theargus', outletId: 'theargus', criticName: 'PA News Agency', url: 'https://www.theargus.co.uk/news/national/1.some-show-reviews/', fullText: 'Placeholder roundup body. '.repeat(80), textQuality: 'full' };
+  const P = 'theargus--pa-news-agency.json';
+  const U = 'theargus--unknown.json';
+  fs.writeFileSync(path.join(dir, P), JSON.stringify({ ...base, assignedScore: 78 }, null, 2));
+  fs.writeFileSync(path.join(dir, U), JSON.stringify({ ...base, assignedScore: 78, duplicateOf: P, duplicateReason: 'criticName-override-collided-at-rename', duplicateClearReason: null, originalScore: '5/5 stars', originalScoreNormalized: 100, originalScoreSource: 'word-stars' }, null, 2));
+  const p = path.join(dir, U);
+  const record = JSON.parse(fs.readFileSync(p, 'utf8'));
+  const action = { field: 'originalScore', oldValue: '5/5 stars', newValue: null };
+  const res = applyReviewFieldEdit(record, action, stamp);
+  assert.equal(res.ok, true, res.reason);
+  safeWriteReview(p, res.record, {});
+  const after = JSON.parse(fs.readFileSync(p, 'utf8'));
+  assert.equal(after.originalScore ?? null, null);
+  assert.equal(after.duplicateOf, P);
+  assert.equal(after.duplicateReason, 'criticName-override-collided-at-rename');
+  assert.deepEqual(unexpectedChanges(record, after, 'originalScore', res.sideEffectKeys || []), []);
+});
+
 // BRO-4599: a human wrongShow flag over a SCRIPT-made wrongShowOverride was a
 // silent no-op (wrongShowCleared reads the override first). Driven through the
 // real write guard: without CLEAR_BREADCRUMBS entries the guard restored the override.
