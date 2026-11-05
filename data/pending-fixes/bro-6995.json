@@ -1,8 +1,8 @@
 {
   "issueNumber": "bro-6995",
-  "planId": "645c9f8c-f603-49cd-a78c-ca271af1d966",
+  "planId": "db770f07-3aa4-4b82-96b9-c58a9b69f4b6",
   "status": "pending",
-  "createdAt": "2026-11-05T06:07:46.536Z",
+  "createdAt": "2026-11-05T06:14:04.858Z",
   "submitter": {
     "name": null,
     "email": null
@@ -14,8 +14,6 @@
       "wanton-off-west-end-2026: poster is the Kowalski poster",
       "is-anything-ok-off-broadway-2026: poster is the Anything Goes opening night poster",
       "kelly-mccaughan-catholic-guilt-off-broadway-2026: poster is the CLUB27 poster",
-      "ish-off-west-end-2026: poster is the FISH (WP Theater) poster",
-      "ish-off-west-end-2026: reject the wrong art's source URL so no fetch takes it again",
       "little-journey-off-broadway-2027: poster is a Phyl cast announcement graphic",
       "scratching-the-itch-off-west-end-2026: poster is a Shiprocked episode card",
       "memoriam-off-west-end-2026: poster is an obituary announcement for an unrelated person",
@@ -24,7 +22,6 @@
       "rowan-live-west-end-2027: poster is a news graphic, not show art",
       "imitation-of-life-off-broadway-2026: poster is the 1959 film poster",
       "imitation-of-life-off-broadway-2026: reject the wrong art's source URL so no fetch takes it again",
-      "everybody-to-kenmure-street-off-west-end-2026: poster is a documentary film poster",
       "king-lear-2-off-west-end-2026: poster is another company's 2022 King Lear",
       "the-place-we-made-off-west-end-2026: poster is the Broadway Studios Tour graphic",
       "the-place-we-made-off-west-end-2026: reject the wrong art's source URL so no fetch takes it again",
@@ -34,7 +31,10 @@
       "the-mystery-of-edwin-drood-amt-theater-off-broadway-2026: reject the wrong art's source URL so no fetch takes it again",
       "rope-off-broadway-2026: poster is The Lost Boys art (mis-uploaded Theater Diary file); reject that source so the re-fetch replaces it",
       "rope-off-broadway-2026: reject the wrong art's source URL so no fetch takes it again",
-      "bettys-summer-vacation-the-heights-players-off-broadway-2026: poster is the How Shakespeare Saved My Life poster"
+      "bettys-summer-vacation-the-heights-players-off-broadway-2026: poster is the How Shakespeare Saved My Life poster",
+      "aftermath-art-new-york-off-broadway-2026: thumbnail is a Cosi fan tutte production photo",
+      "ish-off-west-end-2026: poster and thumbnail are the FISH (WP Theater) art",
+      "ish-off-west-end-2026: reject the wrong art's source URL so no fetch takes it again"
     ],
     "riskLevel": "low",
     "actions": [
@@ -105,34 +105,6 @@
           "hero": null
         },
         "description": "kelly-mccaughan-catholic-guilt-off-broadway-2026: poster is the CLUB27 poster"
-      },
-      {
-        "type": "data-edit",
-        "file": "shows.json",
-        "showId": "ish-off-west-end-2026",
-        "field": "images",
-        "oldValue": {
-          "hero": "/images/shows/ish-off-west-end-2026/hero.webp",
-          "thumbnail": "/images/shows/ish-off-west-end-2026/thumbnail.webp",
-          "poster": "/images/shows/ish-off-west-end-2026/poster.webp"
-        },
-        "newValue": {
-          "hero": "/images/shows/ish-off-west-end-2026/hero.webp",
-          "thumbnail": "/images/shows/ish-off-west-end-2026/thumbnail.webp",
-          "poster": null
-        },
-        "description": "ish-off-west-end-2026: poster is the FISH (WP Theater) poster"
-      },
-      {
-        "type": "data-edit",
-        "file": "shows.json",
-        "showId": "ish-off-west-end-2026",
-        "field": "rejectedImageUrls",
-        "oldValue": null,
-        "newValue": [
-          "https://images.ctfassets.net/6pezt69ih962/4WvhYJCUyEFxfMZirLKvrw/6c22edd16f2ea944775694ab6b8048eb/260723_WP_FISH_TodayTix-Poster_v01.png?fm=webp&q=90"
-        ],
-        "description": "ish-off-west-end-2026: reject the wrong art's source URL so no fetch takes it again"
       },
       {
         "type": "data-edit",
@@ -263,23 +235,6 @@
           "https://images.ctfassets.net/6pezt69ih962/6MsBiWDWUB4yQBGzp6aqpf/b8076a1bf8d90694d11274d04c11985b/NORAM_480x720.jpg?fm=webp&q=90"
         ],
         "description": "imitation-of-life-off-broadway-2026: reject the wrong art's source URL so no fetch takes it again"
-      },
-      {
-        "type": "data-edit",
-        "file": "shows.json",
-        "showId": "everybody-to-kenmure-street-off-west-end-2026",
-        "field": "images",
-        "oldValue": {
-          "thumbnail": "/images/shows/everybody-to-kenmure-street-off-west-end-2026/thumbnail.jpg",
-          "poster": "/images/shows/everybody-to-kenmure-street-off-west-end-2026/poster.jpg",
-          "hero": null
-        },
-        "newValue": {
-          "thumbnail": "/images/shows/everybody-to-kenmure-street-off-west-end-2026/thumbnail.jpg",
-          "poster": null,
-          "hero": null
-        },
-        "description": "everybody-to-kenmure-street-off-west-end-2026: poster is a documentary film poster"
       },
       {
         "type": "data-edit",
@@ -432,6 +387,52 @@
           "hero": null
         },
         "description": "bettys-summer-vacation-the-heights-players-off-broadway-2026: poster is the How Shakespeare Saved My Life poster"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "aftermath-art-new-york-off-broadway-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/aftermath-art-new-york-off-broadway-2026/thumbnail.jpg",
+          "poster": "/images/shows/aftermath-art-new-york-off-broadway-2026/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": "/images/shows/aftermath-art-new-york-off-broadway-2026/poster.jpg",
+          "hero": null
+        },
+        "description": "aftermath-art-new-york-off-broadway-2026: thumbnail is a Cosi fan tutte production photo"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "ish-off-west-end-2026",
+        "field": "images",
+        "oldValue": {
+          "hero": "/images/shows/ish-off-west-end-2026/hero.webp",
+          "thumbnail": "/images/shows/ish-off-west-end-2026/thumbnail.webp",
+          "poster": "/images/shows/ish-off-west-end-2026/poster.webp"
+        },
+        "newValue": {
+          "hero": "/images/shows/ish-off-west-end-2026/hero.webp",
+          "thumbnail": null,
+          "poster": null
+        },
+        "description": "ish-off-west-end-2026: poster and thumbnail are the FISH (WP Theater) art"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "ish-off-west-end-2026",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/4WvhYJCUyEFxfMZirLKvrw/6c22edd16f2ea944775694ab6b8048eb/260723_WP_FISH_TodayTix-Poster_v01.png?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/6gIxfiBp2W90yURTXNB0aD/511d2c7b62004a36d23ce6bc1afaa98b/1080x1080__TodayTix_.png?fm=webp&q=90"
+        ],
+        "description": "ish-off-west-end-2026: reject the wrong art's source URL so no fetch takes it again"
       }
     ]
   }

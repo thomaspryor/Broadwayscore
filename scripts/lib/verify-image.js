@@ -282,6 +282,13 @@ function creativesForVerify(show) {
   return team.filter(c => c && c.name && WORK_ROLE_RE.test(String(c.role || '')));
 }
 
+/** True when the verifier itself failed (API/download/parse error, skipped), whatever it guessed. */
+function isVerifierError(result) {
+  const r = result || {};
+  return (r.issues || []).some(i => ['api_error', 'download_error', 'parse_error', 'invalid_input'].includes(i))
+    || r.confidence === 'error' || r.match === null || r.skipped === true;
+}
+
 /**
  * Final accept/reject for a verify result (pure; BRO-5022).
  * Non-strict: unchanged legacy behaviour (low-confidence rejections and API
@@ -291,13 +298,6 @@ function creativesForVerify(show) {
  * record "no reliable art" because Gemini was down.
  * @returns {{accept: boolean, errored: boolean, reason: string}}
  */
-/** True when the verifier itself failed (API/download/parse error, skipped), whatever it guessed. */
-function isVerifierError(result) {
-  const r = result || {};
-  return (r.issues || []).some(i => ['api_error', 'download_error', 'parse_error', 'invalid_input'].includes(i))
-    || r.confidence === 'error' || r.match === null || r.skipped === true;
-}
-
 function applyStrictVerdict(result, { strict = false } = {}) {
   const r = result || {};
   const errored = isVerifierError(r);

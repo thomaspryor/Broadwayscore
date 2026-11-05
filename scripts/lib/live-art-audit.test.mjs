@@ -4,7 +4,7 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const { selectLiveShows, artFilesToAudit, collapseRowsByShow, AUDITED_FORMATS, classifyResult, buildReport, buildLiveArtAlert } = require('./live-art-audit.js');
 
-test('selectLiveShows keeps live statuses with a thumbnail only', () => {
+test('selectLiveShows keeps live statuses with a thumbnail or poster', () => {
   const shows = [
     { id: 'a', status: 'open', images: { thumbnail: '/images/shows/a/thumbnail.webp' } },
     { id: 'b', status: 'closed', images: { thumbnail: '/x.webp' } },
@@ -95,7 +95,9 @@ test('classifyResult ignores strictFieldsMissing: the sweep never asks for stric
   // What verifyImage returns for the sweep's non-strict call: no workConfirmed, strictFieldsMissing true.
   const base = { confidence: 'high', workConfirmed: false, strictFieldsMissing: true, productionMatch: 'unknown' };
   assert.deepEqual(classifyResult({ ...base, match: false, issues: ['wrong_show'], imageType: 'promotional_art' }), { kind: 'wrong_show', errored: false });
+  // The old strict check filed every passing answer as an error row (BRO-6995).
   assert.equal(classifyResult({ ...base, match: true, issues: [] }), null);
+  assert.equal(classifyResult({ ...base, match: true, confidence: 'medium', issues: [] }), null);
   // Real failures stay errors.
   assert.equal(classifyResult({ ...base, match: true, confidence: 'low', issues: ['download_error'] }).errored, true);
 });

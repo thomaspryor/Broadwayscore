@@ -20,7 +20,10 @@
  *   - vec: the 256 cell values, mean-centred and unit-length, so the dot
  *     product of two vecs is their Pearson correlation (1.0 = same picture,
  *     whatever the brightness, contrast, size or JPEG noise).
- * Different artwork correlates near 0.0 to 0.5; the same artwork 0.9+.
+ * Different artwork correlates near 0.0 to 0.5; the same artwork 0.97+ when the
+ * layout is the same. A re-laid-out poster scores lower (Rope vs The Lost Boys: 0.80),
+ * so this is a shortlist, not proof. A pair whose bit hashes differ by more than
+ * SHORTLIST_BITS scores -1 ("not comparable").
  *
  * Pure functions (CLAUDE.md §15) work on a greyscale raster
  * { data, width, height }; only grayRaster / signatureOf touch sharp.

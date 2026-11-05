@@ -82,10 +82,10 @@ function collapseRowsByShow(rows) {
  */
 function classifyResult(result) {
   const r = result || {};
-  // Non-strict on purpose: the sweep calls verifyImage without the STRICT prompt block, so
-  // its answers never carry workConfirmed and always have strictFieldsMissing set. Strict
-  // error rules filed ~85% of every run (including wrong art such as Rope's poster) as a
-  // "verifier error" and hid it (BRO-6995). Only a real verifier failure is an error.
+  // Only a real verifier failure is an error. The sweep calls verifyImage without the STRICT
+  // prompt block, so its answers never carry workConfirmed and always have strictFieldsMissing
+  // set. The old strict-mode check turned every PASSING (match:true) answer into an "error"
+  // row (679 of 797 on the 2026-11-05 run), burying the real failures in noise (BRO-6995).
   if (isVerifierError(r)) return { kind: 'error', errored: true };
   if (r.match !== false || r.confidence === 'low') return null;
   const issues = Array.isArray(r.issues) ? r.issues : [];
