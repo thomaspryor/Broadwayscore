@@ -777,13 +777,13 @@
       "title": "Time-to-publish SLA cannot be measured — only 0 review(s) in scope (need 5)",
       "firstSeen": "2026-08-08T11:39:46.729Z",
       "incidentOpenedAt": "2026-10-27T08:11:38.216Z",
-      "lastSeen": "2026-11-04T09:45:52.528Z",
+      "lastSeen": "2026-11-05T09:53:09.671Z",
       "lastNotifiedAt": "2026-11-03T09:57:34.258Z",
       "lastSurfacedAt": "2026-11-03T09:57:34.258Z",
       "notifyCount": 13,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "affiliate:bot-divergence": {
       "status": "open",
@@ -26051,10 +26051,10 @@
       "title": "NYC Theatre roundups: archive coverage 54% in 2025Q4+2026Q2 vs 82% baseline (2024Q2+2024Q4+2025Q1+2025Q2)",
       "firstSeen": "2026-10-24T07:38:57.677Z",
       "incidentOpenedAt": "2026-10-24T07:38:57.677Z",
-      "lastSeen": "2026-11-04T09:42:54.315Z",
-      "lastNotifiedAt": "2026-11-04T09:42:54.315Z",
-      "lastSurfacedAt": "2026-11-04T09:42:54.315Z",
-      "notifyCount": 12,
+      "lastSeen": "2026-11-05T09:50:51.046Z",
+      "lastNotifiedAt": "2026-11-05T09:50:51.046Z",
+      "lastSurfacedAt": "2026-11-05T09:50:51.046Z",
+      "notifyCount": 13,
       "cardId": null,
       "linearIdentifier": null
     },
@@ -35627,7 +35627,7 @@
       "linearIdentifier": null
     },
     "aggregator-health:lbo-roundups:workflow-stale:scrape-new-aggregators.yml": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "London Box Office roundups: scrape-new-aggregators.yml last succeeded 7 days ago",
       "firstSeen": "2026-11-02T21:49:11.368Z",
@@ -35638,7 +35638,9 @@
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 1,
+      "resolvedAt": "2026-11-05T09:50:51.272Z",
+      "resolveReason": "finding cleared"
     },
     "land:land/bro-6854-sd": {
       "status": "open",
