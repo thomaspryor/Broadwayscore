@@ -100,7 +100,7 @@ function checkHandoffBreak({ impactClicksByDay, posthogTTClicksByDay, asOf, days
  * 2026 (Impact 89/62/60 vs ~30 real). Costs nothing directly but dilutes EPC
  * and risks Impact compliance flags if sustained.
  */
-function checkBotDivergence({ impactClicksByDay, posthogTTClicksByDay, asOf, days = 3, maxRatio = 2.5, minImpactClicks = 60 }) {
+function checkBotDivergence({ impactClicksByDay, posthogTTClicksByDay, asOf, days = 3, maxRatio = 2.5, minImpactClicks = 60, minLastDayFloor = 15 }) {
   const posthog = sumWindow(posthogTTClicksByDay, asOf, days);
   const impact = sumWindow(impactClicksByDay, asOf, days);
   if (impact < minImpactClicks || posthog === 0) {
@@ -108,6 +108,19 @@ function checkBotDivergence({ impactClicksByDay, posthogTTClicksByDay, asOf, day
   }
   const ratio = impact / posthog;
   if (ratio > maxRatio) {
+    // BRO-6985: a burst that already stopped must not keep warning until it rolls out of the window
+    // (Nov 1-3 2026: 1995 Impact clicks vs 152 real, back to normal Nov 4, still in the digest days
+    // later). "If sustained" is the harm, so judge whether the latest complete day is still inflated.
+    const lastDay = String(asOf);
+    const impactLast = Number((impactClicksByDay instanceof Map ? impactClicksByDay.get(lastDay) : (impactClicksByDay || {})[lastDay]) || 0);
+    const posthogLast = Number((posthogTTClicksByDay instanceof Map ? posthogTTClicksByDay.get(lastDay) : (posthogTTClicksByDay || {})[lastDay]) || 0);
+    if (impactLast <= maxRatio * Math.max(posthogLast, minLastDayFloor)) {
+      return {
+        verdict: 'healthy',
+        reason: `Earlier burst over: Impact ${impact} vs PostHog ${posthog} over ${days}d (${ratio.toFixed(1)}x), but ${lastDay} is back to ${impactLast} vs ${posthogLast} (within ${maxRatio}x)`,
+        impact, posthog, ratio, ended: true,
+      };
+    }
     return {
       verdict: 'diverged',
       reason: `Impact recorded ${impact} clicks vs only ${posthog} real PostHog TodayTix clicks over ${days}d (${ratio.toFixed(1)}x, ceiling ${maxRatio}x) — likely bots hitting the pxf.io tracking links; dilutes EPC and risks Impact compliance review if sustained`,
