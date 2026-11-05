@@ -1,15 +1,15 @@
 {
   "system": "autofix",
-  "status": "warn",
-  "lastChecked": "2026-11-04T09:18:28.504Z",
+  "status": "pass",
+  "lastChecked": "2026-11-05T09:31:02.873Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
   "details": [
     {
       "name": "Autofix: persistent visitor rows with no open card",
-      "status": "warn",
-      "message": "2 visitor-facing row(s) red for 4+ days with no open card: Data quality: revival-unverified lifetime sweep (22d, BRO-6509 closed); Data quality: cross-outlet attribution drift (4d, BRO-6860 closed)"
+      "status": "pass",
+      "message": "Every visitor-facing row red for 96h+ has an open card"
     }
   ]
 }

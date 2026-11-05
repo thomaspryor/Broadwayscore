@@ -1,7 +1,7 @@
 {
   "system": "quality",
   "status": "warn",
-  "lastChecked": "2026-11-04T09:18:28.500Z",
+  "lastChecked": "2026-11-05T09:31:02.859Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -13,23 +13,23 @@
     },
     {
       "name": "Quality: star-vs-score mismatch",
-      "status": "warn",
-      "message": "1 NEW review(s) whose explicit rating contradicts the score (worst: american-buffalo-west-end-2015 Evening Standard 1/5→20 vs LLM 75, gap 55)"
+      "status": "pass",
+      "message": "No new star/score contradictions (31 known/baselined)"
     },
     {
       "name": "Quality: scored review ratio",
       "status": "pass",
-      "message": "98.0% scored (49196/50193)"
+      "message": "98.1% scored (49149/50110)"
     },
     {
       "name": "Quality: corpus drift",
       "status": "pass",
-      "message": "28 audit(s) drifting, each reported on its own card or the digest FYI line (1h ago)"
+      "message": "27 audit(s) drifting, each reported on its own card or the digest FYI line (6h ago)"
     },
     {
       "name": "Quality: DMARC deliverability",
       "status": "pass",
-      "message": "17869 messages, 0 auth failures (p=reject)"
+      "message": "17936 messages, 0 auth failures (p=reject)"
     },
     {
       "name": "Quality: missing contentTier",
@@ -39,22 +39,22 @@
     {
       "name": "Quality: outlet domain moves",
       "status": "pass",
-      "message": "No probable domain moves in 284 unregistered host(s)"
+      "message": "No probable domain moves in 285 unregistered host(s)"
     },
     {
       "name": "Quality: Show Score gap",
-      "status": "pass",
-      "message": "Every opened Broadway/off-Broadway show with a cached Show Score URL has a Show Score audience score"
+      "status": "warn",
+      "message": "1 opened show(s) have a cached Show Score URL but no Show Score audience score (midnight-off-broadway-2026)"
     },
     {
       "name": "Quality: outlet stub rate",
       "status": "pass",
-      "message": "No broken-extractor signature in 1850 outlet(s), 80004 review(s)"
+      "message": "No broken-extractor signature in 1854 outlet(s), 80145 review(s)"
     },
     {
       "name": "Quality: outlet invalid-content rate",
       "status": "pass",
-      "message": "No broken-extractor signature in 1850 outlet(s), 80004 review(s)"
+      "message": "No broken-extractor signature in 1854 outlet(s), 80145 review(s)"
     },
     {
       "name": "Quality: standingCoverage drift",
@@ -69,12 +69,12 @@
     {
       "name": "Quality: outlet-heartbeat red flags",
       "status": "pass",
-      "message": "148 outlet×market rows checked, none NEW silent 2+ consecutive weeks (31 known/baselined, 2d ago)"
+      "message": "148 outlet×market rows checked, none NEW silent 2+ consecutive weeks (31 known/baselined, 3d ago)"
     },
     {
       "name": "Quality: outlet feed staleness",
       "status": "warn",
-      "message": "Of 66 feed(s), outlet still publishing but feed 1 failing: slantmagazine (All scraping methods failed)"
+      "message": "Of 74 feed(s), outlet still publishing but feed 1 stale: exeunt-magazine (feed newest none, review 2026-11-03); 1 failing: slantmagazine (All scraping methods failed)"
     }
   ]
 }
