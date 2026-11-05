@@ -1,22 +1,24 @@
 {
-  "generatedAt": "2026-11-05T06:56:32.322Z",
+  "generatedAt": "2026-11-05T10:22:28.763Z",
   "night": "2026-11-04",
   "counts": {
     "total": 1,
     "passed": 0,
-    "failed": 0,
-    "notGraded": 1
+    "failed": 1,
+    "notGraded": 0
   },
   "lines": [
     {
-      "verdict": "PENDING",
-      "line": "Parcel from America: not graded yet, still being checked."
+      "verdict": "FAIL",
+      "line": "Parcel from America: published by the regular pipeline; 1 of 1 review live by 12:00am; the first review was not live until 10:45pm (45 min after release). Failed."
     }
   ],
   "scoreboard": {
-    "graded": 12,
+    "graded": 13,
     "passed": 1,
     "passedOnOwn": 1
   },
-  "missFirstSeen": {}
+  "missFirstSeen": {
+    "parcel-from-america-off-broadway-2026|2026-11-04|review:first-live": "2026-11-05T10:22:28.763Z"
+  }
 }
