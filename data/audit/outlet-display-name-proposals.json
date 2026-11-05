@@ -1,0 +1,466 @@
+{
+  "_meta": {
+    "issue": "BRO-5507",
+    "generatedAt": "2026-11-05T00:00:00.000Z",
+    "description": "Hand-reviewed display names for outlets whose displayName was the capitalized id. Each row was read off the outlet homepage (fetchPage, og:site_name/<title>). Applied by node scripts/audit-registry-slug-displaynames.js --apply-proposals (rules: scripts/lib/outlet-display-name-proposals.js).",
+    "selection": "single-token id, 10+ characters, displayName equals the capitalized id, at least one live review, not stamped displayNameReviewed"
+  },
+  "proposals": [
+    {
+      "outletId": "theatrecat",
+      "from": "Theatrecat",
+      "action": "rename",
+      "to": "theatreCat",
+      "liveReviews": 74,
+      "evidence": "2026-11-05 https://theatrecat.com/ og:site_name/<title>: \"theatreCat / theatreCat | Libby Purves and friends review\""
+    },
+    {
+      "outletId": "monstagigz",
+      "from": "Monstagigz",
+      "action": "reviewed",
+      "liveReviews": 57,
+      "evidence": "2026-11-05 https://monstagigz.com/ og:site_name and <title> are \"monstagigz\"; the one-word name is the brand"
+    },
+    {
+      "outletId": "scribicide",
+      "from": "Scribicide",
+      "action": "reviewed",
+      "liveReviews": 47,
+      "evidence": "2026-11-05 https://scribicide.com/ <title> \"scribicide – a new york-based theater blog\"; the one-word name is the brand"
+    },
+    {
+      "outletId": "showbiz411",
+      "from": "Showbiz411",
+      "action": "reviewed",
+      "liveReviews": 37,
+      "evidence": "2026-11-05 https://showbiz411.com/ og:site_name \"Showbiz411\" equals the current name"
+    },
+    {
+      "outletId": "corrblimey",
+      "from": "Corrblimey",
+      "action": "rename",
+      "to": "Corr Blimey",
+      "liveReviews": 27,
+      "evidence": "2026-11-05 https://corrblimey.uk/ og:site_name/<title>: \"Corr Blimey / Corr Blimey – Reviews, News & Previews – edited by Dominic Corr\""
+    },
+    {
+      "outletId": "1883magazine",
+      "from": "1883magazine",
+      "action": "rename",
+      "to": "1883 Magazine",
+      "liveReviews": 25,
+      "evidence": "2026-11-05 https://1883magazine.com/ og:site_name/<title>: \"1883 Magazine / 1883 Magazine | Celebrity Interviews, Fashion, Beauty, Music & Film\""
+    },
+    {
+      "outletId": "blogcritics",
+      "from": "Blogcritics",
+      "action": "reviewed",
+      "liveReviews": 22,
+      "evidence": "2026-11-05 https://blogcritics.org/ og:site_name \"Blogcritics\" (direct fetch) equals the current name"
+    },
+    {
+      "outletId": "rescripted",
+      "from": "Rescripted",
+      "action": "reviewed",
+      "liveReviews": 21,
+      "evidence": "2026-11-05 https://rescripted.org/ <title> \"Rescripted: Artist-led interactive commentary...\"; the one-word name is the brand"
+    },
+    {
+      "outletId": "maturetimes",
+      "from": "Maturetimes",
+      "action": "rename",
+      "to": "Mature Times",
+      "liveReviews": 20,
+      "evidence": "2026-11-05 https://maturetimes.co.uk/ og:site_name \"Mature Times\" (direct fetch)"
+    },
+    {
+      "outletId": "2ontheaisle",
+      "from": "2ontheaisle",
+      "action": "rename",
+      "to": "Two on the Aisle",
+      "liveReviews": 10,
+      "evidence": "2026-11-05 https://2ontheaisle.wordpress.com/ og:site_name/<title>: \"Two on the Aisle / Two on the Aisle – NYC and Connecticut Theater News and Reviews\""
+    },
+    {
+      "outletId": "latheatrix",
+      "from": "Latheatrix",
+      "action": "rename",
+      "to": "LA Theatrix",
+      "liveReviews": 10,
+      "evidence": "2026-11-05 https://latheatrix.com/ og:site_name/<title>: \"LA Theatrix / LA Theatrix Theatre Reviews | LA Theatrix\""
+    },
+    {
+      "outletId": "attractions",
+      "from": "Attractions",
+      "action": "rename",
+      "to": "Attractions Magazine",
+      "liveReviews": 9,
+      "evidence": "2026-11-05 https://attractionsmagazine.com/ og:site_name/<title>: \"Attractions Magazine / Attractions Magazine theme park news, videos, rumors\""
+    },
+    {
+      "outletId": "equality365",
+      "from": "Equality365",
+      "action": "rename",
+      "to": "Equality 365",
+      "liveReviews": 8,
+      "evidence": "2026-11-05 https://equality365.com/ <title> \"Equality 365 Entertainment News\""
+    },
+    {
+      "outletId": "towncountry",
+      "from": "Towncountry",
+      "action": "rename",
+      "to": "Town & Country",
+      "liveReviews": 6,
+      "evidence": "2026-11-05 https://townandcountrymag.com/ og:site_name/<title>: \"Town & Country / Luxury Style, Travel, and Leisure - Town & Country Magazine\""
+    },
+    {
+      "outletId": "dallasvoice",
+      "from": "Dallasvoice",
+      "action": "rename",
+      "to": "Dallas Voice",
+      "liveReviews": 6,
+      "evidence": "2026-11-05 https://dallasvoice.com/ og:site_name/<title>: \"Dallas Voice / Dallas Voice - The Premier Media Source for LGBTQ News North Texas\""
+    },
+    {
+      "outletId": "jewishnews",
+      "from": "Jewishnews",
+      "action": "rename",
+      "to": "Jewish News",
+      "liveReviews": 6,
+      "evidence": "2026-11-05 https://jewishnews.co.uk/ og:site_name/<title>: \"Jewish News / Jewish News - Britain's Biggest Jewish Newspaper Online\""
+    },
+    {
+      "outletId": "susanelkin",
+      "from": "Susanelkin",
+      "action": "rename",
+      "to": "Susan Elkin",
+      "liveReviews": 6,
+      "evidence": "2026-11-05 https://susanelkin.co.uk/ og:site_name/<title>: \"Susan Elkin / Official website of Susan Elkin - Freelance journalist and author\""
+    },
+    {
+      "outletId": "ethankanfer",
+      "from": "Ethankanfer",
+      "action": "rename",
+      "to": "Ethan Kanfer",
+      "liveReviews": 5,
+      "evidence": "2026-11-05 https://ethankanfer.wordpress.com/ og:site_name/<title>: \"Ethan Kanfer / Ethan Kanfer – The Authorized Blog\""
+    },
+    {
+      "outletId": "number9reviews",
+      "from": "Number9reviews",
+      "action": "rename",
+      "to": "Number 9",
+      "liveReviews": 5,
+      "evidence": "2026-11-05 https://number9reviews.blogspot.com/ <title> \"NUMBER 9.... Reviewing The Arts UK-wide\""
+    },
+    {
+      "outletId": "londongrip",
+      "from": "Londongrip",
+      "action": "rename",
+      "to": "London Grip",
+      "liveReviews": 4,
+      "evidence": "2026-11-05 https://londongrip.co.uk/ <title> \"Welcome to London Grip, a forum for reviews...\""
+    },
+    {
+      "outletId": "outinjersey",
+      "from": "Outinjersey",
+      "action": "rename",
+      "to": "Out In Jersey",
+      "liveReviews": 4,
+      "evidence": "2026-11-05 https://outinjersey.net/ og:site_name \"Out In Jersey media\", <title> \"Out In Jersey magazine\""
+    },
+    {
+      "outletId": "austin101magazine",
+      "from": "Austin101magazine",
+      "action": "rename",
+      "to": "Austin 101 Magazine",
+      "liveReviews": 4,
+      "evidence": "2026-11-05 https://austin101magazine.com/ og:site_name/<title>: \"Austin 101 Magazine\""
+    },
+    {
+      "outletId": "mycultural",
+      "from": "Mycultural",
+      "action": "rename",
+      "to": "My Cultural Life",
+      "liveReviews": 4,
+      "evidence": "2026-11-05 https://mycultural.life/ og:site_name/<title>: \"My Cultural Life / Home - My Cultural Life My Cultural Life\""
+    },
+    {
+      "outletId": "consequence",
+      "from": "Consequence",
+      "action": "reviewed",
+      "liveReviews": 3,
+      "evidence": "2026-11-05 https://consequence.net/ og:site_name \"Consequence\" equals the current name"
+    },
+    {
+      "outletId": "totaltheater1",
+      "from": "Totaltheater1",
+      "action": "rename",
+      "to": "TotalTheater",
+      "liveReviews": 3,
+      "evidence": "2026-11-05 https://totaltheater1.wordpress.com/ og:site_name/<title>: \"TotalTheater / TotalTheater – theater criticism and journalism from around the world\""
+    },
+    {
+      "outletId": "thecrimson",
+      "from": "Thecrimson",
+      "action": "rename",
+      "to": "The Harvard Crimson",
+      "liveReviews": 3,
+      "evidence": "2026-11-05 https://thecrimson.com/ og:site_name/<title>: \"The Harvard Crimson\""
+    },
+    {
+      "outletId": "fastcompany",
+      "from": "Fastcompany",
+      "action": "rename",
+      "to": "Fast Company",
+      "liveReviews": 2,
+      "evidence": "2026-11-05 https://fastcompany.com/ og:site_name/<title>: \"Fast Company / Fast Company | Business News, Innovation, Technology, Work Life and Design\""
+    },
+    {
+      "outletId": "crazychris",
+      "from": "Crazychris",
+      "action": "rename",
+      "to": "Crazy Chris",
+      "liveReviews": 2,
+      "evidence": "2026-11-05 https://crazychris.net/ <title> \"The Crazy Chris Website\""
+    },
+    {
+      "outletId": "dailyactor",
+      "from": "Dailyactor",
+      "action": "rename",
+      "to": "Daily Actor",
+      "liveReviews": 2,
+      "evidence": "2026-11-05 https://dailyactor.com/ og:site_name/<title>: \"Daily Actor: Monologues, Acting Tips, Interviews, Resources / Daily Actor: Free Monologues, Acting Tips, Interviews, Resources\""
+    },
+    {
+      "outletId": "huntnewsnu",
+      "from": "Huntnewsnu",
+      "action": "rename",
+      "to": "The Huntington News",
+      "liveReviews": 2,
+      "evidence": "2026-11-05 https://huntnewsnu.com/ og:site_name/<title>: \"The Huntington News / The Huntington News - The independent student newspaper of Northeastern University\""
+    },
+    {
+      "outletId": "curtainsup",
+      "from": "Curtainsup",
+      "action": "rename",
+      "to": "CurtainsUp",
+      "liveReviews": 2,
+      "evidence": "2026-11-05 https://curtainsup.online/ og:site_name/<title>: \"CurtainsUp / Theatre | CurtainsUp\""
+    },
+    {
+      "outletId": "operacanada",
+      "from": "Operacanada",
+      "action": "rename",
+      "to": "Opera Canada",
+      "liveReviews": 2,
+      "evidence": "2026-11-05 https://operacanada.ca/ og:site_name/<title>: \"Opera Canada | News, Reviews & Stories from Canada’s Opera World / Opera Canada\""
+    },
+    {
+      "outletId": "thesuburban",
+      "from": "Thesuburban",
+      "action": "rename",
+      "to": "The Suburban",
+      "liveReviews": 2,
+      "evidence": "2026-11-05 https://thesuburban.com/ og:site_name \"The Suburban Newspaper\""
+    },
+    {
+      "outletId": "channel3000",
+      "from": "Channel3000",
+      "action": "rename",
+      "to": "Channel 3000",
+      "liveReviews": 2,
+      "evidence": "2026-11-05 https://channel3000.com/ og:site_name/<title>: \"Channel3000.com / Channel 3000 | Madison, WI news and weather\""
+    },
+    {
+      "outletId": "mildconcern",
+      "from": "Mildconcern",
+      "action": "rename",
+      "to": "Mild Concern",
+      "liveReviews": 2,
+      "evidence": "2026-11-05 https://mildconcern.substack.com/ og:site_name/<title>: \"Mild Concern | Tim Brandon | Substack / Mild Concern\""
+    },
+    {
+      "outletId": "burghvivant",
+      "from": "Burghvivant",
+      "action": "rename",
+      "to": "'Burgh Vivant",
+      "liveReviews": 2,
+      "evidence": "2026-11-05 https://burghvivant.org/ og:site_name/<title>: \"'Burgh Vivant\""
+    },
+    {
+      "outletId": "flavorwire",
+      "from": "Flavorwire",
+      "action": "reviewed",
+      "liveReviews": 1,
+      "evidence": "2026-11-05 https://flavorwire.com/ og:site_name \"Flavorwire\" equals the current name"
+    },
+    {
+      "outletId": "nippertown",
+      "from": "Nippertown",
+      "action": "reviewed",
+      "liveReviews": 1,
+      "evidence": "2026-11-05 https://nippertown.com/ domain now redirects to the Daily Gazette; Nippertown was the outlet's one-word name"
+    },
+    {
+      "outletId": "spoilednyc",
+      "from": "Spoilednyc",
+      "action": "rename",
+      "to": "spoiled NYC",
+      "liveReviews": 1,
+      "evidence": "2026-11-05 https://spoilednyc.com/ og:site_name/<title>: \"spoiled NYC / spoiled NYC | The Food & Culture Guide to New York\""
+    },
+    {
+      "outletId": "splitsider",
+      "from": "Splitsider",
+      "action": "reviewed",
+      "liveReviews": 1,
+      "evidence": "2026-11-05 https://splitsider.com/ domain now redirects to Vulture; Splitsider was the outlet's one-word name"
+    },
+    {
+      "outletId": "refinery29",
+      "from": "Refinery29",
+      "action": "reviewed",
+      "liveReviews": 1,
+      "evidence": "2026-11-05 https://refinery29.com/ og:site_name \"Refinery29\" equals the current name"
+    },
+    {
+      "outletId": "thepopbreak",
+      "from": "Thepopbreak",
+      "action": "rename",
+      "to": "The Pop Break",
+      "liveReviews": 1,
+      "evidence": "2026-11-05 https://thepopbreak.com/ og:site_name/<title>: \"The Pop Break\""
+    },
+    {
+      "outletId": "musicals101",
+      "from": "Musicals101",
+      "action": "reviewed",
+      "liveReviews": 1,
+      "evidence": "2026-11-05 https://musicals101.com/ <title> \"Musicals101.com Homepage\"; the one-word name is the brand"
+    },
+    {
+      "outletId": "katzreviews",
+      "from": "Katzreviews",
+      "action": "rename",
+      "to": "Katz Reviews",
+      "liveReviews": 1,
+      "evidence": "2026-11-05 https://katzreviews.com/ og:site_name/<title>: \"Katz Reviews / Katz Reviews – Movie & Theater Reviews by Ed Katz\""
+    },
+    {
+      "outletId": "royberkinfo",
+      "from": "Royberkinfo",
+      "action": "rename",
+      "to": "RoyBerko.info",
+      "liveReviews": 1,
+      "evidence": "2026-11-05 https://royberkinfo.blogspot.com/ og:site_name/<title>: \"RoyBerko.info\""
+    },
+    {
+      "outletId": "commonweal",
+      "from": "Commonweal",
+      "action": "rename",
+      "to": "Commonweal Magazine",
+      "liveReviews": 1,
+      "evidence": "2026-11-05 https://commonwealmagazine.org/ og:site_name/<title>: \"Commonweal Magazine | Religion, Politics, Culture / Commonweal Magazine\""
+    },
+    {
+      "outletId": "stanservice",
+      "from": "Stanservice",
+      "action": "rename",
+      "to": "stan service",
+      "liveReviews": 1,
+      "evidence": "2026-11-05 https://stanservice.substack.com/ og:site_name/<title>: \"stan service | Molly Wilson | Substack / stan service\""
+    },
+    {
+      "outletId": "newtownbee",
+      "from": "Newtownbee",
+      "action": "rename",
+      "to": "The Newtown Bee",
+      "liveReviews": 1,
+      "evidence": "2026-11-05 https://newtownbee.com/ og:site_name/<title>: \"Home | The Newtown Bee / Home\""
+    },
+    {
+      "outletId": "newsfromme",
+      "from": "Newsfromme",
+      "action": "rename",
+      "to": "News From ME",
+      "liveReviews": 1,
+      "evidence": "2026-11-05 https://newsfromme.com/ og:site_name/<title>: \"News From ME / News From ME – Mark Evanier's Blog About All Sorts of Stuff\""
+    },
+    {
+      "outletId": "nichibeiorg",
+      "from": "Nichibeiorg",
+      "action": "rename",
+      "to": "Nichi Bei News",
+      "liveReviews": 1,
+      "evidence": "2026-11-05 https://nichibei.org/ og:site_name \"Nichi Bei News\" (direct fetch)"
+    },
+    {
+      "outletId": "matthewsplace1",
+      "from": "Matthewsplace1",
+      "action": "rename",
+      "to": "Matthew’s Place",
+      "liveReviews": 1,
+      "evidence": "2026-11-05 https://matthewsplace1.substack.com/ og:site_name/<title>: \"Matthew’s Place | Substack / Matthew’s Place\""
+    },
+    {
+      "outletId": "pghlesbian",
+      "from": "Pghlesbian",
+      "action": "rename",
+      "to": "Pittsburgh Lesbian Correspondents",
+      "liveReviews": 1,
+      "evidence": "2026-11-05 https://pghlesbian.com/ og:site_name/<title>: \"Pittsburgh Lesbian Correspondents - Pittsburgh's LGBTQ Blog Since 2005 ... / Pittsburgh Lesbian Correspondents\""
+    },
+    {
+      "outletId": "munroreview",
+      "from": "Munroreview",
+      "action": "rename",
+      "to": "The Munro Review",
+      "liveReviews": 1,
+      "evidence": "2026-11-05 https://munroreview.com/ og:site_name \"THE MUNRO REVIEW\" (all-caps styling)"
+    },
+    {
+      "outletId": "headtopics",
+      "from": "Headtopics",
+      "action": "rename",
+      "to": "Head Topics",
+      "liveReviews": 1,
+      "evidence": "2026-11-05 https://us.headtopics.com/ og:site_name/<title>: \"Head Topics / Breaking News | Headlines | United States News - Head Topics\""
+    },
+    {
+      "outletId": "sequenza21",
+      "from": "Sequenza21",
+      "action": "reviewed",
+      "liveReviews": 1,
+      "evidence": "2026-11-05 https://sequenza21.com/ og:site_name \"Sequenza21\" equals the current name"
+    },
+    {
+      "outletId": "itgirlworld",
+      "from": "Itgirlworld",
+      "action": "rename",
+      "to": "ItGirl World",
+      "liveReviews": 1,
+      "evidence": "2026-11-05 https://itgirlworld.co.uk/ og:site_name \"ItGirl World UK\""
+    }
+  ],
+  "unresolved": [
+    {
+      "outletId": "theamerican",
+      "current": "Theamerican",
+      "liveReviews": 4,
+      "reason": "masthead \"The American\" collides with american-theater-web on the america ~ american near-duplicate key (outlet-alias-collision); needs an alias decision first"
+    },
+    {
+      "outletId": "harryforbes",
+      "current": "Harryforbes",
+      "liveReviews": 2,
+      "reason": "homepage fetch blocked/timed out (Bright Data refuses the domain)"
+    },
+    {
+      "outletId": "cityguideny",
+      "current": "Cityguideny",
+      "liveReviews": 1,
+      "reason": "<title> \"New York City Guide\" does not settle the brand spelling"
+    }
+  ]
+}

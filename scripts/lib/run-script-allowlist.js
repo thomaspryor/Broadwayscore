@@ -104,6 +104,9 @@ const ALLOWED_SCRIPTS = [
   // BRO-4490: stamp textFetchedAt on review texts that lack it (git history first,
   // then firstSeenAt/addedAt/collectedAt; plans pass --apply).
   'backfill-text-fetched-at.js',
+  // BRO-5507: apply hand-reviewed outlet display names to outlet-registry.json. Plans pass
+  // --apply-proposals=data/audit/outlet-display-name-proposals.json --write; exits 1 on any refused row.
+  'audit-registry-slug-displaynames.js',
 ];
 
 /** Why the executor would refuse this run-script name, or null. */
