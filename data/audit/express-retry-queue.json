@@ -1,112 +1,6 @@
 {
   "entries": [
     {
-      "showId": "tosca-off-broadway-2026",
-      "market": "broadway",
-      "queuedAt": "2026-11-01T14:36:12.889Z",
-      "dueAt": "2026-11-02T04:15:00.000Z",
-      "attempted": true,
-      "attemptedAt": "2026-11-02T06:26:38.820Z"
-    },
-    {
-      "showId": "the-blue-violinist-over-west-end-avenue-off-broadway-2026",
-      "market": "broadway",
-      "queuedAt": "2026-11-01T14:31:46.842Z",
-      "dueAt": "2026-11-02T04:15:00.000Z",
-      "attempted": true,
-      "attemptedAt": "2026-11-02T06:26:38.820Z"
-    },
-    {
-      "showId": "msblackforpresident-off-broadway-2026",
-      "market": "broadway",
-      "queuedAt": "2026-11-01T14:31:09.616Z",
-      "dueAt": "2026-11-02T04:15:00.000Z",
-      "attempted": true,
-      "attemptedAt": "2026-11-02T06:26:38.820Z"
-    },
-    {
-      "kind": "truncated-t1-refetch",
-      "showId": "tosca-off-broadway-2026",
-      "market": "broadway",
-      "queuedAt": "2026-11-01T15:30:27.466Z",
-      "dueAt": "2026-11-01T16:30:27.466Z",
-      "offsetHours": 1,
-      "outletIds": [
-        "guardian"
-      ],
-      "attempted": true,
-      "attemptedAt": "2026-11-01T18:50:18.632Z"
-    },
-    {
-      "kind": "truncated-t1-refetch",
-      "showId": "tosca-off-broadway-2026",
-      "market": "broadway",
-      "queuedAt": "2026-11-01T15:30:27.466Z",
-      "dueAt": "2026-11-01T18:30:27.466Z",
-      "offsetHours": 3,
-      "outletIds": [
-        "guardian"
-      ],
-      "attempted": true,
-      "attemptedAt": "2026-11-01T18:50:18.632Z"
-    },
-    {
-      "kind": "truncated-t1-refetch",
-      "showId": "tosca-off-broadway-2026",
-      "market": "broadway",
-      "queuedAt": "2026-11-01T15:30:27.466Z",
-      "dueAt": "2026-11-02T03:30:27.466Z",
-      "offsetHours": 12,
-      "outletIds": [
-        "guardian"
-      ],
-      "attempted": true,
-      "skipped": true,
-      "skipReason": "express-retry-same-tick",
-      "attemptedAt": "2026-11-02T06:26:38.820Z"
-    },
-    {
-      "kind": "truncated-t1-refetch",
-      "showId": "medea-off-broadway-2026",
-      "market": "broadway",
-      "queuedAt": "2026-11-01T18:50:18.632Z",
-      "dueAt": "2026-11-01T19:50:18.632Z",
-      "offsetHours": 1,
-      "outletIds": [
-        "wsj"
-      ],
-      "attempted": true,
-      "attemptedAt": "2026-11-01T19:56:58.573Z"
-    },
-    {
-      "kind": "truncated-t1-refetch",
-      "showId": "medea-off-broadway-2026",
-      "market": "broadway",
-      "queuedAt": "2026-11-01T18:50:18.632Z",
-      "dueAt": "2026-11-01T21:50:18.632Z",
-      "offsetHours": 3,
-      "outletIds": [
-        "wsj"
-      ],
-      "attempted": true,
-      "attemptedAt": "2026-11-01T23:18:07.457Z"
-    },
-    {
-      "kind": "truncated-t1-refetch",
-      "showId": "medea-off-broadway-2026",
-      "market": "broadway",
-      "queuedAt": "2026-11-01T18:50:18.632Z",
-      "dueAt": "2026-11-02T06:50:18.632Z",
-      "offsetHours": 12,
-      "outletIds": [
-        "wsj"
-      ],
-      "attempted": true,
-      "skipped": true,
-      "skipReason": "no-truncated-t1",
-      "attemptedAt": "2026-11-02T06:55:44.705Z"
-    },
-    {
       "showId": "clifford-odets-waiting-for-lefty-off-broadway-2026",
       "market": "broadway",
       "queuedAt": "2026-11-02T13:36:07.924Z",
@@ -173,7 +67,8 @@
       "market": "broadway",
       "queuedAt": "2026-11-04T15:22:26.639Z",
       "dueAt": "2026-11-05T04:15:00.000Z",
-      "attempted": false
+      "attempted": true,
+      "attemptedAt": "2026-11-05T06:59:20.425Z"
     },
     {
       "showId": "ghost-notes-off-broadway-2026",
@@ -194,7 +89,8 @@
       "market": "broadway",
       "queuedAt": "2026-11-04T14:46:47.480Z",
       "dueAt": "2026-11-05T06:46:47.480Z",
-      "attempted": false
+      "attempted": true,
+      "attemptedAt": "2026-11-05T06:59:20.425Z"
     },
     {
       "showId": "the-unbelievers-off-broadway-2026",
