@@ -178,6 +178,27 @@ function isShortPartialReview(data) {
 }
 
 /**
+ * BRO-6996: one show's section of a multi-show column (copy-multishow-section.js,
+ * multi-show-review-fanout). It is short by construction: Ben West's Musical
+ * Theatre Report column gives In the Heights a 375-char capsule and The Heart
+ * 846, and both were refused as body_too_short, leaving the review off the
+ * site. The text is the verbatim section the splitter cut for this show, not a
+ * page shell, so the 1000-char floor does not apply. The 300-char floor and
+ * the same exclusion flags as isShortPartialReview still hold. A 'complete'
+ * tier is required: the splitter writes that tier for a section it trusts.
+ * @param {Object} data review-text record
+ * @returns {boolean}
+ */
+function isMultiShowSectionReview(data) {
+  if (!data || typeof data.fullText !== 'string') return false;
+  if (data.multiShowSplitChild !== true && data.multiShowSplitParent !== true) return false;
+  const len = data.fullText.trim().length;
+  if (len < MIN_SHORT_PARTIAL_CHARS || len >= BODY_GATE_CHARS) return false;
+  if (data.contentTier !== 'complete') return false;
+  return !(data.wrongShow || data.wrongProduction || data.isNonReview || data.rejectionReason);
+}
+
+/**
  * The one answer to "does score-input-validator.js's body_too_short gate
  * apply to this file?". The scorer call sites (scorer.ts, ensemble-scorer.ts)
  * and rescore-lifecycle.js's isBlockedFromRescore must agree, or a file is
@@ -186,7 +207,7 @@ function isShortPartialReview(data) {
  * @returns {boolean}
  */
 function isExemptFromBodyLengthGate(data) {
-  return isCapsuleReview(data) || isShortPartialReview(data);
+  return isCapsuleReview(data) || isShortPartialReview(data) || isMultiShowSectionReview(data);
 }
 
 /**
@@ -244,4 +265,4 @@ function isStaleToBeCalculated(data, showCategory) {
 
 module.exports = {
   strippedFullTextSelection, selectScorableText, isCapsuleReview, DEFAULT_MIN_TEXT_LENGTH,
-  isShortPartialReview, isExemptFromBodyLengthGate, isToBeCalculatedScored, isStaleToBeCalculated, BODY_GATE_CHARS, MIN_SHORT_PARTIAL_CHARS };
+  isShortPartialReview, isMultiShowSectionReview, isExemptFromBodyLengthGate, isToBeCalculatedScored, isStaleToBeCalculated, BODY_GATE_CHARS, MIN_SHORT_PARTIAL_CHARS };
