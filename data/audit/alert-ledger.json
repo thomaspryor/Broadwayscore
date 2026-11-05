@@ -6156,7 +6156,7 @@
       "resolveReason": "absent"
     },
     "scheduled-email-missing:morning-digest:2026-09-25": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "Morning digest did not arrive on 2026-09-25",
       "firstSeen": "2026-09-26T18:15:35.650Z",
@@ -6165,7 +6165,9 @@
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-4176"
+      "linearIdentifier": "BRO-4176",
+      "resolvedAt": "2026-11-05T21:19:38.000Z",
+      "resolveReason": "BRO-6157: morning-digest delivered again on 2026-11-02"
     },
     "direct-push:54899ea4987da87a4d51eeaf03f5f3343b047a63": {
       "status": "resolved",
@@ -7811,7 +7813,7 @@
       "resolvedAt": "2026-09-29T21:59:52.776Z"
     },
     "scheduled-email-missing:morning-digest:2026-09-28": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "Morning digest did not arrive on 2026-09-28",
       "firstSeen": "2026-09-29T19:45:47.529Z",
@@ -7820,7 +7822,9 @@
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-4378"
+      "linearIdentifier": "BRO-4378",
+      "resolvedAt": "2026-11-05T21:19:38.024Z",
+      "resolveReason": "BRO-6157: morning-digest delivered again on 2026-11-02"
     },
     "land:land/bro-4265-tm-gap-test": {
       "status": "resolved",
@@ -9072,7 +9076,7 @@
       "resolvedAt": "2026-09-30T20:27:35.763Z"
     },
     "scheduled-email-missing:morning-digest:2026-09-29": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "Morning digest did not arrive on 2026-09-29",
       "firstSeen": "2026-09-30T19:47:24.927Z",
@@ -9081,10 +9085,12 @@
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-4445"
+      "linearIdentifier": "BRO-4445",
+      "resolvedAt": "2026-11-05T21:19:38.044Z",
+      "resolveReason": "BRO-6157: morning-digest delivered again on 2026-11-02"
     },
     "scheduled-email-missing:opening-digest:2026-09-29": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "Opening digest did not arrive on 2026-09-29",
       "firstSeen": "2026-09-30T19:47:29.264Z",
@@ -9093,7 +9099,9 @@
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-4446"
+      "linearIdentifier": "BRO-4446",
+      "resolvedAt": "2026-11-05T21:19:38.062Z",
+      "resolveReason": "BRO-6157: opening-digest delivered again on 2026-11-02"
     },
     "land:land/bro-4431-ownership": {
       "status": "resolved",
@@ -26465,7 +26473,7 @@
       "resolveReason": "absent"
     },
     "scheduled-email-missing:opening-digest:2026-10-23": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "Opening digest did not arrive on 2026-10-23",
       "firstSeen": "2026-10-24T17:47:33.927Z",
@@ -26475,7 +26483,9 @@
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-6157"
+      "linearIdentifier": "BRO-6157",
+      "resolvedAt": "2026-11-05T21:19:38.081Z",
+      "resolveReason": "BRO-6157: opening-digest delivered again on 2026-11-02"
     },
     "land:land/bro-6155-we-major-recovery": {
       "status": "resolved",
@@ -36177,10 +36187,10 @@
       "title": "Scheduled sender delivered MORE THAN ONCE in a day: reddit-post-ready, opening-digest",
       "firstSeen": "2026-11-03T20:49:21.806Z",
       "incidentOpenedAt": "2026-11-03T20:49:21.806Z",
-      "lastSeen": "2026-11-04T21:02:30.190Z",
-      "lastNotifiedAt": "2026-11-04T21:02:30.190Z",
+      "lastSeen": "2026-11-05T21:19:38.102Z",
+      "lastNotifiedAt": "2026-11-05T21:19:38.102Z",
       "lastSurfacedAt": null,
-      "notifyCount": 2,
+      "notifyCount": 3,
       "cardId": null,
       "linearIdentifier": "BRO-6918"
     },
@@ -37249,6 +37259,19 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
+    },
+    "scheduled-email-count:dup-reddit-post-ready": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "Scheduled sender delivered MORE THAN ONCE in a day: reddit-post-ready",
+      "firstSeen": "2026-11-05T21:19:38.500Z",
+      "incidentOpenedAt": "2026-11-05T21:19:38.500Z",
+      "lastSeen": "2026-11-05T21:19:38.500Z",
+      "lastNotifiedAt": "2026-11-05T21:19:38.500Z",
+      "lastSurfacedAt": null,
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-7026"
     }
   }
 }

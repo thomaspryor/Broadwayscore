@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-11-04T21:02:29.754Z",
+  "generatedAt": "2026-11-05T21:19:37.464Z",
   "counts": {
-    "router": 213,
+    "router": 214,
     "digest": 1,
     "direct": 0,
     "humanCallerIgnoresDigest": 0
@@ -93,21 +93,21 @@
     },
     {
       "file": ".github/workflows/test.yml",
-      "line": 4477,
+      "line": 4482,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "unknown"
     },
     {
       "file": ".github/workflows/test.yml",
-      "line": 4486,
+      "line": 4491,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "unknown"
     },
     {
       "file": ".github/workflows/test.yml",
-      "line": 6624,
+      "line": 6636,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "digest"
@@ -142,7 +142,7 @@
     },
     {
       "file": ".github/workflows/update-show-status.yml",
-      "line": 2046,
+      "line": 2047,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "human"
@@ -163,7 +163,7 @@
     },
     {
       "file": "scripts/analyze-rebuild-drops.js",
-      "line": 384,
+      "line": 391,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "auto"
@@ -268,14 +268,14 @@
     },
     {
       "file": "scripts/audit-live-show-art.js",
-      "line": 134,
+      "line": 155,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "unknown"
     },
     {
       "file": "scripts/audit-live-show-art.js",
-      "line": 142,
+      "line": 163,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "unknown"
@@ -932,6 +932,27 @@
       "disposition": "unknown"
     },
     {
+      "file": "scripts/lib/audit-route-alert-core.js",
+      "line": 240,
+      "kind": "routeAlert",
+      "classification": "router",
+      "disposition": "unknown"
+    },
+    {
+      "file": "scripts/lib/audit-route-alert-core.js",
+      "line": 275,
+      "kind": "routeAlert",
+      "classification": "router",
+      "disposition": "unknown"
+    },
+    {
+      "file": "scripts/lib/audit-route-alert-core.js",
+      "line": 280,
+      "kind": "routeAlert",
+      "classification": "router",
+      "disposition": "unknown"
+    },
+    {
       "file": "scripts/lib/auto-fix-first.js",
       "line": 331,
       "kind": "routeAlert",
@@ -1038,7 +1059,7 @@
     },
     {
       "file": "scripts/lib/core-data-merge-registry.js",
-      "line": 1950,
+      "line": 1958,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "unknown"
@@ -1142,20 +1163,6 @@
       "disposition": "unknown"
     },
     {
-      "file": "scripts/lib/route-alert-write-order.js",
-      "line": 105,
-      "kind": "routeAlert",
-      "classification": "router",
-      "disposition": "unknown"
-    },
-    {
-      "file": "scripts/lib/route-alert-write-order.js",
-      "line": 122,
-      "kind": "routeAlert",
-      "classification": "router",
-      "disposition": "unknown"
-    },
-    {
       "file": "scripts/lib/scan-alert-ledger-gaps.js",
       "line": 310,
       "kind": "routeAlert",
@@ -1206,14 +1213,14 @@
     },
     {
       "file": "scripts/monitor-scheduled-email-count.js",
-      "line": 227,
+      "line": 236,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "auto"
     },
     {
       "file": "scripts/monitor-scheduled-email-count.js",
-      "line": 240,
+      "line": 249,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "auto"
@@ -1346,7 +1353,7 @@
     },
     {
       "file": "scripts/route-live-data-failures.js",
-      "line": 34,
+      "line": 41,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "unknown"
@@ -1416,28 +1423,28 @@
     },
     {
       "file": "scripts/send-welcome-emails.js",
-      "line": 233,
+      "line": 217,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "digest"
     },
     {
       "file": "scripts/send-welcome-emails.js",
-      "line": 246,
+      "line": 230,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "digest"
     },
     {
       "file": "scripts/send-welcome-emails.js",
-      "line": 255,
+      "line": 239,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "digest"
     },
     {
       "file": "scripts/send-welcome-emails.js",
-      "line": 277,
+      "line": 261,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "digest"
