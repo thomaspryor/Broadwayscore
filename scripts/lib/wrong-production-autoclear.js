@@ -1216,6 +1216,35 @@ function shouldAutoClearWrongProductionUkDualMarket(data, ctx = {}) {
 }
 
 /**
+ * In-own-production-window test for the London-outlet reverse self-heal, for
+ * files that may have no publishDate (BRO-6994). 38 of the 55 observer.com files
+ * held as "Cross-market: London outlet" had a null publishDate, so the window
+ * gate failed them although the URL carries the date or year
+ * (observer.com/2024/...). With no publishDate, fall back to the URL date, then
+ * to the URL year: in window only when some day of that year falls inside the
+ * show's own window. A year is coarser than a date, so the caller keeps its
+ * other-show-URL veto (urlFiledUnderOtherShow).
+ *
+ * @param {object} show
+ * @param {string|null} publishDate
+ * @param {string|null} url
+ * @returns {boolean}
+ */
+function isInOwnWindowByDateOrUrlYear(show, publishDate, url) {
+  const { isReviewWithinOwnProductionWindow } = require('./review-guards');
+  if (publishDate) return isReviewWithinOwnProductionWindow(show, publishDate);
+  if (!show || !url) return false;
+  const u = require('./url-date').extractDateFromUrl(url);
+  if (!u) return false;
+  if (u.date) return isReviewWithinOwnProductionWindow(show, u.date);
+  if (!u.yearOnly) return false;
+  for (let m = 1; m <= 12; m++) {
+    if (isReviewWithinOwnProductionWindow(show, `${u.yearOnly}-${String(m).padStart(2, '0')}-01`)) return true;
+  }
+  return isReviewWithinOwnProductionWindow(show, `${u.yearOnly}-12-31`);
+}
+
+/**
  * Reverse direction of shouldAutoClearWrongProductionUkDualMarket: a stale
  * "Cross-market: London outlet ..." flag on a Broadway / off-Broadway show,
  * written before the outlet was registered as dual-market.
@@ -1309,4 +1338,5 @@ module.exports = {
   isUrlIndependentWrongShowReason,
   shouldAutoClearWrongProductionUkDualMarket,
   shouldAutoClearStaleLondonOutletCrossMarket,
+  isInOwnWindowByDateOrUrlYear,
 };

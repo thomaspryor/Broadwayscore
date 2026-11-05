@@ -117,6 +117,7 @@ const {
   shouldAutoClearAnticipatoryGrace,
   shouldAutoClearWrongProductionUkDualMarket,
   shouldAutoClearStaleLondonOutletCrossMarket,
+  isInOwnWindowByDateOrUrlYear,
   isDateOnlyAutoReason,
 } = require('./lib/wrong-production-autoclear');
 const { isAnticipatoryPreviewPost } = require('./lib/content-filters');
@@ -3679,7 +3680,7 @@ showDirs.forEach(showId => {
             isDateMismatch: revDateMismatch,
             isShowListingUrl: require('./lib/cross-production-guards').isEvergreenListingUrl(data.url),
             cvBlocksClear: cvBlocksUkWrongProductionAutoClear(data.contentVerification),
-            inOwnProductionWindow: isReviewWithinOwnProductionWindow(showById[showId], data.publishDate),
+            inOwnProductionWindow: isInOwnWindowByDateOrUrlYear(showById[showId], data.publishDate, data.url),
             urlFiledUnderOtherShow: ((urlShowIdsAll.get(normalizeUrlForDedup(data.url)) || new Set()).size > 1),
           })) {
             delete data.wrongProduction;
