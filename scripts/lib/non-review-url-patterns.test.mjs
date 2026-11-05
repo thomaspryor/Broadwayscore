@@ -35,6 +35,9 @@ test('namedNonReviewReason: venue production pages are named', () => {
 
 test('namedNonReviewReason: event listing pages are named', () => {
   assert.equal(namedNonReviewReason('https://middlesexcountyculture.com/event/the-car-man/'), 'event-listing');
+  // BRO-5829
+  assert.equal(namedNonReviewReason('https://www.newjerseystage.com/events/2026/10/31/george-street-playhouse-presents-the-unexpected-3rd-at-new-brunswick-performing-arts-center-nbpac-in-new-brunswick-nj-on-2026-10-31-200pm'), 'event-listing');
+  assert.equal(namedNonReviewReason('https://www.newjerseystage.com/articles3/2026/10/28/review-of-some-show/'), null);
 });
 
 test('namedNonReviewReason: host+path pairs only exclude the specific path, not the whole host', () => {

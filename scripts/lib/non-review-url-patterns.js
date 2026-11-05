@@ -248,6 +248,9 @@ const NAMED_NON_REVIEW_URL_PATTERNS = [
   { host: /(^|\.)nypost\.com$/, path: /^\/\d{4}\/\d\d\/\d\d\/[^/]+-join-forces-to-produce-[^/]+\/?$/i, reason: 'producer-news' },
   { host: /(^|\.)nationaltheatre\.org\.uk$/, path: /^\/productions\//, reason: 'venue-production-page' },
   { host: /(^|\.)middlesexcountyculture\.com$/, path: /^\/event\//, reason: 'event-listing' },
+  // BRO-5829: New Jersey Stage per-showtime calendar pages (/events/YYYY/MM/DD/...-on-DATE-TIME) are
+  // listings, never reviews; the SERP census kept re-alerting four of them for The Unexpected 3rd.
+  { host: /(^|\.)newjerseystage\.com$/, path: /^\/events\/\d{4}\/\d\d\/\d\d\//, reason: 'event-listing' },
   // An events-calendar entry ("UPCOMING ... Event information supplied by the
   // originating source") at a bare title slug. Opening Night Online's real reviews
   // use the same shape (/the-invention-of-love/), so only this page is named (BRO-4679).
