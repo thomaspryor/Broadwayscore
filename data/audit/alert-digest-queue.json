@@ -185,5 +185,19 @@
       }
     ],
     "queuedAt": "2026-11-05T11:38:08.402Z"
+  },
+  {
+    "conditionKey": "test-yml:data-validation-red",
+    "title": "Data audits failing (non-blocking): Audit outlet-registry gaps (still open — BRO-5882)",
+    "description": "Still firing after 37 notifications since it was filed. Tracked at BRO-5882.\n\nCorpus-state audits in test.yml Data Validation failed. They no longer decide main's color (BRO-3425). Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/42024071933",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": "BRO-5882",
+    "fields": [],
+    "queuedAt": "2026-11-05T12:12:52.127Z"
   }
 ]
