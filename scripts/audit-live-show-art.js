@@ -10,7 +10,7 @@
  * the file anyway; a human or an approved-fix plan removes it).
  *
  * Usage:
- *   node scripts/audit-live-show-art.js                  # all live shows, 4 workers
+ *   node scripts/audit-live-show-art.js                  # all live shows, 6 workers, 120 rpm (thumbnail + poster = ~1500 calls, fits the 40 min workflow timeout)
  *   node scripts/audit-live-show-art.js --show=ID        # one show
  *   node scripts/audit-live-show-art.js --limit=N        # first N shows (smoke test)
  *   node scripts/audit-live-show-art.js --workers=N --no-write --no-alert
@@ -111,8 +111,8 @@ async function main() {
     if (!(n > 0)) { console.error('--limit needs a positive number'); process.exit(2); }
     shows = shows.slice(0, n);
   }
-  const workers = Math.max(1, parseInt(arg('workers') || '4', 10));
-  const rateLimiter = createRateLimiter(parseInt(arg('rpm') || '60', 10));
+  const workers = Math.max(1, parseInt(arg('workers') || '6', 10));
+  const rateLimiter = createRateLimiter(parseInt(arg('rpm') || '120', 10));
   console.log(`Auditing the thumbnail and poster of ${shows.length} live shows with ${workers} workers...`);
 
   const rows = [];

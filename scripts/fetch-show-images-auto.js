@@ -2013,7 +2013,6 @@ async function verifyAndCollect(images, show, tierName, verifyCtx) {
   if (unconfirmed) {
     console.log(`   ✗ REFUSED (${tierName}): ${unconfirmed} — ${result && result.description}`);
     verifyCtx.refusedUnconfirmed = (verifyCtx.refusedUnconfirmed || 0) + 1;
-    discardStaged(images._staged, 'poster');
     return null;
   }
 
@@ -3418,6 +3417,7 @@ async function main() {
     console.log(`  Rejected (wrong image): ${verifyCtx.rejected}`);
     console.log(`  Production photos deferred: ${verifyCtx.productionPhotos || 0}`);
     console.log(`  Uncertain (accepted anyway): ${verifyCtx.uncertain}`);
+    if (verifyCtx.refusedUnconfirmed) console.log(`  Refused (user-uploaded art, verifier not confident): ${verifyCtx.refusedUnconfirmed}`);
     if (verifyCtx.venueOverrides > 0) {
       console.log(`  Venue overrides (pre-Broadway): ${verifyCtx.venueOverrides}`);
     }
