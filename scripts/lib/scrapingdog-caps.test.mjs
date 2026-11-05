@@ -413,3 +413,27 @@ test('pressNightSpentUsd warm calls on a 44MB-class ledger average under 20 ms (
   assert.equal(caps.pressNightSpentUsd(PN, { ledgerPath, table: PN_TABLE }), fullScan(ledgerPath, dir));
   fs.rmSync(dir, { recursive: true, force: true });
 });
+
+test('pressNightSpentUsd retries when a trim rewrite lands between validation and read (torn read)', () => {
+  _resetForTests();
+  const { dir, ledgerPath } = pnLedger();
+  const rows = Array.from({ length: 30 }, (_, i) => pnRow(i));
+  fs.writeFileSync(ledgerPath, rows.join('\n') + '\n');
+  checkSame(ledgerPath, dir); // prime the cache
+  fs.appendFileSync(ledgerPath, pnRow(100) + '\n');
+  const realRead = fs.readSync;
+  let calls = 0;
+  fs.readSync = (...args) => {
+    const n = realRead(...args);
+    if (++calls === 2) {
+      // trim lands after head + fingerprint validation, before the data read: drop 3 oldest rows, append 3 new ones
+      fs.writeFileSync(ledgerPath, [...rows.slice(3), pnRow(100), pnRow(101), pnRow(102), pnRow(103)].map((r, i) => (i >= 27 ? r.replace(/"credits":\d/, '"credits":9') : r)).join('\n') + '\n');
+    }
+    return n;
+  };
+  let cached;
+  try { cached = caps.pressNightSpentUsd(PN, { ledgerPath, table: PN_TABLE }); } finally { fs.readSync = realRead; }
+  assert.equal(cached, fullScan(ledgerPath, dir));
+  assert.equal(checkSame(ledgerPath, dir), cached);
+  fs.rmSync(dir, { recursive: true, force: true });
+});
