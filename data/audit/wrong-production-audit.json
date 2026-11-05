@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-05T04:27:18.326Z",
+  "timestamp": "2026-11-05T06:14:01.217Z",
   "stats": {
-    "totalReviews": 80183,
-    "alreadyFlagged": 22021,
+    "totalReviews": 80185,
+    "alreadyFlagged": 22002,
     "dateGuardCatches": 217,
     "directorMismatch": 3507,
-    "tvFilmSignals": 2281,
+    "tvFilmSignals": 2282,
     "londonSignals": 3614,
-    "offBroadwaySignals": 737,
+    "offBroadwaySignals": 741,
     "yearMismatch": 361,
-    "noPublishDate": 8483
+    "noPublishDate": 8504
   },
   "findings": [
     {
@@ -69448,6 +69448,20 @@
       ]
     },
     {
+      "showId": "the-kite-runner-2022",
+      "file": "observer--david-cote.json",
+      "score": 38,
+      "publishDate": null,
+      "url": "https://observer.com/2022/07/review-a-weak-adaptation-of-a-rapidly-aging-the-kite-runner-at-hayes-theater/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"streaming series\""
+        }
+      ]
+    },
+    {
       "showId": "the-kite-runner-west-end-2017",
       "file": "financialtimes--alexander-gilmour.json",
       "score": 42,
@@ -87121,6 +87135,20 @@
       ]
     },
     {
+      "showId": "american-idiot-2010",
+      "file": "observer--jesse-oxfeld.json",
+      "score": 58,
+      "publishDate": null,
+      "url": "https://observer.com/2010/culture/green-day-american-idiot",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
       "showId": "american-psycho-2016",
       "file": "broadway-blog--samuel-l-leiter.json",
       "score": 75,
@@ -91236,6 +91264,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"st. ann's warehouse\""
+        }
+      ]
+    },
+    {
+      "showId": "brief-encounter-2010",
+      "file": "observer--jesse-oxfeld.json",
+      "score": 75,
+      "publishDate": null,
+      "url": "https://observer.com/2010/culture/brief-encounter-%E2%80%A6-again",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"classic stage\""
         }
       ]
     },
@@ -118371,6 +118413,20 @@
       ]
     },
     {
+      "showId": "race-2009",
+      "file": "observer--jesse-oxfeld.json",
+      "score": 38,
+      "publishDate": null,
+      "url": "https://observer.com/2009/culture/make-way-mamet-didact-1",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"lucille lortel\""
+        }
+      ]
+    },
+    {
       "showId": "rare-earth-mettle-west-end-2021",
       "file": "everything-theatre--gabriel-wilding.json",
       "score": 81,
@@ -138981,6 +139037,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "wonderland-2011",
+      "file": "observer--jesse-oxfeld.json",
+      "score": 17,
+      "publishDate": null,
+      "url": "https://observer.com/2011/04/at-the-theater-high-war-horse-and-wonderland-strike-out-but-being-harold-pinter-strikes-gold/2/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"public theater\""
         }
       ]
     },
