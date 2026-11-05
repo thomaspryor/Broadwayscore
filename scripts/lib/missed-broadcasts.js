@@ -389,13 +389,14 @@ function findMissedBroadcasts({
     const state = classifyShowBroadcastState(sentShows, s.id);
     if (state === 'sent' || state === 'discarded') continue;
 
-    // The real gate, not a copy of it: Broadway needs 15 AND a DTLI/BWW (or lane-aggregator, BRO-6623)
+    // The real gate: Broadway needs 15 AND a DTLI/BWW (or lane-aggregator, BRO-6623)
     // aggregator, West End needs 12 and no aggregator. Reporting a Broadway
     // show with 13 reviews as a missed send would be a confident lie — it
     // never qualified in the first place.
     const showReviews = reviewsByShow.get(s.id) || [];
     const verdict = evaluateBroadcastReadiness(showReviews, s.category);
     if (!verdict.ready) continue;
+    // Stricter than the sender on purpose (BRO-5447): a transfer whose own run is under the floor owes no email.
     if (!currentRunQualifies(s, shows, showReviews)) continue;
 
     // Only the never-drafted case is what the redundant-force-send scenario
