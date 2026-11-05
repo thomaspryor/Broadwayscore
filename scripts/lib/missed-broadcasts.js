@@ -36,6 +36,7 @@
 
 const { migrateSentRecord } = require('./broadcast-state');
 const { evaluateBroadcastReadiness } = require('./broadcast-readiness');
+const { priorRunClassifier } = require('./prior-run-sibling');
 
 // Only these two ever broadcast — mirrors the category allowlist in
 // opening-night-broadcast.yml's `find` step and findRecentlyOpenedShows.
@@ -313,6 +314,33 @@ function wasCoveredByWeeklyRoundup(issues, showId) {
 }
 
 /**
+ * BRO-5447: a returning production (a declared `priorRuns` transfer or return)
+ * carries its earlier run's reviews, so it clears the review-count floor on the
+ * day it reopens without THIS run having been reviewed at all. Jesus Christ
+ * Superstar moved from the Palladium (opened 2026-07-07, its own opening-night
+ * draft already handled) to Drury Lane on 2026-10-16 with 32 reviews, 2 of them
+ * about the new run; the sweep reported it as a qualified opening nobody
+ * emailed, every day, and no round-up could ever "cover" it because the
+ * round-up's fresh-run gate (newsletter/fresh-run-reviews.mjs, BRO-3822) rightly
+ * refuses to announce it as newly opened. Owing an opening-night email is a
+ * claim about this run, so for a returning production the readiness gate is
+ * re-run without the reviews placed in a prior run (prior-run-sibling.js
+ * priorRunClassifier, the same split the email's "N new reviews" line uses).
+ *
+ * Fails open (true) when the show has no priorRuns or its prior run cannot be
+ * resolved to a window: a classifier gap must never hide an ordinary opening.
+ * Pure.
+ */
+function currentRunQualifies(show, shows, showReviews) {
+  if (!show || !Array.isArray(show.priorRuns) || show.priorRuns.length === 0) return true;
+  const runs = priorRunClassifier(show, shows || []);
+  if (!runs.windows.length) return true;
+  // Drop only rows positively placed in a prior run; an undated row stays in,
+  // so a metadata gap errs toward reporting a miss, never toward hiding one.
+  return evaluateBroadcastReadiness((showReviews || []).filter((r) => !runs.isPrior(r)), show.category).ready;
+}
+
+/**
  * @param {object} args
  * @param {Array}  args.shows     - shows.json `.shows`
  * @param {object} args.sentShows - opening-night-sent.json `.shows`
@@ -365,8 +393,10 @@ function findMissedBroadcasts({
     // aggregator, West End needs 12 and no aggregator. Reporting a Broadway
     // show with 13 reviews as a missed send would be a confident lie — it
     // never qualified in the first place.
-    const verdict = evaluateBroadcastReadiness(reviewsByShow.get(s.id) || [], s.category);
+    const showReviews = reviewsByShow.get(s.id) || [];
+    const verdict = evaluateBroadcastReadiness(showReviews, s.category);
     if (!verdict.ready) continue;
+    if (!currentRunQualifies(s, shows, showReviews)) continue;
 
     // Only the never-drafted case is what the redundant-force-send scenario
     // this exists for looks like — a draft-stuck/draft-unknown show already
@@ -456,6 +486,7 @@ module.exports = {
   summarizeMissedForHealth,
   selectPageableStaleDrafts,
   findMissedBroadcasts,
+  currentRunQualifies,
   classifyBroadcastState,
   classifyShowBroadcastState,
   sentOnSiblingRecord,
