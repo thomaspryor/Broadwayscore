@@ -20,7 +20,7 @@ name: Morning Digest
 #
 # CATCH-UP (handoff day 2026-11-02): GitHub started NONE of the three scheduled runs, and this repo
 # is known to drop most scheduled runs (BRO-4282, cron-redispatch.yml). Events are delivered reliably,
-# so the workflow also wakes on every finished Test Suite run on main AND every finished Deploy to Vercel run on main (BRO-7016: on 2026-11-05 no Test Suite run finished between 07:35 and 09:24 ET, so the digest went out at 09:26 ET; Deploy to Vercel finished every 10 to 20 minutes in that gap). Do not add Cron re-dispatch: it is itself woken by Test Suite, so it adds no independence and sits at GitHub's 3-level workflow_run chain limit. A fully quiet weekend morning could still give no wake, and the pager is the backstop. Each wake goes
+# so the workflow also wakes on every finished Test Suite run on main AND every finished Deploy to Vercel run on main (BRO-7016: on 2026-11-05 no Test Suite run finished between 07:35 and 09:24 ET, so the digest went out at 09:26 ET; Deploy to Vercel finished every 10 to 20 minutes in that gap). Do not add Cron re-dispatch: it is itself woken by Test Suite, so it adds no independence (a Test Suite gap is a Cron re-dispatch gap). A fully quiet weekend morning could still give no wake, and the pager is the backstop. Each wake goes
 # through the same gate (handoff date, 07:45 to 11:30 ET) and then scripts/digest-sent-precheck.js
 # (one Resend read; go only when no digest to the owner exists yet today), so a dropped cron costs
 # minutes, not the owner's morning email. Exactly one email a day still rests on the Resend

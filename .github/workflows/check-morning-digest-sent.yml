@@ -1,7 +1,7 @@
 name: Check Morning Digest Sent
 
 # BRO-4373 / BRO-6764: two live signals, both from GitHub so they work while the Mac is dead.
-# The morning digest is sent by morning-digest-action.yml (cron 07:50 ET with retries to ~08:50);
+# The morning digest is sent by morning-digest-action.yml (cron 07:50 ET with retries to ~08:50, plus catch-up wakes on finished Test Suite and Deploy to Vercel runs until 11:30 ET);
 # this job runs later and checks (1) the digest reached the owner today (mac:morning-digest-missing:
 # the Action itself failed) and (2) the Mac's checkout-sync heartbeat is fresh
 # (mac:checkin-heartbeat-dead: Mac off or at the FileVault login screen; 2026-09-25..29 it was
