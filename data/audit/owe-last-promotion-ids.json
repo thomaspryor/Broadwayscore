@@ -1,6 +1,12 @@
 {
-  "generatedAt": "2026-11-04T21:24:19.324Z",
-  "promoted": [],
+  "generatedAt": "2026-11-05T21:31:30.776Z",
+  "promoted": [
+    {
+      "id": "fault-off-west-end-2027",
+      "source": "venue-page:king-s-head-theatre",
+      "sourceUrl": "https://kingsheadtheatre.com/whats-on/"
+    }
+  ],
   "rejected": [
     {
       "title": "Golden Boy",
@@ -121,6 +127,14 @@
       "sourceUrl": null,
       "kind": "skip-duplicate",
       "reason": "already in shows.json as robin-hood-and-the-merry-mandem-off-west-end-2026 (same house, title words contained, overlapping run (\"Robin Hood and the Merry Mandem\" vs \"Robin Hood\"))"
+    },
+    {
+      "title": "Robin Hood Press Night",
+      "venue": "Theatre Royal Stratford East",
+      "source": "venue-page:theatre-royal-stratford-east",
+      "sourceUrl": null,
+      "kind": "skip-unconfirmed",
+      "reason": "venue's dated listing does not confirm a run: not a production (one-night event (2026-11-27))"
     },
     {
       "title": "Talking In Tongues",
@@ -379,20 +393,20 @@
       "reason": "already in shows.json as the-radium-girls-off-west-end-2026 (normalized-equal)"
     },
     {
-      "title": "Garry Starr Classic Penguins",
-      "venue": "The Other Palace",
-      "source": "venue-page:the-other-palace",
-      "sourceUrl": null,
-      "kind": "skip-duplicate",
-      "reason": "already in shows.json as garry-starr-classic-penguins-garrick-west-end-2026 (london-pool-title-equal (venue \"The Other Palace\" vs \"Garrick Theatre\"))"
-    },
-    {
       "title": "An Oak Tree",
       "venue": "The Other Palace",
       "source": "venue-page:the-other-palace",
       "sourceUrl": null,
       "kind": "skip-duplicate",
       "reason": "already in shows.json as an-oak-tree-off-west-end-2026 (london-pool-title-equal (venue \"The Other Palace\" vs \"The Other Palace - Main Theatre\"))"
+    },
+    {
+      "title": "Garry Starr Classic Penguins",
+      "venue": "The Other Palace",
+      "source": "venue-page:the-other-palace",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as garry-starr-classic-penguins-garrick-west-end-2026 (london-pool-title-equal (venue \"The Other Palace\" vs \"Garrick Theatre\"))"
     },
     {
       "title": "Boys Who Dance",
@@ -1409,14 +1423,6 @@
       "sourceUrl": null,
       "kind": "skip-duplicate",
       "reason": "already in shows.json as high-school-musical-off-west-end-2026 (normalized-equal)"
-    },
-    {
-      "title": "Robin Hood Press Night",
-      "venue": "Theatre Royal Stratford East",
-      "source": "venue-page:theatre-royal-stratford-east",
-      "sourceUrl": null,
-      "kind": "skip-unconfirmed",
-      "reason": "venue's dated listing does not confirm a run: not a production (one-night event (2026-11-27))"
     }
   ]
 }
