@@ -1,11 +1,3 @@
-{"ts":"2026-10-05T15:22:49.468Z","conditionKey":"e2e-canary:main","title":"[E2E Canary] alert chain check 2026-10-05T15:21:41.739Z","ok":true,"error":null}
-{"ts":"2026-10-05T15:22:56.626Z","conditionKey":"e2e-canary:dedup","title":"[E2E Canary] dedup check 2026-10-05T15:22:49.781Z","ok":true,"error":null}
-{"ts":"2026-10-05T15:45:01.381Z","conditionKey":"test-yml:red:Lint Workflows:8be00113","title":"main test.yml red: Lint Workflows / Audit — wrongProduction/wrongShow writers must invalidate stale auto-clear breadcrumbs","ok":true,"error":null}
-{"ts":"2026-10-05T17:44:42.287Z","conditionKey":"roundup-gap:soon-off-broadway-2026","title":"Soon: 1 roundup-listed review(s) still not captured","ok":true,"error":null}
-{"ts":"2026-10-05T17:44:49.839Z","conditionKey":"roundup-gap:the-hairy-ape-irish-repertory-theatre-off-broadway-2026","title":"The Hairy Ape: 6 roundup-listed review(s) still not captured","ok":true,"error":null}
-{"ts":"2026-10-05T17:48:22.349Z","conditionKey":"test-yml:red:Unit Tests:cd491ba1","title":"main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"CONCURRENT-WRITER STRESS: N racing writers all survive via CAS retry, branch stays single-commit\"","ok":true,"error":null}
-{"ts":"2026-10-05T21:59:38.056Z","conditionKey":"time-bomb-tests:unit:scripts/verify-bro-4724-recheck.test.mjs::the weekly auto-create ran in write mode after landing","title":"Time-bomb test armed: scripts/verify-bro-4724-recheck.test.mjs — the weekly auto-create ran in write mode after landing","ok":true,"error":null}
-{"ts":"2026-10-05T21:51:02.523Z","conditionKey":"scheduled-email-count:2026-10-04","title":"Scheduled sender delivered MORE THAN ONCE on 2026-10-04: reddit-post-ready","ok":true,"error":null}
 {"ts":"2026-10-06T11:06:15.363Z","conditionKey":"review-gap:opening-window:the-invention-of-love-off-broadway-2026","title":"Review gap — \"The Invention of Love\" missing 5 cited review(s)","ok":true,"error":null}
 {"ts":"2026-10-06T11:06:19.997Z","conditionKey":"review-gap:opening-window:the-last-ship-west-end-2026","title":"Review gap — \"The Last Ship\" missing 4 cited review(s)","ok":true,"error":null}
 {"ts":"2026-10-06T11:07:43.725Z","conditionKey":"gap:what-the-animals-say-off-west-end-2026/timeout-london--unknown.json","title":"T1/T2 silent gap on near-opening show: What The Animals Say — timeout-london","ok":true,"error":null}
@@ -770,3 +762,4 @@
 {"ts":"2026-11-04T09:18:57.969Z","conditionKey":"e2e-canary:dedup","title":"[E2E Canary] dedup check 2026-11-04T09:18:56.679Z","ok":true,"error":null}
 {"ts":"2026-11-04T12:30:46.510Z","conditionKey":"test-yml:red:Unit Tests:52f78a6b","title":"main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"shows.json no longer points rejected hero/poster fields at missing or rejected bytes\"","ok":true,"error":null}
 {"ts":"2026-11-04T13:21:41.505Z","conditionKey":"test-yml:red:Unit Tests:2a99ef21","title":"main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"every verified gap id still exists in shows.json (a rename would silently empty the checks below)\"","ok":true,"error":null}
+{"ts":"2026-11-05T02:38:03.910Z","conditionKey":"corpus-drift:orphaned-wrongprod-provenance","title":"Corpus drift: review files with wrongProduction provenance but the flag dropped (would score silently; baseline-diff)","ok":true,"error":null}
