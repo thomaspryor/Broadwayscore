@@ -185,6 +185,8 @@ on:
       - 'scripts/reconcile-uk-regional-opening-dates.js'
       # tests/unit/audit-malformed-review-urls.test.mjs names this CLI (audit-toplevel-script-test-yml-coverage).
       - 'scripts/audit-malformed-review-urls.js'
+      # BRO-2454: CLI + scripts/audit-route-alert.test.mjs (audit-toplevel-script-test-yml-coverage).
+      - 'scripts/audit-route-alert.js'
       - 'scripts/audit-multi-verdict-stars.js'
       # tests/unit/run-contamination.test.mjs requires class2/3/5 from this audit (BRO-5261).
       - 'scripts/audit-run-contamination.js'
