@@ -1,0 +1,109 @@
+{
+  "schemaVersion": 1,
+  "showId": "parcel-from-america-off-broadway-2026",
+  "night": "2026-11-04",
+  "market": "off-broadway",
+  "embargoAt": "2026-11-05T03:00:00.000Z",
+  "embargoSource": "market-default",
+  "probe": {
+    "startedAt": "2026-11-05T02:30:06.025Z",
+    "endedAt": null,
+    "intervalMin": 5,
+    "samples": 30,
+    "failedSamples": 0,
+    "lastSampleAt": "2026-11-05T04:55:10.386Z",
+    "lastOkSampleAt": "2026-11-05T04:55:10.386Z"
+  },
+  "firstLiveAt": "2026-11-05T03:45:08.318Z",
+  "firstLiveBaseline": false,
+  "lastLiveAt": "2026-11-05T03:45:08.318Z",
+  "liveCount": 1,
+  "liveCountAt": {
+    "1h": 1,
+    "2h": null,
+    "6h": null
+  },
+  "liveCountSampleAt": {
+    "1h": "2026-11-05T04:00:08.793Z",
+    "2h": null,
+    "6h": null
+  },
+  "firstOutletPublishAt": {
+    "at": "2026-11-05",
+    "precision": "approx",
+    "source": "prod-rv-publishDate",
+    "tierScope": "T1-T2"
+  },
+  "perReview": [
+    {
+      "key": "theatermania|zachary stewart",
+      "outlet": "TheaterMania",
+      "critic": "Zachary Stewart",
+      "tier": 2,
+      "publishAt": "2026-11-05",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-05T03:45:08.318Z",
+      "prevOkSampleAt": "2026-11-05T03:40:08.085Z",
+      "baseline": false,
+      "liveNow": true
+    }
+  ],
+  "dropped": [],
+  "reference": {
+    "2h": {
+      "status": "no-census-yet",
+      "source": null,
+      "count": 0,
+      "covered": null,
+      "coverage": null,
+      "missing": [],
+      "liveCount": 1,
+      "fetchedAt": "2026-11-05T05:00:17.274Z",
+      "censusNote": "no BWW roundup found"
+    }
+  },
+  "manualActions": [],
+  "publishedBy": {
+    "path": "regular",
+    "method": "lane-only-decision",
+    "checks": [
+      {
+        "at": "2026-11-05T05:00:17.335Z",
+        "label": "2h",
+        "standDown": false,
+        "reason": "market not lane-only"
+      }
+    ]
+  },
+  "fileState": {
+    "capturedAt": "2026-11-05T05:01:07.711Z",
+    "files": [
+      {
+        "file": "nitelifeexchange-com--nitelife-exchange.json",
+        "outletId": "nitelifeexchange-com",
+        "outlet": "Nitelifeexchange Com",
+        "critic": "NiteLife Exchange",
+        "firstSeenAt": "2026-11-04T04:11:34.756Z",
+        "scoredAt": null,
+        "publishDate": "2026-10-15",
+        "url": "nitelifeexchange.com/parcel-from-america-the-irish-musical-begins-on-wednesday-october-28-at-theatre-row",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "theatermania--zachary-stewart.json",
+        "outletId": "theatermania",
+        "outlet": "TheaterMania",
+        "critic": "Zachary Stewart",
+        "firstSeenAt": "2026-11-05T03:11:24.969Z",
+        "scoredAt": "2026-11-05T03:18:51.293Z",
+        "publishDate": "2026-11-05",
+        "url": "theatermania.com/news/review-parcel-from-america-irish-schtick-in-a-box_1858919",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      }
+    ]
+  }
+}
