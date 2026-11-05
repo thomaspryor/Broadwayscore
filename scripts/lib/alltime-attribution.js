@@ -31,6 +31,7 @@
 
 const { normalizeTitle } = require('./title-match');
 const { KNOWN_GAPS } = require('./grosses-integrity');
+const { weekKeyFor } = require('./grosses-history-repair');
 
 const DAY_MS = 24 * 60 * 60 * 1000;
 const PERFS_PER_WEEK = 8;
@@ -195,6 +196,16 @@ function applyAllTimeAttribution(grossesShows, shows, opts = {}) {
 const OWN_RUN_START_SLACK_DAYS = 21;
 const OWN_RUN_END_SLACK_DAYS = 14;
 
+// BRO-5804: production-specific weeks with confirmed zero performances.
+// Missing source rows alone are not evidence of a hiatus. These reports
+// explicitly confirm each scheduled break; neither week needs a gross row.
+const SHOW_DARK_WEEKS = {
+  'the-music-man-2022': {
+    '2022-08-21': 'https://www.broadwaynews.com/broadway-box-office-feels-the-weight-of-three-fewer-shows/',
+    '2022-09-11': 'https://www.broadwaynews.com/despite-some-bright-spots-broadway-box-office-tumbles-after-holiday-weekend/',
+  },
+};
+
 // Calendar weeks from `first` to `last` inclusive that Broadway played, so a
 // week missing from the history altogether counts as a hole, not just a stored
 // week that lacks the row (the history is keyed by week ending, a few BWW-era
@@ -213,8 +224,8 @@ function expectedWeeks(first, last) {
  * files a title's earlier runs under one slug, and those must never be summed
  * back into the production. `complete` when the rows cover first preview to
  * closing with no missing week (a week the history has for other shows but not
- * this one is a scrape gap, and the sum would come up short), every row has a
- * count, and the count fits the run. `status`: complete, partial (rows start
+ * this one is a scrape gap unless a cited hiatus confirms it was dark), every
+ * row has a count, and the count fits the run. `status`: complete, partial (rows start
  * late but are whole after), gaps (a hole, a short end or a missing count) or
  * misfit (more performances than the run could play).
  */
@@ -239,7 +250,13 @@ function ownRunTotals(history, show, { now = new Date() } = {}) {
   if (!rows.length) return null;
   const first = rows[0][0];
   const last = rows[rows.length - 1][0];
-  const gaps = Math.max(0, expectedWeeks(first, last) - rows.length);
+  // Subtract only absent dark weeks inside the observed span. A stored row
+  // (including a zero row or one missing its gross) must not discount a
+  // different hole. Normalize legacy Monday keys like the history writers.
+  const darkWeeks = Object.keys(SHOW_DARK_WEEKS[slug] || {}).filter((week) =>
+    week > weekKeyFor(first) && week < weekKeyFor(last)
+    && !inRun.some((w) => weekKeyFor(w) === week && history.weeks[w]?.[slug]));
+  const gaps = Math.max(0, expectedWeeks(first, last) - rows.length - darkWeeks.length);
   // Weekly grosses carry cents; round the sum so float drift never shows.
   const sum = (k) => Math.round(rows.reduce((a, [, r]) => a + (Number(r[k]) || 0), 0) * 100) / 100;
   const performances = sum('performances');
