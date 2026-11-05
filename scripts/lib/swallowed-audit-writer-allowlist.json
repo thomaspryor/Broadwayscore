@@ -123,5 +123,11 @@
     "step": "Check critical crons ran recently",
     "script": "scripts/update-cron-health-state.js",
     "reason": "False positive (BRO-6261): the step's only '|| true' are on 'grep -c . || true' count lines (grep exits 1 on zero matches). update-cron-health-state.js itself runs under the default bash -e with no swallow, so its failure fails the step."
+  },
+  {
+    "workflow": "check-corpus-drift.yml",
+    "step": "Auto-heal slug-shaped outlet names before the live-data check",
+    "script": "scripts/audit-registry-slug-displaynames.js",
+    "reason": "The step commits whatever the script healed and then exits with the script's own status (see its 'exit \"$status\"'), so a failed registry write is not lost. The script only reads data/audit/outlet-display-name-proposals.json (BRO-5507); its sole data/audit write is the registry staging file the step commits."
   }
 ]
