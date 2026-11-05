@@ -384,5 +384,19 @@
       }
     ],
     "queuedAt": "2026-11-05T14:58:47.162Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-t1-missing:parcel-from-america-off-broadway-2026",
+    "title": "Auto-remediation gave up on parcel-from-america-off-broadway-2026",
+    "description": "t1-outlets-scored keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: gather-reviews.yml {\"shows\":\"parcel-from-america-off-broadway-2026\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-05T15:34:38.095Z"
   }
 ]
