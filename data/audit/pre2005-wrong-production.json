@@ -1,10 +1,10 @@
 {
   "_meta": {
-    "generatedAt": "2026-11-05T03:17:06.562Z",
+    "generatedAt": "2026-11-05T03:47:09.903Z",
     "description": "Pre-2005 wrong-production audit results",
-    "totalFlagged": 152,
+    "totalFlagged": 153,
     "highConfidence": 9,
-    "mediumConfidence": 143,
+    "mediumConfidence": 144,
     "lowConfidence": 0,
     "reassignable": 52
   },
@@ -2285,6 +2285,22 @@
         "year 2005 in text matches revival la-cage-aux-folles-2004"
       ],
       "textSnippet": "Theatre Review by Matthew Murray\n - December 9, 2004 \n\nLa Cage aux Folles Music and Lyrics by Jerry Herman. Book by Harvey Fierstein. Based on the play 'La Cage Aux Folles' by Jean Poiret. Directed by"
+    },
+    {
+      "showId": "the-glass-menagerie-1983",
+      "showTitle": "The Glass Menagerie",
+      "showYear": 1983,
+      "file": "nytimes--maya-phillips.json",
+      "outlet": "The New York Times",
+      "criticName": "Maya Phillips",
+      "publishDate": null,
+      "confidence": "medium",
+      "suggestedShowId": null,
+      "signals": [
+        "revival text signals: revival, this production",
+        "no publishDate + revival signals + revivals exist"
+      ],
+      "textSnippet": "THE new Broadway revival of ''The Glass Menagerie'' leaves much to be desired, but that fact doesn't diminish the largest aspect of the event. The spirits of Tennessee Williams and Jessica Tandy have "
     },
     {
       "showId": "the-tap-dance-kid-1983",

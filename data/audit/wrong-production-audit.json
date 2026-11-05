@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-05T03:29:44.363Z",
+  "timestamp": "2026-11-05T03:55:54.933Z",
   "stats": {
     "totalReviews": 80183,
     "alreadyFlagged": 22029,
     "dateGuardCatches": 217,
     "directorMismatch": 3507,
     "tvFilmSignals": 2280,
-    "londonSignals": 3610,
+    "londonSignals": 3612,
     "offBroadwaySignals": 736,
     "yearMismatch": 361,
-    "noPublishDate": 8489
+    "noPublishDate": 8479
   },
   "findings": [
     {
@@ -99082,6 +99082,20 @@
       ]
     },
     {
+      "showId": "ghosts-west-end-2013",
+      "file": "a-younger-theatre--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.ayoungertheatre.com/review-ghosts-trafalgar-studios-richard-eyre-almeida-theatre-lesley-manville/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
       "showId": "giant-2026",
       "file": "amny--matt-windman.json",
       "score": 75,
@@ -126800,6 +126814,20 @@
       "score": 66,
       "publishDate": "2021-11-22",
       "url": "https://www.londonboxoffice.co.uk/news/post/review-drifters-girl",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-effect-west-end-2012",
+      "file": "everything-theatre--unknown.json",
+      "score": null,
+      "publishDate": "2012-11-24",
+      "url": "https://everything-theatre.co.uk/2012/11/the-effect-national-theatre/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
