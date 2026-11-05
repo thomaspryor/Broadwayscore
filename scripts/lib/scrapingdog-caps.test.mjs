@@ -285,3 +285,131 @@ test('pressNightSpentUsd ignores zero-credit memo-skip rows but counts credit-be
   assert.equal(caps.pressNightSpentUsd(purpose, { ledgerPath, table }), 0.05);
   fs.rmSync(dir, { recursive: true, force: true });
 });
+
+// ---------- BRO-6989: incremental press-night ledger total ----------
+
+const PN = 'press-night:some-show:2026-11-03';
+const PN_TABLE = { scrapingdog: { usdPerUnit: 0.01 } };
+const pnRow = (i, purpose = PN, ts = i) => JSON.stringify({ ts: new Date(1e12 + ts * 1000).toISOString(), provider: 'scrapingdog', purpose, success: true, credits: 1 + (i % 3) });
+
+function pnLedger() {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'pn-cap-'));
+  return { dir, ledgerPath: path.join(dir, 'ledger.jsonl') };
+}
+// Ground truth: the same bytes read through a fresh path (cache miss = full scan).
+function fullScan(ledgerPath, dir) {
+  const copy = path.join(dir, `oracle-${Math.random().toString(36).slice(2)}.jsonl`);
+  fs.copyFileSync(ledgerPath, copy);
+  return caps.pressNightSpentUsd(PN, { ledgerPath: copy, table: PN_TABLE });
+}
+function checkSame(ledgerPath, dir) {
+  const cached = caps.pressNightSpentUsd(PN, { ledgerPath, table: PN_TABLE });
+  assert.equal(cached, fullScan(ledgerPath, dir));
+  return cached;
+}
+
+test('pressNightSpentUsd cached total equals full scan across appends', () => {
+  _resetForTests();
+  const { dir, ledgerPath } = pnLedger();
+  fs.writeFileSync(ledgerPath, Array.from({ length: 50 }, (_, i) => pnRow(i, i % 2 ? PN : 'other')).join('\n') + '\n');
+  const first = checkSame(ledgerPath, dir);
+  for (let i = 50; i < 70; i++) {
+    fs.appendFileSync(ledgerPath, pnRow(i) + '\n');
+    checkSame(ledgerPath, dir);
+  }
+  assert.ok(checkSame(ledgerPath, dir) > first);
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('pressNightSpentUsd handles a partial (unterminated) tail without double counting', () => {
+  _resetForTests();
+  const { dir, ledgerPath } = pnLedger();
+  const full = pnRow(1);
+  fs.writeFileSync(ledgerPath, pnRow(0) + '\n' + full.slice(0, 20));
+  const a = caps.pressNightSpentUsd(PN, { ledgerPath, table: PN_TABLE });
+  fs.appendFileSync(ledgerPath, full.slice(20) + '\n');
+  const b = checkSame(ledgerPath, dir);
+  assert.ok(b > a);
+  // complete row with no trailing newline is counted, then the newline arrives: still counted once
+  fs.appendFileSync(ledgerPath, pnRow(2));
+  const c = checkSame(ledgerPath, dir);
+  fs.appendFileSync(ledgerPath, '\n');
+  assert.equal(checkSame(ledgerPath, dir), c);
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('pressNightSpentUsd rescans after a trim rewrite (shrink, same inode)', () => {
+  _resetForTests();
+  const { dir, ledgerPath } = pnLedger();
+  const rows = Array.from({ length: 100 }, (_, i) => pnRow(i));
+  fs.writeFileSync(ledgerPath, rows.join('\n') + '\n');
+  checkSame(ledgerPath, dir);
+  fs.writeFileSync(ledgerPath, rows.slice(60).join('\n') + '\n');
+  checkSame(ledgerPath, dir);
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('pressNightSpentUsd rescans when a trim keeps line 0 and the size stays above the offset', () => {
+  _resetForTests();
+  const { dir, ledgerPath } = pnLedger();
+  // Row 0 has the oldest ts-but-one; trim drops older-than-it rows is simulated by
+  // dropping middle rows while keeping the first line, then appending more than was dropped.
+  const rows = Array.from({ length: 100 }, (_, i) => pnRow(i));
+  fs.writeFileSync(ledgerPath, rows.join('\n') + '\n');
+  checkSame(ledgerPath, dir);
+  const kept = [rows[0], ...rows.slice(30)];
+  const extra = Array.from({ length: 80 }, (_, i) => pnRow(200 + i));
+  fs.writeFileSync(ledgerPath, [...kept, ...extra].join('\n') + '\n');
+  assert.ok(fs.statSync(ledgerPath).size > 0);
+  checkSame(ledgerPath, dir);
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('pressNightSpentUsd rescans after a same-size rewrite and after an atomic rename replace', () => {
+  _resetForTests();
+  const { dir, ledgerPath } = pnLedger();
+  fs.writeFileSync(ledgerPath, Array.from({ length: 20 }, (_, i) => pnRow(i)).join('\n') + '\n');
+  const before = checkSame(ledgerPath, dir);
+  // same byte length, different content (credits digit flipped 1->3 on every row would change size? keep length: swap provider-neutral ts digit)
+  const text = fs.readFileSync(ledgerPath, 'utf8').replace(/"credits":1/g, '"credits":2');
+  assert.equal(text.length, fs.statSync(ledgerPath).size);
+  fs.writeFileSync(ledgerPath, text);
+  assert.notEqual(checkSame(ledgerPath, dir), before);
+  const tmp = path.join(dir, 'new.jsonl');
+  fs.writeFileSync(tmp, Array.from({ length: 5 }, (_, i) => pnRow(i)).join('\n') + '\n');
+  fs.renameSync(tmp, ledgerPath);
+  checkSame(ledgerPath, dir);
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('pressNightSpentUsd: missing ledger is 0, and a different price table is not served from cache', () => {
+  _resetForTests();
+  const { dir, ledgerPath } = pnLedger();
+  assert.equal(caps.pressNightSpentUsd(PN, { ledgerPath, table: PN_TABLE }), 0);
+  fs.writeFileSync(ledgerPath, pnRow(0) + '\n');
+  const a = caps.pressNightSpentUsd(PN, { ledgerPath, table: PN_TABLE });
+  const b = caps.pressNightSpentUsd(PN, { ledgerPath, table: { scrapingdog: { usdPerUnit: 1 } } });
+  assert.ok(b > a * 50);
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('pressNightSpentUsd warm calls on a 44MB-class ledger average under 20 ms (BRO-6989)', () => {
+  _resetForTests();
+  const { dir, ledgerPath } = pnLedger();
+  const filler = 'x'.repeat(280);
+  const lines = [];
+  for (let i = 0; i < 114000; i++) lines.push(JSON.stringify({ ts: i, provider: 'scrapingdog', purpose: i % 50 === 0 ? PN : `press-night:other-${i % 7}:2026-11-03`, success: true, credits: 1, pad: filler }));
+  fs.writeFileSync(ledgerPath, lines.join('\n') + '\n');
+  assert.ok(fs.statSync(ledgerPath).size > 30e6);
+  caps.pressNightSpentUsd(PN, { ledgerPath, table: PN_TABLE }); // cold: full scan, no target
+  const N = 30;
+  const t0 = process.hrtime.bigint();
+  for (let i = 0; i < N; i++) {
+    fs.appendFileSync(ledgerPath, pnRow(i) + '\n');
+    caps.pressNightSpentUsd(PN, { ledgerPath, table: PN_TABLE });
+  }
+  const avgMs = Number(process.hrtime.bigint() - t0) / 1e6 / N;
+  assert.ok(avgMs < 20, `avg ${avgMs.toFixed(2)} ms`);
+  assert.equal(caps.pressNightSpentUsd(PN, { ledgerPath, table: PN_TABLE }), fullScan(ledgerPath, dir));
+  fs.rmSync(dir, { recursive: true, force: true });
+});

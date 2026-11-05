@@ -364,15 +364,8 @@ function ledgerRowUsd(row, table) {
   return units * (bd !== null ? bd : 0.0015);
 }
 
-/** Sum USD of ledger rows tagged `purpose`. ENOENT = nothing spent; any other read error throws. */
-function pressNightSpentUsd(purpose, { ledgerPath, table } = {}) {
-  let text;
-  try {
-    text = fs.readFileSync(ledgerPath, 'utf8');
-  } catch (e) {
-    if (e && e.code === 'ENOENT') return 0;
-    throw e;
-  }
+/** USD of the complete-or-partial rows in `text` tagged `purpose`. */
+function sumLedgerText(text, purpose, table) {
   const needle = `"purpose":${JSON.stringify(purpose)}`;
   let usd = 0;
   for (const line of text.split('\n')) {
@@ -384,6 +377,71 @@ function pressNightSpentUsd(purpose, { ledgerPath, table } = {}) {
     usd += ledgerRowUsd(row, table);
   }
   return usd;
+}
+
+// BRO-6989: the ledger is ~44MB and this runs on every press-night fetch, so
+// the running total per (ledger, purpose) is cached and only bytes appended
+// since the last read are scanned. The ledger is append-only EXCEPT the
+// periodic trim rewrite (provider-telemetry.js: sort + dedupe + writeFileSync,
+// same inode), which can leave the first line unchanged and the size above our
+// offset, so the guard is a fingerprint of the bytes just BEFORE the offset
+// (appends never change them; a rewrite almost always does) plus dev/ino and
+// size. Any mismatch, shrink, table change or error means a full rescan.
+// The price table is compared by reference (loadProviderPricing() memoizes it);
+// an in-place edit of a live table is not detected.
+const FINGERPRINT_BYTES = 512;
+const _spentCache = new Map(); // `${ledgerPath}\0${purpose}` -> {dev, ino, offset, usd, table, fp}
+
+function _readBytes(fd, position, length) {
+  const buf = Buffer.alloc(length);
+  let got = 0;
+  while (got < length) {
+    const n = fs.readSync(fd, buf, got, length - got, position + got);
+    if (n <= 0) break;
+    got += n;
+  }
+  return got === length ? buf : buf.subarray(0, got);
+}
+
+/**
+ * Sum USD of ledger rows tagged `purpose`. ENOENT = nothing spent; any other
+ * read error throws. Incremental across calls (see _spentCache); results are
+ * identical to a full scan, which is what a cache miss runs.
+ */
+function pressNightSpentUsd(purpose, { ledgerPath, table } = {}) {
+  const key = `${ledgerPath}\0${purpose}`;
+  let fd;
+  try {
+    fd = fs.openSync(ledgerPath, 'r');
+    const st = fs.fstatSync(fd);
+    let c = _spentCache.get(key);
+    if (c && (c.dev !== st.dev || c.ino !== st.ino || c.table !== table || st.size < c.offset)) c = undefined;
+    if (c && c.offset > 0) {
+      const fpLen = Math.min(FINGERPRINT_BYTES, c.offset);
+      if (!_readBytes(fd, c.offset - fpLen, fpLen).equals(c.fp)) c = undefined;
+    }
+    const base = c || { offset: 0, usd: 0 };
+    const buf = _readBytes(fd, base.offset, st.size - base.offset);
+    const lastNl = buf.lastIndexOf(0x0a);
+    const complete = lastNl + 1; // bytes through the last newline
+    const usd = base.usd + sumLedgerText(buf.toString('utf8', 0, complete), purpose, table);
+    const offset = base.offset + complete;
+    // An unterminated tail may still be growing: counted now, re-read next call.
+    const tail = complete < buf.length ? sumLedgerText(buf.toString('utf8', complete), purpose, table) : 0;
+    let fp = Buffer.alloc(0);
+    if (offset > 0) {
+      const fpLen = Math.min(FINGERPRINT_BYTES, offset);
+      fp = _readBytes(fd, offset - fpLen, fpLen);
+    }
+    _spentCache.set(key, { dev: st.dev, ino: st.ino, offset, usd, table, fp });
+    return usd + tail;
+  } catch (e) {
+    _spentCache.delete(key);
+    if (e && e.code === 'ENOENT') return 0;
+    throw e;
+  } finally {
+    if (fd !== undefined) { try { fs.closeSync(fd); } catch { /* already closed */ } }
+  }
 }
 
 /**
@@ -550,6 +608,7 @@ function _resetForTests() {
   _runStats.blockedByPressNightCap = 0;
   _loggedPressNightBlocks.clear();
   _pressNightWarned.clear();
+  _spentCache.clear();
   _stateCache = { at: 0, value: null };
   _loggedBlock = false;
 }
