@@ -1,13 +1,32 @@
 {
-  "generatedAt": "2026-11-05T00:55:12.687Z",
+  "generatedAt": "2026-11-05T02:11:12.474Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 318,
-  "clean": 318,
-  "defective": 0,
-  "byType": {},
-  "shows": [],
+  "clean": 317,
+  "defective": 1,
+  "byType": {
+    "score-drift": 1
+  },
+  "shows": [
+    {
+      "showId": "abba-voyage-off-west-end-2026",
+      "title": "ABBA Voyage",
+      "openingDate": "2022-05-28",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 87.64 vs local 87.58 (Δ0.06)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 23,
+      "deployedCount": 23,
+      "firstDefectAt": "2026-11-05T02:11:04.258Z"
+    }
+  ],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }

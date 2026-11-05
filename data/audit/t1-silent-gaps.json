@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-05T00:54:52.999Z",
+  "generatedAt": "2026-11-05T02:10:46.925Z",
   "windowDays": 45,
   "showsScanned": 248,
   "gaps": [
@@ -21,10 +21,34 @@
       "forumLinkRecoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=lincoln-in-the-bardo-off-broadway-2026",
       "firstSeen": "2026-10-25T17:52:33.957Z",
-      "fileAgeHours": 247.0377261111111,
+      "fileAgeHours": 248.30120333333332,
       "gapSeenAt": "2026-10-26T08:25:16.367Z",
-      "nonTerminalAgeHours": 232.4935088888889,
+      "nonTerminalAgeHours": 233.75848833333333,
       "needsManualRecovery": true
+    },
+    {
+      "showId": "the-bridge-off-west-end-2026",
+      "title": "The Bridge",
+      "openingDate": "2026-11-03",
+      "file": "sunday-times--unknown.json",
+      "outletId": "sunday-times",
+      "tier": 1,
+      "type": "empty-body",
+      "recoverable": true,
+      "url": "https://www.thetimes.com/uk/politics/article/city-bridge-foundation-grant-money-hamas-linked-organisation-j5sbhgrs2",
+      "recovery": {
+        "attempted": true,
+        "ok": false,
+        "reason": "⚠️  outletId drift detected — operator input \"sunday-times\" resolved to \"sunday-times\" but URL domain maps to canonical \"times-uk\". Using URL-derived canonical.\nArticle extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS."
+      },
+      "recoveryCount": 0,
+      "forumLinkRecoveryCount": 0,
+      "fix": "node scripts/ingest-review-from-url.js --show=the-bridge-off-west-end-2026 --url=https://www.thetimes.com/uk/politics/article/city-bridge-foundation-grant-money-hamas-linked-organisation-j5sbhgrs2 --outlet=sunday-times   # run LOCALLY (cookie jar lives on the Mac)",
+      "firstSeen": "2026-11-05T01:36:56.414Z",
+      "fileAgeHours": 0.56335,
+      "gapSeenAt": "2026-11-05T02:10:46.925Z",
+      "nonTerminalAgeHours": 0,
+      "needsManualRecovery": false
     }
   ],
   "contradictions": []
