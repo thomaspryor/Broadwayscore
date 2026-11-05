@@ -1,10 +1,10 @@
 {
-  "timestamp": "2026-11-05T17:50:15.497Z",
+  "timestamp": "2026-11-05T18:10:46.345Z",
   "stats": {
     "totalReviews": 80173,
     "alreadyFlagged": 21976,
     "dateGuardCatches": 217,
-    "directorMismatch": 3509,
+    "directorMismatch": 3510,
     "tvFilmSignals": 2282,
     "londonSignals": 3614,
     "offBroadwaySignals": 741,
@@ -51830,6 +51830,19 @@
       "score": 39,
       "publishDate": "2016-10-23",
       "url": "http://www.nj.com/entertainment/index.ssf/2016/10/plenty_review_rachel_weisz_overplays_her_hand_in_t.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"david hare\" from plenty-1983"
+        }
+      ]
+    },
+    {
+      "showId": "plenty-off-broadway-2016",
+      "file": "northjerseycom--robert-feldberg.json",
+      "publishDate": "2016-10-24",
+      "url": "https://www.northjersey.com/story/entertainment/theater/2016/10/24/theater-review-plenty/93072406/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
