@@ -303,7 +303,7 @@ jobs:
         # BRO-2914 (owner chose commit-only-on-success, 2026-10-29): when the
         # research step failed or timed out, the pending queue and research queue
         # are NOT committed (a half-written pending review is worse than redoing a
-        # run). Cost, spend and progress logs still are, so the budget cap keeps
+        # run). Cost and spend logs still are, so the budget cap keeps
         # counting what the failed run already spent.
         if: always() && inputs.dry_run != true
         # Task #574: commits commercial-pending-review.json + commercial-
@@ -325,8 +325,8 @@ jobs:
           if [ "$RESEARCH_OUTCOME" = "success" ]; then
             bash scripts/lib/git-add-existing.sh data/commercial-pending-review.json data/deep-research-cost-log.json data/deep-research-progress.json data/commercial-research-spend.json data/commercial-research-queue.json
           else
-            echo "Deep research outcome: $RESEARCH_OUTCOME. Committing cost/progress logs only; pending queue left untouched."
-            bash scripts/lib/git-add-existing.sh data/deep-research-cost-log.json data/deep-research-progress.json data/commercial-research-spend.json
+            echo "Deep research outcome: $RESEARCH_OUTCOME. Committing spend logs only; pending queue and progress marks left untouched."
+            bash scripts/lib/git-add-existing.sh data/deep-research-cost-log.json data/commercial-research-spend.json
           fi
           if git diff --staged --quiet; then
             echo "No deep research results to commit"
@@ -364,10 +364,10 @@ jobs:
           "
 
       - name: Push core data to private repo
-        # Runs even when the research step failed part-way (its marks for the
-        # shows it did finish are still worth keeping), but never past a
-        # failed validation or deletion guard.
-        if: ${{ !cancelled() && inputs.dry_run != true && steps.validate_core.outcome == 'success' && steps.guard_core.outcome == 'success' }}
+        # BRO-2914: only after a successful research step, so researchAttempts /
+        # lastResearchedAt marks are never pushed for shows whose findings were
+        # not committed. Never past a failed validation or deletion guard.
+        if: ${{ !cancelled() && inputs.dry_run != true && steps.deep_research_mutator.outcome == 'success' && steps.validate_core.outcome == 'success' && steps.guard_core.outcome == 'success' }}
         uses: ./.github/actions/push-core-data
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}

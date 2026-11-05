@@ -395,8 +395,11 @@ test('deep-research commits the pending queue only when its mutator succeeded', 
   assert.ok(mutator?.id, 'deep-research mutator needs an id');
   assert.match(String(commit.env.RESEARCH_OUTCOME), new RegExp(`steps\\.${mutator.id}\\.outcome`));
   const run = String(commit.run);
-  const failBranch = run.slice(run.indexOf('else'), run.indexOf('fi'));
+  const failBranch = /else[\s\S]*?\n\s*fi\n/.exec(run)?.[0] ?? run.slice(run.indexOf('else'));
   assert.ok(run.includes('$RESEARCH_OUTCOME" = "success"'), 'must branch on the outcome');
   assert.ok(!/commercial-pending-review|commercial-research-queue/.test(failBranch), 'failure path must not stage the pending queue');
+  assert.ok(!/deep-research-progress/.test(failBranch), 'failure path must not stage progress marks');
   assert.match(failBranch, /deep-research-cost-log\.json/, 'failure path still records spend');
+  const push = steps.find((s) => /push-core-data/.test(String(s.uses)));
+  assert.match(String(push.if), new RegExp(`steps\\.${mutator.id}\\.outcome\\s*==\\s*'success'`), 'core-data push needs the mutator to succeed');
 });
