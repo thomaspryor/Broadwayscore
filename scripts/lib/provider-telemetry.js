@@ -90,7 +90,11 @@ const MAX_LEDGER_LINES = 45000;
 // The check counts yesterday's UTC day, and SB/SD credits since the previous
 // reconciliation's capturedAt, which after one skipped run is two days back.
 // So rows since 00:00Z the day before yesterday are never trimmed below this
-// hard ceiling (~45MB at ~300 bytes/row, under GitHub's 50MB warning).
+// hard ceiling. BRO-6990: rows are ~385 bytes each (2026-11-04: 44MB / 114K
+// rows), so a full 3-day window at the 48K/day peak is ~144K rows = ~55MB:
+// over GitHub's 50MB warning (a warning only) but far under its 100MB
+// rejection. Do not cut the ceiling below 3 x peak-day rows to chase the
+// warning: that drops rows check-provider-spend.js still counts (BRO-4936).
 const HARD_MAX_LEDGER_LINES = 150000;
 const TAG_BY_PROVIDER = {
   brightdata: 'BD',
