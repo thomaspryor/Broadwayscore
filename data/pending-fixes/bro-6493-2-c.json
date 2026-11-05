@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6493-2-c",
   "planId": "6c28155d-548c-4547-b7e8-be5daabfa3fc",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-04T13:10:40.052Z",
   "submitter": {
     "name": null,
@@ -144,5 +144,74 @@
         "description": "BRO-6493: 2023 TFANA lecture-performance listing explicitly gives September 15 opening night, matching the start of this engagement; TDF and Playbill independently give that same opening and run start. Sources: https://www.theatermania.com/shows/new-york-city-theater/off-broadway/prometheus-firebringer_1711511/ https://www.tdf.org/shows/19487/prometheus-firebringer/"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-05T10:55:35.104Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for burning-leaves-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for conflicted-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for rabih-mroue-and-lina-majdalanie-four-walls-and-a-roof-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for illinoise-off-broadway-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for illinoise-off-broadway-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for the-goodbye-girl-off-broadway-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for the-goodbye-girl-off-broadway-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for the-goodbye-girl-off-broadway-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for odd-man-out-off-broadway-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for odd-man-out-off-broadway-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for odd-man-out-off-broadway-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for sesame-street-the-musical-off-broadway-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for prometheus-firebringer-off-broadway-2023"
+    }
+  ],
+  "executedIn": "ci"
 }
