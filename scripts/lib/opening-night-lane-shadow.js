@@ -83,6 +83,15 @@ function createShadowPublishPorts({ onRows, now = Date.now } = {}) {
  * queue (lane-runner.js publishBatch), and every later batch with it, so onRows alone can go quiet for the night.
  * Wrap scoreReview, and record rows that arrive with a fallback score through onRow.
  */
+/** The printed rating the scorer was handed (inline-score.js ratingFields) as a short label: '2/5 (regex-stars)'. */
+function ratingLabel(r) {
+  if (!r || typeof r !== 'object') return null;
+  const v = r.originalScore != null && r.originalScore !== '' ? r.originalScore : (r.aggregatorStars != null && r.aggregatorStars !== '' ? r.aggregatorStars : null);
+  if (v == null) return null;
+  const src = r.originalScoreSource || r.scoreSource || null;
+  return `${String(v)}${src ? ` (${src})` : ''}`;
+}
+
 function createScoreRecorder({ logFile = null, now = Date.now } = {}) {
   const grader = require('./lane-shadow-grade');
   const scores = new Map();
@@ -124,7 +133,8 @@ function createScoreRecorder({ logFile = null, now = Date.now } = {}) {
         chars: fromExcerpt ? excerptChars : (typeof extra.fullText === 'string' ? extra.fullText.length : undefined),
         tier,
         sha: grader.textSha(scored), models: grader.modelScores(extra.ensembleData),
-        rating: fetched && fetched.rating && fetched.rating.originalScore != null ? String(fetched.rating.originalScore) : null,
+        // ratingFields routes a value to originalScore, or to aggregatorStars; detectBandFromReviewFile reads both.
+        rating: ratingLabel(fetched && fetched.rating),
         scoreSource: typeof extra.scoreSource === 'string' ? extra.scoreSource : null,
       });
       return out;

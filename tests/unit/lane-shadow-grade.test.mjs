@@ -367,10 +367,12 @@ test('a score gap says whether the lane read the site’s text and how each side
 
 test('a score gap says when the lane was anchored to a rating it read off the page', () => {
   const url = 'https://www.theaterscene.net/plays/broadway-plays/x/a-critic/';
-  const rep = { ...REPORT, reviews: [rev('both', { url, outlet: 'theater-scene', laneScore: 41, siteScore: 78, laneTextChars: 7409, laneContentTier: 'complete', laneModels: { claude: 42, openai: 40, gemini: 40 }, laneRating: '2/5', laneScoreSource: 'anchored-v6' })] };
+  const rep = { ...REPORT, reviews: [rev('both', { url, outlet: 'theater-scene', laneScore: 41, siteScore: 78, laneTextChars: 7409, laneContentTier: 'complete', laneModels: { claude: 42, openai: 40, gemini: 40 }, laneRating: '2/5 (regex-stars)', laneScoreSource: 'anchored-v6' })] };
   const g = grade.gradeShadowReport(rep, { replayAnchorAt: '2026-10-30T02:00:00Z' });
-  assert.equal(g.scoreGaps[0].laneRating, '2/5');
-  assert.match(grade.gradeMarkdown(g), /lane anchored to a printed 2\/5 \(anchored-v6\)/);
+  assert.equal(g.scoreGaps[0].laneRating, '2/5 (regex-stars)');
+  assert.match(grade.gradeMarkdown(g), /lane read a printed 2\/5 \(regex-stars\), scored anchored to its band \(anchored-v6\)/);
+  const loose = grade.gradeShadowReport({ ...REPORT, reviews: [rev('both', { url, outlet: 'theater-scene', laneScore: 41, siteScore: 78, laneRating: '2/5 (regex-stars)', laneScoreSource: 'llm-v6' })] }, { replayAnchorAt: '2026-10-30T02:00:00Z' });
+  assert.match(grade.gradeMarkdown(loose), /scored unanchored \(llm-v6\)/, 'a rejected rating is not called an anchor');
   const plain = grade.gradeShadowReport({ ...REPORT, reviews: [rev('both', { url, outlet: 'theater-scene', laneScore: 41, siteScore: 78 })] }, { replayAnchorAt: '2026-10-30T02:00:00Z' });
-  assert.doesNotMatch(grade.gradeMarkdown(plain), /anchored to a printed/);
+  assert.doesNotMatch(grade.gradeMarkdown(plain), /read a printed/);
 });

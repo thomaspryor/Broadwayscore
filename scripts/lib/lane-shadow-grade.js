@@ -267,7 +267,8 @@ function gradeMarkdown(g) {
         + (d.siteBand ? `, site rating ${d.siteBand.rating || '?'} (band ${d.siteBand.floor}-${d.siteBand.ceiling}): ${d.beyondEnsemble ? 'BEYOND band' : 'inside band'}`
           : d.siteScoreSpread == null ? ', site spread unknown' : `, site spread ${d.siteScoreSpread}${d.siteModelAgreement ? ` (${d.siteModelAgreement})` : ''}: ${d.beyondEnsemble ? 'BEYOND ensemble' : 'within ensemble'}`)
         + (d.laneModels || d.siteModels ? `; models lane ${modelsLabel(d.laneModels)} / site ${modelsLabel(d.siteModels)}` : '')
-        + (d.laneRating ? `; lane anchored to a printed ${d.laneRating}${d.laneScoreSource ? ` (${d.laneScoreSource})` : ''}` : '')
+        // Only an anchored-* score was held to the rating's band; under llm-v6 the rating was context in the prompt.
+        + (d.laneRating ? `; lane read a printed ${d.laneRating}, ${/^anchored/.test(d.laneScoreSource || '') ? `scored anchored to its band (${d.laneScoreSource})` : `scored unanchored (${d.laneScoreSource || 'source unknown'})`}` : '')
         + (d.sameText == null ? '' : d.sameText ? '; same text as the site' : `; text differs from the site's (${d.siteTextChars ?? '?'} chars there), or was cut differently`))] : []),
   ];
   return `${lines.join('\n')}\n`;
