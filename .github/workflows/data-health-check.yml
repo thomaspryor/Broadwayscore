@@ -461,7 +461,7 @@ jobs:
         if: always()
         continue-on-error: true
         timeout-minutes: 3
-        run: node scripts/audit-printed-byline-conflicts.js --tier=known --limit=40
+        run: node scripts/audit-printed-byline-conflicts.js --tier=known --limit=40 --cache-out=data/audit/outlet-corpus-critics.json
 
       # BRO-5769: early or carried publish dates no page read has confirmed (counts only, digest row).
       # Advisory: exit 1 means the daily backfill-review-dates recheck is behind; continue-on-error keeps the job green.
@@ -603,6 +603,8 @@ jobs:
           # step committed it, so each run's log was lost and the file kept
           # every later push's rebase refusing. apiFallbackMerge-registered.
           git add data/audit/owner-email-log.jsonl 2>/dev/null || true
+          # BRO-6947: corpus-derived outlet -> critics cache the collect pipeline reads (names only).
+          git add data/audit/outlet-corpus-critics.json 2>/dev/null || true
           if git diff --staged --quiet; then
             echo "No provider spend ledger changes"
           else

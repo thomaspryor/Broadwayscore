@@ -26,7 +26,7 @@
  *
  * Usage:
  *   node scripts/audit-printed-byline-conflicts.js [--show=ID] [--outlet=ID]
- *        [--tier=known|unlisted|all] [--json] [--actions-out=FILE] [--exclude=show/file,...] [--limit=N]
+ *        [--tier=known|unlisted|all] [--json] [--actions-out=FILE] [--cache-out=FILE] [--exclude=show/file,...] [--limit=N]
  *   node scripts/audit-printed-byline-conflicts.js --help
  */
 
@@ -48,6 +48,7 @@ const {
   NO_FILL_OUTLETS,
   isPlaceholderName,
   sameCritic,
+  REJECTED_FILES,
 } = require('./lib/printed-byline-conflict');
 
 const args = process.argv.slice(2);
@@ -57,15 +58,14 @@ const ONLY_SHOW = flag('show');
 const ONLY_OUTLET = flag('outlet');
 const TIER = flag('tier') || 'all';
 const ACTIONS_OUT = flag('actions-out');
+// BRO-6947: write the corpus-derived outlet -> critics index the collect pipeline reads as a second source.
+const CACHE_OUT = flag('cache-out');
 const LIMIT = Number(flag('limit')) || 0;
 // show/file paths a human reviewed and rejected (roundup pages, scrape chrome): never given an action.
 // Reviewed in BRO-6940 and rejected for good, so the daily audit can go green: a New Yorker "Goings On"
 // roundup page (the printed name is another writer's blurb) and a London Theatre Direct ticket page
 // credited to the company itself.
-const REJECTED = [
-  'liberation-2025/newyorker--helen-shaw.json',
-  'ceilidh-the-musical-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json',
-];
+const REJECTED = REJECTED_FILES;
 const EXCLUDE = new Set([...REJECTED, ...(flag('exclude') || '').split(',').map((x) => x.trim()).filter(Boolean)]);
 
 // A corpus critic counts as "known at the outlet" with this much evidence.
@@ -98,6 +98,10 @@ function buildKnown(recs, registryIndex) {
   for (const rec of recs) {
     const name = rec.r.criticName;
     if (isPlaceholderName(name) || !isPlausiblePersonName(name)) continue;
+    // Only clean, unflagged, unlocked-by-nothing files count as evidence a critic writes here (BRO-6947):
+    // misattributed, duplicate or roundup files would otherwise make a wrong name "known".
+    if (rec.r.wrongProduction || rec.r.wrongShow || rec.r.isRoundupArticle || rec.r.duplicateOf || rec.r.fullTextWrongAuthor || rec.r._authorMismatch || rec.r.misattributedFullText) continue;
+    if (REJECTED_FILES.includes(`${rec.show}/${rec.file}`)) continue;
     const o = outletOf(rec);
     if (!counts.has(o)) counts.set(o, new Map());
     const m = counts.get(o);
@@ -127,6 +131,21 @@ function canonicalVariant(counts, outlet, name) {
   return best;
 }
 
+// Corpus-derived critics only (3+ files across 2+ shows), not the registry: the collect side merges the
+// registry itself, so a registry edit takes effect without waiting for the next cache write.
+function writeCorpusCache(file, recs, counts) {
+  const outlets = {};
+  for (const o of [...counts.keys()].sort()) {
+    const names = [...counts.get(o)].filter(([, e]) => e.files >= CORPUS_MIN_FILES && e.shows.size >= CORPUS_MIN_SHOWS)
+      .sort((a, b) => b[1].files - a[1].files || a[0].localeCompare(b[0])).map(([n]) => n);
+    if (names.length) outlets[o] = names;
+  }
+  const body = { _comment: 'BRO-6947: written by scripts/audit-printed-byline-conflicts.js --cache-out. Critics the review corpus files at each outlet (3+ files, 2+ shows). Read by collect-review-texts.js step 1B-v. Names only.', outlets };
+  fs.mkdirSync(path.dirname(file), { recursive: true });
+  fs.writeFileSync(file, JSON.stringify(body, null, 1) + '\n');
+  console.error(`wrote corpus critics for ${Object.keys(outlets).length} outlets to ${file}`);
+}
+
 function main() {
   const root = resolveReviewTextsDir();
   const registryPath = path.join(__dirname, '..', 'data', 'outlet-registry.json');
@@ -134,6 +153,8 @@ function main() {
   try { registry = JSON.parse(fs.readFileSync(registryPath, 'utf8')); } catch { /* corpus-only */ }
   const recs = readRecords(root);
   const { known, counts } = buildKnown(recs, buildKnownCriticsIndex(registry));
+
+  if (CACHE_OUT) writeCorpusCache(CACHE_OUT, recs, counts);
 
   const findings = [];
   for (const rec of recs) {

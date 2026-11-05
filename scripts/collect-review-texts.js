@@ -184,7 +184,7 @@ const { shouldRetryGarbageConsentWall, storedTextNeedsConsentRefetch, shouldRele
 const { shouldRetryDatelessHoldFetch } = require('./lib/review-slot-guards');
 const { needsSerpUrlDiscovery } = require('./lib/serp-discovery-gate');
 const { isProvisionalPublishDate, isReplaceableByPageDate, needsOpeningWindowDateRecheck, resolvePageDateReplacement, htmlDateSourceFor, bodyPublishDateFallback, ingestGateDate } = require('./lib/publish-date-provenance');
-const { decidePrintedByline, buildKnownCriticsIndex, knownCriticsForOutlet } = require('./lib/printed-byline-conflict');
+const { decidePrintedByline, buildKnownCriticsIndex, mergeCorpusCritics, knownCriticsForOutlet } = require('./lib/printed-byline-conflict');
 const { checkBrowserbaseCaps, countBrowserbaseAttempt, resolveMaxSessionsPerDay, resolveRecoveryReserve, resolveUseReserve, isDeniedHost, isTier1RecoveryHost, tier1BoostForCaller, resolveExemptScripts: resolveBbExemptScripts } = require('./lib/browserbase-caps');
 const { isExemptCaller: isBbExemptCaller } = require('./lib/brightdata-caps');
 
@@ -632,6 +632,18 @@ function getPrintedBylineIndex() {
     _printedBylineIndex = buildKnownCriticsIndex(loadOutletRegistryForDedupe());
   }
   return _printedBylineIndex;
+}
+
+// BRO-6947: outlet -> critics the review corpus files there (daily cache written by the data-health-check
+// audit). Weaker than the registry: decidePrintedByline uses it only to fill unnamed files. Missing cache = empty.
+let _corpusBylineIndex;
+function getCorpusBylineIndex() {
+  if (_corpusBylineIndex === undefined) {
+    let cache = null;
+    try { cache = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'audit', 'outlet-corpus-critics.json'), 'utf8')); } catch { /* no cache yet */ }
+    _corpusBylineIndex = mergeCorpusCritics(new Map(), cache);
+  }
+  return _corpusBylineIndex;
 }
 
 // BRO-4807: opening-night lane reviews (provenance + productionVerified:"aggregator") stand down for the
@@ -5452,6 +5464,8 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
       outletId: bylineOutlet,
       fullText: cleanedText,
       knownCritics: knownCriticsForOutlet(getPrintedBylineIndex(), bylineOutlet),
+      corpusCritics: knownCriticsForOutlet(getCorpusBylineIndex(), bylineOutlet),
+      relPath: review && review.filePath ? `${path.basename(path.dirname(review.filePath))}/${path.basename(review.filePath)}` : undefined,
       locked: !!(data.criticNameManual || data._locked),
       excluded: !!(data.isRoundupArticle || data.wrongShow || data.wrongProduction || data.duplicateOf),
     });
