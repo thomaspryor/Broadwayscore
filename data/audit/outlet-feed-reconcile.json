@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-05T16:25:50.623Z",
+  "generatedAt": "2026-11-05T17:34:28.740Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -89,6 +89,11 @@
       "openingDate": "2026-11-02"
     },
     {
+      "id": "king-lear-off-broadway-2026",
+      "title": "King Lear",
+      "openingDate": "2026-11-05"
+    },
+    {
       "id": "the-royale-regional-2026",
       "title": "The Royale",
       "openingDate": "2026-10-30"
@@ -97,10 +102,6 @@
   "skipped": [],
   "feedsChecked": 78,
   "feedsFailed": [
-    {
-      "outletId": "theater-life",
-      "error": "Timeout fetching https://theaterlife.com/feed"
-    },
     {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
@@ -126,9 +127,9 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 802,
-  "matchedGaps": 5,
-  "possibleGaps": 5,
+  "itemsScanned": 808,
+  "matchedGaps": 6,
+  "possibleGaps": 6,
   "gaps": [
     {
       "showId": "222-a-ghost-story-off-broadway-2026",
@@ -147,6 +148,15 @@
       "url": "https://northwestend.com/the-bridge-bush-theatre/",
       "headline": "The Bridge – Bush Theatre",
       "publishDate": "2026-11-04"
+    },
+    {
+      "showId": "the-bridge-off-west-end-2026",
+      "title": "The Bridge",
+      "level": "matched",
+      "outletId": "viewfromthegods",
+      "url": "https://viewfromthegods.co.uk/2026/11/05/the-bridge-bush-theatre/?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=the-bridge-bush-theatre",
+      "headline": "&#8220;The Bridge &#8221; Bush Theatre",
+      "publishDate": "2026-11-05"
     },
     {
       "showId": "tosca-off-broadway-2026",
@@ -174,6 +184,15 @@
       "url": "https://www.thereviewshub.com/eno-tosca-london-coliseum/",
       "headline": "ENO: Tosca &#8211; London Coliseum",
       "publishDate": "2026-10-31"
+    },
+    {
+      "showId": "king-lear-off-broadway-2026",
+      "title": "King Lear",
+      "level": "possible",
+      "outletId": "guardian",
+      "url": "https://www.theguardian.com/culture/2026/nov/04/every-family-has-silences-kathryn-hunter-on-despair-desire-dislodgeable-limbs-and-her-acting-genius",
+      "headline": "‘Every family has silences’: Kathryn Hunter on despair, desire, dislodgeable limbs – and her acting genius",
+      "publishDate": "2026-11-04"
     },
     {
       "showId": "the-bridge-off-west-end-2026",

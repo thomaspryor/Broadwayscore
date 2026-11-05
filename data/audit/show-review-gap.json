@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-11-05T16:24:53.258Z",
+  "generatedAt": "2026-11-05T17:29:01.482Z",
   "windowDays": 1095,
-  "targets": 913,
-  "auditedThisRun": 5,
-  "carriedForward": 2035,
+  "targets": 911,
+  "auditedThisRun": 7,
+  "carriedForward": 2034,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
@@ -14,9 +14,9 @@
     "totalRecoverable": 56,
     "totalRecovered": 90,
     "humanExcluded": 26,
-    "automatedExcluded": 1020,
+    "automatedExcluded": 1018,
     "automatedExcludedListed": 730,
-    "priorProductionCitations": 6071
+    "priorProductionCitations": 6074
   },
   "results": [
     {
@@ -9098,6 +9098,44 @@
         "candidateCount": 8
       },
       "computedAt": "2026-11-01T16:17:39.675Z"
+    },
+    {
+      "showId": "a-single-man-aviva-studios-regional-2025",
+      "title": "A Single Man",
+      "openingDate": "2025-07-04",
+      "status": "closed",
+      "category": "regional",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "unextractable": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 4,
+        "excluded": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-11-05T17:29:01.482Z"
     },
     {
       "showId": "a-slow-fire-off-west-end-2026",
@@ -51574,8 +51612,9 @@
       "showId": "broom-play-off-broadway-2026",
       "title": "Broom Play",
       "openingDate": null,
-      "status": "upcoming",
+      "status": "previews",
       "category": "off-broadway",
+      "previewsStartDate": "2026-11-05",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [],
       "dirFiles": 0,
@@ -51587,12 +51626,76 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "out-of-window"
+        "ran": true,
+        "complete": true,
+        "query": "\"Broom Play\" Off-Broadway review",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Broom Play\" Off-Broadway review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 9,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Broom Play\" review players",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 5,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Broom Play The Players Theatre review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 9,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Broom Play The Players Theatre review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Broom Play The Players Theatre review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 0,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 42,
+        "byReason": {
+          "non-review-host": 9,
+          "not-http-url": 24,
+          "aggregator-internal-nav": 4,
+          "bare-host": 2,
+          "venue-production-page": 1,
+          "merch-store": 2
+        }
       },
       "dedupedVariants": [],
       "unextractable": [],
@@ -51601,11 +51704,12 @@
         "missing": [],
         "suppressedMissing": [],
         "candidates": [],
-        "censusSchema": 3,
+        "censusSchema": 4,
+        "excluded": [],
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-11-02T02:40:23.651Z"
+      "computedAt": "2026-11-05T17:29:01.482Z"
     },
     {
       "showId": "buddy-the-buddy-holly-story-regional-2026",
@@ -140832,7 +140936,7 @@
       "showId": "heart-of-a-dog-off-broadway-2026",
       "title": "Heart of a Dog",
       "openingDate": null,
-      "status": "upcoming",
+      "status": "previews",
       "category": "off-broadway",
       "previewsStartDate": "2026-11-05",
       "aggregatorArticles": [],
@@ -140846,12 +140950,63 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "out-of-window"
+        "ran": true,
+        "complete": true,
+        "query": "\"Heart of a Dog\" Off-Broadway review",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Heart of a Dog\" Off-Broadway review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 9,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Heart of a Dog Theater 86 review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 8,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Heart of a Dog Theater 86 review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 9,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Heart of a Dog Theater 86 review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 4,
+        "queriesTotal": 4,
+        "resultCount": 0,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 35,
+        "byReason": {
+          "non-review-host": 6,
+          "not-http-url": 28,
+          "census-junk-host": 1
+        }
       },
       "dedupedVariants": [],
       "unextractable": [],
@@ -140865,7 +141020,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-11-04T15:34:33.700Z"
+      "computedAt": "2026-11-05T17:29:01.482Z"
     },
     {
       "showId": "heart-of-rock-and-roll-2024",
@@ -172023,8 +172178,9 @@
       "showId": "kate-allie-and-the-86-mets-off-broadway-2026",
       "title": "Kate, Allie and the '86 Mets",
       "openingDate": null,
-      "status": "upcoming",
+      "status": "previews",
       "category": "off-broadway",
+      "previewsStartDate": "2026-11-05",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [],
       "dirFiles": 0,
@@ -172036,12 +172192,74 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "out-of-window"
+        "ran": true,
+        "complete": true,
+        "query": "\"Kate, Allie and the '86 Mets\" Off-Broadway review",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Kate, Allie and the '86 Mets\" Off-Broadway review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 3,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Kate, Allie and the '86 Mets\" review asylum",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 4,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Kate, Allie and the '86 Mets Asylum NYC review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 9,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Kate, Allie and the '86 Mets Asylum NYC review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Kate, Allie and the '86 Mets Asylum NYC review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 0,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 35,
+        "byReason": {
+          "non-review-host": 7,
+          "not-http-url": 25,
+          "no-review-evidence": 2,
+          "non-stage-review": 1
+        }
       },
       "dedupedVariants": [],
       "unextractable": [],
@@ -172050,11 +172268,12 @@
         "missing": [],
         "suppressedMissing": [],
         "candidates": [],
-        "censusSchema": 3,
+        "censusSchema": 4,
+        "excluded": [],
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-11-02T02:40:23.651Z"
+      "computedAt": "2026-11-05T17:29:01.482Z"
     },
     {
       "showId": "kathy-and-stella-solve-a-murder-west-end-2024",
@@ -280024,8 +280243,9 @@
       "showId": "sankai-juku-totemvoid-and-height-off-broadway-2026",
       "title": "Sankai Juku: TOTEM—Void and Height",
       "openingDate": null,
-      "status": "upcoming",
+      "status": "previews",
       "category": "off-broadway",
+      "previewsStartDate": "2026-11-05",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [],
       "dirFiles": 0,
@@ -280037,12 +280257,73 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "out-of-window"
+        "ran": true,
+        "complete": true,
+        "query": "\"Sankai Juku: TOTEM—Void and Height\" Off-Broadway review",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Sankai Juku: TOTEM—Void and Height\" Off-Broadway review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 4,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Sankai Juku: TOTEM—Void and Height\" review skirball",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 1,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Sankai Juku: TOTEM—Void and Height NYU Skirball review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 9,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Sankai Juku: TOTEM—Void and Height NYU Skirball review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Sankai Juku: TOTEM—Void and Height NYU Skirball review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 0,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 33,
+        "byReason": {
+          "non-review-host": 7,
+          "not-http-url": 25,
+          "ticketing-reseller": 1
+        }
       },
       "dedupedVariants": [],
       "unextractable": [],
@@ -280051,11 +280332,12 @@
         "missing": [],
         "suppressedMissing": [],
         "candidates": [],
-        "censusSchema": 3,
+        "censusSchema": 4,
+        "excluded": [],
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-11-02T00:58:35.182Z"
+      "computedAt": "2026-11-05T17:29:01.482Z"
     },
     {
       "showId": "saturday-church-off-broadway-2025",
@@ -354146,6 +354428,7 @@
       "openingDate": null,
       "status": "open",
       "category": "off-west-end",
+      "previewsStartDate": "2025-01-08",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [],
       "dirFiles": 0,
@@ -354165,16 +354448,18 @@
         "byReason": {}
       },
       "dedupedVariants": [],
+      "unextractable": [],
       "censusVerdict": {
         "verdict": "no-census-yet",
         "missing": [],
         "suppressedMissing": [],
         "candidates": [],
-        "censusSchema": 2,
+        "censusSchema": 4,
+        "excluded": [],
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-09-24T23:04:09.984Z"
+      "computedAt": "2026-11-05T17:29:01.482Z"
     },
     {
       "showId": "the-maids-off-broadway-2026",
@@ -356160,7 +356445,6 @@
       "previewsStartDate": "2026-10-27",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://broadwaybaby.com/shows/the-moth/839368",
         "https://theartsdispatch.substack.com/p/the-moth-review-finborough-theatre",
         "https://www.thereviewshub.com/the-moth-finborough-theatre-london/",
         "https://fringereview.co.uk/review/fringereview-uk/2026/the-moth/",
@@ -356169,9 +356453,7 @@
         "https://www.londontheatre1.com/reviews/the-moth-finborough-theatre/",
         "https://readaboutstuff.com/2026/10/31/review-the-moth-finborough-theatre-london/",
         "https://www.londonpubtheatres.com/review-the-moth-at-finborough-theatre-27-oct-21-nov-2026",
-        "https://quayslife.com/reviews/the-moth-review/",
         "https://northernartsreview.co.uk/north-east/review-the-moth-at-live-theatre/",
-        "https://www.afridiziak.com/news/the-london-premiere-direct-from-a-sell-out-northern-tour-the-moth/",
         "https://www.allthatdazzles.co.uk/post/review-the-moth-finborough-theatre",
         "https://theblurb.com.au/wp/moth-theatre-works-theatre-review/",
         "http://blakefriedmann.co.uk/news/the-moth-paul-herzberg",
@@ -356193,12 +356475,54 @@
       "inReviewsJson": 15,
       "missing": [
         {
-          "url": "https://quayslife.com/reviews/the-moth-review/",
-          "host": "quayslife.com",
-          "knownOutletId": "quays-life",
+          "url": "https://theblurb.com.au/wp/moth-theatre-works-theatre-review/",
+          "host": "theblurb.com.au",
+          "knownOutletId": null,
           "serpCensus": true,
           "priorRun": true,
-          "priorRunSource": "pending-file-date:2025-04-11",
+          "priorRunSource": "pending-file-date:2023-06-01",
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ]
+        },
+        {
+          "url": "http://blakefriedmann.co.uk/news/the-moth-paul-herzberg",
+          "host": "blakefriedmann.co.uk",
+          "knownOutletId": null,
+          "serpCensus": true,
+          "priorRun": true,
+          "priorRunSource": "pending-file-date:2025-04-22",
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ]
+        },
+        {
+          "url": "https://northwestend.com/the-moth-shakespeare-north-playhouse/",
+          "host": "northwestend.com",
+          "knownOutletId": "north-west-end",
+          "serpCensus": true,
+          "priorRun": true,
+          "priorRunSource": "pending-file-date:2025-03-19",
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ]
+        },
+        {
+          "url": "https://www.britishtheatreguide.info/reviews/moth-bush-theatre-8895",
+          "host": "britishtheatreguide.info",
+          "knownOutletId": "british-theatre",
+          "serpCensus": true,
+          "priorRun": true,
+          "priorRunSource": "pending-file-date:2013-05-31",
           "sources": [
             {
               "source": "serp-census",
@@ -356209,72 +356533,6 @@
       ],
       "dirOnly": [],
       "flaggedMisses": [
-        {
-          "url": "https://broadwaybaby.com/shows/the-moth/839368",
-          "host": "broadwaybaby.com",
-          "knownOutletId": "broadway-baby",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "broadway-baby--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://broadwaybaby.com/shows/the-moth/839368"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "confirmedNonReview": true,
-          "confirmedBasis": [
-            "non-review"
-          ],
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ],
-          "serpCensus": true,
-          "reverify": false
-        },
-        {
-          "url": "https://www.afridiziak.com/news/the-london-premiere-direct-from-a-sell-out-northern-tour-the-moth/",
-          "host": "afridiziak.com",
-          "knownOutletId": "afridiziak-theatre-news",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "afridiziak-theatre-news--basil-g-lumsden.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.afridiziak.com/news/the-london-premiere-direct-from-a-sell-out-northern-tour-the-moth/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "confirmedNonReview": true,
-          "confirmedBasis": [
-            "non-review"
-          ],
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ],
-          "serpCensus": true,
-          "reverify": false
-        },
         {
           "url": "https://viewfromthegods.co.uk/2026/10/30/the-moth-finborough-theatre/",
           "host": "viewfromthegods.co.uk",
@@ -356372,78 +356630,13 @@
         }
       },
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"The Moth\" West End review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"The Moth\" West End review 2026",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 9,
-            "accepted": 4,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"The Moth\" review finborough",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 9,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "The Moth Finborough Theatre review",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "The Moth Finborough Theatre review",
-            "page": 1,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 4,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "The Moth Finborough Theatre review",
-            "page": 2,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 3,
-            "error": null
-          }
-        ],
-        "queriesOk": 5,
-        "queriesTotal": 5,
-        "resultCount": 12,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 33,
+        "count": 2,
         "byReason": {
-          "non-review-host": 6,
-          "aggregator-internal-nav": 1,
-          "not-http-url": 15,
-          "write-path-blocked": 4,
-          "ticketing-listing": 1,
-          "roundup-page": 3,
-          "event-listing": 1,
-          "no-review-evidence": 1,
-          "census-junk-host": 1
+          "write-path-blocked": 2
         }
       },
       "dedupedVariants": [],
@@ -356462,46 +356655,35 @@
           "serpCensus": true,
           "nonReviewVerdict": "page-date-before-run",
           "nonReviewDetail": "2025-03-16"
-        },
-        {
-          "url": "https://theblurb.com.au/wp/moth-theatre-works-theatre-review/",
-          "host": "theblurb.com.au",
-          "knownOutletId": null,
-          "serpCensus": true,
-          "nonReviewVerdict": "page-date-before-run",
-          "nonReviewDetail": "2023-06-02"
-        },
-        {
-          "url": "http://blakefriedmann.co.uk/news/the-moth-paul-herzberg",
-          "host": "blakefriedmann.co.uk",
-          "knownOutletId": null,
-          "serpCensus": true,
-          "nonReviewVerdict": "page-date-before-run",
-          "nonReviewDetail": "2025-04-22"
-        },
-        {
-          "url": "https://northwestend.com/the-moth-shakespeare-north-playhouse/",
-          "host": "northwestend.com",
-          "knownOutletId": "north-west-end",
-          "serpCensus": true,
-          "nonReviewVerdict": "page-date-before-run",
-          "nonReviewDetail": "2025-03-19"
-        },
-        {
-          "url": "https://www.britishtheatreguide.info/reviews/moth-bush-theatre-8895",
-          "host": "britishtheatreguide.info",
-          "knownOutletId": "british-theatre",
-          "serpCensus": true,
-          "nonReviewVerdict": "page-date-before-run",
-          "nonReviewDetail": "2013-05-31"
         }
       ],
       "automatedExcludedListed": 0,
       "unextractable": [],
       "weIngestBlocked": [
         {
-          "url": "https://quayslife.com/reviews/the-moth-review/",
-          "host": "quayslife.com",
+          "url": "https://theblurb.com.au/wp/moth-theatre-works-theatre-review/",
+          "host": "theblurb.com.au",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://blakefriedmann.co.uk/news/the-moth-paul-herzberg",
+          "host": "blakefriedmann.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://northwestend.com/the-moth-shakespeare-north-playhouse/",
+          "host": "northwestend.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.britishtheatreguide.info/reviews/moth-bush-theatre-8895",
+          "host": "britishtheatreguide.info",
           "priorRun": true,
           "reason": "prior-run",
           "censusGateOn": true
@@ -356575,30 +356757,6 @@
             "firstSeenAt": "2026-10-30T23:31:22.664Z"
           },
           {
-            "url": "https://theblurb.com.au/wp/moth-theatre-works-theatre-review/",
-            "outletId": "theblurb.com.au",
-            "state": "live",
-            "firstSeenAt": "2026-11-03T12:40:56.402Z"
-          },
-          {
-            "url": "http://blakefriedmann.co.uk/news/the-moth-paul-herzberg",
-            "outletId": "blakefriedmann.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-11-04T22:31:22.172Z"
-          },
-          {
-            "url": "https://northwestend.com/the-moth-shakespeare-north-playhouse/",
-            "outletId": "northwestend.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-03T12:40:56.402Z"
-          },
-          {
-            "url": "https://www.britishtheatreguide.info/reviews/moth-bush-theatre-8895",
-            "outletId": "britishtheatreguide.info",
-            "state": "live",
-            "firstSeenAt": "2026-11-03T12:40:56.402Z"
-          },
-          {
             "url": "https://theartsdesk.com/theatre/moth-finborough-theatre-review-apartheids-legacy-lingering-bad-smell",
             "outletId": "theartsdesk.com",
             "state": "live",
@@ -356666,45 +356824,15 @@
             "reason": "page-date-before-run"
           },
           {
-            "url": "https://theblurb.com.au/wp/moth-theatre-works-theatre-review/",
-            "host": "theblurb.com.au",
-            "reason": "page-date-before-run"
-          },
-          {
-            "url": "http://blakefriedmann.co.uk/news/the-moth-paul-herzberg",
-            "host": "blakefriedmann.co.uk",
-            "reason": "page-date-before-run"
-          },
-          {
-            "url": "https://northwestend.com/the-moth-shakespeare-north-playhouse/",
-            "host": "northwestend.com",
-            "reason": "page-date-before-run"
-          },
-          {
-            "url": "https://www.britishtheatreguide.info/reviews/moth-bush-theatre-8895",
-            "host": "britishtheatreguide.info",
-            "reason": "page-date-before-run"
-          },
-          {
-            "url": "https://broadwaybaby.com/shows/the-moth/839368",
-            "host": "broadwaybaby.com",
-            "reason": "confirmed-non-review"
-          },
-          {
-            "url": "https://www.afridiziak.com/news/the-london-premiere-direct-from-a-sell-out-northern-tour-the-moth/",
-            "host": "afridiziak.com",
-            "reason": "confirmed-non-review"
-          },
-          {
             "url": "https://viewfromthegods.co.uk/2026/10/30/the-moth-finborough-theatre/",
             "host": "viewfromthegods.co.uk",
             "reason": "confirmed-non-review"
           }
         ],
-        "liveCount": 21,
-        "candidateCount": 21
+        "liveCount": 17,
+        "candidateCount": 17
       },
-      "computedAt": "2026-11-05T12:59:02.711Z"
+      "computedAt": "2026-11-05T17:29:01.482Z"
     },
     {
       "showId": "the-motion-regional-2026",
@@ -420667,23 +420795,25 @@
     }
   ],
   "staleness": {
-    "at": "2026-11-05T16:24:53.257Z",
+    "at": "2026-11-05T17:29:01.481Z",
     "reserveEvery": 4,
     "reservedAttempted": [
-      "heartbreak-house-regional-2026"
+      "the-magicians-table-off-west-end-2026"
     ],
     "catalogueReserveEvery": 8,
-    "catalogueAttempted": [],
+    "catalogueAttempted": [
+      "a-single-man-aviva-studios-regional-2025"
+    ],
     "neverAuditedDueAtStart": 649,
     "oldestDueRowAtStart": {
-      "showId": "home-2024",
-      "computedAt": "2026-10-19T22:58:16.678Z",
-      "ageHours": 401.1
+      "showId": "the-magicians-table-off-west-end-2026",
+      "computedAt": "2026-09-24T23:04:09.984Z",
+      "ageHours": 1002.1
     },
     "oldestDueRowAfterRun": {
       "showId": "home-2024",
       "computedAt": "2026-10-19T22:58:16.678Z",
-      "ageHours": 401.4
+      "ageHours": 402.5
     }
   }
 }

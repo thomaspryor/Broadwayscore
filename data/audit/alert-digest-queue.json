@@ -372,20 +372,6 @@
     "queuedAt": "2026-11-05T16:24:53.960Z"
   },
   {
-    "conditionKey": "t1-gaps:needs-manual-recovery",
-    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (Lincoln in the Bardo (washpost)). Checked 2026-11-05.",
-    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-05T16:25:25.192Z"
-  },
-  {
     "conditionKey": "land:land/job/linear-BRO-7017-mw3q5ujs",
     "title": "Landing blocked: rebase red on land/job/linear-BRO-7017-mw3q5ujs",
     "description": "land.yml did not land land/job/linear-BRO-7017-mw3q5ujs: the rebase gate went red at 92cf43f520. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/42062464912",
@@ -457,5 +443,19 @@
     "tracked": "BRO-7021",
     "fields": [],
     "queuedAt": "2026-11-05T16:55:41.531Z"
+  },
+  {
+    "conditionKey": "t1-gaps:needs-manual-recovery",
+    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (Lincoln in the Bardo (washpost)). Checked 2026-11-05.",
+    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-05T17:29:16.300Z"
   }
 ]
