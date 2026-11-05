@@ -490,6 +490,63 @@
     "queuedAt": "2026-11-05T18:14:41.922Z"
   },
   {
+    "conditionKey": "cron-health-failed:Secret Scan (gitleaks)",
+    "title": "Cron's latest run failed (not yet stale): Secret Scan (gitleaks)",
+    "description": "Secret Scan (gitleaks): Latest run failed (last success 100h ago). Not stale yet; fix it before it is.",
+    "severity": "warning",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42092540893",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/42092540893)"
+      }
+    ],
+    "queuedAt": "2026-11-05T19:19:28.437Z"
+  },
+  {
+    "conditionKey": "cron-health-failed:Enrich Off-Broadway Dates",
+    "title": "Cron's latest run failed (not yet stale): Enrich Off-Broadway Dates",
+    "description": "Enrich Off-Broadway Dates: Latest run failed (last success 74h ago). Not stale yet; fix it before it is.",
+    "severity": "warning",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42092540893",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/42092540893)"
+      }
+    ],
+    "queuedAt": "2026-11-05T19:19:28.468Z"
+  },
+  {
+    "conditionKey": "cron-health-failed:Update Lottery/Rush",
+    "title": "Cron's latest run failed (not yet stale): Update Lottery/Rush",
+    "description": "Update Lottery/Rush: Latest run failed (last success 71h ago). Not stale yet; fix it before it is.",
+    "severity": "warning",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42092540893",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/42092540893)"
+      }
+    ],
+    "queuedAt": "2026-11-05T19:19:28.489Z"
+  },
+  {
     "conditionKey": "pending-unrecoverable:rope-off-broadway-2026",
     "title": "1 review(s) for rope-off-broadway-2026 stuck in _pending with no text and no byline",
     "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- thenewgroup-org--6a5c1850.json (thenewgroup-org): no byline in page and no recoverable body https://thenewgroup.org/events/rope",
