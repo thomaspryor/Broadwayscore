@@ -617,6 +617,20 @@
     "queuedAt": "2026-11-05T20:49:55.620Z"
   },
   {
+    "conditionKey": "pending-unrecoverable:in-the-heights-off-broadway-2026",
+    "title": "1 review(s) for in-the-heights-off-broadway-2026 stuck in _pending with no text and no byline",
+    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- nycitycenter-org--7d6014eb.json (nycitycenter-org): fetch failed: All scraping methods failed https://www.nycitycenter.org/pdps/2026-2027/in-the-heights34/",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-05T21:09:47.585Z"
+  },
+  {
     "conditionKey": "ob-venue-go-live:seven-in-one-blow-or-the-brave-little-kid-off-broadway-2026",
     "title": "Seven in One Blow, or The Brave Little Kid @ Axis Theatre — off-Broadway show added",
     "description": "Auto-promoted via the venue listing (venue's own listing: 2026-12-04 to 2026-12-20, 9 performances). Reviews ingest automatically once critics publish.",
