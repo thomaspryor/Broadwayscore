@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6995-b",
   "planId": "e40e2efc-e519-4d3f-a906-47862d9b58f9",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-05T06:14:04.858Z",
   "submitter": {
     "name": null,
@@ -62,5 +62,24 @@
         "description": "michael-off-west-end-2026: reject the wrong art's source URL so no fetch takes it again"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-05T07:33:27.888Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for untitled-new-work-by-monica-bill-barnes-and-robbie-saenz-de-viteri-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for michael-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for michael-off-west-end-2026"
+    }
+  ],
+  "executedIn": "ci"
 }
