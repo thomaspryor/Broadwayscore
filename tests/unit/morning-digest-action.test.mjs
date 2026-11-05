@@ -120,7 +120,7 @@ test('pager workflow: both signals are live and explicit, no repo variables', ()
   assert.doesNotMatch(pager, /continue-on-error/);
   assert.match(pager, /ARGS="--signal=digest"/);
   assert.match(pager, /ARGS="--signal=heartbeat"/);
-  assert.match(pager, /cron: '30 16 \* \* \*'/);
+  assert.match(pager, /cron: '45 16 \* \* \*'/);
   assert.match(pager, /^ {2}statuses: read$/m);
 });
 

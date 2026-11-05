@@ -2354,6 +2354,9 @@ on:
       # tests/unit/morning-digest-action.test.mjs.
       - 'scripts/check-morning-digest-sent.js'
       - 'scripts/lib/digest-enable-gate.js'
+      # BRO-7017: pager wake gate; tested by tests/unit/check-morning-digest-sent-wakes.test.mjs.
+      - 'scripts/lib/digest-pager-gate.js'
+      - 'tests/unit/check-morning-digest-sent-wakes.test.mjs'
       - 'scripts/digest-sent-precheck.js'
       # Close-time acceptance verify + trunk status (task #1003) — the decision
       # lib, the shared checkout/runner it leans on, the gh producer, and the
