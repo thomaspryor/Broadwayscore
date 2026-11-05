@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6995-c",
   "planId": "40649471-055b-4f96-924a-ce3d6dabf730",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-05T08:00:12.093Z",
   "submitter": {
     "name": null,
@@ -47,5 +47,19 @@
         "description": "michael-off-west-end-2026: reject the wrong art's source so no fetch takes it again"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-05T08:24:43.866Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for michael-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for michael-off-west-end-2026"
+    }
+  ],
+  "executedIn": "ci"
 }
