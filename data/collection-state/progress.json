@@ -193,7 +193,10 @@
     "abba-voyage-off-west-end-2026/fairypoweredproductions--unknown.json",
     "abba-voyage-off-west-end-2026/times-uk--will-hodgkinson.json",
     "the-lion-king-tour-2021/orlando-sentinel--matthew-j-palm.json",
-    "king-lear-off-broadway-2026/chicago-reader--amanda-finn.json"
+    "king-lear-off-broadway-2026/chicago-reader--amanda-finn.json",
+    "the-moth-off-west-end-2026/creative-reviews-uk--creative-reviews-uk.json",
+    "ceilidh-the-musical-off-west-end-2026/guardian--unknown.json",
+    "ceilidh-the-musical-off-west-end-2026/soundsandstage--unknown.json"
   ],
   "failed": [
     "_superseded-misattributed/ruthless-the-musical-off-broadway-2015--stagezine--scott-harrah--1792592645478.json",
@@ -301,7 +304,16 @@
     "mj-2022/variety--peter-marks.json",
     "mj-2022/broadwaynews--charles-isherwood.json",
     "mj-2022/nydailynews--karu-f-daniels.json",
-    "six-2021/whatsonstage--alex-wood.json"
+    "six-2021/whatsonstage--alex-wood.json",
+    "the-bridge-off-west-end-2026/theatreandtonic--emmie-newitt.json",
+    "tosca-english-national-opera-west-end-2026/bachtrack--anna-bogdanova.json",
+    "tosca-english-national-opera-west-end-2026/bachtrack--clare-varney.json",
+    "tosca-english-national-opera-west-end-2026/bachtrack--mark-pullinger.json",
+    "tosca-english-national-opera-west-end-2026/bachtrack--peter-quantrill.json",
+    "tosca-english-national-opera-west-end-2026/cherylmarkosky--cherylmarkosky.json",
+    "tosca-english-national-opera-west-end-2026/times-uk--richard-morrison.json",
+    "ceilidh-the-musical-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
+    "ceilidh-the-musical-off-west-end-2026/theatre-south-east--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -400,7 +412,10 @@
       "book-of-mormon-tour-2022/orlando-sentinel--matthew-j-palm.json",
       "abba-voyage-off-west-end-2026/fairypoweredproductions--unknown.json",
       "the-lion-king-tour-2021/orlando-sentinel--matthew-j-palm.json",
-      "king-lear-off-broadway-2026/chicago-reader--amanda-finn.json"
+      "king-lear-off-broadway-2026/chicago-reader--amanda-finn.json",
+      "the-moth-off-west-end-2026/creative-reviews-uk--creative-reviews-uk.json",
+      "ceilidh-the-musical-off-west-end-2026/guardian--unknown.json",
+      "ceilidh-the-musical-off-west-end-2026/soundsandstage--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -499,7 +514,7 @@
     ]
   },
   "startTime": "2026-11-05T12:38:40.125Z",
-  "lastProcessed": "king-lear-off-broadway-2026/chicago-reader--amanda-finn.json",
+  "lastProcessed": "ceilidh-the-musical-off-west-end-2026/theatre-south-east--unknown.json",
   "log": [
     {
       "t": "2026-11-05T12:45:43.228Z",
@@ -609,6 +624,30 @@
       "t": "2026-11-05T14:10:44.830Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-11-05T14:29:48.769Z",
+      "event": "bb-session",
+      "session": "aa957300",
+      "url": "https://bachtrack.com/review-lorfeo-william-kentridge-greek-national-opera-athen"
+    },
+    {
+      "t": "2026-11-05T14:30:24.582Z",
+      "event": "bb-session",
+      "session": "bab6e23f",
+      "url": "https://bachtrack.com/review-shostakovich-cherry-town-ahlbom-dutch-national-oper"
+    },
+    {
+      "t": "2026-11-05T14:31:28.606Z",
+      "event": "bb-session",
+      "session": "2d36375c",
+      "url": "https://bachtrack.com/review-tosca-miskimmon-glassberg-fanyo-english-national-op"
+    },
+    {
+      "t": "2026-11-05T14:32:32.912Z",
+      "event": "bb-session",
+      "session": "40ee2dba",
+      "url": "https://bachtrack.com/review-nozze-figaro-pountney-conta-bucharest-national-oper"
     }
   ],
   "recoveredAfterFailure": [
