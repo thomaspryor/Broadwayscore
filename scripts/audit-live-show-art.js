@@ -3,7 +3,7 @@
 /**
  * audit-live-show-art.js (BRO-5744)
  *
- * Vision sweep of the thumbnail actually served for every live show
+ * Vision sweep of the thumbnail and poster actually served for every live show
  * (open / previews / upcoming / announced). Reports art that shows another
  * work (wrong_show), a non-theatre work, or a generic image. ADVISORY ONLY:
  * it never nulls or deletes art (the pre-deploy orphan auto-fix would re-attach
@@ -17,13 +17,15 @@
  *
  * Flagged rows fold into ONE rollup alert card (stable key, 7-day cooldown).
  *
- * Output: tmp/live-art-audit.json (needs GEMINI_API_KEY).
+ * Output: tmp/live-art-audit.json (needs GEMINI_API_KEY). Each flagged row lists
+ * the format(s) flagged; the poster was added after Rope served The Lost Boys'
+ * poster that no thumbnail-only sweep could see (BRO-6995).
  */
 const fs = require('fs');
 const path = require('path');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
-const USAGE = `audit-live-show-art.js — vision sweep of live show thumbnails (advisory).
+const USAGE = `audit-live-show-art.js — vision sweep of live show thumbnails and posters (advisory).
 
 Usage:
   node scripts/audit-live-show-art.js [--show=ID] [--limit=N] [--workers=N] [--rpm=N] [--no-write] [--no-alert]
@@ -36,7 +38,7 @@ if (hasHelpFlag(process.argv)) {
 }
 
 const { verifyImage, createRateLimiter, creativesForVerify, resolveMarketSlug } = require('./lib/verify-image');
-const { selectLiveShows, classifyResult, buildReport, buildLiveArtAlert, LIVE_ART_ALERT_KEY } =require('./lib/live-art-audit');
+const { selectLiveShows, artFilesToAudit, collapseRowsByShow, classifyResult, buildReport, buildLiveArtAlert, LIVE_ART_ALERT_KEY } = require('./lib/live-art-audit');
 
 const ROOT = path.join(__dirname, '..');
 const OUTPUT = path.join(ROOT, 'tmp', 'live-art-audit.json');
@@ -50,11 +52,12 @@ function mimeFor(file) {
   return ext === '.png' ? 'image/png' : ext === '.webp' ? 'image/webp' : 'image/jpeg';
 }
 
-async function auditShow(show, rateLimiter) {
-  const rel = show.images.thumbnail.replace(/^\//, '');
+/** Vision-check one served image file; null when the art is fine. */
+async function auditFile(show, art, rateLimiter) {
+  const rel = art.path.replace(/^\//, '');
   const file = path.join(ROOT, 'public', rel.replace(/^public\//, ''));
   if (!fs.existsSync(file)) {
-    return { id: show.id, title: show.title, errored: true, kind: 'error', description: `thumbnail file missing: ${show.images.thumbnail}` };
+    return { id: show.id, title: show.title, format: art.format, errored: true, kind: 'error', description: `${art.format} file missing: ${art.path}` };
   }
   const result = await verifyImage(fs.readFileSync(file), show.title, {
     year: show.openingDate ? show.openingDate.slice(0, 4) : undefined,
@@ -70,11 +73,30 @@ async function auditShow(show, rateLimiter) {
   if (!cls) return null;
   return {
     id: show.id, title: show.title, status: show.status, venue: show.venue,
+    format: art.format, file: art.path,
     thumbnail: show.images.thumbnail,
     kind: cls.kind, errored: cls.errored,
     confidence: result.confidence, imageType: result.imageType,
     issues: result.issues, description: result.description,
   };
+}
+
+/** Rows for every served format of a show (thumbnail, then poster unless it is the same file). */
+async function auditShow(show, rateLimiter) {
+  const rows = [];
+  const seenBytes = new Set();
+  for (const art of artFilesToAudit(show)) {
+    // A poster that is a byte copy of the thumbnail is one check, not two.
+    try {
+      const full = path.join(ROOT, 'public', art.path.replace(/^\//, '').replace(/^public\//, ''));
+      const md5 = fs.existsSync(full) ? require('crypto').createHash('md5').update(fs.readFileSync(full)).digest('hex') : null;
+      if (md5 && seenBytes.has(md5)) continue;
+      if (md5) seenBytes.add(md5);
+    } catch { /* hash failure: audit the file anyway */ }
+    const row = await auditFile(show, art, rateLimiter);
+    if (row) rows.push(row);
+  }
+  return rows;
 }
 
 async function main() {
@@ -91,7 +113,7 @@ async function main() {
   }
   const workers = Math.max(1, parseInt(arg('workers') || '4', 10));
   const rateLimiter = createRateLimiter(parseInt(arg('rpm') || '60', 10));
-  console.log(`Auditing ${shows.length} live thumbnails with ${workers} workers...`);
+  console.log(`Auditing the thumbnail and poster of ${shows.length} live shows with ${workers} workers...`);
 
   const rows = [];
   let next = 0, done = 0;
@@ -99,8 +121,7 @@ async function main() {
     while (next < shows.length) {
       const show = shows[next++];
       try {
-        const row = await auditShow(show, rateLimiter);
-        if (row) rows.push(row);
+        rows.push(...await auditShow(show, rateLimiter));
       } catch (err) {
         rows.push({ id: show.id, title: show.title, errored: true, kind: 'error', description: err.message });
       }
@@ -109,10 +130,10 @@ async function main() {
   }
   await Promise.all(Array.from({ length: workers }, worker));
 
-  rows.sort((a, b) => a.id.localeCompare(b.id));
-  const report = buildReport(rows, { totalChecked: shows.length });
+  const collapsed = collapseRowsByShow(rows).sort((a, b) => a.id.localeCompare(b.id));
+  const report = buildReport(collapsed, { totalChecked: shows.length });
   console.log(`Checked ${report.totalChecked}: flagged ${report.flaggedCount} ${JSON.stringify(report.byKind)}, errors ${report.errorCount}`);
-  for (const r of report.flagged.slice(0, 40)) console.log(`  ${r.kind.padEnd(16)} ${r.id}: ${String(r.description).slice(0, 90)}`);
+  for (const r of report.flagged.slice(0, 40)) console.log(`  ${r.kind.padEnd(16)} ${r.id} [${(r.formats || []).join(',')}]: ${String(r.description).slice(0, 90)}`);
 
   if (!process.argv.includes('--no-write')) {
     fs.mkdirSync(path.dirname(OUTPUT), { recursive: true });

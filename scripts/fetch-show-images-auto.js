@@ -38,6 +38,7 @@ const { isCrossMarketPlaybillUrl } = require('./lib/playbill-url-market');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 const { getMarketSearchKeyword } = require('./lib/market-label');
 const { todaytixMarket, todaytixSearchUrl, extractTodaytixShowLink, todaytixSerpQuery, todaytixShowUrl } = require('./lib/todaytix-market');
+const { unconfirmedArtReason } = require('./lib/unconfirmed-art-policy');
 const { normalizeMezzTitle, buildMezzIndex, pickMezzanineCandidate, theatrEligible, isRejectedImage, thumbnailFallbackAction, ibdbEligible, venuesMatch, buildVenueCityIndex, keepExistingImage, fileSourceUrls, recordFileSources, recordedSourceFor, imagePathOwner } = require('./lib/image-source-match');
 const { isStrictGoogleShow, noArtOutcome, buildNoReliableArtMarker } = require('./lib/no-reliable-art');
 const { selectShowsToFetch, todaytixApiArtEligible } = require('./lib/image-fetch-selection');
@@ -2005,6 +2006,16 @@ async function verifyAndCollect(images, show, tierName, verifyCtx) {
     ...verifyOptionsFor(show, verifyMeta, strict),
     rateLimiter: verifyCtx.rateLimiter,
   });
+
+  // BRO-6995: anyone can upload to Mezzanine/Theater Diary, and the verifier fails
+  // open on a missing key or an API error. Art from those tiers must be confirmed.
+  const unconfirmed = unconfirmedArtReason(tierName, result);
+  if (unconfirmed) {
+    console.log(`   ✗ REFUSED (${tierName}): ${unconfirmed} — ${result && result.description}`);
+    verifyCtx.refusedUnconfirmed = (verifyCtx.refusedUnconfirmed || 0) + 1;
+    discardStaged(images._staged, 'poster');
+    return null;
+  }
 
   if (strict) {
     const tally = strictTallyFor(verifyCtx, show.id);

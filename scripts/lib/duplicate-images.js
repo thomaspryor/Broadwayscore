@@ -16,15 +16,24 @@
  * below. Anything else is reported. Same-title productions sharing a file
  * (wrong revival art) are scripts/audit-duplicate-images.js's job, not this one.
  *
- * findDuplicateImageGroups is pure (CLAUDE.md §15); hashShowImageFiles does the
- * file I/O. Callers: scripts/validate-data.js (warning), the post-run audit in
- * scripts/fetch-show-images-auto.js. Test: scripts/lib/duplicate-images.test.mjs.
+ * Byte-identical is not enough (BRO-6995): Rope (St. Clement's) served The Lost
+ * Boys' poster as a re-encoded, re-cropped copy under a different source URL, so
+ * md5 and the source-URL guard both missed it. findLookalikeImageGroups is the
+ * same question asked of the picture itself (scripts/lib/image-phash.js), using
+ * the same "may these two shows share art" rules.
+ *
+ * findDuplicateImageGroups and findLookalikeImageGroups are pure (CLAUDE.md §15);
+ * hashShowImageFiles and signatureShowImageFiles do the file I/O. Callers:
+ * scripts/validate-data.js (warning), the post-run audit in
+ * scripts/fetch-show-images-auto.js, scripts/audit-lookalike-images.js.
+ * Test: scripts/lib/duplicate-images.test.mjs.
  */
 
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
 const { lineageIds, ALLOWED_SHARED_IMAGES } = require('./cross-show-images');
+const imagePhash = require('./image-phash');
 
 // Pairs whose identical files were looked at and judged to be one production's
 // art. Only add a pair after viewing the image; never to hide a wrong poster.
@@ -157,7 +166,100 @@ function auditDuplicateImages(shows, publicDir, opts = {}) {
   return { groups: findDuplicateImageGroups(files, shows, opts), hashed: files.length, missing };
 }
 
+// Correlation at or above which two images by unrelated shows are the same
+// picture. Chosen from a whole-library sweep on 2026-11-05 (BRO-6995): 0.9 gave
+// 283 pairs and 0.8 hundreds more, mostly dark posters with centred title text.
+// 0.97 gives 45 pairs, which includes real wrong art (Edwin Drood's poster is
+// Titanique's) next to same-production variants. It is a shortlist for a person
+// or the vision audit to judge, not a gate: Rope vs The Lost Boys correlates at
+// only 0.80 because the two layouts differ.
+const LOOKALIKE_MIN_SIMILARITY = 0.97;
+
+/**
+ * Pairs of unrelated shows whose image files look like the same picture.
+ * @param {Array<{showId, key, path, sig}>} entries  sig from image-phash signatureOf (null = skip)
+ * @param {Array<object>} shows
+ * @param {{minSimilarity?: number, allowlist?, sharedAllowlist?}} [opts]
+ * @returns {Array<{ids: string[], similarity: number, files: Array<{showId, key, path}>}>}
+ *   one row per show pair (its best-matching file pair), most alike first.
+ */
+function findLookalikeImageGroups(entries, shows, opts = {}) {
+  const minSimilarity = opts.minSimilarity == null ? LOOKALIKE_MIN_SIMILARITY : opts.minSimilarity;
+  const related = makeRelated(shows, opts);
+  const items = (entries || []).filter((e) => e && e.sig && e.showId);
+  const relatedCache = new Map();
+  const isRelated = (a, b) => {
+    const k = pairKey(a, b);
+    if (!relatedCache.has(k)) relatedCache.set(k, related(a, b));
+    return relatedCache.get(k);
+  };
+  const best = new Map();
+  for (let i = 0; i < items.length; i++) {
+    const a = items[i];
+    for (let j = i + 1; j < items.length; j++) {
+      const b = items[j];
+      if (a.showId === b.showId) continue;
+      const sim = imagePhash.similarity(a.sig, b.sig);
+      if (sim < minSimilarity) continue;
+      if (isRelated(a.showId, b.showId)) continue;
+      const k = pairKey(a.showId, b.showId);
+      const cur = best.get(k);
+      if (!cur || sim > cur.similarity) {
+        const [x, y] = a.showId < b.showId ? [a, b] : [b, a];
+        best.set(k, {
+          ids: [x.showId, y.showId],
+          similarity: Math.round(sim * 1000) / 1000,
+          files: [x, y].map(({ showId, key, path: p }) => ({ showId, key, path: p })),
+        });
+      }
+    }
+  }
+  return [...best.values()].sort((a, b) => b.similarity - a.similarity || a.ids[0].localeCompare(b.ids[0]));
+}
+
+/**
+ * Signature every local images.<key> file the shows reference (same file
+ * selection as hashShowImageFiles; one decode per file, run `concurrency`
+ * at a time). Unreadable or flat files get sig null and are skipped by
+ * findLookalikeImageGroups.
+ * @param {{keys?: string[], concurrency?: number, onlyIds?: Set<string>}} [opts]
+ * @returns {Promise<{entries: Array<{showId, key, path, sig}>, missing: Array<{showId, key, path}>}>}
+ */
+async function signatureShowImageFiles(shows, publicDir, opts = {}) {
+  const keys = opts.keys || null;
+  const concurrency = opts.concurrency || 8;
+  const refs = [];
+  const missing = [];
+  for (const s of shows || []) {
+    if (!s || !s.images || typeof s.images !== 'object') continue;
+    if (opts.onlyIds && !opts.onlyIds.has(s.id)) continue;
+    for (const [key, p] of Object.entries(s.images)) {
+      if (typeof p !== 'string' || key.startsWith('_') || !p.startsWith('/images/')) continue;
+      if (keys && !keys.includes(key)) continue;
+      const full = path.join(publicDir, p);
+      if (!fs.existsSync(full)) { missing.push({ showId: s.id, key, path: p }); continue; }
+      refs.push({ showId: s.id, key, path: p, full });
+    }
+  }
+  const sigByFile = new Map();
+  let next = 0;
+  async function worker() {
+    while (next < refs.length) {
+      const r = refs[next++];
+      if (!sigByFile.has(r.full)) sigByFile.set(r.full, await imagePhash.signatureOf(r.full));
+    }
+  }
+  await Promise.all(Array.from({ length: Math.min(concurrency, refs.length) }, worker));
+  return {
+    entries: refs.map((r) => ({ showId: r.showId, key: r.key, path: r.path, sig: sigByFile.get(r.full) || null })),
+    missing,
+  };
+}
+
 module.exports = {
+  LOOKALIKE_MIN_SIMILARITY,
+  findLookalikeImageGroups,
+  signatureShowImageFiles,
   DUPLICATE_IMAGE_ALLOWLIST,
   titleKey,
   makeRelated,

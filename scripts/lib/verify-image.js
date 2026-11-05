@@ -291,10 +291,16 @@ function creativesForVerify(show) {
  * record "no reliable art" because Gemini was down.
  * @returns {{accept: boolean, errored: boolean, reason: string}}
  */
+/** True when the verifier itself failed (API/download/parse error, skipped), whatever it guessed. */
+function isVerifierError(result) {
+  const r = result || {};
+  return (r.issues || []).some(i => ['api_error', 'download_error', 'parse_error', 'invalid_input'].includes(i))
+    || r.confidence === 'error' || r.match === null || r.skipped === true;
+}
+
 function applyStrictVerdict(result, { strict = false } = {}) {
   const r = result || {};
-  const errored = (r.issues || []).some(i => ['api_error', 'download_error', 'parse_error', 'invalid_input'].includes(i))
-    || r.confidence === 'error' || r.match === null || r.skipped === true;
+  const errored = isVerifierError(r);
   if (!strict) {
     if (r.match === true) return { accept: true, errored: false, reason: 'match' };
     if (r.match === false && (r.confidence === 'high' || r.confidence === 'medium')) return { accept: false, errored: false, reason: 'rejected' };
@@ -703,6 +709,7 @@ module.exports = {
   buildVerificationPrompt,
   buildUserPrompt,
   applyStrictVerdict,
+  isVerifierError,
   parseResponse,
   creativesForVerify,
   formatCreatives,

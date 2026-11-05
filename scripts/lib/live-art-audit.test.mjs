@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
-const { selectLiveShows, classifyResult, buildReport, buildLiveArtAlert } =require('./live-art-audit.js');
+const { selectLiveShows, artFilesToAudit, collapseRowsByShow, AUDITED_FORMATS, classifyResult, buildReport, buildLiveArtAlert } = require('./live-art-audit.js');
 
 test('selectLiveShows keeps live statuses with a thumbnail only', () => {
   const shows = [
@@ -50,4 +50,52 @@ test('buildLiveArtAlert is null with no rows and one stable-key rollup otherwise
   assert.equal(a.conditionKey, 'live-show-art:wrong-work');
   assert.equal(a.disposition, 'auto');
   assert.match(a.description, /\(a\) \[wrong_show\]/);
+});
+
+test('selectLiveShows keeps a live show that has only a poster (BRO-6995)', () => {
+  const shows = [
+    { id: 'p', status: 'open', images: { thumbnail: null, poster: '/images/shows/p/poster.jpg' } },
+    { id: 'h', status: 'open', images: { hero: '/images/shows/h/hero.jpg' } },
+  ];
+  assert.deepEqual(selectLiveShows(shows).map(s => s.id), ['p']);
+});
+
+test('artFilesToAudit covers thumbnail and poster once per distinct path, never hero', () => {
+  assert.deepEqual(AUDITED_FORMATS, ['thumbnail', 'poster']);
+  const both = artFilesToAudit({ images: { thumbnail: '/t.jpg', poster: '/p.jpg', hero: '/h.jpg' } });
+  assert.deepEqual(both, [{ format: 'thumbnail', path: '/t.jpg' }, { format: 'poster', path: '/p.jpg' }]);
+  const same = artFilesToAudit({ images: { thumbnail: '/t.jpg', poster: '/t.jpg' } });
+  assert.deepEqual(same, [{ format: 'thumbnail', path: '/t.jpg' }]);
+  assert.deepEqual(artFilesToAudit({ images: {} }), []);
+  assert.deepEqual(artFilesToAudit(null), []);
+});
+
+test('collapseRowsByShow gives one row per show and prefers a verdict over an error', () => {
+  const rows = collapseRowsByShow([
+    { id: 'a', format: 'thumbnail', kind: 'wrong_show', errored: false },
+    { id: 'a', format: 'poster', kind: 'wrong_show', errored: false },
+    { id: 'b', format: 'thumbnail', kind: 'error', errored: true },
+    { id: 'b', format: 'poster', kind: 'wrong_show', errored: false },
+    { id: 'c', format: 'poster', kind: 'error', errored: true },
+  ]);
+  assert.equal(rows.length, 3);
+  assert.deepEqual(rows.find(r => r.id === 'a').formats, ['thumbnail', 'poster']);
+  const b = rows.find(r => r.id === 'b');
+  assert.equal(b.errored, false);
+  assert.deepEqual(b.formats, ['poster']);
+  assert.equal(rows.find(r => r.id === 'c').errored, true);
+});
+
+test('buildLiveArtAlert names the flagged formats', () => {
+  const a = buildLiveArtAlert([{ id: 'r', title: 'Rope', kind: 'wrong_show', formats: ['poster'], description: 'Lost Boys' }]);
+  assert.match(a.description, /\(r\) \[wrong_show\] \(poster\)/);
+});
+
+test('classifyResult ignores strictFieldsMissing: the sweep never asks for strict fields (BRO-6995)', () => {
+  // What verifyImage returns for the sweep's non-strict call: no workConfirmed, strictFieldsMissing true.
+  const base = { confidence: 'high', workConfirmed: false, strictFieldsMissing: true, productionMatch: 'unknown' };
+  assert.deepEqual(classifyResult({ ...base, match: false, issues: ['wrong_show'], imageType: 'promotional_art' }), { kind: 'wrong_show', errored: false });
+  assert.equal(classifyResult({ ...base, match: true, issues: [] }), null);
+  // Real failures stay errors.
+  assert.equal(classifyResult({ ...base, match: true, confidence: 'low', issues: ['download_error'] }).errored, true);
 });
