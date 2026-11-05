@@ -21,6 +21,7 @@
  */
 
 const { decodeBloxRot47 } = require('./lib/blox-rot47-decode');
+const { isChromeParagraph } = require('./lib/chrome-paragraph');
 const { isolateMultiShowSectionForShowId } = require('./lib/multi-show-section-extract');
 const { filterToLiveShowIds, loadLiveShowIds } = require('./lib/live-show-ids');
 const fs = require('fs');
@@ -321,12 +322,8 @@ function extractBrSeparatedText(html) {
     .map(p => p.trim())
     .filter(p => {
       if (p.length < 40) return false;
-      const lower = p.toLowerCase();
-      if (lower.includes('cookie') || lower.includes('subscribe') ||
-          lower.includes('sign up for') || lower.includes('advertisement') ||
-          lower.includes('back to') || lower.includes('search curtainup') ||
-          lower.includes('production notes')) return false;
-      return true;
+      // BRO-6872: keyword hits drop only short paragraphs (see chrome-paragraph.js).
+      return !isChromeParagraph(p, /back to|search curtainup|production notes/i);
     });
 
   return paragraphs.join('\n\n');

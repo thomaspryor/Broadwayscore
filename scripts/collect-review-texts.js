@@ -4166,6 +4166,7 @@ function isPaywalled(html) {
 // Playwright browser context via page.evaluate.
 const { extractArticleTextFromDocument } = require('./lib/dom-article-extractor');
 const { decodeBloxRot47, decodeBloxRot47InDocument } = require('./lib/blox-rot47-decode');
+const { isChromeParagraph } = require('./lib/chrome-paragraph');
 
 async function extractArticleText(page) {
   // Serialize the lib function and run it in the browser. Wrapping in
@@ -4177,27 +4178,42 @@ async function extractArticleText(page) {
   // BRO-4221: BLOX ROT47-scrambled paragraphs are one text node in the DOM;
   // decode them in place first, or the extractor saves the gibberish.
   await page.evaluate(`(${decodeBloxRot47InDocument.toString()})(document)`).catch(() => 0);
-  return await page.evaluate(
+  const domText = await page.evaluate(
     `(${extractArticleTextFromDocument.toString()})(document, ${JSON.stringify(currentUrl)})`
   );
+  // BRO-6872: the browser path never consulted the tested per-host extractors,
+  // so L&SA's A Few Good Men review was saved without its last paragraphs and
+  // with the magazine's address footer (5375 chars vs the dedicated 5772).
+  if (!isDedicatedExtractorHost(currentUrl)) return domText;
+  const html = await page.content().catch(() => '');
+  return preferDedicatedText(domText, decodeBloxRot47(html), currentUrl);
 }
 
 // BRO-3499: only TB and Variety delegated to article-extractor.js; the other
 // DEDICATED_EXTRACTOR_HOSTS (WSJ, La Voce, The Stage, The Times, LSA, Theatre
 // Weekly) ran on the generic extraction alone, leaving their tested dedicated
-// patterns unused. Generic stays first (no behavior change when it already
-// found a full body); the dedicated extractor is the fallback when the generic
-// result is short, and wins only if it recovers more text.
-const DEDICATED_FALLBACK_MIN_CHARS = 500;
+// patterns unused. Generic still runs first; the dedicated extractor wins only
+// if it recovers more text.
+//
+// BRO-6872: the 500-char short-circuit is gone. A generic body past 500 chars
+// can still be wrong on these hosts: on L&SA it dropped the review's closing
+// paragraphs and kept the address footer, while the dedicated extractor got
+// the whole review. Both the HTML path and the browser path now run the
+// dedicated extractor on every dedicated host and keep it when it is longer.
+function preferDedicatedText(generic, html, url) {
+  const base = String(generic || '');
+  if (!url || !html || !isDedicatedExtractorHost(url)) return base;
+  let dedicated = null;
+  try { dedicated = extractArticleTextFromHtml(html, url); } catch { dedicated = null; }
+  return dedicated && dedicated.length > base.length ? dedicated : base;
+}
+
 function extractTextFromHtml(html, url) {
   // BLOX CMS hosts (Tulsa World, Buffalo News, ...) ship paywalled paragraphs
   // ROT47-scrambled; decode before either extractor runs (BRO-4221).
   html = decodeBloxRot47(html);
   const generic = extractTextFromHtmlGeneric(html, url);
-  if (!url || generic.length >= DEDICATED_FALLBACK_MIN_CHARS || !isDedicatedExtractorHost(url)) return generic;
-  let dedicated = null;
-  try { dedicated = extractArticleTextFromHtml(html, url); } catch { dedicated = null; }
-  return dedicated && dedicated.length > generic.length ? dedicated : generic;
+  return preferDedicatedText(generic, html, url);
 }
 
 function extractTextFromHtmlGeneric(html, url) {
@@ -4320,11 +4336,7 @@ function extractNewYorkerFromHtml(html) {
       .replace(/&ndash;/g, '\u2013')
       .trim();
 
-    if (pText.length > 30 &&
-        !pText.toLowerCase().includes('cookie') &&
-        !pText.toLowerCase().includes('subscribe') &&
-        !pText.toLowerCase().includes('sign up for') &&
-        !pText.toLowerCase().includes('newsletter')) {
+    if (pText.length > 30 && !isChromeParagraph(pText)) {
       paragraphs.push(pText);
     }
   }
@@ -8569,7 +8581,7 @@ function exitIfStuckAfterMain(graceMs = 20000) {
 }
 
 module.exports = {
-  reviewTimeoutMs, pushReviewTextsCheckpoint, commitChanges, extractTextFromHtml, findReviewsToProcess, dropLeasedReviews, updateReviewJson, verifyFetchedContent };
+  reviewTimeoutMs, pushReviewTextsCheckpoint, commitChanges, extractTextFromHtml, preferDedicatedText, extractArticleText, findReviewsToProcess, dropLeasedReviews, updateReviewJson, verifyFetchedContent };
 
 // Run (guarded so scripts/collect-review-texts.test.mjs can require() this
 // file for pushReviewTextsCheckpoint() without kicking off a real collection

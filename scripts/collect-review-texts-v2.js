@@ -329,10 +329,8 @@ async function extractArticleText(page) {
       const allP = Array.from(document.querySelectorAll('p'))
         .filter(p => {
           const text = p.textContent.trim();
-          return text.length > 50 &&
-                 !text.toLowerCase().includes('cookie') &&
-                 !text.toLowerCase().includes('subscribe') &&
-                 !text.toLowerCase().includes('sign up');
+          // BRO-6872: inline copy of scripts/lib/chrome-paragraph.js (runs in the page).
+          return text.length > 50 && !(text.length < 300 && /cookie|subscribe|sign up/i.test(text));
         })
         .map(p => p.textContent.trim())
         .join('\n\n');

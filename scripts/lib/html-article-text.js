@@ -4,6 +4,7 @@
 const cheerio = require('cheerio');
 const { parseJsonLd } = require('./jsonld');
 const { jsonLdBodyToText } = require('./jsonld-body-choice');
+const { isChromeParagraph } = require('./chrome-paragraph');
 
 /**
  * Extract article text from JSON-LD structured data embedded in the page.
@@ -99,10 +100,8 @@ function extractParagraphText(html) {
       .replace(/&ndash;/g, '–')
       .trim();
 
-    if (pText.length > 30 &&
-        !pText.toLowerCase().includes('cookie') &&
-        !pText.toLowerCase().includes('subscribe') &&
-        !pText.toLowerCase().includes('sign up for')) {
+    // BRO-6872: keyword hits drop only short clutter (see chrome-paragraph.js).
+    if (pText.length > 30 && !isChromeParagraph(pText)) {
       paragraphs.push(pText);
     }
   }
