@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-05T01:14:53.717Z",
+  "generatedAt": "2026-11-05T01:58:05.752Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -1892,27 +1892,27 @@
       "status": "open",
       "slug": "well-see-off-broadway",
       "thumbnail": "/images/shows/well-see-off-broadway-2026/thumbnail.jpg",
-      "siteScore": 75.31,
-      "liveScore": 75,
-      "scoreDrift": -0.3100000000000023,
+      "siteScore": 71.39,
+      "liveScore": 71,
+      "scoreDrift": -0.39000000000000057,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 5,
-      "t1": 0,
+      "total": 6,
+      "t1": 1,
       "t2": 4,
       "t3": 1,
       "positive": 4,
-      "mixed": 1,
+      "mixed": 2,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "5/12 total",
-          "T1:0/3",
-          "hi-conf:5/8"
+          "6/12 total",
+          "T1:1/3",
+          "hi-conf:6/8"
         ],
-        "highConfidence": 5,
+        "highConfidence": 6,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -2298,6 +2298,18 @@
           "t3": 1,
           "p": 4,
           "m": 1,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-11-05T01:58:05.752Z",
+          "rc": 6,
+          "s": 71.39,
+          "t1": 1,
+          "t2": 4,
+          "t3": 1,
+          "p": 4,
+          "m": 2,
           "n": 0,
           "bc": "waiting"
         }

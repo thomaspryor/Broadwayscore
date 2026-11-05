@@ -1,10 +1,10 @@
 {
-  "timestamp": "2026-11-05T01:14:32.903Z",
+  "timestamp": "2026-11-05T01:57:45.802Z",
   "stats": {
-    "totalReviews": 80156,
-    "alreadyFlagged": 22022,
+    "totalReviews": 80157,
+    "alreadyFlagged": 22023,
     "dateGuardCatches": 217,
-    "directorMismatch": 3501,
+    "directorMismatch": 3502,
     "tvFilmSignals": 2279,
     "londonSignals": 3609,
     "offBroadwaySignals": 735,
@@ -18386,6 +18386,19 @@
       "score": 81,
       "publishDate": "2026-08-22",
       "url": "https://www.startribune.com/sexy-dirty-dancing-finds-its-groove-in-new-stage-version-in-st-paul/601879471",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"lonny price\" from dirty-dancing-2027"
+        }
+      ]
+    },
+    {
+      "showId": "dirty-dancing-tour-2026",
+      "file": "nytimes--michael-paulson.json",
+      "publishDate": "2026-10-06",
+      "url": "https://www.nytimes.com/2026/10/06/theater/dirty-dancing-broadway.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
