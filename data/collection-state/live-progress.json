@@ -1,19 +1,32 @@
 {
-  "updatedAt": "2026-11-05T10:36:37.312Z",
-  "processed": 0,
-  "failed": 2,
-  "successRate": "0%",
+  "updatedAt": "2026-11-05T13:10:47.962Z",
+  "processed": 28,
+  "failed": 52,
+  "successRate": "35.0%",
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 17,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 2,
     "directCookies": 0,
     "scrapingdog": 0,
-    "scrapingbee": 0,
-    "brightdata": 0,
+    "scrapingbee": 2,
+    "brightdata": 1,
     "archiveToday": 0,
-    "archive": 0
+    "archive": 4
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 2,
+  "recentActivity": [
+    {
+      "t": "2026-11-05T12:45:43.228Z",
+      "event": "bb-session",
+      "session": "ce2fcb00",
+      "url": "http://www.hollywoodreporter.com/review/chita-rivera-visit-theater-review-791063"
+    },
+    {
+      "t": "2026-11-05T13:00:02.827Z",
+      "event": "bb-session",
+      "session": "7f64740c",
+      "url": "https://www.londontheatre1.com/.well-known/captcha/?y=ipr:20.83.175.21:179330283"
+    }
+  ]
 }
