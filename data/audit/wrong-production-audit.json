@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-11-05T11:45:14.391Z",
+  "timestamp": "2026-11-05T11:58:47.770Z",
   "stats": {
-    "totalReviews": 80186,
-    "alreadyFlagged": 22003,
+    "totalReviews": 80195,
+    "alreadyFlagged": 22004,
     "dateGuardCatches": 217,
     "directorMismatch": 3508,
-    "tvFilmSignals": 2282,
+    "tvFilmSignals": 2283,
     "londonSignals": 3614,
     "offBroadwaySignals": 741,
     "yearMismatch": 361,
@@ -36933,6 +36933,19 @@
       "score": 72,
       "publishDate": null,
       "url": "https://www.talkinbroadway.com/world/KingLear.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "king-lear-2004",
+      "file": "theatermania--unknown.json",
+      "publishDate": "2004-03-04",
+      "url": "https://www.theatermania.com/news/king-lear_4450/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
