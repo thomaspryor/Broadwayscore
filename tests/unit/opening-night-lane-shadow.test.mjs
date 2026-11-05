@@ -193,3 +193,20 @@ test('an excerpt the fetch step chose (no tier from the scorer) is logged as the
   assert.equal(e.textChars, quote.length);
   assert.equal(e.textSha, grade.textSha(quote));
 });
+
+test('a lane score records the printed rating it was anchored to, and its score source', async () => {
+  const rec = shadow.createScoreRecorder({ now: () => T0 });
+  await rec.wrapScore(async () => ({ score: 41, extra: { scoreSource: 'anchored-v6', ensembleData: { claudeScore: 42, openaiScore: 40, geminiScore: 40 } } }))(
+    { url: 'https://www.theaterscene.net/plays/x/a-critic/', fullText: TEXT, outletId: 'theater-scene' },
+    { fullText: TEXT, rating: { originalScore: '2/5', scoreSource: 'regex-stars' } });
+  await rec.wrapScore(async () => ({ score: 78, extra: { scoreSource: 'llm-v6' } }))({ url: 'https://example.org/b', fullText: TEXT }, { fullText: TEXT });
+  const [a, b] = rec.snapshot();
+  assert.deepEqual([a.rating, a.scoreSource], ['2/5', 'anchored-v6']);
+  assert.equal(b.rating, undefined, 'no printed rating, no field');
+  assert.equal(b.scoreSource, 'llm-v6');
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'shadow-anchor-'));
+  const report = shadow.buildShadowReport({ show: SHOW, night: NIGHT, ledgerDir: dir, scores: rec.snapshot(), live: { polls: 1, failures: 0, firstLive: new Map() }, startedAt: T0, endedAt: T0 + 3600000, result: null });
+  const row = report.reviews.find((r) => r.laneScore === 41);
+  assert.deepEqual([row.laneRating, row.laneScoreSource], ['2/5', 'anchored-v6']);
+  fs.rmSync(dir, { recursive: true, force: true });
+});

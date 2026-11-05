@@ -194,6 +194,7 @@ function gradeShadowReport(rep, opts = {}) {
     return {
       ...brief(r), delta, laneTextChars: r.laneTextChars ?? null, laneContentTier: r.laneContentTier || null,
       laneModels: r.laneModels || null, siteModels: st.models || null, siteTextChars: st.textChars ?? null,
+      laneRating: r.laneRating || null, laneScoreSource: r.laneScoreSource || null,
       sameText: r.laneTextSha && st.textSha ? r.laneTextSha === st.textSha : null,
       siteScoreSpread: spread, siteBand: band ? { floor: band.floor, ceiling: band.ceiling, rating: band.rating || null } : null,
       siteModelAgreement: (sp && sp.agreement) || null, siteScoreConfidence: (sp && sp.confidence) || null,
@@ -266,6 +267,7 @@ function gradeMarkdown(g) {
         + (d.siteBand ? `, site rating ${d.siteBand.rating || '?'} (band ${d.siteBand.floor}-${d.siteBand.ceiling}): ${d.beyondEnsemble ? 'BEYOND band' : 'inside band'}`
           : d.siteScoreSpread == null ? ', site spread unknown' : `, site spread ${d.siteScoreSpread}${d.siteModelAgreement ? ` (${d.siteModelAgreement})` : ''}: ${d.beyondEnsemble ? 'BEYOND ensemble' : 'within ensemble'}`)
         + (d.laneModels || d.siteModels ? `; models lane ${modelsLabel(d.laneModels)} / site ${modelsLabel(d.siteModels)}` : '')
+        + (d.laneRating ? `; lane anchored to a printed ${d.laneRating}${d.laneScoreSource ? ` (${d.laneScoreSource})` : ''}` : '')
         + (d.sameText == null ? '' : d.sameText ? '; same text as the site' : `; text differs from the site's (${d.siteTextChars ?? '?'} chars there), or was cut differently`))] : []),
   ];
   return `${lines.join('\n')}\n`;
