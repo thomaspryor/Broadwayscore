@@ -49,6 +49,12 @@ on:
         required: false
         type: string
         default: '300'
+      cpu_prof:
+        description: 'shadow only: 1 = write a Node CPU profile (10 ms samples) into the shadow artifact (BRO-6988)'
+        required: false
+        type: choice
+        options: ['0', '1']
+        default: '0'
 
 permissions:
   contents: write  # night: lease branch (lease-store.js) and the alert ledger commit
@@ -524,7 +530,12 @@ jobs:
           # BRO-6651: encrypted page recording lands in $RUNNER_TEMP/shadow/recording, uploaded with the report below.
           LANE_RECORDING_KEY: ${{ secrets.LANE_RECORDING_KEY }}
           REVIEW_TEXTS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
-        run: npx tsx scripts/opening-night-lane-shadow.js "--show=${SHOW}" "--night=${NIGHT}" "--window-min=${WINDOW}" "--out=${RUNNER_TEMP}/shadow"
+          # BRO-6988: opt-in CPU profile for event-loop freeze hunting. npx, the tsx parent and the lane child each write
+          # one; the lane's is the largest. Written on exit, including the SIGTERM handler's process.exit.
+          CPU_PROF: ${{ inputs.cpu_prof }}
+        run: |
+          if [ "$CPU_PROF" = "1" ]; then export NODE_OPTIONS="${NODE_OPTIONS:+$NODE_OPTIONS }--cpu-prof --cpu-prof-interval=10000 --cpu-prof-dir=${RUNNER_TEMP}/shadow/cpu-prof"; fi
+          npx tsx scripts/opening-night-lane-shadow.js "--show=${SHOW}" "--night=${NIGHT}" "--window-min=${WINDOW}" "--out=${RUNNER_TEMP}/shadow"
 
       - name: Shadow page recording status
         if: always()
