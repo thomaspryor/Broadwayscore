@@ -617,6 +617,20 @@
     "queuedAt": "2026-11-05T20:49:55.620Z"
   },
   {
+    "conditionKey": "ob-venue-go-live:seven-in-one-blow-or-the-brave-little-kid-off-broadway-2026",
+    "title": "Seven in One Blow, or The Brave Little Kid @ Axis Theatre — off-Broadway show added",
+    "description": "Auto-promoted via the venue listing (venue's own listing: 2026-12-04 to 2026-12-20, 9 performances). Reviews ingest automatically once critics publish.",
+    "severity": "info",
+    "url": "https://broadwayscorecard.com/show/seven-in-one-blow-or-the-brave-little-kid-off-broadway-2026",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-05T21:01:06.216Z"
+  },
+  {
     "conditionKey": "mezzanine:transient-failure",
     "title": "Mezzanine Scraper Failed — Transient API Failure",
     "description": "The Mezzanine audience data update failed mid-run (likely ECONNRESET, timeout, or server error from theaterdiary.com). The script already retried transient errors 3× with backoff. No token action required — the next scheduled run usually recovers on its own. Investigate only if 2+ consecutive failures.",
