@@ -353,5 +353,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-05T14:29:57.403Z"
+  },
+  {
+    "conditionKey": "land:land/bro-7016-digest-wake",
+    "title": "Landing blocked: unit-tests-node red on land/bro-7016-digest-wake",
+    "description": "land.yml did not land land/bro-7016-digest-wake: the unit-tests-node gate went red at 6dc914e117. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/42047151877",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-7016-digest-wake"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "6dc914e1173bee0b736c6e5191eb935505a61823"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42047151877"
+      }
+    ],
+    "queuedAt": "2026-11-05T14:58:47.162Z"
   }
 ]
