@@ -11,11 +11,13 @@ import assert from 'node:assert';
 import { createRequire } from 'module';
 
 const require = createRequire(import.meta.url);
+const { isReviewWithinOwnProductionWindow } = require('../../scripts/lib/review-guards');
 const {
-  isInOwnWindowByDateOrUrlYear,
+  isInOwnWindowByDateOrUrlYear: rawInWindow,
   shouldAutoClearStaleLondonOutletCrossMarket,
 } = require('../../scripts/lib/wrong-production-autoclear');
 
+const isInOwnWindowByDateOrUrlYear = (show, pd, url) => rawInWindow(show, pd, url, isReviewWithinOwnProductionWindow);
 const show2024 = { id: 'eureka-day-2024', previewsStartDate: '2024-03-20', openingDate: '2024-04-18', closingDate: '2024-06-30' };
 const OBS = 'https://observer.com/2024/04/eureka-day-broadway-review/';
 

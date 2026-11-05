@@ -3680,7 +3680,7 @@ showDirs.forEach(showId => {
             isDateMismatch: revDateMismatch,
             isShowListingUrl: require('./lib/cross-production-guards').isEvergreenListingUrl(data.url),
             cvBlocksClear: cvBlocksUkWrongProductionAutoClear(data.contentVerification),
-            inOwnProductionWindow: isInOwnWindowByDateOrUrlYear(showById[showId], data.publishDate, data.url),
+            inOwnProductionWindow: isInOwnWindowByDateOrUrlYear(showById[showId], data.publishDate, data.url, isReviewWithinOwnProductionWindow),
             urlFiledUnderOtherShow: ((urlShowIdsAll.get(normalizeUrlForDedup(data.url)) || new Set()).size > 1),
           })) {
             delete data.wrongProduction;

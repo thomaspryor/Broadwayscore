@@ -1228,10 +1228,12 @@ function shouldAutoClearWrongProductionUkDualMarket(data, ctx = {}) {
  * @param {object} show
  * @param {string|null} publishDate
  * @param {string|null} url
+ * @param {(show: object, date: string) => boolean} isReviewWithinOwnProductionWindow injected from
+ *   review-guards by the caller: requiring it here would pull its heavy graph into this light module
+ *   (safe-form-allowlist graph check).
  * @returns {boolean}
  */
-function isInOwnWindowByDateOrUrlYear(show, publishDate, url) {
-  const { isReviewWithinOwnProductionWindow } = require('./review-guards');
+function isInOwnWindowByDateOrUrlYear(show, publishDate, url, isReviewWithinOwnProductionWindow) {
   if (publishDate) return isReviewWithinOwnProductionWindow(show, publishDate);
   if (!show || !url) return false;
   const inWin = (d) => isReviewWithinOwnProductionWindow(show, d);
