@@ -1,5 +1,24 @@
 [
   {
+    "startedAt": "2026-11-03T19:52:00.023Z",
+    "completedAt": "2026-11-03T19:52:06.961Z",
+    "totalReviews": 5,
+    "processed": 1,
+    "skipped": 4,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 6212,
+      "output": 264,
+      "cacheRead": 0,
+      "cacheWrite": 3807,
+      "total": 15350
+    },
+    "costUsd": 0.03612894999999999,
+    "runId": "41704476150",
+    "source": "index",
+    "errorDetails": []
+  },
+  {
     "startedAt": "2026-11-03T19:57:02.829Z",
     "completedAt": "2026-11-03T19:57:02.832Z",
     "totalReviews": 0,
@@ -558258,33 +558277,8 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-11-05T03:13:18.954Z",
-    "completedAt": "2026-11-05T03:13:19.175Z",
-    "totalReviews": 9,
-    "processed": 0,
-    "skipped": 8,
-    "errors": 1,
-    "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "cacheRead": 0,
-      "cacheWrite": 0,
-      "total": 0
-    },
-    "costUsd": 0,
-    "runId": "41959690216",
-    "source": "index",
-    "errorDetails": [
-      {
-        "showId": "nero-off-west-end-2026",
-        "outletId": "london-theatre",
-        "error": "input_validation_failed:body_too_short"
-      }
-    ]
-  },
-  {
-    "startedAt": "2026-11-05T03:13:20.394Z",
-    "completedAt": "2026-11-05T03:13:20.396Z",
+    "startedAt": "2026-11-05T03:17:26.334Z",
+    "completedAt": "2026-11-05T03:17:26.337Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -558297,7 +558291,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "41959690216",
+    "runId": "41959697154",
     "source": "comparative-rescore",
     "errorDetails": []
   }
