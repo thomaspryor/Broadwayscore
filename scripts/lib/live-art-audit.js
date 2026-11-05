@@ -25,12 +25,19 @@ const WRONG_WORK_ISSUES = {
 // Served art the sweep looks at. The sweep used to check only the thumbnail, so a
 // wrong POSTER shipped unseen: Rope (St. Clement's) served The Lost Boys' poster
 // while its thumbnail was something else (BRO-6995). Heroes are wide banners the
-// verifier prompt is not written for, so they stay out.
-const AUDITED_FORMATS = ['thumbnail', 'poster'];
+// verifier prompt is not written for, so a hero row is kept only at HIGH
+// confidence (Michael (Kiln) served a wrong hero, BRO-6997).
+const AUDITED_FORMATS = ['thumbnail', 'poster', 'hero'];
+
+// Show types whose art is routinely a venue card, a comedian or an event graphic, which the
+// verifier reads as generic_image / non_theatre_work. Those two kinds are dropped for them;
+// wrong_show still flags (BRO-6997: 15 generic + 5 non-theatre flags were mostly one-off events).
+const EVENT_TYPES = ['special'];
+const EVENT_NOISE_KINDS = ['generic_image', 'non_theatre_work'];
 
 const hasPath = (v) => typeof v === 'string' && v.length > 0;
 
-/** Live shows that carry a thumbnail or poster path, in shows.json order. */
+/** Live shows that carry a thumbnail, poster or hero path, in shows.json order. */
 function selectLiveShows(shows, { statuses = LIVE_STATUSES, showId = null } = {}) {
   return (Array.isArray(shows) ? shows : []).filter(s =>
     s && statuses.includes(s.status)
@@ -80,7 +87,7 @@ function collapseRowsByShow(rows) {
  * Low-confidence rejections are dropped; medium and high are kept.
  * @returns {{kind: string, errored: boolean}|null}
  */
-function classifyResult(result) {
+function classifyResult(result, { format = null, showType = null } = {}) {
   const r = result || {};
   // Only a real verifier failure is an error. The sweep calls verifyImage without the STRICT
   // prompt block, so its answers never carry workConfirmed and always have strictFieldsMissing
@@ -88,9 +95,14 @@ function classifyResult(result) {
   // row (679 of 797 on the 2026-11-05 run), burying the real failures in noise (BRO-6995).
   if (isVerifierError(r)) return { kind: 'error', errored: true };
   if (r.match !== false || r.confidence === 'low') return null;
+  if (format === 'hero' && r.confidence !== 'high') return null;
   const issues = Array.isArray(r.issues) ? r.issues : [];
+  const eventShow = EVENT_TYPES.includes(showType);
   for (const i of issues) {
-    if (WRONG_WORK_ISSUES[i]) return { kind: WRONG_WORK_ISSUES[i], errored: false };
+    const kind = WRONG_WORK_ISSUES[i];
+    if (!kind) continue;
+    if (eventShow && EVENT_NOISE_KINDS.includes(kind)) continue;
+    return { kind, errored: false };
   }
   return null;
 }
@@ -123,11 +135,11 @@ function buildLiveArtAlert(flagged) {
     itemId: (r) => r.id,
     itemBlock: (r) => `- ${r.title || r.id} (${r.id}) [${r.kind}]${r.formats && r.formats.length ? ` (${r.formats.join(', ')})` : ''}: ${String(r.description || '').slice(0, 140)}`,
     title: (xs) => `${xs.length} live show(s) carry art of another work`,
-    intro: (xs) => `The weekly vision sweep of served thumbnail and poster art flagged ${xs.length} live show(s). Check each on its show page; fix with an approved-fix plan (null the field AND git rm the file, or the orphan auto-fix re-attaches it).`,
+    intro: (xs) => `The weekly vision sweep of served thumbnail, poster and hero art flagged ${xs.length} live show(s). Check each on its show page; fix with an approved-fix plan (null the field AND git rm the file, or the orphan auto-fix re-attaches it).`,
     hint: () => 'node scripts/audit-live-show-art.js --show=<id> --no-write --no-alert   # re-check one show',
     severity: 'warn',
     cooldownHours: 144,
   });
 }
 
-module.exports = { LIVE_STATUSES, LIVE_ART_ALERT_KEY, AUDITED_FORMATS, selectLiveShows, artFilesToAudit, collapseRowsByShow, classifyResult, buildReport, buildLiveArtAlert };
+module.exports = { EVENT_TYPES, LIVE_STATUSES, LIVE_ART_ALERT_KEY, AUDITED_FORMATS, selectLiveShows, artFilesToAudit, collapseRowsByShow, classifyResult, buildReport, buildLiveArtAlert };

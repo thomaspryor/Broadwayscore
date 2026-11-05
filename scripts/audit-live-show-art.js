@@ -69,7 +69,7 @@ async function auditFile(show, art, rateLimiter) {
     mimeType: mimeFor(file),
     rateLimiter,
   });
-  const cls = classifyResult(result);
+  const cls = classifyResult(result, { format: art.format, showType: show.type });
   if (!cls) return null;
   return {
     id: show.id, title: show.title, status: show.status, venue: show.venue,

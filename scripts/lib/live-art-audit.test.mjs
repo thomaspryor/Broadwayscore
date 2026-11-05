@@ -56,14 +56,15 @@ test('selectLiveShows keeps a live show that has only a poster (BRO-6995)', () =
   const shows = [
     { id: 'p', status: 'open', images: { thumbnail: null, poster: '/images/shows/p/poster.jpg' } },
     { id: 'h', status: 'open', images: { hero: '/images/shows/h/hero.jpg' } },
+    { id: 'n', status: 'open', images: {} },
   ];
-  assert.deepEqual(selectLiveShows(shows).map(s => s.id), ['p']);
+  assert.deepEqual(selectLiveShows(shows).map(s => s.id), ['p', 'h']);
 });
 
-test('artFilesToAudit covers thumbnail and poster once per distinct path, never hero', () => {
-  assert.deepEqual(AUDITED_FORMATS, ['thumbnail', 'poster']);
+test('artFilesToAudit covers thumbnail, poster and hero once per distinct path (BRO-6997)', () => {
+  assert.deepEqual(AUDITED_FORMATS, ['thumbnail', 'poster', 'hero']);
   const both = artFilesToAudit({ images: { thumbnail: '/t.jpg', poster: '/p.jpg', hero: '/h.jpg' } });
-  assert.deepEqual(both, [{ format: 'thumbnail', path: '/t.jpg' }, { format: 'poster', path: '/p.jpg' }]);
+  assert.deepEqual(both, [{ format: 'thumbnail', path: '/t.jpg' }, { format: 'poster', path: '/p.jpg' }, { format: 'hero', path: '/h.jpg' }]);
   const same = artFilesToAudit({ images: { thumbnail: '/t.jpg', poster: '/t.jpg' } });
   assert.deepEqual(same, [{ format: 'thumbnail', path: '/t.jpg' }]);
   assert.deepEqual(artFilesToAudit({ images: {} }), []);
@@ -100,4 +101,19 @@ test('classifyResult ignores strictFieldsMissing: the sweep never asks for stric
   assert.equal(classifyResult({ ...base, match: true, confidence: 'medium', issues: [] }), null);
   // Real failures stay errors.
   assert.equal(classifyResult({ ...base, match: true, confidence: 'low', issues: ['download_error'] }).errored, true);
+});
+
+test('classifyResult keeps a hero row only at high confidence (BRO-6997)', () => {
+  const r = (confidence) => ({ match: false, confidence, issues: ['wrong_show'] });
+  assert.equal(classifyResult(r('medium'), { format: 'hero' }), null);
+  assert.deepEqual(classifyResult(r('high'), { format: 'hero' }), { kind: 'wrong_show', errored: false });
+  assert.deepEqual(classifyResult(r('medium'), { format: 'poster' }), { kind: 'wrong_show', errored: false });
+});
+
+test('classifyResult drops generic_image and non_theatre_work for special events, not wrong_show (BRO-6997)', () => {
+  const r = (issues) => ({ match: false, confidence: 'high', issues });
+  assert.equal(classifyResult(r(['generic_image']), { showType: 'special' }), null);
+  assert.equal(classifyResult(r(['non_theatre_work']), { showType: 'special' }), null);
+  assert.deepEqual(classifyResult(r(['wrong_show']), { showType: 'special' }), { kind: 'wrong_show', errored: false });
+  assert.deepEqual(classifyResult(r(['generic_image']), { showType: 'play' }), { kind: 'generic_image', errored: false });
 });

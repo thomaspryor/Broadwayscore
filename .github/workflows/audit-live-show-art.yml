@@ -6,7 +6,8 @@ name: Audit Live Show Art
 # artifact (tmp/live-art-audit.json, never committed) plus a step
 # summary. Flagged rows fold into ONE rollup alert card (stable key); only the
 # alert ledger is committed so the weekly cooldown holds.
-# ~745 Gemini Flash calls, ~15 min, ~$0.2.
+# ~1100 Gemini Flash calls (thumbnail, poster, hero), ~25 min, ~$0.3.
+# BRO-6997: also runs the perceptual lookalike audit in shadow mode (report only).
 
 on:
   schedule:
@@ -19,7 +20,7 @@ permissions:
 jobs:
   audit:
     runs-on: ubuntu-latest
-    timeout-minutes: 40
+    timeout-minutes: 60
     concurrency:
       group: audit-live-show-art
       cancel-in-progress: false
@@ -55,6 +56,12 @@ jobs:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
         run: node scripts/audit-live-show-art.js
 
+      - name: Lookalike image audit (shadow)
+        continue-on-error: true
+        run: |
+          mkdir -p tmp
+          node scripts/audit-lookalike-images.js --json > tmp/lookalike-images.json
+
       - name: Summarize
         if: always()
         run: |
@@ -72,7 +79,9 @@ jobs:
         uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5
         with:
           name: live-art-audit
-          path: tmp/live-art-audit.json
+          path: |
+            tmp/live-art-audit.json
+            tmp/lookalike-images.json
           if-no-files-found: ignore
           retention-days: 30
 
