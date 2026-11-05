@@ -631,7 +631,9 @@ if (require.main === module) {
     const retryIds = allPending ? undefined : allOpen
       ? shows.filter(show => isPendingDrainEligible(show, closedWithinDays)).map(show => show.id)
       : ids;
-    await retryEmptyBodyReviews({ root: REVIEW_TEXTS_ROOT, shows, showIds: retryIds, dryRun,
+    // --skip-empty-body-retry (BRO-7004): the poller's per-show press-night drain shares timeBudget
+    // with this phase, so a retry pass could spend the whole budget before the first _pending stub.
+    if (!args.includes('--skip-empty-body-retry')) await retryEmptyBodyReviews({ root: REVIEW_TEXTS_ROOT, shows, showIds: retryIds, dryRun,
       cooldownHours: showArg || showsArg ? 1 : 6,
       budget: createRunBudget(Math.min(2, timeBudget.minutes || 2)) });
     const scopeNote = allOpen && closedWithinDays > 0 ? ` (open/previews + closed within ${closedWithinDays}d)` : '';

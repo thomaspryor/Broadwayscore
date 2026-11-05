@@ -20,4 +20,5 @@ test('poll_one drains the hot show pending stubs before HOT_AFTER is counted', (
   assert.ok(drain > 0, 'per-show drain present');
   assert.ok(guard < drain && drain < after, 'drain runs inside the hot-show branch, before HOT_AFTER');
   assert.match(body.slice(drain - 90, drain), /BD_OPENING_NIGHT=1/);
+  assert.match(body.slice(drain, drain + 160), /--skip-empty-body-retry/, 'retry phase must not eat the drain budget');
 });

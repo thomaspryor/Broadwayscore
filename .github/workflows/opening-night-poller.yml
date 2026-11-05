@@ -565,7 +565,7 @@ jobs:
               # NEXT run (~60 min later). Promote it now, before HOT_AFTER is counted, so it counts
               # as a new file and ends the loop early like any other hot find. Promotions stay
               # uncommitted in the checkout (same as the pre-loop drain); time-boxed.
-              BD_OPENING_NIGHT=1 timeout 200 node scripts/replay-pending-bylines.js --shows="$SHOW_ID" --time-budget-min=2 || echo "::warning::press-night pending drain for $SHOW_ID failed or timed out"
+              BD_OPENING_NIGHT=1 timeout 240 node scripts/replay-pending-bylines.js --shows="$SHOW_ID" --time-budget-min=2 --skip-empty-body-retry || echo "::warning::press-night pending drain for $SHOW_ID failed or timed out"
               local HOT_AFTER
               HOT_AFTER=$(cd data/review-texts && git status --porcelain --untracked-files=all -- "$SHOW_ID" | grep -c '^??' || true)
               if [ "$HOT_AFTER" -gt "$HOT_BEFORE" ]; then
