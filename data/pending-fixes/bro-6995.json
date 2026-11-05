@@ -1,0 +1,438 @@
+{
+  "issueNumber": "bro-6995",
+  "planId": "645c9f8c-f603-49cd-a78c-ca271af1d966",
+  "status": "pending",
+  "createdAt": "2026-11-05T06:07:46.536Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Stop serving wrong posters and thumbnails found by the live-art sweep and the lookalike audit, Rope first (BRO-6995) (part 1 of 2)",
+    "steps": [
+      "lambslaughter-off-west-end-2026: poster is the film poster for The Lucky Sheep",
+      "wanton-off-west-end-2026: poster is the Kowalski poster",
+      "is-anything-ok-off-broadway-2026: poster is the Anything Goes opening night poster",
+      "kelly-mccaughan-catholic-guilt-off-broadway-2026: poster is the CLUB27 poster",
+      "ish-off-west-end-2026: poster is the FISH (WP Theater) poster",
+      "ish-off-west-end-2026: reject the wrong art's source URL so no fetch takes it again",
+      "little-journey-off-broadway-2027: poster is a Phyl cast announcement graphic",
+      "scratching-the-itch-off-west-end-2026: poster is a Shiprocked episode card",
+      "memoriam-off-west-end-2026: poster is an obituary announcement for an unrelated person",
+      "gifted-and-talented-off-west-end-2026: poster is a school gifted-and-talented program flyer",
+      "james-baldwin-a-life-and-legacy-with-ben-okri-off-west-end-2026: poster is a German-language book event flyer",
+      "rowan-live-west-end-2027: poster is a news graphic, not show art",
+      "imitation-of-life-off-broadway-2026: poster is the 1959 film poster",
+      "imitation-of-life-off-broadway-2026: reject the wrong art's source URL so no fetch takes it again",
+      "everybody-to-kenmure-street-off-west-end-2026: poster is a documentary film poster",
+      "king-lear-2-off-west-end-2026: poster is another company's 2022 King Lear",
+      "the-place-we-made-off-west-end-2026: poster is the Broadway Studios Tour graphic",
+      "the-place-we-made-off-west-end-2026: reject the wrong art's source URL so no fetch takes it again",
+      "town-hall-talks-reel-kilburn-off-west-end-2026: poster is a screenshot of a festival talk",
+      "unfinished-business-off-west-end-2026: poster is a film poster for another Unfinished Business",
+      "the-mystery-of-edwin-drood-amt-theater-off-broadway-2026: poster is the Titanique poster",
+      "the-mystery-of-edwin-drood-amt-theater-off-broadway-2026: reject the wrong art's source URL so no fetch takes it again",
+      "rope-off-broadway-2026: poster is The Lost Boys art (mis-uploaded Theater Diary file); reject that source so the re-fetch replaces it",
+      "rope-off-broadway-2026: reject the wrong art's source URL so no fetch takes it again",
+      "bettys-summer-vacation-the-heights-players-off-broadway-2026: poster is the How Shakespeare Saved My Life poster"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "lambslaughter-off-west-end-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/lambslaughter-off-west-end-2026/thumbnail.jpg",
+          "poster": "/images/shows/lambslaughter-off-west-end-2026/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": "/images/shows/lambslaughter-off-west-end-2026/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "description": "lambslaughter-off-west-end-2026: poster is the film poster for The Lucky Sheep"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "wanton-off-west-end-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/wanton-off-west-end-2026/thumbnail.jpg",
+          "poster": "/images/shows/wanton-off-west-end-2026/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": "/images/shows/wanton-off-west-end-2026/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "description": "wanton-off-west-end-2026: poster is the Kowalski poster"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "is-anything-ok-off-broadway-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/is-anything-ok-off-broadway-2026/thumbnail.jpg",
+          "poster": "/images/shows/is-anything-ok-off-broadway-2026/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": "/images/shows/is-anything-ok-off-broadway-2026/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "description": "is-anything-ok-off-broadway-2026: poster is the Anything Goes opening night poster"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "kelly-mccaughan-catholic-guilt-off-broadway-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/kelly-mccaughan-catholic-guilt-off-broadway-2026/thumbnail.jpg",
+          "poster": "/images/shows/kelly-mccaughan-catholic-guilt-off-broadway-2026/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": "/images/shows/kelly-mccaughan-catholic-guilt-off-broadway-2026/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "description": "kelly-mccaughan-catholic-guilt-off-broadway-2026: poster is the CLUB27 poster"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "ish-off-west-end-2026",
+        "field": "images",
+        "oldValue": {
+          "hero": "/images/shows/ish-off-west-end-2026/hero.webp",
+          "thumbnail": "/images/shows/ish-off-west-end-2026/thumbnail.webp",
+          "poster": "/images/shows/ish-off-west-end-2026/poster.webp"
+        },
+        "newValue": {
+          "hero": "/images/shows/ish-off-west-end-2026/hero.webp",
+          "thumbnail": "/images/shows/ish-off-west-end-2026/thumbnail.webp",
+          "poster": null
+        },
+        "description": "ish-off-west-end-2026: poster is the FISH (WP Theater) poster"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "ish-off-west-end-2026",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/4WvhYJCUyEFxfMZirLKvrw/6c22edd16f2ea944775694ab6b8048eb/260723_WP_FISH_TodayTix-Poster_v01.png?fm=webp&q=90"
+        ],
+        "description": "ish-off-west-end-2026: reject the wrong art's source URL so no fetch takes it again"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "little-journey-off-broadway-2027",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/little-journey-off-broadway-2027/thumbnail.jpg",
+          "poster": "/images/shows/little-journey-off-broadway-2027/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": "/images/shows/little-journey-off-broadway-2027/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "description": "little-journey-off-broadway-2027: poster is a Phyl cast announcement graphic"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "scratching-the-itch-off-west-end-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/scratching-the-itch-off-west-end-2026/thumbnail.jpg",
+          "poster": "/images/shows/scratching-the-itch-off-west-end-2026/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": "/images/shows/scratching-the-itch-off-west-end-2026/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "description": "scratching-the-itch-off-west-end-2026: poster is a Shiprocked episode card"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "memoriam-off-west-end-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/memoriam-off-west-end-2026/thumbnail.jpg",
+          "poster": "/images/shows/memoriam-off-west-end-2026/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": "/images/shows/memoriam-off-west-end-2026/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "description": "memoriam-off-west-end-2026: poster is an obituary announcement for an unrelated person"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "gifted-and-talented-off-west-end-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/gifted-and-talented-off-west-end-2026/thumbnail.jpg",
+          "poster": "/images/shows/gifted-and-talented-off-west-end-2026/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": "/images/shows/gifted-and-talented-off-west-end-2026/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "description": "gifted-and-talented-off-west-end-2026: poster is a school gifted-and-talented program flyer"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "james-baldwin-a-life-and-legacy-with-ben-okri-off-west-end-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/james-baldwin-a-life-and-legacy-with-ben-okri-off-west-end-2026/thumbnail.jpg",
+          "poster": "/images/shows/james-baldwin-a-life-and-legacy-with-ben-okri-off-west-end-2026/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": "/images/shows/james-baldwin-a-life-and-legacy-with-ben-okri-off-west-end-2026/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "description": "james-baldwin-a-life-and-legacy-with-ben-okri-off-west-end-2026: poster is a German-language book event flyer"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "rowan-live-west-end-2027",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/rowan-live-west-end-2027/thumbnail.jpg",
+          "poster": "/images/shows/rowan-live-west-end-2027/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": "/images/shows/rowan-live-west-end-2027/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "description": "rowan-live-west-end-2027: poster is a news graphic, not show art"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "imitation-of-life-off-broadway-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/imitation-of-life-off-broadway-2026/thumbnail.jpg",
+          "poster": "/images/shows/imitation-of-life-off-broadway-2026/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": "/images/shows/imitation-of-life-off-broadway-2026/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "description": "imitation-of-life-off-broadway-2026: poster is the 1959 film poster"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "imitation-of-life-off-broadway-2026",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/6MsBiWDWUB4yQBGzp6aqpf/b8076a1bf8d90694d11274d04c11985b/NORAM_480x720.jpg?fm=webp&q=90"
+        ],
+        "description": "imitation-of-life-off-broadway-2026: reject the wrong art's source URL so no fetch takes it again"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "everybody-to-kenmure-street-off-west-end-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/everybody-to-kenmure-street-off-west-end-2026/thumbnail.jpg",
+          "poster": "/images/shows/everybody-to-kenmure-street-off-west-end-2026/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": "/images/shows/everybody-to-kenmure-street-off-west-end-2026/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "description": "everybody-to-kenmure-street-off-west-end-2026: poster is a documentary film poster"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "king-lear-2-off-west-end-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/king-lear-2-off-west-end-2026/thumbnail.jpg",
+          "poster": "/images/shows/king-lear-2-off-west-end-2026/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": "/images/shows/king-lear-2-off-west-end-2026/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "description": "king-lear-2-off-west-end-2026: poster is another company's 2022 King Lear"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-place-we-made-off-west-end-2026",
+        "field": "images",
+        "oldValue": {
+          "hero": "/images/shows/the-place-we-made-off-west-end-2026/hero.webp",
+          "thumbnail": "/images/shows/the-place-we-made-off-west-end-2026/thumbnail.jpg",
+          "poster": "/images/shows/the-place-we-made-off-west-end-2026/poster.webp"
+        },
+        "newValue": {
+          "hero": "/images/shows/the-place-we-made-off-west-end-2026/hero.webp",
+          "thumbnail": "/images/shows/the-place-we-made-off-west-end-2026/thumbnail.jpg",
+          "poster": null
+        },
+        "description": "the-place-we-made-off-west-end-2026: poster is the Broadway Studios Tour graphic"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-place-we-made-off-west-end-2026",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/nqoHPhKfIFCeyuQQAlyfD/bccc9cd95602b9f09348b1123cb18e0e/Bway_Poster.jpg?fm=webp&q=90"
+        ],
+        "description": "the-place-we-made-off-west-end-2026: reject the wrong art's source URL so no fetch takes it again"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "town-hall-talks-reel-kilburn-off-west-end-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/town-hall-talks-reel-kilburn-off-west-end-2026/thumbnail.jpg",
+          "poster": "/images/shows/town-hall-talks-reel-kilburn-off-west-end-2026/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": "/images/shows/town-hall-talks-reel-kilburn-off-west-end-2026/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "description": "town-hall-talks-reel-kilburn-off-west-end-2026: poster is a screenshot of a festival talk"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "unfinished-business-off-west-end-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/unfinished-business-off-west-end-2026/thumbnail.jpg",
+          "poster": "/images/shows/unfinished-business-off-west-end-2026/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": "/images/shows/unfinished-business-off-west-end-2026/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "description": "unfinished-business-off-west-end-2026: poster is a film poster for another Unfinished Business"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-mystery-of-edwin-drood-amt-theater-off-broadway-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/the-mystery-of-edwin-drood-amt-theater-off-broadway-2026/thumbnail.jpg",
+          "poster": "/images/shows/the-mystery-of-edwin-drood-amt-theater-off-broadway-2026/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": "/images/shows/the-mystery-of-edwin-drood-amt-theater-off-broadway-2026/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "description": "the-mystery-of-edwin-drood-amt-theater-off-broadway-2026: poster is the Titanique poster"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-mystery-of-edwin-drood-amt-theater-off-broadway-2026",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/11751/medium_1778602386-Poster_Image__480x720_.jpg"
+        ],
+        "description": "the-mystery-of-edwin-drood-amt-theater-off-broadway-2026: reject the wrong art's source URL so no fetch takes it again"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "rope-off-broadway-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/rope-off-broadway-2026/thumbnail.jpg",
+          "poster": "/images/shows/rope-off-broadway-2026/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": "/images/shows/rope-off-broadway-2026/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "description": "rope-off-broadway-2026: poster is The Lost Boys art (mis-uploaded Theater Diary file); reject that source so the re-fetch replaces it"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "rope-off-broadway-2026",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://www.theaterdiary.com/parse/files/C7TsezAg3jnX9jHLsC9KFEteyKePkwLtB46dDpfh/6d222ef63e096bd842d8bd92a1cc85e3_Rope%20st%20clements.jpg"
+        ],
+        "description": "rope-off-broadway-2026: reject the wrong art's source URL so no fetch takes it again"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "bettys-summer-vacation-the-heights-players-off-broadway-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/bettys-summer-vacation-the-heights-players-off-broadway-2026/thumbnail.jpg",
+          "poster": "/images/shows/bettys-summer-vacation-the-heights-players-off-broadway-2026/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": "/images/shows/bettys-summer-vacation-the-heights-players-off-broadway-2026/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "description": "bettys-summer-vacation-the-heights-players-off-broadway-2026: poster is the How Shakespeare Saved My Life poster"
+      }
+    ]
+  }
+}
