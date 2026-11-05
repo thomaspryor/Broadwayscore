@@ -1,0 +1,38 @@
+{
+  "issueNumber": "bro-6493-6",
+  "planId": "5704e348-0b75-44ba-9868-868f1acb8ca8",
+  "status": "pending",
+  "createdAt": "2026-11-05T01:40:24.075Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6493: correct Prince Faggot Studio Seaview opening using producer production history",
+    "steps": [
+      "BRO-6493: Soho Rep production history explicitly dates the Studio Seaview opening September 11 and closing December 13, 2025. September 10 was an added first performance, described as a first preview by TheaterMania. Prefer the producing company retrospective over listing pages that label the first performance opening. Sources: https://www.sohorep.org/shows/prince-faggot/ https://www.theatermania.com/news/prince-faggot-will-have-a-return-off-broadway-engagement_1795576/ https://www.broadwayworld.com/off-broadway/article/PRINCE-FAGGOT-Announces-30-First-Performance-at-Studio-Seaview-20250908",
+      "BRO-6493: Soho Rep production history explicitly dates the Studio Seaview opening September 11 and closing December 13, 2025. September 10 was an added first performance, described as a first preview by TheaterMania. Prefer the producing company retrospective over listing pages that label the first performance opening. Sources: https://www.sohorep.org/shows/prince-faggot/ https://www.theatermania.com/news/prince-faggot-will-have-a-return-off-broadway-engagement_1795576/ https://www.broadwayworld.com/off-broadway/article/PRINCE-FAGGOT-Announces-30-First-Performance-at-Studio-Seaview-20250908"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "prince-faggot-off-broadway-2025",
+        "field": "openingDate",
+        "oldValue": "2025-09-10",
+        "newValue": "2025-09-11",
+        "description": "BRO-6493: Soho Rep production history explicitly dates the Studio Seaview opening September 11 and closing December 13, 2025. September 10 was an added first performance, described as a first preview by TheaterMania. Prefer the producing company retrospective over listing pages that label the first performance opening. Sources: https://www.sohorep.org/shows/prince-faggot/ https://www.theatermania.com/news/prince-faggot-will-have-a-return-off-broadway-engagement_1795576/ https://www.broadwayworld.com/off-broadway/article/PRINCE-FAGGOT-Announces-30-First-Performance-at-Studio-Seaview-20250908"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "prince-faggot-off-broadway-2025",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "producer-history:soho-rep",
+        "description": "BRO-6493: Soho Rep production history explicitly dates the Studio Seaview opening September 11 and closing December 13, 2025. September 10 was an added first performance, described as a first preview by TheaterMania. Prefer the producing company retrospective over listing pages that label the first performance opening. Sources: https://www.sohorep.org/shows/prince-faggot/ https://www.theatermania.com/news/prince-faggot-will-have-a-return-off-broadway-engagement_1795576/ https://www.broadwayworld.com/off-broadway/article/PRINCE-FAGGOT-Announces-30-First-Performance-at-Studio-Seaview-20250908"
+      }
+    ]
+  }
+}

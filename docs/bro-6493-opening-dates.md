@@ -1,39 +1,54 @@
 # BRO-6493: closed off-Broadway opening-date research
 
-Updated November 4, 2026. This report supersedes the October 29 inventory. The earlier plans bro-6493, bro-6493-b, bro-6493-c and bro-6493-d are applied in the supplied data. They are preserved as history.
+Updated November 5, 2026. This report supersedes the October 29 inventory. The earlier plans bro-6493, bro-6493-b, bro-6493-c and bro-6493-d are applied in the supplied data. They are preserved as history.
 
-## Current result
+## November 5 result
 
-Six new pending plans contain 97 actions for 59 closed off-Broadway records: 32 records receive date corrections, 26 receive source-only confirmations, and Silver Manhattan receives the explicitly requested venue correction. No private data or review text is written. Applying the plans with the real executor helper on an in-memory copy projects the whole NYC same-date class from 108 to 79. Zero unrelated records change. These are projections, not a claim that the plans have executed in the private repositories.
+Strict validation already passes on the supplied main checkout with 1,927 warnings and no errors. The earlier Art review fix and Silver Manhattan venue correction are present. Of the six November 4 plans, bro-6493-2, -3, -4 and -5 are applied and every planned field matches current data. The two split plans bro-6493-2-b and bro-6493-2-c remain pending, with all 38 planned field changes still absent across 20 records.
 
-Within the closed off-Broadway scope specifically, equal-date rows go from 81 to 52. Of those 52, 48 have confirmations documented by the applied earlier plans or the new plans, and four remain held. Confirmed same-day rows intentionally stay in the consistency class; no finding is suppressed to improve the count.
+The actual blocker is the runner's `cardPlanFiles()` in `scripts/lib/codex-data-fixes.js`: its single optional suffix accepts bro-6493-2.json but excludes bro-6493-2-b.json and bro-6493-2-c.json. The generator deliberately appends split suffixes to retry IDs. The fix accepts repeated nonempty suffixes while preserving exact card-ID boundaries and lexical ordering. The existing `applyCardFixPlans()` caller now discovers both plans. No workflow or execution safeguards change.
 
-All ten previously held rows have a researched decision in the new plans. Silver Manhattan is confirmed at Bowery Palace, 327 Bowery, by its official site, TDF and the Public Theater. Pen Pals is already corrected in current data to December 11, 2024 opening and December 5 previews, so it is left alone. The former Art review validation failure is also already resolved: baseline strict validation passes.
+A new two-action [bro-6493-6 plan](../data/pending-fixes/bro-6493-6.json) resolves Prince Faggot at Studio Seaview: opening September 10 -> September 11, 2025, with openingDateSource `producer-history:soho-rep`; first preview stays September 10. [Soho Rep's production history](https://www.sohorep.org/shows/prince-faggot/) explicitly dates the Studio Seaview opening September 11 and closing December 13, 2025. [TheaterMania's updated announcement](https://www.theatermania.com/news/prince-faggot-will-have-a-return-off-broadway-engagement_1795576/) identifies the added September 10 performance as a first preview. The producing company's retrospective resolves the conflict with listings that label September 10 opening.
 
-Four additional rows in the wider inventory remain held below. The original exact 68-ID cohort cannot be reconstructed from the retained artifacts and shallow checkout. Full card acceptance is therefore not claimed.
+Replaying the three pending plans with the real executor helper on the November 5 data applies 40 actions across 21 intended records, with zero unrelated records or fields changed. The whole NYC preview-equals-opening class projects from **94 to 81**; the closed off-Broadway subset projects from **64 to 51**. Every projected remaining closed row has a source field, but three legacy labels remain unconfirmed: Fishing for Alaska, Elephant & Piggie, and Bettinger's Luggage. The larger NYC class includes open/upcoming rows outside this card's closed scope. These are projections, not claims of private-repository execution.
 
-## Deliverables and execution
+Examples:
 
-Each plan is pending, contains at most 25 actions, uses compare-and-set oldValue fields read from the supplied checkout, and has per-row source URLs in its action descriptions. Opening-date edits precede their source edits, which correctly expect the executor's human-correction stamp. Keep all six files; the runner applies them after landing.
+- Prince Faggot: opening 2025-09-10 -> 2025-09-11, preview remains 2025-09-10.
+- Pygmalion: opening 2025-10-22 -> 2025-11-02, preview remains 2025-10-22.
+- Cosi Fan Tutte: opening and preview remain 2026-09-23; absent source -> `venue-archive:metropolitan-opera:no-previews`.
 
-| Plan | Actions | Preflight |
+## Pending execution
+
+| Plan | Actions | November 5 preflight |
 | --- | ---: | --- |
-| [bro-6493-2](../data/pending-fixes/bro-6493-2.json) | 25 | All applied cleanly |
-| [bro-6493-2-b](../data/pending-fixes/bro-6493-2-b.json) | 25 | All applied cleanly |
-| [bro-6493-2-c](../data/pending-fixes/bro-6493-2-c.json) | 13 | All applied cleanly |
-| [bro-6493-3](../data/pending-fixes/bro-6493-3.json) | 13 | All applied cleanly |
-| [bro-6493-4](../data/pending-fixes/bro-6493-4.json) | 13 | All applied cleanly |
-| [bro-6493-5](../data/pending-fixes/bro-6493-5.json) | 8 | All applied cleanly |
+| [bro-6493-2-b](../data/pending-fixes/bro-6493-2-b.json) | 25 | 25/25 applied cleanly in memory |
+| [bro-6493-2-c](../data/pending-fixes/bro-6493-2-c.json) | 13 | 13/13 applied cleanly in memory |
+| [bro-6493-6](../data/pending-fixes/bro-6493-6.json) | 2 | 2/2 applied cleanly in memory |
 
-Generated with the existing CLI, for example:
+The existing split plans and their identities are preserved. The runner applies them after landing, using the corrected discovery function. The new plan was generated with `node --require ./.tmp-bro6493/local-data.cjs scripts/new-fix-plan.js --id=bro-6493-6 --summary=... --actions=.tmp-bro6493/actions.json`. The temporary preload selected the supplied checkout data and skipped automatic git staging; it did not skip preflight or modify a private clone.
 
-```sh
-node --require ./.tmp-bro-6493/local-data.cjs scripts/new-fix-plan.js --id=bro-6493-2 --summary="BRO-6493: independently sourced opening and preview corrections, same-day confirmations, and Silver Manhattan venue correction" --actions=.tmp-bro-6493/actions.json
-```
+## November 5 verification
 
-The temporary preload selected the runner-provided data/ copies and skipped the CLI's automatic git staging. It did not refresh or write any external clone. The generator's completion message still says Staged, but staging was explicitly skipped. No temporary verifier, preload or input file is delivered.
+- Baseline `node scripts/validate-data.js --strict`: passed with 1,927 warnings and no errors. No validator change is needed.
+- Baseline `node scripts/fact-check-historical-sample.js consistency --list --class=preview-equals-opening`: 94 findings. The same CLI with an in-memory shows.json overlay of the three plans prints 81.
+- Before the fix, an assertion requiring the real `cardPlanFiles()` and passing the actual two split filenames fails: actual `[]`, expected both filenames. After the fix, both are found and the existing caller's dispatch regression test passes. Single-suffix and base names remain supported; another card and malformed suffixes remain excluded.
+- `node .tmp-bro6493/projected.cjs` requires the real `cardPlanFiles`, `applyDataEdit` and `consistencyFindings`. It verifies closed off-Broadway scope, unchanged production years, valid date order where dates are present, intended fields only, 21 changed records and zero unrelated changes. The initial verifier incorrectly required a non-null closing date for The Infinite Wrench; the corrected assertion permits its pre-existing null closing date.
+- `node --test --test-timeout 300000 tests/unit/codex-data-fixes.test.mjs tests/unit/codex-runner.test.mjs scripts/lib/outlet-registry-alias-action.test.mjs tests/unit/pending-fix-plans.test.mjs scripts/lib/data-edit-action.test.mjs tests/unit/opening-date-guards.test.mjs`: 198 passed, zero failed.
+- Final `node scripts/validate-data.js --strict` and `BRO6493_PROJECTED=1 node --require ./.tmp-bro6493/projected.cjs scripts/validate-data.js --strict`: both passed with 1,927 warnings and zero errors. The overlay changes reads in memory only.
+- `GAUNTLET_GATES=lint-workflows bash scripts/lib/land-gauntlet.sh /tmp/gauntlet`: the gate exits 1 solely because `actionlint` is not installed (`actionlint: command not found`, exit 127). The full lint-workflows.log reports no other failed audit, including top-level test coverage and library dependency checks. Missing actionlint is the worker prompt's permitted exception.
+- Independent code/data reviewer passed and independently reproduced the projected counts. An external API review could not run because OPENAI_API_KEY is unavailable; the runner's independent review remains required. No new paid review call was made.
+- Rechecked the retained October 29 enrichment run: 67 URL misses, including 53 with non-null equal dates. After replay, those 53 are 24 closed rows with distinct dates, 28 closed sourced same-day rows, and the now-open Slanted Floors. The exact original 68-row roster is absent, so no extra IDs are inferred.
+- Cleanup: `git checkout --` of the three generated audit files failed to create index.lock in the read-only shared git metadata. Restored their exact HEAD bytes with `git show HEAD:<path>` instead; `git diff --quiet` on those paths passed. Temporary replay inputs, output logs and the gauntlet directory were removed; only the intended five deliverables remain.
+- Main check: `git diff origin/main -- scripts/validate-data.js scripts/lib/nyc-facts-audit.js` is empty. `git log -S 'bro-6493' --oneline -5` cannot traverse missing partial-clone objects because lazy fetching tries to write to the read-only shared git object store. The narrowed `git --no-lazy-fetch log -S 'BRO-6493' --oneline -5 -- docs/bro-6493-opening-dates.md` also fails on a missing object. Applied plan status plus current field values, rather than a passing validator alone, establish what is already fixed.
+- Writer/caller: `scripts/new-fix-plan.js` generates retry splits via `splitName`; `scripts/codex/daily-runner.js` calls `DF.applyCardFixPlans`, which calls `cardPlanFiles`. Date edits are executed by `applyDataEdit` via `scripts/execute-approved-fix.js`. No new helper, script or flag is introduced.
+- Cost: zero new paid scraping fetches or LLM calls. For this card the runner now dispatches the two previously missed executor workflows, plus the new Prince Faggot plan; the existing rebuild dispatch remains once per completed card application. Each newly recognized pending plan also uses the existing git fetch/read and workflow polling operations. This runs in the existing scheduled Codex runner, with no new cron or polling interval.
 
-## New per-row decisions
+## November 4 research inventory (retained)
+
+The tables below retain the source research behind the earlier 97 actions and the recoverable cohort. Their projected dates remain applicable; application status and current counts are superseded by the November 5 sections above. Full acceptance is still not claimed: three source conflicts and the missing original 68-ID roster remain.
+
+## November 4 per-row decisions
 
 Dates below come from page content, not URL metadata. Title, venue, engagement and year were checked. A no-previews confirmation means the sourced local opening/premiere matches the first advertised public performance. It does not mean that no rehearsals occurred. For the free MCC youth showcase, the date is explicitly labeled as the first public showcase, without inventing a commercial press night.
 
@@ -170,24 +185,23 @@ After replay, the retained 53 split into 24 rows with distinct dates, 28 sourced
 
 ## Remaining source conflicts
 
-These four wider-inventory rows are unchanged. Each needs further authoritative production evidence before a date or confirmation can safely be planned.
+These three wider-inventory rows are unchanged. Each needs further authoritative production evidence before a date or confirmation can safely be planned.
 
 | Row | Evidence and remaining question |
 | --- | --- |
 | fishing-for-alaska-off-broadway-2026 | [Producer](https://www.fishingforalaskaproductions.com/), [venue](https://www.paradisefactory.org/on-our-stages) and [announcement](https://www.broadwayworld.com/off-broadway/article/FISHING-FOR-ALASKA-by-Sturgis-Warner-to-be-Presented-at-Paradise-Factory-20260923) establish October 9 to 25, 2026, but do not distinguish a press opening from first performance. No explicit no-preview confirmation was found. |
-| prince-faggot-off-broadway-2025 | [Updated announcement](https://playbill.com/article/prince-f-t-will-start-off-broadway-return-1-day-earlier-with-30-tickets) adds September 10 before the originally announced September 11 start. [TheaterMania news](https://www.theatermania.com/news/prince-faggot-will-have-a-return-off-broadway-engagement_1795576/) calls the added event a first preview; its [listing](https://www.theatermania.com/shows/new-york-city-theater/off-broadway/prince-faggot_1795489/) labels September 10 opening. A first-preview announcement cannot confirm no previews. |
 | elephant-and-piggies-we-are-in-a-play-off-broadway-2025 | [Original announcement](https://playbill.com/article/atlantic-theater-company-reveals-dates-for-their-2024-2025-season) schedules February 1 to 23 at Linda Gross, matching the stored row. [Current official production](https://atlantictheater.org/production/atlantic-for-kids-elephant-piggies-we-are-in-a-play/) instead identifies a New York premiere December 13, 2025 to February 8, 2026 at Atlantic Stage 2. Resolve whether the February engagement happened or was replaced; do not silently substitute the later run or infer a cancellation. A retirement/new-production operation, if required, is outside the allowed action types. |
 | bettingers-luggage-off-broadway-2023 | [Season page](https://www.amttheater.org/bettingersluggage) and [original announcement](https://playbill.com/article/albert-m-tappers-bettingers-luggage-to-debut-off-broadway-at-amt-theater) start September 19. [Producer retrospective](https://www.amttheater.org/post/bettinger-s-luggage-is-open) dated September 22 describes a Tuesday dress run; [designer calendar](https://www.ryanmarshdesign.com/upcoming) starts September 20. Neither September 19 no-preview confirmation nor September 20 opening is sufficiently explicit to resolve the conflict. |
 
-The projected remaining NYC class also has eight rows without openingDateSource outside the card's closed scope: la-boheme-off-broadway-2026, lincoln-in-the-bardo-off-broadway-2026, maria-stuarda-off-broadway-2026, medea-off-broadway-2026, otello-off-broadway-2027, samson-et-dalila-off-broadway-2026, tosca-off-broadway-2026 and bigfoot-ripped-my-dog-in-half-i-saw-it-off-broadway-2026. These are open or upcoming; they were not modified. Every remaining closed off-Broadway row has a source field, but the four legacy labels above are not endorsed as researched confirmations.
+The projected remaining NYC class also has eight rows without openingDateSource outside the card's closed scope: la-boheme-off-broadway-2026, lincoln-in-the-bardo-off-broadway-2026, maria-stuarda-off-broadway-2026, medea-off-broadway-2026, otello-off-broadway-2027, samson-et-dalila-off-broadway-2026, tosca-off-broadway-2026 and bigfoot-ripped-my-dog-in-half-i-saw-it-off-broadway-2026. These are open or upcoming; they were not modified. Every remaining closed off-Broadway row has a source field, but the three legacy labels above are not endorsed as researched confirmations.
 
-## Writer, wiring and cost
+## November 4 writer, wiring and cost (historical)
 
 - scripts/one-time-backfill-opening-date-source.js:46-53 assigned ibdb to off-Broadway openings without page evidence. The actual writer is scripts/enrich-off-broadway-dates.js; its same-date repair and closed production-year guards leave page misses audit-only. Its Lortel currently-playing parser also explicitly reports that its removed page soft-404s. This change repairs source records through the card-authorized per-row plan route; no downstream audit suppression or speculative scraper is added.
 - scripts/execute-approved-fix.js:88 imports applyDataEdit from scripts/lib/data-edit-action.js; line 273 calls it, and line 649 dispatches data-edit actions. All 97 actions use this existing path. There are no new scripts, functions, flags or workflows to wire in.
 - New paid fetches per production run: 0. New LLM calls: 0. New API calls: 0. No cron changes. Research used manual web search and page reads only.
 
-## Verification evidence
+## November 4 verification evidence (historical)
 
 - Baseline: node scripts/validate-data.js --strict passed with 1,993 warnings and no errors against the supplied real data. No fix is needed for the already-passing validator or applied Art review plan.
 - Final exact acceptance command: node scripts/validate-data.js --strict passed again after plan generation, with 1,993 warnings, zero errors, zero shows.json writes and three audit writes suppressed by dry-run mode.

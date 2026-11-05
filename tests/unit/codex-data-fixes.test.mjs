@@ -56,8 +56,12 @@ test('CODEX_DATA_FIXES_DISABLED restores the old skips', () => {
 });
 
 test('cardPlanFiles: the card own plan and its split parts only', () => {
-  const names = ['data/pending-fixes/bro-61.json', 'bro-61-b.json', 'bro-610.json', 'bro-6.json', 'bro-61-b-c.json', 'notes.md'];
-  assert.deepEqual(DF.cardPlanFiles(names, 'BRO-61'), ['bro-61-b.json', 'bro-61.json']);
+  const names = ['data/pending-fixes/bro-61.json', 'bro-61-b.json', 'bro-610.json', 'bro-6.json',
+    'bro-61-b-c.json', 'data/pending-fixes/bro-61-2-b.json', 'bro-61-2-c.json',
+    'bro-610-2-b.json', 'bro-61--b.json', 'bro-61-2-.json', 'bro-61-.json', 'notes.md'];
+  assert.deepEqual(DF.cardPlanFiles(names, 'BRO-61'), [
+    'bro-61-2-b.json', 'bro-61-2-c.json', 'bro-61-b-c.json', 'bro-61-b.json', 'bro-61.json',
+  ]);
   assert.deepEqual(DF.cardPlanFiles(names, 'x'), []);
 });
 
@@ -123,6 +127,23 @@ test('applyCardFixPlans: pending plan is dispatched in apply mode, checked on ma
   assert.deepEqual(calls[0].slice(0, 7), ['execute-approved-fix.yml', '-f', 'issue_number=bro-9', '-f', 'plan_id=p1', '-f', 'mode=apply']);
   assert.ok(calls[0].includes('--wait'));
   assert.equal(calls[1][0], 'rebuild-fast.yml');
+});
+
+test('applyCardFixPlans: retry split plans are applied without dispatching another card', async () => {
+  const { io, calls } = fake({
+    'bro-6493-2-b.json': plan(['data-edit'], { issueNumber: 'bro-6493-2-b', planId: 'split-b' }),
+    'bro-6493-2-c.json': plan(['data-edit'], { issueNumber: 'bro-6493-2-c', planId: 'split-c' }),
+    'bro-64930-2-b.json': plan(['data-edit']),
+  }, { code: 0, plan: { status: 'applied', executedIn: 'ci' } });
+  const res = await DF.applyCardFixPlans('BRO-6493', io);
+  assert.equal(res.kind, 'applied');
+  assert.deepEqual(res.files, ['bro-6493-2-b.json', 'bro-6493-2-c.json']);
+  assert.deepEqual(calls.map(c => c[0]), ['execute-approved-fix.yml', 'execute-approved-fix.yml', 'rebuild-fast.yml']);
+  assert.deepEqual(calls.slice(0, 2).map(c => c.slice(1, 7)), [
+    ['-f', 'issue_number=bro-6493-2-b', '-f', 'plan_id=split-b', '-f', 'mode=apply'],
+    ['-f', 'issue_number=bro-6493-2-c', '-f', 'plan_id=split-c', '-f', 'mode=apply'],
+  ]);
+  assert.ok(calls.slice(0, 2).every(c => c.includes('--wait')));
 });
 
 // BRO-6260: the cloud lane waits only for what is left before its hard stop.
