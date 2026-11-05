@@ -1,7 +1,7 @@
 {
-  "generated": "2026-11-05T13:05:36.253Z",
+  "generated": "2026-11-05T14:21:32.222Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 43,
+  "count": 42,
   "orphans": [
     {
       "showId": "33-variations-2009",
@@ -50,6 +50,13 @@
       "loserFile": "vulture--unknown.json",
       "targetFile": "vulture--bethy-squires.json",
       "reason": "orphaned-duplicate-heal: vulture--bethy-squires.json was flagged invalid after vulture--unknown.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
+      "showId": "beetlejuice-tour-2022",
+      "loserFile": "theatermania--unknown.json",
+      "targetFile": "theatermania--david-gordon.json",
+      "reason": "orphaned-duplicate-heal: theatermania--david-gordon.json was flagged invalid after theatermania--unknown.json was pointed at it",
       "field": "duplicateOf"
     },
     {
@@ -172,13 +179,6 @@
       "field": "duplicateOf"
     },
     {
-      "showId": "myth-off-broadway-2026",
-      "loserFile": "theater-mirror--unknown.json",
-      "targetFile": "theater-mirror--theater-mirror.json",
-      "reason": "orphaned-duplicate-heal: theater-mirror--theater-mirror.json was flagged invalid after theater-mirror--unknown.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
       "showId": "oliver-west-end-2024",
       "loserFile": "the-sun--dominic-maxwell.json",
       "targetFile": "sunday-times--dominic-maxwell.json",
@@ -296,13 +296,6 @@
       "targetFile": "providence-journal--katie-landeck.json",
       "reason": "orphaned-duplicate-heal: providence-journal--katie-landeck.json was flagged invalid after providence-journal--unknown.json was pointed at it",
       "field": "duplicateOf"
-    },
-    {
-      "showId": "myth-off-broadway-2026",
-      "loserFile": "theater-mirror--unknown.json",
-      "targetFile": "theater-mirror--theater-mirror.json",
-      "reason": "orphaned-duplicate-heal: theater-mirror--theater-mirror.json was flagged invalid after theater-mirror--unknown.json was pointed at it (duplicateTextOf)",
-      "field": "duplicateTextOf"
     }
   ]
 }
