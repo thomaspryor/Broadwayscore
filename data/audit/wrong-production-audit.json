@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-11-05T18:10:46.345Z",
+  "timestamp": "2026-11-05T18:30:36.050Z",
   "stats": {
-    "totalReviews": 80173,
-    "alreadyFlagged": 21976,
+    "totalReviews": 80174,
+    "alreadyFlagged": 21977,
     "dateGuardCatches": 217,
     "directorMismatch": 3510,
     "tvFilmSignals": 2282,
-    "londonSignals": 3614,
+    "londonSignals": 3615,
     "offBroadwaySignals": 741,
     "yearMismatch": 361,
     "noPublishDate": 8492
@@ -104245,6 +104245,20 @@
       "score": 75,
       "publishDate": "December 4, 2003",
       "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9505e5db163df937a35751c1a9659c8b63",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "i-became-we-off-broadway-2026",
+      "file": "newyorker--emily-nussbaum.json",
+      "score": 89,
+      "publishDate": "2026-11-05",
+      "url": "https://www.newyorker.com/magazine/2026/11/16/the-heart-theatre-review-broadway-i-became-we",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
