@@ -86,19 +86,31 @@ function parseRescueRef(ref) {
 // non-empty field main lacks stays a conflict for a person.
 const TIER_RANK = { invalid: 0, stub: 1, excerpt: 2, truncated: 3, complete: 4 };
 const CONTENT_KEYS = new Set(['contentTier', 'contentTierReason', 'fullText', 'sources', 'source', 'dateSource']);
-const normUrl = (u) => (typeof u === 'string' ? u.trim().toLowerCase().replace(/\/+$/, '') : '');
+const normUrl = (u) => {
+  if (typeof u !== 'string') return '';
+  const t = u.trim().replace(/\/+$/, '');
+  const m = /^(https?:\/\/[^/]+)(.*)$/i.exec(t);
+  return m ? m[1].toLowerCase() + m[2] : t;
+};
+// Fields where a different non-empty value on main means a person must look.
+const IDENTITY_KEYS = ['showId', 'outletId', 'criticName', 'originalScore', 'assignedScore'];
 const isEmpty = (v) => v == null || v === '' || v === false || (Array.isArray(v) && v.length === 0);
+const canon = (v) => JSON.stringify(v, (k, x) => (x && typeof x === 'object' && !Array.isArray(x)
+  ? Object.fromEntries(Object.keys(x).sort().map((key) => [key, x[key]])) : x));
 function mainSupersedesRescue(rescueText, mainText) {
   let a; let b;
   try { a = JSON.parse(rescueText); b = JSON.parse(mainText); } catch { return false; }
   if (!a || !b || typeof a !== 'object' || typeof b !== 'object') return false;
+  // Every non-empty rescued field is already on main with the same value: nothing to lose.
+  if (Object.keys(a).every((k) => isEmpty(a[k]) || canon(a[k]) === canon(b[k]))) return true;
   const ua = normUrl(a.url);
   if (!ua || ua !== normUrl(b.url)) return false;
   const ra = TIER_RANK[a.contentTier];
   const rb = TIER_RANK[b.contentTier];
   // Identical text on main, whatever tier the pipeline gave it since, loses nothing.
   const sameText = typeof a.fullText === 'string' && a.fullText !== '' && a.fullText === b.fullText;
-  if (!sameText && (ra === undefined || rb === undefined || rb < ra)) return false;
+  if (!sameText && (ra === undefined || rb === undefined || rb <= ra)) return false;
+  if (IDENTITY_KEYS.some((k) => !isEmpty(a[k]) && !isEmpty(b[k]) && JSON.stringify(a[k]) !== JSON.stringify(b[k]))) return false;
   return Object.keys(a).every((k) => CONTENT_KEYS.has(k) || isEmpty(a[k]) || !isEmpty(b[k]));
 }
 

@@ -35,3 +35,18 @@ test('main downgrading a review keeps it a conflict unless the text is identical
   assert.equal(mainSupersedesRescue(j({ ...full }), j({ ...full, contentTier: 'invalid', fullText: 'other' })), false);
   assert.equal(mainSupersedesRescue(j({ ...full }), j({ ...full, contentTier: 'invalid' })), true);
 });
+test('same tier with different text, differing score, or path-case-only url stay conflicts', () => {
+  assert.equal(mainSupersedesRescue(j({ ...full, fullText: 'one' }), j({ ...full, fullText: 'two' })), false);
+  assert.equal(mainSupersedesRescue(j({ ...stub, originalScore: 3 }), j({ ...full, originalScore: 4 })), false);
+  assert.equal(mainSupersedesRescue(j({ ...stub, url: 'https://x.com/A' }), j({ ...full, url: 'https://x.com/a' })), false);
+});
+test('same data with different formatting is superseded', () => {
+  assert.equal(mainSupersedesRescue(JSON.stringify(stub, null, 2), JSON.stringify(stub)), true);
+});
+test('same data in a different key order is superseded', () => {
+  assert.equal(mainSupersedesRescue(j({ a: 1, url: 'u', contentTier: 'stub' }), j({ contentTier: 'stub', url: 'u', a: 1 })), true);
+});
+test('main holding every rescued field plus more is superseded at equal tier', () => {
+  assert.equal(mainSupersedesRescue(j(stub), j({ ...stub, extra: 1 })), true);
+  assert.equal(mainSupersedesRescue(j({ ...stub, note: 'x' }), j({ ...stub, extra: 1 })), false);
+});
