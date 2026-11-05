@@ -41,7 +41,23 @@
     "hughie-2016/abc-news--mark-kennedy.json",
     "hughie-2016/theatermania--david-gordon.json",
     "hughie-2016/ap--mark-kennedy.json",
-    "hughie-2016/financialtimes--max-mcguinness.json"
+    "hughie-2016/financialtimes--max-mcguinness.json",
+    "hughie-2016/huffpost--steven-suskin.json",
+    "hughie-2016/onstage-blog--sara-zweig.json",
+    "hughie-2016/thestage--mark-shenton.json",
+    "hughie-2016/wnyc--jennifer-vanasco.json",
+    "old-times-2015/financialtimes--brendan-lemon.json",
+    "old-times-2015/huffpost--fern-siegel.json",
+    "living-on-love-2015/nydailynews--joe-dziemianowicz.json",
+    "living-on-love-2015/timeout--adam-feldman.json",
+    "hedwig-and-the-angry-inch-2014/ew--thom-geier.json",
+    "hedwig-and-the-angry-inch-2014/guardian--jesse-green.json",
+    "orphans-2013/nytimes--ben-brantley.json",
+    "orphans-2013/variety--marilyn-stasio.json",
+    "orphans-2013/wsj--terry-teachout.json",
+    "one-man-two-guvnors-2012/newsday--linda-winer.json",
+    "one-man-two-guvnors-2012/newsday--matt-windman.json",
+    "guys-and-dolls-1992/theatermania--unknown.json"
   ],
   "failed": [
     "lempicka-2024/pages-on-stages--mason-pilevsky.json",
@@ -61,7 +77,16 @@
     "mean-girls-2018/people--dave-quinn.json",
     "falsettos-2016/theater-life--eric-march.json",
     "falsettos-2016/washpost--peter-marks.json",
-    "hughie-2016/act-three-the-reviews--doug-marino.json"
+    "hughie-2016/act-three-the-reviews--doug-marino.json",
+    "hughie-2016/labor-press--leonard-golubchick.json",
+    "hughie-2016/northjerseycom--robert-feldberg.json",
+    "hughie-2016/talkinbroadway--matthew-murray.json",
+    "old-times-2015/american-theater-web--andy-propst.json",
+    "living-on-love-2015/hollywood-reporter--david-rooney.json",
+    "living-on-love-2015/newsday--linda-winer.json",
+    "orphans-2013/ap--associated-press.json",
+    "orphans-2013/washpost--mark-kennedy.json",
+    "one-man-two-guvnors-2012/guardian--charles-isherwood.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -80,13 +105,21 @@
       "plaza-suite-2022/broadway-and-me--janice-c-simpson.json",
       "mean-girls-2018/film-festival-traveler--kevin-filipski.json",
       "hughie-2016/theatermania--david-gordon.json",
-      "hughie-2016/financialtimes--max-mcguinness.json"
+      "hughie-2016/financialtimes--max-mcguinness.json",
+      "hughie-2016/onstage-blog--sara-zweig.json",
+      "hughie-2016/wnyc--jennifer-vanasco.json",
+      "old-times-2015/financialtimes--brendan-lemon.json",
+      "living-on-love-2015/timeout--adam-feldman.json",
+      "one-man-two-guvnors-2012/newsday--matt-windman.json",
+      "guys-and-dolls-1992/theatermania--unknown.json"
     ],
     "amp": [
       "data/review-texts/queen-versailles-2025/variety--aramide-tinubu.json",
       "queen-versailles-2025/variety--aramide-tinubu.json",
       "data/review-texts/hedwig-and-the-angry-inch-2014/variety--marilyn-stasio.json",
-      "hedwig-and-the-angry-inch-2014/variety--marilyn-stasio.json"
+      "hedwig-and-the-angry-inch-2014/variety--marilyn-stasio.json",
+      "data/review-texts/orphans-2013/variety--marilyn-stasio.json",
+      "orphans-2013/variety--marilyn-stasio.json"
     ],
     "browserbase": [
       "data/review-texts/choir-boy-2019/deadline--greg-evans.json",
@@ -97,7 +130,8 @@
     "scrapingbee": [
       "old-times-2015/latimes--charles-mcnulty.json",
       "lempicka-2024/broadwaynews--brittani-samuel.json",
-      "prayer-for-the-french-republic-2024/broadwaynews--brittani-samuel.json"
+      "prayer-for-the-french-republic-2024/broadwaynews--brittani-samuel.json",
+      "hughie-2016/huffpost--steven-suskin.json"
     ],
     "brightdata": [],
     "archiveToday": [],
@@ -125,11 +159,19 @@
       "falsettos-2016/theater-life--eric-march.json",
       "hughie-2016/abc-news--mark-kennedy.json",
       "falsettos-2016/washpost--peter-marks.json",
-      "hughie-2016/ap--mark-kennedy.json"
+      "hughie-2016/ap--mark-kennedy.json",
+      "hughie-2016/thestage--mark-shenton.json",
+      "old-times-2015/huffpost--fern-siegel.json",
+      "old-times-2015/american-theater-web--andy-propst.json",
+      "living-on-love-2015/nydailynews--joe-dziemianowicz.json",
+      "hedwig-and-the-angry-inch-2014/ew--thom-geier.json",
+      "orphans-2013/nytimes--ben-brantley.json",
+      "orphans-2013/wsj--terry-teachout.json",
+      "one-man-two-guvnors-2012/newsday--linda-winer.json"
     ]
   },
   "startTime": "2026-11-05T16:35:12.989Z",
-  "lastProcessed": "hughie-2016/financialtimes--max-mcguinness.json",
+  "lastProcessed": "guys-and-dolls-1992/theatermania--unknown.json",
   "log": [
     {
       "t": "2026-11-05T16:37:00.213Z",
@@ -179,6 +221,28 @@
     },
     {
       "t": "2026-11-05T17:02:18.189Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-11-05T17:21:41.100Z",
+      "event": "bb-session",
+      "session": "2ceb204e",
+      "url": "https://online.wsj.com/article/SB10001424127887324493704578428590892936624.html"
+    },
+    {
+      "t": "2026-11-05T17:21:41.908Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-11-05T17:21:59.196Z",
+      "event": "bb-session",
+      "session": "1e853bc9",
+      "url": "https://online.wsj.com/article/SB10001424127887324493704578428590892936624.html"
+    },
+    {
+      "t": "2026-11-05T17:22:00.033Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }

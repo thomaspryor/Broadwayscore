@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-11-05T17:08:34.975Z",
-  "processed": 42,
-  "failed": 18,
-  "successRate": "70.0%",
+  "updatedAt": "2026-11-05T17:25:05.992Z",
+  "processed": 58,
+  "failed": 27,
+  "successRate": "68.2%",
   "tierBreakdown": {
-    "playwright": 15,
-    "amp": 4,
+    "playwright": 21,
+    "amp": 6,
     "browserbase": 2,
     "directCookies": 0,
     "scrapingdog": 0,
-    "scrapingbee": 3,
+    "scrapingbee": 4,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 24
+    "archive": 32
   },
-  "browserbaseSessions": 6,
+  "browserbaseSessions": 8,
   "recentActivity": [
     {
       "t": "2026-11-05T16:37:00.213Z",
@@ -64,6 +64,28 @@
     },
     {
       "t": "2026-11-05T17:02:18.189Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-11-05T17:21:41.100Z",
+      "event": "bb-session",
+      "session": "2ceb204e",
+      "url": "https://online.wsj.com/article/SB10001424127887324493704578428590892936624.html"
+    },
+    {
+      "t": "2026-11-05T17:21:41.908Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-11-05T17:21:59.196Z",
+      "event": "bb-session",
+      "session": "1e853bc9",
+      "url": "https://online.wsj.com/article/SB10001424127887324493704578428590892936624.html"
+    },
+    {
+      "t": "2026-11-05T17:22:00.033Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
