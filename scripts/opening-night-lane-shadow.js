@@ -106,6 +106,9 @@ async function main() {
   const writeEventLoop = () => fs.writeFileSync(path.join(out, 'event-loop.json'), JSON.stringify({
     maxMs: Math.round(loopDelay.max / 1e6), p99Ms: Math.round(loopDelay.percentile(99) / 1e6), meanMs: Math.round(loopDelay.mean / 1e6),
     stallsOver500ms: stalls.length, stalls,
+    // BRO-6988: wall clock and monotonic clock read together, so a stall's wall time converts to a --cpu-prof sample
+    // offset (V8 profile timestamps are CLOCK_MONOTONIC microseconds, the same clock as process.hrtime).
+    clockAnchor: { wallMs: Date.now(), monoUs: Number(process.hrtime.bigint() / 1000n) },
   }, null, 1));
   const writeReport = () => {
     try { writeEventLoop(); } catch (e) { console.error(`shadow: event-loop log failed: ${e.message}`); }
