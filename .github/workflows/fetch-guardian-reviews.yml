@@ -200,7 +200,8 @@ jobs:
         # Complementary real-time alert (not a substitute for the blocking
         # guard above): same non-blocking pattern as rebuild-fast.yml's
         # identical step, specifically for shows in the ±7d opening-night
-        # window.
+        # window. No continue-on-error (BRO-6261): every publish step below is
+        # if: always(), so a crash still publishes but turns the run red.
         #
         # BRO-3127 /what-else finding: this workflow ALSO calls
         # check-rebuild-staleness.js (the guard above), so it was audited for
@@ -220,7 +221,6 @@ jobs:
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
           GITHUB_REPOSITORY: ${{ github.repository }}
         run: node scripts/check-opening-night-completeness.js
-        continue-on-error: true
 
       - name: Push review-texts to private repo
         if: always()

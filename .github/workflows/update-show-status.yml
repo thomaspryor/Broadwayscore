@@ -1733,6 +1733,7 @@ jobs:
             }
 
       - name: Submit new show pages to Google Indexing API + IndexNow
+        # lint-allow-swallow: optional SEO hint (pages are still found via the sitemap); an Indexing API quota or auth failure must not fail the status update or skip 'Record indexing quota usage' below, which commits whatever usage was recorded (BRO-6261)
         continue-on-error: true
         env:
           GOOGLE_INDEXING_KEY: ${{ secrets.GOOGLE_INDEXING_KEY }}

@@ -133,6 +133,8 @@ jobs:
       #     file is missing (handled internally; ~+90s slow path).
 
       - name: Classify new review files
+        id: classify-non-reviews
+        # lint-allow-swallow: continue-on-error only so a crash cannot skip the enrichment steps after it (they have no status check); 'Fail the run if a classifier crashed' below checks this outcome and turns the run red after the pushes (BRO-6261)
         if: inputs.skip_classify_non_reviews != 'true'
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
@@ -141,6 +143,8 @@ jobs:
         continue-on-error: true
 
       - name: Classify medium-confidence wrong-production flags
+        id: classify-wrong-production
+        # lint-allow-swallow: continue-on-error only so a crash cannot skip the enrichment steps after it (they have no status check); 'Fail the run if a classifier crashed' below checks this outcome and turns the run red after the pushes (BRO-6261)
         if: inputs.skip_classify_wrong_production != 'true'
         # Opus, not the Gemini default: Gemini over-accepts garbage for
         # classification (memory/feedback_llm_verifier_hallucinates.md, ~48% on
@@ -154,6 +158,8 @@ jobs:
         continue-on-error: true
 
       - name: Classify wrong-show flags (LLM)
+        id: classify-wrong-show
+        # lint-allow-swallow: continue-on-error only so a crash cannot skip the enrichment steps after it (they have no status check); 'Fail the run if a classifier crashed' below checks this outcome and turns the run red after the pushes (BRO-6261)
         if: inputs.skip_classify_wrong_show != 'true'
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
@@ -279,7 +285,6 @@ jobs:
           fi
           echo "Running: node scripts/replay-pending-bylines.js $FLAGS --time-budget-min=16"
           node scripts/replay-pending-bylines.js $FLAGS --time-budget-min=16 2>&1 | tee -a /tmp/locked-skip.log
-        continue-on-error: true
         timeout-minutes: 20
 
       # Weekly (Sunday cron) or on dispatch with drain_scope=all-pending: drain
@@ -301,7 +306,6 @@ jobs:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
         shell: bash # -eo pipefail: a failing node script must not be masked by tee (BRO-5046)
         run: node scripts/replay-pending-bylines.js --all-pending --time-budget-min=16 2>&1 | tee -a /tmp/locked-skip.log
-        continue-on-error: true
         timeout-minutes: 20
 
       # ---- Push review-texts changes ----
@@ -384,12 +388,33 @@ jobs:
       # 4 AM UTC scheduled rebuild + the auto-trigger from collect-review-texts
       # workflow_run will pick them up within the hour.
 
+      # BRO-6261: the classifiers keep continue-on-error so a crash cannot
+      # skip the enrichment after them, but a crash must not vanish either.
+      # Checked here, after the pushes, so it turns the run red.
+      - name: Fail the run if a classifier crashed
+        if: always()
+        env:
+          OUTCOMES: >-
+            classify-non-reviews=${{ steps.classify-non-reviews.outcome }}
+            classify-wrong-production=${{ steps.classify-wrong-production.outcome }}
+            classify-wrong-show=${{ steps.classify-wrong-show.outcome }}
+        run: |
+          crashed=""
+          for kv in $OUTCOMES; do
+            [ "${kv#*=}" = "failure" ] && crashed="$crashed ${kv%%=*}"
+          done
+          if [ -n "$crashed" ]; then
+            echo "::error::classifier step(s) crashed:$crashed (see their logs above; the rest of the run and the pushes still ran)"
+            exit 1
+          fi
+          echo "No classifier crashed."
+
       - name: Notify on failure
         if: failure()
         uses: ./.github/actions/notify-failure
         with:
           title: 'Enrich Reviews Failed'
-          description: 'Enrich Reviews workflow failed. continue-on-error is set on every step so this means a setup/checkout/push failure, not a script error. Check run logs.'
+          description: 'Enrich Reviews workflow failed: a setup/checkout/push failure, a no-byline drain crash, or a classifier crash (named by the "Fail the run if a classifier crashed" step). The other enrichment steps are still continue-on-error. Check run logs.'
           severity: 'warning'
           discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
 

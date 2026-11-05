@@ -92,6 +92,7 @@ jobs:
           fi
 
       - name: Submit to Google Indexing API (show pages only)
+        # lint-allow-swallow: optional SEO hint (Google still crawls the sitemap); submit-google-indexing.js exits 1 on routine daily-quota exhaustion as well as on a crash, and the IndexNow step above already fails the run on its own errors (BRO-6261)
         if: steps.mode.outputs.mode == 'shows' && env.GOOGLE_INDEXING_KEY != ''
         continue-on-error: true
         env:

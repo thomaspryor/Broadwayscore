@@ -150,6 +150,8 @@ jobs:
         continue-on-error: true
 
       - name: Audit pre-2005 wrong-production reviews
+        id: sweep-pre2005
+        # lint-allow-swallow: continue-on-error only so a crash cannot skip 'Rebuild reviews.json' (no status check); 'Fail the run if a best-effort sweep crashed' below checks this outcome and turns the run red after publishing (BRO-6261)
         if: inputs.skip_enrichment != 'true'
         shell: bash # -eo pipefail: a failing node script must not be masked by tee (BRO-5046)
         run: node scripts/audit-pre2005-reviews.js 2>&1 | tee -a /tmp/locked-skip.log
@@ -162,6 +164,8 @@ jobs:
         continue-on-error: true
 
       - name: Cleanup phantom outlet duplicates
+        id: sweep-phantom-outlets
+        # lint-allow-swallow: continue-on-error only so a crash cannot skip 'Rebuild reviews.json' (no status check); 'Fail the run if a best-effort sweep crashed' below checks this outcome and turns the run red after publishing (BRO-6261)
         if: inputs.skip_enrichment != 'true'
         shell: bash # -eo pipefail: a failing node script must not be masked by tee (BRO-5046)
         run: node scripts/cleanup-phantom-outlets.js --apply 2>&1 | tee -a /tmp/locked-skip.log
@@ -174,12 +178,16 @@ jobs:
         continue-on-error: true
 
       - name: Detect syndicated duplicates and author mismatches
+        id: sweep-syndicated
+        # lint-allow-swallow: continue-on-error only so a crash cannot skip 'Rebuild reviews.json' (no status check); 'Fail the run if a best-effort sweep crashed' below checks this outcome and turns the run red after publishing (BRO-6261)
         if: inputs.skip_enrichment != 'true'
         shell: bash # -eo pipefail: a failing node script must not be masked by tee (BRO-5046)
         run: node scripts/detect-syndicated-duplicates.js 2>&1 | tee -a /tmp/locked-skip.log
         continue-on-error: true
 
       - name: Apply audit flags to review-text files
+        id: sweep-audit-flags
+        # lint-allow-swallow: continue-on-error only so a crash cannot skip 'Rebuild reviews.json' (no status check); 'Fail the run if a best-effort sweep crashed' below checks this outcome and turns the run red after publishing (BRO-6261)
         if: inputs.skip_enrichment != 'true'
         run: node scripts/apply-audit-flags.js
         continue-on-error: true
@@ -204,6 +212,8 @@ jobs:
       # reclassified, so a genuinely valid review stays silently excluded
       # (moulin-rouge-2019 WSJ Terry Teachout, confirmed missing).
       - name: Sweep orphaned duplicateOf pointers (stale target invalidation)
+        id: sweep-orphan-pointers
+        # lint-allow-swallow: continue-on-error only so a crash cannot skip 'Rebuild reviews.json' (no status check); 'Fail the run if a best-effort sweep crashed' below checks this outcome and turns the run red after publishing (BRO-6261)
         if: inputs.skip_enrichment != 'true'
         shell: bash # -eo pipefail: a failing node script must not be masked by tee (BRO-5046)
         run: node scripts/heal-orphaned-duplicate-pointers.js --fix 2>&1 | tee -a /tmp/locked-skip.log
@@ -469,7 +479,6 @@ jobs:
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
         run: node scripts/analyze-rebuild-drops.js
-        continue-on-error: true
 
       - name: Exclusion mirror vs rebuild census
         if: always() && steps.rebuild.outcome == 'success' && steps.staleness.outputs.safe_to_publish == 'true'
@@ -477,10 +486,10 @@ jobs:
         # this run's real per-show exclusion lists and reviews.json, and writes
         # the counts-only data/audit/exclusion-mirror-summary.json that the
         # commit step below stages (data/audit/*.json) and check-corpus-drift.js
-        # reads. Advisory: a census failure must never block publishing.
+        # reads. A census crash never blocks publishing (every later step is
+        # if: always()) but turns the run red instead of vanishing (BRO-6261).
         timeout-minutes: 5
         run: node scripts/exclusion-rule-census.js --compare-rebuild --no-diff
-        continue-on-error: true
 
       - name: Applied fix plans reached includable rows
         if: always() && steps.rebuild.outcome == 'success' && steps.staleness.outputs.safe_to_publish == 'true'
@@ -512,7 +521,6 @@ jobs:
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
           GITHUB_REPOSITORY: ${{ github.repository }}
         run: node scripts/check-opening-night-completeness.js
-        continue-on-error: true
 
       - name: Verify all eligible reviews scored (orphan-unscored guard)
         if: always() && steps.rebuild.outcome == 'success' && steps.staleness.outputs.safe_to_publish == 'true'
@@ -522,8 +530,9 @@ jobs:
         # data/audit/orphan-unscored-{showId}.json marker files that
         # opening-night-broadcast.yml reads as an early-exit gate. Dispatches
         # llm-ensemble-score.yml (per-show) so the next rebuild has scores.
-        # Discord warning, 60-min cooldown per show. continue-on-error so a
-        # failure here never blocks the rebuild itself.
+        # Discord warning, 60-min cooldown per show. No continue-on-error
+        # (BRO-6261): every later step is if: always(), so a crash here
+        # still publishes but turns the run red (Notify on failure -> digest).
         env:
           # discord-notify.js reads RESEND_API_KEY+OWNER_EMAIL for email delivery;
           # DISCORD_WEBHOOK_ALERTS was never read (Discord removed) — alerts were log-only.
@@ -533,17 +542,14 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REVIEW_TEXTS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
         run: node scripts/verify-all-scored.js
-        continue-on-error: true
 
       - name: Audit wrong-production reviews
         if: always() && steps.rebuild.outcome == 'success' && steps.staleness.outputs.safe_to_publish == 'true'
         run: node scripts/audit-wrong-production.js
-        continue-on-error: true
 
       - name: Update critic registry
         if: always() && steps.rebuild.outcome == 'success' && steps.staleness.outputs.safe_to_publish == 'true'
         run: node scripts/audit-critic-outlets.js
-        continue-on-error: true
 
       - name: Enrich cast from cast files
         if: always() && steps.rebuild.outcome == 'success' && steps.staleness.outputs.safe_to_publish == 'true'
@@ -615,7 +621,6 @@ jobs:
       - name: Score-public-since stamp
         if: always() && steps.rebuild.outcome == 'success' && steps.staleness.outputs.safe_to_publish == 'true'
         run: node scripts/audit-score-public-since.js
-        continue-on-error: true
 
       - name: Generate opening night status page
         if: always() && steps.rebuild.outcome == 'success' && steps.staleness.outputs.safe_to_publish == 'true'
@@ -1044,6 +1049,30 @@ jobs:
 
           echo "Dispatching consensus update (reviews changed, no scoring needed)..."
           gh workflow run update-critic-consensus.yml
+
+      # BRO-6261: the pre-rebuild sweeps above keep continue-on-error so a
+      # crash cannot skip the rebuild, but a crash must not vanish either.
+      # Checked here, after every publishing step, so it turns the run red
+      # (Notify on failure -> morning digest) without blocking anything.
+      - name: Fail the run if a best-effort sweep crashed
+        if: always()
+        env:
+          OUTCOMES: >-
+            sweep-pre2005=${{ steps.sweep-pre2005.outcome }}
+            sweep-phantom-outlets=${{ steps.sweep-phantom-outlets.outcome }}
+            sweep-syndicated=${{ steps.sweep-syndicated.outcome }}
+            sweep-audit-flags=${{ steps.sweep-audit-flags.outcome }}
+            sweep-orphan-pointers=${{ steps.sweep-orphan-pointers.outcome }}
+        run: |
+          crashed=""
+          for kv in $OUTCOMES; do
+            [ "${kv#*=}" = "failure" ] && crashed="$crashed ${kv%%=*}"
+          done
+          if [ -n "$crashed" ]; then
+            echo "::error::best-effort step(s) crashed:$crashed (see their logs above; the rebuild and publish still ran)"
+            exit 1
+          fi
+          echo "No best-effort sweep crashed."
 
       - name: Notify on failure
         if: failure()

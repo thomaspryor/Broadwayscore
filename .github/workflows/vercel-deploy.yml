@@ -677,6 +677,7 @@ jobs:
             || echo "::warning::Watermark dispatch failed (non-critical)"
 
       - name: Notify search engines of updated sitemap
+        # lint-allow-swallow: optional SEO ping after a deploy that already reached READY; failing here would mark a good deploy failed and fire the failure alert and investigation steps below; daily-quota exhaustion exits 1 like a crash (BRO-6261)
         if: success() && steps.deploy.outputs.superseded != 'true'
         continue-on-error: true
         env:

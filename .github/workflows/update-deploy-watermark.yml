@@ -125,7 +125,12 @@ jobs:
       - name: Update watermark
         if: steps.throttle.outputs.skip != 'true'
         run: |
-          node scripts/pre-deploy-check.js > /dev/null 2>&1 || true
+          # BRO-6261: was `> /dev/null 2>&1 || true`, which hid both the check's
+          # verdict and a crash. Exit 1 = critical issues (watermark NOT
+          # advanced) or a crash; either way the commits below still run and
+          # the step fails at the end so the run goes red.
+          check_rc=0
+          node scripts/pre-deploy-check.js || check_rc=$?
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
@@ -138,7 +143,7 @@ jobs:
           # disqualified push-with-retry.sh's Git Data API fallback for BOTH
           # files even though deploy-watermark.json alone is now
           # apiFallbackSafe.
-          git add data/audit/deploy-watermark.json 2>/dev/null || true
+          bash scripts/lib/git-add-existing.sh data/audit/deploy-watermark.json
           if git diff --staged --quiet; then
             echo "No changes to watermark"
           else
@@ -146,12 +151,17 @@ jobs:
             bash scripts/lib/push-with-retry.sh 3 main
           fi
 
-          git add data/audit/stage-latency.jsonl 2>/dev/null || true
+          bash scripts/lib/git-add-existing.sh data/audit/stage-latency.jsonl
           if git diff --staged --quiet; then
             echo "No changes to stage-latency"
           else
             git commit -m "chore: Update stage-latency [skip ci]"
             bash scripts/lib/push-with-retry.sh 3 main
+          fi
+
+          if [ "$check_rc" -ne 0 ]; then
+            echo "::error::pre-deploy-check.js exited $check_rc after a live deploy: critical data issues or a crash (see its output above); the deploy watermark was not advanced"
+            exit 1
           fi
 
       - name: Notify on failure
