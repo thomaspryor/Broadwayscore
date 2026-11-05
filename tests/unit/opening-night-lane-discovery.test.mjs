@@ -219,6 +219,10 @@ test('canonicalUrl: one key per article (https, no www, tracking stripped, param
   assert.equal(d.canonicalUrl('https://nytimes.com/2026/10/19/theater/other-desert-cities-review.html/amp/'), NYT);
   assert.equal(d.canonicalUrl('https://example.com/a?b=2&a=1&utm_campaign=x&fbclid=y'), 'https://example.com/a?a=1&b=2');
   assert.equal(d.canonicalUrl('https://example.com/a?id=7'), 'https://example.com/a?id=7', 'a real parameter survives');
+  const WSJ = 'https://wsj.com/articles/the-imaginary-invalid-review-bill-irwins-hilarious-hypochondriac-ff88aa6b';
+  assert.equal(d.canonicalUrl(`${WSJ.replace('https://', 'https://www.')}?mod=rss_artsculture`), WSJ, 'the WSJ feed tag does not split one review into two keys');
+  assert.equal(d.canonicalUrl(`${WSJ}?reflink=desktopwebshare_permalink&mod=e2tw`), WSJ, 'nor does a WSJ share link');
+  assert.equal(d.canonicalUrl('http://www.lightingandsoundamerica.com/news/story.asp?ID=TNQ36D'), 'https://lightingandsoundamerica.com/news/story.asp?ID=TNQ36D', 'the L&SA article id survives');
   assert.equal(d.canonicalUrl('https://feedproxy.google.com/~r/variety/legit/~3/abc/story.html'), null);
   assert.equal(d.canonicalUrl('https://news.google.com/rss/articles/CBMi'), null);
   assert.equal(d.canonicalUrl('https://bit.ly/3abc'), null);

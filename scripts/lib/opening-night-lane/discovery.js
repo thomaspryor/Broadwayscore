@@ -97,7 +97,8 @@ const WRAPPER_HOSTS = [
   'feedproxy.google.com', 'feeds.feedburner.com', 'feedburner.google.com', 'news.google.com', 't.co', 'bit.ly',
   'ow.ly', 'lnkd.in', 'tinyurl.com', 'buff.ly', 'dlvr.it', 'trib.al', 'go.redirectingat.com', 'l.facebook.com',
 ];
-const TRACKING_PARAM = /^(utm_.*|fbclid|gclid|dclid|msclkid|igshid|mc_eid|mc_cid|ref|ref_src|referrer|partner|emc|smid|smtyp|cmp|cid|ocid|campaign|spm|_ga|_gl|taid|at_medium|at_campaign|share|shared|amp|output|cmpid|intcmp|iid|sr_share|rss)$/i;
+// mod and reflink: WSJ (Dow Jones) tags every feed and share link with them; without them one review held two keys (BRO-6872).
+const TRACKING_PARAM = /^(utm_.*|fbclid|gclid|dclid|msclkid|igshid|mc_eid|mc_cid|ref|ref_src|referrer|partner|emc|smid|smtyp|cmp|cid|ocid|campaign|spm|_ga|_gl|taid|at_medium|at_campaign|share|shared|amp|output|cmpid|intcmp|iid|sr_share|rss|mod|reflink)$/i;
 // URL path segments of pages that are not a review of one production.
 const NON_REVIEW_SEGMENTS = new Set([
   'news', 'tag', 'tags', 'author', 'authors', 'category', 'categories', 'topic', 'topics', 'gallery', 'galleries',
