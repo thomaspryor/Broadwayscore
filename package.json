@@ -14,6 +14,7 @@
     "lint:design": "node scripts/lint-design-tokens.js",
     "test": "npm run test:data && npm run test:e2e",
     "test:data": "node scripts/validate-data.js && node scripts/validate-aggregator-truth.js",
+    "audit:lookalike-images": "node scripts/audit-lookalike-images.js",
     "audit:featured-row-mincount": "node scripts/audit-featured-row-mincount.js",
     "audit:text-contrast": "node scripts/audit-text-contrast.js",
     "audit:aggregator-health": "node scripts/audit-aggregator-health.js",
