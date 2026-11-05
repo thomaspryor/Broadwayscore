@@ -7,12 +7,12 @@
   "embargoSource": "market-default",
   "probe": {
     "startedAt": "2026-11-05T02:30:06.025Z",
-    "endedAt": null,
+    "endedAt": "2026-11-05T09:00:40.551Z",
     "intervalMin": 5,
-    "samples": 30,
+    "samples": 77,
     "failedSamples": 0,
-    "lastSampleAt": "2026-11-05T04:55:10.386Z",
-    "lastOkSampleAt": "2026-11-05T04:55:10.386Z"
+    "lastSampleAt": "2026-11-05T08:55:06.532Z",
+    "lastOkSampleAt": "2026-11-05T08:55:06.532Z"
   },
   "firstLiveAt": "2026-11-05T03:45:08.318Z",
   "firstLiveBaseline": false,
@@ -20,12 +20,12 @@
   "liveCount": 1,
   "liveCountAt": {
     "1h": 1,
-    "2h": null,
+    "2h": 1,
     "6h": null
   },
   "liveCountSampleAt": {
     "1h": "2026-11-05T04:00:08.793Z",
-    "2h": null,
+    "2h": "2026-11-05T05:04:53.244Z",
     "6h": null
   },
   "firstOutletPublishAt": {
@@ -60,6 +60,17 @@
       "liveCount": 1,
       "fetchedAt": "2026-11-05T05:00:17.274Z",
       "censusNote": "no BWW roundup found"
+    },
+    "end": {
+      "status": "no-census-yet",
+      "source": null,
+      "count": 0,
+      "covered": null,
+      "coverage": null,
+      "missing": [],
+      "liveCount": 1,
+      "fetchedAt": "2026-11-05T09:00:36.734Z",
+      "censusNote": "no BWW roundup found"
     }
   },
   "manualActions": [],
@@ -72,11 +83,17 @@
         "label": "2h",
         "standDown": false,
         "reason": "market not lane-only"
+      },
+      {
+        "at": "2026-11-05T09:00:36.822Z",
+        "label": "end",
+        "standDown": false,
+        "reason": "market not lane-only"
       }
     ]
   },
   "fileState": {
-    "capturedAt": "2026-11-05T05:01:07.711Z",
+    "capturedAt": "2026-11-05T09:00:40.500Z",
     "files": [
       {
         "file": "nitelifeexchange-com--nitelife-exchange.json",
@@ -103,6 +120,26 @@
         "includable": true,
         "reason": null,
         "syndicatedUnder": null
+      }
+    ]
+  },
+  "laneShadow": {
+    "importedAt": "2026-11-05T09:00:32.169Z",
+    "runId": "41955610767",
+    "startedAt": "2026-11-05T02:33:29.776Z",
+    "pollMin": 2,
+    "pollFailures": 0,
+    "firstDiscoveredAt": "2026-11-05T02:34:20.057Z",
+    "discoveredByOutlet": {
+      "theatermania": "2026-11-05T02:34:20.057Z"
+    },
+    "bwwRoundupUrl": null,
+    "liveFirstSeen": [
+      {
+        "outlet": "TheaterMania",
+        "url": "https://www.theatermania.com/news/review-parcel-from-america-irish-schtick-in-a-box_1858919/",
+        "at": "2026-11-05T03:45:31.899Z",
+        "baseline": false
       }
     ]
   }
