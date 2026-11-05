@@ -536,6 +536,14 @@ const CORE_DATA_MERGE_REGISTRY = [
     verifiedBy: '2026-08-23: findWritingWorkflows() against real .github/workflows/*.yml — 1 writer (data-health-check.yml), group data-health-check.',
   },
   {
+    file: 'audit/outlet-corpus-critics.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'data-health-check',
+    verifiedBy: '2026-11-04 (BRO-6947): written only by the Printed byline conflict audit step in data-health-check.yml (--cache-out), group data-health-check.',
+  },
+  {
     file: 'audit/linear-archive-done.jsonl',
     surface: 'public-repo',
     status: 'single-writer',

@@ -202,6 +202,17 @@ function findPrintedKnownByline({ fullText, knownCritics }) {
   return _firstPrintedKnown({ fullText, knownCritics, creditedName: null });
 }
 
+/**
+ * True when the printed name sits in a multi-author list ("By A, B, C and D"): a roundup or co-byline, so the
+ * first known name is not the author of the page (the Liberation / Goings On case).
+ */
+function bylineContinuesList(rawHead, name) {
+  const toks = String(name).trim().split(/\s+/).map((t) => t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
+  if (toks.length < 2) return false;
+  const re = new RegExp(toks.join("[\\s.]+") + "\\s*(?:,\\s*|\\s+(?:and|&)\\s+)\\p{Lu}[\\p{L}'’-]+\\s+\\p{Lu}", 'u');
+  return re.test(rawHead);
+}
+
 function _firstPrintedKnown({ fullText, knownCritics, creditedName }) {
   if (!fullText || typeof fullText !== 'string' || fullText.length < 50) return null;
   if (!Array.isArray(knownCritics) || knownCritics.length === 0) return null;
@@ -218,6 +229,7 @@ function _firstPrintedKnown({ fullText, knownCritics, creditedName }) {
     const at = firstBylineIndex(head, k);
     if (at === -1) continue;
     if (!_rawBylineConfirmed(rawHead, k)) continue;
+    if (bylineContinuesList(rawHead, k)) continue;
     if (!best || at < best.at) best = { name: k, at };
   }
   return best ? { printedName: best.name, kind: 'known' } : null;
@@ -327,7 +339,37 @@ function buildKnownCriticsIndex(registry) {
 
 // Outlets whose pages list editors or several critics (Verdict roundups, forum-style threads, nav-chrome
 // heads). A printed name there is not the author, so an unnamed file is never filled from it.
+// show/file paths a human reviewed and rejected for good (roundup pages, scrape chrome): never re-credited,
+// by the audit or by the collect pipeline (BRO-6940 review, BRO-6947).
+const REJECTED_FILES = [
+  'liberation-2025/newyorker--helen-shaw.json',
+  'ceilidh-the-musical-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json',
+];
+
 const NO_FILL_OUTLETS = new Set(['playbill', 'broadwayworld', 'around-the-town-chicago', 'stagebuddy', 'chicagotribune', 'londontheatredirect']);
+
+/**
+ * Merge the registry index with the corpus-derived cache (BRO-6947): outlets with no registry critics
+ * (camdennewjournal, theater-pizzazz, talkinbroadway ...) get the critics the corpus already files there.
+ * @param {Map<string,string[]>} registryIndex result of buildKnownCriticsIndex
+ * @param {object|null} corpusCache parsed cache file ({ outlets: { id: string[] } })
+ * @returns {Map<string,string[]>} new map; registry names first, corpus names that are not the same critic appended
+ */
+function mergeCorpusCritics(registryIndex, corpusCache) {
+  const out = new Map();
+  for (const [id, names] of (registryIndex && typeof registryIndex.entries === 'function' ? registryIndex.entries() : [])) out.set(id, [...names]);
+  const outlets = (corpusCache && typeof corpusCache.outlets === 'object' && corpusCache.outlets) || {};
+  for (const [id, names] of Object.entries(outlets)) {
+    if (!Array.isArray(names)) continue;
+    const list = out.get(id) || [];
+    for (const n of names) {
+      if (typeof n !== 'string' || isPlaceholderName(n)) continue;
+      if (!list.some((k) => sameCritic(k, n))) list.push(n);
+    }
+    if (list.length) out.set(id, list);
+  }
+  return out;
+}
 
 /** Critic names the registry lists for an outlet (`buildKnownCriticsIndex` result), [] when none. */
 function knownCriticsForOutlet(index, outletId) {
@@ -345,13 +387,26 @@ function knownCriticsForOutlet(index, outletId) {
  * @param {string} a.outletId    normalized outlet id
  * @param {string} a.fullText    cleaned article text
  * @param {string[]} a.knownCritics critics the registry lists for the outlet
+ * @param {string[]} [a.corpusCritics] corpus-derived critics (BRO-6947): used only to fill unnamed files
+ * @param {string} [a.relPath] 'show/file.json', checked against REJECTED_FILES
  * @param {boolean} [a.locked]   criticNameManual or _locked: a human set the credit, never override it
  * @param {boolean} [a.excluded] roundup, wrong show/production or duplicate file: not a review to re-credit
  * @returns {{ printedName: string, unnamed: boolean } | null}
  */
-function decidePrintedByline({ criticName, outletId, fullText, knownCritics, locked, excluded }) {
-  if (locked || excluded || !fullText || !Array.isArray(knownCritics) || knownCritics.length === 0) return null;
+function mergeNames(a, b) {
+  const out = Array.isArray(a) ? [...a] : [];
+  for (const n of b) if (typeof n === 'string' && !isPlaceholderName(n) && !out.some((k) => sameCritic(k, n))) out.push(n);
+  return out;
+}
+
+function decidePrintedByline({ criticName, outletId, fullText, knownCritics, corpusCritics, locked, excluded, relPath }) {
+  if (locked || excluded || !fullText) return null;
+  if (relPath && REJECTED_FILES.includes(relPath)) return null;
   const unnamed = isPlaceholderName(criticName);
+  // Corpus-derived critics are a weaker source than the registry: they only fill unnamed files, they never
+  // override a named credit (a wrong name in the corpus would otherwise feed itself).
+  if (unnamed && Array.isArray(corpusCritics)) knownCritics = mergeNames(knownCritics, corpusCritics);
+  if (!Array.isArray(knownCritics) || knownCritics.length === 0) return null;
   if (unnamed && NO_FILL_OUTLETS.has(outletId)) return null;
   const hit = unnamed
     ? findPrintedKnownByline({ fullText, knownCritics })
@@ -373,4 +428,7 @@ module.exports = {
   findUnlistedPrintedByline,
   extractHeaderByline,
   buildKnownCriticsIndex,
+  mergeCorpusCritics,
+  REJECTED_FILES,
+  bylineContinuesList,
 };

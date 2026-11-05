@@ -22,6 +22,9 @@ const {
   NO_FILL_OUTLETS,
   decidePrintedByline,
   looksLikeListingHead,
+  mergeCorpusCritics,
+  REJECTED_FILES,
+  bylineContinuesList,
 } = require('./printed-byline-conflict.js');
 
 const FILLER = ' The company plays the old protest piece straight and the room responds to it with real heat from the first scene to the last.'.repeat(3);
@@ -160,4 +163,52 @@ test('decidePrintedByline: the pipeline decision (conflict, fill, locked, no-fil
   assert.equal(decidePrintedByline({ ...base, criticName: 'Frank Scheck', knownCritics: [] }), null);
   assert.equal(decidePrintedByline({ ...base, criticName: 'Unknown', outletId: 'playbill' }), null, 'roundup outlets are never filled');
   assert.equal(decidePrintedByline({ ...base, criticName: 'Frank Scheck', fullText: '' }), null);
+});
+
+test('BRO-6947: corpus cache covers an outlet with no registry critics; decidePrintedByline uses it', () => {
+  const registry = buildKnownCriticsIndex({ outlets: { nysr: { defaultCritics: ['Michael Sommers'] } } });
+  const cache = { outlets: { 'theater-pizzazz': ['Jane Reviewer', 'Unknown'], nysr: ['M. Sommers', 'Frank Scheck'] } };
+  const idx = mergeCorpusCritics(registry, cache);
+  // registry-less outlet gets the corpus critics (placeholders dropped)
+  assert.deepEqual(knownCriticsForOutlet(idx, 'theater-pizzazz'), ['Jane Reviewer']);
+  // registry outlet keeps registry first, adds only critics that are not the same person
+  const nysr = knownCriticsForOutlet(idx, 'nysr');
+  assert.equal(nysr[0], 'Michael Sommers');
+  assert.ok(nysr.includes('Frank Scheck'));
+  assert.ok(!nysr.includes('M. Sommers'));
+  // without the cache the registry-less outlet is untouched (the pre-fix behaviour)
+  assert.equal(decidePrintedByline({ criticName: 'Unknown', outletId: 'theater-pizzazz', fullText: `By Jane Reviewer${FILLER}`, knownCritics: knownCriticsForOutlet(registry, 'theater-pizzazz') }), null);
+  const hit = decidePrintedByline({ criticName: 'Unknown', outletId: 'theater-pizzazz', fullText: `By Jane Reviewer${FILLER}`, knownCritics: knownCriticsForOutlet(idx, 'theater-pizzazz') });
+  assert.deepEqual(hit, { printedName: 'Jane Reviewer', unnamed: true });
+});
+
+test('BRO-6947: mergeCorpusCritics tolerates a missing or malformed cache and does not mutate the registry index', () => {
+  const registry = buildKnownCriticsIndex({ outlets: { nyt: { defaultCritic: 'Jesse Green' } } });
+  for (const bad of [null, undefined, {}, { outlets: null }, { outlets: { nyt: 'oops' } }]) {
+    assert.deepEqual(knownCriticsForOutlet(mergeCorpusCritics(registry, bad), 'nyt'), ['Jesse Green']);
+  }
+  mergeCorpusCritics(registry, { outlets: { nyt: ['Someone Else'] } });
+  assert.deepEqual(knownCriticsForOutlet(registry, 'nyt'), ['Jesse Green']);
+  assert.equal(mergeCorpusCritics(null, null).size, 0);
+});
+
+test('BRO-6947: corpus critics fill unnamed files only, never override a named credit', () => {
+  const text = `By Jane Reviewer${FILLER}`;
+  assert.deepEqual(decidePrintedByline({ criticName: 'Unknown', outletId: 'x', fullText: text, knownCritics: [], corpusCritics: ['Jane Reviewer'] }), { printedName: 'Jane Reviewer', unnamed: true });
+  assert.equal(decidePrintedByline({ criticName: 'Other Person', outletId: 'x', fullText: text, knownCritics: ['Other Person'], corpusCritics: ['Jane Reviewer'] }), null);
+});
+
+test('BRO-6947: human-rejected files are never re-credited', () => {
+  assert.ok(REJECTED_FILES.length >= 2);
+  const text = `By Jane Reviewer${FILLER}`;
+  assert.equal(decidePrintedByline({ criticName: 'Unknown', outletId: 'x', fullText: text, knownCritics: ['Jane Reviewer'], relPath: REJECTED_FILES[0] }), null);
+  assert.ok(decidePrintedByline({ criticName: 'Unknown', outletId: 'x', fullText: text, knownCritics: ['Jane Reviewer'], relPath: 'ok/file.json' }));
+});
+
+test('BRO-6947: a multi-author byline list is not a verdict (Goings On roundup)', () => {
+  const list = `By Hilton Als, Brian Seibert, Helen Shaw and Vinson Cunningham${FILLER}`;
+  assert.ok(bylineContinuesList(list, 'Hilton Als'));
+  assert.equal(findPrintedKnownByline({ fullText: list, knownCritics: ['Hilton Als'] }), null);
+  assert.ok(!bylineContinuesList(`By Hilton Als${FILLER}`, 'Hilton Als'));
+  assert.ok(findPrintedKnownByline({ fullText: `By Hilton Als${FILLER}`, knownCritics: ['Hilton Als'] }));
 });

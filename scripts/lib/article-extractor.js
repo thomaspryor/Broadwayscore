@@ -282,7 +282,8 @@ function extractStageBody(html) {
     // Author bio: "Firstname [Lastname] is a (culture|theatre|freelance)? journalist/critic/..."
     // First-name-only bylines (e.g. "Holly is a culture journalist…") slipped the
     // multi-word-name pattern, so allow zero additional name parts.
-    /^[A-Z][a-z]+(?:\s+[A-Z][a-z'-]+)*\s+is\s+(?:a|an|the|freelance|theatre)\s+(?:culture\s+|theatre\s+|freelance\s+|theater\s+)?(?:journalist|critic|writer|editor|reviewer)/i.test(t) ||
+    // BRO-6872: case-sensitive and short only; with /i "The protagonist is a writer…" was dropped.
+    (t.length < 400 && /^[A-Z][a-z]+(?:\s+[A-Z][a-z'-]+)*\s+is\s+(?:a|an|the|freelance|theatre)\s+(?:[Cc]ulture\s+|[Tt]heatre\s+|[Ff]reelance\s+|[Tt]heater\s+)?(?:journalist|critic|writer|editor|reviewer)/.test(t)) ||
     // Subscribe pitch
     /subscription\s+starting|Invest in The Stage|Subscribe\s+Start a subscription/i.test(t) ||
     // Copyright
@@ -376,10 +377,14 @@ function extractLsaBody(html) {
     .filter((m) => /<font[^>]+face="Arial,Helvetica,Geneva,Swiss/i.test(m[1]))
     .map((m) => stripHtml(m[1]))
     .filter((t) => t.length > 40 && /[a-z]/.test(t)
-      && !/^©|All rights reserved|PLASA Media|Subscribe to (?:News|LSA)|Back to|Today's News/i.test(t)
+      // BRO-6872: nav phrases anchored; an unanchored "Back to" dropped review
+      // paragraphs that said "comes back to" (LSA ID=R01JKR lost two).
+      && !/^©|All rights reserved|PLASA Media|Subscribe to (?:News|LSA)|^Back to\b|^Today's News/i.test(t)
       // Contact/address footer block ("Lighting&Sound America, 372 Central Park
       // West… Tel:… lsamedia.com") shares the Arial review font, so drop by content.
-      && !/Lighting\s*&\s*Sound America\s*,|Central Park West|Tel:\s*\d|lsamedia\.com/i.test(t));
+      // BRO-6872: "Central Park West" alone is a setting a review can name; the
+      // footer is still caught by the outlet name, phone and domain.
+      && !/Lighting\s*&\s*Sound America\s*,|Tel:\s*\d|lsamedia\.com/i.test(t));
   const body = paras.join('\n\n');
   return body.length >= 300 ? body : null;
 }
