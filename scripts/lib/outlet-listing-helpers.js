@@ -196,6 +196,21 @@ function slugNamesWord(urlSlug, word) {
 }
 
 // Does the headline write `word` with a capital first letter (or in capitals)?
+// A one-word title the headline writes only inside a hyphenated compound is not
+// named there: theupcoming's "Phoebe Waller-Bridge offers rent-free London flat"
+// filed to The Bridge (2026-11-04), because the slug "phoebe-waller-bridge-..."
+// splits on the hyphen. Slugs mirror the headline, so a compound-only headline
+// voids the slug match too. True hyphens only: an unspaced en dash is a separator.
+function headlineOnlyInCompound(headline, word) {
+  const h = foldDiacritics(String(headline || '')).toLowerCase();
+  const w = foldDiacritics(word).toLowerCase();
+  if (!h || !w) return false;
+  const esc = w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const all = h.match(new RegExp(`(^|[^a-z0-9])${esc}(?![a-z0-9])`, 'g')) || [];
+  if (!all.length) return false;
+  const loose = new RegExp(`(^|[^a-z0-9\u2010\u2011-])${esc}(?![a-z0-9]|[\u2010\u2011-][a-z0-9])`, 'g');
+  return !(h.match(loose) || []).length;
+}
 function headlineCapitalizes(headline, word) {
   const h = foldDiacritics(String(headline || ''));
   const w = foldDiacritics(word);
@@ -272,6 +287,7 @@ function findMatchingShows(headline, urlSlug, activeShows, creditText = '', { no
     // match (whole-word or glued, below) still counts on its own.
     if (ok && tokens.length === 1 && !needsCredit && !slugNamesWord(urlSlug, norm)
       && !headlineCapitalizes(headline, norm)) ok = false;
+    if (ok && tokens.length === 1 && headlineOnlyInCompound(headline, norm)) ok = false;
     if (!ok) {
       const glued = foldDiacritics(norm).replace(/[^a-z0-9]/g, '');
       ok = glued.length >= 6 && tokens[0] !== 'and'
@@ -889,6 +905,7 @@ function isFeedStale({ newestFiltered, filteredCount, newestAny = null, oldestAn
 }
 
 module.exports = {
+  headlineOnlyInCompound,
   publishedInRunWindow,
   OUTLET_FEED_HEALTH_REL,
   FEED_STALE_DAYS,

@@ -285,3 +285,48 @@ describe('ship-check P1 fixes (BRO-6921)', () => {
     assert.ok(!poller.OUTLET_STRATEGY_CONFIG.totaltheater1.pageConfirmAll);
   });
 });
+
+// Wrong-show admissions in the 2026-11-04 daily run (run 41885954795), found
+// auditing its 80 stubs for BRO-6921's "zero wrong-show admissions" check.
+describe('2026-11-04 poller admissions (BRO-6921 recheck)', () => {
+  const { headlineOnlyInCompound } = require('../../scripts/lib/outlet-listing-helpers.js');
+  const { listingPageUrlReason } = require('../../scripts/lib/non-review-url-patterns.js');
+  const BRIDGE = { id: 'the-bridge-off-west-end-2026', title: 'The Bridge', status: 'open', previewsStartDate: '2026-10-28', openingDate: '2026-11-03', closingDate: '2026-11-11', venue: 'Bush Theatre' };
+  const opts = { publishDate: '2026-11-04', nowMs: Date.parse('2026-11-04T18:00:00Z') };
+  const match = (headline, slug) => ids(findMatchingShows(headline, slug, [BRIDGE], '', opts));
+
+  test('a surname compound is not the one-word title (theupcoming, Waller-Bridge)', () => {
+    assert.deepEqual(match('Phoebe Waller-Bridge offers rent-free London flat to support emerging artists',
+      '/2026/11/04/phoebe-waller-bridge-offers-rent-free-london-flat-to-support-emerging/'), []);
+    assert.deepEqual(match('Bridge-building charity gala raises funds', '/2026/11/04/bridge-building-gala/'), []);
+  });
+  test('the real reviews of The Bridge still match', () => {
+    assert.deepEqual(match('Review: The Bridge, Bush Theatre', '/2026/11/03/review-the-bridge-bush-theatre/'), [BRIDGE.id]);
+    assert.deepEqual(match('', '/theatre/bridge-bush-theatre-review-entertaining-stand-one-sided-theatre'), [BRIDGE.id]);
+    // The title also named on its own beside a compound counts.
+    assert.deepEqual(match('The Bridge review: Waller-Bridge would approve', '/the-bridge-review/'), [BRIDGE.id]);
+    // An unspaced en dash is a separator, not a compound.
+    assert.deepEqual(match('Bridge–Bush Theatre review', '/bridge-bush-theatre-review/'), [BRIDGE.id]);
+  });
+  test('headlineOnlyInCompound', () => {
+    assert.equal(headlineOnlyInCompound('Phoebe Waller-Bridge offers a flat', 'bridge'), true);
+    assert.equal(headlineOnlyInCompound('Phoebe Waller‑Bridge offers a flat', 'bridge'), true);
+    assert.equal(headlineOnlyInCompound('Review: The Bridge', 'bridge'), false);
+    assert.equal(headlineOnlyInCompound('No mention here', 'bridge'), false);
+    assert.equal(headlineOnlyInCompound('', 'bridge'), false);
+  });
+  test('a /tag/ archive is a listing page on any host but the ones whose reviews live there', () => {
+    // StageBuddy's tag page was filed as a review of The King's Critique, still in previews.
+    assert.equal(listingPageUrlReason('https://stagebuddy.com/tag/the-kings-critique'), 'tag-index-page');
+    for (const u of ['https://1minutecritic.com/tag/hospital-hour/', 'https://theatrevibe.co.uk/tag/surinderella/',
+      'https://thespyinthestalls.com/tag/the-children/', 'https://khambayswordswordswords.blog/tag/tender/',
+      'https://example.com/category/off-broadway/', 'https://example.com/author/jane-doe/']) {
+      assert.equal(listingPageUrlReason(u), 'tag-index-page', u);
+    }
+    for (const u of ['https://twi-ny.com/tag/an-american-daughter/', 'https://www.whatsonoffbroadway.com/tag/the-crucible-review/',
+      'https://offoffonline.com/tag/the-holes/', 'https://stagebuddy.com/theater/theater-review/the-imaginary-invalid-2',
+      'https://example.com/2026/10/tag-team-review/']) {
+      assert.equal(listingPageUrlReason(u), null, u);
+    }
+  });
+});

@@ -604,6 +604,9 @@ function namedNonReviewReason(url, opts) {
  * reads it unconditionally ('listingPageUrl', escape hatch
  * listingPageUrlManualClear).
  */
+// Hosts that publish single reviews at /tag/<show>/ urls (see tag-index-page below).
+const TAG_REVIEW_HOSTS = /(^|\.)(?:twi-ny\.com|whatsonoffbroadway\.com|offoffonline\.com)$/;
+
 const LISTING_PAGE_URL_PATTERNS = [
   // BRO-5925: theatre.reviews linked the Almeida's what's-on index in its
   // Triumph roundup. The shared writer treated that venue listing as a
@@ -702,7 +705,13 @@ const LISTING_PAGE_URL_PATTERNS = [
   // 2026-11-03: their one /tag/ row each was counted (ENO Tosca took
   // cherylmarkosky.com/tag/english-national-opera/, scored 87); 0 of their
   // other 108 rows use the path.
-  { host: /(^|\.)(?:thereviewshub\.com|deadline\.com|vulture\.com|theatermania\.com|whatsonstage\.com|theatreweekly\.com|cherylmarkosky\.com|monstagigz\.com|firstnightmagazine\.com)$/, path: /^\/(?:tags?|category|author)\//i, reason: 'tag-index-page' },
+  // BRO-6921: the host list kept growing one incident at a time (StageBuddy's
+  // /tag/the-kings-critique was filed for a show still in previews, 2026-11-04),
+  // so the rule is now any host EXCEPT those whose reviews do sit at /tag/ urls.
+  // Corpus 2026-11-04: /tag|category|author/ files on 21 hosts; every one is
+  // flagged or an uncounted stub except twi-ny (2) and whatsonoffbroadway (1),
+  // the only such rows of 49,326 in reviews.json. TAG_REVIEW_HOSTS is that list.
+  { host: /./, path: /^\/(?:tags?|category|author)\//i, reason: 'tag-index-page', unlessHost: () => TAG_REVIEW_HOSTS },
 ];
 
 /**
@@ -725,6 +734,7 @@ function listingPageUrlReason(url) {
   for (const p of LISTING_PAGE_URL_PATTERNS) {
     if (!p.host.test(host)) continue;
     if (!p.path.test(pathname)) continue;
+    if (p.unlessHost && p.unlessHost().test(host)) continue;
     return p.reason;
   }
   if ((pathname === '' || pathname === '/') && !u.search) return 'bare-host';
