@@ -659798,40 +659798,56 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-11-05T18:14:33.199Z",
-    "completedAt": "2026-11-05T18:14:36.106Z",
-    "totalReviews": 8,
-    "processed": 0,
-    "skipped": 7,
-    "errors": 0,
+    "startedAt": "2026-11-05T18:14:32.242Z",
+    "completedAt": "2026-11-05T18:17:41.705Z",
+    "totalReviews": 80435,
+    "processed": 67,
+    "skipped": 80362,
+    "errors": 3,
     "tokensUsed": {
-      "input": 4321,
-      "output": 116,
-      "cacheRead": 3807,
-      "cacheWrite": 0,
-      "total": 12334
+      "input": 367466,
+      "output": 21005,
+      "cacheRead": 235846,
+      "cacheWrite": 30162,
+      "total": 977008
     },
-    "costUsd": 0.0150974,
-    "runId": "42081361911",
+    "costUsd": 0.789524975,
+    "runId": "42081289635",
     "source": "index",
-    "errorDetails": []
+    "errorDetails": [
+      {
+        "showId": "an-enemy-of-the-people-west-end-2024",
+        "outletId": "times-uk",
+        "error": "Review text too short or missing"
+      },
+      {
+        "showId": "alterations-west-end-2025",
+        "outletId": "thestage",
+        "error": "Review text too short or missing"
+      },
+      {
+        "showId": "the-years-west-end-2025",
+        "outletId": "thestage",
+        "error": "Review text too short or missing"
+      }
+    ]
   },
   {
-    "startedAt": "2026-11-05T18:19:35.045Z",
-    "completedAt": "2026-11-05T18:19:35.047Z",
-    "totalReviews": 0,
-    "processed": 0,
+    "startedAt": "2026-11-05T18:19:51.259Z",
+    "completedAt": "2026-11-05T18:20:08.296Z",
+    "totalReviews": 7,
+    "processed": 7,
     "skipped": 0,
     "errors": 0,
     "tokensUsed": {
-      "input": 0,
-      "output": 0,
+      "input": 10403,
+      "output": 1431,
       "cacheRead": 0,
       "cacheWrite": 0,
-      "total": 0
+      "total": 11834
     },
-    "costUsd": 0,
-    "runId": "42081361911",
+    "costUsd": 0.032916299999999996,
+    "runId": "42081289635",
     "source": "comparative-rescore",
     "errorDetails": []
   }
