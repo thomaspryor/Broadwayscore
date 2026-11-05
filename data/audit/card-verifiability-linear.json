@@ -1,22 +1,14 @@
 {
-  "generatedAt": "2026-11-04T13:12:06.334Z",
-  "total": 379,
-  "armedCount": 365,
-  "refusedCount": 14,
+  "generatedAt": "2026-11-05T13:25:31.529Z",
+  "total": 374,
+  "armedCount": 363,
+  "refusedCount": 11,
   "byKind": {
-    "no-section": 2,
-    "shape": 11,
+    "shape": 9,
+    "no-section": 1,
     "no-command": 1
   },
   "refused": [
-    {
-      "id": "BRO-6974",
-      "name": "Opening-night audit 2026-11-04",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6974/opening-night-audit-2026-11-04",
-      "reason": "card has no acceptance-criteria section or VERIFY line",
-      "kind": "no-section"
-    },
     {
       "id": "BRO-6957",
       "name": "iOS E2E: signed-out sweep, every sign-in prompt opens and closes cleanly",
@@ -50,27 +42,11 @@
       "kind": "no-command"
     },
     {
-      "id": "BRO-6939",
-      "name": "Onboarding follow-ups: audit new tours' art in CI, keep genre tags through a lost-push redo",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6939/onboarding-follow-ups-audit-new-tours-art-in-ci-keep-genre-tags",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/test-onboarding-data.js)",
-      "kind": "shape"
-    },
-    {
       "id": "BRO-6849",
       "name": "11 scripts/lib/*.test.js files never run in CI (glob is *.test.mjs only)",
       "priority": null,
       "url": "https://linear.app/broadway-scorecard/issue/BRO-6849/11-scriptslibtestjs-files-never-run-in-ci-glob-is-testmjs-only",
       "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node -e \"const n=require('fs').readdirSync('scripts/lib').filter(f=>f.endsWith('.test.js')).length;console.log(n);proces)",
-      "kind": "shape"
-    },
-    {
-      "id": "BRO-6790",
-      "name": "Add opera assets to the /brand page and download zip",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6790/add-opera-assets-to-the-brand-page-and-download-zip",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: unzip -l public/brand-kit/broadway-scorecard-brand-kit.zip | grep -c opera)",
       "kind": "shape"
     },
     {
@@ -123,30 +99,20 @@
     }
   ],
   "ownerJudgmentLimbo": {
-    "total": 299,
-    "checked": 299,
+    "total": 302,
+    "checked": 302,
     "complete": true,
-    "cards": []
+    "cards": [
+      {
+        "id": "BRO-6642",
+        "name": "Email sign-in: add a captcha (Cloudflare Turnstile) to code sends",
+        "priority": 3,
+        "url": "https://linear.app/broadway-scorecard/issue/BRO-6642/email-sign-in-add-a-captcha-cloudflare-turnstile-to-code-sends",
+        "source": "description"
+      }
+    ]
   },
   "missingCheckPaths": [
-    {
-      "id": "BRO-6963",
-      "name": "Web/app parity leftovers: toast wording, planned-date format, small-sample audience note, curated-historical min, photos on new rating",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6963/webapp-parity-leftovers-toast-wording-planned-date-format-small-sample",
-      "cmd": "node --test tests/unit/web-app-leftovers-parity.test.mjs",
-      "missingPaths": [
-        "tests/unit/web-app-leftovers-parity.test.mjs"
-      ]
-    },
-    {
-      "id": "BRO-6919",
-      "name": "iOS eas-build: manual builds get silently cancelled when a CI push queues behind the shared Supabase fixture lock",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6919/ios-eas-build-manual-builds-get-silently-cancelled-when-a-ci-push",
-      "cmd": "node --test scripts/verify-eas-build-gate-concurrency.test.mjs",
-      "missingPaths": [
-        "scripts/verify-eas-build-gate-concurrency.test.mjs"
-      ]
-    },
     {
       "id": "BRO-6917",
       "name": "Web sign-up flow: light-touch onboarding (anonymous ratings, quieter bookmark prompt, opt-in quiz after Sign-in-button sign-ups)",
@@ -166,30 +132,12 @@
       ]
     },
     {
-      "id": "BRO-6914",
-      "name": "Quiz follow-ups the BRO-6734 reviewer found outside its scope",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6914/quiz-follow-ups-the-bro-6734-reviewer-found-outside-its-scope",
-      "cmd": "node --test scripts/dispatch-follow-ups.test.mjs",
-      "missingPaths": [
-        "scripts/dispatch-follow-ups.test.mjs"
-      ]
-    },
-    {
       "id": "BRO-6909",
       "name": "Waiting for Lefty lost Vulture/NYSR/Pizzazz/Cititour to the cross-show URL guard (author-credit title vs closed 2024 regional)",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-6909/waiting-for-lefty-lost-vulturenysrpizzazzcititour-to-the-cross-show",
       "cmd": "node --test tests/unit/cross-show-url-guard.test.mjs",
       "missingPaths": [
         "tests/unit/cross-show-url-guard.test.mjs"
-      ]
-    },
-    {
-      "id": "BRO-6872",
-      "name": "Quarantined live test: run the opening-night lane (shadow, empty ledger) on past Broadway nights and grade vs the aggregator census",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6872/quarantined-live-test-run-the-opening-night-lane-shadow-empty-ledger",
-      "cmd": "test -f memory/opening-night-lane-shadow-grades.md",
-      "missingPaths": [
-        "memory/opening-night-lane-shadow-grades.md"
       ]
     },
     {
@@ -805,15 +753,6 @@
       ]
     },
     {
-      "id": "BRO-2454",
-      "name": "P2: audit routeAlert() call sites repo-wide for write-before-notify ordering",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2454/p2-audit-routealert-call-sites-repo-wide-for-write-before-notify",
-      "cmd": "node --test scripts/audit-route-alert.test.mjs",
-      "missingPaths": [
-        "scripts/audit-route-alert.test.mjs"
-      ]
-    },
-    {
       "id": "BRO-2445",
       "name": "Investigate Codex CLI reliability in ship-check/code-review sessions",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-2445/investigate-codex-cli-reliability-in-ship-checkcode-review-sessions",
@@ -829,15 +768,6 @@
       "cmd": "node --test scripts/lib/check-secrets-health.test.mjs",
       "missingPaths": [
         "scripts/lib/check-secrets-health.test.mjs"
-      ]
-    },
-    {
-      "id": "BRO-2263",
-      "name": "BSC Daily: Quality: outlet domain moves",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2263/bsc-daily-quality-outlet-domain-moves",
-      "cmd": "node --test tests/unit/outlet-registry-domain-aliases.test.mjs",
-      "missingPaths": [
-        "tests/unit/outlet-registry-domain-aliases.test.mjs"
       ]
     },
     {
