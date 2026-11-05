@@ -199,17 +199,25 @@ function slugNamesWord(urlSlug, word) {
 // A one-word title the headline writes only inside a hyphenated compound is not
 // named there: theupcoming's "Phoebe Waller-Bridge offers rent-free London flat"
 // filed to The Bridge (2026-11-04), because the slug "phoebe-waller-bridge-..."
-// splits on the hyphen. Slugs mirror the headline, so a compound-only headline
-// voids the slug match too. True hyphens only: an unspaced en dash is a separator.
-function headlineOnlyInCompound(headline, word) {
+// splits on the hyphen. A slug that just repeats the compound adds nothing; one
+// that names the word elsewhere ("/the-bridge-review/") is its own evidence.
+// True hyphens only: an unspaced en dash is a separator.
+const HYPHENS = '\\u2010\\u2011-';
+function headlineOnlyInCompound(headline, word, urlSlug = '') {
   const h = foldDiacritics(String(headline || '')).toLowerCase();
   const w = foldDiacritics(word).toLowerCase();
   if (!h || !w) return false;
   const esc = w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  const all = h.match(new RegExp(`(^|[^a-z0-9])${esc}(?![a-z0-9])`, 'g')) || [];
-  if (!all.length) return false;
-  const loose = new RegExp(`(^|[^a-z0-9\u2010\u2011-])${esc}(?![a-z0-9]|[\u2010\u2011-][a-z0-9])`, 'g');
-  return !(h.match(loose) || []).length;
+  if (!new RegExp(`(^|[^a-z0-9])${esc}(?![a-z0-9])`).test(h)) return false;
+  const loose = new RegExp(`(^|[^a-z0-9${HYPHENS}])${esc}(?![a-z0-9]|[${HYPHENS}][a-z0-9])`);
+  if (loose.test(h)) return false;
+  if (!urlSlug) return true;
+  const compounds = (h.match(new RegExp(`[a-z0-9]+(?:[${HYPHENS}][a-z0-9]+)+`, 'g')) || [])
+    .map((c) => c.replace(new RegExp(`[${HYPHENS}]`, 'g'), '-'))
+    .filter((c) => c.split('-').includes(w));
+  let rest = foldDiacritics(String(urlSlug)).toLowerCase().replace(/[\u2010\u2011]/g, '-');
+  for (const c of compounds) rest = rest.split(c).join(' ');
+  return !slugNamesWord(rest, w);
 }
 function headlineCapitalizes(headline, word) {
   const h = foldDiacritics(String(headline || ''));
@@ -287,8 +295,10 @@ function findMatchingShows(headline, urlSlug, activeShows, creditText = '', { no
     // match (whole-word or glued, below) still counts on its own.
     if (ok && tokens.length === 1 && !needsCredit && !slugNamesWord(urlSlug, norm)
       && !headlineCapitalizes(headline, norm)) ok = false;
-    if (ok && tokens.length === 1 && headlineOnlyInCompound(headline, norm)) ok = false;
-    if (!ok) {
+    // Checked before the glued-segment fallback, which must not re-admit it ("/BridgeBuilding.html").
+    const compoundOnly = tokens.length === 1 && headlineOnlyInCompound(headline, norm, urlSlug);
+    if (compoundOnly) ok = false;
+    if (!ok && !compoundOnly) {
       const glued = foldDiacritics(norm).replace(/[^a-z0-9]/g, '');
       ok = glued.length >= 6 && tokens[0] !== 'and'
         // normalizeTitle drops a leading article; the glued URL keeps it.
@@ -475,7 +485,7 @@ function findPageConfirmCandidates(item, activeShows, { alreadyMatched = [], rev
     if (!forms.length || COMMON_WORD_SHOW_TITLES.has(forms[0])) continue;
     // A one-word form written only inside a hyphenated compound (Waller-Bridge,
     // Sleight-of-Heart) is not named, as in findMatchingShows.
-    const form = forms.find((f) => formInHay(f, hay) && !(!f.includes(' ') && headlineOnlyInCompound(headline, f)));
+    const form = forms.find((f) => formInHay(f, hay) && !(!f.includes(' ') && headlineOnlyInCompound(headline, f, slug)));
     if (!form) continue;
     // Sibling productions share a main title (Alvin Ailey's "Legacy" and "New
     // Works" programmes, a run and its return): their credits and venue match

@@ -902,7 +902,7 @@ function directorGuardMapFor(guards) {
 
 function listingPatternsKey(guards) {
   const lib = (guards && guards.__nonReviewUrlPatterns) || {};
-  return JSON.stringify((lib.LISTING_PAGE_URL_PATTERNS || []).map(p => [String(p.host), String(p.path), p.reason]))
+  return JSON.stringify((lib.LISTING_PAGE_URL_PATTERNS || []).map(p => [String(p.host), String(p.path), p.reason, String(p.exceptHosts || '')]))
     + String(lib.listingPageUrlReason || '');
 }
 
@@ -2390,7 +2390,7 @@ function main() {
   process.exit(significant ? 2 : 0);
 }
 
-module.exports = { INCLUSION_FILES, SCORE_VALUE_FILES, LLM_INPUT_FILES, gitDiffHasChanges, changedFiles, isSignificant, ensureBaseRef, decideInclusion, FLAG_FIELDS, findLogExclusionSites, parseUnifiedHunks, computeTouchedSites, detectRebuildLoopTouch };
+module.exports = { listingPatternsKey, INCLUSION_FILES, SCORE_VALUE_FILES, LLM_INPUT_FILES, gitDiffHasChanges, changedFiles, isSignificant, ensureBaseRef, decideInclusion, FLAG_FIELDS, findLogExclusionSites, parseUnifiedHunks, computeTouchedSites, detectRebuildLoopTouch };
 
 // What this run measured, stamped with its real exit code for the Stop hook
 // (BRO-5270). Set once main() starts real work, so --help leaves no stamp.

@@ -299,12 +299,16 @@ describe('2026-11-04 poller admissions (BRO-6921 recheck)', () => {
     assert.deepEqual(match('Phoebe Waller-Bridge offers rent-free London flat to support emerging artists',
       '/2026/11/04/phoebe-waller-bridge-offers-rent-free-london-flat-to-support-emerging/'), []);
     assert.deepEqual(match('Bridge-building charity gala raises funds', '/2026/11/04/bridge-building-gala/'), []);
+    // The glued-segment fallback does not re-admit it.
+    assert.deepEqual(match('Bridge-building charity gala raises funds', '/news/BridgeBuilding.html'), []);
   });
   test('the real reviews of The Bridge still match', () => {
     assert.deepEqual(match('Review: The Bridge, Bush Theatre', '/2026/11/03/review-the-bridge-bush-theatre/'), [BRIDGE.id]);
     assert.deepEqual(match('', '/theatre/bridge-bush-theatre-review-entertaining-stand-one-sided-theatre'), [BRIDGE.id]);
     // The title also named on its own beside a compound counts.
     assert.deepEqual(match('The Bridge review: Waller-Bridge would approve', '/the-bridge-review/'), [BRIDGE.id]);
+    // A slug that names the title outside the headline's compound is its own evidence.
+    assert.deepEqual(match('Waller-Bridge would approve', '/the-bridge-review/'), [BRIDGE.id]);
     // An unspaced en dash is a separator, not a compound.
     assert.deepEqual(match('Bridge–Bush Theatre review', '/bridge-bush-theatre-review/'), [BRIDGE.id]);
   });
@@ -314,17 +318,21 @@ describe('2026-11-04 poller admissions (BRO-6921 recheck)', () => {
     assert.equal(headlineOnlyInCompound('Review: The Bridge', 'bridge'), false);
     assert.equal(headlineOnlyInCompound('No mention here', 'bridge'), false);
     assert.equal(headlineOnlyInCompound('', 'bridge'), false);
+    assert.equal(headlineOnlyInCompound('Phoebe Waller-Bridge offers a flat', 'bridge', '/phoebe-waller-bridge-offers-a-flat/'), true);
+    assert.equal(headlineOnlyInCompound('Phoebe Waller-Bridge offers a flat', 'bridge', '/the-bridge-review/'), false);
   });
   test('a /tag/ archive is a listing page on any host but the ones whose reviews live there', () => {
     // StageBuddy's tag page was filed as a review of The King's Critique, still in previews.
     assert.equal(listingPageUrlReason('https://stagebuddy.com/tag/the-kings-critique'), 'tag-index-page');
     for (const u of ['https://1minutecritic.com/tag/hospital-hour/', 'https://theatrevibe.co.uk/tag/surinderella/',
       'https://thespyinthestalls.com/tag/the-children/', 'https://khambayswordswordswords.blog/tag/tender/',
-      'https://example.com/category/off-broadway/', 'https://example.com/author/jane-doe/']) {
+      'https://example.com/author/jane-doe/', 'https://twi-ny.com/author/jane-doe/', 'https://example.com/tag/x/page/2/']) {
       assert.equal(listingPageUrlReason(u), 'tag-index-page', u);
     }
     for (const u of ['https://twi-ny.com/tag/an-american-daughter/', 'https://www.whatsonoffbroadway.com/tag/the-crucible-review/',
-      'https://offoffonline.com/tag/the-holes/', 'https://stagebuddy.com/theater/theater-review/the-imaginary-invalid-2',
+      'https://stagebuddy.com/theater/theater-review/the-imaginary-invalid-2',
+      // /category/ stays host-scoped: some sites nest article permalinks under it.
+      'https://example.com/category/theatre/the-bridge-review/', 'https://example.com/tag/x/the-bridge-review/',
       'https://example.com/2026/10/tag-team-review/']) {
       assert.equal(listingPageUrlReason(u), null, u);
     }
@@ -344,4 +352,13 @@ describe('page-confirm skips hyphen-compound one-word titles (BRO-6921 recheck)'
   test('the title named on its own is still a candidate', () => {
     assert.deepEqual(ids(findPageConfirmCandidates({ url: 'https://x.com/2026/11/03/the-bridge/', headline: 'The Bridge', publishDate: '2026-11-04' }, [BRIDGE], { reviewOnlyFeed: true, nowMs: now })), [BRIDGE.id]);
   });
+});
+
+test('scoring-delta fingerprints the tag-index exception hosts (BRO-6921 review P1)', () => {
+  const { listingPatternsKey } = require('../../scripts/scoring-delta.js');
+  const lib = require('../../scripts/lib/non-review-url-patterns.js');
+  const base = listingPatternsKey({ __nonReviewUrlPatterns: lib });
+  const edited = { ...lib, LISTING_PAGE_URL_PATTERNS: lib.LISTING_PAGE_URL_PATTERNS.map((p) => (p.exceptHosts ? { ...p, exceptHosts: /(^|\.)example\.com$/ } : p)) };
+  assert.ok(lib.LISTING_PAGE_URL_PATTERNS.some((p) => p.exceptHosts));
+  assert.notEqual(listingPatternsKey({ __nonReviewUrlPatterns: edited }), base);
 });
