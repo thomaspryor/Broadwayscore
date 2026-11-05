@@ -371,3 +371,32 @@ test('exactly one step carries the commit id, and no decoy step mimics it', () =
       `decoy. Commit+push steps found: ${committers.map((s) => s.name || s.uses).join(', ') || '(none)'}`,
   );
 });
+
+/**
+ * BRO-2914 (owner decision 2026-10-29, commit only on success). sweep-pending
+ * and deep-research must not commit a half-mutated pending queue when their
+ * mutator fails. batch-research is excluded on purpose: it checkpoints per show.
+ */
+test('sweep-pending commit requires its mutator to have succeeded', () => {
+  const wf = yaml.load(fs.readFileSync(WORKFLOW, 'utf-8'));
+  const steps = wf.jobs['sweep-pending'].steps;
+  const mutator = steps.find((s) => s.name === 'Sweep pending-review');
+  const commit = steps.find((s) => s.name === 'Commit sweep results');
+  assert.ok(mutator?.id, 'sweep mutator needs an id');
+  assert.ok(commit, 'commit step missing');
+  assert.match(String(commit.if), new RegExp(`steps\\.${mutator.id}\\.outcome\\s*==\\s*'success'`));
+});
+
+test('deep-research commits the pending queue only when its mutator succeeded', () => {
+  const wf = yaml.load(fs.readFileSync(WORKFLOW, 'utf-8'));
+  const steps = wf.jobs['deep-research'].steps;
+  const mutator = steps.find((s) => s.name === 'Run deep research');
+  const commit = steps.find((s) => s.name === 'Commit deep research results');
+  assert.ok(mutator?.id, 'deep-research mutator needs an id');
+  assert.match(String(commit.env.RESEARCH_OUTCOME), new RegExp(`steps\\.${mutator.id}\\.outcome`));
+  const run = String(commit.run);
+  const failBranch = run.slice(run.indexOf('else'), run.indexOf('fi'));
+  assert.ok(run.includes('$RESEARCH_OUTCOME" = "success"'), 'must branch on the outcome');
+  assert.ok(!/commercial-pending-review|commercial-research-queue/.test(failBranch), 'failure path must not stage the pending queue');
+  assert.match(failBranch, /deep-research-cost-log\.json/, 'failure path still records spend');
+});

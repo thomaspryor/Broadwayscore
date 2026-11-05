@@ -189,6 +189,7 @@ jobs:
         continue-on-error: true
 
       - name: Sweep pending-review
+        id: sweep_mutator
         run: |
           ARGS="--report-json=/tmp/sweep-report.json"
           if [ "${{ inputs.dry_run }}" = "true" ]; then
@@ -219,7 +220,10 @@ jobs:
         continue-on-error: true
 
       - name: Commit sweep results
-        if: always() && inputs.dry_run != true
+        # BRO-2914 (owner chose commit-only-on-success, 2026-10-29): a sweep that
+        # failed part-way must not push a half-mutated pending queue. always() is
+        # kept only so the step still evaluates after the continue-on-error steps.
+        if: always() && inputs.dry_run != true && steps.sweep_mutator.outcome == 'success'
         # Task #574: commits commercial-pending-review.json + commercial-
         # research-queue.json (union-merged managed files) — see push-with-
         # retry.sh's reconcile_merged_json().
@@ -271,6 +275,7 @@ jobs:
           configure-git: 'true'
 
       - name: Run deep research
+        id: deep_research_mutator
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: |
@@ -295,11 +300,17 @@ jobs:
           node scripts/deep-research-commercial.js $ARGS
 
       - name: Commit deep research results
+        # BRO-2914 (owner chose commit-only-on-success, 2026-10-29): when the
+        # research step failed or timed out, the pending queue and research queue
+        # are NOT committed (a half-written pending review is worse than redoing a
+        # run). Cost, spend and progress logs still are, so the budget cap keeps
+        # counting what the failed run already spent.
         if: always() && inputs.dry_run != true
         # Task #574: commits commercial-pending-review.json + commercial-
         # research-queue.json (union-merged managed files) — see push-with-
         # retry.sh's reconcile_merged_json().
         env:
+          RESEARCH_OUTCOME: ${{ steps.deep_research_mutator.outcome }}
           PUSH_RECONCILE_MERGED_JSON: '1'
           # BRO-123: same root cause as the batch-research push above. This
           # job has a 120min timeout (mostly consumed by the research loop
@@ -311,7 +322,12 @@ jobs:
           GIT_NET_TIMEOUT_SEC: '30'
         run: |
           # commercial.json is gitignored (core data); push-core-data syncs it to the private repo.
-          bash scripts/lib/git-add-existing.sh data/commercial-pending-review.json data/deep-research-cost-log.json data/deep-research-progress.json data/commercial-research-spend.json data/commercial-research-queue.json
+          if [ "$RESEARCH_OUTCOME" = "success" ]; then
+            bash scripts/lib/git-add-existing.sh data/commercial-pending-review.json data/deep-research-cost-log.json data/deep-research-progress.json data/commercial-research-spend.json data/commercial-research-queue.json
+          else
+            echo "Deep research outcome: $RESEARCH_OUTCOME. Committing cost/progress logs only; pending queue left untouched."
+            bash scripts/lib/git-add-existing.sh data/deep-research-cost-log.json data/deep-research-progress.json data/commercial-research-spend.json
+          fi
           if git diff --staged --quiet; then
             echo "No deep research results to commit"
           else
