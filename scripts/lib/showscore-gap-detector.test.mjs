@@ -60,7 +60,7 @@ test('a cleanly stamped attempt gets a 21-day grace, then is flagged', () => {
 // BRO-7023: Midnight (off-Broadway) sits on London's page until Show Score makes a NYC page.
 test('London page served and re-checked recently: not a gap (marker, or tombstone plus fresh attempt)', () => {
   const old = { openingDate: '2026-09-01' };
-  const marker = { a: { sources: {}, showScoreUkPageAt: '2026-10-14T02:00:00Z' } };
+  const marker = { a: { sources: {}, showScoreUkPageAt: '2026-10-08T14:00:00Z' } }; // 6.9 days old, weekly cadence
   const tomb = { a: { sources: {}, sourcesRemoved: { showScore: 'Show Score page is a UK production page (canonical /uk/london/...) (BRO-5499)' }, showScoreLastAttempted: '2026-10-14T02:00:00Z' } };
   assert.equal(findShowScoreGaps([show(old)], urls, marker, NOW).length, 0);
   assert.equal(findShowScoreGaps([show(old)], urls, tomb, NOW).length, 0);
@@ -68,7 +68,7 @@ test('London page served and re-checked recently: not a gap (marker, or tombston
 
 test('London-page state goes loud again when the scraper stops confirming it', () => {
   const old = { openingDate: '2026-09-01' };
-  const stale = { a: { sources: {}, showScoreUkPageAt: '2026-10-01T02:00:00Z' } };
+  const stale = { a: { sources: {}, showScoreUkPageAt: '2026-10-04T02:00:00Z' } }; // 11 days
   const tombStale = { a: { sources: {}, sourcesRemoved: { showScore: 'Show Score page is a UK production page' }, showScoreLastAttempted: '2026-10-01T02:00:00Z' } };
   const tombOnly = { a: { sources: {}, sourcesRemoved: { showScore: 'Show Score page is a UK production page' } } };
   assert.equal(findShowScoreGaps([show(old)], urls, stale, NOW).length, 1);
