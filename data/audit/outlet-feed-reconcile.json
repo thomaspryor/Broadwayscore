@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-05T09:02:25.905Z",
+  "generatedAt": "2026-11-05T10:45:05.484Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -114,6 +114,14 @@
       "error": "HTTP 403 for https://davidcote1.substack.com/feed"
     },
     {
+      "outletId": "south-london",
+      "error": "Timeout fetching https://southlondon.co.uk/feed/"
+    },
+    {
+      "outletId": "theatre-vibe",
+      "error": "Timeout fetching https://theatrevibe.co.uk/feed/"
+    },
+    {
       "outletId": "theartsdispatch",
       "error": "HTTP 403 for https://theartsdispatch.substack.com/feed"
     },
@@ -126,7 +134,7 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 808,
+  "itemsScanned": 807,
   "matchedGaps": 5,
   "possibleGaps": 5,
   "gaps": [
