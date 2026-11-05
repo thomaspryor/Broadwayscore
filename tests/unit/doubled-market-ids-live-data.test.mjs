@@ -71,6 +71,8 @@ test('every allowlisted corpus row parses to the expected parts', (t) => {
       { prefix: 'paranormal-activity-national-tour', market: 'regional', doubledWord: 'tour', year: '2025' },
     'strictly-come-dancing-london-off-west-end-2027':
       { prefix: 'strictly-come-dancing-london', market: 'off-west-end', doubledWord: 'london', year: '2027' },
+    'loki-the-end-of-the-world-tour-regional-2026':
+      { prefix: 'loki-the-end-of-the-world-tour', market: 'regional', doubledWord: 'tour', year: '2026' },
   };
   assert.deepEqual(Object.keys(expected).sort(), [...D.ALLOWLIST.keys()].sort(),
     'this table and ALLOWLIST have drifted apart');
