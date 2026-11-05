@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-11-05T03:03:41.121Z",
+    "generatedAt": "2026-11-05T12:18:12.870Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": true,
@@ -10,55 +10,50 @@
     "minChurn": 30,
     "flaggedCount": 0,
     "exemptCount": 1,
-    "coveredCount": 8,
-    "highChurnTracked": 9
+    "coveredCount": 7,
+    "highChurnTracked": 8
   },
   "flagged": [],
   "exempt": [
     {
       "path": "data/audit/alert-ledger.json",
-      "churn": 39
+      "churn": 44
     }
   ],
   "covered": [
     {
       "path": "data/audit/scraper-spend-ledger.jsonl",
-      "churn": 74,
+      "churn": 61,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 46,
+      "churn": 48,
       "mergeAttr": "union"
     },
     {
-      "path": "data/audit/cross-show-fingerprint-collisions.json",
-      "churn": 32,
+      "path": "data/audit/deploy-watermark.json",
+      "churn": 40,
       "mergeAttr": "ours"
     },
     {
-      "path": "data/audit/deploy-watermark.json",
-      "churn": 32,
+      "path": "data/audit/cross-show-fingerprint-collisions.json",
+      "churn": 37,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/needs-human-review.json",
-      "churn": 32,
+      "churn": 37,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/rebuild-score-drift.json",
-      "churn": 32,
+      "churn": 37,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/skipped-alias-collisions.json",
-      "churn": 32,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/collection-state/scoring-progress.json",
-      "churn": 30,
+      "churn": 37,
       "mergeAttr": "ours"
     }
   ]

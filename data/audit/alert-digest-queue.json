@@ -187,6 +187,34 @@
     "queuedAt": "2026-11-05T11:38:08.402Z"
   },
   {
+    "conditionKey": "corpus-drift:outlet-identity-hygiene",
+    "title": "Corpus drift: live reviews on look-alike/blocked hosts, look-alike registry aliases, or undecided provisional outlets (still open — BRO-5823)",
+    "description": "Still firing after 30 notifications since it was filed. Tracked at BRO-5823.\n\ncheck-corpus-drift.js audit \"outlet-identity-hygiene\" (node scripts/audit-outlet-identity-hygiene.js --strict) has been drifting. Latest output:\n\nlive reviews scanned: 49371\nlive reviews on look-alike/blocked host: 0\nregistry aliases naming a look-alike host: 0\nlive reviews with unregistered outlet: 7 outlet(s)\n  (+9 staged by the rebuild within the grace window, not failed: drtomstevens, withashleyandco, howlround, zanderopper, sflinsider, david-finkle, hourdetroit, fxbgadvance, the-lost-and-avatar)\ncorpus files scanned: 80457; provisional outlets without a decision: 10\n  globalnews2 (1) e.g. a-few-good-men-2026/globalnews2--unknown.json\n  beauty-news-nyc (1) e.g. afterglow-off-broadway-2017/beauty-news-nyc--pk-greenfield.json\n  should-appeal-to-two-audiences (1) e.g. angels-in-america-2018/should-appeal-to-two-audiences--national-theatre.json\n  the-showmance-already-happened (1) e.g. anna-christie-off-broadway-2025/the-showmance-already-happened--in-brooklyn.json\n  theglobalcelebritymeter (1) e.g. billy-crystal-860-2026/theglobalcelebritymeter--steve-smith.json\n  rivertribe (1) e.g. dog-mom-off-west-end-2026/rivertribe--lyndsay-kenwright.json\n  texannews (1) e.g. hadestown-tour-2024/texannews--unknown.json\n  marissavivian (1) e.g. king-of-the-yees-off-broadway-2026/marissavivian--marissa.json\n  substack-com (1) e.g. other-desert-cities-2026/substack-com--sloan-ciccone.json\n  wtlgomag (3) e.g. shucked-tour-2024/wtlgomag--unknown.json\nPROBLEMS: 17",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": "BRO-5823",
+    "fields": [],
+    "queuedAt": "2026-11-05T12:24:43.012Z"
+  },
+  {
+    "conditionKey": "corpus-drift:monitor-only",
+    "title": "Data-quality monitors drifting from baseline: 18 (backfill-everybodys-talking-about-jamie-show-exists, pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, +12 more). Checked 2026-11-05.",
+    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-05T12:24:43.123Z"
+  },
+  {
     "conditionKey": "test-yml:data-validation-red",
     "title": "Data audits failing (non-blocking): Audit outlet-registry gaps (still open — BRO-5882)",
     "description": "Still firing after 37 notifications since it was filed. Tracked at BRO-5882.\n\nCorpus-state audits in test.yml Data Validation failed. They no longer decide main's color (BRO-3425). Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/42024071933",
