@@ -1,13 +1,48 @@
 {
-  "generatedAt": "2026-11-05T18:37:55.490Z",
+  "generatedAt": "2026-11-05T19:19:41.869Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 324,
-  "clean": 324,
-  "defective": 0,
-  "byType": {},
-  "shows": [],
+  "clean": 322,
+  "defective": 2,
+  "byType": {
+    "score-drift": 2
+  },
+  "shows": [
+    {
+      "showId": "the-heart-off-broadway-2026",
+      "title": "The Heart",
+      "openingDate": "2026-10-29",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 77.35 vs local 77.29 (Δ0.06)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 21,
+      "deployedCount": 21,
+      "firstDefectAt": "2026-11-05T19:19:35.739Z"
+    },
+    {
+      "showId": "in-the-heights-off-broadway-2026",
+      "title": "In the Heights",
+      "openingDate": "2026-10-28",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 75.45 vs local 75.52 (Δ0.07)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 9,
+      "deployedCount": 9,
+      "firstDefectAt": "2026-11-05T19:19:35.739Z"
+    }
+  ],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }
