@@ -149,7 +149,8 @@
     "the-smile-of-her-off-west-end-2026/britishtheatrecom--susan-novak.json",
     "white-rabbit-red-rabbit-west-end-2026/londontheatredirect--matthew-keeley.json",
     "white-rabbit-red-rabbit-west-end-2026/whatsonstage--alex-wood.json",
-    "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/off-off-online--edward-karam.json"
+    "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/off-off-online--edward-karam.json",
+    "ceilidh-the-musical-off-west-end-2026/guardian--unknown.json"
   ],
   "failed": [
     "_superseded-misattributed/ruthless-the-musical-off-broadway-2015--stagezine--scott-harrah--1793106197109.json",
@@ -251,7 +252,15 @@
     "golden-boy-off-west-end-2026/thestage--dave-fargnoli.json",
     "white-rabbit-red-rabbit-west-end-2026/thestage--dave-fargnoli.json",
     "white-rabbit-red-rabbit-west-end-2026/times-uk--anya-ryan.json",
-    "beetlejuice-west-end-2026/amny--matt-windman.json"
+    "beetlejuice-west-end-2026/amny--matt-windman.json",
+    "the-bridge-off-west-end-2026/theatreandtonic--emmie-newitt.json",
+    "tosca-english-national-opera-west-end-2026/bachtrack--anna-bogdanova.json",
+    "tosca-english-national-opera-west-end-2026/bachtrack--clare-varney.json",
+    "tosca-english-national-opera-west-end-2026/bachtrack--mark-pullinger.json",
+    "tosca-english-national-opera-west-end-2026/bachtrack--peter-quantrill.json",
+    "tosca-english-national-opera-west-end-2026/cherylmarkosky--cherylmarkosky.json",
+    "tosca-english-national-opera-west-end-2026/times-uk--richard-morrison.json",
+    "ceilidh-the-musical-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -339,12 +348,15 @@
       "the-smile-of-her-off-west-end-2026/britishtheatrecom--susan-novak.json",
       "white-rabbit-red-rabbit-west-end-2026/londontheatredirect--matthew-keeley.json",
       "white-rabbit-red-rabbit-west-end-2026/whatsonstage--alex-wood.json",
-      "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/off-off-online--edward-karam.json"
+      "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/off-off-online--edward-karam.json",
+      "ceilidh-the-musical-off-west-end-2026/guardian--unknown.json"
     ],
     "amp": [],
     "browserbase": [
       "data/review-texts/dirty-dancing-tour-2026/nytimes--michael-paulson.json",
-      "dirty-dancing-tour-2026/nytimes--michael-paulson.json"
+      "dirty-dancing-tour-2026/nytimes--michael-paulson.json",
+      "data/review-texts/tosca-english-national-opera-west-end-2026/times-uk--richard-morrison.json",
+      "tosca-english-national-opera-west-end-2026/times-uk--richard-morrison.json"
     ],
     "directCookies": [],
     "scrapingdog": [
@@ -367,9 +379,6 @@
       "roleplay-off-west-end-2026/broadwayworld--cindy-marcolina.json",
       "the-curious-case-of-benjamin-button-off-broadway-2026/theatrely--emily-wyrwa.json",
       "the-holes-off-broadway-2026/broadwayworld--unknown.json"
-    ],
-    "brightdata": [
-      "oh-mary-2024/cititour--unknown.json"
     ],
     "brightdata": [
       "the-holes-off-broadway-2026/broadwayworld--unknown.json",
@@ -413,7 +422,7 @@
     ]
   },
   "startTime": "2026-11-04T22:29:38.217Z",
-  "lastProcessed": "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/off-off-online--edward-karam.json",
+  "lastProcessed": "ceilidh-the-musical-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
   "log": [
     {
       "t": "2026-11-05T00:52:30.627Z",
@@ -425,6 +434,53 @@
       "t": "2026-11-05T00:52:31.312Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-05T01:00:24.242Z",
+      "event": "bb-session",
+      "session": "8d434ff1",
+      "url": "https://bachtrack.com/review-lorfeo-william-kentridge-greek-national-opera-athen"
+    },
+    {
+      "t": "2026-11-05T01:01:26.153Z",
+      "event": "bb-session",
+      "session": "168d22fa",
+      "url": "https://bachtrack.com/review-shostakovich-cherry-town-ahlbom-dutch-national-oper"
+    },
+    {
+      "t": "2026-11-05T01:01:34.606Z",
+      "event": "bb-session",
+      "session": "6d9c52a6",
+      "url": "https://bachtrack.com/review-shostakovich-cherry-town-ahlbom-dutch-national-oper"
+    },
+    {
+      "t": "2026-11-05T01:03:26.040Z",
+      "event": "bb-session",
+      "session": "09a35f52",
+      "url": "https://bachtrack.com/review-tosca-miskimmon-glassberg-fanyo-english-national-op"
+    },
+    {
+      "t": "2026-11-05T01:04:27.705Z",
+      "event": "bb-session",
+      "session": "a16289c8",
+      "url": "https://bachtrack.com/review-nozze-figaro-pountney-conta-bucharest-national-oper"
+    },
+    {
+      "t": "2026-11-05T01:04:37.521Z",
+      "event": "bb-session",
+      "session": "e902e7e8",
+      "url": "https://bachtrack.com/review-nozze-figaro-pountney-conta-bucharest-national-oper"
+    },
+    {
+      "t": "2026-11-05T01:08:03.343Z",
+      "event": "bb-session",
+      "session": "6116d5d9",
+      "url": "https://www.thetimes.com/culture/classical-opera/article/tosca-review-london-col"
+    },
+    {
+      "t": "2026-11-05T01:08:04.334Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ]
 }

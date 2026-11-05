@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-11-05T00:56:44.464Z",
-  "processed": 150,
-  "failed": 100,
-  "successRate": "60.0%",
+  "updatedAt": "2026-11-05T01:09:19.352Z",
+  "processed": 151,
+  "failed": 108,
+  "successRate": "58.3%",
   "tierBreakdown": {
-    "playwright": 84,
+    "playwright": 85,
     "amp": 0,
-    "browserbase": 2,
+    "browserbase": 4,
     "directCookies": 0,
     "scrapingdog": 13,
-    "scrapingbee": 3,
+    "scrapingbee": 4,
     "brightdata": 2,
     "archiveToday": 0,
     "archive": 33
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 7,
   "recentActivity": [
     {
       "t": "2026-11-05T00:52:30.627Z",
@@ -26,6 +26,53 @@
       "t": "2026-11-05T00:52:31.312Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-05T01:00:24.242Z",
+      "event": "bb-session",
+      "session": "8d434ff1",
+      "url": "https://bachtrack.com/review-lorfeo-william-kentridge-greek-national-opera-athen"
+    },
+    {
+      "t": "2026-11-05T01:01:26.153Z",
+      "event": "bb-session",
+      "session": "168d22fa",
+      "url": "https://bachtrack.com/review-shostakovich-cherry-town-ahlbom-dutch-national-oper"
+    },
+    {
+      "t": "2026-11-05T01:01:34.606Z",
+      "event": "bb-session",
+      "session": "6d9c52a6",
+      "url": "https://bachtrack.com/review-shostakovich-cherry-town-ahlbom-dutch-national-oper"
+    },
+    {
+      "t": "2026-11-05T01:03:26.040Z",
+      "event": "bb-session",
+      "session": "09a35f52",
+      "url": "https://bachtrack.com/review-tosca-miskimmon-glassberg-fanyo-english-national-op"
+    },
+    {
+      "t": "2026-11-05T01:04:27.705Z",
+      "event": "bb-session",
+      "session": "a16289c8",
+      "url": "https://bachtrack.com/review-nozze-figaro-pountney-conta-bucharest-national-oper"
+    },
+    {
+      "t": "2026-11-05T01:04:37.521Z",
+      "event": "bb-session",
+      "session": "e902e7e8",
+      "url": "https://bachtrack.com/review-nozze-figaro-pountney-conta-bucharest-national-oper"
+    },
+    {
+      "t": "2026-11-05T01:08:03.343Z",
+      "event": "bb-session",
+      "session": "6116d5d9",
+      "url": "https://www.thetimes.com/culture/classical-opera/article/tosca-review-london-col"
+    },
+    {
+      "t": "2026-11-05T01:08:04.334Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ]
 }
