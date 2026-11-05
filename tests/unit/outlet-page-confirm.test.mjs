@@ -330,3 +330,18 @@ describe('2026-11-04 poller admissions (BRO-6921 recheck)', () => {
     }
   });
 });
+
+describe('page-confirm skips hyphen-compound one-word titles (BRO-6921 recheck)', () => {
+  const BRIDGE = { id: 'the-bridge-off-west-end-2026', title: 'The Bridge', status: 'open', previewsStartDate: '2026-10-28', openingDate: '2026-11-03', closingDate: '2026-11-11', venue: 'Bush Theatre' };
+  const HEART = { id: 'the-heart-off-broadway-2026', title: 'The Heart', status: 'open', previewsStartDate: '2026-10-10', openingDate: '2026-10-29', venue: 'Signature Theatre' };
+  const now = Date.parse('2026-11-04T18:00:00Z');
+  test('no page fetch is spent on a compound-only headline', () => {
+    assert.deepEqual(ids(findPageConfirmCandidates({ url: 'https://www.theguardian.com/tv-and-radio/2026/nov/04/fleabag-creator-phoebe-waller-bridge-donates-flat-to-help-writers',
+      headline: 'Phoebe Waller-Bridge donates flat to help early-career writers live in London', publishDate: '2026-11-04' }, [BRIDGE], { reviewOnlyFeed: true, nowMs: now })), []);
+    assert.deepEqual(ids(findPageConfirmCandidates({ url: 'https://thefrontrowcenter.com/2026/10/legerdemain-at-the-tank-lynn-rosens-sleight-of-heart-comedy/',
+      headline: 'Legerdemain at The Tank: Lynn Rosen’s Sleight-of-Heart Comedy', publishDate: '2026-10-30' }, [HEART], { reviewOnlyFeed: true, nowMs: now })), []);
+  });
+  test('the title named on its own is still a candidate', () => {
+    assert.deepEqual(ids(findPageConfirmCandidates({ url: 'https://x.com/2026/11/03/the-bridge/', headline: 'The Bridge', publishDate: '2026-11-04' }, [BRIDGE], { reviewOnlyFeed: true, nowMs: now })), [BRIDGE.id]);
+  });
+});

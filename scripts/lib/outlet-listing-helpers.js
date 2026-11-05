@@ -473,7 +473,9 @@ function findPageConfirmCandidates(item, activeShows, { alreadyMatched = [], rev
     if (skip.has(show.id)) continue;
     const forms = titleForms(show);
     if (!forms.length || COMMON_WORD_SHOW_TITLES.has(forms[0])) continue;
-    const form = forms.find((f) => formInHay(f, hay));
+    // A one-word form written only inside a hyphenated compound (Waller-Bridge,
+    // Sleight-of-Heart) is not named, as in findMatchingShows.
+    const form = forms.find((f) => formInHay(f, hay) && !(!f.includes(' ') && headlineOnlyInCompound(headline, f)));
     if (!form) continue;
     // Sibling productions share a main title (Alvin Ailey's "Legacy" and "New
     // Works" programmes, a run and its return): their credits and venue match
