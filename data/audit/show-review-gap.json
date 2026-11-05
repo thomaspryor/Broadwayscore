@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-11-05T17:29:01.482Z",
+  "generatedAt": "2026-11-05T18:37:16.557Z",
   "windowDays": 1095,
-  "targets": 911,
-  "auditedThisRun": 7,
-  "carriedForward": 2034,
+  "targets": 922,
+  "auditedThisRun": 4,
+  "carriedForward": 2037,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
@@ -16,7 +16,7 @@
     "humanExcluded": 26,
     "automatedExcluded": 1018,
     "automatedExcludedListed": 730,
-    "priorProductionCitations": 6074
+    "priorProductionCitations": 6071
   },
   "results": [
     {
@@ -178228,8 +178228,8 @@
         "https://pagesonstages.com/2026/10/23/king-of-the-yees/",
         "https://www.interestedbystander.com/2026/10/theater-reviews-lauren-yees-king-of.html",
         "https://www.offoffonline.com/offoffonline/2026/10/22/king-of-the-yees",
-        "https://nyunews.com/arts/performance/2026/10/20/review-king-of-the-yees/",
         "https://marissavivian.substack.com/p/king-of-the-yees-review",
+        "https://nyunews.com/arts/performance/2026/10/20/review-king-of-the-yees/",
         "https://nottobedramatic.substack.com/p/fish-and-king-of-the-yees-reviews",
         "https://theaterscene.com/reviews/king-of-the-yees/",
         "https://thefrontrowcenter.com/2026/10/king-of-the-yees-at-signature-theatre/",
@@ -178308,7 +178308,7 @@
             "geo": "us",
             "ok": true,
             "results": 8,
-            "accepted": 0,
+            "accepted": 2,
             "error": null
           },
           {
@@ -178317,8 +178317,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 9,
-            "accepted": 0,
+            "results": 7,
+            "accepted": 1,
             "error": null
           },
           {
@@ -178327,8 +178327,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 9,
-            "accepted": 0,
+            "results": 8,
+            "accepted": 1,
             "error": null
           },
           {
@@ -178348,28 +178348,25 @@
             "geo": "us",
             "ok": true,
             "results": 9,
-            "accepted": 3,
+            "accepted": 0,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 3,
+        "resultCount": 4,
         "error": null
       },
       "candidatesRejected": {
-        "count": 136,
+        "count": 129,
         "byReason": {
           "aggregator-internal-nav": 41,
-          "non-review-host": 28,
-          "bare-host": 1,
-          "not-http-url": 47,
-          "show-listing-page": 1,
-          "production-database-listing": 9,
+          "not-http-url": 43,
+          "production-database-listing": 10,
           "aggregator-section-root": 5,
-          "non-stage-review": 2,
-          "tag-index-page": 1,
-          "ticketing-listing": 1
+          "non-review-host": 28,
+          "non-stage-review": 1,
+          "census-junk-host": 1
         }
       },
       "dedupedVariants": [
@@ -178413,7 +178410,7 @@
           "expectedReason": null,
           "unclassified": false,
           "zeroChar": false,
-          "reason": "⚠️  Scrapingdog pace (~170948/day) projects exhaustion in ~27d, before the 29d-out renewal — still using SD (prepaid credits beat BD's ~17x cost); health-check tracks the burn\n⚠️  Scrapingdog failed (dynamic=false, domain=morristheatredc.com): Scrapingdog HTTP 400: Oops! Something went wrong. You won’t be charged for this request. You can try enabling Stealth Mode using stealth_mode=true. If the issue continues, feel free to email us at info@scrapingdog.com.\nFetch failed: fetch failed: All scraping methods failed; no archive.org capture"
+          "reason": "spawnSync node ETIMEDOUT | ⚠️  Scrapingdog failed (dynamic=false, domain=morristheatredc.com): Scrapingdog HTTP 400: Oops! Something went wrong. You won’t be charged for this request. You can try enabling Stealth Mode using stealth_mode=true. If the issue continues, feel free to email us at info@scrapingdog.com."
         }
       ],
       "ingestSkippedByCap": [],
@@ -178523,16 +178520,16 @@
             "firstSeenAt": "2026-11-03T02:30:34.695Z"
           },
           {
-            "url": "https://nyunews.com/arts/performance/2026/10/20/review-king-of-the-yees/",
-            "outletId": "nyunews.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-04T17:07:25.311Z"
-          },
-          {
             "url": "https://marissavivian.substack.com/p/king-of-the-yees-review",
             "outletId": "marissavivian.substack.com",
             "state": "live",
             "firstSeenAt": "2026-10-24T11:53:28.442Z"
+          },
+          {
+            "url": "https://nyunews.com/arts/performance/2026/10/20/review-king-of-the-yees/",
+            "outletId": "nyunews.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-04T17:07:25.311Z"
           },
           {
             "url": "https://nottobedramatic.substack.com/p/fish-and-king-of-the-yees-reviews",
@@ -178585,7 +178582,7 @@
         "liveCount": 17,
         "candidateCount": 20
       },
-      "computedAt": "2026-11-05T06:00:29.201Z"
+      "computedAt": "2026-11-05T18:37:16.557Z"
     },
     {
       "showId": "kinky-boots-the-musical-west-end-2026",
@@ -211930,11 +211927,7 @@
         "https://newyorktheatrereview.blogspot.com/2015/10/wesley-doucette-on-medea-as-presented.html",
         "http://www.ayoungertheatre.com/review-medea-wilton-music-hall-teatro-patalogico/",
         "https://newyorkclassicalreview.com/2026/10/yoncheva-spyres-provide-adrenaline-injection-to-mets-medea-revival/",
-        "https://bachtrack.com/review-cherubini-medea-radvanovsky-polenzani-mcvicar-metropolitan-opera-new-york-september-2022",
         "https://operawire.com/metropolitan-opera-2022-23-review-medea/",
-        "https://operacanada.ca/the-metropolitan-opera-medea-sondra-radvanovsky-giving-one-of-the-most-fully-immersive-performances-ive-ever-seen-on-an-opera-stage/",
-        "https://indieopera.com/review-medea/",
-        "https://bachtrack.com/fr_FR/review-cherubini-medea-radvanovsky-polenzani-mcvicar-metropolitan-opera-new-york-september-2022",
         "https://operawire.com/metropolitan-opera-2026-27-review-medea/",
         "https://www.broadwayworld.com/bwwopera/article/Review-Spectacular-Yoncheva-Shows-What-MEDEA-Is-All-About-at-the-Met-20261101",
         "https://www.timeout.com/newyork/theater/medea-4",
@@ -211945,6 +211938,8 @@
         "https://aroundthetownchicago.com/theatre-reviews/medea-reviewed-by-jacob-davis/",
         "https://www.the-tls.com/arts/theatre/medea-sohoplace-phaedra-national-theatre-review-mary-beard",
         "https://parterre.com/works/medea/",
+        "https://bachtrack.com/review-cherubini-medea-radvanovsky-polenzani-mcvicar-metropolitan-opera-new-york-september-2022",
+        "https://bachtrack.com/fr_FR/review-cherubini-medea-radvanovsky-polenzani-mcvicar-metropolitan-opera-new-york-september-2022",
         "https://everything-theatre.co.uk/2026/10/review-the-musical-medea-upstairs-at-the-gatehouse/"
       ],
       "dirFiles": 19,
@@ -211963,34 +211958,6 @@
           ],
           "priorRun": true,
           "priorRunSource": "show-score-url-year"
-        },
-        {
-          "url": "https://operacanada.ca/the-metropolitan-opera-medea-sondra-radvanovsky-giving-one-of-the-most-fully-immersive-performances-ive-ever-seen-on-an-opera-stage/",
-          "host": "operacanada.ca",
-          "knownOutletId": "operacanada",
-          "serpCensus": true,
-          "priorRun": true,
-          "priorRunSource": "pending-file-date:2022-10-13",
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ]
-        },
-        {
-          "url": "https://indieopera.com/review-medea/",
-          "host": "indieopera.com",
-          "knownOutletId": "indie-opera",
-          "serpCensus": true,
-          "priorRun": true,
-          "priorRunSource": "pending-file-date:2022-10-01",
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ]
         },
         {
           "url": "https://musicaltheatrereview.com/the-musical-medea-upstairs-at-the-gatehouse-2/",
@@ -212188,87 +212155,12 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"Medea\" Off-Broadway review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"Medea\" Off-Broadway review 2026",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 9,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"Medea\" review metropolitan",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 8,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "scoped2",
-            "query": "\"Medea\" McVicar review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 9,
-            "accepted": 3,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "Medea Metropolitan Opera House review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 9,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "Medea Metropolitan Opera House review",
-            "page": 1,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 2,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "Medea Metropolitan Opera House review",
-            "page": 2,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 1,
-            "error": null
-          }
-        ],
-        "queriesOk": 6,
-        "queriesTotal": 6,
-        "resultCount": 6,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 41,
-        "byReason": {
-          "non-review-host": 9,
-          "not-http-url": 27,
-          "event-listing": 1,
-          "no-review-evidence": 1,
-          "census-junk-host": 1,
-          "ticketing-reseller": 1,
-          "review-hub-page": 1
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
       "nonReviewCandidates": [
@@ -212289,37 +212181,23 @@
           "priorRun": true,
           "reason": "prior-run",
           "censusGateOn": true
-        },
-        {
-          "url": "https://operacanada.ca/the-metropolitan-opera-medea-sondra-radvanovsky-giving-one-of-the-most-fully-immersive-performances-ive-ever-seen-on-an-opera-stage/",
-          "host": "operacanada.ca",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://indieopera.com/review-medea/",
-          "host": "indieopera.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
         }
       ],
       "ingestResults": [
         {
-          "url": "https://parterre.com/works/medea/",
-          "host": "parterre.com",
-          "outletId": "parterre-box",
+          "url": "https://www.the-tls.com/arts/theatre/medea-sohoplace-phaedra-national-theatre-review-mary-beard",
+          "host": "the-tls.com",
+          "outletId": "the-tls",
           "provisional": false,
           "ok": false,
-          "noop": true,
+          "noop": false,
           "conflict": false,
           "conflictReason": null,
           "expected": false,
           "expectedReason": null,
           "unclassified": false,
           "zeroChar": false,
-          "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir (no-changes)"
+          "reason": "spawnSync node ETIMEDOUT | ⚠️  Scrapingdog failed (dynamic=false, domain=the-tls.com): Scrapingdog HTTP 400: Oops! Something went wrong. You won’t be charged for this request. You can try enabling Stealth Mode using stealth_mode=true. If the issue continues, feel free to email us at info@scrapingdog.com."
         },
         {
           "url": "https://musicaltheatrereview.com/the-musical-medea-upstairs-at-the-gatehouse-2/",
@@ -212327,14 +212205,14 @@
           "outletId": "musical-theatre-review",
           "provisional": false,
           "ok": false,
-          "noop": true,
+          "noop": false,
           "conflict": false,
           "conflictReason": null,
-          "expected": true,
-          "expectedReason": "publish-date-unresolved",
+          "expected": false,
+          "expectedReason": null,
           "unclassified": false,
           "zeroChar": false,
-          "reason": "medea-off-broadway-2026: https://musicaltheatrereview.com/the-musical-medea-upstairs-at-the-gatehouse-2/ has no readable publish date and this show has an earlier-dated citation (a prior production), so the undated page was refused rather than filed where it could be scored as this run's review. Expected rejection; if it IS this production's review, ingest it with --publish-date=YYYY-MM-DD."
+          "reason": "spawnSync node ETIMEDOUT | ⚠️  Scrapingdog failed (dynamic=false, domain=musicaltheatrereview.com): Scrapingdog HTTP 400: Oops! Something went wrong. You won’t be charged for this request. You can try enabling Stealth Mode using stealth_mode=true. If the issue continues, feel free to email us at info@scrapingdog.com."
         },
         {
           "url": "https://www.the-tls.com/arts/theatre/medea-metropolitan-opera-new-york-review-larry-wolff",
@@ -212348,8 +212226,8 @@
           "expected": false,
           "expectedReason": null,
           "unclassified": false,
-          "zeroChar": true,
-          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS."
+          "zeroChar": false,
+          "reason": "Fetch failed: fetch failed: All scraping methods failed; no archive.org capture"
         },
         {
           "url": "https://www.theatermania.com/news/review-a-messy-divorce-plays-out-in-public-in-medea-at-the-metropolitan-opera_94358/",
@@ -212364,7 +212242,7 @@
           "expectedReason": null,
           "unclassified": false,
           "zeroChar": false,
-          "reason": "❌ Refusing to ingest — collision with theatermania--zachary-stewart.json\n   reason: stale-flag-on-existing-file\n   detail: {\n  \"existingUrl\": \"https://www.theatermania.com/new-york-city-theater/reviews/review-medea-metropolitan-opera-radvanovsky_94358.html\",\n  \"existingFlags\": {\n    \"wrongProduction\": true,\n    \"wrongShow\": false,\n    \"wrongProductionAutoCleared\": false\n  },\n  \"existingPublishDate\": \"2022-09-28\",\n  \"incomingUrl\": \"https://www.theatermania.com/news/review-a-messy-divorce-plays-out-in-public-in-medea-at-the-metropolitan-opera_94358/\",\n  \"incomingPublishDate\": \"2022-09-28\"\n}\n\nMan"
+          "reason": "spawnSync node ETIMEDOUT | ⚠️  Scrapingdog failed (dynamic=true, domain=theatermania.com): Scrapingdog HTTP 400: Oops! Something went wrong. You won’t be charged for this request. You can try enabling Stealth Mode using stealth_mode=true. If the issue continues, feel free to email us at info@scrapingdog.com."
         },
         {
           "url": "https://aroundthetownchicago.com/theatre-reviews/medea-reviewed-by-jacob-davis/",
@@ -212384,9 +212262,9 @@
       ],
       "ingestSkippedByCap": [
         {
-          "url": "https://www.the-tls.com/arts/theatre/medea-sohoplace-phaedra-national-theatre-review-mary-beard",
-          "host": "the-tls.com",
-          "outletId": "the-tls"
+          "url": "https://parterre.com/works/medea/",
+          "host": "parterre.com",
+          "outletId": "parterre-box"
         }
       ],
       "recoveryResults": [],
@@ -212582,7 +212460,7 @@
         "liveCount": 4,
         "candidateCount": 11
       },
-      "computedAt": "2026-11-05T12:59:02.711Z"
+      "computedAt": "2026-11-05T18:37:16.557Z"
     },
     {
       "showId": "meet-the-cartozians-off-broadway-2025",
@@ -291575,121 +291453,23 @@
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
         "https://1minutecritic.com/slanted-floors-apartment-play-review/",
-        "https://www.theatermania.com/news/review-slanted-floors-a-voyeurs-view-of-one-gay-new-york-city-household_1858778/",
-        "https://www.vulture.com/article/slanted-floors-play-greenpoint-interview.html"
+        "https://www.theatermania.com/news/review-slanted-floors-a-voyeurs-view-of-one-gay-new-york-city-household_1858778/"
       ],
       "dirFiles": 3,
       "dirClean": 2,
       "inReviewsJson": 2,
       "missing": [],
       "dirOnly": [],
-      "flaggedMisses": [
-        {
-          "url": "https://www.vulture.com/article/slanted-floors-play-greenpoint-interview.html",
-          "host": "vulture.com",
-          "knownOutletId": "vulture",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "vulture--jason-p-frank.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.vulture.com/article/slanted-floors-play-greenpoint-interview.html"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "priorRun": true,
-          "priorRunSource": "flagged-file-date:2026-06-18",
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ],
-          "serpCensus": true,
-          "reverify": false
-        }
-      ],
+      "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"Slanted Floors\" Off-Broadway review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"Slanted Floors\" Off-Broadway review 2026",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 5,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"Slanted Floors\" review astor",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 9,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "Slanted Floors Astor Place Theatre review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 9,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "Slanted Floors Astor Place Theatre review",
-            "page": 1,
-            "geo": "us",
-            "ok": true,
-            "results": 9,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "Slanted Floors Astor Place Theatre review",
-            "page": 2,
-            "geo": "us",
-            "ok": true,
-            "results": 9,
-            "accepted": 2,
-            "error": null
-          }
-        ],
-        "queriesOk": 5,
-        "queriesTotal": 5,
-        "resultCount": 3,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 31,
-        "byReason": {
-          "non-review-host": 7,
-          "aggregator-internal-nav": 3,
-          "not-http-url": 17,
-          "non-review-path": 1,
-          "no-review-evidence": 1,
-          "census-junk-host": 1,
-          "venue-production-page": 1
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 0,
@@ -291717,7 +291497,7 @@
         "liveCount": 2,
         "candidateCount": 2
       },
-      "computedAt": "2026-11-05T12:59:02.711Z"
+      "computedAt": "2026-11-05T18:37:16.557Z"
     },
     {
       "showId": "slaughterhouse-five-off-west-end-2026",
@@ -356342,77 +356122,12 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"The Morbs\" Off-Broadway review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"The Morbs\" Off-Broadway review 2026",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 9,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"The Morbs\" review jeffrey",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 9,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "The Morbs Jeffrey and Paula Gural Theatre at A.R.T./New York Theatres review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "The Morbs Jeffrey and Paula Gural Theatre at A.R.T./New York Theatres review",
-            "page": 1,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "The Morbs Jeffrey and Paula Gural Theatre at A.R.T./New York Theatres review",
-            "page": 2,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          }
-        ],
-        "queriesOk": 5,
-        "queriesTotal": 5,
-        "resultCount": 0,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 41,
-        "byReason": {
-          "non-review-host": 12,
-          "aggregator-internal-nav": 2,
-          "not-http-url": 23,
-          "show-listing-page": 1,
-          "tag-index-page": 1,
-          "bare-host": 1,
-          "news-roundup-site": 1
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 0,
@@ -356434,7 +356149,7 @@
         "liveCount": 1,
         "candidateCount": 1
       },
-      "computedAt": "2026-11-05T12:59:02.711Z"
+      "computedAt": "2026-11-05T18:37:16.557Z"
     },
     {
       "showId": "the-moth-off-west-end-2026",
@@ -420795,25 +420510,23 @@
     }
   ],
   "staleness": {
-    "at": "2026-11-05T17:29:01.481Z",
+    "at": "2026-11-05T18:37:16.557Z",
     "reserveEvery": 4,
     "reservedAttempted": [
-      "the-magicians-table-off-west-end-2026"
+      "king-of-the-yees-off-broadway-2026"
     ],
     "catalogueReserveEvery": 8,
-    "catalogueAttempted": [
-      "a-single-man-aviva-studios-regional-2025"
-    ],
-    "neverAuditedDueAtStart": 649,
+    "catalogueAttempted": [],
+    "neverAuditedDueAtStart": 648,
     "oldestDueRowAtStart": {
-      "showId": "the-magicians-table-off-west-end-2026",
-      "computedAt": "2026-09-24T23:04:09.984Z",
-      "ageHours": 1002.1
+      "showId": "home-2024",
+      "computedAt": "2026-10-19T22:58:16.678Z",
+      "ageHours": 403.3
     },
     "oldestDueRowAfterRun": {
       "showId": "home-2024",
       "computedAt": "2026-10-19T22:58:16.678Z",
-      "ageHours": 402.5
+      "ageHours": 403.6
     }
   }
 }
