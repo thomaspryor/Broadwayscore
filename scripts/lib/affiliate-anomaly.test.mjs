@@ -188,6 +188,20 @@ test('bot divergence trips when Impact clicks dwarf real clicks', () => {
   assert.equal(res.verdict, 'diverged');
 });
 
+test('bot divergence stays quiet once the burst has ended (BRO-6985: Nov 1-3 2026 real series)', () => {
+  // Impact clicks 233/1429/333 then 70/92; real PostHog TodayTix clicks ~50 a day.
+  const impact = new Map([['2026-11-01', 233], ['2026-11-02', 1429], ['2026-11-03', 333], ['2026-11-04', 70], ['2026-11-05', 92]]);
+  const posthog = new Map([['2026-11-01', 45], ['2026-11-02', 50], ['2026-11-03', 57], ['2026-11-04', 50], ['2026-11-05', 52]]);
+  const live = checkBotDivergence({ impactClicksByDay: impact, posthogTTClicksByDay: posthog, asOf: '2026-11-03' });
+  assert.equal(live.verdict, 'diverged');
+  const over = checkBotDivergence({ impactClicksByDay: impact, posthogTTClicksByDay: posthog, asOf: '2026-11-04' });
+  assert.equal(over.verdict, 'healthy');
+  assert.equal(over.ended, true);
+  // and a burst that is still running on the latest day still warns
+  const still = new Map(impact); still.set('2026-11-04', 400);
+  assert.equal(checkBotDivergence({ impactClicksByDay: still, posthogTTClicksByDay: posthog, asOf: '2026-11-04' }).verdict, 'diverged');
+});
+
 test('dead-man fires when BOTH signals are near-zero (correlated failure, pre-mortem case)', () => {
   const dead = new Map([['2026-08-01', 1], ['2026-08-02', 0]]);
   const res = checkDeadMan({ impactClicksByDay: dead, posthogClicksByDay: dead, asOf: '2026-08-02' });

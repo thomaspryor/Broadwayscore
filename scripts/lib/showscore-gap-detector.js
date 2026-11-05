@@ -13,6 +13,19 @@ const GRACE_MS = 7 * 24 * 60 * 60 * 1000;
 // is usually a live page with no ratings yet: wait longer before alerting.
 const STAMPED_GRACE_MS = 21 * 24 * 60 * 60 * 1000;
 const CATEGORIES = new Set(['broadway', 'off-broadway']);
+// BRO-7023: a transfer with no NYC Show Score page yet is served London's page at the NYC slug.
+// The scraper refuses it on purpose and re-checks every run, so the gap is expected and clears
+// itself when the NYC page appears. Quiet only while the scraper keeps confirming that state.
+const UK_WAIT_FRESH_MS = 3 * 24 * 60 * 60 * 1000;
+
+function waitingOnNycPage(rec, now) {
+  if (!rec) return false;
+  const fresh = (iso) => { const t = Date.parse(iso); return Number.isFinite(t) && now - t <= UK_WAIT_FRESH_MS; };
+  if (fresh(rec.showScoreUkPageAt)) return true;
+  // Older records: the tombstone the scraper wrote when it cleared London's rating, plus a fresh attempt.
+  const tomb = rec.sourcesRemoved && rec.sourcesRemoved.showScore;
+  return typeof tomb === 'string' && /UK production page/.test(tomb) && fresh(rec.showScoreLastAttempted);
+}
 
 /**
  * @param {object[]} shows        shows.json `shows` array
@@ -33,6 +46,7 @@ function findShowScoreGaps(shows, urls, buzz, now = Date.now()) {
     // The scraper rejects off-off-broadway pages by design (isValidShowScorePage).
     if (!url || url.includes('/off-off-broadway-shows/')) continue;
     if (buzz?.[s.id]?.sources?.showScore != null) continue;
+    if (waitingOnNycPage(buzz?.[s.id], now)) continue;
     hits.push({ id: s.id, category: s.category, openingDate: s.openingDate, url });
   }
   return hits.sort((a, b) => a.openingDate.localeCompare(b.openingDate));

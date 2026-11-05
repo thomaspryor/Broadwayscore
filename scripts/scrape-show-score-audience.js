@@ -770,6 +770,9 @@ function noteProductionMismatch(showId, url) {
 // showScoreLastAttempted, or a proxy outage would mark every show fresh and
 // suppress retries for the whole --skip-fresh-hours window.
 let showFetchFailed = false;
+// BRO-7023: set when the current show's cached page is London's (no NYC page yet). Stamped as
+// showScoreUkPageAt so the gap detector knows the scraper is watching, not stuck.
+let ukPageServed = false;
 
 /**
  * A US show whose Show Score page turned out to be London's: clear any rating an earlier run attached
@@ -810,6 +813,7 @@ function dropWrongProductionShowScoreSource(show, url) {
  */
 async function processShow(show, { rediscovered = false } = {}) {
   showFetchFailed = false;
+  ukPageServed = false;
   // Multi-production guard: older productions only processed if they have their own page
   if (!isMostRecentProduction(show)) {
     const myUrl = getCachedUrl(show.id);
@@ -864,6 +868,7 @@ async function processShow(show, { rediscovered = false } = {}) {
     // discovery-only, which let Midnight's cached URL re-attach London's 92%/353 ratings each run).
     if (isUkPageForShow(show, html, url)) {
       console.log(`  SKIP: ${url} is a UK Show Score page (canonical /uk/london/...), not this US production`);
+      ukPageServed = true;
       dropUkShowScoreSource(show, html);
       return null;
     }
@@ -1286,7 +1291,12 @@ async function main() {
       if (skipFreshHours > 0 && !dryRun && !shardOutput && !showFetchFailed && !(data && data.score)) {
         audienceBuzz.shows[show.id] = audienceBuzz.shows[show.id] || { sources: {} };
         audienceBuzz.shows[show.id].showScoreLastAttempted = new Date().toISOString();
+        if (ukPageServed) audienceBuzz.shows[show.id].showScoreUkPageAt = audienceBuzz.shows[show.id].showScoreLastAttempted;
         saveAudienceBuzz(audienceBuzz);
+      } else if (data && data.score && audienceBuzz.shows && audienceBuzz.shows[show.id] && audienceBuzz.shows[show.id].showScoreUkPageAt) {
+        // The NYC page arrived and scored: the London-page marker no longer applies.
+        delete audienceBuzz.shows[show.id].showScoreUkPageAt;
+        if (!dryRun && !shardOutput) saveAudienceBuzz(audienceBuzz);
       }
     } catch (e) {
       console.error(`Error processing ${show.title}:`, e.message);
