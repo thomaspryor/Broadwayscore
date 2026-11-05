@@ -80,6 +80,28 @@ function parseRescueRef(ref) {
   return { stamp: s, at, runId: m[2], base: m[3] };
 }
 
+// BRO-6859: a rescued stub whose file main already holds, same review URL, at
+// an equal or later content tier, is superseded (a later pipeline run enriched
+// it). Fail closed: anything unparseable, URL-less, unknown-tier, or carrying a
+// non-empty field main lacks stays a conflict for a person.
+const TIER_RANK = { invalid: 0, stub: 1, excerpt: 2, truncated: 3, complete: 4 };
+const CONTENT_KEYS = new Set(['contentTier', 'contentTierReason', 'fullText', 'sources', 'source', 'dateSource']);
+const normUrl = (u) => (typeof u === 'string' ? u.trim().toLowerCase().replace(/\/+$/, '') : '');
+const isEmpty = (v) => v == null || v === '' || v === false || (Array.isArray(v) && v.length === 0);
+function mainSupersedesRescue(rescueText, mainText) {
+  let a; let b;
+  try { a = JSON.parse(rescueText); b = JSON.parse(mainText); } catch { return false; }
+  if (!a || !b || typeof a !== 'object' || typeof b !== 'object') return false;
+  const ua = normUrl(a.url);
+  if (!ua || ua !== normUrl(b.url)) return false;
+  const ra = TIER_RANK[a.contentTier];
+  const rb = TIER_RANK[b.contentTier];
+  // Identical text on main, whatever tier the pipeline gave it since, loses nothing.
+  const sameText = typeof a.fullText === 'string' && a.fullText !== '' && a.fullText === b.fullText;
+  if (!sameText && (ra === undefined || rb === undefined || rb < ra)) return false;
+  return Object.keys(a).every((k) => CONTENT_KEYS.has(k) || isEmpty(a[k]) || !isEmpty(b[k]));
+}
+
 /**
  * Pure decision for one rescue branch.
  * @param {{adds: string[], mainBlob: Map<string,string>,
@@ -91,7 +113,7 @@ function parseRescueRef(ref) {
  *   claimed: paths an earlier branch in the same replay already restored.
  *   Nothing on main is ever overwritten or resurrected.
  */
-function replayPlan({ adds, mainBlob, touchedOnMain, rescueBlob, claimed = new Map() }) {
+function replayPlan({ adds, mainBlob, touchedOnMain, rescueBlob, claimed = new Map(), superseded = () => false }) {
   const restore = [];
   const skipped = [];
   const conflicts = [];
@@ -99,6 +121,7 @@ function replayPlan({ adds, mainBlob, touchedOnMain, rescueBlob, claimed = new M
     const ours = rescueBlob.get(p);
     if (mainBlob.has(p)) {
       if (mainBlob.get(p) === ours) skipped.push({ path: p, why: 'already on main' });
+      else if (superseded(p)) skipped.push({ path: p, why: 'main holds the same review, further along' });
       else conflicts.push({ path: p, why: 'main holds a different version' });
     } else if (touchedOnMain.has(p)) skipped.push({ path: p, why: 'changed on main since the rescue (e.g. drained or moved)' });
     else if (claimed.has(p)) {
@@ -176,7 +199,9 @@ function replayOne({ sha, ref, info }, claimed) {
   const since = new Date(baseTime * 1000).toISOString();
   const touched = new Set(adds.filter((p) => !mainBlob.has(p)
     && gitOk(['log', '-1', '--format=%H', `--since=${since}`, 'origin/main', '--', p]).trim() !== ''));
-  const plan = replayPlan({ adds, mainBlob, touchedOnMain: touched, rescueBlob, claimed });
+  const show = (rev, p) => { const r = git(['show', `${rev}:${p}`]); return r.status === 0 ? r.stdout : ''; };
+  const superseded = (p) => mainSupersedesRescue(show(sha, p), show('origin/main', p));
+  const plan = replayPlan({ adds, mainBlob, touchedOnMain: touched, rescueBlob, claimed, superseded });
   for (const p of plan.restore) {
     fs.mkdirSync(path.dirname(p), { recursive: true });
     fs.writeFileSync(p, gitOk(['show', `${sha}:${p}`]));
@@ -261,7 +286,7 @@ function cliPrune(args) {
   }
 }
 
-module.exports = { RESCUE_PREFIX, isRecoverablePath, parseNameStatusZ, recoverableAdds, rescueRefName, parseRescueRef, replayPlan, prunable };
+module.exports = { RESCUE_PREFIX, isRecoverablePath, parseNameStatusZ, recoverableAdds, rescueRefName, parseRescueRef, replayPlan, prunable, mainSupersedesRescue };
 
 if (require.main === module) {
   const [cmd, ...rest] = process.argv.slice(2);
