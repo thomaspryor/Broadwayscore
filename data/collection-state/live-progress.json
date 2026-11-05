@@ -1,19 +1,31 @@
 {
-  "updatedAt": "2026-11-05T01:36:19.542Z",
-  "processed": 1,
-  "failed": 0,
-  "successRate": "100.0%",
+  "updatedAt": "2026-11-05T01:58:14.512Z",
+  "processed": 287,
+  "failed": 183,
+  "successRate": "61.1%",
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 144,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 2,
     "directCookies": 0,
-    "scrapingdog": 0,
-    "scrapingbee": 0,
-    "brightdata": 0,
+    "scrapingdog": 20,
+    "scrapingbee": 8,
+    "brightdata": 4,
     "archiveToday": 0,
-    "archive": 0
+    "archive": 88
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 1,
+  "recentActivity": [
+    {
+      "t": "2026-11-05T00:52:30.627Z",
+      "event": "bb-session",
+      "session": "c948a3e7",
+      "url": "https://www.nytimes.com/2026/10/06/theater/dirty-dancing-broadway.html"
+    },
+    {
+      "t": "2026-11-05T00:52:31.312Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
