@@ -1100,7 +1100,7 @@ jobs:
 
       - name: Record pipeline success
         continue-on-error: true # a failed push shows red but does not fail the job; was `|| echo` (BRO-4730)
-        if: success()
+        if: always() && steps.rebuild.outcome == 'success' && steps.staleness.outputs.safe_to_publish == 'true' # BRO-6261: a crashed post-rebuild audit turns the run red but the rebuild+publish still succeeded
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
