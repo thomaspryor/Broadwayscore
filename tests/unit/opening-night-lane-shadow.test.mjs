@@ -179,3 +179,17 @@ test('each lane score records a hash of the text it scored and the per-model sco
   assert.equal(b.textSha, grade.textSha(quote), 'an excerpt score hashes the excerpt it read, not the blanked page text');
   assert.ok(!JSON.stringify(rec.snapshot()).includes(TEXT.slice(0, 40)), 'the text itself is never recorded');
 });
+
+test('an excerpt the fetch step chose (no tier from the scorer) is logged as the excerpt, not as empty page text', async () => {
+  const grade = require('../../scripts/lib/lane-shadow-grade.js');
+  const rec = shadow.createScoreRecorder({ now: () => T0 });
+  const quote = 'A placeholder quote the aggregator printed beside the paywalled link.';
+  // inline-score fetchReview returns fullText '' + contentTier 'excerpt'; ensembleScoreText's extra carries no tier.
+  await rec.wrapScore(async () => ({ score: 81, extra: { ensembleData: { claudeScore: 86, openaiScore: 80, geminiScore: 78 } } }))(
+    { url: 'https://www.wsj.com/articles/b-review-cd34', fullText: '', outletId: 'wsj' },
+    { fullText: '', contentTier: 'excerpt', excerpts: { bwwExcerpt: quote } });
+  const [e] = rec.snapshot();
+  assert.equal(e.contentTier, 'excerpt');
+  assert.equal(e.textChars, quote.length);
+  assert.equal(e.textSha, grade.textSha(quote));
+});

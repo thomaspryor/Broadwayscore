@@ -109,13 +109,17 @@ function createScoreRecorder({ logFile = null, now = Date.now } = {}) {
       // An excerpt score's text is the excerpts the scorer read, not the page text it dropped.
       const excerpts = (fetched && fetched.excerpts) || {};
       const excerptChars = Object.values(excerpts).reduce((n, t) => n + String(t || '').length, 0);
-      const fromExcerpt = extra.contentTier === 'excerpt';
+      // The fetch step can pick the excerpt itself (a paywall teaser out of retries): then the scorer's extra has no tier
+      // and the excerpt tier is on `fetched`, as lane-runner.js reads it. Missing that logged the excerpt as 0 chars of
+      // page text with no hash (BRO-6872 p25: Imaginary Invalid and Other Desert Cities WSJ).
+      const tier = extra.contentTier || (fetched && fetched.contentTier) || 'complete';
+      const fromExcerpt = tier === 'excerpt';
       // Hash what textChars measures: the excerpts for an excerpt score (its fullText is blanked to ''), else the page text.
       const scored = fromExcerpt ? Object.keys(excerpts).sort().map((k) => String(excerpts[k] || '')).join('\n')
         : (typeof extra.fullText === 'string' && extra.fullText ? extra.fullText : String((row && row.fullText) || ''));
       record(row, out && typeof out === 'object' ? out.score : out, {
         chars: fromExcerpt ? excerptChars : (typeof extra.fullText === 'string' ? extra.fullText.length : undefined),
-        tier: extra.contentTier || (fetched && fetched.contentTier) || 'complete',
+        tier,
         sha: grader.textSha(scored), models: grader.modelScores(extra.ensembleData),
       });
       return out;
