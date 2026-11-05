@@ -12,13 +12,14 @@
  *   node scripts/tag-genres.js --dry           # coverage only
  *   node scripts/tag-genres.js --limit=40      # LLM pass for 40 shows
  *   node scripts/tag-genres.js --all           # include closed shows
+ *   node scripts/tag-genres.js --replay=COMMIT # redo: reuse the lost commit's tags, no LLM
  */
 const fs = require('fs');
 const path = require('path');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
 if (hasHelpFlag(process.argv.slice(2))) {
-  console.log('Usage: node scripts/tag-genres.js [--dry] [--all] [--limit=N]  (see header comment)');
+  console.log('Usage: node scripts/tag-genres.js [--dry] [--all] [--limit=N] [--replay=COMMIT]  (see header comment)');
   process.exit(0);
 }
 
@@ -64,6 +65,14 @@ ${batch.map(s => `${s.id} | ${s.t} | ${s.ty || ''} | ${(s.syn || '').slice(0, 28
 
 async function main() {
   const args = process.argv.slice(2);
+  const replay = args.find(a => a.startsWith('--replay='));
+  if (replay) {
+    const commit = replay.slice('--replay='.length);
+    if (!commit) throw new Error('--replay requires the lost commit');
+    if (args.includes('--dry')) throw new Error('--dry cannot be combined with --replay');
+    require('./lib/rebuild-fast-replay-genres').replayGenreTags(commit);
+    return;
+  }
   const dry = args.includes('--dry');
   const all = args.includes('--all');
   const limit = Number((args.find(a => a.startsWith('--limit=')) || '').split('=')[1]) || Infinity;

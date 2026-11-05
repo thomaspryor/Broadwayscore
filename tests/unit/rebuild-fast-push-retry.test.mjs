@@ -82,7 +82,7 @@ describe('decision helper (pure)', () => {
  * origin (bare) <- seed; runner = depth-1 clone (like actions/checkout);
  * competitor = separate clone that keeps landing commits on hot files.
  */
-function setupFixture() {
+function setupFixture(genreTags) {
   const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'rebuild-fast-retry-'));
   const origin = path.join(tmp, 'origin.git');
   const seed = path.join(tmp, 'seed');
@@ -103,6 +103,7 @@ function setupFixture() {
   }, null, 2) + '\n');
   write(path.join(seed, 'data/audit/verify-all-scored-state.json'), '{"run":"seed"}\n');
   write(path.join(seed, 'data/audit/critic-outlets-baseline.json'), '{"outlets":1}\n');
+  if (genreTags) write(path.join(seed, 'src/config/genre-tags.json'), JSON.stringify(genreTags) + '\n');
   sh('git add -A && git commit -q -m base', seed);
   sh(`git push -q "${origin}" main`, seed);
   sh(`git clone -q --depth=1 --branch main "file://${origin}" "${runner}"`, tmp);
@@ -209,6 +210,33 @@ const originHas = (fx, p) => spawnSync('git', [`--git-dir=${fx.origin}`, 'cat-fi
 const lines = (p) => (fs.existsSync(p) ? fs.readFileSync(p, 'utf8').trim().split('\n').filter(Boolean).length : 0);
 
 describe('replayed contention against a local bare repo', () => {
+  test('lost genre tags are replayed before regeneration without dropping fresh main tags', () => {
+    const tags = JSON.parse(fs.readFileSync(path.join(REPO, 'src/config/genre-tags.json'), 'utf8'));
+    const ids = Object.keys(tags).slice(0, 4);
+    assert.equal(ids.length, 4);
+    const base = Object.fromEntries(Object.entries(tags).filter(([id]) => !ids.includes(id)));
+    const fx = setupFixture(base);
+    try {
+      const ours = { ...base, ...Object.fromEntries(ids.slice(0, 3).map(id => [id, tags[id]])) };
+      write(path.join(fx.runner, 'src/config/genre-tags.json'), JSON.stringify(ours) + '\n');
+      firstPassCommit(fx);
+      // An independent main writer tags another real show while our push loses.
+      write(path.join(fx.competitor, 'src/config/genre-tags.json'), JSON.stringify({ ...base, [ids[3]]: tags[ids[3]] }) + '\n');
+      sh('git add src/config/genre-tags.json && git commit -q -m genres && git push -q origin HEAD:main', fx.competitor);
+      // The real redo must replay before regeneration reads the sidecar.
+      write(path.join(fx.runner, 'inputs/genre-tags.json'), JSON.stringify(ours));
+      fs.appendFileSync(fx.regen, `\nnode -e 'const assert = require("node:assert/strict"); const tags = require("./src/config/genre-tags.json"); const expected = require("./inputs/genre-tags.json"); for (const [id, genres] of Object.entries(expected)) assert.deepEqual(tags[id], genres, "lost genre tags: " + id);'\n`);
+      fs.writeFileSync(fx.races, '0\n');
+      const r = runLoop(fx);
+      assert.equal(r.status, 0, r.stdout + r.stderr);
+      assert.deepEqual(JSON.parse(originFile(fx, 'src/config/genre-tags.json')), tags);
+      assert.match(r.stdout, /restored 3 genre records; no LLM calls/);
+      console.log(`Real genre data: ${Object.keys(base).length + 1} -> ${Object.keys(tags).length} records; restored ${ids.slice(0, 3).map(id => `${id}=${JSON.stringify(tags[id])}`).join(', ')}`);
+    } finally {
+      fs.rmSync(fx.tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
+    }
+  });
+
   test('a push that loses all 20 races still lands its +N reviews within one redo cycle', () => {
     const fx = setupFixture();
     try {
