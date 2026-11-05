@@ -1,18 +1,5 @@
 [
   {
-    "showId": "ghost-the-musical-2012",
-    "outletId": "wsj",
-    "filePath": "/home/runner/work/Broadwayscore/Broadwayscore/data/review-texts/ghost-the-musical-2012/wsj--terry-teachout.json",
-    "quality": "garbage",
-    "confidence": "high",
-    "issues": [
-      "No theater-related keywords found",
-      "No theater-related keywords in short text",
-      "Very short content (155 chars)"
-    ],
-    "skippedAt": "2026-09-11T09:32:15.046Z"
-  },
-  {
     "showId": "gore-vidals-the-best-man-2012",
     "outletId": "wsj",
     "filePath": "/home/runner/work/Broadwayscore/Broadwayscore/data/review-texts/gore-vidals-the-best-man-2012/wsj--terry-teachout.json",
@@ -5550,5 +5537,16 @@
       "Multiple article boundaries detected (3 unique of 3 total)"
     ],
     "skippedAt": "2026-11-04T12:39:44.151Z"
+  },
+  {
+    "showId": "art-2025",
+    "outletId": "observer",
+    "filePath": "/home/runner/work/Broadwayscore/Broadwayscore/data/review-texts/art-2025/observer--david-cote.json",
+    "quality": "garbage",
+    "confidence": "high",
+    "issues": [
+      "Multiple shows mentioned (12): one man, two guvnors, god of carnage, the name, middle, other..."
+    ],
+    "skippedAt": "2026-11-05T11:53:24.576Z"
   }
 ]
