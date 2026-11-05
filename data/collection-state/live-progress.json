@@ -1,18 +1,18 @@
 {
-  "updatedAt": "2026-11-05T03:52:05.742Z",
-  "processed": 359,
-  "failed": 158,
-  "successRate": "69.4%",
+  "updatedAt": "2026-11-05T04:12:39.713Z",
+  "processed": 410,
+  "failed": 177,
+  "successRate": "69.8%",
   "tierBreakdown": {
-    "playwright": 181,
+    "playwright": 204,
     "amp": 0,
-    "browserbase": 4,
+    "browserbase": 5,
     "directCookies": 0,
     "scrapingdog": 28,
     "scrapingbee": 8,
-    "brightdata": 7,
+    "brightdata": 8,
     "archiveToday": 0,
-    "archive": 107
+    "archive": 126
   },
   "browserbaseSessions": 2,
   "recentActivity": [
@@ -34,39 +34,20 @@
       "url": "https://www.nytimes.com/2019/03/21/theater/matt-walker-play-that-goes-wrong.html"
     },
     {
-      "t": "2026-11-05T02:13:04.769Z",
-      "event": "bb-session",
-      "session": "677c815f",
-      "url": "https://bachtrack.com/review-shostakovich-cherry-town-ahlbom-dutch-national-oper"
-    },
-    {
-      "t": "2026-11-05T02:14:11.778Z",
-      "event": "bb-session",
-      "session": "833a4636",
-      "url": "https://bachtrack.com/review-tosca-miskimmon-glassberg-fanyo-english-national-op"
-    },
-    {
-      "t": "2026-11-05T02:15:16.453Z",
-      "event": "bb-session",
-      "session": "101f09c1",
-      "url": "https://bachtrack.com/review-nozze-figaro-pountney-conta-bucharest-national-oper"
-    },
-    {
-      "t": "2026-11-05T03:22:02.332Z",
-      "event": "bb-session",
-      "session": "e322543d",
-      "url": "https://bachtrack.com/review-medea-yoncheva-spyres-met-opera-new-york-october-20"
-    },
-    {
-      "t": "2026-11-05T03:25:07.735Z",
-      "event": "bb-session",
-      "session": "9e84b2ab",
-      "url": "https://hermes.talkinbroadway.com/allthatchat_new/d.php?id=2655044"
-    },
-    {
-      "t": "2026-11-05T03:25:08.375Z",
+      "t": "2026-11-05T03:08:42.593Z",
       "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-05T04:00:45.136Z",
+      "event": "bb-session",
+      "session": "1c37f274",
+      "url": "https://www.wsj.com/arts-culture/film/the-only-living-pickpocket-in-new-york-rev"
+    },
+    {
+      "t": "2026-11-05T04:00:45.454Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
