@@ -39,6 +39,7 @@ const { maxPlausibleYear } = require('./lib/date-utils');
 const fs = require('fs');
 const path = require('path');
 const cheerio = require('cheerio');
+const { venuesMatch } = require('./lib/deduplication');
 const { pageVenueMatches } = require('./lib/show-score-venue-match');
 const { normalizeUrl, identityKey, baselineKeySet, computeNewViolators } = require('./lib/show-score-urls-baseline');
 const { computeStaleBaselineKeys, reportStaleBaseline, pruneStaleEntries, runStaleModes } = require('./lib/stale-baseline');
@@ -227,7 +228,7 @@ for (const [showId, url] of Object.entries(urlData.shows)) {
 
   // Check venue (multi-production only)
   const pageVenue = extractVenueFromMeta(html);
-  if (pageVenue && show.venue && !pageVenueMatches(pageVenue, show.venue)) {
+  if (pageVenue && show.venue && !venuesMatch(pageVenue, show.venue) && !pageVenueMatches(pageVenue, show.venue)) {
     const base = showId.replace(/-\d{4}$/, '');
     // BRO-6825: Show Score keeps one page per title and its venue meta names the
     // LATEST run (beetlejuice-2019 maps to the page now headed "Palace Theatre"
