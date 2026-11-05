@@ -894,8 +894,22 @@
     "queuedAt": "2026-11-04T23:47:57.957Z"
   },
   {
+    "conditionKey": "review-gap:opening-window:222-a-ghost-story-off-broadway-2026",
+    "title": "Review gap — \"2:22 - A Ghost Story\" missing 1 cited review(s)",
+    "description": "2:22 - A Ghost Story (222-a-ghost-story-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=222-a-ghost-story-off-broadway-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-05T00:54:32.746Z"
+  },
+  {
     "conditionKey": "t1-gaps:needs-manual-recovery",
-    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (Lincoln in the Bardo (washpost)). Checked 2026-11-04.",
+    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (Lincoln in the Bardo (washpost)). Checked 2026-11-05.",
     "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
     "severity": "info",
     "url": null,
@@ -905,6 +919,6 @@
     "model": null,
     "tracked": null,
     "fields": [],
-    "queuedAt": "2026-11-04T23:48:15.089Z"
+    "queuedAt": "2026-11-05T00:54:53.000Z"
   }
 ]

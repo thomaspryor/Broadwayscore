@@ -1,22 +1,22 @@
 {
-  "generatedAt": "2026-11-04T23:47:57.166Z",
+  "generatedAt": "2026-11-05T00:54:32.366Z",
   "windowDays": 1095,
-  "targets": 925,
-  "auditedThisRun": 11,
+  "targets": 916,
+  "auditedThisRun": 12,
   "carriedForward": 2019,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 632,
+    "withGap": 633,
     "missingCurrentRun": 1175,
     "totalCitedNoUrl": 0,
-    "totalFlaggedMisses": 921,
-    "totalRecoverable": 57,
-    "totalRecovered": 93,
+    "totalFlaggedMisses": 919,
+    "totalRecoverable": 56,
+    "totalRecovered": 90,
     "humanExcluded": 27,
-    "automatedExcluded": 1024,
-    "automatedExcludedListed": 740,
-    "priorProductionCitations": 6114
+    "automatedExcluded": 1022,
+    "automatedExcludedListed": 738,
+    "priorProductionCitations": 6103
   },
   "results": [
     {
@@ -11741,9 +11741,7 @@
       "category": "off-west-end",
       "previewsStartDate": "2026-11-03",
       "aggregatorArticles": [],
-      "aggregatorListedUrls": [
-        "https://www.uktw.co.uk/Tour/Play/A-Train-to-Woking/T0635056768/"
-      ],
+      "aggregatorListedUrls": [],
       "dirFiles": 0,
       "dirClean": 0,
       "inReviewsJson": 0,
@@ -11790,54 +11788,80 @@
             "passive": true
           }
         },
-        "allSourcesFailed": false,
-        "currentRunRows": 0,
-        "corroborated": 0,
-        "perSource": {}
+        "allSourcesFailed": false
       },
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"A Train To Woking\" West End review",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"A Train To Woking\" West End review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 9,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"A Train To Woking\" review waterloo",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 8,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "A Train To Woking Waterloo East Theatre review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 4,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "A Train To Woking Waterloo East Theatre review",
+            "page": 1,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "A Train To Woking Waterloo East Theatre review",
+            "page": 2,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 0,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 37,
+        "byReason": {
+          "non-review-host": 4,
+          "not-http-url": 30,
+          "no-review-evidence": 2,
+          "bare-host": 1
+        }
       },
       "dedupedVariants": [],
-      "automatedExcludedListed": 0,
-      "unextractable": [
-        {
-          "url": "https://www.uktw.co.uk/Tour/Play/A-Train-to-Woking/T0635056768/",
-          "host": "uktw.co.uk",
-          "knownOutletId": "uktw",
-          "serpCensus": true,
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ],
-          "zeroCharAttempts": 9
-        }
-      ],
-      "ingestResults": [
-        {
-          "url": "https://www.uktw.co.uk/Tour/Play/A-Train-to-Woking/T0635056768/",
-          "host": "uktw.co.uk",
-          "outletId": "uktw",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": true,
-          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS."
-        }
-      ],
-      "ingestSkippedByCap": [],
+      "unextractable": [],
       "censusVerdict": {
         "verdict": "no-census-yet",
         "missing": [],
@@ -11848,7 +11872,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-11-04T19:31:35.837Z"
+      "computedAt": "2026-11-05T00:54:32.366Z"
     },
     {
       "showId": "a-tupperware-of-ashes-west-end-2024",
@@ -92040,7 +92064,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-11-03T00:25:22.653Z"
+      "computedAt": "2026-11-05T00:54:32.366Z"
     },
     {
       "showId": "dr-strangelove-west-end-2024",
@@ -161863,7 +161887,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-11-03T00:25:22.653Z"
+      "computedAt": "2026-11-05T00:54:32.366Z"
     },
     {
       "showId": "iphigenie-en-tauride-west-end-2026",
@@ -182031,6 +182055,7 @@
       "openingDate": "2024-10-23",
       "status": "closed",
       "category": "broadway",
+      "previewsStartDate": "2024-09-26",
       "aggregatorArticles": [
         "https://playbill.com/article/read-the-reviews-for-broadways-left-on-tenth",
         "https://www.broadwayworld.com/article/Review-Roundup-LEFT-ON-TENTH-Starring-Julianna-Margulies-and-Peter-Gallagher-Opens-On-Broadway-20241023"
@@ -182056,9 +182081,9 @@
         "https://theaterpizzazz.com/left-on-tenth/",
         "https://pagesonstages.wordpress.com/2024/10/28/left-on-tenth/"
       ],
-      "dirFiles": 33,
-      "dirClean": 24,
-      "inReviewsJson": 24,
+      "dirFiles": 36,
+      "dirClean": 28,
+      "inReviewsJson": 28,
       "missing": [],
       "dirOnly": [
         {
@@ -182074,6 +182099,10 @@
           "count": 1
         },
         {
+          "host": "stagebuddy.com",
+          "count": 1
+        },
+        {
           "host": "theatermania.com",
           "count": 1
         },
@@ -182082,11 +182111,19 @@
           "count": 1
         },
         {
+          "host": "thestage.co.uk",
+          "count": 1
+        },
+        {
           "host": "variety.com",
           "count": 1
         },
         {
           "host": "vulture.com",
+          "count": 1
+        },
+        {
+          "host": "washingtonpost.com",
           "count": 1
         }
       ],
@@ -182111,29 +182148,14 @@
           "basis": [
             "knownSyndicationSecondary"
           ],
-          "reverify": false
-        },
-        {
-          "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-4KL7GF",
-          "host": "lightingandsoundamerica.com",
-          "knownOutletId": "lighting-and-sound-america",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
+          "copyOfLiveReview": true,
+          "sources": [
             {
-              "file": "lighting-and-sound-america--david-barbour.json",
-              "flag": "wrongShow",
-              "urlInDir": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-4KL7GF"
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-broadways-left-on-tenth"
             }
           ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongShow"
-          ],
-          "reverify": true
+          "reverify": false
         }
       ],
       "citedNoUrl": [],
@@ -182143,30 +182165,37 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 389,
+        "count": 384,
         "byReason": {
           "non-review-host": 35,
-          "aggregator-internal-nav": 284,
+          "aggregator-internal-nav": 278,
           "not-http-url": 48,
+          "bare-host": 1,
           "production-database-listing": 11,
           "aggregator-section-root": 10,
-          "bare-host": 1
+          "non-stage-review": 1
         }
       },
       "dedupedVariants": [],
-      "automatedExcludedListed": 1,
+      "automatedExcludedListed": 0,
       "unextractable": [],
+      "recoveryResults": [
+        {
+          "url": "https://www.thestage.co.uk/reviews/left-on-tenth-review-at-the-james-earl-jones-theatre-new-york-by-delia-ephron-directed-by-susan-stroman",
+          "host": "thestage.co.uk",
+          "file": "thestage--nicole-serratore.json",
+          "recovered": false,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": "ingest no-op (text landed elsewhere or unchanged)",
+          "recoveryCount": 1,
+          "uncited": true
+        }
+      ],
       "censusVerdict": {
-        "verdict": "incomplete",
-        "missing": [
-          {
-            "outletId": "lighting-and-sound-america",
-            "outlet": "lighting-and-sound-america",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-4KL7GF"
-          }
-        ],
+        "verdict": "complete",
+        "missing": [],
         "suppressedMissing": [],
         "candidates": [
           {
@@ -182254,6 +182283,12 @@
             "firstSeenAt": "2026-08-31T14:43:54.309Z"
           },
           {
+            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-4KL7GF",
+            "outletId": "lightingandsoundamerica.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-16T23:13:35.325Z"
+          },
+          {
             "url": "https://www.theaterscene.net/plays/broadway-plays/left-on-tenth/victor-gluck/",
             "outletId": "theaterscene.net",
             "state": "live",
@@ -182270,13 +182305,6 @@
             "outletId": "pagesonstages.wordpress.com",
             "state": "live",
             "firstSeenAt": "2026-08-16T23:13:35.325Z"
-          },
-          {
-            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-4KL7GF",
-            "outletId": "lighting-and-sound-america",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-16T23:13:35.325Z"
           }
         ],
         "censusSchema": 4,
@@ -182284,13 +182312,13 @@
           {
             "url": "https://www.nydailynews.com/2024/10/23/broadway-review-delia-ephron-drama-left-on-tenth-is-deeply-personal-memoir-as-play/",
             "host": "nydailynews.com",
-            "reason": "collected-and-excluded"
+            "reason": "copy-of-live-review"
           }
         ],
-        "liveCount": 16,
+        "liveCount": 17,
         "candidateCount": 17
       },
-      "computedAt": "2026-10-19T18:05:32.145Z"
+      "computedAt": "2026-11-05T00:54:32.366Z"
     },
     {
       "showId": "legally-blondes-orfeh-unbound-off-broadway-2026",
@@ -255269,77 +255297,12 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"Parcel from America\" Off-Broadway review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"Parcel from America\" Off-Broadway review 2026",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"Parcel from America\" review three",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "Parcel from America Theatre Row - Theatre Three review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "Parcel from America Theatre Row - Theatre Three review",
-            "page": 1,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "Parcel from America Theatre Row - Theatre Three review",
-            "page": 2,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          }
-        ],
-        "queriesOk": 5,
-        "queriesTotal": 5,
-        "resultCount": 0,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 34,
-        "byReason": {
-          "non-review-host": 12,
-          "aggregator-internal-nav": 3,
-          "ticketing-reseller": 1,
-          "census-junk-host": 12,
-          "write-path-blocked": 1,
-          "news-roundup-site": 4,
-          "event-listing": 1
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 1,
@@ -255360,8 +255323,8 @@
           {
             "url": "https://nitelifeexchange.com/parcel-from-america-the-irish-musical-begins-on-wednesday-october-28-at-theatre-row/",
             "outletId": "nitelifeexchange-com",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-11-04T04:19:43.534Z"
           }
         ],
@@ -255370,7 +255333,7 @@
         "liveCount": 0,
         "candidateCount": 1
       },
-      "computedAt": "2026-11-04T19:31:35.837Z"
+      "computedAt": "2026-11-05T00:54:32.366Z"
     },
     {
       "showId": "parsifal-off-west-end-2026",
@@ -277173,138 +277136,58 @@
       "openingDate": "2024-10-24",
       "status": "closed",
       "category": "broadway",
-      "aggregatorArticles": [
-        "https://playbill.com/article/reviews-did-critics-love-the-tom-holland-led-romeo-juliet-in-the-west-end",
-        "https://www.broadwayworld.com/article/Review-Roundup-ROMEO-JULIET-Starring-Rachel-Zegler-and-Kit-Connor-Opens-On-Broadway-20241024",
-        "https://www.broadwayworld.com/article/Review-Roundup-The-Public-Theaters-Free-Shakespeare-in-the-Park-Production-of-ROMEO-JULIET-20260612",
-        "https://www.broadwayworld.com/article/Review-Roundup-ROMEO-JULIET-at-ART-20240914",
-        "https://www.broadwayworld.com/article/Review-Roundup-ROMEO-JULIET-Starring-Tom-Holland-Francesca-Amewudah-Rivers-20240523"
-      ],
+      "previewsStartDate": "2024-09-26",
+      "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://www.bbc.com/culture/article/20240523-tom-holland-in-romeo-and-juliet-review-the-star-is-not-to-blame-but-this-production-cum-global-event-is-lifeless",
-        "https://www.express.co.uk/entertainment/theatre/1902976/Romeo-Juliet-review-Tom-Holland-Jamie-Lloyd",
+        "https://www.nytimes.com/2024/10/24/theater/romeo-juliet-broadway-kit-connor-rachel-zegler.html",
+        "https://www.newyorktheatreguide.com/reviews/romeo-and-juliet-broadway-review-kit-connor-rachel-zegler",
+        "https://www.timeout.com/newyork/theater/romeo-juliet-broadway-review-kit-connor-rachel-zegler",
+        "https://www.wsj.com/articles/romeo-juliet-review-romance-on-broadway-rachel-zegler-kit-connor-sam-gold-6b43d781",
+        "https://variety.com/2024/legit/reviews/romeo-and-juliet-review-kit-connor-rachel-zegler-broadway-1236189568/",
+        "https://observer.com/2024/10/review-juliet-is-fire-romeo-got-mad-rizz-in-this-shakespeare-glowup/",
+        "https://www.washingtonpost.com/entertainment/theater/2024/10/24/romeo-juliet-left-tenth/",
+        "https://nypost.com/2024/10/24/entertainment/romeo-juliet-review-kit-connor-shines-in-hollow-broadway-show/",
+        "https://ew.com/romeo-juliet-review-kit-connor-rachel-zegler-shakespeare-broadway-8732243",
+        "https://www.theatermania.com/news/review-kit-connor-flexes-and-rachel-zegler-belts-in-a-lit-romeo-and-juliet_1753873/",
+        "http://www.lightingandsoundamerica.com/news/story.asp?ID=-5F6HMP",
+        "https://www.talkinbroadway.com/page/world/RomeoandJuliet2024.html",
+        "https://www.theaterscene.net/plays/broadway-plays/romeo-and-juliet/victor-gluck/",
+        "https://www.theatrereviews.com/broadway-review-romeo-juliet-at-circle-in-the-square-through-sunday-february-16-2025/",
+        "https://newyorktheater.me/2024/10/24/romeo-juliet-broadway-review/",
+        "https://theaterlife.com/romeo-juliet-1-2-2/",
+        "https://culturesauce.com/2024/10/24/romeo-juliet-broadway-review-kit-connor-rachel-zegler/",
+        "https://pagesonstages.com/2024/12/24/romeo-and-juliet/",
+        "https://theaterscene.com/RomeoJuliet_DD.html",
+        "https://www.interestedbystander.com/2024/10/theater-review-romeo-juliet-jellicle.html",
         "https://www.londontheatre.co.uk/reviews/romeo-and-juliet-review-tom-holland-stars-in-a-sexy-and-haunting-show-jamie-lloyd",
-        "https://www.nytimes.com/2024/05/24/theater/tom-holland-romeo-and-juliet.html",
         "https://www.telegraph.co.uk/theatre/what-to-see/romeo-and-juliet-duke-of-yorks-review-tom-holland/",
         "https://variety.com/2024/legit/reviews/romeo-and-juliet-review-tom-holland-1236014743/",
         "https://www.whatsonstage.com/news/romeo-and-juliet-review-tom-holland-and-francesca-amewudah-rivers-shine-in-stripped-back-shakespeare_1603000/",
         "https://www.nytimes.com/2024/10/24/theater/romeo-juliet-kit-carson-rachel-zegler.html",
-        "https://variety.com/2024/legit/reviews/romeo-and-juliet-review-kit-connor-rachel-zegler-broadway-1236189568/",
         "https://www.theatrely.com/post/an-astonishing-romeo-juliet-for-a-new-age-review",
-        "https://nypost.com/2024/10/24/entertainment/romeo-juliet-review-kit-connor-shines-in-hollow-broadway-show/",
         "https://www.hollywoodreporter.com/lifestyle/arts/romeo-and-juliet-theater-review-kit-connor-rachel-zegler-shakespeare-jack-antonoff-1236043115/",
         "https://deadline.com/2024/10/romeo-juliet-broadway-review-kit-connor-rachel-zegler-1236145764/",
-        "https://ew.com/romeo-juliet-review-kit-connor-rachel-zegler-shakespeare-broadway-8732243",
         "https://www.vulture.com/article/theater-review-connor-zegler-gold-romeo-juliet.html",
-        "https://observer.com/2024/10/review-juliet-is-fire-romeo-got-mad-rizz-in-this-shakespeare-glowup/",
         "https://www.theguardian.com/stage/2024/oct/24/romeo-juliet-broadway-review",
-        "https://www.wsj.com/articles/romeo-juliet-review-romance-on-broadway-rachel-zegler-kit-connor-sam-gold-6b43d781",
-        "https://www.slantmagazine.com/theater/romeo-and-juliet-review-rachel-zegler-kit-connor/",
-        "https://www.timeout.com/newyork/theater/romeo-juliet-broadway-review-kit-connor-rachel-zegler",
         "https://www.chicagotribune.com/2024/10/24/review-in-romeo-juliet-on-broadway-its-hard-to-hear-the-young-love-amid-all-the-excitement/",
-        "https://www.washingtonpost.com/entertainment/theater/2024/10/24/romeo-juliet-left-tenth/",
         "https://www.usatoday.com/story/entertainment/music/2024/10/24/kit-connor-rachel-zegler-romeo-juliet-review/75775741007/",
-        "https://newyorktheater.me/2024/10/24/romeo-juliet-broadway-review/",
         "https://nystagereview.com/2024/10/24/romeo-juliet-star-crossd-lovers-in-star-crossd-for-our-time-production/",
         "https://nystagereview.com/2024/10/24/romeo-juliet-shakespeare-for-the-tiktok-generation/",
-        "https://www.newyorktheatreguide.com/reviews/romeo-and-juliet-broadway-review-kit-connor-rachel-zegler",
-        "https://culturesauce.com/2024/10/24/romeo-juliet-broadway-review-kit-connor-rachel-zegler/",
         "https://cititour.com/NYC_Broadway/Romeo-Juliet/1260",
         "https://www.nytimes.com/2026/06/11/theater/review-romeo-juliet-shakespeare-in-the-park.html",
-        "https://1minutecritic.com/romeo-juliet-free-shakespeare-in-the-park-2026-review/",
         "https://nystagereview.com/2026/06/11/romeo-juliet-star-crossed-and-border-bound/",
         "https://www.timeout.com/newyork/news/review-romeo-and-juliet-are-border-crossed-lovers-at-shakespeare-in-the-park-061226",
         "https://www.newyorktheatreguide.com/reviews/romeo-and-juliet-off-broadway-review-shakespeare-in-the-park",
-        "https://exeuntnyc.com/reviews/review-romeo-juliet-at-the-delacorte-theater/",
         "https://culturesauce.com/romeo-juliet-border-wall-off-broadway-review/",
         "https://www.vulture.com/article/romeo-and-juliet-shakespeare-park-saheem-ali-public.html",
         "https://www.wsj.com/articles/romeo-and-juliet-review-no-love-lost-for-shakespeare-in-the-park-c066ffdf",
-        "https://www.bostonglobe.com/2024/09/06/arts/american-repertory-theater-art-shakespeare-romeo-and-juliet-diane-paulus/",
-        "https://artsfuse.org/297731/theater-review-a-r-t-s-romeo-and-juliet-whats-love-got-to-do-with-it/",
-        "https://www.cambridgeday.com/2024/09/13/romeo-and-juliet-review-a-r-t-changes-little-from-the-classic-tale-but-makes-you-feel-the-love/",
-        "https://www.harvardmagazine.com/2024/09/romeo-and-juliet",
-        "https://www.timeout.com/london/theatre/romeo-juliet-13-review",
         "https://www.theguardian.com/stage/article/2024/may/23/romeo-juliet-review-tom-holland-spider-man-francesca-amewudah-rivers",
-        "https://www.dailymail.co.uk/tvshowbiz/article-13453543/Romeo-Juliet-review-Spider-Man-PATRICK-MARMION.html",
-        "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/romeo-and-juliet-review-tom-holland-london-b2550337.html",
-        "https://www.thetimes.co.uk/article/romeo-and-juliet-review-tom-holland-spiderman-theatre-london-zjjr6wjwg",
-        "https://www.thestage.co.uk/reviews/romeo-and-juliet-review-at-duke-of-yorks-theatre-london-jamie-lloyd-tom-holland-and-francesca-amewudah-rivers",
-        "https://www.nytimes.com/2024/10/24/theater/romeo-juliet-broadway-kit-connor-rachel-zegler.html",
-        "https://www.theatermania.com/news/review-kit-connor-flexes-and-rachel-zegler-belts-in-a-lit-romeo-and-juliet_1753873/",
-        "https://www.theaterscene.net/plays/broadway-plays/romeo-and-juliet/victor-gluck/",
-        "https://theaterlife.com/romeo-juliet-1-2-2/",
-        "https://pagesonstages.com/2024/12/24/romeo-and-juliet/",
-        "https://www.interestedbystander.com/2024/10/theater-review-romeo-juliet-jellicle.html",
-        "https://www.theatrereviews.com/broadway-review-romeo-juliet-at-circle-in-the-square-through-sunday-february-16-2025/"
+        "https://www.slantmagazine.com/theater/romeo-and-juliet-review-rachel-zegler-kit-connor/"
       ],
-      "dirFiles": 52,
-      "dirClean": 39,
-      "inReviewsJson": 38,
-      "missing": [
-        {
-          "url": "https://www.bbc.com/culture/article/20240523-tom-holland-in-romeo-and-juliet-review-the-star-is-not-to-blame-but-this-production-cum-global-event-is-lifeless",
-          "host": "bbc.com",
-          "knownOutletId": "bbc-news",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.express.co.uk/entertainment/theatre/1902976/Romeo-Juliet-review-Tom-Holland-Jamie-Lloyd",
-          "host": "express.co.uk",
-          "knownOutletId": "sunday-express",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://1minutecritic.com/romeo-juliet-free-shakespeare-in-the-park-2026-review/",
-          "host": "1minutecritic.com",
-          "knownOutletId": "one-minute-critic",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://exeuntnyc.com/reviews/review-romeo-juliet-at-the-delacorte-theater/",
-          "host": "exeuntnyc.com",
-          "knownOutletId": "exeunt-magazine",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://artsfuse.org/297731/theater-review-a-r-t-s-romeo-and-juliet-whats-love-got-to-do-with-it/",
-          "host": "artsfuse.org",
-          "knownOutletId": "artsfuse",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.dailymail.co.uk/tvshowbiz/article-13453543/Romeo-Juliet-review-Spider-Man-PATRICK-MARMION.html",
-          "host": "dailymail.co.uk",
-          "knownOutletId": "mail-on-sunday",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/romeo-and-juliet-review-tom-holland-london-b2550337.html",
-          "host": "independent.co.uk",
-          "knownOutletId": "independent",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.thetimes.co.uk/article/romeo-and-juliet-review-tom-holland-spiderman-theatre-london-zjjr6wjwg",
-          "host": "thetimes.co.uk",
-          "knownOutletId": "sunday-times",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.thestage.co.uk/reviews/romeo-and-juliet-review-at-duke-of-yorks-theatre-london-jamie-lloyd-tom-holland-and-francesca-amewudah-rivers",
-          "host": "thestage.co.uk",
-          "knownOutletId": "thestage",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        }
-      ],
+      "dirFiles": 70,
+      "dirClean": 43,
+      "inReviewsJson": 42,
+      "missing": [],
       "dirOnly": [
         {
           "host": "broadwaynews.com",
@@ -277312,6 +277195,10 @@
         },
         {
           "host": "thefrontrowcenter.com",
+          "count": 1
+        },
+        {
+          "host": "frontmezzjunkies.com",
           "count": 1
         },
         {
@@ -277327,11 +277214,11 @@
           "count": 1
         },
         {
-          "host": "talkinbroadway.com",
+          "host": "people.com",
           "count": 1
         },
         {
-          "host": "theaterscene.com",
+          "host": "stagebuddy.com",
           "count": 1
         },
         {
@@ -277360,79 +277247,14 @@
           "basis": [
             "wrongProduction"
           ],
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
+          "serpCensus": true,
           "reverify": true
-        },
-        {
-          "url": "https://www.bostonglobe.com/2024/09/06/arts/american-repertory-theater-art-shakespeare-romeo-and-juliet-diane-paulus/",
-          "host": "bostonglobe.com",
-          "knownOutletId": "boston-globe",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "boston-globe--william-shakespeare-directed-by-diane.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.bostonglobe.com/2024/09/06/arts/american-repertory-theater-art-shakespeare-romeo-and-juliet-diane-paulus/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date",
-          "reverify": false
-        },
-        {
-          "url": "https://www.cambridgeday.com/2024/09/13/romeo-and-juliet-review-a-r-t-changes-little-from-the-classic-tale-but-makes-you-feel-the-love/",
-          "host": "cambridgeday.com",
-          "knownOutletId": "cambridge-day",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "cambridge-day--madeleine-aitken.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.cambridgeday.com/2024/09/13/romeo-and-juliet-review-a-r-t-changes-little-from-the-classic-tale-but-makes-you-feel-the-love/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date",
-          "reverify": false
-        },
-        {
-          "url": "https://www.harvardmagazine.com/2024/09/romeo-and-juliet",
-          "host": "harvardmagazine.com",
-          "knownOutletId": "harvard-magazine",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "harvard-magazine--max_krupnickharvardedu.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.harvardmagazine.com/2024/09/romeo-and-juliet"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date",
-          "reverify": false
         }
       ],
       "citedNoUrl": [],
@@ -277442,104 +277264,12 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 1265,
-        "byReason": {
-          "non-review-host": 82,
-          "aggregator-internal-nav": 932,
-          "not-http-url": 203,
-          "production-database-listing": 23,
-          "aggregator-section-root": 24,
-          "bare-host": 1
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
-      "priorRunArticles": [
-        {
-          "url": "https://playbill.com/article/reviews-did-critics-love-the-tom-holland-led-romeo-juliet-in-the-west-end",
-          "publishDate": "2024-05-24"
-        },
-        {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-The-Public-Theaters-Free-Shakespeare-in-the-Park-Production-of-ROMEO-JULIET-20260612",
-          "publishDate": "2026-06-12"
-        },
-        {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-ROMEO-JULIET-at-ART-20240914",
-          "publishDate": "2024-09-14"
-        },
-        {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-ROMEO-JULIET-Starring-Tom-Holland-Francesca-Amewudah-Rivers-20240523",
-          "publishDate": "2024-05-23"
-        }
-      ],
       "automatedExcludedListed": 1,
       "unextractable": [],
-      "weIngestBlocked": [
-        {
-          "url": "https://www.bbc.com/culture/article/20240523-tom-holland-in-romeo-and-juliet-review-the-star-is-not-to-blame-but-this-production-cum-global-event-is-lifeless",
-          "host": "bbc.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.express.co.uk/entertainment/theatre/1902976/Romeo-Juliet-review-Tom-Holland-Jamie-Lloyd",
-          "host": "express.co.uk",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://1minutecritic.com/romeo-juliet-free-shakespeare-in-the-park-2026-review/",
-          "host": "1minutecritic.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://exeuntnyc.com/reviews/review-romeo-juliet-at-the-delacorte-theater/",
-          "host": "exeuntnyc.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://artsfuse.org/297731/theater-review-a-r-t-s-romeo-and-juliet-whats-love-got-to-do-with-it/",
-          "host": "artsfuse.org",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.dailymail.co.uk/tvshowbiz/article-13453543/Romeo-Juliet-review-Spider-Man-PATRICK-MARMION.html",
-          "host": "dailymail.co.uk",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/romeo-and-juliet-review-tom-holland-london-b2550337.html",
-          "host": "independent.co.uk",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.thetimes.co.uk/article/romeo-and-juliet-review-tom-holland-spiderman-theatre-london-zjjr6wjwg",
-          "host": "thetimes.co.uk",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.thestage.co.uk/reviews/romeo-and-juliet-review-at-duke-of-yorks-theatre-london-jamie-lloyd-tom-holland-and-francesca-amewudah-rivers",
-          "host": "thestage.co.uk",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        }
-      ],
-      "ingestResults": [],
-      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
@@ -277554,14 +277284,128 @@
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://www.londontheatre.co.uk/reviews/romeo-and-juliet-review-tom-holland-stars-in-a-sexy-and-haunting-show-jamie-lloyd",
-            "outletId": "londontheatre.co.uk",
+            "url": "https://www.nytimes.com/2024/10/24/theater/romeo-juliet-broadway-kit-connor-rachel-zegler.html",
+            "outletId": "nytimes.com",
             "state": "live",
             "firstSeenAt": "2026-08-16T15:15:17.003Z"
           },
           {
-            "url": "https://www.nytimes.com/2024/05/24/theater/tom-holland-romeo-and-juliet.html",
-            "outletId": "nytimes.com",
+            "url": "https://www.newyorktheatreguide.com/reviews/romeo-and-juliet-broadway-review-kit-connor-rachel-zegler",
+            "outletId": "newyorktheatreguide.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-16T15:15:17.003Z"
+          },
+          {
+            "url": "https://www.timeout.com/newyork/theater/romeo-juliet-broadway-review-kit-connor-rachel-zegler",
+            "outletId": "timeout.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-16T15:15:17.003Z"
+          },
+          {
+            "url": "https://www.wsj.com/articles/romeo-juliet-review-romance-on-broadway-rachel-zegler-kit-connor-sam-gold-6b43d781",
+            "outletId": "wsj.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-16T15:15:17.003Z"
+          },
+          {
+            "url": "https://variety.com/2024/legit/reviews/romeo-and-juliet-review-kit-connor-rachel-zegler-broadway-1236189568/",
+            "outletId": "variety.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-16T15:15:17.003Z"
+          },
+          {
+            "url": "https://observer.com/2024/10/review-juliet-is-fire-romeo-got-mad-rizz-in-this-shakespeare-glowup/",
+            "outletId": "observer.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-16T15:15:17.003Z"
+          },
+          {
+            "url": "https://www.washingtonpost.com/entertainment/theater/2024/10/24/romeo-juliet-left-tenth/",
+            "outletId": "washingtonpost.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-16T15:15:17.003Z"
+          },
+          {
+            "url": "https://nypost.com/2024/10/24/entertainment/romeo-juliet-review-kit-connor-shines-in-hollow-broadway-show/",
+            "outletId": "nypost.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-16T15:15:17.003Z"
+          },
+          {
+            "url": "https://ew.com/romeo-juliet-review-kit-connor-rachel-zegler-shakespeare-broadway-8732243",
+            "outletId": "ew.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-16T15:15:17.003Z"
+          },
+          {
+            "url": "https://www.theatermania.com/news/review-kit-connor-flexes-and-rachel-zegler-belts-in-a-lit-romeo-and-juliet_1753873/",
+            "outletId": "theatermania.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-16T15:15:17.003Z"
+          },
+          {
+            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-5F6HMP",
+            "outletId": "lightingandsoundamerica.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-05T00:54:32.366Z"
+          },
+          {
+            "url": "https://www.talkinbroadway.com/page/world/RomeoandJuliet2024.html",
+            "outletId": "talkinbroadway.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-05T00:54:32.366Z"
+          },
+          {
+            "url": "https://www.theaterscene.net/plays/broadway-plays/romeo-and-juliet/victor-gluck/",
+            "outletId": "theaterscene.net",
+            "state": "live",
+            "firstSeenAt": "2026-08-16T15:15:17.003Z"
+          },
+          {
+            "url": "https://www.theatrereviews.com/broadway-review-romeo-juliet-at-circle-in-the-square-through-sunday-february-16-2025/",
+            "outletId": "theatrereviews.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-16T15:15:17.003Z"
+          },
+          {
+            "url": "https://newyorktheater.me/2024/10/24/romeo-juliet-broadway-review/",
+            "outletId": "newyorktheater.me",
+            "state": "live",
+            "firstSeenAt": "2026-08-16T15:15:17.003Z"
+          },
+          {
+            "url": "https://theaterlife.com/romeo-juliet-1-2-2/",
+            "outletId": "theaterlife.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-16T15:15:17.003Z"
+          },
+          {
+            "url": "https://culturesauce.com/2024/10/24/romeo-juliet-broadway-review-kit-connor-rachel-zegler/",
+            "outletId": "culturesauce.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-16T15:15:17.003Z"
+          },
+          {
+            "url": "https://pagesonstages.com/2024/12/24/romeo-and-juliet/",
+            "outletId": "pagesonstages.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-16T15:15:17.003Z"
+          },
+          {
+            "url": "https://theaterscene.com/RomeoJuliet_DD.html",
+            "outletId": "theaterscene.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-05T00:54:32.366Z"
+          },
+          {
+            "url": "https://www.interestedbystander.com/2024/10/theater-review-romeo-juliet-jellicle.html",
+            "outletId": "interestedbystander.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-16T15:15:17.003Z"
+          },
+          {
+            "url": "https://www.londontheatre.co.uk/reviews/romeo-and-juliet-review-tom-holland-stars-in-a-sexy-and-haunting-show-jamie-lloyd",
+            "outletId": "londontheatre.co.uk",
             "state": "live",
             "firstSeenAt": "2026-08-16T15:15:17.003Z"
           },
@@ -277590,20 +277434,8 @@
             "firstSeenAt": "2026-08-16T15:15:17.003Z"
           },
           {
-            "url": "https://variety.com/2024/legit/reviews/romeo-and-juliet-review-kit-connor-rachel-zegler-broadway-1236189568/",
-            "outletId": "variety.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-16T15:15:17.003Z"
-          },
-          {
             "url": "https://www.theatrely.com/post/an-astonishing-romeo-juliet-for-a-new-age-review",
             "outletId": "theatrely.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-16T15:15:17.003Z"
-          },
-          {
-            "url": "https://nypost.com/2024/10/24/entertainment/romeo-juliet-review-kit-connor-shines-in-hollow-broadway-show/",
-            "outletId": "nypost.com",
             "state": "live",
             "firstSeenAt": "2026-08-16T15:15:17.003Z"
           },
@@ -277620,20 +277452,8 @@
             "firstSeenAt": "2026-08-16T15:15:17.003Z"
           },
           {
-            "url": "https://ew.com/romeo-juliet-review-kit-connor-rachel-zegler-shakespeare-broadway-8732243",
-            "outletId": "ew.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-16T15:15:17.003Z"
-          },
-          {
             "url": "https://www.vulture.com/article/theater-review-connor-zegler-gold-romeo-juliet.html",
             "outletId": "vulture.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-16T15:15:17.003Z"
-          },
-          {
-            "url": "https://observer.com/2024/10/review-juliet-is-fire-romeo-got-mad-rizz-in-this-shakespeare-glowup/",
-            "outletId": "observer.com",
             "state": "live",
             "firstSeenAt": "2026-08-16T15:15:17.003Z"
           },
@@ -277644,38 +277464,14 @@
             "firstSeenAt": "2026-08-16T15:15:17.003Z"
           },
           {
-            "url": "https://www.wsj.com/articles/romeo-juliet-review-romance-on-broadway-rachel-zegler-kit-connor-sam-gold-6b43d781",
-            "outletId": "wsj.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-16T15:15:17.003Z"
-          },
-          {
-            "url": "https://www.timeout.com/newyork/theater/romeo-juliet-broadway-review-kit-connor-rachel-zegler",
-            "outletId": "timeout.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-16T15:15:17.003Z"
-          },
-          {
             "url": "https://www.chicagotribune.com/2024/10/24/review-in-romeo-juliet-on-broadway-its-hard-to-hear-the-young-love-amid-all-the-excitement/",
             "outletId": "chicagotribune.com",
             "state": "live",
             "firstSeenAt": "2026-08-16T15:15:17.003Z"
           },
           {
-            "url": "https://www.washingtonpost.com/entertainment/theater/2024/10/24/romeo-juliet-left-tenth/",
-            "outletId": "washingtonpost.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-16T15:15:17.003Z"
-          },
-          {
             "url": "https://www.usatoday.com/story/entertainment/music/2024/10/24/kit-connor-rachel-zegler-romeo-juliet-review/75775741007/",
             "outletId": "usatoday.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-16T15:15:17.003Z"
-          },
-          {
-            "url": "https://newyorktheater.me/2024/10/24/romeo-juliet-broadway-review/",
-            "outletId": "newyorktheater.me",
             "state": "live",
             "firstSeenAt": "2026-08-16T15:15:17.003Z"
           },
@@ -277688,18 +277484,6 @@
           {
             "url": "https://nystagereview.com/2024/10/24/romeo-juliet-shakespeare-for-the-tiktok-generation/",
             "outletId": "nystagereview.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-16T15:15:17.003Z"
-          },
-          {
-            "url": "https://www.newyorktheatreguide.com/reviews/romeo-and-juliet-broadway-review-kit-connor-rachel-zegler",
-            "outletId": "newyorktheatreguide.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-16T15:15:17.003Z"
-          },
-          {
-            "url": "https://culturesauce.com/2024/10/24/romeo-juliet-broadway-review-kit-connor-rachel-zegler/",
-            "outletId": "culturesauce.com",
             "state": "live",
             "firstSeenAt": "2026-08-16T15:15:17.003Z"
           },
@@ -277752,56 +277536,8 @@
             "firstSeenAt": "2026-08-16T15:15:17.003Z"
           },
           {
-            "url": "https://www.timeout.com/london/theatre/romeo-juliet-13-review",
-            "outletId": "timeout.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-16T15:15:17.003Z"
-          },
-          {
             "url": "https://www.theguardian.com/stage/article/2024/may/23/romeo-juliet-review-tom-holland-spider-man-francesca-amewudah-rivers",
             "outletId": "theguardian.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-16T15:15:17.003Z"
-          },
-          {
-            "url": "https://www.nytimes.com/2024/10/24/theater/romeo-juliet-broadway-kit-connor-rachel-zegler.html",
-            "outletId": "nytimes.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-16T15:15:17.003Z"
-          },
-          {
-            "url": "https://www.theatermania.com/news/review-kit-connor-flexes-and-rachel-zegler-belts-in-a-lit-romeo-and-juliet_1753873/",
-            "outletId": "theatermania.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-16T15:15:17.003Z"
-          },
-          {
-            "url": "https://www.theaterscene.net/plays/broadway-plays/romeo-and-juliet/victor-gluck/",
-            "outletId": "theaterscene.net",
-            "state": "live",
-            "firstSeenAt": "2026-08-16T15:15:17.003Z"
-          },
-          {
-            "url": "https://theaterlife.com/romeo-juliet-1-2-2/",
-            "outletId": "theaterlife.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-16T15:15:17.003Z"
-          },
-          {
-            "url": "https://pagesonstages.com/2024/12/24/romeo-and-juliet/",
-            "outletId": "pagesonstages.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-16T15:15:17.003Z"
-          },
-          {
-            "url": "https://www.interestedbystander.com/2024/10/theater-review-romeo-juliet-jellicle.html",
-            "outletId": "interestedbystander.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-16T15:15:17.003Z"
-          },
-          {
-            "url": "https://www.theatrereviews.com/broadway-review-romeo-juliet-at-circle-in-the-square-through-sunday-february-16-2025/",
-            "outletId": "theatrereviews.com",
             "state": "live",
             "firstSeenAt": "2026-08-16T15:15:17.003Z"
           },
@@ -277815,10 +277551,10 @@
         ],
         "censusSchema": 4,
         "excluded": [],
-        "liveCount": 29,
-        "candidateCount": 30
+        "liveCount": 32,
+        "candidateCount": 33
       },
-      "computedAt": "2026-10-19T18:05:32.145Z"
+      "computedAt": "2026-11-05T00:54:32.366Z"
     },
     {
       "showId": "rope-off-broadway-2026",
@@ -324322,16 +324058,17 @@
       "previewsStartDate": "2026-10-28",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://www.standard.co.uk/culture/theatre/richard-ii-bridge-theatre-review-jonathan-bailey-b1211568.html",
-        "https://www.whatsonstage.com/news/richard-ii-at-bridge-theatre-review-jonathan-bailey-is-a-vicious-monarch_1665507/",
         "https://www.londontheatre.co.uk/reviews/the-bridge-review-bush-theatre",
         "https://theatreandtonic.co.uk/blog/the-bridge-bush-theatre-london-review",
+        "https://www.whatsonstage.com/news/the-bridge-at-bush-theatre-review_1736389/",
+        "https://www.timeout.com/london/theatre/the-bridge-4",
+        "https://newyorktheater.me/2026/09/03/the-bridge-review-a-palestinians-journey-at-the-fringe/",
+        "https://www.standard.co.uk/culture/theatre/richard-ii-bridge-theatre-review-jonathan-bailey-b1211568.html",
+        "https://www.whatsonstage.com/news/richard-ii-at-bridge-theatre-review-jonathan-bailey-is-a-vicious-monarch_1665507/",
         "https://everything-theatre.co.uk/2026/11/review-the-bridge-bush-theatre/",
         "https://www.thereviewshub.com/the-bridge-bush-theatre-london/",
         "https://chiswickcalendar.co.uk/the-bridge-bush-theatre-review/",
         "https://redbuslondinium.uk/2026/11/03/review-the-bridge-bush-theatre-%E2%98%85%E2%98%85%E2%98%85%E2%98%85/",
-        "https://www.theguardian.com/culture/2026/aug/30/the-bridge-review-alaa-shehada",
-        "https://www.timeout.com/london/theatre/the-bridge-4",
         "https://susanelkin.co.uk/articles/the-bridge-susan-elkin-reviews/",
         "https://www.broadwayworld.com/westend/article/Review-THE-BRIDGE-Bush-Theatre-20261103",
         "https://www.thestage.co.uk/reviews/the-bridge-review-bush-theatre-london-alaa-shehada",
@@ -324340,62 +324077,60 @@
         "https://www.standard.co.uk/culture/theatre/the-bridge-at-bush-theatre-review-b1303391.html",
         "https://www.standard.co.uk/culture/theatre/guys-dolls-at-bridge-theatre-review-marisha-wallace-daniel-mays-nicholas-hytner-b1067134.html",
         "https://www.whatsonstage.com/london-theatre/news/guys-dolls-bridge-revival-five-star-review_58533.html",
-        "https://www.whatsonstage.com/news/the-bridge-at-bush-theatre-review_1736389/",
         "https://www.standard.co.uk/go/london/theatre/beat-the-devil-review-david-hare-the-bridge-a4536291.html",
         "https://www.standard.co.uk/culture/theatre/the-oresteia-at-the-bridge-review-b1290028.html",
         "https://www.whatsonstage.com/news/the-oresteia-at-the-bridge-theatre-review_1727392/",
         "https://www.londontheatre1.com/reviews/the-bridge-bush-theatre/",
+        "https://www.pinkprincetheatre.com/post/review-the-bridge-bush-theatre",
+        "https://www.allthatdazzles.co.uk/post/review-the-bridge-bush-theatre",
         "https://www.theskinny.co.uk/festivals/edinburgh-fringe/theatre/the-bridge-assembly-roxy",
+        "https://www.theguardian.com/culture/2026/aug/30/the-bridge-review-alaa-shehada",
         "https://www.bestoftheatre.co.uk/blog/post/alaa-shehada-brings-his-fringe-first-winner-the-bridge-to-the-bush-theatre",
         "https://www.britishtheatreguide.info/reviews/the-bridge-139-upstairs-at-25855",
-        "https://newyorktheater.me/2026/09/03/the-bridge-review-a-palestinians-journey-at-the-fringe/",
-        "https://snackmag.co.uk/alaa-shehada-one-people-not-two-a-conversation-about-and-review-of-the-bridge",
-        "https://www.pinkprincetheatre.com/post/review-the-bridge-bush-theatre",
-        "https://www.allthatdazzles.co.uk/post/review-the-bridge-bush-theatre"
+        "https://snackmag.co.uk/alaa-shehada-one-people-not-two-a-conversation-about-and-review-of-the-bridge"
       ],
-      "dirFiles": 33,
-      "dirClean": 17,
-      "inReviewsJson": 17,
-      "missing": [
-        {
-          "url": "https://www.theskinny.co.uk/festivals/edinburgh-fringe/theatre/the-bridge-assembly-roxy",
-          "host": "theskinny.co.uk",
-          "knownOutletId": "the-skinny",
-          "serpCensus": true,
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ]
-        }
-      ],
+      "dirFiles": 34,
+      "dirClean": 20,
+      "inReviewsJson": 20,
+      "missing": [],
       "dirOnly": [
         {
+          "host": "theartsdesk.com",
+          "count": 1
+        },
+        {
           "host": "ft.com",
+          "count": 1
+        },
+        {
+          "host": "firstnightmagazine.com",
+          "count": 1
+        },
+        {
+          "host": "revstanstheatreblog.co.uk",
           "count": 1
         }
       ],
       "flaggedMisses": [
         {
-          "url": "https://www.theguardian.com/culture/2026/aug/30/the-bridge-review-alaa-shehada",
-          "host": "theguardian.com",
-          "knownOutletId": "guardian",
-          "recoverable": true,
-          "recoverableFile": "guardian--unknown.json",
-          "recoverableOutletId": "guardian",
-          "recoverableCritic": "Unknown",
+          "url": "https://newyorktheater.me/2026/09/03/the-bridge-review-a-palestinians-journey-at-the-fringe/",
+          "host": "newyorktheater.me",
+          "knownOutletId": "nyt-theater",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "guardian--unknown.json",
-              "flag": "emptyBody",
-              "urlInDir": "https://www.theguardian.com/tv-and-radio/2026/nov/04/fleabag-creator-phoebe-waller-bridge-donates-flat-to-help-writers"
+              "file": "nyt-theater--jonathan-mandell.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://newyorktheater.me/2026/09/03/the-bridge-review-a-palestinians-journey-at-the-fringe/"
             }
           ],
           "exclusion": "automatedExcluded",
           "basis": [
-            "noTextOrScoreSignal"
+            "wrongProduction"
           ],
           "sources": [
             {
@@ -324405,6 +324140,37 @@
           ],
           "serpCensus": true,
           "reverify": true
+        },
+        {
+          "url": "https://www.theskinny.co.uk/festivals/edinburgh-fringe/theatre/the-bridge-assembly-roxy",
+          "host": "theskinny.co.uk",
+          "knownOutletId": "the-skinny",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "the-skinny--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.theskinny.co.uk/festivals/edinburgh-fringe/theatre/the-bridge-assembly-roxy"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "flagged-file-date:venue-verified:Assembly Roxy (Upstairs)",
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
+          "serpCensus": true,
+          "reverify": false
         },
         {
           "url": "https://www.bestoftheatre.co.uk/blog/post/alaa-shehada-brings-his-fringe-first-winner-the-bridge-to-the-bush-theatre",
@@ -324449,35 +324215,6 @@
               "file": "british-theatre--keith-mckenna.json",
               "flag": "wrongProduction",
               "urlInDir": "https://www.britishtheatreguide.info/reviews/the-bridge-139-upstairs-at-25855"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ],
-          "serpCensus": true,
-          "reverify": true
-        },
-        {
-          "url": "https://newyorktheater.me/2026/09/03/the-bridge-review-a-palestinians-journey-at-the-fringe/",
-          "host": "newyorktheater.me",
-          "knownOutletId": "nyt-theater",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nyt-theater--jonathan-mandell.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://newyorktheater.me/2026/09/03/the-bridge-review-a-palestinians-journey-at-the-fringe/"
             }
           ],
           "exclusion": "automatedExcluded",
@@ -324574,12 +324311,76 @@
         }
       },
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"The Bridge\" West End review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"The Bridge\" West End review 2026",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 2,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"The Bridge\" review bush",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 9,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "The Bridge Bush Theatre review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 9,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "The Bridge Bush Theatre review",
+            "page": 1,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 2,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "The Bridge Bush Theatre review",
+            "page": 2,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 5,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 32,
+        "byReason": {
+          "non-review-host": 9,
+          "not-http-url": 14,
+          "no-review-evidence": 2,
+          "ticketing-listing": 1,
+          "census-junk-host": 1,
+          "event-listing": 5
+        }
       },
       "dedupedVariants": [],
       "nonReviewCandidates": [
@@ -324589,93 +324390,27 @@
           "knownOutletId": "timeout-london",
           "nonReviewVerdict": "timeout-listing-blurb",
           "nonReviewDetail": "unauthored-and-pre-opening"
-        }
-      ],
-      "automatedExcludedListed": 5,
-      "unextractable": [],
-      "ingestResults": [
-        {
-          "url": "https://www.theskinny.co.uk/festivals/edinburgh-fringe/theatre/the-bridge-assembly-roxy",
-          "host": "theskinny.co.uk",
-          "outletId": "the-skinny",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": null
-        }
-      ],
-      "ingestSkippedByCap": [],
-      "recoveryResults": [
+        },
         {
           "url": "https://www.theguardian.com/culture/2026/aug/30/the-bridge-review-alaa-shehada",
           "host": "theguardian.com",
-          "file": "guardian--unknown.json",
-          "recovered": false,
-          "skipped": false,
-          "provisional": false,
-          "starFallback": false,
-          "reason": "❌ Refusing to ingest — collision with guardian--mark-fisher.json\n   reason: stale-flag-on-existing-file\n   detail: {\n  \"existingUrl\": null,\n  \"existingFlags\": {\n    \"wrongProduction\": true,\n    \"wrongShow\": false,\n    \"wrongProductionAutoCleared\": false\n  },\n  \"existingPublishDate\": \"2026-08-30\",\n  \"incomingUrl\": \"https://www.theguardian.com/culture/2026/aug/30/the-bridge-review-alaa-shehada\",\n  \"incomingPublishDate\": \"2026-08-30\"\n}\n\nManual remediation required: rename or clear the existing file.",
-          "recoveryCount": 1
-        },
-        {
-          "url": "https://theartsdesk.com/theatre/bridge-bush-theatre-review-entertaining-stand-one-sided-theatre",
-          "host": "theartsdesk.com",
-          "file": "artsdesk--unknown.json",
-          "recovered": true,
-          "skipped": false,
-          "provisional": false,
-          "starFallback": false,
-          "reason": null,
-          "recoveryCount": 0,
-          "uncited": true
-        },
-        {
-          "url": "https://firstnightmagazine.com/2026/11/04/review-of-the-bridge-palestinian-play-exposes-major-conflict-but-ultimately-lacks-one-of-its-own/",
-          "host": "firstnightmagazine.com",
-          "file": "firstnightmagazine--unknown.json",
-          "recovered": true,
-          "skipped": false,
-          "provisional": false,
-          "starFallback": false,
-          "reason": null,
-          "recoveryCount": 0,
-          "uncited": true
-        },
-        {
-          "url": "https://revstanstheatreblog.co.uk/2026/11/03/review-the-bridge-bush-theatre/",
-          "host": "revstanstheatreblog.co.uk",
-          "file": "revstanstheatreblog--unknown.json",
-          "recovered": true,
-          "skipped": false,
-          "provisional": false,
-          "starFallback": false,
-          "reason": null,
-          "recoveryCount": 0,
-          "uncited": true
+          "knownOutletId": "guardian",
+          "serpCensus": true,
+          "nonReviewVerdict": "page-date-before-run",
+          "nonReviewDetail": "2026-08-30"
         }
       ],
+      "automatedExcludedListed": 4,
+      "unextractable": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "the-skinny",
-            "outlet": "the-skinny",
+            "outletId": "nyt-theater",
+            "outlet": "nyt-theater",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.theskinny.co.uk/festivals/edinburgh-fringe/theatre/the-bridge-assembly-roxy"
-          },
-          {
-            "outletId": "guardian",
-            "outlet": "guardian",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.theguardian.com/culture/2026/aug/30/the-bridge-review-alaa-shehada"
+            "url": "https://newyorktheater.me/2026/09/03/the-bridge-review-a-palestinians-journey-at-the-fringe/"
           },
           {
             "outletId": "bestoftheatre",
@@ -324692,13 +324427,6 @@
             "url": "https://www.britishtheatreguide.info/reviews/the-bridge-139-upstairs-at-25855"
           },
           {
-            "outletId": "nyt-theater",
-            "outlet": "nyt-theater",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://newyorktheater.me/2026/09/03/the-bridge-review-a-palestinians-journey-at-the-fringe/"
-          },
-          {
             "outletId": "snackmag.co.uk",
             "outlet": "snackmag.co.uk",
             "critic": "Unknown",
@@ -324708,18 +324436,6 @@
         ],
         "suppressedMissing": [],
         "candidates": [
-          {
-            "url": "https://www.standard.co.uk/culture/theatre/richard-ii-bridge-theatre-review-jonathan-bailey-b1211568.html",
-            "outletId": "standard.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-11-03T14:15:10.547Z"
-          },
-          {
-            "url": "https://www.whatsonstage.com/news/richard-ii-at-bridge-theatre-review-jonathan-bailey-is-a-vicious-monarch_1665507/",
-            "outletId": "whatsonstage.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-04T04:19:43.534Z"
-          },
           {
             "url": "https://www.londontheatre.co.uk/reviews/the-bridge-review-bush-theatre",
             "outletId": "londontheatre.co.uk",
@@ -324731,6 +324447,30 @@
             "outletId": "theatreandtonic.co.uk",
             "state": "live",
             "firstSeenAt": "2026-11-04T07:52:26.614Z"
+          },
+          {
+            "url": "https://www.whatsonstage.com/news/the-bridge-at-bush-theatre-review_1736389/",
+            "outletId": "whatsonstage.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-03T14:15:10.547Z"
+          },
+          {
+            "url": "https://www.timeout.com/london/theatre/the-bridge-4",
+            "outletId": "timeout.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T22:24:22.326Z"
+          },
+          {
+            "url": "https://www.standard.co.uk/culture/theatre/richard-ii-bridge-theatre-review-jonathan-bailey-b1211568.html",
+            "outletId": "standard.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-11-03T14:15:10.547Z"
+          },
+          {
+            "url": "https://www.whatsonstage.com/news/richard-ii-at-bridge-theatre-review-jonathan-bailey-is-a-vicious-monarch_1665507/",
+            "outletId": "whatsonstage.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-04T04:19:43.534Z"
           },
           {
             "url": "https://everything-theatre.co.uk/2026/11/review-the-bridge-bush-theatre/",
@@ -324755,12 +324495,6 @@
             "outletId": "redbuslondinium.uk",
             "state": "live",
             "firstSeenAt": "2026-11-04T07:52:26.614Z"
-          },
-          {
-            "url": "https://www.timeout.com/london/theatre/the-bridge-4",
-            "outletId": "timeout.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-30T22:24:22.326Z"
           },
           {
             "url": "https://susanelkin.co.uk/articles/the-bridge-susan-elkin-reviews/",
@@ -324811,12 +324545,6 @@
             "firstSeenAt": "2026-11-04T04:19:43.534Z"
           },
           {
-            "url": "https://www.whatsonstage.com/news/the-bridge-at-bush-theatre-review_1736389/",
-            "outletId": "whatsonstage.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-03T14:15:10.547Z"
-          },
-          {
             "url": "https://www.standard.co.uk/go/london/theatre/beat-the-devil-review-david-hare-the-bridge-a4536291.html",
             "outletId": "standard.co.uk",
             "state": "live",
@@ -324853,18 +324581,17 @@
             "firstSeenAt": "2026-11-04T19:31:35.837Z"
           },
           {
-            "url": "https://www.theskinny.co.uk/festivals/edinburgh-fringe/theatre/the-bridge-assembly-roxy",
-            "outletId": "the-skinny",
+            "url": "https://www.theguardian.com/culture/2026/aug/30/the-bridge-review-alaa-shehada",
+            "outletId": "theguardian.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T22:24:22.326Z"
+          },
+          {
+            "url": "https://newyorktheater.me/2026/09/03/the-bridge-review-a-palestinians-journey-at-the-fringe/",
+            "outletId": "nyt-theater",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-10-29T07:30:38.899Z"
-          },
-          {
-            "url": "https://www.theguardian.com/culture/2026/aug/30/the-bridge-review-alaa-shehada",
-            "outletId": "guardian",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-30T22:24:22.326Z"
           },
           {
             "url": "https://www.bestoftheatre.co.uk/blog/post/alaa-shehada-brings-his-fringe-first-winner-the-bridge-to-the-bush-theatre",
@@ -324876,13 +324603,6 @@
           {
             "url": "https://www.britishtheatreguide.info/reviews/the-bridge-139-upstairs-at-25855",
             "outletId": "british-theatre",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-29T07:30:38.899Z"
-          },
-          {
-            "url": "https://newyorktheater.me/2026/09/03/the-bridge-review-a-palestinians-journey-at-the-fringe/",
-            "outletId": "nyt-theater",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-10-29T07:30:38.899Z"
@@ -324901,12 +324621,17 @@
             "url": "https://www.timeout.com/london/theatre/the-bridge-4",
             "host": "timeout.com",
             "reason": "timeout-listing-blurb"
+          },
+          {
+            "url": "https://www.theguardian.com/culture/2026/aug/30/the-bridge-review-alaa-shehada",
+            "host": "theguardian.com",
+            "reason": "page-date-before-run"
           }
         ],
-        "liveCount": 17,
-        "candidateCount": 23
+        "liveCount": 18,
+        "candidateCount": 22
       },
-      "computedAt": "2026-11-04T19:31:35.837Z"
+      "computedAt": "2026-11-05T00:54:32.366Z"
     },
     {
       "showId": "the-brief-wondrous-life-of-oscar-wao-regional-2026",
@@ -325423,12 +325148,74 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"The Charioteer\" Off-Broadway review",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"The Charioteer\" Off-Broadway review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 9,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"The Charioteer\" review cell",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 9,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "The Charioteer the cell review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 9,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "The Charioteer the cell review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "The Charioteer the cell review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 0,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 41,
+        "byReason": {
+          "non-review-host": 12,
+          "aggregator-internal-nav": 2,
+          "not-http-url": 26,
+          "write-path-blocked": 1
+        }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 0,
@@ -325470,7 +325257,7 @@
         "liveCount": 0,
         "candidateCount": 1
       },
-      "computedAt": "2026-11-04T19:31:35.837Z"
+      "computedAt": "2026-11-05T00:54:32.366Z"
     },
     {
       "showId": "the-cherry-orchard-park-avenue-armory-off-broadway-2026",
@@ -376843,76 +376630,12 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"The Steel Man\" Off-Broadway review",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"The Steel Man\" Off-Broadway review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"The Steel Man\" review 59e59",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 4,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "The Steel Man 59E59 Theaters review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "The Steel Man 59E59 Theaters review",
-            "page": 1,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "The Steel Man 59E59 Theaters review",
-            "page": 2,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          }
-        ],
-        "queriesOk": 5,
-        "queriesTotal": 5,
-        "resultCount": 1,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 36,
-        "byReason": {
-          "non-review-host": 27,
-          "aggregator-internal-nav": 5,
-          "no-review-evidence": 1,
-          "ticketing-listing": 1,
-          "census-junk-host": 1,
-          "write-path-blocked": 1
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 0,
@@ -376954,7 +376677,7 @@
         "liveCount": 0,
         "candidateCount": 1
       },
-      "computedAt": "2026-11-04T19:31:35.837Z"
+      "computedAt": "2026-11-05T00:54:32.366Z"
     },
     {
       "showId": "the-story-olivier-west-end-2026",
@@ -399055,12 +398778,74 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Turn. Turning. TURNT.\" Off-Broadway review",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Turn. Turning. TURNT.\" Off-Broadway review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 2,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Turn. Turning. TURNT.\" review fisher",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 3,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Turn. Turning. TURNT. BAM Fisher (Fishman Space) review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 5,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Turn. Turning. TURNT. BAM Fisher (Fishman Space) review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Turn. Turning. TURNT. BAM Fisher (Fishman Space) review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 0,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 27,
+        "byReason": {
+          "non-review-host": 3,
+          "aggregator-internal-nav": 2,
+          "not-http-url": 21,
+          "non-review-path": 1
+        }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 0,
@@ -399082,7 +398867,7 @@
         "liveCount": 1,
         "candidateCount": 1
       },
-      "computedAt": "2026-11-04T19:31:35.837Z"
+      "computedAt": "2026-11-05T00:54:32.366Z"
     },
     {
       "showId": "twelfth-night-crucible-regional-2026",
@@ -407712,6 +407497,45 @@
       "computedAt": "2026-11-03T22:38:02.538Z"
     },
     {
+      "showId": "wanted-2022",
+      "title": "Wanted",
+      "openingDate": "2026-11-08",
+      "status": "previews",
+      "category": "broadway",
+      "previewsStartDate": "2026-10-15",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "unextractable": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 4,
+        "excluded": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-11-05T00:54:32.366Z"
+    },
+    {
       "showId": "war-horse-west-end-2026",
       "title": "War Horse",
       "openingDate": "2026-06-02",
@@ -410044,53 +409868,156 @@
       "category": "off-broadway",
       "previewsStartDate": "2026-10-25",
       "aggregatorArticles": [
-        "https://www.broadwayworld.com/article/Review-Roundup-THE-GREAT-SOCIETY-Opens-On-Broadway-See-What-The-Critics-Think-20191001",
         "https://playbill.com/article/read-the-reviews-for-midterm-election-play-well-see-off-broadway"
       ],
       "aggregatorListedUrls": [
         "https://culturesauce.com/well-see-richard-nelson-apple-off-broadway-review/",
         "https://nystagereview.com/2026/11/04/well-see-sitting-down-to-dinner-once-again-with-our-beloved-apple-family/",
         "https://nystagereview.com/2026/11/04/well-see-sweating-election-night-with-the-apples/",
-        "https://www.theatermania.com/news/review-richard-nelsons-apple-family-confront-the-end-of-history-in-well-see_1858880/"
+        "https://www.theatermania.com/news/review-richard-nelsons-apple-family-confront-the-end-of-history-in-well-see_1858880/",
+        "https://www.vulture.com/article/review-nelson-apple-family-plays-well-see-public-theater.html"
       ],
-      "dirFiles": 5,
-      "dirClean": 4,
-      "inReviewsJson": 4,
-      "missing": [],
-      "dirOnly": [],
+      "dirFiles": 6,
+      "dirClean": 5,
+      "inReviewsJson": 5,
+      "missing": [
+        {
+          "url": "https://www.vulture.com/article/review-nelson-apple-family-plays-well-see-public-theater.html",
+          "host": "vulture.com",
+          "knownOutletId": "vulture",
+          "serpCensus": true,
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ]
+        }
+      ],
+      "dirOnly": [
+        {
+          "host": "newyorktheatreguide.com",
+          "count": 1
+        }
+      ],
       "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"We'll See\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"We'll See\" Off-Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 9,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"We'll See\" review public",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 9,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped2",
+            "query": "\"We'll See\" Nelson review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 7,
+            "accepted": 3,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "We'll See The Public Theater/Barbaralee Theater review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 9,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "We'll See The Public Theater/Barbaralee Theater review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "We'll See The Public Theater/Barbaralee Theater review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 6,
+        "queriesTotal": 6,
+        "resultCount": 3,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 377,
+        "count": 134,
         "byReason": {
-          "non-review-host": 36,
-          "aggregator-internal-nav": 253,
-          "bare-host": 1,
-          "not-http-url": 64,
-          "aggregator-section-root": 10,
-          "roundup-page": 2,
-          "podcast-episode": 1,
+          "non-review-host": 30,
+          "aggregator-internal-nav": 40,
+          "not-http-url": 46,
           "production-database-listing": 9,
-          "non-stage-review": 1
+          "aggregator-section-root": 6,
+          "non-stage-review": 1,
+          "news-roundup-site": 2
         }
       },
       "dedupedVariants": [],
-      "priorRunArticles": [
-        {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-THE-GREAT-SOCIETY-Opens-On-Broadway-See-What-The-Critics-Think-20191001",
-          "publishDate": "2019-10-01"
-        }
-      ],
       "automatedExcludedListed": 0,
       "unextractable": [],
+      "ingestResults": [
+        {
+          "url": "https://www.vulture.com/article/review-nelson-apple-family-plays-well-see-public-theater.html",
+          "host": "vulture.com",
+          "outletId": "vulture",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "complete",
-        "missing": [],
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "vulture",
+            "outlet": "vulture",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.vulture.com/article/review-nelson-apple-family-plays-well-see-public-theater.html"
+          }
+        ],
         "suppressedMissing": [],
         "candidates": [
           {
@@ -410116,14 +410043,21 @@
             "outletId": "theatermania.com",
             "state": "live",
             "firstSeenAt": "2026-11-04T16:42:04.576Z"
+          },
+          {
+            "url": "https://www.vulture.com/article/review-nelson-apple-family-plays-well-see-public-theater.html",
+            "outletId": "vulture",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-11-05T00:54:32.366Z"
           }
         ],
         "censusSchema": 4,
         "excluded": [],
         "liveCount": 3,
-        "candidateCount": 3
+        "candidateCount": 4
       },
-      "computedAt": "2026-11-04T19:31:35.837Z"
+      "computedAt": "2026-11-05T00:54:32.366Z"
     },
     {
       "showId": "wesley-off-broadway-2025",
@@ -420629,26 +420563,26 @@
     }
   ],
   "staleness": {
-    "at": "2026-11-04T23:47:57.165Z",
+    "at": "2026-11-05T00:54:32.365Z",
     "reserveEvery": 4,
     "reservedAttempted": [
-      "tammy-faye-2024",
-      "a-wonderful-world-the-louis-armstrong-musical-2024"
+      "romeo-juliet-2024",
+      "left-on-tenth-2024"
     ],
     "catalogueReserveEvery": 8,
     "catalogueAttempted": [
-      "the-winters-tale-royal-shakespeare-regional-2025"
+      "wanted-2022"
     ],
-    "neverAuditedDueAtStart": 661,
+    "neverAuditedDueAtStart": 660,
     "oldestDueRowAtStart": {
-      "showId": "tammy-faye-2024",
-      "computedAt": "2026-10-19T18:05:32.145Z",
-      "ageHours": 389.4
-    },
-    "oldestDueRowAfterRun": {
       "showId": "romeo-juliet-2024",
       "computedAt": "2026-10-19T18:05:32.145Z",
-      "ageHours": 389.7
+      "ageHours": 390.5
+    },
+    "oldestDueRowAfterRun": {
+      "showId": "yellow-face-2024",
+      "computedAt": "2026-10-19T21:45:10.991Z",
+      "ageHours": 387.2
     }
   }
 }

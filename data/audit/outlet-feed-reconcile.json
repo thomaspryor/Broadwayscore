@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-04T23:48:40.409Z",
+  "generatedAt": "2026-11-05T00:55:12.995Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -17,11 +17,6 @@
       "id": "the-verge-off-broadway-2026",
       "title": "The Verge",
       "openingDate": "2026-11-05"
-    },
-    {
-      "id": "the-lives-of-others-west-end-2026",
-      "title": "The Lives of Others",
-      "openingDate": "2026-10-29"
     },
     {
       "id": "tosca-english-national-opera-west-end-2026",
@@ -49,16 +44,6 @@
       "openingDate": "2026-11-05"
     },
     {
-      "id": "a-few-good-men-2026",
-      "title": "A Few Good Men",
-      "openingDate": "2026-10-29"
-    },
-    {
-      "id": "ceilidh-the-musical-off-west-end-2026",
-      "title": "Ceilidh The Musical",
-      "openingDate": "2026-10-29"
-    },
-    {
       "id": "the-bridge-off-west-end-2026",
       "title": "The Bridge",
       "openingDate": "2026-11-03"
@@ -67,16 +52,6 @@
       "id": "the-moth-off-west-end-2026",
       "title": "The Moth",
       "openingDate": "2026-10-30"
-    },
-    {
-      "id": "the-heart-off-broadway-2026",
-      "title": "The Heart",
-      "openingDate": "2026-10-29"
-    },
-    {
-      "id": "kelly-mccaughan-catholic-guilt-off-broadway-2026",
-      "title": "Kelly McCaughan: Catholic Guilt",
-      "openingDate": "2026-10-29"
     },
     {
       "id": "rope-off-broadway-2026",
@@ -114,24 +89,18 @@
       "openingDate": "2026-11-02"
     },
     {
-      "id": "middlemarch-rsc-regional-2026",
-      "title": "Middlemarch",
-      "openingDate": "2026-10-29"
-    },
-    {
       "id": "the-royale-regional-2026",
       "title": "The Royale",
       "openingDate": "2026-10-30"
     }
   ],
-  "skipped": [
-    {
-      "showId": "the-greatest-story-ever-off-broadway-2026",
-      "reason": "no data/review-texts directory for this show"
-    }
-  ],
+  "skipped": [],
   "feedsChecked": 78,
   "feedsFailed": [
+    {
+      "outletId": "theater-life",
+      "error": "Timeout fetching https://theaterlife.com/feed"
+    },
     {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
@@ -157,9 +126,9 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 825,
-  "matchedGaps": 8,
-  "possibleGaps": 10,
+  "itemsScanned": 814,
+  "matchedGaps": 7,
+  "possibleGaps": 5,
   "gaps": [
     {
       "showId": "222-a-ghost-story-off-broadway-2026",
@@ -171,30 +140,21 @@
       "publishDate": "2026-11-04"
     },
     {
-      "showId": "the-heart-off-broadway-2026",
-      "title": "The Heart",
+      "showId": "parcel-from-america-off-broadway-2026",
+      "title": "Parcel from America",
       "level": "matched",
-      "outletId": "firstnightmagazine",
-      "url": "https://firstnightmagazine.com/2026/11/02/review-of-ceilidh-unconventional-scottish-musical-isnt-that-brave-but-it-teems-with-heart/",
-      "headline": "Review of &#8216;Ceilidh&#8217;: &#8220;Unconventional Scottish musical isn&#8217;t that brave, but it teems with heart&#8221;",
-      "publishDate": "2026-11-02"
+      "outletId": "theatermania",
+      "url": "https://www.theatermania.com/news/review-parcel-from-america-irish-schtick-in-a-box_1858919/",
+      "headline": "Review: Parcel From America, Irish Schtick in a Box",
+      "publishDate": "2026-11-04"
     },
     {
-      "showId": "the-heart-off-broadway-2026",
-      "title": "The Heart",
+      "showId": "the-bridge-off-west-end-2026",
+      "title": "The Bridge",
       "level": "matched",
-      "outletId": "frontmezzjunkies",
-      "url": "https://frontmezzjunkies.com/2026/10/29/rent-still-has-my-heart-thirty-years-later/",
-      "headline": "“Rent” Still Has My Heart, Thirty Years Later",
-      "publishDate": "2026-10-29"
-    },
-    {
-      "showId": "the-heart-off-broadway-2026",
-      "title": "The Heart",
-      "level": "matched",
-      "outletId": "nypost",
-      "url": "https://nypost.com/2026/11/04/entertainment/the-heart-review-touching-edm-musical-blends-the-pitt-with-broadway/",
-      "headline": "&#8216;The Heart&#8217; review: Touching EDM musical blends &#8216;The Pitt&#8217; with Broadway",
+      "outletId": "north-west-end",
+      "url": "https://northwestend.com/the-bridge-bush-theatre/",
+      "headline": "The Bridge – Bush Theatre",
       "publishDate": "2026-11-04"
     },
     {
@@ -250,51 +210,6 @@
       "url": "https://standard.co.uk/culture/theatre/the-oresteia-at-the-bridge-review-b1290028.html",
       "headline": "The Oresteia at the Bridge: Thrillingly stripped back and bloody",
       "publishDate": null
-    },
-    {
-      "showId": "the-heart-off-broadway-2026",
-      "title": "The Heart",
-      "level": "possible",
-      "outletId": "onin",
-      "url": "https://onin.london/eve-bar-review/?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=eve-bar-review",
-      "headline": "Eve Bar Review",
-      "publishDate": "2026-11-04"
-    },
-    {
-      "showId": "the-heart-off-broadway-2026",
-      "title": "The Heart",
-      "level": "possible",
-      "outletId": "plays-to-see",
-      "url": "https://playstosee.com/reviews/international-reviews/ireland/iris/?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=iris",
-      "headline": "Iris",
-      "publishDate": "2026-10-29"
-    },
-    {
-      "showId": "the-heart-off-broadway-2026",
-      "title": "The Heart",
-      "level": "possible",
-      "outletId": "stageandcinema",
-      "url": "https://stageandcinema.com/2026/10/28/assimilation-word-for-word-z-below-san-francisco-review/",
-      "headline": "Theater Review: ASSIMILATION (Word for Word / San Francisco)",
-      "publishDate": "2026-10-28"
-    },
-    {
-      "showId": "the-heart-off-broadway-2026",
-      "title": "The Heart",
-      "level": "possible",
-      "outletId": "nytimes",
-      "url": "https://www.nytimes.com/2026/11/03/theater/waiting-for-lefty-review-odets-pasquale.html",
-      "headline": "‘Waiting for Lefty’ Review: Protest Songs in the Key of Life",
-      "publishDate": "2026-11-03"
-    },
-    {
-      "showId": "the-heart-off-broadway-2026",
-      "title": "The Heart",
-      "level": "possible",
-      "outletId": "thereviewshub",
-      "url": "https://www.thereviewshub.com/hansel-gretel-and-the-witch-northern-stage-newcastle/",
-      "headline": "Hansel &#038; Gretel and the Witch &#8211; Northern Stage, Newcastle",
-      "publishDate": "2026-10-30"
     },
     {
       "showId": "the-moth-off-west-end-2026",

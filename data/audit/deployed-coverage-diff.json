@@ -1,48 +1,13 @@
 {
-  "generatedAt": "2026-11-04T23:48:40.008Z",
+  "generatedAt": "2026-11-05T00:55:12.687Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 322,
-  "clean": 320,
-  "defective": 2,
-  "byType": {
-    "score-drift": 2
-  },
-  "shows": [
-    {
-      "showId": "the-moth-off-west-end-2026",
-      "title": "The Moth",
-      "openingDate": "2026-10-30",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 58.62 vs local 59.06 (Δ0.44)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 15,
-      "deployedCount": 15,
-      "firstDefectAt": "2026-11-04T23:48:31.747Z"
-    },
-    {
-      "showId": "other-desert-cities-2026",
-      "title": "Other Desert Cities",
-      "openingDate": "2026-10-18",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 67.3 vs local 67.23 (Δ0.07)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 37,
-      "deployedCount": 38,
-      "firstDefectAt": "2026-11-04T23:48:31.747Z"
-    }
-  ],
+  "checked": 318,
+  "clean": 318,
+  "defective": 0,
+  "byType": {},
+  "shows": [],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }
