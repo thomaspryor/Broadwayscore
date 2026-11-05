@@ -23,6 +23,7 @@ const { isOfficialBroadwayTheater } = require('./broadway-theaters');
 const { isNonNycVenue, isBroadwayCategory } = require('./venue-classification');
 const { isPlaceholderVenue } = require('./placeholder-venue');
 const { baseTitle } = require('./prior-run-sibling');
+const { isConfirmedNoPreviewSource } = require('./date-source-confidence');
 
 // Lazy: fact-check-sample.js registers this cohort, so a top-level require would be circular.
 const fc = () => require('./fact-check-sample');
@@ -225,7 +226,8 @@ function otherRunsTriage(show, shows, checks) {
  *   non-nyc-venue          venue outside New York (venue-classification isNonNycVenue)
  *   status-vs-dates        a stored status the dates contradict and the build does not correct
  *                          (closed with a future closing; not yet open with a past closing)
- *   preview-equals-opening first preview stored as opening night (the class the BRO-6489 probe found)
+ *   preview-equals-opening first preview stored as opening night (the class the BRO-6489 probe found);
+ *                          rows whose openingDateSource ends `:no-previews` are confirmed, not flagged
  * Off-Broadway venues are not checked against off-broadway-venues.json: it is
  * built from shows.json (build-ob-venues.js), so every row passes by construction.
  */
@@ -241,7 +243,9 @@ function consistencyFindings(shows, today) {
     }
     if (s.status === 'closed' && s.closingDate && s.closingDate > today) add('status-vs-dates', `closed, closingDate ${s.closingDate}`);
     if ((s.status === 'upcoming' || s.status === 'announced' || s.status === 'previews') && s.closingDate && s.closingDate < today) add('status-vs-dates', `${s.status}, closingDate ${s.closingDate}`);
-    if (s.previewsStartDate && s.openingDate && s.previewsStartDate === s.openingDate) add('preview-equals-opening', s.openingDate);
+    // A source-confirmed no-preview run (`…:no-previews`) is the real shape, not the bug (BRO-6493).
+    if (s.previewsStartDate && s.openingDate && s.previewsStartDate === s.openingDate &&
+        !isConfirmedNoPreviewSource(s.openingDateSource)) add('preview-equals-opening', s.openingDate);
   }
   return out;
 }

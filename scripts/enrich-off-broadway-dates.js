@@ -90,6 +90,12 @@ const {
   isEligibleForDateFix,
   getShowOpeningYear,
 } = require('./lib/ob-date-fix-eligibility');
+const {
+  parseSpectraProductions,
+  parseSpectraVenueName,
+  pickSpectraVenueUrl,
+  matchSpectraProduction,
+} = require('./lib/spectra-iobdb');
 
 const USAGE = `enrich-off-broadway-dates.js — Off-Broadway Date Enrichment Script.
 
@@ -218,6 +224,7 @@ module.exports = {
   parseUSDate,
   extractDatesFromProductionPage,
   validateOBProductionPageTitle,
+  titleHeadMatchesShow,
   mergeSources,
   isPreviewStrictlyAfterOpening,
   isNullOpeningFill,
@@ -398,6 +405,40 @@ function getPlaybillUrlYear(url) {
 }
 
 /**
+ * Does a source page's title head ("Show Name", metadata already cropped)
+ * name this show? Shared by the Playbill production-page check and the
+ * Spectra/IOBDB record match (BRO-6493) so both sources apply one rule.
+ */
+function titleHeadMatchesShow(showTitle, showHead) {
+  if (!showTitle || !showHead) return false;
+  // Title-word match (token-overlap with extra-distinctive-word rejection) is
+  // stricter than substring containment. The previous bidirectional substring
+  // rule could pass a longer sibling production within the same year window
+  // (e.g. base title matching extended title, or vice versa). titleWordsMatch
+  // applies the same cross-show defense the rest of the codebase uses for
+  // page validation. Tightened 2026-04-30 ship-check (Codex P0 finding).
+  //
+  // Pre-normalize slashes to spaces — show-matching's normalizer treats `/` as
+  // word-internal (so "Blood/Love" collapses to "bloodlove" and never matches
+  // "Blood/Love" on a Playbill page where the slash is a token separator).
+  const slashSplit = (s) => s.replace(/\//g, ' ');
+  if (!titleWordsMatch(slashSplit(showTitle), slashSplit(showHead))) return false;
+  // Short-title length guard: titleWordsMatch's single-word path accepts any
+  // page-head that contains the show word as a token, so "Hamlet" passes
+  // "Hamlet 2.0: An Improvised Sequel" and "The Maids" passes "The Maids of
+  // Honor". For show titles with ≤3 meaningful words, require page-head's
+  // meaningful word count to equal the show title's. Longer titles are
+  // sufficiently distinctive on their own. (Codex P0 ship-check finding.)
+  const meaningfulWords = (s) => normalizeForCompare(s)
+    .split(/[\s,:()&\-_/.]+/)
+    .map((w) => w.replace(/[^a-z0-9]/g, ''))
+    .filter((w) => w.length > 2 && !COMMON_GENERIC_WORDS.has(w));
+  const showWc = meaningfulWords(showTitle).length;
+  const headWc = meaningfulWords(showHead).length;
+  return !(showWc <= 3 && headWc > showWc);
+}
+
+/**
  * Validate a Playbill production page. Three checks:
  *   1. <title> contains the show's title (loose substring after diacritic +
  *      entity decode + punctuation strip)
@@ -428,31 +469,7 @@ function validateOBProductionPageTitle(html, show) {
   // year-window check separate (which reads the full title, parens included).
   const showHead = rawTitle.replace(/\s*\(.*$/, '').replace(/\s*\|\s*Playbill\s*$/i, '').trim();
   if (!showHead) return false;
-  // Title-word match (token-overlap with extra-distinctive-word rejection) is
-  // stricter than substring containment. The previous bidirectional substring
-  // rule could pass a longer sibling production within the same year window
-  // (e.g. base title matching extended title, or vice versa). titleWordsMatch
-  // applies the same cross-show defense the rest of the codebase uses for
-  // page validation. Tightened 2026-04-30 ship-check (Codex P0 finding).
-  //
-  // Pre-normalize slashes to spaces — show-matching's normalizer treats `/` as
-  // word-internal (so "Blood/Love" collapses to "bloodlove" and never matches
-  // "Blood/Love" on a Playbill page where the slash is a token separator).
-  const slashSplit = (s) => s.replace(/\//g, ' ');
-  if (!titleWordsMatch(slashSplit(showTitle), slashSplit(showHead))) return false;
-  // Short-title length guard: titleWordsMatch's single-word path accepts any
-  // page-head that contains the show word as a token, so "Hamlet" passes
-  // "Hamlet 2.0: An Improvised Sequel" and "The Maids" passes "The Maids of
-  // Honor". For show titles with ≤3 meaningful words, require page-head's
-  // meaningful word count to equal the show title's. Longer titles are
-  // sufficiently distinctive on their own. (Codex P0 ship-check finding.)
-  const meaningfulWords = (s) => normalizeForCompare(s)
-    .split(/[\s,:()&\-_/.]+/)
-    .map((w) => w.replace(/[^a-z0-9]/g, ''))
-    .filter((w) => w.length > 2 && !COMMON_GENERIC_WORDS.has(w));
-  const showWc = meaningfulWords(showTitle).length;
-  const headWc = meaningfulWords(showHead).length;
-  if (showWc <= 3 && headWc > showWc) return false;
+  if (!titleHeadMatchesShow(showTitle, showHead)) return false;
   // Year window check — only enforced when both expected and page year exist.
   if (typeof show === 'object') {
     const expectedYear = getShowYear(show);
@@ -684,6 +701,96 @@ async function scrapePlaybillProductionPages(candidateShows, alreadyMatchedShowI
 
   console.log(`Production-page hits: ${entries.length} | misses: ${misses.length}`);
   return { entries, misses, cacheChanged };
+}
+
+// =========================================================
+// SOURCE 4: SPECTRA / IOBDB VENUE PAGES (BRO-6493)
+// =========================================================
+// Second page-validated per-show source for rows Phase 3 could not resolve
+// (no Playbill production page). iobdb.com now redirects to spectra.theater,
+// whose venue page lists every production there with IOBDB's First
+// Performance / Opening Date / Closing Date (scripts/lib/spectra-iobdb.js).
+// Google indexes Spectra venue pages far better than its production pages,
+// so discovery is one SERP per distinct VENUE (not per show), capped per run;
+// the page itself is a free direct fetch.
+const MAX_SPECTRA_VENUES_PER_RUN = 12;
+
+async function scrapeSpectraVenuePages(queue, opts = {}) {
+  console.log('--- SPECTRA / IOBDB VENUE PAGES ---');
+  const entries = [];
+  const misses = [];
+  const maxVenues = opts.maxVenues ?? MAX_SPECTRA_VENUES_PER_RUN;
+  const byVenue = new Map();
+  for (const show of queue) {
+    if (!show.venue) { misses.push({ showId: show.id, reason: 'spectra-no-venue' }); continue; }
+    const key = normalizeForCompare(show.venue).trim();
+    if (!byVenue.has(key)) byVenue.set(key, []);
+    byVenue.get(key).push(show);
+  }
+  console.log(`Queue: ${queue.length} shows at ${byVenue.size} venues (cap ${maxVenues} venue lookups)`);
+  let lookups = 0;
+  for (const shows of byVenue.values()) {
+    const venue = shows[0].venue;
+    if (lookups >= maxVenues || !timeBudget.canStartItem(MIN_REMAINING_MS_TO_START)) {
+      for (const s of shows) misses.push({ showId: s.id, reason: 'spectra-deferred-cap' });
+      continue;
+    }
+    lookups++;
+    let venueUrl = null;
+    try {
+      const results = await serpQuery(`site:spectra.theater "${normalizeForCompare(venue).replace(/"/g, '')}"`, { nbResults: 10 });
+      venueUrl = pickSpectraVenueUrl(results, venue, venuesShareDistinctiveWord);
+    } catch (e) {
+      for (const s of shows) misses.push({ showId: s.id, reason: 'spectra-serp-error', detail: e.message });
+      continue;
+    }
+    if (!venueUrl) {
+      console.log(`  ${venue}: no Spectra venue page found via SERP (${shows.length} show(s))`);
+      for (const s of shows) misses.push({ showId: s.id, reason: 'spectra-no-venue-page' });
+      continue;
+    }
+    let html = '';
+    try {
+      html = (await fetchPage(venueUrl, { directOnly: true }))?.content || '';
+    } catch (e) {
+      for (const s of shows) misses.push({ showId: s.id, reason: 'spectra-fetch-error', detail: e.message, url: venueUrl });
+      continue;
+    }
+    // Page validation: the fetched page must itself name our venue.
+    const pageVenue = parseSpectraVenueName(html);
+    if (!pageVenue || !venuesShareDistinctiveWord(venue, pageVenue)) {
+      console.warn(`  ${venue}: Spectra page venue "${pageVenue}" does not match (${venueUrl})`);
+      for (const s of shows) misses.push({ showId: s.id, reason: 'spectra-venue-page-mismatch', url: venueUrl });
+      continue;
+    }
+    const records = parseSpectraProductions(html);
+    console.log(`  ${venue}: ${records.length} productions on ${venueUrl}`);
+    for (const show of shows) {
+      const r = matchSpectraProduction(records, show, {
+        showYear: getShowOpeningYear(show),
+        titleMatches: titleHeadMatchesShow,
+      });
+      if (!r.ok) {
+        console.log(`    ${show.id}: ${r.reason}`);
+        misses.push({ showId: show.id, reason: `spectra-${r.reason}`, url: r.record?.url || venueUrl });
+        continue;
+      }
+      const rec = r.record;
+      entries.push({
+        title: show.title,
+        showId: show.id,
+        firstPreview: rec.startDate,
+        opening: rec.openingDate,
+        source: 'spectra-iobdb',
+        url: rec.url,
+        venueUrl,
+        productionPageYear: rec.year,
+      });
+      console.log(`    ${show.id}: first performance=${rec.startDate || '(none)'}, opening=${rec.openingDate} [${rec.url}]`);
+    }
+  }
+  console.log(`Spectra hits: ${entries.length} | misses: ${misses.length} | venue lookups: ${lookups}`);
+  return { entries, misses };
 }
 
 // =========================================================
@@ -1011,7 +1118,7 @@ async function main() {
     includeClosed: includeClosedWhenYearMatches,
   });
   for (const e of phase3.entries) {
-    // playbillYear rides on the merged entry (Phase 4's closed-row check), not
+    // The page year rides on the merged entry (Phase 4's closed-row check), not
     // in the audit raw blob, so audit output is unchanged without the flag.
     const { playbillYear, ...rawEntry } = e;
     merged.push({
@@ -1019,12 +1126,36 @@ async function main() {
       showId: e.showId, // surfaces in Phase 4 as a direct-match shortcut
       firstPreview: e.firstPreview,
       opening: e.opening,
-      playbillYear,
+      productionPageYear: playbillYear,
       sources: ['playbill-production-page'],
       confidence: 'single-source',
       raw: { 'playbill-production-page': rawEntry },
     });
   }
+
+  // Phase 3c (BRO-6493): Spectra/IOBDB venue pages for the Phase 3 queue rows
+  // Playbill could not resolve. Same scope rule as Phase 3, so the daily cron
+  // only spends on the same-date / no-opening class.
+  const today = new Date().toISOString().slice(0, 10);
+  const playbillHit = new Set(phase3.entries.map(e => e.showId));
+  const spectraQueue = candidateShows.filter(s => !alreadyMatched.has(s.id) && !playbillHit.has(s.id) &&
+    (phase3Broad || isPhase3DefaultCandidate(s, today, { includeClosed: includeClosedWhenYearMatches })));
+  console.log('');
+  const spectra = await scrapeSpectraVenuePages(spectraQueue);
+  for (const e of spectra.entries) {
+    const { productionPageYear, ...rawEntry } = e;
+    merged.push({
+      title: e.title,
+      showId: e.showId,
+      firstPreview: e.firstPreview,
+      opening: e.opening,
+      productionPageYear,
+      sources: ['spectra-iobdb'],
+      confidence: 'single-source',
+      raw: { 'spectra-iobdb': rawEntry },
+    });
+  }
+  phase3.misses.push(...spectra.misses.map(m => ({ ...m, source: 'spectra-iobdb' })));
   // Save the URL cache even in dry-run/verify mode. The cache is discovery
   // data (URL strings), not show data — there's no risk to writing it during
   // a dry-run, and skipping the save means the real follow-up run has to
@@ -1057,7 +1188,7 @@ async function main() {
       showId: show.id,
       title: show.title,
       confidence: 'phase3-miss',
-      sources: ['playbill-production-page'],
+      sources: [miss.source || 'playbill-production-page'],
       currentOpening: show.openingDate,
       currentPreviews: show.previewsStartDate,
       currentSource: show.openingDateSource,
@@ -1095,11 +1226,11 @@ async function main() {
     // row's own year. Schedule/Lortel entries carry no page year, so a closed
     // row can never take a date from them (Romeo & Juliet Suite hazard). Every
     // other pool status is unconditionally eligible — see the lib.
-    if (!isEligibleForDateFix(show, entry.playbillYear ?? null, { includeClosedWhenYearMatches })) {
-      const pageYear = entry.playbillYear ?? 'unknown';
+    if (!isEligibleForDateFix(show, entry.productionPageYear ?? null, { includeClosedWhenYearMatches })) {
+      const pageYear = entry.productionPageYear ?? 'unknown';
       const showYear = getShowOpeningYear(show) ?? 'unknown';
       closedSkippedYearMismatch.add(show.id);
-      console.warn(`  SKIP ${show.id}: closed row — Playbill year ${pageYear} != show year ${showYear} [${entry.sources.join('+')}]`);
+      console.warn(`  SKIP ${show.id}: closed row — production-page year ${pageYear} != show year ${showYear} [${entry.sources.join('+')}]`);
       auditEntries.push({
         showId: show.id,
         title: show.title,
@@ -1268,8 +1399,11 @@ async function main() {
       changes.push({ id: show.id, title: show.title, slug: show.slug, changes: showChanges });
       console.log(`  FILL ${show.title}: null opening → ${entry.opening} [${entryDateSource}]`);
     } else if (sameDateConfirmed && isCandidate) {
+      // `:no-previews` marks the same-date shape as a CONFIRMED no-preview
+      // run, the convention hand-sourced rows already use, so audits that
+      // flag preview==opening (nyc-facts-audit preview-equals-opening) skip it.
       const showChanges = [
-        { field: 'openingDateSource', old: show.openingDateSource, new: entryDateSource },
+        { field: 'openingDateSource', old: show.openingDateSource, new: `${entryDateSource}:no-previews` },
       ];
       changes.push({ id: show.id, title: show.title, slug: show.slug, changes: showChanges });
       console.log(`  CONFIRM ${show.title}: same-date ${show.openingDate} confirmed correct (no preview period) [${entryDateSource}]`);
@@ -1365,7 +1499,7 @@ async function main() {
     const closedChanged = new Set(changes.filter(c => closedIds.has(c.id)).map(c => c.id));
     const verb = (!verify && !dryRun) ? 'applied' : 'proposed (no writes)';
     console.log('');
-    console.log(`Closed rows (--include-closed-when-year-matches): ${closedIds.size} in pool | ${closedChanged.size} ${verb} | ${closedSkippedYearMismatch.size} skipped (Playbill year mismatch)`);
+    console.log(`Closed rows (--include-closed-when-year-matches): ${closedIds.size} in pool | ${closedChanged.size} ${verb} | ${closedSkippedYearMismatch.size} skipped (production-page year mismatch)`);
     if (closedSkippedYearMismatch.size > 0) {
       console.log(`  skipped: ${[...closedSkippedYearMismatch].join(', ')}`);
     }

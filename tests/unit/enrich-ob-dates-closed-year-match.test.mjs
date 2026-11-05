@@ -177,7 +177,7 @@ test('wiring: enrich-off-broadway-dates.js requires the lib and calls both eligi
   const src = fs.readFileSync(SCRIPT_PATH, 'utf8');
   assert.match(src, /require\('\.\/lib\/ob-date-fix-eligibility'\)/, 'script must require scripts/lib/ob-date-fix-eligibility');
   assert.match(src, /isStatusEligibleForDateFix\(s, \{ includeClosedWhenYearMatches \}\)/, 'pool filter must call isStatusEligibleForDateFix');
-  assert.match(src, /isEligibleForDateFix\(show, entry\.playbillYear \?\? null, \{ includeClosedWhenYearMatches \}\)/, 'Phase 4 must call isEligibleForDateFix with the page year');
+  assert.match(src, /isEligibleForDateFix\(show, entry\.productionPageYear \?\? null, \{ includeClosedWhenYearMatches \}\)/, 'Phase 4 must call isEligibleForDateFix with the page year');
   assert.match(src, /args\.includes\('--include-closed-when-year-matches'\)/, 'flag must be parsed from argv');
   // The inline allowlist must not survive as a second copy of the decision.
   assert.doesNotMatch(src, /const ELIGIBLE_STATUSES = new Set\(/, 'inline ELIGIBLE_STATUSES copy must be gone (lib owns it)');
@@ -185,6 +185,6 @@ test('wiring: enrich-off-broadway-dates.js requires the lib and calls both eligi
   assert.match(src, /matchTitleToShow\(entry\.title, titleMatchShows,/, 'Phase 4 fuzzy match must use the non-closed pool');
   assert.match(src, /matchTitleToShow\(entry\.title, titleMatchCandidates,/, 'alreadyMatched must use the non-closed candidate pool');
   // Summary + per-id skip logging.
-  assert.match(src, /skipped \(Playbill year mismatch\)/, 'run summary must report closed rows skipped for year mismatch');
+  assert.match(src, /skipped \(production-page year mismatch\)/, 'run summary must report closed rows skipped for year mismatch');
   assert.match(src, /SKIP \$\{show\.id\}: closed row/, 'each skipped closed id must be logged');
 });
