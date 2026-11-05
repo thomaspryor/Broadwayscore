@@ -291,7 +291,7 @@ function summarize(rows) {
 
 /**
  * write-before-notify rows not covered by REVIEWED (per-file count). A file
- * whose live count exceeds its reviewed count reports all of its rows.
+ * whose live count differs from its reviewed count (more: new site; fewer: stale entry, a swap could hide) reports all of its rows.
  */
 function unreviewed(rows, reviewed = REVIEWED) {
   const byFile = new Map();
@@ -299,7 +299,7 @@ function unreviewed(rows, reviewed = REVIEWED) {
   const out = [];
   for (const [file, list] of byFile) {
     const ok = reviewed[file];
-    if (!ok || list.length > ok.count) out.push(...list);
+    if (!ok || list.length !== ok.count) out.push(...list);
   }
   return out;
 }
