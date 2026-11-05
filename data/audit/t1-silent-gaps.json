@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-05T03:08:37.844Z",
+  "generatedAt": "2026-11-05T04:10:29.256Z",
   "windowDays": 45,
   "showsScanned": 248,
   "gaps": [
@@ -21,9 +21,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=lincoln-in-the-bardo-off-broadway-2026",
       "firstSeen": "2026-10-25T17:52:33.957Z",
-      "fileAgeHours": 249.26544416666667,
+      "fileAgeHours": 250.2963286111111,
       "gapSeenAt": "2026-10-26T08:25:16.367Z",
-      "nonTerminalAgeHours": 234.72263222222222,
+      "nonTerminalAgeHours": 235.7535802777778,
       "needsManualRecovery": true
     },
     {
@@ -41,13 +41,13 @@
         "ok": false,
         "reason": "⚠️  outletId drift detected — operator input \"sunday-times\" resolved to \"sunday-times\" but URL domain maps to canonical \"times-uk\". Using URL-derived canonical.\nArticle extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS."
       },
-      "recoveryCount": 0,
+      "recoveryCount": 1,
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=the-bridge-off-west-end-2026 --url=https://www.thetimes.com/uk/politics/article/city-bridge-foundation-grant-money-hamas-linked-organisation-j5sbhgrs2 --outlet=sunday-times   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-11-05T01:36:56.414Z",
-      "fileAgeHours": 1.5272522222222222,
+      "fileAgeHours": 2.5582438888888888,
       "gapSeenAt": "2026-11-05T02:10:46.925Z",
-      "nonTerminalAgeHours": 0.9641438888888889,
+      "nonTerminalAgeHours": 1.9950919444444444,
       "needsManualRecovery": false
     }
   ],
