@@ -35,8 +35,8 @@ test('digest workflow: committed schedule (both DST offsets), gated by the hando
   assert.match(WF, /if: \(github\.event_name == 'schedule' && steps\.gate\.outputs\.go == 'true'\) \|\| \(github\.event_name == 'workflow_run' && steps\.precheck\.outputs\.go == 'true'\) \|\| \(github\.event_name == 'workflow_dispatch' && inputs\.send\)/);
 });
 
-test('digest workflow: dropped-cron catch-up wakes on Test Suite runs on main, gated then pre-checked, one send path', () => {
-  assert.match(WF, /^ {2}workflow_run:\n {4}workflows: \['Test Suite'\]\n {4}types: \[completed\]\n {4}branches: \[main\]/m);
+test('digest workflow: dropped-cron catch-up wakes on Test Suite and Deploy to Vercel runs on main, gated then pre-checked, one send path', () => {
+  assert.match(WF, /^ {2}workflow_run:\n {4}workflows: \['Test Suite', 'Deploy to Vercel'\]\n {4}types: \[completed\]\n {4}branches: \[main\]/m);
   // gate runs for schedule and catch-up; the pre-check only for the catch-up, only after the gate said go
   assert.match(WF, /id: gate\n\s+if: github\.event_name == 'schedule' \|\| github\.event_name == 'workflow_run'/);
   assert.match(WF, /id: precheck\n\s+if: github\.event_name == 'workflow_run' && steps\.gate\.outputs\.go == 'true'/);
@@ -49,6 +49,23 @@ test('digest workflow: dropped-cron catch-up wakes on Test Suite runs on main, g
   assert.match(cache, /workflow_run' && steps\.precheck\.outputs\.go == 'true'/);
   // the failure pager treats the catch-up like the schedule
   assert.match(WF, /\(github\.event_name == 'schedule' \|\| github\.event_name == 'workflow_run'\) && 'critical'/);
+});
+
+test('digest workflow: wake sources are pinned and each names a real workflow (BRO-7016)', () => {
+  // GitHub silently ignores an unknown workflow name, so a rename would quietly remove a wake.
+  const m = WF.match(/^ {2}workflow_run:\n {4}workflows: \[([^\]]*)\]/m);
+  assert.ok(m, 'workflow_run.workflows list not found');
+  const names = [...m[1].matchAll(/'([^']+)'/g)].map((x) => x[1]);
+  // Exact list: Test Suite is push-driven and can be silent for 2h at the 07:45 ET gate opening
+  // (2026-11-05), Deploy to Vercel finishes every 10-20 min. Cron re-dispatch is excluded on purpose
+  // (woken by Test Suite itself = no independence, and at the 3-level workflow_run chain limit).
+  assert.deepEqual(names, ['Test Suite', 'Deploy to Vercel']);
+  const dir = path.join(ROOT, '.github/workflows');
+  const topNames = fs.readdirSync(dir).filter((f) => /\.ya?ml$/.test(f)).map((f) => {
+    const line = read(`.github/workflows/${f}`).split('\n').find((l) => /^name:/.test(l)) || '';
+    return line.replace(/^name:\s*['"]?/, '').replace(/['"]?\s*$/, '');
+  });
+  for (const n of names) assert.equal(topNames.filter((x) => x === n).length, 1, `"${n}" must be the top-level name of exactly one workflow`);
 });
 
 test('digest workflow: the Mac label is NOT retired; on the handoff day it runs autofix only (W2)', () => {

@@ -2,8 +2,8 @@
 'use strict';
 // scripts/digest-sent-precheck.js — cheap "is today's owner digest already out?" check for the
 // morning-digest Action's catch-up trigger (BRO-6764 handoff day). GitHub dropped every scheduled
-// run on 2026-11-02, so the Action also wakes on each finished Test Suite run on main (events are
-// delivered reliably, ~100 a day). Most of those wakes must cost one Resend read, not a full digest
+// run on 2026-11-02, so the Action also wakes on each finished Test Suite and Deploy to Vercel run on main
+// (events are delivered reliably, 100+ a day; see the header of morning-digest-action.yml). Most of those wakes must cost one Resend read, not a full digest
 // build, so this runs first: go=true only when Resend positively shows no digest to the owner yet today.
 // Fail closed: 'cannot-tell' (Resend down, key missing) skips the catch-up wake; the scheduled lines,
 // the dispatch path and the 12:30 ET pager (check-morning-digest-sent.yml) are unaffected.
