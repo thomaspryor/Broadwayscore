@@ -1,0 +1,108 @@
+{
+  "issueNumber": "bro-6140",
+  "planId": "63c8ea08-0ec5-4f83-8e23-09dda6f6bfb6",
+  "status": "pending",
+  "createdAt": "2026-11-05T01:24:45.838Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6140: nine closed shows with a sourced recoupment (recouped:true) still read TBD; label them Recouped, the plain win label for a reported recoupment with no reported return multiple (owner option B, BRO-5641). appropriate and the-lehman-trilogy-2021 keep their human-review lock; the owner's stated intent there was 'shows Recouped, return undisclosed' (BRO-6446).",
+    "steps": [
+      "commercial.json: appropriate.designation",
+      "commercial.json: the-lehman-trilogy-2021.designation",
+      "commercial.json: skylight-2015.designation",
+      "commercial.json: fish-in-the-dark-2015.designation",
+      "commercial.json: the-elephant-man-2014.designation",
+      "commercial.json: the-river-2014.designation",
+      "commercial.json: its-only-a-play-2014.designation",
+      "commercial.json: the-curious-incident-of-the-dog-in-the-nighttime-2014.designation",
+      "commercial.json: the-audience-2015.designation"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "appropriate",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Recouped",
+        "description": "commercial.json: appropriate.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-lehman-trilogy-2021",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Recouped",
+        "description": "commercial.json: the-lehman-trilogy-2021.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "skylight-2015",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Recouped",
+        "description": "commercial.json: skylight-2015.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "fish-in-the-dark-2015",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Recouped",
+        "description": "commercial.json: fish-in-the-dark-2015.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-elephant-man-2014",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Recouped",
+        "description": "commercial.json: the-elephant-man-2014.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-river-2014",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Recouped",
+        "description": "commercial.json: the-river-2014.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "its-only-a-play-2014",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Recouped",
+        "description": "commercial.json: its-only-a-play-2014.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-curious-incident-of-the-dog-in-the-nighttime-2014",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Recouped",
+        "description": "commercial.json: the-curious-incident-of-the-dog-in-the-nighttime-2014.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-audience-2015",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Recouped",
+        "description": "commercial.json: the-audience-2015.designation"
+      }
+    ]
+  }
+}
