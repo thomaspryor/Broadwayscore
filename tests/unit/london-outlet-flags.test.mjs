@@ -41,6 +41,24 @@ describe('isInOwnWindowByDateOrUrlYear', () => {
   });
 });
 
+describe('isInOwnWindowByDateOrUrlYear: real observer.com /YYYY/MM/ shapes', () => {
+  it('month inside the window counts', () => {
+    assert.equal(isInOwnWindowByDateOrUrlYear(show2024, null, 'https://observer.com/2024/04/eureka-day-broadway-review/'), true);
+  });
+  it('same-year month far outside the window does not (same-year transfer/other run)', () => {
+    assert.equal(isInOwnWindowByDateOrUrlYear(show2024, null, 'https://observer.com/2024/01/some-other-run-review/'), false);
+    assert.equal(isInOwnWindowByDateOrUrlYear(show2024, null, 'https://observer.com/2024/11/some-other-run-review/'), false);
+  });
+  it('2026 URLs are not skipped as title years', () => {
+    const show2026 = { openingDate: '2026-04-20', previewsStartDate: '2026-03-25', closingDate: '2026-06-30' };
+    assert.equal(isInOwnWindowByDateOrUrlYear(show2026, null, 'https://observer.com/2026/04/foo-review/'), true);
+    assert.equal(isInOwnWindowByDateOrUrlYear(show2026, null, 'https://observer.com/2026/12/foo-review/'), false);
+  });
+  it('/YYYY/MM/DD/ uses the month too', () => {
+    assert.equal(isInOwnWindowByDateOrUrlYear(show2024, null, 'https://observer.com/2024/04/19/foo/'), true);
+  });
+});
+
 describe('Observer NYC review with null publishDate releases end to end', () => {
   const data = {
     wrongProduction: true,
