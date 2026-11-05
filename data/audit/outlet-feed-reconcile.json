@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-05T12:59:53.902Z",
+  "generatedAt": "2026-11-05T14:48:30.325Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -98,16 +98,16 @@
   "feedsChecked": 78,
   "feedsFailed": [
     {
-      "outletId": "theater-scene",
-      "error": "certificate has expired"
-    },
-    {
       "outletId": "theater-life",
       "error": "Timeout fetching https://theaterlife.com/feed"
     },
     {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
+    },
+    {
+      "outletId": "theater-pizzazz",
+      "error": "Timeout fetching https://theaterpizzazz.com/feed/"
     },
     {
       "outletId": "slantmagazine",
@@ -130,7 +130,7 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 794,
+  "itemsScanned": 783,
   "matchedGaps": 5,
   "possibleGaps": 5,
   "gaps": [

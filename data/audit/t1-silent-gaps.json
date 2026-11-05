@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-05T12:59:26.405Z",
+  "generatedAt": "2026-11-05T14:48:09.203Z",
   "windowDays": 45,
   "showsScanned": 248,
   "gaps": [
@@ -21,9 +21,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=lincoln-in-the-bardo-off-broadway-2026",
       "firstSeen": "2026-10-25T17:52:33.957Z",
-      "fileAgeHours": 259.1132244444444,
+      "fileAgeHours": 260.91917944444447,
       "gapSeenAt": "2026-10-26T08:25:16.367Z",
-      "nonTerminalAgeHours": 244.569455,
+      "nonTerminalAgeHours": 246.38134305555556,
       "needsManualRecovery": true
     },
     {
@@ -44,9 +44,33 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=the-bridge-off-west-end-2026 --url=https://www.thetimes.com/uk/politics/article/city-bridge-foundation-grant-money-hamas-linked-organisation-j5sbhgrs2 --outlet=sunday-times   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-11-05T01:36:56.414Z",
-      "fileAgeHours": 11.374124722222222,
+      "fileAgeHours": 13.179976111111111,
       "gapSeenAt": "2026-11-05T02:10:46.925Z",
-      "nonTerminalAgeHours": 10.810966666666667,
+      "nonTerminalAgeHours": 12.622854722222222,
+      "needsManualRecovery": false
+    },
+    {
+      "showId": "harry-potter-and-the-cursed-child-one-part-west-end-2026",
+      "title": "Harry Potter and the Cursed Child",
+      "openingDate": "2026-10-21",
+      "file": "times-uk--clive-davis.json",
+      "outletId": "times-uk",
+      "tier": 1,
+      "type": "empty-body",
+      "recoverable": true,
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/harry-potter-and-the-cursed-child-review-london-7jq7shl0t",
+      "recovery": {
+        "attempted": true,
+        "ok": false,
+        "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS."
+      },
+      "recoveryCount": 0,
+      "forumLinkRecoveryCount": 0,
+      "fix": "node scripts/ingest-review-from-url.js --show=harry-potter-and-the-cursed-child-one-part-west-end-2026 --url=https://www.thetimes.com/culture/theatre-dance/article/harry-potter-and-the-cursed-child-review-london-7jq7shl0t --outlet=times-uk --critic=\"Clive Davis\"   # run LOCALLY (cookie jar lives on the Mac)",
+      "firstSeen": "2026-11-05T13:10:35.064Z",
+      "fileAgeHours": 1.6257791666666668,
+      "gapSeenAt": "2026-11-05T14:48:09.202Z",
+      "nonTerminalAgeHours": 0,
       "needsManualRecovery": false
     }
   ],
