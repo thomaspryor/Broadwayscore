@@ -31,7 +31,7 @@ test('shape detection: long run-together slug matches, real names and short ids 
   assert.deepEqual(rows, [{ outletId: 'hackneycitizen', displayName: 'Hackneycitizen' }]);
 });
 
-test('lowercase raw ids reach the masthead audit without widening capitalized or short names', () => {
+test('lowercase raw ids reach the masthead audit alongside capitalized names of 10+ characters', () => {
   const rows = findRunTogetherSlugDisplayNames({
     theatlantic: { displayName: 'theatlantic' },
     primarytimes: { displayName: 'primarytimes' },
@@ -40,12 +40,41 @@ test('lowercase raw ids reach the masthead audit without widening capitalized or
     washingtonian: { displayName: 'washingtonian', displayNameReviewed: true },
     singleticket: { displayName: 'Single Ticket' },
     variety: { displayName: 'variety' },
-    letterboxd: { displayName: 'letterboxd' },
+    letterboxd: { displayName: 'letterboxd', displayNameReviewed: true },
     anotheroutlet: { displayName: 'primarytimes' },
   });
   assert.deepEqual(rows.map(row => row.outletId), ['theatlantic', 'primarytimes', 'timesofsandiego', 'melissamaney']);
   assert.equal(isRunTogetherSlugDisplayName('theatlantic', 'The Atlantic'), false);
-  assert.equal(isRunTogetherSlugDisplayName('theatlantic', 'Theatlantic'), false);
+  assert.equal(isRunTogetherSlugDisplayName('theatlantic', 'Theatlantic'), true);
+});
+
+test('10-character boundary and digit ids reach the same selector used by the daily heal', () => {
+  for (const [id, name] of [
+    ['theatrecat', 'Theatrecat'], ['theatrecat', 'theatrecat'],
+    ['theatlantic', 'Theatlantic'], ['1883magazine', '1883magazine'],
+    ['showbiz411', 'Showbiz411'], ['2ontheaisle', '2ontheaisle'],
+    ['thedaviddesk2', 'Thedaviddesk2'], ['a123456789', 'A123456789'],
+  ]) assert.equal(isRunTogetherSlugDisplayName(id, name), true, name);
+
+  for (const [id, name] of [
+    ['variety', 'Variety'], ['playbill', 'Playbill'], ['shortname', 'Shortname'],
+    ['1234567890', '1234567890'], ['theatrecat', 'theatreCat'],
+    ['1883magazine', '1883 Magazine'], ['showbiz411', 'ShowBiz411'],
+    ['theatre-cat', 'Theatre-cat'], ['otheroutlet', 'Theatrecat'],
+    ['', ''], [null, null],
+  ]) assert.equal(isRunTogetherSlugDisplayName(id, name), false, String(name));
+
+  assert.equal(isRunTogetherSlugDisplayName('theatre-cat', 'Theatrecat'), true);
+  assert.deepEqual(findRunTogetherSlugDisplayNames({
+    theatrecat: { displayName: 'Theatrecat' },
+    '1883magazine': { displayName: '1883magazine' },
+    showbiz411: { displayName: 'Showbiz411', displayNameReviewed: true },
+    playbill: { displayName: 'Playbill' },
+    '1234567890': { displayName: '1234567890' },
+  }), [
+    { outletId: 'theatrecat', displayName: 'Theatrecat' },
+    { outletId: '1883magazine', displayName: '1883magazine' },
+  ]);
 });
 
 test('auto-add derivation prefers og:site_name over the capitalized slug', () => {

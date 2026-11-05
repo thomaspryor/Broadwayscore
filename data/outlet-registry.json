@@ -1,9 +1,9 @@
 {
   "_meta": {
     "description": "Canonical outlet registry - ALL scripts must use this for outlet normalization",
-    "lastUpdated": "2026-11-05T04:05:06.728Z",
+    "lastUpdated": "2026-11-05T11:00:17.035Z",
     "version": "2.1.0",
-    "lastChange": "BRO-5507: 56 reviewed outlet display name(s) from outlet-display-name-proposals.json"
+    "lastChange": "BRO-6991: resolve 15 slug-shaped outlet display names and stamp 2 verified one-word brands after widening the selector"
   },
   "outlets": {
     "westendtheatre": {
@@ -5334,12 +5334,13 @@
       "domain": "hpherald.com"
     },
     "rockchicago": {
-      "displayName": "Rockchicago",
+      "displayName": "Rock Chicago",
       "tier": 3,
       "aliases": [
         "rockchicago"
       ],
-      "accessModel": "free"
+      "accessModel": "free",
+      "displayNameSource": "homepage-reviewed"
     },
     "windy-city-media-group": {
       "displayName": "Windy City Media Group",
@@ -5439,13 +5440,14 @@
       "domain": "lamag.com"
     },
     "lgbtweekly": {
-      "displayName": "Lgbtweekly",
+      "displayName": "LGBT Weekly",
       "tier": 3,
       "aliases": [
         "lgbtweekly"
       ],
       "accessModel": "free",
-      "domain": "lgbtweekly.com"
+      "domain": "lgbtweekly.com",
+      "displayNameSource": "homepage-reviewed"
     },
     "life-full-of-cheese": {
       "displayName": "Life Full Of Cheese",
@@ -5507,21 +5509,23 @@
       "domain": "sddowntownnews.com"
     },
     "sdamustang": {
-      "displayName": "Sdamustang",
+      "displayName": "The Mustang",
       "tier": 3,
       "aliases": [
         "sdamustang"
       ],
-      "domain": "sdamustang.com"
+      "domain": "sdamustang.com",
+      "displayNameSource": "homepage-reviewed"
     },
     "sdcitybeat": {
-      "displayName": "Sdcitybeat",
+      "displayName": "San Diego CityBeat",
       "tier": 3,
       "aliases": [
         "sdcitybeat"
       ],
       "accessModel": "free",
-      "domain": "sdcitybeat.com"
+      "domain": "sdcitybeat.com",
+      "displayNameSource": "homepage-reviewed"
     },
     "shortandsweetnyc": {
       "displayName": "Short and Sweet NYC",
@@ -6237,13 +6241,14 @@
       "domain": "insidethemagic.net"
     },
     "afterellen": {
-      "displayName": "Afterellen",
+      "displayName": "AfterEllen",
       "tier": 3,
       "aliases": [
         "afterellen"
       ],
       "accessModel": "free",
-      "domain": "afterellen.com"
+      "domain": "afterellen.com",
+      "displayNameSource": "homepage-reviewed"
     },
     "okazu": {
       "displayName": "Okazu",
@@ -7245,14 +7250,15 @@
       "domain": "12thnight.ca"
     },
     "cityguideny": {
-      "displayName": "Cityguideny",
+      "displayName": "City Guide",
       "tier": 3,
       "aliases": [
         "cityguideny"
       ],
       "accessModel": "free",
       "defaultCritic": "Griffin Miller",
-      "domain": "cityguideny.com"
+      "domain": "cityguideny.com",
+      "displayNameSource": "homepage-reviewed"
     },
     "edge-boston": {
       "displayName": "Edge Boston",
@@ -8798,14 +8804,15 @@
       "displayNameSource": "homepage-reviewed"
     },
     "harryforbes": {
-      "displayName": "Harryforbes",
+      "displayName": "Forbes on Film & Footlights",
       "tier": 3,
       "aliases": [
         "harryforbes"
       ],
       "domain": "harryforbes.com",
       "accessModel": "defunct",
-      "defaultCritic": "Harry Forbes"
+      "defaultCritic": "Harry Forbes",
+      "displayNameSource": "homepage-reviewed"
     },
     "whatsonoffbroadway": {
       "displayName": "What's On Off Broadway",
@@ -8952,7 +8959,8 @@
         "metrosource.com"
       ],
       "displayName": "Metrosource",
-      "domain": "metrosource.com"
+      "domain": "metrosource.com",
+      "displayNameReviewed": true
     },
     "et": {
       "displayName": "Entertainment Tonight",
@@ -9037,13 +9045,14 @@
       "defaultCritic": "James George"
     },
     "jasonraize": {
-      "displayName": "Jasonraize",
+      "displayName": "The Raize Resource",
       "tier": 3,
       "aliases": [
         "jasonraize"
       ],
       "domain": "jasonraize.net",
-      "defaultCritic": "Nelson Pressley"
+      "defaultCritic": "Nelson Pressley",
+      "displayNameSource": "homepage-reviewed"
     },
     "streetdirectory": {
       "displayName": "Streetdirectory.com",
@@ -10726,7 +10735,8 @@
       "domain": "letterboxd.com",
       "isDualMarket": true,
       "regionCorrectedBy": "BRO-5896",
-      "regionCorrectedEvidence": "Headquartered in Auckland, NZ (en.wikipedia.org/wiki/Letterboxd); global platform"
+      "regionCorrectedEvidence": "Headquartered in Auckland, NZ (en.wikipedia.org/wiki/Letterboxd); global platform",
+      "displayNameReviewed": true
     },
     "marquee": {
       "displayName": "marquee",
@@ -10740,7 +10750,7 @@
       "regionInferredAt": "2026-08-18T14:28:06.532Z"
     },
     "myreviewer": {
-      "displayName": "myreviewer",
+      "displayName": "MyReviewer.com",
       "tier": 3,
       "aliases": [
         "myreviewer"
@@ -10748,7 +10758,8 @@
       "domain": "myreviewer.com",
       "region": "london",
       "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
-      "regionInferredAt": "2026-08-18T14:28:06.532Z"
+      "regionInferredAt": "2026-08-18T14:28:06.532Z",
+      "displayNameSource": "homepage-reviewed"
     },
     "chicagoconcertreviews": {
       "displayName": "Chicago Concert Reviews",
@@ -10962,12 +10973,13 @@
       "displayNameSource": "homepage"
     },
     "bookevents": {
-      "displayName": "bookevents",
+      "displayName": "NYC Book Events",
       "tier": 3,
       "aliases": [
         "bookevents"
       ],
-      "domain": "bookevents.nyc"
+      "domain": "bookevents.nyc",
+      "displayNameSource": "homepage-reviewed"
     },
     "eventticketscenter": {
       "displayName": "Event Tickets Center",
@@ -10996,12 +11008,13 @@
       "displayNameSource": "homepage"
     },
     "clevescene": {
-      "displayName": "clevescene",
+      "displayName": "Cleveland Scene",
       "tier": 3,
       "aliases": [
         "clevescene"
       ],
-      "domain": "clevescene.com"
+      "domain": "clevescene.com",
+      "displayNameSource": "homepage-reviewed"
     },
     "masslive": {
       "displayName": "masslive",
@@ -11252,12 +11265,13 @@
       "domain": "goldderby.com"
     },
     "thedaviddesk2": {
-      "displayName": "Thedaviddesk2",
+      "displayName": "The David Desk 2",
       "tier": 4,
       "aliases": [
         "thedaviddesk2"
       ],
-      "domain": "thedaviddesk2.blogspot.com"
+      "domain": "thedaviddesk2.blogspot.com",
+      "displayNameSource": "homepage-reviewed"
     },
     "timboatswain": {
       "displayName": "Tim Boatswain",
@@ -12244,12 +12258,13 @@
       "domain": "utahconcertreview.com"
     },
     "nowtoronto": {
-      "displayName": "Nowtoronto",
+      "displayName": "NOW Toronto",
       "tier": 3,
       "aliases": [
         "nowtoronto"
       ],
-      "domain": "nowtoronto.com"
+      "domain": "nowtoronto.com",
+      "displayNameSource": "homepage-reviewed"
     },
     "slotkinletter": {
       "displayName": "The Slotkin Letter",
@@ -12693,7 +12708,7 @@
       "domain": "theatretradge.com"
     },
     "theamerican": {
-      "displayName": "Theamerican",
+      "displayName": "The American",
       "tier": 3,
       "aliases": [
         "theamerican"
@@ -12701,7 +12716,8 @@
       "domain": "theamerican.co.uk",
       "region": "london",
       "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
-      "regionInferredAt": "2026-10-10T16:06:25.478Z"
+      "regionInferredAt": "2026-10-10T16:06:25.478Z",
+      "displayNameSource": "homepage-reviewed"
     },
     "outfrontmagazine": {
       "displayName": "OUT FRONT Magazine",
@@ -14104,14 +14120,15 @@
       "accessModel": "free"
     },
     "rollingout": {
-      "displayName": "Rollingout",
+      "displayName": "Rolling Out",
       "tier": 4,
       "aliases": [
         "rollingout"
       ],
       "domain": "rollingout.com",
       "region": "chicago",
-      "accessModel": "free"
+      "accessModel": "free",
+      "displayNameSource": "homepage-reviewed"
     },
     "chicagopride": {
       "displayName": "Chicago Pride",

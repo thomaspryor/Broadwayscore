@@ -3,7 +3,8 @@
     "issue": "BRO-5507",
     "generatedAt": "2026-11-05T00:00:00.000Z",
     "description": "Hand-reviewed display names for outlets whose displayName was the capitalized id. Each row was read off the outlet homepage (fetchPage, og:site_name/<title>). Applied by node scripts/audit-registry-slug-displaynames.js --apply-proposals (rules: scripts/lib/outlet-display-name-proposals.js).",
-    "selection": "single-token id, 10+ characters, displayName equals the capitalized id, at least one live review, not stamped displayNameReviewed"
+    "selection": "single-token id, 10+ characters, displayName equals the capitalized id, at least one live review, not stamped displayNameReviewed",
+    "followUp": "BRO-6991: resolved the three remaining rows and reviewed the 14 other names newly exposed by the 10-character/digit selector, including outlets with no live reviews."
   },
   "proposals": [
     {
@@ -441,26 +442,141 @@
       "to": "ItGirl World",
       "liveReviews": 1,
       "evidence": "2026-11-05 https://itgirlworld.co.uk/ og:site_name \"ItGirl World UK\""
-    }
-  ],
-  "unresolved": [
-    {
-      "outletId": "theamerican",
-      "current": "Theamerican",
-      "liveReviews": 4,
-      "reason": "masthead \"The American\" collides with american-theater-web on the america ~ american near-duplicate key (outlet-alias-collision); needs an alias decision first"
     },
     {
-      "outletId": "harryforbes",
-      "current": "Harryforbes",
-      "liveReviews": 2,
-      "reason": "homepage fetch blocked/timed out (Bright Data refuses the domain)"
+      "outletId": "rockchicago",
+      "from": "Rockchicago",
+      "action": "rename",
+      "to": "Rock Chicago",
+      "liveReviews": 0,
+      "evidence": "2026-11-05 BRO-6991: Stored airline-highway-2015 review outlet label is Rock Chicago."
+    },
+    {
+      "outletId": "lgbtweekly",
+      "from": "Lgbtweekly",
+      "action": "rename",
+      "to": "LGBT Weekly",
+      "liveReviews": 0,
+      "evidence": "2026-11-05 BRO-6991: Stored allegiance-2015 review text names LGBT Weekly; https://lgbtweekly.jeffjungblut.com/about/ identifies San Diego LGBT Weekly."
+    },
+    {
+      "outletId": "sdamustang",
+      "from": "Sdamustang",
+      "action": "rename",
+      "to": "The Mustang",
+      "liveReviews": 0,
+      "evidence": "2026-11-05 BRO-6991: https://www.sdamustang.com/about/ names the student newspaper The Mustang."
+    },
+    {
+      "outletId": "sdcitybeat",
+      "from": "Sdcitybeat",
+      "action": "rename",
+      "to": "San Diego CityBeat",
+      "liveReviews": 0,
+      "evidence": "2026-11-05 BRO-6991: https://timesofsandiego.com/wp-content/uploads/2019/08/2019_CityBeat_MediaKit.pdf is the publication media kit headed San Diego CityBeat."
+    },
+    {
+      "outletId": "afterellen",
+      "from": "Afterellen",
+      "action": "rename",
+      "to": "AfterEllen",
+      "liveReviews": 0,
+      "evidence": "2026-11-05 BRO-6991: https://afterellen.com/about/ names the brand AfterEllen, with an internal capital E."
     },
     {
       "outletId": "cityguideny",
-      "current": "Cityguideny",
+      "from": "Cityguideny",
+      "action": "rename",
+      "to": "City Guide",
       "liveReviews": 1,
-      "reason": "<title> \"New York City Guide\" does not settle the brand spelling"
+      "evidence": "2026-11-05 BRO-6991: https://www.cityguideny.com/ homepage masthead and introductory text both name City Guide."
+    },
+    {
+      "outletId": "harryforbes",
+      "from": "Harryforbes",
+      "action": "rename",
+      "to": "Forbes on Film & Footlights",
+      "liveReviews": 2,
+      "evidence": "2026-11-05 BRO-6991: Stored three-tall-women-2018 review text preserves the Forbes on Film & Footlights masthead; https://www.harryforbes.com/2011/10/ has the same title."
+    },
+    {
+      "outletId": "metrosource",
+      "from": "Metrosource",
+      "action": "reviewed",
+      "liveReviews": 0,
+      "evidence": "2026-11-05 BRO-6991: https://metrosource.com/wp-content/uploads/2020/02/2020-Metrosource-Media-Kit-Local-Directory-1.pdf names the one-word Metrosource brand."
+    },
+    {
+      "outletId": "jasonraize",
+      "from": "Jasonraize",
+      "action": "rename",
+      "to": "The Raize Resource",
+      "liveReviews": 0,
+      "evidence": "2026-11-05 BRO-6991: Stored the-lion-king-1997 review text begins with the masthead The Raize Resource."
+    },
+    {
+      "outletId": "letterboxd",
+      "from": "letterboxd",
+      "action": "reviewed",
+      "liveReviews": 0,
+      "evidence": "2026-11-05 BRO-6991: https://letterboxd.com/ names the one-word Letterboxd brand; preserve the existing lowercase display spelling."
+    },
+    {
+      "outletId": "myreviewer",
+      "from": "myreviewer",
+      "action": "rename",
+      "to": "MyReviewer.com",
+      "liveReviews": 0,
+      "evidence": "2026-11-05 BRO-6991: https://vimeo.com/182392913 is the publication account named MyReviewer.com and links its own review forums."
+    },
+    {
+      "outletId": "bookevents",
+      "from": "bookevents",
+      "action": "rename",
+      "to": "NYC Book Events",
+      "liveReviews": 0,
+      "evidence": "2026-11-05 BRO-6991: https://bookevents.nyc/ homepage title is NYC Book Events | Author Talks, Signings & Literary Events."
+    },
+    {
+      "outletId": "clevescene",
+      "from": "clevescene",
+      "action": "rename",
+      "to": "Cleveland Scene",
+      "liveReviews": 8,
+      "evidence": "2026-11-05 BRO-6991: https://www.clevescene.com/ homepage title names Cleveland Scene."
+    },
+    {
+      "outletId": "thedaviddesk2",
+      "from": "Thedaviddesk2",
+      "action": "rename",
+      "to": "The David Desk 2",
+      "liveReviews": 0,
+      "evidence": "2026-11-05 BRO-6991: https://thedaviddesk2.blogspot.com/ homepage heading is The David Desk 2."
+    },
+    {
+      "outletId": "nowtoronto",
+      "from": "Nowtoronto",
+      "action": "rename",
+      "to": "NOW Toronto",
+      "liveReviews": 0,
+      "evidence": "2026-11-05 BRO-6991: https://nowtoronto.com/ homepage title is NOW Toronto."
+    },
+    {
+      "outletId": "theamerican",
+      "from": "Theamerican",
+      "action": "rename",
+      "to": "The American",
+      "liveReviews": 4,
+      "evidence": "2026-11-05 BRO-6991: https://www.theamerican.co.uk/pr/about-us.php names The American, the UK expat magazine. The fuzzy america alias on the unrelated American Theater Web is now a declared distinct pair (BRO-6991)."
+    },
+    {
+      "outletId": "rollingout",
+      "from": "Rollingout",
+      "action": "rename",
+      "to": "Rolling Out",
+      "liveReviews": 0,
+      "evidence": "2026-11-05 BRO-6991: https://rollingout.com/MediaKit.pdf names the publication Rolling Out."
     }
-  ]
+  ],
+  "unresolved": []
 }

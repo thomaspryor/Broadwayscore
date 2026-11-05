@@ -287,6 +287,18 @@ describe('findOutletAliasCollisions typo class (BRO-5577)', () => {
     // A fuzzy exception must not suppress a real alias collision.
     assert.ok(findOutletAliasCollisions({ independent: {}, indiependent: { aliases: ['independent'] } }).length);
   });
+
+  test('The American and American Theater Web are distinct, with exact collisions still rejected', () => {
+    const outlets = {
+      'american-theater-web': { displayName: 'American Theater Web', aliases: ['america'] },
+      theamerican: { displayName: 'The American', aliases: ['theamerican'] },
+    };
+    assert.deepStrictEqual(findOutletAliasCollisions(outlets), []);
+    assert.ok(findOutletAliasCollisions({ ...outlets, theamericann: {} })
+      .some(c => c.outletIds.includes('theamericann')));
+    outlets.theamerican.aliases.push('america');
+    assert.ok(findOutletAliasCollisions(outlets).some(c => c.key === 'america'));
+  });
 });
 
 describe('wouldCauseAliasCollision', () => {
