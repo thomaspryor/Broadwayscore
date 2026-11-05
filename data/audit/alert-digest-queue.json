@@ -1128,5 +1128,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-05T09:02:06.841Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6261-swallowed-batch",
+    "title": "Landing blocked: unit-tests-node red on land/bro-6261-swallowed-batch",
+    "description": "land.yml did not land land/bro-6261-swallowed-batch: the unit-tests-node gate went red at e280586d57. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/41998387816",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6261-swallowed-batch"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "e280586d57e2ff05eb23916902157160c4e2dd26"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41998387816"
+      }
+    ],
+    "queuedAt": "2026-11-05T09:18:15.372Z"
   }
 ]
