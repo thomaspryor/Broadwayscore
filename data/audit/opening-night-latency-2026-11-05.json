@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-11-05T19:22:21.066Z",
+  "generatedAt": "2026-11-05T22:04:42.298Z",
   "date": "2026-11-05",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 206287,
+  "entryCount": 214580,
   "shows": [
     {
       "showId": "these-paper-bullets-off-broadway-2015",
@@ -669,13 +669,13 @@
     },
     {
       "showId": "the-bridge-off-west-end-2026",
-      "reviewCount": 21,
+      "reviewCount": 24,
       "median_e2e_ms": 167639812,
       "p90_e2e_ms": 167640296,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": 664304,
-        "scored-to-rebuilt": 643194,
+        "collected-to-scored": 381889,
+        "scored-to-rebuilt": 588306,
         "rebuilt-to-deployed": 158134245
       },
       "reviews_over_15min": 3,
@@ -6176,7 +6176,7 @@
     },
     {
       "showId": "i-became-we-off-broadway-2026",
-      "reviewCount": 9,
+      "reviewCount": 10,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -7553,7 +7553,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 178616,
-        "scored-to-rebuilt": 424094,
+        "scored-to-rebuilt": 231436,
         "rebuilt-to-deployed": 86634431
       },
       "reviews_over_15min": 1,
@@ -9076,13 +9076,13 @@
     },
     {
       "showId": "garry-starr-classic-penguins-off-west-end-2026",
-      "reviewCount": 15,
+      "reviewCount": 16,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 1006817,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -10342,13 +10342,13 @@
     },
     {
       "showId": "a-few-good-men-2026",
-      "reviewCount": 28,
+      "reviewCount": 29,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 6801938,
-        "scored-to-rebuilt": 609569,
+        "scored-to-rebuilt": 443019,
         "rebuilt-to-deployed": 72481076
       },
       "reviews_over_15min": 0,
@@ -10522,13 +10522,13 @@
     },
     {
       "showId": "parcel-from-america-off-broadway-2026",
-      "reviewCount": 2,
+      "reviewCount": 3,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 638251,
+        "scored-to-rebuilt": 812540,
         "rebuilt-to-deployed": 35767049
       },
       "reviews_over_15min": 0,
@@ -12044,6 +12044,21 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 1675644,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "medea-off-broadway-2026",
+      "reviewCount": 4,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 1103922,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
