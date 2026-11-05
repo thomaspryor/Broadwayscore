@@ -1,10 +1,10 @@
 {
-  "updatedAt": "2026-11-05T18:39:01.930Z",
-  "processed": 2,
-  "failed": 7,
-  "successRate": "22.2%",
+  "updatedAt": "2026-11-05T18:52:06.113Z",
+  "processed": 4,
+  "failed": 27,
+  "successRate": "12.9%",
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 2,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
@@ -12,9 +12,9 @@
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 0
+    "archive": 1
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
       "t": "2026-11-05T18:31:34.202Z",
@@ -39,6 +39,23 @@
       "event": "bb-session",
       "session": "93e39877",
       "url": "https://bachtrack.com/review-nozze-figaro-pountney-conta-bucharest-national-oper"
+    },
+    {
+      "t": "2026-11-05T18:44:20.539Z",
+      "event": "bb-session",
+      "session": "910d0f33",
+      "url": "https://bachtrack.com/review-medea-yoncheva-spyres-met-opera-new-york-october-20"
+    },
+    {
+      "t": "2026-11-05T18:47:42.580Z",
+      "event": "bb-session",
+      "session": "0f1c74f1",
+      "url": "https://hermes.talkinbroadway.com/allthatchat_new/d.php?id=2655044"
+    },
+    {
+      "t": "2026-11-05T18:47:42.865Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }

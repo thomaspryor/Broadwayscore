@@ -1,7 +1,9 @@
 {
   "processed": [
     "the-moth-off-west-end-2026/creative-reviews-uk--creative-reviews-uk.json",
-    "tosca-english-national-opera-west-end-2026/times-uk--richard-morrison.json"
+    "tosca-english-national-opera-west-end-2026/times-uk--richard-morrison.json",
+    "jest-to-impress-off-broadway-2026/donyc--unknown.json",
+    "kelly-mccaughan-catholic-guilt-off-broadway-2026/broadway-baby--unknown.json"
   ],
   "failed": [
     "the-bridge-off-west-end-2026/sunday-times--unknown.json",
@@ -10,12 +12,33 @@
     "tosca-english-national-opera-west-end-2026/bachtrack--clare-varney.json",
     "tosca-english-national-opera-west-end-2026/bachtrack--mark-pullinger.json",
     "tosca-english-national-opera-west-end-2026/bachtrack--peter-quantrill.json",
-    "tosca-english-national-opera-west-end-2026/cherylmarkosky--cherylmarkosky.json"
+    "tosca-english-national-opera-west-end-2026/cherylmarkosky--cherylmarkosky.json",
+    "222-a-ghost-story-off-broadway-2026/theatrely--kobi-kassal.json",
+    "the-unbelievers-off-broadway-2026/bobs-theater-blog--unknown.json",
+    "jest-to-impress-off-broadway-2026/chelmsfordtheatre--genre.json",
+    "seussical-theatre-young-audiences-off-broadway-2026/wknd--unknown.json",
+    "medea-off-broadway-2026/express-uk--neil-norman.json",
+    "medea-off-broadway-2026/bachtrack--susan-stempleski.json",
+    "a-few-good-men-2026/variety--anna-tingley.json",
+    "the-heart-off-broadway-2026/variety--cynthia-littleton.json",
+    "a-few-good-men-2026/goldderby--ethan-alter.json",
+    "the-heart-off-broadway-2026/frontmezzjunkies--unknown.json",
+    "in-the-heights-off-broadway-2026/nypost--clive-barnes.json",
+    "in-the-heights-off-broadway-2026/bloomberg--john-simon.json",
+    "i-became-we-off-broadway-2026/timeout--unknown.json",
+    "hospital-hour-off-broadway-2026/broadway-baby--unknown.json",
+    "hospital-hour-off-broadway-2026/one-minute-critic--unknown.json",
+    "aftermath-art-new-york-off-broadway-2026/talkinbroadway--unknown.json",
+    "love-me-off-broadway-2026/consequence--unknown.json",
+    "love-me-off-broadway-2026/daily-mail--codie-bullen.json",
+    "phyl-off-broadway-2026/phusionpassenger--unknown.json",
+    "phyl-off-broadway-2026/theater-life--paulanne-simmons.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "the-moth-off-west-end-2026/creative-reviews-uk--creative-reviews-uk.json"
+      "the-moth-off-west-end-2026/creative-reviews-uk--creative-reviews-uk.json",
+      "jest-to-impress-off-broadway-2026/donyc--unknown.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -26,10 +49,12 @@
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [],
-    "archive": []
+    "archive": [
+      "kelly-mccaughan-catholic-guilt-off-broadway-2026/broadway-baby--unknown.json"
+    ]
   },
   "startTime": "2026-11-05T18:29:03.184Z",
-  "lastProcessed": "tosca-english-national-opera-west-end-2026/times-uk--richard-morrison.json",
+  "lastProcessed": "phyl-off-broadway-2026/theater-life--paulanne-simmons.json",
   "log": [
     {
       "t": "2026-11-05T18:31:34.202Z",
@@ -54,6 +79,23 @@
       "event": "bb-session",
       "session": "93e39877",
       "url": "https://bachtrack.com/review-nozze-figaro-pountney-conta-bucharest-national-oper"
+    },
+    {
+      "t": "2026-11-05T18:44:20.539Z",
+      "event": "bb-session",
+      "session": "910d0f33",
+      "url": "https://bachtrack.com/review-medea-yoncheva-spyres-met-opera-new-york-october-20"
+    },
+    {
+      "t": "2026-11-05T18:47:42.580Z",
+      "event": "bb-session",
+      "session": "0f1c74f1",
+      "url": "https://hermes.talkinbroadway.com/allthatchat_new/d.php?id=2655044"
+    },
+    {
+      "t": "2026-11-05T18:47:42.865Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
