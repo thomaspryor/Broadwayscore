@@ -162,3 +162,20 @@ test('BRO-6066: each lane score records the length and tier of the text it was s
   assert.deepEqual([a.textChars, a.contentTier], [TEXT.length, 'truncated']);
   assert.deepEqual([b.textChars, b.contentTier], [quote.length, 'excerpt'], 'an excerpt score records the excerpt it read, not the teaser');
 });
+
+// BRO-6872: a Talkin' Broadway gap (lane 48 / site 60) could not be put down to the text or to the models, because the
+// score log kept neither. It now keeps a hash of the scored text and each model's score, never the text.
+test('each lane score records a hash of the text it scored and the per-model scores, not the text', async () => {
+  const grade = require('../../scripts/lib/lane-shadow-grade.js');
+  const rec = shadow.createScoreRecorder({ now: () => T0 });
+  const ens = { claudeScore: 50, openaiScore: 45, geminiScore: 48, kimiScore: null, ensembleSource: 'ensemble-unanimous' };
+  await rec.wrapScore(async () => ({ score: 48, extra: { ensembleData: ens } }))({ url: 'https://www.talkinbroadway.com/page/world/X.html', fullText: TEXT, outletId: 'talkinbroadway' }, {});
+  const quote = 'A placeholder quote the aggregator printed beside the link.';
+  await rec.wrapScore(async () => ({ score: 45, extra: { fullText: '', contentTier: 'excerpt' } }))({ url: 'https://www.wsj.com/articles/a-review-ab12', fullText: 'teaser '.repeat(200), outletId: 'wsj' }, { excerpts: { bwwExcerpt: quote } });
+  const [a, b] = rec.snapshot();
+  assert.equal(a.textSha, grade.textSha(TEXT));
+  assert.equal(a.textSha.length, 16);
+  assert.deepEqual(a.models, { claude: 50, openai: 45, gemini: 48 }, 'a missing model is dropped, not recorded as null');
+  assert.equal(b.textSha, grade.textSha(quote), 'an excerpt score hashes the excerpt it read, not the blanked page text');
+  assert.ok(!JSON.stringify(rec.snapshot()).includes(TEXT.slice(0, 40)), 'the text itself is never recorded');
+});

@@ -40,6 +40,25 @@ const criticKey = (c) => String(c || '').toLowerCase().normalize('NFKD').replace
 const ms = (t) => { const v = Date.parse(t || ''); return Number.isFinite(v) ? v : null; };
 const round1 = (x) => Math.round(x * 10) / 10;
 
+/**
+ * A short hash of a review text (whitespace collapsed): enough to say whether the lane and the site read the same copy,
+ * never the text itself (the repo is public and the pages are copyrighted). A match proves the same text; a mismatch
+ * can also be the same article cut differently by two extractors, so the grade reads it beside the two lengths.
+ */
+function textSha(text) {
+  const t = String(text || '').replace(/\s+/g, ' ').trim();
+  return t ? require('crypto').createHash('sha256').update(t).digest('hex').slice(0, 16) : null;
+}
+
+/** The ensemble's per-model scores ({claude, openai, gemini, kimi}, finite numbers only) from a review file's ensembleData. */
+function modelScores(ens) {
+  if (!ens || typeof ens !== 'object') return null;
+  const out = {};
+  for (const [k, f] of [['claude', 'claudeScore'], ['openai', 'openaiScore'], ['gemini', 'geminiScore'], ['kimi', 'kimiScore']]) if (Number.isFinite(ens[f])) out[k] = ens[f];
+  return Object.keys(out).length ? out : null;
+}
+const modelsLabel = (m) => (m ? Object.values(m).join('/') : '?');
+
 // The lane starts this long before the embargo (lane-only-markets.js window, embargo - 3h). A review the regular
 // pipeline already had before then is on the site when the lane starts, and the lane's merge keeps it.
 const LANE_LEAD_MS = 3 * 60 * 60 * 1000;
@@ -155,6 +174,7 @@ function gradeShadowReport(rep, opts = {}) {
   }
 
   const spreadOf = (r) => lookupMeta(opts.siteScoreSpread, r.siteUrl || r.url);
+  const siteTextOf = (r) => lookupMeta(opts.siteMeta, r.siteUrl || r.url) || {};
   const diffs = both.filter((r) => r.laneScore != null && r.siteScore != null).map((r) => {
     const sp = spreadOf(r);
     const delta = r.laneScore - r.siteScore;
@@ -170,8 +190,11 @@ function gradeShadowReport(rep, opts = {}) {
     // scored 15 points off a row with an 18-point spread is a text defect, not model variance, so tier decides.
     const big = Math.abs(delta) >= GAP_PTS;
     const partialText = !!(r.laneContentTier && r.laneContentTier !== 'complete');
+    const st = siteTextOf(r);
     return {
       ...brief(r), delta, laneTextChars: r.laneTextChars ?? null, laneContentTier: r.laneContentTier || null,
+      laneModels: r.laneModels || null, siteModels: st.models || null, siteTextChars: st.textChars ?? null,
+      sameText: r.laneTextSha && st.textSha ? r.laneTextSha === st.textSha : null,
       siteScoreSpread: spread, siteBand: band ? { floor: band.floor, ceiling: band.ceiling, rating: band.rating || null } : null,
       siteModelAgreement: (sp && sp.agreement) || null, siteScoreConfidence: (sp && sp.confidence) || null,
       beyondEnsemble: big && (partialText || (band ? outsideBand : (spread == null || Math.abs(delta) > spread))),
@@ -241,13 +264,15 @@ function gradeMarkdown(g) {
     ...(g.scoreGaps.length ? ['', `Score gaps of ${GAP_PTS}+ (lane / site, lane text chars, tier; "within ensemble" = smaller than the site row's own model spread, so not a text difference):`,
       ...g.scoreGaps.map((d) => `- ${row(d)} ${d.laneScore} / ${d.siteScore} (${d.delta > 0 ? '+' : ''}${d.delta}), ${d.laneTextChars ?? '?'} chars, ${d.laneContentTier || '?'}`
         + (d.siteBand ? `, site rating ${d.siteBand.rating || '?'} (band ${d.siteBand.floor}-${d.siteBand.ceiling}): ${d.beyondEnsemble ? 'BEYOND band' : 'inside band'}`
-          : d.siteScoreSpread == null ? ', site spread unknown' : `, site spread ${d.siteScoreSpread}${d.siteModelAgreement ? ` (${d.siteModelAgreement})` : ''}: ${d.beyondEnsemble ? 'BEYOND ensemble' : 'within ensemble'}`))] : []),
+          : d.siteScoreSpread == null ? ', site spread unknown' : `, site spread ${d.siteScoreSpread}${d.siteModelAgreement ? ` (${d.siteModelAgreement})` : ''}: ${d.beyondEnsemble ? 'BEYOND ensemble' : 'within ensemble'}`)
+        + (d.laneModels || d.siteModels ? `; models lane ${modelsLabel(d.laneModels)} / site ${modelsLabel(d.siteModels)}` : '')
+        + (d.sameText == null ? '' : d.sameText ? '; same text as the site' : `; text differs from the site's (${d.siteTextChars ?? '?'} chars there), or was cut differently`))] : []),
   ];
   return `${lines.join('\n')}\n`;
 }
 
 /**
- * siteMeta from review files ({url, firstSeenAt, source, sources} per file; the text is never kept): a local review-texts
+ * siteMeta from review files ({url, firstSeenAt, source, sources} per file, plus the text's length, hash and model scores; the text itself is never kept): a local review-texts
  * show directory, or `files` already read ([{name, json}]). Returns a Map canonical URL -> {firstSeenAt, source, sources}.
  */
 function loadSiteMetaFromDir(dir, files = null) {
@@ -260,6 +285,11 @@ function loadSiteMetaFromDir(dir, files = null) {
     const k = canonicalUrl(json && json.url);
     if (!k) continue;
     const m = { firstSeenAt: json.firstSeenAt || null, source: json.source || null, sources: Array.isArray(json.sources) ? json.sources : null };
+    // What the site scored, without keeping it: the text's length and hash, and each model's score (BRO-6872: a lane
+    // 48 / site 60 Talkin' Broadway gap could not be traced to the text or to the models).
+    if (typeof json.fullText === 'string' && json.fullText) Object.assign(m, { textChars: json.fullText.length, textSha: textSha(json.fullText) });
+    const models = modelScores(json.ensembleData);
+    if (models) m.models = models;
     // Two files for one URL (a duplicate): production first had it when the earlier of them was first seen.
     const prev = meta.get(k);
     if (!prev || (ms(m.firstSeenAt) != null && (ms(prev.firstSeenAt) == null || ms(m.firstSeenAt) < ms(prev.firstSeenAt)))) meta.set(k, m);
@@ -315,4 +345,4 @@ function writeGrade(outDir, g) {
   return md;
 }
 
-module.exports = { GAP_PTS, DEFAULT_THRESHOLDS, LANE_LEAD_MS, gradeShadowReport, gradeMarkdown, writeGrade, siteRowVerdict, joinNearSlugs, loadSiteMetaFromDir, loadSiteScoreSpread };
+module.exports = { textSha, modelScores, GAP_PTS, DEFAULT_THRESHOLDS, LANE_LEAD_MS, gradeShadowReport, gradeMarkdown, writeGrade, siteRowVerdict, joinNearSlugs, loadSiteMetaFromDir, loadSiteScoreSpread };

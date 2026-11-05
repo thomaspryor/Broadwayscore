@@ -343,3 +343,24 @@ test('an anchored row never excuses a wide gap on partial lane text, even inside
   const g = grade.gradeShadowReport(rep, { replayAnchorAt: '2026-10-30T02:00:00Z', siteScoreSpread: m });
   assert.deepEqual(g.scoreGapsBeyondEnsemble.map((d) => d.url), [t.url]);
 });
+
+// BRO-6872: the grade shows, beside each score gap, the lane's and the site's per-model scores and whether both read the
+// same text, from the site's review files (hashed and measured there, never kept).
+test('a score gap says whether the lane read the site’s text and how each side’s models scored it', () => {
+  const url = 'https://www.talkinbroadway.com/page/world/TheImaginaryInvalid.html';
+  const text = 'Theatre Review by A Critic. The production lacks a clear vision.  It drifts.';
+  const siteMeta = grade.loadSiteMetaFromDir(null, [{ name: 'tb.json', json: { url, fullText: text, ensembleData: { claudeScore: 58, openaiScore: 65, geminiScore: 58, kimiScore: null } } }]);
+  const meta = [...siteMeta.values()][0];
+  assert.deepEqual([meta.textChars, meta.models], [text.length, { claude: 58, openai: 65, gemini: 58 }]);
+  assert.ok(!JSON.stringify(meta).includes('clear vision'), 'the site text is not kept');
+  const gapFor = (laneText) => {
+    const rep = { ...REPORT, reviews: [rev('both', { url, outlet: 'talkinbroadway', laneScore: 48, siteScore: 60, laneTextChars: 4345, laneContentTier: 'complete', laneTextSha: grade.textSha(laneText), laneModels: { claude: 48, openai: 50, gemini: 45 } })] };
+    return grade.gradeShadowReport(rep, { replayAnchorAt: '2026-10-30T02:00:00Z', siteMeta });
+  };
+  const same = gapFor(text.replace(/\s+/g, '\n'));
+  assert.equal(same.scoreGaps[0].sameText, true, 'whitespace alone does not make two copies differ');
+  assert.match(grade.gradeMarkdown(same), /models lane 48\/50\/45 \/ site 58\/65\/58; same text as the site/);
+  const diff = gapFor(`${text} Photo: credit line.`);
+  assert.equal(diff.scoreGaps[0].sameText, false);
+  assert.match(grade.gradeMarkdown(diff), /text differs from the site's \(\d+ chars there\), or was cut differently/);
+});

@@ -84,6 +84,7 @@ function createShadowPublishPorts({ onRows, now = Date.now } = {}) {
  * Wrap scoreReview, and record rows that arrive with a fallback score through onRow.
  */
 function createScoreRecorder({ logFile = null, now = Date.now } = {}) {
+  const grader = require('./lane-shadow-grade');
   const scores = new Map();
   // The text the score came from (its length and tier), so a lane/site score gap can be traced to a truncated or excerpt
   // copy on either side without re-fetching (BRO-6066: the 10-29 shadow could not say what the lane had scored).
@@ -94,6 +95,9 @@ function createScoreRecorder({ logFile = null, now = Date.now } = {}) {
       key, score, outletId: row.outletId || null, outlet: row.outlet || null, critic: row.criticName || null, at: now(),
       textChars: textInfo.chars != null ? textInfo.chars : String((row && row.fullText) || '').length,
       contentTier: textInfo.tier || (row && row.contentTier) || null,
+      // The hash covers the lane's scoring INPUT (the scorer may add aggregator quotes to a partial copy), and the models'
+      // own scores, so a gap against the site can be put down to the text or to the models (BRO-6872).
+      ...(textInfo.sha ? { textSha: textInfo.sha } : {}), ...(textInfo.models ? { models: textInfo.models } : {}),
     };
     scores.set(key, e);
     appendJsonl(logFile, e);
@@ -103,10 +107,16 @@ function createScoreRecorder({ logFile = null, now = Date.now } = {}) {
       const out = await scoreReview(row, fetched);
       const extra = (out && typeof out === 'object' && out.extra) || {};
       // An excerpt score's text is the excerpts the scorer read, not the page text it dropped.
-      const excerptChars = Object.values((fetched && fetched.excerpts) || {}).reduce((n, t) => n + String(t || '').length, 0);
+      const excerpts = (fetched && fetched.excerpts) || {};
+      const excerptChars = Object.values(excerpts).reduce((n, t) => n + String(t || '').length, 0);
+      const fromExcerpt = extra.contentTier === 'excerpt';
+      // Hash what textChars measures: the excerpts for an excerpt score (its fullText is blanked to ''), else the page text.
+      const scored = fromExcerpt ? Object.keys(excerpts).sort().map((k) => String(excerpts[k] || '')).join('\n')
+        : (typeof extra.fullText === 'string' && extra.fullText ? extra.fullText : String((row && row.fullText) || ''));
       record(row, out && typeof out === 'object' ? out.score : out, {
-        chars: extra.contentTier === 'excerpt' ? excerptChars : (typeof extra.fullText === 'string' ? extra.fullText.length : undefined),
+        chars: fromExcerpt ? excerptChars : (typeof extra.fullText === 'string' ? extra.fullText.length : undefined),
         tier: extra.contentTier || (fetched && fetched.contentTier) || 'complete',
+        sha: grader.textSha(scored), models: grader.modelScores(extra.ensembleData),
       });
       return out;
     },
@@ -165,7 +175,7 @@ function buildShadowReport({ show, night, ledgerDir, scores = [], rows = [], liv
     lane.set(s.reviewKey, { key: s.reviewKey, url: s.reviewKey, discoveredAt: toMs(s.firstAt.discovered), scoredAt: toMs(s.firstAt.scored) });
   }
   const laneEntry = (key) => { if (!lane.has(key)) lane.set(key, { key, url: key }); return lane.get(key); };
-  for (const s of scores) Object.assign(laneEntry(s.key), { laneScore: s.score, outletId: s.outletId, outlet: s.outlet, critic: s.critic, scoredAt: laneEntry(s.key).scoredAt ?? s.at, laneTextChars: s.textChars ?? null, laneContentTier: s.contentTier ?? null });
+  for (const s of scores) Object.assign(laneEntry(s.key), { laneScore: s.score, outletId: s.outletId, outlet: s.outlet, critic: s.critic, scoredAt: laneEntry(s.key).scoredAt ?? s.at, laneTextChars: s.textChars ?? null, laneContentTier: s.contentTier ?? null, laneTextSha: s.textSha || null, laneModels: s.models || null });
   for (const { row, at } of rows) {
     const k = canonicalUrl(row.url); if (!k) continue;
     const e = laneEntry(k);
@@ -200,6 +210,7 @@ function buildShadowReport({ show, night, ledgerDir, scores = [], rows = [], liv
       siteDate: (l && l.date) || null,
       siteUrl: l ? (l.url || l.key) : null,
       laneTextChars: e && e.laneTextChars != null ? e.laneTextChars : null, laneContentTier: (e && e.laneContentTier) || null,
+      laneTextSha: (e && e.laneTextSha) || null, laneModels: (e && e.laneModels) || null,
       scoredLeadMin: scoredAt != null && liveAt != null ? minutesBetween(scoredAt, liveAt) : null,
       // Already on the site at the first poll: the regular pipeline had it before the shadow started.
       liveAtStart: liveAt != null && t0 != null && liveAt <= t0,
@@ -311,7 +322,8 @@ async function loadSiteMeta({ repoDir, showId, token, fetchImpl = globalThis.fet
   for (const f of (Array.isArray(listing) ? listing : []).filter((x) => x.type === 'file' && /\.json$/.test(x.name))) {
     try {
       const j = await get(`${api}/${encodeURIComponent(showId)}/${encodeURIComponent(f.name)}`, 'application/vnd.github.raw+json');
-      files.push({ name: f.name, json: { url: j.url, firstSeenAt: j.firstSeenAt, source: j.source, sources: j.sources } });
+      // fullText goes to the loader only to be measured and hashed; the returned meta never holds it.
+      files.push({ name: f.name, json: { url: j.url, firstSeenAt: j.firstSeenAt, source: j.source, sources: j.sources, fullText: j.fullText, ensembleData: j.ensembleData } });
     } catch { /* one unreadable file grades by its date */ }
   }
   return grader.loadSiteMetaFromDir(null, files);
