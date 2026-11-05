@@ -713,8 +713,8 @@ jobs:
       # fired this cycle, so 3 flat samples surface in the daily digest
       # (health-check.js's progressWatchResults). Never fails the job.
       - name: Snapshot progress-watch state
-        # lint-allow-swallow: failing the job here would block opening-night-broadcast's success-gated workflow_run trigger and skip the later chain steps that have no always(); a crash leaves data/audit/progress-watch-state.json lastRunAt stale, which audit-freshness-checks.js puts in the digest after 72h (BRO-6261)
         if: always() && github.event.schedule == '30 4 * * *'
+        # lint-allow-swallow: failing the job here would block opening-night-broadcast's success-gated workflow_run trigger and skip the later chain steps that have no always(); a crash leaves data/audit/progress-watch-state.json lastRunAt stale, which audit-freshness-checks.js puts in the digest after 72h (BRO-6261)
         env:
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
