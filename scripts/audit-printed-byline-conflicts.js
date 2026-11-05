@@ -93,11 +93,14 @@ function outletOf(rec) {
   return normalizeOutlet(rec.r.outletId || rec.r.outlet || rec.file.split('--')[0]);
 }
 
+// Company and outlet names that credit lines sometimes carry ("Condé Nast", "Financial Times"): never a critic.
+const COMPANY_NAME_RE = /\b(?:times|cond[eé] nast|inc|llc|ltd|limited|media|network|group|magazine|news|post|journal|today|broadcasting|publishing|tube|staff|desk|team)\b/i;
+
 function buildKnown(recs, registryIndex) {
   const counts = new Map(); // outlet -> name -> { files, shows:Set }
   for (const rec of recs) {
     const name = rec.r.criticName;
-    if (isPlaceholderName(name) || !isPlausiblePersonName(name)) continue;
+    if (isPlaceholderName(name) || !isPlausiblePersonName(name) || COMPANY_NAME_RE.test(name)) continue;
     // Only clean, unflagged, unlocked-by-nothing files count as evidence a critic writes here (BRO-6947):
     // misattributed, duplicate or roundup files would otherwise make a wrong name "known".
     if (rec.r.wrongProduction || rec.r.wrongShow || rec.r.isRoundupArticle || rec.r.duplicateOf || rec.r.fullTextWrongAuthor || rec.r._authorMismatch || rec.r.misattributedFullText) continue;
@@ -133,14 +136,14 @@ function canonicalVariant(counts, outlet, name) {
 
 // Corpus-derived critics only (3+ files across 2+ shows), not the registry: the collect side merges the
 // registry itself, so a registry edit takes effect without waiting for the next cache write.
-function writeCorpusCache(file, recs, counts) {
+function writeCorpusCache(file, counts) {
   const outlets = {};
   for (const o of [...counts.keys()].sort()) {
     const names = [...counts.get(o)].filter(([, e]) => e.files >= CORPUS_MIN_FILES && e.shows.size >= CORPUS_MIN_SHOWS)
       .sort((a, b) => b[1].files - a[1].files || a[0].localeCompare(b[0])).map(([n]) => n);
     if (names.length) outlets[o] = names;
   }
-  const body = { _comment: 'BRO-6947: written by scripts/audit-printed-byline-conflicts.js --cache-out. Critics the review corpus files at each outlet (3+ files, 2+ shows). Read by collect-review-texts.js step 1B-v. Names only.', outlets };
+  const body = { generatedAt: new Date().toISOString(), _comment: 'BRO-6947: written by scripts/audit-printed-byline-conflicts.js --cache-out. Critics the review corpus files at each outlet (3+ files, 2+ shows). Read by collect-review-texts.js step 1B-v. Names only.', outlets };
   fs.mkdirSync(path.dirname(file), { recursive: true });
   fs.writeFileSync(file, JSON.stringify(body, null, 1) + '\n');
   console.error(`wrote corpus critics for ${Object.keys(outlets).length} outlets to ${file}`);
@@ -154,7 +157,7 @@ function main() {
   const recs = readRecords(root);
   const { known, counts } = buildKnown(recs, buildKnownCriticsIndex(registry));
 
-  if (CACHE_OUT) writeCorpusCache(CACHE_OUT, recs, counts);
+  if (CACHE_OUT) writeCorpusCache(CACHE_OUT, counts);
 
   const findings = [];
   for (const rec of recs) {

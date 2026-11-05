@@ -212,3 +212,13 @@ test('BRO-6947: a multi-author byline list is not a verdict (Goings On roundup)'
   assert.ok(!bylineContinuesList(`By Hilton Als${FILLER}`, 'Hilton Als'));
   assert.ok(findPrintedKnownByline({ fullText: `By Hilton Als${FILLER}`, knownCritics: ['Hilton Als'] }));
 });
+
+test('BRO-6947: a byline followed by a title, outlet or date is a single author, not a list', () => {
+  for (const tail of [', Chief Theater Critic', ', Los Angeles Times', ', Theatre Critic', ', Posted Nov 3', ', USA TODAY NEW YORK', ' , Contributing Writer']) {
+    const head = `By Jesse Green${tail}${FILLER}`;
+    assert.ok(!bylineContinuesList(head, 'Jesse Green'), tail);
+    assert.ok(findPrintedKnownByline({ fullText: head, knownCritics: ['Jesse Green'] }), tail);
+  }
+  assert.ok(bylineContinuesList(`By Jesse Green and Maya Phillips${FILLER}`, 'Jesse Green'));
+  assert.ok(bylineContinuesList(`By Jesse Green, Maya Phillips, Helen Shaw${FILLER}`, 'Jesse Green'));
+});

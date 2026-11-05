@@ -641,6 +641,9 @@ function getCorpusBylineIndex() {
   if (_corpusBylineIndex === undefined) {
     let cache = null;
     try { cache = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'audit', 'outlet-corpus-critics.json'), 'utf8')); } catch { /* no cache yet */ }
+    // Stale cache (audit not running, e.g. 14+ days) = ignored, so old outlet staff lists never keep filling credits.
+    const ageMs = cache && cache.generatedAt ? Date.now() - Date.parse(cache.generatedAt) : Infinity;
+    if (!(ageMs < 14 * 24 * 3600 * 1000)) cache = null;
     _corpusBylineIndex = mergeCorpusCritics(new Map(), cache);
   }
   return _corpusBylineIndex;
