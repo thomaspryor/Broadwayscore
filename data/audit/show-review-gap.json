@@ -1,22 +1,22 @@
 {
-  "generatedAt": "2026-11-05T19:19:07.269Z",
+  "generatedAt": "2026-11-05T20:49:43.633Z",
   "windowDays": 1095,
-  "targets": 920,
-  "auditedThisRun": 6,
-  "carriedForward": 2036,
+  "targets": 922,
+  "auditedThisRun": 11,
+  "carriedForward": 2032,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
     "withGap": 632,
-    "missingCurrentRun": 1187,
+    "missingCurrentRun": 1189,
     "totalCitedNoUrl": 0,
     "totalFlaggedMisses": 911,
     "totalRecoverable": 56,
     "totalRecovered": 90,
     "humanExcluded": 26,
-    "automatedExcluded": 1016,
-    "automatedExcludedListed": 729,
-    "priorProductionCitations": 6084
+    "automatedExcluded": 1017,
+    "automatedExcludedListed": 728,
+    "priorProductionCitations": 6086
   },
   "results": [
     {
@@ -10851,12 +10851,75 @@
         "allSourcesFailed": false
       },
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"A Train To Woking\" West End review",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"A Train To Woking\" West End review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 9,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"A Train To Woking\" review waterloo",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 9,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "A Train To Woking Waterloo East Theatre review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 9,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "A Train To Woking Waterloo East Theatre review",
+            "page": 1,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "A Train To Woking Waterloo East Theatre review",
+            "page": 2,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 0,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 31,
+        "byReason": {
+          "not-http-url": 14,
+          "non-review-host": 13,
+          "non-stage-review": 1,
+          "no-review-evidence": 2,
+          "bare-host": 1
+        }
       },
       "dedupedVariants": [],
       "unextractable": [],
@@ -10870,7 +10933,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-11-05T14:47:27.487Z"
+      "computedAt": "2026-11-05T20:49:43.633Z"
     },
     {
       "showId": "a-tupperware-of-ashes-west-end-2024",
@@ -91390,7 +91453,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-11-05T14:47:27.487Z"
+      "computedAt": "2026-11-05T20:49:43.633Z"
     },
     {
       "showId": "dr-strangelove-west-end-2024",
@@ -113201,54 +113264,54 @@
       ],
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
+        "https://www.londontheatre.co.uk/reviews/garry-starr-classic-penguins-review-the-other-palace",
+        "https://corrblimey.uk/2026/08/27/edinburgh-festival-fringe-2026-review-garry-starr-classic-penguins-grand-at-pleasance-courtyard/",
+        "https://www.newyorktheatreguide.com/reviews/garry-starr-classic-penguins-off-broadway-review",
+        "https://nystagereview.com/2026/09/08/garry-starr-classic-penguins-much-ado-about-nothing-on/",
+        "https://www.broadwayworld.com/westend/article/Review-GARRY-STARR-CLASSIC-PENGUINS-The-Other-Palace-20261026",
+        "https://www.timeout.com/london/comedy/garry-starr-classic-penguins",
+        "https://www.nytimes.com/2026/09/10/theater/garry-starr-classic-penguins-review.html",
+        "https://therecs.co.uk/garry-starr-classic-penguins/",
+        "https://www.thereviewshub.com/garry-starr-classic-penguins-arts-theatre-london/",
         "https://entertainment-now.com/2026/08/edfringe-comedy-review-garry-starr-classic-penguins-3/",
         "https://limelight-arts.com.au/event/garry-starr-classic-penguins-2/2026-06-25/",
         "https://limelight-arts.com.au/event/garry-starr-classic-penguins/2026-06-21/",
         "https://limelight-arts.com.au/event/garry-starr-classic-penguins/2026-06-24/",
         "https://limelight-arts.com.au/event/garry-starr-classic-penguins-2/2026-06-18/",
-        "https://www.westendbestfriend.co.uk/news/review-garry-starr-classic-penguins-arts-theatre",
         "https://www.thetimes.com/culture/comedy/article/garry-starr-classic-penguins-review-garrick-theatre-london-87vh6kdjs",
-        "https://www.londontheatre.co.uk/reviews/garry-starr-classic-penguins-review-the-other-palace",
-        "https://www.newyorktheatreguide.com/reviews/garry-starr-classic-penguins-off-broadway-review",
         "https://theatreandtonic.co.uk/blog/garry-starr-classic-penguins-at-the-other-palace-review",
         "https://ayoungishperspective.co.uk/2026/08/29/review-garry-starr-classic-penguins-grand-pleasance-courtyard/",
         "https://www.westendbestfriend.co.uk/news/review-garry-starr-classic-penguins-the-other-palace",
         "https://chiswickcalendar.co.uk/garry-starr-classic-penguins-the-other-palace-theatre-review/",
         "https://everything-theatre.co.uk/2026/10/review-garry-starr-classic-penguins-the-other-palace/",
         "https://www.londonlivinglarge.com/2026/10/garry-starr-classic-penguins-other.html",
-        "https://www.thereviewshub.com/garry-starr-classic-penguins-arts-theatre-london/",
-        "https://therecs.co.uk/garry-starr-classic-penguins/",
         "https://www.jackstage.co.uk/post/garry-starr-classic-penguins-review",
         "https://www.thereviewshub.com/garry-starr-classic-penguins-the-other-palace-london/",
         "https://www.thestage.co.uk/reviews/garry-starr-classic-penguins-review-damien-warren-smith-the-other-palace",
-        "https://www.broadwayworld.com/westend/article/Review-GARRY-STARR-CLASSIC-PENGUINS-The-Other-Palace-20261026",
         "https://www.thestage.co.uk/reviews/garry-starr-classic-penguins-review-underbelly-george-square-edinburgh-damien-warren-smith-francesca-moody",
         "https://ayoungishperspective.co.uk/2026/10/25/review-garry-starr-classic-penguins-3/",
         "https://theatreweekly.com/review-garry-starr-classic-penguins-at-the-other-palace/",
         "http://www.broadwayworld.com/westend/article/Review-GARRY-STARR-CLASSIC-PENGUINS-The-Other-Palace-20261026",
-        "https://www.timeout.com/london/comedy/garry-starr-classic-penguins",
         "https://www.londonbornandbred.co.uk/post/garry-starr-s-classic-penguins-a-delightfully-daft-evening-at-the-arts-theatre",
         "https://limelight-arts.com.au/event/garry-starr-classic-penguins-2/2026-06-21/",
-        "https://www.nytimes.com/2026/09/10/theater/garry-starr-classic-penguins-review.html",
         "https://limelight-arts.com.au/event/garry-starr-classic-penguins-2/2026-06-23/",
         "https://limelight-arts.com.au/event/garry-starr-classic-penguins-2/2026-07-03/",
         "https://limelight-arts.com.au/event/garry-starr-classic-penguins-2/2026-07-01/",
         "https://exeuntnyc.com/reviews/review-garry-starr-classic-penguins-at-studio-seaview/",
-        "https://corrblimey.uk/2026/08/27/edinburgh-festival-fringe-2026-review-garry-starr-classic-penguins-grand-at-pleasance-courtyard/",
         "https://fringereview.co.uk/review/edinburgh-fringe/2026/garry-starr-classic-penguins-3/",
         "https://www.thetheatrereviewer.com/post/garry-starr-classic-penguins",
         "https://playsinternational.org.uk/garry-starr-classic-penguins-pleasance-grand-edinburgh/",
         "https://limelight-arts.com.au/event/garry-starr-classic-penguins-2/2026-06-17/",
         "https://www.london-unattached.com/classic-penguins-gary-starr/"
       ],
-      "dirFiles": 32,
-      "dirClean": 14,
-      "inReviewsJson": 15,
+      "dirFiles": 33,
+      "dirClean": 15,
+      "inReviewsJson": 16,
       "missing": [
         {
-          "url": "https://therecs.co.uk/garry-starr-classic-penguins/",
-          "host": "therecs.co.uk",
-          "knownOutletId": "the-recs",
+          "url": "https://www.timeout.com/london/comedy/garry-starr-classic-penguins",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london",
           "serpCensus": true,
           "sources": [
             {
@@ -113258,9 +113321,45 @@
           ]
         },
         {
-          "url": "https://www.timeout.com/london/comedy/garry-starr-classic-penguins",
-          "host": "timeout.com",
-          "knownOutletId": "timeout-london",
+          "url": "https://limelight-arts.com.au/event/garry-starr-classic-penguins-2/2026-06-25/",
+          "host": "limelight-arts.com.au",
+          "knownOutletId": "limelight-magazine-au",
+          "serpCensus": true,
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ]
+        },
+        {
+          "url": "https://limelight-arts.com.au/event/garry-starr-classic-penguins/2026-06-21/",
+          "host": "limelight-arts.com.au",
+          "knownOutletId": "limelight-magazine-au",
+          "serpCensus": true,
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ]
+        },
+        {
+          "url": "https://limelight-arts.com.au/event/garry-starr-classic-penguins/2026-06-24/",
+          "host": "limelight-arts.com.au",
+          "knownOutletId": "limelight-magazine-au",
+          "serpCensus": true,
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ]
+        },
+        {
+          "url": "https://limelight-arts.com.au/event/garry-starr-classic-penguins-2/2026-06-18/",
+          "host": "limelight-arts.com.au",
+          "knownOutletId": "limelight-magazine-au",
           "serpCensus": true,
           "sources": [
             {
@@ -113285,18 +113384,6 @@
           "url": "https://limelight-arts.com.au/event/garry-starr-classic-penguins-2/2026-06-21/",
           "host": "limelight-arts.com.au",
           "knownOutletId": "limelight-magazine-au",
-          "serpCensus": true,
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ]
-        },
-        {
-          "url": "https://www.nytimes.com/2026/09/10/theater/garry-starr-classic-penguins-review.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes",
           "serpCensus": true,
           "sources": [
             {
@@ -113354,39 +113441,13 @@
           ]
         }
       ],
-      "dirOnly": [],
-      "flaggedMisses": [
+      "dirOnly": [
         {
-          "url": "https://www.westendbestfriend.co.uk/news/review-garry-starr-classic-penguins-arts-theatre",
-          "host": "westendbestfriend.co.uk",
-          "knownOutletId": "west-end-best-friend",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "west-end-best-friend--livvy-perrett.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.westendbestfriend.co.uk/news/review-garry-starr-classic-penguins-arts-theatre"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "priorRun": true,
-          "priorRunSource": "flagged-file-date:venue-verified:Arts Theatre",
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ],
-          "serpCensus": true,
-          "reverify": false
-        },
+          "host": "allthatdazzles.co.uk",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [
         {
           "url": "https://corrblimey.uk/2026/08/27/edinburgh-festival-fringe-2026-review-garry-starr-classic-penguins-grand-at-pleasance-courtyard/",
           "host": "corrblimey.uk",
@@ -113595,7 +113656,7 @@
             "geo": "gb",
             "ok": true,
             "results": 8,
-            "accepted": 5,
+            "accepted": 2,
             "error": null
           },
           {
@@ -113605,7 +113666,7 @@
             "geo": "gb",
             "ok": true,
             "results": 7,
-            "accepted": 0,
+            "accepted": 2,
             "error": null
           },
           {
@@ -113615,7 +113676,7 @@
             "geo": "gb",
             "ok": true,
             "results": 9,
-            "accepted": 0,
+            "accepted": 2,
             "error": null
           },
           {
@@ -113625,7 +113686,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 3,
             "error": null
           },
           {
@@ -113635,66 +113696,27 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 0,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 7,
+        "resultCount": 9,
         "error": null
       },
       "candidatesRejected": {
-        "count": 35,
+        "count": 27,
         "byReason": {
-          "non-review-host": 13,
-          "not-http-url": 20,
-          "write-path-blocked": 1,
-          "aggregator-internal-nav": 1
+          "not-http-url": 14,
+          "non-review-host": 10,
+          "roundup-page": 1,
+          "ticketing-listing": 1,
+          "write-path-blocked": 1
         }
       },
       "dedupedVariants": [],
       "nonReviewCandidates": [
-        {
-          "url": "https://entertainment-now.com/2026/08/edfringe-comedy-review-garry-starr-classic-penguins-3/",
-          "host": "entertainment-now.com",
-          "knownOutletId": null,
-          "serpCensus": true,
-          "nonReviewVerdict": "page-date-before-run",
-          "nonReviewDetail": "2026-08-25"
-        },
-        {
-          "url": "https://limelight-arts.com.au/event/garry-starr-classic-penguins-2/2026-06-25/",
-          "host": "limelight-arts.com.au",
-          "knownOutletId": "limelight-magazine-au",
-          "serpCensus": true,
-          "nonReviewVerdict": "page-date-before-run",
-          "nonReviewDetail": "2026-05-07"
-        },
-        {
-          "url": "https://limelight-arts.com.au/event/garry-starr-classic-penguins/2026-06-21/",
-          "host": "limelight-arts.com.au",
-          "knownOutletId": "limelight-magazine-au",
-          "serpCensus": true,
-          "nonReviewVerdict": "page-date-before-run",
-          "nonReviewDetail": "2026-03-30"
-        },
-        {
-          "url": "https://limelight-arts.com.au/event/garry-starr-classic-penguins/2026-06-24/",
-          "host": "limelight-arts.com.au",
-          "knownOutletId": "limelight-magazine-au",
-          "serpCensus": true,
-          "nonReviewVerdict": "page-date-before-run",
-          "nonReviewDetail": "2026-03-30"
-        },
-        {
-          "url": "https://limelight-arts.com.au/event/garry-starr-classic-penguins-2/2026-06-18/",
-          "host": "limelight-arts.com.au",
-          "knownOutletId": "limelight-magazine-au",
-          "serpCensus": true,
-          "nonReviewVerdict": "page-date-before-run",
-          "nonReviewDetail": "2026-05-07"
-        },
         {
           "url": "https://www.newyorktheatreguide.com/reviews/garry-starr-classic-penguins-off-broadway-review",
           "host": "newyorktheatreguide.com",
@@ -113702,28 +113724,60 @@
           "serpCensus": true,
           "nonReviewVerdict": "page-date-before-run",
           "nonReviewDetail": "2026-09-08"
+        },
+        {
+          "url": "https://nystagereview.com/2026/09/08/garry-starr-classic-penguins-much-ado-about-nothing-on/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "serpCensus": true,
+          "nonReviewVerdict": "page-date-before-run",
+          "nonReviewDetail": "2026-09-09"
+        },
+        {
+          "url": "https://www.nytimes.com/2026/09/10/theater/garry-starr-classic-penguins-review.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "serpCensus": true,
+          "nonReviewVerdict": "page-date-before-run",
+          "nonReviewDetail": "2026-09-10"
+        },
+        {
+          "url": "https://therecs.co.uk/garry-starr-classic-penguins/",
+          "host": "therecs.co.uk",
+          "knownOutletId": "the-recs",
+          "serpCensus": true,
+          "nonReviewVerdict": "page-date-before-run",
+          "nonReviewDetail": "2025-11-04"
+        },
+        {
+          "url": "https://entertainment-now.com/2026/08/edfringe-comedy-review-garry-starr-classic-penguins-3/",
+          "host": "entertainment-now.com",
+          "knownOutletId": null,
+          "serpCensus": true,
+          "nonReviewVerdict": "page-date-before-run",
+          "nonReviewDetail": "2026-08-25"
         }
       ],
       "automatedExcludedListed": 5,
       "unextractable": [],
       "ingestResults": [
         {
-          "url": "https://www.nytimes.com/2026/09/10/theater/garry-starr-classic-penguins-review.html",
-          "host": "nytimes.com",
-          "outletId": "nytimes",
+          "url": "https://www.londonbornandbred.co.uk/post/garry-starr-s-classic-penguins-a-delightfully-daft-evening-at-the-arts-theatre",
+          "host": "londonbornandbred.co.uk",
+          "outletId": "londonbornandbred",
           "provisional": false,
           "ok": false,
           "noop": true,
-          "conflict": true,
-          "conflictReason": "cross-show-url-owned",
-          "expected": false,
-          "expectedReason": null,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": true,
+          "expectedReason": "prior-production-quarantined",
           "unclassified": false,
           "zeroChar": false,
-          "reason": "garry-starr-classic-penguins-off-west-end-2026: https://www.nytimes.com/2026/09/10/theater/garry-starr-classic-penguins-review.html is already owned by garry-starr-classic-penguins-off-broadway-2026 — one of the two is contaminated. Inspect data/review-texts/garry-starr-classic-penguins-off-broadway-2026/ for this URL; if that copy is the misfiled one, flag it wrongShow with a manual wrongShowReason (that releases ownership), then re-ingest here."
+          "reason": "garry-starr-classic-penguins-off-west-end-2026: https://www.londonbornandbred.co.uk/post/garry-starr-s-classic-penguins-a-delightfully-daft-evening-at-the-arts-theatre dated 2025-11-05 predates this run; quarantined to _pending/ as the earlier production's review. Expected, no action needed."
         },
         {
-          "url": "https://limelight-arts.com.au/event/garry-starr-classic-penguins-2/2026-06-23/",
+          "url": "https://limelight-arts.com.au/event/garry-starr-classic-penguins-2/2026-06-21/",
           "host": "limelight-arts.com.au",
           "outletId": "limelight-magazine-au",
           "provisional": false,
@@ -113735,12 +113789,12 @@
           "expectedReason": null,
           "unclassified": false,
           "zeroChar": false,
-          "reason": "❌ Refusing to ingest — collision with limelight-magazine-au--unknown.json\n   reason: stale-flag-on-existing-file\n   detail: {\n  \"existingUrl\": \"https://limelight-arts.com.au/event/garry-starr-classic-penguins-2/2026-06-17/\",\n  \"existingFlags\": {\n    \"wrongProduction\": true,\n    \"wrongShow\": false,\n    \"wrongProductionAutoCleared\": false\n  },\n  \"existingPublishDate\": \"2026-05-06\",\n  \"incomingUrl\": \"https://limelight-arts.com.au/event/garry-starr-classic-penguins-2/2026-06-23/\",\n  \"incomingPublishDate\": \"2026-05-06\"\n}\n\nManual remediation required: rename or clear the existing file."
+          "reason": "❌ Refusing to ingest — collision with limelight-magazine-au--unknown.json\n   reason: stale-flag-on-existing-file\n   detail: {\n  \"existingUrl\": \"https://limelight-arts.com.au/event/garry-starr-classic-penguins-2/2026-06-17/\",\n  \"existingFlags\": {\n    \"wrongProduction\": true,\n    \"wrongShow\": false,\n    \"wrongProductionAutoCleared\": false\n  },\n  \"existingPublishDate\": \"2026-05-06\",\n  \"incomingUrl\": \"https://limelight-arts.com.au/event/garry-starr-classic-penguins-2/2026-06-21/\",\n  \"incomingPublishDate\": \"2026-05-06\"\n}\n\nManual remediation required: rename or clear the existing file."
         },
         {
-          "url": "https://exeuntnyc.com/reviews/review-garry-starr-classic-penguins-at-studio-seaview/",
-          "host": "exeuntnyc.com",
-          "outletId": "exeunt-magazine",
+          "url": "https://limelight-arts.com.au/event/garry-starr-classic-penguins-2/2026-07-03/",
+          "host": "limelight-arts.com.au",
+          "outletId": "limelight-magazine-au",
           "provisional": false,
           "ok": false,
           "noop": false,
@@ -113749,78 +113803,109 @@
           "expected": false,
           "expectedReason": null,
           "unclassified": false,
-          "zeroChar": true,
-          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS."
-        },
-        {
-          "url": "https://therecs.co.uk/garry-starr-classic-penguins/",
-          "host": "therecs.co.uk",
-          "outletId": "the-recs",
-          "provisional": false,
-          "ok": false,
-          "noop": true,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": true,
-          "expectedReason": "prior-production-quarantined",
-          "unclassified": false,
           "zeroChar": false,
-          "reason": "garry-starr-classic-penguins-off-west-end-2026: https://therecs.co.uk/garry-starr-classic-penguins/ dated 2025-11-04 predates this run; quarantined to _pending/ as the earlier production's review. Expected, no action needed."
-        },
-        {
-          "url": "https://www.timeout.com/london/comedy/garry-starr-classic-penguins",
-          "host": "timeout.com",
-          "outletId": "timeout-london",
-          "provisional": false,
-          "ok": false,
-          "noop": true,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": true,
-          "expectedReason": "timeout-listing-capsule",
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "garry-starr-classic-penguins-off-west-end-2026: https://www.timeout.com/london/comedy/garry-starr-classic-penguins is a Time Out listing capsule, not a review (lib/timeout-capsule.js). Expected rejection; no action needed unless Time Out later publishes a full review at this URL, which a later audit will then ingest."
-        }
-      ],
-      "ingestSkippedByCap": [
-        {
-          "url": "https://www.londonbornandbred.co.uk/post/garry-starr-s-classic-penguins-a-delightfully-daft-evening-at-the-arts-theatre",
-          "host": "londonbornandbred.co.uk",
-          "outletId": "londonbornandbred"
-        },
-        {
-          "url": "https://limelight-arts.com.au/event/garry-starr-classic-penguins-2/2026-06-21/",
-          "host": "limelight-arts.com.au",
-          "outletId": "limelight-magazine-au"
-        },
-        {
-          "url": "https://limelight-arts.com.au/event/garry-starr-classic-penguins-2/2026-07-03/",
-          "host": "limelight-arts.com.au",
-          "outletId": "limelight-magazine-au"
+          "reason": "❌ Refusing to ingest — collision with limelight-magazine-au--unknown.json\n   reason: stale-flag-on-existing-file\n   detail: {\n  \"existingUrl\": \"https://limelight-arts.com.au/event/garry-starr-classic-penguins-2/2026-06-17/\",\n  \"existingFlags\": {\n    \"wrongProduction\": true,\n    \"wrongShow\": false,\n    \"wrongProductionAutoCleared\": false\n  },\n  \"existingPublishDate\": \"2026-05-06\",\n  \"incomingUrl\": \"https://limelight-arts.com.au/event/garry-starr-classic-penguins-2/2026-07-03/\",\n  \"incomingPublishDate\": \"2026-05-06\"\n}\n\nManual remediation required: rename or clear the existing file."
         },
         {
           "url": "https://limelight-arts.com.au/event/garry-starr-classic-penguins-2/2026-07-01/",
           "host": "limelight-arts.com.au",
+          "outletId": "limelight-magazine-au",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "❌ Refusing to ingest — collision with limelight-magazine-au--unknown.json\n   reason: stale-flag-on-existing-file\n   detail: {\n  \"existingUrl\": \"https://limelight-arts.com.au/event/garry-starr-classic-penguins-2/2026-06-17/\",\n  \"existingFlags\": {\n    \"wrongProduction\": true,\n    \"wrongShow\": false,\n    \"wrongProductionAutoCleared\": false\n  },\n  \"existingPublishDate\": \"2026-05-06\",\n  \"incomingUrl\": \"https://limelight-arts.com.au/event/garry-starr-classic-penguins-2/2026-07-01/\",\n  \"incomingPublishDate\": \"2026-05-06\"\n}\n\nManual remediation required: rename or clear the existing file."
+        },
+        {
+          "url": "https://limelight-arts.com.au/event/garry-starr-classic-penguins-2/2026-06-25/",
+          "host": "limelight-arts.com.au",
+          "outletId": "limelight-magazine-au",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "❌ Refusing to ingest — collision with limelight-magazine-au--unknown.json\n   reason: stale-flag-on-existing-file\n   detail: {\n  \"existingUrl\": \"https://limelight-arts.com.au/event/garry-starr-classic-penguins-2/2026-06-17/\",\n  \"existingFlags\": {\n    \"wrongProduction\": true,\n    \"wrongShow\": false,\n    \"wrongProductionAutoCleared\": false\n  },\n  \"existingPublishDate\": \"2026-05-06\",\n  \"incomingUrl\": \"https://limelight-arts.com.au/event/garry-starr-classic-penguins-2/2026-06-25/\",\n  \"incomingPublishDate\": \"2026-05-06\"\n}\n\nManual remediation required: rename or clear the existing file."
+        }
+      ],
+      "ingestSkippedByCap": [
+        {
+          "url": "https://limelight-arts.com.au/event/garry-starr-classic-penguins/2026-06-21/",
+          "host": "limelight-arts.com.au",
           "outletId": "limelight-magazine-au"
+        },
+        {
+          "url": "https://limelight-arts.com.au/event/garry-starr-classic-penguins/2026-06-24/",
+          "host": "limelight-arts.com.au",
+          "outletId": "limelight-magazine-au"
+        },
+        {
+          "url": "https://limelight-arts.com.au/event/garry-starr-classic-penguins-2/2026-06-18/",
+          "host": "limelight-arts.com.au",
+          "outletId": "limelight-magazine-au"
+        },
+        {
+          "url": "https://www.timeout.com/london/comedy/garry-starr-classic-penguins",
+          "host": "timeout.com",
+          "outletId": "timeout-london"
+        },
+        {
+          "url": "https://limelight-arts.com.au/event/garry-starr-classic-penguins-2/2026-06-23/",
+          "host": "limelight-arts.com.au",
+          "outletId": "limelight-magazine-au"
+        },
+        {
+          "url": "https://exeuntnyc.com/reviews/review-garry-starr-classic-penguins-at-studio-seaview/",
+          "host": "exeuntnyc.com",
+          "outletId": "exeunt-magazine"
         }
       ],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "the-recs",
-            "outlet": "the-recs",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://therecs.co.uk/garry-starr-classic-penguins/"
-          },
-          {
             "outletId": "timeout-london",
             "outlet": "timeout-london",
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.timeout.com/london/comedy/garry-starr-classic-penguins"
+          },
+          {
+            "outletId": "limelight-magazine-au",
+            "outlet": "limelight-magazine-au",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://limelight-arts.com.au/event/garry-starr-classic-penguins-2/2026-06-25/"
+          },
+          {
+            "outletId": "limelight-magazine-au",
+            "outlet": "limelight-magazine-au",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://limelight-arts.com.au/event/garry-starr-classic-penguins/2026-06-21/"
+          },
+          {
+            "outletId": "limelight-magazine-au",
+            "outlet": "limelight-magazine-au",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://limelight-arts.com.au/event/garry-starr-classic-penguins/2026-06-24/"
+          },
+          {
+            "outletId": "limelight-magazine-au",
+            "outlet": "limelight-magazine-au",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://limelight-arts.com.au/event/garry-starr-classic-penguins-2/2026-06-18/"
           },
           {
             "outletId": "londonbornandbred",
@@ -113835,13 +113920,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://limelight-arts.com.au/event/garry-starr-classic-penguins-2/2026-06-21/"
-          },
-          {
-            "outletId": "nytimes",
-            "outlet": "nytimes",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.nytimes.com/2026/09/10/theater/garry-starr-classic-penguins-review.html"
           },
           {
             "outletId": "limelight-magazine-au",
@@ -113910,42 +113988,6 @@
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://entertainment-now.com/2026/08/edfringe-comedy-review-garry-starr-classic-penguins-3/",
-            "outletId": "entertainment-now.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-04T05:30:13.242Z"
-          },
-          {
-            "url": "https://limelight-arts.com.au/event/garry-starr-classic-penguins-2/2026-06-25/",
-            "outletId": "limelight-arts.com.au",
-            "state": "live",
-            "firstSeenAt": "2026-11-05T07:20:10.412Z"
-          },
-          {
-            "url": "https://limelight-arts.com.au/event/garry-starr-classic-penguins/2026-06-21/",
-            "outletId": "limelight-arts.com.au",
-            "state": "live",
-            "firstSeenAt": "2026-11-05T07:20:10.412Z"
-          },
-          {
-            "url": "https://limelight-arts.com.au/event/garry-starr-classic-penguins/2026-06-24/",
-            "outletId": "limelight-arts.com.au",
-            "state": "live",
-            "firstSeenAt": "2026-11-05T07:20:10.412Z"
-          },
-          {
-            "url": "https://limelight-arts.com.au/event/garry-starr-classic-penguins-2/2026-06-18/",
-            "outletId": "limelight-arts.com.au",
-            "state": "live",
-            "firstSeenAt": "2026-11-05T07:20:10.412Z"
-          },
-          {
-            "url": "https://www.thetimes.com/culture/comedy/article/garry-starr-classic-penguins-review-garrick-theatre-london-87vh6kdjs",
-            "outletId": "thetimes.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-05T07:20:10.412Z"
-          },
-          {
             "url": "https://www.londontheatre.co.uk/reviews/garry-starr-classic-penguins-review-the-other-palace",
             "outletId": "londontheatre.co.uk",
             "state": "live",
@@ -113956,6 +113998,48 @@
             "outletId": "newyorktheatreguide.com",
             "state": "live",
             "firstSeenAt": "2026-10-31T06:31:50.539Z"
+          },
+          {
+            "url": "https://nystagereview.com/2026/09/08/garry-starr-classic-penguins-much-ado-about-nothing-on/",
+            "outletId": "nystagereview.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-05T20:49:43.633Z"
+          },
+          {
+            "url": "https://www.broadwayworld.com/westend/article/Review-GARRY-STARR-CLASSIC-PENGUINS-The-Other-Palace-20261026",
+            "outletId": "broadwayworld.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-26T18:53:32.675Z"
+          },
+          {
+            "url": "https://www.nytimes.com/2026/09/10/theater/garry-starr-classic-penguins-review.html",
+            "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T16:58:09.613Z"
+          },
+          {
+            "url": "https://therecs.co.uk/garry-starr-classic-penguins/",
+            "outletId": "therecs.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-24T14:59:13.348Z"
+          },
+          {
+            "url": "https://www.thereviewshub.com/garry-starr-classic-penguins-arts-theatre-london/",
+            "outletId": "thereviewshub.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T00:00:48.604Z"
+          },
+          {
+            "url": "https://entertainment-now.com/2026/08/edfringe-comedy-review-garry-starr-classic-penguins-3/",
+            "outletId": "entertainment-now.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-04T05:30:13.242Z"
+          },
+          {
+            "url": "https://www.thetimes.com/culture/comedy/article/garry-starr-classic-penguins-review-garrick-theatre-london-87vh6kdjs",
+            "outletId": "thetimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-05T07:20:10.412Z"
           },
           {
             "url": "https://theatreandtonic.co.uk/blog/garry-starr-classic-penguins-at-the-other-palace-review",
@@ -113994,12 +114078,6 @@
             "firstSeenAt": "2026-10-26T08:25:08.978Z"
           },
           {
-            "url": "https://www.thereviewshub.com/garry-starr-classic-penguins-arts-theatre-london/",
-            "outletId": "thereviewshub.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-25T00:00:48.604Z"
-          },
-          {
             "url": "https://www.jackstage.co.uk/post/garry-starr-classic-penguins-review",
             "outletId": "jackstage.co.uk",
             "state": "live",
@@ -114014,12 +114092,6 @@
           {
             "url": "https://www.thestage.co.uk/reviews/garry-starr-classic-penguins-review-damien-warren-smith-the-other-palace",
             "outletId": "thestage.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-10-26T18:53:32.675Z"
-          },
-          {
-            "url": "https://www.broadwayworld.com/westend/article/Review-GARRY-STARR-CLASSIC-PENGUINS-The-Other-Palace-20261026",
-            "outletId": "broadwayworld.com",
             "state": "live",
             "firstSeenAt": "2026-10-26T18:53:32.675Z"
           },
@@ -114054,18 +114126,39 @@
             "firstSeenAt": "2026-10-25T00:00:48.604Z"
           },
           {
-            "url": "https://therecs.co.uk/garry-starr-classic-penguins/",
-            "outletId": "the-recs",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-24T14:59:13.348Z"
-          },
-          {
             "url": "https://www.timeout.com/london/comedy/garry-starr-classic-penguins",
             "outletId": "timeout-london",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-10-25T21:33:02.264Z"
+          },
+          {
+            "url": "https://limelight-arts.com.au/event/garry-starr-classic-penguins-2/2026-06-25/",
+            "outletId": "limelight-magazine-au",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-11-05T07:20:10.412Z"
+          },
+          {
+            "url": "https://limelight-arts.com.au/event/garry-starr-classic-penguins/2026-06-21/",
+            "outletId": "limelight-magazine-au",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-11-05T07:20:10.412Z"
+          },
+          {
+            "url": "https://limelight-arts.com.au/event/garry-starr-classic-penguins/2026-06-24/",
+            "outletId": "limelight-magazine-au",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-11-05T07:20:10.412Z"
+          },
+          {
+            "url": "https://limelight-arts.com.au/event/garry-starr-classic-penguins-2/2026-06-18/",
+            "outletId": "limelight-magazine-au",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-11-05T07:20:10.412Z"
           },
           {
             "url": "https://www.londonbornandbred.co.uk/post/garry-starr-s-classic-penguins-a-delightfully-daft-evening-at-the-arts-theatre",
@@ -114080,13 +114173,6 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-10-28T19:57:53.939Z"
-          },
-          {
-            "url": "https://www.nytimes.com/2026/09/10/theater/garry-starr-classic-penguins-review.html",
-            "outletId": "nytimes",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-30T16:58:09.613Z"
           },
           {
             "url": "https://limelight-arts.com.au/event/garry-starr-classic-penguins-2/2026-06-23/",
@@ -114155,40 +114241,35 @@
         "censusSchema": 4,
         "excluded": [
           {
-            "url": "https://entertainment-now.com/2026/08/edfringe-comedy-review-garry-starr-classic-penguins-3/",
-            "host": "entertainment-now.com",
-            "reason": "page-date-before-run"
-          },
-          {
-            "url": "https://limelight-arts.com.au/event/garry-starr-classic-penguins-2/2026-06-25/",
-            "host": "limelight-arts.com.au",
-            "reason": "page-date-before-run"
-          },
-          {
-            "url": "https://limelight-arts.com.au/event/garry-starr-classic-penguins/2026-06-21/",
-            "host": "limelight-arts.com.au",
-            "reason": "page-date-before-run"
-          },
-          {
-            "url": "https://limelight-arts.com.au/event/garry-starr-classic-penguins/2026-06-24/",
-            "host": "limelight-arts.com.au",
-            "reason": "page-date-before-run"
-          },
-          {
-            "url": "https://limelight-arts.com.au/event/garry-starr-classic-penguins-2/2026-06-18/",
-            "host": "limelight-arts.com.au",
-            "reason": "page-date-before-run"
-          },
-          {
             "url": "https://www.newyorktheatreguide.com/reviews/garry-starr-classic-penguins-off-broadway-review",
             "host": "newyorktheatreguide.com",
             "reason": "page-date-before-run"
+          },
+          {
+            "url": "https://nystagereview.com/2026/09/08/garry-starr-classic-penguins-much-ado-about-nothing-on/",
+            "host": "nystagereview.com",
+            "reason": "page-date-before-run"
+          },
+          {
+            "url": "https://www.nytimes.com/2026/09/10/theater/garry-starr-classic-penguins-review.html",
+            "host": "nytimes.com",
+            "reason": "page-date-before-run"
+          },
+          {
+            "url": "https://therecs.co.uk/garry-starr-classic-penguins/",
+            "host": "therecs.co.uk",
+            "reason": "page-date-before-run"
+          },
+          {
+            "url": "https://entertainment-now.com/2026/08/edfringe-comedy-review-garry-starr-classic-penguins-3/",
+            "host": "entertainment-now.com",
+            "reason": "page-date-before-run"
           }
         ],
-        "liveCount": 17,
+        "liveCount": 19,
         "candidateCount": 27
       },
-      "computedAt": "2026-11-05T07:20:10.412Z"
+      "computedAt": "2026-11-05T20:49:43.633Z"
     },
     {
       "showId": "garsides-career-off-broadway-2025",
@@ -155666,22 +155747,29 @@
       "openingDate": "2024-04-24",
       "status": "closed",
       "category": "broadway",
-      "aggregatorArticles": [
-        "https://playbill.com/article/reviews-read-what-critics-are-saying-about-sufjan-stevens-musical-illinoise-at-park-avenue-armory",
-        "https://playbill.com/article/reviews-what-do-the-critics-think-of-sufjan-stevens-dance-musical-illinoise-on-broadway",
-        "https://www.broadwayworld.com/article/Review-Roundup-Justin-Peck-Brings-Sufjan-Stevens-ILLINOISE-to-Life-at-Park-Avenue-Armory-20240307",
-        "https://www.broadwayworld.com/article/Review-Roundup-ILLINOISE-Arrives-on-Broadway-20240426",
-        "https://www.broadwayworld.com/article/Review-Roundup-Sufjan-Stevens-Justin-Peck-and-Jackie-Sibblies-Drurys-ILLINOISE-at-Chicago-Shakespeare-Theater-20240205"
+      "previewsStartDate": "2024-04-24",
+      "priorRuns": [
+        {
+          "openingDate": "2024-03-03",
+          "closingDate": "2024-03-26",
+          "venue": "Park Avenue Armory"
+        }
       ],
+      "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://www.vulture.com/article/theater-review-sufjan-stevens-illinoise-armory.html",
-        "https://nystagereview.com/2024/03/07/illinoise-an-explosion-of-transporting-music-and-dance/",
-        "https://www.newyorktheatreguide.com/reviews/illinoise-off-broadway-review-sufjan-stevens",
-        "https://newyorktheater.me/2024/03/07/illinoise-review/",
+        "https://culturesauce.com/2024/04/26/illinoise-sufjan-stevens-ethan-peck-broadway-review/",
+        "https://pagesonstages.wordpress.com/2024/04/25/illinoise/",
         "https://www.nytimes.com/2024/03/07/theater/illinoise-review-sufjan-stevens-justin-pick.html",
+        "https://www.newyorktheatreguide.com/reviews/illinoise-off-broadway-review-sufjan-stevens",
+        "https://www.vulture.com/article/theater-review-sufjan-stevens-illinoise-armory.html",
+        "https://www.washingtonpost.com/entertainment/theater/2024/03/07/illinoise-park-avenue-armory/",
+        "http://www.theaterscene.net/plays/offbway-plays/illinoise/victor-gluck/",
+        "https://newyorktheater.me/2024/03/07/illinoise-review/",
+        "https://culturesauce.com/2024/03/08/illinoise-sufjan-stevens-off-broadway-review/",
+        "http://theaterscene.com/Illinoise-DD.html",
+        "https://nystagereview.com/2024/03/07/illinoise-an-explosion-of-transporting-music-and-dance/",
         "https://www.slantmagazine.com/theater/illinoise-review-sufjan-stevens-justin-peck/",
         "https://www.theatermania.com/news/review-illinoise-is-a-folk-ballet-for-the-emotionally-wounded_1732498/",
-        "https://www.washingtonpost.com/entertainment/theater/2024/03/07/illinoise-park-avenue-armory/",
         "https://www.chicagotribune.com/2024/04/26/review-illinoise-puts-movement-to-the-music-of-sufjan-stevens-its-not-the-usual-broadway-show/",
         "https://www.digitaljournal.com/entertainment/review-illinoise-is-a-new-musical-on-broadway-directed-by-justin-peck/article",
         "https://www.hollywoodreporter.com/lifestyle/arts/illinoise-review-sufjan-stevens-justin-peck-broadway-theater-1235882171/",
@@ -155694,15 +155782,10 @@
         "https://www.thewrap.com/sufjan-stevens-illinoise-broadway-review/",
         "https://www.nytimes.com/2024/03/13/arts/dance/illinoise-dance-justin-peck.html",
         "https://newyorktheater.me/2024/04/24/illinoise-opens-on-broadway/",
-        "https://www.chicagotribune.com/2024/02/04/review-in-illinoise-at-chicago-shakes-a-sufjan-stevens-album-is-choreographed-into-something-new/",
-        "https://culturesauce.com/2024/04/26/illinoise-sufjan-stevens-ethan-peck-broadway-review/",
-        "https://pagesonstages.wordpress.com/2024/04/25/illinoise/",
-        "http://www.theaterscene.net/plays/offbway-plays/illinoise/victor-gluck/",
-        "https://culturesauce.com/2024/03/08/illinoise-sufjan-stevens-off-broadway-review/",
-        "http://theaterscene.com/Illinoise-DD.html"
+        "https://www.chicagotribune.com/2024/02/04/review-in-illinoise-at-chicago-shakes-a-sufjan-stevens-album-is-choreographed-into-something-new/"
       ],
-      "dirFiles": 41,
-      "dirClean": 22,
+      "dirFiles": 39,
+      "dirClean": 21,
       "inReviewsJson": 24,
       "missing": [],
       "dirOnly": [
@@ -155725,6 +155808,40 @@
       ],
       "flaggedMisses": [
         {
+          "url": "https://www.newyorktheatreguide.com/reviews/illinoise-off-broadway-review-sufjan-stevens",
+          "host": "newyorktheatreguide.com",
+          "knownOutletId": "nytg",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nytg--amelia-merrill.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.newyorktheatreguide.com/reviews/illinoise-off-broadway-review-sufjan-stevens"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "sibling-held:illinoise-off-broadway-2024",
+          "sources": [
+            {
+              "source": "show-score",
+              "sourceUrl": "https://www.show-score.com/broadway-shows/illinoise"
+            },
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
+          "reverify": false
+        },
+        {
           "url": "https://www.washingtonpost.com/entertainment/theater/2024/03/07/illinoise-park-avenue-armory/",
           "host": "washingtonpost.com",
           "knownOutletId": "washpost",
@@ -155744,8 +155861,13 @@
           "basis": [
             "cvWrongArticleHighConfidence"
           ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date",
+          "liveInReviews": true,
+          "sources": [
+            {
+              "source": "show-score",
+              "sourceUrl": "https://www.show-score.com/broadway-shows/illinoise"
+            }
+          ],
           "reverify": false
         },
         {
@@ -155768,7 +155890,19 @@
           "basis": [
             "wrongProduction"
           ],
-          "reverify": true
+          "priorRun": true,
+          "priorRunSource": "sibling-held:illinoise-off-broadway-2024",
+          "sources": [
+            {
+              "source": "show-score",
+              "sourceUrl": "https://www.show-score.com/broadway-shows/illinoise"
+            },
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
+          "reverify": false
         },
         {
           "url": "http://theaterscene.com/Illinoise-DD.html",
@@ -155790,7 +155924,16 @@
           "basis": [
             "rejectionReason"
           ],
-          "serpCensus": true,
+          "sources": [
+            {
+              "source": "show-score",
+              "sourceUrl": "https://www.show-score.com/broadway-shows/illinoise"
+            },
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
           "reverify": true
         }
       ],
@@ -155801,45 +155944,15 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 1090,
-        "byReason": {
-          "aggregator-internal-nav": 796,
-          "not-http-url": 160,
-          "production-database-listing": 22,
-          "aggregator-section-root": 22,
-          "non-review-host": 86,
-          "write-path-blocked": 1,
-          "bare-host": 1,
-          "roundup-page": 2
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
-      "priorRunArticles": [
-        {
-          "url": "https://playbill.com/article/reviews-read-what-critics-are-saying-about-sufjan-stevens-musical-illinoise-at-park-avenue-armory",
-          "publishDate": "2024-03-08"
-        },
-        {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-Justin-Peck-Brings-Sufjan-Stevens-ILLINOISE-to-Life-at-Park-Avenue-Armory-20240307",
-          "publishDate": "2024-03-07"
-        },
-        {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-Sufjan-Stevens-Justin-Peck-and-Jackie-Sibblies-Drurys-ILLINOISE-at-Chicago-Shakespeare-Theater-20240205",
-          "publishDate": "2024-02-05"
-        }
-      ],
-      "automatedExcludedListed": 2,
+      "automatedExcludedListed": 1,
       "unextractable": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
-          {
-            "outletId": "theater-scene",
-            "outlet": "theater-scene",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "http://www.theaterscene.net/plays/offbway-plays/illinoise/victor-gluck/"
-          },
           {
             "outletId": "theater-scene",
             "outlet": "theater-scene",
@@ -155851,20 +155964,26 @@
         "suppressedMissing": [],
         "candidates": [
           {
+            "url": "https://culturesauce.com/2024/04/26/illinoise-sufjan-stevens-ethan-peck-broadway-review/",
+            "outletId": "culturesauce.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-16T23:13:35.325Z"
+          },
+          {
+            "url": "https://pagesonstages.wordpress.com/2024/04/25/illinoise/",
+            "outletId": "pagesonstages.wordpress.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-16T23:13:35.325Z"
+          },
+          {
+            "url": "https://www.nytimes.com/2024/03/07/theater/illinoise-review-sufjan-stevens-justin-pick.html",
+            "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-16T23:13:35.325Z"
+          },
+          {
             "url": "https://www.vulture.com/article/theater-review-sufjan-stevens-illinoise-armory.html",
             "outletId": "vulture.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-20T01:37:32.051Z"
-          },
-          {
-            "url": "https://nystagereview.com/2024/03/07/illinoise-an-explosion-of-transporting-music-and-dance/",
-            "outletId": "nystagereview.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-31T14:43:54.309Z"
-          },
-          {
-            "url": "https://www.newyorktheatreguide.com/reviews/illinoise-off-broadway-review-sufjan-stevens",
-            "outletId": "newyorktheatreguide.com",
             "state": "live",
             "firstSeenAt": "2026-10-20T01:37:32.051Z"
           },
@@ -155875,10 +155994,16 @@
             "firstSeenAt": "2026-10-20T01:37:32.051Z"
           },
           {
-            "url": "https://www.nytimes.com/2024/03/07/theater/illinoise-review-sufjan-stevens-justin-pick.html",
-            "outletId": "nytimes.com",
+            "url": "https://culturesauce.com/2024/03/08/illinoise-sufjan-stevens-off-broadway-review/",
+            "outletId": "culturesauce.com",
             "state": "live",
             "firstSeenAt": "2026-08-16T23:13:35.325Z"
+          },
+          {
+            "url": "https://nystagereview.com/2024/03/07/illinoise-an-explosion-of-transporting-music-and-dance/",
+            "outletId": "nystagereview.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-31T14:43:54.309Z"
           },
           {
             "url": "https://www.slantmagazine.com/theater/illinoise-review-sufjan-stevens-justin-peck/",
@@ -155971,31 +156096,6 @@
             "firstSeenAt": "2026-08-31T14:43:54.309Z"
           },
           {
-            "url": "https://culturesauce.com/2024/04/26/illinoise-sufjan-stevens-ethan-peck-broadway-review/",
-            "outletId": "culturesauce.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-16T23:13:35.325Z"
-          },
-          {
-            "url": "https://pagesonstages.wordpress.com/2024/04/25/illinoise/",
-            "outletId": "pagesonstages.wordpress.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-16T23:13:35.325Z"
-          },
-          {
-            "url": "https://culturesauce.com/2024/03/08/illinoise-sufjan-stevens-off-broadway-review/",
-            "outletId": "culturesauce.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-16T23:13:35.325Z"
-          },
-          {
-            "url": "http://www.theaterscene.net/plays/offbway-plays/illinoise/victor-gluck/",
-            "outletId": "theater-scene",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-16T23:13:35.325Z"
-          },
-          {
             "url": "http://theaterscene.com/Illinoise-DD.html",
             "outletId": "theater-scene",
             "state": "GAP",
@@ -156004,11 +156104,17 @@
           }
         ],
         "censusSchema": 4,
-        "excluded": [],
-        "liveCount": 17,
-        "candidateCount": 18
+        "excluded": [
+          {
+            "url": "https://www.washingtonpost.com/entertainment/theater/2024/03/07/illinoise-park-avenue-armory/",
+            "host": "washingtonpost.com",
+            "reason": "live-in-reviews"
+          }
+        ],
+        "liveCount": 16,
+        "candidateCount": 17
       },
-      "computedAt": "2026-10-20T01:37:32.051Z"
+      "computedAt": "2026-11-05T20:49:43.633Z"
     },
     {
       "showId": "illinoise-off-broadway-2024",
@@ -161410,7 +161516,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-11-05T14:47:27.487Z"
+      "computedAt": "2026-11-05T20:49:43.633Z"
     },
     {
       "showId": "iphigenie-en-tauride-west-end-2026",
@@ -255581,12 +255687,79 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Parcel from America\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Parcel from America\" Off-Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 8,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Parcel from America\" review three",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 2,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Parcel from America Theatre Row - Theatre Three review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 9,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Parcel from America Theatre Row - Theatre Three review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Parcel from America Theatre Row - Theatre Three review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 2,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 33,
+        "byReason": {
+          "not-http-url": 15,
+          "non-review-host": 5,
+          "ticketing-listing": 1,
+          "write-path-blocked": 2,
+          "aggregator-internal-nav": 2,
+          "census-junk-host": 4,
+          "no-review-evidence": 2,
+          "bare-host": 1,
+          "production-database-listing": 1
+        }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 1,
@@ -255629,7 +255802,7 @@
         "liveCount": 2,
         "candidateCount": 3
       },
-      "computedAt": "2026-11-05T14:47:27.487Z"
+      "computedAt": "2026-11-05T20:49:43.633Z"
     },
     {
       "showId": "parsifal-off-west-end-2026",
@@ -324861,47 +325034,79 @@
       "status": "open",
       "category": "off-west-end",
       "previewsStartDate": "2026-10-28",
-      "aggregatorArticles": [],
+      "aggregatorArticles": [
+        "https://www.broadwayworld.com/article/Review-Roundup-Nicholas-Hytners-Immersive-GUYS-AND-DOLLS-Opens-At-The-Bridge-Theatre-20230314"
+      ],
       "aggregatorListedUrls": [
+        "https://www.theguardian.com/stage/2023/mar/15/guys-and-dolls-review-bridge-theatre-london-nicholas-hytner",
+        "https://variety.com/2023/legit/reviews/guys-and-dolls-review-london-nicholas-hytner-bridge-theatre-1235553744/",
         "https://www.standard.co.uk/culture/theatre/guys-dolls-at-bridge-theatre-review-marisha-wallace-daniel-mays-nicholas-hytner-b1067134.html",
+        "https://www.thestage.co.uk/long-reviews/guys-and-dolls-review-bridge-theatre-london-nicholas-hytner-daniel-mays-marisha-wallace-arlene-phillips",
         "https://www.whatsonstage.com/london-theatre/news/guys-dolls-bridge-revival-five-star-review_58533.html",
         "https://theatreandtonic.co.uk/blog/the-bridge-bush-theatre-london-review",
-        "https://theartsdesk.com/theatre/bridge-bush-theatre-review-entertaining-stand-one-sided-theatre",
-        "https://www.thestage.co.uk/reviews/the-bridge-review-bush-theatre-london-alaa-shehada",
         "https://www.londontheatre.co.uk/reviews/the-bridge-review-bush-theatre",
-        "https://www.whatsonstage.com/news/the-bridge-at-bush-theatre-review_1736389/",
-        "https://www.timeout.com/london/theatre/the-bridge-4",
-        "https://www.standard.co.uk/culture/theatre/richard-ii-bridge-theatre-review-jonathan-bailey-b1211568.html",
-        "https://www.whatsonstage.com/news/richard-ii-at-bridge-theatre-review-jonathan-bailey-is-a-vicious-monarch_1665507/",
         "https://everything-theatre.co.uk/2026/11/review-the-bridge-bush-theatre/",
         "https://www.thereviewshub.com/the-bridge-bush-theatre-london/",
+        "https://www.broadwayworld.com/westend/article/Review-THE-BRIDGE-Bush-Theatre-20261103",
+        "https://fringereview.co.uk/review/fringereview-uk/2026/the-bridge-2/",
+        "https://www.theguardian.com/culture/2026/aug/30/the-bridge-review-alaa-shehada",
+        "https://www.standard.co.uk/culture/theatre/the-bridge-at-bush-theatre-review-b1303391.html",
+        "https://theartsdesk.com/theatre/bridge-bush-theatre-review-entertaining-stand-one-sided-theatre",
+        "https://www.thestage.co.uk/reviews/the-bridge-review-bush-theatre-london-alaa-shehada",
+        "https://www.whatsonstage.com/news/the-bridge-at-bush-theatre-review_1736389/",
+        "https://www.standard.co.uk/culture/theatre/richard-ii-bridge-theatre-review-jonathan-bailey-b1211568.html",
+        "https://www.whatsonstage.com/news/richard-ii-at-bridge-theatre-review-jonathan-bailey-is-a-vicious-monarch_1665507/",
         "https://chiswickcalendar.co.uk/the-bridge-bush-theatre-review/",
         "https://redbuslondinium.uk/2026/11/03/review-the-bridge-bush-theatre-%E2%98%85%E2%98%85%E2%98%85%E2%98%85/",
         "https://susanelkin.co.uk/articles/the-bridge-susan-elkin-reviews/",
-        "https://www.broadwayworld.com/westend/article/Review-THE-BRIDGE-Bush-Theatre-20261103",
         "https://liamodell.com/2026/11/03/the-bridge-review-bush-theatre-alaa-shehada-palestine/",
         "https://theatreweekly.com/review-the-bridge-at-bush-theatre/",
-        "https://www.standard.co.uk/culture/theatre/the-bridge-at-bush-theatre-review-b1303391.html",
         "https://www.standard.co.uk/go/london/theatre/beat-the-devil-review-david-hare-the-bridge-a4536291.html",
         "https://www.standard.co.uk/culture/theatre/the-oresteia-at-the-bridge-review-b1290028.html",
         "https://www.whatsonstage.com/news/the-oresteia-at-the-bridge-theatre-review_1727392/",
         "https://www.londontheatre1.com/reviews/the-bridge-bush-theatre/",
         "https://www.pinkprincetheatre.com/post/review-the-bridge-bush-theatre",
         "https://www.allthatdazzles.co.uk/post/review-the-bridge-bush-theatre",
-        "https://www.theguardian.com/culture/2026/aug/30/the-bridge-review-alaa-shehada",
+        "https://www.timeout.com/london/theatre/the-bridge-4",
         "https://newyorktheater.me/2026/09/03/the-bridge-review-a-palestinians-journey-at-the-fringe/",
         "https://www.bestoftheatre.co.uk/blog/post/alaa-shehada-brings-his-fringe-first-winner-the-bridge-to-the-bush-theatre",
         "https://www.britishtheatreguide.info/reviews/the-bridge-139-upstairs-at-25855",
         "https://snackmag.co.uk/alaa-shehada-one-people-not-two-a-conversation-about-and-review-of-the-bridge"
       ],
-      "dirFiles": 35,
-      "dirClean": 20,
-      "inReviewsJson": 20,
+      "dirFiles": 39,
+      "dirClean": 24,
+      "inReviewsJson": 24,
       "missing": [
         {
-          "url": "https://www.timeout.com/london/theatre/the-bridge-4",
-          "host": "timeout.com",
-          "knownOutletId": "timeout-london",
+          "url": "https://www.theguardian.com/stage/2023/mar/15/guys-and-dolls-review-bridge-theatre-london-nicholas-hytner",
+          "host": "theguardian.com",
+          "knownOutletId": "guardian",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Nicholas-Hytners-Immersive-GUYS-AND-DOLLS-Opens-At-The-Bridge-Theatre-20230314"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://variety.com/2023/legit/reviews/guys-and-dolls-review-london-nicholas-hytner-bridge-theatre-1235553744/",
+          "host": "variety.com",
+          "knownOutletId": "variety",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Nicholas-Hytners-Immersive-GUYS-AND-DOLLS-Opens-At-The-Bridge-Theatre-20230314"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://fringereview.co.uk/review/fringereview-uk/2026/the-bridge-2/",
+          "host": "fringereview.co.uk",
+          "knownOutletId": "fringereview",
           "serpCensus": true,
           "sources": [
             {
@@ -324921,7 +325126,19 @@
           "count": 1
         },
         {
+          "host": "northwestend.com",
+          "count": 1
+        },
+        {
           "host": "revstanstheatreblog.co.uk",
+          "count": 1
+        },
+        {
+          "host": "theartsdispatch.substack.com",
+          "count": 1
+        },
+        {
+          "host": "viewfromthegods.co.uk",
           "count": 1
         }
       ],
@@ -325094,14 +325311,86 @@
         }
       },
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"The Bridge\" West End review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"The Bridge\" West End review 2026",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 8,
+            "accepted": 6,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"The Bridge\" review bush",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 8,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "The Bridge Bush Theatre review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 9,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "The Bridge Bush Theatre review",
+            "page": 1,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 2,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "The Bridge Bush Theatre review",
+            "page": 2,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 8,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 359,
+        "byReason": {
+          "not-http-url": 102,
+          "non-review-host": 23,
+          "ticketing-listing": 1,
+          "aggregator-internal-nav": 226,
+          "non-review-path": 1,
+          "census-junk-host": 1,
+          "no-review-evidence": 1,
+          "aggregator-section-root": 4
+        }
       },
       "dedupedVariants": [],
+      "priorRunArticles": [
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-Nicholas-Hytners-Immersive-GUYS-AND-DOLLS-Opens-At-The-Bridge-Theatre-20230314",
+          "publishDate": "2023-03-14"
+        }
+      ],
       "nonReviewCandidates": [
         {
           "url": "https://www.theguardian.com/culture/2026/aug/30/the-bridge-review-alaa-shehada",
@@ -325114,21 +325403,37 @@
       ],
       "automatedExcludedListed": 4,
       "unextractable": [],
+      "weIngestBlocked": [
+        {
+          "url": "https://www.theguardian.com/stage/2023/mar/15/guys-and-dolls-review-bridge-theatre-london-nicholas-hytner",
+          "host": "theguardian.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://variety.com/2023/legit/reviews/guys-and-dolls-review-london-nicholas-hytner-bridge-theatre-1235553744/",
+          "host": "variety.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        }
+      ],
       "ingestResults": [
         {
-          "url": "https://www.timeout.com/london/theatre/the-bridge-4",
-          "host": "timeout.com",
-          "outletId": "timeout-london",
+          "url": "https://fringereview.co.uk/review/fringereview-uk/2026/the-bridge-2/",
+          "host": "fringereview.co.uk",
+          "outletId": "fringereview",
           "provisional": false,
-          "ok": true,
+          "ok": false,
           "noop": false,
           "conflict": false,
           "conflictReason": null,
           "expected": false,
           "expectedReason": null,
           "unclassified": false,
-          "zeroChar": false,
-          "reason": null
+          "zeroChar": true,
+          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS."
         }
       ],
       "ingestSkippedByCap": [],
@@ -325136,11 +325441,11 @@
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "timeout-london",
-            "outlet": "timeout-london",
+            "outletId": "fringereview",
+            "outlet": "fringereview",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.timeout.com/london/theatre/the-bridge-4"
+            "url": "https://fringereview.co.uk/review/fringereview-uk/2026/the-bridge-2/"
           },
           {
             "outletId": "nyt-theater",
@@ -325180,6 +325485,12 @@
             "firstSeenAt": "2026-11-04T04:19:43.534Z"
           },
           {
+            "url": "https://www.thestage.co.uk/long-reviews/guys-and-dolls-review-bridge-theatre-london-nicholas-hytner-daniel-mays-marisha-wallace-arlene-phillips",
+            "outletId": "thestage.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-11-05T20:49:43.633Z"
+          },
+          {
             "url": "https://www.whatsonstage.com/london-theatre/news/guys-dolls-bridge-revival-five-star-review_58533.html",
             "outletId": "whatsonstage.com",
             "state": "live",
@@ -325192,6 +325503,42 @@
             "firstSeenAt": "2026-11-04T07:52:26.614Z"
           },
           {
+            "url": "https://www.londontheatre.co.uk/reviews/the-bridge-review-bush-theatre",
+            "outletId": "londontheatre.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-11-03T23:57:50.737Z"
+          },
+          {
+            "url": "https://everything-theatre.co.uk/2026/11/review-the-bridge-bush-theatre/",
+            "outletId": "everything-theatre.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-11-03T14:15:10.547Z"
+          },
+          {
+            "url": "https://www.thereviewshub.com/the-bridge-bush-theatre-london/",
+            "outletId": "thereviewshub.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-03T23:57:50.737Z"
+          },
+          {
+            "url": "https://www.broadwayworld.com/westend/article/Review-THE-BRIDGE-Bush-Theatre-20261103",
+            "outletId": "broadwayworld.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-03T14:15:10.547Z"
+          },
+          {
+            "url": "https://www.theguardian.com/culture/2026/aug/30/the-bridge-review-alaa-shehada",
+            "outletId": "theguardian.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T22:24:22.326Z"
+          },
+          {
+            "url": "https://www.standard.co.uk/culture/theatre/the-bridge-at-bush-theatre-review-b1303391.html",
+            "outletId": "standard.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-11-04T10:35:05.824Z"
+          },
+          {
             "url": "https://theartsdesk.com/theatre/bridge-bush-theatre-review-entertaining-stand-one-sided-theatre",
             "outletId": "theartsdesk.com",
             "state": "live",
@@ -325202,12 +325549,6 @@
             "outletId": "thestage.co.uk",
             "state": "live",
             "firstSeenAt": "2026-11-03T14:15:10.547Z"
-          },
-          {
-            "url": "https://www.londontheatre.co.uk/reviews/the-bridge-review-bush-theatre",
-            "outletId": "londontheatre.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-11-03T23:57:50.737Z"
           },
           {
             "url": "https://www.whatsonstage.com/news/the-bridge-at-bush-theatre-review_1736389/",
@@ -325228,18 +325569,6 @@
             "firstSeenAt": "2026-11-04T04:19:43.534Z"
           },
           {
-            "url": "https://everything-theatre.co.uk/2026/11/review-the-bridge-bush-theatre/",
-            "outletId": "everything-theatre.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-11-03T14:15:10.547Z"
-          },
-          {
-            "url": "https://www.thereviewshub.com/the-bridge-bush-theatre-london/",
-            "outletId": "thereviewshub.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-03T23:57:50.737Z"
-          },
-          {
             "url": "https://chiswickcalendar.co.uk/the-bridge-bush-theatre-review/",
             "outletId": "chiswickcalendar.co.uk",
             "state": "live",
@@ -325258,12 +325587,6 @@
             "firstSeenAt": "2026-11-04T17:07:25.311Z"
           },
           {
-            "url": "https://www.broadwayworld.com/westend/article/Review-THE-BRIDGE-Bush-Theatre-20261103",
-            "outletId": "broadwayworld.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-03T14:15:10.547Z"
-          },
-          {
             "url": "https://liamodell.com/2026/11/03/the-bridge-review-bush-theatre-alaa-shehada-palestine/",
             "outletId": "liamodell.com",
             "state": "live",
@@ -325274,12 +325597,6 @@
             "outletId": "theatreweekly.com",
             "state": "live",
             "firstSeenAt": "2026-11-03T14:15:10.547Z"
-          },
-          {
-            "url": "https://www.standard.co.uk/culture/theatre/the-bridge-at-bush-theatre-review-b1303391.html",
-            "outletId": "standard.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-11-04T10:35:05.824Z"
           },
           {
             "url": "https://www.standard.co.uk/go/london/theatre/beat-the-devil-review-david-hare-the-bridge-a4536291.html",
@@ -325318,17 +325635,17 @@
             "firstSeenAt": "2026-11-04T19:31:35.837Z"
           },
           {
-            "url": "https://www.theguardian.com/culture/2026/aug/30/the-bridge-review-alaa-shehada",
-            "outletId": "theguardian.com",
+            "url": "https://www.timeout.com/london/theatre/the-bridge-4",
+            "outletId": "timeout.com",
             "state": "live",
             "firstSeenAt": "2026-10-30T22:24:22.326Z"
           },
           {
-            "url": "https://www.timeout.com/london/theatre/the-bridge-4",
-            "outletId": "timeout-london",
+            "url": "https://fringereview.co.uk/review/fringereview-uk/2026/the-bridge-2/",
+            "outletId": "fringereview",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-10-30T22:24:22.326Z"
+            "firstSeenAt": "2026-11-05T20:49:43.633Z"
           },
           {
             "url": "https://newyorktheater.me/2026/09/03/the-bridge-review-a-palestinians-journey-at-the-fringe/",
@@ -325367,10 +325684,10 @@
             "reason": "page-date-before-run"
           }
         ],
-        "liveCount": 18,
-        "candidateCount": 23
+        "liveCount": 19,
+        "candidateCount": 24
       },
-      "computedAt": "2026-11-05T14:47:27.487Z"
+      "computedAt": "2026-11-05T20:49:43.633Z"
     },
     {
       "showId": "the-brief-wondrous-life-of-oscar-wao-regional-2026",
@@ -325910,7 +326227,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 8,
+            "results": 9,
             "accepted": 0,
             "error": null
           },
@@ -325920,7 +326237,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 9,
+            "results": 1,
             "accepted": 0,
             "error": null
           },
@@ -325951,23 +326268,23 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 0,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 1,
+        "resultCount": 0,
         "error": null
       },
       "candidatesRejected": {
-        "count": 41,
+        "count": 35,
         "byReason": {
-          "non-review-host": 11,
-          "aggregator-internal-nav": 8,
+          "not-http-url": 30,
+          "non-review-host": 2,
+          "aggregator-internal-nav": 1,
           "non-stage-review": 1,
-          "census-junk-host": 1,
-          "not-http-url": 20
+          "non-review-path": 1
         }
       },
       "dedupedVariants": [],
@@ -326031,7 +326348,7 @@
         "liveCount": 0,
         "candidateCount": 2
       },
-      "computedAt": "2026-11-05T14:47:27.487Z"
+      "computedAt": "2026-11-05T20:49:43.633Z"
     },
     {
       "showId": "the-cherry-orchard-park-avenue-armory-off-broadway-2026",
@@ -329994,6 +330311,58 @@
         "candidateCount": 18
       },
       "computedAt": "2026-11-01T15:28:43.633Z"
+    },
+    {
+      "showId": "the-constant-wife-royal-shakespeare-regional-2025",
+      "title": "The Constant Wife",
+      "openingDate": "2025-07-01",
+      "status": "closed",
+      "category": "regional",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "unextractable": [],
+      "recoveryResults": [
+        {
+          "url": "https://www.thestage.co.uk/reviews/the-constant-wife-review-swan-theatre-stratford-2025-rose-leslie-tamara-harvey-laura-wade-w-somerset-maugham",
+          "host": "thestage.co.uk",
+          "file": "thestage--dave-fargnoli.json",
+          "recovered": false,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": "ingest no-op (text landed elsewhere or unchanged)",
+          "recoveryCount": 1,
+          "uncited": true
+        }
+      ],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 4,
+        "excluded": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-11-05T20:49:43.633Z"
     },
     {
       "showId": "the-constant-wife-york-royal-regional-2026",
@@ -377283,7 +377652,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 8,
+            "results": 5,
             "accepted": 0,
             "error": null
           },
@@ -377324,14 +377693,12 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 38,
+        "count": 36,
         "byReason": {
-          "non-review-host": 3,
-          "aggregator-internal-nav": 1,
-          "no-review-evidence": 1,
-          "census-junk-host": 1,
-          "not-http-url": 31,
-          "ticketing-listing": 1
+          "not-http-url": 28,
+          "non-review-host": 6,
+          "ticketing-listing": 1,
+          "census-junk-host": 1
         }
       },
       "dedupedVariants": [],
@@ -377374,7 +377741,7 @@
         "liveCount": 0,
         "candidateCount": 1
       },
-      "computedAt": "2026-11-05T14:47:27.487Z"
+      "computedAt": "2026-11-05T20:49:43.633Z"
     },
     {
       "showId": "the-story-olivier-west-end-2026",
@@ -410085,31 +410452,136 @@
         "https://newyorktheater.me/2026/11/04/well-see-review-election-night-back-with-the-apple-family/",
         "https://www.newyorktheatreguide.com/reviews/well-see-off-broadway-review",
         "https://culturesauce.com/well-see-richard-nelson-apple-off-broadway-review/",
-        "https://www.theatermania.com/news/review-richard-nelsons-apple-family-confront-the-end-of-history-in-well-see_1858880/"
+        "https://www.theatermania.com/news/review-richard-nelsons-apple-family-confront-the-end-of-history-in-well-see_1858880/",
+        "https://www.theguardian.com/stage/2026/nov/03/well-see-play-midterm-elections"
       ],
       "dirFiles": 8,
       "dirClean": 7,
       "inReviewsJson": 7,
       "missing": [],
       "dirOnly": [],
-      "flaggedMisses": [],
+      "flaggedMisses": [
+        {
+          "url": "https://www.theguardian.com/stage/2026/nov/03/well-see-play-midterm-elections",
+          "host": "theguardian.com",
+          "knownOutletId": "guardian",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "guardian--juan-a-ramirez.json",
+              "flag": "clean",
+              "urlInDir": "https://www.theguardian.com/stage/2026/nov/03/well-see-play-midterm-elections"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "rejectionReason"
+          ],
+          "confirmedNonReview": true,
+          "confirmedBasis": [
+            "non-review"
+          ],
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
+          "serpCensus": true,
+          "reverify": false
+        }
+      ],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"We'll See\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"We'll See\" Off-Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 8,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"We'll See\" review public",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 9,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped2",
+            "query": "\"We'll See\" Nelson review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 9,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "We'll See The Public Theater/Barbaralee Theater review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 8,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "We'll See The Public Theater/Barbaralee Theater review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "We'll See The Public Theater/Barbaralee Theater review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 6,
+        "queriesTotal": 6,
+        "resultCount": 1,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 386,
+        "count": 434,
         "byReason": {
-          "non-review-host": 36,
-          "aggregator-internal-nav": 247,
+          "not-http-url": 107,
+          "non-review-host": 45,
+          "roundup-page": 6,
+          "aggregator-internal-nav": 249,
           "non-stage-review": 1,
-          "not-http-url": 78,
-          "production-database-listing": 9,
+          "census-junk-host": 3,
+          "production-database-listing": 10,
           "aggregator-section-root": 10,
-          "roundup-page": 4,
-          "podcast-episode": 1
+          "podcast-episode": 1,
+          "show-listing-page": 1,
+          "review-hub-page": 1
         }
       },
       "dedupedVariants": [],
@@ -410164,11 +410636,17 @@
           }
         ],
         "censusSchema": 4,
-        "excluded": [],
+        "excluded": [
+          {
+            "url": "https://www.theguardian.com/stage/2026/nov/03/well-see-play-midterm-elections",
+            "host": "theguardian.com",
+            "reason": "confirmed-non-review"
+          }
+        ],
         "liveCount": 6,
         "candidateCount": 6
       },
-      "computedAt": "2026-11-05T14:47:27.487Z"
+      "computedAt": "2026-11-05T20:49:43.633Z"
     },
     {
       "showId": "wesley-off-broadway-2025",
@@ -420559,25 +421037,26 @@
     }
   ],
   "staleness": {
-    "at": "2026-11-05T19:19:07.268Z",
+    "at": "2026-11-05T20:49:43.632Z",
     "reserveEvery": 4,
     "reservedAttempted": [
-      "home-2024"
+      "garry-starr-classic-penguins-off-west-end-2026",
+      "illinoise-2024"
     ],
     "catalogueReserveEvery": 8,
     "catalogueAttempted": [
-      "liberation-royal-exchange-regional-2025"
+      "the-constant-wife-royal-shakespeare-regional-2025"
     ],
-    "neverAuditedDueAtStart": 648,
+    "neverAuditedDueAtStart": 647,
     "oldestDueRowAtStart": {
-      "showId": "home-2024",
-      "computedAt": "2026-10-19T22:58:16.678Z",
-      "ageHours": 404
-    },
-    "oldestDueRowAfterRun": {
       "showId": "illinoise-2024",
       "computedAt": "2026-10-20T01:37:32.051Z",
-      "ageHours": 401.7
+      "ageHours": 402.9
+    },
+    "oldestDueRowAfterRun": {
+      "showId": "uncle-vanya-2024",
+      "computedAt": "2026-10-20T01:37:32.051Z",
+      "ageHours": 403.2
     }
   }
 }

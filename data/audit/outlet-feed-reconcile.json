@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-05T19:19:42.288Z",
+  "generatedAt": "2026-11-05T20:50:16.798Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -103,10 +103,6 @@
   "feedsChecked": 78,
   "feedsFailed": [
     {
-      "outletId": "theater-life",
-      "error": "Timeout fetching https://theaterlife.com/feed"
-    },
-    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
@@ -131,8 +127,8 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 798,
-  "matchedGaps": 5,
+  "itemsScanned": 808,
+  "matchedGaps": 4,
   "possibleGaps": 7,
   "gaps": [
     {
@@ -152,15 +148,6 @@
       "url": "https://www.theaterscene.net/plays/offbway-plays/the-morbs/victor-gluck/",
       "headline": "The Morbs",
       "publishDate": "2026-11-05"
-    },
-    {
-      "showId": "tosca-off-broadway-2026",
-      "title": "Tosca",
-      "level": "matched",
-      "outletId": "a-youngish-perspective",
-      "url": "https://ayoungishperspective.co.uk/2026/11/02/review-tosca-2/",
-      "headline": "REVIEW: Tosca",
-      "publishDate": "2026-11-02"
     },
     {
       "showId": "tosca-off-broadway-2026",
@@ -221,7 +208,7 @@
       "title": "The Moth",
       "level": "possible",
       "outletId": "plays-international",
-      "url": "https://playsinternational.org.uk/the-moth-at-finborough-theatre/",
+      "url": "https://playsinternational.org.uk/the-moth-finborough-theatre/",
       "headline": "“The Moth” at Finborough Theatre",
       "publishDate": "2026-11-05"
     },

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-05T19:19:41.869Z",
+  "generatedAt": "2026-11-05T20:50:16.516Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
@@ -11,36 +11,36 @@
   },
   "shows": [
     {
-      "showId": "the-heart-off-broadway-2026",
-      "title": "The Heart",
+      "showId": "a-few-good-men-2026",
+      "title": "A Few Good Men",
       "openingDate": "2026-10-29",
       "ok": false,
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 77.35 vs local 77.29 (Δ0.06)"
+          "detail": "deployed cs 61.15 vs local 61.52 (Δ0.37)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 21,
-      "deployedCount": 21,
-      "firstDefectAt": "2026-11-05T19:19:35.739Z"
+      "localCount": 27,
+      "deployedCount": 28,
+      "firstDefectAt": "2026-11-05T20:50:08.493Z"
     },
     {
-      "showId": "in-the-heights-off-broadway-2026",
-      "title": "In the Heights",
-      "openingDate": "2026-10-28",
+      "showId": "garry-starr-classic-penguins-off-west-end-2026",
+      "title": "Garry Starr Classic Penguins",
+      "openingDate": "2026-10-23",
       "ok": false,
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 75.45 vs local 75.52 (Δ0.07)"
+          "detail": "deployed cs 87.52 vs local 86.81 (Δ0.71)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 9,
-      "deployedCount": 9,
-      "firstDefectAt": "2026-11-05T19:19:35.739Z"
+      "localCount": 16,
+      "deployedCount": 16,
+      "firstDefectAt": "2026-11-05T20:50:08.493Z"
     }
   ],
   "persistentDefective": 0,
