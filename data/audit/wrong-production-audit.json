@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-05T15:02:22.494Z",
+  "timestamp": "2026-11-05T16:31:52.407Z",
   "stats": {
-    "totalReviews": 80192,
+    "totalReviews": 80203,
     "alreadyFlagged": 22006,
     "dateGuardCatches": 217,
-    "directorMismatch": 3507,
+    "directorMismatch": 3506,
     "tvFilmSignals": 2283,
-    "londonSignals": 3614,
-    "offBroadwaySignals": 741,
-    "yearMismatch": 361,
-    "noPublishDate": 8501
+    "londonSignals": 3613,
+    "offBroadwaySignals": 740,
+    "yearMismatch": 360,
+    "noPublishDate": 8513
   },
   "findings": [
     {
@@ -28298,20 +28298,6 @@
     },
     {
       "showId": "hangmen-2022",
-      "file": "nytimes--jesse-green.json",
-      "score": 82,
-      "publishDate": "April 22, 2022",
-      "url": "https://www.nytimes.com/2022/04/21/theater/hangmen-review.html",
-      "findings": [
-        {
-          "type": "YEAR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions year 2018 (2x) more than 2022 (1x). 2018 matches production: hangmen-off-broadway-2018"
-        }
-      ]
-    },
-    {
-      "showId": "hangmen-2022",
       "file": "theater-pizzazz--samuel-l-leiter.json",
       "score": 89,
       "publishDate": null,
@@ -31016,20 +31002,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"des mcanuff\" from how-to-succeed-in-business-without-really-trying-1995"
-        }
-      ]
-    },
-    {
-      "showId": "hughie-2016",
-      "file": "ap--mark-kennedy.json",
-      "score": 88,
-      "publishDate": "2016-02-25",
-      "url": "https://www.washingtontimes.com/news/2016/feb/25/review-broadways-odd-hughie-glows-thanks-to-whitak/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"al pacino\" from hughie-1996"
         }
       ]
     },
@@ -51272,8 +51244,8 @@
     },
     {
       "showId": "plaza-suite-2022",
-      "file": "hollywood-reporter--angie-han.json",
-      "score": 64,
+      "file": "hollywood-reporter--david-rooney.json",
+      "score": 63,
       "publishDate": "March 29, 2022",
       "url": "https://www.hollywoodreporter.com/lifestyle/arts/plaza-suite-review-matthew-broderick-sarah-jessica-parker-neil-simon-broadway-1235119408/",
       "findings": [
@@ -101851,7 +101823,7 @@
       "showId": "hangmen-2022",
       "file": "talkinbroadway--howard-miller.json",
       "score": 45,
-      "publishDate": null,
+      "publishDate": "2022-04-21T21:04:09-04:00",
       "url": "https://www.talkinbroadway.com/page/world/Hangmen.html",
       "findings": [
         {
@@ -107701,20 +107673,6 @@
       "score": 92,
       "publishDate": "November 27, 2022",
       "url": "https://didtheylikeit.com/shows/kpop/if-the-refreshing-kpop-is-the-future-of-broadway-consider-me-a-stan/",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"ars nova\""
-        }
-      ]
-    },
-    {
-      "showId": "kpop-2022",
-      "file": "nydailynews--chris-jones.json",
-      "score": 48,
-      "publishDate": "2022-11-28",
-      "url": "https://www.nydailynews.com/2022/11/28/theater-review-kpop-doesnt-fully-pop-on-broadway/",
       "findings": [
         {
           "type": "OFF_BROADWAY_SIGNAL",
@@ -115600,20 +115558,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"old vic\""
-        }
-      ]
-    },
-    {
-      "showId": "one-man-two-guvnors-2012",
-      "file": "timeout--adam-feldman.json",
-      "score": 97,
-      "publishDate": "April 18, 2012",
-      "url": "https://www.timeout.com/newyork/theater/one-man-two-guvnors",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
@@ -125073,7 +125017,7 @@
     {
       "showId": "the-bridge-off-west-end-2026",
       "file": "artsdesk--unknown.json",
-      "score": 61,
+      "score": 66,
       "publishDate": "2026-11-04",
       "url": "https://theartsdesk.com/theatre/bridge-bush-theatre-review-entertaining-stand-one-sided-theatre",
       "findings": [
