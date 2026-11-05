@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-05T03:12:04.139Z",
+  "timestamp": "2026-11-05T03:29:44.363Z",
   "stats": {
-    "totalReviews": 80179,
-    "alreadyFlagged": 22025,
+    "totalReviews": 80183,
+    "alreadyFlagged": 22029,
     "dateGuardCatches": 217,
     "directorMismatch": 3507,
-    "tvFilmSignals": 2281,
+    "tvFilmSignals": 2280,
     "londonSignals": 3610,
     "offBroadwaySignals": 736,
     "yearMismatch": 361,
-    "noPublishDate": 8492
+    "noPublishDate": 8489
   },
   "findings": [
     {
@@ -63233,19 +63233,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"hulu\""
-        }
-      ]
-    },
-    {
-      "showId": "the-bodyguard-tour-2026",
-      "file": "readvslisten--unknown.json",
-      "publishDate": "2026-10-30",
-      "url": "https://readvslisten.com/verdicts/the-bodyguard-katherine-center-audiobook-vs-book",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
