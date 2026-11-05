@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-11-05T20:19:04.566Z",
+  "runDate": "2026-11-05T20:54:09.348Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
     "priority": "all",
-    "showFilter": "well-see-off-broadway-2026,clifford-odets-waiting-for-lefty-off-broadway-2026,the-bridge-off-west-end-2026,rope-off-broadway-2026,parcel-from-america-off-broadway-2026,the-morbs-off-broadway-2026,slanted-floors-off-broadway-2026",
+    "showFilter": "the-unbelievers-off-broadway-2026,the-verge-off-broadway-2026,222-a-ghost-story-off-broadway-2026,king-lear-off-broadway-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -28,8 +28,8 @@
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 2,
-    "tier1Success": 1,
+    "tier1Attempts": 1,
+    "tier1Success": 0,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
@@ -45,11 +45,11 @@
     "tier4Attempts": 1,
     "tier4Success": 0,
     "totalFailed": 2,
-    "scrapingBeePageCredits": 10,
+    "scrapingBeePageCredits": 1,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 0,
+    "urlDiscoveryAttempts": 1,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
@@ -57,7 +57,8 @@
     "processed": 0,
     "failed": 2,
     "shows": [
-      "the-bridge-off-west-end-2026"
+      "222-a-ghost-story-off-broadway-2026",
+      "the-unbelievers-off-broadway-2026"
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
@@ -67,14 +68,14 @@
   },
   "processed": [],
   "failed": [
-    "the-bridge-off-west-end-2026/sunday-times--unknown.json",
-    "the-bridge-off-west-end-2026/theatreandtonic--emmie-newitt.json"
+    "222-a-ghost-story-off-broadway-2026/theatrely--kobi-kassal.json",
+    "the-unbelievers-off-broadway-2026/bobs-theater-blog--unknown.json"
   ],
   "cumulativeResumedState": {
     "processed": [],
     "failed": [
-      "the-bridge-off-west-end-2026/sunday-times--unknown.json",
-      "the-bridge-off-west-end-2026/theatreandtonic--emmie-newitt.json"
+      "222-a-ghost-story-off-broadway-2026/theatrely--kobi-kassal.json",
+      "the-unbelievers-off-broadway-2026/bobs-theater-blog--unknown.json"
     ]
   },
   "tierDetails": {
@@ -89,9 +90,9 @@
     "archive": []
   },
   "failuresByOutlet": {
-    "The Sunday Times": {
+    "Bob's Theater Blog": {
       "count": 1,
-      "domain": "thetimes.com",
+      "domain": "gotham-playgoer.blogspot.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
