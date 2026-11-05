@@ -1,43 +1,5 @@
 [
   {
-    "startedAt": "2026-11-04T08:15:35.744Z",
-    "completedAt": "2026-11-04T08:15:35.760Z",
-    "totalReviews": 0,
-    "processed": 0,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "cacheRead": 0,
-      "cacheWrite": 0,
-      "total": 0
-    },
-    "costUsd": 0,
-    "runId": "41797246824",
-    "source": "comparative-rescore",
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-11-04T08:18:29.600Z",
-    "completedAt": "2026-11-04T08:18:29.602Z",
-    "totalReviews": 0,
-    "processed": 0,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "cacheRead": 0,
-      "cacheWrite": 0,
-      "total": 0
-    },
-    "costUsd": 0,
-    "runId": "41797250334",
-    "source": "comparative-rescore",
-    "errorDetails": []
-  },
-  {
     "startedAt": "2026-11-04T08:22:01.684Z",
     "completedAt": "2026-11-04T08:22:01.702Z",
     "totalReviews": 0,
@@ -761175,6 +761137,60 @@
     },
     "costUsd": 0,
     "runId": "42113423935",
+    "source": "comparative-rescore",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-11-05T22:17:04.096Z",
+    "completedAt": "2026-11-05T22:19:32.028Z",
+    "totalReviews": 80466,
+    "processed": 3,
+    "skipped": 80460,
+    "errors": 3,
+    "tokensUsed": {
+      "input": 12679,
+      "output": 918,
+      "cacheRead": 3760,
+      "cacheWrite": 7567,
+      "total": 37217
+    },
+    "costUsd": 0.039214775,
+    "runId": "42118856304",
+    "source": "index",
+    "errorDetails": [
+      {
+        "showId": "an-enemy-of-the-people-west-end-2024",
+        "outletId": "times-uk",
+        "error": "Review text too short or missing"
+      },
+      {
+        "showId": "alterations-west-end-2025",
+        "outletId": "thestage",
+        "error": "Review text too short or missing"
+      },
+      {
+        "showId": "the-years-west-end-2025",
+        "outletId": "thestage",
+        "error": "Review text too short or missing"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-11-05T22:19:48.533Z",
+    "completedAt": "2026-11-05T22:20:04.273Z",
+    "totalReviews": 4,
+    "processed": 4,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 8287,
+      "output": 929,
+      "cacheRead": 0,
+      "cacheWrite": 0,
+      "total": 9216
+    },
+    "costUsd": 0.024579599999999997,
+    "runId": "42118856304",
     "source": "comparative-rescore",
     "errorDetails": []
   }
