@@ -424,20 +424,6 @@
     "queuedAt": "2026-11-04T11:47:23.050Z"
   },
   {
-    "conditionKey": "review-gap:opening-window:pulman-and-stilgoe-hooray-for-hollywood-off-west-end-2026",
-    "title": "Review gap — \"Pulman & Stilgoe: Hooray For Hollywood\" missing 1 cited review(s)",
-    "description": "Pulman & Stilgoe: Hooray For Hollywood (pulman-and-stilgoe-hooray-for-hollywood-off-west-end-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=pulman-and-stilgoe-hooray-for-hollywood-off-west-end-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-04T12:02:15.977Z"
-  },
-  {
     "conditionKey": "test-yml:main-streak-escalation",
     "title": "main test.yml STILL red — auto-dispatch did not resolve it",
     "description": "main test.yml is STILL red after 5 consecutive pushes — the auto-dispatch card(s) filed at the 2nd failure have not resolved it. Currently failing: Unit Tests. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
@@ -1085,20 +1071,6 @@
     "queuedAt": "2026-11-05T06:45:18.006Z"
   },
   {
-    "conditionKey": "t1-gaps:needs-manual-recovery",
-    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (Lincoln in the Bardo (washpost)). Checked 2026-11-05.",
-    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-05T07:20:26.078Z"
-  },
-  {
     "conditionKey": "land:land/bro-6995-michael",
     "title": "Landing blocked: rebase red on land/bro-6995-michael",
     "description": "land.yml did not land land/bro-6995-michael: the rebase gate went red at 804377cd35. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/41991226827",
@@ -1128,5 +1100,33 @@
       }
     ],
     "queuedAt": "2026-11-05T08:02:52.756Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:pulman-and-stilgoe-hooray-for-hollywood-off-west-end-2026",
+    "title": "Review gap — \"Pulman & Stilgoe: Hooray For Hollywood\" missing 1 cited review(s)",
+    "description": "Pulman & Stilgoe: Hooray For Hollywood (pulman-and-stilgoe-hooray-for-hollywood-off-west-end-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=pulman-and-stilgoe-hooray-for-hollywood-off-west-end-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-05T09:01:47.501Z"
+  },
+  {
+    "conditionKey": "t1-gaps:needs-manual-recovery",
+    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (Lincoln in the Bardo (washpost)). Checked 2026-11-05.",
+    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-05T09:02:06.841Z"
   }
 ]
