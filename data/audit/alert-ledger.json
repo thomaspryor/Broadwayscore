@@ -9958,13 +9958,13 @@
     "priority-queue:overdue": {
       "status": "open",
       "disposition": "digest",
-      "title": "Overdue P0/P1 queue: 9 P0 older than 24h, 17 P1 older than 7d",
+      "title": "Overdue P0/P1 queue: 11 P0 older than 24h, 18 P1 older than 7d",
       "firstSeen": "2026-10-02T13:15:40.706Z",
       "incidentOpenedAt": "2026-10-02T13:15:40.706Z",
-      "lastSeen": "2026-11-04T09:19:00.052Z",
-      "lastNotifiedAt": "2026-11-04T09:19:00.052Z",
+      "lastSeen": "2026-11-05T09:31:29.676Z",
+      "lastNotifiedAt": "2026-11-05T09:31:29.676Z",
       "lastSurfacedAt": "2026-11-01T09:17:56.266Z",
-      "notifyCount": 32,
+      "notifyCount": 33,
       "cardId": null,
       "linearIdentifier": "BRO-5613"
     },
@@ -17805,12 +17805,13 @@
       "title": "Spend guard bd-circuit-breaker-web_unlocker2: cap drift",
       "firstSeen": "2026-10-14T02:46:56.661Z",
       "incidentOpenedAt": "2026-10-14T02:46:56.661Z",
-      "lastSeen": "2026-11-04T09:21:31.384Z",
+      "lastSeen": "2026-11-05T09:33:18.784Z",
       "lastNotifiedAt": "2026-11-04T09:21:31.384Z",
       "lastSurfacedAt": "2026-11-04T09:21:31.384Z",
       "notifyCount": 4,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "land:land/bro-5261-s5-retro-fixes": {
       "status": "resolved",
@@ -34626,10 +34627,10 @@
       "title": "a-few-good-men-2026: 1 review(s) need a decision (rejected real review or score outside the critic's rating)",
       "firstSeen": "2026-11-01T09:18:39.554Z",
       "incidentOpenedAt": "2026-11-01T09:18:39.554Z",
-      "lastSeen": "2026-11-04T09:19:36.586Z",
-      "lastNotifiedAt": "2026-11-04T09:19:36.586Z",
-      "lastSurfacedAt": "2026-11-04T09:19:36.586Z",
-      "notifyCount": 4,
+      "lastSeen": "2026-11-05T09:31:56.174Z",
+      "lastNotifiedAt": "2026-11-05T09:31:56.174Z",
+      "lastSurfacedAt": "2026-11-05T09:31:56.174Z",
+      "notifyCount": 5,
       "cardId": null,
       "linearIdentifier": null
     },
@@ -34639,10 +34640,10 @@
       "title": "the-moth-off-west-end-2026: 1 review(s) need a decision (rejected real review or score outside the critic's rating)",
       "firstSeen": "2026-11-01T09:18:39.622Z",
       "incidentOpenedAt": "2026-11-01T09:18:39.622Z",
-      "lastSeen": "2026-11-04T09:19:36.645Z",
-      "lastNotifiedAt": "2026-11-04T09:19:36.645Z",
-      "lastSurfacedAt": "2026-11-04T09:19:36.645Z",
-      "notifyCount": 4,
+      "lastSeen": "2026-11-05T09:31:56.207Z",
+      "lastNotifiedAt": "2026-11-05T09:31:56.207Z",
+      "lastSurfacedAt": "2026-11-05T09:31:56.207Z",
+      "notifyCount": 5,
       "cardId": null,
       "linearIdentifier": null
     },
@@ -34707,10 +34708,10 @@
       "title": "tosca-off-broadway-2026: 1 review(s) need a decision (rejected real review or score outside the critic's rating)",
       "firstSeen": "2026-11-01T14:15:28.863Z",
       "incidentOpenedAt": "2026-11-01T14:15:28.863Z",
-      "lastSeen": "2026-11-04T09:19:36.561Z",
-      "lastNotifiedAt": "2026-11-04T09:19:36.561Z",
-      "lastSurfacedAt": "2026-11-04T09:19:36.561Z",
-      "notifyCount": 4,
+      "lastSeen": "2026-11-05T09:31:56.154Z",
+      "lastNotifiedAt": "2026-11-05T09:31:56.154Z",
+      "lastSurfacedAt": "2026-11-05T09:31:56.154Z",
+      "notifyCount": 5,
       "cardId": null,
       "linearIdentifier": null
     },
@@ -35934,7 +35935,7 @@
       "linearIdentifier": "BRO-6882"
     },
     "guard-audit:sd": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Spend guard sd-circuit-breaker: cap drift",
       "firstSeen": "2026-11-03T09:37:52.310Z",
@@ -35945,7 +35946,8 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 2
+      "silentRefires": 2,
+      "resolvedAt": "2026-11-05T09:33:18.795Z"
     },
     "opening-night-remediation-exhausted-empty-cast:the-verge-off-broadway-2026": {
       "status": "open",
