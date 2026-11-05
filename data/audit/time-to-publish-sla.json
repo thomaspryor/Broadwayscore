@@ -1,30 +1,30 @@
 {
-  "generatedAt": "2026-11-04T09:45:51.865Z",
-  "scope": "2 opening window(s): parcel-from-america-off-broadway-2026 (2026-11-04), well-see-off-broadway-2026 (2026-11-03)",
+  "generatedAt": "2026-11-05T09:53:09.227Z",
+  "scope": "2 opening window(s): the-unbelievers-off-broadway-2026 (2026-11-05), the-verge-off-broadway-2026 (2026-11-05)",
   "degraded": null,
   "windows": [
     {
-      "showId": "parcel-from-america-off-broadway-2026",
-      "openingDate": "2026-11-04",
-      "from": "2026-11-03T00:00:00.000Z",
-      "to": "2026-11-08T23:59:59.999Z"
+      "showId": "the-unbelievers-off-broadway-2026",
+      "openingDate": "2026-11-05",
+      "from": "2026-11-04T00:00:00.000Z",
+      "to": "2026-11-09T23:59:59.999Z"
     },
     {
-      "showId": "well-see-off-broadway-2026",
-      "openingDate": "2026-11-03",
-      "from": "2026-11-02T00:00:00.000Z",
-      "to": "2026-11-07T23:59:59.999Z"
+      "showId": "the-verge-off-broadway-2026",
+      "openingDate": "2026-11-05",
+      "from": "2026-11-04T00:00:00.000Z",
+      "to": "2026-11-09T23:59:59.999Z"
     }
   ],
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "logEntryCount": 232326,
-  "logOldestEntryAt": "2026-11-02T02:48:19.611Z",
+  "logEntryCount": 180565,
+  "logOldestEntryAt": "2026-11-03T12:48:47.867Z",
   "publishTimesLoaded": 0,
   "verdict": {
     "verdict": "insufficient-data",
     "pass": false,
     "evaluated": 0,
-    "inFlight": 1,
+    "inFlight": 0,
     "compliant": 0,
     "compliancePct": null,
     "p50Ms": null,
@@ -35,17 +35,5 @@
     "breaches": [],
     "byBasis": {}
   },
-  "records": [
-    {
-      "showId": "well-see-off-broadway-2026",
-      "outletId": "culturesauce",
-      "reviewKey": "culturesauce:thom-geier:https://culturesauce.com/well-see-richard-nelson-apple-off-broadway-review/",
-      "basis": null,
-      "firstSeenAt": "2026-11-04T04:04:31.998Z",
-      "liveAt": null,
-      "pipelineMinutes": null,
-      "publishedToLiveMinutes": null,
-      "stuckAtStage": "rebuilt"
-    }
-  ]
+  "records": []
 }
