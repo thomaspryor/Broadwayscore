@@ -367,13 +367,16 @@ async function main() {
     process.exit(0);
   }
 
-  fs.mkdirSync(TRIAGE_DIR, { recursive: true });
-  // Record every run (not just dispatches) so the 48h/7-day cooldown covers
-  // ROUTINE verdicts too — without this, a recurring routine drop pattern
+  // Record routine runs too (not just dispatches) so the 48h/7-day cooldown
+  // covers ROUTINE verdicts — without this, a recurring routine drop pattern
   // would re-trigger a full Claude analysis every rebuild forever.
-  fs.writeFileSync(cooldownFile, JSON.stringify({ lastSent: new Date().toISOString(), verdict, totalDropped, shows: regressions.length, signature: dropSignature }) + '\n');
+  const stampCooldown = () => {
+    fs.mkdirSync(TRIAGE_DIR, { recursive: true });
+    fs.writeFileSync(cooldownFile, JSON.stringify({ lastSent: new Date().toISOString(), verdict, totalDropped, shows: regressions.length, signature: dropSignature }) + '\n');
+  };
 
   if (!needsInvestigation) {
+    stampCooldown();
     console.log(`[Drop Analysis] Verdict ${verdict} — routine, no dispatch. ${subject}`);
     return;
   }
@@ -381,7 +384,11 @@ async function main() {
   const conditionKey = `rebuild-drops:${crypto.createHash('sha1').update(dropSignature).digest('hex').slice(0, 12)}`;
   const description = `${analysis}\n\n${action}\n\nTop affected shows:\n${top10}${regressions.length > 10 ? `\n...and ${regressions.length - 10} more` : ''}\n\nFull details: data/audit/rebuild-regression.json`;
   try {
-    await routeAlert({
+    // BRO-2454: stamp the cooldown only once the card actually landed. It used
+    // to be written before this call, so a failed 'auto' dispatch (Linear
+    // down, quota) was marked handled and the 48h/7-day cooldown suppressed
+    // the retry while routeAlert's own ledger correctly left it unrecorded.
+    const routed = await routeAlert({
       conditionKey,
       title: subject,
       description,
@@ -393,7 +400,12 @@ async function main() {
         { name: 'Score drift shows', value: String(drifts.length) },
       ],
     });
-    console.log('[Drop Analysis] Routed:', subject);
+    if (routed && routed.dispatchOk !== false && routed.delivered !== false) {
+      stampCooldown();
+      console.log('[Drop Analysis] Routed:', subject);
+    } else {
+      console.error(`[Drop Analysis] Alert not delivered (${(routed && routed.dispatchError) || 'unknown'}) — cooldown not stamped, next rebuild retries.`);
+    }
   } catch (err) {
     console.error('[Drop Analysis] Alert routing failed:', err.message);
     process.exit(1);
