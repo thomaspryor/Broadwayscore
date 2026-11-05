@@ -79,3 +79,22 @@ test('browser extractor strips a capitalised sign-up pitch but keeps lowercase p
   assert.doesNotMatch(text, /City Lights/);
   assert.match(text, /sign up for the Marines face the court/);
 });
+
+const { CHROME_PHRASES } = require('../../scripts/lib/chrome-paragraph.js');
+test('drift: the browser extractor inlines CHROME_PHRASES verbatim', () => {
+  assert.ok(extractArticleTextFromDocument.toString().includes(CHROME_PHRASES.source),
+    'dom-article-extractor.js must inline the same CHROME_PHRASES as scripts/lib/chrome-paragraph.js');
+});
+
+test('server readers keep short prose that says "sign up" or "advertisement" (no new words)', () => {
+  const shortProse = 'The recruits sign up with a swagger, and a TV advertisement for the Corps plays during the scene change.';
+  assert.ok(shortProse.length < 300);
+  assert.equal(isChromeParagraph(shortProse), false);
+  const html = `<html><body><div class="entry-content">${[1, 2, 3, 4].map((i) => `<p>${FILLER(i)}</p>`).join('')}<p>${shortProse}</p></div></body></html>`;
+  assert.match(extractTextFromHtml(html, 'https://example.com/review'), /recruits sign up with a swagger/);
+});
+
+test('long clutter with a clear promo phrase is still dropped', () => {
+  assert.equal(isChromeParagraph('This website uses cookies to improve your experience. ' + LONG), true);
+  assert.equal(isChromeParagraph("Sign up for Variety's newsletter for the latest. " + LONG), true);
+});

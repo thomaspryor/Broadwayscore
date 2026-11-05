@@ -188,11 +188,11 @@ function extractArticleTextFromDocument(document, url) {
       .filter(p => !p.closest(CHROME_SELECTORS));
     const contentParagraphs = allParagraphs.filter(p => {
       const text = p.textContent.trim();
-      // BRO-6872: inline copy of scripts/lib/chrome-paragraph.js (this function
+      // BRO-6872: inline copy of CHROME_PHRASES in scripts/lib/chrome-paragraph.js (this function
       // is serialized into the page and cannot require). Keyword hits drop only
       // short paragraphs; long ones need a real promo phrase.
-      const isChrome = /we use cookies|cookie (?:policy|settings|preferences)|subscribe to (?:our|the) (?:newsletter|mailing list)|sign up (?:for|to) (?:our|the) [\w' ]{0,40}newsletter|subscribe (?:now|today)\b/i.test(text)
-        || (text.length < 300 && /cookie|subscribe|sign up|newsletter|advertisement/i.test(text));
+      const isChrome = /(?:we|this (?:site|website)) uses? cookies|cookie (?:policy|settings|preferences)|subscribe to (?:our|the) (?:newsletter|mailing list)|sign up (?:for|to) [\w' ]{0,40}newsletter|subscribe (?:now|today)\b/i.test(text)
+        || (text.length < 300 && /cookie|subscribe|sign up|newsletter/i.test(text));
       return text.length > 50 && !isChrome;
     });
 

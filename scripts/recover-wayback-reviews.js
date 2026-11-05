@@ -323,7 +323,7 @@ function extractBrSeparatedText(html) {
     .filter(p => {
       if (p.length < 40) return false;
       // BRO-6872: keyword hits drop only short paragraphs (see chrome-paragraph.js).
-      return !isChromeParagraph(p, /back to|search curtainup|production notes/i);
+      return !isChromeParagraph(p, /advertisement|back to|search curtainup|production notes/i);
     });
 
   return paragraphs.join('\n\n');
