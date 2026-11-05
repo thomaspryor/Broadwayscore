@@ -200,6 +200,9 @@ test('bot divergence stays quiet once the burst has ended (BRO-6985: Nov 1-3 202
   // and a burst that is still running on the latest day still warns
   const still = new Map(impact); still.set('2026-11-04', 400);
   assert.equal(checkBotDivergence({ impactClicksByDay: still, posthogTTClicksByDay: posthog, asOf: '2026-11-04' }).verdict, 'diverged');
+  // a missing Impact day is unknown, not proof the burst ended
+  const gap = new Map(impact); gap.delete('2026-11-04');
+  assert.equal(checkBotDivergence({ impactClicksByDay: gap, posthogTTClicksByDay: posthog, asOf: '2026-11-04' }).verdict, 'diverged');
 });
 
 test('dead-man fires when BOTH signals are near-zero (correlated failure, pre-mortem case)', () => {

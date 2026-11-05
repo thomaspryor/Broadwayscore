@@ -112,9 +112,11 @@ function checkBotDivergence({ impactClicksByDay, posthogTTClicksByDay, asOf, day
     // (Nov 1-3 2026: 1995 Impact clicks vs 152 real, back to normal Nov 4, still in the digest days
     // later). "If sustained" is the harm, so judge whether the latest complete day is still inflated.
     const lastDay = String(asOf);
-    const impactLast = Number((impactClicksByDay instanceof Map ? impactClicksByDay.get(lastDay) : (impactClicksByDay || {})[lastDay]) || 0);
+    const impactRaw = impactClicksByDay instanceof Map ? impactClicksByDay.get(lastDay) : (impactClicksByDay || {})[lastDay];
+    const impactLast = Number(impactRaw) || 0;
     const posthogLast = Number((posthogTTClicksByDay instanceof Map ? posthogTTClicksByDay.get(lastDay) : (posthogTTClicksByDay || {})[lastDay]) || 0);
-    if (impactLast <= maxRatio * Math.max(posthogLast, minLastDayFloor)) {
+    // A missing Impact day is unknown, not quiet: only a day that is present can prove the burst ended.
+    if (impactRaw != null && impactLast <= maxRatio * Math.max(posthogLast, minLastDayFloor)) {
       return {
         verdict: 'healthy',
         reason: `Earlier burst over: Impact ${impact} vs PostHog ${posthog} over ${days}d (${ratio.toFixed(1)}x), but ${lastDay} is back to ${impactLast} vs ${posthogLast} (within ${maxRatio}x)`,

@@ -1291,7 +1291,10 @@ async function main() {
       if (skipFreshHours > 0 && !dryRun && !shardOutput && !showFetchFailed && !(data && data.score)) {
         audienceBuzz.shows[show.id] = audienceBuzz.shows[show.id] || { sources: {} };
         audienceBuzz.shows[show.id].showScoreLastAttempted = new Date().toISOString();
+        // Stamp while London's page is served; clear it the moment a clean scrape sees anything else
+        // (a NYC page that exists but has no rating yet falls back to the normal gap grace).
         if (ukPageServed) audienceBuzz.shows[show.id].showScoreUkPageAt = audienceBuzz.shows[show.id].showScoreLastAttempted;
+        else delete audienceBuzz.shows[show.id].showScoreUkPageAt;
         saveAudienceBuzz(audienceBuzz);
       } else if (data && data.score && audienceBuzz.shows && audienceBuzz.shows[show.id] && audienceBuzz.shows[show.id].showScoreUkPageAt) {
         // The NYC page arrived and scored: the London-page marker no longer applies.
