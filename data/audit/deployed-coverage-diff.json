@@ -1,39 +1,13 @@
 {
-  "generatedAt": "2026-11-05T14:48:29.978Z",
+  "generatedAt": "2026-11-05T16:25:50.189Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 322,
-  "clean": 321,
-  "defective": 1,
-  "byType": {
-    "missing-from-prod": 1,
-    "score-drift": 1
-  },
-  "shows": [
-    {
-      "showId": "fences-leeds-regional-2026",
-      "title": "Fences",
-      "openingDate": "2026-09-17",
-      "ok": false,
-      "defects": [
-        {
-          "type": "missing-from-prod",
-          "detail": "1 scored outlet(s) absent from the deployed payload: thereviewshub"
-        },
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 82.08 vs local 84.35 (Δ2.27)"
-        }
-      ],
-      "missingFromProd": [
-        "thereviewshub"
-      ],
-      "localCount": 7,
-      "deployedCount": 6,
-      "firstDefectAt": "2026-11-05T14:48:24.332Z"
-    }
-  ],
+  "clean": 322,
+  "defective": 0,
+  "byType": {},
+  "shows": [],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }
