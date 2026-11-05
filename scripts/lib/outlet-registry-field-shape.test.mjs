@@ -110,12 +110,28 @@ test('the remaining BRO-5246 names keep their individually checked spelling', ()
 
 test('BRO-6991 resolutions preserve reviewed mastheads and legacy label routing', () => {
   const { outlets } = require('../../data/outlet-registry.json');
-  const { proposals, unresolved } = require('../../data/audit/outlet-display-name-proposals.json');
-  assert.deepEqual(unresolved, []);
-  const resolutions = proposals.filter(row => row.evidence.startsWith('2026-11-05 BRO-6991:'));
-  assert.equal(resolutions.length, 17);
-  for (const { outletId, from, to } of resolutions) {
-    const displayName = to || from;
+  // Pin the reviewed results independently of the historical audit report.
+  // Changes to that report do not trigger test.yml, and must not redefine
+  // the expected registry names or silently remove a regression case.
+  for (const [outletId, from, displayName] of [
+    ['rockchicago', 'Rockchicago', 'Rock Chicago'],
+    ['lgbtweekly', 'Lgbtweekly', 'LGBT Weekly'],
+    ['sdamustang', 'Sdamustang', 'The Mustang'],
+    ['sdcitybeat', 'Sdcitybeat', 'San Diego CityBeat'],
+    ['afterellen', 'Afterellen', 'AfterEllen'],
+    ['cityguideny', 'Cityguideny', 'City Guide'],
+    ['harryforbes', 'Harryforbes', 'Forbes on Film & Footlights'],
+    ['metrosource', 'Metrosource', 'Metrosource'],
+    ['jasonraize', 'Jasonraize', 'The Raize Resource'],
+    ['letterboxd', 'letterboxd', 'letterboxd'],
+    ['myreviewer', 'myreviewer', 'MyReviewer.com'],
+    ['bookevents', 'bookevents', 'NYC Book Events'],
+    ['clevescene', 'clevescene', 'Cleveland Scene'],
+    ['thedaviddesk2', 'Thedaviddesk2', 'The David Desk 2'],
+    ['nowtoronto', 'Nowtoronto', 'NOW Toronto'],
+    ['theamerican', 'Theamerican', 'The American'],
+    ['rollingout', 'Rollingout', 'Rolling Out'],
+  ]) {
     assert.equal(outlets[outletId]?.displayName, displayName);
     assert.equal(normalizeOutlet(displayName), outletId, displayName);
     assert.equal(normalizeOutlet(from), outletId, `Legacy label ${from} must still resolve`);
