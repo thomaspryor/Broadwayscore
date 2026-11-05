@@ -1,10 +1,10 @@
 {
-  "updatedAt": "2026-11-05T20:53:09.895Z",
-  "processed": 0,
-  "failed": 2,
-  "successRate": "0%",
+  "updatedAt": "2026-11-05T20:59:34.203Z",
+  "processed": 7,
+  "failed": 31,
+  "successRate": "18.4%",
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 5,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
@@ -12,8 +12,50 @@
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 0
+    "archive": 2
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 4,
+  "recentActivity": [
+    {
+      "t": "2026-11-05T20:12:23.542Z",
+      "event": "bb-session",
+      "session": "207d5e57",
+      "url": "https://bachtrack.com/review-medea-yoncheva-spyres-met-opera-new-york-october-20"
+    },
+    {
+      "t": "2026-11-05T20:16:44.164Z",
+      "event": "bb-session",
+      "session": "7cc3eaa4",
+      "url": "https://hermes.talkinbroadway.com/allthatchat_new/d.php?id=2655044"
+    },
+    {
+      "t": "2026-11-05T20:16:44.602Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-05T20:52:19.618Z",
+      "event": "bb-session",
+      "session": "a0f0d1dc",
+      "url": "https://bachtrack.com/review-lorfeo-william-kentridge-greek-national-opera-athen"
+    },
+    {
+      "t": "2026-11-05T20:52:54.922Z",
+      "event": "bb-session",
+      "session": "af9bbbf2",
+      "url": "https://bachtrack.com/review-shostakovich-cherry-town-ahlbom-dutch-national-oper"
+    },
+    {
+      "t": "2026-11-05T20:53:58.763Z",
+      "event": "bb-session",
+      "session": "c79eeeb9",
+      "url": "https://bachtrack.com/review-tosca-miskimmon-glassberg-fanyo-english-national-op"
+    },
+    {
+      "t": "2026-11-05T20:54:34.760Z",
+      "event": "bb-session",
+      "session": "754800d4",
+      "url": "https://bachtrack.com/review-nozze-figaro-pountney-conta-bucharest-national-oper"
+    }
+  ]
 }
