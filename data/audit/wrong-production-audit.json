@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-05T23:00:21.426Z",
+  "timestamp": "2026-11-05T23:20:34.893Z",
   "stats": {
-    "totalReviews": 80227,
-    "alreadyFlagged": 21984,
-    "dateGuardCatches": 217,
+    "totalReviews": 80208,
+    "alreadyFlagged": 21985,
+    "dateGuardCatches": 216,
     "directorMismatch": 3511,
     "tvFilmSignals": 2283,
     "londonSignals": 3617,
     "offBroadwaySignals": 741,
     "yearMismatch": 362,
-    "noPublishDate": 8494
+    "noPublishDate": 8488
   },
   "findings": [
     {
@@ -106447,19 +106447,6 @@
           "type": "DATE_GUARD",
           "severity": "MEDIUM",
           "detail": "Published 100d before show (2026-07-08 vs 2026-10-16)"
-        }
-      ]
-    },
-    {
-      "showId": "jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026",
-      "file": "london-theatre--olivia-rook.json",
-      "publishDate": "2026-09-07",
-      "url": "https://www.londontheatre.co.uk/theatre-news/news/full-cast-revealed-for-jesus-christ-superstar-at-theatre-royal-drury-lane",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 39d before show (2026-09-07 vs 2026-10-16)"
         }
       ]
     },
