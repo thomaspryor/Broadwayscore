@@ -1,0 +1,63 @@
+{
+  "issueNumber": "bro-6905",
+  "planId": "43c5b6ad-a9bc-4844-a00f-adfa9aba4165",
+  "status": "pending",
+  "createdAt": "2026-11-05T01:58:56.647Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Clear relayed critic star ratings from four PA news-agency roundups and the Metro Romeo and Juliet roundup; preserve their prose and prevent automated re-extraction. Defer the Argus unknown duplicate to the Claude lane because its score clear also rewrites duplicateReason in the write guard.",
+    "steps": [
+      "game-of-thrones-the-mad-king-regional-2026/theargus--pa-news-agency.json: originalScore",
+      "game-of-thrones-the-mad-king-regional-2026/herald--pa-news-agency.json: originalScore",
+      "game-of-thrones-the-mad-king-regional-2026/yahoo--unknown.json: originalScore",
+      "game-of-thrones-the-mad-king-regional-2026/thenorthernecho--pa-news-agency.json: originalScore",
+      "romeo-and-juliet-west-end-2024/metro-uk--kitty-chrisp.json: originalScore"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "game-of-thrones-the-mad-king-regional-2026/theargus--pa-news-agency.json",
+        "field": "originalScore",
+        "oldValue": "5/5 stars",
+        "newValue": null,
+        "description": "game-of-thrones-the-mad-king-regional-2026/theargus--pa-news-agency.json: originalScore"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "game-of-thrones-the-mad-king-regional-2026/herald--pa-news-agency.json",
+        "field": "originalScore",
+        "oldValue": "5/5 stars",
+        "newValue": null,
+        "description": "game-of-thrones-the-mad-king-regional-2026/herald--pa-news-agency.json: originalScore"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "game-of-thrones-the-mad-king-regional-2026/yahoo--unknown.json",
+        "field": "originalScore",
+        "oldValue": "5/5 stars",
+        "newValue": null,
+        "description": "game-of-thrones-the-mad-king-regional-2026/yahoo--unknown.json: originalScore"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "game-of-thrones-the-mad-king-regional-2026/thenorthernecho--pa-news-agency.json",
+        "field": "originalScore",
+        "oldValue": "5/5 stars",
+        "newValue": null,
+        "description": "game-of-thrones-the-mad-king-regional-2026/thenorthernecho--pa-news-agency.json: originalScore"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "romeo-and-juliet-west-end-2024/metro-uk--kitty-chrisp.json",
+        "field": "originalScore",
+        "oldValue": "5/5 stars",
+        "newValue": null,
+        "description": "romeo-and-juliet-west-end-2024/metro-uk--kitty-chrisp.json: originalScore"
+      }
+    ]
+  }
+}
