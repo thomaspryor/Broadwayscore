@@ -1,10 +1,10 @@
 {
-  "updatedAt": "2026-11-05T20:18:09.036Z",
-  "processed": 0,
-  "failed": 2,
-  "successRate": "0%",
+  "updatedAt": "2026-11-05T20:20:17.177Z",
+  "processed": 2,
+  "failed": 21,
+  "successRate": "8.7%",
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 1,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
@@ -12,8 +12,26 @@
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 0
+    "archive": 1
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 2,
+  "recentActivity": [
+    {
+      "t": "2026-11-05T20:12:23.542Z",
+      "event": "bb-session",
+      "session": "207d5e57",
+      "url": "https://bachtrack.com/review-medea-yoncheva-spyres-met-opera-new-york-october-20"
+    },
+    {
+      "t": "2026-11-05T20:16:44.164Z",
+      "event": "bb-session",
+      "session": "7cc3eaa4",
+      "url": "https://hermes.talkinbroadway.com/allthatchat_new/d.php?id=2655044"
+    },
+    {
+      "t": "2026-11-05T20:16:44.602Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    }
+  ]
 }

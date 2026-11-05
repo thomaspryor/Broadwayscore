@@ -1,12 +1,36 @@
 {
-  "processed": [],
+  "processed": [
+    "jest-to-impress-off-broadway-2026/donyc--unknown.json",
+    "kelly-mccaughan-catholic-guilt-off-broadway-2026/broadway-baby--unknown.json"
+  ],
   "failed": [
-    "the-bridge-off-west-end-2026/sunday-times--unknown.json",
-    "the-bridge-off-west-end-2026/theatreandtonic--emmie-newitt.json"
+    "222-a-ghost-story-off-broadway-2026/theatrely--kobi-kassal.json",
+    "the-unbelievers-off-broadway-2026/bobs-theater-blog--unknown.json",
+    "jest-to-impress-off-broadway-2026/chelmsfordtheatre--genre.json",
+    "seussical-theatre-young-audiences-off-broadway-2026/wknd--unknown.json",
+    "medea-off-broadway-2026/express-uk--neil-norman.json",
+    "medea-off-broadway-2026/bachtrack--susan-stempleski.json",
+    "a-few-good-men-2026/variety--anna-tingley.json",
+    "the-heart-off-broadway-2026/variety--cynthia-littleton.json",
+    "a-few-good-men-2026/goldderby--ethan-alter.json",
+    "the-heart-off-broadway-2026/frontmezzjunkies--unknown.json",
+    "in-the-heights-off-broadway-2026/nypost--clive-barnes.json",
+    "in-the-heights-off-broadway-2026/bloomberg--john-simon.json",
+    "i-became-we-off-broadway-2026/timeout--unknown.json",
+    "i-became-we-off-broadway-2026/bobs-theater-blog--unknown.json",
+    "hospital-hour-off-broadway-2026/broadway-baby--unknown.json",
+    "hospital-hour-off-broadway-2026/one-minute-critic--unknown.json",
+    "aftermath-art-new-york-off-broadway-2026/talkinbroadway--unknown.json",
+    "love-me-off-broadway-2026/consequence--unknown.json",
+    "love-me-off-broadway-2026/daily-mail--codie-bullen.json",
+    "phyl-off-broadway-2026/phusionpassenger--unknown.json",
+    "phyl-off-broadway-2026/theater-life--paulanne-simmons.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "jest-to-impress-off-broadway-2026/donyc--unknown.json"
+    ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
@@ -14,9 +38,29 @@
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [],
-    "archive": []
+    "archive": [
+      "kelly-mccaughan-catholic-guilt-off-broadway-2026/broadway-baby--unknown.json"
+    ]
   },
-  "startTime": "2026-11-05T20:16:40.211Z",
-  "lastProcessed": "the-bridge-off-west-end-2026/theatreandtonic--emmie-newitt.json",
-  "log": []
+  "startTime": "2026-11-05T20:10:09.935Z",
+  "lastProcessed": "phyl-off-broadway-2026/theater-life--paulanne-simmons.json",
+  "log": [
+    {
+      "t": "2026-11-05T20:12:23.542Z",
+      "event": "bb-session",
+      "session": "207d5e57",
+      "url": "https://bachtrack.com/review-medea-yoncheva-spyres-met-opera-new-york-october-20"
+    },
+    {
+      "t": "2026-11-05T20:16:44.164Z",
+      "event": "bb-session",
+      "session": "7cc3eaa4",
+      "url": "https://hermes.talkinbroadway.com/allthatchat_new/d.php?id=2655044"
+    },
+    {
+      "t": "2026-11-05T20:16:44.602Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    }
+  ]
 }
