@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-04T22:52:00.491Z",
+  "timestamp": "2026-11-05T00:01:26.430Z",
   "stats": {
-    "totalReviews": 80152,
-    "alreadyFlagged": 22020,
+    "totalReviews": 80155,
+    "alreadyFlagged": 22021,
     "dateGuardCatches": 217,
-    "directorMismatch": 3500,
+    "directorMismatch": 3501,
     "tvFilmSignals": 2279,
     "londonSignals": 3608,
     "offBroadwaySignals": 734,
     "yearMismatch": 361,
-    "noPublishDate": 8497
+    "noPublishDate": 8494
   },
   "findings": [
     {
@@ -47731,6 +47731,20 @@
       "score": 50,
       "publishDate": "2026-10-19",
       "url": "https://www.amny.com/entertainment/broadway/review-other-desert-cities-2026/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"joe mantello\" from other-desert-cities-2011"
+        }
+      ]
+    },
+    {
+      "showId": "other-desert-cities-2026",
+      "file": "blogcritics--carole-di-tosti.json",
+      "score": 72,
+      "publishDate": "2026-11-01",
+      "url": "https://blogcritics.org/theater-review-other-desert-cities-with-julia-louis-dreyfus-allison-janney-ed-harris/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
