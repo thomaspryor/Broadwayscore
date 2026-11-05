@@ -158,6 +158,16 @@ describe('snapToSourceSpan', () => {
   });
 });
 
+describe('BRO-6439: showNotMentioned body does not defer a correct aggregator quote', () => {
+  it('keeps the bwwExcerpt when the recovered body is a different article', () => {
+    const quote = "It's spritely directed and choreographed by Casey Nicholaw, well sung by a huge 35-person cast and hits that sweet spot Disney Theatrical Productions do so well.";
+    const data = { showId: 'aladdin-2014', outletId: 'ap', bwwExcerpt: quote, assignedScore: 80, showNotMentioned: true, textStatus: 'incomplete',
+      fullText: 'Pakistan says it has killed 145 terrorists in Balochistan. '.repeat(12) };
+    const q = selectBestExcerpt(data, 'Aladdin');
+    assert.ok(q && q.startsWith("It's spritely directed"), String(q));
+  });
+});
+
 describe('isTrustedContiguitySource / startsWithPageChrome / phraseContradictsScore', () => {
   it('distrusts flagged or truncated bodies', () => {
     const ok = { fullText: POST_TEXT, textStatus: 'complete' };
@@ -166,6 +176,7 @@ describe('isTrustedContiguitySource / startsWithPageChrome / phraseContradictsSc
       assert.equal(isTrustedContiguitySource({ ...ok, [f]: true }), false, f);
     }
     assert.equal(isTrustedContiguitySource({ ...ok, contentTier: 'invalid' }), false);
+    assert.equal(isTrustedContiguitySource({ ...ok, showNotMentioned: true }), false); // BRO-6439
     assert.equal(isTrustedContiguitySource({ ...ok, textStatus: 'truncated' }), false);
     assert.equal(isTrustedContiguitySource({ ...ok, wrongShowAutoRecovered: 'rebuild: heuristic' }), false);
     assert.equal(isTrustedContiguitySource({ ...ok, wrongShowAutoRecovered: 'x', contentVerification: { wrongArticle: false } }), true);

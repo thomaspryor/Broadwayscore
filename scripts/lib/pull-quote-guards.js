@@ -903,6 +903,9 @@ function isTrustedContiguitySource(data) {
   if (data.textStatus === 'truncated') return false;
   if (data.wrongShow || data.wrongProduction || data.wrongFullText || data.isRoundupArticle) return false;
   if (data.contentTier === 'invalid') return false;
+  // BRO-6439: a body that never mentions the show (showNotMentioned, e.g. an AP news feed recovered from
+  // garbageFullText) is a different article, so a correct aggregator quote "fails" contiguity against it.
+  if (data.showNotMentioned === true) return false;
   if (isSoft404Body(data.fullText)) return false;
   if (data.wrongShowAutoRecovered) {
     const cv = data.contentVerification;
