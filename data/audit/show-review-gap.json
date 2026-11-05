@@ -1,22 +1,22 @@
 {
-  "generatedAt": "2026-11-05T02:10:04.143Z",
+  "generatedAt": "2026-11-05T03:08:07.157Z",
   "windowDays": 1095,
-  "targets": 914,
-  "auditedThisRun": 10,
-  "carriedForward": 2022,
+  "targets": 907,
+  "auditedThisRun": 8,
+  "carriedForward": 2025,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 635,
-    "missingCurrentRun": 1176,
+    "withGap": 636,
+    "missingCurrentRun": 1185,
     "totalCitedNoUrl": 0,
-    "totalFlaggedMisses": 920,
+    "totalFlaggedMisses": 915,
     "totalRecoverable": 56,
     "totalRecovered": 90,
-    "humanExcluded": 27,
-    "automatedExcluded": 1021,
-    "automatedExcludedListed": 739,
-    "priorProductionCitations": 6091
+    "humanExcluded": 26,
+    "automatedExcluded": 1017,
+    "automatedExcludedListed": 734,
+    "priorProductionCitations": 6099
   },
   "results": [
     {
@@ -388,6 +388,7 @@
       "previewsStartDate": "2026-10-20",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
+        "https://www.mixuptheatre.com/post/theatre-review-2-22-a-ghost-story-1",
         "https://www.londontheatre.co.uk/reviews/222-a-ghost-story-review-lyric-theatre-cheryl"
       ],
       "dirFiles": 7,
@@ -408,17 +409,125 @@
         }
       ],
       "dirOnly": [],
-      "flaggedMisses": [],
+      "flaggedMisses": [
+        {
+          "url": "https://www.mixuptheatre.com/post/theatre-review-2-22-a-ghost-story-1",
+          "host": "mixuptheatre.com",
+          "knownOutletId": "mixuptheatre",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "mixuptheatre--mix-up-theatre-stewart.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.mixuptheatre.com/post/theatre-review-2-22-a-ghost-story-1"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "flagged-file-date:2026-04-29",
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
+          "serpCensus": true,
+          "reverify": false
+        }
+      ],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "out-of-window"
+        "ran": true,
+        "complete": true,
+        "query": "\"2:22 - A Ghost Story\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"2:22 - A Ghost Story\" Off-Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 9,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"2:22 - A Ghost Story\" review lucille",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 8,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped2",
+            "query": "\"2:22 - A Ghost Story\" Robins review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 3,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "2:22 - A Ghost Story Lucille Lortel Theatre review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 7,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "2:22 - A Ghost Story Lucille Lortel Theatre review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "2:22 - A Ghost Story Lucille Lortel Theatre review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 2,
+            "error": null
+          }
+        ],
+        "queriesOk": 6,
+        "queriesTotal": 6,
+        "resultCount": 3,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 1,
+        "count": 40,
         "byReason": {
-          "write-path-blocked": 1
+          "aggregator-internal-nav": 2,
+          "not-http-url": 14,
+          "non-review-host": 14,
+          "show-listing-page": 2,
+          "write-path-blocked": 1,
+          "non-review-path": 2,
+          "ticketing-listing": 1,
+          "venue-production-page": 1,
+          "no-review-evidence": 1,
+          "show-blocklist": 2
         }
       },
       "dedupedVariants": [],
@@ -468,7 +577,7 @@
         "liveCount": 0,
         "candidateCount": 1
       },
-      "computedAt": "2026-11-04T20:32:02.077Z"
+      "computedAt": "2026-11-05T03:08:07.157Z"
     },
     {
       "showId": "3-summers-of-lincoln-regional-2025",
@@ -66580,11 +66689,15 @@
         "https://www.timeout.com/newyork/news/theater-review-waiting-for-lefty-takes-a-swing-for-workers-110426",
         "https://www.vulture.com/article/theater-reviews-waiting-for-lefty-odets-specky-clark-doherty.html"
       ],
-      "dirFiles": 14,
-      "dirClean": 13,
-      "inReviewsJson": 13,
+      "dirFiles": 15,
+      "dirClean": 14,
+      "inReviewsJson": 14,
       "missing": [],
       "dirOnly": [
+        {
+          "host": "talkinbroadway.com",
+          "count": 1
+        },
         {
           "host": "theatermania.com",
           "count": 1
@@ -66598,18 +66711,88 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Clifford Odets’ Waiting for Lefty\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Clifford Odets’ Waiting for Lefty\" Off-Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 9,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Clifford Odets’ Waiting for Lefty\" review classic",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 9,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped2",
+            "query": "\"Clifford Odets’ Waiting for Lefty\" Odets review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 8,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Clifford Odets’ Waiting for Lefty Classic Stage Company review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 8,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Clifford Odets’ Waiting for Lefty Classic Stage Company review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Clifford Odets’ Waiting for Lefty Classic Stage Company review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          }
+        ],
+        "queriesOk": 6,
+        "queriesTotal": 6,
+        "resultCount": 1,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 95,
+        "count": 141,
         "byReason": {
-          "aggregator-internal-nav": 39,
-          "not-http-url": 20,
+          "aggregator-internal-nav": 41,
+          "not-http-url": 54,
           "production-database-listing": 9,
           "aggregator-section-root": 5,
-          "non-review-host": 21,
-          "non-stage-review": 1
+          "non-review-host": 27,
+          "non-stage-review": 1,
+          "census-junk-host": 2,
+          "roundup-page": 1,
+          "show-listing-page": 1
         }
       },
       "dedupedVariants": [],
@@ -66692,7 +66875,7 @@
         "liveCount": 10,
         "candidateCount": 10
       },
-      "computedAt": "2026-11-04T20:32:02.077Z"
+      "computedAt": "2026-11-05T03:08:07.157Z"
     },
     {
       "showId": "clinamen-off-broadway-2026",
@@ -117324,6 +117507,231 @@
         "candidateCount": 22
       },
       "computedAt": "2026-10-31T17:07:08.919Z"
+    },
+    {
+      "showId": "girls-and-boys-regional-2025",
+      "title": "Girls & Boys",
+      "openingDate": "2025-07-22",
+      "status": "closed",
+      "category": "regional",
+      "aggregatorArticles": [
+        "https://playbill.com/article/read-reviews-for-girls-boys-starring-carey-mulligan"
+      ],
+      "aggregatorListedUrls": [
+        "http://www.thedailybeast.com/tragedy-in-strong-voices-girls-and-boys-and-carmen-jones",
+        "http://www.hollywoodreporter.com/review/girls-boys-theater-review-1123412",
+        "http://www.nytimes.com/2018/06/27/theater/girls-and-boys-review-carey-mulligan.html",
+        "http://www.nydailynews.com/entertainment/theater-arts/ny-ent-girls-boys-review-20180626-story.html",
+        "http://www.vulture.com/2018/06/theater-review-carey-mulligan-in-girls-and-boys.html",
+        "http://nystagereview.com/2018/06/27/girls-boys-carey-mulligan-astounds-in-searing-one-person-play/",
+        "http://www.thewrap.com/girls-boys-theater-review-carey-mulligan-dennis-kelly/"
+      ],
+      "dirFiles": 4,
+      "dirClean": 4,
+      "inReviewsJson": 4,
+      "missing": [
+        {
+          "url": "http://www.thedailybeast.com/tragedy-in-strong-voices-girls-and-boys-and-carmen-jones",
+          "host": "thedailybeast.com",
+          "knownOutletId": "dailybeast",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-reviews-for-girls-boys-starring-carey-mulligan"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.hollywoodreporter.com/review/girls-boys-theater-review-1123412",
+          "host": "hollywoodreporter.com",
+          "knownOutletId": "hollywood-reporter",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-reviews-for-girls-boys-starring-carey-mulligan"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.nytimes.com/2018/06/27/theater/girls-and-boys-review-carey-mulligan.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-reviews-for-girls-boys-starring-carey-mulligan"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.nydailynews.com/entertainment/theater-arts/ny-ent-girls-boys-review-20180626-story.html",
+          "host": "nydailynews.com",
+          "knownOutletId": "nydailynews",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-reviews-for-girls-boys-starring-carey-mulligan"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.vulture.com/2018/06/theater-review-carey-mulligan-in-girls-and-boys.html",
+          "host": "vulture.com",
+          "knownOutletId": "vulture",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-reviews-for-girls-boys-starring-carey-mulligan"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://nystagereview.com/2018/06/27/girls-boys-carey-mulligan-astounds-in-searing-one-person-play/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-reviews-for-girls-boys-starring-carey-mulligan"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.thewrap.com/girls-boys-theater-review-carey-mulligan-dennis-kelly/",
+          "host": "thewrap.com",
+          "knownOutletId": "thewrap",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-reviews-for-girls-boys-starring-carey-mulligan"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        }
+      ],
+      "dirOnly": [
+        {
+          "host": "aroundthetownchicago.com",
+          "count": 1
+        },
+        {
+          "host": "chicagoreader.com",
+          "count": 1
+        },
+        {
+          "host": "chicagotribune.com",
+          "count": 1
+        },
+        {
+          "host": "thirdcoastreview.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 112,
+        "byReason": {
+          "aggregator-internal-nav": 69,
+          "not-http-url": 6,
+          "production-database-listing": 11,
+          "aggregator-section-root": 4,
+          "non-review-host": 20,
+          "non-stage-review": 1,
+          "bare-host": 1
+        }
+      },
+      "dedupedVariants": [],
+      "priorRunArticles": [
+        {
+          "url": "https://playbill.com/article/read-reviews-for-girls-boys-starring-carey-mulligan",
+          "publishDate": "2018-06-28"
+        }
+      ],
+      "automatedExcludedListed": 0,
+      "unextractable": [],
+      "weIngestBlocked": [
+        {
+          "url": "http://www.thedailybeast.com/tragedy-in-strong-voices-girls-and-boys-and-carmen-jones",
+          "host": "thedailybeast.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.hollywoodreporter.com/review/girls-boys-theater-review-1123412",
+          "host": "hollywoodreporter.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.nytimes.com/2018/06/27/theater/girls-and-boys-review-carey-mulligan.html",
+          "host": "nytimes.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.nydailynews.com/entertainment/theater-arts/ny-ent-girls-boys-review-20180626-story.html",
+          "host": "nydailynews.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.vulture.com/2018/06/theater-review-carey-mulligan-in-girls-and-boys.html",
+          "host": "vulture.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://nystagereview.com/2018/06/27/girls-boys-carey-mulligan-astounds-in-searing-one-person-play/",
+          "host": "nystagereview.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.thewrap.com/girls-boys-theater-review-carey-mulligan-dennis-kelly/",
+          "host": "thewrap.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        }
+      ],
+      "ingestResults": [],
+      "ingestSkippedByCap": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 4,
+        "excluded": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-11-05T03:08:07.157Z"
     },
     {
       "showId": "girls-off-west-end-2026",
@@ -175969,23 +176377,191 @@
       "category": "off-broadway",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
+        "https://theatreandtonic.co.uk/blog/king-lear-crescent-theatre-review",
+        "https://exeuntnyc.com/reviews/review-king-lear-bam-harvey/",
+        "https://www.newyorktheatreguide.com/reviews/king-lear",
+        "https://medium.com/@unprofessionalopinion/skip-it-an-epically-empty-unaffecting-king-lear-cc8168531dad",
+        "https://ctxlivetheatre.com/reviews/review-the-history-of-king-lear-nahum-tate-adap/",
+        "https://www.theatermania.com/news/review-power-slips-away-one-lear-at-a-time-in-king-lear-at-la-mama_1822401/",
+        "https://www.playshakespeare.com/king-lear-reviews/theatre-reviews",
+        "https://www.theatermania.com/news/king-lear_4450/",
         "http://www.timeout.com/newyork/theater/king-lear-12"
       ],
       "dirFiles": 0,
       "dirClean": 0,
       "inReviewsJson": 0,
-      "missing": [],
+      "missing": [
+        {
+          "url": "https://theatreandtonic.co.uk/blog/king-lear-crescent-theatre-review",
+          "host": "theatreandtonic.co.uk",
+          "knownOutletId": "theatreandtonic",
+          "serpCensus": true,
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ]
+        },
+        {
+          "url": "https://exeuntnyc.com/reviews/review-king-lear-bam-harvey/",
+          "host": "exeuntnyc.com",
+          "knownOutletId": "exeunt-magazine",
+          "serpCensus": true,
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ]
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/king-lear",
+          "host": "newyorktheatreguide.com",
+          "knownOutletId": "nytg",
+          "serpCensus": true,
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ]
+        },
+        {
+          "url": "https://medium.com/@unprofessionalopinion/skip-it-an-epically-empty-unaffecting-king-lear-cc8168531dad",
+          "host": "medium.com",
+          "knownOutletId": "medium",
+          "serpCensus": true,
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ]
+        },
+        {
+          "url": "https://ctxlivetheatre.com/reviews/review-the-history-of-king-lear-nahum-tate-adap/",
+          "host": "ctxlivetheatre.com",
+          "knownOutletId": "ctxlivetheatre",
+          "serpCensus": true,
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ]
+        },
+        {
+          "url": "https://www.theatermania.com/news/review-power-slips-away-one-lear-at-a-time-in-king-lear-at-la-mama_1822401/",
+          "host": "theatermania.com",
+          "knownOutletId": "theatermania",
+          "serpCensus": true,
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ]
+        },
+        {
+          "url": "https://www.playshakespeare.com/king-lear-reviews/theatre-reviews",
+          "host": "playshakespeare.com",
+          "knownOutletId": null,
+          "serpCensus": true,
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ]
+        },
+        {
+          "url": "https://www.theatermania.com/news/king-lear_4450/",
+          "host": "theatermania.com",
+          "knownOutletId": "theatermania",
+          "serpCensus": true,
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ]
+        }
+      ],
       "dirOnly": [],
       "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "out-of-window"
+        "ran": true,
+        "complete": true,
+        "query": "\"King Lear\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"King Lear\" Off-Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 9,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"King Lear\" review secret",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 5,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "King Lear The Secret Theatre review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 9,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "King Lear The Secret Theatre review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 6,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "King Lear The Secret Theatre review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 2,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 8,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 33,
+        "byReason": {
+          "aggregator-internal-nav": 1,
+          "not-http-url": 24,
+          "non-review-host": 4,
+          "write-path-blocked": 3,
+          "no-review-evidence": 1
+        }
       },
       "dedupedVariants": [],
       "nonReviewCandidates": [
@@ -175999,9 +176575,164 @@
       ],
       "automatedExcludedListed": 0,
       "unextractable": [],
+      "weIngestBlocked": [
+        {
+          "url": "https://www.playshakespeare.com/king-lear-reviews/theatre-reviews",
+          "host": "playshakespeare.com",
+          "priorRun": false,
+          "reason": "unregistered-host",
+          "censusGateOn": true
+        }
+      ],
+      "ingestResults": [
+        {
+          "url": "https://theatreandtonic.co.uk/blog/king-lear-crescent-theatre-review",
+          "host": "theatreandtonic.co.uk",
+          "outletId": "theatreandtonic",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": true,
+          "expectedReason": "prior-production-quarantined",
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "king-lear-off-broadway-2026: https://theatreandtonic.co.uk/blog/king-lear-crescent-theatre-review dated 2024-11-18 predates this run; quarantined to _pending/ as the earlier production's review. Expected, no action needed."
+        },
+        {
+          "url": "https://exeuntnyc.com/reviews/review-king-lear-bam-harvey/",
+          "host": "exeuntnyc.com",
+          "outletId": "exeunt-magazine",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": true,
+          "expectedReason": "prior-production-quarantined",
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "king-lear-off-broadway-2026: https://exeuntnyc.com/reviews/review-king-lear-bam-harvey/ dated 2018-04-20 predates this run; quarantined to _pending/ as the earlier production's review. Expected, no action needed."
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/king-lear",
+          "host": "newyorktheatreguide.com",
+          "outletId": "nytg",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": true,
+          "expectedReason": "prior-production-quarantined",
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "king-lear-off-broadway-2026: https://www.newyorktheatreguide.com/reviews/king-lear dated 2017-09-22 predates this run; quarantined to _pending/ as the earlier production's review. Expected, no action needed."
+        },
+        {
+          "url": "https://medium.com/@unprofessionalopinion/skip-it-an-epically-empty-unaffecting-king-lear-cc8168531dad",
+          "host": "medium.com",
+          "outletId": "medium",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": true,
+          "expectedReason": "prior-production-quarantined",
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "king-lear-off-broadway-2026: https://medium.com/@unprofessionalopinion/skip-it-an-epically-empty-unaffecting-king-lear-cc8168531dad dated 2023-03-13 predates this run; quarantined to _pending/ as the earlier production's review. Expected, no action needed."
+        },
+        {
+          "url": "https://ctxlivetheatre.com/reviews/review-the-history-of-king-lear-nahum-tate-adap/",
+          "host": "ctxlivetheatre.com",
+          "outletId": "ctxlivetheatre",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": [
+        {
+          "url": "https://www.theatermania.com/news/review-power-slips-away-one-lear-at-a-time-in-king-lear-at-la-mama_1822401/",
+          "host": "theatermania.com",
+          "outletId": "theatermania"
+        },
+        {
+          "url": "https://www.theatermania.com/news/king-lear_4450/",
+          "host": "theatermania.com",
+          "outletId": "theatermania"
+        }
+      ],
       "censusVerdict": {
-        "verdict": "complete",
-        "missing": [],
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "theatreandtonic",
+            "outlet": "theatreandtonic",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://theatreandtonic.co.uk/blog/king-lear-crescent-theatre-review"
+          },
+          {
+            "outletId": "exeunt-magazine",
+            "outlet": "exeunt-magazine",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://exeuntnyc.com/reviews/review-king-lear-bam-harvey/"
+          },
+          {
+            "outletId": "nytg",
+            "outlet": "nytg",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.newyorktheatreguide.com/reviews/king-lear"
+          },
+          {
+            "outletId": "medium",
+            "outlet": "medium",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://medium.com/@unprofessionalopinion/skip-it-an-epically-empty-unaffecting-king-lear-cc8168531dad"
+          },
+          {
+            "outletId": "ctxlivetheatre",
+            "outlet": "ctxlivetheatre",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://ctxlivetheatre.com/reviews/review-the-history-of-king-lear-nahum-tate-adap/"
+          },
+          {
+            "outletId": "theatermania",
+            "outlet": "theatermania",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.theatermania.com/news/review-power-slips-away-one-lear-at-a-time-in-king-lear-at-la-mama_1822401/"
+          },
+          {
+            "outletId": "playshakespeare.com",
+            "outlet": "playshakespeare.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.playshakespeare.com/king-lear-reviews/theatre-reviews"
+          },
+          {
+            "outletId": "theatermania",
+            "outlet": "theatermania",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.theatermania.com/news/king-lear_4450/"
+          }
+        ],
         "suppressedMissing": [],
         "candidates": [
           {
@@ -176009,6 +176740,62 @@
             "outletId": "timeout.com",
             "state": "live",
             "firstSeenAt": "2026-11-04T01:35:14.329Z"
+          },
+          {
+            "url": "https://theatreandtonic.co.uk/blog/king-lear-crescent-theatre-review",
+            "outletId": "theatreandtonic",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-11-05T03:08:07.157Z"
+          },
+          {
+            "url": "https://exeuntnyc.com/reviews/review-king-lear-bam-harvey/",
+            "outletId": "exeunt-magazine",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-11-05T03:08:07.157Z"
+          },
+          {
+            "url": "https://www.newyorktheatreguide.com/reviews/king-lear",
+            "outletId": "nytg",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-11-05T03:08:07.157Z"
+          },
+          {
+            "url": "https://medium.com/@unprofessionalopinion/skip-it-an-epically-empty-unaffecting-king-lear-cc8168531dad",
+            "outletId": "medium",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-11-05T03:08:07.157Z"
+          },
+          {
+            "url": "https://ctxlivetheatre.com/reviews/review-the-history-of-king-lear-nahum-tate-adap/",
+            "outletId": "ctxlivetheatre",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-11-05T03:08:07.157Z"
+          },
+          {
+            "url": "https://www.theatermania.com/news/review-power-slips-away-one-lear-at-a-time-in-king-lear-at-la-mama_1822401/",
+            "outletId": "theatermania",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-11-05T03:08:07.157Z"
+          },
+          {
+            "url": "https://www.playshakespeare.com/king-lear-reviews/theatre-reviews",
+            "outletId": "playshakespeare.com",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-11-05T03:08:07.157Z"
+          },
+          {
+            "url": "https://www.theatermania.com/news/king-lear_4450/",
+            "outletId": "theatermania",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-11-05T03:08:07.157Z"
           }
         ],
         "censusSchema": 4,
@@ -176020,9 +176807,9 @@
           }
         ],
         "liveCount": 1,
-        "candidateCount": 1
+        "candidateCount": 8
       },
-      "computedAt": "2026-11-04T21:30:20.530Z"
+      "computedAt": "2026-11-05T03:08:07.157Z"
     },
     {
       "showId": "king-lear-royal-exchange-regional-2026",
@@ -230765,8 +231552,8 @@
       "previewsStartDate": "2026-11-02",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://www.timeout.com/london/theatre/nero",
         "https://www.londontheatre.co.uk/theatre-news/news/andrew-barth-feldman-to-star-in-new-musical-nero-in-london",
+        "https://www.timeout.com/london/theatre/nero",
         "https://www.londonboxoffice.co.uk/search/month/nero-tickets/2026/11/03/2",
         "http://www.curtainup.com/nero.html"
       ],
@@ -230774,6 +231561,18 @@
       "dirClean": 0,
       "inReviewsJson": 0,
       "missing": [
+        {
+          "url": "https://www.londontheatre.co.uk/theatre-news/news/andrew-barth-feldman-to-star-in-new-musical-nero-in-london",
+          "host": "londontheatre.co.uk",
+          "knownOutletId": "london-theatre",
+          "serpCensus": true,
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ]
+        },
         {
           "url": "https://www.timeout.com/london/theatre/nero",
           "host": "timeout.com",
@@ -230877,91 +231676,32 @@
         "perSource": {}
       },
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"Nero\" West End review",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"Nero\" West End review",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 9,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"Nero\" review southwark",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 9,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "Nero Southwark Playhouse review",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "Nero Southwark Playhouse review",
-            "page": 1,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "Nero Southwark Playhouse review",
-            "page": 2,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          }
-        ],
-        "queriesOk": 5,
-        "queriesTotal": 5,
-        "resultCount": 1,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 39,
-        "byReason": {
-          "not-http-url": 29,
-          "non-review-host": 6,
-          "event-listing": 1,
-          "ticketing-listing": 1,
-          "non-review-path": 1,
-          "write-path-blocked": 1
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
-      "nonReviewCandidates": [
-        {
-          "url": "https://www.londontheatre.co.uk/theatre-news/news/andrew-barth-feldman-to-star-in-new-musical-nero-in-london",
-          "host": "londontheatre.co.uk",
-          "knownOutletId": "london-theatre",
-          "serpCensus": true,
-          "nonReviewVerdict": "page-date-before-run",
-          "nonReviewDetail": "2026-07-21"
-        }
-      ],
       "automatedExcludedListed": 1,
       "unextractable": [],
       "ingestResults": [
+        {
+          "url": "https://www.londontheatre.co.uk/theatre-news/news/andrew-barth-feldman-to-star-in-new-musical-nero-in-london",
+          "host": "londontheatre.co.uk",
+          "outletId": "london-theatre",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
         {
           "url": "https://www.timeout.com/london/theatre/nero",
           "host": "timeout.com",
@@ -230990,13 +231730,20 @@
           "expectedReason": null,
           "unclassified": false,
           "zeroChar": false,
-          "reason": "Fetch failed: fetch failed: All scraping methods failed; no archive.org capture"
+          "reason": "⚠️  Scrapingdog pace (~166748/day) projects exhaustion in ~28d, before the 29d-out renewal — still using SD (prepaid credits beat BD's ~17x cost); health-check tracks the burn\nFetch failed: fetch failed: All scraping methods failed; no archive.org capture"
         }
       ],
       "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
+          {
+            "outletId": "london-theatre",
+            "outlet": "london-theatre",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.londontheatre.co.uk/theatre-news/news/andrew-barth-feldman-to-star-in-new-musical-nero-in-london"
+          },
           {
             "outletId": "timeout-london",
             "outlet": "timeout-london",
@@ -231023,8 +231770,9 @@
         "candidates": [
           {
             "url": "https://www.londontheatre.co.uk/theatre-news/news/andrew-barth-feldman-to-star-in-new-musical-nero-in-london",
-            "outletId": "londontheatre.co.uk",
-            "state": "live",
+            "outletId": "london-theatre",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
             "firstSeenAt": "2026-11-04T05:30:13.242Z"
           },
           {
@@ -231050,17 +231798,11 @@
           }
         ],
         "censusSchema": 4,
-        "excluded": [
-          {
-            "url": "https://www.londontheatre.co.uk/theatre-news/news/andrew-barth-feldman-to-star-in-new-musical-nero-in-london",
-            "host": "londontheatre.co.uk",
-            "reason": "page-date-before-run"
-          }
-        ],
-        "liveCount": 1,
+        "excluded": [],
+        "liveCount": 0,
         "candidateCount": 4
       },
-      "computedAt": "2026-11-04T21:30:20.530Z"
+      "computedAt": "2026-11-05T03:08:07.157Z"
     },
     {
       "showId": "new-born-off-broadway-2026",
@@ -380358,8 +381100,10 @@
       "category": "off-broadway",
       "previewsStartDate": "2026-10-13",
       "aggregatorArticles": [],
-      "aggregatorListedUrls": [],
-      "dirFiles": 0,
+      "aggregatorListedUrls": [
+        "https://www.timeout.com/newyork/theater/the-unbelievers"
+      ],
+      "dirFiles": 9,
       "dirClean": 0,
       "inReviewsJson": 0,
       "missing": [],
@@ -380368,26 +381112,114 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "out-of-window"
+        "ran": true,
+        "complete": true,
+        "query": "\"The Unbelievers\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"The Unbelievers\" Off-Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 9,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"The Unbelievers\" review york",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 7,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "The Unbelievers New York City Center review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 9,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "The Unbelievers New York City Center review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "The Unbelievers New York City Center review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 1,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 38,
+        "byReason": {
+          "not-http-url": 18,
+          "production-database-listing": 1,
+          "non-review-host": 13,
+          "no-review-evidence": 1,
+          "ticketing-reseller": 1,
+          "bare-host": 3,
+          "aggregator-roundup": 1
+        }
       },
       "dedupedVariants": [],
+      "nonReviewCandidates": [
+        {
+          "url": "https://www.timeout.com/newyork/theater/the-unbelievers",
+          "host": "timeout.com",
+          "knownOutletId": "timeout",
+          "nonReviewVerdict": "timeout-listing-blurb",
+          "nonReviewDetail": "unauthored-and-pre-opening"
+        }
+      ],
+      "automatedExcludedListed": 0,
       "unextractable": [],
       "censusVerdict": {
-        "verdict": "no-census-yet",
+        "verdict": "complete",
         "missing": [],
         "suppressedMissing": [],
-        "candidates": [],
+        "candidates": [
+          {
+            "url": "https://www.timeout.com/newyork/theater/the-unbelievers",
+            "outletId": "timeout.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-05T03:08:07.157Z"
+          }
+        ],
         "censusSchema": 4,
-        "excluded": [],
-        "liveCount": 0,
-        "candidateCount": 0
+        "excluded": [
+          {
+            "url": "https://www.timeout.com/newyork/theater/the-unbelievers",
+            "host": "timeout.com",
+            "reason": "timeout-listing-blurb"
+          }
+        ],
+        "liveCount": 1,
+        "candidateCount": 1
       },
-      "computedAt": "2026-11-04T21:30:20.530Z"
+      "computedAt": "2026-11-05T03:08:07.157Z"
     },
     {
       "showId": "the-unbelievers-west-end-2025",
@@ -381397,7 +382229,8 @@
       "aggregatorListedUrls": [
         "http://www.showbiz411.com/2010/11/04/women-on-the-verge-musical-the-gazpacho-is-sour",
         "http://www.newsday.com/entertainment/theater/women-on-the-verge-of-a-stronger-story-1.2425363",
-        "http://www.bloomberg.com/news/2010-11-05/three-divas-founder-in-pointless-women-on-the-verge-review.html"
+        "http://www.bloomberg.com/news/2010-11-05/three-divas-founder-in-pointless-women-on-the-verge-review.html",
+        "https://www.timeout.com/newyork/theater/the-verge"
       ],
       "dirFiles": 1,
       "dirClean": 0,
@@ -381448,16 +382281,88 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "out-of-window"
+        "ran": true,
+        "complete": true,
+        "query": "\"The Verge\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"The Verge\" Off-Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 5,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"The Verge\" review public",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 8,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped2",
+            "query": "\"The Verge\" Glaspell review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 4,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "The Verge The Public Theater/LuEsther Hall review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 8,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "The Verge The Public Theater/LuEsther Hall review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "The Verge The Public Theater/LuEsther Hall review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 6,
+        "queriesTotal": 6,
+        "resultCount": 1,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 273,
+        "count": 313,
         "byReason": {
-          "not-http-url": 39,
-          "non-review-host": 15,
-          "aggregator-internal-nav": 213,
-          "aggregator-section-root": 6
+          "aggregator-internal-nav": 214,
+          "not-http-url": 60,
+          "aggregator-section-root": 6,
+          "non-review-host": 27,
+          "show-listing-page": 1,
+          "news-roundup-site": 1,
+          "ticketing-reseller": 1,
+          "merch-store": 1,
+          "tag-index-page": 2
         }
       },
       "dedupedVariants": [],
@@ -381465,6 +382370,15 @@
         {
           "url": "https://www.broadwayworld.com/article/Review-Roundup-WOMEN-ON-THE-VERGE-20101104",
           "publishDate": "2010-11-05"
+        }
+      ],
+      "nonReviewCandidates": [
+        {
+          "url": "https://www.timeout.com/newyork/theater/the-verge",
+          "host": "timeout.com",
+          "knownOutletId": "timeout",
+          "nonReviewVerdict": "timeout-listing-blurb",
+          "nonReviewDetail": "unauthored-and-pre-opening"
         }
       ],
       "automatedExcludedListed": 0,
@@ -381495,16 +382409,29 @@
       "ingestResults": [],
       "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "no-census-yet",
+        "verdict": "complete",
         "missing": [],
         "suppressedMissing": [],
-        "candidates": [],
+        "candidates": [
+          {
+            "url": "https://www.timeout.com/newyork/theater/the-verge",
+            "outletId": "timeout.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-05T03:08:07.157Z"
+          }
+        ],
         "censusSchema": 4,
-        "excluded": [],
-        "liveCount": 0,
-        "candidateCount": 0
+        "excluded": [
+          {
+            "url": "https://www.timeout.com/newyork/theater/the-verge",
+            "host": "timeout.com",
+            "reason": "timeout-listing-blurb"
+          }
+        ],
+        "liveCount": 1,
+        "candidateCount": 1
       },
-      "computedAt": "2026-11-04T21:30:20.530Z"
+      "computedAt": "2026-11-05T03:08:07.157Z"
     },
     {
       "showId": "the-very-hungry-caterpillar-interactive-show-off-broadway-2026",
@@ -419328,48 +420255,52 @@
       "openingDate": "2024-10-01",
       "status": "closed",
       "category": "broadway",
-      "aggregatorArticles": [
-        "https://playbill.com/article/read-the-reviews-for-david-henry-hwangs-yellow-face-on-broadway",
-        "https://www.broadwayworld.com/article/Review-Roundup-Daniel-Dae-Kim-More-Star-In-YELLOW-FACE-on-Broadway-20241001"
-      ],
+      "previewsStartDate": "2024-09-13",
+      "aggregatorArticles": [],
       "aggregatorListedUrls": [
+        "https://www.nytimes.com/2024/10/01/theater/yellow-face-review-daniel-dae-kim.html",
+        "https://www.newyorktheatreguide.com/reviews/yellow-face-broadway-review-daniel-dae-kim",
+        "https://www.timeout.com/newyork/theater/yellow-face-broadway-review-david-henry-hwang-daniel-dae-kim-asian-american",
+        "https://variety.com/2024/legit/reviews/yellow-face-play-review-daniel-dae-kim-broadway-1236160159/",
+        "https://www.theatermania.com/news/review-daniel-dae-kim-plays-david-henry-hwang-in-yellow-face_1751759/",
+        "https://www.talkinbroadway.com/page/world/YellowFace.html",
+        "https://www.theaterscene.net/plays/broadway-plays/yellow-face/joel-benjamin/",
+        "https://www.theatrereviews.com/broadway-review-yellow-face-at-the-todd-haimes-theatre-currently-on/",
+        "https://newyorktheater.me/2024/10/01/yellow-face-broadway-review/",
+        "https://twi-ny.com/2024/10/07/big-small-screen-stars-on-broadway-yellow-face-the-roommate-mcneal/",
+        "https://pagesonstages.wordpress.com/2024/11/03/yellow-face/",
+        "https://joysauce.com/yellow-face-is-unabashedly-back-for-its-broadway-debut/",
         "https://www.chicagotribune.com/2024/10/01/review-in-yellow-face-on-broadway-david-henry-hwang-has-some-fun-with-a-thorny-question/",
         "https://cititour.com/NYC_Broadway/Yellow-Face/1254",
         "https://www.thedailybeast.com/review-the-ghosts-of-good-bones-and-yellow-face-on-broadway",
         "https://deadline.com/2024/10/yellow-face-broadway-review-daniel-dae-kim-1236103847/",
         "https://exeuntnyc.com/reviews/review-yellow-face-at-todd-haimes-theatre/",
-        "https://www.nydailynews.com/2024/10/01/broadway-review-yellow-face-is-enjoyable-comedy-about-racial-identity-in-the-arts/",
         "https://www.vulture.com/article/theater-reviews-yellow-face-hwang-good-bones-ijames.html",
         "https://nystagereview.com/2024/10/01/yellow-face-laugh-reflect-repeat/",
         "https://nystagereview.com/2024/10/01/yellow-face-playwright-david-henry-hwang-has-fun-unmasking-himself/",
-        "https://newyorktheater.me/2024/10/01/yellow-face-broadway-review/",
-        "https://www.newyorktheatreguide.com/reviews/yellow-face-broadway-review-daniel-dae-kim",
-        "https://www.nytimes.com/2024/10/01/theater/yellow-face-review-daniel-dae-kim.html",
-        "https://www.nysun.com/article/tony-winner-david-henry-hwangs-2007-play-yellow-face-makes-its-broadway-bow",
-        "https://www.theatermania.com/news/review-daniel-dae-kim-plays-david-henry-hwang-in-yellow-face_1751759/",
         "https://www.theatrely.com/post/yellow-face-finally-makes-it-to-broadway-review",
-        "https://www.timeout.com/newyork/theater/yellow-face-broadway-review-david-henry-hwang-daniel-dae-kim-asian-american",
-        "https://variety.com/2024/legit/reviews/yellow-face-play-review-daniel-dae-kim-broadway-1236160159/",
-        "https://www.washingtonpost.com/entertainment/theater/2024/10/01/yellow-face-review-broadway-daniel-dae-kim/",
         "https://www.thewrap.com/yellow-face-broadway-review-david-henry-hwang/",
-        "https://www.talkinbroadway.com/page/world/YellowFace.html",
-        "https://www.theaterscene.net/plays/broadway-plays/yellow-face/joel-benjamin/",
-        "https://www.theatrereviews.com/broadway-review-yellow-face-at-the-todd-haimes-theatre-currently-on/",
-        "https://pagesonstages.wordpress.com/2024/11/03/yellow-face/",
-        "https://twi-ny.com/2024/10/07/big-small-screen-stars-on-broadway-yellow-face-the-roommate-mcneal/",
-        "https://joysauce.com/yellow-face-is-unabashedly-back-for-its-broadway-debut/"
+        "https://www.washingtonpost.com/entertainment/theater/2024/10/01/yellow-face-review-broadway-daniel-dae-kim/"
       ],
-      "dirFiles": 39,
-      "dirClean": 21,
-      "inReviewsJson": 21,
+      "dirFiles": 49,
+      "dirClean": 27,
+      "inReviewsJson": 29,
       "missing": [],
       "dirOnly": [
+        {
+          "host": "amny.com",
+          "count": 1
+        },
+        {
+          "host": "frontmezzjunkies.com",
+          "count": 1
+        },
         {
           "host": "latimes.com",
           "count": 1
         },
         {
-          "host": "pagesonstages.com",
+          "host": "stagebuddy.com",
           "count": 1
         },
         {
@@ -419382,122 +420313,6 @@
         }
       ],
       "flaggedMisses": [
-        {
-          "url": "https://www.nydailynews.com/2024/10/01/broadway-review-yellow-face-is-enjoyable-comedy-about-racial-identity-in-the-arts/",
-          "host": "nydailynews.com",
-          "knownOutletId": "nydailynews",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nydailynews--chris-jones.json",
-              "flag": "clean",
-              "urlInDir": "https://www.nydailynews.com/2024/10/01/broadway-review-yellow-face-is-enjoyable-comedy-about-racial-identity-in-the-arts/"
-            }
-          ],
-          "exclusion": "humanExcluded",
-          "basis": [
-            "knownSyndicationSecondary"
-          ],
-          "reverify": false
-        },
-        {
-          "url": "https://www.nysun.com/article/tony-winner-david-henry-hwangs-2007-play-yellow-face-makes-its-broadway-bow",
-          "host": "nysun.com",
-          "knownOutletId": "new-york-sun",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "new-york-sun--elysa-gardner.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.nysun.com/article/tony-winner-david-henry-hwangs-2007-play-yellow-face-makes-its-broadway-bow"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "reverify": true
-        },
-        {
-          "url": "https://www.theatermania.com/news/review-daniel-dae-kim-plays-david-henry-hwang-in-yellow-face_1751759/",
-          "host": "theatermania.com",
-          "knownOutletId": "theatermania",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "theatermania--kenji-fujishima.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://www.theatermania.com/news/review-daniel-dae-kim-plays-david-henry-hwang-in-yellow-face_1751759/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongShow"
-          ],
-          "reverify": true
-        },
-        {
-          "url": "https://www.washingtonpost.com/entertainment/theater/2024/10/01/yellow-face-review-broadway-daniel-dae-kim/",
-          "host": "washingtonpost.com",
-          "knownOutletId": "washpost",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "washpost--naveen-kumar.json",
-              "flag": "clean",
-              "urlInDir": "https://www.washingtonpost.com/entertainment/theater/2024/10/01/yellow-face-review-broadway-daniel-dae-kim/"
-            },
-            {
-              "file": "washpost--peter-marks.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://www.washingtonpost.com/entertainment/theater/2024/10/01/yellow-face-review-broadway-daniel-dae-kim/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongAttribution",
-            "wrongShow"
-          ],
-          "reverify": true
-        },
-        {
-          "url": "https://www.theatrereviews.com/broadway-review-yellow-face-at-the-todd-haimes-theatre-currently-on/",
-          "host": "theatrereviews.com",
-          "knownOutletId": "theatre-reviews-limited",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "theatre-reviews-limited--joseph-verlezza.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://www.theatrereviews.com/broadway-review-yellow-face-at-the-todd-haimes-theatre-currently-on/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongShow"
-          ],
-          "reverify": true
-        },
         {
           "url": "https://twi-ny.com/2024/10/07/big-small-screen-stars-on-broadway-yellow-face-the-roommate-mcneal/",
           "host": "twi-ny.com",
@@ -419518,7 +420333,18 @@
           "basis": [
             "wrongShow"
           ],
-          "serpCensus": true,
+          "sources": [
+            {
+              "source": "show-score",
+              "sourceUrl": "https://www.show-score.com/broadway-shows/yellow-face-broadway"
+            },
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
+          "listingDate": "2024-10-07",
+          "listingSource": "show-score",
           "reverify": true
         },
         {
@@ -419533,16 +420359,28 @@
           "dirFlags": [
             {
               "file": "joysauce--janvi-sai.json",
-              "flag": "wrongShow",
+              "flag": "clean",
               "urlInDir": "https://joysauce.com/yellow-face-is-unabashedly-back-for-its-broadway-debut/"
             }
           ],
           "exclusion": "automatedExcluded",
           "basis": [
-            "wrongShow"
+            "cvWrongArticleHighConfidence"
           ],
-          "serpCensus": true,
-          "reverify": true
+          "liveInReviews": true,
+          "sources": [
+            {
+              "source": "show-score",
+              "sourceUrl": "https://www.show-score.com/broadway-shows/yellow-face-broadway"
+            },
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
+          "listingDate": "2024-10-02",
+          "listingSource": "show-score",
+          "reverify": false
         }
       ],
       "citedNoUrl": [],
@@ -419552,74 +420390,87 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 402,
+        "count": 2,
         "byReason": {
-          "aggregator-internal-nav": 285,
-          "not-http-url": 60,
-          "production-database-listing": 11,
-          "aggregator-section-root": 10,
-          "non-review-host": 36
+          "non-review-host": 2
         }
       },
-      "dedupedVariants": [
-        {
-          "url": "https://pagesonstages.wordpress.com/2024/11/03/yellow-face/",
-          "host": "pagesonstages.wordpress.com",
-          "matchedUrl": "http://pagesonstages.com/2024/11/03/yellow-face/",
-          "outletId": "pages-on-stages",
-          "reason": "same outlet \"pages-on-stages\" already held at pagesonstages.com; pagesonstages.wordpress.com is a registered alias of it"
-        }
-      ],
-      "automatedExcludedListed": 6,
+      "dedupedVariants": [],
+      "automatedExcludedListed": 1,
       "unextractable": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
-          {
-            "outletId": "new-york-sun",
-            "outlet": "new-york-sun",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.nysun.com/article/tony-winner-david-henry-hwangs-2007-play-yellow-face-makes-its-broadway-bow"
-          },
-          {
-            "outletId": "theatermania",
-            "outlet": "theatermania",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.theatermania.com/news/review-daniel-dae-kim-plays-david-henry-hwang-in-yellow-face_1751759/"
-          },
-          {
-            "outletId": "washpost",
-            "outlet": "washpost",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.washingtonpost.com/entertainment/theater/2024/10/01/yellow-face-review-broadway-daniel-dae-kim/"
-          },
-          {
-            "outletId": "theatre-reviews-limited",
-            "outlet": "theatre-reviews-limited",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.theatrereviews.com/broadway-review-yellow-face-at-the-todd-haimes-theatre-currently-on/"
-          },
           {
             "outletId": "this-week-in-new-york",
             "outlet": "this-week-in-new-york",
             "critic": "Unknown",
             "stars": null,
             "url": "https://twi-ny.com/2024/10/07/big-small-screen-stars-on-broadway-yellow-face-the-roommate-mcneal/"
-          },
-          {
-            "outletId": "joysauce",
-            "outlet": "joysauce",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://joysauce.com/yellow-face-is-unabashedly-back-for-its-broadway-debut/"
           }
         ],
         "suppressedMissing": [],
         "candidates": [
+          {
+            "url": "https://www.nytimes.com/2024/10/01/theater/yellow-face-review-daniel-dae-kim.html",
+            "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-16T23:13:35.325Z"
+          },
+          {
+            "url": "https://www.newyorktheatreguide.com/reviews/yellow-face-broadway-review-daniel-dae-kim",
+            "outletId": "newyorktheatreguide.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-16T23:13:35.325Z"
+          },
+          {
+            "url": "https://www.timeout.com/newyork/theater/yellow-face-broadway-review-david-henry-hwang-daniel-dae-kim-asian-american",
+            "outletId": "timeout.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-16T23:13:35.325Z"
+          },
+          {
+            "url": "https://variety.com/2024/legit/reviews/yellow-face-play-review-daniel-dae-kim-broadway-1236160159/",
+            "outletId": "variety.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-16T23:13:35.325Z"
+          },
+          {
+            "url": "https://www.theatermania.com/news/review-daniel-dae-kim-plays-david-henry-hwang-in-yellow-face_1751759/",
+            "outletId": "theatermania.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-16T23:13:35.325Z"
+          },
+          {
+            "url": "https://www.talkinbroadway.com/page/world/YellowFace.html",
+            "outletId": "talkinbroadway.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-16T23:13:35.325Z"
+          },
+          {
+            "url": "https://www.theaterscene.net/plays/broadway-plays/yellow-face/joel-benjamin/",
+            "outletId": "theaterscene.net",
+            "state": "live",
+            "firstSeenAt": "2026-08-16T23:13:35.325Z"
+          },
+          {
+            "url": "https://www.theatrereviews.com/broadway-review-yellow-face-at-the-todd-haimes-theatre-currently-on/",
+            "outletId": "theatrereviews.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-16T23:13:35.325Z"
+          },
+          {
+            "url": "https://newyorktheater.me/2024/10/01/yellow-face-broadway-review/",
+            "outletId": "newyorktheater.me",
+            "state": "live",
+            "firstSeenAt": "2026-08-16T23:13:35.325Z"
+          },
+          {
+            "url": "https://pagesonstages.wordpress.com/2024/11/03/yellow-face/",
+            "outletId": "pagesonstages.wordpress.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-16T23:13:35.325Z"
+          },
           {
             "url": "https://www.chicagotribune.com/2024/10/01/review-in-yellow-face-on-broadway-david-henry-hwang-has-some-fun-with-a-thorny-question/",
             "outletId": "chicagotribune.com",
@@ -419669,40 +420520,10 @@
             "firstSeenAt": "2026-08-31T14:43:54.309Z"
           },
           {
-            "url": "https://newyorktheater.me/2024/10/01/yellow-face-broadway-review/",
-            "outletId": "newyorktheater.me",
-            "state": "live",
-            "firstSeenAt": "2026-08-16T23:13:35.325Z"
-          },
-          {
-            "url": "https://www.newyorktheatreguide.com/reviews/yellow-face-broadway-review-daniel-dae-kim",
-            "outletId": "newyorktheatreguide.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-16T23:13:35.325Z"
-          },
-          {
-            "url": "https://www.nytimes.com/2024/10/01/theater/yellow-face-review-daniel-dae-kim.html",
-            "outletId": "nytimes.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-16T23:13:35.325Z"
-          },
-          {
             "url": "https://www.theatrely.com/post/yellow-face-finally-makes-it-to-broadway-review",
             "outletId": "theatrely.com",
             "state": "live",
             "firstSeenAt": "2026-08-31T14:43:54.309Z"
-          },
-          {
-            "url": "https://www.timeout.com/newyork/theater/yellow-face-broadway-review-david-henry-hwang-daniel-dae-kim-asian-american",
-            "outletId": "timeout.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-16T23:13:35.325Z"
-          },
-          {
-            "url": "https://variety.com/2024/legit/reviews/yellow-face-play-review-daniel-dae-kim-broadway-1236160159/",
-            "outletId": "variety.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-16T23:13:35.325Z"
           },
           {
             "url": "https://www.thewrap.com/yellow-face-broadway-review-david-henry-hwang/",
@@ -419711,61 +420532,14 @@
             "firstSeenAt": "2026-08-31T14:43:54.309Z"
           },
           {
-            "url": "https://www.talkinbroadway.com/page/world/YellowFace.html",
-            "outletId": "talkinbroadway.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-16T23:13:35.325Z"
-          },
-          {
-            "url": "https://www.theaterscene.net/plays/broadway-plays/yellow-face/joel-benjamin/",
-            "outletId": "theaterscene.net",
-            "state": "live",
-            "firstSeenAt": "2026-08-16T23:13:35.325Z"
-          },
-          {
-            "url": "https://pagesonstages.wordpress.com/2024/11/03/yellow-face/",
-            "outletId": "pagesonstages.wordpress.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-16T23:13:35.325Z"
-          },
-          {
-            "url": "https://www.nysun.com/article/tony-winner-david-henry-hwangs-2007-play-yellow-face-makes-its-broadway-bow",
-            "outletId": "new-york-sun",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-31T14:43:54.309Z"
-          },
-          {
-            "url": "https://www.theatermania.com/news/review-daniel-dae-kim-plays-david-henry-hwang-in-yellow-face_1751759/",
-            "outletId": "theatermania",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-16T23:13:35.325Z"
-          },
-          {
             "url": "https://www.washingtonpost.com/entertainment/theater/2024/10/01/yellow-face-review-broadway-daniel-dae-kim/",
-            "outletId": "washpost",
-            "state": "GAP",
-            "reason": "sla-breach",
+            "outletId": "washingtonpost.com",
+            "state": "live",
             "firstSeenAt": "2026-08-31T14:43:54.309Z"
-          },
-          {
-            "url": "https://www.theatrereviews.com/broadway-review-yellow-face-at-the-todd-haimes-theatre-currently-on/",
-            "outletId": "theatre-reviews-limited",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-16T23:13:35.325Z"
           },
           {
             "url": "https://twi-ny.com/2024/10/07/big-small-screen-stars-on-broadway-yellow-face-the-roommate-mcneal/",
             "outletId": "this-week-in-new-york",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-16T23:13:35.325Z"
-          },
-          {
-            "url": "https://joysauce.com/yellow-face-is-unabashedly-back-for-its-broadway-debut/",
-            "outletId": "joysauce",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-16T23:13:35.325Z"
@@ -419774,15 +420548,15 @@
         "censusSchema": 4,
         "excluded": [
           {
-            "url": "https://www.nydailynews.com/2024/10/01/broadway-review-yellow-face-is-enjoyable-comedy-about-racial-identity-in-the-arts/",
-            "host": "nydailynews.com",
-            "reason": "collected-and-excluded"
+            "url": "https://joysauce.com/yellow-face-is-unabashedly-back-for-its-broadway-debut/",
+            "host": "joysauce.com",
+            "reason": "live-in-reviews"
           }
         ],
-        "liveCount": 17,
-        "candidateCount": 23
+        "liveCount": 20,
+        "candidateCount": 21
       },
-      "computedAt": "2026-10-19T21:45:10.991Z"
+      "computedAt": "2026-11-05T03:08:07.157Z"
     },
     {
       "showId": "yentl-off-west-end-2026",
@@ -420458,26 +421232,25 @@
     }
   ],
   "staleness": {
-    "at": "2026-11-05T02:10:04.143Z",
+    "at": "2026-11-05T03:08:07.156Z",
     "reserveEvery": 4,
     "reservedAttempted": [
-      "ghost-notes-off-broadway-2026",
-      "i-became-we-off-broadway-2026"
+      "yellow-face-2024"
     ],
     "catalogueReserveEvery": 8,
     "catalogueAttempted": [
-      "burlesque-off-west-end-2026"
+      "girls-and-boys-regional-2025"
     ],
-    "neverAuditedDueAtStart": 659,
+    "neverAuditedDueAtStart": 658,
     "oldestDueRowAtStart": {
       "showId": "yellow-face-2024",
       "computedAt": "2026-10-19T21:45:10.991Z",
-      "ageHours": 388.1
+      "ageHours": 389
     },
     "oldestDueRowAfterRun": {
-      "showId": "yellow-face-2024",
+      "showId": "mcneal-2024",
       "computedAt": "2026-10-19T21:45:10.991Z",
-      "ageHours": 388.4
+      "ageHours": 389.4
     }
   }
 }
