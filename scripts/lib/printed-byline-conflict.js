@@ -206,11 +206,22 @@ function findPrintedKnownByline({ fullText, knownCritics }) {
  * True when the printed name sits in a multi-author list ("By A, B, C and D"): a roundup or co-byline, so the
  * first known name is not the author of the page (the Liberation / Goings On case).
  */
+// Words that mark a job title, outlet or date after a byline name ("By Jesse Green, Chief Theater Critic").
+// A name list continues only when the next item reads like a person, so these never count as a second author.
+const NON_NAME_AFTER_BYLINE = /^(?:chief|senior|staff|contributing|theat(?:er|re)|drama|critic|writer|editor|reporter|special|associate|guest|los|new|usa|the|posted|published|updated|photo|photos|photography|review|reviews|reviewed|off|west|broadway|london|nyc|ny|nov|dec|jan|feb|mar|apr|may|jun|jul|aug|sep|sept|oct|monday|tuesday|wednesday|thursday|friday|saturday|sunday)$/i;
+
 function bylineContinuesList(rawHead, name) {
   const toks = String(name).trim().split(/\s+/).map((t) => t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
   if (toks.length < 2) return false;
-  const re = new RegExp(toks.join("[\\s.]+") + "\\s*(?:,\\s*|\\s+(?:and|&)\\s+)\\p{Lu}[\\p{L}'’-]+\\s+\\p{Lu}", 'u');
-  return re.test(rawHead);
+  // Anchored to the byline marker, so a later mention of the name elsewhere in the head does not count.
+  const re = new RegExp("(?:^|[^\\p{L}])[Bb][Yy]\\s*:?\\s+" + toks.join("[\\s.]+") + "\\s*(?:,\\s*|\\s+(?:and|&)\\s+)(\\p{Lu}[\\p{L}'’.-]*)\\s+(\\p{Lu}[\\p{L}'’.-]*)", 'u');
+  const m = re.exec(rawHead);
+  if (!m) return false;
+  // Next item must look like a person: neither word a title/outlet/date word, and not an ALL-CAPS tag.
+  const [first, second] = [m[1], m[2]];
+  if (NON_NAME_AFTER_BYLINE.test(first) || NON_NAME_AFTER_BYLINE.test(second)) return false;
+  if (/^[\p{Lu}]{3,}$/u.test(first)) return false;
+  return true;
 }
 
 function _firstPrintedKnown({ fullText, knownCritics, creditedName }) {
