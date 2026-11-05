@@ -687,3 +687,55 @@ test('countReviewHeaders: zero for an issue whose review pages carry no text', a
   assert.ok(countReviewHeaders('Fiona Mountford  Evening Standard  05.04.17\nbody') > 0);
   assert.equal(countReviewHeaders('first performed 25.11.52; at the Ambassadors'), 0);
 });
+
+// BRO-6356: raw mode kept THE KING AND I's and EXIT THE KING's reviews under
+// King Lear (volume 38). Path 2 counted "lear" inside "clear"/"learns" and
+// Path 4 counted "king" alone. Prose below is written for the test.
+const { hasTitleWord, hasDistinctiveTitleWord } = require('./tr-pdf-parse.js');
+const rawBlock = (body) => `GUARDIAN\n03.07.18\nA Critic\n${body}\n`;
+const KING_AND_I = 'The musical about the King of Siam returns to the stage of the Palladium. The king is proud, the governess is clear-eyed, and the production learns how to make the old songs breathe. Every scene with the king fills the theatre, and the cast is strong throughout. ';
+const EXIT_KING = 'This play about a dying king is staged with wit. The king refuses to go, the queen is clear about the end, and the director learns to pace the comedy. A cast of six gives the king a long farewell in a fine production. ';
+const LEAR = 'Ian McKellen plays Lear in a production of cold modern power. The old man divides his kingdom, and this Lear rages with a clarity that the whole cast matches on the stage of the theatre tonight. ';
+test('BRO-6356 raw mode: a King Lear filter drops reviews that only share "king"', () => {
+  for (const body of [KING_AND_I.repeat(3), EXIT_KING.repeat(3)]) {
+    assert.equal(parseRawPdfReviews(rawBlock(body), 'King Lear', null).length, 0, body.slice(0, 40));
+  }
+  assert.equal(parseRawPdfReviews(rawBlock(LEAR.repeat(3)), 'King Lear', null).length, 1, 'a review that says only "Lear" is kept');
+  // The same texts still match their own titles.
+  assert.equal(parseRawPdfReviews(rawBlock(EXIT_KING.repeat(3)), 'Exit the King', null).length, 0, 'never names "exit": unchanged behaviour');
+  assert.equal(parseRawPdfReviews(rawBlock(KING_AND_I.repeat(3)), 'The King and I', null).length, 1);
+});
+test('BRO-6356 hasTitleWord: whole words or glued proper names, never inside another word', () => {
+  assert.equal(hasTitleWord('it was clear he learns', 'lear'), false);
+  assert.equal(hasTitleWord("Lear's daughters", 'lear'), true);
+  assert.equal(hasTitleWord('KING LEAR', 'lear'), true);
+  assert.equal(hasTitleWord('CLEARLY', 'lear'), false);
+  assert.equal(hasTitleWord('City ofAngels is a musical', 'angels'), true);
+  assert.equal(hasTitleWord('Death andtheMaiden', 'maiden'), true);
+  assert.equal(hasDistinctiveTitleWord('the king and the king', 'King Lear'), false);
+  assert.equal(hasDistinctiveTitleWord('the cats and the cats', 'Cats'), true, 'no distinctive word: no gate');
+});
+test('BRO-6356 raw mode: glued old-issue text still matches a mixed title', () => {
+  const body = 'A trip on the Showboat is a long and happy musical evening at the theatre, and the production has a fine cast. '.repeat(4);
+  assert.equal(parseRawPdfReviews(rawBlock(body), 'Show Boat', null).length, 1);
+});
+
+// BRO-6356 real fixture (private review-texts, skipped when absent): the
+// King Lear 2018 TR files the scorer rejected as another show's review are
+// THE KING AND I / EXIT THE KING texts; the raw filter must drop every one and
+// keep the TR files that are Lear reviews (raw or default mode).
+test('BRO-6356 real King Lear 2018 TR texts: rejected dropped, Lear reviews kept', async (t) => {
+  const fsm = await import('node:fs');
+  const dir = new URL('../../data/review-texts/king-lear-west-end-2018/', import.meta.url);
+  if (!fsm.existsSync(dir)) { t.skip('private review-texts not present'); return; }
+  let rejected = 0; let kept = 0;
+  for (const f of fsm.readdirSync(dir)) {
+    const d = JSON.parse(fsm.readFileSync(new URL(f, dir), 'utf8'));
+    if (d.source !== 'theatre-record' || !d.fullText) continue;
+    const n = parseRawPdfReviews(rawBlock(d.fullText), 'King Lear', null).length;
+    if (d.rejectionReason === 'wrong_show') { rejected++; assert.equal(n, 0, f); }
+    // A Lear review is kept by raw or (as before) by default mode.
+    else if (/\blear\b/i.test(d.fullText)) { kept++; assert.ok(n + parseDefaultPdfReviews(rawBlock(d.fullText), 'King Lear', null).length > 0, f); }
+  }
+  if (!rejected && !kept) t.skip('no TR files present');
+});
