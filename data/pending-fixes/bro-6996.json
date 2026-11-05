@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6996",
   "planId": "8c3f1087-1882-4f21-b065-34122d012c34",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-05T05:22:05.764Z",
   "submitter": {
     "name": null,
@@ -31,5 +31,19 @@
         "args": "--from=the-heart-off-broadway-2026/musical-theatre-report--ben-west.json --to-show=in-the-heights-off-broadway-2026 --method=markers --expect-start=IN_THE_HEIGHTS_AT_NEW_YORK_CITY_CENTER_In --expect-end=that_borders_on_poor --own-start=THE_HEART_AT_THE_LAURA_PELS_THEATRE_The --own-end=with_a_16_million_max --apply"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-05T05:31:32.469Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for in-the-heights-off-broadway-2026"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran copy-multishow-section.js successfully"
+    }
+  ],
+  "executedIn": "ci"
 }
