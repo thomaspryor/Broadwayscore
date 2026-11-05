@@ -8,8 +8,9 @@
  * A genuinely different venue (Palace vs Winter Garden) still fails.
  */
 const { venuesMatch } = require('./deduplication');
+const { foldDiacritics } = require('./title-match');
 
-const compact = (s) => String(s || '').toLowerCase().replace(/&#0?39;|[’‘]/g, "'").replace(/[^a-z0-9]/g, '');
+const compact = (s) => foldDiacritics(String(s || '')).toLowerCase().replace(/&#0?39;|[’‘]/g, "'").replace(/[^a-z0-9]/g, '');
 
 function pageVenueMatches(pageVenue, showVenue) {
   if (!pageVenue || !showVenue) return false;
