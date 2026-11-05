@@ -22760,17 +22760,17 @@
     },
     "live-data-test:tests/unit/review-pullquotes-live-data.test.mjs::no review missing a pullQuote has a recoverable excerpt sitting unused in review-texts": {
       "status": "open",
-      "disposition": "digest",
+      "disposition": "auto",
       "title": "Live-data test failing: no review missing a pullQuote has a recoverable excerpt sitting unused in review-texts (tests/unit/review-pullquotes-live-data.test.mjs)",
       "firstSeen": "2026-10-20T21:59:17.665Z",
       "incidentOpenedAt": "2026-10-31T00:35:50.708Z",
-      "lastSeen": "2026-11-05T03:17:25.408Z",
-      "lastNotifiedAt": "2026-11-04T07:10:12.725Z",
-      "lastSurfacedAt": "2026-11-04T07:10:12.725Z",
-      "notifyCount": 12,
+      "deferredAuto": true,
+      "lastSeen": "2026-11-05T12:32:05.737Z",
+      "lastNotifiedAt": "2026-11-05T12:32:05.737Z",
+      "lastSurfacedAt": "2026-11-05T12:32:05.737Z",
+      "notifyCount": 13,
       "cardId": null,
-      "linearIdentifier": null,
-      "silentRefires": 10
+      "linearIdentifier": "BRO-7012"
     },
     "land:land/bro-5776-commercial-coverage": {
       "status": "resolved",
@@ -24071,13 +24071,13 @@
       "title": "Live-data test failing: live corpus scan: no NEW same-show/same-outlet critic-name near-duplicate beyond the known backlog (tests/unit/critic-spelling-duplicates-live-data.test.mjs)",
       "firstSeen": "2026-10-22T11:49:37.833Z",
       "incidentOpenedAt": "2026-11-04T07:10:12.665Z",
-      "lastSeen": "2026-11-05T03:17:25.328Z",
-      "lastNotifiedAt": "2026-11-04T07:10:12.665Z",
-      "lastSurfacedAt": "2026-11-04T07:10:12.665Z",
-      "notifyCount": 9,
+      "deferredAuto": true,
+      "lastSeen": "2026-11-05T12:32:04.294Z",
+      "lastNotifiedAt": "2026-11-05T12:32:04.294Z",
+      "lastSurfacedAt": "2026-11-05T12:32:04.294Z",
+      "notifyCount": 10,
       "cardId": null,
-      "linearIdentifier": null,
-      "silentRefires": 10
+      "linearIdentifier": null
     },
     "land:land/bro-5325-wsj-section": {
       "status": "resolved",
@@ -24853,13 +24853,13 @@
       "firstSeen": "2026-10-22T20:59:52.372Z",
       "incidentOpenedAt": "2026-10-22T20:59:52.372Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-05T03:17:25.131Z",
+      "lastSeen": "2026-11-05T12:32:04.079Z",
       "lastNotifiedAt": "2026-11-05T02:45:26.544Z",
       "lastSurfacedAt": "2026-11-05T02:45:26.544Z",
       "notifyCount": 13,
       "cardId": null,
       "linearIdentifier": "BRO-6993",
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "land:land/bro-5969-index-bloat-v3": {
       "status": "resolved",
@@ -26805,17 +26805,17 @@
     },
     "live-data-test:tests/unit/venue-complex-live-data.test.mjs::no off-Broadway venue-complex has an unlinked bare-form/keyword-overlap sub-venue slug": {
       "status": "open",
-      "disposition": "digest",
+      "disposition": "auto",
       "title": "Live-data test failing: no off-Broadway venue-complex has an unlinked bare-form/keyword-overlap sub-venue slug (tests/unit/venue-complex-live-data.test.mjs)",
       "firstSeen": "2026-10-24T23:08:26.440Z",
       "incidentOpenedAt": "2026-10-31T00:35:50.727Z",
-      "lastSeen": "2026-11-05T03:17:25.425Z",
-      "lastNotifiedAt": "2026-11-04T07:10:12.739Z",
-      "lastSurfacedAt": "2026-11-04T07:10:12.739Z",
-      "notifyCount": 9,
+      "deferredAuto": true,
+      "lastSeen": "2026-11-05T12:32:07.725Z",
+      "lastNotifiedAt": "2026-11-05T12:32:07.725Z",
+      "lastSurfacedAt": "2026-11-05T12:32:07.725Z",
+      "notifyCount": 10,
       "cardId": null,
-      "linearIdentifier": null,
-      "silentRefires": 10
+      "linearIdentifier": "BRO-7013"
     },
     "test-yml:red:Unit Tests:196541b4": {
       "status": "resolved",
@@ -32030,17 +32030,17 @@
     },
     "live-data-test:tests/unit/doubled-market-ids-live-data.test.mjs::the live corpus has zero unallowlisted doubled-market ids": {
       "status": "open",
-      "disposition": "digest",
+      "disposition": "auto",
       "title": "Live-data test failing: the live corpus has zero unallowlisted doubled-market ids (tests/unit/doubled-market-ids-live-data.test.mjs)",
       "firstSeen": "2026-10-29T23:10:05.391Z",
       "incidentOpenedAt": "2026-10-29T23:10:05.391Z",
-      "lastSeen": "2026-11-05T03:17:25.351Z",
-      "lastNotifiedAt": "2026-11-04T07:10:12.680Z",
-      "lastSurfacedAt": "2026-11-04T07:10:12.680Z",
-      "notifyCount": 6,
+      "deferredAuto": true,
+      "lastSeen": "2026-11-05T12:32:04.319Z",
+      "lastNotifiedAt": "2026-11-05T12:32:04.319Z",
+      "lastSurfacedAt": "2026-11-05T12:32:04.319Z",
+      "notifyCount": 7,
       "cardId": null,
-      "linearIdentifier": null,
-      "silentRefires": 10
+      "linearIdentifier": "BRO-7011"
     },
     "live-data-test:tests/unit/duplicate-images-live-data.test.mjs::real data: no byte-identical art across unrelated, unlinked shows": {
       "status": "open",
@@ -32048,13 +32048,13 @@
       "title": "Live-data test failing: real data: no byte-identical art across unrelated, unlinked shows (tests/unit/duplicate-images-live-data.test.mjs)",
       "firstSeen": "2026-10-29T23:10:05.416Z",
       "incidentOpenedAt": "2026-11-03T03:38:58.182Z",
-      "lastSeen": "2026-11-05T03:17:25.373Z",
-      "lastNotifiedAt": "2026-11-04T07:10:12.695Z",
-      "lastSurfacedAt": "2026-11-04T07:10:12.695Z",
-      "notifyCount": 5,
+      "deferredAuto": true,
+      "lastSeen": "2026-11-05T12:32:05.698Z",
+      "lastNotifiedAt": "2026-11-05T12:32:05.698Z",
+      "lastSurfacedAt": "2026-11-05T12:32:05.698Z",
+      "notifyCount": 6,
       "cardId": null,
-      "linearIdentifier": null,
-      "silentRefires": 10
+      "linearIdentifier": null
     },
     "land:land/bro-6546-voidfix": {
       "status": "open",
@@ -35896,13 +35896,13 @@
       "title": "Live-data test failing: at most the 2 known real instances are flagged across the full corpus (tests/unit/outlet-domain-validation-live-data.test.mjs)",
       "firstSeen": "2026-11-03T04:48:41.826Z",
       "incidentOpenedAt": "2026-11-03T04:48:41.826Z",
-      "lastSeen": "2026-11-05T03:17:25.390Z",
-      "lastNotifiedAt": "2026-11-04T07:10:12.710Z",
-      "lastSurfacedAt": "2026-11-04T07:10:12.710Z",
-      "notifyCount": 2,
+      "deferredAuto": true,
+      "lastSeen": "2026-11-05T12:32:05.716Z",
+      "lastNotifiedAt": "2026-11-05T12:32:05.716Z",
+      "lastSurfacedAt": "2026-11-05T12:32:05.716Z",
+      "notifyCount": 3,
       "cardId": null,
-      "linearIdentifier": null,
-      "silentRefires": 10
+      "linearIdentifier": null
     },
     "opening-night-revival-unverified-clifford-odets-waiting-for-lefty-off-broadway-2026": {
       "status": "open",
