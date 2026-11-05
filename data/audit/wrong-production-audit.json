@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-05T17:29:59.182Z",
+  "timestamp": "2026-11-05T17:50:15.497Z",
   "stats": {
-    "totalReviews": 80209,
-    "alreadyFlagged": 22009,
+    "totalReviews": 80173,
+    "alreadyFlagged": 21976,
     "dateGuardCatches": 217,
-    "directorMismatch": 3506,
-    "tvFilmSignals": 2283,
+    "directorMismatch": 3509,
+    "tvFilmSignals": 2282,
     "londonSignals": 3614,
     "offBroadwaySignals": 741,
     "yearMismatch": 361,
-    "noPublishDate": 8500
+    "noPublishDate": 8492
   },
   "findings": [
     {
@@ -31020,6 +31020,19 @@
     },
     {
       "showId": "hughie-2016",
+      "file": "ap--mark-kennedy.json",
+      "publishDate": "2016-02-25",
+      "url": "http://abcnews.go.com/Entertainment/wireStory/review-broadways-odd-hughie-glows-whitaker-37205864",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"al pacino\" from hughie-1996"
+        }
+      ]
+    },
+    {
+      "showId": "hughie-2016",
       "file": "broadwayworld--michael-dale.json",
       "score": 44,
       "publishDate": "2016-02-25",
@@ -31092,7 +31105,7 @@
       "showId": "hughie-2016",
       "file": "huffpost--steven-suskin.json",
       "score": 39,
-      "publishDate": "2016-02-26",
+      "publishDate": "2016-02-25",
       "url": "http://www.huffingtonpost.com/steven-suskin/aisle-view-a-long-nights_b_9322680.html",
       "findings": [
         {
@@ -31174,6 +31187,20 @@
     },
     {
       "showId": "hughie-2016",
+      "file": "onstage-blog--sara-zweig.json",
+      "score": null,
+      "publishDate": "2016-02-26",
+      "url": "http://www.onstageblog.com/reviews/2016/2/25/broadway-review-hughie",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"al pacino\" from hughie-1996"
+        }
+      ]
+    },
+    {
+      "showId": "hughie-2016",
       "file": "theater-life--eric-march.json",
       "score": 17,
       "publishDate": "2016-02-29T21:51:00",
@@ -31192,6 +31219,20 @@
       "score": 89,
       "publishDate": "2016-03-05",
       "url": "https://www.theaterscene.net/plays/hughie/darryl-reilly/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"al pacino\" from hughie-1996"
+        }
+      ]
+    },
+    {
+      "showId": "hughie-2016",
+      "file": "theatermania--david-gordon.json",
+      "score": null,
+      "publishDate": "2016-02-25",
+      "url": "http://www.theatermania.com/broadway/reviews/hughie_76103.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -47011,20 +47052,6 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2026 (5x) more than 2013 (0x). 2026 matches production: once-pitlochry-festival-regional-2026"
-        }
-      ]
-    },
-    {
-      "showId": "one-man-two-guvnors-2012",
-      "file": "newsday--linda-winer.json",
-      "score": 62,
-      "publishDate": "April 18, 2012",
-      "url": "http://www.newsday.com/entertainment/theater/one-man-two-guvnors-is-pure-slapstick-1.3667079",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"peacock\""
         }
       ]
     },
