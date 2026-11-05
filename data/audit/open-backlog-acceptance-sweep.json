@@ -1,34 +1,64 @@
 {
-  "generatedAt": "2026-11-04T09:29:00.697Z",
+  "generatedAt": "2026-11-05T09:38:45.427Z",
   "shadow": true,
-  "checkoutSha": "fdd5be15af05512ec94fb0cc27df95b0f701c73b",
-  "totalCandidates": 381,
+  "checkoutSha": "89640c86461432a19c882b978293412832d27e93",
+  "totalCandidates": 369,
   "eligibleCandidates": 90,
   "checked": 30,
   "truncated": true,
   "fetchError": null,
   "counts": {
     "pass": 21,
-    "fail": 4,
-    "unverifiable": 5
+    "fail": 3,
+    "unverifiable": 6
   },
   "alreadyDone": [
     {
-      "id": "BRO-6966",
-      "name": "Guardian page extractor returns null on immersive-layout 5/5 pages (end-of-the-world, king-lear, arturo-ui)",
-      "verifyCmd": "node --test scripts/lib/score-extractors.test.mjs",
+      "id": "BRO-6997",
+      "name": "Image guard follow-ups: audit hero art, schedule the lookalike audit, tune weekly sweep noise (72 advisory flags)",
+      "verifyCmd": "node --test scripts/lib/live-art-audit.test.mjs",
       "detail": null
     },
     {
-      "id": "BRO-6951",
-      "name": "Run paired-clear plan for NYC parent-building wrongProduction candidates (65 reviews)",
-      "verifyCmd": "node --test scripts/lib/venue-parent-building.test.mjs",
+      "id": "BRO-6991",
+      "name": "Widen run-together outlet-name selector to 10+ chars and digit ids (BRO-5507 follow-up)",
+      "verifyCmd": "node --test scripts/lib/outlet-registry-field-shape.test.mjs tests/unit/outlet-registry-display-names.test.mjs tests/unit/outlet-registry-live-data.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-6983",
+      "name": "Stop the wrong-production-reviews leak recurring + de-noise Corpus Drift and the morning digest",
+      "verifyCmd": "node --test tests/unit/live-data-routing.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-6965",
+      "name": "Regular pipeline reads the lane's 24 outlet feeds daily (Bob's Theater Blog reviews missing for AGM, ODC)",
+      "verifyCmd": "test -f scripts/lib/titled-blog-collect.js",
+      "detail": null
+    },
+    {
+      "id": "BRO-6947",
+      "name": "Printed-byline follow-ups: auto-fill for outlets without registry critics, triage 341 unlisted, 14 destination-exists",
+      "verifyCmd": "node --test scripts/lib/printed-byline-conflict.test.mjs",
       "detail": null
     },
     {
       "id": "BRO-6916",
       "name": "West End lane: capture the real Lives of Others pages into the private recordings archive",
       "verifyCmd": "node --test tests/unit/west-end-fixture-replay.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-6904",
+      "name": "Daily Mail review files whose url points at a different review (low text overlap)",
+      "verifyCmd": "node --test scripts/lib/dailymail-url-discovery.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-6901",
+      "name": "Regional (UK/DC/Chicago) shows still missing images: root cause + systematic fix",
+      "verifyCmd": "node scripts/validate-data.js --strict",
       "detail": null
     },
     {
@@ -74,12 +104,6 @@
       "detail": null
     },
     {
-      "id": "BRO-6773",
-      "name": "Monthly Profitability Scorecard email: preview-only draft generator for the money list",
-      "verifyCmd": "node --test tests/unit/money-monthly.test.mjs",
-      "detail": null
-    },
-    {
       "id": "BRO-6763",
       "name": "Owner email for each new Profitability Scorecard sign-up",
       "verifyCmd": "node --test tests/unit/money-signup-notify.test.mjs",
@@ -104,18 +128,6 @@
       "detail": null
     },
     {
-      "id": "BRO-6736",
-      "name": "Joint reviews (one article covering two shows) only go live on the first show: 30 cited-not-live rows",
-      "verifyCmd": "node scripts/lib/verify-data-backfill.js --show=the-ask-off-broadway-2026,slam-frank-off-broadway-2026,school-girls-or-the-african-mean-girls-play-2026,laowang-a-chinatown-king-lear-off-broadway-2025,oedipus-2025,queen-versailles-2025,silver-manhattan-off-broadway-2026,bughouse-off-broadway-2026,burnout-paradise-off-broadway-2026,night-side-songs-off-broadway-2026,bigfoot-off-broadway-2026,the-dinosaurs-off-broadway-2026,the-monsters-off-broadway-2026,marjorie-prime-2025,anna-christie-off-broadway-2025,lowcountry-off-broadway-2025,goddess-off-broadway-2025,bowl-ep-off-broadway-2025,the-lonely-few-off-broadway-2024,good-bones-off-broadway-2024,the-coast-starlight-off-broadway-2023,the-fears-off-broadway-2023,orlando-off-broadway-2026,what-became-of-us-off-broadway-2024,liberation-2025 --reviews=1",
-      "detail": null
-    },
-    {
-      "id": "BRO-6666",
-      "name": "verify-schema failed 2 days (unapplied migration) with nobody acting: auto-file a fix card on failure",
-      "verifyCmd": "node scripts/audit-workflow-hygiene.js",
-      "detail": null
-    },
-    {
       "id": "BRO-6616",
       "name": "Cutover 0: lane shadow commits its own scraper-spend ledger lines to main",
       "verifyCmd": "node --test tests/unit/lane-spend-ledger-commit.test.mjs",
@@ -126,21 +138,15 @@
       "name": "audit-cross-show-url.js: 109 non-London unhandled hits are title-overlap false positives (A Beautiful Noise vs Beautiful etc.); teach it to skip them",
       "verifyCmd": "node --test scripts/lib/cross-show-url.test.mjs",
       "detail": null
-    },
-    {
-      "id": "BRO-6567",
-      "name": "Accessibility follow-ups to BRO-6553: web min text size (9-11px) + high-contrast mode on web and app",
-      "verifyCmd": "node --test tests/unit/text-contrast-guard.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-6564",
-      "name": "Show page money card: show estimated return range for closed win labels (match /biz table)",
-      "verifyCmd": "npx tsx --test tests/unit/commercial-display.test.mjs",
-      "detail": null
     }
   ],
   "failing": [
+    {
+      "id": "BRO-6794",
+      "name": "Older-years sweep remainder: 1,835 never-audited older shows + blocked-host fetch failures",
+      "verifyCmd": "node scripts/lib/verify-data-backfill.js --show=broadway,west-end,regional,tour --reviews=1835",
+      "detail": "FAIL broadway: show missing; scored reviews 0 < 1835\nFAIL west-end: show missing; scored reviews 0 < 1835\nFAIL regional: show missing; scored reviews 0 < 1835\nFAIL tour: show missing; scored reviews 0 < 1835\n"
+    },
     {
       "id": "BRO-6710",
       "name": "UK regional: lift the 20 new venue-season shows and remaining below-bar shows to 3 reviews",
@@ -152,18 +158,6 @@
       "name": "Delete stale failed land branch land/bro-6682-opening-night-leftovers",
       "verifyCmd": "node scripts/check-remote-branch-absent.js --branch=land/bro-6682-opening-night-leftovers",
       "detail": "[check-remote-branch-absent] FAIL: land/bro-6682-opening-night-leftovers is still on origin\n"
-    },
-    {
-      "id": "BRO-6590",
-      "name": "Renew the NYT login cookie on the Mac Studio (NYT-S / nyt-a expired by 2026-10-27, poller NYT reviews cut at the paywall)",
-      "verifyCmd": "node scripts/check-workflow-run-status.js --workflow=check-cookie-health.yml --expect=success",
-      "detail": "(gh not authenticated; read runs from the public GitHub API)\ncheck-cookie-health.yml: MISMATCH — most recent run concluded 'failure', expected 'success' (https://github.com/thomaspryor/Broadwayscore/actions/runs/41711625398)\n"
-    },
-    {
-      "id": "BRO-6586",
-      "name": "Re-extract truncated/stub BroadwayWorld review files with the new JSON-LD articleBody extractor",
-      "verifyCmd": "node scripts/lib/verify-data-backfill.js --show=broadwayworld --reviews=3",
-      "detail": "FAIL broadwayworld: show missing; scored reviews 0 < 3\n"
     }
   ],
   "unverifiable": [
@@ -180,6 +174,12 @@
       "detail": "ran no passing tests (all skipped or none ran)"
     },
     {
+      "id": "BRO-6914",
+      "name": "Quiz follow-ups the BRO-6734 reviewer found outside its scope",
+      "verifyCmd": "node --test scripts/dispatch-follow-ups.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/dispatch-follow-ups.test.mjs"
+    },
+    {
       "id": "BRO-6862",
       "name": "Lottery/rush: 'special' key from bwayrush scraper never shown (MTC $35, HipTix)",
       "verifyCmd": "node --test tests/unit/lottery-rush-special-key.test.mjs",
@@ -189,16 +189,44 @@
       "id": "BRO-6724",
       "name": "Pre-existing red checks seen during BRO-6716: cross-outlet attribution suspect tests + audit-regex-patterns --full overages",
       "verifyCmd": "node scripts/run-unit-tests.js",
-      "detail": "check killed by SIGTERM after 132887ms (timeout — no verdict)"
+      "detail": "check killed by SIGTERM after 122191ms (timeout — no verdict)"
     },
     {
       "id": "BRO-6602",
       "name": "main test.yml red: Unit Tests / scripts/lib tests — matchSlugToShow 20 real fixtures + BRO-2281 Hackney Empire venue",
       "verifyCmd": "node scripts/run-unit-tests.js",
-      "detail": "check killed by SIGTERM after 66537ms (timeout — no verdict)"
+      "detail": "check killed by SIGTERM after 72125ms (timeout — no verdict)"
     }
   ],
   "landedButOpen": [
+    {
+      "id": "BRO-6983",
+      "name": "Stop the wrong-production-reviews leak recurring + de-noise Corpus Drift and the morning digest",
+      "branch": "land/bro-6983-cost",
+      "sha": "161db91d77ba9380026f57a7c6d80160311df726",
+      "landedAt": "2026-11-04T23:26:28.880Z"
+    },
+    {
+      "id": "BRO-6965",
+      "name": "Regular pipeline reads the lane's 24 outlet feeds daily (Bob's Theater Blog reviews missing for AGM, ODC)",
+      "branch": "land/bro-6965-collect2",
+      "sha": "454bfb8674b83db7682630f52e71c30e794b4a01",
+      "landedAt": "2026-11-04T08:45:01.327Z"
+    },
+    {
+      "id": "BRO-6947",
+      "name": "Printed-byline follow-ups: auto-fill for outlets without registry critics, triage 341 unlisted, 14 destination-exists",
+      "branch": "land/bro-6947-followup",
+      "sha": "dce76b5f3949ff3fddf47fd49166d9b37d6f8e21",
+      "landedAt": "2026-11-05T01:59:25.154Z"
+    },
+    {
+      "id": "BRO-6901",
+      "name": "Regional (UK/DC/Chicago) shows still missing images: root cause + systematic fix",
+      "branch": "land/bro-6901-session-cost",
+      "sha": "b4e516950800ecb32407ef0f165151e1b0ebecb4",
+      "landedAt": "2026-11-03T19:48:31.859Z"
+    },
     {
       "id": "BRO-6886",
       "name": "P1: Opening night miss: Clifford Odets’ Waiting for Lefty (2026-11-02)",
@@ -235,13 +263,6 @@
       "landedAt": "2026-11-01T20:01:56.269Z"
     },
     {
-      "id": "BRO-6773",
-      "name": "Monthly Profitability Scorecard email: preview-only draft generator for the money list",
-      "branch": "land/bro-6773-audience-apply",
-      "sha": "91e2216d4eb269f76d7bdabae18a7ee18a3e4a68",
-      "landedAt": "2026-11-01T18:10:53.314Z"
-    },
-    {
       "id": "BRO-6763",
       "name": "Owner email for each new Profitability Scorecard sign-up",
       "branch": "land/bro-6763-money-signup-notify",
@@ -270,20 +291,6 @@
       "landedAt": "2026-11-01T15:07:57.966Z"
     },
     {
-      "id": "BRO-6736",
-      "name": "Joint reviews (one article covering two shows) only go live on the first show: 30 cited-not-live rows",
-      "branch": "land/job/linear-BRO-6736-mvxsck8q",
-      "sha": "34d8c6cc7cee2c15bcedc60c27f708cd9702a56b",
-      "landedAt": "2026-11-01T13:41:40.264Z"
-    },
-    {
-      "id": "BRO-6666",
-      "name": "verify-schema failed 2 days (unapplied migration) with nobody acting: auto-file a fix card on failure",
-      "branch": "land/bro-6666-schema-drift-card",
-      "sha": "6947845febf7a49fe03443fea3222768a67d4c6e",
-      "landedAt": "2026-10-30T22:48:34.402Z"
-    },
-    {
       "id": "BRO-6616",
       "name": "Cutover 0: lane shadow commits its own scraper-spend ledger lines to main",
       "branch": "land/bro-6616-guard",
@@ -296,20 +303,6 @@
       "branch": "land/bro-6599-cross-show-canon",
       "sha": "88819d77d5934cc5eebb2b9dbbd8f56d813e1fa3",
       "landedAt": "2026-11-01T04:44:16.715Z"
-    },
-    {
-      "id": "BRO-6567",
-      "name": "Accessibility follow-ups to BRO-6553: web min text size (9-11px) + high-contrast mode on web and app",
-      "branch": "land/bro-6567-visual",
-      "sha": "eacbeb8cdd591f35c5588121e2db1eda3270468c",
-      "landedAt": "2026-11-03T21:15:00.652Z"
-    },
-    {
-      "id": "BRO-6564",
-      "name": "Show page money card: show estimated return range for closed win labels (match /biz table)",
-      "branch": "land/codex-bro-6564",
-      "sha": "0f2198a9a40edfe49e8f70ed5258012c8b44fa6b",
-      "landedAt": "2026-10-30T08:33:33.052Z"
     }
   ]
 }
