@@ -1,0 +1,51 @@
+{
+  "issueNumber": "bro-6995-c",
+  "planId": "40649471-055b-4f96-924a-ce3d6dabf730",
+  "status": "pending",
+  "createdAt": "2026-11-05T08:00:12.093Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6995: Michael (Kiln) thumbnail is a Phantom of the Opera photo; remove and reject its source",
+    "steps": [
+      "michael-off-west-end-2026: thumbnail is a Phantom of the Opera photo from a Facebook post",
+      "michael-off-west-end-2026: reject the wrong art's source so no fetch takes it again"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "michael-off-west-end-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/michael-off-west-end-2026/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "michael-off-west-end-2026: thumbnail is a Phantom of the Opera photo from a Facebook post"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "michael-off-west-end-2026",
+        "field": "rejectedImageUrls",
+        "oldValue": [
+          "https://images.ctfassets.net/6pezt69ih962/5BJCtH5zCUtBzPkdzzNLiI/e5e7a95a147c73d79118f84ca2e9e55c/F._Michael_Haynie-_poster.png?fm=webp&q=90"
+        ],
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/5BJCtH5zCUtBzPkdzzNLiI/e5e7a95a147c73d79118f84ca2e9e55c/F._Michael_Haynie-_poster.png?fm=webp&q=90",
+          "google-images:https://www.facebook.com/groups/celebratingbritishandirish/posts/334277613045969/"
+        ],
+        "description": "michael-off-west-end-2026: reject the wrong art's source so no fetch takes it again"
+      }
+    ]
+  }
+}
