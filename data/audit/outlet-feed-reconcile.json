@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-05T10:45:05.484Z",
+  "generatedAt": "2026-11-05T11:49:57.365Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -98,44 +98,16 @@
   "feedsChecked": 78,
   "feedsFailed": [
     {
-      "outletId": "theater-life",
-      "error": "Timeout fetching https://theaterlife.com/feed"
-    },
-    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
     {
       "outletId": "slantmagazine",
       "error": "direct fetch returned a non-rss page"
-    },
-    {
-      "outletId": "cote-notices",
-      "error": "HTTP 403 for https://davidcote1.substack.com/feed"
-    },
-    {
-      "outletId": "south-london",
-      "error": "Timeout fetching https://southlondon.co.uk/feed/"
-    },
-    {
-      "outletId": "theatre-vibe",
-      "error": "Timeout fetching https://theatrevibe.co.uk/feed/"
-    },
-    {
-      "outletId": "theartsdispatch",
-      "error": "HTTP 403 for https://theartsdispatch.substack.com/feed"
-    },
-    {
-      "outletId": "rolandcat",
-      "error": "HTTP 403 for https://rolandcat.substack.com/feed"
-    },
-    {
-      "outletId": "matineemouse",
-      "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 807,
-  "matchedGaps": 5,
+  "itemsScanned": 831,
+  "matchedGaps": 6,
   "possibleGaps": 5,
   "gaps": [
     {
@@ -154,6 +126,15 @@
       "outletId": "north-west-end",
       "url": "https://northwestend.com/the-bridge-bush-theatre/",
       "headline": "The Bridge – Bush Theatre",
+      "publishDate": "2026-11-04"
+    },
+    {
+      "showId": "the-bridge-off-west-end-2026",
+      "title": "The Bridge",
+      "level": "matched",
+      "outletId": "theartsdispatch",
+      "url": "https://theartsdispatch.substack.com/p/the-bridge-review-bush-theatre-london",
+      "headline": "The Bridge review - Bush Theatre, London ★★★★★",
       "publishDate": "2026-11-04"
     },
     {
