@@ -1,44 +1,31 @@
 {
-  "updatedAt": "2026-11-05T23:59:36.591Z",
-  "processed": 200,
-  "failed": 111,
-  "successRate": "64.3%",
+  "updatedAt": "2026-11-06T00:23:04.384Z",
+  "processed": 235,
+  "failed": 155,
+  "successRate": "60.3%",
   "tierBreakdown": {
-    "playwright": 105,
+    "playwright": 122,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 2,
     "directCookies": 0,
-    "scrapingdog": 16,
-    "scrapingbee": 9,
-    "brightdata": 0,
+    "scrapingdog": 18,
+    "scrapingbee": 11,
+    "brightdata": 2,
     "archiveToday": 0,
-    "archive": 49
+    "archive": 58
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
-      "t": "2026-11-05T23:52:37.974Z",
+      "t": "2026-11-06T00:02:41.049Z",
       "event": "bb-session",
-      "session": "6c2485ad",
-      "url": "https://bachtrack.com/review-lorfeo-william-kentridge-greek-national-opera-athen"
+      "session": "b1a1b502",
+      "url": "https://www.nytimes.com/2026/08/25/theater/paranormal-activity-review-broadway.h"
     },
     {
-      "t": "2026-11-05T23:53:13.960Z",
-      "event": "bb-session",
-      "session": "14378e27",
-      "url": "https://bachtrack.com/review-shostakovich-cherry-town-ahlbom-dutch-national-oper"
-    },
-    {
-      "t": "2026-11-05T23:54:18.143Z",
-      "event": "bb-session",
-      "session": "57b078e0",
-      "url": "https://bachtrack.com/review-tosca-miskimmon-glassberg-fanyo-english-national-op"
-    },
-    {
-      "t": "2026-11-05T23:54:53.770Z",
-      "event": "bb-session",
-      "session": "04e1c6f2",
-      "url": "https://bachtrack.com/review-nozze-figaro-pountney-conta-bucharest-national-oper"
+      "t": "2026-11-06T00:02:41.842Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
