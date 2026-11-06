@@ -12,7 +12,7 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const yaml = require('js-yaml');
-const { parseShowIds, isBroadwayPoll } = require('../../scripts/poller-failure-audience.js');
+const { parseShowIds, isBroadwayPoll, isNonBroadwayId } = require('../../scripts/poller-failure-audience.js');
 
 const SHOWS = [
   { id: 'bway-show', category: 'broadway' },
@@ -66,6 +66,33 @@ describe('isBroadwayPoll: only Broadway openings email right away', () => {
   });
 });
 
+describe('isBroadwayPoll: run died before shows.json loaded (BRO-7029 night, 2026-11-06)', () => {
+  test('a market-suffixed non-Broadway id is quiet even with no shows.json', () => {
+    assert.equal(isBroadwayPoll(['the-verge-off-broadway-2026'], null), false);
+    assert.equal(isBroadwayPoll(['king-lear-off-broadway-2026', 'the-unbelievers-off-broadway-2026'], null), false);
+    assert.equal(isBroadwayPoll(['hamlet-west-end-2026', 'x-off-west-end-2025'], null), false);
+  });
+  test('a non-Broadway-suffixed id missing from a loaded shows.json is quiet too', () => {
+    assert.equal(isBroadwayPoll(['brand-new-off-broadway-2026'], SHOWS), false);
+  });
+  test('a plain id (Broadway or regional) still fails open', () => {
+    assert.equal(isBroadwayPoll(['other-desert-cities-2026'], null), true);
+    assert.equal(isBroadwayPoll(['the-verge-off-broadway-2026', 'some-show-2026'], null), true);
+    assert.equal(isBroadwayPoll(['hamlet-broadway-2026'], null), true);
+    assert.equal(isBroadwayPoll(['magical-mystery-tour-2027'], null), true);
+  });
+  test('a show found in shows.json uses its category, not its id', () => {
+    assert.equal(isBroadwayPoll(['odd-off-broadway-2026'], [{ id: 'odd-off-broadway-2026', category: 'broadway', openingDate: null }]), true);
+  });
+  test('every market-suffixed id in shows.json really is non-Broadway (guards the shortcut)', (t) => {
+    const file = path.join(process.cwd(), 'data/shows.json');
+    if (!fs.existsSync(file)) return t.skip('no data/shows.json (CI checks out core data)');
+    const shows = JSON.parse(fs.readFileSync(file, 'utf8')).shows;
+    const wrong = shows.filter((s) => isNonBroadwayId(s.id) && (s.category || 'broadway') === 'broadway').map((s) => s.id);
+    assert.deepEqual(wrong, []);
+  });
+});
+
 describe('opening-night-poller.yml wiring', () => {
   const doc = yaml.load(fs.readFileSync(path.join(process.cwd(), '.github/workflows/opening-night-poller.yml'), 'utf8'));
   const steps = doc.jobs.poll.steps;
@@ -75,6 +102,11 @@ describe('opening-night-poller.yml wiring', () => {
   const action = yaml.load(fs.readFileSync(path.join(process.cwd(), '.github/actions/notify-failure/action.yml'), 'utf8'));
   const send = action.runs.steps.find((s) => s.name === 'Send failure alert');
 
+  test('a run that died before the find step still classifies the dispatched show_id', () => {
+    const audience = steps[audienceIdx];
+    assert.match(String(audience.env.INPUT_SHOW_ID), /inputs\.show_id/);
+    assert.match(String(audience.run), /--shows="\$\{SHOWS:-\$INPUT_SHOW_ID\}"/);
+  });
   test('audience is classified before Notify reads it', () => {
     assert.ok(audienceIdx >= 0 && audienceIdx < notifyIdx);
   });

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-06T13:01:34.043Z",
+  "generatedAt": "2026-11-06T14:52:36.769Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -73,12 +73,12 @@
   "feedsChecked": 78,
   "feedsFailed": [
     {
-      "outletId": "front-row-center",
-      "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
+      "outletId": "theater-life",
+      "error": "Timeout fetching https://theaterlife.com/feed"
     },
     {
-      "outletId": "amny",
-      "error": "HTTP 403 for https://www.amny.com/category/entertainment/theater/feed/"
+      "outletId": "front-row-center",
+      "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
     {
       "outletId": "slantmagazine",
@@ -101,8 +101,8 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 804,
-  "matchedGaps": 15,
+  "itemsScanned": 792,
+  "matchedGaps": 12,
   "possibleGaps": 4,
   "gaps": [
     {
@@ -121,24 +121,6 @@
       "outletId": "off-off-online",
       "url": "https://www.offoffonline.com/offoffonline/2026/11/2/parcel-from-america",
       "headline": "Parcel from America",
-      "publishDate": "2026-11-05"
-    },
-    {
-      "showId": "slanted-floors-off-broadway-2026",
-      "title": "Slanted Floors",
-      "level": "matched",
-      "outletId": "nyt-theater",
-      "url": "https://newyorktheater.me/2026/11/05/slanted-floors-review/",
-      "headline": "Slanted Floors Review",
-      "publishDate": "2026-11-05"
-    },
-    {
-      "showId": "the-blue-violinist-over-west-end-avenue-off-broadway-2026",
-      "title": "The Blue Violinist Over West End Avenue",
-      "level": "matched",
-      "outletId": "pages-on-stages",
-      "url": "https://pagesonstages.com/2026/11/05/the-blue-violinist-over-west-end-avenue/",
-      "headline": "Tradition",
       "publishDate": "2026-11-05"
     },
     {
@@ -178,20 +160,11 @@
       "publishDate": "2026-11-05"
     },
     {
-      "showId": "the-verge-off-broadway-2026",
-      "title": "The Verge",
-      "level": "matched",
-      "outletId": "pages-on-stages",
-      "url": "https://pagesonstages.com/2026/11/05/the-verge/",
-      "headline": "Vibrant and Verdant",
-      "publishDate": "2026-11-05"
-    },
-    {
       "showId": "tosca-off-broadway-2026",
       "title": "Tosca",
       "level": "matched",
       "outletId": "plays-to-see",
-      "url": "https://playstosee.com/reviews/tosca-17/?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=tosca-17",
+      "url": "https://playstosee.com/tosca-17/?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=tosca-17",
       "headline": "TOSCA",
       "publishDate": "2026-10-31"
     },

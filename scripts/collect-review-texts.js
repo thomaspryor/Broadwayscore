@@ -7707,6 +7707,7 @@ async function processReview(review) {
         console.log(`  ↪ Mention check (${sanity.reason}) waived: titledReviews blog, page title is the show title ("${sanity.htmlTitle}")`);
         sanity.valid = true;
       }
+      review._showMentionProven = sanity.valid; // BRO-7041: the Time Out re-credit below needs a proven show
       if (!sanity.valid && !laneHeld(review, 'headlineBackstop')) {
         console.log(`  ✗ URL→CONTENT MISMATCH: ${sanity.reason}`);
         if (sanity.htmlTitle) console.log(`    HTML <title>: "${sanity.htmlTitle}"`);
@@ -7762,7 +7763,24 @@ async function processReview(review) {
         recordFailedFetch(review, 'partial_no_improvement', { storedLength: review._storedTextLength, newLength: result.text.length, method: result.method, timeoutPage: timeoutPage.reason });
         return { success: false, error: 'timeout_listing_capsule_kept_existing', reason: timeoutPage.reason };
       }
-      if (timeoutPage.verdict === 'wrong_critic' || timeoutPage.verdict === 'listing_capsule') {
+      // A page that is this show's real review but signed by someone other than the row's critic is a
+      // roundup misattribution (BRO-7041: the-unbelievers, row Adam Feldman, page Billy McEntee). The
+      // sanity check above already proved the page is this show, so re-credit the row to the page byline
+      // and keep the text instead of failing the fetch.
+      if (timeoutPage.verdict === 'wrong_critic' && timeoutPage.pageCritic && review._showMentionProven && !review._urlDiscovered && review.filePath && !review._timeoutRecredited) {
+        const data = readReviewForUpdate(review.filePath);
+        const credited = data.criticName;
+        data.criticName = timeoutPage.pageCritic;
+        data.criticReattributedFrom = credited || 'Unknown';
+        data.criticReattributedReason = `timeout-page-byline: ${timeoutPage.reason}`;
+        const moved = renameReviewFileForCriticOverride(review, data, timeoutPage.pageCritic);
+        if (moved.action === 'renamed') {
+          review.critic = timeoutPage.pageCritic;
+          review._timeoutRecredited = true;
+          console.log(`  ↻ TIME OUT PAGE: re-credited ${credited} → ${timeoutPage.pageCritic} (${timeoutPage.reason})`);
+        }
+      }
+      if ((timeoutPage.verdict === 'wrong_critic' && !review._timeoutRecredited) || timeoutPage.verdict === 'listing_capsule') {
         console.log(`  ✗ TIME OUT PAGE: ${timeoutPage.reason}`);
         recordFailedFetch(review, 'url_content_mismatch', {
           method: result.method,

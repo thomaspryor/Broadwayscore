@@ -65,6 +65,14 @@ function parseTimeoutPage(html) {
   };
 }
 
+/** The page's <meta name="author"> value, or null. */
+function metaAuthor(html) {
+  const m = String(html || '').match(/<meta[^>]*\bname=["']author["'][^>]*\bcontent=["']([^"']{3,60})["']/i)
+    || String(html || '').match(/<meta[^>]*\bcontent=["']([^"']{3,60})["'][^>]*\bname=["']author["']/i);
+  const name = m ? decodeHtmlEntities(m[1]).trim() : '';
+  return /^[A-Z][\w'’.-]*(?: [A-Z][\w'’.-]*){1,3}$/.test(name) ? name : null;
+}
+
 /**
  * @param {object} p
  * @param {string} p.html - fetched page HTML
@@ -72,7 +80,7 @@ function parseTimeoutPage(html) {
  * @param {number|null} [p.showYear] - opening year of the production
  * @param {string} [p.url] - page url, with showTitle: a page byline that differs from the row critic is accepted when the url is a "<show>-review" slug of a post-2014 show (BRO-7044)
  * @param {string} [p.showTitle]
- * @returns {{verdict: 'review'|'wrong_critic'|'listing_capsule'|'unknown', reason?: string}}
+ * @returns {{verdict: 'review'|'wrong_critic'|'listing_capsule'|'unknown', reason?: string, pageCritic?: string|null, byline?: string}}
  */
 function classifyTimeoutPage({ html, critic, showYear, url, showTitle }) {
   const page = parseTimeoutPage(html);
@@ -90,7 +98,11 @@ function classifyTimeoutPage({ html, critic, showYear, url, showTitle }) {
         return { verdict: 'review', byline: page.reviewBy.split(/\s+/).slice(0, 2).join(' ') };
       }
       const shown = page.reviewBy.split(/\s+/).slice(0, 2).join(' ');
-      return { verdict: 'wrong_critic', reason: `Time Out review by ${shown}, row credits ${critic}` };
+      // pageCritic (BRO-7041): the page's <meta name="author">, accepted only when the printed "review by" run
+      // starts with it. The first two words of the run are not a safe name (middle names, "Name. Body...").
+      const pageCritic = metaAuthor(html);
+      const confirmed = pageCritic && normName(page.reviewBy).startsWith(normName(pageCritic));
+      return { verdict: 'wrong_critic', reason: `Time Out review by ${shown}, row credits ${critic}`, pageCritic: confirmed ? pageCritic : null };
     }
     return { verdict: 'review' };
   }
