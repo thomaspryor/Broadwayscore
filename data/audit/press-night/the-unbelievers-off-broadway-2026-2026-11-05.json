@@ -7,7 +7,7 @@
   "embargoSource": "market-default",
   "probe": {
     "startedAt": "2026-11-06T02:30:06.825Z",
-    "endedAt": null,
+    "endedAt": "2026-11-06T05:08:03.317Z",
     "intervalMin": 5,
     "samples": 30,
     "failedSamples": 0,
@@ -107,6 +107,17 @@
           "reason": "rejectionReason"
         }
       ]
+    },
+    "end": {
+      "status": "no-census-yet",
+      "source": null,
+      "count": 0,
+      "covered": null,
+      "coverage": null,
+      "missing": [],
+      "liveCount": 4,
+      "fetchedAt": "2026-11-06T05:08:03.080Z",
+      "censusNote": "archive only"
     }
   },
   "manualActions": [],
@@ -119,6 +130,12 @@
         "label": "2h",
         "standDown": false,
         "reason": "market not lane-only"
+      },
+      {
+        "at": "2026-11-06T05:08:03.081Z",
+        "label": "end",
+        "standDown": false,
+        "reason": "show unknown"
       }
     ]
   },
