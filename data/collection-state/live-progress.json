@@ -1,26 +1,65 @@
 {
-  "updatedAt": "2026-11-06T17:50:50.014Z",
-  "processed": 65,
-  "failed": 45,
-  "successRate": "59.1%",
+  "updatedAt": "2026-11-06T18:05:44.079Z",
+  "processed": 113,
+  "failed": 64,
+  "successRate": "63.8%",
   "tierBreakdown": {
-    "playwright": 38,
+    "playwright": 61,
     "amp": 0,
-    "browserbase": 11,
+    "browserbase": 15,
     "directCookies": 0,
-    "scrapingdog": 6,
-    "scrapingbee": 1,
-    "brightdata": 0,
+    "scrapingdog": 13,
+    "scrapingbee": 15,
+    "brightdata": 3,
     "archiveToday": 0,
-    "archive": 14
+    "archive": 19
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
       "t": "2026-11-06T17:17:25.395Z",
       "event": "bb-session",
       "session": "9cab2bb9",
       "url": "https://www.londontheatre1.com/.well-known/captcha/?y=ipr:20.83.175.21:179330283"
+    },
+    {
+      "t": "2026-11-06T17:57:37.808Z",
+      "event": "bb-session",
+      "session": "163351ce",
+      "url": "https://www.nytimes.com/2026/11/06/theater/the-unbelievers-222-a-ghost-story-rev"
+    },
+    {
+      "t": "2026-11-06T17:57:38.513Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-06T17:58:07.795Z",
+      "event": "bb-session",
+      "session": "0044f056",
+      "url": "https://www.nytimes.com/2026/11/05/theater/rope-the-verge-review-off-broadway-si"
+    },
+    {
+      "t": "2026-11-06T17:58:08.390Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-06T17:58:24.295Z",
+      "event": "bb-session",
+      "session": "b6e73775",
+      "url": "https://www.wsj.com/articles/the-unbelievers-and-2-22a-ghost-story-review-off-br"
+    },
+    {
+      "t": "2026-11-06T17:58:24.932Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-11-06T18:00:58.223Z",
+      "event": "bb-session",
+      "session": "c7acc293",
+      "url": "https://bachtrack.com/review-medea-yoncheva-spyres-met-opera-new-york-october-20"
     }
   ]
 }
