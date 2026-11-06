@@ -967,7 +967,7 @@ async function main() {
       try {
         const dir = path.join(__dirname, '..', 'data', 'review-texts', showId);
         const files = fs.existsSync(dir) ? fs.readdirSync(dir).filter((n) => n.endsWith('.json')).map((n) => { try { return JSON.parse(fs.readFileSync(path.join(dir, n), 'utf8')); } catch (_) { return null; } }) : [];
-        const r = publishedRoundupWithoutArchive(files, census ? census.sourcesPresent : []);
+        const r = publishedRoundupWithoutArchive(files, census ? census.sourcesPresent : [], show.title);
         if (r.missing) archiveMissingUrl = r.url;
       } catch (_) { /* best effort */ }
     }
