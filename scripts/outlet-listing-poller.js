@@ -289,7 +289,7 @@ const OUTLET_STRATEGY_CONFIG = {
   // site has no RSS/WP API we could find, and nysun.com answered 429 to every probe from the
   // sandbox, so the arts section page is read instead. Unverified from here: confirm with a
   // dispatch of outlet-listing-poller.yml (dry_run, outlets=new-york-sun) and adjust the url.
-  'new-york-sun':            { strategy: 'listing-html', url: 'https://www.nysun.com/section/arts', urlFilter: /nysun\.com\/article\//, usePlainFetch: true, pageConfirmAll: true },
+  'new-york-sun':            { strategy: 'listing-html', url: 'https://www.nysun.com/section/culture', urlFilter: /nysun\.com\/article\//, pageConfirmAll: true },
 };
 
 // Outlets where we use WordPress REST API (separate — API approach, no URL scraping needed)
