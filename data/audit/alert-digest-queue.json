@@ -363,5 +363,19 @@
       }
     ],
     "queuedAt": "2026-11-06T15:42:46.956Z"
+  },
+  {
+    "conditionKey": "bd-circuit-breaker-serp_api1",
+    "title": "Bright Data daily breaker TRIPPED: serp_api1 (2780/1750 reqs)",
+    "description": "Zone serp_api1 billed 2780 requests today against a ceiling of 1750.\nBulk Bright Data calls are now skipped for the rest of the UTC day; opening-night flows keep their own allowance.\n24 show(s) are in an active opening window (tonight-focused) — bulk review collection for them is capped.\nTop attributed BD callers today: gather-reviews.js (1878), opening-night-lane-shadow.js (1013), collect-review-texts.js (470).",
+    "severity": "critical",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-06T16:23:58.725Z"
   }
 ]
