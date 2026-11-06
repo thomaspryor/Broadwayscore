@@ -1,0 +1,82 @@
+{
+  "issueNumber": "bro-6892",
+  "planId": "fa2149f7-2f0f-42f8-8803-61c8aefcef79",
+  "status": "pending",
+  "createdAt": "2026-11-06T13:01:27.045Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Blank the Long Beach Playhouse building photo used as art on two regional shows and mark noReliableArt",
+    "steps": [
+      "shows.json: hangman-regional-2026.images",
+      "shows.json: a-dolls-house-part-2-regional-2026.images",
+      "shows.json: hangman-regional-2026.noReliableArt",
+      "shows.json: a-dolls-house-part-2-regional-2026.noReliableArt"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "hangman-regional-2026",
+        "field": "images",
+        "oldValue": {
+          "poster": "/images/shows/hangman-regional-2026/poster.webp",
+          "thumbnail": "/images/shows/hangman-regional-2026/thumbnail.webp",
+          "hero": "/images/shows/hangman-regional-2026/hero.webp"
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: hangman-regional-2026.images"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-dolls-house-part-2-regional-2026",
+        "field": "images",
+        "oldValue": {
+          "poster": "/images/shows/a-dolls-house-part-2-regional-2026/poster.webp",
+          "thumbnail": "/images/shows/a-dolls-house-part-2-regional-2026/thumbnail.webp",
+          "hero": "/images/shows/a-dolls-house-part-2-regional-2026/hero.webp"
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: a-dolls-house-part-2-regional-2026.images"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "hangman-regional-2026",
+        "field": "noReliableArt",
+        "oldValue": null,
+        "newValue": {
+          "at": "2026-11-06",
+          "reason": "Only image on file is the Long Beach Playhouse building photo, not art for this show (BRO-6892)",
+          "key": "hangman|long beach playhouse, long beach, ca|2026-09-20"
+        },
+        "description": "shows.json: hangman-regional-2026.noReliableArt"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-dolls-house-part-2-regional-2026",
+        "field": "noReliableArt",
+        "oldValue": null,
+        "newValue": {
+          "at": "2026-11-06",
+          "reason": "Only image on file is the Long Beach Playhouse building photo, not art for this show (BRO-6892)",
+          "key": "a doll's house part 2|long beach playhouse, long beach, ca|2026-07-20"
+        },
+        "description": "shows.json: a-dolls-house-part-2-regional-2026.noReliableArt"
+      }
+    ]
+  }
+}
