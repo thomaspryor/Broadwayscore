@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-05T22:40:28.343Z",
+  "generatedAt": "2026-11-06T00:08:21.135Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -19,19 +19,9 @@
       "openingDate": "2026-11-05"
     },
     {
-      "id": "tosca-english-national-opera-west-end-2026",
-      "title": "Tosca - English National Opera",
-      "openingDate": "2026-10-30"
-    },
-    {
       "id": "clifford-odets-waiting-for-lefty-off-broadway-2026",
       "title": "Clifford Odets’ Waiting for Lefty",
       "openingDate": "2026-11-02"
-    },
-    {
-      "id": "medea-off-broadway-2026",
-      "title": "Medea",
-      "openingDate": "2026-10-30"
     },
     {
       "id": "tosca-off-broadway-2026",
@@ -47,11 +37,6 @@
       "id": "the-bridge-off-west-end-2026",
       "title": "The Bridge",
       "openingDate": "2026-11-03"
-    },
-    {
-      "id": "the-moth-off-west-end-2026",
-      "title": "The Moth",
-      "openingDate": "2026-10-30"
     },
     {
       "id": "rope-off-broadway-2026",
@@ -74,16 +59,6 @@
       "openingDate": "2026-11-01"
     },
     {
-      "id": "specimen-off-broadway-2026",
-      "title": "Specimen",
-      "openingDate": "2026-10-30"
-    },
-    {
-      "id": "a-beautiful-noise-the-neil-diamond-musical-tour-2026",
-      "title": "A Beautiful Noise, The Neil Diamond Musical",
-      "openingDate": "2026-10-30"
-    },
-    {
       "id": "slanted-floors-off-broadway-2026",
       "title": "Slanted Floors",
       "openingDate": "2026-11-02"
@@ -92,16 +67,15 @@
       "id": "king-lear-off-broadway-2026",
       "title": "King Lear",
       "openingDate": "2026-11-05"
-    },
-    {
-      "id": "the-royale-regional-2026",
-      "title": "The Royale",
-      "openingDate": "2026-10-30"
     }
   ],
   "skipped": [],
   "feedsChecked": 78,
   "feedsFailed": [
+    {
+      "outletId": "theater-life",
+      "error": "Timeout fetching https://theaterlife.com/feed"
+    },
     {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
@@ -127,9 +101,9 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 805,
-  "matchedGaps": 6,
-  "possibleGaps": 7,
+  "itemsScanned": 796,
+  "matchedGaps": 8,
+  "possibleGaps": 4,
   "gaps": [
     {
       "showId": "222-a-ghost-story-off-broadway-2026",
@@ -180,10 +154,28 @@
       "showId": "tosca-off-broadway-2026",
       "title": "Tosca",
       "level": "matched",
+      "outletId": "theatrecat",
+      "url": "https://theatrecat.com/2026/11/05/tosca-coliseum-st-martins-lane-a-farewell/",
+      "headline": "TOSCA      Coliseum,  St Martin’s Lane. &#038; a farewell).",
+      "publishDate": "2026-11-05"
+    },
+    {
+      "showId": "tosca-off-broadway-2026",
+      "title": "Tosca",
+      "level": "matched",
       "outletId": "thereviewshub",
       "url": "https://www.thereviewshub.com/eno-tosca-london-coliseum/",
       "headline": "ENO: Tosca &#8211; London Coliseum",
       "publishDate": "2026-10-31"
+    },
+    {
+      "showId": "well-see-off-broadway-2026",
+      "title": "We'll See",
+      "level": "matched",
+      "outletId": "theater-pizzazz",
+      "url": "https://theaterpizzazz.com/in-well-see-much-to-talk-about-little-to-dramatize/",
+      "headline": "IN “WE’LL SEE,” MUCH TO TALK ABOUT, LITTLE TO DRAMATIZE",
+      "publishDate": "2026-11-05"
     },
     {
       "showId": "king-lear-off-broadway-2026",
@@ -211,33 +203,6 @@
       "url": "https://standard.co.uk/culture/theatre/the-oresteia-at-the-bridge-review-b1290028.html",
       "headline": "The Oresteia at the Bridge: Thrillingly stripped back and bloody",
       "publishDate": null
-    },
-    {
-      "showId": "the-moth-off-west-end-2026",
-      "title": "The Moth",
-      "level": "possible",
-      "outletId": "monstagigz",
-      "url": "https://monstagigz.com/2026/11/03/gig-review-knats-at-the-moth-club-hackney/",
-      "headline": "GIG REVIEW: Knats at The MOTH Club, Hackney",
-      "publishDate": "2026-11-02"
-    },
-    {
-      "showId": "the-moth-off-west-end-2026",
-      "title": "The Moth",
-      "level": "possible",
-      "outletId": "plays-international",
-      "url": "https://playsinternational.org.uk/the-moth-finborough-theatre/",
-      "headline": "“The Moth” at Finborough Theatre",
-      "publishDate": "2026-11-05"
-    },
-    {
-      "showId": "the-moth-off-west-end-2026",
-      "title": "The Moth",
-      "level": "possible",
-      "outletId": "guardian",
-      "url": "https://www.theguardian.com/stage/2026/oct/31/theatre-horror-play-paranormal-activity-blackout-silence-lambs-haunting-hill-house",
-      "headline": "Jump scares, leather gloves and squeaking moth noises: theatre horror masters on how they make their shows so scary",
-      "publishDate": "2026-10-31"
     },
     {
       "showId": "tosca-off-broadway-2026",

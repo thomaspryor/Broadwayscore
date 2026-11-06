@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-11-05T22:40:06.418Z",
+  "generatedAt": "2026-11-06T00:04:30.465Z",
   "windowDays": 45,
-  "showsScanned": 248,
+  "showsScanned": 246,
   "gaps": [
     {
       "showId": "lincoln-in-the-bardo-off-broadway-2026",
@@ -21,9 +21,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=lincoln-in-the-bardo-off-broadway-2026",
       "firstSeen": "2026-10-25T17:52:33.957Z",
-      "fileAgeHours": 268.7913136111111,
+      "fileAgeHours": 270.1977236111111,
       "gapSeenAt": "2026-10-26T08:25:16.367Z",
-      "nonTerminalAgeHours": 254.2472363888889,
+      "nonTerminalAgeHours": 255.6539161111111,
       "needsManualRecovery": true
     },
     {
@@ -44,9 +44,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=the-bridge-off-west-end-2026 --url=https://www.thetimes.com/uk/politics/article/city-bridge-foundation-grant-money-hamas-linked-organisation-j5sbhgrs2 --outlet=sunday-times   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-11-05T01:36:56.414Z",
-      "fileAgeHours": 21.05210611111111,
+      "fileAgeHours": 22.458613333333332,
       "gapSeenAt": "2026-11-05T02:10:46.925Z",
-      "nonTerminalAgeHours": 20.488748055555554,
+      "nonTerminalAgeHours": 21.895427777777776,
       "needsManualRecovery": false
     },
     {
@@ -64,9 +64,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=harry-potter-and-the-cursed-child-one-part-west-end-2026 --url=https://www.thetimes.com/culture/theatre-dance/article/harry-potter-and-the-cursed-child-review-london-7jq7shl0t --outlet=times-uk --critic=\"Clive Davis\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-11-05T13:10:35.064Z",
-      "fileAgeHours": 9.491665833333334,
+      "fileAgeHours": 10.898242777777778,
       "gapSeenAt": "2026-11-05T14:48:09.202Z",
-      "nonTerminalAgeHours": 7.865893333333333,
+      "nonTerminalAgeHours": 9.272573055555556,
       "needsManualRecovery": false
     }
   ],
