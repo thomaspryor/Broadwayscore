@@ -1,7 +1,7 @@
 {
   "system": "data",
   "status": "warn",
-  "lastChecked": "2026-11-05T09:31:02.840Z",
+  "lastChecked": "2026-11-06T09:26:23.275Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
@@ -49,7 +49,7 @@
     {
       "name": "Data: Tours To You pages not checked",
       "status": "pass",
-      "message": "All 223 Tours To You show pages read within 4 days"
+      "message": "All 224 Tours To You show pages read within 4 days"
     },
     {
       "name": "Data: national tours added automatically",
@@ -84,27 +84,27 @@
     {
       "name": "Data: undispatchable Linear backlog cards",
       "status": "warn",
-      "message": "14 of 379 open Linear card(s) have no runnable acceptance-criteria command (workers would skip them). First: [?] BRO-6974 Opening-night audit 2026-11-04"
+      "message": "11 of 374 open Linear card(s) have no runnable acceptance-criteria command (workers would skip them). First: [?] BRO-6957 iOS E2E: signed-out sweep, every sign-in prompt opens and closes cleanly"
     },
     {
       "name": "Data: Linear card-verifiability report stale",
       "status": "pass",
-      "message": "data/audit/card-verifiability-linear.json generated 2026-11-04"
+      "message": "data/audit/card-verifiability-linear.json generated 2026-11-05"
     },
     {
       "name": "Data: review coverage holes",
       "status": "warn",
-      "message": "111 review(s) with no usable text, 72 rejected although verified as a review, 38 never scored, 33 with a blocked URL (0 published on the site), across 651 current shows"
+      "message": "109 review(s) with no usable text, 68 rejected although verified as a review, 18 never scored, 33 with a blocked URL (0 published on the site), across 653 current shows"
     },
     {
       "name": "Data: published scores outside the critic's rating",
       "status": "pass",
-      "message": "No published review score contradicts the critic's rating (47129 checked)"
+      "message": "No published review score contradicts the critic's rating (47312 checked)"
     },
     {
       "name": "Data: early publish dates awaiting page-date recheck",
       "status": "warn",
-      "message": "99 review(s) carry an early or carried publish date no page read has confirmed (limit 40; 165 more already attempted)"
+      "message": "100 review(s) carry an early or carried publish date no page read has confirmed (limit 40; 165 more already attempted)"
     },
     {
       "name": "Data: duplicate-flag leaks (a wrong twin dropping a good review)",
@@ -114,12 +114,17 @@
     {
       "name": "Data: stale-slot squatters (current-year review slots held by another production)",
       "status": "pass",
-      "message": "audit ran: 561 candidate slot(s) in current-year shows (mostly correct exclusions; node scripts/audit-stale-slot-squatters.js lists them)"
+      "message": "audit ran: 556 candidate slot(s) in current-year shows (mostly correct exclusions; node scripts/audit-stale-slot-squatters.js lists them)"
     },
     {
       "name": "Data: reviewed shows missing from shows.json",
       "status": "pass",
       "message": "No aggregator-reviewed show is missing from the catalogue"
+    },
+    {
+      "name": "Data: T1/T2 silent review gaps",
+      "status": "warn",
+      "message": "1 discovered review(s) not reaching the composite score (1 T1). Oldest: the-bridge-off-west-end-2026 — sunday-times (empty-body)"
     }
   ]
 }

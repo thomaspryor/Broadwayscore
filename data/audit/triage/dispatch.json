@@ -1,15 +1,15 @@
 {
   "system": "dispatch",
-  "status": "pass",
-  "lastChecked": "2026-11-05T09:31:02.874Z",
+  "status": "warn",
+  "lastChecked": "2026-11-06T09:26:23.281Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
   "details": [
     {
       "name": "Dispatch: owner-judgment cards without owner notification",
-      "status": "pass",
-      "message": "No unarmed human-territory or owner-judgment-only card lacks an owner-notification route (299 checked)."
+      "status": "warn",
+      "message": "1 Todo/Backlog card(s) need human-territory triage or a person's judgment with no check command and no owner-notification route. First: BRO-6642"
     }
   ]
 }

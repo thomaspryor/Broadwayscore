@@ -1,16 +1,23 @@
 {
-  "generatedAt": "2026-11-05T09:50:51.665Z",
+  "generatedAt": "2026-11-06T09:45:50.002Z",
   "linearIssue": "BRO-80",
-  "scannedShows": 5920,
-  "flaggedShows": 51,
-  "flaggedFiles": 178,
-  "readmissionRiskFiles": 0,
-  "readmissionRisks": [],
+  "scannedShows": 5922,
+  "flaggedShows": 50,
+  "flaggedFiles": 172,
+  "readmissionRiskFiles": 1,
+  "readmissionRisks": [
+    {
+      "showId": "private-lives-2025",
+      "file": "huffpost--michael-giltz.json",
+      "publishDate": "2011-11-19",
+      "outletId": "huffpost"
+    }
+  ],
   "unevaluatedFiles": 0,
   "unevaluated": [],
   "unreadableFiles": 0,
   "byVerdict": {
-    "likely-contamination": 29,
+    "likely-contamination": 28,
     "needs-human-review": 22
   },
   "shows": [
@@ -260,9 +267,9 @@
       "previewsStartDate": null,
       "openingDate": null,
       "verdict": "likely-contamination",
-      "reasoning": "12/12 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
+      "reasoning": "12/13 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
       "stats": {
-        "count": 12,
+        "count": 13,
         "distinctYears": [
           2011,
           2023
@@ -309,6 +316,19 @@
           "publishDate": "2023-04-15",
           "url": "https://www.theguardian.com/stage/2023/apr/23/the-week-in-theatre-dancing-at-lughnasa-private-lives-review",
           "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "huffpost--michael-giltz.json",
+          "readmissionRisk": "readmits-on-open",
+          "beforeReason": "prematureForUnopenedShow",
+          "afterReason": null,
+          "outletId": "huffpost",
+          "criticName": "Michael Giltz",
+          "publishDate": "2011-11-19",
+          "url": "https://www.huffpost.com/entry/private-lives-broadway-review_b_1102882",
+          "wrongProduction": false,
           "wrongShow": false,
           "evaluationError": null
         },
@@ -1026,120 +1046,6 @@
           "criticName": "Phil Lowe",
           "publishDate": "2022-07-21",
           "url": "https://www.whatsonstage.com/leicester-theatre/reviews/billy-elliot-musical-revival-curve_56970.html",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        }
-      ]
-    },
-    {
-      "showId": "the-unbelievers-off-broadway-2026",
-      "title": "The Unbelievers",
-      "market": "broadway",
-      "status": "previews",
-      "venue": "New York City Center",
-      "previewsStartDate": "2026-10-13",
-      "openingDate": "2026-11-05",
-      "verdict": "likely-contamination",
-      "reasoning": "7/7 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
-      "stats": {
-        "count": 7,
-        "distinctYears": [
-          2025
-        ],
-        "spanDays": 0,
-        "flaggedCount": 7,
-        "venueMentionCount": 0
-      },
-      "suggestedPriorRun": null,
-      "reviews": [
-        {
-          "file": "financialtimes--sarah-hemming.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "previewPlaceholder",
-          "afterReason": "previewPlaceholder",
-          "outletId": "financialtimes",
-          "criticName": "Sarah Hemming",
-          "publishDate": "2025-10-21",
-          "url": "https://www.ft.com/content/d5e51521-5b2c-4ab4-996a-b99cd4a8c2e5",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "guardian--arifa-akbar.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "guardian",
-          "criticName": "Arifa Akbar",
-          "publishDate": "2025-10-21",
-          "url": "https://www.theguardian.com/stage/2025/oct/21/the-unbelievers-review-nicola-walker-family-tragedy-nick-payne",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "i-paper--fiona-mountford.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "i-paper",
-          "criticName": "Fiona Mountford",
-          "publishDate": "2025-10-21",
-          "url": "https://inews.co.uk/culture/arts/nicola-walker-blisteringly-good-unbelievers-3991836",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "standard--nick-curtis.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "previewPlaceholder",
-          "afterReason": "previewPlaceholder",
-          "outletId": "standard",
-          "criticName": "Nick Curtis",
-          "publishDate": "2025-10-21",
-          "url": "https://www.standard.co.uk/culture/theatre/the-unbelievers-review-theatre-nicola-walker-b1253995.html",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "telegraph--dominic-cavendish.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "previewPlaceholder",
-          "afterReason": "previewPlaceholder",
-          "outletId": "telegraph",
-          "criticName": "Dominic Cavendish",
-          "publishDate": "2025-10-21",
-          "url": "https://www.telegraph.co.uk/theatre/what-to-see/unbelievers-royal-court-theatre-review-nicola-walker/",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "thestage--sam-marlowe.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "previewPlaceholder",
-          "afterReason": "previewPlaceholder",
-          "outletId": "thestage",
-          "criticName": "Sam Marlowe",
-          "publishDate": "2025-10-21",
-          "url": "https://www.thestage.co.uk/reviews/the-unbelievers-review-royal-court-theatre-london-nicola-walker",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "timeout-london--andrzej-lukowski.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "previewPlaceholder",
-          "afterReason": "previewPlaceholder",
-          "outletId": "timeout-london",
-          "criticName": "Andrzej Lukowski",
-          "publishDate": "2025-10-21",
-          "url": "https://www.timeout.com/london/theatre/the-unbelievers-review",
           "wrongProduction": true,
           "wrongShow": false,
           "evaluationError": null
