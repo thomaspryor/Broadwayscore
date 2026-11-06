@@ -94,15 +94,34 @@ function shouldSkipNonReviewStamp(d) {
   return text.length < 800 && looksLikeReviewUrl(d.url);
 }
 
+// A file the scorer has already scored from its own text (llm-v6 label, numeric
+// score): scoring ran after the verifier and the text-quality gates passed.
+function hasEnsembleScore(d) {
+  return typeof d.assignedScore === 'number' && Number.isFinite(d.assignedScore)
+    && /^llm/i.test(String(d.scoreSource || ''));
+}
+
 // BRO-4429: the Gemini non-review classifier reads a sample of the text and its
 // verdict is terminal (isNonReview excludes the file). Never let it overrule
 // stronger evidence: a high-confidence content-verifier "review" verdict, an
 // operator clear of the wrong-production/show flags (BRO-4204 electra), or text
 // that is bot-truncated (the classifier is judging a stub, not the article).
 // Returns a reason string when the stamp must be skipped, else null.
-function nonReviewStampBlockReason(d, hasBotStub) {
+function nonReviewStampBlockReason(d, hasBotStub, opts = {}) {
   if (!d) return null;
   const cv = d.contentVerification;
+  // BRO-7044: one classifier call must not retire a review that two other
+  // checks already passed. NYTG's 2:22 review (complete, 985 words, scored by
+  // the ensemble) was stamped "feature" by a single Gemini call hours after
+  // scoring; its verifier said articleType "review" but isValid:false (a
+  // spurious date mismatch), which the isValid:true rule below does not cover.
+  // A verifier "review" label plus a numeric LLM score blocks the stamp unless
+  // the caller holds a second, independent check that agrees it is not a review.
+  if (cv && cv.articleType === 'review' && cv.wrongArticle !== true
+      && (cv.articleTypeConfidence || cv.confidence) !== 'low'
+      && hasEnsembleScore(d) && opts.independentCheckAgrees !== true) {
+    return 'content-verifier says review and an LLM score already exists (no second independent check)';
+  }
   if (cv && cv.isValid === true && cv.confidence === 'high' && cv.wrongArticle !== true
       && (!cv.articleType || cv.articleType === 'review')) {
     return 'high-confidence content-verifier says review';

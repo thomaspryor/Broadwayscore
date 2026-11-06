@@ -1,0 +1,36 @@
+{
+  "issueNumber": "bro-7044",
+  "planId": "70838a16-daa8-414e-ad47-2322e4a94f03",
+  "status": "pending",
+  "createdAt": "2026-11-06T15:07:08.864Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7044: clear the Gemini non-review flag on the NYTG review of 2:22 A Ghost Story (complete, scored, content check says review)",
+    "steps": [
+      "222-a-ghost-story-off-broadway-2026/nytg--gillian-russo.json: nonReviewManualClear",
+      "222-a-ghost-story-off-broadway-2026/nytg--gillian-russo.json: isNonReview"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "222-a-ghost-story-off-broadway-2026/nytg--gillian-russo.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "222-a-ghost-story-off-broadway-2026/nytg--gillian-russo.json: nonReviewManualClear"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "222-a-ghost-story-off-broadway-2026/nytg--gillian-russo.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": false,
+        "description": "222-a-ghost-story-off-broadway-2026/nytg--gillian-russo.json: isNonReview"
+      }
+    ]
+  }
+}

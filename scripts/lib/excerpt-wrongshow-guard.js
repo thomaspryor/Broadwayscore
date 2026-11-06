@@ -53,4 +53,39 @@ function shouldSuppressExcerptOnlyWrongShow({ rejection, scoredTextType, fileDat
   return { suppress: true, reason: 'excerpt_only_wrong_show_url_names_show' };
 }
 
-module.exports = { shouldSuppressExcerptOnlyWrongShow, urlSlugNamesShow };
+/**
+ * True when the LAST path segment names the show AND carries a "review" token
+ * (the-unbelievers-off-broadway-review-lauren-ambrose). A slug that only names
+ * the show could be a listing, a feature or a ticket page.
+ */
+function urlSlugIsReviewOfShow(url, showTitle) {
+  if (!urlSlugNamesShow(url, showTitle)) return false;
+  let path;
+  try { path = new URL(url).pathname; } catch { path = String(url); }
+  const segment = normalize(path.split('/').filter(Boolean).pop() || '');
+  const words = segment.split(' ');
+  return words.includes('review') && !words.includes('roundup') && !words.includes('reviews');
+}
+
+/**
+ * BRO-7044: a not_a_review verdict that only saw an aggregator EXCERPT judges
+ * the excerpt, not the article. BWW roundup excerpts are often the lede (cast
+ * list, premise) with no verdict language; Time Out's Unbelievers review was
+ * rejected on a 303-char premise blurb and sat excluded while the real review
+ * waited behind the rejection. When no fullText exists and the review URL is
+ * itself a "<show>-review" slug, hold the flag and let the text fetch decide.
+ * Same destructive-write-only use of the URL as the wrong_show guard (§3).
+ *
+ * @param {Object} args same shape as shouldSuppressExcerptOnlyWrongShow
+ * @returns {{suppress: boolean, reason: string|null}}
+ */
+function shouldSuppressExcerptOnlyNotAReview({ rejection, scoredTextType, fileData, showTitle }) {
+  if (rejection !== 'not_a_review') return { suppress: false, reason: null };
+  if (scoredTextType !== 'excerpt') return { suppress: false, reason: null };
+  const hasFullText = typeof fileData?.fullText === 'string' && fileData.fullText.length >= MIN_FULLTEXT;
+  if (hasFullText) return { suppress: false, reason: null };
+  if (!urlSlugIsReviewOfShow(fileData?.url, showTitle)) return { suppress: false, reason: null };
+  return { suppress: true, reason: 'excerpt_only_not_a_review_url_is_review_slug' };
+}
+
+module.exports = { shouldSuppressExcerptOnlyWrongShow, shouldSuppressExcerptOnlyNotAReview, urlSlugNamesShow, urlSlugIsReviewOfShow };

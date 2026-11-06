@@ -531,3 +531,82 @@ test('transition join: the first show named again in the second stretch is one c
   ].join(' ');
   assert.equal(plan(ID.Midnight, text), null);
 });
+
+// BRO-7044 (WSJ, "The Unbelievers and 2:22 A Ghost Story"; BRO-6736 recurred):
+// the lede names both shows, the first show's review runs on character names
+// and never repeats its title, one pivot sentence opens the second show, and
+// the closing listing gives venues, not titles. The strict joint path saw the
+// first show's single lede mention as a comparison and left the whole article
+// on one show. Prose is invented.
+const LEDE_SHOWS = [
+  { id: 'the-lantern-hall-off-broadway-2026', title: 'The Lantern Hall', category: 'off-broadway', openingDate: '2026-10-18' },
+  { id: 'quiet-room-off-broadway-2026', title: 'Quiet Room', category: 'off-broadway', openingDate: '2026-10-18' },
+];
+const ledePlan = (showId, fullText, over = {}) =>
+  planMultiShowFanout(base({ showId, publishDate: '2026-10-20', fullText, ...over }), [...SHOWS, ...LEDE_SHOWS], { joint: true });
+const LEDE_TEXT = [
+  `It has been a restless autumn on the city's stages, with lanterns, locked doors and lingering voices everywhere you look, none more than in “The Lantern Hall.” ${filler('autumn', 3)}`,
+  'Two of the season’s odder arrivals are “The Lantern Hall,” a chamber play about grief, and “Quiet Room,” a ghost story with jump scares.',
+  `Ada Marsh gives a brave performance as a widow whose sorrow splits her in two. ${filler('widow', 7)} Her husband, played by Ben Ostrow, never quite becomes real. ${filler('grief', 5)}`,
+  `Dark nights notwithstanding, “Quiet Room” is a lighter entertainment. ${filler('ghost', 5)} But “Quiet Room” will interest fans of ghost stories. ${filler('fright', 2)} The cast gasps on cue, and “Quiet Room” earns its small scares.`,
+  'City Center Stage I, 131 W. 55th St., through Nov. 29. Lortel Theatre, 121 Christopher St., through Jan. 17.',
+].join(' ');
+
+test('joint, lede-named first show: each show gets its own stretch', () => {
+  for (const own of ['the-lantern-hall-off-broadway-2026', 'quiet-room-off-broadway-2026']) {
+    const p = ledePlan(own, LEDE_TEXT);
+    assert.ok(p, `${own} must plan a split`);
+    assert.equal(p.strategy, 'joint');
+    assert.deepEqual(ids(p), ['quiet-room-off-broadway-2026', 'the-lantern-hall-off-broadway-2026']);
+  }
+  const p = ledePlan('the-lantern-hall-off-broadway-2026', LEDE_TEXT);
+  const quiet = section(p, 'quiet-room-off-broadway-2026');
+  assert.match(quiet, /^Dark nights notwithstanding/);
+  assert.doesNotMatch(quiet, /Ada Marsh/);
+  assert.doesNotMatch(section(p, 'the-lantern-hall-off-broadway-2026'), /fans of ghost stories/);
+});
+
+test('joint, lede-named first show: a review of one show that only compares to another stays whole', () => {
+  // Second show is named once up front and never gets a stretch of its own.
+  const oneReview = [
+    `“The Lantern Hall” and “Quiet Room” share a season, and “Quiet Room” is the louder one. ${filler('hall', 6)} The Lantern Hall holds its breath. ${filler('widow', 8)}`,
+    'City Center Stage I, through Nov. 29.',
+  ].join(' ');
+  assert.equal(ledePlan('the-lantern-hall-off-broadway-2026', oneReview), null);
+  // The second title sits far into a sentence of the first show's prose (no pivot
+  // sentence opens on it): not a join.
+  const midSentence = LEDE_TEXT.replace('Dark nights notwithstanding, “Quiet Room” is',
+    'The widow wonders, across a long and winding sentence that wanders from the staircase to the cellar to the attic and back again without pause for breath or comma or any sort of mercy for the audience, whether “Quiet Room” is');
+  assert.equal(ledePlan('the-lantern-hall-off-broadway-2026', midSentence), null);
+});
+
+// BRO-7044 reviewer probe: a single review whose lede compares to another show must not be split.
+test('BRO-7044: comparison lede on a single review is not split into a joint review', () => {
+  const SHOWS = [
+    { id: 'a-2026', title: 'The Lantern Hall', category: 'off-broadway', openingDate: '2026-10-18' },
+    { id: 'b-2026', title: 'Quiet Room', category: 'off-broadway', openingDate: '2026-10-18' },
+  ];
+  const filler = (t, n) => Array.from({ length: n }, (_, i) => `The ${t} passage number ${i + 1} moves along at a patient, deliberate pace that the cast keeps up with real care.`).join(' ');
+  const text = [
+    `Last week “The Lantern Hall” proved that a ghost play can be quiet. Fans of “The Lantern Hall” will find a louder cousin in “Quiet Room,” which opened Sunday.`,
+    `Ada Marsh plays the medium with relish. ${filler('medium', 8)}`,
+    `“Quiet Room” is at its best in the second act. ${filler('scare', 4)} The director lets “Quiet Room” breathe. ${filler('scare', 4)} See “Quiet Room” with a friend.`,
+  ].join(' ');
+  const p = planMultiShowFanout({ outletId: 'x', outlet: 'X', criticName: 'C', url: 'https://e.com/a', contentTier: 'complete', showId: 'b-2026', publishDate: '2026-10-20', fullText: text }, SHOWS, { joint: true });
+  assert.ok(!p || (p.otherSections || []).length === 0);
+});
+
+test('BRO-7044: backstory naming a sibling show in separate sentences is not a joint lede', () => {
+  const SHOWS = [
+    { id: 'a-2026', title: 'The Lantern Hall', category: 'off-broadway', openingDate: '2026-10-18' },
+    { id: 'b-2026', title: 'Quiet Room', category: 'off-broadway', openingDate: '2026-10-18' },
+  ];
+  const filler = (t, n) => Array.from({ length: n }, (_, i) => `The ${t} passage number ${i + 1} moves along at a patient, deliberate pace that the cast keeps up with real care.`).join(' ');
+  const text = [
+    `When “The Lantern Hall” opened in 2024 it changed the season. The producers of “The Lantern Hall” have since gone quiet. Nobody expected “Quiet Room” to follow.`,
+    `Ada Marsh plays the medium with relish. ${filler('medium', 8)}`,
+    `Dark nights notwithstanding, “Quiet Room” is at its best in the second act. ${filler('scare', 4)} The director lets “Quiet Room” breathe. ${filler('scare', 4)} See “Quiet Room” with a friend.`,
+  ].join(' ');
+  const p = planMultiShowFanout({ outletId: 'x', outlet: 'X', criticName: 'C', url: 'https://e.com/a', contentTier: 'complete', showId: 'b-2026', publishDate: '2026-10-20', fullText: text }, SHOWS, { joint: true });
+  assert.ok(!p || (p.otherSections || []).length === 0);
+});
