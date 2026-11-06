@@ -487,6 +487,9 @@ jobs:
               fi
               # Capture poller output to a per-show file so we can grep for
               # guardian_redispatch_needed below. --force-serp is derived from workflow input.
+              # BRO-7033: stubs live in _pending/<show>/, not <show>/. Count them before the poll so any show
+              # (Off-Broadway is never "hot") that gains a no-byline stub gets drained right away.
+              PENDING_BEFORE=$(cd data/review-texts && git status --porcelain --untracked-files=all -- "_pending/$SHOW_ID" | grep -c '^??' || true)
               PER_SHOW_OUT="$RUNNER_TEMP/poller-$SHOW_ID.log"
               GATHER_TOTAL=$((GATHER_TOTAL + 1))
               POLLER_RC=0
@@ -498,6 +501,18 @@ jobs:
               elif [ "$POLLER_RC" -ne 0 ]; then
                 GATHER_FAILED=$((GATHER_FAILED + 1))
                 echo "  ⚠️ poller exited $POLLER_RC for $SHOW_ID — counted as a gather-stage failure"
+              fi
+
+              # BRO-7004 / BRO-7033: a review found without a byline (TheaterMania, Parcel from America,
+              # The Verge) is routed to _pending/ and used to wait for the pre-loop drain of the NEXT run
+              # (~60 min later). Promote it now, before any file count below, so it counts as a new file.
+              # Runs for hot shows every poll and for ANY show whose poll just added a pending stub: The
+              # Verge (Off-Broadway, never hot) missed its 11:55pm bar by 50 min when this was hot-only.
+              # Promotions stay uncommitted in the checkout (same as the pre-loop drain); time-boxed.
+              PENDING_AFTER=$(cd data/review-texts && git status --porcelain --untracked-files=all -- "_pending/$SHOW_ID" | grep -c '^??' || true)
+              if [ -n "$HOT_BEFORE" ] || [ "$PENDING_AFTER" -gt "$PENDING_BEFORE" ]; then
+                # lint-allow-swallow: best-effort speed-up; a failure emits ::warning:: and the stub is still drained by the pre-loop drain step of the next run, so nothing is lost.
+                BD_OPENING_NIGHT=1 timeout 240 node scripts/replay-pending-bylines.js --shows="$SHOW_ID" --time-budget-min=2 --skip-empty-body-retry || echo "::warning::press-night pending drain for $SHOW_ID failed or timed out"
               fi
 
               # Check if files were created (review-texts is a separate git checkout)
@@ -560,13 +575,6 @@ jobs:
                 [[ ",$GUARDIAN_REDISPATCH_SHOWS," == *",$SHOW_ID,"* ]] || GUARDIAN_REDISPATCH_SHOWS="$GUARDIAN_REDISPATCH_SHOWS,$SHOW_ID"
               fi
             if [ -n "$HOT_BEFORE" ]; then
-              # BRO-7004: a press-night review found without a byline (TheaterMania, Parcel from
-              # America) is routed to _pending/ and used to wait for the pre-loop drain step of the
-              # NEXT run (~60 min later). Promote it now, before HOT_AFTER is counted, so it counts
-              # as a new file and ends the loop early like any other hot find. Promotions stay
-              # uncommitted in the checkout (same as the pre-loop drain); time-boxed.
-              # lint-allow-swallow: best-effort speed-up; a failure emits ::warning:: and the stub is still drained by the pre-loop drain step of the next run, so nothing is lost.
-              BD_OPENING_NIGHT=1 timeout 240 node scripts/replay-pending-bylines.js --shows="$SHOW_ID" --time-budget-min=2 --skip-empty-body-retry || echo "::warning::press-night pending drain for $SHOW_ID failed or timed out"
               local HOT_AFTER
               HOT_AFTER=$(cd data/review-texts && git status --porcelain --untracked-files=all -- "$SHOW_ID" | grep -c '^??' || true)
               if [ "$HOT_AFTER" -gt "$HOT_BEFORE" ]; then

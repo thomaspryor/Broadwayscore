@@ -10,15 +10,25 @@ import fs from 'node:fs';
 
 const wf = fs.readFileSync(new URL('../../.github/workflows/opening-night-poller.yml', import.meta.url), 'utf8');
 
-test('poll_one drains the hot show pending stubs before HOT_AFTER is counted', () => {
+test('poll_one drains pending stubs before any file count, for hot shows or any show with new stubs', () => {
   const start = wf.indexOf('poll_one() {');
   assert.ok(start > 0, 'poll_one present');
   const body = wf.slice(start, wf.indexOf('LAST_POLL[$SHOW_ID]=$SECONDS', start));
   const drain = body.indexOf('replay-pending-bylines.js --shows="$SHOW_ID"');
-  const after = body.indexOf('HOT_AFTER=$(');
-  const guard = body.indexOf('if [ -n "$HOT_BEFORE" ]');
   assert.ok(drain > 0, 'per-show drain present');
-  assert.ok(guard < drain && drain < after, 'drain runs inside the hot-show branch, before HOT_AFTER');
+  assert.equal(body.split('replay-pending-bylines.js --shows="$SHOW_ID"').length, 2, 'exactly one in-loop drain');
+  // BRO-7033: the drain must not live inside the hot-only branch (Off-Broadway shows are never hot).
+  const hotBranch = body.indexOf('if [ -n "$HOT_BEFORE" ]; then\n              local HOT_AFTER');
+  assert.ok(hotBranch > drain, 'drain is outside and before the hot-only HOT_AFTER branch');
+  const guard = body.slice(body.lastIndexOf('if [', drain), drain);
+  assert.match(guard, /HOT_BEFORE/);
+  assert.match(guard, /PENDING_AFTER" -gt "\$PENDING_BEFORE/, 'drain is keyed off new pending stubs');
+  // counted in _pending/<show>/ (where stubs live), before the poller runs, with untracked files expanded
+  const before = body.indexOf('PENDING_BEFORE=$(');
+  assert.ok(before > 0 && before < body.indexOf('node scripts/opening-night-poller.js'), 'pending count taken before the poll');
+  assert.match(body.slice(before, before + 220), /--untracked-files=all -- "_pending\/\$SHOW_ID"/);
+  assert.ok(drain < body.indexOf('CREATED=$('), 'drain precedes the new-file count');
+  assert.ok(drain < body.indexOf('UNSCORED=$('), 'drain precedes the unscored count');
   assert.match(body.slice(drain - 90, drain), /BD_OPENING_NIGHT=1/);
   assert.match(body.slice(drain, drain + 160), /--skip-empty-body-retry/, 'retry phase must not eat the drain budget');
 });
