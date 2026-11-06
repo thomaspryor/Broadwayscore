@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-06T20:15:56.380Z",
+  "generatedAt": "2026-11-06T20:28:39.293Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -556,7 +556,7 @@
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 12,
+        "highConfidence": 11,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -677,10 +677,6 @@
         },
         {
           "name": "Slant Magazine",
-          "isDualMarket": false
-        },
-        {
-          "name": "Lighting & Sound America",
           "isDualMarket": false
         },
         {
@@ -965,26 +961,26 @@
       "status": "open",
       "slug": "the-verge-off-broadway",
       "thumbnail": "/images/shows/the-verge-off-broadway-2026/thumbnail.webp",
-      "siteScore": 61.66,
+      "siteScore": 62.15,
       "liveScore": 62,
-      "scoreDrift": 0.3400000000000034,
+      "scoreDrift": -0.14999999999999858,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 9,
+      "total": 10,
       "t1": 2,
       "t2": 5,
-      "t3": 2,
-      "positive": 5,
+      "t3": 3,
+      "positive": 6,
       "mixed": 1,
       "negative": 3,
       "readiness": {
         "ready": false,
         "reasons": [
-          "9/12 total",
+          "10/12 total",
           "T1:2/3"
         ],
-        "highConfidence": 9,
+        "highConfidence": 8,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -1109,10 +1105,6 @@
         },
         {
           "name": "Slant Magazine",
-          "isDualMarket": false
-        },
-        {
-          "name": "Lighting & Sound America",
           "isDualMarket": false
         },
         {
@@ -1381,6 +1373,18 @@
           "t2": 5,
           "t3": 2,
           "p": 5,
+          "m": 1,
+          "n": 3,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-11-06T20:28:39.293Z",
+          "rc": 10,
+          "s": 62.15,
+          "t1": 2,
+          "t2": 5,
+          "t3": 3,
+          "p": 6,
           "m": 1,
           "n": 3,
           "bc": "waiting"
@@ -1905,23 +1909,23 @@
       "status": "open",
       "slug": "speculations-off-west-end",
       "thumbnail": "/images/shows/speculations-off-west-end-2026/thumbnail.jpg",
-      "siteScore": 48.58,
-      "liveScore": 49,
-      "scoreDrift": 0.4200000000000017,
+      "siteScore": 47.33,
+      "liveScore": 47,
+      "scoreDrift": -0.3299999999999983,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 22,
-      "t1": 4,
-      "t2": 5,
-      "t3": 13,
+      "total": 25,
+      "t1": 5,
+      "t2": 6,
+      "t3": 14,
       "positive": 7,
-      "mixed": 4,
-      "negative": 11,
+      "mixed": 5,
+      "negative": 13,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 21,
+        "highConfidence": 23,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -2068,6 +2072,18 @@
           "p": 7,
           "m": 4,
           "n": 11,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-11-06T20:28:39.293Z",
+          "rc": 25,
+          "s": 47.33,
+          "t1": 5,
+          "t2": 6,
+          "t3": 14,
+          "p": 7,
+          "m": 5,
+          "n": 13,
           "bc": "waiting"
         }
       ]
@@ -3715,9 +3731,9 @@
       "status": "open",
       "slug": "rope-off-broadway",
       "thumbnail": "/images/shows/rope-off-broadway-2026/thumbnail.webp",
-      "siteScore": 56.77,
+      "siteScore": 57.17,
       "liveScore": 57,
-      "scoreDrift": 0.22999999999999687,
+      "scoreDrift": -0.1700000000000017,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
@@ -4170,6 +4186,18 @@
           "t": "2026-11-06T13:21:49.700Z",
           "rc": 12,
           "s": 56.77,
+          "t1": 1,
+          "t2": 7,
+          "t3": 4,
+          "p": 5,
+          "m": 2,
+          "n": 5,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-11-06T20:28:39.293Z",
+          "rc": 12,
+          "s": 57.17,
           "t1": 1,
           "t2": 7,
           "t3": 4,
