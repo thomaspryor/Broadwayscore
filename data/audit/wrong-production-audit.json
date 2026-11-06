@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-06T21:00:25.628Z",
+  "timestamp": "2026-11-06T21:25:14.014Z",
   "stats": {
-    "totalReviews": 80349,
+    "totalReviews": 80351,
     "alreadyFlagged": 22012,
     "dateGuardCatches": 216,
     "directorMismatch": 3517,
     "tvFilmSignals": 2286,
-    "londonSignals": 3620,
+    "londonSignals": 3621,
     "offBroadwaySignals": 743,
     "yearMismatch": 362,
-    "noPublishDate": 8478
+    "noPublishDate": 8477
   },
   "findings": [
     {
@@ -130461,6 +130461,19 @@
       "file": "guardian--ryan-gilbey.json",
       "publishDate": "2026-10-13",
       "url": "https://www.theguardian.com/stage/2026/oct/13/keira-knightley-luke-thompson-hacking-stasi-spy-play-the-lives-of-others",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"adelphi theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-lives-of-others-west-end-2026",
+      "file": "independent--unknown.json",
+      "publishDate": "2026-11-02",
+      "url": "https://www.independent.co.uk/bulletin/culture/keira-knightley-theatre-the-lives-of-others-review-b3077335.html",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
