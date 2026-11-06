@@ -1,10 +1,10 @@
 {
-  "timestamp": "2026-11-06T02:16:53.562Z",
+  "timestamp": "2026-11-06T03:14:58.816Z",
   "stats": {
-    "totalReviews": 80210,
-    "alreadyFlagged": 21988,
+    "totalReviews": 80229,
+    "alreadyFlagged": 21989,
     "dateGuardCatches": 216,
-    "directorMismatch": 3511,
+    "directorMismatch": 3514,
     "tvFilmSignals": 2283,
     "londonSignals": 3617,
     "offBroadwaySignals": 741,
@@ -7098,6 +7098,19 @@
       "file": "fwtx--john-henry.json",
       "publishDate": "2026-03-23",
       "url": "https://fwtx.com/culture/back-to-the-future-musical-lands-at-bass-hall/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"john rando\" from back-to-the-future-2023"
+        }
+      ]
+    },
+    {
+      "showId": "back-to-the-future-tour-2024",
+      "file": "hotchka--unknown.json",
+      "publishDate": "2024-07-26",
+      "url": "https://hotchka.com/back-to-the-future-the-musical-tour-review-washington-dc-kennedy-center",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -37615,7 +37628,7 @@
     {
       "showId": "la-bete-2010",
       "file": "village-voice--michael-feingold.json",
-      "score": null,
+      "score": 78,
       "publishDate": "2010-10-20",
       "url": "https://www.villagevoice.com/bloody-bloody-andrew-jackson-la-bete-and-a-life-in-the-theatre-second-helpings-on-45th-street/",
       "findings": [
@@ -80173,6 +80186,19 @@
       ]
     },
     {
+      "showId": "waitress-tour-2026",
+      "file": "manchestertheatres--robert-jones.json",
+      "publishDate": "2026-10-28",
+      "url": "https://www.manchestertheatres.com/news/review-_-waitress-is-honest,-authentic,-heartfelt,-and-baked-with-real-care",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"diane paulus\" from waitress-2021"
+        }
+      ]
+    },
+    {
       "showId": "waitress-west-end-2019",
       "file": "artsdesk--unknown.json",
       "score": 75,
@@ -83453,6 +83479,19 @@
       "score": 91,
       "publishDate": "2025-06-23",
       "url": "https://indianapolisrecorder.com/review-wicked-is-magically-immersive-theatre-experience/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"joe mantello\" from wicked-2003"
+        }
+      ]
+    },
+    {
+      "showId": "wicked-tour-2021",
+      "file": "next-magazine--william-molls.json",
+      "publishDate": "2024-06-08",
+      "url": "https://nextmag.ca/review-wicked-returns-to-mirvish-spectacular-as-ever/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
