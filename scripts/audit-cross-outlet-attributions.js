@@ -80,7 +80,7 @@ const { hasHelpFlag } = require('./lib/cli-help');
 const { getTier } = require('./lib/outlet-tiers');
 const { normalizeCriticForCoverage } = require('./lib/multi-critic-serp');
 const { assertCorpusScanned, CorpusNotScannedError } = require('./lib/corpus-scan-guard');
-const { isTriagedOut, makeOutletCanonicalizer } = require('./lib/cross-outlet-triage');
+const { isTriagedOut, makeOutletCanonicalizer, isWireSyndicatedCopy, WIRE_OUTLET_IDS } = require('./lib/cross-outlet-triage');
 const { explainExclusion } = require('./lib/review-guards');
 const { listShowDirs } = require('./lib/list-show-dirs');
 // Registry aliases (gotham-playgoer -> bobs-theater-blog, dc-metro-theater-arts
@@ -255,6 +255,17 @@ if (PLAYBILL_BLEED) {
   for (const showId of listShowDirs(reviewTexts)) {
     if (showId.startsWith('_') || showId.startsWith('.')) continue;
     const dir = path.join(reviewTexts, showId);
+    const wireCritics = new Set();
+    for (const file of fs.readdirSync(dir)) {
+      if (!file.endsWith('.json')) continue;
+      if (![...WIRE_OUTLET_IDS].some((w) => file.startsWith(`${w}--`))) continue;
+      try {
+        const w = JSON.parse(fs.readFileSync(path.join(dir, file), 'utf8'));
+        if (w.criticName && !isTriagedOut(w, explainExclusion)) wireCritics.add(w.criticName);
+      } catch {
+        // unreadable wire file just means no syndication exemption
+      }
+    }
     for (const file of fs.readdirSync(dir)) {
       if (!file.endsWith('.json')) continue;
       let d;
@@ -267,6 +278,7 @@ if (PLAYBILL_BLEED) {
       const { criticName, outletId } = d;
       if (!criticName || !outletId || criticName === 'Unknown') continue;
       if (isTriagedOut(d, explainExclusion)) continue;
+      if (isWireSyndicatedCopy(criticName, canonOutlet(outletId), wireCritics)) continue;
       const homes = defaultOf.get(criticName) || [];
       const canonId = canonOutlet(outletId);
       if (!homes.length || homes.includes(canonId)) continue;
