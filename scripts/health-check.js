@@ -36,6 +36,7 @@ const crypto = require('crypto');
 const { execSync, execFileSync } = require('child_process');
 const { getTodayJsonlPath } = require('./lib/exclusion-logger');
 const { classifyHealthCheck } = require('./lib/digest-audience');
+const { updateFirstSeen } = require('./lib/health-first-seen');
 const { computeCommercialModelDriftStatus } = require('./lib/commercial-model-drift');
 const { checkBizOgCoverage, RENDER_HINT: BIZ_OG_RENDER_HINT } = require('./lib/audit-biz-og-coverage');
 const { fitCheckStatus: waltzFitCheckStatus } = require('./lib/waltz-model-fit');
@@ -5995,8 +5996,11 @@ async function sendEmailDigest(results, history, workflowSummary, autoFixResults
     subject,
     bannerText,
     consecutiveErrorDays: history.consecutiveErrorDays || 0,
-    errors: unfixedErrors.map(r => ({ name: r.name, message: r.message })),
-    warns: unfixedWarns.map(r => ({ name: r.name, message: r.message })),
+    errors: unfixedErrors.map(r => ({ name: r.name, message: r.message, firstSeen: (history.firstSeen || {})[r.name] || null })),
+    warns: unfixedWarns.map(r => ({ name: r.name, message: r.message, firstSeen: (history.firstSeen || {})[r.name] || null })),
+    // BRO-7040: rows that left the list since the last run, for the digest's
+    // single "Cleared since yesterday" line. {name: {at, firstSeen, status}}
+    cleared: history.cleared || {},
     // owner-alert-router's disposition='digest' queue (ship-check finding,
     // card #364): whatever it held only ever reaches the owner if it's
     // carried here. Losing it would silently reintroduce the exact bug card
@@ -6381,6 +6385,14 @@ async function main() {
   }
   history.lastRun = new Date().toISOString();
   history.results = allResults.map(r => ({ name: r.name, status: r.status, message: r.message }));
+  // BRO-7040: remember how long each warning/error has been open, so the
+  // morning digest can hold a warning back until it has lasted 48h.
+  {
+    const fs2 = updateFirstSeen(history, allResults, history.lastRun);
+    history.firstSeen = fs2.firstSeen;
+    history.cleared = fs2.cleared;
+    history.openStatus = fs2.openStatus;
+  }
   saveHistory(history);
 
   // Write per-system triage state files
