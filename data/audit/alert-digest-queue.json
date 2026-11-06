@@ -259,10 +259,10 @@
   },
   {
     "conditionKey": "test-yml:main-streak-escalation",
-    "title": "main test.yml STILL red — auto-dispatch did not resolve it — escalated after 207 notifications",
-    "description": "Filed BRO-7048 for owner triage after 207 repeats with no tracker.\n\nmain test.yml is STILL red after 4 consecutive pushes — the auto-dispatch card(s) filed at the 2nd failure have not resolved it. Currently failing: E2E Tests, Unit Tests. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
+    "title": "main test.yml STILL red — auto-dispatch did not resolve it — already tracked at BRO-7048",
+    "description": "This condition already has an open tracker (BRO-7048); not filing a duplicate. It will go quiet in the digest from here.\n\nmain test.yml is STILL red after 5 consecutive pushes — the auto-dispatch card(s) filed at the 2nd failure have not resolved it. Currently failing: Unit Tests, E2E Tests. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
     "severity": "error",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42239783032",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42241379728",
     "decision": false,
     "info": false,
     "decisionPrompt": null,
@@ -271,22 +271,22 @@
     "fields": [
       {
         "name": "This failed run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/42239783032)"
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/42241379728)"
       },
       {
         "name": "Previous failed run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/42238137104)"
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/42239783032)"
       },
       {
         "name": "Consecutive failures",
-        "value": "4"
+        "value": "5"
       },
       {
         "name": "Currently failing job(s)",
-        "value": "E2E Tests, Unit Tests"
+        "value": "Unit Tests, E2E Tests"
       }
     ],
-    "queuedAt": "2026-11-06T15:35:07.933Z"
+    "queuedAt": "2026-11-06T15:41:31.878Z"
   },
   {
     "conditionKey": "land:land/bro-7044-reviews",
