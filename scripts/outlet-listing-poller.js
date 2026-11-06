@@ -58,6 +58,7 @@ const {
 const { normalizeUrl } = require('./lib/url-utils');
 const { dailyLaneFeedConfigs, laneFeedAccepts } = require('./lib/daily-lane-feeds');
 const { extractPublishDate } = require('./lib/article-extractor');
+const ow = require('./lib/outlet-opening-window');
 const { describeSkip } = require('./lib/ingest-skip-classify');
 const {
   findMatchingShows,
@@ -275,6 +276,20 @@ const OUTLET_STRATEGY_CONFIG = {
   // match alone is not trusted here: every match must also page-confirm.
   artsfuse:                  { strategy: 'rss', url: 'https://artsfuse.org/feed/', titleFilter: /\b(theat(er|re)|review|stage|play|musical|off-broadway)\b/i, pageConfirmAll: true },
   'exeunt-magazine':         { strategy: 'rss', url: 'https://exeuntnyc.com/feed/', pageConfirmAll: true },
+  // BRO-7051: frequent Off-Broadway / Off-West End reviewers that were SERP-only, so the
+  // 3-hourly opening-window run (feed + listing only, no SERP) could not see them.
+  // Feeds probed 200 with items on 2026-11-06 (probe-outlet-feeds.js). Mixed feeds page-confirm.
+  londonpubtheatres:         { strategy: 'rss', url: 'https://www.londonpubtheatres.com/feed/rss2' },
+  fringereview:              { strategy: 'rss', url: 'https://fringereview.co.uk/feed/' },
+  'partially-obstructed-view': { strategy: 'rss', url: 'https://partially-obstructed-view.blogspot.com/feeds/posts/default' },
+  stagebuddy:                { strategy: 'rss', url: 'https://stagebuddy.com/feed', pageConfirmAll: true },
+  'the-knockturnal':         { strategy: 'rss', url: 'https://theknockturnal.com/feed/', pageConfirmAll: true },
+  'lighting-and-sound-america': { strategy: 'rss', url: 'https://lightingandsoundamerica.com/news/rss.asp', titleFilter: /\b(review|theat(er|re)|broadway|musical|play)\b/i, pageConfirmAll: true },
+  // BRO-7051: New York Sun reviews appear at /article/<slug> (25 OB reviews in 6 months) but the
+  // site has no RSS/WP API we could find, and nysun.com answered 429 to every probe from the
+  // sandbox, so the arts section page is read instead. Unverified from here: confirm with a
+  // dispatch of outlet-listing-poller.yml (dry_run, outlets=new-york-sun) and adjust the url.
+  'new-york-sun':            { strategy: 'listing-html', url: 'https://www.nysun.com/section/arts', urlFilter: /nysun\.com\/article\//, pageConfirmAll: true },
 };
 
 // Outlets where we use WordPress REST API (separate — API approach, no URL scraping needed)
@@ -346,6 +361,8 @@ function parseArgs() {
     outlets: null,
     market: null,
     minShowCount: 5,
+    openingWindow: false, // BRO-7051: 0-3 days past opening, free feeds/listings only, capped paid fetches
+    maxPaid: ow.DEFAULT_MAX_PAID,
   };
   for (let i = 0; i < args.length; i++) {
     switch (args[i]) {
@@ -354,6 +371,8 @@ function parseArgs() {
       case '--outlets': opts.outlets = args[++i].split(',').map(s => s.trim()); break;
       case '--market': opts.market = args[++i]; break;
       case '--min-show-count': opts.minShowCount = parseInt(args[++i], 10); break;
+      case '--opening-window': opts.openingWindow = true; break;
+      case '--max-paid': opts.maxPaid = parseInt(args[++i], 10); break;
     }
   }
   return opts;
@@ -394,6 +413,18 @@ function fetchSimple(url, timeoutMs = 15000, redirectsLeft = 5) {
 
 let _rejectedCache = null;       // Set<string>: "url|||showId" keys for fast lookup
 let _rejectedCacheList = null;   // Array<{url,showId,outletId,reason,rejectedAt}>: ordered FIFO
+
+// Paid page fetches (fetchPage tiers) go through one budget. Unlimited outside opening-window mode.
+// Counts ATTEMPTS, so a dry run with blank keys still reports the real call pattern (an upper bound).
+let paidBudget = { used: 0, refused: 0, max: Infinity, attempt() { this.used++; return true; } };
+async function paidFetchPage(url, o) {
+  if (!paidBudget.attempt()) {
+    const e = new Error('paid fetch budget exhausted');
+    e.code = 'PAID_BUDGET';
+    throw e;
+  }
+  return fetchPage(url, o);
+}
 
 function _loadRejectedCache() {
   if (_rejectedCache) return _rejectedCache;
@@ -567,7 +598,7 @@ async function fetchXmlWithProxyRetry(url, label, isExpected, { proxyRetry = tru
     if (!proxyRetry) throw err;
     if (health) health.directBlocked = true;
     console.log(`  [${label}] direct fetch failed (${err.message}); retrying via fetchPage`);
-    const result = await fetchPage(url, { renderJs: false });
+    const result = await paidFetchPage(url, { renderJs: false });
     if (!isExpected(result && result.content)) {
       throw new Error(`fetchPage returned an unexpected page for ${url}`);
     }
@@ -671,7 +702,7 @@ async function fetchViaListingHtml(outletId, listingUrl, urlFilter, usePlainFetc
     // falls back to SERP. Swallowing here would prevent that fallback.
     html = await fetchSimple(listingUrl, 20000);
   } else {
-    const result = await fetchPage(listingUrl, { timeout: 25000 });
+    const result = await paidFetchPage(listingUrl, { timeout: 25000 });
     // fetchPage returns {content, format, source} or null on all-tiers failure
     html = result && typeof result === 'object' ? result.content : result;
   }
@@ -775,7 +806,7 @@ async function fetchArticleHtml(url, looksRight = () => true) {
     const html = await fetchSimple(url, 20000);
     if (html && html.length >= 2000 && looksRight(html)) return html;
   } catch { /* fall through to the scraper chain */ }
-  const result = await fetchPage(url, { timeout: 25000 });
+  const result = await paidFetchPage(url, { timeout: 25000 });
   return result && typeof result === 'object' ? result.content : result;
 }
 
@@ -822,7 +853,11 @@ async function confirmOnPage(url, candidates, stats, { fetcher = fetchArticleHtm
   const markUnreadable = () => { stats.failed++; if (unconfirmedCache) unconfirmedCache[unconfirmedKey(url, FAILED_SHOW_ID)] = new Date().toISOString(); return []; };
   const namesACandidate = (h) => { const t = pageText(h); return candidates.some(({ show }) => pageNamesTitle(t, show)); };
   let html;
-  try { html = await fetcher(url, namesACandidate); } catch (err) { console.log(`  [page-confirm] fetch failed ${url}: ${err.message}`); }
+  try { html = await fetcher(url, namesACandidate); } catch (err) {
+    // Out of paid budget is not a verdict on the page: leave it unmarked so the next run retries.
+    if (err.code === 'PAID_BUDGET') { stats.fetched--; stats.overBudget += candidates.length; return []; }
+    console.log(`  [page-confirm] fetch failed ${url}: ${err.message}`);
+  }
   if (!html) return markUnreadable();
   const text = pageText(html);
   // No candidate's title anywhere on the page: not a verdict on the show, an
@@ -862,7 +897,13 @@ async function main() {
   const opts = parseArgs();
   const cutoff = new Date(Date.now() - opts.lookbackDays * 24 * 60 * 60 * 1000);
 
-  console.log(`\n=== Outlet Listing Poller ===`);
+  console.log(`\n=== Outlet Listing Poller${opts.openingWindow ? ' (opening window)' : ''} ===`);
+  const win = opts.openingWindow;
+  if (win && /^(1|true)$/i.test(process.env.OPENING_WINDOW_DISABLED || '')) {
+    console.log('OPENING_WINDOW_DISABLED is set: kill switch, nothing fetched.');
+    if (process.env.GITHUB_OUTPUT) fs.appendFileSync(process.env.GITHUB_OUTPUT, 'new_stubs=0\n');
+    return;
+  }
   console.log(`Lookback: ${opts.lookbackDays} days (since ${cutoff.toISOString().slice(0, 10)})`);
   if (opts.dryRun) console.log('DRY RUN mode — no files written');
 
@@ -873,12 +914,33 @@ async function main() {
 
   // Active shows only (open or previews), optionally filtered by market
   let activeShows = allShows.filter(s => s.status === 'open' || s.status === 'previews');
+  let windowOutlets = null;
+  if (win) {
+    // Match only against shows 0-3 days past opening; nothing in the window means no fetches at all.
+    activeShows = ow.selectWindowShows(allShows);
+    if (activeShows.length === 0) {
+      console.log('No shows 0-3 days past opening: nothing to fetch.');
+      console.log('OPENING_WINDOW_STATS fetches=0 paid=0');
+      if (process.env.GITHUB_OUTPUT) fs.appendFileSync(process.env.GITHUB_OUTPUT, 'new_stubs=0\n');
+      return;
+    }
+    console.log(`Window shows: ${activeShows.map(s => `${s.id} (${s.openingDate})`).join(', ')}`);
+    paidBudget = ow.createPaidBudget(opts.maxPaid);
+  }
   if (opts.market) activeShows = activeShows.filter(s => s.category === opts.market || s.market === opts.market);
   console.log(`Active shows: ${activeShows.length}${opts.market ? ` (${opts.market})` : ''}`);
 
   // --- Derive qualifying outlets ---
   let qualifyingOutlets;
-  if (opts.outlets) {
+  if (win && !opts.outlets) {
+    const sel = ow.selectWindowOutlets({
+      windowShows: activeShows, allShows, allReviews,
+      outletStrategyConfig: OUTLET_STRATEGY_CONFIG, wpApiConfig: WP_API_CONFIG, skipOutlets: SKIP_OUTLETS,
+      minShowCount: Number.isFinite(opts.minShowCount) && opts.minShowCount !== 5 ? opts.minShowCount : 2,
+    });
+    qualifyingOutlets = sel.outlets;
+    console.log(`Window outlets: ${qualifyingOutlets.length} feed/listing outlets (${sel.skippedSerp.length} SERP-only outlets skipped, daily run covers them)`);
+  } else if (opts.outlets) {
     qualifyingOutlets = opts.outlets;
     console.log(`Targeting specific outlets: ${qualifyingOutlets.join(', ')}`);
   } else {
@@ -907,6 +969,7 @@ async function main() {
   // "no new reviews" (index lag, keyword mismatch) — listed in the summary so a
   // silent miss is visible; the fix is a feed entry (scripts/probe-outlet-feeds.js).
   const serpOnlyEmpty = [];
+  let windowFetches = 0;
   const blockedCollisions = [];
   const sameUrlFlagged = [];
   // Per-outlet rss/sitemap feed health (BRO-6352), written to OUTLET_FEED_HEALTH_REL.
@@ -923,6 +986,8 @@ async function main() {
     const isPaid = accessModel === 'paywalled';
 
     console.log(`\n--- ${displayName} (${outletId}) ---`);
+    if (win && !ow.windowStrategyFor(outletId, OUTLET_STRATEGY_CONFIG, WP_API_CONFIG)) { console.log('  Skipping: SERP-only outlet (not polled in opening-window mode)'); continue; }
+    windowFetches++;
 
     let articles = [];
     let viaSerp = false; // SERP results are unfiltered, so never "reviews only"
@@ -934,12 +999,12 @@ async function main() {
       } catch (err) {
         console.warn(`  ⚠ WP API failed for ${outletId}: ${err.message}`);
         outletsFailed++;
-        if (!(WP_API_CONFIG[outletId].keepSerp && domain)) continue;
+        if (win || !(WP_API_CONFIG[outletId].keepSerp && domain)) continue;
       }
       // keepSerp: a mixed review/news feed only admits review-shaped headlines
       // (titleLedReviews), so the SERP sweep this outlet had before keeps running
       // beside it and still finds the reviews titled any other way.
-      if (WP_API_CONFIG[outletId].keepSerp && domain) {
+      if (!win && WP_API_CONFIG[outletId].keepSerp && domain) {
         try {
           const key = (u) => { try { return normalizeUrl(u); } catch { return u; } };
           const seen = new Set(articles.map(a => key(a.url)));
@@ -968,8 +1033,8 @@ async function main() {
           }
         } catch (err) {
           if (feedHealth[outletId]) feedHealth[outletId].error = String(err.message || err).slice(0, 200);
-          console.warn(`  ⚠ ${sc.strategy} failed (${err.message}); falling back to SERP`);
-          if (!domain || sc.laneRules) { outletsFailed++; continue; } // lane-derived feeds never fall back to paid SERP (BRO-6965)
+          console.warn(`  ⚠ ${sc.strategy} failed (${err.message});${win ? " no SERP in opening-window mode" : " falling back to SERP"}`);
+          if (win || !domain || sc.laneRules) { outletsFailed++; continue; } // lane-derived feeds never fall back to paid SERP (BRO-6965)
           try {
             viaSerp = true;
             articles = await fetchViaSerp(outletId, domain, cutoff, opts);
@@ -1095,6 +1160,7 @@ async function main() {
   // --- Summary ---
   console.log(`\n=== Done ===`);
   console.log(`New stubs: ${totalNewStubs}`);
+  if (win) console.log(`OPENING_WINDOW_STATS fetches=${windowFetches} paid=${paidBudget.used} paidRefused=${paidBudget.refused} cap=${paidBudget.max}`);
   if (pageConfirmStats.overBudget > 0) console.warn(`⚠ Page-confirm budget (${PAGE_CONFIRM_MAX_FETCHES}) ran out: ${pageConfirmStats.overBudget} candidate(s) not checked this run`);
   console.log(`Page-confirm (BRO-6921): ${pageConfirmStats.fetched} pages fetched, ${pageConfirmStats.confirmed} confirmed, ${pageConfirmStats.unconfirmed} not confirmed, ${pageConfirmStats.overBudget} over budget, ${pageConfirmStats.failed} fetch failures`);
   if (outletsFailed > 0) console.warn(`Outlets with errors: ${outletsFailed}`);
