@@ -422,19 +422,17 @@
       "linearIdentifier": null
     },
     "provider-spend:overspend": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "digest",
       "title": "Scraping spend over budget",
       "firstSeen": "2026-08-01T07:38:45.313Z",
-      "incidentOpenedAt": "2026-08-01T07:38:45.313Z",
-      "lastSeen": "2026-10-30T08:43:47.483Z",
-      "lastNotifiedAt": "2026-10-30T08:43:47.483Z",
-      "lastSurfacedAt": "2026-10-30T08:43:47.483Z",
-      "notifyCount": 46,
+      "incidentOpenedAt": "2026-11-06T09:29:18.224Z",
+      "lastSeen": "2026-11-06T09:29:18.224Z",
+      "lastNotifiedAt": "2026-11-06T09:29:18.224Z",
+      "lastSurfacedAt": "2026-11-06T09:29:18.224Z",
+      "notifyCount": 47,
       "cardId": null,
-      "linearIdentifier": "BRO-5526",
-      "resolvedAt": "2026-11-02T12:56:45.096Z",
-      "resolveReason": "no provider over budget for 3 days through 2026-11-01"
+      "linearIdentifier": "BRO-5526"
     },
     "orphan-unscored-requeue:tao-of-glass-west-end-2026": {
       "status": "resolved",
@@ -1037,8 +1035,10 @@
       "lastSurfacedAt": "2026-11-05T20:52:51.498Z",
       "notifyCount": 22,
       "cardId": null,
-      "linearIdentifier": "BRO-7022",
-      "resolvedAt": "2026-11-06T01:13:24.112Z"
+      "linearIdentifier": null,
+      "resolvedAt": "2026-11-06T01:13:24.112Z",
+      "sweptTracker": "BRO-7022",
+      "notifyCountAtRelease": 22
     },
     "test-yml:main-streak": {
       "status": "resolved",
@@ -9972,13 +9972,13 @@
     "priority-queue:overdue": {
       "status": "open",
       "disposition": "digest",
-      "title": "Overdue P0/P1 queue: 11 P0 older than 24h, 18 P1 older than 7d",
+      "title": "Overdue P0/P1 queue: 8 P0 older than 24h, 22 P1 older than 7d",
       "firstSeen": "2026-10-02T13:15:40.706Z",
       "incidentOpenedAt": "2026-10-02T13:15:40.706Z",
-      "lastSeen": "2026-11-05T09:31:29.676Z",
-      "lastNotifiedAt": "2026-11-05T09:31:29.676Z",
+      "lastSeen": "2026-11-06T09:26:49.306Z",
+      "lastNotifiedAt": "2026-11-06T09:26:49.306Z",
       "lastSurfacedAt": "2026-11-01T09:17:56.266Z",
-      "notifyCount": 33,
+      "notifyCount": 34,
       "cardId": null,
       "linearIdentifier": "BRO-5613"
     },
@@ -17822,13 +17822,13 @@
       "title": "Spend guard bd-circuit-breaker-web_unlocker2: cap drift",
       "firstSeen": "2026-10-14T02:46:56.661Z",
       "incidentOpenedAt": "2026-10-14T02:46:56.661Z",
-      "lastSeen": "2026-11-05T09:33:18.784Z",
+      "lastSeen": "2026-11-06T09:29:16.778Z",
       "lastNotifiedAt": "2026-11-04T09:21:31.384Z",
       "lastSurfacedAt": "2026-11-04T09:21:31.384Z",
       "notifyCount": 4,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "land:land/bro-5261-s5-retro-fixes": {
       "status": "resolved",
@@ -22796,10 +22796,12 @@
       "lastSurfacedAt": "2026-11-05T12:32:05.737Z",
       "notifyCount": 13,
       "cardId": null,
-      "linearIdentifier": "BRO-7012",
+      "linearIdentifier": null,
       "silentRefires": 1,
       "resolvedAt": "2026-11-05T16:55:41.678Z",
-      "resolveReason": "live-data test green"
+      "resolveReason": "live-data test green",
+      "sweptTracker": "BRO-7012",
+      "notifyCountAtRelease": 13
     },
     "land:land/bro-5776-commercial-coverage": {
       "status": "resolved",
@@ -24891,10 +24893,12 @@
       "lastSurfacedAt": "2026-11-05T02:45:26.544Z",
       "notifyCount": 13,
       "cardId": null,
-      "linearIdentifier": "BRO-6993",
+      "linearIdentifier": null,
       "silentRefires": 5,
       "resolvedAt": "2026-11-06T04:56:22.833Z",
-      "resolveReason": "live-data test green"
+      "resolveReason": "live-data test green",
+      "sweptTracker": "BRO-6993",
+      "notifyCountAtRelease": 13
     },
     "land:land/bro-5969-index-bloat-v3": {
       "status": "resolved",
@@ -32149,10 +32153,12 @@
       "lastSurfacedAt": "2026-11-05T12:32:04.319Z",
       "notifyCount": 7,
       "cardId": null,
-      "linearIdentifier": "BRO-7011",
+      "linearIdentifier": null,
       "silentRefires": 2,
       "resolvedAt": "2026-11-06T02:20:05.568Z",
-      "resolveReason": "live-data test green"
+      "resolveReason": "live-data test green",
+      "sweptTracker": "BRO-7011",
+      "notifyCountAtRelease": 7
     },
     "live-data-test:tests/unit/duplicate-images-live-data.test.mjs::real data: no byte-identical art across unrelated, unlinked shows": {
       "status": "resolved",
@@ -32166,10 +32172,12 @@
       "lastSurfacedAt": "2026-11-05T16:55:37.287Z",
       "notifyCount": 7,
       "cardId": null,
-      "linearIdentifier": "BRO-7020",
+      "linearIdentifier": null,
       "silentRefires": 1,
       "resolvedAt": "2026-11-06T04:56:22.852Z",
-      "resolveReason": "live-data test green"
+      "resolveReason": "live-data test green",
+      "sweptTracker": "BRO-7020",
+      "notifyCountAtRelease": 7
     },
     "land:land/bro-6546-voidfix": {
       "status": "resolved",
@@ -34758,10 +34766,10 @@
       "title": "a-few-good-men-2026: 1 review(s) need a decision (rejected real review or score outside the critic's rating)",
       "firstSeen": "2026-11-01T09:18:39.554Z",
       "incidentOpenedAt": "2026-11-01T09:18:39.554Z",
-      "lastSeen": "2026-11-05T09:31:56.174Z",
-      "lastNotifiedAt": "2026-11-05T09:31:56.174Z",
-      "lastSurfacedAt": "2026-11-05T09:31:56.174Z",
-      "notifyCount": 5,
+      "lastSeen": "2026-11-06T09:27:24.264Z",
+      "lastNotifiedAt": "2026-11-06T09:27:24.264Z",
+      "lastSurfacedAt": "2026-11-06T09:27:24.264Z",
+      "notifyCount": 6,
       "cardId": null,
       "linearIdentifier": null
     },
@@ -34771,10 +34779,10 @@
       "title": "the-moth-off-west-end-2026: 1 review(s) need a decision (rejected real review or score outside the critic's rating)",
       "firstSeen": "2026-11-01T09:18:39.622Z",
       "incidentOpenedAt": "2026-11-01T09:18:39.622Z",
-      "lastSeen": "2026-11-05T09:31:56.207Z",
-      "lastNotifiedAt": "2026-11-05T09:31:56.207Z",
-      "lastSurfacedAt": "2026-11-05T09:31:56.207Z",
-      "notifyCount": 5,
+      "lastSeen": "2026-11-06T09:27:24.303Z",
+      "lastNotifiedAt": "2026-11-06T09:27:24.303Z",
+      "lastSurfacedAt": "2026-11-06T09:27:24.303Z",
+      "notifyCount": 6,
       "cardId": null,
       "linearIdentifier": null
     },
@@ -34840,10 +34848,10 @@
       "title": "tosca-off-broadway-2026: 1 review(s) need a decision (rejected real review or score outside the critic's rating)",
       "firstSeen": "2026-11-01T14:15:28.863Z",
       "incidentOpenedAt": "2026-11-01T14:15:28.863Z",
-      "lastSeen": "2026-11-05T09:31:56.154Z",
-      "lastNotifiedAt": "2026-11-05T09:31:56.154Z",
-      "lastSurfacedAt": "2026-11-05T09:31:56.154Z",
-      "notifyCount": 5,
+      "lastSeen": "2026-11-06T09:27:24.241Z",
+      "lastNotifiedAt": "2026-11-06T09:27:24.241Z",
+      "lastSurfacedAt": "2026-11-06T09:27:24.241Z",
+      "notifyCount": 6,
       "cardId": null,
       "linearIdentifier": null
     },
@@ -36040,10 +36048,12 @@
       "lastSurfacedAt": "2026-11-05T16:55:39.043Z",
       "notifyCount": 4,
       "cardId": null,
-      "linearIdentifier": "BRO-7021",
+      "linearIdentifier": null,
       "silentRefires": 1,
       "resolvedAt": "2026-11-06T04:56:22.884Z",
-      "resolveReason": "live-data test green"
+      "resolveReason": "live-data test green",
+      "sweptTracker": "BRO-7021",
+      "notifyCountAtRelease": 4
     },
     "opening-night-revival-unverified-clifford-odets-waiting-for-lefty-off-broadway-2026": {
       "status": "open",
