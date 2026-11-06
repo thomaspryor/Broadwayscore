@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-2881",
   "planId": "8e4ceddb-b855-41e2-9a8a-54bebda068a9",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-06T03:03:44.962Z",
   "submitter": {
     "name": null,
@@ -95,5 +95,54 @@
         "description": "the-unlikely-pilgrimage-of-harold-fry-west-end-2026/thereviewshub--phoebe-taplin.json: originalScore"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-06T03:11:59.284Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "dirty-dancing-the-classic-story-on-stage-off-west-end-2026/thereviewshub--the-reviews-hub-scotland.json originalScore: null -> \"80/100\" (retracted originalScoreNormalized, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "girls-off-west-end-2026/thereviewshub--scott-matthewman.json originalScore: null -> \"70/100\" (retracted originalScoreNormalized, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "hit-machine-off-west-end-2026/thereviewshub--the-reviews-hub-london.json originalScore: null -> \"70/100\" (retracted originalScoreNormalized, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "ilford-boy-off-west-end-2026/thereviewshub--maryam-philpott.json originalScore: null -> \"80/100\" (retracted originalScoreNormalized, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "little-shop-of-horrors-hope-mill-regional-2026/thereviewshub--sebastian-farrell.json originalScore: null -> \"100/100\" (retracted originalScoreNormalized, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "malory-towers-royal-bath-regional-2026/thereviewshub--chris-harris.json originalScore: null -> \"100/100\" (retracted originalScoreNormalized, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "paddington-the-musical-west-end-2025/thereviewshub--scott-matthewman.json originalScore: null -> \"100/100\" (retracted originalScoreNormalized, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-children-off-west-end-2026/thereviewshub--the-reviews-hub-london.json originalScore: null -> \"80/100\" (retracted originalScoreNormalized, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-unlikely-pilgrimage-of-harold-fry-west-end-2026/thereviewshub--phoebe-taplin.json originalScore: null -> \"100/100\" (retracted originalScoreNormalized, originalScoreSource, scoreSource)"
+    }
+  ],
+  "executedIn": "ci"
 }
