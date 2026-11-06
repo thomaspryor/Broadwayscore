@@ -1,13 +1,24 @@
 {
-  "processed": [],
+  "processed": [
+    "the-verge-off-broadway-2026/nytimes--helen-shaw.json",
+    "rope-off-broadway-2026/nytimes--helen-shaw.json"
+  ],
   "failed": [
-    "222-a-ghost-story-off-broadway-2026/theatrely--kobi-kassal.json"
+    "the-unbelievers-off-broadway-2026/timeout--adam-feldman.json",
+    "the-unbelievers-off-broadway-2026/bobs-theater-blog--unknown.json",
+    "the-bridge-off-west-end-2026/sunday-times--unknown.json",
+    "the-bridge-off-west-end-2026/theatreandtonic--emmie-newitt.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/the-verge-off-broadway-2026/nytimes--helen-shaw.json",
+      "the-verge-off-broadway-2026/nytimes--helen-shaw.json",
+      "data/review-texts/rope-off-broadway-2026/nytimes--helen-shaw.json",
+      "rope-off-broadway-2026/nytimes--helen-shaw.json"
+    ],
     "directCookies": [],
     "scrapingdog": [],
     "scrapingbee": [],
@@ -15,7 +26,30 @@
     "archiveToday": [],
     "archive": []
   },
-  "startTime": "2026-11-06T10:15:01.614Z",
-  "lastProcessed": "222-a-ghost-story-off-broadway-2026/theatrely--kobi-kassal.json",
-  "log": []
+  "startTime": "2026-11-06T11:09:44.680Z",
+  "lastProcessed": "the-bridge-off-west-end-2026/theatreandtonic--emmie-newitt.json",
+  "log": [
+    {
+      "t": "2026-11-06T11:10:13.590Z",
+      "event": "bb-session",
+      "session": "ed8c3dd7",
+      "url": "https://www.nytimes.com/2026/11/05/theater/rope-the-verge-review-off-broadway-si"
+    },
+    {
+      "t": "2026-11-06T11:10:14.435Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-06T11:12:52.336Z",
+      "event": "bb-session",
+      "session": "c1b83881",
+      "url": "https://www.nytimes.com/2026/11/05/theater/rope-the-verge-review-off-broadway-si"
+    },
+    {
+      "t": "2026-11-06T11:12:53.217Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
