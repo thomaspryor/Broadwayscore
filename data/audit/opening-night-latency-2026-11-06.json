@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-11-06T21:17:07.669Z",
+  "generatedAt": "2026-11-06T23:15:59.898Z",
   "date": "2026-11-06",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 271644,
+  "entryCount": 278204,
   "shows": [
     {
       "showId": "these-paper-bullets-off-broadway-2015",
@@ -1016,13 +1016,13 @@
     },
     {
       "showId": "heartbreak-house-regional-2026",
-      "reviewCount": 7,
+      "reviewCount": 8,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 944041,
+        "scored-to-rebuilt": 938946,
         "rebuilt-to-deployed": 259230430
       },
       "reviews_over_15min": 0,
@@ -6248,13 +6248,13 @@
     },
     {
       "showId": "church-hurt-regional-2026",
-      "reviewCount": 7,
+      "reviewCount": 9,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 514681,
-        "scored-to-rebuilt": 1519437,
+        "scored-to-rebuilt": 1513981,
         "rebuilt-to-deployed": 233917563
       },
       "reviews_over_15min": 0,
@@ -12178,13 +12178,13 @@
     },
     {
       "showId": "222-a-ghost-story-off-broadway-2026",
-      "reviewCount": 9,
+      "reviewCount": 10,
       "median_e2e_ms": 39277801,
       "p90_e2e_ms": 44622476,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 471045,
-        "scored-to-rebuilt": 536124,
+        "scored-to-rebuilt": 554917,
         "rebuilt-to-deployed": 37362821
       },
       "reviews_over_15min": 4,
@@ -12611,13 +12611,58 @@
     },
     {
       "showId": "adirondack-chair-circle-regional-2026",
-      "reviewCount": 7,
+      "reviewCount": 11,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 1586306,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "red-regional-2026",
+      "reviewCount": 1,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 1893278,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "cats-2016",
+      "reviewCount": 43,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 1893273,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "curtains-2007",
+      "reviewCount": 5,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 1893273,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
