@@ -16,9 +16,11 @@ test('poll_one drains the hot show pending stubs before HOT_AFTER is counted', (
   const body = wf.slice(start, wf.indexOf('LAST_POLL[$SHOW_ID]=$SECONDS', start));
   const drain = body.indexOf('replay-pending-bylines.js --shows="$SHOW_ID"');
   const after = body.indexOf('HOT_AFTER=$(');
-  const guard = body.indexOf('if [ -n "$HOT_BEFORE" ]');
+  const before = body.indexOf('HOT_BEFORE=$(');
+  const created = body.indexOf('CREATED=$(');
   assert.ok(drain > 0, 'per-show drain present');
-  assert.ok(guard < drain && drain < after, 'drain runs inside the hot-show branch, before HOT_AFTER');
+  assert.ok(before > 0 && before < drain && drain < created && drain < after, 'HOT_BEFORE read before the poll, drain before the new-file counts and HOT_AFTER');
+  assert.equal(body.indexOf('replay-pending-bylines.js', drain + 10), -1, 'one drain only');
   assert.match(body.slice(drain - 90, drain), /BD_OPENING_NIGHT=1/);
   assert.match(body.slice(drain, drain + 160), /--skip-empty-body-retry/, 'retry phase must not eat the drain budget');
 });

@@ -502,13 +502,14 @@ jobs:
                 echo "  ⚠️ poller exited $POLLER_RC for $SHOW_ID — counted as a gather-stage failure"
               fi
 
-              # BRO-7032 (The Unbelievers, Off-Broadway 2026-11-05): the BRO-7004 drain below only
-              # runs for HOT shows, which are main-stage only. An Off-Broadway press-night review
-              # with no byline (TheaterMania) stayed in _pending/ for ~55 min until the next run's
-              # pre-loop drain and missed the 11:55pm bar. Drain every other press-night-window
-              # show right after its poll too; promotions stay uncommitted so the CREATED check
-              # below counts them and the commit + collect + score chain picks them up.
-              if [[ ",$WINDOW_SHOWS," == *",$SHOW_ID,"* ]] && [[ ",$HOT_SHOWS," != *",$SHOW_ID,"* ]]; then
+              # BRO-7004 / BRO-7032: a press-night review found without a byline (TheaterMania,
+              # Parcel from America, The Unbelievers) is routed to _pending/ and used to wait for
+              # the pre-loop drain of the NEXT run (~60 min later). Promote it right after the poll
+              # for EVERY show in its press-night window (WINDOW_SHOWS, any market: HOT_SHOWS is
+              # main-stage only, so Off-Broadway nights were skipped). Promotions stay uncommitted,
+              # so the CREATED/SHOW_DIRTY checks below and HOT_AFTER (HOT_BEFORE is read before the
+              # poll) count them as new and the commit + collect + score chain picks them up.
+              if [[ ",$WINDOW_SHOWS," == *",$SHOW_ID,"* ]]; then
                 # lint-allow-swallow: best-effort speed-up; the next run's pre-loop drain still promotes the stub, so nothing is lost.
                 BD_OPENING_NIGHT=1 timeout 240 node scripts/replay-pending-bylines.js --shows="$SHOW_ID" --time-budget-min=2 --skip-empty-body-retry || echo "::warning::press-night pending drain for $SHOW_ID failed or timed out"
               fi
@@ -573,13 +574,6 @@ jobs:
                 [[ ",$GUARDIAN_REDISPATCH_SHOWS," == *",$SHOW_ID,"* ]] || GUARDIAN_REDISPATCH_SHOWS="$GUARDIAN_REDISPATCH_SHOWS,$SHOW_ID"
               fi
             if [ -n "$HOT_BEFORE" ]; then
-              # BRO-7004: a press-night review found without a byline (TheaterMania, Parcel from
-              # America) is routed to _pending/ and used to wait for the pre-loop drain step of the
-              # NEXT run (~60 min later). Promote it now, before HOT_AFTER is counted, so it counts
-              # as a new file and ends the loop early like any other hot find. Promotions stay
-              # uncommitted in the checkout (same as the pre-loop drain); time-boxed.
-              # lint-allow-swallow: best-effort speed-up; a failure emits ::warning:: and the stub is still drained by the pre-loop drain step of the next run, so nothing is lost.
-              BD_OPENING_NIGHT=1 timeout 240 node scripts/replay-pending-bylines.js --shows="$SHOW_ID" --time-budget-min=2 --skip-empty-body-retry || echo "::warning::press-night pending drain for $SHOW_ID failed or timed out"
               local HOT_AFTER
               HOT_AFTER=$(cd data/review-texts && git status --porcelain --untracked-files=all -- "$SHOW_ID" | grep -c '^??' || true)
               if [ "$HOT_AFTER" -gt "$HOT_BEFORE" ]; then
