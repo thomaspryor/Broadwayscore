@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-11-06T17:12:32.334Z",
-  "processed": 362,
-  "failed": 199,
-  "successRate": "64.5%",
+  "updatedAt": "2026-11-06T17:17:40.400Z",
+  "processed": 101,
+  "failed": 62,
+  "successRate": "62.0%",
   "tierBreakdown": {
-    "playwright": 185,
+    "playwright": 60,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 4,
     "directCookies": 0,
-    "scrapingdog": 29,
-    "scrapingbee": 13,
-    "brightdata": 1,
+    "scrapingdog": 8,
+    "scrapingbee": 2,
+    "brightdata": 0,
     "archiveToday": 0,
     "archive": 102
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
       "t": "2026-11-06T15:46:15.164Z",
@@ -45,6 +45,28 @@
       "event": "bb-session",
       "session": "6f06c94d",
       "url": "https://playstosee.com/reviews/uk-reviews/the-banality-of-evil-hannah-arendt-fra"
+    },
+    {
+      "t": "2026-11-06T17:13:39.596Z",
+      "event": "bb-session",
+      "session": "54ae78a1",
+      "url": "https://www.nytimes.com/2026/11/06/theater/the-unbelievers-222-a-ghost-story-rev"
+    },
+    {
+      "t": "2026-11-06T17:13:40.149Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-06T17:14:23.573Z",
+      "event": "bb-session",
+      "session": "55f5e9ea",
+      "url": "https://www.nytimes.com/2026/11/05/theater/rope-the-verge-review-off-broadway-si"
+    },
+    {
+      "t": "2026-11-06T17:14:24.015Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
