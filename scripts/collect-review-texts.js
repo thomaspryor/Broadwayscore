@@ -7707,6 +7707,7 @@ async function processReview(review) {
         console.log(`  ↪ Mention check (${sanity.reason}) waived: titledReviews blog, page title is the show title ("${sanity.htmlTitle}")`);
         sanity.valid = true;
       }
+      review._showMentionProven = sanity.valid; // BRO-7041: the Time Out re-credit below needs a proven show
       if (!sanity.valid && !laneHeld(review, 'headlineBackstop')) {
         console.log(`  ✗ URL→CONTENT MISMATCH: ${sanity.reason}`);
         if (sanity.htmlTitle) console.log(`    HTML <title>: "${sanity.htmlTitle}"`);
@@ -7758,11 +7759,11 @@ async function processReview(review) {
       // roundup misattribution (BRO-7041: the-unbelievers, row Adam Feldman, page Billy McEntee). The
       // sanity check above already proved the page is this show, so re-credit the row to the page byline
       // and keep the text instead of failing the fetch.
-      if (timeoutPage.verdict === 'wrong_critic' && timeoutPage.pageCritic && review.filePath && !review._timeoutRecredited) {
+      if (timeoutPage.verdict === 'wrong_critic' && timeoutPage.pageCritic && review._showMentionProven && !review._urlDiscovered && review.filePath && !review._timeoutRecredited) {
         const data = readReviewForUpdate(review.filePath);
         const credited = data.criticName;
         data.criticName = timeoutPage.pageCritic;
-        data.criticReattributedFrom = credited;
+        data.criticReattributedFrom = credited || 'Unknown';
         data.criticReattributedReason = `timeout-page-byline: ${timeoutPage.reason}`;
         const moved = renameReviewFileForCriticOverride(review, data, timeoutPage.pageCritic);
         if (moved.action === 'renamed') {

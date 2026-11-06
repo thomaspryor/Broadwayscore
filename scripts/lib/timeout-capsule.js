@@ -65,6 +65,14 @@ function parseTimeoutPage(html) {
   };
 }
 
+/** The page's <meta name="author"> value, or null. */
+function metaAuthor(html) {
+  const m = String(html || '').match(/<meta[^>]*\bname=["']author["'][^>]*\bcontent=["']([^"']{3,60})["']/i)
+    || String(html || '').match(/<meta[^>]*\bcontent=["']([^"']{3,60})["'][^>]*\bname=["']author["']/i);
+  const name = m ? decodeHtmlEntities(m[1]).trim() : '';
+  return /^[A-Z][\w'’.-]*(?: [A-Z][\w'’.-]*){1,3}$/.test(name) ? name : null;
+}
+
 /**
  * @param {object} p
  * @param {string} p.html - fetched page HTML
@@ -80,9 +88,11 @@ function classifyTimeoutPage({ html, critic, showYear }) {
   if (page.reviewBy) {
     if (rowCritic && !normName(page.reviewBy).startsWith(rowCritic)) {
       const shown = page.reviewBy.split(/\s+/).slice(0, 2).join(' ');
-      // pageCritic: the byline of a real "review by" page, for re-crediting a row a roundup misattributed (BRO-7041).
-      const pageCritic = /^[A-Z][A-Za-z'’.-]+ [A-Z][A-Za-z'’.-]+$/.test(shown) ? shown : null;
-      return { verdict: 'wrong_critic', reason: `Time Out review by ${shown}, row credits ${critic}`, pageCritic };
+      // pageCritic (BRO-7041): the page's <meta name="author">, accepted only when the printed "review by" run
+      // starts with it. The first two words of the run are not a safe name (middle names, "Name. Body...").
+      const pageCritic = metaAuthor(html);
+      const confirmed = pageCritic && normName(page.reviewBy).startsWith(normName(pageCritic));
+      return { verdict: 'wrong_critic', reason: `Time Out review by ${shown}, row credits ${critic}`, pageCritic: confirmed ? pageCritic : null };
     }
     return { verdict: 'review' };
   }
