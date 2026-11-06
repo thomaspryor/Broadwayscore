@@ -1,13 +1,32 @@
 {
-  "generatedAt": "2026-11-06T13:01:33.686Z",
+  "generatedAt": "2026-11-06T14:52:36.357Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 320,
-  "clean": 320,
-  "defective": 0,
-  "byType": {},
-  "shows": [],
+  "clean": 319,
+  "defective": 1,
+  "byType": {
+    "score-drift": 1
+  },
+  "shows": [
+    {
+      "showId": "the-verge-off-broadway-2026",
+      "title": "The Verge",
+      "openingDate": "2026-11-05",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 58.31 vs local 56.12 (Δ2.19)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 8,
+      "deployedCount": 8,
+      "firstDefectAt": "2026-11-06T14:52:31.775Z"
+    }
+  ],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }
