@@ -1,27 +1,100 @@
 {
   "processed": [
-    "speculations-off-west-end-2026/theatre-vibe--lizzie-loveridge.json"
+    "speculations-off-west-end-2026/theatre-vibe--lizzie-loveridge.json",
+    "jest-to-impress-off-broadway-2026/donyc--unknown.json",
+    "the-unbelievers-off-broadway-2026/nytimes--laura-collins-hughes.json",
+    "the-verge-off-broadway-2026/nytimes--helen-shaw.json",
+    "222-a-ghost-story-off-broadway-2026/wsj--charles-isherwood.json",
+    "medea-off-broadway-2026/maryland-theatre-guide--unknown.json",
+    "kelly-mccaughan-catholic-guilt-off-broadway-2026/broadway-baby--unknown.json"
   ],
   "failed": [
     "speculations-off-west-end-2026/guardian--unknown.json",
     "speculations-off-west-end-2026/artsdesk--unknown.json",
-    "speculations-off-west-end-2026/london-unattached--unknown.json"
+    "speculations-off-west-end-2026/london-unattached--unknown.json",
+    "jest-to-impress-off-broadway-2026/chelmsfordtheatre--genre.json",
+    "seussical-theatre-young-audiences-off-broadway-2026/wknd--unknown.json",
+    "medea-off-broadway-2026/express-uk--neil-norman.json",
+    "222-a-ghost-story-off-broadway-2026/theatrely--kobi-kassal.json",
+    "the-unbelievers-off-broadway-2026/bobs-theater-blog--unknown.json",
+    "medea-off-broadway-2026/bachtrack--susan-stempleski.json",
+    "a-few-good-men-2026/variety--anna-tingley.json",
+    "the-heart-off-broadway-2026/variety--cynthia-littleton.json",
+    "a-few-good-men-2026/goldderby--ethan-alter.json",
+    "the-heart-off-broadway-2026/frontmezzjunkies--unknown.json",
+    "in-the-heights-off-broadway-2026/nypost--clive-barnes.json",
+    "in-the-heights-off-broadway-2026/bloomberg--john-simon.json",
+    "i-became-we-off-broadway-2026/timeout--unknown.json",
+    "i-became-we-off-broadway-2026/bobs-theater-blog--unknown.json",
+    "hospital-hour-off-broadway-2026/broadway-baby--unknown.json",
+    "hospital-hour-off-broadway-2026/one-minute-critic--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "speculations-off-west-end-2026/theatre-vibe--lizzie-loveridge.json"
+      "speculations-off-west-end-2026/theatre-vibe--lizzie-loveridge.json",
+      "jest-to-impress-off-broadway-2026/donyc--unknown.json",
+      "medea-off-broadway-2026/maryland-theatre-guide--unknown.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/the-unbelievers-off-broadway-2026/nytimes--laura-collins-hughes.json",
+      "the-unbelievers-off-broadway-2026/nytimes--laura-collins-hughes.json",
+      "data/review-texts/the-verge-off-broadway-2026/nytimes--helen-shaw.json",
+      "the-verge-off-broadway-2026/nytimes--helen-shaw.json",
+      "data/review-texts/222-a-ghost-story-off-broadway-2026/wsj--charles-isherwood.json",
+      "222-a-ghost-story-off-broadway-2026/wsj--charles-isherwood.json"
+    ],
     "directCookies": [],
     "scrapingdog": [],
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [],
-    "archive": []
+    "archive": [
+      "kelly-mccaughan-catholic-guilt-off-broadway-2026/broadway-baby--unknown.json"
+    ]
   },
   "startTime": "2026-11-06T19:40:03.471Z",
-  "lastProcessed": "speculations-off-west-end-2026/theatre-vibe--lizzie-loveridge.json",
-  "log": []
+  "lastProcessed": "hospital-hour-off-broadway-2026/one-minute-critic--unknown.json",
+  "log": [
+    {
+      "t": "2026-11-06T19:50:11.430Z",
+      "event": "bb-session",
+      "session": "171b1aa8",
+      "url": "https://www.nytimes.com/2026/11/06/theater/the-unbelievers-222-a-ghost-story-rev"
+    },
+    {
+      "t": "2026-11-06T19:50:12.062Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-06T19:50:53.172Z",
+      "event": "bb-session",
+      "session": "b6cf23ed",
+      "url": "https://www.nytimes.com/2026/11/05/theater/rope-the-verge-review-off-broadway-si"
+    },
+    {
+      "t": "2026-11-06T19:50:53.716Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-06T19:51:08.974Z",
+      "event": "bb-session",
+      "session": "4b045e04",
+      "url": "https://www.wsj.com/articles/the-unbelievers-and-2-22a-ghost-story-review-off-br"
+    },
+    {
+      "t": "2026-11-06T19:51:09.548Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-11-06T19:53:21.943Z",
+      "event": "bb-session",
+      "session": "868a4394",
+      "url": "https://bachtrack.com/review-medea-yoncheva-spyres-met-opera-new-york-october-20"
+    }
+  ]
 }
