@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-06T03:15:11.190Z",
+  "generatedAt": "2026-11-06T03:41:27.500Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -1293,7 +1293,7 @@
       "slug": "222-a-ghost-story-off-broadway",
       "thumbnail": "/images/shows/222-a-ghost-story-off-broadway-2026/thumbnail.jpg",
       "siteScore": null,
-      "liveScore": 60,
+      "liveScore": 57,
       "scoreDrift": null,
       "belowThreshold": true,
       "reviewsNeeded": 4,
@@ -1302,8 +1302,8 @@
       "t1": 0,
       "t2": 0,
       "t3": 1,
-      "positive": 0,
-      "mixed": 1,
+      "positive": 1,
+      "mixed": 0,
       "negative": 0,
       "readiness": {
         "ready": false,
@@ -1311,9 +1311,9 @@
           "1/12 total",
           "T1:0/3",
           "T2:0/3",
-          "hi-conf:0/8"
+          "hi-conf:1/8"
         ],
-        "highConfidence": 0,
+        "highConfidence": 1,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -1667,6 +1667,18 @@
           "t3": 1,
           "p": 0,
           "m": 1,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-11-06T03:41:27.500Z",
+          "rc": 1,
+          "s": 57,
+          "t1": 0,
+          "t2": 0,
+          "t3": 1,
+          "p": 1,
+          "m": 0,
           "n": 0,
           "bc": "waiting"
         }

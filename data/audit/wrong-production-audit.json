@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-06T03:14:58.816Z",
+  "timestamp": "2026-11-06T03:41:14.644Z",
   "stats": {
     "totalReviews": 80229,
     "alreadyFlagged": 21989,
     "dateGuardCatches": 216,
-    "directorMismatch": 3514,
-    "tvFilmSignals": 2283,
+    "directorMismatch": 3515,
+    "tvFilmSignals": 2284,
     "londonSignals": 3617,
     "offBroadwaySignals": 741,
     "yearMismatch": 361,
-    "noPublishDate": 8483
+    "noPublishDate": 8481
   },
   "findings": [
     {
@@ -52784,6 +52784,34 @@
       ]
     },
     {
+      "showId": "private-lives-2025",
+      "file": "huffpost--michael-giltz.json",
+      "score": 80,
+      "publishDate": "2011-11-19",
+      "url": "https://www.huffpost.com/entry/private-lives-broadway-review_b_1102882",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "private-lives-2025",
+      "file": "nytimes--unknown.json",
+      "score": null,
+      "publishDate": "November 17, 2011",
+      "url": "http://theater.nytimes.com/2011/11/18/theater/reviews/kim-cattrall-stars-in-private-lives-review.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"howard davies\" from private-lives-2002"
+        }
+      ]
+    },
+    {
       "showId": "private-lives-west-end-2013",
       "file": "british-theatre--philip-fisher.json",
       "score": 66,
@@ -57192,7 +57220,7 @@
     },
     {
       "showId": "some-like-it-hot-tour-2024",
-      "file": "oklahoman--unknown.json",
+      "file": "oklahoman--brandy-mcdonnell.json",
       "publishDate": "2025-03-29",
       "url": "https://www.oklahoman.com/story/entertainment/2025/03/29/new-some-like-it-hot-musical-heads-to-okc-on-national-tour-what-to-know/82657256007/",
       "findings": [
@@ -122949,7 +122977,7 @@
     },
     {
       "showId": "strictly-ballroom-west-end-2018",
-      "file": "artsdesk--unknown.json",
+      "file": "artsdesk--matt-wolf.json",
       "score": 36,
       "publishDate": null,
       "url": "https://theartsdesk.com/theatre/strictly-ballroom-musical-piccadilly-theatre-review-largely-naff",
@@ -124892,7 +124920,7 @@
     },
     {
       "showId": "the-birthday-party-royal-bath-regional-2024",
-      "file": "artsdesk--unknown.json",
+      "file": "artsdesk--gary-naylor.json",
       "score": 79,
       "publishDate": null,
       "url": "https://theartsdesk.com/theatre/birthday-party-ustinov-studio-theatre-royal-bath-review-pinter-still-packs-punch",
@@ -125987,7 +126015,7 @@
     },
     {
       "showId": "the-comedy-about-a-bank-robbery-west-end-2016",
-      "file": "britishtheatrecom--unknown.json",
+      "file": "britishtheatrecom--matthew-lunn.json",
       "score": 93,
       "publishDate": null,
       "url": "https://www.britishtheatre.com/posts/review-the-comedy-about-a-bank-robbery-criterion-theatre",
@@ -126377,7 +126405,7 @@
     },
     {
       "showId": "the-crucible-west-end-2014",
-      "file": "guardian--unknown.json",
+      "file": "guardian--michael-billington.json",
       "score": 93,
       "publishDate": "2014-07-04",
       "url": "https://www.theguardian.com/stage/2014/jul/04/the-crucible-review-old-vic-london",
