@@ -19,10 +19,9 @@ import { fileURLToPath } from 'node:url';
 const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
 const require = createRequire(import.meta.url);
 const CHECKABLE_FROM = Date.parse('2026-11-08T12:00:00Z');
-const skip = Date.now() < CHECKABLE_FROM && 'not checkable before 2026-11-08';
 const read = (f) => JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'audit', f), 'utf8'));
 
-test('digest snapshot rows carry firstSeen after the change landed', { skip }, () => {
+test('digest snapshot rows carry firstSeen after the change landed', { skip: Date.now() < CHECKABLE_FROM && 'not checkable before 2026-11-08' }, () => {
   const snap = read('health-digest-snapshot.json');
   assert.ok(Date.parse(snap.generatedAt) >= Date.parse('2026-11-07T00:00:00Z'), 'snapshot not regenerated since the change landed');
   const rows = [...(snap.errors || []), ...(snap.warns || [])];
@@ -31,11 +30,12 @@ test('digest snapshot rows carry firstSeen after the change landed', { skip }, (
   assert.equal(typeof snap.cleared, 'object', 'snapshot lost its cleared map');
 });
 
-test('history keeps the first-seen maps', { skip }, () => {
+test('history keeps the first-seen maps', { skip: Date.now() < CHECKABLE_FROM && 'not checkable before 2026-11-08' }, () => {
   const h = read('health-check-history.json');
   for (const k of ['firstSeen', 'cleared', 'openStatus']) assert.equal(typeof h[k], 'object', `history.${k} missing`);
 });
 
+// RECHECK-GREEN-TODAY: pure-function check, passes now and must keep passing.
 test('the hold logic still exists and holds a young warning', () => {
   const { isSettling, SETTLE_HOURS } = require('./lib/health-first-seen');
   const now = Date.now();
