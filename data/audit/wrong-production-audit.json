@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-06T03:41:14.644Z",
+  "timestamp": "2026-11-06T04:42:00.031Z",
   "stats": {
-    "totalReviews": 80229,
-    "alreadyFlagged": 21989,
+    "totalReviews": 80245,
+    "alreadyFlagged": 21988,
     "dateGuardCatches": 216,
     "directorMismatch": 3515,
     "tvFilmSignals": 2284,
-    "londonSignals": 3617,
-    "offBroadwaySignals": 741,
+    "londonSignals": 3619,
+    "offBroadwaySignals": 743,
     "yearMismatch": 361,
-    "noPublishDate": 8481
+    "noPublishDate": 8482
   },
   "findings": [
     {
@@ -84336,6 +84336,34 @@
       ]
     },
     {
+      "showId": "222-a-ghost-story-off-broadway-2026",
+      "file": "mashable--kristy-puchko.json",
+      "score": 86,
+      "publishDate": "2026-11-05",
+      "url": "https://sea.mashable.com/entertainment/56657/222-a-ghost-story-is-scarier-than-paranormal-activity-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "222-a-ghost-story-off-broadway-2026",
+      "file": "nytg--gillian-russo.json",
+      "score": null,
+      "publishDate": "2026-11-05",
+      "url": "https://www.newyorktheatreguide.com/reviews/2-22-a-ghost-story-off-broadway-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "4-48-psychosis-west-end-2025",
       "file": "guardian--arifa-akbar.json",
       "score": 56,
@@ -119408,6 +119436,19 @@
       ]
     },
     {
+      "showId": "rope-off-broadway-2026",
+      "file": "nytimes--helen-shaw.json",
+      "publishDate": "2026-11-05",
+      "url": "https://www.nytimes.com/2026/11/05/theater/rope-the-verge-review-off-broadway-silverman.html",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
       "showId": "rose-west-end-2023",
       "file": "telegraph--dominic-cavendish.json",
       "score": 79,
@@ -134353,6 +134394,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"gielgud\""
+        }
+      ]
+    },
+    {
+      "showId": "the-unbelievers-off-broadway-2026",
+      "file": "wsj--charles-isherwood.json",
+      "score": 60,
+      "publishDate": "2026-11-05",
+      "url": "https://www.wsj.com/articles/the-unbelievers-and-2-22a-ghost-story-review-off-broadway-stages-turn-unsettling-b758c396",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"lucille lortel\""
         }
       ]
     },
