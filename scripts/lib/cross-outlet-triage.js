@@ -76,22 +76,4 @@ function makeOutletCanonicalizer(registryDoc) {
   };
 }
 
-// Wire services (AP) syndicate one story to many newspapers, so the SAME critic
-// legitimately appears under other outlets' ids (BRO-7038: Mark Kennedy is AP's
-// critic; denver-post/washpost rows are his AP story run in those papers, while
-// the registry records him as news-tribune's defaultCritic). When the same show
-// already has a non-excluded wire-original file by that critic, a cross-outlet
-// copy is syndication, not misattribution.
-const WIRE_OUTLET_IDS = new Set(['ap']);
-
-/**
- * @param {string} criticName critic on the candidate file
- * @param {string} canonOutletId canonical outletId of the candidate file
- * @param {Set<string>} wireCritics criticNames with a wire-original file in the same show
- */
-function isWireSyndicatedCopy(criticName, canonOutletId, wireCritics) {
-  if (!criticName || !wireCritics || WIRE_OUTLET_IDS.has(canonOutletId)) return false;
-  return wireCritics.has(criticName);
-}
-
-module.exports = { makeOutletCanonicalizer, isTriagedOut, isWireSyndicatedCopy, WIRE_OUTLET_IDS };
+module.exports = { makeOutletCanonicalizer, isTriagedOut };
