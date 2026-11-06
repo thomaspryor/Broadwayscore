@@ -1,12 +1,11 @@
 {
-  "generatedAt": "2026-11-05T13:25:31.529Z",
-  "total": 374,
-  "armedCount": 363,
-  "refusedCount": 11,
+  "generatedAt": "2026-11-06T13:08:22.347Z",
+  "total": 351,
+  "armedCount": 341,
+  "refusedCount": 10,
   "byKind": {
     "shape": 9,
-    "no-section": 1,
-    "no-command": 1
+    "no-section": 1
   },
   "refused": [
     {
@@ -32,14 +31,6 @@
       "url": "https://linear.app/broadway-scorecard/issue/BRO-6949/x",
       "reason": "card has no acceptance-criteria section or VERIFY line",
       "kind": "no-section"
-    },
-    {
-      "id": "BRO-6944",
-      "name": "iOS: signed-out rating Save shows no sign-in sheet and strands the user on the show page",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6944/ios-signed-out-rating-save-shows-no-sign-in-sheet-and-strands-the-user",
-      "reason": "acceptance criteria names no runnable command (prose only)",
-      "kind": "no-command"
     },
     {
       "id": "BRO-6849",
@@ -99,8 +90,8 @@
     }
   ],
   "ownerJudgmentLimbo": {
-    "total": 302,
-    "checked": 302,
+    "total": 276,
+    "checked": 276,
     "complete": true,
     "cards": [
       {
@@ -113,6 +104,15 @@
     ]
   },
   "missingCheckPaths": [
+    {
+      "id": "BRO-7024",
+      "name": "Make critic byline distinct from pull quote on review cards",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7024/make-critic-byline-distinct-from-pull-quote-on-review-cards",
+      "cmd": "node --test tests/unit/review-card-byline-distinction.test.mjs",
+      "missingPaths": [
+        "tests/unit/review-card-byline-distinction.test.mjs"
+      ]
+    },
     {
       "id": "BRO-6917",
       "name": "Web sign-up flow: light-touch onboarding (anonymous ratings, quieter bookmark prompt, opt-in quiz after Sign-in-button sign-ups)",
@@ -138,15 +138,6 @@
       "cmd": "node --test tests/unit/cross-show-url-guard.test.mjs",
       "missingPaths": [
         "tests/unit/cross-show-url-guard.test.mjs"
-      ]
-    },
-    {
-      "id": "BRO-6862",
-      "name": "Lottery/rush: 'special' key from bwayrush scraper never shown (MTC $35, HipTix)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6862/lotteryrush-special-key-from-bwayrush-scraper-never-shown-mtc-dollar35",
-      "cmd": "node --test tests/unit/lottery-rush-special-key.test.mjs",
-      "missingPaths": [
-        "tests/unit/lottery-rush-special-key.test.mjs"
       ]
     },
     {
@@ -420,15 +411,6 @@
       ]
     },
     {
-      "id": "BRO-5804",
-      "name": "Weekly-gross history: check 4 missing weeks for three 2017-2022 revivals so their all-time totals can fill",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5804/weekly-gross-history-check-4-missing-weeks-for-three-2017-2022",
-      "cmd": "node --test tests/unit/missing-weeks-audit.test.mjs",
-      "missingPaths": [
-        "tests/unit/missing-weeks-audit.test.mjs"
-      ]
-    },
-    {
       "id": "BRO-5673",
       "name": "Progress per dollar: more Codex, cap batch sessions, stop dead filers, consolidate watchers (owner chose A, 2026-10-19)",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-5673/progress-per-dollar-more-codex-cap-batch-sessions-stop-dead-filers",
@@ -669,15 +651,6 @@
       "cmd": "node --test tests/unit/actions-cache-budget.test.mjs",
       "missingPaths": [
         "tests/unit/actions-cache-budget.test.mjs"
-      ]
-    },
-    {
-      "id": "BRO-3606",
-      "name": "Two dead/bypassing scraping workflows found during BRO-2961 ledger audit",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-3606/two-deadbypassing-scraping-workflows-found-during-bro-2961-ledger",
-      "cmd": "node --test tests/unit/scraping-workflows-fetchpage.test.mjs",
-      "missingPaths": [
-        "tests/unit/scraping-workflows-fetchpage.test.mjs"
       ]
     },
     {
