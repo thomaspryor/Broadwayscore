@@ -595,3 +595,18 @@ test('BRO-7044: comparison lede on a single review is not split into a joint rev
   const p = planMultiShowFanout({ outletId: 'x', outlet: 'X', criticName: 'C', url: 'https://e.com/a', contentTier: 'complete', showId: 'b-2026', publishDate: '2026-10-20', fullText: text }, SHOWS, { joint: true });
   assert.ok(!p || (p.otherSections || []).length === 0);
 });
+
+test('BRO-7044: backstory naming a sibling show in separate sentences is not a joint lede', () => {
+  const SHOWS = [
+    { id: 'a-2026', title: 'The Lantern Hall', category: 'off-broadway', openingDate: '2026-10-18' },
+    { id: 'b-2026', title: 'Quiet Room', category: 'off-broadway', openingDate: '2026-10-18' },
+  ];
+  const filler = (t, n) => Array.from({ length: n }, (_, i) => `The ${t} passage number ${i + 1} moves along at a patient, deliberate pace that the cast keeps up with real care.`).join(' ');
+  const text = [
+    `When “The Lantern Hall” opened in 2024 it changed the season. The producers of “The Lantern Hall” have since gone quiet. Nobody expected “Quiet Room” to follow.`,
+    `Ada Marsh plays the medium with relish. ${filler('medium', 8)}`,
+    `Dark nights notwithstanding, “Quiet Room” is at its best in the second act. ${filler('scare', 4)} The director lets “Quiet Room” breathe. ${filler('scare', 4)} See “Quiet Room” with a friend.`,
+  ].join(' ');
+  const p = planMultiShowFanout({ outletId: 'x', outlet: 'X', criticName: 'C', url: 'https://e.com/a', contentTier: 'complete', showId: 'b-2026', publishDate: '2026-10-20', fullText: text }, SHOWS, { joint: true });
+  assert.ok(!p || (p.otherSections || []).length === 0);
+});

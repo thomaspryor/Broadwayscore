@@ -563,6 +563,10 @@ function ledeNamedFirstSections(text, byShow, mentions) {
   const aId = [...byShow.keys()].find((id) => id !== bId);
   if (!aId || lede[0].id !== aId || stretch.some((mn) => mn.id !== bId) || stretch.length < 3) return [];
   if (lede.filter((mn) => mn.id === aId).length < 2 || !lede.some((mn) => mn.id === bId)) return [];
+  // A joint lede introduces the two shows together; a backstory paragraph that
+  // happens to name a sibling show does not put the two titles side by side.
+  const ledeB = lede.filter((mn) => mn.id === bId);
+  if (!ledeB.some((mb) => lede.some((ma) => ma.id === aId && Math.abs(mb.at - ma.end) <= 200 && !/[.!?]["”’]?\s/.test(text.slice(Math.min(ma.end, mb.at), Math.max(ma.end, mb.at)).replace(/\b(?:[A-Z]|St|Mr|Mrs|Dr)\.\s/g, ''))))) return [];
   if (lede[lede.length - 1].end > text.length * FIRST_INTRO_MAX_SHARE) return [];
   // The pivot sentence opens on the second show's title (a short lead-in at most
   // like "Dark nights notwithstanding,"), and the lede is not a comparison ("a louder
