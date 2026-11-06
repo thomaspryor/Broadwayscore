@@ -43,3 +43,21 @@ test('fullText 99 vs 100 chars', () => {
   assert.equal(g({ ...base, fileData: { url: URL_OK, fullText: 'x'.repeat(99) } }).suppress, true);
   assert.equal(g({ ...base, fileData: { url: URL_OK, fullText: 'x'.repeat(100) } }).suppress, false);
 });
+
+// BRO-7044: Time Out's Unbelievers review was rejected not_a_review on a 303-char premise blurb.
+const { shouldSuppressExcerptOnlyNotAReview: n, urlSlugIsReviewOfShow } = require('./excerpt-wrongshow-guard.js');
+const TO_URL = 'https://www.timeout.com/newyork/theater/the-unbelievers-off-broadway-review-lauren-ambrose';
+const nbase = { rejection: 'not_a_review', scoredTextType: 'excerpt', showTitle: 'The Unbelievers', fileData: { url: TO_URL, fullText: null } };
+
+test('BRO-7044 real case: excerpt-only not_a_review on a <show>-review slug -> suppressed', () => {
+  assert.deepEqual(n(nbase), { suppress: true, reason: 'excerpt_only_not_a_review_url_is_review_slug' });
+});
+test('BRO-7044: fullText judged, or non-review slug, or other rejection -> verdict stands', () => {
+  assert.equal(n({ ...nbase, scoredTextType: 'fullText' }).suppress, false);
+  assert.equal(n({ ...nbase, fileData: { url: TO_URL, fullText: 'x'.repeat(500) } }).suppress, false);
+  assert.equal(n({ ...nbase, fileData: { url: 'https://x.com/the-unbelievers-cast-and-tickets', fullText: null } }).suppress, false);
+  assert.equal(n({ ...nbase, fileData: { url: 'https://x.com/a-different-show-review', fullText: null } }).suppress, false);
+  assert.equal(n({ ...nbase, rejection: 'wrong_show' }).suppress, false);
+  assert.equal(n({ ...nbase, showTitle: undefined }).suppress, false);
+  assert.equal(urlSlugIsReviewOfShow('not a url', 'The Unbelievers'), false);
+});

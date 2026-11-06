@@ -77,7 +77,7 @@ import { ReviewTextFile, ScoringPipelineOptions, PipelineRunSummary } from './ty
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { assessTextQuality, qualityOptsFor, detectGarbageFromReasoning, hasBotStubTruncationSignal } = require('../lib/content-quality.js');
 const { getBestTextForScoring } = require('../lib/text-quality');
-const { shouldSuppressExcerptOnlyWrongShow } = require('../lib/excerpt-wrongshow-guard');
+const { shouldSuppressExcerptOnlyWrongShow, shouldSuppressExcerptOnlyNotAReview } = require('../lib/excerpt-wrongshow-guard');
 const { invalidateWrongProductionAutoClear, invalidateWrongShowAutoClear } = require('../lib/review-write-guard');
 const { laneBypasses } = require('../lib/opening-night-lane/trust-model');
 const { writableShowIds } = require('../lib/opening-night-lane/lease-guard');
@@ -1581,6 +1581,21 @@ async function main(): Promise<void> {
         if (excerptGuard.suppress && !humanClearOverridingRejection(fileData, rejection)) {
           console.log(`SKIP-REJECT (wrong_show on excerpt only, URL names show; awaiting fullText): ${rejectionReasoning?.substring(0, 80) || ''}`);
           stampTerminalScoringFailure(fileData, `excerpt_only_wrong_show:${rejection}`);
+          saveReviewFile(filePath, fileData);
+          skipped++;
+          return true;
+        }
+
+        // BRO-7044: same for a not_a_review verdict on an excerpt-only file whose URL is a "<show>-review" slug.
+        const notAReviewGuard = shouldSuppressExcerptOnlyNotAReview({
+          rejection,
+          scoredTextType,
+          fileData,
+          showTitle: showTitles.get(reviewFile.showId || '') || undefined,
+        });
+        if (notAReviewGuard.suppress && !humanClearOverridingRejection(fileData, rejection)) {
+          console.log(`SKIP-REJECT (not_a_review on excerpt only, URL is a review slug; awaiting fullText): ${rejectionReasoning?.substring(0, 80) || ''}`);
+          stampTerminalScoringFailure(fileData, `excerpt_only_not_a_review:${rejection}`);
           saveReviewFile(filePath, fileData);
           skipped++;
           return true;
