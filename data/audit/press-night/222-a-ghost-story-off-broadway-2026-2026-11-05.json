@@ -7,7 +7,7 @@
   "embargoSource": "market-default",
   "probe": {
     "startedAt": "2026-11-06T02:30:04.921Z",
-    "endedAt": null,
+    "endedAt": "2026-11-06T05:06:15.519Z",
     "intervalMin": 5,
     "samples": 30,
     "failedSamples": 0,
@@ -96,6 +96,17 @@
       "liveCount": 4,
       "fetchedAt": "2026-11-06T05:00:30.126Z",
       "censusNote": "no BWW roundup found"
+    },
+    "end": {
+      "status": "no-census-yet",
+      "source": null,
+      "count": 0,
+      "covered": null,
+      "coverage": null,
+      "missing": [],
+      "liveCount": 4,
+      "fetchedAt": "2026-11-06T05:06:15.213Z",
+      "censusNote": "archive only"
     }
   },
   "manualActions": [],
@@ -108,6 +119,12 @@
         "label": "2h",
         "standDown": false,
         "reason": "market not lane-only"
+      },
+      {
+        "at": "2026-11-06T05:06:15.213Z",
+        "label": "end",
+        "standDown": false,
+        "reason": "show unknown"
       }
     ]
   },
