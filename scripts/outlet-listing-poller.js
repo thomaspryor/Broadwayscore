@@ -289,7 +289,7 @@ const OUTLET_STRATEGY_CONFIG = {
   // site has no RSS/WP API we could find, and nysun.com answered 429 to every probe from the
   // sandbox, so the arts section page is read instead. Unverified from here: confirm with a
   // dispatch of outlet-listing-poller.yml (dry_run, outlets=new-york-sun) and adjust the url.
-  'new-york-sun':            { strategy: 'listing-html', url: 'https://www.nysun.com/section/arts', urlFilter: /nysun\.com\/article\//, pageConfirmAll: true },
+  'new-york-sun':            { strategy: 'listing-html', url: 'https://www.nysun.com/section/arts', urlFilter: /nysun\.com\/article\//, usePlainFetch: true, pageConfirmAll: true },
 };
 
 // Outlets where we use WordPress REST API (separate — API approach, no URL scraping needed)
@@ -372,7 +372,7 @@ function parseArgs() {
       case '--market': opts.market = args[++i]; break;
       case '--min-show-count': opts.minShowCount = parseInt(args[++i], 10); break;
       case '--opening-window': opts.openingWindow = true; break;
-      case '--max-paid': opts.maxPaid = parseInt(args[++i], 10); break;
+      case '--max-paid': { const n = parseInt(args[++i], 10); if (Number.isFinite(n) && n >= 0) opts.maxPaid = n; break; }
     }
   }
   return opts;
@@ -759,37 +759,6 @@ async function fetchViaSerp(outletId, domain, cutoff, opts) {
   return items;
 }
 
-async function fetchViaHtml(outletId, domain, outletEntry, cutoff) {
-  // Try common theater/stage section paths for the outlet
-  const candidates = [
-    outletEntry.theaterUrl,
-    outletEntry.reviewsUrl,
-    `https://${domain}/theater/`,
-    `https://${domain}/stage/`,
-    `https://${domain}/theater-reviews/`,
-    `https://${domain}/reviews/`,
-    `https://${domain}/broadway/`,
-  ].filter(Boolean);
-
-  for (const listingUrl of candidates) {
-    try {
-      console.log(`  [html] Fetching ${listingUrl}`);
-      const result = await fetchPage(listingUrl, { timeout: 20000 });
-      // fetchPage returns {content, format, source}, never a bare string
-      const html = result && typeof result === 'object' ? result.content : result;
-      if (!html || html.length < 500) continue;
-
-      const items = extractListingUrls(html, domain);
-      if (items.length < 3) continue; // listing page didn't parse well
-
-      console.log(`  [html] ${items.length} links extracted from ${listingUrl}`);
-      return items;
-    } catch (err) {
-      console.log(`  [html] Failed: ${err.message}`);
-    }
-  }
-  return [];
-}
 
 // ---------------------------------------------------------------------------
 // Page confirmation (BRO-6921)
@@ -914,7 +883,6 @@ async function main() {
 
   // Active shows only (open or previews), optionally filtered by market
   let activeShows = allShows.filter(s => s.status === 'open' || s.status === 'previews');
-  let windowOutlets = null;
   if (win) {
     // Match only against shows 0-3 days past opening; nothing in the window means no fetches at all.
     activeShows = ow.selectWindowShows(allShows);
@@ -1163,7 +1131,7 @@ async function main() {
   console.log(`\n=== Done ===`);
   console.log(`New stubs: ${totalNewStubs}`);
   if (win) console.log(`OPENING_WINDOW_STATS fetches=${windowFetches} paid=${paidBudget.used} paidRefused=${paidBudget.refused} cap=${paidBudget.max}`);
-  if (pageConfirmStats.overBudget > 0) console.warn(`⚠ Page-confirm budget (${PAGE_CONFIRM_MAX_FETCHES}) ran out: ${pageConfirmStats.overBudget} candidate(s) not checked this run`);
+  if (pageConfirmStats.overBudget > 0) console.warn(`⚠ Page-confirm budget (${PAGE_CONFIRM_MAX_FETCHES} pages${paidBudget && paidBudget.refused ? ', paid cap ' + paidBudget.max : ''}) ran out: ${pageConfirmStats.overBudget} candidate(s) not checked this run`);
   console.log(`Page-confirm (BRO-6921): ${pageConfirmStats.fetched} pages fetched, ${pageConfirmStats.confirmed} confirmed, ${pageConfirmStats.unconfirmed} not confirmed, ${pageConfirmStats.overBudget} over budget, ${pageConfirmStats.failed} fetch failures`);
   if (outletsFailed > 0) console.warn(`Outlets with errors: ${outletsFailed}`);
   if (serpOnlyEmpty.length > 0) {
@@ -1236,7 +1204,7 @@ function reportFeedHealth(feedHealth, allReviews, opts) {
   // Previous snapshot: carries failStreak, and is the merge base for --outlets runs.
   let previous = null;
   try { previous = JSON.parse(fs.readFileSync(FEED_HEALTH_PATH, 'utf-8')); } catch { previous = null; }
-  const report = buildFeedHealthReport(feedHealth, allReviews, { previous, partial: !!opts.outlets });
+  const report = buildFeedHealthReport(feedHealth, allReviews, { previous, partial: !!opts.outlets || !!opts.openingWindow });
   if (report.stale.length > 0) {
     console.warn(`\n⚠ Stale feeds (outlet still publishing, feed's newest matching item >${FEED_STALE_DAYS}d old or none): ${report.stale.length}`);
     for (const id of report.stale) {
