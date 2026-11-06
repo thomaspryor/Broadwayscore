@@ -1,116 +1,5 @@
 [
   {
-    "startedAt": "2026-11-04T22:09:01.770Z",
-    "completedAt": "2026-11-04T22:11:41.571Z",
-    "totalReviews": 80405,
-    "processed": 7,
-    "skipped": 80394,
-    "errors": 3,
-    "tokensUsed": {
-      "input": 46931,
-      "output": 2349,
-      "cacheRead": 18990,
-      "cacheWrite": 11321,
-      "total": 118584
-    },
-    "costUsd": 0.107861075,
-    "runId": "41921282183",
-    "source": "index",
-    "errorDetails": [
-      {
-        "showId": "an-enemy-of-the-people-west-end-2024",
-        "outletId": "times-uk",
-        "error": "Review text too short or missing"
-      },
-      {
-        "showId": "alterations-west-end-2025",
-        "outletId": "thestage",
-        "error": "Review text too short or missing"
-      },
-      {
-        "showId": "the-years-west-end-2025",
-        "outletId": "thestage",
-        "error": "Review text too short or missing"
-      }
-    ]
-  },
-  {
-    "startedAt": "2026-11-04T22:11:59.729Z",
-    "completedAt": "2026-11-04T22:12:12.704Z",
-    "totalReviews": 3,
-    "processed": 3,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 9308,
-      "output": 631,
-      "cacheRead": 0,
-      "cacheWrite": 0,
-      "total": 9939
-    },
-    "costUsd": 0.0244179,
-    "runId": "41921282183",
-    "source": "comparative-rescore",
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-11-04T22:51:49.705Z",
-    "completedAt": "2026-11-04T22:51:49.746Z",
-    "totalReviews": 0,
-    "processed": 0,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "cacheRead": 0,
-      "cacheWrite": 0,
-      "total": 0
-    },
-    "costUsd": 0,
-    "runId": "41926041628",
-    "source": "comparative-rescore",
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-11-04T22:59:43.645Z",
-    "completedAt": "2026-11-04T22:59:43.688Z",
-    "totalReviews": 0,
-    "processed": 0,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "cacheRead": 0,
-      "cacheWrite": 0,
-      "total": 0
-    },
-    "costUsd": 0,
-    "runId": "41928907601",
-    "source": "comparative-rescore",
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-11-04T23:00:14.302Z",
-    "completedAt": "2026-11-04T23:00:14.320Z",
-    "totalReviews": 0,
-    "processed": 0,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "cacheRead": 0,
-      "cacheWrite": 0,
-      "total": 0
-    },
-    "costUsd": 0,
-    "runId": "41928912465",
-    "source": "comparative-rescore",
-    "errorDetails": []
-  },
-  {
     "startedAt": "2026-11-04T23:19:55.139Z",
     "completedAt": "2026-11-04T23:20:00.298Z",
     "totalReviews": 65,
@@ -761621,6 +761510,44 @@
     },
     "costUsd": 0,
     "runId": "42282761386",
+    "source": "comparative-rescore",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-11-06T20:08:12.746Z",
+    "completedAt": "2026-11-06T20:08:23.938Z",
+    "totalReviews": 22,
+    "processed": 2,
+    "skipped": 20,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 11212,
+      "output": 678,
+      "cacheRead": 3807,
+      "cacheWrite": 3807,
+      "total": 29049
+    },
+    "costUsd": 0.05701475,
+    "runId": "42284974816",
+    "source": "index",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-11-06T20:13:20.820Z",
+    "completedAt": "2026-11-06T20:13:20.829Z",
+    "totalReviews": 0,
+    "processed": 0,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 0,
+      "output": 0,
+      "cacheRead": 0,
+      "cacheWrite": 0,
+      "total": 0
+    },
+    "costUsd": 0,
+    "runId": "42284974816",
     "source": "comparative-rescore",
     "errorDetails": []
   }
