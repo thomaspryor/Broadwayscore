@@ -1,43 +1,5 @@
 [
   {
-    "startedAt": "2026-11-04T17:20:43.891Z",
-    "completedAt": "2026-11-04T17:20:48.449Z",
-    "totalReviews": 2,
-    "processed": 2,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 6921,
-      "output": 415,
-      "cacheRead": 0,
-      "cacheWrite": 0,
-      "total": 7336
-    },
-    "costUsd": 0.0175895,
-    "runId": "41874461585",
-    "source": "comparative-rescore",
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-11-04T17:18:53.797Z",
-    "completedAt": "2026-11-04T17:18:58.939Z",
-    "totalReviews": 28,
-    "processed": 1,
-    "skipped": 27,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 5811,
-      "output": 295,
-      "cacheRead": 3807,
-      "cacheWrite": 0,
-      "total": 14775
-    },
-    "costUsd": 0.021886500000000003,
-    "runId": "41874484299",
-    "source": "index",
-    "errorDetails": []
-  },
-  {
     "startedAt": "2026-11-04T17:23:55.815Z",
     "completedAt": "2026-11-04T17:23:55.839Z",
     "totalReviews": 0,
@@ -812037,6 +811999,44 @@
     },
     "costUsd": 0,
     "runId": "42241105956",
+    "source": "comparative-rescore",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-11-06T15:15:57.593Z",
+    "completedAt": "2026-11-06T15:16:06.487Z",
+    "totalReviews": 18,
+    "processed": 2,
+    "skipped": 16,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 8094,
+      "output": 553,
+      "cacheRead": 3807,
+      "cacheWrite": 3807,
+      "total": 24322
+    },
+    "costUsd": 0.04617665,
+    "runId": "42240077509",
+    "source": "index",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-11-06T15:21:04.000Z",
+    "completedAt": "2026-11-06T15:21:04.013Z",
+    "totalReviews": 0,
+    "processed": 0,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 0,
+      "output": 0,
+      "cacheRead": 0,
+      "cacheWrite": 0,
+      "total": 0
+    },
+    "costUsd": 0,
+    "runId": "42240077509",
     "source": "comparative-rescore",
     "errorDetails": []
   }
