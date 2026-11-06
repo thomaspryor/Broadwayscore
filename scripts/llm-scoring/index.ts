@@ -77,7 +77,7 @@ import { ReviewTextFile, ScoringPipelineOptions, PipelineRunSummary } from './ty
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { assessTextQuality, qualityOptsFor, detectGarbageFromReasoning, hasBotStubTruncationSignal } = require('../lib/content-quality.js');
 const { getBestTextForScoring } = require('../lib/text-quality');
-const { shouldSuppressExcerptOnlyWrongShow, shouldSuppressExcerptOnlyNotAReview } = require('../lib/excerpt-wrongshow-guard');
+const { shouldSuppressExcerptOnlyWrongShow, shouldSuppressExcerptOnlyNotAReview, shouldSuppressExcerptOnlyAggregatorListed } = require('../lib/excerpt-wrongshow-guard');
 const { invalidateWrongProductionAutoClear, invalidateWrongShowAutoClear } = require('../lib/review-write-guard');
 const { laneBypasses } = require('../lib/opening-night-lane/trust-model');
 const { writableShowIds } = require('../lib/opening-night-lane/lease-guard');
@@ -1596,6 +1596,17 @@ async function main(): Promise<void> {
         if (notAReviewGuard.suppress && !humanClearOverridingRejection(fileData, rejection)) {
           console.log(`SKIP-REJECT (not_a_review on excerpt only, URL is a review slug; awaiting fullText): ${rejectionReasoning?.substring(0, 80) || ''}`);
           stampTerminalScoringFailure(fileData, `excerpt_only_not_a_review:${rejection}`);
+          saveReviewFile(filePath, fileData);
+          skipped++;
+          return true;
+        }
+
+        // BRO-7050: any remaining ensemble rejection judged on an aggregator excerpt alone, for a file an
+        // aggregator lists, writes no flag (the two URL-slug guards above are its narrower cases).
+        const aggListedGuard = shouldSuppressExcerptOnlyAggregatorListed({ rejection, scoredTextType, fileData });
+        if (aggListedGuard.suppress && !humanClearOverridingRejection(fileData, rejection)) {
+          console.log(`SKIP-REJECT (${rejection} on excerpt only, aggregator lists it; awaiting fullText): ${rejectionReasoning?.substring(0, 80) || ''}`);
+          stampTerminalScoringFailure(fileData, `excerpt_only_aggregator_listed:${rejection}`);
           saveReviewFile(filePath, fileData);
           skipped++;
           return true;

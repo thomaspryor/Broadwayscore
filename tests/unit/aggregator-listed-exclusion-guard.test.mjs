@@ -104,6 +104,30 @@ describe('what the guard must NOT release', () => {
   });
 });
 
+describe('writers stop minting the verdict (so the flag is never written)', () => {
+  const { shouldSuppressExcerptOnlyAggregatorListed } = require('../../scripts/lib/excerpt-wrongshow-guard');
+  const { nonReviewStampBlockReason } = require('../../scripts/lib/flagged-recovery');
+
+  test('llm-scoring: any ensemble rejection on an excerpt-only aggregator-listed file writes no flag', () => {
+    for (const rejection of ['not_a_review', 'wrong_show', 'wrong_production']) {
+      const r = shouldSuppressExcerptOnlyAggregatorListed({ rejection, scoredTextType: 'excerpt', fileData: { fullText: null, dtliExcerpt: 'quote' } });
+      assert.equal(r.suppress, true, rejection);
+    }
+  });
+
+  test('llm-scoring: a verdict that read a real body, or an unlisted file, is not suppressed', () => {
+    assert.equal(shouldSuppressExcerptOnlyAggregatorListed({ rejection: 'not_a_review', scoredTextType: 'fullText', fileData: { fullText: BODY, dtliExcerpt: 'q' } }).suppress, false);
+    assert.equal(shouldSuppressExcerptOnlyAggregatorListed({ rejection: 'not_a_review', scoredTextType: 'excerpt', fileData: { fullText: null, metaExcerpt: 'headline' } }).suppress, false);
+    assert.equal(shouldSuppressExcerptOnlyAggregatorListed({ rejection: 'garbage_text', scoredTextType: 'excerpt', fileData: { dtliExcerpt: 'q' } }).suppress, false);
+  });
+
+  test('classify-non-reviews: the Gemini stamp is blocked when an aggregator lists the review', () => {
+    assert.match(nonReviewStampBlockReason(review(), false) || '', /aggregator lists this review/);
+    assert.equal(nonReviewStampBlockReason(review({ dtliExcerpt: undefined }), false), null);
+    assert.equal(nonReviewStampBlockReason(review(), false, { independentCheckAgrees: true }), null);
+  });
+});
+
 describe('plumbing', () => {
   test('evaluateSoloVerdictHold rejects unknown kinds and missing data', () => {
     assert.equal(evaluateSoloVerdictHold(null, 'nonReview').held, false);
