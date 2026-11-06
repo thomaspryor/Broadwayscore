@@ -110,6 +110,17 @@ jobs:
             exit 1
           fi
 
+      # BRO-6939: pick clean Seen/Want art for any tour added since the last audit
+      # (no --redo: only unaudited tours). Advisory (CLAUDE.md 19): a failure leaves
+      # the tour on its current art and never blocks the schedule commit.
+      - name: Audit new tour art
+        id: tourartaudit
+        if: ${{ !cancelled() && steps.schedules.outcome == 'success' }}
+        continue-on-error: true
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: timeout 600 node scripts/audit-tour-art.js
+
       - name: Check for changes
         id: changes
         if: ${{ !cancelled() && steps.schedules.outcome == 'success' }}
@@ -121,7 +132,7 @@ jobs:
           # byte-identical would never ship the shows.json that points at them.
           shows_changed=false
           if ! cmp -s data/shows.json /tmp/core-data-snapshot/shows.json; then shows_changed=true; fi
-          if [ "$shows_changed" = false ] && [ -z "$(git status --porcelain -- data/tour-schedules.json data/tour-tickets.json data/image-sources.json data/tour-art-attempts.json public/images/shows/)" ]; then
+          if [ "$shows_changed" = false ] && [ -z "$(git status --porcelain -- data/tour-schedules.json data/tour-tickets.json data/image-sources.json data/tour-art-attempts.json src/config/onboarding-tour-art.json public/images/shows/)" ]; then
             echo "has_changes=false" >> $GITHUB_OUTPUT
           else
             echo "has_changes=true" >> $GITHUB_OUTPUT
@@ -138,7 +149,7 @@ jobs:
           BRANCH="${GITHUB_REF#refs/heads/}"
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/tour-schedules.json data/tour-tickets.json
+          git add data/tour-schedules.json data/tour-tickets.json src/config/onboarding-tour-art.json
           # Whole dirs: one missing pathspec makes the helper stage nothing.
           bash scripts/lib/stage-data-changes.sh data/ public/images/shows/
           # Drop an aspect violator instead of losing the whole batch.
