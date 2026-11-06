@@ -1119,6 +1119,9 @@ const COMMON_WORD_SHOW_TITLES = new Set([
   'enemies', 'frozen', 'freak', 'misery', 'orphans', 'rocky', 'rumors',
   'thieves', 'trash', 'warp', 'brothers', 'bully', 'buddy',
   'ambassador', 'steaming', 'monument', 'consumed', 'anonymous',
+  // BRO-7053: ordinary words and first names that are also show titles and
+  // matched real London reviews (Speculations: Guardian, Arts Desk).
+  'still', 'people', 'both', 'right now', 'john', 'jack', 'miles', 'trevor',
 ]);
 
 // BRO-5373: show titles that are ordinary words ("Tender", "Local", "Miles",
@@ -1185,6 +1188,30 @@ function isSubjectName(hitIndexes, textLength) {
 }
 
 /**
+ * BRO-7053: short captures (a 1.6-3k review) name their subject only once or
+ * twice in the interior, so the strict rule above cannot reach them. Two
+ * interior hits at least SHORT_SUBJECT_MIN_GAP apart count, but only when few
+ * titles qualify: a junk page listing many titles twice would qualify many.
+ */
+const SHORT_SUBJECT_MAX_TEXT = 3000;
+const SHORT_SUBJECT_MIN_TEXT = 600;
+const SHORT_SUBJECT_MIN_GAP = 300;
+const SHORT_SUBJECT_MIN_SPREAD = 0.2;
+const SHORT_SUBJECT_MAX_TITLES = 4;
+function isShortSubjectName(hitIndexes, textLength) {
+  if (!textLength || textLength < SHORT_SUBJECT_MIN_TEXT || textLength >= SHORT_SUBJECT_MAX_TEXT) return false;
+  const lo = textLength * SUBJECT_EDGE;
+  const hi = textLength * (1 - SUBJECT_EDGE);
+  const interior = hitIndexes.filter((i) => i >= lo && i <= hi);
+  if (interior.length < 2) return false;
+  const span = interior[interior.length - 1] - interior[0];
+  if (span < SHORT_SUBJECT_MIN_GAP || span / textLength < SHORT_SUBJECT_MIN_SPREAD) return false;
+  // Every gap must be wide: a card repeating a title in a row stays flagged.
+  for (let i = 1; i < interior.length; i++) if (interior[i] - interior[i - 1] < SHORT_SUBJECT_MIN_GAP) return false;
+  return true;
+}
+
+/**
  * Detect if text contains references to multiple different Broadway shows
  * This indicates a 404/index page or navigation junk, not a single review
  *
@@ -1235,14 +1262,15 @@ function detectMultiShowContent(text, expectedShowId, opts = {}) {
   // CURRENT_BROADWAY_SHOWS is deduped at construction (loadBroadwayShows), so
   // one entry here == one distinct title, and foundShows.length is a count of
   // DIFFERENT shows rather than of productions.
-  const foundShows = CURRENT_BROADWAY_SHOWS.filter(show => {
+  const candidates = [];
+  for (const show of CURRENT_BROADWAY_SHOWS) {
     // Skip common English words that happen to be show titles
-    if (COMMON_WORD_SHOW_TITLES.has(show)) return false;
+    if (COMMON_WORD_SHOW_TITLES.has(show)) continue;
 
     // Skip if this is the expected show
     const showWords = show.split(/\s+/);
     const isExpectedShow = expectedWords.some(ew => showWords.some(sw => sw.includes(ew) || ew.includes(sw)));
-    if (isExpectedShow) return false;
+    if (isExpectedShow) continue;
 
     // Use word-boundary regex instead of substring matching
     const escaped = show.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -1252,14 +1280,18 @@ function detectMultiShowContent(text, expectedShowId, opts = {}) {
       if (requireTitleCase && !titleCaseMatch(m[0])) continue;
       hits.push(m.index);
     }
-    if (hits.length === 0) return false;
+    if (hits.length === 0) continue;
     // BRO-7053: a name the article keeps coming back to across its whole body
     // is the review's SUBJECT (Marilyn, Dorothy, Kilgallen in a play about
     // Monroe), not a cross-show mention. A junk index or sidebar lists each
     // title once or twice, or clusters repeats inside one card.
-    if (subjectNames && isSubjectName(hits, text.length)) return false;
-    return true;
-  });
+    if (subjectNames && isSubjectName(hits, text.length)) continue;
+    candidates.push({ show, hits });
+  }
+  // Short captures: few repeated names are the subject; many mean a listing.
+  const shortSubjects = subjectNames ? candidates.filter((c) => isShortSubjectName(c.hits, text.length)) : [];
+  const exempt = shortSubjects.length > 0 && shortSubjects.length <= SHORT_SUBJECT_MAX_TITLES ? new Set(shortSubjects.map((c) => c.show)) : new Set();
+  const foundShows = candidates.filter((c) => !exempt.has(c.show)).map((c) => c.show);
 
   // Scale threshold by text length — critics routinely reference other shows for comparison
   // Short text (< 1000 chars) with 3+ shows = likely junk page
