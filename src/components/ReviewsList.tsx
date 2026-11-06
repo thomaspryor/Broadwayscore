@@ -354,8 +354,8 @@ const ReviewCard = memo(function ReviewCard({ review, isLast, category, hideStop
   const mobileDate = dateLabel && !stop ? (
     <span className="sm:hidden whitespace-nowrap">, {dateLabel.replace(new RegExp(`,\\s*${new Date().getFullYear()}$`), '')}</span>
   ) : null;
-  // With a stop, phones get one full-width line under the byline row instead
-  // ("Oct 5 · Rochester, NY"), so it never squeezes against Full Review. Only
+  // With a stop, phones get one full-width line under the quote instead
+  // ("Oct 5 · Rochester, NY"), so it never squeezes against the byline. Only
   // this year's dates lose the year; an older tour's review keeps it.
   const mobileStopLine = stop ? (
     <div className="sm:hidden text-xs text-fg-muted mt-0.5">
