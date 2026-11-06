@@ -1,12 +1,12 @@
 {
-  "updatedAt": "2026-11-06T14:32:16.101Z",
-  "processed": 191,
-  "failed": 115,
-  "successRate": "62.4%",
+  "updatedAt": "2026-11-06T15:17:38.962Z",
+  "processed": 200,
+  "failed": 117,
+  "successRate": "63.1%",
   "tierBreakdown": {
-    "playwright": 91,
+    "playwright": 100,
     "amp": 0,
-    "browserbase": 10,
+    "browserbase": 11,
     "directCookies": 0,
     "scrapingdog": 18,
     "scrapingbee": 5,
@@ -14,83 +14,8 @@
     "archiveToday": 0,
     "archive": 56
   },
-  "browserbaseSessions": 16,
+  "browserbaseSessions": 9,
   "recentActivity": [
-    {
-      "t": "2026-11-06T12:32:50.174Z",
-      "event": "bb-session",
-      "session": "f673a2da",
-      "url": "https://www.hollywoodreporter.com/review/height-storm-theater-review-1242574"
-    },
-    {
-      "t": "2026-11-06T12:44:42.358Z",
-      "event": "bb-session",
-      "session": "185c4d02",
-      "url": "https://www.londontheatre1.com/.well-known/captcha/?y=ipr:20.83.175.21:179330283"
-    },
-    {
-      "t": "2026-11-06T13:04:41.951Z",
-      "event": "bb-session",
-      "session": "e6e2f62b",
-      "url": "https://publictheater.org/productions/season/2627/the-curious-case-of-benjamin-b"
-    },
-    {
-      "t": "2026-11-06T13:05:02.449Z",
-      "event": "bb-session",
-      "session": "8a217452",
-      "url": "https://publictheater.org/productions/season/2627/the-curious-case-of-benjamin-b"
-    },
-    {
-      "t": "2026-11-06T13:38:51.574Z",
-      "event": "bb-session",
-      "session": "e36521e0",
-      "url": "https://www.talkinbroadway.com/regional/minn/minn1534.html"
-    },
-    {
-      "t": "2026-11-06T13:38:52.216Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-11-06T13:49:04.655Z",
-      "event": "bb-session",
-      "session": "5709553c",
-      "url": "https://www.nytimes.com/2026/08/25/theater/paranormal-activity-review-broadway.h"
-    },
-    {
-      "t": "2026-11-06T13:49:05.278Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-11-06T14:02:47.750Z",
-      "event": "bb-session",
-      "session": "49769c29",
-      "url": "https://deadline.com/2026/09/two-strangers-carry-a-cake-across-new-york-broadway"
-    },
-    {
-      "t": "2026-11-06T14:13:36.224Z",
-      "event": "bb-session",
-      "session": "3f370e52",
-      "url": "https://talkinbroadway.com/review-maybe-happy-ending/"
-    },
-    {
-      "t": "2026-11-06T14:13:36.905Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-11-06T14:14:49.089Z",
-      "event": "bb-session",
-      "session": "5facec35",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review-1"
-    },
-    {
-      "t": "2026-11-06T14:14:58.484Z",
-      "event": "bb-session",
-      "session": "a11e8983",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review-1"
-    },
     {
       "t": "2026-11-06T14:16:19.973Z",
       "event": "bb-session",
@@ -130,6 +55,80 @@
       "event": "bb-session",
       "session": "1a321616",
       "url": "https://www.cityweekly.net/BuzzBlog/archives/2022/10/03/theater-review-the-lion-"
+    },
+    {
+      "t": "2026-11-06T14:44:24.078Z",
+      "event": "bb-session",
+      "session": "6d971f7e",
+      "url": "http://www.talkinbroadway.com/page/ob/2_11_16.html"
+    },
+    {
+      "t": "2026-11-06T14:44:24.894Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-06T14:55:06.023Z",
+      "event": "bb-session",
+      "session": "20b84a3a",
+      "url": "https://www.londontheatre1.com/.well-known/captcha/?y=ipr:20.83.175.21:179330283"
+    },
+    {
+      "t": "2026-11-06T15:02:32.762Z",
+      "event": "bb-session",
+      "session": "27d313eb",
+      "url": "https://www.talkinbroadway.com/regional/minn/minn1534.html"
+    },
+    {
+      "t": "2026-11-06T15:02:33.693Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-06T15:03:58.816Z",
+      "event": "bb-session",
+      "session": "b3cd3ce0",
+      "url": "https://www.nytimes.com/2026/10/06/theater/dirty-dancing-broadway.html"
+    },
+    {
+      "t": "2026-11-06T15:03:59.586Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-06T15:13:35.489Z",
+      "event": "bb-session",
+      "session": "d50adfc8",
+      "url": "https://talkinbroadway.com/review-maybe-happy-ending/"
+    },
+    {
+      "t": "2026-11-06T15:13:36.295Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-06T15:13:57.316Z",
+      "event": "bb-session",
+      "session": "a88f75ca",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review-1"
+    },
+    {
+      "t": "2026-11-06T15:14:06.559Z",
+      "event": "bb-session",
+      "session": "dc167ee3",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review-1"
+    },
+    {
+      "t": "2026-11-06T15:15:27.522Z",
+      "event": "bb-session",
+      "session": "8195d752",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review/"
+    },
+    {
+      "t": "2026-11-06T15:15:36.405Z",
+      "event": "bb-session",
+      "session": "c83c3f2c",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review/"
     }
   ]
 }
