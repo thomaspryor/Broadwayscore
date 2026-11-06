@@ -1,29 +1,40 @@
 {
-  "updatedAt": "2026-11-06T19:22:25.616Z",
-  "processed": 91,
-  "failed": 59,
-  "successRate": "60.7%",
+  "updatedAt": "2026-11-06T19:27:47.182Z",
+  "processed": 6,
+  "failed": 7,
+  "successRate": "46.2%",
   "tierBreakdown": {
-    "playwright": 56,
+    "playwright": 3,
     "amp": 0,
-    "browserbase": 2,
+    "browserbase": 4,
     "directCookies": 0,
-    "scrapingdog": 10,
+    "scrapingdog": 0,
     "scrapingbee": 1,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 16
+    "archive": 0
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
-      "t": "2026-11-06T19:21:08.026Z",
+      "t": "2026-11-06T19:20:20.570Z",
       "event": "bb-session",
-      "session": "080c8d10",
+      "session": "5d8a2d4f",
+      "url": "https://www.nytimes.com/2026/11/06/theater/the-unbelievers-222-a-ghost-story-rev"
+    },
+    {
+      "t": "2026-11-06T19:20:21.414Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-06T19:21:05.544Z",
+      "event": "bb-session",
+      "session": "b9df631c",
       "url": "https://www.nytimes.com/2026/11/05/theater/rope-the-verge-review-off-broadway-si"
     },
     {
-      "t": "2026-11-06T19:21:08.669Z",
+      "t": "2026-11-06T19:21:06.367Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
