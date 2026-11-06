@@ -1,0 +1,25 @@
+{
+  "issueNumber": "bro-7044",
+  "planId": "b6b4c746-8863-4aad-827d-ec3d28632b73",
+  "status": "pending",
+  "createdAt": "2026-11-06T18:56:44.049113Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7044: re-trim the WSJ joint review in The Unbelievers and 2:22 to each show's own section",
+    "steps": [
+      "split-multi-show-roundups.js on the-unbelievers-off-broadway-2026/wsj--charles-isherwood.json"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "run-script",
+        "description": "BRO-7044: the WSJ joint review of The Unbelievers and 2:22 is back to the whole article in both show files after a re-collect. Run the multi-show splitter on this one file so each show keeps only its own section; both rows are then queued for a rescore.",
+        "script": "split-multi-show-roundups.js",
+        "args": "--show=the-unbelievers-off-broadway-2026 --file=wsj--charles-isherwood.json --joint --apply --scan-all"
+      }
+    ]
+  }
+}

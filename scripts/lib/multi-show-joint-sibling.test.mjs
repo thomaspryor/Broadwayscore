@@ -9,7 +9,7 @@ import path from 'node:path';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { planMultiShowFanout, applyMultiShowFanoutToFile, heldSiblingNeedsTrim } = require('./multi-show-review-fanout.js');
+const { planMultiShowFanout, applyMultiShowFanoutToFile, heldSiblingNeedsTrim, splitParentRegrew } = require('./multi-show-review-fanout.js');
 const { findSectionHeadings, extractShowSection, isolateMultiShowSection } = require('./multi-show-section-extract.js');
 
 const SHOWS = [
@@ -229,4 +229,12 @@ test('heldSiblingNeedsTrim: a processed split is trimmed only for the parent tha
   assert.equal(heldSiblingNeedsTrim(whole, sec, 'bughouse-x'), true);
   assert.equal(heldSiblingNeedsTrim(whole, sec, 'other-show'), false);
   assert.equal(heldSiblingNeedsTrim(whole, sec), false);
+});
+
+test('BRO-7044: splitParentRegrew lets a re-collected split parent past the processed skip', () => {
+  const trimmed = { multiShowSplitProcessed: 'x', multiShowSplitParent: true, multiShowSplitTextLength: 3740, fullText: 'a'.repeat(3740) };
+  assert.equal(splitParentRegrew(trimmed), false);
+  assert.equal(splitParentRegrew({ ...trimmed, fullText: 'a'.repeat(5592) }), true);
+  assert.equal(splitParentRegrew({ ...trimmed, multiShowSplitParent: false, fullText: 'a'.repeat(5592) }), false);
+  assert.equal(splitParentRegrew(null), false);
 });

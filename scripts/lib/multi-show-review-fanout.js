@@ -1060,6 +1060,17 @@ function verdictNamesOtherSection(data, otherSections) {
   });
 }
 
+/**
+ * A split parent whose fullText grew back past its trimmed length (a re-collect
+ * restored the whole article, BRO-7044). The planner re-plans it; callers that
+ * skip processed files must let it through too.
+ */
+function splitParentRegrew(data) {
+  return !!(data && data.multiShowSplitParent && typeof data.fullText === 'string'
+    && Number.isFinite(data.multiShowSplitTextLength)
+    && data.fullText.length > data.multiShowSplitTextLength + 200);
+}
+
 function planMultiShowFanout(data, shows, opts = {}) {
   if (!data || typeof data !== 'object') return null;
   if (data.multiShowSplitChild) return null;
@@ -1069,12 +1080,7 @@ function planMultiShowFanout(data, shows, opts = {}) {
   // stays whole: the scorer reads its own section at score time (BRO-5294),
   // and this planner's intro cut lands elsewhere in WSJ capsule columns.
   if (data.multiShowSplitMethod === 'venue-box') return null;
-  if (data.multiShowSplitProcessed) {
-    const retrimmed = data.multiShowSplitParent && typeof data.fullText === 'string'
-      && Number.isFinite(data.multiShowSplitTextLength)
-      && data.fullText.length > data.multiShowSplitTextLength + 200;
-    if (!retrimmed) return null;
-  }
+  if (data.multiShowSplitProcessed && !splitParentRegrew(data)) return null;
   // A critic's own verdict (hand clear or reject) is never overridden here.
   const humanJudged = isHumanJudged(data);
   // Aggregator round-ups quote many critics; they are not one critic's review.
@@ -1518,6 +1524,7 @@ function unsplitArticle(filePath, data, reviewTextsDir, ownShowId) {
 }
 
 module.exports = {
+  splitParentRegrew,
   fanoutMovesText,
   heldSiblingNeedsTrim,
   isHumanJudged,
