@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 /**
- * audit-multishow-subject-replay.js — read-only (BRO-7053).
+ * replay-multishow-subject.js — read-only (BRO-7053).
  * Replays detectMultiShowContent over every stored review fullText with and
  * without the subject-name exemption and lists the files whose verdict flips.
  * Prints ids, outlets, lengths and counts only, never review text.
- * Usage: node scripts/audit-multishow-subject-replay.js [--show=a,b] [--shard=i/n] [--limit=N]
+ * Usage: node scripts/replay-multishow-subject.js [--show=a,b] [--shard=i/n] [--limit=N]
  */
 'use strict';
 const fs = require('fs');
@@ -22,7 +22,7 @@ const shows = fs.readdirSync(dir).filter((d) => fs.statSync(path.join(dir, d)).i
 let scanned = 0, flaggedBefore = 0; const restored = [];
 for (const show of shows) {
   for (const f of fs.readdirSync(path.join(dir, show))) {
-    if (!f.endsWith('.json') || f === 'failed-fetches.json') continue;
+    if (!f.endsWith('.json') || f === 'failed-fetches.json' || f.startsWith('_')) continue;
     let j; try { j = JSON.parse(fs.readFileSync(path.join(dir, show, f), 'utf8')); } catch { continue; }
     const text = j.fullText; if (!text || typeof text !== 'string') continue;
     scanned++;
