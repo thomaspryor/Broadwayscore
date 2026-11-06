@@ -91,8 +91,8 @@ test('diacritics are kept: "José Solís" stays "José Solís"', () => {
   assert.equal(displayCriticName('Juan A. Ramírez', 'The New York Times'), 'Juan A. Ramírez');
 });
 
-test('the 40 CRITIC_NAME_FIXES pairs resolve to their canonical (and the canonical is a fixed point)', () => {
-  assert.equal(Object.keys(CRITIC_NAME_FIXES).length, 40); // +3 BRO-6928 (Holly O Mahony, AR Hoffman, Micael J. Fressola)
+test('the 41 CRITIC_NAME_FIXES pairs resolve to their canonical (and the canonical is a fixed point)', () => {
+  assert.equal(Object.keys(CRITIC_NAME_FIXES).length, 41); // +4 BRO-6928 (Holly O Mahony, AR Hoffman, Micael J. Fressola, Karen Dsouza)
   for (const [raw, canonical] of Object.entries(CRITIC_NAME_FIXES)) {
     assert.equal(displayCriticName(raw), canonical, `${JSON.stringify(raw)} → ${canonical}`);
     assert.equal(displayCriticName(canonical), canonical, `${canonical} is a fixed point`);

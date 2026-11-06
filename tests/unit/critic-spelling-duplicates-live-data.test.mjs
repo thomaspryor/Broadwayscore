@@ -1,3 +1,4 @@
+// TESTS-VS-DERIVED-DATA-EXEMPT: structural gate (no NEW split pairs vs data/audit baseline) over reviews.json criticName; pins no facts.
 // BRO-5729 (BRO-3425 pattern): Part 2 of scripts/lib/critic-spelling-duplicates.test.mjs, split out. It asserts a
 // zero-new-pairs ceiling over data/review-texts, which bots rewrite, so in a code-test batch it turns main red with no
 // code change. Runs in check-corpus-drift.yml's "Live-data assertions" step (data-health, which checks out

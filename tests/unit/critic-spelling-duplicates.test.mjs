@@ -19,7 +19,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const { displayCriticName, displayFormForCanonical } = require('../../scripts/lib/critic-display-name.js');
-const { CRITIC_ALIASES } = require('../../scripts/lib/review-normalization.js');
+const { CRITIC_ALIASES, loadOutletRegistry, slugify } = require('../../scripts/lib/review-normalization.js');
 const { criticProfileKey } = require('../../scripts/lib/url-slug.js');
 const { buildPages, findSplitPairs, newSplitPairs } = require('../../scripts/audit-critic-splits.js');
 const AUTO_ALIASES = require('../../data/auto-critic-aliases.json').aliases;
@@ -82,6 +82,24 @@ test('every alias in data/auto-critic-aliases.json takes effect, with or without
     }
   }
   assert.deepEqual(broken, [], `aliases that do not merge:\n${broken.join('\n')}`);
+});
+
+test('an aliased critic gets the same page at their own outlet as anywhere else', () => {
+  // An outlet's defaultCritic is preferred as the display form, so without a fixes
+  // entry "Karen D'Souza" was karen-d-souza at the Mercury News, karen-dsouza elsewhere.
+  const reg = loadOutletRegistry();
+  const broken = [];
+  for (const [id, e] of Object.entries(reg.outlets || reg)) {
+    const dc = e && typeof e.defaultCritic === 'string' ? e.defaultCritic.trim() : '';
+    const slug = dc && slugify(dc);
+    if (!slug || !CRITIC_ALIASES[slug]) continue;
+    const outlet = e.displayName || e.name || id;
+    for (const form of [dc, ...CRITIC_ALIASES[slug]]) {
+      const at = page(form, outlet), elsewhere = page(form);
+      if (at !== elsewhere) broken.push(`${form} @${outlet}: ${at} vs ${elsewhere}`);
+    }
+  }
+  assert.deepEqual(broken, [], `add a critic-name-fixes.json entry:\n${broken.join('\n')}`);
 });
 
 test('the split gate fails on a NEW pair and passes once an alias fixes it', () => {
