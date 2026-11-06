@@ -115,7 +115,9 @@ jobs:
       # the tour on its current art and never blocks the schedule commit.
       - name: Audit new tour art
         id: tourartaudit
-        if: ${{ !cancelled() && steps.schedules.outcome == 'success' }}
+        # Only after the tours' own posters are archived: a tour audited before its poster
+        # exists falls back to a Broadway poster, is recorded null, and is never retried.
+        if: ${{ !cancelled() && steps.schedules.outcome == 'success' && steps.images.outcome == 'success' }}
         continue-on-error: true
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
