@@ -91,16 +91,16 @@ function main() {
         before = assessTextQuality(text, show, title, { requireTitleCase: false, useShowEvidence: false });
         after = assessTextQuality(text, show, title, { requireTitleCase: false, useShowEvidence: true, ...qualityOptsFor(r) });
       } else {
-        wasFound = detectMultiShowContent(text, show, { requireTitleCase: false });
+        wasFound = detectMultiShowContent(text, show, { requireTitleCase: false, subjectNames: false });
         if (!wasFound.detected) continue;
-        before = assessTextQuality(text, show, title, { requireTitleCase: false });
-        after = assessTextQuality(text, show, title, { requireTitleCase: true });
+        before = assessTextQuality(text, show, title, { requireTitleCase: false, subjectNames: false });
+        after = assessTextQuality(text, show, title, { requireTitleCase: true, subjectNames: false });
       }
       if (before.quality === after.quality) continue;
       const key = `${before.quality} -> ${after.quality}`;
       transitions[key] = (transitions[key] || 0) + 1;
       const was = wasFound.showsFound;
-      const now = new Set(rule === 'url' ? [] : detectMultiShowContent(text, show, { requireTitleCase: true }).showsFound);
+      const now = new Set(rule === 'url' ? [] : detectMultiShowContent(text, show, { requireTitleCase: true, subjectNames: false }).showsFound);
       flips.push({
         show, file, outlet: r.outletId || null, chars: text.length,
         before: before.quality, after: after.quality,

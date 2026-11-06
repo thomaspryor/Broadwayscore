@@ -1149,18 +1149,56 @@ function titleCaseMatch(span) {
 }
 
 /**
+ * BRO-7053: true when a matched title recurs through the body, which marks it
+ * as the review's subject matter rather than a listing entry. Needs
+ * SUBJECT_MIN_HITS interior occurrences (outside the first and last
+ * SUBJECT_EDGE of the text, where nav and footer links live) spread over at
+ * least SUBJECT_MIN_SPREAD of the text; a card repeating a title in a row
+ * still counts.
+ */
+const SUBJECT_MIN_HITS = 3;
+const SUBJECT_MIN_SPREAD = 0.4;
+const SUBJECT_EDGE = 0.1;
+// A schedule or deals grid repeats each title densely down a short page; prose
+// names recur sparsely. Both bounds keep that listing shape flagged.
+const SUBJECT_MIN_TEXT = 1500;
+const SUBJECT_MIN_MEAN_GAP = 200;
+// Prose mentions arrive in bursts; a schedule row or card list repeats a title
+// at an even rhythm. Coefficient of variation of the gaps tells them apart.
+const SUBJECT_MIN_GAP_CV = 0.5;
+function isSubjectName(hitIndexes, textLength) {
+  if (!textLength || textLength < SUBJECT_MIN_TEXT) return false;
+  // Header nav and footer links sit at the edges of a junk page; only hits in
+  // the interior of the text can show a title recurring through a body.
+  const lo = textLength * SUBJECT_EDGE;
+  const hi = textLength * (1 - SUBJECT_EDGE);
+  const interior = hitIndexes.filter((i) => i >= lo && i <= hi);
+  if (interior.length < SUBJECT_MIN_HITS) return false;
+  const span = interior[interior.length - 1] - interior[0];
+  if (span / textLength < SUBJECT_MIN_SPREAD) return false;
+  const gaps = [];
+  for (let i = 1; i < interior.length; i++) gaps.push(interior[i] - interior[i - 1]);
+  const mean = span / gaps.length;
+  if (mean < SUBJECT_MIN_MEAN_GAP) return false;
+  const variance = gaps.reduce((a, g) => a + (g - mean) ** 2, 0) / gaps.length;
+  return Math.sqrt(variance) / mean >= SUBJECT_MIN_GAP_CV;
+}
+
+/**
  * Detect if text contains references to multiple different Broadway shows
  * This indicates a 404/index page or navigation junk, not a single review
  *
  * @param {string} text - Text to check
  * @param {string} [expectedShowId] - The show this review should be about (excluded from count)
- * @param {{ requireTitleCase?: boolean }} [opts] - requireTitleCase: a title
+ * @param {{ requireTitleCase?: boolean, subjectNames?: boolean }} [opts] - subjectNames:
+ *   false turns off the BRO-7053 subject-name exemption (replay audits only). requireTitleCase: a title
  *   counts only where it appears in Title Case (see titleCaseMatch, BRO-5373).
  *   Defaults to MULTI_SHOW_REQUIRE_TITLE_CASE.
  * @returns {{ detected: boolean, showsFound: string[], reason: string | null }}
  */
 function detectMultiShowContent(text, expectedShowId, opts = {}) {
   const requireTitleCase = opts.requireTitleCase === undefined ? MULTI_SHOW_REQUIRE_TITLE_CASE : !!opts.requireTitleCase;
+  const subjectNames = opts.subjectNames !== false; // false reproduces the pre-BRO-7053 rule for replay audits
   if (!text || text.length < 200) {
     return { detected: false, showsFound: [], reason: null };
   }
@@ -1208,15 +1246,19 @@ function detectMultiShowContent(text, expectedShowId, opts = {}) {
 
     // Use word-boundary regex instead of substring matching
     const escaped = show.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    if (!requireTitleCase) {
-      const regex = new RegExp(`\\b${escaped}\\b`, 'i');
-      return regex.test(text);
-    }
     const regex = new RegExp(`\\b${escaped}\\b`, 'gi');
+    const hits = [];
     for (const m of text.matchAll(regex)) {
-      if (titleCaseMatch(m[0])) return true;
+      if (requireTitleCase && !titleCaseMatch(m[0])) continue;
+      hits.push(m.index);
     }
-    return false;
+    if (hits.length === 0) return false;
+    // BRO-7053: a name the article keeps coming back to across its whole body
+    // is the review's SUBJECT (Marilyn, Dorothy, Kilgallen in a play about
+    // Monroe), not a cross-show mention. A junk index or sidebar lists each
+    // title once or twice, or clusters repeats inside one card.
+    if (subjectNames && isSubjectName(hits, text.length)) return false;
+    return true;
   });
 
   // Scale threshold by text length — critics routinely reference other shows for comparison
