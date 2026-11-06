@@ -2,9 +2,43 @@
   "version": 1,
   "showId": "speculations-off-west-end-2026",
   "openingDate": "2026-11-05",
-  "detectedAt": "2026-11-06T17:24:04.336Z",
+  "detectedAt": "2026-11-06T17:27:26.848Z",
   "windowDays": 7,
   "orphans": [
+    {
+      "file": "everything-theatre--sara-west.json",
+      "outletId": "everything-theatre",
+      "criticName": "Sara West",
+      "url": "https://everything-theatre.co.uk/2026/11/review-speculations-marylebone-theatre/",
+      "fullTextLen": 3743,
+      "dispatchActionable": true,
+      "skipReason": null,
+      "rescoreBlockedReason": null,
+      "humanReviewScore": null,
+      "adjudicatedScore": null,
+      "originalScore": null,
+      "originalScoreNormalized": null,
+      "llmScore": null,
+      "contentTier": "complete",
+      "eligibilityReason": null
+    },
+    {
+      "file": "standard--nick-curtis.json",
+      "outletId": "standard",
+      "criticName": "Nick Curtis",
+      "url": "https://www.standard.co.uk/culture/theatre/speculations-at-marylebone-theatre-review-b1303733.html",
+      "fullTextLen": 4672,
+      "dispatchActionable": true,
+      "skipReason": null,
+      "rescoreBlockedReason": null,
+      "humanReviewScore": null,
+      "adjudicatedScore": null,
+      "originalScore": null,
+      "originalScoreNormalized": null,
+      "llmScore": null,
+      "contentTier": "complete",
+      "eligibilityReason": null
+    },
     {
       "file": "timeout-london--caroline-mcginn.json",
       "outletId": "timeout-london",
@@ -23,10 +57,10 @@
       "eligibilityReason": null
     }
   ],
-  "orphanCount": 1,
-  "dispatchableOrphanCount": 1,
+  "orphanCount": 3,
+  "dispatchableOrphanCount": 3,
   "blockedOrphanCount": 0,
   "blockBroadcast": true,
   "lastDispatch": "ok",
-  "lastDispatchAt": "2026-11-06T17:24:04.336Z"
+  "lastDispatchAt": "2026-11-06T17:27:26.848Z"
 }
