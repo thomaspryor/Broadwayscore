@@ -1,0 +1,234 @@
+{
+  "issueNumber": "bro-6774-c",
+  "planId": "0f0486c1-6772-4afe-ac85-624808a2e1d9",
+  "status": "pending",
+  "createdAt": "2026-11-06T07:16:30.752Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6774: resolve the last 19 different-critic cross-outlet flags (stamp confirmed copies with page evidence, clear flags hiding real reviews, mark wholly misattributed primaries wrongAttribution) (part 1 of 2)",
+    "steps": [
+      "an-american-in-paris-2015/northjerseycom--robert-feldberg.json: crossOutletVerifiedNote",
+      "an-american-in-paris-2015/northjerseycom--robert-feldberg.json: crossOutletVerified",
+      "bandstand-2017/off-script-with-dan-dwyer--dan-dwyer.json: crossOutletVerifiedNote",
+      "bandstand-2017/off-script-with-dan-dwyer--dan-dwyer.json: crossOutletVerified",
+      "kinky-boots-2013/huffpost--michael-giltz.json: crossOutletVerifiedNote",
+      "kinky-boots-2013/huffpost--michael-giltz.json: crossOutletVerified",
+      "m-butterfly-2017/stageandcinema--lynn-berk.json: crossOutletVerifiedNote",
+      "m-butterfly-2017/stageandcinema--lynn-berk.json: crossOutletVerified",
+      "the-color-purple-2015/theater-scene--darryl-reilly.json: crossOutletClearReason",
+      "the-color-purple-2015/theater-scene--darryl-reilly.json: crossOutletDuplicate",
+      "sea-wall-a-life-2019/theatre-reviews-limited--david-roberts.json: crossOutletVerifiedNote",
+      "sea-wall-a-life-2019/theatre-reviews-limited--david-roberts.json: crossOutletVerified",
+      "fela-2009/nytimes--unknown.json: crossOutletVerifiedNote",
+      "fela-2009/nytimes--unknown.json: crossOutletVerified",
+      "first-date-2013/nytimes--ben-brantley.json: duplicateOf (same NYT article URL; the write guard marks this on any write)",
+      "first-date-2013/nytimes--ben-brantley.json: crossOutletVerifiedNote",
+      "first-date-2013/nytimes--ben-brantley.json: crossOutletVerified",
+      "ghost-the-musical-2012/about-entertainment--charles-isherwood.json: duplicateOf (same NYT article URL; the write guard marks this on any write)",
+      "ghost-the-musical-2012/about-entertainment--charles-isherwood.json: crossOutletVerifiedNote",
+      "ghost-the-musical-2012/about-entertainment--charles-isherwood.json: crossOutletVerified",
+      "hold-on-to-me-darling-off-broadway-2024/timteeman--unknown.json: crossOutletVerifiedNote",
+      "hold-on-to-me-darling-off-broadway-2024/timteeman--unknown.json: crossOutletVerified",
+      "scenes-with-girls-west-end-2020/camdennewjournal--clair-chapwell.json: crossOutletVerifiedNote",
+      "scenes-with-girls-west-end-2020/camdennewjournal--clair-chapwell.json: crossOutletVerified"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "an-american-in-paris-2015/northjerseycom--robert-feldberg.json",
+        "field": "crossOutletVerifiedNote",
+        "oldValue": null,
+        "newValue": "Re-fetched BRO-6774: this file's own URL is a 404 (0% of its text), while the primary an-american-in-paris-2015/huffpost--david-finkle.json's URL (https://www.huffpost.com/david-finkle/first-nighter-choreograph_b_7051910.html, David Finkle byline) carries 97% of this file's text, so the text is Finkle's review and this file is a copy of the primary; stays excluded.",
+        "description": "an-american-in-paris-2015/northjerseycom--robert-feldberg.json: crossOutletVerifiedNote"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "an-american-in-paris-2015/northjerseycom--robert-feldberg.json",
+        "field": "crossOutletVerified",
+        "oldValue": null,
+        "newValue": true,
+        "description": "an-american-in-paris-2015/northjerseycom--robert-feldberg.json: crossOutletVerified"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "bandstand-2017/off-script-with-dan-dwyer--dan-dwyer.json",
+        "field": "crossOutletVerifiedNote",
+        "oldValue": null,
+        "newValue": "Re-fetched BRO-6774: this file's own tumblr URL is gone (0%), and https://www.stagezine.com/bandstand-bopping-swinging-delight/ (David NouNou byline) carries 92% of this file's text and 92% of the primary bandstand-2017/huffpost--michael-giltz.json's text (100% shared in storage), so it is the same StageZine text as the primary; stays excluded.",
+        "description": "bandstand-2017/off-script-with-dan-dwyer--dan-dwyer.json: crossOutletVerifiedNote"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "bandstand-2017/off-script-with-dan-dwyer--dan-dwyer.json",
+        "field": "crossOutletVerified",
+        "oldValue": null,
+        "newValue": true,
+        "description": "bandstand-2017/off-script-with-dan-dwyer--dan-dwyer.json: crossOutletVerified"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "kinky-boots-2013/huffpost--michael-giltz.json",
+        "field": "crossOutletVerifiedNote",
+        "oldValue": null,
+        "newValue": "Re-fetched BRO-6774: this file's own URL (Giltz, 'Kinky Boots Too Vanilla') carries 0% of its text, while the primary kinky-boots-2013/latimes--charles-mcnulty.json's URL (https://articles.latimes.com/2013/apr/04/entertainment/la-et-kinky-boots-review-broadway-cyndi-lauper-20130405) carries 95% of it, so the stored text is McNulty's LA Times review and this file is a copy of the primary; stays excluded.",
+        "description": "kinky-boots-2013/huffpost--michael-giltz.json: crossOutletVerifiedNote"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "kinky-boots-2013/huffpost--michael-giltz.json",
+        "field": "crossOutletVerified",
+        "oldValue": null,
+        "newValue": true,
+        "description": "kinky-boots-2013/huffpost--michael-giltz.json: crossOutletVerified"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "m-butterfly-2017/stageandcinema--lynn-berk.json",
+        "field": "crossOutletVerifiedNote",
+        "oldValue": null,
+        "newValue": "Re-fetched BRO-6774: this file's own URL is a 404 (0% of its text), while the primary m-butterfly-2017/huffpost--christian-lewis.json's URL (https://www.huffpost.com/entry/m-butterfly-surprisingly-relevant_us_59f28708e4b05f0ade1b5625) carries 97% of it, so the text is Lewis's review and this file is a copy of the primary; stays excluded.",
+        "description": "m-butterfly-2017/stageandcinema--lynn-berk.json: crossOutletVerifiedNote"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "m-butterfly-2017/stageandcinema--lynn-berk.json",
+        "field": "crossOutletVerified",
+        "oldValue": null,
+        "newValue": true,
+        "description": "m-butterfly-2017/stageandcinema--lynn-berk.json: crossOutletVerified"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-color-purple-2015/theater-scene--darryl-reilly.json",
+        "field": "crossOutletClearReason",
+        "oldValue": null,
+        "newValue": "BRO-6774: this file is already excluded by wrongAttribution (BRO-5348); re-fetched, its own URL (https://www.theaterscene.net/musicals/the-color-purple-2015/darryl-reilly/) carries 0% of its text while the primary the-color-purple-2015/huffpost--steven-suskin.json's URL carries 97%, confirming that verdict. The cross-outlet flag is redundant with it.",
+        "description": "the-color-purple-2015/theater-scene--darryl-reilly.json: crossOutletClearReason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-color-purple-2015/theater-scene--darryl-reilly.json",
+        "field": "crossOutletDuplicate",
+        "oldValue": true,
+        "newValue": false,
+        "description": "the-color-purple-2015/theater-scene--darryl-reilly.json: crossOutletDuplicate"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "sea-wall-a-life-2019/theatre-reviews-limited--david-roberts.json",
+        "field": "crossOutletVerifiedNote",
+        "oldValue": null,
+        "newValue": "Re-fetched BRO-6774: this file's own URL (https://www.theatrereviews.com/off-broadway-review-sea-wall-a-life-at-the-hudson-theatre/) is a different review with 0% of this file's text; the text is 100% shared with the primary sea-wall-a-life-2019/national-review--kyle-smith.json, whose stored copy carries the Kyle Smith byline and whose archived National Review page (web.archive.org 20251117220518) carries a summary matching it, so this file is a copy of the primary; stays excluded.",
+        "description": "sea-wall-a-life-2019/theatre-reviews-limited--david-roberts.json: crossOutletVerifiedNote"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "sea-wall-a-life-2019/theatre-reviews-limited--david-roberts.json",
+        "field": "crossOutletVerified",
+        "oldValue": null,
+        "newValue": true,
+        "description": "sea-wall-a-life-2019/theatre-reviews-limited--david-roberts.json: crossOutletVerified"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "fela-2009/nytimes--unknown.json",
+        "field": "crossOutletVerifiedNote",
+        "oldValue": null,
+        "newValue": "Re-fetched BRO-6774: this file's URL is the same New York Times article as the primary fela-2009/nytimes--ben-brantley.json (2009/11/24/theater/reviews/24fela.html); the page (Ben Brantley byline) carries 94% of this file's text and 97% of the primary's, so it is the same review stored twice; stays excluded.",
+        "description": "fela-2009/nytimes--unknown.json: crossOutletVerifiedNote"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "fela-2009/nytimes--unknown.json",
+        "field": "crossOutletVerified",
+        "oldValue": null,
+        "newValue": true,
+        "description": "fela-2009/nytimes--unknown.json: crossOutletVerified"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "first-date-2013/nytimes--ben-brantley.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "about-entertainment--charles-isherwood.json",
+        "description": "first-date-2013/nytimes--ben-brantley.json: duplicateOf (same NYT article URL; the write guard marks this on any write)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "first-date-2013/nytimes--ben-brantley.json",
+        "field": "crossOutletVerifiedNote",
+        "oldValue": null,
+        "newValue": "Re-fetched BRO-6774: this file and the primary first-date-2013/about-entertainment--charles-isherwood.json both point at the same New York Times article (2013/08/09/theater/reviews/first-date-a-musical-opens-on-broadway.html, Charles Isherwood byline); the paywalled page carries 42%/34% of the two texts and they share 80% in storage, so it is the same review stored twice; stays excluded.",
+        "description": "first-date-2013/nytimes--ben-brantley.json: crossOutletVerifiedNote"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "first-date-2013/nytimes--ben-brantley.json",
+        "field": "crossOutletVerified",
+        "oldValue": null,
+        "newValue": true,
+        "description": "first-date-2013/nytimes--ben-brantley.json: crossOutletVerified"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "ghost-the-musical-2012/about-entertainment--charles-isherwood.json",
+        "field": "duplicateOf",
+        "oldValue": "nytimes--charles-isherwood.json",
+        "newValue": "nytimes--ben-brantley.json",
+        "description": "ghost-the-musical-2012/about-entertainment--charles-isherwood.json: duplicateOf (same NYT article URL; the write guard marks this on any write)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "ghost-the-musical-2012/about-entertainment--charles-isherwood.json",
+        "field": "crossOutletVerifiedNote",
+        "oldValue": null,
+        "newValue": "Re-fetched BRO-6774: this file and the primary ghost-the-musical-2012/nytimes--ben-brantley.json both point at the same New York Times article (2012/04/24/theater/reviews/ghost-the-musical-at-the-lunt-fontanne-theater.html, Charles Isherwood byline); they share 99% of their text in storage, so it is the same review stored twice; stays excluded.",
+        "description": "ghost-the-musical-2012/about-entertainment--charles-isherwood.json: crossOutletVerifiedNote"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "ghost-the-musical-2012/about-entertainment--charles-isherwood.json",
+        "field": "crossOutletVerified",
+        "oldValue": null,
+        "newValue": true,
+        "description": "ghost-the-musical-2012/about-entertainment--charles-isherwood.json: crossOutletVerified"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "hold-on-to-me-darling-off-broadway-2024/timteeman--unknown.json",
+        "field": "crossOutletVerifiedNote",
+        "oldValue": null,
+        "newValue": "BRO-6774: outlet 'Timteeman' is critic Tim Teeman's name, and Teeman is The Daily Beast's theatre critic; this BWW-roundup excerpt is word-for-word the NYC Theatre excerpt stored on the primary hold-on-to-me-darling-off-broadway-2024/dailybeast--unknown.json (98% shared), so both are the same Daily Beast review; stays excluded.",
+        "description": "hold-on-to-me-darling-off-broadway-2024/timteeman--unknown.json: crossOutletVerifiedNote"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "hold-on-to-me-darling-off-broadway-2024/timteeman--unknown.json",
+        "field": "crossOutletVerified",
+        "oldValue": null,
+        "newValue": true,
+        "description": "hold-on-to-me-darling-off-broadway-2024/timteeman--unknown.json: crossOutletVerified"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "scenes-with-girls-west-end-2020/camdennewjournal--clair-chapwell.json",
+        "field": "crossOutletVerifiedNote",
+        "oldValue": null,
+        "newValue": "Re-fetched BRO-6774: https://www.islingtontribune.co.uk/article/review-scenes-with-girls-at-royal-court-upstairs (the primary's URL, Clair Chapwell byline) carries 100% of this file's text and 79% of the primary's; the Camden New Journal and Islington Tribune are sister papers, so this is a genuine syndicated copy of Chapwell's review; stays excluded.",
+        "description": "scenes-with-girls-west-end-2020/camdennewjournal--clair-chapwell.json: crossOutletVerifiedNote"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "scenes-with-girls-west-end-2020/camdennewjournal--clair-chapwell.json",
+        "field": "crossOutletVerified",
+        "oldValue": null,
+        "newValue": true,
+        "description": "scenes-with-girls-west-end-2020/camdennewjournal--clair-chapwell.json: crossOutletVerified"
+      }
+    ]
+  }
+}
