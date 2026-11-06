@@ -81,7 +81,11 @@ jobs:
           INPUT_OUTLETS: ${{ github.event.inputs.outlets }}
           INPUT_DRY_RUN: ${{ github.event.inputs.dry_run }}
         run: |
-          ARGS="--opening-window --max-paid ${INPUT_MAX_PAID:-8}"
+          # Inputs arrive via env (no shell interpolation); validate shape so a stray value cannot add flags.
+          MAX_PAID="${INPUT_MAX_PAID:-8}"
+          case "$MAX_PAID" in ''|*[!0-9]*) echo "::error::max_paid must be a whole number"; exit 1;; esac
+          case "${INPUT_OUTLETS}" in *[!a-z0-9,_-]*) echo "::error::outlets must be comma-separated outlet ids"; exit 1;; esac
+          ARGS="--opening-window --max-paid ${MAX_PAID}"
           if [ "${INPUT_DRY_RUN}" = "true" ]; then
             ARGS="$ARGS --dry-run"
           fi
