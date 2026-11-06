@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-06T07:57:54.916Z",
+  "generatedAt": "2026-11-06T13:01:34.043Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -73,12 +73,12 @@
   "feedsChecked": 78,
   "feedsFailed": [
     {
-      "outletId": "theater-life",
-      "error": "Timeout fetching https://theaterlife.com/feed"
-    },
-    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
+    },
+    {
+      "outletId": "amny",
+      "error": "HTTP 403 for https://www.amny.com/category/entertainment/theater/feed/"
     },
     {
       "outletId": "slantmagazine",
@@ -101,9 +101,9 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 799,
-  "matchedGaps": 14,
-  "possibleGaps": 3,
+  "itemsScanned": 804,
+  "matchedGaps": 15,
+  "possibleGaps": 4,
   "gaps": [
     {
       "showId": "222-a-ghost-story-off-broadway-2026",
@@ -208,6 +208,15 @@
       "showId": "tosca-off-broadway-2026",
       "title": "Tosca",
       "level": "matched",
+      "outletId": "jackstage",
+      "url": "https://www.jackstage.co.uk/post/eno-s-tosca-review-a-fiery-revival-of-puccini-s-opera-without-political-grounding",
+      "headline": "ENO's Tosca Review: a fiery revival of Puccini's opera without political grounding",
+      "publishDate": "2026-11-06"
+    },
+    {
+      "showId": "tosca-off-broadway-2026",
+      "title": "Tosca",
+      "level": "matched",
       "outletId": "thereviewshub",
       "url": "https://www.thereviewshub.com/eno-tosca-london-coliseum/",
       "headline": "ENO: Tosca &#8211; London Coliseum",
@@ -230,6 +239,15 @@
       "url": "https://theaterpizzazz.com/in-well-see-much-to-talk-about-little-to-dramatize/",
       "headline": "IN “WE’LL SEE,” MUCH TO TALK ABOUT, LITTLE TO DRAMATIZE",
       "publishDate": "2026-11-05"
+    },
+    {
+      "showId": "king-lear-off-broadway-2026",
+      "title": "King Lear",
+      "level": "possible",
+      "outletId": "guardian",
+      "url": "https://www.theguardian.com/culture/2026/nov/04/every-family-has-silences-kathryn-hunter-on-despair-desire-dislodgeable-limbs-and-her-acting-genius",
+      "headline": "‘Every family has silences’: Kathryn Hunter on despair, desire, dislodgeable limbs – and her acting genius",
+      "publishDate": "2026-11-04"
     },
     {
       "showId": "the-bridge-off-west-end-2026",

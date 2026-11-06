@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-11-06T07:54:59.218Z",
+  "generatedAt": "2026-11-06T13:00:59.974Z",
   "windowDays": 1095,
-  "targets": 870,
-  "auditedThisRun": 9,
-  "carriedForward": 2049,
+  "targets": 883,
+  "auditedThisRun": 5,
+  "carriedForward": 2053,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
@@ -16,7 +16,7 @@
     "humanExcluded": 26,
     "automatedExcluded": 1008,
     "automatedExcludedListed": 713,
-    "priorProductionCitations": 6012
+    "priorProductionCitations": 6014
   },
   "results": [
     {
@@ -161897,7 +161897,7 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 9,
+            "results": 0,
             "accepted": 0,
             "error": null
           },
@@ -161928,13 +161928,11 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 42,
+        "count": 35,
         "byReason": {
-          "not-http-url": 23,
-          "non-review-host": 4,
-          "event-listing": 3,
-          "ticketing-listing": 6,
-          "ticketing-reseller": 5,
+          "not-http-url": 30,
+          "non-review-host": 2,
+          "census-junk-host": 2,
           "no-review-evidence": 1
         }
       },
@@ -161950,7 +161948,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-11-06T01:02:18.510Z"
+      "computedAt": "2026-11-06T13:00:59.974Z"
     },
     {
       "showId": "iphigenie-en-tauride-west-end-2026",
@@ -178376,9 +178374,10 @@
         "https://pagesonstages.com/2026/10/23/king-of-the-yees/",
         "https://www.interestedbystander.com/2026/10/theater-reviews-lauren-yees-king-of.html",
         "https://www.offoffonline.com/offoffonline/2026/10/22/king-of-the-yees",
+        "https://nottobedramatic.substack.com/p/fish-and-king-of-the-yees-reviews",
+        "https://morristheatredc.com/reviews/review-king-of-the-yees-signature-theatre",
         "https://marissavivian.substack.com/p/king-of-the-yees-review",
         "https://nyunews.com/arts/performance/2026/10/20/review-king-of-the-yees/",
-        "https://nottobedramatic.substack.com/p/fish-and-king-of-the-yees-reviews",
         "https://theaterscene.com/reviews/king-of-the-yees/",
         "https://thefrontrowcenter.com/2026/10/king-of-the-yees-at-signature-theatre/",
         "http://www.theaterscene.net/plays/offbway-plays/king-of-the-yees/tony-marinelli/",
@@ -178390,6 +178389,20 @@
       "dirClean": 20,
       "inReviewsJson": 20,
       "missing": [
+        {
+          "url": "https://morristheatredc.com/reviews/review-king-of-the-yees-signature-theatre",
+          "host": "morristheatredc.com",
+          "knownOutletId": "morris-theatre-dc",
+          "serpCensus": true,
+          "priorRun": true,
+          "priorRunSource": "pending-file-date:2023-09-22",
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ]
+        },
         {
           "url": "https://perform.ink/review-king-of-the-yees-at-goodman-theatre/",
           "host": "perform.ink",
@@ -178465,8 +178478,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 7,
-            "accepted": 1,
+            "results": 8,
+            "accepted": 4,
             "error": null
           },
           {
@@ -178476,7 +178489,7 @@
             "geo": "us",
             "ok": true,
             "results": 8,
-            "accepted": 1,
+            "accepted": 0,
             "error": null
           },
           {
@@ -178485,7 +178498,7 @@
             "page": 1,
             "geo": "us",
             "ok": true,
-            "results": 9,
+            "results": 10,
             "accepted": 0,
             "error": null
           },
@@ -178495,26 +178508,30 @@
             "page": 2,
             "geo": "us",
             "ok": true,
-            "results": 9,
-            "accepted": 0,
+            "results": 10,
+            "accepted": 1,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 4,
+        "resultCount": 7,
         "error": null
       },
       "candidatesRejected": {
-        "count": 129,
+        "count": 125,
         "byReason": {
-          "aggregator-internal-nav": 41,
-          "not-http-url": 43,
-          "production-database-listing": 10,
+          "aggregator-internal-nav": 40,
+          "not-http-url": 32,
+          "production-database-listing": 11,
           "aggregator-section-root": 5,
-          "non-review-host": 28,
-          "non-stage-review": 1,
-          "census-junk-host": 1
+          "non-review-host": 29,
+          "non-stage-review": 2,
+          "roundup-page": 2,
+          "census-junk-host": 1,
+          "show-listing-page": 1,
+          "ticketing-listing": 1,
+          "ticketing-reseller": 1
         }
       },
       "dedupedVariants": [
@@ -178529,6 +178546,13 @@
       "automatedExcludedListed": 0,
       "unextractable": [],
       "weIngestBlocked": [
+        {
+          "url": "https://morristheatredc.com/reviews/review-king-of-the-yees-signature-theatre",
+          "host": "morristheatredc.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
         {
           "url": "https://perform.ink/review-king-of-the-yees-at-goodman-theatre/",
           "host": "perform.ink",
@@ -178558,7 +178582,7 @@
           "expectedReason": null,
           "unclassified": false,
           "zeroChar": false,
-          "reason": "spawnSync node ETIMEDOUT | ⚠️  Scrapingdog failed (dynamic=false, domain=morristheatredc.com): Scrapingdog HTTP 400: Oops! Something went wrong. You won’t be charged for this request. You can try enabling Stealth Mode using stealth_mode=true. If the issue continues, feel free to email us at info@scrapingdog.com."
+          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=morristheatredc.com): Scrapingdog HTTP 400: Oops! Something went wrong. You won’t be charged for this request. You can try enabling Stealth Mode using stealth_mode=true. If the issue continues, feel free to email us at info@scrapingdog.com.\nFetch failed: fetch failed: All scraping methods failed; no archive.org capture"
         }
       ],
       "ingestSkippedByCap": [],
@@ -178668,6 +178692,12 @@
             "firstSeenAt": "2026-11-03T02:30:34.695Z"
           },
           {
+            "url": "https://nottobedramatic.substack.com/p/fish-and-king-of-the-yees-reviews",
+            "outletId": "nottobedramatic.substack.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-24T11:53:28.442Z"
+          },
+          {
             "url": "https://marissavivian.substack.com/p/king-of-the-yees-review",
             "outletId": "marissavivian.substack.com",
             "state": "live",
@@ -178678,12 +178708,6 @@
             "outletId": "nyunews.com",
             "state": "live",
             "firstSeenAt": "2026-11-04T17:07:25.311Z"
-          },
-          {
-            "url": "https://nottobedramatic.substack.com/p/fish-and-king-of-the-yees-reviews",
-            "outletId": "nottobedramatic.substack.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-24T11:53:28.442Z"
           },
           {
             "url": "https://theaterscene.com/reviews/king-of-the-yees/",
@@ -178730,7 +178754,7 @@
         "liveCount": 17,
         "candidateCount": 20
       },
-      "computedAt": "2026-11-05T18:37:16.557Z"
+      "computedAt": "2026-11-06T13:00:59.974Z"
     },
     {
       "showId": "kinky-boots-the-musical-west-end-2026",
@@ -277099,15 +277123,16 @@
         "https://exeuntnyc.com/reviews/review-rope-at-the-theatre-at-st-clements/",
         "https://theaterpizzazz.com/rope-winds-up-on-the-ropes/",
         "https://nystagereview.com/2026/11/03/rope-murders-most-foul/",
+        "https://www.nytimes.com/2026/11/05/theater/rope-the-verge-review-off-broadway-silverman.html",
         "https://newyorknotebook.substack.com/p/rope",
         "https://theaterlife.com/rope/",
-        "https://www.theatermania.com/news/review-as-a-thiller-gordon-greenbergs-rope-isnt-all-that-taut_1858790/",
+        "https://acsntn.substack.com/p/theatre-rope-theatre-at-st-clements",
         "https://www.timeout.com/newyork/theater/rope",
-        "https://acsntn.substack.com/p/theatre-rope-theatre-at-st-clements"
+        "https://www.theatermania.com/news/review-as-a-thiller-gordon-greenbergs-rope-isnt-all-that-taut_1858790/"
       ],
-      "dirFiles": 13,
-      "dirClean": 11,
-      "inReviewsJson": 11,
+      "dirFiles": 14,
+      "dirClean": 12,
+      "inReviewsJson": 12,
       "missing": [],
       "dirOnly": [
         {
@@ -277119,20 +277144,81 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Rope\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Rope\" Off-Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 9,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Rope\" review clement",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 0,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Rope Theatre at St. Clement's review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 8,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Rope Theatre at St. Clement's review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Rope Theatre at St. Clement's review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 2,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 3,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 393,
+        "count": 425,
         "byReason": {
-          "not-http-url": 83,
-          "non-review-host": 38,
-          "aggregator-internal-nav": 247,
-          "aggregator-section-root": 10,
-          "roundup-page": 4,
-          "podcast-episode": 1,
+          "aggregator-internal-nav": 249,
+          "not-http-url": 98,
           "production-database-listing": 9,
-          "non-stage-review": 1
+          "aggregator-section-root": 10,
+          "non-review-host": 49,
+          "non-stage-review": 1,
+          "roundup-page": 3,
+          "podcast-episode": 1,
+          "census-junk-host": 1,
+          "show-listing-page": 2,
+          "ticketing-reseller": 1,
+          "news-roundup-site": 1
         }
       },
       "dedupedVariants": [],
@@ -277189,6 +277275,12 @@
             "firstSeenAt": "2026-11-04T06:38:21.233Z"
           },
           {
+            "url": "https://www.nytimes.com/2026/11/05/theater/rope-the-verge-review-off-broadway-silverman.html",
+            "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-06T13:00:59.974Z"
+          },
+          {
             "url": "https://newyorknotebook.substack.com/p/rope",
             "outletId": "newyorknotebook.substack.com",
             "state": "live",
@@ -277201,10 +277293,10 @@
             "firstSeenAt": "2026-11-05T14:47:27.487Z"
           },
           {
-            "url": "https://www.theatermania.com/news/review-as-a-thiller-gordon-greenbergs-rope-isnt-all-that-taut_1858790/",
-            "outletId": "theatermania.com",
+            "url": "https://acsntn.substack.com/p/theatre-rope-theatre-at-st-clements",
+            "outletId": "acsntn.substack.com",
             "state": "live",
-            "firstSeenAt": "2026-11-05T02:10:04.143Z"
+            "firstSeenAt": "2026-11-03T00:25:22.653Z"
           },
           {
             "url": "https://www.timeout.com/newyork/theater/rope",
@@ -277213,10 +277305,10 @@
             "firstSeenAt": "2026-11-03T15:34:54.267Z"
           },
           {
-            "url": "https://acsntn.substack.com/p/theatre-rope-theatre-at-st-clements",
-            "outletId": "acsntn.substack.com",
+            "url": "https://www.theatermania.com/news/review-as-a-thiller-gordon-greenbergs-rope-isnt-all-that-taut_1858790/",
+            "outletId": "theatermania.com",
             "state": "live",
-            "firstSeenAt": "2026-11-03T00:25:22.653Z"
+            "firstSeenAt": "2026-11-05T02:10:04.143Z"
           }
         ],
         "censusSchema": 4,
@@ -277227,10 +277319,10 @@
             "reason": "timeout-listing-blurb"
           }
         ],
-        "liveCount": 11,
-        "candidateCount": 11
+        "liveCount": 12,
+        "candidateCount": 12
       },
-      "computedAt": "2026-11-06T02:02:35.916Z"
+      "computedAt": "2026-11-06T13:00:59.974Z"
     },
     {
       "showId": "rorschach-regional-2026",
@@ -405393,12 +405485,78 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Violet’s Magic Glasses\" Off-Broadway review",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Violet’s Magic Glasses\" Off-Broadway review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 9,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Violet’s Magic Glasses\" review 92ny",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 0,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Violet’s Magic Glasses 92NY Buttenwieser Hall review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Violet’s Magic Glasses 92NY Buttenwieser Hall review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Violet’s Magic Glasses 92NY Buttenwieser Hall review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 0,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 25,
+        "byReason": {
+          "aggregator-internal-nav": 3,
+          "not-http-url": 8,
+          "non-review-host": 3,
+          "census-junk-host": 1,
+          "ticketing-listing": 1,
+          "venue-production-page": 2,
+          "write-path-blocked": 1,
+          "bare-host": 6
+        }
       },
       "dedupedVariants": [],
       "unextractable": [],
@@ -405412,7 +405570,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-11-06T02:02:35.916Z"
+      "computedAt": "2026-11-06T13:00:59.974Z"
     },
     {
       "showId": "vladimir-regional-2026",
@@ -410284,19 +410442,86 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"We'll See\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"We'll See\" Off-Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 0,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"We'll See\" review public",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 7,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped2",
+            "query": "\"We'll See\" Nelson review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 0,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "We'll See The Public Theater/Barbaralee Theater review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 8,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "We'll See The Public Theater/Barbaralee Theater review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 0,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "We'll See The Public Theater/Barbaralee Theater review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 6,
+        "queriesTotal": 6,
+        "resultCount": 0,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 522,
+        "count": 545,
         "byReason": {
           "aggregator-internal-nav": 292,
-          "not-http-url": 84,
+          "not-http-url": 103,
           "production-database-listing": 20,
           "aggregator-section-root": 14,
-          "non-review-host": 57,
+          "non-review-host": 60,
           "non-stage-review": 2,
-          "roundup-page": 52,
+          "roundup-page": 53,
           "podcast-episode": 1
         }
       },
@@ -410362,7 +410587,7 @@
         "liveCount": 6,
         "candidateCount": 6
       },
-      "computedAt": "2026-11-06T01:02:18.510Z"
+      "computedAt": "2026-11-06T13:00:59.974Z"
     },
     {
       "showId": "wesley-off-broadway-2025",
@@ -420743,25 +420968,23 @@
     }
   ],
   "staleness": {
-    "at": "2026-11-06T07:54:59.217Z",
+    "at": "2026-11-06T13:00:59.973Z",
     "reserveEvery": 4,
     "reservedAttempted": [
-      "heartbreak-house-regional-2026"
+      "king-of-the-yees-off-broadway-2026"
     ],
     "catalogueReserveEvery": 8,
-    "catalogueAttempted": [
-      "bear-grease-off-broadway-2025"
-    ],
-    "neverAuditedDueAtStart": 632,
+    "catalogueAttempted": [],
+    "neverAuditedDueAtStart": 631,
     "oldestDueRowAtStart": {
       "showId": "the-devil-wears-prada-west-end-2024",
       "computedAt": "2026-10-28T21:39:57.244Z",
-      "ageHours": 201.9
+      "ageHours": 207
     },
     "oldestDueRowAfterRun": {
       "showId": "the-devil-wears-prada-west-end-2024",
       "computedAt": "2026-10-28T21:39:57.244Z",
-      "ageHours": 202.3
+      "ageHours": 207.4
     }
   }
 }
