@@ -1,31 +1,21 @@
 {
-  "updatedAt": "2026-11-05T09:50:22.956Z",
-  "scanned": 4760,
+  "updatedAt": "2026-11-06T09:45:19.217Z",
+  "scanned": 4761,
   "showsWithViolations": 169,
-  "totalViolations": 223,
-  "newSinceLastRun": 13,
+  "totalViolations": 224,
+  "newSinceLastRun": 3,
   "handled": {
-    "temporal-override-low-confidence": 953,
+    "temporal-override-low-confidence": 958,
     "not-shipped": 55,
     "duplicate-not-shipped": 53,
     "rebuild-skip-audit": 32,
     "manual-clear-reason": 12,
-    "prior-run-or-tour-leg": 42
+    "prior-run-or-tour-leg": 43
   },
   "newViolationKeys": [
-    "into-the-woods-off-west-end-2025::1883magazine--nick-barr.json",
-    "into-the-woods-off-west-end-2025::partially-obstructed-view--view-my-complete.json",
-    "into-the-woods-off-west-end-2025::theartsdispatch--the-arts-dispatch.json",
-    "witness-for-the-prosecution-off-west-end-2022::london-theatre--will-longman.json",
-    "relics-off-west-end-2026::artsdesk--unknown.json",
-    "sting-off-west-end-2026::artsdesk--aleks-sierz.json",
-    "the-enormous-crocodile-off-west-end-2026::musical-theatre-review--unknown.json",
-    "mass-off-west-end-2026::artsdesk--demetrios-matheou.json",
-    "sherlock-holmes-off-west-end-2026::standard--nick-curtis.json",
-    "now-you-see-me-live-off-west-end-2026::london-box-office--stuart-king.json",
-    "the-oresteia-off-west-end-2026::artsdesk--unknown.json",
-    "derren-brown-only-human-off-west-end-2026::theatre-weekly--greg-stewart.json",
-    "derren-brown-only-human-off-west-end-2026::thereviewshub--katherine-gannon.json"
+    "blood-of-my-blood-west-end-2026::islingtontribune--unknown.json",
+    "operation-mincemeat-west-end-2024::the-recs--unknown.json",
+    "operation-mincemeat-west-end-2024::thereviewshub--the-reviews-hub-scotland.json"
   ],
   "violationKeys": [
     "cats-the-jellicle-ball-2026::nytg--kyle-turner.json",
@@ -90,7 +80,6 @@
     "therese-raquin-2015::theater-scene--victor-gluck.json",
     "therese-raquin-2015::towleroad--naveen-kumar.json",
     "sylvia-2015::nydailynews--joe-dziemianowicz.json",
-    "fool-for-love-2015::latimes--charles-mcnulty.json",
     "fool-for-love-2015::philadelphia-inquirer--toby-zinman.json",
     "on-the-twentieth-century-2015::broadway-showbiz--corine-cohen.json",
     "on-the-twentieth-century-2015::harpersbazaar--aaron-leth.json",
@@ -147,8 +136,11 @@
     "sting-off-west-end-2026::artsdesk--aleks-sierz.json",
     "between-the-river-and-the-sea-west-end-2026::artsdesk--aleks-sierz.json",
     "blood-of-my-blood-west-end-2026::guardian--unknown.json",
+    "blood-of-my-blood-west-end-2026::islingtontribune--unknown.json",
     "archduke-west-end-2026::artsdesk--unknown.json",
     "the-enormous-crocodile-off-west-end-2026::musical-theatre-review--unknown.json",
+    "operation-mincemeat-west-end-2024::the-recs--unknown.json",
+    "operation-mincemeat-west-end-2024::thereviewshub--the-reviews-hub-scotland.json",
     "titanique-west-end-2024::telegraph--dominic-cavendish.json",
     "burlesque-off-west-end-2026::telegraph--claire-allfree.json",
     "making-a-show-of-myself-off-broadway-2026::pages-on-stages--mason-pilevsky.json",
@@ -188,7 +180,6 @@
     "a-small-and-quiet-light-off-west-end-2026::plays-international--unknown.json",
     "sylvia-west-end-2023::standard--nick-curtis.json",
     "crybabies-the-scaring-off-west-end-2026::london-box-office--stuart-king.json",
-    "a-world-elsewhere-off-west-end-2026::guardian--miriam-gillinson.json",
     "operation-mincemeat-tour-2026::boston-globe--unknown.json",
     "spamalot-tour-2025::the-moderate-voice--dough-bursch.json",
     "a-beautiful-noise-the-neil-diamond-musical-tour-2024::broadwayworld--jarrod-michael.json",
@@ -1394,21 +1385,8 @@
       "showId": "fool-for-love-2015",
       "title": "Fool for Love",
       "openingDate": "2015-10-08",
-      "message": "latimes/Charles McNulty (latimes--charles-mcnulty.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This is a dual-show review that primarily critiques Pinter's 'Old Times' at American Airlines Theatre, with only a brief — http://www.latimes.com/entertainment/arts/la-et-cm-old-times-fool-for-love-broadway-20151009-column.html\nphiladelphia-inquirer/Toby Zinman (philadelphia-inquirer--toby-zinman.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This is a legitimate theater review of the Broadway production (cast, venue, and opinion-bearing content all match the 2 — http://www.philly.com/philly/blogs/331493732.html",
+      "message": "philadelphia-inquirer/Toby Zinman (philadelphia-inquirer--toby-zinman.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This is a legitimate theater review of the Broadway production (cast, venue, and opinion-bearing content all match the 2 — http://www.philly.com/philly/blogs/331493732.html",
       "violations": [
-        {
-          "filename": "latimes--charles-mcnulty.json",
-          "url": "http://www.latimes.com/entertainment/arts/la-et-cm-old-times-fool-for-love-broadway-20151009-column.html",
-          "outletId": "latimes",
-          "criticName": "Charles McNulty",
-          "matchedBy": "url",
-          "cvConfidence": "high",
-          "cvReasoning": "This is a dual-show review that primarily critiques Pinter's 'Old Times' at American Airlines Theatre, with only a brief",
-          "cvIssues": [
-            "This review is primarily about Pinter's 'Old Times' at American Airlines Theatre, not the expected 'Fool for Love' review",
-            "'Fool for Love' is only briefly mentioned in passing ('At...Friedman Theatre, \"Fool for Love,\" Sam Shepard's...') as a secondary comparison, not the subject of substantive critical evaluation"
-          ]
-        },
         {
           "filename": "philadelphia-inquirer--toby-zinman.json",
           "url": "http://www.philly.com/philly/blogs/331493732.html",
@@ -2467,7 +2445,7 @@
       "showId": "blood-of-my-blood-west-end-2026",
       "title": "Blood of my Blood",
       "openingDate": "2026-10-07",
-      "message": "guardian/Unknown (guardian--unknown.json) SHIPPED with CV.wrongProduction=true (undefined confidence) and no clear flag; reasoning: (none) — https://www.theguardian.com/stage/2026/oct/10/blood-of-my-blood-review-royal-court-theatre-london",
+      "message": "guardian/Unknown (guardian--unknown.json) SHIPPED with CV.wrongProduction=true (undefined confidence) and no clear flag; reasoning: (none) — https://www.theguardian.com/stage/2026/oct/10/blood-of-my-blood-review-royal-court-theatre-london\nislingtontribune/Unknown (islingtontribune--unknown.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 29d of opening, likely correct production] The scraped review is dated 15th October but the exp — https://www.islingtontribune.co.uk/article/review-blood-of-my-blood-at-royal-court-theatre",
       "violations": [
         {
           "filename": "guardian--unknown.json",
@@ -2477,6 +2455,19 @@
           "matchedBy": "url",
           "cvReasoning": null,
           "cvIssues": null
+        },
+        {
+          "filename": "islingtontribune--unknown.json",
+          "url": "https://www.islingtontribune.co.uk/article/review-blood-of-my-blood-at-royal-court-theatre",
+          "outletId": "islingtontribune",
+          "criticName": "Unknown",
+          "matchedBy": "url",
+          "cvConfidence": "low",
+          "cvReasoning": "[OVERRIDE: review within 29d of opening, likely correct production] The scraped review is dated 15th October but the exp",
+          "cvIssues": [
+            "Review publish date (15th October) does not match expected date (2026-11-05)",
+            "Review does not name Royal Court as the venue; no West End venue is mentioned in the text"
+          ]
         }
       ]
     },
@@ -2518,6 +2509,40 @@
           "cvIssues": [
             "Review describes production at Regent's Park Open Air Theatre (runs until 7 September 2025), not Lyric Hammersmith",
             "Review describes 2025 production, but expected Off-West End opening is 2026-07-28 — this is a different production/year"
+          ]
+        }
+      ]
+    },
+    {
+      "showId": "operation-mincemeat-west-end-2024",
+      "title": "Operation Mincemeat",
+      "openingDate": "2023-05-09",
+      "message": "the-recs/Unknown (the-recs--unknown.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This is a genuine review with critical assessment (5-star rating), but the critic attended and is evaluating the Edinbur — https://therecs.co.uk/operation-mincemeat-touring/\nthereviewshub/The Reviews Hub - Scotland (thereviewshub--the-reviews-hub-scotland.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This is a legitimate theater review with critical assessment, but it reviews a touring production of Operation Mincemeat — https://www.thereviewshub.com/operation-mincemeat-kings-theatre-edinburgh/",
+      "violations": [
+        {
+          "filename": "the-recs--unknown.json",
+          "url": "https://therecs.co.uk/operation-mincemeat-touring/",
+          "outletId": "the-recs",
+          "criticName": "Unknown",
+          "matchedBy": "url",
+          "cvConfidence": "high",
+          "cvReasoning": "This is a genuine review with critical assessment (5-star rating), but the critic attended and is evaluating the Edinbur",
+          "cvIssues": [
+            "Review describes Edinburgh touring production (Kings Theatre, Edinburgh, Nov 2026), not West End production at Fortune Theatre",
+            "Review publish date (2026-11-03) aligns with Edinburgh tour performance date, not West End opening (2023-05-09)"
+          ]
+        },
+        {
+          "filename": "thereviewshub--the-reviews-hub-scotland.json",
+          "url": "https://www.thereviewshub.com/operation-mincemeat-kings-theatre-edinburgh/",
+          "outletId": "thereviewshub",
+          "criticName": "The Reviews Hub - Scotland",
+          "matchedBy": "url",
+          "cvConfidence": "high",
+          "cvReasoning": "This is a legitimate theater review with critical assessment, but it reviews a touring production of Operation Mincemeat",
+          "cvIssues": [
+            "Review describes a touring production, not the West End run at Fortune Theatre",
+            "Critic explicitly states 'on tour' and references 'when it tours back to Edinburgh next year'"
           ]
         }
       ]
@@ -3229,27 +3254,6 @@
           "cvIssues": [
             "Review end-date mismatch: review states show 'continues its London run until 23rd September' but expected publish date is 2026-09-29 (6 days after closing)",
             "Content truncated: scraped text ends with incomplete footer fragment ('100% Honest Reviews. All show reviews are written by independent theatregoers, directors')"
-          ]
-        }
-      ]
-    },
-    {
-      "showId": "a-world-elsewhere-off-west-end-2026",
-      "title": "A World Elsewhere",
-      "openingDate": "2026-07-25",
-      "message": "guardian/Miriam Gillinson (guardian--miriam-gillinson.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This is a legitimate review of a Globe theatre production, but it reviews a completely different show — a family comedy  — https://www.theguardian.com/stage/2026/jul/31/a-world-elsewhere-review-sam-wanamaker-theatre-globe",
-      "violations": [
-        {
-          "filename": "guardian--miriam-gillinson.json",
-          "url": "https://www.theguardian.com/stage/2026/jul/31/a-world-elsewhere-review-sam-wanamaker-theatre-globe",
-          "outletId": "guardian",
-          "criticName": "Miriam Gillinson",
-          "matchedBy": "url",
-          "cvConfidence": "high",
-          "cvReasoning": "This is a legitimate review of a Globe theatre production, but it reviews a completely different show — a family comedy ",
-          "cvIssues": [
-            "Show title mismatch: scraped review is of a family show about a boy named Cass with Shakespearean characters; expected show is 'A World Elsewhere' with no plot description provided matching this content",
-            "Cast mismatch: review names Kyle Ndukuba (Cass), Kerry Frampton (Sarah), Tanvi Virmani (Cobweb), Zachary Willis (Big Guy), Lucy Cuthbertson (director), Rose Revitt (designer) — none of these are standard cast for 'A World Elsewhere'"
           ]
         }
       ]
