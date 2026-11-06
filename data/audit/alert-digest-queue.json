@@ -503,5 +503,100 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-06T18:03:55.205Z"
+  },
+  {
+    "conditionKey": "cron-health-failed:Secret Scan (gitleaks)",
+    "title": "Cron's latest run failed (not yet stale): Secret Scan (gitleaks)",
+    "description": "Secret Scan (gitleaks): Latest run failed (last success 123h ago). Not stale yet; fix it before it is.",
+    "severity": "warning",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42273338826",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/42273338826)"
+      }
+    ],
+    "queuedAt": "2026-11-06T18:45:30.449Z"
+  },
+  {
+    "conditionKey": "cron-health-failed:Test Suite",
+    "title": "Cron's latest run failed (not yet stale): Test Suite",
+    "description": "Test Suite: Latest run failed (last success 5h ago). Not stale yet; fix it before it is.",
+    "severity": "warning",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42273338826",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/42273338826)"
+      }
+    ],
+    "queuedAt": "2026-11-06T18:45:30.472Z"
+  },
+  {
+    "conditionKey": "cron-health-failed:Enrich Off-Broadway Dates",
+    "title": "Cron's latest run failed (not yet stale): Enrich Off-Broadway Dates",
+    "description": "Enrich Off-Broadway Dates: Latest run failed (last success 97h ago). Not stale yet; fix it before it is.",
+    "severity": "warning",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42273338826",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/42273338826)"
+      }
+    ],
+    "queuedAt": "2026-11-06T18:45:30.495Z"
+  },
+  {
+    "conditionKey": "cron-health-failed:Fetch All Image Formats",
+    "title": "Cron's latest run failed (not yet stale): Fetch All Image Formats",
+    "description": "Fetch All Image Formats: Latest run failed (last success 3h ago). Not stale yet; fix it before it is.",
+    "severity": "warning",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42273338826",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/42273338826)"
+      }
+    ],
+    "queuedAt": "2026-11-06T18:45:30.510Z"
+  },
+  {
+    "conditionKey": "cron-health-failed:Update Lottery/Rush",
+    "title": "Cron's latest run failed (not yet stale): Update Lottery/Rush",
+    "description": "Update Lottery/Rush: Latest run failed (last success 94h ago). Not stale yet; fix it before it is.",
+    "severity": "warning",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42273338826",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/42273338826)"
+      }
+    ],
+    "queuedAt": "2026-11-06T18:45:30.524Z"
   }
 ]

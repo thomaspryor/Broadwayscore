@@ -16,19 +16,17 @@
       "resolveReason": "latest run no longer failing"
     },
     "cron-health-failed:Test Suite": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "digest",
       "title": "Cron's latest run failed (not yet stale): Test Suite",
       "firstSeen": "2026-10-12T20:42:23.460Z",
-      "incidentOpenedAt": "2026-10-29T17:59:59.322Z",
-      "lastSeen": "2026-11-01T17:29:47.395Z",
-      "lastNotifiedAt": "2026-11-01T17:29:47.395Z",
-      "lastSurfacedAt": "2026-11-01T17:29:47.395Z",
-      "notifyCount": 7,
+      "incidentOpenedAt": "2026-11-06T18:45:30.471Z",
+      "lastSeen": "2026-11-06T18:45:30.471Z",
+      "lastNotifiedAt": "2026-11-06T18:45:30.471Z",
+      "lastSurfacedAt": "2026-11-06T18:45:30.471Z",
+      "notifyCount": 8,
       "cardId": null,
-      "linearIdentifier": null,
-      "resolvedAt": "2026-11-05T19:19:28.504Z",
-      "resolveReason": "latest run no longer failing"
+      "linearIdentifier": null
     },
     "land:land/bro-5184-scroll-arrows": {
       "status": "resolved",
@@ -21901,19 +21899,17 @@
       "resolveReason": "absent"
     },
     "cron-health-failed:Fetch All Image Formats": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "digest",
       "title": "Cron's latest run failed (not yet stale): Fetch All Image Formats",
       "firstSeen": "2026-10-19T18:07:12.430Z",
-      "incidentOpenedAt": "2026-10-29T17:59:59.346Z",
-      "lastSeen": "2026-10-29T17:59:59.346Z",
-      "lastNotifiedAt": "2026-10-29T17:59:59.346Z",
-      "lastSurfacedAt": "2026-10-29T17:59:59.346Z",
-      "notifyCount": 4,
+      "incidentOpenedAt": "2026-11-06T18:45:30.510Z",
+      "lastSeen": "2026-11-06T18:45:30.510Z",
+      "lastNotifiedAt": "2026-11-06T18:45:30.510Z",
+      "lastSurfacedAt": "2026-11-06T18:45:30.510Z",
+      "notifyCount": 5,
       "cardId": null,
-      "linearIdentifier": null,
-      "resolvedAt": "2026-11-02T21:18:56.695Z",
-      "resolveReason": "absent"
+      "linearIdentifier": null
     },
     "opening-night-fulltext-mentions-show:short:triumph-off-west-end-2026": {
       "status": "resolved",
@@ -24603,10 +24599,10 @@
       "title": "Cron's latest run failed (not yet stale): Update Lottery/Rush",
       "firstSeen": "2026-10-22T16:27:21.287Z",
       "incidentOpenedAt": "2026-11-05T19:19:28.489Z",
-      "lastSeen": "2026-11-05T19:19:28.489Z",
-      "lastNotifiedAt": "2026-11-05T19:19:28.489Z",
-      "lastSurfacedAt": "2026-11-05T19:19:28.489Z",
-      "notifyCount": 3,
+      "lastSeen": "2026-11-06T18:45:30.524Z",
+      "lastNotifiedAt": "2026-11-06T18:45:30.524Z",
+      "lastSurfacedAt": "2026-11-06T18:45:30.524Z",
+      "notifyCount": 4,
       "cardId": null,
       "linearIdentifier": null
     },
@@ -35087,10 +35083,10 @@
       "title": "Cron's latest run failed (not yet stale): Secret Scan (gitleaks)",
       "firstSeen": "2026-11-01T17:29:47.370Z",
       "incidentOpenedAt": "2026-11-01T17:29:47.370Z",
-      "lastSeen": "2026-11-05T19:19:28.436Z",
-      "lastNotifiedAt": "2026-11-05T19:19:28.436Z",
-      "lastSurfacedAt": "2026-11-05T19:19:28.436Z",
-      "notifyCount": 4,
+      "lastSeen": "2026-11-06T18:45:30.449Z",
+      "lastNotifiedAt": "2026-11-06T18:45:30.449Z",
+      "lastSurfacedAt": "2026-11-06T18:45:30.449Z",
+      "notifyCount": 5,
       "cardId": null,
       "linearIdentifier": null
     },
@@ -35719,7 +35715,7 @@
       "silentRefires": 1
     },
     "cron-health-chronic:Replay Push Rescue": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "Cron stale 3+ consecutive days: Replay Push Rescue",
       "firstSeen": "2026-11-02T21:15:33.632Z",
@@ -35730,7 +35726,8 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-6859",
-      "silentRefires": 2
+      "silentRefires": 2,
+      "resolvedAt": "2026-11-06T18:45:30.638Z"
     },
     "land:land/bro-6857": {
       "status": "open",
@@ -37353,10 +37350,10 @@
       "title": "Cron's latest run failed (not yet stale): Enrich Off-Broadway Dates",
       "firstSeen": "2026-11-05T19:19:28.467Z",
       "incidentOpenedAt": "2026-11-05T19:19:28.467Z",
-      "lastSeen": "2026-11-05T19:19:28.467Z",
-      "lastNotifiedAt": "2026-11-05T19:19:28.467Z",
-      "lastSurfacedAt": "2026-11-05T19:19:28.467Z",
-      "notifyCount": 1,
+      "lastSeen": "2026-11-06T18:45:30.495Z",
+      "lastNotifiedAt": "2026-11-06T18:45:30.495Z",
+      "lastSurfacedAt": "2026-11-06T18:45:30.495Z",
+      "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": null
     },
