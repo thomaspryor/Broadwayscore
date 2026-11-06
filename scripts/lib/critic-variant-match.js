@@ -186,9 +186,11 @@ function classifyVariantPair(a, b, opts = {}) {
     return { verdict: 'review', relation, reason: 'joint or garbled byline, needs a human', canonical };
   }
   // 'extra' words are the weakest signal (two people can share a surname and a
-  // given name inside a longer name), so they need the straggler test as well.
+  // given name inside a longer name), so they need the straggler test AND a shared
+  // outlet (BRO-6928: G. Bruce Smith at Stage Raw vs a Bruce Smith at Bsonarts).
   if (relation === 'extra') {
-    if (straggler) return { verdict: 'merge', relation, reason: `extra words on a ${small.count}-review page`, canonical };
+    if (straggler && shared.length > 0) return { verdict: 'merge', relation, reason: `extra words on a ${small.count}-review page, shared outlet ${shared[0]}`, canonical };
+    if (straggler) return { verdict: 'review', relation, reason: `extra words on a ${small.count}-review page but no shared outlet`, canonical };
     return { verdict: 'review', relation, reason: 'extra words, both pages sizeable', canonical };
   }
   if (shared.length > 0) return { verdict: 'merge', relation, reason: `${relation}, shared outlet ${shared[0]}`, canonical };

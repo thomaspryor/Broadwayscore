@@ -18,7 +18,7 @@ test('real splits merge', () => {
     [pg('David Fargnoli', 1, 'Stage Left'), pg('Dave Fargnoli', 30, 'Stage Left')],
     [pg('Chris Caggiano', 15, 'Dc Metro'), pg('Christopher Caggiano', 12, 'Dc Metro')],
     [pg('Jospeh Verlezza', 1, 'Theatre Reviews Limited'), pg('Joseph Verlezza', 40, 'Theatre Reviews Limited')],
-    [pg('Erickson Elisabeth Vincentelli', 1, 'X'), pg('Elisabeth Vincentelli', 200, 'Y')],
+    [pg('Erickson Elisabeth Vincentelli', 1, 'New York Times'), pg('Elisabeth Vincentelli', 200, 'New York Times')],
   ];
   for (const [a, b] of cases) assert.equal(classifyVariantPair(a, b).verdict, 'merge', `${a.name} / ${b.name}`);
 });
@@ -33,6 +33,8 @@ test('different people stay apart', () => {
     [pg('Jess Green', 1, 'Musical Theatre Review'), pg('Jesse Green', 400, 'New York Times')],
     [pg('Erin Grode', 1, 'A'), pg('Eric Grode', 50, 'B')],
     [pg('Jane Roberts', 3, 'A'), pg('Jane Robertson', 40, 'B')],
+    // extra words with no shared outlet: a human decides (BRO-6928)
+    [pg('G. Bruce Smith', 1, 'Stage Raw'), pg('Bruce Smith', 14, 'Bsonarts')],
   ];
   for (const [a, b] of cases) assert.notEqual(classifyVariantPair(a, b).verdict, 'merge', `${a.name} / ${b.name}`);
 });

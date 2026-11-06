@@ -652,8 +652,20 @@ function displayCriticName(raw, outlet, registryEntry) {
   if (fixed) {
     name = fixed;
   } else {
-    const slug = normalizeCritic(stripped);
+    let slug = normalizeCritic(stripped);
     if (slug === 'unknown') return null;
+    // BRO-6928: alias strings are stored punctuation-free ("samuel l", "andrze
+    // lukowski") but normalizeCritic matches the raw lowercase byline exactly,
+    // so "Samuel L." or "Andrze] Lukowski" missed its alias and kept its own
+    // critic page. Retry on the folded form; only an alias hit may move it.
+    if (!Object.prototype.hasOwnProperty.call(CRITIC_ALIASES, slug) || slugify(stripped) === slug) {
+      const folded = slugify(stripped).replace(/-/g, ' ');
+      if (folded && folded !== stripped.toLowerCase().trim()) {
+        const foldedSlug = normalizeCritic(folded);
+        if (foldedSlug !== slug && Object.prototype.hasOwnProperty.call(CRITIC_ALIASES, foldedSlug)
+          && (CRITIC_ALIASES[foldedSlug] || []).includes(folded)) slug = foldedSlug;
+      }
+    }
     if (Object.prototype.hasOwnProperty.call(CRITIC_ALIASES, slug) && slugify(stripped) !== slug) {
       name = displayFormForCanonical(slug, ctx.entry);
     } else {
