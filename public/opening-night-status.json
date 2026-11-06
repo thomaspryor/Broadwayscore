@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-06T16:38:14.093Z",
+  "generatedAt": "2026-11-06T17:06:49.592Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -1329,28 +1329,27 @@
       "status": "open",
       "slug": "222-a-ghost-story-off-broadway",
       "thumbnail": "/images/shows/222-a-ghost-story-off-broadway-2026/thumbnail.jpg",
-      "siteScore": 62.39,
-      "liveScore": 62,
+      "siteScore": 63.39,
+      "liveScore": 63,
       "scoreDrift": -0.39000000000000057,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 5,
+      "total": 6,
       "t1": 0,
-      "t2": 2,
+      "t2": 3,
       "t3": 3,
       "positive": 3,
-      "mixed": 1,
+      "mixed": 2,
       "negative": 1,
       "readiness": {
         "ready": false,
         "reasons": [
-          "5/12 total",
+          "6/12 total",
           "T1:0/3",
-          "T2:2/3",
-          "hi-conf:5/8"
+          "hi-conf:6/8"
         ],
-        "highConfidence": 5,
+        "highConfidence": 6,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -1752,6 +1751,18 @@
           "t3": 3,
           "p": 3,
           "m": 1,
+          "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-11-06T17:06:49.592Z",
+          "rc": 6,
+          "s": 63.39,
+          "t1": 0,
+          "t2": 3,
+          "t3": 3,
+          "p": 3,
+          "m": 2,
           "n": 1,
           "bc": "waiting"
         }
