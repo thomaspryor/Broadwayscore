@@ -73,6 +73,7 @@ const {
   visitorProblemNames,
   renderOwnerTopBlock,
   renderTechnicalDetailsHeading,
+  renderBehindTheScenesLine,
 } = require('./lib/autonomous-email-render.js');
 const { localLoopDeadMessage } = require('./lib/digest-loop-health.js');
 const { renderNewShowTypesBlock } = require('./lib/new-show-types.js');
@@ -647,7 +648,7 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
   // 2026-08-02); everything else follows under "Technical details".
   const view = buildOwnerView({
     health: sections.health, autofixRows, needsYou: sections.needsYou, awaitingOwner: sections.awaitingOwner,
-    inReviewBacklog: sections.inReviewBacklog, loopDead: !!loopDeadMsg,
+    inReviewBacklog: sections.inReviewBacklog, loopDead: !!loopDeadMsg, nowMs: now.getTime(),
   });
   // Without autofix rows the fallback count also folds freshness/stuck in,
   // exactly like the technical "issues detected" line below.
@@ -655,28 +656,29 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
   const decisionBlocksHtml = [
     renderNeedsAttentionBlock(view.decisionQueued),
     // "Needs You" tab triage (card #870) — the owner's own pending decisions.
-    sections.needsYou ? renderNamedDigestBlock('Decisions waiting on you', sections.needsYou, { actionCards: true }) : '',
+    sections.needsYou ? renderNamedDigestBlock('Decisions waiting on you', sections.needsYou, { actionCards: true, compactOld: !view.isMonday }) : '',
     decisionsListLinkHtml(sections.needsYou),
     // Waiting on your approval (BRO-282) — Linear issues carrying the
     // 'awaiting-owner' label (work finished, blocked on a plain-language yes,
     // e.g. the /visual-qa pre-push gate). Distinct from "Needs your decision"
     // above (session-scoped cmux state, dies with the tab): this is
     // issue-scoped and survives the originating session closing.
-    sections.awaitingOwner ? renderNamedDigestBlock('Waiting on your approval', sections.awaitingOwner, { actionCards: true, showBanner: true }) : '',
+    sections.awaitingOwner ? renderNamedDigestBlock('Waiting on your approval', sections.awaitingOwner, { actionCards: true, showBanner: true, compactOld: !view.isMonday }) : '',
     // Parked in review (BRO-3376) — finished work waiting on the owner with
     // no opt-in marker; de-duplicated against awaitingOwner in buildOwnerView.
-    view.reviewQueue ? renderNamedDigestBlock('Review queue', view.reviewQueue, { actionCards: true, showBanner: true }) : '',
+    view.reviewQueue ? renderNamedDigestBlock('Review queue', view.reviewQueue, { actionCards: true, showBanner: true, compactOld: !view.isMonday }) : '',
   ].filter(Boolean).join('\n');
-  head.push(renderOwnerTopBlock(view, { decisionBlocksHtml, overnightLine }));
-  if (sections.memoryConflicts) {
-    head.push(renderNamedDigestBlock('Saved memory conflicts', sections.memoryConflicts));
-  }
   // Last night's openings (BRO-6645): one grade per press night, reviews live
   // and opening-night emails ready. Nights with no openings render nothing.
+  let lastNightHtml = '';
   try {
-    head.push(renderPressNightBlock(sections.pressNight, { esc, nowMs: now.getTime() }));
+    lastNightHtml = renderPressNightBlock(sections.pressNight, { esc, nowMs: now.getTime() }) || '';
   } catch (err) {
     console.error(`[digest] WARN press-night block failed: ${String(err.message).slice(0, 120)}`);
+  }
+  head.push(renderOwnerTopBlock(view, { decisionBlocksHtml, overnightLine, lastNightHtml }));
+  if (sections.memoryConflicts) {
+    head.push(renderNamedDigestBlock('Saved memory conflicts', sections.memoryConflicts));
   }
   // New tour / pre-Broadway / UK regional shows with suggested Reddit posts
   // (BRO-6542). Quiet days render nothing; a stale snapshot is flagged by the
@@ -686,6 +688,11 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
   } catch (err) {
     console.error(`[digest] WARN new-show-types block failed: ${String(err.message).slice(0, 120)}`);
   }
+  // BRO-7040 (owner decision: board stats stay in the daily email, collapsed):
+  // everything below the four owner sections goes into one <details> at the
+  // bottom. Gmail ignores <details> and shows the content open at the bottom,
+  // which is the accepted fallback; Apple Mail collapses it.
+  const collapsed = [renderBehindTheScenesLine(view)];
   // Board numbers (BRO-5482). `waiting` and `stuck` are the SAME numbers the sections
   // above/below use (view.decisions, stuckCount): never a second definition.
   if (boardNumbersData) {
@@ -698,7 +705,7 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
       // BRO-6081: the owner reads a verdict, a 7-day chart and four tiles; the
       // full numbers table moves under Technical details.
       boardNumbersTableHtml = bn.renderBoardNumbersHtml(m, esc);
-      head.push(require('./lib/board-summary.js').renderBoardSummaryHtml(m, m.daily, esc, { partial: m.daily ? m.dailyTruncated : m.floors, startedIdle: boardStartedIdle(boardReport) }));
+      collapsed.push(require('./lib/board-summary.js').renderBoardSummaryHtml(m, m.daily, esc, { partial: m.daily ? m.dailyTruncated : m.floors, startedIdle: boardStartedIdle(boardReport) }));
     } catch (err) {
       console.error(`[digest] WARN board numbers block failed: ${String(err.message).slice(0, 120)}`);
     }
@@ -708,13 +715,13 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
   // fetch failed: a visible "unavailable" line, never a silent gap.
   if (boardReport !== undefined) {
     try {
-      head.push(require('./lib/board-summary.js').renderBoardCategoriesHtml(boardReport, boardReportPrev, esc));
+      collapsed.push(require('./lib/board-summary.js').renderBoardCategoriesHtml(boardReport, boardReportPrev, esc));
     } catch (err) {
       console.error(`[digest] WARN board category table failed: ${String(err.message).slice(0, 120)}`);
     }
   }
 
-  head.push(renderMoneySignups(sections.moneySignups));
+  collapsed.push(renderMoneySignups(sections.moneySignups));
 
   // Technical report starts here. The raw error names stay (debugging), but
   // are no longer called "site errors": most are the automation's own
@@ -892,9 +899,13 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
   }
   if (boardNumbersTableHtml) parts.push(boardNumbersTableHtml);
   if (parts.length) {
-    head.push(renderTechnicalDetailsHeading());
-    head.push(...parts);
+    collapsed.push(renderTechnicalDetailsHeading());
+    collapsed.push(...parts);
   }
+  head.push(`<details style="margin:18px 0 0;border-top:1px solid #e5e5e5;padding-top:8px;">
+<summary style="cursor:pointer;font-size:12px;color:#777;margin:0 0 10px;">Board, spend and technical details</summary>
+${collapsed.filter(Boolean).join('\n')}
+</details>`);
 
   head.push(`<p style="color:#999;font-size:11px;margin-top:16px;text-align:center;">Broadway Scorecard morning digest</p>`);
   head.push(`</div>`);

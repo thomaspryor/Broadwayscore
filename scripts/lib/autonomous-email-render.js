@@ -22,6 +22,7 @@
 const { CHECK_NAME: AUTOFIX_EFFECTIVENESS_CHECK_NAME } = require('./autofix-effectiveness.js');
 const { BSC_DAILY_TITLE_PREFIX } = require('./autofix-filed-marker.js');
 const { splitHealthByAudience } = require('./digest-audience.js');
+const { isSettling, SETTLE_HOURS, LEGACY_SEED, reportableCleared } = require('./health-first-seen.js');
 
 function esc(s) {
   return String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -272,12 +273,41 @@ const PLAIN_HEALTH = [
   [/^Quality: DMARC deliverability/, () => 'Email deliverability reports stopped arriving'],
   [/^Coverage: SERP census recall/, () => 'Finding fewer published reviews than usual'],
   [/^Feedback: needs-manual-review backlog/, () => 'Visitor feedback waiting for a manual look'],
+  // BRO-7040: the two rows that reached the owner under their raw check names
+  // on 2026-11-05. Quality: Show Score gap is refined with show names below.
+  [/^Quality: Show Score gap/, () => 'Some shows have no audience score yet'],
+  [/^Revenue: affiliate health/, () => 'Ticket-link click numbers look unusual'],
 ];
-function plainHealthLine(name) {
+
+// "midnight-2026" -> "Midnight", "parcel-from-america-2026" -> "Parcel From America".
+function prettyShowSlug(id) {
+  const words = String(id || '').trim().replace(/-(?:19|20)\d\d$/, '').replace(/-(?:broadway|west-end|off-broadway)$/, '').split('-').filter(Boolean);
+  return words.map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+}
+
+// Rows whose message carries the thing the owner cares about (the show names).
+// Returns null to fall back to the static line.
+function plainHealthFromMessage(name, message) {
+  const msg = String(message || '');
+  if (/^Quality: Show Score gap/.test(name)) {
+    const m = msg.match(/^(\d+) opened show\(s\).*\(([^)]*)\)/);
+    if (!m) return null;
+    const total = Number(m[1]);
+    const shown = m[2].split(',').map((x) => x.trim()).filter((x) => x && x !== '...').map(prettyShowSlug);
+    if (!shown.length) return null;
+    if (total === 1) return `${shown[0]} has no audience score yet`;
+    if (total <= shown.length) return `${shown.slice(0, -1).join(', ')} and ${shown[shown.length - 1]} have no audience score yet`;
+    return `${shown.join(', ')} and ${total - shown.length} more have no audience score yet`;
+  }
+  return null;
+}
+function plainHealthLine(name, message) {
   // BRO-5669: owner-login-dependent sources (lib/login-sources.js). The row
   // name after the prefix is already the plain sentence.
   const login = String(name).match(/^Login expired:\s*(.+)$/);
   if (login) return login[1];
+  const fromMsg = message ? plainHealthFromMessage(String(name), message) : null;
+  if (fromMsg) return fromMsg;
   for (const [re2, fn] of PLAIN_HEALTH) { const m = String(name).match(re2); if (m) return fn(m); }
   return String(name);
 }
@@ -617,8 +647,24 @@ function ownerItemKey(it) {
   return String((it && (it.url || it.title)) || '');
 }
 
+// "Nov 3" in the owner's timezone (America/New_York) for a since-date.
+function shortDateET(iso) {
+  const t = Date.parse(iso);
+  if (!Number.isFinite(t)) return null;
+  return new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', month: 'short', day: 'numeric' }).format(new Date(t));
+}
+function isMondayET(nowMs) {
+  return new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', weekday: 'short' }).format(new Date(nowMs)) === 'Mon';
+}
+// firstSeen older than the 1970 seed is a real date; the seed means "was already there when tracking began".
+function realFirstSeen(iso) {
+  const t = Date.parse(iso);
+  return Number.isFinite(t) && iso !== LEGACY_SEED ? iso : null;
+}
+
 function buildOwnerView({
   health = null, autofixRows = null, needsYou = null, awaitingOwner = null, inReviewBacklog = null, loopDead = false,
+  nowMs = Date.now(),
 } = {}) {
   const split = splitHealthByAudience(health);
   const allQueued = filterForbiddenQueued(Array.isArray(health?.queued) ? health.queued : []);
@@ -679,16 +725,22 @@ function buildOwnerView({
   // share a plain-English line read as one problem).
   // A merged plain line is handled only when every row behind it is.
   const byPlain = new Map();
+  // BRO-7040: a WARNING stays out of the email until it has lasted
+  // SETTLE_HOURS (errors never wait; a row with no first-seen date is shown).
+  let settling = 0;
   for (const [severity, list] of [['error', split.visitors.errors], ['warn', split.visitors.warns]]) {
     for (const r of list) {
-      const plain = plainHealthLine(r.name);
+      if (isSettling(r, severity, nowMs)) { settling++; continue; }
+      const plain = plainHealthLine(r.name, r.message);
       // BRO-5669: an expired login can only be fixed by the owner, so no
       // autofix row may ever demote it to "handled" ("all with automation").
       const loginRow = r.loginSource === true || /^Login expired:/.test(String(r.name));
       const fix = loopDead || loginRow ? null : findAutofixRow(r, autofixRows);
       const handled = !!fix && OWNER_HANDLED_STATES.has(fix.state) && !(fix.state === 'watching' && severity === 'error');
+      const seenAt = realFirstSeen(r.firstSeen);
       const item = {
-        name: r.name, plain, severity, handled, status: loginRow ? 'needs your login: only you can fix this' : ownerFixStatus(r, autofixRows, loopDead),
+        name: r.name, plain, severity, handled, since: seenAt ? shortDateET(seenAt) : null,
+        sinceDays: seenAt ? Math.max(0, Math.floor((nowMs - Date.parse(seenAt)) / 86400000)) : null, status: loginRow ? 'needs your login: only you can fix this' : ownerFixStatus(r, autofixRows, loopDead),
         ...(loginRow ? { loginSource: true, fixUrl: r.fixUrl || null } : {}),
         kind: !handled ? null : fix.state === 'watching' ? 'watching' : fix.state === 'acknowledged' ? 'acknowledged' : 'ticket',
       };
@@ -707,8 +759,18 @@ function buildOwnerView({
   else if (visitorItems.some((i) => i.severity === 'error')) siteState = 'affected';
   else if (visitorItems.length) siteState = 'minor';
   else if (handledItems.length) siteState = 'handled';
+  // Rows that left the list since yesterday and that the email could have
+  // shown (errors, or warnings that outlasted the hold). Names are plain.
+  const clearedNames = [];
+  for (const c of reportableCleared(health && health.cleared)) {
+    const plain = plainHealthLine(c.name);
+    if (!clearedNames.includes(plain)) clearedNames.push(plain);
+  }
   return {
     siteState,
+    settling,
+    cleared: clearedNames,
+    isMonday: isMondayET(nowMs),
     visitorItems,
     visitorHandled: handledItems.length,
     visitorHandledWatching: handledItems.filter((i) => i.kind === 'watching').length,
@@ -764,7 +826,7 @@ function renderVisitorItems(view) {
   const rest = view.visitorItems.length - shown.length;
   // A dead loop gives every row the same status; say it once, not per row.
   return shown.map((i) => `<div style="margin:0 0 5px;">
-        <div style="font-size:13px;color:#333;">• ${esc(i.plain)}</div>
+        <div style="font-size:13px;color:#333;">• ${esc(i.plain)}${i.since && i.sinceDays >= 1 ? ` <span style="font-size:11px;color:#777;">(since ${esc(i.since)})</span>` : ''}</div>
         ${i.loginSource ? `<div style="font-size:11px;color:#92400e;margin:1px 0 0 12px;">${esc(i.status)}${i.fixUrl ? ` · <a href="${esc(i.fixUrl)}" style="color:#1d4ed8;">fix it here</a>` : ''}</div>` : view.loopDead ? '' : `<div style="font-size:11px;color:#777;margin:1px 0 0 12px;">${esc(i.status)}</div>`}
       </div>`).join('')
     + (rest > 0 ? `<div style="font-size:11px;color:#777;margin-top:4px;">+${rest} more (listed under Technical details)</div>` : '')
@@ -803,7 +865,7 @@ function infoLines(view) {
 // cards with their one-click links, Needs your decision, Waiting on your
 // approval, Review queue) so every existing block keeps its own markup and
 // mandates.
-function renderOwnerTopBlock(view, { decisionBlocksHtml = '', overnightLine = null } = {}) {
+function renderOwnerTopBlock(view, { decisionBlocksHtml = '', overnightLine = null, lastNightHtml = '' } = {}) {
   const parts = [];
   if (view.siteState === 'affected' || view.siteState === 'minor') {
     const affected = view.siteState === 'affected';
@@ -823,10 +885,24 @@ function renderOwnerTopBlock(view, { decisionBlocksHtml = '', overnightLine = nu
     parts.push(`<p style="font-size:13px;color:#666;margin:0 0 12px;">The overnight site check did not report in, so site status is unknown this morning.</p>`);
   }
 
+  // BRO-7040: one line for what cleared (only things this email could have
+  // shown), and one small line for warnings still inside the 48h hold.
+  if (view.cleared && view.cleared.length) {
+    parts.push(`<p style="font-size:13px;color:#15803d;margin:0 0 6px;"><b>Cleared since yesterday:</b> ${esc(view.cleared.slice(0, 4).join('; '))}${view.cleared.length > 4 ? ` (+${view.cleared.length - 4} more)` : ''}.</p>`);
+  }
+  if (view.settling > 0) {
+    parts.push(`<p style="font-size:11px;color:#888;margin:0 0 12px;">${view.settling} new ${view.settling === 1 ? 'item is' : 'items are'} under watch. ${view.settling === 1 ? 'It shows' : 'They show'} here only if still there on day 3.</p>`);
+  }
+
+  if (lastNightHtml) parts.push(lastNightHtml);
+
   if (view.decisions > 0) {
     parts.push(`<p style="font-size:16px;font-weight:700;color:#1d4ed8;margin:4px 0 2px;">${view.decisions} decision${view.decisions === 1 ? '' : 's'} for you</p>`);
-    // BRO-6131: say how to answer once, up top (no "ask Claude": BRO-5542).
-    parts.push(`<p style="font-size:12px;color:#555;margin:0 0 10px;">Tap a button to open the item. To answer a decision with lettered options, comment on it with just the letter (for example "A"). Twice a day your answer is read: the work is queued, or you get a short question back if it was unclear. Each one says what happens if you do nothing.</p>`);
+    // BRO-7040: the how-to-answer paragraph only on Mondays (a weekly nudge),
+    // otherwise one short line. Lettered answers: comment with just the letter.
+    parts.push(view.isMonday
+      ? `<p style="font-size:12px;color:#555;margin:0 0 10px;">Tap a button to open the item. To answer a decision with lettered options, comment on it with just the letter (for example "A"). Twice a day your answer is read: the work is queued, or you get a short question back if it was unclear. Each one says what happens if you do nothing.</p>`
+      : `<p style="font-size:12px;color:#555;margin:0 0 10px;">Tap Open. For lettered options, comment with just the letter.</p>`);
     if (decisionBlocksHtml) parts.push(decisionBlocksHtml);
   } else if (view.siteState !== 'affected') {
     // About the OWNER's attention only (no decisions waiting); the visitor
@@ -848,6 +924,12 @@ function renderOwnerTopBlock(view, { decisionBlocksHtml = '', overnightLine = nu
   if (view.autoFixed) did.push(`${view.autoFixed} problem${view.autoFixed === 1 ? ' was' : 's were'} fixed automatically overnight.`);
   if (did.length) parts.push(`<p style="font-size:12px;color:#444;margin:0 0 8px;">${esc(did.join(' '))}</p>`);
 
+  return parts.join('\n');
+}
+
+// "Behind the scenes" status line. BRO-7040: no longer part of the owner-first
+// top; the caller puts it in the collapsed bottom section.
+function renderBehindTheScenesLine(view) {
   const items = `${view.tracked} maintenance item${view.tracked === 1 ? '' : 's'} tracked`;
   let behind;
   if (view.loopDead) {
@@ -861,8 +943,7 @@ function renderOwnerTopBlock(view, { decisionBlocksHtml = '', overnightLine = nu
     if (view.launched) parts2.push(`${view.launched} fix attempt${view.launched === 1 ? '' : 's'} launched this morning (tomorrow's email confirms ${view.launched === 1 ? 'it' : 'they'} ran)`);
     behind = `Behind the scenes: ${items}${parts2.length ? `, ${parts2.join(', ')}` : ''}.`;
   }
-  parts.push(`<p style="font-size:12px;color:#888;margin:0 0 16px;">${esc(behind)}</p>`);
-  return parts.join('\n');
+  return `<p style="font-size:12px;color:#888;margin:0 0 8px;">${esc(behind)}</p>`;
 }
 
 // Heading that demotes the full technical report (kept for debugging) below
@@ -891,7 +972,7 @@ function healthIssueCount(health) {
 // detail, url?}], moreCount } — routine FYI content, not errors/warnings, so
 // unlike renderHealthDigestBlock this never bumps the "N things to look at"
 // count; it's context, same tier as the overnight digest block below it.
-function renderNamedDigestBlock(label, snapshot, { actionCards = false, showBanner = false } = {}) {
+function renderNamedDigestBlock(label, snapshot, { actionCards = false, showBanner = false, compactOld = false } = {}) {
   if (!snapshot) return '';
   // .filter(Boolean): a corrupted/partial snapshot write must not crash the
   // whole email render — same guard as renderHealthDigestBlock's queued items
@@ -911,7 +992,7 @@ function renderNamedDigestBlock(label, snapshot, { actionCards = false, showBann
     // look like plain text.
     return `<div style="margin:0 0 14px;">
     <div style="font-size:13px;font-weight:700;color:#333;margin:0 0 8px;">${esc(label)}${showBanner && snapshot.bannerText ? `<span style="font-weight:400;color:#777;"> \u00b7 ${esc(snapshot.bannerText)}</span>` : ''}</div>
-    ${items.map((it) => renderActionCard(it, safeUrl)).join('')}${more}${asOf}
+    ${items.map((it) => renderActionCard(it, safeUrl, { compact: compactOld && it.ageDays >= 2 })).join('')}${more}${asOf}
   </div>`;
   }
   const rows = items.map(it => {
@@ -932,7 +1013,7 @@ function renderNamedDigestBlock(label, snapshot, { actionCards = false, showBann
 // each option with its upside/downside, the recommended pick and what happens
 // if nothing is answered. Any other row (approval, review queue, cmux tab)
 // shows its title and one line of context. A card with a URL ends in a button.
-function renderActionCard(it, safeUrl) {
+function renderActionCard(it, safeUrl, { compact = false } = {}) {
   const { cleanOwnerText, recommendedKey } = require('./decision-card-parse.js');
   const href = safeUrl(it.url);
   const cardHref = safeUrl(it.cardUrl) || href;
@@ -953,6 +1034,16 @@ function renderActionCard(it, safeUrl) {
   const titleHtml = href
     ? `<a href="${esc(href)}" style="color:#1d4ed8;text-decoration:underline;">${esc(title)}</a>`
     : esc(title);
+  // BRO-7040: a decision the owner has already seen (waiting 2+ days) is one
+  // line plus a button on ordinary days; Mondays and new decisions show it in full.
+  if (compact) {
+    const openLabel = href ? `<a href="${esc(href)}" style="display:inline-block;font-size:13px;font-weight:700;color:#ffffff;background-color:#1d4ed8;text-decoration:none;padding:5px 14px;border-radius:8px;">Open</a>` : '';
+    return `<div style="border-left:4px solid ${accent};background-color:${bg};border-radius:6px;padding:8px 12px;margin:0 0 8px;">
+    <div style="font-size:14px;font-weight:700;color:#111;margin:0 0 2px;">${esc(title)}</div>
+    <div style="font-size:11px;color:${it.stale ? '#b91c1c' : '#92400e'};margin:0 0 6px;">${ref}${it.ageDays >= 1 ? ` waiting ${esc(it.ageDays)} days` : ''}</div>
+    ${openLabel}
+  </div>`;
+  }
   const pick = d ? recommendedKey(d.recommendation, d.options) : null;
   let body = '';
   if (d) {
@@ -1291,7 +1382,7 @@ module.exports = {
   renderEmail, renderItem, renderUsageBlock, renderQueueSummary, renderAttentionBlock, renderRecheckBlock, renderSummaryLine, summarizeQueue, skipBucket, extractWhy, esc,
   attentionCountOf, actionableAttentionCountOf, digestStuckCount,
   renderHealthDigestBlock, healthIssueCount, selectHealthRows,
-  renderHealthScoreboard, renderAutofixBlock, plainHealthLine, autofixLoopDeadMessage,
+  renderHealthScoreboard, renderAutofixBlock, plainHealthLine, autofixLoopDeadMessage, renderBehindTheScenesLine, prettyShowSlug,
   renderNamedDigestBlock, renderDailyDigestBlock, renderOpeningDigestBlock, renderRedditDigestBlock,
   buildPlainLanguageItemPrompt, sanitizePlainLanguageText,
   renderParkedCardsBlock,
