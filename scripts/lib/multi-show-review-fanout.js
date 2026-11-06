@@ -1300,9 +1300,14 @@ function urlKey(u) {
  * whole article when its text is well past its section and opens with it.
  * Never a record a person or another verdict owns.
  */
-function heldSiblingNeedsTrim(existing, sec) {
+function heldSiblingNeedsTrim(existing, sec, parentShowId) {
   if (!existing || existing.unreadable || typeof existing.fullText !== 'string') return false;
-  if (existing.multiShowSplitProcessed || existing.multiShowUnsplitAt) return false;
+  // A child THIS parent's split created, whose text a re-collect put back to the
+  // whole article (BRO-7044: the opening-night poller refetched the WSJ joint review
+  // into the 2:22 child), is trimmed again; any other processed split is left alone.
+  const ownChild = !!parentShowId && existing.multiShowSplitChild === true
+    && existing.multiShowSplitParentShowId === parentShowId;
+  if ((existing.multiShowSplitProcessed && !ownChild) || existing.multiShowUnsplitAt) return false;
   // Only a hand score or lock stops a TEXT trim; a manual production clear is
   // about the production, not the text, and survives rewriteParent.
   if (existing._locked === true || existing.humanReviewScore != null || existing.manualContentTier
@@ -1384,11 +1389,16 @@ function applyMultiShowFanoutToFile(filePath, opts = {}) {
       // BRO-6736: the sibling already holds this URL, but possibly as the WHOLE
       // article (stored before any split); leaving it whole scores the other
       // sections into it and keeps a "review of <other show>" verdict alive.
-      if (heldSiblingNeedsTrim(existing, sec)) {
+      if (heldSiblingNeedsTrim(existing, sec, ownShowId)) {
         result.children[result.children.length - 1].action = 'held-trim';
         if (!dryRun) {
           const trimmed = rewriteParent(existing, sec, [ownShowId, ...plan.otherSections.map((o) => o.showId).filter((id) => id !== sec.showId)], now);
           trimmed.multiShowSplitAnchorKind = sec.anchorKind;
+          // A restored child of this very split stays a child, not a second parent.
+          if (existing.multiShowSplitChild === true) {
+            delete trimmed.multiShowSplitParent;
+            delete trimmed.multiShowSplitChildShowIds;
+          }
           // The trim replaces the sibling's text; keep what it held so nothing is lost or unsplit-able.
           trimmed.multiShowWholeArticleText = existing.fullText;
           safeWriteReview(childPath, trimmed, { merge: false, force: true });

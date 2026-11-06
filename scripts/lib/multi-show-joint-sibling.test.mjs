@@ -193,3 +193,40 @@ test('bystander fallback never drops a generic heading it does not cover', () =>
     if (sec.showId !== 'alpha-x') assert.doesNotMatch(sec.sectionText, /alpha passage/);
   }
 });
+
+test('BRO-7044: a split child whose text a re-collect restored to the whole article is trimmed again, and stays a child', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro7044-'));
+  try {
+    for (const s of ['bughouse-x', 'silver-manhattan-x', 'burnout-paradise-x']) fs.mkdirSync(path.join(dir, s));
+    const fp = path.join(dir, 'bughouse-x', 'la-voce--jk.json');
+    // First pass splits the article: parent keeps its section, children are created.
+    fs.writeFileSync(fp, JSON.stringify(base({ showId: 'bughouse-x', fullText: LAVOCE })));
+    assert.ok(applyMultiShowFanoutToFile(fp, { shows: SHOWS, reviewTextsDir: dir, joint: true }).applied);
+    const childPath = path.join(dir, 'silver-manhattan-x', 'la-voce--jk.json');
+    const child = JSON.parse(fs.readFileSync(childPath, 'utf8'));
+    assert.equal(child.multiShowSplitChild, true);
+    // A later collect writes the whole article back into parent AND child.
+    const parent = JSON.parse(fs.readFileSync(fp, 'utf8'));
+    fs.writeFileSync(fp, JSON.stringify({ ...parent, fullText: LAVOCE }));
+    fs.writeFileSync(childPath, JSON.stringify({ ...child, fullText: LAVOCE }));
+    const res = applyMultiShowFanoutToFile(fp, { shows: SHOWS, reviewTextsDir: dir, joint: true });
+    assert.ok(res.applied);
+    assert.equal(res.children.find((c) => c.showId === 'silver-manhattan-x').action, 'held-trim');
+    const after = JSON.parse(fs.readFileSync(childPath, 'utf8'));
+    assert.match(after.fullText, /^Silver Manhattan \*\*\*\*/);
+    assert.doesNotMatch(after.fullText, /Bughouse \*\*|Burnout Paradise \*\*\*/);
+    assert.equal(after.multiShowSplitChild, true, 'still a child');
+    assert.ok(!after.multiShowSplitParent, 'not turned into a second parent');
+    assert.doesNotMatch(JSON.parse(fs.readFileSync(fp, 'utf8')).fullText, /Silver Manhattan \*\*\*\*/);
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test('heldSiblingNeedsTrim: a processed split is trimmed only for the parent that created it', () => {
+  const sec = { sectionText: `Silver Manhattan ${filler('silver', 6)}` };
+  const whole = { fullText: `Intro. Bughouse ${filler('b', 5)} ${sec.sectionText} Burnout ${filler('c', 5)}`, multiShowSplitProcessed: 'x', multiShowSplitChild: true, multiShowSplitParentShowId: 'bughouse-x' };
+  assert.equal(heldSiblingNeedsTrim(whole, sec, 'bughouse-x'), true);
+  assert.equal(heldSiblingNeedsTrim(whole, sec, 'other-show'), false);
+  assert.equal(heldSiblingNeedsTrim(whole, sec), false);
+});
