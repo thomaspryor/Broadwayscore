@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-11-06T13:23:21.049Z",
-  "processed": 71,
-  "failed": 65,
-  "successRate": "52.2%",
+  "updatedAt": "2026-11-06T13:57:21.522Z",
+  "processed": 146,
+  "failed": 80,
+  "successRate": "64.6%",
   "tierBreakdown": {
-    "playwright": 40,
+    "playwright": 77,
     "amp": 0,
-    "browserbase": 6,
+    "browserbase": 8,
     "directCookies": 0,
-    "scrapingdog": 10,
-    "scrapingbee": 2,
+    "scrapingdog": 15,
+    "scrapingbee": 3,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 13
+    "archive": 32
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 7,
   "recentActivity": [
     {
       "t": "2026-11-06T11:10:13.590Z",
@@ -72,6 +72,28 @@
       "event": "bb-session",
       "session": "8a217452",
       "url": "https://publictheater.org/productions/season/2627/the-curious-case-of-benjamin-b"
+    },
+    {
+      "t": "2026-11-06T13:38:51.574Z",
+      "event": "bb-session",
+      "session": "e36521e0",
+      "url": "https://www.talkinbroadway.com/regional/minn/minn1534.html"
+    },
+    {
+      "t": "2026-11-06T13:38:52.216Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-06T13:49:04.655Z",
+      "event": "bb-session",
+      "session": "5709553c",
+      "url": "https://www.nytimes.com/2026/08/25/theater/paranormal-activity-review-broadway.h"
+    },
+    {
+      "t": "2026-11-06T13:49:05.278Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
