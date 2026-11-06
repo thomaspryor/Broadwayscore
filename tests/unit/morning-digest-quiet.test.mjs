@@ -154,3 +154,21 @@ test('subject and body use the same clock for the hold', () => {
   assert.match(subject, /site (?:is )?(?:ok|fine)|nothing needs you/i, subject);
   assert.ok(!/minor visitor issue/i.test(subject), subject);
 });
+
+// BRO-7040 follow-up: check-name families that carry a file or job name must
+// never reach the owner as the raw check name ("Freshness: audit/x.json").
+test('plain wording: Freshness / Push verify / Cron / Pipeline families are translated', () => {
+  const names = [
+    'Freshness: reviews.json', 'Freshness: audit/same-title-confusion.json',
+    'Push verify: shows.json', 'Cron: Update Show Status',
+    'Cron: failing every scheduled run', 'Pipeline: weekly-grosses',
+  ];
+  for (const n of names) {
+    const line = plainHealthLine(n, '');
+    assert.notEqual(line, n, `${n} still shows its raw check name`);
+    assert.match(line, /^[A-Z]/, `${n}: sentence should start with a capital`);
+    assert.doesNotMatch(line, /\.json|audit\//, `${n}: leaks a file name`);
+  }
+  // A specific mapping still wins over the family fallback.
+  assert.equal(plainHealthLine('Cron failed: x', ''), 'The automated "x" job keeps failing');
+});

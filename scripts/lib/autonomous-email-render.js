@@ -277,7 +277,24 @@ const PLAIN_HEALTH = [
   // on 2026-11-05. Quality: Show Score gap is refined with show names below.
   [/^Quality: Show Score gap/, () => 'Some shows have no audience score yet'],
   [/^Revenue: affiliate health/, () => 'Ticket-link click numbers look unusual'],
+  // BRO-7040: family fallbacks for check names that carry a file or job name.
+  // Specific rows above win (first match); these only catch what would otherwise
+  // reach the owner as "Freshness: audit/same-title-confusion.json".
+  [/^Freshness: (.+)/, (m) => `${capFirst(humanizeCheckTarget(m[1]))} has not refreshed on schedule`],
+  [/^Push verify: (.+)/, (m) => `An update to ${humanizeCheckTarget(m[1])} may not have reached the site`],
+  [/^Cron: failing every scheduled run/, () => 'A scheduled job has failed on every run'],
+  [/^Cron: (.+)/, (m) => `The scheduled "${m[1]}" job is not running on time`],
+  [/^Pipeline: (.+)/, (m) => `The ${humanizeCheckTarget(m[1])} update did not finish cleanly`],
 ];
+
+function capFirst(t) { return t.charAt(0).toUpperCase() + t.slice(1); }
+
+// "audit/same-title-confusion.json" -> "same title confusion data"; "weekly-grosses" -> "weekly grosses".
+function humanizeCheckTarget(raw) {
+  const stem = String(raw).split('/').pop().replace(/\.json$/i, '');
+  const words = stem.replace(/[-_]+/g, ' ').trim();
+  return /\.json$/i.test(String(raw)) ? `${words} data` : words;
+}
 
 // "midnight-2026" -> "Midnight", "parcel-from-america-2026" -> "Parcel From America".
 function prettyShowSlug(id) {
