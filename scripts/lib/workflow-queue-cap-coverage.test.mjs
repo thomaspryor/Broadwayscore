@@ -58,6 +58,7 @@ const GATHER = 'gather-reviews.yml';
 const HINT = 'hint text shown to a person, not a dispatch';
 const ON = 'opening-night work: exempt from the cap by design';
 const BASELINE = {
+  [`.github/workflows/opening-night-poller.yml|${ENS}`]: { count: 1, reason: 'BRO-7031: one per-show dispatch for a show the inline scorer left unscored, only after a poll found new reviews; per-show lane holds one running + one waiting run' },
   [`scripts/audit-opening-night-coverage.js|${GATHER}`]: { count: 1, reason: ON },
   [`scripts/lib/press-night-watchdog.js|${ENS}`]: { count: 1, reason: 'press-night watchdog (BRO-6858): one score retry per show-night, claimed once' },
   [`scripts/press-night-watchdog.js|${ENS}`]: { count: 1, reason: 'press-night watchdog (BRO-6858): one score retry per show-night, claimed once' },
