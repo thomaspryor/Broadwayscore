@@ -61,3 +61,10 @@ test('BRO-7044: fullText judged, or non-review slug, or other rejection -> verdi
   assert.equal(n({ ...nbase, showTitle: undefined }).suppress, false);
   assert.equal(urlSlugIsReviewOfShow('not a url', 'The Unbelievers'), false);
 });
+
+test('BRO-7044: a roundup slug is not a review slug of the show', async () => {
+  const { urlSlugIsReviewOfShow } = (await import('node:module')).createRequire(import.meta.url)('./excerpt-wrongshow-guard.js');
+  assert.equal(urlSlugIsReviewOfShow('https://e.com/the-unbelievers-review-roundup', 'The Unbelievers'), false);
+  assert.equal(urlSlugIsReviewOfShow('https://e.com/the-unbelievers-reviews', 'The Unbelievers'), false);
+  assert.equal(urlSlugIsReviewOfShow('https://e.com/the-unbelievers-off-broadway-review', 'The Unbelievers'), true);
+});

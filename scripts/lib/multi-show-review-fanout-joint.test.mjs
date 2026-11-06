@@ -579,3 +579,19 @@ test('joint, lede-named first show: a review of one show that only compares to a
     'The widow wonders, across a long and winding sentence that wanders from the staircase to the cellar to the attic and back again without pause for breath or comma or any sort of mercy for the audience, whether “Quiet Room” is');
   assert.equal(ledePlan('the-lantern-hall-off-broadway-2026', midSentence), null);
 });
+
+// BRO-7044 reviewer probe: a single review whose lede compares to another show must not be split.
+test('BRO-7044: comparison lede on a single review is not split into a joint review', () => {
+  const SHOWS = [
+    { id: 'a-2026', title: 'The Lantern Hall', category: 'off-broadway', openingDate: '2026-10-18' },
+    { id: 'b-2026', title: 'Quiet Room', category: 'off-broadway', openingDate: '2026-10-18' },
+  ];
+  const filler = (t, n) => Array.from({ length: n }, (_, i) => `The ${t} passage number ${i + 1} moves along at a patient, deliberate pace that the cast keeps up with real care.`).join(' ');
+  const text = [
+    `Last week “The Lantern Hall” proved that a ghost play can be quiet. Fans of “The Lantern Hall” will find a louder cousin in “Quiet Room,” which opened Sunday.`,
+    `Ada Marsh plays the medium with relish. ${filler('medium', 8)}`,
+    `“Quiet Room” is at its best in the second act. ${filler('scare', 4)} The director lets “Quiet Room” breathe. ${filler('scare', 4)} See “Quiet Room” with a friend.`,
+  ].join(' ');
+  const p = planMultiShowFanout({ outletId: 'x', outlet: 'X', criticName: 'C', url: 'https://e.com/a', contentTier: 'complete', showId: 'b-2026', publishDate: '2026-10-20', fullText: text }, SHOWS, { joint: true });
+  assert.ok(!p || (p.otherSections || []).length === 0);
+});

@@ -10,9 +10,9 @@ test('site query keeps the old form and adds a dash-free outlet-named query', ()
   const q = googleNewsSiteQueries({ title: '2:22 - A Ghost Story' }, 'nysun.com');
   assert.deepEqual(q, ['"2:22 - A Ghost Story" site:nysun.com', '"2:22 A Ghost Story" nysun']);
 });
-test('a title with no dash punctuation still gets the outlet-named query', () => {
+test('a title with no dash punctuation gets only the site query (no duplicate)', () => {
   const q = googleNewsSiteQueries({ title: 'The Unbelievers' }, 'www.nysun.com');
-  assert.deepEqual(q, ['"The Unbelievers" site:www.nysun.com', '"The Unbelievers" nysun']);
+  assert.deepEqual(q, ['"The Unbelievers" site:www.nysun.com']);
 });
 
 test('adapter: the dash-free query is actually fetched and its Sun item is kept', async () => {
@@ -28,4 +28,10 @@ test('adapter: the dash-free query is actually fetched and its Sun item is kept'
   assert.ok(asked.includes('"2:22 A Ghost Story" nysun'), `asked ${JSON.stringify(asked)}`);
   const urls = (Array.isArray(out) ? out : (out.candidates || out.items || [])).map((c) => c.url || c.link);
   assert.ok(urls.some((u) => /nysun\.com\/article\/222-a-ghost-story/.test(u)), `got ${JSON.stringify(out).slice(0, 400)}`);
+});
+
+test('BRO-7044: no duplicate loose query when the title has no dash', async () => {
+  const { createRequire } = await import('node:module');
+  const { googleNewsSiteQueries } = createRequire(import.meta.url)('./discovery.js');
+  assert.equal(googleNewsSiteQueries({ title: 'The Unbelievers' }, 'nysun.com').length, 1);
 });

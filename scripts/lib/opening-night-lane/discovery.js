@@ -851,7 +851,7 @@ function googleNewsSiteQueries(show, host) {
   const queries = [`"${title}" site:${host}`];
   const loose = title.replace(/[\u2012-\u2015-]+/g, ' ').replace(/\s+/g, ' ').trim();
   const label = String(host || '').replace(/^www\./, '').replace(/\.[a-z.]+$/i, '');
-  if (loose && label) queries.push(`"${loose}" ${label}`);
+  if (loose && label && loose !== title.replace(/\s+/g, " ")) queries.push(`"${loose}" ${label}`);
   return queries;
 }
 

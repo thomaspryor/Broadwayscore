@@ -58,6 +58,8 @@ const SIBLING_MAX_GAP_DAYS = 400;
 const FIRST_INTRO_MAX_SHARE = 0.4;
 // A later section's show must be named within this many chars of its start.
 const INTRO_LEAD_CHARS = 160;
+const PIVOT_LEAD_CHARS = 60; // real WSJ pivot: "Dark and stormy night notwithstanding, “2:22"
+const LEDE_COMPARISON_RE = /\b(?:cousin|sibling|unlike|compared (?:to|with)|reminiscent|echoes|echoing|recalls|reminds|predecessor|follow-?up to|sequel)\b/i;
 // Partial texts can't be sectioned reliably (the missing tail may be the
 // rest of the first show); invalid ones only when rejected for wrong/multi show.
 const PARTIAL_TIERS = new Set(['truncated', 'excerpt', 'stub']);
@@ -562,9 +564,13 @@ function ledeNamedFirstSections(text, byShow, mentions) {
   if (!aId || lede[0].id !== aId || stretch.some((mn) => mn.id !== bId) || stretch.length < 3) return [];
   if (lede.filter((mn) => mn.id === aId).length < 2 || !lede.some((mn) => mn.id === bId)) return [];
   if (lede[lede.length - 1].end > text.length * FIRST_INTRO_MAX_SHARE) return [];
-  // The pivot sentence opens on the second show's title.
+  // The pivot sentence opens on the second show's title (a short lead-in at most
+  // like "Dark nights notwithstanding,"), and the lede is not a comparison ("a louder
+  // cousin in", "unlike"): a single review that opens by comparing to another
+  // show names it twice and then never again (reviewer probe, BRO-7044).
   const cut = Math.max(sentenceStart(text, stretch[0].at), lede[lede.length - 1].end);
-  if (stretch[0].at - cut > INTRO_LEAD_CHARS) return [];
+  if (stretch[0].at - cut > PIVOT_LEAD_CHARS) return [];
+  if (LEDE_COMPARISON_RE.test(text.slice(0, cut))) return [];
   const first = text.slice(0, cut).trim();
   const second = text.slice(cut).trim();
   for (const part of [first, second]) {
@@ -817,6 +823,7 @@ function jointSections(text, shows, ownShowId, publishDate, opts = {}) {
   };
   const strict = strictSections();
   if (strict.length) return strict;
+  if (opts.strictLede) return [];
   return ledeNamedFirstSections(text, byShow, mentions);
 }
 

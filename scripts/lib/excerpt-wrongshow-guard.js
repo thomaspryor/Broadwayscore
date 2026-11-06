@@ -63,7 +63,8 @@ function urlSlugIsReviewOfShow(url, showTitle) {
   let path;
   try { path = new URL(url).pathname; } catch { path = String(url); }
   const segment = normalize(path.split('/').filter(Boolean).pop() || '');
-  return segment.split(' ').includes('review');
+  const words = segment.split(' ');
+  return words.includes('review') && !words.includes('roundup') && !words.includes('reviews');
 }
 
 /**
