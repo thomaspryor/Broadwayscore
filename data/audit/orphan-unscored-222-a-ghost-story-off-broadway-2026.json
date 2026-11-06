@@ -2,15 +2,15 @@
   "version": 1,
   "showId": "222-a-ghost-story-off-broadway-2026",
   "openingDate": "2026-11-05",
-  "detectedAt": "2026-11-06T17:27:26.848Z",
+  "detectedAt": "2026-11-06T17:41:51.660Z",
   "windowDays": 7,
   "orphans": [
     {
-      "file": "wsj--charles-isherwood.json",
-      "outletId": "wsj",
-      "criticName": "Charles Isherwood",
-      "url": "https://www.wsj.com/articles/the-unbelievers-and-2-22a-ghost-story-review-off-broadway-stages-turn-unsettling-b758c396",
-      "fullTextLen": 1851,
+      "file": "nytimes--laura-collins-hughes.json",
+      "outletId": "nytimes",
+      "criticName": "Laura Collins-Hughes",
+      "url": "https://www.nytimes.com/2026/11/06/theater/the-unbelievers-222-a-ghost-story-review-ambrose.html",
+      "fullTextLen": 2070,
       "dispatchActionable": true,
       "skipReason": null,
       "rescoreBlockedReason": null,
@@ -19,7 +19,7 @@
       "originalScore": null,
       "originalScoreNormalized": null,
       "llmScore": null,
-      "contentTier": "truncated",
+      "contentTier": "complete",
       "eligibilityReason": null
     }
   ],
@@ -27,6 +27,6 @@
   "dispatchableOrphanCount": 1,
   "blockedOrphanCount": 0,
   "blockBroadcast": true,
-  "lastDispatch": "ok",
-  "lastDispatchAt": "2026-11-06T17:27:26.848Z"
+  "lastDispatch": "suppressed-cooldown",
+  "lastDispatchAt": null
 }
