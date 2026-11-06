@@ -1,22 +1,22 @@
 {
-  "generatedAt": "2026-11-06T21:30:36.879Z",
+  "generatedAt": "2026-11-06T22:26:51.704Z",
   "windowDays": 1095,
-  "targets": 907,
-  "auditedThisRun": 4,
-  "carriedForward": 2057,
+  "targets": 905,
+  "auditedThisRun": 11,
+  "carriedForward": 2050,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 642,
+    "withGap": 641,
     "missingCurrentRun": 1213,
     "totalCitedNoUrl": 0,
     "totalFlaggedMisses": 903,
     "totalRecoverable": 56,
     "totalRecovered": 90,
     "humanExcluded": 26,
-    "automatedExcluded": 1011,
+    "automatedExcluded": 1008,
     "automatedExcludedListed": 712,
-    "priorProductionCitations": 6091
+    "priorProductionCitations": 6092
   },
   "results": [
     {
@@ -967,6 +967,7 @@
       "openingDate": "2025-06-18",
       "status": "closed",
       "category": "west-end",
+      "previewsStartDate": "2025-06-12",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [],
       "dirFiles": 0,
@@ -992,11 +993,12 @@
         "missing": [],
         "suppressedMissing": [],
         "candidates": [],
-        "censusSchema": 3,
+        "censusSchema": 4,
+        "excluded": [],
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-11-01T20:20:32.037Z"
+      "computedAt": "2026-11-06T22:26:51.704Z"
     },
     {
       "showId": "44-off-broadway-2025",
@@ -4512,11 +4514,8 @@
         "https://variety.com/2026/legit/reviews/a-few-good-men-review-broadway-revival-aaron-sorkin-bradley-whitford-1236935521/",
         "https://www.vulture.com/article/review-few-good-men-broadway-revival-sorkin-whitford.html",
         "https://variety.com/2026/legit/news/a-few-good-men-aaron-sorkin-bradley-whitford-broadway-1236878406/",
-        "https://www.nytimes.com/2026/10/29/t-magazine/a-few-good-men-broadway-live.html",
-        "https://www.avclub.com/aaron-sorkin-polish-a-few-good-men-broadway",
-        "https://ew.com/exclusive-first-look-a-few-good-men-return-to-broadway-stage-12163494",
-        "https://www.jkstheatrescene.com/2026/10/review-few-good-men.html",
         "https://www.timeout.com/newyork/theater/a-few-good-men",
+        "https://www.jkstheatrescene.com/2026/10/review-few-good-men.html",
         "https://www.theatermania.com/news/watch-aaron-sorkin-bradley-whitford-and-the-cast-of-a-few-good-men-talk-new-broadway-revival_1857133/",
         "https://www.theatermania.com/news/bradley-whitford-and-aaron-sorkin-to-team-up-for-broadway-revival-of-a-few-good-men_1842777/",
         "https://thedailyconsensus.us/article/broadway-revival-of-a-few-good-men-starring-bradley-whitford-and-tom-blyth-earns-praise",
@@ -4613,105 +4612,6 @@
           "reverify": false
         },
         {
-          "url": "https://www.nytimes.com/2026/10/29/t-magazine/a-few-good-men-broadway-live.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nytimes--nancy-coleman.json",
-              "flag": "clean",
-              "urlInDir": "https://www.nytimes.com/2026/10/29/t-magazine/a-few-good-men-broadway-live.html"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "rejectionReason"
-          ],
-          "confirmedNonReview": true,
-          "confirmedBasis": [
-            "non-review"
-          ],
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ],
-          "serpCensus": true,
-          "reverify": false
-        },
-        {
-          "url": "https://www.avclub.com/aaron-sorkin-polish-a-few-good-men-broadway",
-          "host": "avclub.com",
-          "knownOutletId": "av-club",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "av-club--drew-gillis.json",
-              "flag": "clean",
-              "urlInDir": "https://www.avclub.com/aaron-sorkin-polish-a-few-good-men-broadway"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "rejectionReason"
-          ],
-          "confirmedNonReview": true,
-          "confirmedBasis": [
-            "non-review"
-          ],
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ],
-          "serpCensus": true,
-          "reverify": false
-        },
-        {
-          "url": "https://ew.com/exclusive-first-look-a-few-good-men-return-to-broadway-stage-12163494",
-          "host": "ew.com",
-          "knownOutletId": "ew",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "ew--dalton-ross.json",
-              "flag": "clean",
-              "urlInDir": "https://ew.com/exclusive-first-look-a-few-good-men-return-to-broadway-stage-12163494"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "rejectionReason"
-          ],
-          "confirmedNonReview": true,
-          "confirmedBasis": [
-            "non-review"
-          ],
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ],
-          "serpCensus": true,
-          "reverify": false
-        },
-        {
           "url": "https://www.onstageblog.com/broadway/2026/9/8/broadway-how-excited-are-you-a-few-good-men",
           "host": "onstageblog.com",
           "knownOutletId": "onstage-blog",
@@ -4754,7 +4654,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 7,
+            "results": 9,
             "accepted": 4,
             "error": null
           },
@@ -4765,7 +4665,7 @@
             "geo": "us",
             "ok": true,
             "results": 8,
-            "accepted": 3,
+            "accepted": 1,
             "error": null
           },
           {
@@ -4774,7 +4674,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 8,
+            "results": 9,
             "accepted": 2,
             "error": null
           },
@@ -4784,7 +4684,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 7,
+            "results": 0,
             "accepted": 0,
             "error": null
           },
@@ -4795,7 +4695,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 2,
             "error": null
           },
           {
@@ -4815,21 +4715,19 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 407,
+        "count": 406,
         "byReason": {
-          "non-review-host": 51,
-          "venue-production-page": 1,
           "ticketing-reseller": 2,
           "not-http-url": 74,
-          "aggregator-internal-nav": 251,
-          "aggregator-section-root": 10,
+          "non-review-host": 51,
+          "aggregator-internal-nav": 252,
           "production-database-listing": 10,
+          "aggregator-section-root": 10,
           "non-stage-review": 1,
-          "roundup-page": 3,
+          "roundup-page": 2,
           "podcast-episode": 1,
-          "show-listing-page": 1,
-          "show-hub": 1,
-          "tag-index-page": 1
+          "awards-news-not-review": 1,
+          "show-hub": 2
         }
       },
       "dedupedVariants": [],
@@ -5013,16 +4911,16 @@
             "firstSeenAt": "2026-10-30T06:43:10.293Z"
           },
           {
-            "url": "https://www.jkstheatrescene.com/2026/10/review-few-good-men.html",
-            "outletId": "jkstheatrescene.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-31T17:00:43.220Z"
-          },
-          {
             "url": "https://www.timeout.com/newyork/theater/a-few-good-men",
             "outletId": "timeout.com",
             "state": "live",
             "firstSeenAt": "2026-10-29T01:32:30.606Z"
+          },
+          {
+            "url": "https://www.jkstheatrescene.com/2026/10/review-few-good-men.html",
+            "outletId": "jkstheatrescene.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T17:00:43.220Z"
           },
           {
             "url": "https://www.theatermania.com/news/watch-aaron-sorkin-bradley-whitford-and-the-cast-of-a-few-good-men-talk-new-broadway-revival_1857133/",
@@ -5064,27 +4962,12 @@
             "url": "https://variety.com/2026/legit/news/a-few-good-men-aaron-sorkin-bradley-whitford-broadway-1236878406/",
             "host": "variety.com",
             "reason": "confirmed-non-review"
-          },
-          {
-            "url": "https://www.nytimes.com/2026/10/29/t-magazine/a-few-good-men-broadway-live.html",
-            "host": "nytimes.com",
-            "reason": "confirmed-non-review"
-          },
-          {
-            "url": "https://www.avclub.com/aaron-sorkin-polish-a-few-good-men-broadway",
-            "host": "avclub.com",
-            "reason": "confirmed-non-review"
-          },
-          {
-            "url": "https://ew.com/exclusive-first-look-a-few-good-men-return-to-broadway-stage-12163494",
-            "host": "ew.com",
-            "reason": "confirmed-non-review"
           }
         ],
         "liveCount": 22,
         "candidateCount": 25
       },
-      "computedAt": "2026-11-06T00:04:03.170Z"
+      "computedAt": "2026-11-06T22:26:51.704Z"
     },
     {
       "showId": "a-fine-idea-off-west-end-2026",
@@ -51943,12 +51826,25 @@
       "previewsStartDate": "2026-11-05",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
+        "https://patch.com/new-york/new-york-city/calendar/event/20261105/2de75cb8-78ea-4f2c-b949-23e611d13b1b/broom-play",
         "https://emmareed.net/review-room-broom/"
       ],
       "dirFiles": 0,
       "dirClean": 0,
       "inReviewsJson": 0,
       "missing": [
+        {
+          "url": "https://patch.com/new-york/new-york-city/calendar/event/20261105/2de75cb8-78ea-4f2c-b949-23e611d13b1b/broom-play",
+          "host": "patch.com",
+          "knownOutletId": "patch",
+          "serpCensus": true,
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ]
+        },
         {
           "url": "https://emmareed.net/review-room-broom/",
           "host": "emmareed.net",
@@ -51987,7 +51883,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 4,
+            "results": 0,
             "accepted": 0,
             "error": null
           },
@@ -52028,12 +51924,17 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 41,
+        "count": 31,
         "byReason": {
+          "non-review-host": 15,
           "aggregator-internal-nav": 4,
-          "not-http-url": 32,
-          "non-review-host": 4,
-          "show-listing-page": 1
+          "venue-production-page": 3,
+          "bare-host": 2,
+          "news-roundup-site": 1,
+          "merch-store": 2,
+          "event-listing": 1,
+          "write-path-blocked": 1,
+          "non-review-path": 2
         }
       },
       "dedupedVariants": [],
@@ -52048,11 +51949,34 @@
           "censusGateOn": true
         }
       ],
-      "ingestResults": [],
+      "ingestResults": [
+        {
+          "url": "https://patch.com/new-york/new-york-city/calendar/event/20261105/2de75cb8-78ea-4f2c-b949-23e611d13b1b/broom-play",
+          "host": "patch.com",
+          "outletId": "patch",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        }
+      ],
       "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
+          {
+            "outletId": "patch",
+            "outlet": "patch",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://patch.com/new-york/new-york-city/calendar/event/20261105/2de75cb8-78ea-4f2c-b949-23e611d13b1b/broom-play"
+          },
           {
             "outletId": "emmareed.net",
             "outlet": "emmareed.net",
@@ -52064,6 +51988,13 @@
         "suppressedMissing": [],
         "candidates": [
           {
+            "url": "https://patch.com/new-york/new-york-city/calendar/event/20261105/2de75cb8-78ea-4f2c-b949-23e611d13b1b/broom-play",
+            "outletId": "patch",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-11-06T22:26:51.704Z"
+          },
+          {
             "url": "https://emmareed.net/review-room-broom/",
             "outletId": "emmareed.net",
             "state": "IN_FLIGHT",
@@ -52074,9 +52005,9 @@
         "censusSchema": 4,
         "excluded": [],
         "liveCount": 0,
-        "candidateCount": 1
+        "candidateCount": 2
       },
-      "computedAt": "2026-11-06T07:54:59.218Z"
+      "computedAt": "2026-11-06T22:26:51.704Z"
     },
     {
       "showId": "buddy-the-buddy-holly-story-regional-2026",
@@ -142321,6 +142252,8 @@
           "host": "latimes.com",
           "knownOutletId": "latimes",
           "serpCensus": true,
+          "priorRun": true,
+          "priorRunSource": "pending-file-date:2015-11-15",
           "sources": [
             {
               "source": "serp-census",
@@ -142344,7 +142277,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 3,
+            "results": 9,
             "accepted": 0,
             "error": null
           },
@@ -142354,7 +142287,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 8,
+            "results": 0,
             "accepted": 0,
             "error": null
           },
@@ -142374,74 +142307,50 @@
             "page": 2,
             "geo": "us",
             "ok": true,
-            "results": 10,
-            "accepted": 1,
+            "results": 0,
+            "accepted": 0,
             "error": null
           }
         ],
         "queriesOk": 4,
         "queriesTotal": 4,
-        "resultCount": 1,
+        "resultCount": 0,
         "error": null
       },
       "candidatesRejected": {
-        "count": 29,
+        "count": 15,
         "byReason": {
+          "non-review-host": 10,
           "aggregator-internal-nav": 1,
-          "not-http-url": 22,
-          "non-review-host": 4,
-          "non-review-path": 1,
-          "event-listing": 1
+          "venue-production-page": 3,
+          "non-review-path": 1
         }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 0,
       "unextractable": [],
-      "ingestResults": [
+      "weIngestBlocked": [
         {
           "url": "https://www.latimes.com/socal/glendale-news-press/tn-gnp-film-review-artists-feature-film-heart-of-a-dog-defies-categorization-20151114-story.html",
           "host": "latimes.com",
-          "outletId": "latimes",
-          "provisional": false,
-          "ok": false,
-          "noop": true,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": true,
-          "expectedReason": "prior-production-quarantined",
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "heart-of-a-dog-off-broadway-2026: https://www.latimes.com/socal/glendale-news-press/tn-gnp-film-review-artists-feature-film-heart-of-a-dog-defies-categorization-20151114-story.html dated 2015-11-15 predates this run; quarantined to _pending/ as the earlier production's review. Expected, no action needed."
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
         }
       ],
+      "ingestResults": [],
       "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "incomplete",
-        "missing": [
-          {
-            "outletId": "latimes",
-            "outlet": "latimes",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.latimes.com/socal/glendale-news-press/tn-gnp-film-review-artists-feature-film-heart-of-a-dog-defies-categorization-20151114-story.html"
-          }
-        ],
+        "verdict": "no-census-yet",
+        "missing": [],
         "suppressedMissing": [],
-        "candidates": [
-          {
-            "url": "https://www.latimes.com/socal/glendale-news-press/tn-gnp-film-review-artists-feature-film-heart-of-a-dog-defies-categorization-20151114-story.html",
-            "outletId": "latimes",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-11-06T07:54:59.218Z"
-          }
-        ],
+        "candidates": [],
         "censusSchema": 4,
         "excluded": [],
         "liveCount": 0,
-        "candidateCount": 1
+        "candidateCount": 0
       },
-      "computedAt": "2026-11-06T07:54:59.218Z"
+      "computedAt": "2026-11-06T22:26:51.704Z"
     },
     {
       "showId": "heart-of-rock-and-roll-2024",
@@ -173947,15 +173856,17 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 40,
+        "count": 37,
         "byReason": {
-          "aggregator-internal-nav": 1,
-          "not-http-url": 23,
-          "non-review-host": 10,
-          "venue-production-page": 2,
-          "census-junk-host": 1,
+          "non-review-host": 18,
+          "no-review-evidence": 3,
+          "aggregator-internal-nav": 4,
+          "non-stage-review": 4,
+          "venue-production-page": 3,
           "news-roundup-site": 1,
-          "no-review-evidence": 2
+          "merch-store": 1,
+          "news-article": 1,
+          "census-junk-host": 2
         }
       },
       "dedupedVariants": [],
@@ -173970,7 +173881,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-11-06T07:54:59.218Z"
+      "computedAt": "2026-11-06T22:26:51.704Z"
     },
     {
       "showId": "kathy-and-stella-solve-a-murder-west-end-2024",
@@ -174091,8 +174002,7 @@
       "aggregatorListedUrls": [
         "https://broadwaybaby.com/shows/kelly-mccaughan-catholic-guilt/808297",
         "https://list.co.uk/news/kelly-mccaughan-catholic-guilt-comedy-review-wild-ride-about-religious-dogma-45286",
-        "https://theweereview.com/review/kelly-mccaughan-catholic-guilt/",
-        "https://theaterpizzazz.com/catholic-guilt-odd-theology-makes-for-comedy-gold/"
+        "https://theweereview.com/review/kelly-mccaughan-catholic-guilt/"
       ],
       "dirFiles": 2,
       "dirClean": 1,
@@ -174138,7 +174048,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 9,
+            "results": 0,
             "accepted": 0,
             "error": null
           },
@@ -174148,7 +174058,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 5,
+            "results": 0,
             "accepted": 0,
             "error": null
           },
@@ -174158,7 +174068,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 9,
+            "results": 0,
             "accepted": 0,
             "error": null
           },
@@ -174168,7 +174078,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 9,
+            "results": 0,
             "accepted": 0,
             "error": null
           },
@@ -174178,7 +174088,7 @@
             "page": 1,
             "geo": "us",
             "ok": true,
-            "results": 10,
+            "results": 0,
             "accepted": 0,
             "error": null
           },
@@ -174188,7 +174098,7 @@
             "page": 2,
             "geo": "us",
             "ok": true,
-            "results": 10,
+            "results": 0,
             "accepted": 0,
             "error": null
           }
@@ -174199,32 +174109,12 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 49,
-        "byReason": {
-          "not-http-url": 34,
-          "non-review-host": 10,
-          "aggregator-internal-nav": 3,
-          "write-path-blocked": 1,
-          "no-review-evidence": 1
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 0,
-      "unextractable": [
-        {
-          "url": "https://theaterpizzazz.com/catholic-guilt-odd-theology-makes-for-comedy-gold/",
-          "host": "theaterpizzazz.com",
-          "knownOutletId": "theater-pizzazz",
-          "serpCensus": true,
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ],
-          "zeroCharAttempts": 3
-        }
-      ],
+      "unextractable": [],
       "ingestResults": [
         {
           "url": "https://list.co.uk/news/kelly-mccaughan-catholic-guilt-comedy-review-wild-ride-about-religious-dogma-45286",
@@ -174247,29 +174137,14 @@
           "outletId": "theweereview",
           "provisional": false,
           "ok": false,
-          "noop": false,
+          "noop": true,
           "conflict": false,
           "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
+          "expected": true,
+          "expectedReason": "publish-date-unresolved",
           "unclassified": false,
-          "zeroChar": true,
-          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS."
-        },
-        {
-          "url": "https://theaterpizzazz.com/catholic-guilt-odd-theology-makes-for-comedy-gold/",
-          "host": "theaterpizzazz.com",
-          "outletId": "theater-pizzazz",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": true,
-          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS."
+          "zeroChar": false,
+          "reason": "kelly-mccaughan-catholic-guilt-off-broadway-2026: https://theweereview.com/review/kelly-mccaughan-catholic-guilt/ has no readable publish date and this show has an earlier-dated citation (a prior production), so the undated page was refused rather than filed where it could be scored as this run's review. Expected rejection; if it IS this production's review, ingest it with --publish-date=YYYY-MM-DD."
         }
       ],
       "ingestSkippedByCap": [],
@@ -174319,7 +174194,7 @@
         "liveCount": 1,
         "candidateCount": 3
       },
-      "computedAt": "2026-11-06T02:02:35.916Z"
+      "computedAt": "2026-11-06T22:26:51.704Z"
     },
     {
       "showId": "kenrex-off-broadway-2026",
@@ -257044,20 +256919,17 @@
       "previewsStartDate": "2026-10-28",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://thefrontrowcenter.com/2026/11/parcel-from-america-the-irish-musical/",
         "https://www.theatermania.com/news/review-parcel-from-america-irish-schtick-in-a-box_1858919/",
+        "https://www.talkinbroadway.com/page/ob/11_04_26.html",
+        "https://thefrontrowcenter.com/2026/11/parcel-from-america-the-irish-musical/",
+        "https://www.offoffonline.com/offoffonline/2026/11/2/parcel-from-america",
         "https://nitelifeexchange.com/parcel-from-america-the-irish-musical-begins-on-wednesday-october-28-at-theatre-row/"
       ],
-      "dirFiles": 4,
-      "dirClean": 3,
-      "inReviewsJson": 3,
+      "dirFiles": 5,
+      "dirClean": 4,
+      "inReviewsJson": 4,
       "missing": [],
-      "dirOnly": [
-        {
-          "host": "talkinbroadway.com",
-          "count": 1
-        }
-      ],
+      "dirOnly": [],
       "flaggedMisses": [
         {
           "url": "https://nitelifeexchange.com/parcel-from-america-the-irish-musical-begins-on-wednesday-october-28-at-theatre-row/",
@@ -257102,8 +256974,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 8,
-            "accepted": 1,
+            "results": 0,
+            "accepted": 0,
             "error": null
           },
           {
@@ -257112,8 +256984,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 9,
-            "accepted": 1,
+            "results": 0,
+            "accepted": 0,
             "error": null
           },
           {
@@ -257122,7 +256994,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 9,
+            "results": 0,
             "accepted": 0,
             "error": null
           },
@@ -257132,7 +257004,7 @@
             "page": 1,
             "geo": "us",
             "ok": true,
-            "results": 10,
+            "results": 0,
             "accepted": 0,
             "error": null
           },
@@ -257149,19 +257021,12 @@
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 2,
+        "resultCount": 0,
         "error": null
       },
       "candidatesRejected": {
-        "count": 29,
-        "byReason": {
-          "not-http-url": 18,
-          "non-review-host": 4,
-          "census-junk-host": 4,
-          "no-review-evidence": 1,
-          "write-path-blocked": 1,
-          "ticketing-reseller": 1
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 1,
@@ -257180,16 +257045,28 @@
         "suppressedMissing": [],
         "candidates": [
           {
+            "url": "https://www.theatermania.com/news/review-parcel-from-america-irish-schtick-in-a-box_1858919/",
+            "outletId": "theatermania.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-05T09:01:46.901Z"
+          },
+          {
+            "url": "https://www.talkinbroadway.com/page/ob/11_04_26.html",
+            "outletId": "talkinbroadway.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-06T22:26:51.704Z"
+          },
+          {
             "url": "https://thefrontrowcenter.com/2026/11/parcel-from-america-the-irish-musical/",
             "outletId": "thefrontrowcenter.com",
             "state": "live",
             "firstSeenAt": "2026-11-05T09:01:46.901Z"
           },
           {
-            "url": "https://www.theatermania.com/news/review-parcel-from-america-irish-schtick-in-a-box_1858919/",
-            "outletId": "theatermania.com",
+            "url": "https://www.offoffonline.com/offoffonline/2026/11/2/parcel-from-america",
+            "outletId": "offoffonline.com",
             "state": "live",
-            "firstSeenAt": "2026-11-05T09:01:46.901Z"
+            "firstSeenAt": "2026-11-06T22:26:51.704Z"
           },
           {
             "url": "https://nitelifeexchange.com/parcel-from-america-the-irish-musical-begins-on-wednesday-october-28-at-theatre-row/",
@@ -257201,10 +257078,10 @@
         ],
         "censusSchema": 4,
         "excluded": [],
-        "liveCount": 2,
-        "candidateCount": 3
+        "liveCount": 4,
+        "candidateCount": 5
       },
-      "computedAt": "2026-11-06T07:54:59.218Z"
+      "computedAt": "2026-11-06T22:26:51.704Z"
     },
     {
       "showId": "parsifal-off-west-end-2026",
@@ -282165,12 +282042,74 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Sankai Juku: TOTEM—Void and Height\" Off-Broadway review",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Sankai Juku: TOTEM—Void and Height\" Off-Broadway review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 3,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Sankai Juku: TOTEM—Void and Height\" review skirball",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 1,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Sankai Juku: TOTEM—Void and Height NYU Skirball review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Sankai Juku: TOTEM—Void and Height NYU Skirball review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Sankai Juku: TOTEM—Void and Height NYU Skirball review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 0,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 22,
+        "byReason": {
+          "ticketing-reseller": 2,
+          "not-http-url": 8,
+          "non-review-host": 11,
+          "no-review-evidence": 1
+        }
       },
       "dedupedVariants": [],
       "unextractable": [],
@@ -282184,7 +282123,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-11-06T05:00:24.054Z"
+      "computedAt": "2026-11-06T22:26:51.704Z"
     },
     {
       "showId": "saturday-church-off-broadway-2025",
@@ -327681,18 +327620,12 @@
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
         "https://theatreandtonic.co.uk/blog/the-bridge-bush-theatre-london-review",
-        "https://www.theguardian.com/culture/2026/aug/30/the-bridge-review-alaa-shehada",
         "https://www.londontheatre.co.uk/reviews/the-bridge-review-bush-theatre",
         "https://www.timeout.com/london/theatre/the-bridge-4",
         "https://www.standard.co.uk/culture/theatre/guys-dolls-at-bridge-theatre-review-marisha-wallace-daniel-mays-nicholas-hytner-b1067134.html",
         "https://www.whatsonstage.com/london-theatre/news/guys-dolls-bridge-revival-five-star-review_58533.html",
         "https://everything-theatre.co.uk/2026/11/review-the-bridge-bush-theatre/",
-        "https://www.britishtheatreguide.info/reviews/the-bridge-139-upstairs-at-25855",
         "https://theartsdesk.com/theatre/old-bridge-bush-theatre-review-powerful-poetic-and-profound",
-        "https://uk.style.yahoo.com/bridge-bush-theatre-witty-autobiographical-120550251.html",
-        "https://newyorktheater.me/2026/09/03/the-bridge-review-a-palestinians-journey-at-the-fringe/",
-        "https://www.standard.co.uk/culture/theatre/guys-dolls-at-bridge-theatre-review-marisha-wallace-daniel-mays-nicholas-hytner-b1067134.html",
-        "https://www.whatsonstage.com/london-theatre/news/guys-dolls-bridge-revival-five-star-review_58533.html",
         "https://www.thereviewshub.com/the-bridge-bush-theatre-london/",
         "https://www.broadwayworld.com/westend/article/Review-THE-BRIDGE-Bush-Theatre-20261103",
         "https://www.standard.co.uk/culture/theatre/the-bridge-at-bush-theatre-review-b1303391.html",
@@ -327713,8 +327646,15 @@
         "https://www.pinkprincetheatre.com/post/review-the-bridge-bush-theatre",
         "https://www.allthatdazzles.co.uk/post/review-the-bridge-bush-theatre",
         "https://fringereview.co.uk/review/fringereview-uk/2026/the-bridge-2/",
+        "https://www.theguardian.com/culture/2026/aug/30/the-bridge-review-alaa-shehada",
+        "https://www.britishtheatreguide.info/reviews/the-bridge-139-upstairs-at-25855",
+        "https://newyorktheater.me/2026/09/03/the-bridge-review-a-palestinians-journey-at-the-fringe/",
         "https://www.bestoftheatre.co.uk/blog/post/alaa-shehada-brings-his-fringe-first-winner-the-bridge-to-the-bush-theatre",
-        "https://snackmag.co.uk/alaa-shehada-one-people-not-two-a-conversation-about-and-review-of-the-bridge"
+        "https://snackmag.co.uk/alaa-shehada-one-people-not-two-a-conversation-about-and-review-of-the-bridge",
+        "https://northwestend.com/the-bridge-bush-theatre/",
+        "https://viewfromthegods.co.uk/2026/11/05/the-bridge-bush-theatre/",
+        "https://www.timeout.com/london/theatre/the-bridge-4-review",
+        "https://firstnightmagazine.com/2026/11/04/review-of-the-bridge-palestinian-play-exposes-major-conflict-but-ultimately-lacks-one-of-its-own/"
       ],
       "dirFiles": 40,
       "dirClean": 24,
@@ -327736,14 +327676,6 @@
       "dirOnly": [
         {
           "host": "ft.com",
-          "count": 1
-        },
-        {
-          "host": "firstnightmagazine.com",
-          "count": 1
-        },
-        {
-          "host": "northwestend.com",
           "count": 1
         },
         {
@@ -327871,11 +327803,52 @@
           ],
           "serpCensus": true,
           "reverify": true
+        },
+        {
+          "url": "https://viewfromthegods.co.uk/2026/11/05/the-bridge-bush-theatre/",
+          "host": "viewfromthegods.co.uk",
+          "knownOutletId": "viewfromthegods",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "viewfromthegods--simon-jenner.json",
+              "flag": "clean",
+              "urlInDir": "https://viewfromthegods.co.uk/2026/11/05/the-bridge-bush-theatre/?utm_source=rss&utm_medium=rss&utm_campaign=the-bridge-bush-theatre"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "knownSyndicationSecondary"
+          ],
+          "confirmedNonReview": true,
+          "confirmedBasis": [
+            "syndication-primary-held"
+          ],
+          "copyOfLiveReview": true,
+          "sources": [
+            {
+              "source": "bestoftheatre",
+              "sourceUrl": "https://www.bestoftheatre.co.uk/blog/post/review-roundup-the-bridge-bush-theatre"
+            }
+          ],
+          "listingDate": "2026-11-04",
+          "listingSource": "bestoftheatre",
+          "weRef": true,
+          "weRefSources": [
+            "bestoftheatre"
+          ],
+          "weRefStars": 4,
+          "weRefStarsSource": "bestoftheatre",
+          "reverify": false
         }
       ],
       "citedNoUrl": [],
       "weReference": {
-        "rowCount": 13,
+        "rowCount": 17,
         "sources": {
           "westendtheatre": {
             "found": false,
@@ -327900,7 +327873,7 @@
           },
           "bestoftheatre": {
             "found": true,
-            "rows": 13,
+            "rows": 17,
             "emptyParse": false,
             "error": null,
             "fetchErrors": 0
@@ -327914,12 +327887,12 @@
           }
         },
         "allSourcesFailed": false,
-        "currentRunRows": 13,
-        "corroborated": 13,
+        "currentRunRows": 17,
+        "corroborated": 16,
         "perSource": {
           "bestoftheatre": {
-            "cited": 13,
-            "corroborated": 13
+            "cited": 17,
+            "corroborated": 16
           }
         }
       },
@@ -327934,7 +327907,7 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 1,
+            "results": 0,
             "accepted": 0,
             "error": null
           },
@@ -327944,7 +327917,7 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 8,
+            "results": 0,
             "accepted": 0,
             "error": null
           },
@@ -327954,8 +327927,8 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 9,
-            "accepted": 1,
+            "results": 0,
+            "accepted": 0,
             "error": null
           },
           {
@@ -327964,8 +327937,8 @@
             "page": 1,
             "geo": "gb",
             "ok": true,
-            "results": 10,
-            "accepted": 3,
+            "results": 0,
+            "accepted": 0,
             "error": null
           },
           {
@@ -327974,23 +327947,19 @@
             "page": 2,
             "geo": "gb",
             "ok": true,
-            "results": 10,
+            "results": 0,
             "accepted": 0,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 4,
+        "resultCount": 0,
         "error": null
       },
       "candidatesRejected": {
-        "count": 33,
-        "byReason": {
-          "not-http-url": 24,
-          "non-review-host": 8,
-          "ticketing-listing": 1
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 4,
@@ -328022,6 +327991,13 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.theguardian.com/culture/2026/aug/30/the-bridge-review-alaa-shehada"
+          },
+          {
+            "outletId": "british-theatre",
+            "outlet": "british-theatre",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.britishtheatreguide.info/reviews/the-bridge-139-upstairs-at-25855"
           },
           {
             "outletId": "nyt-theater",
@@ -328088,18 +328064,6 @@
             "outletId": "theartsdesk.com",
             "state": "live",
             "firstSeenAt": "2026-11-06T07:26:34.668Z"
-          },
-          {
-            "url": "https://www.standard.co.uk/culture/theatre/guys-dolls-at-bridge-theatre-review-marisha-wallace-daniel-mays-nicholas-hytner-b1067134.html",
-            "outletId": "standard.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-11-04T04:19:43.534Z"
-          },
-          {
-            "url": "https://www.whatsonstage.com/london-theatre/news/guys-dolls-bridge-revival-five-star-review_58533.html",
-            "outletId": "whatsonstage.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-04T04:19:43.534Z"
           },
           {
             "url": "https://www.thereviewshub.com/the-bridge-bush-theatre-london/",
@@ -328222,6 +328186,24 @@
             "firstSeenAt": "2026-11-05T20:49:43.633Z"
           },
           {
+            "url": "https://northwestend.com/the-bridge-bush-theatre/",
+            "outletId": "northwestend.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-06T22:26:51.704Z"
+          },
+          {
+            "url": "https://www.timeout.com/london/theatre/the-bridge-4-review",
+            "outletId": "timeout.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-06T22:26:51.704Z"
+          },
+          {
+            "url": "https://firstnightmagazine.com/2026/11/04/review-of-the-bridge-palestinian-play-exposes-major-conflict-but-ultimately-lacks-one-of-its-own/",
+            "outletId": "firstnightmagazine.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-06T22:26:51.704Z"
+          },
+          {
             "url": "https://www.theguardian.com/culture/2026/aug/30/the-bridge-review-alaa-shehada",
             "outletId": "guardian",
             "state": "GAP",
@@ -328258,11 +328240,17 @@
           }
         ],
         "censusSchema": 4,
-        "excluded": [],
-        "liveCount": 19,
-        "candidateCount": 24
+        "excluded": [
+          {
+            "url": "https://viewfromthegods.co.uk/2026/11/05/the-bridge-bush-theatre/",
+            "host": "viewfromthegods.co.uk",
+            "reason": "confirmed-non-review"
+          }
+        ],
+        "liveCount": 21,
+        "candidateCount": 26
       },
-      "computedAt": "2026-11-06T07:54:59.218Z"
+      "computedAt": "2026-11-06T22:26:51.704Z"
     },
     {
       "showId": "the-brief-wondrous-life-of-oscar-wao-regional-2026",
@@ -328802,7 +328790,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 2,
+            "results": 0,
             "accepted": 0,
             "error": null
           },
@@ -328812,7 +328800,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 9,
+            "results": 0,
             "accepted": 0,
             "error": null
           },
@@ -328822,7 +328810,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 9,
+            "results": 0,
             "accepted": 0,
             "error": null
           },
@@ -328832,7 +328820,7 @@
             "page": 1,
             "geo": "us",
             "ok": true,
-            "results": 10,
+            "results": 0,
             "accepted": 0,
             "error": null
           },
@@ -328842,7 +328830,7 @@
             "page": 2,
             "geo": "us",
             "ok": true,
-            "results": 10,
+            "results": 0,
             "accepted": 0,
             "error": null
           }
@@ -328853,14 +328841,8 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 37,
-        "byReason": {
-          "aggregator-internal-nav": 3,
-          "not-http-url": 25,
-          "non-review-host": 7,
-          "no-review-evidence": 1,
-          "non-review-path": 1
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 0,
@@ -328923,7 +328905,7 @@
         "liveCount": 0,
         "candidateCount": 2
       },
-      "computedAt": "2026-11-06T07:54:59.218Z"
+      "computedAt": "2026-11-06T22:26:51.704Z"
     },
     {
       "showId": "the-cherry-orchard-park-avenue-armory-off-broadway-2026",
@@ -400301,49 +400283,13 @@
       "category": "off-broadway",
       "previewsStartDate": "2026-11-04",
       "aggregatorArticles": [],
-      "aggregatorListedUrls": [
-        "https://www.theatermania.com/news/traitorz-the-unauthorized-musical-parody-to-run-at-st-lukes-theatre_1856629/"
-      ],
-      "dirFiles": 2,
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
       "dirClean": 0,
       "inReviewsJson": 0,
       "missing": [],
       "dirOnly": [],
-      "flaggedMisses": [
-        {
-          "url": "https://www.theatermania.com/news/traitorz-the-unauthorized-musical-parody-to-run-at-st-lukes-theatre_1856629/",
-          "host": "theatermania.com",
-          "knownOutletId": "theatermania",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "theatermania--linda-buchwald.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.theatermania.com/news/traitorz-the-unauthorized-musical-parody-to-run-at-st-lukes-theatre_1856629/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "confirmedNonReview": true,
-          "confirmedBasis": [
-            "non-review"
-          ],
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ],
-          "serpCensus": true,
-          "reverify": false
-        }
-      ],
+      "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
@@ -400357,7 +400303,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 0,
+            "results": 2,
             "accepted": 0,
             "error": null
           },
@@ -400377,7 +400323,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 9,
+            "results": 0,
             "accepted": 0,
             "error": null
           },
@@ -400387,7 +400333,7 @@
             "page": 1,
             "geo": "us",
             "ok": true,
-            "results": 10,
+            "results": 0,
             "accepted": 0,
             "error": null
           },
@@ -400397,7 +400343,7 @@
             "page": 2,
             "geo": "us",
             "ok": true,
-            "results": 10,
+            "results": 0,
             "accepted": 0,
             "error": null
           }
@@ -400408,18 +400354,14 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 32,
+        "count": 6,
         "byReason": {
-          "not-http-url": 21,
           "non-review-host": 4,
-          "census-junk-host": 4,
-          "write-path-blocked": 1,
-          "bare-host": 1,
-          "news-article": 1
+          "aggregator-internal-nav": 1,
+          "write-path-blocked": 1
         }
       },
       "dedupedVariants": [],
-      "automatedExcludedListed": 0,
       "unextractable": [],
       "censusVerdict": {
         "verdict": "no-census-yet",
@@ -400427,17 +400369,11 @@
         "suppressedMissing": [],
         "candidates": [],
         "censusSchema": 4,
-        "excluded": [
-          {
-            "url": "https://www.theatermania.com/news/traitorz-the-unauthorized-musical-parody-to-run-at-st-lukes-theatre_1856629/",
-            "host": "theatermania.com",
-            "reason": "confirmed-non-review"
-          }
-        ],
+        "excluded": [],
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-11-06T07:54:59.218Z"
+      "computedAt": "2026-11-06T22:26:51.704Z"
     },
     {
       "showId": "transcendency-rising-short-plays-about-defying-limitations-off-broadway-2026",
@@ -425546,23 +425482,26 @@
     }
   ],
   "staleness": {
-    "at": "2026-11-06T21:30:36.878Z",
+    "at": "2026-11-06T22:26:51.703Z",
     "reserveEvery": 4,
     "reservedAttempted": [
-      "seussical-theatre-young-audiences-off-broadway-2026"
+      "a-few-good-men-2026",
+      "kelly-mccaughan-catholic-guilt-off-broadway-2026"
     ],
     "catalogueReserveEvery": 8,
-    "catalogueAttempted": [],
-    "neverAuditedDueAtStart": 631,
+    "catalogueAttempted": [
+      "4-48-psychosis-west-end-2025"
+    ],
+    "neverAuditedDueAtStart": 630,
     "oldestDueRowAtStart": {
       "showId": "this-is-my-favorite-song-off-broadway-2024",
       "computedAt": "2026-10-23T14:07:48.228Z",
-      "ageHours": 343.1
+      "ageHours": 344
     },
     "oldestDueRowAfterRun": {
       "showId": "this-is-my-favorite-song-off-broadway-2024",
       "computedAt": "2026-10-23T14:07:48.228Z",
-      "ageHours": 343.4
+      "ageHours": 344.3
     }
   }
 }
