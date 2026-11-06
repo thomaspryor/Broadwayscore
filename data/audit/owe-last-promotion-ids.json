@@ -1,12 +1,6 @@
 {
-  "generatedAt": "2026-11-05T21:31:30.776Z",
-  "promoted": [
-    {
-      "id": "fault-off-west-end-2027",
-      "source": "venue-page:king-s-head-theatre",
-      "sourceUrl": "https://kingsheadtheatre.com/whats-on/"
-    }
-  ],
+  "generatedAt": "2026-11-06T20:58:44.453Z",
+  "promoted": [],
   "rejected": [
     {
       "title": "Golden Boy",
@@ -401,20 +395,20 @@
       "reason": "already in shows.json as an-oak-tree-off-west-end-2026 (london-pool-title-equal (venue \"The Other Palace\" vs \"The Other Palace - Main Theatre\"))"
     },
     {
-      "title": "Garry Starr Classic Penguins",
-      "venue": "The Other Palace",
-      "source": "venue-page:the-other-palace",
-      "sourceUrl": null,
-      "kind": "skip-duplicate",
-      "reason": "already in shows.json as garry-starr-classic-penguins-garrick-west-end-2026 (london-pool-title-equal (venue \"The Other Palace\" vs \"Garrick Theatre\"))"
-    },
-    {
       "title": "Boys Who Dance",
       "venue": "The Other Palace",
       "source": "venue-page:the-other-palace",
       "sourceUrl": null,
       "kind": "skip-duplicate",
       "reason": "already in shows.json as boys-who-dance-off-west-end-2026 (normalized-equal)"
+    },
+    {
+      "title": "Garry Starr Classic Penguins",
+      "venue": "The Other Palace",
+      "source": "venue-page:the-other-palace",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as garry-starr-classic-penguins-garrick-west-end-2026 (london-pool-title-equal (venue \"The Other Palace\" vs \"Garrick Theatre\"))"
     },
     {
       "title": "A Homo Alone 2 Yikes We Did It Again",
@@ -839,6 +833,14 @@
       "sourceUrl": null,
       "kind": "skip-duplicate",
       "reason": "already in shows.json as double-bill-tell-me-straight-and-aggy-off-west-end-2026 (normalized-equal)"
+    },
+    {
+      "title": "Fault",
+      "venue": "King's Head Theatre",
+      "source": "venue-page:king-s-head-theatre",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as fault-off-west-end-2027 (normalized-equal)"
     },
     {
       "title": "For Dolores",
