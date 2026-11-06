@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-06T15:50:13.963Z",
+  "generatedAt": "2026-11-06T17:08:46.463Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -49,6 +49,11 @@
       "openingDate": "2026-11-04"
     },
     {
+      "id": "speculations-off-west-end-2026",
+      "title": "Speculations",
+      "openingDate": "2026-11-05"
+    },
+    {
       "id": "the-morbs-off-broadway-2026",
       "title": "The Morbs",
       "openingDate": "2026-11-02"
@@ -69,16 +74,25 @@
       "openingDate": "2026-11-05"
     }
   ],
-  "skipped": [],
+  "skipped": [
+    {
+      "showId": "iphigenie-en-tauride-english-national-opera-west-end-2026",
+      "reason": "no data/review-texts directory for this show"
+    },
+    {
+      "showId": "dr-seuss-how-the-grinch-stole-christmas-tour-2026",
+      "reason": "no data/review-texts directory for this show"
+    }
+  ],
   "feedsChecked": 78,
   "feedsFailed": [
     {
-      "outletId": "theater-life",
-      "error": "Timeout fetching https://theaterlife.com/feed"
-    },
-    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
+    },
+    {
+      "outletId": "british-theatre",
+      "error": "Timeout fetching https://www.britishtheatreguide.info/reviews/"
     },
     {
       "outletId": "slantmagazine",
@@ -101,9 +115,9 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 797,
-  "matchedGaps": 7,
-  "possibleGaps": 4,
+  "itemsScanned": 784,
+  "matchedGaps": 20,
+  "possibleGaps": 5,
   "gaps": [
     {
       "showId": "222-a-ghost-story-off-broadway-2026",
@@ -124,11 +138,128 @@
       "publishDate": "2026-11-05"
     },
     {
+      "showId": "speculations-off-west-end-2026",
+      "title": "Speculations",
+      "level": "matched",
+      "outletId": "a-youngish-perspective",
+      "url": "https://ayoungishperspective.co.uk/2026/11/06/review-speculations/",
+      "headline": "REVIEW: Speculations",
+      "publishDate": "2026-11-06"
+    },
+    {
+      "showId": "speculations-off-west-end-2026",
+      "title": "Speculations",
+      "level": "matched",
+      "outletId": "fairypoweredproductions",
+      "url": "https://fairypoweredproductions.com/speculations-review/",
+      "headline": "Speculations Review",
+      "publishDate": "2026-11-05"
+    },
+    {
+      "showId": "speculations-off-west-end-2026",
+      "title": "Speculations",
+      "level": "matched",
+      "outletId": "firstnightmagazine",
+      "url": "https://firstnightmagazine.com/2026/11/05/review-of-speculations-conspiracy-theory-play-is-riddled-with-hollowness/",
+      "headline": "Review of &#8216;Speculations&#8217;: &#8220;Conspiracy-theory play is riddled with hollowness&#8221;",
+      "publishDate": "2026-11-05"
+    },
+    {
+      "showId": "speculations-off-west-end-2026",
+      "title": "Speculations",
+      "level": "matched",
+      "outletId": "theatre-vibe",
+      "url": "https://theatrevibe.co.uk/2026/11/06/review-speculations-marylebone-theatre-2026/",
+      "headline": "REVIEW: Speculations, Marylebone Theatre (2026)",
+      "publishDate": "2026-11-06"
+    },
+    {
+      "showId": "speculations-off-west-end-2026",
+      "title": "Speculations",
+      "level": "matched",
+      "outletId": "all-that-dazzles-uk",
+      "url": "https://www.allthatdazzles.co.uk/post/review-speculations-marylebone-theatre",
+      "headline": "Review: Speculations (Marylebone Theatre)",
+      "publishDate": "2026-11-05"
+    },
+    {
+      "showId": "speculations-off-west-end-2026",
+      "title": "Speculations",
+      "level": "matched",
+      "outletId": "jackstage",
+      "url": "https://www.jackstage.co.uk/post/speculations-review-marilyn-monroe-john-f-kennedy-lee-harvey-oswald-you-know-how-they-died-or",
+      "headline": "Speculations Review: Marilyn Monroe. John F. Kennedy. Lee Harvey Oswald. You know how they died. Or do you?",
+      "publishDate": "2026-11-05"
+    },
+    {
+      "showId": "speculations-off-west-end-2026",
+      "title": "Speculations",
+      "level": "matched",
+      "outletId": "london-unattached",
+      "url": "https://www.london-unattached.com/speculations-marylebone-theatre/",
+      "headline": "Speculations — Marylebone Theatre",
+      "publishDate": "2026-11-05"
+    },
+    {
+      "showId": "speculations-off-west-end-2026",
+      "title": "Speculations",
+      "level": "matched",
+      "outletId": "londontheatre1",
+      "url": "https://www.londontheatre1.com/reviews/speculations-marylebone-theatre/",
+      "headline": "Speculations | Marylebone Theatre",
+      "publishDate": "2026-11-05"
+    },
+    {
+      "showId": "speculations-off-west-end-2026",
+      "title": "Speculations",
+      "level": "matched",
+      "outletId": "pinkprincetheatre",
+      "url": "https://www.pinkprincetheatre.com/post/review-speculations-marylebone-theatre",
+      "headline": "REVIEW: SPECULATIONS @ MARYLEBONE THEATRE",
+      "publishDate": "2026-11-05"
+    },
+    {
+      "showId": "speculations-off-west-end-2026",
+      "title": "Speculations",
+      "level": "matched",
+      "outletId": "guardian",
+      "url": "https://www.theguardian.com/stage/2026/nov/06/marilyn-monroe-speculations-conspiracy-drama-marylebone-theatre-london-trevor-nunn",
+      "headline": "Marilyn Monroe is a magnetic misfit in Speculations, a spicy conspiracy drama full of bombshells",
+      "publishDate": "2026-11-06"
+    },
+    {
+      "showId": "speculations-off-west-end-2026",
+      "title": "Speculations",
+      "level": "matched",
+      "outletId": "thereviewshub",
+      "url": "https://www.thereviewshub.com/speculations-marylebone-theatre-london/",
+      "headline": "Speculations – Marylebone Theatre, London",
+      "publishDate": "2026-11-05"
+    },
+    {
+      "showId": "speculations-off-west-end-2026",
+      "title": "Speculations",
+      "level": "matched",
+      "outletId": "unmissabletheatre",
+      "url": "https://www.unmissabletheatre.co.uk/reviews/review-speculations-at-marylebone-theatre",
+      "headline": "Review: Speculations at Marylebone Theatre",
+      "publishDate": "2026-11-05"
+    },
+    {
+      "showId": "speculations-off-west-end-2026",
+      "title": "Speculations",
+      "level": "matched",
+      "outletId": "west-end-best-friend",
+      "url": "https://www.westendbestfriend.co.uk/news/review-speculations-marylebone-theatre",
+      "headline": "Review: SPECULATIONS, Marylebone Theatre",
+      "publishDate": "2026-11-05"
+    },
+    {
       "showId": "tosca-off-broadway-2026",
       "title": "Tosca",
       "level": "matched",
       "outletId": "plays-to-see",
-      "url": "https://playstosee.com/tosca-17/?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=tosca-17",
+      "url": "https://playstosee.com/reviews/tosca-17/?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=tosca-17",
       "headline": "TOSCA",
       "publishDate": "2026-10-31"
     },
@@ -176,6 +307,15 @@
       "url": "https://www.theguardian.com/culture/2026/nov/04/every-family-has-silences-kathryn-hunter-on-despair-desire-dislodgeable-limbs-and-her-acting-genius",
       "headline": "‘Every family has silences’: Kathryn Hunter on despair, desire, dislodgeable limbs – and her acting genius",
       "publishDate": "2026-11-04"
+    },
+    {
+      "showId": "speculations-off-west-end-2026",
+      "title": "Speculations",
+      "level": "possible",
+      "outletId": "artsdesk",
+      "url": "https://theartsdesk.com/theatre/speculations-marylebone-theatre-review-real-mystery-how-it-got-made",
+      "headline": "Speculations, Marylebone Theatre review - the real mystery is how it got made",
+      "publishDate": null
     },
     {
       "showId": "the-bridge-off-west-end-2026",
