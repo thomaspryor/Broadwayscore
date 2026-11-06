@@ -761447,8 +761447,27 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-11-06T17:35:46.619Z",
-    "completedAt": "2026-11-06T17:35:46.629Z",
+    "startedAt": "2026-11-06T17:31:10.905Z",
+    "completedAt": "2026-11-06T17:31:16.623Z",
+    "totalReviews": 5,
+    "processed": 1,
+    "skipped": 4,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 5826,
+      "output": 305,
+      "cacheRead": 3807,
+      "cacheWrite": 0,
+      "total": 14797
+    },
+    "costUsd": 0.0222366,
+    "runId": "42261163504",
+    "source": "index",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-11-06T17:36:13.621Z",
+    "completedAt": "2026-11-06T17:36:13.623Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -761461,7 +761480,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "42261800111",
+    "runId": "42261163504",
     "source": "comparative-rescore",
     "errorDetails": []
   },
