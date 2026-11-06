@@ -3095,10 +3095,8 @@ function isNonReviewDemotedByFreshCV(data) {
   if (data.manualReviewedBy || data.manualNonReviewSet === true || data.manualNonReviewBy
     || (typeof data.isNonReviewReason === 'string'
       && /^manual \(not a review\)/i.test(data.isNonReviewReason))) return false;
-  // BRO-7050: a lone automated classifier verdict on an aggregator-listed / full-text-scored review is advisory.
-  if (soloVerdictHeld(data, 'nonReview').held) return true;
   const cv = data.contentVerification;
-  if (!cv) return false;
+  if (!cv) return soloVerdictHeld(data, 'nonReview').held; // BRO-7050: no CV record, a lone classifier verdict can still be held
   const isCvPromotedProvenance = typeof data.isNonReviewReason === 'string'
     && /^CV-promoted \(not a review\):/.test(data.isNonReviewReason);
   if (isCvPartialWindowAdvisory(data)) return true;
@@ -3112,6 +3110,8 @@ function isNonReviewDemotedByFreshCV(data) {
   // refused it (a roundup or interview whose booleans said clean). That verdict must not
   // overrule the label here either, or the refusal only stops the script, not the rebuild.
   if (cv.clearRefusal) return false;
+  // BRO-7050: a lone automated classifier verdict on an aggregator-listed / full-text-scored review is advisory.
+  if (soloVerdictHeld(data, 'nonReview').held) return true;
   if (cv.articleType !== 'review') return false;
   if (cv.isValid === false) return false;
   if (cv.wrongArticle === true) return false;

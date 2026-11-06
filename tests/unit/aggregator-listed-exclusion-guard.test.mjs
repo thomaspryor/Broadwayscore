@@ -9,7 +9,7 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const guards = require('../../scripts/lib/review-guards');
-const { explainExclusion, soloVerdictHeld, isRejectedByReasonExclusion, isRejectedAtExclusion } = guards;
+const { explainExclusion, soloVerdictHeld, isRejectedByReasonExclusion, isRejectedAtExclusion, isNonReviewDemotedByFreshCV } = guards;
 const { evaluateSoloVerdictHold, aggregatorListedBy } = require('../../scripts/lib/single-verdict-guard');
 
 const QUOTE = 'a beautifully staged revival that lands every joke and every heartbreak';
@@ -58,6 +58,20 @@ describe('the regression: a lone classifier verdict on an aggregator-listed revi
 });
 
 describe('what the guard must NOT release', () => {
+  test('openai + kimi two-model consensus is not a solo verdict (reviewer finding)', () => {
+    const d = review({ rejectionReason: 'wrong_production', rejectedBy: 'ensemble-scoreability-check',
+      rejectedAt: '2026-11-06T10:00:00Z', rejectionReasoning: 'openai: original U.K. staging; kimi: original U.K. staging' });
+    assert.equal(soloVerdictHeld(d, 'rejection').held, false);
+    assert.equal(isRejectedByReasonExclusion(d), true);
+  });
+  test('a refused CV clear keeps a nonReview label in force even when an aggregator lists it (BRO-6745)', () => {
+    const d = gemini({ contentVerification: { clearRefusal: true, verifiedAt: '2026-11-01T00:00:00Z', articleType: 'review', isValid: true } });
+    assert.equal(isNonReviewDemotedByFreshCV(d), false);
+  });
+  test('a held nonReview with no contentVerification record is still demoted-by-hold', () => {
+    assert.equal(isNonReviewDemotedByFreshCV(gemini({})), true);
+  });
+
   test('two classifier families (gemini + a current high-confidence CV article-type verdict) is a second check: stays excluded', () => {
     const d = gemini({ contentVerification: { isValid: true, confidence: 'high', articleTypeConfidence: 'high', articleType: 'interview' } });
     assert.equal(soloVerdictHeld(d, 'nonReview').held, false);

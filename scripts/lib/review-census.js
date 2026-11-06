@@ -318,9 +318,12 @@ function publishedRoundupWithoutArchive(reviewFiles, sourcesPresent, showTitle) 
     // A roundup URL copied onto another show's file (cross-show misroute) must not raise a gap: the slug has to
     // carry a distinctive word of THIS show's title (e.g. "unbelievers"), when a title is known.
     if (showTitle) {
-      const toks = String(showTitle).toLowerCase().split(/[^a-z0-9]+/).filter((t) => t.length > 3);
+      const STOP = new Set(['the', 'a', 'an', 'of', 'and', 'in', 'on', 'to']);
+      const toks = String(showTitle).toLowerCase().split(/[^a-z0-9]+/).filter((t) => t && !STOP.has(t));
       const slug = u.toLowerCase();
-      if (toks.length && !toks.some((t) => slug.includes(t))) continue;
+      // Short titles must match fully; long titles (slugs truncate them) need at least half their words.
+      const need = toks.length <= 3 ? toks.length : Math.ceil(toks.length / 2);
+      if (toks.length && toks.filter((t) => slug.includes(t)).length < need) continue;
     }
     return { missing: true, url: u };
   }
