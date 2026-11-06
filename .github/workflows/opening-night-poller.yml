@@ -510,7 +510,7 @@ jobs:
               # Verge (Off-Broadway, never hot) missed its 11:55pm bar by 50 min when this was hot-only.
               # Promotions stay uncommitted in the checkout (same as the pre-loop drain); time-boxed.
               PENDING_AFTER=$(cd data/review-texts && git status --porcelain --untracked-files=all -- "_pending/$SHOW_ID" | grep -c '^??' || true)
-              if [ -n "$HOT_BEFORE" ] || [ "$PENDING_AFTER" -gt "$PENDING_BEFORE" ]; then
+              if [ -n "$HOT_BEFORE" ] || [ "${PENDING_AFTER:-0}" -gt "${PENDING_BEFORE:-0}" ]; then
                 # lint-allow-swallow: best-effort speed-up; a failure emits ::warning:: and the stub is still drained by the pre-loop drain step of the next run, so nothing is lost.
                 BD_OPENING_NIGHT=1 timeout 240 node scripts/replay-pending-bylines.js --shows="$SHOW_ID" --time-budget-min=2 --skip-empty-body-retry || echo "::warning::press-night pending drain for $SHOW_ID failed or timed out"
               fi

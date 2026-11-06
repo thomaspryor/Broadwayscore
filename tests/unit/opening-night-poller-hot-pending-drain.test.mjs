@@ -22,11 +22,13 @@ test('poll_one drains pending stubs before any file count, for hot shows or any 
   assert.ok(hotBranch > drain, 'drain is outside and before the hot-only HOT_AFTER branch');
   const guard = body.slice(body.lastIndexOf('if [', drain), drain);
   assert.match(guard, /HOT_BEFORE/);
-  assert.match(guard, /PENDING_AFTER" -gt "\$PENDING_BEFORE/, 'drain is keyed off new pending stubs');
+  assert.match(guard, /PENDING_AFTER:-0\}" -gt "\$\{PENDING_BEFORE/, 'drain is keyed off new pending stubs');
   // counted in _pending/<show>/ (where stubs live), before the poller runs, with untracked files expanded
   const before = body.indexOf('PENDING_BEFORE=$(');
   assert.ok(before > 0 && before < body.indexOf('node scripts/opening-night-poller.js'), 'pending count taken before the poll');
   assert.match(body.slice(before, before + 220), /--untracked-files=all -- "_pending\/\$SHOW_ID"/);
+  const pa = body.indexOf('PENDING_AFTER=$(');
+  assert.ok(pa > body.indexOf('node scripts/opening-night-poller.js') && pa < drain, 'pending count re-taken after the poll');
   assert.ok(drain < body.indexOf('CREATED=$('), 'drain precedes the new-file count');
   assert.ok(drain < body.indexOf('UNSCORED=$('), 'drain precedes the unscored count');
   assert.match(body.slice(drain - 90, drain), /BD_OPENING_NIGHT=1/);
