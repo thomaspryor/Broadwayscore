@@ -1,47 +1,47 @@
 {
-  "generatedAt": "2026-11-05T09:38:50.813Z",
-  "bannerText": "155/199 Done(14d) verified on main · 9 FAILED · 0 vacuous · 12 stuck-but-done · 13 mis-armed, needs re-arming (BRO-4531, BRO-6963, BRO-6962, +10 more) — PARTIAL RUN: 17 checks not re-run (ran out of time), so these numbers understate the board",
+  "generatedAt": "2026-11-06T09:35:50.625Z",
+  "bannerText": "146/177 Done(14d) verified on main · 10 FAILED · 0 vacuous · 9 stuck-but-done · 16 mis-armed, needs re-arming (BRO-6681, BRO-6247, BRO-6232, +13 more)",
   "items": [
+    {
+      "title": "FAILED BRO-6530 — Renew The Stage login cookie on the Mac Studio (CI cookie expired 2026-10-29)",
+      "detail": "(gh not authenticated; read runs from the public GitHub API) check-cookie-health.yml: MISMATCH — most recent run concluded 'failure', expected 'success' (https://github.com/thomas…",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6530/renew-the-stage-login-cookie-on-the-mac-studio-ci-cookie-expired-2026"
+    },
+    {
+      "title": "FAILED BRO-6459 — BSC Daily: Data quality: cv-wrongproduction lifetime sweep",
+      "detail": "[check-health-row-absent] FAIL: \"Data quality: cv-wrongproduction lifetime sweep\" still listed in the 2026-11-06T09:26:27.436Z health snapshot",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6459/bsc-daily-data-quality-cv-wrongproduction-lifetime-sweep"
+    },
+    {
+      "title": "FAILED BRO-5745 — Poller review-texts push burns 20 attempts on a false rename/delete conflict (git pairs unrelated _pending files)",
+      "detail": "TAP version 13",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5745/poller-review-texts-push-burns-20-attempts-on-a-false-renamedelete"
+    },
+    {
+      "title": "FAILED BRO-5456 — BSC Daily: Data: armed-but-vacuous backlog cards",
+      "detail": "[check-health-row-absent] FAIL: \"Data: armed-but-vacuous backlog cards\" still listed in the 2026-11-06T09:26:27.436Z health snapshot",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5456/bsc-daily-data-armed-but-vacuous-backlog-cards"
+    },
+    {
+      "title": "FAILED BRO-7004 — P1: Opening night miss: Parcel from America (2026-11-04)",
+      "detail": "gap audit generated 2026-11-06T07:54:59.218Z BLIND parcel-from-america-off-broadway-2026: 3 live, 0 cited not live; info: 0 census candidate(s), 0 exclusion(s) confirmed correct; …",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7004/p1-opening-night-miss-parcel-from-america-2026-11-04"
+    },
+    {
+      "title": "FAILED BRO-6976 — BSC Daily: Data quality: cross-outlet attribution drift",
+      "detail": "[check-health-row-absent] FAIL: \"Data quality: cross-outlet attribution drift\" still listed in the 2026-11-06T09:26:27.436Z health snapshot",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6976/bsc-daily-data-quality-cross-outlet-attribution-drift"
+    },
     {
       "title": "FAILED BRO-6869 — iPhone app batch: work the 16 app-repo cards (owner chose A, 2026-11-02)",
       "detail": "OPEN: 18 pending row(s) remain: the-rocky-horror-show, parade-2023, springsteen-on-broadway-2021",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-6869/iphone-app-batch-work-the-16-app-repo-cards-owner-chose-a-2026-11-02"
     },
     {
-      "title": "FAILED BRO-6767 — Opera: past premiere-run pages + reviews for current Met revivals",
-      "detail": "FAIL medea-met-2022: show missing; scored reviews 0 < 3 FAIL tosca-met-2017: show missing; scored reviews 0 < 3 FAIL otello-met-2015: show missing; scored reviews 0 < 3 FAIL der-r…",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6767/opera-past-premiere-run-pages-reviews-for-current-met-revivals"
-    },
-    {
-      "title": "FAILED BRO-6766 — Opera expansion B: premieres at major houses beyond the Met (ROH first)",
-      "detail": "FAIL roh-new-prod-2026-27-1: show missing FAIL roh-new-prod-2026-27-2: show missing",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6766/opera-expansion-b-premieres-at-major-houses-beyond-the-met-roh-first"
-    },
-    {
-      "title": "FAILED BRO-6708 — BSC Daily: Live-data test failing: no off-Broadway venue-complex has an unlinked bare-form/keyword-overlap sub-venue slug (tests/unit/venue-complex-live-data.test.mjs)",
-      "detail": "[check-health-row-absent] FAIL: \"Live-data test failing: no off-Broadway venue-complex has an unlinked bare-form/keyword-overlap sub-venue slug (tests/un\" still listed in the 2026…",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6708/bsc-daily-live-data-test-failing-no-off-broadway-venue-complex-has-an"
-    },
-    {
-      "title": "FAILED BRO-6464 — BSC Daily: Live-data test failing: no class-A cross-market leaks (a show showing another production's reviews) (scripts/verify-contamination-gate.test.mjs)",
-      "detail": "[check-health-row-absent] FAIL: \"Live-data test failing: no class-A cross-market leaks (a show showing another production's reviews) (scripts/verify-cont\" still listed in the 2026…",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6464/bsc-daily-live-data-test-failing-no-class-a-cross-market-leaks-a-show"
-    },
-    {
-      "title": "FAILED BRO-6460 — BSC Daily: Codex runner: landing cards",
-      "detail": "[check-health-row-absent] FAIL: \"Codex runner: landing cards\" still listed in the 2026-11-05T09:31:11.083Z health snapshot",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6460/bsc-daily-codex-runner-landing-cards"
-    },
-    {
-      "title": "FAILED BRO-6459 — BSC Daily: Data quality: cv-wrongproduction lifetime sweep",
-      "detail": "[check-health-row-absent] FAIL: \"Data quality: cv-wrongproduction lifetime sweep\" still listed in the 2026-11-05T09:31:11.083Z health snapshot",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6459/bsc-daily-data-quality-cv-wrongproduction-lifetime-sweep"
-    },
-    {
-      "title": "FAILED BRO-6437 — BSC Daily: Live-data test failing: live corpus scan: no NEW same-show/same-outlet critic-name near-duplicate beyond the known backlog (tests/unit/critic-spelling-duplicates-live-data.test.mjs)",
-      "detail": "[check-health-row-absent] FAIL: \"Live-data test failing: live corpus scan: no NEW same-show/same-outlet critic-name near-duplicate beyond the known backl\" still listed in the 2026…",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6437/bsc-daily-live-data-test-failing-live-corpus-scan-no-new-same-showsame"
+      "title": "FAILED BRO-6830 — BSC Daily: Live-data test failing: the live corpus has zero unallowlisted doubled-market ids (tests/unit/doubled-market-ids-live-data.test.mjs)",
+      "detail": "[check-health-row-absent] FAIL: \"Live-data test failing: the live corpus has zero unallowlisted doubled-market ids (tests/unit/doubled-market-ids-live-da\" still listed in the 2026…",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6830/bsc-daily-live-data-test-failing-the-live-corpus-has-zero"
     }
   ],
-  "moreCount": 13
+  "moreCount": 11
 }
