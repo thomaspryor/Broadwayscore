@@ -247,6 +247,22 @@ jobs:
             echo "- WARNING: \`check-affiliate-health.js\` exited $rc (non-blocking; 124 = timed out)" >> "$GITHUB_STEP_SUMMARY"
           fi
 
+      # BRO-3902: runtime occupancy check for GitHub Actions caches. Rule (m) in
+      # audit-workflow-hygiene.js only sees run-id keys; this reads the live
+      # `gh cache list` and flags total > 8 GiB, any entry > 1 GiB, or a churning
+      # key family. Non-blocking: surfaces in the step summary only.
+      - name: Check Actions cache budget
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          rc=0
+          out=$(timeout -k 10 60 node scripts/check-actions-cache-budget.js 2>&1) || rc=$?
+          echo "$out"
+          if [ "$rc" -ne 0 ] || grep -q '^- ' <<<"$out"; then
+            echo "::warning::Actions cache budget: see step output (non-blocking)"
+            { echo "### Actions cache budget"; echo '```'; echo "$out"; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
+          fi
+
       - name: Run health check
         env:
           GH_TOKEN: ${{ github.token }}
