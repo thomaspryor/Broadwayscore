@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-06T17:45:02.423Z",
+  "generatedAt": "2026-11-06T18:21:53.073Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -540,9 +540,9 @@
       "status": "open",
       "slug": "the-unbelievers-off-broadway",
       "thumbnail": "/images/shows/the-unbelievers-off-broadway-2026/thumbnail.webp",
-      "siteScore": 71.51,
-      "liveScore": 72,
-      "scoreDrift": 0.4899999999999949,
+      "siteScore": 71.46,
+      "liveScore": 71,
+      "scoreDrift": -0.45999999999999375,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
@@ -558,7 +558,7 @@
         "reasons": [
           "11/12 total"
         ],
-        "highConfidence": 11,
+        "highConfidence": 10,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -918,6 +918,18 @@
           "m": 3,
           "n": 1,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-11-06T18:21:53.073Z",
+          "rc": 11,
+          "s": 71.46,
+          "t1": 3,
+          "t2": 5,
+          "t3": 3,
+          "p": 7,
+          "m": 3,
+          "n": 1,
+          "bc": "waiting"
         }
       ]
     },
@@ -948,9 +960,10 @@
         "ready": false,
         "reasons": [
           "8/12 total",
-          "T1:2/3"
+          "T1:2/3",
+          "hi-conf:7/8"
         ],
-        "highConfidence": 8,
+        "highConfidence": 7,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -1067,10 +1080,6 @@
         },
         {
           "name": "Theatrely",
-          "isDualMarket": false
-        },
-        {
-          "name": "Talkin' Broadway",
           "isDualMarket": false
         },
         {
@@ -1343,26 +1352,26 @@
       "status": "open",
       "slug": "222-a-ghost-story-off-broadway",
       "thumbnail": "/images/shows/222-a-ghost-story-off-broadway-2026/thumbnail.jpg",
-      "siteScore": 60.67,
-      "liveScore": 61,
-      "scoreDrift": 0.3299999999999983,
+      "siteScore": 63.46,
+      "liveScore": 63,
+      "scoreDrift": -0.46000000000000085,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 8,
-      "t1": 1,
+      "total": 9,
+      "t1": 2,
       "t2": 4,
       "t3": 3,
-      "positive": 3,
+      "positive": 4,
       "mixed": 3,
       "negative": 2,
       "readiness": {
         "ready": false,
         "reasons": [
-          "8/12 total",
-          "T1:1/3"
+          "9/12 total",
+          "T1:2/3"
         ],
-        "highConfidence": 8,
+        "highConfidence": 9,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -1790,6 +1799,18 @@
           "m": 3,
           "n": 2,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-11-06T18:21:53.073Z",
+          "rc": 9,
+          "s": 63.46,
+          "t1": 2,
+          "t2": 4,
+          "t3": 3,
+          "p": 4,
+          "m": 3,
+          "n": 2,
+          "bc": "waiting"
         }
       ]
     },
@@ -1803,25 +1824,23 @@
       "status": "open",
       "slug": "speculations-off-west-end",
       "thumbnail": "/images/shows/speculations-off-west-end-2026/thumbnail.jpg",
-      "siteScore": 45.74,
-      "liveScore": 46,
-      "scoreDrift": 0.259999999999998,
+      "siteScore": 47.75,
+      "liveScore": 48,
+      "scoreDrift": 0.25,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 10,
-      "t1": 2,
+      "total": 13,
+      "t1": 3,
       "t2": 3,
-      "t3": 5,
-      "positive": 2,
-      "mixed": 2,
-      "negative": 6,
+      "t3": 7,
+      "positive": 3,
+      "mixed": 3,
+      "negative": 7,
       "readiness": {
-        "ready": false,
-        "reasons": [
-          "T1:2/3"
-        ],
-        "highConfidence": 6,
+        "ready": true,
+        "reasons": [],
+        "highConfidence": 12,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -1831,13 +1850,9 @@
       },
       "broadcast": {
         "state": "waiting",
-        "detail": "Not yet broadcast-ready"
+        "detail": "Ready — awaiting send"
       },
       "missingT1": [
-        {
-          "name": "The Guardian",
-          "isDualMarket": true
-        },
         {
           "name": "Observer",
           "isDualMarket": true
@@ -1869,10 +1884,6 @@
         {
           "name": "The Mail on Sunday",
           "isDualMarket": true
-        },
-        {
-          "name": "The Stage",
-          "isDualMarket": true
         }
       ],
       "missingT2": [
@@ -1889,10 +1900,6 @@
           "isDualMarket": true
         },
         {
-          "name": "The Arts Desk",
-          "isDualMarket": false
-        },
-        {
           "name": "British Theatre Guide",
           "isDualMarket": false
         },
@@ -1905,15 +1912,7 @@
           "isDualMarket": false
         },
         {
-          "name": "The Reviews Hub",
-          "isDualMarket": false
-        },
-        {
           "name": "London Theatre",
-          "isDualMarket": false
-        },
-        {
-          "name": "LondonTheatre1",
           "isDualMarket": false
         }
       ],
@@ -1952,6 +1951,18 @@
           "p": 2,
           "m": 2,
           "n": 6,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-11-06T18:21:53.073Z",
+          "rc": 13,
+          "s": 47.75,
+          "t1": 3,
+          "t2": 3,
+          "t3": 7,
+          "p": 3,
+          "m": 3,
+          "n": 7,
           "bc": "waiting"
         }
       ]
@@ -2356,28 +2367,28 @@
       "status": "open",
       "slug": "parcel-from-america-off-broadway",
       "thumbnail": "/images/shows/parcel-from-america-off-broadway-2026/thumbnail.webp",
-      "siteScore": 67.55,
-      "liveScore": 68,
-      "scoreDrift": 0.45000000000000284,
+      "siteScore": 69.2,
+      "liveScore": 69,
+      "scoreDrift": -0.20000000000000284,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 3,
+      "total": 4,
       "t1": 0,
       "t2": 2,
-      "t3": 1,
-      "positive": 2,
+      "t3": 2,
+      "positive": 3,
       "mixed": 0,
       "negative": 1,
       "readiness": {
         "ready": false,
         "reasons": [
-          "3/12 total",
+          "4/12 total",
           "T1:0/3",
           "T2:2/3",
-          "hi-conf:3/8"
+          "hi-conf:4/8"
         ],
-        "highConfidence": 3,
+        "highConfidence": 4,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -2749,6 +2760,18 @@
           "m": 0,
           "n": 1,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-11-06T18:21:53.073Z",
+          "rc": 4,
+          "s": 69.2,
+          "t1": 0,
+          "t2": 2,
+          "t3": 2,
+          "p": 3,
+          "m": 0,
+          "n": 1,
+          "bc": "waiting"
         }
       ]
     },
@@ -2910,14 +2933,6 @@
         },
         {
           "name": "Slant Magazine",
-          "isDualMarket": false
-        },
-        {
-          "name": "Lighting & Sound America",
-          "isDualMarket": false
-        },
-        {
-          "name": "The New York Sun",
           "isDualMarket": false
         },
         {
