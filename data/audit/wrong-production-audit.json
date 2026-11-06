@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-06T18:21:31.750Z",
+  "timestamp": "2026-11-06T18:41:40.769Z",
   "stats": {
-    "totalReviews": 80336,
-    "alreadyFlagged": 22008,
+    "totalReviews": 80337,
+    "alreadyFlagged": 22009,
     "dateGuardCatches": 216,
     "directorMismatch": 3517,
-    "tvFilmSignals": 2285,
+    "tvFilmSignals": 2286,
     "londonSignals": 3620,
     "offBroadwaySignals": 743,
     "yearMismatch": 362,
-    "noPublishDate": 8488
+    "noPublishDate": 8485
   },
   "findings": [
     {
@@ -58163,6 +58163,19 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2023 (2x) more than 2025 (0x). 2023 matches production: spamalot-2023"
+        }
+      ]
+    },
+    {
+      "showId": "speculations-off-west-end-2026",
+      "file": "londontheatre1--chris-omaweng.json",
+      "publishDate": "2026-11-05",
+      "url": "https://www.londontheatre1.com/reviews/speculations-marylebone-theatre/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },

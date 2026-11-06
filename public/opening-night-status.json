@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-06T18:21:53.073Z",
+  "generatedAt": "2026-11-06T18:42:01.770Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -540,25 +540,23 @@
       "status": "open",
       "slug": "the-unbelievers-off-broadway",
       "thumbnail": "/images/shows/the-unbelievers-off-broadway-2026/thumbnail.webp",
-      "siteScore": 71.46,
-      "liveScore": 71,
-      "scoreDrift": -0.45999999999999375,
+      "siteScore": 71.93,
+      "liveScore": 72,
+      "scoreDrift": 0.06999999999999318,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 11,
+      "total": 12,
       "t1": 3,
       "t2": 5,
-      "t3": 3,
-      "positive": 7,
+      "t3": 4,
+      "positive": 8,
       "mixed": 3,
       "negative": 1,
       "readiness": {
-        "ready": false,
-        "reasons": [
-          "11/12 total"
-        ],
-        "highConfidence": 10,
+        "ready": true,
+        "reasons": [],
+        "highConfidence": 12,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -568,7 +566,7 @@
       },
       "broadcast": {
         "state": "waiting",
-        "detail": "Not yet broadcast-ready"
+        "detail": "Ready — awaiting send"
       },
       "missingT1": [
         {
@@ -930,6 +928,18 @@
           "m": 3,
           "n": 1,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-11-06T18:42:01.770Z",
+          "rc": 12,
+          "s": 71.93,
+          "t1": 3,
+          "t2": 5,
+          "t3": 4,
+          "p": 8,
+          "m": 3,
+          "n": 1,
+          "bc": "waiting"
         }
       ]
     },
@@ -943,27 +953,26 @@
       "status": "open",
       "slug": "the-verge-off-broadway",
       "thumbnail": "/images/shows/the-verge-off-broadway-2026/thumbnail.webp",
-      "siteScore": 59.36,
-      "liveScore": 59,
-      "scoreDrift": -0.35999999999999943,
+      "siteScore": 61.8,
+      "liveScore": 62,
+      "scoreDrift": 0.20000000000000284,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 8,
+      "total": 9,
       "t1": 2,
-      "t2": 4,
+      "t2": 5,
       "t3": 2,
-      "positive": 4,
+      "positive": 5,
       "mixed": 1,
       "negative": 3,
       "readiness": {
         "ready": false,
         "reasons": [
-          "8/12 total",
-          "T1:2/3",
-          "hi-conf:7/8"
+          "9/12 total",
+          "T1:2/3"
         ],
-        "highConfidence": 7,
+        "highConfidence": 9,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -1339,6 +1348,18 @@
           "m": 1,
           "n": 3,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-11-06T18:42:01.770Z",
+          "rc": 9,
+          "s": 61.8,
+          "t1": 2,
+          "t2": 5,
+          "t3": 2,
+          "p": 5,
+          "m": 1,
+          "n": 3,
+          "bc": "waiting"
         }
       ]
     },
@@ -1352,9 +1373,9 @@
       "status": "open",
       "slug": "222-a-ghost-story-off-broadway",
       "thumbnail": "/images/shows/222-a-ghost-story-off-broadway-2026/thumbnail.jpg",
-      "siteScore": 63.46,
+      "siteScore": 63.3,
       "liveScore": 63,
-      "scoreDrift": -0.46000000000000085,
+      "scoreDrift": -0.29999999999999716,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
@@ -1811,6 +1832,18 @@
           "m": 3,
           "n": 2,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-11-06T18:42:01.770Z",
+          "rc": 9,
+          "s": 63.3,
+          "t1": 2,
+          "t2": 4,
+          "t3": 3,
+          "p": 4,
+          "m": 3,
+          "n": 2,
+          "bc": "waiting"
         }
       ]
     },
@@ -1824,19 +1857,19 @@
       "status": "open",
       "slug": "speculations-off-west-end",
       "thumbnail": "/images/shows/speculations-off-west-end-2026/thumbnail.jpg",
-      "siteScore": 47.75,
+      "siteScore": 48.19,
       "liveScore": 48,
-      "scoreDrift": 0.25,
+      "scoreDrift": -0.18999999999999773,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 13,
-      "t1": 3,
-      "t2": 3,
-      "t3": 7,
-      "positive": 3,
-      "mixed": 3,
-      "negative": 7,
+      "total": 20,
+      "t1": 4,
+      "t2": 5,
+      "t3": 11,
+      "positive": 4,
+      "mixed": 5,
+      "negative": 11,
       "readiness": {
         "ready": true,
         "reasons": [],
@@ -1963,6 +1996,18 @@
           "p": 3,
           "m": 3,
           "n": 7,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-11-06T18:42:01.770Z",
+          "rc": 20,
+          "s": 48.19,
+          "t1": 4,
+          "t2": 5,
+          "t3": 11,
+          "p": 4,
+          "m": 5,
+          "n": 11,
           "bc": "waiting"
         }
       ]
