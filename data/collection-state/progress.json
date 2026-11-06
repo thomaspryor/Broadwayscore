@@ -1,6 +1,7 @@
 {
   "processed": [
-    "the-bridge-off-west-end-2026/fringereview--unknown.json"
+    "the-bridge-off-west-end-2026/fringereview--unknown.json",
+    "the-verge-off-broadway-2026/nytimes--helen-shaw.json"
   ],
   "failed": [
     "the-bridge-off-west-end-2026/sunday-times--unknown.json",
@@ -14,7 +15,10 @@
       "the-bridge-off-west-end-2026/fringereview--unknown.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/the-verge-off-broadway-2026/nytimes--helen-shaw.json",
+      "the-verge-off-broadway-2026/nytimes--helen-shaw.json"
+    ],
     "directCookies": [],
     "scrapingdog": [],
     "scrapingbee": [],
@@ -23,6 +27,18 @@
     "archive": []
   },
   "startTime": "2026-11-06T04:19:27.309Z",
-  "lastProcessed": "the-unbelievers-off-broadway-2026/bobs-theater-blog--unknown.json",
-  "log": []
+  "lastProcessed": "the-verge-off-broadway-2026/nytimes--helen-shaw.json",
+  "log": [
+    {
+      "t": "2026-11-06T04:38:46.426Z",
+      "event": "bb-session",
+      "session": "ab54766d",
+      "url": "https://www.nytimes.com/2026/11/05/theater/rope-the-verge-review-off-broadway-si"
+    },
+    {
+      "t": "2026-11-06T04:38:46.720Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
