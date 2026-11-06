@@ -19,7 +19,7 @@ const fs = require('fs');
 const path = require('path');
 const { isLondonMarket } = require('./lib/venue-classification');
 const { showRecencyKey, NO_DATE_SENTINEL } = require('./lib/collection-priority');
-const { buildCensusFromArchives, censusVerdict, CI_UNFETCHABLE_OUTLETS } = require('./lib/review-census');
+const { buildCensusFromArchives, publishedRoundupWithoutArchive, censusVerdict, CI_UNFETCHABLE_OUTLETS } = require('./lib/review-census');
 const { rebuildExcludedOutlets, filterCensus } = require('./lib/census-rebuild-exclusions');
 const { classifyCell, mergeLedger, serializeLedger, isDispatchTierOutlet, computeDispatchDecision, canonicalTierId, groupByCanonicalTierId, GRACE_HOURS } = require('./lib/t1-ledger');
 const { buildDigest } = require('./lib/t1-digest');
@@ -961,6 +961,18 @@ async function main() {
       });
     }
 
+    // BRO-7050: a published roundup with no archived copy is an unverifiable census, not "no census yet".
+    let archiveMissingUrl = null;
+    if (!(census && census.hadAnySource && (census.sourcesPresent || []).includes('bww-roundup'))) {
+      try {
+        const dir = path.join(__dirname, '..', 'data', 'review-texts', showId);
+        const files = fs.existsSync(dir) ? fs.readdirSync(dir).filter((n) => n.endsWith('.json')).map((n) => { try { return JSON.parse(fs.readFileSync(path.join(dir, n), 'utf8')); } catch (_) { return null; } }) : [];
+        const r = publishedRoundupWithoutArchive(files, census ? census.sourcesPresent : []);
+        if (r.missing) archiveMissingUrl = r.url;
+      } catch (_) { /* best effort */ }
+    }
+    if (archiveMissingUrl) console.log(`  🚨 CENSUS ARCHIVE MISSING: roundup published (${archiveMissingUrl}) but no archived copy, census unverifiable.`);
+
     // A census-incomplete show is a gap even if the review-count floor is met (the
     // whole point: the floor missed the long tail the census enumerates).
     const censusIncomplete = !!(cVerdict && census && census.hadAnySource && cVerdict.verdict === 'incomplete');
@@ -981,7 +993,7 @@ async function main() {
     // or a broken extractor. A show whose only census-missing outlets are soft
     // (supplementary-source tryout noise) is honestly "incomplete" but not a gap to
     // act on — recording it as a gap would storm-dispatch a gather that can't help.
-    if (censusMissing.length > 0 || censusExtractorBroken) {
+    if (censusMissing.length > 0 || censusExtractorBroken || archiveMissingUrl) {
       gaps.push({
         showId,
         title: show.title,
@@ -996,7 +1008,8 @@ async function main() {
         censusMissingSoft,
         censusSuppressed,
         censusExtractorBroken,
-        censusVerdict: cVerdict ? cVerdict.verdict : null,
+        censusVerdict: archiveMissingUrl && !(census && census.hadAnySource) ? 'census-archive-missing' : (cVerdict ? cVerdict.verdict : null),
+        censusArchiveMissingUrl: archiveMissingUrl,
         dispatchable,
         // Severity counts only ACTIONABLE misses: escalating to 'major' (which
         // pages) on outlets we've already decided we cannot fetch is precisely
