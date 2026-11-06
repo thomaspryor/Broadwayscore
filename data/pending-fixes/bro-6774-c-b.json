@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6774-c-b",
   "planId": "f8796de0-18dd-4bad-9890-a1eee35c6027",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-06T07:16:30.752Z",
   "submitter": {
     "name": null,
@@ -230,5 +230,129 @@
         "description": "cyrano-de-bergerac-2012/amny--matt-windman.json: crossOutletDuplicate"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-06T07:59:44.985Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-lion-king-west-end-2021/telegraph--charles-spencer.json crossOutletVerifiedNote: null -> \"BRO-6774: this file's fullText is byte-identical (9373 chars) to the primary the-lion-king-west-end-2021/independent--paul-taylor.json's: one Theatre Record OCR page holding an unbylined review followed by Robert Butler's Independent on Sunday review. One text cannot be two critics' reviews, so this file is a duplicate of the primary's text and stays excluded until a clean Telegraph text is fetched.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-lion-king-west-end-2021/telegraph--charles-spencer.json crossOutletVerified: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "king-kong-2018/florida-theater-on-stage--bill-hirschman.json crossOutletClearReason: null -> \"BRO-6774: this file's text is 100% present on its own URL (https://www.floridatheateronstage.com/reviews/the-report-from-new-york-king-kongs-beast-is-amazing-the-musical-not-so-amazing/), while the primary king-kong-2018/broadwayworld--michael-dale.json's own BWW page (Dale's 'It Was Inept Writing Killed The Musical') carries 0% of the shared text; real review, must not be hidden.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "king-kong-2018/florida-theater-on-stage--bill-hirschman.json crossOutletDuplicate: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "king-kong-2018/broadwayworld--michael-dale.json wrongAttributionReason: null -> \"BRO-6774: stored fullText is Bill Hirschman's Florida Theater On Stage review (100% on floridatheateronstage.com); this file's own URL https://www.broadwayworld.com/article/BWW-Review-KING-KONG-It-Was-Inept-Writing-Killed-The-Musical-20181109 is Dale's different review with 0% of the text. Needs a refetch of Dale's page.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "king-kong-2018/broadwayworld--michael-dale.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "groundhog-day-2017/huffpost--steven-suskin.json crossOutletClearReason: null -> \"BRO-6774: this file's own URL (https://www.huffpost.com/entry/58f560e8e4b048372700daec, 'Aisle View: Deja Vu With Groundhogs') carries 67% of this file's text and 86% of the primary groundhog-day-2017/latimes--charles-mcnulty.json's, while McNulty's own LA Times page carries 0% of either; the text is Suskin's, real review, must not be hidden.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "groundhog-day-2017/huffpost--steven-suskin.json crossOutletDuplicate: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "groundhog-day-2017/latimes--charles-mcnulty.json wrongAttributionReason: null -> \"BRO-6774: stored fullText is Steven Suskin's HuffPost review (86% on his Aisle View page); this file's own URL https://www.latimes.com/entertainment/arts/la-et-cm-groundhog-day-review-20170417-story.html is McNulty's different review with 0% of the text. Needs a refetch of McNulty's page.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "groundhog-day-2017/latimes--charles-mcnulty.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-play-that-goes-wrong-west-end-2021/sunday-telegraph--tim-walker.json crossOutletClearReason: null -> \"BRO-6774: the telegraph.co.uk page stored as the primary's URL (11106181, 18 September 2014) is bylined Tim Walker and carries 100% of the primary the-play-that-goes-wrong-west-end-2021/telegraph--dominic-cavendish.json's text and 69% of this OCR copy; the text is Walker's own review, must not be hidden.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-play-that-goes-wrong-west-end-2021/sunday-telegraph--tim-walker.json crossOutletDuplicate: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-play-that-goes-wrong-west-end-2021/telegraph--dominic-cavendish.json wrongAttributionReason: null -> \"BRO-6774: stored fullText and URL are Tim Walker's review (telegraph.co.uk 11106181, page bylined Tim Walker, 100% of the text), not Dominic Cavendish's; Walker's review is kept on sunday-telegraph--tim-walker.json. Needs Cavendish's own review URL.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-play-that-goes-wrong-west-end-2021/telegraph--dominic-cavendish.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "art-west-end-2016/guardian--michael-billington.json crossOutletClearReason: null -> \"BRO-6774: this file holds one clean review whose opening matches Billington's Guardian review 'Art review - Rufus Sewell shines in finely shaded character study' (inkl reprint, Billington byline, 32% of the text, 2% of the primary's); the primary art-west-end-2016/standard--fiona-mountford.json is a Theatre Record OCR interleave of this column with Mountford's. Real review, must not be hidden.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "art-west-end-2016/guardian--michael-billington.json crossOutletDuplicate: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "art-west-end-2016/standard--fiona-mountford.json wrongAttributionReason: null -> \"BRO-6774: stored fullText is a Theatre Record OCR interleave of Michael Billington's Guardian column with Fiona Mountford's, and its second half is Billington's text alone (identical to guardian--michael-billington.json); the score cannot be Mountford's. Needs a clean Evening Standard text.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "art-west-end-2016/standard--fiona-mountford.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "exit-the-king-west-end-2018/times-uk--ann-treneman.json crossOutletClearReason: null -> \"BRO-6774: the archived Times page (web.archive.org 20190721152913, Ann Treneman byline) opens with this file's text (30% present; the rest is paywalled); the primary exit-the-king-west-end-2018/daily-mail--quentin-letts.json is a Theatre Record merge of this review followed by Letts's own. Real review, must not be hidden.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "exit-the-king-west-end-2018/times-uk--ann-treneman.json crossOutletDuplicate: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "network-2018/dailybeast--tim-teeman.json crossOutletClearReason: null -> \"BRO-6774: both this file's and the primary network-2018/vulture--jesse-green.json's stored text is an archive.ph CAPTCHA page, not a review; the 100% match is page chrome, not shared review text. The file stays excluded by its own isNonReview flag until a real fetch.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "network-2018/dailybeast--tim-teeman.json crossOutletDuplicate: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cyrano-de-bergerac-2012/amny--matt-windman.json crossOutletClearReason: null -> \"BRO-6774: audit finds 0% shared text between this file and cyrano-de-bergerac-2012/newsday--linda-winer.json (the primary holds only a Winer excerpt); the flag is stale.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cyrano-de-bergerac-2012/amny--matt-windman.json crossOutletDuplicate: true -> false"
+    }
+  ],
+  "executedIn": "ci"
 }
