@@ -1,22 +1,22 @@
 {
-  "generatedAt": "2026-11-06T17:07:51.339Z",
+  "generatedAt": "2026-11-06T19:17:50.122Z",
   "windowDays": 1095,
-  "targets": 885,
-  "auditedThisRun": 3,
-  "carriedForward": 2056,
+  "targets": 901,
+  "auditedThisRun": 5,
+  "carriedForward": 2054,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 639,
-    "missingCurrentRun": 1204,
+    "withGap": 641,
+    "missingCurrentRun": 1208,
     "totalCitedNoUrl": 0,
     "totalFlaggedMisses": 905,
     "totalRecoverable": 58,
     "totalRecovered": 90,
     "humanExcluded": 26,
-    "automatedExcluded": 1010,
+    "automatedExcluded": 1013,
     "automatedExcludedListed": 714,
-    "priorProductionCitations": 6028
+    "priorProductionCitations": 6046
   },
   "results": [
     {
@@ -71216,6 +71216,8 @@
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
         "https://www.timeout.com/london/theatre/cranford",
+        "https://theatreweekly.com/orange-tree-theatre-reveals-full-cast-for-cranford-starring-tamsin-greig/",
+        "https://www.westendbestfriend.co.uk/news/orange-tree-theatre-full-casting-cranford",
         "https://books.mailshop.co.uk/cranford-9781839046544/"
       ],
       "dirFiles": 2,
@@ -71248,7 +71250,74 @@
         }
       ],
       "dirOnly": [],
-      "flaggedMisses": [],
+      "flaggedMisses": [
+        {
+          "url": "https://theatreweekly.com/orange-tree-theatre-reveals-full-cast-for-cranford-starring-tamsin-greig/",
+          "host": "theatreweekly.com",
+          "knownOutletId": "theatre-weekly",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theatre-weekly--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://theatreweekly.com/orange-tree-theatre-reveals-full-cast-for-cranford-starring-tamsin-greig/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "confirmedNonReview": true,
+          "confirmedBasis": [
+            "non-review"
+          ],
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
+          "serpCensus": true,
+          "reverify": false
+        },
+        {
+          "url": "https://www.westendbestfriend.co.uk/news/orange-tree-theatre-full-casting-cranford",
+          "host": "westendbestfriend.co.uk",
+          "knownOutletId": "west-end-best-friend",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "west-end-best-friend--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.westendbestfriend.co.uk/news/orange-tree-theatre-full-casting-cranford"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "confirmedNonReview": true,
+          "confirmedBasis": [
+            "non-review"
+          ],
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
+          "serpCensus": true,
+          "reverify": false
+        }
+      ],
       "citedNoUrl": [],
       "weReference": {
         "rowCount": 0,
@@ -71306,7 +71375,7 @@
             "geo": "gb",
             "ok": true,
             "results": 9,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           },
           {
@@ -71316,7 +71385,7 @@
             "geo": "gb",
             "ok": true,
             "results": 9,
-            "accepted": 1,
+            "accepted": 0,
             "error": null
           },
           {
@@ -71326,7 +71395,7 @@
             "geo": "gb",
             "ok": true,
             "results": 9,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           },
           {
@@ -71336,7 +71405,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           },
           {
@@ -71352,16 +71421,19 @@
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 1,
+        "resultCount": 3,
         "error": null
       },
       "candidatesRejected": {
-        "count": 41,
+        "count": 31,
         "byReason": {
-          "not-http-url": 23,
-          "non-review-host": 13,
-          "aggregator-internal-nav": 2,
-          "no-review-evidence": 3
+          "non-review-host": 18,
+          "aggregator-internal-nav": 4,
+          "no-review-evidence": 3,
+          "tag-index-page": 1,
+          "bare-host": 1,
+          "write-path-blocked": 3,
+          "roundup-page": 1
         }
       },
       "dedupedVariants": [],
@@ -71430,11 +71502,22 @@
           }
         ],
         "censusSchema": 4,
-        "excluded": [],
+        "excluded": [
+          {
+            "url": "https://theatreweekly.com/orange-tree-theatre-reveals-full-cast-for-cranford-starring-tamsin-greig/",
+            "host": "theatreweekly.com",
+            "reason": "confirmed-non-review"
+          },
+          {
+            "url": "https://www.westendbestfriend.co.uk/news/orange-tree-theatre-full-casting-cranford",
+            "host": "westendbestfriend.co.uk",
+            "reason": "confirmed-non-review"
+          }
+        ],
         "liveCount": 0,
         "candidateCount": 2
       },
-      "computedAt": "2026-11-06T02:02:35.916Z"
+      "computedAt": "2026-11-06T19:17:50.122Z"
     },
     {
       "showId": "crazy-mama-a-true-story-of-love-and-madness-off-broadway-2026",
@@ -73183,40 +73266,198 @@
       "showId": "curtains-off-broadway-2026",
       "title": "Curtains",
       "openingDate": null,
-      "status": "upcoming",
+      "status": "previews",
       "category": "off-broadway",
       "previewsStartDate": "2026-11-06",
       "aggregatorArticles": [],
-      "aggregatorListedUrls": [],
+      "aggregatorListedUrls": [
+        "https://www.newyorktheatreguide.com/reviews/curtains",
+        "https://www.talkinbroadway.com/world/Curtains.html"
+      ],
       "dirFiles": 0,
       "dirClean": 0,
       "inReviewsJson": 0,
-      "missing": [],
+      "missing": [
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/curtains",
+          "host": "newyorktheatreguide.com",
+          "knownOutletId": "nytg",
+          "serpCensus": true,
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ]
+        },
+        {
+          "url": "https://www.talkinbroadway.com/world/Curtains.html",
+          "host": "talkinbroadway.com",
+          "knownOutletId": "talkinbroadway",
+          "serpCensus": true,
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ]
+        }
+      ],
       "dirOnly": [],
       "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "out-of-window"
+        "ran": true,
+        "complete": true,
+        "query": "\"Curtains\" Off-Broadway review",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Curtains\" Off-Broadway review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 9,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Curtains\" review jean",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 3,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Curtains Theater at St. Jean's review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 9,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Curtains Theater at St. Jean's review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 0,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Curtains Theater at St. Jean's review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 2,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 23,
+        "byReason": {
+          "non-review-host": 12,
+          "aggregator-internal-nav": 3,
+          "venue-production-page": 2,
+          "no-review-evidence": 2,
+          "tag-index-page": 1,
+          "bare-host": 1,
+          "production-database-listing": 1,
+          "ticketing-reseller": 1
+        }
       },
       "dedupedVariants": [],
+      "automatedExcludedListed": 0,
       "unextractable": [],
+      "ingestResults": [
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/curtains",
+          "host": "newyorktheatreguide.com",
+          "outletId": "nytg",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": true,
+          "expectedReason": "prior-production-quarantined",
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "curtains-off-broadway-2026: https://www.newyorktheatreguide.com/reviews/curtains dated 2017-09-22 predates this run; quarantined to _pending/ as the earlier production's review. Expected, no action needed."
+        },
+        {
+          "url": "https://www.talkinbroadway.com/world/Curtains.html",
+          "host": "talkinbroadway.com",
+          "outletId": "talkinbroadway",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "spawnSync node ETIMEDOUT | ⚠️  Bright Data failed: Bright Data request timeout\n  ⚠️  Cross-market reroute: curtains-off-broadway-2026 → curtains-2007 (year-level sibling match (review year 2007 vs current show year 2026))"
+        }
+      ],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "no-census-yet",
-        "missing": [],
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "nytg",
+            "outlet": "nytg",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.newyorktheatreguide.com/reviews/curtains"
+          },
+          {
+            "outletId": "talkinbroadway",
+            "outlet": "talkinbroadway",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.talkinbroadway.com/world/Curtains.html"
+          }
+        ],
         "suppressedMissing": [],
-        "candidates": [],
+        "candidates": [
+          {
+            "url": "https://www.newyorktheatreguide.com/reviews/curtains",
+            "outletId": "nytg",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-11-06T19:17:50.122Z"
+          },
+          {
+            "url": "https://www.talkinbroadway.com/world/Curtains.html",
+            "outletId": "talkinbroadway",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-11-06T19:17:50.122Z"
+          }
+        ],
         "censusSchema": 4,
         "excluded": [],
         "liveCount": 0,
-        "candidateCount": 0
+        "candidateCount": 2
       },
-      "computedAt": "2026-11-03T01:31:50.133Z"
+      "computedAt": "2026-11-06T19:17:50.122Z"
     },
     {
       "showId": "cyrano-de-bergerac-west-end-2026",
@@ -91064,16 +91305,44 @@
       "showId": "dr-seuss-how-the-grinch-stole-christmas-tour-2026",
       "title": "Dr. Seuss' How the Grinch Stole Christmas!",
       "openingDate": "2026-11-06",
-      "status": "upcoming",
+      "status": "open",
       "category": "tour",
       "venue": "North American Tour",
       "market": "tour",
       "aggregatorArticles": [],
-      "aggregatorListedUrls": [],
+      "aggregatorListedUrls": [
+        "https://www.leagueofcincytheatres.info/review-dr-seuss-how-the-grinch-stole-christmas-the-musical/",
+        "https://www.newyorktheatreguide.com/reviews/dr-seuss-how-the-grinch-stole-christmas-0"
+      ],
       "dirFiles": 0,
       "dirClean": 0,
       "inReviewsJson": 0,
-      "missing": [],
+      "missing": [
+        {
+          "url": "https://www.leagueofcincytheatres.info/review-dr-seuss-how-the-grinch-stole-christmas-the-musical/",
+          "host": "leagueofcincytheatres.info",
+          "knownOutletId": "leagueofcincytheatres",
+          "serpCensus": true,
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ]
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/dr-seuss-how-the-grinch-stole-christmas-0",
+          "host": "newyorktheatreguide.com",
+          "knownOutletId": "nytg",
+          "serpCensus": true,
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ]
+        }
+      ],
       "dirOnly": [],
       "flaggedMisses": [],
       "citedNoUrl": [],
@@ -91089,7 +91358,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 7,
+            "results": 0,
             "accepted": 0,
             "error": null
           },
@@ -91099,7 +91368,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 3,
+            "results": 0,
             "accepted": 0,
             "error": null
           },
@@ -91109,7 +91378,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 7,
+            "results": 0,
             "accepted": 0,
             "error": null
           },
@@ -91130,37 +91399,100 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 2,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 0,
+        "resultCount": 2,
         "error": null
       },
       "candidatesRejected": {
-        "count": 33,
+        "count": 7,
         "byReason": {
-          "not-http-url": 22,
-          "non-review-host": 8,
-          "aggregator-internal-nav": 2,
-          "no-review-evidence": 1
+          "non-review-host": 5,
+          "no-review-evidence": 1,
+          "show-listing-page": 1
         }
       },
       "dedupedVariants": [],
+      "automatedExcludedListed": 0,
       "unextractable": [],
+      "ingestResults": [
+        {
+          "url": "https://www.leagueofcincytheatres.info/review-dr-seuss-how-the-grinch-stole-christmas-the-musical/",
+          "host": "leagueofcincytheatres.info",
+          "outletId": "leagueofcincytheatres",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": true,
+          "expectedReason": "tour-review",
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "dr-seuss-how-the-grinch-stole-christmas-tour-2026: https://www.leagueofcincytheatres.info/review-dr-seuss-how-the-grinch-stole-christmas-the-musical/ looks like a tour-stop or regional-mounting review (BWW city subdirectory / local-paper tour coverage), not a review of this production — refused by the tour-contamination guard. Expected rejection; if this outlet genuinely reviewed THIS production, ingest with the correct production URL or fix isLikelyTourReview in review-guards.js."
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/dr-seuss-how-the-grinch-stole-christmas-0",
+          "host": "newyorktheatreguide.com",
+          "outletId": "nytg",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": true,
+          "expectedReason": "tour-review",
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "dr-seuss-how-the-grinch-stole-christmas-tour-2026: https://www.newyorktheatreguide.com/reviews/dr-seuss-how-the-grinch-stole-christmas-0 looks like a tour-stop or regional-mounting review (BWW city subdirectory / local-paper tour coverage), not a review of this production — refused by the tour-contamination guard. Expected rejection; if this outlet genuinely reviewed THIS production, ingest with the correct production URL or fix isLikelyTourReview in review-guards.js."
+        }
+      ],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "no-census-yet",
-        "missing": [],
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "leagueofcincytheatres",
+            "outlet": "leagueofcincytheatres",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.leagueofcincytheatres.info/review-dr-seuss-how-the-grinch-stole-christmas-the-musical/"
+          },
+          {
+            "outletId": "nytg",
+            "outlet": "nytg",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.newyorktheatreguide.com/reviews/dr-seuss-how-the-grinch-stole-christmas-0"
+          }
+        ],
         "suppressedMissing": [],
-        "candidates": [],
+        "candidates": [
+          {
+            "url": "https://www.leagueofcincytheatres.info/review-dr-seuss-how-the-grinch-stole-christmas-the-musical/",
+            "outletId": "leagueofcincytheatres",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-11-06T19:17:50.122Z"
+          },
+          {
+            "url": "https://www.newyorktheatreguide.com/reviews/dr-seuss-how-the-grinch-stole-christmas-0",
+            "outletId": "nytg",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-11-06T19:17:50.122Z"
+          }
+        ],
         "censusSchema": 4,
         "excluded": [],
         "liveCount": 0,
-        "candidateCount": 0
+        "candidateCount": 2
       },
-      "computedAt": "2026-11-06T02:02:35.916Z"
+      "computedAt": "2026-11-06T19:17:50.122Z"
     },
     {
       "showId": "dr-strangelove-west-end-2024",
@@ -211434,30 +211766,233 @@
           "inheritReviews": false
         }
       ],
-      "aggregatorArticles": [],
+      "aggregatorArticles": [
+        "https://www.broadwayworld.com/article/Review-Roundup-BAMs-MEDEA-Starring-Rose-Byrne-and-Bobby-Cannavale-What-Did-the-Critics-Think-20200131",
+        "https://www.broadwayworld.com/article/Review-Roundup-The-Met-Opera-Opens-New-Season-With-MEDEA-20220928",
+        "https://www.broadwayworld.com/article/Review-Roundup-National-Theatres-MEDEA-with-Helen-McCrory-20140725"
+      ],
       "aggregatorListedUrls": [
+        "https://www.nytimes.com/2020/01/30/theater/medea-review.html",
+        "https://www.thewrap.com/medea-theater-review-rose-byrne-bobby-cannavale/",
+        "https://www.hollywoodreporter.com/review/medea-theater-review-1274662",
+        "https://www.vulture.com/2020/01/how-do-you-solve-a-problem-like-medea.html",
+        "https://www.vulture.com/2020/01/rose-byrne-bobby-cannavale-medea.html",
+        "https://observer.com/2020/01/medea-bam-rose-byrne-bobby-cannavale-review/",
+        "http://nystagereview.com/2020/01/30/medea-simon-stones-not-too-searching-euripides-update/",
+        "https://operawire.com/metropolitan-opera-2022-23-review-medea/",
+        "https://www.nytimes.com/2022/09/28/arts/music/review-medea-met-opera.html",
+        "http://www.nytimes.com/2014/07/26/theater/theater-review-medea-kathleen-turner-and-noel-coward-on-london-stages.html",
+        "https://www.theguardian.com/stage/2014/jul/22/medea-carrie-cracknell-helen-mccrory-national-theatre-review",
+        "http://www.telegraph.co.uk/culture/theatre/theatre-reviews/10980862/Medea-National-Theatre-review-thrilling-and-merciless.html",
+        "https://www.standard.co.uk/goingout/theatre/medea-national-theatre--theatre-review-helen-mccrory-is-on-exceptional-form-9620591.html",
+        "http://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/medea-national-theatre-review-unforgettable-and-horribly-gripping-9621292.html",
+        "http://www.dailymail.co.uk/tvshowbiz/article-2700820/An-exciting-fashionable-production-horrid-play-QUENTIN-LETTS-reviews-Medea.html",
+        "http://www.huffingtonpost.co.uk/victoria-sadler/helen-mccrory-medea-review_b_5614983.html",
         "https://newyorktheatrereview.blogspot.com/2015/10/wesley-doucette-on-medea-as-presented.html",
         "http://www.ayoungertheatre.com/review-medea-wilton-music-hall-teatro-patalogico/",
         "https://newyorkclassicalreview.com/2026/10/yoncheva-spyres-provide-adrenaline-injection-to-mets-medea-revival/",
-        "https://operawire.com/metropolitan-opera-2022-23-review-medea/",
+        "https://operacanada.ca/the-metropolitan-opera-medea-sondra-radvanovsky-giving-one-of-the-most-fully-immersive-performances-ive-ever-seen-on-an-opera-stage/",
+        "https://bachtrack.com/review-cherubini-medea-radvanovsky-polenzani-mcvicar-metropolitan-opera-new-york-september-2022",
         "https://operawire.com/metropolitan-opera-2026-27-review-medea/",
-        "https://www.broadwayworld.com/bwwopera/article/Review-Spectacular-Yoncheva-Shows-What-MEDEA-Is-All-About-at-the-Met-20261101",
-        "https://www.timeout.com/newyork/theater/medea-4",
-        "https://operawire.com/metropolitan-operas-medea-heads-for-live-in-hd-this-weekend/",
-        "https://musicaltheatrereview.com/the-musical-medea-upstairs-at-the-gatehouse-2/",
         "https://www.the-tls.com/arts/theatre/medea-metropolitan-opera-new-york-review-larry-wolff",
+        "https://indieopera.com/review-medea/",
+        "https://www.timeout.com/newyork/theater/medea-4",
+        "https://www.broadwayworld.com/bwwopera/article/Review-Spectacular-Yoncheva-Shows-What-MEDEA-Is-All-About-at-the-Met-20261101",
+        "https://operawire.com/metropolitan-operas-medea-heads-for-live-in-hd-this-weekend/",
+        "https://parterre.com/works/medea/",
+        "https://musicaltheatrereview.com/the-musical-medea-upstairs-at-the-gatehouse-2/",
         "https://www.theatermania.com/news/review-a-messy-divorce-plays-out-in-public-in-medea-at-the-metropolitan-opera_94358/",
         "https://aroundthetownchicago.com/theatre-reviews/medea-reviewed-by-jacob-davis/",
         "https://www.the-tls.com/arts/theatre/medea-sohoplace-phaedra-national-theatre-review-mary-beard",
-        "https://parterre.com/works/medea/",
-        "https://bachtrack.com/review-cherubini-medea-radvanovsky-polenzani-mcvicar-metropolitan-opera-new-york-september-2022",
         "https://bachtrack.com/fr_FR/review-cherubini-medea-radvanovsky-polenzani-mcvicar-metropolitan-opera-new-york-september-2022",
         "https://everything-theatre.co.uk/2026/10/review-the-musical-medea-upstairs-at-the-gatehouse/"
       ],
-      "dirFiles": 20,
+      "dirFiles": 21,
       "dirClean": 4,
       "inReviewsJson": 4,
       "missing": [
+        {
+          "url": "https://www.nytimes.com/2020/01/30/theater/medea-review.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-BAMs-MEDEA-Starring-Rose-Byrne-and-Bobby-Cannavale-What-Did-the-Critics-Think-20200131"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.hollywoodreporter.com/review/medea-theater-review-1274662",
+          "host": "hollywoodreporter.com",
+          "knownOutletId": "hollywood-reporter",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-BAMs-MEDEA-Starring-Rose-Byrne-and-Bobby-Cannavale-What-Did-the-Critics-Think-20200131"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.vulture.com/2020/01/how-do-you-solve-a-problem-like-medea.html",
+          "host": "vulture.com",
+          "knownOutletId": "vulture",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-BAMs-MEDEA-Starring-Rose-Byrne-and-Bobby-Cannavale-What-Did-the-Critics-Think-20200131"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.vulture.com/2020/01/rose-byrne-bobby-cannavale-medea.html",
+          "host": "vulture.com",
+          "knownOutletId": "vulture",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-BAMs-MEDEA-Starring-Rose-Byrne-and-Bobby-Cannavale-What-Did-the-Critics-Think-20200131"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://observer.com/2020/01/medea-bam-rose-byrne-bobby-cannavale-review/",
+          "host": "observer.com",
+          "knownOutletId": "observer",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-BAMs-MEDEA-Starring-Rose-Byrne-and-Bobby-Cannavale-What-Did-the-Critics-Think-20200131"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://nystagereview.com/2020/01/30/medea-simon-stones-not-too-searching-euripides-update/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-BAMs-MEDEA-Starring-Rose-Byrne-and-Bobby-Cannavale-What-Did-the-Critics-Think-20200131"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.nytimes.com/2022/09/28/arts/music/review-medea-met-opera.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-The-Met-Opera-Opens-New-Season-With-MEDEA-20220928"
+            }
+          ]
+        },
+        {
+          "url": "http://www.nytimes.com/2014/07/26/theater/theater-review-medea-kathleen-turner-and-noel-coward-on-london-stages.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-National-Theatres-MEDEA-with-Helen-McCrory-20140725"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2014/jul/22/medea-carrie-cracknell-helen-mccrory-national-theatre-review",
+          "host": "theguardian.com",
+          "knownOutletId": "guardian",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-National-Theatres-MEDEA-with-Helen-McCrory-20140725"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.telegraph.co.uk/culture/theatre/theatre-reviews/10980862/Medea-National-Theatre-review-thrilling-and-merciless.html",
+          "host": "telegraph.co.uk",
+          "knownOutletId": "sunday-telegraph",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-National-Theatres-MEDEA-with-Helen-McCrory-20140725"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.standard.co.uk/goingout/theatre/medea-national-theatre--theatre-review-helen-mccrory-is-on-exceptional-form-9620591.html",
+          "host": "standard.co.uk",
+          "knownOutletId": "standard",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-National-Theatres-MEDEA-with-Helen-McCrory-20140725"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/medea-national-theatre-review-unforgettable-and-horribly-gripping-9621292.html",
+          "host": "independent.co.uk",
+          "knownOutletId": "independent",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-National-Theatres-MEDEA-with-Helen-McCrory-20140725"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.dailymail.co.uk/tvshowbiz/article-2700820/An-exciting-fashionable-production-horrid-play-QUENTIN-LETTS-reviews-Medea.html",
+          "host": "dailymail.co.uk",
+          "knownOutletId": "mail-on-sunday",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-National-Theatres-MEDEA-with-Helen-McCrory-20140725"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.huffingtonpost.co.uk/victoria-sadler/helen-mccrory-medea-review_b_5614983.html",
+          "host": "huffingtonpost.co.uk",
+          "knownOutletId": "huffpost",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-National-Theatres-MEDEA-with-Helen-McCrory-20140725"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
         {
           "url": "https://newyorktheatrereview.blogspot.com/2015/10/wesley-doucette-on-medea-as-presented.html",
           "host": "newyorktheatrereview.blogspot.com",
@@ -211472,10 +212007,12 @@
           "priorRunSource": "show-score-url-year"
         },
         {
-          "url": "https://musicaltheatrereview.com/the-musical-medea-upstairs-at-the-gatehouse-2/",
-          "host": "musicaltheatrereview.com",
-          "knownOutletId": "musical-theatre-review",
+          "url": "https://operacanada.ca/the-metropolitan-opera-medea-sondra-radvanovsky-giving-one-of-the-most-fully-immersive-performances-ive-ever-seen-on-an-opera-stage/",
+          "host": "operacanada.ca",
+          "knownOutletId": "operacanada",
           "serpCensus": true,
+          "priorRun": true,
+          "priorRunSource": "pending-file-date:2022-10-13",
           "sources": [
             {
               "source": "serp-census",
@@ -211487,6 +212024,32 @@
           "url": "https://www.the-tls.com/arts/theatre/medea-metropolitan-opera-new-york-review-larry-wolff",
           "host": "the-tls.com",
           "knownOutletId": "the-tls",
+          "serpCensus": true,
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ]
+        },
+        {
+          "url": "https://indieopera.com/review-medea/",
+          "host": "indieopera.com",
+          "knownOutletId": "indie-opera",
+          "serpCensus": true,
+          "priorRun": true,
+          "priorRunSource": "pending-file-date:2022-10-01",
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ]
+        },
+        {
+          "url": "https://musicaltheatrereview.com/the-musical-medea-upstairs-at-the-gatehouse-2/",
+          "host": "musicaltheatrereview.com",
+          "knownOutletId": "musical-theatre-review",
           "serpCensus": true,
           "sources": [
             {
@@ -211534,6 +212097,36 @@
       ],
       "dirOnly": [],
       "flaggedMisses": [
+        {
+          "url": "https://www.thewrap.com/medea-theater-review-rose-byrne-bobby-cannavale/",
+          "host": "thewrap.com",
+          "knownOutletId": "thewrap",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "thewrap--thom-geier.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.thewrap.com/medea-theater-review-rose-byrne-bobby-cannavale/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-BAMs-MEDEA-Starring-Rose-Byrne-and-Bobby-Cannavale-What-Did-the-Critics-Think-20200131"
+            }
+          ],
+          "reverify": false
+        },
         {
           "url": "http://www.ayoungertheatre.com/review-medea-wilton-music-hall-teatro-patalogico/",
           "host": "ayoungertheatre.com",
@@ -211665,7 +212258,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 0,
+            "results": 9,
             "accepted": 0,
             "error": null
           },
@@ -211675,8 +212268,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 0,
-            "accepted": 0,
+            "results": 8,
+            "accepted": 4,
             "error": null
           },
           {
@@ -211685,7 +212278,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 0,
+            "results": 9,
             "accepted": 0,
             "error": null
           },
@@ -211695,8 +212288,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 0,
-            "accepted": 0,
+            "results": 8,
+            "accepted": 2,
             "error": null
           },
           {
@@ -211705,8 +212298,8 @@
             "page": 1,
             "geo": "us",
             "ok": true,
-            "results": 0,
-            "accepted": 0,
+            "results": 10,
+            "accepted": 2,
             "error": null
           },
           {
@@ -211715,21 +212308,49 @@
             "page": 2,
             "geo": "us",
             "ok": true,
-            "results": 0,
+            "results": 10,
             "accepted": 0,
             "error": null
           }
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 0,
+        "resultCount": 8,
         "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 831,
+        "byReason": {
+          "non-review-host": 62,
+          "aggregator-internal-nav": 632,
+          "venue-production-page": 1,
+          "no-review-evidence": 2,
+          "ticketing-reseller": 1,
+          "not-http-url": 112,
+          "aggregator-section-root": 15,
+          "podcast-episode": 1,
+          "show-listing-page": 1,
+          "census-junk-host": 1,
+          "event-listing": 1,
+          "review-hub-page": 1,
+          "non-stage-review": 1
+        }
       },
       "dedupedVariants": [],
+      "priorRunArticles": [
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-BAMs-MEDEA-Starring-Rose-Byrne-and-Bobby-Cannavale-What-Did-the-Critics-Think-20200131",
+          "publishDate": "2020-01-31"
+        },
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-The-Met-Opera-Opens-New-Season-With-MEDEA-20220928",
+          "publishDate": "2022-09-28"
+        },
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-National-Theatres-MEDEA-with-Helen-McCrory-20140725",
+          "publishDate": "2014-07-25"
+        }
+      ],
       "nonReviewCandidates": [
         {
           "url": "https://www.timeout.com/newyork/theater/medea-4",
@@ -211743,14 +212364,141 @@
       "unextractable": [],
       "weIngestBlocked": [
         {
+          "url": "https://www.nytimes.com/2020/01/30/theater/medea-review.html",
+          "host": "nytimes.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.hollywoodreporter.com/review/medea-theater-review-1274662",
+          "host": "hollywoodreporter.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.vulture.com/2020/01/how-do-you-solve-a-problem-like-medea.html",
+          "host": "vulture.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.vulture.com/2020/01/rose-byrne-bobby-cannavale-medea.html",
+          "host": "vulture.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://observer.com/2020/01/medea-bam-rose-byrne-bobby-cannavale-review/",
+          "host": "observer.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://nystagereview.com/2020/01/30/medea-simon-stones-not-too-searching-euripides-update/",
+          "host": "nystagereview.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.nytimes.com/2022/09/28/arts/music/review-medea-met-opera.html",
+          "host": "nytimes.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.nytimes.com/2014/07/26/theater/theater-review-medea-kathleen-turner-and-noel-coward-on-london-stages.html",
+          "host": "nytimes.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2014/jul/22/medea-carrie-cracknell-helen-mccrory-national-theatre-review",
+          "host": "theguardian.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.telegraph.co.uk/culture/theatre/theatre-reviews/10980862/Medea-National-Theatre-review-thrilling-and-merciless.html",
+          "host": "telegraph.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.standard.co.uk/goingout/theatre/medea-national-theatre--theatre-review-helen-mccrory-is-on-exceptional-form-9620591.html",
+          "host": "standard.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/medea-national-theatre-review-unforgettable-and-horribly-gripping-9621292.html",
+          "host": "independent.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.dailymail.co.uk/tvshowbiz/article-2700820/An-exciting-fashionable-production-horrid-play-QUENTIN-LETTS-reviews-Medea.html",
+          "host": "dailymail.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.huffingtonpost.co.uk/victoria-sadler/helen-mccrory-medea-review_b_5614983.html",
+          "host": "huffingtonpost.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
           "url": "https://newyorktheatrereview.blogspot.com/2015/10/wesley-doucette-on-medea-as-presented.html",
           "host": "newyorktheatrereview.blogspot.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://operacanada.ca/the-metropolitan-opera-medea-sondra-radvanovsky-giving-one-of-the-most-fully-immersive-performances-ive-ever-seen-on-an-opera-stage/",
+          "host": "operacanada.ca",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://indieopera.com/review-medea/",
+          "host": "indieopera.com",
           "priorRun": true,
           "reason": "prior-run",
           "censusGateOn": true
         }
       ],
       "ingestResults": [
+        {
+          "url": "https://www.the-tls.com/arts/theatre/medea-metropolitan-opera-new-york-review-larry-wolff",
+          "host": "the-tls.com",
+          "outletId": "the-tls",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "Fetch failed: fetch failed: All scraping methods failed; no archive.org capture"
+        },
         {
           "url": "https://musicaltheatrereview.com/the-musical-medea-upstairs-at-the-gatehouse-2/",
           "host": "musicaltheatrereview.com",
@@ -211765,21 +212513,6 @@
           "unclassified": false,
           "zeroChar": false,
           "reason": "medea-off-broadway-2026: https://musicaltheatrereview.com/the-musical-medea-upstairs-at-the-gatehouse-2/ has no readable publish date and this show has an earlier-dated citation (a prior production), so the undated page was refused rather than filed where it could be scored as this run's review. Expected rejection; if it IS this production's review, ingest it with --publish-date=YYYY-MM-DD."
-        },
-        {
-          "url": "https://www.the-tls.com/arts/theatre/medea-metropolitan-opera-new-york-review-larry-wolff",
-          "host": "the-tls.com",
-          "outletId": "the-tls",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": true,
-          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS."
         },
         {
           "url": "https://www.theatermania.com/news/review-a-messy-divorce-plays-out-in-public-in-medea-at-the-metropolitan-opera_94358/",
@@ -211845,18 +212578,18 @@
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "musical-theatre-review",
-            "outlet": "musical-theatre-review",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://musicaltheatrereview.com/the-musical-medea-upstairs-at-the-gatehouse-2/"
-          },
-          {
             "outletId": "the-tls",
             "outlet": "the-tls",
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.the-tls.com/arts/theatre/medea-metropolitan-opera-new-york-review-larry-wolff"
+          },
+          {
+            "outletId": "musical-theatre-review",
+            "outlet": "musical-theatre-review",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://musicaltheatrereview.com/the-musical-medea-upstairs-at-the-gatehouse-2/"
           },
           {
             "outletId": "theatermania",
@@ -211904,16 +212637,16 @@
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://newyorkclassicalreview.com/2026/10/yoncheva-spyres-provide-adrenaline-injection-to-mets-medea-revival/",
-            "outletId": "newyorkclassicalreview.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-01T03:53:58.113Z"
-          },
-          {
             "url": "https://operawire.com/metropolitan-opera-2022-23-review-medea/",
             "outletId": "operawire.com",
             "state": "live",
             "firstSeenAt": "2026-11-01T16:44:25.468Z"
+          },
+          {
+            "url": "https://newyorkclassicalreview.com/2026/10/yoncheva-spyres-provide-adrenaline-injection-to-mets-medea-revival/",
+            "outletId": "newyorkclassicalreview.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-01T03:53:58.113Z"
           },
           {
             "url": "https://operawire.com/metropolitan-opera-2026-27-review-medea/",
@@ -211922,16 +212655,16 @@
             "firstSeenAt": "2026-11-03T07:10:54.955Z"
           },
           {
-            "url": "https://www.broadwayworld.com/bwwopera/article/Review-Spectacular-Yoncheva-Shows-What-MEDEA-Is-All-About-at-the-Met-20261101",
-            "outletId": "broadwayworld.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-03T17:21:06.692Z"
-          },
-          {
             "url": "https://www.timeout.com/newyork/theater/medea-4",
             "outletId": "timeout.com",
             "state": "live",
             "firstSeenAt": "2026-10-30T00:11:50.524Z"
+          },
+          {
+            "url": "https://www.broadwayworld.com/bwwopera/article/Review-Spectacular-Yoncheva-Shows-What-MEDEA-Is-All-About-at-the-Met-20261101",
+            "outletId": "broadwayworld.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-03T17:21:06.692Z"
           },
           {
             "url": "https://operawire.com/metropolitan-operas-medea-heads-for-live-in-hd-this-weekend/",
@@ -211946,18 +212679,18 @@
             "firstSeenAt": "2026-11-02T06:46:27.997Z"
           },
           {
-            "url": "https://musicaltheatrereview.com/the-musical-medea-upstairs-at-the-gatehouse-2/",
-            "outletId": "musical-theatre-review",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-11-01T16:44:25.468Z"
-          },
-          {
             "url": "https://www.the-tls.com/arts/theatre/medea-metropolitan-opera-new-york-review-larry-wolff",
             "outletId": "the-tls",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-10-30T00:11:50.524Z"
+          },
+          {
+            "url": "https://musicaltheatrereview.com/the-musical-medea-upstairs-at-the-gatehouse-2/",
+            "outletId": "musical-theatre-review",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-11-01T16:44:25.468Z"
           },
           {
             "url": "https://www.theatermania.com/news/review-a-messy-divorce-plays-out-in-public-in-medea-at-the-metropolitan-opera_94358/",
@@ -212013,7 +212746,7 @@
         "liveCount": 5,
         "candidateCount": 11
       },
-      "computedAt": "2026-11-05T22:39:41.205Z"
+      "computedAt": "2026-11-06T19:17:50.122Z"
     },
     {
       "showId": "meet-the-cartozians-off-broadway-2025",
@@ -265002,6 +265735,10 @@
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
         "https://broadwaybaby.com/shows/pulman-and-stilgoe-hooray-for-hollywood/839240",
+        "https://everything-theatre.co.uk/2026/10/review-pulman-stilgoe-hooray-for-hollywood-chichester-festival-theatre/",
+        "https://theatrereviews.design/liza-pulman-and-joe-stilgoe-hooray-for-hollywood/",
+        "https://loureviews.blog/2026/10/26/show-focus-liza-pulman-and-joe-stilgoe-on-hooray-for-hollywood/",
+        "https://www.thereviewshub.com/liza-pulman-and-joe-stilgoe-hooray-for-hollywood-duchess-theatre-london/",
         "https://closeupculture.com/2026/10/14/hooray-for-hollywood-joe-stilgoe-liza-pulman-on-the-return-of-their-hit-show/",
         "https://theoxfordmagazine.com/event/pulman-stilgoe-hooray-for-hollywood/"
       ],
@@ -265009,6 +265746,20 @@
       "dirClean": 2,
       "inReviewsJson": 2,
       "missing": [
+        {
+          "url": "https://www.thereviewshub.com/liza-pulman-and-joe-stilgoe-hooray-for-hollywood-duchess-theatre-london/",
+          "host": "thereviewshub.com",
+          "knownOutletId": "thereviewshub",
+          "serpCensus": true,
+          "priorRun": true,
+          "priorRunSource": "pending-file-date:2026-04-14",
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ]
+        },
         {
           "url": "https://theoxfordmagazine.com/event/pulman-stilgoe-hooray-for-hollywood/",
           "host": "theoxfordmagazine.com",
@@ -265022,16 +265773,7 @@
           ]
         }
       ],
-      "dirOnly": [
-        {
-          "host": "everything-theatre.co.uk",
-          "count": 1
-        },
-        {
-          "host": "theatrereviews.design",
-          "count": 1
-        }
-      ],
+      "dirOnly": [],
       "flaggedMisses": [
         {
           "url": "https://broadwaybaby.com/shows/pulman-and-stilgoe-hooray-for-hollywood/839240",
@@ -265061,6 +265803,39 @@
           ],
           "serpCensus": true,
           "reverify": true
+        },
+        {
+          "url": "https://loureviews.blog/2026/10/26/show-focus-liza-pulman-and-joe-stilgoe-on-hooray-for-hollywood/",
+          "host": "loureviews.blog",
+          "knownOutletId": "loureviews",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "loureviews--louise-penn.json",
+              "flag": "clean",
+              "urlInDir": "https://loureviews.blog/2026/10/26/show-focus-liza-pulman-and-joe-stilgoe-on-hooray-for-hollywood/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "rejectionReason"
+          ],
+          "confirmedNonReview": true,
+          "confirmedBasis": [
+            "non-review"
+          ],
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
+          "serpCensus": true,
+          "reverify": false
         },
         {
           "url": "https://closeupculture.com/2026/10/14/hooray-for-hollywood-joe-stilgoe-liza-pulman-on-the-return-of-their-hit-show/",
@@ -265152,8 +265927,8 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 6,
-            "accepted": 0,
+            "results": 9,
+            "accepted": 1,
             "error": null
           },
           {
@@ -265162,8 +265937,8 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 4,
-            "accepted": 1,
+            "results": 5,
+            "accepted": 0,
             "error": null
           },
           {
@@ -265173,7 +265948,7 @@
             "geo": "gb",
             "ok": true,
             "results": 9,
-            "accepted": 0,
+            "accepted": 3,
             "error": null
           },
           {
@@ -265183,7 +265958,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           },
           {
@@ -265199,23 +265974,30 @@
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 2,
+        "resultCount": 6,
         "error": null
       },
       "candidatesRejected": {
-        "count": 32,
+        "count": 23,
         "byReason": {
-          "not-http-url": 20,
-          "non-review-host": 7,
-          "write-path-blocked": 1,
-          "no-review-evidence": 3,
-          "ticketing-reseller": 1
+          "non-review-host": 16,
+          "no-review-evidence": 2,
+          "ticketing-reseller": 1,
+          "census-junk-host": 2,
+          "write-path-blocked": 2
         }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 1,
       "unextractable": [],
       "weIngestBlocked": [
+        {
+          "url": "https://www.thereviewshub.com/liza-pulman-and-joe-stilgoe-hooray-for-hollywood-duchess-theatre-london/",
+          "host": "thereviewshub.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
         {
           "url": "https://theoxfordmagazine.com/event/pulman-stilgoe-hooray-for-hollywood/",
           "host": "theoxfordmagazine.com",
@@ -265247,6 +266029,18 @@
         "suppressedMissing": [],
         "candidates": [
           {
+            "url": "https://everything-theatre.co.uk/2026/10/review-pulman-stilgoe-hooray-for-hollywood-chichester-festival-theatre/",
+            "outletId": "everything-theatre.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-11-06T19:17:50.122Z"
+          },
+          {
+            "url": "https://theatrereviews.design/liza-pulman-and-joe-stilgoe-hooray-for-hollywood/",
+            "outletId": "theatrereviews.design",
+            "state": "live",
+            "firstSeenAt": "2026-11-06T19:17:50.122Z"
+          },
+          {
             "url": "https://theoxfordmagazine.com/event/pulman-stilgoe-hooray-for-hollywood/",
             "outletId": "theoxfordmagazine.com",
             "state": "IN_FLIGHT",
@@ -265264,15 +266058,20 @@
         "censusSchema": 4,
         "excluded": [
           {
+            "url": "https://loureviews.blog/2026/10/26/show-focus-liza-pulman-and-joe-stilgoe-on-hooray-for-hollywood/",
+            "host": "loureviews.blog",
+            "reason": "confirmed-non-review"
+          },
+          {
             "url": "https://closeupculture.com/2026/10/14/hooray-for-hollywood-joe-stilgoe-liza-pulman-on-the-return-of-their-hit-show/",
             "host": "closeupculture.com",
             "reason": "confirmed-non-review"
           }
         ],
-        "liveCount": 0,
-        "candidateCount": 2
+        "liveCount": 2,
+        "candidateCount": 4
       },
-      "computedAt": "2026-11-06T02:02:35.916Z"
+      "computedAt": "2026-11-06T19:17:50.122Z"
     },
     {
       "showId": "pulman-and-stilgoe-hooray-for-hollywood-west-end-2026",
@@ -423221,23 +424020,23 @@
     }
   ],
   "staleness": {
-    "at": "2026-11-06T17:07:51.338Z",
+    "at": "2026-11-06T19:17:50.121Z",
     "reserveEvery": 4,
     "reservedAttempted": [
-      "tosca-english-national-opera-west-end-2026"
+      "medea-off-broadway-2026"
     ],
     "catalogueReserveEvery": 8,
     "catalogueAttempted": [],
-    "neverAuditedDueAtStart": 632,
+    "neverAuditedDueAtStart": 631,
     "oldestDueRowAtStart": {
       "showId": "this-is-my-favorite-song-off-broadway-2024",
       "computedAt": "2026-10-23T14:07:48.228Z",
-      "ageHours": 338.7
+      "ageHours": 340.8
     },
     "oldestDueRowAfterRun": {
       "showId": "this-is-my-favorite-song-off-broadway-2024",
       "computedAt": "2026-10-23T14:07:48.228Z",
-      "ageHours": 339
+      "ageHours": 341.2
     }
   }
 }

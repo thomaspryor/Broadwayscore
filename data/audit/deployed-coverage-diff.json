@@ -1,13 +1,48 @@
 {
-  "generatedAt": "2026-11-06T17:08:46.081Z",
+  "generatedAt": "2026-11-06T19:19:54.354Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 322,
-  "clean": 322,
-  "defective": 0,
-  "byType": {},
-  "shows": [],
+  "clean": 320,
+  "defective": 2,
+  "byType": {
+    "score-drift": 2
+  },
+  "shows": [
+    {
+      "showId": "girls-off-west-end-2026",
+      "title": "Girls",
+      "openingDate": "2026-10-27",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 77.8 vs local 77.71 (Δ0.09)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 18,
+      "deployedCount": 19,
+      "firstDefectAt": "2026-11-06T19:19:50.279Z"
+    },
+    {
+      "showId": "garry-starr-classic-penguins-off-west-end-2026",
+      "title": "Garry Starr Classic Penguins",
+      "openingDate": "2026-10-23",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 87.27 vs local 87.33 (Δ0.06)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 16,
+      "deployedCount": 17,
+      "firstDefectAt": "2026-11-06T19:19:50.279Z"
+    }
+  ],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }
