@@ -194,5 +194,19 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-06T13:01:10.500Z"
+  },
+  {
+    "conditionKey": "llm-scoring:cost-repeat-signature",
+    "title": "LLM scoring repeated work detected",
+    "description": "Repeated scoring signatures in the last 24h (processed/input tokens): 1/5071 seen 3 times.",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-06T13:34:10.784Z"
   }
 ]
