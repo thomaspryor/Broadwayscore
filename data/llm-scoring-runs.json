@@ -761550,5 +761550,43 @@
     "runId": "42287275772",
     "source": "comparative-rescore",
     "errorDetails": []
+  },
+  {
+    "startedAt": "2026-11-06T20:26:05.185Z",
+    "completedAt": "2026-11-06T20:26:16.208Z",
+    "totalReviews": 23,
+    "processed": 2,
+    "skipped": 21,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 11659,
+      "output": 672,
+      "cacheRead": 7614,
+      "cacheWrite": 0,
+      "total": 29702
+    },
+    "costUsd": 0.045046,
+    "runId": "42287414445",
+    "source": "index",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-11-06T20:31:13.113Z",
+    "completedAt": "2026-11-06T20:31:13.123Z",
+    "totalReviews": 0,
+    "processed": 0,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 0,
+      "output": 0,
+      "cacheRead": 0,
+      "cacheWrite": 0,
+      "total": 0
+    },
+    "costUsd": 0,
+    "runId": "42287414445",
+    "source": "comparative-rescore",
+    "errorDetails": []
   }
 ]
