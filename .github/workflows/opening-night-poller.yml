@@ -1549,7 +1549,10 @@ jobs:
         continue-on-error: true
         env:
           SHOWS: ${{ steps.find.outputs.shows }}
-        run: node scripts/poller-failure-audience.js --shows="$SHOWS"
+          # A run that dies before the find step (e.g. checkout-core-data) has no
+          # find output; the dispatched show_id still names the show (BRO-7029 night).
+          INPUT_SHOW_ID: ${{ inputs.show_id }}
+        run: node scripts/poller-failure-audience.js --shows="${SHOWS:-$INPUT_SHOW_ID}"
 
       # BRO-3707: opening-night-express.yml deliberately `gh run cancel`s any
       # in-progress poller run before taking over (its "Cancel competing

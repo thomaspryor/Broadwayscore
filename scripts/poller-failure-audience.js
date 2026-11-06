@@ -15,10 +15,16 @@
  * opening-night-poller.yml's Notify step also emails the owner right away
  * (notify-failure's email_with_auto_fix); the fix card is still filed.
  *
- * Fail-open: an empty show list, an id missing from shows.json, a show with
- * no category, a Broadway show with no or an unparseable openingDate, or an
- * unreadable shows.json all count, and the workflow only skips the immediate
- * email on an explicit 'false'.
+ * Fail-open: an empty show list, a show with no category, a Broadway show with
+ * no or an unparseable openingDate all count, and the workflow only skips the
+ * immediate email on an explicit 'false'. An id that shows.json cannot answer
+ * for (shows.json unreadable because the run died in checkout-core-data, or the
+ * id is not in it) counts too, UNLESS the id itself ends in a non-Broadway
+ * market suffix (-off-broadway-YYYY, -west-end-YYYY, -off-west-end-YYYY):
+ * tests/unit/poller-failure-audience.test.mjs checks every such id in
+ * shows.json is non-Broadway. Tours are left out (a Broadway title can end in
+ * "tour", and the poller never polls tours). BRO-7029 night: three Off-Broadway polls died before shows.json
+ * loaded and the owner got a [CRITICAL] email they had opted out of.
  *
  *   node scripts/poller-failure-audience.js --shows=a,b
  *
@@ -37,6 +43,15 @@ function parseShowIds(raw) {
   return String(raw || '').split(',').map((s) => s.trim()).filter(Boolean);
 }
 
+// Ids whose market is certain from the id alone. Plain `<title>-YYYY` ids are
+// Broadway OR regional, so they stay fail-open.
+const NON_BROADWAY_ID_RE = /-(off-broadway|west-end|off-west-end)-\d{4}$/;
+
+/** Pure: true when the id alone says the show is not Broadway. */
+function isNonBroadwayId(id) {
+  return NON_BROADWAY_ID_RE.test(String(id || ''));
+}
+
 /** Pure: a Broadway show in its opening window, or one we cannot date. */
 function isBroadwayOpening(show, now) {
   if (!show) return true;
@@ -48,9 +63,13 @@ function isBroadwayOpening(show, now) {
 
 /** Pure: true when the poll includes a Broadway opening (or cannot tell). */
 function isBroadwayPoll(showIds, shows, now = new Date()) {
-  if (!showIds.length || !Array.isArray(shows)) return true;
-  const byId = new Map(shows.filter((s) => s && s.id).map((s) => [s.id, s]));
-  return showIds.some((id) => isBroadwayOpening(byId.get(id), now));
+  if (!showIds.length) return true;
+  const byId = new Map((Array.isArray(shows) ? shows : []).filter((s) => s && s.id).map((s) => [s.id, s]));
+  return showIds.some((id) => {
+    const show = byId.get(id);
+    if (!show) return !isNonBroadwayId(id);
+    return isBroadwayOpening(show, now);
+  });
 }
 
 function loadShows() {
@@ -72,4 +91,4 @@ function main(argv = process.argv.slice(2)) {
 
 if (require.main === module) process.exitCode = main();
 
-module.exports = { parseShowIds, isBroadwayPoll, isBroadwayOpening, main };
+module.exports = { parseShowIds, isBroadwayPoll, isBroadwayOpening, isNonBroadwayId, main };
