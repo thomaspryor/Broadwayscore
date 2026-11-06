@@ -84,7 +84,7 @@ function publicTrackedDataFiles(repoDir) {
 function findStaleCopies({ dataDir, coreDataDir, files = getLocalCopyFiles(), repoDir = null }) {
   let tracked = new Set();
   if (repoDir) {
-    try { tracked = publicTrackedDataFiles(repoDir); } catch { tracked = new Set(); }
+    try { tracked = publicTrackedDataFiles(repoDir); } catch (e) { console.warn(`[core-data-files] tracked-file listing failed (${(e && e.code) || (e && e.message)}); not excluding tracked files`); tracked = new Set(); }
   }
   const stale = [];
   for (const f of files) {

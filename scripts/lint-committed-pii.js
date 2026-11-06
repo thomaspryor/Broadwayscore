@@ -70,7 +70,7 @@ function listTrackedAuditFiles() {
   const out = execFileSync(
     'git',
     ['ls-files', '--', 'data/audit/*.json', 'data/audit/*.jsonl', 'data/archive/*.json', 'data/archive/*.jsonl'],
-    { cwd: REPO_ROOT, encoding: 'utf8' }
+    { cwd: REPO_ROOT, encoding: 'utf8', maxBuffer: 256 * 1024 * 1024 }
   );
   return out.split('\n').filter(Boolean);
 }
