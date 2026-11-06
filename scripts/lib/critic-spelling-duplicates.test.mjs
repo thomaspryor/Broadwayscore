@@ -98,3 +98,14 @@ test('scanReviewTextsForCriticDuplicates skips _-prefixed holding dirs (BRO-5740
   assert.deepEqual(findings.map((f) => f.showId), ['show-c']);
   fs.rmSync(root, { recursive: true, force: true });
 });
+
+test('findSpellingDuplicates skips a pair already linked by duplicateOf (BRO-6928)', () => {
+  const records = [
+    { showId: 'show-a', outletId: 'standard', criticName: 'Nick Curtis', file: 'standard--nick-curtis.json', duplicateOf: 'standard--nick-curits.json' },
+    { showId: 'show-a', outletId: 'standard', criticName: 'Nick Curits', file: 'standard--nick-curits.json' },
+  ];
+  assert.equal(findSpellingDuplicates(records).length, 0);
+  // a duplicateOf pointing elsewhere does not resolve the pair
+  records[0].duplicateOf = 'standard--someone-else.json';
+  assert.equal(findSpellingDuplicates(records).length, 1);
+});

@@ -32,7 +32,7 @@ const KNOWN_BACKLOG = [
   ['aint-too-proud-2019', 'ew', 'Leah Greenblat', 'Leah Greenblatt'],
   ['allegiance-2015', 'san-diego-union-tribune', 'James Hebert', 'James Herbert'],
   ['anastasia-2017', 'nbcny', 'Dave Quinn', 'David Quinn'],
-  ['beautiful-little-fool-west-end-2026', 'broadwayworld', 'Aliya Al-Hassan', 'Aliya Al-Hussain'],
+  ['beautiful-little-fool-off-west-end-2026', 'broadwayworld', 'Aliya Al-Hassan', 'Aliya Al-Hussain'],
   ['betrayal-2019', 'ew', 'Alison Adato', 'Allison Adato'],
   ['casa-valentina-2014', 'ew', 'Adam Markovitz', 'Adam Markowitz'],
   ['city-of-angels-1989', 'daily-mail', 'Quentin Letts', 'Quentln Letts'],
@@ -103,7 +103,7 @@ const KNOWN_BACKLOG = [
   ['the-lifespan-of-a-fact-2018', 'vulture', 'Sara Holden', 'Sara Holdren'],
   ['the-lifespan-of-a-fact-2018', 'vulture', 'Sara Holden', 'Sarah Holdren'],
   ['the-lifespan-of-a-fact-2018', 'vulture', 'Sara Holdren', 'Sarah Holdren'],
-  ['the-oresteia-west-end-2026', 'everything-theatre', 'Raffaella Sero', 'Raffaello Sero'],
+  ['the-oresteia-off-west-end-2026', 'everything-theatre', 'Raffaella Sero', 'Raffaello Sero'],
   ['the-parisian-woman-2017', 'vulture', 'Sara Holdren', 'Sarah Holdren'],
   ['the-play-that-goes-wrong-west-end-2021', 'timeout-london', 'Anya Ryan', 'Anna Ryan'],
   ['the-realistic-joneses-2014', 'vulture', 'Jesse Green', 'Jessie Green'],
@@ -168,4 +168,21 @@ test('the Markoski/Markosky pair itself is gone from the live corpus (directed r
   assert.ok(files.includes('london-theatre--cheryl-markosky.json'), 'the correctly-spelled file must exist');
   const data = JSON.parse(fs.readFileSync(path.join(showDir, 'london-theatre--cheryl-markosky.json'), 'utf8'));
   assert.equal(data.criticName, 'Cheryl Markosky');
+});
+
+// BRO-6928: critic PAGES (reviews.json, the site's grouping) split by a spelling
+// variant. A pair that is not held in data/audit/critic-splits-baseline.json and that no
+// alias resolves fails here. Fix: add the alias (node scripts/audit-critic-splits.js --apply
+// for 'merge' pairs), or record different people in data/audit/critic-distinct-people.json.
+test('reviews.json: no NEW critic page split by a byline spelling variant', (t) => {
+  const reviewsPath = path.join(REPO_ROOT, 'data', 'reviews.json');
+  if (!fs.existsSync(reviewsPath)) {
+    assert.ok(!REQUIRE_CORPUS, 'REQUIRE_REVIEW_CORPUS=1 but data/reviews.json is missing: the core-data checkout did not land.');
+    t.skip('no data/reviews.json (run ./scripts/setup-local-data.sh)');
+    return;
+  }
+  const { buildPages, findSplitPairs, loadDistinct, loadBaseline, newSplitPairs } = require('../../scripts/audit-critic-splits.js');
+  const reviews = JSON.parse(fs.readFileSync(reviewsPath, 'utf8')).reviews || [];
+  const fresh = newSplitPairs(findSplitPairs(buildPages(reviews), { distinct: loadDistinct() }), loadBaseline());
+  assert.deepEqual(fresh.map((p) => `${p.verdict}: ${p.variant.name} (${p.variant.count}) -> ${p.canonical.name} (${p.canonical.count}) [${p.reason}]`), []);
 });

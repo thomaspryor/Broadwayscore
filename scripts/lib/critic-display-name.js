@@ -211,7 +211,11 @@ function criticRegistryNames() {
     if (!c || typeof c.displayName !== 'string') continue;
     const clean = stripBylineSuffixes(c.displayName).trim();
     const key = normKey(clean);
-    if (key && !_criticRegistryNames.has(key)) _criticRegistryNames.set(key, clean);
+    if (!key) continue;
+    // BRO-6928: a lost space is a capture artifact ("MichaelArditti"), an added
+    // one never is, so the spelling with more words wins the shared key.
+    const prev = _criticRegistryNames.get(key);
+    if (!prev || clean.split(/\s+/).length > prev.split(/\s+/).length) _criticRegistryNames.set(key, clean);
   }
   return _criticRegistryNames;
 }
@@ -662,8 +666,9 @@ function displayCriticName(raw, outlet, registryEntry) {
       const folded = slugify(stripped).replace(/-/g, ' ');
       if (folded && folded !== stripped.toLowerCase().trim()) {
         const foldedSlug = normalizeCritic(folded);
+        // A raw spelling already on the canonical's page ("A.R. Hoffman") keeps it.
         if (foldedSlug !== slug && Object.prototype.hasOwnProperty.call(CRITIC_ALIASES, foldedSlug)
-          && (CRITIC_ALIASES[foldedSlug] || []).includes(folded)) slug = foldedSlug;
+          && (CRITIC_ALIASES[foldedSlug] || []).includes(folded) && pageSlug(stripped) !== foldedSlug) slug = foldedSlug;
       }
     }
     if (Object.prototype.hasOwnProperty.call(CRITIC_ALIASES, slug) && slugify(stripped) !== slug) {

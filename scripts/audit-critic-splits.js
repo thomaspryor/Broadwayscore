@@ -84,7 +84,7 @@ function findSplitPairs(pages, opts = {}) {
       const [canon, typo] = res.canonical === 'a' ? [a, b] : [b, a];
       out.push({ key, verdict: res.verdict, relation: res.relation, reason: res.reason,
         canonical: { slug: canon.slug, name: canon.name, count: canon.count },
-        variant: { slug: typo.slug, name: typo.name, count: typo.count } });
+        variant: { slug: typo.slug, name: typo.name, count: typo.count, outlet: [...typo.outlets][0] } });
     }
   }
   // A name that contains TWO other pages' names is a joint byline, whatever the
@@ -164,8 +164,7 @@ if (require.main === module) {
   }
   console.log(`\n${pairs.filter(p => p.verdict === 'merge').length} merge, ${pairs.filter(p => p.verdict === 'review').length} review`);
   if (argv.includes('--strict')) {
-    const base = new Set((readJson(BASELINE, { pairs: [] }).pairs) || []);
-    const fresh = pairs.filter(p => !base.has(p.key));
+    const fresh = newSplitPairs(pairs, loadBaseline());
     if (fresh.length) {
       console.error(`\n${fresh.length} NEW split pair(s) not in the baseline:`);
       fresh.forEach(p => console.error(`  ${p.variant.slug} -> ${p.canonical.slug}`));
@@ -174,9 +173,26 @@ if (require.main === module) {
   }
 }
 
+/** Pairs still waiting on a merge decision, as a Set of "slugA|slugB". */
+function loadBaseline() {
+  return new Set((readJson(BASELINE, { pairs: [] }).pairs) || []);
+}
+
+/**
+ * The split pairs the gate fails on: not in the baseline, and not already fixed by
+ * an alias (displayCriticName() maps the variant onto the canonical page; reviews.json
+ * catches up at the next rebuild). An alias that exists but does not take effect
+ * (BRO-6928: "Samuel L." vs the stored "samuel l") stays a failure.
+ */
+function newSplitPairs(pairs, baseline) {
+  const { displayCriticName } = require('./lib/critic-display-name');
+  return pairs.filter(p => !baseline.has(p.key)
+    && criticProfileKey(displayCriticName(p.variant.name, p.variant.outlet)) !== p.canonical.slug);
+}
+
 /** The confirmed-different-people allowlist as a Set of "slugA|slugB". */
 function loadDistinct() {
   return new Set((readJson(DISTINCT, { pairs: [] }).pairs) || []);
 }
 
-module.exports = { buildPages, findSplitPairs, applyMerges, loadDistinct };
+module.exports = { buildPages, findSplitPairs, applyMerges, loadDistinct, loadBaseline, newSplitPairs };

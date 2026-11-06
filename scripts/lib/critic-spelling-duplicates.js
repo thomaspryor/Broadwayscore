@@ -74,7 +74,7 @@ function isNearDuplicateCriticName(nameA, nameB) {
  * the same outlet's coverage of the same show, under two spellings of what
  * is almost certainly one critic.
  *
- * @param {{outletId:string, criticName:string, showId:string, file?:string}[]} records
+ * @param {{outletId:string, criticName:string, showId:string, file?:string, duplicateOf?:string|null}[]} records
  * @param {{allow?: Set<string>}} [opts] - allow: set of
  *   "showId::outletId::nameA::nameB" keys (either name order) known-good and
  *   never flagged — e.g. two genuinely different critics who both covered
@@ -84,7 +84,9 @@ function isNearDuplicateCriticName(nameA, nameB) {
 function findSpellingDuplicates(records, opts = {}) {
   const allow = opts.allow || new Set();
   const byGroup = new Map(); // "showId::outletId" -> Map(criticName -> file[])
+  const dupOf = new Map(); // "showId::file" -> the file its duplicateOf points at
   for (const r of records) {
+    if (r.file && r.duplicateOf) dupOf.set(`${r.showId}::${r.file}`, r.duplicateOf);
     if (!r.outletId || !r.criticName || !r.showId) continue;
     const groupKey = `${r.showId}::${r.outletId}`;
     if (!byGroup.has(groupKey)) byGroup.set(groupKey, new Map());
@@ -105,6 +107,11 @@ function findSpellingDuplicates(records, opts = {}) {
         const allowKeyBA = `${showId}::${outletId}::${b}::${a}`;
         if (allow.has(allowKeyAB) || allow.has(allowKeyBA)) continue;
         if (!isNearDuplicateCriticName(a, b)) continue;
+        // Already resolved: every file under one spelling is a duplicateOf a file
+        // under the other, so the rebuild counts the review once (BRO-6928).
+        const filesA = names.get(a), filesB = names.get(b);
+        const pointsInto = (from, to) => from.every((f) => to.includes(dupOf.get(`${showId}::${f}`)));
+        if (pointsInto(filesA, filesB) || pointsInto(filesB, filesA)) continue;
         findings.push({
           showId,
           outletId,
@@ -153,7 +160,7 @@ function scanReviewTextsForCriticDuplicates(reviewTextsDir, opts = {}) {
       }
       if (!data.outletId || !data.criticName) continue;
       scanned++;
-      records.push({ outletId: data.outletId, criticName: data.criticName, showId, file });
+      records.push({ outletId: data.outletId, criticName: data.criticName, showId, file, duplicateOf: data.duplicateOf || null });
     }
   }
   return { findings: findSpellingDuplicates(records, opts), scanned };
