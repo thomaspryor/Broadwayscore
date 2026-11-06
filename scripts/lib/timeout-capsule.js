@@ -70,7 +70,7 @@ function parseTimeoutPage(html) {
  * @param {string} p.html - fetched page HTML
  * @param {string} [p.critic] - critic credited on the row
  * @param {number|null} [p.showYear] - opening year of the production
- * @returns {{verdict: 'review'|'wrong_critic'|'listing_capsule'|'unknown', reason?: string}}
+ * @returns {{verdict: 'review'|'wrong_critic'|'listing_capsule'|'unknown', reason?: string, pageCritic?: string|null}}
  */
 function classifyTimeoutPage({ html, critic, showYear }) {
   const page = parseTimeoutPage(html);
@@ -80,7 +80,9 @@ function classifyTimeoutPage({ html, critic, showYear }) {
   if (page.reviewBy) {
     if (rowCritic && !normName(page.reviewBy).startsWith(rowCritic)) {
       const shown = page.reviewBy.split(/\s+/).slice(0, 2).join(' ');
-      return { verdict: 'wrong_critic', reason: `Time Out review by ${shown}, row credits ${critic}` };
+      // pageCritic: the byline of a real "review by" page, for re-crediting a row a roundup misattributed (BRO-7041).
+      const pageCritic = /^[A-Z][A-Za-z'’.-]+ [A-Z][A-Za-z'’.-]+$/.test(shown) ? shown : null;
+      return { verdict: 'wrong_critic', reason: `Time Out review by ${shown}, row credits ${critic}`, pageCritic };
     }
     return { verdict: 'review' };
   }
