@@ -964,6 +964,7 @@ async function main() {
 
   // --- Per-outlet sweep ---
   let totalNewStubs = 0;
+  const newStubShowIds = new Set(); // BRO-7051: shows that got a NEW stub this run (drives same-cycle collect+score)
   let outletsFailed = 0;
   // Every source returned nothing. For SERP-only outlets that is NOT proof of
   // "no new reviews" (index lag, keyword mismatch) — listed in the summary so a
@@ -1145,6 +1146,7 @@ async function main() {
         if (result && result.action === 'new') {
           if (!opts.dryRun) outletNewStubs++;
           totalNewStubs++;
+          if (!opts.dryRun) newStubShowIds.add(show.id);
         } else if (result && result.action === 'skipped' && !opts.dryRun
             && shouldCacheSkipReason(result.reason)) {
           // Record durable rejections (cross-market classifier, junk outlet,
@@ -1194,6 +1196,7 @@ async function main() {
   // Signal to GitHub Actions workflow
   if (process.env.GITHUB_OUTPUT) {
     fs.appendFileSync(process.env.GITHUB_OUTPUT, `new_stubs=${totalNewStubs}\n`);
+    fs.appendFileSync(process.env.GITHUB_OUTPUT, `stub_shows=${[...newStubShowIds].join(',')}\n`);
   }
 
   if (totalNewStubs > 0 && !opts.dryRun) {
