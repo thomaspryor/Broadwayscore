@@ -7,7 +7,7 @@
   "embargoSource": "market-default",
   "probe": {
     "startedAt": "2026-11-06T02:30:05.993Z",
-    "endedAt": null,
+    "endedAt": "2026-11-06T05:07:55.097Z",
     "intervalMin": 5,
     "samples": 30,
     "failedSamples": 0,
@@ -125,6 +125,17 @@
       "liveCount": 6,
       "fetchedAt": "2026-11-06T05:00:27.544Z",
       "censusNote": "archive + live BWW roundup (6 rows): https://www.broadwayworld.com/article/Review-Roundup-Fiasco-Theaters-THE-VERGE-Opens-at-the-Public-Theater-20261105"
+    },
+    "end": {
+      "status": "no-census-yet",
+      "source": null,
+      "count": 0,
+      "covered": null,
+      "coverage": null,
+      "missing": [],
+      "liveCount": 6,
+      "fetchedAt": "2026-11-06T05:07:54.864Z",
+      "censusNote": "archive only"
     }
   },
   "manualActions": [],
@@ -137,6 +148,12 @@
         "label": "2h",
         "standDown": false,
         "reason": "market not lane-only"
+      },
+      {
+        "at": "2026-11-06T05:07:54.864Z",
+        "label": "end",
+        "standDown": false,
+        "reason": "show unknown"
       }
     ]
   },
