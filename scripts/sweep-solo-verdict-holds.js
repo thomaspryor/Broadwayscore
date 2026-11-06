@@ -9,6 +9,8 @@
 const fs = require('fs');
 const path = require('path');
 const { explainExclusion, soloVerdictHeld } = require('./lib/review-guards');
+const { exitOnHelp } = require('./lib/cli-help');
+exitOnHelp(module);
 const arg = (n, d) => (process.argv.find((a) => a.startsWith(`--${n}=`)) || '').split('=').slice(1).join('=') || d;
 const since = arg('since', '2025-11-01');
 const root = path.join(__dirname, '..', 'data', 'review-texts');

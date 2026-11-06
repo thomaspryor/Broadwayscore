@@ -18,6 +18,7 @@
  */
 
 const { EXCERPT_FIELDS } = require('./excerpt-fields');
+const { foldDiacritics } = require('./title-match');
 
 // metaExcerpt is the review page's own headline, not an aggregator listing.
 const AGGREGATOR_EXCERPT_FIELDS = EXCERPT_FIELDS.filter((f) => f !== 'metaExcerpt');
@@ -25,7 +26,7 @@ const MIN_FULLTEXT_CHARS = 500;
 
 const KINDS = ['nonReview', 'wrongProduction', 'wrongShow', 'rejection'];
 
-const norm = (t) => String(t || '').toLowerCase().replace(/&#0?38;|&amp;/g, '&').replace(/[\u2018\u2019\u201c\u201d]/g, "'").replace(/[^a-z0-9&']+/g, ' ').trim();
+const norm = (t) => foldDiacritics(String(t || '')).toLowerCase().replace(/&#0?38;|&amp;/g, '&').replace(/[\u2018\u2019\u201c\u201d]/g, "'").replace(/[^a-z0-9&']+/g, ' ').trim();
 
 /**
  * Aggregator excerpt fields whose quote actually appears in THIS file's body. An aggregator lists a

@@ -190,6 +190,7 @@ const EXCLUDED_FILES = new Set([
   'scripts/lib/cross-outlet-cycle.js',
   'scripts/lib/syndication-pairs.js',
   'scripts/lib/review-guards.js',
+  'scripts/lib/single-verdict-guard.js', // BRO-7050: holds an aggregator-listed review against one classifier verdict
   'scripts/rebuild-all-reviews.js',
   'scripts/lib/date-guard.js',
   'scripts/lib/wrong-production-autoclear.js',
