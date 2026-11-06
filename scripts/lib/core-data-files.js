@@ -62,8 +62,12 @@ function planCoreDataCopy(names, { isPublicTracked, coreFiles = getShippedCoreFi
 
 /** Basenames under data/ that git tracks in the repo at repoDir. */
 function publicTrackedDataFiles(repoDir) {
-  const out = execFileSync('git', ['-C', repoDir, 'ls-files', '-z', '--', 'data/*.json'], { encoding: 'utf8' });
-  // Git pathspec `*` crosses `/`, so keep only top-level data/*.json.
+  // `:(glob)data/*.json` matches the top level only, so the output stays small. The plain
+  // `data/*.json` pathspec crosses `/` and listed every tracked data/**/*.json (audit files
+  // and more), which overflowed execFileSync's 1 MiB default buffer on 2026-11-06 (ENOBUFS)
+  // and failed the land.yml core-data gate for every landing. maxBuffer is the second guard.
+  const out = execFileSync('git', ['-C', repoDir, 'ls-files', '-z', '--', ':(glob)data/*.json'], { encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 });
+  // Keep only top-level data/*.json (belt and braces).
   return new Set(out.split('\0').filter((p) => p && path.dirname(p) === 'data').map((p) => path.basename(p)));
 }
 

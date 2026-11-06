@@ -193,3 +193,25 @@ test('verifyCoreDataCopy defaults to the live push-core-data CORE_FILES (19+ nam
   assert.ok(problems.length >= 19, `expected one problem per CORE_FILES name, got ${problems.length}`);
   assert.ok(problems.some((p) => p.startsWith('opening-night-sent.json ')));
 });
+
+// 2026-11-06: `ls-files data/*.json` crossed `/`, printed >1 MiB and threw ENOBUFS in land.yml's
+// core-data gate, failing every landing. Pin the top-level-only pathspec and a roomy buffer.
+test('publicTrackedDataFiles lists only top-level data json and survives a huge tree', async () => {
+  const { publicTrackedDataFiles } = await import('./core-data-files.js');
+  const fs = await import('node:fs');
+  const os = await import('node:os');
+  const path = await import('node:path');
+  const { execFileSync } = await import('node:child_process');
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'cdf-'));
+  execFileSync('git', ['init', '-q', dir]);
+  fs.mkdirSync(path.join(dir, 'data', 'audit'), { recursive: true });
+  fs.writeFileSync(path.join(dir, 'data', 'top.json'), '{}');
+  // Enough nested paths to exceed 1 MiB of ls-files output.
+  for (let i = 0; i < 400; i++) fs.writeFileSync(path.join(dir, 'data', 'audit', `${'x'.repeat(200)}-${i}.json`), '{}');
+  execFileSync('git', ['-C', dir, 'add', '-A']);
+  const tracked = publicTrackedDataFiles(dir);
+  assert.deepEqual([...tracked], ['top.json']);
+  const src = fs.readFileSync(new URL('./core-data-files.js', import.meta.url), 'utf8');
+  assert.match(src, /:\(glob\)data\/\*\.json/);
+  assert.match(src, /maxBuffer/);
+});
