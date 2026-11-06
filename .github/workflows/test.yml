@@ -2211,6 +2211,7 @@ on:
       - 'scripts/llm-scoring/comparative-rescore.ts'
       - 'scripts/llm-scoring/config.ts'
       - 'scripts/outlet-listing-poller.js'
+      - 'scripts/window-shows-needing-collection.js'
       - 'scripts/probe-outlet-feeds.js'
       # visual-qa push-gate helper — colocated test runs in the scripts/lib step
       # but the workflow only fires when a push-path matches; without this entry

@@ -10,6 +10,7 @@ const fs = require('fs');
 const path = require('path');
 const ow = require('./lib/outlet-opening-window');
 const { shouldRetryFetch } = require('./lib/review-guards');
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 
 const i = process.argv.indexOf('--limit');
 const limit = i > -1 ? parseInt(process.argv[i + 1], 10) || 3 : 3;
@@ -21,7 +22,7 @@ for (const s of win) {
   const dir = path.join(root, 'review-texts', s.id);
   if (!fs.existsSync(dir)) continue;
   byShow[s.id] = fs.readdirSync(dir)
-    .filter((f) => f.endsWith('.json') && !f.startsWith('_') && f !== 'failed-fetches.json')
+    .filter(isReviewTextFile)
     .map((f) => { try { const r = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8')); if (r && typeof r === 'object') r.reviewId = r.reviewId || `${s.id}/${f}`; return r; } catch { return null; } })
     .filter(Boolean);
 }
