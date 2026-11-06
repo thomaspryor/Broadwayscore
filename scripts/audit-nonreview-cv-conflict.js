@@ -115,7 +115,7 @@ function main() {
       catch { continue; }
       scanned++;
 
-      if (isNonReviewDemotedByFreshCV(data)) {
+      if (isNonReviewDemotedByFreshCV(data) && data.contentVerification) { // BRO-7050: solo-verdict holds have no CV and are not CV conflicts
         const cv = data.contentVerification;
         hits.push({
           showId,

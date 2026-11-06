@@ -54,7 +54,7 @@ function scoredFromFullText(data) {
 
 // The ensemble's rejection text lists one "<model>: <reasoning>" voice per model that agreed.
 function ensembleVoices(data) {
-  const voices = new Set(String(data.rejectionReasoning || '').match(/(?:^|;\s*)(claude|openai|gemini|gpt)\s*:/gi) || []);
+  const voices = new Set(String(data.rejectionReasoning || '').match(/(?:^|;\s*)(claude|openai|gemini|gpt|kimi)\s*:/gi) || []);
   return Math.max(voices.size, Number.isFinite(data.rejectionAgreeCount) ? data.rejectionAgreeCount : 0);
 }
 
