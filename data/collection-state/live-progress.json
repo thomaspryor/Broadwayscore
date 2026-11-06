@@ -1,72 +1,133 @@
 {
-  "updatedAt": "2026-11-06T17:17:40.400Z",
-  "processed": 101,
-  "failed": 62,
-  "successRate": "62.0%",
+  "updatedAt": "2026-11-06T17:46:59.348Z",
+  "processed": 372,
+  "failed": 204,
+  "successRate": "64.6%",
   "tierBreakdown": {
-    "playwright": 60,
+    "playwright": 191,
     "amp": 0,
-    "browserbase": 4,
+    "browserbase": 11,
     "directCookies": 0,
-    "scrapingdog": 8,
-    "scrapingbee": 2,
-    "brightdata": 0,
+    "scrapingdog": 30,
+    "scrapingbee": 15,
+    "brightdata": 3,
     "archiveToday": 0,
-    "archive": 102
+    "archive": 105
   },
   "browserbaseSessions": 2,
   "recentActivity": [
     {
-      "t": "2026-11-06T15:46:15.164Z",
+      "t": "2026-11-06T14:26:40.224Z",
       "event": "bb-session",
-      "session": "9c3f186a",
+      "session": "12c8f94e",
+      "url": "https://variety.com/2022/legit/reviews/mj-the-musical-review-broadway-1235175916"
+    },
+    {
+      "t": "2026-11-06T14:26:40.829Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-11-06T14:26:49.214Z",
+      "event": "bb-session",
+      "session": "ea352f74",
+      "url": "https://variety.com/2022/legit/reviews/mj-the-musical-review-broadway-1235175916"
+    },
+    {
+      "t": "2026-11-06T14:26:49.804Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-11-06T14:29:55.304Z",
+      "event": "bb-session",
+      "session": "1a321616",
+      "url": "https://www.cityweekly.net/BuzzBlog/archives/2022/10/03/theater-review-the-lion-"
+    },
+    {
+      "t": "2026-11-06T14:44:24.078Z",
+      "event": "bb-session",
+      "session": "6d971f7e",
+      "url": "http://www.talkinbroadway.com/page/ob/2_11_16.html"
+    },
+    {
+      "t": "2026-11-06T14:44:24.894Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-06T14:55:06.023Z",
+      "event": "bb-session",
+      "session": "20b84a3a",
       "url": "https://www.londontheatre1.com/.well-known/captcha/?y=ipr:20.83.175.21:179330283"
     },
     {
-      "t": "2026-11-06T15:56:07.501Z",
+      "t": "2026-11-06T15:02:32.762Z",
       "event": "bb-session",
-      "session": "ad1d2ed5",
-      "url": "https://playstosee.com/reviews/uk-reviews/murder-in-the-cathedral/?utm_source=rs"
+      "session": "27d313eb",
+      "url": "https://www.talkinbroadway.com/regional/minn/minn1534.html"
     },
     {
-      "t": "2026-11-06T15:56:26.903Z",
-      "event": "bb-session",
-      "session": "721ff573",
-      "url": "https://playstosee.com/reviews/uk-reviews/murder-in-the-cathedral/?utm_source=rs"
+      "t": "2026-11-06T15:02:33.693Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     },
     {
-      "t": "2026-11-06T16:06:40.907Z",
+      "t": "2026-11-06T15:03:58.816Z",
       "event": "bb-session",
-      "session": "27180413",
-      "url": "https://playstosee.com/reviews/uk-reviews/the-banality-of-evil-hannah-arendt-fra"
+      "session": "b3cd3ce0",
+      "url": "https://www.nytimes.com/2026/10/06/theater/dirty-dancing-broadway.html"
     },
     {
-      "t": "2026-11-06T16:07:00.784Z",
-      "event": "bb-session",
-      "session": "6f06c94d",
-      "url": "https://playstosee.com/reviews/uk-reviews/the-banality-of-evil-hannah-arendt-fra"
-    },
-    {
-      "t": "2026-11-06T17:13:39.596Z",
-      "event": "bb-session",
-      "session": "54ae78a1",
-      "url": "https://www.nytimes.com/2026/11/06/theater/the-unbelievers-222-a-ghost-story-rev"
-    },
-    {
-      "t": "2026-11-06T17:13:40.149Z",
+      "t": "2026-11-06T15:03:59.586Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     },
     {
-      "t": "2026-11-06T17:14:23.573Z",
+      "t": "2026-11-06T15:13:35.489Z",
       "event": "bb-session",
-      "session": "55f5e9ea",
-      "url": "https://www.nytimes.com/2026/11/05/theater/rope-the-verge-review-off-broadway-si"
+      "session": "d50adfc8",
+      "url": "https://talkinbroadway.com/review-maybe-happy-ending/"
     },
     {
-      "t": "2026-11-06T17:14:24.015Z",
+      "t": "2026-11-06T15:13:36.295Z",
       "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-06T15:13:57.316Z",
+      "event": "bb-session",
+      "session": "a88f75ca",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review-1"
+    },
+    {
+      "t": "2026-11-06T15:14:06.559Z",
+      "event": "bb-session",
+      "session": "dc167ee3",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review-1"
+    },
+    {
+      "t": "2026-11-06T15:15:27.522Z",
+      "event": "bb-session",
+      "session": "8195d752",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review/"
+    },
+    {
+      "t": "2026-11-06T15:15:36.405Z",
+      "event": "bb-session",
+      "session": "c83c3f2c",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review/"
+    },
+    {
+      "t": "2026-11-06T15:24:31.222Z",
+      "event": "bb-session",
+      "session": "1e361516",
+      "url": "https://variety.com/2022/legit/reviews/mj-the-musical-review-broadway-1235175916"
+    },
+    {
+      "t": "2026-11-06T15:24:32.090Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
