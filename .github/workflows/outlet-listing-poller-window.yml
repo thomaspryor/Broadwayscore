@@ -1,0 +1,149 @@
+name: Outlet Listing Poller (Opening Window)
+
+# BRO-7051: every-3h direct outlet checks for shows 0-3 days past opening. Free feeds / listing
+# pages only (no SERP), paid page fetches capped per run (--max-paid), only outlets that review
+# the in-window shows' markets. Separate file from the daily poller on purpose: its own concurrency
+# group (a queued daily run can never be displaced by a 3h tick) and its own check-cron-health row
+# (the daily row keeps meaning "the daily SERP sweep ran").
+# Kill switch: repo variable OPENING_WINDOW_DISABLED=1 (poller exits before any fetch, no dispatch).
+# Same-cycle collect + score: in-window shows that still have stubs with no text get a
+# collect-review-texts.yml run (show_filter, aggressive); its push-review-texts step dispatches
+# show-scoped scoring for urgent shows and the collect run triggers the rebuild. Up to 3 shows per
+# tick, most pending first; shows over the cap are picked up by the next tick (state is the stubs
+# themselves, not this run's output).
+
+on:
+  schedule:
+    - cron: '17 */3 * * *'
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Dry run (log discoveries, no files written, no dispatch)'
+        required: false
+        default: false
+        type: boolean
+      max_paid:
+        description: 'Max paid page fetches this run'
+        required: false
+        default: '8'
+        type: string
+      outlets:
+        description: 'Comma-separated outlet IDs to poll (default: all qualifying)'
+        required: false
+        default: ''
+        type: string
+
+concurrency:
+  group: outlet-listing-poller-window
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  actions: write
+
+jobs:
+  poll:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    outputs:
+      new_stubs: ${{ steps.poll.outputs.new_stubs }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Checkout review-texts from private repo
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - uses: ./.github/actions/setup-node
+
+      - name: Poll outlet listings (opening window)
+        id: poll
+        env:
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          GITHUB_OUTPUT: ${{ env.GITHUB_OUTPUT }}
+          OPENING_WINDOW_DISABLED: ${{ vars.OPENING_WINDOW_DISABLED }}
+          INPUT_MAX_PAID: ${{ github.event.inputs.max_paid }}
+          INPUT_OUTLETS: ${{ github.event.inputs.outlets }}
+          INPUT_DRY_RUN: ${{ github.event.inputs.dry_run }}
+        run: |
+          ARGS="--opening-window --max-paid ${INPUT_MAX_PAID:-8}"
+          if [ "${INPUT_DRY_RUN}" = "true" ]; then
+            ARGS="$ARGS --dry-run"
+          fi
+          if [ -n "${INPUT_OUTLETS}" ]; then
+            ARGS="$ARGS --outlets ${INPUT_OUTLETS}"
+          fi
+          echo "Running: node scripts/outlet-listing-poller.js $ARGS"
+          node scripts/outlet-listing-poller.js $ARGS
+
+      - name: Push review-texts to private repo
+        if: always() && github.event.inputs.dry_run != 'true'
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: outlet listing poller (opening window) - stub discovery'
+
+      - name: Collect and score in-window shows that have uncollected stubs
+        if: success() && github.event.inputs.dry_run != 'true' && vars.OPENING_WINDOW_DISABLED != '1' && vars.OPENING_WINDOW_DISABLED != 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          IDS=$(node scripts/window-shows-needing-collection.js --limit 3)
+          if [ -z "$IDS" ]; then
+            echo "No in-window shows with uncollected stubs."
+            exit 0
+          fi
+          for ID in $(echo "$IDS" | tr ',' ' '); do
+            echo "Dispatching collect-review-texts for $ID"
+            gh workflow run collect-review-texts.yml -f show_filter="$ID" -f aggressive=true -f max_reviews=60 -f browserbase_max_sessions=5 || echo "::warning::collect dispatch failed for $ID"
+          done
+
+      # outlet-listing-poller.js calls url-discovery.js's serpQuery to find
+      # cross-show outlet listing pages, which writes attribution rows to
+      # data/audit/scraper-spend-ledger.jsonl on the runner's local disk (task
+      # #752/#784). This daily cron never staged that file before (Sprint 3,
+      # card 3b1637c5).
+      # BRO-6352: also stages the per-feed newest-item snapshot the poller
+      # writes (health-check.js "Quality: outlet feed staleness" reads it).
+      - name: Commit scraper-spend ledger and feed health
+        if: always() && github.event.inputs.dry_run != 'true'
+        continue-on-error: true  # telemetry-only commit (Sprint 3, card 3b1637c5) — push contention under concurrent scheduled runs must never fail an otherwise-successful job
+        env:
+          PUSH_RECONCILE_MERGED_JSON: '1'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add data/audit/scraper-spend-ledger.jsonl 2>/dev/null || true
+          git add data/audit/outlet-feed-health.json 2>/dev/null || true
+          git add data/audit/outlet-page-confirm-unconfirmed.json 2>/dev/null || true
+          if git diff --staged --quiet; then
+            echo "No ledger changes to commit"
+          else
+            git commit -m "chore: Record scraper-spend ledger and feed health (outlet-listing-poller-window)"
+            bash scripts/lib/push-with-retry.sh
+          fi
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Outlet Listing Poller (Opening Window) Failed'
+          severity: 'warning'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}

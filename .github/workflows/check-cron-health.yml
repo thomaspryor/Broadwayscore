@@ -195,6 +195,8 @@ jobs:
             "weekly-nyt-critics-picks.yml|72|NYT Critics Picks"
             "weekly-show-origins.yml|192|Weekly Show Origins"
             "outlet-listing-poller.yml|25|Outlet Listing Poller"
+            # BRO-7051: 3h opening-window poller; throttled cron, same 12h band as opening-night-reviews.yml.
+            "outlet-listing-poller-window.yml|12|Outlet Listing Poller (Opening Window)"
             "update-cast-changes.yml|120|Update Cast Changes"
             "update-show-score.yml|192|Update Show Score"
             "update-mezzanine.yml|192|Update Mezzanine"
