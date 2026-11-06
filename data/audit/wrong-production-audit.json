@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-05T23:20:34.893Z",
+  "timestamp": "2026-11-06T00:06:11.613Z",
   "stats": {
-    "totalReviews": 80208,
+    "totalReviews": 80207,
     "alreadyFlagged": 21985,
     "dateGuardCatches": 216,
     "directorMismatch": 3511,
     "tvFilmSignals": 2283,
     "londonSignals": 3617,
     "offBroadwaySignals": 741,
-    "yearMismatch": 362,
-    "noPublishDate": 8488
+    "yearMismatch": 361,
+    "noPublishDate": 8487
   },
   "findings": [
     {
@@ -47561,19 +47561,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"robert hastie\" from operation-mincemeat-2025"
-        }
-      ]
-    },
-    {
-      "showId": "operation-mincemeat-west-end-2024",
-      "file": "the-recs--unknown.json",
-      "publishDate": "2026-11-03",
-      "url": "https://therecs.co.uk/operation-mincemeat-touring/",
-      "findings": [
-        {
-          "type": "YEAR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions year 2026 (5x) more than 2023 (0x). 2026 matches production: operation-mincemeat-tour-2026"
         }
       ]
     },
