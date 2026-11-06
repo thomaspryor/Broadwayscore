@@ -249,14 +249,15 @@
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
       "incidentOpenedAt": "2026-11-06T17:05:10.198Z",
-      "lastSeen": "2026-11-06T20:13:04.142Z",
+      "lastSeen": "2026-11-06T21:11:36.542Z",
       "lastNotifiedAt": "2026-11-06T17:05:10.198Z",
       "lastSurfacedAt": "2026-11-06T15:41:31.549Z",
       "notifyCount": 211,
       "cardId": null,
       "linearIdentifier": "BRO-7048",
       "notifyCountAtRelease": 192,
-      "sweptTracker": "BRO-6656"
+      "sweptTracker": "BRO-6656",
+      "silentRefires": 1
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -6805,7 +6806,7 @@
       "title": "main test.yml red: E2E Tests / Run E2E tests",
       "firstSeen": "2026-09-28T21:32:51.430Z",
       "incidentOpenedAt": "2026-11-06T14:59:51.158Z",
-      "lastSeen": "2026-11-06T20:13:04.125Z",
+      "lastSeen": "2026-11-06T21:11:36.520Z",
       "lastNotifiedAt": "2026-11-06T14:59:51.158Z",
       "lastSurfacedAt": null,
       "notifyCount": 19,
@@ -6818,7 +6819,7 @@
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40634589536"
       },
       "absentRunIds": [],
-      "silentRefires": 5
+      "silentRefires": 6
     },
     "review-gap:opening-window:lost-in-del-valle-return-off-broadway-2026": {
       "status": "resolved",
