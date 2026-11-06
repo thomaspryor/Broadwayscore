@@ -84,7 +84,7 @@ function findSplitPairs(pages, opts = {}) {
       const [canon, typo] = res.canonical === 'a' ? [a, b] : [b, a];
       out.push({ key, verdict: res.verdict, relation: res.relation, reason: res.reason,
         canonical: { slug: canon.slug, name: canon.name, count: canon.count },
-        variant: { slug: typo.slug, name: typo.name, count: typo.count, outlet: [...typo.outlets][0] } });
+        variant: { slug: typo.slug, name: typo.name, count: typo.count, spellings: [...typo.spell.keys()], outlets: [...typo.outlets] } });
     }
   }
   // A name that contains TWO other pages' names is a joint byline, whatever the
@@ -186,8 +186,12 @@ function loadBaseline() {
  */
 function newSplitPairs(pairs, baseline) {
   const { displayCriticName } = require('./lib/critic-display-name');
-  return pairs.filter(p => !baseline.has(p.key)
-    && criticProfileKey(displayCriticName(p.variant.name, p.variant.outlet)) !== p.canonical.slug);
+  // Every spelling at every outlet must resolve: one that does not keeps the page
+  // alive after the rebuild (an outlet-scoped mapping may cover only one outlet).
+  const resolved = (p) => (p.variant.spellings || [p.variant.name]).every(name =>
+    (p.variant.outlets && p.variant.outlets.length ? p.variant.outlets : [undefined]).every(outlet =>
+      criticProfileKey(displayCriticName(name, outlet)) === p.canonical.slug));
+  return pairs.filter(p => !baseline.has(p.key) && !resolved(p));
 }
 
 /** The confirmed-different-people allowlist as a Set of "slugA|slugB". */

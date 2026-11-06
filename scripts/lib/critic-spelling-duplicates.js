@@ -108,10 +108,13 @@ function findSpellingDuplicates(records, opts = {}) {
         if (allow.has(allowKeyAB) || allow.has(allowKeyBA)) continue;
         if (!isNearDuplicateCriticName(a, b)) continue;
         // Already resolved: every file under one spelling is a duplicateOf a file
-        // under the other, so the rebuild counts the review once (BRO-6928).
+        // under the other, and nothing points back (a cycle is not an exclusion:
+        // the rebuild recovers both members), so the review counts once (BRO-6928).
         const filesA = names.get(a), filesB = names.get(b);
         const pointsInto = (from, to) => from.every((f) => to.includes(dupOf.get(`${showId}::${f}`)));
-        if (pointsInto(filesA, filesB) || pointsInto(filesB, filesA)) continue;
+        const anyPoints = (from, to) => from.some((f) => to.includes(dupOf.get(`${showId}::${f}`)));
+        if ((pointsInto(filesA, filesB) && !anyPoints(filesB, filesA))
+          || (pointsInto(filesB, filesA) && !anyPoints(filesA, filesB))) continue;
         findings.push({
           showId,
           outletId,

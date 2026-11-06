@@ -213,9 +213,13 @@ function criticRegistryNames() {
     const key = normKey(clean);
     if (!key) continue;
     // BRO-6928: a lost space is a capture artifact ("MichaelArditti"), an added
-    // one never is, so the spelling with more words wins the shared key.
+    // one never is, so the spelling with more words wins the shared key. A
+    // hyphen is never an artifact either ("Jean-Paul" beats "Jean Paul").
     const prev = _criticRegistryNames.get(key);
-    if (!prev || clean.split(/\s+/).length > prev.split(/\s+/).length) _criticRegistryNames.set(key, clean);
+    const hyphens = (s) => (s.match(/-/g) || []).length;
+    if (!prev || (clean.split(/\s+/).length > prev.split(/\s+/).length && hyphens(clean) >= hyphens(prev))) {
+      _criticRegistryNames.set(key, clean);
+    }
   }
   return _criticRegistryNames;
 }
@@ -662,16 +666,20 @@ function displayCriticName(raw, outlet, registryEntry) {
     // lukowski") but normalizeCritic matches the raw lowercase byline exactly,
     // so "Samuel L." or "Andrze] Lukowski" missed its alias and kept its own
     // critic page. Retry on the folded form; only an alias hit may move it.
-    if (!Object.prototype.hasOwnProperty.call(CRITIC_ALIASES, slug) || slugify(stripped) === slug) {
+    const isAlias = (s) => Object.prototype.hasOwnProperty.call(CRITIC_ALIASES, s);
+    // The page a canonical's reviews live on (the site keys pages by url-slug).
+    const canonPage = (s) => pageSlug(displayFormForCanonical(s, ctx.entry));
+    if (!isAlias(slug) || slugify(stripped) === slug) {
       const folded = slugify(stripped).replace(/-/g, ' ');
       if (folded && folded !== stripped.toLowerCase().trim()) {
         const foldedSlug = normalizeCritic(folded);
-        // A raw spelling already on the canonical's page ("A.R. Hoffman") keeps it.
-        if (foldedSlug !== slug && Object.prototype.hasOwnProperty.call(CRITIC_ALIASES, foldedSlug)
-          && (CRITIC_ALIASES[foldedSlug] || []).includes(folded) && pageSlug(stripped) !== foldedSlug) slug = foldedSlug;
+        if (foldedSlug !== slug && isAlias(foldedSlug) && CRITIC_ALIASES[foldedSlug].includes(folded)) slug = foldedSlug;
       }
     }
-    if (Object.prototype.hasOwnProperty.call(CRITIC_ALIASES, slug) && slugify(stripped) !== slug) {
+    // A raw spelling already on the canonical's page keeps its own spelling
+    // ("José Solís", "A.R. Hoffman"); any other alias hit takes the canonical's
+    // display form, so "Holly OMahony" joins Holly O'Mahony's page.
+    if (isAlias(slug) && pageSlug(stripped) !== canonPage(slug)) {
       name = displayFormForCanonical(slug, ctx.entry);
     } else {
       name = stripped;

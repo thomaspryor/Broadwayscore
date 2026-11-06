@@ -105,6 +105,10 @@ test('findSpellingDuplicates skips a pair already linked by duplicateOf (BRO-692
     { showId: 'show-a', outletId: 'standard', criticName: 'Nick Curits', file: 'standard--nick-curits.json' },
   ];
   assert.equal(findSpellingDuplicates(records).length, 0);
+  // a cycle (each points at the other) is not an exclusion: the rebuild recovers both
+  records[1].duplicateOf = 'standard--nick-curtis.json';
+  assert.equal(findSpellingDuplicates(records).length, 1);
+  records[1].duplicateOf = null;
   // a duplicateOf pointing elsewhere does not resolve the pair
   records[0].duplicateOf = 'standard--someone-else.json';
   assert.equal(findSpellingDuplicates(records).length, 1);
