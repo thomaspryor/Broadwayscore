@@ -348,7 +348,12 @@ const ReviewCard = memo(function ReviewCard({ review, isLast, category, hideStop
       <span aria-hidden="true" className="text-fg-muted"> · </span>{pin}<span className="sr-only">Reviewed in </span>{stop}
     </span>
   ) : null;
-  const mobileDate = dateLabel && !stop ? <span className="sm:hidden block text-xs text-fg-muted mt-0.5">{dateLabel}</span> : null;
+  // Compact layout (owner pick 2026-11-06): the byline runs in at the end of the
+  // quote ("... precision." — Name), phones add the date after it, and Full
+  // Review shrinks to an arrow beside the date in the header row.
+  const mobileDate = dateLabel && !stop ? (
+    <span className="sm:hidden whitespace-nowrap">, {dateLabel.replace(new RegExp(`,\\s*${new Date().getFullYear()}$`), '')}</span>
+  ) : null;
   // With a stop, phones get one full-width line under the byline row instead
   // ("Oct 5 · Rochester, NY"), so it never squeezes against Full Review. Only
   // this year's dates lose the year; an older tour's review keeps it.
@@ -358,6 +363,25 @@ const ReviewCard = memo(function ReviewCard({ review, isLast, category, hideStop
       {pin}<span className="sr-only">Reviewed in </span>{stop}
     </div>
   ) : null;
+
+  const hasCritic = !!review.criticName && review.criticName !== 'Unknown';
+  const attribution = (
+    <span className="text-xs sm:text-sm text-fg-muted">
+      {' '}
+      <span className="whitespace-nowrap">
+        <span aria-hidden="true">&mdash; </span>
+        {hasCritic ? (
+          <>
+            <span className="sr-only">By </span>
+            {featureFlags.criticPages && review.criticSlug ? (
+              <Link href={`/critics/${review.criticSlug}`} className="hover:text-brand transition-colors">{review.criticName}</Link>
+            ) : review.criticName}
+          </>
+        ) : <>{review.outlet} Staff</>}
+      </span>
+      {stopTag}{mobileDate}
+    </span>
+  );
 
   // Subtle caption under the score badge so readers can see the rating our
   // score is anchored to (the pull quote only mentions it when the critic
@@ -419,6 +443,18 @@ const ReviewCard = memo(function ReviewCard({ review, isLast, category, hideStop
         {formatDate(review.publishDate) && (
           <span className="hidden sm:inline text-xs text-fg-muted flex-shrink-0">{formatDate(review.publishDate)}</span>
         )}
+        {review.url && (
+          <a
+            href={review.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            title="Full review"
+            className="inline-flex flex-shrink-0 items-center justify-center p-2 -m-2 text-brand hover:text-brand-hover transition-colors"
+            aria-label={`Read full review from ${review.outlet}${hasCritic ? ` by ${review.criticName}` : ''} (opens in new tab)`}
+          >
+            <ExternalLinkIcon className="w-4 h-4" />
+          </a>
+        )}
       </div>
 
       {/* Quote + Author, indented to align with outlet name */}
@@ -433,41 +469,22 @@ const ReviewCard = memo(function ReviewCard({ review, isLast, category, hideStop
         )}
         {review.quote && (
           <p className="text-sm sm:text-base text-gray-300 leading-snug mb-0.5">
-            &ldquo;{nestQuotes(review.quote)}&rdquo;
+            &ldquo;{nestQuotes(review.quote)}&rdquo;{attribution}
           </p>
         )}
         {review.summary && !review.quote && (
           <p className="text-sm sm:text-base text-gray-400 leading-snug mb-0.5">
-            {review.summary}{/[.!?'""\u2019]$/.test(review.summary.trim()) ? '' : '.'}
+            {review.summary}{/[.!?'""\u2019]$/.test(review.summary.trim()) ? '' : '.'}{attribution}
           </p>
         )}
         {review.pullQuote && !review.quote && !review.summary && (
           <p className="text-sm sm:text-base text-gray-300 leading-snug mb-0.5">
-            &ldquo;{withEndPunctuation(nestQuotes(review.pullQuote))}&rdquo;
+            &ldquo;{withEndPunctuation(nestQuotes(review.pullQuote))}&rdquo;{attribution}
           </p>
         )}
-
-        <div className="flex items-center justify-between gap-3 text-xs sm:text-sm leading-tight">
-          {review.criticName && review.criticName !== 'Unknown' ? (
-            <span className="text-sm text-fg-muted">By {featureFlags.criticPages && review.criticSlug ? (
-              <Link href={`/critics/${review.criticSlug}`} className="hover:text-brand transition-colors">{review.criticName}</Link>
-            ) : review.criticName}{stopTag}{mobileDate}</span>
-          ) : (
-            <span className="text-sm text-gray-400">{review.outlet} Staff{stopTag}{mobileDate}</span>
-          )}
-          {review.url && (
-            <a
-              href={review.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex flex-shrink-0 whitespace-nowrap items-center gap-1 text-xs font-semibold text-brand hover:text-brand-hover transition-colors uppercase tracking-wide"
-              aria-label={`Read full review from ${review.outlet}${review.criticName && review.criticName !== 'Unknown' ? ` by ${review.criticName}` : ''} (opens in new tab)`}
-            >
-              Full Review
-              <ExternalLinkIcon className="w-3 h-3" />
-            </a>
-          )}
-        </div>
+        {!review.quote && !review.summary && !review.pullQuote && (
+          <p className="leading-snug mb-0.5">{attribution}</p>
+        )}
         {mobileStopLine}
       </div>
       {/* After the header and quote in the DOM so screen readers hear the score and outlet first; positioned under the badge. */}
