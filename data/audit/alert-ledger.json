@@ -22791,7 +22791,7 @@
       "resolvedAt": "2026-10-20T22:22:57.440Z"
     },
     "live-data-test:tests/unit/review-pullquotes-live-data.test.mjs::no review missing a pullQuote has a recoverable excerpt sitting unused in review-texts": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Live-data test failing: no review missing a pullQuote has a recoverable excerpt sitting unused in review-texts (tests/unit/review-pullquotes-live-data.test.mjs)",
       "firstSeen": "2026-10-20T21:59:17.665Z",
@@ -22804,7 +22804,9 @@
       "cardId": null,
       "linearIdentifier": null,
       "notifyCountAtRelease": 13,
-      "sweptTracker": "BRO-7012"
+      "sweptTracker": "BRO-7012",
+      "resolvedAt": "2026-11-06T20:47:26.998Z",
+      "resolveReason": "live-data test green"
     },
     "land:land/bro-5776-commercial-coverage": {
       "status": "resolved",
@@ -26857,13 +26859,13 @@
       "firstSeen": "2026-10-24T23:08:26.440Z",
       "incidentOpenedAt": "2026-10-31T00:35:50.727Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-06T19:00:33.778Z",
+      "lastSeen": "2026-11-06T20:47:26.701Z",
       "lastNotifiedAt": "2026-11-06T15:25:31.885Z",
       "lastSurfacedAt": "2026-11-05T12:32:07.725Z",
       "notifyCount": 11,
       "cardId": null,
       "linearIdentifier": "BRO-7013",
-      "silentRefires": 3
+      "silentRefires": 4
     },
     "test-yml:red:Unit Tests:196541b4": {
       "status": "resolved",
@@ -36062,7 +36064,7 @@
       "firstSeen": "2026-11-03T04:48:41.826Z",
       "incidentOpenedAt": "2026-11-06T12:25:00.217Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-06T19:00:33.732Z",
+      "lastSeen": "2026-11-06T20:47:26.682Z",
       "lastNotifiedAt": "2026-11-06T12:25:00.217Z",
       "lastSurfacedAt": "2026-11-06T12:25:00.217Z",
       "notifyCount": 5,
@@ -36070,7 +36072,7 @@
       "linearIdentifier": null,
       "notifyCountAtRelease": 4,
       "sweptTracker": "BRO-7021",
-      "silentRefires": 4
+      "silentRefires": 5
     },
     "opening-night-revival-unverified-clifford-odets-waiting-for-lefty-off-broadway-2026": {
       "status": "open",
