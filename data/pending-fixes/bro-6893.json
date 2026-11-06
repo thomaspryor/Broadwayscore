@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6893",
   "planId": "3e5d6aa0-e96d-4908-9afb-c42fd49c8c7e",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-06T13:02:42.355Z",
   "submitter": {
     "name": null,
@@ -24,5 +24,14 @@
         "description": "shows.json: clifford-odets-waiting-for-lefty-off-broadway-2026.isRevival"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-06T13:11:37.347Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: isRevival updated for clifford-odets-waiting-for-lefty-off-broadway-2026 (tags: [\"revival\"])"
+    }
+  ],
+  "executedIn": "ci"
 }
