@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-06T16:10:38.464Z",
+  "generatedAt": "2026-11-06T16:38:14.093Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -9,7 +9,7 @@
       "category": "west-end",
       "type": "opera",
       "openingDate": "2026-11-06",
-      "status": "upcoming",
+      "status": "open",
       "slug": "iphigenie-en-tauride-english-national-opera-west-end",
       "thumbnail": "/images/shows/iphigenie-en-tauride-english-national-opera-west-end-2026/thumbnail.jpg",
       "siteScore": null,
@@ -161,7 +161,7 @@
       "category": "tour",
       "type": "musical",
       "openingDate": "2026-11-06",
-      "status": "upcoming",
+      "status": "open",
       "slug": "dr-seuss-how-the-grinch-stole-christmas-tour-2026",
       "thumbnail": "/images/shows/dr-seuss-how-the-grinch-stole-christmas-2007/thumbnail.jpg",
       "siteScore": null,
@@ -1753,6 +1753,168 @@
           "p": 3,
           "m": 1,
           "n": 1,
+          "bc": "waiting"
+        }
+      ]
+    },
+    {
+      "id": "speculations-off-west-end-2026",
+      "title": "Speculations",
+      "market": "west-end",
+      "category": "off-west-end",
+      "type": "show",
+      "openingDate": "2026-11-05",
+      "status": "open",
+      "slug": "speculations-off-west-end",
+      "thumbnail": "/images/shows/speculations-off-west-end-2026/thumbnail.jpg",
+      "siteScore": null,
+      "liveScore": 62,
+      "scoreDrift": null,
+      "belowThreshold": true,
+      "reviewsNeeded": 1,
+      "siteFileExists": true,
+      "total": 2,
+      "t1": 0,
+      "t2": 1,
+      "t3": 1,
+      "positive": 0,
+      "mixed": 2,
+      "negative": 0,
+      "readiness": {
+        "ready": false,
+        "reasons": [
+          "2/8 total",
+          "T1:0/3",
+          "T2:1/2",
+          "hi-conf:1/6"
+        ],
+        "highConfidence": 1,
+        "thresholds": {
+          "minReviews": 8,
+          "minT1": 3,
+          "minT2": 2,
+          "minHiConf": 6
+        }
+      },
+      "broadcast": {
+        "state": "waiting",
+        "detail": "Not yet broadcast-ready"
+      },
+      "missingT1": [
+        {
+          "name": "The Guardian",
+          "isDualMarket": true
+        },
+        {
+          "name": "Observer",
+          "isDualMarket": true
+        },
+        {
+          "name": "Financial Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Telegraph",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Times (UK)",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Sunday Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "Evening Standard",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Independent",
+          "isDualMarket": true
+        },
+        {
+          "name": "The i",
+          "isDualMarket": false
+        },
+        {
+          "name": "Time Out London",
+          "isDualMarket": false
+        },
+        {
+          "name": "Daily Mail",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Mail on Sunday",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Stage",
+          "isDualMarket": true
+        }
+      ],
+      "missingT2": [
+        {
+          "name": "The New York Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "Variety",
+          "isDualMarket": true
+        },
+        {
+          "name": "BroadwayWorld",
+          "isDualMarket": true
+        },
+        {
+          "name": "New York Theatre Guide",
+          "isDualMarket": true
+        },
+        {
+          "name": "WhatsOnStage",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Arts Desk",
+          "isDualMarket": false
+        },
+        {
+          "name": "British Theatre Guide",
+          "isDualMarket": false
+        },
+        {
+          "name": "BritishTheatre.com",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Spectator (UK)",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Reviews Hub",
+          "isDualMarket": false
+        },
+        {
+          "name": "London Theatre",
+          "isDualMarket": false
+        },
+        {
+          "name": "LondonTheatre1",
+          "isDualMarket": false
+        }
+      ],
+      "timeline": [
+        {
+          "t": "2026-11-06T16:38:14.093Z",
+          "rc": 2,
+          "s": 62,
+          "t1": 0,
+          "t2": 1,
+          "t3": 1,
+          "p": 0,
+          "m": 2,
+          "n": 0,
           "bc": "waiting"
         }
       ]
