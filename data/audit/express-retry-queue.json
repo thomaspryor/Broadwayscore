@@ -1,30 +1,6 @@
 {
   "entries": [
     {
-      "showId": "franky-off-west-end-2026",
-      "market": "west-end",
-      "queuedAt": "2026-11-03T17:16:22.744Z",
-      "dueAt": "2026-11-04T09:16:22.744Z",
-      "attempted": true,
-      "attemptedAt": "2026-11-04T11:09:02.280Z"
-    },
-    {
-      "showId": "rope-off-broadway-2026",
-      "market": "broadway",
-      "queuedAt": "2026-11-03T17:09:02.702Z",
-      "dueAt": "2026-11-04T04:15:00.000Z",
-      "attempted": true,
-      "attemptedAt": "2026-11-04T05:10:06.798Z"
-    },
-    {
-      "showId": "well-see-off-broadway-2026",
-      "market": "broadway",
-      "queuedAt": "2026-11-03T16:52:16.201Z",
-      "dueAt": "2026-11-04T04:15:00.000Z",
-      "attempted": true,
-      "attemptedAt": "2026-11-04T05:10:06.798Z"
-    },
-    {
       "showId": "tristan-and-yseult-off-broadway-2026",
       "market": "broadway",
       "queuedAt": "2026-11-04T15:30:50.327Z",
@@ -148,7 +124,8 @@
       "outletIds": [
         "nytimes"
       ],
-      "attempted": false
+      "attempted": true,
+      "attemptedAt": "2026-11-06T18:52:50.943Z"
     },
     {
       "showId": "iphigenie-en-tauride-english-national-opera-west-end-2026",
@@ -162,6 +139,42 @@
       "market": "broadway",
       "queuedAt": "2026-11-06T16:33:56.158Z",
       "dueAt": "2026-11-07T08:33:56.158Z",
+      "attempted": false
+    },
+    {
+      "kind": "truncated-t1-refetch",
+      "showId": "the-unbelievers-off-broadway-2026",
+      "market": "broadway",
+      "queuedAt": "2026-11-06T18:52:50.943Z",
+      "dueAt": "2026-11-06T19:52:50.943Z",
+      "offsetHours": 1,
+      "outletIds": [
+        "nytimes"
+      ],
+      "attempted": false
+    },
+    {
+      "kind": "truncated-t1-refetch",
+      "showId": "the-unbelievers-off-broadway-2026",
+      "market": "broadway",
+      "queuedAt": "2026-11-06T18:52:50.943Z",
+      "dueAt": "2026-11-06T21:52:50.943Z",
+      "offsetHours": 3,
+      "outletIds": [
+        "nytimes"
+      ],
+      "attempted": false
+    },
+    {
+      "kind": "truncated-t1-refetch",
+      "showId": "the-unbelievers-off-broadway-2026",
+      "market": "broadway",
+      "queuedAt": "2026-11-06T18:52:50.943Z",
+      "dueAt": "2026-11-07T06:52:50.943Z",
+      "offsetHours": 12,
+      "outletIds": [
+        "nytimes"
+      ],
       "attempted": false
     }
   ]
