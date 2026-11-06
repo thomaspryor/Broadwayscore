@@ -90,3 +90,25 @@ test('short page where each title repeats back to back (card) is still multi-sho
   const text = filler.repeat(3) + singleWord.slice(0, 9).map((n) => `${cap2(n)} ${cap2(n)} read more.`).join(' ') + ' ' + filler.repeat(6);
   assert.equal(detectMultiShowContent(text, SHOW).detected, true);
 });
+
+test('short page: featured block, prose, then a related block repeating 4 titles plus 4 new ones is still multi-show', () => {
+  const t = singleWord;
+  const block = (list) => list.map((n) => `${cap2(n)} - read the review.`).join(' ');
+  const text = block(t.slice(0, 4)) + ' ' + filler.repeat(6) + block([...t.slice(0, 4), ...t.slice(4, 8)]) + ' ' + filler.repeat(2);
+  assert.ok(text.length > 1000 && text.length < 3000, String(text.length));
+  assert.equal(detectMultiShowContent(text, SHOW).detected, true);
+});
+
+test('short page: header strip, single-mention body cards, footer strip is still multi-show', () => {
+  const t = singleWord;
+  const strip = t.slice(0, 4).map(cap2).join(' | ');
+  const text = filler.repeat(2) + strip + ' ' + t.slice(4, 8).map((n) => `${cap2(n)} is on now. ${filler}`).join('') + filler.repeat(3) + strip + ' ' + filler.repeat(2);
+  assert.ok(text.length > 1000 && text.length < 3000, String(text.length));
+  assert.equal(detectMultiShowContent(text, SHOW).detected, true);
+});
+
+test('the ordinary-word additions only apply in subject mode (subjectNames:false replays the old rule)', () => {
+  const text = ['Still', 'People', 'Both', 'Right Now', 'John', 'Jack'].map((w) => `${w} ${filler}`).join('');
+  assert.equal(detectMultiShowContent(text, SHOW).showsFound.length, 0);
+  assert.ok(detectMultiShowContent(text, SHOW, { subjectNames: false }).showsFound.length >= 3);
+});

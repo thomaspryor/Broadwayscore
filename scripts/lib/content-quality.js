@@ -1119,8 +1119,12 @@ const COMMON_WORD_SHOW_TITLES = new Set([
   'enemies', 'frozen', 'freak', 'misery', 'orphans', 'rocky', 'rumors',
   'thieves', 'trash', 'warp', 'brothers', 'bully', 'buddy',
   'ambassador', 'steaming', 'monument', 'consumed', 'anonymous',
-  // BRO-7053: ordinary words and first names that are also show titles and
-  // matched real London reviews (Speculations: Guardian, Arts Desk).
+]);
+
+// BRO-7053: ordinary words and first names that are also show titles and
+// matched real London reviews (Speculations: Guardian, Arts Desk). Kept apart
+// from the set above so opts.subjectNames:false still reproduces the old rule.
+const SUBJECT_MODE_COMMON_WORDS = new Set([
   'still', 'people', 'both', 'right now', 'john', 'jack', 'miles', 'trevor',
 ]);
 
@@ -1194,7 +1198,7 @@ function isSubjectName(hitIndexes, textLength) {
  * titles qualify: a junk page listing many titles twice would qualify many.
  */
 const SHORT_SUBJECT_MAX_TEXT = 3000;
-const SHORT_SUBJECT_MIN_TEXT = 600;
+const SHORT_SUBJECT_MIN_TEXT = 1000;
 const SHORT_SUBJECT_MIN_GAP = 300;
 const SHORT_SUBJECT_MIN_SPREAD = 0.2;
 const SHORT_SUBJECT_MAX_TITLES = 4;
@@ -1266,6 +1270,7 @@ function detectMultiShowContent(text, expectedShowId, opts = {}) {
   for (const show of CURRENT_BROADWAY_SHOWS) {
     // Skip common English words that happen to be show titles
     if (COMMON_WORD_SHOW_TITLES.has(show)) continue;
+    if (subjectNames && SUBJECT_MODE_COMMON_WORDS.has(show)) continue;
 
     // Skip if this is the expected show
     const showWords = show.split(/\s+/);
@@ -1288,19 +1293,22 @@ function detectMultiShowContent(text, expectedShowId, opts = {}) {
     if (subjectNames && isSubjectName(hits, text.length)) continue;
     candidates.push({ show, hits });
   }
-  // Short captures: few repeated names are the subject; many mean a listing.
-  const shortSubjects = subjectNames ? candidates.filter((c) => isShortSubjectName(c.hits, text.length)) : [];
-  const exempt = shortSubjects.length > 0 && shortSubjects.length <= SHORT_SUBJECT_MAX_TITLES ? new Set(shortSubjects.map((c) => c.show)) : new Set();
-  const foundShows = candidates.filter((c) => !exempt.has(c.show)).map((c) => c.show);
-
-  // Scale threshold by text length — critics routinely reference other shows for comparison
-  // Short text (< 1000 chars) with 3+ shows = likely junk page
-  // Long reviews (5000+ chars) are substantial articles where many references are normal
   const threshold = text.length < 1000 ? 3
     : text.length < 3000 ? 5
     : text.length < 5000 ? 7
     : text.length < 8000 ? 10
     : 15;
+  // Short captures: few repeated names are the subject; many mean a listing.
+  // The titles that do NOT qualify must stay well under the threshold, so a
+  // header/footer strip around a card grid cannot hide behind its repeats.
+  const shortSubjects = subjectNames ? candidates.filter((c) => isShortSubjectName(c.hits, text.length)) : [];
+  const leftover = candidates.length - shortSubjects.length;
+  const exempt = shortSubjects.length > 0 && shortSubjects.length <= SHORT_SUBJECT_MAX_TITLES && leftover <= threshold - 3 ? new Set(shortSubjects.map((c) => c.show)) : new Set();
+  const foundShows = candidates.filter((c) => !exempt.has(c.show)).map((c) => c.show);
+
+  // Scale threshold by text length — critics routinely reference other shows for comparison
+  // Short text (< 1000 chars) with 3+ shows = likely junk page
+  // Long reviews (5000+ chars) are substantial articles where many references are normal
   if (foundShows.length >= threshold) {
     return {
       detected: true,
