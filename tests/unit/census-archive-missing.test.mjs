@@ -15,6 +15,10 @@ test('archived bww-roundup present: not missing', () => {
 test('no roundup URL on any file: still no-census-yet, not a gap', () => {
   assert.equal(publishedRoundupWithoutArchive([{ bwwRoundupUrl: null }, {}], []).missing, false);
 });
+test('roundup URL for a different show (cross-show misroute) is not a gap', () => {
+  assert.equal(publishedRoundupWithoutArchive([{ bwwRoundupUrl: RU }], [], 'Hamilton').missing, false);
+  assert.equal(publishedRoundupWithoutArchive([{ bwwRoundupUrl: RU }], [], 'The Unbelievers').missing, true);
+});
 test('audit wires the helper into the gap condition', async () => {
   const fs = require('node:fs');
   const src = fs.readFileSync(new URL('../../scripts/audit-opening-night-coverage.js', import.meta.url), 'utf8');

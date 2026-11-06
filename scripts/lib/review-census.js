@@ -310,11 +310,19 @@ function unionCensus(perSource, opts = {}) {
  * Pure: pass the review-text JSON objects and the census' sourcesPresent.
  * @returns {{missing:boolean, url:string|null}}
  */
-function publishedRoundupWithoutArchive(reviewFiles, sourcesPresent) {
+function publishedRoundupWithoutArchive(reviewFiles, sourcesPresent, showTitle) {
   if ((sourcesPresent || []).includes('bww-roundup')) return { missing: false, url: null };
   for (const f of reviewFiles || []) {
     const u = f && typeof f.bwwRoundupUrl === 'string' ? f.bwwRoundupUrl : '';
-    if (/^https?:\/\/[^ ]*review-roundup/i.test(u)) return { missing: true, url: u };
+    if (!/^https?:\/\/[^ ]*review-roundup/i.test(u)) continue;
+    // A roundup URL copied onto another show's file (cross-show misroute) must not raise a gap: the slug has to
+    // carry a distinctive word of THIS show's title (e.g. "unbelievers"), when a title is known.
+    if (showTitle) {
+      const toks = String(showTitle).toLowerCase().split(/[^a-z0-9]+/).filter((t) => t.length > 3);
+      const slug = u.toLowerCase();
+      if (toks.length && !toks.some((t) => slug.includes(t))) continue;
+    }
+    return { missing: true, url: u };
   }
   return { missing: false, url: null };
 }
