@@ -244,6 +244,13 @@ test('poll loop breaks through shouldBreakEarly with the first-wave inputs', () 
   // the pre-BRO-6033 rule is still ORed in
   assert.match(step.run, /HOT_NEW" = "true" \] && \[ "\$POLLED" -ge "\$FRONT" \]/);
   const find = findStep(wf, 'poll', 'Find shows to poll');
-  assert.match(find.run, /r\.mainFrontEnd\]\.join\('\|'\)/);
+  assert.match(find.run, /r\.mainFrontEnd, r\.window\.join\(','\)\]\.join\('\|'\)/);
   assert.match(find.run, /echo "main_front_end=/);
+});
+
+test('BRO-7032: window lists every press-night-window show, Off-Broadway included, while hot stays main-stage', () => {
+  const ob = { id: 'ob-show', category: 'off-broadway', openingDate: '2026-11-05' };
+  const r = orderPollShows([ob], new Date('2026-11-06T03:30:00Z')); // 10:30pm ET press night
+  assert.deepEqual(r.window, ['ob-show']);
+  assert.deepEqual(r.hot, []);
 });
