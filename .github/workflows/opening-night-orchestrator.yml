@@ -930,7 +930,7 @@ jobs:
             if [ "$ITERATION" -lt "$MAX_ITERATIONS" ]; then
               # BRO-6858: 5 min instead of POLL_INTERVAL inside a Broadway show's first 2h after the embargo
               # (scripts/lib/press-night-poll-plan.js). An explicit poll_interval_minutes input always wins; any
-              # error prints POLL_INTERVAL. SERP deferral is unchanged (counted in iterations).
+              # error prints POLL_INTERVAL. For Broadway the poller's capped hourly SERP sweep overrides the deferral below.
               SLEEP_MIN=$(timeout 30 node scripts/lib/press-night-poll-plan.js --shows="$SHOWS" --default="$POLL_INTERVAL" \
                 --override="${{ inputs.poll_interval_minutes }}" 2>/tmp/poll-plan.err) || SLEEP_MIN=$POLL_INTERVAL
               cat /tmp/poll-plan.err 2>/dev/null || true
