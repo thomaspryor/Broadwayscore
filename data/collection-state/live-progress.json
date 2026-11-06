@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-11-06T22:07:13.383Z",
-  "processed": 8,
-  "failed": 11,
-  "successRate": "42.1%",
+  "updatedAt": "2026-11-06T22:14:18.965Z",
+  "processed": 27,
+  "failed": 54,
+  "successRate": "33.3%",
   "tierBreakdown": {
-    "playwright": 6,
+    "playwright": 17,
     "amp": 0,
-    "browserbase": 2,
+    "browserbase": 4,
     "directCookies": 0,
-    "scrapingdog": 0,
-    "scrapingbee": 0,
+    "scrapingdog": 2,
+    "scrapingbee": 1,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 1
+    "archive": 3
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
       "t": "2026-11-06T20:16:15.914Z",
@@ -52,28 +52,49 @@
       "url": "https://bachtrack.com/review-nozze-figaro-pountney-conta-bucharest-national-oper"
     },
     {
-      "t": "2026-11-06T22:00:38.855Z",
+      "t": "2026-11-06T21:50:57.596Z",
       "event": "bb-session",
-      "session": "8aa350b1",
-      "url": "https://bachtrack.com/review-lorfeo-william-kentridge-greek-national-opera-athen"
+      "session": "f3cd938f",
+      "url": "http://www.talkinbroadway.com/page/ob/3_07_16.html"
     },
     {
-      "t": "2026-11-06T22:01:14.599Z",
-      "event": "bb-session",
-      "session": "39373614",
-      "url": "https://bachtrack.com/review-shostakovich-cherry-town-ahlbom-dutch-national-oper"
+      "t": "2026-11-06T21:50:58.492Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     },
     {
-      "t": "2026-11-06T22:02:18.242Z",
+      "t": "2026-11-06T21:54:15.926Z",
       "event": "bb-session",
-      "session": "a30c3b35",
-      "url": "https://bachtrack.com/review-tosca-miskimmon-glassberg-fanyo-english-national-op"
+      "session": "de70c8e7",
+      "url": "http://www.talkinbroadway.com/ob/12_07_15.html"
     },
     {
-      "t": "2026-11-06T22:02:55.773Z",
+      "t": "2026-11-06T21:54:16.721Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-06T21:57:17.048Z",
       "event": "bb-session",
-      "session": "3d2a837d",
-      "url": "https://bachtrack.com/review-nozze-figaro-pountney-conta-bucharest-national-oper"
+      "session": "099e6280",
+      "url": "https://www.nytimes.com/2026/11/05/theater/rope-the-verge-review-off-broadway-si"
+    },
+    {
+      "t": "2026-11-06T21:57:17.890Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-06T22:00:15.107Z",
+      "event": "bb-session",
+      "session": "07e2e14b",
+      "url": "https://www.londontheatre1.com/.well-known/captcha/?y=ipr:20.83.175.21:179330283"
+    },
+    {
+      "t": "2026-11-06T22:01:34.559Z",
+      "event": "bb-session",
+      "session": "caf9fe20",
+      "url": "https://ground.news/article/memoriam-review-by-thespyinthestalls-at-southwark-pl"
     }
   ]
 }
