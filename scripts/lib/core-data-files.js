@@ -62,8 +62,10 @@ function planCoreDataCopy(names, { isPublicTracked, coreFiles = getShippedCoreFi
 
 /** Basenames under data/ that git tracks in the repo at repoDir. */
 function publicTrackedDataFiles(repoDir) {
-  const out = execFileSync('git', ['-C', repoDir, 'ls-files', '-z', '--', 'data/*.json'], { encoding: 'utf8' });
-  // Git pathspec `*` crosses `/`, so keep only top-level data/*.json.
+  const out = execFileSync('git', ['-C', repoDir, 'ls-files', '-z', '--', ':(glob)data/*.json'], { encoding: 'utf8', maxBuffer: 256 * 1024 * 1024 });
+  // BRO-7029: plain `data/*.json` crosses `/` and listed data/audit/** too (>1 MiB, ENOBUFS in
+  // opening-night-poller). `:(glob)` keeps `*` to one level; maxBuffer is headroom. The dirname
+  // filter stays as a belt-and-braces check.
   return new Set(out.split('\0').filter((p) => p && path.dirname(p) === 'data').map((p) => path.basename(p)));
 }
 
