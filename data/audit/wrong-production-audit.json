@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-06T17:06:28.664Z",
+  "timestamp": "2026-11-06T17:24:24.405Z",
   "stats": {
-    "totalReviews": 80262,
-    "alreadyFlagged": 21991,
+    "totalReviews": 80284,
+    "alreadyFlagged": 22003,
     "dateGuardCatches": 216,
     "directorMismatch": 3516,
-    "tvFilmSignals": 2284,
-    "londonSignals": 3620,
+    "tvFilmSignals": 2285,
+    "londonSignals": 3621,
     "offBroadwaySignals": 743,
     "yearMismatch": 361,
-    "noPublishDate": 8482
+    "noPublishDate": 8470
   },
   "findings": [
     {
@@ -524,6 +524,20 @@
       "score": 79,
       "publishDate": "February 1st, 2023",
       "url": "https://www.whatsonstage.com/london-theatre/news/222-a-ghost-story-cheryl-west-end-debut_58260.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "222-a-ghost-story-off-broadway-2026",
+      "file": "new-york-sun--elysa-gardner.json",
+      "score": 41,
+      "publishDate": "2026-11-06",
+      "url": "https://www.nysun.com/article/222-a-ghost-story-not-quite-a-screaming-good-time",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -125267,6 +125281,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-bridge-off-west-end-2026",
+      "file": "artsdesk--aleks-sierz.json",
+      "score": 66,
+      "publishDate": "2026-11-04",
+      "url": "https://theartsdesk.com/theatre/bridge-bush-theatre-review-entertaining-stand-one-sided-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
         }
       ]
     },

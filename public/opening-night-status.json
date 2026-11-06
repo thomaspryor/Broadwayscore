@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-06T17:06:49.592Z",
+  "generatedAt": "2026-11-06T17:24:42.325Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -558,9 +558,9 @@
         "reasons": [
           "8/12 total",
           "T1:2/3",
-          "hi-conf:6/8"
+          "hi-conf:5/8"
         ],
-        "highConfidence": 6,
+        "highConfidence": 5,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -1329,27 +1329,27 @@
       "status": "open",
       "slug": "222-a-ghost-story-off-broadway",
       "thumbnail": "/images/shows/222-a-ghost-story-off-broadway-2026/thumbnail.jpg",
-      "siteScore": 63.39,
-      "liveScore": 63,
+      "siteScore": 59.39,
+      "liveScore": 59,
       "scoreDrift": -0.39000000000000057,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 6,
+      "total": 7,
       "t1": 0,
-      "t2": 3,
+      "t2": 4,
       "t3": 3,
       "positive": 3,
       "mixed": 2,
-      "negative": 1,
+      "negative": 2,
       "readiness": {
         "ready": false,
         "reasons": [
-          "6/12 total",
+          "7/12 total",
           "T1:0/3",
-          "hi-conf:6/8"
+          "hi-conf:7/8"
         ],
-        "highConfidence": 6,
+        "highConfidence": 7,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -1380,10 +1380,6 @@
         },
         {
           "name": "The New Yorker",
-          "isDualMarket": false
-        },
-        {
-          "name": "The Wall Street Journal",
           "isDualMarket": false
         },
         {
@@ -1490,10 +1486,6 @@
         },
         {
           "name": "Lighting & Sound America",
-          "isDualMarket": false
-        },
-        {
-          "name": "The New York Sun",
           "isDualMarket": false
         },
         {
@@ -1765,6 +1757,18 @@
           "m": 2,
           "n": 1,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-11-06T17:24:42.325Z",
+          "rc": 7,
+          "s": 59.39,
+          "t1": 0,
+          "t2": 4,
+          "t3": 3,
+          "p": 3,
+          "m": 2,
+          "n": 2,
+          "bc": "waiting"
         }
       ]
     },
@@ -1778,25 +1782,24 @@
       "status": "open",
       "slug": "speculations-off-west-end",
       "thumbnail": "/images/shows/speculations-off-west-end-2026/thumbnail.jpg",
-      "siteScore": null,
-      "liveScore": 62,
-      "scoreDrift": null,
-      "belowThreshold": true,
-      "reviewsNeeded": 1,
+      "siteScore": 49,
+      "liveScore": 49,
+      "scoreDrift": 0,
+      "belowThreshold": false,
+      "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 2,
-      "t1": 0,
-      "t2": 1,
-      "t3": 1,
-      "positive": 0,
+      "total": 7,
+      "t1": 1,
+      "t2": 3,
+      "t3": 3,
+      "positive": 2,
       "mixed": 2,
-      "negative": 0,
+      "negative": 3,
       "readiness": {
         "ready": false,
         "reasons": [
-          "2/8 total",
-          "T1:0/3",
-          "T2:1/2",
+          "7/8 total",
+          "T1:1/3",
           "hi-conf:1/6"
         ],
         "highConfidence": 1,
@@ -1837,19 +1840,11 @@
           "isDualMarket": true
         },
         {
-          "name": "Evening Standard",
-          "isDualMarket": false
-        },
-        {
           "name": "The Independent",
           "isDualMarket": true
         },
         {
           "name": "The i",
-          "isDualMarket": false
-        },
-        {
-          "name": "Time Out London",
           "isDualMarket": false
         },
         {
@@ -1875,15 +1870,7 @@
           "isDualMarket": true
         },
         {
-          "name": "BroadwayWorld",
-          "isDualMarket": true
-        },
-        {
           "name": "New York Theatre Guide",
-          "isDualMarket": true
-        },
-        {
-          "name": "WhatsOnStage",
           "isDualMarket": true
         },
         {
@@ -1926,6 +1913,18 @@
           "p": 0,
           "m": 2,
           "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-11-06T17:24:42.325Z",
+          "rc": 7,
+          "s": 49,
+          "t1": 1,
+          "t2": 3,
+          "t3": 3,
+          "p": 2,
+          "m": 2,
+          "n": 3,
           "bc": "waiting"
         }
       ]
