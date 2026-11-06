@@ -74,7 +74,7 @@ const { inheritUrlFromDuplicateLosers } = require('./lib/duplicate-fold-url');
 const { siblingRatingForClamp } = require('./lib/sibling-rating-inherit');
 const { detectBandFromReviewFile } = require('./lib/star-reliability');
 const { displayedOriginalRating } = require('./lib/displayed-original-rating');
-const { isRoundupUrl, isLikelyStaleRoundupFlag, isLikelyStaleSuspectedMisattribution, getCriticRegistry, isVenueMismatch, shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag, multiShowSplitGroup, isMultiShowSplitSibling, shouldSkipRoundupAudit, isRoundupPageAsReview, isQuotingRoundupHostUrl, cvBlocksUkWrongProductionAutoClear, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild, hasIncludableSyndicationPrimary, isRejectedByReasonExclusion, isFullTextWrongAuthorActive, isRejectedAtExclusion, isRegistrationWallStubExclusion, duplicateOfInheritedFlag, duplicateOfRefIsCopy, hasStrongDifferentShowSignal, hasHighConfidenceLlmScore, canonicalizeUrlForDedup, areSameCriticFuzzy, isStaleCvPromotedWrongProduction, isStaleCvPromotedWrongShow, isMisFamilyCvPromotedWrongShow, isStaleGenericHomepageWrongShow, isStaleBulkTitleWrongShow, computeCvIsStale, applyVenueClassificationCarveout, cvWrongProductionIsVenueCarveout, isVenueCarveoutPersistedWrongProduction, isOwnCastEvidencePersistedWrongProduction, isEnsembleCategoryQuibbleRejection, isReviewWithinOwnProductionWindow, isPrematureReviewForUnopenedShow, isNonReviewDemotedByFreshCV, isReviewContentTrustworthy, cvFlagVetoedInWindow, isNamedNonReviewUrlRecord, isCancelledBeforeOpeningShow, isUnverifiableWebSearchRow, isPreviewFirstLookPiece, isCombinedReviewOfOtherMemberOnly, isBodylessAggregatorScoreUncorroborated, cvNonReviewHumanCleared, cvWrongArticleFamily, cvArticleTypeNonReview, cvArticleTypeVerdictIsPartialWindow, cvWrongArticlePromotion, wrongShowCleared, wrongShowExplicitlyCleared, evaluateLateDateGuard, evaluateUrlYearGuard, evaluateDirectorGuard } = require('./lib/review-guards');
+const { isRoundupUrl, isLikelyStaleRoundupFlag, isLikelyStaleSuspectedMisattribution, getCriticRegistry, isVenueMismatch, shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag, multiShowSplitGroup, isMultiShowSplitSibling, shouldSkipRoundupAudit, isRoundupPageAsReview, isQuotingRoundupHostUrl, cvBlocksUkWrongProductionAutoClear, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild, hasIncludableSyndicationPrimary, isRejectedByReasonExclusion, isFullTextWrongAuthorActive, isRejectedAtExclusion, isRegistrationWallStubExclusion, duplicateOfInheritedFlag, duplicateOfRefIsCopy, hasStrongDifferentShowSignal, hasHighConfidenceLlmScore, canonicalizeUrlForDedup, areSameCriticFuzzy, isStaleCvPromotedWrongProduction, isStaleCvPromotedWrongShow, isMisFamilyCvPromotedWrongShow, isStaleGenericHomepageWrongShow, isStaleBulkTitleWrongShow, computeCvIsStale, applyVenueClassificationCarveout, cvWrongProductionIsVenueCarveout, isVenueCarveoutPersistedWrongProduction, isOwnCastEvidencePersistedWrongProduction, isEnsembleCategoryQuibbleRejection, isReviewWithinOwnProductionWindow, isPrematureReviewForUnopenedShow, isNonReviewDemotedByFreshCV, isReviewContentTrustworthy, cvFlagVetoedInWindow, soloVerdictHeld, isNamedNonReviewUrlRecord, isCancelledBeforeOpeningShow, isUnverifiableWebSearchRow, isPreviewFirstLookPiece, isCombinedReviewOfOtherMemberOnly, isBodylessAggregatorScoreUncorroborated, cvNonReviewHumanCleared, cvWrongArticleFamily, cvArticleTypeNonReview, cvArticleTypeVerdictIsPartialWindow, cvWrongArticlePromotion, wrongShowCleared, wrongShowExplicitlyCleared, evaluateLateDateGuard, evaluateUrlYearGuard, evaluateDirectorGuard } = require('./lib/review-guards');
 const { ownShowTextEvidence } = require('./lib/own-show-text-evidence');
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
 const { isSoft404Body } = require('./lib/soft-404-body');
@@ -1202,6 +1202,7 @@ function selectBestExcerpt(data, showTitle) {
 // Stats tracking
 const { humanScoreOutsideStarBand } = require('./lib/human-score-star-guard');
 const humanOverridesOutsideBand = [];
+const soloVerdictHoldLog = [];
 const stats = {
   totalFiles: 0,
   totalReviews: 0,
@@ -3753,6 +3754,15 @@ showDirs.forEach(showId => {
         data.wrongProduction = false;
       }
       const laneOk = (guard) => laneBypasses(data, guard, { openingDate: showById[showId] && showById[showId].openingDate });
+      // BRO-7050: log every file a lone classifier verdict would have hidden (the hold itself lives in
+      // review-guards.js soloVerdictHeld, read by the vetoes the gates below already call).
+      for (const svKind of ['nonReview', 'wrongProduction', 'wrongShow', 'rejection']) {
+        const sv = soloVerdictHeld(data, svKind);
+        if (!sv.held) continue;
+        soloVerdictHoldLog.push({ showId, file, outletId: data.outletId || null, kind: svKind,
+          classifiers: sv.families, listedBy: sv.listedBy, scored: sv.scored });
+        stats.singleVerdictHeld = (stats.singleVerdictHeld || 0) + 1;
+      }
       if (data.wrongProduction === true && !laneOk('wrongProduction')) {
         if (data.wrongProductionManualClear || data.wrongProductionOverride || data.humanReviewedWrongProduction === false) {
           console.log(`  [NUCLEAR GUARD FAILURE] ${showId}/${file}: wrongProduction=true despite manual clear — FORCING false`);
@@ -7201,6 +7211,11 @@ if (stats.unscoredWithText.length > 0) {
   });
 
   fs.writeFileSync(auditPath, JSON.stringify(auditOutput, null, 2) + '\n');
+  // BRO-7050: deterministic (sorted, no timestamp) so an unchanged corpus rewrites an identical file.
+  fs.writeFileSync(path.join(path.dirname(auditPath), 'single-verdict-holds.json'), JSON.stringify({
+    _meta: { issue: 'BRO-7050', count: soloVerdictHoldLog.length },
+    holds: soloVerdictHoldLog.slice().sort((a, b) => (a.showId + a.file + a.kind).localeCompare(b.showId + b.file + b.kind)),
+  }, null, 2) + '\n');
   if (humanReviewQueue.length > 0) {
     console.log(`\nHUMAN REVIEW QUEUE: ${humanReviewQueue.length} reviews flagged`);
     Object.entries(auditOutput._meta.reasons).forEach(([reason, count]) => {

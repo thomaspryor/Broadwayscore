@@ -17,6 +17,7 @@ const { isNonEvidenceFailure, isStrictFailureReason, effectiveFailureReason, SOF
 // publishes stops costing a full fetch chain every run.
 const SOFT_404_COOLDOWNS_MS = [3, 12, 48, 168].map((h) => h * 3600 * 1000);
 const { passesGenericTitleIdentity } = require('./generic-title-guard');
+const { evaluateSoloVerdictHold } = require('./single-verdict-guard');
 
 /**
  * Fix #12 — assignedScore skip guard (collect-review-texts.js)
@@ -608,6 +609,25 @@ function isInWindowSlugMatchedReview(data, show) {
 }
 
 /**
+ * BRO-7050: single-verdict hold (scripts/lib/single-verdict-guard.js) with the
+ * current-CV second-family signal supplied from this module's own predicates.
+ * kind: 'nonReview' | 'wrongProduction' | 'wrongShow' | 'rejection'.
+ * Returns the full evaluation ({held, reason, families, listedBy, scored}).
+ */
+function soloVerdictHeld(data, kind, ctx = {}) {
+  if (!data) return { held: false, reason: 'no-data', families: [], listedBy: [], scored: false };
+  const cv = data.contentVerification;
+  const rejKind = kind === 'rejection'
+    ? (data.rejectionReason === 'wrong_show' ? 'wrongShow'
+      : data.rejectionReason === 'wrong_production' ? 'wrongProduction' : 'nonReview')
+    : kind;
+  const cvStands = rejKind === 'nonReview'
+    ? !!cv && cv.confidence === 'high' && (cvArticleTypeNonReview(cv) || cvWrongArticleFamily(cv) === 'nonReview')
+    : currentCvVerdictStands(data, rejKind);
+  return evaluateSoloVerdictHold(data, kind, { ...ctx, cvStands });
+}
+
+/**
  * wrongProduction whose provenance is a CV promotion ('CV-promoted: …' —
  * NOT 'CV-low-but-strong-signal', that path is the strong-signal bypass) or
  * classify-wrong-production.js (llmClassified). A wrongProductionNote or
@@ -661,9 +681,12 @@ function hasStrongDifferentProductionSignal(data, show) {
  */
 function cvFlagVetoedInWindow(data, show, kind, ctx = {}) {
   if (!data || !show) return false;
+  if (ctx && ctx.urlFiledUnderOtherShow === true) return false;
+  // BRO-7050: one automated classifier verdict never hides an aggregator-listed
+  // or full-text-scored review (same safety carve-outs as below, no window test).
+  if (soloVerdictHeld(data, kind, ctx).held && !hasStrongDifferentProductionSignal(data, show)) return true;
   const sourced = kind === 'wrongShow' ? isCvSourcedWrongShow(data) : isCvSourcedWrongProduction(data);
   if (!sourced) return false;
-  if (ctx && ctx.urlFiledUnderOtherShow === true) return false;
   // The collector's / promotion's wrong-content stamps are lifted only by a
   // real clear (explainExclusion's wrongContentFlagsUncleared and
   // contentTierInvalid rules read the clear breadcrumbs, never this veto),
@@ -3072,6 +3095,8 @@ function isNonReviewDemotedByFreshCV(data) {
   if (data.manualReviewedBy || data.manualNonReviewSet === true || data.manualNonReviewBy
     || (typeof data.isNonReviewReason === 'string'
       && /^manual \(not a review\)/i.test(data.isNonReviewReason))) return false;
+  // BRO-7050: a lone automated classifier verdict on an aggregator-listed / full-text-scored review is advisory.
+  if (soloVerdictHeld(data, 'nonReview').held) return true;
   const cv = data.contentVerification;
   if (!cv) return false;
   const isCvPromotedProvenance = typeof data.isNonReviewReason === 'string'
@@ -5267,6 +5292,8 @@ function isRejectedByReasonExclusion(data, opts) {
     // clear, since the scorer no longer re-stamps cleared files (human-cleared-rejection.js, BRO-4838). Without this the
     // clear only worked if a second plan also nulled rejectionReason (BRO-6910: Theatrely on Waiting for Lefty).
     if (nonReviewRejectionHumanCleared(data)) return false;
+    // BRO-7050: an ensemble-only rejection of an aggregator-listed / full-text-scored review is advisory.
+    if (soloVerdictHeld(data, 'rejection').held) return false;
     const isJsonLdStarNotAReview = data.rejectionReason === 'not_a_review' &&
       (data.originalScoreSource === 'json-ld' || data.aggregatorStarsSource === 'json-ld') &&
       require('./score-extractors').KNOWN_STAR_OUTLETS.has(data.outletId);
@@ -5327,6 +5354,8 @@ function isRegistrationWallStubExclusion(data) {
 function isRejectedAtExclusion(data) {
   if (!data) return false;
   if (data.rejectedAt && typeof data.rejectedAt === 'string') {
+    // BRO-7050: the rejectedAt stamp is the same ensemble verdict as rejectionReason; one hold covers both.
+    if (data.rejectionReason && soloVerdictHeld(data, 'rejection').held) return false;
     const reFetched = isTimestampAfter(data.textFetchedAt, data.rejectedAt);
     const wpCleared = rejectedAtHumanCleared(data) || isFreshWpAutoCleared(data) || nonReviewRejectionHumanCleared(data);
     // Exception 3: matches the rejectionReason exception — not_a_review + json-ld star
@@ -6834,6 +6863,7 @@ module.exports = {
   isCvSourcedWrongShow,
   currentCvVerdictStands,
   cvFlagVetoedInWindow,
+  soloVerdictHeld,
   isSameTitleDifferentYearFalsePositive,
   isPrematureReviewForUnopenedShow,
   PRE_OPENING_LEAD_DAYS,
