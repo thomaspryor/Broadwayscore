@@ -14,7 +14,14 @@
  *   - reviews.json at the time is not recorded, so a review is never in the "deploy" stage here, and scoring time is
  *     not recorded, so a pending review sits in the "score" stage.
  *
- * Usage: node scripts/press-night-watchdog-replay.js --show=ID --night=YYYY-MM-DD [--runs=FILE|--no-runs] [--json]
+ * --project: also project the night's first-live and coverage-2h under the 5-min first-2h sleep
+ * (press-night-poll-plan.js). Model: an orchestrator-chained poller run (it started 12-22 min after another poller
+ * run ended, i.e. after a 15-min sleep) whose sleep began inside [embargo, +2h] starts 10 min earlier, and every
+ * later run of that chain inherits the shift. A review found by a shifted run is found and goes live that much
+ * earlier. The watchdog adds nothing on top while a poller is moving (it retries only a stalled stage). Coverage-2h
+ * uses the record's own +2h census (reference['2h']); a census outlet with no live review stays missing.
+ *
+ * Usage: node scripts/press-night-watchdog-replay.js --show=ID --night=YYYY-MM-DD [--runs=FILE|--no-runs] [--project] [--json]
  * Exit 0 replayed, 2 bad args or missing record.
  */
 const fs = require('fs');
@@ -60,6 +67,72 @@ function replayNight({ record, runs, normOutlet, tickMin = TICK_MIN, untilMin = 
     pages: acted.flatMap((t) => t.actions.filter((a) => a.type === 'page').map((a) => ({ atMin: t.atMin, ...a }))) };
 }
 
+const POLLER = 'opening-night-poller.yml';
+const SLEEP_SAVED_MIN = 15 - 5; // press-night-poll-plan: default 15 -> FAST_MIN 5 inside the first 2h
+const FAST_WINDOW_MIN = 120;
+
+/** Per poller run (by index in the sorted list), how many minutes earlier it starts under the fast first-2h sleep. */
+function chainShifts(runs, embargoMs) {
+  const pollers = (runs || []).filter((r) => r.workflow === POLLER)
+    .map((r) => ({ start: Date.parse(r.startedAt || r.createdAt), end: Date.parse(r.updatedAt), run: r }))
+    .filter((r) => Number.isFinite(r.start) && Number.isFinite(r.end)).sort((a, b) => a.start - b.start);
+  for (const r of pollers) {
+    // The orchestrator sleeps 15 min after its poller finishes, then dispatches: the predecessor ended 12-22 min ago.
+    const pred = pollers.filter((p) => p !== r && p.end <= r.start - 12 * MIN && p.end >= r.start - 22 * MIN)
+      .sort((a, b) => b.end - a.end)[0];
+    r.shift = 0;
+    if (pred) {
+      const sleepFrom = pred.end - (pred.shift || 0) * MIN;
+      const fast = sleepFrom >= embargoMs && sleepFrom - embargoMs <= FAST_WINDOW_MIN * MIN;
+      r.shift = (pred.shift || 0) + (fast ? SLEEP_SAVED_MIN : 0);
+    }
+  }
+  return pollers;
+}
+
+/** Projected first-live and coverage-2h of a recorded night under the fast first-2h sleep (model in the header). */
+function projectNight({ record, runs, normOutlet }) {
+  const embargoMs = Date.parse(record.embargoAt);
+  const pollers = chainShifts(runs, embargoMs);
+  const nightStart = embargoMs - wd.NIGHT_START_H * 60 * MIN;
+  const seenBy = new Map();
+  for (const f of (record.fileState && record.fileState.files) || []) {
+    const ms = Date.parse(f.firstSeenAt);
+    if (!f.includable || !f.outletId || !Number.isFinite(ms) || ms < nightStart) continue;
+    if (!seenBy.has(f.outletId) || ms < seenBy.get(f.outletId)) seenBy.set(f.outletId, ms);
+  }
+  const shiftAt = (ms) => {
+    const r = pollers.filter((p) => p.start <= ms && ms <= p.end + 5 * MIN).sort((a, b) => b.start - a.start)[0];
+    return r ? r.shift : 0;
+  };
+  const rows = [];
+  for (const p of record.perReview || []) {
+    const liveMs = Date.parse(p.firstLiveAt);
+    if (!Number.isFinite(liveMs)) continue;
+    const oid = normOutlet(p.outlet);
+    const seen = seenBy.get(oid);
+    const shift = Number.isFinite(seen) && liveMs > seen ? shiftAt(seen) : 0;
+    rows.push({ outletId: oid, liveMs, projectedMs: Math.max(liveMs - shift * MIN, Number.isFinite(seen) ? seen - shift * MIN : -Infinity), shift });
+  }
+  const mins = (ms) => (Number.isFinite(ms) ? Math.round((ms - embargoMs) / MIN) : null);
+  const firstLiveMs = Date.parse(record.firstLiveAt);
+  const first = rows.filter((r) => r.liveMs === firstLiveMs)[0];
+  const ref = (record.reference && record.reference['2h']) || null;
+  let coverage = null;
+  if (ref && ref.count) {
+    const at2h = embargoMs + FAST_WINDOW_MIN * MIN;
+    const nowLive = (ref.missing || []).filter((o) => rows.some((r) => r.outletId === o && r.projectedMs <= at2h));
+    const covered = ref.covered + nowLive.length;
+    coverage = { count: ref.count, recordedCovered: ref.covered, projectedCovered: covered, projected: Math.round((covered / ref.count) * 1000) / 1000, newlyLive: nowLive };
+  }
+  return {
+    shiftedRuns: pollers.filter((r) => r.shift).map((r) => ({ startMin: mins(r.start), shift: r.shift })),
+    firstLive: { recordedMin: mins(firstLiveMs), projectedMin: first ? mins(first.projectedMs) : mins(firstLiveMs) },
+    coverage2h: coverage,
+    medianShiftMin: rows.length ? rows.map((r) => r.shift).sort((a, b) => a - b)[Math.floor(rows.length / 2)] : 0,
+  };
+}
+
 function main() {
   const args = process.argv.slice(2);
   const arg = (k) => { const a = args.find((x) => x.startsWith(`--${k}=`)); return a ? a.slice(k.length + 3) : null; };
@@ -88,8 +161,15 @@ function main() {
     }
   }
   console.log(`  totals: ${out.dispatches.length} dispatch(es), ${out.pages.length} page(s) over ${out.ticks} ticks`);
+  if (args.includes('--project')) {
+    if (!runs) { console.error('--project needs the recorded runs (drop --no-runs)'); return 2; }
+    const p = projectNight({ record, runs, normOutlet });
+    console.log(`  projection (5-min sleep in the first 2h): poller runs started earlier: ${p.shiftedRuns.map((r) => `+${r.startMin}m by ${r.shift}`).join(', ') || 'none'}`);
+    console.log(`    first-live: recorded +${p.firstLive.recordedMin} min, projected +${p.firstLive.projectedMin} min after the embargo (bar 30)`);
+    if (p.coverage2h) console.log(`    coverage-2h: recorded ${p.coverage2h.recordedCovered}/${p.coverage2h.count}, projected ${p.coverage2h.projectedCovered}/${p.coverage2h.count} = ${p.coverage2h.projected} (bar 0.8)${p.coverage2h.newlyLive.length ? `; newly live by +2h: ${p.coverage2h.newlyLive.join(', ')}` : ''}`);
+  }
   return 0;
 }
 
-module.exports = { replayNight, runsAt };
+module.exports = { replayNight, runsAt, projectNight, chainShifts };
 if (require.main === module) process.exitCode = main();
