@@ -1,34 +1,34 @@
 {
-  "generatedAt": "2026-11-05T09:38:45.427Z",
+  "generatedAt": "2026-11-06T09:35:34.117Z",
   "shadow": true,
-  "checkoutSha": "89640c86461432a19c882b978293412832d27e93",
-  "totalCandidates": 369,
-  "eligibleCandidates": 90,
-  "checked": 30,
+  "checkoutSha": "08ca96b9e784c13cc32c506752dee09b1846d322",
+  "totalCandidates": 353,
+  "eligibleCandidates": 91,
+  "checked": 27,
   "truncated": true,
   "fetchError": null,
   "counts": {
-    "pass": 21,
+    "pass": 20,
     "fail": 3,
-    "unverifiable": 6
+    "unverifiable": 4
   },
   "alreadyDone": [
     {
-      "id": "BRO-6997",
-      "name": "Image guard follow-ups: audit hero art, schedule the lookalike audit, tune weekly sweep noise (72 advisory flags)",
-      "verifyCmd": "node --test scripts/lib/live-art-audit.test.mjs",
+      "id": "BRO-7023",
+      "name": "Show Score gap: Midnight (off-Broadway) cached URL is London's page; detector flags it forever",
+      "verifyCmd": "node --test scripts/lib/showscore-gap-detector.test.mjs",
       "detail": null
     },
     {
-      "id": "BRO-6991",
-      "name": "Widen run-together outlet-name selector to 10+ chars and digit ids (BRO-5507 follow-up)",
-      "verifyCmd": "node --test scripts/lib/outlet-registry-field-shape.test.mjs tests/unit/outlet-registry-display-names.test.mjs tests/unit/outlet-registry-live-data.test.mjs",
+      "id": "BRO-6987",
+      "name": "P2: Opening night miss: Rope (2026-11-03)",
+      "verifyCmd": "node scripts/slow-market-grade.js --opened-from=2026-11-03 --opened-to=2026-11-03 --check-gaps",
       "detail": null
     },
     {
-      "id": "BRO-6983",
-      "name": "Stop the wrong-production-reviews leak recurring + de-noise Corpus Drift and the morning digest",
-      "verifyCmd": "node --test tests/unit/live-data-routing.test.mjs",
+      "id": "BRO-6985",
+      "name": "Affiliate bot click divergence: Impact records 10.5x the real PostHog TodayTix clicks (ceiling 2.5x)",
+      "verifyCmd": "node --test scripts/lib/affiliate-anomaly.test.mjs",
       "detail": null
     },
     {
@@ -41,6 +41,12 @@
       "id": "BRO-6947",
       "name": "Printed-byline follow-ups: auto-fill for outlets without registry critics, triage 341 unlisted, 14 destination-exists",
       "verifyCmd": "node --test scripts/lib/printed-byline-conflict.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-6939",
+      "name": "Onboarding follow-ups: audit new tours' art in CI, keep genre tags through a lost-push redo",
+      "verifyCmd": "node scripts/validate-data.js --strict",
       "detail": null
     },
     {
@@ -98,12 +104,6 @@
       "detail": null
     },
     {
-      "id": "BRO-6774",
-      "name": "Finish BRO-6759 cross-outlet repair: 42 different-critic flags still unverified or stale (unfetchable pages)",
-      "verifyCmd": "node scripts/audit-review-contamination.js --strict",
-      "detail": null
-    },
-    {
       "id": "BRO-6763",
       "name": "Owner email for each new Profitability Scorecard sign-up",
       "verifyCmd": "node --test tests/unit/money-signup-notify.test.mjs",
@@ -131,12 +131,6 @@
       "id": "BRO-6616",
       "name": "Cutover 0: lane shadow commits its own scraper-spend ledger lines to main",
       "verifyCmd": "node --test tests/unit/lane-spend-ledger-commit.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-6599",
-      "name": "audit-cross-show-url.js: 109 non-London unhandled hits are title-overlap false positives (A Beautiful Noise vs Beautiful etc.); teach it to skip them",
-      "verifyCmd": "node --test scripts/lib/cross-show-url.test.mjs",
       "detail": null
     }
   ],
@@ -174,37 +168,32 @@
       "detail": "ran no passing tests (all skipped or none ran)"
     },
     {
-      "id": "BRO-6914",
-      "name": "Quiz follow-ups the BRO-6734 reviewer found outside its scope",
-      "verifyCmd": "node --test scripts/dispatch-follow-ups.test.mjs",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/dispatch-follow-ups.test.mjs"
-    },
-    {
-      "id": "BRO-6862",
-      "name": "Lottery/rush: 'special' key from bwayrush scraper never shown (MTC $35, HipTix)",
-      "verifyCmd": "node --test tests/unit/lottery-rush-special-key.test.mjs",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/lottery-rush-special-key.test.mjs"
-    },
-    {
       "id": "BRO-6724",
       "name": "Pre-existing red checks seen during BRO-6716: cross-outlet attribution suspect tests + audit-regex-patterns --full overages",
       "verifyCmd": "node scripts/run-unit-tests.js",
-      "detail": "check killed by SIGTERM after 122191ms (timeout — no verdict)"
+      "detail": "check killed by SIGTERM after 95668ms (timeout — no verdict)"
     },
     {
       "id": "BRO-6602",
       "name": "main test.yml red: Unit Tests / scripts/lib tests — matchSlugToShow 20 real fixtures + BRO-2281 Hackney Empire venue",
       "verifyCmd": "node scripts/run-unit-tests.js",
-      "detail": "check killed by SIGTERM after 72125ms (timeout — no verdict)"
+      "detail": "check killed by SIGTERM after 46525ms (timeout — no verdict)"
     }
   ],
   "landedButOpen": [
     {
-      "id": "BRO-6983",
-      "name": "Stop the wrong-production-reviews leak recurring + de-noise Corpus Drift and the morning digest",
-      "branch": "land/bro-6983-cost",
-      "sha": "161db91d77ba9380026f57a7c6d80160311df726",
-      "landedAt": "2026-11-04T23:26:28.880Z"
+      "id": "BRO-7023",
+      "name": "Show Score gap: Midnight (off-Broadway) cached URL is London's page; detector flags it forever",
+      "branch": "land/bro-7023-cost",
+      "sha": "7cd43c98398f5353df0907b0d9bfc8c6acf31e47",
+      "landedAt": "2026-11-05T20:12:58.890Z"
+    },
+    {
+      "id": "BRO-6987",
+      "name": "P2: Opening night miss: Rope (2026-11-03)",
+      "branch": "land/codex-bro-6987",
+      "sha": "91a35c79cb12dcdf63480bcd2e866bd93e58d345",
+      "landedAt": "2026-11-05T22:02:44.152Z"
     },
     {
       "id": "BRO-6965",
@@ -219,6 +208,13 @@
       "branch": "land/bro-6947-followup",
       "sha": "dce76b5f3949ff3fddf47fd49166d9b37d6f8e21",
       "landedAt": "2026-11-05T01:59:25.154Z"
+    },
+    {
+      "id": "BRO-6939",
+      "name": "Onboarding follow-ups: audit new tours' art in CI, keep genre tags through a lost-push redo",
+      "branch": "land/codex-bro-6939",
+      "sha": "d5cf7cb53df52a65818c590e50475505816b1e62",
+      "landedAt": "2026-11-05T22:24:25.170Z"
     },
     {
       "id": "BRO-6901",
@@ -256,13 +252,6 @@
       "landedAt": "2026-11-02T17:40:19.636Z"
     },
     {
-      "id": "BRO-6774",
-      "name": "Finish BRO-6759 cross-outlet repair: 42 different-critic flags still unverified or stale (unfetchable pages)",
-      "branch": "land/bro-6774-cost",
-      "sha": "1abc3a1035de976ef438edd32bc72e9c5b187f2c",
-      "landedAt": "2026-11-01T20:01:56.269Z"
-    },
-    {
       "id": "BRO-6763",
       "name": "Owner email for each new Profitability Scorecard sign-up",
       "branch": "land/bro-6763-money-signup-notify",
@@ -296,13 +285,6 @@
       "branch": "land/bro-6616-guard",
       "sha": "40eaf7691c28fa714768d170e62ded32b4e1edd9",
       "landedAt": "2026-11-03T17:17:20.140Z"
-    },
-    {
-      "id": "BRO-6599",
-      "name": "audit-cross-show-url.js: 109 non-London unhandled hits are title-overlap false positives (A Beautiful Noise vs Beautiful etc.); teach it to skip them",
-      "branch": "land/bro-6599-cross-show-canon",
-      "sha": "88819d77d5934cc5eebb2b9dbbd8f56d813e1fa3",
-      "landedAt": "2026-11-01T04:44:16.715Z"
     }
   ]
 }
