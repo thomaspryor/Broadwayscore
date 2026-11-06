@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-06T02:03:11.016Z",
+  "generatedAt": "2026-11-06T05:01:17.120Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -73,12 +73,8 @@
   "feedsChecked": 78,
   "feedsFailed": [
     {
-      "outletId": "theater-life",
-      "error": "Timeout fetching https://theaterlife.com/feed"
-    },
-    {
       "outletId": "front-row-center",
-      "error": "HTTP 202 for https://thefrontrowcenter.com/feed"
+      "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
     {
       "outletId": "slantmagazine",
@@ -99,29 +95,12 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
-    },
-    {
-      "outletId": "times-square-chronicles",
-      "error": "fetchPage returned an unexpected page for https://t2conline.com/wp-json/wp/v2/posts?categories=504,298,283&per_page=100&"
-    },
-    {
-      "outletId": "londontheatre1",
-      "error": "fetchPage returned an unexpected page for https://www.londontheatre1.com/wp-json/wp/v2/posts?categories=14&per_page=50&o"
     }
   ],
-  "itemsScanned": 745,
-  "matchedGaps": 9,
+  "itemsScanned": 807,
+  "matchedGaps": 14,
   "possibleGaps": 4,
   "gaps": [
-    {
-      "showId": "222-a-ghost-story-off-broadway-2026",
-      "title": "2:22 - A Ghost Story",
-      "level": "matched",
-      "outletId": "culturesauce",
-      "url": "https://culturesauce.com/222-ghost-story-finn-jones-anna-camp-off-broadway-review/",
-      "headline": "&#8216;2:22 A Ghost Story&#8217; is a clockwork exercise in onstage horror (Off Broadway review)",
-      "publishDate": "2026-11-05"
-    },
     {
       "showId": "222-a-ghost-story-off-broadway-2026",
       "title": "2:22 - A Ghost Story",
@@ -132,12 +111,39 @@
       "publishDate": "2026-11-04"
     },
     {
+      "showId": "222-a-ghost-story-off-broadway-2026",
+      "title": "2:22 - A Ghost Story",
+      "level": "matched",
+      "outletId": "theatermania",
+      "url": "https://www.theatermania.com/news/review-222-a-ghost-story-a-boozy-dinner-party-becomes-a-late-night-vigil_1859012/",
+      "headline": "Review: 2:22 – A Ghost Story, a Boozy Dinner Party Becomes a Late-Night Vigil",
+      "publishDate": "2026-11-05"
+    },
+    {
       "showId": "parcel-from-america-off-broadway-2026",
       "title": "Parcel from America",
       "level": "matched",
       "outletId": "off-off-online",
       "url": "https://www.offoffonline.com/offoffonline/2026/11/2/parcel-from-america",
       "headline": "Parcel from America",
+      "publishDate": "2026-11-05"
+    },
+    {
+      "showId": "slanted-floors-off-broadway-2026",
+      "title": "Slanted Floors",
+      "level": "matched",
+      "outletId": "nyt-theater",
+      "url": "https://newyorktheater.me/2026/11/05/slanted-floors-review/",
+      "headline": "Slanted Floors Review",
+      "publishDate": "2026-11-05"
+    },
+    {
+      "showId": "the-blue-violinist-over-west-end-avenue-off-broadway-2026",
+      "title": "The Blue Violinist Over West End Avenue",
+      "level": "matched",
+      "outletId": "pages-on-stages",
+      "url": "https://pagesonstages.com/2026/11/05/the-blue-violinist-over-west-end-avenue/",
+      "headline": "Tradition",
       "publishDate": "2026-11-05"
     },
     {
@@ -156,6 +162,33 @@
       "outletId": "theater-scene",
       "url": "https://www.theaterscene.net/plays/offbway-plays/the-morbs/victor-gluck/",
       "headline": "The Morbs",
+      "publishDate": "2026-11-05"
+    },
+    {
+      "showId": "the-unbelievers-off-broadway-2026",
+      "title": "The Unbelievers",
+      "level": "matched",
+      "outletId": "pages-on-stages",
+      "url": "https://pagesonstages.com/2026/11/05/the-unbelievers/",
+      "headline": "Drinks and Snacks",
+      "publishDate": "2026-11-05"
+    },
+    {
+      "showId": "the-unbelievers-off-broadway-2026",
+      "title": "The Unbelievers",
+      "level": "matched",
+      "outletId": "theater-pizzazz",
+      "url": "https://theaterpizzazz.com/the-unbelievers-falls-short-after-setting-a-high-bar/",
+      "headline": "“THE UNBELIEVERS” FALLS SHORT AFTER SETTING A HIGH BAR",
+      "publishDate": "2026-11-05"
+    },
+    {
+      "showId": "the-verge-off-broadway-2026",
+      "title": "The Verge",
+      "level": "matched",
+      "outletId": "pages-on-stages",
+      "url": "https://pagesonstages.com/2026/11/05/the-verge/",
+      "headline": "Vibrant and Verdant",
       "publishDate": "2026-11-05"
     },
     {

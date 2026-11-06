@@ -706,20 +706,6 @@
     "queuedAt": "2026-11-06T00:04:03.878Z"
   },
   {
-    "conditionKey": "t1-gaps:needs-manual-recovery",
-    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (Lincoln in the Bardo (washpost)). Checked 2026-11-06.",
-    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-06T02:02:44.867Z"
-  },
-  {
     "conditionKey": "corpus-drift:monitor-only",
     "title": "Data-quality monitors drifting from baseline: 19 (backfill-everybodys-talking-about-jamie-show-exists, pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, +13 more). Checked 2026-11-06.",
     "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
@@ -776,6 +762,20 @@
     "queuedAt": "2026-11-06T02:38:07.307Z"
   },
   {
+    "conditionKey": "t1-gaps:needs-manual-recovery",
+    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (Lincoln in the Bardo (washpost)). Checked 2026-11-06.",
+    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-06T05:00:40.836Z"
+  },
+  {
     "conditionKey": "live-data-test:tests/unit/audit-bad-stub-visibility-live-data.test.mjs::tests/unit/audit-bad-stub-visibility-live-data.test.mjs",
     "title": "Live-data test failing: tests/unit/audit-bad-stub-visibility-live-data.test.mjs (tests/unit/audit-bad-stub-visibility-live-data.test.mjs)",
     "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"tests/unit/audit-bad-stub-visibility-live-data.test.mjs\" in tests/unit/audit-bad-stub-visibility-live-data.test.mjs is red against the live corpus.\n\ntest failed",
@@ -802,20 +802,6 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-06T04:56:22.584Z"
-  },
-  {
-    "conditionKey": "live-data-test:tests/unit/critic-spelling-duplicates-live-data.test.mjs::live corpus scan: no NEW same-show/same-outlet critic-name near-duplicate beyond the known backlog",
-    "title": "Live-data test failing: live corpus scan: no NEW same-show/same-outlet critic-name near-duplicate beyond the known backlog (tests/unit/critic-spelling-duplicates-live-data.test.mjs)",
-    "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"live corpus scan: no NEW same-show/same-outlet critic-name near-duplicate beyond the known backlog\" in tests/unit/critic-spelling-duplicates-live-data.test.mjs is red against the live corpus.\n\nREQUIRE_REVIEW_CORPUS=1 but no corpus at <root>/data/review-texts — the review-texts checkout did not land, so this scan would have silently skipped. Fix the checkout rather than unsetting the flag.",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-06T04:56:22.623Z"
   },
   {
     "conditionKey": "live-data-test:tests/unit/critic-spelling-duplicates-live-data.test.mjs::reviews.json: no NEW critic page split by a byline spelling variant",
