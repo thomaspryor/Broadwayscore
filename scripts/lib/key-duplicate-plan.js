@@ -71,7 +71,11 @@ function sameReview(a, b) {
 }
 
 const titleCase = (slug) => slug.split('-').filter(Boolean).map((w) => w[0].toUpperCase() + w.slice(1)).join(' ');
-const fileSlug = (file) => (file.replace(/\.json$/, '').split('--')[1] || '');
+// BRO-2938: legacy filenames carry a byline URL where the critic slug belongs; never treat that as a name.
+const fileSlug = (file) => {
+  const slug = file.replace(/\.json$/, '').split('--')[1] || '';
+  return /^https?/i.test(slug) ? '' : slug;
+};
 
 /**
  * @param {Array<{file:string, url?:string, head?:string, critic?:string, hrs?:*, orig?:*, textLen?:number, tier?:string, bylineFile?:boolean|null, bylineField?:boolean|null}>} files one key group, file = bare filename
@@ -100,4 +104,4 @@ function planKeyGroup(files) {
   return { actions, ambiguous };
 }
 
-module.exports = { planKeyGroup, chooseCanonical, sameReview, normUrl };
+module.exports = { planKeyGroup, chooseCanonical, sameReview, normUrl, fileSlug };

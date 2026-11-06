@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
-const { planKeyGroup, chooseCanonical, normUrl } = require('../../scripts/lib/key-duplicate-plan.js');
+const { planKeyGroup, chooseCanonical, normUrl, fileSlug } = require('../../scripts/lib/key-duplicate-plan.js');
 
 const f = (file, extra = {}) => ({ file, url: null, head: '', textLen: 3000, tier: 'complete', hrs: null, orig: null, ...extra });
 
@@ -48,4 +48,10 @@ test('inconclusive evidence and groups of three are left for a human', () => {
   assert.equal(r.actions.length, 0);
   assert.equal(r.ambiguous.length, 1);
   assert.equal(planKeyGroup([f('1.json'), f('2.json'), f('3.json')]).ambiguous.length, 1);
+});
+
+test('fileSlug never returns a URL-shaped critic slug (BRO-2938)', () => {
+  assert.equal(fileSlug('chicago-sun-times--httpschicagosuntimescomcatey-sullivan.json'), '');
+  assert.equal(fileSlug('nytimes--jesse-green.json'), 'jesse-green');
+  assert.equal(fileSlug('nytimes.json'), '');
 });
