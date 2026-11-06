@@ -26,7 +26,7 @@ import { getCriticBySlug, getAllCriticSlugs } from '../../src/lib/data-reviews';
 const require = createRequire(import.meta.url);
 const emitter = require('../../scripts/lib/critic-slug-aliases.js') as {
   CRITIC_REDIRECT_PREFIX: string;
-  criticSlugsFromReviews: (reviews: unknown) => Set<string>;
+  criticSlugsFromReviews: (reviews: unknown, shows?: unknown) => Set<string>;
 };
 const nameEmitter = require('../../scripts/lib/name-slug-redirects.js') as { NAME_REDIRECT_PREFIXES: Record<string, string> };
 const compact = require('../../data/slug-redirects-compact.json') as Record<string, string>;
@@ -206,7 +206,7 @@ describe('getCriticBySlug alias fallback (real data/slug-redirects-compact.json)
     // prebuild regenerates it on every deploy, and build-slug-redirects.js
     // drops an alias whose canonical no review byline produces (BRO-5434).
     // Such an entry is lag the next build removes, not a broken redirect.
-    const bylineSlugs = emitter.criticSlugsFromReviews((require('../../data/reviews.json') as { reviews: unknown }).reviews);
+    const bylineSlugs = emitter.criticSlugsFromReviews((require('../../data/reviews.json') as { reviews: unknown }).reviews, (require('../../data/shows.json') as { shows: unknown }).shows);
     for (const key of criticKeys) {
       const oldSlug = key.slice(CRITIC_REDIRECT_PREFIX.length);
       const canonical = compact[key];

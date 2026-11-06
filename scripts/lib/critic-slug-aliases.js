@@ -159,17 +159,25 @@ function flattenCriticSlugAliases(aliases) {
   return { aliases: out, dropped };
 }
 
+// Mirrors the show-category filter in src/lib/data-reviews.ts: critic pages
+// are built only from reviews of shows in these categories.
+const CRITIC_PAGE_CATEGORIES = new Set(['broadway', 'off-broadway', 'west-end', 'off-west-end']);
+
 /**
- * Pure: every critic-page slug the reviews could produce (criticProfileKey of
- * each byline). A SUPERSET of the live /critics pages: src/lib/data-reviews.ts
- * also leaves out reviews outside the profiled markets/categories, so an alias
- * whose canonical exists only there passes this check and still 404s.
- * @param {Array<{criticName?: unknown}>} reviews
+ * Pure: every critic-page slug the reviews produce (criticProfileKey of each
+ * byline). With `shows` it applies the same eligibility as the live /critics
+ * pages (known show in a profiled category, not an inherited copy), so a critic
+ * with only regional/tour reviews has no page and its alias is dropped (BRO-7045).
+ * Without `shows` it is a SUPERSET of the live pages.
+ * @param {Array<{criticName?: unknown, showId?: string, inheritedFromShowId?: unknown}>} reviews
+ * @param {Array<{id: string, category?: string}>} [shows]
  * @returns {Set<string>}
  */
-function criticSlugsFromReviews(reviews) {
+function criticSlugsFromReviews(reviews, shows) {
   const slugs = new Set();
+  const category = shows ? new Map(shows.map((s) => [s.id, s.category])) : null;
   for (const r of reviews || []) {
+    if (category && (!r || r.inheritedFromShowId || !CRITIC_PAGE_CATEGORIES.has(category.get(r.showId)))) continue;
     const key = criticProfileKey(r && r.criticName);
     if (key) slugs.add(key);
   }

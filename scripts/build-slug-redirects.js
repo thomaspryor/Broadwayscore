@@ -143,7 +143,7 @@ for (const show of shows) {
 // with no reviews.json in this checkout, none are.
 const { aliases: flatCriticRedirects, dropped: droppedCycles } = flattenCriticSlugAliases(loadCriticSlugAliases());
 const liveCriticSlugs = fs.existsSync(reviewsPath)
-  ? criticSlugsFromReviews(JSON.parse(fs.readFileSync(reviewsPath, 'utf8')).reviews)
+  ? criticSlugsFromReviews(JSON.parse(fs.readFileSync(reviewsPath, 'utf8')).reviews, shows)
   : null;
 const { aliases: criticRedirects, dropped: droppedDead } = dropAliasesWithoutLiveCanonical(flatCriticRedirects, liveCriticSlugs);
 for (const d of [...droppedCycles, ...droppedDead]) {
