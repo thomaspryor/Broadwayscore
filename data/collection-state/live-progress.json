@@ -1,44 +1,21 @@
 {
-  "updatedAt": "2026-11-06T23:11:27.922Z",
-  "processed": 99,
-  "failed": 79,
-  "successRate": "55.6%",
+  "updatedAt": "2026-11-06T23:22:19.657Z",
+  "processed": 176,
+  "failed": 105,
+  "successRate": "62.6%",
   "tierBreakdown": {
-    "playwright": 55,
+    "playwright": 86,
     "amp": 0,
-    "browserbase": 4,
+    "browserbase": 6,
     "directCookies": 0,
-    "scrapingdog": 14,
-    "scrapingbee": 2,
+    "scrapingdog": 16,
+    "scrapingbee": 7,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 19
+    "archive": 48
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 12,
   "recentActivity": [
-    {
-      "t": "2026-11-06T20:16:15.914Z",
-      "event": "bb-session",
-      "session": "2fc01128",
-      "url": "https://www.nytimes.com/2026/11/06/theater/the-unbelievers-222-a-ghost-story-rev"
-    },
-    {
-      "t": "2026-11-06T20:16:16.765Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-11-06T21:06:08.480Z",
-      "event": "bb-session",
-      "session": "50a1e57a",
-      "url": "https://bachtrack.com/review-lorfeo-william-kentridge-greek-national-opera-athen"
-    },
-    {
-      "t": "2026-11-06T21:07:12.415Z",
-      "event": "bb-session",
-      "session": "9425f459",
-      "url": "https://bachtrack.com/review-shostakovich-cherry-town-ahlbom-dutch-national-oper"
-    },
     {
       "t": "2026-11-06T21:08:15.564Z",
       "event": "bb-session",
@@ -108,28 +85,50 @@
       "domain": "talkinbroadway.com"
     },
     {
-      "t": "2026-11-06T23:04:30.865Z",
+      "t": "2026-11-06T23:00:18.011Z",
       "event": "bb-session",
-      "session": "e3996e0c",
-      "url": "https://bachtrack.com/review-lorfeo-william-kentridge-greek-national-opera-athen"
+      "session": "3cb52702",
+      "url": "https://www.nytimes.com/2026/08/25/theater/paranormal-activity-review-broadway.h"
     },
     {
-      "t": "2026-11-06T23:05:06.701Z",
-      "event": "bb-session",
-      "session": "e8f51607",
-      "url": "https://bachtrack.com/review-shostakovich-cherry-town-ahlbom-dutch-national-oper"
+      "t": "2026-11-06T23:00:18.864Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     },
     {
-      "t": "2026-11-06T23:06:10.119Z",
+      "t": "2026-11-06T23:15:19.492Z",
       "event": "bb-session",
-      "session": "5f48c584",
-      "url": "https://bachtrack.com/review-tosca-miskimmon-glassberg-fanyo-english-national-op"
+      "session": "5ba85e91",
+      "url": "https://talkinbroadway.com/review-maybe-happy-ending/"
     },
     {
-      "t": "2026-11-06T23:06:47.552Z",
+      "t": "2026-11-06T23:15:20.391Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-06T23:16:16.864Z",
       "event": "bb-session",
-      "session": "b505e72b",
-      "url": "https://bachtrack.com/review-nozze-figaro-pountney-conta-bucharest-national-oper"
+      "session": "29985819",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review-1"
+    },
+    {
+      "t": "2026-11-06T23:16:25.856Z",
+      "event": "bb-session",
+      "session": "e86da551",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review-1"
+    },
+    {
+      "t": "2026-11-06T23:17:48.169Z",
+      "event": "bb-session",
+      "session": "a9e4e5a9",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review/"
+    },
+    {
+      "t": "2026-11-06T23:17:57.276Z",
+      "event": "bb-session",
+      "session": "f548cd65",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review/"
     }
   ]
 }
