@@ -1,23 +1,23 @@
 {
-  "runDate": "2026-11-06T20:18:51.988Z",
+  "runDate": "2026-11-06T20:19:49.097Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 60,
     "priority": "all",
-    "showFilter": "the-verge-off-broadway-2026",
+    "showFilter": "the-unbelievers-off-broadway-2026",
     "aggressive": true,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 3,
-    "failed": 0,
+    "processed": 2,
+    "failed": 1,
     "skipped": 0,
-    "successRate": "100.0%"
+    "successRate": "66.7%"
   },
   "tierBreakdown": {
-    "playwright": 2,
+    "playwright": 1,
     "amp": 0,
     "browserbase": 2,
     "directCookies": 0,
@@ -29,23 +29,23 @@
   },
   "statistics": {
     "tier1Attempts": 2,
-    "tier1Success": 2,
+    "tier1Success": 1,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 1,
     "tier1_5Success": 1,
-    "tier1_9Attempts": 0,
+    "tier1_9Attempts": 1,
     "tier1_9Success": 0,
-    "tier2Attempts": 1,
-    "tier2Success": 0,
-    "tier3Attempts": 0,
+    "tier2Attempts": 2,
+    "tier2Success": 1,
+    "tier3Attempts": 1,
     "tier3Success": 0,
-    "tier3_6Attempts": 0,
+    "tier3_6Attempts": 1,
     "tier3_6Success": 0,
     "tier4Attempts": 1,
     "tier4Success": 0,
-    "totalFailed": 0,
-    "scrapingBeePageCredits": 0,
+    "totalFailed": 1,
+    "scrapingBeePageCredits": 11,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 1,
     "browserbaseMinutesUsed": 0.2,
@@ -54,10 +54,10 @@
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 3,
-    "failed": 0,
+    "processed": 2,
+    "failed": 1,
     "shows": [
-      "the-verge-off-broadway-2026"
+      "the-unbelievers-off-broadway-2026"
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
@@ -66,28 +66,29 @@
     }
   },
   "processed": [
-    "the-verge-off-broadway-2026/nytimes--helen-shaw.json",
-    "the-verge-off-broadway-2026/front-row-center--unknown.json",
-    "the-verge-off-broadway-2026/lighting-and-sound-america--unknown.json"
+    "the-unbelievers-off-broadway-2026/nytimes--laura-collins-hughes.json",
+    "the-unbelievers-off-broadway-2026/lighting-and-sound-america--unknown.json"
   ],
-  "failed": [],
+  "failed": [
+    "the-unbelievers-off-broadway-2026/bobs-theater-blog--unknown.json"
+  ],
   "cumulativeResumedState": {
     "processed": [
-      "the-verge-off-broadway-2026/nytimes--helen-shaw.json",
-      "the-verge-off-broadway-2026/front-row-center--unknown.json",
-      "the-verge-off-broadway-2026/lighting-and-sound-america--unknown.json"
+      "the-unbelievers-off-broadway-2026/nytimes--laura-collins-hughes.json",
+      "the-unbelievers-off-broadway-2026/lighting-and-sound-america--unknown.json"
     ],
-    "failed": []
+    "failed": [
+      "the-unbelievers-off-broadway-2026/bobs-theater-blog--unknown.json"
+    ]
   },
   "tierDetails": {
     "playwright": [
-      "the-verge-off-broadway-2026/front-row-center--unknown.json",
-      "the-verge-off-broadway-2026/lighting-and-sound-america--unknown.json"
+      "the-unbelievers-off-broadway-2026/lighting-and-sound-america--unknown.json"
     ],
     "amp": [],
     "browserbase": [
-      "data/review-texts/the-verge-off-broadway-2026/nytimes--helen-shaw.json",
-      "the-verge-off-broadway-2026/nytimes--helen-shaw.json"
+      "data/review-texts/the-unbelievers-off-broadway-2026/nytimes--laura-collins-hughes.json",
+      "the-unbelievers-off-broadway-2026/nytimes--laura-collins-hughes.json"
     ],
     "directCookies": [],
     "scrapingdog": [],
@@ -96,6 +97,14 @@
     "archiveToday": [],
     "archive": []
   },
-  "failuresByOutlet": {},
+  "failuresByOutlet": {
+    "Bob's Theater Blog": {
+      "count": 1,
+      "domain": "gotham-playgoer.blogspot.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    }
+  },
   "urlDiscoveries": []
 }
