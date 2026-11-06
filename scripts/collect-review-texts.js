@@ -7743,7 +7743,15 @@ async function processReview(review) {
         html: result.html,
         critic: review.critic,
         showYear: showYearMatch ? Number(showYearMatch[1]) : null,
+        url: review.url,
+        showTitle: (() => {
+          try {
+            if (!_showsJsonCache) _showsJsonCache = JSON.parse(fs.readFileSync('data/shows.json', 'utf8'));
+            return (_showsJsonCache.shows.find(s => s.id === review.showId) || {}).title;
+          } catch { return undefined; }
+        })(),
       });
+      if (timeoutPage.byline) console.log(`  ↷ TIME OUT PAGE: byline ${timeoutPage.byline} differs from row critic ${review.critic}; url is the show's review, byline wins (BRO-7044)`);
       // Time Out swaps a closed show's review for a listing blurb at the same
       // url (the-present-2017 stores the 3,140-char review; the page is now a
       // 2-line capsule). The blurb says nothing against text already held.

@@ -70,15 +70,25 @@ function parseTimeoutPage(html) {
  * @param {string} p.html - fetched page HTML
  * @param {string} [p.critic] - critic credited on the row
  * @param {number|null} [p.showYear] - opening year of the production
+ * @param {string} [p.url] - page url, with showTitle: a page byline that differs from the row critic is accepted when the url is a "<show>-review" slug of a post-2014 show (BRO-7044)
+ * @param {string} [p.showTitle]
  * @returns {{verdict: 'review'|'wrong_critic'|'listing_capsule'|'unknown', reason?: string}}
  */
-function classifyTimeoutPage({ html, critic, showYear }) {
+function classifyTimeoutPage({ html, critic, showYear, url, showTitle }) {
   const page = parseTimeoutPage(html);
   if (!page.hasTimeOutSays) return { verdict: 'unknown' };
   // An Unknown critic can't be contradicted (same skip as audit-critic-outlets.js).
   const rowCritic = /^unknown$/i.test(String(critic || '').trim()) ? '' : normName(critic);
   if (page.reviewBy) {
     if (rowCritic && !normName(page.reviewBy).startsWith(rowCritic)) {
+      // BRO-7044: the BWW row credited Adam Feldman, but the unbelievers review url is Billy
+      // McEntee's own review. The url is the show's review, so the byline is the truth and the
+      // collector's high-confidence author override corrects the row; failing the fetch left
+      // the review excerpt-only (and rejected) for hours.
+      if (Number.isFinite(showYear) && showYear >= LISTING_CAPSULE_FROM_YEAR
+          && require('./excerpt-wrongshow-guard').urlSlugIsReviewOfShow(url, showTitle)) {
+        return { verdict: 'review', byline: page.reviewBy.split(/\s+/).slice(0, 2).join(' ') };
+      }
       const shown = page.reviewBy.split(/\s+/).slice(0, 2).join(' ');
       return { verdict: 'wrong_critic', reason: `Time Out review by ${shown}, row credits ${critic}` };
     }
