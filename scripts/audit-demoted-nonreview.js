@@ -52,7 +52,7 @@ function main() {
       try { r = JSON.parse(fs.readFileSync(path.join(dir, file), 'utf8')); } catch { continue; }
       if (r.isNonReview !== true) continue;
       flagged++;
-      if (!isNonReviewDemotedByFreshCV(r)) continue;
+      if (!isNonReviewDemotedByFreshCV(r) || !r.contentVerification) continue; // BRO-7050: solo-verdict holds have no CV
       demoted++;
       let excl;
       try { excl = explainExclusion(r, showById[show] || null, path.join(dir, file)); } catch (e) { excl = `error: ${e.message}`; }

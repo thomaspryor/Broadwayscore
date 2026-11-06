@@ -1166,6 +1166,8 @@ async function main() {
           const blockReason = nonReviewStampBlockReason(data, hasBotStubTruncationSignal(data));
           if (blockReason) {
             console.log(`  [EVIDENCE-CONFLICT] ${nr.file} — ${blockReason}; skipping terminal stamp`);
+            // BRO-7050: kept live, so stamp it checked; otherwise every incremental run re-pays Gemini for it.
+            if (/aggregator lists this review/.test(blockReason)) reviewsConfirmed.push(nr.file);
             continue;
           }
           data.isNonReview = true;

@@ -14,6 +14,7 @@ const path = require('path');
 // included → excluded (or vice versa) in reviews.json.
 const INCLUSION_FILES = [
   'scripts/lib/review-guards.js',
+  'scripts/lib/single-verdict-guard.js',  // BRO-7050: holds an aggregator-listed review against one classifier verdict
   // BRO-3963: the replay and rebuild share these dedup decisions.
   'scripts/lib/duplicate-of-exclusion.js',
   'scripts/lib/duplicate-cycle.js',
