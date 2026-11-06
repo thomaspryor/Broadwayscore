@@ -1,43 +1,5 @@
 [
   {
-    "startedAt": "2026-11-04T12:39:52.727Z",
-    "completedAt": "2026-11-04T12:44:05.597Z",
-    "totalReviews": 80273,
-    "processed": 44,
-    "skipped": 76469,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 263744,
-      "output": 14957,
-      "cacheRead": 151182,
-      "cacheWrite": 37657,
-      "total": 696852
-    },
-    "costUsd": 1.15226545,
-    "runId": "41828719201",
-    "source": "index",
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-11-04T12:49:00.807Z",
-    "completedAt": "2026-11-04T12:53:09.949Z",
-    "totalReviews": 111,
-    "processed": 111,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 295663,
-      "output": 24927,
-      "cacheRead": 0,
-      "cacheWrite": 0,
-      "total": 320590
-    },
-    "costUsd": 0.8163626,
-    "runId": "41828719201",
-    "source": "comparative-rescore",
-    "errorDetails": []
-  },
-  {
     "startedAt": "2026-11-04T14:03:57.438Z",
     "completedAt": "2026-11-04T14:03:57.440Z",
     "totalReviews": 0,
@@ -811832,6 +811794,44 @@
     },
     "costUsd": 0.07605279999999999,
     "runId": "42151879626",
+    "source": "comparative-rescore",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-11-06T04:27:32.669Z",
+    "completedAt": "2026-11-06T04:27:38.074Z",
+    "totalReviews": 40,
+    "processed": 1,
+    "skipped": 39,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 6782,
+      "output": 327,
+      "cacheRead": 0,
+      "cacheWrite": 3807,
+      "total": 16261
+    },
+    "costUsd": 0.038387950000000004,
+    "runId": "42162045851",
+    "source": "index",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-11-06T04:32:34.679Z",
+    "completedAt": "2026-11-06T04:32:34.707Z",
+    "totalReviews": 0,
+    "processed": 0,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 0,
+      "output": 0,
+      "cacheRead": 0,
+      "cacheWrite": 0,
+      "total": 0
+    },
+    "costUsd": 0,
+    "runId": "42162045851",
     "source": "comparative-rescore",
     "errorDetails": []
   }
