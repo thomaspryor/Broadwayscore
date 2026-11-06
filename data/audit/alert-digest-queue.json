@@ -505,20 +505,6 @@
     "queuedAt": "2026-11-06T18:03:55.205Z"
   },
   {
-    "conditionKey": "corpus-drift:monitor-only",
-    "title": "Data-quality monitors drifting from baseline: 19 (backfill-everybodys-talking-about-jamie-show-exists, pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, +13 more). Checked 2026-11-06.",
-    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-06T18:52:57.063Z"
-  },
-  {
     "conditionKey": "cron-health-failed:Secret Scan (gitleaks)",
     "title": "Cron's latest run failed (not yet stale): Secret Scan (gitleaks)",
     "description": "Secret Scan (gitleaks): Latest run failed (last success 123h ago). Not stale yet; fix it before it is.",
@@ -788,6 +774,20 @@
     "queuedAt": "2026-11-06T19:36:26.969Z"
   },
   {
+    "conditionKey": "corpus-drift:monitor-only",
+    "title": "Data-quality monitors drifting from baseline: 19 (backfill-everybodys-talking-about-jamie-show-exists, pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, +13 more). Checked 2026-11-06.",
+    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-06T20:41:09.349Z"
+  },
+  {
     "conditionKey": "review-gap:opening-window:king-lear-off-broadway-2026",
     "title": "Review gap — \"King Lear\" missing 2 cited review(s)",
     "description": "King Lear (king-lear-off-broadway-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=king-lear-off-broadway-2026 --checkpoint --ingest-missing",
@@ -800,20 +800,6 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-06T20:37:45.348Z"
-  },
-  {
-    "conditionKey": "t1-gaps:needs-manual-recovery",
-    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (Lincoln in the Bardo (washpost)). Checked 2026-11-06.",
-    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-06T20:37:53.420Z"
   },
   {
     "conditionKey": "ob-venue-go-live:standing-on-the-corner-off-broadway-2026",
