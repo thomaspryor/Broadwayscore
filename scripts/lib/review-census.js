@@ -303,6 +303,23 @@ function unionCensus(perSource, opts = {}) {
 }
 
 /**
+ * BRO-7050: a roundup that is PUBLISHED but absent from the archive must not read as "no census yet".
+ * The review files record the live roundup URL (`bwwRoundupUrl`); when one exists and no bww-roundup
+ * archive was parsed, the audit used to print NO CENSUS YET and count 0 gaps (2026-11-05 off-Broadway
+ * openings: the-unbelievers had a published BWW roundup, no archive file, 5 reviews missing, "Shows with gaps: 0").
+ * Pure: pass the review-text JSON objects and the census' sourcesPresent.
+ * @returns {{missing:boolean, url:string|null}}
+ */
+function publishedRoundupWithoutArchive(reviewFiles, sourcesPresent) {
+  if ((sourcesPresent || []).includes('bww-roundup')) return { missing: false, url: null };
+  for (const f of reviewFiles || []) {
+    const u = f && typeof f.bwwRoundupUrl === 'string' ? f.bwwRoundupUrl : '';
+    if (/^https?:\/\/[^ ]*review-roundup/i.test(u)) return { missing: true, url: u };
+  }
+  return { missing: false, url: null };
+}
+
+/**
  * Build the census for a show from archived roundups (archive-first, no network).
  * @param {string} showId
  * @param {object} [opts] { archiveDir, sources } injectable for tests
@@ -488,7 +505,7 @@ function censusVerdict(census, coveredScoredOutlets, opts = {}) {
 }
 
 module.exports = {
-  buildCensusFromArchives, unionCensus, isLegacyArchiveUrl, censusVerdict, CI_UNFETCHABLE_OUTLETS,
+  buildCensusFromArchives, publishedRoundupWithoutArchive, unionCensus, isLegacyArchiveUrl, censusVerdict, CI_UNFETCHABLE_OUTLETS,
   sourceExtractors, parseBwwRoundup, parseDtli, parsePlaybillVerdict, parseShowScore,
   standingOutletsSource, candidateStatesFor, outletVariants, outletInSet,
 };
