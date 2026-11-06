@@ -1,0 +1,36 @@
+{
+  "processed": [
+    "the-verge-off-broadway-2026/nytimes--helen-shaw.json"
+  ],
+  "failed": [],
+  "skipped": [],
+  "tierBreakdown": {
+    "playwright": [],
+    "amp": [],
+    "browserbase": [
+      "data/review-texts/the-verge-off-broadway-2026/nytimes--helen-shaw.json",
+      "the-verge-off-broadway-2026/nytimes--helen-shaw.json"
+    ],
+    "directCookies": [],
+    "scrapingdog": [],
+    "scrapingbee": [],
+    "brightdata": [],
+    "archiveToday": [],
+    "archive": []
+  },
+  "startTime": "2026-11-06T19:20:40.727Z",
+  "lastProcessed": "the-verge-off-broadway-2026/nytimes--helen-shaw.json",
+  "log": [
+    {
+      "t": "2026-11-06T19:21:08.026Z",
+      "event": "bb-session",
+      "session": "080c8d10",
+      "url": "https://www.nytimes.com/2026/11/05/theater/rope-the-verge-review-off-broadway-si"
+    },
+    {
+      "t": "2026-11-06T19:21:08.669Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
+}
