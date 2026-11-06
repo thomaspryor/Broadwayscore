@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-11-06T23:06:33.369Z",
+  "timestamp": "2026-11-06T23:48:10.845Z",
   "stats": {
     "totalReviews": 80366,
-    "alreadyFlagged": 22012,
+    "alreadyFlagged": 22013,
     "dateGuardCatches": 216,
     "directorMismatch": 3517,
     "tvFilmSignals": 2287,
-    "londonSignals": 3622,
+    "londonSignals": 3621,
     "offBroadwaySignals": 743,
     "yearMismatch": 362,
     "noPublishDate": 8475
@@ -102405,20 +102405,6 @@
       "score": 97,
       "publishDate": "2022-01-25",
       "url": "https://www.newyorktheatreguide.com/reviews/review-of-harry-potter-and-the-cursed-child-on-broadway",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "harry-potter-2021",
-      "file": "sfgate--lily-janiak.json",
-      "score": null,
-      "publishDate": "2018-06-28",
-      "url": "https://www.sfgate.com/performance/article/Harry-Potter-play-coming-to-San-Francisco-s-13035122.php",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
