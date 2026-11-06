@@ -98,20 +98,6 @@
     "queuedAt": "2026-11-06T12:19:18.645Z"
   },
   {
-    "conditionKey": "corpus-drift:monitor-only",
-    "title": "Data-quality monitors drifting from baseline: 18 (backfill-everybodys-talking-about-jamie-show-exists, pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, +12 more). Checked 2026-11-06.",
-    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-06T12:19:18.964Z"
-  },
-  {
     "conditionKey": "live-data-test:tests/unit/duplicate-images-live-data.test.mjs::real data: no byte-identical art across unrelated, unlinked shows",
     "title": "Live-data test failing: real data: no byte-identical art across unrelated, unlinked shows (tests/unit/duplicate-images-live-data.test.mjs)",
     "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"real data: no byte-identical art across unrelated, unlinked shows\" in tests/unit/duplicate-images-live-data.test.mjs is red against the live corpus.\n\nExpected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   'a-dolls-house-part-2-regional-2026 | hangman-regional-2026 (/images/shows/a-dolls-house-part-2-regional-2026/thumbnail.webp, /images/shows/hangman-regional-2026/thumbnail.webp)',\n+   'a-dolls-house-part-2-regional-2026 | hangman-regional-2026 (/images/shows/a-dolls-house-part-2-regional-2026/hero.webp, /images/shows/hangman-regional-2026/hero.webp)',\n+   'a-dolls-house-part-2-regional-2026 | hangman-regional-2026 (/images/shows/a-dolls-house-part-2-regional-2026/poster.webp, /images/shows/hangman-regional-2026/poster.webp)'\n+ ]\n- []\n",
@@ -270,6 +256,20 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-06T14:48:56.104Z"
+  },
+  {
+    "conditionKey": "corpus-drift:monitor-only",
+    "title": "Data-quality monitors drifting from baseline: 19 (backfill-everybodys-talking-about-jamie-show-exists, pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, +13 more). Checked 2026-11-06.",
+    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-06T15:18:33.775Z"
   },
   {
     "conditionKey": "land:land/bro-7044-reviews",
