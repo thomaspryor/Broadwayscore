@@ -187,7 +187,7 @@ test('audit --max with a non-integer value exits 2 instead of disabling the gate
 test('audit --gate refuses to pass when the corpus was never checked out', () => {
   const r = spawnSync(process.execPath,
     [AUDIT_SCRIPT, '--gate', '--max=12', '--review-texts-dir=/nonexistent'], { encoding: 'utf8' });
-  assert.equal(r.status, 1, 'an unscanned corpus must fail, not report a clean sweep');
+  assert.equal(r.status, 2, 'an unscanned corpus must fail as could-not-run (2, BRO-3549), not report a clean sweep or read as drift (1)');
 });
 
 // The gate has TWO inputs. A missing shows.json makes every detection return
@@ -197,7 +197,7 @@ test('audit --gate refuses to pass when the corpus was never checked out', () =>
 test('audit --gate refuses to pass when shows.json is missing', () => {
   const r = spawnSync(process.execPath,
     [AUDIT_SCRIPT, '--gate', '--max=12', '--shows-path=/nonexistent/shows.json'], { encoding: 'utf8' });
-  assert.equal(r.status, 1, 'no show records must fail, not report a clean sweep');
+  assert.equal(r.status, 2, 'no show records must fail as could-not-run (2, BRO-3549), not report a clean sweep or read as drift (1)');
   assert.match(r.stderr, /cannot pass vacuously/);
 });
 

@@ -35,7 +35,7 @@
 const fs = require('fs');
 const path = require('path');
 const { baselineKeySet, computeNewViolators } = require('./lib/critic-outlets-baseline');
-const { assertCorpusScanned, CorpusNotScannedError } = require('./lib/corpus-scan-guard');
+const { assertCorpusScanned, exitIfCorpusNotScanned } = require('./lib/corpus-scan-guard');
 const { findTenureFlags, describeTenureFlag } = require('./lib/critic-tenure');
 const { findAffiliationFlags } = require('./lib/critic-affiliations');
 const { scanReviewTexts: scanCriticReviewTexts } = require('./lib/critic-review-scan');
@@ -242,9 +242,7 @@ function main() {
   try {
     assertCorpusScanned(totalFiles, { gate: STRICT || UPDATE_BASELINE });
   } catch (e) {
-    if (!(e instanceof CorpusNotScannedError)) throw e;
-    console.error(`\n❌ ${e.message}`);
-    process.exit(1);
+    exitIfCorpusNotScanned(e, { prefix: '❌ ' }); // BRO-3549: exit 2 (could not run), not 1 (drift)
   }
 
   const criticCount = Object.keys(critics).length;

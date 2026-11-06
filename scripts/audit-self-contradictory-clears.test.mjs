@@ -114,7 +114,7 @@ test('CLI (unscoped) against the live corpus scans >0 files when the corpus is p
       { cwd: repoRoot, encoding: 'utf8' },
     );
   } catch (err) {
-    if (err.status === 1 && /is missing or empty|does not exist or is unreadable/.test(err.stderr || '')) {
+    if (err.status === 2 && /is missing or empty|does not exist or is unreadable/.test(err.stderr || '')) {
       t.skip('data/review-texts not present in this checkout — run from a checkout with the private repo cloned');
       return;
     }

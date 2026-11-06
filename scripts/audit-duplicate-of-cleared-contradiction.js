@@ -34,7 +34,7 @@ const {
   detectDuplicateOfClearedContradiction,
   retractDuplicateOfCleared,
 } = require('./lib/duplicate-of-cleared-contradiction.js');
-const { assertCorpusScanned, CorpusNotScannedError } = require('./lib/corpus-scan-guard.js');
+const { assertCorpusScanned, exitIfCorpusNotScanned } = require('./lib/corpus-scan-guard.js');
 const { parseMaxArgOrExit } = require('./lib/parse-max-arg.js');
 
 const USAGE = `audit-duplicate-of-cleared-contradiction.js — duplicateOf + stale _duplicateOfCleared sweep (#1655)
@@ -87,9 +87,7 @@ function main() {
   try {
     assertCorpusScanned(showDirs.length, { gate });
   } catch (e) {
-    if (!(e instanceof CorpusNotScannedError)) throw e;
-    console.error(`\nFAIL: ${e.message}`);
-    process.exit(1);
+    exitIfCorpusNotScanned(e); // BRO-3549: exit 2 (could not run), not 1 (drift)
   }
 
   const hits = [];

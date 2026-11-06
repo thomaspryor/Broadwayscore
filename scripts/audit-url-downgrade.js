@@ -39,7 +39,7 @@ const path = require('path');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { listShowDirs } = require('./lib/list-show-dirs.js');
 const { isUrlSwapRegression } = require('./lib/url-downgrade-guard.js');
-const { assertCorpusScanned, CorpusNotScannedError } = require('./lib/corpus-scan-guard.js');
+const { assertCorpusScanned, exitIfCorpusNotScanned } = require('./lib/corpus-scan-guard.js');
 
 const USAGE = `audit-url-downgrade.js — historical URL-swap-regression sweep (#1416)
 
@@ -85,9 +85,7 @@ function main() {
   try {
     assertCorpusScanned(showDirs.length, { gate });
   } catch (e) {
-    if (!(e instanceof CorpusNotScannedError)) throw e;
-    console.error(`\nFAIL: ${e.message}`);
-    process.exit(1);
+    exitIfCorpusNotScanned(e); // BRO-3549: exit 2 (could not run), not 1 (drift)
   }
 
   const hits = [];

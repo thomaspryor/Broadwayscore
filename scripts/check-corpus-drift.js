@@ -97,6 +97,12 @@ function saveGuardState(state) {
 
 // Each audit: how to run it and how to read its exit code. `crashCodes` are
 // exit codes that mean "could not run" (a real error) vs "ran and found drift".
+// Corpus audits that use scripts/lib/corpus-scan-guard.js exit
+// CORPUS_NOT_SCANNED_EXIT_CODE (2) when the corpus is missing/empty, so list 2
+// here for them (BRO-3549). `healPathRequired` must be set explicitly to true
+// or false on every entry — tests/unit/check-corpus-drift.test.mjs fails on
+// undefined, so a new entry cannot silently opt out of the heal-path ratchet
+// (scripts/lib/data-gate-heal-paths.js auditCorpusDriftGates) by omission.
 const AUDITS = [
   // BRO-5266: these backfill acceptance probes pin live world state. Preserve
   // their checks in the advisory corpus monitor, outside blocking unit jobs.
@@ -111,6 +117,7 @@ const AUDITS = [
     'mystic-pizza-show-existence',
   ].map(name => ({
     name: `backfill-${name}`,
+    healPathRequired: false,
     label: `backfill outcome: ${name}`,
     script: `lib/corpus-checks/${name}.mjs`,
     args: [],
@@ -118,6 +125,7 @@ const AUDITS = [
   })),
   {
     name: 'text-quality',
+    healPathRequired: false,
     label: 'Review text quality (full/truncated/unknown %)',
     script: 'audit-text-quality.js',
     args: [],
@@ -125,6 +133,7 @@ const AUDITS = [
   },
   {
     name: 'aggregator-truth',
+    healPathRequired: false,
     label: 'Local vs aggregator review-count ratios',
     script: 'validate-aggregator-truth.js',
     args: [],
@@ -132,6 +141,7 @@ const AUDITS = [
   },
   {
     name: 'pull-quote-quality',
+    healPathRequired: false,
     label: 'shipped pull quotes tripping a hard guard (chrome/tag-cloud/mid-word-cut/etc)',
     script: 'audit-pull-quotes.js',
     // Card em-20260801-000455/#727/#728 (second-opinion review 2026-08-17):
@@ -146,6 +156,7 @@ const AUDITS = [
   },
   {
     name: 'regex-fp',
+    healPathRequired: false,
     label: 'content-quality regex false-positive rate',
     script: 'audit-regex-patterns.js',
     args: ['--full'],
@@ -157,6 +168,7 @@ const AUDITS = [
   // clear shows up in the digest. Classes 1/5/6/7 are reported in the audit's own output.
   {
     name: 'run-contamination',
+    healPathRequired: false,
     label: 'reviews of another run/production/date counted (recent pre-window, republished page, flag beaten by clear)',
     script: 'audit-run-contamination.js',
     args: ['--max-actionable=0'], // measured 0 on 2026-10-13 after the BRO-5239 sweep (was 44)
@@ -168,6 +180,7 @@ const AUDITS = [
     // today's company or checked by hand are excused inside the audit
     // (explainContradiction / HAND_CHECKED, BRO-5857), so any hit is drift.
     name: 'cast-vs-reviews',
+    healPathRequired: false,
     label: 'cast on file named in none of the show\'s full reviews (wrong-production cast)',
     script: 'audit-cast-vs-reviews.js',
     args: ['--strict'],
@@ -178,6 +191,7 @@ const AUDITS = [
   // months). Advisory first (rule 19): this monitor never blocks a push.
   {
     name: 'commercial-source-coverage',
+    healPathRequired: false,
     label: 'outlets cited by >=10 commercial shows that the recoupment poller neither watches nor exempts',
     script: 'audit-commercial-source-coverage.js',
     args: [],
@@ -185,6 +199,7 @@ const AUDITS = [
   },
   {
     name: 'todaytix-placeholder-runtime',
+    healPathRequired: false,
     label: 'TodayTix placeholder runtime "3h 12m" stored on a row (BRO-5860)',
     script: 'lib/corpus-checks/todaytix-placeholder-runtime.mjs',
     args: [],
@@ -192,6 +207,7 @@ const AUDITS = [
   },
   {
     name: 'cross-show-url',
+    healPathRequired: false,
     label: 'cross-show URL contamination (review URL slug names a different show)',
     script: 'audit-cross-show-url.js',
     // --max baseline = known stable false-positive tail (franchise/substring
@@ -213,6 +229,7 @@ const AUDITS = [
   // is wrong, so the date guards judge the review on a date that isn't its own.
   {
     name: 'body-date-mismatch',
+    healPathRequired: false,
     label: 'review byline date disagrees with publishDate by >3 days on a shipping review',
     script: 'audit-body-date-mismatch.js',
     args: ['--max-unexplained=0'],
@@ -224,6 +241,7 @@ const AUDITS = [
   // first (CLAUDE.md rule 19), so a new hit shows up in the digest.
   {
     name: 'phantom-text-stars',
+    healPathRequired: false,
     label: 'stored text-derived star ratings read from prose (year + "starring", number tails)',
     script: 'audit-phantom-text-stars.js',
     args: ['--max=0'],
@@ -231,6 +249,7 @@ const AUDITS = [
   },
   {
     name: 'unknown-outlets',
+    healPathRequired: false,
     label: 'resolvable unknown outlets (in reviews, not yet in registry)',
     script: 'audit-unknown-outlets.js',
     // Moved off the blocking test.yml gate (was assert.ok(resolvableUnknowns<=5)).
@@ -241,6 +260,7 @@ const AUDITS = [
   },
   {
     name: 'review-key-duplicates',
+    healPathRequired: false,
     label: 'duplicate reviews (same showDir|outlet|critic)',
     script: 'audit-review-key-duplicates.js',
     // Moved off the blocking test.yml gate (was assert.ok(report.current.duplicates<=5)).
@@ -251,6 +271,7 @@ const AUDITS = [
   },
   {
     name: 'churn-merge-coverage',
+    healPathRequired: false,
     label: 'high-churn tracked files lacking a .gitattributes merge driver',
     script: 'audit-churn-merge-coverage.js',
     // Complements the test.yml "merge drivers registered" guard: that checks
@@ -262,6 +283,7 @@ const AUDITS = [
   },
   {
     name: 'review-contamination',
+    healPathRequired: false,
     label: 'review-text contamination (strict classes A/C/E/F)',
     script: 'audit-review-contamination.js',
     // The per-push test.yml gate runs --gate (catastrophe FLOOR only — class A
@@ -277,6 +299,7 @@ const AUDITS = [
   // sub-floor drift the per-push gate lets pass still surfaces daily in the digest.
   {
     name: 'duplicate-of-url-mismatch',
+    healPathRequired: false,
     label: 'stale duplicateOf flags (our URL ≠ sibling URL) — full report (gate = spike floor)',
     script: 'audit-duplicate-of-url-mismatch.js',
     args: [],                  // report mode: 0 clean / 1 = ANY mismatch (drift)
@@ -289,6 +312,7 @@ const AUDITS = [
   // scripts/audit-cloned-excerpts.js --live-only --apply` in the review-texts clone.
   {
     name: 'cloned-excerpts',
+    healPathRequired: false,
     label: 'same-outlet review files sharing one aggregator excerpt, both live (phantom/duplicate double-count)',
     script: 'audit-cloned-excerpts.js',
     args: ['--live-only'],     // 0 clean / 1 = any live cloned pair (drift)
@@ -296,6 +320,7 @@ const AUDITS = [
   },
   {
     name: 'cast-changes',
+    healPathRequired: false,
     label: 'cast-changes.json integrity — full --strict (gate = cross-show conflict / spike)',
     script: 'audit-cast-changes.js',
     args: ['--strict'],        // 0 clean / 1 = ANY issue (drift)
@@ -303,6 +328,7 @@ const AUDITS = [
   },
   {
     name: 'non-reviews',
+    healPathRequired: false,
     label: 'scored non-review content (definitive wrong-page) — full --strict',
     script: 'audit-non-reviews.js',
     args: ['--strict'],        // 0 clean / 1 = definitive wrong-page among scored (drift)
@@ -310,6 +336,7 @@ const AUDITS = [
   },
   {
     name: 'review-texts',
+    healPathRequired: false,
     label: 'review-text file structure — full validator (gate = catastrophic classes + churn floor)',
     script: 'validate-review-texts.js',
     args: [],                  // 0 clean / 1 = ANY error: dup/garbage/contamination/corrupt (drift)
@@ -322,6 +349,7 @@ const AUDITS = [
   // surfaces daily in the digest.
   {
     name: 'cast-contamination',
+    healPathRequired: false,
     label: 'data/cast/*.json wrong-show contamination — full report (gate = wrong-show class only)',
     script: 'audit-cast-contamination.js',
     args: [],                  // report mode: 0 clean / 1 = ANY flagged file (fail or warn = drift)
@@ -329,6 +357,7 @@ const AUDITS = [
   },
   {
     name: 'commercial-contamination',
+    healPathRequired: false,
     label: 'data/commercial.json physics/contradiction — full --strict (gate = FAIL only)',
     script: 'audit-commercial-contamination.js',
     args: ['--strict'],        // 0 clean / 1 = fail or warn (drift)
@@ -336,6 +365,7 @@ const AUDITS = [
   },
   {
     name: 'audience-buzz-contamination',
+    healPathRequired: false,
     label: 'data/audience-buzz.json source divergence — full --strict (gate = divergence spike only)',
     script: 'audit-audience-buzz-contamination.js',
     args: ['--strict'],        // 0 clean / 1 = fail (single divergence) or warn (drift)
@@ -343,6 +373,7 @@ const AUDITS = [
   },
   {
     name: 'critic-consensus-contamination',
+    healPathRequired: false,
     label: 'data/critic-consensus.json orphan/staleness — full --strict (gate = orphan key only)',
     script: 'audit-critic-consensus-contamination.js',
     args: ['--strict'],        // 0 clean / 1 = orphan or staleness drift
@@ -350,6 +381,7 @@ const AUDITS = [
   },
   {
     name: 'synopsis-story',
+    healPathRequired: false,
     label: 'shows.json synopses holding wikitext debris or audience pitch copy',
     // BRO-5063: 60+ live synopses carried Wikipedia scrape debris ("thumb
     // alt=", ";Act I") or producer pitch ("Don't miss", "Join us").
@@ -361,6 +393,7 @@ const AUDITS = [
   },
   {
     name: 'stuck-rescore-flags',
+    healPathRequired: false,
     label: 'needsRescore=true reviews the scorer rejects (stuck flags that never clear)',
     // Invariant behind the late-star producer/consumer seam bug (2026-06-30): a
     // review flagged for rescore that isScoreable=false never clears (the scorer
@@ -380,6 +413,7 @@ const AUDITS = [
   },
   {
     name: 'stale-score-input',
+    healPathRequired: false,
     label: 'reviews scored off an excerpt that now have fullText, never flagged for rescore',
     // Card #1902 (2026-08-26): 653 reviews measured with contentTier
     // complete/truncated but llmMetadata.textSource.type=excerpt — scored
@@ -400,6 +434,7 @@ const AUDITS = [
   },
   {
     name: 'false-balance-framing',
+    healPathRequired: false,
     label: 'critic-consensus text overstating the critical split (hedge/"divided" language vs a dominant bucketBreakdown majority)',
     // BRO-164: generate-critic-consensus.js's Layer 5b sentiment guards only
     // fire at the extremes (100% positive, or >=50% negative+mixed) — a show
@@ -456,7 +491,7 @@ const AUDITS = [
     script: 'audit-duplicate-shows.js',
     // --include-closed (BRO-6481): a dupe whose twin has closed was invisible.
     args: ['--strict', '--include-closed'],
-    crashCodes: [],            // 0 under baseline / 1 = new un-baselined duplicate pair
+    crashCodes: [2],           // 0 under baseline / 1 = new un-baselined duplicate pair / 2 = corpus missing (BRO-3549)
   },
   {
     name: 'show-score-urls',
@@ -464,7 +499,7 @@ const AUDITS = [
     label: 'one Show Score URL mapped to 2+ showIds (baseline-diff)',
     script: 'audit-show-score-urls.js',
     args: ['--strict'],
-    crashCodes: [],            // 0 under baseline / 1 = new un-baselined URL collision
+    crashCodes: [2],           // 0 under baseline / 1 = new un-baselined URL collision / 2 = input missing/empty/unreadable (BRO-3549)
   },
   {
     name: 'cv-flag-contradiction',
@@ -476,6 +511,7 @@ const AUDITS = [
   },
   {
     name: 'counted-review-integrity',
+    healPathRequired: false,
     label: 'counted reviews that break an invariant (same review on unrelated shows, one review under two critics, URL year outside the run, never-opened show, junk outlet, openingDate after its own reviews, priorRuns pointing at a missing show)',
     script: 'audit-counted-review-integrity.js',
     // BRO-4886: monitor, not a gate (CLAUDE.md 19). Baseline 82 = the 80 found
@@ -489,6 +525,7 @@ const AUDITS = [
   },
   {
     name: 'flagged-in-window',
+    healPathRequired: false,
     label: 'review files excluded as wrong production/show although their date and URL year sit inside the run (recovery backlog)',
     script: 'audit-counted-review-integrity.js',
     // BRO-4886: 825 on 2026-10-08. Includes real cross-market and tour reviews, so this is a
@@ -503,7 +540,7 @@ const AUDITS = [
     label: 'a review asserting an exclusion flag AND its own retraction breadcrumb at once (baseline-diff)',
     script: 'audit-self-contradictory-clears.js',
     args: ['--gate', '--baseline'],
-    crashCodes: [],            // 0 within band of committed baseline / 1 = materially worse than baseline
+    crashCodes: [2],           // 0 within band of committed baseline / 1 = materially worse than baseline / 2 = corpus or baseline missing (BRO-3549)
   },
   {
     name: 'aggregator-archive-integrity',
@@ -511,7 +548,7 @@ const AUDITS = [
     label: 'cached aggregator HTML whose <title> mismatches its filename showId (baseline-diff)',
     script: 'audit-aggregator-archive-integrity.js',
     args: ['--strict'],
-    crashCodes: [],            // 0 under baseline / 1 = new un-baselined mismatch
+    crashCodes: [2],           // 0 under baseline / 1 = new un-baselined mismatch / 2 = archive missing/empty or shows.json unreadable (BRO-3549)
   },
   {
     name: 'outlet-identity-hygiene',
@@ -528,7 +565,7 @@ const AUDITS = [
     label: 'critic-outlet affinity anomalies vs data/critic-registry.json (baseline-diff)',
     script: 'audit-critic-outlets.js',
     args: ['--strict'],
-    crashCodes: [],            // 0 under baseline / 1 = new un-baselined (showId,file) flag
+    crashCodes: [2],           // 0 under baseline / 1 = new un-baselined (showId,file) flag / 2 = corpus missing (BRO-3549)
   },
   {
     name: 'autoclear-vs-ensemble',
@@ -539,7 +576,7 @@ const AUDITS = [
     script: 'audit-autoclear-vs-ensemble.js',
     args: ['--strict'],
     healExempt: '--fix exists and is documented safe but no scheduled workflow runs it yet — tracked follow-up, not wired to a cron.',
-    crashCodes: [],            // 0 clean / 1 = hit found
+    crashCodes: [2],           // 0 clean / 1 = hit found / 2 = corpus missing (BRO-3549)
   },
   {
     name: 'contradicted-flag-basis',
@@ -548,7 +585,7 @@ const AUDITS = [
     script: 'audit-contradicted-flag-basis.js',
     args: ['--gate', '--max=0'],
     healExempt: 'report-only by design — no --fix exists; a prior sweep of this shape auto-un-suppressed 8 wrong-production reviews the day after running unsupervised.',
-    crashCodes: [],            // 0 clean / 1 = hit found (live count is 0 by design; any hit is real signal)
+    crashCodes: [2],           // 0 clean / 1 = hit found (live count is 0 by design; any hit is real signal) / 2 = corpus or shows.json missing, bad --max (BRO-3549)
   },
   {
     name: 'duplicate-of-cleared-contradiction',
@@ -557,7 +594,7 @@ const AUDITS = [
     script: 'audit-duplicate-of-cleared-contradiction.js',
     args: ['--gate', '--max=0'],
     healExempt: '--fix exists and is documented bulk-safe (see #1655) but no scheduled workflow runs it yet — tracked follow-up, not wired to a cron.',
-    crashCodes: [],            // 0 clean / 1 = hit found
+    crashCodes: [2],           // 0 clean / 1 = hit found / 2 = corpus missing or bad --max (BRO-3549)
   },
   {
     name: 'url-downgrade',
@@ -566,7 +603,7 @@ const AUDITS = [
     script: 'audit-url-downgrade.js',
     args: ['--gate'],
     healExempt: 'fixing requires picking the correct historical URL per hit (which prior production/run this review actually belongs to) — not mechanical.',
-    crashCodes: [],            // 0 clean / 1 = a live (unflagged) URL-swap regression found
+    crashCodes: [2],           // 0 clean / 1 = a live (unflagged) URL-swap regression found / 2 = corpus missing (BRO-3549)
   },
   {
     name: 'orphan-show-ids',
@@ -619,6 +656,7 @@ const AUDITS = [
     // Fires when a rule's excluded count jumps, the mirror/rebuild
     // disagreement rate rises, or the summary went stale.
     name: 'exclusion-mirror',
+    healPathRequired: false,
     label: 'exclusion rule census: per-rule count jump or explainExclusion-vs-rebuild disagreement rise',
     script: 'exclusion-rule-census.js',
     args: ['--check', '--max-rule-delta=200', '--max-rate-rise=0.01'],

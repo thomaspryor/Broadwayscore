@@ -49,7 +49,7 @@ const { normalizeTitle } = require('./lib/deduplication');
 const { findTitleFragmentDupes, findSharedTicketIdentityDupes, sameMarketPair, stubIsUnplacedDupe } = require('./lib/show-duplicate-detection');
 const { pairKey, baselineKeySet, computeNewViolators, dedupeClustersByPair } = require('./lib/duplicate-shows-baseline');
 const { computeStaleBaselineKeys, reportStaleBaseline, pruneStaleEntries, runStaleModes } = require('./lib/stale-baseline');
-const { assertCorpusScanned, CorpusNotScannedError } = require('./lib/corpus-scan-guard');
+const { assertCorpusScanned, CorpusNotScannedError, CORPUS_NOT_SCANNED_EXIT_CODE } = require('./lib/corpus-scan-guard');
 
 const ROOT = path.join(__dirname, '..');
 const SHOWS_PATH = path.join(ROOT, 'data', 'shows.json');
@@ -265,7 +265,7 @@ function main() {
     } catch (e) {
       if (!(e instanceof CorpusNotScannedError)) throw e;
       console.error(`\n❌ ${e.message}`);
-      return 1;
+      return CORPUS_NOT_SCANNED_EXIT_CODE; // BRO-3549: could not run, not drift
     }
   }
 

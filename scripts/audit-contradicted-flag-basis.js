@@ -34,7 +34,7 @@ const path = require('path');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { listShowDirs } = require('./lib/list-show-dirs.js');
 const { detectContradictedFlagBasis } = require('./lib/contradicted-flag-basis.js');
-const { assertCorpusScanned, CorpusNotScannedError } = require('./lib/corpus-scan-guard.js');
+const { assertCorpusScanned, exitIfCorpusNotScanned, CORPUS_NOT_SCANNED_EXIT_CODE } = require('./lib/corpus-scan-guard.js');
 const { parseMaxArgOrExit } = require('./lib/parse-max-arg.js');
 
 const USAGE = `audit-contradicted-flag-basis.js — stale exclusion-flag sweep (replaces the #483 sweep)
@@ -89,7 +89,7 @@ function main() {
   // side. This gate has TWO inputs, so it needs both checks.
   if (gate && Object.keys(showsById).length === 0) {
     console.error(`\nFAIL: no show records loaded from ${SHOWS_PATH}. The gate cannot pass vacuously — check out the core-data private repo first.`);
-    process.exit(1);
+    process.exit(CORPUS_NOT_SCANNED_EXIT_CODE); // BRO-3549: could not run, not drift
   }
 
   let showDirs = [];
@@ -101,9 +101,7 @@ function main() {
   try {
     assertCorpusScanned(showDirs.length, { gate });
   } catch (e) {
-    if (!(e instanceof CorpusNotScannedError)) throw e;
-    console.error(`\nFAIL: ${e.message}`);
-    process.exit(1);
+    exitIfCorpusNotScanned(e); // BRO-3549: exit 2 (could not run), not 1 (drift)
   }
 
   const hits = [];

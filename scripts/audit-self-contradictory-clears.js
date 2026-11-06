@@ -39,7 +39,7 @@ const {
   demoteStaleWrongShowPromotion,
   isZeroScoreImpactFix,
 } = require('./lib/flag-contradiction');
-const { assertCorpusScanned, CorpusNotScannedError } = require('./lib/corpus-scan-guard');
+const { assertCorpusScanned, exitIfCorpusNotScanned, CORPUS_NOT_SCANNED_EXIT_CODE } = require('./lib/corpus-scan-guard');
 const { parseArgs: parseArgsLib } = require('./lib/audit-self-contradictory-clears-args.js');
 
 const USAGE = `audit-self-contradictory-clears.js — exclusion flag + its own clear breadcrumb (#1020/#1022/#1023)
@@ -228,9 +228,7 @@ function main() {
   try {
     assertCorpusScanned(0, { corpusRootMissing: rootMissing });
   } catch (e) {
-    if (!(e instanceof CorpusNotScannedError)) throw e;
-    console.error(`FAIL: ${e.message}`);
-    process.exit(1);
+    exitIfCorpusNotScanned(e); // BRO-3549: exit 2 (could not run), not 1 (drift)
   }
   for (const showId of showDirs) {
     const showDir = path.join(REVIEW_TEXTS_DIR, showId);
@@ -329,9 +327,7 @@ function main() {
     // --show=ID match under --gate).
     assertCorpusScanned(scanned, { gate: args.gate });
   } catch (e) {
-    if (!(e instanceof CorpusNotScannedError)) throw e;
-    console.error(`\nFAIL: ${e.message}`);
-    process.exit(1);
+    exitIfCorpusNotScanned(e); // BRO-3549: exit 2 (could not run), not 1 (drift)
   }
 
   if (args.recordBaseline) {
@@ -362,7 +358,7 @@ function main() {
     } catch (e) {
       console.error(`\nFAIL: cannot read baseline (${e.message}).`);
       console.error('Fix: node scripts/audit-self-contradictory-clears.js --record-baseline');
-      process.exit(1);
+      process.exit(CORPUS_NOT_SCANNED_EXIT_CODE); // BRO-3549: could not run (no baseline), not drift
     }
     const delta = hits.length - baseline.count;
     const sign = delta >= 0 ? '+' : '';
