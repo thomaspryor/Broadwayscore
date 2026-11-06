@@ -125,3 +125,12 @@ test('window-shows-needing-collection CLI honors the ledger with the real "<show
   const out = execFileSync('node', ['scripts/window-shows-needing-collection.js'], { env: { ...process.env, WINDOW_DATA_ROOT: root } }).toString().trim();
   assert.equal(out, 'fresh-show');
 });
+
+test('window runs do not bump the feed fail streak (daily-run threshold)', () => {
+  const previous = { outlets: { nytg: { failStreak: 1, error: 'x' } } };
+  const hm = { nytg: { error: 'boom' } };
+  const win = poller.buildFeedHealthReport(hm, [], { previous, partial: true, holdStreak: true });
+  assert.equal(win.outlets.nytg.failStreak, 1);
+  const daily = poller.buildFeedHealthReport(hm, [], { previous, partial: true });
+  assert.equal(daily.outlets.nytg.failStreak, 2);
+});

@@ -1174,7 +1174,7 @@ async function main() {
  * (BRO-6352). A --outlets run merges into the existing file instead of
  * replacing it, so a targeted re-poll does not drop the other ~70 feeds.
  */
-function buildFeedHealthReport(feedHealth, allReviews, { now = Date.now(), previous = null, partial = false } = {}) {
+function buildFeedHealthReport(feedHealth, allReviews, { now = Date.now(), previous = null, partial = false, holdStreak = false } = {}) {
   const latestByOutlet = latestReviewDateByOutlet(allReviews);
   const checkedAt = new Date(now).toISOString();
   const outlets = partial && previous && previous.outlets ? { ...previous.outlets } : {};
@@ -1182,7 +1182,9 @@ function buildFeedHealthReport(feedHealth, allReviews, { now = Date.now(), previ
     const latestReviewDate = latestByOutlet[outletId] || null;
     const stale = !h.error && isFeedStale({ newestFiltered: h.newestFiltered, filteredCount: h.filteredCount, newestAny: h.newestAny, oldestAny: h.oldestAny, latestReviewDate, now });
     const prev = previous && previous.outlets && previous.outlets[outletId];
-    const failStreak = h.error ? ((prev && prev.failStreak) || 0) + 1 : 0;
+    // holdStreak (3-hourly window runs): FEED_FAIL_STREAK counts daily runs, so a window run must not bump it.
+    const prevStreak = (prev && prev.failStreak) || 0;
+    const failStreak = h.error ? (holdStreak ? prevStreak : prevStreak + 1) : 0;
     outlets[outletId] = { ...h, latestReviewDate, stale, failStreak, checkedAt };
   }
   const stale = Object.keys(outlets).filter(id => outlets[id].stale).sort();
@@ -1201,7 +1203,7 @@ function reportFeedHealth(feedHealth, allReviews, opts) {
   // Previous snapshot: carries failStreak, and is the merge base for --outlets runs.
   let previous = null;
   try { previous = JSON.parse(fs.readFileSync(FEED_HEALTH_PATH, 'utf-8')); } catch { previous = null; }
-  const report = buildFeedHealthReport(feedHealth, allReviews, { previous, partial: !!opts.outlets || !!opts.openingWindow });
+  const report = buildFeedHealthReport(feedHealth, allReviews, { previous, partial: !!opts.outlets || !!opts.openingWindow, holdStreak: !!opts.openingWindow });
   if (report.stale.length > 0) {
     console.warn(`\n⚠ Stale feeds (outlet still publishing, feed's newest matching item >${FEED_STALE_DAYS}d old or none): ${report.stale.length}`);
     for (const id of report.stale) {
