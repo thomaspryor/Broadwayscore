@@ -55,3 +55,10 @@ test('fileSlug never returns a URL-shaped critic slug (BRO-2938)', () => {
   assert.equal(fileSlug('nytimes--jesse-green.json'), 'jesse-green');
   assert.equal(fileSlug('nytimes.json'), '');
 });
+
+test('planKeyGroup never renames a critic from a URL-shaped filename slug (BRO-2938)', () => {
+  const urlFile = f('chicago-sun-times--httpschicagosuntimescomsteven-oxman.json', { critic: 'X', bylineFile: true, bylineField: false, url: 'https://a.com/1', head: 'one' });
+  const other = f('chicago-sun-times--x.json', { critic: 'X', bylineFile: false, bylineField: false, url: 'https://a.com/2', head: 'two' });
+  const r = planKeyGroup([urlFile, other]);
+  assert.equal(r.actions.filter((a) => a.kind === 'criticName').length, 0);
+});

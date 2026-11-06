@@ -17,7 +17,7 @@ const fs = require('fs');
 const path = require('path');
 const { listShowDirs } = require('./lib/list-show-dirs');
 const { isRejectedNonReview } = require('./lib/review-guards');
-const { planKeyGroup } = require('./lib/key-duplicate-plan');
+const { planKeyGroup, fileSlug: fileSlugOf } = require('./lib/key-duplicate-plan');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
 const RT = path.join(__dirname, '..', 'data', 'review-texts');
@@ -56,7 +56,6 @@ function scan() {
   return [...groups.entries()].filter(([, v]) => v.length > 1);
 }
 
-const fileSlugOf = (file) => file.replace(/\.json$/, '').split('--')[1] || '';
 
 function main() {
   if (hasHelpFlag(process.argv)) { console.log('Usage: node scripts/plan-key-duplicate-fixes.js  (read-only; prints JSON)'); return; }

@@ -74,7 +74,7 @@ const titleCase = (slug) => slug.split('-').filter(Boolean).map((w) => w[0].toUp
 // BRO-2938: legacy filenames carry a byline URL where the critic slug belongs; never treat that as a name.
 const fileSlug = (file) => {
   const slug = file.replace(/\.json$/, '').split('--')[1] || '';
-  return /^https?/i.test(slug) ? '' : slug;
+  return /^http/i.test(slug) ? '' : slug;
 };
 
 /**
