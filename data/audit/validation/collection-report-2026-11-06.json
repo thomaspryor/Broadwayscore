@@ -1,63 +1,68 @@
 {
-  "runDate": "2026-11-06T18:21:39.486Z",
+  "runDate": "2026-11-06T19:29:00.918Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 1000,
+    "maxReviews": 100,
     "priority": "all",
-    "showFilter": "speculations-off-west-end-2026",
+    "showFilter": "the-unbelievers-off-broadway-2026,well-see-off-broadway-2026,the-verge-off-broadway-2026,222-a-ghost-story-off-broadway-2026,the-bridge-off-west-end-2026,rope-off-broadway-2026,parcel-from-america-off-broadway-2026,speculations-off-west-end-2026,king-lear-off-broadway-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 1,
-    "failed": 3,
+    "processed": 6,
+    "failed": 7,
     "skipped": 0,
-    "successRate": "25.0%"
+    "successRate": "46.2%"
   },
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 3,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 4,
     "directCookies": 0,
     "scrapingdog": 0,
-    "scrapingbee": 0,
+    "scrapingbee": 1,
     "brightdata": 0,
     "archiveToday": 0,
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 3,
-    "tier1Success": 2,
+    "tier1Attempts": 9,
+    "tier1Success": 5,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 0,
-    "tier1_5Success": 0,
-    "tier1_9Attempts": 1,
+    "tier1_5Attempts": 2,
+    "tier1_5Success": 2,
+    "tier1_9Attempts": 3,
     "tier1_9Success": 0,
-    "tier2Attempts": 1,
-    "tier2Success": 0,
-    "tier3Attempts": 1,
+    "tier2Attempts": 6,
+    "tier2Success": 1,
+    "tier3Attempts": 3,
     "tier3Success": 0,
-    "tier3_6Attempts": 1,
+    "tier3_6Attempts": 3,
     "tier3_6Success": 0,
-    "tier4Attempts": 2,
+    "tier4Attempts": 6,
     "tier4Success": 0,
-    "totalFailed": 3,
-    "scrapingBeePageCredits": 1,
+    "totalFailed": 7,
+    "scrapingBeePageCredits": 13,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 0,
-    "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 0,
+    "browserbaseSessionsUsed": 2,
+    "browserbaseMinutesUsed": 0.4,
+    "urlDiscoveryAttempts": 1,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 1,
-    "failed": 3,
+    "processed": 6,
+    "failed": 7,
     "shows": [
-      "speculations-off-west-end-2026"
+      "222-a-ghost-story-off-broadway-2026",
+      "speculations-off-west-end-2026",
+      "the-bridge-off-west-end-2026",
+      "the-unbelievers-off-broadway-2026",
+      "the-verge-off-broadway-2026",
+      "well-see-off-broadway-2026"
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
@@ -66,32 +71,59 @@
     }
   },
   "processed": [
-    "speculations-off-west-end-2026/theatre-vibe--lizzie-loveridge.json"
+    "the-unbelievers-off-broadway-2026/nytimes--laura-collins-hughes.json",
+    "the-verge-off-broadway-2026/nytimes--helen-shaw.json",
+    "speculations-off-west-end-2026/theatre-vibe--lizzie-loveridge.json",
+    "well-see-off-broadway-2026/new-york-sun--unknown.json",
+    "well-see-off-broadway-2026/lighting-and-sound-america--unknown.json",
+    "well-see-off-broadway-2026/times-square-chronicles--unknown.json"
   ],
   "failed": [
     "speculations-off-west-end-2026/guardian--unknown.json",
+    "222-a-ghost-story-off-broadway-2026/theatrely--kobi-kassal.json",
     "speculations-off-west-end-2026/artsdesk--unknown.json",
-    "speculations-off-west-end-2026/london-unattached--unknown.json"
+    "speculations-off-west-end-2026/london-unattached--unknown.json",
+    "the-unbelievers-off-broadway-2026/bobs-theater-blog--unknown.json",
+    "the-bridge-off-west-end-2026/sunday-times--unknown.json",
+    "the-bridge-off-west-end-2026/theatreandtonic--emmie-newitt.json"
   ],
   "cumulativeResumedState": {
     "processed": [
-      "speculations-off-west-end-2026/theatre-vibe--lizzie-loveridge.json"
+      "the-unbelievers-off-broadway-2026/nytimes--laura-collins-hughes.json",
+      "the-verge-off-broadway-2026/nytimes--helen-shaw.json",
+      "speculations-off-west-end-2026/theatre-vibe--lizzie-loveridge.json",
+      "well-see-off-broadway-2026/new-york-sun--unknown.json",
+      "well-see-off-broadway-2026/lighting-and-sound-america--unknown.json",
+      "well-see-off-broadway-2026/times-square-chronicles--unknown.json"
     ],
     "failed": [
       "speculations-off-west-end-2026/guardian--unknown.json",
+      "222-a-ghost-story-off-broadway-2026/theatrely--kobi-kassal.json",
       "speculations-off-west-end-2026/artsdesk--unknown.json",
-      "speculations-off-west-end-2026/london-unattached--unknown.json"
+      "speculations-off-west-end-2026/london-unattached--unknown.json",
+      "the-unbelievers-off-broadway-2026/bobs-theater-blog--unknown.json",
+      "the-bridge-off-west-end-2026/sunday-times--unknown.json",
+      "the-bridge-off-west-end-2026/theatreandtonic--emmie-newitt.json"
     ]
   },
   "tierDetails": {
     "playwright": [
-      "speculations-off-west-end-2026/theatre-vibe--lizzie-loveridge.json"
+      "speculations-off-west-end-2026/theatre-vibe--lizzie-loveridge.json",
+      "well-see-off-broadway-2026/lighting-and-sound-america--unknown.json",
+      "well-see-off-broadway-2026/times-square-chronicles--unknown.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/the-unbelievers-off-broadway-2026/nytimes--laura-collins-hughes.json",
+      "the-unbelievers-off-broadway-2026/nytimes--laura-collins-hughes.json",
+      "data/review-texts/the-verge-off-broadway-2026/nytimes--helen-shaw.json",
+      "the-verge-off-broadway-2026/nytimes--helen-shaw.json"
+    ],
     "directCookies": [],
     "scrapingdog": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "well-see-off-broadway-2026/new-york-sun--unknown.json"
+    ],
     "brightdata": [],
     "archiveToday": [],
     "archive": []
@@ -100,6 +132,20 @@
     "London Unattached": {
       "count": 1,
       "domain": "london-unattached.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Bob's Theater Blog": {
+      "count": 1,
+      "domain": "gotham-playgoer.blogspot.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "The Sunday Times": {
+      "count": 1,
+      "domain": "thetimes.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
