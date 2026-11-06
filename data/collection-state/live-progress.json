@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-11-06T03:33:51.259Z",
-  "processed": 455,
-  "failed": 252,
-  "successRate": "64.4%",
+  "updatedAt": "2026-11-06T04:01:42.200Z",
+  "processed": 469,
+  "failed": 262,
+  "successRate": "64.2%",
   "tierBreakdown": {
-    "playwright": 224,
+    "playwright": 235,
     "amp": 0,
-    "browserbase": 2,
+    "browserbase": 6,
     "directCookies": 0,
     "scrapingdog": 32,
     "scrapingbee": 19,
-    "brightdata": 3,
+    "brightdata": 4,
     "archiveToday": 0,
     "archive": 126
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
       "t": "2026-11-06T00:02:41.049Z",
@@ -74,6 +74,34 @@
       "event": "bb-session",
       "session": "28b86d84",
       "url": "https://bachtrack.com/review-nozze-figaro-pountney-conta-bucharest-national-oper"
+    },
+    {
+      "t": "2026-11-06T03:52:12.480Z",
+      "event": "bb-session",
+      "session": "cc5b0dcb",
+      "url": "https://www.wsj.com/articles/the-unbelievers-and-2-22a-ghost-story-review-off-br"
+    },
+    {
+      "t": "2026-11-06T03:52:13.225Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-11-06T03:53:06.400Z",
+      "event": "bb-session",
+      "session": "0e9c8609",
+      "url": "https://www.nytimes.com/2026/11/05/theater/rope-the-verge-review-off-broadway-si"
+    },
+    {
+      "t": "2026-11-06T03:53:07.026Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-06T03:58:26.501Z",
+      "event": "bb-session",
+      "session": "3ffb1956",
+      "url": "https://bachtrack.com/review-medea-yoncheva-spyres-met-opera-new-york-october-20"
     }
   ]
 }
