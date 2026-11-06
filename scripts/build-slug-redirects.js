@@ -142,10 +142,10 @@ for (const show of shows) {
 // Aliases to a critic no review carries any more are dropped too (BRO-5434);
 // with no reviews.json in this checkout, none are.
 const { aliases: flatCriticRedirects, dropped: droppedCycles } = flattenCriticSlugAliases(loadCriticSlugAliases());
-const liveCriticSlugs = fs.existsSync(reviewsPath)
-  ? criticSlugsFromReviews(JSON.parse(fs.readFileSync(reviewsPath, 'utf8')).reviews, shows)
-  : null;
-const { aliases: criticRedirects, dropped: droppedDead } = dropAliasesWithoutLiveCanonical(flatCriticRedirects, liveCriticSlugs);
+const reviewRows = fs.existsSync(reviewsPath) ? JSON.parse(fs.readFileSync(reviewsPath, 'utf8')).reviews : null;
+const liveCriticSlugs = reviewRows ? criticSlugsFromReviews(reviewRows, shows) : null;
+const bylineCriticSlugs = reviewRows ? criticSlugsFromReviews(reviewRows) : undefined;
+const { aliases: criticRedirects, dropped: droppedDead } = dropAliasesWithoutLiveCanonical(flatCriticRedirects, liveCriticSlugs, bylineCriticSlugs);
 for (const d of [...droppedCycles, ...droppedDead]) {
   console.warn(`critic-slug alias skipped: "${d.slug}" — ${d.reason}`);
 }

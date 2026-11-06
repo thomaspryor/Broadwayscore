@@ -298,3 +298,13 @@ test('criticSlugsFromReviews with shows: regional/tour-only and inherited review
   assert.deepEqual([...criticSlugsFromReviews(reviews, shows)], ['ann-real']);
   assert.equal(criticSlugsFromReviews(reviews).size, 5);
 });
+
+test('dropAliasesWithoutLiveCanonical: regional-only canonicals are dropped but do not trip the truncation limit (BRO-7045)', () => {
+  const flat = {};
+  for (let i = 0; i <= MAX_DEAD_CANONICAL_DROPS + 2; i++) flat['old-' + i] = 'regional-' + i;
+  const bylines = new Set(Object.values(flat));
+  const { aliases, dropped } = dropAliasesWithoutLiveCanonical(flat, new Set(['x']), bylines);
+  assert.deepEqual(aliases, {});
+  assert.equal(dropped.length, MAX_DEAD_CANONICAL_DROPS + 3);
+  assert.throws(() => dropAliasesWithoutLiveCanonical(flat, new Set(['x']), new Set()), /refusing to drop/);
+});

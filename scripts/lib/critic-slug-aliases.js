@@ -177,7 +177,7 @@ function criticSlugsFromReviews(reviews, shows) {
   const slugs = new Set();
   const category = shows ? new Map(shows.map((s) => [s.id, s.category])) : null;
   for (const r of reviews || []) {
-    if (category && (!r || r.inheritedFromShowId || !CRITIC_PAGE_CATEGORIES.has(category.get(r.showId)))) continue;
+    if (category && (!r || r.inheritedFromShowId || !category.has(r.showId) || !CRITIC_PAGE_CATEGORIES.has(category.get(r.showId) || 'broadway'))) continue;
     const key = criticProfileKey(r && r.criticName);
     if (key) slugs.add(key);
   }
@@ -197,20 +197,26 @@ const MAX_DEAD_CANONICAL_DROPS = 5;
  * `liveSlugs` null (no reviews.json in this checkout) keeps every alias.
  * Throws when more than MAX_DEAD_CANONICAL_DROPS would go.
  * @param {Record<string,string>} flatAliases output of flattenCriticSlugAliases().aliases
- * @param {Set<string>|null} liveSlugs output of criticSlugsFromReviews()
+ * @param {Set<string>|null} liveSlugs output of criticSlugsFromReviews(reviews, shows)
+ * @param {Set<string>} [bylineSlugs] output of criticSlugsFromReviews(reviews). A canonical in here but not in
+ *   liveSlugs is a real critic with only regional/tour reviews: dropped, but not counted toward the
+ *   truncated-reviews.json limit (BRO-7045).
  * @returns {{aliases: Record<string,string>, dropped: Array<{slug:string, reason:string}>}}
  */
-function dropAliasesWithoutLiveCanonical(flatAliases, liveSlugs) {
+function dropAliasesWithoutLiveCanonical(flatAliases, liveSlugs, bylineSlugs) {
   if (!liveSlugs) return { aliases: { ...flatAliases }, dropped: [] };
   const aliases = {};
   const dropped = [];
+  let vanished = 0;
   for (const [oldSlug, canonical] of Object.entries(flatAliases)) {
-    if (liveSlugs.has(canonical)) aliases[oldSlug] = canonical;
-    else dropped.push({ slug: oldSlug, reason: `canonical "${canonical}" has no critic page (no review carries that byline)` });
+    if (liveSlugs.has(canonical)) { aliases[oldSlug] = canonical; continue; }
+    const ineligible = !!bylineSlugs && bylineSlugs.has(canonical);
+    if (!ineligible) vanished++;
+    dropped.push({ slug: oldSlug, reason: `canonical "${canonical}" has no critic page (${ineligible ? 'its reviews are all outside the profiled markets' : 'no review carries that byline'})` });
   }
-  if (dropped.length > MAX_DEAD_CANONICAL_DROPS) {
+  if (vanished > MAX_DEAD_CANONICAL_DROPS) {
     throw new Error(
-      `${dropped.length} of ${Object.keys(flatAliases).length} critic aliases point at critics no review carries (limit ${MAX_DEAD_CANONICAL_DROPS}); reviews.json has ${liveSlugs.size} critic bylines — refusing to drop them, check that reviews.json is complete`
+      `${vanished} of ${Object.keys(flatAliases).length} critic aliases point at critics no review carries (limit ${MAX_DEAD_CANONICAL_DROPS}); reviews.json has ${liveSlugs.size} critic bylines — refusing to drop them, check that reviews.json is complete`
     );
   }
   return { aliases, dropped };
