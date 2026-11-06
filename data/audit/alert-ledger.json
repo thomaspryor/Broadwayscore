@@ -249,15 +249,16 @@
       "disposition": "auto",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "incidentOpenedAt": "2026-11-06T15:41:31.549Z",
-      "lastSeen": "2026-11-06T15:41:31.549Z",
-      "lastNotifiedAt": "2026-11-06T15:41:31.549Z",
-      "lastSurfacedAt": "2026-11-06T15:41:31.549Z",
+      "incidentOpenedAt": "2026-11-06T15:35:04.577Z",
+      "lastSeen": "2026-11-06T16:06:57.841Z",
+      "lastNotifiedAt": "2026-11-06T15:35:04.577Z",
+      "lastSurfacedAt": "2026-11-06T15:35:04.577Z",
       "notifyCount": 207,
       "cardId": null,
       "linearIdentifier": "BRO-7048",
       "notifyCountAtRelease": 192,
-      "sweptTracker": "BRO-6656"
+      "sweptTracker": "BRO-6656",
+      "silentRefires": 1
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -6803,7 +6804,7 @@
       "title": "main test.yml red: E2E Tests / Run E2E tests",
       "firstSeen": "2026-09-28T21:32:51.430Z",
       "incidentOpenedAt": "2026-11-06T14:59:51.158Z",
-      "lastSeen": "2026-11-06T15:41:31.533Z",
+      "lastSeen": "2026-11-06T16:06:57.820Z",
       "lastNotifiedAt": "2026-11-06T14:59:51.158Z",
       "lastSurfacedAt": null,
       "notifyCount": 19,
@@ -6816,7 +6817,7 @@
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40634589536"
       },
       "absentRunIds": [],
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "review-gap:opening-window:lost-in-del-valle-return-off-broadway-2026": {
       "status": "resolved",
@@ -19289,7 +19290,7 @@
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"every emitted critic alias resolves: canonical exists, and the old slug resolves to it unless the old slug is still a live profile (exact match wins)\"",
       "firstSeen": "2026-10-16T06:37:49.248Z",
       "incidentOpenedAt": "2026-11-06T14:59:49.329Z",
-      "lastSeen": "2026-11-06T15:41:31.509Z",
+      "lastSeen": "2026-11-06T16:06:57.794Z",
       "lastNotifiedAt": "2026-11-06T14:59:49.329Z",
       "lastSurfacedAt": null,
       "notifyCount": 2,
@@ -19301,7 +19302,7 @@
         "runId": "42234485900",
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42234485900"
       },
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "coverage-holes:a-ghost-in-your-ear-off-broadway-2026": {
       "status": "resolved",
