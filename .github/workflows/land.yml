@@ -881,6 +881,12 @@ jobs:
         # Only the re-check path (main moved substantively since `checks`)
         # needs it — land.js's gauntlet copies data/*.json into its throwaway
         # worktree from this checkout. Cheap enough to always have.
+        # BRO-7029 bootstrap (revert once main has the maxBuffer/:(glob) fix in
+        # core-data-files.js): this job checks out main, whose `git ls-files
+        # data/*.json` overflowed execFileSync's buffer. GIT_GLOB_PATHSPECS=1 makes
+        # `*` stop at `/`, so the broken script lists ~4 KB instead of ~1 MiB.
+        env:
+          GIT_GLOB_PATHSPECS: "1"
         uses: ./.github/actions/checkout-core-data
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
