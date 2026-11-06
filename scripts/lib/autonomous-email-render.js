@@ -762,7 +762,7 @@ function buildOwnerView({
   // Rows that left the list since yesterday and that the email could have
   // shown (errors, or warnings that outlasted the hold). Names are plain.
   const clearedNames = [];
-  for (const c of reportableCleared(health && health.cleared)) {
+  for (const c of reportableCleared(health && health.cleared, nowMs)) {
     const plain = plainHealthLine(c.name);
     if (!clearedNames.includes(plain)) clearedNames.push(plain);
   }

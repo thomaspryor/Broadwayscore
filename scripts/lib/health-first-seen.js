@@ -20,8 +20,11 @@
 
 const SETTLE_HOURS = 48;
 // A cleared row that comes back within this window keeps its ORIGINAL clock,
-// so a condition that flaps every other day cannot hide behind the hold.
-const REAPPEAR_KEEP_HOURS = 36;
+// so a condition that flaps every few days cannot hide behind the hold
+// (it is shown at once, the fail-safe direction).
+const REAPPEAR_KEEP_HOURS = 7 * 24;
+// "Cleared since yesterday" only mentions rows that cleared this recently.
+const CLEAR_REPORT_HOURS = 36;
 const HOUR_MS = 60 * 60 * 1000;
 
 // A very old date used to seed rows the first time this runs: everything that
@@ -36,14 +39,16 @@ function isOpen(r) {
  * @param {{firstSeen?: Object<string,string>, cleared?: Object<string,{at:string,firstSeen:string,status?:string}>}} prev
  * @param {Array<{name:string,status:string}>} results  this run's health results
  * @param {string} nowIso
- * @returns {{firstSeen: Object<string,string>, cleared: Object<string,{at:string,firstSeen:string,status:string}>}}
+ * @returns {{firstSeen: Object<string,string>, cleared: Object<string,{at:string,firstSeen:string,status:string}>, openStatus: Object<string,string>}}
+ *   the result has the same shape as the persisted history keys, so it can be fed back as `prev`
  */
 function updateFirstSeen(prev, results, nowIso) {
   const now = Date.parse(nowIso);
   const bootstrap = !prev || typeof prev.firstSeen !== 'object' || prev.firstSeen === null;
   const prevSeen = bootstrap ? {} : prev.firstSeen;
   const prevCleared = (prev && typeof prev.cleared === 'object' && prev.cleared) || {};
-  const prevStatus = (prev && typeof prev.status === 'object' && prev.status) || {};
+  // history.openStatus: name -> 'warn'|'error' as of the previous run.
+  const prevStatus = (prev && typeof prev.openStatus === 'object' && prev.openStatus) || {};
 
   const open = new Map();
   for (const r of Array.isArray(results) ? results : []) if (isOpen(r)) open.set(r.name, r.status);
@@ -72,7 +77,7 @@ function updateFirstSeen(prev, results, nowIso) {
     if (open.has(name) || cleared[name] || !c || !c.at) continue;
     if (Number.isFinite(now) && now - Date.parse(c.at) <= REAPPEAR_KEEP_HOURS * HOUR_MS) cleared[name] = c;
   }
-  return { firstSeen, cleared, status };
+  return { firstSeen, cleared, openStatus: status };
 }
 
 function ageHours(firstSeenIso, nowMs) {
@@ -93,10 +98,12 @@ function isSettling(row, severity, nowMs) {
  * could have shown (an error, or a warning that outlasted the hold).
  * @returns {Array<{name:string, daysOpen:number}>}
  */
-function reportableCleared(cleared) {
+function reportableCleared(cleared, nowMs) {
   const out = [];
   for (const [name, c] of Object.entries(cleared || {})) {
     if (!c || !c.at) continue;
+    const sinceClear = (nowMs - Date.parse(c.at)) / HOUR_MS;
+    if (Number.isFinite(sinceClear) && sinceClear > CLEAR_REPORT_HOURS) continue;
     const open = Date.parse(c.at) - Date.parse(c.firstSeen);
     const wasShown = c.status === 'error' || !(open >= 0 && open < SETTLE_HOURS * HOUR_MS);
     if (wasShown) out.push({ name, daysOpen: Number.isFinite(open) && open > 0 ? Math.max(1, Math.round(open / (24 * HOUR_MS))) : 0 });
@@ -104,4 +111,4 @@ function reportableCleared(cleared) {
   return out;
 }
 
-module.exports = { SETTLE_HOURS, REAPPEAR_KEEP_HOURS, LEGACY_SEED, updateFirstSeen, ageHours, isSettling, reportableCleared };
+module.exports = { SETTLE_HOURS, REAPPEAR_KEEP_HOURS, CLEAR_REPORT_HOURS, LEGACY_SEED, updateFirstSeen, ageHours, isSettling, reportableCleared };

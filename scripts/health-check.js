@@ -6391,7 +6391,7 @@ async function main() {
     const fs2 = updateFirstSeen(history, allResults, history.lastRun);
     history.firstSeen = fs2.firstSeen;
     history.cleared = fs2.cleared;
-    history.openStatus = fs2.status;
+    history.openStatus = fs2.openStatus;
   }
   saveHistory(history);
 
