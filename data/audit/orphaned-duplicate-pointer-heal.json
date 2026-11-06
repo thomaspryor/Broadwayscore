@@ -1,7 +1,7 @@
 {
-  "generated": "2026-11-06T17:12:34.075Z",
+  "generated": "2026-11-06T17:31:08.662Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 43,
+  "count": 42,
   "orphans": [
     {
       "showId": "33-variations-2009",
@@ -274,13 +274,6 @@
       "loserFile": "metro-uk--unknown.json",
       "targetFile": "metro-uk--tori-brazier.json",
       "reason": "orphaned-duplicate-heal: metro-uk--tori-brazier.json was flagged invalid after metro-uk--unknown.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "the-outsiders-tour-2025",
-      "loserFile": "oklahoman--unknown.json",
-      "targetFile": "oklahoman--brandy-mcdonnell.json",
-      "reason": "orphaned-duplicate-heal: oklahoman--brandy-mcdonnell.json was flagged invalid after oklahoman--unknown.json was pointed at it",
       "field": "duplicateOf"
     },
     {

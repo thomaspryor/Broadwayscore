@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-06T17:24:24.405Z",
+  "timestamp": "2026-11-06T17:44:41.112Z",
   "stats": {
-    "totalReviews": 80284,
-    "alreadyFlagged": 22003,
+    "totalReviews": 80292,
+    "alreadyFlagged": 22002,
     "dateGuardCatches": 216,
-    "directorMismatch": 3516,
+    "directorMismatch": 3517,
     "tvFilmSignals": 2285,
-    "londonSignals": 3621,
+    "londonSignals": 3620,
     "offBroadwaySignals": 743,
-    "yearMismatch": 361,
-    "noPublishDate": 8470
+    "yearMismatch": 362,
+    "noPublishDate": 8469
   },
   "findings": [
     {
@@ -32143,6 +32143,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "in-the-heights-off-broadway-2026",
+      "file": "theater-pizzazz--unknown.json",
+      "score": 86,
+      "publishDate": "2026-11-05",
+      "url": "https://theaterpizzazz.com/in-the-heights-still-musically-inspires/",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2008 (2x) more than 2026 (0x). 2008 matches production: in-the-heights-2008"
         }
       ]
     },
@@ -72334,6 +72348,19 @@
       "score": 79,
       "publishDate": "2026-08-26",
       "url": "https://freepressokc.com/the-outsiders-stays-gold-in-striking-new-musical-at-civic-center/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"danya taymor\" from the-outsiders-2024"
+        }
+      ]
+    },
+    {
+      "showId": "the-outsiders-tour-2025",
+      "file": "oklahoman--brandy-mcdonnell.json",
+      "publishDate": "2025-10-11",
+      "url": "https://www.oklahoman.com/story/entertainment/2025/10/11/the-outsiders-musical-tulsa-pac-broadway-national-tour-roots/86328160007/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -125300,20 +125327,6 @@
     },
     {
       "showId": "the-bridge-off-west-end-2026",
-      "file": "artsdesk--unknown.json",
-      "score": 66,
-      "publishDate": "2026-11-04",
-      "url": "https://theartsdesk.com/theatre/bridge-bush-theatre-review-entertaining-stand-one-sided-theatre",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"almeida\""
-        }
-      ]
-    },
-    {
-      "showId": "the-bridge-off-west-end-2026",
       "file": "theatreandtonic--emmie-newitt.json",
       "score": 82,
       "publishDate": "2026-11-03",
@@ -134460,7 +134473,7 @@
     {
       "showId": "the-unbelievers-off-broadway-2026",
       "file": "wsj--charles-isherwood.json",
-      "score": 60,
+      "score": 61,
       "publishDate": "2026-11-05",
       "url": "https://www.wsj.com/articles/the-unbelievers-and-2-22a-ghost-story-review-off-broadway-stages-turn-unsettling-b758c396",
       "findings": [
