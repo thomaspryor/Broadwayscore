@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-06T21:53:17.840Z",
+  "timestamp": "2026-11-06T22:44:56.283Z",
   "stats": {
-    "totalReviews": 80355,
+    "totalReviews": 80366,
     "alreadyFlagged": 22012,
     "dateGuardCatches": 216,
     "directorMismatch": 3517,
-    "tvFilmSignals": 2286,
-    "londonSignals": 3621,
+    "tvFilmSignals": 2287,
+    "londonSignals": 3622,
     "offBroadwaySignals": 743,
     "yearMismatch": 362,
-    "noPublishDate": 8477
+    "noPublishDate": 8475
   },
   "findings": [
     {
@@ -62431,6 +62431,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "tango-after-dark-off-west-end-2026",
+      "file": "london-unattached--teresa-guerreiro.json",
+      "publishDate": "2026-11-06",
+      "url": "https://www.london-unattached.com/german-cornejos-tango-after-dark/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
         }
       ]
     },
@@ -130217,7 +130230,7 @@
     },
     {
       "showId": "the-lehman-trilogy-west-end-2018",
-      "file": "artsdesk--unknown.json",
+      "file": "artsdesk--matt-wolf.json",
       "score": 89,
       "publishDate": null,
       "url": "https://theartsdesk.com/theatre/lehman-trilogy-national-theatre-review-acting-tour-de-force",
@@ -130461,6 +130474,19 @@
       "file": "guardian--ryan-gilbey.json",
       "publishDate": "2026-10-13",
       "url": "https://www.theguardian.com/stage/2026/oct/13/keira-knightley-luke-thompson-hacking-stasi-spy-play-the-lives-of-others",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"adelphi theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-lives-of-others-west-end-2026",
+      "file": "independent--lizzie-edmonds.json",
+      "publishDate": "2026-11-02",
+      "url": "https://www.independent.co.uk/bulletin/culture/keira-knightley-theatre-the-lives-of-others-review-b3077335.html",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
