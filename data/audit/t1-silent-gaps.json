@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-06T00:04:30.465Z",
+  "generatedAt": "2026-11-06T01:02:39.767Z",
   "windowDays": 45,
   "showsScanned": 246,
   "gaps": [
@@ -21,9 +21,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=lincoln-in-the-bardo-off-broadway-2026",
       "firstSeen": "2026-10-25T17:52:33.957Z",
-      "fileAgeHours": 270.1977236111111,
+      "fileAgeHours": 271.16728027777776,
       "gapSeenAt": "2026-10-26T08:25:16.367Z",
-      "nonTerminalAgeHours": 255.6539161111111,
+      "nonTerminalAgeHours": 256.6231663888889,
       "needsManualRecovery": true
     },
     {
@@ -44,9 +44,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=the-bridge-off-west-end-2026 --url=https://www.thetimes.com/uk/politics/article/city-bridge-foundation-grant-money-hamas-linked-organisation-j5sbhgrs2 --outlet=sunday-times   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-11-05T01:36:56.414Z",
-      "fileAgeHours": 22.458613333333332,
+      "fileAgeHours": 23.428058055555557,
       "gapSeenAt": "2026-11-05T02:10:46.925Z",
-      "nonTerminalAgeHours": 21.895427777777776,
+      "nonTerminalAgeHours": 22.864678055555554,
       "needsManualRecovery": false
     },
     {
@@ -64,9 +64,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=harry-potter-and-the-cursed-child-one-part-west-end-2026 --url=https://www.thetimes.com/culture/theatre-dance/article/harry-potter-and-the-cursed-child-review-london-7jq7shl0t --outlet=times-uk --critic=\"Clive Davis\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-11-05T13:10:35.064Z",
-      "fileAgeHours": 10.898242777777778,
+      "fileAgeHours": 11.867604722222222,
       "gapSeenAt": "2026-11-05T14:48:09.202Z",
-      "nonTerminalAgeHours": 9.272573055555556,
+      "nonTerminalAgeHours": 10.241823333333333,
       "needsManualRecovery": false
     }
   ],
