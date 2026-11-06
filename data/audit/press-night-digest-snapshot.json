@@ -1,24 +1,38 @@
 {
-  "generatedAt": "2026-11-05T10:22:28.763Z",
-  "night": "2026-11-04",
+  "generatedAt": "2026-11-06T07:52:09.163Z",
+  "night": "2026-11-05",
   "counts": {
-    "total": 1,
+    "total": 4,
     "passed": 0,
-    "failed": 1,
-    "notGraded": 0
+    "failed": 3,
+    "notGraded": 1
   },
   "lines": [
     {
       "verdict": "FAIL",
-      "line": "Parcel from America: published by the regular pipeline; 1 of 1 review live by 12:00am; the first review was not live until 10:45pm (45 min after release). Failed."
+      "line": "2:22 - A Ghost Story: published by the regular pipeline; 4 of 5 reviews live by 12:00am; New York Theatre Guide not live by 11:55pm; Reddit draft not due until 9:00am. Failed."
+    },
+    {
+      "verdict": "FAIL",
+      "line": "The Unbelievers: published by the regular pipeline; 4 of 5 reviews live by 12:00am; TheaterMania not live by 11:55pm; Reddit draft not due until 9:00am. Failed."
+    },
+    {
+      "verdict": "FAIL",
+      "line": "The Verge: published by the regular pipeline; 6 of 7 reviews live by 12:00am; TheaterMania not live by 11:55pm; Reddit draft not due until 9:00am. Failed."
+    },
+    {
+      "verdict": "UNKNOWN",
+      "line": "King Lear: not graded, no reviews were published overnight."
     }
   ],
   "scoreboard": {
-    "graded": 13,
+    "graded": 16,
     "passed": 1,
     "passedOnOwn": 1
   },
   "missFirstSeen": {
-    "parcel-from-america-off-broadway-2026|2026-11-04|review:first-live": "2026-11-05T10:22:28.763Z"
+    "222-a-ghost-story-off-broadway-2026|2026-11-05|review:nytg:Gillian Russo": "2026-11-06T07:52:09.163Z",
+    "the-unbelievers-off-broadway-2026|2026-11-05|review:theatermania:Rachel Graham": "2026-11-06T07:52:09.163Z",
+    "the-verge-off-broadway-2026|2026-11-05|review:theatermania:Kenji Fujishima": "2026-11-06T07:52:09.163Z"
   }
 }
