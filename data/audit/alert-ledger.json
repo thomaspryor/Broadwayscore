@@ -24093,7 +24093,7 @@
       "resolveReason": "absent"
     },
     "live-data-test:tests/unit/critic-spelling-duplicates-live-data.test.mjs::live corpus scan: no NEW same-show/same-outlet critic-name near-duplicate beyond the known backlog": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Live-data test failing: live corpus scan: no NEW same-show/same-outlet critic-name near-duplicate beyond the known backlog (tests/unit/critic-spelling-duplicates-live-data.test.mjs)",
       "firstSeen": "2026-10-22T11:49:37.833Z",
@@ -24105,7 +24105,9 @@
       "notifyCount": 10,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 2
+      "silentRefires": 2,
+      "resolvedAt": "2026-11-06T02:20:05.555Z",
+      "resolveReason": "live-data test green"
     },
     "land:land/bro-5325-wsj-section": {
       "status": "resolved",
@@ -24879,13 +24881,13 @@
       "firstSeen": "2026-10-22T20:59:52.372Z",
       "incidentOpenedAt": "2026-10-22T20:59:52.372Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-05T16:55:36.832Z",
+      "lastSeen": "2026-11-06T02:20:04.963Z",
       "lastNotifiedAt": "2026-11-05T02:45:26.544Z",
       "lastSurfacedAt": "2026-11-05T02:45:26.544Z",
       "notifyCount": 13,
       "cardId": null,
       "linearIdentifier": "BRO-6993",
-      "silentRefires": 4
+      "silentRefires": 5
     },
     "land:land/bro-5969-index-bloat-v3": {
       "status": "resolved",
@@ -26838,13 +26840,13 @@
       "firstSeen": "2026-10-24T23:08:26.440Z",
       "incidentOpenedAt": "2026-10-31T00:35:50.727Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-05T16:55:41.543Z",
+      "lastSeen": "2026-11-06T02:20:05.409Z",
       "lastNotifiedAt": "2026-11-05T12:32:07.725Z",
       "lastSurfacedAt": "2026-11-05T12:32:07.725Z",
       "notifyCount": 10,
       "cardId": null,
       "linearIdentifier": "BRO-7013",
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "test-yml:red:Unit Tests:196541b4": {
       "status": "resolved",
@@ -32063,7 +32065,7 @@
       "resolvedAt": "2026-10-29T23:52:38.989Z"
     },
     "live-data-test:tests/unit/doubled-market-ids-live-data.test.mjs::the live corpus has zero unallowlisted doubled-market ids": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "Live-data test failing: the live corpus has zero unallowlisted doubled-market ids (tests/unit/doubled-market-ids-live-data.test.mjs)",
       "firstSeen": "2026-10-29T23:10:05.391Z",
@@ -32075,7 +32077,9 @@
       "notifyCount": 7,
       "cardId": null,
       "linearIdentifier": "BRO-7011",
-      "silentRefires": 2
+      "silentRefires": 2,
+      "resolvedAt": "2026-11-06T02:20:05.568Z",
+      "resolveReason": "live-data test green"
     },
     "live-data-test:tests/unit/duplicate-images-live-data.test.mjs::real data: no byte-identical art across unrelated, unlinked shows": {
       "status": "open",
@@ -32084,12 +32088,13 @@
       "firstSeen": "2026-10-29T23:10:05.416Z",
       "incidentOpenedAt": "2026-11-03T03:38:58.182Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-05T16:55:37.287Z",
+      "lastSeen": "2026-11-06T02:20:05.378Z",
       "lastNotifiedAt": "2026-11-05T16:55:37.287Z",
       "lastSurfacedAt": "2026-11-05T16:55:37.287Z",
       "notifyCount": 7,
       "cardId": null,
-      "linearIdentifier": "BRO-7020"
+      "linearIdentifier": "BRO-7020",
+      "silentRefires": 1
     },
     "land:land/bro-6546-voidfix": {
       "status": "open",
@@ -35935,12 +35940,13 @@
       "firstSeen": "2026-11-03T04:48:41.826Z",
       "incidentOpenedAt": "2026-11-03T04:48:41.826Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-05T16:55:39.043Z",
+      "lastSeen": "2026-11-06T02:20:05.394Z",
       "lastNotifiedAt": "2026-11-05T16:55:39.043Z",
       "lastSurfacedAt": "2026-11-05T16:55:39.043Z",
       "notifyCount": 4,
       "cardId": null,
-      "linearIdentifier": "BRO-7021"
+      "linearIdentifier": "BRO-7021",
+      "silentRefires": 1
     },
     "opening-night-revival-unverified-clifford-odets-waiting-for-lefty-off-broadway-2026": {
       "status": "open",
