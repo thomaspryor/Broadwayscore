@@ -1,46 +1,94 @@
 {
-  "generatedAt": "2026-11-06T19:19:54.354Z",
+  "generatedAt": "2026-11-06T20:38:18.460Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 322,
-  "clean": 320,
-  "defective": 2,
+  "clean": 317,
+  "defective": 5,
   "byType": {
-    "score-drift": 2
+    "score-drift": 5
   },
   "shows": [
     {
-      "showId": "girls-off-west-end-2026",
-      "title": "Girls",
-      "openingDate": "2026-10-27",
+      "showId": "the-unbelievers-off-broadway-2026",
+      "title": "The Unbelievers",
+      "openingDate": "2026-11-05",
       "ok": false,
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 77.8 vs local 77.71 (Δ0.09)"
+          "detail": "deployed cs 72.05 vs local 71.93 (Δ0.12)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 18,
-      "deployedCount": 19,
-      "firstDefectAt": "2026-11-06T19:19:50.279Z"
+      "localCount": 12,
+      "deployedCount": 12,
+      "firstDefectAt": "2026-11-06T20:38:09.812Z"
     },
     {
-      "showId": "garry-starr-classic-penguins-off-west-end-2026",
-      "title": "Garry Starr Classic Penguins",
-      "openingDate": "2026-10-23",
+      "showId": "the-verge-off-broadway-2026",
+      "title": "The Verge",
+      "openingDate": "2026-11-05",
       "ok": false,
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 87.27 vs local 87.33 (Δ0.06)"
+          "detail": "deployed cs 61.66 vs local 61.8 (Δ0.14)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 16,
-      "deployedCount": 17,
-      "firstDefectAt": "2026-11-06T19:19:50.279Z"
+      "localCount": 9,
+      "deployedCount": 9,
+      "firstDefectAt": "2026-11-06T20:38:09.812Z"
+    },
+    {
+      "showId": "222-a-ghost-story-off-broadway-2026",
+      "title": "2:22 - A Ghost Story",
+      "openingDate": "2026-11-05",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 63.3 vs local 63.23 (Δ0.07)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 9,
+      "deployedCount": 9,
+      "firstDefectAt": "2026-11-06T20:38:09.812Z"
+    },
+    {
+      "showId": "speculations-off-west-end-2026",
+      "title": "Speculations",
+      "openingDate": "2026-11-05",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 48.68 vs local 48.58 (Δ0.1)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 23,
+      "deployedCount": 24,
+      "firstDefectAt": "2026-11-06T20:38:09.812Z"
+    },
+    {
+      "showId": "the-imaginary-invalid-2026",
+      "title": "The Imaginary Invalid",
+      "openingDate": "2026-10-22",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 67.89 vs local 67.45 (Δ0.44)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 28,
+      "deployedCount": 28,
+      "firstDefectAt": "2026-11-06T20:38:09.812Z"
     }
   ],
   "persistentDefective": 0,

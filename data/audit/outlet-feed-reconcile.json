@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-06T19:19:54.716Z",
+  "generatedAt": "2026-11-06T20:38:18.820Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -84,8 +84,12 @@
       "reason": "no data/review-texts directory for this show"
     }
   ],
-  "feedsChecked": 78,
+  "feedsChecked": 85,
   "feedsFailed": [
+    {
+      "outletId": "theater-life",
+      "error": "Timeout fetching https://theaterlife.com/feed"
+    },
     {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
@@ -109,10 +113,14 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
+    },
+    {
+      "outletId": "new-york-sun",
+      "error": "HTTP 429 for https://www.nysun.com/section/arts"
     }
   ],
-  "itemsScanned": 802,
-  "matchedGaps": 4,
+  "itemsScanned": 830,
+  "matchedGaps": 6,
   "possibleGaps": 4,
   "gaps": [
     {
@@ -125,6 +133,15 @@
       "publishDate": "2026-11-04"
     },
     {
+      "showId": "the-blue-violinist-over-west-end-avenue-off-broadway-2026",
+      "title": "The Blue Violinist Over West End Avenue",
+      "level": "matched",
+      "outletId": "the-knockturnal",
+      "url": "https://theknockturnal.com/the-blue-violinist-over-west-end-avenue-review/",
+      "headline": "&#8216;The Blue Violinist Over West End Avenue&#8217;: Review",
+      "publishDate": "2026-11-05"
+    },
+    {
       "showId": "tosca-off-broadway-2026",
       "title": "Tosca",
       "level": "matched",
@@ -132,6 +149,15 @@
       "url": "https://playstosee.com/reviews/tosca-17/?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=tosca-17",
       "headline": "TOSCA",
       "publishDate": "2026-10-31"
+    },
+    {
+      "showId": "tosca-off-broadway-2026",
+      "title": "Tosca",
+      "level": "matched",
+      "outletId": "british-theatre",
+      "url": "https://www.britishtheatreguide.info/reviews/tosca-london-coliseum-26187",
+      "headline": "Tosca",
+      "publishDate": "2026-11-06"
     },
     {
       "showId": "tosca-off-broadway-2026",

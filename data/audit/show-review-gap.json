@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-11-06T19:17:50.122Z",
+  "generatedAt": "2026-11-06T20:37:44.785Z",
   "windowDays": 1095,
-  "targets": 901,
-  "auditedThisRun": 5,
-  "carriedForward": 2054,
+  "targets": 911,
+  "auditedThisRun": 7,
+  "carriedForward": 2053,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 641,
-    "missingCurrentRun": 1208,
+    "withGap": 642,
+    "missingCurrentRun": 1210,
     "totalCitedNoUrl": 0,
     "totalFlaggedMisses": 905,
     "totalRecoverable": 58,
@@ -16,7 +16,7 @@
     "humanExcluded": 26,
     "automatedExcluded": 1013,
     "automatedExcludedListed": 714,
-    "priorProductionCitations": 6046
+    "priorProductionCitations": 6049
   },
   "results": [
     {
@@ -386,13 +386,25 @@
       "status": "open",
       "category": "off-broadway",
       "previewsStartDate": "2026-10-20",
-      "aggregatorArticles": [],
+      "aggregatorArticles": [
+        "https://playbill.com/article/what-are-the-reviews-for-222---a-ghost-story-off-broadway",
+        "https://www.broadwayworld.com/article/Review-Roundup-222-A-GHOST-STORY-Opens-Off-Broadway-with-Anna-Camp-Jasmine-Cephas-Jones-and-More-20261105"
+      ],
       "aggregatorListedUrls": [
+        "https://1minutecritic.com/222-a-ghost-story-off-broadway-review/",
+        "https://culturesauce.com/222-ghost-story-finn-jones-anna-camp-off-broadway-review/",
+        "https://www.newyorktheatreguide.com/reviews/2-22-a-ghost-story-off-broadway-review",
+        "https://nystagereview.com/2026/11/05/222-a-ghost-story-whos-afraid-of-the-spectral-woolf/",
+        "https://www.wsj.com/articles/the-unbelievers-and-2-22a-ghost-story-review-off-broadway-stages-turn-unsettling-b758c396",
+        "https://www.theatermania.com/news/review-222-a-ghost-story-a-boozy-dinner-party-becomes-a-late-night-vigil_1859012/",
+        "https://mashable.com/entertainment/222-ghost-story-review",
+        "https://www.timeout.com/newyork/theater/2-22-a-ghost-story",
+        "https://www.mixuptheatre.com/post/theatre-review-2-22-a-ghost-story-1",
         "https://www.londontheatre.co.uk/reviews/222-a-ghost-story-review-lyric-theatre-cheryl"
       ],
-      "dirFiles": 7,
-      "dirClean": 0,
-      "inReviewsJson": 0,
+      "dirFiles": 16,
+      "dirClean": 9,
+      "inReviewsJson": 9,
       "missing": [
         {
           "url": "https://www.londontheatre.co.uk/reviews/222-a-ghost-story-review-lyric-theatre-cheryl",
@@ -407,21 +419,151 @@
           ]
         }
       ],
-      "dirOnly": [],
-      "flaggedMisses": [],
+      "dirOnly": [
+        {
+          "host": "nysun.com",
+          "count": 1
+        },
+        {
+          "host": "nytimes.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [
+        {
+          "url": "https://www.mixuptheatre.com/post/theatre-review-2-22-a-ghost-story-1",
+          "host": "mixuptheatre.com",
+          "knownOutletId": "mixuptheatre",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "mixuptheatre--mix-up-theatre-stewart.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.mixuptheatre.com/post/theatre-review-2-22-a-ghost-story-1"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "flagged-file-date:2026-04-29",
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
+          "serpCensus": true,
+          "reverify": false
+        }
+      ],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"2:22 - A Ghost Story\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"2:22 - A Ghost Story\" Off-Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 0,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"2:22 - A Ghost Story\" review lucille",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 0,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped2",
+            "query": "\"2:22 - A Ghost Story\" Robins review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "2:22 - A Ghost Story Lucille Lortel Theatre review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 0,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "2:22 - A Ghost Story Lucille Lortel Theatre review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 2,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "2:22 - A Ghost Story Lucille Lortel Theatre review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 6,
+        "queriesTotal": 6,
+        "resultCount": 3,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 1,
+        "count": 407,
         "byReason": {
-          "write-path-blocked": 1
+          "aggregator-internal-nav": 250,
+          "not-http-url": 76,
+          "production-database-listing": 5,
+          "aggregator-section-root": 10,
+          "non-review-host": 54,
+          "non-stage-review": 1,
+          "census-junk-host": 2,
+          "roundup-page": 2,
+          "podcast-episode": 1,
+          "non-review-path": 2,
+          "venue-production-page": 1,
+          "news-roundup-site": 1,
+          "no-review-evidence": 1,
+          "show-blocklist": 1
         }
       },
       "dedupedVariants": [],
+      "nonReviewCandidates": [
+        {
+          "url": "https://www.timeout.com/newyork/theater/2-22-a-ghost-story",
+          "host": "timeout.com",
+          "knownOutletId": "timeout",
+          "nonReviewVerdict": "timeout-listing-blurb",
+          "nonReviewDetail": "unauthored-and-pre-opening"
+        }
+      ],
       "automatedExcludedListed": 0,
       "unextractable": [],
       "ingestResults": [
@@ -456,6 +598,54 @@
         "suppressedMissing": [],
         "candidates": [
           {
+            "url": "https://1minutecritic.com/222-a-ghost-story-off-broadway-review/",
+            "outletId": "1minutecritic.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-06T20:37:44.785Z"
+          },
+          {
+            "url": "https://culturesauce.com/222-ghost-story-finn-jones-anna-camp-off-broadway-review/",
+            "outletId": "culturesauce.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-06T20:37:44.785Z"
+          },
+          {
+            "url": "https://www.newyorktheatreguide.com/reviews/2-22-a-ghost-story-off-broadway-review",
+            "outletId": "newyorktheatreguide.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-06T20:37:44.785Z"
+          },
+          {
+            "url": "https://nystagereview.com/2026/11/05/222-a-ghost-story-whos-afraid-of-the-spectral-woolf/",
+            "outletId": "nystagereview.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-06T20:37:44.785Z"
+          },
+          {
+            "url": "https://www.wsj.com/articles/the-unbelievers-and-2-22a-ghost-story-review-off-broadway-stages-turn-unsettling-b758c396",
+            "outletId": "wsj.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-06T20:37:44.785Z"
+          },
+          {
+            "url": "https://www.theatermania.com/news/review-222-a-ghost-story-a-boozy-dinner-party-becomes-a-late-night-vigil_1859012/",
+            "outletId": "theatermania.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-06T20:37:44.785Z"
+          },
+          {
+            "url": "https://mashable.com/entertainment/222-ghost-story-review",
+            "outletId": "mashable.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-06T20:37:44.785Z"
+          },
+          {
+            "url": "https://www.timeout.com/newyork/theater/2-22-a-ghost-story",
+            "outletId": "timeout.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-06T20:37:44.785Z"
+          },
+          {
             "url": "https://www.londontheatre.co.uk/reviews/222-a-ghost-story-review-lyric-theatre-cheryl",
             "outletId": "london-theatre",
             "state": "GAP",
@@ -464,11 +654,17 @@
           }
         ],
         "censusSchema": 4,
-        "excluded": [],
-        "liveCount": 0,
-        "candidateCount": 1
+        "excluded": [
+          {
+            "url": "https://www.timeout.com/newyork/theater/2-22-a-ghost-story",
+            "host": "timeout.com",
+            "reason": "timeout-listing-blurb"
+          }
+        ],
+        "liveCount": 8,
+        "candidateCount": 9
       },
-      "computedAt": "2026-11-06T02:02:35.916Z"
+      "computedAt": "2026-11-06T20:37:44.785Z"
     },
     {
       "showId": "3-summers-of-lincoln-regional-2025",
@@ -10908,7 +11104,7 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 1,
+            "results": 9,
             "accepted": 0,
             "error": null
           },
@@ -10928,7 +11124,7 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 7,
+            "results": 9,
             "accepted": 0,
             "error": null
           },
@@ -10959,14 +11155,14 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 24,
+        "count": 26,
         "byReason": {
-          "non-review-host": 6,
-          "not-http-url": 11,
-          "no-review-evidence": 2,
-          "tag-index-page": 2,
+          "non-review-host": 21,
+          "non-stage-review": 1,
           "non-review-path": 1,
-          "bare-host": 2
+          "no-review-evidence": 1,
+          "tag-index-page": 1,
+          "bare-host": 1
         }
       },
       "dedupedVariants": [],
@@ -10981,7 +11177,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-11-06T05:00:24.054Z"
+      "computedAt": "2026-11-06T20:37:44.785Z"
     },
     {
       "showId": "a-tupperware-of-ashes-west-end-2024",
@@ -16878,6 +17074,44 @@
         "candidateCount": 0
       },
       "computedAt": "2026-10-31T17:07:08.919Z"
+    },
+    {
+      "showId": "always-patsy-cline-regional-2025",
+      "title": "Always...Patsy Cline",
+      "openingDate": "2025-06-19",
+      "status": "closed",
+      "category": "regional",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "unextractable": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 4,
+        "excluded": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-11-06T20:37:44.785Z"
     },
     {
       "showId": "always-patsy-cline-regional-2026",
@@ -164726,16 +164960,71 @@
       "category": "off-broadway",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
+        "http://www.sohoplayhouse.com/shows/mark-simmons-jest-to-impress",
+        "https://donyc.com/events/2026/10/24/mark-simmons-jest-to-impress-tickets-1zwj7rb",
+        "https://www.sohoplayhouse.com/calendar/mark-simmons-jest-to-impress",
+        "https://www.thereviewshub.com/mark-simmons-jest-to-impress-lawrence-batley-theatre-huddersfield/",
+        "https://www.theguardian.com/stage/2026/mar/25/mark-simmons-comedian-jest-to-impress-tour-interview",
         "https://donyc.com/events/2026/10/27/mark-simmons-jest-to-impress-tickets",
         "https://www.totalntertainment.com/comedy/mark-simmons-jest-to-impress-2026-tour/",
-        "https://donyc.com/events/2026/10/24/mark-simmons-jest-to-impress-tickets-1zwj7rb",
-        "https://www.chelmsfordtheatre.co.uk/events/mark-simmons-jest-to-impress-2026",
-        "http://www.sohoplayhouse.com/shows/mark-simmons-jest-to-impress"
+        "https://www.chelmsfordtheatre.co.uk/events/mark-simmons-jest-to-impress-2026"
       ],
       "dirFiles": 4,
       "dirClean": 0,
       "inReviewsJson": 0,
       "missing": [
+        {
+          "url": "https://donyc.com/events/2026/10/24/mark-simmons-jest-to-impress-tickets-1zwj7rb",
+          "host": "donyc.com",
+          "knownOutletId": "donyc",
+          "serpCensus": true,
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ]
+        },
+        {
+          "url": "https://www.sohoplayhouse.com/calendar/mark-simmons-jest-to-impress",
+          "host": "sohoplayhouse.com",
+          "knownOutletId": "sohoplayhouse",
+          "serpCensus": true,
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ]
+        },
+        {
+          "url": "https://www.thereviewshub.com/mark-simmons-jest-to-impress-lawrence-batley-theatre-huddersfield/",
+          "host": "thereviewshub.com",
+          "knownOutletId": "thereviewshub",
+          "serpCensus": true,
+          "priorRun": true,
+          "priorRunSource": "pending-file-date:2026-04-02",
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ]
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2026/mar/25/mark-simmons-comedian-jest-to-impress-tour-interview",
+          "host": "theguardian.com",
+          "knownOutletId": "guardian",
+          "serpCensus": true,
+          "priorRun": true,
+          "priorRunSource": "pending-file-date:2026-03-25",
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ]
+        },
         {
           "url": "https://donyc.com/events/2026/10/27/mark-simmons-jest-to-impress-tickets",
           "host": "donyc.com",
@@ -164759,51 +165048,10 @@
               "sourceUrl": null
             }
           ]
-        },
-        {
-          "url": "https://donyc.com/events/2026/10/24/mark-simmons-jest-to-impress-tickets-1zwj7rb",
-          "host": "donyc.com",
-          "knownOutletId": "donyc",
-          "serpCensus": true,
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ]
         }
       ],
       "dirOnly": [],
       "flaggedMisses": [
-        {
-          "url": "https://www.chelmsfordtheatre.co.uk/events/mark-simmons-jest-to-impress-2026",
-          "host": "chelmsfordtheatre.co.uk",
-          "knownOutletId": "chelmsfordtheatre",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "chelmsfordtheatre--genre.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.chelmsfordtheatre.co.uk/events/mark-simmons-jest-to-impress-2026"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ],
-          "serpCensus": true,
-          "reverify": true
-        },
         {
           "url": "http://www.sohoplayhouse.com/shows/mark-simmons-jest-to-impress",
           "host": "sohoplayhouse.com",
@@ -164832,6 +165080,35 @@
           ],
           "serpCensus": true,
           "reverify": true
+        },
+        {
+          "url": "https://www.chelmsfordtheatre.co.uk/events/mark-simmons-jest-to-impress-2026",
+          "host": "chelmsfordtheatre.co.uk",
+          "knownOutletId": "chelmsfordtheatre",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "chelmsfordtheatre--genre.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.chelmsfordtheatre.co.uk/events/mark-simmons-jest-to-impress-2026"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
+          "serpCensus": true,
+          "reverify": true
         }
       ],
       "citedNoUrl": [],
@@ -164847,7 +165124,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 0,
+            "results": 9,
             "accepted": 0,
             "error": null
           },
@@ -164857,7 +165134,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 0,
+            "results": 10,
             "accepted": 0,
             "error": null
           },
@@ -164867,8 +165144,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 0,
-            "accepted": 0,
+            "results": 9,
+            "accepted": 3,
             "error": null
           },
           {
@@ -164887,24 +165164,42 @@
             "page": 2,
             "geo": "us",
             "ok": true,
-            "results": 0,
-            "accepted": 0,
+            "results": 10,
+            "accepted": 2,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 0,
+        "resultCount": 5,
         "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 25,
+        "byReason": {
+          "non-review-host": 21,
+          "venue-production-page": 3,
+          "write-path-blocked": 1
+        }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 2,
       "unextractable": [],
       "weIngestBlocked": [
+        {
+          "url": "https://www.thereviewshub.com/mark-simmons-jest-to-impress-lawrence-batley-theatre-huddersfield/",
+          "host": "thereviewshub.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2026/mar/25/mark-simmons-comedian-jest-to-impress-tour-interview",
+          "host": "theguardian.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
         {
           "url": "https://www.totalntertainment.com/comedy/mark-simmons-jest-to-impress-2026-tour/",
           "host": "totalntertainment.com",
@@ -164915,19 +165210,19 @@
       ],
       "ingestResults": [
         {
-          "url": "https://donyc.com/events/2026/10/27/mark-simmons-jest-to-impress-tickets",
-          "host": "donyc.com",
-          "outletId": "donyc",
+          "url": "https://www.sohoplayhouse.com/calendar/mark-simmons-jest-to-impress",
+          "host": "sohoplayhouse.com",
+          "outletId": "sohoplayhouse",
           "provisional": false,
           "ok": false,
-          "noop": false,
+          "noop": true,
           "conflict": false,
           "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
+          "expected": true,
+          "expectedReason": "publish-date-unresolved",
           "unclassified": false,
           "zeroChar": false,
-          "reason": "⛔ Refusing write: donyc--unknown.json is a flagged/rejected record (wrongProduction/duplicateOf/rejectionReason) and the incoming critic is unresolved — a human/override flow must clear it first\n\n❌ Write-guard refused the write — nothing changed on disk (flagged-filename-collision)"
+          "reason": "jest-to-impress-off-broadway-2026: https://www.sohoplayhouse.com/calendar/mark-simmons-jest-to-impress has no readable publish date and this show has an earlier-dated citation (a prior production), so the undated page was refused rather than filed where it could be scored as this run's review. Expected rejection; if it IS this production's review, ingest it with --publish-date=YYYY-MM-DD."
         },
         {
           "url": "https://donyc.com/events/2026/10/24/mark-simmons-jest-to-impress-tickets-1zwj7rb",
@@ -164935,20 +165230,49 @@
           "outletId": "donyc",
           "provisional": false,
           "ok": false,
-          "noop": false,
+          "noop": true,
           "conflict": false,
           "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
+          "expected": true,
+          "expectedReason": "publish-date-unresolved",
           "unclassified": false,
           "zeroChar": false,
-          "reason": "⛔ Refusing write: donyc--unknown.json is a flagged/rejected record (wrongProduction/duplicateOf/rejectionReason) and the incoming critic is unresolved — a human/override flow must clear it first\n\n❌ Write-guard refused the write — nothing changed on disk (flagged-filename-collision)"
+          "reason": "jest-to-impress-off-broadway-2026: https://donyc.com/events/2026/10/24/mark-simmons-jest-to-impress-tickets-1zwj7rb has no readable publish date and this show has an earlier-dated citation (a prior production), so the undated page was refused rather than filed where it could be scored as this run's review. Expected rejection; if it IS this production's review, ingest it with --publish-date=YYYY-MM-DD."
+        },
+        {
+          "url": "https://donyc.com/events/2026/10/27/mark-simmons-jest-to-impress-tickets",
+          "host": "donyc.com",
+          "outletId": "donyc",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": true,
+          "expectedReason": "publish-date-unresolved",
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "jest-to-impress-off-broadway-2026: https://donyc.com/events/2026/10/27/mark-simmons-jest-to-impress-tickets has no readable publish date and this show has an earlier-dated citation (a prior production), so the undated page was refused rather than filed where it could be scored as this run's review. Expected rejection; if it IS this production's review, ingest it with --publish-date=YYYY-MM-DD."
         }
       ],
       "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
+          {
+            "outletId": "donyc",
+            "outlet": "donyc",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://donyc.com/events/2026/10/24/mark-simmons-jest-to-impress-tickets-1zwj7rb"
+          },
+          {
+            "outletId": "sohoplayhouse",
+            "outlet": "sohoplayhouse",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.sohoplayhouse.com/calendar/mark-simmons-jest-to-impress"
+          },
           {
             "outletId": "donyc",
             "outlet": "donyc",
@@ -164964,11 +165288,11 @@
             "url": "https://www.totalntertainment.com/comedy/mark-simmons-jest-to-impress-2026-tour/"
           },
           {
-            "outletId": "donyc",
-            "outlet": "donyc",
+            "outletId": "sohoplayhouse",
+            "outlet": "sohoplayhouse",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://donyc.com/events/2026/10/24/mark-simmons-jest-to-impress-tickets-1zwj7rb"
+            "url": "http://www.sohoplayhouse.com/shows/mark-simmons-jest-to-impress"
           },
           {
             "outletId": "chelmsfordtheatre",
@@ -164976,17 +165300,24 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.chelmsfordtheatre.co.uk/events/mark-simmons-jest-to-impress-2026"
-          },
-          {
-            "outletId": "sohoplayhouse",
-            "outlet": "sohoplayhouse",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "http://www.sohoplayhouse.com/shows/mark-simmons-jest-to-impress"
           }
         ],
         "suppressedMissing": [],
         "candidates": [
+          {
+            "url": "https://donyc.com/events/2026/10/24/mark-simmons-jest-to-impress-tickets-1zwj7rb",
+            "outletId": "donyc",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-24T18:45:20.421Z"
+          },
+          {
+            "url": "https://www.sohoplayhouse.com/calendar/mark-simmons-jest-to-impress",
+            "outletId": "sohoplayhouse",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-11-06T20:37:44.785Z"
+          },
           {
             "url": "https://donyc.com/events/2026/10/27/mark-simmons-jest-to-impress-tickets",
             "outletId": "donyc",
@@ -165002,11 +165333,11 @@
             "firstSeenAt": "2026-11-03T01:31:50.133Z"
           },
           {
-            "url": "https://donyc.com/events/2026/10/24/mark-simmons-jest-to-impress-tickets-1zwj7rb",
-            "outletId": "donyc",
+            "url": "http://www.sohoplayhouse.com/shows/mark-simmons-jest-to-impress",
+            "outletId": "sohoplayhouse",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-10-24T18:45:20.421Z"
+            "firstSeenAt": "2026-10-26T12:11:33.926Z"
           },
           {
             "url": "https://www.chelmsfordtheatre.co.uk/events/mark-simmons-jest-to-impress-2026",
@@ -165014,13 +165345,6 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-10-31T17:07:08.919Z"
-          },
-          {
-            "url": "http://www.sohoplayhouse.com/shows/mark-simmons-jest-to-impress",
-            "outletId": "sohoplayhouse",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-26T12:11:33.926Z"
           }
         ],
         "censusSchema": 4,
@@ -165028,7 +165352,7 @@
         "liveCount": 0,
         "candidateCount": 4
       },
-      "computedAt": "2026-11-05T22:39:41.205Z"
+      "computedAt": "2026-11-06T20:37:44.785Z"
     },
     {
       "showId": "jesus-christ-superstar-off-west-end-2026",
@@ -380107,7 +380431,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 5,
+            "results": 8,
             "accepted": 0,
             "error": null
           },
@@ -380117,7 +380441,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 6,
+            "results": 7,
             "accepted": 0,
             "error": null
           },
@@ -380127,8 +380451,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 9,
-            "accepted": 1,
+            "results": 0,
+            "accepted": 0,
             "error": null
           },
           {
@@ -380154,18 +380478,17 @@
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 1,
+        "resultCount": 0,
         "error": null
       },
       "candidatesRejected": {
-        "count": 35,
+        "count": 28,
         "byReason": {
-          "non-review-host": 13,
-          "ticketing-listing": 2,
-          "not-http-url": 17,
-          "census-junk-host": 1,
-          "write-path-blocked": 1,
-          "no-review-evidence": 1
+          "aggregator-internal-nav": 1,
+          "non-review-host": 22,
+          "no-review-evidence": 3,
+          "merch-store": 1,
+          "ticketing-listing": 1
         }
       },
       "dedupedVariants": [],
@@ -380208,7 +380531,7 @@
         "liveCount": 0,
         "candidateCount": 1
       },
-      "computedAt": "2026-11-06T05:00:24.054Z"
+      "computedAt": "2026-11-06T20:37:44.785Z"
     },
     {
       "showId": "the-story-olivier-west-end-2026",
@@ -384966,24 +385289,25 @@
       "category": "off-broadway",
       "previewsStartDate": "2026-10-27",
       "aggregatorArticles": [
-        "https://www.broadwayworld.com/article/Review-Roundup-WOMEN-ON-THE-VERGE-20101104",
-        "https://www.broadwayworld.com/article/Review-Roundup-Fiasco-Theaters-THE-VERGE-Opens-at-the-Public-Theater-20261105"
+        "https://www.broadwayworld.com/article/Review-Roundup-Fiasco-Theaters-THE-VERGE-Opens-at-the-Public-Theater-20261105",
+        "https://www.broadwayworld.com/article/Review-Roundup-WOMEN-ON-THE-VERGE-20101104"
       ],
       "aggregatorListedUrls": [
-        "http://www.showbiz411.com/2010/11/04/women-on-the-verge-musical-the-gazpacho-is-sour",
-        "http://www.newsday.com/entertainment/theater/women-on-the-verge-of-a-stronger-story-1.2425363",
-        "http://www.bloomberg.com/news/2010-11-05/three-divas-founder-in-pointless-women-on-the-verge-review.html",
         "https://www.nytimes.com/2026/11/05/theater/rope-the-verge-review-off-broadway-silverman.html",
         "https://culturesauce.com/verge-susan-glaspell-off-broadway-review/",
         "https://www.theatermania.com/news/review-revival-of-the-verge-aims-to-bring-susan-glaspell-back-into-the-canon_1858976/",
         "https://www.newyorktheatreguide.com/reviews/the-verge-off-broadway-review",
         "https://nystagereview.com/2026/11/05/the-verge-a-portrait-in-discontent/",
         "https://exeuntnyc.com/reviews/review-the-verge-at-the-public-theater/",
+        "http://www.showbiz411.com/2010/11/04/women-on-the-verge-musical-the-gazpacho-is-sour",
+        "http://www.newsday.com/entertainment/theater/women-on-the-verge-of-a-stronger-story-1.2425363",
+        "http://www.bloomberg.com/news/2010-11-05/three-divas-founder-in-pointless-women-on-the-verge-review.html",
+        "https://pagesonstages.com/2026/11/05/the-verge/",
         "https://www.timeout.com/newyork/theater/the-verge"
       ],
-      "dirFiles": 12,
-      "dirClean": 7,
-      "inReviewsJson": 6,
+      "dirFiles": 18,
+      "dirClean": 11,
+      "inReviewsJson": 9,
       "missing": [
         {
           "url": "http://www.showbiz411.com/2010/11/04/women-on-the-verge-musical-the-gazpacho-is-sour",
@@ -385023,9 +385347,33 @@
           ],
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.timeout.com/newyork/theater/the-verge",
+          "host": "timeout.com",
+          "knownOutletId": "timeout",
+          "serpCensus": true,
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ]
         }
       ],
       "dirOnly": [
+        {
+          "host": "thefrontrowcenter.com",
+          "count": 1
+        },
+        {
+          "host": "lightingandsoundamerica.com",
+          "count": 1
+        },
+        {
+          "host": "talkinbroadway.com",
+          "count": 1
+        },
         {
           "host": "vulture.com",
           "count": 1
@@ -385045,7 +385393,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 4,
+            "results": 0,
             "accepted": 0,
             "error": null
           },
@@ -385055,8 +385403,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 8,
-            "accepted": 1,
+            "results": 0,
+            "accepted": 0,
             "error": null
           },
           {
@@ -385065,7 +385413,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 7,
+            "results": 0,
             "accepted": 0,
             "error": null
           },
@@ -385075,7 +385423,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 9,
+            "results": 0,
             "accepted": 0,
             "error": null
           },
@@ -385085,7 +385433,7 @@
             "page": 1,
             "geo": "us",
             "ok": true,
-            "results": 10,
+            "results": 0,
             "accepted": 0,
             "error": null
           },
@@ -385095,25 +385443,23 @@
             "page": 2,
             "geo": "us",
             "ok": true,
-            "results": 10,
+            "results": 0,
             "accepted": 0,
             "error": null
           }
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 1,
+        "resultCount": 0,
         "error": null
       },
       "candidatesRejected": {
-        "count": 592,
+        "count": 569,
         "byReason": {
-          "non-review-host": 34,
-          "not-http-url": 120,
-          "aggregator-internal-nav": 423,
-          "bare-host": 1,
+          "aggregator-internal-nav": 425,
+          "not-http-url": 102,
           "aggregator-section-root": 11,
-          "roundup-page": 2,
+          "non-review-host": 30,
           "podcast-episode": 1
         }
       },
@@ -385122,15 +385468,6 @@
         {
           "url": "https://www.broadwayworld.com/article/Review-Roundup-WOMEN-ON-THE-VERGE-20101104",
           "publishDate": "2010-11-05"
-        }
-      ],
-      "nonReviewCandidates": [
-        {
-          "url": "https://www.timeout.com/newyork/theater/the-verge",
-          "host": "timeout.com",
-          "knownOutletId": "timeout",
-          "nonReviewVerdict": "timeout-listing-blurb",
-          "nonReviewDetail": "unauthored-and-pre-opening"
         }
       ],
       "automatedExcludedListed": 0,
@@ -385158,11 +385495,35 @@
           "censusGateOn": true
         }
       ],
-      "ingestResults": [],
+      "ingestResults": [
+        {
+          "url": "https://www.timeout.com/newyork/theater/the-verge",
+          "host": "timeout.com",
+          "outletId": "timeout",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": true,
+          "expectedReason": "timeout-listing-capsule",
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "the-verge-off-broadway-2026: https://www.timeout.com/newyork/theater/the-verge is a Time Out listing capsule, not a review (lib/timeout-capsule.js). Expected rejection; no action needed unless Time Out later publishes a full review at this URL, which a later audit will then ingest."
+        }
+      ],
       "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "complete",
-        "missing": [],
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "timeout",
+            "outlet": "timeout",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.timeout.com/newyork/theater/the-verge"
+          }
+        ],
         "suppressedMissing": [],
         "candidates": [
           {
@@ -385202,24 +385563,25 @@
             "firstSeenAt": "2026-11-06T05:00:24.054Z"
           },
           {
-            "url": "https://www.timeout.com/newyork/theater/the-verge",
-            "outletId": "timeout.com",
+            "url": "https://pagesonstages.com/2026/11/05/the-verge/",
+            "outletId": "pagesonstages.com",
             "state": "live",
+            "firstSeenAt": "2026-11-06T20:37:44.785Z"
+          },
+          {
+            "url": "https://www.timeout.com/newyork/theater/the-verge",
+            "outletId": "timeout",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-11-05T03:08:07.157Z"
           }
         ],
         "censusSchema": 4,
-        "excluded": [
-          {
-            "url": "https://www.timeout.com/newyork/theater/the-verge",
-            "host": "timeout.com",
-            "reason": "timeout-listing-blurb"
-          }
-        ],
+        "excluded": [],
         "liveCount": 7,
-        "candidateCount": 7
+        "candidateCount": 8
       },
-      "computedAt": "2026-11-06T05:00:24.054Z"
+      "computedAt": "2026-11-06T20:37:44.785Z"
     },
     {
       "showId": "the-very-hungry-caterpillar-interactive-show-off-broadway-2026",
@@ -402870,7 +403232,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 3,
+            "results": 4,
             "accepted": 0,
             "error": null
           },
@@ -402880,7 +403242,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 6,
+            "results": 5,
             "accepted": 0,
             "error": null
           },
@@ -402921,16 +403283,16 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 32,
+        "count": 24,
         "byReason": {
+          "aggregator-internal-nav": 9,
           "non-review-host": 7,
-          "not-http-url": 12,
-          "census-junk-host": 1,
+          "non-review-path": 1,
           "no-review-evidence": 2,
-          "aggregator-internal-nav": 5,
-          "non-review-path": 2,
-          "news-roundup-site": 1,
-          "ticketing-reseller": 2
+          "write-path-blocked": 1,
+          "bare-host": 1,
+          "ticketing-reseller": 2,
+          "static-asset": 1
         }
       },
       "dedupedVariants": [],
@@ -402952,7 +403314,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-11-06T05:00:24.054Z"
+      "computedAt": "2026-11-06T20:37:44.785Z"
     },
     {
       "showId": "twelfth-night-crucible-regional-2026",
@@ -424020,23 +424382,25 @@
     }
   ],
   "staleness": {
-    "at": "2026-11-06T19:17:50.121Z",
+    "at": "2026-11-06T20:37:44.784Z",
     "reserveEvery": 4,
     "reservedAttempted": [
-      "medea-off-broadway-2026"
+      "jest-to-impress-off-broadway-2026"
     ],
     "catalogueReserveEvery": 8,
-    "catalogueAttempted": [],
+    "catalogueAttempted": [
+      "always-patsy-cline-regional-2025"
+    ],
     "neverAuditedDueAtStart": 631,
     "oldestDueRowAtStart": {
       "showId": "this-is-my-favorite-song-off-broadway-2024",
       "computedAt": "2026-10-23T14:07:48.228Z",
-      "ageHours": 340.8
+      "ageHours": 342.2
     },
     "oldestDueRowAfterRun": {
       "showId": "this-is-my-favorite-song-off-broadway-2024",
       "computedAt": "2026-10-23T14:07:48.228Z",
-      "ageHours": 341.2
+      "ageHours": 342.5
     }
   }
 }

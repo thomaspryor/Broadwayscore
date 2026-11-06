@@ -628,20 +628,6 @@
     "queuedAt": "2026-11-06T19:17:50.784Z"
   },
   {
-    "conditionKey": "review-gap:opening-window:jest-to-impress-off-broadway-2026",
-    "title": "Review gap — \"Jest to Impress\" missing 2 cited review(s)",
-    "description": "Jest to Impress (jest-to-impress-off-broadway-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=jest-to-impress-off-broadway-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-06T19:17:50.840Z"
-  },
-  {
     "conditionKey": "review-gap:opening-window:lanny-bristol-old-vic-regional-2026",
     "title": "Review gap — \"Lanny\" missing 1 cited review(s)",
     "description": "Lanny (lanny-bristol-old-vic-regional-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=lanny-bristol-old-vic-regional-2026 --checkpoint --ingest-missing",
@@ -696,20 +682,6 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-06T19:17:51.092Z"
-  },
-  {
-    "conditionKey": "t1-gaps:needs-manual-recovery",
-    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (Lincoln in the Bardo (washpost)). Checked 2026-11-06.",
-    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-06T19:19:33.696Z"
   },
   {
     "conditionKey": "live-data-test:tests/unit/review-pullquotes-live-data.test.mjs::no review missing a pullQuote has a recoverable excerpt sitting unused in review-texts",
@@ -814,6 +786,34 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-06T19:36:26.969Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:king-lear-off-broadway-2026",
+    "title": "Review gap — \"King Lear\" missing 2 cited review(s)",
+    "description": "King Lear (king-lear-off-broadway-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=king-lear-off-broadway-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-06T20:37:45.348Z"
+  },
+  {
+    "conditionKey": "t1-gaps:needs-manual-recovery",
+    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (Lincoln in the Bardo (washpost)). Checked 2026-11-06.",
+    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-06T20:37:53.420Z"
   },
   {
     "conditionKey": "ob-venue-go-live:standing-on-the-corner-off-broadway-2026",
