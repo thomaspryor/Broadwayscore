@@ -41,27 +41,36 @@ test('runsAt: a run is active between its start and its last update, unseen befo
 });
 
 // BRO-6858 item 6: projected first-live and coverage-2h under the 5-min first-2h sleep, from the recorded runs.
-test('projection, A Few Good Men 10-29: first-live 100 -> 90 min, coverage-2h 1/14 -> 2/14 (the ~60-min poller pass dominates)', () => {
+test('projection, A Few Good Men 10-29: reviews ~10 min sooner, but first-live (deploy outage until +99) and coverage-2h do not move', () => {
   const { record, runs } = night('a-few-good-men-2026', '2026-10-29');
   const p = projectNight({ record, runs, normOutlet: norm });
-  assert.deepEqual(p.firstLive, { recordedMin: 100, projectedMin: 90 });
+  assert.deepEqual(p.firstLive, { recordedMin: 100, projectedMin: 100 });
+  assert.equal(p.coverage2h.projectedCovered, p.coverage2h.recordedCovered);
   assert.equal(p.coverage2h.recordedCovered, 1);
-  assert.equal(p.coverage2h.projectedCovered, 2);
-  assert.deepEqual(p.coverage2h.newlyLive, ['nysr']);
+  const nyt = p.shiftedReviews.find((r) => r.outletId === 'nytimes');
+  assert.deepEqual(nyt, { outletId: 'nytimes', liveMin: 171, projectedMin: 161 });
+  // Time Out was found at +35 but the lane only saw it published at +62: no proof it existed earlier, no gain.
+  assert.ok(!p.shiftedReviews.some((r) => r.outletId === 'timeout'));
 });
 
-test('projection, Imaginary Invalid 10-22: already inside both bars, unchanged', () => {
+test('projection, Imaginary Invalid 10-22: first-live counts night reviews only (not the Oct 5 preview review); unchanged', () => {
   const { record, runs } = night('the-imaginary-invalid-2026', '2026-10-22');
   const p = projectNight({ record, runs, normOutlet: norm });
-  assert.deepEqual(p.firstLive, { recordedMin: 22, projectedMin: 22 });
+  assert.deepEqual(p.firstLive, { recordedMin: 87, projectedMin: 87 });
   assert.equal(p.coverage2h.projected, 1);
 });
 
-test('chainShifts: only a sleep that starts inside [embargo, +2h] is shortened; the chain inherits it', () => {
+test('projection is Broadway only', () => {
+  const { record, runs } = night('the-imaginary-invalid-2026', '2026-10-22');
+  assert.match(projectNight({ record: { ...record, market: 'west-end' }, runs, normOutlet: norm }).skipped, /Broadway only/);
+});
+
+test('chainShifts: only a sleep that starts inside [embargo, +2h] is shortened; the chain inherits it; one follower each', () => {
   const E = Date.parse('2026-11-09T03:00:00Z');
   const at = (m) => new Date(E + m * 60000).toISOString();
   const run = (s, e) => ({ workflow: 'opening-night-poller.yml', status: 'completed', conclusion: 'success', startedAt: at(s), updatedAt: at(e) });
-  // -80..-20 then sleep (starts before the embargo: unchanged), 0..60, sleep inside window, 75..135, sleep after +2h, 150..
-  const shifts = chainShifts([run(-80, -20), run(-5, 60), run(75, 135), run(150, 210)], E).map((r) => r.shift);
-  assert.deepEqual(shifts, [0, 0, 10, 10]);
+  // -80..-20 then sleep (starts before the embargo: unchanged), -5..60, sleep inside window, 75..135, sleep after +2h, 150..;
+  // 152.. also starts 17 min after 135 ended, but 135 already has its follower.
+  const shifts = chainShifts([run(-80, -20), run(-5, 60), run(75, 135), run(150, 210), run(152, 200)], E).map((r) => r.shift);
+  assert.deepEqual(shifts, [0, 0, 10, 10, 0]);
 });
