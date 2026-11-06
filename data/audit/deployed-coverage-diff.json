@@ -1,96 +1,13 @@
 {
-  "generatedAt": "2026-11-06T20:38:18.460Z",
+  "generatedAt": "2026-11-06T21:34:03.545Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 322,
-  "clean": 317,
-  "defective": 5,
-  "byType": {
-    "score-drift": 5
-  },
-  "shows": [
-    {
-      "showId": "the-unbelievers-off-broadway-2026",
-      "title": "The Unbelievers",
-      "openingDate": "2026-11-05",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 72.05 vs local 71.93 (Δ0.12)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 12,
-      "deployedCount": 12,
-      "firstDefectAt": "2026-11-06T20:38:09.812Z"
-    },
-    {
-      "showId": "the-verge-off-broadway-2026",
-      "title": "The Verge",
-      "openingDate": "2026-11-05",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 61.66 vs local 61.8 (Δ0.14)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 9,
-      "deployedCount": 9,
-      "firstDefectAt": "2026-11-06T20:38:09.812Z"
-    },
-    {
-      "showId": "222-a-ghost-story-off-broadway-2026",
-      "title": "2:22 - A Ghost Story",
-      "openingDate": "2026-11-05",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 63.3 vs local 63.23 (Δ0.07)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 9,
-      "deployedCount": 9,
-      "firstDefectAt": "2026-11-06T20:38:09.812Z"
-    },
-    {
-      "showId": "speculations-off-west-end-2026",
-      "title": "Speculations",
-      "openingDate": "2026-11-05",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 48.68 vs local 48.58 (Δ0.1)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 23,
-      "deployedCount": 24,
-      "firstDefectAt": "2026-11-06T20:38:09.812Z"
-    },
-    {
-      "showId": "the-imaginary-invalid-2026",
-      "title": "The Imaginary Invalid",
-      "openingDate": "2026-10-22",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 67.89 vs local 67.45 (Δ0.44)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 28,
-      "deployedCount": 28,
-      "firstDefectAt": "2026-11-06T20:38:09.812Z"
-    }
-  ],
+  "checked": 323,
+  "clean": 323,
+  "defective": 0,
+  "byType": {},
+  "shows": [],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-06T20:38:18.820Z",
+  "generatedAt": "2026-11-06T21:34:03.900Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -72,6 +72,11 @@
       "id": "king-lear-off-broadway-2026",
       "title": "King Lear",
       "openingDate": "2026-11-05"
+    },
+    {
+      "id": "adirondack-chair-circle-regional-2026",
+      "title": "Adirondack Chair Circle",
+      "openingDate": "2026-11-02"
     }
   ],
   "skipped": [
@@ -84,12 +89,8 @@
       "reason": "no data/review-texts directory for this show"
     }
   ],
-  "feedsChecked": 85,
+  "feedsChecked": 84,
   "feedsFailed": [
-    {
-      "outletId": "theater-life",
-      "error": "Timeout fetching https://theaterlife.com/feed"
-    },
     {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
@@ -113,14 +114,10 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
-    },
-    {
-      "outletId": "new-york-sun",
-      "error": "HTTP 429 for https://www.nysun.com/section/arts"
     }
   ],
-  "itemsScanned": 830,
-  "matchedGaps": 6,
+  "itemsScanned": 837,
+  "matchedGaps": 7,
   "possibleGaps": 4,
   "gaps": [
     {
@@ -131,6 +128,15 @@
       "url": "https://rhombusrota.co.uk/2026/11/04/222-a-ghost-story-by-dads-theatre-company-at-upwell-village-hall-review/?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=222-a-ghost-story-by-dads-theatre-company-at-upwell-village-hall-review",
       "headline": "2:22 A Ghost Story by DADS Theatre Company at Upwell Village Hall Review",
       "publishDate": "2026-11-04"
+    },
+    {
+      "showId": "adirondack-chair-circle-regional-2026",
+      "title": "Adirondack Chair Circle",
+      "level": "matched",
+      "outletId": "one-minute-critic",
+      "url": "https://1minutecritic.com/adirondack-chair-circle-steppenwolf-review/",
+      "headline": "The moms around this fire pit would like a word with the school librarian",
+      "publishDate": "2026-11-03"
     },
     {
       "showId": "the-blue-violinist-over-west-end-avenue-off-broadway-2026",
