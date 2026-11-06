@@ -1,25 +1,25 @@
 {
-  "runDate": "2026-11-06T19:42:55.989Z",
+  "runDate": "2026-11-06T20:18:51.988Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 1000,
+    "maxReviews": 60,
     "priority": "all",
-    "showFilter": "speculations-off-west-end-2026",
-    "aggressive": false,
+    "showFilter": "the-verge-off-broadway-2026",
+    "aggressive": true,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 1,
-    "failed": 3,
+    "processed": 3,
+    "failed": 0,
     "skipped": 0,
-    "successRate": "25.0%"
+    "successRate": "100.0%"
   },
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 2,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 2,
     "directCookies": 0,
     "scrapingdog": 0,
     "scrapingbee": 0,
@@ -28,36 +28,36 @@
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 3,
+    "tier1Attempts": 2,
     "tier1Success": 2,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 0,
-    "tier1_5Success": 0,
-    "tier1_9Attempts": 1,
+    "tier1_5Attempts": 1,
+    "tier1_5Success": 1,
+    "tier1_9Attempts": 0,
     "tier1_9Success": 0,
     "tier2Attempts": 1,
     "tier2Success": 0,
-    "tier3Attempts": 1,
+    "tier3Attempts": 0,
     "tier3Success": 0,
-    "tier3_6Attempts": 1,
+    "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 2,
+    "tier4Attempts": 1,
     "tier4Success": 0,
-    "totalFailed": 3,
-    "scrapingBeePageCredits": 1,
+    "totalFailed": 0,
+    "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 0,
-    "browserbaseMinutesUsed": 0,
+    "browserbaseSessionsUsed": 1,
+    "browserbaseMinutesUsed": 0.2,
     "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 1,
-    "failed": 3,
+    "processed": 3,
+    "failed": 0,
     "shows": [
-      "speculations-off-west-end-2026"
+      "the-verge-off-broadway-2026"
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
@@ -66,29 +66,29 @@
     }
   },
   "processed": [
-    "speculations-off-west-end-2026/theatre-vibe--lizzie-loveridge.json"
+    "the-verge-off-broadway-2026/nytimes--helen-shaw.json",
+    "the-verge-off-broadway-2026/front-row-center--unknown.json",
+    "the-verge-off-broadway-2026/lighting-and-sound-america--unknown.json"
   ],
-  "failed": [
-    "speculations-off-west-end-2026/guardian--unknown.json",
-    "speculations-off-west-end-2026/artsdesk--unknown.json",
-    "speculations-off-west-end-2026/london-unattached--unknown.json"
-  ],
+  "failed": [],
   "cumulativeResumedState": {
     "processed": [
-      "speculations-off-west-end-2026/theatre-vibe--lizzie-loveridge.json"
+      "the-verge-off-broadway-2026/nytimes--helen-shaw.json",
+      "the-verge-off-broadway-2026/front-row-center--unknown.json",
+      "the-verge-off-broadway-2026/lighting-and-sound-america--unknown.json"
     ],
-    "failed": [
-      "speculations-off-west-end-2026/guardian--unknown.json",
-      "speculations-off-west-end-2026/artsdesk--unknown.json",
-      "speculations-off-west-end-2026/london-unattached--unknown.json"
-    ]
+    "failed": []
   },
   "tierDetails": {
     "playwright": [
-      "speculations-off-west-end-2026/theatre-vibe--lizzie-loveridge.json"
+      "the-verge-off-broadway-2026/front-row-center--unknown.json",
+      "the-verge-off-broadway-2026/lighting-and-sound-america--unknown.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/the-verge-off-broadway-2026/nytimes--helen-shaw.json",
+      "the-verge-off-broadway-2026/nytimes--helen-shaw.json"
+    ],
     "directCookies": [],
     "scrapingdog": [],
     "scrapingbee": [],
@@ -96,14 +96,6 @@
     "archiveToday": [],
     "archive": []
   },
-  "failuresByOutlet": {
-    "London Unattached": {
-      "count": 1,
-      "domain": "london-unattached.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    }
-  },
+  "failuresByOutlet": {},
   "urlDiscoveries": []
 }
