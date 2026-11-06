@@ -88,3 +88,16 @@ test('needsCollection / showsNeedingCollection pick stubs without text, skip sco
   assert.deepEqual(ow.showsNeedingCollection(win, by, 2), ['b', 'a']);
   assert.deepEqual(ow.showsNeedingCollection([], by), []);
 });
+
+test('retry bound: collector-skipped records and ledger-gated failures are not pending', () => {
+  const stub = { reviewId: 'r1', url: 'https://x.com/a', contentTier: 'stub' };
+  for (const bad of [{ fetchDiscoveryAbandoned: true }, { fabricatedEntry: true }, { incompleteReason: 'permanently_unavailable' }, { incompleteReason: 'multi_show_section_not_found' }]) {
+    assert.equal(ow.needsCollection({ ...stub, ...bad }), false);
+  }
+  const gate = (show, r, entry) => ({ shouldRetry: entry.failureCount < 3 });
+  const ledgerOf = (n) => ({ r1: { reviewId: 'r1', failureCount: n } });
+  const win = [{ id: 'a' }];
+  assert.deepEqual(ow.showsNeedingCollection(win, { a: [stub] }, 3, { ledger: ledgerOf(1), shouldRetryFetch: gate }), ['a']);
+  assert.deepEqual(ow.showsNeedingCollection(win, { a: [stub] }, 3, { ledger: ledgerOf(3), shouldRetryFetch: gate }), []);
+  assert.deepEqual(ow.showsNeedingCollection(win, { a: [stub] }, 3, { ledger: {}, shouldRetryFetch: gate }), ['a']);
+});

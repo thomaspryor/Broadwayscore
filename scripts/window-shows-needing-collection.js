@@ -9,6 +9,7 @@
 const fs = require('fs');
 const path = require('path');
 const ow = require('./lib/outlet-opening-window');
+const { shouldRetryFetch } = require('./lib/review-guards');
 
 const i = process.argv.indexOf('--limit');
 const limit = i > -1 ? parseInt(process.argv[i + 1], 10) || 3 : 3;
@@ -24,4 +25,8 @@ for (const s of win) {
     .map((f) => { try { return JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8')); } catch { return null; } })
     .filter(Boolean);
 }
-console.log(ow.showsNeedingCollection(win, byShow, limit).join(','));
+const ledger = {};
+try {
+  for (const e of JSON.parse(fs.readFileSync(path.join(root, 'review-texts', 'failed-fetches.json'), 'utf8'))) if (e && e.reviewId) ledger[e.reviewId] = e;
+} catch { /* no ledger yet: nothing has failed */ }
+console.log(ow.showsNeedingCollection(win, byShow, limit, { ledger, shouldRetryFetch }).join(','));

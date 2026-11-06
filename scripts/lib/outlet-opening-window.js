@@ -94,19 +94,39 @@ function projectMonthlyCost({ paidPerRun, activeRunsPerMonth, usdPerCall = WORST
   return { calls, usd: Math.round(calls * usdPerCall * 100) / 100 };
 }
 
-/** A review-text record that still needs its text collected (mirrors collect-we-ob-reviews' remaining count). */
-function needsCollection(r) {
+const MULTI_SHOW_NOT_FOUND = 'multi_show_section_not_found';
+
+/**
+ * A review-text record that still needs its text collected (mirrors collect-we-ob-reviews'
+ * remaining count) AND that the collector would actually attempt. A show_filter run bypasses the
+ * collector's own retry gate for opening-window shows, so the gate is applied here instead
+ * (shouldRetryFetch: 6h cooldown + 3/5-try limit from the failed-fetches ledger), which bounds
+ * the paid re-fetches of a dead URL. ctx = { show, ledgerEntry, shouldRetryFetch }.
+ */
+function needsCollection(r, ctx = {}) {
   if (!r || typeof r !== 'object') return false;
   if (r.assignedScore || r.duplicateOf || r.wrongShow || r.wrongProduction || r.wrongAttribution
       || r.contentTier === 'invalid' || r.isRoundupArticle || r.rejectionReason) return false;
+  if (r.fetchDiscoveryAbandoned === true || r.fabricatedEntry === true) return false;
+  if (r.incompleteReason === 'permanently_unavailable' || r.incompleteReason === MULTI_SHOW_NOT_FOUND) return false;
   const hasText = r.fullText || r.bwwExcerpt || r.dtliExcerpt || r.showScoreExcerpt || r.nycTheatreExcerpt || r.lboRoundupExcerpt;
-  return !hasText && typeof r.url === 'string' && r.url.startsWith('http');
+  if (hasText || typeof r.url !== 'string' || !r.url.startsWith('http')) return false;
+  if (ctx.ledgerEntry && typeof ctx.shouldRetryFetch === 'function') {
+    return !!ctx.shouldRetryFetch(ctx.show || null, r, ctx.ledgerEntry).shouldRetry;
+  }
+  return true;
 }
 
-/** Window show ids with uncollected records, most pending first, at most `limit`. recordsByShow: {showId: [record]} */
-function showsNeedingCollection(windowShows, recordsByShow, limit = 3) {
+/**
+ * Window show ids with collectable records, most pending first, at most `limit`.
+ * recordsByShow: {showId: [record]}; ledger: {reviewId: failed-fetches entry}.
+ */
+function showsNeedingCollection(windowShows, recordsByShow, limit = 3, { ledger = {}, shouldRetryFetch } = {}) {
   return windowShows
-    .map((s) => ({ id: s.id, n: (recordsByShow[s.id] || []).filter(needsCollection).length }))
+    .map((s) => ({
+      id: s.id,
+      n: (recordsByShow[s.id] || []).filter((r) => needsCollection(r, { show: s, ledgerEntry: r && ledger[r.reviewId], shouldRetryFetch })).length,
+    }))
     .filter((x) => x.n > 0)
     .sort((a, b) => b.n - a.n || a.id.localeCompare(b.id))
     .slice(0, limit)
