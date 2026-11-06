@@ -103,7 +103,7 @@ jobs:
           message: 'data: outlet listing poller (opening window) - stub discovery'
 
       - name: Collect and score in-window shows that have uncollected stubs
-        if: success() && github.event.inputs.dry_run != 'true' && vars.OPENING_WINDOW_DISABLED != '1' && vars.OPENING_WINDOW_DISABLED != 'true'
+        if: success() && github.event.inputs.dry_run != 'true' && !contains(fromJSON('["1","true","TRUE","True"]'), vars.OPENING_WINDOW_DISABLED)
         env:
           GH_TOKEN: ${{ github.token }}
         run: |

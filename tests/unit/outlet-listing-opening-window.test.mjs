@@ -101,3 +101,27 @@ test('retry bound: collector-skipped records and ledger-gated failures are not p
   assert.deepEqual(ow.showsNeedingCollection(win, { a: [stub] }, 3, { ledger: ledgerOf(3), shouldRetryFetch: gate }), []);
   assert.deepEqual(ow.showsNeedingCollection(win, { a: [stub] }, 3, { ledger: {}, shouldRetryFetch: gate }), ['a']);
 });
+
+// Review finding: review files carry no reviewId; the collector keys the ledger by "<showId>/<file>".
+test('window-shows-needing-collection CLI honors the ledger with the real "<show>/<file>" key', async () => {
+  const fs = await import('node:fs');
+  const os = await import('node:os');
+  const path = await import('node:path');
+  const { execFileSync } = await import('node:child_process');
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'ow-cli-'));
+  const open = new Date().toISOString().slice(0, 10);
+  fs.writeFileSync(path.join(root, 'shows.json'), JSON.stringify([
+    { id: 'dead-show', category: 'off-broadway', openingDate: open },
+    { id: 'fresh-show', category: 'off-broadway', openingDate: open },
+  ]));
+  for (const id of ['dead-show', 'fresh-show']) {
+    fs.mkdirSync(path.join(root, 'review-texts', id), { recursive: true });
+    fs.writeFileSync(path.join(root, 'review-texts', id, 'outlet--critic.json'), JSON.stringify({ showId: id, url: 'https://example.com/a' }));
+  }
+  const recent = new Date().toISOString();
+  fs.writeFileSync(path.join(root, 'review-texts', 'failed-fetches.json'), JSON.stringify([
+    { reviewId: 'dead-show/outlet--critic.json', showId: 'dead-show', url: 'https://example.com/a', failureReason: 'http_404', failureCount: 9, lastFailedAt: recent, firstFailedAt: recent },
+  ]));
+  const out = execFileSync('node', ['scripts/window-shows-needing-collection.js'], { env: { ...process.env, WINDOW_DATA_ROOT: root } }).toString().trim();
+  assert.equal(out, 'fresh-show');
+});

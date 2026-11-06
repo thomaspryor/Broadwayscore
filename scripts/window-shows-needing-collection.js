@@ -13,7 +13,7 @@ const { shouldRetryFetch } = require('./lib/review-guards');
 
 const i = process.argv.indexOf('--limit');
 const limit = i > -1 ? parseInt(process.argv[i + 1], 10) || 3 : 3;
-const root = path.join(__dirname, '..', 'data');
+const root = process.env.WINDOW_DATA_ROOT || path.join(__dirname, '..', 'data');
 const raw = JSON.parse(fs.readFileSync(path.join(root, 'shows.json'), 'utf8'));
 const win = ow.selectWindowShows(Array.isArray(raw) ? raw : raw.shows);
 const byShow = {};
@@ -22,7 +22,7 @@ for (const s of win) {
   if (!fs.existsSync(dir)) continue;
   byShow[s.id] = fs.readdirSync(dir)
     .filter((f) => f.endsWith('.json') && !f.startsWith('_') && f !== 'failed-fetches.json')
-    .map((f) => { try { return JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8')); } catch { return null; } })
+    .map((f) => { try { const r = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8')); if (r && typeof r === 'object') r.reviewId = r.reviewId || `${s.id}/${f}`; return r; } catch { return null; } })
     .filter(Boolean);
 }
 const ledger = {};
