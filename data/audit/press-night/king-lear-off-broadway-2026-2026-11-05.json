@@ -1,0 +1,122 @@
+{
+  "schemaVersion": 1,
+  "showId": "king-lear-off-broadway-2026",
+  "night": "2026-11-05",
+  "market": "off-broadway",
+  "embargoAt": "2026-11-06T03:00:00.000Z",
+  "embargoSource": "market-default",
+  "probe": {
+    "startedAt": "2026-11-06T02:30:05.584Z",
+    "endedAt": null,
+    "intervalMin": 5,
+    "samples": 30,
+    "failedSamples": 0,
+    "lastSampleAt": "2026-11-06T04:55:11.238Z",
+    "lastOkSampleAt": "2026-11-06T04:55:11.238Z"
+  },
+  "firstLiveAt": "2026-11-06T02:30:05.584Z",
+  "firstLiveBaseline": true,
+  "lastLiveAt": "2026-11-06T02:30:05.584Z",
+  "liveCount": 1,
+  "liveCountAt": {
+    "1h": 1,
+    "2h": null,
+    "6h": null
+  },
+  "liveCountSampleAt": {
+    "1h": "2026-11-06T04:00:09.104Z",
+    "2h": null,
+    "6h": null
+  },
+  "firstOutletPublishAt": {
+    "at": null,
+    "precision": "unknown",
+    "source": "prod-rv-publishDate",
+    "tierScope": null
+  },
+  "perReview": [
+    {
+      "key": "chicago reader|amanda finn",
+      "outlet": "Chicago Reader",
+      "critic": "Amanda Finn",
+      "tier": 3,
+      "publishAt": "2026-10-28",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-06T02:30:05.584Z",
+      "prevOkSampleAt": null,
+      "baseline": true,
+      "liveNow": true
+    }
+  ],
+  "dropped": [],
+  "reference": {
+    "2h": {
+      "status": "no-census-yet",
+      "source": null,
+      "count": 0,
+      "covered": null,
+      "coverage": null,
+      "missing": [],
+      "liveCount": 1,
+      "fetchedAt": "2026-11-06T05:00:21.553Z",
+      "censusNote": "no BWW roundup found"
+    }
+  },
+  "manualActions": [],
+  "publishedBy": {
+    "path": "regular",
+    "method": "lane-only-decision",
+    "checks": [
+      {
+        "at": "2026-11-06T05:00:21.640Z",
+        "label": "2h",
+        "standDown": false,
+        "reason": "market not lane-only"
+      }
+    ]
+  },
+  "fileState": {
+    "capturedAt": "2026-11-06T05:00:24.248Z",
+    "files": [
+      {
+        "file": "chicago-reader--amanda-finn.json",
+        "outletId": "chicago-reader",
+        "outlet": "Chicago Reader",
+        "critic": "Amanda Finn",
+        "firstSeenAt": "2026-11-05T11:47:50.821Z",
+        "scoredAt": "2026-11-05T11:54:20.123Z",
+        "publishDate": "2026-10-28",
+        "url": "chicagoreader.com/performing-arts/theater/theater-review/king-lear-babes-with-blades",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "ctxlivetheatre--william-shakespeare.json",
+        "outletId": "ctxlivetheatre",
+        "outlet": "CTX Live Theatre",
+        "critic": "William Shakespeare",
+        "firstSeenAt": "2026-11-05T03:04:26.555Z",
+        "scoredAt": "2026-11-05T03:15:20.976Z",
+        "publishDate": null,
+        "url": "ctxlivetheatre.com/reviews/review-the-history-of-king-lear-nahum-tate-adap",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "new-city-stage--tristan-bruns.json",
+        "outletId": "new-city-stage",
+        "outlet": "New City Stage",
+        "critic": "Tristan Bruns",
+        "firstSeenAt": "2026-11-05T18:40:48.473Z",
+        "scoredAt": null,
+        "publishDate": "2026-10-30",
+        "url": "newcitystage.com/2026/10/30/thou-art-mad-to-miss-king-lear",
+        "includable": false,
+        "reason": "rejectionReason",
+        "syndicatedUnder": null
+      }
+    ]
+  }
+}
