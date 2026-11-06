@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-06T11:57:10.420Z",
+  "timestamp": "2026-11-06T13:21:27.578Z",
   "stats": {
-    "totalReviews": 80249,
-    "alreadyFlagged": 21988,
+    "totalReviews": 80250,
+    "alreadyFlagged": 21989,
     "dateGuardCatches": 216,
-    "directorMismatch": 3515,
+    "directorMismatch": 3516,
     "tvFilmSignals": 2284,
     "londonSignals": 3619,
     "offBroadwaySignals": 743,
     "yearMismatch": 361,
-    "noPublishDate": 8483
+    "noPublishDate": 8481
   },
   "findings": [
     {
@@ -7108,7 +7108,22 @@
     },
     {
       "showId": "back-to-the-future-tour-2024",
+      "file": "hotchka--chuck-duncan.json",
+      "score": 81,
+      "publishDate": "2024-07-26",
+      "url": "https://hotchka.com/back-to-the-future-the-musical-tour-review-washington-dc-kennedy-center",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"john rando\" from back-to-the-future-2023"
+        }
+      ]
+    },
+    {
+      "showId": "back-to-the-future-tour-2024",
       "file": "hotchka--unknown.json",
+      "score": 81,
       "publishDate": "2024-07-26",
       "url": "https://hotchka.com/back-to-the-future-the-musical-tour-review-washington-dc-kennedy-center",
       "findings": [
@@ -45632,7 +45647,7 @@
     {
       "showId": "not-ready-for-prime-time-off-broadway-2025",
       "file": "theatermania--zachary-stewart.json",
-      "score": 42,
+      "score": 48,
       "publishDate": "2025-10-20",
       "url": "https://www.theatermania.com/news/review-not-ready-for-prime-time-an-expensive-and-dull-drama-about-snl_1808362/",
       "findings": [
@@ -80216,6 +80231,7 @@
     {
       "showId": "waitress-tour-2026",
       "file": "manchestertheatres--robert-jones.json",
+      "score": 91,
       "publishDate": "2026-10-28",
       "url": "https://www.manchestertheatres.com/news/review-_-waitress-is-honest,-authentic,-heartfelt,-and-baked-with-real-care",
       "findings": [
@@ -83518,6 +83534,7 @@
     {
       "showId": "wicked-tour-2021",
       "file": "next-magazine--william-molls.json",
+      "score": 67,
       "publishDate": "2024-06-08",
       "url": "https://nextmag.ca/review-wicked-returns-to-mirvish-spectacular-as-ever/",
       "findings": [
@@ -101809,7 +101826,7 @@
     {
       "showId": "hamlet-west-end-2025",
       "file": "financialtimes--sarah-hemming.json",
-      "score": 63,
+      "score": 56,
       "publishDate": "2025-10-03",
       "url": "https://www.ft.com/content/29ea5370-383c-436b-9888-b6705571687b?syn-25a6b1a6=1",
       "findings": [
@@ -101837,7 +101854,7 @@
     {
       "showId": "hamlet-west-end-2025",
       "file": "liamodell--liam-odell.json",
-      "score": 62,
+      "score": 58,
       "publishDate": "2025-10-05",
       "url": "https://liamodell.com/2025/10/05/hamlet-review-national-theatre-2025-hiran-abeysekera-alistair-petrie-robert-hastie-francesca-mills-running-time/",
       "findings": [
@@ -101851,7 +101868,7 @@
     {
       "showId": "hamlet-west-end-2025",
       "file": "london-theatre--anya-ryan.json",
-      "score": 64,
+      "score": 56,
       "publishDate": "2025-10-03",
       "url": null,
       "findings": [
@@ -104735,7 +104752,7 @@
     {
       "showId": "ilford-boy-off-west-end-2026",
       "file": "thereviewshub--maryam-philpott.json",
-      "score": 79,
+      "score": 78,
       "publishDate": "2026-10-22",
       "url": "https://www.thereviewshub.com/ilford-boy-donmar-warehouse-london/",
       "findings": [
@@ -111187,7 +111204,7 @@
     {
       "showId": "mary-page-marlowe-west-end-2025",
       "file": "artsdesk--matt-wolf.json",
-      "score": 89,
+      "score": 82,
       "publishDate": "2025-10-24",
       "url": "https://theartsdesk.com/theatre/mary-page-marlowe-old-vic-review-starry-portrait-splintered-life",
       "findings": [
@@ -111242,7 +111259,7 @@
     {
       "showId": "mary-page-marlowe-west-end-2025",
       "file": "independent--alice-saville.json",
-      "score": 64,
+      "score": 61,
       "publishDate": "2025-10-09",
       "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/mary-page-marlowe-review-susan-sarandon-andrea-riseborough-b2842339.html",
       "findings": [
@@ -127552,7 +127569,7 @@
     },
     {
       "showId": "the-father-west-end-2015",
-      "file": "guardian--unknown.json",
+      "file": "guardian--michael-billington.json",
       "score": 78,
       "publishDate": "2015-10-06",
       "url": "https://www.theguardian.com/stage/2015/oct/06/the-father-review-alzheimer-s-kenneth-cranham-claire-skinner-florian-zeller",
@@ -127888,7 +127905,7 @@
     },
     {
       "showId": "the-flick-west-end-2016",
-      "file": "guardian--unknown.json",
+      "file": "guardian--lyn-gardner.json",
       "score": 90,
       "publishDate": "2016-05-04",
       "url": "https://www.theguardian.com/stage/theatreblog/2016/may/04/the-flick-annie-bakers-play-about-cinema-is-really-a-love-letter-to-theatre",
