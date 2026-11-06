@@ -1,21 +1,21 @@
 {
-  "generatedAt": "2026-11-06T14:48:30.602Z",
+  "generatedAt": "2026-11-06T15:49:21.638Z",
   "windowDays": 1095,
-  "targets": 889,
-  "auditedThisRun": 4,
-  "carriedForward": 2054,
+  "targets": 885,
+  "auditedThisRun": 5,
+  "carriedForward": 2053,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 636,
-    "missingCurrentRun": 1182,
+    "withGap": 637,
+    "missingCurrentRun": 1183,
     "totalCitedNoUrl": 0,
-    "totalFlaggedMisses": 904,
+    "totalFlaggedMisses": 905,
     "totalRecoverable": 58,
     "totalRecovered": 90,
     "humanExcluded": 26,
     "automatedExcluded": 1010,
-    "automatedExcludedListed": 713,
+    "automatedExcludedListed": 714,
     "priorProductionCitations": 6020
   },
   "results": [
@@ -65320,18 +65320,88 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Clifford Odets’ Waiting for Lefty\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Clifford Odets’ Waiting for Lefty\" Off-Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 8,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Clifford Odets’ Waiting for Lefty\" review classic",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 9,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped2",
+            "query": "\"Clifford Odets’ Waiting for Lefty\" Odets review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 8,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Clifford Odets’ Waiting for Lefty Classic Stage Company review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 8,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Clifford Odets’ Waiting for Lefty Classic Stage Company review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Clifford Odets’ Waiting for Lefty Classic Stage Company review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 6,
+        "queriesTotal": 6,
+        "resultCount": 1,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 95,
+        "count": 145,
         "byReason": {
-          "not-http-url": 20,
-          "non-review-host": 21,
-          "aggregator-internal-nav": 39,
-          "aggregator-section-root": 5,
+          "aggregator-internal-nav": 42,
+          "not-http-url": 57,
           "production-database-listing": 9,
-          "non-stage-review": 1
+          "aggregator-section-root": 5,
+          "non-review-host": 26,
+          "non-stage-review": 1,
+          "roundup-page": 2,
+          "ticketing-listing": 1,
+          "census-junk-host": 2
         }
       },
       "dedupedVariants": [],
@@ -65414,7 +65484,7 @@
         "liveCount": 10,
         "candidateCount": 10
       },
-      "computedAt": "2026-11-06T02:02:35.916Z"
+      "computedAt": "2026-11-06T15:49:21.638Z"
     },
     {
       "showId": "clinamen-off-broadway-2026",
@@ -85291,18 +85361,17 @@
       "previewsStartDate": "2026-10-10",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
+        "https://theatreandtonic.co.uk/blog/derren-brown-only-human-at-apollo-theatre-reviewnbsp",
         "https://www.timeout.com/london/theatre/derren-brown-only-human-review",
         "https://www.londontheatre.co.uk/reviews/derren-brown-only-human-review-apollo-theatre",
         "https://www.theguardian.com/stage/2026/oct/25/derren-brown-only-human-review-gasp-inducing-stunts-apollo-london",
+        "http://www.jonathanbaz.com/2026/10/derren-brown-only-human-review.html",
+        "https://www.londontheatre1.com/reviews/derren-brown-only-human-apollo-theatre/",
+        "https://liamodell.com/2026/10/22/derren-brown-only-human-review-apollo-theatre-west-end-live-show-london/",
         "https://matineemouse.substack.com/p/derren-brown-only-human-review",
-        "https://www.broadwayworld.com/westend/article/Review-DERREN-BROWN-ONLY-HUMAN-Apollo-Theatre-20261023",
         "https://www.telegraph.co.uk/theatre/what-to-see/derren-brown-only-human-review/",
         "https://www.allthatdazzles.co.uk/post/review-derren-brown-only-human-apollo-theatre",
-        "https://theatreandtonic.co.uk/blog/derren-brown-only-human-at-apollo-theatre-reviewnbsp",
         "https://www.whatsonstage.com/news/derren-brown-only-human-in-the-west-end-review_1735644/",
-        "https://thehollywoodreporteruk.com/movies/film-festivals/derren-browns-only-human-earns-four-stars-at-the-apollo-557/",
-        "https://secretstagereviews.co.uk/reviews/derrem-brown-only-human/",
-        "https://www.transientarena.com/blog/reviews/derren-brown-only-human",
         "https://www.thereviewshub.com/derren-brown-only-human-the-apollo-london/",
         "https://everything-theatre.co.uk/2026/10/review-derren-brown-only-human-apollo-theatre/",
         "https://loureviews.blog/2026/10/23/show-review-derren-brown-only-human-at-the-apollo-theatre/",
@@ -85310,31 +85379,18 @@
         "https://www.thereviewshub.com/derren-brown-only-human-marlowe-theatre-canterbury/",
         "https://www.londonboxoffice.co.uk/news/post/derren-brown-only-human-apollo-theatre-review",
         "https://www.westendbestfriend.co.uk/news/review-derren-brown-only-human-apollo-theatre",
-        "https://liamodell.com/2026/10/22/derren-brown-only-human-review-apollo-theatre-west-end-live-show-london/",
-        "https://www.londontheatre1.com/reviews/derren-brown-only-human-apollo-theatre/",
         "https://theatresoutheast.com/derren-brown-only-human-apollo-theatre-review/",
         "https://www.broadwayworld.com/westend/article/Review-DERREN-BROWN-ONLY-HUMAN-Apollo-Theatre-20261022",
+        "https://www.transientarena.com/blog/reviews/derren-brown-only-human",
         "https://www.weekendnotes.co.uk/derren-brown-only-human-2026-uk-tour-review/",
         "https://thespyinthestalls.com/2026/10/derren-brown/",
         "https://theatreweekly.com/review-derren-browns-only-human-at-apollo-theatre/",
         "https://www.thetimes.com/culture/theatre-dance/article/derren-brown-review-apollo-theatre-6967vbx7h"
       ],
       "dirFiles": 39,
-      "dirClean": 27,
+      "dirClean": 28,
       "inReviewsJson": 28,
       "missing": [
-        {
-          "url": "https://thehollywoodreporteruk.com/movies/film-festivals/derren-browns-only-human-earns-four-stars-at-the-apollo-557/",
-          "host": "thehollywoodreporteruk.com",
-          "knownOutletId": null,
-          "serpCensus": true,
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ]
-        },
         {
           "url": "https://www.transientarena.com/blog/reviews/derren-brown-only-human",
           "host": "transientarena.com",
@@ -85366,15 +85422,15 @@
           "count": 1
         },
         {
-          "host": "jonathanbaz.com",
-          "count": 1
-        },
-        {
           "host": "lbc.co.uk",
           "count": 1
         },
         {
           "host": "londontheatrereviews.co.uk",
+          "count": 1
+        },
+        {
+          "host": "northwestend.com",
           "count": 1
         },
         {
@@ -85390,42 +85446,7 @@
           "count": 1
         }
       ],
-      "flaggedMisses": [
-        {
-          "url": "https://www.broadwayworld.com/westend/article/Review-DERREN-BROWN-ONLY-HUMAN-Apollo-Theatre-20261023",
-          "host": "broadwayworld.com",
-          "knownOutletId": "broadwayworld",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "broadwayworld--unknown.json",
-              "flag": "duplicate",
-              "urlInDir": "https://www.broadwayworld.com/westend/article/Review-DERREN-BROWN-ONLY-HUMAN-Apollo-Theatre-20261023"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "duplicateOf"
-          ],
-          "confirmedNonReview": true,
-          "confirmedBasis": [
-            "duplicate-of-held"
-          ],
-          "copyOfLiveReview": true,
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ],
-          "serpCensus": true,
-          "reverify": false
-        }
-      ],
+      "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": {
         "rowCount": 21,
@@ -85501,8 +85522,8 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 7,
-            "accepted": 2,
+            "results": 9,
+            "accepted": 0,
             "error": null
           },
           {
@@ -85511,7 +85532,7 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 7,
+            "results": 0,
             "accepted": 0,
             "error": null
           },
@@ -85522,7 +85543,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 0,
             "error": null
           },
           {
@@ -85532,45 +85553,26 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 1,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 12,
+        "resultCount": 7,
         "error": null
       },
       "candidatesRejected": {
-        "count": 17,
+        "count": 28,
         "byReason": {
-          "non-review-host": 14,
-          "census-junk-host": 1,
-          "ticketing-listing": 1,
-          "event-listing": 1
+          "not-http-url": 23,
+          "non-review-host": 5
         }
       },
       "dedupedVariants": [],
-      "nonReviewCandidates": [
-        {
-          "url": "https://secretstagereviews.co.uk/reviews/derrem-brown-only-human/",
-          "host": "secretstagereviews.co.uk",
-          "knownOutletId": null,
-          "serpCensus": true,
-          "nonReviewVerdict": "page-date-before-run",
-          "nonReviewDetail": "2025-07-15"
-        }
-      ],
       "automatedExcludedListed": 0,
       "unextractable": [],
       "weIngestBlocked": [
-        {
-          "url": "https://thehollywoodreporteruk.com/movies/film-festivals/derren-browns-only-human-earns-four-stars-at-the-apollo-557/",
-          "host": "thehollywoodreporteruk.com",
-          "priorRun": false,
-          "reason": "unregistered-host",
-          "censusGateOn": true
-        },
         {
           "url": "https://www.transientarena.com/blog/reviews/derren-brown-only-human",
           "host": "transientarena.com",
@@ -85592,13 +85594,6 @@
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "thehollywoodreporteruk.com",
-            "outlet": "thehollywoodreporteruk.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://thehollywoodreporteruk.com/movies/film-festivals/derren-browns-only-human-earns-four-stars-at-the-apollo-557/"
-          },
-          {
             "outletId": "transientarena.com",
             "outlet": "transientarena.com",
             "critic": "Unknown",
@@ -85616,6 +85611,12 @@
         "suppressedMissing": [],
         "candidates": [
           {
+            "url": "https://theatreandtonic.co.uk/blog/derren-brown-only-human-at-apollo-theatre-reviewnbsp",
+            "outletId": "theatreandtonic.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-11-04T19:31:35.837Z"
+          },
+          {
             "url": "https://www.timeout.com/london/theatre/derren-brown-only-human-review",
             "outletId": "timeout.com",
             "state": "live",
@@ -85630,6 +85631,24 @@
           {
             "url": "https://www.theguardian.com/stage/2026/oct/25/derren-brown-only-human-review-gasp-inducing-stunts-apollo-london",
             "outletId": "theguardian.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-04T19:31:35.837Z"
+          },
+          {
+            "url": "http://www.jonathanbaz.com/2026/10/derren-brown-only-human-review.html",
+            "outletId": "jonathanbaz.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-06T15:49:21.638Z"
+          },
+          {
+            "url": "https://www.londontheatre1.com/reviews/derren-brown-only-human-apollo-theatre/",
+            "outletId": "londontheatre1.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-04T19:31:35.837Z"
+          },
+          {
+            "url": "https://liamodell.com/2026/10/22/derren-brown-only-human-review-apollo-theatre-west-end-live-show-london/",
+            "outletId": "liamodell.com",
             "state": "live",
             "firstSeenAt": "2026-11-04T19:31:35.837Z"
           },
@@ -85652,22 +85671,10 @@
             "firstSeenAt": "2026-11-04T19:31:35.837Z"
           },
           {
-            "url": "https://theatreandtonic.co.uk/blog/derren-brown-only-human-at-apollo-theatre-reviewnbsp",
-            "outletId": "theatreandtonic.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-11-04T19:31:35.837Z"
-          },
-          {
             "url": "https://www.whatsonstage.com/news/derren-brown-only-human-in-the-west-end-review_1735644/",
             "outletId": "whatsonstage.com",
             "state": "live",
             "firstSeenAt": "2026-11-04T19:31:35.837Z"
-          },
-          {
-            "url": "https://secretstagereviews.co.uk/reviews/derrem-brown-only-human/",
-            "outletId": "secretstagereviews.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-11-05T09:01:46.901Z"
           },
           {
             "url": "https://www.thereviewshub.com/derren-brown-only-human-the-apollo-london/",
@@ -85712,18 +85719,6 @@
             "firstSeenAt": "2026-11-04T19:31:35.837Z"
           },
           {
-            "url": "https://liamodell.com/2026/10/22/derren-brown-only-human-review-apollo-theatre-west-end-live-show-london/",
-            "outletId": "liamodell.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-04T19:31:35.837Z"
-          },
-          {
-            "url": "https://www.londontheatre1.com/reviews/derren-brown-only-human-apollo-theatre/",
-            "outletId": "londontheatre1.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-04T19:31:35.837Z"
-          },
-          {
             "url": "https://theatresoutheast.com/derren-brown-only-human-apollo-theatre-review/",
             "outletId": "theatresoutheast.com",
             "state": "live",
@@ -85754,13 +85749,6 @@
             "firstSeenAt": "2026-11-04T19:31:35.837Z"
           },
           {
-            "url": "https://thehollywoodreporteruk.com/movies/film-festivals/derren-browns-only-human-earns-four-stars-at-the-apollo-557/",
-            "outletId": "thehollywoodreporteruk.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-11-04T19:31:35.837Z"
-          },
-          {
             "url": "https://www.transientarena.com/blog/reviews/derren-brown-only-human",
             "outletId": "transientarena.com",
             "state": "GAP",
@@ -85776,22 +85764,11 @@
           }
         ],
         "censusSchema": 4,
-        "excluded": [
-          {
-            "url": "https://secretstagereviews.co.uk/reviews/derrem-brown-only-human/",
-            "host": "secretstagereviews.co.uk",
-            "reason": "page-date-before-run"
-          },
-          {
-            "url": "https://www.broadwayworld.com/westend/article/Review-DERREN-BROWN-ONLY-HUMAN-Apollo-Theatre-20261023",
-            "host": "broadwayworld.com",
-            "reason": "confirmed-non-review"
-          }
-        ],
+        "excluded": [],
         "liveCount": 21,
-        "candidateCount": 24
+        "candidateCount": 23
       },
-      "computedAt": "2026-11-05T22:39:41.205Z"
+      "computedAt": "2026-11-06T15:49:21.638Z"
     },
     {
       "showId": "derren-brown-only-human-west-end-2026",
@@ -229594,6 +229571,7 @@
       "previewsStartDate": "2026-11-02",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
+        "https://www.whatsonstage.com/news/new-musical-nero-releases-first-listen-with-andrew-barth-feldman_1735027/",
         "https://www.timeout.com/london/theatre/nero",
         "https://www.londonboxoffice.co.uk/search/month/nero-tickets/2026/11/03/2",
         "http://www.curtainup.com/nero.html"
@@ -229629,6 +229607,35 @@
       ],
       "dirOnly": [],
       "flaggedMisses": [
+        {
+          "url": "https://www.whatsonstage.com/news/new-musical-nero-releases-first-listen-with-andrew-barth-feldman_1735027/",
+          "host": "whatsonstage.com",
+          "knownOutletId": "whatsonstage",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "whatsonstage--tanyel-gumushan.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://www.whatsonstage.com/news/new-musical-nero-releases-first-listen-with-andrew-barth-feldman_1735027/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongShow"
+          ],
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
+          "serpCensus": true,
+          "reverify": true
+        },
         {
           "url": "http://www.curtainup.com/nero.html",
           "host": "curtainup.com",
@@ -229705,15 +229712,79 @@
         "perSource": {}
       },
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Nero\" West End review",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Nero\" West End review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 1,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Nero\" review southwark",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 0,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Nero Southwark Playhouse review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 9,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Nero Southwark Playhouse review",
+            "page": 1,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Nero Southwark Playhouse review",
+            "page": 2,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 1,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 23,
+        "byReason": {
+          "aggregator-internal-nav": 2,
+          "not-http-url": 15,
+          "non-review-host": 2,
+          "ticketing-listing": 1,
+          "tag-index-page": 1,
+          "write-path-blocked": 2
+        }
       },
       "dedupedVariants": [],
-      "automatedExcludedListed": 1,
+      "automatedExcludedListed": 2,
       "unextractable": [],
       "ingestResults": [
         {
@@ -229766,6 +229837,13 @@
             "url": "https://www.londonboxoffice.co.uk/search/month/nero-tickets/2026/11/03/2"
           },
           {
+            "outletId": "whatsonstage",
+            "outlet": "whatsonstage",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.whatsonstage.com/news/new-musical-nero-releases-first-listen-with-andrew-barth-feldman_1735027/"
+          },
+          {
             "outletId": "curtainup",
             "outlet": "curtainup",
             "critic": "Unknown",
@@ -229790,6 +229868,13 @@
             "firstSeenAt": "2026-11-04T13:45:30.971Z"
           },
           {
+            "url": "https://www.whatsonstage.com/news/new-musical-nero-releases-first-listen-with-andrew-barth-feldman_1735027/",
+            "outletId": "whatsonstage",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-11-06T15:49:21.638Z"
+          },
+          {
             "url": "http://www.curtainup.com/nero.html",
             "outletId": "curtainup",
             "state": "IN_FLIGHT",
@@ -229800,9 +229885,9 @@
         "censusSchema": 4,
         "excluded": [],
         "liveCount": 0,
-        "candidateCount": 3
+        "candidateCount": 4
       },
-      "computedAt": "2026-11-06T02:02:35.916Z"
+      "computedAt": "2026-11-06T15:49:21.638Z"
     },
     {
       "showId": "new-born-off-broadway-2026",
@@ -290515,24 +290600,88 @@
       "previewsStartDate": "2026-10-20",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
+        "https://newyorktheater.me/2026/11/05/slanted-floors-review/",
         "https://1minutecritic.com/slanted-floors-apartment-play-review/",
         "https://www.theatermania.com/news/review-slanted-floors-a-voyeurs-view-of-one-gay-new-york-city-household_1858778/"
       ],
-      "dirFiles": 3,
-      "dirClean": 2,
-      "inReviewsJson": 2,
+      "dirFiles": 4,
+      "dirClean": 3,
+      "inReviewsJson": 3,
       "missing": [],
       "dirOnly": [],
       "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Slanted Floors\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Slanted Floors\" Off-Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 0,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Slanted Floors\" review astor",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 8,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Slanted Floors Astor Place Theatre review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 8,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Slanted Floors Astor Place Theatre review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Slanted Floors Astor Place Theatre review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 1,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 34,
+        "byReason": {
+          "aggregator-internal-nav": 1,
+          "not-http-url": 28,
+          "non-review-host": 3,
+          "no-review-evidence": 1,
+          "non-review-path": 1
+        }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 0,
@@ -290542,6 +290691,12 @@
         "missing": [],
         "suppressedMissing": [],
         "candidates": [
+          {
+            "url": "https://newyorktheater.me/2026/11/05/slanted-floors-review/",
+            "outletId": "newyorktheater.me",
+            "state": "live",
+            "firstSeenAt": "2026-11-06T15:49:21.638Z"
+          },
           {
             "url": "https://1minutecritic.com/slanted-floors-apartment-play-review/",
             "outletId": "1minutecritic.com",
@@ -290557,10 +290712,10 @@
         ],
         "censusSchema": 4,
         "excluded": [],
-        "liveCount": 2,
-        "candidateCount": 2
+        "liveCount": 3,
+        "candidateCount": 3
       },
-      "computedAt": "2026-11-06T02:02:35.916Z"
+      "computedAt": "2026-11-06T15:49:21.638Z"
     },
     {
       "showId": "slaughterhouse-five-off-west-end-2026",
@@ -356885,12 +357040,41 @@
       "previewsStartDate": "2026-10-26",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://www.talkinbroadway.com/page/ob/11_02_26b.html"
+        "https://www.talkinbroadway.com/page/ob/11_02_26b.html",
+        "https://www.theaterscene.net/plays/offbway-plays/the-morbs/victor-gluck/",
+        "https://www.offoffonline.com/offoffonline/2026/11/2/the-morbs"
       ],
       "dirFiles": 4,
       "dirClean": 2,
       "inReviewsJson": 2,
-      "missing": [],
+      "missing": [
+        {
+          "url": "https://www.theaterscene.net/plays/offbway-plays/the-morbs/victor-gluck/",
+          "host": "theaterscene.net",
+          "knownOutletId": "theater-scene",
+          "sources": [
+            {
+              "source": "show-score",
+              "sourceUrl": "https://www.show-score.com/off-broadway-shows/the-morbs"
+            }
+          ],
+          "listingDate": "2026-11-05",
+          "listingSource": "show-score"
+        },
+        {
+          "url": "https://www.offoffonline.com/offoffonline/2026/11/2/the-morbs",
+          "host": "offoffonline.com",
+          "knownOutletId": "off-off-online",
+          "sources": [
+            {
+              "source": "show-score",
+              "sourceUrl": "https://www.show-score.com/off-broadway-shows/the-morbs"
+            }
+          ],
+          "listingDate": "2026-11-05",
+          "listingSource": "show-score"
+        }
+      ],
       "dirOnly": [
         {
           "host": "twi-ny.com",
@@ -356901,19 +357085,129 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"The Morbs\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"The Morbs\" Off-Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 0,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"The Morbs\" review jeffrey",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 6,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "The Morbs Jeffrey and Paula Gural Theatre at A.R.T./New York Theatres review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 9,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "The Morbs Jeffrey and Paula Gural Theatre at A.R.T./New York Theatres review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "The Morbs Jeffrey and Paula Gural Theatre at A.R.T./New York Theatres review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 0,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 28,
+        "byReason": {
+          "aggregator-internal-nav": 1,
+          "not-http-url": 25,
+          "non-review-host": 1,
+          "tag-index-page": 1
+        }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 0,
       "unextractable": [],
+      "ingestResults": [
+        {
+          "url": "https://www.theaterscene.net/plays/offbway-plays/the-morbs/victor-gluck/",
+          "host": "theaterscene.net",
+          "outletId": "theater-scene",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
+          "url": "https://www.offoffonline.com/offoffonline/2026/11/2/the-morbs",
+          "host": "offoffonline.com",
+          "outletId": "off-off-online",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "complete",
-        "missing": [],
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "theater-scene",
+            "outlet": "theater-scene",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.theaterscene.net/plays/offbway-plays/the-morbs/victor-gluck/"
+          },
+          {
+            "outletId": "off-off-online",
+            "outlet": "off-off-online",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.offoffonline.com/offoffonline/2026/11/2/the-morbs"
+          }
+        ],
         "suppressedMissing": [],
         "candidates": [
           {
@@ -356921,14 +357215,28 @@
             "outletId": "talkinbroadway.com",
             "state": "live",
             "firstSeenAt": "2026-11-04T13:45:30.971Z"
+          },
+          {
+            "url": "https://www.theaterscene.net/plays/offbway-plays/the-morbs/victor-gluck/",
+            "outletId": "theater-scene",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-11-06T15:49:21.638Z"
+          },
+          {
+            "url": "https://www.offoffonline.com/offoffonline/2026/11/2/the-morbs",
+            "outletId": "off-off-online",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-11-06T15:49:21.638Z"
           }
         ],
         "censusSchema": 4,
         "excluded": [],
         "liveCount": 1,
-        "candidateCount": 1
+        "candidateCount": 3
       },
-      "computedAt": "2026-11-06T02:02:35.916Z"
+      "computedAt": "2026-11-06T15:49:21.638Z"
     },
     {
       "showId": "the-moth-off-west-end-2026",
@@ -421558,10 +421866,10 @@
     }
   ],
   "staleness": {
-    "at": "2026-11-06T14:48:30.601Z",
+    "at": "2026-11-06T15:49:21.637Z",
     "reserveEvery": 4,
     "reservedAttempted": [
-      "garry-starr-classic-penguins-off-west-end-2026"
+      "derren-brown-only-human-off-west-end-2026"
     ],
     "catalogueReserveEvery": 8,
     "catalogueAttempted": [],
@@ -421569,12 +421877,12 @@
     "oldestDueRowAtStart": {
       "showId": "this-is-my-favorite-song-off-broadway-2024",
       "computedAt": "2026-10-23T14:07:48.228Z",
-      "ageHours": 336.4
+      "ageHours": 337.4
     },
     "oldestDueRowAfterRun": {
       "showId": "this-is-my-favorite-song-off-broadway-2024",
       "computedAt": "2026-10-23T14:07:48.228Z",
-      "ageHours": 336.7
+      "ageHours": 337.7
     }
   }
 }

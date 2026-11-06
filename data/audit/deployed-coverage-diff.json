@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-06T14:52:36.357Z",
+  "generatedAt": "2026-11-06T15:50:13.560Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
@@ -11,20 +11,20 @@
   },
   "shows": [
     {
-      "showId": "the-verge-off-broadway-2026",
-      "title": "The Verge",
+      "showId": "the-unbelievers-off-broadway-2026",
+      "title": "The Unbelievers",
       "openingDate": "2026-11-05",
       "ok": false,
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 58.31 vs local 56.12 (Δ2.19)"
+          "detail": "deployed cs 66.43 vs local 70.48 (Δ4.05)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 8,
+      "localCount": 6,
       "deployedCount": 8,
-      "firstDefectAt": "2026-11-06T14:52:31.775Z"
+      "firstDefectAt": "2026-11-06T15:50:04.656Z"
     }
   ],
   "persistentDefective": 0,
