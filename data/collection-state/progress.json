@@ -1,16 +1,25 @@
 {
   "processed": [
     "the-unbelievers-off-broadway-2026/nytimes--laura-collins-hughes.json",
-    "the-unbelievers-off-broadway-2026/lighting-and-sound-america--unknown.json"
+    "the-unbelievers-off-broadway-2026/lighting-and-sound-america--unknown.json",
+    "speculations-off-west-end-2026/theatre-vibe--lizzie-loveridge.json"
   ],
   "failed": [
-    "the-unbelievers-off-broadway-2026/bobs-theater-blog--unknown.json"
+    "speculations-off-west-end-2026/guardian--unknown.json",
+    "speculations-off-west-end-2026/artsdesk--unknown.json",
+    "the-bridge-off-west-end-2026/sunday-times--unknown.json",
+    "the-bridge-off-west-end-2026/theatreandtonic--emmie-newitt.json",
+    "the-moth-off-west-end-2026/creative-reviews-uk--creative-reviews-uk.json",
+    "tosca-english-national-opera-west-end-2026/bachtrack--anna-bogdanova.json",
+    "tosca-english-national-opera-west-end-2026/bachtrack--clare-varney.json",
+    "tosca-english-national-opera-west-end-2026/bachtrack--mark-pullinger.json",
+    "tosca-english-national-opera-west-end-2026/bachtrack--peter-quantrill.json"
   ],
-  "failed": [],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "the-unbelievers-off-broadway-2026/lighting-and-sound-america--unknown.json"
+      "the-unbelievers-off-broadway-2026/lighting-and-sound-america--unknown.json",
+      "speculations-off-west-end-2026/theatre-vibe--lizzie-loveridge.json"
     ],
     "amp": [],
     "browserbase": [
@@ -25,7 +34,7 @@
     "archive": []
   },
   "startTime": "2026-11-06T20:15:59.034Z",
-  "lastProcessed": "the-unbelievers-off-broadway-2026/lighting-and-sound-america--unknown.json",
+  "lastProcessed": "tosca-english-national-opera-west-end-2026/bachtrack--peter-quantrill.json",
   "log": [
     {
       "t": "2026-11-06T20:16:15.914Z",
@@ -37,6 +46,30 @@
       "t": "2026-11-06T20:16:16.765Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-06T21:06:08.480Z",
+      "event": "bb-session",
+      "session": "50a1e57a",
+      "url": "https://bachtrack.com/review-lorfeo-william-kentridge-greek-national-opera-athen"
+    },
+    {
+      "t": "2026-11-06T21:07:12.415Z",
+      "event": "bb-session",
+      "session": "9425f459",
+      "url": "https://bachtrack.com/review-shostakovich-cherry-town-ahlbom-dutch-national-oper"
+    },
+    {
+      "t": "2026-11-06T21:08:15.564Z",
+      "event": "bb-session",
+      "session": "d9b9dde2",
+      "url": "https://bachtrack.com/review-tosca-miskimmon-glassberg-fanyo-english-national-op"
+    },
+    {
+      "t": "2026-11-06T21:09:19.864Z",
+      "event": "bb-session",
+      "session": "a9b4fc39",
+      "url": "https://bachtrack.com/review-nozze-figaro-pountney-conta-bucharest-national-oper"
     }
   ]
 }
