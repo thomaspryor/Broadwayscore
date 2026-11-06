@@ -873,5 +873,33 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-06T20:46:29.743Z"
+  },
+  {
+    "conditionKey": "opening-night-cv-wrongproduction-unhandled-speculations-off-west-end-2026",
+    "title": "Unhandled CV.wrongProduction on Speculations",
+    "description": "thestage/Sam Marlowe (thestage--unknown.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 0d of opening, likely correct production] This is a genuine review of 'Speculations' by Torben  — https://thestage.co.uk/reviews/speculations-review-marylebone-theatre-london-torben-betts-trevor-nunn-janie-dee",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-06T21:17:06.913Z"
+  },
+  {
+    "conditionKey": "opening-night-publish-date-pre-opening:missing:speculations-off-west-end-2026",
+    "title": "Shipped review missing publishDate on Speculations",
+    "description": "artsdesk/Gary Naylor SHIPPED with no publishDate — cannot confirm post-opening: https://theartsdesk.com/theatre/speculations-marylebone-theatre-review-real-mystery-how-it-got-made",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-06T21:17:06.942Z"
   }
 ]
