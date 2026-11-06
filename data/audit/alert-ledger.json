@@ -24091,21 +24091,18 @@
       "resolveReason": "absent"
     },
     "live-data-test:tests/unit/critic-spelling-duplicates-live-data.test.mjs::live corpus scan: no NEW same-show/same-outlet critic-name near-duplicate beyond the known backlog": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "digest",
       "title": "Live-data test failing: live corpus scan: no NEW same-show/same-outlet critic-name near-duplicate beyond the known backlog (tests/unit/critic-spelling-duplicates-live-data.test.mjs)",
       "firstSeen": "2026-10-22T11:49:37.833Z",
-      "incidentOpenedAt": "2026-11-04T07:10:12.665Z",
+      "incidentOpenedAt": "2026-11-06T04:56:22.623Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-05T16:55:37.106Z",
-      "lastNotifiedAt": "2026-11-05T12:32:04.294Z",
-      "lastSurfacedAt": "2026-11-05T12:32:04.294Z",
-      "notifyCount": 10,
+      "lastSeen": "2026-11-06T04:56:22.623Z",
+      "lastNotifiedAt": "2026-11-06T04:56:22.623Z",
+      "lastSurfacedAt": "2026-11-06T04:56:22.623Z",
+      "notifyCount": 11,
       "cardId": null,
-      "linearIdentifier": null,
-      "silentRefires": 2,
-      "resolvedAt": "2026-11-06T02:20:05.555Z",
-      "resolveReason": "live-data test green"
+      "linearIdentifier": null
     },
     "land:land/bro-5325-wsj-section": {
       "status": "resolved",
@@ -24873,7 +24870,7 @@
       "resolvedAt": "2026-10-23T02:38:25.343Z"
     },
     "live-data-test:tests/unit/bro3887-cache-fix-acceptance.test.mjs::BRO-3887: repo Actions cache stays below the size that evicts the SERP cache": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "Live-data test failing: BRO-3887: repo Actions cache stays below the size that evicts the SERP cache (tests/unit/bro3887-cache-fix-acceptance.test.mjs)",
       "firstSeen": "2026-10-22T20:59:52.372Z",
@@ -24885,7 +24882,9 @@
       "notifyCount": 13,
       "cardId": null,
       "linearIdentifier": "BRO-6993",
-      "silentRefires": 5
+      "silentRefires": 5,
+      "resolvedAt": "2026-11-06T04:56:22.833Z",
+      "resolveReason": "live-data test green"
     },
     "land:land/bro-5969-index-bloat-v3": {
       "status": "resolved",
@@ -32079,7 +32078,7 @@
       "resolveReason": "live-data test green"
     },
     "live-data-test:tests/unit/duplicate-images-live-data.test.mjs::real data: no byte-identical art across unrelated, unlinked shows": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "Live-data test failing: real data: no byte-identical art across unrelated, unlinked shows (tests/unit/duplicate-images-live-data.test.mjs)",
       "firstSeen": "2026-10-29T23:10:05.416Z",
@@ -32091,7 +32090,9 @@
       "notifyCount": 7,
       "cardId": null,
       "linearIdentifier": "BRO-7020",
-      "silentRefires": 1
+      "silentRefires": 1,
+      "resolvedAt": "2026-11-06T04:56:22.852Z",
+      "resolveReason": "live-data test green"
     },
     "land:land/bro-6546-voidfix": {
       "status": "open",
@@ -35932,7 +35933,7 @@
       "linearIdentifier": null
     },
     "live-data-test:tests/unit/outlet-domain-validation-live-data.test.mjs::at most the 2 known real instances are flagged across the full corpus": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "Live-data test failing: at most the 2 known real instances are flagged across the full corpus (tests/unit/outlet-domain-validation-live-data.test.mjs)",
       "firstSeen": "2026-11-03T04:48:41.826Z",
@@ -35944,7 +35945,9 @@
       "notifyCount": 4,
       "cardId": null,
       "linearIdentifier": "BRO-7021",
-      "silentRefires": 1
+      "silentRefires": 1,
+      "resolvedAt": "2026-11-06T04:56:22.884Z",
+      "resolveReason": "live-data test green"
     },
     "opening-night-revival-unverified-clifford-odets-waiting-for-lefty-off-broadway-2026": {
       "status": "open",
@@ -37286,6 +37289,132 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-7026"
+    },
+    "live-data-test:tests/unit/audit-bad-stub-visibility-live-data.test.mjs::tests/unit/audit-bad-stub-visibility-live-data.test.mjs": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Live-data test failing: tests/unit/audit-bad-stub-visibility-live-data.test.mjs (tests/unit/audit-bad-stub-visibility-live-data.test.mjs)",
+      "firstSeen": "2026-11-06T04:56:22.548Z",
+      "incidentOpenedAt": "2026-11-06T04:56:22.548Z",
+      "deferredAuto": true,
+      "lastSeen": "2026-11-06T04:56:22.548Z",
+      "lastNotifiedAt": "2026-11-06T04:56:22.548Z",
+      "lastSurfacedAt": "2026-11-06T04:56:22.548Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "live-data-test:tests/unit/automated-clear-not-manual-live-data.test.mjs::corpus: no review file stores an automated clear as ManualClear": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Live-data test failing: corpus: no review file stores an automated clear as ManualClear (tests/unit/automated-clear-not-manual-live-data.test.mjs)",
+      "firstSeen": "2026-11-06T04:56:22.584Z",
+      "incidentOpenedAt": "2026-11-06T04:56:22.584Z",
+      "deferredAuto": true,
+      "lastSeen": "2026-11-06T04:56:22.584Z",
+      "lastNotifiedAt": "2026-11-06T04:56:22.584Z",
+      "lastSurfacedAt": "2026-11-06T04:56:22.584Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "live-data-test:tests/unit/critic-spelling-duplicates-live-data.test.mjs::reviews.json: no NEW critic page split by a byline spelling variant": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Live-data test failing: reviews.json: no NEW critic page split by a byline spelling variant (tests/unit/critic-spelling-duplicates-live-data.test.mjs)",
+      "firstSeen": "2026-11-06T04:56:22.650Z",
+      "incidentOpenedAt": "2026-11-06T04:56:22.650Z",
+      "deferredAuto": true,
+      "lastSeen": "2026-11-06T04:56:22.650Z",
+      "lastNotifiedAt": "2026-11-06T04:56:22.650Z",
+      "lastSurfacedAt": "2026-11-06T04:56:22.650Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "live-data-test:tests/unit/drain-unknown-outlets-live-data.test.mjs::tests/unit/drain-unknown-outlets-live-data.test.mjs": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Live-data test failing: tests/unit/drain-unknown-outlets-live-data.test.mjs (tests/unit/drain-unknown-outlets-live-data.test.mjs)",
+      "firstSeen": "2026-11-06T04:56:22.674Z",
+      "incidentOpenedAt": "2026-11-06T04:56:22.674Z",
+      "deferredAuto": true,
+      "lastSeen": "2026-11-06T04:56:22.674Z",
+      "lastNotifiedAt": "2026-11-06T04:56:22.674Z",
+      "lastSurfacedAt": "2026-11-06T04:56:22.674Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "live-data-test:tests/unit/duplicate-show-dedup-live-data.test.mjs::shows.json has no live entry for an id another show lists as an alias": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Live-data test failing: shows.json has no live entry for an id another show lists as an alias (tests/unit/duplicate-show-dedup-live-data.test.mjs)",
+      "firstSeen": "2026-11-06T04:56:22.704Z",
+      "incidentOpenedAt": "2026-11-06T04:56:22.704Z",
+      "deferredAuto": true,
+      "lastSeen": "2026-11-06T04:56:22.704Z",
+      "lastNotifiedAt": "2026-11-06T04:56:22.704Z",
+      "lastSurfacedAt": "2026-11-06T04:56:22.704Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "live-data-test:tests/unit/image-presence.test.mjs::tests/unit/image-presence.test.mjs": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Live-data test failing: tests/unit/image-presence.test.mjs (tests/unit/image-presence.test.mjs)",
+      "firstSeen": "2026-11-06T04:56:22.730Z",
+      "incidentOpenedAt": "2026-11-06T04:56:22.730Z",
+      "deferredAuto": true,
+      "lastSeen": "2026-11-06T04:56:22.730Z",
+      "lastNotifiedAt": "2026-11-06T04:56:22.730Z",
+      "lastSurfacedAt": "2026-11-06T04:56:22.730Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "live-data-test:tests/unit/review-pullquotes-live-data.test.mjs::tests/unit/review-pullquotes-live-data.test.mjs": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Live-data test failing: tests/unit/review-pullquotes-live-data.test.mjs (tests/unit/review-pullquotes-live-data.test.mjs)",
+      "firstSeen": "2026-11-06T04:56:22.764Z",
+      "incidentOpenedAt": "2026-11-06T04:56:22.764Z",
+      "deferredAuto": true,
+      "lastSeen": "2026-11-06T04:56:22.764Z",
+      "lastNotifiedAt": "2026-11-06T04:56:22.764Z",
+      "lastSurfacedAt": "2026-11-06T04:56:22.764Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "live-data-test:tests/unit/tour-runtime-coverage.test.mjs::tests/unit/tour-runtime-coverage.test.mjs": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Live-data test failing: tests/unit/tour-runtime-coverage.test.mjs (tests/unit/tour-runtime-coverage.test.mjs)",
+      "firstSeen": "2026-11-06T04:56:22.793Z",
+      "incidentOpenedAt": "2026-11-06T04:56:22.793Z",
+      "deferredAuto": true,
+      "lastSeen": "2026-11-06T04:56:22.793Z",
+      "lastNotifiedAt": "2026-11-06T04:56:22.793Z",
+      "lastSurfacedAt": "2026-11-06T04:56:22.793Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "live-data-test:tests/unit/venue-complex-live-data.test.mjs::tests/unit/venue-complex-live-data.test.mjs": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Live-data test failing: tests/unit/venue-complex-live-data.test.mjs (tests/unit/venue-complex-live-data.test.mjs)",
+      "firstSeen": "2026-11-06T04:56:22.810Z",
+      "incidentOpenedAt": "2026-11-06T04:56:22.810Z",
+      "deferredAuto": true,
+      "lastSeen": "2026-11-06T04:56:22.810Z",
+      "lastNotifiedAt": "2026-11-06T04:56:22.810Z",
+      "lastSurfacedAt": "2026-11-06T04:56:22.810Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
     }
   }
 }
