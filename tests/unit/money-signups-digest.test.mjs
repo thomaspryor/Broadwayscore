@@ -119,5 +119,5 @@ test('page limit bounds API cost and discards partial statistics', async () => {
 test('production main collects the section that buildHtml renders', () => {
   const source = readFileSync(new URL('../../scripts/send-morning-digest.js', import.meta.url), 'utf8');
   assert.match(source, /sections\.moneySignups = await collectMoneySignups\(\)/);
-  assert.match(source, /head\.push\(renderMoneySignups\(sections\.moneySignups\)\)/);
+  assert.match(source, /(?:head|collapsed)\.push\(renderMoneySignups\(sections\.moneySignups\)\)/);
 });
