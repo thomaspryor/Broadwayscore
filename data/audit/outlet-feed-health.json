@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-06T15:00:46.028Z",
+  "generatedAt": "2026-11-06T18:03:10.427Z",
   "staleDays": 45,
   "aliveDays": 30,
   "stale": [
@@ -12,93 +12,93 @@
     "guardian": {
       "strategy": "rss",
       "url": "https://www.theguardian.com/stage/rss",
-      "newestAny": "2026-11-05",
+      "newestAny": "2026-11-06",
       "oldestAny": "2026-09-17",
-      "newestFiltered": "2026-11-05",
+      "newestFiltered": "2026-11-06",
       "directBlocked": false,
       "filteredCount": 33,
       "latestReviewDate": "2026-11-02",
       "stale": false,
       "failStreak": 0,
-      "checkedAt": "2026-11-05T18:50:42.924Z"
+      "checkedAt": "2026-11-06T18:03:10.427Z"
     },
     "all-that-dazzles-uk": {
       "strategy": "rss",
       "url": "https://www.allthatdazzles.co.uk/blog-feed.xml",
-      "newestAny": "2026-11-05",
-      "oldestAny": "2026-10-27",
-      "newestFiltered": "2026-11-05",
+      "newestAny": "2026-11-06",
+      "oldestAny": "2026-10-28",
+      "newestFiltered": "2026-11-06",
       "directBlocked": false,
       "filteredCount": 20,
-      "latestReviewDate": "2026-11-03",
+      "latestReviewDate": "2026-11-05",
       "stale": false,
       "failStreak": 0,
-      "checkedAt": "2026-11-05T18:50:42.924Z"
+      "checkedAt": "2026-11-06T18:03:10.427Z"
     },
     "thereviewshub": {
       "strategy": "rss",
       "url": "https://www.thereviewshub.com/feed/",
-      "newestAny": "2026-11-05",
-      "oldestAny": "2026-10-23",
-      "newestFiltered": "2026-11-05",
+      "newestAny": "2026-11-06",
+      "oldestAny": "2026-10-24",
+      "newestFiltered": "2026-11-06",
       "directBlocked": false,
       "filteredCount": 100,
       "latestReviewDate": "2026-11-03",
       "stale": false,
       "failStreak": 0,
-      "checkedAt": "2026-11-05T18:50:42.924Z"
+      "checkedAt": "2026-11-06T18:03:10.427Z"
     },
     "whatsonstage": {
       "strategy": "rss",
       "url": "https://www.whatsonstage.com/news/feed/",
-      "newestAny": "2026-11-05",
-      "oldestAny": "2026-11-03",
+      "newestAny": "2026-11-06",
+      "oldestAny": "2026-11-04",
       "newestFiltered": "2026-11-05",
       "directBlocked": false,
       "filteredCount": 1,
-      "latestReviewDate": "2026-11-03",
+      "latestReviewDate": "2026-11-05",
       "stale": false,
       "failStreak": 0,
-      "checkedAt": "2026-11-05T18:50:42.924Z"
+      "checkedAt": "2026-11-06T18:03:10.427Z"
     },
     "stageandcinema": {
       "strategy": "rss",
       "url": "https://www.stageandcinema.com/feed/",
-      "newestAny": "2026-11-03",
-      "oldestAny": "2026-10-28",
-      "newestFiltered": "2026-11-03",
-      "directBlocked": false,
-      "filteredCount": 20,
-      "latestReviewDate": "2026-11-03",
-      "stale": false,
-      "failStreak": 0,
-      "checkedAt": "2026-11-05T18:50:42.924Z"
-    },
-    "west-end-best-friend": {
-      "strategy": "rss",
-      "url": "https://www.westendbestfriend.co.uk/news?format=rss",
-      "newestAny": "2026-11-05",
-      "oldestAny": "2026-11-02",
-      "newestFiltered": "2026-11-05",
-      "directBlocked": false,
-      "filteredCount": 5,
-      "latestReviewDate": "2026-11-01",
-      "stale": false,
-      "failStreak": 0,
-      "checkedAt": "2026-11-05T18:50:42.924Z"
-    },
-    "british-theatre": {
-      "strategy": "rss",
-      "url": "https://www.britishtheatreguide.info/reviews/",
       "newestAny": "2026-11-05",
       "oldestAny": "2026-10-29",
       "newestFiltered": "2026-11-05",
       "directBlocked": false,
       "filteredCount": 20,
-      "latestReviewDate": "2026-11-04",
+      "latestReviewDate": "2026-11-03",
       "stale": false,
       "failStreak": 0,
-      "checkedAt": "2026-11-05T18:50:42.924Z"
+      "checkedAt": "2026-11-06T18:03:10.427Z"
+    },
+    "west-end-best-friend": {
+      "strategy": "rss",
+      "url": "https://www.westendbestfriend.co.uk/news?format=rss",
+      "newestAny": "2026-11-06",
+      "oldestAny": "2026-11-03",
+      "newestFiltered": "2026-11-05",
+      "directBlocked": false,
+      "filteredCount": 4,
+      "latestReviewDate": "2026-11-01",
+      "stale": false,
+      "failStreak": 0,
+      "checkedAt": "2026-11-06T18:03:10.427Z"
+    },
+    "british-theatre": {
+      "strategy": "rss",
+      "url": "https://www.britishtheatreguide.info/reviews/",
+      "newestAny": null,
+      "oldestAny": null,
+      "newestFiltered": null,
+      "directBlocked": true,
+      "error": "fetchPage returned an unexpected page for https://www.britishtheatreguide.info/reviews/",
+      "latestReviewDate": "2026-11-04",
+      "stale": false,
+      "failStreak": 1,
+      "checkedAt": "2026-11-06T18:03:10.427Z"
     },
     "theater-scene": {
       "strategy": "rss",
@@ -108,101 +108,88 @@
       "newestFiltered": "2026-11-05",
       "directBlocked": false,
       "filteredCount": 21,
-      "latestReviewDate": "2026-11-03",
+      "latestReviewDate": "2026-11-05",
       "stale": false,
       "failStreak": 0,
-      "checkedAt": "2026-11-05T18:50:42.924Z"
+      "checkedAt": "2026-11-06T18:03:10.427Z"
     },
     "theatre-weekly": {
       "strategy": "rss",
       "url": "https://theatreweekly.com/feed",
-      "newestAny": "2026-11-05",
-      "oldestAny": "2026-11-04",
-      "newestFiltered": "2026-11-04",
+      "newestAny": "2026-11-06",
+      "oldestAny": "2026-11-05",
+      "newestFiltered": null,
       "directBlocked": false,
-      "filteredCount": 2,
+      "filteredCount": 0,
       "latestReviewDate": "2026-11-02",
       "stale": false,
       "failStreak": 0,
-      "checkedAt": "2026-11-05T18:50:42.924Z"
-    },
-    "plays-international": {
-      "strategy": "rss",
-      "url": "https://playsinternational.org.uk/feed/",
-      "newestAny": "2026-11-02",
-      "oldestAny": "2026-10-23",
-      "newestFiltered": "2026-11-02",
-      "directBlocked": false,
-      "filteredCount": 10,
-      "latestReviewDate": "2026-11-02",
-      "stale": false,
-      "failStreak": 0,
-      "checkedAt": "2026-11-05T18:50:42.924Z"
+      "checkedAt": "2026-11-06T18:03:10.427Z"
     },
     "off-off-online": {
       "strategy": "rss",
       "url": "https://offoffonline.com/offoffonline?format=rss",
-      "newestAny": "2026-11-03",
-      "oldestAny": "2026-10-05",
-      "newestFiltered": "2026-11-03",
-      "directBlocked": false,
-      "filteredCount": 20,
-      "latestReviewDate": "2026-11-03",
-      "stale": false,
-      "failStreak": 0,
-      "checkedAt": "2026-11-05T18:50:42.924Z"
-    },
-    "nytimes": {
-      "strategy": "rss",
-      "url": "https://rss.nytimes.com/services/xml/rss/nyt/Theater.xml",
       "newestAny": "2026-11-05",
-      "oldestAny": "2026-10-28",
-      "newestFiltered": "2026-11-03",
-      "directBlocked": false,
-      "filteredCount": 4,
-      "latestReviewDate": "2026-11-03",
-      "stale": false,
-      "failStreak": 0,
-      "checkedAt": "2026-11-05T18:50:42.924Z"
-    },
-    "the-spy-in-the-stalls": {
-      "strategy": "rss",
-      "url": "https://thespyinthestalls.com/feed/",
-      "newestAny": "2026-11-05",
-      "oldestAny": "2026-11-04",
+      "oldestAny": "2026-10-07",
       "newestFiltered": "2026-11-05",
       "directBlocked": false,
-      "filteredCount": 2,
-      "latestReviewDate": "2026-10-30",
+      "filteredCount": 20,
+      "latestReviewDate": "2026-11-05",
       "stale": false,
       "failStreak": 0,
-      "checkedAt": "2026-11-05T18:50:42.924Z"
+      "checkedAt": "2026-11-06T18:03:10.427Z"
     },
-    "a-youngish-perspective": {
+    "plays-international": {
       "strategy": "rss",
-      "url": "https://ayoungishperspective.co.uk/feed/",
+      "url": "https://playsinternational.org.uk/feed/",
       "newestAny": "2026-11-05",
-      "oldestAny": "2026-11-02",
+      "oldestAny": "2026-10-28",
       "newestFiltered": "2026-11-05",
       "directBlocked": false,
       "filteredCount": 10,
       "latestReviewDate": "2026-11-02",
       "stale": false,
       "failStreak": 0,
-      "checkedAt": "2026-11-05T18:50:42.924Z"
+      "checkedAt": "2026-11-06T18:03:10.427Z"
+    },
+    "nytimes": {
+      "strategy": "rss",
+      "url": "https://rss.nytimes.com/services/xml/rss/nyt/Theater.xml",
+      "newestAny": "2026-11-06",
+      "oldestAny": "2026-10-28",
+      "newestFiltered": "2026-11-03",
+      "directBlocked": false,
+      "filteredCount": 4,
+      "latestReviewDate": "2026-11-06",
+      "stale": false,
+      "failStreak": 0,
+      "checkedAt": "2026-11-06T18:03:10.427Z"
     },
     "culturesauce": {
       "strategy": "rss",
       "url": "https://culturesauce.net/feed",
-      "newestAny": "2026-11-04",
-      "oldestAny": "2026-10-22",
-      "newestFiltered": "2026-11-04",
+      "newestAny": "2026-11-05",
+      "oldestAny": "2026-10-29",
+      "newestFiltered": "2026-11-05",
       "directBlocked": false,
       "filteredCount": 9,
-      "latestReviewDate": "2026-11-04",
+      "latestReviewDate": "2026-11-05",
       "stale": false,
       "failStreak": 0,
-      "checkedAt": "2026-11-05T18:50:42.924Z"
+      "checkedAt": "2026-11-06T18:03:10.427Z"
+    },
+    "a-youngish-perspective": {
+      "strategy": "rss",
+      "url": "https://ayoungishperspective.co.uk/feed/",
+      "newestAny": "2026-11-06",
+      "oldestAny": "2026-11-04",
+      "newestFiltered": "2026-11-06",
+      "directBlocked": false,
+      "filteredCount": 10,
+      "latestReviewDate": "2026-11-02",
+      "stale": false,
+      "failStreak": 0,
+      "checkedAt": "2026-11-06T18:03:10.427Z"
     },
     "front-row-center": {
       "strategy": "rss",
@@ -215,33 +202,20 @@
       "latestReviewDate": "2026-11-04",
       "stale": false,
       "failStreak": 0,
-      "checkedAt": "2026-11-05T18:50:42.924Z"
+      "checkedAt": "2026-11-06T18:03:10.427Z"
     },
-    "liamodell": {
+    "the-spy-in-the-stalls": {
       "strategy": "rss",
-      "url": "https://liamodell.com/feed/",
-      "newestAny": "2026-11-05",
-      "oldestAny": "2026-10-26",
-      "newestFiltered": "2026-11-05",
+      "url": "https://thespyinthestalls.com/feed/",
+      "newestAny": "2026-11-06",
+      "oldestAny": "2026-11-06",
+      "newestFiltered": "2026-11-06",
       "directBlocked": false,
-      "filteredCount": 10,
-      "latestReviewDate": "2026-11-03",
+      "filteredCount": 2,
+      "latestReviewDate": "2026-10-30",
       "stale": false,
       "failStreak": 0,
-      "checkedAt": "2026-11-05T18:50:42.924Z"
-    },
-    "vulture": {
-      "strategy": "sitemap",
-      "url": "https://www.vulture.com/sitemaps/sitemap-2026.xml",
-      "newestAny": "2026-11-05",
-      "oldestAny": "2026-01-01",
-      "newestFiltered": "2026-11-02",
-      "directBlocked": false,
-      "filteredCount": 56,
-      "latestReviewDate": "2026-11-04",
-      "stale": false,
-      "failStreak": 0,
-      "checkedAt": "2026-11-05T18:50:42.924Z"
+      "checkedAt": "2026-11-06T18:03:10.427Z"
     },
     "theater-pizzazz": {
       "strategy": "rss",
@@ -251,62 +225,88 @@
       "newestFiltered": "2026-11-05",
       "directBlocked": false,
       "filteredCount": 99,
-      "latestReviewDate": "2026-11-04",
+      "latestReviewDate": "2026-11-05",
       "stale": false,
       "failStreak": 0,
-      "checkedAt": "2026-11-06T15:00:46.028Z"
+      "checkedAt": "2026-11-06T18:03:10.427Z"
     },
-    "readaboutstuff": {
-      "strategy": "rss",
-      "url": "https://readaboutstuff.com/feed/",
-      "newestAny": "2026-11-05",
-      "oldestAny": "2026-10-29",
-      "newestFiltered": "2026-11-05",
+    "vulture": {
+      "strategy": "sitemap",
+      "url": "https://www.vulture.com/sitemaps/sitemap-2026.xml",
+      "newestAny": "2026-11-06",
+      "oldestAny": "2026-01-01",
+      "newestFiltered": "2026-11-02",
       "directBlocked": false,
-      "filteredCount": 12,
-      "latestReviewDate": "2026-10-31",
+      "filteredCount": 56,
+      "latestReviewDate": "2026-11-05",
       "stale": false,
       "failStreak": 0,
-      "checkedAt": "2026-11-05T18:50:42.924Z"
+      "checkedAt": "2026-11-06T18:03:10.427Z"
     },
-    "north-west-end": {
+    "liamodell": {
       "strategy": "rss",
-      "url": "https://northwestend.com/feed/",
-      "newestAny": "2026-11-04",
-      "oldestAny": "2026-11-02",
-      "newestFiltered": "2026-11-04",
-      "directBlocked": false,
-      "filteredCount": 10,
-      "latestReviewDate": "2026-11-02",
-      "stale": false,
-      "failStreak": 0,
-      "checkedAt": "2026-11-05T18:50:42.924Z"
-    },
-    "one-minute-critic": {
-      "strategy": "rss",
-      "url": "https://1minutecritic.com/feed",
-      "newestAny": "2026-11-03",
-      "oldestAny": "2026-10-26",
-      "newestFiltered": "2026-11-03",
+      "url": "https://liamodell.com/feed/",
+      "newestAny": "2026-11-06",
+      "oldestAny": "2026-10-27",
+      "newestFiltered": "2026-11-06",
       "directBlocked": false,
       "filteredCount": 10,
       "latestReviewDate": "2026-11-03",
       "stale": false,
       "failStreak": 0,
-      "checkedAt": "2026-11-05T18:50:42.924Z"
+      "checkedAt": "2026-11-06T18:03:10.427Z"
     },
-    "theupcoming": {
+    "one-minute-critic": {
       "strategy": "rss",
-      "url": "https://www.theupcoming.co.uk/feed/",
+      "url": "https://1minutecritic.com/feed",
+      "newestAny": "2026-11-06",
+      "oldestAny": "2026-10-27",
+      "newestFiltered": "2026-11-06",
+      "directBlocked": false,
+      "filteredCount": 10,
+      "latestReviewDate": "2026-11-05",
+      "stale": false,
+      "failStreak": 0,
+      "checkedAt": "2026-11-06T18:03:10.427Z"
+    },
+    "north-west-end": {
+      "strategy": "rss",
+      "url": "https://northwestend.com/feed/",
       "newestAny": "2026-11-05",
-      "oldestAny": "2026-11-04",
+      "oldestAny": "2026-11-03",
       "newestFiltered": "2026-11-05",
       "directBlocked": false,
       "filteredCount": 10,
+      "latestReviewDate": "2026-11-04",
+      "stale": false,
+      "failStreak": 0,
+      "checkedAt": "2026-11-06T18:03:10.427Z"
+    },
+    "readaboutstuff": {
+      "strategy": "rss",
+      "url": "https://readaboutstuff.com/feed/",
+      "newestAny": "2026-11-06",
+      "oldestAny": "2026-11-01",
+      "newestFiltered": "2026-11-06",
+      "directBlocked": false,
+      "filteredCount": 12,
       "latestReviewDate": "2026-10-31",
       "stale": false,
       "failStreak": 0,
-      "checkedAt": "2026-11-05T18:50:42.924Z"
+      "checkedAt": "2026-11-06T18:03:10.427Z"
+    },
+    "exeunt-magazine": {
+      "strategy": "rss",
+      "url": "https://exeuntnyc.com/feed/",
+      "newestAny": null,
+      "oldestAny": null,
+      "newestFiltered": null,
+      "directBlocked": false,
+      "filteredCount": 0,
+      "latestReviewDate": "2026-11-05",
+      "stale": true,
+      "failStreak": 0,
+      "checkedAt": "2026-11-06T18:03:10.427Z"
     },
     "plays-to-see": {
       "strategy": "rss",
@@ -319,46 +319,46 @@
       "latestReviewDate": "2026-11-03",
       "stale": false,
       "failStreak": 0,
-      "checkedAt": "2026-11-05T18:50:42.924Z"
+      "checkedAt": "2026-11-06T18:03:10.427Z"
     },
     "firstnightmagazine": {
       "strategy": "rss",
       "url": "https://firstnightmagazine.com/feed/",
-      "newestAny": "2026-11-05",
-      "oldestAny": "2026-10-26",
-      "newestFiltered": "2026-11-05",
+      "newestAny": "2026-11-06",
+      "oldestAny": "2026-10-27",
+      "newestFiltered": "2026-11-06",
       "directBlocked": false,
       "filteredCount": 10,
       "latestReviewDate": "2026-11-04",
       "stale": false,
       "failStreak": 0,
-      "checkedAt": "2026-11-05T18:50:42.924Z"
+      "checkedAt": "2026-11-06T18:03:10.427Z"
     },
-    "exeunt-magazine": {
+    "theupcoming": {
       "strategy": "rss",
-      "url": "https://exeuntnyc.com/feed/",
-      "newestAny": null,
-      "oldestAny": null,
-      "newestFiltered": null,
+      "url": "https://www.theupcoming.co.uk/feed/",
+      "newestAny": "2026-11-05",
+      "oldestAny": "2026-11-05",
+      "newestFiltered": "2026-11-05",
       "directBlocked": false,
-      "filteredCount": 0,
-      "latestReviewDate": "2026-11-03",
-      "stale": true,
+      "filteredCount": 10,
+      "latestReviewDate": "2026-10-31",
+      "stale": false,
       "failStreak": 0,
-      "checkedAt": "2026-11-05T18:50:42.924Z"
+      "checkedAt": "2026-11-06T18:03:10.427Z"
     },
     "london-unattached": {
       "strategy": "rss",
       "url": "https://www.london-unattached.com/feed/",
-      "newestAny": "2026-11-05",
-      "oldestAny": "2026-10-30",
-      "newestFiltered": "2026-11-05",
+      "newestAny": "2026-11-06",
+      "oldestAny": "2026-10-31",
+      "newestFiltered": "2026-11-06",
       "directBlocked": false,
       "filteredCount": 10,
       "latestReviewDate": "2026-11-01",
       "stale": false,
       "failStreak": 0,
-      "checkedAt": "2026-11-05T18:50:42.924Z"
+      "checkedAt": "2026-11-06T18:03:10.427Z"
     },
     "this-week-in-new-york": {
       "strategy": "rss",
@@ -371,7 +371,7 @@
       "latestReviewDate": "2026-11-02",
       "stale": false,
       "failStreak": 0,
-      "checkedAt": "2026-11-05T18:50:42.924Z"
+      "checkedAt": "2026-11-06T18:03:10.427Z"
     },
     "theater-life": {
       "strategy": "rss",
@@ -384,7 +384,7 @@
       "latestReviewDate": "2026-11-04",
       "stale": false,
       "failStreak": 0,
-      "checkedAt": "2026-11-05T18:50:42.924Z"
+      "checkedAt": "2026-11-06T18:03:10.427Z"
     },
     "musical-theatre-review": {
       "strategy": "rss",
@@ -397,59 +397,59 @@
       "latestReviewDate": "2026-11-04",
       "stale": false,
       "failStreak": 0,
-      "checkedAt": "2026-11-05T18:50:42.924Z"
+      "checkedAt": "2026-11-06T18:03:10.427Z"
     },
     "the-recs": {
       "strategy": "rss",
       "url": "https://therecs.co.uk/feed/",
-      "newestAny": "2026-11-05",
-      "oldestAny": "2026-10-28",
-      "newestFiltered": "2026-11-05",
+      "newestAny": "2026-11-06",
+      "oldestAny": "2026-10-29",
+      "newestFiltered": "2026-11-06",
       "directBlocked": false,
       "filteredCount": 10,
-      "latestReviewDate": "2026-11-04",
+      "latestReviewDate": "2026-11-05",
       "stale": false,
       "failStreak": 0,
-      "checkedAt": "2026-11-05T18:50:42.924Z"
-    },
-    "monstagigz": {
-      "strategy": "rss",
-      "url": "https://monstagigz.com/feed/",
-      "newestAny": "2026-11-05",
-      "oldestAny": "2026-10-23",
-      "newestFiltered": "2026-11-05",
-      "directBlocked": false,
-      "filteredCount": 10,
-      "latestReviewDate": "2026-10-25",
-      "stale": false,
-      "failStreak": 0,
-      "checkedAt": "2026-11-05T18:50:42.924Z"
+      "checkedAt": "2026-11-06T18:03:10.427Z"
     },
     "pages-on-stages": {
       "strategy": "rss",
       "url": "https://pagesonstages.com/feed",
-      "newestAny": "2026-10-29",
-      "oldestAny": "2026-10-11",
-      "newestFiltered": "2026-10-29",
+      "newestAny": "2026-11-05",
+      "oldestAny": "2026-10-21",
+      "newestFiltered": "2026-11-05",
       "directBlocked": false,
       "filteredCount": 10,
-      "latestReviewDate": "2026-10-29",
+      "latestReviewDate": "2026-11-05",
       "stale": false,
       "failStreak": 0,
-      "checkedAt": "2026-11-05T18:50:42.924Z"
+      "checkedAt": "2026-11-06T18:03:10.427Z"
+    },
+    "monstagigz": {
+      "strategy": "rss",
+      "url": "https://monstagigz.com/feed/",
+      "newestAny": "2026-11-06",
+      "oldestAny": "2026-10-24",
+      "newestFiltered": "2026-11-06",
+      "directBlocked": false,
+      "filteredCount": 10,
+      "latestReviewDate": "2026-11-05",
+      "stale": false,
+      "failStreak": 0,
+      "checkedAt": "2026-11-06T18:03:10.427Z"
     },
     "afridiziak-theatre-news": {
       "strategy": "rss",
       "url": "https://www.afridiziak.com/feed/",
-      "newestAny": "2026-11-05",
+      "newestAny": "2026-11-06",
       "oldestAny": "2026-06-27",
       "newestFiltered": "2026-11-05",
       "directBlocked": false,
-      "filteredCount": 49,
+      "filteredCount": 48,
       "latestReviewDate": "2026-10-28",
       "stale": false,
       "failStreak": 0,
-      "checkedAt": "2026-11-05T18:50:42.924Z"
+      "checkedAt": "2026-11-06T18:03:10.427Z"
     },
     "the-interested-bystander": {
       "strategy": "rss",
@@ -462,7 +462,7 @@
       "latestReviewDate": "2026-10-23",
       "stale": false,
       "failStreak": 0,
-      "checkedAt": "2026-11-05T18:50:42.924Z"
+      "checkedAt": "2026-11-06T18:03:10.427Z"
     },
     "adventuresintheatreland": {
       "strategy": "rss",
@@ -475,7 +475,7 @@
       "latestReviewDate": "2026-10-29",
       "stale": false,
       "failStreak": 0,
-      "checkedAt": "2026-11-05T18:50:42.924Z"
+      "checkedAt": "2026-11-06T18:03:10.427Z"
     },
     "thewrap": {
       "strategy": "rss",
@@ -488,33 +488,20 @@
       "latestReviewDate": "2026-10-30",
       "stale": false,
       "failStreak": 0,
-      "checkedAt": "2026-11-05T18:50:42.924Z"
+      "checkedAt": "2026-11-06T18:03:10.427Z"
     },
     "theartsdispatch": {
       "strategy": "rss",
       "url": "https://theartsdispatch.substack.com/feed",
-      "newestAny": "2026-11-04",
+      "newestAny": "2026-11-05",
       "oldestAny": "2026-09-27",
-      "newestFiltered": "2026-11-04",
+      "newestFiltered": "2026-11-05",
       "directBlocked": true,
       "filteredCount": 20,
-      "latestReviewDate": "2026-11-01",
+      "latestReviewDate": "2026-11-04",
       "stale": false,
       "failStreak": 0,
-      "checkedAt": "2026-11-05T18:50:42.924Z"
-    },
-    "theatrecat": {
-      "strategy": "rss",
-      "url": "https://theatrecat.com/feed/",
-      "newestAny": "2026-10-29",
-      "oldestAny": "2026-03-06",
-      "newestFiltered": "2026-10-29",
-      "directBlocked": false,
-      "filteredCount": 50,
-      "latestReviewDate": "2026-10-23",
-      "stale": false,
-      "failStreak": 0,
-      "checkedAt": "2026-11-05T18:50:42.924Z"
+      "checkedAt": "2026-11-06T18:03:10.427Z"
     },
     "pinkprincetheatre": {
       "strategy": "rss",
@@ -524,15 +511,15 @@
       "newestFiltered": "2026-11-05",
       "directBlocked": false,
       "filteredCount": 20,
-      "latestReviewDate": "2026-11-03",
+      "latestReviewDate": "2026-11-05",
       "stale": false,
       "failStreak": 0,
-      "checkedAt": "2026-11-05T18:50:42.924Z"
+      "checkedAt": "2026-11-06T18:03:10.427Z"
     },
     "south-london": {
       "strategy": "rss",
       "url": "https://southlondon.co.uk/feed/",
-      "newestAny": "2026-11-05",
+      "newestAny": "2026-11-06",
       "oldestAny": "2026-11-03",
       "newestFiltered": "2026-11-05",
       "directBlocked": false,
@@ -540,72 +527,98 @@
       "latestReviewDate": "2026-11-01",
       "stale": false,
       "failStreak": 0,
-      "checkedAt": "2026-11-05T18:50:42.924Z"
+      "checkedAt": "2026-11-06T18:03:10.427Z"
     },
     "fairypoweredproductions": {
       "strategy": "rss",
       "url": "https://fairypoweredproductions.com/feed/",
-      "newestAny": "2026-11-05",
-      "oldestAny": "2026-11-04",
-      "newestFiltered": "2026-11-05",
+      "newestAny": "2026-11-06",
+      "oldestAny": "2026-11-05",
+      "newestFiltered": "2026-11-06",
       "directBlocked": false,
       "filteredCount": 10,
       "latestReviewDate": "2026-10-27",
       "stale": false,
       "failStreak": 0,
-      "checkedAt": "2026-11-05T18:50:42.924Z"
+      "checkedAt": "2026-11-06T18:03:10.427Z"
+    },
+    "theatrecat": {
+      "strategy": "rss",
+      "url": "https://theatrecat.com/feed/",
+      "newestAny": "2026-11-05",
+      "oldestAny": "2026-03-10",
+      "newestFiltered": "2026-11-05",
+      "directBlocked": false,
+      "filteredCount": 50,
+      "latestReviewDate": "2026-10-23",
+      "stale": false,
+      "failStreak": 0,
+      "checkedAt": "2026-11-06T18:03:10.427Z"
     },
     "jackstage": {
       "strategy": "rss",
       "url": "https://www.jackstage.co.uk/blog-feed.xml",
-      "newestAny": "2026-11-05",
-      "oldestAny": "2026-10-08",
-      "newestFiltered": "2026-11-05",
+      "newestAny": "2026-11-06",
+      "oldestAny": "2026-10-09",
+      "newestFiltered": "2026-11-06",
       "directBlocked": false,
       "filteredCount": 20,
       "latestReviewDate": "2026-10-24",
       "stale": false,
       "failStreak": 0,
-      "checkedAt": "2026-11-05T18:50:42.924Z"
+      "checkedAt": "2026-11-06T18:03:10.427Z"
     },
     "harry-theatre-life": {
       "strategy": "rss",
       "url": "https://www.harrytheatrelife.co.uk/blog-feed.xml",
-      "newestAny": "2026-11-04",
-      "oldestAny": "2026-09-08",
-      "newestFiltered": "2026-11-04",
+      "newestAny": "2026-11-06",
+      "oldestAny": "2026-09-09",
+      "newestFiltered": "2026-11-06",
       "directBlocked": false,
       "filteredCount": 20,
       "latestReviewDate": "2026-10-30",
       "stale": false,
       "failStreak": 0,
-      "checkedAt": "2026-11-05T18:50:42.924Z"
+      "checkedAt": "2026-11-06T18:03:10.427Z"
     },
     "theatre-reviews-limited": {
       "strategy": "rss",
       "url": "https://www.theatrereviews.com/feed/",
-      "newestAny": "2026-11-02",
-      "oldestAny": "2026-08-11",
-      "newestFiltered": "2026-11-02",
+      "newestAny": "2026-11-05",
+      "oldestAny": "2026-09-27",
+      "newestFiltered": "2026-11-05",
       "directBlocked": false,
       "filteredCount": 10,
       "latestReviewDate": "2026-11-02",
       "stale": false,
       "failStreak": 0,
-      "checkedAt": "2026-11-05T18:50:42.924Z"
+      "checkedAt": "2026-11-06T18:03:10.427Z"
+    },
+    "la-voce-di-new-york": {
+      "strategy": "rss",
+      "url": "https://lavocedinewyork.com/feed/",
+      "newestAny": "2026-11-06",
+      "oldestAny": "2026-11-06",
+      "newestFiltered": "2026-11-06",
+      "directBlocked": false,
+      "filteredCount": 1,
+      "latestReviewDate": "2026-11-03",
+      "stale": false,
+      "failStreak": 0,
+      "checkedAt": "2026-11-06T18:03:10.427Z"
     },
     "west-end-wilma": {
       "strategy": "rss",
       "url": "https://westendwilma.com/feed/",
-      "newestAny": "2026-11-05",
+      "newestAny": "2026-11-06",
       "oldestAny": "2026-11-02",
-      "newestFiltered": "2026-11-05",
+      "newestFiltered": "2026-11-06",
       "directBlocked": false,
       "filteredCount": 10,
       "latestReviewDate": "2026-10-24",
       "stale": false,
       "failStreak": 0,
-      "checkedAt": "2026-11-05T18:50:42.924Z"
+      "checkedAt": "2026-11-06T18:03:10.427Z"
     },
     "city-am": {
       "strategy": "rss",
@@ -618,20 +631,20 @@
       "latestReviewDate": "2026-11-01",
       "stale": false,
       "failStreak": 0,
-      "checkedAt": "2026-11-05T18:50:42.924Z"
+      "checkedAt": "2026-11-06T18:03:10.427Z"
     },
     "observer": {
       "strategy": "sitemap",
       "url": "https://observer.co.uk/sitemap.xml",
-      "newestAny": "2026-11-05",
+      "newestAny": "2026-11-06",
       "oldestAny": "1970-06-28",
-      "newestFiltered": "2026-10-31",
+      "newestFiltered": "2026-11-06",
       "directBlocked": false,
-      "filteredCount": 169,
+      "filteredCount": 171,
       "latestReviewDate": "2026-10-31",
       "stale": false,
       "failStreak": 0,
-      "checkedAt": "2026-11-05T18:50:42.924Z"
+      "checkedAt": "2026-11-06T18:03:10.427Z"
     },
     "nypost": {
       "strategy": "rss",
@@ -644,59 +657,46 @@
       "latestReviewDate": "2026-11-04",
       "stale": false,
       "failStreak": 0,
-      "checkedAt": "2026-11-05T18:50:42.924Z"
+      "checkedAt": "2026-11-06T18:03:10.427Z"
     },
     "josh-at-the-movies": {
       "strategy": "rss",
       "url": "https://joshatthemovies.com/feed/",
-      "newestAny": "2026-11-05",
+      "newestAny": "2026-11-06",
       "oldestAny": "2026-10-23",
-      "newestFiltered": "2026-11-05",
+      "newestFiltered": "2026-11-06",
       "directBlocked": false,
       "filteredCount": 10,
       "latestReviewDate": "2026-10-31",
       "stale": false,
       "failStreak": 0,
-      "checkedAt": "2026-11-05T18:50:42.924Z"
-    },
-    "la-voce-di-new-york": {
-      "strategy": "rss",
-      "url": "https://lavocedinewyork.com/feed/",
-      "newestAny": "2026-11-05",
-      "oldestAny": "2026-11-05",
-      "newestFiltered": "2026-11-05",
-      "directBlocked": false,
-      "filteredCount": 1,
-      "latestReviewDate": "2026-10-19",
-      "stale": false,
-      "failStreak": 0,
-      "checkedAt": "2026-11-05T18:50:42.924Z"
+      "checkedAt": "2026-11-06T18:03:10.427Z"
     },
     "onin": {
       "strategy": "rss",
       "url": "https://onin.london/feed/",
-      "newestAny": "2026-11-05",
-      "oldestAny": "2026-11-04",
-      "newestFiltered": "2026-11-05",
+      "newestAny": "2026-11-06",
+      "oldestAny": "2026-11-05",
+      "newestFiltered": "2026-11-06",
       "directBlocked": false,
       "filteredCount": 5,
       "latestReviewDate": "2026-10-28",
       "stale": false,
       "failStreak": 0,
-      "checkedAt": "2026-11-05T18:50:42.924Z"
+      "checkedAt": "2026-11-06T18:03:10.427Z"
     },
     "theatre-vibe": {
       "strategy": "rss",
       "url": "https://theatrevibe.co.uk/feed/",
-      "newestAny": "2026-11-04",
+      "newestAny": "2026-11-06",
       "oldestAny": "2026-06-10",
-      "newestFiltered": "2026-11-04",
+      "newestFiltered": "2026-11-06",
       "directBlocked": false,
       "filteredCount": 30,
       "latestReviewDate": "2026-10-11",
       "stale": false,
       "failStreak": 0,
-      "checkedAt": "2026-11-05T18:50:42.924Z"
+      "checkedAt": "2026-11-06T18:03:10.427Z"
     },
     "unmissabletheatre": {
       "strategy": "rss",
@@ -709,20 +709,7 @@
       "latestReviewDate": "2026-11-02",
       "stale": false,
       "failStreak": 0,
-      "checkedAt": "2026-11-05T18:50:42.924Z"
-    },
-    "revstanstheatreblog": {
-      "strategy": "rss",
-      "url": "https://revstanstheatreblog.co.uk/feed/",
-      "newestAny": "2026-11-05",
-      "oldestAny": "2026-09-26",
-      "newestFiltered": "2026-11-05",
-      "directBlocked": false,
-      "filteredCount": 10,
-      "latestReviewDate": "2026-11-03",
-      "stale": false,
-      "failStreak": 0,
-      "checkedAt": "2026-11-05T18:50:42.924Z"
+      "checkedAt": "2026-11-06T18:03:10.427Z"
     },
     "matineemouse": {
       "strategy": "rss",
@@ -735,7 +722,7 @@
       "latestReviewDate": "2026-10-23",
       "stale": false,
       "failStreak": 0,
-      "checkedAt": "2026-11-05T18:50:42.924Z"
+      "checkedAt": "2026-11-06T18:03:10.427Z"
     },
     "rolandcat": {
       "strategy": "rss",
@@ -748,7 +735,20 @@
       "latestReviewDate": "2026-10-21",
       "stale": false,
       "failStreak": 0,
-      "checkedAt": "2026-11-05T18:50:42.924Z"
+      "checkedAt": "2026-11-06T18:03:10.427Z"
+    },
+    "revstanstheatreblog": {
+      "strategy": "rss",
+      "url": "https://revstanstheatreblog.co.uk/feed/",
+      "newestAny": "2026-11-05",
+      "oldestAny": "2026-09-26",
+      "newestFiltered": "2026-11-05",
+      "directBlocked": false,
+      "filteredCount": 10,
+      "latestReviewDate": "2026-11-03",
+      "stale": false,
+      "failStreak": 0,
+      "checkedAt": "2026-11-06T18:03:10.427Z"
     },
     "amny": {
       "strategy": "rss",
@@ -761,33 +761,20 @@
       "latestReviewDate": "2026-11-03",
       "stale": false,
       "failStreak": 0,
-      "checkedAt": "2026-11-05T18:50:42.924Z"
-    },
-    "viewfromthegods": {
-      "strategy": "rss",
-      "url": "https://viewfromthegods.co.uk/feed/",
-      "newestAny": "2026-11-05",
-      "oldestAny": "2026-10-21",
-      "newestFiltered": "2026-11-05",
-      "directBlocked": false,
-      "filteredCount": 10,
-      "latestReviewDate": "2026-09-26",
-      "stale": false,
-      "failStreak": 0,
-      "checkedAt": "2026-11-05T18:50:42.924Z"
+      "checkedAt": "2026-11-06T18:03:10.427Z"
     },
     "frontmezzjunkies": {
       "strategy": "rss",
       "url": "https://frontmezzjunkies.com/feed/",
-      "newestAny": "2026-11-05",
-      "oldestAny": "2026-10-27",
-      "newestFiltered": "2026-11-05",
+      "newestAny": "2026-11-06",
+      "oldestAny": "2026-10-28",
+      "newestFiltered": "2026-11-06",
       "directBlocked": false,
       "filteredCount": 10,
       "latestReviewDate": "2026-10-28",
       "stale": false,
       "failStreak": 0,
-      "checkedAt": "2026-11-05T18:50:42.924Z"
+      "checkedAt": "2026-11-06T18:03:10.427Z"
     },
     "new-york-classical-review": {
       "strategy": "rss",
@@ -800,7 +787,20 @@
       "latestReviewDate": "2026-11-02",
       "stale": false,
       "failStreak": 0,
-      "checkedAt": "2026-11-05T18:50:42.924Z"
+      "checkedAt": "2026-11-06T18:03:10.427Z"
+    },
+    "mashable": {
+      "strategy": "rss",
+      "url": "https://mashable.com/feeds/rss/entertainment",
+      "newestAny": "2026-11-06",
+      "oldestAny": "2026-10-31",
+      "newestFiltered": "2026-11-06",
+      "directBlocked": false,
+      "filteredCount": 100,
+      "latestReviewDate": "2026-11-05",
+      "stale": false,
+      "failStreak": 0,
+      "checkedAt": "2026-11-06T18:03:10.427Z"
     },
     "variety": {
       "strategy": "rss",
@@ -813,7 +813,7 @@
       "latestReviewDate": "2026-10-30",
       "stale": false,
       "failStreak": 0,
-      "checkedAt": "2026-11-05T18:50:42.924Z"
+      "checkedAt": "2026-11-06T18:03:10.427Z"
     },
     "slantmagazine": {
       "strategy": "rss",
@@ -825,47 +825,60 @@
       "error": "All scraping methods failed",
       "latestReviewDate": "2026-10-19",
       "stale": false,
-      "failStreak": 8,
-      "checkedAt": "2026-11-05T18:50:42.924Z"
+      "failStreak": 9,
+      "checkedAt": "2026-11-06T18:03:10.427Z"
+    },
+    "viewfromthegods": {
+      "strategy": "rss",
+      "url": "https://viewfromthegods.co.uk/feed/",
+      "newestAny": "2026-11-05",
+      "oldestAny": "2026-10-21",
+      "newestFiltered": "2026-11-05",
+      "directBlocked": false,
+      "filteredCount": 10,
+      "latestReviewDate": "2026-09-26",
+      "stale": false,
+      "failStreak": 0,
+      "checkedAt": "2026-11-06T18:03:10.427Z"
     },
     "totaltheater1": {
       "strategy": "rss",
       "url": "https://totaltheater1.wordpress.com/feed/",
-      "newestAny": "2026-11-02",
-      "oldestAny": "2026-10-06",
-      "newestFiltered": "2026-11-02",
+      "newestAny": "2026-11-05",
+      "oldestAny": "2026-10-07",
+      "newestFiltered": "2026-11-05",
       "directBlocked": false,
       "filteredCount": 15,
       "latestReviewDate": "2026-11-02",
       "stale": false,
       "failStreak": 0,
-      "checkedAt": "2026-11-05T18:50:42.924Z"
+      "checkedAt": "2026-11-06T18:03:10.427Z"
     },
     "operawire": {
       "strategy": "rss",
       "url": "https://operawire.com/feed/",
-      "newestAny": "2026-11-05",
+      "newestAny": "2026-11-06",
       "oldestAny": "2026-11-05",
-      "newestFiltered": "2026-11-05",
+      "newestFiltered": "2026-11-06",
       "directBlocked": false,
       "filteredCount": 10,
       "latestReviewDate": "2026-11-01",
       "stale": false,
       "failStreak": 0,
-      "checkedAt": "2026-11-05T18:50:42.924Z"
+      "checkedAt": "2026-11-06T18:03:10.427Z"
     },
     "rhombus-rota": {
       "strategy": "rss",
       "url": "https://rhombusrota.co.uk/feed/",
-      "newestAny": "2026-11-05",
+      "newestAny": "2026-11-06",
       "oldestAny": "2026-11-02",
-      "newestFiltered": "2026-11-05",
+      "newestFiltered": "2026-11-06",
       "directBlocked": false,
       "filteredCount": 10,
       "latestReviewDate": "2026-10-06",
       "stale": false,
       "failStreak": 0,
-      "checkedAt": "2026-11-05T18:50:42.924Z"
+      "checkedAt": "2026-11-06T18:03:10.427Z"
     },
     "cote-notices": {
       "strategy": "rss",
@@ -878,85 +891,72 @@
       "latestReviewDate": "2026-10-05",
       "stale": false,
       "failStreak": 0,
-      "checkedAt": "2026-11-05T18:50:42.924Z"
+      "checkedAt": "2026-11-06T18:03:10.427Z"
     },
     "artsfuse": {
       "strategy": "rss",
       "url": "https://artsfuse.org/feed/",
-      "newestAny": "2026-11-05",
-      "oldestAny": "2026-11-02",
+      "newestAny": "2026-11-06",
+      "oldestAny": "2026-11-03",
       "newestFiltered": "2026-11-05",
       "directBlocked": false,
-      "filteredCount": 9,
+      "filteredCount": 8,
       "latestReviewDate": "2026-10-11",
       "stale": false,
       "failStreak": 0,
-      "checkedAt": "2026-11-05T18:50:42.924Z"
+      "checkedAt": "2026-11-06T18:03:10.427Z"
     },
     "the-contending": {
       "strategy": "rss",
       "url": "https://thecontending.com/feed/",
-      "newestAny": "2026-11-04",
-      "oldestAny": "2026-10-31",
-      "newestFiltered": "2026-11-04",
+      "newestAny": "2026-11-06",
+      "oldestAny": "2026-11-03",
+      "newestFiltered": "2026-11-06",
       "directBlocked": false,
       "filteredCount": 10,
       "latestReviewDate": "2026-07-06",
       "stale": false,
       "failStreak": 0,
-      "checkedAt": "2026-11-05T18:50:42.924Z"
+      "checkedAt": "2026-11-06T18:03:10.427Z"
     },
     "new-york-notebook": {
       "strategy": "rss",
       "url": "https://newyorknotebook.substack.com/feed",
-      "newestAny": "2026-11-04",
-      "oldestAny": "2026-08-26",
-      "newestFiltered": "2026-11-04",
+      "newestAny": "2026-11-05",
+      "oldestAny": "2026-09-15",
+      "newestFiltered": "2026-11-05",
       "directBlocked": true,
       "filteredCount": 20,
       "latestReviewDate": "2026-11-03",
       "stale": false,
       "failStreak": 0,
-      "checkedAt": "2026-11-05T18:50:42.924Z"
+      "checkedAt": "2026-11-06T18:03:10.427Z"
     },
     "dailybeast": {
       "strategy": "rss",
       "url": "https://www.thedailybeast.com/arc/outboundfeeds/rss/articles/",
-      "newestAny": "2026-11-05",
-      "oldestAny": "2026-11-04",
-      "newestFiltered": "2026-11-05",
+      "newestAny": "2026-11-06",
+      "oldestAny": "2026-11-05",
+      "newestFiltered": "2026-11-06",
       "directBlocked": false,
       "filteredCount": 100,
       "latestReviewDate": "2026-01-08",
       "stale": false,
       "failStreak": 0,
-      "checkedAt": "2026-11-05T18:50:42.924Z"
-    },
-    "mashable": {
-      "strategy": "rss",
-      "url": "https://mashable.com/feeds/rss/entertainment",
-      "newestAny": "2026-11-05",
-      "oldestAny": "2026-10-29",
-      "newestFiltered": "2026-11-05",
-      "directBlocked": false,
-      "filteredCount": 100,
-      "latestReviewDate": "2026-11-01",
-      "stale": false,
-      "failStreak": 0,
-      "checkedAt": "2026-11-05T18:50:42.924Z"
+      "checkedAt": "2026-11-06T18:03:10.427Z"
     },
     "jks-theatre-scene": {
       "strategy": "rss",
       "url": "https://www.jkstheatrescene.com/feeds/posts/default?alt=rss",
-      "newestAny": "2026-11-04",
-      "oldestAny": "2026-09-11",
-      "newestFiltered": "2026-11-04",
+      "newestAny": "2026-11-06",
+      "oldestAny": "2026-09-14",
+      "newestFiltered": "2026-11-06",
       "directBlocked": false,
       "filteredCount": 25,
       "latestReviewDate": "2026-11-02",
       "stale": false,
       "failStreak": 0,
-      "checkedAt": "2026-11-05T18:50:42.924Z"
+      "checkedAt": "2026-11-06T18:03:10.427Z"
     },
     "bobs-theater-blog": {
       "strategy": "rss",
@@ -969,7 +969,7 @@
       "latestReviewDate": "2026-10-24",
       "stale": false,
       "failStreak": 0,
-      "checkedAt": "2026-11-05T18:50:42.924Z"
+      "checkedAt": "2026-11-06T18:03:10.427Z"
     }
   }
 }
