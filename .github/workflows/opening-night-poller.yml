@@ -999,6 +999,27 @@ jobs:
           bash ../../scripts/lib/push-with-retry.sh 5 main
         continue-on-error: true
 
+      # BRO-7031: the inline scorer shares one ~8 min deadline across every show and
+      # only starts a review with 5 min left, so a busy night leaves reviews unscored
+      # ("left N for the next run"). The next poll can be cancelled by an Express
+      # takeover, which stranded New York Theatre Guide for 1h36m on 2:22 - A Ghost
+      # Story (2026-11-05). Hand any show still holding unscored reviews straight to
+      # the dedicated scoring workflow instead of waiting for a poll that may not come.
+      - name: Dispatch scoring for shows left unscored
+        if: steps.find.outputs.has_shows == 'true' && steps.poll.outputs.any_action == 'true'
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          LEFTOVER=$(node scripts/lib/scoring-leftover-shows.js "${{ steps.find.outputs.shows }}")
+          if [ -z "$LEFTOVER" ]; then
+            echo "No show left unscored by the inline scorer."
+            exit 0
+          fi
+          echo "→ Dispatching llm-ensemble-score.yml for: $LEFTOVER"
+          gh workflow run llm-ensemble-score.yml -f show_id="$LEFTOVER" \
+            || echo "::warning::scoring dispatch failed for $LEFTOVER"
+
       # === FAST PATH: inline rebuild+deploy (skips separate rebuild-reviews.yml) ===
       # NYT Critic's Pick on opening night: data/nyt-critics-picks.json is
       # otherwise refreshed only Mon/Wed/Fri (weekly-nyt-critics-picks.yml),
