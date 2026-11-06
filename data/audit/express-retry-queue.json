@@ -151,7 +151,8 @@
       "outletIds": [
         "nytimes"
       ],
-      "attempted": false
+      "attempted": true,
+      "attemptedAt": "2026-11-06T21:07:38.081Z"
     },
     {
       "kind": "truncated-t1-refetch",
@@ -174,6 +175,42 @@
       "offsetHours": 12,
       "outletIds": [
         "nytimes"
+      ],
+      "attempted": false
+    },
+    {
+      "kind": "truncated-t1-refetch",
+      "showId": "speculations-off-west-end-2026",
+      "market": "west-end",
+      "queuedAt": "2026-11-06T21:07:38.081Z",
+      "dueAt": "2026-11-06T22:07:38.081Z",
+      "offsetHours": 1,
+      "outletIds": [
+        "guardian"
+      ],
+      "attempted": false
+    },
+    {
+      "kind": "truncated-t1-refetch",
+      "showId": "speculations-off-west-end-2026",
+      "market": "west-end",
+      "queuedAt": "2026-11-06T21:07:38.081Z",
+      "dueAt": "2026-11-07T00:07:38.081Z",
+      "offsetHours": 3,
+      "outletIds": [
+        "guardian"
+      ],
+      "attempted": false
+    },
+    {
+      "kind": "truncated-t1-refetch",
+      "showId": "speculations-off-west-end-2026",
+      "market": "west-end",
+      "queuedAt": "2026-11-06T21:07:38.081Z",
+      "dueAt": "2026-11-07T09:07:38.081Z",
+      "offsetHours": 12,
+      "outletIds": [
+        "guardian"
       ],
       "attempted": false
     }
