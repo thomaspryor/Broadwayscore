@@ -10,6 +10,9 @@
  * metadata (CLAUDE.md §3).
  */
 const { foldDiacritics } = require('./url-slug');
+const { EXCERPT_FIELDS } = require('./excerpt-fields');
+
+const AGGREGATOR_EXCERPT_FIELDS = EXCERPT_FIELDS.filter((f) => f !== 'metaExcerpt');
 
 const MIN_FULLTEXT = 100; // same floor as selectScorableText (scorable-text.js)
 
@@ -88,4 +91,22 @@ function shouldSuppressExcerptOnlyNotAReview({ rejection, scoredTextType, fileDa
   return { suppress: true, reason: 'excerpt_only_not_a_review_url_is_review_slug' };
 }
 
-module.exports = { shouldSuppressExcerptOnlyWrongShow, shouldSuppressExcerptOnlyNotAReview, urlSlugNamesShow, urlSlugIsReviewOfShow };
+/**
+ * BRO-7050: the general form of the two guards above. An ensemble rejection (any reason) judged on an
+ * aggregator excerpt alone, for a file an aggregator itself lists, is a verdict on a snippet the aggregator
+ * paired by critic+outlet, not on the article. It writes no flag; the file stays excerpt-tier and queued for
+ * the fullText refetch (fetchPage chain + archive fallback), exactly as the URL-slug guards leave it.
+ * Needs no URL slug: the listing is the evidence. A fullText of 100+ chars means the verdict read a real body
+ * and is not suppressed here.
+ */
+function shouldSuppressExcerptOnlyAggregatorListed({ rejection, scoredTextType, fileData }) {
+  if (!['not_a_review', 'wrong_show', 'wrong_production'].includes(rejection)) return { suppress: false, reason: null };
+  if (scoredTextType !== 'excerpt') return { suppress: false, reason: null };
+  const hasFullText = typeof fileData?.fullText === 'string' && fileData.fullText.length >= MIN_FULLTEXT;
+  if (hasFullText) return { suppress: false, reason: null };
+  const listed = AGGREGATOR_EXCERPT_FIELDS.some((f) => typeof fileData?.[f] === 'string' && fileData[f].trim().length > 0);
+  if (!listed) return { suppress: false, reason: null };
+  return { suppress: true, reason: `excerpt_only_${rejection}_aggregator_listed` };
+}
+
+module.exports = { shouldSuppressExcerptOnlyWrongShow, shouldSuppressExcerptOnlyNotAReview, shouldSuppressExcerptOnlyAggregatorListed, urlSlugNamesShow, urlSlugIsReviewOfShow };

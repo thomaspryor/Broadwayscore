@@ -122,6 +122,11 @@ function nonReviewStampBlockReason(d, hasBotStub, opts = {}) {
       && hasEnsembleScore(d) && opts.independentCheckAgrees !== true) {
     return 'content-verifier says review and an LLM score already exists (no second independent check)';
   }
+  // BRO-7050: the stamp is one Gemini call. An aggregator that lists this review (its quote is in this body)
+  // is an independent check the classifier did not see, so the stamp waits for a second one that agrees.
+  if (opts.independentCheckAgrees !== true && require('./single-verdict-guard').aggregatorListedBy(d).length > 0) {
+    return 'an aggregator lists this review and no second independent check agrees it is not one';
+  }
   if (cv && cv.isValid === true && cv.confidence === 'high' && cv.wrongArticle !== true
       && (!cv.articleType || cv.articleType === 'review')) {
     return 'high-confidence content-verifier says review';
