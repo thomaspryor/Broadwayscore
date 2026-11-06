@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-06T07:26:34.668Z",
+  "generatedAt": "2026-11-06T07:54:59.218Z",
   "windowDays": 1095,
   "targets": 870,
   "auditedThisRun": 9,
@@ -7,8 +7,8 @@
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 634,
-    "missingCurrentRun": 1177,
+    "withGap": 635,
+    "missingCurrentRun": 1178,
     "totalCitedNoUrl": 0,
     "totalFlaggedMisses": 904,
     "totalRecoverable": 58,
@@ -37366,7 +37366,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-11-06T07:26:34.668Z"
+      "computedAt": "2026-11-06T07:54:59.218Z"
     },
     {
       "showId": "beautiful-little-fool-west-end-2026",
@@ -51392,16 +51392,16 @@
       "previewsStartDate": "2026-11-05",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://www.britishtheatre.com/posts/review-room-broom-lyric-theatre-4stars"
+        "https://emmareed.net/review-room-broom/"
       ],
       "dirFiles": 0,
       "dirClean": 0,
       "inReviewsJson": 0,
       "missing": [
         {
-          "url": "https://www.britishtheatre.com/posts/review-room-broom-lyric-theatre-4stars",
-          "host": "britishtheatre.com",
-          "knownOutletId": "britishtheatrecom",
+          "url": "https://emmareed.net/review-room-broom/",
+          "host": "emmareed.net",
+          "knownOutletId": null,
           "serpCensus": true,
           "sources": [
             {
@@ -51436,7 +51436,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 9,
+            "results": 4,
             "accepted": 0,
             "error": null
           },
@@ -51479,55 +51479,45 @@
       "candidatesRejected": {
         "count": 41,
         "byReason": {
-          "aggregator-internal-nav": 3,
-          "not-http-url": 21,
-          "non-review-host": 11,
-          "venue-production-page": 2,
-          "bare-host": 2,
-          "merch-store": 1,
-          "non-review-path": 1
+          "aggregator-internal-nav": 4,
+          "not-http-url": 32,
+          "non-review-host": 4,
+          "show-listing-page": 1
         }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 0,
       "unextractable": [],
-      "ingestResults": [
+      "weIngestBlocked": [
         {
-          "url": "https://www.britishtheatre.com/posts/review-room-broom-lyric-theatre-4stars",
-          "host": "britishtheatre.com",
-          "outletId": "britishtheatrecom",
-          "provisional": false,
-          "ok": false,
-          "noop": true,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": true,
-          "expectedReason": "prior-production-quarantined",
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "broom-play-off-broadway-2026: https://www.britishtheatre.com/posts/review-room-broom-lyric-theatre-4stars dated 2014-11-26 predates this run; quarantined to _pending/ as the earlier production's review. Expected, no action needed."
+          "url": "https://emmareed.net/review-room-broom/",
+          "host": "emmareed.net",
+          "priorRun": false,
+          "reason": "unregistered-host",
+          "censusGateOn": true
         }
       ],
+      "ingestResults": [],
       "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "britishtheatrecom",
-            "outlet": "britishtheatrecom",
+            "outletId": "emmareed.net",
+            "outlet": "emmareed.net",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.britishtheatre.com/posts/review-room-broom-lyric-theatre-4stars"
+            "url": "https://emmareed.net/review-room-broom/"
           }
         ],
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://www.britishtheatre.com/posts/review-room-broom-lyric-theatre-4stars",
-            "outletId": "britishtheatrecom",
+            "url": "https://emmareed.net/review-room-broom/",
+            "outletId": "emmareed.net",
             "state": "IN_FLIGHT",
             "reason": "within-grace",
-            "firstSeenAt": "2026-11-06T07:26:34.668Z"
+            "firstSeenAt": "2026-11-06T07:54:59.218Z"
           }
         ],
         "censusSchema": 4,
@@ -51535,7 +51525,7 @@
         "liveCount": 0,
         "candidateCount": 1
       },
-      "computedAt": "2026-11-06T07:26:34.668Z"
+      "computedAt": "2026-11-06T07:54:59.218Z"
     },
     {
       "showId": "buddy-the-buddy-holly-story-regional-2026",
@@ -141430,11 +141420,26 @@
       "category": "off-broadway",
       "previewsStartDate": "2026-11-05",
       "aggregatorArticles": [],
-      "aggregatorListedUrls": [],
+      "aggregatorListedUrls": [
+        "https://www.latimes.com/socal/glendale-news-press/tn-gnp-film-review-artists-feature-film-heart-of-a-dog-defies-categorization-20151114-story.html"
+      ],
       "dirFiles": 0,
       "dirClean": 0,
       "inReviewsJson": 0,
-      "missing": [],
+      "missing": [
+        {
+          "url": "https://www.latimes.com/socal/glendale-news-press/tn-gnp-film-review-artists-feature-film-heart-of-a-dog-defies-categorization-20151114-story.html",
+          "host": "latimes.com",
+          "knownOutletId": "latimes",
+          "serpCensus": true,
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ]
+        }
+      ],
       "dirOnly": [],
       "flaggedMisses": [],
       "citedNoUrl": [],
@@ -141450,7 +141455,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 9,
+            "results": 3,
             "accepted": 0,
             "error": null
           },
@@ -141460,7 +141465,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 7,
+            "results": 8,
             "accepted": 0,
             "error": null
           },
@@ -141481,38 +141486,73 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           }
         ],
         "queriesOk": 4,
         "queriesTotal": 4,
-        "resultCount": 0,
+        "resultCount": 1,
         "error": null
       },
       "candidatesRejected": {
-        "count": 32,
+        "count": 29,
         "byReason": {
           "aggregator-internal-nav": 1,
-          "not-http-url": 19,
-          "non-review-host": 10,
-          "bare-host": 1,
+          "not-http-url": 22,
+          "non-review-host": 4,
+          "non-review-path": 1,
           "event-listing": 1
         }
       },
       "dedupedVariants": [],
+      "automatedExcludedListed": 0,
       "unextractable": [],
+      "ingestResults": [
+        {
+          "url": "https://www.latimes.com/socal/glendale-news-press/tn-gnp-film-review-artists-feature-film-heart-of-a-dog-defies-categorization-20151114-story.html",
+          "host": "latimes.com",
+          "outletId": "latimes",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": true,
+          "expectedReason": "prior-production-quarantined",
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "heart-of-a-dog-off-broadway-2026: https://www.latimes.com/socal/glendale-news-press/tn-gnp-film-review-artists-feature-film-heart-of-a-dog-defies-categorization-20151114-story.html dated 2015-11-15 predates this run; quarantined to _pending/ as the earlier production's review. Expected, no action needed."
+        }
+      ],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "no-census-yet",
-        "missing": [],
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "latimes",
+            "outlet": "latimes",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.latimes.com/socal/glendale-news-press/tn-gnp-film-review-artists-feature-film-heart-of-a-dog-defies-categorization-20151114-story.html"
+          }
+        ],
         "suppressedMissing": [],
-        "candidates": [],
+        "candidates": [
+          {
+            "url": "https://www.latimes.com/socal/glendale-news-press/tn-gnp-film-review-artists-feature-film-heart-of-a-dog-defies-categorization-20151114-story.html",
+            "outletId": "latimes",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-11-06T07:54:59.218Z"
+          }
+        ],
         "censusSchema": 4,
         "excluded": [],
         "liveCount": 0,
-        "candidateCount": 0
+        "candidateCount": 1
       },
-      "computedAt": "2026-11-06T07:26:34.668Z"
+      "computedAt": "2026-11-06T07:54:59.218Z"
     },
     {
       "showId": "heart-of-rock-and-roll-2024",
@@ -141863,17 +141903,18 @@
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
         "http://michaeldohertyspersonallibrary.blogspot.com/2026/10/heartbreak-house-antaeus-theatre.html",
-        "https://www.artsbeatla.com/2026/10/antaeus-presents-heartbreak-house/",
-        "https://soundcloud.com/latheatrebites/heartbreak-house-antaeus",
-        "https://www.theatreinla.com/heartbreak-house/11447/",
+        "https://www.theatreinla.com/heartbreak-house/reviews/11447/",
+        "https://ae.headtopics.com/news/review-george-bernard-shaw-s-heartbreak-house-gets-a-89418086",
+        "https://larchmontbuzz.com/theater/heartbreak-house-hilarity-and-twists/",
+        "https://stagebuddy.com/theater/theater-review/review-heartbreak-house",
         "https://www.latimes.com/entertainment-arts/story/2026-10-28/heartbreak-house-review-tenderly-luminous-shaw-revival",
         "https://www.broadwayworld.com/los-angeles/article/Review-HEARTBREAK-HOUSE-at-Antaeus-Theatre-Company-20261021",
         "https://stageraw.com/stage-raw-review-heartbreak-house/",
-        "https://stagebuddy.com/theater/theater-review/review-heartbreak-house",
         "https://stageraw.com/stage-raw-youth-journalism-review-heartbreak-house/",
-        "https://larchmontbuzz.com/theater/heartbreak-house-hilarity-and-twists/",
         "https://www.newyorktheatreguide.com/reviews/heartbreak-house",
         "https://latheatrebites.com/heartbreak-house-antaeus-theatre-company-review/",
+        "https://soundcloud.com/latheatrebites/heartbreak-house-antaeus",
+        "https://www.theatreinla.com/heartbreak-house/11447/",
         "https://www.stage-door.com/3/Reviews/Entries/2026/7/heartbreak-house.html",
         "https://ontariostage.com/heartbreak-house-shaw-festival/",
         "https://www.onstagentx.com/reviews/shaws-heartbreak-house-hip-pocket-theatre",
@@ -141888,6 +141929,44 @@
         {
           "url": "http://michaeldohertyspersonallibrary.blogspot.com/2026/10/heartbreak-house-antaeus-theatre.html",
           "host": "michaeldohertyspersonallibrary.blogspot.com",
+          "knownOutletId": null,
+          "serpCensus": true,
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ]
+        },
+        {
+          "url": "https://ae.headtopics.com/news/review-george-bernard-shaw-s-heartbreak-house-gets-a-89418086",
+          "host": "headtopics.com",
+          "knownOutletId": "headtopics",
+          "serpCensus": true,
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ]
+        },
+        {
+          "url": "https://stagebuddy.com/theater/theater-review/review-heartbreak-house",
+          "host": "stagebuddy.com",
+          "knownOutletId": "stagebuddy",
+          "serpCensus": true,
+          "priorRun": true,
+          "priorRunSource": "pending-file-date:2017-05-30",
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ]
+        },
+        {
+          "url": "https://latheatrebites.com/heartbreak-house-antaeus-theatre-company-review/",
+          "host": "latheatrebites.com",
           "knownOutletId": null,
           "serpCensus": true,
           "sources": [
@@ -141913,18 +141992,6 @@
           "url": "https://www.theatreinla.com/heartbreak-house/11447/",
           "host": "theatreinla.com",
           "knownOutletId": "theatreinla",
-          "serpCensus": true,
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ]
-        },
-        {
-          "url": "https://latheatrebites.com/heartbreak-house-antaeus-theatre-company-review/",
-          "host": "latheatrebites.com",
-          "knownOutletId": null,
           "serpCensus": true,
           "sources": [
             {
@@ -142088,7 +142155,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 8,
+            "results": 9,
             "accepted": 0,
             "error": null
           },
@@ -142098,8 +142165,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 7,
-            "accepted": 0,
+            "results": 4,
+            "accepted": 1,
             "error": null
           },
           {
@@ -142108,8 +142175,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 9,
-            "accepted": 0,
+            "results": 8,
+            "accepted": 1,
             "error": null
           },
           {
@@ -142119,7 +142186,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 0,
             "error": null
           },
           {
@@ -142135,26 +142202,18 @@
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 4,
+        "resultCount": 5,
         "error": null
       },
       "candidatesRejected": {
-        "count": 47,
+        "count": 45,
         "byReason": {
-          "not-http-url": 36,
-          "non-review-host": 11
+          "not-http-url": 37,
+          "non-review-host": 8
         }
       },
       "dedupedVariants": [],
       "nonReviewCandidates": [
-        {
-          "url": "https://stagebuddy.com/theater/theater-review/review-heartbreak-house",
-          "host": "stagebuddy.com",
-          "knownOutletId": "stagebuddy",
-          "serpCensus": true,
-          "nonReviewVerdict": "page-date-before-run",
-          "nonReviewDetail": "2017-05-30"
-        },
         {
           "url": "https://www.newyorktheatreguide.com/reviews/heartbreak-house",
           "host": "newyorktheatreguide.com",
@@ -142175,15 +142234,22 @@
           "censusGateOn": true
         },
         {
-          "url": "https://soundcloud.com/latheatrebites/heartbreak-house-antaeus",
-          "host": "soundcloud.com",
-          "priorRun": false,
-          "reason": "unregistered-host",
+          "url": "https://stagebuddy.com/theater/theater-review/review-heartbreak-house",
+          "host": "stagebuddy.com",
+          "priorRun": true,
+          "reason": "prior-run",
           "censusGateOn": true
         },
         {
           "url": "https://latheatrebites.com/heartbreak-house-antaeus-theatre-company-review/",
           "host": "latheatrebites.com",
+          "priorRun": false,
+          "reason": "unregistered-host",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://soundcloud.com/latheatrebites/heartbreak-house-antaeus",
+          "host": "soundcloud.com",
           "priorRun": false,
           "reason": "unregistered-host",
           "censusGateOn": true
@@ -142239,6 +142305,13 @@
             "url": "http://michaeldohertyspersonallibrary.blogspot.com/2026/10/heartbreak-house-antaeus-theatre.html"
           },
           {
+            "outletId": "latheatrebites.com",
+            "outlet": "latheatrebites.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://michaeldohertyspersonallibrary.blogspot.com/2026/10/heartbreak-house-antaeus-theatre.html"
+          },
+          {
             "outletId": "soundcloud.com",
             "outlet": "soundcloud.com",
             "critic": "Unknown",
@@ -142258,13 +142331,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://latheatrebites.com/heartbreak-house-antaeus-theatre-company-review/"
-          },
-          {
-            "outletId": "stage-door.com",
-            "outlet": "stage-door.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.stage-door.com/3/Reviews/Entries/2026/7/heartbreak-house.html"
           },
           {
             "outletId": "ontariostage.com",
@@ -142305,8 +142371,14 @@
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://www.artsbeatla.com/2026/10/antaeus-presents-heartbreak-house/",
-            "outletId": "artsbeatla.com",
+            "url": "https://larchmontbuzz.com/theater/heartbreak-house-hilarity-and-twists/",
+            "outletId": "larchmontbuzz.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-04T02:32:00.382Z"
+          },
+          {
+            "url": "https://www.latimes.com/entertainment-arts/story/2026-10-28/heartbreak-house-review-tenderly-luminous-shaw-revival",
+            "outletId": "latimes.com",
             "state": "live",
             "firstSeenAt": "2026-11-03T14:15:10.547Z"
           },
@@ -142329,22 +142401,10 @@
             "firstSeenAt": "2026-11-03T14:15:10.547Z"
           },
           {
-            "url": "https://stagebuddy.com/theater/theater-review/review-heartbreak-house",
-            "outletId": "stagebuddy.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-03T14:15:10.547Z"
-          },
-          {
             "url": "https://stageraw.com/stage-raw-youth-journalism-review-heartbreak-house/",
             "outletId": "stageraw.com",
             "state": "live",
             "firstSeenAt": "2026-11-03T14:15:10.547Z"
-          },
-          {
-            "url": "https://larchmontbuzz.com/theater/heartbreak-house-hilarity-and-twists/",
-            "outletId": "larchmontbuzz.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-04T02:32:00.382Z"
           },
           {
             "url": "https://www.newyorktheatreguide.com/reviews/heartbreak-house",
@@ -142355,6 +142415,13 @@
           {
             "url": "http://michaeldohertyspersonallibrary.blogspot.com/2026/10/heartbreak-house-antaeus-theatre.html",
             "outletId": "michaeldohertyspersonallibrary.blogspot.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-11-03T01:31:50.133Z"
+          },
+          {
+            "url": "https://latheatrebites.com/heartbreak-house-antaeus-theatre-company-review/",
+            "outletId": "latheatrebites.com",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-11-03T01:31:50.133Z"
@@ -142379,13 +142446,6 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-11-03T14:15:10.547Z"
-          },
-          {
-            "url": "https://www.stage-door.com/3/Reviews/Entries/2026/7/heartbreak-house.html",
-            "outletId": "stage-door.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-11-03T01:31:50.133Z"
           },
           {
             "url": "https://ontariostage.com/heartbreak-house-shaw-festival/",
@@ -142426,20 +142486,15 @@
         "censusSchema": 4,
         "excluded": [
           {
-            "url": "https://stagebuddy.com/theater/theater-review/review-heartbreak-house",
-            "host": "stagebuddy.com",
-            "reason": "page-date-before-run"
-          },
-          {
             "url": "https://www.newyorktheatreguide.com/reviews/heartbreak-house",
             "host": "newyorktheatreguide.com",
             "reason": "page-date-before-run"
           }
         ],
-        "liveCount": 7,
-        "candidateCount": 16
+        "liveCount": 6,
+        "candidateCount": 15
       },
-      "computedAt": "2026-11-06T07:26:34.668Z"
+      "computedAt": "2026-11-06T07:54:59.218Z"
     },
     {
       "showId": "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026",
@@ -172405,7 +172460,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 4,
+            "results": 9,
             "accepted": 0,
             "error": null
           },
@@ -172415,7 +172470,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 9,
+            "results": 5,
             "accepted": 0,
             "error": null
           },
@@ -172456,16 +172511,15 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 42,
+        "count": 40,
         "byReason": {
           "aggregator-internal-nav": 1,
-          "not-http-url": 26,
-          "non-review-host": 6,
-          "venue-production-page": 1,
-          "no-review-evidence": 2,
-          "non-stage-review": 3,
-          "census-junk-host": 2,
-          "news-roundup-site": 1
+          "not-http-url": 23,
+          "non-review-host": 10,
+          "venue-production-page": 2,
+          "census-junk-host": 1,
+          "news-roundup-site": 1,
+          "no-review-evidence": 2
         }
       },
       "dedupedVariants": [],
@@ -172480,7 +172534,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-11-06T07:26:34.668Z"
+      "computedAt": "2026-11-06T07:54:59.218Z"
     },
     {
       "showId": "kathy-and-stella-solve-a-murder-west-end-2024",
@@ -254166,8 +254220,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 9,
-            "accepted": 0,
+            "results": 8,
+            "accepted": 1,
             "error": null
           },
           {
@@ -254206,27 +254260,25 @@
             "page": 2,
             "geo": "us",
             "ok": true,
-            "results": 10,
+            "results": 0,
             "accepted": 0,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 1,
+        "resultCount": 2,
         "error": null
       },
       "candidatesRejected": {
-        "count": 40,
+        "count": 29,
         "byReason": {
-          "aggregator-internal-nav": 2,
-          "not-http-url": 27,
-          "non-review-host": 3,
-          "no-review-evidence": 1,
+          "not-http-url": 18,
+          "non-review-host": 4,
           "census-junk-host": 4,
-          "ticketing-reseller": 1,
-          "production-database-listing": 1,
-          "ticketing-listing": 1
+          "no-review-evidence": 1,
+          "write-path-blocked": 1,
+          "ticketing-reseller": 1
         }
       },
       "dedupedVariants": [],
@@ -254270,7 +254322,7 @@
         "liveCount": 2,
         "candidateCount": 3
       },
-      "computedAt": "2026-11-06T07:26:34.668Z"
+      "computedAt": "2026-11-06T07:54:59.218Z"
     },
     {
       "showId": "parsifal-off-west-end-2026",
@@ -323514,8 +323566,12 @@
       "previewsStartDate": "2026-10-28",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://www.londontheatre.co.uk/reviews/the-bridge-review-bush-theatre",
         "https://theatreandtonic.co.uk/blog/the-bridge-bush-theatre-london-review",
+        "https://www.theguardian.com/culture/2026/aug/30/the-bridge-review-alaa-shehada",
+        "https://www.londontheatre.co.uk/reviews/the-bridge-review-bush-theatre",
+        "https://www.timeout.com/london/theatre/the-bridge-4",
+        "https://www.standard.co.uk/culture/theatre/guys-dolls-at-bridge-theatre-review-marisha-wallace-daniel-mays-nicholas-hytner-b1067134.html",
+        "https://www.whatsonstage.com/london-theatre/news/guys-dolls-bridge-revival-five-star-review_58533.html",
         "https://everything-theatre.co.uk/2026/11/review-the-bridge-bush-theatre/",
         "https://www.britishtheatreguide.info/reviews/the-bridge-139-upstairs-at-25855",
         "https://theartsdesk.com/theatre/old-bridge-bush-theatre-review-powerful-poetic-and-profound",
@@ -323525,7 +323581,6 @@
         "https://www.whatsonstage.com/london-theatre/news/guys-dolls-bridge-revival-five-star-review_58533.html",
         "https://www.thereviewshub.com/the-bridge-bush-theatre-london/",
         "https://www.broadwayworld.com/westend/article/Review-THE-BRIDGE-Bush-Theatre-20261103",
-        "https://www.theguardian.com/culture/2026/aug/30/the-bridge-review-alaa-shehada",
         "https://www.standard.co.uk/culture/theatre/the-bridge-at-bush-theatre-review-b1303391.html",
         "https://theartsdesk.com/theatre/bridge-bush-theatre-review-entertaining-stand-one-sided-theatre",
         "https://www.thestage.co.uk/reviews/the-bridge-review-bush-theatre-london-alaa-shehada",
@@ -323543,7 +323598,6 @@
         "https://www.londontheatre1.com/reviews/the-bridge-bush-theatre/",
         "https://www.pinkprincetheatre.com/post/review-the-bridge-bush-theatre",
         "https://www.allthatdazzles.co.uk/post/review-the-bridge-bush-theatre",
-        "https://www.timeout.com/london/theatre/the-bridge-4",
         "https://fringereview.co.uk/review/fringereview-uk/2026/the-bridge-2/",
         "https://www.bestoftheatre.co.uk/blog/post/alaa-shehada-brings-his-fringe-first-winner-the-bridge-to-the-bush-theatre",
         "https://snackmag.co.uk/alaa-shehada-one-people-not-two-a-conversation-about-and-review-of-the-bridge"
@@ -323552,18 +323606,6 @@
       "dirClean": 24,
       "inReviewsJson": 24,
       "missing": [
-        {
-          "url": "https://uk.style.yahoo.com/bridge-bush-theatre-witty-autobiographical-120550251.html",
-          "host": "yahoo.com",
-          "knownOutletId": "yahoo",
-          "serpCensus": true,
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ]
-        },
         {
           "url": "https://www.theguardian.com/culture/2026/aug/30/the-bridge-review-alaa-shehada",
           "host": "theguardian.com",
@@ -323778,8 +323820,8 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 9,
-            "accepted": 2,
+            "results": 1,
+            "accepted": 0,
             "error": null
           },
           {
@@ -323809,7 +323851,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 3,
             "error": null
           },
           {
@@ -323819,43 +323861,27 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 0,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 7,
+        "resultCount": 4,
         "error": null
       },
       "candidatesRejected": {
-        "count": 37,
+        "count": 33,
         "byReason": {
-          "aggregator-internal-nav": 1,
-          "not-http-url": 31,
-          "non-review-host": 4,
-          "no-review-evidence": 1
+          "not-http-url": 24,
+          "non-review-host": 8,
+          "ticketing-listing": 1
         }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 4,
       "unextractable": [],
       "ingestResults": [
-        {
-          "url": "https://uk.style.yahoo.com/bridge-bush-theatre-witty-autobiographical-120550251.html",
-          "host": "yahoo.com",
-          "outletId": "yahoo",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": true,
-          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS."
-        },
         {
           "url": "https://www.theguardian.com/culture/2026/aug/30/the-bridge-review-alaa-shehada",
           "host": "theguardian.com",
@@ -323884,13 +323910,6 @@
             "url": "https://www.theguardian.com/culture/2026/aug/30/the-bridge-review-alaa-shehada"
           },
           {
-            "outletId": "british-theatre",
-            "outlet": "british-theatre",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.britishtheatreguide.info/reviews/the-bridge-139-upstairs-at-25855"
-          },
-          {
             "outletId": "nyt-theater",
             "outlet": "nyt-theater",
             "critic": "Unknown",
@@ -323915,16 +323934,34 @@
         "suppressedMissing": [],
         "candidates": [
           {
+            "url": "https://theatreandtonic.co.uk/blog/the-bridge-bush-theatre-london-review",
+            "outletId": "theatreandtonic.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-11-04T07:52:26.614Z"
+          },
+          {
             "url": "https://www.londontheatre.co.uk/reviews/the-bridge-review-bush-theatre",
             "outletId": "londontheatre.co.uk",
             "state": "live",
             "firstSeenAt": "2026-11-03T23:57:50.737Z"
           },
           {
-            "url": "https://theatreandtonic.co.uk/blog/the-bridge-bush-theatre-london-review",
-            "outletId": "theatreandtonic.co.uk",
+            "url": "https://www.timeout.com/london/theatre/the-bridge-4",
+            "outletId": "timeout.com",
             "state": "live",
-            "firstSeenAt": "2026-11-04T07:52:26.614Z"
+            "firstSeenAt": "2026-10-30T22:24:22.326Z"
+          },
+          {
+            "url": "https://www.standard.co.uk/culture/theatre/guys-dolls-at-bridge-theatre-review-marisha-wallace-daniel-mays-nicholas-hytner-b1067134.html",
+            "outletId": "standard.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-11-04T04:19:43.534Z"
+          },
+          {
+            "url": "https://www.whatsonstage.com/london-theatre/news/guys-dolls-bridge-revival-five-star-review_58533.html",
+            "outletId": "whatsonstage.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-04T04:19:43.534Z"
           },
           {
             "url": "https://everything-theatre.co.uk/2026/11/review-the-bridge-bush-theatre/",
@@ -324065,12 +324102,6 @@
             "firstSeenAt": "2026-11-04T19:31:35.837Z"
           },
           {
-            "url": "https://www.timeout.com/london/theatre/the-bridge-4",
-            "outletId": "timeout.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-30T22:24:22.326Z"
-          },
-          {
             "url": "https://fringereview.co.uk/review/fringereview-uk/2026/the-bridge-2/",
             "outletId": "fringereview.co.uk",
             "state": "live",
@@ -324113,17 +324144,11 @@
           }
         ],
         "censusSchema": 4,
-        "excluded": [
-          {
-            "url": "https://uk.style.yahoo.com/bridge-bush-theatre-witty-autobiographical-120550251.html",
-            "host": "yahoo.com",
-            "reason": "syndication-portal"
-          }
-        ],
+        "excluded": [],
         "liveCount": 19,
         "candidateCount": 24
       },
-      "computedAt": "2026-11-06T07:26:34.668Z"
+      "computedAt": "2026-11-06T07:54:59.218Z"
     },
     {
       "showId": "the-brief-wondrous-life-of-oscar-wao-regional-2026",
@@ -324663,7 +324688,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 9,
+            "results": 2,
             "accepted": 0,
             "error": null
           },
@@ -324714,13 +324739,13 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 42,
+        "count": 37,
         "byReason": {
-          "aggregator-internal-nav": 2,
-          "not-http-url": 32,
-          "non-review-host": 6,
-          "non-review-path": 1,
-          "non-stage-review": 1
+          "aggregator-internal-nav": 3,
+          "not-http-url": 25,
+          "non-review-host": 7,
+          "no-review-evidence": 1,
+          "non-review-path": 1
         }
       },
       "dedupedVariants": [],
@@ -324784,7 +324809,7 @@
         "liveCount": 0,
         "candidateCount": 2
       },
-      "computedAt": "2026-11-06T07:26:34.668Z"
+      "computedAt": "2026-11-06T07:54:59.218Z"
     },
     {
       "showId": "the-cherry-orchard-park-avenue-armory-off-broadway-2026",
@@ -395800,7 +395825,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 1,
+            "results": 0,
             "accepted": 0,
             "error": null
           },
@@ -395810,7 +395835,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 1,
+            "results": 5,
             "accepted": 0,
             "error": null
           },
@@ -395820,8 +395845,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 8,
-            "accepted": 1,
+            "results": 9,
+            "accepted": 0,
             "error": null
           },
           {
@@ -395847,16 +395872,17 @@
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 1,
+        "resultCount": 0,
         "error": null
       },
       "candidatesRejected": {
-        "count": 29,
+        "count": 32,
         "byReason": {
-          "aggregator-internal-nav": 1,
-          "not-http-url": 18,
-          "non-review-host": 5,
+          "not-http-url": 21,
+          "non-review-host": 4,
           "census-junk-host": 4,
+          "write-path-blocked": 1,
+          "bare-host": 1,
           "news-article": 1
         }
       },
@@ -395879,7 +395905,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-11-06T07:26:34.668Z"
+      "computedAt": "2026-11-06T07:54:59.218Z"
     },
     {
       "showId": "transcendency-rising-short-plays-about-defying-limitations-off-broadway-2026",
@@ -420717,7 +420743,7 @@
     }
   ],
   "staleness": {
-    "at": "2026-11-06T07:26:34.667Z",
+    "at": "2026-11-06T07:54:59.217Z",
     "reserveEvery": 4,
     "reservedAttempted": [
       "heartbreak-house-regional-2026"
@@ -420730,12 +420756,12 @@
     "oldestDueRowAtStart": {
       "showId": "the-devil-wears-prada-west-end-2024",
       "computedAt": "2026-10-28T21:39:57.244Z",
-      "ageHours": 201.5
+      "ageHours": 201.9
     },
     "oldestDueRowAfterRun": {
       "showId": "the-devil-wears-prada-west-end-2024",
       "computedAt": "2026-10-28T21:39:57.244Z",
-      "ageHours": 201.8
+      "ageHours": 202.3
     }
   }
 }
