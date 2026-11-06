@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
-const { googleNewsSiteQueries, googleNewsAdapter } = require('./discovery.js');
+const { googleNewsSiteQueries, googleNewsAdapter } = require('../../scripts/lib/opening-night-lane/discovery.js');
 
 // BRO-7044: `"2:22 - A Ghost Story" site:nysun.com` is an exact phrase with a hyphen the Sun's headline
 // ('2:22 — A Ghost Story': Not Quite a Screaming Good Time) does not have, so Google returned only the Sun's general news.
@@ -32,6 +32,6 @@ test('adapter: the dash-free query is actually fetched and its Sun item is kept'
 
 test('BRO-7044: no duplicate loose query when the title has no dash', async () => {
   const { createRequire } = await import('node:module');
-  const { googleNewsSiteQueries } = createRequire(import.meta.url)('./discovery.js');
+  const { googleNewsSiteQueries } = createRequire(import.meta.url)('../../scripts/lib/opening-night-lane/discovery.js');
   assert.equal(googleNewsSiteQueries({ title: 'The Unbelievers' }, 'nysun.com').length, 1);
 });
