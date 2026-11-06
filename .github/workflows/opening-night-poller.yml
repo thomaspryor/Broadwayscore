@@ -1010,15 +1010,22 @@ jobs:
         continue-on-error: true
         env:
           GH_TOKEN: ${{ github.token }}
+          POLLED_SHOWS: ${{ steps.find.outputs.shows }}
         run: |
-          LEFTOVER=$(node scripts/lib/scoring-leftover-shows.js "${{ steps.find.outputs.shows }}")
+          LEFTOVER=$(node scripts/lib/scoring-leftover-shows.js "$POLLED_SHOWS")
           if [ -z "$LEFTOVER" ]; then
             echo "No show left unscored by the inline scorer."
             exit 0
           fi
-          echo "→ Dispatching llm-ensemble-score.yml for: $LEFTOVER"
-          gh workflow run llm-ensemble-score.yml -f show_id="$LEFTOVER" \
-            || echo "::warning::scoring dispatch failed for $LEFTOVER"
+          # One dispatch PER show: a comma list shares the "shows-multi" lane (a newer
+          # list replaces a waiting one) and Express cancels a whole list naming its
+          # show without re-dispatching it (express-preemption.js shouldCancel).
+          IFS=',' read -ra LEFT_ARRAY <<< "$LEFTOVER"
+          for LEFT_ID in "${LEFT_ARRAY[@]}"; do
+            echo "→ Dispatching llm-ensemble-score.yml for: $LEFT_ID"
+            gh workflow run llm-ensemble-score.yml -f show_id="$LEFT_ID" -f run_validation=false \
+              || echo "::warning::scoring dispatch failed for $LEFT_ID"
+          done
 
       # === FAST PATH: inline rebuild+deploy (skips separate rebuild-reviews.yml) ===
       # NYT Critic's Pick on opening night: data/nyt-critics-picks.json is
