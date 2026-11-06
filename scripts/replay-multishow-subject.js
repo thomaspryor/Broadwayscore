@@ -10,6 +10,8 @@
 const fs = require('fs');
 const path = require('path');
 const { detectMultiShowContent } = require('./lib/content-quality');
+const { listShowDirs } = require('./lib/list-show-dirs');
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const ROOT = path.join(__dirname, '..');
 const args = process.argv.slice(2);
 const val = (n) => { const a = args.find((x) => x.startsWith(`--${n}=`)); return a ? a.slice(n.length + 3) : null; };
@@ -18,11 +20,11 @@ const [si, sc] = val('shard') ? val('shard').split('/').map(Number) : [0, 1];
 if (!(sc >= 1 && si >= 0 && si < sc)) { console.error('--shard must be i/n'); process.exit(2); }
 const limit = Number(val('limit') || 100);
 const dir = path.join(ROOT, 'data', 'review-texts');
-const shows = fs.readdirSync(dir).filter((d) => fs.statSync(path.join(dir, d)).isDirectory()).sort().filter((_, i) => i % sc === si).filter((d) => !only || only.includes(d));
+const shows = listShowDirs(dir, { silent: true }).sort().filter((_, i) => i % sc === si).filter((d) => !only || only.includes(d));
 let scanned = 0, flaggedBefore = 0; const restored = [];
 for (const show of shows) {
   for (const f of fs.readdirSync(path.join(dir, show))) {
-    if (!f.endsWith('.json') || f === 'failed-fetches.json' || f.startsWith('_')) continue;
+    if (!isReviewTextFile(f)) continue;
     let j; try { j = JSON.parse(fs.readFileSync(path.join(dir, show, f), 'utf8')); } catch { continue; }
     const text = j.fullText; if (!text || typeof text !== 'string') continue;
     scanned++;
