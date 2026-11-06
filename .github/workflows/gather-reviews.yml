@@ -697,6 +697,7 @@ jobs:
         run: node scripts/scrape-bww-reviews.js --type=roundup --shows=${INPUT_SHOWS}
 
       - name: Scrape LBO roundups for West End target shows
+        # lint-allow-swallow: West End LBO roundups are a best-effort supplement; the main gather and the roundup audit still report missing shows
         continue-on-error: true
         env:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}

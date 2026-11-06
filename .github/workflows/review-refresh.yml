@@ -358,6 +358,7 @@ jobs:
 
       - name: Extract Theatre Record reviews (WE shows)
         if: steps.check.outputs.has_new_reviews == 'true' || inputs.force_collection == true || inputs.tr_show_filter != ''
+        # lint-allow-swallow: Theatre Record is a best-effort West End source; a failure here must not block the Broadway extraction and rebuild steps that follow, and the aggregator coverage audit reports gaps
         continue-on-error: true
         env:
           TR_EMAIL: ${{ secrets.TR_EMAIL }}
@@ -401,6 +402,7 @@ jobs:
 
       - name: Discover URLs for Theatre Record reviews (Phase 0)
         if: steps.check.outputs.has_new_reviews == 'true' || inputs.force_collection == true
+        # lint-allow-swallow: optional URL discovery for Theatre Record; the later extraction and coverage audit report the gap
         continue-on-error: true
         timeout-minutes: 20
         env:
