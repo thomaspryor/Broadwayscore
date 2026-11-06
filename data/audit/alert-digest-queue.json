@@ -239,5 +239,36 @@
       }
     ],
     "queuedAt": "2026-11-06T14:11:52.659Z"
+  },
+  {
+    "conditionKey": "land:land/bro-7040-quiet-digest",
+    "title": "Landing blocked: scripts-lib-tests red on land/bro-7040-quiet-digest",
+    "description": "land.yml did not land land/bro-7040-quiet-digest: the scripts-lib-tests gate went red at 49ede05dd5. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/42230256753",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-7040-quiet-digest"
+      },
+      {
+        "name": "gate",
+        "value": "scripts-lib-tests"
+      },
+      {
+        "name": "tip",
+        "value": "49ede05dd5c437b3e97dc1da94113986e9dfd015"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42230256753"
+      }
+    ],
+    "queuedAt": "2026-11-06T14:23:40.174Z"
   }
 ]
