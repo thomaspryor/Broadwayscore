@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-06T01:03:06.398Z",
+  "generatedAt": "2026-11-06T02:03:11.016Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -78,7 +78,7 @@
     },
     {
       "outletId": "front-row-center",
-      "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
+      "error": "HTTP 202 for https://thefrontrowcenter.com/feed"
     },
     {
       "outletId": "slantmagazine",
@@ -99,12 +99,29 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
+    },
+    {
+      "outletId": "times-square-chronicles",
+      "error": "fetchPage returned an unexpected page for https://t2conline.com/wp-json/wp/v2/posts?categories=504,298,283&per_page=100&"
+    },
+    {
+      "outletId": "londontheatre1",
+      "error": "fetchPage returned an unexpected page for https://www.londontheatre1.com/wp-json/wp/v2/posts?categories=14&per_page=50&o"
     }
   ],
-  "itemsScanned": 795,
-  "matchedGaps": 8,
+  "itemsScanned": 745,
+  "matchedGaps": 9,
   "possibleGaps": 4,
   "gaps": [
+    {
+      "showId": "222-a-ghost-story-off-broadway-2026",
+      "title": "2:22 - A Ghost Story",
+      "level": "matched",
+      "outletId": "culturesauce",
+      "url": "https://culturesauce.com/222-ghost-story-finn-jones-anna-camp-off-broadway-review/",
+      "headline": "&#8216;2:22 A Ghost Story&#8217; is a clockwork exercise in onstage horror (Off Broadway review)",
+      "publishDate": "2026-11-05"
+    },
     {
       "showId": "222-a-ghost-story-off-broadway-2026",
       "title": "2:22 - A Ghost Story",

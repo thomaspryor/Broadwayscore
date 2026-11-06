@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-06T01:02:39.767Z",
+  "generatedAt": "2026-11-06T02:02:44.866Z",
   "windowDays": 45,
   "showsScanned": 246,
   "gaps": [
@@ -21,9 +21,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=lincoln-in-the-bardo-off-broadway-2026",
       "firstSeen": "2026-10-25T17:52:33.957Z",
-      "fileAgeHours": 271.16728027777776,
+      "fileAgeHours": 272.1686472222222,
       "gapSeenAt": "2026-10-26T08:25:16.367Z",
-      "nonTerminalAgeHours": 256.6231663888889,
+      "nonTerminalAgeHours": 257.62458305555555,
       "needsManualRecovery": true
     },
     {
@@ -44,29 +44,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=the-bridge-off-west-end-2026 --url=https://www.thetimes.com/uk/politics/article/city-bridge-foundation-grant-money-hamas-linked-organisation-j5sbhgrs2 --outlet=sunday-times   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-11-05T01:36:56.414Z",
-      "fileAgeHours": 23.428058055555557,
+      "fileAgeHours": 24.429439722222224,
       "gapSeenAt": "2026-11-05T02:10:46.925Z",
-      "nonTerminalAgeHours": 22.864678055555554,
-      "needsManualRecovery": false
-    },
-    {
-      "showId": "harry-potter-and-the-cursed-child-one-part-west-end-2026",
-      "title": "Harry Potter and the Cursed Child",
-      "openingDate": "2026-10-21",
-      "file": "times-uk--clive-davis.json",
-      "outletId": "times-uk",
-      "tier": 1,
-      "type": "empty-body",
-      "recoverable": false,
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/harry-potter-and-the-cursed-child-review-london-7jq7shl0t",
-      "recovery": null,
-      "recoveryCount": 3,
-      "forumLinkRecoveryCount": 0,
-      "fix": "node scripts/ingest-review-from-url.js --show=harry-potter-and-the-cursed-child-one-part-west-end-2026 --url=https://www.thetimes.com/culture/theatre-dance/article/harry-potter-and-the-cursed-child-review-london-7jq7shl0t --outlet=times-uk --critic=\"Clive Davis\"   # run LOCALLY (cookie jar lives on the Mac)",
-      "firstSeen": "2026-11-05T13:10:35.064Z",
-      "fileAgeHours": 11.867604722222222,
-      "gapSeenAt": "2026-11-05T14:48:09.202Z",
-      "nonTerminalAgeHours": 10.241823333333333,
+      "nonTerminalAgeHours": 23.866094722222222,
       "needsManualRecovery": false
     }
   ],
