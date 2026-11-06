@@ -177,8 +177,14 @@ test('mergeNeedsYouSections keeps cardUrls from both sides (a hidden decision th
   assert.equal(digestSender.mergeNeedsYouSections(cmux, null), cmux);
 });
 
-test('whole email: every link above Technical details is visibly a link or a button (owner complaint 2026-10-24)', () => {
-  const now = new Date('2026-10-24T11:30:00Z');
+// Two mornings: a Saturday (decisions older than 2 days render as compact one-button
+// cards, BRO-7040) and a Monday (every decision is re-expanded in full). The
+// camouflage rule must hold for both shapes; the full shape carries more links.
+for (const [label, nowIso, minLinks] of [
+  ['weekday, compact decision cards', '2026-10-24T11:30:00Z', 6],
+  ['Monday, full decision cards', '2026-10-26T11:30:00Z', 8],
+]) test(`whole email: every link above Technical details is visibly a link or a button (owner complaint 2026-10-24) [${label}]`, () => {
+  const now = new Date(nowIso);
   const card = (id) => ({ identifier: id, title: `DECISION NEEDED: ${id}`, url: `https://linear.app/x/issue/${id}`, createdAt: '2026-10-22T00:00:00Z', description: `DECISION NEEDED: Question ${id}?\nOption A - a: x / y\nOption B - b: x / y\nMy recommendation: A because z.\nDefault: nothing.` });
   const html = digestSender.buildHtml({
     sections: {
@@ -196,7 +202,7 @@ test('whole email: every link above Technical details is visibly a link or a but
   // leaving white text on a pale card, owner report 2026-10-24); `background-color:` survives.
   assert.doesNotMatch(top, /background:/, 'use background-color, never the background shorthand, above Technical details');
   const anchors = top.match(/<a\b[^>]*>/g) || [];
-  assert.ok(anchors.length >= 8, `expected many links above Technical details, got ${anchors.length}`);
+  assert.ok(anchors.length >= minLinks, `expected at least ${minLinks} links above Technical details, got ${anchors.length}`);
   for (const a of anchors) {
     const hidden = /text-decoration:none/.test(a) && !/background(?:-color)?:/.test(a);
     assert.equal(hidden, false, `camouflaged link: ${a.slice(0, 120)}`);
