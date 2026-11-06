@@ -839,6 +839,22 @@ function outletTier(outletId) {
 // (reviewSignalGiven); the scorer's not_a_review verdict and the night window still judge the page.
 const GOOGLE_NEWS_SITE_QUERY_HOSTS = Object.freeze(['nysun.com']);
 
+/**
+ * The Google News queries that look for one outlet's review of a show. `"<title>" site:<host>` is exact-phrase: the
+ * listing title "2:22 - A Ghost Story" has a hyphen where the Sun's headline has an em dash, so the phrase matched
+ * nothing and the site search returned only the outlet's general news, never the review (BRO-7044: NY Sun on 2:22 was
+ * missed for a day). A second query keeps the title's words and colons, drops the dash punctuation, and names the
+ * outlet instead of using the site: operator; the caller still keeps only items whose publisher is that host.
+ */
+function googleNewsSiteQueries(show, host) {
+  const title = String((show && show.title) || '').trim();
+  const queries = [`"${title}" site:${host}`];
+  const loose = title.replace(/[\u2012-\u2015-]+/g, ' ').replace(/\s+/g, ' ').trim();
+  const label = String(host || '').replace(/^www\./, '').replace(/\.[a-z.]+$/i, '');
+  if (loose && label) queries.push(`"${loose}" ${label}`);
+  return queries;
+}
+
 /** True when a feed date is a full date-time that admitLaneCandidate would refuse for this night. No night or no date: false. */
 function outsideNightWindow(rawDate, night, timeZone) {
   if (!night) return false;
@@ -862,7 +878,7 @@ function googleNewsAdapter({ maxUnwrap = 8, decodeImpl = null, maxDecode = 3 * m
       const xml = await searchFetch(`https://news.google.com/rss/search?${q}`);
       const sites = london ? [] : siteQueryHosts;
       // A site search that fails costs only its own outlet this pass; the main search failing still fails the adapter.
-      const siteXml = await Promise.all(sites.map((host) => searchFetch(`https://news.google.com/rss/search?${new URLSearchParams({ q: `"${show.title}" site:${host}`, ...locale })}`).catch(() => '')));
+      const siteXml = await Promise.all(sites.map(async (host) => (await Promise.all(googleNewsSiteQueries(show, host).map((q) => searchFetch(`https://news.google.com/rss/search?${new URLSearchParams({ q, ...locale })}`).catch(() => '')))).join('\n')));
       const items = [];
       const seenLinks = new Set();
       for (const [feedXml, site] of [[xml, null], ...siteXml.map((x, i) => [x, sites[i]])]) {
@@ -1523,7 +1539,7 @@ function recordDiscovered(ledgerDir, { show, night, admitted, now = Date.now() }
 module.exports = {
   SERP_AFTER_MS, SERP_COOLDOWN_MS, SERP_NIGHT_MAX, defaultLaneMissingOutlets, defaultLaneSectionIndexes, laneMissingOutlets,
   NON_REVIEW_HOSTS, WRAPPER_HOSTS, canonicalUrl, bodyScope, playbillArticleBody, bwwRoundupBody, storyCitedLinks, extractAnchors, citedExcerpts, extractCitedLinks, extractPublishDate,
-  nonReviewReason, SECTION_INDEX_PARSERS, headlineIsShowTitle, hasReviewSignal, hostSignalsReview, REVIEW_WITHOUT_WORD_HOSTS, pageDatedNear, dtliSitemapPages, defaultLaneFeeds, bwwRoundupAdapter, dtliAdapter, rssAdapter, PAID_FEED_REST_PASSES, PAID_FEED_MAX_FAILS, PAID_FEED_RUN_MAX, CHAIN_FEED_MAX_FAILS, CHAIN_FEED_REST_PASSES, unreachableFromRunner, sectionIndexAdapter, showScoreAdapter, playbillVerdictAdapter, googleNewsAdapter, GOOGLE_NEWS_SITE_QUERY_HOSTS, GOOGLE_NEWS_FETCH_TIMEOUT_MS, GOOGLE_NEWS_SEARCH_TIMEOUT_MS, GOOGLE_NEWS_MIN_UNWRAP_MS, GOOGLE_NEWS_UNWRAP_CONCURRENCY, talkinBroadwayAdapter, TB_PROBE_BATCH, TB_MAX_CARRIES, tbFetchWasBlocked, serpAdapter,
+  nonReviewReason, SECTION_INDEX_PARSERS, headlineIsShowTitle, hasReviewSignal, hostSignalsReview, REVIEW_WITHOUT_WORD_HOSTS, pageDatedNear, dtliSitemapPages, defaultLaneFeeds, bwwRoundupAdapter, dtliAdapter, rssAdapter, PAID_FEED_REST_PASSES, PAID_FEED_MAX_FAILS, PAID_FEED_RUN_MAX, CHAIN_FEED_MAX_FAILS, CHAIN_FEED_REST_PASSES, unreachableFromRunner, sectionIndexAdapter, showScoreAdapter, playbillVerdictAdapter, googleNewsAdapter, googleNewsSiteQueries, GOOGLE_NEWS_SITE_QUERY_HOSTS, GOOGLE_NEWS_FETCH_TIMEOUT_MS, GOOGLE_NEWS_SEARCH_TIMEOUT_MS, GOOGLE_NEWS_MIN_UNWRAP_MS, GOOGLE_NEWS_UNWRAP_CONCURRENCY, talkinBroadwayAdapter, TB_PROBE_BATCH, TB_MAX_CARRIES, tbFetchWasBlocked, serpAdapter,
   publisherUrlFromWrapperPage, parseFeedEntries, fetchTextFrom, serpAllowed, memoPath, loadMemo, saveMemo,
   runDiscoveryPass, loadSeen, recordDiscovered, PREFETCHED_PAGE,
 };
