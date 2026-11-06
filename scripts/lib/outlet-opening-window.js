@@ -94,7 +94,27 @@ function projectMonthlyCost({ paidPerRun, activeRunsPerMonth, usdPerCall = WORST
   return { calls, usd: Math.round(calls * usdPerCall * 100) / 100 };
 }
 
+/** A review-text record that still needs its text collected (mirrors collect-we-ob-reviews' remaining count). */
+function needsCollection(r) {
+  if (!r || typeof r !== 'object') return false;
+  if (r.assignedScore || r.duplicateOf || r.wrongShow || r.wrongProduction || r.wrongAttribution
+      || r.contentTier === 'invalid' || r.isRoundupArticle || r.rejectionReason) return false;
+  const hasText = r.fullText || r.bwwExcerpt || r.dtliExcerpt || r.showScoreExcerpt || r.nycTheatreExcerpt || r.lboRoundupExcerpt;
+  return !hasText && typeof r.url === 'string' && r.url.startsWith('http');
+}
+
+/** Window show ids with uncollected records, most pending first, at most `limit`. recordsByShow: {showId: [record]} */
+function showsNeedingCollection(windowShows, recordsByShow, limit = 3) {
+  return windowShows
+    .map((s) => ({ id: s.id, n: (recordsByShow[s.id] || []).filter(needsCollection).length }))
+    .filter((x) => x.n > 0)
+    .sort((a, b) => b.n - a.n || a.id.localeCompare(b.id))
+    .slice(0, limit)
+    .map((x) => x.id);
+}
+
 module.exports = {
+  needsCollection, showsNeedingCollection,
   WINDOW_DAYS_PAST, WINDOW_CATEGORIES, WINDOW_STRATEGIES, DEFAULT_MAX_PAID, WORST_CASE_USD_PER_PAID_CALL,
   selectWindowShows, windowStrategyFor, selectWindowOutlets, createPaidBudget, projectMonthlyCost,
 };

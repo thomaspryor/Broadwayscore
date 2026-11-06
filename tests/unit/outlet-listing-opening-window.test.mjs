@@ -74,3 +74,17 @@ test('poller config: New York Sun has a free entry and new OB feeds are register
     assert.ok(ow.windowStrategyFor(id, c, poller.WP_API_CONFIG || {}), id);
   }
 });
+
+test('needsCollection / showsNeedingCollection pick stubs without text, skip scored or flagged', () => {
+  const stub = { url: 'https://x.com/a', contentTier: 'stub' };
+  assert.equal(ow.needsCollection(stub), true);
+  assert.equal(ow.needsCollection({ ...stub, fullText: 'abc' }), false);
+  assert.equal(ow.needsCollection({ ...stub, assignedScore: 70 }), false);
+  assert.equal(ow.needsCollection({ ...stub, wrongShow: true }), false);
+  assert.equal(ow.needsCollection({ ...stub, duplicateOf: 'z' }), false);
+  assert.equal(ow.needsCollection({ contentTier: 'stub' }), false);
+  const win = [{ id: 'a' }, { id: 'b' }, { id: 'c' }, { id: 'd' }];
+  const by = { a: [stub], b: [stub, stub, { ...stub, fullText: 'x' }], c: [{ ...stub, assignedScore: 80 }], d: [stub] };
+  assert.deepEqual(ow.showsNeedingCollection(win, by, 2), ['b', 'a']);
+  assert.deepEqual(ow.showsNeedingCollection([], by), []);
+});
