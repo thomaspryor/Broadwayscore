@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-06T05:01:17.120Z",
+  "generatedAt": "2026-11-06T07:29:38.787Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -73,6 +73,10 @@
   "feedsChecked": 78,
   "feedsFailed": [
     {
+      "outletId": "theater-life",
+      "error": "Timeout fetching https://theaterlife.com/feed"
+    },
+    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
@@ -97,9 +101,9 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 807,
+  "itemsScanned": 800,
   "matchedGaps": 14,
-  "possibleGaps": 4,
+  "possibleGaps": 3,
   "gaps": [
     {
       "showId": "222-a-ghost-story-off-broadway-2026",
@@ -109,15 +113,6 @@
       "url": "https://rhombusrota.co.uk/2026/11/04/222-a-ghost-story-by-dads-theatre-company-at-upwell-village-hall-review/?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=222-a-ghost-story-by-dads-theatre-company-at-upwell-village-hall-review",
       "headline": "2:22 A Ghost Story by DADS Theatre Company at Upwell Village Hall Review",
       "publishDate": "2026-11-04"
-    },
-    {
-      "showId": "222-a-ghost-story-off-broadway-2026",
-      "title": "2:22 - A Ghost Story",
-      "level": "matched",
-      "outletId": "theatermania",
-      "url": "https://www.theatermania.com/news/review-222-a-ghost-story-a-boozy-dinner-party-becomes-a-late-night-vigil_1859012/",
-      "headline": "Review: 2:22 – A Ghost Story, a Boozy Dinner Party Becomes a Late-Night Vigil",
-      "publishDate": "2026-11-05"
     },
     {
       "showId": "parcel-from-america-off-broadway-2026",
@@ -222,19 +217,19 @@
       "showId": "well-see-off-broadway-2026",
       "title": "We'll See",
       "level": "matched",
+      "outletId": "times-square-chronicles",
+      "url": "https://t2conline.com/well-see-much-ado-about-very-little/",
+      "headline": "We’ll See: Much Ado About Very Little",
+      "publishDate": "2026-11-06"
+    },
+    {
+      "showId": "well-see-off-broadway-2026",
+      "title": "We'll See",
+      "level": "matched",
       "outletId": "theater-pizzazz",
       "url": "https://theaterpizzazz.com/in-well-see-much-to-talk-about-little-to-dramatize/",
       "headline": "IN “WE’LL SEE,” MUCH TO TALK ABOUT, LITTLE TO DRAMATIZE",
       "publishDate": "2026-11-05"
-    },
-    {
-      "showId": "king-lear-off-broadway-2026",
-      "title": "King Lear",
-      "level": "possible",
-      "outletId": "guardian",
-      "url": "https://www.theguardian.com/culture/2026/nov/04/every-family-has-silences-kathryn-hunter-on-despair-desire-dislodgeable-limbs-and-her-acting-genius",
-      "headline": "‘Every family has silences’: Kathryn Hunter on despair, desire, dislodgeable limbs – and her acting genius",
-      "publishDate": "2026-11-04"
     },
     {
       "showId": "the-bridge-off-west-end-2026",

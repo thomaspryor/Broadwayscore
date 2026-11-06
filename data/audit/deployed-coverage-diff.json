@@ -1,13 +1,80 @@
 {
-  "generatedAt": "2026-11-06T05:01:16.101Z",
+  "generatedAt": "2026-11-06T07:29:38.516Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 320,
-  "clean": 320,
-  "defective": 0,
-  "byType": {},
-  "shows": [],
+  "clean": 316,
+  "defective": 4,
+  "byType": {
+    "score-drift": 4
+  },
+  "shows": [
+    {
+      "showId": "the-unbelievers-off-broadway-2026",
+      "title": "The Unbelievers",
+      "openingDate": "2026-11-05",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 70.48 vs local 66.21 (Δ4.27)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 5,
+      "deployedCount": 5,
+      "firstDefectAt": "2026-11-06T07:29:32.207Z"
+    },
+    {
+      "showId": "the-verge-off-broadway-2026",
+      "title": "The Verge",
+      "openingDate": "2026-11-05",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 57.42 vs local 54.16 (Δ3.26)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 7,
+      "deployedCount": 7,
+      "firstDefectAt": "2026-11-06T07:29:32.207Z"
+    },
+    {
+      "showId": "222-a-ghost-story-off-broadway-2026",
+      "title": "2:22 - A Ghost Story",
+      "openingDate": "2026-11-05",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 60.17 vs local 57.54 (Δ2.63)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 5,
+      "deployedCount": 5,
+      "firstDefectAt": "2026-11-06T07:29:32.207Z"
+    },
+    {
+      "showId": "rope-off-broadway-2026",
+      "title": "Rope",
+      "openingDate": "2026-11-03",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 57.22 vs local 58.43 (Δ1.21)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 12,
+      "deployedCount": 12,
+      "firstDefectAt": "2026-11-06T07:29:32.207Z"
+    }
+  ],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }
