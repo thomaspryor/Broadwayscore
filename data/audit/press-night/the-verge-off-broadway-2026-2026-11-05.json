@@ -1,0 +1,304 @@
+{
+  "schemaVersion": 1,
+  "showId": "the-verge-off-broadway-2026",
+  "night": "2026-11-05",
+  "market": "off-broadway",
+  "embargoAt": "2026-11-06T03:00:00.000Z",
+  "embargoSource": "market-default",
+  "probe": {
+    "startedAt": "2026-11-06T02:30:05.993Z",
+    "endedAt": null,
+    "intervalMin": 5,
+    "samples": 30,
+    "failedSamples": 0,
+    "lastSampleAt": "2026-11-06T04:55:13.191Z",
+    "lastOkSampleAt": "2026-11-06T04:55:13.191Z"
+  },
+  "firstLiveAt": "2026-11-06T04:30:12.006Z",
+  "firstLiveBaseline": false,
+  "lastLiveAt": "2026-11-06T04:30:12.006Z",
+  "liveCount": 6,
+  "liveCountAt": {
+    "1h": 0,
+    "2h": null,
+    "6h": null
+  },
+  "liveCountSampleAt": {
+    "1h": "2026-11-06T04:00:10.557Z",
+    "2h": null,
+    "6h": null
+  },
+  "firstOutletPublishAt": {
+    "at": "2026-11-05",
+    "precision": "approx",
+    "source": "prod-rv-publishDate",
+    "tierScope": "T1-T2"
+  },
+  "perReview": [
+    {
+      "key": "the new york times|helen shaw",
+      "outlet": "The New York Times",
+      "critic": "Helen Shaw",
+      "tier": 1,
+      "publishAt": "2026-11-05",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-06T04:30:12.006Z",
+      "prevOkSampleAt": "2026-11-06T04:25:11.793Z",
+      "baseline": false,
+      "liveNow": true
+    },
+    {
+      "key": "vulture|sara holdren",
+      "outlet": "Vulture",
+      "critic": "Sara Holdren",
+      "tier": 1,
+      "publishAt": "2026-11-05",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-06T04:30:12.006Z",
+      "prevOkSampleAt": "2026-11-06T04:25:11.793Z",
+      "baseline": false,
+      "liveNow": true
+    },
+    {
+      "key": "exeunt magazine|loren noveck",
+      "outlet": "Exeunt Magazine",
+      "critic": "Loren Noveck",
+      "tier": 2,
+      "publishAt": "2026-11-05",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-06T04:30:12.006Z",
+      "prevOkSampleAt": "2026-11-06T04:25:11.793Z",
+      "baseline": false,
+      "liveNow": true
+    },
+    {
+      "key": "new york stage review|michael sommers",
+      "outlet": "New York Stage Review",
+      "critic": "Michael Sommers",
+      "tier": 2,
+      "publishAt": "2026-11-05",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-06T04:30:12.006Z",
+      "prevOkSampleAt": "2026-11-06T04:25:11.793Z",
+      "baseline": false,
+      "liveNow": true
+    },
+    {
+      "key": "new york theatre guide|christian lewis",
+      "outlet": "New York Theatre Guide",
+      "critic": "Christian Lewis",
+      "tier": 2,
+      "publishAt": "2026-11-05",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-06T04:30:12.006Z",
+      "prevOkSampleAt": "2026-11-06T04:25:11.793Z",
+      "baseline": false,
+      "liveNow": true
+    },
+    {
+      "key": "culture sauce|thom geier",
+      "outlet": "Culture Sauce",
+      "critic": "Thom Geier",
+      "tier": 3,
+      "publishAt": "2026-11-05",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-06T04:30:12.006Z",
+      "prevOkSampleAt": "2026-11-06T04:25:11.793Z",
+      "baseline": false,
+      "liveNow": true
+    }
+  ],
+  "dropped": [],
+  "reference": {
+    "2h": {
+      "status": "incomplete",
+      "source": [
+        "bww-roundup-live"
+      ],
+      "count": 6,
+      "covered": 5,
+      "coverage": 0.833,
+      "missing": [
+        "theatermania"
+      ],
+      "suppressedMissing": [],
+      "liveCount": 6,
+      "fetchedAt": "2026-11-06T05:00:27.544Z",
+      "censusNote": "archive + live BWW roundup (6 rows): https://www.broadwayworld.com/article/Review-Roundup-Fiasco-Theaters-THE-VERGE-Opens-at-the-Public-Theater-20261105"
+    }
+  },
+  "manualActions": [],
+  "publishedBy": {
+    "path": "regular",
+    "method": "lane-only-decision",
+    "checks": [
+      {
+        "at": "2026-11-06T05:00:27.624Z",
+        "label": "2h",
+        "standDown": false,
+        "reason": "market not lane-only"
+      }
+    ]
+  },
+  "fileState": {
+    "capturedAt": "2026-11-06T05:00:31.515Z",
+    "files": [
+      {
+        "file": "culturesauce--thom-geier.json",
+        "outletId": "culturesauce",
+        "outlet": "Culture Sauce",
+        "critic": "Thom Geier",
+        "firstSeenAt": "2026-11-06T03:42:23.164Z",
+        "scoredAt": "2026-11-06T04:03:41.720Z",
+        "publishDate": "2026-11-05",
+        "url": "culturesauce.com/verge-susan-glaspell-off-broadway-review",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "exeunt-magazine--loren-noveck.json",
+        "outletId": "exeunt-magazine",
+        "outlet": "Exeunt Magazine",
+        "critic": "Loren Noveck",
+        "firstSeenAt": "2026-11-06T03:42:19.565Z",
+        "scoredAt": "2026-11-06T04:03:46.854Z",
+        "publishDate": "2026-11-05",
+        "url": "exeuntnyc.com/reviews/review-the-verge-at-the-public-theater",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "london-box-office--unknown.json",
+        "outletId": "london-box-office",
+        "outlet": "London Box Office",
+        "critic": "Unknown",
+        "firstSeenAt": "2026-10-28T13:01:27.096Z",
+        "scoredAt": null,
+        "publishDate": null,
+        "url": "londonboxoffice.co.uk/news/post/women-on-the-verge-review",
+        "includable": false,
+        "reason": "previewPlaceholder",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "nysr--michael-sommers.json",
+        "outletId": "nysr",
+        "outlet": "New York Stage Review",
+        "critic": "Michael Sommers",
+        "firstSeenAt": "2026-11-06T03:42:21.256Z",
+        "scoredAt": "2026-11-06T04:03:52.380Z",
+        "publishDate": "2026-11-05",
+        "url": "nystagereview.com/2026/11/05/the-verge-a-portrait-in-discontent",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "nytg--christian-lewis.json",
+        "outletId": "nytg",
+        "outlet": "New York Theatre Guide",
+        "critic": "Christian Lewis",
+        "firstSeenAt": "2026-11-06T03:42:20.829Z",
+        "scoredAt": "2026-11-06T04:03:56.461Z",
+        "publishDate": "2026-11-05",
+        "url": "newyorktheatreguide.com/reviews/the-verge-off-broadway-review",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "nytimes--helen-shaw.json",
+        "outletId": "nytimes",
+        "outlet": "The New York Times",
+        "critic": "Helen Shaw",
+        "firstSeenAt": "2026-11-06T03:42:19.006Z",
+        "scoredAt": "2026-11-06T04:40:53.911Z",
+        "publishDate": "2026-11-05",
+        "url": "nytimes.com/2026/11/05/theater/rope-the-verge-review-off-broadway-silverman.html",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "the-verge--david-pierce.json",
+        "outletId": "the-verge",
+        "outlet": "The Verge",
+        "critic": "David Pierce",
+        "firstSeenAt": "2026-11-05T16:48:24.494Z",
+        "scoredAt": null,
+        "publishDate": "2026-11-05",
+        "url": "theverge.com/tech/1026570/apple-macbook-pro-proled-xdr-display-review",
+        "includable": false,
+        "reason": "wrongShow",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "the-verge--john-higgins.json",
+        "outletId": "the-verge",
+        "outlet": "The Verge",
+        "critic": "John Higgins",
+        "firstSeenAt": "2026-11-05T16:48:25.842Z",
+        "scoredAt": null,
+        "publishDate": "2026-11-05",
+        "url": "theverge.com/tech/1026958/sony-mdr-3r-headphones-review",
+        "includable": false,
+        "reason": "wrongShow",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "the-verge--nathan-edwards.json",
+        "outletId": "the-verge",
+        "outlet": "The Verge",
+        "critic": "Nathan Edwards",
+        "firstSeenAt": "2026-11-05T16:48:25.444Z",
+        "scoredAt": null,
+        "publishDate": "2026-11-05",
+        "url": "theverge.com/tech/1027250/m6-macbook-pro-review",
+        "includable": false,
+        "reason": "wrongShow",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "the-verge--todd-haselton.json",
+        "outletId": "the-verge",
+        "outlet": "The Verge",
+        "critic": "Todd Haselton",
+        "firstSeenAt": "2026-11-05T16:48:25.034Z",
+        "scoredAt": null,
+        "publishDate": "2026-11-05",
+        "url": "theverge.com/tech/1027177/2026-imac-m6-review",
+        "includable": false,
+        "reason": "wrongShow",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "theatermania--kenji-fujishima.json",
+        "outletId": "theatermania",
+        "outlet": "TheaterMania",
+        "critic": "Kenji Fujishima",
+        "firstSeenAt": "2026-11-06T03:42:19.984Z",
+        "scoredAt": "2026-11-06T04:40:59.520Z",
+        "publishDate": "2026-11-05",
+        "url": "theatermania.com/news/review-revival-of-the-verge-aims-to-bring-susan-glaspell-back-into-the-canon_1858976",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "vulture--sara-holdren.json",
+        "outletId": "vulture",
+        "outlet": "Vulture",
+        "critic": "Sara Holdren",
+        "firstSeenAt": "2026-11-06T03:42:20.404Z",
+        "scoredAt": "2026-11-06T04:04:07.341Z",
+        "publishDate": "2026-11-05",
+        "url": "vulture.com/article/the-verge-needs-to-be-much-weirder-than-this.html",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      }
+    ]
+  }
+}
