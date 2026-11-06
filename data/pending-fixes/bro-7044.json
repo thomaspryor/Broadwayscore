@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7044",
   "planId": "70838a16-daa8-414e-ad47-2322e4a94f03",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-06T15:07:08.864Z",
   "submitter": {
     "name": null,
@@ -32,5 +32,19 @@
         "description": "222-a-ghost-story-off-broadway-2026/nytg--gillian-russo.json: isNonReview"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-06T16:48:39.302Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "222-a-ghost-story-off-broadway-2026/nytg--gillian-russo.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "222-a-ghost-story-off-broadway-2026/nytg--gillian-russo.json isNonReview: true -> false"
+    }
+  ],
+  "executedIn": "ci"
 }
