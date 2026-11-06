@@ -842,5 +842,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-06T20:19:57.969Z"
+  },
+  {
+    "conditionKey": "land:land/bro-7053-multishow",
+    "title": "Landing blocked: unit-tests-node red on land/bro-7053-multishow",
+    "description": "land.yml did not land land/bro-7053-multishow: the unit-tests-node gate went red at 3d0256fd55. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/42286942492",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-7053-multishow"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "3d0256fd555da534e994d89af8d16d4e0089e769"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42286942492"
+      }
+    ],
+    "queuedAt": "2026-11-06T20:37:46.807Z"
   }
 ]
