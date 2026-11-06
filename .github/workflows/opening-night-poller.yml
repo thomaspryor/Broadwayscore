@@ -249,18 +249,19 @@ jobs:
               // this order, so tonight's opener is never the one a budget cut drops.
               const { orderPollShows } = require('./scripts/lib/poller-loop-budget');
               const r = orderPollShows(opened, now);
-              if (r.order.length > 0) console.log([r.order.join(','), r.hot.join(','), r.front, r.mainFrontEnd].join('|'));
+              if (r.order.length > 0) console.log([r.order.join(','), r.hot.join(','), r.front, r.mainFrontEnd, r.window.join(',')].join('|'));
             ")
 
             if [ -z "$SHOWS" ]; then
               echo "No recently opened shows"
               echo "has_shows=false" >> $GITHUB_OUTPUT
             else
-              IFS='|' read -r ORDERED HOT FRONT MAIN_FRONT_END <<< "$SHOWS"
+              IFS='|' read -r ORDERED HOT FRONT MAIN_FRONT_END WINDOW <<< "$SHOWS"
               echo "Recently opened shows: $ORDERED"
               echo "Press-night shows re-polled during the loop: ${HOT:-none}"
               echo "shows=$ORDERED" >> $GITHUB_OUTPUT
               echo "hot=$HOT" >> $GITHUB_OUTPUT
+              echo "window=$WINDOW" >> $GITHUB_OUTPUT
               echo "front=${FRONT:-0}" >> $GITHUB_OUTPUT
               echo "main_front_end=${MAIN_FRONT_END:-}" >> $GITHUB_OUTPUT
               echo "has_shows=true" >> $GITHUB_OUTPUT
@@ -441,6 +442,7 @@ jobs:
           # openers) is done, the loop stops so collect/score/rebuild/deploy run now;
           # the tail waits for the next run (at most one night, the hot span).
           HOT_SHOWS="${{ steps.find.outputs.hot }}"
+          WINDOW_SHOWS="${{ steps.find.outputs.window }}"
           FRONT="${{ steps.find.outputs.front }}"
           case "$FRONT" in ''|*[!0-9]*) FRONT=0 ;; esac
           # Missing/garbled main-front index falls back to the full front (old rule).
@@ -498,6 +500,18 @@ jobs:
               elif [ "$POLLER_RC" -ne 0 ]; then
                 GATHER_FAILED=$((GATHER_FAILED + 1))
                 echo "  ⚠️ poller exited $POLLER_RC for $SHOW_ID — counted as a gather-stage failure"
+              fi
+
+              # BRO-7004 / BRO-7032: a press-night review found without a byline (TheaterMania,
+              # Parcel from America, The Unbelievers) is routed to _pending/ and used to wait for
+              # the pre-loop drain of the NEXT run (~60 min later). Promote it right after the poll
+              # for EVERY show in its press-night window (WINDOW_SHOWS, any market: HOT_SHOWS is
+              # main-stage only, so Off-Broadway nights were skipped). Promotions stay uncommitted,
+              # so the CREATED/SHOW_DIRTY checks below and HOT_AFTER (HOT_BEFORE is read before the
+              # poll) count them as new and the commit + collect + score chain picks them up.
+              if [[ ",$WINDOW_SHOWS," == *",$SHOW_ID,"* ]]; then
+                # lint-allow-swallow: best-effort speed-up; the next run's pre-loop drain still promotes the stub, so nothing is lost.
+                BD_OPENING_NIGHT=1 timeout 240 node scripts/replay-pending-bylines.js --shows="$SHOW_ID" --time-budget-min=2 --skip-empty-body-retry || echo "::warning::press-night pending drain for $SHOW_ID failed or timed out"
               fi
 
               # Check if files were created (review-texts is a separate git checkout)
@@ -560,13 +574,6 @@ jobs:
                 [[ ",$GUARDIAN_REDISPATCH_SHOWS," == *",$SHOW_ID,"* ]] || GUARDIAN_REDISPATCH_SHOWS="$GUARDIAN_REDISPATCH_SHOWS,$SHOW_ID"
               fi
             if [ -n "$HOT_BEFORE" ]; then
-              # BRO-7004: a press-night review found without a byline (TheaterMania, Parcel from
-              # America) is routed to _pending/ and used to wait for the pre-loop drain step of the
-              # NEXT run (~60 min later). Promote it now, before HOT_AFTER is counted, so it counts
-              # as a new file and ends the loop early like any other hot find. Promotions stay
-              # uncommitted in the checkout (same as the pre-loop drain); time-boxed.
-              # lint-allow-swallow: best-effort speed-up; a failure emits ::warning:: and the stub is still drained by the pre-loop drain step of the next run, so nothing is lost.
-              BD_OPENING_NIGHT=1 timeout 240 node scripts/replay-pending-bylines.js --shows="$SHOW_ID" --time-budget-min=2 --skip-empty-body-retry || echo "::warning::press-night pending drain for $SHOW_ID failed or timed out"
               local HOT_AFTER
               HOT_AFTER=$(cd data/review-texts && git status --porcelain --untracked-files=all -- "$SHOW_ID" | grep -c '^??' || true)
               if [ "$HOT_AFTER" -gt "$HOT_BEFORE" ]; then

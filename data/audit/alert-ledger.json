@@ -5522,13 +5522,13 @@
       "title": "Data audits failing (non-blocking): Audit outlet-registry gaps",
       "firstSeen": "2026-09-23T19:33:16.776Z",
       "incidentOpenedAt": "2026-09-23T19:33:16.776Z",
-      "lastSeen": "2026-11-06T13:25:26.848Z",
+      "lastSeen": "2026-11-06T14:21:25.642Z",
       "lastNotifiedAt": "2026-11-06T12:16:19.703Z",
       "lastSurfacedAt": "2026-11-05T12:12:51.744Z",
       "notifyCount": 38,
       "cardId": null,
       "linearIdentifier": "BRO-5882",
-      "silentRefires": 2
+      "silentRefires": 4
     },
     "review-gap:opening-window:elf-lyons-the-woman-on-the-edge-off-broadway-2026": {
       "status": "resolved",
@@ -35999,13 +35999,13 @@
       "title": "Placeholder synopsis on The Unbelievers",
       "firstSeen": "2026-11-03T03:11:54.749Z",
       "incidentOpenedAt": "2026-11-03T03:11:54.749Z",
-      "lastSeen": "2026-11-06T11:01:37.052Z",
+      "lastSeen": "2026-11-06T14:29:18.314Z",
       "lastNotifiedAt": "2026-11-03T03:11:54.749Z",
       "lastSurfacedAt": "2026-11-03T03:11:54.749Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 28
+      "silentRefires": 29
     },
     "opening-night-placeholder-synopsis-king-lear-off-broadway-2026": {
       "status": "open",
@@ -37343,13 +37343,13 @@
       "title": "Unhandled CV.wrongProduction on King Lear",
       "firstSeen": "2026-11-05T19:22:20.512Z",
       "incidentOpenedAt": "2026-11-05T19:22:20.512Z",
-      "lastSeen": "2026-11-06T11:01:37.067Z",
+      "lastSeen": "2026-11-06T14:29:22.664Z",
       "lastNotifiedAt": "2026-11-05T19:22:20.512Z",
       "lastSurfacedAt": "2026-11-05T19:22:20.512Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 5
+      "silentRefires": 6
     },
     "opening-night-publish-date-pre-opening:king-lear-off-broadway-2026": {
       "status": "open",
@@ -37357,13 +37357,13 @@
       "title": "Pre-opening publishDate on King Lear",
       "firstSeen": "2026-11-05T19:22:20.529Z",
       "incidentOpenedAt": "2026-11-05T19:22:20.529Z",
-      "lastSeen": "2026-11-06T11:01:37.082Z",
+      "lastSeen": "2026-11-06T14:29:22.682Z",
       "lastNotifiedAt": "2026-11-05T19:22:20.529Z",
       "lastSurfacedAt": "2026-11-05T19:22:20.529Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 5
+      "silentRefires": 6
     },
     "ob-venue-go-live:seven-in-one-blow-or-the-brave-little-kid-off-broadway-2026": {
       "status": "open",
@@ -37594,12 +37594,13 @@
       "title": "Auto-remediation gave up on king-lear-off-broadway-2026",
       "firstSeen": "2026-11-06T11:01:37.096Z",
       "incidentOpenedAt": "2026-11-06T11:01:37.096Z",
-      "lastSeen": "2026-11-06T11:01:37.096Z",
+      "lastSeen": "2026-11-06T14:29:22.698Z",
       "lastNotifiedAt": "2026-11-06T11:01:37.096Z",
       "lastSurfacedAt": "2026-11-06T11:01:37.096Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "express-retry-still-thin:ivy-day-off-broadway-2026": {
       "status": "open",
@@ -37624,6 +37625,32 @@
       "lastSeen": "2026-11-06T12:42:50.742Z",
       "lastNotifiedAt": "2026-11-06T12:42:50.742Z",
       "lastSurfacedAt": "2026-11-06T12:42:50.742Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "land:land/job/linear-BRO-7033-mw4zx3hi": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Landing blocked: rebase red on land/job/linear-BRO-7033-mw4zx3hi",
+      "firstSeen": "2026-11-06T14:11:52.659Z",
+      "incidentOpenedAt": "2026-11-06T14:11:52.659Z",
+      "lastSeen": "2026-11-06T14:11:52.659Z",
+      "lastNotifiedAt": "2026-11-06T14:11:52.659Z",
+      "lastSurfacedAt": "2026-11-06T14:11:52.659Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "land:land/bro-7040-quiet-digest": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Landing blocked: scripts-lib-tests red on land/bro-7040-quiet-digest",
+      "firstSeen": "2026-11-06T14:23:40.173Z",
+      "incidentOpenedAt": "2026-11-06T14:23:40.173Z",
+      "lastSeen": "2026-11-06T14:23:40.173Z",
+      "lastNotifiedAt": "2026-11-06T14:23:40.173Z",
+      "lastSurfacedAt": "2026-11-06T14:23:40.173Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null

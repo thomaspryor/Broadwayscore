@@ -87,10 +87,13 @@ function orderPollShows(shows, now = new Date()) {
   rows.sort((a, b) => a.tier - b.tier || a.main - b.main || (a.od < b.od ? 1 : a.od > b.od ? -1 : 0) || a.i - b.i);
   const order = rows.map((r) => r.s.id);
   const hot = rows.filter((r) => r.tier === 0 && isHot(r.s, now)).slice(0, MAX_HOT).map((r) => r.s.id);
+  // BRO-7032: every show in its press-night window (any market), not just the main-stage
+  // hot ones: the workflow drains _pending/ no-byline stubs for these right after each poll.
+  const window = rows.filter((r) => r.tier === 0).map((r) => r.s.id);
   const front = rows.filter((r) => r.tier <= 1).length;
   let mainFrontEnd = 0;
   rows.forEach((r, idx) => { if (r.tier <= 1 && r.main === 0) mainFrontEnd = idx + 1; });
-  return { order, hot, front, mainFrontEnd };
+  return { order, hot, window, front, mainFrontEnd };
 }
 
 // BRO-6033 (Imaginary Invalid, 2026-10-22): the hot show was polled first and
