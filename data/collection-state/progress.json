@@ -1,10 +1,16 @@
 {
   "processed": [
-    "speculations-off-west-end-2026/theatre-vibe--lizzie-loveridge.json"
+    "speculations-off-west-end-2026/theatre-vibe--lizzie-loveridge.json",
+    "the-unbelievers-off-broadway-2026/nytimes--laura-collins-hughes.json",
+    "the-verge-off-broadway-2026/nytimes--helen-shaw.json"
   ],
   "failed": [
     "speculations-off-west-end-2026/guardian--unknown.json",
-    "speculations-off-west-end-2026/artsdesk--unknown.json"
+    "speculations-off-west-end-2026/artsdesk--unknown.json",
+    "speculations-off-west-end-2026/guardian--arifa-akbar.json",
+    "222-a-ghost-story-off-broadway-2026/theatrely--kobi-kassal.json",
+    "speculations-off-west-end-2026/artsdesk--gary-naylor.json",
+    "the-unbelievers-off-broadway-2026/bobs-theater-blog--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -12,7 +18,12 @@
       "speculations-off-west-end-2026/theatre-vibe--lizzie-loveridge.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/the-unbelievers-off-broadway-2026/nytimes--laura-collins-hughes.json",
+      "the-unbelievers-off-broadway-2026/nytimes--laura-collins-hughes.json",
+      "data/review-texts/the-verge-off-broadway-2026/nytimes--helen-shaw.json",
+      "the-verge-off-broadway-2026/nytimes--helen-shaw.json"
+    ],
     "directCookies": [],
     "scrapingdog": [
       "memoriam-off-west-end-2026/ground--unknown.json",
@@ -26,6 +37,29 @@
     "archive": []
   },
   "startTime": "2026-11-06T22:21:51.729Z",
-  "lastProcessed": "speculations-off-west-end-2026/theatre-vibe--lizzie-loveridge.json",
-  "log": []
+  "lastProcessed": "the-unbelievers-off-broadway-2026/bobs-theater-blog--unknown.json",
+  "log": [
+    {
+      "t": "2026-11-06T22:27:14.519Z",
+      "event": "bb-session",
+      "session": "bdd238cf",
+      "url": "https://www.nytimes.com/2026/11/06/theater/the-unbelievers-222-a-ghost-story-rev"
+    },
+    {
+      "t": "2026-11-06T22:27:15.399Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-06T22:27:58.470Z",
+      "event": "bb-session",
+      "session": "8efb8ff5",
+      "url": "https://www.nytimes.com/2026/11/05/theater/rope-the-verge-review-off-broadway-si"
+    },
+    {
+      "t": "2026-11-06T22:27:59.261Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }

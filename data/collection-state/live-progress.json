@@ -1,12 +1,12 @@
 {
-  "updatedAt": "2026-11-06T22:22:24.970Z",
-  "processed": 1,
-  "failed": 2,
+  "updatedAt": "2026-11-06T22:29:57.321Z",
+  "processed": 3,
+  "failed": 6,
   "successRate": "33.3%",
   "tierBreakdown": {
     "playwright": 1,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 4,
     "directCookies": 0,
     "scrapingdog": 2,
     "scrapingbee": 1,
@@ -14,6 +14,29 @@
     "archiveToday": 0,
     "archive": 0
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 2,
+  "recentActivity": [
+    {
+      "t": "2026-11-06T22:27:14.519Z",
+      "event": "bb-session",
+      "session": "bdd238cf",
+      "url": "https://www.nytimes.com/2026/11/06/theater/the-unbelievers-222-a-ghost-story-rev"
+    },
+    {
+      "t": "2026-11-06T22:27:15.399Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-06T22:27:58.470Z",
+      "event": "bb-session",
+      "session": "8efb8ff5",
+      "url": "https://www.nytimes.com/2026/11/05/theater/rope-the-verge-review-off-broadway-si"
+    },
+    {
+      "t": "2026-11-06T22:27:59.261Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
