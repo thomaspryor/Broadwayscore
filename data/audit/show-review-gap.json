@@ -1,22 +1,22 @@
 {
-  "generatedAt": "2026-11-07T19:57:10.145Z",
+  "generatedAt": "2026-11-07T20:21:28.962Z",
   "windowDays": 1095,
-  "targets": 891,
-  "auditedThisRun": 28,
-  "carriedForward": 2048,
+  "targets": 901,
+  "auditedThisRun": 33,
+  "carriedForward": 2044,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
     "withGap": 633,
-    "missingCurrentRun": 1160,
+    "missingCurrentRun": 1157,
     "totalCitedNoUrl": 0,
-    "totalFlaggedMisses": 900,
+    "totalFlaggedMisses": 901,
     "totalRecoverable": 57,
     "totalRecovered": 93,
     "humanExcluded": 25,
-    "automatedExcluded": 998,
-    "automatedExcludedListed": 707,
-    "priorProductionCitations": 6084
+    "automatedExcluded": 1001,
+    "automatedExcludedListed": 708,
+    "priorProductionCitations": 6066
   },
   "results": [
     {
@@ -386,12 +386,10 @@
       "status": "open",
       "category": "off-broadway",
       "previewsStartDate": "2026-10-20",
-      "aggregatorArticles": [
-        "https://playbill.com/article/what-are-the-reviews-for-222---a-ghost-story-off-broadway"
-      ],
+      "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://1minutecritic.com/222-a-ghost-story-off-broadway-review/",
         "https://culturesauce.com/222-ghost-story-finn-jones-anna-camp-off-broadway-review/",
+        "https://1minutecritic.com/222-a-ghost-story-off-broadway-review/",
         "https://www.newyorktheatreguide.com/reviews/2-22-a-ghost-story-off-broadway-review",
         "https://nystagereview.com/2026/11/05/222-a-ghost-story-whos-afraid-of-the-spectral-woolf/",
         "https://www.wsj.com/articles/the-unbelievers-and-2-22a-ghost-story-review-off-broadway-stages-turn-unsettling-b758c396",
@@ -401,22 +399,10 @@
         "https://concerts.consequence.net/events/222-a-ghost-story-at-lucille-lortel-theatre-on-2026-11-27-19-30--1",
         "https://www.londontheatre.co.uk/reviews/222-a-ghost-story-review-lyric-theatre-cheryl"
       ],
-      "dirFiles": 17,
-      "dirClean": 10,
+      "dirFiles": 18,
+      "dirClean": 11,
       "inReviewsJson": 10,
       "missing": [
-        {
-          "url": "https://concerts.consequence.net/events/222-a-ghost-story-at-lucille-lortel-theatre-on-2026-11-27-19-30--1",
-          "host": "consequence.net",
-          "knownOutletId": "consequence",
-          "serpCensus": true,
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ]
-        },
         {
           "url": "https://www.londontheatre.co.uk/reviews/222-a-ghost-story-review-lyric-theatre-cheryl",
           "host": "londontheatre.co.uk",
@@ -452,16 +438,8 @@
         "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 89,
-        "byReason": {
-          "not-http-url": 20,
-          "non-review-host": 19,
-          "production-database-listing": 5,
-          "aggregator-internal-nav": 38,
-          "aggregator-section-root": 5,
-          "non-stage-review": 1,
-          "census-junk-host": 1
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
       "nonReviewCandidates": [
@@ -476,21 +454,6 @@
       "automatedExcludedListed": 0,
       "unextractable": [],
       "ingestResults": [
-        {
-          "url": "https://concerts.consequence.net/events/222-a-ghost-story-at-lucille-lortel-theatre-on-2026-11-27-19-30--1",
-          "host": "consequence.net",
-          "outletId": "consequence",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": null
-        },
         {
           "url": "https://www.londontheatre.co.uk/reviews/222-a-ghost-story-review-lyric-theatre-cheryl",
           "host": "londontheatre.co.uk",
@@ -512,13 +475,6 @@
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "consequence",
-            "outlet": "consequence",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://concerts.consequence.net/events/222-a-ghost-story-at-lucille-lortel-theatre-on-2026-11-27-19-30--1"
-          },
-          {
             "outletId": "london-theatre",
             "outlet": "london-theatre",
             "critic": "Unknown",
@@ -529,14 +485,14 @@
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://1minutecritic.com/222-a-ghost-story-off-broadway-review/",
-            "outletId": "1minutecritic.com",
+            "url": "https://culturesauce.com/222-ghost-story-finn-jones-anna-camp-off-broadway-review/",
+            "outletId": "culturesauce.com",
             "state": "live",
             "firstSeenAt": "2026-11-06T20:37:44.785Z"
           },
           {
-            "url": "https://culturesauce.com/222-ghost-story-finn-jones-anna-camp-off-broadway-review/",
-            "outletId": "culturesauce.com",
+            "url": "https://1minutecritic.com/222-a-ghost-story-off-broadway-review/",
+            "outletId": "1minutecritic.com",
             "state": "live",
             "firstSeenAt": "2026-11-06T20:37:44.785Z"
           },
@@ -578,9 +534,8 @@
           },
           {
             "url": "https://concerts.consequence.net/events/222-a-ghost-story-at-lucille-lortel-theatre-on-2026-11-27-19-30--1",
-            "outletId": "consequence",
-            "state": "GAP",
-            "reason": "sla-breach",
+            "outletId": "concerts.consequence.net",
+            "state": "live",
             "firstSeenAt": "2026-11-07T15:26:55.890Z"
           },
           {
@@ -599,10 +554,10 @@
             "reason": "timeout-listing-blurb"
           }
         ],
-        "liveCount": 8,
+        "liveCount": 9,
         "candidateCount": 10
       },
-      "computedAt": "2026-11-07T19:57:10.145Z"
+      "computedAt": "2026-11-07T20:21:28.962Z"
     },
     {
       "showId": "3-summers-of-lincoln-regional-2025",
@@ -937,6 +892,45 @@
         "candidateCount": 0
       },
       "computedAt": "2026-11-06T22:26:51.704Z"
+    },
+    {
+      "showId": "42-balloons-regional-2025",
+      "title": "42 Balloons",
+      "openingDate": "2025-06-10",
+      "status": "closed",
+      "category": "regional",
+      "previewsStartDate": "2025-05-24",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "unextractable": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 4,
+        "excluded": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-11-07T20:21:28.962Z"
     },
     {
       "showId": "44-off-broadway-2025",
@@ -10935,7 +10929,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-11-07T19:57:10.145Z"
+      "computedAt": "2026-11-07T20:21:28.962Z"
     },
     {
       "showId": "a-tupperware-of-ashes-west-end-2024",
@@ -12172,32 +12166,19 @@
         "https://www.chicagotribune.com/2026/11/02/review-adirondack-chair-circle-steppenwolf-theatre/",
         "https://rachelweinbergreviews.com/2026/11/03/review-adirondack-chair-circle-at-steppenwolf-theatre-company/",
         "https://chicago.suntimes.com/theater/2026/11/03/review-adirondack-chair-circle-steppenwolf-theatre-co",
-        "https://www.broadwayworld.com/chicago/article/Review-ADIRONDACK-CHAIR-CIRCLE-at-Steppenwolf-Theatre-Company-20261102",
         "https://1minutecritic.com/adirondack-chair-circle-steppenwolf-review/",
         "https://aroundthetownchicago.com/theatre-reviews/adirondack-chair-circle-reviewed-by-mark-reinecke/",
         "https://splashmags.com/2026/11/adirondack-chair-circle-review-steppenwolf-theatre-companys-world-premiere/",
         "http://www.buzznews.net/theatre/theatre-reviews/item/6817-steppenwolf-s-adirondack-chair-circle-the-joke-lands-then-what.html",
         "https://chicagoonstage.com/culture-wars-on-deck-chairs-steppenwolfs-adirondack-chair-circle-is-both-funny-and-powerful/",
         "https://www.conversationswithedtracy.com/picksinsix/2026/11/3/picksinsix-review-adirondack-chair-circle-steppenwolf-theatre-company",
-        "https://thirdcoastreview.com/stages/2026/11/02/review-steppenwolf-adirondack-chair-circle"
+        "https://thirdcoastreview.com/stages/2026/11/02/review-steppenwolf-adirondack-chair-circle",
+        "https://www.broadwayworld.com/chicago/article/Review-ADIRONDACK-CHAIR-CIRCLE-at-Steppenwolf-Theatre-Company-20261102"
       ],
-      "dirFiles": 12,
-      "dirClean": 12,
-      "inReviewsJson": 11,
-      "missing": [
-        {
-          "url": "https://www.broadwayworld.com/chicago/article/Review-ADIRONDACK-CHAIR-CIRCLE-at-Steppenwolf-Theatre-Company-20261102",
-          "host": "broadwayworld.com",
-          "knownOutletId": "broadwayworld",
-          "serpCensus": true,
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ]
-        }
-      ],
+      "dirFiles": 13,
+      "dirClean": 13,
+      "inReviewsJson": 13,
+      "missing": [],
       "dirOnly": [
         {
           "host": "chicagostageandscreen.com",
@@ -12212,106 +12193,19 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"Adirondack Chair Circle\" Broadway review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"Adirondack Chair Circle\" Broadway review 2026",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 9,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"Adirondack Chair Circle\" review steppenwolf",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 9,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "Adirondack Chair Circle Steppenwolf Theatre, Chicago, IL review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 9,
-            "accepted": 2,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "Adirondack Chair Circle Steppenwolf Theatre, Chicago, IL review",
-            "page": 1,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "Adirondack Chair Circle Steppenwolf Theatre, Chicago, IL review",
-            "page": 2,
-            "geo": "us",
-            "ok": true,
-            "results": 9,
-            "accepted": 1,
-            "error": null
-          }
-        ],
-        "queriesOk": 5,
-        "queriesTotal": 5,
-        "resultCount": 5,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 40,
-        "byReason": {
-          "not-http-url": 33,
-          "non-review-host": 6,
-          "aggregator-internal-nav": 1
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 0,
       "unextractable": [],
-      "ingestResults": [
-        {
-          "url": "https://www.broadwayworld.com/chicago/article/Review-ADIRONDACK-CHAIR-CIRCLE-at-Steppenwolf-Theatre-Company-20261102",
-          "host": "broadwayworld.com",
-          "outletId": "broadwayworld",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": null
-        }
-      ],
-      "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "incomplete",
-        "missing": [
-          {
-            "outletId": "broadwayworld",
-            "outlet": "broadwayworld",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.broadwayworld.com/chicago/article/Review-ADIRONDACK-CHAIR-CIRCLE-at-Steppenwolf-Theatre-Company-20261102"
-          }
-        ],
+        "verdict": "complete",
+        "missing": [],
         "suppressedMissing": [],
         "candidates": [
           {
@@ -12376,18 +12270,17 @@
           },
           {
             "url": "https://www.broadwayworld.com/chicago/article/Review-ADIRONDACK-CHAIR-CIRCLE-at-Steppenwolf-Theatre-Company-20261102",
-            "outletId": "broadwayworld",
-            "state": "GAP",
-            "reason": "sla-breach",
+            "outletId": "broadwayworld.com",
+            "state": "live",
             "firstSeenAt": "2026-11-07T17:08:58.264Z"
           }
         ],
         "censusSchema": 4,
         "excluded": [],
-        "liveCount": 10,
+        "liveCount": 11,
         "candidateCount": 11
       },
-      "computedAt": "2026-11-07T17:08:58.264Z"
+      "computedAt": "2026-11-07T20:21:28.962Z"
     },
     {
       "showId": "admissions-regional-2026",
@@ -48384,7 +48277,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-11-07T19:57:10.145Z"
+      "computedAt": "2026-11-07T20:21:28.962Z"
     },
     {
       "showId": "bob-odenkirk-presents-hospital-hour-off-broadway-2026",
@@ -51667,7 +51560,7 @@
         "liveCount": 0,
         "candidateCount": 1
       },
-      "computedAt": "2026-11-07T19:57:10.145Z"
+      "computedAt": "2026-11-07T20:21:28.962Z"
     },
     {
       "showId": "buddy-the-buddy-holly-story-regional-2026",
@@ -71372,7 +71265,7 @@
         "liveCount": 0,
         "candidateCount": 2
       },
-      "computedAt": "2026-11-07T19:57:10.145Z"
+      "computedAt": "2026-11-07T20:21:28.962Z"
     },
     {
       "showId": "crazy-mama-a-true-story-of-love-and-madness-off-broadway-2026",
@@ -104832,7 +104725,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-11-07T19:57:10.145Z"
+      "computedAt": "2026-11-07T20:21:28.962Z"
     },
     {
       "showId": "father-time-off-broadway-2026",
@@ -113193,26 +113086,26 @@
         "https://corrblimey.uk/2026/08/27/edinburgh-festival-fringe-2026-review-garry-starr-classic-penguins-grand-at-pleasance-courtyard/",
         "https://fringereview.co.uk/review/edinburgh-fringe/2026/garry-starr-classic-penguins-4/",
         "https://www.londontheatre.co.uk/reviews/garry-starr-classic-penguins-review-the-other-palace",
-        "https://ayoungishperspective.co.uk/2026/08/29/review-garry-starr-classic-penguins-grand-pleasance-courtyard/",
+        "https://www.westendbestfriend.co.uk/news/review-garry-starr-classic-penguins-the-other-palace",
         "https://theatreweekly.com/review-garry-starr-classic-penguins-at-the-other-palace/",
         "https://theatreandtonic.co.uk/blog/garry-starr-classic-penguins-at-the-other-palace-review",
-        "https://www.westendbestfriend.co.uk/news/review-garry-starr-classic-penguins-the-other-palace",
+        "https://chiswickcalendar.co.uk/garry-starr-classic-penguins-the-other-palace-theatre-review/",
+        "https://www.timeout.com/london/comedy/garry-starr-classic-penguins",
+        "https://www.thereviewshub.com/garry-starr-classic-penguins-the-other-palace-london/",
+        "https://www.londonlivinglarge.com/2026/10/garry-starr-classic-penguins-other.html",
         "https://therecs.co.uk/garry-starr-classic-penguins/",
         "https://everything-theatre.co.uk/2026/10/review-garry-starr-classic-penguins-the-other-palace/",
         "https://www.broadwayworld.com/westend/article/Review-GARRY-STARR-CLASSIC-PENGUINS-The-Other-Palace-20261026",
         "https://www.thereviewshub.com/garry-starr-classic-penguins-arts-theatre-london/",
         "https://entertainment-now.com/2026/08/edfringe-comedy-review-garry-starr-classic-penguins-3/",
         "https://www.thetimes.com/culture/comedy/article/garry-starr-classic-penguins-review-garrick-theatre-london-87vh6kdjs",
-        "https://chiswickcalendar.co.uk/garry-starr-classic-penguins-the-other-palace-theatre-review/",
-        "https://www.londonlivinglarge.com/2026/10/garry-starr-classic-penguins-other.html",
+        "https://ayoungishperspective.co.uk/2026/08/29/review-garry-starr-classic-penguins-grand-pleasance-courtyard/",
         "https://www.jackstage.co.uk/post/garry-starr-classic-penguins-review",
-        "https://www.thereviewshub.com/garry-starr-classic-penguins-the-other-palace-london/",
         "https://www.thestage.co.uk/reviews/garry-starr-classic-penguins-review-damien-warren-smith-the-other-palace",
         "https://www.thestage.co.uk/reviews/garry-starr-classic-penguins-review-underbelly-george-square-edinburgh-damien-warren-smith-francesca-moody",
         "https://ayoungishperspective.co.uk/2026/10/25/review-garry-starr-classic-penguins-3/",
         "http://www.broadwayworld.com/westend/article/Review-GARRY-STARR-CLASSIC-PENGUINS-The-Other-Palace-20261026",
         "https://www.islingtontribune.co.uk/article/review-garry-starr-classic-penguins-at-the-other-place",
-        "https://www.timeout.com/london/comedy/garry-starr-classic-penguins",
         "https://www.londonbornandbred.co.uk/post/garry-starr-s-classic-penguins-a-delightfully-daft-evening-at-the-arts-theatre",
         "https://exeuntnyc.com/reviews/review-garry-starr-classic-penguins-at-studio-seaview/",
         "https://fringereview.co.uk/review/edinburgh-fringe/2026/garry-starr-classic-penguins-3/",
@@ -113238,9 +113131,10 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://culturesauce.com/garry-starr-classic-penguins-off-broadway-review/",
-          "host": "culturesauce.com",
-          "knownOutletId": "culturesauce",
+          "url": "https://www.londonbornandbred.co.uk/post/garry-starr-s-classic-penguins-a-delightfully-daft-evening-at-the-arts-theatre",
+          "host": "londonbornandbred.co.uk",
+          "knownOutletId": "londonbornandbred",
+          "serpCensus": true,
           "sources": [
             {
               "source": "aggregator-article",
@@ -113251,99 +113145,9 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://thefrontrowcenter.com/2026/09/garry-starr-classic-penguins/",
-          "host": "thefrontrowcenter.com",
-          "knownOutletId": "front-row-center",
-          "sources": [
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-garry-starr-classic-penguins-off-broadway"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://nystagereview.com/2026/09/08/garry-starr-classic-penguins-much-ado-about-nothing-on/",
-          "host": "nystagereview.com",
-          "knownOutletId": "nysr",
-          "sources": [
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-garry-starr-classic-penguins-off-broadway"
-            },
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://nystagereview.com/2026/09/08/garry-starr-classic-penguins-naked-laughter/",
-          "host": "nystagereview.com",
-          "knownOutletId": "nysr",
-          "sources": [
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-garry-starr-classic-penguins-off-broadway"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.newyorktheatreguide.com/reviews/garry-starr-classic-penguins-off-broadway-review",
-          "host": "newyorktheatreguide.com",
-          "knownOutletId": "nytg",
-          "sources": [
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-garry-starr-classic-penguins-off-broadway"
-            },
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.nytimes.com/2026/09/10/theater/garry-starr-classic-penguins-review.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes",
-          "sources": [
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-garry-starr-classic-penguins-off-broadway"
-            },
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.theatermania.com/news/review-garry-starr-classic-penguins-a-naked-clown-show-about-great-literature_1852789/",
-          "host": "theatermania.com",
-          "knownOutletId": "theatermania",
-          "sources": [
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-garry-starr-classic-penguins-off-broadway"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.timeout.com/london/comedy/garry-starr-classic-penguins",
-          "host": "timeout.com",
-          "knownOutletId": "timeout-london",
+          "url": "https://exeuntnyc.com/reviews/review-garry-starr-classic-penguins-at-studio-seaview/",
+          "host": "exeuntnyc.com",
+          "knownOutletId": "exeunt-magazine",
           "serpCensus": true,
           "sources": [
             {
@@ -113603,7 +113407,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 0,
             "error": null
           },
           {
@@ -113633,7 +113437,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 2,
             "error": null
           },
           {
@@ -113643,27 +113447,23 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 7,
+        "resultCount": 8,
         "error": null
       },
       "candidatesRejected": {
-        "count": 138,
+        "count": 48,
         "byReason": {
-          "not-http-url": 55,
-          "non-review-host": 21,
-          "event-listing": 9,
-          "production-database-listing": 6,
-          "aggregator-internal-nav": 39,
-          "aggregator-section-root": 5,
-          "non-stage-review": 1,
-          "bare-host": 1,
-          "write-path-blocked": 1
+          "not-http-url": 35,
+          "non-review-host": 2,
+          "write-path-blocked": 1,
+          "no-review-evidence": 1,
+          "event-listing": 9
         }
       },
       "dedupedVariants": [],
@@ -113717,64 +113517,6 @@
       ],
       "automatedExcludedListed": 4,
       "unextractable": [],
-      "weIngestBlocked": [
-        {
-          "url": "https://cititour.com/NYC_Broadway/Garry-Starr-Classic-Penguins/1392",
-          "host": "cititour.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://culturesauce.com/garry-starr-classic-penguins-off-broadway-review/",
-          "host": "culturesauce.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://thefrontrowcenter.com/2026/09/garry-starr-classic-penguins/",
-          "host": "thefrontrowcenter.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://nystagereview.com/2026/09/08/garry-starr-classic-penguins-much-ado-about-nothing-on/",
-          "host": "nystagereview.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://nystagereview.com/2026/09/08/garry-starr-classic-penguins-naked-laughter/",
-          "host": "nystagereview.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.newyorktheatreguide.com/reviews/garry-starr-classic-penguins-off-broadway-review",
-          "host": "newyorktheatreguide.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.nytimes.com/2026/09/10/theater/garry-starr-classic-penguins-review.html",
-          "host": "nytimes.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.theatermania.com/news/review-garry-starr-classic-penguins-a-naked-clown-show-about-great-literature_1852789/",
-          "host": "theatermania.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        }
-      ],
       "ingestResults": [
         {
           "url": "https://www.timeout.com/london/comedy/garry-starr-classic-penguins",
@@ -113790,6 +113532,28 @@
           "unclassified": false,
           "zeroChar": false,
           "reason": "garry-starr-classic-penguins-off-west-end-2026: https://www.timeout.com/london/comedy/garry-starr-classic-penguins is a Time Out listing capsule, not a review (lib/timeout-capsule.js). Expected rejection; no action needed unless Time Out later publishes a full review at this URL, which a later audit will then ingest."
+        },
+        {
+          "url": "https://culturesauce.com/garry-starr-classic-penguins-off-broadway-review/",
+          "host": "culturesauce.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://exeuntnyc.com/reviews/review-garry-starr-classic-penguins-at-studio-seaview/",
+          "host": "exeuntnyc.com",
+          "outletId": "exeunt-magazine",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": true,
+          "conflictReason": "cross-show-url-owned",
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "garry-starr-classic-penguins-off-west-end-2026: https://exeuntnyc.com/reviews/review-garry-starr-classic-penguins-at-studio-seaview/ is already owned by garry-starr-classic-penguins-off-broadway-2026 — one of the two is contaminated. Inspect data/review-texts/garry-starr-classic-penguins-off-broadway-2026/ for this URL; if that copy is the misfiled one, flag it wrongShow with a manual wrongShowReason (that releases ownership), then re-ingest here."
         }
       ],
       "ingestSkippedByCap": [],
@@ -113802,6 +113566,20 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.timeout.com/london/comedy/garry-starr-classic-penguins"
+          },
+          {
+            "outletId": "londonbornandbred",
+            "outlet": "londonbornandbred",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.londonbornandbred.co.uk/post/garry-starr-s-classic-penguins-a-delightfully-daft-evening-at-the-arts-theatre"
+          },
+          {
+            "outletId": "exeunt-magazine",
+            "outlet": "exeunt-magazine",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://exeuntnyc.com/reviews/review-garry-starr-classic-penguins-at-studio-seaview/"
           },
           {
             "outletId": "corrblimey",
@@ -113847,8 +113625,44 @@
             "firstSeenAt": "2026-10-24T14:39:26.381Z"
           },
           {
-            "url": "https://ayoungishperspective.co.uk/2026/08/29/review-garry-starr-classic-penguins-grand-pleasance-courtyard/",
-            "outletId": "ayoungishperspective.co.uk",
+            "url": "https://www.westendbestfriend.co.uk/news/review-garry-starr-classic-penguins-the-other-palace",
+            "outletId": "westendbestfriend.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T00:00:48.604Z"
+          },
+          {
+            "url": "https://theatreweekly.com/review-garry-starr-classic-penguins-at-the-other-palace/",
+            "outletId": "theatreweekly.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T00:00:48.604Z"
+          },
+          {
+            "url": "https://theatreandtonic.co.uk/blog/garry-starr-classic-penguins-at-the-other-palace-review",
+            "outletId": "theatreandtonic.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-24T14:39:26.381Z"
+          },
+          {
+            "url": "https://chiswickcalendar.co.uk/garry-starr-classic-penguins-the-other-palace-theatre-review/",
+            "outletId": "chiswickcalendar.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-24T14:59:13.348Z"
+          },
+          {
+            "url": "https://www.thereviewshub.com/garry-starr-classic-penguins-the-other-palace-london/",
+            "outletId": "thereviewshub.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T21:33:02.264Z"
+          },
+          {
+            "url": "https://www.londonlivinglarge.com/2026/10/garry-starr-classic-penguins-other.html",
+            "outletId": "londonlivinglarge.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-26T08:25:08.978Z"
+          },
+          {
+            "url": "https://therecs.co.uk/garry-starr-classic-penguins/",
+            "outletId": "therecs.co.uk",
             "state": "live",
             "firstSeenAt": "2026-10-25T00:00:48.604Z"
           },
@@ -113907,28 +113721,16 @@
             "firstSeenAt": "2026-11-05T07:20:10.412Z"
           },
           {
-            "url": "https://chiswickcalendar.co.uk/garry-starr-classic-penguins-the-other-palace-theatre-review/",
-            "outletId": "chiswickcalendar.co.uk",
+            "url": "https://ayoungishperspective.co.uk/2026/08/29/review-garry-starr-classic-penguins-grand-pleasance-courtyard/",
+            "outletId": "ayoungishperspective.co.uk",
             "state": "live",
-            "firstSeenAt": "2026-10-24T14:59:13.348Z"
-          },
-          {
-            "url": "https://www.londonlivinglarge.com/2026/10/garry-starr-classic-penguins-other.html",
-            "outletId": "londonlivinglarge.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-26T08:25:08.978Z"
+            "firstSeenAt": "2026-10-25T00:00:48.604Z"
           },
           {
             "url": "https://www.jackstage.co.uk/post/garry-starr-classic-penguins-review",
             "outletId": "jackstage.co.uk",
             "state": "live",
             "firstSeenAt": "2026-10-25T00:00:48.604Z"
-          },
-          {
-            "url": "https://www.thereviewshub.com/garry-starr-classic-penguins-the-other-palace-london/",
-            "outletId": "thereviewshub.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-25T21:33:02.264Z"
           },
           {
             "url": "https://www.thestage.co.uk/reviews/garry-starr-classic-penguins-review-damien-warren-smith-the-other-palace",
@@ -113984,6 +113786,20 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-10-25T21:33:02.264Z"
+          },
+          {
+            "url": "https://www.londonbornandbred.co.uk/post/garry-starr-s-classic-penguins-a-delightfully-daft-evening-at-the-arts-theatre",
+            "outletId": "londonbornandbred",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-24T14:59:13.348Z"
+          },
+          {
+            "url": "https://exeuntnyc.com/reviews/review-garry-starr-classic-penguins-at-studio-seaview/",
+            "outletId": "exeunt-magazine",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-24T14:59:13.348Z"
           },
           {
             "url": "https://corrblimey.uk/2026/08/27/edinburgh-festival-fringe-2026-review-garry-starr-classic-penguins-grand-at-pleasance-courtyard/",
@@ -114043,9 +113859,9 @@
           }
         ],
         "liveCount": 20,
-        "candidateCount": 25
+        "candidateCount": 27
       },
-      "computedAt": "2026-11-07T19:57:10.145Z"
+      "computedAt": "2026-11-07T20:21:28.962Z"
     },
     {
       "showId": "garsides-career-off-broadway-2025",
@@ -141488,13 +141304,12 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 39,
+        "count": 38,
         "byReason": {
-          "not-http-url": 28,
-          "non-review-host": 7,
-          "no-review-evidence": 1,
-          "census-junk-host": 1,
-          "venue-production-page": 2
+          "not-http-url": 31,
+          "non-review-host": 3,
+          "aggregator-internal-nav": 2,
+          "bare-host": 2
         }
       },
       "dedupedVariants": [],
@@ -141509,7 +141324,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-11-07T19:57:10.145Z"
+      "computedAt": "2026-11-07T20:21:28.962Z"
     },
     {
       "showId": "heart-of-rock-and-roll-2024",
@@ -171035,18 +170850,8 @@
       "status": "previews",
       "category": "off-west-end",
       "previewsStartDate": "2026-11-06",
-      "aggregatorArticles": [
-        "https://playbill.com/article/what-do-critics-think-of-shakespeare-in-the-parks-julius-caesar"
-      ],
+      "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "http://www.amny.com/entertainment/julius-caesar-review-shakespeare-in-the-park-production-a-jumbled-mess-1.13731534",
-        "http://deadline.com/2017/06/review-trump-like-julius-caesar-murdered-in-shakespeare-in-the-park-1202110899/",
-        "http://www.hollywoodreporter.com/review/julius-caesar-1012271",
-        "http://www.nbcnewyork.com/news/local/Review-Shakespeare-Julius-Caesar-Donald-Trump-427672483.html",
-        "http://www.newsday.com/entertainment/theater/julius-caesar-review-shakespeare-shaded-by-the-trumps-1.13725658",
-        "https://www.nytimes.com/2017/06/09/theater/review-julius-caesar-delacorte-theater-donald-trump.html",
-        "https://www.timeout.com/newyork/theater/julius-caesar-11",
-        "http://variety.com/2017/legit/reviews/julius-caesar-broadway-review-trump-like-play-1202462921/",
         "https://www.timeout.com/london/theatre/julius-caesar-26",
         "https://timeandleisure.co.uk/things-to-do/review-julius-caesar-globe-theatre/",
         "https://thebuffalohive.com/review-anthony-alcocer-reimagines-shakespeares-julius-caesar-at-the-kavinoky/",
@@ -171056,134 +170861,6 @@
       "dirClean": 0,
       "inReviewsJson": 0,
       "missing": [
-        {
-          "url": "http://www.amny.com/entertainment/julius-caesar-review-shakespeare-in-the-park-production-a-jumbled-mess-1.13731534",
-          "host": "amny.com",
-          "knownOutletId": "amny",
-          "sources": [
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://playbill.com/article/what-do-critics-think-of-shakespeare-in-the-parks-julius-caesar"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://deadline.com/2017/06/review-trump-like-julius-caesar-murdered-in-shakespeare-in-the-park-1202110899/",
-          "host": "deadline.com",
-          "knownOutletId": "deadline",
-          "sources": [
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://playbill.com/article/what-do-critics-think-of-shakespeare-in-the-parks-julius-caesar"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.hollywoodreporter.com/review/julius-caesar-1012271",
-          "host": "hollywoodreporter.com",
-          "knownOutletId": "hollywood-reporter",
-          "sources": [
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://playbill.com/article/what-do-critics-think-of-shakespeare-in-the-parks-julius-caesar"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.nbcnewyork.com/news/local/Review-Shakespeare-Julius-Caesar-Donald-Trump-427672483.html",
-          "host": "nbcnewyork.com",
-          "knownOutletId": "nbcny",
-          "sources": [
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://playbill.com/article/what-do-critics-think-of-shakespeare-in-the-parks-julius-caesar"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.newsday.com/entertainment/theater/julius-caesar-review-shakespeare-shaded-by-the-trumps-1.13725658",
-          "host": "newsday.com",
-          "knownOutletId": "newsday",
-          "sources": [
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://playbill.com/article/what-do-critics-think-of-shakespeare-in-the-parks-julius-caesar"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.nytimes.com/2017/06/09/theater/review-julius-caesar-delacorte-theater-donald-trump.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes",
-          "sources": [
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://playbill.com/article/what-do-critics-think-of-shakespeare-in-the-parks-julius-caesar"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.timeout.com/newyork/theater/julius-caesar-11",
-          "host": "timeout.com",
-          "knownOutletId": "timeout",
-          "sources": [
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://playbill.com/article/what-do-critics-think-of-shakespeare-in-the-parks-julius-caesar"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://variety.com/2017/legit/reviews/julius-caesar-broadway-review-trump-like-play-1202462921/",
-          "host": "variety.com",
-          "knownOutletId": "variety",
-          "sources": [
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://playbill.com/article/what-do-critics-think-of-shakespeare-in-the-parks-julius-caesar"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.timeout.com/london/theatre/julius-caesar-26",
-          "host": "timeout.com",
-          "knownOutletId": "timeout-london",
-          "serpCensus": true,
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ]
-        },
-        {
-          "url": "https://timeandleisure.co.uk/things-to-do/review-julius-caesar-globe-theatre/",
-          "host": "timeandleisure.co.uk",
-          "knownOutletId": "timeandleisure",
-          "serpCensus": true,
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ]
-        },
         {
           "url": "https://thebuffalohive.com/review-anthony-alcocer-reimagines-shakespeares-julius-caesar-at-the-kavinoky/",
           "host": "thebuffalohive.com",
@@ -171195,10 +170872,7 @@
               "sourceUrl": null
             }
           ]
-        }
-      ],
-      "dirOnly": [],
-      "flaggedMisses": [
+        },
         {
           "url": "https://www.sueterryvoices.com/news/julius-caesar-at-the-sam-wanamaker-playhouse",
           "host": "sueterryvoices.com",
@@ -171279,82 +170953,31 @@
         "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 119,
-        "byReason": {
-          "not-http-url": 6,
-          "non-review-host": 21,
-          "production-database-listing": 17,
-          "aggregator-internal-nav": 70,
-          "aggregator-section-root": 4,
-          "non-stage-review": 1
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
-      "priorRunArticles": [
+      "nonReviewCandidates": [
         {
-          "url": "https://playbill.com/article/what-do-critics-think-of-shakespeare-in-the-parks-julius-caesar",
-          "publishDate": "2017-06-12"
+          "url": "https://www.timeout.com/london/theatre/julius-caesar-26",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london",
+          "serpCensus": true,
+          "nonReviewVerdict": "page-date-before-run",
+          "nonReviewDetail": "2026-07-05"
+        },
+        {
+          "url": "https://timeandleisure.co.uk/things-to-do/review-julius-caesar-globe-theatre/",
+          "host": "timeandleisure.co.uk",
+          "knownOutletId": "timeandleisure",
+          "serpCensus": true,
+          "nonReviewVerdict": "page-date-before-run",
+          "nonReviewDetail": "2022-05-13"
         }
       ],
       "automatedExcludedListed": 1,
       "unextractable": [],
       "weIngestBlocked": [
-        {
-          "url": "http://www.amny.com/entertainment/julius-caesar-review-shakespeare-in-the-park-production-a-jumbled-mess-1.13731534",
-          "host": "amny.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "http://deadline.com/2017/06/review-trump-like-julius-caesar-murdered-in-shakespeare-in-the-park-1202110899/",
-          "host": "deadline.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "http://www.hollywoodreporter.com/review/julius-caesar-1012271",
-          "host": "hollywoodreporter.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "http://www.nbcnewyork.com/news/local/Review-Shakespeare-Julius-Caesar-Donald-Trump-427672483.html",
-          "host": "nbcnewyork.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "http://www.newsday.com/entertainment/theater/julius-caesar-review-shakespeare-shaded-by-the-trumps-1.13725658",
-          "host": "newsday.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.nytimes.com/2017/06/09/theater/review-julius-caesar-delacorte-theater-donald-trump.html",
-          "host": "nytimes.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.timeout.com/newyork/theater/julius-caesar-11",
-          "host": "timeout.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "http://variety.com/2017/legit/reviews/julius-caesar-broadway-review-trump-like-play-1202462921/",
-          "host": "variety.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
         {
           "url": "https://thebuffalohive.com/review-anthony-alcocer-reimagines-shakespeares-julius-caesar-at-the-kavinoky/",
           "host": "thebuffalohive.com",
@@ -171460,11 +171083,22 @@
           }
         ],
         "censusSchema": 4,
-        "excluded": [],
-        "liveCount": 0,
+        "excluded": [
+          {
+            "url": "https://www.timeout.com/london/theatre/julius-caesar-26",
+            "host": "timeout.com",
+            "reason": "page-date-before-run"
+          },
+          {
+            "url": "https://timeandleisure.co.uk/things-to-do/review-julius-caesar-globe-theatre/",
+            "host": "timeandleisure.co.uk",
+            "reason": "page-date-before-run"
+          }
+        ],
+        "liveCount": 2,
         "candidateCount": 4
       },
-      "computedAt": "2026-11-07T19:57:10.145Z"
+      "computedAt": "2026-11-07T20:21:28.962Z"
     },
     {
       "showId": "julius-caesar-off-broadway-2017",
@@ -171975,7 +171609,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-11-07T19:57:10.145Z"
+      "computedAt": "2026-11-07T20:21:28.962Z"
     },
     {
       "showId": "just-for-one-day-west-end-2024",
@@ -172808,7 +172442,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 4,
+            "results": 10,
             "accepted": 0,
             "error": null
           },
@@ -172859,13 +172493,14 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 42,
+        "count": 48,
         "byReason": {
-          "not-http-url": 29,
-          "non-review-host": 9,
-          "no-review-evidence": 2,
+          "not-http-url": 39,
+          "census-junk-host": 1,
+          "non-review-host": 4,
           "aggregator-internal-nav": 1,
-          "census-junk-host": 1
+          "venue-production-page": 2,
+          "non-stage-review": 1
         }
       },
       "dedupedVariants": [],
@@ -172880,7 +172515,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-11-07T19:57:10.145Z"
+      "computedAt": "2026-11-07T20:21:28.962Z"
     },
     {
       "showId": "kathy-and-stella-solve-a-murder-west-end-2024",
@@ -209061,18 +208696,27 @@
       "status": "open",
       "category": "broadway",
       "previewsStartDate": "2024-10-16",
-      "aggregatorArticles": [],
+      "aggregatorArticles": [
+        "https://www.broadwayworld.com/article/Review-Roundup-MAYBE-HAPPY-ENDING-Starring-Darren-Criss-and-Helen-J-Shen-20241112"
+      ],
       "aggregatorListedUrls": [
         "https://www.nytimes.com/2024/11/12/theater/maybe-happy-ending-review-darren-criss.html",
-        "https://www.newyorktheatreguide.com/reviews/maybe-happy-ending-broadway-review-darren-criss-helen-j-shen",
         "https://www.timeout.com/newyork/theater/maybe-happy-ending-broadway-musical-review-darren-criss-helen-shen-robots",
-        "https://www.vulture.com/article/theater-review-maybe-happy-ending.html",
-        "https://www.nydailynews.com/2024/11/12/broadway-review-maybe-happy-ending-darren-criss-helen-shen/",
+        "https://ew.com/maybe-happy-ending-review-broadway-darren-criss-brings-charm-robot-love-story-8743079",
         "https://variety.com/2024/legit/reviews/maybe-happy-ending-review-darren-criss-broadway-musical-1236207518/",
+        "https://deadline.com/2024/11/maybe-happy-ending-broadway-review-1236172693/",
+        "https://www.thedailybeast.com/review-maybe-happy-ending-is-the-best-new-musical-on-broadway/",
+        "https://www.usatoday.com/story/entertainment/music/2024/11/12/maybe-happy-ending-review-broadway-darren-criss/76193072007/",
+        "https://www.thewrap.com/maybe-happy-ending-broadway-review-darren-criss/",
+        "https://nystagereview.com/2024/11/12/maybe-happy-ending-beguiling-musical-charmer-from-korea/",
+        "https://nystagereview.com/2024/11/12/maybe-happy-ending-a-futuristic-love-story-with-old-fashioned-heart/",
+        "https://www.newyorktheatreguide.com/reviews/maybe-happy-ending-broadway-review-darren-criss-helen-j-shen",
+        "https://www.nydailynews.com/2024/11/12/broadway-review-maybe-happy-ending-darren-criss-helen-shen/",
+        "https://www.nysun.com/article/broadway-theatergoers-may-want-to-pack-tissues-for-maybe-happy-ending-the-most-enchanting-new-musical-in-years",
+        "https://www.vulture.com/article/theater-review-maybe-happy-ending.html",
         "https://observer.com/2024/11/maybe-happy-ending-is-the-most-original-most-beautiful-musical-in-eons/",
         "https://www.washingtonpost.com/entertainment/theater/2024/11/12/maybe-happy-ending-broadway-review/",
         "https://nypost.com/2024/11/12/entertainment/maybe-happy-ending-review-romantic-robot-musical-is-glorious-on-broadway-really/",
-        "https://ew.com/maybe-happy-ending-review-broadway-darren-criss-brings-charm-robot-love-story-8743079",
         "https://www.theatermania.com/news/review-maybe-happy-ending-with-darren-criss-and-helen-j-shen-a-balm-for-trying-times_1755342/",
         "http://www.lightingandsoundamerica.com/news/story.asp?ID=-8NUWVM",
         "https://www.talkinbroadway.com/page/world/MaybeHappyEnding.html",
@@ -209084,17 +208728,10 @@
         "https://www.interestedbystander.com/2024/11/broadway-reviews-death-becomes-her-is.html",
         "https://cititour.com/NYC_Broadway/Maybe-Happy-Ending/1263",
         "https://culturesauce.com/2024/11/12/maybe-happy-ending-is-an-instant-musical-classic-both-old-fashioned-and-cutting-edge-broadway-review/",
-        "https://www.thedailybeast.com/review-maybe-happy-ending-is-the-best-new-musical-on-broadway/",
-        "https://deadline.com/2024/11/maybe-happy-ending-broadway-review-1236172693/",
         "https://thefrontrowcenter.com/2024/11/maybe-happy-ending/",
-        "https://nystagereview.com/2024/11/12/maybe-happy-ending-a-futuristic-love-story-with-old-fashioned-heart/",
-        "https://nystagereview.com/2024/11/12/maybe-happy-ending-beguiling-musical-charmer-from-korea/",
-        "https://www.nysun.com/article/broadway-theatergoers-may-want-to-pack-tissues-for-maybe-happy-ending-the-most-enchanting-new-musical-in-years",
         "https://www.showbiz411.com/2024/11/12/broadway-glee-star-darren-criss-opens-in-charming-original-musical-maybe-happy-ending",
         "https://www.slantmagazine.com/theater/maybe-happy-ending-review-darren-criss/",
-        "https://www.theatrely.com/post/maybe-happy-ending-a-visionary-ode-to-emotion----review",
-        "https://www.usatoday.com/story/entertainment/music/2024/11/12/maybe-happy-ending-review-broadway-darren-criss/76193072007/",
-        "https://www.thewrap.com/maybe-happy-ending-broadway-review-darren-criss/"
+        "https://www.theatrely.com/post/maybe-happy-ending-a-visionary-ode-to-emotion----review"
       ],
       "dirFiles": 65,
       "dirClean": 42,
@@ -209152,45 +208789,6 @@
       ],
       "flaggedMisses": [
         {
-          "url": "https://www.nydailynews.com/2024/11/12/broadway-review-maybe-happy-ending-darren-criss-helen-shen/",
-          "host": "nydailynews.com",
-          "knownOutletId": "nydailynews",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nydailynews--chris-jones.json",
-              "flag": "clean",
-              "urlInDir": "https://www.nydailynews.com/2024/11/12/broadway-review-maybe-happy-ending-darren-criss-helen-shen/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "knownSyndicationSecondary"
-          ],
-          "confirmedNonReview": true,
-          "confirmedBasis": [
-            "syndication-primary-held"
-          ],
-          "copyOfLiveReview": true,
-          "sources": [
-            {
-              "source": "show-score",
-              "sourceUrl": "https://www.show-score.com/broadway-shows/maybe-happy-ending-broadway"
-            },
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ],
-          "listingDate": "2024-11-12",
-          "listingSource": "show-score",
-          "reverify": false
-        },
-        {
           "url": "https://variety.com/2024/legit/reviews/maybe-happy-ending-review-darren-criss-broadway-musical-1236207518/",
           "host": "variety.com",
           "knownOutletId": "variety",
@@ -209218,6 +208816,10 @@
           ],
           "sources": [
             {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-MAYBE-HAPPY-ENDING-Starring-Darren-Criss-and-Helen-J-Shen-20241112"
+            },
+            {
               "source": "show-score",
               "sourceUrl": "https://www.show-score.com/broadway-shows/maybe-happy-ending-broadway"
             },
@@ -209229,6 +208831,49 @@
           "listingDate": "2024-11-12",
           "listingSource": "show-score",
           "reverify": true
+        },
+        {
+          "url": "https://www.nydailynews.com/2024/11/12/broadway-review-maybe-happy-ending-darren-criss-helen-shen/",
+          "host": "nydailynews.com",
+          "knownOutletId": "nydailynews",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nydailynews--chris-jones.json",
+              "flag": "clean",
+              "urlInDir": "https://www.nydailynews.com/2024/11/12/broadway-review-maybe-happy-ending-darren-criss-helen-shen/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "knownSyndicationSecondary"
+          ],
+          "confirmedNonReview": true,
+          "confirmedBasis": [
+            "syndication-primary-held"
+          ],
+          "copyOfLiveReview": true,
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-MAYBE-HAPPY-ENDING-Starring-Darren-Criss-and-Helen-J-Shen-20241112"
+            },
+            {
+              "source": "show-score",
+              "sourceUrl": "https://www.show-score.com/broadway-shows/maybe-happy-ending-broadway"
+            },
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
+          "listingDate": "2024-11-12",
+          "listingSource": "show-score",
+          "reverify": false
         },
         {
           "url": "https://observer.com/2024/11/maybe-happy-ending-is-the-most-original-most-beautiful-musical-in-eons/",
@@ -209272,8 +208917,13 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 291,
+        "byReason": {
+          "not-http-url": 45,
+          "non-review-host": 19,
+          "aggregator-internal-nav": 223,
+          "aggregator-section-root": 4
+        }
       },
       "dedupedVariants": [
         {
@@ -209286,20 +208936,6 @@
       ],
       "automatedExcludedListed": 2,
       "unextractable": [],
-      "recoveryResults": [
-        {
-          "url": "https://www.thestage.co.uk/reviews/maybe-happy-ending-review-belasco-theatre-new-york-darren-criss-helen-j-shen-will-aronson-hue-park-michael-arden",
-          "host": "thestage.co.uk",
-          "file": "thestage--nicole-serratore.json",
-          "recovered": false,
-          "skipped": false,
-          "provisional": false,
-          "starFallback": false,
-          "reason": "ingest no-op (text landed elsewhere or unchanged)",
-          "recoveryCount": 3,
-          "uncited": true
-        }
-      ],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
@@ -209327,16 +208963,64 @@
             "firstSeenAt": "2026-08-03T10:14:58.194Z"
           },
           {
+            "url": "https://www.timeout.com/newyork/theater/maybe-happy-ending-broadway-musical-review-darren-criss-helen-shen-robots",
+            "outletId": "timeout.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-03T10:14:58.194Z"
+          },
+          {
+            "url": "https://ew.com/maybe-happy-ending-review-broadway-darren-criss-brings-charm-robot-love-story-8743079",
+            "outletId": "ew.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-13T15:59:02.152Z"
+          },
+          {
+            "url": "https://deadline.com/2024/11/maybe-happy-ending-broadway-review-1236172693/",
+            "outletId": "deadline.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T03:22:12.044Z"
+          },
+          {
+            "url": "https://www.thedailybeast.com/review-maybe-happy-ending-is-the-best-new-musical-on-broadway/",
+            "outletId": "thedailybeast.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T03:22:12.044Z"
+          },
+          {
+            "url": "https://www.usatoday.com/story/entertainment/music/2024/11/12/maybe-happy-ending-review-broadway-darren-criss/76193072007/",
+            "outletId": "usatoday.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-21T10:23:53.851Z"
+          },
+          {
+            "url": "https://www.thewrap.com/maybe-happy-ending-broadway-review-darren-criss/",
+            "outletId": "thewrap.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-21T10:23:53.851Z"
+          },
+          {
+            "url": "https://nystagereview.com/2024/11/12/maybe-happy-ending-beguiling-musical-charmer-from-korea/",
+            "outletId": "nystagereview.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T03:22:12.044Z"
+          },
+          {
+            "url": "https://nystagereview.com/2024/11/12/maybe-happy-ending-a-futuristic-love-story-with-old-fashioned-heart/",
+            "outletId": "nystagereview.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T02:57:17.839Z"
+          },
+          {
             "url": "https://www.newyorktheatreguide.com/reviews/maybe-happy-ending-broadway-review-darren-criss-helen-j-shen",
             "outletId": "newyorktheatreguide.com",
             "state": "live",
             "firstSeenAt": "2026-08-03T10:14:58.194Z"
           },
           {
-            "url": "https://www.timeout.com/newyork/theater/maybe-happy-ending-broadway-musical-review-darren-criss-helen-shen-robots",
-            "outletId": "timeout.com",
+            "url": "https://www.nysun.com/article/broadway-theatergoers-may-want-to-pack-tissues-for-maybe-happy-ending-the-most-enchanting-new-musical-in-years",
+            "outletId": "nysun.com",
             "state": "live",
-            "firstSeenAt": "2026-08-03T10:14:58.194Z"
+            "firstSeenAt": "2026-10-31T03:22:12.044Z"
           },
           {
             "url": "https://www.vulture.com/article/theater-review-maybe-happy-ending.html",
@@ -209357,16 +209041,16 @@
             "firstSeenAt": "2026-08-13T15:59:02.152Z"
           },
           {
-            "url": "https://ew.com/maybe-happy-ending-review-broadway-darren-criss-brings-charm-robot-love-story-8743079",
-            "outletId": "ew.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-13T15:59:02.152Z"
-          },
-          {
             "url": "https://www.theatermania.com/news/review-maybe-happy-ending-with-darren-criss-and-helen-j-shen-a-balm-for-trying-times_1755342/",
             "outletId": "theatermania.com",
             "state": "live",
             "firstSeenAt": "2026-08-13T15:59:02.152Z"
+          },
+          {
+            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-8NUWVM",
+            "outletId": "lightingandsoundamerica.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T03:22:12.044Z"
           },
           {
             "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-8NUWVM",
@@ -209429,40 +209113,10 @@
             "firstSeenAt": "2026-08-21T10:23:53.851Z"
           },
           {
-            "url": "https://www.thedailybeast.com/review-maybe-happy-ending-is-the-best-new-musical-on-broadway/",
-            "outletId": "thedailybeast.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-31T03:22:12.044Z"
-          },
-          {
-            "url": "https://deadline.com/2024/11/maybe-happy-ending-broadway-review-1236172693/",
-            "outletId": "deadline.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-31T03:22:12.044Z"
-          },
-          {
             "url": "https://thefrontrowcenter.com/2024/11/maybe-happy-ending/",
             "outletId": "thefrontrowcenter.com",
             "state": "live",
             "firstSeenAt": "2026-08-13T15:59:02.152Z"
-          },
-          {
-            "url": "https://nystagereview.com/2024/11/12/maybe-happy-ending-a-futuristic-love-story-with-old-fashioned-heart/",
-            "outletId": "nystagereview.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-31T02:57:17.839Z"
-          },
-          {
-            "url": "https://nystagereview.com/2024/11/12/maybe-happy-ending-beguiling-musical-charmer-from-korea/",
-            "outletId": "nystagereview.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-31T03:22:12.044Z"
-          },
-          {
-            "url": "https://www.nysun.com/article/broadway-theatergoers-may-want-to-pack-tissues-for-maybe-happy-ending-the-most-enchanting-new-musical-in-years",
-            "outletId": "nysun.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-31T03:22:12.044Z"
           },
           {
             "url": "https://www.showbiz411.com/2024/11/12/broadway-glee-star-darren-criss-opens-in-charming-original-musical-maybe-happy-ending",
@@ -209479,18 +209133,6 @@
           {
             "url": "https://www.theatrely.com/post/maybe-happy-ending-a-visionary-ode-to-emotion----review",
             "outletId": "theatrely.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-21T10:23:53.851Z"
-          },
-          {
-            "url": "https://www.usatoday.com/story/entertainment/music/2024/11/12/maybe-happy-ending-review-broadway-darren-criss/76193072007/",
-            "outletId": "usatoday.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-21T10:23:53.851Z"
-          },
-          {
-            "url": "https://www.thewrap.com/maybe-happy-ending-broadway-review-darren-criss/",
-            "outletId": "thewrap.com",
             "state": "live",
             "firstSeenAt": "2026-08-21T10:23:53.851Z"
           },
@@ -209520,7 +209162,7 @@
         "liveCount": 27,
         "candidateCount": 29
       },
-      "computedAt": "2026-11-07T19:57:10.145Z"
+      "computedAt": "2026-11-07T20:21:28.962Z"
     },
     {
       "showId": "maybe-happy-ending-tour-2026",
@@ -227201,7 +226843,7 @@
         "liveCount": 0,
         "candidateCount": 4
       },
-      "computedAt": "2026-11-07T19:57:10.145Z"
+      "computedAt": "2026-11-07T20:21:28.962Z"
     },
     {
       "showId": "much-ado-about-nothing-globe-off-west-end-2026",
@@ -236748,16 +236390,38 @@
       "status": "open",
       "category": "broadway",
       "previewsStartDate": "2024-06-26",
-      "aggregatorArticles": [],
+      "aggregatorArticles": [
+        "https://playbill.com/article/reviews-what-do-critics-think-of-cole-escolas-oh-mary-on-broadway"
+      ],
       "aggregatorListedUrls": [
-        "https://www.nytimes.com/2024/07/11/theater/oh-mary-review-cole-escola.html",
-        "https://www.newyorktheatreguide.com/reviews/oh-mary-broadway-review-cole-escola",
-        "https://www.timeout.com/newyork/theater/oh-mary-broadway-review-cole-escola",
-        "https://www.wsj.com/articles/oh-mary-review-cole-escola-mary-todd-lincoln-broadway-9a0803c1",
-        "https://deadline.com/2024/07/oh-mary-broadway-review-cole-escola-1236005071/",
-        "https://variety.com/2024/legit/reviews/oh-mary-review-broadway-cole-escola-1236067236/",
-        "https://nypost.com/2024/07/11/entertainment/oh-mary-review-get-to-the-funniest-show-on-broadway/",
+        "https://www.broadwaynews.com/the-broadway-review-in-oh-mary-cole-escola-is-a-tour-de-farce/",
+        "https://www.chicagotribune.com/2024/07/11/review-oh-mary-on-broadway-is-about-an-unhinged-hilarious-mary-todd-lincoln/",
+        "https://cititour.com/NYC_News/Review-Oh-Mary-Is-Oh-Mazing/8508",
         "https://culturesauce.com/2024/07/11/cole-escola-oh-mary-broadway-review/",
+        "https://www.thedailybeast.com/oh-mary-on-broadway-history-made-brilliantly-hilariously-silly",
+        "https://deadline.com/2024/07/oh-mary-broadway-review-cole-escola-1236005071/",
+        "https://www.digitaljournal.com/entertainment/review-cole-escola-rewrites-history-as-mary-todd-lincoln-in-oh-mary-on-broadway/article",
+        "https://ew.com/oh-mary-review-cole-escola-american-farce-is-funniest-play-on-broadway-8676908",
+        "https://www.theguardian.com/stage/article/2024/jul/11/oh-mary-review-cole-escola-broadway",
+        "https://www.hollywoodreporter.com/lifestyle/arts/oh-mary-theater-review-cole-escola-broadway-1235945864/",
+        "https://www.nydailynews.com/2024/07/11/broadway-review-mary-todd-lincoln-farce-oh-mary-is-hilarious-take-on-controversial-first-lady/",
+        "https://www.vulture.com/article/theater-review-oh-mary-cole-escola-broadway-transfer.html",
+        "https://nypost.com/2024/07/11/entertainment/oh-mary-review-get-to-the-funniest-show-on-broadway/",
+        "https://nystagereview.com/2024/07/11/oh-mary-lincoln-drinkin-and-todd/",
+        "https://nystagereview.com/2024/07/11/oh-mary-dont-ask-for-subtle-comedy/",
+        "https://www.nysun.com/article/new-play-on-broadway-features-mary-todd-lincoln-in-a-delirious-nearly-80-minute-fit-of-pique",
+        "https://newyorktheater.me/2024/07/11/oh-mary-on-broadway/",
+        "https://www.newyorktheatreguide.com/reviews/oh-mary-broadway-review-cole-escola",
+        "https://www.nytimes.com/2024/07/11/theater/oh-mary-review-cole-escola.html",
+        "https://www.nj.com/entertainment/2024/07/oh-mary-broadway-review-cole-escolas-historical-farce-is-pure-bananas-and-close-to-perfect.html",
+        "https://observer.com/2024/07/oh-mary-is-a-splendidly-nasty-farce-you-will-not-want-to-miss/",
+        "https://www.theatermania.com/news/review-oh-mary-cole-escolas-riotous-broadway-debut_1744785/",
+        "https://www.theatrely.com/post/cole-escolas-oh-mary-on-broadway-is-a-stupid-masterpiece-review",
+        "https://www.timeout.com/newyork/theater/oh-mary-broadway-review-cole-escola",
+        "https://www.usatoday.com/story/entertainment/music/2024/07/11/oh-mary-broadway-review/74326625007/",
+        "https://variety.com/2024/legit/reviews/oh-mary-review-broadway-cole-escola-1236067236/",
+        "https://www.wsj.com/articles/oh-mary-review-cole-escola-mary-todd-lincoln-broadway-9a0803c1",
+        "https://www.thewrap.com/oh-mary-broadway-review-cole-escola/",
         "https://pagesonstages.wordpress.com/2024/08/29/oh-mary/",
         "https://theaterscene.com/Oh-Mary-DD.html",
         "https://www.interestedbystander.com/2024/07/broadway-review-cole-escolas-irreverent.html",
@@ -236779,30 +236443,11 @@
         "https://www.thewrap.com/oh-mary-off-broadway-review-cole-escola/",
         "https://culturesauce.com/2024/02/08/cole-escola-oh-mary-off-broadway-review/",
         "https://twi-ny.com/2024/05/05/oh-mary/",
-        "https://www.vulture.com/article/theater-review-oh-mary-cole-escola-broadway-transfer.html",
-        "https://ew.com/oh-mary-review-cole-escola-american-farce-is-funniest-play-on-broadway-8676908",
-        "https://www.theguardian.com/stage/article/2024/jul/11/oh-mary-review-cole-escola-broadway",
-        "https://www.thedailybeast.com/oh-mary-on-broadway-history-made-brilliantly-hilariously-silly",
-        "https://www.thewrap.com/oh-mary-broadway-review-cole-escola/",
-        "https://www.hollywoodreporter.com/lifestyle/arts/oh-mary-theater-review-cole-escola-broadway-1235945864/",
-        "https://observer.com/2024/07/oh-mary-is-a-splendidly-nasty-farce-you-will-not-want-to-miss/",
-        "https://nystagereview.com/2024/07/11/oh-mary-lincoln-drinkin-and-todd/",
-        "https://nystagereview.com/2024/07/11/oh-mary-dont-ask-for-subtle-comedy/",
-        "https://www.theatrely.com/post/cole-escolas-oh-mary-on-broadway-is-a-stupid-masterpiece-review",
         "https://www.theatrely.com/post/oh-mary-a-first-rate-first-lady-campsterpiece-review",
         "https://www.queerty.com/in-oh-mary-cole-escola-conrad-ricamora-deliver-a-raucous-romp-through-history-20240208",
         "https://www.theguardian.com/stage/2025/dec/19/oh-mary-review-mason-alexander-park-giles-terera-trafalgar-theatre-london",
         "https://www.nytimes.com/2025/12/19/arts/oh-mary-trafalgar-theater-london.html",
-        "https://www.chicagotribune.com/2024/07/11/review-oh-mary-on-broadway-is-about-an-unhinged-hilarious-mary-todd-lincoln/",
-        "https://cititour.com/NYC_News/Review-Oh-Mary-Is-Oh-Mazing/8508",
-        "https://www.digitaljournal.com/entertainment/review-cole-escola-rewrites-history-as-mary-todd-lincoln-in-oh-mary-on-broadway/article",
-        "https://www.nysun.com/article/new-play-on-broadway-features-mary-todd-lincoln-in-a-delirious-nearly-80-minute-fit-of-pique",
-        "https://newyorktheater.me/2024/07/11/oh-mary-on-broadway/",
-        "https://www.nj.com/entertainment/2024/07/oh-mary-broadway-review-cole-escolas-historical-farce-is-pure-bananas-and-close-to-perfect.html",
-        "https://www.theatermania.com/news/review-oh-mary-cole-escolas-riotous-broadway-debut_1744785/",
-        "https://www.usatoday.com/story/entertainment/music/2024/07/11/oh-mary-broadway-review/74326625007/",
-        "https://liamodell.com/2025/12/19/oh-mary-review-trafalgar-theatre-london-mason-alexander-park-mary-todd-lincoln-abraham-cole-escola-sam-pinkleton-dino-fetscher-kate-odonnell-about/",
-        "https://www.broadwaynews.com/the-broadway-review-in-oh-mary-cole-escola-is-a-tour-de-farce/"
+        "https://liamodell.com/2025/12/19/oh-mary-review-trafalgar-theatre-london-mason-alexander-park-mary-todd-lincoln-abraham-cole-escola-sam-pinkleton-dino-fetscher-kate-odonnell-about/"
       ],
       "dirFiles": 90,
       "dirClean": 35,
@@ -236859,6 +236504,39 @@
       ],
       "flaggedMisses": [
         {
+          "url": "https://www.broadwaynews.com/the-broadway-review-in-oh-mary-cole-escola-is-a-tour-de-farce/",
+          "host": "broadwaynews.com",
+          "knownOutletId": "broadwaynews",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "broadwaynews--brittani-samuel.json",
+              "flag": "clean",
+              "urlInDir": "https://www.broadwaynews.com/the-broadway-review-in-oh-mary-cole-escola-is-a-tour-de-farce/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "cvWrongArticleHighConfidence"
+          ],
+          "liveInReviews": true,
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-what-do-critics-think-of-cole-escolas-oh-mary-on-broadway"
+            },
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
+          "reverify": false
+        },
+        {
           "url": "https://culturesauce.com/2024/07/11/cole-escola-oh-mary-broadway-review/",
           "host": "culturesauce.com",
           "knownOutletId": "culturesauce",
@@ -236880,6 +236558,10 @@
           ],
           "sources": [
             {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-what-do-critics-think-of-cole-escolas-oh-mary-on-broadway"
+            },
+            {
               "source": "show-score",
               "sourceUrl": "https://www.show-score.com/broadway-shows/oh-mary-broadway"
             },
@@ -236891,6 +236573,39 @@
           "listingDate": "2024-07-11",
           "listingSource": "show-score",
           "reverify": true
+        },
+        {
+          "url": "https://www.nydailynews.com/2024/07/11/broadway-review-mary-todd-lincoln-farce-oh-mary-is-hilarious-take-on-controversial-first-lady/",
+          "host": "nydailynews.com",
+          "knownOutletId": "nydailynews",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "culturesauce--thom-geier.json",
+              "flag": "clean",
+              "urlInDir": "https://culturesauce.com/2024/07/11/cole-escola-oh-mary-broadway-review/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongAttribution"
+          ],
+          "confirmedNonReview": true,
+          "confirmedBasis": [
+            "non-review"
+          ],
+          "copyOfLiveReview": true,
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-what-do-critics-think-of-cole-escolas-oh-mary-on-broadway"
+            }
+          ],
+          "reverify": false
         },
         {
           "url": "https://www.nytimes.com/2024/02/27/theater/oh-mary-cole-escola-review.html",
@@ -237011,36 +236726,6 @@
             }
           ],
           "reverify": false
-        },
-        {
-          "url": "https://www.broadwaynews.com/the-broadway-review-in-oh-mary-cole-escola-is-a-tour-de-farce/",
-          "host": "broadwaynews.com",
-          "knownOutletId": "broadwaynews",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "broadwaynews--brittani-samuel.json",
-              "flag": "clean",
-              "urlInDir": "https://www.broadwaynews.com/the-broadway-review-in-oh-mary-cole-escola-is-a-tour-de-farce/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "cvWrongArticleHighConfidence"
-          ],
-          "liveInReviews": true,
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ],
-          "serpCensus": true,
-          "reverify": false
         }
       ],
       "citedNoUrl": [],
@@ -237050,8 +236735,16 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 113,
+        "byReason": {
+          "not-http-url": 6,
+          "non-review-host": 21,
+          "aggregator-internal-nav": 69,
+          "aggregator-section-root": 4,
+          "non-stage-review": 1,
+          "production-database-listing": 11,
+          "bare-host": 1
+        }
       },
       "dedupedVariants": [
         {
@@ -237119,20 +236812,140 @@
         "suppressedMissing": [],
         "candidates": [
           {
+            "url": "https://www.chicagotribune.com/2024/07/11/review-oh-mary-on-broadway-is-about-an-unhinged-hilarious-mary-todd-lincoln/",
+            "outletId": "chicagotribune.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-21T10:23:53.851Z"
+          },
+          {
+            "url": "https://cititour.com/NYC_News/Review-Oh-Mary-Is-Oh-Mazing/8508",
+            "outletId": "cititour.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-21T10:23:53.851Z"
+          },
+          {
+            "url": "https://www.thedailybeast.com/oh-mary-on-broadway-history-made-brilliantly-hilariously-silly",
+            "outletId": "thedailybeast.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-21T10:23:53.851Z"
+          },
+          {
+            "url": "https://deadline.com/2024/07/oh-mary-broadway-review-cole-escola-1236005071/",
+            "outletId": "deadline.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-03T10:14:58.194Z"
+          },
+          {
+            "url": "https://www.digitaljournal.com/entertainment/review-cole-escola-rewrites-history-as-mary-todd-lincoln-in-oh-mary-on-broadway/article",
+            "outletId": "digitaljournal.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-21T10:23:53.851Z"
+          },
+          {
+            "url": "https://ew.com/oh-mary-review-cole-escola-american-farce-is-funniest-play-on-broadway-8676908",
+            "outletId": "ew.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-21T10:23:53.851Z"
+          },
+          {
+            "url": "https://www.theguardian.com/stage/article/2024/jul/11/oh-mary-review-cole-escola-broadway",
+            "outletId": "theguardian.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-03T10:14:58.194Z"
+          },
+          {
+            "url": "https://www.hollywoodreporter.com/lifestyle/arts/oh-mary-theater-review-cole-escola-broadway-1235945864/",
+            "outletId": "hollywoodreporter.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-21T10:23:53.851Z"
+          },
+          {
+            "url": "https://www.vulture.com/article/theater-review-oh-mary-cole-escola-broadway-transfer.html",
+            "outletId": "vulture.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-03T10:14:58.194Z"
+          },
+          {
+            "url": "https://nypost.com/2024/07/11/entertainment/oh-mary-review-get-to-the-funniest-show-on-broadway/",
+            "outletId": "nypost.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-03T10:14:58.194Z"
+          },
+          {
+            "url": "https://nystagereview.com/2024/07/11/oh-mary-lincoln-drinkin-and-todd/",
+            "outletId": "nystagereview.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-21T10:23:53.851Z"
+          },
+          {
+            "url": "https://nystagereview.com/2024/07/11/oh-mary-dont-ask-for-subtle-comedy/",
+            "outletId": "nystagereview.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T02:57:17.839Z"
+          },
+          {
+            "url": "https://www.nysun.com/article/new-play-on-broadway-features-mary-todd-lincoln-in-a-delirious-nearly-80-minute-fit-of-pique",
+            "outletId": "nysun.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T02:57:17.839Z"
+          },
+          {
+            "url": "https://newyorktheater.me/2024/07/11/oh-mary-on-broadway/",
+            "outletId": "newyorktheater.me",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T02:57:17.839Z"
+          },
+          {
+            "url": "https://www.newyorktheatreguide.com/reviews/oh-mary-off-broadway-review-cole-escola",
+            "outletId": "newyorktheatreguide.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-13T16:56:06.359Z"
+          },
+          {
             "url": "https://www.nytimes.com/2024/07/11/theater/oh-mary-review-cole-escola.html",
             "outletId": "nytimes.com",
             "state": "live",
             "firstSeenAt": "2026-08-03T10:14:58.194Z"
           },
           {
-            "url": "https://www.newyorktheatreguide.com/reviews/oh-mary-broadway-review-cole-escola",
-            "outletId": "newyorktheatreguide.com",
+            "url": "https://www.nj.com/entertainment/2024/07/oh-mary-broadway-review-cole-escolas-historical-farce-is-pure-bananas-and-close-to-perfect.html",
+            "outletId": "nj.com",
             "state": "live",
-            "firstSeenAt": "2026-08-03T10:14:58.194Z"
+            "firstSeenAt": "2026-08-21T10:23:53.851Z"
+          },
+          {
+            "url": "https://observer.com/2024/07/oh-mary-is-a-splendidly-nasty-farce-you-will-not-want-to-miss/",
+            "outletId": "observer.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-21T10:23:53.851Z"
+          },
+          {
+            "url": "https://www.theatermania.com/news/review-oh-mary-cole-escolas-riotous-broadway-debut_1744785/",
+            "outletId": "theatermania.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-21T10:23:53.851Z"
+          },
+          {
+            "url": "https://www.theatrely.com/post/cole-escolas-oh-mary-on-broadway-is-a-stupid-masterpiece-review",
+            "outletId": "theatrely.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-21T10:23:53.851Z"
           },
           {
             "url": "https://www.timeout.com/newyork/theater/oh-mary-broadway-review-cole-escola",
             "outletId": "timeout.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-03T10:14:58.194Z"
+          },
+          {
+            "url": "https://www.usatoday.com/story/entertainment/music/2024/07/11/oh-mary-broadway-review/74326625007/",
+            "outletId": "usatoday.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-21T10:23:53.851Z"
+          },
+          {
+            "url": "https://variety.com/2024/legit/reviews/oh-mary-review-broadway-cole-escola-1236067236/",
+            "outletId": "variety.com",
             "state": "live",
             "firstSeenAt": "2026-08-03T10:14:58.194Z"
           },
@@ -237143,22 +236956,10 @@
             "firstSeenAt": "2026-08-03T10:14:58.194Z"
           },
           {
-            "url": "https://deadline.com/2024/07/oh-mary-broadway-review-cole-escola-1236005071/",
-            "outletId": "deadline.com",
+            "url": "https://www.thewrap.com/oh-mary-broadway-review-cole-escola/",
+            "outletId": "thewrap.com",
             "state": "live",
-            "firstSeenAt": "2026-08-03T10:14:58.194Z"
-          },
-          {
-            "url": "https://variety.com/2024/legit/reviews/oh-mary-review-broadway-cole-escola-1236067236/",
-            "outletId": "variety.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-03T10:14:58.194Z"
-          },
-          {
-            "url": "https://nypost.com/2024/07/11/entertainment/oh-mary-review-get-to-the-funniest-show-on-broadway/",
-            "outletId": "nypost.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-03T10:14:58.194Z"
+            "firstSeenAt": "2026-08-21T10:23:53.851Z"
           },
           {
             "url": "https://pagesonstages.wordpress.com/2024/08/29/oh-mary/",
@@ -237206,13 +237007,13 @@
             "url": "https://www.theatermania.com/news/review-cole-escola-drags-mary-todd-lincoln-in-oh-mary_1729241/",
             "outletId": "theatermania.com",
             "state": "live",
-            "firstSeenAt": "2026-10-31T02:57:17.839Z"
+            "firstSeenAt": "2026-11-07T19:57:10.145Z"
           },
           {
             "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-KHRRIA",
             "outletId": "lightingandsoundamerica.com",
             "state": "live",
-            "firstSeenAt": "2026-11-07T19:57:10.145Z"
+            "firstSeenAt": "2026-11-07T20:21:28.962Z"
           },
           {
             "url": "https://www.talkinbroadway.com/page/ob/02_08_24b.html",
@@ -237251,66 +237052,6 @@
             "firstSeenAt": "2026-08-13T16:56:06.359Z"
           },
           {
-            "url": "https://www.vulture.com/article/theater-review-oh-mary-cole-escola-broadway-transfer.html",
-            "outletId": "vulture.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-21T10:23:53.851Z"
-          },
-          {
-            "url": "https://ew.com/oh-mary-review-cole-escola-american-farce-is-funniest-play-on-broadway-8676908",
-            "outletId": "ew.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-21T10:23:53.851Z"
-          },
-          {
-            "url": "https://www.theguardian.com/stage/article/2024/jul/11/oh-mary-review-cole-escola-broadway",
-            "outletId": "theguardian.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-21T10:23:53.851Z"
-          },
-          {
-            "url": "https://www.thedailybeast.com/oh-mary-on-broadway-history-made-brilliantly-hilariously-silly",
-            "outletId": "thedailybeast.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-21T10:23:53.851Z"
-          },
-          {
-            "url": "https://www.thewrap.com/oh-mary-broadway-review-cole-escola/",
-            "outletId": "thewrap.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-21T10:23:53.851Z"
-          },
-          {
-            "url": "https://www.hollywoodreporter.com/lifestyle/arts/oh-mary-theater-review-cole-escola-broadway-1235945864/",
-            "outletId": "hollywoodreporter.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-21T10:23:53.851Z"
-          },
-          {
-            "url": "https://observer.com/2024/07/oh-mary-is-a-splendidly-nasty-farce-you-will-not-want-to-miss/",
-            "outletId": "observer.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-21T10:23:53.851Z"
-          },
-          {
-            "url": "https://nystagereview.com/2024/07/11/oh-mary-lincoln-drinkin-and-todd/",
-            "outletId": "nystagereview.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-21T10:23:53.851Z"
-          },
-          {
-            "url": "https://nystagereview.com/2024/07/11/oh-mary-dont-ask-for-subtle-comedy/",
-            "outletId": "nystagereview.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-21T10:23:53.851Z"
-          },
-          {
-            "url": "https://www.theatrely.com/post/cole-escolas-oh-mary-on-broadway-is-a-stupid-masterpiece-review",
-            "outletId": "theatrely.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-21T10:23:53.851Z"
-          },
-          {
             "url": "https://www.theatrely.com/post/oh-mary-a-first-rate-first-lady-campsterpiece-review",
             "outletId": "theatrely.com",
             "state": "live",
@@ -237335,54 +237076,6 @@
             "firstSeenAt": "2026-08-21T10:23:53.851Z"
           },
           {
-            "url": "https://www.chicagotribune.com/2024/07/11/review-oh-mary-on-broadway-is-about-an-unhinged-hilarious-mary-todd-lincoln/",
-            "outletId": "chicagotribune.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-21T10:23:53.851Z"
-          },
-          {
-            "url": "https://cititour.com/NYC_News/Review-Oh-Mary-Is-Oh-Mazing/8508",
-            "outletId": "cititour.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-21T10:23:53.851Z"
-          },
-          {
-            "url": "https://www.digitaljournal.com/entertainment/review-cole-escola-rewrites-history-as-mary-todd-lincoln-in-oh-mary-on-broadway/article",
-            "outletId": "digitaljournal.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-21T10:23:53.851Z"
-          },
-          {
-            "url": "https://www.nysun.com/article/new-play-on-broadway-features-mary-todd-lincoln-in-a-delirious-nearly-80-minute-fit-of-pique",
-            "outletId": "nysun.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-21T10:23:53.851Z"
-          },
-          {
-            "url": "https://newyorktheater.me/2024/07/11/oh-mary-on-broadway/",
-            "outletId": "newyorktheater.me",
-            "state": "live",
-            "firstSeenAt": "2026-08-21T10:23:53.851Z"
-          },
-          {
-            "url": "https://www.nj.com/entertainment/2024/07/oh-mary-broadway-review-cole-escolas-historical-farce-is-pure-bananas-and-close-to-perfect.html",
-            "outletId": "nj.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-21T10:23:53.851Z"
-          },
-          {
-            "url": "https://www.theatermania.com/news/review-oh-mary-cole-escolas-riotous-broadway-debut_1744785/",
-            "outletId": "theatermania.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-21T10:23:53.851Z"
-          },
-          {
-            "url": "https://www.usatoday.com/story/entertainment/music/2024/07/11/oh-mary-broadway-review/74326625007/",
-            "outletId": "usatoday.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-21T10:23:53.851Z"
-          },
-          {
             "url": "https://liamodell.com/2025/12/19/oh-mary-review-trafalgar-theatre-london-mason-alexander-park-mary-todd-lincoln-abraham-cole-escola-sam-pinkleton-dino-fetscher-kate-odonnell-about/",
             "outletId": "liamodell",
             "state": "GAP",
@@ -237403,12 +237096,17 @@
             "url": "https://www.broadwaynews.com/the-broadway-review-in-oh-mary-cole-escola-is-a-tour-de-farce/",
             "host": "broadwaynews.com",
             "reason": "live-in-reviews"
+          },
+          {
+            "url": "https://www.nydailynews.com/2024/07/11/broadway-review-mary-todd-lincoln-farce-oh-mary-is-hilarious-take-on-controversial-first-lady/",
+            "host": "nydailynews.com",
+            "reason": "confirmed-non-review"
           }
         ],
         "liveCount": 32,
         "candidateCount": 34
       },
-      "computedAt": "2026-11-07T19:57:10.145Z"
+      "computedAt": "2026-11-07T20:21:28.962Z"
     },
     {
       "showId": "oh-mary-off-broadway-2024",
@@ -243916,10 +243614,17 @@
       "category": "broadway",
       "previewsStartDate": "2025-02-15",
       "aggregatorArticles": [
-        "https://www.broadwayworld.com/article/Review-Roundup-OPERATION-MINCEMEAT-Opens-On-Broadway-20250320",
         "https://www.broadwayworld.com/article/Review-Roundup-OPERATION-MINCEMEAT-Launches-North-American-Leg-of-World-Tour-20260930"
       ],
       "aggregatorListedUrls": [
+        "https://warwickpost.com/ppacs-operation-mincemeat-mirthful-martial-musical/",
+        "https://www.bostonglobe.com/2026/09/24/metro/review-ri-operation-mincemeat-review-providence/",
+        "https://chicagoreader.com/performing-arts/theater/theater-review/operation-mincemeat-broadway-in-chicago/",
+        "https://chicago.suntimes.com/theater/2026/10/02/review-operation-mincemeat-broadway-in-chicago-cibc-theatre",
+        "https://thirdcoastreview.com/stages/2026/10/01/review-broadway-in-chicagos-operation-mincemeat",
+        "https://www.chicagotribune.com/2026/10/01/review-operation-mincemeat-chicago/",
+        "https://aroundthetownchicago.com/theatre-reviews/operation-mincemeat/",
+        "https://www.boston.com/culture/arts/2026/10/16/theater-review-operation-mincemeat-at-emerson-colonial-boston/",
         "https://www.nytimes.com/2025/03/20/theater/operation-mincemeat-review-broadway.html",
         "https://www.wsj.com/articles/operation-mincemeat-review-a-madcap-military-plot-on-broadway-92d630a9",
         "https://www.vulture.com/article/theater-review-operation-mincemeat-on-broadway.html",
@@ -244112,10 +243817,6 @@
           ],
           "sources": [
             {
-              "source": "aggregator-article",
-              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-OPERATION-MINCEMEAT-Opens-On-Broadway-20250320"
-            },
-            {
               "source": "show-score",
               "sourceUrl": "https://www.show-score.com/broadway-shows/operation-mincemeat-broadway"
             },
@@ -244183,10 +243884,6 @@
           ],
           "sources": [
             {
-              "source": "aggregator-article",
-              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-OPERATION-MINCEMEAT-Opens-On-Broadway-20250320"
-            },
-            {
               "source": "show-score",
               "sourceUrl": "https://www.show-score.com/broadway-shows/operation-mincemeat-broadway"
             },
@@ -244234,6 +243931,39 @@
           "reverify": true
         },
         {
+          "url": "https://www.nydailynews.com/2025/03/20/operation-mincemeat-broadway-review/",
+          "host": "nydailynews.com",
+          "knownOutletId": "nydailynews",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "source": "show-score",
+              "sourceUrl": "https://www.show-score.com/broadway-shows/operation-mincemeat-broadway"
+            },
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "isSyndicatedDuplicate"
+          ],
+          "copyOfLiveReview": true,
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
+          "serpCensus": true,
+          "reverify": false
+        },
+        {
           "url": "https://www.usatoday.com/story/entertainment/music/2025/05/14/operation-mincemeat-broadway-fact-check/82224626007/",
           "host": "usatoday.com",
           "knownOutletId": "usatoday",
@@ -244270,12 +244000,12 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 586,
+        "count": 305,
         "byReason": {
-          "not-http-url": 104,
-          "non-review-host": 38,
-          "aggregator-internal-nav": 421,
-          "aggregator-section-root": 11,
+          "not-http-url": 57,
+          "non-review-host": 19,
+          "aggregator-internal-nav": 212,
+          "aggregator-section-root": 5,
           "podcast-episode": 12
         }
       },
@@ -244375,6 +244105,12 @@
         ],
         "suppressedMissing": [],
         "candidates": [
+          {
+            "url": "https://www.chicagotribune.com/2026/10/01/review-operation-mincemeat-chicago/",
+            "outletId": "chicagotribune.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-07T20:21:28.962Z"
+          },
           {
             "url": "https://www.nytimes.com/2025/03/20/theater/operation-mincemeat-review-broadway.html",
             "outletId": "nytimes.com",
@@ -244553,7 +244289,7 @@
         "liveCount": 22,
         "candidateCount": 26
       },
-      "computedAt": "2026-11-07T19:57:10.145Z"
+      "computedAt": "2026-11-07T20:21:28.962Z"
     },
     {
       "showId": "operation-mincemeat-tour-2026",
@@ -249890,7 +249626,7 @@
         "liveCount": 1,
         "candidateCount": 3
       },
-      "computedAt": "2026-11-07T19:57:10.145Z"
+      "computedAt": "2026-11-07T20:21:28.962Z"
     },
     {
       "showId": "othello-off-broadway-2016",
@@ -256057,38 +255793,13 @@
         "https://thefrontrowcenter.com/2026/11/parcel-from-america-the-irish-musical/",
         "https://www.offoffonline.com/offoffonline/2026/11/2/parcel-from-america",
         "https://theaterscene.com/reviews/parcel-from-america/",
-        "https://nitelifeexchange.com/parcel-from-america-the-irish-musical-begins-on-wednesday-october-28-at-theatre-row/",
-        "https://womanaroundtown.com/sections/playing-around/the-pipes-the-pipes-are-calling-parcel-from-america-the-irish-musical-at-theatre-row/"
+        "https://womanaroundtown.com/sections/playing-around/the-pipes-the-pipes-are-calling-parcel-from-america-the-irish-musical-at-theatre-row/",
+        "https://nitelifeexchange.com/parcel-from-america-the-irish-musical-begins-on-wednesday-october-28-at-theatre-row/"
       ],
-      "dirFiles": 6,
-      "dirClean": 5,
-      "inReviewsJson": 5,
-      "missing": [
-        {
-          "url": "https://theaterscene.com/reviews/parcel-from-america/",
-          "host": "theaterscene.com",
-          "knownOutletId": "theater-scene",
-          "serpCensus": true,
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ]
-        },
-        {
-          "url": "https://womanaroundtown.com/sections/playing-around/the-pipes-the-pipes-are-calling-parcel-from-america-the-irish-musical-at-theatre-row/",
-          "host": "womanaroundtown.com",
-          "knownOutletId": "woman-around-town",
-          "serpCensus": true,
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ]
-        }
-      ],
+      "dirFiles": 8,
+      "dirClean": 6,
+      "inReviewsJson": 6,
+      "missing": [],
       "dirOnly": [
         {
           "host": "irishcentral.com",
@@ -256096,6 +255807,35 @@
         }
       ],
       "flaggedMisses": [
+        {
+          "url": "https://womanaroundtown.com/sections/playing-around/the-pipes-the-pipes-are-calling-parcel-from-america-the-irish-musical-at-theatre-row/",
+          "host": "womanaroundtown.com",
+          "knownOutletId": "woman-around-town",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "woman-around-town--mj-hanley-goff.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://womanaroundtown.com/sections/playing-around/the-pipes-the-pipes-are-calling-parcel-from-america-the-irish-musical-at-theatre-row/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongShow"
+          ],
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
+          "serpCensus": true,
+          "reverify": true
+        },
         {
           "url": "https://nitelifeexchange.com/parcel-from-america-the-irish-musical-begins-on-wednesday-october-28-at-theatre-row/",
           "host": "nitelifeexchange.com",
@@ -256129,125 +255869,19 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"Parcel from America\" Off-Broadway review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"Parcel from America\" Off-Broadway review 2026",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 9,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"Parcel from America\" review three",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 6,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "Parcel from America Theatre Row - Theatre Three review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 9,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "Parcel from America Theatre Row - Theatre Three review",
-            "page": 1,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "Parcel from America Theatre Row - Theatre Three review",
-            "page": 2,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 1,
-            "error": null
-          }
-        ],
-        "queriesOk": 5,
-        "queriesTotal": 5,
-        "resultCount": 3,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 38,
-        "byReason": {
-          "not-http-url": 31,
-          "write-path-blocked": 1,
-          "ticketing-listing": 1,
-          "census-junk-host": 1,
-          "production-database-listing": 1,
-          "no-review-evidence": 1,
-          "news-roundup-site": 1,
-          "ticketing-reseller": 1
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
-      "automatedExcludedListed": 1,
+      "automatedExcludedListed": 2,
       "unextractable": [],
-      "ingestResults": [
-        {
-          "url": "https://theaterscene.com/reviews/parcel-from-america/",
-          "host": "theaterscene.com",
-          "outletId": "theater-scene",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": null
-        },
-        {
-          "url": "https://womanaroundtown.com/sections/playing-around/the-pipes-the-pipes-are-calling-parcel-from-america-the-irish-musical-at-theatre-row/",
-          "host": "womanaroundtown.com",
-          "outletId": "woman-around-town",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": null
-        }
-      ],
-      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
-          {
-            "outletId": "theater-scene",
-            "outlet": "theater-scene",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://theaterscene.com/reviews/parcel-from-america/"
-          },
           {
             "outletId": "woman-around-town",
             "outlet": "woman-around-town",
@@ -256291,9 +255925,8 @@
           },
           {
             "url": "https://theaterscene.com/reviews/parcel-from-america/",
-            "outletId": "theater-scene",
-            "state": "GAP",
-            "reason": "sla-breach",
+            "outletId": "theaterscene.com",
+            "state": "live",
             "firstSeenAt": "2026-11-07T17:08:58.264Z"
           },
           {
@@ -256313,10 +255946,10 @@
         ],
         "censusSchema": 4,
         "excluded": [],
-        "liveCount": 4,
+        "liveCount": 5,
         "candidateCount": 7
       },
-      "computedAt": "2026-11-07T17:08:58.264Z"
+      "computedAt": "2026-11-07T20:21:28.962Z"
     },
     {
       "showId": "parsifal-off-west-end-2026",
@@ -266634,7 +266267,7 @@
         "liveCount": 3,
         "candidateCount": 5
       },
-      "computedAt": "2026-11-07T19:57:10.145Z"
+      "computedAt": "2026-11-07T20:21:28.962Z"
     },
     {
       "showId": "pulman-and-stilgoe-hooray-for-hollywood-west-end-2026",
@@ -281140,7 +280773,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-11-07T19:57:10.145Z"
+      "computedAt": "2026-11-07T20:21:28.962Z"
     },
     {
       "showId": "saturday-church-off-broadway-2025",
@@ -292457,7 +292090,7 @@
         "liveCount": 3,
         "candidateCount": 3
       },
-      "computedAt": "2026-11-07T19:57:10.145Z"
+      "computedAt": "2026-11-07T20:21:28.962Z"
     },
     {
       "showId": "slaughterhouse-five-off-west-end-2026",
@@ -318775,7 +318408,7 @@
         "liveCount": 2,
         "candidateCount": 2
       },
-      "computedAt": "2026-11-07T19:57:10.145Z"
+      "computedAt": "2026-11-07T20:21:28.962Z"
     },
     {
       "showId": "tango-after-dark-west-end-2026",
@@ -327614,7 +327247,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 1,
+            "results": 0,
             "accepted": 0,
             "error": null
           },
@@ -327655,13 +327288,13 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 36,
+        "count": 38,
         "byReason": {
-          "not-http-url": 28,
-          "non-review-host": 4,
+          "not-http-url": 30,
+          "census-junk-host": 1,
+          "non-review-host": 5,
           "aggregator-internal-nav": 1,
-          "non-stage-review": 2,
-          "census-junk-host": 1
+          "production-database-listing": 1
         }
       },
       "dedupedVariants": [],
@@ -327725,7 +327358,7 @@
         "liveCount": 0,
         "candidateCount": 2
       },
-      "computedAt": "2026-11-07T19:57:10.145Z"
+      "computedAt": "2026-11-07T20:21:28.962Z"
     },
     {
       "showId": "the-cherry-orchard-park-avenue-armory-off-broadway-2026",
@@ -359394,7 +359027,7 @@
         "liveCount": 3,
         "candidateCount": 3
       },
-      "computedAt": "2026-11-07T19:57:10.145Z"
+      "computedAt": "2026-11-07T20:21:28.962Z"
     },
     {
       "showId": "the-moth-off-west-end-2026",
@@ -360686,16 +360319,33 @@
       "category": "regional",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://chicagoreader.com/performing-arts/theater/theater-review/niceties-fleetwood-jourdain-theatre/",
-        "https://aroundthetownchicago.com/theatre-reviews/the-niceties-reviewed-by-julia-w-rath/"
+        "https://www.broadwayworld.com/st-louis/article/Review-Soul-Sirens-Provocative-THE-NICETIES-is-Explosive-Art-20261014",
+        "https://evanstonroundtable.com/2026/11/05/review-generations-and-identities-clash-in-the-niceties/"
       ],
       "dirFiles": 4,
       "dirClean": 4,
       "inReviewsJson": 4,
-      "missing": [],
+      "missing": [
+        {
+          "url": "https://www.broadwayworld.com/st-louis/article/Review-Soul-Sirens-Provocative-THE-NICETIES-is-Explosive-Art-20261014",
+          "host": "broadwayworld.com",
+          "knownOutletId": "broadwayworld",
+          "serpCensus": true,
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ]
+        }
+      ],
       "dirOnly": [
         {
-          "host": "evanstonroundtable.com",
+          "host": "aroundthetownchicago.com",
+          "count": 1
+        },
+        {
+          "host": "chicagoreader.com",
           "count": 1
         },
         {
@@ -360718,7 +360368,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           },
           {
@@ -360728,7 +360378,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           },
           {
@@ -360758,7 +360408,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 0,
             "error": null
           }
         ],
@@ -360768,42 +360418,67 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 45,
+        "count": 47,
         "byReason": {
           "not-http-url": 38,
-          "non-review-host": 4,
-          "event-listing": 1,
-          "no-review-evidence": 1,
-          "production-database-listing": 1
+          "census-junk-host": 2,
+          "non-review-host": 7
         }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 0,
       "unextractable": [],
+      "ingestResults": [
+        {
+          "url": "https://www.broadwayworld.com/st-louis/article/Review-Soul-Sirens-Provocative-THE-NICETIES-is-Explosive-Art-20261014",
+          "host": "broadwayworld.com",
+          "outletId": "broadwayworld",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "complete",
-        "missing": [],
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "broadwayworld",
+            "outlet": "broadwayworld",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.broadwayworld.com/st-louis/article/Review-Soul-Sirens-Provocative-THE-NICETIES-is-Explosive-Art-20261014"
+          }
+        ],
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://chicagoreader.com/performing-arts/theater/theater-review/niceties-fleetwood-jourdain-theatre/",
-            "outletId": "chicagoreader.com",
+            "url": "https://evanstonroundtable.com/2026/11/05/review-generations-and-identities-clash-in-the-niceties/",
+            "outletId": "evanstonroundtable.com",
             "state": "live",
-            "firstSeenAt": "2026-11-07T19:57:10.145Z"
+            "firstSeenAt": "2026-11-07T20:21:28.962Z"
           },
           {
-            "url": "https://aroundthetownchicago.com/theatre-reviews/the-niceties-reviewed-by-julia-w-rath/",
-            "outletId": "aroundthetownchicago.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-07T19:57:10.145Z"
+            "url": "https://www.broadwayworld.com/st-louis/article/Review-Soul-Sirens-Provocative-THE-NICETIES-is-Explosive-Art-20261014",
+            "outletId": "broadwayworld",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-11-07T20:21:28.962Z"
           }
         ],
         "censusSchema": 4,
         "excluded": [],
-        "liveCount": 2,
+        "liveCount": 1,
         "candidateCount": 2
       },
-      "computedAt": "2026-11-07T19:57:10.145Z"
+      "computedAt": "2026-11-07T20:21:28.962Z"
     },
     {
       "showId": "the-night-larry-kramer-kissed-me-hope-mill-regional-2026",
@@ -380285,7 +379960,7 @@
         "liveCount": 0,
         "candidateCount": 1
       },
-      "computedAt": "2026-11-07T19:57:10.145Z"
+      "computedAt": "2026-11-07T20:21:28.962Z"
     },
     {
       "showId": "the-story-olivier-west-end-2026",
@@ -383799,80 +383474,20 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"The Unbelievers\" Off-Broadway review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"The Unbelievers\" Off-Broadway review 2026",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 9,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"The Unbelievers\" review york",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 9,
-            "accepted": 2,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "The Unbelievers New York City Center review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 9,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "The Unbelievers New York City Center review",
-            "page": 1,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "The Unbelievers New York City Center review",
-            "page": 2,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          }
-        ],
-        "queriesOk": 5,
-        "queriesTotal": 5,
-        "resultCount": 3,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 426,
+        "count": 385,
         "byReason": {
-          "not-http-url": 121,
-          "non-review-host": 37,
-          "write-path-blocked": 1,
+          "not-http-url": 86,
+          "census-junk-host": 1,
+          "non-review-host": 35,
           "aggregator-internal-nav": 246,
           "aggregator-section-root": 10,
           "podcast-episode": 1,
-          "census-junk-host": 1,
-          "roundup-page": 1,
-          "production-database-listing": 5,
           "non-stage-review": 1,
-          "no-review-evidence": 2
+          "production-database-listing": 5
         }
       },
       "dedupedVariants": [],
@@ -383943,7 +383558,7 @@
         "liveCount": 8,
         "candidateCount": 8
       },
-      "computedAt": "2026-11-07T17:08:58.264Z"
+      "computedAt": "2026-11-07T20:21:28.962Z"
     },
     {
       "showId": "the-unbelievers-west-end-2025",
@@ -384804,7 +384419,7 @@
         "https://pagesonstages.com/2026/11/05/the-verge/",
         "https://www.timeout.com/newyork/theater/the-verge"
       ],
-      "dirFiles": 20,
+      "dirFiles": 21,
       "dirClean": 11,
       "inReviewsJson": 11,
       "missing": [],
@@ -384830,89 +384445,17 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"The Verge\" Off-Broadway review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"The Verge\" Off-Broadway review 2026",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 9,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"The Verge\" review public",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 5,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "scoped2",
-            "query": "\"The Verge\" Glaspell review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 6,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "The Verge The Public Theater/LuEsther Hall review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "The Verge The Public Theater/LuEsther Hall review",
-            "page": 1,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "The Verge The Public Theater/LuEsther Hall review",
-            "page": 2,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 1,
-            "error": null
-          }
-        ],
-        "queriesOk": 6,
-        "queriesTotal": 6,
-        "resultCount": 2,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 342,
+        "count": 296,
         "byReason": {
-          "not-http-url": 98,
-          "non-review-host": 19,
-          "tag-index-page": 1,
-          "bare-host": 1,
+          "not-http-url": 63,
+          "non-review-host": 15,
           "aggregator-internal-nav": 212,
           "aggregator-section-root": 5,
-          "podcast-episode": 1,
-          "ugc-platform": 3,
-          "census-junk-host": 1,
-          "roundup-page": 1
+          "podcast-episode": 1
         }
       },
       "dedupedVariants": [],
@@ -384992,7 +384535,7 @@
         "liveCount": 8,
         "candidateCount": 8
       },
-      "computedAt": "2026-11-07T17:08:58.264Z"
+      "computedAt": "2026-11-07T20:21:28.962Z"
     },
     {
       "showId": "the-very-hungry-caterpillar-interactive-show-off-broadway-2026",
@@ -398518,13 +398061,49 @@
       "category": "off-broadway",
       "previewsStartDate": "2026-11-04",
       "aggregatorArticles": [],
-      "aggregatorListedUrls": [],
-      "dirFiles": 0,
+      "aggregatorListedUrls": [
+        "https://www.theatermania.com/news/traitorz-the-unauthorized-musical-parody-to-run-at-st-lukes-theatre_1856629/"
+      ],
+      "dirFiles": 2,
       "dirClean": 0,
       "inReviewsJson": 0,
       "missing": [],
       "dirOnly": [],
-      "flaggedMisses": [],
+      "flaggedMisses": [
+        {
+          "url": "https://www.theatermania.com/news/traitorz-the-unauthorized-musical-parody-to-run-at-st-lukes-theatre_1856629/",
+          "host": "theatermania.com",
+          "knownOutletId": "theatermania",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theatermania--linda-buchwald.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.theatermania.com/news/traitorz-the-unauthorized-musical-parody-to-run-at-st-lukes-theatre_1856629/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "confirmedNonReview": true,
+          "confirmedBasis": [
+            "non-review"
+          ],
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
+          "serpCensus": true,
+          "reverify": false
+        }
+      ],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
@@ -398538,7 +398117,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 3,
+            "results": 2,
             "accepted": 0,
             "error": null
           },
@@ -398548,7 +398127,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 3,
+            "results": 6,
             "accepted": 0,
             "error": null
           },
@@ -398559,7 +398138,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           },
           {
@@ -398585,22 +398164,21 @@
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 0,
+        "resultCount": 1,
         "error": null
       },
       "candidatesRejected": {
-        "count": 36,
+        "count": 37,
         "byReason": {
-          "not-http-url": 21,
+          "not-http-url": 25,
+          "census-junk-host": 3,
           "non-review-host": 6,
-          "no-review-evidence": 1,
-          "aggregator-internal-nav": 2,
-          "non-stage-review": 1,
-          "census-junk-host": 4,
-          "venue-production-page": 1
+          "aggregator-internal-nav": 1,
+          "ticketing-listing": 2
         }
       },
       "dedupedVariants": [],
+      "automatedExcludedListed": 0,
       "unextractable": [],
       "censusVerdict": {
         "verdict": "no-census-yet",
@@ -398608,11 +398186,17 @@
         "suppressedMissing": [],
         "candidates": [],
         "censusSchema": 4,
-        "excluded": [],
+        "excluded": [
+          {
+            "url": "https://www.theatermania.com/news/traitorz-the-unauthorized-musical-parody-to-run-at-st-lukes-theatre_1856629/",
+            "host": "theatermania.com",
+            "reason": "confirmed-non-review"
+          }
+        ],
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-11-07T19:57:10.145Z"
+      "computedAt": "2026-11-07T20:21:28.962Z"
     },
     {
       "showId": "transcendency-rising-short-plays-about-defying-limitations-off-broadway-2026",
@@ -402517,7 +402101,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-11-07T19:57:10.145Z"
+      "computedAt": "2026-11-07T20:21:28.962Z"
     },
     {
       "showId": "twelfth-night-crucible-regional-2026",
@@ -408112,7 +407696,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 9,
+            "results": 10,
             "accepted": 0,
             "error": null
           },
@@ -408163,13 +407747,14 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 44,
+        "count": 47,
         "byReason": {
-          "not-http-url": 35,
+          "not-http-url": 38,
           "non-review-host": 1,
-          "aggregator-internal-nav": 3,
-          "bare-host": 2,
-          "non-review-path": 2,
+          "aggregator-internal-nav": 4,
+          "bare-host": 1,
+          "ticketing-listing": 1,
+          "news-roundup-site": 1,
           "tag-index-page": 1
         }
       },
@@ -408185,7 +407770,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-11-07T19:57:10.145Z"
+      "computedAt": "2026-11-07T20:21:28.962Z"
     },
     {
       "showId": "vladimir-regional-2026",
@@ -410975,7 +410560,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-11-07T19:57:10.145Z"
+      "computedAt": "2026-11-07T20:21:28.962Z"
     },
     {
       "showId": "war-horse-west-end-2026",
@@ -423673,7 +423258,7 @@
     }
   ],
   "staleness": {
-    "at": "2026-11-07T19:57:10.144Z",
+    "at": "2026-11-07T20:21:28.961Z",
     "reserveEvery": 4,
     "reservedAttempted": [
       "garry-starr-classic-penguins-off-west-end-2026",
@@ -423685,18 +423270,19 @@
     "catalogueAttempted": [
       "father-anonymous-off-broadway-2025",
       "bluebelle-crucible-regional-2025",
-      "just-for-one-day-the-live-aid-musical-west-end-2025"
+      "just-for-one-day-the-live-aid-musical-west-end-2025",
+      "42-balloons-regional-2025"
     ],
     "neverAuditedDueAtStart": 619,
     "oldestDueRowAtStart": {
       "showId": "operation-mincemeat-2025",
       "computedAt": "2026-10-30T23:31:22.664Z",
-      "ageHours": 188.1
+      "ageHours": 188.5
     },
     "oldestDueRowAfterRun": {
       "showId": "the-outsiders-2024",
       "computedAt": "2026-10-31T06:31:50.539Z",
-      "ageHours": 181.4
+      "ageHours": 181.8
     }
   }
 }
