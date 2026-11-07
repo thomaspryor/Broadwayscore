@@ -661,6 +661,13 @@ const LISTING_PAGE_URL_PATTERNS = [
   // live under /<market>/article/ (0 of 56k scored rows on 2026-10-13 use a
   // /regional/ path).
   { host: /(^|\.)broadwayworld\.com$/, path: /^\/[^/]+\/regional\//i, reason: 'show-listing-page' },
+  // BWW feature articles whose headline prefix says what they are (BRO-5958,
+  // BRO-7079): a "Previews:" piece on Arias with a Twist, dated five days
+  // before opening, counted as Peter Danish's review until a hand fix. BWW
+  // article slugs are the headline, so the prefix survives in the path.
+  // Reviews are /article/Review-... (1,027 live rows on 2026-11-07, 0 with
+  // any prefix below).
+  { host: /(^|\.)broadwayworld\.com$/, path: /\/article\/(?:Previews?|Interview|Photos?|Photo-Flash|Video|Exclusive-Photos|Breaking)-/i, reason: 'feature-not-review' },
   // Talkin' Broadway regional section indexes, /regional/<city>/ (BRO-5436:
   // /regional/alb/ filed as a Macbeth review). Reviews are /page/<section>/<slug>.html.
   { host: /(^|\.)talkinbroadway\.com$/, path: /^\/regional(\/[^/.]*)?\/?$/i, reason: 'review-index-page' },

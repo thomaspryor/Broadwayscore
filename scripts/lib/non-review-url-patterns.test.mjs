@@ -682,6 +682,34 @@ test('maybeUpgradeUrl: a merge refuses to swap a goldderby file url onto the rou
   assert.equal(file.url, before);
 });
 
+// BRO-7079: mergeReviews had no roundup guard, so the same swap went through
+// the merge path (replayed 2026-11-07: url swapped and old fields cleared).
+test('mergeReviews: refuses an aggregator-page url (swap or first-set), keeps metadata and a normal swap', () => {
+  const { mergeReviews } = require('./review-normalization.js');
+  const file = { outletId: 'goldderby', criticName: 'Ethan Alter', url: GD_NEWS, originalScore: 80, fullText: 'own text' };
+  const ctx = { showId: 'a-few-good-men-broadway-2026', script: 'test' };
+  const roundup = mergeReviews({ ...file }, { url: GD_ROUNDUP, originalScore: 60, fullText: 'roundup text', bwwExcerpt: 'excerpt' }, {}, ctx);
+  assert.equal(roundup.url, GD_NEWS);
+  assert.equal(roundup.originalScore, 80);
+  assert.equal(roundup.fullText, 'own text');
+  assert.equal(roundup.bwwExcerpt, 'excerpt'); // soft refusal: aggregator metadata still merges
+  const agg = mergeReviews({ ...file }, { url: 'https://www.show-score.com/broadway-shows/a-few-good-men' }, {}, ctx);
+  assert.equal(agg.url, GD_NEWS);
+  const firstSet = mergeReviews({ outletId: 'goldderby', criticName: 'Ethan Alter' }, { url: GD_ROUNDUP, fullText: 'roundup text' }, {}, ctx);
+  assert.ok(!firstSet.url);
+  assert.ok(!firstSet.fullText);
+  const normal = mergeReviews({ ...file }, { url: 'https://www.goldderby.com/theater/2026/a-few-good-men-broadway-review-ethan-alter/' }, {}, ctx);
+  assert.notEqual(normal.url, GD_NEWS);
+});
+
+test('ingestBlockReason: a host outside the outlet registry is refused (BRO-6685)', () => {
+  const { ingestBlockReason } = require('./gap-ingest-policy.js');
+  const opts = { showIsWe: false, weGateOn: false, lowTrustSources: new Set(), serpCensusGateOn: false };
+  assert.equal(ingestBlockReason({ url: 'https://globalnews2.xyz/a-few-good-men-review', knownOutletId: null }, opts), 'unregistered-host');
+  assert.equal(ingestBlockReason({ url: 'https://globalnews2.xyz/a-few-good-men-review', knownOutletId: null, recoverableOutletId: 'x' }, opts), null);
+  assert.equal(ingestBlockReason({ url: 'https://www.nytimes.com/x.html', knownOutletId: 'nytimes' }, opts), null);
+});
+
 // BRO-6716: the gap audit tagged cited reviews from registered outlets as
 // 'unregistered-host' because their URLs used a Blogger country mirror or
 // Substack's shared link host. publicationHostOf maps both onto the host the
@@ -792,6 +820,37 @@ test('forum, aggregator-repost and blog tag pages are listing pages, their revie
     'https://thespyinthestalls.com/2026/10/the-revlon-girl/',
     'https://twi-ny.com/tag/an-american-daughter/',
   ]) assert.equal(listingPageUrlReason(url), null, url);
+});
+
+// BRO-5958 / BRO-7079: a BroadwayWorld "Previews:" feature counted as a review.
+test('listingPageUrlReason: BWW Previews/Interview/Photos features are not reviews; Review- and Review-Roundup are untouched here', () => {
+  const { listingPageUrlReason } = require('./non-review-url-patterns.js');
+  const { explainExclusion } = require('./review-guards.js');
+  const PREV = 'https://www.broadwayworld.com/off-broadway/article/Previews-ARIAS-WITH-A-TWIST-at-HERE-Arts-Center-20260918';
+  assert.equal(listingPageUrlReason(PREV), 'feature-not-review');
+  assert.equal(listingPageUrlReason('https://www.broadwayworld.com/article/Interview-Joey-Arias-Brings-ARIAS-WITH-A-TWIST-Home-20260901'), 'feature-not-review');
+  assert.equal(listingPageUrlReason('https://www.broadwayworld.com/article/Photos-First-Look-at-ARIAS-WITH-A-TWIST-20260918'), 'feature-not-review');
+  assert.equal(listingPageUrlReason('https://www.broadwayworld.com/off-broadway/article/Review-ARIAS-WITH-A-TWIST-at-HERE-20260925'), null);
+  assert.equal(listingPageUrlReason('https://www.broadwayworld.com/article/Review-Roundup-ARIAS-WITH-A-TWIST-at-Here-Arts-Center-20261005'), null);
+  assert.equal(listingPageUrlReason('https://www.broadwayworld.com/article/Mary-Poppins-Returns-20260918'), null);
+  if (typeof explainExclusion === 'function') {
+    assert.equal(explainExclusion({ url: PREV, outletId: 'broadwayworld', criticName: 'Peter Danish', llmScore: { score: 70 } }), 'listingPageUrl');
+  }
+});
+
+// BRO-7079 (BRO-4430 class): a live review whose url is a roundup/aggregator
+// page. The ingest and merge guards now refuse new ones; this ratchet catches
+// any that reach reviews.json another way. Baseline 1 = Black Swan BWW row,
+// repaired by data/pending-fixes/bro-7079.json; lower it to 0 once applied.
+test('reviews.json: no new included review stores an aggregator-page url', () => {
+  const fs = require('fs');
+  const path = require('path');
+  const file = path.resolve('data/reviews.json');
+  if (!fs.existsSync(file)) return;
+  const { isAggregatorPageUrl } = require('./review-slot-guards.js');
+  const data = JSON.parse(fs.readFileSync(file, 'utf8'));
+  const rows = (Array.isArray(data) ? data : data.reviews).filter(r => r.url && isAggregatorPageUrl(r.url));
+  assert.ok(rows.length <= 1, `aggregator-page urls on live reviews: ${rows.map(r => `${r.showId}/${r.outletId} ${r.url}`).join('; ')}`);
 });
 
 test('BRO-7081: dated event pages and bare /shows/<slug>/ hubs are listings, not owed reviews', () => {

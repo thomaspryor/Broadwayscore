@@ -103,13 +103,28 @@ test('extractTbReviewDate reads the header date line, ignores later body dates',
   assert.equal(extractTbReviewDate('no date here'), null);
 });
 
-test('buildTbObCandidateUrls builds MM_DD_YY with b/c suffixes', () => {
+test('buildTbObCandidateUrls tries padded and unpadded months with a/b/c suffixes (BRO-4437)', () => {
+  const H = 'https://www.talkinbroadway.com/page/ob/';
   assert.deepEqual(buildTbObCandidateUrls({ y: 2026, m: 9, d: 29 }), [
-    'https://www.talkinbroadway.com/page/ob/09_29_26.html',
-    'https://www.talkinbroadway.com/page/ob/09_29_26b.html',
-    'https://www.talkinbroadway.com/page/ob/09_29_26c.html',
-  ]);
+    '09_29_26', '09_29_26a', '09_29_26b', '09_29_26c', '9_29_26', '9_29_26a', '9_29_26b', '9_29_26c',
+  ].map(x => `${H}${x}.html`));
+  // A two-digit month has one form only.
+  assert.deepEqual(buildTbObCandidateUrls({ y: 2026, m: 10, d: 5 }), ['10_05_26', '10_05_26a', '10_05_26b', '10_05_26c'].map(x => `${H}${x}.html`));
   assert.deepEqual(buildTbObCandidateUrls(null), []);
+});
+
+test('every TB OB url shape in reviews.json is one the builder can produce', () => {
+  const fs = require('fs');
+  const path = require('path');
+  const file = ['data/reviews.json', '../../data/reviews.json'].map(p => path.resolve(p)).find(p => fs.existsSync(p));
+  if (!file) return;
+  const urls = [...new Set(fs.readFileSync(file, 'utf8').match(/talkinbroadway\.com\/page\/ob\/\d{1,2}_\d{2}_\d{2}[a-z]?\.html/g) || [])];
+  assert.ok(urls.length > 0);
+  for (const u of urls) {
+    const [, m, d, y] = u.match(/ob\/(\d{1,2})_(\d{2})_(\d{2})/);
+    const built = buildTbObCandidateUrls({ y: 2000 + Number(y), m: Number(m), d: Number(d) });
+    assert.ok(built.includes(`https://www.${u}`), u);
+  }
 });
 
 test('resolveTbObIndexUrl takes the candidate matching title and critic, skips others', async () => {

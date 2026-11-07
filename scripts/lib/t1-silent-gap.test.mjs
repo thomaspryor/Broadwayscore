@@ -295,8 +295,8 @@ test('non-review URL the scorer will never take (and no verdict ever recorded) i
   const body = Array.from({ length: 30 }, (_, i) => `Trailer note ${i}: the cast and creative team are announced for the new run.`).join(' ');
   const LATER = { tier: 2, now: new Date('2026-10-11T12:00:00Z') };
   const video = {
-    url: 'https://www.broadwayworld.com/westend/article/Video-MILLION-DOLLAR-QUARTET-Trailer-Released-20260908',
-    outletId: 'broadwayworld', criticName: 'BWW News Desk', fullText: body, contentTier: 'complete',
+    url: 'https://www.cbsnews.com/video/million-dollar-quartet-trailer-released/',
+    outletId: 'cbsnews', criticName: 'CBS News', fullText: body, contentTier: 'complete',
     textStatus: 'complete', textFetchedAt: '2026-09-09T07:00:00.000Z', llmScore: null,
   };
   const blocked = { rescoreBlockedReason: 'input_validation_failed:body_too_short',
@@ -309,6 +309,11 @@ test('non-review URL the scorer will never take (and no verdict ever recorded) i
   const real = { ...video, ...blocked, outletId: 'nydailynews', criticName: 'Jane Doe',
     url: 'https://www.nydailynews.com/2026/09/08/million-dollar-quartet-review-west-end/' };
   assert.equal(classify(real, LATER)?.type, 'unscored');
+  // BRO-7079: the incident's own BWW 'Video-...' url is now a listing page
+  // (feature-not-review), so it is never a gap, blocked or not.
+  const bwwVideo = { ...video, outletId: 'broadwayworld', criticName: 'BWW News Desk',
+    url: 'https://www.broadwayworld.com/westend/article/Video-MILLION-DOLLAR-QUARTET-Trailer-Released-20260908' };
+  assert.equal(classify(bwwVideo, LATER), null);
 });
 
 test('BRO-5166: empty-body file at a listing page (BWW regional show page) is not a gap; a manual clear restores it', () => {

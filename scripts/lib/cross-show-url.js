@@ -90,6 +90,29 @@ function hasSlugRun(urlPath, slug) {
   return new RegExp(`(^|[^a-z0-9])${esc}([^a-z0-9]|$)`).test(urlPath);
 }
 
+// BRO-6910: a one-word title ("Lifeline", "Glorious", "The Heart") is an
+// ordinary word in review slugs ("review-loki-lifeline-theatre", "...is-a-
+// glorious-..."), so it names a show only from a title position: right next to
+// "review(s)", or as the whole last path segment ("beautiful-review",
+// "/theater-review-midnight", "/glorious/").
+function isTitlePositioned(urlPath, slug) {
+  const esc = slug.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const b = '(^|[^a-z0-9])';
+  const e = '([^a-z0-9]|$)';
+  if (new RegExp(`${b}reviews?-${esc}${e}`).test(urlPath)) return true;
+  // a part number may sit between: Time Out's "shadowlands-1-review"
+  if (new RegExp(`${b}${esc}(?:-\\d{1,2})?-reviews?${e}`).test(urlPath)) return true;
+  // A path segment that opens with the title is how most outlets slug a review
+  // ("hadestown-broadway-review-1236", "hadestown-is-a-thrilling-revival").
+  const segs = urlPath.replace(/\/+$/, '').split('/').map(x => x.replace(/\.[a-z0-9]+$/, ''));
+  return segs.some(x => x === slug || x.startsWith(`${slug}-`));
+}
+
+// One significant word once a leading "the"/"a" is dropped.
+function isOneWordSlug(slug) {
+  return !slug.replace(/^(?:the|a|an)-/, '').includes('-');
+}
+
 // BroadwayWorld files regional coverage under /<region>/article/ ("oklahoma",
 // "charlotte"); that section word says nothing about the show reviewed.
 function stripBwwSection(hostname, urlPath) {
@@ -229,6 +252,16 @@ function detectCrossShowUrlMismatch(showId, url, opts = {}) {
     // Skip common URL-path words that would false-positive on nearly every URL
     const URL_PATH_STOPWORDS = new Set(['broadway', 'musical', 'theater', 'theatre', 'review', 'reviews', 'london', 'west-end', 'off-broadway']);
 
+    // BRO-6910: words of THIS show's own title that can vouch for a URL
+    // naming another show too. Market/venue words and digits never vouch.
+    const NON_VOUCHING = new Set(['regional', 'tour', 'national', 'company', 'stage', 'playhouse',
+      'center', 'centre', 'festival', 'production', 'revival', 'opening', 'night', 'season']);
+    // Title words only: the id also carries venue/city words ("royal-exchange",
+    // "chichester") that a review of another show at the same venue names too.
+    const ownWords = [...new Set(thisShow.slug.split('-'))]
+      .filter(t => t.length >= 4 && !GENERIC_TOKENS.has(t) && !NON_VOUCHING.has(t) && !/^\d+$/.test(t));
+    const hasUrlWord = t => new RegExp(`(^|[^a-z0-9])${t}([^a-z0-9]|$)`).test(urlPath);
+
     // Check if URL contains a different show's slug
     for (const other of index) {
       if (other.id === showId) continue;
@@ -242,6 +275,16 @@ function detectCrossShowUrlMismatch(showId, url, opts = {}) {
       // Skip if one show's slug is a prefix of the other (e.g., "kinky-boots" vs "kinky-boots-the-musical")
       if (thisShow.slug.startsWith(other.slug) || other.slug.startsWith(thisShow.slug)) continue;
       if (idSlug.startsWith(otherIdSlug) || otherIdSlug.startsWith(idSlug)) continue;
+      // BRO-6910: a URL that also carries this show's own title words is a
+      // review of this show (a joint review, or a phrase like "...finds the
+      // heart in..." that happens to spell a one-word title). Same bar as the
+      // containment carve-out below: two of this show's own words the other
+      // title lacks (or all of them when it has only one).
+      {
+        const otherWords = new Set([...other.slug.split('-'), ...otherIdSlug.split('-')]);
+        const vouch = ownWords.filter(t => !otherWords.has(t));
+        if (vouch.length > 0 && vouch.filter(hasUrlWord).length >= Math.min(2, vouch.length)) continue;
+      }
       // BRO-6599: the same title spelled differently ("The Old Man & the Pool" vs "...and
       // the Pool", "4.48" vs "448", a leading "The") is the same play under
       // another production id, so its slug in the URL is not a different show.
@@ -291,7 +334,7 @@ function detectCrossShowUrlMismatch(showId, url, opts = {}) {
           if (phrases.some(p => urlPath.includes(p))) continue;
         }
       }
-      if (hasSlugRun(urlPath, other.slug)) {
+      if (hasSlugRun(urlPath, other.slug) && (!isOneWordSlug(other.slug) || isTitlePositioned(urlPath, other.slug))) {
         return { matchedShowId: other.id, matchedTitle: other.title, showTitle: thisShow.title };
       }
       // BRO-4986: outlets often drop a leading "The" ("heart-of-rock-and-roll-
@@ -333,7 +376,12 @@ function detectCrossShowUrlMismatch(showId, url, opts = {}) {
       // just "monte-cristo" wouldn't match the full slug.
       const baseTitle = (other.title || '').replace(/\s*\(.*?\)/g, '').replace(/:\s.*$/, '')
         .trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+      // BRO-6910: a one-word shortened title ("August" of August: Osage County,
+      // "Beautiful" of Beautiful: The Carole King Musical) is an ordinary word
+      // in review slugs ("august-wilsons-...", "...-is-beautiful"), so it only
+      // counts from a title position (isTitlePositioned).
       if (baseTitle.length >= 6 && !URL_PATH_STOPWORDS.has(baseTitle)
+          && (!isOneWordSlug(baseTitle) || isTitlePositioned(urlPath, baseTitle))
           && baseTitle !== idSlug
           && !idSlug.startsWith(baseTitle) && !baseTitle.startsWith(idSlug)
           && hasSlugRun(urlPath, baseTitle)

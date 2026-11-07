@@ -810,6 +810,31 @@ function mergeReviews(existing, incoming, options = {}, context = {}) {
     return { ...existing };
   }
 
+  // Aggregator-page swap guard, maybeUpgradeUrl's twin (BRO-6685 replay,
+  // BRO-7079). maybeUpgradeUrl refused a swap onto a roundup or aggregator
+  // page, but mergeReviews did not: a Gold Derby review file merged with an
+  // incoming record carrying the "-reviews/" roundup url swapped onto it and
+  // wiped its own state. Soft refusal like urlCollidesWithSibling: the url
+  // and incoming fullText are refused, while aggregator metadata (bwwExcerpt,
+  // bwwScore, ...) still merges. Covers first-set too (review-file-writer
+  // refuses the same first-set at its aggregator-url guard).
+  const urlIsAggregatorPage = !!incoming.url && !incomingUrlGarbage
+    && (urlChanged || !existing.url)
+    && require('./review-slot-guards').isAggregatorPageUrl(incoming.url);
+  if (urlIsAggregatorPage) {
+    console.warn(`[mergeReviews] refused aggregator-page url for ${existing.outletId || context.file || '?'}: ${incoming.url}`);
+    logExclusion({
+      script: context.script || 'unknown-caller',
+      showId: context.showId || 'unknown',
+      file: context.file || '-',
+      reason: 'skippedAggregatorUrlSwap',
+      details: {
+        existingUrl: existing.url || null, incomingUrl: incoming.url, outletId: existing.outletId,
+        criticName: existing.criticName,
+      },
+    });
+  }
+
   // Sibling URL-collision guard (BRO-3092). A urlChanged swap onto a URL that
   // a DIFFERENT file in this show already owns manufactures exactly the state
   // validate-data.js errors on ("One URL per outlet per show = one review"),
@@ -919,7 +944,7 @@ function mergeReviews(existing, incoming, options = {}, context = {}) {
   // scraped from the sibling's URL, so taking it here would pair THIS file's
   // (retained) url with ANOTHER article's body — undetectable by url-dated
   // audits, exactly like the regressed-swap case.
-  if (incoming.fullText && !urlSwapRegressed && !urlFlipFlop && !urlCollidesWithSibling) {
+  if (incoming.fullText && !urlSwapRegressed && !urlFlipFlop && !urlCollidesWithSibling && !urlIsAggregatorPage) {
     const decodedFullText = decodeHtmlEntities(incoming.fullText);
     if (!existing.fullText || decodedFullText.length > existing.fullText.length) {
       merged.fullText = decodedFullText;
@@ -944,7 +969,7 @@ function mergeReviews(existing, incoming, options = {}, context = {}) {
 
   if (incoming.url && !incomingUrlGarbage
       && (!existing.url || existing.url.includes('undefined') || urlChanged)
-      && !blockUrlChange && !urlSwapRegressed && !urlCollidesWithSibling) {
+      && !blockUrlChange && !urlSwapRegressed && !urlCollidesWithSibling && !urlIsAggregatorPage) {
     merged.url = incoming.url;
     if (urlChanged) {
       // URL moved to a different canonical article. Refresh publishDate and
@@ -1111,7 +1136,7 @@ function mergeReviews(existing, incoming, options = {}, context = {}) {
   // (no show record, no show dates or no date in the url => unchanged).
   let autoClearUrlDateVeto = false;
   if (context.show && merged.url && merged.wrongProduction && incoming.url && incoming.url.startsWith('http')
-      && !urlSwapRegressed && !urlFlipFlop && !urlCollidesWithSibling
+      && !urlSwapRegressed && !urlFlipFlop && !urlCollidesWithSibling && !urlIsAggregatorPage
       && !merged.wrongProductionManualClear && !cvSaysWrongProduction && isUrlBasedWrongProd) {
     const { isUrlSwapRegression: _urlOutsideRun } = require('./url-downgrade-guard');
     const veto = _urlOutsideRun({ newUrl: merged.url, show: context.show, outletId: existing.outletId });
@@ -1138,7 +1163,7 @@ function mergeReviews(existing, incoming, options = {}, context = {}) {
     && canonicalReviewUrl(incoming.url) !== canonicalReviewUrl(existing.url);
   if (merged.wrongProduction && incoming.url && incoming.url.startsWith('http')
       && urlActuallyChanged
-      && !urlSwapRegressed && !urlFlipFlop && !urlCollidesWithSibling
+      && !urlSwapRegressed && !urlFlipFlop && !urlCollidesWithSibling && !urlIsAggregatorPage
       && !merged.wrongProductionManualClear
       && !cvSaysWrongProduction
       && !autoClearUrlDateVeto
@@ -2870,10 +2895,9 @@ function maybeUpgradeUrl(existingData, newUrl, source, opts = {}) {
   // (via applyUrlChangeInvariant below) wipes the real score along with it.
   // Reuses the same isRoundupUrl() predicate the write path already trusts to
   // keep roundup pages from being ingested as reviews at all.
-  const { isRoundupUrl } = require('./review-guards');
   // BRO-4430: any aggregator host (show-score, stagedoor, westendtheatre, ...)
   // too, not only round-up shapes: the rebuild drops a file carrying one.
-  if (isRoundupUrl(newUrl).isRoundup || require('./review-slot-guards').isAggregatorPageUrl(newUrl)) {
+  if (require('./review-slot-guards').isAggregatorPageUrl(newUrl)) {
     console.warn(`[maybeUpgradeUrl] refused roundup-page swap for ${existingData.outletId || source || '?'}: ${newUrl}`);
     return false;
   }

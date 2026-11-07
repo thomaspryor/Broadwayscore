@@ -323,6 +323,12 @@ test('BRO-4391: the recheck stamp survives safeWriteReview (PROTECTED_FIELDS)', 
   assert.ok(PROTECTED_FIELDS.includes('productionVerdictRecheckedAt'));
 });
 
+// BRO-3106 / BRO-7079: a later write must not silently clear a non-review verdict.
+test('BRO-3106: isNonReview and isNonReviewReason survive safeWriteReview (PROTECTED_FIELDS)', () => {
+  assert.ok(PROTECTED_FIELDS.includes('isNonReview'));
+  assert.ok(PROTECTED_FIELDS.includes('isNonReviewReason'));
+});
+
 test('BRO-5166: a refetch that brought back the rejected text keeps the verdict (both clear paths)', async () => {
   const { rejectionTextFingerprint } = await import('./rescore-lifecycle.js').then((m) => m.default || m);
   const { isRejectedTextUnchanged, staleAutomatedTextVerdicts } = await import('./stale-automated-text-verdict.js').then((m) => m.default || m);
