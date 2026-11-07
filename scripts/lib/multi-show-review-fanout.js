@@ -1351,6 +1351,18 @@ function fanoutMovesText(fan) {
   return !!(fan && fan.applied && (fan.trimOnly || fan.children.some((c) => c.action === 'create' || c.action === 'fill' || c.action === 'held' || c.action === 'held-trim')));
 }
 
+function trimHeldSibling(childPath, existing, sec, otherShowIds, now) {
+  const trimmed = rewriteParent(existing, sec, otherShowIds, now);
+  // A restored child of this split stays a child, not a second parent.
+  if (existing.multiShowSplitChild === true) {
+    delete trimmed.multiShowSplitParent;
+    delete trimmed.multiShowSplitChildShowIds;
+  }
+  // Keep the restored article so the trim remains reversible.
+  trimmed.multiShowWholeArticleText = existing.fullText;
+  return require('./review-write-guard').safeWriteReview(childPath, trimmed, { merge: false, force: true });
+}
+
 /**
  * Apply the fan-out to a file on disk. `reviewTextsDir` is the root holding
  * {showId}/ dirs. Returns { applied, parentRewritten, children: [{showId, action}] }.
@@ -1364,6 +1376,32 @@ function applyMultiShowFanoutToFile(filePath, opts = {}) {
   let data;
   try { data = JSON.parse(fs.readFileSync(filePath, 'utf8')); } catch { return result; }
   const ownShowId = data.showId || path.basename(path.dirname(filePath));
+  // BRO-7052: a collector may restore the article in ONLY a split child.
+  // Re-plan in its parent's context using that restored body, without
+  // rewriting the unchanged parent or touching any other sibling.
+  if (data.multiShowSplitChild === true) {
+    const parentShowId = data.multiShowSplitParentShowId;
+    if (!parentShowId || !shows.some((s) => s.id === parentShowId)) return result;
+    let parent;
+    try { parent = JSON.parse(fs.readFileSync(path.join(reviewTextsDir, parentShowId, path.basename(filePath)), 'utf8')); } catch { return result; }
+    if (parent.multiShowSplitParent !== true || parent.multiShowSplitChild
+      || !parent.multiShowSplitChildShowIds?.includes(ownShowId)
+      || !data.url || !parent.url || urlKey(data.url) !== urlKey(parent.url)) return result;
+    const parentPlan = planMultiShowFanout({ ...parent, fullText: data.fullText }, shows, { ownShowId: parentShowId, joint: opts.joint });
+    const sec = parentPlan && parentPlan.otherSections.find((s) => s.showId === ownShowId);
+    if (!sec || !heldSiblingNeedsTrim(data, sec, parentShowId)) return result;
+    const { loadBlocklist, findBlockedEntry } = require('./poller-blocklist');
+    if (findBlockedEntry(loadBlocklist(path.dirname(filePath)), data.url)) return result;
+    if (!dryRun) {
+      const otherShowIds = [parentShowId, ...parentPlan.otherSections.map((s) => s.showId).filter((id) => id !== ownShowId)];
+      const write = trimHeldSibling(filePath, data, sec, otherShowIds, new Date().toISOString());
+      if (!write || write.wrote === false) return result;
+    }
+    result.applied = true;
+    result.strategy = parentPlan.strategy;
+    result.children.push({ showId: ownShowId, action: 'held-trim', chars: sec.sectionText.length });
+    return result;
+  }
   const plan = planMultiShowFanout(data, shows, { ownShowId, joint: opts.joint });
   if (!plan) {
     if (!dryRun && isWholeArticleBackOnBadSplit(data, shows)) {
@@ -1398,16 +1436,7 @@ function applyMultiShowFanoutToFile(filePath, opts = {}) {
       if (heldSiblingNeedsTrim(existing, sec, ownShowId)) {
         result.children[result.children.length - 1].action = 'held-trim';
         if (!dryRun) {
-          const trimmed = rewriteParent(existing, sec, [ownShowId, ...plan.otherSections.map((o) => o.showId).filter((id) => id !== sec.showId)], now);
-          trimmed.multiShowSplitAnchorKind = sec.anchorKind;
-          // A restored child of this very split stays a child, not a second parent.
-          if (existing.multiShowSplitChild === true) {
-            delete trimmed.multiShowSplitParent;
-            delete trimmed.multiShowSplitChildShowIds;
-          }
-          // The trim replaces the sibling's text; keep what it held so nothing is lost or unsplit-able.
-          trimmed.multiShowWholeArticleText = existing.fullText;
-          safeWriteReview(childPath, trimmed, { merge: false, force: true });
+          trimHeldSibling(childPath, existing, sec, [ownShowId, ...plan.otherSections.map((o) => o.showId).filter((id) => id !== sec.showId)], now);
         }
       }
       continue;
