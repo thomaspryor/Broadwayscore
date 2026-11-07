@@ -146,6 +146,7 @@ runs:
               sleep "$DELAY_S"
               ;;
           esac
+          if [ "$i" -ge "$MAX" ]; then break; fi
           if [ $((SECONDS - START_S)) -ge "$DEADLINE_S" ]; then
             echo "Aggregator archive push deadline (${DEADLINE_S}s) reached after attempt $i"
             break
