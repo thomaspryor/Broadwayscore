@@ -114,7 +114,9 @@ jobs:
     # (~17% margin). Real runs still finish in ~50-70 min.
     # 145->150 (BRO-6620): the lane-only gate adds a lease re-sync (2 min), a
     # variable read (1 min) and the gate (2 min); (7260+240+60)/0.85 = 8894s.
-    timeout-minutes: 150
+    # 150->152 (BRO-6987): the Reddit due-check dispatch step (2 min);
+    # (7560+120)/0.85 = 9035s, so 152min = 9120s.
+    timeout-minutes: 152
     steps:
       # BRO-4231: this job checks out a blobless partial clone (filter: blob:none
       # on the checkout below), so rebase/diff/show fetch missing blobs over the
@@ -1378,6 +1380,20 @@ jobs:
           fi
         continue-on-error: true
         timeout-minutes: 9
+
+      # BRO-6987: GitHub drops many runs of the Reddit digest's hourly cron
+      # (15 of ~72 ran in 3 days, gaps up to 8h), so the opening-post drafter
+      # missed score moves. After each verified deploy, ask that workflow's
+      # cheap due check now; the drafter's own rule decides whether to redraft.
+      # Extra dispatches collapse into its one pending 'hourly' concurrency slot.
+      - name: Dispatch Reddit draft due check (after verified deploy)
+        if: steps.deploy_verify.outputs.verified == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh workflow run reddit-engagement-digest.yml -f due_check=true || echo "::warning::Reddit due-check dispatch failed; the hourly cron is the fallback"
+        continue-on-error: true
+        timeout-minutes: 2
 
       # === LEGACY PATH: dispatch rebuild-reviews.yml (when fast_path is off) ===
       - name: Trigger rebuild + deploy (legacy)
