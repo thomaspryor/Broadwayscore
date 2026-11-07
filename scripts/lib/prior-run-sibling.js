@@ -332,10 +332,31 @@ function reReviewedByManyOutlets(show, shows, existing) {
 }
 
 /**
+ * Whether a review the earlier entry holds belongs to the run `show` inherits.
+ * Dated: inside the window. Undated (BRO-4874; 12 such reviews on 6 returning
+ * shows, e.g. Teeth, Prince Faggot, Jesus Christ Superstar, were never
+ * carried): the earlier entry filed it as its own review, so it is that run's
+ * when the window IS the entry's own run (not one of several runs it declares)
+ * and the entry closed before `show` started, so a misfiled current-run review
+ * cannot ride in. Same rule collectHousedSiblingFiles already used for gap rows.
+ * @param {string|null|undefined} publishDate
+ * @param {object} window from findPriorRunSiblings
+ * @param {object} sibling the earlier entry
+ * @param {object} show the returning entry
+ * @returns {boolean}
+ */
+function carriesFromPriorRun(publishDate, window, sibling, show) {
+  if (publishDate) return !!findMatchingPriorRun(publishDate, [window]);
+  if (!window || !sibling || !ymd(sibling.openingDate) || ymd(window.openingDate) !== ymd(sibling.openingDate)) return false;
+  return toDateMs(sibling.closingDate) < runStartMs(show);
+}
+
+/**
  * Copies of the earlier entry's published reviews that belong on the returning
- * entry. A review is carried only when it is dated inside the declared prior-run
- * window (so a review of the earlier entry published long after it closed, or an
- * undated one, stays where it is) and the returning entry does not already have
+ * entry. A review is carried only when carriesFromPriorRun says so (dated inside
+ * the declared prior-run window, so a review of the earlier entry published long
+ * after it closed stays where it is; undated only from the entry's own,
+ * already-closed run) and the returning entry does not already have
  * it (same canonical URL, or same outlet + critic).
  *
  * Reviews already inherited (inheritedFromShowId) are never re-inherited, so a
@@ -379,7 +400,7 @@ function inheritPriorRunReviews(reviews, shows, opts = {}) {
       let count = 0;
       for (const r of byShow.get(sibling.id) || []) {
         if (r.inheritedFromShowId) continue;
-        if (!findMatchingPriorRun(r.publishDate, [window])) continue;
+        if (!carriesFromPriorRun(r.publishDate, window, sibling, show)) continue;
         const cu = canonicalizeUrl(r.url);
         if (cu && haveUrl.has(cu)) continue;
         if (havePerson.has(personKey(r))) continue;
@@ -420,7 +441,7 @@ function collectCarriedFiles(show, shows, deps) {
     // Same 5-outlet separation the rebuild applies, so the gap audit agrees with what is published.
     if (!(run && typeof run === 'object' && run.inheritReviews === true) && reReviewedByManyOutlets(show, shows, deps.loadFiles(show.id) || [])) continue;
     for (const d of deps.loadFiles(sibling.id) || []) {
-      if (!findMatchingPriorRun(d.publishDate, [window])) continue;
+      if (!carriesFromPriorRun(d.publishDate, window, sibling, show)) continue;
       if (!deps.isCovered(d, sibling)) continue;
       out.push({ ...d, _ctxShow: sibling, _carriedFromShowId: sibling.id, _exactMatchOnly: true });
     }

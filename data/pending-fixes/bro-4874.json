@@ -1,0 +1,243 @@
+{
+  "issueNumber": "bro-4874",
+  "planId": "aad41e61-92cb-4d64-9c5d-41d4ec9b93c8",
+  "status": "pending",
+  "createdAt": "2026-11-07T19:54:59.551Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Junk capture bylines (View my Complete, account handles, admin handles, The Recs initials, cut-off phrases) set to Unknown on 89 live primary review files so the byline backfill can retry them; display already drops them via critic-display-name (part 1 of 4)",
+    "steps": [
+      "1536-west-end-2026/the-recs--the-recs-jdh.json: criticName",
+      "a-ghost-in-your-ear-off-west-end-2026/partially-obstructed-view--view-my-complete.json: criticName",
+      "affluenza-off-west-end-2026/partially-obstructed-view--nick730.json: criticName",
+      "alterations-west-end-2025/all-that-dazzles-uk--sam-admin.json: criticName",
+      "amaze-magic-off-broadway-2025/luxury-experience--debra-c-argenedward-f-nesta.json: criticName",
+      "angels-in-america-2018/ew--national-theatre.json: criticName",
+      "archduke-west-end-2026/boycotting-trends--view-my-complete.json: criticName",
+      "as-you-like-it-globe-off-west-end-2026/partially-obstructed-view--nick730.json: criticName",
+      "bacchae-west-end-2025/all-that-dazzles-uk--sam-admin.json: criticName",
+      "bleak-expectations-west-end-2023/all-that-dazzles-uk--sam-admin.json: criticName",
+      "blue-mist-west-end-2023/partially-obstructed-view--view-my-complete.json: criticName",
+      "born-with-teeth-west-end-2025/partially-obstructed-view--view-my-complete.json: criticName",
+      "children-of-the-night-off-west-end-2026/all-that-dazzles-uk--lily-admin.json: criticName",
+      "crazysexycool-regional-2026/morris-theatre-dc--morris-theatre-dc.json: criticName",
+      "cuckoo-west-end-2023/all-that-dazzles-uk--sam-admin.json: criticName",
+      "darkling-off-west-end-2026/khambayswordswordswords--view-more-posts.json: criticName",
+      "deaf-republic-west-end-2025/all-that-dazzles-uk--sam-admin.json: criticName",
+      "dog-mom-off-west-end-2026/notesfromrowh--helena6.json: criticName",
+      "dugsi-dayz-west-end-2024/partially-obstructed-view--view-my-complete.json: criticName",
+      "east-is-east-west-end-2021/partially-obstructed-view--view-my-complete.json: criticName",
+      "enron-2010/chicagotribune--shanxi-radio-and.json: criticName",
+      "equus-off-west-end-2026/partially-obstructed-view--view-my-complete.json: criticName",
+      "evita-west-end-2025/the-recs--the-recs-it.json: criticName",
+      "frozen-west-end-2021/partially-obstructed-view--view-my-complete.json: criticName",
+      "game-of-thrones-the-mad-king-regional-2026/partially-obstructed-view--nick730.json: criticName"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "1536-west-end-2026/the-recs--the-recs-jdh.json",
+        "field": "criticName",
+        "oldValue": "The Recs Jdh",
+        "newValue": "Unknown",
+        "description": "1536-west-end-2026/the-recs--the-recs-jdh.json: criticName"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-ghost-in-your-ear-off-west-end-2026/partially-obstructed-view--view-my-complete.json",
+        "field": "criticName",
+        "oldValue": "View my Complete",
+        "newValue": "Unknown",
+        "description": "a-ghost-in-your-ear-off-west-end-2026/partially-obstructed-view--view-my-complete.json: criticName"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "affluenza-off-west-end-2026/partially-obstructed-view--nick730.json",
+        "field": "criticName",
+        "oldValue": "nick730",
+        "newValue": "Unknown",
+        "description": "affluenza-off-west-end-2026/partially-obstructed-view--nick730.json: criticName"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "alterations-west-end-2025/all-that-dazzles-uk--sam-admin.json",
+        "field": "criticName",
+        "oldValue": "Sam - Admin",
+        "newValue": "Unknown",
+        "description": "alterations-west-end-2025/all-that-dazzles-uk--sam-admin.json: criticName"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "amaze-magic-off-broadway-2025/luxury-experience--debra-c-argenedward-f-nesta.json",
+        "field": "criticName",
+        "oldValue": "Debra C ArgenEdward F Nesta",
+        "newValue": "Unknown",
+        "description": "amaze-magic-off-broadway-2025/luxury-experience--debra-c-argenedward-f-nesta.json: criticName"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "angels-in-america-2018/ew--national-theatre.json",
+        "field": "criticName",
+        "oldValue": "National Theatre",
+        "newValue": "Unknown",
+        "description": "angels-in-america-2018/ew--national-theatre.json: criticName"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "archduke-west-end-2026/boycotting-trends--view-my-complete.json",
+        "field": "criticName",
+        "oldValue": "View my Complete",
+        "newValue": "Unknown",
+        "description": "archduke-west-end-2026/boycotting-trends--view-my-complete.json: criticName"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "as-you-like-it-globe-off-west-end-2026/partially-obstructed-view--nick730.json",
+        "field": "criticName",
+        "oldValue": "nick730",
+        "newValue": "Unknown",
+        "description": "as-you-like-it-globe-off-west-end-2026/partially-obstructed-view--nick730.json: criticName"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "bacchae-west-end-2025/all-that-dazzles-uk--sam-admin.json",
+        "field": "criticName",
+        "oldValue": "Sam - Admin",
+        "newValue": "Unknown",
+        "description": "bacchae-west-end-2025/all-that-dazzles-uk--sam-admin.json: criticName"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "bleak-expectations-west-end-2023/all-that-dazzles-uk--sam-admin.json",
+        "field": "criticName",
+        "oldValue": "Sam - Admin",
+        "newValue": "Unknown",
+        "description": "bleak-expectations-west-end-2023/all-that-dazzles-uk--sam-admin.json: criticName"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "blue-mist-west-end-2023/partially-obstructed-view--view-my-complete.json",
+        "field": "criticName",
+        "oldValue": "View my Complete",
+        "newValue": "Unknown",
+        "description": "blue-mist-west-end-2023/partially-obstructed-view--view-my-complete.json: criticName"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "born-with-teeth-west-end-2025/partially-obstructed-view--view-my-complete.json",
+        "field": "criticName",
+        "oldValue": "View my Complete",
+        "newValue": "Unknown",
+        "description": "born-with-teeth-west-end-2025/partially-obstructed-view--view-my-complete.json: criticName"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "children-of-the-night-off-west-end-2026/all-that-dazzles-uk--lily-admin.json",
+        "field": "criticName",
+        "oldValue": "Lily - Admin",
+        "newValue": "Unknown",
+        "description": "children-of-the-night-off-west-end-2026/all-that-dazzles-uk--lily-admin.json: criticName"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "crazysexycool-regional-2026/morris-theatre-dc--morris-theatre-dc.json",
+        "field": "criticName",
+        "oldValue": "Morris Theatre DC",
+        "newValue": "Unknown",
+        "description": "crazysexycool-regional-2026/morris-theatre-dc--morris-theatre-dc.json: criticName"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cuckoo-west-end-2023/all-that-dazzles-uk--sam-admin.json",
+        "field": "criticName",
+        "oldValue": "Sam - Admin",
+        "newValue": "Unknown",
+        "description": "cuckoo-west-end-2023/all-that-dazzles-uk--sam-admin.json: criticName"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "darkling-off-west-end-2026/khambayswordswordswords--view-more-posts.json",
+        "field": "criticName",
+        "oldValue": "View more posts",
+        "newValue": "Unknown",
+        "description": "darkling-off-west-end-2026/khambayswordswordswords--view-more-posts.json: criticName"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "deaf-republic-west-end-2025/all-that-dazzles-uk--sam-admin.json",
+        "field": "criticName",
+        "oldValue": "Sam - Admin",
+        "newValue": "Unknown",
+        "description": "deaf-republic-west-end-2025/all-that-dazzles-uk--sam-admin.json: criticName"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "dog-mom-off-west-end-2026/notesfromrowh--helena6.json",
+        "field": "criticName",
+        "oldValue": "helena6",
+        "newValue": "Unknown",
+        "description": "dog-mom-off-west-end-2026/notesfromrowh--helena6.json: criticName"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "dugsi-dayz-west-end-2024/partially-obstructed-view--view-my-complete.json",
+        "field": "criticName",
+        "oldValue": "View my Complete",
+        "newValue": "Unknown",
+        "description": "dugsi-dayz-west-end-2024/partially-obstructed-view--view-my-complete.json: criticName"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "east-is-east-west-end-2021/partially-obstructed-view--view-my-complete.json",
+        "field": "criticName",
+        "oldValue": "View my Complete",
+        "newValue": "Unknown",
+        "description": "east-is-east-west-end-2021/partially-obstructed-view--view-my-complete.json: criticName"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "enron-2010/chicagotribune--shanxi-radio-and.json",
+        "field": "criticName",
+        "oldValue": "Shanxi Radio and",
+        "newValue": "Unknown",
+        "description": "enron-2010/chicagotribune--shanxi-radio-and.json: criticName"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "equus-off-west-end-2026/partially-obstructed-view--view-my-complete.json",
+        "field": "criticName",
+        "oldValue": "View my Complete",
+        "newValue": "Unknown",
+        "description": "equus-off-west-end-2026/partially-obstructed-view--view-my-complete.json: criticName"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "evita-west-end-2025/the-recs--the-recs-it.json",
+        "field": "criticName",
+        "oldValue": "The Recs IT",
+        "newValue": "Unknown",
+        "description": "evita-west-end-2025/the-recs--the-recs-it.json: criticName"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "frozen-west-end-2021/partially-obstructed-view--view-my-complete.json",
+        "field": "criticName",
+        "oldValue": "View my Complete",
+        "newValue": "Unknown",
+        "description": "frozen-west-end-2021/partially-obstructed-view--view-my-complete.json: criticName"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "game-of-thrones-the-mad-king-regional-2026/partially-obstructed-view--nick730.json",
+        "field": "criticName",
+        "oldValue": "nick730",
+        "newValue": "Unknown",
+        "description": "game-of-thrones-the-mad-king-regional-2026/partially-obstructed-view--nick730.json: criticName"
+      }
+    ]
+  }
+}

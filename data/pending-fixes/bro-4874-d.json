@@ -1,0 +1,144 @@
+{
+  "issueNumber": "bro-4874-d",
+  "planId": "b9cc23e2-354e-4e3e-8804-57cdaa1b7957",
+  "status": "pending",
+  "createdAt": "2026-11-07T19:54:59.551Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Junk capture bylines (View my Complete, account handles, admin handles, The Recs initials, cut-off phrases) set to Unknown on 89 live primary review files so the byline backfill can retry them; display already drops them via critic-display-name (part 4 of 4)",
+    "steps": [
+      "the-penelopiad-york-royal-regional-2026/notesfromrowh--helena6.json: criticName",
+      "the-pianist-off-west-end-2026/partially-obstructed-view--view-my-complete.json: criticName",
+      "the-pianist-off-west-end-2026/the-recs--the-recs-sw.json: criticName",
+      "the-standard-of-living-west-end-2026/partially-obstructed-view--nick730.json: criticName",
+      "the-story-west-end-2026/partially-obstructed-view--nick730.json: criticName",
+      "the-unbelievers-west-end-2025/all-that-dazzles-uk--sam-admin.json: criticName",
+      "the-urmetazoan-off-west-end-2026/khambayswordswordswords--view-more-posts.json: criticName",
+      "thelma-and-louise-a-new-musical-off-west-end-2026/partially-obstructed-view--nick730.json: criticName",
+      "twelfth-night-royal-shakespeare-regional-2025/partially-obstructed-view--nick730.json: criticName",
+      "under-milk-wood-west-end-2021/boycotting-trends--view-my-complete.json: criticName",
+      "underdog-the-other-other-bronte-west-end-2024/partially-obstructed-view--view-my-complete.json: criticName",
+      "water-for-elephants-tour-2025/burghvivant--vivantadmin.json: criticName",
+      "what-the-animals-say-off-west-end-2026/partially-obstructed-view--nick730.json: criticName",
+      "whos-afraid-of-virginia-woolf-west-end-2026/partially-obstructed-view--nick730.json: criticName"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "the-penelopiad-york-royal-regional-2026/notesfromrowh--helena6.json",
+        "field": "criticName",
+        "oldValue": "helena6",
+        "newValue": "Unknown",
+        "description": "the-penelopiad-york-royal-regional-2026/notesfromrowh--helena6.json: criticName"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-pianist-off-west-end-2026/partially-obstructed-view--view-my-complete.json",
+        "field": "criticName",
+        "oldValue": "View my Complete",
+        "newValue": "Unknown",
+        "description": "the-pianist-off-west-end-2026/partially-obstructed-view--view-my-complete.json: criticName"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-pianist-off-west-end-2026/the-recs--the-recs-sw.json",
+        "field": "criticName",
+        "oldValue": "The Recs SW",
+        "newValue": "Unknown",
+        "description": "the-pianist-off-west-end-2026/the-recs--the-recs-sw.json: criticName"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-standard-of-living-west-end-2026/partially-obstructed-view--nick730.json",
+        "field": "criticName",
+        "oldValue": "nick730",
+        "newValue": "Unknown",
+        "description": "the-standard-of-living-west-end-2026/partially-obstructed-view--nick730.json: criticName"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-story-west-end-2026/partially-obstructed-view--nick730.json",
+        "field": "criticName",
+        "oldValue": "nick730",
+        "newValue": "Unknown",
+        "description": "the-story-west-end-2026/partially-obstructed-view--nick730.json: criticName"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-unbelievers-west-end-2025/all-that-dazzles-uk--sam-admin.json",
+        "field": "criticName",
+        "oldValue": "Sam - Admin",
+        "newValue": "Unknown",
+        "description": "the-unbelievers-west-end-2025/all-that-dazzles-uk--sam-admin.json: criticName"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-urmetazoan-off-west-end-2026/khambayswordswordswords--view-more-posts.json",
+        "field": "criticName",
+        "oldValue": "View more posts",
+        "newValue": "Unknown",
+        "description": "the-urmetazoan-off-west-end-2026/khambayswordswordswords--view-more-posts.json: criticName"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "thelma-and-louise-a-new-musical-off-west-end-2026/partially-obstructed-view--nick730.json",
+        "field": "criticName",
+        "oldValue": "nick730",
+        "newValue": "Unknown",
+        "description": "thelma-and-louise-a-new-musical-off-west-end-2026/partially-obstructed-view--nick730.json: criticName"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "twelfth-night-royal-shakespeare-regional-2025/partially-obstructed-view--nick730.json",
+        "field": "criticName",
+        "oldValue": "nick730",
+        "newValue": "Unknown",
+        "description": "twelfth-night-royal-shakespeare-regional-2025/partially-obstructed-view--nick730.json: criticName"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "under-milk-wood-west-end-2021/boycotting-trends--view-my-complete.json",
+        "field": "criticName",
+        "oldValue": "View my Complete",
+        "newValue": "Unknown",
+        "description": "under-milk-wood-west-end-2021/boycotting-trends--view-my-complete.json: criticName"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "underdog-the-other-other-bronte-west-end-2024/partially-obstructed-view--view-my-complete.json",
+        "field": "criticName",
+        "oldValue": "View my Complete",
+        "newValue": "Unknown",
+        "description": "underdog-the-other-other-bronte-west-end-2024/partially-obstructed-view--view-my-complete.json: criticName"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "water-for-elephants-tour-2025/burghvivant--vivantadmin.json",
+        "field": "criticName",
+        "oldValue": "VivantAdmin",
+        "newValue": "Unknown",
+        "description": "water-for-elephants-tour-2025/burghvivant--vivantadmin.json: criticName"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "what-the-animals-say-off-west-end-2026/partially-obstructed-view--nick730.json",
+        "field": "criticName",
+        "oldValue": "nick730",
+        "newValue": "Unknown",
+        "description": "what-the-animals-say-off-west-end-2026/partially-obstructed-view--nick730.json: criticName"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "whos-afraid-of-virginia-woolf-west-end-2026/partially-obstructed-view--nick730.json",
+        "field": "criticName",
+        "oldValue": "nick730",
+        "newValue": "Unknown",
+        "description": "whos-afraid-of-virginia-woolf-west-end-2026/partially-obstructed-view--nick730.json: criticName"
+      }
+    ]
+  }
+}

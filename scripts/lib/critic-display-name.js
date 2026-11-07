@@ -80,6 +80,7 @@ const { isOutletishName, isPersonShapedName, CORPORATE_RE } = require('./outlet-
 const CRITIC_NAME_FIXES = require('./critic-name-fixes.json').fixes;
 // The site's critic-page slug rule (apostrophe -> hyphen), not review-normalization's.
 const { slugify: pageSlug } = require('./url-slug');
+const { isJunkCriticName, nameFromJunkCriticName } = require('./byline-recovery');
 
 // Placeholders the 2026 audit found emitted as critics, plus the obvious
 // neighbours of each. Lowercase; normalized through normalizeForCompare below
@@ -699,6 +700,13 @@ function displayCriticName(raw, outlet, registryEntry) {
   // or abbreviation ("Dave B.", "Jr.") is kept: only one after 2+ lowercase.
   out = trimEdgePunctuation(out);
   if (!out) return null;
+  // BRO-4874: capture junk the byline-recovery sweep knows ("View my Complete",
+  // "nick730", "Sam - Admin", "The Recs IT") reached the site as a critic.
+  // Keep the person it wraps ("Read more articles by X") or drop the byline.
+  if (isJunkCriticName(out)) {
+    out = nameFromJunkCriticName(out);
+    if (!out) return null;
+  }
   // 6. one spelling per person: the critic registry's form when the name is
   //    the same modulo accents/case/punctuation, then one apostrophe style.
   out = straightenApostrophes(registrySpelling(out, ctx.id));
