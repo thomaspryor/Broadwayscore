@@ -924,6 +924,19 @@ function buildHtmlParts({ sections = {}, problemsNote = null, changesHtml = null
   return { body: enforceBodyTypeFloor(body), full, report: reportInner ? buildReportDocument({ dateLabel, inner: reportInner }) : null };
 }
 
+/**
+ * BRO-7075: the Resend POST body. Same From as the retired morning email on purpose: the owner's
+ * Gmail filters, threading and iOS notification trust key off the sender. The full report rides as
+ * an HTML attachment because Gmail cannot collapse a section; no report means no attachment key.
+ */
+function buildResendPayload({ to, subject, bodyHtml, reportHtml, dayKey }) {
+  const payload = { from: 'Broadway Scorecard <alerts@broadwayscorecard.com>', to: [to], subject, html: bodyHtml };
+  if (reportHtml) {
+    payload.attachments = [{ filename: `morning-digest-report-${dayKey}.html`, content: Buffer.from(reportHtml, 'utf8').toString('base64'), content_type: 'text/html' }];
+  }
+  return payload;
+}
+
 /** The whole email as one string (every section), for tests, previews and the content-invariant check. */
 function buildHtml(opts) { return buildHtmlParts(opts).full; }
 
@@ -1853,17 +1866,15 @@ async function main() {
 
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) { console.error('[digest] RESEND_API_KEY not set'); process.exit(1); }
-  const res = await httpsJson('POST', 'https://api.resend.com/emails', { Authorization: `Bearer ${apiKey}` }, {
-    // Same From as the retired morning email on purpose: the owner's Gmail
-    // filters, threading, and iOS notification trust key off the sender
-    // (plan-review user-impact finding).
-    from: 'Broadway Scorecard <alerts@broadwayscorecard.com>',
-    to: [sendTo],
-    subject: testSend ? `TEST: ${subject}` : subject,
-    html: bodyHtml,
-    // BRO-7075: the long board/spend/technical report is an attachment, because Gmail cannot collapse it.
-    ...(reportHtml ? { attachments: [{ filename: `morning-digest-report-${todayET}.html`, content: Buffer.from(reportHtml, 'utf8').toString('base64'), content_type: 'text/html' }] } : {}),
-  });
+  const payload = buildResendPayload({ to: sendTo, subject: testSend ? `TEST: ${subject}` : subject, bodyHtml, reportHtml, dayKey: todayET });
+  let res = await httpsJson('POST', 'https://api.resend.com/emails', { Authorization: `Bearer ${apiKey}` }, payload);
+  // BRO-7075: a rejected attachment (a 4xx means nothing was sent) must never cost the owner the whole digest:
+  // retry once with the body alone, which is self-sufficient. 5xx/429 are not retried here (a duplicate send is worse).
+  if (payload.attachments && res.status >= 400 && res.status < 500 && res.status !== 429) {
+    console.error(`[digest] WARN send with attachment rejected (${res.status} ${JSON.stringify(res.json || {}).slice(0, 160)}); retrying without the attachment`);
+    const { attachments: _dropped, ...bodyOnly } = payload;
+    res = await httpsJson('POST', 'https://api.resend.com/emails', { Authorization: `Bearer ${apiKey}` }, bodyOnly);
+  }
   if (res.status < 200 || res.status >= 300) {
     console.error(`[digest] send failed: ${res.status} ${JSON.stringify(res.json || {}).slice(0, 200)}`);
     process.exit(1);
@@ -1892,4 +1903,4 @@ if (require.main === module) {
   main().catch((err) => { console.error(`[digest] fatal: ${err.message}`); process.exit(1); });
 }
 
-module.exports = { decisionsListLinkHtml, buildSubject, buildHtml, buildHtmlParts, enforceBodyTypeFloor, BODY_MIN_FONT_PX, parseArgs, composeDigestEmail, mergeNeedsYouSections, macLabelRetired, localCyrusRelayMessage, localRunnerHealthMessage, localLinearDelegationMessage, localCodexConnectionLine, retiredSyncTags, autofixShouldDryRun, DIGEST_SYNC_TAG, localDispatchWatchdogLeakMessage, macLocalSkippedLine, resendSentToday, fetchBoardTable, boardWaitingFallback, boardStartedIdle, saveBoardTableSnapshot };
+module.exports = { decisionsListLinkHtml, buildSubject, buildHtml, buildHtmlParts, buildResendPayload, enforceBodyTypeFloor, BODY_MIN_FONT_PX, parseArgs, composeDigestEmail, mergeNeedsYouSections, macLabelRetired, localCyrusRelayMessage, localRunnerHealthMessage, localLinearDelegationMessage, localCodexConnectionLine, retiredSyncTags, autofixShouldDryRun, DIGEST_SYNC_TAG, localDispatchWatchdogLeakMessage, macLocalSkippedLine, resendSentToday, fetchBoardTable, boardWaitingFallback, boardStartedIdle, saveBoardTableSnapshot };
