@@ -648,6 +648,7 @@ async function searchForReviewViaSERP(showId, outlet, scrapingBeeKey, brightData
     brightDataKey,
     log: (msg) => process.stdout.write(msg.replace(/^\s+/, '  ') + '\n'),
     forceHistorical: historical,
+    returnMetadata: true, // BRO-7084: keep the SERP headline for the empty-body guard
     // opening-night discovery is time-sensitive — ScrapingBee-first sync chain
     // (see url-discovery.js's preferSpeed doc: "time-sensitive flows like
     // opening night polling").
@@ -662,7 +663,7 @@ async function searchForReviewViaSERP(showId, outlet, scrapingBeeKey, brightData
     return { unavailable: true };
   }
   if (result) {
-    return { url: result };
+    return typeof result === 'string' ? { url: result } : { url: result.url, serpTitle: result.serpTitle };
   }
   return null;
 }
@@ -5678,6 +5679,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
                   outlet: outlet.name,
                   criticName: critic,
                   url: result.url,
+                  serpTitle: result.serpTitle,
                   source: 'serp-discovery-per-critic',
                 });
               }
@@ -5726,6 +5728,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
                 outlet: outlet.name,
                 criticName: 'Unknown',
                 url: result.url,
+                serpTitle: result.serpTitle,
                 source: 'serp-discovery',
               });
             } else {
@@ -5780,6 +5783,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
             outlet: outlet.name,
             criticName: defaultCritic,
             url: result.url,
+            serpTitle: result.serpTitle,
             source: 'serp-discovery'
           });
         } else {
@@ -5813,6 +5817,44 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
 
   let created = 0;
   for (const review of foundReviews) {
+    // BRO-7084: an empty-body SERP hit never reaches the content verifier, so
+    // the SERP headline is the only evidence it is about this show.
+    {
+      const { evaluateEmptyBodySerpWrite } = require('./lib/empty-body-serp-guard');
+      const eb = evaluateEmptyBodySerpWrite({ source: review.source, fullText: review.fullText, excerpt: review.excerpt, serpTitle: review.serpTitle, showTitle: show.title, url: review.url, akaTitles: show.akaTitles });
+      delete review.serpTitle;
+      if (eb.reject) {
+        console.log(`    ⊘ ${review.outletId}: ${eb.reason} — not written (BRO-7084): ${review.url}`);
+        logExclusion({
+          script: 'gather-reviews', showId,
+          file: generateReviewFilename(review.outletId || review.outlet, review.criticName),
+          reason: 'empty-body-serp-headline-mismatch',
+          details: { url: review.url, criticName: review.criticName, publishDate: review.publishDate },
+        });
+        continue;
+      }
+    }
+    // BRO-7084: date a body-less The Stage stub from its page HTML before the
+    // writer sees it; the writer parks it when no date is found.
+    if (review.url && !review.publishDate && !review.fullText && !review.excerpt
+        && require('./lib/unvetted-serp-sources').isUnvettedSerpSource(review.source)
+        && /thestage\.co\.uk/i.test(review.url) && !require('./lib/undated-stage-stub-guard').urlPathHasYear(review.url)) {
+      try {
+        const _pre = await require('./lib/discovery-prefetch').prefetchDiscoveredArticle(review.url, { outletId: review.outletId, showId });
+        if (_pre && _pre.publishDate) review.publishDate = _pre.publishDate;
+      } catch { /* parked below */ }
+      const _stage = require('./lib/undated-stage-stub-guard').evaluateUndatedStageStub({ outletId: review.outletId, url: review.url, publishDate: review.publishDate });
+      if (_stage.park) {
+        console.log(`    ⊘ ${review.outletId}: ${_stage.reason} — parked (BRO-7084): ${review.url}`);
+        logExclusion({
+          script: 'gather-reviews', showId,
+          file: generateReviewFilename(review.outletId || review.outlet, review.criticName),
+          reason: 'thestage-undated-stub',
+          details: { url: review.url, criticName: review.criticName, publishDate: review.publishDate },
+        });
+        continue;
+      }
+    }
     if (review.url && !review.needsUrl) {
       // --validate-urls: fetch roundup-sourced URLs and verify the page is about this show.
       // If validation fails, null the URL but keep score/critic data.

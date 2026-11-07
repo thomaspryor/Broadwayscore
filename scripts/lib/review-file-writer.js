@@ -1454,6 +1454,27 @@ function _createOrMergeReviewFile(showId, input, options = {}) {
     if (refusal) return refusal;
   }
 
+  // --- Guard: undated The Stage stub (BRO-7084) ---
+  // No year in the URL, no body (paywall) and no date: nothing ties it to this
+  // production. Callers date it from the page first (discovery-prefetch); with
+  // no date found it is parked. Aggregator rows carrying a score are cited
+  // reviews and exempt.
+  if (!(existing && existing.data) && !fs.existsSync(filepath)
+    && !isAggregatorReviewSource(input.source) && !hasPreservableAggregatorScore(fields)
+    && require('./unvetted-serp-sources').isUnvettedSerpSource(input.source)
+    && fields.humanReviewScore == null && fields.allowUndatedStageStub !== true && !input.allowUndatedStageStub) {
+    const stage = require('./undated-stage-stub-guard').evaluateUndatedStageStub({
+      outletId, url: input.url,
+      publishDate: fields.publishDate || input.publishDate,
+      fullText: input.fullText || fields.fullText,
+      excerpt: input.excerpt || fields.excerpt,
+    });
+    if (stage.park) {
+      console.warn(`  ⛔ Parking undated The Stage stub: ${input.url}`);
+      return { action: 'skipped', reason: stage.reason, guardRefused: true };
+    }
+  }
+
   // --- Guard M: merged-away URL (BRO-4414) ---
   // A sibling file already absorbed this URL in an earlier merge and the
   // duplicate was deleted. Creating a file for it re-manufactures that duplicate
