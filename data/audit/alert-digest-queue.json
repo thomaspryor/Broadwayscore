@@ -1555,5 +1555,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-07T22:31:05.383Z"
+  },
+  {
+    "conditionKey": "land:land/job/linear-BRO-7096-mw6xpp6l",
+    "title": "Landing blocked: rebase red on land/job/linear-BRO-7096-mw6xpp6l",
+    "description": "land.yml did not land land/job/linear-BRO-7096-mw6xpp6l: the rebase gate went red at 7a0b6e6925. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/job/linear-BRO-7096-mw6xpp6l @ 7a0b6e6925 (origin/land/job/linear-BRO-7096-mw6xpp6l) → origin/main @ d23af85e59 REFUSED: rebase: branch would not rebase cleanly onto origin/main @ d23af85e59: Rebasing (1/1) error: could not apply 7a0b6e6925b... fix(BRO-7096): hasExcerpt/getLongestExcerpt replace excerpt-field || chains; West End-only excerpts tier as excerpt; guard test flags chains hi Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/42419517415",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/job/linear-BRO-7096-mw6xpp6l"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "7a0b6e6925b539c477e8d78d9fe8fb61a035b887"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42419517415"
+      }
+    ],
+    "queuedAt": "2026-11-07T22:42:03.109Z"
   }
 ]
