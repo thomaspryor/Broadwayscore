@@ -1,5 +1,7 @@
 import 'server-only';
 import type { NextRequest } from 'next/server';
+import { revalidatePath, revalidateTag } from 'next/cache';
+import type { GrantDeps } from './critic-ownership';
 
 // BRO-6895: server-side plumbing for critic claiming. All writes use the
 // service role AFTER the caller's Supabase JWT is verified.
@@ -44,6 +46,23 @@ export async function getRequestUser(req: NextRequest): Promise<{ id: string; em
     const u = await res.json();
     return u?.id ? { id: String(u.id), email: String(u.email || '') } : null;
   } catch { return null; }
+}
+
+/** Real I/O for grantOwnership (critic-ownership.ts). */
+export const ownershipDeps: GrantDeps = {
+  sbAdmin: (path, init) => sbAdmin(path, init),
+  revalidateTag: (tag) => revalidateTag(tag, { expire: 0 }),
+  revalidatePath: (path) => revalidatePath(path),
+};
+
+/** user_id of the approved owner of a critic page; null when none, 'error' when the lookup failed. */
+export async function approvedOwnerOf(slug: string): Promise<string | null | 'error'> {
+  try {
+    const res = await sbAdmin(`/rest/v1/critic_claims?critic_slug=eq.${encodeURIComponent(slug)}&status=eq.approved&select=user_id&limit=1`);
+    if (!res.ok) return 'error';
+    const rows = (await res.json()) as { user_id: string }[];
+    return rows[0]?.user_id ?? null;
+  } catch { return 'error'; }
 }
 
 export interface ClaimRow {

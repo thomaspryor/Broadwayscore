@@ -1,8 +1,8 @@
 import { NextRequest } from 'next/server';
-import { revalidatePath, revalidateTag } from 'next/cache';
 import { CONFIRM_FIELD_HTML, readConfirmedForm } from '@/lib/confirm-post';
 import { verifyClaimLink } from '@/lib/critic-claim';
-import { sbAdmin, escHtml, criticBackendReady, type ClaimRow } from '@/lib/critic-server';
+import { sbAdmin, escHtml, criticBackendReady, ownershipDeps, type ClaimRow } from '@/lib/critic-server';
+import { grantOwnership } from '@/lib/critic-ownership';
 
 // BRO-6895: the owner's Approve / Decline links. GET only shows a confirm
 // button (mail scanners open every link); the POST behind it acts.
@@ -72,15 +72,7 @@ export async function POST(req: NextRequest) {
     if (!Array.isArray(changed) || changed.length !== 1) return page('Already handled', '<h1>Already handled</h1><p>Someone else decided this a moment ago. Nothing changed.</p>', 409);
   }
   if (g.action === 'approve') {
-    const prof = await sbAdmin('/rest/v1/critic_profiles?on_conflict=critic_slug', {
-      method: 'POST', prefer: 'resolution=merge-duplicates,return=minimal',
-      body: JSON.stringify({ critic_slug: claim.critic_slug, user_id: claim.user_id, verified_at: new Date().toISOString() }),
-    });
-    if (!prof.ok) return page('Partly done', '<h1>Approved, but the profile row failed</h1><p>Tap the link again in a minute.</p>', 502);
-    revalidateTag(`critic-profile:${claim.critic_slug}`, { expire: 0 });
-    revalidateTag('critic-profiles', { expire: 0 });
-    revalidatePath(`/critics/${claim.critic_slug}`);
-    revalidatePath('/critics');
+    if (!(await grantOwnership(claim.critic_slug, claim.user_id, ownershipDeps))) return page('Partly done', '<h1>Approved, but the profile row failed</h1><p>Tap the link again in a minute.</p>', 502);
   }
   return page('Recorded', `<h1>${g.action === 'approve' ? 'Approved' : 'Declined'}</h1><p>${escHtml(claim.critic_slug)} is recorded as ${status}.</p>`);
 }
