@@ -1462,5 +1462,36 @@
       }
     ],
     "queuedAt": "2026-11-07T20:37:51.609Z"
+  },
+  {
+    "conditionKey": "land:land/bro-4874-junk-bylines-undated-carry",
+    "title": "Landing blocked: scripts-lib-tests red on land/bro-4874-junk-bylines-undated-carry",
+    "description": "land.yml did not land land/bro-4874-junk-bylines-undated-carry: the scripts-lib-tests gate went red at 9bba0b0cf2. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/42411610168",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-4874-junk-bylines-undated-carry"
+      },
+      {
+        "name": "gate",
+        "value": "scripts-lib-tests"
+      },
+      {
+        "name": "tip",
+        "value": "9bba0b0cf22a1a252768f677480735df1331cf9f"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42411610168"
+      }
+    ],
+    "queuedAt": "2026-11-07T20:55:34.786Z"
   }
 ]
