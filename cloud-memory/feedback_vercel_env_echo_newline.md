@@ -9,7 +9,7 @@ Never use `echo "value" | vercel env add VAR production` — `echo` appends `\n`
 
 Use `printf '%s' "$value" | vercel env add VAR production` instead.
 
-**Why:** On the admin dashboard ship (Apr 10 2026), I used `echo` to pipe the `ADMIN_TOKEN` into Vercel. Auth kept 404ing on production even though the route was matched and the token looked correct. Pulled the env back with `vercel env pull` and found `ADMIN_TOKEN="dIatCPfM91FvMVJ8lwsrByAWiYnNqzJn\n"`. Cost 2 deploy cycles to diagnose.
+**Why:** On the admin dashboard ship (Apr 10 2026), I used `echo` to pipe the `ADMIN_TOKEN` into Vercel. Auth kept 404ing on production even though the route was matched and the token looked correct. Pulled the env back with `vercel env pull` and found `ADMIN_TOKEN="<redacted>\n"`. Cost 2 deploy cycles to diagnose.
 
 **How to apply:**
 - When piping any secret into `vercel env add`, always use `printf '%s'` (no trailing newline, no format interpretation).
