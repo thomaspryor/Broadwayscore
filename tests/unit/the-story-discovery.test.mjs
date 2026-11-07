@@ -60,6 +60,10 @@ test('single-word identity needs the cue beside the word or the word leading (BR
   assert.equal(titleMatchesShow('Broadway producers ask Congress for tax relief', 'The Ask'), false);
   assert.equal(titleMatchesShow('How To Ask Colleagues For A Raise On Broadway Jobs Board', 'The Ask'), false);
   assert.equal(titleMatchesShow('The Ask review: a tense two-hander', 'The Ask'), true);
+  // ship-check P2: cue compounds and "cast of" beside the word still match.
+  assert.equal(titleMatchesShow('Tony-winning Outsiders sets national tour', 'The Outsiders'), true);
+  assert.equal(titleMatchesShow('Cast of Outsiders to perform at Tonys', 'The Outsiders'), true);
+  assert.equal(titleMatchesShow('Tony-winning producers ask Congress for tax relief', 'The Ask'), false);
   assert.equal(titleMatchesShow('Notebook musical drowns in sentiment', 'The Notebook'), true);
   assert.equal(titleMatchesShow('Notebook opens on Broadway to mixed notices', 'The Notebook'), true);
   assert.equal(titleMatchesShow('Outsiders musical wins Tony', 'The Outsiders'), true);
