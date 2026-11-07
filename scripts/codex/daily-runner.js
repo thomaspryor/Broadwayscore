@@ -243,9 +243,22 @@ function setupWorktree() {
   if (!fs.existsSync(path.join(WT, '.git'))) {
     sh('git', ['worktree', 'prune']);
     git(['fetch', 'origin', 'main'], ROOT);
-    git(['worktree', 'add', '--detach', WT, 'origin/main'], ROOT);
+    addWorktree(WT);
   }
+  applyTreeMode(WT);
   linkNodeModules(WT);
+}
+/** BRO-7097: 'slim' trees skip the image trees (R.SLIM_EXCLUDED_DIRS); a card that reads images gets 'full'. Set per card. */
+let treeMode = 'slim';
+/** Put <tree> into the current tree mode. Idempotent, and also slims a full tree an earlier version made. */
+function applyTreeMode(tree) {
+  git(R.treeModeArgs(treeMode), tree);
+}
+/** A new detached worktree of origin/main in the current tree mode, without ever writing the excluded trees. */
+function addWorktree(tree) {
+  git(['worktree', 'add', '--no-checkout', '--detach', tree, 'origin/main'], ROOT);
+  git(R.treeModeArgs(treeMode), tree);
+  git(['checkout', '-q', '-f', 'HEAD'], tree);
 }
 /** Link <tree>/node_modules to ROOT's (a dangling link is replaced). Node finds ROOT's copy from a nested tree anyway, but tests that copy the tree to /tmp follow this link. */
 function linkNodeModules(tree) {
@@ -430,6 +443,7 @@ function resetWorktree(branch) {
   cardBase = git(['rev-parse', 'origin/main']);
   git(['checkout', '-f', '-B', branch, cardBase]);
   git(['reset', '--hard', cardBase]);
+  applyTreeMode(WT);
   // -x: gitignored files Codex or tests wrote must not carry into the next card.
   git(['clean', '-fdx', '-e', 'node_modules']);
   return provideData(WT);
@@ -578,7 +592,7 @@ const CHECK_BINARY_LINES = 1000; // a binary file is never "small"
 
 /** Commit Codex's working-tree changes (message: a --pr landing's own). -> { hasDiff, blocked } */
 function commitAttempt(card, attempt, message = null) {
-  git(['add', '-A']); // node_modules is a gitignored symlink; naming it in a pathspec makes git add fail
+  git(['add', '-A', '--sparse']); // --sparse: a card that adds a file under a slim tree's excluded dir still commits it. node_modules is a gitignored symlink; naming it in a pathspec makes git add fail
   const names = git(['diff', '--cached', '--name-only', '--no-renames']).split('\n').filter(Boolean);
   if (!names.length) return { hasDiff: git(['rev-list', '--count', 'origin/main..HEAD']) !== '0', blocked: null };
   if (names.some((n) => n.startsWith('.github/workflows/'))) return { hasDiff: true, blocked: 'Codex edited .github/workflows/**, which the runner never lands' };
@@ -622,10 +636,11 @@ function prepareBase() {
   if (SB.dropStale(BASE_WT, { gitCommon: gitCommonDir() })) log(`removed ${BASE_WT}: a sandboxed run that did not finish left it owned by the sandbox`);
   if (!fs.existsSync(path.join(BASE_WT, '.git'))) {
     sh('git', ['worktree', 'prune'], { cwd: ROOT });
-    git(['worktree', 'add', '--detach', BASE_WT, 'origin/main'], ROOT);
+    addWorktree(BASE_WT);
   }
   linkNodeModules(BASE_WT);
   git(['checkout', '-q', '-f', '--detach', cardBase], BASE_WT);
+  applyTreeMode(BASE_WT); // same mode as the card's tree: the land check compares the two
   git(['clean', '-qfdx', '-e', 'node_modules'], BASE_WT);
   provideData(BASE_WT, { reviewTexts: false });
 }
@@ -918,6 +933,7 @@ async function workCard(pick, stats, inFlight) {
     // Record the claim in the lock, so a run that dies from here on leaves this card named.
     if (!refreshLock(MAX_STAMP_GAP_MS)) throw new Error('lost the run lock (another run took it, or it could not be re-stamped before going stale)');
     const branch = `codex/${id.toLowerCase()}`;
+    treeMode = R.cardNeedsImages(`${card.title}\n${card.description || ''}\n${verifyCommand(card) || ''}`) ? 'full' : 'slim';
     const data = resetWorktree(branch);
     const cmd = verifyCommand(card);
     let onMain = 'The card has no automatic check command.';
@@ -1443,8 +1459,14 @@ async function launchSlots() {
     const n = R.slotNames(plan.base + k);
     return [n.wt, n.base].filter((w) => !fs.existsSync(path.join(ROOT, '.claude/worktrees', w, '.git'))).length;
   });
-  const disk = R.slotsForDisk({ slots: plan.slots, freeBytes: freeDisk(), missingBySlot, reserveBytes: R.LANES[OPTS.lane].diskReserveBytes });
+  // BRO-7097: budget a worktree from a real one (any slot's existing tree), not a constant.
+  const existingTree = [...Array(plan.slots).keys()].flatMap((k) => { const n = R.slotNames(plan.base + k); return [n.wt, n.base]; })
+    .map((w) => path.join(ROOT, '.claude/worktrees', w)).find((d) => fs.existsSync(path.join(d, '.git')));
+  const measuredBytes = existingTree ? R.measureTreeBytes(existingTree) : null;
+  const worktreeBytes = R.worktreeBytesFor({ mode: 'slim', measuredBytes });
+  const disk = R.slotsForDisk({ slots: plan.slots, freeBytes: freeDisk(), missingBySlot, reserveBytes: R.LANES[OPTS.lane].diskReserveBytes, worktreeBytes });
   if (disk.slots < plan.slots) Object.assign(plan, { slots: disk.slots, why: [plan.why, disk.why].filter(Boolean).join('; ') });
+  log(`worktree budget ${(worktreeBytes / 1e9).toFixed(2)} GB each (${measuredBytes ? `measured ${(measuredBytes / 1e9).toFixed(2)} GB from ${path.basename(existingTree)}` : 'estimate, no worktree exists yet'}); ${(freeDisk() / 1e9).toFixed(1)} GB free`);
   log(`launching ${plan.slots} slot(s) from slot ${plan.base} (${plan.lane} lane)${plan.why ? ` instead of ${OPTS.slots}: ${plan.why}` : ''}`);
   // One slot: no run dir, so it runs exactly as a lone runner (2 landings in flight, plain summary).
   const runDir = plan.slots > 1 ? fs.mkdtempSync(path.join(LOG_DIR, 'launch-')) : '';
@@ -1453,7 +1475,7 @@ async function launchSlots() {
     if (k) await sleep(SLOT_STAGGER_MS);
     if (dying || (runDir && fs.existsSync(path.join(runDir, 'STOP')))) break;
     const args = R.slotArgs(process.argv.slice(2), { slot: plan.base + k, runDir, runStartedMs: RUN_STARTED_MS, limit: Math.ceil(OPTS.limit / plan.slots), checkBudgetUsd: OPTS.checkBudgetUsd / plan.slots, pickList: OPTS.limit + 5 * plan.slots });
-    const child = spawn(process.execPath, [__filename, ...args], { cwd: ROOT, stdio: 'inherit', env: { ...process.env, ...(plan.slots < OPTS.slots ? { CODEX_SLOT_SHORTFALL: `${plan.slots} of ${OPTS.slots} requested: ${plan.why || 'disk or lane limit'}` } : {}),
+    const child = spawn(process.execPath, [__filename, ...args], { cwd: ROOT, stdio: 'inherit', env: { ...process.env, CODEX_FULL_TREE_BYTES: String(R.FULL_WORKTREE_BYTES), ...(plan.slots < OPTS.slots ? { CODEX_SLOT_SHORTFALL: `${plan.slots} of ${OPTS.slots} requested: ${plan.why || 'disk or lane limit'}` } : {}),
       // A lane that fell back to another lane's slot (the login may refresh) stands down by design if that slot is busy.
       ...fallback } });
     slotChildren.push(child);
@@ -1654,6 +1676,7 @@ async function runLocked(startedMs) {
     weeklyPct: weeklyPct(),
     checkCount, checkSpentUsd, checkByModel,
     slotShortfall: process.env.CODEX_SLOT_SHORTFALL,
+    worktreeLine: R.worktreeSummaryLine({ mode: treeMode, bytes: R.measureTreeBytes(WT), fullBytes: Number(process.env.CODEX_FULL_TREE_BYTES) || null }),
     landedPerLane: SLOT === 0 ? landedPerLane() : null,
     ladderLine: ladderLine(),
   });
@@ -1748,6 +1771,7 @@ async function runPr(n) {
     ensureTools({ codex: false });
     pruneDisk();
     setupWorktree();
+    treeMode = 'full'; // a PR's files are not known before its diff: take the whole tree
     const data = resetWorktree(`codex-pr-${n}`);
     git(['fetch', 'origin', `+refs/pull/${n}/head:refs/remotes/origin/codex-pr/${n}`]);
     if (git(['rev-parse', `refs/remotes/origin/codex-pr/${n}`]) !== sha) { log(`PR #${n}: fetched head is not ${short}; a newer push's run handles it`); say('superseded'); return; }

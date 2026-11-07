@@ -125,3 +125,28 @@ test('the plan executor accepts the generated nulling edit (data-edit-action ima
   assert.equal(res.ok, true, res.reason);
   assert.deepEqual(data.shows[0].images, { thumbnail: null, poster: null, hero: null });
 });
+
+// BRO-7097: in a slim (sparse-checkout) Codex worktree a missing image proves nothing.
+test('slim sparse trees: image finders report nothing instead of flagging every local image', async () => {
+  const { spawnSync } = await import('node:child_process');
+  const fs = await import('node:fs'); const os = await import('node:os'); const pth = await import('node:path');
+  const dir = fs.mkdtempSync(pth.join(os.tmpdir(), 'sparse-img-'));
+  try {
+    const g = (...a) => spawnSync('git', a, { cwd: dir, encoding: 'utf8' });
+    g('init', '-q'); g('config', 'user.email', 't@t.t'); g('config', 'user.name', 't');
+    fs.mkdirSync(pth.join(dir, 'public/images/shows'), { recursive: true });
+    fs.writeFileSync(pth.join(dir, 'public/images/shows/a.webp'), 'x');
+    g('add', '-A'); g('commit', '-qm', 'x');
+    const publicDir = pth.join(dir, 'public');
+    const shows = [{ id: 'a', images: { hero: '/images/shows/a.webp', thumbnail: '/images/shows/a.webp' } }];
+    const mod = (await import('./image-pointers.js')).default;
+    assert.equal(mod.isSparseTree(publicDir), false);
+    g('sparse-checkout', 'set', '--no-cone', '/*', '!/public/images/shows/');
+    assert.equal(fs.existsSync(pth.join(publicDir, 'images/shows/a.webp')), false);
+    assert.equal(mod.isSparseTree(publicDir), true);
+    assert.deepEqual(mod.findImagePointerProblems(shows, { publicDir }), []);
+    assert.deepEqual(mod.findDanglingLocalImageRefs(shows, { publicDir }), []);
+    g('sparse-checkout', 'disable');
+    assert.equal(mod.isSparseTree(publicDir), false);
+  } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+});

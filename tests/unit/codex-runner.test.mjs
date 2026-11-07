@@ -1011,26 +1011,92 @@ test('slotsForDisk: budgets worktrees not yet created plus the per-card reserve'
   // All worktrees exist: 3 slots x 3 GB reserve = 9 GB.
   assert.deepEqual(r.slotsForDisk({ slots: 3, freeBytes: 10e9, missingBySlot: [0, 0, 0] }), { slots: 3, why: null });
   // Fresh session: each slot also creates 2 x 1.4 GB.
-  const fresh = r.slotsForDisk({ slots: 3, freeBytes: 12e9, missingBySlot: [2, 2, 2] });
+  const fresh = r.slotsForDisk({ slots: 3, freeBytes: 12e9, missingBySlot: [2, 2, 2], worktreeBytes: 1.4e9 });
   assert.equal(fresh.slots, 2);
   assert.match(fresh.why, /12\.0 GB/);
-  assert.equal(r.slotsForDisk({ slots: 3, freeBytes: 2e9, missingBySlot: [2, 2, 2] }).slots, 1);
+  assert.equal(r.slotsForDisk({ slots: 3, freeBytes: 2e9, missingBySlot: [2, 2, 2], worktreeBytes: 1.4e9 }).slots, 1);
   assert.deepEqual(r.slotsForDisk({ slots: 3, freeBytes: NaN }), { slots: 3, why: null });
 });
 
 test('slotsForDisk: reserveBytes keeps room for the session\'s own work (BRO-7088)', () => {
   // 20 GB free, 8 GB reserved, nothing created yet: 12 GB left; 3 slots need 17.4, 2 need 11.6.
-  const tight = r.slotsForDisk({ slots: 3, freeBytes: 20e9, missingBySlot: [2, 2, 2], reserveBytes: 8e9 });
+  const tight = r.slotsForDisk({ slots: 3, freeBytes: 20e9, missingBySlot: [2, 2, 2], reserveBytes: 8e9, worktreeBytes: 1.4e9 });
   assert.equal(tight.slots, 2);
-  assert.match(tight.why, /20\.0 GB of disk free, 8\.0 GB of it kept/);
+  assert.match(tight.why, /20\.0 GB of disk free \(1\.40 GB per worktree\), 8\.0 GB of it kept/);
   // The same disk without a reserve carries all 3.
-  assert.deepEqual(r.slotsForDisk({ slots: 3, freeBytes: 20e9, missingBySlot: [2, 2, 2] }), { slots: 3, why: null });
+  assert.deepEqual(r.slotsForDisk({ slots: 3, freeBytes: 20e9, missingBySlot: [2, 2, 2], worktreeBytes: 1.4e9 }), { slots: 3, why: null });
   // A reserve bigger than the free disk still leaves one slot (stopReason owns the per-card stop).
   assert.equal(r.slotsForDisk({ slots: 3, freeBytes: 5e9, missingBySlot: [2, 2, 2], reserveBytes: 8e9 }).slots, 1);
   // One slot, an unmeasurable disk, and a junk reserve are all no-ops.
   assert.deepEqual(r.slotsForDisk({ slots: 1, freeBytes: 1e9, reserveBytes: 8e9 }), { slots: 1, why: null });
   assert.deepEqual(r.slotsForDisk({ slots: 3, freeBytes: NaN, reserveBytes: 8e9 }), { slots: 3, why: null });
   assert.deepEqual(r.slotsForDisk({ slots: 3, freeBytes: 20e9, missingBySlot: [0, 0, 0], reserveBytes: NaN }), { slots: 3, why: null });
+});
+
+test('slim worktrees (BRO-7097): three cloud slots fit at about 20 GB free with the lane reserve', () => {
+  // 3 slots x (worktree + base) x slim budget + 3 x per-card free-disk floor, 20 GB free, 8 GB reserved.
+  const d = r.slotsForDisk({ slots: 3, freeBytes: 20e9, missingBySlot: [2, 2, 2], reserveBytes: r.LANES.cloud.diskReserveBytes });
+  assert.deepEqual(d, { slots: 3, why: null });
+  // The old full-tree budget stopped at 2, which is what slim trees fix.
+  assert.equal(r.slotsForDisk({ slots: 3, freeBytes: 20e9, missingBySlot: [2, 2, 2], reserveBytes: r.LANES.cloud.diskReserveBytes, worktreeBytes: r.FULL_WORKTREE_BYTES }).slots, 2);
+  // A junk worktreeBytes falls back to the slim estimate.
+  assert.equal(r.slotsForDisk({ slots: 3, freeBytes: 20e9, missingBySlot: [2, 2, 2], reserveBytes: r.LANES.cloud.diskReserveBytes, worktreeBytes: NaN }).slots, 3);
+});
+
+test('worktreeBytesFor: a measurement wins but is floored; no measurement uses the mode estimate', () => {
+  assert.equal(r.worktreeBytesFor({ mode: 'slim' }), r.SLIM_WORKTREE_BYTES);
+  assert.equal(r.worktreeBytesFor({ mode: 'full' }), r.FULL_WORKTREE_BYTES);
+  assert.equal(r.worktreeBytesFor({ mode: 'slim', measuredBytes: 0.9e9 }), 0.9e9);
+  assert.equal(r.worktreeBytesFor({ mode: 'slim', measuredBytes: 1e6 }), r.SLIM_WORKTREE_BYTES);
+  assert.equal(r.worktreeBytesFor({ mode: 'slim', measuredBytes: NaN }), r.SLIM_WORKTREE_BYTES);
+  assert.ok(r.SLIM_WORKTREE_BYTES <= 0.4 * r.FULL_WORKTREE_BYTES + 0.02e9, 'slim estimate is at most ~40% of a full tree');
+});
+
+test('cardNeedsImages: image, poster, video-review and validate-data cards get a full tree', () => {
+  for (const t of ['Fix hero image for show X', 'poster missing', 'public/images/shows/x.webp', 'node scripts/validate-data.js fails', 'video-reviews transcripts', 'thumbnail 404']) assert.equal(r.cardNeedsImages(t), true, t);
+  for (const t of ['Fix codex runner slot count', 'scoring tier weights', '', null]) assert.equal(r.cardNeedsImages(t), false, String(t));
+});
+
+test('slim sparse patterns: a real git worktree drops the image trees, keeps the rest, and full mode brings them back', () => {
+  const sh = (cwd, ...args) => { const x = spawnSync('git', args, { cwd, encoding: 'utf8' }); assert.equal(x.status, 0, x.stderr); return x.stdout; };
+  const dir = mkdtempSync(join(tmpdir(), 'slim-wt-'));
+  try {
+    sh(dir, 'init', '-q');
+    sh(dir, 'config', 'user.email', 't@t.t'); sh(dir, 'config', 'user.name', 't');
+    for (const f of [...r.SLIM_EXCLUDED_DIRS.map((d) => `${d}/a.txt`), 'public/data/keep.json', 'public/images/theaters/t.txt', 'README.md']) {
+      fs.mkdirSync(join(dir, dirname(f)), { recursive: true }); writeFileSync(join(dir, f), 'x');
+    }
+    sh(dir, 'add', '-A'); sh(dir, 'commit', '-qm', 'x');
+    sh(dir, ...r.treeModeArgs('slim'));
+    for (const d of r.SLIM_EXCLUDED_DIRS) assert.equal(fs.existsSync(join(dir, d)), false, d);
+    for (const f of ['public/data/keep.json', 'public/images/theaters/t.txt', 'README.md']) assert.equal(fs.existsSync(join(dir, f)), true, f);
+    // Repeating the setup on a slim tree is a no-op (setupWorktree runs it every card).
+    sh(dir, ...r.treeModeArgs('slim'));
+    assert.ok(r.measureTreeBytes(dir) > 0);
+    // A new file under an excluded dir still stages with --sparse (commitAttempt).
+    fs.mkdirSync(join(dir, 'public/images/shows'), { recursive: true }); writeFileSync(join(dir, 'public/images/shows/new.txt'), 'y');
+    sh(dir, 'add', '-A', '--sparse');
+    assert.match(sh(dir, 'diff', '--cached', '--name-only'), /public\/images\/shows\/new\.txt/);
+    sh(dir, 'reset', '-q', '--hard', 'HEAD');
+    sh(dir, ...r.treeModeArgs('full'));
+    for (const d of r.SLIM_EXCLUDED_DIRS) assert.equal(fs.existsSync(join(dir, d, 'a.txt')), true, d);
+  } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+});
+
+test('worktreeSummaryLine prints the measured size and its share of a full tree', () => {
+  assert.equal(r.worktreeSummaryLine({ mode: 'slim', bytes: 0.7e9, fullBytes: 1.77e9 }), 'slim checkout, 0.70 GB measured on disk, 40% of a full tree (1.77 GB)');
+  assert.equal(r.worktreeSummaryLine({ mode: 'full', bytes: 1.7e9 }), 'full checkout, 1.70 GB measured on disk');
+  assert.equal(r.worktreeSummaryLine({ mode: 'slim', bytes: null }), '');
+  assert.match(r.runnerSummaryText({ heading: 'h', stats: { landed: [], landedPartial: [], alreadyFixed: [], bounced: [], inReview: [], landFailed: [], crashed: [], recoveredStops: [], carried: [], outOfTime: [], wouldLand: [] }, worked: 0, skipped: 0, picks: [], stop: null, settingsLine: '', weeklyPct: null, checkCount: 0, checkSpentUsd: 0, checkByModel: {}, worktreeLine: 'slim checkout, 0.70 GB measured on disk' }) || '', /- Worktree: slim checkout, 0\.70 GB/);
+});
+
+test('the runner picks the tree mode per card, measures the budget, and stages sparsely', () => {
+  const src = fs.readFileSync(new URL('../../scripts/codex/daily-runner.js', import.meta.url), 'utf8');
+  assert.match(src, /treeMode = R\.cardNeedsImages\(/);
+  assert.match(src, /worktreeBytes = R\.worktreeBytesFor\(/);
+  assert.match(src, /'add', '-A', '--sparse'/);
+  assert.match(src, /addWorktree\(WT\)/);
+  assert.match(src, /addWorktree\(BASE_WT\)/);
 });
 
 test('the runner passes its lane\'s disk reserve to slotsForDisk, and only the cloud lane has one', () => {

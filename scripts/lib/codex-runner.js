@@ -1615,8 +1615,45 @@ function holdsIgnoredWork(wt) {
   return false;
 }
 
-// One slot's worktree or base worktree (public/images + data, measured 2026-10-16).
-const WORKTREE_BYTES = 1.4e9;
+// A full worktree (tracked files + data copies, du measured 2026-11-07: 1,773 MB).
+const FULL_WORKTREE_BYTES = 1.77e9;
+// BRO-7097: a slim worktree skips these image trees (show images 808 MB, video-review images 128 MB, transcripts 116 MB, deleted-images archive 19 MB of a 1,773 MB tree, measured 2026-11-07).
+const SLIM_EXCLUDED_DIRS = ['public/images/shows', 'public/images/video-reviews', 'data/video-reviews-transcripts', 'data/audit/deleted-images'];
+// Non-cone sparse-checkout patterns: everything, minus the excluded directories.
+const SLIM_SPARSE_PATTERNS = ['/*', ...SLIM_EXCLUDED_DIRS.map((d) => `!/${d}/`)];
+// What the slim estimate is when nothing was measured: the full size less the excluded images.
+const SLIM_WORKTREE_BYTES = 0.72e9;
+// Card text that means the card reads or edits show images, or runs a script that does: it gets a full tree.
+const IMAGE_CARD_RE = /public\/images|\bimages?\b|\bhero\b|\bposter\b|\bthumbnail|\bvideo[- ]?reviews?\b|\btranscripts?\b|deleted-images|validate-data|image-pointer|image-null|\bphotos?\b/i;
+/** Does this card need the image trees? text = title + description + verify command. A conservative match: a false yes only costs disk. */
+function cardNeedsImages(text) {
+  return IMAGE_CARD_RE.test(String(text || ''));
+}
+/** git args that put a worktree into 'slim' or 'full' mode (run in the worktree; idempotent, safe on an existing tree). */
+function treeModeArgs(mode) {
+  return mode === 'full' ? ['sparse-checkout', 'disable'] : ['sparse-checkout', 'set', '--no-cone', ...SLIM_SPARSE_PATTERNS];
+}
+/**
+ * The bytes one worktree takes, from a measurement (bytes of an existing tree in the mode
+ * asked for) when there is one, else the estimate for that mode. A measurement is floored at
+ * the slim estimate: a tree measured mid-checkout must not make three slots look free.
+ */
+function worktreeBytesFor({ mode = 'slim', measuredBytes = null } = {}) {
+  const fallback = mode === 'full' ? FULL_WORKTREE_BYTES : SLIM_WORKTREE_BYTES;
+  return Number.isFinite(measuredBytes) && measuredBytes > 0 ? Math.max(measuredBytes, SLIM_WORKTREE_BYTES) : fallback;
+}
+/** The run summary's worktree line (BRO-7097): measured bytes of this slot's tree against the full-tree size. */
+function worktreeSummaryLine({ mode, bytes, fullBytes = null }) {
+  if (!Number.isFinite(bytes) || bytes <= 0) return '';
+  const pct = Number.isFinite(fullBytes) && fullBytes > 0 ? `, ${Math.round((bytes / fullBytes) * 100)}% of a full tree (${(fullBytes / 1e9).toFixed(2)} GB)` : '';
+  return `${mode} checkout, ${(bytes / 1e9).toFixed(2)} GB measured on disk${pct}`;
+}
+/** Real disk use of a directory in bytes (du, skipping a node_modules link), or null. */
+function measureTreeBytes(dir) {
+  const r = require('child_process').spawnSync('du', ['-sk', '--exclude=node_modules', dir], { encoding: 'utf8', timeout: 120_000 });
+  const kb = r.status === 0 ? Number(String(r.stdout).split(/\s/)[0]) : NaN;
+  return Number.isFinite(kb) && kb > 0 ? kb * 1024 : null;
+}
 /**
  * How many slots the free disk carries: slot k needs its worktree and base worktree created
  * (missingBySlot[k] of the two do not exist yet) and still MIN_FREE_DISK_BYTES to run a card.
@@ -1625,15 +1662,15 @@ const WORKTREE_BYTES = 1.4e9;
  * disk that fills later is stopReason's per-card check, not this one.
  * -> { slots, why }
  */
-function slotsForDisk({ slots, freeBytes, missingBySlot = [], reserveBytes = 0 }) {
+function slotsForDisk({ slots, freeBytes, missingBySlot = [], reserveBytes = 0, worktreeBytes = SLIM_WORKTREE_BYTES }) {
   if (!(slots > 1) || !Number.isFinite(freeBytes)) return { slots: Math.max(1, slots || 1), why: null };
   const reserve = Number.isFinite(reserveBytes) && reserveBytes > 0 ? reserveBytes : 0;
   const need = (n) => MIN_FREE_DISK_BYTES * n
-    + WORKTREE_BYTES * missingBySlot.slice(0, n).reduce((a, m) => a + (Number(m) || 0), 0);
+    + (Number(worktreeBytes) > 0 ? Number(worktreeBytes) : SLIM_WORKTREE_BYTES) * missingBySlot.slice(0, n).reduce((a, m) => a + (Number(m) || 0), 0);
   let n = slots;
   while (n > 1 && freeBytes - reserve < need(n)) n--;
   if (n === slots) return { slots, why: null };
-  return { slots: n, why: `only ${(freeBytes / 1e9).toFixed(1)} GB of disk free${reserve ? `, ${(reserve / 1e9).toFixed(1)} GB of it kept for the session's own work` : ''}` };
+  return { slots: n, why: `only ${(freeBytes / 1e9).toFixed(1)} GB of disk free (${(worktreeBytes / 1e9).toFixed(2)} GB per worktree)${reserve ? `, ${(reserve / 1e9).toFixed(1)} GB of it kept for the session's own work` : ''}` };
 }
 
 /**
@@ -1784,6 +1821,8 @@ module.exports = {
   CODEX_SLOT_WORKTREE,
   LATER_CARD_DISCOUNT_MS,
   slotsForDisk,
+  SLIM_SPARSE_PATTERNS, SLIM_EXCLUDED_DIRS, SLIM_WORKTREE_BYTES, FULL_WORKTREE_BYTES,
+  cardNeedsImages, treeModeArgs, worktreeSummaryLine, worktreeBytesFor, measureTreeBytes,
   isDiskFailure,
   encryptAuth,
   decryptAuth,

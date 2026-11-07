@@ -16,10 +16,23 @@ function imagePointerSeverity(problem) {
   ) ? 'warn' : 'error';
 }
 
+/**
+ * BRO-7097: the Codex runner checks out slim worktrees (sparse-checkout, no public/images/shows),
+ * where every local image looks missing. A missing file proves nothing there, so the finders
+ * below report no problems rather than nulling or failing every show.
+ */
+function isSparseTree(publicDir) {
+  try {
+    const r = require('child_process').spawnSync('git', ['-C', fs.existsSync(publicDir) ? publicDir : path.dirname(publicDir), 'config', '--get', 'core.sparseCheckout'], { encoding: 'utf8', timeout: 10_000 });
+    return r.status === 0 && r.stdout.trim() === 'true';
+  } catch { return false; }
+}
+
 /** Validate stored hero/poster pointers without fetching or changing any data. */
 function findImagePointerProblems(shows, { publicDir, remotePatterns = [] }) {
   const imagesDir = path.resolve(publicDir, 'images');
   const problems = [];
+  const sparse = isSparseTree(publicDir);
   for (const show of shows) {
     for (const key of ['hero', 'poster']) {
       const value = show.images?.[key];
@@ -34,7 +47,7 @@ function findImagePointerProblems(shows, { publicDir, remotePatterns = [] }) {
           const relative = path.relative(imagesDir, file);
           if (!relative || relative.startsWith('..') || path.isAbsolute(relative)) {
             reason = 'local image must be under public/images/';
-          } else if (!fs.existsSync(file) || !fs.statSync(file).isFile()) {
+          } else if (!sparse && (!fs.existsSync(file) || !fs.statSync(file).isFile())) {
             reason = 'local image file does not exist';
           }
         } else {
@@ -61,6 +74,7 @@ function findImagePointerProblems(shows, { publicDir, remotePatterns = [] }) {
 const DANGLING_IMAGE_KEYS = ['thumbnail', 'poster', 'hero'];
 function findDanglingLocalImageRefs(shows, { publicDir, keys = DANGLING_IMAGE_KEYS } = {}) {
   const out = [];
+  if (isSparseTree(publicDir)) return out;
   for (const show of shows || []) {
     for (const key of keys) {
       const value = show && show.images && show.images[key];
@@ -99,6 +113,6 @@ function danglingImageNullingActions(shows, dangling) {
 }
 
 module.exports = {
-  findImagePointerProblems, imagePointerSeverity,
+  findImagePointerProblems, imagePointerSeverity, isSparseTree,
   findDanglingLocalImageRefs, danglingImageNullingActions, DANGLING_IMAGE_KEYS,
 };
