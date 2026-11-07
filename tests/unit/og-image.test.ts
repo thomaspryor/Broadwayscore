@@ -91,3 +91,17 @@ test('versioned show art (?v=<hash>) reaches the optimizer as a bare path', asyn
   assert.equal(requested.pathname, '/_next/image');
   assert.equal(requested.searchParams.get('url'), '/images/shows/i-became-we-off-broadway-2026/poster.jpg');
 });
+
+test('WebP bytes labelled image/jpeg (a .jpg that is really WebP) are converted, not passed to Satori as JPEG', async t => {
+  const webp = await sharp({ create: { width: 30, height: 30, channels: 3, background: 'green' } }).webp().toBuffer();
+  t.mock.method(globalThis, 'fetch', async () => new Response(new Uint8Array(webp), { headers: { 'content-type': 'image/jpeg' } }));
+  const uri = await fetchImageDataUri('/images/shows/king-hedley-ii-regional-2026/poster.jpg', 1200);
+  assert.match(uri!, /^data:image\/jpeg;base64,/);
+  const meta = await sharp(Buffer.from(uri!.split(',')[1], 'base64')).metadata();
+  assert.equal(meta.format, 'jpeg');
+});
+
+test('bytes that are no known image under an image/jpeg label return null', async t => {
+  t.mock.method(globalThis, 'fetch', async () => new Response('<html>not an image</html>', { headers: { 'content-type': 'image/jpeg' } }));
+  assert.equal(await fetchImageDataUri('/images/shows/x/poster.jpg', 1200), null);
+});

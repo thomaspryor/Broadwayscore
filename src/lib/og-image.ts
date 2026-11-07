@@ -47,6 +47,12 @@ export async function fetchImageDataUri(
     let contentType = (res.headers.get('content-type') || '').split(';')[0].trim().toLowerCase();
     if (!/^image\/(jpeg|png|webp)$/.test(contentType)) return null;
     let buf = Buffer.from(await res.arrayBuffer());
+    // Trust the bytes, not the header: many show images are WebP saved as
+    // .jpg, and the optimizer can pass them through labelled image/jpeg.
+    // Satori then throws "Invalid JPEG" and fails the whole static build.
+    const sniffed = sniffImageType(buf);
+    if (!sniffed) return null;
+    contentType = sniffed;
     if (contentType === 'image/webp') {
       buf = await sharp(buf).resize({ width, withoutEnlargement: true }).jpeg({ quality: 75 }).toBuffer();
       contentType = 'image/jpeg';
@@ -55,6 +61,14 @@ export async function fetchImageDataUri(
   } catch {
     return null;
   }
+}
+
+/** Image type from magic bytes (JPEG, PNG, WebP), or null for anything else. */
+export function sniffImageType(buf: Buffer): 'image/jpeg' | 'image/png' | 'image/webp' | null {
+  if (buf.length >= 3 && buf[0] === 0xff && buf[1] === 0xd8 && buf[2] === 0xff) return 'image/jpeg';
+  if (buf.length >= 8 && buf.subarray(0, 8).equals(Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]))) return 'image/png';
+  if (buf.length >= 12 && buf.toString('ascii', 0, 4) === 'RIFF' && buf.toString('ascii', 8, 12) === 'WEBP') return 'image/webp';
+  return null;
 }
 
 /** True for a site-relative /images/** path (no scheme, host or traversal). */
