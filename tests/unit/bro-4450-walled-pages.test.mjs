@@ -27,6 +27,20 @@ test('thetimes interstitial is a challenge page', () => {
   assert.equal(isChallengeOrGarbage(html), true);
 });
 
+// BRO-7090: theatreweekly.com bot-verification page, 12.7KB (over the 10KB size gate).
+test('"One moment, please" verification page is a challenge page at any size', () => {
+  const html = '<!DOCTYPE html><html><head><script>setTimeout(function(){window.location.reload();},5000)</script>'
+    + '<title>One moment, please...</title><style>' + '.spinner{animation:spin 1s}'.repeat(600) + '</style></head>'
+    + '<body><h1>Please wait while your request is being verified...</h1><script src="/z0f76a1d14fd21a8fb5fd0d03e0fdc3d3cedae52f?wsidchk=1"></script></body></html>';
+  assert.ok(html.length > 10000);
+  assert.equal(isChallengeOrGarbage(html), true);
+});
+
+test('an article that only mentions "One moment, please" is not a challenge page', () => {
+  const html = '<html><head><title>One moment, please: a review</title></head><body>' + 'Real review prose. '.repeat(800) + '</body></html>';
+  assert.equal(isChallengeOrGarbage(html), false);
+});
+
 test('real article page is not a challenge page', () => {
   assert.equal(isChallengeOrGarbage('<html><title>Review</title>' + 'x'.repeat(20000) + '</html>'), false);
 });
