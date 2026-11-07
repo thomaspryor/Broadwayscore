@@ -934,20 +934,6 @@
     "queuedAt": "2026-11-07T03:15:21.420Z"
   },
   {
-    "conditionKey": "pending-unrecoverable:dog-mom-off-west-end-2026",
-    "title": "1 review(s) for dog-mom-off-west-end-2026 stuck in _pending with no text and no byline",
-    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- thestage--70d4480d.json (thestage): no byline in page and no recoverable body https://www.thestage.co.uk/reviews/dog-mom-review-southwark-playhouse-borough-london",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-07T04:35:40.466Z"
-  },
-  {
     "conditionKey": "review-gap:opening-window:curtains-off-broadway-2026",
     "title": "Review gap — \"Curtains\" missing 1 cited review(s)",
     "description": "Curtains (curtains-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=curtains-off-broadway-2026 --checkpoint --ingest-missing",
@@ -1030,5 +1016,19 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-07T05:34:49.862Z"
+  },
+  {
+    "conditionKey": "pending-unrecoverable:dog-mom-off-west-end-2026",
+    "title": "1 review(s) for dog-mom-off-west-end-2026 stuck in _pending with no text and no byline",
+    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- thestage--70d4480d.json (thestage): no byline in page and no recoverable body https://www.thestage.co.uk/reviews/dog-mom-review-southwark-playhouse-borough-london",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-07T05:42:44.914Z"
   }
 ]
