@@ -1213,5 +1213,36 @@
       }
     ],
     "queuedAt": "2026-11-07T16:22:48.136Z"
+  },
+  {
+    "conditionKey": "land:land/bro-7079-retro-guards",
+    "title": "Landing blocked: rebase red on land/bro-7079-retro-guards",
+    "description": "land.yml did not land land/bro-7079-retro-guards: the rebase gate went red at 1b73ced3e1. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/42390971560",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-7079-retro-guards"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "1b73ced3e1159982d0c8504199aea5687c325f4a"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42390971560"
+      }
+    ],
+    "queuedAt": "2026-11-07T16:25:07.549Z"
   }
 ]
