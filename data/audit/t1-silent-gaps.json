@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-07T00:27:35.409Z",
+  "generatedAt": "2026-11-07T01:34:26.040Z",
   "windowDays": 45,
   "showsScanned": 248,
   "gaps": [
@@ -21,9 +21,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=lincoln-in-the-bardo-off-broadway-2026",
       "firstSeen": "2026-10-25T17:52:33.957Z",
-      "fileAgeHours": 294.58237583333334,
+      "fileAgeHours": 295.69702666666666,
       "gapSeenAt": "2026-10-26T08:25:16.367Z",
-      "nonTerminalAgeHours": 280.0386227777778,
+      "nonTerminalAgeHours": 281.15268694444444,
       "needsManualRecovery": true
     },
     {
@@ -44,9 +44,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=the-bridge-off-west-end-2026 --url=https://www.thetimes.com/uk/politics/article/city-bridge-foundation-grant-money-hamas-linked-organisation-j5sbhgrs2 --outlet=sunday-times   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-11-05T01:36:56.414Z",
-      "fileAgeHours": 46.8432525,
+      "fileAgeHours": 47.95771055555556,
       "gapSeenAt": "2026-11-05T02:10:46.925Z",
-      "nonTerminalAgeHours": 46.28013444444444,
+      "nonTerminalAgeHours": 47.39419861111111,
       "needsManualRecovery": false
     }
   ],

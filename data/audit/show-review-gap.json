@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-11-07T00:27:24.504Z",
+  "generatedAt": "2026-11-07T01:34:14.941Z",
   "windowDays": 1095,
-  "targets": 899,
-  "auditedThisRun": 5,
+  "targets": 900,
+  "auditedThisRun": 6,
   "carriedForward": 2056,
   "prunedStale": 0,
   "retentionDays": 395,
@@ -14,9 +14,9 @@
     "totalRecoverable": 56,
     "totalRecovered": 90,
     "humanExcluded": 26,
-    "automatedExcluded": 1009,
+    "automatedExcluded": 1010,
     "automatedExcludedListed": 712,
-    "priorProductionCitations": 6088
+    "priorProductionCitations": 6083
   },
   "results": [
     {
@@ -87317,6 +87317,45 @@
       "computedAt": "2026-10-31T22:05:43.219Z"
     },
     {
+      "showId": "desire-under-the-elms-off-west-end-2026",
+      "title": "Desire Under the Elms",
+      "openingDate": null,
+      "status": "upcoming",
+      "category": "off-west-end",
+      "previewsStartDate": "2026-11-10",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "unextractable": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 4,
+        "excluded": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-11-07T01:34:14.941Z"
+    },
+    {
       "showId": "detroit-67-regional-2026",
       "title": "Detroit '67",
       "openingDate": "2026-09-23",
@@ -154386,7 +154425,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 9,
+            "results": 0,
             "accepted": 0,
             "error": null
           },
@@ -154396,7 +154435,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 7,
+            "results": 8,
             "accepted": 0,
             "error": null
           },
@@ -154407,7 +154446,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 0,
             "error": null
           },
           {
@@ -154423,19 +154462,15 @@
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 2,
+        "resultCount": 0,
         "error": null
       },
       "candidatesRejected": {
-        "count": 136,
+        "count": 128,
         "byReason": {
-          "non-review-host": 31,
-          "ticketing-listing": 1,
-          "not-http-url": 46,
-          "census-junk-host": 1,
-          "no-review-evidence": 1,
+          "not-http-url": 47,
+          "non-review-host": 26,
           "aggregator-internal-nav": 39,
-          "ticketing-reseller": 1,
           "aggregator-section-root": 5,
           "production-database-listing": 10,
           "non-stage-review": 1
@@ -154517,7 +154552,7 @@
         "liveCount": 6,
         "candidateCount": 7
       },
-      "computedAt": "2026-11-06T05:00:24.054Z"
+      "computedAt": "2026-11-07T01:34:14.941Z"
     },
     {
       "showId": "i-can-die-too-pitlochry-festival-regional-2026",
@@ -279874,8 +279909,8 @@
         "https://www.nytimes.com/2026/11/05/theater/rope-the-verge-review-off-broadway-silverman.html",
         "https://newyorknotebook.substack.com/p/rope",
         "https://theaterlife.com/rope/",
-        "https://acsntn.substack.com/p/theatre-rope-theatre-at-st-clements",
         "https://www.timeout.com/newyork/theater/rope",
+        "https://acsntn.substack.com/p/theatre-rope-theatre-at-st-clements",
         "https://www.theatermania.com/news/review-as-a-thiller-gordon-greenbergs-rope-isnt-all-that-taut_1858790/"
       ],
       "dirFiles": 14,
@@ -279902,7 +279937,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 9,
+            "results": 0,
             "accepted": 0,
             "error": null
           },
@@ -279912,8 +279947,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 0,
-            "accepted": 0,
+            "results": 9,
+            "accepted": 2,
             "error": null
           },
           {
@@ -279942,8 +279977,8 @@
             "page": 2,
             "geo": "us",
             "ok": true,
-            "results": 10,
-            "accepted": 2,
+            "results": 9,
+            "accepted": 0,
             "error": null
           }
         ],
@@ -279953,20 +279988,20 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 425,
+        "count": 421,
         "byReason": {
-          "aggregator-internal-nav": 249,
           "not-http-url": 98,
-          "production-database-listing": 9,
+          "non-review-host": 44,
+          "aggregator-internal-nav": 249,
           "aggregator-section-root": 10,
-          "non-review-host": 49,
-          "non-stage-review": 1,
-          "roundup-page": 3,
+          "roundup-page": 5,
           "podcast-episode": 1,
-          "census-junk-host": 1,
-          "show-listing-page": 2,
+          "production-database-listing": 9,
+          "non-stage-review": 1,
+          "show-listing-page": 1,
+          "news-roundup-site": 1,
           "ticketing-reseller": 1,
-          "news-roundup-site": 1
+          "non-review-path": 1
         }
       },
       "dedupedVariants": [],
@@ -280041,16 +280076,16 @@
             "firstSeenAt": "2026-11-05T14:47:27.487Z"
           },
           {
-            "url": "https://acsntn.substack.com/p/theatre-rope-theatre-at-st-clements",
-            "outletId": "acsntn.substack.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-03T00:25:22.653Z"
-          },
-          {
             "url": "https://www.timeout.com/newyork/theater/rope",
             "outletId": "timeout.com",
             "state": "live",
             "firstSeenAt": "2026-11-03T15:34:54.267Z"
+          },
+          {
+            "url": "https://acsntn.substack.com/p/theatre-rope-theatre-at-st-clements",
+            "outletId": "acsntn.substack.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-03T00:25:22.653Z"
           },
           {
             "url": "https://www.theatermania.com/news/review-as-a-thiller-gordon-greenbergs-rope-isnt-all-that-taut_1858790/",
@@ -280070,7 +280105,7 @@
         "liveCount": 12,
         "candidateCount": 12
       },
-      "computedAt": "2026-11-06T13:00:59.974Z"
+      "computedAt": "2026-11-07T01:34:14.941Z"
     },
     {
       "showId": "rorschach-regional-2026",
@@ -399133,21 +399168,14 @@
           "inheritReviews": false
         }
       ],
-      "aggregatorArticles": [
-        "https://playbill.com/article/what-did-critics-think-of-the-metropolitan-operas-new-production-of-tosca"
-      ],
+      "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "http://newyorkclassicalreview.com/2018/01/yoncheva-triumphs-in-premiere-of-mets-new-and-dazzling-tosca/",
-        "https://www.nytimes.com/2018/01/01/arts/music/tosca-metropolitan-opera.html",
-        "http://www.zealnyc.com/review-a-traditional-tosca-returns-with-cheers-to-the-met/",
-        "https://www.musicomh.com/classical/opera-reviews/tosca-puccini-opera-holland-park",
+        "https://autos.yahoo.com/review-l-opera-tosca-thats-162354501.html",
+        "https://www.britishtheatreguide.info/reviews/tosca-metropolitan-op-19674",
         "https://aatmanvakil.substack.com/p/review-tosca-at-the-metropolitan",
-        "https://operacanada.ca/metropolitan-opera-tosca-review/",
         "https://www.thecwordmag.co.uk/tv-shows/a-review-of-tosca-by-puccini-the-opera",
         "https://operacanada.ca/metropolitan-opera-tosca-a-gentler-less-overtly-volatile-tosca/",
         "https://interclassical.com/review-puccinis-tosca-metropolitan-opera/",
-        "https://www.britishtheatreguide.info/reviews/tosca-metropolitan-op-19674",
-        "https://www.newyorker.com/goings-on-about-town/classical-music/the-met-tosca-review",
         "https://www.britishtheatreguide.info/reviews/tosca-metropolitan-op-15428",
         "https://www.express.co.uk/entertainment/theatre/911185/Puccini-Tosca-opera-Royal-Opera-House-Jonathan-Kent-Paul-Brown-Covent-Garden",
         "https://aroundthetownchicago.com/theatre-reviews/tosca-reviewed-by-jacob-davis/",
@@ -399156,30 +399184,29 @@
         "https://www.viewlogue.com/film/the-metropolitan-opera-tosca",
         "https://www.theguardian.com/music/2026/nov/01/tosca-review-axelle-fanyo-christopher-purves"
       ],
-      "dirFiles": 14,
+      "dirFiles": 15,
       "dirClean": 1,
       "inReviewsJson": 1,
       "missing": [
         {
-          "url": "https://www.nytimes.com/2018/01/01/arts/music/tosca-metropolitan-opera.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date",
+          "url": "https://autos.yahoo.com/review-l-opera-tosca-thats-162354501.html",
+          "host": "yahoo.com",
+          "knownOutletId": "yahoo",
+          "serpCensus": true,
           "sources": [
             {
-              "source": "aggregator-article",
-              "sourceUrl": "https://playbill.com/article/what-did-critics-think-of-the-metropolitan-operas-new-production-of-tosca"
+              "source": "serp-census",
+              "sourceUrl": null
             }
           ]
         },
         {
-          "url": "https://www.musicomh.com/classical/opera-reviews/tosca-puccini-opera-holland-park",
-          "host": "musicomh.com",
-          "knownOutletId": "musicomh",
+          "url": "https://www.britishtheatreguide.info/reviews/tosca-metropolitan-op-19674",
+          "host": "britishtheatreguide.info",
+          "knownOutletId": "british-theatre",
           "serpCensus": true,
           "priorRun": true,
-          "priorRunSource": "pending-file-date:2024-06-11",
+          "priorRunSource": "pending-file-date:2020-12-31",
           "sources": [
             {
               "source": "serp-census",
@@ -399192,20 +399219,6 @@
           "host": "aatmanvakil.substack.com",
           "knownOutletId": null,
           "serpCensus": true,
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ]
-        },
-        {
-          "url": "https://operacanada.ca/metropolitan-opera-tosca-review/",
-          "host": "operacanada.ca",
-          "knownOutletId": "operacanada",
-          "serpCensus": true,
-          "priorRun": true,
-          "priorRunSource": "pending-file-date:2018-11-08",
           "sources": [
             {
               "source": "serp-census",
@@ -399230,6 +399243,8 @@
           "host": "operacanada.ca",
           "knownOutletId": "operacanada",
           "serpCensus": true,
+          "priorRun": true,
+          "priorRunSource": "pending-file-date:2024-11-20",
           "sources": [
             {
               "source": "serp-census",
@@ -399242,34 +399257,6 @@
           "host": "interclassical.com",
           "knownOutletId": null,
           "serpCensus": true,
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ]
-        },
-        {
-          "url": "https://www.britishtheatreguide.info/reviews/tosca-metropolitan-op-19674",
-          "host": "britishtheatreguide.info",
-          "knownOutletId": "british-theatre",
-          "serpCensus": true,
-          "priorRun": true,
-          "priorRunSource": "pending-file-date:2020-12-31",
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ]
-        },
-        {
-          "url": "https://www.newyorker.com/goings-on-about-town/classical-music/the-met-tosca-review",
-          "host": "newyorker.com",
-          "knownOutletId": "newyorker",
-          "serpCensus": true,
-          "priorRun": true,
-          "priorRunSource": "sibling-held:tosca-off-broadway-2017",
           "sources": [
             {
               "source": "serp-census",
@@ -399350,38 +399337,13 @@
           ]
         }
       ],
-      "dirOnly": [],
-      "flaggedMisses": [
+      "dirOnly": [
         {
-          "url": "http://www.zealnyc.com/review-a-traditional-tosca-returns-with-cheers-to-the-met/",
-          "host": "zealnyc.com",
-          "knownOutletId": "zeal-nyc",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "zeal-nyc--herman-spencer.json",
-              "flag": "wrongProduction",
-              "urlInDir": "http://www.zealnyc.com/review-a-traditional-tosca-returns-with-cheers-to-the-met/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "sources": [
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://playbill.com/article/what-did-critics-think-of-the-metropolitan-operas-new-production-of-tosca"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date",
-          "reverify": false
-        },
+          "host": "newyorkclassicalreview.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [
         {
           "url": "https://www.theguardian.com/music/2026/nov/01/tosca-review-axelle-fanyo-christopher-purves",
           "host": "theguardian.com",
@@ -399435,8 +399397,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 8,
-            "accepted": 2,
+            "results": 9,
+            "accepted": 1,
             "error": null
           },
           {
@@ -399445,8 +399407,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 8,
-            "accepted": 1,
+            "results": 0,
+            "accepted": 0,
             "error": null
           },
           {
@@ -399466,7 +399428,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 0,
             "error": null
           },
           {
@@ -399476,47 +399438,32 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 0,
             "error": null
           }
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 8,
+        "resultCount": 2,
         "error": null
       },
       "candidatesRejected": {
-        "count": 133,
+        "count": 42,
         "byReason": {
-          "non-review-host": 26,
-          "not-http-url": 35,
-          "roundup-page": 2,
-          "aggregator-internal-nav": 55,
-          "production-database-listing": 10,
-          "aggregator-section-root": 4,
+          "not-http-url": 36,
+          "non-review-host": 3,
+          "aggregator-internal-nav": 1,
+          "roundup-page": 1,
           "non-stage-review": 1
         }
       },
       "dedupedVariants": [],
-      "priorRunArticles": [
-        {
-          "url": "https://playbill.com/article/what-did-critics-think-of-the-metropolitan-operas-new-production-of-tosca",
-          "publishDate": "2018-01-02"
-        }
-      ],
       "automatedExcludedListed": 1,
       "unextractable": [],
       "weIngestBlocked": [
         {
-          "url": "https://www.nytimes.com/2018/01/01/arts/music/tosca-metropolitan-opera.html",
-          "host": "nytimes.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.musicomh.com/classical/opera-reviews/tosca-puccini-opera-holland-park",
-          "host": "musicomh.com",
+          "url": "https://www.britishtheatreguide.info/reviews/tosca-metropolitan-op-19674",
+          "host": "britishtheatreguide.info",
           "priorRun": true,
           "reason": "prior-run",
           "censusGateOn": true
@@ -399529,13 +399476,6 @@
           "censusGateOn": true
         },
         {
-          "url": "https://operacanada.ca/metropolitan-opera-tosca-review/",
-          "host": "operacanada.ca",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
           "url": "https://www.thecwordmag.co.uk/tv-shows/a-review-of-tosca-by-puccini-the-opera",
           "host": "thecwordmag.co.uk",
           "priorRun": false,
@@ -399543,24 +399483,17 @@
           "censusGateOn": true
         },
         {
+          "url": "https://operacanada.ca/metropolitan-opera-tosca-a-gentler-less-overtly-volatile-tosca/",
+          "host": "operacanada.ca",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
           "url": "https://interclassical.com/review-puccinis-tosca-metropolitan-opera/",
           "host": "interclassical.com",
           "priorRun": false,
           "reason": "unregistered-host",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.britishtheatreguide.info/reviews/tosca-metropolitan-op-19674",
-          "host": "britishtheatreguide.info",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.newyorker.com/goings-on-about-town/classical-music/the-met-tosca-review",
-          "host": "newyorker.com",
-          "priorRun": true,
-          "reason": "prior-run",
           "censusGateOn": true
         },
         {
@@ -399580,9 +399513,9 @@
       ],
       "ingestResults": [
         {
-          "url": "https://operacanada.ca/metropolitan-opera-tosca-a-gentler-less-overtly-volatile-tosca/",
-          "host": "operacanada.ca",
-          "outletId": "operacanada",
+          "url": "https://autos.yahoo.com/review-l-opera-tosca-thats-162354501.html",
+          "host": "yahoo.com",
+          "outletId": "yahoo",
           "provisional": false,
           "ok": false,
           "noop": true,
@@ -399592,7 +399525,7 @@
           "expectedReason": "prior-production-quarantined",
           "unclassified": false,
           "zeroChar": false,
-          "reason": "tosca-off-broadway-2026: https://operacanada.ca/metropolitan-opera-tosca-a-gentler-less-overtly-volatile-tosca/ dated 2024-11-20 predates this run; quarantined to _pending/ as the earlier production's review. Expected, no action needed."
+          "reason": "tosca-off-broadway-2026: https://autos.yahoo.com/review-l-opera-tosca-thats-162354501.html dated 2022-11-23 predates this run; quarantined to _pending/ as the earlier production's review. Expected, no action needed."
         },
         {
           "url": "https://www.britishtheatreguide.info/reviews/tosca-metropolitan-op-15428",
@@ -399615,14 +399548,14 @@
           "outletId": "sunday-express",
           "provisional": false,
           "ok": false,
-          "noop": true,
+          "noop": false,
           "conflict": false,
           "conflictReason": null,
           "expected": false,
           "expectedReason": null,
           "unclassified": false,
           "zeroChar": false,
-          "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir (no-changes)"
+          "reason": "⚠️  Cross-market reroute: tosca-off-broadway-2026 → tosca-off-broadway-2017 (sibling opening 28d from publishDate vs current 3199d)\n\n❌ Stale merge: fullText still hold a pre-existing value at /home/runner/work/Broadwayscore/Broadwayscore/data/review-texts/tosca-off-broadway-2017/sunday-express--clare-colvin.json that does not match this ingest — merge-into-existing only fills blank fields, it does not correct a non-blank-but-wrong one. Manual field correction needed."
         },
         {
           "url": "https://aroundthetownchicago.com/theatre-reviews/tosca-reviewed-by-jacob-davis/",
@@ -399672,13 +399605,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.thecwordmag.co.uk/tv-shows/a-review-of-tosca-by-puccini-the-opera"
-          },
-          {
-            "outletId": "operacanada",
-            "outlet": "operacanada",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://operacanada.ca/metropolitan-opera-tosca-a-gentler-less-overtly-volatile-tosca/"
           },
           {
             "outletId": "interclassical.com",
@@ -399740,12 +399666,6 @@
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "http://newyorkclassicalreview.com/2018/01/yoncheva-triumphs-in-premiere-of-mets-new-and-dazzling-tosca/",
-            "outletId": "newyorkclassicalreview.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-06T14:48:30.602Z"
-          },
-          {
             "url": "https://aatmanvakil.substack.com/p/review-tosca-at-the-metropolitan",
             "outletId": "aatmanvakil.substack.com",
             "state": "GAP",
@@ -399755,13 +399675,6 @@
           {
             "url": "https://www.thecwordmag.co.uk/tv-shows/a-review-of-tosca-by-puccini-the-opera",
             "outletId": "thecwordmag.co.uk",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-11-06T14:48:30.602Z"
-          },
-          {
-            "url": "https://operacanada.ca/metropolitan-opera-tosca-a-gentler-less-overtly-volatile-tosca/",
-            "outletId": "operacanada",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-11-06T14:48:30.602Z"
@@ -399824,11 +399737,17 @@
           }
         ],
         "censusSchema": 4,
-        "excluded": [],
-        "liveCount": 1,
-        "candidateCount": 12
+        "excluded": [
+          {
+            "url": "https://autos.yahoo.com/review-l-opera-tosca-thats-162354501.html",
+            "host": "yahoo.com",
+            "reason": "syndication-portal"
+          }
+        ],
+        "liveCount": 0,
+        "candidateCount": 10
       },
-      "computedAt": "2026-11-06T14:48:30.602Z"
+      "computedAt": "2026-11-07T01:34:14.941Z"
     },
     {
       "showId": "touch-off-broadway-2026",
@@ -400818,12 +400737,12 @@
       "previewsStartDate": "2026-11-01",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
+        "https://oxfordshireguardian.co.uk/emma-rices-tristan-yseult-returns-to-oxford-playhouse-in-january/",
         "https://www.theguardian.com/stage/2026/sep/19/tristan-and-yseult-review-theatre-royal-bath-kneehigh-emma-rice",
-        "https://artsfuse.org/123965/fuse-theater-review-kneehigh-wows-with-tristan-yseult-love-raucous-and-romantic/",
         "https://corrblimey.uk/2026/10/05/review-tristan-yseult-the-citizens-theatre-glasgow/",
+        "https://corrblimey.uk/2026/10/23/review-tristan-yseult-the-royal-lyceum-theatre/",
         "https://www.broadwayworld.com/westend/article/Review-TRISTAN-YSEULT-Theatre-Royal-Bath-20260918",
         "https://www.whatsonstage.com/news/tristan-yseult-at-theatre-royal-bath-and-on-tour-review_1731590/",
-        "https://oxfordshireguardian.co.uk/emma-rices-tristan-yseult-returns-to-oxford-playhouse-in-january/",
         "https://fairypoweredproductions.com/tristan-yseult-review/",
         "https://www.thetimes.com/culture/theatre-dance/article/emma-rices-tristan-and-yseult-review-t8jmccphs",
         "https://ayoungishperspective.co.uk/2026/10/02/review-tristan-yseult/",
@@ -400839,20 +400758,6 @@
           "host": "theguardian.com",
           "knownOutletId": "guardian",
           "serpCensus": true,
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ]
-        },
-        {
-          "url": "https://artsfuse.org/123965/fuse-theater-review-kneehigh-wows-with-tristan-yseult-love-raucous-and-romantic/",
-          "host": "artsfuse.org",
-          "knownOutletId": "artsfuse",
-          "serpCensus": true,
-          "priorRun": true,
-          "priorRunSource": "pending-file-date:2015-03-08",
           "sources": [
             {
               "source": "serp-census",
@@ -400888,6 +400793,35 @@
       "dirOnly": [],
       "flaggedMisses": [
         {
+          "url": "https://oxfordshireguardian.co.uk/emma-rices-tristan-yseult-returns-to-oxford-playhouse-in-january/",
+          "host": "oxfordshireguardian.co.uk",
+          "knownOutletId": "oxfordshire-guardian",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "oxfordshire-guardian--samuel-macgregor.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://oxfordshireguardian.co.uk/emma-rices-tristan-yseult-returns-to-oxford-playhouse-in-january/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
+          "serpCensus": true,
+          "reverify": true
+        },
+        {
           "url": "https://corrblimey.uk/2026/10/05/review-tristan-yseult-the-citizens-theatre-glasgow/",
           "host": "corrblimey.uk",
           "knownOutletId": "corrblimey",
@@ -400921,9 +400855,9 @@
           "reverify": false
         },
         {
-          "url": "https://oxfordshireguardian.co.uk/emma-rices-tristan-yseult-returns-to-oxford-playhouse-in-january/",
-          "host": "oxfordshireguardian.co.uk",
-          "knownOutletId": "oxfordshire-guardian",
+          "url": "https://corrblimey.uk/2026/10/23/review-tristan-yseult-the-royal-lyceum-theatre/",
+          "host": "corrblimey.uk",
+          "knownOutletId": "corrblimey",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -400931,14 +400865,18 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "oxfordshire-guardian--samuel-macgregor.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://oxfordshireguardian.co.uk/emma-rices-tristan-yseult-returns-to-oxford-playhouse-in-january/"
+              "file": "corrblimey--unknown.json",
+              "flag": "clean",
+              "urlInDir": "https://corrblimey.uk/2026/10/23/review-tristan-yseult-the-royal-lyceum-theatre/"
             }
           ],
           "exclusion": "automatedExcluded",
           "basis": [
-            "wrongProduction"
+            "rejectionReason"
+          ],
+          "confirmedNonReview": true,
+          "confirmedBasis": [
+            "ensemble-3-agree"
           ],
           "sources": [
             {
@@ -400947,7 +400885,7 @@
             }
           ],
           "serpCensus": true,
-          "reverify": true
+          "reverify": false
         },
         {
           "url": "https://fairypoweredproductions.com/tristan-yseult-review/",
@@ -401128,8 +401066,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 3,
-            "accepted": 0,
+            "results": 8,
+            "accepted": 1,
             "error": null
           },
           {
@@ -401165,32 +401103,23 @@
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 3,
+        "resultCount": 4,
         "error": null
       },
       "candidatesRejected": {
-        "count": 46,
+        "count": 47,
         "byReason": {
+          "not-http-url": 29,
           "non-review-host": 12,
-          "not-http-url": 30,
-          "roundup-page": 1,
-          "write-path-blocked": 1,
-          "bare-host": 1,
-          "ticketing-listing": 1
+          "production-database-listing": 1,
+          "show-listing-page": 1,
+          "news-roundup-site": 1,
+          "census-junk-host": 3
         }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 6,
       "unextractable": [],
-      "weIngestBlocked": [
-        {
-          "url": "https://artsfuse.org/123965/fuse-theater-review-kneehigh-wows-with-tristan-yseult-love-raucous-and-romantic/",
-          "host": "artsfuse.org",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        }
-      ],
       "ingestResults": [
         {
           "url": "https://www.theguardian.com/stage/2026/sep/19/tristan-and-yseult-review-theatre-royal-bath-kneehigh-emma-rice",
@@ -401379,12 +401308,17 @@
             "url": "https://corrblimey.uk/2026/10/05/review-tristan-yseult-the-citizens-theatre-glasgow/",
             "host": "corrblimey.uk",
             "reason": "confirmed-non-review"
+          },
+          {
+            "url": "https://corrblimey.uk/2026/10/23/review-tristan-yseult-the-royal-lyceum-theatre/",
+            "host": "corrblimey.uk",
+            "reason": "confirmed-non-review"
           }
         ],
         "liveCount": 0,
         "candidateCount": 9
       },
-      "computedAt": "2026-11-06T14:48:30.602Z"
+      "computedAt": "2026-11-07T01:34:14.941Z"
     },
     {
       "showId": "tristan-and-yseult-royal-bath-regional-2026",
@@ -409956,7 +409890,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 9,
+            "results": 8,
             "accepted": 0,
             "error": null
           },
@@ -409966,7 +409900,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 0,
+            "results": 9,
             "accepted": 0,
             "error": null
           },
@@ -409986,7 +409920,7 @@
             "page": 1,
             "geo": "us",
             "ok": true,
-            "results": 10,
+            "results": 0,
             "accepted": 0,
             "error": null
           },
@@ -409996,7 +409930,7 @@
             "page": 2,
             "geo": "us",
             "ok": true,
-            "results": 10,
+            "results": 0,
             "accepted": 0,
             "error": null
           }
@@ -410009,14 +409943,10 @@
       "candidatesRejected": {
         "count": 25,
         "byReason": {
-          "aggregator-internal-nav": 3,
-          "not-http-url": 8,
-          "non-review-host": 3,
-          "census-junk-host": 1,
-          "ticketing-listing": 1,
-          "venue-production-page": 2,
-          "write-path-blocked": 1,
-          "bare-host": 6
+          "not-http-url": 20,
+          "non-review-host": 2,
+          "aggregator-internal-nav": 2,
+          "no-review-evidence": 1
         }
       },
       "dedupedVariants": [],
@@ -410031,7 +409961,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-11-06T13:00:59.974Z"
+      "computedAt": "2026-11-07T01:34:14.941Z"
     },
     {
       "showId": "vladimir-regional-2026",
@@ -425439,23 +425369,25 @@
     }
   ],
   "staleness": {
-    "at": "2026-11-07T00:27:24.503Z",
+    "at": "2026-11-07T01:34:14.941Z",
     "reserveEvery": 4,
     "reservedAttempted": [
-      "ceilidh-the-musical-off-west-end-2026"
+      "i-became-we-off-broadway-2026"
     ],
     "catalogueReserveEvery": 8,
-    "catalogueAttempted": [],
+    "catalogueAttempted": [
+      "desire-under-the-elms-off-west-end-2026"
+    ],
     "neverAuditedDueAtStart": 632,
     "oldestDueRowAtStart": {
       "showId": "this-is-my-favorite-song-off-broadway-2024",
       "computedAt": "2026-10-23T14:07:48.228Z",
-      "ageHours": 346
+      "ageHours": 347.1
     },
     "oldestDueRowAfterRun": {
       "showId": "this-is-my-favorite-song-off-broadway-2024",
       "computedAt": "2026-10-23T14:07:48.228Z",
-      "ageHours": 346.3
+      "ageHours": 347.4
     }
   }
 }
