@@ -1,22 +1,22 @@
 {
-  "generatedAt": "2026-11-07T07:06:02.282Z",
+  "generatedAt": "2026-11-07T08:05:11.343Z",
   "windowDays": 1095,
-  "targets": 912,
-  "auditedThisRun": 4,
-  "carriedForward": 2059,
+  "targets": 911,
+  "auditedThisRun": 5,
+  "carriedForward": 2058,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 638,
-    "missingCurrentRun": 1190,
+    "withGap": 637,
+    "missingCurrentRun": 1187,
     "totalCitedNoUrl": 0,
     "totalFlaggedMisses": 904,
     "totalRecoverable": 56,
     "totalRecovered": 90,
     "humanExcluded": 26,
-    "automatedExcluded": 1008,
+    "automatedExcluded": 1007,
     "automatedExcludedListed": 713,
-    "priorProductionCitations": 6075
+    "priorProductionCitations": 6072
   },
   "results": [
     {
@@ -10890,11 +10890,26 @@
       "category": "off-west-end",
       "previewsStartDate": "2026-11-03",
       "aggregatorArticles": [],
-      "aggregatorListedUrls": [],
+      "aggregatorListedUrls": [
+        "https://www.londontheatre1.com/shows/fleur-de-lis-classical-theatre-company-presents-a-train-to-woking-at-rhoda-mcgaw-theatre-woking/"
+      ],
       "dirFiles": 0,
       "dirClean": 0,
       "inReviewsJson": 0,
-      "missing": [],
+      "missing": [
+        {
+          "url": "https://www.londontheatre1.com/shows/fleur-de-lis-classical-theatre-company-presents-a-train-to-woking-at-rhoda-mcgaw-theatre-woking/",
+          "host": "londontheatre1.com",
+          "knownOutletId": "londontheatre1",
+          "serpCensus": true,
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ]
+        }
+      ],
       "dirOnly": [],
       "flaggedMisses": [],
       "citedNoUrl": [],
@@ -10937,7 +10952,10 @@
             "passive": true
           }
         },
-        "allSourcesFailed": false
+        "allSourcesFailed": false,
+        "currentRunRows": 0,
+        "corroborated": 0,
+        "perSource": {}
       },
       "serpCensus": {
         "ran": true,
@@ -10950,7 +10968,7 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 9,
+            "results": 1,
             "accepted": 0,
             "error": null
           },
@@ -10960,7 +10978,7 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 9,
+            "results": 8,
             "accepted": 0,
             "error": null
           },
@@ -10970,8 +10988,8 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 9,
-            "accepted": 0,
+            "results": 10,
+            "accepted": 1,
             "error": null
           },
           {
@@ -10980,7 +10998,7 @@
             "page": 1,
             "geo": "gb",
             "ok": true,
-            "results": 10,
+            "results": 1,
             "accepted": 0,
             "error": null
           },
@@ -10997,33 +11015,68 @@
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 0,
+        "resultCount": 1,
         "error": null
       },
       "candidatesRejected": {
-        "count": 26,
+        "count": 21,
         "byReason": {
-          "non-review-host": 21,
-          "non-stage-review": 1,
-          "non-review-path": 1,
-          "no-review-evidence": 1,
+          "non-review-host": 3,
+          "not-http-url": 14,
           "tag-index-page": 1,
-          "bare-host": 1
+          "bare-host": 1,
+          "non-review-path": 1,
+          "non-stage-review": 1
         }
       },
       "dedupedVariants": [],
+      "automatedExcludedListed": 0,
       "unextractable": [],
+      "ingestResults": [
+        {
+          "url": "https://www.londontheatre1.com/shows/fleur-de-lis-classical-theatre-company-presents-a-train-to-woking-at-rhoda-mcgaw-theatre-woking/",
+          "host": "londontheatre1.com",
+          "outletId": "londontheatre1",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "no-census-yet",
-        "missing": [],
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "londontheatre1",
+            "outlet": "londontheatre1",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.londontheatre1.com/shows/fleur-de-lis-classical-theatre-company-presents-a-train-to-woking-at-rhoda-mcgaw-theatre-woking/"
+          }
+        ],
         "suppressedMissing": [],
-        "candidates": [],
+        "candidates": [
+          {
+            "url": "https://www.londontheatre1.com/shows/fleur-de-lis-classical-theatre-company-presents-a-train-to-woking-at-rhoda-mcgaw-theatre-woking/",
+            "outletId": "londontheatre1",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-11-07T08:05:11.343Z"
+          }
+        ],
         "censusSchema": 4,
         "excluded": [],
         "liveCount": 0,
-        "candidateCount": 0
+        "candidateCount": 1
       },
-      "computedAt": "2026-11-06T20:37:44.785Z"
+      "computedAt": "2026-11-07T08:05:11.343Z"
     },
     {
       "showId": "a-tupperware-of-ashes-west-end-2024",
@@ -12258,67 +12311,19 @@
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
         "https://www.chicagotribune.com/2026/11/02/review-adirondack-chair-circle-steppenwolf-theatre/",
+        "https://chicagoonstage.com/culture-wars-on-deck-chairs-steppenwolfs-adirondack-chair-circle-is-both-funny-and-powerful/",
+        "https://splashmags.com/2026/11/adirondack-chair-circle-review-steppenwolf-theatre-companys-world-premiere/",
+        "https://www.conversationswithedtracy.com/picksinsix/2026/11/3/picksinsix-review-adirondack-chair-circle-steppenwolf-theatre-company",
+        "https://aroundthetownchicago.com/theatre-reviews/adirondack-chair-circle-reviewed-by-mark-reinecke/",
+        "http://www.buzznews.net/theatre/theatre-reviews/item/6817-steppenwolf-s-adirondack-chair-circle-the-joke-lands-then-what.html",
         "https://thirdcoastreview.com/stages/2026/11/02/review-steppenwolf-adirondack-chair-circle",
         "https://rachelweinbergreviews.com/2026/11/03/review-adirondack-chair-circle-at-steppenwolf-theatre-company/",
-        "https://chicago.suntimes.com/theater/2026/11/03/review-adirondack-chair-circle-steppenwolf-theatre-co",
-        "https://aroundthetownchicago.com/theatre-reviews/adirondack-chair-circle-reviewed-by-mark-reinecke/",
-        "https://chicagoonstage.com/culture-wars-on-deck-chairs-steppenwolfs-adirondack-chair-circle-is-both-funny-and-powerful/",
-        "http://www.buzznews.net/theatre/theatre-reviews/item/6817-steppenwolf-s-adirondack-chair-circle-the-joke-lands-then-what.html",
-        "https://www.conversationswithedtracy.com/picksinsix/2026/11/3/picksinsix-review-adirondack-chair-circle-steppenwolf-theatre-company"
+        "https://chicago.suntimes.com/theater/2026/11/03/review-adirondack-chair-circle-steppenwolf-theatre-co"
       ],
-      "dirFiles": 7,
-      "dirClean": 7,
-      "inReviewsJson": 0,
-      "missing": [
-        {
-          "url": "https://thirdcoastreview.com/stages/2026/11/02/review-steppenwolf-adirondack-chair-circle",
-          "host": "thirdcoastreview.com",
-          "knownOutletId": "third-coast-review",
-          "serpCensus": true,
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ]
-        },
-        {
-          "url": "https://rachelweinbergreviews.com/2026/11/03/review-adirondack-chair-circle-at-steppenwolf-theatre-company/",
-          "host": "rachelweinbergreviews.com",
-          "knownOutletId": "rachelweinbergreviews",
-          "serpCensus": true,
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ]
-        },
-        {
-          "url": "https://chicago.suntimes.com/theater/2026/11/03/review-adirondack-chair-circle-steppenwolf-theatre-co",
-          "host": "suntimes.com",
-          "knownOutletId": "chicago-sun-times",
-          "serpCensus": true,
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ]
-        },
-        {
-          "url": "https://www.conversationswithedtracy.com/picksinsix/2026/11/3/picksinsix-review-adirondack-chair-circle-steppenwolf-theatre-company",
-          "host": "conversationswithedtracy.com",
-          "knownOutletId": "picksinsix",
-          "serpCensus": true,
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ]
-        }
-      ],
+      "dirFiles": 11,
+      "dirClean": 11,
+      "inReviewsJson": 11,
+      "missing": [],
       "dirOnly": [
         {
           "host": "chicagostageandscreen.com",
@@ -12326,10 +12331,6 @@
         },
         {
           "host": "chicagotheaterandarts.com",
-          "count": 1
-        },
-        {
-          "host": "splashmags.com",
           "count": 1
         }
       ],
@@ -12347,7 +12348,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 0,
+            "results": 10,
             "accepted": 0,
             "error": null
           },
@@ -12357,8 +12358,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 8,
-            "accepted": 5,
+            "results": 7,
+            "accepted": 1,
             "error": null
           },
           {
@@ -12367,7 +12368,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 0,
+            "results": 10,
             "accepted": 0,
             "error": null
           },
@@ -12377,7 +12378,7 @@
             "page": 1,
             "geo": "us",
             "ok": true,
-            "results": 10,
+            "results": 9,
             "accepted": 3,
             "error": null
           },
@@ -12394,116 +12395,25 @@
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 8,
+        "resultCount": 4,
         "error": null
       },
       "candidatesRejected": {
-        "count": 17,
+        "count": 36,
         "byReason": {
-          "non-review-host": 13,
+          "non-review-host": 5,
+          "not-http-url": 28,
+          "aggregator-internal-nav": 1,
           "census-junk-host": 1,
-          "aggregator-internal-nav": 2,
-          "tag-index-page": 1
+          "ticketing-reseller": 1
         }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 0,
       "unextractable": [],
-      "ingestResults": [
-        {
-          "url": "https://thirdcoastreview.com/stages/2026/11/02/review-steppenwolf-adirondack-chair-circle",
-          "host": "thirdcoastreview.com",
-          "outletId": "third-coast-review",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": null
-        },
-        {
-          "url": "https://rachelweinbergreviews.com/2026/11/03/review-adirondack-chair-circle-at-steppenwolf-theatre-company/",
-          "host": "rachelweinbergreviews.com",
-          "outletId": "rachelweinbergreviews",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": null
-        },
-        {
-          "url": "https://chicago.suntimes.com/theater/2026/11/03/review-adirondack-chair-circle-steppenwolf-theatre-co",
-          "host": "suntimes.com",
-          "outletId": "chicago-sun-times",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": null
-        },
-        {
-          "url": "https://www.conversationswithedtracy.com/picksinsix/2026/11/3/picksinsix-review-adirondack-chair-circle-steppenwolf-theatre-company",
-          "host": "conversationswithedtracy.com",
-          "outletId": "picksinsix",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": null
-        }
-      ],
-      "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "incomplete",
-        "missing": [
-          {
-            "outletId": "third-coast-review",
-            "outlet": "third-coast-review",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://thirdcoastreview.com/stages/2026/11/02/review-steppenwolf-adirondack-chair-circle"
-          },
-          {
-            "outletId": "rachelweinbergreviews",
-            "outlet": "rachelweinbergreviews",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://rachelweinbergreviews.com/2026/11/03/review-adirondack-chair-circle-at-steppenwolf-theatre-company/"
-          },
-          {
-            "outletId": "chicago-sun-times",
-            "outlet": "chicago-sun-times",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://chicago.suntimes.com/theater/2026/11/03/review-adirondack-chair-circle-steppenwolf-theatre-co"
-          },
-          {
-            "outletId": "picksinsix",
-            "outlet": "picksinsix",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.conversationswithedtracy.com/picksinsix/2026/11/3/picksinsix-review-adirondack-chair-circle-steppenwolf-theatre-company"
-          }
-        ],
+        "verdict": "complete",
+        "missing": [],
         "suppressedMissing": [],
         "candidates": [
           {
@@ -12513,14 +12423,26 @@
             "firstSeenAt": "2026-11-06T21:30:36.879Z"
           },
           {
-            "url": "https://aroundthetownchicago.com/theatre-reviews/adirondack-chair-circle-reviewed-by-mark-reinecke/",
-            "outletId": "aroundthetownchicago.com",
+            "url": "https://chicagoonstage.com/culture-wars-on-deck-chairs-steppenwolfs-adirondack-chair-circle-is-both-funny-and-powerful/",
+            "outletId": "chicagoonstage.com",
             "state": "live",
             "firstSeenAt": "2026-11-06T21:30:36.879Z"
           },
           {
-            "url": "https://chicagoonstage.com/culture-wars-on-deck-chairs-steppenwolfs-adirondack-chair-circle-is-both-funny-and-powerful/",
-            "outletId": "chicagoonstage.com",
+            "url": "https://splashmags.com/2026/11/adirondack-chair-circle-review-steppenwolf-theatre-companys-world-premiere/",
+            "outletId": "splashmags.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-07T08:05:11.343Z"
+          },
+          {
+            "url": "https://www.conversationswithedtracy.com/picksinsix/2026/11/3/picksinsix-review-adirondack-chair-circle-steppenwolf-theatre-company",
+            "outletId": "conversationswithedtracy.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-06T21:30:36.879Z"
+          },
+          {
+            "url": "https://aroundthetownchicago.com/theatre-reviews/adirondack-chair-circle-reviewed-by-mark-reinecke/",
+            "outletId": "aroundthetownchicago.com",
             "state": "live",
             "firstSeenAt": "2026-11-06T21:30:36.879Z"
           },
@@ -12532,39 +12454,29 @@
           },
           {
             "url": "https://thirdcoastreview.com/stages/2026/11/02/review-steppenwolf-adirondack-chair-circle",
-            "outletId": "third-coast-review",
-            "state": "GAP",
-            "reason": "sla-breach",
+            "outletId": "thirdcoastreview.com",
+            "state": "live",
             "firstSeenAt": "2026-11-06T21:30:36.879Z"
           },
           {
             "url": "https://rachelweinbergreviews.com/2026/11/03/review-adirondack-chair-circle-at-steppenwolf-theatre-company/",
-            "outletId": "rachelweinbergreviews",
-            "state": "GAP",
-            "reason": "sla-breach",
+            "outletId": "rachelweinbergreviews.com",
+            "state": "live",
             "firstSeenAt": "2026-11-06T21:30:36.879Z"
           },
           {
             "url": "https://chicago.suntimes.com/theater/2026/11/03/review-adirondack-chair-circle-steppenwolf-theatre-co",
-            "outletId": "chicago-sun-times",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-11-06T21:30:36.879Z"
-          },
-          {
-            "url": "https://www.conversationswithedtracy.com/picksinsix/2026/11/3/picksinsix-review-adirondack-chair-circle-steppenwolf-theatre-company",
-            "outletId": "picksinsix",
-            "state": "GAP",
-            "reason": "sla-breach",
+            "outletId": "chicago.suntimes.com",
+            "state": "live",
             "firstSeenAt": "2026-11-06T21:30:36.879Z"
           }
         ],
         "censusSchema": 4,
         "excluded": [],
-        "liveCount": 4,
-        "candidateCount": 8
+        "liveCount": 9,
+        "candidateCount": 9
       },
-      "computedAt": "2026-11-06T21:30:36.879Z"
+      "computedAt": "2026-11-07T08:05:11.343Z"
     },
     {
       "showId": "admissions-regional-2026",
@@ -86077,6 +85989,7 @@
       "previewsStartDate": "2026-10-10",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
+        "https://concerts.consequence.net/events/derren-brown-only-human-at-apollo-theatre-on-2026-12-03-19-30",
         "https://theatreandtonic.co.uk/blog/derren-brown-only-human-at-apollo-theatre-reviewnbsp",
         "https://www.timeout.com/london/theatre/derren-brown-only-human-review",
         "https://www.londontheatre.co.uk/reviews/derren-brown-only-human-review-apollo-theatre",
@@ -86104,9 +86017,21 @@
         "https://www.thetimes.com/culture/theatre-dance/article/derren-brown-review-apollo-theatre-6967vbx7h"
       ],
       "dirFiles": 39,
-      "dirClean": 28,
+      "dirClean": 27,
       "inReviewsJson": 28,
       "missing": [
+        {
+          "url": "https://concerts.consequence.net/events/derren-brown-only-human-at-apollo-theatre-on-2026-12-03-19-30",
+          "host": "consequence.net",
+          "knownOutletId": "consequence",
+          "serpCensus": true,
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ]
+        },
         {
           "url": "https://www.transientarena.com/blog/reviews/derren-brown-only-human",
           "host": "transientarena.com",
@@ -86143,10 +86068,6 @@
         },
         {
           "host": "londontheatrereviews.co.uk",
-          "count": 1
-        },
-        {
-          "host": "northwestend.com",
           "count": 1
         },
         {
@@ -86228,8 +86149,8 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 8,
-            "accepted": 6,
+            "results": 10,
+            "accepted": 1,
             "error": null
           },
           {
@@ -86248,7 +86169,7 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 0,
+            "results": 10,
             "accepted": 0,
             "error": null
           },
@@ -86269,20 +86190,21 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 0,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 7,
+        "resultCount": 1,
         "error": null
       },
       "candidatesRejected": {
-        "count": 28,
+        "count": 44,
         "byReason": {
-          "not-http-url": 23,
-          "non-review-host": 5
+          "non-review-host": 5,
+          "not-http-url": 38,
+          "write-path-blocked": 1
         }
       },
       "dedupedVariants": [],
@@ -86304,11 +86226,34 @@
           "censusGateOn": true
         }
       ],
-      "ingestResults": [],
+      "ingestResults": [
+        {
+          "url": "https://concerts.consequence.net/events/derren-brown-only-human-at-apollo-theatre-on-2026-12-03-19-30",
+          "host": "consequence.net",
+          "outletId": "consequence",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": true,
+          "expectedReason": "publish-date-unresolved",
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "derren-brown-only-human-off-west-end-2026: https://concerts.consequence.net/events/derren-brown-only-human-at-apollo-theatre-on-2026-12-03-19-30 has no readable publish date and this show has an earlier-dated citation (a prior production), so the undated page was refused rather than filed where it could be scored as this run's review. Expected rejection; if it IS this production's review, ingest it with --publish-date=YYYY-MM-DD."
+        }
+      ],
       "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
+          {
+            "outletId": "consequence",
+            "outlet": "consequence",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://concerts.consequence.net/events/derren-brown-only-human-at-apollo-theatre-on-2026-12-03-19-30"
+          },
           {
             "outletId": "transientarena.com",
             "outlet": "transientarena.com",
@@ -86465,6 +86410,13 @@
             "firstSeenAt": "2026-11-04T19:31:35.837Z"
           },
           {
+            "url": "https://concerts.consequence.net/events/derren-brown-only-human-at-apollo-theatre-on-2026-12-03-19-30",
+            "outletId": "consequence",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-11-07T08:05:11.343Z"
+          },
+          {
             "url": "https://www.transientarena.com/blog/reviews/derren-brown-only-human",
             "outletId": "transientarena.com",
             "state": "GAP",
@@ -86482,9 +86434,9 @@
         "censusSchema": 4,
         "excluded": [],
         "liveCount": 21,
-        "candidateCount": 23
+        "candidateCount": 24
       },
-      "computedAt": "2026-11-06T15:49:21.638Z"
+      "computedAt": "2026-11-07T08:05:11.343Z"
     },
     {
       "showId": "derren-brown-only-human-west-end-2026",
@@ -385584,8 +385536,7 @@
       "category": "off-broadway",
       "previewsStartDate": "2026-10-27",
       "aggregatorArticles": [
-        "https://www.broadwayworld.com/article/Review-Roundup-Fiasco-Theaters-THE-VERGE-Opens-at-the-Public-Theater-20261105",
-        "https://www.broadwayworld.com/article/Review-Roundup-WOMEN-ON-THE-VERGE-20101104"
+        "https://www.broadwayworld.com/article/Review-Roundup-Fiasco-Theaters-THE-VERGE-Opens-at-the-Public-Theater-20261105"
       ],
       "aggregatorListedUrls": [
         "https://www.nytimes.com/2026/11/05/theater/rope-the-verge-review-off-broadway-silverman.html",
@@ -385594,68 +385545,13 @@
         "https://www.newyorktheatreguide.com/reviews/the-verge-off-broadway-review",
         "https://nystagereview.com/2026/11/05/the-verge-a-portrait-in-discontent/",
         "https://exeuntnyc.com/reviews/review-the-verge-at-the-public-theater/",
-        "http://www.showbiz411.com/2010/11/04/women-on-the-verge-musical-the-gazpacho-is-sour",
-        "http://www.newsday.com/entertainment/theater/women-on-the-verge-of-a-stronger-story-1.2425363",
-        "http://www.bloomberg.com/news/2010-11-05/three-divas-founder-in-pointless-women-on-the-verge-review.html",
         "https://pagesonstages.com/2026/11/05/the-verge/",
         "https://www.timeout.com/newyork/theater/the-verge"
       ],
-      "dirFiles": 18,
+      "dirFiles": 20,
       "dirClean": 11,
-      "inReviewsJson": 9,
-      "missing": [
-        {
-          "url": "http://www.showbiz411.com/2010/11/04/women-on-the-verge-musical-the-gazpacho-is-sour",
-          "host": "showbiz411.com",
-          "knownOutletId": "showbiz411",
-          "sources": [
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-WOMEN-ON-THE-VERGE-20101104"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.newsday.com/entertainment/theater/women-on-the-verge-of-a-stronger-story-1.2425363",
-          "host": "newsday.com",
-          "knownOutletId": "newsday",
-          "sources": [
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-WOMEN-ON-THE-VERGE-20101104"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.bloomberg.com/news/2010-11-05/three-divas-founder-in-pointless-women-on-the-verge-review.html",
-          "host": "bloomberg.com",
-          "knownOutletId": "bloomberg",
-          "sources": [
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-WOMEN-ON-THE-VERGE-20101104"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.timeout.com/newyork/theater/the-verge",
-          "host": "timeout.com",
-          "knownOutletId": "timeout",
-          "serpCensus": true,
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ]
-        }
-      ],
+      "inReviewsJson": 11,
+      "missing": [],
       "dirOnly": [
         {
           "host": "thefrontrowcenter.com",
@@ -385688,8 +385584,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 0,
-            "accepted": 0,
+            "results": 9,
+            "accepted": 1,
             "error": null
           },
           {
@@ -385698,7 +385594,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 0,
+            "results": 4,
             "accepted": 0,
             "error": null
           },
@@ -385708,7 +385604,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 0,
+            "results": 3,
             "accepted": 0,
             "error": null
           },
@@ -385718,8 +385614,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 0,
-            "accepted": 0,
+            "results": 10,
+            "accepted": 1,
             "error": null
           },
           {
@@ -385728,7 +385624,7 @@
             "page": 1,
             "geo": "us",
             "ok": true,
-            "results": 0,
+            "results": 10,
             "accepted": 0,
             "error": null
           },
@@ -385745,80 +385641,40 @@
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 0,
+        "resultCount": 2,
         "error": null
       },
       "candidatesRejected": {
-        "count": 569,
+        "count": 328,
         "byReason": {
-          "aggregator-internal-nav": 425,
-          "not-http-url": 102,
-          "aggregator-section-root": 11,
-          "non-review-host": 30,
-          "podcast-episode": 1
+          "non-review-host": 24,
+          "not-http-url": 78,
+          "tag-index-page": 1,
+          "aggregator-internal-nav": 212,
+          "aggregator-section-root": 5,
+          "podcast-episode": 1,
+          "news-roundup-site": 1,
+          "ugc-platform": 3,
+          "no-review-evidence": 1,
+          "production-database-listing": 1,
+          "review-hub-page": 1
         }
       },
       "dedupedVariants": [],
-      "priorRunArticles": [
+      "nonReviewCandidates": [
         {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-WOMEN-ON-THE-VERGE-20101104",
-          "publishDate": "2010-11-05"
+          "url": "https://www.timeout.com/newyork/theater/the-verge",
+          "host": "timeout.com",
+          "knownOutletId": "timeout",
+          "nonReviewVerdict": "timeout-listing-blurb",
+          "nonReviewDetail": "unauthored-and-pre-opening"
         }
       ],
       "automatedExcludedListed": 0,
       "unextractable": [],
-      "weIngestBlocked": [
-        {
-          "url": "http://www.showbiz411.com/2010/11/04/women-on-the-verge-musical-the-gazpacho-is-sour",
-          "host": "showbiz411.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "http://www.newsday.com/entertainment/theater/women-on-the-verge-of-a-stronger-story-1.2425363",
-          "host": "newsday.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "http://www.bloomberg.com/news/2010-11-05/three-divas-founder-in-pointless-women-on-the-verge-review.html",
-          "host": "bloomberg.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        }
-      ],
-      "ingestResults": [
-        {
-          "url": "https://www.timeout.com/newyork/theater/the-verge",
-          "host": "timeout.com",
-          "outletId": "timeout",
-          "provisional": false,
-          "ok": false,
-          "noop": true,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": true,
-          "expectedReason": "timeout-listing-capsule",
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "the-verge-off-broadway-2026: https://www.timeout.com/newyork/theater/the-verge is a Time Out listing capsule, not a review (lib/timeout-capsule.js). Expected rejection; no action needed unless Time Out later publishes a full review at this URL, which a later audit will then ingest."
-        }
-      ],
-      "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "incomplete",
-        "missing": [
-          {
-            "outletId": "timeout",
-            "outlet": "timeout",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.timeout.com/newyork/theater/the-verge"
-          }
-        ],
+        "verdict": "complete",
+        "missing": [],
         "suppressedMissing": [],
         "candidates": [
           {
@@ -385865,18 +385721,23 @@
           },
           {
             "url": "https://www.timeout.com/newyork/theater/the-verge",
-            "outletId": "timeout",
-            "state": "GAP",
-            "reason": "sla-breach",
+            "outletId": "timeout.com",
+            "state": "live",
             "firstSeenAt": "2026-11-05T03:08:07.157Z"
           }
         ],
         "censusSchema": 4,
-        "excluded": [],
-        "liveCount": 7,
+        "excluded": [
+          {
+            "url": "https://www.timeout.com/newyork/theater/the-verge",
+            "host": "timeout.com",
+            "reason": "timeout-listing-blurb"
+          }
+        ],
+        "liveCount": 8,
         "candidateCount": 8
       },
-      "computedAt": "2026-11-06T20:37:44.785Z"
+      "computedAt": "2026-11-07T08:05:11.343Z"
     },
     {
       "showId": "the-very-hungry-caterpillar-interactive-show-off-broadway-2026",
@@ -403257,49 +403118,13 @@
       "category": "off-broadway",
       "previewsStartDate": "2026-11-04",
       "aggregatorArticles": [],
-      "aggregatorListedUrls": [
-        "https://www.picturethispost.com/brooklyn-academy-of-music-presents-turn-turning-turnt-preview/"
-      ],
-      "dirFiles": 1,
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
       "dirClean": 0,
       "inReviewsJson": 0,
       "missing": [],
       "dirOnly": [],
-      "flaggedMisses": [
-        {
-          "url": "https://www.picturethispost.com/brooklyn-academy-of-music-presents-turn-turning-turnt-preview/",
-          "host": "picturethispost.com",
-          "knownOutletId": "picture-this-post",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "picture-this-post--unknown.json",
-              "flag": "clean",
-              "urlInDir": "https://www.picturethispost.com/brooklyn-academy-of-music-presents-turn-turning-turnt-preview/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "rejectionReason"
-          ],
-          "confirmedNonReview": true,
-          "confirmedBasis": [
-            "non-review"
-          ],
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ],
-          "serpCensus": true,
-          "reverify": false
-        }
-      ],
+      "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
@@ -403313,7 +403138,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 4,
+            "results": 7,
             "accepted": 0,
             "error": null
           },
@@ -403323,7 +403148,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 5,
+            "results": 4,
             "accepted": 0,
             "error": null
           },
@@ -403333,8 +403158,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 9,
-            "accepted": 1,
+            "results": 10,
+            "accepted": 0,
             "error": null
           },
           {
@@ -403360,24 +403185,20 @@
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 1,
+        "resultCount": 0,
         "error": null
       },
       "candidatesRejected": {
-        "count": 24,
+        "count": 34,
         "byReason": {
-          "aggregator-internal-nav": 9,
-          "non-review-host": 7,
+          "non-review-host": 2,
+          "not-http-url": 27,
           "non-review-path": 1,
-          "no-review-evidence": 2,
-          "write-path-blocked": 1,
-          "bare-host": 1,
-          "ticketing-reseller": 2,
-          "static-asset": 1
+          "aggregator-internal-nav": 3,
+          "census-junk-host": 1
         }
       },
       "dedupedVariants": [],
-      "automatedExcludedListed": 0,
       "unextractable": [],
       "censusVerdict": {
         "verdict": "no-census-yet",
@@ -403385,17 +403206,11 @@
         "suppressedMissing": [],
         "candidates": [],
         "censusSchema": 4,
-        "excluded": [
-          {
-            "url": "https://www.picturethispost.com/brooklyn-academy-of-music-presents-turn-turning-turnt-preview/",
-            "host": "picturethispost.com",
-            "reason": "confirmed-non-review"
-          }
-        ],
+        "excluded": [],
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-11-06T20:37:44.785Z"
+      "computedAt": "2026-11-07T08:05:11.343Z"
     },
     {
       "showId": "twelfth-night-crucible-regional-2026",
@@ -424470,10 +424285,10 @@
     }
   ],
   "staleness": {
-    "at": "2026-11-07T07:06:02.281Z",
+    "at": "2026-11-07T08:05:11.343Z",
     "reserveEvery": 4,
     "reservedAttempted": [
-      "garry-starr-classic-penguins-off-west-end-2026"
+      "derren-brown-only-human-off-west-end-2026"
     ],
     "catalogueReserveEvery": 8,
     "catalogueAttempted": [],
@@ -424481,12 +424296,12 @@
     "oldestDueRowAtStart": {
       "showId": "this-is-my-favorite-song-off-broadway-2024",
       "computedAt": "2026-10-23T14:07:48.228Z",
-      "ageHours": 352.7
+      "ageHours": 353.7
     },
     "oldestDueRowAfterRun": {
       "showId": "this-is-my-favorite-song-off-broadway-2024",
       "computedAt": "2026-10-23T14:07:48.228Z",
-      "ageHours": 353
+      "ageHours": 354
     }
   }
 }
