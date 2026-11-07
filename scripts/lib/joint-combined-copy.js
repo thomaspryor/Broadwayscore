@@ -34,7 +34,22 @@ function isJointCombinedCopy(data, showId, keptCopies, show) {
     && canonicalizeUrlForDedup(k.url) === url
     && (mine.includes(k.showId) || (Array.isArray(k.combinedWith) && k.combinedWith.includes(showId))));
   if (!sibling) return false;
-  return !!textMentionsTitle(data.fullText, show.title);
+  return !!textMentionsTitle(data.fullText, show.title) || mentionsShortTitleAsWritten(data.fullText, show.title);
 }
 
-module.exports = { isJointCombinedCopy };
+/**
+ * textMentionsTitle skips variants under 4 characters, so a joint copy for
+ * Red, Art, SIX, Elf or Tru never counted (BRO-7077, BRO-4305 Codex P2). This
+ * path is already corroborated by a shared URL and a combinedWith link, so a
+ * short title only has to appear as written: whole word, case-sensitive in
+ * its title-case or upper-case form ("Red" or "RED", never prose "red").
+ */
+function mentionsShortTitleAsWritten(text, title) {
+  const t = String(title || '').trim().replace(/[.!?,]+$/, '');
+  const core = t.replace(/[^A-Za-z0-9]/g, '');
+  if (!core || core.length >= 4 || core !== t) return false;
+  const forms = new Set([t, t.charAt(0).toUpperCase() + t.slice(1).toLowerCase(), t.toUpperCase()]);
+  return [...forms].some((f) => new RegExp(`(?<![A-Za-z0-9])${f}(?![A-Za-z0-9])`).test(text));
+}
+
+module.exports = { isJointCombinedCopy, mentionsShortTitleAsWritten };
