@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-07T15:35:29.748Z",
+  "timestamp": "2026-11-07T16:07:56.560Z",
   "stats": {
-    "totalReviews": 80449,
-    "alreadyFlagged": 22044,
+    "totalReviews": 80452,
+    "alreadyFlagged": 22015,
     "dateGuardCatches": 215,
-    "directorMismatch": 3519,
+    "directorMismatch": 3521,
     "tvFilmSignals": 2290,
-    "londonSignals": 3623,
-    "offBroadwaySignals": 745,
-    "yearMismatch": 361,
-    "noPublishDate": 8465
+    "londonSignals": 3624,
+    "offBroadwaySignals": 746,
+    "yearMismatch": 362,
+    "noPublishDate": 8468
   },
   "findings": [
     {
@@ -31854,6 +31854,20 @@
     },
     {
       "showId": "illinoise-off-broadway-2024",
+      "file": "nyt-theater--jonathan-mandell.json",
+      "score": null,
+      "publishDate": "March 7th, 2024",
+      "url": "https://newyorktheater.me/2024/03/07/illinoise-review/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"justin peck\" from illinoise-2024"
+        }
+      ]
+    },
+    {
+      "showId": "illinoise-off-broadway-2024",
       "file": "nytg--amelia-merrill.json",
       "score": 76,
       "publishDate": "March 7, 2024",
@@ -45604,6 +45618,19 @@
       "score": 77,
       "publishDate": "2026-07-14",
       "url": "https://sandiegostory.com/creative-interpretation-of-a-hitchcock-classic/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"emma rice\" from north-by-northwest-regional-2026"
+        }
+      ]
+    },
+    {
+      "showId": "north-by-northwest-old-regional-2026",
+      "file": "san-diego-union-tribune--pam-kragen.json",
+      "publishDate": "2026-07-10",
+      "url": "https://www.sandiegouniontribune.com/2026/07/10/review-funny-and-dance-fueled-north-by-northwest-dazzles-in-its-american-premiere/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -64243,6 +64270,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-cherry-orchard-west-end-2026",
+      "file": "newsbreak--alice-saville.json",
+      "score": 79,
+      "publishDate": "2026-10-14",
+      "url": "https://www.newsbreak.com/the-independent-517119/4944952540795-the-cherry-orchard-review-kristin-scott-thomas-is-compelling-in-a-chekhov-play-that-s-very-very-funny-until-it-s-not",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2023 (3x) more than 2026 (1x). 2023 matches production: the-cherry-orchard-regional-2023"
         }
       ]
     },
@@ -85832,6 +85873,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "a-night-with-janis-joplin-2013",
+      "file": "bloomberg--jeremy-gerard.json",
+      "publishDate": "2013-10-10",
+      "url": "http://www.bloomberg.com/news/2013-10-11/janis-joplin-all-women-julius-caesar-yanks-theater.html",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"st. ann's warehouse\""
         }
       ]
     },
@@ -126340,6 +126394,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"adelphi theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-comedy-about-spies-west-end-2026",
+      "file": "thetheatreflyer-co-uk--unknown.json",
+      "publishDate": null,
+      "url": "https://www.thetheatreflyer.co.uk/review-the-comedy-about-spies-adelphi-theatre-2026",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
