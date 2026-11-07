@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-07T19:44:36.421Z",
+  "timestamp": "2026-11-07T20:16:54.210Z",
   "stats": {
     "totalReviews": 80504,
     "alreadyFlagged": 22032,
     "dateGuardCatches": 217,
     "directorMismatch": 3524,
     "tvFilmSignals": 2291,
-    "londonSignals": 3624,
+    "londonSignals": 3623,
     "offBroadwaySignals": 747,
     "yearMismatch": 363,
-    "noPublishDate": 8458
+    "noPublishDate": 8459
   },
   "findings": [
     {
@@ -130837,20 +130837,6 @@
       "score": 89,
       "publishDate": "2026-10-29",
       "url": "https://www.shinylife.co.uk/2026/10/29/the-lives-of-others/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"adelphi theatre\""
-        }
-      ]
-    },
-    {
-      "showId": "the-lives-of-others-west-end-2026",
-      "file": "standard--unknown.json",
-      "score": 91,
-      "publishDate": "2026-11-02",
-      "url": "https://standard.co.uk/culture/theatre/the-lives-of-others-adelphi-theatre-review-keira-knightley-b1302949.html",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
