@@ -1016,5 +1016,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-07T07:06:17.652Z"
+  },
+  {
+    "conditionKey": "land:land/bro-7061-artsdesk",
+    "title": "Landing blocked: unit-tests-node red on land/bro-7061-artsdesk",
+    "description": "land.yml did not land land/bro-7061-artsdesk: the unit-tests-node gate went red at a96a33cc26. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/42351522921",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-7061-artsdesk"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "a96a33cc26311806d83455522350cc0e6f71e2d7"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42351522921"
+      }
+    ],
+    "queuedAt": "2026-11-07T07:49:39.468Z"
   }
 ]
