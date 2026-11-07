@@ -82,6 +82,6 @@ test('6 concurrent shards all land within the budget (5 attempts would not be en
     const files = sh(`git --git-dir="${bare}" ls-tree -r --name-only main | wc -l`, root).trim();
     assert.equal(Number(files), N + 1, 'every shard file plus the seed is in the remote');
   } finally {
-    fs.rmSync(root, { recursive: true, force: true });
+    fs.rmSync(root, { recursive: true, force: true, maxRetries: 5, retryDelay: 100 });
   }
 });
