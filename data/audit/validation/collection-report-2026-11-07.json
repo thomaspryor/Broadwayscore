@@ -1,23 +1,23 @@
 {
-  "runDate": "2026-11-07T04:50:13.623Z",
+  "runDate": "2026-11-07T05:06:56.926Z",
   "config": {
     "batchSize": 5,
     "maxReviews": 40,
     "priority": "all",
-    "showFilter": "the-39-steps-west-end-2024,the-crucible-2016,the-drowsy-chaperone-2006,the-enfield-haunting-west-end-2023,the-ferryman-west-end-2017,the-gap-hope-mill-regional-2024,the-good-john-proctor-off-broadway-2023,the-graduate-2002,the-jonathan-larson-project-off-broadway-2025,the-kid-stays-in-the-picture-west-end-2017,the-king-and-i-west-end-2024,the-lion-king-west-end-2021,the-merchant-of-venice-1973,the-minutes-2022,the-mirror-and-the-light-west-end-2021,the-motive-and-the-cue-west-end-2023,the-normal-heart-west-end-2021,the-old-man-and-the-pool-west-end-2023,the-pajama-game-west-end-2014,the-play-that-goes-wrong-2017,the-price-2017,the-profane-off-broadway-2017,the-red-barn-west-end-2016,the-shark-is-broken-2023",
+    "showFilter": "the-tragedy-of-macbeth-regional-2024,the-treasurer-off-broadway-2017,the-wanderers-off-broadway-2023,the-weir-west-end-2014,the-woodsman-off-broadway-2016,topdog-underdog-2022,travesties-west-end-2017,two-strangers-carry-a-cake-across-new-york-at-art-regional-2025,underdog-the-other-other-bronte-west-end-2024,urban-cowboy-2003,vietgone-off-broadway-2016,waiting-for-godot-2013,we-will-rock-you-west-end-2023,white-noise-off-broadway-2019,witness-for-the-prosecution-off-west-end-2022",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 3,
-    "failed": 19,
+    "processed": 4,
+    "failed": 10,
     "skipped": 0,
-    "successRate": "13.6%"
+    "successRate": "28.6%"
   },
   "tierBreakdown": {
-    "playwright": 2,
+    "playwright": 4,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
@@ -28,56 +28,48 @@
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 17,
-    "tier1Success": 15,
+    "tier1Attempts": 12,
+    "tier1Success": 10,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 2,
     "tier1_5Success": 0,
-    "tier1_9Attempts": 1,
-    "tier1_9Success": 0,
-    "tier2Attempts": 3,
+    "tier1_9Attempts": 2,
+    "tier1_9Success": 1,
+    "tier2Attempts": 2,
     "tier2Success": 1,
-    "tier3Attempts": 3,
-    "tier3Success": 1,
-    "tier3_6Attempts": 0,
+    "tier3Attempts": 1,
+    "tier3Success": 0,
+    "tier3_6Attempts": 1,
     "tier3_6Success": 0,
     "tier4Attempts": 6,
-    "tier4Success": 3,
-    "totalFailed": 19,
-    "scrapingBeePageCredits": 11,
+    "tier4Success": 0,
+    "totalFailed": 10,
+    "scrapingBeePageCredits": 2,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 2,
-    "browserbaseMinutesUsed": 1.2,
+    "browserbaseMinutesUsed": 0.6,
     "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 3,
-    "failed": 19,
+    "processed": 4,
+    "failed": 10,
     "shows": [
-      "the-39-steps-west-end-2024",
-      "the-drowsy-chaperone-2006",
-      "the-enfield-haunting-west-end-2023",
-      "the-ferryman-west-end-2017",
-      "the-gap-hope-mill-regional-2024",
-      "the-good-john-proctor-off-broadway-2023",
-      "the-graduate-2002",
-      "the-jonathan-larson-project-off-broadway-2025",
-      "the-kid-stays-in-the-picture-west-end-2017",
-      "the-king-and-i-west-end-2024",
-      "the-lion-king-west-end-2021",
-      "the-merchant-of-venice-1973",
-      "the-minutes-2022",
-      "the-mirror-and-the-light-west-end-2021",
-      "the-motive-and-the-cue-west-end-2023",
-      "the-normal-heart-west-end-2021",
-      "the-old-man-and-the-pool-west-end-2023",
-      "the-pajama-game-west-end-2014",
-      "the-price-2017",
-      "the-profane-off-broadway-2017",
-      "the-shark-is-broken-2023"
+      "the-tragedy-of-macbeth-regional-2024",
+      "the-treasurer-off-broadway-2017",
+      "the-wanderers-off-broadway-2023",
+      "the-woodsman-off-broadway-2016",
+      "topdog-underdog-2022",
+      "travesties-west-end-2017",
+      "underdog-the-other-other-bronte-west-end-2024",
+      "urban-cowboy-2003",
+      "vietgone-off-broadway-2016",
+      "waiting-for-godot-2013",
+      "we-will-rock-you-west-end-2023",
+      "white-noise-off-broadway-2019",
+      "witness-for-the-prosecution-off-west-end-2022"
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
@@ -86,63 +78,49 @@
     }
   },
   "processed": [
-    "the-lion-king-west-end-2021/guardian--lyngardner.json",
-    "the-king-and-i-west-end-2024/thestage--unknown.json",
-    "the-old-man-and-the-pool-west-end-2023/thestage--anya-ryan.json"
+    "witness-for-the-prosecution-off-west-end-2022/theatre-weekly--unknown.json",
+    "the-tragedy-of-macbeth-regional-2024/chicago-reader--dan-jakes.json",
+    "underdog-the-other-other-bronte-west-end-2024/i-paper--fiona-mountford.json",
+    "white-noise-off-broadway-2019/bobs-theater-blog--robert-sholiton.json"
   ],
   "failed": [
-    "the-merchant-of-venice-1973/backstage--erik-haagensen.json",
-    "the-jonathan-larson-project-off-broadway-2025/musical-theatre-report--ben-west.json",
-    "the-jonathan-larson-project-off-broadway-2025/talkinbroadway--marc-miller.json",
-    "the-39-steps-west-end-2024/city-am--adam-bloodworth.json",
-    "the-gap-hope-mill-regional-2024/thestage--chris-bartlett.json",
-    "the-enfield-haunting-west-end-2023/city-am--adam-bloodworth.json",
-    "the-motive-and-the-cue-west-end-2023/letterboxd--unknown.json",
-    "the-shark-is-broken-2023/talkinbroadway--howard-miller.json",
-    "the-good-john-proctor-off-broadway-2023/timeout--unknown.json",
-    "the-minutes-2022/timeout--adam-feldman.json",
-    "the-mirror-and-the-light-west-end-2021/i-paper--sam-marlowe.json",
-    "the-normal-heart-west-end-2021/i-paper--sam-marlowe.json",
-    "the-ferryman-west-end-2017/sunday-times--unknown.json",
-    "the-profane-off-broadway-2017/bobs-theater-blog--robert-sholiton.json",
-    "the-kid-stays-in-the-picture-west-end-2017/london-theatre--unknown.json",
-    "the-price-2017/theatermania--jesse-green.json",
-    "the-pajama-game-west-end-2014/standard--henry-hitchings.json",
-    "the-drowsy-chaperone-2006/theatermania--david-finkle.json",
-    "the-graduate-2002/nytimes--ben-brantley.json"
+    "vietgone-off-broadway-2016/bobs-theater-blog--robert-sholiton.json",
+    "we-will-rock-you-west-end-2023/city-am--adam-bloodworth.json",
+    "the-wanderers-off-broadway-2023/timeout--unknown.json",
+    "topdog-underdog-2022/hollywood-reporter--unknown.json",
+    "the-treasurer-off-broadway-2017/bobs-theater-blog--robert-sholiton.json",
+    "travesties-west-end-2017/hampstead-highgate-express--marianka-swain.json",
+    "vietgone-off-broadway-2016/act-three-the-reviews--doug-marino.json",
+    "the-woodsman-off-broadway-2016/bobs-theater-blog--robert-sholiton.json",
+    "waiting-for-godot-2013/theatermania--david-finkle.json",
+    "urban-cowboy-2003/nytimes--ben-brantley.json"
   ],
   "cumulativeResumedState": {
     "processed": [
-      "the-lion-king-west-end-2021/guardian--lyngardner.json",
-      "the-king-and-i-west-end-2024/thestage--unknown.json",
-      "the-old-man-and-the-pool-west-end-2023/thestage--anya-ryan.json"
+      "witness-for-the-prosecution-off-west-end-2022/theatre-weekly--unknown.json",
+      "the-tragedy-of-macbeth-regional-2024/chicago-reader--dan-jakes.json",
+      "underdog-the-other-other-bronte-west-end-2024/i-paper--fiona-mountford.json",
+      "white-noise-off-broadway-2019/bobs-theater-blog--robert-sholiton.json"
     ],
     "failed": [
-      "the-merchant-of-venice-1973/backstage--erik-haagensen.json",
-      "the-jonathan-larson-project-off-broadway-2025/musical-theatre-report--ben-west.json",
-      "the-jonathan-larson-project-off-broadway-2025/talkinbroadway--marc-miller.json",
-      "the-39-steps-west-end-2024/city-am--adam-bloodworth.json",
-      "the-gap-hope-mill-regional-2024/thestage--chris-bartlett.json",
-      "the-enfield-haunting-west-end-2023/city-am--adam-bloodworth.json",
-      "the-motive-and-the-cue-west-end-2023/letterboxd--unknown.json",
-      "the-shark-is-broken-2023/talkinbroadway--howard-miller.json",
-      "the-good-john-proctor-off-broadway-2023/timeout--unknown.json",
-      "the-minutes-2022/timeout--adam-feldman.json",
-      "the-mirror-and-the-light-west-end-2021/i-paper--sam-marlowe.json",
-      "the-normal-heart-west-end-2021/i-paper--sam-marlowe.json",
-      "the-ferryman-west-end-2017/sunday-times--unknown.json",
-      "the-profane-off-broadway-2017/bobs-theater-blog--robert-sholiton.json",
-      "the-kid-stays-in-the-picture-west-end-2017/london-theatre--unknown.json",
-      "the-price-2017/theatermania--jesse-green.json",
-      "the-pajama-game-west-end-2014/standard--henry-hitchings.json",
-      "the-drowsy-chaperone-2006/theatermania--david-finkle.json",
-      "the-graduate-2002/nytimes--ben-brantley.json"
+      "vietgone-off-broadway-2016/bobs-theater-blog--robert-sholiton.json",
+      "we-will-rock-you-west-end-2023/city-am--adam-bloodworth.json",
+      "the-wanderers-off-broadway-2023/timeout--unknown.json",
+      "topdog-underdog-2022/hollywood-reporter--unknown.json",
+      "the-treasurer-off-broadway-2017/bobs-theater-blog--robert-sholiton.json",
+      "travesties-west-end-2017/hampstead-highgate-express--marianka-swain.json",
+      "vietgone-off-broadway-2016/act-three-the-reviews--doug-marino.json",
+      "the-woodsman-off-broadway-2016/bobs-theater-blog--robert-sholiton.json",
+      "waiting-for-godot-2013/theatermania--david-finkle.json",
+      "urban-cowboy-2003/nytimes--ben-brantley.json"
     ]
   },
   "tierDetails": {
     "playwright": [
-      "the-king-and-i-west-end-2024/thestage--unknown.json",
-      "the-old-man-and-the-pool-west-end-2023/thestage--anya-ryan.json"
+      "witness-for-the-prosecution-off-west-end-2022/theatre-weekly--unknown.json",
+      "the-tragedy-of-macbeth-regional-2024/chicago-reader--dan-jakes.json",
+      "underdog-the-other-other-bronte-west-end-2024/i-paper--fiona-mountford.json",
+      "white-noise-off-broadway-2019/bobs-theater-blog--robert-sholiton.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -153,6 +131,14 @@
     "archiveToday": [],
     "archive": []
   },
-  "failuresByOutlet": {},
+  "failuresByOutlet": {
+    "Bob's Theater Blog": {
+      "count": 1,
+      "domain": "gotham-playgoer.blogspot.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    }
+  },
   "urlDiscoveries": []
 }
