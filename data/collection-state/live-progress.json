@@ -1,34 +1,23 @@
 {
-  "updatedAt": "2026-11-07T16:43:14.423Z",
-  "processed": 196,
-  "failed": 144,
-  "successRate": "57.6%",
+  "updatedAt": "2026-11-07T17:05:16.677Z",
+  "processed": 203,
+  "failed": 153,
+  "successRate": "57.0%",
   "tierBreakdown": {
-    "playwright": 93,
+    "playwright": 99,
     "amp": 0,
     "browserbase": 1,
     "directCookies": 0,
     "scrapingdog": 16,
-    "scrapingbee": 7,
+    "scrapingbee": 6,
     "brightdata": 1,
     "archiveToday": 0,
     "archive": 62
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
-      "t": "2026-11-07T14:35:27.420Z",
-      "event": "bb-session",
-      "session": "abc8d13a",
-      "url": "http://www.talkinbroadway.com/ob/10_05_15.html"
-    },
-    {
-      "t": "2026-11-07T14:35:27.761Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-11-07T14:36:58.947Z",
+      "t": "2026-11-07T15:59:59.432Z",
       "event": "bb-session",
       "session": "2543d2e6",
       "url": "https://www.nytimes.com/2026/11/05/theater/rope-the-verge-review-off-broadway-si"
@@ -48,6 +37,45 @@
       "t": "2026-11-07T16:00:17.447Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-07T16:56:13.381Z",
+      "event": "bb-session",
+      "session": "ede05b8a",
+      "url": "https://www.nytimes.com/2026/11/06/theater/the-unbelievers-222-a-ghost-story-rev"
+    },
+    {
+      "t": "2026-11-07T16:56:14.239Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-07T16:56:31.448Z",
+      "event": "bb-session",
+      "session": "816a7116",
+      "url": "https://www.nytimes.com/2026/11/06/theater/the-unbelievers-222-a-ghost-story-rev"
+    },
+    {
+      "t": "2026-11-07T16:56:32.228Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-07T17:00:06.016Z",
+      "event": "bb-session",
+      "session": "41d982d0",
+      "url": "https://bachtrack.com/review-medea-yoncheva-spyres-met-opera-new-york-october-20"
+    },
+    {
+      "t": "2026-11-07T17:04:34.701Z",
+      "event": "bb-session",
+      "session": "42ade87e",
+      "url": "https://hermes.talkinbroadway.com/allthatchat_new/d.php?id=2655044"
+    },
+    {
+      "t": "2026-11-07T17:04:35.552Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
