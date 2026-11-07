@@ -726,7 +726,11 @@ const LISTING_PAGE_URL_PATTERNS = [
   // 2026-11-07: 0 of reviews.json's URLs match either shape; reviews on hub hosts
   // sit one level deeper (didtheylikeit /shows/<show>/<review>/).
   { host: /./, path: /^(?![^?#]*review)[^?#]*\/events?\/[^/]+\/\d{4}-\d\d-\d\d\/?$/i, reason: 'event-listing' },
-  { host: /./, path: /^\/shows\/[^/]+\/?$/i, reason: 'show-hub' },
+  // Registered aggregators (stagedoor.com, show-score.com, ...) are exempt: their
+  // /shows/<slug> page is the citation URL an aggregator star-stub is filed under
+  // (aggregator-outlet-refinement.test.mjs), so refusing it would drop exactly the
+  // aggregator-cited reviews this rule exists to protect.
+  { host: new RegExp(`^(?!(?:.*\\.)?(?:${[...require('./aggregator-domains').AGGREGATOR_DOMAINS].map((d) => d.replace(/\./g, '\\.')).join('|')})$)`), path: /^\/shows\/[^/]+\/?$/i, reason: 'show-hub' },
   // BRO-5629: an aggregator cited bestoftheatre's "everything you need to know"
   // explainer as Affluenza's missing review (also /everything-you-need-to-know-dogstar,
   // oldvictheatre /things-you-need-to-know-about-martin-guerre/). A slug that also

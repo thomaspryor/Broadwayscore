@@ -819,6 +819,15 @@ test('BRO-7081: dated event pages and bare /shows/<slug>/ hubs are listings, not
   ]) assert.equal(listingPageUrlReason(url), null, url);
 });
 
+test('BRO-7081: registered aggregator /shows/<slug> pages stay citation URLs, not show hubs', () => {
+  const { listingPageUrlReason } = require('./non-review-url-patterns.js');
+  for (const url of ['https://www.stagedoor.com/shows/some-show', 'https://stagedoor.com/shows/some-show/', 'https://www.show-score.com/shows/x']) {
+    assert.notEqual(listingPageUrlReason(url), 'show-hub', url);
+  }
+  assert.equal(listingPageUrlReason('https://notstagedoor.com/shows/some-show'), 'show-hub');
+  assert.equal(listingPageUrlReason('https://www.broadwayblack.com/shows/midnight/'), 'show-hub');
+});
+
 test('BRO-5629: "everything you need to know" explainers are guide articles, not reviews', () => {
   const { listingPageUrlReason } = require('./non-review-url-patterns.js');
   for (const url of [
