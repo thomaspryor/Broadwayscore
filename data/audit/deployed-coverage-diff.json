@@ -1,14 +1,13 @@
 {
-  "generatedAt": "2026-11-07T18:27:58.030Z",
+  "generatedAt": "2026-11-07T19:57:59.066Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 323,
-  "clean": 308,
-  "defective": 15,
+  "checked": 324,
+  "clean": 322,
+  "defective": 2,
   "byType": {
-    "missing-from-prod": 13,
-    "score-drift": 13
+    "score-drift": 2
   },
   "shows": [
     {
@@ -18,255 +17,13 @@
       "ok": false,
       "defects": [
         {
-          "type": "missing-from-prod",
-          "detail": "1 scored outlet(s) absent from the deployed payload: everything-theatre"
-        }
-      ],
-      "missingFromProd": [
-        "everything-theatre"
-      ],
-      "localCount": 3,
-      "deployedCount": 2,
-      "firstDefectAt": "2026-11-07T16:41:43.565Z"
-    },
-    {
-      "showId": "parcel-from-america-off-broadway-2026",
-      "title": "Parcel from America",
-      "openingDate": "2026-11-04",
-      "ok": false,
-      "defects": [
-        {
-          "type": "missing-from-prod",
-          "detail": "1 scored outlet(s) absent from the deployed payload: theater-scene"
-        },
-        {
           "type": "score-drift",
-          "detail": "deployed cs 70.35 vs local 71.58 (Δ1.23)"
+          "detail": "deployed cs 38.41 vs local 39.18 (Δ0.77)"
         }
       ],
-      "missingFromProd": [
-        "theater-scene"
-      ],
-      "localCount": 6,
-      "deployedCount": 5,
-      "firstDefectAt": "2026-11-07T18:27:51.656Z"
-    },
-    {
-      "showId": "the-bridge-off-west-end-2026",
-      "title": "The Bridge",
-      "openingDate": "2026-11-03",
-      "ok": false,
-      "defects": [
-        {
-          "type": "missing-from-prod",
-          "detail": "1 scored outlet(s) absent from the deployed payload: sierz-co-uk"
-        },
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 76.06 vs local 75.68 (Δ0.38)"
-        }
-      ],
-      "missingFromProd": [
-        "sierz-co-uk"
-      ],
-      "localCount": 25,
-      "deployedCount": 24,
-      "firstDefectAt": "2026-11-07T18:27:51.656Z"
-    },
-    {
-      "showId": "rope-off-broadway-2026",
-      "title": "Rope",
-      "openingDate": "2026-11-03",
-      "ok": false,
-      "defects": [
-        {
-          "type": "missing-from-prod",
-          "detail": "1 scored outlet(s) absent from the deployed payload: gay-city-news"
-        },
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 56.63 vs local 57.08 (Δ0.45)"
-        }
-      ],
-      "missingFromProd": [
-        "gay-city-news"
-      ],
-      "localCount": 13,
-      "deployedCount": 12,
-      "firstDefectAt": "2026-11-07T18:27:51.656Z"
-    },
-    {
-      "showId": "adirondack-chair-circle-regional-2026",
-      "title": "Adirondack Chair Circle",
-      "openingDate": "2026-11-02",
-      "ok": false,
-      "defects": [
-        {
-          "type": "missing-from-prod",
-          "detail": "2 scored outlet(s) absent from the deployed payload: broadwayworld, one-minute-critic"
-        },
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 66.76 vs local 65.86 (Δ0.9)"
-        }
-      ],
-      "missingFromProd": [
-        "broadwayworld",
-        "one-minute-critic"
-      ],
-      "localCount": 13,
-      "deployedCount": 11,
-      "firstDefectAt": "2026-11-07T17:35:08.332Z"
-    },
-    {
-      "showId": "the-blue-violinist-over-west-end-avenue-off-broadway-2026",
-      "title": "The Blue Violinist Over West End Avenue",
-      "openingDate": "2026-11-01",
-      "ok": false,
-      "defects": [
-        {
-          "type": "missing-from-prod",
-          "detail": "2 scored outlet(s) absent from the deployed payload: stageandcinema, the-knockturnal"
-        },
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 70.24 vs local 65.94 (Δ4.3)"
-        }
-      ],
-      "missingFromProd": [
-        "stageandcinema",
-        "the-knockturnal"
-      ],
-      "localCount": 5,
-      "deployedCount": 3,
-      "firstDefectAt": "2026-11-07T18:27:51.656Z"
-    },
-    {
-      "showId": "tosca-english-national-opera-west-end-2026",
-      "title": "Tosca - English National Opera",
-      "openingDate": "2026-10-30",
-      "ok": false,
-      "defects": [
-        {
-          "type": "missing-from-prod",
-          "detail": "1 scored outlet(s) absent from the deployed payload: british-theatre"
-        }
-      ],
-      "missingFromProd": [
-        "british-theatre"
-      ],
-      "localCount": 18,
-      "deployedCount": 17,
-      "firstDefectAt": "2026-11-07T18:27:51.656Z"
-    },
-    {
-      "showId": "in-the-heights-off-broadway-2026",
-      "title": "In the Heights",
-      "openingDate": "2026-10-28",
-      "ok": false,
-      "defects": [
-        {
-          "type": "missing-from-prod",
-          "detail": "1 scored outlet(s) absent from the deployed payload: theater-scene"
-        },
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 76.12 vs local 76.7 (Δ0.58)"
-        }
-      ],
-      "missingFromProd": [
-        "theater-scene"
-      ],
-      "localCount": 12,
-      "deployedCount": 11,
-      "firstDefectAt": "2026-11-07T18:27:51.656Z"
-    },
-    {
-      "showId": "other-desert-cities-2026",
-      "title": "Other Desert Cities",
-      "openingDate": "2026-10-18",
-      "ok": false,
-      "defects": [
-        {
-          "type": "missing-from-prod",
-          "detail": "1 scored outlet(s) absent from the deployed payload: exeunt-magazine"
-        },
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 67.3 vs local 67.55 (Δ0.25)"
-        }
-      ],
-      "missingFromProd": [
-        "exeunt-magazine"
-      ],
-      "localCount": 39,
-      "deployedCount": 38,
-      "firstDefectAt": "2026-11-07T16:41:43.565Z"
-    },
-    {
-      "showId": "twelfth-night-crucible-regional-2026",
-      "title": "Twelfth Night",
-      "openingDate": "2026-10-17",
-      "ok": false,
-      "defects": [
-        {
-          "type": "missing-from-prod",
-          "detail": "1 scored outlet(s) absent from the deployed payload: british-theatre"
-        },
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 80.91 vs local 81.16 (Δ0.25)"
-        }
-      ],
-      "missingFromProd": [
-        "british-theatre"
-      ],
-      "localCount": 19,
-      "deployedCount": 18,
-      "firstDefectAt": "2026-11-07T16:41:43.565Z"
-    },
-    {
-      "showId": "contact-oran-mor-regional-2026",
-      "title": "Contact",
-      "openingDate": "2026-10-07",
-      "ok": false,
-      "defects": [
-        {
-          "type": "missing-from-prod",
-          "detail": "1 scored outlet(s) absent from the deployed payload: the-scotsman"
-        },
-        {
-          "type": "score-drift",
-          "detail": "deployed payload has no numeric cs (local 81.79)"
-        }
-      ],
-      "missingFromProd": [
-        "the-scotsman"
-      ],
-      "localCount": 3,
-      "deployedCount": 2,
-      "firstDefectAt": "2026-11-07T16:41:43.565Z"
-    },
-    {
-      "showId": "hay-fever-west-end-2026",
-      "title": "Hay Fever",
-      "openingDate": "2026-10-01",
-      "ok": false,
-      "defects": [
-        {
-          "type": "missing-from-prod",
-          "detail": "1 scored outlet(s) absent from the deployed payload: city-am"
-        },
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 68.5 vs local 68.76 (Δ0.26)"
-        }
-      ],
-      "missingFromProd": [
-        "city-am"
-      ],
-      "localCount": 40,
-      "deployedCount": 39,
+      "missingFromProd": [],
+      "localCount": 4,
+      "deployedCount": 4,
       "firstDefectAt": "2026-11-07T16:41:43.565Z"
     },
     {
@@ -276,53 +33,13 @@
       "ok": false,
       "defects": [
         {
-          "type": "missing-from-prod",
-          "detail": "3 scored outlet(s) absent from the deployed payload: culturesauce, front-row-center, nytg"
-        },
-        {
           "type": "score-drift",
-          "detail": "deployed payload has no numeric cs (local 79.37)"
+          "detail": "deployed cs 79.02 vs local 79.37 (Δ0.35)"
         }
       ],
-      "missingFromProd": [
-        "culturesauce",
-        "front-row-center",
-        "nytg"
-      ],
+      "missingFromProd": [],
       "localCount": 4,
-      "deployedCount": 1,
-      "firstDefectAt": "2026-11-07T18:27:51.656Z"
-    },
-    {
-      "showId": "speculations-off-west-end-2026",
-      "title": "Speculations",
-      "openingDate": "2026-11-05",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 47.79 vs local 47.17 (Δ0.62)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 27,
-      "deployedCount": 28,
-      "firstDefectAt": "2026-11-07T16:41:43.565Z"
-    },
-    {
-      "showId": "an-oak-tree-off-west-end-2026",
-      "title": "An Oak Tree",
-      "openingDate": "2026-10-08",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 76.04 vs local 74.48 (Δ1.56)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 18,
-      "deployedCount": 19,
+      "deployedCount": 4,
       "firstDefectAt": "2026-11-07T18:27:51.656Z"
     }
   ],
