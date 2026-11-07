@@ -17,6 +17,9 @@ const ALLOWED = {
   'src/components/HomePageClient.tsx': {
     'totalReviews.toLocaleString()': 'Site-wide critic-review total, in the thousands.',
   },
+  'src/components/user/LocalSavesConfirmation.tsx': {
+    added: 'The added === 1 branch says "Saved to your account."; the shows branch only renders for added >= 2.',
+  },
   'src/components/OffBroadwayPageClient.tsx': {
     totalShows: 'Whole Off-Broadway catalog total, not the filtered result count.',
   },

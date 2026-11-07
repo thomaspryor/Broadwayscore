@@ -4,7 +4,7 @@ import { useState, useCallback, useEffect, useRef } from 'react';
 import { trackUgc } from '@/lib/ugc-analytics';
 import { getSupabaseClient } from '@/lib/supabase';
 import { supabaseRestInsert, supabaseRestDelete, supabaseRestUpdate } from '@/lib/supabase-rest';
-import { getLocalWatchlist, removeLocalShow, showsToMigrate } from '@/lib/local-watchlist';
+import { getLocalWatchlist, removeLocalShow, showsToMigrate, LOCAL_WATCHLIST_MIGRATED_EVENT } from '@/lib/local-watchlist';
 import type { WatchlistEntry } from '@/types/user';
 
 // Cross-instance sync: all useWatchlist hooks with the same userId share state
@@ -92,6 +92,8 @@ async function migrateLocalWatchlist(userId: string): Promise<WatchlistEntry[] |
     if (!toAdd.includes(e.showId)) removeLocalShow(e.showId);
   }
   trackUgc('watchlist_local_migrated', { local_count: local.length, added, failed: toAdd.length - added });
+  // LocalSavesConfirmation (under the toast provider) turns this into "Saved to your account."
+  if (added > 0) document.dispatchEvent(new CustomEvent(LOCAL_WATCHLIST_MIGRATED_EVENT, { detail: { added } }));
   invalidateWatchlistCache();
   return getWatchlistCached(userId);
 }
