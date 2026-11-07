@@ -721,6 +721,8 @@ function pausedHistorySkipReason(comments, nowMs, { priority, pausedBacklog = fa
   const stampIdx = sorted.findIndex((c) => parseRecheckAfter(c.body) != null);
   if (stampIdx >= 0 && parseRecheckAfter(sorted[stampIdx].body) > nowMs
     && !sorted.slice(0, stampIdx).some((c) => !isMachineComment(c.body))) return 'recheck-pending';
+  // BRO-7098: the newest comment (any kind of report, not only a paused one) says the card waits on the owner.
+  if (ownerWaitHolds(sorted, nowMs)) return 'awaiting-owner';
   if (idx < 0) return null;
   const report = sorted[idx];
   if (parseSessionReportStatus(report.body) !== 'paused') return null;
@@ -751,6 +753,32 @@ function namesOwnerHold(text) {
     if (!OWNER_NEGATED_BEFORE_RE.test(before) && !OWNER_NEGATED_AFTER_RE.test(after)) return true;
   }
   return false;
+}
+
+// BRO-7098: wording that says the owner already answered (or that nothing is needed), so a mention of
+// "owner approval" next to it is no hold.
+const OWNER_ANSWERED_WORDING_RE = /^\*\*Owner decision\*\* \(answered by the owner\b|^Owner answered:|\b(?:DECISION NEEDED|owner (?:decision|approval|call))\s*:?\s*(?:none|n\/a)\b|\bowner (?:approval|decision|answer|sign[- ]?off|go[- ]ahead)\b[^.\n]{0,30}\b(?:came in|arrived|received|given|granted|recorded)\b/i;
+const OWNER_WAIT_MAX_MS = AWAITING_OWNER_MAX_MS;
+
+/**
+ * BRO-7098. True while the card's newest human-or-worker comment (machine notes, Codex runner notes and retry
+ * notes skipped) says the card waits on the owner and is under 14 days old. Every comment posts as the owner's
+ * account, so the body decides. A later comment of any kind replaces the hold: an owner answer is a comment too,
+ * and the recorded-answer shapes never count as a hold. Pure; `comments` are the card's comment nodes.
+ */
+function ownerWaitHolds(comments, nowMs) {
+  const newest = (Array.isArray(comments) ? comments : [])
+    .filter((c) => c && Number.isFinite(Date.parse(c.createdAt)) && !isMachineComment(c.body))
+    .sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt))[0];
+  if (!newest) return false;
+  const { unescapeMarkdown } = require('../../src/lib/owner-decision-link.js');
+  const body = unescapeMarkdown(String(newest.body || '')).trim();
+  const age = nowMs - Date.parse(newest.createdAt);
+  if (!(age >= 0 && age < OWNER_WAIT_MAX_MS)) return false;
+  if (OWNER_ANSWERED_WORDING_RE.test(body) || OWNER_DRAIN_ANSWER_RE.test(body)) return false;
+  // The owner-gate clear line (OWNER-CLEARED:, "not an owner decision") is the sweep's release, never a hold.
+  if (require('./headless-dispatchability.js').commentClearsOwnerGate([body], '')) return false;
+  return namesOwnerHold(body);
 }
 
 /** Card number named by a land ref ('land/bro-2311-x' -> 2311), or null. */
@@ -833,7 +861,7 @@ module.exports = {
   leaveCodexCards,
   isMachineComment, laneUnworkableReason, LANE_UNWORKABLE_MAX_MS,
   IDLE_MS, STRANDED_MS, RESUME_WINDOW_MS, MAX_LAND_RUNS, RECENT_PAUSE_MS, RECENT_PAUSE_URGENT_MS, MAX_PAUSES, AWAITING_OWNER_MAX_MS, isPausedBacklog,
-  AUTOMATION_PARK_STALE_MS, effectiveTouchMs, hasPersonParkHold, isFallbackTechnicalPark, START_NOW_MIN_AGE_MS, START_NOW_MAX_AGE_MS, IOS_APP_CARD_RE, isStaleAutomationParked, isStartNow, hasStartNowLine, isOwnerTaskResume, startNowUnpickableReason, skipReason, pickCloudCard, pausedHistorySkipReason, historySkipReason, landRefCardNumber, resumableCardsByNumber,
+  AUTOMATION_PARK_STALE_MS, effectiveTouchMs, hasPersonParkHold, isFallbackTechnicalPark, START_NOW_MIN_AGE_MS, START_NOW_MAX_AGE_MS, IOS_APP_CARD_RE, isStaleAutomationParked, isStartNow, hasStartNowLine, isOwnerTaskResume, ownerWaitHolds, startNowUnpickableReason, skipReason, pickCloudCard, pausedHistorySkipReason, historySkipReason, landRefCardNumber, resumableCardsByNumber,
   P2_PRIORITY, TIER_P0P1, TIER_P2, isP2FallbackCandidate, P3_PRIORITY, TIER_P3, isP3FallbackCandidate, buildPickQueue, needsComments, pickModel, modelPicker, noDispatchHold, opusClaimEntries, fetchOpusClaimEntries, withCloudOpusClaims, sessionModelFor, cloudPriorAttempts, mayTakeUnchecked,
   findResumeCandidates, findResumeCard, headlessUnfitReason, AWAITING_OWNER_RE, namesOwnerHold, FALLBACK_PARK_DENY_RE,
 };

@@ -1572,3 +1572,32 @@ test('codexBounceCapped (BRO-6857): two bounces cap the card, a retry note does 
   assert.equal(r.codexBounceCapped([...two, c('Retry this one, the key is set now.', '2026-10-06T00:00:00Z')], now), false);
   assert.equal(r.codexBounceCapped([...two, c('Claimed by https://claude.ai/code/session_x', '2026-10-06T00:00:00Z')], now), true);
 });
+
+// BRO-7098: a card whose newest comment says it waits on the owner is not picked (the real functions, §15).
+test('BRO-7098: ownerWaitHolds / historySkipReason skip a card that waits on the owner', () => {
+  const P = require('../../scripts/lib/cloud-worker-pick.js');
+  const now = Date.parse('2026-11-07T12:00:00Z');
+  const day = 86400_000;
+  const c = (body, ageDays) => ({ body, createdAt: new Date(now - ageDays * day).toISOString() });
+  const hold = 'Code landed. Waiting on the owner OK to apply supabase/migrations/20261104_critic_requests_kinds.sql.';
+  // the hold is the newest comment: not picked, by either lane's skip rule
+  assert.equal(P.ownerWaitHolds([c(hold, 2)], now), true);
+  assert.equal(P.historySkipReason({ priority: 3 }, [c(hold, 2)], now), 'awaiting-owner');
+  assert.equal(P.historySkipReason({ priority: 3 }, [c('**Outcome**\n\nLanded. DECISION NEEDED: approve the tier policy.', 1)], now), 'awaiting-owner');
+  // machine notes (claim, Codex bounce, retry) after the hold do not hide it
+  assert.equal(P.ownerWaitHolds([c(hold, 3), c('Claimed by https://claude.ai/code/session_x', 1), c('<!-- codex-runner-retry -->\nowner approval needed', 0.5)], now), true);
+  // a later comment replaces it
+  assert.equal(P.ownerWaitHolds([c(hold, 3), c('Go ahead and apply it.', 1)], now), false);
+  // answers and negations are no hold
+  assert.equal(P.ownerWaitHolds([c('**Owner decision** (answered by the owner via email)\n\nChose: Option A', 1)], now), false);
+  assert.equal(P.ownerWaitHolds([c('The owner approval came in, proceeding.', 1)], now), false);
+  assert.equal(P.ownerWaitHolds([c('DECISION NEEDED: none', 1)], now), false);
+  assert.equal(P.ownerWaitHolds([c('No owner decision needed.', 1)], now), false);
+  // age: held at 13 days, released at 15
+  assert.equal(P.ownerWaitHolds([c(hold, 13)], now), true);
+  assert.equal(P.ownerWaitHolds([c(hold, 15)], now), false);
+  // CODEX-OK in the description does not lift it
+  assert.equal(P.historySkipReason({ priority: 3, description: 'CODEX-OK' }, [c(hold, 2)], now), 'awaiting-owner');
+  // a card with no owner wording is untouched
+  assert.equal(P.historySkipReason({ priority: 3 }, [c('Plain progress note.', 2)], now), null);
+});
