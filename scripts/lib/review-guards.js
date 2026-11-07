@@ -219,16 +219,22 @@ const STRONG_DIFFERENT_SHOW_MARKERS = [
 const DIFFERENT_CITY_NAMES_RE = new RegExp(
   '\\b(?:Chicago|Illinois|Los Angeles|California|San Francisco|San Diego|Boston|Massachusetts|' +
   'Philadelphia|Pennsylvania|Washington,? D\\.?C\\.?|Seattle|Houston|Dallas|Austin|Atlanta|Minneapolis|' +
-  'Cleveland|Pittsburgh|Denver|Detroit|Norfolk)\\b'
+  'Cleveland|Pittsburgh|Denver|Detroit|Norfolk)\\b' +
+  // "Austin Pendleton", "Denver Post": a city glued to another capitalised word is a name, not a place,
+  // unless that word is a venue word ("Chicago Shakespeare Theater").
+  '(?!\\s+(?!Theat|Playhouse|Rep\\b|Stage|Shakes|Opera)[A-Z][a-z]+)'
 );
+// "not <market>" must follow within a few words (not 80 characters), and "does/do/did not mention
+// Broadway" is a statement about the critic, not about where the show was staged.
 const NOT_THIS_MARKET_RE =
-  /\bnot\b[^.|;]{0,80}\b(?:New York(?: City)?|NYC|Off[- ]?Broadway|Broadway)\b(?!\s+(?:City\s+)?(?:Center|Centre|Theat|Ballet|Opera|Live|Public|Fringe))|\bregional (?:theat(?:er|re)|production)\b|\bgeographic(?:al)? (?:location|mismatch)\b/i;
+  /(?<!\b(?:does|do|did)\s)\bnot\s+(?:\S+\s+){0,3}?(?:an?\s+|the\s+)?(?:expected\s+|intended\s+)?(?:Off[- ]?Broadway|Broadway|New York(?: City)?|NYC)\b(?!\s+(?:City\s+)?(?:Center|Centre|Theat|Ballet|Opera|Live|Public|Fringe))|\bregional (?:theat(?:er|re)|production)\b|\bgeographic(?:al)? (?:location|mismatch)\b/i;
+function escapeRegExp(v) { return String(v).replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
 // Outlet names carry a city ("Chicago Tribune" critic bylines, "Boston Globe") and quoted
 // passages carry the play's own setting; neither says where the production was staged.
 const OUTLET_CITY_RE = /\b(?:Chicago (?:Tribune|Reader|Sun-Times|Magazine)|Boston (?:Globe|Herald)|Washington Post|Los Angeles Times|LA Times|Philadelphia Inquirer|Houston Chronicle|San Francisco Chronicle|Seattle Times|Dallas Morning News|Denver Post|Atlanta Journal-Constitution|Pittsburgh Post-Gazette|Star Tribune|Plain Dealer|Virginian-Pilot|Third Coast Review|New City Stage)\b/gi;
 const QUOTED_PASSAGE_RE = /["\u201C][^"\u201D]{0,300}["\u201D]|(?<![A-Za-z])'[^']{10,300}'(?![A-Za-z])/g;
 const SAME_PRODUCTION_TRAVEL_RE =
-  /\b(?:pre-?broadway|try-?out|out-of-town|premiere[ds]?|touring|tour\b|national tour|transfer(?:red|s)?|moved to|workshop|previous(?:ly)? (?:run|production)|earlier (?:run|production)|years? (?:ago|earlier|before))\b/i;
+  /\b(?:pre-?broadway|try-?out|out-of-town|premiered|premieres|world premiere|(?:Broadway|Off-Broadway|New York|U\.?S\.?) premiere|touring|tour\b|national tour|transfer(?:red|s)?|moved to|presentation of|presented by|co-?production|originated|imported|originally (?:staged|produced)|workshop|previous(?:ly)? (?:run|production)|earlier (?:run|production)|years? (?:ago|earlier|before))\b/i;
 
 function hasDifferentCityProductionSignal(cvIssues, cvReasoning, show) {
   // Needs the show: a Chicago venue is the WRONG production for an Off-Broadway page but
@@ -240,10 +246,18 @@ function hasDifferentCityProductionSignal(cvIssues, cvReasoning, show) {
   if (Array.isArray(cvIssues)) texts.push(...cvIssues.map(String));
   if (cvReasoning) texts.push(String(cvReasoning));
   if (texts.length === 0) return false;
-  const all = texts.join(' | ');
-  if (SAME_PRODUCTION_TRAVEL_RE.test(all)) return false;
-  const cityText = all.replace(QUOTED_PASSAGE_RE, ' ').replace(OUTLET_CITY_RE, ' ');
-  return DIFFERENT_CITY_NAMES_RE.test(cityText) && NOT_THIS_MARKET_RE.test(all);
+  if (SAME_PRODUCTION_TRAVEL_RE.test(texts.join(' | '))) return false;
+  // The show's own title can be a city (the musical Chicago); its venue turns "not The Secret
+  // Theatre" into a market statement even when CV never writes "Off-Broadway".
+  const titleRe = show.title ? new RegExp(escapeRegExp(show.title), 'gi') : null;
+  const venueBare = show.venue ? String(show.venue).replace(/^the\s+/i, '').trim() : '';
+  const venueNotRe = venueBare ? new RegExp('\\bnot\\s+(?:the\\s+)?' + escapeRegExp(venueBare) + '\\b', 'i') : null;
+  // City and "not this market" must come from the SAME issue string, never stitched across issues.
+  return texts.some((seg) => {
+    let cityText = seg.replace(QUOTED_PASSAGE_RE, ' ').replace(OUTLET_CITY_RE, ' ');
+    if (titleRe) cityText = cityText.replace(titleRe, ' ');
+    return DIFFERENT_CITY_NAMES_RE.test(cityText) && (NOT_THIS_MARKET_RE.test(seg) || !!(venueNotRe && venueNotRe.test(seg)));
+  });
 }
 
 function hasStrongDifferentShowSignal(cvIssues, cvReasoning) {
