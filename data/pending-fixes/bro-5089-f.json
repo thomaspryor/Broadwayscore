@@ -1,0 +1,541 @@
+{
+  "issueNumber": "bro-5089-f",
+  "planId": "a5484d78-b5be-4f18-8ed2-7ed181da4921",
+  "status": "applied",
+  "createdAt": "2026-10-12T00:34:28.560Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5089 sweep part 6/11 (apply after the bro-5080 plans): clear Broadway historical posters of other productions/shows (two-model agreement, theatre renames accounted for) and historical synopses that are producer copy, another staging's production history, another work or invented plot. No noReliableArt marker: the verified image pipeline may refill.",
+    "steps": [
+      "images cleared + source rejected",
+      "synopsis cleared for the production-verified enricher"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "park-your-car-in-harvard-yard-1991",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/park-your-car-in-harvard-yard-1991/thumbnail.jpg",
+          "poster": "/images/shows/park-your-car-in-harvard-yard-1991/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "park-your-car-in-harvard-yard-1991: poster and thumbnail cleared, wrong-show: The cover clearly reads \"André Heller's WONDERHOUSE\" (visible title text and artwork), not \"Park Your Car in Harvard Yard.\" (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-little-hotel-on-the-side-1992",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/a-little-hotel-on-the-side-1992/thumbnail.jpg",
+          "poster": "/images/shows/a-little-hotel-on-the-side-1992/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "a-little-hotel-on-the-side-1992: poster and thumbnail cleared, wrong-show: The Playbill covers clearly read '700 Sundays' and 'Mr. Saturday Night' (Billy Crystal), not 'A Little Hotel on the Side' or any Belasco 1992 credits. (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-secret-rapture-1989",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/the-secret-rapture-1989/thumbnail.jpg",
+          "poster": "/images/shows/the-secret-rapture-1989/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "the-secret-rapture-1989: poster and thumbnail cleared, wrong-show: Image clearly shows Remy Martin branding (bottle label and slogan 'INDULGENT, THE SENSE OF REMY') and a cognac ad layout rather than any title, playwright or theatre credits for The Secret Rapture. (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "dancing-at-lughnasa-1991",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/dancing-at-lughnasa-1991/thumbnail.jpg",
+          "poster": "/images/shows/dancing-at-lughnasa-1991/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "dancing-at-lughnasa-1991: poster and thumbnail cleared, other-production: Image is the cinematic film poster version (large close-up profile of a film actress, movie-style top billing and tagline, small dancing figures) — not a Broadway Playbill for the 1991–92 Gerald Schoenfeld Theatre produc (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "dancing-at-lughnasa-1991",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/8336/medium_1677172892-290778783_406082331574449_9119931760503032074_n.jpg",
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/8336/preview_1677172892-290778783_406082331574449_9119931760503032074_n.jpg"
+        ],
+        "description": "dancing-at-lughnasa-1991: never re-take this art source (BRO-5089)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "i-hate-hamlet-1991",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/i-hate-hamlet-1991/thumbnail.jpg",
+          "poster": "/images/shows/i-hate-hamlet-1991/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "i-hate-hamlet-1991: poster and thumbnail cleared, other-production: The poster text reads 'Possum Point Players presents' and lists dates in January 2012 and location 'Possum Hall, Georgetown, DE' — not the Walter Kerr Theatre 1991 Broadway production. (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "dangerous-games-1989",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/dangerous-games-1989/thumbnail.jpg",
+          "poster": "/images/shows/dangerous-games-1989/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "dangerous-games-1989: poster and thumbnail cleared, other-production: The Playbill cover shows 'LUNT-FONTANNE THEATRE' under PLAYBILL and the bottom reads 'SUNDAY EVENING, JUNE 4, 1989' with a large Tony-style trophy — this ties it to the June 4, 1989 Tony/ Lunt-Fontanne program, not the O (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "an-american-daughter-1997",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/an-american-daughter-1997/thumbnail.jpg",
+          "poster": "/images/shows/an-american-daughter-1997/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "an-american-daughter-1997: poster and thumbnail cleared, wrong-show: The image clearly shows the title 'Trial by Media' and the actor name 'Christine Lahti' (and 'Starlight Signature Series'), not the play title 'An American Daughter' or any Broadway Playbill/theatre credits. (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-three-sisters-1996",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/the-three-sisters-1996/thumbnail.jpg",
+          "poster": "/images/shows/the-three-sisters-1996/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "the-three-sisters-1996: poster and thumbnail cleared, other-production: The Playbill header includes the text 'ROUNDABOUT THEATRE COMPANY CRITERION CENTER STAGE RIGHT', indicating a Roundabout/Criterion Center production rather than the Lunt‑Fontanne run. (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "broadway-1987",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/broadway-1987/thumbnail.jpg",
+          "poster": "/images/shows/broadway-1987/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "broadway-1987: poster and thumbnail cleared, wrong-show: The image displays the title 'Les Misérables' plus the iconic Cosette illustration and the tagline 'THE MUSICAL SENSATION', which identifies it as Les Misérables, not the Abbott & Dunning play listed. (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "il-berretto-a-songali-1987",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/il-berretto-a-songali-1987/thumbnail.jpg",
+          "poster": "/images/shows/il-berretto-a-songali-1987/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "il-berretto-a-songali-1987: poster and thumbnail cleared, wrong-show: Image is a collage of vintage movie posters and actresses (multiple film titles/imagery visible) and does not show the play title 'Il Berretto a Sonagli', playwright 'Luigi Pirandello', director 'Lamberto Puggelli', or t (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "oedipus-rex-1984",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/oedipus-rex-1984/thumbnail.jpg",
+          "poster": "/images/shows/oedipus-rex-1984/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "oedipus-rex-1984: poster and thumbnail cleared, other-production: Poster shows text 'THE OLD VIC THEATRE COMPANY' — ties the image to an Old Vic production, not the Vivian Beaumont Theatre (1984) run. (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "la-serva-amorosa-1987",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/la-serva-amorosa-1987/thumbnail.jpg",
+          "poster": "/images/shows/la-serva-amorosa-1987/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "la-serva-amorosa-1987: poster and thumbnail cleared, other-production: The Playbill cover clearly shows the title text 'Roza' at the bottom, not 'La Serva Amorosa', indicating a different production. (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-search-for-signs-of-intelligent-life-in-the-universe-1985",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/the-search-for-signs-of-intelligent-life-in-the-universe-1985/thumbnail.jpg",
+          "poster": "/images/shows/the-search-for-signs-of-intelligent-life-in-the-universe-1985/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "the-search-for-signs-of-intelligent-life-in-the-universe-1985: poster and thumbnail cleared, other-production: Poster features 'Cecily Strong' and credits director 'Leigh Silverman' and lists run 'DEC 21 - FEB 6 at THE SHED' — not the 1985-86 Gerald Schoenfeld Theatre production directed by Jane Wagner. (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-search-for-signs-of-intelligent-life-in-the-universe-1985",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/6946/medium_1639930197-searchfinal.jpg",
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/6946/preview_1639930197-searchfinal.jpg"
+        ],
+        "description": "the-search-for-signs-of-intelligent-life-in-the-universe-1985: never re-take this art source (BRO-5089)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "wind-in-the-willows-1985",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/wind-in-the-willows-1985/thumbnail.jpg",
+          "poster": "/images/shows/wind-in-the-willows-1985/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "wind-in-the-willows-1985: poster and thumbnail cleared, other-production: Poster header reads 'Sadler's Wells Theatre', indicating a different theatre/staging than the Nederlander (1985 Broadway) production. (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "precious-sons-1986",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/precious-sons-1986/thumbnail.jpg",
+          "poster": "/images/shows/precious-sons-1986/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "precious-sons-1986: poster and thumbnail cleared, wrong-show: The image shows a Playbill cover with the title 'The ODD Couple' and 'BROADHURST THEATRE' clearly visible — not 'Precious Sons' or Longacre Theatre. (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "corpse-1986",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/corpse-1986/thumbnail.jpg",
+          "poster": "/images/shows/corpse-1986/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "corpse-1986: poster and thumbnail cleared, wrong-show: The Playbill cover clearly reads 'The Odd Couple' (with its photo), indicating a different show than 'Corpse!'. (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "electra-1998",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/electra-1998/thumbnail.jpg",
+          "poster": "/images/shows/electra-1998/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "electra-1998: poster and thumbnail cleared, wrong-show: Poster clearly reads 'ON THE TOWN' and 'New York, New York Musical'—different title/production than 'Electra'. (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "more-to-love-1998",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/more-to-love-1998/thumbnail.jpg",
+          "poster": "/images/shows/more-to-love-1998/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "more-to-love-1998: poster and thumbnail cleared, wrong-show: The Playbill cover clearly reads 'AN EVENING WITH JERRY HERMAN' and shows show logos (Hello, Dolly!, La Cage, Mack & Mabel), not the title 'More to Love' or credits for Rob Bartlett/Jack O'Brien. (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "peter-pan-1999",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/peter-pan-1999/thumbnail.jpg",
+          "poster": "/images/shows/peter-pan-1999/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "peter-pan-1999: poster and thumbnail cleared, other-production: The Playbill header line under PLAYBILL clearly reads 'MARQUIS THEATRE', indicating a different venue than the Gershwin/Uris Theatre for the 1999 production. (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-lonesome-west-1999",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/the-lonesome-west-1999/thumbnail.jpg",
+          "poster": "/images/shows/the-lonesome-west-1999/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "the-lonesome-west-1999: poster and thumbnail cleared, other-production: The poster heading reads 'Queensland Theatre Company presents', indicating this is a Queensland production rather than the Lyceum Theatre 1999 Broadway staging. (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "night-must-fall-1999",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/night-must-fall-1999/thumbnail.jpg",
+          "poster": "/images/shows/night-must-fall-1999/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "night-must-fall-1999: poster and thumbnail cleared, other-production: The Playbill cover clearly reads 'THE HELEN HAYES THEATRE' under PLAYBILL (not the Lyceum), even though the title 'NIGHT MUST FALL' matches — the theatre name ties it to a different staging. (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "your-arms-too-short-to-box-with-god-1980",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/your-arms-too-short-to-box-with-god-1980/thumbnail.jpg",
+          "poster": "/images/shows/your-arms-too-short-to-box-with-god-1980/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "your-arms-too-short-to-box-with-god-1980: poster and thumbnail cleared, other-production: The Playbill cover clearly shows \"LYCEUM THEATRE\" beneath the header, indicating a different theatre than the Ambassador Theatre specified for the 1980 run. (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-12T05:07:57.576Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for park-your-car-in-harvard-yard-1991"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for a-little-hotel-on-the-side-1992"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for the-secret-rapture-1989"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for dancing-at-lughnasa-1991"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for dancing-at-lughnasa-1991"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for i-hate-hamlet-1991"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for dangerous-games-1989"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for an-american-daughter-1997"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for the-three-sisters-1996"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for broadway-1987"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for il-berretto-a-songali-1987"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for oedipus-rex-1984"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for la-serva-amorosa-1987"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for the-search-for-signs-of-intelligent-life-in-the-universe-1985"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for the-search-for-signs-of-intelligent-life-in-the-universe-1985"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for wind-in-the-willows-1985"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for precious-sons-1986"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for corpse-1986"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for electra-1998"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for more-to-love-1998"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for peter-pan-1999"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for the-lonesome-west-1999"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for night-must-fall-1999"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for your-arms-too-short-to-box-with-god-1980"
+    }
+  ]
+}

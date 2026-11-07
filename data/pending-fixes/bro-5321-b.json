@@ -1,0 +1,323 @@
+{
+  "issueNumber": "bro-5321-b",
+  "planId": "11784673-b93a-44da-9dfc-ec5c04635a18",
+  "status": "applied",
+  "createdAt": "2026-10-14T04:01:46.493Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5321 step 2, batch 1 part 1/3 (caroline-or-change-2021, follies-2011, prince-of-broadway-2017, she-loves-me-2016, spring-awakening-2006, straight-white-men-2018, the-king-and-i-west-end-2024, cabaret-2024, clydes-2021): 29 groups on 28 shows where one review text sits under two critics and the counted row names the wrong one. Byline read from the page that carries the text (verify-identical-text-bylines.js). Renames the counted row to the page author when its url carries the text; otherwise flags the counted copy wrongAttribution and re-admits the copy whose url carries the text. Review counts per show stay the same except la-cage-aux-folles-2010 (Variety was counted twice, now once).",
+    "steps": [
+      "Rename the counted row to the page byline where its url carries the text",
+      "Flag same-outlet copies of that text wrongAttribution",
+      "Where another row holds the url, flag the counted copy and clear the duplicate pointer on the row that holds it"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "caroline-or-change-2021/variety--aramide-tinubu.json",
+        "field": "criticName",
+        "oldValue": "Aramide Tinubu",
+        "newValue": "Ayanna Prescod",
+        "description": "BRO-5321: the page carrying this text credits Ayanna Prescod (https://variety.com/2021/legit/reviews/caroline-or-change-review-broadway-1235104577/)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "caroline-or-change-2021/variety--ayanna-prescod.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5321"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "caroline-or-change-2021/variety--ayanna-prescod.json",
+        "field": "wrongAttributionReason",
+        "oldValue": null,
+        "newValue": "BRO-5321: same text as variety--aramide-tinubu.json, which holds Ayanna Prescod's review at https://variety.com/2021/legit/reviews/caroline-or-change-review-broadway-1235104577/; this copy's byline or url is another page",
+        "description": "BRO-5321"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "caroline-or-change-2021/hollywood-reporter--angie-han.json",
+        "field": "criticName",
+        "oldValue": "Angie Han",
+        "newValue": "David Rooney",
+        "description": "BRO-5321: the page carrying this text credits David Rooney (https://www.hollywoodreporter.com/lifestyle/arts/caroline-or-change-broadway-review-1235045716/)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "caroline-or-change-2021/hollywood-reporter--david-rooney.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5321"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "caroline-or-change-2021/hollywood-reporter--david-rooney.json",
+        "field": "wrongAttributionReason",
+        "oldValue": null,
+        "newValue": "BRO-5321: same text as hollywood-reporter--angie-han.json, which holds David Rooney's review at https://www.hollywoodreporter.com/lifestyle/arts/caroline-or-change-broadway-review-1235045716/; this copy's byline or url is another page",
+        "description": "BRO-5321"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "follies-2011/variety--david-rooney.json",
+        "field": "criticName",
+        "oldValue": "David Rooney",
+        "newValue": "Steven Suskin",
+        "description": "BRO-5321: the page carrying this text credits Steven Suskin (https://variety.com/2011/legit/reviews/follies-2-1117946070/)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "follies-2011/variety--steven-suskin.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5321"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "follies-2011/variety--steven-suskin.json",
+        "field": "wrongAttributionReason",
+        "oldValue": null,
+        "newValue": "BRO-5321: same text as variety--david-rooney.json, which holds Steven Suskin's review at https://variety.com/2011/legit/reviews/follies-2-1117946070/; this copy's byline or url is another page",
+        "description": "BRO-5321"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "prince-of-broadway-2017/huffpost--huffington-post-steven-suskin.json",
+        "field": "criticName",
+        "oldValue": "Huffington Post (Steven Suskin)",
+        "newValue": "Steven Suskin",
+        "description": "BRO-5321: the page carrying this text credits Steven Suskin (https://www.huffpost.com/entry/599f632de4b0a62d0987ae0b)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "she-loves-me-2016/huffpost--fern-siegel.json",
+        "field": "criticName",
+        "oldValue": "Fern Siegel",
+        "newValue": "Steven Suskin",
+        "description": "BRO-5321: the page carrying this text credits Steven Suskin (https://www.huffpost.com/steven-suskin/aisle-view-musical-candy_b_9492440.html)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "spring-awakening-2006/variety--charles-isherwood.json",
+        "field": "criticName",
+        "oldValue": "Charles Isherwood",
+        "newValue": "David Rooney",
+        "description": "BRO-5321: the page carrying this text credits David Rooney (https://variety.com/2006/legit/reviews/spring-awakening-1200516066/)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "spring-awakening-2006/variety--david-rooney.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5321"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "spring-awakening-2006/variety--david-rooney.json",
+        "field": "wrongAttributionReason",
+        "oldValue": null,
+        "newValue": "BRO-5321: same text as variety--charles-isherwood.json, which holds David Rooney's review at https://variety.com/2006/legit/reviews/spring-awakening-1200516066/; this copy's byline or url is another page",
+        "description": "BRO-5321"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "straight-white-men-2018/hollywood-reporter--david-rooney.json",
+        "field": "criticName",
+        "oldValue": "David Rooney",
+        "newValue": "Frank Scheck",
+        "description": "BRO-5321: the page carrying this text credits Frank Scheck (https://www.hollywoodreporter.com/news/general-news/straight-white-men-theater-review-1129164/)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "straight-white-men-2018/hollywood-reporter--frank-scheck.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5321"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "straight-white-men-2018/hollywood-reporter--frank-scheck.json",
+        "field": "wrongAttributionReason",
+        "oldValue": null,
+        "newValue": "BRO-5321: same text as hollywood-reporter--david-rooney.json, which holds Frank Scheck's review at https://www.hollywoodreporter.com/news/general-news/straight-white-men-theater-review-1129164/; this copy's byline or url is another page",
+        "description": "BRO-5321"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-king-and-i-west-end-2024/timeout-london--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Tom Wicker",
+        "description": "BRO-5321: the page at this url credits Tom Wicker (https://www.timeout.com/london/theatre/the-king-and-i-review-1)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cabaret-2024/amny--emlyn-travis.json",
+        "field": "criticName",
+        "oldValue": "Emlyn Travis",
+        "newValue": "Matt Windman",
+        "description": "BRO-5321: the page carrying this text credits Matt Windman (https://www.amny.com/news/review-cabaret-revival-2024/)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cabaret-2024/amny--matt-windman.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5321"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cabaret-2024/amny--matt-windman.json",
+        "field": "wrongAttributionReason",
+        "oldValue": null,
+        "newValue": "BRO-5321: same text as amny--emlyn-travis.json, which holds Matt Windman's review at https://www.amny.com/news/review-cabaret-revival-2024/; this copy's byline or url is another page",
+        "description": "BRO-5321"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "clydes-2021/nysr--melissa-rose-bernardo.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5321"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "clydes-2021/nysr--melissa-rose-bernardo.json",
+        "field": "wrongAttributionReason",
+        "oldValue": null,
+        "newValue": "BRO-5321: this text is Steven Suskin's review (nysr--steven-suskin.json): the page carrying this text credits Steven Suskin (http://nystagereview.com/2021/11/23/clydes-zestfully-tasty-new-play-from-lynn-nottage-with-cilantro-and-dill/)",
+        "description": "BRO-5321"
+      }
+    ]
+  },
+  "executedAt": "2026-10-14T04:40:06.397Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "caroline-or-change-2021/variety--aramide-tinubu.json criticName: \"Aramide Tinubu\" -> \"Ayanna Prescod\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "caroline-or-change-2021/variety--ayanna-prescod.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "caroline-or-change-2021/variety--ayanna-prescod.json wrongAttributionReason: null -> \"BRO-5321: same text as variety--aramide-tinubu.json, which holds Ayanna Prescod's review at https://variety.com/2021/legit/reviews/caroline-or-change-review-broadway-1235104577/; this copy's byline or url is another page\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "caroline-or-change-2021/hollywood-reporter--angie-han.json criticName: \"Angie Han\" -> \"David Rooney\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "caroline-or-change-2021/hollywood-reporter--david-rooney.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "caroline-or-change-2021/hollywood-reporter--david-rooney.json wrongAttributionReason: null -> \"BRO-5321: same text as hollywood-reporter--angie-han.json, which holds David Rooney's review at https://www.hollywoodreporter.com/lifestyle/arts/caroline-or-change-broadway-review-1235045716/; this copy's byline or url is another page\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "follies-2011/variety--david-rooney.json criticName: \"David Rooney\" -> \"Steven Suskin\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "follies-2011/variety--steven-suskin.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "follies-2011/variety--steven-suskin.json wrongAttributionReason: null -> \"BRO-5321: same text as variety--david-rooney.json, which holds Steven Suskin's review at https://variety.com/2011/legit/reviews/follies-2-1117946070/; this copy's byline or url is another page\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "prince-of-broadway-2017/huffpost--huffington-post-steven-suskin.json criticName: \"Huffington Post (Steven Suskin)\" -> \"Steven Suskin\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "she-loves-me-2016/huffpost--fern-siegel.json criticName: \"Fern Siegel\" -> \"Steven Suskin\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "spring-awakening-2006/variety--charles-isherwood.json criticName: \"Charles Isherwood\" -> \"David Rooney\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "spring-awakening-2006/variety--david-rooney.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "spring-awakening-2006/variety--david-rooney.json wrongAttributionReason: null -> \"BRO-5321: same text as variety--charles-isherwood.json, which holds David Rooney's review at https://variety.com/2006/legit/reviews/spring-awakening-1200516066/; this copy's byline or url is another page\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "straight-white-men-2018/hollywood-reporter--david-rooney.json criticName: \"David Rooney\" -> \"Frank Scheck\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "straight-white-men-2018/hollywood-reporter--frank-scheck.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "straight-white-men-2018/hollywood-reporter--frank-scheck.json wrongAttributionReason: null -> \"BRO-5321: same text as hollywood-reporter--david-rooney.json, which holds Frank Scheck's review at https://www.hollywoodreporter.com/news/general-news/straight-white-men-theater-review-1129164/; this copy's byline or url is another page\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-king-and-i-west-end-2024/timeout-london--unknown.json criticName: \"Unknown\" -> \"Tom Wicker\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cabaret-2024/amny--emlyn-travis.json criticName: \"Emlyn Travis\" -> \"Matt Windman\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cabaret-2024/amny--matt-windman.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cabaret-2024/amny--matt-windman.json wrongAttributionReason: null -> \"BRO-5321: same text as amny--emlyn-travis.json, which holds Matt Windman's review at https://www.amny.com/news/review-cabaret-revival-2024/; this copy's byline or url is another page\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "clydes-2021/nysr--melissa-rose-bernardo.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "clydes-2021/nysr--melissa-rose-bernardo.json wrongAttributionReason: null -> \"BRO-5321: this text is Steven Suskin's review (nysr--steven-suskin.json): the page carrying this text credits Steven Suskin (http://nystagereview.com/2021/11/23/clydes-zestfully-tasty-new-play-from-lynn-nottage-with-cilantro-and-dill/)\""
+    }
+  ]
+}

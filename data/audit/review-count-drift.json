@@ -1,0 +1,203 @@
+{
+  "generatedAt": "2026-11-07T15:28:42.173Z",
+  "summary": {
+    "reviewsJsonLastUpdated": "2026-11-07T15:13:21.362Z",
+    "reviewsJsonAgeHours": 0.3,
+    "freshnessBreach": false,
+    "showsScanned": 24,
+    "allShowsScanned": 4768,
+    "filesScanned": 80408,
+    "showsOverThreshold": 0,
+    "newOffenders": 0,
+    "blindShows": 29,
+    "orphanReviews": 4
+  },
+  "thresholds": {
+    "suppressedPerShow": 3,
+    "windowDays": 7,
+    "maxAgeHours": 30
+  },
+  "showsOverThreshold": [],
+  "newOffenders": [],
+  "staleBaseline": [
+    {
+      "showDir": "china-doll-2015",
+      "gone": [
+        "journal-inquirer--lauren-yarger.json",
+        "latimes--charles-mcnulty.json",
+        "stagezine--david-nounou.json",
+        "theatermania--david-gordon.json"
+      ]
+    },
+    {
+      "showDir": "into-the-woods-1997",
+      "gone": [
+        "washpost--peter-marks.json"
+      ]
+    }
+  ],
+  "orphanReviews": [
+    {
+      "showId": "pride-bridge-theatre-off-west-end-2026",
+      "count": 23
+    },
+    {
+      "showId": "the-apple-boys-regional-2025",
+      "count": 4
+    },
+    {
+      "showId": "gun-and-powder-signature-regional-2020",
+      "count": 6
+    },
+    {
+      "showId": "gun-and-powder-regional-2020",
+      "count": 12
+    }
+  ],
+  "perShow": [
+    {
+      "showDir": "222-a-ghost-story-off-broadway-2026",
+      "actual": 10,
+      "scanned": 16,
+      "suppressedCount": 0,
+      "suppressed": [],
+      "overThreshold": false
+    },
+    {
+      "showDir": "adirondack-chair-circle-regional-2026",
+      "actual": 11,
+      "scanned": 11,
+      "suppressedCount": 0,
+      "suppressed": [],
+      "overThreshold": false
+    },
+    {
+      "showDir": "clifford-odets-waiting-for-lefty-off-broadway-2026",
+      "actual": 14,
+      "scanned": 15,
+      "suppressedCount": 0,
+      "suppressed": [],
+      "overThreshold": false
+    },
+    {
+      "showDir": "iphigenie-en-tauride-english-national-opera-west-end-2026",
+      "actual": 1,
+      "scanned": 3,
+      "suppressedCount": 1,
+      "suppressed": [
+        {
+          "file": "theatre-weekly--ke-meng.json",
+          "outletId": "theatre-weekly",
+          "criticName": "Ke Meng",
+          "publishDate": "2026-11-06",
+          "url": "https://theatreweekly.com/review-iphigenie-en-tauride-at-london-coliseum/"
+        }
+      ],
+      "overThreshold": false
+    },
+    {
+      "showDir": "nero-off-west-end-2026",
+      "actual": 2,
+      "scanned": 11,
+      "suppressedCount": 0,
+      "suppressed": [],
+      "overThreshold": false
+    },
+    {
+      "showDir": "parcel-from-america-off-broadway-2026",
+      "actual": 5,
+      "scanned": 6,
+      "suppressedCount": 0,
+      "suppressed": [],
+      "overThreshold": false
+    },
+    {
+      "showDir": "rope-off-broadway-2026",
+      "actual": 12,
+      "scanned": 14,
+      "suppressedCount": 0,
+      "suppressed": [],
+      "overThreshold": false
+    },
+    {
+      "showDir": "slanted-floors-off-broadway-2026",
+      "actual": 3,
+      "scanned": 4,
+      "suppressedCount": 0,
+      "suppressed": [],
+      "overThreshold": false
+    },
+    {
+      "showDir": "speculations-off-west-end-2026",
+      "actual": 28,
+      "scanned": 35,
+      "suppressedCount": 0,
+      "suppressed": [],
+      "overThreshold": false
+    },
+    {
+      "showDir": "tango-after-dark-off-west-end-2026",
+      "actual": 2,
+      "scanned": 2,
+      "suppressedCount": 0,
+      "suppressed": [],
+      "overThreshold": false
+    },
+    {
+      "showDir": "the-blue-violinist-over-west-end-avenue-off-broadway-2026",
+      "actual": 3,
+      "scanned": 5,
+      "suppressedCount": 0,
+      "suppressed": [],
+      "overThreshold": false
+    },
+    {
+      "showDir": "the-bridge-off-west-end-2026",
+      "actual": 24,
+      "scanned": 40,
+      "suppressedCount": 0,
+      "suppressed": [],
+      "overThreshold": false
+    },
+    {
+      "showDir": "the-morbs-off-broadway-2026",
+      "actual": 4,
+      "scanned": 6,
+      "suppressedCount": 0,
+      "suppressed": [],
+      "overThreshold": false
+    },
+    {
+      "showDir": "the-unbelievers-off-broadway-2026",
+      "actual": 14,
+      "scanned": 25,
+      "suppressedCount": 0,
+      "suppressed": [],
+      "overThreshold": false
+    },
+    {
+      "showDir": "the-verge-off-broadway-2026",
+      "actual": 11,
+      "scanned": 20,
+      "suppressedCount": 0,
+      "suppressed": [],
+      "overThreshold": false
+    },
+    {
+      "showDir": "tosca-off-broadway-2026",
+      "actual": 1,
+      "scanned": 15,
+      "suppressedCount": 0,
+      "suppressed": [],
+      "overThreshold": false
+    },
+    {
+      "showDir": "well-see-off-broadway-2026",
+      "actual": 11,
+      "scanned": 14,
+      "suppressedCount": 0,
+      "suppressed": [],
+      "overThreshold": false
+    }
+  ]
+}

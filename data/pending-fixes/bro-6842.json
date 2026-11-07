@@ -1,0 +1,76 @@
+{
+  "issueNumber": "bro-6842",
+  "planId": "610d4375-2222-4ba4-8f8b-80560189916c",
+  "status": "applied",
+  "createdAt": "2026-11-02T19:10:38.252Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6842: flag two misattributed files that are live under the wrong outlet (audit-review-contamination class C). (1) Les Liaisons Dangereuses (2016) William Wolf / Wolf Entertainment Guide file holds the New York Theatre Guide review (url newyorktheatreguide.com, text opens with a Barbara Mehlman and Geri Manus byline). (2) Hadestown (2019) WhatsOnStage / Scott Mitchell file is the reviewsoffbroadway.blogspot.com blog review, scored as WhatsOnStage; its crossOutletVerified note was written while the file was excluded as wrongProduction, and went stale when a scheduled job cleared that flag.",
+    "steps": [
+      "les-liaisons-dangereuses-2016/wolf-entertainment-guide--william-wolf.json: wrongAttribution (with reason)",
+      "hadestown-2019/whatsonstage--scott-mitchell.json: wrongAttribution (with reason)"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "les-liaisons-dangereuses-2016/wolf-entertainment-guide--william-wolf.json",
+        "field": "wrongAttributionReason",
+        "oldValue": null,
+        "newValue": "BRO-6842: url is newyorktheatreguide.com and the text opens with a Barbara Mehlman and Geri Manus byline, not William Wolf / Wolf Entertainment Guide (the text also covers the 2008 revival)",
+        "description": "les-liaisons-dangereuses-2016/wolf-entertainment-guide--william-wolf.json: wrongAttributionReason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "les-liaisons-dangereuses-2016/wolf-entertainment-guide--william-wolf.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "les-liaisons-dangereuses-2016/wolf-entertainment-guide--william-wolf.json: wrongAttribution"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "hadestown-2019/whatsonstage--scott-mitchell.json",
+        "field": "wrongAttributionReason",
+        "oldValue": null,
+        "newValue": "BRO-6842: url is reviewsoffbroadway.blogspot.com (the Reviews Off Broadway blog), scored as WhatsOnStage; the crossOutletVerified note assumed the file stayed excluded as wrongProduction, which a scheduled clear later removed",
+        "description": "hadestown-2019/whatsonstage--scott-mitchell.json: wrongAttributionReason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "hadestown-2019/whatsonstage--scott-mitchell.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "hadestown-2019/whatsonstage--scott-mitchell.json: wrongAttribution"
+      }
+    ]
+  },
+  "executedAt": "2026-11-02T19:52:56.093Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "les-liaisons-dangereuses-2016/wolf-entertainment-guide--william-wolf.json wrongAttributionReason: null -> \"BRO-6842: url is newyorktheatreguide.com and the text opens with a Barbara Mehlman and Geri Manus byline, not William Wolf / Wolf Entertainment Guide (the text also covers the 2008 revival)\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "les-liaisons-dangereuses-2016/wolf-entertainment-guide--william-wolf.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "hadestown-2019/whatsonstage--scott-mitchell.json wrongAttributionReason: null -> \"BRO-6842: url is reviewsoffbroadway.blogspot.com (the Reviews Off Broadway blog), scored as WhatsOnStage; the crossOutletVerified note assumed the file stayed excluded as wrongProduction, which a scheduled clear later removed\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "hadestown-2019/whatsonstage--scott-mitchell.json wrongAttribution: null -> true (retracted clearBreadcrumbRetracted, clearBreadcrumbRetractedAt, clearBreadcrumbRetractedFields, crossOutletVerified, crossOutletVerifiedNote, wrongArticleManualClear)"
+    }
+  ],
+  "executedIn": "ci"
+}

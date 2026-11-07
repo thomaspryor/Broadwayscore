@@ -1,0 +1,134 @@
+{
+  "issueNumber": "bro-6716-hand",
+  "planId": "8bbd66e6-a79b-4d3c-8752-dc508c5106e7",
+  "status": "partial",
+  "createdAt": "2026-10-31T19:40:39.646Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6716: clear four false review drops confirmed by reading the articles",
+    "steps": [
+      "Read the article: The Stage review of the Aldwych Theatre run (URL and body name the Aldwych, Hugh Bonneville and Maggie Siff), published 2026-02-13, one day after opening. CV flagged it only because the body mentions the 2019 Chichester origin.",
+      "Clear after the manual-clear marker above (BRO-6716).",
+      "Read the article: The Stage review of the National Theatre Lyttelton production (URL names the Lyttelton and Nicola Coughlan), dated 2025-12-12 at opening. CV objected that it is an Abbey co-production; it is this production.",
+      "Clear after the manual-clear marker above (BRO-6716).",
+      "Read the article: Mark Rifkin's TWI-NY piece is an evaluative review of The Disappear at the Minetta Lane (calls it wildly entertaining, closes with a verdict), dated 2026-01-16, the day after opening. CV called it a preview-style synopsis; its earlier CV verdict was articleType review.",
+      "Clear after the manual-clear marker above (BRO-6716).",
+      "Read the article: Charles Wright's Off Off Online piece on Silver Manhattan at the Bowery Palace evaluates the direction (\"an effective balance between serious musical drama and intimate rock concert\"), the book (\"slender, but they tell the story clearly\") and Malin's \"exuberant performance\"; Show Score lists it as a review. CV called it a feature.",
+      "Clear after the manual-clear marker above (BRO-6716)."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "shadowlands-west-end-2026/thestage--holly-omahony.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Read the article: The Stage review of the Aldwych Theatre run (URL and body name the Aldwych, Hugh Bonneville and Maggie Siff), published 2026-02-13, one day after opening. CV flagged it only because the body mentions the 2019 Chichester origin."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "shadowlands-west-end-2026/thestage--holly-omahony.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Clear after the manual-clear marker above (BRO-6716)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-playboy-of-the-western-world-west-end-2025/thestage--dave-fargnoli.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Read the article: The Stage review of the National Theatre Lyttelton production (URL names the Lyttelton and Nicola Coughlan), dated 2025-12-12 at opening. CV objected that it is an Abbey co-production; it is this production."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-playboy-of-the-western-world-west-end-2025/thestage--dave-fargnoli.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Clear after the manual-clear marker above (BRO-6716)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-disappear-off-broadway-2026/this-week-in-new-york--mark-rifkin.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Read the article: Mark Rifkin's TWI-NY piece is an evaluative review of The Disappear at the Minetta Lane (calls it wildly entertaining, closes with a verdict), dated 2026-01-16, the day after opening. CV called it a preview-style synopsis; its earlier CV verdict was articleType review."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-disappear-off-broadway-2026/this-week-in-new-york--mark-rifkin.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Clear after the manual-clear marker above (BRO-6716)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "silver-manhattan-off-broadway-2026/off-off-online--charles-wright.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Read the article: Charles Wright's Off Off Online piece on Silver Manhattan at the Bowery Palace evaluates the direction (\"an effective balance between serious musical drama and intimate rock concert\"), the book (\"slender, but they tell the story clearly\") and Malin's \"exuberant performance\"; Show Score lists it as a review. CV called it a feature."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "silver-manhattan-off-broadway-2026/off-off-online--charles-wright.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Clear after the manual-clear marker above (BRO-6716)."
+      }
+    ]
+  },
+  "executedAt": "2026-10-31T20:54:27.551Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "shadowlands-west-end-2026/thestage--holly-omahony.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "shadowlands-west-end-2026/thestage--holly-omahony.json wrongProduction: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-playboy-of-the-western-world-west-end-2025/thestage--dave-fargnoli.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-playboy-of-the-western-world-west-end-2025/thestage--dave-fargnoli.json wrongProduction: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-disappear-off-broadway-2026/this-week-in-new-york--mark-rifkin.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "wrongShow: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "silver-manhattan-off-broadway-2026/off-off-online--charles-wright.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "wrongShow: current value doesn't match expected (data changed since plan was created)"
+    }
+  ],
+  "executedIn": "ci"
+}

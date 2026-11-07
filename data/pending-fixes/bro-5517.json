@@ -1,0 +1,163 @@
+{
+  "issueNumber": "bro-5517",
+  "planId": "9eb90327-f1a1-48dc-83a4-4483a6200a2f",
+  "status": "applied",
+  "createdAt": "2026-10-17T04:53:17.365Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5517 follow-up: ten show notes, which print on the /biz show card, still quoted tax credit guesses written before the state paid or allocated the award the recoupment model now counts (scripts/lib/ny-tax-credit.js). Glengarry Glen Ross said \"Expected ~$1.9M\" (paid $2.7M), An Enemy of the People \"~$1.3M\" (paid ~$2.3M), Othello \"~$2M\" and Romeo + Juliet \"up to $1.75M\" (each allocated $3M); Buena Vista Social Club’s \"Eligible for $3M\" is now a payment; Art has no award listed and its \"Eligible for $3M\" named the cap as if owed. Four more still said \"Eligible for $3M\" after the award: Water for Elephants and The Great Gatsby were paid $3M (Jan 2025), Death Becomes Her and Sunset Boulevard allocated $3M (Aug 2025). Only the tax credit sentence changes in each note. Found by the new taxCreditNoteConflicts check (validate-data.js warning; audit-commercial-data.js weekly sweep).",
+    "steps": [
+      "Each action replaces one sentence of the notes; the rest of each note is unchanged.",
+      "After apply, taxCreditNoteConflicts returns no conflict for any record."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "glengarry-glen-ross-2025",
+        "field": "notes",
+        "oldValue": "Kieran Culkin, Bob Odenkirk, Bill Burr revival (all Broadway debuts). $7.5M cap (SEC confirmed). Recouped in 9 weeks (May 12, 2025). Broke Palace Theatre box-office record ($2.4M gross). Weekly nut ~$925K — early weeks roughly broke even, then $1M+ weeks drove quick recoupment. Expected ~$1.9M NY state tax credit (25% of costs). Run extended twice. All-male cast throughout.",
+        "newValue": "Kieran Culkin, Bob Odenkirk, Bill Burr revival (all Broadway debuts). $7.5M cap (SEC confirmed). Recouped in 9 weeks (May 12, 2025). Broke Palace Theatre box-office record ($2.4M gross). Weekly nut ~$925K — early weeks roughly broke even, then $1M+ weeks drove quick recoupment. Paid a $2.7M NY tax credit by Jun 2026 (Bloomberg Tax). Run extended twice. All-male cast throughout.",
+        "description": "glengarry-glen-ross-2025: the note tax credit sentence matches the award the model counts: paid about $2.7M by Jun 2 2026 (Bloomberg Tax, from ESD records), not the ~$1.9M expected."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "an-enemy-of-the-people",
+        "field": "notes",
+        "oldValue": "Jeremy Strong and Michael Imperioli in Amy Herzog's Ibsen adaptation. $5.5M cap recouped during run at Circle in the Square (840 seats). Broke CITS weekly gross record 16 times during run. Final week record: $1,266,338 (prev record $917K by Hugh Jackman in The River). Joined Broadway's $1M Club for weekly grosses — almost unheard of for a non-musical. Strong won Tony for Best Actor. Digital lottery + cancellation line ensured 100%+ capacity some weeks. Eligible for ~$1.3M tax credit.",
+        "newValue": "Jeremy Strong and Michael Imperioli in Amy Herzog's Ibsen adaptation. $5.5M cap recouped during run at Circle in the Square (840 seats). Broke CITS weekly gross record 16 times during run. Final week record: $1,266,338 (prev record $917K by Hugh Jackman in The River). Joined Broadway's $1M Club for weekly grosses — almost unheard of for a non-musical. Strong won Tony for Best Actor. Digital lottery + cancellation line ensured 100%+ capacity some weeks. Paid a ~$2.3M NY tax credit by Jun 2026 (Bloomberg Tax).",
+        "description": "an-enemy-of-the-people: the note tax credit sentence matches the award the model counts: paid roughly $2.3M by Jun 2 2026 (Bloomberg Tax), not the ~$1.3M estimate."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "buena-vista-social-club",
+        "field": "notes",
+        "oldValue": "Producer Orin Wolf noted it 'only cost $17 million' - modest for 2025 musical. Won 5 Tony Awards. Typical weekly gross $0.9-1.0M at 90-95% capacity. Break-even ~$0.85M. Broadway Journal: 'if they can weather the next year... may recoup in 12-18 months.' Eligible for $3M NY tax credit.",
+        "newValue": "Producer Orin Wolf noted it 'only cost $17 million' - modest for 2025 musical. Won 5 Tony Awards. Typical weekly gross $0.9-1.0M at 90-95% capacity. Break-even ~$0.85M. Broadway Journal: 'if they can weather the next year... may recoup in 12-18 months.' Paid a $3M NY tax credit by Jun 2026 (Bloomberg Tax).",
+        "description": "buena-vista-social-club: the note tax credit sentence matches the award the model counts: paid $3M by Jun 2 2026 (Bloomberg Tax): eligibility is now a payment."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "othello-2025",
+        "field": "notes",
+        "oldValue": "Denzel Washington & Jake Gyllenhaal. $9M cap. Recouped in 9 weeks (May 1, 2025). Shattered weekly Broadway play record with $2.82M gross (topping Harry Potter). Premium tickets reached $921. Highest-grossing play revival in world history. Expected ~$2M NY tax credit. 15-week limited run closed day of Tony Awards. Tony snub but producers announced recoupment as rejoinder. Washington likely had gross percentage deal.",
+        "newValue": "Denzel Washington & Jake Gyllenhaal. $9M cap. Recouped in 9 weeks (May 1, 2025). Shattered weekly Broadway play record with $2.82M gross (topping Harry Potter). Premium tickets reached $921. Highest-grossing play revival in world history. Allocated a $3M NY tax credit (ESD allocation list, Aug 2025). 15-week limited run closed day of Tony Awards. Tony snub but producers announced recoupment as rejoinder. Washington likely had gross percentage deal.",
+        "description": "othello-2025: the note tax credit sentence matches the award the model counts: ESD allocated $3M (BroadwayWorld analysis of the Aug 18 2025 lists), not the ~$2M expected."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "romeo-juliet-2024",
+        "field": "notes",
+        "oldValue": "Kit Connor and Rachel Zegler in Sam Gold's immersive production at Circle in the Square (794 seats). $7M cap recouped during 20-week run — 'rare industry feat' for Shakespeare. Final week $1.48M. Highest-grossing limited engagement in CITS history. 14% of buyers age 18-24 (youngest Broadway audience demographics ever). Jack Antonoff provided music. Sonya Tayeh choreography. Run extended twice. ATP $150-180 via dynamic pricing. SRO tickets sold for additional revenue. Eligible for up to $1.75M tax credit.",
+        "newValue": "Kit Connor and Rachel Zegler in Sam Gold's immersive production at Circle in the Square (794 seats). $7M cap recouped during 20-week run — 'rare industry feat' for Shakespeare. Final week $1.48M. Highest-grossing limited engagement in CITS history. 14% of buyers age 18-24 (youngest Broadway audience demographics ever). Jack Antonoff provided music. Sonya Tayeh choreography. Run extended twice. ATP $150-180 via dynamic pricing. SRO tickets sold for additional revenue. Allocated a $3M NY tax credit (ESD allocation list, Aug 2025).",
+        "description": "romeo-juliet-2024: the note tax credit sentence matches the award the model counts: ESD allocated $3M (Aug 18 2025 lists), not up to $1.75M."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "art-2025",
+        "field": "notes",
+        "oldValue": "Bobby Cannavale, James Corden, Neil Patrick Harris revival. $6.75M cap (Broadway News confirmed, SEC 'White Canvas Broadway LP' $6.9M). Recouped week ending Dec 14, 2025 (~13 weeks into 16-week run). Weekly nut ~$725-750K — surprisingly high for 3-actor play due to star salaries (~$350K/week combined) and premium Broadway Journal ad spend. Averaged $1.2-1.8M gross at ~99% capacity. Matthew Warchus directed (also directed original 1996 production). Eligible for $3M NY tax credit.",
+        "newValue": "Bobby Cannavale, James Corden, Neil Patrick Harris revival. $6.75M cap (Broadway News confirmed, SEC 'White Canvas Broadway LP' $6.9M). Recouped week ending Dec 14, 2025 (~13 weeks into 16-week run). Weekly nut ~$725-750K — surprisingly high for 3-actor play due to star salaries (~$350K/week combined) and premium Broadway Journal ad spend. Averaged $1.2-1.8M gross at ~99% capacity. Matthew Warchus directed (also directed original 1996 production).",
+        "description": "art-2025: the note tax credit sentence matches the award the model counts: no award is listed for Art; the $3M is the cap, not an amount it is owed, so the sentence goes."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "water-for-elephants",
+        "field": "notes",
+        "oldValue": "Closed Dec 8, 2024 without recouping despite 7 Tony nominations. $25M cap confirmed (NYT + SEC). Breakeven ~$960K gross/week but often fell short (e.g. 72% capacity, sub-$800K grosses early on). SEC: 'Benzini Bros LLC' ($8M) funded 2023 Atlanta tryout; additional LLCs raised remaining capital for Broadway. Peter Schneider / Big Red Barn Productions / Broadway Across America. Eligible for $3M NY state tax credit.",
+        "newValue": "Closed Dec 8, 2024 without recouping despite 7 Tony nominations. $25M cap confirmed (NYT + SEC). Breakeven ~$960K gross/week but often fell short (e.g. 72% capacity, sub-$800K grosses early on). SEC: 'Benzini Bros LLC' ($8M) funded 2023 Atlanta tryout; additional LLCs raised remaining capital for Broadway. Peter Schneider / Big Red Barn Productions / Broadway Across America. Paid a $3M NY tax credit (ESD payout list, Jan 2025).",
+        "description": "water-for-elephants: the note tax credit sentence matches the award the model counts: ESD paid $3M on Jan 29 2025 (the payout list scripts/lib/ny-tax-credit.js cites); eligibility is now a payment."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-great-gatsby",
+        "field": "notes",
+        "oldValue": "First Broadway musical led by Korean producer (OD Company). BroadwayWorld: 'now appears unlikely' to recoup - grosses declined ~$250K/week in 2025 vs 2024. Weekly running costs of more than $900,000 put break-even near $1.0M once royalties and rent are added; recent weeks grossed about $0.9M (82% capacity). Eligible for $3M NY tax credit. Lavish Jazz Age production with 22-person cast, Tony-winning costumes. [Merged from duplicate the-great-gatsby-2024 entry: Musical capitalized at $25 million, opened April 2024, has not yet recouped investment as of January 2025 according to trade reports]",
+        "newValue": "First Broadway musical led by Korean producer (OD Company). BroadwayWorld: 'now appears unlikely' to recoup - grosses declined ~$250K/week in 2025 vs 2024. Weekly running costs of more than $900,000 put break-even near $1.0M once royalties and rent are added; recent weeks grossed about $0.9M (82% capacity). Paid a $3M NY tax credit (ESD payout list, Jan 2025). Lavish Jazz Age production with 22-person cast, Tony-winning costumes. [Merged from duplicate the-great-gatsby-2024 entry: Musical capitalized at $25 million, opened April 2024, has not yet recouped investment as of January 2025 according to trade reports]",
+        "description": "the-great-gatsby: the note tax credit sentence matches the award the model counts: ESD paid $3M on Jan 29 2025; eligibility is now a payment."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "death-becomes-her",
+        "field": "notes",
+        "oldValue": "Most expensive show of 2024-2025 season. Grossed $63M+ in 46 weeks with $1.0-1.1M weekly costs. Closed June 2026; Broadway Journal (Aug 12, 2026) reported a total loss to investors as of early February 2026. Eligible for $3M NY tax credit (25% of costs up to $12M). Break-even ~$1.2M weekly. [Merged from duplicate death-becomes-her-2024 entry: High-budget musical ($31.5M) that opened November 2024 and is described as one of the major commercial successes of the season thus far, but insufficient data on recoupment status]",
+        "newValue": "Most expensive show of 2024-2025 season. Grossed $63M+ in 46 weeks with $1.0-1.1M weekly costs. Closed June 2026; Broadway Journal (Aug 12, 2026) reported a total loss to investors as of early February 2026. Allocated a $3M NY tax credit (ESD allocation list, Aug 2025). Break-even ~$1.2M weekly. [Merged from duplicate death-becomes-her-2024 entry: High-budget musical ($31.5M) that opened November 2024 and is described as one of the major commercial successes of the season thus far, but insufficient data on recoupment status]",
+        "description": "death-becomes-her: the note tax credit sentence matches the award the model counts: ESD allocated $3M (Aug 18 2025 lists); eligibility is now an allocation."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "sunset-boulevard-2024",
+        "field": "notes",
+        "oldValue": "Jamie Lloyd-directed revival starring Nicole Scherzinger. $15M capitalization. Weekly nut ~$950K. Won Tony for Best Actress (Scherzinger). Producer J.J. Powell confirmed $6M loss (~40% of cap) despite selling out and grossing $60M+ total. Jamie Lloyd invested $4M personally (~27% of cap) — unusual director-as-investor arrangement. Lloyd likely recouped his loss via director royalties (~1-2% of gross over 10 months). ALW's Really Useful Group took substantial composer/rights royalties. Scherzinger had high salary + possible gross percentage. Highest gross $2.5M in final week. Eligible for $3M tax credit (would reduce net loss to ~$3M).",
+        "newValue": "Jamie Lloyd-directed revival starring Nicole Scherzinger. $15M capitalization. Weekly nut ~$950K. Won Tony for Best Actress (Scherzinger). Producer J.J. Powell confirmed $6M loss (~40% of cap) despite selling out and grossing $60M+ total. Jamie Lloyd invested $4M personally (~27% of cap) — unusual director-as-investor arrangement. Lloyd likely recouped his loss via director royalties (~1-2% of gross over 10 months). ALW's Really Useful Group took substantial composer/rights royalties. Scherzinger had high salary + possible gross percentage. Highest gross $2.5M in final week. Allocated a $3M NY tax credit (ESD allocation list, Aug 2025), which would reduce its net loss to ~$3M.",
+        "description": "sunset-boulevard-2024: the note tax credit sentence matches the award the model counts: ESD allocated $3M (Aug 18 2025 lists); eligibility is now an allocation, the rest of the sentence unchanged."
+      }
+    ]
+  },
+  "executedAt": "2026-10-17T06:53:03.576Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for glengarry-glen-ross-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for an-enemy-of-the-people"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for buena-vista-social-club"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for othello-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for romeo-juliet-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for art-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for water-for-elephants"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for the-great-gatsby"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for death-becomes-her"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for sunset-boulevard-2024"
+    }
+  ]
+}

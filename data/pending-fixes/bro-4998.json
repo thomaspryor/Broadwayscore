@@ -1,0 +1,163 @@
+{
+  "issueNumber": "bro-4998",
+  "planId": "007485d5-1adb-4f88-b623-e80916d11f32",
+  "status": "applied",
+  "createdAt": "2026-10-30T07:57:39.525Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Correct verified remaining newsletter audit fields. Sources checked 2026-10-30; no review text included.",
+    "steps": [
+      "shows.json: a-ghost-in-your-ear-off-broadway-2026.openingDate Verified 2026-10-30: https://www.tdf.org/shows/23452/a-ghost-in-your-ear/",
+      "fences-off-west-end-2026/a-youngish-perspective--ella-thornburn.json: wrongProduction Verified 2026-10-30: https://ayoungishperspective.co.uk/2026/10/03/review-fences/",
+      "fences-off-west-end-2026/a-youngish-perspective--ella-thornburn.json: wrongProductionReason Verified 2026-10-30: https://ayoungishperspective.co.uk/2026/10/03/review-fences/",
+      "fences-off-west-end-2026/british-theatre--david-woodward.json: wrongProduction Verified 2026-10-30: https://www.britishtheatreguide.info/reviews/fences-oxford-playhous-26068",
+      "fences-off-west-end-2026/british-theatre--david-woodward.json: wrongProductionReason Verified 2026-10-30: https://www.britishtheatreguide.info/reviews/fences-oxford-playhous-26068",
+      "franz-and-marie-west-end-2026/jupiterhadley--jupiter.json: originalScore Verified 2026-10-30: https://jupiterhadley.com/franz-and-marie-at-charing-cross-theatre/",
+      "franz-and-marie-west-end-2026/jackstage--eddie-slattery.json: originalScore Verified 2026-10-30: https://www.jackstage.co.uk/post/franz-marie-review-imaginatively-staged-musical-after-b%C3%BCchner-s-woyzeck",
+      "rent-west-end-2026/thereviewshub--a-tran-ngoc.json: duplicateOf Verified 2026-10-30: https://www.thereviewshub.com/rent-tom-stoppard-theatre-london/",
+      "rent-west-end-2026/thereviewshub--the-reviews-hub-london.json: criticName Verified 2026-10-30: https://www.thereviewshub.com/rent-tom-stoppard-theatre-london/",
+      "the-hairy-ape-irish-repertory-theatre-off-broadway-2026/theatrely--emily-wyrwa.json: criticName Verified 2026-10-30: https://www.theatrely.com/post/excellent-stagings-of-our-basest-selves-degenerates-the-hairy-ape-review-roundup"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-ghost-in-your-ear-off-broadway-2026",
+        "field": "openingDate",
+        "oldValue": "2026-10-09",
+        "newValue": "2026-10-14",
+        "description": "shows.json: a-ghost-in-your-ear-off-broadway-2026.openingDate Verified 2026-10-30: https://www.tdf.org/shows/23452/a-ghost-in-your-ear/"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "fences-off-west-end-2026/a-youngish-perspective--ella-thornburn.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "fences-off-west-end-2026/a-youngish-perspective--ella-thornburn.json: wrongProduction Verified 2026-10-30: https://ayoungishperspective.co.uk/2026/10/03/review-fences/"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "fences-off-west-end-2026/a-youngish-perspective--ella-thornburn.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-4998: Oxford Playhouse review, not the Lyric run. The article states the Oxford run ends October 3, before Lyric previews October 6.",
+        "description": "fences-off-west-end-2026/a-youngish-perspective--ella-thornburn.json: wrongProductionReason Verified 2026-10-30: https://ayoungishperspective.co.uk/2026/10/03/review-fences/"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "fences-off-west-end-2026/british-theatre--david-woodward.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "fences-off-west-end-2026/british-theatre--david-woodward.json: wrongProduction Verified 2026-10-30: https://www.britishtheatreguide.info/reviews/fences-oxford-playhous-26068"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "fences-off-west-end-2026/british-theatre--david-woodward.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-4998: The article explicitly identifies Oxford Playhouse, October 1-3, 2026, not the Lyric run.",
+        "description": "fences-off-west-end-2026/british-theatre--david-woodward.json: wrongProductionReason Verified 2026-10-30: https://www.britishtheatreguide.info/reviews/fences-oxford-playhous-26068"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "franz-and-marie-west-end-2026/jupiterhadley--jupiter.json",
+        "field": "originalScore",
+        "oldValue": "5/5",
+        "newValue": null,
+        "description": "franz-and-marie-west-end-2026/jupiterhadley--jupiter.json: originalScore Verified 2026-10-30: https://jupiterhadley.com/franz-and-marie-at-charing-cross-theatre/"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "franz-and-marie-west-end-2026/jackstage--eddie-slattery.json",
+        "field": "originalScore",
+        "oldValue": null,
+        "newValue": "3/5",
+        "description": "franz-and-marie-west-end-2026/jackstage--eddie-slattery.json: originalScore Verified 2026-10-30: https://www.jackstage.co.uk/post/franz-marie-review-imaginatively-staged-musical-after-b%C3%BCchner-s-woyzeck"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "rent-west-end-2026/thereviewshub--a-tran-ngoc.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "thereviewshub--the-reviews-hub-london.json",
+        "description": "rent-west-end-2026/thereviewshub--a-tran-ngoc.json: duplicateOf Verified 2026-10-30: https://www.thereviewshub.com/rent-tom-stoppard-theatre-london/"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "rent-west-end-2026/thereviewshub--the-reviews-hub-london.json",
+        "field": "criticName",
+        "oldValue": "The Reviews Hub - London",
+        "newValue": "A. Tran Ngoc",
+        "description": "rent-west-end-2026/thereviewshub--the-reviews-hub-london.json: criticName Verified 2026-10-30: https://www.thereviewshub.com/rent-tom-stoppard-theatre-london/"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-hairy-ape-irish-repertory-theatre-off-broadway-2026/theatrely--emily-wyrwa.json",
+        "field": "criticName",
+        "oldValue": "Emily Wyrwa",
+        "newValue": "Juan A. Ramirez",
+        "description": "the-hairy-ape-irish-repertory-theatre-off-broadway-2026/theatrely--emily-wyrwa.json: criticName Verified 2026-10-30: https://www.theatrely.com/post/excellent-stagings-of-our-basest-selves-degenerates-the-hairy-ape-review-roundup"
+      }
+    ]
+  },
+  "executedAt": "2026-10-30T09:12:20.625Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for a-ghost-in-your-ear-off-broadway-2026"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "fences-off-west-end-2026/a-youngish-perspective--ella-thornburn.json wrongProduction: null -> true (retracted _previousWrongProductionClear, clearBreadcrumbRetracted, clearBreadcrumbRetractedAt, clearBreadcrumbRetractedFields, wrongProductionClearedNote, wrongProductionManualClear, wrongProductionOverride, wrongProductionOverrideReason, wrongProductionOverrideSetAt, wrongProductionOverrideSetBy)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "fences-off-west-end-2026/a-youngish-perspective--ella-thornburn.json wrongProductionReason: null -> \"BRO-4998: Oxford Playhouse review, not the Lyric run. The article states the Oxford run ends October 3, before Lyric previews October 6.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "fences-off-west-end-2026/british-theatre--david-woodward.json wrongProduction: null -> true (retracted _previousWrongProductionClear, clearBreadcrumbRetracted, clearBreadcrumbRetractedAt, clearBreadcrumbRetractedFields, wrongProductionClearedNote, wrongProductionManualClear, wrongProductionOverride, wrongProductionOverrideReason, wrongProductionOverrideSetAt, wrongProductionOverrideSetBy)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "fences-off-west-end-2026/british-theatre--david-woodward.json wrongProductionReason: null -> \"BRO-4998: The article explicitly identifies Oxford Playhouse, October 1-3, 2026, not the Lyric run.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "franz-and-marie-west-end-2026/jupiterhadley--jupiter.json originalScore: \"5/5\" -> null (retracted originalScoreCleared, originalScoreClearedReason, originalScoreCorrectedFrom, originalScoreNormalized, originalScoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "franz-and-marie-west-end-2026/jackstage--eddie-slattery.json originalScore: null -> \"3/5\" (retracted originalScoreNormalized, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "rent-west-end-2026/thereviewshub--a-tran-ngoc.json duplicateOf: null -> \"thereviewshub--the-reviews-hub-london.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "rent-west-end-2026/thereviewshub--the-reviews-hub-london.json criticName: \"The Reviews Hub - London\" -> \"A. Tran Ngoc\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-hairy-ape-irish-repertory-theatre-off-broadway-2026/theatrely--emily-wyrwa.json criticName: \"Emily Wyrwa\" -> \"Juan A. Ramirez\""
+    }
+  ],
+  "executedIn": "ci"
+}

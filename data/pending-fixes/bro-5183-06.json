@@ -1,0 +1,357 @@
+{
+  "issueNumber": "bro-5183-06",
+  "planId": "11ed0cec-700f-46ab-a285-751d245994b6",
+  "status": "partial",
+  "createdAt": "2026-10-12T22:52:13.944Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5183: mark legacy web-search phantoms as duplicates of the outlet's real review already on file (url aligned first, as the write guard requires).",
+    "steps": [
+      "mj-2022/variety--charles-isherwood.json: url -> https://variety.com/2022/legit/reviews/mj-review-michael-jackson-broadway-musical-1235168798/",
+      "mj-2022/variety--charles-isherwood.json: duplicateOf -> variety--naveen-kumar.json",
+      "mrs-warrens-profession-2010/nytimes--ben-brantley.json: url -> http://theater.nytimes.com/2010/10/04/theater/reviews/04mrs.html?ref=theaterhttp://theater.nytimes.com/2010/10/04/theater/reviews/04mrs.html?ref=theaterhttp://theater.nytimes.com/2010/10/04/theater/reviews/04mrs.html?ref=theater",
+      "mrs-warrens-profession-2010/nytimes--ben-brantley.json: duplicateOf -> about-entertainment--ben-brantley.json",
+      "relatively-speaking-2011/variety--charles-isherwood.json: url -> http://www.variety.com/review/VE1117946401",
+      "relatively-speaking-2011/variety--charles-isherwood.json: duplicateOf -> variety--marilyn-stasio.json",
+      "sister-act-2011/timeout--david-cote.json: url -> https://newyork.timeout.com/arts-culture/theater/1228219/review-sister-act",
+      "sister-act-2011/timeout--david-cote.json: duplicateOf -> timeout--adam-feldman.json",
+      "spongebob-squarepants-2017/vulture--jesse-green.json: url -> https://www.vulture.com/2017/12/adaptable-yellow-and-porous-is-he-spongebob-broadway.html",
+      "spongebob-squarepants-2017/vulture--jesse-green.json: duplicateOf -> vulture--sara-holdren.json",
+      "that-championship-season-2011/vulture--jesse-green.json: url -> http://nymag.com/daily/entertainment/2011/03/stage_dive_the_faded_glory_of.html",
+      "that-championship-season-2011/vulture--jesse-green.json: duplicateOf -> vulture--scott-brown.json",
+      "the-mystery-of-edwin-drood-2012/variety--marilyn-stasio.json: url -> https://www.variety.com/review/VE1117948742",
+      "the-mystery-of-edwin-drood-2012/variety--marilyn-stasio.json: duplicateOf -> variety--steven-suskin.json",
+      "the-peewee-herman-show-2010/variety--david-rooney.json: url -> http://www.variety.com/review/VE1117944035/",
+      "the-peewee-herman-show-2010/variety--david-rooney.json: duplicateOf -> variety--steven-suskin.json",
+      "what-the-constitution-means-to-me-2019/observer--rex-reed.json: url -> https://observer.com/2019/03/she-the-people-heidi-schreck-shreds-our-toxic-constitution/",
+      "what-the-constitution-means-to-me-2019/observer--rex-reed.json: duplicateOf -> observer--david-cote.json",
+      "in-the-next-room-2009/nytimes--ben-brantley.json: url -> http://www.nytimes.com/2009/11/20/theater/reviews/20innextroom.html?_r=1",
+      "in-the-next-room-2009/nytimes--ben-brantley.json: duplicateOf -> nytimes--charles-isherwood.json",
+      "king-kong-2018/talkinbroadway--matthew-murray.json: url -> https://www.talkinbroadway.com/page/world/KingKong2018.html",
+      "king-kong-2018/talkinbroadway--matthew-murray.json: duplicateOf -> talkinbroadway--howard-miller.json",
+      "once-on-this-island-2017/vulture--jesse-green.json: url -> https://www.vulture.com/2017/12/theater-the-performances-that-carry-once-on-this-island.html",
+      "once-on-this-island-2017/vulture--jesse-green.json: duplicateOf -> vulture--sara-holdren.json"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "mj-2022/variety--charles-isherwood.json",
+        "field": "url",
+        "oldValue": "https://variety.com/2022/legit/reviews/mj-the-musical-review-broadway-1235179126/",
+        "newValue": "https://variety.com/2022/legit/reviews/mj-review-michael-jackson-broadway-musical-1235168798/",
+        "description": "This legacy web-search row (made-up url https://variety.com/2022/legit/reviews/mj-the-musical-review-broadway-1235179126/, byline Charles Isherwood) is a copy of the outlet's real review, already on file as variety--naveen-kumar.json. Point it at that review's url so it can be marked a duplicate of it (the write guard requires matching urls)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "mj-2022/variety--charles-isherwood.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "variety--naveen-kumar.json",
+        "description": "Duplicate of variety--naveen-kumar.json (same outlet, same production, real page text on file); this row came from the legacy LLM web-search step."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "mrs-warrens-profession-2010/nytimes--ben-brantley.json",
+        "field": "url",
+        "oldValue": "https://www.nytimes.com/2010/10/04/theater/reviews/04warren.html",
+        "newValue": "http://theater.nytimes.com/2010/10/04/theater/reviews/04mrs.html?ref=theaterhttp://theater.nytimes.com/2010/10/04/theater/reviews/04mrs.html?ref=theaterhttp://theater.nytimes.com/2010/10/04/theater/reviews/04mrs.html?ref=theater",
+        "description": "This legacy web-search row (made-up url https://www.nytimes.com/2010/10/04/theater/reviews/04warren.html, byline Ben Brantley) is a copy of the outlet's real review, already on file as about-entertainment--ben-brantley.json. Point it at that review's url so it can be marked a duplicate of it (the write guard requires matching urls)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "mrs-warrens-profession-2010/nytimes--ben-brantley.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "about-entertainment--ben-brantley.json",
+        "description": "Duplicate of about-entertainment--ben-brantley.json (same outlet, same production, real page text on file); this row came from the legacy LLM web-search step."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "relatively-speaking-2011/variety--charles-isherwood.json",
+        "field": "url",
+        "oldValue": "https://variety.com/2011/legit/reviews/talking-cure-1118045506/",
+        "newValue": "http://www.variety.com/review/VE1117946401",
+        "description": "This legacy web-search row (made-up url https://variety.com/2011/legit/reviews/talking-cure-1118045506/, byline Charles Isherwood) is a copy of the outlet's real review, already on file as variety--marilyn-stasio.json. Point it at that review's url so it can be marked a duplicate of it (the write guard requires matching urls)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "relatively-speaking-2011/variety--charles-isherwood.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "variety--marilyn-stasio.json",
+        "description": "Duplicate of variety--marilyn-stasio.json (same outlet, same production, real page text on file); this row came from the legacy LLM web-search step."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "sister-act-2011/timeout--david-cote.json",
+        "field": "url",
+        "oldValue": "https://www.timeout.com/newyork/theater/sister-act-review",
+        "newValue": "https://newyork.timeout.com/arts-culture/theater/1228219/review-sister-act",
+        "description": "This legacy web-search row (made-up url https://www.timeout.com/newyork/theater/sister-act-review, byline David Cote) is a copy of the outlet's real review, already on file as timeout--adam-feldman.json. Point it at that review's url so it can be marked a duplicate of it (the write guard requires matching urls)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "sister-act-2011/timeout--david-cote.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "timeout--adam-feldman.json",
+        "description": "Duplicate of timeout--adam-feldman.json (same outlet, same production, real page text on file); this row came from the legacy LLM web-search step."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "spongebob-squarepants-2017/vulture--jesse-green.json",
+        "field": "url",
+        "oldValue": "https://www.vulture.com/2017/12/theater-review-spongebob-squarepants-the-broadway-musical.html",
+        "newValue": "https://www.vulture.com/2017/12/adaptable-yellow-and-porous-is-he-spongebob-broadway.html",
+        "description": "This legacy web-search row (made-up url https://www.vulture.com/2017/12/theater-review-spongebob-squarepants-the-broadway-musical.html, byline Jesse Green) is a copy of the outlet's real review, already on file as vulture--sara-holdren.json. Point it at that review's url so it can be marked a duplicate of it (the write guard requires matching urls)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "spongebob-squarepants-2017/vulture--jesse-green.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "vulture--sara-holdren.json",
+        "description": "Duplicate of vulture--sara-holdren.json (same outlet, same production, real page text on file); this row came from the legacy LLM web-search step."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "that-championship-season-2011/vulture--jesse-green.json",
+        "field": "url",
+        "oldValue": "https://www.vulture.com/2011/03/theater_review_that_champions.html",
+        "newValue": "http://nymag.com/daily/entertainment/2011/03/stage_dive_the_faded_glory_of.html",
+        "description": "This legacy web-search row (made-up url https://www.vulture.com/2011/03/theater_review_that_champions.html, byline Jesse Green) is a copy of the outlet's real review, already on file as vulture--scott-brown.json. Point it at that review's url so it can be marked a duplicate of it (the write guard requires matching urls)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "that-championship-season-2011/vulture--jesse-green.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "vulture--scott-brown.json",
+        "description": "Duplicate of vulture--scott-brown.json (same outlet, same production, real page text on file); this row came from the legacy LLM web-search step."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-mystery-of-edwin-drood-2012/variety--marilyn-stasio.json",
+        "field": "url",
+        "oldValue": "https://variety.com/2012/legit/reviews/the-mystery-of-edwin-drood-1117948959/",
+        "newValue": "https://www.variety.com/review/VE1117948742",
+        "description": "This legacy web-search row (made-up url https://variety.com/2012/legit/reviews/the-mystery-of-edwin-drood-1117948959/, byline Marilyn Stasio) is a copy of the outlet's real review, already on file as variety--steven-suskin.json. Point it at that review's url so it can be marked a duplicate of it (the write guard requires matching urls)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-mystery-of-edwin-drood-2012/variety--marilyn-stasio.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "variety--steven-suskin.json",
+        "description": "Duplicate of variety--steven-suskin.json (same outlet, same production, real page text on file); this row came from the legacy LLM web-search step."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-peewee-herman-show-2010/variety--david-rooney.json",
+        "field": "url",
+        "oldValue": "https://variety.com/2010/legit/reviews/the-pee-wee-herman-show-1117945092/",
+        "newValue": "http://www.variety.com/review/VE1117944035/",
+        "description": "This legacy web-search row (made-up url https://variety.com/2010/legit/reviews/the-pee-wee-herman-show-1117945092/, byline David Rooney) is a copy of the outlet's real review, already on file as variety--steven-suskin.json. Point it at that review's url so it can be marked a duplicate of it (the write guard requires matching urls)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-peewee-herman-show-2010/variety--david-rooney.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "variety--steven-suskin.json",
+        "description": "Duplicate of variety--steven-suskin.json (same outlet, same production, real page text on file); this row came from the legacy LLM web-search step."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "what-the-constitution-means-to-me-2019/observer--rex-reed.json",
+        "field": "url",
+        "oldValue": "https://observer.com/2019/04/what-the-constitution-means-to-me-broadway-review/",
+        "newValue": "https://observer.com/2019/03/she-the-people-heidi-schreck-shreds-our-toxic-constitution/",
+        "description": "This legacy web-search row (made-up url https://observer.com/2019/04/what-the-constitution-means-to-me-broadway-review/, byline Rex Reed) is a copy of the outlet's real review, already on file as observer--david-cote.json. Point it at that review's url so it can be marked a duplicate of it (the write guard requires matching urls)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "what-the-constitution-means-to-me-2019/observer--rex-reed.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "observer--david-cote.json",
+        "description": "Duplicate of observer--david-cote.json (same outlet, same production, real page text on file); this row came from the legacy LLM web-search step."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "in-the-next-room-2009/nytimes--ben-brantley.json",
+        "field": "url",
+        "oldValue": "https://www.nytimes.com/2009/11/20/theater/reviews/20room.html",
+        "newValue": "http://www.nytimes.com/2009/11/20/theater/reviews/20innextroom.html?_r=1",
+        "description": "This legacy web-search row (made-up url https://www.nytimes.com/2009/11/20/theater/reviews/20room.html, byline Ben Brantley) is a copy of the outlet's real review, already on file as nytimes--charles-isherwood.json. Point it at that review's url so it can be marked a duplicate of it (the write guard requires matching urls)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "in-the-next-room-2009/nytimes--ben-brantley.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "nytimes--charles-isherwood.json",
+        "description": "Duplicate of nytimes--charles-isherwood.json (same outlet, same production, real page text on file); this row came from the legacy LLM web-search step."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "king-kong-2018/talkinbroadway--matthew-murray.json",
+        "field": "url",
+        "oldValue": "https://www.talkinbroadway.com/world/KingKong.html",
+        "newValue": "https://www.talkinbroadway.com/page/world/KingKong2018.html",
+        "description": "This legacy web-search row (made-up url https://www.talkinbroadway.com/world/KingKong.html, byline Matthew Murray) is a copy of the outlet's real review, already on file as talkinbroadway--howard-miller.json. Point it at that review's url so it can be marked a duplicate of it (the write guard requires matching urls)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "king-kong-2018/talkinbroadway--matthew-murray.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "talkinbroadway--howard-miller.json",
+        "description": "Duplicate of talkinbroadway--howard-miller.json (same outlet, same production, real page text on file); this row came from the legacy LLM web-search step."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "once-on-this-island-2017/vulture--jesse-green.json",
+        "field": "url",
+        "oldValue": "https://www.vulture.com/2017/12/theater-review-once-on-this-island-revival.html",
+        "newValue": "https://www.vulture.com/2017/12/theater-the-performances-that-carry-once-on-this-island.html",
+        "description": "This legacy web-search row (made-up url https://www.vulture.com/2017/12/theater-review-once-on-this-island-revival.html, byline Jesse Green) is a copy of the outlet's real review, already on file as vulture--sara-holdren.json. Point it at that review's url so it can be marked a duplicate of it (the write guard requires matching urls)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "once-on-this-island-2017/vulture--jesse-green.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "vulture--sara-holdren.json",
+        "description": "Duplicate of vulture--sara-holdren.json (same outlet, same production, real page text on file); this row came from the legacy LLM web-search step."
+      }
+    ]
+  },
+  "executedAt": "2026-10-12T23:39:39.331Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "mj-2022/variety--charles-isherwood.json url: \"https://variety.com/2022/legit/reviews/mj-the-musical-review-broadway-1235179126/\" -> \"https://variety.com/2022/legit/reviews/mj-review-michael-jackson-broadway-musical-1235168798/\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "duplicateOf: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "mrs-warrens-profession-2010/nytimes--ben-brantley.json url: \"https://www.nytimes.com/2010/10/04/theater/reviews/04warren.html\" -> \"http://theater.nytimes.com/2010/10/04/theater/reviews/04mrs.html?ref=theaterhttp://theater.nytimes.com/2010/10/04/theater/reviews/04mrs.html?ref=theaterhttp://theater.nytimes.com/2010/10/04/theater/reviews/04mrs.html?ref=theater\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "duplicateOf: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "relatively-speaking-2011/variety--charles-isherwood.json url: \"https://variety.com/2011/legit/reviews/talking-cure-1118045506/\" -> \"http://www.variety.com/review/VE1117946401\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "duplicateOf: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "sister-act-2011/timeout--david-cote.json url: \"https://www.timeout.com/newyork/theater/sister-act-review\" -> \"https://newyork.timeout.com/arts-culture/theater/1228219/review-sister-act\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "duplicateOf: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "spongebob-squarepants-2017/vulture--jesse-green.json url: \"https://www.vulture.com/2017/12/theater-review-spongebob-squarepants-the-broadway-musical.html\" -> \"https://www.vulture.com/2017/12/adaptable-yellow-and-porous-is-he-spongebob-broadway.html\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "duplicateOf: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "that-championship-season-2011/vulture--jesse-green.json url: \"https://www.vulture.com/2011/03/theater_review_that_champions.html\" -> \"http://nymag.com/daily/entertainment/2011/03/stage_dive_the_faded_glory_of.html\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "duplicateOf: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-mystery-of-edwin-drood-2012/variety--marilyn-stasio.json url: \"https://variety.com/2012/legit/reviews/the-mystery-of-edwin-drood-1117948959/\" -> \"https://www.variety.com/review/VE1117948742\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "duplicateOf: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-peewee-herman-show-2010/variety--david-rooney.json url: \"https://variety.com/2010/legit/reviews/the-pee-wee-herman-show-1117945092/\" -> \"http://www.variety.com/review/VE1117944035/\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "duplicateOf: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "what-the-constitution-means-to-me-2019/observer--rex-reed.json url: \"https://observer.com/2019/04/what-the-constitution-means-to-me-broadway-review/\" -> \"https://observer.com/2019/03/she-the-people-heidi-schreck-shreds-our-toxic-constitution/\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "duplicateOf: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "in-the-next-room-2009/nytimes--ben-brantley.json url: \"https://www.nytimes.com/2009/11/20/theater/reviews/20room.html\" -> \"http://www.nytimes.com/2009/11/20/theater/reviews/20innextroom.html?_r=1\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "duplicateOf: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "king-kong-2018/talkinbroadway--matthew-murray.json url: \"https://www.talkinbroadway.com/world/KingKong.html\" -> \"https://www.talkinbroadway.com/page/world/KingKong2018.html\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "duplicateOf: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "once-on-this-island-2017/vulture--jesse-green.json url: \"https://www.vulture.com/2017/12/theater-review-once-on-this-island-revival.html\" -> \"https://www.vulture.com/2017/12/theater-the-performances-that-carry-once-on-this-island.html\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "once-on-this-island-2017/vulture--jesse-green.json duplicateOf applied, but the write guard also changed _duplicateOfCleared; check the record before trusting it"
+    }
+  ]
+}

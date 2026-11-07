@@ -1,0 +1,36 @@
+{
+  "issueNumber": "bro-6082",
+  "planId": "fa55b7e9-61cd-42bd-a333-5ce35264a7d2",
+  "status": "applied",
+  "createdAt": "2026-10-31T02:53:40.718Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Hairy Ape nydailynews file is the 2016 Cannavale review (article-1.3031263), not the 2026 Irish Rep production: flag wrongProduction so it stops listing as a T2 silent gap",
+    "steps": [
+      "the-hairy-ape-irish-repertory-theatre-off-broadway-2026/nydailynews--joe-dziemianowicz.json: wrongProduction"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "the-hairy-ape-irish-repertory-theatre-off-broadway-2026/nydailynews--joe-dziemianowicz.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "the-hairy-ape-irish-repertory-theatre-off-broadway-2026/nydailynews--joe-dziemianowicz.json: wrongProduction"
+      }
+    ]
+  },
+  "executedAt": "2026-10-31T03:49:30.187Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-hairy-ape-irish-repertory-theatre-off-broadway-2026/nydailynews--joe-dziemianowicz.json wrongProduction: null -> true"
+    }
+  ],
+  "executedIn": "ci"
+}

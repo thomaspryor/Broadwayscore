@@ -1,0 +1,322 @@
+{
+  "issueNumber": "bro-6036-b",
+  "planId": "0f26e158-8aaf-40d8-88bc-93031a6410ac",
+  "status": "applied",
+  "createdAt": "2026-10-23T10:30:24.365Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6036: sourced press nights for 11 closed West End rows plus first performance (source first-performance-no-press-night-found, no press night published) for 16 dance/one-off/short-run rows; Yamato, Whodunnit and Jack and the Beanstalk deliberately left undated (multi-week runs, press night likely) (bro-6036-b)",
+    "steps": [
+      "every-brilliant-thing-west-end-2025: openingDate null -> 2025-08-07 (BRO-6036: playbill.com production page: first preview Aug 1 2025, opening Aug 7 2025)",
+      "every-brilliant-thing-west-end-2025: openingDateSource (BRO-6036)",
+      "return-of-the-godz-west-end-2026: openingDate null -> 2026-06-10 (BRO-6036: short dance/one-off/fringe run with no published press night; first performance 2026-06-10 from the venue/ticketing listing)",
+      "return-of-the-godz-west-end-2026: openingDateSource (BRO-6036)",
+      "noda-map-320f-west-end-2026: openingDate null -> 2026-07-02 (BRO-6036: short dance/one-off/fringe run with no published press night; first performance 2026-07-02 from the venue/ticketing listing)",
+      "noda-map-320f-west-end-2026: openingDateSource (BRO-6036)",
+      "360-allstars-off-west-end-2026: openingDate null -> 2026-06-02 (BRO-6036: short dance/one-off/fringe run with no published press night; first performance 2026-06-02 from the venue/ticketing listing)",
+      "360-allstars-off-west-end-2026: openingDateSource (BRO-6036)",
+      "this-is-rambert-west-end-2026: openingDate null -> 2026-06-10 (BRO-6036: short dance/one-off/fringe run with no published press night; first performance 2026-06-10 from the venue/ticketing listing)",
+      "this-is-rambert-west-end-2026: openingDateSource (BRO-6036)",
+      "return-to-the-forest-off-west-end-2026: openingDate null -> 2026-05-28 (BRO-6036: short dance/one-off/fringe run with no published press night; first performance 2026-05-28 from the venue/ticketing listing)",
+      "return-to-the-forest-off-west-end-2026: openingDateSource (BRO-6036)",
+      "mermaids-and-pirates-west-end-2026: openingDate null -> 2026-07-21 (BRO-6036: short dance/one-off/fringe run with no published press night; first performance 2026-07-21 from the venue/ticketing listing)",
+      "mermaids-and-pirates-west-end-2026: openingDateSource (BRO-6036)",
+      "grayson-the-musical-a-first-look-off-west-end-2026: openingDate null -> 2026-07-16 (BRO-6036: short dance/one-off/fringe run with no published press night; first performance 2026-07-16 from the venue/ticketing listing)",
+      "grayson-the-musical-a-first-look-off-west-end-2026: openingDateSource (BRO-6036)",
+      "shamilton-the-improvised-hip-hop-musical-west-end-2026: openingDate null -> 2026-09-08 (BRO-6036: short dance/one-off/fringe run with no published press night; first performance 2026-09-08 from the venue/ticketing listing)",
+      "shamilton-the-improvised-hip-hop-musical-west-end-2026: openingDateSource (BRO-6036)",
+      "an-evening-with-an-immigrant-off-west-end-2026: openingDate null -> 2026-10-06 (BRO-6036: short dance/one-off/fringe run with no published press night; first performance 2026-10-06 from the venue/ticketing listing)",
+      "an-evening-with-an-immigrant-off-west-end-2026: openingDateSource (BRO-6036)"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "every-brilliant-thing-west-end-2025",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2025-08-07",
+        "description": "every-brilliant-thing-west-end-2025: openingDate null -> 2025-08-07 (BRO-6036: playbill.com production page: first preview Aug 1 2025, opening Aug 7 2025)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "every-brilliant-thing-west-end-2025",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "playbill.com production page: first preview Aug 1 2025, opening Aug 7 2025",
+        "description": "every-brilliant-thing-west-end-2025: openingDateSource (BRO-6036)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "return-of-the-godz-west-end-2026",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2026-06-10",
+        "description": "return-of-the-godz-west-end-2026: openingDate null -> 2026-06-10 (BRO-6036: short dance/one-off/fringe run with no published press night; first performance 2026-06-10 from the venue/ticketing listing)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "return-of-the-godz-west-end-2026",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "first-performance-no-press-night-found",
+        "description": "return-of-the-godz-west-end-2026: openingDateSource (BRO-6036)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "noda-map-320f-west-end-2026",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2026-07-02",
+        "description": "noda-map-320f-west-end-2026: openingDate null -> 2026-07-02 (BRO-6036: short dance/one-off/fringe run with no published press night; first performance 2026-07-02 from the venue/ticketing listing)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "noda-map-320f-west-end-2026",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "first-performance-no-press-night-found",
+        "description": "noda-map-320f-west-end-2026: openingDateSource (BRO-6036)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "360-allstars-off-west-end-2026",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2026-06-02",
+        "description": "360-allstars-off-west-end-2026: openingDate null -> 2026-06-02 (BRO-6036: short dance/one-off/fringe run with no published press night; first performance 2026-06-02 from the venue/ticketing listing)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "360-allstars-off-west-end-2026",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "first-performance-no-press-night-found",
+        "description": "360-allstars-off-west-end-2026: openingDateSource (BRO-6036)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "this-is-rambert-west-end-2026",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2026-06-10",
+        "description": "this-is-rambert-west-end-2026: openingDate null -> 2026-06-10 (BRO-6036: short dance/one-off/fringe run with no published press night; first performance 2026-06-10 from the venue/ticketing listing)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "this-is-rambert-west-end-2026",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "first-performance-no-press-night-found",
+        "description": "this-is-rambert-west-end-2026: openingDateSource (BRO-6036)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "return-to-the-forest-off-west-end-2026",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2026-05-28",
+        "description": "return-to-the-forest-off-west-end-2026: openingDate null -> 2026-05-28 (BRO-6036: short dance/one-off/fringe run with no published press night; first performance 2026-05-28 from the venue/ticketing listing)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "return-to-the-forest-off-west-end-2026",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "first-performance-no-press-night-found",
+        "description": "return-to-the-forest-off-west-end-2026: openingDateSource (BRO-6036)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "mermaids-and-pirates-west-end-2026",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2026-07-21",
+        "description": "mermaids-and-pirates-west-end-2026: openingDate null -> 2026-07-21 (BRO-6036: short dance/one-off/fringe run with no published press night; first performance 2026-07-21 from the venue/ticketing listing)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "mermaids-and-pirates-west-end-2026",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "first-performance-no-press-night-found",
+        "description": "mermaids-and-pirates-west-end-2026: openingDateSource (BRO-6036)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "grayson-the-musical-a-first-look-off-west-end-2026",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2026-07-16",
+        "description": "grayson-the-musical-a-first-look-off-west-end-2026: openingDate null -> 2026-07-16 (BRO-6036: short dance/one-off/fringe run with no published press night; first performance 2026-07-16 from the venue/ticketing listing)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "grayson-the-musical-a-first-look-off-west-end-2026",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "first-performance-no-press-night-found",
+        "description": "grayson-the-musical-a-first-look-off-west-end-2026: openingDateSource (BRO-6036)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "shamilton-the-improvised-hip-hop-musical-west-end-2026",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2026-09-08",
+        "description": "shamilton-the-improvised-hip-hop-musical-west-end-2026: openingDate null -> 2026-09-08 (BRO-6036: short dance/one-off/fringe run with no published press night; first performance 2026-09-08 from the venue/ticketing listing)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "shamilton-the-improvised-hip-hop-musical-west-end-2026",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "first-performance-no-press-night-found",
+        "description": "shamilton-the-improvised-hip-hop-musical-west-end-2026: openingDateSource (BRO-6036)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "an-evening-with-an-immigrant-off-west-end-2026",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2026-10-06",
+        "description": "an-evening-with-an-immigrant-off-west-end-2026: openingDate null -> 2026-10-06 (BRO-6036: short dance/one-off/fringe run with no published press night; first performance 2026-10-06 from the venue/ticketing listing)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "an-evening-with-an-immigrant-off-west-end-2026",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "first-performance-no-press-night-found",
+        "description": "an-evening-with-an-immigrant-off-west-end-2026: openingDateSource (BRO-6036)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-23T10:50:27.571Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for every-brilliant-thing-west-end-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for every-brilliant-thing-west-end-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for return-of-the-godz-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for return-of-the-godz-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for noda-map-320f-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for noda-map-320f-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for 360-allstars-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for 360-allstars-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for this-is-rambert-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for this-is-rambert-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for return-to-the-forest-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for return-to-the-forest-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for mermaids-and-pirates-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for mermaids-and-pirates-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for grayson-the-musical-a-first-look-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for grayson-the-musical-a-first-look-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for shamilton-the-improvised-hip-hop-musical-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for shamilton-the-improvised-hip-hop-musical-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for an-evening-with-an-immigrant-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for an-evening-with-an-immigrant-off-west-end-2026"
+    }
+  ],
+  "executedIn": "ci"
+}

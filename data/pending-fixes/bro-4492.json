@@ -1,0 +1,396 @@
+{
+  "issueNumber": "bro-4492",
+  "planId": "2a2b64f8-d346-4050-a09c-f76389c19b4d",
+  "status": "applied",
+  "createdAt": "2026-10-01T22:03:55.998Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Part 1 of 2 (25 of 41 rows; execute-approved-fix caps a plan at 25 actions). Type the 41 listed rows (status past announced) that have no type, so validate-market-expansion passes. Each type comes from the venue page, its ticketing feed, or a trade listing cited in the action. Dance, circus, magic and children's variety are special (same rule as discover-new-shows.js for TodayTix categories). The 5 other Orange Tree rows are in plan bro-4398-d.",
+    "steps": [
+      "Set type null -> musical on the-outsiders-world-premiere-regional-2023",
+      "Set type null -> musical on two-strangers-carry-a-cake-across-new-york-at-art-regional-2025",
+      "Set type null -> play on rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026",
+      "Set type null -> play on bluebirds-off-west-end-2026",
+      "Set type null -> play on cranford-off-west-end-2026",
+      "Set type null -> play on fly-you-fools-off-west-end-2026",
+      "Set type null -> play on triumph-off-west-end-2026",
+      "Set type null -> musical on the-radium-girls-off-west-end-2026",
+      "Set type null -> musical on an-outrageous-outcome-off-broadway-2027",
+      "Set type null -> play on broom-play-off-broadway-2026",
+      "Set type null -> play on not-nineveh-off-broadway-2027",
+      "Set type null -> musical on space-quest-off-broadway-2027",
+      "Set type null -> play on the-little-lasses-of-appleton-wisconsin-off-broadway-2027",
+      "Set type null -> play on we-are-happy-to-serve-you-off-broadway-2026",
+      "Set type null -> musical on you-go-on-off-broadway-2027",
+      "Set type null -> play on the-masters-tools-off-broadway-2027",
+      "Set type null -> play on miss-julie-off-broadway-2026",
+      "Set type null -> musical on all-the-way-home-off-broadway-2027",
+      "Set type null -> musical on nikola-tesla-the-forgotten-genius-off-broadway-2027",
+      "Set type null -> musical on sometimes-love-off-broadway-2027",
+      "Set type null -> play on baby-shower-katie-off-broadway-2027",
+      "Set type null -> play on gods-spies-off-broadway-2027",
+      "Set type null -> play on starstuff-off-broadway-2026",
+      "Set type null -> play on the-steel-man-off-broadway-2026",
+      "Set type null -> musical on tim-and-scrooge-off-broadway-2026"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-outsiders-world-premiere-regional-2023",
+        "field": "type",
+        "oldValue": null,
+        "newValue": "musical",
+        "description": "La Jolla Playhouse staged the world premiere of The Outsiders musical (book Adam Rapp, music and lyrics Jamestown Revival and Justin Levine): https://lajollaplayhouse.org/show/the-outsiders/ ; same production as the-outsiders-2024 (typed musical)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "two-strangers-carry-a-cake-across-new-york-at-art-regional-2025",
+        "field": "type",
+        "oldValue": null,
+        "newValue": "musical",
+        "description": "A.R.T. calls it a musical comedy by Jim Barne and Kit Buchan: https://americanrepertorytheater.org/shows-events/two-strangers-carry-a-cake-across-new-york/ ; transferred to Broadway as two-strangers-bway-2025 (typed musical)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026",
+        "field": "type",
+        "oldValue": null,
+        "newValue": "play",
+        "description": "A.R.T. page: \"Eugène Ionesco's landmark play ... in a new adaptation\": https://americanrepertorytheater.org/shows-events/rhinoceros/"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "bluebirds-off-west-end-2026",
+        "field": "type",
+        "oldValue": null,
+        "newValue": "play",
+        "description": "Vern Thiessen's award-winning WWI drama about three Canadian nurses, Finborough Theatre 30 Mar-24 Apr 2027: https://theatre-scout.fun/venues/finborough ; play: https://theatrens.ca/event/bluebirds/"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "cranford-off-west-end-2026",
+        "field": "type",
+        "oldValue": null,
+        "newValue": "play",
+        "description": "Lin Coghlan and Shaun McKenna's stage adaptation of Gaskell's novel, described as a play (\"the play follows the residents of the small town of Cranford\"): https://www.whatsonstage.com/news/full-cast-for-cranford-stage-adaptation-confirmed_1732070/ ; https://orangetreetheatre.co.uk/whats-on/cranford/"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "fly-you-fools-off-west-end-2026",
+        "field": "type",
+        "oldValue": null,
+        "newValue": "play",
+        "description": "Recent Cutbacks' four-performer parody of the first Lord of the Rings film (physical comedy, live sound effects, mime); same company as Hold On To Your Butts (typed play): https://www.whatsonstage.com/news/the-lord-of-the-rings-parody-fly-you-fools-to-premiere-in-london-and-birmingham_1732232/"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "triumph-off-west-end-2026",
+        "field": "type",
+        "oldValue": null,
+        "newValue": "play",
+        "description": "Almeida: world premiere of Caryl Churchill's new 15-minute play: https://almeida.co.uk/whats-on/triumph/ ; https://www.thestage.co.uk/news/production-news/almeida-announces-world-premiere-of-15-minute-caryl-churchill-play"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-radium-girls-off-west-end-2026",
+        "field": "type",
+        "oldValue": null,
+        "newValue": "musical",
+        "description": "Southwark Playhouse: world premiere new musical, 20 Mar-8 May 2027: https://southwarkplayhouse.co.uk/productions/the-radium-girls/ ; https://playbill.com/article/marissa-jaret-winokur-will-direct-world-premiere-radium-girls-musical-in-london"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "an-outrageous-outcome-off-broadway-2027",
+        "field": "type",
+        "oldValue": null,
+        "newValue": "musical",
+        "description": "OvationTix listing (Players Theatre, production 1290046): \"With book, music, and lyrics by Colby Thompson ... a musical revue for four performers\": https://ci.ovationtix.com/277/production/1290046"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "broom-play-off-broadway-2026",
+        "field": "type",
+        "oldValue": null,
+        "newValue": "play",
+        "description": "OvationTix listing (Players Theatre, production 1288031): clowning tragicomedy, \"a tension the play itself embodies\", a nod to Beckett and Ionesco: https://ci.ovationtix.com/277/production/1288031"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "not-nineveh-off-broadway-2027",
+        "field": "type",
+        "oldValue": null,
+        "newValue": "play",
+        "description": "OvationTix listing (Players Theatre, production 1291461): \"A new play by Amy Pan\": https://ci.ovationtix.com/277/production/1291461"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "space-quest-off-broadway-2027",
+        "field": "type",
+        "oldValue": null,
+        "newValue": "musical",
+        "description": "OvationTix listing (Players Theatre, production 1272596): \"a laugh-out-loud musical comedy\", site spacequestmusical.com: https://ci.ovationtix.com/277/production/1272596"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-little-lasses-of-appleton-wisconsin-off-broadway-2027",
+        "field": "type",
+        "oldValue": null,
+        "newValue": "play",
+        "description": "OvationTix listing (production 1281456) calls it a darkly comedic retelling of Macbeth; it had a new play reading at Playwrights Horizons (Feb 2026): https://ci.ovationtix.com/277/production/1281456 ; https://www.eventbrite.com/e/the-little-lasses-of-appleton-wisconisin-tickets-1979416577267"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "we-are-happy-to-serve-you-off-broadway-2026",
+        "field": "type",
+        "oldValue": null,
+        "newValue": "play",
+        "description": "OvationTix listing (production 1270079): written and performed by Sarah Fearon as Snazzy Peabody, with a director and dramaturg; her one-person comedy show: https://ci.ovationtix.com/277/production/1270079 ; https://www.irishecho.com/2026/2/a-resplenence-of-artists"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "you-go-on-off-broadway-2027",
+        "field": "type",
+        "oldValue": null,
+        "newValue": "musical",
+        "description": "OvationTix listing (Players Theatre, production 1277892) subtitle \"A New Musical\": https://ci.ovationtix.com/277/production/1277892"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-masters-tools-off-broadway-2027",
+        "field": "type",
+        "oldValue": null,
+        "newValue": "play",
+        "description": "Zora Howard's one-person play about Tituba (\"My play THE MASTER'S TOOLS\"), Flea OvationTix production 1290958: https://ci.ovationtix.com/14/production/1290958 ; https://utrfest.org/ufo/the-masters-tools/"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "miss-julie-off-broadway-2026",
+        "field": "type",
+        "oldValue": null,
+        "newValue": "play",
+        "description": "Irondale: a new adaptation of August Strindberg's Miss Julie (\"returns to the play\"): https://irondale.org/on-stage/miss-julie"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "all-the-way-home-off-broadway-2027",
+        "field": "type",
+        "oldValue": null,
+        "newValue": "musical",
+        "description": "OvationTix listing (Theater at St. Jean's, production 1274680): \"this exquisite new musical\": https://ci.ovationtix.com/34375/production/1274680"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "nikola-tesla-the-forgotten-genius-off-broadway-2027",
+        "field": "type",
+        "oldValue": null,
+        "newValue": "musical",
+        "description": "TDF listing: Off-Broadway musical with music, lyrics and book by Robert Lindsey-Nassif: https://www.tdf.org/shows/23430/nikola-tesla-the-forgotten-genius/"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "sometimes-love-off-broadway-2027",
+        "field": "type",
+        "oldValue": null,
+        "newValue": "musical",
+        "description": "OvationTix listing (Theater at St. Jean's, production 1274678): \"an original musical\": https://ci.ovationtix.com/34375/production/1274678"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "baby-shower-katie-off-broadway-2027",
+        "field": "type",
+        "oldValue": null,
+        "newValue": "play",
+        "description": "59E59/Primary Stages: Beth Hyland's new comedy (play), 27 Feb-11 Apr 2027: https://www.59e59.org/shows/show-detail/baby-shower-katie/"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "gods-spies-off-broadway-2027",
+        "field": "type",
+        "oldValue": null,
+        "newValue": "play",
+        "description": "59E59/Red Bull Theater: world premiere play by Bill Cain: https://www.59e59.org/shows/show-detail/gods-spies/"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "starstuff-off-broadway-2026",
+        "field": "type",
+        "oldValue": null,
+        "newValue": "play",
+        "description": "BroadwayWorld lists it as an Off-Broadway play (No. 11 Productions, 59E59 Theater C): https://www.broadwayworld.com/shows/Starstuff-336336.html ; https://www.59e59.org/shows/show-detail/starstuff/"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-steel-man-off-broadway-2026",
+        "field": "type",
+        "oldValue": null,
+        "newValue": "play",
+        "description": "59E59/Penguin Rep: Cary Gitter's play, 3 Nov-13 Dec 2026: https://www.59e59.org/shows/show-detail/the-steel-man/"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "tim-and-scrooge-off-broadway-2026",
+        "field": "type",
+        "oldValue": null,
+        "newValue": "musical",
+        "description": "59E59: \"Tim and Scrooge: A Holiday Musical Radio Play\", music by Neil Berg, book and lyrics by Nick Meglin: https://www.59e59.org/shows/show-detail/tim-and-scrooge/"
+      }
+    ]
+  },
+  "executedAt": "2026-10-01T22:47:50.587Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for the-outsiders-world-premiere-regional-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for two-strangers-carry-a-cake-across-new-york-at-art-regional-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for bluebirds-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for cranford-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for fly-you-fools-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for triumph-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for the-radium-girls-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for an-outrageous-outcome-off-broadway-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for broom-play-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for not-nineveh-off-broadway-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for space-quest-off-broadway-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for the-little-lasses-of-appleton-wisconsin-off-broadway-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for we-are-happy-to-serve-you-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for you-go-on-off-broadway-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for the-masters-tools-off-broadway-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for miss-julie-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for all-the-way-home-off-broadway-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for nikola-tesla-the-forgotten-genius-off-broadway-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for sometimes-love-off-broadway-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for baby-shower-katie-off-broadway-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for gods-spies-off-broadway-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for starstuff-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for the-steel-man-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for tim-and-scrooge-off-broadway-2026"
+    }
+  ]
+}

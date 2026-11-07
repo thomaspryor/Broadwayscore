@@ -1,0 +1,256 @@
+{
+  "issueNumber": "bro-5420-g6",
+  "planId": "df0e26ca-c8be-4c93-9f48-58b0ba0fe4a0",
+  "status": "partial",
+  "createdAt": "2026-10-16T04:45:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5420 (g6): London reviews live on Broadway shows (audit-uk-rows-on-broadway: UK outlet or Theatre Record, dated outside the Broadway opening window and priorRuns; each url hand-checked and names a London venue or production). This plan: flag wrongProduction (no London show holds the date), 18 actions.",
+    "steps": [
+      "flag"
+    ],
+    "riskLevel": "medium",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "the-assembled-parties-2013/artsdesk--helen-hawkins.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-5420: artsdesk 2025-10-28 review of a London production (https://theartsdesk.com/theatre/assembled-parties-hampstead-review-rarity-well-made-play-delivered-straight), not the Broadway run 2013-04-17..2013-07-28.",
+        "description": "BRO-5420: reason for the flag below."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-assembled-parties-2013/artsdesk--helen-hawkins.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5420: London review live on a Broadway show; no London show in shows.json whose run contains the date, so flag rather than move."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-assembled-parties-2013/standard--nick-curtis.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-5420: standard 2025-10-24 review of a London production (https://www.standard.co.uk/culture/theatre/the-assembled-parties-at-hampstead-theatre-review-b1254714.html), not the Broadway run 2013-04-17..2013-07-28.",
+        "description": "BRO-5420: reason for the flag below."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-assembled-parties-2013/standard--nick-curtis.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5420: London review live on a Broadway show; no London show in shows.json whose run contains the date, so flag rather than move."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-drowsy-chaperone-2006/independent--paul-taylor.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-5420: independent 2007-06-08 review of a London production (https://www.theatrerecord.com/archive/volume/27/page/691), not the Broadway run 2006-05-01..2007-12-30.",
+        "description": "BRO-5420: reason for the flag below."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-drowsy-chaperone-2006/independent--paul-taylor.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5420: London review live on a Broadway show; no London show in shows.json whose run contains the date, so flag rather than move."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-homecoming-2007/artsdesk--heather-neill.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-5420: artsdesk 2023-12-06 review of a London production (https://theartsdesk.com/theatre/homecoming-young-vic-theatre-review-pinters-disturbing-masterpiece-given-low-key-revival), not the Broadway run 2007-12-16..2008-04-13.",
+        "description": "BRO-5420: reason for the flag below."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-homecoming-2007/artsdesk--heather-neill.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5420: London review live on a Broadway show; no London show in shows.json whose run contains the date, so flag rather than move."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-homecoming-2007/london-theatre--matt-wolf.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-5420: london-theatre 2023-12-08 review of a London production (https://www.londontheatre.co.uk/reviews/the-homecoming-review-young-vic), not the Broadway run 2007-12-16..2008-04-13.",
+        "description": "BRO-5420: reason for the flag below."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-homecoming-2007/london-theatre--matt-wolf.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5420: London review live on a Broadway show; no London show in shows.json whose run contains the date, so flag rather than move."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-homecoming-2007/standard--nick-curtis.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-5420: standard 2023-12-06 review of a London production (https://www.standard.co.uk/culture/theatre/the-homecoming-young-vic-jared-harris-joe-cole-harold-pinter-b1125082.html), not the Broadway run 2007-12-16..2008-04-13.",
+        "description": "BRO-5420: reason for the flag below."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-homecoming-2007/standard--nick-curtis.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5420: London review live on a Broadway show; no London show in shows.json whose run contains the date, so flag rather than move."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-homecoming-2007/west-end-best-friend--diana-feng.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-5420: west-end-best-friend 2023-12-06 review of a London production (https://www.westendbestfriend.co.uk/news/review-the-homecoming-young-vic-theatre), not the Broadway run 2007-12-16..2008-04-13.",
+        "description": "BRO-5420: reason for the flag below."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-homecoming-2007/west-end-best-friend--diana-feng.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5420: London review live on a Broadway show; no London show in shows.json whose run contains the date, so flag rather than move."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-last-five-years-2025/london-theatre--unknown.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-5420: london-theatre 2020-10-06 review of a London production (https://www.londontheatre.co.uk/reviews/the-last-five-years-at-southwark-playhouse-soars-even-higher-after-shutdown), not the Broadway run 2025-04-06..2025-06-22.",
+        "description": "BRO-5420: reason for the flag below."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-last-five-years-2025/london-theatre--unknown.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5420: London review live on a Broadway show; no London show in shows.json whose run contains the date, so flag rather than move."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-mystery-of-edwin-drood-1985/guardian--michael-billington.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-5420: guardian 1987-05-09 review of a London production (https://www.theatrerecord.com/archive/issue/341#page=6), not the Broadway run 1985-12-02..1987-05-16.",
+        "description": "BRO-5420: reason for the flag below."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-mystery-of-edwin-drood-1985/guardian--michael-billington.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5420: London review live on a Broadway show; no London show in shows.json whose run contains the date, so flag rather than move."
+      }
+    ]
+  },
+  "executedAt": "2026-10-16T05:21:42.937Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-assembled-parties-2013/artsdesk--helen-hawkins.json wrongProductionReason: null -> \"BRO-5420: artsdesk 2025-10-28 review of a London production (https://theartsdesk.com/theatre/assembled-parties-hampstead-review-rarity-well-made-play-delivered-straight), not the Broadway run 2013-04-17..2013-07-28.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "wrongProduction: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-assembled-parties-2013/standard--nick-curtis.json wrongProductionReason: null -> \"BRO-5420: standard 2025-10-24 review of a London production (https://www.standard.co.uk/culture/theatre/the-assembled-parties-at-hampstead-theatre-review-b1254714.html), not the Broadway run 2013-04-17..2013-07-28.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "wrongProduction: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-drowsy-chaperone-2006/independent--paul-taylor.json wrongProductionReason: null -> \"BRO-5420: independent 2007-06-08 review of a London production (https://www.theatrerecord.com/archive/volume/27/page/691), not the Broadway run 2006-05-01..2007-12-30.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-drowsy-chaperone-2006/independent--paul-taylor.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-homecoming-2007/artsdesk--heather-neill.json wrongProductionReason: null -> \"BRO-5420: artsdesk 2023-12-06 review of a London production (https://theartsdesk.com/theatre/homecoming-young-vic-theatre-review-pinters-disturbing-masterpiece-given-low-key-revival), not the Broadway run 2007-12-16..2008-04-13.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "wrongProduction: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-homecoming-2007/london-theatre--matt-wolf.json wrongProductionReason: null -> \"BRO-5420: london-theatre 2023-12-08 review of a London production (https://www.londontheatre.co.uk/reviews/the-homecoming-review-young-vic), not the Broadway run 2007-12-16..2008-04-13.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "wrongProduction: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-homecoming-2007/standard--nick-curtis.json wrongProductionReason: null -> \"BRO-5420: standard 2023-12-06 review of a London production (https://www.standard.co.uk/culture/theatre/the-homecoming-young-vic-jared-harris-joe-cole-harold-pinter-b1125082.html), not the Broadway run 2007-12-16..2008-04-13.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "wrongProduction: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-homecoming-2007/west-end-best-friend--diana-feng.json wrongProductionReason: null -> \"BRO-5420: west-end-best-friend 2023-12-06 review of a London production (https://www.westendbestfriend.co.uk/news/review-the-homecoming-young-vic-theatre), not the Broadway run 2007-12-16..2008-04-13.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "wrongProduction: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "wrongProductionReason: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "wrongProduction: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-mystery-of-edwin-drood-1985/guardian--michael-billington.json wrongProductionReason: null -> \"BRO-5420: guardian 1987-05-09 review of a London production (https://www.theatrerecord.com/archive/issue/341#page=6), not the Broadway run 1985-12-02..1987-05-16.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-mystery-of-edwin-drood-1985/guardian--michael-billington.json wrongProduction: null -> true"
+    }
+  ]
+}

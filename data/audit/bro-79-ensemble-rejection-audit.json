@@ -1,0 +1,161 @@
+{
+  "auditedAt": "2026-08-20T19:57:40.770Z",
+  "cohort": "2026-07-21/22 ensemble-scoreability-check rescore (NYC rollout, commit 482d2118dee)",
+  "rootCauseFix": "scripts/llm-scoring/index.ts saveReviewFile(): clearFailureFlags() was nulling rejectionReason=garbage_text on the SAME write that set it. Fixed with clearFailureFlags(data, {skipRejectionReasonClear}) — narrow skip of just that sub-rule, not a blanket skip (ship-check adversarial review caught the first, broader version).",
+  "nullReasonBackfill": [
+    {
+      "path": "fully-committed-2016/eater--joshua-david-stein.json",
+      "backfilledReason": "garbage_text",
+      "rationale": "Real review contaminated with an unrelated Dallas-dining-scene listicle mid-article (scrape merged two Eater articles) — re-extraction could recover it."
+    },
+    {
+      "path": "grey-house-2023/slash-film--caroline-cao.json",
+      "backfilledReason": "garbage_text",
+      "rationale": "Real review present but >80% of the text is an unrelated horror-films listicle appended after it — re-extraction could recover it."
+    },
+    {
+      "path": "hadestown-2019/vox--constance-grady.json",
+      "backfilledReason": "garbage_text",
+      "rationale": "Real review interspersed with paywall/ad and personal-finance-story junk mid-article — re-extraction could recover it."
+    },
+    {
+      "path": "harry-potter-2021/limelight-magazine-au--clive-paget.json",
+      "backfilledReason": "garbage_text",
+      "rationale": "Truncated mid-sentence into promotional/nav content; paywall cutoff — a fresh fetch could get past it."
+    },
+    {
+      "path": "little-bear-ridge-road-2025/playbill--logan-culwell-block.json",
+      "backfilledReason": "not_a_review",
+      "rationale": "Playbill \"reviews are in\" news roundup — cast/creative-team facts and links to other outlets' reviews, no evaluative content of its own."
+    },
+    {
+      "path": "network-2018/broadwaynews--charles-isherwood.json",
+      "backfilledReason": "garbage_text",
+      "rationale": "Stored text is an archive.ph CAPTCHA interstitial, not article content — a fresh fetch could get past it."
+    },
+    {
+      "path": "promises-promises-2010/timeout--adam-feldman.json",
+      "backfilledReason": "garbage_text",
+      "rationale": "Partial real review fragment mixed with site nav and user-comment text; not cleanly scoreable as stored, but re-extraction could recover it."
+    },
+    {
+      "path": "the-lion-king-1997/newsday--linda-winer.json",
+      "backfilledReason": "not_a_review",
+      "rationale": "Behind-the-scenes operations/anniversary feature — no evaluative judgment of the production."
+    },
+    {
+      "path": "yellow-face-2024/aaartsalliance--katie-gee-salisbury.json",
+      "backfilledReason": "not_a_review",
+      "rationale": "Scrape captured the site's reviews-archive INDEX page (titles/links only), not the article body — refetching this same URL will always return the same index page."
+    },
+    {
+      "path": "1984-2017/bloomberg--jason-zinoman.json",
+      "backfilledReason": "not_a_review",
+      "rationale": "Scrape captured Bloomberg homepage/nav headlines, not the article; the review headline appears only as an unlinked title — this is what an unauthenticated fetch of this URL will always return."
+    },
+    {
+      "path": "brief-encounter-2010/newsday--linda-winer.json",
+      "backfilledReason": "not_a_review",
+      "rationale": "Systemic Newsday scraper bug: stored text is a live traffic-report widget, not the article (see also 5 sibling Newsday files below) — reproducible on this URL, not a one-off fetch glitch."
+    },
+    {
+      "path": "butley-2006/wsj--terry-teachout.json",
+      "backfilledReason": "not_a_review",
+      "rationale": "Systemic WSJ stream.wsj.com bug: stored text is the CURRENT WSJ homepage feed, not the archived article (identical 4248-char payload as romeo-and-juliet-2013 and the-testament-of-mary-2013 below — same scraper bug, three shows) — reproducible on this URL."
+    },
+    {
+      "path": "cats-2016/out-magazine--michael-musto.json",
+      "backfilledReason": "not_a_review",
+      "rationale": "Wrong article entirely — an unrelated Michael Musto interview piece with no Cats content; URL was never a Cats review, so this is permanent, not a fetch fluke."
+    },
+    {
+      "path": "charlie-and-the-chocolate-factory-2017/vulture--jesse-green.json",
+      "backfilledReason": "garbage_text",
+      "rationale": "Truncated mid-sentence before the verdict, with nav noise mixed in — a fresh fetch could recover the full text."
+    },
+    {
+      "path": "dont-dress-for-dinner-2012/nydailynews--joe-dziemianowicz.json",
+      "backfilledReason": "garbage_text",
+      "rationale": "Truncated and interleaved with unrelated NY Daily News headlines — a fresh fetch could recover the full text."
+    },
+    {
+      "path": "good-people-2011/newsday--linda-winer.json",
+      "backfilledReason": "not_a_review",
+      "rationale": "Systemic Newsday scraper bug: traffic-report widget content, not the article (see brief-encounter-2010 above) — reproducible on this URL."
+    },
+    {
+      "path": "jerusalem-2011/newsday--linda-winer.json",
+      "backfilledReason": "not_a_review",
+      "rationale": "Systemic Newsday scraper bug: traffic-report widget content, not the article — reproducible on this URL."
+    },
+    {
+      "path": "la-bete-2010/newsday--linda-winer.json",
+      "backfilledReason": "not_a_review",
+      "rationale": "Systemic Newsday scraper bug: traffic-report widget content, not the article — reproducible on this URL."
+    },
+    {
+      "path": "miss-saigon-2017/out-magazine--michael-musto.json",
+      "backfilledReason": "not_a_review",
+      "rationale": "Wrong article entirely — unrelated Musto interview content, URL was never a Miss Saigon review, so this is permanent, not a fetch fluke."
+    },
+    {
+      "path": "romeo-and-juliet-2013/wsj--unknown.json",
+      "backfilledReason": "not_a_review",
+      "rationale": "Systemic WSJ stream.wsj.com bug: current WSJ homepage feed, not the archived article (identical payload to butley-2006 above) — reproducible on this URL."
+    },
+    {
+      "path": "sister-act-2011/ew--thom-geier.json",
+      "backfilledReason": "not_a_review",
+      "rationale": "Pre-opening preview piece written before previews began — anticipatory commentary, no evaluation of an actual performance."
+    },
+    {
+      "path": "sister-act-2011/newsday--linda-winer.json",
+      "backfilledReason": "not_a_review",
+      "rationale": "Systemic Newsday scraper bug: traffic-report widget content, not the article — reproducible on this URL."
+    },
+    {
+      "path": "sunday-in-the-park-with-george-1984/nydailynews--howard-kissel.json",
+      "backfilledReason": "not_a_review",
+      "rationale": "Bernadette Peters career profile/interview piece — no critical evaluation of the production."
+    },
+    {
+      "path": "the-people-in-the-picture-2011/newsday--linda-winer.json",
+      "backfilledReason": "not_a_review",
+      "rationale": "Systemic Newsday scraper bug: traffic-report widget content, not the article — reproducible on this URL."
+    },
+    {
+      "path": "the-testament-of-mary-2013/wsj--unknown.json",
+      "backfilledReason": "not_a_review",
+      "rationale": "Systemic WSJ stream.wsj.com bug: current WSJ homepage feed, not the archived article (identical payload to butley-2006 above) — reproducible on this URL."
+    }
+  ],
+  "falsePositivesFixed": [
+    {
+      "path": "queen-versailles-2025/one-minute-critic--matthew-wexler.json",
+      "originalReason": "wrong_production",
+      "rationale": "LLM claimed the target venue was \"Ethel Barrymore Theatre\"; shows.json confirms queen-versailles-2025's actual venue is St. James Theatre, exactly as stated in the review text. LLM hallucinated the mismatch."
+    },
+    {
+      "path": "old-times-2015/huffpost--michael-glitz.json",
+      "originalReason": "wrong_production",
+      "rationale": "Review says \"American Airlines Theatre (Roundabout Theatre Company)\"; shows.json lists old-times-2015's venue as \"Todd Haimes Theatre\" — the same building, renamed in 2022. Venue-rename blindness, not a different production."
+    },
+    {
+      "path": "the-terms-of-my-surrender-2017/newsday--barbara-schuler.json",
+      "originalReason": "not_a_review",
+      "rationale": "Full WHAT/WHERE/BOTTOM LINE Newsday review with a complete critical arc and explicit verdict (\"Bottom Line: Michael Moore preaches to the choir\"). LLM was confused by a subscription-login banner and ad interruptions preceding the review body."
+    }
+  ],
+  "wickedRecovery": {
+    "path": "wicked-2003/washpost--peter-marks.json",
+    "method": "excerpt-tier (fullText cleared, showScoreExcerpt/dtliExcerpt/llmScore/assignedScore retained, contaminated text archived outside garbageFullText to prevent auto-restore)",
+    "llmScore": 66,
+    "assignedScore": 85
+  },
+  "ewAliceKingDocumented": {
+    "path": "wicked-2003/ew--alice-king.json",
+    "verdict": "sound-rejection-confirmed",
+    "rejectionReason": "not_a_review",
+    "rationale": "Wayback CDX for ew.com/article/2003/11/21/wicked shows exactly ONE 200-status capture (2016-03-06) and it is this same roundup content. Left rejected."
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "generatedAt": "2026-11-07T19:57:59.066Z",
+  "base": "https://broadwayscorecard.com",
+  "daysChecked": 21,
+  "skippedForBudget": 0,
+  "checked": 324,
+  "clean": 322,
+  "defective": 2,
+  "byType": {
+    "score-drift": 2
+  },
+  "shows": [
+    {
+      "showId": "nero-off-west-end-2026",
+      "title": "Nero",
+      "openingDate": "2026-11-06",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 38.41 vs local 39.18 (Δ0.77)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 4,
+      "deployedCount": 4,
+      "firstDefectAt": "2026-11-07T16:41:43.565Z"
+    },
+    {
+      "showId": "tristan-and-yseult-off-broadway-2026",
+      "title": "Tristan & Yseult",
+      "openingDate": null,
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 79.02 vs local 79.37 (Δ0.35)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 4,
+      "deployedCount": 4,
+      "firstDefectAt": "2026-11-07T18:27:51.656Z"
+    }
+  ],
+  "persistentDefective": 0,
+  "staleGraceHours": 6
+}

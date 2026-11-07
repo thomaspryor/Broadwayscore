@@ -1,0 +1,50 @@
+{
+  "issueNumber": "bro-6034",
+  "planId": "1a6318b4-3902-4a45-810a-b9a2107f5782",
+  "status": "applied",
+  "createdAt": "2026-10-23T05:23:05.088Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6034: score NY Daily News (Chris Jones) review of The Imaginary Invalid; ensemble skips it on a false critic-outlet mismatch from the content verifier",
+    "steps": [
+      "the-imaginary-invalid-2026/nydailynews--chris-jones.json: humanReviewScore",
+      "the-imaginary-invalid-2026/nydailynews--chris-jones.json: humanReviewNote"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "the-imaginary-invalid-2026/nydailynews--chris-jones.json",
+        "field": "humanReviewScore",
+        "oldValue": null,
+        "newValue": 72,
+        "description": "the-imaginary-invalid-2026/nydailynews--chris-jones.json: humanReviewScore"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-imaginary-invalid-2026/nydailynews--chris-jones.json",
+        "field": "humanReviewNote",
+        "oldValue": null,
+        "newValue": "Read full text: enthusiastic but qualified (\"mostly won me over\", \"weirdly invigorating\", warns the medical humor may repel some). Positive, 71-75 band; 72.",
+        "description": "the-imaginary-invalid-2026/nydailynews--chris-jones.json: humanReviewNote"
+      }
+    ]
+  },
+  "executedAt": "2026-10-23T05:31:34.763Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-imaginary-invalid-2026/nydailynews--chris-jones.json humanReviewScore: null -> 72"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-imaginary-invalid-2026/nydailynews--chris-jones.json humanReviewNote: null -> \"Read full text: enthusiastic but qualified (\\\"mostly won me over\\\", \\\"weirdly invigorating\\\", warns the medical humor may repel some). Positive, 71-75 band; 72.\""
+    }
+  ],
+  "executedIn": "ci"
+}

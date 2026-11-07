@@ -1,0 +1,58 @@
+{
+  "issueNumber": "bro-3915-b",
+  "planId": "49b9f100-6fef-457a-9399-3743ac137afb",
+  "status": "applied",
+  "createdAt": "2026-10-14T00:00:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Recase three shouted all-caps titles (owner chose normal casing, BRO-3915).",
+    "steps": [
+      "Retitle THE LISTENING, ISLA, VIDA to title case"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "retitle-show",
+        "id": "the-listening-off-broadway-2026",
+        "expectTitle": "THE LISTENING",
+        "newTitle": "The Listening",
+        "reason": "scraped from ticketing pages that uppercase titles; owner approved normal casing (BRO-3915)"
+      },
+      {
+        "type": "retitle-show",
+        "id": "isla-off-broadway-2026",
+        "expectTitle": "ISLA",
+        "newTitle": "Isla",
+        "reason": "scraped from ticketing pages that uppercase titles; owner approved normal casing (BRO-3915)"
+      },
+      {
+        "type": "retitle-show",
+        "id": "vida-off-broadway-2026",
+        "expectTitle": "VIDA",
+        "newTitle": "Vida",
+        "reason": "scraped from ticketing pages that uppercase titles; owner approved normal casing (BRO-3915)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-14T01:28:10.145Z",
+  "results": [
+    {
+      "action": "retitle-show",
+      "ok": true,
+      "msg": "retitled the-listening-off-broadway-2026: \"THE LISTENING\" -> \"The Listening\""
+    },
+    {
+      "action": "retitle-show",
+      "ok": true,
+      "msg": "retitled isla-off-broadway-2026: \"ISLA\" -> \"Isla\""
+    },
+    {
+      "action": "retitle-show",
+      "ok": true,
+      "msg": "retitled vida-off-broadway-2026: \"VIDA\" -> \"Vida\""
+    }
+  ]
+}

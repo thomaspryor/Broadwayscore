@@ -1,0 +1,47 @@
+{
+  "issueNumber": "bro-5325-c",
+  "planId": "012c67cc-5e25-4fb4-85d9-7888fe427cf7",
+  "status": "applied",
+  "createdAt": "2026-10-19T02:55:27.466Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5325 (c): add the required multiShowSource metadata to the two already recovered WSJ Teachout rows. The copy tool refreshes provenance when the stored section is identical, preserving fullText and existing scores. Venus in Fur remains queued for its pending rescore; Of Mice and Men already has an ensemble score.",
+    "steps": [
+      "Refresh multiShowSource on venus-in-fur-2011 from godspell-2011.",
+      "Refresh multiShowSource on of-mice-and-men-2014 from act-one-2014.",
+      "Run llm-ensemble-score.yml with show_id=venus-in-fur-2011 and needs_rescore=true to finish its pending rescore."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "run-script",
+        "script": "copy-multishow-section.js",
+        "args": "--from=godspell-2011/wsj--terry-teachout.json --to-show=venus-in-fur-2011 --expect-start=If_it_s_possible_to_become --expect-end=fry_a_carton_of_eggs_on_her --apply",
+        "description": "Refresh multiShowSource metadata on venus-in-fur-2011/wsj--terry-teachout.json from its stored sibling column. Preserve the existing identical section, URL, date and scoring state. Refuse an ambiguous section or a marker mismatch."
+      },
+      {
+        "type": "run-script",
+        "script": "copy-multishow-section.js",
+        "args": "--from=act-one-2014/wsj--terry-teachout.json --to-show=of-mice-and-men-2014 --expect-start=When_not_writing_plays_with_Moss_Hart --expect-end=with_any_regularity_on_Broadway --apply",
+        "description": "Refresh multiShowSource metadata on of-mice-and-men-2014/wsj--terry-teachout.json from its stored sibling column. Preserve the existing identical section, URL, date and scoring state. Refuse an ambiguous section or a marker mismatch."
+      }
+    ]
+  },
+  "executedAt": "2026-10-22T12:51:39.108Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran copy-multishow-section.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran copy-multishow-section.js successfully"
+    }
+  ],
+  "executedIn": "ci"
+}

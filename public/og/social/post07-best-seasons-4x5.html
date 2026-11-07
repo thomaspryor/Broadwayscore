@@ -1,0 +1,96 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><style>
+  
+  @import url('https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800;14..32,900&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    width: 2160px; height: 2700px;
+    background: #0f0f14;
+    font-family: 'Inter', ui-sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    color: #e5e7eb; overflow: hidden; -webkit-font-smoothing: antialiased;
+  } .page { padding: 120px 100px 100px; height: 100%; display: flex; flex-direction: column; } 
+  .header { text-align: center; margin-bottom: 72px; }
+  .header h1 { font-size: 112px; font-weight: 900; line-height: 1.05; color: #fff; letter-spacing: -0.02em; margin-bottom: 24px; }
+  .header .sub { font-size: 32px; font-weight: 400; color: #9ca3af; }
+  .header .sub .brand { color: #d4a574; font-weight: 700; }
+  .rows { display: flex; flex-direction: column; gap: 44px; align-items: center; flex: 1; }
+  .season-row { background: #1a1a24; border-radius: 32px; padding: 36px 48px; display: flex; align-items: center; gap: 36px; border: 1px solid rgba(255,255,255,0.05); max-width: 1700px; width: 100%; }
+  .season-rank { font-size: 128px; font-weight: 800; color: rgba(255,255,255,0.08); line-height: 1; width: 120px; text-align: center; flex-shrink: 0; }
+  .season-info { flex: 1; min-width: 0; }
+  .season-name { font-size: 72px; font-weight: 800; color: #fff; margin-bottom: 8px; }
+  .season-meta { font-size: 28px; color: #6b7280; }
+  .season-meta .highlight { color: #d4a574; font-weight: 600; }
+  .season-score-col { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; }
+  .season-score-label { font-size: 18px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: #6b7280; margin-bottom: 8px; }
+  .season-score { width: 140px; height: 140px; border-radius: 28px; display: flex; align-items: center; justify-content: center; font-size: 60px; font-weight: 700; }
+  .season-score.green { background: #22c55e; color: #fff; box-shadow: 0 2px 12px rgba(34,197,94,0.3); }
+  .season-score.teal { background: #14b8a6; color: #fff; box-shadow: 0 2px 12px rgba(20,184,166,0.3); }
+  
+  .footer { text-align: center; margin-top: auto; }
+  .footer-logo { font-size: 48px; font-weight: 900; margin-bottom: 16px; letter-spacing: -0.5px; }
+  .footer-logo .white { color: #fff; }
+  .footer-logo .gold { background: linear-gradient(135deg, #d4a574 0%, #b8956a 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .footer-logo .tm { font-size: 16px; font-weight: 400; vertical-align: super; margin-left: 4px; color: #9ca3af; -webkit-text-fill-color: #9ca3af; }
+  .footer-meta { font-size: 24px; font-weight: 400; color: #6b7280; }
+  </style></head><body><div class="page">
+    <div class="header">
+      <h1>Best Broadway Seasons<br>Since 2000</h1>
+      <div class="sub">Average <span class="brand">CriticScore™</span> across all shows that season</div>
+    </div>
+    <div class="rows">
+    <div class="season-row">
+        <div class="season-rank">1</div>
+        <div class="season-info">
+          <div class="season-name">2022-23 Season</div>
+          <div class="season-meta">43 shows · Top: <span class="highlight">Kimberly Akimbo</span> (88)</div>
+        </div>
+        <div class="season-score-col">
+          <div class="season-score-label">Avg Score</div>
+          <div class="season-score teal">72.5</div>
+        </div>
+      </div><div class="season-row">
+        <div class="season-rank">2</div>
+        <div class="season-info">
+          <div class="season-name">2016-17 Season</div>
+          <div class="season-meta">38 shows · Top: <span class="highlight">Dear Evan Hansen</span> (83)</div>
+        </div>
+        <div class="season-score-col">
+          <div class="season-score-label">Avg Score</div>
+          <div class="season-score teal">71.7</div>
+        </div>
+      </div><div class="season-row">
+        <div class="season-rank">3</div>
+        <div class="season-info">
+          <div class="season-name">2023-24 Season</div>
+          <div class="season-meta">35 shows · Top: <span class="highlight">Stereophonic</span> (89)</div>
+        </div>
+        <div class="season-score-col">
+          <div class="season-score-label">Avg Score</div>
+          <div class="season-score teal">71.7</div>
+        </div>
+      </div><div class="season-row">
+        <div class="season-rank">4</div>
+        <div class="season-info">
+          <div class="season-name">2017-18 Season</div>
+          <div class="season-meta">31 shows · Top: <span class="highlight">Angels in America</span> (88)</div>
+        </div>
+        <div class="season-score-col">
+          <div class="season-score-label">Avg Score</div>
+          <div class="season-score teal">71.4</div>
+        </div>
+      </div><div class="season-row">
+        <div class="season-rank">5</div>
+        <div class="season-info">
+          <div class="season-name">2014-15 Season</div>
+          <div class="season-meta">35 shows · Top: <span class="highlight">Hamilton</span> (89)</div>
+        </div>
+        <div class="season-score-col">
+          <div class="season-score-label">Avg Score</div>
+          <div class="season-score teal">71.1</div>
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+    <div class="footer-logo"><span class="white">Broadway</span><span class="gold">Scorecard</span><span class="tm">™</span></div>
+    <div class="footer-meta">Updated March 2026 · 700+ shows · 18,000+ scored reviews · broadwayscorecard.com</div>
+  </div>
+  </div></body></html>

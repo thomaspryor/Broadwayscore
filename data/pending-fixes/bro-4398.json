@@ -1,0 +1,61 @@
+{
+  "issueNumber": "bro-4398",
+  "planId": "b034be5f-e4e2-41b1-ab3a-ba61d8696d59",
+  "status": "applied",
+  "createdAt": "2026-09-30T18:31:19.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Remove three rows the 2026-09-30 Off-West End promotion added through the old undated venue-page path: two Kiln Theatre cinema screenings and a one-off concert at The Other Palace. The code paths that let them in are fixed (undated rows at dated-reader venues now drop; titles ending in 'Concert' are refused).",
+    "steps": [
+      "Retire all-rivers-spill-their-stories-to-the-sea-off-west-end-2026 (Kiln film screening), id only",
+      "Retire sense-and-sensibility-off-west-end-2026 (Kiln film screening), id only",
+      "Retire scribbles-concert-off-west-end-2026 (one-off concert), blocking the title at this venue"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "retire-show",
+        "id": "all-rivers-spill-their-stories-to-the-sea-off-west-end-2026",
+        "expectTitle": "All Rivers Spill Their Stories To The Sea",
+        "reason": "Kiln Theatre cinema screening (Spektrix attribute_Type Cinema), not a stage production; promoted 2026-09-30 by the undated venue-page path (BRO-4398)",
+        "description": "Retire Kiln film screening row"
+      },
+      {
+        "type": "retire-show",
+        "id": "sense-and-sensibility-off-west-end-2026",
+        "expectTitle": "Sense And Sensibility",
+        "reason": "Kiln Theatre cinema screening (Spektrix attribute_Type Cinema), not a stage production; promoted 2026-09-30 by the undated venue-page path (BRO-4398)",
+        "description": "Retire Kiln film screening row"
+      },
+      {
+        "type": "retire-show",
+        "id": "scribbles-concert-off-west-end-2026",
+        "expectTitle": "Scribbles Concert",
+        "reason": "One-off concert at The Other Palace, not a production; promoted 2026-09-30 by the undated venue-page path (BRO-4398)",
+        "blockTitleVenue": true,
+        "description": "Retire one-off concert row"
+      }
+    ]
+  },
+  "executedAt": "2026-09-30T19:40:21.321Z",
+  "results": [
+    {
+      "action": "retire-show",
+      "ok": true,
+      "msg": "retired all-rivers-spill-their-stories-to-the-sea-off-west-end-2026 (\"All Rivers Spill Their Stories To The Sea\" @ Kiln Theatre)"
+    },
+    {
+      "action": "retire-show",
+      "ok": true,
+      "msg": "retired sense-and-sensibility-off-west-end-2026 (\"Sense And Sensibility\" @ Kiln Theatre)"
+    },
+    {
+      "action": "retire-show",
+      "ok": true,
+      "msg": "retired scribbles-concert-off-west-end-2026 (\"Scribbles Concert\" @ The Other Palace) — title+venue blocked"
+    }
+  ]
+}

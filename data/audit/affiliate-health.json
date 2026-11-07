@@ -1,0 +1,68 @@
+{
+  "asOf": "2026-11-05",
+  "shadow": false,
+  "checks": [
+    {
+      "key": "affiliate:provider-auth:impact",
+      "label": "impact API",
+      "verdict": "pass",
+      "reason": "reachable"
+    },
+    {
+      "key": "affiliate:provider-auth:posthog",
+      "label": "posthog API",
+      "verdict": "pass",
+      "reason": "reachable"
+    },
+    {
+      "key": "affiliate:dead-man",
+      "label": "Dead-man (both click signals)",
+      "verdict": "pass",
+      "reason": "at least one click signal alive"
+    },
+    {
+      "key": "affiliate:conversions-flatline",
+      "label": "Conversions flatline",
+      "verdict": "pass",
+      "reason": "last yield 0d ago, under the 3d threshold"
+    },
+    {
+      "key": "affiliate:zero-conversions",
+      "label": "7-day zero-conversion ceiling",
+      "verdict": "pass",
+      "reason": "19 conversions in trailing 7d"
+    },
+    {
+      "key": "affiliate:click-flow-collapse",
+      "label": "Site ticket-click flow",
+      "verdict": "pass",
+      "reason": "715/715 = 100% of peak, above the 20% floor"
+    },
+    {
+      "key": "affiliate:impact-click-collapse",
+      "label": "Impact click ingestion",
+      "verdict": "pass",
+      "reason": "2638/2638 = 100% of peak, above the 20% floor"
+    },
+    {
+      "key": "affiliate:handoff-break",
+      "label": "Click → Impact handoff",
+      "verdict": "pass",
+      "reason": "Impact/PostHog click ratio 450% over 3d"
+    },
+    {
+      "key": "affiliate:bot-divergence",
+      "label": "Bot click divergence",
+      "verdict": "warn",
+      "reason": "Impact recorded 589 clicks vs only 131 real PostHog TodayTix clicks over 3d (4.5x, ceiling 2.5x) — likely bots hitting the pxf.io tracking links; dilutes EPC and risks Impact compliance review if sustained"
+    },
+    {
+      "key": "affiliate:payout-anomaly",
+      "label": "Payout economics",
+      "verdict": "pass",
+      "reason": "take-rate 3.46%, 0 zero-payout"
+    }
+  ],
+  "failingCount": 1,
+  "updatedAt": "2026-11-07T08:47:07.815Z"
+}

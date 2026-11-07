@@ -1,0 +1,225 @@
+{
+  "issueNumber": "bro-5000",
+  "planId": "a775f6fc-84cd-4514-b5b8-60f11b3890e8",
+  "status": "applied",
+  "createdAt": "2026-10-11T10:20:36.066Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5000 (1/2): move or delete the Bridge-run files sitting in the Noel Coward Into the Woods folder (dated before its 2026-09-22 previews); the inheritReviews opt-out was committed to shows.json.",
+    "steps": [
+      "Bridge-run files dated before 2026-09-22 leave the Noel Coward folder; duplicates are deleted, the rest move to into-the-woods-west-end-2025."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "into-the-woods-noel-coward-west-end-2026/bestoftheatre--al-gorman.json",
+        "description": "Bridge-run (or preview/trailer) item dated 2026-09-11, before the Noel Coward previews of 2026-09-22; not a review."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "into-the-woods-noel-coward-west-end-2026/bestoftheatre--cecil-glover.json",
+        "description": "Bridge-run (or preview/trailer) item dated 2026-09-10, before the Noel Coward previews of 2026-09-22; not a review."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "into-the-woods-noel-coward-west-end-2026/counselmagazine--daniel-barnett.json",
+        "destPath": "into-the-woods-west-end-2025/counselmagazine--daniel-barnett.json",
+        "description": "Bridge-run review dated 2026-04-13; belongs with the Bridge entry."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "into-the-woods-noel-coward-west-end-2026/guardian--arifa-akbar.json",
+        "description": "Bridge-run (or preview/trailer) item dated 2025-12-12, before the Noel Coward previews of 2026-09-22; the Bridge folder already holds it."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "into-the-woods-noel-coward-west-end-2026/i-paper--fiona-mountford.json",
+        "description": "Bridge-run (or preview/trailer) item dated 2025-12-12, before the Noel Coward previews of 2026-09-22; the Bridge folder already holds it."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "into-the-woods-noel-coward-west-end-2026/independent--louis-chilton.json",
+        "description": "Bridge-run (or preview/trailer) item dated 2025-12-12, before the Noel Coward previews of 2026-09-22; the Bridge folder already holds it."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "into-the-woods-noel-coward-west-end-2026/london-box-office--harriet-grenville.json",
+        "description": "Bridge-run (or preview/trailer) item dated 2016-07-18, before the Noel Coward previews of 2026-09-22; the Bridge folder already holds it."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "into-the-woods-noel-coward-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
+        "destPath": "into-the-woods-west-end-2025/londontheatredirect--london-theatre-direct-limited.json",
+        "description": "Bridge-run review dated 2025-12-16; belongs with the Bridge entry."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "into-the-woods-noel-coward-west-end-2026/mildconcern--tim-brandon.json",
+        "destPath": "into-the-woods-west-end-2025/mildconcern--tim-brandon.json",
+        "description": "Bridge-run review dated 2026-03-30; belongs with the Bridge entry."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "into-the-woods-noel-coward-west-end-2026/new-york-sun--elysa-gardner.json",
+        "description": "Bridge-run (or preview/trailer) item dated 2022-07-11, before the Noel Coward previews of 2026-09-22; the Bridge folder already holds it."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "into-the-woods-noel-coward-west-end-2026/observer--susannah-clapp.json",
+        "description": "Bridge-run (or preview/trailer) item dated 2025-12-19, before the Noel Coward previews of 2026-09-22; the Bridge folder already holds it."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "into-the-woods-noel-coward-west-end-2026/plays-to-see--wilder-gutterson.json",
+        "destPath": "into-the-woods-west-end-2025/plays-to-see--wilder-gutterson.json",
+        "description": "Bridge-run review dated 2026-03-05; belongs with the Bridge entry."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "into-the-woods-noel-coward-west-end-2026/telegraph--dominic-cavendish.json",
+        "description": "Bridge-run (or preview/trailer) item dated 2025-12-12, before the Noel Coward previews of 2026-09-22; the Bridge folder already holds it."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "into-the-woods-noel-coward-west-end-2026/the-jewish-chronicle--john-nathan.json",
+        "description": "Bridge-run (or preview/trailer) item dated 2026-01-06, before the Noel Coward previews of 2026-09-22; the Bridge folder already holds it."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "into-the-woods-noel-coward-west-end-2026/theatremonkey--unknown.json",
+        "destPath": "into-the-woods-west-end-2025/theatremonkey--unknown.json",
+        "description": "Bridge-run review dated 2025-12-13; belongs with the Bridge entry."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "into-the-woods-noel-coward-west-end-2026/timeout-london--andrzej-lukowski.json",
+        "description": "Bridge-run (or preview/trailer) item dated 2026-04-12, before the Noel Coward previews of 2026-09-22; the Bridge folder already holds it."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "into-the-woods-noel-coward-west-end-2026/times-uk--clive-davis.json",
+        "description": "Bridge-run (or preview/trailer) item dated 2025-12-12, before the Noel Coward previews of 2026-09-22; the Bridge folder already holds it."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "into-the-woods-noel-coward-west-end-2026/whatsonstage--sarah-crompton.json",
+        "description": "Bridge-run (or preview/trailer) item dated 2025-12-12, before the Noel Coward previews of 2026-09-22; the Bridge folder already holds it."
+      }
+    ]
+  },
+  "executedAt": "2026-10-11T11:42:50.601Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted into-the-woods-noel-coward-west-end-2026/bestoftheatre--al-gorman.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted into-the-woods-noel-coward-west-end-2026/bestoftheatre--cecil-glover.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved into-the-woods-noel-coward-west-end-2026/counselmagazine--daniel-barnett.json → into-the-woods-west-end-2025/counselmagazine--daniel-barnett.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted into-the-woods-noel-coward-west-end-2026/guardian--arifa-akbar.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted into-the-woods-noel-coward-west-end-2026/i-paper--fiona-mountford.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted into-the-woods-noel-coward-west-end-2026/independent--louis-chilton.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted into-the-woods-noel-coward-west-end-2026/london-box-office--harriet-grenville.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved into-the-woods-noel-coward-west-end-2026/londontheatredirect--london-theatre-direct-limited.json → into-the-woods-west-end-2025/londontheatredirect--london-theatre-direct-limited.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved into-the-woods-noel-coward-west-end-2026/mildconcern--tim-brandon.json → into-the-woods-west-end-2025/mildconcern--tim-brandon.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted into-the-woods-noel-coward-west-end-2026/new-york-sun--elysa-gardner.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted into-the-woods-noel-coward-west-end-2026/observer--susannah-clapp.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved into-the-woods-noel-coward-west-end-2026/plays-to-see--wilder-gutterson.json → into-the-woods-west-end-2025/plays-to-see--wilder-gutterson.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted into-the-woods-noel-coward-west-end-2026/telegraph--dominic-cavendish.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted into-the-woods-noel-coward-west-end-2026/the-jewish-chronicle--john-nathan.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved into-the-woods-noel-coward-west-end-2026/theatremonkey--unknown.json → into-the-woods-west-end-2025/theatremonkey--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted into-the-woods-noel-coward-west-end-2026/timeout-london--andrzej-lukowski.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted into-the-woods-noel-coward-west-end-2026/times-uk--clive-davis.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted into-the-woods-noel-coward-west-end-2026/whatsonstage--sarah-crompton.json"
+    }
+  ]
+}

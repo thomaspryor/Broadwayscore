@@ -1,0 +1,482 @@
+{
+  "issueNumber": "bro-5268-d",
+  "planId": "c8d1888e-39a9-4489-87f1-16bd5ad29ca2",
+  "status": "applied",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5268: cite trade/producer reports for recoupment outcomes on the-roommate, mamma-mia-2001, kimberly-akimbo-2022, aint-too-proud-2019, i-need-that, saint-joan-2018, paranormal-activity, dolly-an-original-musical, damn-yankees, a-few-good-men",
+    "steps": [
+      "Apply each commercial.json data-edit (compare-and-set on oldValue)",
+      "Each citation was read on the article page; excerpts are at most 15 quoted words"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-roommate",
+        "showId": "the-roommate",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "manual",
+            "url": "https://broadwayscorecard.com",
+            "date": "2026-02-03",
+            "excerpt": "Detailed financial analysis: did not recoup. Weekly grosses barely covered nut. Eligible for NY State tax credit up to $3M."
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://playbill.com/production/the-roommate-broadway-booth-theatre-2024",
+            "date": "2024-12-15",
+            "excerpt": "Total current gross: $6,974,678.64"
+          }
+        ],
+        "description": "the-roommate: replace own-site source link with the Playbill production page (grosses)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "mamma-mia-2001",
+        "showId": "mamma-mia-2001",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://playbill.com",
+            "date": "2002-05-29",
+            "excerpt": "Recouped entire $10M investment in less than 28 weeks"
+          },
+          {
+            "type": "manual",
+            "url": "https://broadwayscorecard.com",
+            "date": "2026-02-03",
+            "excerpt": "Detailed financial analysis: Universal Music contributed ~50% of $10M. All 3 ABBA members were investors. Littlestar paid £5.7M fees + £900K dividend."
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://playbill.com/article/money-money-money-hit-mamma-mia-recoups-its-investment-com-106096",
+            "date": "2002-05-29",
+            "excerpt": "has recouped its entire $10 million Broadway investment"
+          }
+        ],
+        "description": "mamma-mia-2001: replace homepage link with the Playbill recoupment article; drop own-site link (nothing supports its claims)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "kimberly-akimbo-2022",
+        "showId": "kimberly-akimbo-2022",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://www.broadwayjournal.com",
+            "date": "2023-01-01"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://playbill.com/article/kimberly-akimbo-national-tour-sets-closing-date",
+            "date": "2026-04-23",
+            "excerpt": "Both the Broadway production and the national tour have now recouped their investments"
+          }
+        ],
+        "description": "kimberly-akimbo-2022: replace homepage link with the Playbill article on the Broadway and tour recoupment"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "aint-too-proud-2019",
+        "showId": "aint-too-proud-2019",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://broadwaynews.com",
+            "date": "2021-12-01"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.forbes.com/sites/leeseymour/2021/12/28/aint-too-proud-is-latest-broadway-show-to-close-but-first-to-make-profit/",
+            "date": "2021-12-28"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.broadwaynews.com/aint-too-proud-to-end-broadway-run-jan-16/",
+            "date": "2021-12-28",
+            "excerpt": "will play its final Broadway performance Jan. 16"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.forbes.com/sites/leeseymour/2021/12/28/aint-too-proud-is-latest-broadway-show-to-close-but-first-to-make-profit/",
+            "date": "2021-12-28"
+          }
+        ],
+        "description": "aint-too-proud-2019: replace homepage link with the Broadway News closing article"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "i-need-that",
+        "showId": "i-need-that",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "manual",
+            "url": "https://www.roundabouttheatre.org/get-tickets/2023-2024-season/i-need-that",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwayworld.com/article/Danny-DeVito-Will-Return-to-Broadway-in-Theresa-Rebecks-I-NEED-THAT-Roundabout-Announces-2023-2024-Season-20230321",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://better.roundabouttheatre.org/",
+            "date": "2024-01-01"
+          },
+          {
+            "type": "trade",
+            "url": "https://en.wikipedia.org/wiki/I_Need_That",
+            "date": "2026-01-02"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "manual",
+            "url": "https://www.roundabouttheatre.org/get-tickets/2023-2024-season/i-need-that",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwayworld.com/article/Danny-DeVito-Will-Return-to-Broadway-in-Theresa-Rebecks-I-NEED-THAT-Roundabout-Announces-2023-2024-Season-20230321",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwaynews.com/danny-devito-and-lucy-devito-set-for-theresa-rebecks-i-need-that-with-roundabout-new-season-announced/",
+            "date": "2023-03-21",
+            "excerpt": "which is set to open at the American Airlines Theatre in October"
+          },
+          {
+            "type": "trade",
+            "url": "https://en.wikipedia.org/wiki/I_Need_That",
+            "date": "2026-01-02"
+          }
+        ],
+        "description": "i-need-that: replace homepage link with the Broadway News Roundabout season article"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "saint-joan-2018",
+        "showId": "saint-joan-2018",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://playbill.com/article/saint-joan-starring-condola-rashad-opens-on-broadway",
+            "date": null
+          },
+          {
+            "type": "manual",
+            "url": "https://www.manhattantheatreclub.com/",
+            "date": null
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://playbill.com/article/saint-joan-starring-condola-rashad-opens-on-broadway",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://playbill.com/article/take-a-first-look-at-saint-joan-on-broadway",
+            "date": "2018-04-20",
+            "excerpt": "The Manhattan Theatre Club's Broadway revival of Saint Joan began previews April 3."
+          }
+        ],
+        "description": "saint-joan-2018: replace MTC homepage link with the Playbill production article"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "paranormal-activity",
+        "showId": "paranormal-activity",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "manual",
+            "url": "https://broadwayscorecard.com",
+            "date": "2026-10-10"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/2153516/000215351626000001/primary_doc.xml",
+            "date": "2026-09-15"
+          }
+        ],
+        "description": "paranormal-activity: replace own-site link with the SEC Form D its capitalization cites"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "dolly-an-original-musical",
+        "showId": "dolly-an-original-musical",
+        "field": "isEstimate",
+        "oldValue": null,
+        "newValue": {
+          "capitalization": true
+        },
+        "description": "dolly-an-original-musical: replace own-site link with the production announcement; the $30M capitalization has no source, so mark it an estimate"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "dolly-an-original-musical",
+        "showId": "dolly-an-original-musical",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "manual",
+            "url": "https://broadwayscorecard.com",
+            "date": "2026-10-10"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "manual",
+            "url": "https://www.dollyparton.com/news/dolly-a-true-original-musical-comes-to-broadway-this-winter",
+            "date": "2026-07-07",
+            "excerpt": "produced by Dolly Parton, Danny Nozell, Adam Speers for ATG Productions, and Gavin Kalin"
+          }
+        ],
+        "description": "dolly-an-original-musical: replace own-site link with the production announcement; the $30M capitalization has no source, so mark it an estimate"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "damn-yankees",
+        "showId": "damn-yankees",
+        "field": "isEstimate",
+        "oldValue": null,
+        "newValue": {
+          "capitalization": true
+        },
+        "description": "damn-yankees: replace own-site link with the amNY announcement; the $19M capitalization has no source, so mark it an estimate"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "damn-yankees",
+        "showId": "damn-yankees",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "manual",
+            "url": "https://broadwayscorecard.com",
+            "date": "2026-10-10"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.amny.com/entertainment/broadway/damn-yankees-broadway-blue-man-group/",
+            "date": "2026-09-29",
+            "excerpt": "Previews begin March 24, 2027, at the Marquis Theatre."
+          }
+        ],
+        "description": "damn-yankees: replace own-site link with the amNY announcement; the $19M capitalization has no source, so mark it an estimate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-few-good-men-2026",
+        "field": "venue",
+        "oldValue": "Vivian Beaumont Theater - Lincoln Center Theater",
+        "newValue": "Vivian Beaumont Theater",
+        "description": "a-few-good-men: canonical venue name (the only show listing the Beaumont with a \"- Lincoln Center Theater\" suffix), so the Lincoln Center Theater nonprofit tag validates"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "a-few-good-men",
+        "showId": "a-few-good-men",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Nonprofit",
+        "description": "a-few-good-men: replace own-site link with the TheaterMania article: a Lincoln Center Theater (nonprofit) production; the unsourced $7M capitalization is dropped"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "a-few-good-men",
+        "showId": "a-few-good-men",
+        "field": "nonprofitOrg",
+        "oldValue": null,
+        "newValue": "Lincoln Center Theater",
+        "description": "a-few-good-men: replace own-site link with the TheaterMania article: a Lincoln Center Theater (nonprofit) production; the unsourced $7M capitalization is dropped"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "a-few-good-men",
+        "showId": "a-few-good-men",
+        "field": "capitalization",
+        "oldValue": 7000000,
+        "newValue": null,
+        "description": "a-few-good-men: replace own-site link with the TheaterMania article: a Lincoln Center Theater (nonprofit) production; the unsourced $7M capitalization is dropped"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "a-few-good-men",
+        "showId": "a-few-good-men",
+        "field": "capitalizationSource",
+        "oldValue": "Industry sources",
+        "newValue": null,
+        "description": "a-few-good-men: replace own-site link with the TheaterMania article: a Lincoln Center Theater (nonprofit) production; the unsourced $7M capitalization is dropped"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "a-few-good-men",
+        "showId": "a-few-good-men",
+        "field": "notes",
+        "oldValue": "Capitalization about $7M.",
+        "newValue": "Lincoln Center Theater (nonprofit) production at the Vivian Beaumont (TheaterMania, Jun 23, 2026); no capitalization reported.",
+        "description": "a-few-good-men: replace own-site link with the TheaterMania article: a Lincoln Center Theater (nonprofit) production; the unsourced $7M capitalization is dropped"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "a-few-good-men",
+        "showId": "a-few-good-men",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "manual",
+            "url": "https://broadwayscorecard.com",
+            "date": "2026-10-10"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.theatermania.com/news/bradley-whitford-and-aaron-sorkin-to-team-up-for-broadway-revival-of-a-few-good-men_1842777/",
+            "date": "2026-06-23",
+            "excerpt": "Tom Blyth will also star in the Lincoln Center Theater production at the Beaumont."
+          }
+        ],
+        "description": "a-few-good-men: replace own-site link with the TheaterMania article: a Lincoln Center Theater (nonprofit) production; the unsourced $7M capitalization is dropped"
+      }
+    ]
+  },
+  "executedAt": "2026-10-13T16:57:50.763Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for the-roommate"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for mamma-mia-2001"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for kimberly-akimbo-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for aint-too-proud-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for i-need-that"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for saint-joan-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for paranormal-activity"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: isEstimate updated for dolly-an-original-musical"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for dolly-an-original-musical"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: isEstimate updated for damn-yankees"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for damn-yankees"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: venue updated for a-few-good-men-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for a-few-good-men"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: nonprofitOrg updated for a-few-good-men"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for a-few-good-men"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for a-few-good-men"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for a-few-good-men"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for a-few-good-men"
+    }
+  ]
+}

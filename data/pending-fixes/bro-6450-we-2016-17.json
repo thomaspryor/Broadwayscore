@@ -1,0 +1,847 @@
+{
+  "issueNumber": "bro-6450-we-2016-17",
+  "planId": "ea7e1062-7db9-4efa-b875-a3ba376bce71",
+  "status": "applied",
+  "createdAt": "2026-10-27T23:55:51.370Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Add 25 closed West End production(s) for 2016-2017 from the historical backfill (we-historical:theatricalia; BRO-6450).",
+    "steps": [
+      "Append no-mans-land-west-end-2016 (Wyndham's Theatre, 2016-09-20 to 2016-12-17)",
+      "Append the-libertine-west-end-2016 (Theatre Royal Haymarket, 2016-09-27 to 2016-12-03)",
+      "Append nos-knife-west-end-2016 (The Old Vic, 2016-09-29 to 2016-10-15)",
+      "Append the-red-barn-west-end-2016 (Lyttelton Theatre, 2016-10-06 to 2017-01-17)",
+      "Append school-of-rock-west-end-2016 (Gillian Lynne Theatre, 2016-10-22 to 2020-03-01)",
+      "Append buried-child-west-end-2016 (Trafalgar Theatre, 2016-11-14 to 2017-03-04)",
+      "Append nice-fish-west-end-2016 (Harold Pinter Theatre, 2016-11-15 to 2017-02-11)",
+      "Append half-a-sixpence-west-end-2016 (Noël Coward Theatre, 2016-11-17 to 2017-09-02)",
+      "Append the-children-west-end-2016 (Royal Court, 2016-11-17 to 2017-01-14)",
+      "Append this-house-west-end-2016 (Garrick Theatre, 2016-11-19 to 2017-02-25)",
+      "Append hedda-gabler-west-end-2016 (Lyttelton Theatre, 2016-12-05 to 2017-03-21)",
+      "Append much-ado-about-nothing-west-end-2016 (Theatre Royal Haymarket, 2016-12-12 to 2017-03-18)",
+      "Append loves-labours-lost-west-end-2016 (Theatre Royal Haymarket, 2016-12-16 to 2017-03-18)",
+      "Append the-girls-west-end-2017 (Phoenix Theatre, 2017-01-28 to 2017-07-15)",
+      "Append twelfth-night-west-end-2017 (Olivier Theatre, 2017-02-15 to 2017-05-13)",
+      "Append whos-afraid-of-virginia-woolf-west-end-2017 (Harold Pinter Theatre, 2017-02-22 to 2017-05-27)",
+      "Append a-profoundly-affectionate-passionate-devotion-to-someone-noun-west-end-2017 (Royal Court, 2017-02-28 to 2017-04-01)",
+      "Append the-goat-or-who-is-sylvia-west-end-2017 (Theatre Royal Haymarket, 2017-03-14 to 2017-06-24)",
+      "Append 42nd-street-west-end-2017 (Theatre Royal Drury Lane, 2017-03-20 to 2019-01-05)",
+      "Append an-american-in-paris-west-end-2017 (Dominion Theatre, 2017-04-01 to 2018-01-27)",
+      "Append the-philanthropist-west-end-2017 (Trafalgar Theatre, 2017-04-03 to 2017-07-22)",
+      "Append killology-west-end-2017 (Royal Court, 2017-05-25 to 2017-06-24)",
+      "Append hamlet-west-end-2017 (Harold Pinter Theatre, 2017-06-09 to 2017-09-02)",
+      "Append mosquitoes-west-end-2017 (Dorfman Theatre, 2017-07-18 to 2017-09-28)",
+      "Append apologia-west-end-2017 (Trafalgar Theatre, 2017-07-29 to 2017-11-18)"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "add-show",
+        "show": {
+          "id": "no-mans-land-west-end-2016",
+          "title": "No Man's Land",
+          "slug": "no-mans-land-west-end-2016",
+          "venue": "Wyndham's Theatre",
+          "previewsStartDate": "2016-09-20",
+          "openingDate": "2016-09-20",
+          "closingDate": "2016-12-17",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2016-2017",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:50.747Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/4xm/no-mans-land/production/wrc"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-libertine-west-end-2016",
+          "title": "The Libertine",
+          "slug": "the-libertine-west-end-2016",
+          "venue": "Theatre Royal Haymarket",
+          "previewsStartDate": "2016-09-27",
+          "openingDate": "2016-09-27",
+          "closingDate": "2016-12-03",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2016-2017",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:50.775Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/fhs/the-libertine/production/108x"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "nos-knife-west-end-2016",
+          "title": "No's Knife",
+          "slug": "nos-knife-west-end-2016",
+          "venue": "The Old Vic",
+          "previewsStartDate": "2016-09-29",
+          "openingDate": "2016-09-29",
+          "closingDate": "2016-10-15",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2016-2017",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:50.798Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/e7k/nos-knife/production/wrx"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-red-barn-west-end-2016",
+          "title": "The Red Barn",
+          "slug": "the-red-barn-west-end-2016",
+          "venue": "Lyttelton Theatre",
+          "previewsStartDate": "2016-10-06",
+          "openingDate": "2016-10-06",
+          "closingDate": "2017-01-17",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2016-2017",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:50.823Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/e7n/the-red-barn/production/ws0"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "school-of-rock-west-end-2016",
+          "title": "School of Rock",
+          "slug": "school-of-rock-west-end-2016",
+          "venue": "Gillian Lynne Theatre",
+          "previewsStartDate": "2016-10-22",
+          "openingDate": "2016-10-22",
+          "closingDate": "2020-03-01",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "musical",
+          "tags": [
+            "historical"
+          ],
+          "season": "2016-2017",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:50.851Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/867/school-of-rock/production/14bx"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "buried-child-west-end-2016",
+          "title": "Buried Child",
+          "slug": "buried-child-west-end-2016",
+          "venue": "Trafalgar Theatre",
+          "previewsStartDate": "2016-11-14",
+          "openingDate": "2016-11-14",
+          "closingDate": "2017-03-04",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2016-2017",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:50.877Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/8pn/buried-child/production/wv0"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "nice-fish-west-end-2016",
+          "title": "Nice Fish",
+          "slug": "nice-fish-west-end-2016",
+          "venue": "Harold Pinter Theatre",
+          "previewsStartDate": "2016-11-15",
+          "openingDate": "2016-11-15",
+          "closingDate": "2017-02-11",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2016-2017",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:50.898Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/7dn/nice-fish/production/14ck"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "half-a-sixpence-west-end-2016",
+          "title": "Half a Sixpence",
+          "slug": "half-a-sixpence-west-end-2016",
+          "venue": "Noël Coward Theatre",
+          "previewsStartDate": "2016-11-17",
+          "openingDate": "2016-11-17",
+          "closingDate": "2017-09-02",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "musical",
+          "tags": [
+            "historical"
+          ],
+          "season": "2016-2017",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:50.919Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/5bs/half-a-sixpence/production/12nd"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-children-west-end-2016",
+          "title": "The Children",
+          "slug": "the-children-west-end-2016",
+          "venue": "Royal Court",
+          "previewsStartDate": "2016-11-17",
+          "openingDate": "2016-11-17",
+          "closingDate": "2017-01-14",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2016-2017",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:50.946Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/e84/the-children/production/wt4"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "this-house-west-end-2016",
+          "title": "This House",
+          "slug": "this-house-west-end-2016",
+          "venue": "Garrick Theatre",
+          "previewsStartDate": "2016-11-19",
+          "openingDate": "2016-11-19",
+          "closingDate": "2017-02-25",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2016-2017",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:50.971Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/e8x/this-house/production/wv9"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "hedda-gabler-west-end-2016",
+          "title": "Hedda Gabler",
+          "slug": "hedda-gabler-west-end-2016",
+          "venue": "Lyttelton Theatre",
+          "previewsStartDate": "2016-12-05",
+          "openingDate": "2016-12-05",
+          "closingDate": "2017-03-21",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2016-2017",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:50.991Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/9k/hedda-gabler/production/wvf"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "much-ado-about-nothing-west-end-2016",
+          "title": "Much Ado About Nothing",
+          "slug": "much-ado-about-nothing-west-end-2016",
+          "venue": "Theatre Royal Haymarket",
+          "previewsStartDate": "2016-12-12",
+          "openingDate": "2016-12-12",
+          "closingDate": "2017-03-18",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2016-2017",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:51.010Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/1/much-ado-about-nothing/production/108y"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "loves-labours-lost-west-end-2016",
+          "title": "Love's Labour's Lost",
+          "slug": "loves-labours-lost-west-end-2016",
+          "venue": "Theatre Royal Haymarket",
+          "previewsStartDate": "2016-12-16",
+          "openingDate": "2016-12-16",
+          "closingDate": "2017-03-18",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2016-2017",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:51.032Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/15/loves-labours-lost/production/108z"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-girls-west-end-2017",
+          "title": "The Girls",
+          "slug": "the-girls-west-end-2017",
+          "venue": "Phoenix Theatre",
+          "previewsStartDate": "2017-01-28",
+          "openingDate": "2017-01-28",
+          "closingDate": "2017-07-15",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "musical",
+          "tags": [
+            "historical"
+          ],
+          "season": "2016-2017",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:51.054Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/fma/the-girls/production/10f2"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "twelfth-night-west-end-2017",
+          "title": "Twelfth Night",
+          "slug": "twelfth-night-west-end-2017",
+          "venue": "Olivier Theatre",
+          "previewsStartDate": "2017-02-15",
+          "openingDate": "2017-02-15",
+          "closingDate": "2017-05-13",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2016-2017",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:51.074Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/f/twelfth-night/production/zhh"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "whos-afraid-of-virginia-woolf-west-end-2017",
+          "title": "Who's Afraid of Virginia Woolf?",
+          "slug": "whos-afraid-of-virginia-woolf-west-end-2017",
+          "venue": "Harold Pinter Theatre",
+          "previewsStartDate": "2017-02-22",
+          "openingDate": "2017-02-22",
+          "closingDate": "2017-05-27",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2016-2017",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:51.093Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/7bb/whos-afraid-of-virginia-woolf/production/wwm"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "a-profoundly-affectionate-passionate-devotion-to-someone-noun-west-end-2017",
+          "title": "a profoundly affectionate, passionate devotion to someone (-noun)",
+          "slug": "a-profoundly-affectionate-passionate-devotion-to-someone-noun-west-end-2017",
+          "venue": "Royal Court",
+          "previewsStartDate": "2017-02-28",
+          "openingDate": "2017-02-28",
+          "closingDate": "2017-04-01",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2016-2017",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:51.118Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/fxd/a-profoundly-affectionate-passionate-devotion-to-someone-noun/production/10zx"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-goat-or-who-is-sylvia-west-end-2017",
+          "title": "The Goat, or Who is Sylvia?",
+          "slug": "the-goat-or-who-is-sylvia-west-end-2017",
+          "venue": "Theatre Royal Haymarket",
+          "previewsStartDate": "2017-03-14",
+          "openingDate": "2017-03-14",
+          "closingDate": "2017-06-24",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2016-2017",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:51.139Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/far/the-goat-or-who-is-sylvia/production/wvd"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "42nd-street-west-end-2017",
+          "title": "42nd Street",
+          "slug": "42nd-street-west-end-2017",
+          "venue": "Theatre Royal Drury Lane",
+          "previewsStartDate": "2017-03-20",
+          "openingDate": "2017-03-20",
+          "closingDate": "2019-01-05",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "musical",
+          "tags": [
+            "historical"
+          ],
+          "season": "2016-2017",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:51.163Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/5nt/42nd-street/production/zv6"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "an-american-in-paris-west-end-2017",
+          "title": "An American in Paris",
+          "slug": "an-american-in-paris-west-end-2017",
+          "venue": "Dominion Theatre",
+          "previewsStartDate": "2017-04-01",
+          "openingDate": "2017-04-01",
+          "closingDate": "2018-01-27",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "musical",
+          "tags": [
+            "historical"
+          ],
+          "season": "2016-2017",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:51.186Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/e69/an-american-in-paris/production/wn9"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-philanthropist-west-end-2017",
+          "title": "The Philanthropist",
+          "slug": "the-philanthropist-west-end-2017",
+          "venue": "Trafalgar Theatre",
+          "previewsStartDate": "2017-04-03",
+          "openingDate": "2017-04-03",
+          "closingDate": "2017-07-22",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2016-2017",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:51.207Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/51x/the-philanthropist/production/wwp"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "killology-west-end-2017",
+          "title": "Killology",
+          "slug": "killology-west-end-2017",
+          "venue": "Royal Court",
+          "previewsStartDate": "2017-05-25",
+          "openingDate": "2017-05-25",
+          "closingDate": "2017-06-24",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2016-2017",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:51.228Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/fy5/killology/production/1118"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "hamlet-west-end-2017",
+          "title": "Hamlet",
+          "slug": "hamlet-west-end-2017",
+          "venue": "Harold Pinter Theatre",
+          "previewsStartDate": "2017-06-09",
+          "openingDate": "2017-06-09",
+          "closingDate": "2017-09-02",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2016-2017",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:51.246Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/2/hamlet/production/12q9"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "mosquitoes-west-end-2017",
+          "title": "Mosquitoes",
+          "slug": "mosquitoes-west-end-2017",
+          "venue": "Dorfman Theatre",
+          "previewsStartDate": "2017-07-18",
+          "openingDate": "2017-07-18",
+          "closingDate": "2017-09-28",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2016-2017",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:51.268Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/fwh/mosquitoes/production/10yq"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "apologia-west-end-2017",
+          "title": "Apologia",
+          "slug": "apologia-west-end-2017",
+          "venue": "Trafalgar Theatre",
+          "previewsStartDate": "2017-07-29",
+          "openingDate": "2017-07-29",
+          "closingDate": "2017-11-18",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2016-2017",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:51.287Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/ecf/apologia/production/14y3"
+          ]
+        }
+      }
+    ]
+  },
+  "executedAt": "2026-10-28T01:28:13.391Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added no-mans-land-west-end-2016"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-libertine-west-end-2016"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added nos-knife-west-end-2016"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-red-barn-west-end-2016"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added school-of-rock-west-end-2016"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added buried-child-west-end-2016"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added nice-fish-west-end-2016"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added half-a-sixpence-west-end-2016"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-children-west-end-2016"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added this-house-west-end-2016"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added hedda-gabler-west-end-2016"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added much-ado-about-nothing-west-end-2016"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added loves-labours-lost-west-end-2016"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-girls-west-end-2017"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added twelfth-night-west-end-2017"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added whos-afraid-of-virginia-woolf-west-end-2017"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added a-profoundly-affectionate-passionate-devotion-to-someone-noun-west-end-2017"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-goat-or-who-is-sylvia-west-end-2017"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added 42nd-street-west-end-2017"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added an-american-in-paris-west-end-2017"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-philanthropist-west-end-2017"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added killology-west-end-2017"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added hamlet-west-end-2017"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added mosquitoes-west-end-2017"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added apologia-west-end-2017"
+    }
+  ],
+  "executedIn": "ci"
+}

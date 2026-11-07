@@ -1,0 +1,243 @@
+{
+  "issueNumber": "bro-5317",
+  "planId": "8a7a7444-84d0-49cf-87ef-60d581f4e2ce",
+  "status": "pending",
+  "createdAt": "2026-10-31T01:15:16.194Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Replace CMS uploader handles on 61 live rows: restore 54 verified bylines, clear seven uncredited names to Unknown, and preserve an existing duplicate pointer while explicitly normalizing its guard-written reason. Reserved staging and archive paths require separate private-data maintenance. (part 1 of 3)",
+    "steps": [
+      "Live article header byline checked 2026-10-31. Evidence: https://www.allthatdazzles.co.uk/post/review-cuckoo-royal-court-theatre",
+      "Live article header byline checked 2026-10-31. Evidence: https://www.allthatdazzles.co.uk/post/review-disruption-park-theatre",
+      "Live article header byline checked 2026-10-31. Evidence: https://playsinternational.org.uk/electra-persona-national-theatre/",
+      "Live news article credits only ARH Admin; no personal byline printed; remove uploader handle without guessing a critic (checked 2026-10-31). Evidence: https://artsreviewhub.com/jane-eyre-set-to-enchant-storyhouse-audiences-this-autumn/",
+      "Live article body byline checked 2026-10-31. Evidence: https://burghvivant.org/2026/04/01/kinkers-rousts-and-rubes-a-review-of-water-for-elephants/",
+      "Live article header byline checked 2026-10-31. Evidence: https://www.allthatdazzles.co.uk/post/review-hope-has-a-happy-meal-royal-court-jerwood-upstairs",
+      "Live article header byline checked 2026-10-31. Evidence: https://playsinternational.org.uk/the-gang-of-three-richmond-theatre/",
+      "Live article header byline checked 2026-10-31. Evidence: https://www.allthatdazzles.co.uk/post/review-bacchae-national-theatre-olivier",
+      "Live article header byline checked 2026-10-31. Evidence: https://www.allthatdazzles.co.uk/post/review-deaf-republic-royal-court-theatre",
+      "Live article header byline checked 2026-10-31. Evidence: https://www.allthatdazzles.co.uk/post/review-the-king-and-i-dominion-theatre",
+      "Live article header byline checked 2026-10-31. Evidence: https://www.allthatdazzles.co.uk/post/review-slaughterhouse-five-southwark-playhouse-borough",
+      "Live article header byline checked 2026-10-31. Evidence: https://www.allthatdazzles.co.uk/post/review-bleak-expectations-criterion-theatre",
+      "Live article header byline checked 2026-10-31. Evidence: https://www.allthatdazzles.co.uk/post/review-king-lear-wyndham-s-theatre",
+      "Live article header byline checked 2026-10-31. Evidence: https://www.allthatdazzles.co.uk/post/review-much-ado-about-nothing-shakespeare-s-globe",
+      "Preserve the existing duplicateOf pointer to plays-international--jane-edwardes.json. Explicitly accept the write guard normalizing its duplicate reason before the verified criticName correction.",
+      "Live article header byline checked 2026-10-31. Evidence: https://playsinternational.org.uk/ilford-boy-donmar-warehouse/",
+      "Live article header byline checked 2026-10-31. Evidence: https://playsinternational.org.uk/garry-starr-classic-penguins-pleasance-grand-edinburgh/",
+      "Live article header byline checked 2026-10-31. Evidence: https://www.allthatdazzles.co.uk/post/review-the-brightening-air-the-old-vic",
+      "Live article header byline checked 2026-10-31. Evidence: https://playsinternational.org.uk/the-banality-of-evil-hannah-arendt-france-1940-arcola-theatre/",
+      "Live article header byline checked 2026-10-31. Evidence: https://www.allthatdazzles.co.uk/post/review-kathy-stella-solve-a-murder-ambassadors-theatre",
+      "Live article header byline checked 2026-10-31. Evidence: https://www.allthatdazzles.co.uk/post/review-the-motive-and-the-cue-no%C3%ABl-coward-theatre",
+      "Live article header byline checked 2026-10-31. Evidence: https://www.allthatdazzles.co.uk/post/review-the-motive-and-the-cue-no%C3%ABl-coward-theatre",
+      "Outlet article indexed text explicitly credits this critic; live page unavailable on 2026-10-31. Evidence: https://www.allthatdazzles.co.uk/post/review-romeo-and-juliet-greenwich-theatre",
+      "Live article header byline checked 2026-10-31. Evidence: https://playsinternational.org.uk/romeo-and-juliet-harold-pinter-theatre/",
+      "Live article credits only Admin; no personal byline printed; remove uploader handle without guessing a critic (checked 2026-10-31). Evidence: https://www.myviewfromthestalls.co.uk/post/review-murder-in-the-cathedral-oxford-playhouse"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "cuckoo-west-end-2023/all-that-dazzles-uk--sam-admin.json",
+        "field": "criticName",
+        "oldValue": "Sam - Admin",
+        "newValue": "Raphael Kohn",
+        "description": "Live article header byline checked 2026-10-31. Evidence: https://www.allthatdazzles.co.uk/post/review-cuckoo-royal-court-theatre"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "disruption-off-broadway-2026/all-that-dazzles-uk--sam-admin.json",
+        "field": "criticName",
+        "oldValue": "Sam - Admin",
+        "newValue": "Sam Waite",
+        "description": "Live article header byline checked 2026-10-31. Evidence: https://www.allthatdazzles.co.uk/post/review-disruption-park-theatre"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "electra-persona-west-end-2026/plays-international--unknown.json",
+        "field": "criticName",
+        "oldValue": "Ri-admin",
+        "newValue": "Neil Dowden",
+        "description": "Live article header byline checked 2026-10-31. Evidence: https://playsinternational.org.uk/electra-persona-national-theatre/"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "jane-eyre-rose-kingston-off-west-end-2026/artsreviewhub--arh-admin.json",
+        "field": "criticName",
+        "oldValue": "ARH Admin",
+        "newValue": "Unknown",
+        "description": "Live news article credits only ARH Admin; no personal byline printed; remove uploader handle without guessing a critic (checked 2026-10-31). Evidence: https://artsreviewhub.com/jane-eyre-set-to-enchant-storyhouse-audiences-this-autumn/"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "water-for-elephants-tour-2025/burghvivant--vivantadmin.json",
+        "field": "criticName",
+        "oldValue": "VivantAdmin",
+        "newValue": "Michael Buzzelli",
+        "description": "Live article body byline checked 2026-10-31. Evidence: https://burghvivant.org/2026/04/01/kinkers-rousts-and-rubes-a-review-of-water-for-elephants/"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "hope-has-a-happy-meal-west-end-2023/all-that-dazzles-uk--sam-admin.json",
+        "field": "criticName",
+        "oldValue": "Sam - Admin",
+        "newValue": "Harry Bower",
+        "description": "Live article header byline checked 2026-10-31. Evidence: https://www.allthatdazzles.co.uk/post/review-hope-has-a-happy-meal-royal-court-jerwood-upstairs"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "gang-of-three-off-west-end-2026/plays-international--unknown.json",
+        "field": "criticName",
+        "oldValue": "Ri-admin",
+        "newValue": "Jeremy Malies",
+        "description": "Live article header byline checked 2026-10-31. Evidence: https://playsinternational.org.uk/the-gang-of-three-richmond-theatre/"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "bacchae-west-end-2025/all-that-dazzles-uk--sam-admin.json",
+        "field": "criticName",
+        "oldValue": "Sam - Admin",
+        "newValue": "Sam Waite",
+        "description": "Live article header byline checked 2026-10-31. Evidence: https://www.allthatdazzles.co.uk/post/review-bacchae-national-theatre-olivier"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "deaf-republic-west-end-2025/all-that-dazzles-uk--sam-admin.json",
+        "field": "criticName",
+        "oldValue": "Sam - Admin",
+        "newValue": "Sam Waite",
+        "description": "Live article header byline checked 2026-10-31. Evidence: https://www.allthatdazzles.co.uk/post/review-deaf-republic-royal-court-theatre"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-king-and-i-west-end-2024/all-that-dazzles-uk--sam-admin.json",
+        "field": "criticName",
+        "oldValue": "Sam - Admin",
+        "newValue": "Sam Waite",
+        "description": "Live article header byline checked 2026-10-31. Evidence: https://www.allthatdazzles.co.uk/post/review-the-king-and-i-dominion-theatre"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "slaughterhouse-five-off-west-end-2026/all-that-dazzles-uk--lily-admin.json",
+        "field": "criticName",
+        "oldValue": "Lily - Admin",
+        "newValue": "Ruth Sealey",
+        "description": "Live article header byline checked 2026-10-31. Evidence: https://www.allthatdazzles.co.uk/post/review-slaughterhouse-five-southwark-playhouse-borough"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "bleak-expectations-west-end-2023/all-that-dazzles-uk--sam-admin.json",
+        "field": "criticName",
+        "oldValue": "Sam - Admin",
+        "newValue": "Sam Waite",
+        "description": "Live article header byline checked 2026-10-31. Evidence: https://www.allthatdazzles.co.uk/post/review-bleak-expectations-criterion-theatre"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "king-lear-west-end-2023/all-that-dazzles-uk--sam-admin.json",
+        "field": "criticName",
+        "oldValue": "Sam - Admin",
+        "newValue": "Sam Waite",
+        "description": "Live article header byline checked 2026-10-31. Evidence: https://www.allthatdazzles.co.uk/post/review-king-lear-wyndham-s-theatre"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "much-ado-about-nothing-globe-off-west-end-2026/all-that-dazzles-uk--lily-admin.json",
+        "field": "criticName",
+        "oldValue": "Lily - Admin",
+        "newValue": "Ruth Sealey",
+        "description": "Live article header byline checked 2026-10-31. Evidence: https://www.allthatdazzles.co.uk/post/review-much-ado-about-nothing-shakespeare-s-globe"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "ilford-boy-west-end-2026/plays-international--unknown.json",
+        "field": "duplicateReason",
+        "oldValue": "fix-unflagged-same-url-clusters.js on 2026-10-23: same URL as canonical plays-international--jane-edwardes.json, neither carried a duplicate pointer (byline: named human beats unknown/placeholder)",
+        "newValue": "url-collision-detected-at-write",
+        "description": "Preserve the existing duplicateOf pointer to plays-international--jane-edwardes.json. Explicitly accept the write guard normalizing its duplicate reason before the verified criticName correction."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "ilford-boy-west-end-2026/plays-international--unknown.json",
+        "field": "criticName",
+        "oldValue": "Ri-admin",
+        "newValue": "Jane Edwardes",
+        "description": "Live article header byline checked 2026-10-31. Evidence: https://playsinternational.org.uk/ilford-boy-donmar-warehouse/"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "garry-starr-classic-penguins-off-west-end-2026/plays-international--unknown.json",
+        "field": "criticName",
+        "oldValue": "Ri-admin",
+        "newValue": "Mark Brown",
+        "description": "Live article header byline checked 2026-10-31. Evidence: https://playsinternational.org.uk/garry-starr-classic-penguins-pleasance-grand-edinburgh/"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-brightening-air-west-end-2025/all-that-dazzles-uk--sam-admin.json",
+        "field": "criticName",
+        "oldValue": "Sam - Admin",
+        "newValue": "Sam Waite",
+        "description": "Live article header byline checked 2026-10-31. Evidence: https://www.allthatdazzles.co.uk/post/review-the-brightening-air-the-old-vic"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026/plays-international--unknown.json",
+        "field": "criticName",
+        "oldValue": "Ri-admin",
+        "newValue": "David Wootton",
+        "description": "Live article header byline checked 2026-10-31. Evidence: https://playsinternational.org.uk/the-banality-of-evil-hannah-arendt-france-1940-arcola-theatre/"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "kathy-and-stella-solve-a-murder-west-end-2024/all-that-dazzles-uk--sam-admin.json",
+        "field": "criticName",
+        "oldValue": "Sam - Admin",
+        "newValue": "Sam Waite",
+        "description": "Live article header byline checked 2026-10-31. Evidence: https://www.allthatdazzles.co.uk/post/review-kathy-stella-solve-a-murder-ambassadors-theatre"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-motive-and-the-cue-west-end-2023/all-that-dazzles-uk--sam-admin.json",
+        "field": "criticName",
+        "oldValue": "Sam - Admin",
+        "newValue": "Sam Waite",
+        "description": "Live article header byline checked 2026-10-31. Evidence: https://www.allthatdazzles.co.uk/post/review-the-motive-and-the-cue-no%C3%ABl-coward-theatre"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-motive-and-the-cue-west-end-2023/all-that-dazzles-uk--sam-waite.json",
+        "field": "criticName",
+        "oldValue": "Sam - Admin",
+        "newValue": "Sam Waite",
+        "description": "Live article header byline checked 2026-10-31. Evidence: https://www.allthatdazzles.co.uk/post/review-the-motive-and-the-cue-no%C3%ABl-coward-theatre"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "romeo-and-juliet-west-end-2026/all-that-dazzles-uk--sam-admin.json",
+        "field": "criticName",
+        "oldValue": "Sam - Admin",
+        "newValue": "Phil McCullough",
+        "description": "Outlet article indexed text explicitly credits this critic; live page unavailable on 2026-10-31. Evidence: https://www.allthatdazzles.co.uk/post/review-romeo-and-juliet-greenwich-theatre"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "romeo-and-juliet-west-end-2026/plays-international--unknown.json",
+        "field": "criticName",
+        "oldValue": "Ri-admin",
+        "newValue": "Jeremy Malies",
+        "description": "Live article header byline checked 2026-10-31. Evidence: https://playsinternational.org.uk/romeo-and-juliet-harold-pinter-theatre/"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "murder-cathedral-off-west-end-2026/myviewfromthestalls--unknown.json",
+        "field": "criticName",
+        "oldValue": "Admin",
+        "newValue": "Unknown",
+        "description": "Live article credits only Admin; no personal byline printed; remove uploader handle without guessing a critic (checked 2026-10-31). Evidence: https://www.myviewfromthestalls.co.uk/post/review-murder-in-the-cathedral-oxford-playhouse"
+      }
+    ]
+  }
+}

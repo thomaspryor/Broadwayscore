@@ -1,0 +1,78 @@
+{
+  "issueNumber": "bro-6905-b",
+  "planId": "b0a6c618-382c-4de5-b698-988cba60b13d",
+  "status": "applied",
+  "createdAt": "2026-11-05T09:05:20.204Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Clear relayed word-stars ratings (another critic's stars quoted in the text, not the article's own): the Argus PA roundup duplicate left out of plan 43c5b6ad, two 5thingstodotoday recommendation pieces and the Standard Present Laughter reviews round-up.",
+    "steps": [
+      "game-of-thrones-the-mad-king-regional-2026/theargus--unknown.json: originalScore",
+      "jane-eyre-rose-kingston-off-west-end-2026/5thingstodotoday--bolton131.json: originalScore",
+      "little-shop-of-horrors-hope-mill-regional-2026/5thingstodotoday--bolton131.json: originalScore",
+      "present-laughter-west-end-2019/standard--zoe-paskett.json: originalScore"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "game-of-thrones-the-mad-king-regional-2026/theargus--unknown.json",
+        "field": "originalScore",
+        "oldValue": "5/5 stars",
+        "newValue": null,
+        "description": "game-of-thrones-the-mad-king-regional-2026/theargus--unknown.json: originalScore"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "jane-eyre-rose-kingston-off-west-end-2026/5thingstodotoday--bolton131.json",
+        "field": "originalScore",
+        "oldValue": "4/5 stars",
+        "newValue": null,
+        "description": "jane-eyre-rose-kingston-off-west-end-2026/5thingstodotoday--bolton131.json: originalScore"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "little-shop-of-horrors-hope-mill-regional-2026/5thingstodotoday--bolton131.json",
+        "field": "originalScore",
+        "oldValue": "4/5 stars",
+        "newValue": null,
+        "description": "little-shop-of-horrors-hope-mill-regional-2026/5thingstodotoday--bolton131.json: originalScore"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "present-laughter-west-end-2019/standard--zoe-paskett.json",
+        "field": "originalScore",
+        "oldValue": "5/5 stars",
+        "newValue": null,
+        "description": "present-laughter-west-end-2019/standard--zoe-paskett.json: originalScore"
+      }
+    ]
+  },
+  "executedAt": "2026-11-05T10:45:12.495Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "game-of-thrones-the-mad-king-regional-2026/theargus--unknown.json originalScore: \"5/5 stars\" -> null (retracted originalScoreCleared, originalScoreClearedReason, originalScoreCorrectedFrom, originalScoreNormalized, originalScoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "jane-eyre-rose-kingston-off-west-end-2026/5thingstodotoday--bolton131.json originalScore: \"4/5 stars\" -> null (retracted needsRescore, originalScoreCleared, originalScoreClearedReason, originalScoreCorrectedFrom, originalScoreNormalized, originalScoreSource, rescoreFlaggedAt, rescoreReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "little-shop-of-horrors-hope-mill-regional-2026/5thingstodotoday--bolton131.json originalScore: \"4/5 stars\" -> null (retracted originalScoreCleared, originalScoreClearedReason, originalScoreCorrectedFrom, originalScoreNormalized, originalScoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "present-laughter-west-end-2019/standard--zoe-paskett.json originalScore: \"5/5 stars\" -> null (retracted originalScoreCleared, originalScoreClearedReason, originalScoreCorrectedFrom, originalScoreNormalized, originalScoreSource)"
+    }
+  ],
+  "executedIn": "ci"
+}

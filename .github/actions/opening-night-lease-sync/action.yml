@@ -1,0 +1,38 @@
+name: Opening-night lease sync
+description: Fetch the shared opening-night night-lease state (BRO-4786) so scripts skip leased shows and push-review-texts refuses writes to them
+
+inputs:
+  page:
+    description: "'true' raises a failed sync through the owner alert router (BRO-6648). Only a job that commits data/audit/alert-ledger.json and the digest queue may set it."
+    required: false
+    default: 'false'
+  linear-api-key:
+    description: Lets a failed sync on a press night file its worker card (with page 'true')
+    required: false
+    default: ''
+  token:
+    description: "REVIEW_TEXTS_TOKEN (variables:read). Only used when sync fails, to read LANE_ONLY_MARKETS into the unknown marker so a show the lane can be primary for still waits (BRO-6672). Empty = unread = every show writes."
+    required: false
+    default: ''
+
+runs:
+  using: composite
+  steps:
+    - name: Sync opening-night leases
+      shell: bash
+      env:
+        LEASE_SYNC_PAGE: ${{ inputs.page }}
+        LINEAR_API_KEY: ${{ inputs.linear-api-key }}
+        REVIEW_TEXTS_TOKEN: ${{ inputs.token }}
+      run: |
+        if ! node "$GITHUB_WORKSPACE/scripts/opening-night-lease.js" sync; then
+          # A crash before sync wrote its marker would leave no file, which reads as "nothing leased".
+          # Write the unknown marker instead, so only tonight's LANE_ONLY_MARKETS-covered shows wait (BRO-6648, BRO-6672).
+          echo "::warning::opening-night lease sync crashed; writing the unknown marker (tonight's lane-only shows wait)"
+          F="$GITHUB_WORKSPACE/data/opening-night/leases.json"
+          node -e "require(process.argv[1]).markUnknown()" "$GITHUB_WORKSPACE/scripts/lib/opening-night-lane/lease-guard.js" \
+            || { mkdir -p "$(dirname "$F")"; printf '{"leases":{},"unknown":true}\n' > "$F"; }
+        fi
+        if [ "$LEASE_SYNC_PAGE" = "true" ]; then
+          node "$GITHUB_WORKSPACE/scripts/opening-night-lease-alert.js"
+        fi

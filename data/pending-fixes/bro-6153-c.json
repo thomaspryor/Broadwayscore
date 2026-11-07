@@ -1,0 +1,112 @@
+{
+  "issueNumber": "bro-6153-c",
+  "planId": "8c61b49a-394a-444d-b1a6-7bfbebf7cdea",
+  "status": "applied",
+  "createdAt": "2026-10-24T22:31:05.206Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "OB historical backfill gap-window calibration: add 3 Playbill-validated shows from the 10-show random sample (BRO-6153)",
+    "steps": [
+      "add-show",
+      "add-show",
+      "add-show"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "add-show",
+        "show": {
+          "id": "archduke-off-broadway-2025",
+          "title": "Archduke",
+          "slug": "archduke-off-broadway-2025",
+          "venue": "Laura Pels Theatre",
+          "previewsStartDate": "2025-10-23",
+          "openingDate": "2025-11-12",
+          "closingDate": "2025-12-21",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:tm",
+          "discoveredAt": "2026-10-24T00:00:00.000Z",
+          "openingDateSource": "playbill-bro-6153",
+          "closingDateSource": "playbill-bro-6153",
+          "evidenceUrls": [
+            "https://playbill.com/production/archduke-off-broadway-roundabout-theatre-company-laura-pels-theatre-2025"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "not-ready-for-prime-time-off-broadway-2025",
+          "title": "Not Ready for Prime Time",
+          "slug": "not-ready-for-prime-time-off-broadway-2025",
+          "venue": "MCC Theater Space",
+          "previewsStartDate": "2025-10-05",
+          "openingDate": "2025-10-20",
+          "closingDate": "2025-12-07",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:tm",
+          "discoveredAt": "2026-10-24T00:00:00.000Z",
+          "openingDateSource": "playbill-bro-6153",
+          "closingDateSource": "playbill-bro-6153",
+          "evidenceUrls": [
+            "https://playbill.com/production/not-ready-for-prime-time-off-broadway-the-robert-w-wilson-mcc-theater-space-2025"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "lowcountry-off-broadway-2025",
+          "title": "Lowcountry",
+          "slug": "lowcountry-off-broadway-2025",
+          "venue": "Atlantic Theater Company",
+          "previewsStartDate": "2025-06-04",
+          "openingDate": "2025-06-10",
+          "closingDate": "2025-07-13",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:tm",
+          "discoveredAt": "2026-10-24T00:00:00.000Z",
+          "openingDateSource": "playbill-bro-6153",
+          "closingDateSource": "playbill-bro-6153",
+          "evidenceUrls": [
+            "https://playbill.com/production/lowcountry-off-broadway-atlantic-theater-company-linda-gross-theater-2025"
+          ]
+        }
+      }
+    ]
+  },
+  "executedAt": "2026-10-24T23:07:55.299Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added archduke-off-broadway-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added not-ready-for-prime-time-off-broadway-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added lowcountry-off-broadway-2025"
+    }
+  ],
+  "executedIn": "ci"
+}

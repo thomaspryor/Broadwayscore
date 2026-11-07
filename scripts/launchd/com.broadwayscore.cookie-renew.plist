@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <!-- Automatic cookie renewal, The Stage only for now (BRO-4183).
+
+         Every 6h: scripts/renew-cookies.js probes a walled Stage review
+         (free, plain HTTPS from this residential IP, same probe as
+         check-cookie-health.yml Layer 3). Logged in: exits in seconds.
+         Logged out: reuses the persistent profile's session if it is still
+         alive, else logs in ONCE (password from the macOS Keychain), pushes
+         COOKIES_BUNDLE_* via extract-safari-cookies.py (from-local mode), and
+         confirms with a live check-cookie-health run. CAPTCHA, emailed
+         code, rejected password, or 2 logins in 7 days: stops, emails one
+         link, and stays stopped. Recover with
+         renew-cookies.js in manual mode (see its header for flags) (you log in
+         inside the same profile, so no extra device), or its reset flag after
+         fixing the cause some other way. Probe pages that aren't the known
+         registration gate (Cloudflare challenge, maintenance) never trigger
+         a login.
+
+         MAC STUDIO ONLY. Never add Stage login to CI: per-runner logins
+         tripped the 2-device limit on 2026-03-30.
+
+         Do NOT install before the first supervised run:
+           security add-generic-password, service broadwayscorecard-cookie-renew, account thestage-email, value = your Stage login email
+           security add-generic-password, service broadwayscorecard-cookie-renew, account thestage-password, prompt for password
+           (exact commands: scripts/lib/cookie-renew.js readKeychain docstring)
+           node scripts/renew-cookies.js (outlet thestage, headed flag; exact flags in its header)
+         then confirm The Stage's account page shows a single active session.
+
+         .env is sourced for RESEND_API_KEY/OWNER_EMAIL (alert email) only;
+         launchd does not inherit shell env. `gh` must be authenticated with
+         secrets:write on thomaspryor/Broadwayscore. The first Keychain read
+         from launchd may show an "allow access" prompt: choose Always Allow.
+
+         Install:  cp scripts/launchd/com.broadwayscore.cookie-renew.plist ~/Library/LaunchAgents/
+                   launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.broadwayscore.cookie-renew.plist
+         Manual run: launchctl kickstart -k gui/$(id -u)/com.broadwayscore.cookie-renew
+         Kill:     launchctl bootout gui/$(id -u)/com.broadwayscore.cookie-renew -->
+    <key>Label</key>
+    <string>com.broadwayscore.cookie-renew</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/bin/bash</string>
+        <string>-lc</string>
+        <string>cd /Users/tompryor/Broadwayscore &amp;&amp; set -a &amp;&amp; source .env &amp;&amp; set +a &amp;&amp; exec node scripts/renew-cookies.js --outlet=thestage</string>
+    </array>
+    <key>StartInterval</key>
+    <integer>21600</integer>
+    <key>StandardOutPath</key>
+    <string>/tmp/cookie-renew.log</string>
+    <key>StandardErrorPath</key>
+    <string>/tmp/cookie-renew.log</string>
+    <key>RunAtLoad</key>
+    <false/>
+</dict>
+</plist>

@@ -1,0 +1,155 @@
+{
+  "generatedAt": "2026-10-25",
+  "note": "BRO-4937: all 20 BRO-2740 baseline entries triaged using stored bodies and current show metadata. Six already resolved; the remaining 14 decisions are in pending-fixes/bro-4937.json. The live corpus audit will report those 14 until the runner applies the plan; no audit predicate is relaxed.",
+  "files": [],
+  "triage": [
+    {
+      "file": "a-midsummer-nights-dream-globe-west-end-2026/whatsonstage--daniel-perks.json",
+      "decision": "clear",
+      "evidence": "Body names Emily Lim, Michael Grady-Hall and Mel Lowe at the Globe, matching the current show cast and director. Current publishDate is opening day; missing URL is not evidence of another production."
+    },
+    {
+      "file": "a-midsummer-nights-dream-west-end-2026/broadwayworld--cheryl-markosky.json",
+      "decision": "clear",
+      "evidence": "Body names Atri Banerjee and Regent's Park Open Air Theatre. Current html-paid publishDate 2026-06-30 is one day after the 2026-06-29 opening; the five-day pre-opening provenance is stale."
+    },
+    {
+      "file": "betrayal-2013/financialtimes--financial-times.json",
+      "decision": "clear",
+      "evidence": "Body names Mike Nichols, Daniel Craig, Rachel Weisz, Rafe Spall and the Barrymore, matching the 2013 production. publishDate is absent; the legacy URL-based verdict is unsupported by the body."
+    },
+    {
+      "file": "cyrano-de-bergerac-2012/ew--tanner-stransky.json",
+      "decision": "clear",
+      "evidence": "Body names Douglas Hodge, Jamie Lloyd and Roundabout, matching the 2012 production rather than the 2007 revival. No publication date was inferred from the URL."
+    },
+    {
+      "file": "death-of-a-salesman-2026/latimes--charles-mcnulty.json",
+      "decision": "already-restored",
+      "evidence": "Current record has wrongProduction:true and anticipatory_pre_opening_post; no new action."
+    },
+    {
+      "file": "evita-2026/whatsonstage--sarah-crompton.json",
+      "decision": "restore",
+      "evidence": "Body discusses the 2025 London Palladium Evita and its casting, while this show opens at the Winter Garden in 2027. isNonReview:true already excludes it; retain that flag."
+    },
+    {
+      "file": "gypsy-2024/cititour--brian-scott-lipton.json",
+      "decision": "clear",
+      "evidence": "Body names Audra McDonald, Danny Burstein, Joy Woods, George C. Wolfe and the Majestic, matching the 2024 production rather than 2008."
+    },
+    {
+      "file": "gypsy-2024/dailybeast--tim-teeman.json",
+      "decision": "clear",
+      "evidence": "Body names Audra McDonald, Joy Woods and the Majestic, with a booking window into 2025, matching the 2024 production rather than 2008."
+    },
+    {
+      "file": "hercules-west-end-2025/times-uk--clive-davis.json",
+      "decision": "clear",
+      "evidence": "Body names Luke Brady, Mae Ann Jorolan, Casey Nicholaw and Theatre Royal Drury Lane. Stored publishDate June 24th, 2025 matches the current opening 2025-06-24; provenance used an obsolete 2025-07-10 opening."
+    },
+    {
+      "file": "kinky-boots-2026/huffpost--michael-giltz.json",
+      "decision": "already-removed",
+      "evidence": "File is absent from the current private corpus; no edit or recreation."
+    },
+    {
+      "file": "les-miserables-2014/northjerseycom--robert-feldberg.json",
+      "decision": "clear",
+      "evidence": "Body names Ramin Karimloo, Will Swenson, Laurence Connor, James Powell and the Imperial, identifying the 2014 revival. Missing publication date does not contradict that evidence."
+    },
+    {
+      "file": "loves-labours-lost-globe-west-end-2026/guardian--mark-fisher.json",
+      "decision": "already-restored",
+      "evidence": "Current record has wrongProduction:true and a reason identifying the Guildford double bill rather than the Globe; no new action."
+    },
+    {
+      "file": "loves-labours-lost-globe-west-end-2026/whatsonstage--michael-davies.json",
+      "decision": "already-restored",
+      "evidence": "Current record has wrongProduction:true and a BRO-4599 reason identifying the Guildford double bill rather than the Globe; no new action."
+    },
+    {
+      "file": "miles-for-mary-off-broadway-2026/broadwayworld--bww-news-desk.json",
+      "decision": "restore",
+      "evidence": "Body is a show synopsis and email-alert promotion, not a review. isNonReview:true and its BRO-4270 show-hub reason already exclude it; retain those flags and restore the historical exclusion."
+    },
+    {
+      "file": "ride-the-cyclone-off-west-end-2026/whatsonstage--alex-wood.json",
+      "decision": "restore",
+      "evidence": "Body is return-engagement promotional copy quoting other outlets, not an Alex Wood review. isNonReview:true and nonReviewType:preview already exclude it; retain those flags and restore the historical exclusion."
+    },
+    {
+      "file": "the-color-purple-2005/nytimes--alissa-wilkinson.json",
+      "decision": "restore",
+      "evidence": "Body is a May 2007 cast-change review of Fantasia replacing LaChanze, not the 2005 opening review already covered by nytimes--ben-brantley.json. The 2007 NYT review is misattributed to Alissa Wilkinson. The stored llmPullQuote comes from the 2015 revival review and is absent from this body. Restore the exclusion for this contaminated record."
+    },
+    {
+      "file": "the-glass-menagerie-2013/dailybeast--tim-teeman.json",
+      "decision": "restore",
+      "evidence": "Surviving text explicitly names Sam Gold as director. The 2013 show director is John Tiffany; the 2017 show director is Sam Gold. Missing URL does not justify clearing this production mismatch."
+    },
+    {
+      "file": "the-lost-boys-2026/playbill--unknown.json",
+      "decision": "already-restored",
+      "evidence": "Current record has wrongProduction:true and anticipatory_pre_opening_post; no new action."
+    },
+    {
+      "file": "the-rocky-horror-show-2026/playbill--unknown.json",
+      "decision": "already-restored",
+      "evidence": "Current record has wrongProduction:true and anticipatory_pre_opening_post; no new action."
+    },
+    {
+      "file": "the-truth-a-comedy-by-florian-zeller-west-end-2026/i-paper--sarah-carson.json",
+      "decision": "restore",
+      "evidence": "Current record has tierReason:Wrong show, incompleteReason:url_content_mismatch and no body to support a production clear. Restore the historical exclusion; no metadata inferred from the current URL."
+    }
+  ],
+  "siblingUrlAudit": {
+    "scanned": 60923,
+    "matchingPairs": 5,
+    "sameShowPairs": 0,
+    "note": "Exact URL comparison through sameUrlKey; no metadata inferred from URLs. Four Gypsy siblings already have wrongProduction:true. The remaining double-bill match is the already-restored Globe file. No pair leaves both copies unexcluded, and no additional actions are needed for this triage.",
+    "pairs": [
+      {
+        "file": "gypsy-2024/dailybeast--tim-teeman.json",
+        "sharedWith": "gypsy-1974/dailybeast--tim-teeman.json",
+        "distinctTexts": false,
+        "otherWrongProduction": true,
+        "otherManualClear": false,
+        "otherDuplicateOf": null
+      },
+      {
+        "file": "gypsy-2024/dailybeast--tim-teeman.json",
+        "sharedWith": "gypsy-1989/dailybeast--tim-teeman.json",
+        "distinctTexts": false,
+        "otherWrongProduction": true,
+        "otherManualClear": false,
+        "otherDuplicateOf": null
+      },
+      {
+        "file": "gypsy-2024/cititour--brian-scott-lipton.json",
+        "sharedWith": "gypsy-2008/cititour--brian-scott-lipton.json",
+        "distinctTexts": false,
+        "otherWrongProduction": true,
+        "otherManualClear": false,
+        "otherDuplicateOf": null
+      },
+      {
+        "file": "gypsy-2024/dailybeast--tim-teeman.json",
+        "sharedWith": "gypsy-2008/dailybeast--tim-teeman.json",
+        "distinctTexts": false,
+        "otherWrongProduction": true,
+        "otherManualClear": false,
+        "otherDuplicateOf": null
+      },
+      {
+        "file": "loves-labours-lost-globe-west-end-2026/whatsonstage--michael-davies.json",
+        "sharedWith": "much-ado-about-nothing-off-west-end-2026/whatsonstage--maygan-forbes.json",
+        "distinctTexts": false,
+        "otherWrongProduction": false,
+        "otherManualClear": true,
+        "otherDuplicateOf": null
+      }
+    ]
+  }
+}

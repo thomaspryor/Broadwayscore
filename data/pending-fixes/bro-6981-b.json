@@ -1,0 +1,55 @@
+{
+  "issueNumber": "bro-6981-b",
+  "planId": "c89ba92c-003b-452c-80c1-87b6f30437ce",
+  "status": "applied",
+  "createdAt": "2026-11-04T21:19:04.747Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6981 follow-up: replace the body-less Unknown stub of Michael Sommers' NYSR Babe review with the real page (canonical is the WordPress shortlink ?p=22418, which 301s to the review)",
+    "steps": [
+      "Body-less stub from ingest-urls (CI fetch failed, byline Unknown). Replaced by the handoff ingest below of the same NYSR URL; WP API post 22418 author id 10 = Michael Sommers.",
+      "Ingest babe-off-broadway-2024 from handed-off HTML: https://nystagereview.com/?p=22418"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "babe-off-broadway-2024/nysr--unknown.json",
+        "description": "Body-less stub from ingest-urls (CI fetch failed, byline Unknown). Replaced by the handoff ingest below of the same NYSR URL; WP API post 22418 author id 10 = Michael Sommers."
+      },
+      {
+        "type": "ingest-html-handoff",
+        "showId": "babe-off-broadway-2024",
+        "url": "https://nystagereview.com/?p=22418",
+        "outlet": "nysr",
+        "critic": "Michael Sommers",
+        "publishDate": "2024-11-20",
+        "description": "Michael Sommers' NYSR Babe review; WP API post 22418 author 10 = Sommers; shortlink 301s to /2024/11/20/babe-sex-rock-and-gen-z-in-a-tik-tok-workplace/",
+        "htmlBytes": 184102,
+        "html": {
+          "kid": "ecc142c27b1b7f86",
+          "sha256": "ea492a7883257c88254dabaf39e9f57cd4ee932f76476f2294ac1c1766527098",
+          "scrubbed": true
+        }
+      }
+    ]
+  },
+  "executedAt": "2026-11-04T21:28:19.831Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted babe-off-broadway-2024/nysr--unknown.json"
+    },
+    {
+      "action": "ingest-html-handoff",
+      "ok": true,
+      "msg": "Ingested https://nystagereview.com/?p=22418 for babe-off-broadway-2024 from handed-off HTML (183850 chars)"
+    }
+  ],
+  "executedIn": "ci"
+}

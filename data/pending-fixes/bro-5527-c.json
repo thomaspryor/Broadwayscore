@@ -1,0 +1,465 @@
+{
+  "issueNumber": "bro-5527-c",
+  "planId": "97ec8363-78b6-4925-b760-9749982a9711",
+  "status": "applied",
+  "createdAt": "2026-10-17T07:50:17.559Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5527: shows on the NY tax-credit lists had no capitalization, so /biz had no cost basis for them. Each gets the total offering amount from its production entity's SEC Form D (Regulation D notice), matched to the show by the filing's related persons (lead producers), its timing and, where the tax-credit payout list names the entity, that name. Filed figures, not estimates; notes that said no capitalization was reported are corrected. Model rerun on apply. (part 3 of 6: job-2024, john-proctor-is-the-villain-2025, kpop-2022, left-on-tenth-2024, mr-saturday-night-2022)",
+    "steps": [
+      "Filed figures: capitalization, a Form D citation, the estimate flag, and the filing in sources.",
+      "Notes that said no capitalization was reported now state the filed offering."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "job-2024",
+        "field": "capitalization",
+        "oldValue": null,
+        "newValue": 3000000,
+        "description": "job-2024: the SEC Form D gives a $3 million offering (no capitalization was on file)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "job-2024",
+        "field": "capitalizationSource",
+        "oldValue": null,
+        "newValue": "SEC Form D filing (Xanax Girlie Ltd Liability Co, CIK 0002023222, filed May 29, 2024): total offering amount $3,000,000. Matched to the show by its related persons Hannah Getts, Alex Levy, Craig Balsam and Power of 3 (Ben Holtzman, Sammy Lopez, Fiona Rudin), the lead producers. https://www.sec.gov/Archives/edgar/data/2023222/000200301324000001/xslFormDX01/primary_doc.xml",
+        "description": "job-2024: cite the Form D."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "job-2024",
+        "field": "isEstimate",
+        "oldValue": null,
+        "newValue": {
+          "capitalization": false
+        },
+        "description": "job-2024: a filed figure, not an estimate."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "job-2024",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://playbill.com/production/job-broadway-helen-hayes-theatre-2024",
+            "date": null
+          },
+          {
+            "type": "manual",
+            "url": "https://en.wikipedia.org/wiki/Job_(play)",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://playbill.com/article/psychological-thriller-job-begins-broadway-transfer-july-15",
+            "date": null
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://playbill.com/production/job-broadway-helen-hayes-theatre-2024",
+            "date": null
+          },
+          {
+            "type": "manual",
+            "url": "https://en.wikipedia.org/wiki/Job_(play)",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://playbill.com/article/psychological-thriller-job-begins-broadway-transfer-july-15",
+            "date": null
+          },
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/2023222/000200301324000001/xslFormDX01/primary_doc.xml",
+            "date": "2024-05-29"
+          }
+        ],
+        "description": "job-2024: add the Form D to sources."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "john-proctor-is-the-villain-2025",
+        "field": "capitalization",
+        "oldValue": null,
+        "newValue": 6700000,
+        "description": "john-proctor-is-the-villain-2025: the SEC Form D gives a $6.7 million offering (no capitalization was on file)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "john-proctor-is-the-villain-2025",
+        "field": "capitalizationSource",
+        "oldValue": null,
+        "newValue": "SEC Form D filing (Georgia Green Light Ltd Liability Co, CIK 0002036591, filed Oct 2, 2024): total offering amount $6,700,000. Matched to the show by its related persons Sue Wagner and John Johnson, the lead producers. https://www.sec.gov/Archives/edgar/data/2036591/000203659124000002/xslFormDX01/primary_doc.xml",
+        "description": "john-proctor-is-the-villain-2025: cite the Form D."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "john-proctor-is-the-villain-2025",
+        "field": "isEstimate",
+        "oldValue": null,
+        "newValue": {
+          "capitalization": false
+        },
+        "description": "john-proctor-is-the-villain-2025: a filed figure, not an estimate."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "john-proctor-is-the-villain-2025",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://deadline.com/2025/09/broadway-box-office-john-proctor-is-the-villain-1236513171/",
+            "date": "2025-09-08"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwaynews.com/tag/recoupment/",
+            "date": null
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://deadline.com/2025/09/broadway-box-office-john-proctor-is-the-villain-1236513171/",
+            "date": "2025-09-08"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwaynews.com/tag/recoupment/",
+            "date": null
+          },
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/2036591/000203659124000002/xslFormDX01/primary_doc.xml",
+            "date": "2024-10-02"
+          }
+        ],
+        "description": "john-proctor-is-the-villain-2025: add the Form D to sources."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "john-proctor-is-the-villain-2025",
+        "field": "notes",
+        "oldValue": "Commercial production at the Booth, Apr 14 to Sep 7, 2025 (extended three times; seven Tony nominations). No capitalization reported and no recoupment announced (not on Broadway News' recoupment list as of Oct 2026).",
+        "newValue": "Commercial production at the Booth, Apr 14 to Sep 7, 2025 (extended three times; seven Tony nominations). Its SEC Form D (Oct 2024) offered $6.7 million; no recoupment announced (not on Broadway News' recoupment list as of Oct 2026).",
+        "description": "john-proctor-is-the-villain-2025: the notes said no capitalization was reported; it was filed."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "kpop-2022",
+        "field": "capitalization",
+        "oldValue": null,
+        "newValue": 14000000,
+        "description": "kpop-2022: the SEC Form D/A gives a $14 million offering (no capitalization was on file)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "kpop-2022",
+        "field": "capitalizationSource",
+        "oldValue": null,
+        "newValue": "SEC Form D/A filing (KPOP Broadway LLC, CIK 0001808497, filed Mar 3, 2023): total offering amount $14,000,000 ($13,432,667 sold by then). Matched to the show by its related persons Joey Parnes and Tim Forbes, the lead producers; the same entity received its NY tax credit. https://www.sec.gov/Archives/edgar/data/1808497/000180849723000001/xslFormDX01/primary_doc.xml",
+        "description": "kpop-2022: cite the Form D."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "kpop-2022",
+        "field": "isEstimate",
+        "oldValue": null,
+        "newValue": {
+          "capitalization": false
+        },
+        "description": "kpop-2022: a filed figure, not an estimate."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "kpop-2022",
+        "field": "sources",
+        "oldValue": [],
+        "newValue": [
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/1808497/000180849723000001/xslFormDX01/primary_doc.xml",
+            "date": "2023-03-03"
+          }
+        ],
+        "description": "kpop-2022: add the Form D to sources."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "left-on-tenth-2024",
+        "field": "capitalization",
+        "oldValue": null,
+        "newValue": 5900000,
+        "description": "left-on-tenth-2024: the SEC Form D/A gives a $5.9 million offering (no capitalization was on file)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "left-on-tenth-2024",
+        "field": "capitalizationSource",
+        "oldValue": null,
+        "newValue": "SEC Form D/A filing (Left on Tenth Ltd Liability Co, CIK 0002018694, filed Oct 30, 2024): total offering amount $5,900,000 ($5,400,000 sold by then). Matched to the show by its related person Daryl Roth, the lead producer. https://www.sec.gov/Archives/edgar/data/2018694/000201869424000002/xslFormDX01/primary_doc.xml",
+        "description": "left-on-tenth-2024: cite the Form D."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "left-on-tenth-2024",
+        "field": "isEstimate",
+        "oldValue": null,
+        "newValue": {
+          "capitalization": false
+        },
+        "description": "left-on-tenth-2024: a filed figure, not an estimate."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "left-on-tenth-2024",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://playbill.com/article/left-on-tenth-leaves-broadway-february-2",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwaynews.com/tag/recoupment/",
+            "date": null
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://playbill.com/article/left-on-tenth-leaves-broadway-february-2",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwaynews.com/tag/recoupment/",
+            "date": null
+          },
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/2018694/000201869424000002/xslFormDX01/primary_doc.xml",
+            "date": "2024-10-30"
+          }
+        ],
+        "description": "left-on-tenth-2024: add the Form D to sources."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "left-on-tenth-2024",
+        "field": "notes",
+        "oldValue": "Commercial play (Daryl Roth) at the James Earl Jones, Oct 23, 2024 to Feb 2, 2025. No capitalization reported and no recoupment announced (not on Broadway News' recoupment list as of Oct 2026).",
+        "newValue": "Commercial play (Daryl Roth) at the James Earl Jones, Oct 23, 2024 to Feb 2, 2025. Its SEC Form D/A (Oct 2024) put the offering at $5.9 million; no recoupment announced (not on Broadway News' recoupment list as of Oct 2026).",
+        "description": "left-on-tenth-2024: the notes said no capitalization was reported; it was filed."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "mr-saturday-night-2022",
+        "field": "capitalization",
+        "oldValue": null,
+        "newValue": 11000000,
+        "description": "mr-saturday-night-2022: the SEC Form D/A gives a $11 million offering (no capitalization was on file)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "mr-saturday-night-2022",
+        "field": "capitalizationSource",
+        "oldValue": null,
+        "newValue": "SEC Form D/A filing (Buddy Young Jr Ltd Liability Co, CIK 0001887271, filed Apr 26, 2022): total offering amount $11,000,000 ($10,000,000 sold by then). Matched to the show by its related persons James L. Nederlander and Nick Scandalios, the lead producers; the same entity received its NY tax credit. https://www.sec.gov/Archives/edgar/data/1887271/000188727122000001/xslFormDX01/primary_doc.xml",
+        "description": "mr-saturday-night-2022: cite the Form D."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "mr-saturday-night-2022",
+        "field": "isEstimate",
+        "oldValue": null,
+        "newValue": {
+          "capitalization": false
+        },
+        "description": "mr-saturday-night-2022: a filed figure, not an estimate."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "mr-saturday-night-2022",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://www.broadwayworld.com/shows/Mr.-Saturday-Night-333713/Mr.-Saturday-Night-333713.html",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwayworld.com/article/The-Art-of-Recasting-20250801",
+            "date": "2025-08-01"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.broadwayworld.com/shows/Mr.-Saturday-Night-333713/Mr.-Saturday-Night-333713.html",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwayworld.com/article/The-Art-of-Recasting-20250801",
+            "date": "2025-08-01"
+          },
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/1887271/000188727122000001/xslFormDX01/primary_doc.xml",
+            "date": "2022-04-26"
+          }
+        ],
+        "description": "mr-saturday-night-2022: add the Form D to sources."
+      }
+    ]
+  },
+  "executedAt": "2026-10-17T08:41:28.208Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for job-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for job-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: isEstimate updated for job-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for job-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for john-proctor-is-the-villain-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for john-proctor-is-the-villain-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: isEstimate updated for john-proctor-is-the-villain-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for john-proctor-is-the-villain-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for john-proctor-is-the-villain-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for kpop-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for kpop-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: isEstimate updated for kpop-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for kpop-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for left-on-tenth-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for left-on-tenth-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: isEstimate updated for left-on-tenth-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for left-on-tenth-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for left-on-tenth-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for mr-saturday-night-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for mr-saturday-night-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: isEstimate updated for mr-saturday-night-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for mr-saturday-night-2022"
+    }
+  ]
+}

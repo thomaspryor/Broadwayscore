@@ -1,0 +1,327 @@
+{
+  "issueNumber": "bro-4317-a-03",
+  "planId": "12ae5ce6-2dce-4385-bbd4-09a52a34c29b",
+  "status": "applied",
+  "createdAt": "2026-10-13T00:58:15.177Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4317 part 3/4: rehome review-text files from folders with no shows.json id (rebuild skips them) into the production whose run window holds the review's publishDate; drop exact duplicates of files the target already holds.",
+    "steps": [
+      "delete spamalot-off-broadway-2026/socal-thrills--cori-graham.json",
+      "delete spamalot-off-broadway-2026/splash-magazines--beverly-cohn.json",
+      "delete spamalot-off-broadway-2026/the-moderate-voice--doug-bursch.json",
+      "delete spamalot-off-broadway-2026/theatermania--zachary-stewart.json",
+      "delete spamalot-off-broadway-2026/thewrap--robert-hofler.json",
+      "delete spamalot-off-broadway-2026/timeout--adam-feldman.json",
+      "delete spamalot-off-broadway-2026/wsj--charles-isherwood.json",
+      "delete take-me-out/nytimes--ben-brantley.json",
+      "delete tammy-faye/new-york-sun--elysa-gardner.json",
+      "move the-cottage/theater-life--david-sheward.json -> the-cottage-2023/theater-life--david-sheward.json",
+      "move the-disappear-off-broadway/theater-life--david-sheward.json -> the-disappear-off-broadway-2026/theater-life--david-sheward.json",
+      "move the-fear-of-13/theater-life--patrick-christiano.json -> the-fear-of-13-2026/theater-life--patrick-christiano.json",
+      "move the-great-gatsby/theater-life--paulanne-simmons.json -> the-great-gatsby-2024/theater-life--paulanne-simmons.json",
+      "move the-monsters-off-broadway/theater-life--isa-goldberg.json -> the-monsters-off-broadway-2026/theater-life--isa-goldberg.json",
+      "move the-monsters-off-broadway/theater-life--paulanne-simmons.json -> the-monsters-off-broadway-2026/theater-life--paulanne-simmons.json",
+      "delete the-music-man-off-broadway-2026/ap--mark-kennedy.json",
+      "delete the-music-man-off-broadway-2026/broadwaynews--charles-isherwood.json",
+      "delete the-music-man-off-broadway-2026/dailybeast--tim-teeman.json",
+      "delete the-music-man-off-broadway-2026/deadline--greg-evans.json",
+      "delete the-music-man-off-broadway-2026/dtli--christian-lewis.json",
+      "delete the-music-man-off-broadway-2026/hollywood-reporter--frank-scheck.json",
+      "delete the-music-man-off-broadway-2026/nypost--johnny-oleksinski.json",
+      "delete the-music-man-off-broadway-2026/nytg--naveen-kumar.json",
+      "delete the-music-man-off-broadway-2026/nytimes--jesse-green.json",
+      "delete the-music-man-off-broadway-2026/theatermania--david-gordon.json"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "spamalot-off-broadway-2026/socal-thrills--cori-graham.json",
+        "description": "Orphan copy (spamalot-off-broadway-2026/ is not a shows.json id) of spamalot-tour-2025/socal-thrills--cori-graham.json: same url, publishDate 2026-03-27 inside spamalot-tour-2025's run; the kept copy is complete 3999 chars vs this invalid 0."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "spamalot-off-broadway-2026/splash-magazines--beverly-cohn.json",
+        "description": "Orphan copy (spamalot-off-broadway-2026/ is not a shows.json id) of spamalot-tour-2025/splash-magazines--beverly-cohn.json: same url, publishDate 2026-03-31 inside spamalot-tour-2025's run; the kept copy is complete 5448 chars vs this invalid 0."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "spamalot-off-broadway-2026/the-moderate-voice--doug-bursch.json",
+        "description": "Orphan copy (spamalot-off-broadway-2026/ is not a shows.json id) of spamalot-tour-2025/the-moderate-voice--doug-bursch.json: same url, publishDate 2026-02-08 inside spamalot-tour-2025's run; the kept copy is complete 4247 chars vs this complete 4247."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "spamalot-off-broadway-2026/theatermania--zachary-stewart.json",
+        "description": "Orphan copy (spamalot-off-broadway-2026/ is not a shows.json id) of spamalot-2023/theatermania--zachary-stewart.json: same url, publishDate November 16, 2023 inside spamalot-2023's run; the kept copy is complete 5977 chars vs this invalid 0."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "spamalot-off-broadway-2026/thewrap--robert-hofler.json",
+        "description": "Orphan copy (spamalot-off-broadway-2026/ is not a shows.json id) of spamalot-2023/thewrap--robert-hofler.json: same url, publishDate November 16, 2023 inside spamalot-2023's run; the kept copy is complete 2548 chars vs this invalid 2873."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "spamalot-off-broadway-2026/timeout--adam-feldman.json",
+        "description": "Orphan copy (spamalot-off-broadway-2026/ is not a shows.json id) of spamalot-2023/timeout--adam-feldman.json: same url, publishDate November 16, 2023 inside spamalot-2023's run; the kept copy is complete 5159 chars vs this invalid 4909."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "spamalot-off-broadway-2026/wsj--charles-isherwood.json",
+        "description": "Orphan copy (spamalot-off-broadway-2026/ is not a shows.json id) of spamalot-2023/wsj--charles-isherwood.json: same url, publishDate November 16, 2023 inside spamalot-2023's run; the kept copy is complete 5148 chars vs this invalid 0."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "take-me-out/nytimes--ben-brantley.json",
+        "description": "Orphan copy (take-me-out/ is not a shows.json id) of take-me-out-2003/nytimes--ben-brantley.json: same url, publishDate February 28, 2003 inside take-me-out-2003's run; the kept copy is invalid 3311 chars vs this untiered 0."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "tammy-faye/new-york-sun--elysa-gardner.json",
+        "description": "Orphan copy (tammy-faye/ is not a shows.json id) of tammy-faye-2024/new-york-sun--elysa-gardner.json: same url, publishDate November 14, 2024 inside tammy-faye-2024's run; the kept copy is invalid 5306 chars vs this untiered 0."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "the-cottage/theater-life--david-sheward.json",
+        "destPath": "the-cottage-2023/theater-life--david-sheward.json",
+        "description": "the-cottage/ is not a shows.json id, so rebuild skipped this review. publishDate 2023-07-24T11:30:27 falls only inside the-cottage-2023 (run 2023-07-24..2023-10-29); no same-named file there."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "the-disappear-off-broadway/theater-life--david-sheward.json",
+        "destPath": "the-disappear-off-broadway-2026/theater-life--david-sheward.json",
+        "description": "the-disappear-off-broadway/ is not a shows.json id, so rebuild skipped this review. publishDate 2026-01-16T12:07:07 falls only inside the-disappear-off-broadway-2026 (run 2026-01-08..2026-02-22); no same-named file there."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "the-fear-of-13/theater-life--patrick-christiano.json",
+        "destPath": "the-fear-of-13-2026/theater-life--patrick-christiano.json",
+        "description": "the-fear-of-13/ is not a shows.json id, so rebuild skipped this review. publishDate 2026-04-24T08:55:00 falls only inside the-fear-of-13-2026 (run 2026-04-15..2026-06-28); no same-named file there."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "the-great-gatsby/theater-life--paulanne-simmons.json",
+        "destPath": "the-great-gatsby-2024/theater-life--paulanne-simmons.json",
+        "description": "the-great-gatsby/ is not a shows.json id, so rebuild skipped this review. publishDate 2024-04-28T13:51:03 falls only inside the-great-gatsby-2024 (run 2024-04-25..2027-03-18); no same-named file there."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "the-monsters-off-broadway/theater-life--isa-goldberg.json",
+        "destPath": "the-monsters-off-broadway-2026/theater-life--isa-goldberg.json",
+        "description": "the-monsters-off-broadway/ is not a shows.json id, so rebuild skipped this review. publishDate 2026-02-12T14:42:42 falls only inside the-monsters-off-broadway-2026 (run 2026-01-23..2026-03-22); no same-named file there."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "the-monsters-off-broadway/theater-life--paulanne-simmons.json",
+        "destPath": "the-monsters-off-broadway-2026/theater-life--paulanne-simmons.json",
+        "description": "the-monsters-off-broadway/ is not a shows.json id, so rebuild skipped this review. publishDate 2026-02-16T10:18:47 falls only inside the-monsters-off-broadway-2026 (run 2026-01-23..2026-03-22); no same-named file there."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-music-man-off-broadway-2026/ap--mark-kennedy.json",
+        "description": "Orphan copy (the-music-man-off-broadway-2026/ is not a shows.json id) of the-music-man-2022/ap--mark-kennedy.json: same url, publishDate February 10, 2022 inside the-music-man-2022's run; the kept copy is invalid 8528 chars vs this invalid 12646."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-music-man-off-broadway-2026/broadwaynews--charles-isherwood.json",
+        "description": "Orphan copy (the-music-man-off-broadway-2026/ is not a shows.json id) of the-music-man-2022/broadwaynews--charles-isherwood.json: same url, publishDate February 10, 2022 inside the-music-man-2022's run; the kept copy is complete 5839 chars vs this invalid 0."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-music-man-off-broadway-2026/dailybeast--tim-teeman.json",
+        "description": "Orphan copy (the-music-man-off-broadway-2026/ is not a shows.json id) of the-music-man-2022/dailybeast--tim-teeman.json: same url, publishDate February 11, 2022 inside the-music-man-2022's run; the kept copy is complete 6751 chars vs this invalid 0."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-music-man-off-broadway-2026/deadline--greg-evans.json",
+        "description": "Orphan copy (the-music-man-off-broadway-2026/ is not a shows.json id) of the-music-man-2022/deadline--greg-evans.json: same url, publishDate February 10, 2022 inside the-music-man-2022's run; the kept copy is complete 10894 chars vs this invalid 0."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-music-man-off-broadway-2026/dtli--christian-lewis.json",
+        "description": "Orphan copy (the-music-man-off-broadway-2026/ is not a shows.json id) of the-music-man-2022/dtli--christian-lewis.json: same url, publishDate February 10, 2022 inside the-music-man-2022's run; the kept copy is complete 6869 chars vs this invalid 0."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-music-man-off-broadway-2026/hollywood-reporter--frank-scheck.json",
+        "description": "Orphan copy (the-music-man-off-broadway-2026/ is not a shows.json id) of the-music-man-2022/hollywood-reporter--frank-scheck.json: same url, publishDate February 10, 2022 inside the-music-man-2022's run; the kept copy is complete 7085 chars vs this invalid 7412."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-music-man-off-broadway-2026/nypost--johnny-oleksinski.json",
+        "description": "Orphan copy (the-music-man-off-broadway-2026/ is not a shows.json id) of the-music-man-2022/nypost--johnny-oleksinski.json: same url, publishDate February 10, 2022 inside the-music-man-2022's run; the kept copy is complete 4617 chars vs this invalid 0."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-music-man-off-broadway-2026/nytg--naveen-kumar.json",
+        "description": "Orphan copy (the-music-man-off-broadway-2026/ is not a shows.json id) of the-music-man-2022/nytg--naveen-kumar.json: same url, publishDate 2022-09-29 inside the-music-man-2022's run; the kept copy is complete 4469 chars vs this invalid 4469."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-music-man-off-broadway-2026/nytimes--jesse-green.json",
+        "description": "Orphan copy (the-music-man-off-broadway-2026/ is not a shows.json id) of the-music-man-2022/nytimes--jesse-green.json: same url, publishDate February 10, 2022 inside the-music-man-2022's run; the kept copy is complete 7577 chars vs this invalid 0."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-music-man-off-broadway-2026/theatermania--david-gordon.json",
+        "description": "Orphan copy (the-music-man-off-broadway-2026/ is not a shows.json id) of the-music-man-2022/theatermania--david-gordon.json: same url, publishDate February 11, 2022 inside the-music-man-2022's run; the kept copy is complete 5995 chars vs this invalid 0."
+      }
+    ]
+  },
+  "executedAt": "2026-10-13T01:48:53.870Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted spamalot-off-broadway-2026/socal-thrills--cori-graham.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted spamalot-off-broadway-2026/splash-magazines--beverly-cohn.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted spamalot-off-broadway-2026/the-moderate-voice--doug-bursch.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted spamalot-off-broadway-2026/theatermania--zachary-stewart.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted spamalot-off-broadway-2026/thewrap--robert-hofler.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted spamalot-off-broadway-2026/timeout--adam-feldman.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted spamalot-off-broadway-2026/wsj--charles-isherwood.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted take-me-out/nytimes--ben-brantley.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted tammy-faye/new-york-sun--elysa-gardner.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved the-cottage/theater-life--david-sheward.json → the-cottage-2023/theater-life--david-sheward.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved the-disappear-off-broadway/theater-life--david-sheward.json → the-disappear-off-broadway-2026/theater-life--david-sheward.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved the-fear-of-13/theater-life--patrick-christiano.json → the-fear-of-13-2026/theater-life--patrick-christiano.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved the-great-gatsby/theater-life--paulanne-simmons.json → the-great-gatsby-2024/theater-life--paulanne-simmons.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved the-monsters-off-broadway/theater-life--isa-goldberg.json → the-monsters-off-broadway-2026/theater-life--isa-goldberg.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved the-monsters-off-broadway/theater-life--paulanne-simmons.json → the-monsters-off-broadway-2026/theater-life--paulanne-simmons.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-music-man-off-broadway-2026/ap--mark-kennedy.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-music-man-off-broadway-2026/broadwaynews--charles-isherwood.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-music-man-off-broadway-2026/dailybeast--tim-teeman.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-music-man-off-broadway-2026/deadline--greg-evans.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-music-man-off-broadway-2026/dtli--christian-lewis.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-music-man-off-broadway-2026/hollywood-reporter--frank-scheck.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-music-man-off-broadway-2026/nypost--johnny-oleksinski.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-music-man-off-broadway-2026/nytg--naveen-kumar.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-music-man-off-broadway-2026/nytimes--jesse-green.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-music-man-off-broadway-2026/theatermania--david-gordon.json"
+    }
+  ]
+}

@@ -1,0 +1,174 @@
+{
+  "issueNumber": "bro-6742-b",
+  "planId": "0202e514-893e-41ae-9c8d-ddb9e3185fb5",
+  "status": "applied",
+  "createdAt": "2026-11-01T02:38:35.414Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6742: release four read-confirmed false drops (Queen of Versailles, Every Brilliant Thing x2, Two Strangers) and move the Two Strangers LSA review from the regional copy to Broadway",
+    "steps": [
+      "Read-confirmed: Pages on Stages reviews the St. James Broadway run (Nov 2025); the rejection compared it to a stale Ethel Barrymore venue",
+      "Human clear so the stale wrong_production verdict cannot return",
+      "Read-confirmed: amNY Windman is a full evaluative review of the Hudson run; CV misread it as a preview",
+      "Human clear of the CV-promoted wrongShow",
+      "Read-confirmed: Theatre Reviews Limited reviews the 2026 Hudson Theatre run (URL and body name it)",
+      "Human clear so the body can be restored",
+      "Put the quarantined Hudson review body back into fullText",
+      "Read-confirmed: story.asp?ID=T634J3 is the Longacre Broadway review, not a homepage",
+      "Human clear of the generic-homepage wrongShow",
+      "This LSA review is of the Longacre Broadway run, so it does not belong to the A.R.T. regional production",
+      "Reason for the regional wrongProduction"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "queen-versailles-2025/pages-on-stages--mason-pilevsky.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Read-confirmed: Pages on Stages reviews the St. James Broadway run (Nov 2025); the rejection compared it to a stale Ethel Barrymore venue"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "queen-versailles-2025/pages-on-stages--mason-pilevsky.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Human clear so the stale wrong_production verdict cannot return"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "every-brilliant-thing-2026/amny--matt-windman.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Read-confirmed: amNY Windman is a full evaluative review of the Hudson run; CV misread it as a preview"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "every-brilliant-thing-2026/amny--matt-windman.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Human clear of the CV-promoted wrongShow"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "every-brilliant-thing-2026/theatre-reviews-limited--david-roberts.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Read-confirmed: Theatre Reviews Limited reviews the 2026 Hudson Theatre run (URL and body name it)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "every-brilliant-thing-2026/theatre-reviews-limited--david-roberts.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Human clear so the body can be restored"
+      },
+      {
+        "type": "run-script",
+        "description": "Put the quarantined Hudson review body back into fullText",
+        "script": "restore-released-quarantined-body.js",
+        "args": "--file=every-brilliant-thing-2026/theatre-reviews-limited--david-roberts.json --apply"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "two-strangers-bway-2025/lighting-and-sound-america--david-barbour.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Read-confirmed: story.asp?ID=T634J3 is the Longacre Broadway review, not a homepage"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "two-strangers-bway-2025/lighting-and-sound-america--david-barbour.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Human clear of the generic-homepage wrongShow"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "two-strangers-carry-a-cake-across-new-york-at-art-regional-2025/lighting-and-sound-america--david-barbour.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "This LSA review is of the Longacre Broadway run, so it does not belong to the A.R.T. regional production"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "two-strangers-carry-a-cake-across-new-york-at-art-regional-2025/lighting-and-sound-america--david-barbour.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-6742: review text names the Longacre Theatre (Broadway run); the Broadway copy is the live one",
+        "description": "Reason for the regional wrongProduction"
+      }
+    ]
+  },
+  "executedAt": "2026-11-01T02:46:27.877Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "queen-versailles-2025/pages-on-stages--mason-pilevsky.json wrongProduction: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "queen-versailles-2025/pages-on-stages--mason-pilevsky.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "every-brilliant-thing-2026/amny--matt-windman.json wrongShow: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "every-brilliant-thing-2026/amny--matt-windman.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "every-brilliant-thing-2026/theatre-reviews-limited--david-roberts.json wrongProduction: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "every-brilliant-thing-2026/theatre-reviews-limited--david-roberts.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran restore-released-quarantined-body.js successfully"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "two-strangers-bway-2025/lighting-and-sound-america--david-barbour.json wrongShow: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "two-strangers-bway-2025/lighting-and-sound-america--david-barbour.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "two-strangers-carry-a-cake-across-new-york-at-art-regional-2025/lighting-and-sound-america--david-barbour.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "two-strangers-carry-a-cake-across-new-york-at-art-regional-2025/lighting-and-sound-america--david-barbour.json wrongProductionReason: null -> \"BRO-6742: review text names the Longacre Theatre (Broadway run); the Broadway copy is the live one\""
+    }
+  ],
+  "executedIn": "ci"
+}

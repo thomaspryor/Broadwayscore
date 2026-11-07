@@ -1,0 +1,87 @@
+name: Weekly Show Origins
+
+# BRO-5867: label new Broadway openings in data/show-origins.json so the
+# Path to Broadway page keeps its current-season column. Hand corrections
+# (verifiedBy) are never overwritten by the classifier. Spend is capped with
+# --max-usd on every step; check/resolve only touch labeled shows that lack
+# a second answer or where the two answers disagree.
+# Backstop: validate-data.js errors when an opened show has no record after
+# 10 days (validateShowOrigins), so a failing run here surfaces in CI.
+
+on:
+  schedule:
+    - cron: '30 6 * * 1'  # Mondays 06:30 UTC
+  workflow_dispatch:
+
+concurrency:
+  group: weekly-show-origins
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  label:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - uses: ./.github/actions/setup-node
+
+      - name: Classify new shows
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: node scripts/classify-show-origins.js --max-usd=3
+
+      - name: Independent check (Gemini)
+        if: ${{ !cancelled() }}
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: node scripts/classify-show-origins.js --check --max-usd=2
+
+      - name: Resolve disagreements
+        if: ${{ !cancelled() }}
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: node scripts/classify-show-origins.js --resolve --batch=1 --effort=medium --max-usd=3
+
+      - name: Label original stories (true story vs invented)
+        if: ${{ !cancelled() }}
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: node scripts/classify-original-kind.js --max-usd=2
+
+      - name: Commit and push changes
+        if: always()
+        env:
+          PUSH_RECONCILE_MERGED_JSON: '1'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/show-origins.json
+          if git diff --staged --quiet; then
+            echo "No changes"
+            exit 0
+          fi
+          git commit -m "data: label new Broadway openings (show-origins) [skip ci]"
+          bash scripts/lib/push-with-retry.sh
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Weekly Show Origins Failed'
+          severity: 'warning'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}

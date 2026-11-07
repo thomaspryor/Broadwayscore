@@ -1,0 +1,92 @@
+{
+  "issueNumber": "bro-5294-c",
+  "planId": "4bd98ccd-c1c0-4401-978b-e65b1988ae7c",
+  "status": "applied",
+  "createdAt": "2026-10-14T01:10:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5294 (c): restore three WSJ rows whose box-cluster trim dropped part of the review (master-class-2011 scored 49 on the setup only). Restores the full text and the pre-trim scores 76 / 95 / 92 from review-texts 113b32e9^.",
+    "steps": [
+      "delete the trimmed copy",
+      "restore the pre-trim file from history"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "master-class-2011/wsj--terry-teachout.json",
+        "description": "BRO-5294: remove the bad trimmed copy before restoring it (76 -> 49: kept only the setup before the box cluster; the verdict paragraphs after it were dropped)."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "restore",
+        "sourcePath": "master-class-2011/wsj--terry-teachout.json",
+        "fromCommit": "113b32e9bf56a5129f6af825e6914fafda4f7dd8^",
+        "description": "BRO-5294: restore the full pre-trim file (and its earlier score) from the commit before the multi-show flagging. The section trim was incomplete: 76 -> 49: kept only the setup before the box cluster; the verdict paragraphs after it were dropped."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "a-free-man-of-color-2010/wsj--terry-teachout.json",
+        "description": "BRO-5294: remove the bad trimmed copy before restoring it (95 -> 91: the review continues after the box cluster ('...George C. Wolfe's staging...'))."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "restore",
+        "sourcePath": "a-free-man-of-color-2010/wsj--terry-teachout.json",
+        "fromCommit": "113b32e9bf56a5129f6af825e6914fafda4f7dd8^",
+        "description": "BRO-5294: restore the full pre-trim file (and its earlier score) from the commit before the multi-show flagging. The section trim was incomplete: 95 -> 91: the review continues after the box cluster ('...George C. Wolfe's staging...')."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "waiting-for-godot-2009/wsj--terry-teachout.json",
+        "description": "BRO-5294: remove the bad trimmed copy before restoring it (92 -> 91: the review continues after the box cluster ('...what Mr. Page did to coax such magnificent performances...'))."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "restore",
+        "sourcePath": "waiting-for-godot-2009/wsj--terry-teachout.json",
+        "fromCommit": "113b32e9bf56a5129f6af825e6914fafda4f7dd8^",
+        "description": "BRO-5294: restore the full pre-trim file (and its earlier score) from the commit before the multi-show flagging. The section trim was incomplete: 92 -> 91: the review continues after the box cluster ('...what Mr. Page did to coax such magnificent performances...')."
+      }
+    ]
+  },
+  "executedAt": "2026-10-14T01:20:01.396Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted master-class-2011/wsj--terry-teachout.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Restored master-class-2011/wsj--terry-teachout.json@113b32e9bf56a5129f6af825e6914fafda4f7dd8^ -> master-class-2011/wsj--terry-teachout.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted a-free-man-of-color-2010/wsj--terry-teachout.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Restored a-free-man-of-color-2010/wsj--terry-teachout.json@113b32e9bf56a5129f6af825e6914fafda4f7dd8^ -> a-free-man-of-color-2010/wsj--terry-teachout.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted waiting-for-godot-2009/wsj--terry-teachout.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Restored waiting-for-godot-2009/wsj--terry-teachout.json@113b32e9bf56a5129f6af825e6914fafda4f7dd8^ -> waiting-for-godot-2009/wsj--terry-teachout.json"
+    }
+  ]
+}

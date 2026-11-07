@@ -1,0 +1,348 @@
+{
+ "card": "BRO-5240",
+ "checkedAt": "2026-10-17",
+ "method": "node scripts/enrich-west-end-dates.js --verify (all WE/OWE rows) via scripts/cloud-run-script.js; Theatremonkey, Playbill London and OLT consulted",
+ "finding": "None of the 68 rows has a press night in Theatremonkey, Playbill or OLT. 5 matched an index entry (devil-wears-prada, moulin-rouge, paranormal-activity, phantom, titanique) but only with preview dates (Press Night: none) or no dates at all. Historical and closed runs fall off these listings. Per the card, no source means the row is left unchanged; a blanket +1 is wrong (the-devil-wears-prada-west-end-2024 is correct as stamped). No data-edit plan was needed.",
+ "rows": [
+  {
+   "id": "the-devil-wears-prada-west-end-2024",
+   "openingDate": "2024-12-05",
+   "disposition": "no-source"
+  },
+  {
+   "id": "mj-the-musical-west-end-2024",
+   "openingDate": "2024-03-26",
+   "disposition": "no-source"
+  },
+  {
+   "id": "im-sorry-prime-minister-west-end-2026",
+   "openingDate": "2026-02-12",
+   "disposition": "no-source"
+  },
+  {
+   "id": "woman-in-mind-west-end-2025",
+   "openingDate": "2026-01-05",
+   "disposition": "no-source"
+  },
+  {
+   "id": "moulin-rouge-the-musical-west-end-2021",
+   "openingDate": "2022-01-19",
+   "disposition": "no-source"
+  },
+  {
+   "id": "paranormal-activity-west-end-2025",
+   "openingDate": "2025-12-14",
+   "disposition": "no-source"
+  },
+  {
+   "id": "shadowlands-west-end-2026",
+   "openingDate": "2026-02-12",
+   "disposition": "no-source"
+  },
+  {
+   "id": "all-my-sons-west-end-2025",
+   "openingDate": "2025-11-17",
+   "disposition": "no-source"
+  },
+  {
+   "id": "the-producers-west-end-2025",
+   "openingDate": "2025-09-13",
+   "disposition": "no-source"
+  },
+  {
+   "id": "the-spy-who-came-in-from-the-cold-west-end-2025",
+   "openingDate": "2025-11-25",
+   "disposition": "no-source"
+  },
+  {
+   "id": "the-unlikely-pilgrimage-of-harold-fry-west-end-2026",
+   "openingDate": "2026-02-10",
+   "disposition": "no-source"
+  },
+  {
+   "id": "high-noon-west-end-2025",
+   "openingDate": "2026-01-09",
+   "disposition": "no-source"
+  },
+  {
+   "id": "the-phantom-of-the-opera-west-end-1986",
+   "openingDate": "1986-10-09",
+   "disposition": "no-source"
+  },
+  {
+   "id": "starlight-express-west-end-2024",
+   "openingDate": "2024-06-29",
+   "disposition": "no-source"
+  },
+  {
+   "id": "manic-street-creature-west-end-2026",
+   "openingDate": "2026-03-10",
+   "disposition": "no-source"
+  },
+  {
+   "id": "consumed-west-end-2026",
+   "openingDate": "2026-03-24",
+   "disposition": "no-source"
+  },
+  {
+   "id": "heart-wall-west-end-2026",
+   "openingDate": "2026-04-14",
+   "disposition": "no-source"
+  },
+  {
+   "id": "sweetmeats-west-end-2026",
+   "openingDate": "2026-02-13",
+   "disposition": "no-source"
+  },
+  {
+   "id": "im-not-being-funny-west-end-2026",
+   "openingDate": "2026-05-11",
+   "disposition": "no-source"
+  },
+  {
+   "id": "an-ideal-husband-west-end-2026",
+   "openingDate": "2026-05-12",
+   "disposition": "no-source"
+  },
+  {
+   "id": "jajas-african-hair-braiding-west-end-2026",
+   "openingDate": "2026-03-26",
+   "disposition": "no-source"
+  },
+  {
+   "id": "deep-azure-globe-west-end-2026",
+   "openingDate": "2026-02-17",
+   "disposition": "no-source"
+  },
+  {
+   "id": "dog-man-the-musical-west-end-2026",
+   "openingDate": "2026-08-03",
+   "disposition": "no-source"
+  },
+  {
+   "id": "mother-courage-and-her-children-globe-west-end-2026",
+   "openingDate": "2026-05-15",
+   "disposition": "no-source"
+  },
+  {
+   "id": "please-please-me-west-end-2026",
+   "openingDate": "2026-04-22",
+   "disposition": "no-source"
+  },
+  {
+   "id": "the-playboy-of-the-western-world-west-end-2025",
+   "openingDate": "2025-12-11",
+   "disposition": "no-source"
+  },
+  {
+   "id": "as-you-like-it-globe-west-end-2026",
+   "openingDate": "2026-08-21",
+   "disposition": "no-source"
+  },
+  {
+   "id": "loves-labours-lost-globe-west-end-2026",
+   "openingDate": "2026-07-28",
+   "disposition": "no-source"
+  },
+  {
+   "id": "the-tempest-globe-west-end-2026",
+   "openingDate": "2026-01-29",
+   "disposition": "no-source"
+  },
+  {
+   "id": "man-and-boy-west-end-2026",
+   "openingDate": "2026-02-09",
+   "disposition": "no-source"
+  },
+  {
+   "id": "the-holy-rosenbergs-west-end-2026",
+   "openingDate": "2026-03-08",
+   "disposition": "no-source"
+  },
+  {
+   "id": "beautiful-little-fool-west-end-2026",
+   "openingDate": "2026-01-22",
+   "disposition": "no-source"
+  },
+  {
+   "id": "the-rat-trap-west-end-2026",
+   "openingDate": "2026-02-02",
+   "disposition": "no-source"
+  },
+  {
+   "id": "it-walks-around-the-house-at-night-west-end-2026",
+   "openingDate": "2026-03-09",
+   "disposition": "no-source"
+  },
+  {
+   "id": "arcadia-west-end-2026",
+   "openingDate": "2026-02-04",
+   "disposition": "no-source"
+  },
+  {
+   "id": "titanique-west-end-2024",
+   "openingDate": "2025-01-08",
+   "disposition": "no-source"
+  },
+  {
+   "id": "a-life-in-four-seasons-west-end-2026",
+   "openingDate": "2026-06-12",
+   "disposition": "no-source"
+  },
+  {
+   "id": "evening-all-afternoon-west-end-2026",
+   "openingDate": "2026-02-23",
+   "disposition": "no-source"
+  },
+  {
+   "id": "abba-voyage-off-west-end-2026",
+   "openingDate": "2022-05-28",
+   "disposition": "no-source"
+  },
+  {
+   "id": "churchills-urinal-a-new-comedy-by-and-starring-rosie-holt-with-additional-material-off-west-end-2026",
+   "openingDate": "2026-05-19",
+   "disposition": "no-source"
+  },
+  {
+   "id": "the-first-year-off-west-end-2026",
+   "openingDate": "2026-09-24",
+   "disposition": "no-source"
+  },
+  {
+   "id": "a-small-and-quiet-light-off-west-end-2026",
+   "openingDate": "2026-09-27",
+   "disposition": "no-source"
+  },
+  {
+   "id": "everybodys-talking-about-jamie-west-end-2024",
+   "openingDate": "2024-02-14",
+   "disposition": "no-source"
+  },
+  {
+   "id": "fire-fire-off-west-end-2026",
+   "openingDate": "2026-09-11",
+   "disposition": "no-source"
+  },
+  {
+   "id": "baghdaddy-west-end-2022",
+   "openingDate": "2022-11-24",
+   "disposition": "no-source"
+  },
+  {
+   "id": "standing-at-the-skys-edge-west-end-2023",
+   "openingDate": "2023-02-13",
+   "disposition": "no-source"
+  },
+  {
+   "id": "no-i-d-west-end-2023",
+   "openingDate": "2023-04-19",
+   "disposition": "no-source"
+  },
+  {
+   "id": "is-god-is-west-end-2021",
+   "openingDate": "2021-09-15",
+   "disposition": "no-source"
+  },
+  {
+   "id": "get-up-stand-up-the-bob-marley-story-west-end-2021",
+   "openingDate": "2021-10-19",
+   "disposition": "no-source"
+  },
+  {
+   "id": "four-quartets-west-end-2021",
+   "openingDate": "2021-11-23",
+   "disposition": "no-source"
+  },
+  {
+   "id": "cyrano-de-bergerac-west-end-2022",
+   "openingDate": "2022-02-12",
+   "disposition": "no-source"
+  },
+  {
+   "id": "the-human-voice-west-end-2022",
+   "openingDate": "2022-03-21",
+   "disposition": "no-source"
+  },
+  {
+   "id": "jouvert-west-end-2021",
+   "openingDate": "2021-06-23",
+   "disposition": "no-source"
+  },
+  {
+   "id": "heathers-the-musical-west-end-2021",
+   "openingDate": "2021-06-28",
+   "disposition": "no-source"
+  },
+  {
+   "id": "joseph-and-the-amazing-technicolor-dreamcoat-west-end-2021",
+   "openingDate": "2021-07-27",
+   "disposition": "no-source"
+  },
+  {
+   "id": "glass-kill-bluebeard-and-imp-west-end-2019",
+   "openingDate": "2019-09-24",
+   "disposition": "no-source"
+  },
+  {
+   "id": "the-girl-who-fell-west-end-2019",
+   "openingDate": "2019-10-17",
+   "disposition": "no-source"
+  },
+  {
+   "id": "im-not-running-west-end-2018",
+   "openingDate": "2018-10-08",
+   "disposition": "no-source"
+  },
+  {
+   "id": "don-quixote-west-end-2018",
+   "openingDate": "2018-11-08",
+   "disposition": "no-source"
+  },
+  {
+   "id": "hadestown-west-end-2018",
+   "openingDate": "2018-11-11",
+   "disposition": "no-source"
+  },
+  {
+   "id": "the-tell-tale-heart-west-end-2018",
+   "openingDate": "2018-12-12",
+   "disposition": "no-source"
+  },
+  {
+   "id": "waitress-west-end-2019",
+   "openingDate": "2019-03-05",
+   "disposition": "no-source"
+  },
+  {
+   "id": "follies-west-end-2019",
+   "openingDate": "2019-02-24",
+   "disposition": "no-source"
+  },
+  {
+   "id": "inside-bitch-west-end-2019",
+   "openingDate": "2019-03-03",
+   "disposition": "no-source"
+  },
+  {
+   "id": "rosmersholm-west-end-2019",
+   "openingDate": "2019-05-01",
+   "disposition": "no-source"
+  },
+  {
+   "id": "white-pearl-west-end-2019",
+   "openingDate": "2019-05-16",
+   "disposition": "no-source"
+  },
+  {
+   "id": "anna-west-end-2019",
+   "openingDate": "2019-05-21",
+   "disposition": "no-source"
+  },
+  {
+   "id": "the-secret-diary-of-adrian-mole-aged-13-3-4-west-end-2019",
+   "openingDate": "2019-07-01",
+   "disposition": "no-source"
+  }
+ ]
+}

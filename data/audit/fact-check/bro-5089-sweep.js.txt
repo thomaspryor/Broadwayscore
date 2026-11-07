@@ -1,0 +1,107 @@
+// BRO-5089 sweep: Broadway historical posters + historical synopses, two checkers each.
+// node sweep.js posters|synopses <outfile.jsonl> [--limit=N] [--max-usd=X]
+// Run from the worktree root (needs scripts/lib and public/images).
+const fs = require('fs'); const path = require('path');
+const ROOT = process.cwd();
+const mode = process.argv[2]; const OUT = process.argv[3];
+const arg = (n, d) => { const a = process.argv.find((x) => x.startsWith(`--${n}=`)); return a ? a.slice(n.length + 3) : d; };
+const LIMIT = Number(arg('limit', 1e9)); const MAX_USD = Number(arg('max-usd', 6)); const CONC = Number(arg('conc', 6));
+const S = require('/home/user/broadway-scorecard-data/shows.json'); const shows = S.shows || S;
+const { verifyImage, applyStrictVerdict, creativesForVerify } = require(ROOT + '/scripts/lib/verify-image');
+const spend = { usd: 0 };
+const done = new Set(fs.existsSync(OUT) ? fs.readFileSync(OUT, 'utf8').split('\n').filter(Boolean).map((l) => JSON.parse(l).id) : []);
+
+function facts(s) {
+  const credits = (s.creativeTeam || []).filter((c) => /direct|playwright|book|music|lyric|writ|adapt/i.test(c.role)).slice(0, 6).map((c) => `${c.name} (${c.role})`).join('; ');
+  const market = s.category === 'broadway' ? 'Broadway, New York' : 'West End, London';
+  return `Title: ${s.title}\nMarket: ${market}\nTheatre: ${s.venue || '?'}\nRun: ${s.previewsStartDate || s.openingDate || '?'} to ${s.closingDate || '?'}\nCredits: ${credits || '(none stored)'}`;
+}
+
+async function openai(content, maxOut = 3000) {
+  for (let i = 0; i < 3; i++) {
+    const r = await fetch('https://api.openai.com/v1/responses', { method: 'POST', headers: { 'content-type': 'application/json', authorization: `Bearer ${process.env.OPENAI_API_KEY}` },
+      body: JSON.stringify({ model: 'gpt-5-mini', reasoning: { effort: 'low' }, max_output_tokens: maxOut, input: [{ role: 'user', content }] }) });
+    const j = await r.json().catch(() => ({}));
+    if (r.status === 429 || r.status >= 500) { await new Promise((x) => setTimeout(x, 4000 * (i + 1))); continue; }
+    if (j.error) throw new Error(j.error.message);
+    const u = j.usage || {}; spend.usd += (u.input_tokens || 0) * 0.25e-6 + (u.output_tokens || 0) * 2e-6;
+    const msg = (j.output || []).filter((o) => o.type === 'message').pop();
+    return ((msg && msg.content || []).find((c) => c.type === 'output_text') || {}).text || '';
+  }
+  throw new Error('openai retries');
+}
+
+async function gemini(text) {
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${process.env.GEMINI_API_KEY}`;
+  for (let i = 0; i < 3; i++) {
+    const r = await fetch(url, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ contents: [{ parts: [{ text }] }], generationConfig: { thinkingConfig: { thinkingBudget: 512 }, maxOutputTokens: 2048 } }) });
+    const j = await r.json().catch(() => ({}));
+    if (r.status === 429 || r.status >= 500) { await new Promise((x) => setTimeout(x, 4000 * (i + 1))); continue; }
+    if (j.error) throw new Error(j.error.message);
+    const u = j.usageMetadata || {}; spend.usd += (u.promptTokenCount || 0) * 0.3e-6 + ((u.candidatesTokenCount || 0) + (u.thoughtsTokenCount || 0)) * 2.5e-6;
+    return ((((j.candidates || [])[0] || {}).content || {}).parts || []).map((p) => p.text || '').join('');
+  }
+  throw new Error('gemini retries');
+}
+const json = (t) => { const s = String(t || ''); const a = s.indexOf('{'); const b = s.lastIndexOf('}'); try { return JSON.parse(s.slice(a, b + 1)); } catch { return null; } };
+
+const POSTER_Q = (s) => `This image is used as the poster for the theatre production below on a website.
+${facts(s)}
+Is it art for THIS production? Answer JSON only: {"verdict": "this-production" | "other-production" | "wrong-show" | "not-art" | "unsure", "evidence": "what in the image decides it (names, venue, year, city, style)"}.
+- this-production: key art, logo art or a Playbill/programme cover for this title at this theatre in this run, or neutral title art with nothing tying it to another staging.
+- other-production: art for another staging of the same title (other cast, theatre, city, year, a film or a concert), e.g. modern photo art on a 1970s run.
+- wrong-show: another show or event. not-art: a newspaper page, ticket ad, screening ad, book cover with no production link.`;
+
+async function posters() {
+  const rows = shows.filter((s) => s.category === 'broadway' && (s.tags || []).includes('historical') && s.images && (s.images.poster || s.images.thumbnail) && !done.has(s.id)).slice(0, LIMIT);
+  console.log('posters to check', rows.length);
+  let i = 0;
+  async function worker() {
+    while (i < rows.length && spend.usd < MAX_USD) {
+      const s = rows[i++]; const rel = s.images.poster || s.images.thumbnail; const file = path.join(ROOT, 'public', rel);
+      if (!fs.existsSync(file)) { fs.appendFileSync(OUT, JSON.stringify({ id: s.id, file: rel, missing: true }) + '\n'); continue; }
+      const buf = fs.readFileSync(file); const mime = file.endsWith('.webp') ? 'image/webp' : file.endsWith('.png') ? 'image/png' : 'image/jpeg';
+      let v1 = null; let v2 = null;
+      try {
+        const r = await verifyImage(buf, s.title, { mimeType: mime, openingDate: s.openingDate, market: 'broadway', venue: s.venue, creatives: creativesForVerify(s) });
+        spend.usd += 0.0004;
+        v1 = { accept: applyStrictVerdict(r, { strict: false }).accept, desc: (r.description || '').slice(0, 200), issues: r.issues };
+      } catch (e) { v1 = { error: e.message }; }
+      if (v1 && v1.accept === false) {
+        try { v2 = json(await openai([{ type: 'input_image', image_url: `data:${mime};base64,${buf.toString('base64')}` }, { type: 'input_text', text: POSTER_Q(s) }])); } catch (e) { v2 = { error: e.message }; }
+      }
+      fs.appendFileSync(OUT, JSON.stringify({ id: s.id, file: rel, v1, v2 }) + '\n');
+      if (i % 100 === 0) console.log(i, `$${spend.usd.toFixed(2)}`);
+    }
+  }
+  await Promise.all([...Array(CONC)].map(worker));
+  console.log('done', `$${spend.usd.toFixed(2)}`);
+}
+
+const SYN_Q = (s) => `A website shows this synopsis for the theatre production below.
+${facts(s)}
+Synopsis: """${String(s.synopsis).slice(0, 1500)}"""
+Judge it from what you know about this work and production. Answer JSON only: {"verdict": "ok" | "wrong-work" | "other-production" | "marketing" | "invented" | "unsure", "evidence": "one sentence"}.
+- wrong-work: describes a different show or work that shares or resembles the title.
+- other-production: names people, a theatre, city or year that belong to a different production of this work than the one above (a description of the original production on a revival counts).
+- marketing: mostly praise, awards, booking or star billing rather than what the show is about.
+- invented: plot details that are not in this work.
+- ok: tells what this work is about with nothing contradicting the production above (mild praise is fine).`;
+
+async function synopses() {
+  const rows = shows.filter((s) => s.synopsis && ((s.category === 'broadway' && (s.tags || []).includes('historical')) || String(s.discoverySource || '').startsWith('we-historical')) && !done.has(s.id)).slice(0, LIMIT);
+  console.log('synopses to check', rows.length);
+  let i = 0;
+  async function worker() {
+    while (i < rows.length && spend.usd < MAX_USD) {
+      const s = rows[i++]; const q = SYN_Q(s);
+      const [a, b] = await Promise.allSettled([gemini(q), openai([{ type: 'input_text', text: q }])]);
+      fs.appendFileSync(OUT, JSON.stringify({ id: s.id, gemini: a.status === 'fulfilled' ? json(a.value) : { error: String(a.reason).slice(0, 120) }, openai: b.status === 'fulfilled' ? json(b.value) : { error: String(b.reason).slice(0, 120) } }) + '\n');
+      if (i % 100 === 0) console.log(i, `$${spend.usd.toFixed(2)}`);
+    }
+  }
+  await Promise.all([...Array(CONC)].map(worker));
+  console.log('done', `$${spend.usd.toFixed(2)}`);
+}
+
+(mode === 'posters' ? posters : synopses)().catch((e) => { console.error(e); process.exit(1); });

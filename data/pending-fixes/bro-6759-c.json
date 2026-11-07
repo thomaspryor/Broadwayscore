@@ -1,0 +1,358 @@
+{
+  "issueNumber": "bro-6759-c",
+  "planId": "4b63cf2b-c00a-4581-bdff-50ea20554dcf",
+  "status": "applied",
+  "createdAt": "2026-11-01T13:28:27.569Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6759: verify genuine cross-outlet reprints, clear wrongly hidden different-critic reviews (incl. appropriate-2023 Deadline) (part 3 of 5)",
+    "steps": [
+      "BRO-6759 verified cross-outlet reprint",
+      "BRO-6759 verified cross-outlet reprint",
+      "BRO-6759 clear wrongly hidden review",
+      "BRO-6759 clear wrongly hidden review",
+      "BRO-6759 verified cross-outlet reprint",
+      "BRO-6759 verified cross-outlet reprint",
+      "BRO-6759 verified cross-outlet reprint",
+      "BRO-6759 verified cross-outlet reprint",
+      "BRO-6759 clear wrongly hidden review",
+      "BRO-6759 clear wrongly hidden review",
+      "BRO-6759 verified cross-outlet reprint",
+      "BRO-6759 verified cross-outlet reprint",
+      "BRO-6759 verified cross-outlet reprint",
+      "BRO-6759 verified cross-outlet reprint",
+      "BRO-6759 verified cross-outlet reprint",
+      "BRO-6759 verified cross-outlet reprint",
+      "BRO-6759 verified cross-outlet reprint",
+      "BRO-6759 verified cross-outlet reprint",
+      "BRO-6759 clear stale different-critic flag",
+      "BRO-6759 clear stale different-critic flag",
+      "BRO-6759 clear stale different-critic flag",
+      "BRO-6759 clear stale different-critic flag",
+      "BRO-6759 clear stale different-critic flag",
+      "BRO-6759 clear stale different-critic flag"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "the-cook-regional-2026/localnewsmatters--jean-schiffman-bay-city-news.json",
+        "field": "crossOutletVerifiedNote",
+        "oldValue": null,
+        "newValue": "Both files re-fetched BRO-6759: each file's text is found on its own outlet URL (https://localnewsmatters.org/2026/09/10/review-berkeley-reps-the-cook-details-how-one-family-lived-through-cubas-revolution/), so this is a genuine reprint of the same article under another byline.",
+        "description": "BRO-6759 verified cross-outlet reprint"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-cook-regional-2026/localnewsmatters--jean-schiffman-bay-city-news.json",
+        "field": "crossOutletVerified",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-6759 verified cross-outlet reprint"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-drifters-girl-west-end-2021/i-paper--fiona-mountford.json",
+        "field": "crossOutletClearReason",
+        "oldValue": null,
+        "newValue": "BRO-6759: this file's text is on its own URL (https://inews.co.uk/culture/arts/the-drifters-girl-garrick-theatre-london-review-beverly-knight-tickets-1320002?srsltid=AU7gw4XIu-AjC10sUfJM0uhCOj5d33yg0N6QiUCqFuCBU5powCwfGtuW); the flagged primary guardian--arifa-akbar.json does not match its own URL, so this review is real and must not be hidden.",
+        "description": "BRO-6759 clear wrongly hidden review"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-drifters-girl-west-end-2021/i-paper--fiona-mountford.json",
+        "field": "crossOutletDuplicate",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-6759 clear wrongly hidden review"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-holy-rosenbergs-west-end-2026/sierz-co-uk--unknown.json",
+        "field": "crossOutletVerifiedNote",
+        "oldValue": null,
+        "newValue": "Both files re-fetched BRO-6759: each file's text is found on its own outlet URL (https://sierz.co.uk/reviews/the-holy-rosenbergs-menier-chocolate-factory/), so this is a genuine reprint of the same article under another byline.",
+        "description": "BRO-6759 verified cross-outlet reprint"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-holy-rosenbergs-west-end-2026/sierz-co-uk--unknown.json",
+        "field": "crossOutletVerified",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-6759 verified cross-outlet reprint"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-hungry-ghost-off-west-end-2026/chiswickcalendar--unknown.json",
+        "field": "crossOutletVerifiedNote",
+        "oldValue": null,
+        "newValue": "Both files re-fetched BRO-6759: each file's text is found on its own outlet URL (https://chiswickcalendar.co.uk/event/the-hungry-ghost-bush-theatre/2026-10-01/), so this is a genuine reprint of the same article under another byline.",
+        "description": "BRO-6759 verified cross-outlet reprint"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-hungry-ghost-off-west-end-2026/chiswickcalendar--unknown.json",
+        "field": "crossOutletVerified",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-6759 verified cross-outlet reprint"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-shark-is-broken-west-end-2021/i-paper--sam-marlowe.json",
+        "field": "crossOutletClearReason",
+        "oldValue": null,
+        "newValue": "BRO-6759: this file's text is on its own URL (https://inews.co.uk/culture/the-shark-is-broken-ambassadors-theatre-london-review-jaws-robert-ian-shaw-1263368); the flagged primary guardian--ryan-gilbey.json does not match its own URL, so this review is real and must not be hidden.",
+        "description": "BRO-6759 clear wrongly hidden review"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-shark-is-broken-west-end-2021/i-paper--sam-marlowe.json",
+        "field": "crossOutletDuplicate",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-6759 clear wrongly hidden review"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "till-the-stars-come-down-west-end-2024/sierz-co-uk--unknown.json",
+        "field": "crossOutletVerifiedNote",
+        "oldValue": null,
+        "newValue": "Both files re-fetched BRO-6759: each file's text is found on its own outlet URL (https://sierz.co.uk/reviews/till-the-stars-come-down-national-theatre/), so this is a genuine reprint of the same article under another byline.",
+        "description": "BRO-6759 verified cross-outlet reprint"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "till-the-stars-come-down-west-end-2024/sierz-co-uk--unknown.json",
+        "field": "crossOutletVerified",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-6759 verified cross-outlet reprint"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "top-girls-west-end-2019/sierz-co-uk--unknown.json",
+        "field": "crossOutletVerifiedNote",
+        "oldValue": null,
+        "newValue": "Both files re-fetched BRO-6759: each file's text is found on its own outlet URL (https://sierz.co.uk/reviews/top-girls-national-theatre/), so this is a genuine reprint of the same article under another byline.",
+        "description": "BRO-6759 verified cross-outlet reprint"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "top-girls-west-end-2019/sierz-co-uk--unknown.json",
+        "field": "crossOutletVerified",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-6759 verified cross-outlet reprint"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "total-immediate-collective-imminent-terrestrial-salvation-west-end-2019/sierz-co-uk--unknown.json",
+        "field": "crossOutletVerifiedNote",
+        "oldValue": null,
+        "newValue": "Both files re-fetched BRO-6759: each file's text is found on its own outlet URL (https://sierz.co.uk/reviews/total-immediate-collective-imminent-terrestrial-salvation-royal-court/), so this is a genuine reprint of the same article under another byline.",
+        "description": "BRO-6759 verified cross-outlet reprint"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "total-immediate-collective-imminent-terrestrial-salvation-west-end-2019/sierz-co-uk--unknown.json",
+        "field": "crossOutletVerified",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-6759 verified cross-outlet reprint"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "touching-the-void-west-end-2019/sierz-co-uk--unknown.json",
+        "field": "crossOutletVerifiedNote",
+        "oldValue": null,
+        "newValue": "Both files re-fetched BRO-6759: each file's text is found on its own outlet URL (https://sierz.co.uk/reviews/touching-the-void-duke-of-yorks-theatre/), so this is a genuine reprint of the same article under another byline.",
+        "description": "BRO-6759 verified cross-outlet reprint"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "touching-the-void-west-end-2019/sierz-co-uk--unknown.json",
+        "field": "crossOutletVerified",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-6759 verified cross-outlet reprint"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "ann-2013/amny--matt-windman.json",
+        "field": "crossOutletClearReason",
+        "oldValue": null,
+        "newValue": "BRO-6759: stale flag. Primary ann-2013/newsday--linda-winer.json no longer shares text with this file (0% shared 8-grams); different critics, no verified link.",
+        "description": "BRO-6759 clear stale different-critic flag"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "ann-2013/amny--matt-windman.json",
+        "field": "crossOutletDuplicate",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-6759 clear stale different-critic flag"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "chaplin-2012/amny--matt-windman.json",
+        "field": "crossOutletClearReason",
+        "oldValue": null,
+        "newValue": "BRO-6759: stale flag. Primary chaplin-2012/newsday--linda-winer.json no longer shares text with this file (0% shared 8-grams); different critics, no verified link.",
+        "description": "BRO-6759 clear stale different-critic flag"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "chaplin-2012/amny--matt-windman.json",
+        "field": "crossOutletDuplicate",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-6759 clear stale different-critic flag"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cult-of-love-2024/exeunt-magazine--loren-noveck.json",
+        "field": "crossOutletClearReason",
+        "oldValue": null,
+        "newValue": "BRO-6759: stale flag. Primary cult-of-love-2024/talkinbroadway--matthew-murray.json no longer shares text with this file (0% shared 8-grams); different critics, no verified link.",
+        "description": "BRO-6759 clear stale different-critic flag"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cult-of-love-2024/exeunt-magazine--loren-noveck.json",
+        "field": "crossOutletDuplicate",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-6759 clear stale different-critic flag"
+      }
+    ]
+  },
+  "executedAt": "2026-11-01T15:46:29.043Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-cook-regional-2026/localnewsmatters--jean-schiffman-bay-city-news.json crossOutletVerifiedNote: null -> \"Both files re-fetched BRO-6759: each file's text is found on its own outlet URL (https://localnewsmatters.org/2026/09/10/review-berkeley-reps-the-cook-details-how-one-family-lived-through-cubas-revolution/), so this is a genuine reprint of the same article under another byline.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-cook-regional-2026/localnewsmatters--jean-schiffman-bay-city-news.json crossOutletVerified: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-drifters-girl-west-end-2021/i-paper--fiona-mountford.json crossOutletClearReason: null -> \"BRO-6759: this file's text is on its own URL (https://inews.co.uk/culture/arts/the-drifters-girl-garrick-theatre-london-review-beverly-knight-tickets-1320002?srsltid=AU7gw4XIu-AjC10sUfJM0uhCOj5d33yg0N6QiUCqFuCBU5powCwfGtuW); the flagged primary guardian--arifa-akbar.json does not match its own URL, so this review is real and must not be hidden.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-drifters-girl-west-end-2021/i-paper--fiona-mountford.json crossOutletDuplicate: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-holy-rosenbergs-west-end-2026/sierz-co-uk--unknown.json crossOutletVerifiedNote: null -> \"Both files re-fetched BRO-6759: each file's text is found on its own outlet URL (https://sierz.co.uk/reviews/the-holy-rosenbergs-menier-chocolate-factory/), so this is a genuine reprint of the same article under another byline.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-holy-rosenbergs-west-end-2026/sierz-co-uk--unknown.json crossOutletVerified: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-hungry-ghost-off-west-end-2026/chiswickcalendar--unknown.json crossOutletVerifiedNote: null -> \"Both files re-fetched BRO-6759: each file's text is found on its own outlet URL (https://chiswickcalendar.co.uk/event/the-hungry-ghost-bush-theatre/2026-10-01/), so this is a genuine reprint of the same article under another byline.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-hungry-ghost-off-west-end-2026/chiswickcalendar--unknown.json crossOutletVerified: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-shark-is-broken-west-end-2021/i-paper--sam-marlowe.json crossOutletClearReason: null -> \"BRO-6759: this file's text is on its own URL (https://inews.co.uk/culture/the-shark-is-broken-ambassadors-theatre-london-review-jaws-robert-ian-shaw-1263368); the flagged primary guardian--ryan-gilbey.json does not match its own URL, so this review is real and must not be hidden.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-shark-is-broken-west-end-2021/i-paper--sam-marlowe.json crossOutletDuplicate: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "till-the-stars-come-down-west-end-2024/sierz-co-uk--unknown.json crossOutletVerifiedNote: null -> \"Both files re-fetched BRO-6759: each file's text is found on its own outlet URL (https://sierz.co.uk/reviews/till-the-stars-come-down-national-theatre/), so this is a genuine reprint of the same article under another byline.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "till-the-stars-come-down-west-end-2024/sierz-co-uk--unknown.json crossOutletVerified: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "top-girls-west-end-2019/sierz-co-uk--unknown.json crossOutletVerifiedNote: null -> \"Both files re-fetched BRO-6759: each file's text is found on its own outlet URL (https://sierz.co.uk/reviews/top-girls-national-theatre/), so this is a genuine reprint of the same article under another byline.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "top-girls-west-end-2019/sierz-co-uk--unknown.json crossOutletVerified: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "total-immediate-collective-imminent-terrestrial-salvation-west-end-2019/sierz-co-uk--unknown.json crossOutletVerifiedNote: null -> \"Both files re-fetched BRO-6759: each file's text is found on its own outlet URL (https://sierz.co.uk/reviews/total-immediate-collective-imminent-terrestrial-salvation-royal-court/), so this is a genuine reprint of the same article under another byline.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "total-immediate-collective-imminent-terrestrial-salvation-west-end-2019/sierz-co-uk--unknown.json crossOutletVerified: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "touching-the-void-west-end-2019/sierz-co-uk--unknown.json crossOutletVerifiedNote: null -> \"Both files re-fetched BRO-6759: each file's text is found on its own outlet URL (https://sierz.co.uk/reviews/touching-the-void-duke-of-yorks-theatre/), so this is a genuine reprint of the same article under another byline.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "touching-the-void-west-end-2019/sierz-co-uk--unknown.json crossOutletVerified: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "ann-2013/amny--matt-windman.json crossOutletClearReason: null -> \"BRO-6759: stale flag. Primary ann-2013/newsday--linda-winer.json no longer shares text with this file (0% shared 8-grams); different critics, no verified link.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "ann-2013/amny--matt-windman.json crossOutletDuplicate: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "chaplin-2012/amny--matt-windman.json crossOutletClearReason: null -> \"BRO-6759: stale flag. Primary chaplin-2012/newsday--linda-winer.json no longer shares text with this file (0% shared 8-grams); different critics, no verified link.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "chaplin-2012/amny--matt-windman.json crossOutletDuplicate: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cult-of-love-2024/exeunt-magazine--loren-noveck.json crossOutletClearReason: null -> \"BRO-6759: stale flag. Primary cult-of-love-2024/talkinbroadway--matthew-murray.json no longer shares text with this file (0% shared 8-grams); different critics, no verified link.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cult-of-love-2024/exeunt-magazine--loren-noveck.json crossOutletDuplicate: true -> false"
+    }
+  ],
+  "executedIn": "ci"
+}

@@ -1,0 +1,166 @@
+{
+  "issueNumber": "bro-4652",
+  "planId": "f3a680cc-246f-40c1-9917-2ecabb0fd3a2",
+  "status": "applied",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4623 part 10: Lucky Guy (2013) recouped its $3.6M capitalization after eight weeks (Playbill, TheaterMania, May 2, 2013) but was labeled Flop with recouped=false. Set Easy Winner, recouped, cited, and lock the designation.",
+    "steps": [
+      "Easy Winner: a limited run that recouped quickly (eight weeks of performances).",
+      "Recoupment and capitalization cite the May 2, 2013 Playbill and TheaterMania reports; the existing NYT source stays.",
+      "humanReviewedDesignation locks the outcome against the daily classifier."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "lucky-guy-2013",
+        "showId": "lucky-guy-2013",
+        "field": "designation",
+        "oldValue": "Flop",
+        "newValue": "Easy Winner",
+        "description": "lucky-guy-2013: designation (recouped May 2013, was labeled Flop)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "lucky-guy-2013",
+        "showId": "lucky-guy-2013",
+        "field": "recouped",
+        "oldValue": false,
+        "newValue": true,
+        "description": "lucky-guy-2013: recouped (recouped May 2013, was labeled Flop)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "lucky-guy-2013",
+        "showId": "lucky-guy-2013",
+        "field": "recoupedDate",
+        "oldValue": null,
+        "newValue": "2013-05",
+        "description": "lucky-guy-2013: recoupedDate (recouped May 2013, was labeled Flop)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "lucky-guy-2013",
+        "showId": "lucky-guy-2013",
+        "field": "recoupedSource",
+        "oldValue": "Show closed after only 84 performances (April 1 - July 3, 2013), making recoupment highly unlikely given short run",
+        "newValue": "Playbill, TheaterMania (May 2, 2013): recouped its $3.6M capitalization after eight weeks of performances.",
+        "description": "lucky-guy-2013: recoupedSource (recouped May 2013, was labeled Flop)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "lucky-guy-2013",
+        "showId": "lucky-guy-2013",
+        "field": "capitalizationSource",
+        "oldValue": "New York Times reported that Tom Hanks made it easy to raise $3.6 million to finance the Broadway play",
+        "newValue": "Playbill (May 2013): $3.6M",
+        "description": "lucky-guy-2013: capitalizationSource (recouped May 2013, was labeled Flop)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "lucky-guy-2013",
+        "showId": "lucky-guy-2013",
+        "field": "notes",
+        "oldValue": "Despite Tom Hanks' star power helping raise $3.6 million, the show closed after only 84 performances, making full recoupment extremely unlikely",
+        "newValue": "Nora Ephron's final play, starring Tom Hanks, a limited run at the Broadhurst (opened Apr 1, 2013; closed Jul 3, 2013). Recouped its $3.6M capitalization after eight weeks of performances (announced May 2, 2013) and grossed over $1M most weeks.",
+        "description": "lucky-guy-2013: notes (recouped May 2013, was labeled Flop)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "lucky-guy-2013",
+        "showId": "lucky-guy-2013",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://www.nytimes.com/2013/09/08/theater/for-big-fish-susan-stroman-lures-investors-too.html",
+            "date": "2013-09-08"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://playbill.com/article/nora-ephrons-lucky-guy-starring-tom-hanks-recoups-broadway-investment-com-205010",
+            "date": "2013-05-02"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.theatermania.com/news/its-a-hit-broadway-premiere-of-nora-ephrons-lucky-guy-starring-tom-hanks-recoups-investment_65066/",
+            "date": "2013-05-02"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.nytimes.com/2013/09/08/theater/for-big-fish-susan-stroman-lures-investors-too.html",
+            "date": "2013-09-08"
+          }
+        ],
+        "description": "lucky-guy-2013: sources (recouped May 2013, was labeled Flop)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "lucky-guy-2013",
+        "showId": "lucky-guy-2013",
+        "field": "humanReviewedDesignation",
+        "oldValue": null,
+        "newValue": true,
+        "description": "lucky-guy-2013: humanReviewedDesignation (recouped May 2013, was labeled Flop)"
+      }
+    ],
+    "changes": []
+  },
+  "executedAt": "2026-10-05T01:39:49.496Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for lucky-guy-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recouped updated for lucky-guy-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedDate updated for lucky-guy-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for lucky-guy-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for lucky-guy-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for lucky-guy-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for lucky-guy-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: humanReviewedDesignation updated for lucky-guy-2013"
+    }
+  ]
+}

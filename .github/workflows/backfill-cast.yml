@@ -1,0 +1,282 @@
+name: Backfill Cast Data
+
+on:
+  # Weekly: refresh current cast for open shows
+  schedule:
+    - cron: '0 6 * * 3'
+    # Daily missing-file pass (BRO-5819): scrape only open/previews Broadway
+    # shows with NO data/cast/{id}.json. A new show gets one dispatch from
+    # update-show-status.yml; when that run died (2026-10-22, playwright
+    # install-deps timeout) nothing retried until Wednesday, so the health
+    # check's "Sync: cast coverage" row fired for up to a week. Skips the
+    # scrape entirely when nothing is missing.
+    - cron: '17 14 * * *'
+  workflow_dispatch:
+    inputs:
+      shard:
+        description: 'Shard index (0-based). Leave empty to process all shows.'
+        required: false
+        type: string
+      total_shards:
+        description: 'Total number of shards (default 10)'
+        required: false
+        default: '10'
+        type: string
+      show_filter:
+        description: 'Optional: show ID, or comma-separated list of IDs, to process'
+        required: false
+        type: string
+      force:
+        description: 'Re-scrape shows with existing cast files'
+        required: false
+        default: false
+        type: boolean
+      open_only:
+        description: 'Only process open/previews shows (for current cast updates)'
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: write
+
+jobs:
+  # Daily cron only (BRO-5819): count open/previews Broadway shows with no
+  # cast file. Weekly and dispatch runs skip this job and go straight to the
+  # backfill. Playwright is lazy-required, so the dry run needs no browsers.
+  missing-cast-precheck:
+    if: github.event_name == 'schedule' && github.event.schedule != '0 6 * * 3'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    outputs:
+      missing: ${{ steps.count.outputs.missing }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          ref: main
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Setup Node
+        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with:
+          node-version: "22"
+
+      - name: Install dependencies
+        run: npm ci || npm install
+
+      # Fails closed: an unparseable count runs the backfill rather than
+      # silently skipping it.
+      - name: Count shows missing a cast file
+        id: count
+        run: |
+          set -o pipefail
+          N=$(node scripts/backfill-cast.js --open-only --dry-run | sed -n 's/^Shows to process: \([0-9][0-9]*\)$/\1/p' | tail -1) || N=""
+          if ! [[ "$N" =~ ^[0-9]+$ ]]; then
+            echo "::warning::Could not read the missing-cast count; running the backfill anyway"
+            N=unknown
+          fi
+          echo "Open/previews Broadway shows missing a cast file: $N"
+          echo "missing=$N" >> "$GITHUB_OUTPUT"
+
+      # --dry-run returns before any fetch, so this is normally a no-op; kept
+      # so the ledger-coverage audit holds if the precheck ever fetches.
+      - name: Commit scraper-spend ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: backfill-cast
+
+  backfill-cast:
+    needs: missing-cast-precheck
+    # Weekly/dispatch: precheck is skipped, so run. Daily: run unless the
+    # precheck SUCCEEDED and counted 0 (a failed precheck fails closed and
+    # runs). Compare result, never a skipped job's output: GitHub coerces a
+    # null output and '0' both to 0, so `outputs.missing != '0'` alone would
+    # silently skip every weekly and dispatch run.
+    if: >-
+      !cancelled() && (needs.missing-cast-precheck.result != 'success'
+      || needs.missing-cast-precheck.outputs.missing != '0')
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    # Queued, not cancelled — a manual dispatch overlapping the weekly scheduled
+    # run (or two manual dispatches) would otherwise race-write the same
+    # data/cast/{id}.json files with no lock (ship-check adversarial review,
+    # task #712 follow-up). Matches backfill-cast-web.yml's existing pattern.
+    # Job-level (BRO-5819) so the daily precheck job runs OUTSIDE the group: a
+    # daily run that finds nothing missing never occupies the one pending slot
+    # and so never evicts a pending show_filter dispatch.
+    concurrency:
+      # shows-json-writer-exempt: dispatched mid-run by update-show-status.yml and discover-historical-shows.yml, and its own Wed 06:00 cron fires with update-show-status (Wed 06:00) and check-show-freshness (06:00), so it would pend behind a member and be evicted by the next sibling; 45-min runs. Only cast fields change (BRO-5803)
+      # concurrency-queue-ok: callers (update-show-status.yml, discover-historical-shows.yml)
+      # send ONE comma-list dispatch per run (BRO-4870); empty-cast.check.js still dispatches
+      # one show at a time (a rare opening-night repair, re-run by the next check), and update-show-status's shows are
+      # new/opening Broadway shows that the Wednesday --open-only cron refreshes anyway, and an
+      # evicted show_filter dispatch's still-missing shows are re-selected by the daily
+      # 14:17 missing-file pass (BRO-5819); the
+      # group must stay static because every run rewrites shows.json cast via push-core-data.
+      group: backfill-cast
+      cancel-in-progress: false
+    steps:
+      - name: Checkout
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          ref: main
+          # BRO-2388 (task #466 class): depth 300 keeps push-with-retry.sh's shallow boundary an ancestor
+          # of main for this 45-min job's final ledger commit; depth-1 aborted when churn outran it.
+          fetch-depth: 300
+
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Setup Node
+        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with:
+          node-version: "22"
+
+      - name: Install dependencies
+        run: npm ci || npm install
+
+      - name: Setup Playwright
+        uses: ./.github/actions/setup-playwright
+
+      - name: Run cast backfill
+        env:
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          INPUT_SHARD: ${{ inputs.shard }}
+          INPUT_TOTAL_SHARDS: ${{ inputs.total_shards }}
+          INPUT_SHOW_FILTER: ${{ inputs.show_filter }}
+        run: |
+          FLAGS=""
+
+          # Weekly cron: refresh current cast for open shows. Must match the
+          # cron literal: the daily missing-file cron is also event_name=schedule
+          # and must NOT --force (that would re-scrape every open show daily).
+          if [ "${{ github.event.schedule }}" = "0 6 * * 3" ]; then
+            FLAGS="--open-only --force"
+            echo "Scheduled run: refreshing current cast for open shows"
+          elif [ "${{ github.event_name }}" = "schedule" ]; then
+            FLAGS="--open-only"
+            echo "Daily missing-file pass: open/previews shows with no cast file"
+          else
+            # Shard flags
+            if [ -n "${INPUT_SHARD}" ]; then
+              FLAGS="$FLAGS --shard ${INPUT_SHARD} --total-shards ${INPUT_TOTAL_SHARDS}"
+            fi
+
+            # Show filter
+            if [ -n "${INPUT_SHOW_FILTER}" ]; then
+              FLAGS="$FLAGS --show-filter ${INPUT_SHOW_FILTER}"
+            fi
+
+            # Force flag
+            if [ "${{ inputs.force }}" = "true" ]; then
+              FLAGS="$FLAGS --force"
+            fi
+
+            # Open only flag
+            if [ "${{ inputs.open_only }}" = "true" ]; then
+              FLAGS="$FLAGS --open-only"
+            fi
+          fi
+
+          echo "Running: node scripts/backfill-cast.js $FLAGS"
+          node scripts/backfill-cast.js $FLAGS
+
+      - name: Check for changes
+        if: always()
+        id: git-check
+        run: |
+          CAST_FILES=$(git status --porcelain data/cast/ | wc -l | tr -d ' ')
+          # BRO-5033: shows.json is gitignored core data (git diff is always
+          # empty); compare to the checkout-core-data snapshot instead.
+          SHOWS_CHANGED=0
+          if node scripts/lib/core-data-changed.js shows.json; then SHOWS_CHANGED=1; fi
+          echo "Changed cast files: $CAST_FILES"
+          echo "Shows.json changed: $SHOWS_CHANGED"
+          if [ "$CAST_FILES" -gt "0" ] || [ "$SHOWS_CHANGED" -gt "0" ]; then
+            echo "changes=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Commit and push
+        if: always() && steps.git-check.outputs.changes == 'true'
+        env:
+          INPUT_SHARD: ${{ inputs.shard }}
+          INPUT_TOTAL_SHARDS: ${{ inputs.total_shards }}
+          INPUT_SHOW_FILTER: ${{ inputs.show_filter }}
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add data/cast/
+
+          SHARD_MSG=""
+          if [ -n "${INPUT_SHARD}" ]; then
+            SHARD_MSG=" (shard ${INPUT_SHARD}/${INPUT_TOTAL_SHARDS})"
+          fi
+
+          SHOW_MSG=""
+          if [ -n "${INPUT_SHOW_FILTER}" ]; then
+            SHOW_MSG=" for ${INPUT_SHOW_FILTER}"
+          fi
+
+          if [ "${{ github.event.schedule }}" = "0 6 * * 3" ]; then
+            SHARD_MSG=" (weekly refresh)"
+          elif [ "${{ github.event_name }}" = "schedule" ]; then
+            SHARD_MSG=" (daily missing-file pass)"
+          fi
+
+          CAST_COUNT=$(git status --porcelain data/cast/ | wc -l | tr -d ' ')
+          # A shows.json-only change has nothing tracked to commit (BRO-5033).
+          if git diff --cached --quiet; then
+            echo "No cast file changes to commit."
+            exit 0
+          fi
+          git commit -m "data: Backfill cast data${SHARD_MSG}${SHOW_MSG} [${CAST_COUNT} files]"
+
+          bash scripts/lib/push-with-retry.sh 15
+
+      - name: Enrich shows.json cast from cast files
+        if: always() && steps.git-check.outputs.changes == 'true'
+        run: |
+          node scripts/enrich-cast-from-files.js --force
+          # Shared wrapper regenerates detail + index together (single source of
+          # truth). This site only stages the detail JSONs (cast doesn't change
+          # the index), so the regenerated index is an unstaged no-op here.
+          bash scripts/generate-mobile-artifacts.sh
+          # shows.json syncs via push-core-data; only stage public-repo files here.
+          git add public/data/shows/ || true
+          if ! git diff --cached --quiet; then
+            git commit -m "data: Enrich mobile show details after cast backfill"
+            bash scripts/lib/push-with-retry.sh 5
+          fi
+
+      - name: Push core data to private repo
+        if: always()
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: Update from backfill-cast'
+
+      - name: Commit scraper-spend ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: backfill-cast
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Backfill Cast Data Failed'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}

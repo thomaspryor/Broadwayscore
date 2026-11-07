@@ -1,0 +1,103 @@
+{
+  "issueNumber": "bro-7058",
+  "planId": "dd8423b6-0f2b-486a-819c-776f2f169abb",
+  "status": "applied",
+  "createdAt": "2026-11-07T03:51:14.646Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "King Lear (Secret Theatre, Off-Broadway): flag two Chicago Babes with Blades reviews as wrong production; correct Lear cast to Richard Mazda per Show Score",
+    "steps": [
+      "king-lear-off-broadway-2026/chicago-reader--amanda-finn.json: wrongProduction",
+      "king-lear-off-broadway-2026/chicago-reader--amanda-finn.json: wrongProductionReason",
+      "king-lear-off-broadway-2026/new-city-stage--tristan-bruns.json: wrongProduction",
+      "king-lear-off-broadway-2026/new-city-stage--tristan-bruns.json: wrongProductionReason",
+      "shows.json: king-lear-off-broadway-2026.cast"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "king-lear-off-broadway-2026/chicago-reader--amanda-finn.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "king-lear-off-broadway-2026/chicago-reader--amanda-finn.json: wrongProduction"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "king-lear-off-broadway-2026/chicago-reader--amanda-finn.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-7058: reviews Babes with Blades at Theater Wit, Chicago (URL slug king-lear-babes-with-blades), not The Secret Theatre Off-Broadway in Queens. The opening-week override had downgraded the CV wrongProduction verdict.",
+        "description": "king-lear-off-broadway-2026/chicago-reader--amanda-finn.json: wrongProductionReason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "king-lear-off-broadway-2026/new-city-stage--tristan-bruns.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "king-lear-off-broadway-2026/new-city-stage--tristan-bruns.json: wrongProduction"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "king-lear-off-broadway-2026/new-city-stage--tristan-bruns.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-7058: reviews Babes with Blades at Theater Wit, Chicago (runs through Nov 21), not The Secret Theatre Off-Broadway in Queens. Ensemble already rejected it as wrong_production.",
+        "description": "king-lear-off-broadway-2026/new-city-stage--tristan-bruns.json: wrongProductionReason"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "king-lear-off-broadway-2026",
+        "field": "cast",
+        "oldValue": [
+          {
+            "name": "Michael Potts",
+            "role": "King Lear"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Richard Mazda",
+            "role": "King Lear"
+          }
+        ],
+        "description": "King Lear cast: the Show Score listing (data/aggregator-archive/show-score/king-lear-off-broadway-2026.html, synopsisSource show-score) says Richard Mazda stars as Lear and co-directs; it never names Michael Potts, whose entry has no source."
+      }
+    ]
+  },
+  "executedAt": "2026-11-07T04:52:15.421Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "king-lear-off-broadway-2026/chicago-reader--amanda-finn.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "king-lear-off-broadway-2026/chicago-reader--amanda-finn.json wrongProductionReason: null -> \"BRO-7058: reviews Babes with Blades at Theater Wit, Chicago (URL slug king-lear-babes-with-blades), not The Secret Theatre Off-Broadway in Queens. The opening-week override had downgraded the CV wrongProduction verdict.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "king-lear-off-broadway-2026/new-city-stage--tristan-bruns.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "king-lear-off-broadway-2026/new-city-stage--tristan-bruns.json wrongProductionReason: null -> \"BRO-7058: reviews Babes with Blades at Theater Wit, Chicago (runs through Nov 21), not The Secret Theatre Off-Broadway in Queens. Ensemble already rejected it as wrong_production.\""
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: cast updated for king-lear-off-broadway-2026"
+    }
+  ],
+  "executedIn": "ci"
+}
