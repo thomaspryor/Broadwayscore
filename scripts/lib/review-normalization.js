@@ -2088,8 +2088,10 @@ function findExistingReviewFile(showDir, outletName, criticName, url = null) {
   // wrongProduction/duplicateOf files so contamination is never a merge target.
   if (url) {
     const { canonicalReviewUrl } = require('./review-url-clusters');
+    const { sameArticleUrl } = require('./review-url-collision');
     const canonUrl = canonicalReviewUrl(url);
     if (canonUrl) {
+      let folded = null; // first www/protocol-folded match; an exact match wins over it
       for (const file of files) {
         const filePath = path.join(showDir, file);
         try {
@@ -2099,11 +2101,17 @@ function findExistingReviewFile(showDir, outletName, criticName, url = null) {
           // suffix cannot affect this URL match or the stored byline returned.
           const fileOutlet = normalizeOutlet(data.outletId || file.split('--')[0]);
           if (fileOutlet !== normalizedOutlet) continue;
+          // BRO-7083: canonicalReviewUrl keeps www/protocol, so a listing link without
+          // "www." missed the stored "www." file and minted an outlet--unknown duplicate
+          // every poller run. sameArticleUrl is the collision guard's identity (it folds
+          // www/protocol and tracking params, keeps real query ids).
           if (canonicalReviewUrl(data.url) === canonUrl) {
             return { path: filePath, filename: file, data };
           }
+          if (!folded && sameArticleUrl(data.url, url)) folded = { path: filePath, filename: file, data };
         } catch { /* unreadable — skip */ }
       }
+      if (folded) return folded;
     }
   }
 

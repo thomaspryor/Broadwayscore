@@ -53,3 +53,29 @@ test('query-ID hosts: different ?id= are different articles (no merge); same id 
   const same = findExistingReviewFile(dir, 'ap', 'Someone', 'http://abcnews.go.com/Entertainment/wireStory?utm_source=x&id=9327077');
   assert.equal(same?.filename, 'ap--michael-kuchwara.json');
 });
+
+// BRO-7083: the outlet's listing page links without "www." while the stored file
+// has "www." (theatreweekly.com, Into the Woods). Pass 0 missed it, so every
+// outlet-listing-poller run minted theatre-weekly--unknown.json and the ownership
+// gate deleted it again.
+test('www / protocol difference on the same outlet merges into the existing file', () => {
+  const res = findExistingReviewFile(dir, 'nytimes', 'Unknown', 'http://nytimes.com/2014/04/18/theater/act-one-review.html/');
+  assert.equal(res?.filename, 'nytimes--ben-brantley.json');
+});
+
+test('www folding does not cross outlets or merge different query ids', () => {
+  assert.equal(findExistingReviewFile(dir, 'variety', 'Unknown', 'https://nytimes.com/2014/04/18/theater/act-one-review.html'), null);
+  assert.equal(findExistingReviewFile(dir, 'ap', 'Someone', 'http://www.abcnews.go.com/Entertainment/wireStory?id=11302213'), null);
+});
+
+test('an exact URL match beats an earlier www-folded match; flagged www variants are skipped', () => {
+  const d = fs.mkdtempSync(path.join(os.tmpdir(), 'rev-pass0-www-'));
+  try {
+    const w = (f, o) => fs.writeFileSync(path.join(d, f), JSON.stringify(o));
+    w('tw--a-first.json', { outletId: 'tw', criticName: 'A First', url: 'https://www.tw.com/review-x/' });
+    w('tw--b-second.json', { outletId: 'tw', criticName: 'B Second', url: 'https://tw.com/review-x/' });
+    w('tw--c-flagged.json', { outletId: 'tw', criticName: 'C', url: 'https://www.tw.com/review-y/', wrongProduction: true });
+    assert.equal(findExistingReviewFile(d, 'tw', 'Unknown', 'https://tw.com/review-x/')?.filename, 'tw--b-second.json');
+    assert.equal(findExistingReviewFile(d, 'tw', 'Unknown', 'https://tw.com/review-y/'), null);
+  } finally { fs.rmSync(d, { recursive: true, force: true }); }
+});
