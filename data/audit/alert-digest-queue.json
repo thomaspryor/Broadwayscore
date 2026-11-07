@@ -516,76 +516,6 @@
     "queuedAt": "2026-11-06T18:45:30.524Z"
   },
   {
-    "conditionKey": "review-gap:opening-window:222-a-ghost-story-off-broadway-2026",
-    "title": "Review gap — \"2:22 - A Ghost Story\" missing 1 cited review(s)",
-    "description": "2:22 - A Ghost Story (222-a-ghost-story-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=222-a-ghost-story-off-broadway-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-06T19:17:50.784Z"
-  },
-  {
-    "conditionKey": "review-gap:opening-window:lanny-bristol-old-vic-regional-2026",
-    "title": "Review gap — \"Lanny\" missing 1 cited review(s)",
-    "description": "Lanny (lanny-bristol-old-vic-regional-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=lanny-bristol-old-vic-regional-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-06T19:17:50.983Z"
-  },
-  {
-    "conditionKey": "review-gap:opening-window:medea-off-broadway-2026",
-    "title": "Review gap — \"Medea\" missing 3 cited review(s)",
-    "description": "Medea (medea-off-broadway-2026): 3 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=medea-off-broadway-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-06T19:17:50.999Z"
-  },
-  {
-    "conditionKey": "review-gap:opening-window:other-desert-cities-2026",
-    "title": "Review gap — \"Other Desert Cities\" missing 5 cited review(s)",
-    "description": "Other Desert Cities (other-desert-cities-2026): 5 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=other-desert-cities-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-06T19:17:51.075Z"
-  },
-  {
-    "conditionKey": "review-gap:opening-window:seussical-theatre-young-audiences-off-broadway-2026",
-    "title": "Review gap — \"Seussical ™ – Theatre Young Audiences\" missing 3 cited review(s)",
-    "description": "Seussical ™ – Theatre Young Audiences (seussical-theatre-young-audiences-off-broadway-2026): 3 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=seussical-theatre-young-audiences-off-broadway-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-06T19:17:51.092Z"
-  },
-  {
     "conditionKey": "live-data-test:tests/unit/review-pullquotes-live-data.test.mjs::no review missing a pullQuote has a recoverable excerpt sitting unused in review-texts",
     "title": "Live-data test failing: no review missing a pullQuote has a recoverable excerpt sitting unused in review-texts (tests/unit/review-pullquotes-live-data.test.mjs)",
     "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"no review missing a pullQuote has a recoverable excerpt sitting unused in review-texts\" in tests/unit/review-pullquotes-live-data.test.mjs is red against the live corpus.\n\n1 review(s) have a usable excerpt in review-texts but no pullQuote in reviews.json — run scripts/backfill-missing-pullquotes.js\n+ actual - expected\n\n+ [\n+   {\n+     criticName: 'Laura Collins-Hughes',\n+     outletId: 'nytimes',\n+     showId: 'the-unbelievers-off-broadway-2026'\n+   }\n+ ]\n- []\n",
@@ -1021,22 +951,8 @@
     "queuedAt": "2026-11-07T12:05:47.382Z"
   },
   {
-    "conditionKey": "t1-gaps:needs-manual-recovery",
-    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (Lincoln in the Bardo (washpost)). Checked 2026-11-07.",
-    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-07T13:28:15.046Z"
-  },
-  {
     "conditionKey": "corpus-drift:monitor-only",
-    "title": "Data-quality monitors drifting from baseline: 19 (backfill-everybodys-talking-about-jamie-show-exists, pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, +13 more). Checked 2026-11-07.",
+    "title": "Data-quality monitors drifting from baseline: 18 (backfill-everybodys-talking-about-jamie-show-exists, pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, +12 more). Checked 2026-11-07.",
     "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
     "severity": "info",
     "url": null,
@@ -1046,7 +962,7 @@
     "model": null,
     "tracked": null,
     "fields": [],
-    "queuedAt": "2026-11-07T13:52:34.414Z"
+    "queuedAt": "2026-11-07T15:19:09.942Z"
   },
   {
     "conditionKey": "opening-night-remediation-exhausted-empty-cast:dogstar-off-west-end-2026",
@@ -1075,5 +991,134 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-07T14:46:47.548Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:222-a-ghost-story-off-broadway-2026",
+    "title": "Review gap — \"2:22 - A Ghost Story\" missing 1 cited review(s)",
+    "description": "2:22 - A Ghost Story (222-a-ghost-story-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=222-a-ghost-story-off-broadway-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-07T15:26:56.557Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:lanny-bristol-old-vic-regional-2026",
+    "title": "Review gap — \"Lanny\" missing 1 cited review(s)",
+    "description": "Lanny (lanny-bristol-old-vic-regional-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=lanny-bristol-old-vic-regional-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-07T15:26:56.692Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:medea-off-broadway-2026",
+    "title": "Review gap — \"Medea\" missing 2 cited review(s)",
+    "description": "Medea (medea-off-broadway-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=medea-off-broadway-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-07T15:26:56.712Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:othello-bedlam-off-broadway-2026",
+    "title": "Review gap — \"Othello (Bedlam)\" missing 2 cited review(s)",
+    "description": "Othello (Bedlam) (othello-bedlam-off-broadway-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=othello-bedlam-off-broadway-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-07T15:26:56.754Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:other-desert-cities-2026",
+    "title": "Review gap — \"Other Desert Cities\" missing 5 cited review(s)",
+    "description": "Other Desert Cities (other-desert-cities-2026): 5 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=other-desert-cities-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-07T15:26:56.774Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:seussical-theatre-young-audiences-off-broadway-2026",
+    "title": "Review gap — \"Seussical ™ – Theatre Young Audiences\" missing 3 cited review(s)",
+    "description": "Seussical ™ – Theatre Young Audiences (seussical-theatre-young-audiences-off-broadway-2026): 3 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=seussical-theatre-young-audiences-off-broadway-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-07T15:26:56.796Z"
+  },
+  {
+    "conditionKey": "t1-gaps:needs-manual-recovery",
+    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (Lincoln in the Bardo (washpost)). Checked 2026-11-07.",
+    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-07T15:27:53.757Z"
+  },
+  {
+    "conditionKey": "land:land/bro-7081-discovery",
+    "title": "Landing blocked: scripts-lib-tests red on land/bro-7081-discovery",
+    "description": "land.yml did not land land/bro-7081-discovery: the scripts-lib-tests gate went red at 8ff18403e6. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/42385606797",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-7081-discovery"
+      },
+      {
+        "name": "gate",
+        "value": "scripts-lib-tests"
+      },
+      {
+        "name": "tip",
+        "value": "8ff18403e67e97e987304e7de9ae7fd8497072b4"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42385606797"
+      }
+    ],
+    "queuedAt": "2026-11-07T15:35:40.316Z"
   }
 ]

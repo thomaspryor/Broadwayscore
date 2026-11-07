@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-11-07T13:46:22.965Z",
+    "generatedAt": "2026-11-07T15:12:48.167Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": true,
@@ -17,13 +17,13 @@
   "exempt": [
     {
       "path": "data/audit/alert-ledger.json",
-      "churn": 53
+      "churn": 50
     }
   ],
   "covered": [
     {
       "path": "data/audit/scraper-spend-ledger.jsonl",
-      "churn": 57,
+      "churn": 68,
       "mergeAttr": "union"
     },
     {
@@ -33,27 +33,27 @@
     },
     {
       "path": "data/audit/deploy-watermark.json",
-      "churn": 44,
+      "churn": 43,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/cross-show-fingerprint-collisions.json",
-      "churn": 43,
+      "churn": 41,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/needs-human-review.json",
-      "churn": 43,
+      "churn": 41,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/rebuild-score-drift.json",
-      "churn": 43,
+      "churn": 41,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/skipped-alias-collisions.json",
-      "churn": 43,
+      "churn": 41,
       "mergeAttr": "ours"
     },
     {

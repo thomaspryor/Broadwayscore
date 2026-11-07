@@ -590,7 +590,7 @@ function boardStartedIdle(report) {
   return row && Number.isFinite(row.exclusive) ? row.exclusive : null;
 }
 
-function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stuckCount = 0, autofixRows = null, overnightLine = null, inflow = null, drainThroughputLine = null, pipelineIssues = null, boardNumbersData = null, boardReport = undefined, boardReportPrev = null, loopDeadMsg: givenLoopDeadMsg, reportOnly = false, skipMacLocal = false, now = new Date() } = {}) {
+function buildHtmlParts({ sections = {}, problemsNote = null, changesHtml = null, stuckCount = 0, autofixRows = null, overnightLine = null, inflow = null, drainThroughputLine = null, pipelineIssues = null, boardNumbersData = null, boardReport = undefined, boardReportPrev = null, loopDeadMsg: givenLoopDeadMsg, reportOnly = false, skipMacLocal = false, now = new Date() } = {}) {
   const dateLabel = new Intl.DateTimeFormat('en-US', {
     timeZone: 'America/New_York', weekday: 'long', month: 'long', day: 'numeric',
   }).format(now);
@@ -603,8 +603,9 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
   // all live in `parts` now: the owner can neither see nor act on them.
   const head = [];
   let boardNumbersTableHtml = '';
+  let glanceHtml = '';
   head.push(`<div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:560px;margin:0 auto;padding:18px 14px;color:#111;">`);
-  head.push(`<p style="font-size:15px;font-weight:700;margin:0 0 12px;">Morning digest · ${esc(dateLabel)}</p>`);
+  head.push(`<p style="font-size:20px;font-weight:700;margin:0 0 12px;">Morning digest · ${esc(dateLabel)}</p>`);
   const parts = [];
 
   // Trunk status (task #1003) — a standing line, always rendered when the
@@ -715,7 +716,11 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
       // BRO-6081: the owner reads a verdict, a 7-day chart and four tiles; the
       // full numbers table moves under Technical details.
       boardNumbersTableHtml = bn.renderBoardNumbersHtml(m, esc);
-      collapsed.push(require('./lib/board-summary.js').renderBoardSummaryHtml(m, m.daily, esc, { partial: m.daily ? m.dailyTruncated : m.floors, startedIdle: boardStartedIdle(boardReport) }));
+      const summaryOpts = { partial: m.daily ? m.dailyTruncated : m.floors, startedIdle: boardStartedIdle(boardReport) };
+      collapsed.push(require('./lib/board-summary.js').renderBoardSummaryHtml(m, m.daily, esc, summaryOpts));
+      // BRO-7075: Gmail cannot collapse anything, so the email body carries only
+      // the verdict and four tiles; the chart and tables ride in the attachment.
+      glanceHtml = require('./lib/board-summary.js').renderBoardSummaryHtml(m, m.daily, esc, { ...summaryOpts, compact: true });
     } catch (err) {
       console.error(`[digest] WARN board numbers block failed: ${String(err.message).slice(0, 120)}`);
     }
@@ -913,14 +918,55 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
     collapsed.push(...parts);
   }
   if (alarms.length) head.push(...alarms);
-  head.push(`<details style="margin:18px 0 0;border-top:1px solid #e5e5e5;padding-top:8px;">
-<summary style="cursor:pointer;font-size:12px;color:#777;margin:0 0 10px;">Board, spend and technical details</summary>
-${collapsed.filter(Boolean).join('\n')}
-</details>`);
+  const reportInner = collapsed.filter(Boolean).join('\n');
+  const footer = [`<p style="color:#999;font-size:14px;margin-top:16px;text-align:center;">Broadway Scorecard morning digest</p>`, `</div>`];
+  // BRO-7075: the owner reads this in Gmail, which ignores <details>, so the
+  // old "collapsed" section showed open and made a 10,000px email. What is
+  // sent has the owner sections, a four-tile board glance and one line
+  // pointing at the attachment; the full report is a separate HTML document.
+  const body = [...head, glanceHtml,
+    reportInner ? `<p style="font-size:15px;color:#444;margin:6px 0 0;">${REPORT_ATTACHED_NOTE}</p>` : '',
+    ...footer].filter(Boolean).join('\n');
+  const full = [...head, `<div style="margin:18px 0 0;border-top:1px solid #e5e5e5;padding-top:8px;">`, reportInner, `</div>`, ...footer].join('\n');
+  return { body: enforceBodyTypeFloor(body), full, report: reportInner ? buildReportDocument({ dateLabel, inner: reportInner }) : null };
+}
 
-  head.push(`<p style="color:#999;font-size:11px;margin-top:16px;text-align:center;">Broadway Scorecard morning digest</p>`);
-  head.push(`</div>`);
-  return head.join('\n');
+/**
+ * BRO-7075: the Resend POST body. Same From as the retired morning email on purpose: the owner's
+ * Gmail filters, threading and iOS notification trust key off the sender. The full report rides as
+ * an HTML attachment because Gmail cannot collapse a section; no report means no attachment key.
+ */
+function buildResendPayload({ to, subject, bodyHtml, reportHtml, dayKey }) {
+  const payload = { from: 'Broadway Scorecard <alerts@broadwayscorecard.com>', to: [to], subject, html: bodyHtml };
+  if (reportHtml) {
+    payload.attachments = [{ filename: `morning-digest-report-${dayKey}.html`, content: Buffer.from(reportHtml, 'utf8').toString('base64'), content_type: 'text/html' }];
+  }
+  return payload;
+}
+
+/** The whole email as one string (every section), for tests, previews and the content-invariant check. */
+function buildHtml(opts) { return buildHtmlParts(opts).full; }
+
+// BRO-7075 (owner: "a wall of tiny text"): nothing in the email BODY renders
+// below this size. One choke point instead of 60 inline styles: any smaller
+// font-size the renderers emit is raised here, and a test pins the floor.
+const BODY_MIN_FONT_PX = 14;
+const REPORT_ATTACHED_NOTE = 'The full board, spend and technical report is attached to this email (tap the attachment to open it).';
+const REPORT_NOT_ATTACHED_NOTE = 'The full board, spend and technical report could not be attached this morning.';
+function enforceBodyTypeFloor(html, min = BODY_MIN_FONT_PX) {
+  return String(html).replace(/font-size:\s*(\d+(?:\.\d+)?)px/g, (m, n) => (Number(n) < min ? `font-size:${min}px` : m));
+}
+
+/** The attachment: the full board, spend and technical report as its own page. */
+function buildReportDocument({ dateLabel, inner }) {
+  return `<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Morning digest report, ${esc(dateLabel)}</title></head>
+<body style="margin:0;background-color:#ffffff;">
+<div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:640px;margin:0 auto;padding:18px 14px;color:#111;">
+<p style="font-size:18px;font-weight:700;margin:0 0 4px;">Morning digest report · ${esc(dateLabel)}</p>
+<p style="font-size:13px;color:#666;margin:0 0 16px;">Board, spend and technical details. Nothing here needs action unless the email itself says so.</p>
+${inner}
+</div></body></html>`;
 }
 
 // Composes the subject+html the SAME way the real send does: attach Fix-this
@@ -965,8 +1011,9 @@ function composeDigestEmail({
 
   const loopDeadMsg = digestLoopDeadMessage({ sections, autofixRows, stuckCount, pipelineIssues, skipMacLocal, now });
   const subject = buildSubject({ health: sections.health, autofixRows, awaitingOwner: sections.awaitingOwner, needsYou: sections.needsYou, inReviewBacklog: sections.inReviewBacklog, loopDead: !!loopDeadMsg, now });
-  const html = buildHtml({ sections, problemsNote, changesHtml, stuckCount, autofixRows, overnightLine, inflow, drainThroughputLine, pipelineIssues, boardNumbersData, boardReport, boardReportPrev, loopDeadMsg, reportOnly, skipMacLocal, now });
-  return { subject, html };
+  const parts = buildHtmlParts({ sections, problemsNote, changesHtml, stuckCount, autofixRows, overnightLine, inflow, drainThroughputLine, pipelineIssues, boardNumbersData, boardReport, boardReportPrev, loopDeadMsg, reportOnly, skipMacLocal, now });
+  // html = every section (tests, previews, invariants). bodyHtml is what the owner's inbox shows; reportHtml is the attachment.
+  return { subject, html: parts.full, bodyHtml: parts.body, reportHtml: parts.report };
 }
 
 const BOARD_TABLE_SNAPSHOT = path.join(REPO, 'data', 'audit', 'board-report-snapshot.json');
@@ -1724,7 +1771,7 @@ async function main() {
     sections.macLocalSkipped = macLocalSkippedLine(await readMacAlive({ token: process.env.GH_TOKEN || process.env.GITHUB_TOKEN }));
     console.log(`[digest] ${sections.macLocalSkipped.text}`);
   }
-  const { subject, html } = composeDigestEmail({ sections, problemsNote, changesHtml, stuckCount, autofixRows, overnightLine, inflow, drainThroughputLine, pipelineIssues, boardNumbersData, boardReport: boardTable.report, boardReportPrev: boardTable.prev, reportOnly: noAutofix, skipMacLocal, now });
+  const { subject, html, bodyHtml, reportHtml } = composeDigestEmail({ sections, problemsNote, changesHtml, stuckCount, autofixRows, overnightLine, inflow, drainThroughputLine, pipelineIssues, boardNumbersData, boardReport: boardTable.report, boardReportPrev: boardTable.prev, reportOnly: noAutofix, skipMacLocal, now });
 
   // Card #670/#1641: pre-send content check. Never blocks the SEND itself
   // (the digest must always send — a broken invariant check must not turn
@@ -1744,13 +1791,16 @@ async function main() {
   try {
     const { assertDigestInvariants } = require('./lib/digest-content-invariants.js');
     const { ok, violations } = assertDigestInvariants(html, { health: sections.health, subject, verifySecret: process.env.APPROVAL_HMAC_SECRET });
-    if (!ok) {
-      invariantViolations = violations;
-      console.error(`[digest] FAIL content invariant violation(s): ${violations.join('; ')}`);
+    // BRO-7075: the invariants above run on every section together; the owner only sees the body.
+    const { assertBodyInvariants } = require('./lib/digest-content-invariants.js');
+    const allViolations = [...violations, ...assertBodyInvariants(bodyHtml).violations];
+    if (allViolations.length) {
+      invariantViolations = allViolations;
+      console.error(`[digest] FAIL content invariant violation(s): ${allViolations.join('; ')}`);
       try {
         const ledgerPath = path.join(REPO, 'data', 'audit', 'digest-invariant-fail-ledger.jsonl');
         fs.mkdirSync(path.dirname(ledgerPath), { recursive: true });
-        fs.appendFileSync(ledgerPath, JSON.stringify({ ts: new Date().toISOString(), violations, subject, dryRun: !!dryRun }) + '\n');
+        fs.appendFileSync(ledgerPath, JSON.stringify({ ts: new Date().toISOString(), violations: allViolations, subject, dryRun: !!dryRun }) + '\n');
       } catch (ledgerErr) {
         console.error(`[digest] WARN could not persist invariant-fail ledger record: ${String(ledgerErr.message).slice(0, 120)}`);
       }
@@ -1777,7 +1827,9 @@ async function main() {
   if (dryRun) {
     const out = path.join(REPO, 'data', 'audit', 'morning-digest-preview.html');
     fs.mkdirSync(path.dirname(out), { recursive: true });
-    fs.writeFileSync(out, html);
+    fs.writeFileSync(out, bodyHtml);
+    // The attachment, written beside the preview so a dry run shows both halves of what would be sent.
+    if (reportHtml) fs.writeFileSync(out.replace(/\.html$/, '-report.html'), reportHtml);
     console.log(`[digest] DRY RUN — preview written to ${out} (subject: ${subject})`);
     if (invariantViolations.length) process.exitCode = 1;
     return;
@@ -1826,15 +1878,17 @@ async function main() {
 
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) { console.error('[digest] RESEND_API_KEY not set'); process.exit(1); }
-  const res = await httpsJson('POST', 'https://api.resend.com/emails', { Authorization: `Bearer ${apiKey}` }, {
-    // Same From as the retired morning email on purpose: the owner's Gmail
-    // filters, threading, and iOS notification trust key off the sender
-    // (plan-review user-impact finding).
-    from: 'Broadway Scorecard <alerts@broadwayscorecard.com>',
-    to: [sendTo],
-    subject: testSend ? `TEST: ${subject}` : subject,
-    html,
-  });
+  const payload = buildResendPayload({ to: sendTo, subject: testSend ? `TEST: ${subject}` : subject, bodyHtml, reportHtml, dayKey: todayET });
+  let res = await httpsJson('POST', 'https://api.resend.com/emails', { Authorization: `Bearer ${apiKey}` }, payload);
+  // BRO-7075: a rejected attachment (a 4xx means nothing was sent) must never cost the owner the whole digest:
+  // retry once with the body alone, which is self-sufficient. 5xx/429 are not retried here (a duplicate send is worse).
+  if (payload.attachments && res.status >= 400 && res.status < 500 && res.status !== 429) {
+    console.error(`[digest] WARN send with attachment rejected (${res.status} ${JSON.stringify(res.json || {}).slice(0, 160)}); retrying without the attachment`);
+    const { attachments: _dropped, ...rest } = payload;
+    // The body must not claim an attachment that is not there.
+    const bodyOnly = { ...rest, html: String(rest.html).replace(REPORT_ATTACHED_NOTE, REPORT_NOT_ATTACHED_NOTE) };
+    res = await httpsJson('POST', 'https://api.resend.com/emails', { Authorization: `Bearer ${apiKey}` }, bodyOnly);
+  }
   if (res.status < 200 || res.status >= 300) {
     console.error(`[digest] send failed: ${res.status} ${JSON.stringify(res.json || {}).slice(0, 200)}`);
     process.exit(1);
@@ -1863,4 +1917,4 @@ if (require.main === module) {
   main().catch((err) => { console.error(`[digest] fatal: ${err.message}`); process.exit(1); });
 }
 
-module.exports = { decisionsListLinkHtml, buildSubject, buildHtml, parseArgs, composeDigestEmail, mergeNeedsYouSections, macLabelRetired, localCyrusRelayMessage, localRunnerHealthMessage, localLinearDelegationMessage, localCodexConnectionLine, retiredSyncTags, autofixShouldDryRun, DIGEST_SYNC_TAG, localDispatchWatchdogLeakMessage, macLocalSkippedLine, resendSentToday, fetchBoardTable, boardWaitingFallback, boardStartedIdle, saveBoardTableSnapshot };
+module.exports = { decisionsListLinkHtml, buildSubject, buildHtml, buildHtmlParts, buildResendPayload, REPORT_ATTACHED_NOTE, REPORT_NOT_ATTACHED_NOTE, enforceBodyTypeFloor, BODY_MIN_FONT_PX, parseArgs, composeDigestEmail, mergeNeedsYouSections, macLabelRetired, localCyrusRelayMessage, localRunnerHealthMessage, localLinearDelegationMessage, localCodexConnectionLine, retiredSyncTags, autofixShouldDryRun, DIGEST_SYNC_TAG, localDispatchWatchdogLeakMessage, macLocalSkippedLine, resendSentToday, fetchBoardTable, boardWaitingFallback, boardStartedIdle, saveBoardTableSnapshot };

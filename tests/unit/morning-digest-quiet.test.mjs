@@ -18,6 +18,10 @@ const SHOW_SCORE_MSG = '2 opened show(s) have a cached Show Score URL but no Sho
 function healthWith({ warns = [], errors = [], cleared = {} } = {}) {
   return { generatedAt: NOW.toISOString(), errors, warns, queued: [], cleared };
 }
+// BRO-7075: what the inbox shows (bodyHtml) and the attachment (reportHtml). `html` is every section together.
+function mail(health, { now = NOW, sections = {} } = {}) {
+  return composeDigestEmail({ sections: { health, ...sections }, now, dispatchSecret: null, dispatchConfigPath: NO_CFG });
+}
 function html(health, { now = NOW, sections = {} } = {}) {
   return composeDigestEmail({ sections: { health, ...sections }, now, dispatchSecret: null, dispatchConfigPath: NO_CFG }).html;
 }
@@ -28,9 +32,8 @@ test('age gate: a 20h-old warning is held out of the email and counted as under 
   assert.equal(view.visitorItems.length, 0);
   assert.equal(view.settling, 1);
   assert.equal(view.siteState, 'ok');
-  const h = html(health);
-  const top = h.slice(0, h.indexOf('<details'));
-  assert.ok(!top.includes('no audience score'), 'held warning must not be named above the collapsed section');
+  const top = mail(health).bodyHtml;
+  assert.ok(!top.includes('no audience score'), 'held warning must not be named in the email body');
   assert.match(top, /1 new item is under watch/);
 });
 
@@ -39,7 +42,8 @@ test('age gate: a warning past 48h is shown, in plain words with the show names 
   const h = html(health);
   assert.match(h, /Midnight and Parcel From America have no audience score yet/);
   assert.match(h, /since Nov 3/);
-  assert.ok(!h.includes('Quality: Show Score gap') || h.indexOf('Quality: Show Score gap') > h.indexOf('<details'), 'raw check name only inside the collapsed section');
+  const m = mail(health);
+  assert.ok(!m.bodyHtml.includes('Quality: Show Score gap'), 'raw check name never appears in the email body');
 });
 
 test('age gate fail-safe: no firstSeen means the warning is shown', () => {
@@ -71,15 +75,15 @@ test('cleared line: shown for a warning that outlasted the hold, not for one tha
   assert.ok(!html(quiet).includes('Cleared since yesterday'));
 });
 
-test('board stats, spend and technical details sit in one collapsed section at the bottom', () => {
-  const h = html(healthWith({ warns: [{ name: 'SEO: LCP elevated', message: 'x', firstSeen: iso(100) }] }));
-  const open = h.indexOf('<details');
-  assert.ok(open > 0);
-  assert.equal((h.match(/<details/g) || []).length, 1);
-  assert.match(h, /Board, spend and technical details/);
-  assert.ok(h.indexOf('Behind the scenes') > open, 'behind-the-scenes line is inside the collapsed section');
-  assert.ok(h.indexOf('Technical details') > open);
-  assert.ok(h.indexOf('</details>') < h.indexOf('Broadway Scorecard morning digest'));
+test('board stats, spend and technical details ride in the attachment, not the email body (BRO-7075)', () => {
+  const m = mail(healthWith({ warns: [{ name: 'SEO: LCP elevated', message: 'x', firstSeen: iso(100) }] }));
+  assert.ok(!/<details/.test(m.bodyHtml), 'Gmail ignores <details>; the body must not rely on it');
+  assert.ok(!m.bodyHtml.includes('Technical details'), 'technical heading belongs in the report');
+  assert.ok(!m.bodyHtml.includes('Behind the scenes'));
+  assert.match(m.reportHtml, /^<!doctype html>/);
+  assert.ok(m.reportHtml.includes('Technical details'));
+  assert.ok(m.reportHtml.includes('Behind the scenes'));
+  assert.ok(m.html.includes('Technical details'), 'the all-sections string still carries the report');
 });
 
 test('decisions: long how-to paragraph only on Mondays', () => {
@@ -104,8 +108,7 @@ test('decisions: one already waiting 2+ days is a compact card on weekdays, full
 });
 
 test('quiet morning: owner-visible part (above the collapsed section) stays short', () => {
-  const h = html(healthWith({ warns: [{ name: 'Quality: Show Score gap', message: SHOW_SCORE_MSG, firstSeen: iso(10) }] }));
-  const top = h.slice(0, h.indexOf('<details'));
+  const top = mail(healthWith({ warns: [{ name: 'Quality: Show Score gap', message: SHOW_SCORE_MSG, firstSeen: iso(10) }] })).bodyHtml;
   const text = top.replace(/<[^>]+>/g, '\n').split('\n').map((l) => l.trim()).filter(Boolean);
   assert.ok(text.length < 25, `owner-visible top has ${text.length} non-empty lines`);
 });
@@ -115,12 +118,12 @@ test('renderOwnerTopBlock no longer emits the Behind the scenes line', () => {
   assert.ok(!renderOwnerTopBlock(view, {}).includes('Behind the scenes'));
 });
 
-test('a dead auto-fix loop alarm stays above the collapsed section', () => {
+test('a dead auto-fix loop alarm stays in the email body, not the attachment', () => {
   const sections = { health: healthWith() };
-  const { buildHtml } = require('../../scripts/send-morning-digest.js');
-  const h = buildHtml({ sections, now: NOW, loopDeadMsg: 'Loop stalled for test' });
-  assert.ok(h.indexOf('Loop stalled for test') > 0);
-  assert.ok(h.indexOf('Loop stalled for test') < h.indexOf('<details'), 'alarm must not be inside the collapsed block');
+  const { buildHtmlParts } = require('../../scripts/send-morning-digest.js');
+  const p = buildHtmlParts({ sections, now: NOW, loopDeadMsg: 'Loop stalled for test' });
+  assert.ok(p.body.includes('Loop stalled for test'), 'alarm is in the email body');
+  assert.ok(!(p.report || '').includes('Loop stalled for test'), 'alarm is not buried in the attachment');
 });
 
 test('cleared line: machinery rows and rows whose plain twin is still open are left out', () => {
@@ -171,4 +174,88 @@ test('plain wording: Freshness / Push verify / Cron / Pipeline families are tran
   }
   // A specific mapping still wins over the family fallback.
   assert.equal(plainHealthLine('Cron failed: x', ''), 'The automated "x" job keeps failing');
+});
+
+// ---- BRO-7075: readable in Gmail ----
+
+test('email body type floor: nothing in the body renders below 14px', () => {
+  const sections = { needsYou: { items: [{ title: 'BRO-1: Pick one', url: 'https://linear.app/x/BRO-1', ageDays: 15 }], moreCount: 0 } };
+  const { bodyHtml } = mail(healthWith({ warns: [{ name: 'Quality: Show Score gap', message: SHOW_SCORE_MSG, firstSeen: iso(100) }] }), { sections });
+  const sizes = [...bodyHtml.matchAll(/font-size:\s*(\d+(?:\.\d+)?)px/g)].map((x) => Number(x[1]));
+  assert.ok(sizes.length > 5);
+  assert.ok(Math.min(...sizes) >= 14, `smallest font in the body is ${Math.min(...sizes)}px`);
+});
+
+test('enforceBodyTypeFloor raises small sizes and leaves large ones alone', () => {
+  const { enforceBodyTypeFloor } = require('../../scripts/send-morning-digest.js');
+  assert.equal(enforceBodyTypeFloor('<p style="font-size:11px">a</p><p style="font-size:20px">b</p><p style="font-size: 12.5px">c</p>'),
+    '<p style="font-size:14px">a</p><p style="font-size:20px">b</p><p style="font-size:14px">c</p>');
+});
+
+test('the email body stays short: under 20 KB and well under the old 100 KB wall', () => {
+  const m = mail(healthWith({ warns: [{ name: 'SEO: LCP elevated', message: 'x', firstSeen: iso(100) }] }));
+  assert.ok(Buffer.byteLength(m.bodyHtml) < 20000, `body is ${Buffer.byteLength(m.bodyHtml)} bytes`);
+});
+
+test('the body points at the attachment when there is one, and never when there is not', () => {
+  const m = mail(healthWith());
+  assert.ok(m.reportHtml);
+  assert.match(m.bodyHtml, /attached to this email/);
+});
+
+test('Needs your attention shows each item once: the question, not the question plus the same text again', () => {
+  const { renderNeedsAttentionBlock } = require('../../scripts/lib/autonomous-email-render.js');
+  const out = renderNeedsAttentionBlock([{ title: 'Spend over budget', description: 'LONG DESCRIPTION TEXT', decisionPrompt: 'Decision needed: Buy more credits?', url: 'https://linear.app/x/BRO-5', actionUrl: 'https://broadwayscorecard.com/api/dispatch?x=1' }]);
+  assert.equal((out.match(/Buy more credits\?/g) || []).length, 1);
+  assert.ok(!out.includes('LONG DESCRIPTION TEXT'), 'description is only the fallback when there is no question');
+  assert.ok(!/>https?:\/\//.test(out), 'no raw URL is ever printed as text');
+  assert.match(out, />Open</);
+  assert.match(out, /Dispatch a fix/);
+});
+
+test('Resend payload: the report is a base64 text/html attachment named for the day; no report means no attachments key', () => {
+  const { buildResendPayload } = require('../../scripts/send-morning-digest.js');
+  const withReport = buildResendPayload({ to: 'o@example.com', subject: 'S', bodyHtml: '<p>b</p>', reportHtml: '<!doctype html><p>r</p>', dayKey: '2026-11-07' });
+  assert.deepEqual(withReport.to, ['o@example.com']);
+  assert.equal(withReport.html, '<p>b</p>');
+  assert.equal(withReport.attachments.length, 1);
+  assert.equal(withReport.attachments[0].filename, 'morning-digest-report-2026-11-07.html');
+  assert.equal(withReport.attachments[0].content_type, 'text/html');
+  assert.equal(Buffer.from(withReport.attachments[0].content, 'base64').toString('utf8'), '<!doctype html><p>r</p>');
+  assert.ok(!('attachments' in buildResendPayload({ to: 'o@example.com', subject: 'S', bodyHtml: 'b', reportHtml: null, dayKey: 'd' })));
+});
+
+test('the send site builds its payload with buildResendPayload and retries a 4xx without the attachment', () => {
+  const src = require('node:fs').readFileSync(new URL('../../scripts/send-morning-digest.js', import.meta.url), 'utf8');
+  assert.match(src, /buildResendPayload\(\{ to: sendTo,/);
+  assert.match(src, /retrying without the attachment/);
+});
+
+// ---- BRO-7075 ship-check follow-ups ----
+
+test('body invariants: a decision card with no button, leaked report content and <details> are all caught; the real body passes', () => {
+  const { assertBodyInvariants } = require('../../scripts/lib/digest-content-invariants.js');
+  assert.equal(assertBodyInvariants('<div>Needs your attention</div><p>text only</p>').ok, false);
+  assert.equal(assertBodyInvariants('<div>Needs your attention</div><a href="https://linear.app/x">Open</a>').ok, true);
+  assert.equal(assertBodyInvariants('<h2>Technical details</h2>').ok, false);
+  assert.equal(assertBodyInvariants('<details><summary>x</summary></details>').ok, false);
+  const sections = { needsYou: { items: [{ title: 'BRO-1: Pick one', url: 'https://linear.app/x/BRO-1', ageDays: 15 }], moreCount: 0 } };
+  const real = mail(healthWith(), { sections });
+  assert.deepEqual(assertBodyInvariants(real.bodyHtml).violations, []);
+});
+
+test('the attachment note and its not-attached twin both exist, and the body claims an attachment only when there is one', () => {
+  const { REPORT_ATTACHED_NOTE, REPORT_NOT_ATTACHED_NOTE, buildHtmlParts } = require('../../scripts/send-morning-digest.js');
+  assert.ok(mail(healthWith()).bodyHtml.includes(REPORT_ATTACHED_NOTE));
+  assert.ok(!REPORT_NOT_ATTACHED_NOTE.includes('is attached'));
+  const none = buildHtmlParts({ sections: {}, now: NOW });
+  assert.ok(none.report === null || none.body.includes(REPORT_ATTACHED_NOTE));
+  assert.ok(!/<p[^>]*><\/p>/.test(none.body), 'no empty paragraph when there is nothing to point at');
+});
+
+test('Stuck tile: the glance points at the attachment, the in-report copy points at the table below', () => {
+  const { tilesFor } = require('../../scripts/lib/board-summary.js');
+  const m = { waiting: 0, stuckCards: 1, daily: null, lanes: {}, cost: {} };
+  assert.match(tilesFor(m, { startedIdle: 7, compact: true })[2][2], /attached report/);
+  assert.match(tilesFor(m, { startedIdle: 7 })[2][2], /row below/);
 });
