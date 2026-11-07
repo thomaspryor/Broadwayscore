@@ -184,7 +184,7 @@ function gradeLine(g) {
     const n = g.signals.length;
     tail = `needed a person or a Claude session${sofar} (${n} fix${n === 1 ? '' : 'es'} by hand)`;
   } else if (g.verdict === 'on-its-own') tail = `ran on its own${sofar}`;
-  else if (g.verdict === 'no-reviews') tail = 'no reviews live yet';
+  else if (g.verdict === 'no-reviews') tail = (g.known || 0) > 0 ? 'reviews are out but none are on the site yet' : 'no reviews live yet';
   else tail = 'not graded (edit history missing)';
   return `${head}: ${count}, ${tail}.`;
 }
@@ -207,9 +207,12 @@ function summarize(grades) {
 
 /** Digest tally line, e.g. "Openings in the last 14 days that ran on their own: Broadway 2 of 3, West End 1 of 1." */
 function tallyLine(summary, days) {
-  const parts = MARKETS.filter((m) => summary[m] && summary[m].openings)
-    .map((m) => `${MARKET_LABEL[m]} ${summary[m].onItsOwn} of ${summary[m].openings}`);
-  return parts.length ? `Openings in the last ${days} days that ran on their own: ${parts.join(', ')}.` : `No openings in the last ${days} days.`;
+  // Denominator is graded openings only: a show with no reviews yet, or with
+  // missing edit history, neither passed nor failed.
+  const graded = (s) => s.onItsOwn + s.neededHands;
+  const parts = MARKETS.filter((m) => summary[m] && graded(summary[m]))
+    .map((m) => `${MARKET_LABEL[m]} ${summary[m].onItsOwn} of ${graded(summary[m])}`);
+  return parts.length ? `Openings in the last ${days} days that ran on their own: ${parts.join(', ')}.` : `No graded openings in the last ${days} days.`;
 }
 
 const DOT = { 'on-its-own': '#15803d', 'needed-hands': '#b45309', 'no-reviews': '#999', 'not-gradable': '#999' };
@@ -226,7 +229,9 @@ function renderOpeningGradesBlock(snapshot, { esc = defaultEsc, nowMs = Date.now
     return `<div style="margin:0 0 16px;font-size:14px;"><b>${title}</b> not checked yet (the daily grade has not run).</div>`;
   }
   const cutoff = new Date(nowMs - lineDays * 86400000).toISOString().slice(0, 10);
-  const recent = snapshot.grades.filter((g) => g.openingDate >= cutoff && g.verdict !== 'no-reviews');
+  const recent = snapshot.grades.filter((g) => g.openingDate >= cutoff
+    // No reviews live is only news when reviews are known to exist (a miss).
+    && (g.verdict !== 'no-reviews' || (g.known || 0) > 0));
   const rows = recent.map((g) => `<div style="margin:0 0 6px;font-size:14px;"><span style="color:${DOT[g.verdict] || '#999'};">&#9679;</span> ${esc(gradeLine(g))}</div>`).join('\n    ');
   const days = Math.max(1, Math.round((Date.parse(`${snapshot.to}T00:00:00Z`) - Date.parse(`${snapshot.from}T00:00:00Z`)) / 86400000));
   const tally = tallyLine(snapshot.summary || summarize(snapshot.grades), days);
