@@ -1,63 +1,51 @@
 {
-  "updatedAt": "2026-11-07T04:06:15.767Z",
-  "processed": 404,
-  "failed": 241,
-  "successRate": "62.6%",
+  "updatedAt": "2026-11-07T04:15:24.665Z",
+  "processed": 7,
+  "failed": 18,
+  "successRate": "28.0%",
   "tierBreakdown": {
-    "playwright": 201,
+    "playwright": 5,
     "amp": 0,
-    "browserbase": 7,
+    "browserbase": 0,
     "directCookies": 0,
-    "scrapingdog": 33,
-    "scrapingbee": 17,
-    "brightdata": 2,
+    "scrapingdog": 0,
+    "scrapingbee": 0,
+    "brightdata": 0,
     "archiveToday": 0,
-    "archive": 111
+    "archive": 2
   },
   "browserbaseSessions": 3,
   "recentActivity": [
     {
-      "t": "2026-11-07T03:46:38.215Z",
+      "t": "2026-11-07T04:07:24.616Z",
       "event": "bb-session",
-      "session": "1f7e7570",
-      "url": "https://theater.nytimes.com/mem/theater/treview.html?html_title=&tols_title=IMAG"
+      "session": "f7e74cea",
+      "url": "https://www.washingtonpost.com/books/2024/06/24/gentleman-thief-dean-jobb-review"
     },
     {
-      "t": "2026-11-07T03:46:38.887Z",
+      "t": "2026-11-07T04:07:25.391Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-11-07T04:11:10.296Z",
+      "event": "bb-session",
+      "session": "abf7387c",
+      "url": "https://theater.nytimes.com/mem/theater/treview.html?res=9b03e3df1e38f93ba25752c"
+    },
+    {
+      "t": "2026-11-07T04:11:11.116Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     },
     {
-      "t": "2026-11-07T03:46:55.885Z",
+      "t": "2026-11-07T04:11:28.433Z",
       "event": "bb-session",
-      "session": "170b3a58",
-      "url": "https://theater.nytimes.com/mem/theater/treview.html?html_title=&tols_title=IMAG"
+      "session": "cf86fe99",
+      "url": "https://theater.nytimes.com/mem/theater/treview.html?res=9b03e3df1e38f93ba25752c"
     },
     {
-      "t": "2026-11-07T03:46:56.454Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-11-07T00:23:49.118Z",
-      "event": "bb-session",
-      "session": "df95f777",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review-1"
-    },
-    {
-      "t": "2026-11-07T00:23:59.427Z",
-      "event": "bb-session",
-      "session": "7c8f309b",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review-1"
-    },
-    {
-      "t": "2026-11-07T03:54:00.129Z",
-      "event": "bb-session",
-      "session": "3550d431",
-      "url": "https://theater.nytimes.com/mem/theater/treview.html?res=9E07E3D7113FF932A35752C"
-    },
-    {
-      "t": "2026-11-07T03:54:00.756Z",
+      "t": "2026-11-07T04:11:29.155Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
