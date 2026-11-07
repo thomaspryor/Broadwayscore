@@ -38,9 +38,9 @@ describe('theartsdesk.com extractor', () => {
     const t = extractArticleText(FULL, 'theartsdesk.com');
     assert.ok(t, 'expected text');
     assert.doesNotMatch(t, /Help keep arts journalism alive|rebuilding theartsdesk|SUBSCRIBE/i);
-    assert.ok(t.startsWith('Paragraph 1 of the review'));
+    assert.ok(t.startsWith('Show, Venue review\n\nParagraph 1 of the review'), 'headline leads, then body');
     for (let n = 1; n <= 8; n++) assert.ok(t.includes(`Paragraph ${n} of the review`), `missing paragraph ${n}`);
-    assert.ok(t.split('\n\n').length === 8);
+    assert.ok(t.split('\n\n').length === 9);
   });
 
   test('does not end at the visually-hidden "Image" label or keep link/sidebar chrome', () => {
@@ -72,5 +72,16 @@ describe('theartsdesk.com extractor', () => {
     assert.ok(isExclusiveExtractorHost('www.theartsdesk.com'));
     assert.ok(!isExclusiveExtractorHost('https://nottheartsdesk.com/x'));
     assert.ok(!isExclusiveExtractorHost('https://variety.com/x'));
+  });
+
+  test('the headline keeps a title-less review past the URL-to-content check (BRO-7061)', async () => {
+    const { createRequire } = await import('node:module');
+    const { validateContentMentionsShow } = createRequire(import.meta.url)('../../scripts/lib/content-quality.js');
+    const html = FULL.replace('<html>', '<html><head><title>Speculations, Marylebone Theatre review - the real mystery</title></head>')
+      .replace('Show, Venue review', 'Speculations, Marylebone Theatre review - the real mystery');
+    const t = extractArtsDeskBody(html);
+    const body = t.split('\n\n').slice(1).join('\n\n');
+    assert.equal(validateContentMentionsShow(body, html, 'Speculations', 'speculations-off-west-end-2026').valid, false);
+    assert.equal(validateContentMentionsShow(t, html, 'Speculations', 'speculations-off-west-end-2026').valid, true);
   });
 });

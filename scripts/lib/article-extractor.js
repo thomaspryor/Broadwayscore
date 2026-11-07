@@ -673,7 +673,14 @@ function extractArtsDeskBody(html) {
   const paras = [...body.matchAll(/<p\b[^>]*>([\s\S]*?)<\/p>/gi)]
     .map((p) => stripHtml(p[1]))
     .filter((t) => t && !ARTSDESK_BANNER_RE.test(t));
-  return paras.length ? paras.join('\n\n') : null;
+  if (!paras.length) return null;
+  // The headline sits outside the body block and names the show ("Speculations,
+  // Marylebone Theatre review - ..."). Reviews often never repeat the title, so
+  // without it the URL-to-content sanity check sees 0 mentions and drops a
+  // correct page (BRO-7061: Speculations, 703 words, 0 mentions).
+  const h1 = src.match(/<h1\b[^>]*class="[^"]*\barticleTitle\b[^"]*"[^>]*>([\s\S]*?)<\/h1>/i);
+  const headline = h1 ? stripHtml(h1[1]).replace(/\s+/g, ' ').trim() : '';
+  return (headline ? [headline, ...paras] : paras).join('\n\n');
 }
 
 /**
