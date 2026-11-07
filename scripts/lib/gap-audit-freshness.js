@@ -62,6 +62,19 @@ function isSlowMarketDailyWindow(show, now = Date.now()) {
   return SLOW_MARKETS.has(show?.category) && inOpeningWindow(show, now, SLOW_MARKET_ALERT_DAYS);
 }
 
+// BRO-7081: the same days 8-21 starvation hit Broadway, regional and tour
+// shows. A show that audited clean around day 6 dropped to tier 2 behind ~900
+// due back-catalogue shows (17 audited per hourly run), so it waited 4-7 days
+// for its next audit and late reviews cited by aggregators sat unfound
+// (Other Desert Cities, Broadway, opened 2026-10-18: exeunt and a blog review
+// cited, row 166h old on 2026-11-07; 15 in-window shows sat in tier 2 that
+// day: 3 Broadway, 11 regional, 1 tour). Every in-window show now gets the
+// daily tier, whatever its market. Cost: ~15 more shows at <=20h, ~30
+// audits/day against ~400/day of hourly capacity.
+function isInWindowDaily(show, now = Date.now()) {
+  return inOpeningWindow(show, now, SLOW_MARKET_ALERT_DAYS);
+}
+
 // BRO-6687: every slow-market row the audit has written since this time
 // carries a numeric slowMarketResidual (audit-show-review-gap.js writes it on
 // the entry and on the post-ingest recount). A row stamped after it without
@@ -133,7 +146,7 @@ function freshnessMsFor(show, lastEntry, opts = {}) {
   if (inLastYear(show, now) && !matureClosedClean) base = Math.min(base, LAST_YEAR_MAX_FRESHNESS_MS);
   // BRO-6687: in-window slow-market shows re-audit at least daily, whatever the
   // closed/clean skip or the configured freshness would otherwise allow.
-  if (!isSlowMarketDailyWindow(show, now)) return base;
+  if (!isInWindowDaily(show, now)) return base;
   // A clean row (nothing uncollected, nothing the rollup counts) past the
   // opening week re-audits exactly daily, not at the 12h default, to keep the
   // tier's daily cost near one audit per show.
@@ -199,7 +212,7 @@ function auditTier(show, entry, now = Date.now()) {
   if (show?.status !== 'closed' && inOpeningWindow(show, now) && (!entry || entry.uncollected > 0)) return 1;
   if (show?.status === 'closed' && alertReadsRow(show, entry, now)) return 1; // BRO-5513
   if (lacksSlowMarketResidual(show, entry)) return 1; // BRO-6687: an unaudited-looking row
-  if (isSlowMarketDailyWindow(show, now)) return SLOW_MARKET_TIER; // BRO-6687
+  if (isInWindowDaily(show, now)) return SLOW_MARKET_TIER; // BRO-6687, all markets since BRO-7081
   if (inLastYear(show, now) && (!entry || now - checkpointTs(entry) >= LAST_YEAR_STALE_MS)) return LAST_YEAR_TIER; // BRO-6687
   return 2;
 }
@@ -428,6 +441,7 @@ module.exports = {
   compareAuditPriority,
   auditTier,
   isSlowMarketDailyWindow,
+  isInWindowDaily,
   lacksSlowMarketResidual,
   SLOW_MARKET_RESIDUAL_SINCE_MS,
   pickDueLane,
