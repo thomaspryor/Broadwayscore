@@ -32,12 +32,19 @@ const EXCERPT_FIELDS = ['dtliExcerpt', 'bwwExcerpt', 'showScoreExcerpt', 'nycThe
  * @param {((name: string) => string)|null} [normalizeOutlet] alias resolver (review-normalization's). Injected, not
  *   required here: the audit that shares this module must stay write-free across its require
  *   graph (safe-form allowlist), and review-normalization pulls in exclusion-logger.
+ * @param {{show?: object, filePath?: string, isScoreable?: (data: object, show?: object, filePath?: string) => boolean}} [ctx]
+ *   the shows.json row, the file's path and the scorer's own predicate (scripts/lib/is-scoreable.js,
+ *   injected for the same write-free reason as normalizeOutlet). With both, a file the scorer and
+ *   the rebuild drop (duplicateOf pointing at a live twin, syndication copy, a wrongProduction the
+ *   scorer would not clear) is not fed to the LLM either (BRO-6226).
  */
-function reviewTextInput(data, showId, liveOutlets = null, normalizeOutlet = null) {
+function reviewTextInput(data, showId, liveOutlets = null, normalizeOutlet = null, ctx = {}) {
   if (!data || typeof data !== 'object') return null;
   // Skip excluded reviews
   if (data.duplicateOf || data.wrongProduction || data.wrongShow || data.wrongAttribution ||
       data.isRoundupArticle || data.rejectionReason || data.contentTier === 'invalid') return null;
+  // BRO-6226: the scorer's predicate, not a hand-kept subset of it.
+  if (ctx.isScoreable && ctx.filePath && !ctx.isScoreable(data, ctx.show, ctx.filePath)) return null;
   // Only outlets the site actually shows for this show: the rebuild's guards
   // exclude more than the flags above, and a Critics' Take written from an
   // excluded review (another production, another show) is wrong on the page
@@ -65,22 +72,45 @@ function reviewTextInput(data, showId, liveOutlets = null, normalizeOutlet = nul
  * Review texts the generator summarises for a show.
  * @param {string} showId
  * @param {Set<string>|null} liveOutlets
- * @param {{reviewTextsDir?: string, onWarn?: (msg: string) => void, normalizeOutlet?: (name: string) => string}} [opts]
+ * With opts.isScoreable and opts.createDedup (the generator passes
+ * scripts/lib/is-scoreable.js and scripts/lib/within-show-dedup.js), files go
+ * through the scorer's predicate and then the rebuild's within-show dedup
+ * (same URL, same outlet+critic, an unknown-critic stub beside a named
+ * critic), named critics first, so a live outlet's duplicate stubs are not
+ * counted or summarised twice (BRO-6226: Benjamin Button had 30 inputs for 27
+ * published reviews). Both are injected, not required, because the
+ * contamination audit sharing this module must stay write-free across its
+ * require graph and review-guards is not; the audit runs without them, so its
+ * drift count can sit a few rows above the generator's (thresholds are 10/15).
+ * @param {{reviewTextsDir?: string, onWarn?: (msg: string) => void, normalizeOutlet?: (name: string) => string, show?: object,
+ *   isScoreable?: (data: object, show?: object, filePath?: string) => boolean,
+ *   createDedup?: () => {isDuplicate: (data: object) => boolean, add: (data: object) => void}}} [opts]
  * @returns {object[]}
  */
 function loadReviewTexts(showId, liveOutlets = null, opts = {}) {
   const dir = path.join(opts.reviewTextsDir || DEFAULT_REVIEW_TEXTS_DIR, showId);
   if (!fs.existsSync(dir)) return [];
   const reviews = [];
-  for (const file of fs.readdirSync(dir).filter(f => isReviewTextFile(f))) {
+  const dedup = opts.createDedup ? opts.createDedup() : null;
+  for (const file of fs.readdirSync(dir).filter(f => isReviewTextFile(f)).sort(namedBeforeUnknown)) {
     try {
-      const row = reviewTextInput(JSON.parse(fs.readFileSync(path.join(dir, file), 'utf-8')), showId, liveOutlets, opts.normalizeOutlet || null);
-      if (row) reviews.push(row);
+      const filePath = path.join(dir, file);
+      const data = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+      const row = reviewTextInput(data, showId, liveOutlets, opts.normalizeOutlet || null, { show: opts.show, filePath, isScoreable: opts.isScoreable });
+      if (!row || (dedup && dedup.isDuplicate(data))) continue;
+      if (dedup) dedup.add(data);
+      reviews.push(row);
     } catch (err) {
       if (opts.onWarn) opts.onWarn(`Failed to parse ${file}: ${err.message}`);
     }
   }
   return reviews;
+}
+
+const UNKNOWN_FILE_RE = /--(unknown|unnamed)\b/i;
+/** Named-critic files before unknown stubs, then by name (the rebuild's dedup order). */
+function namedBeforeUnknown(a, b) {
+  return Number(UNKNOWN_FILE_RE.test(a)) - Number(UNKNOWN_FILE_RE.test(b)) || a.localeCompare(b);
 }
 
 /** Positive >= 61, mixed 40-60, negative < 40 (generator's buckets). */

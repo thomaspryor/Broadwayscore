@@ -153,3 +153,40 @@ test('critic-consensus-inputs does not require review-normalization (safe-form a
   const src = fs.readFileSync(new URL('../../scripts/lib/critic-consensus-inputs.js', import.meta.url), 'utf8');
   assert.doesNotMatch(src, /require\(['"]\.\/review-normalization['"]\)/);
 });
+
+describe('BRO-6226: inputs use the scorer predicate and the rebuild within-show dedup', () => {
+  let root;
+  before(() => { root = fs.mkdtempSync(path.join(os.tmpdir(), 'bro6226-')); });
+  after(() => fs.rmSync(root, { recursive: true, force: true }));
+
+  const base = (o) => ({
+    showId: SHOW, outlet: 'New York Stage Review', outletId: 'nysr', publishDate: '2026-10-01',
+    fullText: 'A full review of the show with plenty of words in it. '.repeat(20), contentTier: 'complete', assignedScore: 75, ...o,
+  });
+
+  it('drops an unknown-critic stub beside the named critic, and a duplicateOf twin', () => {
+    writeTexts(root, {
+      'nysr--unknown.json': base({ criticName: 'Unknown', url: 'https://nystagereview.com/2026/10/01/other-slug/', contentTier: 'stub', fullText: null, dtliExcerpt: 'Short excerpt.' }),
+      'nysr--david-finkle.json': base({ criticName: 'David Finkle', url: 'https://nystagereview.com/2026/10/01/show-review/' }),
+      'nysr--david-finkle-2.json': base({ criticName: 'David Finkle', url: 'https://nystagereview.com/2026/10/01/show-review/', duplicateOf: 'nysr--david-finkle.json' }),
+      'guardian--a-critic.json': base({ outlet: 'The Guardian', outletId: 'guardian', criticName: 'A Critic', url: 'https://www.theguardian.com/stage/2026/oct/01/show-review', assignedScore: 60 }),
+    });
+    const live = new Set([`${SHOW}|nysr`, `${SHOW}|guardian`]);
+    const { isScoreable } = require('../../scripts/lib/is-scoreable.js');
+    const { createWithinShowDedup } = require('../../scripts/lib/within-show-dedup.js');
+    const rows = loadReviewTexts(SHOW, live, { reviewTextsDir: root, show: { id: SHOW, title: 'Some Show' }, isScoreable, createDedup: createWithinShowDedup });
+    assert.deepEqual(rows.map(r => r.critic).sort(), ['A Critic', 'David Finkle']);
+    assert.equal(consensusFingerprint(rows).reviewCount, 2);
+    // Without the injected predicate/dedup (the write-free audit) the stub still counts.
+    assert.equal(loadReviewTexts(SHOW, live, { reviewTextsDir: root }).length, 3);
+  });
+
+  it('reviewTextInput runs the scorer predicate (isScoreable) when given a filePath', () => {
+    const isScoreableMod = require('../../scripts/lib/is-scoreable.js');
+    const data = base({ criticName: 'X', url: 'https://nystagereview.com/x/', incompleteReason: 'scraper_garbage' });
+    const filePath = path.join(root, SHOW, 'nysr--x.json');
+    assert.equal(isScoreableMod.isScoreable(data, undefined, filePath), false, 'precondition: the scorer drops it');
+    assert.equal(reviewTextInput(data, SHOW, null, null, { filePath, isScoreable: isScoreableMod.isScoreable }), null);
+    assert.notEqual(reviewTextInput(data, SHOW, null, null), null, 'without a path only the flag subset applies');
+  });
+});
