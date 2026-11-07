@@ -1,15 +1,15 @@
 {
-  "generatedAt": "2026-11-06T16:40:13.091Z",
+  "generatedAt": "2026-11-07T15:28:42.173Z",
   "summary": {
-    "reviewsJsonLastUpdated": "2026-11-06T16:30:17.840Z",
-    "reviewsJsonAgeHours": 0.2,
+    "reviewsJsonLastUpdated": "2026-11-07T15:13:21.362Z",
+    "reviewsJsonAgeHours": 0.3,
     "freshnessBreach": false,
-    "showsScanned": 19,
-    "allShowsScanned": 4759,
-    "filesScanned": 80221,
+    "showsScanned": 24,
+    "allShowsScanned": 4768,
+    "filesScanned": 80408,
     "showsOverThreshold": 0,
     "newOffenders": 0,
-    "blindShows": 26,
+    "blindShows": 29,
     "orphanReviews": 4
   },
   "thresholds": {
@@ -57,8 +57,16 @@
   "perShow": [
     {
       "showDir": "222-a-ghost-story-off-broadway-2026",
-      "actual": 5,
-      "scanned": 12,
+      "actual": 10,
+      "scanned": 16,
+      "suppressedCount": 0,
+      "suppressed": [],
+      "overThreshold": false
+    },
+    {
+      "showDir": "adirondack-chair-circle-regional-2026",
+      "actual": 11,
+      "scanned": 11,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
@@ -72,17 +80,33 @@
       "overThreshold": false
     },
     {
-      "showDir": "king-lear-off-broadway-2026",
+      "showDir": "iphigenie-en-tauride-english-national-opera-west-end-2026",
       "actual": 1,
       "scanned": 3,
+      "suppressedCount": 1,
+      "suppressed": [
+        {
+          "file": "theatre-weekly--ke-meng.json",
+          "outletId": "theatre-weekly",
+          "criticName": "Ke Meng",
+          "publishDate": "2026-11-06",
+          "url": "https://theatreweekly.com/review-iphigenie-en-tauride-at-london-coliseum/"
+        }
+      ],
+      "overThreshold": false
+    },
+    {
+      "showDir": "nero-off-west-end-2026",
+      "actual": 2,
+      "scanned": 11,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
     },
     {
       "showDir": "parcel-from-america-off-broadway-2026",
-      "actual": 3,
-      "scanned": 4,
+      "actual": 5,
+      "scanned": 6,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
@@ -105,6 +129,14 @@
     },
     {
       "showDir": "speculations-off-west-end-2026",
+      "actual": 28,
+      "scanned": 35,
+      "suppressedCount": 0,
+      "suppressed": [],
+      "overThreshold": false
+    },
+    {
+      "showDir": "tango-after-dark-off-west-end-2026",
       "actual": 2,
       "scanned": 2,
       "suppressedCount": 0,
@@ -137,16 +169,16 @@
     },
     {
       "showDir": "the-unbelievers-off-broadway-2026",
-      "actual": 8,
-      "scanned": 18,
+      "actual": 14,
+      "scanned": 25,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
     },
     {
       "showDir": "the-verge-off-broadway-2026",
-      "actual": 8,
-      "scanned": 15,
+      "actual": 11,
+      "scanned": 20,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
@@ -154,15 +186,15 @@
     {
       "showDir": "tosca-off-broadway-2026",
       "actual": 1,
-      "scanned": 14,
+      "scanned": 15,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
     },
     {
       "showDir": "well-see-off-broadway-2026",
-      "actual": 7,
-      "scanned": 9,
+      "actual": 11,
+      "scanned": 14,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
