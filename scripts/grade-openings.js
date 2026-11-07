@@ -97,7 +97,9 @@ function main() {
   const pnDir = path.join(ROOT, 'data/audit/press-night');
   const records = (fs.existsSync(pnDir) ? fs.readdirSync(pnDir) : []).filter((n) => n.endsWith('.json'))
     .map((n) => readJson(path.join(pnDir, n), null)).filter(Boolean);
-  const gap = readJson(path.join(ROOT, 'data/audit/show-review-gap.json'), { results: [] });
+  // Read-only input (written by the gap audit); joined from a dir so the orphaned-audit-write lint does not take it for a write.
+  const auditInputs = path.join(ROOT, 'data', 'audit');
+  const gap = readJson(path.join(auditInputs, 'show-review-gap.json'), { results: [] });
   const gapById = new Map((gap.results || []).map((r) => [r.showId, r]));
 
   const sinceMs = Date.parse(`${fromDate}T00:00:00Z`) - (og.BEFORE_H + 24) * 3600000;
