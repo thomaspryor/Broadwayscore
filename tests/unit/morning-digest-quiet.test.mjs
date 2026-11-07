@@ -3,6 +3,8 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
+import fs from 'node:fs';
+import path from 'node:path';
 
 const require = createRequire(import.meta.url);
 const { composeDigestEmail } = require('../../scripts/send-morning-digest.js');
@@ -174,6 +176,58 @@ test('plain wording: Freshness / Push verify / Cron / Pipeline families are tran
   }
   // A specific mapping still wins over the family fallback.
   assert.equal(plainHealthLine('Cron failed: x', ''), 'The automated "x" job keeps failing');
+});
+
+// BRO-7047 ratchet: every visitor-classified check name must map to a plain
+// sentence. The fixed list pins the 34 names fixed here; the history sweep
+// catches any new check that lands in health-check-history.json without one.
+test('plain wording: no visitor-facing health check shows its raw name (BRO-7047)', () => {
+  const { classifyHealthCheck } = require('../../scripts/lib/digest-audience.js');
+  const fixed = [
+    "Data: review-texts checkout coverage",
+    "Sync: review-texts vs reviews.json",
+    "Sync: open show coverage",
+    "Sync: phantom show detection",
+    "Sync: grosses weekEnding",
+    "Data: UK regional opening dates",
+    "Scoring: batch state",
+    "Quality: scored review ratio",
+    "Quality: missing contentTier",
+    "Quality: outlet stub rate",
+    "Quality: outlet invalid-content rate",
+    "Data quality: provider spend ledger",
+    "Data quality: roundup-url-mismatch lifetime sweep",
+    "Data: OB shows no closing signal can detect",
+    "Memory: cloud mirror reconcile failing",
+    "Memory: cloud notes not reaching the Mac",
+    "Data: Tours To You pages not checked",
+    "Data: closed national tours reopened automatically",
+    "Data: closed national tour lists new dates",
+    "Quality: standingCoverage drift",
+    "Quality: coverageExpectation drift",
+    "Quality: outlet-heartbeat red flags",
+    "Quality: outlet feed staleness",
+    "Commercial pending-review queue",
+    "Commercial: rows held for a person",
+    "Commercial model: Boring Waltz fit",
+    "Commercial model: running-show bar revisit",
+    "Commercial: season share cards",
+    "Cookies: expiration",
+    "CWV: performance",
+    "Data: published scores outside the critic's rating",
+    "Data: early publish dates awaiting page-date recheck",
+    "Data: duplicate-flag leaks (a wrong twin dropping a good review)",
+    "Data: stale-slot squatters (current-year review slots held by another production)",
+  ];
+  let history = [];
+  try { history = (JSON.parse(fs.readFileSync(path.join(process.cwd(), 'data/audit/health-check-history.json'), 'utf8')).results || []).map((x) => x.name); } catch { /* data absent: fixed list only */ }
+  for (const n of new Set([...fixed, ...history])) {
+    if (classifyHealthCheck({ name: n }) !== 'visitors') continue;
+    const line = plainHealthLine(n, '');
+    assert.notEqual(line, n, `${n} still shows its raw check name: add a PLAIN_HEALTH entry`);
+    assert.match(line, /^[A-Z]/, `${n}: sentence should start with a capital`);
+    assert.doesNotMatch(line, /\.json|audit\/|\u2014/, `${n}: leaks a file name or em dash`);
+  }
 });
 
 // ---- BRO-7075: readable in Gmail ----
