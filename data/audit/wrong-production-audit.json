@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-07T20:36:44.313Z",
+  "timestamp": "2026-11-07T20:56:42.400Z",
   "stats": {
-    "totalReviews": 80504,
-    "alreadyFlagged": 22033,
-    "dateGuardCatches": 217,
-    "directorMismatch": 3524,
+    "totalReviews": 80509,
+    "alreadyFlagged": 22037,
+    "dateGuardCatches": 216,
+    "directorMismatch": 3523,
     "tvFilmSignals": 2291,
     "londonSignals": 3623,
     "offBroadwaySignals": 747,
     "yearMismatch": 363,
-    "noPublishDate": 8458
+    "noPublishDate": 8456
   },
   "findings": [
     {
@@ -53376,25 +53376,6 @@
           "type": "DATE_GUARD",
           "severity": "MEDIUM",
           "detail": "Published 199d before show (2025-03-07 vs 2025-09-22)"
-        },
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"adam penford\" from punch-2025"
-        }
-      ]
-    },
-    {
-      "showId": "punch-west-end-2025",
-      "file": "timeout-london--andrzej-lukowski.json",
-      "score": 81,
-      "publishDate": "2025-03-31",
-      "url": "https://www.timeout.com/london/theatre/punch-review",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 175d before show (2025-03-31 vs 2025-09-22)"
         },
         {
           "type": "DIRECTOR_MISMATCH",
