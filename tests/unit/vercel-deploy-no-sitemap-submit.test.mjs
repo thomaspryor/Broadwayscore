@@ -10,7 +10,7 @@ import { readFileSync } from 'node:fs';
 const yml = readFileSync(new URL('../../.github/workflows/vercel-deploy.yml', import.meta.url), 'utf8');
 
 test('vercel-deploy.yml does not run submit-google-indexing.js --submit-sitemap', () => {
-  assert.ok(!/submit-google-indexing\.js\s+--submit-sitemap/.test(yml));
+  assert.ok(!yml.includes('--submit-sitemap'));
 });
 
 test('vercel-deploy.yml still pings Bing for the sitemap', () => {

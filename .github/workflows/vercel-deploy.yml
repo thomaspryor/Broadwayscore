@@ -678,10 +678,8 @@ jobs:
 
       - name: Notify search engines of updated sitemap
         if: success() && steps.deploy.outputs.superseded != 'true'
-        # lint-allow-swallow: optional SEO ping after a deploy that already reached READY; failing here would mark a good deploy failed and fire the failure alert and investigation steps below; daily-quota exhaustion exits 1 like a crash (BRO-6261)
+        # lint-allow-swallow: optional SEO ping after a deploy that already reached READY; failing here would mark a good deploy failed and fire the failure alert and investigation steps below
         continue-on-error: true
-        env:
-          GOOGLE_INDEXING_KEY: ${{ secrets.GOOGLE_INDEXING_KEY }}
         run: |
           # Bing ping — sitemap is sharded (/sitemap/0.xml …); /sitemap.xml is a
           # 404. Bing ping is largely deprecated in favour of IndexNow
