@@ -1,0 +1,25 @@
+{
+  "issueNumber": "bro-7061",
+  "planId": "becf116a-0910-4f56-b93c-ad49602df360",
+  "status": "pending",
+  "createdAt": "2026-11-07T10:05:44.180Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7061: remove the theartsdesk.com support banner from the start, and the trailing 'Image' label from the end, of stored Arts Desk review texts (68 files, including the _pending folders the collector never reads). Text-only change, no verdict text is touched, no rescore needed.",
+    "steps": [
+      "Run strip-artsdesk-banner.js --apply --expect=68 (dry run in CI found exactly 68 rows; it refuses to write if the count differs)"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "run-script",
+        "description": "Strip the Arts Desk support banner and trailing Image label from 68 stored review files; refuses to write unless exactly 68 rows change.",
+        "script": "strip-artsdesk-banner.js",
+        "args": "--apply --expect=68"
+      }
+    ]
+  }
+}
