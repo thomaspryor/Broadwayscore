@@ -53,3 +53,18 @@ test('article-less real slugs still pass (second-opinion regressions)', () => {
   assert.equal(urlLooksLikeReview('https://www.whatsonstage.com/news/review-story-hampstead-theatre/', 'The Story'), true);
   assert.equal(urlLooksLikeReview('https://example.com/theatre/national-theatre-story-review', 'The Story'), true);
 });
+
+// BRO-7077 (BRO-5627 cousin): a theatre cue anywhere in the headline let a verb
+// through ("Broadway producers ask Congress" matched The Ask).
+test('single-word identity needs the cue beside the word or the word leading (BRO-7077)', () => {
+  assert.equal(titleMatchesShow('Broadway producers ask Congress for tax relief', 'The Ask'), false);
+  assert.equal(titleMatchesShow('How To Ask Colleagues For A Raise On Broadway Jobs Board', 'The Ask'), false);
+  assert.equal(titleMatchesShow('The Ask review: a tense two-hander', 'The Ask'), true);
+  // ship-check P2: cue compounds and "cast of" beside the word still match.
+  assert.equal(titleMatchesShow('Tony-winning Outsiders sets national tour', 'The Outsiders'), true);
+  assert.equal(titleMatchesShow('Cast of Outsiders to perform at Tonys', 'The Outsiders'), true);
+  assert.equal(titleMatchesShow('Tony-winning producers ask Congress for tax relief', 'The Ask'), false);
+  assert.equal(titleMatchesShow('Notebook musical drowns in sentiment', 'The Notebook'), true);
+  assert.equal(titleMatchesShow('Notebook opens on Broadway to mixed notices', 'The Notebook'), true);
+  assert.equal(titleMatchesShow('Outsiders musical wins Tony', 'The Outsiders'), true);
+});

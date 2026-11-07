@@ -20,7 +20,11 @@ export async function GET(req: NextRequest) {
     const since = new Date(Date.now() - 30 * 86_400_000).toISOString().slice(0, 10);
     const vres = await sbAdmin(`/rest/v1/critic_page_views?critic_slug=eq.${encodeURIComponent(slug)}&day=gte.${since}&select=views`);
     const views30 = vres.ok ? ((await vres.json()) as { views: number }[]).reduce((n, r) => n + (r.views || 0), 0) : 0;
-    return NextResponse.json({ state: 'owner', email: user.email, notifyOpeningNight: approved.notify_opening_night, views30, profile: row ? toPublicProfile(row) : null });
+    // BRO-6984: owner-only reach (unique people on show pages featuring their reviews). Stale rows (job stopped) are dropped.
+    const rres = await sbAdmin(`/rest/v1/critic_reach?critic_slug=eq.${encodeURIComponent(slug)}&select=people,computed_at`).catch(() => null);
+    const reachRow = rres?.ok ? ((await rres.json()) as { people: number; computed_at: string }[])[0] : undefined;
+    const reachPeople = reachRow && Date.now() - Date.parse(reachRow.computed_at) < 3 * 86_400_000 ? reachRow.people : null;
+    return NextResponse.json({ state: 'owner', email: user.email, notifyOpeningNight: approved.notify_opening_night, views30, reachPeople, profile: row ? toPublicProfile(row) : null });
   }
   if (claims.some((c) => c.status === 'pending')) return NextResponse.json({ state: 'pending', email: user.email });
   return NextResponse.json({ state: 'none', email: user.email });

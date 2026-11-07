@@ -78,6 +78,7 @@ const {
 const { localLoopDeadMessage } = require('./lib/digest-loop-health.js');
 const { renderNewShowTypesBlock } = require('./lib/new-show-types.js');
 const { renderPressNightBlock } = require('./lib/press-night-digest-render.js');
+const { renderOpeningGradesBlock } = require('./lib/opening-grade.js');
 const { fetchPipelineIssues } = require('./lib/autofix-canary.js');
 const { assessCyrusRelay } = require('./lib/cyrus-relay-health.js');
 const { assessRunnerHealth } = require('./lib/cyrus-runner-health.js');
@@ -676,6 +677,12 @@ function buildHtmlParts({ sections = {}, problemsNote = null, changesHtml = null
     lastNightHtml = renderPressNightBlock(sections.pressNight, { esc, nowMs: now.getTime() }) || '';
   } catch (err) {
     console.error(`[digest] WARN press-night block failed: ${String(err.message).slice(0, 120)}`);
+  }
+  // Opening grades (BRO-7082): did each opening this week need a person or a Claude session.
+  try {
+    lastNightHtml += renderOpeningGradesBlock(sections.openingGrades, { esc, nowMs: now.getTime() }) || '';
+  } catch (err) {
+    console.error(`[digest] WARN opening-grades block failed: ${String(err.message).slice(0, 120)}`);
   }
   head.push(renderOwnerTopBlock(view, { decisionBlocksHtml, overnightLine, lastNightHtml }));
   if (sections.memoryConflicts) {

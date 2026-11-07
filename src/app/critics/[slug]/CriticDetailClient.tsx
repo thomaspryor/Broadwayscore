@@ -1,8 +1,8 @@
 'use client';
 
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect, useCallback } from 'react';
 import Link from 'next/link';
-import { positivityPhrase, volumePhrase } from '@/lib/critic-standing';
+import { positivityPhrase, volumePhrase, compareToConsensus, againstTheCrowd, signedGap, type ShowConsensus } from '@/lib/critic-standing';
 import type { CriticProfile, ProfileReview } from '@/lib/data-types';
 import { getOptimizedImageUrl } from '@/lib/images';
 import { getScoreClass, getScoreTextColor, formatDate } from '@/lib/critic-page-utils';
@@ -15,6 +15,7 @@ import { getInitials } from '@/lib/name-initials';
 import { getCriticBio } from '@/config/critic-bios';
 import type { PublicCriticProfile } from '@/lib/critic-server-types';
 import CriticClaimPanel from '@/components/critics/CriticClaimPanel';
+import { FlagProblemModal } from '@/components/critics/CriticRequestModals';
 
 type SortMode = 'recent' | 'highest' | 'lowest';
 type MarketFilter = 'all' | 'broadway' | 'west-end' | 'off-west-end' | 'off-broadway';
@@ -37,7 +38,14 @@ function getShowYear(review: ProfileReview): string | null {
   return null;
 }
 
-function ReviewCard({ review, showYear, loading = 'lazy' }: { review: ProfileReview; showYear?: string | null; loading?: 'eager' | 'lazy' }) {
+function ReviewCard({ review, showYear, loading = 'lazy', consensus, onFlag }: {
+  review: ProfileReview; showYear?: string | null; loading?: 'eager' | 'lazy';
+  /** The show's Critic Score; the "vs. the consensus" line is hidden without one (BRO-6984). */
+  consensus?: ShowConsensus;
+  /** Set only for the signed-in owner of this page. */
+  onFlag?: () => void;
+}) {
+  const vs = compareToConsensus(review.reviewScore, consensus);
   return (
     <article className="card p-4 flex gap-4">
       {/* Thumbnail */}
@@ -96,15 +104,38 @@ function ReviewCard({ review, showYear, loading = 'lazy' }: { review: ProfileRev
             &ldquo;{nestQuotes(review.quote)}&rdquo;
           </p>
         )}
+
+        {(vs || onFlag) && (
+          <div className="mt-1.5 flex items-baseline justify-between gap-3 text-xs text-fg-muted">
+            <span>{vs?.phrase}</span>
+            {onFlag && (
+              <button type="button" onClick={onFlag} className="shrink-0 -my-2 py-2 px-1 hover:text-brand transition-colors">Flag a problem</button>
+            )}
+          </div>
+        )}
       </div>
     </article>
   );
 }
 
 const INITIAL_REVIEWS = 100;
+const NO_CONSENSUS: Record<string, ShowConsensus> = {};
 
-export default function CriticDetailClient({ critic, profile }: { critic: CriticProfile; profile?: PublicCriticProfile | null }) {
+export default function CriticDetailClient({ critic, profile, consensus = NO_CONSENSUS }: {
+  critic: CriticProfile;
+  profile?: PublicCriticProfile | null;
+  /** showSlug → that show's Critic Score, only where the site shows one (page.tsx). */
+  consensus?: Record<string, ShowConsensus>;
+}) {
   const [sortMode, setSortMode] = useState<SortMode>('recent');
+  const [isOwner, setIsOwner] = useState(false);
+  const [flagKey, setFlagKey] = useState<string | null | undefined>(undefined); // undefined = closed, null = open with no review chosen
+  const onOwnerChange = useCallback((v: boolean) => setIsOwner(v), []);
+  const reviewOptions = useMemo(
+    () => critic.reviews.map(r => ({ key: `${r.showSlug}-${getReviewKey(r)}`, label: `${r.showTitle} (${r.outlet})` })),
+    [critic.reviews],
+  );
+  const crowdGaps = useMemo(() => againstTheCrowd(critic.reviews, consensus), [critic.reviews, consensus]);
   const [showCount, setShowCount] = useState(INITIAL_REVIEWS);
 
   const marketCounts = useMemo(() => {
@@ -131,6 +162,19 @@ export default function CriticDetailClient({ critic, profile }: { critic: Critic
     return availableMarkets[0];
   })();
   const [marketFilter, setMarketFilter] = useState<MarketFilter>(defaultMarket);
+  // The summary uses all reviews, so name revivals by year across all of them.
+  const crowdLine = useMemo(() => {
+    if (crowdGaps.length === 0) return null;
+    const slugsByTitle = new Map<string, Set<string>>();
+    for (const r of critic.reviews) slugsByTitle.set(r.showTitle, (slugsByTitle.get(r.showTitle) || new Set()).add(r.showSlug));
+    const name = (g: { showSlug: string; showTitle: string }) => {
+      const review = (slugsByTitle.get(g.showTitle)?.size ?? 0) > 1 ? critic.reviews.find(r => r.showSlug === g.showSlug) : undefined;
+      const year = review ? getShowYear(review) : null;
+      return year ? `${g.showTitle} (${year})` : g.showTitle;
+    };
+    const list = crowdGaps.map(g => `${name(g)} (${signedGap(g.diff)})`).join(', ');
+    return `${marketFilter !== 'all' ? 'Across all their reviews, went' : 'Went'} against the crowd most on: ${list}`;
+  }, [crowdGaps, critic.reviews, marketFilter]);
 
   const filteredReviews = useMemo(() => {
     if (marketFilter === 'all') return critic.reviews;
@@ -241,8 +285,13 @@ export default function CriticDetailClient({ critic, profile }: { critic: Critic
           name={critic.name}
           outlet={critic.primaryOutlet}
           claimed={!!profile}
-          reviewOptions={critic.reviews.map(r => ({ key: `${r.showSlug}-${getReviewKey(r)}`, label: `${r.showTitle} (${r.outlet})` }))}
+          reviewOptions={reviewOptions}
+          onOwnerChange={onOwnerChange}
+          onFlag={() => setFlagKey(null)}
         />
+        {isOwner && (
+          <FlagProblemModal open={flagKey !== undefined} onClose={() => setFlagKey(undefined)} slug={critic.slug} reviewOptions={reviewOptions} initialReviewKey={flagKey} />
+        )}
 
         {/* Bio: the critic's own when verified, else the hand-written one (src/config/critic-bios.ts) */}
         {(profile?.bio || getCriticBio(critic.slug)) && (
@@ -299,6 +348,8 @@ export default function CriticDetailClient({ critic, profile }: { critic: Critic
           const lines = [
             volumePhrase(critic.volumeRank, 'critic', 'critics'),
             positivity && marketFilter !== 'all' ? `Across all their reviews: ${positivity.charAt(0).toLowerCase()}${positivity.slice(1)}` : positivity,
+            // BRO-6984: the shows where this critic was furthest from the Critic Score.
+            crowdLine,
           ].filter(Boolean);
           return lines.length > 0 && (
             <div className="flex flex-col gap-1 text-sm text-gray-400">
@@ -345,7 +396,8 @@ export default function CriticDetailClient({ critic, profile }: { critic: Critic
       {pinnedReview && (
         <div className="mb-4">
           <h2 className="text-xs uppercase tracking-wide text-fg-muted mb-2">Pinned review</h2>
-          <ReviewCard review={pinnedReview} showYear={null} loading="lazy" />
+          <ReviewCard review={pinnedReview} showYear={null} loading="lazy" consensus={consensus[pinnedReview.showSlug]}
+            onFlag={isOwner ? () => setFlagKey(`${pinnedReview.showSlug}-${getReviewKey(pinnedReview)}`) : undefined} />
         </div>
       )}
 
@@ -353,7 +405,9 @@ export default function CriticDetailClient({ critic, profile }: { critic: Critic
       <div className="space-y-2">
         {visibleReviews.length > 0 ? (
           visibleReviews.map((review, index) => (
-            <ReviewCard key={`${review.showSlug}-${getReviewKey(review)}`} review={review} showYear={duplicateTitles.has(review.showTitle) ? getShowYear(review) : null} loading={index < 4 ? 'eager' : 'lazy'} />
+            <ReviewCard key={`${review.showSlug}-${getReviewKey(review)}`} review={review} showYear={duplicateTitles.has(review.showTitle) ? getShowYear(review) : null} loading={index < 4 ? 'eager' : 'lazy'}
+              consensus={consensus[review.showSlug]}
+              onFlag={isOwner ? () => setFlagKey(`${review.showSlug}-${getReviewKey(review)}`) : undefined} />
           ))
         ) : (
           <div className="card p-8 text-center">

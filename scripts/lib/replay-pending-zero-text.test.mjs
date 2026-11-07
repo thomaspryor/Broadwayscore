@@ -355,6 +355,18 @@ describe('replay-pending-bylines: old rss stubs replay the current identity rule
     assert.equal(JSON.parse(fs.readFileSync(s.filepath, 'utf8')).rssIdentityRejected, true);
   });
 
+  test('an empty fetch is transient too: it counts a strike, never tags on the first run (review P2)', async (t) => {
+    const s = seed(nbcStub({ title: 'Paul McCartney asks fans about upcoming Beatles biopics' }), 'nbcny--24124b82.json');
+    t.after(() => fs.rmSync(s.root, { recursive: true, force: true }));
+    const f = fakes({ fetchImpl: async () => ({ content: '' }) });
+    const r = await replay.processShow(SHOW.id, { root: s.root, show: ASK, dryRun: false, explicitScope: true, ...f.deps });
+    if (r.alertPromise) await r.alertPromise;
+    assert.equal(r.unrecoverable, 1);
+    const d = JSON.parse(fs.readFileSync(s.filepath, 'utf8'));
+    assert.equal(d.rssIdentityRejected, undefined);
+    assert.equal(d.rssIdentityFetchFailures, 1);
+  });
+
   test('stored headline that names the show still goes through the normal replay', async (t) => {
     const s = seed(zeroTextStub({ source: 'rss-discovery', title: 'Zephyr Nights review: a gripping evening' }));
     t.after(() => fs.rmSync(s.root, { recursive: true, force: true }));

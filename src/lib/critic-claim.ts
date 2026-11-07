@@ -266,12 +266,24 @@ export function claimHints(i: HintInput): string[] {
 }
 
 export const FLAG_NOTE_MAX = 600;
-export interface ScoreFlagInput { slug: string; reviewKey: string; note: string }
+
+/** What a critic can say is wrong with one of their reviews (BRO-6984). */
+export const FLAG_REASONS = {
+  wrong_score: 'Wrong score',
+  not_mine: 'Not my review',
+  wrong_show: 'Wrong show',
+  other: 'Something else',
+} as const;
+export type FlagReason = keyof typeof FLAG_REASONS;
+
+export interface ScoreFlagInput { slug: string; reviewKey: string; reason: FlagReason; note: string | null }
 
 /**
- * "Flag a score" request. A flag is only ever a message to the owner: it can
- * name one of the critic's own reviews and say what looks wrong, and nothing
- * in it is read back into a score. Unknown review keys are rejected.
+ * "Flag a problem" request. A flag is only ever a message to the owner: it
+ * names one of the critic's own reviews, a reason from FLAG_REASONS and a
+ * note, and nothing in it is read back into a score or a review. Unknown
+ * review keys and reasons are rejected. A missing reason means the older
+ * "Flag a score" form (wrong score). The note is optional except for "other".
  */
 export function sanitizeFlagInput(body: unknown, ownReviewKeys: ReadonlySet<string>): ScoreFlagInput | { error: string } {
   const b = (body && typeof body === 'object' ? body : {}) as Record<string, unknown>;
@@ -279,9 +291,27 @@ export function sanitizeFlagInput(body: unknown, ownReviewKeys: ReadonlySet<stri
   if (!slug) return { error: 'Unknown page.' };
   const reviewKey = typeof b.reviewKey === 'string' && ownReviewKeys.has(b.reviewKey) ? b.reviewKey : null;
   if (!reviewKey) return { error: 'Pick one of your reviews.' };
+  const rawReason = b.reason === undefined || b.reason === null || b.reason === '' ? 'wrong_score' : b.reason;
+  if (typeof rawReason !== 'string' || !Object.prototype.hasOwnProperty.call(FLAG_REASONS, rawReason)) return { error: 'Pick what is wrong.' };
+  const reason = rawReason as FlagReason;
   const note = cleanText(b.note, FLAG_NOTE_MAX);
-  if (!note) return { error: 'Tell us what looks wrong.' };
-  return { slug, reviewKey, note };
+  if (!note && reason === 'other') return { error: 'Tell us what looks wrong.' };
+  if (note && countUrls(note) > MAX_NOTE_URLS) return { error: 'Please keep the note to two links at most.' };
+  return { slug, reviewKey, reason, note };
+}
+
+export interface MissingReviewInput { slug: string; reviewUrl: string; note: string | null }
+
+/** "Missing a review? Tell us": one review link plus an optional short note. */
+export function sanitizeMissingReviewInput(body: unknown): MissingReviewInput | { error: string } {
+  const b = (body && typeof body === 'object' ? body : {}) as Record<string, unknown>;
+  const slug = typeof b.slug === 'string' && SLUG_RE.test(b.slug) ? b.slug : null;
+  if (!slug) return { error: 'Unknown page.' };
+  const reviewUrl = cleanUrl(b.reviewUrl);
+  if (!reviewUrl) return { error: 'Please paste a full link to the review (starting with https://).' };
+  const note = cleanText(b.note, FLAG_NOTE_MAX);
+  if (note && countUrls(note) > MAX_NOTE_URLS) return { error: 'Please keep the note to two links at most.' };
+  return { slug, reviewUrl, note };
 }
 
 export interface NoticeReview { showSlug: string; showTitle: string; parsedDate: number | null }

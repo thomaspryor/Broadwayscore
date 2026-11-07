@@ -165,6 +165,12 @@ function _isChallengeOrGarbage(content) {
   if (content && /<title[^>]*>\s*(?:Just a moment(?:\.\.\.|…)|Attention Required!)/i.test(content)) return true;
   // Both Cloudflare managed-challenge script markers together never appear in a real article (same rule as bww-roundup-validator.js).
   if (content && content.includes('cf_chl_opt') && content.includes('challenge-platform')) return true;
+  // BRO-7090: a host bot-verification page ("One moment, please..." / "Please wait while
+  // your request is being verified", wsidchk script, reloads after 5s). theatreweekly.com
+  // served Scrapingdog a 12.7KB copy, over the <10KB gate below, so the chain stopped and
+  // the review was saved with no text. Title plus one page marker, so size-independent.
+  if (content && /<title[^>]*>\s*One moment, please(?:\.\.\.|…)?\s*<\/title>/i.test(content)
+    && (content.includes('wsidchk') || /request is being verified/i.test(content))) return true;
   // BRO-5874: a rendered HTML shell with almost no text (bachtrack.com served CI runners a
   // 175-char page that Playwright reported as Success, so the chain stopped before BD/SB).
   if (isNearEmptyHtmlShell(content)) return true;

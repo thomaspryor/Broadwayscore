@@ -44,6 +44,11 @@ const { fresherTextWins } = require(path.join(__dirname, 'review-json-three-way-
 // If the remote has these and local doesn't, always restore from remote.
 const MANUAL_FIELDS = [
   // (a) Human-only corrections
+  // BRO-7082 create-time origin stamp (immutable; deliberately NOT in the
+  // guard's PROTECTED_FIELDS, which would change stub quarantine and
+  // staged-deletion protection). A rebase must not drop it.
+  'ingestOrigin',
+  'ingestOriginBy',
   // Identity fields — added to protect opera outlet review files (bachtrack,
   // parterre-box, operawire, new-york-classical-review, classical-voice-america)
   // from having their outletId/outlet silently cleared on rebase. Without this,

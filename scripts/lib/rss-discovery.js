@@ -266,9 +266,17 @@ function singleWordTitleIdentity(itemTitle, itemForms, phrase, word) {
   if (itemForms.some(h => besideReview.test(h))) return true;
   // Theatre context beside the word ("Outsiders musical wins Tony", "Notebook
   // musical opens on Broadway"): a careers or advice column has none.
-  const theatreCue = /(?:^| )(?:broadway|off broadway|musical|tony|tonys|revival|playwright|theater|theatre)(?: |$)/;
-  const hasWord = itemForms.some(h => new RegExp(`(?:^| )${esc}(?: |$)`).test(h));
-  return hasWord && itemForms.some(h => theatreCue.test(h));
+  // BRO-7077: the cue must sit beside the word, or the word must lead the
+  // headline as its subject. A cue elsewhere let a verb through: "Broadway
+  // producers ask Congress for tax relief" matched The Ask.
+  const CUE = '(?:broadway|off broadway|musical|tony|tonys|revival|playwright|theater|theatre)';
+  // A cue compound ("Tony-winning Outsiders", "Broadway-bound Notebook") and "cast of
+  // <word>" also sit beside it (ship-check P2: those headlines matched on main).
+  const LEAD_CUE = `(?:${CUE}(?:[ -](?:winning|nominated|bound|award[ -]winning))?|cast of)`;
+  const beside = new RegExp(`(?:^| )${LEAD_CUE} ${esc}(?: |$)|(?:^| )${esc} ${CUE}(?: |$)`);
+  const theatreCue = new RegExp(`(?:^| )${CUE}(?: |$)`);
+  const leads = new RegExp(`^\\s*${esc}(?: |$)`);
+  return itemForms.some(h => beside.test(h) || (leads.test(h) && theatreCue.test(h)));
 }
 
 /**

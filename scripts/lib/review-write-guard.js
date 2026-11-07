@@ -2711,6 +2711,10 @@ function safeWriteReview(filePath, newData, options = {}) {
     console.warn(`[review-write-guard] discarded relayed originalScore on no-critic-rating outlet ${newData.outletId}: ${path.basename(filePath)}`);
   }
 
+  // BRO-7082: record who created the file (pipeline / person / unknown), once, at
+  // creation. Never guessed from where the process runs; never blocks the write.
+  if (!fs.existsSync(filePath)) require('./review-provenance').stampIngestOrigin(newData);
+
   fs.writeFileSync(filePath, JSON.stringify(newData, null, 2) + '\n');
   return { wrote: true, preserved, lockedSkipped, ...(autoFlaggedWrongProduction ? { autoFlaggedWrongProduction: true } : {}) };
 }

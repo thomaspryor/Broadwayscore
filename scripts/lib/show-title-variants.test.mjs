@@ -217,3 +217,12 @@ test('City Center "Encores!" series prefix: the bare show title is a variant (BR
   assert.ok(!buildShowTitleVariants('Encores! The Wild Party').includes('encores'));
   assert.ok(!buildShowTitleVariants('The Wild Party').some((x) => /encores/.test(x)));
 });
+
+test('textMentionsShortTitle allowUncurated counts short alpha titles only when asked (BRO-7077)', () => {
+  const { textMentionsShortTitle: tm } = require('./show-title-variants');
+  assert.equal(tm('Red is bold. RED again.', 'Red', 2), null, 'uncurated stays off by default');
+  assert.equal(tm('Red is bold. RED again.', 'Red', 2, { allowUncurated: true }), 'red');
+  assert.equal(tm('Red is bold.', 'Red', 2, { allowUncurated: true }), null, 'one hit is not two');
+  assert.equal(tm('On March 13, then May 13.', '13', 2, { allowUncurated: true }), null, 'digits never count');
+  assert.equal(tm('G and G.', 'G', 2, { allowUncurated: true }), null, 'single letters never count');
+});

@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getCriticBySlug } from '@/lib/data-reviews';
-import { sanitizeFlagInput, SLUG_RE } from '@/lib/critic-claim';
-import { criticBackendReady, getRequestUser, approvedClaimFor, sbAdmin, emailOwner, escHtml } from '@/lib/critic-server';
+import { SLUG_RE } from '@/lib/critic-claim';
+import { submitCorrection } from '@/lib/critic-corrections';
+import { criticBackendReady, getRequestUser, approvedClaimFor, sbAdmin, emailOwner } from '@/lib/critic-server';
 import { getReviewKey } from '../../../../../scripts/lib/review-list-key';
 
 export const dynamic = 'force-dynamic';
@@ -16,9 +17,10 @@ function limited(key: string): boolean {
 }
 
 /**
- * "Flag a score": an approved critic tells us a score on their page looks
- * wrong. Stores a request row and emails the owner. It never reads or writes a
- * score; the owner decides whether anything changes.
+ * "Flag a problem" / "Missing a review? Tell us" (BRO-6984; started as "Flag a
+ * score", BRO-6895): an approved critic tells us something on their page looks
+ * wrong. Stores a critic_requests row and emails the owner (the same emailOwner
+ * path claims use). It never reads or writes a score and never emails the critic.
  */
 export async function POST(req: NextRequest) {
   if (!criticBackendReady()) return NextResponse.json({ error: 'Not available right now.' }, { status: 503 });
@@ -32,20 +34,13 @@ export async function POST(req: NextRequest) {
   const critic = getCriticBySlug(slug);
   if (!critic) return NextResponse.json({ error: 'Unknown page.' }, { status: 404 });
 
-  const own = new Map(critic.reviews.map((r) => [`${r.showSlug}-${getReviewKey(r)}`, r]));
-  const input = sanitizeFlagInput(body, new Set(own.keys()));
-  if ('error' in input) return NextResponse.json({ error: input.error }, { status: 400 });
-  const review = own.get(input.reviewKey)!;
-
-  const ins = await sbAdmin('/rest/v1/critic_requests', {
-    method: 'POST', prefer: 'return=minimal',
-    body: JSON.stringify({ critic_slug: slug, user_id: user.id, kind: 'score_flag', payload: { reviewKey: input.reviewKey, note: input.note, show: review.showTitle, outlet: review.outlet, score: review.reviewScore } }),
+  const result = await submitCorrection(body, {
+    slug,
+    criticName: critic.name,
+    user,
+    ownReviews: new Map(critic.reviews.map((r) => [`${r.showSlug}-${getReviewKey(r)}`, r])),
+    insert: async (row) => (await sbAdmin('/rest/v1/critic_requests', { method: 'POST', prefer: 'return=minimal', body: JSON.stringify(row) })).ok,
+    emailOwner,
   });
-  if (!ins.ok) return NextResponse.json({ error: 'Could not send that. Please try again.' }, { status: 502 });
-
-  await emailOwner(`Critic flagged a score: ${critic.name} on ${review.showTitle}`,
-    `<p><b>${escHtml(critic.name)}</b> flagged the score for <b>${escHtml(review.showTitle)}</b> (${escHtml(review.outlet)}), currently ${review.reviewScore}.</p>
-<p>${escHtml(input.note)}</p>
-<p>Account: ${escHtml(user.email)}. Reply to reach them. Nothing was changed.</p>`, user.email);
-  return NextResponse.json({ ok: true });
+  return NextResponse.json(result.body, { status: result.status });
 }

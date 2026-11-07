@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-07T16:41:21.110Z",
+  "generatedAt": "2026-11-07T17:10:15.393Z",
   "windowDays": 45,
   "showsScanned": 248,
   "gaps": [
@@ -21,33 +21,10 @@
       "forumLinkRecoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=lincoln-in-the-bardo-off-broadway-2026",
       "firstSeen": "2026-10-25T17:52:33.957Z",
-      "fileAgeHours": 310.81173027777777,
+      "fileAgeHours": 311.2871222222222,
       "gapSeenAt": "2026-10-26T08:25:16.367Z",
-      "nonTerminalAgeHours": 296.26798388888886,
+      "nonTerminalAgeHours": 296.7497294444444,
       "needsManualRecovery": true
-    },
-    {
-      "showId": "the-bridge-off-west-end-2026",
-      "title": "The Bridge",
-      "openingDate": "2026-11-03",
-      "file": "sunday-times--unknown.json",
-      "outletId": "sunday-times",
-      "tier": 1,
-      "type": "empty-body",
-      "recoverable": true,
-      "url": "https://www.thetimes.com/uk/politics/article/city-bridge-foundation-grant-money-hamas-linked-organisation-j5sbhgrs2",
-      "recovery": {
-        "attempted": false,
-        "reason": "circuit-breaker:per-file-cap"
-      },
-      "recoveryCount": 2,
-      "forumLinkRecoveryCount": 0,
-      "fix": "node scripts/ingest-review-from-url.js --show=the-bridge-off-west-end-2026 --url=https://www.thetimes.com/uk/politics/article/city-bridge-foundation-grant-money-hamas-linked-organisation-j5sbhgrs2 --outlet=sunday-times   # run LOCALLY (cookie jar lives on the Mac)",
-      "firstSeen": "2026-11-05T01:36:56.414Z",
-      "fileAgeHours": 63.072627777777775,
-      "gapSeenAt": "2026-11-05T02:10:46.925Z",
-      "nonTerminalAgeHours": 62.50949555555555,
-      "needsManualRecovery": false
     }
   ],
   "contradictions": []

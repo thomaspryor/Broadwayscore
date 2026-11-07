@@ -216,10 +216,27 @@ const STRONG_DIFFERENT_SHOW_MARKERS = [
 // London production" verdicts mostly come from a critic mentioning the show's history
 // (Heathers, Kenrex, Hamlet, Waiting for Godot were all real NYC reviews), while a US
 // regional venue address in the text (Theater Wit, 1229 W. Belmont) is concrete.
-const DIFFERENT_CITY_NAMES_RE = new RegExp(
-  '\\b(?:Chicago|Illinois|Los Angeles|California|San Francisco|San Diego|Boston|Massachusetts|' +
+const DIFFERENT_CITY_ALT =
+  'Chicago|Illinois|Los Angeles|California|San Francisco|San Diego|Boston|Massachusetts|' +
   'Philadelphia|Pennsylvania|Washington,? D\\.?C\\.?|Seattle|Houston|Dallas|Austin|Atlanta|Minneapolis|' +
-  'Cleveland|Pittsburgh|Denver|Detroit|Norfolk)\\b' +
+  'Cleveland|Pittsburgh|Denver|Detroit|Norfolk';
+// BRO-7077: CV's own wording for the King Lear case was "The review is of a Chicago production
+// by Babes with Blades at Theater Wit" (no "not Off-Broadway"), so the market-statement test
+// missed it. The locator is anchored to the review's OWN subject ("the review is of a <city>
+// production", "reviews a <city>-based company"), so a comparison or history mention ("compares
+// it to the Chicago production", "the director helmed the Chicago staging") never fires. The
+// signal beats the slug-match run-window veto, so a loose match would drop real reviews.
+const CITY_PRODUCTION_LOCATOR_RE = new RegExp(
+  '(?:\\b(?:review|article|piece|critique)\\s+(?:is|was)\\s+(?:of|about)|^\\s*(?:reviews?|covers?)|[.;]\\s*(?:reviews?|covers?))' +
+  '\\s+(?:an?|the)\\s+(?:' + DIFFERENT_CITY_ALT + ')(?:-based)?\\s+(?:production|staging|mounting|revival|company|troupe)\\b', 'i'
+);
+// A located production that is PLAYING HERE (a visiting company at the Public or BAM) is
+// this market's review: the locator never fires when the same text places it in New York
+// or describes a visit (BRO-7077 ship-check P1).
+const LOCATOR_HERE_VETO_RE =
+  /\b(?:New York|NYC|Manhattan|Brooklyn|Broadway|BAM|visit(?:s|ing)?|engagement|bring(?:s|ing)?|brought|now (?:at|playing|running|in)|in residence)\b/i;
+const DIFFERENT_CITY_NAMES_RE = new RegExp(
+  '\\b(?:' + DIFFERENT_CITY_ALT + ')\\b' +
   // "Austin Pendleton", "Denver Post": a city glued to another capitalised word is a name, not a place,
   // unless that word is a venue word ("Chicago Shakespeare Theater").
   '(?!\\s+(?!Theat|Playhouse|Rep\\b|Stage|Shakes|Opera)[A-Z][a-z]+)'
@@ -256,7 +273,11 @@ function hasDifferentCityProductionSignal(cvIssues, cvReasoning, show) {
   return texts.some((seg) => {
     let cityText = seg.replace(QUOTED_PASSAGE_RE, ' ').replace(OUTLET_CITY_RE, ' ');
     if (titleRe) cityText = cityText.replace(titleRe, ' ');
-    return DIFFERENT_CITY_NAMES_RE.test(cityText) && (NOT_THIS_MARKET_RE.test(seg) || !!(venueNotRe && venueNotRe.test(seg)));
+    if (!DIFFERENT_CITY_NAMES_RE.test(cityText)) return false;
+    if (NOT_THIS_MARKET_RE.test(seg) || (venueNotRe && venueNotRe.test(seg))) return true;
+    if (!CITY_PRODUCTION_LOCATOR_RE.test(cityText)) return false;
+    return !LOCATOR_HERE_VETO_RE.test(cityText)
+      && !(venueBare && new RegExp('\\b' + escapeRegExp(venueBare) + '\\b', 'i').test(cityText));
   });
 }
 
@@ -1541,6 +1562,12 @@ function urlTitleWordsPass(lowerUrl, showTitle) {
   // BRO-2760: "The Story"-style titles: a lone generic word is not identity.
   if (!passesGenericTitleIdentity(lowerUrl, showTitle)) return false;
 
+  // BRO-7077 (BRO-5866 cousin): every per-word check below counts a repeated
+  // word once, so "Fire Fire" passed on a single "fire" (Wirecutter
+  // best-smokeless-fire-pits). A one-repeated-word title needs the word twice,
+  // or once beside a stage/arts cue (see repeatedTitleWordsPresent).
+  if (!repeatedTitleWordsPresent(lowerUrl, titleWords)) return false;
+
   const isTBWorldPath = /talkinbroadway\.com\/(?:page\/)?world\//i.test(lowerUrl);
   if (isTBWorldPath) {
     const matchCountTB = titleWords.filter(w => lowerUrl.includes(w)).length;
@@ -1562,6 +1589,25 @@ function urlTitleWordsPass(lowerUrl, showTitle) {
   const matchCount = titleWords.filter(w => wordMatch(lowerUrl, w)).length;
   const minMatch = titleWords.length <= 3 ? titleWords.length : Math.ceil(titleWords.length * 0.5);
   return matchCount >= minMatch;
+}
+
+/**
+ * Titles whose significant words are ONE repeated word ("Fire Fire", "Love,
+ * Love, Love", "Bella Bella") have no distinctive token, the same class
+ * rss-discovery.js titleMatchesShow handles (BRO-4185). The word twice is
+ * identity; once is identity only beside a stage/arts cue in the URL, because
+ * outlets often slug these with one word ("/theater/.../promises_are_fulfilled",
+ * "lemons-harold-pinter-theatre-review"). Any other title passes (long titles
+ * repeat filler words: "Are You Now or Have You Ever Been"). Pure; exported.
+ */
+const REPEATED_TITLE_STAGE_CUE_RE = /theat(?:er|re)|broadway|west-?end|stage|musical|playhouse|entertainment|arts?[-_/]|culture/i;
+function repeatedTitleWordsPresent(haystack, titleWords) {
+  const words = titleWords || [];
+  if (words.length < 2 || new Set(words).size !== 1) return true;
+  const escaped = words[0].replace(/[.*+?${}()|[\]\\]/g, '\\$&');
+  const re = new RegExp('(?:^|[^a-z0-9])' + escaped + '(?=$|[^a-z])', 'gi');
+  const hits = (String(haystack || '').match(re) || []).length;
+  return hits >= 2 || (hits === 1 && REPEATED_TITLE_STAGE_CUE_RE.test(String(haystack || '')));
 }
 
 function urlLooksLikeReview(url, showTitle) {
@@ -6951,6 +6997,7 @@ module.exports = {
   getWrongProductionReasonForAudit,
   urlYearFromPath,
   urlLooksLikeReview,
+  repeatedTitleWordsPresent,
   isSluglessReviewUrl,
   isLikelyWrongProduction,
   isLikelyTourReview,

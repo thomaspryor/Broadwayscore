@@ -32,7 +32,8 @@ test('isUrlYearOutsideWindow and urlYearOf reject the Williamstown 2014 page for
 test('a title that ends in a number is never read as a year (review P1)', () => {
   assert.equal(curtainupSuffixYear('https://www.curtainup.com/catch22.html', NOW), null);
   assert.equal(curtainupSuffixYear('https://www.curtainup.com/apollo13.html', NOW), null);
-  assert.equal(curtainupSuffixYear('https://www.curtainup.com/photograph51.html', NOW), null); // from shows.json
+  assert.equal(curtainupSuffixYear('https://www.curtainup.com/photograph51.html', NOW), null); // 1951 < 1996 floor
+  assert.equal(curtainupSuffixYear('https://www.curtainup.com/ocean11.html', NOW), null); // static numbered title (2011 would be in range)
   assert.equal(isUrlYearOutsideWindow('https://www.curtainup.com/catch22.html', 2026, null), false);
   assert.equal(curtainupSuffixYear('https://www.curtainup.com/bronxtalebway16.html', NOW), 2016);
 });

@@ -338,6 +338,19 @@ const AMBIGUOUS_VENUE_WORDS = new Set([
   'royal', 'garden', 'union', 'stage', 'studio', 'repertory', 'festival',
 ]);
 
+// House abbreviations the press writes in slugs instead of the venue's name
+// (BRO-7077, BRO-5386 follow-up): The Stage files the RSC's As You Like It as
+// "...-rsc-review" and BWW titles it "Opens at the RSC", which never named
+// "royal-shakespeare". Keyed on the venue slug prefix; aliases are explicit,
+// never derived, because short initials collide ("nt", "met").
+const VENUE_ALIASES = [
+  ['royal-shakespeare', ['rsc']],
+];
+// "rsc" names the company, which brands its transfers too: an RSC production at the
+// Barbican (its London home) is "...-rsc-review" as well, so on a show at one of these
+// houses the alias says nothing about which run (ship-check P2).
+const ALIAS_TRANSFER_HOUSES = { rsc: /\bbarbican\b/i };
+
 /**
  * Slug phrases that identify a venue. Only the first comma part is the venue's
  * own name: later parts are a city or region ("Stratford-upon-Avon", "Cambridge, MA"),
@@ -357,7 +370,8 @@ function venuePhrases(venue) {
   const words = stripped.split('-');
   if (words.every(w => VENUE_STOPWORDS.has(w) || GENERIC_VENUE_SLUGS.has(w))) return [];
   if (words.length === 1 && (stripped.length < 7 || AMBIGUOUS_VENUE_WORDS.has(stripped))) return [];
-  return [...new Set([stripped, raw])];
+  const aliases = VENUE_ALIASES.filter(([prefix]) => stripped.startsWith(prefix)).flatMap(([, a]) => a);
+  return [...new Set([stripped, raw, ...aliases])];
 }
 
 /** True when `phrase` appears in the URL path on hyphen/slash boundaries. */
@@ -409,7 +423,9 @@ function siblingVenueDecision(sibData, { url, publishDate, visitedSet }) {
     // family) by design: regional <-> regional is the tour-family layer's call, not a venue match.
     if (sibData.category === 'regional' && sib.category === 'regional') continue;
     // A labelled sibling is also named by its label's initials ("tosca-eno-review").
-    const phrase = [...venuePhrases(sib.venue), ...(sib.labelPhrases || [])].find(p => urlNamesPhrase(urlPath, p));
+    const phrase = [...venuePhrases(sib.venue), ...(sib.labelPhrases || [])]
+      .filter(p => !(ALIAS_TRANSFER_HOUSES[p] && ALIAS_TRANSFER_HOUSES[p].test(String(sibData.venue || ''))))
+      .find(p => urlNamesPhrase(urlPath, p));
     if (!phrase) continue;
     // A sibling with no opening date has no window, so it cannot claim a review.
     if (!sib.openingDate) continue;

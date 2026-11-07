@@ -7,8 +7,12 @@
  */
 const MIN_FONT_PX = 14;
 
+// Gmail drops the `background:#hex` shorthand in some clients; `background-color`
+// is honoured everywhere. Same choke point, same owner-facing senders.
 function enforceTypeFloor(html, min = MIN_FONT_PX) {
-  return String(html).replace(/font-size:\s*(\d+(?:\.\d+)?)px/g, (m, n) => (Number(n) < min ? `font-size:${min}px` : m));
+  return String(html)
+    .replace(/font-size:\s*(\d+(?:\.\d+)?)px/g, (m, n) => (Number(n) < min ? `font-size:${min}px` : m))
+    .replace(/(^|[;"'\s])background:\s*(#[0-9a-fA-F]{3,8})(?![0-9a-fA-F])/g, '$1background-color:$2');
 }
 
 module.exports = { enforceTypeFloor, MIN_FONT_PX };

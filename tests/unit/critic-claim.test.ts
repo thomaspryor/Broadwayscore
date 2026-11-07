@@ -4,7 +4,7 @@
  */
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { signClaimLink, verifyClaimLink, sanitizeProfileEdit, sanitizeClaimInput, sanitizeFlagInput, selectNoticeReviews, cleanSocialLink, claimHints, claimLimitVerdict, ownerEmailPlan, rateLimitAllow, claimsDisabled, countUrls, CLAIM_LINK_TTL_SECONDS } from '../../src/lib/critic-claim';
+import { signClaimLink, verifyClaimLink, sanitizeProfileEdit, sanitizeClaimInput, sanitizeFlagInput, sanitizeMissingReviewInput, FLAG_REASONS, selectNoticeReviews, cleanSocialLink, claimHints, claimLimitVerdict, ownerEmailPlan, rateLimitAllow, claimsDisabled, countUrls, CLAIM_LINK_TTL_SECONDS } from '../../src/lib/critic-claim';
 
 const SECRET = 'test-secret';
 const ID = '11111111-2222-3333-4444-555555555555';
@@ -75,11 +75,36 @@ test('claim input validates slug, email and work link', () => {
 test('a score flag must name one of the critic\'s own reviews and carries only text', () => {
   const own = new Set(['hamilton-abc', 'wicked-def']);
   const ok = sanitizeFlagInput({ slug: 'jordan-ellis', reviewKey: 'wicked-def', note: ' score looks low ', reviewScore: 100, score: 100 }, own);
-  assert.deepEqual(ok, { slug: 'jordan-ellis', reviewKey: 'wicked-def', note: 'score looks low' });
+  // No reason = the older "Flag a score" form.
+  assert.deepEqual(ok, { slug: 'jordan-ellis', reviewKey: 'wicked-def', reason: 'wrong_score', note: 'score looks low' });
   assert.ok(!('reviewScore' in ok) && !('score' in ok));
   assert.ok('error' in sanitizeFlagInput({ slug: 'jordan-ellis', reviewKey: 'someone-elses', note: 'x' }, own));
-  assert.ok('error' in sanitizeFlagInput({ slug: 'jordan-ellis', reviewKey: 'wicked-def', note: '   ' }, own));
   assert.ok('error' in sanitizeFlagInput({ slug: '../x', reviewKey: 'wicked-def', note: 'x' }, own));
+});
+
+test('BRO-6984: flag reasons come from a fixed list; the note is required only for "other"', () => {
+  const own = new Set(['wicked-def']);
+  for (const reason of Object.keys(FLAG_REASONS)) {
+    const r = sanitizeFlagInput({ slug: 'jordan-ellis', reviewKey: 'wicked-def', reason, note: 'see note' }, own);
+    assert.ok(!('error' in r), reason);
+    assert.equal((r as { reason: string }).reason, reason);
+  }
+  assert.deepEqual(sanitizeFlagInput({ slug: 'jordan-ellis', reviewKey: 'wicked-def', reason: 'not_mine', note: '  ' }, own),
+    { slug: 'jordan-ellis', reviewKey: 'wicked-def', reason: 'not_mine', note: null });
+  assert.ok('error' in sanitizeFlagInput({ slug: 'jordan-ellis', reviewKey: 'wicked-def', reason: 'other', note: '   ' }, own));
+  assert.ok('error' in sanitizeFlagInput({ slug: 'jordan-ellis', reviewKey: 'wicked-def', reason: 'set_score_100', note: 'x' }, own));
+  assert.ok('error' in sanitizeFlagInput({ slug: 'jordan-ellis', reviewKey: 'wicked-def', reason: 'toString', note: 'x' }, own));
+  assert.ok('error' in sanitizeFlagInput({ slug: 'jordan-ellis', reviewKey: 'wicked-def', reason: 'other', note: 'https://a.com https://b.com https://c.com' }, own));
+});
+
+test('BRO-6984: a missing-review request needs an http(s) review link and keeps only link and note', () => {
+  assert.deepEqual(sanitizeMissingReviewInput({ slug: 'jordan-ellis', reviewUrl: ' https://example.com/review ', note: ' ran in print ', score: 99 }),
+    { slug: 'jordan-ellis', reviewUrl: 'https://example.com/review', note: 'ran in print' });
+  assert.deepEqual(sanitizeMissingReviewInput({ slug: 'jordan-ellis', reviewUrl: 'https://example.com/r' }),
+    { slug: 'jordan-ellis', reviewUrl: 'https://example.com/r', note: null });
+  assert.ok('error' in sanitizeMissingReviewInput({ slug: 'jordan-ellis', reviewUrl: 'javascript:alert(1)' }));
+  assert.ok('error' in sanitizeMissingReviewInput({ slug: 'jordan-ellis', reviewUrl: '' }));
+  assert.ok('error' in sanitizeMissingReviewInput({ slug: '../x', reviewUrl: 'https://example.com/r' }));
 });
 
 test('opening-night notice picks recent, unsent reviews once per show', () => {

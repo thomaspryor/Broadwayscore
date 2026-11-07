@@ -224,6 +224,20 @@ const AUDITS = [
     args: ['--strict', '--max=50'],
     crashCodes: [2],           // 0 clean / 1 a contradicted show / 2 = corpus missing
   },
+  // BRO-7086: undated included reviews whose URL slug names a venue the show never
+  // played. Undated rows skip date-guard / collected-before-previews and market-routing
+  // only compares URL venues with sibling shows, so these stay on the wrong production.
+  // Advisory (CLAUDE.md s19): baseline = hits still queued in data/pending-fixes/bro-7086.json
+  // (measured 8 on 2026-11-07: 7 queued in bro-7086.json, 1 is the twelfth-night-off-west-end-2026 artsdesk row owned by BRO-7077; 9 settled legit in data/undated-venue-url-legit.json). Lower toward 0 after the plan applies.
+  // Lower to 0 once the plan has applied and a rebuild ran.
+  {
+    name: 'undated-venue-url',
+    healPathRequired: false,
+    label: 'undated reviews whose URL names a venue the show never played',
+    script: 'audit-undated-venue-url.js',
+    args: ['--max=8'],
+    crashCodes: [2],           // 0 within baseline / 1 over baseline / 2 = corpus missing
+  },
   // BRO-2770: byline date in the body vs publishDate (>3 days) on a record that
   // still ships. Body and metadata describe different articles, or publishDate
   // is wrong, so the date guards judge the review on a date that isn't its own.
@@ -246,6 +260,29 @@ const AUDITS = [
     script: 'audit-phantom-text-stars.js',
     args: ['--max=0'],
     crashCodes: [3],           // 0 clean / 1 = phantom star stored (drift) / 3 = corpus missing or bad args
+  },
+  // BRO-7077 (BRO-4594): one article URL filed under 2+ shows with one shared
+  // pull quote and no per-show score: a multi-show column copied whole. Some
+  // groups are real joint reviews; measured 62 groups on 2026-11-07, so only
+  // growth past that shows up here.
+  {
+    name: 'shared-url-quote',
+    healPathRequired: false,
+    label: 'article URL filed under 2+ shows sharing one pull quote (copied multi-show column)',
+    script: 'audit-shared-url-quote.js',
+    args: ['--max=62'],
+    crashCodes: [2],           // 0 at/under baseline / 1 = new shared-quote group / 2 = corpus missing
+  },
+  // BRO-7077 (BRO-4888): same text under two bylines + urls in one show, and
+  // isRoundupArticle set on an outlet's own url. Measured 2 pairs + 72 roundup
+  // flags = 74 on 2026-11-07; lower --max as the backlog is triaged.
+  {
+    name: 'review-pair-anomalies',
+    healPathRequired: false,
+    label: 'same-text pairs under different bylines, and roundup flags on an outlet\'s own url',
+    script: 'audit-review-pair-anomalies.js',
+    args: ['--max=74'],
+    crashCodes: [2],           // 0 at/under baseline / 1 = new anomaly / 2 = corpus missing or bad args
   },
   {
     name: 'unknown-outlets',
