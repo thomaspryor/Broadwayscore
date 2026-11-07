@@ -140,34 +140,6 @@
     "queuedAt": "2026-11-06T13:09:05.238Z"
   },
   {
-    "conditionKey": "review-gap:opening-window:heartbreak-house-regional-2026",
-    "title": "Review gap — \"Heartbreak House\" missing 2 cited review(s)",
-    "description": "Heartbreak House (heartbreak-house-regional-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=heartbreak-house-regional-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-06T13:01:00.620Z"
-  },
-  {
-    "conditionKey": "review-gap:opening-window:tosca-english-national-opera-west-end-2026",
-    "title": "Review gap — \"Tosca - English National Opera\" missing 1 cited review(s)",
-    "description": "Tosca - English National Opera (tosca-english-national-opera-west-end-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=tosca-english-national-opera-west-end-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-06T13:01:00.823Z"
-  },
-  {
     "conditionKey": "llm-scoring:cost-repeat-signature",
     "title": "LLM scoring repeated work detected",
     "description": "Repeated scoring signatures in the last 24h (processed/input tokens): 1/5071 seen 3 times.",
@@ -990,20 +962,6 @@
     "queuedAt": "2026-11-07T04:32:14.450Z"
   },
   {
-    "conditionKey": "t1-gaps:needs-manual-recovery",
-    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (Lincoln in the Bardo (washpost)). Checked 2026-11-07.",
-    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-07T08:05:31.904Z"
-  },
-  {
     "conditionKey": "land:land/bro-7061-artsdesk",
     "title": "Landing blocked: unit-tests-node red on land/bro-7061-artsdesk",
     "description": "land.yml did not land land/bro-7061-artsdesk: the unit-tests-node gate went red at a96a33cc26. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/42351522921",
@@ -1047,5 +1005,47 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-07T09:12:40.109Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:heartbreak-house-regional-2026",
+    "title": "Review gap — \"Heartbreak House\" missing 1 cited review(s)",
+    "description": "Heartbreak House (heartbreak-house-regional-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=heartbreak-house-regional-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-07T10:04:27.464Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:tosca-english-national-opera-west-end-2026",
+    "title": "Review gap — \"Tosca - English National Opera\" missing 1 cited review(s)",
+    "description": "Tosca - English National Opera (tosca-english-national-opera-west-end-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=tosca-english-national-opera-west-end-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-07T10:04:27.654Z"
+  },
+  {
+    "conditionKey": "t1-gaps:needs-manual-recovery",
+    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (Lincoln in the Bardo (washpost)). Checked 2026-11-07.",
+    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-07T10:04:50.767Z"
   }
 ]

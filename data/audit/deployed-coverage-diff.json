@@ -1,13 +1,48 @@
 {
-  "generatedAt": "2026-11-07T08:05:54.809Z",
+  "generatedAt": "2026-11-07T10:05:17.679Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 320,
-  "clean": 320,
-  "defective": 0,
-  "byType": {},
-  "shows": [],
+  "clean": 318,
+  "defective": 2,
+  "byType": {
+    "score-drift": 2
+  },
+  "shows": [
+    {
+      "showId": "speculations-off-west-end-2026",
+      "title": "Speculations",
+      "openingDate": "2026-11-05",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 47.53 vs local 47.81 (Δ0.28)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 27,
+      "deployedCount": 27,
+      "firstDefectAt": "2026-11-07T10:05:13.953Z"
+    },
+    {
+      "showId": "affluenza-off-west-end-2026",
+      "title": "Affluenza",
+      "openingDate": "2026-10-05",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 37.41 vs local 37.29 (Δ0.12)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 32,
+      "deployedCount": 32,
+      "firstDefectAt": "2026-11-07T10:05:13.953Z"
+    }
+  ],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }
