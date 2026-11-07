@@ -45,8 +45,11 @@ function run({ reviews, shows, legit = loadLegit() }) {
 }
 
 function main() {
-  const rv = JSON.parse(fs.readFileSync(path.join(DATA, 'reviews.json'), 'utf8'));
-  const sh = JSON.parse(fs.readFileSync(path.join(DATA, 'shows.json'), 'utf8'));
+  let rv; let sh;
+  try {
+    rv = JSON.parse(fs.readFileSync(path.join(DATA, 'reviews.json'), 'utf8'));
+    sh = JSON.parse(fs.readFileSync(path.join(DATA, 'shows.json'), 'utf8'));
+  } catch (e) { console.error(`✗ cannot read data/reviews.json or shows.json: ${e.message}`); process.exit(2); }
   const { scanned, hits } = run({ reviews: Array.isArray(rv) ? rv : rv.reviews || [], shows: Array.isArray(sh) ? sh : sh.shows || [] });
   if (scanned === 0) { console.error('✗ scanned 0 undated rows: data/reviews.json or shows.json missing/empty'); process.exit(2); }
   if (JSON_OUT) console.log(JSON.stringify({ scanned, flagged: hits.length, hits }, null, 2));
