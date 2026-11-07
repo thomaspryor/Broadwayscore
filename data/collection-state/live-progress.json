@@ -1,19 +1,64 @@
 {
-  "updatedAt": "2026-11-07T22:01:28.585Z",
-  "processed": 0,
-  "failed": 1,
-  "successRate": "0%",
+  "updatedAt": "2026-11-07T22:40:36.091Z",
+  "processed": 31,
+  "failed": 49,
+  "successRate": "38.8%",
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 19,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 5,
     "directCookies": 0,
-    "scrapingdog": 0,
-    "scrapingbee": 0,
+    "scrapingdog": 4,
+    "scrapingbee": 2,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 0
+    "archive": 3
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 4,
+  "recentActivity": [
+    {
+      "t": "2026-11-07T22:12:30.784Z",
+      "event": "bb-session",
+      "session": "d72106e5",
+      "url": "http://www.talkinbroadway.com/ob/11_11_15.html"
+    },
+    {
+      "t": "2026-11-07T22:12:31.275Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-07T22:14:47.271Z",
+      "event": "bb-session",
+      "session": "2cea140c",
+      "url": "http://www.bloomberg.com/apps/news?pid=20601098&sid=aQYyTjbEUXT0"
+    },
+    {
+      "t": "2026-11-07T22:14:47.730Z",
+      "event": "bb-cookie-inject",
+      "domain": "bloomberg.com"
+    },
+    {
+      "t": "2026-11-07T22:15:53.762Z",
+      "event": "bb-session",
+      "session": "5a33eef8",
+      "url": "https://www.nytimes.com/2026/11/06/theater/the-unbelievers-222-a-ghost-story-rev"
+    },
+    {
+      "t": "2026-11-07T22:15:54.239Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-07T22:16:33.882Z",
+      "event": "bb-session",
+      "session": "529867d1",
+      "url": "https://www.nytimes.com/2026/11/05/theater/rope-the-verge-review-off-broadway-si"
+    },
+    {
+      "t": "2026-11-07T22:16:34.284Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
