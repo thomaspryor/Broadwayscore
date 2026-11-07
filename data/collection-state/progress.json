@@ -30,7 +30,9 @@
     "billy-crystal-860-2026/one-minute-critic--matthew-wexler.json",
     "harry-potter-and-the-cursed-child-one-part-west-end-2026/artsdesk--unknown.json",
     "jest-to-impress-off-broadway-2026/donyc--unknown.json",
-    "ilford-boy-off-west-end-2026/guardian--kate-wyver.json"
+    "ilford-boy-off-west-end-2026/guardian--kate-wyver.json",
+    "speculations-off-west-end-2026/jonathan-baz--unknown.json",
+    "speculations-off-west-end-2026/londonlivinglarge--london-living-large.json"
   ],
   "failed": [
     "in-transit-2016/nydailynews--joe-dziemianowicz.json",
@@ -62,7 +64,6 @@
     "long-days-journey-into-night-2016/whatsonstage--sarah-crompton.json",
     "msblackforpresident-off-broadway-2026/theatermania--zachary-stewart.json",
     "222-a-ghost-story-off-broadway-2026/theatrely--kobi-kassal.json",
-    "speculations-off-west-end-2026/jonathan-baz--unknown.json",
     "tango-after-dark-off-west-end-2026/theatreandtonic--emmie-newitt.json",
     "parcel-from-america-off-broadway-2026/talkinbroadway--unknown.json",
     "medea-off-broadway-2026/express-uk--neil-norman.json",
@@ -81,7 +82,18 @@
     "billy-crystal-860-2026/theater-life--paulanne-simmons.json",
     "jest-to-impress-off-broadway-2026/chelmsfordtheatre--genre.json",
     "the-curious-case-of-benjamin-button-off-broadway-2026/publictheaterorg--unknown.json",
-    "the-curious-case-of-benjamin-button-off-broadway-2026/theater-life--david-sheward.json"
+    "the-curious-case-of-benjamin-button-off-broadway-2026/theater-life--david-sheward.json",
+    "speculations-off-west-end-2026/guardian--arifa-akbar.json",
+    "speculations-off-west-end-2026/guardian--unknown.json",
+    "the-bridge-off-west-end-2026/cherylmarkosky--cherylmarkosky.json",
+    "the-bridge-off-west-end-2026/sunday-times--unknown.json",
+    "the-bridge-off-west-end-2026/theatreandtonic--emmie-newitt.json",
+    "tosca-english-national-opera-west-end-2026/bachtrack--anna-bogdanova.json",
+    "tosca-english-national-opera-west-end-2026/bachtrack--clare-varney.json",
+    "tosca-english-national-opera-west-end-2026/bachtrack--mark-pullinger.json",
+    "tosca-english-national-opera-west-end-2026/bachtrack--peter-quantrill.json",
+    "tosca-english-national-opera-west-end-2026/cherylmarkosky--cherylmarkosky.json",
+    "tosca-english-national-opera-west-end-2026/times-uk--richard-morrison.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -104,7 +116,9 @@
       "the-pianist-off-west-end-2026/theatre-south-east--helena-featherstone.json",
       "the-pianist-off-west-end-2026/notesfromrowh--unknown.json",
       "billy-crystal-860-2026/the-100-word-review--unknown.json",
-      "jest-to-impress-off-broadway-2026/donyc--unknown.json"
+      "jest-to-impress-off-broadway-2026/donyc--unknown.json",
+      "speculations-off-west-end-2026/jonathan-baz--unknown.json",
+      "speculations-off-west-end-2026/londonlivinglarge--london-living-large.json"
     ],
     "amp": [],
     "browserbase": [
@@ -134,7 +148,7 @@
     ]
   },
   "startTime": "2026-11-07T21:59:56.711Z",
-  "lastProcessed": "ilford-boy-off-west-end-2026/guardian--kate-wyver.json",
+  "lastProcessed": "tosca-english-national-opera-west-end-2026/times-uk--richard-morrison.json",
   "log": [
     {
       "t": "2026-11-07T22:12:30.784Z",
@@ -179,6 +193,33 @@
       "t": "2026-11-07T22:16:34.284Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-07T22:53:04.277Z",
+      "event": "bb-session",
+      "session": "63b8b5c4",
+      "url": "https://bachtrack.com/review-lorfeo-william-kentridge-greek-national-opera-athen"
+    },
+    {
+      "t": "2026-11-07T22:54:08.011Z",
+      "event": "bb-session",
+      "session": "f5cc6ba9",
+      "url": "https://bachtrack.com/review-shostakovich-cherry-town-ahlbom-dutch-national-oper"
+    },
+    {
+      "t": "2026-11-07T22:55:10.914Z",
+      "event": "bb-session",
+      "session": "27175a96",
+      "url": "https://bachtrack.com/review-tosca-miskimmon-glassberg-fanyo-english-national-op"
+    },
+    {
+      "t": "2026-11-07T22:56:15.324Z",
+      "event": "bb-session",
+      "session": "1f7680f3",
+      "url": "https://bachtrack.com/review-nozze-figaro-pountney-conta-bucharest-national-oper"
     }
+  ],
+  "recoveredAfterFailure": [
+    "speculations-off-west-end-2026/jonathan-baz--unknown.json"
   ]
 }

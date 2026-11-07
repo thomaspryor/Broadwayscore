@@ -1,10 +1,10 @@
 {
-  "updatedAt": "2026-11-07T22:40:36.091Z",
-  "processed": 31,
-  "failed": 49,
-  "successRate": "38.8%",
+  "updatedAt": "2026-11-07T22:58:48.719Z",
+  "processed": 33,
+  "failed": 59,
+  "successRate": "35.9%",
   "tierBreakdown": {
-    "playwright": 19,
+    "playwright": 21,
     "amp": 0,
     "browserbase": 5,
     "directCookies": 0,
@@ -59,6 +59,30 @@
       "t": "2026-11-07T22:16:34.284Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-07T22:53:04.277Z",
+      "event": "bb-session",
+      "session": "63b8b5c4",
+      "url": "https://bachtrack.com/review-lorfeo-william-kentridge-greek-national-opera-athen"
+    },
+    {
+      "t": "2026-11-07T22:54:08.011Z",
+      "event": "bb-session",
+      "session": "f5cc6ba9",
+      "url": "https://bachtrack.com/review-shostakovich-cherry-town-ahlbom-dutch-national-oper"
+    },
+    {
+      "t": "2026-11-07T22:55:10.914Z",
+      "event": "bb-session",
+      "session": "27175a96",
+      "url": "https://bachtrack.com/review-tosca-miskimmon-glassberg-fanyo-english-national-op"
+    },
+    {
+      "t": "2026-11-07T22:56:15.324Z",
+      "event": "bb-session",
+      "session": "1f7680f3",
+      "url": "https://bachtrack.com/review-nozze-figaro-pountney-conta-bucharest-national-oper"
     }
   ]
 }
