@@ -337,20 +337,6 @@
     "queuedAt": "2026-11-06T16:57:24.210Z"
   },
   {
-    "conditionKey": "review-gap:opening-window:the-bridge-off-west-end-2026",
-    "title": "Review gap — \"The Bridge\" missing 1 cited review(s)",
-    "description": "The Bridge (the-bridge-off-west-end-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-bridge-off-west-end-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-06T17:07:52.329Z"
-  },
-  {
     "conditionKey": "opening-night-cv-wrongproduction-unhandled-the-unbelievers-off-broadway-2026",
     "title": "Unhandled CV.wrongProduction on The Unbelievers",
     "description": "pages-on-stages/Mason Pilevsky (pages-on-stages--mason-pilevsky.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 0d of opening, likely correct production] The review is structurally sound and evaluates a perf — https://pagesonstages.com/2026/11/05/the-unbelievers/",
@@ -1021,20 +1007,6 @@
     "queuedAt": "2026-11-07T11:43:03.152Z"
   },
   {
-    "conditionKey": "t1-gaps:needs-manual-recovery",
-    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (Lincoln in the Bardo (washpost)). Checked 2026-11-07.",
-    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-07T11:55:21.676Z"
-  },
-  {
     "conditionKey": "express-retry-still-thin:iphigenie-en-tauride-english-national-opera-west-end-2026",
     "title": "Opening Night Express retry still found thin review coverage for iphigenie-en-tauride-english-national-opera-west-end-2026",
     "description": "The early auto-fire found next to nothing, and the same-night retry (still thin after retry — zero scoreable review records found) still hasn't closed the gap. Full-text upgrade will otherwise wait on the weekly recollect-for-scores.yml cron.",
@@ -1075,5 +1047,19 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-07T12:32:01.666Z"
+  },
+  {
+    "conditionKey": "t1-gaps:needs-manual-recovery",
+    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (Lincoln in the Bardo (washpost)). Checked 2026-11-07.",
+    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-07T13:28:15.046Z"
   }
 ]
