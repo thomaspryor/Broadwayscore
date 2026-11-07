@@ -244,7 +244,23 @@ function extractBylineFromText(outletId, text, opts = {}) {
   // The extractor is strict (end-anchored, person-shaped, not the show
   // title), so a hit is safe to apply where the stored byline is missing.
   const tail = extractBodyByline(text, { showTitle: opts.showTitle });
+  if (tail && tailCreditBelongsToSibling(outletId, text)) return null;
   return tail ? { name: tail, known: true } : null;
+}
+
+/**
+ * BRO-7077 (BRO-5305): "Review: <name> Photos ..." as the closing line is
+ * londontheatrereviews.co.uk's credit. Under its name-alike sibling
+ * london-theatre it means the file is a misfiled London Theatre Reviews
+ * article (heart-wall-west-end-2026: Jack Shaw), so naming the critic there
+ * would put an LTR review under London Theatre. Keep it Unknown instead.
+ */
+const SIBLING_TAIL_CREDITS = [
+  { owner: "london-theatre-reviews", siblings: ["london-theatre"], re: /(?:^|[.!?\n]\s*)Review\s*:\s*[^\n]{3,60}?\s*[|,]?\s*Photo(?:s|graphy)?\b[^\n]{0,80}$/ },
+];
+function tailCreditBelongsToSibling(outletId, text) {
+  const tail = String(text || "").trimEnd().slice(-300);
+  return SIBLING_TAIL_CREDITS.some((c) => c.siblings.includes(outletId) && c.re.test(tail));
 }
 
 /**
@@ -266,6 +282,7 @@ function otherNamedCriticAtOutlet(seenKeys, outletKey, criticKey) {
 
 module.exports = {
   otherNamedCriticAtOutlet,
+  tailCreditBelongsToSibling,
   extractBylineFromText,
   printedBylineOverride,
   extractTheaterSceneByline,
