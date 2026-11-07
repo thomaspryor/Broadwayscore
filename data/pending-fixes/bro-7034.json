@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7034",
   "planId": "75f48814-80a2-4ff5-b8a5-490745d44a15",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-07T20:57:28.350Z",
   "submitter": {
     "name": null,
@@ -41,5 +41,24 @@
         "description": "BRO-7034: normalize the stored PaulTaylor name to Paul Taylor, as named by the card and filename. This metadata correction does not validate the mixed OCR body or repair the bomb-threat URL; those still need review recovery outside this worker."
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-07T21:54:22.143Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "first-date-2013/nytimes--ben-brantley.json criticName: \"Ben Brantley\" -> \"Charles Isherwood\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "ghost-the-musical-2012/nytimes--ben-brantley.json criticName: \"Ben Brantley\" -> \"Charles Isherwood\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-lion-king-west-end-2021/independent--paul-taylor.json criticName: \"PaulTaylor\" -> \"Paul Taylor\""
+    }
+  ],
+  "executedIn": "ci"
 }
