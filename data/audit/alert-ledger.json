@@ -26876,13 +26876,13 @@
       "firstSeen": "2026-10-24T23:08:26.440Z",
       "incidentOpenedAt": "2026-10-31T00:35:50.727Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-07T11:49:52.612Z",
+      "lastSeen": "2026-11-07T13:59:33.852Z",
       "lastNotifiedAt": "2026-11-06T15:25:31.885Z",
       "lastSurfacedAt": "2026-11-05T12:32:07.725Z",
       "notifyCount": 11,
       "cardId": null,
       "linearIdentifier": "BRO-7013",
-      "silentRefires": 18
+      "silentRefires": 19
     },
     "test-yml:red:Unit Tests:196541b4": {
       "status": "resolved",
@@ -36163,7 +36163,7 @@
       "linearIdentifier": null
     },
     "live-data-test:tests/unit/outlet-domain-validation-live-data.test.mjs::at most the 2 known real instances are flagged across the full corpus": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Live-data test failing: at most the 2 known real instances are flagged across the full corpus (tests/unit/outlet-domain-validation-live-data.test.mjs)",
       "firstSeen": "2026-11-03T04:48:41.826Z",
@@ -36177,7 +36177,9 @@
       "linearIdentifier": null,
       "notifyCountAtRelease": 4,
       "sweptTracker": "BRO-7021",
-      "silentRefires": 19
+      "silentRefires": 19,
+      "resolvedAt": "2026-11-07T13:59:34.075Z",
+      "resolveReason": "live-data test green"
     },
     "opening-night-revival-unverified-clifford-odets-waiting-for-lefty-off-broadway-2026": {
       "status": "open",
