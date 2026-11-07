@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-11-07T02:59:54.288Z",
+    "generatedAt": "2026-11-07T03:27:31.860Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": true,
@@ -9,19 +9,15 @@
   "summary": {
     "minChurn": 30,
     "flaggedCount": 0,
-    "exemptCount": 2,
-    "coveredCount": 9,
-    "highChurnTracked": 11
+    "exemptCount": 1,
+    "coveredCount": 11,
+    "highChurnTracked": 12
   },
   "flagged": [],
   "exempt": [
     {
       "path": "data/audit/alert-ledger.json",
-      "churn": 55
-    },
-    {
-      "path": "data/llm-scoring-runs.json",
-      "churn": 31
+      "churn": 51
     }
   ],
   "covered": [
@@ -32,42 +28,52 @@
     },
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 58,
+      "churn": 57,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/cross-show-fingerprint-collisions.json",
-      "churn": 44,
+      "churn": 43,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/deploy-watermark.json",
-      "churn": 44,
+      "churn": 43,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/needs-human-review.json",
-      "churn": 44,
+      "churn": 43,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/rebuild-score-drift.json",
-      "churn": 44,
+      "churn": 43,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/skipped-alias-collisions.json",
-      "churn": 44,
+      "churn": 43,
       "mergeAttr": "ours"
     },
     {
-      "path": "data/collection-state/scoring-progress.json",
-      "churn": 33,
+      "path": "data/collection-state/live-progress.json",
+      "churn": 31,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/collection-state/progress.json",
+      "churn": 31,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/opening-night-completeness-state.json",
-      "churn": 31,
+      "churn": 30,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/collection-state/scoring-progress.json",
+      "churn": 30,
       "mergeAttr": "ours"
     }
   ]
