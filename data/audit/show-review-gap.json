@@ -1,22 +1,22 @@
 {
-  "generatedAt": "2026-11-07T02:00:49.183Z",
+  "generatedAt": "2026-11-07T02:45:45.915Z",
   "windowDays": 1095,
-  "targets": 908,
+  "targets": 901,
   "auditedThisRun": 7,
-  "carriedForward": 2055,
+  "carriedForward": 2056,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 640,
-    "missingCurrentRun": 1212,
+    "withGap": 639,
+    "missingCurrentRun": 1194,
     "totalCitedNoUrl": 0,
     "totalFlaggedMisses": 903,
     "totalRecoverable": 56,
     "totalRecovered": 90,
     "humanExcluded": 26,
-    "automatedExcluded": 1008,
+    "automatedExcluded": 1009,
     "automatedExcludedListed": 712,
-    "priorProductionCitations": 6085
+    "priorProductionCitations": 6083
   },
   "results": [
     {
@@ -65857,7 +65857,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 8,
+            "results": 9,
             "accepted": 0,
             "error": null
           },
@@ -65867,7 +65867,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 9,
+            "results": 0,
             "accepted": 0,
             "error": null
           },
@@ -65877,7 +65877,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 8,
+            "results": 9,
             "accepted": 0,
             "error": null
           },
@@ -65888,7 +65888,7 @@
             "geo": "us",
             "ok": true,
             "results": 8,
-            "accepted": 1,
+            "accepted": 0,
             "error": null
           },
           {
@@ -65907,28 +65907,26 @@
             "page": 2,
             "geo": "us",
             "ok": true,
-            "results": 10,
+            "results": 0,
             "accepted": 0,
             "error": null
           }
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 1,
+        "resultCount": 0,
         "error": null
       },
       "candidatesRejected": {
-        "count": 145,
+        "count": 128,
         "byReason": {
-          "aggregator-internal-nav": 42,
-          "not-http-url": 57,
+          "aggregator-internal-nav": 39,
+          "not-http-url": 48,
           "production-database-listing": 9,
           "aggregator-section-root": 5,
-          "non-review-host": 26,
+          "non-review-host": 24,
           "non-stage-review": 1,
-          "roundup-page": 2,
-          "ticketing-listing": 1,
-          "census-junk-host": 2
+          "news-roundup-site": 2
         }
       },
       "dedupedVariants": [],
@@ -66011,7 +66009,7 @@
         "liveCount": 10,
         "candidateCount": 10
       },
-      "computedAt": "2026-11-06T15:49:21.638Z"
+      "computedAt": "2026-11-07T02:45:45.915Z"
     },
     {
       "showId": "clinamen-off-broadway-2026",
@@ -66047,6 +66045,45 @@
         "candidateCount": 0
       },
       "computedAt": "2026-08-13T06:23:39.338Z"
+    },
+    {
+      "showId": "cloud-9-west-end-2026",
+      "title": "Cloud 9",
+      "openingDate": "2026-11-10",
+      "status": "previews",
+      "category": "west-end",
+      "previewsStartDate": "2026-11-02",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "unextractable": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 4,
+        "excluded": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-11-07T02:45:45.915Z"
     },
     {
       "showId": "cloud-nine-off-broadway-2015",
@@ -142784,61 +142821,32 @@
       "category": "regional",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "http://michaeldohertyspersonallibrary.blogspot.com/2026/10/heartbreak-house-antaeus-theatre.html",
         "https://www.theatreinla.com/heartbreak-house/reviews/11447/",
-        "https://ae.headtopics.com/news/review-george-bernard-shaw-s-heartbreak-house-gets-a-89418086",
+        "https://www.artsbeatla.com/2026/10/antaeus-presents-heartbreak-house/",
         "https://larchmontbuzz.com/theater/heartbreak-house-hilarity-and-twists/",
-        "https://stagebuddy.com/theater/theater-review/review-heartbreak-house",
         "https://www.latimes.com/entertainment-arts/story/2026-10-28/heartbreak-house-review-tenderly-luminous-shaw-revival",
         "https://www.broadwayworld.com/los-angeles/article/Review-HEARTBREAK-HOUSE-at-Antaeus-Theatre-Company-20261021",
         "https://stageraw.com/stage-raw-review-heartbreak-house/",
         "https://stageraw.com/stage-raw-youth-journalism-review-heartbreak-house/",
         "https://www.newyorktheatreguide.com/reviews/heartbreak-house",
+        "http://michaeldohertyspersonallibrary.blogspot.com/2026/10/heartbreak-house-antaeus-theatre.html",
         "https://latheatrebites.com/heartbreak-house-antaeus-theatre-company-review/",
         "https://soundcloud.com/latheatrebites/heartbreak-house-antaeus",
         "https://www.theatreinla.com/heartbreak-house/11447/",
-        "https://www.stage-door.com/3/Reviews/Entries/2026/7/heartbreak-house.html",
         "https://ontariostage.com/heartbreak-house-shaw-festival/",
         "https://www.onstagentx.com/reviews/shaws-heartbreak-house-hip-pocket-theatre",
-        "https://www.theatreinla.com/heartbreak-house/reviews/11447/",
         "https://frontmezzjunkies.com/2026/09/01/heartbreak-house-leaves-me-standing-at-the-door-wanting-my-heart-broken/",
         "https://aroundthetownchicago.com/theatre-reviews/heartbreak-house/"
       ],
-      "dirFiles": 10,
-      "dirClean": 7,
-      "inReviewsJson": 7,
+      "dirFiles": 11,
+      "dirClean": 8,
+      "inReviewsJson": 8,
       "missing": [
         {
           "url": "http://michaeldohertyspersonallibrary.blogspot.com/2026/10/heartbreak-house-antaeus-theatre.html",
           "host": "michaeldohertyspersonallibrary.blogspot.com",
           "knownOutletId": null,
           "serpCensus": true,
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ]
-        },
-        {
-          "url": "https://ae.headtopics.com/news/review-george-bernard-shaw-s-heartbreak-house-gets-a-89418086",
-          "host": "headtopics.com",
-          "knownOutletId": "headtopics",
-          "serpCensus": true,
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ]
-        },
-        {
-          "url": "https://stagebuddy.com/theater/theater-review/review-heartbreak-house",
-          "host": "stagebuddy.com",
-          "knownOutletId": "stagebuddy",
-          "serpCensus": true,
-          "priorRun": true,
-          "priorRunSource": "pending-file-date:2017-05-30",
           "sources": [
             {
               "source": "serp-census",
@@ -142883,30 +142891,6 @@
           ]
         },
         {
-          "url": "https://www.stage-door.com/3/Reviews/Entries/2026/7/heartbreak-house.html",
-          "host": "stage-door.com",
-          "knownOutletId": null,
-          "serpCensus": true,
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ]
-        },
-        {
-          "url": "https://ontariostage.com/heartbreak-house-shaw-festival/",
-          "host": "ontariostage.com",
-          "knownOutletId": null,
-          "serpCensus": true,
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ]
-        },
-        {
           "url": "https://www.onstagentx.com/reviews/shaws-heartbreak-house-hip-pocket-theatre",
           "host": "onstagentx.com",
           "knownOutletId": null,
@@ -142920,6 +142904,10 @@
         }
       ],
       "dirOnly": [
+        {
+          "host": "splashmags.com",
+          "count": 1
+        },
         {
           "host": "stageandcinema.com",
           "count": 1
@@ -143037,7 +143025,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 9,
+            "results": 0,
             "accepted": 0,
             "error": null
           },
@@ -143047,8 +143035,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 4,
-            "accepted": 1,
+            "results": 7,
+            "accepted": 0,
             "error": null
           },
           {
@@ -143058,7 +143046,7 @@
             "geo": "us",
             "ok": true,
             "results": 8,
-            "accepted": 1,
+            "accepted": 0,
             "error": null
           },
           {
@@ -143068,7 +143056,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           },
           {
@@ -143077,21 +143065,21 @@
             "page": 2,
             "geo": "us",
             "ok": true,
-            "results": 10,
+            "results": 0,
             "accepted": 0,
             "error": null
           }
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 5,
+        "resultCount": 2,
         "error": null
       },
       "candidatesRejected": {
-        "count": 45,
+        "count": 31,
         "byReason": {
-          "not-http-url": 37,
-          "non-review-host": 8
+          "not-http-url": 26,
+          "non-review-host": 5
         }
       },
       "dedupedVariants": [],
@@ -143103,6 +143091,14 @@
           "serpCensus": true,
           "nonReviewVerdict": "page-date-before-run",
           "nonReviewDetail": "2017-09-22"
+        },
+        {
+          "url": "https://ontariostage.com/heartbreak-house-shaw-festival/",
+          "host": "ontariostage.com",
+          "knownOutletId": null,
+          "serpCensus": true,
+          "nonReviewVerdict": "page-date-before-run",
+          "nonReviewDetail": "2026-07-13"
         }
       ],
       "automatedExcludedListed": 3,
@@ -143116,13 +143112,6 @@
           "censusGateOn": true
         },
         {
-          "url": "https://stagebuddy.com/theater/theater-review/review-heartbreak-house",
-          "host": "stagebuddy.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
           "url": "https://latheatrebites.com/heartbreak-house-antaeus-theatre-company-review/",
           "host": "latheatrebites.com",
           "priorRun": false,
@@ -143132,20 +143121,6 @@
         {
           "url": "https://soundcloud.com/latheatrebites/heartbreak-house-antaeus",
           "host": "soundcloud.com",
-          "priorRun": false,
-          "reason": "unregistered-host",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.stage-door.com/3/Reviews/Entries/2026/7/heartbreak-house.html",
-          "host": "stage-door.com",
-          "priorRun": false,
-          "reason": "unregistered-host",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://ontariostage.com/heartbreak-house-shaw-festival/",
-          "host": "ontariostage.com",
           "priorRun": false,
           "reason": "unregistered-host",
           "censusGateOn": true
@@ -143191,7 +143166,7 @@
             "outlet": "latheatrebites.com",
             "critic": "Unknown",
             "stars": null,
-            "url": "http://michaeldohertyspersonallibrary.blogspot.com/2026/10/heartbreak-house-antaeus-theatre.html"
+            "url": "https://latheatrebites.com/heartbreak-house-antaeus-theatre-company-review/"
           },
           {
             "outletId": "soundcloud.com",
@@ -143206,20 +143181,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.theatreinla.com/heartbreak-house/11447/"
-          },
-          {
-            "outletId": "latheatrebites.com",
-            "outlet": "latheatrebites.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://latheatrebites.com/heartbreak-house-antaeus-theatre-company-review/"
-          },
-          {
-            "outletId": "ontariostage.com",
-            "outlet": "ontariostage.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://ontariostage.com/heartbreak-house-shaw-festival/"
           },
           {
             "outletId": "onstagentx.com",
@@ -143253,16 +143214,16 @@
         "suppressedMissing": [],
         "candidates": [
           {
+            "url": "https://www.artsbeatla.com/2026/10/antaeus-presents-heartbreak-house/",
+            "outletId": "artsbeatla.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-07T02:45:45.915Z"
+          },
+          {
             "url": "https://larchmontbuzz.com/theater/heartbreak-house-hilarity-and-twists/",
             "outletId": "larchmontbuzz.com",
             "state": "live",
             "firstSeenAt": "2026-11-04T02:32:00.382Z"
-          },
-          {
-            "url": "https://www.latimes.com/entertainment-arts/story/2026-10-28/heartbreak-house-review-tenderly-luminous-shaw-revival",
-            "outletId": "latimes.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-03T14:15:10.547Z"
           },
           {
             "url": "https://www.latimes.com/entertainment-arts/story/2026-10-28/heartbreak-house-review-tenderly-luminous-shaw-revival",
@@ -143295,6 +143256,12 @@
             "firstSeenAt": "2026-11-04T02:32:00.382Z"
           },
           {
+            "url": "https://ontariostage.com/heartbreak-house-shaw-festival/",
+            "outletId": "ontariostage.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-03T01:31:50.133Z"
+          },
+          {
             "url": "http://michaeldohertyspersonallibrary.blogspot.com/2026/10/heartbreak-house-antaeus-theatre.html",
             "outletId": "michaeldohertyspersonallibrary.blogspot.com",
             "state": "GAP",
@@ -143321,20 +143288,6 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-11-03T14:15:10.547Z"
-          },
-          {
-            "url": "https://latheatrebites.com/heartbreak-house-antaeus-theatre-company-review/",
-            "outletId": "latheatrebites.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-11-03T14:15:10.547Z"
-          },
-          {
-            "url": "https://ontariostage.com/heartbreak-house-shaw-festival/",
-            "outletId": "ontariostage.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-11-03T01:31:50.133Z"
           },
           {
             "url": "https://www.onstagentx.com/reviews/shaws-heartbreak-house-hip-pocket-theatre",
@@ -143371,12 +143324,17 @@
             "url": "https://www.newyorktheatreguide.com/reviews/heartbreak-house",
             "host": "newyorktheatreguide.com",
             "reason": "page-date-before-run"
+          },
+          {
+            "url": "https://ontariostage.com/heartbreak-house-shaw-festival/",
+            "host": "ontariostage.com",
+            "reason": "page-date-before-run"
           }
         ],
-        "liveCount": 6,
-        "candidateCount": 15
+        "liveCount": 7,
+        "candidateCount": 14
       },
-      "computedAt": "2026-11-06T07:54:59.218Z"
+      "computedAt": "2026-11-07T02:45:45.915Z"
     },
     {
       "showId": "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026",
@@ -232173,10 +232131,11 @@
       "previewsStartDate": "2026-11-02",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://www.whatsonstage.com/news/new-musical-nero-releases-first-listen-with-andrew-barth-feldman_1735027/",
+        "https://www.theguardian.com/stage/2026/nov/04/emperor-nero-steven-sater-duncan-sheik-spring-awakening-jfk",
+        "http://www.curtainup.com/nero.html",
         "https://www.timeout.com/london/theatre/nero",
         "https://www.londonboxoffice.co.uk/search/month/nero-tickets/2026/11/03/2",
-        "http://www.curtainup.com/nero.html"
+        "https://www.whatsonstage.com/news/new-musical-nero-releases-first-listen-with-andrew-barth-feldman_1735027/"
       ],
       "dirFiles": 9,
       "dirClean": 0,
@@ -232210,9 +232169,9 @@
       "dirOnly": [],
       "flaggedMisses": [
         {
-          "url": "https://www.whatsonstage.com/news/new-musical-nero-releases-first-listen-with-andrew-barth-feldman_1735027/",
-          "host": "whatsonstage.com",
-          "knownOutletId": "whatsonstage",
+          "url": "https://www.theguardian.com/stage/2026/nov/04/emperor-nero-steven-sater-duncan-sheik-spring-awakening-jfk",
+          "host": "theguardian.com",
+          "knownOutletId": "guardian",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -232220,14 +232179,18 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "whatsonstage--tanyel-gumushan.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://www.whatsonstage.com/news/new-musical-nero-releases-first-listen-with-andrew-barth-feldman_1735027/"
+              "file": "guardian--mark-lawson.json",
+              "flag": "clean",
+              "urlInDir": "https://www.theguardian.com/stage/2026/nov/04/emperor-nero-steven-sater-duncan-sheik-spring-awakening-jfk"
             }
           ],
           "exclusion": "automatedExcluded",
           "basis": [
-            "wrongShow"
+            "rejectionReason"
+          ],
+          "confirmedNonReview": true,
+          "confirmedBasis": [
+            "non-review"
           ],
           "sources": [
             {
@@ -232236,7 +232199,7 @@
             }
           ],
           "serpCensus": true,
-          "reverify": true
+          "reverify": false
         },
         {
           "url": "http://www.curtainup.com/nero.html",
@@ -232257,6 +232220,35 @@
           "exclusion": "automatedExcluded",
           "basis": [
             "wrongProduction"
+          ],
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
+          "serpCensus": true,
+          "reverify": true
+        },
+        {
+          "url": "https://www.whatsonstage.com/news/new-musical-nero-releases-first-listen-with-andrew-barth-feldman_1735027/",
+          "host": "whatsonstage.com",
+          "knownOutletId": "whatsonstage",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "whatsonstage--tanyel-gumushan.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://www.whatsonstage.com/news/new-musical-nero-releases-first-listen-with-andrew-barth-feldman_1735027/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongShow"
           ],
           "sources": [
             {
@@ -232334,7 +232326,7 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 0,
+            "results": 9,
             "accepted": 0,
             "error": null
           },
@@ -232345,7 +232337,7 @@
             "geo": "gb",
             "ok": true,
             "results": 9,
-            "accepted": 0,
+            "accepted": 3,
             "error": null
           },
           {
@@ -232355,7 +232347,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 0,
             "error": null
           },
           {
@@ -232371,18 +232363,21 @@
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 1,
+        "resultCount": 3,
         "error": null
       },
       "candidatesRejected": {
-        "count": 23,
+        "count": 34,
         "byReason": {
-          "aggregator-internal-nav": 2,
-          "not-http-url": 15,
-          "non-review-host": 2,
-          "ticketing-listing": 1,
+          "aggregator-internal-nav": 1,
+          "not-http-url": 22,
+          "non-review-host": 5,
           "tag-index-page": 1,
-          "write-path-blocked": 2
+          "census-junk-host": 1,
+          "ticketing-listing": 1,
+          "event-listing": 1,
+          "write-path-blocked": 1,
+          "bare-host": 1
         }
       },
       "dedupedVariants": [],
@@ -232439,18 +232434,18 @@
             "url": "https://www.londonboxoffice.co.uk/search/month/nero-tickets/2026/11/03/2"
           },
           {
-            "outletId": "whatsonstage",
-            "outlet": "whatsonstage",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.whatsonstage.com/news/new-musical-nero-releases-first-listen-with-andrew-barth-feldman_1735027/"
-          },
-          {
             "outletId": "curtainup",
             "outlet": "curtainup",
             "critic": "Unknown",
             "stars": null,
             "url": "http://www.curtainup.com/nero.html"
+          },
+          {
+            "outletId": "whatsonstage",
+            "outlet": "whatsonstage",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.whatsonstage.com/news/new-musical-nero-releases-first-listen-with-andrew-barth-feldman_1735027/"
           }
         ],
         "suppressedMissing": [],
@@ -232470,26 +232465,32 @@
             "firstSeenAt": "2026-11-04T13:45:30.971Z"
           },
           {
-            "url": "https://www.whatsonstage.com/news/new-musical-nero-releases-first-listen-with-andrew-barth-feldman_1735027/",
-            "outletId": "whatsonstage",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-11-06T15:49:21.638Z"
-          },
-          {
             "url": "http://www.curtainup.com/nero.html",
             "outletId": "curtainup",
             "state": "IN_FLIGHT",
             "reason": "within-grace",
             "firstSeenAt": "2026-11-02T13:50:23.501Z"
+          },
+          {
+            "url": "https://www.whatsonstage.com/news/new-musical-nero-releases-first-listen-with-andrew-barth-feldman_1735027/",
+            "outletId": "whatsonstage",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-11-06T15:49:21.638Z"
           }
         ],
         "censusSchema": 4,
-        "excluded": [],
+        "excluded": [
+          {
+            "url": "https://www.theguardian.com/stage/2026/nov/04/emperor-nero-steven-sater-duncan-sheik-spring-awakening-jfk",
+            "host": "theguardian.com",
+            "reason": "confirmed-non-review"
+          }
+        ],
         "liveCount": 0,
         "candidateCount": 4
       },
-      "computedAt": "2026-11-06T15:49:21.638Z"
+      "computedAt": "2026-11-07T02:45:45.915Z"
     },
     {
       "showId": "new-born-off-broadway-2026",
@@ -293325,18 +293326,72 @@
       "status": "open",
       "category": "off-broadway",
       "previewsStartDate": "2026-10-20",
-      "aggregatorArticles": [],
+      "aggregatorArticles": [
+        "https://www.broadwayworld.com/article/Review-Roundup-SLANTED-FLOORS-Opens-With-Kyle-Beltran-and-Adam-Chanler-Berat-20261106"
+      ],
       "aggregatorListedUrls": [
         "https://newyorktheater.me/2026/11/05/slanted-floors-review/",
         "https://1minutecritic.com/slanted-floors-apartment-play-review/",
+        "https://www.vulture.com/article/slanted-floors-play-greenpoint-interview.html",
+        "https://www.theatrely.com/post/adam-chanler-berat-and-kyle-beltran-join-immersive-slanted-floors-this-fall",
         "https://www.theatermania.com/news/review-slanted-floors-a-voyeurs-view-of-one-gay-new-york-city-household_1858778/"
       ],
       "dirFiles": 4,
       "dirClean": 3,
       "inReviewsJson": 3,
-      "missing": [],
+      "missing": [
+        {
+          "url": "https://www.theatrely.com/post/adam-chanler-berat-and-kyle-beltran-join-immersive-slanted-floors-this-fall",
+          "host": "theatrely.com",
+          "knownOutletId": "theatrely",
+          "serpCensus": true,
+          "priorRun": true,
+          "priorRunSource": "pending-file-date:2025-08-12",
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ]
+        }
+      ],
       "dirOnly": [],
-      "flaggedMisses": [],
+      "flaggedMisses": [
+        {
+          "url": "https://www.vulture.com/article/slanted-floors-play-greenpoint-interview.html",
+          "host": "vulture.com",
+          "knownOutletId": "vulture",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "vulture--jason-p-frank.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.vulture.com/article/slanted-floors-play-greenpoint-interview.html"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "flagged-file-date:2026-06-18",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-SLANTED-FLOORS-Opens-With-Kyle-Beltran-and-Adam-Chanler-Berat-20261106"
+            },
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
+          "reverify": false
+        }
+      ],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
@@ -293350,7 +293405,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 0,
+            "results": 9,
             "accepted": 0,
             "error": null
           },
@@ -293360,8 +293415,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 8,
-            "accepted": 1,
+            "results": 9,
+            "accepted": 0,
             "error": null
           },
           {
@@ -293380,7 +293435,7 @@
             "page": 1,
             "geo": "us",
             "ok": true,
-            "results": 10,
+            "results": 0,
             "accepted": 0,
             "error": null
           },
@@ -293391,28 +293446,44 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 2,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 1,
+        "resultCount": 2,
         "error": null
       },
       "candidatesRejected": {
-        "count": 34,
+        "count": 311,
         "byReason": {
-          "aggregator-internal-nav": 1,
-          "not-http-url": 28,
-          "non-review-host": 3,
-          "no-review-evidence": 1,
-          "non-review-path": 1
+          "aggregator-internal-nav": 213,
+          "not-http-url": 69,
+          "aggregator-section-root": 5,
+          "non-review-host": 16,
+          "news-roundup-site": 1,
+          "bare-host": 1,
+          "podcast-episode": 1,
+          "non-review-path": 3,
+          "show-listing-page": 1,
+          "no-review-evidence": 1
         }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 0,
       "unextractable": [],
+      "weIngestBlocked": [
+        {
+          "url": "https://www.theatrely.com/post/adam-chanler-berat-and-kyle-beltran-join-immersive-slanted-floors-this-fall",
+          "host": "theatrely.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        }
+      ],
+      "ingestResults": [],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "complete",
         "missing": [],
@@ -293442,7 +293513,7 @@
         "liveCount": 3,
         "candidateCount": 3
       },
-      "computedAt": "2026-11-06T15:49:21.638Z"
+      "computedAt": "2026-11-07T02:45:45.915Z"
     },
     {
       "showId": "slaughterhouse-five-off-west-end-2026",
@@ -299354,19 +299425,20 @@
       "category": "off-west-end",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
+        "https://maninlondon.com/speculations-review-marylebone-theatre-sir-trevor-nunn/",
+        "https://www.whatsonstage.com/news/speculations-at-marylebone-theatre-review_1736394/",
+        "https://www.broadwayworld.com/westend/article/Review-SPECULATIONS-Marylebone-Theatre-20261104",
+        "https://www.timeout.com/london/theatre/speculations-review",
+        "https://www.londonboxoffice.co.uk/news/post/speculations-marylebone-theatre-review",
+        "https://loureviews.blog/2026/11/05/play-review-speculations-at-marylebone-theatre/",
         "https://www.standard.co.uk/culture/theatre/speculations-at-marylebone-theatre-review-b1303733.html",
         "https://www.theguardian.com/stage/2026/nov/06/marilyn-monroe-speculations-conspiracy-drama-marylebone-theatre-london-trevor-nunn",
         "https://www.thetimes.com/culture/theatre-dance/article/speculations-review-marylebone-theatre-trevor-nunn-janie-dee-jfk-marilyn-monroe-kdvk3tjzr",
-        "https://www.whatsonstage.com/news/speculations-at-marylebone-theatre-review_1736394/",
-        "https://www.broadwayworld.com/westend/article/Review-SPECULATIONS-Marylebone-Theatre-20261104",
-        "https://www.londonboxoffice.co.uk/news/post/speculations-marylebone-theatre-review",
         "https://therecs.co.uk/speculations-marylebone-theatre/",
         "https://everything-theatre.co.uk/2026/11/review-speculations-marylebone-theatre/",
-        "https://www.timeout.com/london/theatre/speculations-review",
         "https://www.londontheatre1.com/reviews/speculations-marylebone-theatre/",
         "https://thespyinthestalls.com/2026/11/speculations/",
         "https://www.allthatdazzles.co.uk/post/review-speculations-marylebone-theatre",
-        "https://loureviews.blog/2026/11/05/play-review-speculations-at-marylebone-theatre/",
         "https://firstnightmagazine.com/2026/11/05/review-of-speculations-conspiracy-theory-play-is-riddled-with-hollowness/",
         "https://www.westendbestfriend.co.uk/news/review-speculations-marylebone-theatre",
         "https://www.london-unattached.com/speculations-marylebone-theatre/",
@@ -299374,37 +299446,14 @@
         "https://theartsdesk.com/theatre/speculations-marylebone-theatre-review-real-mystery-how-it-got-made",
         "https://www.thestage.co.uk/reviews/speculations-review-marylebone-theatre-london-torben-betts-trevor-nunn-janie-dee"
       ],
-      "dirFiles": 2,
-      "dirClean": 2,
-      "inReviewsJson": 2,
+      "dirFiles": 31,
+      "dirClean": 25,
+      "inReviewsJson": 25,
       "missing": [
         {
-          "url": "https://www.standard.co.uk/culture/theatre/speculations-at-marylebone-theatre-review-b1303733.html",
-          "host": "standard.co.uk",
-          "knownOutletId": "standard",
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            },
-            {
-              "source": "bestoftheatre",
-              "sourceUrl": "https://www.bestoftheatre.co.uk/blog/post/review-roundup-speculations-marylebone-theatre"
-            }
-          ],
-          "listingDate": "2026-11-05",
-          "listingSource": "bestoftheatre",
-          "weRef": true,
-          "weRefSources": [
-            "bestoftheatre"
-          ],
-          "weRefStars": 1,
-          "weRefStarsSource": "bestoftheatre"
-        },
-        {
-          "url": "https://www.theguardian.com/stage/2026/nov/06/marilyn-monroe-speculations-conspiracy-drama-marylebone-theatre-london-trevor-nunn",
-          "host": "theguardian.com",
-          "knownOutletId": "guardian",
+          "url": "https://maninlondon.com/speculations-review-marylebone-theatre-sir-trevor-nunn/",
+          "host": "maninlondon.com",
+          "knownOutletId": null,
           "serpCensus": true,
           "sources": [
             {
@@ -299412,140 +299461,6 @@
               "sourceUrl": null
             }
           ]
-        },
-        {
-          "url": "https://www.thetimes.com/culture/theatre-dance/article/speculations-review-marylebone-theatre-trevor-nunn-janie-dee-jfk-marilyn-monroe-kdvk3tjzr",
-          "host": "thetimes.com",
-          "knownOutletId": "sunday-times",
-          "serpCensus": true,
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ]
-        },
-        {
-          "url": "https://www.whatsonstage.com/news/speculations-at-marylebone-theatre-review_1736394/",
-          "host": "whatsonstage.com",
-          "knownOutletId": "whatsonstage",
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            },
-            {
-              "source": "bestoftheatre",
-              "sourceUrl": "https://www.bestoftheatre.co.uk/blog/post/review-roundup-speculations-marylebone-theatre"
-            }
-          ],
-          "listingDate": "2026-11-05",
-          "listingSource": "bestoftheatre",
-          "weRef": true,
-          "weRefSources": [
-            "bestoftheatre"
-          ],
-          "weRefStars": 2,
-          "weRefStarsSource": "bestoftheatre"
-        },
-        {
-          "url": "https://www.broadwayworld.com/westend/article/Review-SPECULATIONS-Marylebone-Theatre-20261104",
-          "host": "broadwayworld.com",
-          "knownOutletId": "broadwayworld",
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            },
-            {
-              "source": "bestoftheatre",
-              "sourceUrl": "https://www.bestoftheatre.co.uk/blog/post/review-roundup-speculations-marylebone-theatre"
-            }
-          ],
-          "listingDate": "2026-11-05",
-          "listingSource": "bestoftheatre",
-          "weRef": true,
-          "weRefSources": [
-            "bestoftheatre"
-          ],
-          "weRefStars": 2,
-          "weRefStarsSource": "bestoftheatre"
-        },
-        {
-          "url": "https://therecs.co.uk/speculations-marylebone-theatre/",
-          "host": "therecs.co.uk",
-          "knownOutletId": "the-recs",
-          "sources": [
-            {
-              "source": "bestoftheatre",
-              "sourceUrl": "https://www.bestoftheatre.co.uk/blog/post/review-roundup-speculations-marylebone-theatre"
-            }
-          ],
-          "listingDate": "2026-11-05",
-          "listingSource": "bestoftheatre",
-          "weRef": true,
-          "weRefSources": [
-            "bestoftheatre"
-          ],
-          "weRefStars": 4,
-          "weRefStarsSource": "bestoftheatre"
-        },
-        {
-          "url": "https://everything-theatre.co.uk/2026/11/review-speculations-marylebone-theatre/",
-          "host": "everything-theatre.co.uk",
-          "knownOutletId": "everything-theatre",
-          "sources": [
-            {
-              "source": "bestoftheatre",
-              "sourceUrl": "https://www.bestoftheatre.co.uk/blog/post/review-roundup-speculations-marylebone-theatre"
-            }
-          ],
-          "listingDate": "2026-11-05",
-          "listingSource": "bestoftheatre",
-          "weRef": true,
-          "weRefSources": [
-            "bestoftheatre"
-          ],
-          "weRefStars": 4,
-          "weRefStarsSource": "bestoftheatre"
-        },
-        {
-          "url": "https://www.timeout.com/london/theatre/speculations-review",
-          "host": "timeout.com",
-          "knownOutletId": "timeout-london",
-          "sources": [
-            {
-              "source": "bestoftheatre",
-              "sourceUrl": "https://www.bestoftheatre.co.uk/blog/post/review-roundup-speculations-marylebone-theatre"
-            }
-          ],
-          "listingDate": "2026-11-05",
-          "listingSource": "bestoftheatre",
-          "weRef": true,
-          "weRefSources": [
-            "bestoftheatre"
-          ],
-          "weRefStars": 3,
-          "weRefStarsSource": "bestoftheatre"
-        },
-        {
-          "url": "https://www.londontheatre1.com/reviews/speculations-marylebone-theatre/",
-          "host": "londontheatre1.com",
-          "knownOutletId": "londontheatre1",
-          "sources": [
-            {
-              "source": "bestoftheatre",
-              "sourceUrl": "https://www.bestoftheatre.co.uk/blog/post/review-roundup-speculations-marylebone-theatre"
-            }
-          ],
-          "listingDate": "2026-11-05",
-          "listingSource": "bestoftheatre",
-          "weRef": true,
-          "weRefSources": [
-            "bestoftheatre"
-          ],
-          "weRefStars": 3,
-          "weRefStarsSource": "bestoftheatre"
         },
         {
           "url": "https://thespyinthestalls.com/2026/11/speculations/",
@@ -299553,24 +299468,9 @@
           "knownOutletId": "the-spy-in-the-stalls",
           "sources": [
             {
-              "source": "bestoftheatre",
-              "sourceUrl": "https://www.bestoftheatre.co.uk/blog/post/review-roundup-speculations-marylebone-theatre"
-            }
-          ],
-          "listingDate": "2026-11-05",
-          "listingSource": "bestoftheatre",
-          "weRef": true,
-          "weRefSources": [
-            "bestoftheatre"
-          ],
-          "weRefStars": 3,
-          "weRefStarsSource": "bestoftheatre"
-        },
-        {
-          "url": "https://www.allthatdazzles.co.uk/post/review-speculations-marylebone-theatre",
-          "host": "allthatdazzles.co.uk",
-          "knownOutletId": "all-that-dazzles-uk",
-          "sources": [
+              "source": "serp-census",
+              "sourceUrl": null
+            },
             {
               "source": "bestoftheatre",
               "sourceUrl": "https://www.bestoftheatre.co.uk/blog/post/review-roundup-speculations-marylebone-theatre"
@@ -299583,63 +299483,6 @@
             "bestoftheatre"
           ],
           "weRefStars": 3,
-          "weRefStarsSource": "bestoftheatre"
-        },
-        {
-          "url": "https://firstnightmagazine.com/2026/11/05/review-of-speculations-conspiracy-theory-play-is-riddled-with-hollowness/",
-          "host": "firstnightmagazine.com",
-          "knownOutletId": "firstnightmagazine",
-          "sources": [
-            {
-              "source": "bestoftheatre",
-              "sourceUrl": "https://www.bestoftheatre.co.uk/blog/post/review-roundup-speculations-marylebone-theatre"
-            }
-          ],
-          "listingDate": "2026-11-05",
-          "listingSource": "bestoftheatre",
-          "weRef": true,
-          "weRefSources": [
-            "bestoftheatre"
-          ],
-          "weRefStars": 2.5,
-          "weRefStarsSource": "bestoftheatre"
-        },
-        {
-          "url": "https://www.westendbestfriend.co.uk/news/review-speculations-marylebone-theatre",
-          "host": "westendbestfriend.co.uk",
-          "knownOutletId": "west-end-best-friend",
-          "sources": [
-            {
-              "source": "bestoftheatre",
-              "sourceUrl": "https://www.bestoftheatre.co.uk/blog/post/review-roundup-speculations-marylebone-theatre"
-            }
-          ],
-          "listingDate": "2026-11-05",
-          "listingSource": "bestoftheatre",
-          "weRef": true,
-          "weRefSources": [
-            "bestoftheatre"
-          ],
-          "weRefStars": 2,
-          "weRefStarsSource": "bestoftheatre"
-        },
-        {
-          "url": "https://www.london-unattached.com/speculations-marylebone-theatre/",
-          "host": "london-unattached.com",
-          "knownOutletId": "london-unattached",
-          "sources": [
-            {
-              "source": "bestoftheatre",
-              "sourceUrl": "https://www.bestoftheatre.co.uk/blog/post/review-roundup-speculations-marylebone-theatre"
-            }
-          ],
-          "listingDate": "2026-11-05",
-          "listingSource": "bestoftheatre",
-          "weRef": true,
-          "weRefSources": [
-            "bestoftheatre"
-          ],
-          "weRefStars": 2,
           "weRefStarsSource": "bestoftheatre"
         },
         {
@@ -299648,43 +299491,9 @@
           "knownOutletId": "jonathan-baz",
           "sources": [
             {
-              "source": "bestoftheatre",
-              "sourceUrl": "https://www.bestoftheatre.co.uk/blog/post/review-roundup-speculations-marylebone-theatre"
-            }
-          ],
-          "listingDate": "2026-11-05",
-          "listingSource": "bestoftheatre",
-          "weRef": true,
-          "weRefSources": [
-            "bestoftheatre"
-          ],
-          "weRefStars": 2,
-          "weRefStarsSource": "bestoftheatre"
-        },
-        {
-          "url": "https://theartsdesk.com/theatre/speculations-marylebone-theatre-review-real-mystery-how-it-got-made",
-          "host": "theartsdesk.com",
-          "knownOutletId": "artsdesk",
-          "sources": [
-            {
-              "source": "bestoftheatre",
-              "sourceUrl": "https://www.bestoftheatre.co.uk/blog/post/review-roundup-speculations-marylebone-theatre"
-            }
-          ],
-          "listingDate": "2026-11-05",
-          "listingSource": "bestoftheatre",
-          "weRef": true,
-          "weRefSources": [
-            "bestoftheatre"
-          ],
-          "weRefStars": 1,
-          "weRefStarsSource": "bestoftheatre"
-        },
-        {
-          "url": "https://www.thestage.co.uk/reviews/speculations-review-marylebone-theatre-london-torben-betts-trevor-nunn-janie-dee",
-          "host": "thestage.co.uk",
-          "knownOutletId": "thestage",
-          "sources": [
+              "source": "serp-census",
+              "sourceUrl": null
+            },
             {
               "source": "bestoftheatre",
               "sourceUrl": "https://www.bestoftheatre.co.uk/blog/post/review-roundup-speculations-marylebone-theatre"
@@ -299700,7 +299509,40 @@
           "weRefStarsSource": "bestoftheatre"
         }
       ],
-      "dirOnly": [],
+      "dirOnly": [
+        {
+          "host": "ayoungishperspective.co.uk",
+          "count": 1
+        },
+        {
+          "host": "fairypoweredproductions.com",
+          "count": 1
+        },
+        {
+          "host": "jackstage.co.uk",
+          "count": 1
+        },
+        {
+          "host": "pinkprincetheatre.com",
+          "count": 1
+        },
+        {
+          "host": "theatrevibe.co.uk",
+          "count": 1
+        },
+        {
+          "host": "theatreandtonic.co.uk",
+          "count": 1
+        },
+        {
+          "host": "thereviewshub.com",
+          "count": 1
+        },
+        {
+          "host": "unmissabletheatre.co.uk",
+          "count": 1
+        }
+      ],
       "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": {
@@ -299744,15 +299586,15 @@
         },
         "allSourcesFailed": false,
         "currentRunRows": 18,
-        "corroborated": 2,
+        "corroborated": 15,
         "perSource": {
           "lbo-roundup": {
             "cited": 1,
             "corroborated": 1
           },
           "bestoftheatre": {
-            "cited": 2,
-            "corroborated": 2
+            "cited": 15,
+            "corroborated": 15
           }
         }
       },
@@ -299767,8 +299609,8 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 0,
-            "accepted": 0,
+            "results": 9,
+            "accepted": 1,
             "error": null
           },
           {
@@ -299777,7 +299619,7 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 0,
+            "results": 9,
             "accepted": 0,
             "error": null
           },
@@ -299788,7 +299630,7 @@
             "geo": "gb",
             "ok": true,
             "results": 9,
-            "accepted": 5,
+            "accepted": 0,
             "error": null
           },
           {
@@ -299797,8 +299639,8 @@
             "page": 1,
             "geo": "gb",
             "ok": true,
-            "results": 0,
-            "accepted": 0,
+            "results": 10,
+            "accepted": 1,
             "error": null
           },
           {
@@ -299807,232 +299649,80 @@
             "page": 2,
             "geo": "gb",
             "ok": true,
-            "results": 10,
-            "accepted": 0,
+            "results": 9,
+            "accepted": 2,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 5,
+        "resultCount": 4,
         "error": null
       },
       "candidatesRejected": {
-        "count": 13,
+        "count": 42,
         "byReason": {
-          "non-review-host": 9,
-          "tag-index-page": 2,
           "aggregator-internal-nav": 1,
-          "review-hub-page": 1
+          "not-http-url": 36,
+          "non-review-host": 3,
+          "show-hub": 1,
+          "ticket-seller-product-page": 1
         }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 0,
       "unextractable": [],
-      "ingestResults": [
+      "weIngestBlocked": [
         {
-          "url": "https://www.standard.co.uk/culture/theatre/speculations-at-marylebone-theatre-review-b1303733.html",
-          "host": "standard.co.uk",
-          "outletId": "standard",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": null
-        },
-        {
-          "url": "https://www.whatsonstage.com/news/speculations-at-marylebone-theatre-review_1736394/",
-          "host": "whatsonstage.com",
-          "outletId": "whatsonstage",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": null
-        },
-        {
-          "url": "https://www.broadwayworld.com/westend/article/Review-SPECULATIONS-Marylebone-Theatre-20261104",
-          "host": "broadwayworld.com",
-          "outletId": "broadwayworld",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": null
-        },
-        {
-          "url": "https://therecs.co.uk/speculations-marylebone-theatre/",
-          "host": "therecs.co.uk",
-          "outletId": "the-recs",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": null
-        },
-        {
-          "url": "https://everything-theatre.co.uk/2026/11/review-speculations-marylebone-theatre/",
-          "host": "everything-theatre.co.uk",
-          "outletId": "everything-theatre",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": null
+          "url": "https://maninlondon.com/speculations-review-marylebone-theatre-sir-trevor-nunn/",
+          "host": "maninlondon.com",
+          "priorRun": false,
+          "reason": "unregistered-host",
+          "censusGateOn": true
         }
       ],
-      "ingestSkippedByCap": [
-        {
-          "url": "https://www.timeout.com/london/theatre/speculations-review",
-          "host": "timeout.com",
-          "outletId": "timeout-london"
-        },
-        {
-          "url": "https://www.londontheatre1.com/reviews/speculations-marylebone-theatre/",
-          "host": "londontheatre1.com",
-          "outletId": "londontheatre1"
-        },
+      "ingestResults": [
         {
           "url": "https://thespyinthestalls.com/2026/11/speculations/",
           "host": "thespyinthestalls.com",
-          "outletId": "the-spy-in-the-stalls"
-        },
-        {
-          "url": "https://www.allthatdazzles.co.uk/post/review-speculations-marylebone-theatre",
-          "host": "allthatdazzles.co.uk",
-          "outletId": "all-that-dazzles-uk"
-        },
-        {
-          "url": "https://firstnightmagazine.com/2026/11/05/review-of-speculations-conspiracy-theory-play-is-riddled-with-hollowness/",
-          "host": "firstnightmagazine.com",
-          "outletId": "firstnightmagazine"
-        },
-        {
-          "url": "https://www.westendbestfriend.co.uk/news/review-speculations-marylebone-theatre",
-          "host": "westendbestfriend.co.uk",
-          "outletId": "west-end-best-friend"
-        },
-        {
-          "url": "https://www.london-unattached.com/speculations-marylebone-theatre/",
-          "host": "london-unattached.com",
-          "outletId": "london-unattached"
+          "outletId": "the-spy-in-the-stalls",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
         },
         {
           "url": "http://www.jonathanbaz.com/2026/11/speculations-review.html",
           "host": "jonathanbaz.com",
-          "outletId": "jonathan-baz"
-        },
-        {
-          "url": "https://theartsdesk.com/theatre/speculations-marylebone-theatre-review-real-mystery-how-it-got-made",
-          "host": "theartsdesk.com",
-          "outletId": "artsdesk"
-        },
-        {
-          "url": "https://www.thestage.co.uk/reviews/speculations-review-marylebone-theatre-london-torben-betts-trevor-nunn-janie-dee",
-          "host": "thestage.co.uk",
-          "outletId": "thestage"
-        },
-        {
-          "url": "https://www.theguardian.com/stage/2026/nov/06/marilyn-monroe-speculations-conspiracy-drama-marylebone-theatre-london-trevor-nunn",
-          "host": "theguardian.com",
-          "outletId": "guardian"
-        },
-        {
-          "url": "https://www.thetimes.com/culture/theatre-dance/article/speculations-review-marylebone-theatre-trevor-nunn-janie-dee-jfk-marilyn-monroe-kdvk3tjzr",
-          "host": "thetimes.com",
-          "outletId": "sunday-times"
+          "outletId": "jonathan-baz",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
         }
       ],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "standard",
-            "outlet": "standard",
+            "outletId": "maninlondon.com",
+            "outlet": "maninlondon.com",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.standard.co.uk/culture/theatre/speculations-at-marylebone-theatre-review-b1303733.html"
-          },
-          {
-            "outletId": "guardian",
-            "outlet": "guardian",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.theguardian.com/stage/2026/nov/06/marilyn-monroe-speculations-conspiracy-drama-marylebone-theatre-london-trevor-nunn"
-          },
-          {
-            "outletId": "sunday-times",
-            "outlet": "sunday-times",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.thetimes.com/culture/theatre-dance/article/speculations-review-marylebone-theatre-trevor-nunn-janie-dee-jfk-marilyn-monroe-kdvk3tjzr"
-          },
-          {
-            "outletId": "whatsonstage",
-            "outlet": "whatsonstage",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.whatsonstage.com/news/speculations-at-marylebone-theatre-review_1736394/"
-          },
-          {
-            "outletId": "broadwayworld",
-            "outlet": "broadwayworld",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.broadwayworld.com/westend/article/Review-SPECULATIONS-Marylebone-Theatre-20261104"
-          },
-          {
-            "outletId": "the-recs",
-            "outlet": "the-recs",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://therecs.co.uk/speculations-marylebone-theatre/"
-          },
-          {
-            "outletId": "everything-theatre",
-            "outlet": "everything-theatre",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://everything-theatre.co.uk/2026/11/review-speculations-marylebone-theatre/"
-          },
-          {
-            "outletId": "timeout-london",
-            "outlet": "timeout-london",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.timeout.com/london/theatre/speculations-review"
-          },
-          {
-            "outletId": "londontheatre1",
-            "outlet": "londontheatre1",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.londontheatre1.com/reviews/speculations-marylebone-theatre/"
+            "url": "https://maninlondon.com/speculations-review-marylebone-theatre-sir-trevor-nunn/"
           },
           {
             "outletId": "the-spy-in-the-stalls",
@@ -300042,57 +299732,33 @@
             "url": "https://thespyinthestalls.com/2026/11/speculations/"
           },
           {
-            "outletId": "all-that-dazzles-uk",
-            "outlet": "all-that-dazzles-uk",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.allthatdazzles.co.uk/post/review-speculations-marylebone-theatre"
-          },
-          {
-            "outletId": "firstnightmagazine",
-            "outlet": "firstnightmagazine",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://firstnightmagazine.com/2026/11/05/review-of-speculations-conspiracy-theory-play-is-riddled-with-hollowness/"
-          },
-          {
-            "outletId": "west-end-best-friend",
-            "outlet": "west-end-best-friend",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.westendbestfriend.co.uk/news/review-speculations-marylebone-theatre"
-          },
-          {
-            "outletId": "london-unattached",
-            "outlet": "london-unattached",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.london-unattached.com/speculations-marylebone-theatre/"
-          },
-          {
             "outletId": "jonathan-baz",
             "outlet": "jonathan-baz",
             "critic": "Unknown",
             "stars": null,
             "url": "http://www.jonathanbaz.com/2026/11/speculations-review.html"
-          },
-          {
-            "outletId": "artsdesk",
-            "outlet": "artsdesk",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://theartsdesk.com/theatre/speculations-marylebone-theatre-review-real-mystery-how-it-got-made"
-          },
-          {
-            "outletId": "thestage",
-            "outlet": "thestage",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.thestage.co.uk/reviews/speculations-review-marylebone-theatre-london-torben-betts-trevor-nunn-janie-dee"
           }
         ],
         "suppressedMissing": [],
         "candidates": [
+          {
+            "url": "https://www.whatsonstage.com/news/speculations-at-marylebone-theatre-review_1736394/",
+            "outletId": "whatsonstage.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-06T17:07:51.339Z"
+          },
+          {
+            "url": "https://www.broadwayworld.com/westend/article/Review-SPECULATIONS-Marylebone-Theatre-20261104",
+            "outletId": "broadwayworld.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-06T17:07:51.339Z"
+          },
+          {
+            "url": "https://www.timeout.com/london/theatre/speculations-review",
+            "outletId": "timeout.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-06T17:07:51.339Z"
+          },
           {
             "url": "https://www.londonboxoffice.co.uk/news/post/speculations-marylebone-theatre-review",
             "outletId": "londonboxoffice.co.uk",
@@ -300107,98 +299773,86 @@
           },
           {
             "url": "https://www.standard.co.uk/culture/theatre/speculations-at-marylebone-theatre-review-b1303733.html",
-            "outletId": "standard",
-            "state": "GAP",
-            "reason": "sla-breach",
+            "outletId": "standard.co.uk",
+            "state": "live",
             "firstSeenAt": "2026-11-06T17:07:51.339Z"
           },
           {
             "url": "https://www.theguardian.com/stage/2026/nov/06/marilyn-monroe-speculations-conspiracy-drama-marylebone-theatre-london-trevor-nunn",
-            "outletId": "guardian",
-            "state": "GAP",
-            "reason": "sla-breach",
+            "outletId": "theguardian.com",
+            "state": "live",
             "firstSeenAt": "2026-11-06T17:07:51.339Z"
           },
           {
             "url": "https://www.thetimes.com/culture/theatre-dance/article/speculations-review-marylebone-theatre-trevor-nunn-janie-dee-jfk-marilyn-monroe-kdvk3tjzr",
-            "outletId": "sunday-times",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-11-06T17:07:51.339Z"
-          },
-          {
-            "url": "https://www.whatsonstage.com/news/speculations-at-marylebone-theatre-review_1736394/",
-            "outletId": "whatsonstage",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-11-06T17:07:51.339Z"
-          },
-          {
-            "url": "https://www.broadwayworld.com/westend/article/Review-SPECULATIONS-Marylebone-Theatre-20261104",
-            "outletId": "broadwayworld",
-            "state": "GAP",
-            "reason": "sla-breach",
+            "outletId": "thetimes.com",
+            "state": "live",
             "firstSeenAt": "2026-11-06T17:07:51.339Z"
           },
           {
             "url": "https://therecs.co.uk/speculations-marylebone-theatre/",
-            "outletId": "the-recs",
-            "state": "GAP",
-            "reason": "sla-breach",
+            "outletId": "therecs.co.uk",
+            "state": "live",
             "firstSeenAt": "2026-11-06T17:07:51.339Z"
           },
           {
             "url": "https://everything-theatre.co.uk/2026/11/review-speculations-marylebone-theatre/",
-            "outletId": "everything-theatre",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-11-06T17:07:51.339Z"
-          },
-          {
-            "url": "https://www.timeout.com/london/theatre/speculations-review",
-            "outletId": "timeout-london",
-            "state": "GAP",
-            "reason": "sla-breach",
+            "outletId": "everything-theatre.co.uk",
+            "state": "live",
             "firstSeenAt": "2026-11-06T17:07:51.339Z"
           },
           {
             "url": "https://www.londontheatre1.com/reviews/speculations-marylebone-theatre/",
-            "outletId": "londontheatre1",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-11-06T17:07:51.339Z"
-          },
-          {
-            "url": "https://thespyinthestalls.com/2026/11/speculations/",
-            "outletId": "the-spy-in-the-stalls",
-            "state": "GAP",
-            "reason": "sla-breach",
+            "outletId": "londontheatre1.com",
+            "state": "live",
             "firstSeenAt": "2026-11-06T17:07:51.339Z"
           },
           {
             "url": "https://www.allthatdazzles.co.uk/post/review-speculations-marylebone-theatre",
-            "outletId": "all-that-dazzles-uk",
-            "state": "GAP",
-            "reason": "sla-breach",
+            "outletId": "allthatdazzles.co.uk",
+            "state": "live",
             "firstSeenAt": "2026-11-06T17:07:51.339Z"
           },
           {
             "url": "https://firstnightmagazine.com/2026/11/05/review-of-speculations-conspiracy-theory-play-is-riddled-with-hollowness/",
-            "outletId": "firstnightmagazine",
-            "state": "GAP",
-            "reason": "sla-breach",
+            "outletId": "firstnightmagazine.com",
+            "state": "live",
             "firstSeenAt": "2026-11-06T17:07:51.339Z"
           },
           {
             "url": "https://www.westendbestfriend.co.uk/news/review-speculations-marylebone-theatre",
-            "outletId": "west-end-best-friend",
-            "state": "GAP",
-            "reason": "sla-breach",
+            "outletId": "westendbestfriend.co.uk",
+            "state": "live",
             "firstSeenAt": "2026-11-06T17:07:51.339Z"
           },
           {
             "url": "https://www.london-unattached.com/speculations-marylebone-theatre/",
-            "outletId": "london-unattached",
+            "outletId": "london-unattached.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-06T17:07:51.339Z"
+          },
+          {
+            "url": "https://theartsdesk.com/theatre/speculations-marylebone-theatre-review-real-mystery-how-it-got-made",
+            "outletId": "theartsdesk.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-06T17:07:51.339Z"
+          },
+          {
+            "url": "https://www.thestage.co.uk/reviews/speculations-review-marylebone-theatre-london-torben-betts-trevor-nunn-janie-dee",
+            "outletId": "thestage.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-11-06T17:07:51.339Z"
+          },
+          {
+            "url": "https://maninlondon.com/speculations-review-marylebone-theatre-sir-trevor-nunn/",
+            "outletId": "maninlondon.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-11-07T02:45:45.915Z"
+          },
+          {
+            "url": "https://thespyinthestalls.com/2026/11/speculations/",
+            "outletId": "the-spy-in-the-stalls",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-11-06T17:07:51.339Z"
@@ -300209,28 +299863,14 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-11-06T17:07:51.339Z"
-          },
-          {
-            "url": "https://theartsdesk.com/theatre/speculations-marylebone-theatre-review-real-mystery-how-it-got-made",
-            "outletId": "artsdesk",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-11-06T17:07:51.339Z"
-          },
-          {
-            "url": "https://www.thestage.co.uk/reviews/speculations-review-marylebone-theatre-london-torben-betts-trevor-nunn-janie-dee",
-            "outletId": "thestage",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-11-06T17:07:51.339Z"
           }
         ],
         "censusSchema": 4,
         "excluded": [],
-        "liveCount": 2,
-        "candidateCount": 19
+        "liveCount": 17,
+        "candidateCount": 20
       },
-      "computedAt": "2026-11-06T17:07:51.339Z"
+      "computedAt": "2026-11-07T02:45:45.915Z"
     },
     {
       "showId": "spellbound-off-broadway-2026",
@@ -360617,37 +360257,10 @@
         "https://www.theaterscene.net/plays/offbway-plays/the-morbs/victor-gluck/",
         "https://www.offoffonline.com/offoffonline/2026/11/2/the-morbs"
       ],
-      "dirFiles": 4,
-      "dirClean": 2,
-      "inReviewsJson": 2,
-      "missing": [
-        {
-          "url": "https://www.theaterscene.net/plays/offbway-plays/the-morbs/victor-gluck/",
-          "host": "theaterscene.net",
-          "knownOutletId": "theater-scene",
-          "sources": [
-            {
-              "source": "show-score",
-              "sourceUrl": "https://www.show-score.com/off-broadway-shows/the-morbs"
-            }
-          ],
-          "listingDate": "2026-11-05",
-          "listingSource": "show-score"
-        },
-        {
-          "url": "https://www.offoffonline.com/offoffonline/2026/11/2/the-morbs",
-          "host": "offoffonline.com",
-          "knownOutletId": "off-off-online",
-          "sources": [
-            {
-              "source": "show-score",
-              "sourceUrl": "https://www.show-score.com/off-broadway-shows/the-morbs"
-            }
-          ],
-          "listingDate": "2026-11-05",
-          "listingSource": "show-score"
-        }
-      ],
+      "dirFiles": 6,
+      "dirClean": 4,
+      "inReviewsJson": 4,
+      "missing": [],
       "dirOnly": [
         {
           "host": "twi-ny.com",
@@ -360668,7 +360281,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 0,
+            "results": 9,
             "accepted": 0,
             "error": null
           },
@@ -360678,8 +360291,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 6,
-            "accepted": 0,
+            "results": 7,
+            "accepted": 1,
             "error": null
           },
           {
@@ -360708,79 +360321,32 @@
             "page": 2,
             "geo": "us",
             "ok": true,
-            "results": 10,
+            "results": 0,
             "accepted": 0,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 0,
+        "resultCount": 1,
         "error": null
       },
       "candidatesRejected": {
         "count": 28,
         "byReason": {
-          "aggregator-internal-nav": 1,
-          "not-http-url": 25,
-          "non-review-host": 1,
-          "tag-index-page": 1
+          "aggregator-internal-nav": 2,
+          "not-http-url": 21,
+          "non-review-host": 3,
+          "census-junk-host": 1,
+          "show-listing-page": 1
         }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 0,
       "unextractable": [],
-      "ingestResults": [
-        {
-          "url": "https://www.theaterscene.net/plays/offbway-plays/the-morbs/victor-gluck/",
-          "host": "theaterscene.net",
-          "outletId": "theater-scene",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": null
-        },
-        {
-          "url": "https://www.offoffonline.com/offoffonline/2026/11/2/the-morbs",
-          "host": "offoffonline.com",
-          "outletId": "off-off-online",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": null
-        }
-      ],
-      "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "incomplete",
-        "missing": [
-          {
-            "outletId": "theater-scene",
-            "outlet": "theater-scene",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.theaterscene.net/plays/offbway-plays/the-morbs/victor-gluck/"
-          },
-          {
-            "outletId": "off-off-online",
-            "outlet": "off-off-online",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.offoffonline.com/offoffonline/2026/11/2/the-morbs"
-          }
-        ],
+        "verdict": "complete",
+        "missing": [],
         "suppressedMissing": [],
         "candidates": [
           {
@@ -360791,25 +360357,23 @@
           },
           {
             "url": "https://www.theaterscene.net/plays/offbway-plays/the-morbs/victor-gluck/",
-            "outletId": "theater-scene",
-            "state": "GAP",
-            "reason": "sla-breach",
+            "outletId": "theaterscene.net",
+            "state": "live",
             "firstSeenAt": "2026-11-06T15:49:21.638Z"
           },
           {
             "url": "https://www.offoffonline.com/offoffonline/2026/11/2/the-morbs",
-            "outletId": "off-off-online",
-            "state": "GAP",
-            "reason": "sla-breach",
+            "outletId": "offoffonline.com",
+            "state": "live",
             "firstSeenAt": "2026-11-06T15:49:21.638Z"
           }
         ],
         "censusSchema": 4,
         "excluded": [],
-        "liveCount": 1,
+        "liveCount": 3,
         "candidateCount": 3
       },
-      "computedAt": "2026-11-06T15:49:21.638Z"
+      "computedAt": "2026-11-07T02:45:45.915Z"
     },
     {
       "showId": "the-moth-off-west-end-2026",
@@ -400729,10 +400293,6 @@
           "confirmedBasis": [
             "ensemble-3-agree"
           ],
-          "confirmedNonReview": true,
-          "confirmedBasis": [
-            "ensemble-3-agree"
-          ],
           "sources": [
             {
               "source": "serp-census",
@@ -425222,25 +424782,25 @@
     }
   ],
   "staleness": {
-    "at": "2026-11-07T02:00:49.182Z",
+    "at": "2026-11-07T02:45:45.915Z",
     "reserveEvery": 4,
     "reservedAttempted": [
-      "i-became-we-off-broadway-2026"
+      "heartbreak-house-regional-2026"
     ],
     "catalogueReserveEvery": 8,
     "catalogueAttempted": [
-      "desire-under-the-elms-off-west-end-2026"
+      "cloud-9-west-end-2026"
     ],
-    "neverAuditedDueAtStart": 632,
+    "neverAuditedDueAtStart": 631,
     "oldestDueRowAtStart": {
       "showId": "this-is-my-favorite-song-off-broadway-2024",
       "computedAt": "2026-10-23T14:07:48.228Z",
-      "ageHours": 347.5
+      "ageHours": 348.3
     },
     "oldestDueRowAfterRun": {
       "showId": "this-is-my-favorite-song-off-broadway-2024",
       "computedAt": "2026-10-23T14:07:48.228Z",
-      "ageHours": 347.9
+      "ageHours": 348.6
     }
   }
 }

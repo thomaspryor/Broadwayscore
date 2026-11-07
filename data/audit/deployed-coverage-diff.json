@@ -1,16 +1,64 @@
 {
-  "generatedAt": "2026-11-07T02:01:20.320Z",
+  "generatedAt": "2026-11-07T02:46:26.671Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 320,
-  "clean": 316,
-  "defective": 4,
+  "clean": 315,
+  "defective": 5,
   "byType": {
-    "score-drift": 4
+    "score-drift": 5
   },
   "shows": [
     {
+      "showId": "boop-tour-2026",
+      "title": "Boop! The Musical",
+      "openingDate": "2026-10-03",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 73.74 vs local 74 (Δ0.26)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 6,
+      "deployedCount": 6,
+      "firstDefectAt": "2026-11-07T02:46:21.168Z"
+    },
+    {
+      "showId": "death-note-the-musical-off-west-end-2026",
+      "title": "Death Note: The Musical",
+      "openingDate": "2026-08-11",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 73.26 vs local 73.34 (Δ0.08)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 38,
+      "deployedCount": 38,
+      "firstDefectAt": "2026-11-07T02:46:21.168Z"
+    },
+    {
+      "showId": "six-2021",
+      "title": "SIX",
+      "openingDate": "2021-10-03",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 82.03 vs local 81.79 (Δ0.24)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 32,
+      "deployedCount": 33,
+      "firstDefectAt": "2026-11-07T02:46:21.168Z"
+    },
+    {
       "showId": "the-book-of-mormon-west-end-2024",
       "title": "The Book of Mormon",
       "openingDate": "2013-03-21",
@@ -18,39 +66,7 @@
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 70.43 vs local 69.79 (Δ0.64)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 14,
-      "deployedCount": 14,
-      "firstDefectAt": "2026-11-07T00:27:55.756Z"
-    },
-    {
-      "showId": "speculations-off-west-end-2026",
-      "title": "Speculations",
-      "openingDate": "2026-11-05",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 47.6 vs local 47.72 (Δ0.12)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 25,
-      "deployedCount": 25,
-      "firstDefectAt": "2026-11-07T02:01:16.551Z"
-    },
-    {
-      "showId": "the-book-of-mormon-west-end-2024",
-      "title": "The Book of Mormon",
-      "openingDate": "2013-03-21",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 75.77 vs local 77.07 (Δ1.3)"
+          "detail": "deployed cs 75.6 vs local 75.77 (Δ0.17)"
         }
       ],
       "missingFromProd": [],
@@ -66,7 +82,7 @@
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 88.57 vs local 88.17 (Δ0.4)"
+          "detail": "deployed cs 88.33 vs local 88.57 (Δ0.24)"
         }
       ],
       "missingFromProd": [],
