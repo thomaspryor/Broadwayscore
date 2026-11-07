@@ -33,6 +33,7 @@ const expect = expectArg === '' ? null : Number(expectArg);
 const TRIM_REASON = 'theartsdesk support banner / trailing Image removed (BRO-7061)';
 
 function main() {
+  if (apply && expect === null) { console.log('✗ --apply requires --expect=N (run the dry run first)'); return 1; }
   const at = new Date().toISOString();
   const plan = [];
   for (const row of scan(DIR, {})) {
@@ -47,7 +48,7 @@ function main() {
     const words = text.split(/\s+/).filter(Boolean).length;
     for (const f of ['textWordCount', 'wordCount']) if (typeof out[f] === 'number') out[f] = words;
     const norm = (s) => String(s).replace(/\s+/g, ' ').trim().toLowerCase();
-    if (out.llmPullQuote && !norm(text).includes(norm(out.llmPullQuote))) out.llmPullQuote = null;
+    if (out.llmPullQuote && norm(d.fullText).includes(norm(out.llmPullQuote)) && !norm(text).includes(norm(out.llmPullQuote))) out.llmPullQuote = null;
     out.fullTextTrimmed = { reason: TRIM_REASON, fromLength: d.fullText.length, toLength: text.length, at };
     plan.push({ rel: `${row.show}/${row.file}`, file, out, before: d.fullText.length });
   }

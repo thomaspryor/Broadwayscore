@@ -32,3 +32,13 @@ describe('stripArtsDeskChrome', () => {
     assert.ok(ALLOWED_SCRIPTS.includes('strip-artsdesk-banner.js'));
   });
 });
+
+test('banner strip keeps a leading quote mark or paren of the article', async () => {
+  const { createRequire } = await import('node:module');
+  const { stripArtsDeskChrome } = createRequire(import.meta.url)('../../scripts/lib/artsdesk-chrome.js');
+  const banner = 'Help keep arts journalism alive. We are rebuilding after a hard year and need readers to help fund independent criticism. SUBSCRIBE TODAY ';
+  const body = '“Hamlet” opens at the theatre with a cast of strong players and a clear sense of purpose across the evening. '.repeat(6);
+  assert.ok(stripArtsDeskChrome(banner + body).startsWith('“Hamlet'));
+  assert.ok(stripArtsDeskChrome(banner + '(Photo credit) ' + body).startsWith('(Photo'));
+  assert.equal(stripArtsDeskChrome(body + 'end.Image').endsWith('end.'), true);
+});

@@ -7,8 +7,8 @@
  */
 
 // Banner heading, the "We're rebuilding..." paragraph and the SUBSCRIBE TODAY button text.
-const BANNER_RE = /^\s*help keep arts journalism alive\.?[\s\S]{0,600}?subscribe today\W*(?:and be part of this movement\W*)?(?:subscribe today\W*)?/i;
-const TRAILING_IMAGE_RE = /(?:\s|^)Image\s*$/;
+const BANNER_RE = /^\s*help keep arts journalism alive\.?[\s\S]{0,600}?subscribe today[\s.!]*(?:and be part of this movement[\s.!]*)?(?:subscribe today[\s.!]*)?/i;
+const TRAILING_IMAGE_RE = /(?<![A-Za-z0-9])Image\s*$/;
 
 /** The text without the banner and trailing Image label; unchanged text comes back as is. */
 function stripArtsDeskChrome(text) {
