@@ -1,14 +1,14 @@
 {
-  "timestamp": "2026-11-07T08:22:15.676Z",
+  "timestamp": "2026-11-07T09:01:48.757Z",
   "stats": {
     "totalReviews": 80384,
     "alreadyFlagged": 22033,
     "dateGuardCatches": 216,
     "directorMismatch": 3521,
     "tvFilmSignals": 2290,
-    "londonSignals": 3628,
+    "londonSignals": 3624,
     "offBroadwaySignals": 745,
-    "yearMismatch": 362,
+    "yearMismatch": 361,
     "noPublishDate": 8435
   },
   "findings": [
@@ -29311,20 +29311,6 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2016 (2x) more than 2018 (0x). 2016 matches production: harry-potter-and-the-cursed-child-both-parts-west-end-2021"
-        }
-      ]
-    },
-    {
-      "showId": "harry-potter-and-the-cursed-child-one-part-west-end-2026",
-      "file": "artsdesk--unknown.json",
-      "score": null,
-      "publishDate": null,
-      "url": "https://theartsdesk.com/new-music/cd-imogen-heap-music-harry-potter-and-cursed-child",
-      "findings": [
-        {
-          "type": "YEAR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions year 2018 (2x) more than 2026 (1x). 2018 matches production: harry-potter-2021"
         }
       ]
     },
@@ -92641,20 +92627,6 @@
     },
     {
       "showId": "catarina-and-the-beauty-of-killing-fascists-west-end-2026",
-      "file": "artsdesk--aleks-sierz.json",
-      "score": 56,
-      "publishDate": "2026-09-22",
-      "url": "https://theartsdesk.com/theatre/catarina-and-beauty-killing-fascists-national-theatre-review-thoroughly-uncomfortable-watch",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"national theatre\""
-        }
-      ]
-    },
-    {
-      "showId": "catarina-and-the-beauty-of-killing-fascists-west-end-2026",
       "file": "bestoftheatre--daisy-fairfax.json",
       "publishDate": "2026-09-22",
       "url": "https://www.bestoftheatre.co.uk/blog/post/review-roundup-catarina-and-the-beauty-of-killing-fascists-dorfman-national-theatre",
@@ -104759,20 +104731,6 @@
     },
     {
       "showId": "ilford-boy-off-west-end-2026",
-      "file": "artsdesk--aleks-sierz.json",
-      "score": 56,
-      "publishDate": "2026-10-23",
-      "url": "https://theartsdesk.com/theatre/ilford-boy-donmar-warehouse-review-writing-numbers-can-be-fun",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"donmar warehouse\""
-        }
-      ]
-    },
-    {
-      "showId": "ilford-boy-off-west-end-2026",
       "file": "boycotting-trends--view-my-complete.json",
       "score": 91,
       "publishDate": "2026-10-19",
@@ -110303,20 +110261,6 @@
       "score": 82,
       "publishDate": "2026-09-13",
       "url": "https://www.allthatdazzles.co.uk/post/review-man-to-man-royal-court",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"royal court\""
-        }
-      ]
-    },
-    {
-      "showId": "man-to-man-west-end-2026",
-      "file": "artsdesk--unknown.json",
-      "score": 97,
-      "publishDate": "2026-09-12",
-      "url": "https://theartsdesk.com/theatre/man-man-royal-court-review-vividly-high-definition-revival",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -125527,20 +125471,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "the-bridge-off-west-end-2026",
-      "file": "artsdesk--aleks-sierz.json",
-      "score": 66,
-      "publishDate": "2026-11-04",
-      "url": "https://theartsdesk.com/theatre/bridge-bush-theatre-review-entertaining-stand-one-sided-theatre",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"almeida\""
         }
       ]
     },
