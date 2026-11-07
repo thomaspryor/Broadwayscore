@@ -54,5 +54,19 @@
     "tracked": "BRO-5526",
     "fields": [],
     "queuedAt": "2026-11-07T08:54:40.086Z"
+  },
+  {
+    "conditionKey": "aggregator-health:nyc-theatre:coverage-drop",
+    "title": "NYC Theatre roundups: archive coverage 49% in 2025Q4+2026Q2 vs 82% baseline (2024Q2+2024Q4+2025Q1+2025Q2) — escalated after 15 notifications",
+    "description": "Filed BRO-7065 for owner triage after 15 repeats with no tracker.\n\nNYC Theatre roundups: archive coverage 49% in 2025Q4+2026Q2 vs 82% baseline (2024Q2+2024Q4+2025Q1+2025Q2)\n\nMonitor: node scripts/audit-aggregator-health.js (BRO-6098). Coverage compares the last 2 full quarters with the 4 before; workflow checks use the last 30 runs.",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": "BRO-7065",
+    "fields": [],
+    "queuedAt": "2026-11-07T09:08:00.936Z"
   }
 ]
