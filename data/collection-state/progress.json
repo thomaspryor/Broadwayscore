@@ -1,16 +1,35 @@
 {
   "processed": [
     "death-note-the-musical-off-west-end-2026/radio-times--katelyn-mensah.json",
-    "high-society-off-west-end-2026/standard--unknown.json"
+    "high-society-off-west-end-2026/standard--unknown.json",
+    "speculations-off-west-end-2026/bestoftheatre--unknown.json",
+    "speculations-off-west-end-2026/theatre-vibe--lizzie-loveridge.json",
+    "the-moth-off-west-end-2026/creative-reviews-uk--creative-reviews-uk.json",
+    "tosca-english-national-opera-west-end-2026/times-uk--richard-morrison.json"
   ],
   "failed": [
     "a-few-good-men-2026/variety--anna-tingley.json",
     "one-day-the-musical-west-end-2026/london-box-office--stuart-king.json",
-    "triumph-off-west-end-2026/closeupculture--unknown.json"
+    "triumph-off-west-end-2026/closeupculture--unknown.json",
+    "speculations-off-west-end-2026/guardian--arifa-akbar.json",
+    "speculations-off-west-end-2026/guardian--unknown.json",
+    "speculations-off-west-end-2026/artsdesk--gary-naylor.json",
+    "speculations-off-west-end-2026/artsdesk--unknown.json",
+    "the-bridge-off-west-end-2026/sunday-times--unknown.json",
+    "the-bridge-off-west-end-2026/theatreandtonic--emmie-newitt.json",
+    "tosca-english-national-opera-west-end-2026/bachtrack--anna-bogdanova.json",
+    "tosca-english-national-opera-west-end-2026/bachtrack--clare-varney.json",
+    "tosca-english-national-opera-west-end-2026/bachtrack--mark-pullinger.json",
+    "tosca-english-national-opera-west-end-2026/bachtrack--peter-quantrill.json",
+    "tosca-english-national-opera-west-end-2026/cherylmarkosky--cherylmarkosky.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "speculations-off-west-end-2026/bestoftheatre--unknown.json",
+      "speculations-off-west-end-2026/theatre-vibe--lizzie-loveridge.json",
+      "the-moth-off-west-end-2026/creative-reviews-uk--creative-reviews-uk.json"
+    ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
@@ -18,13 +37,40 @@
       "death-note-the-musical-off-west-end-2026/radio-times--katelyn-mensah.json"
     ],
     "scrapingbee": [],
-    "brightdata": [],
+    "brightdata": [
+      "tosca-english-national-opera-west-end-2026/times-uk--richard-morrison.json"
+    ],
     "archiveToday": [],
     "archive": [
       "high-society-off-west-end-2026/standard--unknown.json"
     ]
   },
   "startTime": "2026-11-07T01:47:36.054Z",
-  "lastProcessed": "high-society-off-west-end-2026/standard--unknown.json",
-  "log": []
+  "lastProcessed": "tosca-english-national-opera-west-end-2026/times-uk--richard-morrison.json",
+  "log": [
+    {
+      "t": "2026-11-07T02:01:55.832Z",
+      "event": "bb-session",
+      "session": "7ae5ad7b",
+      "url": "https://bachtrack.com/review-lorfeo-william-kentridge-greek-national-opera-athen"
+    },
+    {
+      "t": "2026-11-07T02:03:01.514Z",
+      "event": "bb-session",
+      "session": "5f2d17ee",
+      "url": "https://bachtrack.com/review-shostakovich-cherry-town-ahlbom-dutch-national-oper"
+    },
+    {
+      "t": "2026-11-07T02:04:05.535Z",
+      "event": "bb-session",
+      "session": "7cf3e285",
+      "url": "https://bachtrack.com/review-tosca-miskimmon-glassberg-fanyo-english-national-op"
+    },
+    {
+      "t": "2026-11-07T02:05:10.657Z",
+      "event": "bb-session",
+      "session": "df6ef142",
+      "url": "https://bachtrack.com/review-nozze-figaro-pountney-conta-bucharest-national-oper"
+    }
+  ]
 }
