@@ -915,5 +915,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-06T22:47:49.189Z"
+  },
+  {
+    "conditionKey": "land:land/bro-2485-getcity-bucket",
+    "title": "Landing blocked: bash -n --bro-6687-dash.sh red on land/bro-2485-getcity-bucket",
+    "description": "land.yml did not land land/bro-2485-getcity-bucket: the bash -n --bro-6687-dash.sh gate went red at ce97009769. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-2485-getcity-bucket @ ce97009769 (origin/land/bro-2485-getcity-bucket) → origin/main @ 25c034e1e4 [land] attempt 1/3: rebased onto 25c034e1e4, 5 file(s) changed — running checks [land] verified-base: main moved 69f44ad9b9 → 25c034e1e4 across 26 file(s), substantive — re-checking on the merged tree (+0 test file(s) changed on main since the verified base); small re-check: no file ch Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/42315384504",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-2485-getcity-bucket"
+      },
+      {
+        "name": "gate",
+        "value": "bash -n --bro-6687-dash.sh"
+      },
+      {
+        "name": "tip",
+        "value": "ce9700976945d9b3945f478fab5e228439e31d98"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42315384504"
+      }
+    ],
+    "queuedAt": "2026-11-07T00:22:05.629Z"
   }
 ]
