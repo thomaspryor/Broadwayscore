@@ -1659,5 +1659,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-07T23:31:40.807Z"
+  },
+  {
+    "conditionKey": "land:land/bro-7100-junk-outlets",
+    "title": "Landing blocked: unit-tests-node red on land/bro-7100-junk-outlets",
+    "description": "land.yml did not land land/bro-7100-junk-outlets: the unit-tests-node gate went red at 58700d2eee. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/42424931702",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-7100-junk-outlets"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "58700d2eee594d0c21bf8d6f9076546eff312ef7"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42424931702"
+      }
+    ],
+    "queuedAt": "2026-11-07T23:49:24.880Z"
   }
 ]
