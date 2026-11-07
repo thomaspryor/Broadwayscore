@@ -1,9 +1,12 @@
 {
   "issueNumber": "bro-7080-attractions",
   "planId": "c5a0dd91-eb31-408a-8de1-42e5888d5359",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-07T19:43:39.000Z",
-  "submitter": { "name": null, "email": null },
+  "submitter": {
+    "name": null,
+    "email": null
+  },
   "plan": {
     "summary": "Remove two TodayTix attraction listings that sat in previews with no openingDate: Shrek's Adventure! London (TodayTix category Amusement Parks, walk-through attraction at County Hall) and Armory Public Tours (TodayTix category Tours, guided building tour). Neither is a staged production (docs/show-inclusion-policy.md admit rule; the Landmarks category rule). Both have zero reviews. Discovery now refuses the attraction categories at isNonTheaterContent gate 1b (BRO-7080).",
     "steps": [
@@ -33,5 +36,19 @@
         "description": "Retire building tour row"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-07T20:50:16.534Z",
+  "results": [
+    {
+      "action": "retire-show",
+      "ok": true,
+      "msg": "retired shreks-adventure-london-standard-entry-off-west-end-2026 (\"Shrek's Adventure! London Standard Entry\" @ County Hall) — title+venue blocked"
+    },
+    {
+      "action": "retire-show",
+      "ok": true,
+      "msg": "retired armory-public-tours-off-broadway-2026 (\"Armory Public Tours\" @ Park Avenue Armory) — title+venue blocked"
+    }
+  ],
+  "executedIn": "ci"
 }
