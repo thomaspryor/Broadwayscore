@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-07T04:17:17.737Z",
+  "timestamp": "2026-11-07T04:36:25.283Z",
   "stats": {
     "totalReviews": 80378,
     "alreadyFlagged": 22023,
     "dateGuardCatches": 216,
-    "directorMismatch": 3520,
+    "directorMismatch": 3521,
     "tvFilmSignals": 2289,
-    "londonSignals": 3626,
-    "offBroadwaySignals": 744,
+    "londonSignals": 3627,
+    "offBroadwaySignals": 745,
     "yearMismatch": 362,
-    "noPublishDate": 8443
+    "noPublishDate": 8441
   },
   "findings": [
     {
@@ -44266,6 +44266,20 @@
       "score": 82,
       "publishDate": "February 19th, 2025",
       "url": "https://theatreweekly.com/review-much-ado-about-nothing-at-theatre-royal-drury-lane/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jamie lloyd\" from much-ado-about-nothing-2026"
+        }
+      ]
+    },
+    {
+      "showId": "much-ado-about-nothing-west-end-2025",
+      "file": "thestage--dave-fargnoli.json",
+      "score": 77,
+      "publishDate": "2025-02-20",
+      "url": "https://www.thestage.co.uk/reviews/much-ado-about-nothing-review-theatre-royal-drury-lane-london-2025-tom-hiddleston-hayley-atwell-jamie-lloyd",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -113246,6 +113260,20 @@
     },
     {
       "showId": "my-joy-is-heavy-off-broadway-2025",
+      "file": "playbill--unknown.json",
+      "score": null,
+      "publishDate": "2026-03-18",
+      "url": "https://playbill.com/article/what-are-reviews-for-the-bengsons-my-joy-is-heavy-at-new-york-theatre-workshop",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"classic stage\""
+        }
+      ]
+    },
+    {
+      "showId": "my-joy-is-heavy-off-broadway-2025",
       "file": "vulture--sara-holdren.json",
       "score": 44,
       "publishDate": "2026-03-17",
@@ -114678,6 +114706,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "nye-west-end-2024",
+      "file": "liamodell--liam-odell.json",
+      "score": 85,
+      "publishDate": "2024-03-10",
+      "url": "https://liamodell.com/2024/03/11/nye-bevan-review-michael-sheen-nhs-national-theatre-live-olivier-wales-millennium-centre-sharon-small-tim-price/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"olivier theatre\""
         }
       ]
     },
