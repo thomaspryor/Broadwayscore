@@ -137,3 +137,6 @@ export function markPrompted(now: number = Date.now()): void {
     memoryPromptedAt = now;
   }
 }
+
+/** Fired after bookmarks saved while signed out land in the account (detail.added). */
+export const LOCAL_WATCHLIST_MIGRATED_EVENT = 'bsc-local-watchlist-migrated';

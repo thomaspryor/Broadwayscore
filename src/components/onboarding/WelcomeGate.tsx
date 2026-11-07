@@ -25,6 +25,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { getPendingAction } from '@/lib/deferred-auth';
 import { supabaseRestRpc } from '@/lib/supabase-rest';
 import { shouldOfferWelcome, welcomeCanOpenOn, welcomeSeenKey } from '@/lib/welcome-onboarding';
+import { clearMidFlowSignIn, hasMidFlowSignIn } from '@/lib/signin-intent';
 
 const WelcomeSheet = dynamic(() => import('./WelcomeSheet'), { ssr: false });
 /** Same chunk as above; fetched before the claim so a failed download costs nothing. */
@@ -92,6 +93,29 @@ export default function WelcomeGate() {
       setOpen('preview');
     }
   }, []);
+
+  // A sign-up that began mid-task (rating or bookmark, BRO-6917 Part 3): the
+  // person is partway through something on a show page, so they get no welcome
+  // setup. Spend it quietly instead, so it does not turn up on the next page.
+  // Declared before the effect below: it marks the account seen on this device
+  // first, so that effect (which may fire at once on a hub page) skips it.
+  useEffect(() => {
+    if (!userId || !profileLoaded || onAuthPage || !hasMidFlowSignIn()) return;
+    clearMidFlowSignIn();
+    const key = welcomeSeenKey(userId);
+    let locallySeen = false;
+    try { locallySeen = localStorage.getItem(key) === '1'; } catch { /* private mode */ }
+    if (!shouldOfferWelcome({ profile: { onboarding_seen_at: seenAt, created_at: createdAt }, now: Date.now(), locallySeen })) return;
+    // Marked synchronously so the main effect below skips this account while
+    // the claim is in flight (it would otherwise win the claim and open the
+    // sheet). A failed claim (e.g. offline) undoes the mark, so the welcome is
+    // simply offered on a later page instead of being lost.
+    try { localStorage.setItem(key, '1'); } catch { /* private mode */ }
+    void supabaseRestRpc<boolean>('claim_onboarding').then(({ error }) => {
+      if (!error) return;
+      try { localStorage.removeItem(key); } catch { /* private mode */ }
+    });
+  }, [userId, profileLoaded, seenAt, createdAt, onAuthPage]);
 
   useEffect(() => {
     if (!userId || !profileLoaded || onAuthPage || !canOpenHere || open) return;

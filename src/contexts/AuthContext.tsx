@@ -5,6 +5,7 @@ import type { SupabaseClient } from '@supabase/supabase-js';
 import { getSupabaseClient, hasStoredSupabaseSession, isSupabaseConfigured, onSupabaseClientReady, SUPABASE_STORAGE_KEY, urlHasAuthResult } from '@/lib/supabase';
 import { isAuthCallbackPath } from '@/lib/analytics/redact-url';
 import { saveReturnUrl, clearReturnUrl, clearPendingAction, safeReturnPath, takeSignInParam } from '@/lib/deferred-auth';
+import { recordSignInIntent, clearMidFlowSignIn } from '@/lib/signin-intent';
 import { oauthRedirectUrl } from '@/lib/auth-redirect';
 import { autoSubscribeOnSignIn } from '@/lib/auto-subscribe';
 import type { UserProfile } from '@/types/user';
@@ -434,6 +435,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setModalSource(src);
     setModalReturnTo(options?.returnTo ?? null);
     setModalOpen(true);
+    // Began mid-task (rating or bookmark)? Then the welcome setup stays away
+    // after sign-up (BRO-6917 Part 3). Any other prompt clears an older mark.
+    recordSignInIntent(context);
     // Warm the SDK while they choose a provider.
     void getSupabaseClient();
     trackUgc('sign_in_prompt_shown', { context, source: src });
@@ -464,9 +468,23 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     [verifyEmailCode, modalSource, modalReturnTo],
   );
 
+  // What other components get as signIn / sendEmailCode (e.g. the My Shows
+  // provider buttons). They start a sign-in with no prompt in front of it, so
+  // they must not inherit a leftover mid-task mark. The modal handlers above
+  // use the raw functions and keep the mark showSignIn recorded.
+  const signInDirect = useCallback<typeof signIn>((...args) => {
+    clearMidFlowSignIn();
+    return signIn(...args);
+  }, [signIn]);
+  const sendEmailCodeDirect = useCallback<typeof sendEmailCode>((...args) => {
+    clearMidFlowSignIn();
+    return sendEmailCode(...args);
+  }, [sendEmailCode]);
+
   const handleModalClose = useCallback(() => {
     setModalOpen(false);
     setModalReturnTo(null);
+    clearMidFlowSignIn();
     trackUgc('sign_in_prompt_dismissed', { context: modalContext, source: modalSource });
   }, [modalContext, modalSource]);
 
@@ -477,9 +495,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         profile,
         loading,
         isAuthenticated: !!user,
-        signIn,
+        signIn: signInDirect,
         signOut,
-        sendEmailCode,
+        sendEmailCode: sendEmailCodeDirect,
         verifyEmailCode,
         deleteAccount,
         showSignIn,
