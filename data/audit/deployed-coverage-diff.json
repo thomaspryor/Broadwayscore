@@ -1,15 +1,47 @@
 {
-  "generatedAt": "2026-11-07T01:34:47.305Z",
+  "generatedAt": "2026-11-07T02:01:20.320Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 320,
-  "clean": 318,
-  "defective": 2,
+  "clean": 316,
+  "defective": 4,
   "byType": {
-    "score-drift": 2
+    "score-drift": 4
   },
   "shows": [
+    {
+      "showId": "the-book-of-mormon-west-end-2024",
+      "title": "The Book of Mormon",
+      "openingDate": "2013-03-21",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 70.43 vs local 69.79 (Δ0.64)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 14,
+      "deployedCount": 14,
+      "firstDefectAt": "2026-11-07T00:27:55.756Z"
+    },
+    {
+      "showId": "speculations-off-west-end-2026",
+      "title": "Speculations",
+      "openingDate": "2026-11-05",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 47.6 vs local 47.72 (Δ0.12)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 25,
+      "deployedCount": 25,
+      "firstDefectAt": "2026-11-07T02:01:16.551Z"
+    },
     {
       "showId": "the-book-of-mormon-west-end-2024",
       "title": "The Book of Mormon",
@@ -24,7 +56,7 @@
       "missingFromProd": [],
       "localCount": 17,
       "deployedCount": 17,
-      "firstDefectAt": "2026-11-07T01:34:38.782Z"
+      "firstDefectAt": "2026-11-07T02:01:16.551Z"
     },
     {
       "showId": "book-of-mormon-2011",
@@ -40,7 +72,7 @@
       "missingFromProd": [],
       "localCount": 31,
       "deployedCount": 31,
-      "firstDefectAt": "2026-11-07T01:34:38.782Z"
+      "firstDefectAt": "2026-11-07T02:01:16.551Z"
     }
   ],
   "persistentDefective": 0,
