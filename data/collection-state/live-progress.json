@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-11-07T15:05:17.689Z",
-  "processed": 20,
-  "failed": 40,
-  "successRate": "33.3%",
+  "updatedAt": "2026-11-07T15:35:15.493Z",
+  "processed": 85,
+  "failed": 65,
+  "successRate": "56.7%",
   "tierBreakdown": {
-    "playwright": 10,
+    "playwright": 43,
     "amp": 0,
     "browserbase": 1,
     "directCookies": 0,
-    "scrapingdog": 3,
-    "scrapingbee": 3,
+    "scrapingdog": 9,
+    "scrapingbee": 8,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 6
+    "archive": 31
   },
-  "browserbaseSessions": 9,
+  "browserbaseSessions": 10,
   "recentActivity": [
     {
       "t": "2026-11-07T14:35:27.420Z",
@@ -109,6 +109,12 @@
       "t": "2026-11-07T14:53:21.039Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-07T15:18:49.535Z",
+      "event": "bb-session",
+      "session": "ad6148c2",
+      "url": "http://www.publictheater.org/"
     }
   ]
 }
