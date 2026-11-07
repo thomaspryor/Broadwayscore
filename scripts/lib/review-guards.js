@@ -234,6 +234,8 @@ function hasDifferentCityProductionSignal(cvIssues, cvReasoning, show) {
   // Needs the show: a Chicago venue is the WRONG production for an Off-Broadway page but
   // the right one for a Chicago regional page. No show, or any non-NYC market, never fires.
   if (!show || show.market !== 'broadway') return false;
+  // Kill switch: DIFFERENT_CITY_SIGNAL_DISABLED=1 restores the old opening-week behaviour.
+  if (process.env.DIFFERENT_CITY_SIGNAL_DISABLED === '1') return false;
   const texts = [];
   if (Array.isArray(cvIssues)) texts.push(...cvIssues.map(String));
   if (cvReasoning) texts.push(String(cvReasoning));

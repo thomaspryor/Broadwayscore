@@ -76,3 +76,11 @@ test('the temporal net still rescues an ordinary near-opening false positive', (
   assert.equal(r.bypassedForStrongSignal, false);
   assert.equal(r.wpConfidence, 'low');
 });
+
+test('DIFFERENT_CITY_SIGNAL_DISABLED=1 kill switch restores the old behaviour', () => {
+  process.env.DIFFERENT_CITY_SIGNAL_DISABLED = '1';
+  try {
+    assert.equal(g.hasDifferentCityProductionSignal(KING_LEAR_CHICAGO_READER, '', NYC_SHOW), false);
+  } finally { delete process.env.DIFFERENT_CITY_SIGNAL_DISABLED; }
+  assert.equal(g.hasDifferentCityProductionSignal(KING_LEAR_CHICAGO_READER, '', NYC_SHOW), true);
+});
