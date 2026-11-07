@@ -230,6 +230,11 @@ const CITY_PRODUCTION_LOCATOR_RE = new RegExp(
   '(?:\\b(?:review|article|piece|critique)\\s+(?:is|was)\\s+(?:of|about)|^\\s*(?:reviews?|covers?)|[.;]\\s*(?:reviews?|covers?))' +
   '\\s+(?:an?|the)\\s+(?:' + DIFFERENT_CITY_ALT + ')(?:-based)?\\s+(?:production|staging|mounting|revival|company|troupe)\\b', 'i'
 );
+// A located production that is PLAYING HERE (a visiting company at the Public or BAM) is
+// this market's review: the locator never fires when the same text places it in New York
+// or describes a visit (BRO-7077 ship-check P1).
+const LOCATOR_HERE_VETO_RE =
+  /\b(?:New York|NYC|Manhattan|Brooklyn|Broadway|BAM|visit(?:s|ing)?|engagement|bring(?:s|ing)?|brought|now (?:at|playing|running|in)|in residence)\b/i;
 const DIFFERENT_CITY_NAMES_RE = new RegExp(
   '\\b(?:' + DIFFERENT_CITY_ALT + ')\\b' +
   // "Austin Pendleton", "Denver Post": a city glued to another capitalised word is a name, not a place,
@@ -269,7 +274,10 @@ function hasDifferentCityProductionSignal(cvIssues, cvReasoning, show) {
     let cityText = seg.replace(QUOTED_PASSAGE_RE, ' ').replace(OUTLET_CITY_RE, ' ');
     if (titleRe) cityText = cityText.replace(titleRe, ' ');
     if (!DIFFERENT_CITY_NAMES_RE.test(cityText)) return false;
-    return NOT_THIS_MARKET_RE.test(seg) || !!(venueNotRe && venueNotRe.test(seg)) || CITY_PRODUCTION_LOCATOR_RE.test(cityText);
+    if (NOT_THIS_MARKET_RE.test(seg) || (venueNotRe && venueNotRe.test(seg))) return true;
+    if (!CITY_PRODUCTION_LOCATOR_RE.test(cityText)) return false;
+    return !LOCATOR_HERE_VETO_RE.test(cityText)
+      && !(venueBare && new RegExp('\\b' + escapeRegExp(venueBare) + '\\b', 'i').test(cityText));
   });
 }
 

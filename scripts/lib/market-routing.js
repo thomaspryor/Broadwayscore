@@ -346,6 +346,10 @@ const AMBIGUOUS_VENUE_WORDS = new Set([
 const VENUE_ALIASES = [
   ['royal-shakespeare', ['rsc']],
 ];
+// "rsc" names the company, which brands its transfers too: an RSC production at the
+// Barbican (its London home) is "...-rsc-review" as well, so on a show at one of these
+// houses the alias says nothing about which run (ship-check P2).
+const ALIAS_TRANSFER_HOUSES = { rsc: /\bbarbican\b/i };
 
 /**
  * Slug phrases that identify a venue. Only the first comma part is the venue's
@@ -419,7 +423,9 @@ function siblingVenueDecision(sibData, { url, publishDate, visitedSet }) {
     // family) by design: regional <-> regional is the tour-family layer's call, not a venue match.
     if (sibData.category === 'regional' && sib.category === 'regional') continue;
     // A labelled sibling is also named by its label's initials ("tosca-eno-review").
-    const phrase = [...venuePhrases(sib.venue), ...(sib.labelPhrases || [])].find(p => urlNamesPhrase(urlPath, p));
+    const phrase = [...venuePhrases(sib.venue), ...(sib.labelPhrases || [])]
+      .filter(p => !(ALIAS_TRANSFER_HOUSES[p] && ALIAS_TRANSFER_HOUSES[p].test(String(sibData.venue || ''))))
+      .find(p => urlNamesPhrase(urlPath, p));
     if (!phrase) continue;
     // A sibling with no opening date has no window, so it cannot claim a review.
     if (!sib.openingDate) continue;

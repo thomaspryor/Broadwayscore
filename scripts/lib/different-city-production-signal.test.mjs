@@ -136,3 +136,16 @@ test('BRO-7077: locator phrase stays off for history and other markets', () => {
   ]) assert.equal(g.hasDifferentCityProductionSignal([s], '', NYC_SHOW), false, s);
   assert.equal(g.hasDifferentCityProductionSignal(['The review is of a Chicago production.'], '', CHICAGO_SHOW), false, 'regional page');
 });
+
+// BRO-7077 ship-check P1: a located company PLAYING in New York is this market's review.
+test('BRO-7077: locator stays off for a visiting company playing in New York', () => {
+  const PUBLIC = { ...NYC_SHOW, venue: 'The Public Theater' };
+  for (const s of [
+    "The review is of a Chicago-based company's production now at the Public Theater in New York.",
+    'The review is of a Chicago production visiting BAM in Brooklyn.',
+    'The review is of a Chicago staging, now playing at the Public.',
+    'The piece is about a Chicago company bringing its show to New York.',
+  ]) assert.equal(g.hasDifferentCityProductionSignal([s], '', PUBLIC), false, s);
+  // King Lear case still fires.
+  assert.equal(g.hasDifferentCityProductionSignal(['The review is of a Chicago production by Babes with Blades at Theater Wit.'], '', PUBLIC), true);
+});

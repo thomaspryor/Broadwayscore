@@ -27,3 +27,13 @@ test('"rsc" inside a longer word does not count', () => {
 test('Globe slug with no RSC mention stays', () => {
   assert.equal(route('aylit-globe-2026', 'https://example.com/as-you-like-it-globe-review', '2026-09-01').action, 'accept');
 });
+
+test('undated "-rsc-" slug on an RSC transfer at the Barbican stays put', () => {
+  const sh = [
+    { id: 'hamlet-barbican-2026', title: 'Hamlet', category: 'off-west-end', venue: 'Barbican Theatre', openingDate: '2026-12-01', closingDate: '2027-01-20' },
+    { id: 'hamlet-rsc-2026', title: 'Hamlet', category: 'regional', venue: 'Royal Shakespeare Theatre, Stratford-upon-Avon', openingDate: '2026-09-01', closingDate: '2026-10-30' },
+  ];
+  const ix = buildSiblingIndex(sh);
+  const d = classifyMarketRouting({ showId: 'hamlet-barbican-2026', url: 'https://example.com/hamlet-rsc-review', publishDate: null, category: 'off-west-end', siblingIndex: ix });
+  assert.equal(d.action, 'accept');
+});
