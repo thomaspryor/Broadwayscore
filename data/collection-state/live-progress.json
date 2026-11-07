@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-11-07T03:37:11.594Z",
-  "processed": 4,
-  "failed": 20,
-  "successRate": "16.7%",
+  "updatedAt": "2026-11-07T03:38:28.229Z",
+  "processed": 326,
+  "failed": 226,
+  "successRate": "59.1%",
   "tierBreakdown": {
     "playwright": 164,
     "amp": 0,
@@ -14,7 +14,7 @@
     "archiveToday": 0,
     "archive": 87
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
       "t": "2026-11-07T03:22:40.497Z",
@@ -39,15 +39,21 @@
       "domain": "nytimes.com"
     },
     {
-      "t": "2026-11-07T03:32:42.365Z",
+      "t": "2026-11-07T03:31:09.831Z",
       "event": "bb-session",
-      "session": "fdf90d39",
-      "url": "http://www.northjersey.com/arts_entertainment/142894205__Salesman__revival_buckl"
+      "session": "f0ee5e20",
+      "url": "https://bachtrack.com/review-medea-yoncheva-spyres-met-opera-new-york-october-20"
     },
     {
-      "t": "2026-11-07T03:32:46.405Z",
-      "event": "bb-login-uncertain",
-      "domain": "northjersey.com"
+      "t": "2026-11-07T03:36:27.104Z",
+      "event": "bb-session",
+      "session": "0703b7a3",
+      "url": "https://hermes.talkinbroadway.com/allthatchat_new/d.php?id=2655044"
+    },
+    {
+      "t": "2026-11-07T03:36:27.928Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
