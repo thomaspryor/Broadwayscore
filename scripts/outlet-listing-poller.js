@@ -768,7 +768,7 @@ async function fetchViaSerp(outletId, domain, cutoff, opts) {
 
 // Cap on article pages fetched per run. A candidate needs a title form in the
 // headline or slug plus a run-window date, so a normal day yields a handful.
-const PAGE_CONFIRM_MAX_FETCHES = parseInt(process.env.PAGE_CONFIRM_MAX_FETCHES || '30', 10);
+const PAGE_CONFIRM_MAX_FETCHES = (() => { const n = parseInt(process.env.PAGE_CONFIRM_MAX_FETCHES || '30', 10); return Number.isFinite(n) && n >= 0 ? n : 30; })(); // a typo'd value must not remove the cap (BRO-7083)
 
 // looksRight: the plain-fetch page must pass it (it names a candidate's title),
 // otherwise it is a bot wall, paywall stub or JS shell and the scraper chain runs.
