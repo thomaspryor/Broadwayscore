@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-07T17:35:13.600Z",
+  "generatedAt": "2026-11-07T18:27:58.368Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -108,17 +108,21 @@
     {
       "showId": "wanted-2022",
       "reason": "no data/review-texts directory for this show"
+    },
+    {
+      "showId": "the-steel-man-off-broadway-2026",
+      "reason": "no data/review-texts directory for this show"
     }
   ],
   "feedsChecked": 84,
   "feedsFailed": [
     {
-      "outletId": "front-row-center",
-      "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
+      "outletId": "theater-life",
+      "error": "Timeout fetching https://theaterlife.com/feed"
     },
     {
-      "outletId": "theater-pizzazz",
-      "error": "Timeout fetching https://theaterpizzazz.com/feed/"
+      "outletId": "front-row-center",
+      "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
     {
       "outletId": "cote-notices",
@@ -135,17 +139,9 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
-    },
-    {
-      "outletId": "fringereview",
-      "error": "Timeout fetching https://fringereview.co.uk/feed/"
-    },
-    {
-      "outletId": "lighting-and-sound-america",
-      "error": "Timeout fetching https://lightingandsoundamerica.com/news/rss.asp"
     }
   ],
-  "itemsScanned": 837,
+  "itemsScanned": 827,
   "matchedGaps": 6,
   "possibleGaps": 5,
   "gaps": [
