@@ -36,6 +36,12 @@ test('"One moment, please" verification page is a challenge page at any size', (
   assert.equal(isChallengeOrGarbage(html), true);
 });
 
+test('exact "One moment, please..." title without a verification marker is not a challenge page', () => {
+  const html = '<html><head><title>One moment, please...</title></head><body>' + 'Real review prose. '.repeat(800) + '</body></html>';
+  assert.ok(html.length > 10000);
+  assert.equal(isChallengeOrGarbage(html), false);
+});
+
 test('an article that only mentions "One moment, please" is not a challenge page', () => {
   const html = '<html><head><title>One moment, please: a review</title></head><body>' + 'Real review prose. '.repeat(800) + '</body></html>';
   assert.equal(isChallengeOrGarbage(html), false);
