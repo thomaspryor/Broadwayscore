@@ -37,6 +37,18 @@ test('real contamination still dedups', () => {
   assert.equal(isJointCombinedCopy(null, P, kept, SHOW[P]), false);
 });
 
+test('short titles (Red, SIX, Art) count when written as a proper noun (BRO-7077)', () => {
+  const R = 'red-off-broadway-2026';
+  const red = (fullText) => copy(R, [B], { fullText });
+  const kept = [copy(B, [R])];
+  assert.equal(isJointCombinedCopy(red('Benevolent is first. Red is gorgeous and RED lingers.'), R, kept, { title: 'Red' }), true);
+  assert.equal(isJointCombinedCopy(red('Benevolent is first. SIX rocks.'), R, kept, { title: 'SIX' }), true);
+  assert.equal(isJointCombinedCopy(red('Benevolent is first, then a play in red light.'), R, kept, { title: 'Red' }), false, 'prose red never counts');
+  assert.equal(isJointCombinedCopy(red('Benevolent is first. Redemption follows.'), R, kept, { title: 'Red' }), false, 'substring never counts');
+  assert.equal(isJointCombinedCopy(red('Benevolent is first. Art is next.'), R, [copy(B, [])], { title: 'Art' }), true);
+  assert.equal(isJointCombinedCopy(copy(R, [], { fullText: 'Art is next.' }), R, [copy(B, ['x'])], { title: 'Art' }), false, 'still needs the combinedWith link');
+});
+
 test('rebuild dedup consults the joint-copy guard', () => {
   const src = readFileSync(new URL('../../scripts/rebuild-all-reviews.js', import.meta.url), 'utf8');
   assert.match(src, /isJointCombinedCopy\(data, showId, existing\.copies \|\| \[existing\], showById\[showId\]\)/);
