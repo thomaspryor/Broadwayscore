@@ -37,13 +37,19 @@ const PRIVATE_SHARE_SEGMENT_ENCODED = new RegExp(`%2F(${PREFIX_ALT})%2F(?:(?!%2F
 // Supabase's implicit OAuth flow lands on /auth/complete (or /auth/callback)#access_token=…&refresh_token=….
 // auth-js only clears the hash after its follow-up user fetch succeeds, so a stalled
 // sign-in leaves live tokens in the URL that Sentry / PostHog record (BRO-4525).
-const AUTH_TOKEN_PARAM = /\b(access_token|refresh_token|provider_token|provider_refresh_token)=[^&#\s"'<>]+/gi;
+// `invite` is the critic invite link's bearer token (BRO-7087).
+const AUTH_TOKEN_PARAM = /\b(access_token|refresh_token|provider_token|provider_refresh_token|invite)=[^&#\s"'<>]+/gi;
 
 export function redactPrivateShareUrl(value: string): string {
   return value
     .replace(AUTH_TOKEN_PARAM, '$1=:redacted')
     .replace(PRIVATE_SHARE_SEGMENT, PRIVATE_SHARE_REDACTED)
     .replace(PRIVATE_SHARE_SEGMENT_ENCODED, '%2F$1%2F%3Atoken');
+}
+
+/** True when the query string carries a critic invite token (BRO-7087): GA and replay stay off. */
+export function hasPrivateQueryToken(search: string): boolean {
+  return /[?&]invite=/.test(search);
 }
 
 /** True on a private share page (session replay is switched off there). */

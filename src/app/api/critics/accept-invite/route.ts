@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getCriticBySlug } from '@/lib/data-reviews';
-import { rateLimitAllow } from '@/lib/critic-claim';
+import { rateLimitAllow, claimsDisabled } from '@/lib/critic-claim';
 import { acceptInvite, grantOwnership, type RecordResult } from '@/lib/critic-ownership';
 import { criticBackendReady, getRequestUser, sbAdmin, emailOwner, escHtml, approvedOwnerOf, ownershipDeps } from '@/lib/critic-server';
 
@@ -20,7 +20,7 @@ function clientIp(req: NextRequest): string {
  * Logic lives in acceptInvite (critic-ownership.ts); this wires real I/O.
  */
 export async function POST(req: NextRequest) {
-  if (!criticBackendReady()) return NextResponse.json({ error: 'Not available right now.' }, { status: 503 });
+  if (claimsDisabled() || !criticBackendReady()) return NextResponse.json({ error: 'Not available right now.' }, { status: 503 });
   if (!rateLimitAllow(ipHits, clientIp(req), 20, 3600_000)) return NextResponse.json({ error: 'Too many requests. Please try again later.' }, { status: 429 });
   const user = await getRequestUser(req);
   if (!user) return NextResponse.json({ error: 'Please sign in first.' }, { status: 401 });

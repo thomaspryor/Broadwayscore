@@ -5,7 +5,7 @@ import { SpeedInsights } from '@vercel/speed-insights/next';
 import Script from 'next/script';
 import { usePathname } from 'next/navigation';
 import { useEffect } from 'react';
-import { isAuthCallbackPath, isPrivateSharePath, posthogBeforeSend, sentryScrub, vercelBeforeSend } from '@/lib/analytics/redact-url';
+import { hasPrivateQueryToken, isAuthCallbackPath, isPrivateSharePath, posthogBeforeSend, sentryScrub, vercelBeforeSend } from '@/lib/analytics/redact-url';
 import { POSTHOG_PROXY_PATH, POSTHOG_UI_HOST } from '@/lib/posthog-proxy';
 import { gaInitScript } from '@/lib/analytics/ga-init-script';
 import { applyAnalyticsUser, flushUgcOutbox, reportStaleDeployReload } from '@/lib/ugc-analytics';
@@ -47,7 +47,7 @@ export default function AnalyticsWrapper() {
   useEffect(() => {
     if (!pathname) return;
     try {
-      const onPlans = isPrivateSharePath(pathname);
+      const onPlans = isPrivateSharePath(pathname) || hasPrivateQueryToken(window.location.search);
       if (onPlans || isAuthCallbackPath(pathname)) {
         (window as unknown as { posthog?: { stopSessionRecording?: () => void } }).posthog?.stopSessionRecording?.();
       }
@@ -129,7 +129,7 @@ export default function AnalyticsWrapper() {
             // Shared Plans privacy (BRO-4481): no replay of a plans page, and
             // every event's URLs/properties go through the token redactor.
             // Unsampled tabs disable replay so the recorder never downloads.
-            disable_session_recording: isPrivateSharePath(window.location.pathname) || isAuthCallbackPath(window.location.pathname) || !sampledForReplay(),
+            disable_session_recording: isPrivateSharePath(window.location.pathname) || hasPrivateQueryToken(window.location.search) || isAuthCallbackPath(window.location.pathname) || !sampledForReplay(),
             // The project runs no surveys; this skips the ~33kB surveys
             // script every page otherwise fetched. Turn it back on with the
             // first survey.

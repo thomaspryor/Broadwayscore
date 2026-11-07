@@ -165,3 +165,17 @@ test('OAuth tokens in a URL hash or query are scrubbed (BRO-4525)', async () => 
   // and through a payload walker, as Sentry sends it
   assert.ok(!JSON.stringify(sentryScrub({ request: { url } })).includes('r3fr35h'));
 });
+
+test('critic invite tokens are scrubbed and switch GA/replay off (BRO-7087)', async () => {
+  const { redactPrivateShareUrl, hasPrivateQueryToken, posthogBeforeSend } = await import('../../src/lib/analytics/redact-url');
+  const url = 'https://broadwayscorecard.com/critics/michael-sommers?invite=michael-sommers.1795280357.bfe8280c5830cb7e671f852a219411fb&utm_source=x';
+  const out = redactPrivateShareUrl(url);
+  assert.ok(!out.includes('bfe8280c58'), `invite token leaked: ${out}`);
+  assert.match(out, /invite=:redacted&utm_source=x/);
+  assert.equal(hasPrivateQueryToken('?invite=abc'), true);
+  assert.equal(hasPrivateQueryToken('?a=1&invite=abc'), true);
+  assert.equal(hasPrivateQueryToken('?uninvite=abc'), false);
+  assert.equal(hasPrivateQueryToken(''), false);
+  const ev = posthogBeforeSend({ event: '$pageview', properties: { $current_url: url } } as never) as unknown as { properties: { $current_url: string } };
+  assert.ok(!ev.properties.$current_url.includes('bfe8280c58'));
+});

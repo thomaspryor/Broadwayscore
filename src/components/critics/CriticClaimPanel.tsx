@@ -37,12 +37,35 @@ function devOwnerPreview(): { reachPeople: number | null } | null {
   } catch { return null; }
 }
 
+/** Dev-only `?devCriticSignedIn=1`: preview the signed-in, not-yet-owner states (invite confirm step). */
+function devSignedInPreview(): boolean {
+  if (process.env.NODE_ENV === 'production') return false;
+  try { return new URLSearchParams(window.location.search).get('devCriticSignedIn') === '1'; } catch { return false; }
+}
+
 /** `?invite=<token>` from an owner's invite link (BRO-7087); checked on the server. */
-function readInvite(): string | null {
+const INVITE_KEY = (slug: string) => `bwsc-critic-invite:${slug}`;
+
+/**
+ * The invite token is a bearer credential: take it out of the address bar on
+ * arrival (history, screenshots, analytics) and keep it for this tab only.
+ */
+function readInvite(slug: string): string | null {
   try {
-    const t = new URLSearchParams(window.location.search).get('invite');
-    return t && t.length <= 200 ? t : null;
+    const fromUrl = new URLSearchParams(window.location.search).get('invite');
+    if (fromUrl && fromUrl.length <= 200) {
+      try { sessionStorage.setItem(INVITE_KEY(slug), fromUrl); } catch { /* private mode */ }
+      dropInviteParam();
+      return fromUrl;
+    }
+    const kept = sessionStorage.getItem(INVITE_KEY(slug));
+    return kept && kept.length <= 200 ? kept : null;
   } catch { return null; }
+}
+
+function forgetInvite(slug: string) {
+  try { sessionStorage.removeItem(INVITE_KEY(slug)); } catch { /* ignore */ }
+  dropInviteParam();
 }
 
 function dropInviteParam() {
@@ -72,8 +95,9 @@ export default function CriticClaimPanel({ slug, name, outlet, claimed, reviewOp
   const [claimsOff, setClaimsOff] = useState(false);
   const [invite, setInvite] = useState<string | null>(null);
   const [inviteState, setInviteState] = useState<'idle' | 'working' | 'error'>('idle');
+  const [inviteGo, setInviteGo] = useState(false);
   const [inviteError, setInviteError] = useState('');
-  useEffect(() => { setInvite(readInvite()); }, []);
+  useEffect(() => { setInvite(readInvite(slug)); }, [slug]);
   useEffect(() => {
     fetch('/api/critics/status').then((r) => (r.ok ? r.json() : null)).then((j) => { if (j?.claimsDisabled) setClaimsOff(true); }).catch(() => {});
   }, []);
@@ -90,33 +114,36 @@ export default function CriticClaimPanel({ slug, name, outlet, claimed, reviewOp
   useEffect(() => {
     const dev = devOwnerPreview();
     if (dev) { setMe({ state: 'owner', profile: null, notifyOpeningNight: false, reachPeople: dev.reachPeople }); return; }
+    if (devSignedInPreview()) { setMe({ state: 'none' }); return; }
     if (loading) return;
     if (!isAuthenticated) { setMe({ state: 'signed-out' }); return; }
     refresh();
   }, [loading, isAuthenticated, refresh]);
 
-  // BRO-7087: signed in with an invite link -> take over the page, then show the owner view.
+  // BRO-7087: signed in with an invite link -> the person confirms, then takes over the page.
+  // Never automatic: someone who opens a forwarded link while signed in must not take a page by accident.
   useEffect(() => {
     if (!invite) return;
-    if (me.state === 'owner') { dropInviteParam(); setInvite(null); return; }
-    if ((me.state !== 'none' && me.state !== 'pending') || inviteState !== 'idle') return;
+    if (me.state === 'owner') { forgetInvite(slug); setInvite(null); return; }
+    if (!inviteGo || (me.state !== 'none' && me.state !== 'pending') || inviteState !== 'idle') return;
     setInviteState('working');
     (async () => {
+      const fail = (msg: string) => { forgetInvite(slug); setInviteState('error'); setInviteError(msg); };
       try {
         const token = await accessToken();
-        if (!token) { setInviteState('error'); setInviteError('Please sign in again.'); return; }
+        if (!token) { setInviteState('idle'); setInviteGo(false); setMe({ state: 'signed-out' }); return; }
         const res = await fetch('/api/critics/accept-invite', {
           method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
           body: JSON.stringify({ slug, token: invite }),
         });
         const j = await res.json().catch(() => ({}));
-        if (!res.ok) { setInviteState('error'); setInviteError(j.error || 'Something went wrong. Please try again.'); return; }
-        dropInviteParam();
+        if (!res.ok) { fail(j.error || 'Something went wrong. Please open the link again.'); return; }
+        forgetInvite(slug);
         setInvite(null);
         await refresh();
-      } catch { setInviteState('error'); setInviteError('Something went wrong. Please try again.'); }
+      } catch { fail('Something went wrong. Please open the link again.'); }
     })();
-  }, [invite, me.state, inviteState, slug, refresh]);
+  }, [invite, inviteGo, me.state, inviteState, slug, refresh]);
 
   const isOwner = me.state === 'owner';
   useEffect(() => { onOwnerChange?.(isOwner); }, [isOwner, onOwnerChange]);
@@ -146,17 +173,25 @@ export default function CriticClaimPanel({ slug, name, outlet, claimed, reviewOp
     );
   }
   if (invite) {
-    const first = name.trim().split(/\s+/)[0] || name;
+    const first = name.trim().split(/\s+/)[0] || name; // critic-invite.ts firstName pulls in node crypto
     if (me.state === 'signed-out') {
       return (
         <div className="mb-4 flex flex-wrap items-center justify-between gap-3 rounded-lg border border-brand/50 bg-brand/10 px-4 py-3 text-sm">
           <span className="text-white"><strong>Welcome, {first}.</strong> <span className="text-fg-muted">Sign in to take over your page.</span></span>
-          <button type="button" onClick={() => showSignIn('critic', 'critic_invite', { returnTo: `/critics/${slug}?invite=${encodeURIComponent(invite)}` })} className={btnPrimary}>Sign in</button>
+          <button type="button" onClick={() => showSignIn('critic', 'critic_invite', { returnTo: `/critics/${slug}` })} className={btnPrimary}>Sign in</button>
         </div>
       );
     }
-    if (inviteState === 'error' || me.state === 'unavailable') {
+    if (inviteState === 'error' || me.state === 'unavailable' || claimsOff) {
       return <div role="alert" className="mb-4 rounded-lg border border-white/10 bg-surface-raised px-4 py-3 text-sm text-white">{inviteError || 'Invites are not available right now. Please try again later.'}</div>;
+    }
+    if (!inviteGo && (me.state === 'none' || me.state === 'pending')) {
+      return (
+        <div className="mb-4 flex flex-wrap items-center justify-between gap-3 rounded-lg border border-brand/50 bg-brand/10 px-4 py-3 text-sm">
+          <span className="text-white"><strong>Welcome, {first}.</strong> <span className="text-fg-muted">Take over this page{user?.email ? ` as ${user.email}` : ''}?</span></span>
+          <button type="button" onClick={() => setInviteGo(true)} className={btnPrimary}>Take over my page</button>
+        </div>
+      );
     }
     return <div className="mb-4 rounded-lg border border-brand/30 bg-brand/10 px-4 py-3 text-sm text-white">Welcome, {first}. Setting up your page…</div>;
   }
