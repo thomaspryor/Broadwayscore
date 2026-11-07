@@ -82,7 +82,13 @@ runs:
 
         # Push with retry — newer local scrape always wins on conflicts
         # In rebase context, -X theirs = keep our commits being replayed (local changes)
-        for i in 1 2 3 4 5; do
+        # BRO-6510: attempt budget + widening jitter live in
+        # scripts/lib/push-aggregator-archive.js (tested). A wall-clock
+        # deadline keeps 10 attempts of slow git from outrunning the job.
+        MAX=$(node "${GITHUB_WORKSPACE}/scripts/lib/push-aggregator-archive.js" max 2>/dev/null) || MAX=10
+        DEADLINE_S=900
+        START_S=$SECONDS
+        for i in $(seq 1 "$MAX"); do
           PUSH_STDERR_FILE=$(mktemp)
           if git_net 120 push origin main 2>"$PUSH_STDERR_FILE"; then
             cat "$PUSH_STDERR_FILE" >&2
@@ -132,14 +138,19 @@ runs:
             retry:*)
               DELAY_MS="${DECISION#retry:}"
               DELAY_S=$(( (DELAY_MS + 999) / 1000 ))
-              echo "::warning::Aggregator archive push hit a GitHub API rate limit (attempt $i/5) — backing off ${DELAY_S}s before retry"
+              echo "::warning::Aggregator archive push hit a GitHub API rate limit (attempt $i/$MAX) — backing off ${DELAY_S}s before retry"
               sleep "$DELAY_S"
               ;;
             *)
-              sleep $((RANDOM % 10 + 5))
+              DELAY_S=$(node "${GITHUB_WORKSPACE}/scripts/lib/push-aggregator-archive.js" delay "$i" 2>/dev/null) || DELAY_S=$((RANDOM % 10 + 5))
+              sleep "$DELAY_S"
               ;;
           esac
+          if [ $((SECONDS - START_S)) -ge "$DEADLINE_S" ]; then
+            echo "Aggregator archive push deadline (${DEADLINE_S}s) reached after attempt $i"
+            break
+          fi
         done
 
-        echo "WARNING: Failed to push aggregator-archive after 5 attempts"
+        echo "WARNING: Failed to push aggregator-archive after $i attempts"
         exit 1
