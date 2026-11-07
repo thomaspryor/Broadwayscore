@@ -1431,5 +1431,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-07T20:07:50.810Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6987-reddit-due-dispatch-v2",
+    "title": "Landing blocked: unit-tests-node red on land/bro-6987-reddit-due-dispatch-v2",
+    "description": "land.yml did not land land/bro-6987-reddit-due-dispatch-v2: the unit-tests-node gate went red at c3632ca6b0. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/42409720492",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6987-reddit-due-dispatch-v2"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "c3632ca6b0f9c20fc3421fcec7d66c0174fb1353"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42409720492"
+      }
+    ],
+    "queuedAt": "2026-11-07T20:37:51.609Z"
   }
 ]
