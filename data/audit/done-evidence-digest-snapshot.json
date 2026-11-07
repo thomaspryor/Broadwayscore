@@ -1,47 +1,47 @@
 {
-  "generatedAt": "2026-11-06T09:35:50.625Z",
-  "bannerText": "146/177 Done(14d) verified on main · 10 FAILED · 0 vacuous · 9 stuck-but-done · 16 mis-armed, needs re-arming (BRO-6681, BRO-6247, BRO-6232, +13 more)",
+  "generatedAt": "2026-11-07T09:01:23.257Z",
+  "bannerText": "113/123 Done(14d) verified on main · 5 FAILED · 0 vacuous · 13 stuck-but-done · 2 mis-armed, needs re-arming (BRO-6963, BRO-6919)",
   "items": [
     {
-      "title": "FAILED BRO-6530 — Renew The Stage login cookie on the Mac Studio (CI cookie expired 2026-10-29)",
-      "detail": "(gh not authenticated; read runs from the public GitHub API) check-cookie-health.yml: MISMATCH — most recent run concluded 'failure', expected 'success' (https://github.com/thomas…",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6530/renew-the-stage-login-cookie-on-the-mac-studio-ci-cookie-expired-2026"
-    },
-    {
-      "title": "FAILED BRO-6459 — BSC Daily: Data quality: cv-wrongproduction lifetime sweep",
-      "detail": "[check-health-row-absent] FAIL: \"Data quality: cv-wrongproduction lifetime sweep\" still listed in the 2026-11-06T09:26:27.436Z health snapshot",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6459/bsc-daily-data-quality-cv-wrongproduction-lifetime-sweep"
-    },
-    {
-      "title": "FAILED BRO-5745 — Poller review-texts push burns 20 attempts on a false rename/delete conflict (git pairs unrelated _pending files)",
-      "detail": "TAP version 13",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5745/poller-review-texts-push-burns-20-attempts-on-a-false-renamedelete"
-    },
-    {
-      "title": "FAILED BRO-5456 — BSC Daily: Data: armed-but-vacuous backlog cards",
-      "detail": "[check-health-row-absent] FAIL: \"Data: armed-but-vacuous backlog cards\" still listed in the 2026-11-06T09:26:27.436Z health snapshot",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5456/bsc-daily-data-armed-but-vacuous-backlog-cards"
-    },
-    {
-      "title": "FAILED BRO-7004 — P1: Opening night miss: Parcel from America (2026-11-04)",
-      "detail": "gap audit generated 2026-11-06T07:54:59.218Z BLIND parcel-from-america-off-broadway-2026: 3 live, 0 cited not live; info: 0 census candidate(s), 0 exclusion(s) confirmed correct; …",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7004/p1-opening-night-miss-parcel-from-america-2026-11-04"
-    },
-    {
       "title": "FAILED BRO-6976 — BSC Daily: Data quality: cross-outlet attribution drift",
-      "detail": "[check-health-row-absent] FAIL: \"Data quality: cross-outlet attribution drift\" still listed in the 2026-11-06T09:26:27.436Z health snapshot",
+      "detail": "[check-health-row-absent] FAIL: \"Data quality: cross-outlet attribution drift\" still listed in the 2026-11-07T08:51:31.062Z health snapshot",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-6976/bsc-daily-data-quality-cross-outlet-attribution-drift"
     },
     {
-      "title": "FAILED BRO-6869 — iPhone app batch: work the 16 app-repo cards (owner chose A, 2026-11-02)",
-      "detail": "OPEN: 18 pending row(s) remain: the-rocky-horror-show, parade-2023, springsteen-on-broadway-2021",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6869/iphone-app-batch-work-the-16-app-repo-cards-owner-chose-a-2026-11-02"
+      "title": "FAILED BRO-6827 — BSC Daily: Cron's latest run failed (not yet stale): Test Suite",
+      "detail": "[check-health-row-absent] FAIL: \"Cron's latest run failed (not yet stale): Test Suite\" still listed in the 2026-11-07T08:51:31.062Z health snapshot",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6827/bsc-daily-crons-latest-run-failed-not-yet-stale-test-suite"
     },
     {
-      "title": "FAILED BRO-6830 — BSC Daily: Live-data test failing: the live corpus has zero unallowlisted doubled-market ids (tests/unit/doubled-market-ids-live-data.test.mjs)",
-      "detail": "[check-health-row-absent] FAIL: \"Live-data test failing: the live corpus has zero unallowlisted doubled-market ids (tests/unit/doubled-market-ids-live-da\" still listed in the 2026…",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6830/bsc-daily-live-data-test-failing-the-live-corpus-has-zero"
+      "title": "FAILED BRO-6814 — BSC Daily: Workflow repeat-failure: Test Suite / Test Summary / Check results",
+      "detail": "[check-health-row-absent] FAIL: \"Workflow repeat-failure: Test Suite / Test Summary / Check results\" still listed in the 2026-11-07T08:51:31.062Z health snapshot",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6814/bsc-daily-workflow-repeat-failure-test-suite-test-summary-check"
+    },
+    {
+      "title": "FAILED BRO-4554 — UX audit: Feedback after action is below the fold. 'Date saved' confirmation in 'mobile__ios_date_wheel_sim' requires sc",
+      "detail": "FAIL UX resolution: LINEAR_API_KEY not set in .env or environment",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4554/ux-audit-feedback-after-action-is-below-the-fold-date-saved"
+    },
+    {
+      "title": "FAILED BRO-7004 — P1: Opening night miss: Parcel from America (2026-11-04)",
+      "detail": "gap audit generated 2026-11-07T08:05:11.343Z BLIND parcel-from-america-off-broadway-2026: 5 live, 0 cited not live; info: 0 census candidate(s), 0 exclusion(s) confirmed correct; …",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7004/p1-opening-night-miss-parcel-from-america-2026-11-04"
+    },
+    {
+      "title": "STUCK BRO-6986 — Auto-fix (second try): Opening Night Poller Failed",
+      "detail": "its own evidence holds on main — looks finished",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6986/auto-fix-second-try-opening-night-poller-failed"
+    },
+    {
+      "title": "STUCK BRO-6968 — P1: Opening night miss: The Bridge (2026-11-03)",
+      "detail": "its own evidence holds on main — looks finished",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6968/p1-opening-night-miss-the-bridge-2026-11-03"
+    },
+    {
+      "title": "STUCK BRO-6858 — Broadway press night hardening before Wanted (Nov 8): old-path watchdog, fast owner alert, fresh embargo, faster first-2h polling, credit preflight",
+      "detail": "its own evidence holds on main — looks finished",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6858/broadway-press-night-hardening-before-wanted-nov-8-old-path-watchdog"
     }
   ],
-  "moreCount": 11
+  "moreCount": 10
 }
