@@ -216,10 +216,22 @@ const STRONG_DIFFERENT_SHOW_MARKERS = [
 // London production" verdicts mostly come from a critic mentioning the show's history
 // (Heathers, Kenrex, Hamlet, Waiting for Godot were all real NYC reviews), while a US
 // regional venue address in the text (Theater Wit, 1229 W. Belmont) is concrete.
-const DIFFERENT_CITY_NAMES_RE = new RegExp(
-  '\\b(?:Chicago|Illinois|Los Angeles|California|San Francisco|San Diego|Boston|Massachusetts|' +
+const DIFFERENT_CITY_ALT =
+  'Chicago|Illinois|Los Angeles|California|San Francisco|San Diego|Boston|Massachusetts|' +
   'Philadelphia|Pennsylvania|Washington,? D\\.?C\\.?|Seattle|Houston|Dallas|Austin|Atlanta|Minneapolis|' +
-  'Cleveland|Pittsburgh|Denver|Detroit|Norfolk)\\b' +
+  'Cleveland|Pittsburgh|Denver|Detroit|Norfolk';
+// BRO-7077: CV's own wording for the King Lear case was "The review is of a Chicago production
+// by Babes with Blades at Theater Wit" (no "not Off-Broadway"), so the market-statement test
+// missed it. The locator is anchored to the review's OWN subject ("the review is of a <city>
+// production", "reviews a <city>-based company"), so a comparison or history mention ("compares
+// it to the Chicago production", "the director helmed the Chicago staging") never fires. The
+// signal beats the slug-match run-window veto, so a loose match would drop real reviews.
+const CITY_PRODUCTION_LOCATOR_RE = new RegExp(
+  '(?:\\b(?:review|article|piece|critique)\\s+(?:is|was)\\s+(?:of|about)|^\\s*(?:reviews?|covers?)|[.;]\\s*(?:reviews?|covers?))' +
+  '\\s+(?:an?|the)\\s+(?:' + DIFFERENT_CITY_ALT + ')(?:-based)?\\s+(?:production|staging|mounting|revival|company|troupe)\\b', 'i'
+);
+const DIFFERENT_CITY_NAMES_RE = new RegExp(
+  '\\b(?:' + DIFFERENT_CITY_ALT + ')\\b' +
   // "Austin Pendleton", "Denver Post": a city glued to another capitalised word is a name, not a place,
   // unless that word is a venue word ("Chicago Shakespeare Theater").
   '(?!\\s+(?!Theat|Playhouse|Rep\\b|Stage|Shakes|Opera)[A-Z][a-z]+)'
@@ -256,7 +268,8 @@ function hasDifferentCityProductionSignal(cvIssues, cvReasoning, show) {
   return texts.some((seg) => {
     let cityText = seg.replace(QUOTED_PASSAGE_RE, ' ').replace(OUTLET_CITY_RE, ' ');
     if (titleRe) cityText = cityText.replace(titleRe, ' ');
-    return DIFFERENT_CITY_NAMES_RE.test(cityText) && (NOT_THIS_MARKET_RE.test(seg) || !!(venueNotRe && venueNotRe.test(seg)));
+    if (!DIFFERENT_CITY_NAMES_RE.test(cityText)) return false;
+    return NOT_THIS_MARKET_RE.test(seg) || !!(venueNotRe && venueNotRe.test(seg)) || CITY_PRODUCTION_LOCATOR_RE.test(cityText);
   });
 }
 
