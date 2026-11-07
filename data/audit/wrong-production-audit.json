@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-07T20:56:42.400Z",
+  "timestamp": "2026-11-07T21:44:10.435Z",
   "stats": {
-    "totalReviews": 80509,
-    "alreadyFlagged": 22037,
+    "totalReviews": 80503,
+    "alreadyFlagged": 22028,
     "dateGuardCatches": 216,
-    "directorMismatch": 3523,
+    "directorMismatch": 3524,
     "tvFilmSignals": 2291,
-    "londonSignals": 3623,
+    "londonSignals": 3625,
     "offBroadwaySignals": 747,
-    "yearMismatch": 363,
-    "noPublishDate": 8456
+    "yearMismatch": 364,
+    "noPublishDate": 8453
   },
   "findings": [
     {
@@ -47690,6 +47690,19 @@
       ]
     },
     {
+      "showId": "operation-mincemeat-west-end-2024",
+      "file": "a-youngish-perspective--ross-bevan.json",
+      "publishDate": "2026-11-05",
+      "url": "https://ayoungishperspective.co.uk/2026/11/05/review-operation-mincemeat-4/",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2026 (3x) more than 2023 (0x). 2026 matches production: operation-mincemeat-tour-2026"
+        }
+      ]
+    },
+    {
       "showId": "orlando-off-broadway-2026",
       "file": "theater-life--alix-cohen.json",
       "score": 96,
@@ -72616,6 +72629,19 @@
     },
     {
       "showId": "the-outsiders-tour-2025",
+      "file": "stageandcinema--milo-shapiro.json",
+      "publishDate": "2026-11-04",
+      "url": "https://stageandcinema.com/2026/11/04/the-outsiders-tour-san-diego/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"danya taymor\" from the-outsiders-2024"
+        }
+      ]
+    },
+    {
+      "showId": "the-outsiders-tour-2025",
       "file": "the-daily-gazette--bill-kellert.json",
       "score": 73,
       "publishDate": "2026-05-22",
@@ -90765,6 +90791,19 @@
       "score": 79,
       "publishDate": "2026-10-09",
       "url": "https://markaspen.com/2026/10/09/blood-blood/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "blood-of-my-blood-west-end-2026",
+      "file": "partially-obstructed-view--unknown.json",
+      "publishDate": "2026-11-02",
+      "url": "http://partially-obstructed-view.blogspot.com/2026/11/theatre-review-blood-of-my-blood.html",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -130776,6 +130815,19 @@
       "score": 90,
       "publishDate": "2026-11-02",
       "url": "https://www.londontheatredirect.com/news/the-lives-of-others-review-2026?srsltid=AYCX9vIe9kZE3ufXHUL-sN13uAPRmD6uRKEcuIaxqF33uPQvVhIjgRZo",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"adelphi theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-lives-of-others-west-end-2026",
+      "file": "lovelondonloveculture--unknown.json",
+      "publishDate": "2026-11-05",
+      "url": "https://lovelondonloveculture.com/2026/11/05/review-round-up-the-lives-of-others-adelphi-theatre/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
