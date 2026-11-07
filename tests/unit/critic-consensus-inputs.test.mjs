@@ -189,4 +189,34 @@ describe('BRO-6226: inputs use the scorer predicate and the rebuild within-show 
     assert.equal(reviewTextInput(data, SHOW, null, null, { filePath, isScoreable: isScoreableMod.isScoreable }), null);
     assert.notEqual(reviewTextInput(data, SHOW, null, null), null, 'without a path only the flag subset applies');
   });
+
+  it('a row that emits no input (outlet not live) still registers, so a same-URL twin stays a duplicate', () => {
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro6226-notlive-'));
+    try {
+      const url = 'https://nystagereview.com/2026/10/01/show-review/';
+      writeTexts(dir, {
+        // Sorted first; includable, but its outlet has no live row, so no input.
+        'aaa--david-finkle.json': base({ outletId: 'aaa', outlet: 'Old Outlet', criticName: 'David Finkle', url }),
+        // Same review filed again under a live outlet: the rebuild drops it by URL.
+        'nysr--david-finkle.json': base({ criticName: 'David Finkle', url }),
+      });
+      const live = new Set([`${SHOW}|nysr`]);
+      const { isScoreable } = require('../../scripts/lib/is-scoreable.js');
+      const { createWithinShowDedup } = require('../../scripts/lib/within-show-dedup.js');
+      const rows = loadReviewTexts(SHOW, live, { reviewTextsDir: dir, show: { id: SHOW, title: 'Some Show' }, isScoreable, createDedup: createWithinShowDedup });
+      assert.equal(rows.length, 0, 'the twin must not slip in because the first copy emitted no input');
+    } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+  });
+
+  it('West End excerpt fields the scorer accepts reach the inputs (shared EXCERPT_FIELDS)', () => {
+    const row = reviewTextInput(base({ criticName: 'X', fullText: null, contentTier: 'excerpt', stagedoorExcerpt: 'A strong, moving revival.' }), SHOW);
+    assert.ok(row && /moving revival/.test(row.text));
+  });
+
+  it('file order matches the shared dedup order (no drift between the two copies)', () => {
+    const { namedBeforeUnknown } = require('../../scripts/lib/critic-consensus-inputs.js');
+    const shared = require('../../scripts/lib/within-show-dedup.js').namedBeforeUnknown;
+    const files = ['nysr--unknown.json', 'a--zed.json', 'b--unnamed.json', 'a--amy.json', 'c--unknown-2.json', 'b--bob.json'];
+    assert.deepEqual([...files].sort(namedBeforeUnknown), [...files].sort(shared));
+  });
 });

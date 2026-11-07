@@ -21,7 +21,9 @@ const path = require('path');
 const DEFAULT_REVIEW_TEXTS_DIR = path.join(__dirname, '..', '..', 'data', 'review-texts');
 
 /** Review-text excerpt fields used when a file has no fullText. */
-const EXCERPT_FIELDS = ['dtliExcerpt', 'bwwExcerpt', 'showScoreExcerpt', 'nycTheatreExcerpt', 'lboRoundupExcerpt'];
+// The shared list (BRO-6226 cousin: a hand-kept 5-field copy dropped West End
+// excerpts such as stagedoorExcerpt that the scorer accepts).
+const { EXCERPT_FIELDS } = require('./excerpt-fields');
 
 /**
  * The generator's input row for one review-text file, or null when the file
@@ -38,13 +40,21 @@ const EXCERPT_FIELDS = ['dtliExcerpt', 'bwwExcerpt', 'showScoreExcerpt', 'nycThe
  *   the rebuild drop (duplicateOf pointing at a live twin, syndication copy, a wrongProduction the
  *   scorer would not clear) is not fed to the LLM either (BRO-6226).
  */
-function reviewTextInput(data, showId, liveOutlets = null, normalizeOutlet = null, ctx = {}) {
-  if (!data || typeof data !== 'object') return null;
-  // Skip excluded reviews
+/**
+ * True when the review file survives the exclusion flags and, when injected,
+ * the scorer's predicate: the rows the rebuild keeps before its dedup.
+ */
+function passesExclusions(data, ctx = {}) {
+  if (!data || typeof data !== 'object') return false;
   if (data.duplicateOf || data.wrongProduction || data.wrongShow || data.wrongAttribution ||
-      data.isRoundupArticle || data.rejectionReason || data.contentTier === 'invalid') return null;
+      data.isRoundupArticle || data.rejectionReason || data.contentTier === 'invalid') return false;
   // BRO-6226: the scorer's predicate, not a hand-kept subset of it.
-  if (ctx.isScoreable && ctx.filePath && !ctx.isScoreable(data, ctx.show, ctx.filePath)) return null;
+  if (ctx.isScoreable && ctx.filePath && !ctx.isScoreable(data, ctx.show, ctx.filePath)) return false;
+  return true;
+}
+
+function reviewTextInput(data, showId, liveOutlets = null, normalizeOutlet = null, ctx = {}) {
+  if (!passesExclusions(data, ctx)) return null;
   // Only outlets the site actually shows for this show: the rebuild's guards
   // exclude more than the flags above, and a Critics' Take written from an
   // excluded review (another production, another show) is wrong on the page
@@ -96,10 +106,16 @@ function loadReviewTexts(showId, liveOutlets = null, opts = {}) {
     try {
       const filePath = path.join(dir, file);
       const data = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
-      const row = reviewTextInput(data, showId, liveOutlets, opts.normalizeOutlet || null, { show: opts.show, filePath, isScoreable: opts.isScoreable });
-      if (!row || (dedup && dedup.isDuplicate(data))) continue;
-      if (dedup) dedup.add(data);
-      reviews.push(row);
+      const ctx = { show: opts.show, filePath, isScoreable: opts.isScoreable };
+      if (dedup) {
+        if (dedup.isDuplicate(data)) continue;
+        // Register every row the rebuild keeps, even one with no text or no
+        // live row here, so an --unknown stub at the same outlet still reads
+        // as its duplicate (the rebuild dedups before any text check).
+        if (passesExclusions(data, ctx)) dedup.add(data);
+      }
+      const row = reviewTextInput(data, showId, liveOutlets, opts.normalizeOutlet || null, ctx);
+      if (row) reviews.push(row);
     } catch (err) {
       if (opts.onWarn) opts.onWarn(`Failed to parse ${file}: ${err.message}`);
     }
@@ -176,6 +192,8 @@ module.exports = {
   REVIEWCOUNT_DRIFT_THRESHOLD,
   MEANSCORE_DRIFT_THRESHOLD,
   reviewTextInput,
+  passesExclusions,
+  namedBeforeUnknown,
   loadReviewTexts,
   bucketOf,
   consensusFingerprint,
