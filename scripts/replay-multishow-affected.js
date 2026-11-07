@@ -4,7 +4,9 @@
  * Lists stored review files whose recorded rejection reason is the multi-show
  * junk-page check, and whether the current detector still flags their text.
  * Prints ids, outlets, lengths and the reason string (show titles only), never review text.
- * Usage: node scripts/replay-multishow-affected.js [--show=a,b]
+ * Usage: node scripts/replay-multishow-affected.js [--show=a,b] [--outcome]
+ * --outcome (BRO-7055): instead of the affected list, print one compact row per file in the
+ *   --show shows (incompleteReason, contentTier, text length, scored), so a re-collect can be tallied.
  */
 'use strict';
 const fs = require('fs');
@@ -14,12 +16,18 @@ const { listShowDirs } = require('./lib/list-show-dirs');
 const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const dir = path.join(__dirname, '..', 'data', 'review-texts');
 const only = (process.argv.find((a) => a.startsWith('--show=')) || '').slice(7).split(',').filter(Boolean);
+const outcome = process.argv.includes('--outcome');
 const rows = [];
 for (const show of listShowDirs(dir, { silent: true }).sort()) {
   if (only.length && !only.includes(show)) continue;
   for (const f of fs.readdirSync(path.join(dir, show))) {
     if (!isReviewTextFile(f)) continue;
     let j; try { j = JSON.parse(fs.readFileSync(path.join(dir, show, f), 'utf8')); } catch { continue; }
+    if (outcome) {
+      const t = typeof j.fullText === 'string' ? j.fullText : '';
+      rows.push({ k: show + '/' + f, r: j.incompleteReason || null, d: typeof j.incompleteDetail === 'string' ? j.incompleteDetail.slice(0, 40) : null, t: j.contentTier || null, len: t.length, s: !!(j.assignedScore != null || j.llmScore || j.ensembleScore) });
+      continue;
+    }
     const hit = Object.entries(j).find(([, v]) => typeof v === 'string' && v.includes('Multiple shows mentioned') && v.length < 400);
     if (!hit) continue;
     const text = typeof j.fullText === 'string' ? j.fullText : '';
