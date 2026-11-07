@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-07T13:58:59.924Z",
+  "timestamp": "2026-11-07T15:15:47.809Z",
   "stats": {
-    "totalReviews": 80395,
-    "alreadyFlagged": 22037,
+    "totalReviews": 80444,
+    "alreadyFlagged": 22044,
     "dateGuardCatches": 215,
-    "directorMismatch": 3520,
+    "directorMismatch": 3519,
     "tvFilmSignals": 2290,
-    "londonSignals": 3624,
+    "londonSignals": 3623,
     "offBroadwaySignals": 745,
     "yearMismatch": 361,
-    "noPublishDate": 8434
+    "noPublishDate": 8465
   },
   "findings": [
     {
@@ -63866,19 +63866,6 @@
     },
     {
       "showId": "the-book-of-mormon-west-end-2024",
-      "file": "the-spectator-uk--unknown.json",
-      "publishDate": "2013-03-14",
-      "url": "https://www.spectator.co.uk/article/book-of-mormon-religion-hits-the-west-end",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"trey parker\" from book-of-mormon-2011"
-        }
-      ]
-    },
-    {
-      "showId": "the-book-of-mormon-west-end-2024",
       "file": "thestage--mark-shenton.json",
       "score": 63,
       "publishDate": "2013-03-22",
@@ -70599,7 +70586,7 @@
       "showId": "the-music-man-2022",
       "file": "amny--matt-windman.json",
       "score": 45,
-      "publishDate": null,
+      "publishDate": "2022-02-10T21:07:40-05:00",
       "url": "https://www.amny.com/entertainment/broadway/review-the-music-man-is-an-epic-letdown/",
       "findings": [
         {
@@ -87489,7 +87476,7 @@
       "showId": "american-idiot-2010",
       "file": "observer--jesse-oxfeld.json",
       "score": 58,
-      "publishDate": null,
+      "publishDate": "2010-04-21T08:45:36-04:00",
       "url": "https://observer.com/2010/culture/green-day-american-idiot",
       "findings": [
         {
@@ -132533,20 +132520,6 @@
       "score": 78,
       "publishDate": "2017-04-02",
       "url": "http://www.theatermania.com/broadway/reviews/the-play-that-goes-wrong_80570.html",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "the-play-that-goes-wrong-2017",
-      "file": "thestage--mark-shenton.json",
-      "score": 97,
-      "publishDate": "2017-04-03",
-      "url": "https://www.thestage.co.uk/reviews/the-play-that-goes-wrong-review-at-lyceum-theatre-new-york--deliriously-funny",
       "findings": [
         {
           "type": "LONDON_SIGNAL",

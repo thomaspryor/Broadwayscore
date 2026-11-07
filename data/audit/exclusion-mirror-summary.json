@@ -1,19 +1,19 @@
 {
-  "generatedAt": "2026-11-07T13:58:44.567Z",
-  "totalScanned": 80622,
-  "totalExcluded": 30490,
+  "generatedAt": "2026-11-07T15:15:24.806Z",
+  "totalScanned": 80671,
+  "totalExcluded": 30516,
   "ruleCounts": {
-    "wrongProduction": 19881,
-    "duplicateOf": 2245,
-    "rejectionReason": 1449,
+    "wrongProduction": 19888,
+    "duplicateOf": 2239,
+    "rejectionReason": 1447,
     "wrongShow": 1252,
-    "noTextOrScoreSignal": 1062,
+    "noTextOrScoreSignal": 1089,
     "unverifiableWebSearchRow": 898,
-    "nonReview": 873,
+    "nonReview": 872,
     "cvWrongArticleHighConfidence": 412,
     "wrongAttribution": 355,
     "isRoundupArticle": 314,
-    "blockedReviewUrl": 250,
+    "blockedReviewUrl": 252,
     "crossOutletDuplicate": 195,
     "bodylessAggregatorScoreUncorroborated": 182,
     "knownSyndicationSecondary": 175,
@@ -23,8 +23,8 @@
     "namedNonReviewUrl": 106,
     "scoreStatusToBeCalculated": 83,
     "roundupPageAsReview": 62,
-    "rejectedAt": 57,
     "contentTierInvalid": 56,
+    "rejectedAt": 56,
     "directorMismatch": 42,
     "cancelledBeforeOpening": 29,
     "combinedReviewOfOtherMemberOnly": 26,
@@ -43,23 +43,28 @@
     "registrationWallStub": 1
   },
   "ruleDeltas": {
-    "wrongProduction": 1,
-    "noTextOrScoreSignal": -1
+    "wrongProduction": 7,
+    "duplicateOf": -6,
+    "rejectionReason": -2,
+    "noTextOrScoreSignal": 27,
+    "nonReview": -1,
+    "blockedReviewUrl": 2,
+    "rejectedAt": -1
   },
-  "previousGeneratedAt": "2026-11-07T13:45:01.763Z",
+  "previousGeneratedAt": "2026-11-07T13:58:44.567Z",
   "mirror": {
-    "comparedShows": 4691,
-    "comparedFiles": 79956,
-    "agreeExcluded": 30242,
-    "agreeIncluded": 49040,
-    "mirrorOnly": 348,
+    "comparedShows": 4692,
+    "comparedFiles": 80006,
+    "agreeExcluded": 30289,
+    "agreeIncluded": 49042,
+    "mirrorOnly": 349,
     "rebuildOnly": 326,
-    "disagreements": 674,
+    "disagreements": 675,
     "disagreementRate": 0.0084,
     "mirrorOnlyByRule": {
       "cvWrongArticleHighConfidence": 308,
       "contentTierInvalid": 26,
-      "noTextOrScoreSignal": 10,
+      "noTextOrScoreSignal": 11,
       "knownSyndicationSecondary": 2,
       "previewPlaceholder": 1,
       "rejectionReason": 1
@@ -83,8 +88,8 @@
       "skippedWrongShow": 1
     },
     "rebuildEntriesUnscanned": 0,
-    "notComparedShows": 73,
-    "notComparedFiles": 666
+    "notComparedShows": 72,
+    "notComparedFiles": 665
   },
   "previousDisagreementRate": 0.0084
 }
