@@ -1,0 +1,49 @@
+{
+  "issueNumber": "bro-4396",
+  "planId": "53272a2f-9cf4-4423-a1e1-a4a4c0531e36",
+  "status": "partial",
+  "createdAt": "2026-09-30T02:34:54.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Flag the Daily Echo review on the-car-man-west-end-2026 as a different production: dated 2025-11-11, 259 days before the 2026 run's first date and outside its declared prior run (UK tour from 2026-06-15). validate-data's wrong-production-by-date check fails on it and refused the 2026-09-30 core-data push, which rolled back 33 Off-Broadway promotions (BRO-4396).",
+    "steps": [
+      "Set wrongProduction true on the-car-man-west-end-2026/daily-echo--lorelei-reddin.json",
+      "Record the reason"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "the-car-man-west-end-2026/daily-echo--lorelei-reddin.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Review dated 2025-11-11 predates this production (earliest date 2026-07-28, prior run from 2026-06-15)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-car-man-west-end-2026/daily-echo--lorelei-reddin.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "Dated 2025-11-11, 259d before this production's first date (2026-07-28) and before its declared prior run (UK tour from 2026-06-15): an earlier Car Man production.",
+        "description": "Reason for the flag"
+      }
+    ]
+  },
+  "executedAt": "2026-09-30T04:06:29.828Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "wrongProduction: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-car-man-west-end-2026/daily-echo--lorelei-reddin.json wrongProductionReason: null -> \"Dated 2025-11-11, 259d before this production's first date (2026-07-28) and before its declared prior run (UK tour from 2026-06-15): an earlier Car Man production.\""
+    }
+  ]
+}

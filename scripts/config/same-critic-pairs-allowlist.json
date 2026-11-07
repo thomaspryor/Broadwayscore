@@ -1,0 +1,374 @@
+{
+  "_comment": "BRO-6054: show+critic pairs shipped at two outlets that are legitimately separate reviews. scripts/audit-syndicated-critic-pairs.js fails --strict on any same-critic multi-outlet pair not listed here or explained by scripts/lib/syndication-pairs.js.",
+  "pairs": [
+    {
+      "showId": "a-dolls-house-part-2-2017",
+      "critic": "Jesse Green",
+      "outlets": [
+        "nytimes",
+        "vulture"
+      ],
+      "reason": "Jesse Green's NYT review and his earlier Vulture review are different articles"
+    },
+    {
+      "showId": "aladdin-2014",
+      "critic": "Thom Geier",
+      "outlets": [
+        "culturesauce",
+        "ew"
+      ],
+      "reason": "separate reviews written for each outlet (different urls, text similarity under 0.1)"
+    },
+    {
+      "showId": "aladdin-2014",
+      "critic": "Elysa Gardner",
+      "outlets": [
+        "nysr",
+        "usatoday"
+      ],
+      "reason": "NYSR piece is a 2018 revisit; USA Today is the 2014 opening review"
+    },
+    {
+      "showId": "almost-famous-2022",
+      "critic": "Joe Dziemianowicz",
+      "outlets": [
+        "nydailynews",
+        "nytg"
+      ],
+      "reason": "separate reviews written for each outlet (different urls, text similarity under 0.1)"
+    },
+    {
+      "showId": "and-juliet-2022",
+      "critic": "Matthew Wexler",
+      "outlets": [
+        "one-minute-critic",
+        "queerty"
+      ],
+      "reason": "one review on the critic's own site and a separate Queerty review"
+    },
+    {
+      "showId": "bacchae-west-end-2025",
+      "critic": "Maryam Philpott",
+      "outlets": [
+        "plays-international",
+        "thereviewshub"
+      ],
+      "reason": "separate reviews written for each outlet (different urls, text similarity under 0.1)"
+    },
+    {
+      "showId": "bat-out-of-hell-west-end-2017",
+      "critic": "Tim Bano",
+      "outlets": [
+        "thestage",
+        "timeout-london"
+      ],
+      "reason": "separate reviews written for each outlet (different urls, text similarity under 0.1)"
+    },
+    {
+      "showId": "betrayal-2013",
+      "critic": "David Cote",
+      "outlets": [
+        "guardian",
+        "timeout"
+      ],
+      "reason": "separate reviews written for each outlet (different urls, text similarity under 0.1)"
+    },
+    {
+      "showId": "big-fish-2013",
+      "critic": "Thom Geier",
+      "outlets": [
+        "culturesauce",
+        "ew"
+      ],
+      "reason": "separate reviews written for each outlet (different urls, text similarity under 0.1)"
+    },
+    {
+      "showId": "bug-2026",
+      "critic": "Sandy MacDonald",
+      "outlets": [
+        "new-york-notebook",
+        "nysr"
+      ],
+      "reason": "separate reviews written for each outlet (different urls, text similarity under 0.1)"
+    },
+    {
+      "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
+      "critic": "Marianka Swain",
+      "outlets": [
+        "broadwayworld",
+        "telegraph"
+      ],
+      "reason": "separate reviews written for each outlet (different urls, text similarity under 0.1)"
+    },
+    {
+      "showId": "carmen-off-broadway-2025",
+      "critic": "George Grella",
+      "outlets": [
+        "financialtimes",
+        "new-york-classical-review"
+      ],
+      "reason": "separate reviews written for each outlet (different urls, text similarity under 0.1)"
+    },
+    {
+      "showId": "frozen-west-end-2021",
+      "critic": "Marianka Swain",
+      "outlets": [
+        "artsdesk",
+        "telegraph"
+      ],
+      "reason": "separate reviews written for each outlet (different urls, text similarity under 0.1)"
+    },
+    {
+      "showId": "grease-west-end-2022",
+      "critic": "John Nathan",
+      "outlets": [
+        "metro-uk",
+        "the-jewish-chronicle"
+      ],
+      "reason": "separate reviews written for each outlet (different urls, text similarity under 0.1)"
+    },
+    {
+      "showId": "hadestown-2019",
+      "critic": "Donna Herman",
+      "outlets": [
+        "front-row-center",
+        "nytg"
+      ],
+      "reason": "separate reviews written for each outlet (different urls, text similarity under 0.1)"
+    },
+    {
+      "showId": "harry-potter-2021",
+      "critic": "Charles Isherwood",
+      "outlets": [
+        "broadwaynews",
+        "financialtimes"
+      ],
+      "reason": "separate reviews written for each outlet (different urls, text similarity under 0.1)"
+    },
+    {
+      "showId": "harry-potter-2021",
+      "critic": "Alexis Soloski",
+      "outlets": [
+        "guardian",
+        "nytimes"
+      ],
+      "reason": "separate reviews written for each outlet (different urls, text similarity under 0.1)"
+    },
+    {
+      "showId": "harry-potter-and-the-cursed-child-both-parts-west-end-2021",
+      "critic": "Mark Shenton",
+      "outlets": [
+        "london-theatre",
+        "thestage"
+      ],
+      "reason": "separate reviews written for each outlet (different urls, text similarity under 0.1)"
+    },
+    {
+      "showId": "hello-dolly-2017",
+      "critic": "Jesse Green",
+      "outlets": [
+        "nytimes",
+        "vulture"
+      ],
+      "reason": "Jesse Green's NYT review and his earlier Vulture review are different articles"
+    },
+    {
+      "showId": "indian-princesses-off-broadway-2025",
+      "critic": "Thom Geier",
+      "outlets": [
+        "culturesauce",
+        "talkinbroadway"
+      ],
+      "reason": "separate reviews written for each outlet (different urls, text similarity under 0.1)"
+    },
+    {
+      "showId": "jersey-boys-west-end-2021",
+      "critic": "Marianka Swain",
+      "outlets": [
+        "london-theatre",
+        "telegraph"
+      ],
+      "reason": "separate reviews written for each outlet (different urls, text similarity under 0.1)"
+    },
+    {
+      "showId": "king-lear-royal-exchange-regional-2026",
+      "critic": "Sarah Monaghan",
+      "outlets": [
+        "allabouttheatreuk",
+        "sarahmonaghan"
+      ],
+      "reason": "personal blog review and a separate All About Theatre review"
+    },
+    {
+      "showId": "la-boheme-off-broadway-2026",
+      "critic": "Rick Perdian",
+      "outlets": [
+        "new-york-classical-review",
+        "seen-and-heard-international"
+      ],
+      "reason": "separate reviews written for each outlet (different urls, text similarity under 0.1)"
+    },
+    {
+      "showId": "life-of-pi-2023",
+      "critic": "Tim Teeman",
+      "outlets": [
+        "dailybeast",
+        "timteeman"
+      ],
+      "reason": "Daily Beast review and a different piece on the critic's own site"
+    },
+    {
+      "showId": "motown-the-musical-2016",
+      "critic": "Donna Herman",
+      "outlets": [
+        "front-row-center",
+        "nytg"
+      ],
+      "reason": "separate reviews written for each outlet (different urls, text similarity under 0.1)"
+    },
+    {
+      "showId": "mrs-doubtfire-west-end-2023",
+      "critic": "Marianka Swain",
+      "outlets": [
+        "london-theatre",
+        "telegraph"
+      ],
+      "reason": "separate reviews written for each outlet (different urls, text similarity under 0.1)"
+    },
+    {
+      "showId": "oliver-west-end-2024",
+      "critic": "Dominic Cavendish",
+      "outlets": [
+        "sunday-telegraph",
+        "telegraph"
+      ],
+      "reason": "separate Sunday Telegraph and Daily Telegraph reviews"
+    },
+    {
+      "showId": "present-laughter-west-end-2019",
+      "critic": "Matt Wolf",
+      "outlets": [
+        "artsdesk",
+        "nytimes"
+      ],
+      "reason": "separate Arts Desk and NYT reviews"
+    },
+    {
+      "showId": "shucked-2023",
+      "critic": "David Cote",
+      "outlets": [
+        "cote-notices",
+        "observer"
+      ],
+      "reason": "Observer review and a separate post on the critic's own newsletter"
+    },
+    {
+      "showId": "shucked-2023",
+      "critic": "Tim Teeman",
+      "outlets": [
+        "dailybeast",
+        "timteeman"
+      ],
+      "reason": "Daily Beast review and a different piece on the critic's own site"
+    },
+    {
+      "showId": "sinatra-the-musical-west-end-2026",
+      "critic": "Louise Penn",
+      "outlets": [
+        "loureviews",
+        "plays-international"
+      ],
+      "reason": "personal blog review and a separate Plays International review"
+    },
+    {
+      "showId": "six-the-musical-west-end-2021",
+      "critic": "Marianka Swain",
+      "outlets": [
+        "london-theatre",
+        "telegraph"
+      ],
+      "reason": "separate reviews written for each outlet (different urls, text similarity under 0.1)"
+    },
+    {
+      "showId": "stranger-things-the-first-shadow-west-end-2023",
+      "critic": "Dominic Maxwell",
+      "outlets": [
+        "sunday-times",
+        "times-uk"
+      ],
+      "reason": "separate Sunday Times and Times reviews"
+    },
+    {
+      "showId": "that-is-not-who-i-am-west-end-2022",
+      "critic": "John Nathan",
+      "outlets": [
+        "metro-uk",
+        "the-jewish-chronicle"
+      ],
+      "reason": "separate reviews written for each outlet (different urls, text similarity under 0.1)"
+    },
+    {
+      "showId": "the-bands-visit-2017",
+      "critic": "Steven Suskin",
+      "outlets": [
+        "huffpost",
+        "nysr"
+      ],
+      "reason": "separate reviews written for each outlet (different urls, text similarity under 0.1)"
+    },
+    {
+      "showId": "the-car-man-west-end-2026",
+      "critic": "Sarah Crompton",
+      "outlets": [
+        "observer",
+        "whatsonstage"
+      ],
+      "reason": "separate reviews written for each outlet (different urls, text similarity under 0.1)"
+    },
+    {
+      "showId": "the-crucible-west-end-2022",
+      "critic": "Maryam Philpott",
+      "outlets": [
+        "plays-international",
+        "thereviewshub"
+      ],
+      "reason": "separate reviews written for each outlet (different urls, text similarity under 0.1)"
+    },
+    {
+      "showId": "the-p-word-off-west-end-2026",
+      "critic": "Rosie Wood",
+      "outlets": [
+        "everything-theatre",
+        "thereviewshub"
+      ],
+      "reason": "separate reviews written for each outlet (different urls, text similarity under 0.1)"
+    },
+    {
+      "showId": "the-piano-lesson-2022",
+      "critic": "Joe Dziemianowicz",
+      "outlets": [
+        "nysr",
+        "nytg"
+      ],
+      "reason": "separate reviews written for each outlet (different urls, text similarity under 0.1)"
+    },
+    {
+      "showId": "the-witches-west-end-2023",
+      "critic": "Maryam Philpott",
+      "outlets": [
+        "plays-international",
+        "thereviewshub"
+      ],
+      "reason": "separate reviews written for each outlet (different urls, text similarity under 0.1)"
+    },
+    {
+      "showId": "wicked-2003",
+      "critic": "Charles Isherwood",
+      "outlets": [
+        "nytimes",
+        "variety"
+      ],
+      "reason": "Variety 2003 opening review and a 2014 NYT tenth-anniversary revisit"
+    }
+  ]
+}

@@ -1,0 +1,125 @@
+{
+  "issueNumber": "bro-3719",
+  "planId": "a80f28bc-03c1-4b60-842b-52a51f5e6684",
+  "status": "applied",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-3719: mark the St. Ann's Warehouse venue show page filed as a Kramer/Fauci review as not_a_review, so it stops reading as an uncollected live review strand.",
+    "steps": [
+      "rejectionReason / rejectedAt / rejectedBy / rejectionReasoning compare-and-set on one file (all currently absent)"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "kramerfauci-st-anns-off-broadway-2026/stannswarehouseorg--unknown.json",
+        "field": "rejectionReason",
+        "oldValue": null,
+        "newValue": "not_a_review",
+        "description": "BRO-3719: stannswarehouse.org/show/kramer-fauci/ is St. Ann's Warehouse's own box-office show page (linked from Playbill Verdict), not a critic review. Never fetched (not_attempted), so it showed as an uncollected live review strand. Same verdict classify-unscored-blocked-url.js stamps for blocked hosts; the host is now in domain-filters VENUE_DOMAINS."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "kramerfauci-st-anns-off-broadway-2026/stannswarehouseorg--unknown.json",
+        "field": "rejectedAt",
+        "oldValue": null,
+        "newValue": "2026-10-15T19:10:00.000Z",
+        "description": "BRO-3719: timestamp for the not_a_review verdict above."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "kramerfauci-st-anns-off-broadway-2026/stannswarehouseorg--unknown.json",
+        "field": "rejectedBy",
+        "oldValue": null,
+        "newValue": "blocked-url-heuristic-check",
+        "description": "BRO-3719: same rejectedBy as classify-unscored-blocked-url.js, since the URL is now on an isBlockedReviewUrl host."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "kramerfauci-st-anns-off-broadway-2026/stannswarehouseorg--unknown.json",
+        "field": "rejectionReasoning",
+        "oldValue": null,
+        "newValue": "Venue box-office show page (stannswarehouse.org/show/...), not criticism. Host added to domain-filters VENUE_DOMAINS (BRO-3719).",
+        "description": "BRO-3719: human-readable reason for the verdict."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-few-good-men-2026/variety--unknown.json",
+        "field": "rejectionReason",
+        "oldValue": null,
+        "newValue": "not_a_review",
+        "description": "BRO-3719: variety.com/shop/broadway-show-tickets-where-to-buy-... is a ticket-shopping round-up naming 36 shows (incompleteReason scraper_garbage), not a review of A Few Good Men. Its 2026-10-13 date was the only 'press night has happened' evidence, so the show (in previews, opens 2026-10-29) read as a live show with zero critic reviews, which also hides the strand row in health-check."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-few-good-men-2026/variety--unknown.json",
+        "field": "rejectedAt",
+        "oldValue": null,
+        "newValue": "2026-10-15T19:10:00.000Z",
+        "description": "BRO-3719: timestamp for the not_a_review verdict above."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-few-good-men-2026/variety--unknown.json",
+        "field": "rejectedBy",
+        "oldValue": null,
+        "newValue": "bro-3719-manual",
+        "description": "BRO-3719: hand verdict from the URL and the stored multi-show detail."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-few-good-men-2026/variety--unknown.json",
+        "field": "rejectionReasoning",
+        "oldValue": null,
+        "newValue": "Variety /shop/ ticket-buying round-up covering 36 Broadway shows, not a review. BRO-3719.",
+        "description": "BRO-3719: human-readable reason for the verdict."
+      }
+    ]
+  },
+  "executedAt": "2026-10-15T19:41:04.844Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "kramerfauci-st-anns-off-broadway-2026/stannswarehouseorg--unknown.json rejectionReason: null -> \"not_a_review\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "kramerfauci-st-anns-off-broadway-2026/stannswarehouseorg--unknown.json rejectedAt: null -> \"2026-10-15T19:10:00.000Z\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "kramerfauci-st-anns-off-broadway-2026/stannswarehouseorg--unknown.json rejectedBy: null -> \"blocked-url-heuristic-check\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "kramerfauci-st-anns-off-broadway-2026/stannswarehouseorg--unknown.json rejectionReasoning: null -> \"Venue box-office show page (stannswarehouse.org/show/...), not criticism. Host added to domain-filters VENUE_DOMAINS (BRO-3719).\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-few-good-men-2026/variety--unknown.json rejectionReason: null -> \"not_a_review\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-few-good-men-2026/variety--unknown.json rejectedAt: null -> \"2026-10-15T19:10:00.000Z\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-few-good-men-2026/variety--unknown.json rejectedBy: null -> \"bro-3719-manual\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-few-good-men-2026/variety--unknown.json rejectionReasoning: null -> \"Variety /shop/ ticket-buying round-up covering 36 Broadway shows, not a review. BRO-3719.\""
+    }
+  ]
+}

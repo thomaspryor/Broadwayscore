@@ -1,0 +1,327 @@
+{
+  "issueNumber": "bro-4317-c-02",
+  "planId": "9ed12843-3aa1-4f6c-a176-1e706341b141",
+  "status": "partial",
+  "createdAt": "2026-10-13T01:59:32.269Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4317 part 2/4: rehome review-text files from folders with no shows.json id (rebuild skips them) into the production whose run window holds the review's publishDate; drop exact duplicates of files the target already holds.",
+    "steps": [
+      "delete harry-potter-and-the-cursed-child-parts-one-and-two/variety--marilyn-stasio.json",
+      "delete heathers-the-musical-2025/ap--peter-santilli.json",
+      "delete heathers-the-musical-2025/ew--kyle-anderson.json",
+      "delete heathers-the-musical-2025/hollywood-reporter--david-rooney.json",
+      "delete heathers-the-musical-2025/nbcny--robert-kahn.json",
+      "delete heathers-the-musical-2025/nypost--elisabeth-vincentelli.json",
+      "delete heathers-the-musical-2025/nytimes--ben-brantley.json",
+      "delete heathers-the-musical-2025/vulture--jesse-green.json",
+      "move little-bear-ridge-road/theater-life--david-sheward.json -> little-bear-ridge-road-2025/theater-life--david-sheward.json",
+      "move maybe-happy-ending/nysr--michael-sommers.json -> maybe-happy-ending-2024/nysr--michael-sommers.json",
+      "delete mulan-off-broadway-2026/thereviewshub--the-reviews-hub.json",
+      "delete mulan-off-broadway-2026/thereviewshub--unknown.json",
+      "delete noughts-and-crosses-off-west-end-2026/london-box-office--stuart-king.json",
+      "move operation-mincemeat/theater-life--paulanne-simmons.json -> operation-mincemeat-2025/theater-life--paulanne-simmons.json",
+      "move paranormal-activity/theater-life--samuel-l-leiter.json -> paranormal-activity-2026/theater-life--samuel-l-leiter.json",
+      "move punch/theater-life--isa-goldberg.json -> punch-2025/theater-life--isa-goldberg.json",
+      "move punch/theater-life--samuel-l-leiter.json -> punch-2025/theater-life--samuel-l-leiter.json",
+      "delete spamalot-off-broadway-2026/albany-times-union--katherine-kiessling.json",
+      "delete spamalot-off-broadway-2026/broadwaynews--unknown.json",
+      "delete spamalot-off-broadway-2026/broadwayworld--alexander-c-kafka.json",
+      "delete spamalot-off-broadway-2026/broadwayworld--michael-quintos.json",
+      "delete spamalot-off-broadway-2026/broadwayworld--roy-berko.json",
+      "delete spamalot-off-broadway-2026/broadwayworld--steve-murray.json",
+      "delete spamalot-off-broadway-2026/chicagotribune--chris-jones.json",
+      "delete spamalot-off-broadway-2026/cititour--brian-scott-lipton.json"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "harry-potter-and-the-cursed-child-parts-one-and-two/variety--marilyn-stasio.json",
+        "description": "0-text copy; harry-potter-2021 already holds this outlet+critic"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "heathers-the-musical-2025/ap--peter-santilli.json",
+        "description": "0-text or already-flagged copy of an earlier production that is not tracked (April 1, 2014)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "heathers-the-musical-2025/ew--kyle-anderson.json",
+        "description": "0-text or already-flagged copy of an earlier production that is not tracked (March 31, 2014)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "heathers-the-musical-2025/hollywood-reporter--david-rooney.json",
+        "description": "0-text or already-flagged copy of an earlier production that is not tracked (March 31, 2014)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "heathers-the-musical-2025/nbcny--robert-kahn.json",
+        "description": "0-text or already-flagged copy of an earlier production that is not tracked (March 31, 2014)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "heathers-the-musical-2025/nypost--elisabeth-vincentelli.json",
+        "description": "0-text or already-flagged copy of an earlier production that is not tracked (March 31, 2014)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "heathers-the-musical-2025/nytimes--ben-brantley.json",
+        "description": "0-text or already-flagged copy of an earlier production that is not tracked (April 1, 2014)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "heathers-the-musical-2025/vulture--jesse-green.json",
+        "description": "0-text or already-flagged copy of an earlier production that is not tracked (March 31, 2014)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "little-bear-ridge-road/theater-life--david-sheward.json",
+        "destPath": "little-bear-ridge-road-2025/theater-life--david-sheward.json",
+        "description": "publishDate 2025-10-31T17:27:06 within 9 days of little-bear-ridge-road-2025 opening 2025-10-30; other hits are other cities"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "maybe-happy-ending/nysr--michael-sommers.json",
+        "destPath": "maybe-happy-ending-2024/nysr--michael-sommers.json",
+        "description": "publishDate 2026-08-02 inside the open Broadway run; the tour (other hit) opens 2026-09-13, so it cannot be a tour review"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "mulan-off-broadway-2026/thereviewshub--the-reviews-hub.json",
+        "description": "show id deliberately retired (2026 data audit S8-T2 (owner D3): Concerts, cabaret, music v)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "mulan-off-broadway-2026/thereviewshub--unknown.json",
+        "description": "show id deliberately retired (2026 data audit S8-T2 (owner D3): Concerts, cabaret, music v)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "noughts-and-crosses-off-west-end-2026/london-box-office--stuart-king.json",
+        "description": "show id deliberately retired (2026 data audit S8-T2 (owner D3): Tour stops at receiving ho)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "operation-mincemeat/theater-life--paulanne-simmons.json",
+        "destPath": "operation-mincemeat-2025/theater-life--paulanne-simmons.json",
+        "description": "publishDate 2025-03-23T15:02:13 within 9 days of operation-mincemeat-2025 opening 2025-03-20; other hits are other cities"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "paranormal-activity/theater-life--samuel-l-leiter.json",
+        "destPath": "paranormal-activity-2026/theater-life--samuel-l-leiter.json",
+        "description": "publishDate 2026-08-28T17:24:27 within 9 days of paranormal-activity-2026 opening 2026-08-25; other hits are other cities"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "punch/theater-life--isa-goldberg.json",
+        "destPath": "punch-2025/theater-life--isa-goldberg.json",
+        "description": "publishDate 2025-09-30T16:10:02 within 9 days of punch-2025 opening 2025-09-29; other hits are other cities"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "punch/theater-life--samuel-l-leiter.json",
+        "destPath": "punch-2025/theater-life--samuel-l-leiter.json",
+        "description": "publishDate 2025-09-30T16:19:30 within 9 days of punch-2025 opening 2025-09-29; other hits are other cities"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "spamalot-off-broadway-2026/albany-times-union--katherine-kiessling.json",
+        "description": "no such production; flagged/dateless copy, same outlet+critic already counted on the real production or a regional stub"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "spamalot-off-broadway-2026/broadwaynews--unknown.json",
+        "description": "no such production; flagged/dateless copy, same outlet+critic already counted on the real production or a regional stub"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "spamalot-off-broadway-2026/broadwayworld--alexander-c-kafka.json",
+        "description": "no such production; flagged/dateless copy, same outlet+critic already counted on the real production or a regional stub"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "spamalot-off-broadway-2026/broadwayworld--michael-quintos.json",
+        "description": "no such production; flagged/dateless copy, same outlet+critic already counted on the real production or a regional stub"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "spamalot-off-broadway-2026/broadwayworld--roy-berko.json",
+        "description": "no such production; flagged/dateless copy, same outlet+critic already counted on the real production or a regional stub"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "spamalot-off-broadway-2026/broadwayworld--steve-murray.json",
+        "description": "no such production; flagged/dateless copy, same outlet+critic already counted on the real production or a regional stub"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "spamalot-off-broadway-2026/chicagotribune--chris-jones.json",
+        "description": "no such production; flagged/dateless copy, same outlet+critic already counted on the real production or a regional stub"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "spamalot-off-broadway-2026/cititour--brian-scott-lipton.json",
+        "description": "no such production; flagged/dateless copy, same outlet+critic already counted on the real production or a regional stub"
+      }
+    ]
+  },
+  "executedAt": "2026-10-13T02:48:58.084Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted harry-potter-and-the-cursed-child-parts-one-and-two/variety--marilyn-stasio.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted heathers-the-musical-2025/ap--peter-santilli.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted heathers-the-musical-2025/ew--kyle-anderson.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted heathers-the-musical-2025/hollywood-reporter--david-rooney.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted heathers-the-musical-2025/nbcny--robert-kahn.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted heathers-the-musical-2025/nypost--elisabeth-vincentelli.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted heathers-the-musical-2025/nytimes--ben-brantley.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted heathers-the-musical-2025/vulture--jesse-green.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": false,
+      "reason": "Destination exists: little-bear-ridge-road-2025/theater-life--david-sheward.json (delete it first or set overwrite: true)"
+    },
+    {
+      "action": "review-file-op",
+      "ok": false,
+      "reason": "Destination exists: maybe-happy-ending-2024/nysr--michael-sommers.json (delete it first or set overwrite: true)"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted mulan-off-broadway-2026/thereviewshub--the-reviews-hub.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted mulan-off-broadway-2026/thereviewshub--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted noughts-and-crosses-off-west-end-2026/london-box-office--stuart-king.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved operation-mincemeat/theater-life--paulanne-simmons.json → operation-mincemeat-2025/theater-life--paulanne-simmons.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved paranormal-activity/theater-life--samuel-l-leiter.json → paranormal-activity-2026/theater-life--samuel-l-leiter.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved punch/theater-life--isa-goldberg.json → punch-2025/theater-life--isa-goldberg.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": false,
+      "reason": "Destination exists: punch-2025/theater-life--samuel-l-leiter.json (delete it first or set overwrite: true)"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted spamalot-off-broadway-2026/albany-times-union--katherine-kiessling.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted spamalot-off-broadway-2026/broadwaynews--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted spamalot-off-broadway-2026/broadwayworld--alexander-c-kafka.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted spamalot-off-broadway-2026/broadwayworld--michael-quintos.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted spamalot-off-broadway-2026/broadwayworld--roy-berko.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted spamalot-off-broadway-2026/broadwayworld--steve-murray.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted spamalot-off-broadway-2026/chicagotribune--chris-jones.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted spamalot-off-broadway-2026/cititour--brian-scott-lipton.json"
+    }
+  ]
+}

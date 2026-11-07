@@ -1,0 +1,323 @@
+{
+  "issueNumber": "bro-4317-b-02",
+  "planId": "0f6b24dd-366d-449b-b1cc-bed6a874d8fc",
+  "status": "partial",
+  "createdAt": "2026-10-13T01:56:27.497Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4317 part 2/9: rehome review-text files from folders with no shows.json id (rebuild skips them) into the production whose run window holds the review's publishDate; drop exact duplicates of files the target already holds.",
+    "steps": [
+      "delete friends-the-musical-parody-2022/stagebuddy--bill-crouch.json",
+      "delete friends-the-musical-parody-2022/theater-life--iris-wiener.json",
+      "delete friends-the-musical-parody-2022/theater-pizzazz--adam-cohen.json",
+      "delete friends-the-musical-parody-2022/tv-and-city--elazar-abrahams.json",
+      "delete friends-the-musical-parody-2022/zeal-nyc--megan-wrappe.json",
+      "delete hamlet-2026/blogcritics--jon-sobel.json",
+      "delete hamlet-2026/guardian--alexis-soloski.json",
+      "delete hamlet-2026/nydailynews--joe-dziemianowicz.json",
+      "delete hamlet-2026/nypost--elisabeth-vincentelli.json",
+      "delete hamlet-2026/nytimes--charles-isherwood.json",
+      "delete hamlet-2026/theatermania--zachary-stewart.json",
+      "delete hamlet-2026/theatre-reviews-limited--david-roberts.json",
+      "delete hans-litten-the-jew-who-crossexamined-hitler-2026/nyt-theater--jonathan-mandell.json",
+      "delete hate-radio-2026/front-row-center--brittany-crowell.json",
+      "delete hate-radio-2026/off-off-online--deirdre-donovan.json",
+      "delete hate-radio-2026/theatermania--zachary-stewart.json",
+      "delete hold-on-to-your-butts-2026/all-that-dazzles-uk--daz-gale.json",
+      "delete hold-on-to-your-butts-2026/guardian--chris-wiegand.json",
+      "delete hold-on-to-your-butts-2026/thestage--oliver-jones.json",
+      "delete hold-on-to-your-butts-2026/timeout-london--dave-calhoun.json",
+      "delete hold-on-to-your-butts-2026/west-end-best-friend--kate-soper.json",
+      "delete hold-on-to-your-butts-2026/whatsonstage--taylor-vaughan.json",
+      "move kinky-boots-2026/chicagotribune--chris-jones.json -> kinky-boots-2013/chicagotribune--chris-jones.json",
+      "delete kinky-boots-2026/cititour--brian-scott-lipton.json",
+      "move kinky-boots-2026/ew--thom-geier.json -> kinky-boots-2013/ew--thom-geier.json"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "friends-the-musical-parody-2022/stagebuddy--bill-crouch.json",
+        "description": "same-url copy already in friends-the-musical-parody-off-broadway-2022"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "friends-the-musical-parody-2022/theater-life--iris-wiener.json",
+        "description": "same-url copy already in friends-the-musical-parody-off-broadway-2022"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "friends-the-musical-parody-2022/theater-pizzazz--adam-cohen.json",
+        "description": "same-url copy already in friends-the-musical-parody-off-broadway-2022"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "friends-the-musical-parody-2022/tv-and-city--elazar-abrahams.json",
+        "description": "same-url copy already in friends-the-musical-parody-off-broadway-2022"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "friends-the-musical-parody-2022/zeal-nyc--megan-wrappe.json",
+        "description": "same-url copy already in friends-the-musical-parody-off-broadway-2022"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "hamlet-2026/blogcritics--jon-sobel.json",
+        "description": "same-url copy already in hamlet-off-broadway-2026"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "hamlet-2026/guardian--alexis-soloski.json",
+        "description": "same-url copy already in hamlet-off-broadway-2026"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "hamlet-2026/nydailynews--joe-dziemianowicz.json",
+        "description": "same-url copy already in hamlet-off-broadway-2026"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "hamlet-2026/nypost--elisabeth-vincentelli.json",
+        "description": "same-url copy already in hamlet-off-broadway-2026"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "hamlet-2026/nytimes--charles-isherwood.json",
+        "description": "same-url copy already in hamlet-off-broadway-2026"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "hamlet-2026/theatermania--zachary-stewart.json",
+        "description": "0/shorter-text copy already in hamlet-off-broadway-2026"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "hamlet-2026/theatre-reviews-limited--david-roberts.json",
+        "description": "same-url copy already in hamlet-off-broadway-2026"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "hans-litten-the-jew-who-crossexamined-hitler-2026/nyt-theater--jonathan-mandell.json",
+        "description": "same-url copy already in hans-litten-the-jew-who-crossexamined-hitler-off-broadway-2026"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "hate-radio-2026/front-row-center--brittany-crowell.json",
+        "description": "same-url copy already in hate-radio-off-broadway-2026"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "hate-radio-2026/off-off-online--deirdre-donovan.json",
+        "description": "same-url copy already in hate-radio-off-broadway-2026"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "hate-radio-2026/theatermania--zachary-stewart.json",
+        "description": "same-url copy already in hate-radio-off-broadway-2026"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "hold-on-to-your-butts-2026/all-that-dazzles-uk--daz-gale.json",
+        "description": "same-url copy already in hold-on-to-your-butts-off-broadway-2026"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "hold-on-to-your-butts-2026/guardian--chris-wiegand.json",
+        "description": "same-url copy already in hold-on-to-your-butts-off-broadway-2026"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "hold-on-to-your-butts-2026/thestage--oliver-jones.json",
+        "description": "same-url copy already in hold-on-to-your-butts-off-broadway-2026"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "hold-on-to-your-butts-2026/timeout-london--dave-calhoun.json",
+        "description": "same-url copy already in hold-on-to-your-butts-off-broadway-2026"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "hold-on-to-your-butts-2026/west-end-best-friend--kate-soper.json",
+        "description": "same-url copy already in hold-on-to-your-butts-off-broadway-2026"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "hold-on-to-your-butts-2026/whatsonstage--taylor-vaughan.json",
+        "description": "same-url copy already in hold-on-to-your-butts-off-broadway-2026"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "kinky-boots-2026/chicagotribune--chris-jones.json",
+        "destPath": "kinky-boots-2013/chicagotribune--chris-jones.json",
+        "description": "publishDate April 4th, 2013 within 14d of kinky-boots-2013 opening 2013-04-04 (show-score dump folder)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "kinky-boots-2026/cititour--brian-scott-lipton.json",
+        "description": "same-url copy already in kinky-boots-off-broadway-2026"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "kinky-boots-2026/ew--thom-geier.json",
+        "destPath": "kinky-boots-2013/ew--thom-geier.json",
+        "description": "publishDate April 4th, 2013 within 14d of kinky-boots-2013 opening 2013-04-04 (show-score dump folder)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-13T02:35:06.572Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted friends-the-musical-parody-2022/stagebuddy--bill-crouch.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted friends-the-musical-parody-2022/theater-life--iris-wiener.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted friends-the-musical-parody-2022/theater-pizzazz--adam-cohen.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted friends-the-musical-parody-2022/tv-and-city--elazar-abrahams.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted friends-the-musical-parody-2022/zeal-nyc--megan-wrappe.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted hamlet-2026/blogcritics--jon-sobel.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted hamlet-2026/guardian--alexis-soloski.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted hamlet-2026/nydailynews--joe-dziemianowicz.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted hamlet-2026/nypost--elisabeth-vincentelli.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted hamlet-2026/nytimes--charles-isherwood.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted hamlet-2026/theatermania--zachary-stewart.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted hamlet-2026/theatre-reviews-limited--david-roberts.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted hans-litten-the-jew-who-crossexamined-hitler-2026/nyt-theater--jonathan-mandell.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted hate-radio-2026/front-row-center--brittany-crowell.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted hate-radio-2026/off-off-online--deirdre-donovan.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted hate-radio-2026/theatermania--zachary-stewart.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted hold-on-to-your-butts-2026/all-that-dazzles-uk--daz-gale.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted hold-on-to-your-butts-2026/guardian--chris-wiegand.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted hold-on-to-your-butts-2026/thestage--oliver-jones.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted hold-on-to-your-butts-2026/timeout-london--dave-calhoun.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted hold-on-to-your-butts-2026/west-end-best-friend--kate-soper.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted hold-on-to-your-butts-2026/whatsonstage--taylor-vaughan.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": false,
+      "reason": "Destination exists: kinky-boots-2013/chicagotribune--chris-jones.json (delete it first or set overwrite: true)"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted kinky-boots-2026/cititour--brian-scott-lipton.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": false,
+      "reason": "Destination exists: kinky-boots-2013/ew--thom-geier.json (delete it first or set overwrite: true)"
+    }
+  ]
+}

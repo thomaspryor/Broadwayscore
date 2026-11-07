@@ -1,0 +1,170 @@
+name: Codex Lane Health
+
+# BRO-6134 stage 1: hourly alarm on the Codex lanes read from OUTSIDE signals (git landings,
+# the runner's BRO-4745 summaries, codex-runner.yml runs). Seven regressions in 18 days
+# (2026-10-10..10-23) were each found by a person 2-36h late. The decision lives in
+# scripts/lib/codex-lane-health.js; scripts/codex-lane-alarm.js reads the sources and files
+# one Linear card per lane:class that breached on two consecutive hourly evaluations.
+#
+# SHADOW FIRST (CLAUDE.md 19): without repo variable CODEX_LANE_ALARM_LIVE=true the run only
+# reports (step summary + artifact) and never files a card or touches the alert ledger.
+# Kill switch: repo variable CODEX_LANE_ALARM_DISABLED=true.
+#
+# An unreadable source is "health unknown", never a breach and never a resolve.
+# GitHub throttles this repo's hourly crons (success gaps p95 ~8h, max ~12h), so the real
+# alarm delay is the backtest delay plus the gap between ticks; cron-redispatch.js replaces a
+# dropped tick after 3h and check-cron-health.yml pages staleness at 12h.
+
+on:
+  schedule:
+    - cron: '37 * * * *'
+  workflow_dispatch:
+    inputs:
+      redispatched:
+        # redispatch-after-hours: 3  (BRO-3867: paging band is measured-wide; re-dispatch a dropped tick at 3h)
+        description: 'Internal: re-dispatch of a dropped scheduled run (behaves like the cron)'
+        required: false
+        default: 'false'
+      alert:
+        description: 'File cards for confirmed breaches (also requires the live variable unless true here)'
+        required: false
+        default: 'false'
+
+permissions:
+  contents: write
+  actions: read
+
+concurrency:
+  group: codex-lane-health
+  cancel-in-progress: false
+
+jobs:
+  health:
+    name: Codex lane health (outside signals)
+    if: ${{ vars.CODEX_LANE_ALARM_DISABLED != 'true' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      # Blobless + sparse: the first dispatch hung 15 min on a plain
+      # fetch-depth: 0 (this repo's data/ history is huge). The alarm only
+      # reads commit metadata (git log) and runs scripts/, so skip blobs.
+      - name: Checkout (full commit history, no blobs)
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          ref: main
+          fetch-depth: 0
+          filter: blob:none
+          sparse-checkout: |
+            scripts
+            package.json
+            data/audit
+
+      - name: Setup Node.js
+        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with:
+          node-version: '22'
+
+      - name: Evaluate lane health
+        id: health
+        env:
+          GH_TOKEN: ${{ github.token }}
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          LIVE_VAR: ${{ vars.CODEX_LANE_ALARM_LIVE }}
+          INPUT_ALERT: ${{ github.event.inputs.alert }}
+        run: |
+          ALERT_FLAG=""
+          if [ "$LIVE_VAR" = "true" ] || [ "$INPUT_ALERT" = "true" ]; then ALERT_FLAG="--alert"; fi
+          set +e
+          node scripts/codex-lane-alarm.js $ALERT_FLAG --out=/tmp/codex-lane-health.json | tee /tmp/codex-lane-health.txt
+          EC=${PIPESTATUS[0]}
+          set -e
+          { echo '## Codex lane health'; echo; echo "Mode: ${ALERT_FLAG:-shadow (no cards)}"; echo '```'; cat /tmp/codex-lane-health.txt; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
+          case "$EC" in
+            0) ;;
+            2) echo "::error::codex-lane-alarm.js could not read any source (exit 2)"; exit 1 ;;
+            3) echo "::error::a confirmed breach has no Linear tracker (exit 3): check LINEAR_API_KEY"; exit 1 ;;
+            *) echo "::error::codex-lane-alarm.js exited $EC"; exit 1 ;;
+          esac
+
+      - name: Upload shadow record
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: codex-lane-health
+          path: |
+            /tmp/codex-lane-health.json
+            /tmp/codex-lane-health.txt
+            /tmp/codex-trust-ladder.json
+            /tmp/codex-trust-ladder.txt
+          if-no-files-found: ignore
+          retention-days: 14
+
+      # Alert-router state only moves in alert mode; the cooldown ledger must survive across runs.
+      - name: Persist alert-router state
+        if: always() && (vars.CODEX_LANE_ALARM_LIVE == 'true' || github.event.inputs.alert == 'true')
+        env:
+          PUSH_RECONCILE_MERGED_JSON: '1'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          for f in data/audit/alert-ledger.json data/audit/alert-router-attempts.jsonl data/audit/alert-digest-queue.json; do
+            if [ -e "$f" ]; then git add "$f"; else echo "skip (absent): $f"; fi
+          done
+          if git diff --cached --quiet; then
+            echo "No alert-router state changes to commit"
+          else
+            git commit -m "chore: persist codex-lane-health alert-router state [skip ci]"
+            bash scripts/lib/push-with-retry.sh 5 main
+          fi
+
+      # BRO-6263: trust ladder. Reads the alarm's record plus the BRO-4745 summaries and git
+      # reverts, and writes data/audit/codex-trust-ladder.json. Ships in shadow mode with
+      # promote disabled (state file decides); relocks and alerts only fire in live mode.
+      # Kill switch: repo variable CODEX_LADDER_DISABLED=true (or killSwitch in the owner file).
+      - name: Evaluate Codex trust ladder
+        if: always() && vars.CODEX_LADDER_DISABLED != 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          CODEX_TRUST_LADDER_DISABLED: ${{ vars.CODEX_LADDER_DISABLED }}
+        run: |
+          set +e
+          node scripts/codex-trust-ladder.js --health=/tmp/codex-lane-health.json --apply --alert --out=/tmp/codex-trust-ladder.json | tee /tmp/codex-trust-ladder.txt
+          EC=${PIPESTATUS[0]}
+          set -e
+          { echo '## Codex trust ladder'; echo; echo '```'; cat /tmp/codex-trust-ladder.txt; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
+          case "$EC" in
+            0) ;;
+            1) echo "::error::a trust ladder state file is corrupt (exit 1): runner access is locked to baseline until fixed"; exit 1 ;;
+            *) echo "::error::codex-trust-ladder.js exited $EC"; exit 1 ;;
+          esac
+
+      - name: Persist trust ladder state
+        if: always() && vars.CODEX_LADDER_DISABLED != 'true'
+        env:
+          PUSH_RECONCILE_MERGED_JSON: '1'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/audit/codex-trust-ladder.json
+          for f in data/audit/alert-ledger.json data/audit/alert-router-attempts.jsonl data/audit/alert-digest-queue.json; do
+            if [ -e "$f" ]; then git add "$f"; fi
+          done
+          if git diff --cached --quiet; then
+            echo "No trust ladder state changes to commit"
+          else
+            git commit -m "chore: codex trust ladder state [skip ci]"
+            bash scripts/lib/push-with-retry.sh 5 main
+          fi
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Codex Lane Health could not read its sources or file a card'
+          description: 'Exit 2 = no source readable; exit 3 = a confirmed breach has no Linear tracker (check LINEAR_API_KEY). A breach itself never fails this job.'
+          severity: 'warning'

@@ -1,0 +1,205 @@
+{
+  "issueNumber": "bro-5075-d",
+  "planId": "5d01be21-f375-4462-9db4-dc7100393543",
+  "status": "pending",
+  "createdAt": "2026-11-02T14:24:38.938Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5075: repair or remove the 127 review files whose url is not an absolute http(s) url. 37 repaired in place to the same article (BroadwayWorld relative paths given their host, scheme typos, schemeless hosts; score and flags kept, needs the url-change-invariant repair rule landed with this plan). 90 deleted, none live today: 67 /people/ critic-profile paths and 4 text-fragment urls with no fullText (the rebuild excludes them as skippedInvalidUrl), plus 19 duplicates whose article a sibling or another show already holds with a valid url. (part 4 of 6)",
+    "steps": [
+      "BRO-5075: duplicate of broadwayworld--alyssa-biederman.json, which holds (or after this plan holds) the same article url; the copy is excluded today (duplicateOf/wrongProduction), so the delete changes no score.",
+      "BRO-5075: duplicate of broadwayworld--alyssa-biederman.json, which holds (or after this plan holds) the same article url; the copy is excluded today (duplicateOf/wrongProduction), so the delete changes no score.",
+      "BRO-5075: duplicate of broadwayworld--alyssa-biederman.json, which holds (or after this plan holds) the same article url; the copy is excluded today (duplicateOf/wrongProduction), so the delete changes no score.",
+      "BRO-5075: duplicate of broadwayworld--alyssa-biederman.json, which holds (or after this plan holds) the same article url; the copy is excluded today (duplicateOf/wrongProduction), so the delete changes no score.",
+      "BRO-5075: duplicate of broadwayworld--alyssa-biederman.json, which holds (or after this plan holds) the same article url; the copy is excluded today (duplicateOf/wrongProduction), so the delete changes no score.",
+      "BRO-5075: url is a /people/ critic profile path, not a review; no fullText; the rebuild already excludes it (skippedInvalidUrl).",
+      "BRO-5075: url is a /people/ critic profile path, not a review; no fullText; the rebuild already excludes it (skippedInvalidUrl).",
+      "BRO-5075: url is a /people/ critic profile path, not a review; no fullText; the rebuild already excludes it (skippedInvalidUrl).",
+      "BRO-5075: url is a /people/ critic profile path, not a review; no fullText; the rebuild already excludes it (skippedInvalidUrl).",
+      "BRO-5075: url is a /people/ critic profile path, not a review; no fullText; the rebuild already excludes it (skippedInvalidUrl).",
+      "BRO-5075: url is a /people/ critic profile path, not a review; no fullText; the rebuild already excludes it (skippedInvalidUrl).",
+      "BRO-5075: url is a /people/ critic profile path, not a review; no fullText; the rebuild already excludes it (skippedInvalidUrl).",
+      "BRO-5075: url field holds a text fragment, not a url; no fullText; the rebuild already excludes it (skippedInvalidUrl).",
+      "BRO-5075: url field holds a text fragment, not a url; no fullText; the rebuild already excludes it (skippedInvalidUrl).",
+      "BRO-5075: url is a /people/ critic profile path, not a review; no fullText; the rebuild already excludes it (skippedInvalidUrl).",
+      "BRO-5075: url field holds a text fragment, not a url; no fullText; the rebuild already excludes it (skippedInvalidUrl).",
+      "BRO-5075: url is a /people/ critic profile path, not a review; no fullText; the rebuild already excludes it (skippedInvalidUrl).",
+      "BRO-5075: url is a /people/ critic profile path, not a review; no fullText; the rebuild already excludes it (skippedInvalidUrl).",
+      "BRO-5075: url is a /people/ critic profile path, not a review; no fullText; the rebuild already excludes it (skippedInvalidUrl).",
+      "BRO-5075: bww-relative url repaired to the same article (scheme/host restored); score and flags kept.",
+      "BRO-5075: bww-relative url repaired to the same article (scheme/host restored); score and flags kept.",
+      "BRO-5075: bww-relative url repaired to the same article (scheme/host restored); score and flags kept.",
+      "BRO-5075: bww-relative url repaired to the same article (scheme/host restored); score and flags kept.",
+      "BRO-5075: bww-relative url repaired to the same article (scheme/host restored); score and flags kept.",
+      "BRO-5075: bww-relative url repaired to the same article (scheme/host restored); score and flags kept."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "miss-saigon-2017/broadwayworld--andria-tieman.json",
+        "description": "BRO-5075: duplicate of broadwayworld--alyssa-biederman.json, which holds (or after this plan holds) the same article url; the copy is excluded today (duplicateOf/wrongProduction), so the delete changes no score."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "miss-saigon-2017/broadwayworld--brett-cullum.json",
+        "description": "BRO-5075: duplicate of broadwayworld--alyssa-biederman.json, which holds (or after this plan holds) the same article url; the copy is excluded today (duplicateOf/wrongProduction), so the delete changes no score."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "miss-saigon-2017/broadwayworld--jennifer-perry.json",
+        "description": "BRO-5075: duplicate of broadwayworld--alyssa-biederman.json, which holds (or after this plan holds) the same article url; the copy is excluded today (duplicateOf/wrongProduction), so the delete changes no score."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "miss-saigon-2017/broadwayworld--misha-davenport.json",
+        "description": "BRO-5075: duplicate of broadwayworld--alyssa-biederman.json, which holds (or after this plan holds) the same article url; the copy is excluded today (duplicateOf/wrongProduction), so the delete changes no score."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "miss-saigon-2017/broadwayworld--rob-levy.json",
+        "description": "BRO-5075: duplicate of broadwayworld--alyssa-biederman.json, which holds (or after this plan holds) the same article url; the copy is excluded today (duplicateOf/wrongProduction), so the delete changes no score."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "miss-saigon-2017/third-coast-review--matthew-nerber.json",
+        "description": "BRO-5075: url is a /people/ critic profile path, not a review; no fullText; the rebuild already excludes it (skippedInvalidUrl)."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "oedipus-west-end-2024/nytg--kyle-turner.json",
+        "description": "BRO-5075: url is a /people/ critic profile path, not a review; no fullText; the rebuild already excludes it (skippedInvalidUrl)."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "oedipus-west-end-2024/timeout--adam-feldman.json",
+        "description": "BRO-5075: url is a /people/ critic profile path, not a review; no fullText; the rebuild already excludes it (skippedInvalidUrl)."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "oedipus-west-end-2024/vulture--sara-holdren.json",
+        "description": "BRO-5075: url is a /people/ critic profile path, not a review; no fullText; the rebuild already excludes it (skippedInvalidUrl)."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "oedipus-west-end-2024/wsj--charles-isherwood.json",
+        "description": "BRO-5075: url is a /people/ critic profile path, not a review; no fullText; the rebuild already excludes it (skippedInvalidUrl)."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "oedipus-west-end-2025/nytg--kyle-turner.json",
+        "description": "BRO-5075: url is a /people/ critic profile path, not a review; no fullText; the rebuild already excludes it (skippedInvalidUrl)."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "oedipus-west-end-2025/vulture--sara-holdren.json",
+        "description": "BRO-5075: url is a /people/ critic profile path, not a review; no fullText; the rebuild already excludes it (skippedInvalidUrl)."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "oh-mary-off-broadway-2024/usatoday--patrick-ryan.json",
+        "description": "BRO-5075: url field holds a text fragment, not a url; no fullText; the rebuild already excludes it (skippedInvalidUrl)."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "oh-mary-west-end-2025/usatoday--patrick-ryan.json",
+        "description": "BRO-5075: url field holds a text fragment, not a url; no fullText; the rebuild already excludes it (skippedInvalidUrl)."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "old-times-1971/broadwayworld--michael-dale.json",
+        "description": "BRO-5075: url is a /people/ critic profile path, not a review; no fullText; the rebuild already excludes it (skippedInvalidUrl)."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "operation-mincemeat-west-end-2024/nypost--johnny-oleksinski.json",
+        "description": "BRO-5075: url field holds a text fragment, not a url; no fullText; the rebuild already excludes it (skippedInvalidUrl)."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "pacific-overtures-1976/hollywood-reporter--david-rooney.json",
+        "description": "BRO-5075: url is a /people/ critic profile path, not a review; no fullText; the rebuild already excludes it (skippedInvalidUrl)."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "pacific-overtures-1976/nbcny--robert-kahn.json",
+        "description": "BRO-5075: url is a /people/ critic profile path, not a review; no fullText; the rebuild already excludes it (skippedInvalidUrl)."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "pacific-overtures-1976/nytimes--jesse-green.json",
+        "description": "BRO-5075: url is a /people/ critic profile path, not a review; no fullText; the rebuild already excludes it (skippedInvalidUrl)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "parade-2023/broadwayworld--alan-portner.json",
+        "field": "url",
+        "oldValue": "/kansas-city/article/Review-PARADE-at-Kauffman-Theatre-20250129",
+        "newValue": "https://www.broadwayworld.com/kansas-city/article/Review-PARADE-at-Kauffman-Theatre-20250129",
+        "description": "BRO-5075: bww-relative url repaired to the same article (scheme/host restored); score and flags kept."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "parade-2023/broadwayworld--brett-cullum.json",
+        "field": "url",
+        "oldValue": "/houston/article/Review-PARADE-at-Broadway-at-The-Hobby-Center-20250716",
+        "newValue": "https://www.broadwayworld.com/houston/article/Review-PARADE-at-Broadway-at-The-Hobby-Center-20250716",
+        "description": "BRO-5075: bww-relative url repaired to the same article (scheme/host restored); score and flags kept."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "parade-2023/broadwayworld--courtney-symes.json",
+        "field": "url",
+        "oldValue": "/sacramento/article/Review-PARADE-at-Broadway-Sacramento-is-a-Powerful-Lesson-in-History-20250508",
+        "newValue": "https://www.broadwayworld.com/sacramento/article/Review-PARADE-at-Broadway-Sacramento-is-a-Powerful-Lesson-in-History-20250508",
+        "description": "BRO-5075: bww-relative url repaired to the same article (scheme/host restored); score and flags kept."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "parade-2023/broadwayworld--harker-jones.json",
+        "field": "url",
+        "oldValue": "/los-angeles/article/Review-PARADE-at-Ahmanson-Theatre-20250624",
+        "newValue": "https://www.broadwayworld.com/los-angeles/article/Review-PARADE-at-Ahmanson-Theatre-20250624",
+        "description": "BRO-5075: bww-relative url repaired to the same article (scheme/host restored); score and flags kept."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "parade-2023/broadwayworld--jared-fessler.json",
+        "field": "url",
+        "oldValue": "/minneapolis/article/Review-PARADE-at-Orpheum-Theatre-Minneapolis-20250123",
+        "newValue": "https://www.broadwayworld.com/minneapolis/article/Review-PARADE-at-Orpheum-Theatre-Minneapolis-20250123",
+        "description": "BRO-5075: bww-relative url repaired to the same article (scheme/host restored); score and flags kept."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "parade-2023/broadwayworld--jay-irwin.json",
+        "field": "url",
+        "oldValue": "/seattle/article/Review-PARADE-at-The-5th-Avenue-Theatre-20250419",
+        "newValue": "https://www.broadwayworld.com/seattle/article/Review-PARADE-at-The-5th-Avenue-Theatre-20250419",
+        "description": "BRO-5075: bww-relative url repaired to the same article (scheme/host restored); score and flags kept."
+      }
+    ]
+  }
+}

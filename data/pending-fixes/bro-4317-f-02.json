@@ -1,0 +1,287 @@
+{
+  "issueNumber": "bro-4317-f-02",
+  "planId": "b3de02e3-ed21-4417-ad1c-6321e4037838",
+  "status": "applied",
+  "createdAt": "2026-10-13T03:28:25.646Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4317 part 2/3: clear location-only flags (orphaned-directory wrongShow, showId/directory wrongProduction, write-time ambiguous-production) on review files already rehomed to their production by publish date",
+    "steps": [
+      "set wrongShowManualClear on redwood-2025/theater-life--patrick-christiano.json",
+      "set wrongProductionManualClear on redwood-2025/theater-life--patrick-christiano.json",
+      "set wrongShowManualClear on the-cottage-2023/theater-life--david-sheward.json",
+      "set wrongProductionManualClear on the-cottage-2023/theater-life--david-sheward.json",
+      "set wrongProductionManualClear on the-disappear-off-broadway-2026/theater-life--david-sheward.json",
+      "set wrongShowManualClear on the-fear-of-13-2026/theater-life--patrick-christiano.json",
+      "set wrongProductionManualClear on the-fear-of-13-2026/theater-life--patrick-christiano.json",
+      "set wrongShowManualClear on the-great-gatsby-2024/theater-life--paulanne-simmons.json",
+      "set wrongProductionManualClear on the-great-gatsby-2024/theater-life--paulanne-simmons.json",
+      "set wrongProductionManualClear on the-monsters-off-broadway-2026/theater-life--isa-goldberg.json",
+      "set wrongProductionManualClear on the-monsters-off-broadway-2026/theater-life--paulanne-simmons.json",
+      "set wrongShowManualClear on the-notebook-2024/theater-life--paulanne-simmons.json",
+      "set wrongProductionManualClear on the-notebook-2024/theater-life--paulanne-simmons.json",
+      "set wrongShowManualClear on buena-vista-social-club-2025/nysr--bob-verini.json",
+      "set wrongProductionManualClear on buena-vista-social-club-2025/nysr--bob-verini.json",
+      "set wrongShowManualClear on buena-vista-social-club-2025/nysr--michael-sommers.json",
+      "set wrongProductionManualClear on buena-vista-social-club-2025/nysr--michael-sommers.json",
+      "set wrongShowManualClear on uncle-vanya-2024/nysr--melissa-rose-bernardo.json",
+      "set wrongProductionManualClear on uncle-vanya-2024/nysr--melissa-rose-bernardo.json"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "redwood-2025/theater-life--patrick-christiano.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4317: file was rehomed from a folder with no shows.json id into redwood-2025 by publishDate 2025-02-21T12:00:00 against the run window; the flag only described the old folder"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "redwood-2025/theater-life--patrick-christiano.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4317: file was rehomed from a folder with no shows.json id into redwood-2025 by publishDate 2025-02-21T12:00:00 against the run window; the flag only described the old folder (stale showId redwood would otherwise re-trip the showId/directory audit)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-cottage-2023/theater-life--david-sheward.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4317: file was rehomed from a folder with no shows.json id into the-cottage-2023 by publishDate 2023-07-24T11:30:27 against the run window; the flag only described the old folder"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-cottage-2023/theater-life--david-sheward.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4317: file was rehomed from a folder with no shows.json id into the-cottage-2023 by publishDate 2023-07-24T11:30:27 against the run window; the flag only described the old folder (stale showId the-cottage would otherwise re-trip the showId/directory audit)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-disappear-off-broadway-2026/theater-life--david-sheward.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4317: file was rehomed from a folder with no shows.json id into the-disappear-off-broadway-2026 by publishDate 2026-01-16T12:07:07 against the run window; the flag only described the old folder (stale showId the-disappear-off-broadway would otherwise re-trip the showId/directory audit)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-fear-of-13-2026/theater-life--patrick-christiano.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4317: file was rehomed from a folder with no shows.json id into the-fear-of-13-2026 by publishDate 2026-04-24T08:55:00 against the run window; the flag only described the old folder"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-fear-of-13-2026/theater-life--patrick-christiano.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4317: file was rehomed from a folder with no shows.json id into the-fear-of-13-2026 by publishDate 2026-04-24T08:55:00 against the run window; the flag only described the old folder (stale showId the-fear-of-13 would otherwise re-trip the showId/directory audit)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-great-gatsby-2024/theater-life--paulanne-simmons.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4317: file was rehomed from a folder with no shows.json id into the-great-gatsby-2024 by publishDate 2024-04-28T13:51:03 against the run window; the flag only described the old folder"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-great-gatsby-2024/theater-life--paulanne-simmons.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4317: file was rehomed from a folder with no shows.json id into the-great-gatsby-2024 by publishDate 2024-04-28T13:51:03 against the run window; the flag only described the old folder (stale showId the-great-gatsby would otherwise re-trip the showId/directory audit)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-monsters-off-broadway-2026/theater-life--isa-goldberg.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4317: file was rehomed from a folder with no shows.json id into the-monsters-off-broadway-2026 by publishDate 2026-02-12T14:42:42 against the run window; the flag only described the old folder (stale showId the-monsters-off-broadway would otherwise re-trip the showId/directory audit)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-monsters-off-broadway-2026/theater-life--paulanne-simmons.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4317: file was rehomed from a folder with no shows.json id into the-monsters-off-broadway-2026 by publishDate 2026-02-16T10:18:47 against the run window; the flag only described the old folder (stale showId the-monsters-off-broadway would otherwise re-trip the showId/directory audit)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-notebook-2024/theater-life--paulanne-simmons.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4317: file was rehomed from a folder with no shows.json id into the-notebook-2024 by publishDate 2024-03-22T14:13:54 against the run window; the flag only described the old folder"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-notebook-2024/theater-life--paulanne-simmons.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4317: file was rehomed from a folder with no shows.json id into the-notebook-2024 by publishDate 2024-03-22T14:13:54 against the run window; the flag only described the old folder (stale showId the-notebook would otherwise re-trip the showId/directory audit)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "buena-vista-social-club-2025/nysr--bob-verini.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4317: file was rehomed from a folder with no shows.json id into buena-vista-social-club-2025 by publishDate 2025-03-19T21:58:00 against the run window; the flag only described the old folder"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "buena-vista-social-club-2025/nysr--bob-verini.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4317: file was rehomed from a folder with no shows.json id into buena-vista-social-club-2025 by publishDate 2025-03-19T21:58:00 against the run window; the flag only described the old folder (stale showId buena-vista-social-club would otherwise re-trip the showId/directory audit)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "buena-vista-social-club-2025/nysr--michael-sommers.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4317: file was rehomed from a folder with no shows.json id into buena-vista-social-club-2025 by publishDate 2025-03-19T21:57:04 against the run window; the flag only described the old folder"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "buena-vista-social-club-2025/nysr--michael-sommers.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4317: file was rehomed from a folder with no shows.json id into buena-vista-social-club-2025 by publishDate 2025-03-19T21:57:04 against the run window; the flag only described the old folder (stale showId buena-vista-social-club would otherwise re-trip the showId/directory audit)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "uncle-vanya-2024/nysr--melissa-rose-bernardo.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4317: file was rehomed from a folder with no shows.json id into uncle-vanya-2024 by publishDate 2024-04-24T20:55:05 against the run window; the flag only described the old folder"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "uncle-vanya-2024/nysr--melissa-rose-bernardo.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": true,
+        "newValue": true,
+        "description": "BRO-4317: file was rehomed from a folder with no shows.json id into uncle-vanya-2024 by publishDate 2024-04-24T20:55:05 against the run window; the flag only described the old folder (stale showId uncle-vanya would otherwise re-trip the showId/directory audit)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-13T04:24:44.013Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "redwood-2025/theater-life--patrick-christiano.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "redwood-2025/theater-life--patrick-christiano.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-cottage-2023/theater-life--david-sheward.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-cottage-2023/theater-life--david-sheward.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-disappear-off-broadway-2026/theater-life--david-sheward.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-fear-of-13-2026/theater-life--patrick-christiano.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-fear-of-13-2026/theater-life--patrick-christiano.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-great-gatsby-2024/theater-life--paulanne-simmons.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-great-gatsby-2024/theater-life--paulanne-simmons.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-monsters-off-broadway-2026/theater-life--isa-goldberg.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-monsters-off-broadway-2026/theater-life--paulanne-simmons.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-notebook-2024/theater-life--paulanne-simmons.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-notebook-2024/theater-life--paulanne-simmons.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "buena-vista-social-club-2025/nysr--bob-verini.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "buena-vista-social-club-2025/nysr--bob-verini.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "buena-vista-social-club-2025/nysr--michael-sommers.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "buena-vista-social-club-2025/nysr--michael-sommers.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "uncle-vanya-2024/nysr--melissa-rose-bernardo.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "uncle-vanya-2024/nysr--melissa-rose-bernardo.json wrongProductionManualClear: true -> true"
+    }
+  ]
+}

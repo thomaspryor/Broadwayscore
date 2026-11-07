@@ -1,0 +1,78 @@
+{
+  "issueNumber": "bro-4961",
+  "planId": "ff70c14e-bc4f-425f-8ae4-f5d30514a99a",
+  "status": "applied",
+  "createdAt": "2026-10-29T05:08:24.641Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Clear 4 aggregator excerpts that belong to another show on correctly filed complete reviews",
+    "steps": [
+      "BRO-4961: aggregator excerpt belongs to another show; complete fullText stays the display/score source",
+      "BRO-4961: aggregator excerpt belongs to another show; complete fullText stays the display/score source",
+      "BRO-4961: aggregator excerpt belongs to another show; complete fullText stays the display/score source",
+      "BRO-4961: aggregator excerpt belongs to another show; complete fullText stays the display/score source"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "titus-andronicus-off-broadway-2026/amny--matt-windman.json",
+        "field": "bwwExcerpt",
+        "oldValue": "Were it not for Lane's participation, \"Gary\" might have premiered instead at the Public Theater or another Off-Broadway venue open to its combination of Shakespeare, physical comedy and sincerity. One can't help but admire Lane's willingness to take part in an unpredictable new work instead of another revival. He gives an absolutely committed performance as a sad and sensitive clown/struggling everyman while being backed by two superb comic actresses.",
+        "newValue": null,
+        "description": "BRO-4961: aggregator excerpt belongs to another show; complete fullText stays the display/score source"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "titus-andronicus-off-broadway-2026/timeout--adam-feldman.json",
+        "field": "bwwExcerpt",
+        "oldValue": "Gary, in other words, isn't fooling around. Like its hero, it has big plans, and like its hero, those plans do not come off with perfect smoothness. Lane is tremendous, and Julie White is screamingly funny as the play's third character, Carol: a middle-class midwife racked with guilt over her bystander role in one of Titus's many subtragedies, in which her own throat was nonfatally slit. (She's a bleeding-neck liberal.) But although Nielsen-who took over the role of Janice just before previews-w",
+        "newValue": null,
+        "description": "BRO-4961: aggregator excerpt belongs to another show; complete fullText stays the display/score source"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-pass-off-broadway-2026/theatrely--juan-a-ramirez.json",
+        "field": "dtliExcerpt",
+        "oldValue": "A promising Sun is dawning at the August Wilson Theatre, and not just because Broadway is officially back. Pass Over, a mostly captivating one-acter by Antoinette Chinonye Nwandu, represents a hopeful new chapter in Broadway history, not only as the first play staged since the COVID-19 lockdown, but as the first of seven by Black writers to be produced this season.",
+        "newValue": null,
+        "description": "BRO-4961: aggregator excerpt belongs to another show; complete fullText stays the display/score source"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-story-west-end-2026/london-box-office--stuart-king.json",
+        "field": "lboRoundupExcerpt",
+        "oldValue": "Danny Robins’ small-scale stage thriller has become something of an underground hit with audiences having opened at the Noël Coward, followed by further runs at the Gielgud, the Criterion and most recently the Lyric theatre. Now a new cast have been assembled to continue the ghostly goings-on at the production’s new home at the Apollo on Shaftesbury Avenue. Clifford Samuel as Sam and Jaime Winstone as Jenny in 2:22 A Ghost Story. Photo Helen Murray Sam has been away for work, but at their newly ",
+        "newValue": null,
+        "description": "BRO-4961: aggregator excerpt belongs to another show; complete fullText stays the display/score source"
+      }
+    ]
+  },
+  "executedAt": "2026-10-29T06:35:26.507Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "titus-andronicus-off-broadway-2026/amny--matt-windman.json bwwExcerpt: \"Were it not for Lane's participation, \\\"Gary\\\" might have premiered instead at the Public Theater or another Off-Broadway venue open to its combination of Shakespeare, physical comedy and sincerity. One can't help but admire Lane's willingness to take part in an unpredictable new work instead of another revival. He gives an absolutely committed performance as a sad and sensitive clown/struggling everyman while being backed by two superb comic actresses.\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "titus-andronicus-off-broadway-2026/timeout--adam-feldman.json bwwExcerpt: \"Gary, in other words, isn't fooling around. Like its hero, it has big plans, and like its hero, those plans do not come off with perfect smoothness. Lane is tremendous, and Julie White is screamingly funny as the play's third character, Carol: a middle-class midwife racked with guilt over her bystander role in one of Titus's many subtragedies, in which her own throat was nonfatally slit. (She's a bleeding-neck liberal.) But although Nielsen-who took over the role of Janice just before previews-w\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-pass-off-broadway-2026/theatrely--juan-a-ramirez.json dtliExcerpt: \"A promising Sun is dawning at the August Wilson Theatre, and not just because Broadway is officially back. Pass Over, a mostly captivating one-acter by Antoinette Chinonye Nwandu, represents a hopeful new chapter in Broadway history, not only as the first play staged since the COVID-19 lockdown, but as the first of seven by Black writers to be produced this season.\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-story-west-end-2026/london-box-office--stuart-king.json lboRoundupExcerpt: \"Danny Robins’ small-scale stage thriller has become something of an underground hit with audiences having opened at the Noël Coward, followed by further runs at the Gielgud, the Criterion and most recently the Lyric theatre. Now a new cast have been assembled to continue the ghostly goings-on at the production’s new home at the Apollo on Shaftesbury Avenue. Clifford Samuel as Sam and Jaime Winstone as Jenny in 2:22 A Ghost Story. Photo Helen Murray Sam has been away for work, but at their newly \" -> null"
+    }
+  ],
+  "executedIn": "ci"
+}

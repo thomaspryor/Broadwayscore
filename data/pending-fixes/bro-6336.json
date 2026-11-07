@@ -1,0 +1,186 @@
+{
+  "issueNumber": "bro-6336",
+  "planId": "312a3b3f-3587-4226-b370-a8028f3dffd1",
+  "status": "partial",
+  "createdAt": "2026-10-26T14:37:28.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6336: apply three capitalization figures from the pending-review queue whose cited pages state them (King Lear 2019, Frankie and Johnny 2019, Midnight in the Garden of Good and Evil)",
+    "steps": [
+      "commercial.json: king-lear-2019.capitalization",
+      "commercial.json: king-lear-2019.capitalizationSource",
+      "commercial.json: king-lear-2019.sources",
+      "commercial.json: frankie-and-johnny-in-the-clair-de-lune-2019.capitalization",
+      "commercial.json: frankie-and-johnny-in-the-clair-de-lune-2019.capitalizationSource",
+      "commercial.json: frankie-and-johnny-in-the-clair-de-lune-2019.sources",
+      "commercial.json: midnight-in-the-garden-of-good-and-evil.capitalization",
+      "commercial.json: midnight-in-the-garden-of-good-and-evil.capitalizationSource",
+      "commercial.json: midnight-in-the-garden-of-good-and-evil.sources"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "king-lear-2019",
+        "field": "capitalization",
+        "oldValue": null,
+        "newValue": 4900000,
+        "description": "commercial.json: king-lear-2019.capitalization"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "king-lear-2019",
+        "field": "capitalizationSource",
+        "oldValue": null,
+        "newValue": "Forbes (Lee Seymour, Jun 24, 2019), citing SEC filings: \"Lear and Gary were capped at $4.9 million, Clinton at $4.2 million\" https://www.forbes.com/sites/leeseymour/2019/06/24/half-a-dozen-broadway-shows-to-close-after-tony-award-culling/",
+        "description": "commercial.json: king-lear-2019.capitalizationSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "king-lear-2019",
+        "field": "sources",
+        "oldValue": null,
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.forbes.com/sites/leeseymour/2019/06/24/half-a-dozen-broadway-shows-to-close-after-tony-award-culling/",
+            "date": "2019-06-24"
+          }
+        ],
+        "description": "commercial.json: king-lear-2019.sources"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "frankie-and-johnny-in-the-clair-de-lune-2019",
+        "field": "capitalization",
+        "oldValue": null,
+        "newValue": 4100000,
+        "description": "commercial.json: frankie-and-johnny-in-the-clair-de-lune-2019.capitalization"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "frankie-and-johnny-in-the-clair-de-lune-2019",
+        "field": "capitalizationSource",
+        "oldValue": null,
+        "newValue": "Broadway News (Jul 8, 2019): \"The play was capitalized for up to $4.1 million, according to documents filed with the Securities and Exchange Commission.\" https://www.broadwaynews.com/frankie-and-johnny-posts-early-closing-notice/",
+        "description": "commercial.json: frankie-and-johnny-in-the-clair-de-lune-2019.capitalizationSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "frankie-and-johnny-in-the-clair-de-lune-2019",
+        "field": "sources",
+        "oldValue": null,
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.broadwaynews.com/frankie-and-johnny-posts-early-closing-notice/",
+            "date": "2019-07-08"
+          }
+        ],
+        "description": "commercial.json: frankie-and-johnny-in-the-clair-de-lune-2019.sources"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "midnight-in-the-garden-of-good-and-evil",
+        "field": "capitalization",
+        "oldValue": null,
+        "newValue": 25000000,
+        "description": "commercial.json: midnight-in-the-garden-of-good-and-evil.capitalization"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "midnight-in-the-garden-of-good-and-evil",
+        "field": "capitalizationSource",
+        "oldValue": null,
+        "newValue": "Broadway Journal (Mar 10, 2025): \"Scheduled to open later this year at a capitalization of up to $25 million\" https://www.broadwayjournal.com/p/luftig-wins-latest-round-in-kinky-boots-battle",
+        "description": "commercial.json: midnight-in-the-garden-of-good-and-evil.capitalizationSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "midnight-in-the-garden-of-good-and-evil",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://playbill.com/article/whats-headed-for-broadway-in-2026-2027",
+            "date": null
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://playbill.com/article/whats-headed-for-broadway-in-2026-2027",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwayjournal.com/p/luftig-wins-latest-round-in-kinky-boots-battle",
+            "date": "2025-03-10"
+          }
+        ],
+        "description": "commercial.json: midnight-in-the-garden-of-good-and-evil.sources"
+      }
+    ]
+  },
+  "executedAt": "2026-10-26T15:43:45.689Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "commercial.json:capitalization: value changed since plan"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "commercial.json:capitalizationSource: value changed since plan"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "commercial.json:sources: value changed since plan"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "commercial.json:capitalization: value changed since plan"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "commercial.json:capitalizationSource: value changed since plan"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "commercial.json:sources: value changed since plan"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "commercial.json:capitalization: value changed since plan"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "commercial.json:capitalizationSource: value changed since plan"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "commercial.json:sources: value changed since plan"
+    }
+  ],
+  "executedIn": "ci"
+}

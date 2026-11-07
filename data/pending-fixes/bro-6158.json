@@ -1,0 +1,397 @@
+{
+  "issueNumber": "bro-6158",
+  "planId": "da810cd6-e2a7-44e5-9edc-47398044d2ec",
+  "status": "applied",
+  "createdAt": "2026-10-24T18:31:26.642Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Closed-show estimated designations (owner 2026-10-24): 20 closed TBD shows get a model-estimate designation (part 1 of 2)",
+    "steps": [
+      "commercial.json: ragtime.designation",
+      "commercial.json: ragtime.designationBasis",
+      "commercial.json: cats-the-jellicle-ball.designation",
+      "commercial.json: cats-the-jellicle-ball.designationBasis",
+      "commercial.json: cats-the-jellicle-ball.needsLossEvidence",
+      "commercial.json: proof.designation",
+      "commercial.json: proof.designationBasis",
+      "commercial.json: proof.needsLossEvidence",
+      "commercial.json: leopoldstadt-2022.designation",
+      "commercial.json: leopoldstadt-2022.designationBasis",
+      "commercial.json: just-for-us.designation",
+      "commercial.json: just-for-us.designationBasis",
+      "commercial.json: dog-day-afternoon.designation",
+      "commercial.json: dog-day-afternoon.designationBasis",
+      "commercial.json: dog-day-afternoon.needsLossEvidence",
+      "commercial.json: death-of-a-salesman.designation",
+      "commercial.json: death-of-a-salesman.designationBasis",
+      "commercial.json: joe-turners-come-and-gone.designation",
+      "commercial.json: joe-turners-come-and-gone.designationBasis",
+      "commercial.json: the-fear-of-13.designation",
+      "commercial.json: the-fear-of-13.designationBasis",
+      "commercial.json: the-fear-of-13.needsLossEvidence",
+      "commercial.json: titanique.designation",
+      "commercial.json: titanique.designationBasis",
+      "commercial.json: titanique.needsLossEvidence"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "ragtime",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Fizzle",
+        "description": "commercial.json: ragtime.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "ragtime",
+        "field": "designationBasis",
+        "oldValue": "no-recoupment-announced",
+        "newValue": "model-estimate",
+        "description": "commercial.json: ragtime.designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "cats-the-jellicle-ball",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Flop",
+        "description": "commercial.json: cats-the-jellicle-ball.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "cats-the-jellicle-ball",
+        "field": "designationBasis",
+        "oldValue": "no-recoupment-announced",
+        "newValue": "model-estimate",
+        "description": "commercial.json: cats-the-jellicle-ball.designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "cats-the-jellicle-ball",
+        "field": "needsLossEvidence",
+        "oldValue": null,
+        "newValue": false,
+        "description": "commercial.json: cats-the-jellicle-ball.needsLossEvidence"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "proof",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Fizzle",
+        "description": "commercial.json: proof.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "proof",
+        "field": "designationBasis",
+        "oldValue": "no-recoupment-announced",
+        "newValue": "model-estimate",
+        "description": "commercial.json: proof.designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "proof",
+        "field": "needsLossEvidence",
+        "oldValue": null,
+        "newValue": false,
+        "description": "commercial.json: proof.needsLossEvidence"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "leopoldstadt-2022",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Fizzle",
+        "description": "commercial.json: leopoldstadt-2022.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "leopoldstadt-2022",
+        "field": "designationBasis",
+        "oldValue": "no-recoupment-announced",
+        "newValue": "model-estimate",
+        "description": "commercial.json: leopoldstadt-2022.designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "just-for-us",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Trickle",
+        "description": "commercial.json: just-for-us.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "just-for-us",
+        "field": "designationBasis",
+        "oldValue": null,
+        "newValue": "model-estimate",
+        "description": "commercial.json: just-for-us.designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "dog-day-afternoon",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Flop",
+        "description": "commercial.json: dog-day-afternoon.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "dog-day-afternoon",
+        "field": "designationBasis",
+        "oldValue": "no-recoupment-announced",
+        "newValue": "model-estimate",
+        "description": "commercial.json: dog-day-afternoon.designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "dog-day-afternoon",
+        "field": "needsLossEvidence",
+        "oldValue": null,
+        "newValue": false,
+        "description": "commercial.json: dog-day-afternoon.needsLossEvidence"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "death-of-a-salesman",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Windfall",
+        "description": "commercial.json: death-of-a-salesman.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "death-of-a-salesman",
+        "field": "designationBasis",
+        "oldValue": null,
+        "newValue": "model-estimate",
+        "description": "commercial.json: death-of-a-salesman.designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "joe-turners-come-and-gone",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Fizzle",
+        "description": "commercial.json: joe-turners-come-and-gone.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "joe-turners-come-and-gone",
+        "field": "designationBasis",
+        "oldValue": "no-recoupment-announced",
+        "newValue": "model-estimate",
+        "description": "commercial.json: joe-turners-come-and-gone.designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-fear-of-13",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Flop",
+        "description": "commercial.json: the-fear-of-13.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-fear-of-13",
+        "field": "designationBasis",
+        "oldValue": "no-recoupment-announced",
+        "newValue": "model-estimate",
+        "description": "commercial.json: the-fear-of-13.designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-fear-of-13",
+        "field": "needsLossEvidence",
+        "oldValue": null,
+        "newValue": false,
+        "description": "commercial.json: the-fear-of-13.needsLossEvidence"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "titanique",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Flop",
+        "description": "commercial.json: titanique.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "titanique",
+        "field": "designationBasis",
+        "oldValue": "no-recoupment-announced",
+        "newValue": "model-estimate",
+        "description": "commercial.json: titanique.designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "titanique",
+        "field": "needsLossEvidence",
+        "oldValue": null,
+        "newValue": false,
+        "description": "commercial.json: titanique.needsLossEvidence"
+      }
+    ]
+  },
+  "executedAt": "2026-10-24T22:50:11.865Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for ragtime"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for ragtime"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for cats-the-jellicle-ball"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for cats-the-jellicle-ball"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: needsLossEvidence updated for cats-the-jellicle-ball"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for proof"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for proof"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: needsLossEvidence updated for proof"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for leopoldstadt-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for leopoldstadt-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for just-for-us"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for just-for-us"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for dog-day-afternoon"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for dog-day-afternoon"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: needsLossEvidence updated for dog-day-afternoon"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for death-of-a-salesman"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for death-of-a-salesman"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for joe-turners-come-and-gone"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for joe-turners-come-and-gone"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for the-fear-of-13"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for the-fear-of-13"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: needsLossEvidence updated for the-fear-of-13"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for titanique"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for titanique"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: needsLossEvidence updated for titanique"
+    }
+  ],
+  "executedIn": "ci"
+}

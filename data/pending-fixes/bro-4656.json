@@ -1,0 +1,127 @@
+{
+  "issueNumber": "bro-4656",
+  "planId": "7bfc651a-c641-4eb4-a860-1cd719b21369",
+  "status": "applied",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4656 tour audit: The Only Critic review of The Outsiders (Mar 9 2026) reviews the Broadway in Detroit tour stop (Fisher Theatre, Mar 3-15 2026) but counts on the-outsiders-2024 (Broadway). Flag it wrongProduction with a tour reason; the daily tour sweep then moves it to the-outsiders-tour-2025. Also the Star Tribune review of The Great Gatsby (Jun 3 2026, 'The Broadway tour at the Orpheum', Minneapolis stop Jun 2-14 2026) and the Austin Chronicle review of The Outsiders (Oct 27 2025, 'rolled into Bass Concert Hall last week for a limited Broadway in Austin run', Austin stop Oct 21-26 2025). Both carry wrongProductionOverride/ManualClear from clear-stale-wrong-production-flags.js (2026-08-26), which confirmed each is a real review of the title, not which production; clear the ManualClear marker and flag them (wrongProductionOverride is not plan-editable and is harmless once the file sits on the tour) so the sweep moves them to the tour.",
+    "steps": [
+      "Set wrongProduction true and a national-tour wrongProductionReason on the-outsiders-2024/theonlycritic--nate-adams.json.",
+      "Clear the script-set wrongProductionManualClear on the Gatsby Star Tribune and Outsiders Austin Chronicle files, then flag both with a national-tour reason.",
+      "Next rebuild-reviews run: sweep-tour-reviews --auto moves it to the-outsiders-tour-2025 (approval in data/tour-sweep-approvals.json)."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "the-outsiders-2024/theonlycritic--nate-adams.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "National tour review: Broadway in Detroit stop (2026-03-03), photo credit Broadway in Detroit/ATG; tour integrity (BRO-4656)",
+        "description": "Reason first so the flag write carries it"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-outsiders-2024/theonlycritic--nate-adams.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Tour-stop review counting on the Broadway page"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-great-gatsby-2024/minneapolis-star-tribune--rohan-preston.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Same"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-great-gatsby-2024/minneapolis-star-tribune--rohan-preston.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "National tour review: Orpheum Theatre, Minneapolis, MN stop (2026-06-02), 'The Broadway tour at the Orpheum'; tour integrity (BRO-4656)",
+        "description": "Reason first so the flag write carries it"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-great-gatsby-2024/minneapolis-star-tribune--rohan-preston.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Tour-stop review counting on the Broadway page"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-outsiders-2024/the-austin-chronicle--cat-mccarrey.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Same"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-outsiders-2024/the-austin-chronicle--cat-mccarrey.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "National tour review: Bass Concert Hall, Austin, TX stop (2025-10-21), 'a limited Broadway in Austin run'; tour integrity (BRO-4656)",
+        "description": "Reason first so the flag write carries it"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-outsiders-2024/the-austin-chronicle--cat-mccarrey.json",
+        "field": "wrongProduction",
+        "oldValue": false,
+        "newValue": true,
+        "description": "Tour-stop review counting on the Broadway page"
+      }
+    ]
+  },
+  "executedAt": "2026-10-05T19:52:15.704Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-outsiders-2024/theonlycritic--nate-adams.json wrongProductionReason: null -> \"National tour review: Broadway in Detroit stop (2026-03-03), photo credit Broadway in Detroit/ATG; tour integrity (BRO-4656)\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-outsiders-2024/theonlycritic--nate-adams.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-great-gatsby-2024/minneapolis-star-tribune--rohan-preston.json wrongProductionManualClear: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-great-gatsby-2024/minneapolis-star-tribune--rohan-preston.json wrongProductionReason: null -> \"National tour review: Orpheum Theatre, Minneapolis, MN stop (2026-06-02), 'The Broadway tour at the Orpheum'; tour integrity (BRO-4656)\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-great-gatsby-2024/minneapolis-star-tribune--rohan-preston.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-outsiders-2024/the-austin-chronicle--cat-mccarrey.json wrongProductionManualClear: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-outsiders-2024/the-austin-chronicle--cat-mccarrey.json wrongProductionReason: null -> \"National tour review: Bass Concert Hall, Austin, TX stop (2025-10-21), 'a limited Broadway in Austin run'; tour integrity (BRO-4656)\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-outsiders-2024/the-austin-chronicle--cat-mccarrey.json wrongProduction: false -> true"
+    }
+  ]
+}

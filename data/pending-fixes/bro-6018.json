@@ -1,0 +1,397 @@
+{
+  "issueNumber": "bro-6018",
+  "planId": "3bd79590-05a6-44c1-99a9-38dfdb674c4d",
+  "status": "partial",
+  "createdAt": "2026-10-22T20:25:56.413Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6018: correct 26 West End show dates and type after two-checker disagreement adjudication, each with a cited source (part 1 of 2)",
+    "steps": [
+      "shows.json: foxfinder-west-end-2018.closingDate",
+      "shows.json: come-from-away-west-end-2019.openingDate",
+      "shows.json: on-your-feet-west-end-2019.openingDate",
+      "shows.json: get-up-stand-up-the-bob-marley-story-west-end-2021.closingDate",
+      "shows.json: the-human-voice-west-end-2022.openingDate",
+      "shows.json: a-christmas-carol-west-end-2022.type",
+      "shows.json: medea-west-end-2023.previewsStartDate",
+      "shows.json: hadestown-west-end-2018.openingDate",
+      "shows.json: the-american-clock-west-end-2019.openingDate",
+      "shows.json: glass-kill-bluebeard-and-imp-west-end-2019.openingDate",
+      "shows.json: paradise-west-end-2021.openingDate",
+      "shows.json: magic-goes-wrong-west-end-2021.closingDate",
+      "shows.json: blues-for-an-alabama-sky-west-end-2022.openingDate",
+      "shows.json: the-great-british-bake-off-musical-west-end-2023.closingDate",
+      "shows.json: end-west-end-2025.closingDate",
+      "shows.json: a-christmas-carol-west-end-2018.previewsStartDate",
+      "shows.json: death-of-a-salesman-west-end-2019.openingDate",
+      "shows.json: a-little-life-west-end-2023.previewsStartDate",
+      "shows.json: pygmalion-west-end-2023.openingDate",
+      "shows.json: my-brilliant-friend-part-1-part-2-west-end-2019.openingDate",
+      "shows.json: the-comeback-west-end-2020.openingDate",
+      "shows.json: hairspray-the-musical-west-end-2021.previewsStartDate",
+      "shows.json: anna-x-west-end-2021.closingDate",
+      "shows.json: get-up-stand-up-the-bob-marley-story-west-end-2021.openingDate",
+      "shows.json: a-christmas-carol-west-end-2022.openingDate"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "foxfinder-west-end-2018",
+        "field": "closingDate",
+        "oldValue": "2018-10-24",
+        "newValue": "2018-10-20",
+        "description": "shows.json: foxfinder-west-end-2018.closingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "come-from-away-west-end-2019",
+        "field": "openingDate",
+        "oldValue": "2019-02-17",
+        "newValue": "2019-02-18",
+        "description": "shows.json: come-from-away-west-end-2019.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "on-your-feet-west-end-2019",
+        "field": "openingDate",
+        "oldValue": "2019-06-26",
+        "newValue": "2019-06-27",
+        "description": "shows.json: on-your-feet-west-end-2019.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "get-up-stand-up-the-bob-marley-story-west-end-2021",
+        "field": "closingDate",
+        "oldValue": "2023-01-29",
+        "newValue": "2023-01-08",
+        "description": "shows.json: get-up-stand-up-the-bob-marley-story-west-end-2021.closingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-human-voice-west-end-2022",
+        "field": "openingDate",
+        "oldValue": "2022-03-21",
+        "newValue": "2022-03-22",
+        "description": "shows.json: the-human-voice-west-end-2022.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-christmas-carol-west-end-2022",
+        "field": "type",
+        "oldValue": "musical",
+        "newValue": "play",
+        "description": "shows.json: a-christmas-carol-west-end-2022.type"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "medea-west-end-2023",
+        "field": "previewsStartDate",
+        "oldValue": "2023-02-11",
+        "newValue": "2023-02-10",
+        "description": "shows.json: medea-west-end-2023.previewsStartDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "hadestown-west-end-2018",
+        "field": "openingDate",
+        "oldValue": "2018-11-11",
+        "newValue": "2018-11-13",
+        "description": "shows.json: hadestown-west-end-2018.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-american-clock-west-end-2019",
+        "field": "openingDate",
+        "oldValue": "2019-02-14",
+        "newValue": "2019-02-13",
+        "description": "shows.json: the-american-clock-west-end-2019.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "glass-kill-bluebeard-and-imp-west-end-2019",
+        "field": "openingDate",
+        "oldValue": "2019-09-24",
+        "newValue": "2019-09-25",
+        "description": "shows.json: glass-kill-bluebeard-and-imp-west-end-2019.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "paradise-west-end-2021",
+        "field": "openingDate",
+        "oldValue": "2021-08-12",
+        "newValue": "2021-08-11",
+        "description": "shows.json: paradise-west-end-2021.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "magic-goes-wrong-west-end-2021",
+        "field": "closingDate",
+        "oldValue": "2022-02-12",
+        "newValue": "2022-02-27",
+        "description": "shows.json: magic-goes-wrong-west-end-2021.closingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "blues-for-an-alabama-sky-west-end-2022",
+        "field": "openingDate",
+        "oldValue": "2022-10-04",
+        "newValue": "2022-09-27",
+        "description": "shows.json: blues-for-an-alabama-sky-west-end-2022.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-great-british-bake-off-musical-west-end-2023",
+        "field": "closingDate",
+        "oldValue": "2023-05-14",
+        "newValue": "2023-05-13",
+        "description": "shows.json: the-great-british-bake-off-musical-west-end-2023.closingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "end-west-end-2025",
+        "field": "closingDate",
+        "oldValue": "2025-12-20",
+        "newValue": "2026-01-17",
+        "description": "shows.json: end-west-end-2025.closingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-christmas-carol-west-end-2018",
+        "field": "previewsStartDate",
+        "oldValue": "2018-11-27",
+        "newValue": "2018-11-24",
+        "description": "shows.json: a-christmas-carol-west-end-2018.previewsStartDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "death-of-a-salesman-west-end-2019",
+        "field": "openingDate",
+        "oldValue": "2019-11-05",
+        "newValue": "2019-11-04",
+        "description": "shows.json: death-of-a-salesman-west-end-2019.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-little-life-west-end-2023",
+        "field": "previewsStartDate",
+        "oldValue": "2023-03-30",
+        "newValue": "2023-03-25",
+        "description": "shows.json: a-little-life-west-end-2023.previewsStartDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "pygmalion-west-end-2023",
+        "field": "openingDate",
+        "oldValue": "2023-09-12",
+        "newValue": "2023-09-19",
+        "description": "shows.json: pygmalion-west-end-2023.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "my-brilliant-friend-part-1-part-2-west-end-2019",
+        "field": "openingDate",
+        "oldValue": "2019-11-12",
+        "newValue": "2019-11-26",
+        "description": "shows.json: my-brilliant-friend-part-1-part-2-west-end-2019.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-comeback-west-end-2020",
+        "field": "openingDate",
+        "oldValue": "2020-12-15",
+        "newValue": "2020-12-08",
+        "description": "shows.json: the-comeback-west-end-2020.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "hairspray-the-musical-west-end-2021",
+        "field": "previewsStartDate",
+        "oldValue": "2021-06-22",
+        "newValue": "2021-06-21",
+        "description": "shows.json: hairspray-the-musical-west-end-2021.previewsStartDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "anna-x-west-end-2021",
+        "field": "closingDate",
+        "oldValue": "2021-08-08",
+        "newValue": "2021-08-04",
+        "description": "shows.json: anna-x-west-end-2021.closingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "get-up-stand-up-the-bob-marley-story-west-end-2021",
+        "field": "openingDate",
+        "oldValue": "2021-10-19",
+        "newValue": "2021-10-20",
+        "description": "shows.json: get-up-stand-up-the-bob-marley-story-west-end-2021.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-christmas-carol-west-end-2022",
+        "field": "openingDate",
+        "oldValue": "2022-11-24",
+        "newValue": "2022-11-23",
+        "description": "shows.json: a-christmas-carol-west-end-2022.openingDate"
+      }
+    ]
+  },
+  "executedAt": "2026-10-23T00:39:15.242Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for foxfinder-west-end-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for come-from-away-west-end-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for on-your-feet-west-end-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for get-up-stand-up-the-bob-marley-story-west-end-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for the-human-voice-west-end-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for a-christmas-carol-west-end-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for medea-west-end-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for hadestown-west-end-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for the-american-clock-west-end-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for glass-kill-bluebeard-and-imp-west-end-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for paradise-west-end-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for magic-goes-wrong-west-end-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for blues-for-an-alabama-sky-west-end-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for the-great-british-bake-off-musical-west-end-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for end-west-end-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for a-christmas-carol-west-end-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for death-of-a-salesman-west-end-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for a-little-life-west-end-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for pygmalion-west-end-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "openingDate: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for the-comeback-west-end-2020"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for hairspray-the-musical-west-end-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for anna-x-west-end-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for get-up-stand-up-the-bob-marley-story-west-end-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for a-christmas-carol-west-end-2022"
+    }
+  ],
+  "executedIn": "ci"
+}

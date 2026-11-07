@@ -1,0 +1,19 @@
+{
+  "//": "Autonomous loop config (owner-approved 2026-07-22): $60 night ceiling / $150 weekly cap. Owner: 'let's just see what it does with $60/night' + 'I doubt we can spend that much for multiple days in a row' — so the night cap is high but clampNightToWeekly (autonomous-budget.js) shrinks later nights when the trailing 7-day ledger spend approaches weeklyUSD. Per-card envelopes raised the same day (S $4 / M $10 per attempt) after the $1.50 S cap killed a completed $2.35 card. L enabled: incremental checkpointing gives it one slice per night, now Opus-sized ($10 max / $5 est) since pickModel forces L's single attempt onto Opus (owner: 'I don't trust Sonnet much' on L/data-destructive cards). Consumed by scripts/autonomous-run.js and scripts/autonomous-email.js; CLI flags override.",
+  "nightUSD": 60,
+  "weeklyUSD": 150,
+  "maxItems": 8,
+  "sizes": ["S", "M", "L"],
+  "//tier3": "Tier 3 = the loop may ATTEMPT cards whose fix lives in src/ or scripts/ (owner-approved 2026-07-25, plan v2). It does NOT widen what merges without a human: src//scripts/ paths are never deterministic-green, so every tier-3 diff still lands on the morning approval tap. Turned on as the LAST commit of Sprints 2-4, after the shared check gauntlet (scripts/lib/autonomous-checks.js) and the merge-parity fix were in place — before those, a tier-3 branch could be implemented but never merged. tier3MaxItems caps how many code cards one night may attempt; start at 3 and watch the first few mornings. To turn it off: set tier3Enabled false (no code change, no redeploy). tier3BuildCheck false drops the production build from the src/ check set if it proves too slow.",
+  "tier3Enabled": true,
+  "tier3MaxItems": 3,
+  "tier3BuildCheck": true,
+  "ownerEmail": null,
+  "//ownerEmail": "null here (public repo) — the OWNER_EMAIL env var in .env is the real value; config value, if set, overrides",
+  "baseUrl": "https://broadwayscorecard.com",
+  "linkExpiryHours": 48,
+  "attemptMemoryMaxFailures": 2,
+  "//attemptMemoryMaxFailures": "Loop re-enable readiness (owner mandate 2026-07-30, task #635, do-not-re-enable marker #599 'groundhog day'): a card that fails this many times IN A ROW with unchanged text is parked (scripts/lib/attempt-memory.js) and skipped at triage — no LLM call, no attempt — until the owner edits it or clears the park (data/audit/attempt-memory-overrides.json). Matches the lib's own default; set explicitly here so raising/lowering it is a one-line config change, not a code change.",
+  "circuitBreakerUSD": null,
+  "//circuitBreakerUSD": "Spend circuit breaker (task #635, extends the existing nightUSD/weeklyUSD clamps in scripts/lib/autonomous-budget.js — spendCircuitBreakerStatus): re-checked before every card attempt tonight; if the running total across THIS run's implement events reaches this many dollars with ZERO cards reaching completed+verified (card-pass/auto-approve), the run halts for the night rather than keep burning through the same failure mode. null = never halts (today's behavior, and the loop is still paused per task #599 regardless). Deliberately left null/off pending the owner's shadow-mode review — do NOT set a value or flip launchd back on without that sign-off. `data/audit/autonomous-ledger.jsonl` is Mac-Studio-local and gitignored (see task #577 — losing it resets this analysis), so pick the number from the ACTUAL file on the Mac Studio at re-enable time (`node -e \"const l=require('./scripts/lib/autonomous-ledger.js');const{entries}=l.readEntries();...\"` grouped by runId), not from a number quoted in a card or a prior session's memory — those are not independently verifiable from this checkout."
+}

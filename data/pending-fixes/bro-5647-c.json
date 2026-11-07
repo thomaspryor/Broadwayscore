@@ -1,0 +1,48 @@
+{
+  "issueNumber": "bro-5647-c",
+  "planId": "27a61a0f-a4d9-4f63-877f-d09f3c1aec40",
+  "status": "applied",
+  "createdAt": "2026-10-18T23:13:34.986Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Add All the Way (2014) to commercial.json: recouped its $3.9M investment by May 31, 2014 (BroadwayWorld, Jun 5, 2014; CBS News/Reuters gives the same figure). Found by Gemini Deep Research and checked at the source. Left out: Proof (2000) recoupment, whose only source is a fan-site copy of a Theatre.com item.",
+    "steps": [
+      "Add the all-the-way-2014 entry"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "add-commercial-entry",
+        "slug": "all-the-way-2014",
+        "entry": {
+          "designation": "Easy Winner",
+          "recouped": true,
+          "recoupedDate": "2014-05",
+          "recoupedSource": "BroadwayWorld (Jun 5, 2014): \"As of May 31st, 2014, the Tony Award-nominated Broadway production of All the Way ... has recouped its investment of $3.9 million.\"",
+          "capitalization": 3900000,
+          "capitalizationSource": "BroadwayWorld (Jun 5, 2014): recouped \"its investment of $3.9 million\".",
+          "notes": "Limited run at the Neil Simon (opened Mar 6, 2014; closed Jun 29, 2014) starring Bryan Cranston as LBJ. Recouped its $3.9M capitalization by May 31, 2014; won the Tony for Best Play.",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://www.broadwayworld.com/article/ALL-THE-WAY-Recoups-Broadway-Investment-20140605",
+              "date": "2014-06-05"
+            }
+          ]
+        },
+        "description": "all-the-way-2014: add commercial entry (recouped $3.9M, May 2014)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-19T00:47:23.087Z",
+  "results": [
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added all-the-way-2014 (Easy Winner)"
+    }
+  ]
+}

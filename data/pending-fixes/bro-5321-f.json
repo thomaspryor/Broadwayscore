@@ -1,0 +1,114 @@
+{
+  "issueNumber": "bro-5321-f",
+  "planId": "e901731a-42a7-47b7-b25a-3d1274315933",
+  "status": "applied",
+  "createdAt": "2026-10-14T05:49:51.507Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5321 step 2, batch 3 (paid-scraper rerun): 4 shows where one review text sits under two critics and the counted row names the wrong one (sunset-boulevard-2024, waiting-for-godot-2013, the-story-west-end-2026, true-west-2019). Byline read from the page that carries the text.",
+    "steps": [
+      "Rename the counted row to the page byline where its url carries the text",
+      "Flag same-outlet copies of that text wrongAttribution"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "sunset-boulevard-2024/ew--kathryn-vandervalk.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "ew--kathryn-vanarendonk.json",
+        "description": "BRO-5321: same EW url and text as ew--kathryn-vanarendonk.json, which is renamed to the page byline Kathryn Vandervalk below. Marked duplicate first so the rename does not stamp it."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "sunset-boulevard-2024/ew--kathryn-vanarendonk.json",
+        "field": "criticName",
+        "oldValue": "Kathryn VanArendonk",
+        "newValue": "Kathryn Vandervalk",
+        "description": "BRO-5321: the page carrying this text credits Kathryn Vandervalk (https://ew.com/sunset-boulevard-review-nicole-scherzinger-leads-stunning-2024-revival-8731170?srsltid=AfmBOorEp4ugVH2MKBBFPZq-zJri1UZoinfn9qsinStwnRi5dvV3KR0L)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "waiting-for-godot-2013/nydailynews--chris-jones.json",
+        "field": "criticName",
+        "oldValue": "Chris Jones",
+        "newValue": "Joe Dziemianowicz",
+        "description": "BRO-5321: the page carrying this text credits Joe Dziemianowicz (https://www.nydailynews.com/2013/11/24/no-mans-land-and-waiting-for-godot-theater-review/)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "waiting-for-godot-2013/nydailynews--joe-dziemianowicz.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5321"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "waiting-for-godot-2013/nydailynews--joe-dziemianowicz.json",
+        "field": "wrongAttributionReason",
+        "oldValue": null,
+        "newValue": "BRO-5321: same text as nydailynews--chris-jones.json, which holds Joe Dziemianowicz's review at https://www.nydailynews.com/2013/11/24/no-mans-land-and-waiting-for-godot-theater-review/; this copy's byline or url is another page",
+        "description": "BRO-5321"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-story-west-end-2026/telegraph--benji-wilson.json",
+        "field": "criticName",
+        "oldValue": "Benji Wilson",
+        "newValue": "Dominic Cavendish",
+        "description": "BRO-5321: the page carrying this text credits Dominic Cavendish (https://www.telegraph.co.uk/theatre/what-to-see/the-story-review-national-theatre/)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "true-west-2019/nypost--paul-dziemianowicz.json",
+        "field": "criticName",
+        "oldValue": "Paul Dziemianowicz",
+        "newValue": "Joe Dziemianowicz",
+        "description": "BRO-5321: the page carrying this text credits Joe Dziemianowicz (https://nypost.com/2019/01/25/paul-dano-fails-to-rival-ethan-hawke-in-soft-true-west-revival/)."
+      }
+    ]
+  },
+  "executedAt": "2026-10-14T06:46:28.574Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "sunset-boulevard-2024/ew--kathryn-vandervalk.json duplicateOf: null -> \"ew--kathryn-vanarendonk.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "sunset-boulevard-2024/ew--kathryn-vanarendonk.json criticName: \"Kathryn VanArendonk\" -> \"Kathryn Vandervalk\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "waiting-for-godot-2013/nydailynews--chris-jones.json criticName: \"Chris Jones\" -> \"Joe Dziemianowicz\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "waiting-for-godot-2013/nydailynews--joe-dziemianowicz.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "waiting-for-godot-2013/nydailynews--joe-dziemianowicz.json wrongAttributionReason: null -> \"BRO-5321: same text as nydailynews--chris-jones.json, which holds Joe Dziemianowicz's review at https://www.nydailynews.com/2013/11/24/no-mans-land-and-waiting-for-godot-theater-review/; this copy's byline or url is another page\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-story-west-end-2026/telegraph--benji-wilson.json criticName: \"Benji Wilson\" -> \"Dominic Cavendish\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "true-west-2019/nypost--paul-dziemianowicz.json criticName: \"Paul Dziemianowicz\" -> \"Joe Dziemianowicz\""
+    }
+  ]
+}

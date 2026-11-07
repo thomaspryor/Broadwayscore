@@ -1,0 +1,34 @@
+{
+  "issueNumber": "bro-6453-opening",
+  "planId": "7c1d2f0e-6a43-4b8e-9d55-3f6b0a9c6453",
+  "status": "applied",
+  "createdAt": "2026-10-28T18:40:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6453: West End historical rows built from Theatricalia carry the first performance as openingDate. Move the press night to the review-date mode (single most common review date minus one day; at least 3 reviews, no tie, never a Sunday) where a clear cluster exists. Idempotent; rows without a cluster are left for the audit.",
+    "steps": [
+      "run plan-we-historical-opening-repair.js --apply"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "run-script",
+        "script": "plan-we-historical-opening-repair.js",
+        "args": "--apply",
+        "description": "BRO-6453: Theatricalia first-performance rows move to the review-date mode press night when a clear cluster exists. Idempotent."
+      }
+    ]
+  },
+  "executedAt": "2026-10-28T19:03:41.963Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran plan-we-historical-opening-repair.js successfully"
+    }
+  ],
+  "executedIn": "ci"
+}

@@ -1,0 +1,1637 @@
+{
+  "issueNumber": "bro-6218",
+  "planId": "74ff9935-d8d8-418a-8119-587a92b54e97",
+  "status": "applied",
+  "createdAt": "2026-10-25T18:23:46.597Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6218: redate Cabaret 2024's $1.5M weekly cost anchor to the seven weeks it measured and fix its closing date; add commercial records for six shows the coverage check now counts (three return engagements; the shared Is This A Room / Dana H. financing is not duplicated)",
+    "steps": [
+      "cabaret-2024: closing date is Sep 21, 2025 (Broadway Journal Sep 25, 2025: closed Sunday after 610 performances), not Oct 2025; name the measured period of the $1.5M/week figure",
+      "cabaret-2024: the $1.5M/week is the show's own expenses from a filed financial statement, as reported by Broadway Journal, not our estimate",
+      "cabaret-2024: the figure is total average weekly expenses, royalties included",
+      "cabaret-2024: redate the $1.5M/week anchor from the article date (2025-09-07, wrong article) to the period it measured (first seven weeks after the Apr 21, 2024 opening, midpoint 2024-05-15), cite the Sep 25, 2025 article, keep the report date separately",
+      "a-christmas-carol-2022: add commercial entry (limited holiday run, no figures published)",
+      "girl-from-the-north-country-2022: add commercial entry (return engagement)",
+      "slave-play-2021: add commercial entry (return engagement)",
+      "is-this-a-room-2021: add commercial entry (closed early, financing shared with Dana H.)",
+      "waitress-2021: add commercial entry (return engagement)",
+      "pass-over-2021: add commercial entry (limited engagement, no figures published)"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "cabaret-2024",
+        "field": "notes",
+        "oldValue": "Closed Oct 2025 without recouping. Actual capitalization $24.25M (not $26M). $7.5M of investor money used to convert Kit Kat Club venue owned by ATG (the lead producer's parent company). Active investor lawsuit alleging producers used investor funds to improve their own real estate. Weekly nut $1.5M proved unsustainable. Investors received 0% recovery. Playbill (Sep 10, 2025): the producers said the production \"has not been in a position fiscally to make any distribution to investors.\" https://playbill.com/article/facing-lawsuit-cabaret-producers-say-they-are-not-able-to-repay-investors Per financial statement filed with NY AG (Broadway Journal Sep 25 2025): expenses averaged $1.5M a week over the first seven weeks after official opening; closed Oct 2025 after grossing $90.3M over 610 performances with nothing returned to Broadway backers (total loss of the $24.25M).",
+        "newValue": "Closed Sep 21, 2025 without recouping. Actual capitalization $24.25M (not $26M). $7.5M of investor money used to convert Kit Kat Club venue owned by ATG (the lead producer's parent company). Active investor lawsuit alleging producers used investor funds to improve their own real estate. Weekly nut $1.5M proved unsustainable. Investors received 0% recovery. Playbill (Sep 10, 2025): the producers said the production \"has not been in a position fiscally to make any distribution to investors.\" https://playbill.com/article/facing-lawsuit-cabaret-producers-say-they-are-not-able-to-repay-investors Per financial statement filed with NY AG (Broadway Journal Sep 25 2025): expenses averaged $1.5M a week over the first seven weeks after official opening (Apr 21 to about Jun 8, 2024; reported Sep 25, 2025); closed Sep 21, 2025 after grossing $90.3M over 610 performances with nothing returned to Broadway backers (total loss of the $24.25M).",
+        "description": "cabaret-2024: closing date is Sep 21, 2025 (Broadway Journal Sep 25, 2025: closed Sunday after 610 performances), not Oct 2025; name the measured period of the $1.5M/week figure"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "cabaret-2024",
+        "field": "costMethodology",
+        "oldValue": "industry-estimate",
+        "newValue": "trade-reported",
+        "description": "cabaret-2024: the $1.5M/week is the show's own expenses from a filed financial statement, as reported by Broadway Journal, not our estimate"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "cabaret-2024",
+        "field": "weeklyRunningCostBasis",
+        "oldValue": null,
+        "newValue": "all-in",
+        "description": "cabaret-2024: the figure is total average weekly expenses, royalties included"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "cabaret-2024",
+        "field": "costHistory",
+        "oldValue": [
+          {
+            "asOf": "2024-04-21",
+            "amount": 1160000,
+            "kind": "break-even",
+            "sourceType": "trade",
+            "sourceUrl": "https://www.broadwayjournal.com/p/inside-broadways-1-million-nut-cases",
+            "note": "must gross $1.16M a week to pay operating expenses (budget)",
+            "verified": "page"
+          },
+          {
+            "asOf": "2024-04-23",
+            "amount": 974000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1cbbjjf/weekly_new_musical_grosses_analysis_week_ending/",
+            "postId": "1cbbjjf",
+            "note": "u/Boring_Waltz_9545: Weekly New Musical Grosses Analysis- Week Ending 4/21/2024"
+          },
+          {
+            "asOf": "2024-04-30",
+            "amount": 974000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1cgy2xm/weekly_new_musical_grosses_analysis_week_ending/",
+            "postId": "1cgy2xm",
+            "note": "u/Boring_Waltz_9545: Weekly New Musical Grosses Analysis- Week Ending 4/28/2024"
+          },
+          {
+            "asOf": "2024-05-07",
+            "amount": 974000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1cmi37f/weekly_new_musical_grosses_analysis_week_ending/",
+            "postId": "1cmi37f",
+            "note": "u/Boring_Waltz_9545: Weekly New Musical Grosses Analysis- Week Ending 5/05/2024"
+          },
+          {
+            "asOf": "2024-05-14",
+            "amount": 974000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1cryvew/weekly_new_musical_grosses_analysis_week_ending/",
+            "postId": "1cryvew",
+            "note": "u/Boring_Waltz_9545: Weekly New Musical Grosses Analysis- Week Ending 5/12/2014"
+          },
+          {
+            "asOf": "2024-05-23",
+            "amount": 974000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1cysaj8/weekly_new_musical_grosses_analysis_week_ending/",
+            "postId": "1cysaj8",
+            "note": "u/Boring_Waltz_9545: Weekly New Musical Grosses Analysis- Week Ending 5/19/2024"
+          },
+          {
+            "asOf": "2024-05-28",
+            "amount": 974000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1d2worq/weekly_new_musical_grosses_week_ending_5262024/",
+            "postId": "1d2worq",
+            "note": "u/Boring_Waltz_9545: Weekly New Musical Grosses- Week Ending 5/26/2024"
+          },
+          {
+            "asOf": "2024-06-04",
+            "amount": 974000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1d84cn7/weekly_new_musical_grosses_week_ending_5262024/",
+            "postId": "1d84cn7",
+            "note": "u/Boring_Waltz_9545: Weekly New Musical Grosses- Week Ending 5/26/2024"
+          },
+          {
+            "asOf": "2024-06-11",
+            "amount": 974000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1ddlt1t/weekly_new_musical_grosses_analysis_week_ending/",
+            "postId": "1ddlt1t",
+            "note": "u/Boring_Waltz_9545: Weekly New Musical Grosses Analysis- Week Ending 6/09/2024"
+          },
+          {
+            "asOf": "2024-06-18",
+            "amount": 974000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1diymjl/last_pretony_grosses_analysis_new_musical_grosses/",
+            "postId": "1diymjl",
+            "note": "u/Boring_Waltz_9545: LAST PRE-TONY GROSSES ANALYSIS- New Musical Grosses Analysis Week ending 6/16/2024"
+          },
+          {
+            "asOf": "2024-06-25",
+            "amount": 974000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1docj6s/post_tonys_grosses_analysis_new_musical_grosses/",
+            "postId": "1docj6s",
+            "note": "u/Boring_Waltz_9545: POST TONY'S GROSSES ANALYSIS- New Musical Grosses Analysis Week ending 6/23/2024"
+          },
+          {
+            "asOf": "2024-07-02",
+            "amount": 974000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1dtt21l/new_musical_grosses_analysis_week_ending_6302024/",
+            "postId": "1dtt21l",
+            "note": "u/Boring_Waltz_9545: NEW MUSICAL GROSSES ANALYSIS- Week Ending 6/30/2024"
+          },
+          {
+            "asOf": "2024-07-09",
+            "amount": 974000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1dz8wcv/weekly_new_musical_grosses_analysis_week_ending/",
+            "postId": "1dz8wcv",
+            "note": "u/Boring_Waltz_9545: WEEKLY NEW MUSICAL GROSSES ANALYSIS- Week Ending July 7, 2024"
+          },
+          {
+            "asOf": "2024-07-16",
+            "amount": 974000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1e4yfi3/new_musical_grosses_analysis_week_ending_7142024/",
+            "postId": "1e4yfi3",
+            "note": "u/Boring_Waltz_9545: NEW MUSICAL GROSSES ANALYSIS- Week Ending 7/14/2024"
+          },
+          {
+            "asOf": "2024-07-23",
+            "amount": 974000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1eae3mt/new_musical_grosses_analysis_week_ending_721/",
+            "postId": "1eae3mt",
+            "note": "u/Boring_Waltz_9545: NEW MUSICAL GROSSES ANALYSIS- Week Ending 7/21"
+          },
+          {
+            "asOf": "2024-07-23",
+            "amount": 974000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1eae4mx/new_musical_grosses_analysis_week_ending_721/",
+            "postId": "1eae4mx",
+            "note": "u/Boring_Waltz_9545: NEW MUSICAL GROSSES ANALYSIS- Week Ending 7/21"
+          },
+          {
+            "asOf": "2024-07-30",
+            "amount": 974000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1efzh7d/weekly_new_musical_grosses_analysis_week_ending/",
+            "postId": "1efzh7d",
+            "note": "u/Boring_Waltz_9545: WEEKLY NEW MUSICAL GROSSES ANALYSIS- Week Ending 07/28/2024"
+          },
+          {
+            "asOf": "2024-08-06",
+            "amount": 974000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1elo3sv/new_musical_grosses_analysis_week_ending_august_4/",
+            "postId": "1elo3sv",
+            "note": "u/Boring_Waltz_9545: NEW MUSICAL GROSSES ANALYSIS- Week Ending August 4, 2024"
+          },
+          {
+            "asOf": "2024-08-13",
+            "amount": 974000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1erevsz/weekly_new_musical_grosses_analysis_week_ending/",
+            "postId": "1erevsz",
+            "note": "u/Boring_Waltz_9545: WEEKLY NEW MUSICAL GROSSES ANALYSIS- Week Ending August 11, 2024"
+          },
+          {
+            "asOf": "2024-08-20",
+            "amount": 974000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1ex510n/postolympics_broadway_grosses_week_ending_8182024/",
+            "postId": "1ex510n",
+            "note": "u/Boring_Waltz_9545: POST-OLYMPICS BROADWAY GROSSES- Week Ending 8/18/2024"
+          },
+          {
+            "asOf": "2024-08-27",
+            "amount": 974000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1f2ox39/weekly_musical_grosses_analysis_week_ending/",
+            "postId": "1f2ox39",
+            "note": "u/Boring_Waltz_9545: WEEKLY MUSICAL GROSSES ANALYSIS- Week Ending August 25"
+          },
+          {
+            "asOf": "2024-09-03",
+            "amount": 974000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1f8cqdv/weekly_grosses_analysis_week_ending_september_1/",
+            "postId": "1f8cqdv",
+            "note": "u/Boring_Waltz_9545: WEEKLY GROSSES ANALYSIS- Week ending September 1, 2024"
+          },
+          {
+            "asOf": "2024-09-10",
+            "amount": 974000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1fdopyi/broadway_week_grosses_analysis_week_ending/",
+            "postId": "1fdopyi",
+            "note": "u/Boring_Waltz_9545: BROADWAY WEEK GROSSES ANALYSIS- Week Ending September 8"
+          },
+          {
+            "asOf": "2024-09-17",
+            "amount": 974000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1fj7tnm/broadway_week_grosses_analysis_week_ending/",
+            "postId": "1fj7tnm",
+            "note": "u/Boring_Waltz_9545: BROADWAY WEEK GROSSES ANALYSIS- Week Ending September 15, 2024"
+          },
+          {
+            "asOf": "2024-09-24",
+            "amount": 974000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1fojc5p/post_broadway_week_grosses_analysis_week_ending/",
+            "postId": "1fojc5p",
+            "note": "u/Boring_Waltz_9545: POST BROADWAY WEEK GROSSES ANALYSIS- Week Ending September 22"
+          },
+          {
+            "asOf": "2024-10-01",
+            "amount": 974000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1ftzq4y/grosses_analysis_week_ending_september_29/",
+            "postId": "1ftzq4y",
+            "note": "u/Boring_Waltz_9545: GROSSES ANALYSIS- Week Ending September 29"
+          },
+          {
+            "asOf": "2024-10-08",
+            "amount": 974000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1fz6uso/new_musical_grosses_analysis_week_ending_october_6/",
+            "postId": "1fz6uso",
+            "note": "u/Boring_Waltz_9545: NEW MUSICAL GROSSES ANALYSIS- Week Ending October 6"
+          },
+          {
+            "asOf": "2024-10-15",
+            "amount": 925000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1g4j9t3/holiday_week_grosses_analysis_week_ending_october/",
+            "postId": "1g4j9t3",
+            "note": "u/Boring_Waltz_9545: HOLIDAY WEEK GROSSES ANALYSIS- Week Ending October 13"
+          },
+          {
+            "asOf": "2024-10-22",
+            "amount": 925000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1g9pri7/postholiday_week_grosses_week_ending_october_20/",
+            "postId": "1g9pri7",
+            "note": "u/Boring_Waltz_9545: POST-HOLIDAY WEEK GROSSES- Week Ending October 20"
+          },
+          {
+            "asOf": "2024-10-29",
+            "amount": 825000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1gf00j8/new_musical_grosses_analysis_week_ending_october/",
+            "postId": "1gf00j8",
+            "note": "u/Boring_Waltz_9545: NEW MUSICAL GROSSES ANALYSIS- Week Ending October 27"
+          },
+          {
+            "asOf": "2024-11-05",
+            "amount": 825000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1gke2g6/grosses_week_ending_november_3/",
+            "postId": "1gke2g6",
+            "note": "u/Boring_Waltz_9545: GROSSES- Week Ending November 3"
+          },
+          {
+            "asOf": "2024-11-12",
+            "amount": 825000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1gpttrm/election_week_grosses_analysis_week_ending/",
+            "postId": "1gpttrm",
+            "note": "u/Boring_Waltz_9545: ELECTION WEEK GROSSES ANALYSIS- Week ending November 10"
+          },
+          {
+            "asOf": "2024-11-19",
+            "amount": 825000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1gv4qb6/grosses_analysis_week_ending_november_17/",
+            "postId": "1gv4qb6",
+            "note": "u/Boring_Waltz_9545: GROSSES ANALYSIS- Week Ending November 17"
+          },
+          {
+            "asOf": "2024-11-26",
+            "amount": 825000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1h0khig/grosses_analysis_week_ending_november_24/",
+            "postId": "1h0khig",
+            "note": "u/Boring_Waltz_9545: GROSSES ANALYSIS- Week Ending November 24"
+          },
+          {
+            "asOf": "2024-12-03",
+            "amount": 900000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1h5xbrh/thanksgiving_grosses_analysis_week_ending/",
+            "postId": "1h5xbrh",
+            "note": "u/Boring_Waltz_9545: THANKSGIVING GROSSES ANALYSIS- Week Ending December 1"
+          },
+          {
+            "asOf": "2024-12-17",
+            "amount": 900000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1hgjeev/grosses_analysis_week_ending_december_15/",
+            "postId": "1hgjeev",
+            "note": "u/Boring_Waltz_9545: GROSSES ANALYSIS- Week Ending December 15"
+          },
+          {
+            "asOf": "2024-12-24",
+            "amount": 900000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1hlk9so/grosses_analysis_week_ending_december_22/",
+            "postId": "1hlk9so",
+            "note": "u/Boring_Waltz_9545: GROSSES ANALYSIS- Week Ending December 22"
+          },
+          {
+            "asOf": "2024-12-31",
+            "amount": 900000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1hqo4gu/christmas_grosses_analysis_week_ending_december_29/",
+            "postId": "1hqo4gu",
+            "note": "u/Boring_Waltz_9545: CHRISTMAS GROSSES ANALYSIS- Week Ending December 29"
+          },
+          {
+            "asOf": "2025-01-07",
+            "amount": 900000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1hvz8kc/new_years_grosses_analysis_week_ending_january_5/",
+            "postId": "1hvz8kc",
+            "note": "u/Boring_Waltz_9545: NEW YEARS GROSSES ANALYSIS- Week Ending January 5"
+          },
+          {
+            "asOf": "2025-01-14",
+            "amount": 925000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1i1cn91/grosses_analysis_week_ending_january_12/",
+            "postId": "1i1cn91",
+            "note": "u/Boring_Waltz_9545: GROSSES ANALYSIS- Week Ending January 12"
+          },
+          {
+            "asOf": "2025-01-21",
+            "amount": 925000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1i6umgz/grosses_analysis_week_ending_january_19/",
+            "postId": "1i6umgz",
+            "note": "u/Boring_Waltz_9545: GROSSES ANALYSIS- Week ending January 19"
+          },
+          {
+            "asOf": "2025-01-28",
+            "amount": 925000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1ic95sb/grosses_analysis_week_ending_january_26/",
+            "postId": "1ic95sb",
+            "note": "u/Boring_Waltz_9545: GROSSES ANALYSIS- Week Ending January 26"
+          },
+          {
+            "asOf": "2025-02-04",
+            "amount": 925000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1ihqha7/broadway_week_grosses_analysis_week_ending/",
+            "postId": "1ihqha7",
+            "note": "u/Boring_Waltz_9545: BROADWAY WEEK GROSSES ANALYSIS- Week Ending February 2"
+          },
+          {
+            "asOf": "2025-02-11",
+            "amount": 925000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1in66nl/grosses_analysis_week_ending_february_9/",
+            "postId": "1in66nl",
+            "note": "u/Boring_Waltz_9545: GROSSES ANALYSIS- Week Ending February 9"
+          },
+          {
+            "asOf": "2025-02-18",
+            "amount": 925000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1isql5x/presidents_day_grosses_analysis_week_ending/",
+            "postId": "1isql5x",
+            "note": "u/Boring_Waltz_9545: PRESIDENTS DAY GROSSES ANALYSIS- Week Ending February 16"
+          },
+          {
+            "asOf": "2025-02-25",
+            "amount": 925000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1iy2plm/grosses_analysis_week_ending_february_23/",
+            "postId": "1iy2plm",
+            "note": "u/Boring_Waltz_9545: GROSSES ANALYSIS- Week Ending February 23"
+          },
+          {
+            "asOf": "2025-03-04",
+            "amount": 925000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1j3hx2u/grosses_analysis_week_ending_march_2/",
+            "postId": "1j3hx2u",
+            "note": "u/Boring_Waltz_9545: GROSSES ANALYSIS- Week Ending March 2"
+          },
+          {
+            "asOf": "2025-03-11",
+            "amount": 925000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1j90cbq/grosses_analysis_week_ending_march_9/",
+            "postId": "1j90cbq",
+            "note": "u/Boring_Waltz_9545: GROSSES ANALYSIS- Week Ending March 9"
+          },
+          {
+            "asOf": "2025-03-18",
+            "amount": 925000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1jebu0k/grosses_analysis_week_ending_march_16/",
+            "postId": "1jebu0k",
+            "note": "u/Boring_Waltz_9545: GROSSES ANALYSIS- Week ending March 16"
+          },
+          {
+            "asOf": "2025-03-25",
+            "amount": 925000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1jjqj82/spring_break_grosses_analysis_week_ending_march_23/",
+            "postId": "1jjqj82",
+            "note": "u/Boring_Waltz_9545: SPRING BREAK GROSSES ANALYSIS- Week Ending March 23"
+          },
+          {
+            "asOf": "2025-04-01",
+            "amount": 925000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1jp2qp0/weekly_grosses_analysis_week_ending_march_30/",
+            "postId": "1jp2qp0",
+            "note": "u/Boring_Waltz_9545: WEEKLY GROSSES ANALYSIS- Week Ending March 30"
+          },
+          {
+            "asOf": "2025-04-08",
+            "amount": 925000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1jul863/weekly_grosses_analysis_week_ending_april_6/",
+            "postId": "1jul863",
+            "note": "u/Boring_Waltz_9545: WEEKLY GROSSES ANALYSIS- Week ending April 6"
+          },
+          {
+            "asOf": "2025-04-15",
+            "amount": 925000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1jzymgz/grosses_analysis_week_ending_april_13/",
+            "postId": "1jzymgz",
+            "note": "u/Boring_Waltz_9545: GROSSES ANALYSIS- Week Ending April 13"
+          },
+          {
+            "asOf": "2025-04-22",
+            "amount": 925000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1k5eo6f/easter_grosses_analysis_week_ending_april_20/",
+            "postId": "1k5eo6f",
+            "note": "u/Boring_Waltz_9545: EASTER GROSSES ANALYSIS- Week Ending April 20"
+          },
+          {
+            "asOf": "2025-04-29",
+            "amount": 900000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1kawsjr/pretony_nominations_grosses_analysis_week_ending/",
+            "postId": "1kawsjr",
+            "note": "u/Boring_Waltz_9545: PRE-TONY NOMINATIONS GROSSES ANALYSIS- Week Ending April 27"
+          },
+          {
+            "asOf": "2025-05-06",
+            "amount": 900000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1kge7ci/posttony_nominations_grosses_analysis_week_ending/",
+            "postId": "1kge7ci",
+            "note": "u/Boring_Waltz_9545: POST-TONY NOMINATIONS GROSSES ANALYSIS- Week Ending May (the) 4(th be with you)"
+          },
+          {
+            "asOf": "2025-05-13",
+            "amount": 900000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1klva8x/grosses_analysis_week_ending_may_11/",
+            "postId": "1klva8x",
+            "note": "u/Boring_Waltz_9545: GROSSES ANALYSIS- Week Ending May 11"
+          },
+          {
+            "asOf": "2025-05-20",
+            "amount": 900000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1krbyd0/grosses_analysis_week_ending_may_18/",
+            "postId": "1krbyd0",
+            "note": "u/Boring_Waltz_9545: GROSSES ANALYSIS- Week Ending May 18"
+          },
+          {
+            "asOf": "2025-05-29",
+            "amount": 900000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1kxxb0w/memorial_day_weekend_grosses_analysis_week_ending/",
+            "postId": "1kxxb0w",
+            "note": "u/Boring_Waltz_9545: MEMORIAL DAY WEEKEND GROSSES ANALYSIS- Week Ending May 25"
+          },
+          {
+            "asOf": "2025-06-03",
+            "amount": 900000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1l2n2e3/pre_tonys_grosses_analysis_week_ending_june_1/",
+            "postId": "1l2n2e3",
+            "note": "u/Boring_Waltz_9545: PRE TONYS GROSSES ANALYSIS- Week Ending June 1"
+          },
+          {
+            "asOf": "2025-06-10",
+            "amount": 900000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1l86vfi/tony_week_grosses_analysis_week_ending_june_8/",
+            "postId": "1l86vfi",
+            "note": "u/Boring_Waltz_9545: TONY WEEK GROSSES ANALYSIS- Week Ending June 8"
+          },
+          {
+            "asOf": "2025-06-17",
+            "amount": 900000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1ldtpcu/grosses_analysis_week_ending_june_15/",
+            "postId": "1ldtpcu",
+            "note": "u/Boring_Waltz_9545: GROSSES ANALYSIS- Week Ending June 15"
+          },
+          {
+            "asOf": "2025-06-24",
+            "amount": 900000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1ljhzb1/grosses_analysis_week_ending_june_22/",
+            "postId": "1ljhzb1",
+            "note": "u/Boring_Waltz_9545: GROSSES ANALYSIS- Week Ending June 22"
+          },
+          {
+            "asOf": "2025-07-01",
+            "amount": 900000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1lp9tsn/grosses_analysis_week_ending_june_29/",
+            "postId": "1lp9tsn",
+            "note": "u/Boring_Waltz_9545: GROSSES ANALYSIS- Week Ending June 29"
+          },
+          {
+            "asOf": "2025-07-08",
+            "amount": 900000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1luwvgj/grosses_analysis_week_ending_july_6/",
+            "postId": "1luwvgj",
+            "note": "u/Boring_Waltz_9545: GROSSES ANALYSIS- Week Ending July 6"
+          },
+          {
+            "asOf": "2025-07-15",
+            "amount": 900000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1m0q8ay/grosses_analysis_week_ending_july_13/",
+            "postId": "1m0q8ay",
+            "note": "u/Boring_Waltz_9545: GROSSES ANALYSIS- WEEK ENDING JULY 13"
+          },
+          {
+            "asOf": "2025-07-22",
+            "amount": 900000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1m6mprm/grosses_analysis_week_ending_july_20/",
+            "postId": "1m6mprm",
+            "note": "u/Boring_Waltz_9545: GROSSES ANALYSIS- Week Ending July 20"
+          },
+          {
+            "asOf": "2025-07-29",
+            "amount": 900000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1mch3d8/grosses_analysis_week_ending_july_27/",
+            "postId": "1mch3d8",
+            "note": "u/Boring_Waltz_9545: GROSSES ANALYSIS- Week Ending July 27"
+          },
+          {
+            "asOf": "2025-08-05",
+            "amount": 900000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1migrst/grosses_analysis_week_ending_august_3/",
+            "postId": "1migrst",
+            "note": "u/Boring_Waltz_9545: GROSSES ANALYSIS- Week Ending August 3"
+          },
+          {
+            "asOf": "2025-08-12",
+            "amount": 900000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1mofc60/grosses_analysis_week_ending_august_12/",
+            "postId": "1mofc60",
+            "note": "u/Boring_Waltz_9545: GROSSES ANALYSIS- Week Ending August 12"
+          },
+          {
+            "asOf": "2025-08-19",
+            "amount": 900000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1mur67b/grosses_analysis_week_ending_august_17/",
+            "postId": "1mur67b",
+            "note": "u/Boring_Waltz_9545: GROSSES ANALYSIS- Week Ending August 17"
+          },
+          {
+            "asOf": "2025-08-26",
+            "amount": 900000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1n0xokt/grosses_analysis_week_ending_august_24/",
+            "postId": "1n0xokt",
+            "note": "u/Boring_Waltz_9545: GROSSES ANALYSIS- Week Ending August 24"
+          },
+          {
+            "asOf": "2025-09-02",
+            "amount": 900000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1n6y4i4/labor_day_grosses_analysis_week_ending_august_31/",
+            "postId": "1n6y4i4",
+            "note": "u/Boring_Waltz_9545: LABOR DAY GROSSES ANALYSIS- Week Ending August 31"
+          },
+          {
+            "asOf": "2025-09-07",
+            "amount": 1500000,
+            "kind": "running-cost",
+            "sourceType": "trade",
+            "sourceUrl": "https://www.broadwayjournal.com/p/cabaret-investor-sues-atg-amid-early-closing",
+            "note": "migrated from weeklyRunningCost (trade-reported)",
+            "dateBasis": "migrated",
+            "dateFrom": "sources"
+          },
+          {
+            "asOf": "2025-09-09",
+            "amount": 900000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1ncrcut/grosses_analysis_week_ending_september_7/",
+            "postId": "1ncrcut",
+            "note": "u/Boring_Waltz_9545: GROSSES ANALYSIS- Week Ending September 7"
+          },
+          {
+            "asOf": "2025-09-16",
+            "amount": 900000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1niq205/broadway_week_grosses_analysis_week_ending/",
+            "postId": "1niq205",
+            "note": "u/Boring_Waltz_9545: BROADWAY WEEK GROSSES ANALYSIS- Week Ending September 14"
+          },
+          {
+            "asOf": "2025-09-25",
+            "amount": 900000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1nqbiqm/broadway_week_2_grosses_analysis_week_ending/",
+            "postId": "1nqbiqm",
+            "note": "u/Boring_Waltz_9545: BROADWAY WEEK (2) GROSSES ANALYSIS - Week Ending September 21"
+          }
+        ],
+        "newValue": [
+          {
+            "asOf": "2024-04-21",
+            "amount": 1160000,
+            "kind": "break-even",
+            "sourceType": "trade",
+            "sourceUrl": "https://www.broadwayjournal.com/p/inside-broadways-1-million-nut-cases",
+            "note": "must gross $1.16M a week to pay operating expenses (budget)",
+            "verified": "page"
+          },
+          {
+            "asOf": "2024-04-23",
+            "amount": 974000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1cbbjjf/weekly_new_musical_grosses_analysis_week_ending/",
+            "postId": "1cbbjjf",
+            "note": "u/Boring_Waltz_9545: Weekly New Musical Grosses Analysis- Week Ending 4/21/2024"
+          },
+          {
+            "asOf": "2024-04-30",
+            "amount": 974000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1cgy2xm/weekly_new_musical_grosses_analysis_week_ending/",
+            "postId": "1cgy2xm",
+            "note": "u/Boring_Waltz_9545: Weekly New Musical Grosses Analysis- Week Ending 4/28/2024"
+          },
+          {
+            "asOf": "2024-05-07",
+            "amount": 974000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1cmi37f/weekly_new_musical_grosses_analysis_week_ending/",
+            "postId": "1cmi37f",
+            "note": "u/Boring_Waltz_9545: Weekly New Musical Grosses Analysis- Week Ending 5/05/2024"
+          },
+          {
+            "asOf": "2024-05-14",
+            "amount": 974000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1cryvew/weekly_new_musical_grosses_analysis_week_ending/",
+            "postId": "1cryvew",
+            "note": "u/Boring_Waltz_9545: Weekly New Musical Grosses Analysis- Week Ending 5/12/2014"
+          },
+          {
+            "asOf": "2024-05-15",
+            "amount": 1500000,
+            "kind": "running-cost",
+            "sourceType": "trade",
+            "sourceUrl": "https://www.broadwayjournal.com/p/cabaret-producers-investor-tried-to-extort-us",
+            "note": "expenses averaged $1.5M a week in the first seven weeks after officially opening (financial statement filed with NY AG); dated at the middle of that period, reported Sep 25, 2025",
+            "dateBasis": "period-midpoint",
+            "periodStart": "2024-04-21",
+            "periodEnd": "2024-06-08",
+            "reportedAt": "2025-09-25"
+          },
+          {
+            "asOf": "2024-05-23",
+            "amount": 974000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1cysaj8/weekly_new_musical_grosses_analysis_week_ending/",
+            "postId": "1cysaj8",
+            "note": "u/Boring_Waltz_9545: Weekly New Musical Grosses Analysis- Week Ending 5/19/2024"
+          },
+          {
+            "asOf": "2024-05-28",
+            "amount": 974000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1d2worq/weekly_new_musical_grosses_week_ending_5262024/",
+            "postId": "1d2worq",
+            "note": "u/Boring_Waltz_9545: Weekly New Musical Grosses- Week Ending 5/26/2024"
+          },
+          {
+            "asOf": "2024-06-04",
+            "amount": 974000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1d84cn7/weekly_new_musical_grosses_week_ending_5262024/",
+            "postId": "1d84cn7",
+            "note": "u/Boring_Waltz_9545: Weekly New Musical Grosses- Week Ending 5/26/2024"
+          },
+          {
+            "asOf": "2024-06-11",
+            "amount": 974000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1ddlt1t/weekly_new_musical_grosses_analysis_week_ending/",
+            "postId": "1ddlt1t",
+            "note": "u/Boring_Waltz_9545: Weekly New Musical Grosses Analysis- Week Ending 6/09/2024"
+          },
+          {
+            "asOf": "2024-06-18",
+            "amount": 974000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1diymjl/last_pretony_grosses_analysis_new_musical_grosses/",
+            "postId": "1diymjl",
+            "note": "u/Boring_Waltz_9545: LAST PRE-TONY GROSSES ANALYSIS- New Musical Grosses Analysis Week ending 6/16/2024"
+          },
+          {
+            "asOf": "2024-06-25",
+            "amount": 974000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1docj6s/post_tonys_grosses_analysis_new_musical_grosses/",
+            "postId": "1docj6s",
+            "note": "u/Boring_Waltz_9545: POST TONY'S GROSSES ANALYSIS- New Musical Grosses Analysis Week ending 6/23/2024"
+          },
+          {
+            "asOf": "2024-07-02",
+            "amount": 974000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1dtt21l/new_musical_grosses_analysis_week_ending_6302024/",
+            "postId": "1dtt21l",
+            "note": "u/Boring_Waltz_9545: NEW MUSICAL GROSSES ANALYSIS- Week Ending 6/30/2024"
+          },
+          {
+            "asOf": "2024-07-09",
+            "amount": 974000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1dz8wcv/weekly_new_musical_grosses_analysis_week_ending/",
+            "postId": "1dz8wcv",
+            "note": "u/Boring_Waltz_9545: WEEKLY NEW MUSICAL GROSSES ANALYSIS- Week Ending July 7, 2024"
+          },
+          {
+            "asOf": "2024-07-16",
+            "amount": 974000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1e4yfi3/new_musical_grosses_analysis_week_ending_7142024/",
+            "postId": "1e4yfi3",
+            "note": "u/Boring_Waltz_9545: NEW MUSICAL GROSSES ANALYSIS- Week Ending 7/14/2024"
+          },
+          {
+            "asOf": "2024-07-23",
+            "amount": 974000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1eae3mt/new_musical_grosses_analysis_week_ending_721/",
+            "postId": "1eae3mt",
+            "note": "u/Boring_Waltz_9545: NEW MUSICAL GROSSES ANALYSIS- Week Ending 7/21"
+          },
+          {
+            "asOf": "2024-07-23",
+            "amount": 974000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1eae4mx/new_musical_grosses_analysis_week_ending_721/",
+            "postId": "1eae4mx",
+            "note": "u/Boring_Waltz_9545: NEW MUSICAL GROSSES ANALYSIS- Week Ending 7/21"
+          },
+          {
+            "asOf": "2024-07-30",
+            "amount": 974000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1efzh7d/weekly_new_musical_grosses_analysis_week_ending/",
+            "postId": "1efzh7d",
+            "note": "u/Boring_Waltz_9545: WEEKLY NEW MUSICAL GROSSES ANALYSIS- Week Ending 07/28/2024"
+          },
+          {
+            "asOf": "2024-08-06",
+            "amount": 974000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1elo3sv/new_musical_grosses_analysis_week_ending_august_4/",
+            "postId": "1elo3sv",
+            "note": "u/Boring_Waltz_9545: NEW MUSICAL GROSSES ANALYSIS- Week Ending August 4, 2024"
+          },
+          {
+            "asOf": "2024-08-13",
+            "amount": 974000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1erevsz/weekly_new_musical_grosses_analysis_week_ending/",
+            "postId": "1erevsz",
+            "note": "u/Boring_Waltz_9545: WEEKLY NEW MUSICAL GROSSES ANALYSIS- Week Ending August 11, 2024"
+          },
+          {
+            "asOf": "2024-08-20",
+            "amount": 974000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1ex510n/postolympics_broadway_grosses_week_ending_8182024/",
+            "postId": "1ex510n",
+            "note": "u/Boring_Waltz_9545: POST-OLYMPICS BROADWAY GROSSES- Week Ending 8/18/2024"
+          },
+          {
+            "asOf": "2024-08-27",
+            "amount": 974000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1f2ox39/weekly_musical_grosses_analysis_week_ending/",
+            "postId": "1f2ox39",
+            "note": "u/Boring_Waltz_9545: WEEKLY MUSICAL GROSSES ANALYSIS- Week Ending August 25"
+          },
+          {
+            "asOf": "2024-09-03",
+            "amount": 974000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1f8cqdv/weekly_grosses_analysis_week_ending_september_1/",
+            "postId": "1f8cqdv",
+            "note": "u/Boring_Waltz_9545: WEEKLY GROSSES ANALYSIS- Week ending September 1, 2024"
+          },
+          {
+            "asOf": "2024-09-10",
+            "amount": 974000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1fdopyi/broadway_week_grosses_analysis_week_ending/",
+            "postId": "1fdopyi",
+            "note": "u/Boring_Waltz_9545: BROADWAY WEEK GROSSES ANALYSIS- Week Ending September 8"
+          },
+          {
+            "asOf": "2024-09-17",
+            "amount": 974000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1fj7tnm/broadway_week_grosses_analysis_week_ending/",
+            "postId": "1fj7tnm",
+            "note": "u/Boring_Waltz_9545: BROADWAY WEEK GROSSES ANALYSIS- Week Ending September 15, 2024"
+          },
+          {
+            "asOf": "2024-09-24",
+            "amount": 974000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1fojc5p/post_broadway_week_grosses_analysis_week_ending/",
+            "postId": "1fojc5p",
+            "note": "u/Boring_Waltz_9545: POST BROADWAY WEEK GROSSES ANALYSIS- Week Ending September 22"
+          },
+          {
+            "asOf": "2024-10-01",
+            "amount": 974000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1ftzq4y/grosses_analysis_week_ending_september_29/",
+            "postId": "1ftzq4y",
+            "note": "u/Boring_Waltz_9545: GROSSES ANALYSIS- Week Ending September 29"
+          },
+          {
+            "asOf": "2024-10-08",
+            "amount": 974000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1fz6uso/new_musical_grosses_analysis_week_ending_october_6/",
+            "postId": "1fz6uso",
+            "note": "u/Boring_Waltz_9545: NEW MUSICAL GROSSES ANALYSIS- Week Ending October 6"
+          },
+          {
+            "asOf": "2024-10-15",
+            "amount": 925000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1g4j9t3/holiday_week_grosses_analysis_week_ending_october/",
+            "postId": "1g4j9t3",
+            "note": "u/Boring_Waltz_9545: HOLIDAY WEEK GROSSES ANALYSIS- Week Ending October 13"
+          },
+          {
+            "asOf": "2024-10-22",
+            "amount": 925000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1g9pri7/postholiday_week_grosses_week_ending_october_20/",
+            "postId": "1g9pri7",
+            "note": "u/Boring_Waltz_9545: POST-HOLIDAY WEEK GROSSES- Week Ending October 20"
+          },
+          {
+            "asOf": "2024-10-29",
+            "amount": 825000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1gf00j8/new_musical_grosses_analysis_week_ending_october/",
+            "postId": "1gf00j8",
+            "note": "u/Boring_Waltz_9545: NEW MUSICAL GROSSES ANALYSIS- Week Ending October 27"
+          },
+          {
+            "asOf": "2024-11-05",
+            "amount": 825000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1gke2g6/grosses_week_ending_november_3/",
+            "postId": "1gke2g6",
+            "note": "u/Boring_Waltz_9545: GROSSES- Week Ending November 3"
+          },
+          {
+            "asOf": "2024-11-12",
+            "amount": 825000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1gpttrm/election_week_grosses_analysis_week_ending/",
+            "postId": "1gpttrm",
+            "note": "u/Boring_Waltz_9545: ELECTION WEEK GROSSES ANALYSIS- Week ending November 10"
+          },
+          {
+            "asOf": "2024-11-19",
+            "amount": 825000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1gv4qb6/grosses_analysis_week_ending_november_17/",
+            "postId": "1gv4qb6",
+            "note": "u/Boring_Waltz_9545: GROSSES ANALYSIS- Week Ending November 17"
+          },
+          {
+            "asOf": "2024-11-26",
+            "amount": 825000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1h0khig/grosses_analysis_week_ending_november_24/",
+            "postId": "1h0khig",
+            "note": "u/Boring_Waltz_9545: GROSSES ANALYSIS- Week Ending November 24"
+          },
+          {
+            "asOf": "2024-12-03",
+            "amount": 900000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1h5xbrh/thanksgiving_grosses_analysis_week_ending/",
+            "postId": "1h5xbrh",
+            "note": "u/Boring_Waltz_9545: THANKSGIVING GROSSES ANALYSIS- Week Ending December 1"
+          },
+          {
+            "asOf": "2024-12-17",
+            "amount": 900000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1hgjeev/grosses_analysis_week_ending_december_15/",
+            "postId": "1hgjeev",
+            "note": "u/Boring_Waltz_9545: GROSSES ANALYSIS- Week Ending December 15"
+          },
+          {
+            "asOf": "2024-12-24",
+            "amount": 900000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1hlk9so/grosses_analysis_week_ending_december_22/",
+            "postId": "1hlk9so",
+            "note": "u/Boring_Waltz_9545: GROSSES ANALYSIS- Week Ending December 22"
+          },
+          {
+            "asOf": "2024-12-31",
+            "amount": 900000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1hqo4gu/christmas_grosses_analysis_week_ending_december_29/",
+            "postId": "1hqo4gu",
+            "note": "u/Boring_Waltz_9545: CHRISTMAS GROSSES ANALYSIS- Week Ending December 29"
+          },
+          {
+            "asOf": "2025-01-07",
+            "amount": 900000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1hvz8kc/new_years_grosses_analysis_week_ending_january_5/",
+            "postId": "1hvz8kc",
+            "note": "u/Boring_Waltz_9545: NEW YEARS GROSSES ANALYSIS- Week Ending January 5"
+          },
+          {
+            "asOf": "2025-01-14",
+            "amount": 925000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1i1cn91/grosses_analysis_week_ending_january_12/",
+            "postId": "1i1cn91",
+            "note": "u/Boring_Waltz_9545: GROSSES ANALYSIS- Week Ending January 12"
+          },
+          {
+            "asOf": "2025-01-21",
+            "amount": 925000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1i6umgz/grosses_analysis_week_ending_january_19/",
+            "postId": "1i6umgz",
+            "note": "u/Boring_Waltz_9545: GROSSES ANALYSIS- Week ending January 19"
+          },
+          {
+            "asOf": "2025-01-28",
+            "amount": 925000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1ic95sb/grosses_analysis_week_ending_january_26/",
+            "postId": "1ic95sb",
+            "note": "u/Boring_Waltz_9545: GROSSES ANALYSIS- Week Ending January 26"
+          },
+          {
+            "asOf": "2025-02-04",
+            "amount": 925000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1ihqha7/broadway_week_grosses_analysis_week_ending/",
+            "postId": "1ihqha7",
+            "note": "u/Boring_Waltz_9545: BROADWAY WEEK GROSSES ANALYSIS- Week Ending February 2"
+          },
+          {
+            "asOf": "2025-02-11",
+            "amount": 925000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1in66nl/grosses_analysis_week_ending_february_9/",
+            "postId": "1in66nl",
+            "note": "u/Boring_Waltz_9545: GROSSES ANALYSIS- Week Ending February 9"
+          },
+          {
+            "asOf": "2025-02-18",
+            "amount": 925000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1isql5x/presidents_day_grosses_analysis_week_ending/",
+            "postId": "1isql5x",
+            "note": "u/Boring_Waltz_9545: PRESIDENTS DAY GROSSES ANALYSIS- Week Ending February 16"
+          },
+          {
+            "asOf": "2025-02-25",
+            "amount": 925000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1iy2plm/grosses_analysis_week_ending_february_23/",
+            "postId": "1iy2plm",
+            "note": "u/Boring_Waltz_9545: GROSSES ANALYSIS- Week Ending February 23"
+          },
+          {
+            "asOf": "2025-03-04",
+            "amount": 925000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1j3hx2u/grosses_analysis_week_ending_march_2/",
+            "postId": "1j3hx2u",
+            "note": "u/Boring_Waltz_9545: GROSSES ANALYSIS- Week Ending March 2"
+          },
+          {
+            "asOf": "2025-03-11",
+            "amount": 925000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1j90cbq/grosses_analysis_week_ending_march_9/",
+            "postId": "1j90cbq",
+            "note": "u/Boring_Waltz_9545: GROSSES ANALYSIS- Week Ending March 9"
+          },
+          {
+            "asOf": "2025-03-18",
+            "amount": 925000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1jebu0k/grosses_analysis_week_ending_march_16/",
+            "postId": "1jebu0k",
+            "note": "u/Boring_Waltz_9545: GROSSES ANALYSIS- Week ending March 16"
+          },
+          {
+            "asOf": "2025-03-25",
+            "amount": 925000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1jjqj82/spring_break_grosses_analysis_week_ending_march_23/",
+            "postId": "1jjqj82",
+            "note": "u/Boring_Waltz_9545: SPRING BREAK GROSSES ANALYSIS- Week Ending March 23"
+          },
+          {
+            "asOf": "2025-04-01",
+            "amount": 925000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1jp2qp0/weekly_grosses_analysis_week_ending_march_30/",
+            "postId": "1jp2qp0",
+            "note": "u/Boring_Waltz_9545: WEEKLY GROSSES ANALYSIS- Week Ending March 30"
+          },
+          {
+            "asOf": "2025-04-08",
+            "amount": 925000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1jul863/weekly_grosses_analysis_week_ending_april_6/",
+            "postId": "1jul863",
+            "note": "u/Boring_Waltz_9545: WEEKLY GROSSES ANALYSIS- Week ending April 6"
+          },
+          {
+            "asOf": "2025-04-15",
+            "amount": 925000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1jzymgz/grosses_analysis_week_ending_april_13/",
+            "postId": "1jzymgz",
+            "note": "u/Boring_Waltz_9545: GROSSES ANALYSIS- Week Ending April 13"
+          },
+          {
+            "asOf": "2025-04-22",
+            "amount": 925000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1k5eo6f/easter_grosses_analysis_week_ending_april_20/",
+            "postId": "1k5eo6f",
+            "note": "u/Boring_Waltz_9545: EASTER GROSSES ANALYSIS- Week Ending April 20"
+          },
+          {
+            "asOf": "2025-04-29",
+            "amount": 900000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1kawsjr/pretony_nominations_grosses_analysis_week_ending/",
+            "postId": "1kawsjr",
+            "note": "u/Boring_Waltz_9545: PRE-TONY NOMINATIONS GROSSES ANALYSIS- Week Ending April 27"
+          },
+          {
+            "asOf": "2025-05-06",
+            "amount": 900000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1kge7ci/posttony_nominations_grosses_analysis_week_ending/",
+            "postId": "1kge7ci",
+            "note": "u/Boring_Waltz_9545: POST-TONY NOMINATIONS GROSSES ANALYSIS- Week Ending May (the) 4(th be with you)"
+          },
+          {
+            "asOf": "2025-05-13",
+            "amount": 900000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1klva8x/grosses_analysis_week_ending_may_11/",
+            "postId": "1klva8x",
+            "note": "u/Boring_Waltz_9545: GROSSES ANALYSIS- Week Ending May 11"
+          },
+          {
+            "asOf": "2025-05-20",
+            "amount": 900000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1krbyd0/grosses_analysis_week_ending_may_18/",
+            "postId": "1krbyd0",
+            "note": "u/Boring_Waltz_9545: GROSSES ANALYSIS- Week Ending May 18"
+          },
+          {
+            "asOf": "2025-05-29",
+            "amount": 900000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1kxxb0w/memorial_day_weekend_grosses_analysis_week_ending/",
+            "postId": "1kxxb0w",
+            "note": "u/Boring_Waltz_9545: MEMORIAL DAY WEEKEND GROSSES ANALYSIS- Week Ending May 25"
+          },
+          {
+            "asOf": "2025-06-03",
+            "amount": 900000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1l2n2e3/pre_tonys_grosses_analysis_week_ending_june_1/",
+            "postId": "1l2n2e3",
+            "note": "u/Boring_Waltz_9545: PRE TONYS GROSSES ANALYSIS- Week Ending June 1"
+          },
+          {
+            "asOf": "2025-06-10",
+            "amount": 900000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1l86vfi/tony_week_grosses_analysis_week_ending_june_8/",
+            "postId": "1l86vfi",
+            "note": "u/Boring_Waltz_9545: TONY WEEK GROSSES ANALYSIS- Week Ending June 8"
+          },
+          {
+            "asOf": "2025-06-17",
+            "amount": 900000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1ldtpcu/grosses_analysis_week_ending_june_15/",
+            "postId": "1ldtpcu",
+            "note": "u/Boring_Waltz_9545: GROSSES ANALYSIS- Week Ending June 15"
+          },
+          {
+            "asOf": "2025-06-24",
+            "amount": 900000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1ljhzb1/grosses_analysis_week_ending_june_22/",
+            "postId": "1ljhzb1",
+            "note": "u/Boring_Waltz_9545: GROSSES ANALYSIS- Week Ending June 22"
+          },
+          {
+            "asOf": "2025-07-01",
+            "amount": 900000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1lp9tsn/grosses_analysis_week_ending_june_29/",
+            "postId": "1lp9tsn",
+            "note": "u/Boring_Waltz_9545: GROSSES ANALYSIS- Week Ending June 29"
+          },
+          {
+            "asOf": "2025-07-08",
+            "amount": 900000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1luwvgj/grosses_analysis_week_ending_july_6/",
+            "postId": "1luwvgj",
+            "note": "u/Boring_Waltz_9545: GROSSES ANALYSIS- Week Ending July 6"
+          },
+          {
+            "asOf": "2025-07-15",
+            "amount": 900000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1m0q8ay/grosses_analysis_week_ending_july_13/",
+            "postId": "1m0q8ay",
+            "note": "u/Boring_Waltz_9545: GROSSES ANALYSIS- WEEK ENDING JULY 13"
+          },
+          {
+            "asOf": "2025-07-22",
+            "amount": 900000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1m6mprm/grosses_analysis_week_ending_july_20/",
+            "postId": "1m6mprm",
+            "note": "u/Boring_Waltz_9545: GROSSES ANALYSIS- Week Ending July 20"
+          },
+          {
+            "asOf": "2025-07-29",
+            "amount": 900000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1mch3d8/grosses_analysis_week_ending_july_27/",
+            "postId": "1mch3d8",
+            "note": "u/Boring_Waltz_9545: GROSSES ANALYSIS- Week Ending July 27"
+          },
+          {
+            "asOf": "2025-08-05",
+            "amount": 900000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1migrst/grosses_analysis_week_ending_august_3/",
+            "postId": "1migrst",
+            "note": "u/Boring_Waltz_9545: GROSSES ANALYSIS- Week Ending August 3"
+          },
+          {
+            "asOf": "2025-08-12",
+            "amount": 900000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1mofc60/grosses_analysis_week_ending_august_12/",
+            "postId": "1mofc60",
+            "note": "u/Boring_Waltz_9545: GROSSES ANALYSIS- Week Ending August 12"
+          },
+          {
+            "asOf": "2025-08-19",
+            "amount": 900000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1mur67b/grosses_analysis_week_ending_august_17/",
+            "postId": "1mur67b",
+            "note": "u/Boring_Waltz_9545: GROSSES ANALYSIS- Week Ending August 17"
+          },
+          {
+            "asOf": "2025-08-26",
+            "amount": 900000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1n0xokt/grosses_analysis_week_ending_august_24/",
+            "postId": "1n0xokt",
+            "note": "u/Boring_Waltz_9545: GROSSES ANALYSIS- Week Ending August 24"
+          },
+          {
+            "asOf": "2025-09-02",
+            "amount": 900000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1n6y4i4/labor_day_grosses_analysis_week_ending_august_31/",
+            "postId": "1n6y4i4",
+            "note": "u/Boring_Waltz_9545: LABOR DAY GROSSES ANALYSIS- Week Ending August 31"
+          },
+          {
+            "asOf": "2025-09-09",
+            "amount": 900000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1ncrcut/grosses_analysis_week_ending_september_7/",
+            "postId": "1ncrcut",
+            "note": "u/Boring_Waltz_9545: GROSSES ANALYSIS- Week Ending September 7"
+          },
+          {
+            "asOf": "2025-09-16",
+            "amount": 900000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1niq205/broadway_week_grosses_analysis_week_ending/",
+            "postId": "1niq205",
+            "note": "u/Boring_Waltz_9545: BROADWAY WEEK GROSSES ANALYSIS- Week Ending September 14"
+          },
+          {
+            "asOf": "2025-09-25",
+            "amount": 900000,
+            "kind": "running-cost",
+            "sourceType": "reddit-standard",
+            "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1nqbiqm/broadway_week_2_grosses_analysis_week_ending/",
+            "postId": "1nqbiqm",
+            "note": "u/Boring_Waltz_9545: BROADWAY WEEK (2) GROSSES ANALYSIS - Week Ending September 21"
+          }
+        ],
+        "description": "cabaret-2024: redate the $1.5M/week anchor from the article date (2025-09-07, wrong article) to the period it measured (first seven weeks after the Apr 21, 2024 opening, midpoint 2024-05-15), cite the Sep 25, 2025 article, keep the report date separately"
+      },
+      {
+        "type": "add-commercial-entry",
+        "description": "a-christmas-carol-2022: add commercial entry (limited holiday run, no figures published)",
+        "slug": "a-christmas-carol-2022",
+        "entry": {
+          "designation": "TBD",
+          "recouped": null,
+          "capitalization": null,
+          "notes": "Limited holiday engagement of Jefferson Mays' solo adaptation at the Nederlander (Nov 21, 2022 to Jan 1, 2023). No capitalization, running cost or recoupment was published. A separate production from the 2019 A Christmas Carol.",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://www.broadwaynews.com/jefferson-mays-to-lead-a-christmas-carol-on-broadway/",
+              "date": "2022-09-07"
+            }
+          ]
+        }
+      },
+      {
+        "type": "add-commercial-entry",
+        "description": "girl-from-the-north-country-2022: add commercial entry (return engagement)",
+        "slug": "girl-from-the-north-country-2022",
+        "entry": {
+          "designation": "TBD",
+          "recouped": null,
+          "capitalization": null,
+          "productionType": "return-engagement",
+          "notes": "Limited return engagement at the Belasco (Apr 29 to Jun 19, 2022). The production opened Mar 5, 2020, reopened Oct 13, 2021 and closed Jan 23, 2022 before this return. No capitalization or recoupment was published.",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://www.broadwaynews.com/girl-from-the-north-country-extends-broadway-run",
+              "date": "2022-05-13"
+            }
+          ]
+        }
+      },
+      {
+        "type": "add-commercial-entry",
+        "description": "slave-play-2021: add commercial entry (return engagement)",
+        "slug": "slave-play-2021",
+        "entry": {
+          "designation": "TBD",
+          "recouped": null,
+          "capitalization": null,
+          "productionType": "return-engagement",
+          "notes": "Limited return engagement at the August Wilson that ended Jan 23, 2022. The 2019 original run closed without recouping its reported $3.9M capitalization; that figure belongs to the original run, not this engagement. No figures were published for the return.",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://playbill.com/article/return-broadway-engagement-of-jeremy-o.-harris-slave-play-finishes-limited-run-january-23",
+              "date": "2022-01-23"
+            },
+            {
+              "type": "trade",
+              "url": "https://www.papermag.com/slave-play-closing",
+              "date": "2020-01-21"
+            }
+          ]
+        }
+      },
+      {
+        "type": "add-commercial-entry",
+        "description": "is-this-a-room-2021: add commercial entry (closed early, financing shared with Dana H.)",
+        "slug": "is-this-a-room-2021",
+        "entry": {
+          "designation": "TBD",
+          "recouped": false,
+          "capitalization": null,
+          "recoupedSource": "Producers said \"the finances of the production don't allow us to buy more time to reach a sustainable level\" when announcing the early closing (Broadway News, Oct 25, 2021).",
+          "notes": "Played in repertory with Dana H. at the Lyceum and closed early in Nov 2021 (it had been scheduled through Jan 16, 2022). Producers and investors spent $3.5 million to bankroll the two plays together (The Hustle), with no split between them reported, so this record carries no capitalization of its own. Dana H.'s record notes the same shared figure.",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://broadwaynews.com/is-this-a-room-dana-h-to-close-on-broadway-in-november",
+              "date": "2021-10-25"
+            },
+            {
+              "type": "trade",
+              "url": "https://thehustle.co/the-economics-of-broadway-shows",
+              "date": "2024-06-24"
+            }
+          ]
+        }
+      },
+      {
+        "type": "add-commercial-entry",
+        "description": "waitress-2021: add commercial entry (return engagement)",
+        "slug": "waitress-2021",
+        "entry": {
+          "designation": "TBD",
+          "recouped": null,
+          "capitalization": null,
+          "productionType": "return-engagement",
+          "notes": "Return engagement at the Ethel Barrymore that closed early because of COVID-19 (it had been scheduled through Jan 9, 2022). The original 2016 run's $12M capitalization and its recoupment belong to the original production's record. Waitress LLC received a $10M federal Shuttered Venue Operators grant.",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://www.newyorktheatreguide.com/news-features/waitress-closes-early-on-broadway-due-to-covid-19",
+              "date": "2021-12-23"
+            },
+            {
+              "type": "trade",
+              "url": "https://broadwayjournal.com/waitress-scores-10-million-tip-from-feds",
+              "date": "2021-07-07"
+            }
+          ]
+        }
+      },
+      {
+        "type": "add-commercial-entry",
+        "description": "pass-over-2021: add commercial entry (limited engagement, no figures published)",
+        "slug": "pass-over-2021",
+        "entry": {
+          "designation": "TBD",
+          "recouped": null,
+          "capitalization": null,
+          "notes": "Limited engagement at the August Wilson (Aug 22 to Oct 10, 2021), the first play to reopen Broadway after the shutdown; producers included Matt Ross, Jujamcyn and Lincoln Center Theater. No capitalization or recoupment was published.",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://broadwaynews.com/pass-over-to-reopen-the-august-wilson-theatre-on-broadway",
+              "date": "2021-05-04"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "executedAt": "2026-10-25T19:46:01.458Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for cabaret-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: costMethodology updated for cabaret-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCostBasis updated for cabaret-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: costHistory updated for cabaret-2024"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added a-christmas-carol-2022 (TBD)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added girl-from-the-north-country-2022 (TBD)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added slave-play-2021 (TBD)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added is-this-a-room-2021 (TBD)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added waitress-2021 (TBD)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added pass-over-2021 (TBD)"
+    }
+  ],
+  "executedIn": "ci"
+}

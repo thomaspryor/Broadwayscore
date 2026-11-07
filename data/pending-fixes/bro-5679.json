@@ -1,0 +1,50 @@
+{
+  "issueNumber": "bro-5679",
+  "planId": "7df132bd-1c51-4cbc-923b-051d0201e152",
+  "status": "applied",
+  "createdAt": "2026-10-19T23:20:40.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5679: two Talkin' Broadway files carry bylines damaged by an accent bug (fixed in the extractor). The stored page text names the critics: 'Theatre Review by Kimberly Ramírez - October 9, 2026' for Good Time Charlie and 'Theatre Review by Moshe A. Bloxenheim - September 25, 2026' for Human Things.",
+    "steps": [
+      "Good Time Charlie: criticName 'Kimberly Ram' -> 'Kimberly Ramírez' (the byline lost its accented letter).",
+      "Human Things: criticName 'Unknown' -> 'Moshe A. Bloxenheim' (byline is in the stored page text)."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "good-time-charlie-off-broadway-2026/talkinbroadway--kimberly-ram.json",
+        "field": "criticName",
+        "oldValue": "Kimberly Ram",
+        "newValue": "Kimberly Ramírez",
+        "description": "The Talkin' Broadway byline reads Kimberly Ramírez; the extractor cut it at the accent."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "human-things-off-broadway-2026/talkinbroadway--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Moshe A. Bloxenheim",
+        "description": "The stored page text carries the byline 'Theatre Review by Moshe A. Bloxenheim - September 25, 2026'."
+      }
+    ]
+  },
+  "executedAt": "2026-10-19T23:27:34.421Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "good-time-charlie-off-broadway-2026/talkinbroadway--kimberly-ram.json criticName: \"Kimberly Ram\" -> \"Kimberly Ramírez\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "human-things-off-broadway-2026/talkinbroadway--unknown.json criticName: \"Unknown\" -> \"Moshe A. Bloxenheim\""
+    }
+  ],
+  "executedIn": "ci"
+}

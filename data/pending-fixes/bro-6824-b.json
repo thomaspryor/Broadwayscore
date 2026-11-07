@@ -1,0 +1,34 @@
+{
+  "issueNumber": "bro-6824-b",
+  "planId": "5c598478-121c-4c4d-aaee-e1ba9b7c67d0",
+  "status": "applied",
+  "createdAt": "2026-11-03T15:06:15.932Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6824 follow-up: recompute contentTier on 12 National World reviews (3 Portsmouth News, 9 The Scotsman) tiered invalid by the shared mid-article newsletter widget (\"premium content\"); content-quality.js now strips that widget for every National World title, not only WarwickshireWorld.",
+    "steps": [
+      "BRO-6824 follow-up: recompute contentTier on 12 Portsmouth News + Scotsman rows (BRO-5356 file mode); all 12 verified locally to flip invalid to complete with zero other corpus-wide tier changes."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "run-script",
+        "description": "BRO-6824 follow-up: recompute contentTier on 12 Portsmouth News + Scotsman rows (BRO-5356 file mode); all 12 verified locally to flip invalid to complete with zero other corpus-wide tier changes.",
+        "script": "reclassify-invalid-reviews.js",
+        "args": "--file=armour-oran-mor-regional-2024/the-scotsman--joyce-mcmillan.json,dancing-shoes-oran-mor-regional-2025/the-scotsman--joyce-mcmillan.json,dookin-oot-oran-mor-regional-2025/the-scotsman--joyce-mcmillan.json,ivor-oran-mor-regional-2025/the-scotsman--joyce-mcmillan.json,peak-stuff-chichester-festival-regional-2024/portsmouth-news--james-butler.json,pushin-thirty-oran-mor-regional-2024/the-scotsman--joyce-mcmillan.json,roost-oran-mor-regional-2024/the-scotsman--joyce-mcmillan.json,stand-and-deliver-the-lee-jeans-sit-in-tron-regional-2026/the-scotsman--mark-fisher.json,sunset-song-dundee-rep-regional-2024/the-scotsman--joyce-mcmillan.json,the-cat-and-the-canary-chichester-festival-regional-2024/portsmouth-news--james-george.json,the-house-party-chichester-festival-regional-2024/portsmouth-news--james-butler.json,through-the-shortbread-tin-tron-regional-2025/the-scotsman--joyce-mcmillan.json --apply"
+      }
+    ]
+  },
+  "executedAt": "2026-11-03T16:35:06.423Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran reclassify-invalid-reviews.js successfully"
+    }
+  ],
+  "executedIn": "ci"
+}

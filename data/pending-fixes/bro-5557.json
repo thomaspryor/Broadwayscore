@@ -1,0 +1,47 @@
+{
+  "issueNumber": "bro-5557",
+  "planId": "b747e87f-6913-4cfc-a5d6-ba29f480f95a",
+  "status": "partial",
+  "createdAt": "2026-10-17T18:08:10.171Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5557: remove two provisional duplicate show rows minted by roundup / venue-page promotion (the Anne Washburn ANON row next to ANON - a tempest at our kitchen table; the De Keersmaeker & Mriziga Il Cimento row next to the TodayTix Il Cimento row). Lands before the dedupe code fix so validate-data stays green when that fix starts flagging them.",
+    "steps": [
+      "Retire anne-washburns-anon-off-broadway-2026 (provisional, aggregator-roundup:bww-roundup, zero reviews); the kept row is anon-a-tempest-at-our-kitchen-table-off-broadway-2026",
+      "Retire anne-teresa-de-keersmaeker-radouan-mriziga-il-cimento-dellarmonia-e-dellinventione-off-broadway-2027 (provisional, venue-page:nyu-skirball, zero reviews); the kept row carries the TodayTix listing"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "retire-show",
+        "id": "anne-washburns-anon-off-broadway-2026",
+        "expectTitle": "Anne Washburn's ANON",
+        "reason": "Provisional duplicate of anon-a-tempest-at-our-kitchen-table-off-broadway-2026 (same MCC house and run) minted by the BWW roundup promoter because the writer credit defeated title matching (BRO-5557)",
+        "description": "Retire duplicate ANON row"
+      },
+      {
+        "type": "retire-show",
+        "id": "anne-teresa-de-keersmaeker-radouan-mriziga-il-cimento-dellarmonia-e-dellinventione-off-broadway-2027",
+        "expectTitle": "Anne Teresa De Keersmaeker & Radouan Mriziga: Il Cimento dell'Armonia e dell'Inventione",
+        "reason": "Provisional venue-page duplicate of anne-teresa-de-keersmaeker-il-cimento-dellarmonia-e-dellinventione-off-broadway-2027 (same NYU Skirball run); only the credit list differs (BRO-5557)",
+        "description": "Retire duplicate Il Cimento row"
+      }
+    ]
+  },
+  "executedAt": "2026-10-17T19:02:20.991Z",
+  "results": [
+    {
+      "action": "retire-show",
+      "ok": true,
+      "msg": "retired anne-washburns-anon-off-broadway-2026 (\"Anne Washburn's ANON\" @ MCC Theater)"
+    },
+    {
+      "action": "retire-show",
+      "ok": false,
+      "reason": "retire-show anne-teresa-de-keersmaeker-radouan-mriziga-il-cimento-dellarmonia-e-dellinventione-off-broadway-2027: retireId(anne-teresa-de-keersmaeker-radouan-mriziga-il-cimento-dellarmonia-e-dellinventione-off-broadway-2027): already retired — refusing to retire twice"
+    }
+  ]
+}

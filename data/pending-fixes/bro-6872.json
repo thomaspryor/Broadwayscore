@@ -1,0 +1,35 @@
+{
+  "issueNumber": "bro-6872",
+  "planId": "a2308d52-2b58-488d-a5f1-a43384f45f4f",
+  "status": "applied",
+  "createdAt": "2026-11-03T01:25:35.204483Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6872: recover the Washington Post review of The Imaginary Invalid (Thomas Floyd, 2026-10-23). DTLI lists it; the lane replay found and scored it; reviews.json has no washpost row for the show.",
+    "steps": [
+      "Ingest the WaPo review url for the-imaginary-invalid-2026 (multi-show column: the ingest isolates this show's section)",
+      "Then run verify-review-recovery.js --show=the-imaginary-invalid-2026 --production"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "run-script",
+        "description": "Ingest the-imaginary-invalid-2026 washpost review (Thomas Floyd): missing from the site, listed on DTLI",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-imaginary-invalid-2026 --url=https://www.washingtonpost.com/entertainment/theater/2026/10/23/stars-are-shining-broadway-an-upstart-musical-upstages-them-all/ --outlet=washpost --critic=\"Thomas Floyd\" --publish-date=2026-10-23 --stub-on-failure"
+      }
+    ]
+  },
+  "executedAt": "2026-11-03T02:14:07.514Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    }
+  ],
+  "executedIn": "ci"
+}

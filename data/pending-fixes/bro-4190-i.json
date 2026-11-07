@@ -1,0 +1,50 @@
+{
+  "createdAt": "2026-10-12T11:13:12Z",
+  "issueNumber": "bro-4190-i",
+  "planId": "ac1085e9-d0f0-418f-bdf0-6c56f10c2d0c",
+  "status": "partial",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4190 follow-up: Hercules (West End 2025) openingDate is 2025-07-10 (theatremonkey) but press night was 2025-06-24: 26 of 26 dated reviews fall on 2025-06-24..06-28 (Guardian https://www.theguardian.com/stage/2025/jun/24/hercules-review-disney-musical-theatre-royal-drury-lane, Variety, WhatsOnStage, BroadwayWorld all 2025-06-24; estimatePressNight = 2025-06-24). The wrong date makes the ingest anticipatory gate flag real reviews (Telegraph x2, London Theatre Reviews, Daily Mail, British Theatre Guide) as pre-opening posts.",
+    "steps": [
+      "Set hercules-west-end-2025 openingDate to 2025-06-24 and openingDateSource to review-derived-press-night"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "hercules-west-end-2025",
+        "field": "openingDate",
+        "oldValue": "2025-07-10",
+        "newValue": "2025-06-24",
+        "description": "Press night 2025-06-24: Guardian/Variety/WhatsOnStage/BroadwayWorld reviews all dated 2025-06-24"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "hercules-west-end-2025",
+        "field": "openingDateSource",
+        "oldValue": "theatremonkey",
+        "newValue": "review-derived-press-night",
+        "description": "Date now derived from the review cluster"
+      }
+    ]
+  },
+  "executedAt": "2026-10-12T11:57:13.968Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for hercules-west-end-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "openingDateSource: current value doesn't match expected (data changed since plan was created)"
+    }
+  ]
+}

@@ -1,0 +1,111 @@
+{
+  "schemaVersion": 1,
+  "showId": "slanted-floors-off-broadway-2026",
+  "night": "2026-11-02",
+  "market": "off-broadway",
+  "embargoAt": "2026-11-03T03:00:00.000Z",
+  "embargoSource": "market-default",
+  "probe": {
+    "startedAt": "2026-11-03T02:30:06.098Z",
+    "endedAt": "2026-11-03T09:00:37.851Z",
+    "intervalMin": 5,
+    "samples": 77,
+    "failedSamples": 0,
+    "lastSampleAt": "2026-11-03T08:57:19.007Z",
+    "lastOkSampleAt": "2026-11-03T08:57:19.007Z"
+  },
+  "firstLiveAt": null,
+  "firstLiveBaseline": false,
+  "lastLiveAt": null,
+  "liveCount": 0,
+  "liveCountAt": {
+    "1h": 0,
+    "2h": 0,
+    "6h": null
+  },
+  "liveCountSampleAt": {
+    "1h": "2026-11-03T04:00:09.862Z",
+    "2h": "2026-11-03T05:07:07.032Z",
+    "6h": null
+  },
+  "firstOutletPublishAt": {
+    "at": null,
+    "precision": "unknown",
+    "source": "prod-rv-publishDate",
+    "tierScope": null
+  },
+  "perReview": [],
+  "dropped": [],
+  "reference": {
+    "2h": {
+      "status": "no-census-yet",
+      "source": null,
+      "count": 0,
+      "covered": null,
+      "coverage": null,
+      "missing": [],
+      "liveCount": 0,
+      "fetchedAt": "2026-11-03T05:00:25.510Z",
+      "censusNote": "no BWW roundup found"
+    },
+    "end": {
+      "status": "no-census-yet",
+      "source": null,
+      "count": 0,
+      "covered": null,
+      "coverage": null,
+      "missing": [],
+      "liveCount": 0,
+      "fetchedAt": "2026-11-03T09:00:31.974Z",
+      "censusNote": "no BWW roundup found"
+    }
+  },
+  "manualActions": [],
+  "publishedBy": {
+    "path": "regular",
+    "method": "lane-only-decision",
+    "checks": [
+      {
+        "at": "2026-11-03T05:00:25.596Z",
+        "label": "2h",
+        "standDown": false,
+        "reason": "market not lane-only"
+      },
+      {
+        "at": "2026-11-03T09:00:32.031Z",
+        "label": "end",
+        "standDown": false,
+        "reason": "market not lane-only"
+      }
+    ]
+  },
+  "fileState": {
+    "capturedAt": "2026-11-03T09:00:37.590Z",
+    "files": [
+      {
+        "file": "vulture--jason-p-frank.json",
+        "outletId": "vulture",
+        "outlet": "Vulture",
+        "critic": "Jason P. Frank",
+        "firstSeenAt": "2026-10-20T16:32:41.029Z",
+        "scoredAt": null,
+        "publishDate": "2026-06-18",
+        "url": "vulture.com/article/slanted-floors-play-greenpoint-interview.html",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null
+      }
+    ]
+  },
+  "laneShadow": {
+    "importedAt": "2026-11-03T09:00:28.927Z",
+    "runId": "41566495251",
+    "startedAt": "2026-11-03T02:34:17.262Z",
+    "pollMin": 2,
+    "pollFailures": 0,
+    "firstDiscoveredAt": null,
+    "discoveredByOutlet": {},
+    "bwwRoundupUrl": null,
+    "liveFirstSeen": []
+  }
+}

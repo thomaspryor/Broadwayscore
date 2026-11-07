@@ -1,0 +1,847 @@
+{
+  "issueNumber": "bro-6450-we-2015-16",
+  "planId": "ec03fb7e-fe27-4860-a0ea-6c5c293329de",
+  "status": "applied",
+  "createdAt": "2026-10-27T23:55:49.868Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Add 25 closed West End production(s) for 2015-2016 from the historical backfill (we-historical:tr, we-historical:theatricalia; BRO-6450).",
+    "steps": [
+      "Append cleansed-west-end-2016 (Dorfman, 2016-02-23 to 2016-05-05)",
+      "Append farinelli-and-the-king-west-end-2015 (Duke of York's Theatre, 2015-09-29 to 2015-12-05)",
+      "Append hobsons-choice-west-end-2016 (Vaudeville Theatre, 2016-06-15 to 2016-09-10)",
+      "Append husbands-and-sons-west-end-2015 (Dorfman (Cottesloe), 2015-10-27 to 2016-02-10)",
+      "Append linda-west-end-2015 (Royal Court, 2015-12-01 to 2016-01-01)",
+      "Append notmoses-west-end-2016 (Arts Theatre, 2016-03-15 to 2016-05-14)",
+      "Append roosevelvis-west-end-2015 (Royal Court, 2015-10-26 to 2015-11-14)",
+      "Append the-deep-blue-sea-west-end-2016 (Lyttelton, 2016-06-08 to 2016-09-21)",
+      "Append the-flick-west-end-2016 (Dorfman, 2016-04-20 to 2016-06-15)",
+      "Append wonder-land-west-end-2015 (Olivier, 2015-12-10 to 2016-04-30)",
+      "Append jane-eyre-west-end-2015 (Lyttelton Theatre, 2015-09-08 to 2016-01-10)",
+      "Append ushers-west-end-2015 (Arts Theatre, 2015-09-09 to 2015-10-18)",
+      "Append kinky-boots-west-end-2015 (Adelphi Theatre, 2015-09-15 to 2019-01-12)",
+      "Append close-to-you-bacharach-reimagined-west-end-2015 (Criterion Theatre, 2015-10-03 to 2016-02-14)",
+      "Append the-father-west-end-2015 (Wyndham's Theatre, 2015-10-05 to 2015-11-21)",
+      "Append the-winters-tale-west-end-2015 (Garrick Theatre, 2015-10-17 to 2016-01-16)",
+      "Append harlequinade-west-end-2015 (Garrick Theatre, 2015-10-24 to 2016-01-13)",
+      "Append mr-footes-other-leg-west-end-2015 (Theatre Royal Haymarket, 2015-10-28 to 2016-01-23)",
+      "Append lovesong-of-the-electric-bear-west-end-2015 (Arts Theatre, 2015-11-04 to 2015-11-21)",
+      "Append a-christmas-carol-west-end-2015 (Noël Coward Theatre, 2015-11-30 to 2016-01-30)",
+      "Append peter-pan-goes-wrong-west-end-2015 (Apollo Theatre, 2015-12-04 to 2016-01-31)",
+      "Append guys-and-dolls-west-end-2016 (Savoy Theatre, 2016-01-06 to 2016-03-12)",
+      "Append red-velvet-west-end-2016 (Garrick Theatre, 2016-01-23 to 2016-02-27)",
+      "Append the-master-builder-west-end-2016 (The Old Vic, 2016-01-23 to 2016-03-19)",
+      "Append the-war-of-the-worlds-west-end-2016 (Dominion Theatre, 2016-02-08 to 2016-04-30)"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "add-show",
+        "show": {
+          "id": "cleansed-west-end-2016",
+          "title": "Cleansed",
+          "slug": "cleansed-west-end-2016",
+          "venue": "Dorfman",
+          "previewsStartDate": null,
+          "openingDate": "2016-02-23",
+          "closingDate": "2016-05-05",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2015-2016",
+          "discoverySource": "we-historical:tr",
+          "discoveredAt": "2026-10-27T23:55:48.888Z",
+          "openingDateSource": "theatre-record",
+          "closingDateSource": "theatre-record",
+          "evidenceUrls": [
+            "https://www.theatrerecord.com/archive/volume/36/page/182"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "farinelli-and-the-king-west-end-2015",
+          "title": "Farinelli and the King",
+          "slug": "farinelli-and-the-king-west-end-2015",
+          "venue": "Duke of York's Theatre",
+          "previewsStartDate": null,
+          "openingDate": "2015-09-29",
+          "closingDate": "2015-12-05",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2015-2016",
+          "discoverySource": "we-historical:tr",
+          "discoveredAt": "2026-10-27T23:55:48.926Z",
+          "openingDateSource": "theatre-record",
+          "closingDateSource": "theatre-record",
+          "evidenceUrls": [
+            "https://www.theatrerecord.com/archive/volume/35/page/966"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "hobsons-choice-west-end-2016",
+          "title": "Hobson's Choice",
+          "slug": "hobsons-choice-west-end-2016",
+          "venue": "Vaudeville Theatre",
+          "previewsStartDate": null,
+          "openingDate": "2016-06-15",
+          "closingDate": "2016-09-10",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2015-2016",
+          "discoverySource": "we-historical:tr",
+          "discoveredAt": "2026-10-27T23:55:48.972Z",
+          "openingDateSource": "theatre-record",
+          "closingDateSource": "theatre-record",
+          "evidenceUrls": [
+            "https://www.theatrerecord.com/archive/volume/36/page/643"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "husbands-and-sons-west-end-2015",
+          "title": "Husbands and Sons",
+          "slug": "husbands-and-sons-west-end-2015",
+          "venue": "Dorfman (Cottesloe)",
+          "previewsStartDate": null,
+          "openingDate": "2015-10-27",
+          "closingDate": "2016-02-10",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2015-2016",
+          "discoverySource": "we-historical:tr",
+          "discoveredAt": "2026-10-27T23:55:48.998Z",
+          "openingDateSource": "theatre-record",
+          "closingDateSource": "theatre-record",
+          "evidenceUrls": [
+            "https://www.theatrerecord.com/archive/volume/35/page/1074"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "linda-west-end-2015",
+          "title": "Linda",
+          "slug": "linda-west-end-2015",
+          "venue": "Royal Court",
+          "previewsStartDate": null,
+          "openingDate": "2015-12-01",
+          "closingDate": "2016-01-01",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2015-2016",
+          "discoverySource": "we-historical:tr",
+          "discoveredAt": "2026-10-27T23:55:49.022Z",
+          "openingDateSource": "theatre-record",
+          "closingDateSource": "theatre-record",
+          "evidenceUrls": [
+            "https://www.theatrerecord.com/archive/volume/35/page/1209"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "notmoses-west-end-2016",
+          "title": "Notmoses",
+          "slug": "notmoses-west-end-2016",
+          "venue": "Arts Theatre",
+          "previewsStartDate": null,
+          "openingDate": "2016-03-15",
+          "closingDate": "2016-05-14",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2015-2016",
+          "discoverySource": "we-historical:tr",
+          "discoveredAt": "2026-10-27T23:55:49.043Z",
+          "openingDateSource": "theatre-record",
+          "closingDateSource": "theatre-record",
+          "evidenceUrls": [
+            "https://www.theatrerecord.com/archive/volume/36/page/283"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "roosevelvis-west-end-2015",
+          "title": "Roosevelvis",
+          "slug": "roosevelvis-west-end-2015",
+          "venue": "Royal Court",
+          "previewsStartDate": null,
+          "openingDate": "2015-10-26",
+          "closingDate": "2015-11-14",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2015-2016",
+          "discoverySource": "we-historical:tr",
+          "discoveredAt": "2026-10-27T23:55:49.069Z",
+          "openingDateSource": "theatre-record",
+          "closingDateSource": "theatre-record",
+          "evidenceUrls": [
+            "https://www.theatrerecord.com/archive/volume/35/page/1072"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-deep-blue-sea-west-end-2016",
+          "title": "The Deep Blue Sea",
+          "slug": "the-deep-blue-sea-west-end-2016",
+          "venue": "Lyttelton",
+          "previewsStartDate": null,
+          "openingDate": "2016-06-08",
+          "closingDate": "2016-09-21",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2015-2016",
+          "discoverySource": "we-historical:tr",
+          "discoveredAt": "2026-10-27T23:55:49.095Z",
+          "openingDateSource": "theatre-record",
+          "closingDateSource": "theatre-record",
+          "evidenceUrls": [
+            "https://www.theatrerecord.com/archive/volume/36/page/635"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-flick-west-end-2016",
+          "title": "The Flick",
+          "slug": "the-flick-west-end-2016",
+          "venue": "Dorfman",
+          "previewsStartDate": null,
+          "openingDate": "2016-04-20",
+          "closingDate": "2016-06-15",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2015-2016",
+          "discoverySource": "we-historical:tr",
+          "discoveredAt": "2026-10-27T23:55:49.119Z",
+          "openingDateSource": "theatre-record",
+          "closingDateSource": "theatre-record",
+          "evidenceUrls": [
+            "https://www.theatrerecord.com/archive/volume/36/page/435"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "wonder-land-west-end-2015",
+          "title": "Wonder.land",
+          "slug": "wonder-land-west-end-2015",
+          "venue": "Olivier",
+          "previewsStartDate": null,
+          "openingDate": "2015-12-10",
+          "closingDate": "2016-04-30",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "musical",
+          "tags": [
+            "historical"
+          ],
+          "season": "2015-2016",
+          "discoverySource": "we-historical:tr",
+          "discoveredAt": "2026-10-27T23:55:49.144Z",
+          "openingDateSource": "theatre-record",
+          "closingDateSource": "theatre-record",
+          "evidenceUrls": [
+            "https://www.theatrerecord.com/archive/volume/35/page/1250"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "jane-eyre-west-end-2015",
+          "title": "Jane Eyre",
+          "slug": "jane-eyre-west-end-2015",
+          "venue": "Lyttelton Theatre",
+          "previewsStartDate": "2015-09-08",
+          "openingDate": "2015-09-08",
+          "closingDate": "2016-01-10",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2015-2016",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:49.178Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/3cb/jane-eyre/production/zgj"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "ushers-west-end-2015",
+          "title": "Ushers",
+          "slug": "ushers-west-end-2015",
+          "venue": "Arts Theatre",
+          "previewsStartDate": "2015-09-09",
+          "openingDate": "2015-09-09",
+          "closingDate": "2015-10-18",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2015-2016",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:49.202Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/ghm/ushers/production/12ew"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "kinky-boots-west-end-2015",
+          "title": "Kinky Boots",
+          "slug": "kinky-boots-west-end-2015",
+          "venue": "Adelphi Theatre",
+          "previewsStartDate": "2015-09-15",
+          "openingDate": "2015-09-15",
+          "closingDate": "2019-01-12",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "musical",
+          "tags": [
+            "historical"
+          ],
+          "season": "2015-2016",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:49.223Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/dq5/kinky-boots/production/zte"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "close-to-you-bacharach-reimagined-west-end-2015",
+          "title": "Close to You: Bacharach Reimagined",
+          "slug": "close-to-you-bacharach-reimagined-west-end-2015",
+          "venue": "Criterion Theatre",
+          "previewsStartDate": "2015-10-03",
+          "openingDate": "2015-10-03",
+          "closingDate": "2016-02-14",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "musical",
+          "tags": [
+            "historical"
+          ],
+          "season": "2015-2016",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:49.254Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/h2v/close-to-you-bacharach-reimagined/production/13jn"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-father-west-end-2015",
+          "title": "The Father",
+          "slug": "the-father-west-end-2015",
+          "venue": "Wyndham's Theatre",
+          "previewsStartDate": "2015-10-05",
+          "openingDate": "2015-10-05",
+          "closingDate": "2015-11-21",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2015-2016",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:49.276Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/e4h/the-father/production/wh9"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-winters-tale-west-end-2015",
+          "title": "The Winter's Tale",
+          "slug": "the-winters-tale-west-end-2015",
+          "venue": "Garrick Theatre",
+          "previewsStartDate": "2015-10-17",
+          "openingDate": "2015-10-17",
+          "closingDate": "2016-01-16",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2015-2016",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:49.298Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/1v/the-winters-tale/production/way"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "harlequinade-west-end-2015",
+          "title": "Harlequinade",
+          "slug": "harlequinade-west-end-2015",
+          "venue": "Garrick Theatre",
+          "previewsStartDate": "2015-10-24",
+          "openingDate": "2015-10-24",
+          "closingDate": "2016-01-13",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2015-2016",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:49.323Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/9cf/harlequinade/production/y92"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "mr-footes-other-leg-west-end-2015",
+          "title": "Mr Foote's Other Leg",
+          "slug": "mr-footes-other-leg-west-end-2015",
+          "venue": "Theatre Royal Haymarket",
+          "previewsStartDate": "2015-10-28",
+          "openingDate": "2015-10-28",
+          "closingDate": "2016-01-23",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2015-2016",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:49.347Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/fgc/mr-footes-other-leg/production/1060"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "lovesong-of-the-electric-bear-west-end-2015",
+          "title": "Lovesong of the Electric Bear",
+          "slug": "lovesong-of-the-electric-bear-west-end-2015",
+          "venue": "Arts Theatre",
+          "previewsStartDate": "2015-11-04",
+          "openingDate": "2015-11-04",
+          "closingDate": "2015-11-21",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2015-2016",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:49.369Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/k66/lovesong-of-the-electric-bear/production/1dah"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "a-christmas-carol-west-end-2015",
+          "title": "A Christmas Carol",
+          "slug": "a-christmas-carol-west-end-2015",
+          "venue": "Noël Coward Theatre",
+          "previewsStartDate": "2015-11-30",
+          "openingDate": "2015-11-30",
+          "closingDate": "2016-01-30",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2015-2016",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:49.390Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/gne/a-christmas-carol/production/12ng"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "peter-pan-goes-wrong-west-end-2015",
+          "title": "Peter Pan Goes Wrong",
+          "slug": "peter-pan-goes-wrong-west-end-2015",
+          "venue": "Apollo Theatre",
+          "previewsStartDate": "2015-12-04",
+          "openingDate": "2015-12-04",
+          "closingDate": "2016-01-31",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2015-2016",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:49.415Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/egs/peter-pan-goes-wrong/production/xf4"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "guys-and-dolls-west-end-2016",
+          "title": "Guys and Dolls",
+          "slug": "guys-and-dolls-west-end-2016",
+          "venue": "Savoy Theatre",
+          "previewsStartDate": "2016-01-06",
+          "openingDate": "2016-01-06",
+          "closingDate": "2016-03-12",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "musical",
+          "tags": [
+            "historical"
+          ],
+          "season": "2015-2016",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:49.439Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/81x/guys-and-dolls/production/107p"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "red-velvet-west-end-2016",
+          "title": "Red Velvet",
+          "slug": "red-velvet-west-end-2016",
+          "venue": "Garrick Theatre",
+          "previewsStartDate": "2016-01-23",
+          "openingDate": "2016-01-23",
+          "closingDate": "2016-02-27",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2015-2016",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:49.480Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/gwr/red-velvet/production/w9r"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-master-builder-west-end-2016",
+          "title": "The Master Builder",
+          "slug": "the-master-builder-west-end-2016",
+          "venue": "The Old Vic",
+          "previewsStartDate": "2016-01-23",
+          "openingDate": "2016-01-23",
+          "closingDate": "2016-03-19",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2015-2016",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:49.515Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/rj/the-master-builder/production/1e6a"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-war-of-the-worlds-west-end-2016",
+          "title": "The War of the Worlds",
+          "slug": "the-war-of-the-worlds-west-end-2016",
+          "venue": "Dominion Theatre",
+          "previewsStartDate": "2016-02-08",
+          "openingDate": "2016-02-08",
+          "closingDate": "2016-04-30",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "musical",
+          "tags": [
+            "historical"
+          ],
+          "season": "2015-2016",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:49.540Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/e6s/the-war-of-the-worlds/production/wpc"
+          ]
+        }
+      }
+    ]
+  },
+  "executedAt": "2026-10-28T01:19:27.890Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added cleansed-west-end-2016"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added farinelli-and-the-king-west-end-2015"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added hobsons-choice-west-end-2016"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added husbands-and-sons-west-end-2015"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added linda-west-end-2015"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added notmoses-west-end-2016"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added roosevelvis-west-end-2015"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-deep-blue-sea-west-end-2016"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-flick-west-end-2016"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added wonder-land-west-end-2015"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added jane-eyre-west-end-2015"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added ushers-west-end-2015"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added kinky-boots-west-end-2015"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added close-to-you-bacharach-reimagined-west-end-2015"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-father-west-end-2015"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-winters-tale-west-end-2015"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added harlequinade-west-end-2015"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added mr-footes-other-leg-west-end-2015"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added lovesong-of-the-electric-bear-west-end-2015"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added a-christmas-carol-west-end-2015"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added peter-pan-goes-wrong-west-end-2015"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added guys-and-dolls-west-end-2016"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added red-velvet-west-end-2016"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-master-builder-west-end-2016"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-war-of-the-worlds-west-end-2016"
+    }
+  ],
+  "executedIn": "ci"
+}

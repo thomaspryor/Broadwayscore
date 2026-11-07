@@ -1,0 +1,397 @@
+{
+  "issueNumber": "bro-6282",
+  "planId": "de53aeac-18f9-4a2e-ba9d-3162206a16ba",
+  "status": "applied",
+  "createdAt": "2026-10-26T02:44:48.573Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Add 16 capitalizations from an industry source (reply 2026-10-26); Dana H./Is This a Room split their shared $3.5M (part 1 of 2)",
+    "steps": [
+      "commercial.json: fat-ham-2023.capitalization",
+      "commercial.json: fat-ham-2023.capitalizationSource",
+      "commercial.json: fat-ham-2023.capitalizationBasis",
+      "commercial.json: a-christmas-carol-2022.capitalization",
+      "commercial.json: a-christmas-carol-2022.capitalizationSource",
+      "commercial.json: a-christmas-carol-2022.capitalizationBasis",
+      "commercial.json: girl-from-the-north-country-2022.capitalization",
+      "commercial.json: girl-from-the-north-country-2022.capitalizationSource",
+      "commercial.json: girl-from-the-north-country-2022.capitalizationBasis",
+      "commercial.json: slave-play-2021.capitalization",
+      "commercial.json: slave-play-2021.capitalizationSource",
+      "commercial.json: slave-play-2021.capitalizationBasis",
+      "commercial.json: pass-over-2021.capitalization",
+      "commercial.json: pass-over-2021.capitalizationSource",
+      "commercial.json: pass-over-2021.capitalizationBasis",
+      "commercial.json: the-lightning-thief-2019.capitalization",
+      "commercial.json: the-lightning-thief-2019.capitalizationSource",
+      "commercial.json: the-lightning-thief-2019.capitalizationBasis",
+      "commercial.json: frankie-and-johnny-in-the-clair-de-lune-2019.capitalization",
+      "commercial.json: frankie-and-johnny-in-the-clair-de-lune-2019.capitalizationSource",
+      "commercial.json: frankie-and-johnny-in-the-clair-de-lune-2019.capitalizationBasis",
+      "commercial.json: gary-a-sequel-to-titus-andronicus-2019.capitalization",
+      "commercial.json: gary-a-sequel-to-titus-andronicus-2019.capitalizationSource",
+      "commercial.json: gary-a-sequel-to-titus-andronicus-2019.capitalizationBasis",
+      "commercial.json: oklahoma-2019.capitalization"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "fat-ham-2023",
+        "field": "capitalization",
+        "oldValue": null,
+        "newValue": 3750000,
+        "description": "commercial.json: fat-ham-2023.capitalization"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "fat-ham-2023",
+        "field": "capitalizationSource",
+        "oldValue": null,
+        "newValue": "Production budget from an industry source (Oct 2026): \"$3.75 million\"",
+        "description": "commercial.json: fat-ham-2023.capitalizationSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "fat-ham-2023",
+        "field": "capitalizationBasis",
+        "oldValue": null,
+        "newValue": "reported",
+        "description": "commercial.json: fat-ham-2023.capitalizationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "a-christmas-carol-2022",
+        "field": "capitalization",
+        "oldValue": null,
+        "newValue": 8000000,
+        "description": "commercial.json: a-christmas-carol-2022.capitalization"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "a-christmas-carol-2022",
+        "field": "capitalizationSource",
+        "oldValue": null,
+        "newValue": "Production budget from an industry source (Oct 2026): \"$8 million\"",
+        "description": "commercial.json: a-christmas-carol-2022.capitalizationSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "a-christmas-carol-2022",
+        "field": "capitalizationBasis",
+        "oldValue": null,
+        "newValue": "reported",
+        "description": "commercial.json: a-christmas-carol-2022.capitalizationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "girl-from-the-north-country-2022",
+        "field": "capitalization",
+        "oldValue": null,
+        "newValue": 9000000,
+        "description": "commercial.json: girl-from-the-north-country-2022.capitalization"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "girl-from-the-north-country-2022",
+        "field": "capitalizationSource",
+        "oldValue": null,
+        "newValue": "Production budget from an industry source (Oct 2026): \"$9 million\"",
+        "description": "commercial.json: girl-from-the-north-country-2022.capitalizationSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "girl-from-the-north-country-2022",
+        "field": "capitalizationBasis",
+        "oldValue": null,
+        "newValue": "reported",
+        "description": "commercial.json: girl-from-the-north-country-2022.capitalizationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "slave-play-2021",
+        "field": "capitalization",
+        "oldValue": null,
+        "newValue": 3900000,
+        "description": "commercial.json: slave-play-2021.capitalization"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "slave-play-2021",
+        "field": "capitalizationSource",
+        "oldValue": null,
+        "newValue": "Production budget from an industry source (Oct 2026): \"$3.9 million\"",
+        "description": "commercial.json: slave-play-2021.capitalizationSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "slave-play-2021",
+        "field": "capitalizationBasis",
+        "oldValue": null,
+        "newValue": "reported",
+        "description": "commercial.json: slave-play-2021.capitalizationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "pass-over-2021",
+        "field": "capitalization",
+        "oldValue": null,
+        "newValue": 2800000,
+        "description": "commercial.json: pass-over-2021.capitalization"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "pass-over-2021",
+        "field": "capitalizationSource",
+        "oldValue": null,
+        "newValue": "Production budget from an industry source (Oct 2026): \"$2.8 million\"",
+        "description": "commercial.json: pass-over-2021.capitalizationSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "pass-over-2021",
+        "field": "capitalizationBasis",
+        "oldValue": null,
+        "newValue": "reported",
+        "description": "commercial.json: pass-over-2021.capitalizationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-lightning-thief-2019",
+        "field": "capitalization",
+        "oldValue": null,
+        "newValue": 1700000,
+        "description": "commercial.json: the-lightning-thief-2019.capitalization"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-lightning-thief-2019",
+        "field": "capitalizationSource",
+        "oldValue": null,
+        "newValue": "Production budget from an industry source (Oct 2026): \"$1.7 million\"",
+        "description": "commercial.json: the-lightning-thief-2019.capitalizationSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-lightning-thief-2019",
+        "field": "capitalizationBasis",
+        "oldValue": null,
+        "newValue": "reported",
+        "description": "commercial.json: the-lightning-thief-2019.capitalizationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "frankie-and-johnny-in-the-clair-de-lune-2019",
+        "field": "capitalization",
+        "oldValue": null,
+        "newValue": 4005000,
+        "description": "commercial.json: frankie-and-johnny-in-the-clair-de-lune-2019.capitalization"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "frankie-and-johnny-in-the-clair-de-lune-2019",
+        "field": "capitalizationSource",
+        "oldValue": null,
+        "newValue": "Production budget from an industry source (Oct 2026): \"$4,005,000\"",
+        "description": "commercial.json: frankie-and-johnny-in-the-clair-de-lune-2019.capitalizationSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "frankie-and-johnny-in-the-clair-de-lune-2019",
+        "field": "capitalizationBasis",
+        "oldValue": null,
+        "newValue": "reported",
+        "description": "commercial.json: frankie-and-johnny-in-the-clair-de-lune-2019.capitalizationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "gary-a-sequel-to-titus-andronicus-2019",
+        "field": "capitalization",
+        "oldValue": null,
+        "newValue": 4900000,
+        "description": "commercial.json: gary-a-sequel-to-titus-andronicus-2019.capitalization"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "gary-a-sequel-to-titus-andronicus-2019",
+        "field": "capitalizationSource",
+        "oldValue": null,
+        "newValue": "Production budget from an industry source (Oct 2026): \"$4.9 million\"",
+        "description": "commercial.json: gary-a-sequel-to-titus-andronicus-2019.capitalizationSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "gary-a-sequel-to-titus-andronicus-2019",
+        "field": "capitalizationBasis",
+        "oldValue": null,
+        "newValue": "reported",
+        "description": "commercial.json: gary-a-sequel-to-titus-andronicus-2019.capitalizationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "oklahoma-2019",
+        "field": "capitalization",
+        "oldValue": null,
+        "newValue": 8500000,
+        "description": "commercial.json: oklahoma-2019.capitalization"
+      }
+    ]
+  },
+  "executedAt": "2026-10-26T05:27:41.293Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for fat-ham-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for fat-ham-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationBasis updated for fat-ham-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for a-christmas-carol-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for a-christmas-carol-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationBasis updated for a-christmas-carol-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for girl-from-the-north-country-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for girl-from-the-north-country-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationBasis updated for girl-from-the-north-country-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for slave-play-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for slave-play-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationBasis updated for slave-play-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for pass-over-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for pass-over-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationBasis updated for pass-over-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for the-lightning-thief-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for the-lightning-thief-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationBasis updated for the-lightning-thief-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for frankie-and-johnny-in-the-clair-de-lune-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for frankie-and-johnny-in-the-clair-de-lune-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationBasis updated for frankie-and-johnny-in-the-clair-de-lune-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for gary-a-sequel-to-titus-andronicus-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for gary-a-sequel-to-titus-andronicus-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationBasis updated for gary-a-sequel-to-titus-andronicus-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for oklahoma-2019"
+    }
+  ],
+  "executedIn": "ci"
+}

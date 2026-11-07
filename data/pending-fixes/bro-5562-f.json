@@ -1,0 +1,363 @@
+{
+  "issueNumber": "bro-5562-f",
+  "planId": "586ed31b-b802-4161-8101-acc28e8cc9d3",
+  "status": "applied",
+  "createdAt": "2026-10-18T01:07:34.802Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5562 (part f): newspaper figures an earlier ChatGPT answer cited behind paywalls, now fetched through run-script.yml + fetch-page-probe.js and quoted: mrs-doubtfire-2021, on-the-town-2014, natasha-pierre-and-the-great-comet-of-1812-2016, godspell-2011.",
+    "steps": [
+      "Edits read each oldValue from live commercial.json."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "mrs-doubtfire-2021",
+        "field": "capitalizationSource",
+        "oldValue": null,
+        "newValue": "The New York Times (Jan 2, 2022): \"The production, in development for years and capitalized for $17 million, had gotten through just three preview performances in March 2020 when Broadway shut down\" https://www.nytimes.com/2022/01/02/theater/mrs-doubtfire-broadway.html",
+        "description": "mrs-doubtfire-2021: quote and link the report."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "mrs-doubtfire-2021",
+        "field": "isEstimate",
+        "oldValue": {
+          "capitalization": true,
+          "weeklyRunningCost": true
+        },
+        "newValue": {
+          "weeklyRunningCost": true
+        },
+        "description": "mrs-doubtfire-2021: a reported figure, no longer an estimate."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "mrs-doubtfire-2021",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://www.broadwaynews.com/mrs-doubtfire-musical-to-open-on-broadway-this-season/",
+            "date": "2019-10-16"
+          },
+          {
+            "type": "trade",
+            "url": "https://artdaily.com/news/142620/-Mrs--Doubtfire--on-Broadway-is-pausing-to-avoid-closing",
+            "date": "2022-01-04"
+          },
+          {
+            "type": "trade",
+            "url": "https://nysfocus.com/2026/03/19/new-york-broadway-tax-credit-flops",
+            "date": "2026-03-19"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwayjournal.com/p/broadway-cinderella-story-a-strange-loop-follows-its-pulitzer-with-best-musical",
+            "date": "2022-06-13"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.broadwaynews.com/mrs-doubtfire-musical-to-open-on-broadway-this-season/",
+            "date": "2019-10-16"
+          },
+          {
+            "type": "trade",
+            "url": "https://artdaily.com/news/142620/-Mrs--Doubtfire--on-Broadway-is-pausing-to-avoid-closing",
+            "date": "2022-01-04"
+          },
+          {
+            "type": "trade",
+            "url": "https://nysfocus.com/2026/03/19/new-york-broadway-tax-credit-flops",
+            "date": "2026-03-19"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwayjournal.com/p/broadway-cinderella-story-a-strange-loop-follows-its-pulitzer-with-best-musical",
+            "date": "2022-06-13"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.nytimes.com/2022/01/02/theater/mrs-doubtfire-broadway.html",
+            "date": "2022-01-02"
+          }
+        ],
+        "description": "mrs-doubtfire-2021: add the cited article to sources."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "on-the-town-2014",
+        "field": "capitalization",
+        "oldValue": null,
+        "newValue": 8500000,
+        "description": "on-the-town-2014: The New York Times reports it."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "on-the-town-2014",
+        "field": "capitalizationSource",
+        "oldValue": null,
+        "newValue": "The New York Times (Jan 21, 2015): lead producers Howard and Janet Kagan \"invested more than $2 million out of pocket\" in \"the musical’s $8.5 million budget.\" https://www.nytimes.com/2015/01/21/theater/on-the-town-producers-keep-faith-in-their-investment.html",
+        "description": "on-the-town-2014: quote and link the report."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "on-the-town-2014",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://variety.com/2014/legit/news/broadway-crowdfunding-investment-on-the-town-1201282160/",
+            "date": "2014-08-13",
+            "excerpt": "projected $8.5 million capitalization for \"On the Town\""
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://variety.com/2014/legit/news/broadway-crowdfunding-investment-on-the-town-1201282160/",
+            "date": "2014-08-13",
+            "excerpt": "projected $8.5 million capitalization for \"On the Town\""
+          },
+          {
+            "type": "trade",
+            "url": "https://www.nytimes.com/2015/01/21/theater/on-the-town-producers-keep-faith-in-their-investment.html",
+            "date": "2015-01-21"
+          }
+        ],
+        "description": "on-the-town-2014: add the cited article to sources."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "natasha-pierre-and-the-great-comet-of-1812-2016",
+        "field": "weeklyRunningCost",
+        "oldValue": null,
+        "newValue": 700000,
+        "description": "natasha-pierre-and-the-great-comet-of-1812-2016: The New York Times reports it."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "natasha-pierre-and-the-great-comet-of-1812-2016",
+        "field": "weeklyRunningCostSource",
+        "oldValue": null,
+        "newValue": "The New York Times (Aug 29, 2017), on the show's weekly running costs: \"He said they now average a little over $700,000 a week\" https://www.nytimes.com/2017/08/29/theater/great-comet-broadway-race.html",
+        "description": "natasha-pierre-and-the-great-comet-of-1812-2016: quote and link the report."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "natasha-pierre-and-the-great-comet-of-1812-2016",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://nypost.com/2016/06/23/can-josh-groban-make-this-costly-broadway-musical-a-hit/",
+            "date": "2016-06-23"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.statesman.com/story/entertainment/arts/2024/02/14/zach-theatre-natasha-pierre-the-great-comet-leo-tolstoy-austin-broadway-show/72537641007/",
+            "date": "2024-02-14"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwayjournal.com/p/will-a-new-sweeney-todd-make-its-investors-a-killing-exclusive",
+            "date": null
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://nypost.com/2016/06/23/can-josh-groban-make-this-costly-broadway-musical-a-hit/",
+            "date": "2016-06-23"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.statesman.com/story/entertainment/arts/2024/02/14/zach-theatre-natasha-pierre-the-great-comet-leo-tolstoy-austin-broadway-show/72537641007/",
+            "date": "2024-02-14"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwayjournal.com/p/will-a-new-sweeney-todd-make-its-investors-a-killing-exclusive",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://www.nytimes.com/2017/08/29/theater/great-comet-broadway-race.html",
+            "date": "2017-08-29"
+          }
+        ],
+        "description": "natasha-pierre-and-the-great-comet-of-1812-2016: add the cited article to sources."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "godspell-2011",
+        "field": "weeklyRunningCost",
+        "oldValue": null,
+        "newValue": 275000,
+        "description": "godspell-2011: The New York Times reports it."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "godspell-2011",
+        "field": "weeklyRunningCostSource",
+        "oldValue": null,
+        "newValue": "Estimate: the midpoint of the range The New York Times reported (Mar 21, 2012): lead producer Ken Davenport \"said he had been able to keep weekly running costs to between $250,000 and $300,000 most of the time.\" https://www.nytimes.com/2012/03/21/theater/godspell-sister-act-and-priscilla-push-through-the-winter.html",
+        "description": "godspell-2011: quote and link the report."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "godspell-2011",
+        "field": "isEstimate",
+        "oldValue": null,
+        "newValue": {
+          "weeklyRunningCost": true
+        },
+        "description": "godspell-2011: a reported figure, no longer an estimate."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "godspell-2011",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://www.nytimes.com/2014/07/28/theater/smell-of-the-greasepaint-the-funds-of-the-crowd.html",
+            "date": "2014-07-28"
+          },
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/vprr/1001/10013766.pdf",
+            "date": null
+          },
+          {
+            "type": "manual",
+            "url": "https://kendavenport.com/what-is-the-recoupment-rate-of-revivals-in-the-last-ten-years-part-iii/",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://variety.com/2014/legit/news/broadway-crowdfunding-investment-on-the-town-1201282160/",
+            "date": "2014-08-13",
+            "excerpt": "That show didn't recoup, so none of its investors turned a profit either."
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.nytimes.com/2014/07/28/theater/smell-of-the-greasepaint-the-funds-of-the-crowd.html",
+            "date": "2014-07-28"
+          },
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/vprr/1001/10013766.pdf",
+            "date": null
+          },
+          {
+            "type": "manual",
+            "url": "https://kendavenport.com/what-is-the-recoupment-rate-of-revivals-in-the-last-ten-years-part-iii/",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://variety.com/2014/legit/news/broadway-crowdfunding-investment-on-the-town-1201282160/",
+            "date": "2014-08-13",
+            "excerpt": "That show didn't recoup, so none of its investors turned a profit either."
+          },
+          {
+            "type": "trade",
+            "url": "https://www.nytimes.com/2012/03/21/theater/godspell-sister-act-and-priscilla-push-through-the-winter.html",
+            "date": "2012-03-21"
+          }
+        ],
+        "description": "godspell-2011: add the cited article to sources."
+      }
+    ]
+  },
+  "executedAt": "2026-10-18T01:51:06.057Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for mrs-doubtfire-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: isEstimate updated for mrs-doubtfire-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for mrs-doubtfire-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for on-the-town-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for on-the-town-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for on-the-town-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCost updated for natasha-pierre-and-the-great-comet-of-1812-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCostSource updated for natasha-pierre-and-the-great-comet-of-1812-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for natasha-pierre-and-the-great-comet-of-1812-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCost updated for godspell-2011"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCostSource updated for godspell-2011"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: isEstimate updated for godspell-2011"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for godspell-2011"
+    }
+  ]
+}

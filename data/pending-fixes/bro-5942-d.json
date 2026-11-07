@@ -1,0 +1,127 @@
+{
+  "issueNumber": "bro-5942-d",
+  "planId": "d183984f-662b-4c67-9cb3-5fc43b2094dc",
+  "status": "applied",
+  "createdAt": "2026-10-22T21:58:07.066Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5942 repairs: clear a wrong-show rejection on Junk, correct three Observer/Guardian star ratings that were read from other shows in the same column, and re-split the Flipside King Charles III / Thérèse Raquin article with the credits-block fix.",
+    "steps": [
+      "Read in full: this is Isa Goldberg's own Junk review with its own rating; the wrong-show rejection came from the pre-split multi-show text (BRO-5942).",
+      "The 4/5 was LLM-extracted from the whole Observer column and belongs to Till the Stars Come Down; the Plaza Suite section carries no star rating of its own (BRO-5942).",
+      "The Observer column printed 3/5 for The Crucible; the LLM-extracted 4/5 was another show's in the same column (BRO-5942).",
+      "Clapp's column printed 3/5 for Exit the King; the LLM-extracted 4/5 was another show's in the same column (BRO-5942).",
+      "Mis-cut child: its section opened with King Charles III's credits block. Re-created by the re-split below with the credits-block fix (BRO-5942).",
+      "Trimmed parent removed so the pre-split article can be restored and re-split with the credits-block fix (BRO-5942).",
+      "Restore the Flipside King Charles III / Thérèse Raquin article as it was before the first split (BRO-5942).",
+      "Re-split the Flipside article with the credits-block cut fix (BRO-5942)."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "junk-2017/theater-life--isa-goldberg.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Read in full: this is Isa Goldberg's own Junk review with its own rating; the wrong-show rejection came from the pre-split multi-show text (BRO-5942)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "plaza-suite-west-end-2024/observer--susannah-clapp.json",
+        "field": "originalScore",
+        "oldValue": "4/5 stars",
+        "newValue": null,
+        "description": "The 4/5 was LLM-extracted from the whole Observer column and belongs to Till the Stars Come Down; the Plaza Suite section carries no star rating of its own (BRO-5942)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-crucible-west-end-2022/observer--susannah-clapp.json",
+        "field": "originalScore",
+        "oldValue": "4/5 stars",
+        "newValue": "3/5 stars",
+        "description": "The Observer column printed 3/5 for The Crucible; the LLM-extracted 4/5 was another show's in the same column (BRO-5942)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "exit-the-king-west-end-2018/guardian--susannah-clapp.json",
+        "field": "originalScore",
+        "oldValue": "4/5 stars",
+        "newValue": "3/5 stars",
+        "description": "Clapp's column printed 3/5 for Exit the King; the LLM-extracted 4/5 was another show's in the same column (BRO-5942)."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "therese-raquin-2015/flipsidereviews--kevin-filipski.json",
+        "description": "Mis-cut child: its section opened with King Charles III's credits block. Re-created by the re-split below with the credits-block fix (BRO-5942)."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "king-charles-iii-2015/flipsidereviews--kevin-filipski.json",
+        "description": "Trimmed parent removed so the pre-split article can be restored and re-split with the credits-block fix (BRO-5942)."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "restore",
+        "sourcePath": "king-charles-iii-2015/flipsidereviews--kevin-filipski.json",
+        "description": "Restore the Flipside King Charles III / Thérèse Raquin article as it was before the first split (BRO-5942).",
+        "fromCommit": "f41047c04aa23bae7469c2d6f63d4fb7f58ea566^"
+      },
+      {
+        "type": "run-script",
+        "description": "Re-split the Flipside article with the credits-block cut fix (BRO-5942).",
+        "script": "split-multi-show-roundups.js",
+        "args": "--apply --scan-all --joint --show=king-charles-iii-2015 --file=flipsidereviews--kevin-filipski.json"
+      }
+    ]
+  },
+  "executedAt": "2026-10-23T02:36:30.423Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "junk-2017/theater-life--isa-goldberg.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "plaza-suite-west-end-2024/observer--susannah-clapp.json originalScore: \"4/5 stars\" -> null (retracted originalScoreCleared, originalScoreClearedReason, originalScoreCorrectedFrom, originalScoreNormalized, originalScoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-crucible-west-end-2022/observer--susannah-clapp.json originalScore: \"4/5 stars\" -> \"3/5 stars\" (retracted originalScoreCorrectedFrom, originalScoreNormalized, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "exit-the-king-west-end-2018/guardian--susannah-clapp.json originalScore: \"4/5 stars\" -> \"3/5 stars\" (retracted originalScoreCorrectedFrom, originalScoreNormalized, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted therese-raquin-2015/flipsidereviews--kevin-filipski.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted king-charles-iii-2015/flipsidereviews--kevin-filipski.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Restored king-charles-iii-2015/flipsidereviews--kevin-filipski.json@f41047c04aa23bae7469c2d6f63d4fb7f58ea566^ -> king-charles-iii-2015/flipsidereviews--kevin-filipski.json"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran split-multi-show-roundups.js successfully"
+    }
+  ],
+  "executedIn": "ci"
+}

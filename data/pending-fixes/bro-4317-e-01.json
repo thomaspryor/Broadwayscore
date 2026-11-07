@@ -1,0 +1,177 @@
+{
+  "issueNumber": "bro-4317-e-01",
+  "planId": "b8f4a143-2c17-41df-8399-6fd16cb4d163",
+  "status": "applied",
+  "createdAt": "2026-10-13T02:53:17.740Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4317 part 1/1: rehome review-text files from folders with no shows.json id (rebuild skips them) into the production whose run window holds the review's publishDate; drop exact duplicates of files the target already holds.",
+    "steps": [
+      "delete can-i-be-frank-off-broadway-2026/culturesauce--thom-geier.json",
+      "delete can-i-be-frank-off-broadway-2026/exeunt-magazine--nicole-serratore.json",
+      "delete can-i-be-frank-off-broadway-2026/lighting-and-sound-america--david-barbour.json",
+      "delete can-i-be-frank-off-broadway-2026/nysr--melissa-rose-bernardo.json",
+      "delete can-i-be-frank-off-broadway-2026/nytg--amelia-merrill.json",
+      "delete can-i-be-frank-off-broadway-2026/off-off-online--deirdre-donovan.json",
+      "delete can-i-be-frank-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+      "delete can-i-be-frank-off-broadway-2026/theater-scene--darryl-reilly.json",
+      "delete little-bear-ridge-road/theater-life--david-sheward.json",
+      "delete maybe-happy-ending/nysr--michael-sommers.json",
+      "delete punch/theater-life--samuel-l-leiter.json",
+      "delete the-outsiders/theater-life--david-sheward.json",
+      "delete two-strangers/theater-life--samuel-l-leiter.json"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "can-i-be-frank-off-broadway-2026/culturesauce--thom-geier.json",
+        "description": "same-url copy already in morgan-bassichis-can-i-be-frank-off-broadway-2026 with equal or fuller text (move refused: destination exists)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "can-i-be-frank-off-broadway-2026/exeunt-magazine--nicole-serratore.json",
+        "description": "same-url copy already in morgan-bassichis-can-i-be-frank-off-broadway-2026 with equal or fuller text (move refused: destination exists)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "can-i-be-frank-off-broadway-2026/lighting-and-sound-america--david-barbour.json",
+        "description": "same-url copy already in morgan-bassichis-can-i-be-frank-off-broadway-2026 with equal or fuller text (move refused: destination exists)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "can-i-be-frank-off-broadway-2026/nysr--melissa-rose-bernardo.json",
+        "description": "same-url copy already in morgan-bassichis-can-i-be-frank-off-broadway-2026 with equal or fuller text (move refused: destination exists)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "can-i-be-frank-off-broadway-2026/nytg--amelia-merrill.json",
+        "description": "same-url copy already in morgan-bassichis-can-i-be-frank-off-broadway-2026 with equal or fuller text (move refused: destination exists)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "can-i-be-frank-off-broadway-2026/off-off-online--deirdre-donovan.json",
+        "description": "same-url copy already in morgan-bassichis-can-i-be-frank-off-broadway-2026 with equal or fuller text (move refused: destination exists)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "can-i-be-frank-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+        "description": "same-url copy already in morgan-bassichis-can-i-be-frank-off-broadway-2026 with equal or fuller text (move refused: destination exists)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "can-i-be-frank-off-broadway-2026/theater-scene--darryl-reilly.json",
+        "description": "same-url copy already in morgan-bassichis-can-i-be-frank-off-broadway-2026 with equal or fuller text (move refused: destination exists)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "little-bear-ridge-road/theater-life--david-sheward.json",
+        "description": "same review (same text length) already scored in the Broadway production folder; this copy is flagged wrongShow (move refused: destination exists)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "maybe-happy-ending/nysr--michael-sommers.json",
+        "description": "same review (same text length) already scored in the Broadway production folder; this copy is flagged wrongShow (move refused: destination exists)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "punch/theater-life--samuel-l-leiter.json",
+        "description": "same review (same text length) already scored in the Broadway production folder; this copy is flagged wrongShow (move refused: destination exists)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-outsiders/theater-life--david-sheward.json",
+        "description": "same review (same text length) already scored in the Broadway production folder; this copy is flagged wrongShow (move refused: destination exists)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "two-strangers/theater-life--samuel-l-leiter.json",
+        "description": "same review (same text length) already scored in the Broadway production folder; this copy is flagged wrongShow (move refused: destination exists)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-13T03:43:03.289Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted can-i-be-frank-off-broadway-2026/culturesauce--thom-geier.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted can-i-be-frank-off-broadway-2026/exeunt-magazine--nicole-serratore.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted can-i-be-frank-off-broadway-2026/lighting-and-sound-america--david-barbour.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted can-i-be-frank-off-broadway-2026/nysr--melissa-rose-bernardo.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted can-i-be-frank-off-broadway-2026/nytg--amelia-merrill.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted can-i-be-frank-off-broadway-2026/off-off-online--deirdre-donovan.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted can-i-be-frank-off-broadway-2026/pages-on-stages--mason-pilevsky.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted can-i-be-frank-off-broadway-2026/theater-scene--darryl-reilly.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted little-bear-ridge-road/theater-life--david-sheward.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted maybe-happy-ending/nysr--michael-sommers.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted punch/theater-life--samuel-l-leiter.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-outsiders/theater-life--david-sheward.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted two-strangers/theater-life--samuel-l-leiter.json"
+    }
+  ]
+}

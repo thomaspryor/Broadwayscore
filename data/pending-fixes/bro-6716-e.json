@@ -1,0 +1,134 @@
+{
+  "issueNumber": "bro-6716-e",
+  "planId": "dfb4ae79-80df-45d1-987a-5a56c31a8b12",
+  "status": "applied",
+  "createdAt": "2026-11-01T12:25:54.025Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6716: clear the High Noon and Harold Fry Standard wrongShow/isNonReview flags. Apply ONLY after bro-6716-c swapped both bodies to the Nick Curtis reviews (check fullText names the show).",
+    "steps": [
+      "Read the article: After the refetch the body is Nick Curtis's High Noon review (\"Billy Crudup brings charisma to bonkers real-time Western\"); the CV flag described the old travel article.",
+      "Clear after the manual-clear marker above (BRO-6716).",
+      "Read the article: Same: the non-review verdict described the old travel article.",
+      "Clear after the manual-clear marker above (BRO-6716).",
+      "Read the article: After the refetch the body is Nick Curtis's Theatre Royal Haymarket review; the CV flag described hotel adverts.",
+      "Clear after the manual-clear marker above (BRO-6716).",
+      "Read the article: Same: the non-review verdict described the hotel adverts.",
+      "Clear after the manual-clear marker above (BRO-6716)."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "high-noon-west-end-2025/standard--nick-curtis.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Read the article: After the refetch the body is Nick Curtis's High Noon review (\"Billy Crudup brings charisma to bonkers real-time Western\"); the CV flag described the old travel article."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "high-noon-west-end-2025/standard--nick-curtis.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Clear after the manual-clear marker above (BRO-6716)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "high-noon-west-end-2025/standard--nick-curtis.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Read the article: Same: the non-review verdict described the old travel article."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "high-noon-west-end-2025/standard--nick-curtis.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Clear after the manual-clear marker above (BRO-6716)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-unlikely-pilgrimage-of-harold-fry-west-end-2026/standard--nick-curtis.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Read the article: After the refetch the body is Nick Curtis's Theatre Royal Haymarket review; the CV flag described hotel adverts."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-unlikely-pilgrimage-of-harold-fry-west-end-2026/standard--nick-curtis.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Clear after the manual-clear marker above (BRO-6716)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-unlikely-pilgrimage-of-harold-fry-west-end-2026/standard--nick-curtis.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Read the article: Same: the non-review verdict described the hotel adverts."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-unlikely-pilgrimage-of-harold-fry-west-end-2026/standard--nick-curtis.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Clear after the manual-clear marker above (BRO-6716)."
+      }
+    ]
+  },
+  "executedAt": "2026-11-01T13:25:56.340Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "high-noon-west-end-2025/standard--nick-curtis.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "high-noon-west-end-2025/standard--nick-curtis.json wrongShow: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "high-noon-west-end-2025/standard--nick-curtis.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "high-noon-west-end-2025/standard--nick-curtis.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-unlikely-pilgrimage-of-harold-fry-west-end-2026/standard--nick-curtis.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-unlikely-pilgrimage-of-harold-fry-west-end-2026/standard--nick-curtis.json wrongShow: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-unlikely-pilgrimage-of-harold-fry-west-end-2026/standard--nick-curtis.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-unlikely-pilgrimage-of-harold-fry-west-end-2026/standard--nick-curtis.json isNonReview: true -> false"
+    }
+  ],
+  "executedIn": "ci"
+}

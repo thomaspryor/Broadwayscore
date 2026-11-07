@@ -1,0 +1,348 @@
+{
+  "issueNumber": "bro-4451",
+  "planId": "c712cd3e-d609-45bd-a66b-4043bdd5aa49",
+  "status": "applied",
+  "createdAt": "2026-10-20T07:03:16.592Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4451: Reviews Hub reviews filed under the house byline or Unknown; real critic read from each live page Reviewer line (dry run of scripts/fix-thereviewshub-bylines.js, CI run 39383252809, unanimous single Reviewer line per page). Skips files whose target filename already exists. (part 1 of 2)",
+    "steps": [
+      "Set criticName on each file to the page Reviewer name."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "a-month-in-the-country-west-end-2026/thereviewshub--the-reviews-hub-london.json",
+        "field": "criticName",
+        "oldValue": "The Reviews Hub - London",
+        "newValue": "Jane Darcy",
+        "description": "Page sub-title: Reviewer: Jane Darcy"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "alvin-ailey-american-dance-theater-new-works-west-end-2026/thereviewshub--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "A. Tran Ngoc",
+        "description": "Page sub-title: Reviewer: A. Tran Ngoc"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "an-oak-tree-off-west-end-2026/thereviewshub--the-reviews-hub-london.json",
+        "field": "criticName",
+        "oldValue": "The Reviews Hub - London",
+        "newValue": "John Cutler",
+        "description": "Page sub-title: Reviewer: John Cutler"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "austentatious-an-improvised-jane-austen-novel-west-end-2025/thereviewshub--the-reviews-hub-scotland.json",
+        "field": "criticName",
+        "oldValue": "The Reviews Hub - Scotland",
+        "newValue": "Sue Proudlove",
+        "description": "Page sub-title: Reviewer: Sue Proudlove"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "ballad-lines-off-west-end-2026/thereviewshub--the-reviews-hub-london.json",
+        "field": "criticName",
+        "oldValue": "The Reviews Hub - London",
+        "newValue": "Scott Matthewman",
+        "description": "Page sub-title: Reviewer: Scott Matthewman"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "darkling-off-west-end-2026/thereviewshub--the-reviews-hub-london.json",
+        "field": "criticName",
+        "oldValue": "The Reviews Hub - London",
+        "newValue": "Jane Darcy",
+        "description": "Page sub-title: Reviewer: Jane Darcy"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "deep-heat-rivalry-off-west-end-2026/thereviewshub--the-reviews-hub-london.json",
+        "field": "criticName",
+        "oldValue": "The Reviews Hub - London",
+        "newValue": "Harry Mayes",
+        "description": "Page sub-title: Reviewer: Harry Mayes"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "electra-persona-west-end-2026/thereviewshub--the-reviews-hub-london.json",
+        "field": "criticName",
+        "oldValue": "The Reviews Hub - London",
+        "newValue": "Scott Matthewman",
+        "description": "Page sub-title: Reviewer: Scott Matthewman"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "equus-west-end-2026/thereviewshub--the-reviews-hub-london.json",
+        "field": "criticName",
+        "oldValue": "The Reviews Hub - London",
+        "newValue": "Nick Wayne",
+        "description": "Page sub-title: Reviewer: Nick Wayne"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/thereviewshub--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "John Cutler",
+        "description": "Page sub-title: Reviewer: John Cutler"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "heathers-the-musical-off-broadway-2025/thereviewshub--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "James Garrington",
+        "description": "Page sub-title: Reviewer: James Garrington"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "im-every-woman-off-west-end-2026/thereviewshub--the-reviews-hub-london.json",
+        "field": "criticName",
+        "oldValue": "The Reviews Hub - London",
+        "newValue": "Sonny Waheed",
+        "description": "Page sub-title: Reviewer: Sonny Waheed"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "jane-eyre-off-west-end-2026/thereviewshub--the-reviews-hub-london.json",
+        "field": "criticName",
+        "oldValue": "The Reviews Hub - London",
+        "newValue": "A. Tran Ngoc",
+        "description": "Page sub-title: Reviewer: A. Tran Ngoc"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "kimberly-akimbo-off-west-end-2026/thereviewshub--the-reviews-hub-london.json",
+        "field": "criticName",
+        "oldValue": "The Reviews Hub - London",
+        "newValue": "Maryam Philpott",
+        "description": "Page sub-title: Reviewer: Maryam Philpott"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "king-lear-royal-exchange-regional-2026/thereviewshub--the-reviews-hub.json",
+        "field": "criticName",
+        "oldValue": "The Reviews Hub",
+        "newValue": "Kerry Mullen",
+        "description": "Page sub-title: Reviewer: Kerry Mullen"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "little-shop-of-horrors-off-broadway-2019/thereviewshub--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Sebastian Farrell",
+        "description": "Page sub-title: Reviewer: Sebastian Farrell"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "mamma-mia-west-end-2021/thereviewshub--the-reviews-hub.json",
+        "field": "criticName",
+        "oldValue": "The Reviews Hub",
+        "newValue": "Claire Moore",
+        "description": "Page sub-title: Reviewer: Claire Moore"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "man-to-man-west-end-2026/thereviewshub--the-reviews-hub-london.json",
+        "field": "criticName",
+        "oldValue": "The Reviews Hub - London",
+        "newValue": "John Cutler",
+        "description": "Page sub-title: Reviewer: John Cutler"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "midnight-at-the-never-get-west-end-2026/thereviewshub--the-reviews-hub-london.json",
+        "field": "criticName",
+        "oldValue": "The Reviews Hub - London",
+        "newValue": "Maryam Philpott",
+        "description": "Page sub-title: Reviewer: Maryam Philpott"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "million-dollar-quartet-off-west-end-2026/thereviewshub--the-reviews-hub-london.json",
+        "field": "criticName",
+        "oldValue": "The Reviews Hub - London",
+        "newValue": "Maryam Philpott",
+        "description": "Page sub-title: Reviewer: Maryam Philpott"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "noda-map-320f-west-end-2026/thereviewshub--the-reviews-hub-london.json",
+        "field": "criticName",
+        "oldValue": "The Reviews Hub - London",
+        "newValue": "Daniel Spicer-Cusack",
+        "description": "Page sub-title: Reviewer: Daniel Spicer-Cusack"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "operation-mincemeat-2025/thereviewshub--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Maria Robertson",
+        "description": "Page sub-title: Reviewer: Maria Robertson"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "operation-mincemeat-west-end-2024/thereviewshub--the-reviews-hub.json",
+        "field": "criticName",
+        "oldValue": "The Reviews Hub",
+        "newValue": "Peter Marcus",
+        "description": "Page sub-title: Reviewer: Peter Marcus"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "paranormal-activity-2026/thereviewshub--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Lauren Humphreys",
+        "description": "Page sub-title: Reviewer: Lauren Humphreys"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "slaughterhouse-five-off-west-end-2026/thereviewshub--the-reviews-hub-london.json",
+        "field": "criticName",
+        "oldValue": "The Reviews Hub - London",
+        "newValue": "Alex Jacob",
+        "description": "Page sub-title: Reviewer: Alex Jacob"
+      }
+    ]
+  },
+  "executedAt": "2026-10-20T07:11:13.183Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-month-in-the-country-west-end-2026/thereviewshub--the-reviews-hub-london.json criticName: \"The Reviews Hub - London\" -> \"Jane Darcy\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "alvin-ailey-american-dance-theater-new-works-west-end-2026/thereviewshub--unknown.json criticName: \"Unknown\" -> \"A. Tran Ngoc\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "an-oak-tree-off-west-end-2026/thereviewshub--the-reviews-hub-london.json criticName: \"The Reviews Hub - London\" -> \"John Cutler\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "austentatious-an-improvised-jane-austen-novel-west-end-2025/thereviewshub--the-reviews-hub-scotland.json criticName: \"The Reviews Hub - Scotland\" -> \"Sue Proudlove\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "ballad-lines-off-west-end-2026/thereviewshub--the-reviews-hub-london.json criticName: \"The Reviews Hub - London\" -> \"Scott Matthewman\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "darkling-off-west-end-2026/thereviewshub--the-reviews-hub-london.json criticName: \"The Reviews Hub - London\" -> \"Jane Darcy\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "deep-heat-rivalry-off-west-end-2026/thereviewshub--the-reviews-hub-london.json criticName: \"The Reviews Hub - London\" -> \"Harry Mayes\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "electra-persona-west-end-2026/thereviewshub--the-reviews-hub-london.json criticName: \"The Reviews Hub - London\" -> \"Scott Matthewman\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "equus-west-end-2026/thereviewshub--the-reviews-hub-london.json criticName: \"The Reviews Hub - London\" -> \"Nick Wayne\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/thereviewshub--unknown.json criticName: \"Unknown\" -> \"John Cutler\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "heathers-the-musical-off-broadway-2025/thereviewshub--unknown.json criticName: \"Unknown\" -> \"James Garrington\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "im-every-woman-off-west-end-2026/thereviewshub--the-reviews-hub-london.json criticName: \"The Reviews Hub - London\" -> \"Sonny Waheed\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "jane-eyre-off-west-end-2026/thereviewshub--the-reviews-hub-london.json criticName: \"The Reviews Hub - London\" -> \"A. Tran Ngoc\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "kimberly-akimbo-off-west-end-2026/thereviewshub--the-reviews-hub-london.json criticName: \"The Reviews Hub - London\" -> \"Maryam Philpott\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "king-lear-royal-exchange-regional-2026/thereviewshub--the-reviews-hub.json criticName: \"The Reviews Hub\" -> \"Kerry Mullen\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "little-shop-of-horrors-off-broadway-2019/thereviewshub--unknown.json criticName: \"Unknown\" -> \"Sebastian Farrell\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "mamma-mia-west-end-2021/thereviewshub--the-reviews-hub.json criticName: \"The Reviews Hub\" -> \"Claire Moore\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "man-to-man-west-end-2026/thereviewshub--the-reviews-hub-london.json criticName: \"The Reviews Hub - London\" -> \"John Cutler\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "midnight-at-the-never-get-west-end-2026/thereviewshub--the-reviews-hub-london.json criticName: \"The Reviews Hub - London\" -> \"Maryam Philpott\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "million-dollar-quartet-off-west-end-2026/thereviewshub--the-reviews-hub-london.json criticName: \"The Reviews Hub - London\" -> \"Maryam Philpott\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "noda-map-320f-west-end-2026/thereviewshub--the-reviews-hub-london.json criticName: \"The Reviews Hub - London\" -> \"Daniel Spicer-Cusack\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "operation-mincemeat-2025/thereviewshub--unknown.json criticName: \"Unknown\" -> \"Maria Robertson\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "operation-mincemeat-west-end-2024/thereviewshub--the-reviews-hub.json criticName: \"The Reviews Hub\" -> \"Peter Marcus\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "paranormal-activity-2026/thereviewshub--unknown.json criticName: \"Unknown\" -> \"Lauren Humphreys\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "slaughterhouse-five-off-west-end-2026/thereviewshub--the-reviews-hub-london.json criticName: \"The Reviews Hub - London\" -> \"Alex Jacob\""
+    }
+  ],
+  "executedIn": "ci"
+}

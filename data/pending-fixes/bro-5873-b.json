@@ -1,0 +1,65 @@
+{
+  "issueNumber": "bro-5873-b",
+  "planId": "8bf6f309-6f72-4631-a239-ecdb8d2a2fc4",
+  "status": "applied",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5873 review fix: correct the Lightning Thief entry (drop a gross figure the cited Playbill page does not contain; source date is the Jan 5, 2020 publish date).",
+    "steps": [
+      "Playbill page lists 30 previews and 95 performances but no total gross, so the $5.06M figure comes out of the notes.",
+      "Playbill datePublished is 2020-01-05, not 2019-10-17."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-lightning-thief-2019",
+        "showId": "the-lightning-thief-2019",
+        "field": "notes",
+        "oldValue": "Percy Jackson musical at the Longacre, opened Oct 16, 2019 and closed Jan 5, 2020 as a limited engagement (95 performances, about $5.06M total gross). Capitalization was not published in any source found and no recoupment was announced.",
+        "newValue": "Percy Jackson musical at the Longacre, opened Oct 16, 2019 and closed Jan 5, 2020 as a limited engagement (30 previews, 95 regular performances). Capitalization was not published in any source found and no recoupment was announced.",
+        "description": "BRO-5873: remove uncited gross figure from Lightning Thief notes"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-lightning-thief-2019",
+        "showId": "the-lightning-thief-2019",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://playbill.com/article/the-lightning-thief-the-percy-jackson-musical-ends-broadway-run-january-5",
+            "date": "2019-10-17"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://playbill.com/article/the-lightning-thief-the-percy-jackson-musical-ends-broadway-run-january-5",
+            "date": "2020-01-05"
+          }
+        ],
+        "description": "BRO-5873: correct Lightning Thief source date"
+      }
+    ]
+  },
+  "executedAt": "2026-10-22T05:08:28.237Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for the-lightning-thief-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for the-lightning-thief-2019"
+    }
+  ],
+  "executedIn": "ci"
+}

@@ -1,0 +1,181 @@
+{
+  "issueNumber": "bro-5232-g",
+  "planId": "799251b4-6930-49b9-b962-50a0f22d2a14",
+  "status": "applied",
+  "createdAt": "2026-10-13T09:05:05.171Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5232 batch g: byline/outlet/production fixes for BRO-5222 follow-up rows, each cited to the live page, an aggregator or a sitemap.",
+    "steps": [
+      "duplicateOf or wrongAttribution for cross-outlet copies",
+      "isNonReview for reviews that do not exist",
+      "wrongProduction for other-production texts",
+      "criticName for wrong bylines"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "illinoise-2024/timeout--adam-feldman.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5232: Stored URL 404s; the live Time Out page is an unsigned listing (no author, no rating), and neither Playbill roundup (Broadway or Armory) lists a Time Out review. Evidence: https://www.timeout.com/newyork/theater/illinoise"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "illinoise-2024/timeout--adam-feldman.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "BRO-5232: no such review by this critic at this outlet; evidence https://www.timeout.com/newyork/theater/illinoise",
+        "description": "Reason for the flag above."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "leopoldstadt-2022/timeout--adam-feldman.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5232: Stored URL 404s; the live Time Out page is an unsigned listing (no author/rating) and Playbill's full Broadway roundup lists no Time Out review. Evidence: https://www.timeout.com/newyork/theater/leopoldstadt"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "leopoldstadt-2022/timeout--adam-feldman.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "BRO-5232: no such review by this critic at this outlet; evidence https://www.timeout.com/newyork/theater/leopoldstadt",
+        "description": "Reason for the flag above."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-kite-runner-2022/timeout--adam-feldman.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5232: Stored URL 404s; the live Time Out page is an unsigned listing (no author/rating) and Playbill's Broadway roundup lists no Time Out review. Evidence: https://www.timeout.com/newyork/theater/the-kite-runner"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-kite-runner-2022/timeout--adam-feldman.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "BRO-5232: no such review by this critic at this outlet; evidence https://www.timeout.com/newyork/theater/the-kite-runner",
+        "description": "Reason for the flag above."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "bob-fosses-dancin-2023/timeout--adam-feldman.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5232: Stored URL 404s; the live Time Out page is an unsigned listing (no author/rating) and Playbill's Broadway roundup lists no Time Out review. Evidence: https://www.timeout.com/newyork/theater/dancin"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "bob-fosses-dancin-2023/timeout--adam-feldman.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "BRO-5232: no such review by this critic at this outlet; evidence https://www.timeout.com/newyork/theater/dancin",
+        "description": "Reason for the flag above."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "peter-pan-goes-wrong-2023/new-york-sun--elysa-gardner.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5232: stale cross-market flag. The note says a London outlet (the-sun) reviewed a Broadway show, but this is The New York Sun (nysun.com, Elysa Gardner), and the stored text reviews this Broadway production. Evidence: https://www.broadwayworld.com/article/Review-Roundup-PETER-PAN-GOES-WRONG-Opens-On-Broadway-20230421 ; http://web.archive.org/web/20250715160536/https://www.nysun.com/article/happily-no-one-emerges-unscathed-from-peter-pan-goes-wrong ; https://www.nysun.com/article/happily-no-one-emerges-unscathed-from-peter-pan-goes-wrong"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "peter-pan-goes-wrong-2023/new-york-sun--elysa-gardner.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Clear the stale flag (see above)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "here-lies-love-2023/new-york-sun--elysa-gardner.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5232: stale cross-market flag. The note says a London outlet (the-sun) reviewed a Broadway show, but this is The New York Sun (nysun.com, Elysa Gardner), and the stored text reviews this Broadway production. Evidence: https://www.broadwayworld.com/article/Review-Roundup-Immersive-HERE-LIES-LOVE-Opens-On-Broadway-20230720 ; http://web.archive.org/web/20250815212901/https://www.nysun.com/article/from-david-byrne-a-chance-to-immerse-yourself-in-imelda-marcoss-long-saga ; https://www.nysun.com/article/from-david-byrne-a-chance-to-immerse-yourself-in-imelda-marcoss-long-saga"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "here-lies-love-2023/new-york-sun--elysa-gardner.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Clear the stale flag (see above)."
+      }
+    ]
+  },
+  "executedAt": "2026-10-13T12:14:11.928Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "illinoise-2024/timeout--adam-feldman.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "illinoise-2024/timeout--adam-feldman.json isNonReviewReason: null -> \"BRO-5232: no such review by this critic at this outlet; evidence https://www.timeout.com/newyork/theater/illinoise\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "leopoldstadt-2022/timeout--adam-feldman.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "leopoldstadt-2022/timeout--adam-feldman.json isNonReviewReason: null -> \"BRO-5232: no such review by this critic at this outlet; evidence https://www.timeout.com/newyork/theater/leopoldstadt\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-kite-runner-2022/timeout--adam-feldman.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-kite-runner-2022/timeout--adam-feldman.json isNonReviewReason: null -> \"BRO-5232: no such review by this critic at this outlet; evidence https://www.timeout.com/newyork/theater/the-kite-runner\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "bob-fosses-dancin-2023/timeout--adam-feldman.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "bob-fosses-dancin-2023/timeout--adam-feldman.json isNonReviewReason: null -> \"BRO-5232: no such review by this critic at this outlet; evidence https://www.timeout.com/newyork/theater/dancin\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "peter-pan-goes-wrong-2023/new-york-sun--elysa-gardner.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "peter-pan-goes-wrong-2023/new-york-sun--elysa-gardner.json wrongProduction: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "here-lies-love-2023/new-york-sun--elysa-gardner.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "here-lies-love-2023/new-york-sun--elysa-gardner.json wrongProduction: true -> false"
+    }
+  ]
+}

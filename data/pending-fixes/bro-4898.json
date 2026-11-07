@@ -1,0 +1,189 @@
+{
+  "issueNumber": "bro-4898",
+  "planId": "7e40e000-6780-4c5c-a4bc-4ccb2ca9891a",
+  "status": "partial",
+  "createdAt": "2026-10-13T00:57:28.067Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4898: stop double-counting one review under two bylines (How I Learned to Drive, Merrily, Cuckoo’s Nest, Devil Wears Prada) and drop a junk quote-fragment outlet row on Ink.",
+    "steps": [
+      "how-i-learned-to-drive-2022/theatermania--david-gordon.json: wrongAttribution -> true",
+      "how-i-learned-to-drive-2022/theatermania--david-gordon.json: wrongAttributionReason -> \"BRO-4898: same TheaterMania article (id 93666) as theatermania--andy-propst.json under its legacy url; one review counted twice\"",
+      "merrily-we-roll-along-2023/vulture--jackson-mchenry.json: wrongAttribution -> true",
+      "merrily-we-roll-along-2023/vulture--jackson-mchenry.json: wrongAttributionReason -> \"BRO-4898: same Vulture review as vulture--sara-holdren.json (identical slug, re-dated 2024/06 url); counted twice\"",
+      "one-flew-over-the-cuckoos-nest-west-end-2026/standard--the-standard.json: wrongAttribution -> true",
+      "one-flew-over-the-cuckoos-nest-west-end-2026/standard--the-standard.json: wrongAttributionReason -> \"BRO-4898: same Evening Standard review as standard--nick-curtis.json (same date, score and slug); counted twice\"",
+      "the-devil-wears-prada-west-end-2024/whatsonstage--sarah-crompton.json: wrongAttribution -> true",
+      "the-devil-wears-prada-west-end-2024/whatsonstage--sarah-crompton.json: wrongAttributionReason -> \"BRO-4898: same WhatsOnStage url as whatsonstage--miriam-sallon.json; stored text is the cookie banner, the real review text is on the Sallon row\"",
+      "the-devil-wears-prada-west-end-2024/whatsonstage--miriam-sallon.json: duplicateClearReason -> \"BRO-4898: this is the genuine review text; the row it pointed at holds only a cookie banner and is now flagged\"",
+      "the-devil-wears-prada-west-end-2024/whatsonstage--miriam-sallon.json: duplicateOf -> null",
+      "ink-2019/does-something-very-canny--j-friedman-theatre.json: wrongAttribution -> true",
+      "ink-2019/does-something-very-canny--j-friedman-theatre.json: wrongAttributionReason -> \"BRO-4898: outlet and critic were parsed from a quote fragment (\\\"does something very canny\\\"); no url, no text, real outlet unknown\""
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "how-i-learned-to-drive-2022/theatermania--david-gordon.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "same TheaterMania article (id 93666) as theatermania--andy-propst.json under its legacy url; one review counted twice"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "how-i-learned-to-drive-2022/theatermania--david-gordon.json",
+        "field": "wrongAttributionReason",
+        "oldValue": null,
+        "newValue": "BRO-4898: same TheaterMania article (id 93666) as theatermania--andy-propst.json under its legacy url; one review counted twice",
+        "description": "Reason for the flag"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "merrily-we-roll-along-2023/vulture--jackson-mchenry.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "same Vulture review as vulture--sara-holdren.json (identical slug, re-dated 2024/06 url); counted twice"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "merrily-we-roll-along-2023/vulture--jackson-mchenry.json",
+        "field": "wrongAttributionReason",
+        "oldValue": null,
+        "newValue": "BRO-4898: same Vulture review as vulture--sara-holdren.json (identical slug, re-dated 2024/06 url); counted twice",
+        "description": "Reason for the flag"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "one-flew-over-the-cuckoos-nest-west-end-2026/standard--the-standard.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "same Evening Standard review as standard--nick-curtis.json (same date, score and slug); counted twice"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "one-flew-over-the-cuckoos-nest-west-end-2026/standard--the-standard.json",
+        "field": "wrongAttributionReason",
+        "oldValue": null,
+        "newValue": "BRO-4898: same Evening Standard review as standard--nick-curtis.json (same date, score and slug); counted twice",
+        "description": "Reason for the flag"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-devil-wears-prada-west-end-2024/whatsonstage--sarah-crompton.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "same WhatsOnStage url as whatsonstage--miriam-sallon.json; stored text is the cookie banner, the real review text is on the Sallon row"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-devil-wears-prada-west-end-2024/whatsonstage--sarah-crompton.json",
+        "field": "wrongAttributionReason",
+        "oldValue": null,
+        "newValue": "BRO-4898: same WhatsOnStage url as whatsonstage--miriam-sallon.json; stored text is the cookie banner, the real review text is on the Sallon row",
+        "description": "Reason for the flag"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-devil-wears-prada-west-end-2024/whatsonstage--miriam-sallon.json",
+        "field": "duplicateClearReason",
+        "oldValue": null,
+        "newValue": "BRO-4898: this is the genuine review text; the row it pointed at holds only a cookie banner and is now flagged",
+        "description": "Clear reason (required before clearing duplicateOf)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-devil-wears-prada-west-end-2024/whatsonstage--miriam-sallon.json",
+        "field": "duplicateOf",
+        "oldValue": "whatsonstage--sarah-crompton.json",
+        "newValue": null,
+        "description": "Keep the genuine row instead of pointing it at the junk copy"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "ink-2019/does-something-very-canny--j-friedman-theatre.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "outlet and critic were parsed from a quote fragment (\"does something very canny\"); no url, no text, real outlet unknown"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "ink-2019/does-something-very-canny--j-friedman-theatre.json",
+        "field": "wrongAttributionReason",
+        "oldValue": null,
+        "newValue": "BRO-4898: outlet and critic were parsed from a quote fragment (\"does something very canny\"); no url, no text, real outlet unknown",
+        "description": "Reason for the flag"
+      }
+    ]
+  },
+  "executedAt": "2026-10-13T01:49:08.667Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "how-i-learned-to-drive-2022/theatermania--david-gordon.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "how-i-learned-to-drive-2022/theatermania--david-gordon.json wrongAttributionReason: null -> \"BRO-4898: same TheaterMania article (id 93666) as theatermania--andy-propst.json under its legacy url; one review counted twice\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "merrily-we-roll-along-2023/vulture--jackson-mchenry.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "merrily-we-roll-along-2023/vulture--jackson-mchenry.json wrongAttributionReason: null -> \"BRO-4898: same Vulture review as vulture--sara-holdren.json (identical slug, re-dated 2024/06 url); counted twice\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "one-flew-over-the-cuckoos-nest-west-end-2026/standard--the-standard.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "one-flew-over-the-cuckoos-nest-west-end-2026/standard--the-standard.json wrongAttributionReason: null -> \"BRO-4898: same Evening Standard review as standard--nick-curtis.json (same date, score and slug); counted twice\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-devil-wears-prada-west-end-2024/whatsonstage--sarah-crompton.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-devil-wears-prada-west-end-2024/whatsonstage--sarah-crompton.json wrongAttributionReason: null -> \"BRO-4898: same WhatsOnStage url as whatsonstage--miriam-sallon.json; stored text is the cookie banner, the real review text is on the Sallon row\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-devil-wears-prada-west-end-2024/whatsonstage--miriam-sallon.json duplicateClearReason: null -> \"BRO-4898: this is the genuine review text; the row it pointed at holds only a cookie banner and is now flagged\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "the-devil-wears-prada-west-end-2024/whatsonstage--miriam-sallon.json duplicateOf: write guard kept \"whatsonstage--sarah-crompton.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "ink-2019/does-something-very-canny--j-friedman-theatre.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "ink-2019/does-something-very-canny--j-friedman-theatre.json wrongAttributionReason: null -> \"BRO-4898: outlet and critic were parsed from a quote fragment (\\\"does something very canny\\\"); no url, no text, real outlet unknown\""
+    }
+  ]
+}

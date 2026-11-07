@@ -1,0 +1,1442 @@
+{
+  "issueNumber": "bro-5853-cast-a",
+  "planId": "e041fd9b-9cbd-4aa7-9014-f0ded276a700",
+  "status": "applied",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5853: replace shows.json cast lists that no review of the production names with the performers the reviews credit (found by scripts/audit-cast-vs-reviews.js), and add the director where the reviews credit one and the row has none. Every name was re-checked against the review text. Held back for a person: operation-mincemeat-2025, magic-mike-live-west-end-2021, chicago-1996, les-miserables-west-end-2021, the-play-that-goes-wrong-west-end-2021, the-mousetrap-west-end-2021, sticks-and-bones-1972 (their review sets belong to a different production or era than the row).",
+    "steps": [
+      "Replace cast, one data-edit per show",
+      "Add Director where missing"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "innocence-off-broadway-2026",
+        "field": "cast",
+        "oldValue": [
+          {
+            "name": "Daniel Radcliffe",
+            "role": "Man"
+          },
+          {
+            "name": "Nathan Lane",
+            "role": "Willy Loman"
+          },
+          {
+            "name": "Laurie Metcalf",
+            "role": "Linda"
+          },
+          {
+            "name": "Jon Bernthal",
+            "role": "Sonny Amato"
+          },
+          {
+            "name": "Ebon Moss-Bachrach",
+            "role": "Sal DeSilva"
+          },
+          {
+            "name": "John Lithgow",
+            "role": "Roald Dahl"
+          },
+          {
+            "name": "Patrick Ball",
+            "role": "Senior Resident Frank Langdon"
+          },
+          {
+            "name": "Adrien Brody",
+            "role": "Nick"
+          },
+          {
+            "name": "Tessa Thompson",
+            "role": "Jackie"
+          },
+          {
+            "name": "Luke Evans",
+            "role": "Dr. Frank-N-Furter"
+          },
+          {
+            "name": "Jim Parsons",
+            "role": "Ruth DeWitt Bukater"
+          },
+          {
+            "name": "Deborah Cox",
+            "role": "Molly Brown"
+          },
+          {
+            "name": "Rose Byrne",
+            "role": "Wealthy Woman"
+          },
+          {
+            "name": "Taraji P. Henson",
+            "role": "Bertha Holly"
+          },
+          {
+            "name": "Cedric \"The Entertainer\"",
+            "role": "Seth"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Joyce DiDonato",
+            "role": "Tereza (the Waitress)"
+          },
+          {
+            "name": "Kathleen Kim",
+            "role": "Patricia (Mother-in-Law)"
+          },
+          {
+            "name": "Rod Gilfry",
+            "role": "Henrik (Father-in-Law)"
+          },
+          {
+            "name": "Miles Mykkanen",
+            "role": "Tuomas (Bridegroom)"
+          },
+          {
+            "name": "Jacquelyn Stucker",
+            "role": "Stela (Bride)"
+          },
+          {
+            "name": "Stephen Milling",
+            "role": "Priest"
+          },
+          {
+            "name": "Vilma Jää",
+            "role": "Markéta"
+          },
+          {
+            "name": "Lucy Shelton",
+            "role": "Teacher"
+          },
+          {
+            "name": "Julie Hega",
+            "role": "Iris"
+          },
+          {
+            "name": "Beate Mordal",
+            "role": "Lily"
+          },
+          {
+            "name": "Camilo Delgado Díaz",
+            "role": "Jerónimo"
+          },
+          {
+            "name": "Simon Kluth",
+            "role": "Anton"
+          },
+          {
+            "name": "Marina Dumont Anatassiadou",
+            "role": "Alexia"
+          }
+        ],
+        "description": "BRO-5853: cast on file is named in none of the innocence-off-broadway-2026 reviews; replaced with the performers the reviews credit"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "sting-west-end-2026",
+        "field": "cast",
+        "oldValue": [
+          {
+            "name": "Jackie White",
+            "role": "Shaggy"
+          },
+          {
+            "name": "Declan Bennett",
+            "role": "The Wallsend Ferryman Paris / Brisbane / New York"
+          },
+          {
+            "name": "Lejaun Sheppard",
+            "role": "Gideon"
+          },
+          {
+            "name": "Lauren Samuels",
+            "role": "The Wallsend Ferryman Amsterdam"
+          },
+          {
+            "name": "Annette Mclaughlin",
+            "role": "Meg"
+          },
+          {
+            "name": "Marc Akinfolarin",
+            "role": "Peggy White"
+          },
+          {
+            "name": "Cassiopeia Berkeley-Agyepong",
+            "role": "Davey"
+          },
+          {
+            "name": "Joe Caffrey",
+            "role": "Baroness Tynedale"
+          },
+          {
+            "name": "Mathew Craig",
+            "role": "Billy"
+          },
+          {
+            "name": "Freddy Newlands",
+            "role": "Freddy Newlands"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Adelle Leonce",
+            "role": "Ash"
+          },
+          {
+            "name": "Nick Blood",
+            "role": "Dom"
+          },
+          {
+            "name": "Phoebe Ladenburg",
+            "role": "Lily"
+          }
+        ],
+        "description": "BRO-5853: cast on file is named in none of the sting-west-end-2026 reviews; replaced with the performers the reviews credit"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-tempest-globe-west-end-2026",
+        "field": "cast",
+        "oldValue": [
+          {
+            "name": "Azan Ahmed",
+            "role": "Yusuf"
+          },
+          {
+            "name": "Johnny Khan",
+            "role": "Mustafa"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Tim Crouch",
+            "role": "Prospero"
+          },
+          {
+            "name": "Sophie Steer",
+            "role": "Miranda"
+          },
+          {
+            "name": "Naomi Wirthner",
+            "role": "Ariel"
+          },
+          {
+            "name": "Faizal Abdullah",
+            "role": "Caliban"
+          },
+          {
+            "name": "Amanda Hadingue",
+            "role": "Antonia"
+          },
+          {
+            "name": "Joshua Griffin",
+            "role": "Ferdinand"
+          },
+          {
+            "name": "Jo Stone-Fewings",
+            "role": "Alonso"
+          },
+          {
+            "name": "Tyrone Huggins",
+            "role": "Gonzalo"
+          },
+          {
+            "name": "Patricia Rodriguez",
+            "role": "Stephano"
+          },
+          {
+            "name": "Mercè Ribot",
+            "role": "Trinculo"
+          },
+          {
+            "name": "Emma Bonnici",
+            "role": "singer"
+          },
+          {
+            "name": "Victoria Couper",
+            "role": "singer"
+          }
+        ],
+        "description": "BRO-5853: cast on file is named in none of the the-tempest-globe-west-end-2026 reviews; replaced with the performers the reviews credit"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "la-traviata-off-broadway-2026",
+        "field": "cast",
+        "oldValue": [
+          {
+            "name": "Natale Cervi",
+            "role": "Benoit"
+          },
+          {
+            "name": "Ethel Fox",
+            "role": "Musetta"
+          },
+          {
+            "name": "Giuseppe Interrante",
+            "role": "Schaunard"
+          },
+          {
+            "name": "Andrea Mongelli",
+            "role": "Colline"
+          },
+          {
+            "name": "Myrna Sharlow",
+            "role": "Mimi"
+          },
+          {
+            "name": "Franco Tafura",
+            "role": "Rodolfo"
+          },
+          {
+            "name": "Mario Valle",
+            "role": "Marcello"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Lisette Oropesa",
+            "role": "Violetta"
+          },
+          {
+            "name": "Rosa Feola",
+            "role": "Violetta"
+          },
+          {
+            "name": "Ermonela Jaho",
+            "role": "Violetta"
+          },
+          {
+            "name": "Piotr Buszewski",
+            "role": "Alfredo"
+          },
+          {
+            "name": "Liparit Avetisyan",
+            "role": "Alfredo"
+          },
+          {
+            "name": "Kang Wang",
+            "role": "Alfredo"
+          },
+          {
+            "name": "Luca Salsi",
+            "role": "Germont (Giorgio)"
+          },
+          {
+            "name": "Amartuvshin Enkhbat",
+            "role": "Germont"
+          },
+          {
+            "name": "Lucas Meacham",
+            "role": "Giorgio Germont"
+          },
+          {
+            "name": "Edyta Kulczak",
+            "role": "Flora"
+          },
+          {
+            "name": "Dwayne Croft",
+            "role": "Baron Douphol"
+          },
+          {
+            "name": "Richard Bernstein",
+            "role": "Dr. Grenvil"
+          },
+          {
+            "name": "Tessa McQueen",
+            "role": "Annina"
+          },
+          {
+            "name": "Hannah Jones",
+            "role": "Annina"
+          },
+          {
+            "name": "Jeongcheol Cha",
+            "role": "Marquis d'Obigny"
+          }
+        ],
+        "description": "BRO-5853: cast on file is named in none of the la-traviata-off-broadway-2026 reviews; replaced with the performers the reviews credit"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "la-traviata-off-broadway-2026",
+        "field": "creativeTeam",
+        "oldValue": [
+          {
+            "name": "Giuseppe Verdi",
+            "role": "Composer"
+          },
+          {
+            "name": "Francesco Maria Piave",
+            "role": "Librettist"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Giuseppe Verdi",
+            "role": "Composer"
+          },
+          {
+            "name": "Francesco Maria Piave",
+            "role": "Librettist"
+          },
+          {
+            "name": "Michael Mayer",
+            "role": "Director",
+            "_source": "BRO-5853-reviews"
+          }
+        ],
+        "description": "BRO-5853: director credited in the reviews"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "six-2021",
+        "field": "cast",
+        "oldValue": [
+          {
+            "name": "Aimie Atkinson",
+            "role": "Katherine Howard"
+          },
+          {
+            "name": "Chloe Tucker Caine",
+            "role": "Anne Boleyn"
+          },
+          {
+            "name": "Olivia Donalson",
+            "role": "Anna of Cleves"
+          },
+          {
+            "name": "Najah Hetsberger",
+            "role": "Catherine of Aragon"
+          },
+          {
+            "name": "Natalie Paris",
+            "role": "Jane Seymour"
+          },
+          {
+            "name": "Stephanie Jae Park",
+            "role": "Catherine Parr"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Adrianna Hicks",
+            "role": "Catherine of Aragon"
+          },
+          {
+            "name": "Andrea Macasaet",
+            "role": "Anne Boleyn"
+          },
+          {
+            "name": "Abby Mueller",
+            "role": "Jane Seymour"
+          },
+          {
+            "name": "Brittney Mack",
+            "role": "Anna of Cleves"
+          },
+          {
+            "name": "Samantha Pauly",
+            "role": "Katherine Howard"
+          },
+          {
+            "name": "Anna Uzele",
+            "role": "Catherine Parr"
+          }
+        ],
+        "description": "BRO-5853: cast on file is named in none of the six-2021 reviews; replaced with the performers the reviews credit"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "11-to-midnight-off-broadway-2026",
+        "field": "cast",
+        "oldValue": [
+          {
+            "name": "Maud Allan",
+            "role": "Elizabeth McGrath"
+          },
+          {
+            "name": "Glenn Anders",
+            "role": "Bob Nolan"
+          },
+          {
+            "name": "Harold Bolton",
+            "role": "Second Reporter"
+          },
+          {
+            "name": "Zena Colaer",
+            "role": "Woman Reporter"
+          },
+          {
+            "name": "Josephine Hull",
+            "role": "Mrs. Weldon"
+          },
+          {
+            "name": "William R. Kane",
+            "role": "Treadwell"
+          },
+          {
+            "name": "Jack La Rue",
+            "role": "Gar Boni"
+          },
+          {
+            "name": "Tom H. A. Lewis",
+            "role": "First Reporter"
+          },
+          {
+            "name": "Harriet MacGibbon",
+            "role": "Ada Biggers"
+          },
+          {
+            "name": "Clifford Odets",
+            "role": "Arthur Weldon"
+          },
+          {
+            "name": "James Parker",
+            "role": "Photographer"
+          },
+          {
+            "name": "Frederick Perry",
+            "role": "Edward Weldon"
+          },
+          {
+            "name": "Francis Pierlot",
+            "role": "Richard McGrath"
+          },
+          {
+            "name": "Charles Powers",
+            "role": "Messenger Boy"
+          },
+          {
+            "name": "Samuel Rosen",
+            "role": "Third Reporter"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Austin Telenko",
+            "role": "The Husband"
+          },
+          {
+            "name": "Marideth Telenko",
+            "role": "The Wife"
+          },
+          {
+            "name": "Brendon Chan",
+            "role": "His Cousin"
+          },
+          {
+            "name": "Tyson Hill",
+            "role": "His Single Friend"
+          },
+          {
+            "name": "Kati Simon",
+            "role": "Her Former Roommate"
+          },
+          {
+            "name": "Makenzie Olsen",
+            "role": "Her Friend From Work"
+          },
+          {
+            "name": "Aché Richardson",
+            "role": "Our 'Famous' Friend"
+          }
+        ],
+        "description": "BRO-5853: cast on file is named in none of the 11-to-midnight-off-broadway-2026 reviews; replaced with the performers the reviews credit"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "11-to-midnight-off-broadway-2026",
+        "field": "creativeTeam",
+        "oldValue": [],
+        "newValue": [
+          {
+            "name": "Lyndsay Magid Aviner",
+            "role": "Director",
+            "_source": "BRO-5853-reviews"
+          }
+        ],
+        "description": "BRO-5853: director credited in the reviews"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "beetlejuice-west-end-2026",
+        "field": "cast",
+        "oldValue": [
+          {
+            "name": "Ryan Stajmiger",
+            "role": "Beetlejuice"
+          },
+          {
+            "name": "Leianna Weaver",
+            "role": "Lydia"
+          },
+          {
+            "name": "David Wilson",
+            "role": "Adam"
+          },
+          {
+            "name": "Kaitlin Feely",
+            "role": "Barbara"
+          },
+          {
+            "name": "Jeff Brooks",
+            "role": "Charles"
+          },
+          {
+            "name": "Bailey Frankenberg",
+            "role": "Delia"
+          },
+          {
+            "name": "Alessandra Casanova",
+            "role": "Miss Argentina"
+          },
+          {
+            "name": "Mai Caslowitz",
+            "role": "Girl Scout"
+          },
+          {
+            "name": "Adam Fields",
+            "role": "Otho"
+          },
+          {
+            "name": "Da'zaria Harris",
+            "role": "Maxine Dean"
+          },
+          {
+            "name": "Dan Mason",
+            "role": "Maxie Dean"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "David Fynn",
+            "role": "Beetlejuice"
+          },
+          {
+            "name": "Hannah Nordberg",
+            "role": "Lydia Deetz"
+          },
+          {
+            "name": "Aimie Atkinson",
+            "role": "Delia"
+          },
+          {
+            "name": "David Hunter",
+            "role": "Adam Maitland"
+          },
+          {
+            "name": "Chelsea Halfpenny",
+            "role": "Barbara Maitland"
+          },
+          {
+            "name": "Alasdair Harvey",
+            "role": "Charles"
+          },
+          {
+            "name": "Chasity Crisp",
+            "role": "Maxine Dean / Juno"
+          },
+          {
+            "name": "Richard Frame",
+            "role": "Otho"
+          },
+          {
+            "name": "Irvine Iqbal",
+            "role": "Maxie Dean"
+          },
+          {
+            "name": "Rachel Macdougall",
+            "role": "Girl Scout"
+          },
+          {
+            "name": "Vanessa Aurora Sierra",
+            "role": "Miss Argentina"
+          }
+        ],
+        "description": "BRO-5853: cast on file is named in none of the beetlejuice-west-end-2026 reviews; replaced with the performers the reviews credit"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "beetlejuice-west-end-2026",
+        "field": "creativeTeam",
+        "oldValue": [
+          {
+            "name": "Scott Brown & Anthony King",
+            "role": "Book"
+          },
+          {
+            "name": "Eddie Perfect",
+            "role": "Music & Lyrics"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Scott Brown & Anthony King",
+            "role": "Book"
+          },
+          {
+            "name": "Eddie Perfect",
+            "role": "Music & Lyrics"
+          },
+          {
+            "name": "Alex Timbers",
+            "role": "Director",
+            "_source": "BRO-5853-reviews"
+          }
+        ],
+        "description": "BRO-5853: director credited in the reviews"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "deep-azure-globe-west-end-2026",
+        "field": "cast",
+        "oldValue": [
+          {
+            "name": "Adrianne Langley",
+            "role": "Catherine of Aragon"
+          },
+          {
+            "name": "Marisha Morgan",
+            "role": "Anne Boleyn"
+          },
+          {
+            "name": "Jessica Aubrey",
+            "role": "Jane Seymour"
+          },
+          {
+            "name": "Freya Karlettis",
+            "role": "Anna of Cleves"
+          },
+          {
+            "name": "Leesa Tulley",
+            "role": "Katherine Howard"
+          },
+          {
+            "name": "Nia Stephen",
+            "role": "Catherine Parr"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Selina Jones",
+            "role": "Azure"
+          },
+          {
+            "name": "Jayden Elijah",
+            "role": "Deep"
+          },
+          {
+            "name": "Justice Ritchie",
+            "role": "Roshad"
+          },
+          {
+            "name": "Elijah Cook",
+            "role": "Tone"
+          },
+          {
+            "name": "Aminita Francis",
+            "role": "Street Knowledge of Good"
+          },
+          {
+            "name": "Imani Yahshua",
+            "role": "Street Knowledge of Evil"
+          }
+        ],
+        "description": "BRO-5853: cast on file is named in none of the deep-azure-globe-west-end-2026 reviews; replaced with the performers the reviews credit"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "blood-of-my-blood-west-end-2026",
+        "field": "cast",
+        "oldValue": [
+          {
+            "name": "Brian McCardie",
+            "role": "Isaac Grant"
+          },
+          {
+            "name": "Jhon Lumsden",
+            "role": "Malcolm Grant"
+          },
+          {
+            "name": "Sara Vickers",
+            "role": "Davina Porter"
+          },
+          {
+            "name": "Peter Mullan",
+            "role": "Red Jacob MacKenzie"
+          },
+          {
+            "name": "Harriet Slater",
+            "role": "Ellen MacKenzie"
+          },
+          {
+            "name": "Jamie Roy",
+            "role": "Brian Fraser"
+          },
+          {
+            "name": "Hermione Corfield",
+            "role": "Julia Moriston"
+          },
+          {
+            "name": "Jeremy Irvine",
+            "role": "Henry Beauchamp"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Jodie Campbell",
+            "role": "Talulah"
+          },
+          {
+            "name": "Ronkẹ Adékọluẹ́jọ",
+            "role": "Ginnie"
+          },
+          {
+            "name": "Patrick Vaill",
+            "role": "Doc Good / James"
+          },
+          {
+            "name": "Hannah Morrish",
+            "role": "Nora (present day) / Doc's wife in 1862"
+          },
+          {
+            "name": "Karene Peter",
+            "role": "Bertha / Niecey"
+          }
+        ],
+        "description": "BRO-5853: cast on file is named in none of the blood-of-my-blood-west-end-2026 reviews; replaced with the performers the reviews credit"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "blood-of-my-blood-west-end-2026",
+        "field": "creativeTeam",
+        "oldValue": [],
+        "newValue": [
+          {
+            "name": "Tatenda Shamiso",
+            "role": "Director",
+            "_source": "BRO-5853-reviews"
+          }
+        ],
+        "description": "BRO-5853: director credited in the reviews"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "eugene-onegin-off-broadway-2026",
+        "field": "cast",
+        "oldValue": [
+          {
+            "name": "Devon Teuscher",
+            "role": "Tatiana"
+          },
+          {
+            "name": "Daniel Camargo",
+            "role": "Onegin"
+          },
+          {
+            "name": "Jake Roxander",
+            "role": "Lensky"
+          },
+          {
+            "name": "Zimmi Coker",
+            "role": "Olga"
+          },
+          {
+            "name": "Roman Zhurbin",
+            "role": "Prince Gremin"
+          },
+          {
+            "name": "Christine Shevchenko",
+            "role": "Tatiana"
+          },
+          {
+            "name": "Joo Won Ahn",
+            "role": "Lensky"
+          },
+          {
+            "name": "Joseph Markey",
+            "role": "Prince Gremin"
+          },
+          {
+            "name": "James Whiteside",
+            "role": "Onegin"
+          },
+          {
+            "name": "Calvin Royal III",
+            "role": "Lensky"
+          },
+          {
+            "name": "Andrii Ishchuk",
+            "role": "Prince Gremin"
+          },
+          {
+            "name": "Chloe Misseldine",
+            "role": "Tatiana"
+          },
+          {
+            "name": "Thomas Forster",
+            "role": "Onegin"
+          },
+          {
+            "name": "Aran Bell",
+            "role": "Lensky"
+          },
+          {
+            "name": "Catherine Hurlin",
+            "role": "Olga"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Asmik Grigorian",
+            "role": "Tatiana"
+          },
+          {
+            "name": "Iurii Samoilov",
+            "role": "Onegin"
+          },
+          {
+            "name": "Stanislas de Barbeyrac",
+            "role": "Lenski"
+          },
+          {
+            "name": "Alexander Tsymbalyuk",
+            "role": "Prince Gremin"
+          },
+          {
+            "name": "Maria Barakova",
+            "role": "Olga"
+          },
+          {
+            "name": "Elena Zaremba",
+            "role": "Madame Larina"
+          },
+          {
+            "name": "Larissa Diadkova",
+            "role": "Filippyevna"
+          },
+          {
+            "name": "Tony Stevenson",
+            "role": "Monsieur Triquet"
+          },
+          {
+            "name": "Richard Bernstein",
+            "role": "Zaretski"
+          },
+          {
+            "name": "Ben Brady",
+            "role": "The Captain"
+          }
+        ],
+        "description": "BRO-5853: cast on file is named in none of the eugene-onegin-off-broadway-2026 reviews; replaced with the performers the reviews credit"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "heartbreak-hotel-off-broadway-2026",
+        "field": "cast",
+        "oldValue": [
+          {
+            "name": "JOE CASKEY",
+            "role": "ELVIS"
+          },
+          {
+            "name": "PAMELA BOB",
+            "role": "GLADYS PRESLEY"
+          },
+          {
+            "name": "SPENCER CHASE",
+            "role": "YOUNG ELVIS"
+          },
+          {
+            "name": "WILLIAM THOMAS EVANS",
+            "role": "COL. TOM PARKER"
+          },
+          {
+            "name": "MATTHEW SCHATZ",
+            "role": "SAM PHILLIPS"
+          },
+          {
+            "name": "MICHEL VASQUEZ",
+            "role": "PRISCILLA PRESLEY"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Karin McCracken",
+            "role": "Karin (Actor 1; also playwright)"
+          },
+          {
+            "name": "Simon Leary",
+            "role": "Actor 2 / plays all the male roles"
+          }
+        ],
+        "description": "BRO-5853: cast on file is named in none of the heartbreak-hotel-off-broadway-2026 reviews; replaced with the performers the reviews credit"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "heartbreak-hotel-off-broadway-2026",
+        "field": "creativeTeam",
+        "oldValue": [
+          {
+            "name": "Floyd Mutrux",
+            "role": "Book, Director"
+          },
+          {
+            "name": "Colin Escott",
+            "role": "Book"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Floyd Mutrux",
+            "role": "Book, Director"
+          },
+          {
+            "name": "Colin Escott",
+            "role": "Book"
+          },
+          {
+            "name": "Eleanor Bishop",
+            "role": "Director",
+            "_source": "BRO-5853-reviews"
+          }
+        ],
+        "description": "BRO-5853: director credited in the reviews"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "dog-man-the-musical-west-end-2026",
+        "field": "cast",
+        "oldValue": [
+          {
+            "name": "Larry Blyden",
+            "role": "Sammy Fong"
+          },
+          {
+            "name": "Pat Suzuki",
+            "role": "Linda Low"
+          },
+          {
+            "name": "Miyoshi Umeki",
+            "role": "Mei-Li"
+          },
+          {
+            "name": "Juanita Hall",
+            "role": "Madam Liang"
+          },
+          {
+            "name": "Arabella Hong",
+            "role": "Helen Chao"
+          },
+          {
+            "name": "Ed Kenney",
+            "role": "Wang Ta"
+          },
+          {
+            "name": "Keye Luke",
+            "role": "Wang Chi Yang"
+          },
+          {
+            "name": "Patrick Adiarte",
+            "role": "Wang San"
+          },
+          {
+            "name": "Peter Chan",
+            "role": "Professor Cheng"
+          },
+          {
+            "name": "Anita Ellis",
+            "role": "Night Club Singer"
+          },
+          {
+            "name": "Luis Robert Hernandez",
+            "role": "Child"
+          },
+          {
+            "name": "Susan Lynn Kikuchi",
+            "role": "Child"
+          },
+          {
+            "name": "Jon Lee",
+            "role": "Mr. Huan"
+          },
+          {
+            "name": "Chao Li",
+            "role": "Dr. Lu Fong"
+          },
+          {
+            "name": "Harry Shaw Lowe",
+            "role": "Mr. Lung"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Sam Kipling",
+            "role": "Petey"
+          },
+          {
+            "name": "Peter Lavery",
+            "role": "Harold"
+          },
+          {
+            "name": "Ricardo Mendes",
+            "role": "George"
+          },
+          {
+            "name": "Vanessa Dumatey",
+            "role": "Flippy"
+          },
+          {
+            "name": "Rebecca-Jo Roberts",
+            "role": "Li'l Petey"
+          },
+          {
+            "name": "Renan Teodoro",
+            "role": "Dog Man"
+          }
+        ],
+        "description": "BRO-5853: cast on file is named in none of the dog-man-the-musical-west-end-2026 reviews; replaced with the performers the reviews credit"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "dog-man-the-musical-west-end-2026",
+        "field": "creativeTeam",
+        "oldValue": [],
+        "newValue": [
+          {
+            "name": "Jen Wineman",
+            "role": "Director",
+            "_source": "BRO-5853-reviews"
+          }
+        ],
+        "description": "BRO-5853: director credited in the reviews"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "archduke-west-end-2026",
+        "field": "cast",
+        "oldValue": [
+          {
+            "name": "Patrick Page",
+            "role": "Dragutin ‘Apis’ Dimitrijevic"
+          },
+          {
+            "name": "Jake Berne",
+            "role": "Gavrilo"
+          },
+          {
+            "name": "Kristine Nielsen",
+            "role": "Sladjana"
+          },
+          {
+            "name": "Adrien Rolet",
+            "role": "Trifko"
+          },
+          {
+            "name": "Jason Sanchez",
+            "role": "Nedeljko"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Stanley Morgan",
+            "role": "Gavrilo"
+          },
+          {
+            "name": "Chris Walley",
+            "role": "Nedeljko"
+          },
+          {
+            "name": "Abraham Popoola",
+            "role": "Trifko"
+          },
+          {
+            "name": "Marc Wootton",
+            "role": "Dragutin 'Apis' Dimitrijevic"
+          },
+          {
+            "name": "Janice Connolly",
+            "role": "Sladjana"
+          }
+        ],
+        "description": "BRO-5853: cast on file is named in none of the archduke-west-end-2026 reviews; replaced with the performers the reviews credit"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "archduke-west-end-2026",
+        "field": "creativeTeam",
+        "oldValue": [],
+        "newValue": [
+          {
+            "name": "Lyndsey Turner",
+            "role": "Director",
+            "_source": "BRO-5853-reviews"
+          }
+        ],
+        "description": "BRO-5853: director credited in the reviews"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-woman-among-women-off-broadway-2026",
+        "field": "cast",
+        "oldValue": [
+          {
+            "name": "Charita Bauer",
+            "role": "Little Mary"
+          },
+          {
+            "name": "Eloise Bennett",
+            "role": "Euphie"
+          },
+          {
+            "name": "Eileen Burns",
+            "role": "Miss Fordyce"
+          },
+          {
+            "name": "Jessie Busley",
+            "role": "Mrs. Morehead"
+          },
+          {
+            "name": "Mary Cecil",
+            "role": "Maggie"
+          },
+          {
+            "name": "Ilka Chase",
+            "role": "Sylvia"
+          },
+          {
+            "name": "Virgilia Chew",
+            "role": "Miss Watts"
+          },
+          {
+            "name": "Audrey Christie",
+            "role": "Miriam Aarons"
+          },
+          {
+            "name": "Beatrice Cole",
+            "role": "Second Model"
+          },
+          {
+            "name": "Doris Day",
+            "role": "First Saleswoman"
+          },
+          {
+            "name": "Margaret Douglass",
+            "role": "Countess de Lage"
+          },
+          {
+            "name": "Lucille Fenton",
+            "role": "Head Saleswoman"
+          },
+          {
+            "name": "Arlene Francis",
+            "role": "Princess Tamara"
+          },
+          {
+            "name": "Margalo Gillmore",
+            "role": "Mary"
+          },
+          {
+            "name": "Ruth Hammond",
+            "role": "Olga"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Dee Pelletier",
+            "role": "Cleo"
+          },
+          {
+            "name": "Zoë Geltman",
+            "role": "Grace"
+          },
+          {
+            "name": "Tina Chilip",
+            "role": "Tina"
+          },
+          {
+            "name": "Hannah Heller",
+            "role": "Sarah"
+          },
+          {
+            "name": "Brittany K. Allen",
+            "role": "Christine"
+          },
+          {
+            "name": "Gabriel Brown",
+            "role": "Roy"
+          },
+          {
+            "name": "Morgan Siobhan Green",
+            "role": "Rida/Trisha"
+          },
+          {
+            "name": "Lucy Kaminsky",
+            "role": "Tammy"
+          },
+          {
+            "name": "Drew Lewis",
+            "role": "Lane"
+          }
+        ],
+        "description": "BRO-5853: cast on file is named in none of the a-woman-among-women-off-broadway-2026 reviews; replaced with the performers the reviews credit"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-woman-among-women-off-broadway-2026",
+        "field": "creativeTeam",
+        "oldValue": [],
+        "newValue": [
+          {
+            "name": "Sarah Cameron Hughes",
+            "role": "Director",
+            "_source": "BRO-5853-reviews"
+          }
+        ],
+        "description": "BRO-5853: director credited in the reviews"
+      }
+    ]
+  },
+  "executedAt": "2026-10-21T18:19:51.527Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: cast updated for innocence-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: cast updated for sting-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: cast updated for the-tempest-globe-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: cast updated for la-traviata-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for la-traviata-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: cast updated for six-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: cast updated for 11-to-midnight-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for 11-to-midnight-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: cast updated for beetlejuice-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for beetlejuice-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: cast updated for deep-azure-globe-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: cast updated for blood-of-my-blood-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for blood-of-my-blood-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: cast updated for eugene-onegin-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: cast updated for heartbreak-hotel-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for heartbreak-hotel-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: cast updated for dog-man-the-musical-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for dog-man-the-musical-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: cast updated for archduke-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for archduke-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: cast updated for a-woman-among-women-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for a-woman-among-women-off-broadway-2026"
+    }
+  ],
+  "executedIn": "ci"
+}

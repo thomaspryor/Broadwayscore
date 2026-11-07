@@ -1,0 +1,29 @@
+{
+  "showId": "good-night-and-good-luck-2025",
+  "outletId": "wsj",
+  "outlet": "Wall Street Journal",
+  "criticName": "Charles Isherwood",
+  "score": 20,
+  "bucket": "Pan",
+  "thumb": "Down",
+  "confidence": "medium",
+  "keyPhrases": [
+    {
+      "text": "Good night, good luck, and the nearest Starbucks is two blocks south on Broadway",
+      "sentiment": "negative"
+    }
+  ],
+  "reasoning": "The review consists of a single dismissive line that plays on the show's title while directing readers to leave the theater and go to Starbucks instead. This is a clear negative recommendation suggesting the audience would be better off elsewhere. The brevity and sarcastic tone indicates harsh criticism despite the lack of detailed critique.",
+  "flags": [
+    {
+      "type": "dtli_thumb_mismatch",
+      "dtliThumb": "Up",
+      "llmThumb": "Down"
+    }
+  ],
+  "scoredAt": "2026-02-21T03:41:43.196Z",
+  "promptVersion": "3.0.0-calibrated",
+  "originalScore": null,
+  "dtliThumb": "Up",
+  "bwwThumb": "Meh"
+}

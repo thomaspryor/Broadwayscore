@@ -1,0 +1,37 @@
+{
+  "status": "applied",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "issueNumber": "bro-5091-b",
+  "planId": "f0ef25bc-9867-404e-9269-751bce990a0f",
+  "createdAt": "2026-10-11T22:35:57Z",
+  "plan": {
+    "summary": "Paranormal Activity: cite its $8M capitalization to its SEC Form D",
+    "steps": [
+      "Replace the uncited capitalization source with the Form D filing"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "paranormal-activity",
+        "showId": "paranormal-activity",
+        "field": "capitalizationSource",
+        "oldValue": "Industry sources",
+        "newValue": "SEC Form D (Paranormal Broadway Ltd Liability Co, filed Sep 15, 2026): total offering $8,000,000, $7,910,000 sold https://www.sec.gov/Archives/edgar/data/2153516/000215351626000001/primary_doc.xml",
+        "description": "Cite the $8M capitalization to the SEC Form D filing"
+      }
+    ]
+  },
+  "executedAt": "2026-10-12T01:27:09.003Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for paranormal-activity"
+    }
+  ]
+}

@@ -1,0 +1,386 @@
+{
+  "schemaVersion": 1,
+  "showId": "memoriam-off-west-end-2026",
+  "night": "2026-10-27",
+  "market": "off-west-end",
+  "embargoAt": "2026-10-27T21:00:00.000Z",
+  "probe": {
+    "startedAt": "2026-10-27T22:02:58.129Z",
+    "endedAt": "2026-10-28T03:00:21.572Z",
+    "intervalMin": 5,
+    "samples": 60,
+    "failedSamples": 0,
+    "lastSampleAt": "2026-10-28T02:58:37.629Z",
+    "lastOkSampleAt": "2026-10-28T02:58:37.629Z"
+  },
+  "firstLiveAt": "2026-10-27T22:02:58.129Z",
+  "firstLiveBaseline": true,
+  "lastLiveAt": "2026-10-27T23:58:25.192Z",
+  "liveCount": 10,
+  "liveCountAt": {
+    "1h": 8,
+    "2h": 9,
+    "6h": null
+  },
+  "liveCountSampleAt": {
+    "1h": "2026-10-27T22:02:58.129Z",
+    "2h": "2026-10-27T23:03:21.862Z",
+    "6h": null
+  },
+  "firstOutletPublishAt": {
+    "at": "2026-10-27",
+    "precision": "approx",
+    "source": "prod-rv-publishDate",
+    "tierScope": "T1-T2"
+  },
+  "perReview": [
+    {
+      "key": "londontheatre1|chris omaweng",
+      "outlet": "LondonTheatre1",
+      "critic": "Chris Omaweng",
+      "tier": 2,
+      "publishAt": "2026-10-26",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-10-27T22:02:58.129Z",
+      "prevOkSampleAt": null,
+      "baseline": true,
+      "liveNow": true
+    },
+    {
+      "key": "london box office|stuart king",
+      "outlet": "London Box Office",
+      "critic": "Stuart King",
+      "tier": 2,
+      "publishAt": "2026-10-27",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-10-27T22:02:58.129Z",
+      "prevOkSampleAt": null,
+      "baseline": true,
+      "liveNow": true
+    },
+    {
+      "key": "broadwayworld|clementine scott",
+      "outlet": "BroadwayWorld",
+      "critic": "Clementine Scott",
+      "tier": 2,
+      "publishAt": "2026-10-26",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-10-27T22:02:58.129Z",
+      "prevOkSampleAt": null,
+      "baseline": true,
+      "liveNow": true
+    },
+    {
+      "key": "all that dazzles (uk)|sam woodward",
+      "outlet": "All That Dazzles (UK)",
+      "critic": "Sam Woodward",
+      "tier": 3,
+      "publishAt": "2026-10-27",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-10-27T22:02:58.129Z",
+      "prevOkSampleAt": null,
+      "baseline": true,
+      "liveNow": true
+    },
+    {
+      "key": "plays to see|jad adams",
+      "outlet": "Plays To See",
+      "critic": "Jad Adams",
+      "tier": 3,
+      "publishAt": "2026-10-27",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-10-27T22:02:58.129Z",
+      "prevOkSampleAt": null,
+      "baseline": true,
+      "liveNow": true
+    },
+    {
+      "key": "west end best friend|brian penn",
+      "outlet": "West End Best Friend",
+      "critic": "Brian Penn",
+      "tier": 3,
+      "publishAt": "2026-10-27",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-10-27T22:02:58.129Z",
+      "prevOkSampleAt": null,
+      "baseline": true,
+      "liveNow": true
+    },
+    {
+      "key": "jewishnews|jonathan baz",
+      "outlet": "Jewishnews",
+      "critic": "Jonathan Baz",
+      "tier": 3,
+      "publishAt": "2026-10-27",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-10-27T22:02:58.129Z",
+      "prevOkSampleAt": null,
+      "baseline": true,
+      "liveNow": true
+    },
+    {
+      "key": "the spy in the stalls|jonathan evans",
+      "outlet": "The Spy in the Stalls",
+      "critic": "Jonathan Evans",
+      "tier": 4,
+      "publishAt": "2026-10-27",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-10-27T22:02:58.129Z",
+      "prevOkSampleAt": null,
+      "baseline": true,
+      "liveNow": true
+    },
+    {
+      "key": "the reviews hub|unknown",
+      "outlet": "The Reviews Hub",
+      "critic": null,
+      "tier": 2,
+      "publishAt": "2026-10-27",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-10-27T22:58:01.827Z",
+      "prevOkSampleAt": "2026-10-27T22:53:01.424Z",
+      "baseline": false,
+      "liveNow": true
+    },
+    {
+      "key": "theatre and tonic|annie",
+      "outlet": "Theatre and Tonic",
+      "critic": "Annie",
+      "tier": 3,
+      "publishAt": "2026-10-27",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-10-27T23:58:25.192Z",
+      "prevOkSampleAt": "2026-10-27T23:53:24.496Z",
+      "baseline": false,
+      "liveNow": true
+    }
+  ],
+  "dropped": [],
+  "reference": {
+    "2h": {
+      "status": "no-census-yet",
+      "source": null,
+      "count": 0,
+      "covered": null,
+      "coverage": null,
+      "missing": [],
+      "liveCount": 9,
+      "fetchedAt": "2026-10-27T23:00:20.946Z",
+      "censusNote": "archive only"
+    },
+    "end": {
+      "status": "no-census-yet",
+      "source": null,
+      "count": 0,
+      "covered": null,
+      "coverage": null,
+      "missing": [],
+      "liveCount": 10,
+      "fetchedAt": "2026-10-28T03:00:20.427Z",
+      "censusNote": "archive only"
+    }
+  },
+  "fileState": {
+    "capturedAt": "2026-10-28T03:00:21.515Z",
+    "files": [
+      {
+        "file": "all-that-dazzles-uk--sam-woodward.json",
+        "outletId": "all-that-dazzles-uk",
+        "outlet": "All That Dazzles (UK)",
+        "critic": "Sam Woodward",
+        "firstSeenAt": "2026-10-27T16:08:01.933Z",
+        "publishDate": "2026-10-27",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "bestoftheatre--maria-boot.json",
+        "outletId": "bestoftheatre",
+        "outlet": "bestoftheatre",
+        "critic": "Maria Boot",
+        "firstSeenAt": "2026-10-22T14:13:42.407Z",
+        "publishDate": "2026-09-08",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "broadwayworld--clementine-scott.json",
+        "outletId": "broadwayworld",
+        "outlet": "BroadwayWorld",
+        "critic": "Clementine Scott",
+        "firstSeenAt": "2026-10-27T13:51:25.749Z",
+        "publishDate": "2026-10-26",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "frostmagazine--unknown.json",
+        "outletId": "frostmagazine",
+        "outlet": "frostmagazine",
+        "critic": "Unknown",
+        "firstSeenAt": "2026-10-28T02:52:49.967Z",
+        "publishDate": null,
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "jewishnews--jonathan-baz.json",
+        "outletId": "jewishnews",
+        "outlet": "Jewishnews",
+        "critic": "Jonathan Baz",
+        "firstSeenAt": "2026-10-27T13:51:36.817Z",
+        "publishDate": "2026-10-27",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "jonathan-baz--unknown.json",
+        "outletId": "jonathan-baz",
+        "outlet": "Jonathan Baz",
+        "critic": "Unknown",
+        "firstSeenAt": "2026-10-28T02:52:59.669Z",
+        "publishDate": null,
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "london-box-office--stuart-king.json",
+        "outletId": "london-box-office",
+        "outlet": "London Box Office",
+        "critic": "Stuart King",
+        "firstSeenAt": "2026-10-27T00:45:05.332Z",
+        "publishDate": "2026-10-27",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "londontheatre1--chris-omaweng.json",
+        "outletId": "londontheatre1",
+        "outlet": "LondonTheatre1",
+        "critic": "Chris Omaweng",
+        "firstSeenAt": "2026-10-27T13:51:43.462Z",
+        "publishDate": "2026-10-26",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "plays-to-see--jad-adams.json",
+        "outletId": "plays-to-see",
+        "outlet": "Plays To See",
+        "critic": "Jad Adams",
+        "firstSeenAt": "2026-10-27T16:10:43.721Z",
+        "publishDate": "2026-10-27",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "readaboutstuff--dan-english.json",
+        "outletId": "readaboutstuff",
+        "outlet": "readaboutstuff",
+        "critic": "Dan English",
+        "firstSeenAt": "2026-10-22T14:13:29.830Z",
+        "publishDate": "2026-10-15",
+        "includable": false,
+        "reason": "rejectionReason",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "the-spy-in-the-stalls--jonathan-evans.json",
+        "outletId": "the-spy-in-the-stalls",
+        "outlet": "The Spy in the Stalls",
+        "critic": "Jonathan Evans",
+        "firstSeenAt": "2026-10-27T13:51:31.031Z",
+        "publishDate": "2026-10-27",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "theatreandtonic--eleanor-bywater.json",
+        "outletId": "theatreandtonic",
+        "outlet": "Theatre and Tonic",
+        "critic": "Eleanor Bywater",
+        "firstSeenAt": "2026-10-27T22:10:37.049Z",
+        "publishDate": "2026-10-27",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "theqr--will-quinn.json",
+        "outletId": "theqr",
+        "outlet": "Theqr",
+        "critic": "Will Quinn",
+        "firstSeenAt": "2026-10-22T14:13:23.487Z",
+        "publishDate": "2026-10-20",
+        "includable": false,
+        "reason": "rejectionReason",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "thereviewshub--clare-doyle.json",
+        "outletId": "thereviewshub",
+        "outlet": "The Reviews Hub",
+        "critic": "Clare Doyle",
+        "firstSeenAt": "2026-10-27T21:19:09.447Z",
+        "publishDate": "2026-10-27",
+        "includable": false,
+        "reason": "duplicateOf",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "thereviewshub--the-reviews-hub-london.json",
+        "outletId": "thereviewshub",
+        "outlet": "The Reviews Hub",
+        "critic": "The Reviews Hub - London",
+        "firstSeenAt": "2026-10-27T21:19:09.447Z",
+        "publishDate": "2026-10-27",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "viewfromthegods--simon-jenner.json",
+        "outletId": "viewfromthegods",
+        "outlet": "View From The Gods",
+        "critic": "Simon Jenner",
+        "firstSeenAt": "2026-10-28T02:52:54.588Z",
+        "publishDate": "2026-10-27",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "west-end-best-friend--brian-penn.json",
+        "outletId": "west-end-best-friend",
+        "outlet": "West End Best Friend",
+        "critic": "Brian Penn",
+        "firstSeenAt": "2026-10-27T17:31:22.600Z",
+        "publishDate": "2026-10-27",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "west-end-wilma--westendwilma.json",
+        "outletId": "west-end-wilma",
+        "outlet": "West End Wilma",
+        "critic": "Westendwilma",
+        "firstSeenAt": "2026-10-22T14:13:36.796Z",
+        "publishDate": "2026-07-10",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null
+      }
+    ]
+  }
+}

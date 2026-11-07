@@ -1,0 +1,601 @@
+{
+  "issue": "BRO-6538",
+  "checkedAt": "2026-10-31T03:11:37.194Z",
+  "status": "partial; enumeration blocked; card remains incomplete",
+  "method": "Read-only triage of all 26 saved Stage gaps against current catalog categories and same-outlet, same-show normalized URL/explicit altUrls presence. Five current west-end candidates additionally checked against rendered article titles, venue labels and publication datelines. No metadata inferred from URLs. All five verified article dates fall in the existing census run window.",
+  "scope": "This card limits follow-up to existing shows with category=west-end. The broader London census also includes off-west-end. Out-of-scope rows are retained here for traceability, not removed from the original census. No new shows or review files added.",
+  "source": {
+    "report": "thestage.report.json",
+    "manifest": "thestage.manifest.json",
+    "generatedAt": "2026-10-29T06:45:41.827Z",
+    "reportSha256": "4a1f756f9a086ad4e62d7db354783cb7d7b6d75481bf2eb272ea9babe9dcb990",
+    "manifestSha256": "f8153a1d577dc90c8655a7de665e30e4a580a9f456787d30204170680fe1f235",
+    "archiveComplete": false,
+    "archiveEvidence": "Saved report only has seasons 2021-22 onward and has no CDX enumeration notes. Its historical source.incomplete=false is not evidence of archive completeness."
+  },
+  "totals": {
+    "savedGaps": 26,
+    "verifiedWestEndGaps": 5,
+    "outsideCardVenueScope": 20,
+    "staleShowIds": 1,
+    "nowHeld": 1,
+    "nowPublished": 1,
+    "verifiedPublicationDateDifferences": 3,
+    "showRecordsChanged": 0,
+    "reviewRecordsChanged": 0
+  },
+  "crossShowPresenceCheck": {
+    "method": "For the five verified gap URLs, check normalized URL and explicit altUrls across thestage--*.json files in every private show directory, plus all published thestage rows. This supplemental check does not cover nonstandard private filenames.",
+    "canonicalStageFilesChecked": 1771,
+    "privateUrlMatches": 0,
+    "publishedUrlMatches": 0
+  },
+  "outlets": [
+    {
+      "requestedId": "guardian",
+      "configuredId": "guardian",
+      "sourceKind": "guardian-api",
+      "reportExists": false,
+      "manifestExists": false,
+      "remaining": "Free source enumeration and local bucketing, then vet gaps"
+    },
+    {
+      "requestedId": "observer",
+      "configuredId": "observer",
+      "sourceKind": "guardian-api",
+      "reportExists": false,
+      "manifestExists": false,
+      "remaining": "Free source enumeration and local bucketing, then vet gaps"
+    },
+    {
+      "requestedId": "thestage",
+      "configuredId": "thestage",
+      "sourceKind": "composite",
+      "reportExists": true,
+      "manifestExists": true,
+      "remaining": "Free CDX archive enumeration before 2021-22, then vet new gaps"
+    },
+    {
+      "requestedId": "times-uk",
+      "configuredId": "times-uk",
+      "sourceKind": "unreadable",
+      "reportExists": false,
+      "manifestExists": false,
+      "remaining": "Free source enumeration and local bucketing, then vet gaps"
+    },
+    {
+      "requestedId": "telegraph",
+      "configuredId": "telegraph",
+      "sourceKind": "unreadable",
+      "reportExists": false,
+      "manifestExists": false,
+      "remaining": "Free source enumeration and local bucketing, then vet gaps"
+    },
+    {
+      "requestedId": "evening-standard",
+      "configuredId": "standard",
+      "sourceKind": "unreadable",
+      "reportExists": false,
+      "manifestExists": false,
+      "remaining": "Free source enumeration and local bucketing, then vet gaps"
+    },
+    {
+      "requestedId": "independent",
+      "configuredId": "independent",
+      "sourceKind": "unreadable",
+      "reportExists": false,
+      "manifestExists": false,
+      "remaining": "Free source enumeration and local bucketing, then vet gaps"
+    },
+    {
+      "requestedId": "ft",
+      "configuredId": "financialtimes",
+      "sourceKind": "unreadable",
+      "reportExists": false,
+      "manifestExists": false,
+      "remaining": "Free source enumeration and local bucketing, then vet gaps"
+    }
+  ],
+  "items": [
+    {
+      "url": "https://www.thestage.co.uk/reviews/448-psychosis-review-royal-opera",
+      "savedMatchedIds": [
+        "448-psychosis-off-west-end-2026"
+      ],
+      "savedPublishDate": "2026-10-19",
+      "savedDateSoft": true,
+      "currentShow": {
+        "id": "448-psychosis-off-west-end-2026",
+        "title": "448 Psychosis",
+        "category": "off-west-end",
+        "venue": "Southwark Playhouse"
+      },
+      "heldNow": false,
+      "publishedNow": false,
+      "decision": "outside-card-venue-scope"
+    },
+    {
+      "url": "https://www.thestage.co.uk/reviews/annie-wobbler-revisited-review-finborough-theatre-london",
+      "savedMatchedIds": [
+        "annie-wobbler-revisited-off-west-end-2026"
+      ],
+      "savedPublishDate": "2026-09-04",
+      "savedDateSoft": true,
+      "currentShow": {
+        "id": "annie-wobbler-revisited-off-west-end-2026",
+        "title": "Annie Wobbler Revisited",
+        "category": "off-west-end",
+        "venue": "Finborough Theatre"
+      },
+      "heldNow": false,
+      "publishedNow": false,
+      "decision": "outside-card-venue-scope"
+    },
+    {
+      "url": "https://www.thestage.co.uk/reviews/chat-noir-review-9-beaumont-avenue-london",
+      "savedMatchedIds": [
+        "chat-noir-off-west-end-2026"
+      ],
+      "savedPublishDate": "2026-08-14",
+      "savedDateSoft": true,
+      "currentShow": {
+        "id": "chat-noir-off-west-end-2026",
+        "title": "CHAT NOIR!",
+        "category": "off-west-end",
+        "venue": "The Lost Estate"
+      },
+      "heldNow": false,
+      "publishedNow": false,
+      "decision": "outside-card-venue-scope"
+    },
+    {
+      "url": "https://www.thestage.co.uk/reviews/firebird-review-southwark-playhouse-2026-phil-davies-marlie-haco",
+      "savedMatchedIds": [
+        "firebird-off-west-end-2026"
+      ],
+      "savedPublishDate": "2026-07-16",
+      "savedDateSoft": true,
+      "currentShow": {
+        "id": "firebird-off-west-end-2026",
+        "title": "Firebird",
+        "category": "off-west-end",
+        "venue": "Southwark Playhouse"
+      },
+      "heldNow": false,
+      "publishedNow": false,
+      "decision": "outside-card-venue-scope"
+    },
+    {
+      "url": "https://www.thestage.co.uk/reviews/blue-mist-review-stratford-east-london-2026-mohamed-zain-dada",
+      "savedMatchedIds": [
+        "blue-mist-off-west-end-2026"
+      ],
+      "savedPublishDate": "2026-07-13",
+      "savedDateSoft": true,
+      "currentShow": {
+        "id": "blue-mist-off-west-end-2026",
+        "title": "Blue Mist",
+        "category": "off-west-end",
+        "venue": "Theatre Royal Stratford East"
+      },
+      "heldNow": false,
+      "publishedNow": false,
+      "decision": "outside-card-venue-scope"
+    },
+    {
+      "url": "https://www.thestage.co.uk/reviews/noda-map-320f-review-sadlers-wells-london",
+      "savedMatchedIds": [
+        "noda-map-320f-west-end-2026"
+      ],
+      "savedPublishDate": "2026-07-09",
+      "savedDateSoft": true,
+      "currentShow": {
+        "id": "noda-map-320f-west-end-2026",
+        "title": "Noda Map – 320°F",
+        "category": "off-west-end",
+        "venue": "Sadler's Wells"
+      },
+      "heldNow": false,
+      "publishedNow": false,
+      "decision": "outside-card-venue-scope"
+    },
+    {
+      "url": "https://www.thestage.co.uk/reviews/we-had-a-world-review-hampstead-theatre-downstairs-london-joshua-harmon",
+      "savedMatchedIds": [
+        "we-had-a-world-off-west-end-2026"
+      ],
+      "savedPublishDate": "2026-06-17",
+      "savedDateSoft": true,
+      "currentShow": {
+        "id": "we-had-a-world-off-west-end-2026",
+        "title": "We Had A World",
+        "category": "off-west-end",
+        "venue": "Hampstead Theatre"
+      },
+      "heldNow": false,
+      "publishedNow": false,
+      "decision": "outside-card-venue-scope"
+    },
+    {
+      "url": "https://www.thestage.co.uk/reviews/redcliffe-review-southwark-playhouse-borough-london-jordan-luke-gage",
+      "savedMatchedIds": [
+        "redcliffe-off-west-end-2026"
+      ],
+      "savedPublishDate": "2026-05-28",
+      "savedDateSoft": true,
+      "currentShow": {
+        "id": "redcliffe-off-west-end-2026",
+        "title": "Redcliffe",
+        "category": "off-west-end",
+        "venue": "Southwark Playhouse"
+      },
+      "heldNow": false,
+      "publishedNow": false,
+      "decision": "outside-card-venue-scope"
+    },
+    {
+      "url": "https://www.thestage.co.uk/reviews/yamato-hito-no-chikara-the-power-of-human-strength-review-peacock-theatre-london",
+      "savedMatchedIds": [
+        "yamato-the-drummers-of-japan-hito-no-chikara-the-power-of-human-strength-off-west-end-2026"
+      ],
+      "savedPublishDate": "2026-05-13",
+      "savedDateSoft": true,
+      "currentShow": {
+        "id": "yamato-the-drummers-of-japan-hito-no-chikara-the-power-of-human-strength-off-west-end-2026",
+        "title": "Yamato, The Drummers of Japan: Hito no Chikara - The Power of Human Strength",
+        "category": "off-west-end",
+        "venue": "Peacock Theatre"
+      },
+      "heldNow": false,
+      "publishedNow": false,
+      "decision": "outside-card-venue-scope"
+    },
+    {
+      "url": "https://www.thestage.co.uk/reviews/foal-review-finborough-theatre-london",
+      "savedMatchedIds": [
+        "foal-off-west-end-2026"
+      ],
+      "savedPublishDate": "2026-05-11",
+      "savedDateSoft": true,
+      "currentShow": {
+        "id": "foal-off-west-end-2026",
+        "title": "Foal",
+        "category": "off-west-end",
+        "venue": "Finborough Theatre"
+      },
+      "heldNow": false,
+      "publishedNow": false,
+      "decision": "outside-card-venue-scope"
+    },
+    {
+      "url": "https://www.thestage.co.uk/reviews/two-halves-of-guinness-review-park-theatre-london",
+      "savedMatchedIds": [
+        "two-halves-of-guinness-off-west-end-2026"
+      ],
+      "savedPublishDate": "2026-04-23",
+      "savedDateSoft": true,
+      "currentShow": {
+        "id": "two-halves-of-guinness-off-west-end-2026",
+        "title": "Two Halves of Guinness",
+        "category": "off-west-end",
+        "venue": "Park Theatre"
+      },
+      "heldNow": false,
+      "publishedNow": false,
+      "decision": "outside-card-venue-scope"
+    },
+    {
+      "url": "https://www.thestage.co.uk/reviews/lifeline-review-southwark-playhouse-elephant-london",
+      "savedMatchedIds": [
+        "lifeline-off-west-end-2026"
+      ],
+      "savedPublishDate": "2026-04-13",
+      "savedDateSoft": true,
+      "currentShow": {
+        "id": "lifeline-off-west-end-2026",
+        "title": "Lifeline",
+        "category": "off-west-end",
+        "venue": "Southwark Playhouse Elephant"
+      },
+      "heldNow": false,
+      "publishedNow": false,
+      "decision": "outside-card-venue-scope"
+    },
+    {
+      "url": "https://www.thestage.co.uk/reviews/in-the-print-review-rupert-murdoch-kings-head-london",
+      "savedMatchedIds": [
+        "in-the-print-off-west-end-2026"
+      ],
+      "savedPublishDate": "2026-04-01",
+      "savedDateSoft": true,
+      "currentShow": {
+        "id": "in-the-print-off-west-end-2026",
+        "title": "In The Print",
+        "category": "off-west-end",
+        "venue": "King's Head Theatre"
+      },
+      "heldNow": false,
+      "publishedNow": false,
+      "decision": "outside-card-venue-scope"
+    },
+    {
+      "url": "https://www.thestage.co.uk/reviews/the-old-ladies-review-finborough-theatre-london",
+      "savedMatchedIds": [
+        "the-old-ladies-off-west-end-2026"
+      ],
+      "savedPublishDate": "2026-03-30",
+      "savedDateSoft": true,
+      "currentShow": {
+        "id": "the-old-ladies-off-west-end-2026",
+        "title": "The Old Ladies",
+        "category": "off-west-end",
+        "venue": "Finborough Theatre"
+      },
+      "heldNow": false,
+      "publishedNow": false,
+      "decision": "outside-card-venue-scope"
+    },
+    {
+      "url": "https://www.thestage.co.uk/reviews/ancient-grease-review-the-vaults-london-lady-aria-grey-dan-wye",
+      "savedMatchedIds": [
+        "ancient-grease-off-west-end-2026"
+      ],
+      "savedPublishDate": "2026-03-18",
+      "savedDateSoft": true,
+      "currentShow": {
+        "id": "ancient-grease-off-west-end-2026",
+        "title": "Ancient Grease",
+        "category": "off-west-end",
+        "venue": "The Vaults Theatre"
+      },
+      "heldNow": false,
+      "publishedNow": false,
+      "decision": "outside-card-venue-scope"
+    },
+    {
+      "url": "https://www.thestage.co.uk/reviews/blink-review-kings-head-theatre-london-phil-porter",
+      "savedMatchedIds": [
+        "blink-off-west-end-2026"
+      ],
+      "savedPublishDate": "2026-03-03",
+      "savedDateSoft": true,
+      "currentShow": {
+        "id": "blink-off-west-end-2026",
+        "title": "Blink",
+        "category": "off-west-end",
+        "venue": "King's Head Theatre"
+      },
+      "heldNow": false,
+      "publishedNow": false,
+      "decision": "outside-card-venue-scope"
+    },
+    {
+      "url": "https://www.thestage.co.uk/reviews/children-of-the-night-review-cast-doncaster",
+      "savedMatchedIds": [
+        "children-of-the-night-off-west-end-2026"
+      ],
+      "savedPublishDate": "2026-02-11",
+      "savedDateSoft": true,
+      "currentShow": {
+        "id": "children-of-the-night-off-west-end-2026",
+        "title": "Children of the Night",
+        "category": "off-west-end",
+        "venue": "Southwark Playhouse Borough"
+      },
+      "heldNow": false,
+      "publishedNow": false,
+      "decision": "outside-card-venue-scope"
+    },
+    {
+      "url": "https://www.thestage.co.uk/reviews/dear-liar-review-jermyn-street-theatre",
+      "savedMatchedIds": [
+        "dear-liar-off-west-end-2026"
+      ],
+      "savedPublishDate": "2026-02-11",
+      "savedDateSoft": true,
+      "currentShow": {
+        "id": "dear-liar-off-west-end-2026",
+        "title": "Dear Liar",
+        "category": "off-west-end",
+        "venue": "Jermyn Street Theatre"
+      },
+      "heldNow": false,
+      "publishedNow": false,
+      "decision": "outside-card-venue-scope"
+    },
+    {
+      "url": "https://www.thestage.co.uk/reviews/maggots-review-studio-bush-theatre-london",
+      "savedMatchedIds": [
+        "maggots-west-end-2026"
+      ],
+      "savedPublishDate": "2026-02-04",
+      "savedDateSoft": true,
+      "currentShow": null,
+      "heldNow": false,
+      "publishedNow": false,
+      "decision": "stale-show-id"
+    },
+    {
+      "url": "https://www.thestage.co.uk/reviews/already-perfect-review-kings-head-theatre-london-levi-kreis",
+      "savedMatchedIds": [
+        "already-perfect-off-west-end-2026"
+      ],
+      "savedPublishDate": "2026-01-16",
+      "savedDateSoft": true,
+      "currentShow": {
+        "id": "already-perfect-off-west-end-2026",
+        "title": "Already Perfect",
+        "category": "off-west-end",
+        "venue": "King's Head Theatre"
+      },
+      "heldNow": false,
+      "publishedNow": false,
+      "decision": "outside-card-venue-scope"
+    },
+    {
+      "url": "https://www.thestage.co.uk/reviews/the-39-steps-review-trafalgar-theatre-london-patrick-barlow-tom-byrne-safeena-ladha",
+      "savedMatchedIds": [
+        "the-39-steps-west-end-2024"
+      ],
+      "savedPublishDate": "2024-08-20",
+      "savedDateSoft": true,
+      "currentShow": {
+        "id": "the-39-steps-west-end-2024",
+        "title": "The 39 Steps",
+        "category": "west-end",
+        "venue": "Trafalgar Theatre"
+      },
+      "heldNow": false,
+      "publishedNow": false,
+      "decision": "verified-gap",
+      "articleHeader": {
+        "title": "The 39 Steps",
+        "venue": "Trafalgar Theatre, London",
+        "publishDate": "2024-08-20",
+        "evidence": "Rendered article heading and Reviews dateline, checked with web tool on 2026-10-31"
+      },
+      "verifiedDateInRunWindow": true,
+      "publishDateDiffersFromSaved": false
+    },
+    {
+      "url": "https://www.thestage.co.uk/reviews/your-lie-in-april-review-manga-harold-pinter-theatre-london-naoshi-arakawa-frank-wildhorn",
+      "savedMatchedIds": [
+        "your-lie-in-april-west-end-2024"
+      ],
+      "savedPublishDate": "2024-07-09",
+      "savedDateSoft": true,
+      "currentShow": {
+        "id": "your-lie-in-april-west-end-2024",
+        "title": "Your Lie in April",
+        "category": "west-end",
+        "venue": "Harold Pinter Theatre"
+      },
+      "heldNow": false,
+      "publishedNow": false,
+      "decision": "verified-gap",
+      "articleHeader": {
+        "title": "Your Lie in April",
+        "venue": "Harold Pinter Theatre, London",
+        "publishDate": "2024-07-08",
+        "evidence": "Rendered article heading and Reviews dateline, checked with web tool on 2026-10-31"
+      },
+      "verifiedDateInRunWindow": true,
+      "publishDateDiffersFromSaved": true
+    },
+    {
+      "url": "https://www.thestage.co.uk/reviews/sister-act-review-dominion-theatre-london-alan-menken-bill-buckhurst-beverley-knight-ruth-jones-lesley-joseph",
+      "savedMatchedIds": [
+        "sister-act-west-end-2024"
+      ],
+      "savedPublishDate": "2024-03-25",
+      "savedDateSoft": true,
+      "currentShow": {
+        "id": "sister-act-west-end-2024",
+        "title": "Sister Act",
+        "category": "west-end",
+        "venue": "Dominion Theatre"
+      },
+      "heldNow": false,
+      "publishedNow": false,
+      "decision": "verified-gap",
+      "articleHeader": {
+        "title": "Sister Act",
+        "venue": "Dominion Theatre, London",
+        "publishDate": "2024-03-25",
+        "evidence": "Rendered article heading and Reviews dateline, checked with web tool on 2026-10-31"
+      },
+      "verifiedDateInRunWindow": true,
+      "publishDateDiffersFromSaved": false
+    },
+    {
+      "url": "https://www.thestage.co.uk/reviews/bronco-billy-the-musical-review-charing-cross-theatre-london-clint-eastwood-dennis-hackin-hunter-bird-tarinn-callender-victoria-hamilton-barritt-emily-benjamin",
+      "savedMatchedIds": [
+        "bronco-billy-the-musical-west-end-2024"
+      ],
+      "savedPublishDate": "2024-02-05",
+      "savedDateSoft": true,
+      "currentShow": {
+        "id": "bronco-billy-the-musical-west-end-2024",
+        "title": "Bronco Billy – The Musical",
+        "category": "off-west-end",
+        "venue": "Charing Cross Theatre"
+      },
+      "heldNow": true,
+      "publishedNow": true,
+      "decision": "outside-card-venue-scope"
+    },
+    {
+      "url": "https://www.thestage.co.uk/reviews/baghdaddy-review-at-royal-court-jerwood-theatre-downstairs",
+      "savedMatchedIds": [
+        "baghdaddy-west-end-2022"
+      ],
+      "savedPublishDate": "2022-11-29",
+      "savedDateSoft": true,
+      "currentShow": {
+        "id": "baghdaddy-west-end-2022",
+        "title": "Baghdaddy",
+        "category": "west-end",
+        "venue": "Royal Court"
+      },
+      "heldNow": false,
+      "publishedNow": false,
+      "decision": "verified-gap",
+      "articleHeader": {
+        "title": "Baghdaddy",
+        "venue": "Royal Court, Jerwood Theatre Downstairs, London",
+        "publishDate": "2022-11-28",
+        "evidence": "Rendered article heading and Reviews dateline, checked with web tool on 2026-10-31"
+      },
+      "verifiedDateInRunWindow": true,
+      "publishDateDiffersFromSaved": true
+    },
+    {
+      "url": "https://www.thestage.co.uk/reviews/pride-and-prejudice-sort-of-isobel-mcarthur-criterion-theatre",
+      "savedMatchedIds": [
+        "pride-and-prejudice-sort-of-west-end-2021"
+      ],
+      "savedPublishDate": "2021-11-12",
+      "savedDateSoft": true,
+      "currentShow": {
+        "id": "pride-and-prejudice-sort-of-west-end-2021",
+        "title": "Pride and Prejudice* (*sort of)",
+        "category": "west-end",
+        "venue": "Criterion Theatre"
+      },
+      "heldNow": false,
+      "publishedNow": false,
+      "decision": "verified-gap",
+      "articleHeader": {
+        "title": "Pride and Prejudice* (*Sort Of)",
+        "venue": "Criterion Theatre, London",
+        "publishDate": "2021-11-03",
+        "evidence": "Rendered article heading and Reviews dateline, checked with web tool on 2026-10-31"
+      },
+      "verifiedDateInRunWindow": true,
+      "publishDateDiffersFromSaved": true
+    }
+  ],
+  "blockers": [
+    {
+      "operation": "cloud-run-script enumeration",
+      "command": "node scripts/cloud-run-script.js --review-texts scripts/outlet-census.js --market=london --outlet=guardian --emit-items --enumerate-only",
+      "error": "Could not dispatch run-script.yml: To get started with GitHub CLI, please run: gh auth login"
+    },
+    {
+      "operation": "Direct Guardian API, Wayback CDX and newspaper access",
+      "error": "HTTP 403: Blocked by egress policy"
+    }
+  ],
+  "remaining": [
+    "Generate seven missing reports and manifests using free enumeration; probe unreadable newspaper sources from an authenticated CI environment first.",
+    "Complete The Stage CDX archive enumeration and vet the newly discovered gaps.",
+    "Vet the seven missing outlet enumerations for existing West End shows.",
+    "Strict data validation fails on missing images for bernarda-regional-2023 and happy-days-are-here-again-regional-2024."
+  ],
+  "cost": {
+    "paidFetches": 0,
+    "llmCalls": 0,
+    "newCronJobs": 0,
+    "note": "Five free article-header reads through the web tool; blocked direct probes and dispatch did not generate enumerations. No new runtime API calls."
+  }
+}

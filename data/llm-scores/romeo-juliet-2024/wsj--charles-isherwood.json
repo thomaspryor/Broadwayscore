@@ -1,0 +1,37 @@
+{
+  "showId": "romeo-juliet-2024",
+  "outletId": "wsj",
+  "outlet": "Wall Street Journal",
+  "criticName": "Charles Isherwood",
+  "score": 42,
+  "bucket": "Negative",
+  "thumb": "Down",
+  "confidence": "medium",
+  "keyPhrases": [
+    {
+      "text": "raucous riot of a production",
+      "sentiment": "negative"
+    },
+    {
+      "text": "teddy-bear picnic—with ecstasy as party favors",
+      "sentiment": "negative"
+    },
+    {
+      "text": "awash in stuffed bears",
+      "sentiment": "negative"
+    }
+  ],
+  "reasoning": "Review opens with dismissive, mocking tone comparing the production to a 'teddy-bear picnic with ecstasy as party favors.' The phrase 'raucous riot' suggests chaos rather than artistic merit. The focus on stuffed bears implies the production relies on gimmicks over substance. Overall tone is sardonic and critical.",
+  "flags": [
+    {
+      "type": "bww_thumb_mismatch",
+      "bwwThumb": "Up",
+      "llmThumb": "Down"
+    }
+  ],
+  "scoredAt": "2026-02-21T03:54:21.795Z",
+  "promptVersion": "3.0.0-calibrated",
+  "originalScore": null,
+  "dtliThumb": null,
+  "bwwThumb": "Up"
+}

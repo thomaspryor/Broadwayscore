@@ -1,0 +1,226 @@
+{
+  "issueNumber": "bro-6742-f",
+  "planId": "a8d47fe2-e161-4e8b-b561-ada040148663",
+  "status": "applied",
+  "createdAt": "2026-11-01T03:53:13.130Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6742 plan f: 6 read-confirmed CV not-a-review false drops; re-ingest 3 LSA reviews that lack url/date",
+    "steps": [
+      "Read-confirmed: CultureSauce review: evaluative close (powerful punch, memorable scene)",
+      "Clear CV not-a-review label on a real review",
+      "Read-confirmed: TheaterMania review: evaluative lede (tough-skinned yet heart-tugging)",
+      "Clear CV not-a-review label on a real review",
+      "Read-confirmed: CultureSauce review: evaluative lede (unbelievably timely drama)",
+      "Clear CV not-a-review label on a real review",
+      "Read-confirmed: TheaterMania review: evaluative lede (electrifying new drama)",
+      "Clear CV not-a-review label on a real review",
+      "Read-confirmed: Theater Scene review: evaluative close (unique theatrical experience)",
+      "Clear CV not-a-review label on a real review",
+      "Read-confirmed: WhatsOnStage review; CV reason (cookie text) does not match the stored body, which praises performances",
+      "Clear CV not-a-review label on a real review",
+      "Re-ingest the LSA review: stored file has text and score but no url/date; the headline-venue date fallback (BRO-6742) now dates it to opening",
+      "Re-ingest the LSA review: stored file has text and score but no url/date; the headline-venue date fallback (BRO-6742) now dates it to opening",
+      "Re-ingest the LSA review: stored file has text and score but no url/date; the headline-venue date fallback (BRO-6742) now dates it to opening"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "seagull-true-story-off-broadway-2026/culturesauce--thom-geier.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Read-confirmed: CultureSauce review: evaluative close (powerful punch, memorable scene)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "seagull-true-story-off-broadway-2026/culturesauce--thom-geier.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Clear CV not-a-review label on a real review"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-monsters-off-broadway-2026/theatermania--pete-hempstead.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Read-confirmed: TheaterMania review: evaluative lede (tough-skinned yet heart-tugging)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-monsters-off-broadway-2026/theatermania--pete-hempstead.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Clear CV not-a-review label on a real review"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "data-off-broadway-2026/culturesauce--thom-geier.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Read-confirmed: CultureSauce review: evaluative lede (unbelievably timely drama)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "data-off-broadway-2026/culturesauce--thom-geier.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Clear CV not-a-review label on a real review"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "data-off-broadway-2026/theatermania--zachary-stewart.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Read-confirmed: TheaterMania review: evaluative lede (electrifying new drama)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "data-off-broadway-2026/theatermania--zachary-stewart.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Clear CV not-a-review label on a real review"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "rheology-off-broadway-2026/theater-scene--victor-gluck.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Read-confirmed: Theater Scene review: evaluative close (unique theatrical experience)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "rheology-off-broadway-2026/theater-scene--victor-gluck.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Clear CV not-a-review label on a real review"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "high-noon-west-end-2025/whatsonstage--sarah-crompton.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Read-confirmed: WhatsOnStage review; CV reason (cookie text) does not match the stored body, which praises performances"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "high-noon-west-end-2025/whatsonstage--sarah-crompton.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Clear CV not-a-review label on a real review"
+      },
+      {
+        "type": "run-script",
+        "description": "Re-ingest the LSA review: stored file has text and score but no url/date; the headline-venue date fallback (BRO-6742) now dates it to opening",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=giant-2026 --url=http://www.lightingandsoundamerica.com/news/story.asp?ID=TCKSKA"
+      },
+      {
+        "type": "run-script",
+        "description": "Re-ingest the LSA review: stored file has text and score but no url/date; the headline-venue date fallback (BRO-6742) now dates it to opening",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=marjorie-prime-2025 --url=http://www.lightingandsoundamerica.com/news/story.asp?ID=OMULRL"
+      },
+      {
+        "type": "run-script",
+        "description": "Re-ingest the LSA review: stored file has text and score but no url/date; the headline-venue date fallback (BRO-6742) now dates it to opening",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=oedipus-2025 --url=http://www.lightingandsoundamerica.com/news/story.asp?ID=-CYSJJU"
+      }
+    ]
+  },
+  "executedAt": "2026-11-01T04:02:34.138Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "seagull-true-story-off-broadway-2026/culturesauce--thom-geier.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "seagull-true-story-off-broadway-2026/culturesauce--thom-geier.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-monsters-off-broadway-2026/theatermania--pete-hempstead.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-monsters-off-broadway-2026/theatermania--pete-hempstead.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "data-off-broadway-2026/culturesauce--thom-geier.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "data-off-broadway-2026/culturesauce--thom-geier.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "data-off-broadway-2026/theatermania--zachary-stewart.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "data-off-broadway-2026/theatermania--zachary-stewart.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "rheology-off-broadway-2026/theater-scene--victor-gluck.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "rheology-off-broadway-2026/theater-scene--victor-gluck.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "high-noon-west-end-2025/whatsonstage--sarah-crompton.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "high-noon-west-end-2025/whatsonstage--sarah-crompton.json isNonReview: true -> false"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    }
+  ],
+  "executedIn": "ci"
+}

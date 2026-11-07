@@ -1,0 +1,89 @@
+name: Owner Decision Emails
+
+# BRO-6147: one transactional email per owner decision, with tap-to-answer
+# buttons that open the signed confirm page (src/app/api/owner-decision).
+# Also sweeps "ANSWER:" replies typed on a card into the same record path,
+# and re-sends a roundup of decisions that sat unanswered for 3+ days.
+# Replaces the daily batched step that lived in data-health-check.yml.
+# Owner address only (OWNER_EMAIL), Resend /emails, never a broadcast.
+
+on:
+  schedule:
+    - cron: '7,27,47 * * * *'
+    - cron: '17 15 */3 * *'  # roundup of decisions still waiting
+  workflow_dispatch:
+    inputs:
+      redispatched:
+        # redispatch-after-hours: 0.75  (BRO-6351: GitHub dropped this schedule, 4 runs in 17h; an owner decision must not wait on it)
+        # Set by scripts/cron-redispatch.js when no run was created in the band. A redispatched run is
+        # the 20-minute tick, never the 3-day roundup. Safe to repeat: per-card told marker + Resend idempotency keys.
+        description: 'Internal: re-dispatch of a dropped scheduled run (behaves like the 20-min tick)'
+        required: false
+        default: 'false'
+        type: string
+      only:
+        description: 'Only this card (BRO-N)'
+        required: false
+        type: string
+        default: ''
+      dry_run:
+        description: 'Dry run (no email, no Linear writes)'
+        required: false
+        type: boolean
+        default: false
+      roundup:
+        description: 'Send the roundup of still-waiting decisions'
+        required: false
+        type: boolean
+        default: false
+
+concurrency:
+  group: owner-decision-emails
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  send:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: ./.github/actions/setup-node
+
+      - name: Send decision emails
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          APPROVAL_HMAC_SECRET: ${{ secrets.APPROVAL_HMAC_SECRET }}
+          ONLY: ${{ github.event.inputs.only }}
+          DRY_RUN: ${{ github.event.inputs.dry_run }}
+          ROUNDUP: ${{ github.event.inputs.roundup }}
+          REDISPATCHED: ${{ inputs.redispatched }}
+          SCHEDULE: ${{ github.event.schedule }}
+        run: |
+          args=""
+          if [ "$DRY_RUN" = "true" ]; then args="$args --dry-run"; fi
+          if [ -n "$ONLY" ]; then
+            if ! printf '%s' "$ONLY" | grep -Eq '^BRO-[0-9]+$'; then echo "bad card id"; exit 1; fi
+            args="$args --only=$ONLY"
+          fi
+          # A redispatched run replaces a dropped 20-min tick, so it never counts as the roundup cron
+          # (SCHEDULE is empty on a dispatch anyway). An explicit roundup=true still wins. A dropped
+          # 3-day roundup is not replaced: the 20-min runs keep the band clock fresh.
+          if [ "$ROUNDUP" = "true" ] || { [ "$REDISPATCHED" != "true" ] && [ "$SCHEDULE" = "17 15 */3 * *" ]; }; then args="$args --roundup"; fi
+          node scripts/send-owner-decision-emails.js $args
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Owner Decision Emails Failed'
+          severity: 'warning'

@@ -1,0 +1,328 @@
+{
+  "issueNumber": "bro-4317-a-01",
+  "planId": "d5341abf-3f61-498b-a320-f1ceaa40627f",
+  "status": "applied",
+  "createdAt": "2026-10-13T00:58:15.174Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4317 part 1/4: rehome review-text files from folders with no shows.json id (rebuild skips them) into the production whose run window holds the review's publishDate; drop exact duplicates of files the target already holds.",
+    "steps": [
+      "move and-juliet/theater-life--paulanne-simmons.json -> and-juliet-2022/theater-life--paulanne-simmons.json",
+      "move appropriate/theater-life--patrick-christiano.json -> appropriate-2023/theater-life--patrick-christiano.json",
+      "delete bug/nysr--roma-torre.json",
+      "move bug/theater-life--david-sheward.json -> bug-2026/theater-life--david-sheward.json",
+      "move doubt/theater-life--paulanne-simmons.json -> doubt-2024/theater-life--paulanne-simmons.json",
+      "delete doubt-a-parable/broadwaynews--brittani-samuel.json",
+      "delete doubt-a-parable/deadline--greg-evans.json",
+      "delete doubt-a-parable/ew--dalton-ross.json",
+      "delete doubt-a-parable/nypost--johnny-oleksinski.json",
+      "delete doubt-a-parable/nytg--gillian-russo.json",
+      "delete doubt-a-parable/nytimes--jesse-green.json",
+      "delete doubt-a-parable/theatermania--zachary-stewart.json",
+      "delete doubt-a-parable/theatrely--juan-a-ramirez.json",
+      "delete doubt-a-parable/thewrap--jd-knapp.json",
+      "delete doubt-a-parable/timeout--adam-feldman.json",
+      "delete doubt-a-parable/vulture--sara-holdren.json",
+      "delete doubt-a-parable/wsj--charles-isherwood.json",
+      "delete every-brilliant-thing/nysr--frank-scheck.json",
+      "delete every-brilliant-thing/nysr--steven-suskin.json",
+      "move heathers-the-musical-off-broadway/theater-life--david-sheward.json -> heathers-the-musical-off-broadway-2025/theater-life--david-sheward.json",
+      "move just-in-time/theater-life--samuel-l-leiter.json -> just-in-time-2025/theater-life--samuel-l-leiter.json",
+      "move moulin-rouge/theater-life--isa-goldberg.json -> moulin-rouge-2019/theater-life--isa-goldberg.json",
+      "delete moulin-rouge-the-musical-review/amny--matt-windman.json",
+      "delete moulin-rouge-the-musical-review/deadline--greg-evans.json",
+      "delete oh-mary/theater-life--david-sheward.json"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "and-juliet/theater-life--paulanne-simmons.json",
+        "destPath": "and-juliet-2022/theater-life--paulanne-simmons.json",
+        "description": "and-juliet/ is not a shows.json id, so rebuild skipped this review. publishDate 2022-11-22T22:37:03 falls only inside and-juliet-2022 (run 2022-11-17..2027-01-03); no same-named file there."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "appropriate/theater-life--patrick-christiano.json",
+        "destPath": "appropriate-2023/theater-life--patrick-christiano.json",
+        "description": "appropriate/ is not a shows.json id, so rebuild skipped this review. publishDate 2024-02-05T18:42:44 falls only inside appropriate-2023 (run 2023-12-18..2024-06-30); no same-named file there."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "bug/nysr--roma-torre.json",
+        "description": "Orphan copy (bug/ is not a shows.json id) of bug-2026/nysr--roma-torre.json: same url, publishDate 2026-01-08T20:29:17 inside bug-2026's run; the kept copy is complete 4312 chars vs this complete 4312."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "bug/theater-life--david-sheward.json",
+        "destPath": "bug-2026/theater-life--david-sheward.json",
+        "description": "bug/ is not a shows.json id, so rebuild skipped this review. publishDate 2026-01-08T22:48:20 falls only inside bug-2026 (run 2026-01-08..2026-03-08); no same-named file there."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "doubt/theater-life--paulanne-simmons.json",
+        "destPath": "doubt-2024/theater-life--paulanne-simmons.json",
+        "description": "doubt/ is not a shows.json id, so rebuild skipped this review. publishDate 2024-03-13T22:28:28 falls only inside doubt-2024 (run 2024-03-07..2024-04-21); no same-named file there."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "doubt-a-parable/broadwaynews--brittani-samuel.json",
+        "description": "Orphan copy (doubt-a-parable/ is not a shows.json id) of doubt-2024/broadwaynews--brittani-samuel.json: same url, publishDate March 8, 2024 inside doubt-2024's run; the kept copy is complete 2138 chars vs this untiered 0."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "doubt-a-parable/deadline--greg-evans.json",
+        "description": "Orphan copy (doubt-a-parable/ is not a shows.json id) of doubt-2024/deadline--greg-evans.json: same url, publishDate March 7, 2024 inside doubt-2024's run; the kept copy is complete 4612 chars vs this untiered 0."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "doubt-a-parable/ew--dalton-ross.json",
+        "description": "Orphan copy (doubt-a-parable/ is not a shows.json id) of doubt-2024/ew--dalton-ross.json: same url, publishDate March 7, 2024 inside doubt-2024's run; the kept copy is complete 5642 chars vs this untiered 0."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "doubt-a-parable/nypost--johnny-oleksinski.json",
+        "description": "Orphan copy (doubt-a-parable/ is not a shows.json id) of doubt-2024/nypost--johnny-oleksinski.json: same url, publishDate March 7, 2024 inside doubt-2024's run; the kept copy is complete 3715 chars vs this untiered 0."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "doubt-a-parable/nytg--gillian-russo.json",
+        "description": "Orphan copy (doubt-a-parable/ is not a shows.json id) of doubt-2024/nytg--gillian-russo.json: same url, publishDate March 7, 2024 inside doubt-2024's run; the kept copy is complete 5009 chars vs this untiered 0."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "doubt-a-parable/nytimes--jesse-green.json",
+        "description": "Orphan copy (doubt-a-parable/ is not a shows.json id) of doubt-2024/nytimes--jesse-green.json: same url, publishDate March 7, 2024 inside doubt-2024's run; the kept copy is complete 6912 chars vs this untiered 0."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "doubt-a-parable/theatermania--zachary-stewart.json",
+        "description": "Orphan copy (doubt-a-parable/ is not a shows.json id) of doubt-2024/theatermania--zachary-stewart.json: same url, publishDate March 7, 2024 inside doubt-2024's run; the kept copy is complete 6455 chars vs this untiered 0."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "doubt-a-parable/theatrely--juan-a-ramirez.json",
+        "description": "Orphan copy (doubt-a-parable/ is not a shows.json id) of doubt-2024/theatrely--juan-a-ramirez.json: same url, publishDate March 7, 2024 inside doubt-2024's run; the kept copy is complete 3634 chars vs this untiered 0."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "doubt-a-parable/thewrap--jd-knapp.json",
+        "description": "Orphan copy (doubt-a-parable/ is not a shows.json id) of doubt-2024/thewrap--jd-knapp.json: same url, publishDate March 7, 2024 inside doubt-2024's run; the kept copy is complete 3149 chars vs this untiered 0."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "doubt-a-parable/timeout--adam-feldman.json",
+        "description": "Orphan copy (doubt-a-parable/ is not a shows.json id) of doubt-2024/timeout--adam-feldman.json: same url, publishDate March 7, 2024 inside doubt-2024's run; the kept copy is complete 4655 chars vs this untiered 0."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "doubt-a-parable/vulture--sara-holdren.json",
+        "description": "Orphan copy (doubt-a-parable/ is not a shows.json id) of doubt-2024/vulture--sara-holdren.json: same url, publishDate March 7, 2024 inside doubt-2024's run; the kept copy is complete 9782 chars vs this untiered 0."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "doubt-a-parable/wsj--charles-isherwood.json",
+        "description": "Orphan copy (doubt-a-parable/ is not a shows.json id) of doubt-2024/wsj--charles-isherwood.json: same url, publishDate March 7, 2024 inside doubt-2024's run; the kept copy is complete 5455 chars vs this untiered 0."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "every-brilliant-thing/nysr--frank-scheck.json",
+        "description": "Orphan copy (every-brilliant-thing/ is not a shows.json id) of every-brilliant-thing-2026/nysr--frank-scheck.json: same url, publishDate 2026-03-12T22:59:32 inside every-brilliant-thing-2026's run; the kept copy is complete 3970 chars vs this complete 3970."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "every-brilliant-thing/nysr--steven-suskin.json",
+        "description": "Orphan copy (every-brilliant-thing/ is not a shows.json id) of every-brilliant-thing-2026/nysr--steven-suskin.json: same url, publishDate 2026-03-12T23:00:30 inside every-brilliant-thing-2026's run; the kept copy is complete 5647 chars vs this complete 5647."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "heathers-the-musical-off-broadway/theater-life--david-sheward.json",
+        "destPath": "heathers-the-musical-off-broadway-2025/theater-life--david-sheward.json",
+        "description": "heathers-the-musical-off-broadway/ is not a shows.json id, so rebuild skipped this review. publishDate 2025-07-11T09:27:08 falls only inside heathers-the-musical-off-broadway-2025 (run 2025-06-30..2026-11-08); no same-named file there."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "just-in-time/theater-life--samuel-l-leiter.json",
+        "destPath": "just-in-time-2025/theater-life--samuel-l-leiter.json",
+        "description": "just-in-time/ is not a shows.json id, so rebuild skipped this review. publishDate 2025-05-03T19:28:02 falls only inside just-in-time-2025 (run 2025-04-26..2027-02-07); no same-named file there."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "moulin-rouge/theater-life--isa-goldberg.json",
+        "destPath": "moulin-rouge-2019/theater-life--isa-goldberg.json",
+        "description": "moulin-rouge/ is not a shows.json id, so rebuild skipped this review. publishDate 2019-08-09T08:00:41 falls only inside moulin-rouge-2019 (run 2019-07-25..2026-08-30); no same-named file there."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "moulin-rouge-the-musical-review/amny--matt-windman.json",
+        "description": "Orphan copy (moulin-rouge-the-musical-review/ is not a shows.json id) of moulin-rouge-2019/amny--matt-windman.json: same url, publishDate July 25, 2019 inside moulin-rouge-2019's run; the kept copy is complete 3933 chars vs this untiered 0."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "moulin-rouge-the-musical-review/deadline--greg-evans.json",
+        "description": "Orphan copy (moulin-rouge-the-musical-review/ is not a shows.json id) of moulin-rouge-2019/deadline--greg-evans.json: same url, publishDate July 25, 2019 inside moulin-rouge-2019's run; the kept copy is complete 6502 chars vs this untiered 0."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "oh-mary/theater-life--david-sheward.json",
+        "description": "Orphan copy (oh-mary/ is not a shows.json id) of oh-mary-off-broadway-2024/theater-life--david-sheward.json: same url, publishDate 2024-02-11T14:18:21 inside oh-mary-off-broadway-2024's run; the kept copy is complete 3452 chars vs this complete 3452."
+      }
+    ]
+  },
+  "executedAt": "2026-10-13T01:45:11.405Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved and-juliet/theater-life--paulanne-simmons.json → and-juliet-2022/theater-life--paulanne-simmons.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved appropriate/theater-life--patrick-christiano.json → appropriate-2023/theater-life--patrick-christiano.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted bug/nysr--roma-torre.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved bug/theater-life--david-sheward.json → bug-2026/theater-life--david-sheward.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved doubt/theater-life--paulanne-simmons.json → doubt-2024/theater-life--paulanne-simmons.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted doubt-a-parable/broadwaynews--brittani-samuel.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted doubt-a-parable/deadline--greg-evans.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted doubt-a-parable/ew--dalton-ross.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted doubt-a-parable/nypost--johnny-oleksinski.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted doubt-a-parable/nytg--gillian-russo.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted doubt-a-parable/nytimes--jesse-green.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted doubt-a-parable/theatermania--zachary-stewart.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted doubt-a-parable/theatrely--juan-a-ramirez.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted doubt-a-parable/thewrap--jd-knapp.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted doubt-a-parable/timeout--adam-feldman.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted doubt-a-parable/vulture--sara-holdren.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted doubt-a-parable/wsj--charles-isherwood.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted every-brilliant-thing/nysr--frank-scheck.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted every-brilliant-thing/nysr--steven-suskin.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved heathers-the-musical-off-broadway/theater-life--david-sheward.json → heathers-the-musical-off-broadway-2025/theater-life--david-sheward.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved just-in-time/theater-life--samuel-l-leiter.json → just-in-time-2025/theater-life--samuel-l-leiter.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved moulin-rouge/theater-life--isa-goldberg.json → moulin-rouge-2019/theater-life--isa-goldberg.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted moulin-rouge-the-musical-review/amny--matt-windman.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted moulin-rouge-the-musical-review/deadline--greg-evans.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted oh-mary/theater-life--david-sheward.json"
+    }
+  ]
+}

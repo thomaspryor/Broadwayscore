@@ -1,0 +1,1057 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-11-07T15:38:34.949Z",
+  "generator": "scripts/grade-openings.js (BRO-7082)",
+  "from": "2026-10-24",
+  "to": "2026-11-07",
+  "windowHours": {
+    "before": 72,
+    "after": 168
+  },
+  "historyFrom": "2026-08-25T15:16:39.000Z",
+  "commitsScanned": 2274,
+  "summary": {
+    "broadway": {
+      "openings": 1,
+      "onItsOwn": 0,
+      "neededHands": 1,
+      "neededHandsIngestOnly": 0,
+      "noReviews": 0,
+      "notGradable": 0
+    },
+    "off-broadway": {
+      "openings": 26,
+      "onItsOwn": 15,
+      "neededHands": 7,
+      "neededHandsIngestOnly": 2,
+      "noReviews": 4,
+      "notGradable": 0
+    },
+    "west-end": {
+      "openings": 3,
+      "onItsOwn": 1,
+      "neededHands": 2,
+      "neededHandsIngestOnly": 1,
+      "noReviews": 0,
+      "notGradable": 0
+    },
+    "off-west-end": {
+      "openings": 11,
+      "onItsOwn": 6,
+      "neededHands": 4,
+      "neededHandsIngestOnly": 2,
+      "noReviews": 1,
+      "notGradable": 0
+    }
+  },
+  "grades": [
+    {
+      "showId": "iphigenie-en-tauride-english-national-opera-west-end-2026",
+      "title": "Iphigenie en Tauride - English National Opera",
+      "category": "west-end",
+      "openingDate": "2026-11-06",
+      "embargoAt": "2026-11-06T21:00:00.000Z",
+      "embargoFrom": "press-night record",
+      "windowEnd": "2026-11-13T21:00:00.000Z",
+      "windowClosed": false,
+      "live": 2,
+      "known": null,
+      "hoursToLive": null,
+      "verdict": "needed-hands",
+      "onlyIngestDispatches": true,
+      "signals": [
+        {
+          "kind": "ingest-dispatch",
+          "at": "2026-11-07T15:01:55.000Z",
+          "outletId": "all-that-dazzles-uk",
+          "source": "5a9cabec ingest-urls: 2 review(s) for iphigenie-en-tauride-english-national-opera-west-end-2026"
+        }
+      ],
+      "historyCovers": true
+    },
+    {
+      "showId": "222-a-ghost-story-off-broadway-2026",
+      "title": "2:22 - A Ghost Story",
+      "category": "off-broadway",
+      "openingDate": "2026-11-05",
+      "embargoAt": "2026-11-06T03:00:00.000Z",
+      "embargoFrom": "press-night record",
+      "windowEnd": "2026-11-13T03:00:00.000Z",
+      "windowClosed": false,
+      "live": 13,
+      "known": 9,
+      "hoursToLive": 1.6,
+      "verdict": "needed-hands",
+      "onlyIngestDispatches": true,
+      "signals": [
+        {
+          "kind": "ingest-dispatch",
+          "at": "2026-11-06T17:12:09.000Z",
+          "outletId": "wsj",
+          "source": "e2a2d3fd ingest-urls: 1 review(s) for the-unbelievers-off-broadway-2026"
+        },
+        {
+          "kind": "ingest-dispatch",
+          "at": "2026-11-06T16:57:43.000Z",
+          "outletId": "new-york-sun",
+          "source": "f515cff3 ingest-urls: 1 review(s) for 222-a-ghost-story-off-broadway-2026"
+        }
+      ],
+      "historyCovers": true
+    },
+    {
+      "showId": "king-lear-off-broadway-2026",
+      "title": "King Lear",
+      "category": "off-broadway",
+      "openingDate": "2026-11-05",
+      "embargoAt": "2026-11-06T03:00:00.000Z",
+      "embargoFrom": "press-night record",
+      "windowEnd": "2026-11-13T03:00:00.000Z",
+      "windowClosed": false,
+      "live": 0,
+      "known": 13,
+      "hoursToLive": null,
+      "verdict": "needed-hands",
+      "onlyIngestDispatches": false,
+      "signals": [
+        {
+          "kind": "approved-fix",
+          "at": "2026-11-07T04:52:14.421Z",
+          "file": "king-lear-off-broadway-2026/chicago-reader--amanda-finn.json",
+          "fields": [
+            "wrongProduction"
+          ]
+        },
+        {
+          "kind": "approved-fix",
+          "at": "2026-11-07T04:52:14.578Z",
+          "file": "king-lear-off-broadway-2026/new-city-stage--tristan-bruns.json",
+          "fields": [
+            "wrongProduction"
+          ]
+        }
+      ],
+      "historyCovers": true
+    },
+    {
+      "showId": "speculations-off-west-end-2026",
+      "title": "Speculations",
+      "category": "off-west-end",
+      "openingDate": "2026-11-05",
+      "embargoAt": "2026-11-05T22:00:00.000Z",
+      "embargoFrom": "22:00 local estimate",
+      "windowEnd": "2026-11-12T22:00:00.000Z",
+      "windowClosed": false,
+      "live": 28,
+      "known": 20,
+      "hoursToLive": null,
+      "verdict": "on-its-own",
+      "onlyIngestDispatches": false,
+      "signals": [],
+      "historyCovers": true
+    },
+    {
+      "showId": "the-unbelievers-off-broadway-2026",
+      "title": "The Unbelievers",
+      "category": "off-broadway",
+      "openingDate": "2026-11-05",
+      "embargoAt": "2026-11-06T03:00:00.000Z",
+      "embargoFrom": "press-night record",
+      "windowEnd": "2026-11-13T03:00:00.000Z",
+      "windowClosed": false,
+      "live": 15,
+      "known": 8,
+      "hoursToLive": 1.5,
+      "verdict": "needed-hands",
+      "onlyIngestDispatches": false,
+      "signals": [
+        {
+          "kind": "hand-commit",
+          "at": "2026-11-06T14:57:33.000Z",
+          "outletId": "timeout",
+          "source": "dc3961ec BRO-7041: clear ensemble rejection of the BWW excerpt on the re-credited Time Out row so it refetches"
+        },
+        {
+          "kind": "hand-commit",
+          "at": "2026-11-06T13:57:13.000Z",
+          "outletId": "timeout",
+          "source": "b1c2f86c BRO-7041: re-credit unbelievers Time Out review to Billy McEntee (page byline)"
+        },
+        {
+          "kind": "ingest-dispatch",
+          "at": "2026-11-06T17:12:09.000Z",
+          "outletId": "wsj",
+          "source": "e2a2d3fd ingest-urls: 1 review(s) for the-unbelievers-off-broadway-2026"
+        },
+        {
+          "kind": "ingest-dispatch",
+          "at": "2026-11-06T17:05:03.000Z",
+          "outletId": "theater-pizzazz",
+          "source": "b3069eca ingest-urls: 2 review(s) for the-unbelievers-off-broadway-2026"
+        }
+      ],
+      "historyCovers": true
+    },
+    {
+      "showId": "the-verge-off-broadway-2026",
+      "title": "The Verge",
+      "category": "off-broadway",
+      "openingDate": "2026-11-05",
+      "embargoAt": "2026-11-06T03:00:00.000Z",
+      "embargoFrom": "press-night record",
+      "windowEnd": "2026-11-13T03:00:00.000Z",
+      "windowClosed": false,
+      "live": 11,
+      "known": 8,
+      "hoursToLive": 1.5,
+      "verdict": "on-its-own",
+      "onlyIngestDispatches": false,
+      "signals": [],
+      "historyCovers": true
+    },
+    {
+      "showId": "parcel-from-america-off-broadway-2026",
+      "title": "Parcel from America",
+      "category": "off-broadway",
+      "openingDate": "2026-11-04",
+      "embargoAt": "2026-11-05T03:00:00.000Z",
+      "embargoFrom": "press-night record",
+      "windowEnd": "2026-11-12T03:00:00.000Z",
+      "windowClosed": false,
+      "live": 5,
+      "known": 5,
+      "hoursToLive": 0.8,
+      "verdict": "on-its-own",
+      "onlyIngestDispatches": false,
+      "signals": [],
+      "historyCovers": true
+    },
+    {
+      "showId": "rope-off-broadway-2026",
+      "title": "Rope",
+      "category": "off-broadway",
+      "openingDate": "2026-11-03",
+      "embargoAt": "2026-11-04T03:00:00.000Z",
+      "embargoFrom": "press-night record",
+      "windowEnd": "2026-11-11T03:00:00.000Z",
+      "windowClosed": false,
+      "live": 13,
+      "known": 12,
+      "hoursToLive": 2.1,
+      "verdict": "on-its-own",
+      "onlyIngestDispatches": false,
+      "signals": [],
+      "historyCovers": true
+    },
+    {
+      "showId": "the-bridge-off-west-end-2026",
+      "title": "The Bridge",
+      "category": "off-west-end",
+      "openingDate": "2026-11-03",
+      "embargoAt": "2026-11-03T21:00:00.000Z",
+      "embargoFrom": "press-night record",
+      "windowEnd": "2026-11-10T21:00:00.000Z",
+      "windowClosed": false,
+      "live": 30,
+      "known": 27,
+      "hoursToLive": null,
+      "verdict": "on-its-own",
+      "onlyIngestDispatches": false,
+      "signals": [],
+      "historyCovers": true
+    },
+    {
+      "showId": "well-see-off-broadway-2026",
+      "title": "We'll See",
+      "category": "off-broadway",
+      "openingDate": "2026-11-03",
+      "embargoAt": "2026-11-04T03:00:00.000Z",
+      "embargoFrom": "press-night record",
+      "windowEnd": "2026-11-11T03:00:00.000Z",
+      "windowClosed": false,
+      "live": 12,
+      "known": 6,
+      "hoursToLive": 2.1,
+      "verdict": "on-its-own",
+      "onlyIngestDispatches": false,
+      "signals": [],
+      "historyCovers": true
+    },
+    {
+      "showId": "clifford-odets-waiting-for-lefty-off-broadway-2026",
+      "title": "Clifford Odets’ Waiting for Lefty",
+      "category": "off-broadway",
+      "openingDate": "2026-11-02",
+      "embargoAt": "2026-11-03T03:00:00.000Z",
+      "embargoFrom": "press-night record",
+      "windowEnd": "2026-11-10T03:00:00.000Z",
+      "windowClosed": false,
+      "live": 15,
+      "known": 10,
+      "hoursToLive": 1.9,
+      "verdict": "needed-hands",
+      "onlyIngestDispatches": false,
+      "signals": [
+        {
+          "kind": "ingest-dispatch",
+          "at": "2026-11-03T23:06:57.000Z",
+          "outletId": "cititour",
+          "source": "40fdd1d5 ingest-urls: 2 review(s) for clifford-odets-waiting-for-lefty-off-broadway-2026"
+        },
+        {
+          "kind": "approved-fix",
+          "at": "2026-11-04T08:13:21.683Z",
+          "file": "clifford-odets-waiting-for-lefty-off-broadway-2026/theater-pizzazz--ron-fassler.json",
+          "fields": [
+            "publishDate"
+          ]
+        }
+      ],
+      "historyCovers": true
+    },
+    {
+      "showId": "slanted-floors-off-broadway-2026",
+      "title": "Slanted Floors",
+      "category": "off-broadway",
+      "openingDate": "2026-11-02",
+      "embargoAt": "2026-11-03T03:00:00.000Z",
+      "embargoFrom": "press-night record",
+      "windowEnd": "2026-11-10T03:00:00.000Z",
+      "windowClosed": false,
+      "live": 3,
+      "known": 3,
+      "hoursToLive": null,
+      "verdict": "on-its-own",
+      "onlyIngestDispatches": false,
+      "signals": [],
+      "historyCovers": true
+    },
+    {
+      "showId": "the-morbs-off-broadway-2026",
+      "title": "The Morbs",
+      "category": "off-broadway",
+      "openingDate": "2026-11-02",
+      "embargoAt": "2026-11-03T03:00:00.000Z",
+      "embargoFrom": "press-night record",
+      "windowEnd": "2026-11-10T03:00:00.000Z",
+      "windowClosed": false,
+      "live": 5,
+      "known": 3,
+      "hoursToLive": null,
+      "verdict": "on-its-own",
+      "onlyIngestDispatches": false,
+      "signals": [],
+      "historyCovers": true
+    },
+    {
+      "showId": "the-blue-violinist-over-west-end-avenue-off-broadway-2026",
+      "title": "The Blue Violinist Over West End Avenue",
+      "category": "off-broadway",
+      "openingDate": "2026-11-01",
+      "embargoAt": "2026-11-02T03:00:00.000Z",
+      "embargoFrom": "press-night record",
+      "windowEnd": "2026-11-09T03:00:00.000Z",
+      "windowClosed": false,
+      "live": 3,
+      "known": 2,
+      "hoursToLive": null,
+      "verdict": "on-its-own",
+      "onlyIngestDispatches": false,
+      "signals": [],
+      "historyCovers": true
+    },
+    {
+      "showId": "tosca-off-broadway-2026",
+      "title": "Tosca",
+      "category": "off-broadway",
+      "openingDate": "2026-11-01",
+      "embargoAt": "2026-11-02T03:00:00.000Z",
+      "embargoFrom": "press-night record",
+      "windowEnd": "2026-11-09T03:00:00.000Z",
+      "windowClosed": false,
+      "live": 4,
+      "known": 11,
+      "hoursToLive": null,
+      "verdict": "needed-hands",
+      "onlyIngestDispatches": false,
+      "signals": [
+        {
+          "kind": "approved-fix",
+          "at": "2026-11-02T07:52:03.630Z",
+          "file": "tosca-off-broadway-2026/zeal-nyc--herman-spencer.json",
+          "fields": [
+            "wrongProduction"
+          ]
+        }
+      ],
+      "historyCovers": true
+    },
+    {
+      "showId": "medea-off-broadway-2026",
+      "title": "Medea",
+      "category": "off-broadway",
+      "openingDate": "2026-10-30",
+      "embargoAt": "2026-10-31T02:00:00.000Z",
+      "embargoFrom": "press-night record",
+      "windowEnd": "2026-11-07T02:00:00.000Z",
+      "windowClosed": true,
+      "live": 6,
+      "known": 11,
+      "hoursToLive": null,
+      "verdict": "on-its-own",
+      "onlyIngestDispatches": false,
+      "signals": [],
+      "historyCovers": true
+    },
+    {
+      "showId": "specimen-off-broadway-2026",
+      "title": "Specimen",
+      "category": "off-broadway",
+      "openingDate": "2026-10-30",
+      "embargoAt": "2026-10-31T02:00:00.000Z",
+      "embargoFrom": "press-night record",
+      "windowEnd": "2026-11-07T02:00:00.000Z",
+      "windowClosed": true,
+      "live": 4,
+      "known": 4,
+      "hoursToLive": null,
+      "verdict": "on-its-own",
+      "onlyIngestDispatches": false,
+      "signals": [],
+      "historyCovers": true
+    },
+    {
+      "showId": "stoker-wilde-off-west-end-2026",
+      "title": "Stoker Wilde",
+      "category": "off-west-end",
+      "openingDate": "2026-10-30",
+      "embargoAt": "2026-10-30T22:00:00.000Z",
+      "embargoFrom": "22:00 local estimate",
+      "windowEnd": "2026-11-06T22:00:00.000Z",
+      "windowClosed": true,
+      "live": 4,
+      "known": 5,
+      "hoursToLive": null,
+      "verdict": "on-its-own",
+      "onlyIngestDispatches": false,
+      "signals": [],
+      "historyCovers": true
+    },
+    {
+      "showId": "the-moth-off-west-end-2026",
+      "title": "The Moth",
+      "category": "off-west-end",
+      "openingDate": "2026-10-30",
+      "embargoAt": "2026-10-30T21:00:00.000Z",
+      "embargoFrom": "press-night record",
+      "windowEnd": "2026-11-06T21:00:00.000Z",
+      "windowClosed": true,
+      "live": 18,
+      "known": 17,
+      "hoursToLive": 3.3,
+      "verdict": "on-its-own",
+      "onlyIngestDispatches": false,
+      "signals": [],
+      "historyCovers": true
+    },
+    {
+      "showId": "times-square-skywalk-off-broadway-2026",
+      "title": "Times Square Skywalk",
+      "category": "off-broadway",
+      "openingDate": "2026-10-30",
+      "embargoAt": "2026-10-31T02:00:00.000Z",
+      "embargoFrom": "22:00 local estimate",
+      "windowEnd": "2026-11-07T02:00:00.000Z",
+      "windowClosed": true,
+      "live": 0,
+      "known": null,
+      "hoursToLive": null,
+      "verdict": "no-reviews",
+      "onlyIngestDispatches": false,
+      "signals": [],
+      "historyCovers": true
+    },
+    {
+      "showId": "tosca-english-national-opera-west-end-2026",
+      "title": "Tosca - English National Opera",
+      "category": "west-end",
+      "openingDate": "2026-10-30",
+      "embargoAt": "2026-10-30T22:00:00.000Z",
+      "embargoFrom": "22:00 local estimate",
+      "windowEnd": "2026-11-06T22:00:00.000Z",
+      "windowClosed": true,
+      "live": 22,
+      "known": 16,
+      "hoursToLive": null,
+      "verdict": "needed-hands",
+      "onlyIngestDispatches": false,
+      "signals": [
+        {
+          "kind": "hand-step",
+          "at": "2026-11-02T20:36:35.064Z",
+          "file": "tosca-english-national-opera-west-end-2026/a-youngish-perspective--unknown.json",
+          "steps": [
+            "wrongProductionManualClear"
+          ]
+        },
+        {
+          "kind": "approved-fix",
+          "at": "2026-11-04T02:41:00.359Z",
+          "file": "tosca-english-national-opera-west-end-2026/guardian--flora-willson.json",
+          "fields": [
+            "wrongProduction"
+          ]
+        },
+        {
+          "kind": "hand-step",
+          "at": "2026-11-01T02:10:11.552Z",
+          "file": "tosca-english-national-opera-west-end-2026/london-theatre--cheryl-markosky.json",
+          "steps": [
+            "wrongProductionManualClear"
+          ]
+        },
+        {
+          "kind": "hand-step",
+          "at": "2026-11-01T02:11:18.236Z",
+          "file": "tosca-english-national-opera-west-end-2026/sunday-telegraph--nicholas-kenyon.json",
+          "steps": [
+            "wrongProductionManualClear"
+          ]
+        },
+        {
+          "kind": "hand-step",
+          "at": "2026-11-01T17:00:29.802Z",
+          "file": "tosca-english-national-opera-west-end-2026/theatre-weekly--unknown.json",
+          "steps": [
+            "wrongProductionManualClear"
+          ]
+        },
+        {
+          "kind": "hand-step",
+          "at": "2026-11-01T16:59:59.618Z",
+          "file": "tosca-english-national-opera-west-end-2026/thereviewshub--maryam-philpott.json",
+          "steps": [
+            "wrongProductionManualClear"
+          ]
+        },
+        {
+          "kind": "hand-step",
+          "at": "2026-11-02T20:35:45.537Z",
+          "file": "tosca-english-national-opera-west-end-2026/thestage--george-hall.json",
+          "steps": [
+            "wrongProductionManualClear"
+          ]
+        },
+        {
+          "kind": "hand-step",
+          "at": "2026-11-01T17:45:55.242Z",
+          "file": "tosca-english-national-opera-west-end-2026/times-uk--richard-morrison.json",
+          "steps": [
+            "wrongProductionManualClear"
+          ]
+        }
+      ],
+      "historyCovers": true
+    },
+    {
+      "showId": "a-few-good-men-2026",
+      "title": "A Few Good Men",
+      "category": "broadway",
+      "openingDate": "2026-10-29",
+      "embargoAt": "2026-10-30T02:00:00.000Z",
+      "embargoFrom": "press-night record",
+      "windowEnd": "2026-11-06T02:00:00.000Z",
+      "windowClosed": true,
+      "live": 43,
+      "known": 25,
+      "hoursToLive": 2.8,
+      "verdict": "needed-hands",
+      "onlyIngestDispatches": false,
+      "signals": [
+        {
+          "kind": "ingest-dispatch",
+          "at": "2026-10-30T08:42:13.000Z",
+          "outletId": "new-york-sun",
+          "source": "17203104 ingest-urls: 1 review(s) for a-few-good-men-2026"
+        },
+        {
+          "kind": "ingest-dispatch",
+          "at": "2026-10-30T04:45:37.000Z",
+          "outletId": "thewrap",
+          "source": "d2aad044 ingest-urls: 1 review(s) for a-few-good-men-2026"
+        },
+        {
+          "kind": "approved-fix",
+          "at": "2026-10-30T05:04:04.078Z",
+          "file": "a-few-good-men-2026/cititour--brian-scott-lipton.json",
+          "fields": [
+            "publishDate"
+          ]
+        },
+        {
+          "kind": "approved-fix",
+          "at": "2026-10-30T13:28:27.380Z",
+          "file": "a-few-good-men-2026/new-york-sun--elysa-gardner.json",
+          "fields": [
+            "publishDate"
+          ]
+        }
+      ],
+      "historyCovers": true
+    },
+    {
+      "showId": "ceilidh-the-musical-off-west-end-2026",
+      "title": "Ceilidh The Musical",
+      "category": "off-west-end",
+      "openingDate": "2026-10-29",
+      "embargoAt": "2026-10-29T22:00:00.000Z",
+      "embargoFrom": "22:00 local estimate",
+      "windowEnd": "2026-11-05T22:00:00.000Z",
+      "windowClosed": true,
+      "live": 26,
+      "known": 27,
+      "hoursToLive": null,
+      "verdict": "needed-hands",
+      "onlyIngestDispatches": true,
+      "signals": [
+        {
+          "kind": "ingest-dispatch",
+          "at": "2026-11-02T14:22:13.000Z",
+          "outletId": "thereviewshub",
+          "source": "b0c9ca41 ingest-urls: 1 review(s) for ceilidh-the-musical-off-west-end-2026"
+        }
+      ],
+      "historyCovers": true
+    },
+    {
+      "showId": "ivy-day-off-broadway-2026",
+      "title": "Ivy Day",
+      "category": "off-broadway",
+      "openingDate": "2026-10-29",
+      "embargoAt": "2026-10-30T02:00:00.000Z",
+      "embargoFrom": "22:00 local estimate",
+      "windowEnd": "2026-11-06T02:00:00.000Z",
+      "windowClosed": true,
+      "live": 0,
+      "known": null,
+      "hoursToLive": null,
+      "verdict": "no-reviews",
+      "onlyIngestDispatches": false,
+      "signals": [],
+      "historyCovers": true
+    },
+    {
+      "showId": "kelly-mccaughan-catholic-guilt-off-broadway-2026",
+      "title": "Kelly McCaughan: Catholic Guilt",
+      "category": "off-broadway",
+      "openingDate": "2026-10-29",
+      "embargoAt": "2026-10-30T02:00:00.000Z",
+      "embargoFrom": "press-night record",
+      "windowEnd": "2026-11-06T02:00:00.000Z",
+      "windowClosed": true,
+      "live": 1,
+      "known": 3,
+      "hoursToLive": null,
+      "verdict": "on-its-own",
+      "onlyIngestDispatches": false,
+      "signals": [],
+      "historyCovers": true
+    },
+    {
+      "showId": "showstopper-the-kids-show-off-west-end-2026",
+      "title": "Showstopper! The Kids Show",
+      "category": "off-west-end",
+      "openingDate": "2026-10-29",
+      "embargoAt": "2026-10-29T22:00:00.000Z",
+      "embargoFrom": "22:00 local estimate",
+      "windowEnd": "2026-11-05T22:00:00.000Z",
+      "windowClosed": true,
+      "live": 1,
+      "known": 3,
+      "hoursToLive": null,
+      "verdict": "on-its-own",
+      "onlyIngestDispatches": false,
+      "signals": [],
+      "historyCovers": true
+    },
+    {
+      "showId": "the-greatest-story-ever-off-broadway-2026",
+      "title": "The Greatest Story Ever",
+      "category": "off-broadway",
+      "openingDate": "2026-10-29",
+      "embargoAt": "2026-10-30T02:00:00.000Z",
+      "embargoFrom": "press-night record",
+      "windowEnd": "2026-11-06T02:00:00.000Z",
+      "windowClosed": true,
+      "live": 0,
+      "known": null,
+      "hoursToLive": null,
+      "verdict": "no-reviews",
+      "onlyIngestDispatches": false,
+      "signals": [],
+      "historyCovers": true
+    },
+    {
+      "showId": "the-heart-off-broadway-2026",
+      "title": "The Heart",
+      "category": "off-broadway",
+      "openingDate": "2026-10-29",
+      "embargoAt": "2026-10-30T02:00:00.000Z",
+      "embargoFrom": "press-night record",
+      "windowEnd": "2026-11-06T02:00:00.000Z",
+      "windowClosed": true,
+      "live": 27,
+      "known": 15,
+      "hoursToLive": 1.7,
+      "verdict": "needed-hands",
+      "onlyIngestDispatches": false,
+      "signals": [
+        {
+          "kind": "hand-commit",
+          "at": "2026-10-30T23:09:00.000Z",
+          "outletId": "nydailynews",
+          "source": "225406a9 BRO-6670: remove stale bro-4953 NY Daily News stub on The Heart (null URL, Heart of Rock and Roll excerpt) so a real NYDN review ca"
+        },
+        {
+          "kind": "hand-commit",
+          "at": "2026-10-30T23:08:13.000Z",
+          "outletId": "cititour",
+          "source": "5e5a5c10 BRO-6670: set publishDate on The Heart Cititour so collected-before-previews guard stops re-flagging it"
+        },
+        {
+          "kind": "hand-commit",
+          "at": "2026-10-30T22:54:52.000Z",
+          "outletId": "cititour",
+          "source": "6616aad8 BRO-6670: drop stale combinedWith heart-of-rock-and-roll-2024 on The Heart Cititour review"
+        },
+        {
+          "kind": "hand-commit",
+          "at": "2026-10-30T22:25:34.000Z",
+          "outletId": "nytg",
+          "source": "d66dffa4 BRO-6670: clear stale bro-4953 wrongShow lock on The Heart NYT/NYTG/TheaterMania (real reviews now at these URLs)"
+        },
+        {
+          "kind": "ingest-dispatch",
+          "at": "2026-10-30T22:29:43.000Z",
+          "outletId": "theatermania",
+          "source": "790b6925 ingest-urls: 1 review(s) for the-heart-off-broadway-2026"
+        },
+        {
+          "kind": "ingest-dispatch",
+          "at": "2026-10-30T22:21:01.000Z",
+          "outletId": "nytg",
+          "source": "4c8871a2 ingest-urls: 4 review(s) for the-heart-off-broadway-2026"
+        },
+        {
+          "kind": "approved-fix",
+          "at": "2026-10-30T22:54:52.118Z",
+          "file": "the-heart-off-broadway-2026/cititour--brian-scott-lipton.json",
+          "fields": [
+            "combinedWith",
+            "publishDate"
+          ]
+        },
+        {
+          "kind": "approved-fix",
+          "at": "2026-10-30T22:25:34.669Z",
+          "file": "the-heart-off-broadway-2026/nytg--caroline-cao.json",
+          "fields": [
+            "wrongShow"
+          ]
+        },
+        {
+          "kind": "approved-fix",
+          "at": "2026-10-30T22:25:34.669Z",
+          "file": "the-heart-off-broadway-2026/nytimes--elisabeth-vincentelli.json",
+          "fields": [
+            "wrongShow"
+          ]
+        },
+        {
+          "kind": "approved-fix",
+          "at": "2026-10-30T22:25:34.669Z",
+          "file": "the-heart-off-broadway-2026/theatermania--zachary-stewart.json",
+          "fields": [
+            "wrongShow"
+          ]
+        }
+      ],
+      "historyCovers": true
+    },
+    {
+      "showId": "the-lives-of-others-west-end-2026",
+      "title": "The Lives of Others",
+      "category": "west-end",
+      "openingDate": "2026-10-29",
+      "embargoAt": "2026-10-29T21:00:00.000Z",
+      "embargoFrom": "press-night record",
+      "windowEnd": "2026-11-05T21:00:00.000Z",
+      "windowClosed": true,
+      "live": 36,
+      "known": 32,
+      "hoursToLive": null,
+      "verdict": "on-its-own",
+      "onlyIngestDispatches": false,
+      "signals": [],
+      "historyCovers": true
+    },
+    {
+      "showId": "ghost-notes-off-broadway-2026",
+      "title": "Ghost Notes",
+      "category": "off-broadway",
+      "openingDate": "2026-10-28",
+      "embargoAt": "2026-10-29T02:00:00.000Z",
+      "embargoFrom": "22:00 local estimate",
+      "windowEnd": "2026-11-05T02:00:00.000Z",
+      "windowClosed": true,
+      "live": 1,
+      "known": 2,
+      "hoursToLive": null,
+      "verdict": "on-its-own",
+      "onlyIngestDispatches": false,
+      "signals": [],
+      "historyCovers": true
+    },
+    {
+      "showId": "in-the-heights-off-broadway-2026",
+      "title": "In the Heights",
+      "category": "off-broadway",
+      "openingDate": "2026-10-28",
+      "embargoAt": "2026-10-29T02:00:00.000Z",
+      "embargoFrom": "press-night record",
+      "windowEnd": "2026-11-05T02:00:00.000Z",
+      "windowClosed": true,
+      "live": 15,
+      "known": 8,
+      "hoursToLive": null,
+      "verdict": "needed-hands",
+      "onlyIngestDispatches": true,
+      "signals": [
+        {
+          "kind": "ingest-dispatch",
+          "at": "2026-10-30T22:56:54.000Z",
+          "outletId": "vulture",
+          "source": "78dc0a18 ingest-urls: 1 review(s) for in-the-heights-off-broadway-2026"
+        }
+      ],
+      "historyCovers": true
+    },
+    {
+      "showId": "starstuff-off-broadway-2026",
+      "title": "Starstuff",
+      "category": "off-broadway",
+      "openingDate": "2026-10-28",
+      "embargoAt": "2026-10-29T02:00:00.000Z",
+      "embargoFrom": "22:00 local estimate",
+      "windowEnd": "2026-11-05T02:00:00.000Z",
+      "windowClosed": true,
+      "live": 0,
+      "known": null,
+      "hoursToLive": null,
+      "verdict": "no-reviews",
+      "onlyIngestDispatches": false,
+      "signals": [],
+      "historyCovers": true
+    },
+    {
+      "showId": "the-revlon-girl-off-west-end-2026",
+      "title": "The Revlon Girl",
+      "category": "off-west-end",
+      "openingDate": "2026-10-28",
+      "embargoAt": "2026-10-28T21:00:00.000Z",
+      "embargoFrom": "press-night record",
+      "windowEnd": "2026-11-04T21:00:00.000Z",
+      "windowClosed": true,
+      "live": 17,
+      "known": 19,
+      "hoursToLive": null,
+      "verdict": "needed-hands",
+      "onlyIngestDispatches": false,
+      "signals": [
+        {
+          "kind": "hand-step",
+          "at": "2026-10-29T17:23:10.834Z",
+          "file": "the-revlon-girl-off-west-end-2026/thestage--holly-omahony.json",
+          "steps": [
+            "wrongProductionManualClear"
+          ]
+        }
+      ],
+      "historyCovers": true
+    },
+    {
+      "showId": "franky-off-west-end-2026",
+      "title": "Franky",
+      "category": "off-west-end",
+      "openingDate": "2026-10-27",
+      "embargoAt": "2026-10-27T22:00:00.000Z",
+      "embargoFrom": "22:00 local estimate",
+      "windowEnd": "2026-11-03T22:00:00.000Z",
+      "windowClosed": true,
+      "live": 0,
+      "known": null,
+      "hoursToLive": null,
+      "verdict": "no-reviews",
+      "onlyIngestDispatches": false,
+      "signals": [],
+      "historyCovers": true
+    },
+    {
+      "showId": "girls-off-west-end-2026",
+      "title": "Girls",
+      "category": "off-west-end",
+      "openingDate": "2026-10-27",
+      "embargoAt": "2026-10-27T22:00:00.000Z",
+      "embargoFrom": "22:00 local estimate",
+      "windowEnd": "2026-11-03T22:00:00.000Z",
+      "windowClosed": true,
+      "live": 26,
+      "known": 15,
+      "hoursToLive": null,
+      "verdict": "needed-hands",
+      "onlyIngestDispatches": false,
+      "signals": [
+        {
+          "kind": "hand-commit",
+          "at": "2026-10-30T12:41:29.000Z",
+          "outletId": "the-recs",
+          "source": "96bfc880 BRO-6625: restore wrongProduction on the-recs (ensemble unanimous)"
+        },
+        {
+          "kind": "hand-step",
+          "at": "2026-10-30T16:53:14.593Z",
+          "file": "girls-off-west-end-2026/british-theatre--keith-mckenna.json",
+          "steps": [
+            "wrongProductionManualClear"
+          ]
+        },
+        {
+          "kind": "hand-step",
+          "at": "2026-10-28T11:44:17.027Z",
+          "file": "girls-off-west-end-2026/theatre-weekly--matthew-plampton.json",
+          "steps": [
+            "wrongProductionManualClear"
+          ]
+        },
+        {
+          "kind": "hand-step",
+          "at": "2026-10-29T14:13:30.769Z",
+          "file": "girls-off-west-end-2026/theatreandtonic--emmie-newitt.json",
+          "steps": [
+            "wrongProductionManualClear"
+          ]
+        }
+      ],
+      "historyCovers": true
+    },
+    {
+      "showId": "i-became-we-off-broadway-2026",
+      "title": "I Became We",
+      "category": "off-broadway",
+      "openingDate": "2026-10-27",
+      "embargoAt": "2026-10-28T02:00:00.000Z",
+      "embargoFrom": "press-night record",
+      "windowEnd": "2026-11-04T02:00:00.000Z",
+      "windowClosed": true,
+      "live": 12,
+      "known": 7,
+      "hoursToLive": 0.3,
+      "verdict": "on-its-own",
+      "onlyIngestDispatches": false,
+      "signals": [],
+      "historyCovers": true
+    },
+    {
+      "showId": "memoriam-off-west-end-2026",
+      "title": "Memoriam",
+      "category": "off-west-end",
+      "openingDate": "2026-10-27",
+      "embargoAt": "2026-10-27T21:00:00.000Z",
+      "embargoFrom": "press-night record",
+      "windowEnd": "2026-11-03T21:00:00.000Z",
+      "windowClosed": true,
+      "live": 32,
+      "known": 30,
+      "hoursToLive": 2.5,
+      "verdict": "needed-hands",
+      "onlyIngestDispatches": true,
+      "signals": [
+        {
+          "kind": "ingest-dispatch",
+          "at": "2026-10-29T19:10:08.000Z",
+          "outletId": "british-theatre",
+          "source": "38bc2354 ingest-urls: 11 review(s) for memoriam-off-west-end-2026"
+        }
+      ],
+      "historyCovers": true
+    },
+    {
+      "showId": "roleplay-off-west-end-2026",
+      "title": "Roleplay",
+      "category": "off-west-end",
+      "openingDate": "2026-10-27",
+      "embargoAt": "2026-10-27T22:00:00.000Z",
+      "embargoFrom": "22:00 local estimate",
+      "windowEnd": "2026-11-03T22:00:00.000Z",
+      "windowClosed": true,
+      "live": 15,
+      "known": 20,
+      "hoursToLive": null,
+      "verdict": "on-its-own",
+      "onlyIngestDispatches": false,
+      "signals": [],
+      "historyCovers": true
+    },
+    {
+      "showId": "hospital-hour-off-broadway-2026",
+      "title": "Hospital Hour",
+      "category": "off-broadway",
+      "openingDate": "2026-10-26",
+      "embargoAt": "2026-10-27T02:00:00.000Z",
+      "embargoFrom": "press-night record",
+      "windowEnd": "2026-11-03T02:00:00.000Z",
+      "windowClosed": true,
+      "live": 5,
+      "known": 5,
+      "hoursToLive": 2.8,
+      "verdict": "on-its-own",
+      "onlyIngestDispatches": false,
+      "signals": [],
+      "historyCovers": true
+    },
+    {
+      "showId": "aftermath-art-new-york-off-broadway-2026",
+      "title": "Aftermath",
+      "category": "off-broadway",
+      "openingDate": "2026-10-24",
+      "embargoAt": "2026-10-25T02:00:00.000Z",
+      "embargoFrom": "22:00 local estimate",
+      "windowEnd": "2026-11-01T02:00:00.000Z",
+      "windowClosed": true,
+      "live": 12,
+      "known": 7,
+      "hoursToLive": null,
+      "verdict": "on-its-own",
+      "onlyIngestDispatches": false,
+      "signals": [],
+      "historyCovers": true
+    },
+    {
+      "showId": "love-me-off-broadway-2026",
+      "title": "Love Me",
+      "category": "off-broadway",
+      "openingDate": "2026-10-24",
+      "embargoAt": "2026-10-25T02:00:00.000Z",
+      "embargoFrom": "22:00 local estimate",
+      "windowEnd": "2026-11-01T02:00:00.000Z",
+      "windowClosed": true,
+      "live": 4,
+      "known": 3,
+      "hoursToLive": null,
+      "verdict": "on-its-own",
+      "onlyIngestDispatches": false,
+      "signals": [],
+      "historyCovers": true
+    }
+  ]
+}

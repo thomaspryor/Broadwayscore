@@ -1,0 +1,218 @@
+{
+  "issueNumber": "bro-4919",
+  "planId": "ace56fc7-e622-4fa6-bcbf-3b23e638189e",
+  "status": "applied",
+  "createdAt": "2026-10-16T21:06:24.891Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4919 (Much Ado): move the Braboeuf Manor WhatsOnStage review (counted on the Globe page) to the Orange Tree/Guildford Shakespeare Company production under its true byline, drop its 4 byline copies and 3 stale Drury Lane copies, and clear stale Broadway-folder flags on 3 Drury Lane 2025 reviews. 16 actions, each checked against the stored file and (where reachable) the live page.",
+    "steps": [
+      "delete duplicates",
+      "byline/date fixes",
+      "move",
+      "flag clears",
+      "retier"
+    ],
+    "riskLevel": "medium",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "much-ado-about-nothing-globe-off-west-end-2026/whatsonstage--daisy-bowie.json",
+        "description": "BRO-4919: byte-identical copy (same url https://www.whatsonstage.com/news/loves-labours-lost-and-much-ado-about-nothing-at-braboeuf-manor-review_1727216/, same text) of whatsonstage--judi-herman.json under a wrong byline; the article is the Guildford Shakespeare Company/Orange Tree outdoor double bill at Braboeuf Manor (Guildford), not the Globe. Page byline (checked live 2026-10-16) is Maygan Forbes, dated 2026-07-13."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "much-ado-about-nothing-globe-off-west-end-2026/whatsonstage--matt-trueman.json",
+        "description": "BRO-4919: byte-identical copy (same url https://www.whatsonstage.com/news/loves-labours-lost-and-much-ado-about-nothing-at-braboeuf-manor-review_1727216/, same text) of whatsonstage--judi-herman.json under a wrong byline; the article is the Guildford Shakespeare Company/Orange Tree outdoor double bill at Braboeuf Manor (Guildford), not the Globe. Page byline (checked live 2026-10-16) is Maygan Forbes, dated 2026-07-13."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "much-ado-about-nothing-globe-off-west-end-2026/whatsonstage--michael-davies.json",
+        "description": "BRO-4919: byte-identical copy (same url https://www.whatsonstage.com/news/loves-labours-lost-and-much-ado-about-nothing-at-braboeuf-manor-review_1727216/, same text) of whatsonstage--judi-herman.json under a wrong byline; the article is the Guildford Shakespeare Company/Orange Tree outdoor double bill at Braboeuf Manor (Guildford), not the Globe. Page byline (checked live 2026-10-16) is Maygan Forbes, dated 2026-07-13."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "much-ado-about-nothing-globe-off-west-end-2026/whatsonstage--mickey-jo-boucher.json",
+        "description": "BRO-4919: byte-identical copy (same url https://www.whatsonstage.com/news/loves-labours-lost-and-much-ado-about-nothing-at-braboeuf-manor-review_1727216/, same text) of whatsonstage--judi-herman.json under a wrong byline; the article is the Guildford Shakespeare Company/Orange Tree outdoor double bill at Braboeuf Manor (Guildford), not the Globe. Page byline (checked live 2026-10-16) is Maygan Forbes, dated 2026-07-13."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "much-ado-about-nothing-globe-off-west-end-2026/whatsonstage--judi-herman.json",
+        "field": "criticName",
+        "oldValue": "Judi Herman",
+        "newValue": "Maygan Forbes",
+        "description": "BRO-4919: live page https://www.whatsonstage.com/news/loves-labours-lost-and-much-ado-about-nothing-at-braboeuf-manor-review_1727216/ (checked 2026-10-16) bylines Maygan Forbes (author tag /authors/maygan-forbes), published 2026-07-13; Judi Herman is not on the page."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "much-ado-about-nothing-globe-off-west-end-2026/whatsonstage--judi-herman.json",
+        "destPath": "much-ado-about-nothing-off-west-end-2026/whatsonstage--maygan-forbes.json",
+        "description": "BRO-4919: counted (74) on the Globe page but reviews the Tom Littler / Guildford Shakespeare Company + Orange Tree co-production double bill at Braboeuf Manor (page title and standfirst name Braboeuf Manor, Guildford and Richmond). much-ado-about-nothing-off-west-end-2026 is that production (orangetreetheatre.co.uk/whats-on/much-ado-about-nothing/: directed by Tom Littler, co-production with Guildford Shakespeare Company). Renamed to the true byline."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "much-ado-about-nothing-off-west-end-2026/london-box-office--stuart-king.json",
+        "description": "BRO-4919: empty invalid copy of the Theatre Royal Drury Lane 2025 LBO review; the same url is held with text in much-ado-about-nothing-west-end-2025/london-box-office--stuart-king.json (counted there)."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "much-ado-about-nothing-globe-off-west-end-2026/express-uk--stefan-kyriazis.json",
+        "description": "BRO-4919: Drury Lane 2025 review (url names Tom Hiddleston/Hayley Atwell, dated 2025-02-20) left in the Globe 2026 folder, flagged wrongProduction, no text; the same url is held with text in much-ado-about-nothing-west-end-2025 (counted there)."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "much-ado-about-nothing-globe-off-west-end-2026/independent--alice-saville.json",
+        "description": "BRO-4919: Drury Lane 2025 review (same url, dated 2025-02-20) left in the Globe 2026 folder, flagged wrongProduction; the fuller copy is much-ado-about-nothing-west-end-2025/independent--alice-saville.json."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "much-ado-about-nothing-west-end-2025/independent--alice-saville.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4919: stale flag from the Broadway folder: the collector LLM reason itself says the text reviews the Theatre Royal Drury Lane production, which is exactly much-ado-about-nothing-west-end-2025 (text names Hiddleston, Atwell and Drury Lane; checked by name search)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "much-ado-about-nothing-west-end-2025/independent--alice-saville.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-4919: cleared after the manual-clear marker (review belongs to this Drury Lane 2025 page)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "much-ado-about-nothing-west-end-2025/telegraph--dominic-cavendish.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4919: stale flag from the Broadway folder: the collector LLM reason itself says the text reviews the Theatre Royal Drury Lane production, which is exactly much-ado-about-nothing-west-end-2025 (text names Hiddleston, Atwell and Drury Lane; checked by name search)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "much-ado-about-nothing-west-end-2025/telegraph--dominic-cavendish.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-4919: cleared after the manual-clear marker (review belongs to this Drury Lane 2025 page)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "much-ado-about-nothing-west-end-2025/artsdesk--rachel-halliburton.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4919: write-guard reason says the text never names the show; it does (title twice, Hiddleston, Atwell, Beatrice, Benedick by name search). Url is theartsdesk.com much-ado-about-nothing-theatre-royal-drury-lane-review, dated 2025-02-20."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "much-ado-about-nothing-west-end-2025/artsdesk--rachel-halliburton.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-4919: cleared after the manual-clear marker"
+      },
+      {
+        "type": "run-script",
+        "script": "reclassify-invalid-reviews.js",
+        "args": "--file=much-ado-about-nothing-west-end-2025/independent--alice-saville.json,much-ado-about-nothing-west-end-2025/telegraph--dominic-cavendish.json,much-ado-about-nothing-west-end-2025/artsdesk--rachel-halliburton.json --apply",
+        "description": "BRO-4919: recompute contentTier on the 3 rows whose wrong-content flag this plan clears (BRO-5356 file mode)."
+      }
+    ]
+  },
+  "executedAt": "2026-10-16T21:49:25.280Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted much-ado-about-nothing-globe-off-west-end-2026/whatsonstage--daisy-bowie.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted much-ado-about-nothing-globe-off-west-end-2026/whatsonstage--matt-trueman.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted much-ado-about-nothing-globe-off-west-end-2026/whatsonstage--michael-davies.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted much-ado-about-nothing-globe-off-west-end-2026/whatsonstage--mickey-jo-boucher.json"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "much-ado-about-nothing-globe-off-west-end-2026/whatsonstage--judi-herman.json criticName: \"Judi Herman\" -> \"Maygan Forbes\""
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved much-ado-about-nothing-globe-off-west-end-2026/whatsonstage--judi-herman.json → much-ado-about-nothing-off-west-end-2026/whatsonstage--maygan-forbes.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted much-ado-about-nothing-off-west-end-2026/london-box-office--stuart-king.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted much-ado-about-nothing-globe-off-west-end-2026/express-uk--stefan-kyriazis.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted much-ado-about-nothing-globe-off-west-end-2026/independent--alice-saville.json"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "much-ado-about-nothing-west-end-2025/independent--alice-saville.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "much-ado-about-nothing-west-end-2025/independent--alice-saville.json wrongProduction: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "much-ado-about-nothing-west-end-2025/telegraph--dominic-cavendish.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "much-ado-about-nothing-west-end-2025/telegraph--dominic-cavendish.json wrongProduction: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "much-ado-about-nothing-west-end-2025/artsdesk--rachel-halliburton.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "much-ado-about-nothing-west-end-2025/artsdesk--rachel-halliburton.json wrongShow: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran reclassify-invalid-reviews.js successfully"
+    }
+  ]
+}

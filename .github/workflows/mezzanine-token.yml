@@ -1,0 +1,194 @@
+name: Mezzanine Token
+
+# BRO-5235: renewal of MEZZANINE_SESSION_TOKEN (update-mezzanine.yml's Parse
+# login) from the owner's iPhone. Design notes: scripts/lib/mezzanine-token-renewal.js.
+#
+#   mode=link          writes the signed renewal link onto the Linear card as a
+#                      DECISION NEEDED line, which emails the owner. A link with
+#                      7+ days left is kept (no second email).
+#   mode=check-expiry  reads the current token's expiry from Parse and posts the
+#                      link when it is expired or within 30 days (also run before
+#                      every weekly scrape in update-mezzanine.yml).
+#   mode=complete      dispatched by /api/admin/mezzanine-token after the owner
+#                      pasted a token. `sealed` is the token AES-GCM sealed with
+#                      APPROVAL_HMAC_SECRET, so the public run page shows nothing
+#                      usable. Checks it against Parse, saves the secret, pins
+#                      the owner's Parse user on first use, re-runs
+#                      update-mezzanine.yml, waits for it and reports the result
+#                      on the card. A refused token gets a fresh link with the
+#                      reason.
+#
+# The token never reaches the log: the script ::add-mask::s it and writes it to
+# a 0600 file that `gh secret set` reads from stdin.
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'link | check-expiry | complete (complete is for the site form)'
+        type: choice
+        options: [link, check-expiry, complete]
+        default: link
+      sealed:
+        description: 'complete only: sealed token from the site form'
+        required: false
+        default: ''
+      issue:
+        description: 'Linear card that carries the renewal link'
+        required: false
+        default: 'BRO-5235'
+
+permissions:
+  contents: read
+  actions: write # dispatch and watch update-mezzanine.yml after the secret is saved
+
+concurrency:
+  # Per run: a pending 'complete' run carries the owner's sealed token, and a
+  # static group would let a later dispatch evict it unseen (BRO-4859).
+  group: mezzanine-token-${{ github.run_id }}
+  cancel-in-progress: false
+
+jobs:
+  token:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with:
+          node-version: '22'
+
+      - name: Write the owner's link / check expiry
+        if: ${{ inputs.mode != 'complete' }}
+        env:
+          MEZZANINE_APP_ID: ${{ secrets.MEZZANINE_APP_ID }}
+          MEZZANINE_SESSION_TOKEN: ${{ secrets.MEZZANINE_SESSION_TOKEN }}
+          APPROVAL_HMAC_SECRET: ${{ secrets.APPROVAL_HMAC_SECRET }}
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          MODE: ${{ inputs.mode }}
+          ISSUE: ${{ inputs.issue }}
+        run: |
+          rc=0
+          node scripts/mezzanine-token.js "$MODE" "--issue=$ISSUE" || rc=$?
+          # check-expiry exits 3 for "expired, link posted": the job did its work.
+          if [ "$rc" = "3" ]; then echo "::notice::token expired; renewal link is on $ISSUE"; exit 0; fi
+          exit $rc
+
+      - name: Check the pasted token
+        id: check
+        if: ${{ inputs.mode == 'complete' }}
+        env:
+          MEZZANINE_APP_ID: ${{ secrets.MEZZANINE_APP_ID }}
+          MEZZANINE_OWNER_USER_ID: ${{ secrets.MEZZANINE_OWNER_USER_ID }}
+          APPROVAL_HMAC_SECRET: ${{ secrets.APPROVAL_HMAC_SECRET }}
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          MEZZANINE_TOKEN_SEALED: ${{ inputs.sealed }}
+          ISSUE: ${{ inputs.issue }}
+        run: node scripts/mezzanine-token.js complete "--out=$RUNNER_TEMP/mezzanine-token" "--issue=$ISSUE"
+
+      - name: Save MEZZANINE_SESSION_TOKEN
+        id: save
+        if: ${{ inputs.mode == 'complete' }}
+        env:
+          # Same PAT gmail-reauth.yml and update-theatr.yml use for `gh secret set`.
+          GH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+        run: |
+          f="$RUNNER_TEMP/mezzanine-token"
+          trap 'rm -f "$f"' EXIT
+          for attempt in 1 2 3 4 5; do
+            if gh secret set MEZZANINE_SESSION_TOKEN --repo "$GITHUB_REPOSITORY" < "$f"; then
+              echo "::notice::MEZZANINE_SESSION_TOKEN replaced (attempt $attempt)"
+              exit 0
+            fi
+            echo "::warning::gh secret set failed (attempt $attempt/5), retrying..."
+            [ "$attempt" -lt 5 ] && sleep $((attempt * 10))
+          done
+          echo "::error::could not save MEZZANINE_SESSION_TOKEN after 5 attempts"
+          exit 1
+
+      - name: Pin the owner's Parse user on first use
+        # Later pastes from another Mezzanine account are then refused, so a
+        # leaked link cannot swap in someone else's login.
+        if: ${{ inputs.mode == 'complete' && steps.check.outputs.user_id != '' }}
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          PINNED: ${{ secrets.MEZZANINE_OWNER_USER_ID }}
+          USER_ID: ${{ steps.check.outputs.user_id }}
+        run: |
+          if [ -n "$PINNED" ]; then echo "owner user already pinned"; exit 0; fi
+          printf '%s' "$USER_ID" | gh secret set MEZZANINE_OWNER_USER_ID --repo "$GITHUB_REPOSITORY"
+          echo "::notice::MEZZANINE_OWNER_USER_ID pinned"
+
+      - name: Re-run update-mezzanine.yml and wait for it
+        id: rerun
+        if: ${{ inputs.mode == 'complete' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # 30s back for runner/GitHub clock skew. Every gh call is guarded:
+          # a failed one must end as result=failure, not abort the step and
+          # skip the card report.
+          since=$(date -u -d '-30 sec' +%Y-%m-%dT%H:%M:%SZ)
+          if ! gh workflow run update-mezzanine.yml --repo "$GITHUB_REPOSITORY" --ref main; then
+            echo "::warning::could not dispatch update-mezzanine.yml"
+            echo "result=failure" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          id=""
+          for i in $(seq 1 12); do
+            sleep 10
+            id=$(gh run list --repo "$GITHUB_REPOSITORY" --workflow update-mezzanine.yml --event workflow_dispatch --limit 5 \
+              --json databaseId,createdAt --jq "[.[] | select(.createdAt >= \"$since\")] | last | .databaseId // empty") || id=""
+            [ -n "$id" ] && break
+          done
+          if [ -z "$id" ]; then
+            echo "::warning::could not find the dispatched update-mezzanine run"
+            echo "result=failure" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          url="https://github.com/$GITHUB_REPOSITORY/actions/runs/$id"
+          echo "run_url=$url" >> "$GITHUB_OUTPUT"
+          # One check a minute, at most 20 (the scrape job's timeout is 15).
+          for i in $(seq 1 20); do
+            sleep 60
+            out=$(gh run view "$id" --repo "$GITHUB_REPOSITORY" --json status,conclusion --jq '"\(.status) \(.conclusion)"') || continue
+            read -r status conclusion <<< "$out"
+            if [ "$status" = "completed" ]; then
+              echo "update-mezzanine run $id: $conclusion"
+              [ "$conclusion" = "success" ] && echo "result=success" >> "$GITHUB_OUTPUT" || echo "result=failure" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+          done
+          echo "::warning::update-mezzanine run $id did not finish in 20 minutes"
+          echo "result=failure" >> "$GITHUB_OUTPUT"
+
+      - name: Report on the card
+        if: ${{ !cancelled() && inputs.mode == 'complete' && steps.save.outcome == 'success' }}
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          ISSUE: ${{ inputs.issue }}
+          RESULT: ${{ steps.rerun.outputs.result || 'failure' }}
+          RUN_URL: ${{ steps.rerun.outputs.run_url }}
+        run: node scripts/mezzanine-token.js done "--issue=$ISSUE" "--result=$RESULT" ${RUN_URL:+"--run-url=$RUN_URL"} || echo "::warning::could not report on the card"
+
+      - name: Re-post the link if saving failed
+        # The check step re-posts its own refusals with a reason; this covers
+        # a failure after it (secret save), so it must not overwrite that reason.
+        if: ${{ failure() && inputs.mode == 'complete' && steps.check.outcome == 'success' && steps.save.outcome != 'success' }}
+        env:
+          APPROVAL_HMAC_SECRET: ${{ secrets.APPROVAL_HMAC_SECRET }}
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          ISSUE: ${{ inputs.issue }}
+        run: |
+          rm -f "$RUNNER_TEMP/mezzanine-token"
+          node scripts/mezzanine-token.js link "--issue=$ISSUE" --fresh "--problem=The site could not save the code. Please paste it again." || true
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Mezzanine Token Failed'
+          severity: 'warning'
+          description: 'The Mezzanine token renewal did not finish (BRO-5235). A refused or unsaved token gets a fresh link on the card with the reason; see the run log for the step.'

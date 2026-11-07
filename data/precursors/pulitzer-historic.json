@@ -1,0 +1,39 @@
+{
+  "_meta": {
+    "source": "Wikipedia (Pulitzer_Prize_for_Drama category page + per-year articles)",
+    "purpose": "Pre-2014 Pulitzer Drama winners + finalists keyed by explicit awards.json showId. Fuzzy title matching is unreliable for pre-predictions-era data because most titles have multiple Broadway revivals across decades. Each entry points to the Broadway production the Pulitzer was actually awarded for, OR (when the Pulitzer was for an Off-Broadway premiere) the Broadway transfer in the closest matching year.",
+    "coverage": "winnerId is set when the year's winner has a Broadway entry in awards.json. Skipped when the winner was OB-only (1982 A Soldier's Play, 2012 Water by the Spoonful). finalistIds is deliberately partial — most pre-2014 finalists were OB and aren't in awards.json. Pulitzer began naming finalists publicly in 1980.",
+    "extractedFrom": "claude/fill-awards-data-gaps-1r5VX branch commits 94676a9d5b + a00cc07cfc (2026-05)"
+  },
+  "data": [
+    { "year": 1973, "winnerId": "that-championship-season-1972" },
+    { "year": 1975, "winnerId": "seascape-1975" },
+    { "year": 1976, "winnerId": "a-chorus-line-1975" },
+    { "year": 1977, "winnerId": "the-shadow-box-1977" },
+    { "year": 1978, "winnerId": "the-gin-game-1977" },
+    { "year": 1980, "winnerId": "talleys-folly-1980" },
+    { "year": 1981, "winnerId": "crimes-of-the-heart-1981" },
+    { "year": 1982, "finalistIds": ["the-dresser-1981"], "_note": "winner A Soldier's Play (OB-only, not in awards.json)" },
+    { "year": 1983, "winnerId": "night-mother-1983" },
+    { "year": 1984, "winnerId": "glengarry-glen-ross-1984" },
+    { "year": 1985, "winnerId": "sunday-in-the-park-with-george-1984", "finalistIds": ["as-is-1985"] },
+    { "year": 1987, "winnerId": "fences-1987" },
+    { "year": 1989, "winnerId": "the-heidi-chronicles-1989" },
+    { "year": 1990, "winnerId": "the-piano-lesson-1990" },
+    { "year": 1991, "winnerId": "lost-in-yonkers-1991", "finalistIds": ["prelude-to-a-kiss-1990"] },
+    { "year": 1992, "winnerId": "the-kentucky-cycle-1993", "finalistIds": ["two-trains-running-1992"] },
+    { "year": 1993, "winnerId": "angels-in-america-perestroika-1993", "finalistIds": ["the-sisters-rosensweig-1993"] },
+    { "year": 1995, "winnerId": "the-young-man-from-atlanta-1997" },
+    { "year": 1996, "winnerId": "rent-1996", "finalistIds": ["seven-guitars-1996"] },
+    { "year": 2001, "winnerId": "proof-2000", "finalistIds": ["the-invention-of-love-2001"] },
+    { "year": 2002, "winnerId": "topdog-underdog-2002" },
+    { "year": 2003, "winnerId": "anna-in-the-tropics-2003", "finalistIds": ["take-me-out-2003"] },
+    { "year": 2004, "winnerId": "i-am-my-own-wife-2003" },
+    { "year": 2005, "winnerId": "doubt-2005" },
+    { "year": 2007, "winnerId": "rabbit-hole-2006" },
+    { "year": 2008, "winnerId": "august-osage-county-2007" },
+    { "year": 2010, "winnerId": "next-to-normal-2009", "finalistIds": ["in-the-next-room-2009", "bengal-tiger-at-the-baghdad-zoo-2011"] },
+    { "year": 2011, "winnerId": "clybourne-park-2012", "_note": "a-free-man-of-color-2010 finalist not in awards.json" },
+    { "year": 2012, "finalistIds": ["other-desert-cities-2011"], "_note": "winner Water by the Spoonful (OB-only)" }
+  ]
+}

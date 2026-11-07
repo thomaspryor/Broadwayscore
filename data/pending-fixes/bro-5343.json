@@ -1,0 +1,51 @@
+{
+  "issueNumber": "bro-5343",
+  "planId": "48904a9d-bd26-4c0c-992f-e540a6926e52",
+  "status": "applied",
+  "createdAt": "2026-10-14T06:10:22.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5343: replace two wrong-production official URLs with each show's own venue page (checked against the venue pages).",
+    "steps": [
+      "peter-pan-west-end-2026 (Polka Theatre, 14 Nov-24 Jan): pangoeswrongbway.com is Peter Pan Goes Wrong on Broadway; use polkatheatre.com/event/peter-pan/",
+      "baby-off-west-end-2026 (Brixton House, 8-31 Oct, Pearl Mackie): babybroadway.co.uk is a concert series; use brixtonhouse.co.uk/shows/baby/. Type (play), synopsis and age 14+ already match the venue page."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "peter-pan-west-end-2026",
+        "field": "officialUrl",
+        "oldValue": "https://pangoeswrongbway.com/",
+        "newValue": "https://polkatheatre.com/event/peter-pan/",
+        "description": "Polka Theatre's own Peter Pan page (BRO-5343)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "baby-off-west-end-2026",
+        "field": "officialUrl",
+        "oldValue": "https://babybroadway.co.uk/",
+        "newValue": "https://brixtonhouse.co.uk/shows/baby/",
+        "description": "Brixton House's own Baby page (BRO-5343)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-14T07:00:57.607Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: officialUrl updated for peter-pan-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: officialUrl updated for baby-off-west-end-2026"
+    }
+  ]
+}

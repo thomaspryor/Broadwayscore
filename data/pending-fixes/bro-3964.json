@@ -1,0 +1,99 @@
+{
+  "issueNumber": "bro-3964",
+  "planId": "9b535b4a-28e1-4492-a879-6f9af8cead78",
+  "status": "applied",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Persist four inspected non-review URL exclusions and block the 2018 Cursed Child review from rediscovery into the 2026 one-part run.",
+    "steps": [
+      "Block four hand-inspected non-review URLs through the existing show-specific blocklist writer.",
+      "Block the 2018 Cursed Child URL from the 2026 one-part run. The fresher attached private corpus already has wrongProduction:true and a manual reason, so do not overwrite its verdict.",
+      "Refresh sources through the existing gap-audit cron after the private plan is applied."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "run-script",
+        "script": "block-review.js",
+        "args": [
+          "--show=222-a-ghost-story-off-broadway-2026",
+          "--url=https://www.theatermania.com/news/interview-danny-robins-on-how-222-a-ghost-story-escaped-dear-evan-hansens-theater-and-took-over-the-world_1855474/",
+          "--reason=BRO-3964-interview-with-playwright-not-a-performance-review"
+        ],
+        "description": "BRO-3964-interview-with-playwright-not-a-performance-review"
+      },
+      {
+        "type": "run-script",
+        "script": "block-review.js",
+        "args": [
+          "--show=222-a-ghost-story-off-broadway-2026",
+          "--url=https://www.theatrely.com/post/2-22-a-ghost-story-sets-new-york-premiere-this-fall",
+          "--reason=BRO-3964-production-announcement-not-a-performance-review"
+        ],
+        "description": "Inspected the stored body: premiere announcement, preview/opening dates and production information, without critical evaluation."
+      },
+      {
+        "type": "run-script",
+        "script": "block-review.js",
+        "args": [
+          "--show=la-boheme-off-broadway-2026",
+          "--url=https://parterre.com/broadcast/109261/la-boheme/",
+          "--reason=BRO-3964-opera-stream-schedule-not-a-performance-review"
+        ],
+        "description": "BRO-3964-opera-stream-schedule-not-a-performance-review"
+      },
+      {
+        "type": "run-script",
+        "script": "block-review.js",
+        "args": [
+          "--show=all-male-as-you-like-it-regional-2026",
+          "--url=https://www.rsc.org.uk/as-you-like-it/about-the-play",
+          "--reason=BRO-3964-producer-listing-with-ticket-links-and-external-quotes-not-an-original-review"
+        ],
+        "description": "BRO-3964-producer-listing-with-ticket-links-and-external-quotes-not-an-original-review"
+      },
+      {
+        "type": "run-script",
+        "script": "block-review.js",
+        "args": [
+          "--show=harry-potter-and-the-cursed-child-one-part-west-end-2026",
+          "--url=http://thefrontrowcenter.com/2018/04/harry-potter-and-the-cursed-child/",
+          "--reason=BRO-3964-stored-publication-date-2018-04-30-outside-2026-one-part-production-no-prior-run"
+        ],
+        "description": "BRO-3964-stored-publication-date-2018-04-30-outside-2026-one-part-production-no-prior-run"
+      }
+    ]
+  },
+  "executedAt": "2026-10-22T10:57:47.261Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran block-review.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran block-review.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran block-review.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran block-review.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran block-review.js successfully"
+    }
+  ],
+  "executedIn": "ci"
+}

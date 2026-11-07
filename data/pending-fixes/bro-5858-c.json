@@ -1,0 +1,297 @@
+{
+  "issueNumber": "bro-5858-c",
+  "planId": "8ec854a0-1dd9-4e2a-a269-093228da8373",
+  "status": "applied",
+  "createdAt": "2026-10-21T19:35:07.444Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5858 (part 3/3): two live review files held one article url (a url writer moved one critic's file onto another critic's article). Each loser is marked duplicateOf the file whose critic the page byline, aggregator excerpt attribution or same-critic identity shows wrote the article; where the article's critic is none of the members, the kept file's criticName is corrected.",
+    "steps": [
+      "Mark the surplus file in each same-url group duplicateOf the kept file",
+      "Correct criticName on kept files whose page byline names a different critic"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "moulin-rouge-2019/observer--rex-reed.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "observer--david-cote.json",
+        "description": "same article url as observer--david-cote.json; one review by David Cote (live page byline \"David Cote\")"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "mr-saturday-night-2022/theatrely--kobi-kassal.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "theatrely--juan-a-ramirez.json",
+        "description": "same article url as theatrely--juan-a-ramirez.json; one review by Juan A. Ramirez (live page byline \"Juan A. Ramirez\")"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "much-ado-about-nothing-globe-off-west-end-2026/guardian--susannah-clapp.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "guardian--arifa-akbar.json",
+        "description": "same article url as guardian--arifa-akbar.json; one review by Arifa Akbar (live page byline \"Arifa Akbar\")"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "night-city-off-west-end-2026/thereviewshub--the-reviews-hub-london.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "thereviewshub--richard-maguire.json",
+        "description": "same article url as thereviewshub--richard-maguire.json; one review by Richard Maguire (live page byline \"Richard Maguire\")"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "nina-off-west-end-2026/thereviewshub--the-reviews-hub-london.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "thereviewshub--richard-maguire.json",
+        "description": "same article url as thereviewshub--richard-maguire.json; one review by Richard Maguire (live page byline \"Richard Maguire\")"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "old-times-2015/guardian--charles-isherwood.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "guardian--alexis-soloski.json",
+        "description": "same article url as guardian--alexis-soloski.json; one review by Alexis Soloski (live page byline \"Alexis Soloski\")"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "othello-2025/theatrely--kobi-kassal.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "theatrely--juan-a-ramirez.json",
+        "description": "same article url as theatrely--juan-a-ramirez.json; one review by Juan A. Ramirez (live page byline \"Juan A. Ramirez\")"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "scandalous-2012/nytimes--ben-brantley.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "nytimes--charles-isherwood.json",
+        "description": "same article url as nytimes--charles-isherwood.json; one review by Charles Isherwood (BWW reviews, BWW roundup and DTLI quote this text under Charles Isherwood)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "spamalot-2023/variety--peter-debruge.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "variety--naveen-kumar.json",
+        "description": "same article url as variety--naveen-kumar.json; one review by Naveen Kumar (live page byline \"Naveen Kumar\")"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "stranger-things-the-first-shadow-west-end-2023/whatsonstage--sarah-crompton.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "whatsonstage--alex-wood.json",
+        "description": "same article url as whatsonstage--alex-wood.json; one review by Alex Wood (live page byline \"Alex Wood\")"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "tao-of-glass-west-end-2026/whatsonstage--sarah-crompton.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "whatsonstage--miriam-sallon.json",
+        "description": "same article url as whatsonstage--miriam-sallon.json; one review by Miriam Sallon (live page byline \"Miriam Sallon\")"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-addams-family-2010/variety--steven-suskin.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "variety--david-rooney.json",
+        "description": "same article url as variety--david-rooney.json; one review by Steven Suskin (live page byline + 7 text mentions \"Steven Suskin\"; the Rooney-named file was moved here by show-not-mentioned recovery (old url a Variety film review) and holds the article full text, the Suskin file is an empty excerpt)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-addams-family-2010/variety--david-rooney.json",
+        "field": "criticName",
+        "oldValue": "David Rooney",
+        "newValue": "Steven Suskin",
+        "description": "critic of this article is Steven Suskin, not David Rooney (live page byline + 7 text mentions \"Steven Suskin\"; the Rooney-named file was moved here by show-not-mentioned recovery (old url a Variety film review) and holds the article full text, the Suskin file is an empty excerpt)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-audience-2015/guardian--jesse-green.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "guardian--alexis-soloski.json",
+        "description": "same article url as guardian--alexis-soloski.json; one review by Alexis Soloski (live page byline \"Alexis Soloski\")"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-audience-2015/nytimes--charles-isherwood.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "nytimes--ben-brantley.json",
+        "description": "same article url as nytimes--ben-brantley.json; one review by Ben Brantley (BWW reviews, BWW roundup, DTLI and Show Score quote this text under Ben Brantley)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-house-of-blue-leaves-2011/variety--charles-isherwood.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "variety--marilyn-stasio.json",
+        "description": "same article url as variety--marilyn-stasio.json; one review by Marilyn Stasio (live page byline \"Marilyn Stasio\")"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-present-2017/wsj--terry-teachout.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "wsj--edward-rothstein.json",
+        "description": "same article url as wsj--edward-rothstein.json; one review by Edward Rothstein (Show Score quotes this text under Edward Rothstein)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-price-2017/deadline--pete-hammond.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "deadline--jeremy-gerard.json",
+        "description": "same article url as deadline--jeremy-gerard.json; one review by Jeremy Gerard (live page byline \"Jeremy Gerard\")"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-urmetazoan-off-west-end-2026/thereviewshub--the-reviews-hub-london.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "thereviewshub--richard-maguire.json",
+        "description": "same article url as thereviewshub--richard-maguire.json; one review by Richard Maguire (live page byline \"Richard Maguire\")"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "vanya-and-sonia-and-masha-and-spike-2013/vulture--york-magazine.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "vulture--jesse-green.json",
+        "description": "same article url as vulture--jesse-green.json; one review by Jesse Green (live page byline \"Jesse Green\")"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "whos-afraid-of-virginia-woolf-west-end-2026/thereviewshub--the-reviews-hub-london.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "thereviewshub--nilgun-yusuf.json",
+        "description": "same article url as thereviewshub--nilgun-yusuf.json; one review by Nilgün Yusuf (page names Nilgün Yusuf in the text; \"The Reviews Hub - London\" is the outlet placeholder byline)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-21T20:26:38.389Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "moulin-rouge-2019/observer--rex-reed.json duplicateOf: null -> \"observer--david-cote.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "mr-saturday-night-2022/theatrely--kobi-kassal.json duplicateOf: null -> \"theatrely--juan-a-ramirez.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "much-ado-about-nothing-globe-off-west-end-2026/guardian--susannah-clapp.json duplicateOf: null -> \"guardian--arifa-akbar.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "night-city-off-west-end-2026/thereviewshub--the-reviews-hub-london.json duplicateOf: null -> \"thereviewshub--richard-maguire.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "nina-off-west-end-2026/thereviewshub--the-reviews-hub-london.json duplicateOf: null -> \"thereviewshub--richard-maguire.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "old-times-2015/guardian--charles-isherwood.json duplicateOf: null -> \"guardian--alexis-soloski.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "othello-2025/theatrely--kobi-kassal.json duplicateOf: null -> \"theatrely--juan-a-ramirez.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "scandalous-2012/nytimes--ben-brantley.json duplicateOf: null -> \"nytimes--charles-isherwood.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "spamalot-2023/variety--peter-debruge.json duplicateOf: null -> \"variety--naveen-kumar.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "stranger-things-the-first-shadow-west-end-2023/whatsonstage--sarah-crompton.json duplicateOf: null -> \"whatsonstage--alex-wood.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "tao-of-glass-west-end-2026/whatsonstage--sarah-crompton.json duplicateOf: null -> \"whatsonstage--miriam-sallon.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-addams-family-2010/variety--steven-suskin.json duplicateOf: null -> \"variety--david-rooney.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-addams-family-2010/variety--david-rooney.json criticName: \"David Rooney\" -> \"Steven Suskin\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-audience-2015/guardian--jesse-green.json duplicateOf: null -> \"guardian--alexis-soloski.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-audience-2015/nytimes--charles-isherwood.json duplicateOf: null -> \"nytimes--ben-brantley.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-house-of-blue-leaves-2011/variety--charles-isherwood.json duplicateOf: null -> \"variety--marilyn-stasio.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-present-2017/wsj--terry-teachout.json duplicateOf: null -> \"wsj--edward-rothstein.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-price-2017/deadline--pete-hammond.json duplicateOf: null -> \"deadline--jeremy-gerard.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-urmetazoan-off-west-end-2026/thereviewshub--the-reviews-hub-london.json duplicateOf: null -> \"thereviewshub--richard-maguire.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "vanya-and-sonia-and-masha-and-spike-2013/vulture--york-magazine.json duplicateOf: null -> \"vulture--jesse-green.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "whos-afraid-of-virginia-woolf-west-end-2026/thereviewshub--the-reviews-hub-london.json duplicateOf: null -> \"thereviewshub--nilgun-yusuf.json\""
+    }
+  ],
+  "executedIn": "ci"
+}

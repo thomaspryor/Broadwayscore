@@ -1,0 +1,158 @@
+{
+  "issueNumber": "bro-6506",
+  "planId": "cd13a192-08f8-4716-8239-17627bc9cced",
+  "status": "pending",
+  "createdAt": "2026-10-29T13:36:35.692Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6506: 14 Off-Broadway musicals stored as plays (BRO-6489 audit), each checked against a TheaterMania genre, Playbill tag-line or Playbill article. peter-panto-off-broadway-2026 left as play: no source names it a musical (TDF: Holiday, TM: Cabaret; Comedy).",
+    "steps": [
+      "shows.json: jim-hensons-fraggle-rock-back-to-the-rock-live-off-broadway-2026.type (source: https://www.theatermania.com/news/fraggle-rock-musical-and-jim-henson-creature-shop-tours-bring-muppet-magic-to-nyc_1839616/)",
+      "shows.json: kilgallen-off-broadway-2026.type (source: https://www.theatermania.com/shows/new-york-city-theater/off-broadway/kilgallen_1857606/ (genre Musical))",
+      "shows.json: whats-eating-gilbert-grape-off-broadway-2026.type (source: https://playbill.com/article/mcc-theater-will-host-world-premiere-whats-eating-gilbert-grape-musical-in-2027)",
+      "shows.json: chasing-grace-off-broadway-2026.type (source: https://www.theatermania.com/shows/new-york-theater/chasing-grace_1822611/ (genre Musical))",
+      "shows.json: the-apple-boys-off-broadway-2027.type (source: https://www.theatermania.com/shows/new-york-city-theater/off-broadway/the-apple-boys_1855667/ (genre Musical))",
+      "shows.json: walk-on-through-confessions-of-a-museum-novice-off-broadway-2023.type (source: https://www.theatermania.com/shows/new-york-city-theater/off-broadway/walk-on-through-confessions-of-a-museum-novice_1716310/ (genre Musical))",
+      "shows.json: the-gardens-of-anuncia-off-broadway-2023.type (source: https://www.theatermania.com/shows/new-york-city-theater/off-broadway/the-gardens-of-anuncia_1715881/ (genre Musical))",
+      "shows.json: the-connector-off-broadway-2024.type (source: https://www.theatermania.com/shows/new-york-city-theater/off-broadway/the-connector_1722158/ (genre Musical))",
+      "shows.json: the-big-gay-jamboree-off-broadway-2024.type (source: https://www.theatermania.com/shows/new-york-city-theater/off-broadway/the-big-gay-jamboree_1738251/ (genre Comedy; Musical))",
+      "shows.json: wesley-off-broadway-2025.type (source: https://playbill.com/production/wesley-off-broadway-the-theater-center-anne-l-bernstein-theater-2025 (tag-line Off-Broadway | Musical))",
+      "shows.json: animal-wisdom-off-broadway-2022.type (source: https://playbill.com/production/animal-wisdom-off-broadway-the-pershing-square-signature-center-romulus-linney-courtyard-theatre-2026 (tag-line Musical | Revival))",
+      "shows.json: going-bacharach-the-songs-of-an-icon-off-broadway-2026.type (source: https://playbill.com/production/going-bacharach-off-broadway-marjorie-s-deane-little-theater-the-west-side-y-2026-2 (tag-line Musical Revue))",
+      "shows.json: milk-and-honey-amt-theater-off-broadway-2026.type (source: https://www.theatermania.com/shows/new-york-city-theater/off-broadway/milk-and-honey_1829794/ (genre Musical))",
+      "shows.json: the-potluck-off-broadway-2026.type (source: https://www.theatermania.com/shows/new-york-city-theater/off-broadway/the-potluck_1828908/ (genre Musical))"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "jim-hensons-fraggle-rock-back-to-the-rock-live-off-broadway-2026",
+        "field": "type",
+        "oldValue": "play",
+        "newValue": "musical",
+        "description": "shows.json: jim-hensons-fraggle-rock-back-to-the-rock-live-off-broadway-2026.type (source: https://www.theatermania.com/news/fraggle-rock-musical-and-jim-henson-creature-shop-tours-bring-muppet-magic-to-nyc_1839616/)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "kilgallen-off-broadway-2026",
+        "field": "type",
+        "oldValue": "play",
+        "newValue": "musical",
+        "description": "shows.json: kilgallen-off-broadway-2026.type (source: https://www.theatermania.com/shows/new-york-city-theater/off-broadway/kilgallen_1857606/ (genre Musical))"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "whats-eating-gilbert-grape-off-broadway-2026",
+        "field": "type",
+        "oldValue": "play",
+        "newValue": "musical",
+        "description": "shows.json: whats-eating-gilbert-grape-off-broadway-2026.type (source: https://playbill.com/article/mcc-theater-will-host-world-premiere-whats-eating-gilbert-grape-musical-in-2027)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "chasing-grace-off-broadway-2026",
+        "field": "type",
+        "oldValue": "play",
+        "newValue": "musical",
+        "description": "shows.json: chasing-grace-off-broadway-2026.type (source: https://www.theatermania.com/shows/new-york-theater/chasing-grace_1822611/ (genre Musical))"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-apple-boys-off-broadway-2027",
+        "field": "type",
+        "oldValue": "play",
+        "newValue": "musical",
+        "description": "shows.json: the-apple-boys-off-broadway-2027.type (source: https://www.theatermania.com/shows/new-york-city-theater/off-broadway/the-apple-boys_1855667/ (genre Musical))"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "walk-on-through-confessions-of-a-museum-novice-off-broadway-2023",
+        "field": "type",
+        "oldValue": "play",
+        "newValue": "musical",
+        "description": "shows.json: walk-on-through-confessions-of-a-museum-novice-off-broadway-2023.type (source: https://www.theatermania.com/shows/new-york-city-theater/off-broadway/walk-on-through-confessions-of-a-museum-novice_1716310/ (genre Musical))"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-gardens-of-anuncia-off-broadway-2023",
+        "field": "type",
+        "oldValue": "play",
+        "newValue": "musical",
+        "description": "shows.json: the-gardens-of-anuncia-off-broadway-2023.type (source: https://www.theatermania.com/shows/new-york-city-theater/off-broadway/the-gardens-of-anuncia_1715881/ (genre Musical))"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-connector-off-broadway-2024",
+        "field": "type",
+        "oldValue": "play",
+        "newValue": "musical",
+        "description": "shows.json: the-connector-off-broadway-2024.type (source: https://www.theatermania.com/shows/new-york-city-theater/off-broadway/the-connector_1722158/ (genre Musical))"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-big-gay-jamboree-off-broadway-2024",
+        "field": "type",
+        "oldValue": "play",
+        "newValue": "musical",
+        "description": "shows.json: the-big-gay-jamboree-off-broadway-2024.type (source: https://www.theatermania.com/shows/new-york-city-theater/off-broadway/the-big-gay-jamboree_1738251/ (genre Comedy; Musical))"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "wesley-off-broadway-2025",
+        "field": "type",
+        "oldValue": "play",
+        "newValue": "musical",
+        "description": "shows.json: wesley-off-broadway-2025.type (source: https://playbill.com/production/wesley-off-broadway-the-theater-center-anne-l-bernstein-theater-2025 (tag-line Off-Broadway | Musical))"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "animal-wisdom-off-broadway-2022",
+        "field": "type",
+        "oldValue": "play",
+        "newValue": "musical",
+        "description": "shows.json: animal-wisdom-off-broadway-2022.type (source: https://playbill.com/production/animal-wisdom-off-broadway-the-pershing-square-signature-center-romulus-linney-courtyard-theatre-2026 (tag-line Musical | Revival))"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "going-bacharach-the-songs-of-an-icon-off-broadway-2026",
+        "field": "type",
+        "oldValue": "play",
+        "newValue": "musical",
+        "description": "shows.json: going-bacharach-the-songs-of-an-icon-off-broadway-2026.type (source: https://playbill.com/production/going-bacharach-off-broadway-marjorie-s-deane-little-theater-the-west-side-y-2026-2 (tag-line Musical Revue))"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "milk-and-honey-amt-theater-off-broadway-2026",
+        "field": "type",
+        "oldValue": "play",
+        "newValue": "musical",
+        "description": "shows.json: milk-and-honey-amt-theater-off-broadway-2026.type (source: https://www.theatermania.com/shows/new-york-city-theater/off-broadway/milk-and-honey_1829794/ (genre Musical))"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-potluck-off-broadway-2026",
+        "field": "type",
+        "oldValue": "play",
+        "newValue": "musical",
+        "description": "shows.json: the-potluck-off-broadway-2026.type (source: https://www.theatermania.com/shows/new-york-city-theater/off-broadway/the-potluck_1828908/ (genre Musical))"
+      }
+    ]
+  }
+}
