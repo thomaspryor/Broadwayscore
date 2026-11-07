@@ -6,7 +6,7 @@
  *
  * Usage: node scripts/audit-artsdesk-banner.js [--show=ID] [--year=2026] [--json] [--strict]
  *   --year=N   only files under show folders ending in -N or _pending/<...>-N (default: all years)
- *   --strict   exit 1 when any banner-prefixed file is found (the re-audit gate)
+ *   --strict   exit 1 when any banner-prefixed or trailing-"Image" file is found (the re-audit gate)
  */
 const fs = require('fs');
 const path = require('path');
@@ -63,7 +63,7 @@ if (require.main === module) {
     for (const r of bad) console.log(`${r.show}/${r.file}  tier=${r.contentTier} words=${r.words} banner=${r.banner} endsImage=${r.endsImage}  ${r.url || ''}`);
     console.log(`artsdesk audit: ${rows.length} file(s), ${bad.length} with banner or trailing "Image", ${rows.filter((r) => r.banner).length} start with the banner`);
   }
-  if (process.argv.includes('--strict') && rows.some((r) => r.banner)) process.exit(1);
+  if (process.argv.includes('--strict') && rows.some((r) => r.banner || r.endsImage)) process.exit(1);
 }
 
 module.exports = { classify, scan, BANNER_RE };

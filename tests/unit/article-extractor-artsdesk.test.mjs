@@ -55,6 +55,11 @@ describe('theartsdesk.com extractor', () => {
     assert.ok(t.includes('Paragraph 4 of the review'));
   });
 
+  test('keeps a review paragraph that merely mentions the banner wording', () => {
+    const t = extractArtsDeskBody(page({ body: '<p>The programme urges you to subscribe today, which the critic found rich given the ticket prices on offer here.</p>' + P(3) }));
+    assert.ok(t.includes('subscribe today'));
+  });
+
   test('fails loud (null) when the article-body block is missing, never the banner', () => {
     const html = '<html><body>' + BANNER + '<main><p>' + 'Some other chrome text. '.repeat(40) + '</p></main></body></html>';
     assert.equal(extractArticleText(html, 'theartsdesk.com'), null);

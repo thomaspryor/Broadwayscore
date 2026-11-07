@@ -4208,7 +4208,9 @@ function preferDedicatedText(generic, html, url) {
   if (!url || !html || !isDedicatedExtractorHost(url)) return base;
   let dedicated = null;
   try { dedicated = extractArticleTextFromHtml(html, url); } catch { dedicated = null; }
-  if (dedicated && isExclusiveExtractorHost(url)) return dedicated;
+  // Exclusive host: the generic pass is the bug (it keeps the support banner), so a dedicated miss is a failed
+  // extraction, never a banner-prefixed save.
+  if (isExclusiveExtractorHost(url)) return dedicated || '';
   return dedicated && dedicated.length > base.length ? dedicated : base;
 }
 

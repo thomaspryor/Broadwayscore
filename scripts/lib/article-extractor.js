@@ -663,7 +663,8 @@ function extractNubNewsBody(html) {
  * began with the banner and ended "Image". Keep only <p> text inside the article-body block, minus figures, and
  * drop any banner paragraph. Returns null when the block is absent so a layout change fails loud.
  */
-const ARTSDESK_BANNER_RE = /help keep arts journalism alive|we.re rebuilding theartsdesk|subscribe today/i;
+// Anchored: only a paragraph that BEGINS with the banner copy (or is just the button) goes, never one that quotes it.
+const ARTSDESK_BANNER_RE = /^\s*(?:help keep arts journalism alive|we.re rebuilding theartsdesk to secure|subscribe today\W*$)/i;
 function extractArtsDeskBody(html) {
   const src = String(html || '').replace(/<!--[\s\S]*?-->/g, '').replace(/<script[\s\S]*?<\/script>/gi, '');
   const inner = extractBalancedDivByClass(src, 'block-field-blocknodearticlebody');
@@ -1504,7 +1505,10 @@ function isDedicatedExtractorHost(urlOrHost) {
 // Hosts whose dedicated extractor is authoritative: callers keep its text even when the generic pass is longer
 // (theartsdesk's generic pass is longer only because it keeps the support banner, BRO-7061).
 function isExclusiveExtractorHost(urlOrHost) {
-  return /(?:^|\.)theartsdesk\.com(?:[/:?#]|$)/i.test(String(urlOrHost || '').replace(/^[a-z]+:\/\//i, ''));
+  const raw = String(urlOrHost || '').trim();
+  let h = raw;
+  try { h = new URL(/^[a-z]+:\/\//i.test(raw) ? raw : `https://${raw}`).hostname; } catch { /* keep raw */ }
+  return /(?:^|\.)theartsdesk\.com$/i.test(h);
 }
 
 module.exports = { isExclusiveExtractorHost, isDedicatedExtractorHost, extractArticleText, extractStandfirst, extractArticleTextFromUrl, extractPublishDate, stripHtml, extractLsaByline, extractZoxNewsBody, extractVarietyBody, extractNubNewsBody, extractLondonTheatreBody, extractArtsDeskBody, extractToledoBladeBody, extractCurtainUpBody, extractDailyMailBody, dailyMailVerdictValues };
