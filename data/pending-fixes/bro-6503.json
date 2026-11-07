@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6503",
   "planId": "b2b7628a-8e2f-420e-8c80-8aed269241e1",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-31T03:00:22.599Z",
   "submitter": {
     "name": null,
@@ -242,5 +242,120 @@
         "description": "BRO-6503: Confirm the press night from a dated source, without review-date inference. Dated production reporting distinguishes previews (2011-05-16) from press night (2011-06-01): https://www.whatsonstage.com/news/photos-tennant-tate-in-wyndhams-much-ado_8749/"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-07T18:59:44.648Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for top-hat-west-end-2012"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for top-hat-west-end-2012"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for the-sunshine-boys-west-end-2012"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for the-sunshine-boys-west-end-2012"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for absent-friends-west-end-2012"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for absent-friends-west-end-2012"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for the-tempest-west-end-2011"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for the-tempest-west-end-2011"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for betty-blue-eyes-west-end-2011"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for betty-blue-eyes-west-end-2011"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for shrek-the-musical-west-end-2011"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for shrek-the-musical-west-end-2011"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for ghost-the-musical-west-end-2011"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for ghost-the-musical-west-end-2011"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for ghost-the-musical-west-end-2011"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for birdsong-west-end-2010"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for birdsong-west-end-2010"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: noReliableArt updated for birdsong-west-end-2010"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for betrayal-west-end-2011"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for betrayal-west-end-2011"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate already \"2011-06-01\", pins refreshed for much-ado-about-nothing-west-end-2011",
+      "noop": true
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for much-ado-about-nothing-west-end-2011"
+    }
+  ],
+  "executedIn": "ci"
 }
