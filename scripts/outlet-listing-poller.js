@@ -920,7 +920,7 @@ async function main() {
     && (!opts.market || s.category === opts.market || s.market === opts.market))];
   // Census page checks have their own counters and a per-outlet cap, so they never use up the feed budget.
   const censusPageStats = { fetched: 0, confirmed: 0, unconfirmed: 0, overBudget: 0, failed: 0 };
-  const CENSUS_PAGE_MAX = parseInt(process.env.CENSUS_PAGE_MAX_FETCHES || '80', 10);
+  const CENSUS_PAGE_MAX = (() => { const n = parseInt(process.env.CENSUS_PAGE_MAX_FETCHES || '80', 10); return Number.isFinite(n) && n >= 0 ? n : 80; })(); // a typo'd repo variable must not remove the cap
 
   // --- Derive qualifying outlets ---
   let qualifyingOutlets;
