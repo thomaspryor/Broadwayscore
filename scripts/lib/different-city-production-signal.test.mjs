@@ -84,3 +84,28 @@ test('DIFFERENT_CITY_SIGNAL_DISABLED=1 kill switch restores the old behaviour', 
   } finally { delete process.env.DIFFERENT_CITY_SIGNAL_DISABLED; }
   assert.equal(g.hasDifferentCityProductionSignal(KING_LEAR_CHICAGO_READER, '', NYC_SHOW), true);
 });
+
+// Ship-check review findings (BRO-7058)
+test('Goodman transfer wording ("presentation of the ... production") is exempt, real talkinbroadway verdict', () => {
+  assert.equal(g.hasDifferentCityProductionSignal([
+    'Review evaluates Goodman Theatre production (Chicago), not the Off-Broadway production. Text explicitly states \'in Audible Theater\'s presentation of the Goodman Theatre production\'.',
+  ], '', { ...NYC_SHOW, id: 'swing-state-off-broadway-2023', title: 'Swing State', venue: 'Minetta Lane Theatre' }), false);
+});
+
+test('loose "not ... Broadway" probes do not fire', () => {
+  for (const [issues, show] of [
+    [['Critic is a Los Angeles-based writer; review does not mention Broadway'], NYC_SHOW],
+    [['The review discusses Chicago at the Ambassador; not the expected Broadway cast'], { ...NYC_SHOW, title: 'Chicago' }],
+    [['Austin Pendleton directs; the cast list differs, not Off-Broadway'], NYC_SHOW],
+    [['Review is a Chicago critic roundup', 'Review does not reference New York City at all'], NYC_SHOW],
+  ]) assert.equal(g.hasDifferentCityProductionSignal(issues, '', show), false, issues[0]);
+});
+
+test('city and "not this market" must sit in the same issue string', () => {
+  assert.equal(g.hasDifferentCityProductionSignal(['Venue is in Chicago', 'Cast list is not the Broadway cast'], '', NYC_SHOW), false);
+});
+
+test('original-bug wording that slipped through before now fires', () => {
+  assert.equal(g.hasDifferentCityProductionSignal(['Review is of the Chicago premiere at Theater Wit, not the Off-Broadway production in New York City'], '', NYC_SHOW), true);
+  assert.equal(g.hasDifferentCityProductionSignal(['Review is of Theater Wit (Chicago), not The Secret Theatre'], '', NYC_SHOW), true);
+});
