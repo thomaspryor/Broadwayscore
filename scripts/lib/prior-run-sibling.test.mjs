@@ -135,12 +135,13 @@ test('does not mutate the input reviews', () => {
   assert.equal(reviews[0].inheritedFromShowId, undefined);
 });
 
-test('a review dated outside the prior-run window or undated stays on the earlier entry', () => {
+test('a review dated outside the prior-run window stays; an undated one of the closed earlier run carries (BRO-4874)', () => {
   const reviews = [
     review({ publishDate: '2026-10-05', url: 'https://x.test/late', outletId: 'late', criticName: 'Late' }),
     review({ publishDate: undefined, url: 'https://x.test/undated', outletId: 'undated', criticName: 'Undated' }),
   ];
-  assert.equal(inheritPriorRunReviews(reviews, [SKIRBALL, ST_ANNS]).inherited.length, 0);
+  // Skirball closed 2026-02-21, before the St. Ann's return began, so its undated review belongs to that run.
+  assert.deepEqual(inheritPriorRunReviews(reviews, [SKIRBALL, ST_ANNS]).inherited.map(r => r.outletId), ['undated']);
 });
 
 test('does not duplicate a review the returning entry already has (same URL)', () => {
@@ -205,7 +206,7 @@ const deps = { loadFiles: (id) => files[id] || [], isCovered: (d) => !d.wrongSho
 
 test('collectCarriedFiles carries in-window includable files, tagged with their own entry', () => {
   const got = collectCarriedFiles(ST_ANNS, [SKIRBALL, ST_ANNS], deps);
-  assert.deepEqual(got.map(d => d._file).sort(), ['nyt.json', 'tm.json']);
+  assert.deepEqual(got.map(d => d._file).sort(), ['nyt.json', 'tm.json', 'undated.json']);
   assert.ok(got.every(d => d._ctxShow.id === SKIRBALL.id && d._carriedFromShowId === SKIRBALL.id));
 });
 
