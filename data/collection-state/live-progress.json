@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-11-07T04:55:09.578Z",
-  "processed": 8,
-  "failed": 30,
-  "successRate": "21.1%",
+  "updatedAt": "2026-11-07T04:57:03.030Z",
+  "processed": 9,
+  "failed": 36,
+  "successRate": "20.0%",
   "tierBreakdown": {
-    "playwright": 4,
+    "playwright": 3,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingdog": 33,
-    "scrapingbee": 17,
-    "brightdata": 1,
+    "scrapingdog": 0,
+    "scrapingbee": 2,
+    "brightdata": 0,
     "archiveToday": 0,
-    "archive": 0
+    "archive": 4
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 6,
   "recentActivity": [
     {
       "t": "2026-11-07T04:48:29.259Z",
@@ -50,28 +50,65 @@
       "domain": "nytimes.com"
     },
     {
-      "t": "2026-11-07T04:50:49.792Z",
+      "t": "2026-11-07T04:48:06.359Z",
       "event": "bb-session",
-      "session": "a9c2d795",
-      "url": "https://bachtrack.com/review-lorfeo-william-kentridge-greek-national-opera-athen"
+      "session": "3b4596ac",
+      "url": "https://www.nytimes.com/2026/11/06/theater/the-unbelievers-222-a-ghost-story-rev"
     },
     {
-      "t": "2026-11-07T04:51:54.809Z",
-      "event": "bb-session",
-      "session": "8b300f48",
-      "url": "https://bachtrack.com/review-shostakovich-cherry-town-ahlbom-dutch-national-oper"
+      "t": "2026-11-07T04:48:06.804Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     },
     {
-      "t": "2026-11-07T04:52:58.764Z",
+      "t": "2026-11-07T04:48:23.300Z",
       "event": "bb-session",
-      "session": "6af4d315",
-      "url": "https://bachtrack.com/review-tosca-miskimmon-glassberg-fanyo-english-national-op"
+      "session": "62f37a20",
+      "url": "https://www.nytimes.com/2026/11/06/theater/the-unbelievers-222-a-ghost-story-rev"
     },
     {
-      "t": "2026-11-07T04:54:03.578Z",
+      "t": "2026-11-07T04:48:23.714Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-07T04:49:03.079Z",
       "event": "bb-session",
-      "session": "3fb11622",
-      "url": "https://bachtrack.com/review-nozze-figaro-pountney-conta-bucharest-national-oper"
+      "session": "8aab67b8",
+      "url": "https://www.nytimes.com/2026/11/05/theater/rope-the-verge-review-off-broadway-si"
+    },
+    {
+      "t": "2026-11-07T04:49:03.482Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-07T04:49:19.994Z",
+      "event": "bb-session",
+      "session": "d8847902",
+      "url": "https://www.nytimes.com/2026/11/05/theater/rope-the-verge-review-off-broadway-si"
+    },
+    {
+      "t": "2026-11-07T04:49:20.441Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-07T04:52:13.292Z",
+      "event": "bb-session",
+      "session": "70c7ba2e",
+      "url": "https://bachtrack.com/review-medea-yoncheva-spyres-met-opera-new-york-october-20"
+    },
+    {
+      "t": "2026-11-07T04:56:21.963Z",
+      "event": "bb-session",
+      "session": "89b8b846",
+      "url": "https://hermes.talkinbroadway.com/allthatchat_new/d.php?id=2655044"
+    },
+    {
+      "t": "2026-11-07T04:56:22.411Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
