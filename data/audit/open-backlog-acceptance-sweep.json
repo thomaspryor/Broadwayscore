@@ -1,22 +1,46 @@
 {
-  "generatedAt": "2026-11-06T09:35:34.117Z",
+  "generatedAt": "2026-11-07T09:01:10.396Z",
   "shadow": true,
-  "checkoutSha": "08ca96b9e784c13cc32c506752dee09b1846d322",
-  "totalCandidates": 353,
-  "eligibleCandidates": 91,
-  "checked": 27,
+  "checkoutSha": "2c730bc2777777c7a56ebd5597ead733c694161c",
+  "totalCandidates": 334,
+  "eligibleCandidates": 94,
+  "checked": 29,
   "truncated": true,
   "fetchError": null,
   "counts": {
-    "pass": 20,
-    "fail": 3,
-    "unverifiable": 4
+    "pass": 24,
+    "fail": 2,
+    "unverifiable": 3
   },
   "alreadyDone": [
     {
-      "id": "BRO-7023",
-      "name": "Show Score gap: Midnight (off-Broadway) cached URL is London's page; detector flags it forever",
-      "verifyCmd": "node --test scripts/lib/showscore-gap-detector.test.mjs",
+      "id": "BRO-7053",
+      "name": "Junk-page check rejects real reviews whose subject names match other show titles (Speculations: Guardian, Arts Desk)",
+      "verifyCmd": "node --test tests/unit/multi-show-subject-names.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-7051",
+      "name": "Direct outlet checks every 3h during opening window (outlet-listing-poller), free feeds first",
+      "verifyCmd": "node --test tests/unit/outlet-listing-opening-window.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-7047",
+      "name": "Digest plain wording: 34 owner-visible health checks still show their raw check name",
+      "verifyCmd": "node --test tests/unit/morning-digest-quiet.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-7040",
+      "name": "Morning digest: shorter, quieter, plain-language (age gate, cleared-yesterday, decisions once, board collapsed)",
+      "verifyCmd": "node --test scripts/verify-bro-7040-recheck.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-7034",
+      "name": "Refetch real reviews hidden by BRO-6774 wrongAttribution marks (Mountford/Art, Dale/King Kong, McNulty/Groundhog Day, Cavendish/Play That Goes Wrong) and dedupe Letts/Treneman, Independent Paul Taylor lion-king, NYT mislabels first-date/ghost",
+      "verifyCmd": "node scripts/audit-review-contamination.js --strict",
       "detail": null
     },
     {
@@ -26,9 +50,15 @@
       "detail": null
     },
     {
-      "id": "BRO-6985",
-      "name": "Affiliate bot click divergence: Impact records 10.5x the real PostHog TodayTix clicks (ceiling 2.5x)",
-      "verifyCmd": "node --test scripts/lib/affiliate-anomaly.test.mjs",
+      "id": "BRO-6984",
+      "name": "Critic page: you vs. the consensus line + per-review flag a problem",
+      "verifyCmd": "npx tsx --test tests/unit/critic-standing.test.ts tests/unit/critic-claim.test.ts",
+      "detail": null
+    },
+    {
+      "id": "BRO-6972",
+      "name": "P1: Opening night miss: We'll See (2026-11-03)",
+      "verifyCmd": "node scripts/slow-market-grade.js --opened-from=2026-11-03 --opened-to=2026-11-03 --check-gaps",
       "detail": null
     },
     {
@@ -126,32 +156,20 @@
       "name": "Video captions: tagged link on Facebook, link in bio on TikTok/Instagram, YouTube description link (per-channel)",
       "verifyCmd": "node --test scripts/test-video-captions.test.mjs",
       "detail": null
-    },
-    {
-      "id": "BRO-6616",
-      "name": "Cutover 0: lane shadow commits its own scraper-spend ledger lines to main",
-      "verifyCmd": "node --test tests/unit/lane-spend-ledger-commit.test.mjs",
-      "detail": null
     }
   ],
   "failing": [
+    {
+      "id": "BRO-6944",
+      "name": "iOS: signed-out rating Save shows no sign-in sheet and strands the user on the show page",
+      "verifyCmd": "npx tsc --noEmit",
+      "detail": "src/lib/data-actors.ts(22,26): error TS2307: Cannot find module '../../data/cast-manifest.json' or its corresponding type declarations.\nsrc/lib/data-cast-obc.ts(12,26): error TS2307: Cannot find module '../../data/cast-manifest.json' or its corresponding type declarations.\nsrc/lib/data-tony-nominees.ts(32,32): error TS2307: Cannot find module '../../data/actor-slugs.json' or its corresponding type"
+    },
     {
       "id": "BRO-6794",
       "name": "Older-years sweep remainder: 1,835 never-audited older shows + blocked-host fetch failures",
       "verifyCmd": "node scripts/lib/verify-data-backfill.js --show=broadway,west-end,regional,tour --reviews=1835",
       "detail": "FAIL broadway: show missing; scored reviews 0 < 1835\nFAIL west-end: show missing; scored reviews 0 < 1835\nFAIL regional: show missing; scored reviews 0 < 1835\nFAIL tour: show missing; scored reviews 0 < 1835\n"
-    },
-    {
-      "id": "BRO-6710",
-      "name": "UK regional: lift the 20 new venue-season shows and remaining below-bar shows to 3 reviews",
-      "verifyCmd": "node scripts/lib/verify-data-backfill.js --show=329 --reviews=3",
-      "detail": "FAIL 329: show missing; scored reviews 0 < 3\n"
-    },
-    {
-      "id": "BRO-6688",
-      "name": "Delete stale failed land branch land/bro-6682-opening-night-leftovers",
-      "verifyCmd": "node scripts/check-remote-branch-absent.js --branch=land/bro-6682-opening-night-leftovers",
-      "detail": "[check-remote-branch-absent] FAIL: land/bro-6682-opening-night-leftovers is still on origin\n"
     }
   ],
   "unverifiable": [
@@ -171,22 +189,30 @@
       "id": "BRO-6724",
       "name": "Pre-existing red checks seen during BRO-6716: cross-outlet attribution suspect tests + audit-regex-patterns --full overages",
       "verifyCmd": "node scripts/run-unit-tests.js",
-      "detail": "check killed by SIGTERM after 95668ms (timeout — no verdict)"
-    },
-    {
-      "id": "BRO-6602",
-      "name": "main test.yml red: Unit Tests / scripts/lib tests — matchSlugToShow 20 real fixtures + BRO-2281 Hackney Empire venue",
-      "verifyCmd": "node scripts/run-unit-tests.js",
-      "detail": "check killed by SIGTERM after 46525ms (timeout — no verdict)"
+      "detail": "check killed by SIGTERM after 46015ms (timeout — no verdict)"
     }
   ],
   "landedButOpen": [
     {
-      "id": "BRO-7023",
-      "name": "Show Score gap: Midnight (off-Broadway) cached URL is London's page; detector flags it forever",
-      "branch": "land/bro-7023-cost",
-      "sha": "7cd43c98398f5353df0907b0d9bfc8c6acf31e47",
-      "landedAt": "2026-11-05T20:12:58.890Z"
+      "id": "BRO-7053",
+      "name": "Junk-page check rejects real reviews whose subject names match other show titles (Speculations: Guardian, Arts Desk)",
+      "branch": "land/bro-7053-lowercase",
+      "sha": "1543a4081c3257b1639b92406a019b19aed3bd36",
+      "landedAt": "2026-11-07T00:46:02.180Z"
+    },
+    {
+      "id": "BRO-7051",
+      "name": "Direct outlet checks every 3h during opening window (outlet-listing-poller), free feeds first",
+      "branch": "land/bro-7051-nysun",
+      "sha": "223d1f31afacac2833f91c3bc303edddeebb1a0d",
+      "landedAt": "2026-11-06T20:40:26.525Z"
+    },
+    {
+      "id": "BRO-7040",
+      "name": "Morning digest: shorter, quieter, plain-language (age gate, cleared-yesterday, decisions once, board collapsed)",
+      "branch": "land/bro-7040-followup",
+      "sha": "95f8de1c65c8461a17d20000e443c6762c167a2c",
+      "landedAt": "2026-11-06T15:51:36.452Z"
     },
     {
       "id": "BRO-6987",
@@ -194,6 +220,13 @@
       "branch": "land/codex-bro-6987",
       "sha": "91a35c79cb12dcdf63480bcd2e866bd93e58d345",
       "landedAt": "2026-11-05T22:02:44.152Z"
+    },
+    {
+      "id": "BRO-6972",
+      "name": "P1: Opening night miss: We'll See (2026-11-03)",
+      "branch": "land/bro-6972-uncovered-first",
+      "sha": "1ccaca0e1d67870b719120c7d75f60d6b7e7d785",
+      "landedAt": "2026-11-04T20:32:02.535Z"
     },
     {
       "id": "BRO-6965",
@@ -278,13 +311,6 @@
       "branch": "land/bro-6737-video-clean2",
       "sha": "11f4cc38b7d71e57dac7ffb1d8a08c85082cbad5",
       "landedAt": "2026-11-01T15:07:57.966Z"
-    },
-    {
-      "id": "BRO-6616",
-      "name": "Cutover 0: lane shadow commits its own scraper-spend ledger lines to main",
-      "branch": "land/bro-6616-guard",
-      "sha": "40eaf7691c28fa714768d170e62ded32b4e1edd9",
-      "landedAt": "2026-11-03T17:17:20.140Z"
     }
   ]
 }
