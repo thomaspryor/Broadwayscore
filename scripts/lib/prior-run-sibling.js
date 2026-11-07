@@ -337,8 +337,11 @@ function reReviewedByManyOutlets(show, shows, existing) {
  * shows, e.g. Teeth, Prince Faggot, Jesus Christ Superstar, were never
  * carried): the earlier entry filed it as its own review, so it is that run's
  * when the window IS the entry's own run (not one of several runs it declares)
- * and the entry closed before `show` started, so a misfiled current-run review
- * cannot ride in. Same rule collectHousedSiblingFiles already used for gap rows.
+ * and the entry closed before `show` started. That lowers the odds of a
+ * misfiled current-run review riding in; it cannot rule one out, since an
+ * undated file carries no date to check. No closingDate or no start for
+ * `show` = not carried. Same rule collectHousedSiblingFiles already used for
+ * gap rows.
  * @param {string|null|undefined} publishDate
  * @param {object} window from findPriorRunSiblings
  * @param {object} sibling the earlier entry

@@ -52,3 +52,21 @@ test('undated rows stay put when the window is one of several runs the entry dec
   const { inherited } = inheritPriorRunReviews([rev('x-2025', 'b', null)], [older, multi]);
   assert.equal(inherited.length, 0);
 });
+
+test('guard paths: no closingDate or no start for the return means undated rows stay put; a dateless window uses the entry own run', () => {
+  const noClose = { ...older, closingDate: undefined };
+  const retNoClose = { ...newer, priorRuns: [{ id: 'x-2025', openingDate: '2025-03-01' }] };
+  assert.equal(inheritPriorRunReviews([rev('x-2025', 'b', null)], [noClose, retNoClose]).inherited.length, 0, 'no closingDate');
+  const noStart = { ...newer, previewsStartDate: undefined, openingDate: undefined };
+  assert.equal(inheritPriorRunReviews([rev('x-2025', 'b', null)], [older, noStart]).inherited.length, 0, 'no start');
+  const winNoOpen = { ...newer, priorRuns: [{ id: 'x-2025', closingDate: '2025-06-01' }] };
+  // findPriorRunSiblings fills a dateless window from the entry's own dates, so
+  // the window IS the entry's run and the undated row carries.
+  assert.equal(inheritPriorRunReviews([rev('x-2025', 'b', null)], [older, winNoOpen]).inherited.length, 1, 'window without openingDate');
+});
+
+test('The Recs junk pattern is case-sensitive on the initials', () => {
+  assert.equal(isJunkCriticName('The Recs Mark'), false);
+  assert.equal(isJunkCriticName('the recs IT'), true);
+  assert.equal(isJunkCriticName('The Recs Jdh'), true, 'live row, title-cased initials');
+});
