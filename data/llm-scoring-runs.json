@@ -1,24 +1,5 @@
 [
   {
-    "startedAt": "2026-11-06T00:22:52.695Z",
-    "completedAt": "2026-11-06T00:22:52.729Z",
-    "totalReviews": 0,
-    "processed": 0,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "cacheRead": 0,
-      "cacheWrite": 0,
-      "total": 0
-    },
-    "costUsd": 0,
-    "runId": "42134116151",
-    "source": "comparative-rescore",
-    "errorDetails": []
-  },
-  {
     "startedAt": "2026-11-06T01:22:12.854Z",
     "completedAt": "2026-11-06T01:22:12.864Z",
     "totalReviews": 0,
@@ -762966,6 +762947,60 @@
     },
     "costUsd": 0,
     "runId": "42388847944",
+    "source": "comparative-rescore",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-11-07T16:39:33.071Z",
+    "completedAt": "2026-11-07T16:43:10.464Z",
+    "totalReviews": 80729,
+    "processed": 69,
+    "skipped": 80654,
+    "errors": 3,
+    "tokensUsed": {
+      "input": 356321,
+      "output": 21364,
+      "cacheRead": 255024,
+      "cacheWrite": 18898,
+      "total": 972874
+    },
+    "costUsd": 0.771763225,
+    "runId": "42391879613",
+    "source": "index",
+    "errorDetails": [
+      {
+        "showId": "an-enemy-of-the-people-west-end-2024",
+        "outletId": "times-uk",
+        "error": "Review text too short or missing"
+      },
+      {
+        "showId": "alterations-west-end-2025",
+        "outletId": "thestage",
+        "error": "Review text too short or missing"
+      },
+      {
+        "showId": "the-years-west-end-2025",
+        "outletId": "thestage",
+        "error": "Review text too short or missing"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-11-07T16:44:56.871Z",
+    "completedAt": "2026-11-07T16:45:02.051Z",
+    "totalReviews": 0,
+    "processed": 0,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 0,
+      "output": 0,
+      "cacheRead": 0,
+      "cacheWrite": 0,
+      "total": 0
+    },
+    "costUsd": 0,
+    "runId": "42391879613",
     "source": "comparative-rescore",
     "errorDetails": []
   }
