@@ -283,8 +283,8 @@
           "title": "Oh, Mary!",
           "slug": "oh-mary",
           "rank": 1,
-          "value": 87.4,
-          "displayValue": "87.4",
+          "value": 87.3,
+          "displayValue": "87.3",
           "season": "2024-2025",
           "venue": "Lyceum Theatre",
           "type": "play",
@@ -3181,8 +3181,8 @@
           "title": "The Lion King",
           "slug": "the-lion-king",
           "rank": 1,
-          "value": 86.5,
-          "displayValue": "86.5",
+          "value": 86.6,
+          "displayValue": "86.6",
           "season": "1997-1998",
           "venue": "Minskoff Theatre",
           "type": "musical",
@@ -3543,8 +3543,8 @@
           "title": "Oh, Mary!",
           "slug": "oh-mary",
           "rank": 17,
-          "value": 87.4,
-          "displayValue": "87.4",
+          "value": 87.3,
+          "displayValue": "87.3",
           "season": "2024-2025",
           "venue": "Lyceum Theatre",
           "type": "play",
@@ -3853,8 +3853,8 @@
           "title": "1536",
           "slug": "1536-west-end",
           "rank": 1,
-          "value": 90.4,
-          "displayValue": "90.4",
+          "value": 90.7,
+          "displayValue": "90.7",
           "season": "2025-2026",
           "venue": "Ambassadors Theatre",
           "type": "play",
@@ -6391,8 +6391,8 @@
           "title": "1536",
           "slug": "1536-west-end",
           "rank": 9,
-          "value": 90.4,
-          "displayValue": "90.4",
+          "value": 90.7,
+          "displayValue": "90.7",
           "season": "2025-2026",
           "venue": "Ambassadors Theatre",
           "type": "play",
@@ -6909,8 +6909,8 @@
           "title": "Well, I'll Let You Go",
           "slug": "well-ill-let-you-go-off-broadway",
           "rank": 6,
-          "value": 88,
-          "displayValue": "88.0",
+          "value": 86.8,
+          "displayValue": "86.8",
           "season": "2025-2026",
           "venue": "Studio Seaview",
           "type": "play",
@@ -8285,10 +8285,26 @@
       ],
       "2012-2013": [
         {
+          "showId": "parsifal-off-broadway-2013",
+          "title": "Parsifal",
+          "slug": "parsifal-off-broadway-2013",
+          "rank": 1,
+          "value": 83.7,
+          "displayValue": "83.7",
+          "season": "2012-2013",
+          "venue": "Metropolitan Opera House",
+          "type": "opera",
+          "thumbnail": null,
+          "openingDate": "2013-02-15",
+          "closingDate": null,
+          "status": "closed",
+          "isRevival": false
+        },
+        {
           "showId": "maria-stuarda-off-broadway-2012",
           "title": "Maria Stuarda",
           "slug": "maria-stuarda-off-broadway-2012",
-          "rank": 1,
+          "rank": 2,
           "value": 74.7,
           "displayValue": "74.7",
           "season": "2012-2013",
@@ -8447,26 +8463,10 @@
           "isRevival": false
         },
         {
-          "showId": "well-ill-let-you-go-off-broadway-2026",
-          "title": "Well, I'll Let You Go",
-          "slug": "well-ill-let-you-go-off-broadway",
-          "rank": 10,
-          "value": 88,
-          "displayValue": "88.0",
-          "season": "2025-2026",
-          "venue": "Studio Seaview",
-          "type": "play",
-          "thumbnail": "/images/shows/well-ill-let-you-go-off-broadway-2026/thumbnail.webp",
-          "openingDate": "2026-04-30",
-          "closingDate": "2026-06-20",
-          "status": "closed",
-          "isRevival": false
-        },
-        {
           "showId": "the-emperor-jones-off-broadway-2017",
           "title": "The Emperor Jones",
           "slug": "the-emperor-jones-off-broadway-2017",
-          "rank": 11,
+          "rank": 10,
           "value": 88,
           "displayValue": "88.0",
           "season": "2016-2017",
@@ -8482,7 +8482,7 @@
           "showId": "crazy-mama-a-true-story-of-love-and-madness-off-broadway-2026",
           "title": "Crazy Mama: A True Story of Love and Madness",
           "slug": "crazy-mama-a-true-story-of-love-and-madness-off-broadway",
-          "rank": 12,
+          "rank": 11,
           "value": 87.9,
           "displayValue": "87.9",
           "season": "2026-2027",
@@ -8498,7 +8498,7 @@
           "showId": "spellbound-off-broadway-2026",
           "title": "Spellbound",
           "slug": "spellbound-off-broadway",
-          "rank": 13,
+          "rank": 12,
           "value": 87.5,
           "displayValue": "87.5",
           "season": "2026-2027",
@@ -8514,7 +8514,7 @@
           "showId": "dear-evan-hansen-off-broadway-2016",
           "title": "Dear Evan Hansen",
           "slug": "dear-evan-hansen-off-broadway-2016",
-          "rank": 14,
+          "rank": 13,
           "value": 87.5,
           "displayValue": "87.5",
           "season": "2015-2016",
@@ -8523,6 +8523,22 @@
           "thumbnail": null,
           "openingDate": "2016-05-01",
           "closingDate": "2016-05-29",
+          "status": "closed",
+          "isRevival": false
+        },
+        {
+          "showId": "well-ill-let-you-go-off-broadway-2026",
+          "title": "Well, I'll Let You Go",
+          "slug": "well-ill-let-you-go-off-broadway",
+          "rank": 14,
+          "value": 86.8,
+          "displayValue": "86.8",
+          "season": "2025-2026",
+          "venue": "Studio Seaview",
+          "type": "play",
+          "thumbnail": "/images/shows/well-ill-let-you-go-off-broadway-2026/thumbnail.webp",
+          "openingDate": "2026-04-30",
+          "closingDate": "2026-06-20",
           "status": "closed",
           "isRevival": false
         },
@@ -8727,8 +8743,8 @@
           "title": "The Car Man",
           "slug": "the-car-man-west-end",
           "rank": 2,
-          "value": 86.9,
-          "displayValue": "86.9",
+          "value": 86.8,
+          "displayValue": "86.8",
           "season": "2026-2027",
           "venue": "Sadler's Wells",
           "type": "play",
@@ -9155,8 +9171,8 @@
           "title": "The Car Man",
           "slug": "the-car-man-west-end",
           "rank": 3,
-          "value": 86.9,
-          "displayValue": "86.9",
+          "value": 86.8,
+          "displayValue": "86.8",
           "season": "2026-2027",
           "venue": "Sadler's Wells",
           "type": "play",
@@ -9411,8 +9427,8 @@
           "title": "De Profundis",
           "slug": "de-profundis-off-west-end",
           "rank": 19,
-          "value": 82.9,
-          "displayValue": "82.9",
+          "value": 82.8,
+          "displayValue": "82.8",
           "season": "2026-2027",
           "venue": "Coronet Theatre",
           "type": "play",
@@ -35491,7 +35507,7 @@
       {
         "listType": "critical-gold-off-broadway",
         "season": "all-time",
-        "rank": 12
+        "rank": 11
       }
     ],
     "spellbound-off-broadway-2026": [
@@ -35503,7 +35519,7 @@
       {
         "listType": "critical-gold-off-broadway",
         "season": "all-time",
-        "rank": 13
+        "rank": 12
       }
     ],
     "benevolent-off-broadway-2026": [
@@ -35622,7 +35638,7 @@
       {
         "listType": "critical-gold-off-broadway",
         "season": "all-time",
-        "rank": 10
+        "rank": 14
       }
     ],
     "that-math-show-off-broadway-2026": [
@@ -36279,7 +36295,7 @@
       {
         "listType": "critical-gold-off-broadway",
         "season": "all-time",
-        "rank": 11
+        "rank": 10
       }
     ],
     "master-harold-and-the-boys-off-broadway-2016": [
@@ -36347,7 +36363,7 @@
       {
         "listType": "critical-gold-off-broadway",
         "season": "all-time",
-        "rank": 14
+        "rank": 13
       }
     ],
     "turn-me-loose-off-broadway-2016": [
@@ -36428,11 +36444,18 @@
         "rank": 10
       }
     ],
-    "maria-stuarda-off-broadway-2012": [
+    "parsifal-off-broadway-2013": [
       {
         "listType": "critical-gold-off-broadway",
         "season": "2012-2013",
         "rank": 1
+      }
+    ],
+    "maria-stuarda-off-broadway-2012": [
+      {
+        "listType": "critical-gold-off-broadway",
+        "season": "2012-2013",
+        "rank": 2
       }
     ],
     "la-fille-du-regiment-off-broadway-2025": [
