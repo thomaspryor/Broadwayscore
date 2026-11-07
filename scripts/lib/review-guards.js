@@ -202,6 +202,48 @@ const STRONG_DIFFERENT_SHOW_MARKERS = [
   /\b(?:scraped content|this) is a review of (?:a|an|the) (?:film|movie) (?:adaptation|version)\b/i,
 ];
 
+// Different-city production (King Lear Off-Broadway 2026-11-07, BRO-7058). Two
+// Babes with Blades reviews (Theater Wit, Chicago) sat on The Secret Theatre's
+// page because they landed 6-8 days before opening, so the 30-day safety net
+// downgraded CV's wrongProduction to low even though CV named the Chicago venue.
+// A same-title play (Shakespeare, Chekhov, A Christmas Carol) staged in another
+// city in the same weeks is the normal case for the classics, so the proximity
+// net must not rescue a review whose CV text names a different city's production.
+// Needs BOTH a named non-NYC city/region AND an explicit "not this market"
+// statement, and stays off for tryouts/tours/transfers where CV is describing
+// the same production's earlier or travelling life.
+// US regional cities only. UK/overseas names are left out on purpose: CV's "this is the
+// London production" verdicts mostly come from a critic mentioning the show's history
+// (Heathers, Kenrex, Hamlet, Waiting for Godot were all real NYC reviews), while a US
+// regional venue address in the text (Theater Wit, 1229 W. Belmont) is concrete.
+const DIFFERENT_CITY_NAMES_RE = new RegExp(
+  '\\b(?:Chicago|Illinois|Los Angeles|California|San Francisco|San Diego|Boston|Massachusetts|' +
+  'Philadelphia|Pennsylvania|Washington,? D\\.?C\\.?|Seattle|Houston|Dallas|Austin|Atlanta|Minneapolis|' +
+  'Cleveland|Pittsburgh|Denver|Detroit|Norfolk)\\b'
+);
+const NOT_THIS_MARKET_RE =
+  /\bnot\b[^.|;]{0,80}\b(?:New York(?: City)?|NYC|Off[- ]?Broadway|Broadway)\b(?!\s+(?:City\s+)?(?:Center|Centre|Theat|Ballet|Opera|Live|Public|Fringe))|\bregional (?:theat(?:er|re)|production)\b|\bgeographic(?:al)? (?:location|mismatch)\b/i;
+// Outlet names carry a city ("Chicago Tribune" critic bylines, "Boston Globe") and quoted
+// passages carry the play's own setting; neither says where the production was staged.
+const OUTLET_CITY_RE = /\b(?:Chicago (?:Tribune|Reader|Sun-Times|Magazine)|Boston (?:Globe|Herald)|Washington Post|Los Angeles Times|LA Times|Philadelphia Inquirer|Houston Chronicle|San Francisco Chronicle|Seattle Times|Dallas Morning News|Denver Post|Atlanta Journal-Constitution|Pittsburgh Post-Gazette|Star Tribune|Plain Dealer|Virginian-Pilot|Third Coast Review|New City Stage)\b/gi;
+const QUOTED_PASSAGE_RE = /["\u201C][^"\u201D]{0,300}["\u201D]|(?<![A-Za-z])'[^']{10,300}'(?![A-Za-z])/g;
+const SAME_PRODUCTION_TRAVEL_RE =
+  /\b(?:pre-?broadway|try-?out|out-of-town|premiere[ds]?|touring|tour\b|national tour|transfer(?:red|s)?|moved to|workshop|previous(?:ly)? (?:run|production)|earlier (?:run|production)|years? (?:ago|earlier|before))\b/i;
+
+function hasDifferentCityProductionSignal(cvIssues, cvReasoning, show) {
+  // Needs the show: a Chicago venue is the WRONG production for an Off-Broadway page but
+  // the right one for a Chicago regional page. No show, or any non-NYC market, never fires.
+  if (!show || show.market !== 'broadway') return false;
+  const texts = [];
+  if (Array.isArray(cvIssues)) texts.push(...cvIssues.map(String));
+  if (cvReasoning) texts.push(String(cvReasoning));
+  if (texts.length === 0) return false;
+  const all = texts.join(' | ');
+  if (SAME_PRODUCTION_TRAVEL_RE.test(all)) return false;
+  const cityText = all.replace(QUOTED_PASSAGE_RE, ' ').replace(OUTLET_CITY_RE, ' ');
+  return DIFFERENT_CITY_NAMES_RE.test(cityText) && NOT_THIS_MARKET_RE.test(all);
+}
+
 function hasStrongDifferentShowSignal(cvIssues, cvReasoning) {
   const texts = [];
   if (Array.isArray(cvIssues)) texts.push(...cvIssues.map(String));
@@ -377,6 +419,7 @@ function applyTemporalOverrides(wpFlag, filmTvFlag, wpConfidence, openingDate, p
   const strongDifferent =
     !!(cvContext && hasStrongDifferentShowSignal(cvContext.issues, cvContext.reasoning)) ||
     !!(cvContext && hasNamedDifferentDirectorSignal(cvContext.issues, cvContext.reasoning, cvContext.show, cvContext.fullText)) ||
+    !!(cvContext && hasDifferentCityProductionSignal(cvContext.issues, cvContext.reasoning, cvContext.show)) ||
     !!(cvContext && hasForeignRoundupUrlSignal(cvContext.bwwRoundupUrl, cvContext.show, cvContext.otherShowTitles));
 
   // In-window + slug-match veto (audit S6-T4, BRO-4204). The 30-day rule
@@ -661,7 +704,8 @@ function hasStrongDifferentProductionSignal(data, show) {
   const cv = data && data.contentVerification;
   if (!cv) return false;
   return hasStrongDifferentShowSignal(cv.issues, cv.reasoning)
-    || hasNamedDifferentDirectorSignal(cv.issues, cv.reasoning, show, data.fullText);
+    || hasNamedDifferentDirectorSignal(cv.issues, cv.reasoning, show, data.fullText)
+    || hasDifferentCityProductionSignal(cv.issues, cv.reasoning, show);
 }
 
 /**
@@ -6879,6 +6923,8 @@ module.exports = {
   showHasFestivalVenue,
   reasoningAssertsDifferentProduction,
   hasStrongDifferentShowSignal,
+  hasDifferentCityProductionSignal,
+  hasStrongDifferentProductionSignal,
   hasForeignRoundupUrlSignal,
   hasNamedDifferentDirectorSignal,
   STRONG_DIFFERENT_SHOW_MARKERS,
