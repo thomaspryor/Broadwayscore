@@ -634,20 +634,6 @@
     "queuedAt": "2026-11-06T20:07:20.305Z"
   },
   {
-    "conditionKey": "review-gap:opening-window:king-lear-off-broadway-2026",
-    "title": "Review gap — \"King Lear\" missing 2 cited review(s)",
-    "description": "King Lear (king-lear-off-broadway-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=king-lear-off-broadway-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-06T20:37:45.348Z"
-  },
-  {
     "conditionKey": "ob-venue-go-live:standing-on-the-corner-off-broadway-2026",
     "title": "Standing On the Corner @ Cherry Lane Theatre — off-Broadway show added",
     "description": "Auto-promoted via the venue listing (venue's own listing: 2026-12-17 to 2026-12-21, 5 performances). Reviews ingest automatically once critics publish.",
@@ -1063,20 +1049,6 @@
     "queuedAt": "2026-11-07T15:26:56.796Z"
   },
   {
-    "conditionKey": "t1-gaps:needs-manual-recovery",
-    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (Lincoln in the Bardo (washpost)). Checked 2026-11-07.",
-    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-07T15:27:53.757Z"
-  },
-  {
     "conditionKey": "pending-unrecoverable:dog-mom-off-west-end-2026",
     "title": "1 review(s) for dog-mom-off-west-end-2026 stuck in _pending with no text and no byline",
     "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- thestage--70d4480d.json (thestage): no byline in page and no recoverable body https://www.thestage.co.uk/reviews/dog-mom-review-southwark-playhouse-borough-london",
@@ -1182,6 +1154,34 @@
       }
     ],
     "queuedAt": "2026-11-07T16:08:54.578Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:king-lear-off-broadway-2026",
+    "title": "Review gap — \"King Lear\" missing 3 cited review(s)",
+    "description": "King Lear (king-lear-off-broadway-2026): 3 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=king-lear-off-broadway-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-07T16:40:55.106Z"
+  },
+  {
+    "conditionKey": "t1-gaps:needs-manual-recovery",
+    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (Lincoln in the Bardo (washpost)). Checked 2026-11-07.",
+    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-07T16:41:21.111Z"
   },
   {
     "conditionKey": "land:land/bro-7077-attr-guards",

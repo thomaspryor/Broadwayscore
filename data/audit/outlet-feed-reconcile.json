@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-07T15:28:22.597Z",
+  "generatedAt": "2026-11-07T16:41:52.837Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -118,11 +118,19 @@
     },
     {
       "outletId": "front-row-center",
-      "error": "HTTP 202 for https://thefrontrowcenter.com/feed"
+      "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
     {
       "outletId": "cote-notices",
       "error": "HTTP 403 for https://davidcote1.substack.com/feed"
+    },
+    {
+      "outletId": "south-london",
+      "error": "Timeout fetching https://southlondon.co.uk/feed/"
+    },
+    {
+      "outletId": "theatre-vibe",
+      "error": "Timeout fetching https://theatrevibe.co.uk/feed/"
     },
     {
       "outletId": "theartsdispatch",
@@ -135,18 +143,10 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
-    },
-    {
-      "outletId": "times-square-chronicles",
-      "error": "fetchPage returned an unexpected page for https://t2conline.com/wp-json/wp/v2/posts?categories=504,298,283&per_page=100&"
-    },
-    {
-      "outletId": "londontheatre1",
-      "error": "fetchPage returned an unexpected page for https://www.londontheatre1.com/wp-json/wp/v2/posts?categories=14&per_page=50&o"
     }
   ],
-  "itemsScanned": 778,
-  "matchedGaps": 8,
+  "itemsScanned": 828,
+  "matchedGaps": 9,
   "possibleGaps": 5,
   "gaps": [
     {
@@ -159,13 +159,22 @@
       "publishDate": "2026-11-04"
     },
     {
-      "showId": "adirondack-chair-circle-regional-2026",
-      "title": "Adirondack Chair Circle",
+      "showId": "222-a-ghost-story-off-broadway-2026",
+      "title": "2:22 - A Ghost Story",
       "level": "matched",
-      "outletId": "one-minute-critic",
-      "url": "https://1minutecritic.com/adirondack-chair-circle-steppenwolf-review/",
-      "headline": "The moms around this fire pit would like a word with the school librarian",
-      "publishDate": "2026-11-03"
+      "outletId": "times-square-chronicles",
+      "url": "https://t2conline.com/222-a-ghost-story-the-loudest-thing-in-the-room-isnt-the-ghost/",
+      "headline": "2:22 – A Ghost Story: The Loudest Thing in the Room Isn’t the Ghost",
+      "publishDate": "2026-11-07"
+    },
+    {
+      "showId": "nero-off-west-end-2026",
+      "title": "Nero",
+      "level": "matched",
+      "outletId": "londontheatre1",
+      "url": "https://www.londontheatre1.com/reviews/nero-southwark-playhouse-elephant/",
+      "headline": "Nero | Southwark Playhouse Elephant",
+      "publishDate": "2026-11-07"
     },
     {
       "showId": "the-blue-violinist-over-west-end-avenue-off-broadway-2026",

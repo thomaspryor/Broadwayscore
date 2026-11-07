@@ -1,13 +1,155 @@
 {
-  "generatedAt": "2026-11-07T15:28:22.152Z",
+  "generatedAt": "2026-11-07T16:41:52.402Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 323,
-  "clean": 323,
-  "defective": 0,
-  "byType": {},
-  "shows": [],
+  "clean": 316,
+  "defective": 7,
+  "byType": {
+    "missing-from-prod": 5,
+    "score-drift": 6
+  },
+  "shows": [
+    {
+      "showId": "nero-off-west-end-2026",
+      "title": "Nero",
+      "openingDate": "2026-11-06",
+      "ok": false,
+      "defects": [
+        {
+          "type": "missing-from-prod",
+          "detail": "1 scored outlet(s) absent from the deployed payload: everything-theatre"
+        }
+      ],
+      "missingFromProd": [
+        "everything-theatre"
+      ],
+      "localCount": 3,
+      "deployedCount": 2,
+      "firstDefectAt": "2026-11-07T16:41:43.565Z"
+    },
+    {
+      "showId": "other-desert-cities-2026",
+      "title": "Other Desert Cities",
+      "openingDate": "2026-10-18",
+      "ok": false,
+      "defects": [
+        {
+          "type": "missing-from-prod",
+          "detail": "1 scored outlet(s) absent from the deployed payload: exeunt-magazine"
+        },
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 67.3 vs local 67.55 (Δ0.25)"
+        }
+      ],
+      "missingFromProd": [
+        "exeunt-magazine"
+      ],
+      "localCount": 39,
+      "deployedCount": 38,
+      "firstDefectAt": "2026-11-07T16:41:43.565Z"
+    },
+    {
+      "showId": "twelfth-night-crucible-regional-2026",
+      "title": "Twelfth Night",
+      "openingDate": "2026-10-17",
+      "ok": false,
+      "defects": [
+        {
+          "type": "missing-from-prod",
+          "detail": "1 scored outlet(s) absent from the deployed payload: british-theatre"
+        },
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 80.91 vs local 81.16 (Δ0.25)"
+        }
+      ],
+      "missingFromProd": [
+        "british-theatre"
+      ],
+      "localCount": 19,
+      "deployedCount": 18,
+      "firstDefectAt": "2026-11-07T16:41:43.565Z"
+    },
+    {
+      "showId": "contact-oran-mor-regional-2026",
+      "title": "Contact",
+      "openingDate": "2026-10-07",
+      "ok": false,
+      "defects": [
+        {
+          "type": "missing-from-prod",
+          "detail": "1 scored outlet(s) absent from the deployed payload: the-scotsman"
+        },
+        {
+          "type": "score-drift",
+          "detail": "deployed payload has no numeric cs (local 81.79)"
+        }
+      ],
+      "missingFromProd": [
+        "the-scotsman"
+      ],
+      "localCount": 3,
+      "deployedCount": 2,
+      "firstDefectAt": "2026-11-07T16:41:43.565Z"
+    },
+    {
+      "showId": "hay-fever-west-end-2026",
+      "title": "Hay Fever",
+      "openingDate": "2026-10-01",
+      "ok": false,
+      "defects": [
+        {
+          "type": "missing-from-prod",
+          "detail": "1 scored outlet(s) absent from the deployed payload: city-am"
+        },
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 68.5 vs local 68.76 (Δ0.26)"
+        }
+      ],
+      "missingFromProd": [
+        "city-am"
+      ],
+      "localCount": 40,
+      "deployedCount": 39,
+      "firstDefectAt": "2026-11-07T16:41:43.565Z"
+    },
+    {
+      "showId": "the-verge-off-broadway-2026",
+      "title": "The Verge",
+      "openingDate": "2026-11-05",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 60.93 vs local 61.83 (Δ0.9)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 11,
+      "deployedCount": 11,
+      "firstDefectAt": "2026-11-07T16:41:43.565Z"
+    },
+    {
+      "showId": "speculations-off-west-end-2026",
+      "title": "Speculations",
+      "openingDate": "2026-11-05",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 47.79 vs local 47.17 (Δ0.62)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 27,
+      "deployedCount": 28,
+      "firstDefectAt": "2026-11-07T16:41:43.565Z"
+    }
+  ],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }
