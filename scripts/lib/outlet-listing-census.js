@@ -209,7 +209,16 @@ function censusTitleOnly(item, show, pool) {
   // Bill" in "Double Bill: Tell Me Straight & Aggy") counts only when the slug or headline also has a
   // distinctive word (4+ letters) from the rest of the title: two generic words alone matched
   // "Firebird: A Double Bill" at Sadler's Wells to that King's Head show (BRO-7083).
-  const STOP = new Set(['with', 'from', 'that', 'this', 'what', 'when', 'your', 'their', 'into', 'over', 'about', 'review', 'musical', 'play', 'theatre', 'theater']);
+  // Generic words never count as the distinctive word, and only the slug's last segment and the
+  // headline are searched (URL folders carry years and section names).
+  const STOP = new Set(['with', 'from', 'that', 'this', 'what', 'when', 'your', 'their', 'into', 'over', 'about', 'review',
+    'musical', 'play', 'theatre', 'theater', 'story', 'stories', 'life', 'live', 'night', 'nights', 'first', 'last', 'heart',
+    'song', 'songs', 'love', 'show', 'tale', 'tales', 'part', 'time', 'world', 'house', 'home', 'king', 'queen', 'girl', 'girls',
+    'boys', 'west', 'east', 'north', 'south', 'city', 'town', 'park', 'street', 'road', 'christmas', 'little', 'great', 'young',
+    'other', 'more', 'than', 'were', 'have', 'starring', 'presents', 'production', 'revival', 'concert', 'opera', 'ballet', 'edition']);
+  let leaf = '';
+  try { leaf = new URL(item.url).pathname.split('/').filter(Boolean).pop() || ''; } catch { leaf = ''; }
+  const restHay = slugWords(`${item.headline || ''} ${leaf}`);
   const longForms = (sh) => {
     const all = titleForms(sh).map((f) => slugWords(f));
     return all.filter((f) => {
@@ -217,8 +226,8 @@ function censusTitleOnly(item, show, pool) {
       if (words.length < 2 || f.trim().length < 10) return false;
       const longer = all.filter((g) => g !== f && g.includes(f));
       if (!longer.length || words.length >= 3) return true;
-      const rest = new Set(longer.flatMap((g) => g.trim().split(' ')).filter((w) => w.length >= 4 && !STOP.has(w) && !words.includes(w)));
-      return [...rest].some((w) => hay.includes(` ${w} `));
+      const rest = new Set(longer.flatMap((g) => g.trim().split(' ')).filter((w) => w.length >= 4 && !/^\d+$/.test(w) && !STOP.has(w) && !words.includes(w)));
+      return [...rest].some((w) => restHay.includes(` ${w} `));
     });
   };
   const mine = longForms(show);
@@ -256,7 +265,10 @@ function censusMarketOk(outletId, show, counts, { minReviews = 20 } = {}) {
   if (market !== 'broadway' && market !== 'west-end') return true;
   const c = counts && counts.get(outletId);
   if (!c || c.total < minReviews) return true; // too little history to say
-  return (c[market] || 0) > 0;
+  // One stray review (or one wrong-city census stub rebuilt into reviews.json) must not open the
+  // guard for good: the outlet needs 3+ reviews, or 2%+ of its history, in that market.
+  const n = c[market] || 0;
+  return n >= 3 || n / c.total >= 0.02;
 }
 
 // BRO-7083: write mode is capped per run. After maxAdds census files are written, the rest of
