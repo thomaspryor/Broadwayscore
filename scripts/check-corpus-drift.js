@@ -228,14 +228,14 @@ const AUDITS = [
   // played. Undated rows skip date-guard / collected-before-previews and market-routing
   // only compares URL venues with sibling shows, so these stay on the wrong production.
   // Advisory (CLAUDE.md s19): baseline = hits still queued in data/pending-fixes/bro-7086.json
-  // (measured 8 on 2026-11-07: 7 queued in bro-7086.json, 1 is the twelfth-night-off-west-end-2026 artsdesk row owned by BRO-7077; 9 settled legit in data/undated-venue-url-legit.json). Lower toward 0 after the plan applies.
+  // BRO-7086: fix plans applied and rebuilt 2026-11-07; 0 hits on fresh data (CI run 42398260640). 9 settled legit in data/undated-venue-url-legit.json.
   // Lower to 0 once the plan has applied and a rebuild ran.
   {
     name: 'undated-venue-url',
     healPathRequired: false,
     label: 'undated reviews whose URL names a venue the show never played',
     script: 'audit-undated-venue-url.js',
-    args: ['--max=8'],
+    args: ['--max=0'],
     crashCodes: [2],           // 0 within baseline / 1 over baseline / 2 = corpus missing
   },
   // BRO-2770: byline date in the body vs publishDate (>3 days) on a record that
