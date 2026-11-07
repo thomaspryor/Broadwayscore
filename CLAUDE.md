@@ -10,12 +10,12 @@
 Global rules apply (worktree-first, branch check, commit frequently). Project additions:
 - **Worktree scope (MANDATORY for ANY tracked code edit):** `src/`, `scripts/`, `.github/workflows/`, `supabase/`, `next.config.js`, `tsconfig.json`, `package.json`, `CLAUDE.md` → **worktree before the first edit** (hooks + CI silently revert uncommitted edits; memory/data files can skip).
 - **Push** every ~30 min. **15+ min without committing** → commit NOW.
-- **`git pull` before every shows.json edit.** CI commits to it every ~30 min; stale local copy + rebase silently re-introduces deleted entries. Pull immediately before edits and verify fixes survived after any rebase.
+- **`git pull` before every shows.json edit.** CI commits to it every ~30 min; a stale copy + rebase re-introduces deleted entries. Verify fixes survive any rebase.
 
 ### 2. Vercel Deployment
 Git-triggered builds are BLOCKED. Deploys ONLY via `vercel-deploy.yml`.
 - **5-min cron + content-aware gate.** Deploys only when site-relevant paths changed vs live, or deploy is >6h old (`scripts/lib/should-deploy-gate.js`; kill switch: `DEPLOY_GATE_DISABLED=true`). Do NOT `gh workflow run "Deploy to Vercel"` (emergency-only). Core-data-only changes ride the next rebuild/6h backstop.
-- **"Pushed" ≠ "Deployed" — verify against Vercel, not the GitHub run.** `node scripts/check-prod-deploy.js HEAD` exits 0 only when live on prod (`--wait` polls; ~10 min after landing). A cancel-cascade run reports success while its Vercel deploy is CANCELED; only a READY prod deployment counts.
+- **"Pushed" ≠ "Deployed" — verify against Vercel, not the GitHub run.** `node scripts/check-prod-deploy.js HEAD` exits 0 only when live on prod (`--wait` polls; ~10 min after landing). Only a READY prod deployment counts (a cancel-cascade run reports success while its deploy is CANCELED).
 - **CI monitoring:** see global CLAUDE.md (`wait-for-run.sh`, never `gh run watch`). Detail: `memory/feedback_github_polling_rate_limit.md`.
 
 ### 3. Core Data Rules
@@ -40,18 +40,16 @@ Use shared components from `src/components/show-cards/` — never create custom 
 **Run `/visual-qa` before any push touching UI files** (`src/**/*.{tsx,jsx,css,scss}`, `tailwind.config.*`; not routes): Pre-push blocks `git push`/`gh pr merge` until the owner replies a plain "yes / ship it". Never ask for a hash. In chat: their "yes"/"Approved" IS the approval; push `land/<name>` yourself, never send them to tap, then `record-owner-answer.js BRO-N --choice void` on any held ask. No owner (worker): `visual-approval.js request --issue=BRO-N --what=...`. **Data/scraper-only diffs: no approval** (`request` refuses them). Score badges sacred (`w-20 sm:w-24`). `memory/feedback_local_preview_before_push.md`
 
 ### 6. Board = Linear, not the Notion Brain (MANDATORY — every session)
-**Linear is the source of truth, never Notion cards.** Notion is retired (froze 2026-08-20); its cards have no Linear twin. Flow: `memory/linear-board-workflow.md`.
+**Linear is the source of truth.** Notion is retired (froze 2026-08-20). Flow: `memory/linear-board-workflow.md`.
 - **Session start:** `linear-brain.js create "<title>" --self|--dispatch|--park "<reason>" --notes "..."`; output the URL. `--self` = you do it now (In Progress); technical `--park` refused. **End:** comment the Outcome (what/why) + Key Files, then `linear-brain.js update BRO-N --state Done`. Paused/refused: `linear-session.js report --status=paused`.
 - **Done is gated (exit 5):** needs `PR-EVIDENCE: merged deployed checked (<url>)`, or a safe-form command in `## Acceptance criteria` / a `VERIFY: <cmd>` line.
-- **New discoveries:** file a Linear issue (Todo), don't context-switch.
 - **P0/P1 dispatch at creation (owner rule 2026-07-24):** `--dispatch` does NOT launch yet — run `linear-next.js --id BRO-N`, report `DISPATCHED:`. Confirm it started: a `job-spawned` ledger row AND a growing log. Cap ~8/session.
 - **Owner answered? `record-owner-answer.js` that turn. Read the card before asking or claiming owner waits (BRO-6411).**
 - **Board:** paste `node scripts/board-report.js --markdown`, never hand-built.
-- **If Linear is down:** warn, continue untracked, print the Outcome. Never fall back to Notion.
+- **If Linear is down:** warn, continue untracked, print the Outcome. No Notion fallback.
 
 ### 7. Infrastructure Change Planning (MANDATORY)
 See global CLAUDE.md. Also: test 3 representative cases before merging.
-
 ### 8. Pipeline Operations
 **E2E test before large dispatch** (5+ runs or 50+ reviews): test 5 first; verify secrets, concurrency slots, 10s+ spacing, shard scoring to 10. **Batch scripts checkpoint**.
 
@@ -66,21 +64,21 @@ Review texts, aggregator archive, core data → private repos, all gitignored. C
 
 ### 12. Test Before Committing (MANDATORY)
 Before EVERY commit touching `src/`, `scripts/`, or config:
-1. `npx tsc --noEmit` — zero errors in changed files. **`scripts/llm-scoring/` edits: also `npx tsc --noEmit -p scripts/llm-scoring/tsconfig.json`** — CI's gate uses it and it sets `strictNullChecks: true`, unlike the parent config (#516).
+1. `npx tsc --noEmit` — zero errors in changed files. **`scripts/llm-scoring/` edits: also `npx tsc --noEmit -p scripts/llm-scoring/tsconfig.json`** (CI gate; `strictNullChecks`, #516).
 2. `npm run lint` — no new warnings
 3. Auth-aware build with feature flags
 4. **Scripts:** run against real data, minimum 3 diverse cases. `node --check` is syntax only — NOT a test.
 5. **Script migrations:** compare output before/after on same input. Empty results = broken.
 6. For UI: visual verification per §5
-7. **Scoring-logic edits** — watchlists in `scripts/lib/scoring-watchlists.js` (inclusion, score-source, LLM input; unit tests NOT sufficient). **MUST run** `node scripts/scoring-delta.js` AND `node scripts/test-temporal-override-regression.js`, paste summary. The Stop hook enforces scoring-delta.js by exit code (LLM input exits 2 by design: A/B per §13, then `NO-VERIFY: <A/B result>`). See `memory/feedback_scoring_delta_required.md`.
-8. **Content-quality regex edits** (`scripts/lib/content-quality.js` arrays): **MUST run** `node scripts/audit-regex-patterns.js --full`. Stop hook requires a completed `--full` run after the latest edit; absent `data/review-texts` only warns. See `memory/feedback_content_quality_regex_fps.md`.
+7. **Scoring-logic edits** (watchlists: `scripts/lib/scoring-watchlists.js`): run `node scripts/scoring-delta.js` + `node scripts/test-temporal-override-regression.js`, paste summary. Stop hook enforces; LLM input exits 2 by design (A/B per §13, then `NO-VERIFY: <A/B result>`). `memory/feedback_scoring_delta_required.md`.
+8. **Content-quality regex edits** (`scripts/lib/content-quality.js`): run `node scripts/audit-regex-patterns.js --full` (Stop hook enforces). `memory/feedback_content_quality_regex_fps.md`.
 **If any check fails, fix before committing.**
 
 ### 13. Prompt Changes Require A/B Check (MANDATORY)
 Never rescore >100 reviews without the built-in A/B comparison. Aborts if bucket shift >5% or mean drift >5pts.
 
 ### 14. Opening Night Readiness Check (MANDATORY)
-**TIMING RULE:** Aggregator/outlet review pages (BWW RR, DTLI, Playbill Verdict, Show Score, NYC Theatre, WET, theatre.reviews, Stagedoor, The Stage) **don't exist until reviews drop** (pre-opening 404 is normal). Revisit items 6/8/9 once reviews land. Talkin' Broadway can publish 24h early.
+**TIMING RULE:** aggregator/outlet review pages (BWW RR, DTLI, Playbill Verdict, Show Score, NYC Theatre, WET, TR, Stagedoor, The Stage) 404 until reviews drop. Revisit items 6/8/9 once reviews land. Talkin' Broadway can publish 24h early.
 
 Run `/verify-opening-night <show-id>` (9-point checklist) plus `node scripts/check-opening-night-readiness.js --show=ID` (category/status). Gotchas: `memory/opening-night-discovery-chains.md`.
 
@@ -134,6 +132,9 @@ New `--strict`/`--gate` test.yml steps: `continue-on-error: true` (or own baseli
 
 ### 20. Three-Tier Planning (BRO-6246)
 **Substantial** (new system: 4th new file in a new dir, new workflow/secret) = plan + `/plan-review` + `OWNER-PLAN-APPROVED: <quote>`; a product decision, so "decide technical calls yourself" is off. **Moderate** = `/second-opinion`. **Simple** = go. Warns, blocks from 2026-11-07.
+
+### 21. Every fix, three parts: cousins, root cause, keep improving (owner 2026-11-07)
+A fix is done only when all three hold. (1) **Cousins:** search the live site, `data/` and code for the same defect; fix every instance. (2) **Root cause:** say why it was possible; land a guard (test/lint/gate/type) covering the whole class that fails with the fix reverted. (3) **Improve the system:** if the class recurred or a check should have caught it, fix that check. No guard possible: `NO-ROOT-CAUSE: <reason>` on the card (counts as a spot fix). Checks: BRO-7103.
 
 ---
 
