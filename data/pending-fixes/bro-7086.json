@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7086",
   "planId": "42fdd17f-fec8-4744-98e7-0a31a4ae5f4b",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-07T16:28:33.422Z",
   "submitter": {
     "name": null,
@@ -134,5 +134,79 @@
         "description": "twelfth-night-west-end-2017/whatsonstage--matt-trueman.json: wrongProductionReason"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-07T17:28:33.078Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "9-to-5-the-musical-west-end-2019/all-that-dazzles-uk--unknown.json wrongShow: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "assassins-off-broadway-2021/musical-theatre-review--ron-cohen.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "assassins-off-broadway-2021/musical-theatre-review--ron-cohen.json wrongProductionReason: null -> \"BRO-7086: Review of the 2017 Encores! Off-Center concert at New York City Center, not the 2021 Classic Stage Company run.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "assassins-off-broadway-2021/curtainup--elyse-sommer.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "assassins-off-broadway-2021/curtainup--elyse-sommer.json wrongProductionReason: null -> \"BRO-7086: URL encores-assassins.html is the Encores! Off-Center concert (2017), not the 2021 Classic Stage Company run.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "good-night-oscar-regional-2022/telegraph--fiona-mountford.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "good-night-oscar-regional-2022/telegraph--fiona-mountford.json wrongProductionReason: null -> \"BRO-7086: URL names the Barbican Theatre London production, not the 2022 Goodman Theatre Chicago run.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "good-west-end-2022/thestage--paul-vale.json wrongShow: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "henry-v-west-end-2013/artsdesk--rachel-halliburton.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "henry-v-west-end-2013/artsdesk--rachel-halliburton.json wrongProductionReason: null -> \"BRO-7086: Review of the Shakespeare's Globe Henry V (text names the Globe), not the 2013 Noel Coward Theatre run.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "queens-off-broadway-2025/theater-reviews-from-my-seat--joe-lombardi.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "queens-off-broadway-2025/theater-reviews-from-my-seat--joe-lombardi.json wrongProductionReason: null -> \"BRO-7086: URL is the earlier Lincoln Center Theater production; the 2025 run was Manhattan Theatre Club at New York City Center.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "twelfth-night-west-end-2017/whatsonstage--matt-trueman.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "twelfth-night-west-end-2017/whatsonstage--matt-trueman.json wrongProductionReason: null -> \"BRO-7086: Review of the Shakespeare's Globe Twelfth Night (URL and text name the Globe), not the 2017 National Theatre Olivier run.\""
+    }
+  ],
+  "executedIn": "ci"
 }
