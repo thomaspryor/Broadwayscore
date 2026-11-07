@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-11-07T20:22:33.900Z",
+  "generatedAt": "2026-11-07T21:27:56.896Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 324,
-  "clean": 322,
-  "defective": 2,
+  "clean": 323,
+  "defective": 1,
   "byType": {
-    "score-drift": 2
+    "score-drift": 1
   },
   "shows": [
     {
@@ -18,29 +18,13 @@
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 38.41 vs local 39.18 (Δ0.77)"
+          "detail": "deployed cs 39.1 vs local 38.67 (Δ0.43)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 4,
-      "deployedCount": 4,
+      "localCount": 6,
+      "deployedCount": 6,
       "firstDefectAt": "2026-11-07T16:41:43.565Z"
-    },
-    {
-      "showId": "tristan-and-yseult-off-broadway-2026",
-      "title": "Tristan & Yseult",
-      "openingDate": null,
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 79.02 vs local 79.37 (Δ0.35)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 4,
-      "deployedCount": 4,
-      "firstDefectAt": "2026-11-07T18:27:51.656Z"
     }
   ],
   "persistentDefective": 0,
