@@ -1,10 +1,10 @@
 {
-  "timestamp": "2026-11-07T16:42:53.775Z",
+  "timestamp": "2026-11-07T17:02:30.144Z",
   "stats": {
-    "totalReviews": 80459,
-    "alreadyFlagged": 22017,
-    "dateGuardCatches": 215,
-    "directorMismatch": 3521,
+    "totalReviews": 80461,
+    "alreadyFlagged": 22016,
+    "dateGuardCatches": 217,
+    "directorMismatch": 3522,
     "tvFilmSignals": 2290,
     "londonSignals": 3624,
     "offBroadwaySignals": 746,
@@ -53339,6 +53339,25 @@
     },
     {
       "showId": "punch-west-end-2025",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "score": 81,
+      "publishDate": "2025-03-31",
+      "url": "https://www.timeout.com/london/theatre/punch-review",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 175d before show (2025-03-31 vs 2025-09-22)"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"adam penford\" from punch-2025"
+        }
+      ]
+    },
+    {
+      "showId": "punch-west-end-2025",
       "file": "timeout-london--unknown.json",
       "score": 82,
       "publishDate": null,
@@ -85879,6 +85898,7 @@
     {
       "showId": "a-night-with-janis-joplin-2013",
       "file": "bloomberg--jeremy-gerard.json",
+      "score": 81,
       "publishDate": "2013-10-10",
       "url": "http://www.bloomberg.com/news/2013-10-11/janis-joplin-all-women-julius-caesar-yanks-theater.html",
       "findings": [
@@ -107426,6 +107446,19 @@
       ]
     },
     {
+      "showId": "julius-caesar-globe-off-west-end-2026",
+      "file": "whatsonstage--tanyel-gumushan.json",
+      "publishDate": "2026-10-06",
+      "url": "https://www.whatsonstage.com/news/shakespeares-globe-reveals-full-company-for-julius-caesar_1734439/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 31d before show (2026-10-06 vs 2026-11-06)"
+        }
+      ]
+    },
+    {
       "showId": "julius-caesar-off-broadway-2017",
       "file": "ew--devan-coggan.json",
       "score": 85,
@@ -126400,6 +126433,7 @@
     {
       "showId": "the-comedy-about-spies-west-end-2026",
       "file": "thetheatreflyer-co-uk--unknown.json",
+      "score": 91,
       "publishDate": null,
       "url": "https://www.thetheatreflyer.co.uk/review-the-comedy-about-spies-adelphi-theatre-2026",
       "findings": [
