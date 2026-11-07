@@ -884,9 +884,9 @@ test('listingPageUrlReason: BWW Previews/Interview/Photos features are not revie
 
 // BRO-7079 (BRO-4430 class): a live review whose url is a roundup/aggregator
 // page. The ingest and merge guards now refuse new ones; this ratchet catches
-// any that reach reviews.json another way. Baseline 1 = Black Swan BWW row, a
-// manualEntry carried over by manual-entry-merge.js (fixed there); lower to 0
-// after the next rebuild.
+// any that reach reviews.json another way. Baseline 0 (BRO-7091): the last
+// one, Black Swan BWW, was repaired by manual-entry-merge.js in the
+// 2026-11-07 rebuild.
 test('reviews.json: no new included review stores an aggregator-page url', () => {
   const fs = require('fs');
   const path = require('path');
@@ -895,7 +895,7 @@ test('reviews.json: no new included review stores an aggregator-page url', () =>
   const { isAggregatorPageUrl } = require('./review-slot-guards.js');
   const data = JSON.parse(fs.readFileSync(file, 'utf8'));
   const rows = (Array.isArray(data) ? data : data.reviews).filter(r => r.url && isAggregatorPageUrl(r.url));
-  assert.ok(rows.length <= 1, `aggregator-page urls on live reviews: ${rows.map(r => `${r.showId}/${r.outletId} ${r.url}`).join('; ')}`);
+  assert.equal(rows.length, 0, `aggregator-page urls on live reviews: ${rows.map(r => `${r.showId}/${r.outletId} ${r.url}`).join('; ')}`);
 });
 
 test('BRO-7081: dated event pages and bare /shows/<slug>/ hubs are listings, not owed reviews', () => {
