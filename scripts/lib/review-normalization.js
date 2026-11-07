@@ -2305,6 +2305,10 @@ const JUNK_OUTLETS = new Set([
   // BRO-3515: Rex Features photo-agency livefeed caption, not a critic
   // outlet — see domain-filters.js REFERENCE_DOMAINS for the write-time block.
   'rexfeatures',
+  // BRO-7100: section headings read as outlet names (NYC Theatre roundup
+  // "<h4>Reviews</h4>" became outletId "reviews"). Not bare 'review': it is
+  // a registered alias of reviewing-the-drama (isSentinelOutletId reads this set).
+  'reviews', 'the-reviews', 'critics', 'the-critics',
 ]);
 
 // Exact reserved-word match only — no structural fuzz (length/hyphen-count/
@@ -2344,9 +2348,11 @@ function isJunkOutlet(outletName) {
   // heuristic here (short enough, few enough hyphens) so it needs its own check.
   // ('box-office' alone only — NOT a suffix match, which would also catch the
   // real registered aggregator outlet 'london-box-office'.)
-  if (/^(buy|get)-tickets\b|tickets-directly|^box-office$/.test(slug)) return true;
+  // BRO-7100: theatre.reviews "Tickets available from the theatre" link text read as an outlet.
+  if (/^(buy|get)-tickets\b|tickets-directly|^tickets-available\b|^box-office$/.test(slug)) return true;
   // Starts with conjunctions/verbs that indicate a sentence fragment
-  if (/^(but-|and-(?!juliet)|is-|are-|has-|its-|enjoying-|id-wager|how-to-\w+-is-|does-|turns-|keeps?-|tackles-)/.test(slug)) return true;
+  // BRO-7100: modal verbs too (a "should appeal to ..." fragment of a BWW quote).
+  if (/^(but-|and-(?!juliet)|is-|are-|has-|its-|should-|would-|could-|might-|must-|enjoying-|id-wager|how-to-\w+-is-|does-|turns-|keeps?-|tackles-)/.test(slug)) return true;
   // Contains verb phrases never found in outlet names
   if (/(promises-the|crafted-a|likely-to|fun-surf|wager-that|silence-after|antidote-to|underdog-itself|make-it-fun|speeding-along|seen-on-broadway|rose-to-fame|debacle-of|candid-about|exactly-what|dear-evan-hansen)/.test(slug)) return true;
   // Contains year numbers (19XX/20XX) but not date-formatted — sentence fragments

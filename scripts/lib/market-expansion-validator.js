@@ -92,10 +92,18 @@ function findMissingRequiredFields(marketShows) {
 // Exempt upcoming stubs with no type whose first preview is within `days`:
 // on that date the row turns 'previews' and findMissingRequiredFields fails.
 const UNTYPED_STUB_WARN_DAYS = 30;
+// BRO-7100: also a stub whose start date is unknown but whose run is
+// evidently live: an opening date inside the window, or a closing date
+// already known. speculations-off-west-end-2026 ('announced', closingDate
+// set, no previews date) flipped straight to 'open' from its reviews and
+// failed this check with no warning ever printed.
 function findUntypedStubsNearPreviews(marketShows, now = new Date(), days = UNTYPED_STUB_WARN_DAYS) {
   const horizon = new Date(now.getTime() + days * 86400000).toISOString().slice(0, 10);
-  return marketShows.filter((s) => s.status === 'upcoming' && !s.type && typeExempt(s)
-    && s.previewsStartDate && String(s.previewsStartDate).slice(0, 10) <= horizon);
+  const within = (d) => d && String(d).slice(0, 10) <= horizon;
+  return marketShows.filter((s) => !s.type && typeExempt(s) && (
+    (s.status === 'upcoming' && within(s.previewsStartDate))
+    || (!s.previewsStartDate && (within(s.openingDate) || !!s.closingDate))
+  ));
 }
 
 // outlet-registry.json → { outletDomains: {id: domain}, outletDomainAliases: {id: [domains]} }

@@ -26,6 +26,7 @@ const { validatePageMatchesShow } = require('./lib/page-validator');
 const { checkArchiveCategory } = require('./lib/archive-cache-guard');
 
 const { isUrlYearOutsideWindow } = require('./lib/content-filters');
+const { isJunkOutlet } = require('./lib/review-normalization');
 const { isLondonMarket } = require('./lib/venue-classification');
 const { createOrMergeReviewFile } = require('./lib/review-file-writer');
 const { classifyReason, describeSkip } = require('./lib/ingest-skip-classify');
@@ -175,6 +176,7 @@ const KNOWN_OUTLETS = [
   'Wall Street Journal', 'The Wall Street Journal',
   'Theater Pizzazz', 'Front Mezz Junkies',
   'Theatremania', 'Broadway World', 'BroadwayWorld',
+  'amNY', 'Amny',
 ];
 
 function extractReviewsFromRoundup(html, showId) {
@@ -235,6 +237,8 @@ function extractReviewsFromRoundup(html, showId) {
     // Skip junk outlets
     if (/book tickets|buy tickets|get tickets|subscribe|newsletter/i.test(outlet)) return;
     if (!outlet || outlet.length < 3) return;
+    // BRO-7100: shared junk-outlet guard (section headings like "Reviews").
+    if (isJunkOutlet(outlet)) return;
     const key = outlet.toLowerCase();
     if (seenOutlets.has(key)) return;
     seenOutlets.add(key);
@@ -242,10 +246,11 @@ function extractReviewsFromRoundup(html, showId) {
   }
 
   // Build a lowercase set of known outlet names for validation
-  const knownOutletSet = new Set(KNOWN_OUTLETS.map(o => o.toLowerCase()));
+  // Space-insensitive so "Culturesauce" matches "Culture Sauce" (BRO-7100).
+  const squash = (s) => s.toLowerCase().replace(/[\s\u00a0]+/g, '');
+  const knownOutletSet = new Set(KNOWN_OUTLETS.map(squash));
   function looksLikeOutlet(name) {
-    const clean = cleanOutletName(name).toLowerCase();
-    return knownOutletSet.has(clean);
+    return knownOutletSet.has(squash(cleanOutletName(name)));
   }
 
   // --- Pattern A: h4 outlet headings ---
@@ -292,6 +297,14 @@ function extractReviewsFromRoundup(html, showId) {
     if (!inReviewSection && !currentOutlet) return;
 
     if (['h4', 'h5'].includes(tag) && text.length < 100) {
+      // BRO-7100: a generic heading ("<h4>Reviews</h4>") opens the section;
+      // it is not an outlet. Treating it as one wrote outletId "reviews" and
+      // its dedup swallowed every real outlet on the page.
+      if (isJunkOutlet(cleanOutletName(text))) {
+        inReviewSection = true;
+        currentOutlet = null;
+        return;
+      }
       currentOutlet = text;
       return;
     }
@@ -323,17 +336,19 @@ function extractReviewsFromRoundup(html, showId) {
   $('p').each((_, el) => {
     const text = $(el).text().trim();
     // Match: "...text..." - Outlet Name  or  "...text..." – Outlet Name
-    const trailingOutlet = text.match(/["\u201d']\s*[-\u2013\u2014]\s*([A-Z][A-Za-z\s.&']{2,50})\s*$/);
+    // BRO-7100: the dash is optional ("...right." TheatreMania); the
+    // looksLikeOutlet gate below keeps prose tails out either way.
+    const trailingOutlet = text.match(/["\u201d']\s*([-\u2013\u2014]\s*)?([A-Z][A-Za-z\s.&']{2,50})\s*$/);
     if (trailingOutlet && text.length > 60) {
-      const outlet = trailingOutlet[1].trim();
+      const outlet = trailingOutlet[2].trim();
       // Only accept if it matches a known outlet name
       if (!looksLikeOutlet(outlet)) return;
-      // Strip the trailing " - Outlet" from the excerpt. Require whitespace
-      // before the dash so hyphenated compounds (Night-Time, Toni-Leslie) at the
-      // tail aren't cut \u2014 attribution always has a leading space.
-      const excerpt = text.replace(/\s+(?:[\u2013\u2014]\s*|-\s+)[A-Z][A-Za-z\s.&']{2,50}\s*$/, '').trim();
-      // Clean leading/trailing quotes
-      const cleanExcerpt = excerpt.replace(/^["\u201c\u201d]+/, '').replace(/["\u201c\u201d]+$/, '').trim();
+      // Cut at the closing quote the match starts on, so the attribution goes
+      // whether it is ' - Outlet', '"-Outlet' (glued) or ' Outlet' (BRO-7100).
+      const excerpt = text.slice(0, trailingOutlet.index + 1).trim();
+      // Drop the one wrapping quote pair only: a quoted title at the end of
+      // the excerpt ('"The Jellicle Ball.""') keeps its own closing quote.
+      const cleanExcerpt = excerpt.replace(/^["\u201c\u201d]/, '').replace(/["\u201c\u201d']$/, '').trim();
       if (cleanExcerpt.length > 30) {
         addReview(outlet, cleanExcerpt, $(el).find('a').first().attr('href') || '');
       }
@@ -621,8 +636,12 @@ async function scrapeNYCTheatreRoundups() {
   return stats;
 }
 
+module.exports = { extractReviewsFromRoundup };
+
 // Run
-scrapeNYCTheatreRoundups().catch(err => {
-  console.error('Fatal error:', err);
-  process.exit(1);
-}).finally(() => cleanupScraper());
+if (require.main === module) {
+  scrapeNYCTheatreRoundups().catch(err => {
+    console.error('Fatal error:', err);
+    process.exit(1);
+  }).finally(() => cleanupScraper());
+}

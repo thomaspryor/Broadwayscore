@@ -173,8 +173,10 @@ for (const market of marketsToCheck) {
   }
   // An untyped venue stub fails the check above the day its previews start; name it while there is time.
   for (const s of findUntypedStubsNearPreviews(marketShows)) {
-    warn(`${market} stub ${s.id} has no type and previews ${s.previewsStartDate}; set "type" in shows.json before then or this check fails`);
-    if (process.env.GITHUB_ACTIONS) console.log(`::warning title=Untyped show stub::${s.id} previews ${s.previewsStartDate} with no type; set it in shows.json before then`);
+    const when = s.previewsStartDate ? `previews ${s.previewsStartDate}`
+      : s.openingDate ? `opens ${s.openingDate}` : `has a run (closes ${s.closingDate}) but no start date`;
+    warn(`${market} stub ${s.id} has no type and ${when}; set "type" in shows.json before it is listed or this check fails`);
+    if (process.env.GITHUB_ACTIONS) console.log(`::warning title=Untyped show stub::${s.id} ${when} with no type; set it in shows.json before then`);
   }
 }
 

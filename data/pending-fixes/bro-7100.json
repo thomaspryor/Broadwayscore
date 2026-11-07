@@ -1,0 +1,165 @@
+{
+  "issueNumber": "bro-7100",
+  "planId": "7c10b87a-72b7-43bd-9eab-bf06637a2a27",
+  "status": "pending",
+  "createdAt": "2026-11-07T23:03:03.883Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7100: delete 21 review-text files made from BWW roundup / NYC Theatre parse junk (sentence fragments and section headings read as outlets), each a fragment or duplicate of a real file",
+    "steps": [
+      "review-file-op",
+      "review-file-op",
+      "review-file-op",
+      "review-file-op",
+      "review-file-op",
+      "review-file-op",
+      "review-file-op",
+      "review-file-op",
+      "review-file-op",
+      "review-file-op",
+      "review-file-op",
+      "review-file-op",
+      "review-file-op",
+      "review-file-op",
+      "review-file-op",
+      "review-file-op",
+      "review-file-op",
+      "review-file-op",
+      "review-file-op",
+      "review-file-op",
+      "review-file-op"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "angels-in-america-2018/should-appeal-to-two-audiences--national-theatre.json",
+        "description": "Fragment of Allison Adato's EW quote (\"...National Theatre, should appeal to two audiences:\"); real review is ew--allison-adato.json"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "angels-in-america-perestroika-1993/should-appeal-to-two-audiences--national-theatre.json",
+        "description": "Same EW 2018 fragment, filed on the 1993 production; already invalid"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "angels-in-america-2018/ew--national-theatre.json",
+        "description": "Duplicate of ew--allison-adato.json (same EW url plus a tracking param); critic slug came from the fragment above, and the rebuild kept this copy under critic \"National Theatre\""
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-last-five-years-2025/reviews--unknown.json",
+        "description": "NYC Theatre page section heading \"Reviews\" read as an outlet; the excerpt is TheaterMania's, already on theatermania--zachary-stewart.json"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "anna-christie-off-broadway-2025/the-showmance-already-happened--in-brooklyn.json",
+        "description": "BWW roundup parse of a sentence fragment inside another critic's quote as \"Critic, Outlet:\" (BRO-7100); not a review; quote is David Cote's, on observer--david-cote.json"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "ink-2019/does-something-very-canny--j-friedman-theatre.json",
+        "description": "BWW roundup parse of a sentence fragment inside another critic's quote as \"Critic, Outlet:\" (BRO-7100); not a review; quote is Christopher Kelly's, on njcom--christopher-kelly.json"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "yellow-face-2024/the-lost-and-avatar--dae-kim.json",
+        "description": "BWW roundup parse of a sentence fragment inside another critic's quote as \"Critic, Outlet:\" (BRO-7100); not a review; quote is Greg Evans's, on deadline--greg-evans.json"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "peter-pan-goes-wrong-2023/david-finkle--stage-review.json",
+        "description": "Outlet and critic swapped by the BWW parse; real review is nysr--david-finkle.json"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "back-to-the-future-2023/and-daryl-tofa-back-to-the-future--gabi-stapula.json",
+        "description": "BWW roundup parse of a sentence fragment inside another critic's quote as \"Critic, Outlet:\" (BRO-7100); not a review"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "back-to-the-future-2023/whose-title-is-something-of-a-misnomer--the-musical.json",
+        "description": "BWW roundup parse of a sentence fragment inside another critic's quote as \"Critic, Outlet:\" (BRO-7100); not a review"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "back-to-the-future-2023/back-to-the-future--best-new-musical.json",
+        "description": "BWW roundup synopsis line parsed as a review (no url, show-blurb excerpt)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "beautiful-the-carole-king-musical-2014/the-canadian-talent-who-first-rose-to-fame-ondegrassi--jake-epstein.json",
+        "description": "BWW roundup parse of a sentence fragment inside another critic's quote as \"Critic, Outlet:\" (BRO-7100); not a review"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "forbidden-broadway-merrily-we-stole-a-song-off-broadway-2024/forbidden-broadway--gerry-mcintyre.json",
+        "description": "BWW roundup synopsis line parsed as a review (no url, show-blurb excerpt)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "grand-horizons-2020/the-unthinkable-happens--grand-horizons.json",
+        "description": "BWW roundup parse of a sentence fragment inside another critic's quote as \"Critic, Outlet:\" (BRO-7100); not a review; its fullText is the roundup's own synopsis"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "just-for-one-day-the-live-aid-musical-west-end-2025/a-hopeful-antidote-to-trying-times-photo-credit--one-day.json",
+        "description": "BWW roundup parse of a sentence fragment inside another critic's quote as \"Critic, Outlet:\" (BRO-7100); not a review"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "la-traviata-off-broadway-2026/was-along-for-the-ride--jonathan-loy.json",
+        "description": "BWW roundup parse of a sentence fragment inside another critic's quote as \"Critic, Outlet:\" (BRO-7100); not a review"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "rocky-2014/are-likely-to-inspire-a-heavy-outpouring-of-adjectives--garden-theatre.json",
+        "description": "BWW roundup parse of a sentence fragment inside another critic's quote as \"Critic, Outlet:\" (BRO-7100); not a review"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "shuffle-along-or-the-making-of-the-musical-sensation-of-1921-and-all-that-followed-2016/was-the-star-of-the-original-production-photo-credit--audra-mcdonald.json",
+        "description": "BWW roundup parse of a sentence fragment inside another critic's quote as \"Critic, Outlet:\" (BRO-7100); not a review"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "noises-off-2001/lets-note--brooke-ashton.json",
+        "description": "BWW roundup parse of a sentence fragment inside another critic's quote as \"Critic, Outlet:\" (BRO-7100); not a review; already invalid"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "glengarry-glen-ross-west-end-2026/purlie-victorious--wilders-our-town.json",
+        "description": "BWW roundup parse of a sentence fragment inside another critic's quote as \"Critic, Outlet:\" (BRO-7100); not a review; already invalid"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "sunset-boulevard-1994/close-gives-a-bravura-performance--like-burnett.json",
+        "description": "BWW roundup parse of a sentence fragment inside another critic's quote as \"Critic, Outlet:\" (BRO-7100); not a review; already invalid"
+      }
+    ]
+  }
+}

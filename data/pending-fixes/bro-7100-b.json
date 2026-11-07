@@ -1,0 +1,127 @@
+{
+  "issueNumber": "bro-7100-b",
+  "planId": "a774ffdf-1964-4c6e-9810-f2630e07ac02",
+  "status": "pending",
+  "createdAt": "2026-11-07T23:03:03.885Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7100: fix 14 BWW roundup files whose critic name carries the photographer's surname (delete duplicates, rename the two with no twin)",
+    "steps": [
+      "review-file-op",
+      "review-file-op",
+      "review-file-op",
+      "review-file-op",
+      "review-file-op",
+      "review-file-op",
+      "review-file-op",
+      "review-file-op",
+      "review-file-op",
+      "review-file-op",
+      "review-file-op",
+      "review-file-op",
+      "review-file-op",
+      "review-field-edit",
+      "review-file-op"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "all-male-as-you-like-it-regional-2026/nytimes--brenner-helen-shaw.json",
+        "description": "Photographer surname glued to the byline by the BWW roundup parse (\"Photo Credit: X <Surname> <Critic>\", BRO-7100); real file nytimes--helen-shaw.json"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "here-we-are-west-end-2025/broadwayworld--brenner-alexander-cohen.json",
+        "description": "Photographer surname glued to the byline by the BWW roundup parse (\"Photo Credit: X <Surname> <Critic>\", BRO-7100); real file broadwayworld--alexander-cohen.json (longer text)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "midnight-at-the-never-get-off-west-end-2026/broadwayworld--persson-clementine-scott.json",
+        "description": "Photographer surname glued to the byline by the BWW roundup parse (\"Photo Credit: X <Surname> <Critic>\", BRO-7100); real file broadwayworld--clementine-scott.json"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "midnight-off-broadway-2026/broadwayworld--persson-clementine-scott.json",
+        "description": "Photographer surname glued to the byline by the BWW roundup parse (\"Photo Credit: X <Surname> <Critic>\", BRO-7100); West End review filed on the wrong show, already invalid"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "rent-west-end-2026/broadwayworld--raith-aliya-al-hassan.json",
+        "description": "Photographer surname glued to the byline by the BWW roundup parse (\"Photo Credit: X <Surname> <Critic>\", BRO-7100); same text as broadwayworld--aliya-al-hassan.json"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "slave-play-2021/broadwayworld--murray-alexander-cohen.json",
+        "description": "Photographer surname glued to the byline by the BWW roundup parse (\"Photo Credit: X <Surname> <Critic>\", BRO-7100); already invalid, twin broadwayworld--alexander-cohen.json"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "slave-play-west-end-2024/broadwayworld--murray-alexander-cohen.json",
+        "description": "Photographer surname glued to the byline by the BWW roundup parse (\"Photo Credit: X <Surname> <Critic>\", BRO-7100); real file broadwayworld--alexander-cohen.json"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "teeth-off-broadway-2024/vulture--terranova-jackson-mchenry.json",
+        "description": "Photographer surname glued to the byline by the BWW roundup parse (\"Photo Credit: X <Surname> <Critic>\", BRO-7100); real file vulture--jackson-mchenry.json"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-oresteia-off-west-end-2026/broadwayworld--persson-alexander-cohen.json",
+        "description": "Photographer surname glued to the byline by the BWW roundup parse (\"Photo Credit: X <Surname> <Critic>\", BRO-7100); same text and url as broadwayworld--alexander-cohen.json"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "whos-afraid-of-virginia-woolf-west-end-2026/broadwayworld--persson-alexander-cohen.json",
+        "description": "Photographer surname glued to the byline by the BWW roundup parse (\"Photo Credit: X <Surname> <Critic>\", BRO-7100); broadwayworld--alexander-cohen.json is complete with the same url"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "why-am-i-so-single-west-end-2024/broadwayworld--kaan-aliya-al-hassan.json",
+        "description": "Photographer surname glued to the byline by the BWW roundup parse (\"Photo Credit: X <Surname> <Critic>\", BRO-7100); real file broadwayworld--aliya-al-hassan.json"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "nye-west-end-2024/broadwayworld--gary-naylor.json",
+        "description": "Url-less copy of the same Gary Naylor review; replaced by the url-bearing copy moved in next (BRO-7100)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "nye-west-end-2024/broadwayworld--persson-gary-naylor.json",
+        "destPath": "nye-west-end-2024/broadwayworld--gary-naylor.json",
+        "description": "Photographer surname glued to the byline by the BWW roundup parse (\"Photo Credit: X <Surname> <Critic>\", BRO-7100); criticName inside is already Gary Naylor"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "lady-day-at-emersons-bar-and-grill-west-end-2017/broadwayworld--brenner-marianka-swain.json",
+        "field": "criticName",
+        "oldValue": "Brenner Marianka Swain",
+        "newValue": "Marianka Swain",
+        "description": "Photographer surname glued to the byline by the BWW roundup parse (\"Photo Credit: X <Surname> <Critic>\", BRO-7100)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "lady-day-at-emersons-bar-and-grill-west-end-2017/broadwayworld--brenner-marianka-swain.json",
+        "destPath": "lady-day-at-emersons-bar-and-grill-west-end-2017/broadwayworld--marianka-swain.json",
+        "description": "Photographer surname glued to the byline by the BWW roundup parse (\"Photo Credit: X <Surname> <Critic>\", BRO-7100); no correctly named twin"
+      }
+    ]
+  }
+}

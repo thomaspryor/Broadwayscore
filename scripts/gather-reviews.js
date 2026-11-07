@@ -2688,6 +2688,13 @@ function extractBWWRoundupReviews(html, showId, bwwUrl, showTitle) {
             quote += '...';
           }
 
+          // BRO-7100: an in-quote "Name, lowercase words:" fragment parsed as
+          // a critic/outlet pair ("should-appeal-to-two-audiences"). The parser
+          // now rejects most; this is the shared backstop.
+          if (isJunkOutlet(outletRaw)) {
+            console.log(`    [BWW RR M2] skipped junk outlet: ${outletRaw}`);
+            continue;
+          }
           const outletId = normalizeOutlet(outletRaw);
           const outletName = getOutletDisplayName(outletId);
 

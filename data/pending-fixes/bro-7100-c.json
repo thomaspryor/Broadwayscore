@@ -1,0 +1,35 @@
+{
+  "issueNumber": "bro-7100-c",
+  "planId": "0fb53fbf-03ee-416f-8c6d-5a2bb6614c32",
+  "status": "pending",
+  "createdAt": "2026-11-07T23:10:05.268Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7100: speculations-off-west-end-2026 is a play (Marylebone Theatre production page: Torben Betts' new political thriller, Writer credit, no book/lyrics/music credits). Untyped open row fails validate-market-expansion. Also deletes a theatre.reviews row whose outlet is the link text \"Tickets available from the theatre\" (unscored, url_content_mismatch).",
+    "steps": [
+      "shows.json: speculations-off-west-end-2026.type",
+      "delete thelma-and-louise-a-new-musical-off-west-end-2026/tickets-available-from-the-theatre--unknown.json"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "speculations-off-west-end-2026",
+        "field": "type",
+        "oldValue": null,
+        "newValue": "play",
+        "description": "shows.json: speculations-off-west-end-2026.type"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "thelma-and-louise-a-new-musical-off-west-end-2026/tickets-available-from-the-theatre--unknown.json",
+        "description": "theatre.reviews link text \"Tickets available from the theatre\" parsed as the outlet; points at the venue homepage, never scored"
+      }
+    ]
+  }
+}
