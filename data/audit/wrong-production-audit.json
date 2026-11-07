@@ -1,9 +1,9 @@
 {
-  "timestamp": "2026-11-07T10:27:37.475Z",
+  "timestamp": "2026-11-07T10:58:55.392Z",
   "stats": {
-    "totalReviews": 80386,
+    "totalReviews": 80395,
     "alreadyFlagged": 22033,
-    "dateGuardCatches": 216,
+    "dateGuardCatches": 217,
     "directorMismatch": 3521,
     "tvFilmSignals": 2290,
     "londonSignals": 3624,
@@ -135908,6 +135908,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"classic stage\""
+        }
+      ]
+    },
+    {
+      "showId": "these-paper-bullets-off-broadway-2015",
+      "file": "westsidetodaycom--bev-cohn.json",
+      "score": null,
+      "publishDate": "September 23rd, 2015",
+      "url": "http://westsidetoday.com/2015/09/23/review-these-paper-bullets-places-the-beatles-in-a-shakespearean-60s-fever-dream/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 58d before show (September 23rd, 2015 vs 2015-11-20)"
         }
       ]
     },
