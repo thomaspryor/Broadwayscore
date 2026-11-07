@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5081-03",
   "planId": "77c84513-4e6b-4262-8a63-9dfe3fc3cc4c",
-  "status": "partial",
+  "status": "superseded",
   "createdAt": "2026-10-11T21:42:49.528Z",
   "submitter": {
     "name": null,
@@ -367,5 +367,22 @@
       "ok": true,
       "msg": "hells-kitchen-2024/thewrap--steve-pond.json duplicateOf: null -> \"thewrap--robert-hofler.json\""
     }
-  ]
+  ],
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "obsolete",
+    "counts": {
+      "obsolete": 1
+    },
+    "ops": [
+      {
+        "i": 8,
+        "verdict": "obsolete",
+        "reason": "review file funny-girl-2022/variety--aramide-tinubu.json no longer exists and nothing in funny-girl-2022 looks like a rename"
+      }
+    ]
+  },
+  "supersededAt": "2026-11-07T20:58:07.982Z",
+  "supersededReason": "BRO-7092 triage against current data: every undone op is resolved or no longer applies (1 obsolete); per-op reasons in triage.ops"
 }

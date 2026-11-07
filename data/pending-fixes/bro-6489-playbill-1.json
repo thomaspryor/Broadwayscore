@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6489-playbill-1",
   "planId": "254a39b0-31c6-4b02-b324-278cdf8868e5",
-  "status": "partial",
+  "status": "superseded",
   "createdAt": "2026-10-29T09:03:08.505Z",
   "submitter": {
     "name": null,
@@ -393,5 +393,22 @@
       "msg": "shows.json: openingDate updated for the-dinosaurs-off-broadway-2026"
     }
   ],
-  "executedIn": "ci"
+  "executedIn": "ci",
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "resolved",
+    "counts": {
+      "resolved": 1
+    },
+    "ops": [
+      {
+        "i": 7,
+        "verdict": "resolved",
+        "reason": "bear-grease-off-broadway-2025.type already \"musical\""
+      }
+    ]
+  },
+  "supersededAt": "2026-11-07T20:58:07.982Z",
+  "supersededReason": "BRO-7092 triage against current data: every undone op is already in place (1 resolved); per-op reasons in triage.ops"
 }

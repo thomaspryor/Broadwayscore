@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5395-k3",
   "planId": "6d69c393-740c-42df-9cef-d7c785595b96",
-  "status": "partial",
+  "status": "superseded",
   "createdAt": "2026-10-15T22:10:00.000Z",
   "submitter": {
     "name": null,
@@ -331,5 +331,27 @@
       "ok": true,
       "msg": "accidental-death-of-an-anarchist-west-end-2023/times-uk--clive-davis.json showNotMentioned: true -> false"
     }
-  ]
+  ],
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "resolved",
+    "counts": {
+      "resolved": 2
+    },
+    "ops": [
+      {
+        "i": 2,
+        "verdict": "resolved",
+        "reason": "two-palestinians-go-dogging-west-end-2022/standard--nick-curtis.json showNotMentionedManualClear already (text)"
+      },
+      {
+        "i": 6,
+        "verdict": "resolved",
+        "reason": "an-enemy-of-the-people-west-end-2024/timeout-london--unknown.json showNotMentionedManualClear already (text)"
+      }
+    ]
+  },
+  "supersededAt": "2026-11-07T20:58:07.982Z",
+  "supersededReason": "BRO-7092 triage against current data: every undone op is already in place (2 resolved); per-op reasons in triage.ops"
 }

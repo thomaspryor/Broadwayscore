@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5239-e",
   "planId": "580bab13-db4a-4ac1-b195-828d85063b9b",
-  "status": "partial",
+  "status": "superseded",
   "createdAt": "2026-10-13T08:13:56.197Z",
   "submitter": {
     "name": null,
@@ -343,5 +343,27 @@
       "ok": true,
       "msg": "jane-eyre-off-west-end-2026/north-west-end--helen-jones.json originalScore: \"3/5\" -> \"3/5\" (retracted originalScoreCorrectedFrom, originalScoreSource, scoreSource)"
     }
-  ]
+  ],
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "resolved",
+    "counts": {
+      "resolved": 2
+    },
+    "ops": [
+      {
+        "i": 16,
+        "verdict": "resolved",
+        "reason": "holy-fool-off-west-end-2026/liamodell--unknown.json originalScore already \"2/5\""
+      },
+      {
+        "i": 17,
+        "verdict": "resolved",
+        "reason": "holy-fool-off-west-end-2026/north-west-end--unknown.json originalScore already \"3/5\""
+      }
+    ]
+  },
+  "supersededAt": "2026-11-07T20:58:07.982Z",
+  "supersededReason": "BRO-7092 triage against current data: every undone op is already in place (2 resolved); per-op reasons in triage.ops"
 }

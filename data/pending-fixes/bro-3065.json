@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-3065",
   "planId": "8136ced6-f9b6-45d8-9c57-e593082fc21f",
-  "status": "partial",
+  "status": "superseded",
   "createdAt": "2026-10-13T14:41:36.669Z",
   "submitter": {
     "name": null,
@@ -212,5 +212,22 @@
       "ok": true,
       "msg": "heisenberg-2016/deadline--jeremy-gerard.json publishDate: \"October 16th, 2016\" -> \"2015-06-04\""
     }
-  ]
+  ],
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "resolved",
+    "counts": {
+      "resolved": 1
+    },
+    "ops": [
+      {
+        "i": 9,
+        "verdict": "resolved",
+        "reason": "the-lion-king-west-end-2021/times-uk--clive-davis.json is gone and the-hot-wing-king-west-end-2024/times-uk--clive-davis.json exists"
+      }
+    ]
+  },
+  "supersededAt": "2026-11-07T20:58:07.982Z",
+  "supersededReason": "BRO-7092 triage against current data: every undone op is already in place (1 resolved); per-op reasons in triage.ops"
 }

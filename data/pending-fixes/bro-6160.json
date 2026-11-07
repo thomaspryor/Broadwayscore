@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6160",
   "planId": "aa81e6e1-0fa3-4c6e-ae02-4b9b2f14683a",
-  "status": "partial",
+  "status": "superseded",
   "createdAt": "2026-10-24T19:00:04.856Z",
   "submitter": {
     "name": null,
@@ -669,5 +669,22 @@
       "reason": "add-commercial-entry: \"in-transit-2016\" already has a commercial entry (use data-edit)"
     }
   ],
-  "executedIn": "ci"
+  "executedIn": "ci",
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "obsolete",
+    "counts": {
+      "obsolete": 1
+    },
+    "ops": [
+      {
+        "i": 20,
+        "verdict": "obsolete",
+        "reason": "commercial entry in-transit-2016 exists (made another way; differs on designation, notes, sources)"
+      }
+    ]
+  },
+  "supersededAt": "2026-11-07T20:58:07.982Z",
+  "supersededReason": "BRO-7092 triage against current data: every undone op is resolved or no longer applies (1 obsolete); per-op reasons in triage.ops"
 }

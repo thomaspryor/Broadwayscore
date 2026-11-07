@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-4301",
   "planId": "463a7681-aa97-4e5f-bcdc-6896130bc298",
-  "status": "partial",
+  "status": "superseded",
   "createdAt": "2026-10-14T06:46:48.433Z",
   "submitter": {
     "name": null,
@@ -32,5 +32,22 @@
       "ok": false,
       "reason": "wrongProduction: current value doesn't match expected (data changed since plan was created)"
     }
-  ]
+  ],
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "resolved",
+    "counts": {
+      "resolved": 1
+    },
+    "ops": [
+      {
+        "i": 0,
+        "verdict": "resolved",
+        "reason": "the-producers-west-end-2025/guardian--arifa-akbar.json wrongProduction already true"
+      }
+    ]
+  },
+  "supersededAt": "2026-11-07T20:58:07.982Z",
+  "supersededReason": "BRO-7092 triage against current data: every undone op is already in place (1 resolved); per-op reasons in triage.ops"
 }

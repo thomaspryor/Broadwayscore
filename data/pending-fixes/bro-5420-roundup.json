@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5420-roundup",
   "planId": "447396d1-0df8-4ac0-902e-d8635d41a054",
-  "status": "partial",
+  "status": "superseded",
   "createdAt": "2026-10-16T11:30:00.000Z",
   "submitter": {
     "name": null,
@@ -174,5 +174,22 @@
       "ok": false,
       "reason": "the-devil-wears-prada-west-end-2024/daily-mail--gina-kalsi.json isNonReview applied, but the write guard also changed duplicateOf, duplicateReason; check the record before trusting it"
     }
-  ]
+  ],
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "resolved",
+    "counts": {
+      "resolved": 1
+    },
+    "ops": [
+      {
+        "i": 11,
+        "verdict": "resolved",
+        "reason": "the-devil-wears-prada-west-end-2024/daily-mail--gina-kalsi.json isNonReview already true"
+      }
+    ]
+  },
+  "supersededAt": "2026-11-07T20:58:07.982Z",
+  "supersededReason": "BRO-7092 triage against current data: every undone op is already in place (1 resolved); per-op reasons in triage.ops"
 }

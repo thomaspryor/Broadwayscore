@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-4317-c-01",
   "planId": "59ee922a-3733-477a-bca0-d203be181dc6",
-  "status": "partial",
+  "status": "superseded",
   "createdAt": "2026-10-13T01:59:32.266Z",
   "submitter": {
     "name": null,
@@ -326,5 +326,57 @@
       "ok": true,
       "msg": "Deleted harry-potter-and-the-cursed-child-parts-one-and-two/nytimes--ben-brantley.json"
     }
-  ]
+  ],
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "resolved",
+    "counts": {
+      "resolved": 8
+    },
+    "ops": [
+      {
+        "i": 9,
+        "verdict": "resolved",
+        "reason": "can-i-be-frank-off-broadway-2026/culturesauce--thom-geier.json is gone and morgan-bassichis-can-i-be-frank-off-broadway-2026/culturesauce--thom-geier.json exists"
+      },
+      {
+        "i": 10,
+        "verdict": "resolved",
+        "reason": "can-i-be-frank-off-broadway-2026/exeunt-magazine--nicole-serratore.json is gone and morgan-bassichis-can-i-be-frank-off-broadway-2026/exeunt-magazine--nicole-serratore.json exists"
+      },
+      {
+        "i": 11,
+        "verdict": "resolved",
+        "reason": "can-i-be-frank-off-broadway-2026/lighting-and-sound-america--david-barbour.json is gone and morgan-bassichis-can-i-be-frank-off-broadway-2026/lighting-and-sound-america--david-barbour.json exists"
+      },
+      {
+        "i": 12,
+        "verdict": "resolved",
+        "reason": "can-i-be-frank-off-broadway-2026/nysr--melissa-rose-bernardo.json is gone and morgan-bassichis-can-i-be-frank-off-broadway-2026/nysr--melissa-rose-bernardo.json exists"
+      },
+      {
+        "i": 13,
+        "verdict": "resolved",
+        "reason": "can-i-be-frank-off-broadway-2026/nytg--amelia-merrill.json is gone and morgan-bassichis-can-i-be-frank-off-broadway-2026/nytg--amelia-merrill.json exists"
+      },
+      {
+        "i": 14,
+        "verdict": "resolved",
+        "reason": "can-i-be-frank-off-broadway-2026/off-off-online--deirdre-donovan.json is gone and morgan-bassichis-can-i-be-frank-off-broadway-2026/off-off-online--deirdre-donovan.json exists"
+      },
+      {
+        "i": 15,
+        "verdict": "resolved",
+        "reason": "can-i-be-frank-off-broadway-2026/pages-on-stages--mason-pilevsky.json is gone and morgan-bassichis-can-i-be-frank-off-broadway-2026/pages-on-stages--mason-pilevsky.json exists"
+      },
+      {
+        "i": 16,
+        "verdict": "resolved",
+        "reason": "can-i-be-frank-off-broadway-2026/theater-scene--darryl-reilly.json is gone and morgan-bassichis-can-i-be-frank-off-broadway-2026/theater-scene--darryl-reilly.json exists"
+      }
+    ]
+  },
+  "supersededAt": "2026-11-07T20:58:07.982Z",
+  "supersededReason": "BRO-7092 triage against current data: every undone op is already in place (8 resolved); per-op reasons in triage.ops"
 }

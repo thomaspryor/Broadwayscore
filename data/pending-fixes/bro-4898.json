@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-4898",
   "planId": "7e40e000-6780-4c5c-a4bc-4ccb2ca9891a",
-  "status": "partial",
+  "status": "superseded",
   "createdAt": "2026-10-13T00:57:28.067Z",
   "submitter": {
     "name": null,
@@ -185,5 +185,22 @@
       "ok": true,
       "msg": "ink-2019/does-something-very-canny--j-friedman-theatre.json wrongAttributionReason: null -> \"BRO-4898: outlet and critic were parsed from a quote fragment (\\\"does something very canny\\\"); no url, no text, real outlet unknown\""
     }
-  ]
+  ],
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "resolved",
+    "counts": {
+      "resolved": 1
+    },
+    "ops": [
+      {
+        "i": 9,
+        "verdict": "resolved",
+        "reason": "the-devil-wears-prada-west-end-2024/whatsonstage--miriam-sallon.json duplicateOf already null"
+      }
+    ]
+  },
+  "supersededAt": "2026-11-07T20:58:07.982Z",
+  "supersededReason": "BRO-7092 triage against current data: every undone op is already in place (1 resolved); per-op reasons in triage.ops"
 }

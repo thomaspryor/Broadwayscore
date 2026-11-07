@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-4891-e",
   "planId": "f4799d5d-f04b-423f-9e45-d5d74a4eb1ae",
-  "status": "partial",
+  "status": "superseded",
   "createdAt": "2026-10-13T04:19:41.693Z",
   "submitter": {
     "name": null,
@@ -70,5 +70,22 @@
       "ok": false,
       "reason": "Field \"wrongProductionProvenance\" not allowed for review-field-edit"
     }
-  ]
+  ],
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "obsolete",
+    "counts": {
+      "obsolete": 1
+    },
+    "ops": [
+      {
+        "i": 3,
+        "verdict": "obsolete",
+        "reason": "review file john-proctor-is-the-villain-west-end-2026/theupcoming--unknown.json no longer exists and nothing in john-proctor-is-the-villain-west-end-2026 looks like a rename"
+      }
+    ]
+  },
+  "supersededAt": "2026-11-07T20:58:07.982Z",
+  "supersededReason": "BRO-7092 triage against current data: every undone op is resolved or no longer applies (1 obsolete); per-op reasons in triage.ops"
 }

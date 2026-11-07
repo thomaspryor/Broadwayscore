@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5395-m",
   "planId": "409ae802-d345-4867-8417-db282edf8b3f",
-  "status": "partial",
+  "status": "superseded",
   "createdAt": "2026-10-15T23:05:00.000Z",
   "submitter": {
     "name": null,
@@ -239,5 +239,22 @@
       "ok": true,
       "msg": "Ran reclassify-invalid-reviews.js successfully"
     }
-  ]
+  ],
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "resolved",
+    "counts": {
+      "resolved": 1
+    },
+    "ops": [
+      {
+        "i": 8,
+        "verdict": "resolved",
+        "reason": "guess-how-much-i-love-you-west-end-2026/thestage--sam-marlowe.json wrongShowManualClear already true"
+      }
+    ]
+  },
+  "supersededAt": "2026-11-07T20:58:07.982Z",
+  "supersededReason": "BRO-7092 triage against current data: every undone op is already in place (1 resolved); per-op reasons in triage.ops"
 }

@@ -30,5 +30,21 @@
       "ok": false,
       "reason": "Script audit-sibling-misfile-archive.js failed: Command failed: node scripts/audit-sibling-misfile-archive.js --delete --expect=60"
     }
-  ]
+  ],
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "still-needed",
+    "counts": {
+      "still-needed": 1
+    },
+    "stillNeededReason": "op 0: read-only recount (bro-7092-b, run 42412802580) now finds 156 sibling-misfiled archive pages, against the 60 this plan was approved for; a bulk archive delete of 156 needs a fresh plan with --expect=156 after a spot check (BRO-7092 hand check)",
+    "ops": [
+      {
+        "i": 0,
+        "verdict": "still-needed",
+        "reason": "read-only recount (bro-7092-b, run 42412802580) now finds 156 sibling-misfiled archive pages, against the 60 this plan was approved for; a bulk archive delete of 156 needs a fresh plan with --expect=156 after a spot check (BRO-7092 hand check)"
+      }
+    ]
+  }
 }

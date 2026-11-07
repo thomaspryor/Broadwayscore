@@ -143,5 +143,21 @@
       "ok": true,
       "msg": "waiting-for-godot-2013/nytimes--ben-brantley.json publishDate: \"November 7, 2013\" -> \"2013-11-25\""
     }
-  ]
+  ],
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "still-needed",
+    "counts": {
+      "still-needed": 1
+    },
+    "stillNeededReason": "op 0: the write guard rolled this publishDate edit back because it also rewrote duplicateReason; the record needs a hand check before a retry (BRO-7092 hand check)",
+    "ops": [
+      {
+        "i": 0,
+        "verdict": "still-needed",
+        "reason": "the write guard rolled this publishDate edit back because it also rewrote duplicateReason; the record needs a hand check before a retry (BRO-7092 hand check)"
+      }
+    ]
+  }
 }

@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5317",
   "planId": "8a7a7444-84d0-49cf-87ef-60d581f4e2ce",
-  "status": "partial",
+  "status": "superseded",
   "createdAt": "2026-10-31T01:15:16.194Z",
   "submitter": {
     "name": null,
@@ -368,5 +368,32 @@
       "msg": "murder-cathedral-off-west-end-2026/myviewfromthestalls--unknown.json criticName: \"Admin\" -> \"Unknown\""
     }
   ],
-  "executedIn": "ci"
+  "executedIn": "ci",
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "obsolete",
+    "counts": {
+      "obsolete": 3
+    },
+    "ops": [
+      {
+        "i": 14,
+        "verdict": "obsolete",
+        "reason": "review file ilford-boy-west-end-2026/plays-international--unknown.json no longer exists and nothing in ilford-boy-west-end-2026 looks like a rename"
+      },
+      {
+        "i": 15,
+        "verdict": "obsolete",
+        "reason": "review file ilford-boy-west-end-2026/plays-international--unknown.json no longer exists and nothing in ilford-boy-west-end-2026 looks like a rename"
+      },
+      {
+        "i": 18,
+        "verdict": "obsolete",
+        "reason": "review file the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026/plays-international--unknown.json no longer exists and nothing in the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026 looks like a rename"
+      }
+    ]
+  },
+  "supersededAt": "2026-11-07T20:58:07.982Z",
+  "supersededReason": "BRO-7092 triage against current data: every undone op is resolved or no longer applies (3 obsolete); per-op reasons in triage.ops"
 }

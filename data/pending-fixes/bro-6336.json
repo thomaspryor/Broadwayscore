@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6336",
   "planId": "312a3b3f-3587-4226-b370-a8028f3dffd1",
-  "status": "partial",
+  "status": "superseded",
   "createdAt": "2026-10-26T14:37:28.000Z",
   "submitter": {
     "name": null,
@@ -182,5 +182,63 @@
       "reason": "commercial.json:sources: value changed since plan"
     }
   ],
-  "executedIn": "ci"
+  "executedIn": "ci",
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "obsolete",
+    "counts": {
+      "obsolete": 4,
+      "resolved": 5
+    },
+    "ops": [
+      {
+        "i": 0,
+        "verdict": "obsolete",
+        "reason": "king-lear-2019.capitalization changed since by a later write (now 4950000)"
+      },
+      {
+        "i": 1,
+        "verdict": "obsolete",
+        "reason": "king-lear-2019.capitalizationSource changed since by a later write (now \"Production budget from an industry source (Oct 2026): \\\"...)"
+      },
+      {
+        "i": 2,
+        "verdict": "resolved",
+        "reason": "king-lear-2019.sources already [{\"type\":\"trade\",\"url\":\"https://www.forbes.com/sites/lees..."
+      },
+      {
+        "i": 3,
+        "verdict": "obsolete",
+        "reason": "frankie-and-johnny-in-the-clair-de-lune-2019.capitalization changed since by a later write (now 4005000)"
+      },
+      {
+        "i": 4,
+        "verdict": "obsolete",
+        "reason": "frankie-and-johnny-in-the-clair-de-lune-2019.capitalizationSource changed since by a later write (now \"Production budget from an industry source (Oct 2026): \\\"...)"
+      },
+      {
+        "i": 5,
+        "verdict": "resolved",
+        "reason": "frankie-and-johnny-in-the-clair-de-lune-2019.sources already [{\"type\":\"trade\",\"url\":\"https://www.broadwaynews.com/fran..."
+      },
+      {
+        "i": 6,
+        "verdict": "resolved",
+        "reason": "midnight-in-the-garden-of-good-and-evil.capitalization already 25000000"
+      },
+      {
+        "i": 7,
+        "verdict": "resolved",
+        "reason": "midnight-in-the-garden-of-good-and-evil.capitalizationSource already \"Broadway Journal (Mar 10, 2025): \\\"Scheduled to open lat..."
+      },
+      {
+        "i": 8,
+        "verdict": "resolved",
+        "reason": "midnight-in-the-garden-of-good-and-evil.sources already [{\"type\":\"trade\",\"url\":\"https://playbill.com/article/what..."
+      }
+    ]
+  },
+  "supersededAt": "2026-11-07T20:58:07.982Z",
+  "supersededReason": "BRO-7092 triage against current data: every undone op is resolved or no longer applies (4 obsolete, 5 resolved); per-op reasons in triage.ops"
 }

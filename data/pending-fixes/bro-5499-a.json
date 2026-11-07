@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5499-a",
   "planId": "c383ffc5-ca67-4e65-a0ae-80ec57127c02",
-  "status": "partial",
+  "status": "superseded",
   "createdAt": "2026-10-16T17:26:05.007Z",
   "submitter": {
     "name": null,
@@ -167,5 +167,22 @@
       "ok": false,
       "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=midnight-off-broadway-2026 --url=https://stephenkearley.substack.com/p/stephen-kearley-reviews-midnight --outlet=stephenkearley"
     }
-  ]
+  ],
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "resolved",
+    "counts": {
+      "resolved": 1
+    },
+    "ops": [
+      {
+        "i": 8,
+        "verdict": "resolved",
+        "reason": "https://stephenkearley.substack.com/p/stephen-kearley-reviews-midnight is counted for midnight-off-broadway-2026"
+      }
+    ]
+  },
+  "supersededAt": "2026-11-07T20:58:07.982Z",
+  "supersededReason": "BRO-7092 triage against current data: every undone op is already in place (1 resolved); per-op reasons in triage.ops"
 }

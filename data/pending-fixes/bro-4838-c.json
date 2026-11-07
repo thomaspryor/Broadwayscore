@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-4838-c",
   "planId": "a22b014b-d38c-43e4-9885-758be903cd9f",
-  "status": "partial",
+  "status": "superseded",
   "createdAt": "2026-10-11T20:57:04.713Z",
   "submitter": {
     "name": null,
@@ -188,5 +188,22 @@
       "ok": true,
       "msg": "tao-of-glass-west-end-2026/artsdesk--helen-hawkins.json wrongArticleManualClear: null -> true"
     }
-  ]
+  ],
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "resolved",
+    "counts": {
+      "resolved": 1
+    },
+    "ops": [
+      {
+        "i": 6,
+        "verdict": "resolved",
+        "reason": "from-the-heart-west-end-2026/theatre-news--unknown.json rejectedAt already null"
+      }
+    ]
+  },
+  "supersededAt": "2026-11-07T20:58:07.982Z",
+  "supersededReason": "BRO-7092 triage against current data: every undone op is already in place (1 resolved); per-op reasons in triage.ops"
 }

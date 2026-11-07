@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5317-b",
   "planId": "5c779297-103d-42c5-ba9b-ed3f50242082",
-  "status": "partial",
+  "status": "superseded",
   "createdAt": "2026-10-31T01:15:16.194Z",
   "submitter": {
     "name": null,
@@ -368,5 +368,22 @@
       "msg": "garry-starr-classic-penguins-off-broadway-2026/plays-international--unknown.json criticName: \"Ri-admin\" -> \"Mark Brown\""
     }
   ],
-  "executedIn": "ci"
+  "executedIn": "ci",
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "obsolete",
+    "counts": {
+      "obsolete": 1
+    },
+    "ops": [
+      {
+        "i": 20,
+        "verdict": "obsolete",
+        "reason": "review file catarina-and-the-beauty-of-killing-fascists-west-end-2026/plays-international--unknown.json no longer exists and nothing in catarina-and-the-beauty-of-killing-fascists-west-end-2026 looks like a rename"
+      }
+    ]
+  },
+  "supersededAt": "2026-11-07T20:58:07.982Z",
+  "supersededReason": "BRO-7092 triage against current data: every undone op is resolved or no longer applies (1 obsolete); per-op reasons in triage.ops"
 }

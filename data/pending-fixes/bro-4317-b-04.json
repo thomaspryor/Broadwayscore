@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-4317-b-04",
   "planId": "d82527e8-a496-400b-9f7e-c0d0e24501a0",
-  "status": "partial",
+  "status": "superseded",
   "createdAt": "2026-10-13T01:56:27.497Z",
   "submitter": {
     "name": null,
@@ -322,5 +322,22 @@
       "ok": true,
       "msg": "Deleted the-play-that-goes-wrong-2019/front-row-center--sarah-downs.json"
     }
-  ]
+  ],
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "resolved",
+    "counts": {
+      "resolved": 1
+    },
+    "ops": [
+      {
+        "i": 22,
+        "verdict": "resolved",
+        "reason": "the-play-that-goes-wrong-2019/dctheatrescene--jonathan-mandell.json is gone and the-play-that-goes-wrong-2017/dctheatrescene--jonathan-mandell.json exists"
+      }
+    ]
+  },
+  "supersededAt": "2026-11-07T20:58:07.982Z",
+  "supersededReason": "BRO-7092 triage against current data: every undone op is already in place (1 resolved); per-op reasons in triage.ops"
 }

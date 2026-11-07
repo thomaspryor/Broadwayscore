@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6245",
   "planId": "14124cb9-ca2d-4ed2-be4b-e62e9a85056f",
-  "status": "validation-failed",
+  "status": "superseded",
   "createdAt": "2026-10-25T21:37:11.551Z",
   "submitter": {
     "name": null,
@@ -168,5 +168,68 @@
       "msg": "commercial.json: humanReviewedDesignation updated for a-strange-loop-2022"
     }
   ],
-  "executedIn": "ci"
+  "executedIn": "ci",
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "obsolete",
+    "counts": {
+      "resolved": 4,
+      "obsolete": 6
+    },
+    "ops": [
+      {
+        "i": 0,
+        "verdict": "resolved",
+        "reason": "a-dolls-house-2023.designation already \"Trickle\""
+      },
+      {
+        "i": 1,
+        "verdict": "resolved",
+        "reason": "a-dolls-house-2023.humanReviewedDesignation already true"
+      },
+      {
+        "i": 2,
+        "verdict": "resolved",
+        "reason": "peter-pan-goes-wrong-2023.designation already \"Fizzle\""
+      },
+      {
+        "i": 3,
+        "verdict": "obsolete",
+        "reason": "estimates changed since the plan; current labels match current estimates and the plan's labels now fail the commercial rule (Sidney 25% returned, Strange Loop 37.5%) (BRO-7092 hand check)"
+      },
+      {
+        "i": 4,
+        "verdict": "obsolete",
+        "reason": "estimates changed since the plan; current labels match current estimates and the plan's labels now fail the commercial rule (Sidney 25% returned, Strange Loop 37.5%) (BRO-7092 hand check)"
+      },
+      {
+        "i": 5,
+        "verdict": "obsolete",
+        "reason": "estimates changed since the plan; current labels match current estimates and the plan's labels now fail the commercial rule (Sidney 25% returned, Strange Loop 37.5%) (BRO-7092 hand check)"
+      },
+      {
+        "i": 6,
+        "verdict": "resolved",
+        "reason": "fat-ham-2023.designation already \"Fizzle\""
+      },
+      {
+        "i": 7,
+        "verdict": "obsolete",
+        "reason": "estimates changed since the plan; current labels match current estimates and the plan's labels now fail the commercial rule (Sidney 25% returned, Strange Loop 37.5%) (BRO-7092 hand check)"
+      },
+      {
+        "i": 8,
+        "verdict": "obsolete",
+        "reason": "estimates changed since the plan; current labels match current estimates and the plan's labels now fail the commercial rule (Sidney 25% returned, Strange Loop 37.5%) (BRO-7092 hand check)"
+      },
+      {
+        "i": 9,
+        "verdict": "obsolete",
+        "reason": "estimates changed since the plan; current labels match current estimates and the plan's labels now fail the commercial rule (Sidney 25% returned, Strange Loop 37.5%) (BRO-7092 hand check)"
+      }
+    ]
+  },
+  "supersededAt": "2026-11-07T20:58:07.982Z",
+  "supersededReason": "BRO-7092 triage against current data: every undone op is resolved or no longer applies (4 resolved, 6 obsolete); per-op reasons in triage.ops"
 }

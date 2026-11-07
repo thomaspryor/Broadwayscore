@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-3919",
   "planId": "7ecf5025-f7b8-4ea2-87c8-108f8f291616",
-  "status": "partial",
+  "status": "superseded",
   "createdAt": "2026-10-13T13:32:07.192Z",
   "submitter": {
     "name": null,
@@ -115,5 +115,27 @@
       "ok": true,
       "msg": "the-story-west-end-2026/west-end-wilma--westendwilma.json criticName: \"Westendwilma\" -> \"Nicole Darvill-Batten\""
     }
-  ]
+  ],
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "obsolete",
+    "counts": {
+      "obsolete": 2
+    },
+    "ops": [
+      {
+        "i": 1,
+        "verdict": "obsolete",
+        "reason": "review file cats-west-end-2026/british-theatre--steve-orme.json no longer exists and nothing in cats-west-end-2026 looks like a rename"
+      },
+      {
+        "i": 5,
+        "verdict": "obsolete",
+        "reason": "review file the-car-man-west-end-2026/british-theatre--susan-novak.json no longer exists and nothing in the-car-man-west-end-2026 looks like a rename"
+      }
+    ]
+  },
+  "supersededAt": "2026-11-07T20:58:07.982Z",
+  "supersededReason": "BRO-7092 triage against current data: every undone op is resolved or no longer applies (2 obsolete); per-op reasons in triage.ops"
 }

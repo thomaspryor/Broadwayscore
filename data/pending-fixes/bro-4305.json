@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-4305",
   "planId": "dc075ef3-80bc-479d-a038-01f85d9b8792",
-  "status": "partial",
+  "status": "superseded",
   "createdAt": "2026-10-25T01:59:04.491Z",
   "submitter": {
     "name": null,
@@ -32,5 +32,22 @@
       "reason": "isRoundupArticle: current value doesn't match expected (data changed since plan was created)"
     }
   ],
-  "executedIn": "ci"
+  "executedIn": "ci",
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "resolved",
+    "counts": {
+      "resolved": 1
+    },
+    "ops": [
+      {
+        "i": 0,
+        "verdict": "resolved",
+        "reason": "disruption-off-broadway-2026/la-voce-di-new-york--jk-clarke.json isRoundupArticle already false"
+      }
+    ]
+  },
+  "supersededAt": "2026-11-07T20:58:07.982Z",
+  "supersededReason": "BRO-7092 triage against current data: every undone op is already in place (1 resolved); per-op reasons in triage.ops"
 }

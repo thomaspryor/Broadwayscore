@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6481",
   "planId": "2a2ed013-a740-45d0-944b-0cfd01ca03db",
-  "status": "partial",
+  "status": "superseded",
   "createdAt": "2026-10-28T19:57:21.246Z",
   "submitter": {
     "name": null,
@@ -44,5 +44,22 @@
       "reason": "retire-show clara-sex-love-and-classical-off-broadway-2026: clara-sex-love-and-classical-off-broadway-2026 has 1 review(s): move them before retiring"
     }
   ],
-  "executedIn": "ci"
+  "executedIn": "ci",
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "resolved",
+    "counts": {
+      "resolved": 1
+    },
+    "ops": [
+      {
+        "i": 1,
+        "verdict": "resolved",
+        "reason": "show clara-sex-love-and-classical-off-broadway-2026 is retired or gone"
+      }
+    ]
+  },
+  "supersededAt": "2026-11-07T20:58:07.982Z",
+  "supersededReason": "BRO-7092 triage against current data: every undone op is already in place (1 resolved); per-op reasons in triage.ops"
 }

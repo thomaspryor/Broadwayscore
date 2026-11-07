@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6237",
   "planId": "676022f8-29e6-4e9f-ad47-15545d2aded5",
-  "status": "partial",
+  "status": "superseded",
   "createdAt": "2026-10-26T11:33:49.849Z",
   "submitter": {
     "name": null,
@@ -368,5 +368,27 @@
       "msg": "avenue-q-west-end-2026/telegraph--marianka-swain.json nonReviewManualClear: null -> true"
     }
   ],
-  "executedIn": "ci"
+  "executedIn": "ci",
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "obsolete",
+    "counts": {
+      "obsolete": 2
+    },
+    "ops": [
+      {
+        "i": 19,
+        "verdict": "obsolete",
+        "reason": "review file a-midsummer-nights-dream-west-end-2026/london-box-office--eve-jawara.json no longer exists and nothing in a-midsummer-nights-dream-west-end-2026 looks like a rename"
+      },
+      {
+        "i": 20,
+        "verdict": "obsolete",
+        "reason": "review file a-midsummer-nights-dream-west-end-2026/london-box-office--marian-pashley.json no longer exists and nothing in a-midsummer-nights-dream-west-end-2026 looks like a rename"
+      }
+    ]
+  },
+  "supersededAt": "2026-11-07T20:58:07.982Z",
+  "supersededReason": "BRO-7092 triage against current data: every undone op is resolved or no longer applies (2 obsolete); per-op reasons in triage.ops"
 }

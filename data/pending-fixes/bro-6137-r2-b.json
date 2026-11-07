@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6137-r2-b",
   "planId": "e8be9470-f34b-4573-bc70-8afb7253e9ed",
-  "status": "partial",
+  "status": "superseded",
   "createdAt": "2026-10-24T16:25:24.826Z",
   "submitter": {
     "name": null,
@@ -423,5 +423,42 @@
       "msg": "commercial.json: sources updated for therese-raquin-2015"
     }
   ],
-  "executedIn": "ci"
+  "executedIn": "ci",
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "obsolete",
+    "counts": {
+      "obsolete": 5
+    },
+    "ops": [
+      {
+        "i": 2,
+        "verdict": "obsolete",
+        "reason": "the-father-2016.needsLossEvidence changed since by a later write (now unset)"
+      },
+      {
+        "i": 7,
+        "verdict": "obsolete",
+        "reason": "she-loves-me-2016.needsLossEvidence changed since by a later write (now unset)"
+      },
+      {
+        "i": 12,
+        "verdict": "obsolete",
+        "reason": "our-mothers-brief-affair-2016.needsLossEvidence changed since by a later write (now unset)"
+      },
+      {
+        "i": 17,
+        "verdict": "obsolete",
+        "reason": "noises-off-2016.needsLossEvidence changed since by a later write (now unset)"
+      },
+      {
+        "i": 22,
+        "verdict": "obsolete",
+        "reason": "therese-raquin-2015.needsLossEvidence changed since by a later write (now unset)"
+      }
+    ]
+  },
+  "supersededAt": "2026-11-07T20:58:07.982Z",
+  "supersededReason": "BRO-7092 triage against current data: every undone op is resolved or no longer applies (5 obsolete); per-op reasons in triage.ops"
 }

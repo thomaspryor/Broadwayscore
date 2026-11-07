@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-4429",
   "planId": "81130b68-3144-4415-9ef4-8a97ee0bd3b4",
-  "status": "partial",
+  "status": "superseded",
   "createdAt": "2026-09-30T16:10:02.994Z",
   "submitter": {
     "name": null,
@@ -283,5 +283,22 @@
       "ok": true,
       "msg": "woman-in-mind-west-end-2025/standard--nick-curtis.json isNonReview: true -> false"
     }
-  ]
+  ],
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "obsolete",
+    "counts": {
+      "obsolete": 1
+    },
+    "ops": [
+      {
+        "i": 15,
+        "verdict": "obsolete",
+        "reason": "the review write guard deliberately keeps this wrongProductionReason; the guard is the current policy (BRO-7092 hand check)"
+      }
+    ]
+  },
+  "supersededAt": "2026-11-07T20:58:07.982Z",
+  "supersededReason": "BRO-7092 triage against current data: every undone op is resolved or no longer applies (1 obsolete); per-op reasons in triage.ops"
 }

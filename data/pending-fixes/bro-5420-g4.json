@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5420-g4",
   "planId": "c5a9a835-a0c8-4a1d-8dd3-07d32133b8a0",
-  "status": "partial",
+  "status": "superseded",
   "createdAt": "2026-10-16T04:45:00.000Z",
   "submitter": {
     "name": null,
@@ -330,5 +330,68 @@
       "ok": false,
       "reason": "wrongProduction: current value doesn't match expected (data changed since plan was created)"
     }
-  ]
+  ],
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "obsolete",
+    "counts": {
+      "obsolete": 4,
+      "resolved": 6
+    },
+    "ops": [
+      {
+        "i": 6,
+        "verdict": "obsolete",
+        "reason": "here-lies-love-2023/independent--unknown.json wrongProductionReason changed since by a later write (now \"audit-2026-06-21-prior-production-contamination\")"
+      },
+      {
+        "i": 7,
+        "verdict": "resolved",
+        "reason": "here-lies-love-2023/independent--unknown.json wrongProduction already true"
+      },
+      {
+        "i": 10,
+        "verdict": "obsolete",
+        "reason": "marjorie-prime-2025/city-am--adam-bloodworth.json wrongProductionReason changed since by a later write (now \"audit-2026-06-21-prior-production-contamination\")"
+      },
+      {
+        "i": 11,
+        "verdict": "resolved",
+        "reason": "marjorie-prime-2025/city-am--adam-bloodworth.json wrongProduction already true"
+      },
+      {
+        "i": 12,
+        "verdict": "obsolete",
+        "reason": "marjorie-prime-2025/london-theatre--unknown.json wrongProductionReason changed since by a later write (now \"audit-2026-06-21-prior-production-contamination\")"
+      },
+      {
+        "i": 13,
+        "verdict": "resolved",
+        "reason": "marjorie-prime-2025/london-theatre--unknown.json wrongProduction already true"
+      },
+      {
+        "i": 18,
+        "verdict": "obsolete",
+        "reason": "othello-2025/theupcoming--unknown.json wrongProductionReason changed since by a later write (now \"audit-2026-06-21-prior-production-contamination\")"
+      },
+      {
+        "i": 19,
+        "verdict": "resolved",
+        "reason": "othello-2025/theupcoming--unknown.json wrongProduction already true"
+      },
+      {
+        "i": 21,
+        "verdict": "resolved",
+        "reason": "passing-strange-2008/artsdesk--helen-hawkins.json wrongProduction already true"
+      },
+      {
+        "i": 23,
+        "verdict": "resolved",
+        "reason": "passing-strange-2008/london-theatre--marianka-swain.json wrongProduction already true"
+      }
+    ]
+  },
+  "supersededAt": "2026-11-07T20:58:07.982Z",
+  "supersededReason": "BRO-7092 triage against current data: every undone op is resolved or no longer applies (4 obsolete, 6 resolved); per-op reasons in triage.ops"
 }

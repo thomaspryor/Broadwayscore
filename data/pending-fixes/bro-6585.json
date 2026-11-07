@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6585",
   "planId": "935331fe-5a27-48a8-8f77-6bd1daf02f85",
-  "status": "partial",
+  "status": "superseded",
   "createdAt": "2026-10-30T04:48:00.506Z",
   "submitter": {
     "name": null,
@@ -46,5 +46,22 @@
       "reason": "publishDate: current value doesn't match expected (data changed since plan was created)"
     }
   ],
-  "executedIn": "ci"
+  "executedIn": "ci",
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "obsolete",
+    "counts": {
+      "obsolete": 1
+    },
+    "ops": [
+      {
+        "i": 1,
+        "verdict": "obsolete",
+        "reason": "a-few-good-men-2026/thewrap--robert-hofler.json publishDate changed since by a later write (now (text))"
+      }
+    ]
+  },
+  "supersededAt": "2026-11-07T20:58:07.982Z",
+  "supersededReason": "BRO-7092 triage against current data: every undone op is resolved or no longer applies (1 obsolete); per-op reasons in triage.ops"
 }

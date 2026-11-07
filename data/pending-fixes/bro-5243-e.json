@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5243-e",
   "planId": "4ecc1896-d564-4826-a3dc-34f112b21550",
-  "status": "partial",
+  "status": "superseded",
   "createdAt": "2026-10-14T09:10:00.000Z",
   "submitter": {
     "name": null,
@@ -138,5 +138,27 @@
       "ok": true,
       "msg": "prince-of-broadway-2017/wsj--terry-teachout.json humanReviewNote: null -> \"BRO-5243: hand-read Prince of Broadway section of a two-show column (the rest reviews Barrington Stage's Company); positive with reservations\""
     }
-  ]
+  ],
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "resolved",
+    "counts": {
+      "resolved": 2
+    },
+    "ops": [
+      {
+        "i": 3,
+        "verdict": "resolved",
+        "reason": "sunset-boulevard-2017/wsj--charles-isherwood.json wrongAttribution already true"
+      },
+      {
+        "i": 5,
+        "verdict": "resolved",
+        "reason": "mean-girls-2018/wsj--charles-isherwood.json wrongProduction already true"
+      }
+    ]
+  },
+  "supersededAt": "2026-11-07T20:58:07.982Z",
+  "supersededReason": "BRO-7092 triage against current data: every undone op is already in place (2 resolved); per-op reasons in triage.ops"
 }

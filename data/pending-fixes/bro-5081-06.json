@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5081-06",
   "planId": "fbca62ec-830a-4dc8-8a14-908a538050ed",
-  "status": "partial",
+  "status": "superseded",
   "createdAt": "2026-10-11T21:42:49.528Z",
   "submitter": {
     "name": null,
@@ -367,5 +367,27 @@
       "ok": true,
       "msg": "pretty-woman-the-musical-2018/variety--marilyn-stasio.json criticName: \"Marilyn Stasio\" -> \"Bob Verini\""
     }
-  ]
+  ],
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "obsolete",
+    "counts": {
+      "obsolete": 2
+    },
+    "ops": [
+      {
+        "i": 2,
+        "verdict": "obsolete",
+        "reason": "review file oh-mary-2024/variety--aramide-tinubu.json no longer exists and nothing in oh-mary-2024 looks like a rename"
+      },
+      {
+        "i": 14,
+        "verdict": "obsolete",
+        "reason": "review file pass-over-2021/nytg--david-gordon.json no longer exists and nothing in pass-over-2021 looks like a rename"
+      }
+    ]
+  },
+  "supersededAt": "2026-11-07T20:58:07.982Z",
+  "supersededReason": "BRO-7092 triage against current data: every undone op is resolved or no longer applies (2 obsolete); per-op reasons in triage.ops"
 }

@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5081-02",
   "planId": "339beb2d-ad10-4994-8b63-7a44effc2a12",
-  "status": "partial",
+  "status": "superseded",
   "createdAt": "2026-10-11T21:42:49.528Z",
   "submitter": {
     "name": null,
@@ -367,5 +367,38 @@
       "ok": true,
       "msg": "evita-2012/stageandcinema--steven-suskin.json criticName: \"Steven Suskin\" -> \"Thomas Antoinne\""
     }
-  ]
+  ],
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "obsolete",
+    "counts": {
+      "obsolete": 3,
+      "resolved": 1
+    },
+    "ops": [
+      {
+        "i": 1,
+        "verdict": "obsolete",
+        "reason": "review file betrayal-2013/guardian--charles-isherwood.json no longer exists and nothing in betrayal-2013 looks like a rename"
+      },
+      {
+        "i": 9,
+        "verdict": "resolved",
+        "reason": "chaplin-2012/vulture--jesse-green.json and chaplin-2012/vulture--scott-brown.json share one counted row, so nothing is double-counted"
+      },
+      {
+        "i": 10,
+        "verdict": "obsolete",
+        "reason": "review file choir-boy-2019/vulture--jesse-green.json no longer exists and nothing in choir-boy-2019 looks like a rename"
+      },
+      {
+        "i": 23,
+        "verdict": "obsolete",
+        "reason": "review file evita-2012/vulture--jesse-green.json no longer exists and nothing in evita-2012 looks like a rename"
+      }
+    ]
+  },
+  "supersededAt": "2026-11-07T20:58:07.982Z",
+  "supersededReason": "BRO-7092 triage against current data: every undone op is resolved or no longer applies (3 obsolete, 1 resolved); per-op reasons in triage.ops"
 }

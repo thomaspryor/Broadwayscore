@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5874",
   "planId": "e0869dd5-f8d6-4190-89a9-28e3b2389e4d",
-  "status": "partial",
+  "status": "superseded",
   "createdAt": "2026-10-21T23:45:00.000Z",
   "submitter": {
     "name": null,
@@ -30,5 +30,22 @@
       "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=innocence-off-broadway-2026 --url=https://bachtrack.com/review-saariaho-innocence-malkki-didonato-metropolitan-opera-april-2026 --outlet=bachtrack --archive-snapshot=20260409195415"
     }
   ],
-  "executedIn": "ci"
+  "executedIn": "ci",
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "resolved",
+    "counts": {
+      "resolved": 1
+    },
+    "ops": [
+      {
+        "i": 0,
+        "verdict": "resolved",
+        "reason": "https://bachtrack.com/review-saariaho-innocence-malkki-didonato-metropolitan-opera-april-2026 is counted for innocence-off-broadway-2026"
+      }
+    ]
+  },
+  "supersededAt": "2026-11-07T20:58:07.982Z",
+  "supersededReason": "BRO-7092 triage against current data: every undone op is already in place (1 resolved); per-op reasons in triage.ops"
 }

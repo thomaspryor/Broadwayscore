@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6627",
   "planId": "3693fee7-a4a6-475f-b772-64cd0e49d8a3",
-  "status": "partial",
+  "status": "superseded",
   "createdAt": "2026-10-30T20:43:50.647Z",
   "submitter": {
     "name": null,
@@ -144,5 +144,32 @@
       "msg": "shows.json: noReliableArt updated for mothers-regional-2024"
     }
   ],
-  "executedIn": "ci"
+  "executedIn": "ci",
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "obsolete",
+    "counts": {
+      "obsolete": 3
+    },
+    "ops": [
+      {
+        "i": 0,
+        "verdict": "obsolete",
+        "reason": "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-regional-2024.images changed since by a later write (now {})"
+      },
+      {
+        "i": 2,
+        "verdict": "obsolete",
+        "reason": "judys-lifes-work-regional-2024.images changed since by a later write (now {})"
+      },
+      {
+        "i": 4,
+        "verdict": "obsolete",
+        "reason": "mothers-regional-2024.images changed since by a later write (now {})"
+      }
+    ]
+  },
+  "supersededAt": "2026-11-07T20:58:07.982Z",
+  "supersededReason": "BRO-7092 triage against current data: every undone op is resolved or no longer applies (3 obsolete); per-op reasons in triage.ops"
 }

@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5740-b",
   "planId": "2e2efb66-9e9d-4e9f-b41b-e53096afc1f4",
-  "status": "partial",
+  "status": "superseded",
   "createdAt": "2026-10-20T02:10:00Z",
   "submitter": {
     "name": null,
@@ -162,5 +162,28 @@
       "msg": "the-man-in-the-white-suit-west-end-2019/telegraph--domenic-cavendish.json criticName: \"Domenic Cavendish\" -> \"Dominic Cavendish\""
     }
   ],
-  "executedIn": "ci"
+  "executedIn": "ci",
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "obsolete",
+    "counts": {
+      "obsolete": 1,
+      "resolved": 1
+    },
+    "ops": [
+      {
+        "i": 0,
+        "verdict": "obsolete",
+        "reason": "the file was moved to _superseded-misattributed; there is no live record to edit (BRO-7092 hand check)"
+      },
+      {
+        "i": 9,
+        "verdict": "resolved",
+        "reason": "spamalot-tour-2025/the-moderate-voice--dough-bursch.json criticName already (text)"
+      }
+    ]
+  },
+  "supersededAt": "2026-11-07T20:58:07.982Z",
+  "supersededReason": "BRO-7092 triage against current data: every undone op is resolved or no longer applies (1 obsolete, 1 resolved); per-op reasons in triage.ops"
 }

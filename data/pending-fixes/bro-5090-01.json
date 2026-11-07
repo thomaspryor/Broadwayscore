@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5090-01",
   "planId": "5923f12a-1e3d-4874-a399-006220a84893",
-  "status": "partial",
+  "status": "superseded",
   "createdAt": "2026-10-12T11:57:00.096Z",
   "submitter": {
     "name": null,
@@ -367,5 +367,28 @@
       "ok": false,
       "reason": "elf-2012/nytimes--ben-brantley.json duplicateOf: write guard kept null"
     }
-  ]
+  ],
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "obsolete",
+    "counts": {
+      "resolved": 1,
+      "obsolete": 1
+    },
+    "ops": [
+      {
+        "i": 15,
+        "verdict": "resolved",
+        "reason": "bring-it-on-the-musical-2012/nytimes--ben-brantley.json and bring-it-on-the-musical-2012/nytimes--charles-isherwood.json share one counted row, so nothing is double-counted"
+      },
+      {
+        "i": 24,
+        "verdict": "obsolete",
+        "reason": "review file elf-2012/nytimes--ben-brantley.json no longer exists and nothing in elf-2012 looks like a rename"
+      }
+    ]
+  },
+  "supersededAt": "2026-11-07T20:58:07.982Z",
+  "supersededReason": "BRO-7092 triage against current data: every undone op is resolved or no longer applies (1 resolved, 1 obsolete); per-op reasons in triage.ops"
 }

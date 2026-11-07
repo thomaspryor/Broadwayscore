@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6481-2",
   "planId": "c78f5f1c-3929-418d-80d6-faa62da9758d",
-  "status": "partial",
+  "status": "superseded",
   "createdAt": "2026-10-28T21:50:46.254Z",
   "submitter": {
     "name": null,
@@ -71,5 +71,38 @@
       "reason": "No destination path for move/rename"
     }
   ],
-  "executedIn": "ci"
+  "executedIn": "ci",
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "obsolete",
+    "counts": {
+      "obsolete": 2,
+      "resolved": 2
+    },
+    "ops": [
+      {
+        "i": 0,
+        "verdict": "obsolete",
+        "reason": "review file clara-sex-love-and-classical-off-broadway-2026/theater-pizzazz--alix-cohen.json no longer exists and nothing in clara-sex-love-and-classical-off-broadway-2026 looks like a rename"
+      },
+      {
+        "i": 1,
+        "verdict": "resolved",
+        "reason": "show clara-sex-love-and-classical-off-broadway-2026 is retired or gone"
+      },
+      {
+        "i": 2,
+        "verdict": "resolved",
+        "reason": "titanique-2026/thewrap--robert-hofler.json url already (text)"
+      },
+      {
+        "i": 3,
+        "verdict": "obsolete",
+        "reason": "illinoise-2024/nytg--amelia-merrill.json is not counted and the plan had no destPath"
+      }
+    ]
+  },
+  "supersededAt": "2026-11-07T20:58:07.982Z",
+  "supersededReason": "BRO-7092 triage against current data: every undone op is resolved or no longer applies (2 obsolete, 2 resolved); per-op reasons in triage.ops"
 }

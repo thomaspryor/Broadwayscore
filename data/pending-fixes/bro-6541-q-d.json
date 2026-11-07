@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6541-q-d",
   "planId": "a35983c8-d31a-4adc-a0df-0cafa92861b0",
-  "status": "partial",
+  "status": "superseded",
   "createdAt": "2026-10-29T20:55:20.932Z",
   "submitter": {
     "name": null,
@@ -318,5 +318,22 @@
       "msg": "Ran ingest-review-from-url.js successfully"
     }
   ],
-  "executedIn": "ci"
+  "executedIn": "ci",
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "resolved",
+    "counts": {
+      "resolved": 1
+    },
+    "ops": [
+      {
+        "i": 18,
+        "verdict": "resolved",
+        "reason": "https://www.thestage.co.uk/reviews/scots-the-musical-review-dundee-rep is counted for scots-the-musical-dundee-rep-regional-2026"
+      }
+    ]
+  },
+  "supersededAt": "2026-11-07T20:58:07.982Z",
+  "supersededReason": "BRO-7092 triage against current data: every undone op is already in place (1 resolved); per-op reasons in triage.ops"
 }

@@ -66,5 +66,32 @@
       "ok": true,
       "msg": "brooklyns-bridge-off-broadway-2026/nyt-theater--jonathan.json criticName: \"Jonathan\" -> \"Jonathan Mandell\""
     }
-  ]
+  ],
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "still-needed",
+    "counts": {
+      "resolved": 2,
+      "still-needed": 1
+    },
+    "stillNeededReason": "op 1: re-ingested via ingest-urls on 2026-11-07 (success) but the CI fetch of this paywalled page still yields no text or a stub; it needs a browser html handoff (ingest-html-handoff) to recover (BRO-7092 hand check)",
+    "ops": [
+      {
+        "i": 0,
+        "verdict": "resolved",
+        "reason": "https://www.nysun.com/article/hungry-women-unevenly-takes-aim-at-the-patriarchy is counted for hungry-women-off-broadway-2026"
+      },
+      {
+        "i": 1,
+        "verdict": "still-needed",
+        "reason": "re-ingested via ingest-urls on 2026-11-07 (success) but the CI fetch of this paywalled page still yields no text or a stub; it needs a browser html handoff (ingest-html-handoff) to recover (BRO-7092 hand check)"
+      },
+      {
+        "i": 2,
+        "verdict": "resolved",
+        "reason": "https://www.thetimes.com/culture/theatre-dance/article/the-standard-of-living-review-mxq2c5hnx is counted for the-standard-of-living-west-end-2026"
+      }
+    ]
+  }
 }

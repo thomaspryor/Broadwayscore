@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6153-r2",
   "planId": "bca4ba1c-3d1e-4588-8788-4e275cae97bc",
-  "status": "partial",
+  "status": "superseded",
   "createdAt": "2026-10-25T22:08:23.726Z",
   "submitter": {
     "name": null,
@@ -224,5 +224,27 @@
       "msg": "Ingested http://www.theaterscene.net/musicals/offbway/44-the-musical/victor-gluck/ for 44-off-broadway-2025 from handed-off HTML (99290 chars)"
     }
   ],
-  "executedIn": "ci"
+  "executedIn": "ci",
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "resolved",
+    "counts": {
+      "resolved": 2
+    },
+    "ops": [
+      {
+        "i": 0,
+        "verdict": "resolved",
+        "reason": "https://www.vulture.com/article/prince-faggot-jordan-tannahill-theater-review.html is counted for prince-faggot-off-broadway-2025"
+      },
+      {
+        "i": 3,
+        "verdict": "resolved",
+        "reason": "https://www.theaterscene.net/plays/offbway-plays/prince-faggot/tony-marinelli/ is counted for prince-faggot-off-broadway-2025"
+      }
+    ]
+  },
+  "supersededAt": "2026-11-07T20:58:07.982Z",
+  "supersededReason": "BRO-7092 triage against current data: every undone op is already in place (2 resolved); per-op reasons in triage.ops"
 }

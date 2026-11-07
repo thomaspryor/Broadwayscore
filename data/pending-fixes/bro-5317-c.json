@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5317-c",
   "planId": "fa1b81ed-c01d-4283-b217-f2bcd16b7073",
-  "status": "partial",
+  "status": "superseded",
   "createdAt": "2026-10-31T01:15:16.194Z",
   "submitter": {
     "name": null,
@@ -186,5 +186,22 @@
       "reason": "Review file not found: the-car-man-west-end-2026/all-that-dazzles-uk--sam-admin.json"
     }
   ],
-  "executedIn": "ci"
+  "executedIn": "ci",
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "obsolete",
+    "counts": {
+      "obsolete": 1
+    },
+    "ops": [
+      {
+        "i": 11,
+        "verdict": "obsolete",
+        "reason": "review file the-car-man-west-end-2026/all-that-dazzles-uk--sam-admin.json no longer exists and nothing in the-car-man-west-end-2026 looks like a rename"
+      }
+    ]
+  },
+  "supersededAt": "2026-11-07T20:58:07.982Z",
+  "supersededReason": "BRO-7092 triage against current data: every undone op is resolved or no longer applies (1 obsolete); per-op reasons in triage.ops"
 }

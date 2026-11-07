@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5183-04",
   "planId": "bfc11e47-6c6f-4849-941c-8401e995c513",
-  "status": "partial",
+  "status": "superseded",
   "createdAt": "2026-10-12T20:35:54.048Z",
   "submitter": {
     "name": null,
@@ -353,5 +353,48 @@
       "ok": true,
       "msg": "the-other-place-2013/talkinbroadway--matthew-murray.json url: \"https://www.talkinbroadway.com/world/OtherPlace.html\" -> \"https://talkinbroadway.com/page/world/TheOtherPlace2013.html\""
     }
-  ]
+  ],
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "obsolete",
+    "counts": {
+      "resolved": 5,
+      "obsolete": 1
+    },
+    "ops": [
+      {
+        "i": 2,
+        "verdict": "resolved",
+        "reason": "in-the-next-room-2009/nytimes--ben-brantley.json duplicateOf already \"nytimes--charles-isherwood.json\""
+      },
+      {
+        "i": 4,
+        "verdict": "resolved",
+        "reason": "king-kong-2018/talkinbroadway--matthew-murray.json duplicateOf already \"talkinbroadway--howard-miller.json\""
+      },
+      {
+        "i": 7,
+        "verdict": "resolved",
+        "reason": "once-on-this-island-2017/vulture--jesse-green.json duplicateOf already \"vulture--sara-holdren.json\""
+      },
+      {
+        "i": 9,
+        "verdict": "resolved",
+        "reason": "paradise-square-2022/talkinbroadway--matthew-murray.json duplicateOf already \"talkinbroadway--james-wilson.json\""
+      },
+      {
+        "i": 19,
+        "verdict": "obsolete",
+        "reason": "review file the-bands-visit-2017/talkinbroadway--matthew-murray.json no longer exists and nothing in the-bands-visit-2017 looks like a rename"
+      },
+      {
+        "i": 21,
+        "verdict": "resolved",
+        "reason": "the-ferryman-2018/talkinbroadway--matthew-murray.json duplicateOf already \"talkinbroadway--howard-miller.json\""
+      }
+    ]
+  },
+  "supersededAt": "2026-11-07T20:58:07.982Z",
+  "supersededReason": "BRO-7092 triage against current data: every undone op is resolved or no longer applies (5 resolved, 1 obsolete); per-op reasons in triage.ops"
 }

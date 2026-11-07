@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6481-3",
   "planId": "0224d507-07b5-4640-8575-f23ddc4a9ee4",
-  "status": "partial",
+  "status": "superseded",
   "createdAt": "2026-10-28T21:52:15.999Z",
   "submitter": {
     "name": null,
@@ -820,5 +820,57 @@
       "reason": "add-show: id \"black-no-more-off-broadway-2022\" already exists"
     }
   ],
-  "executedIn": "ci"
+  "executedIn": "ci",
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "resolved",
+    "counts": {
+      "resolved": 8
+    },
+    "ops": [
+      {
+        "i": 7,
+        "verdict": "resolved",
+        "reason": "show trevor-off-broadway-2021 exists"
+      },
+      {
+        "i": 8,
+        "verdict": "resolved",
+        "reason": "show the-bedwetter-off-broadway-2022 exists"
+      },
+      {
+        "i": 10,
+        "verdict": "resolved",
+        "reason": "show a-case-for-the-existence-of-god-off-broadway-2022 exists"
+      },
+      {
+        "i": 11,
+        "verdict": "resolved",
+        "reason": "show confederates-off-broadway-2022 exists"
+      },
+      {
+        "i": 21,
+        "verdict": "resolved",
+        "reason": "show on-sugarland-off-broadway-2022 exists"
+      },
+      {
+        "i": 22,
+        "verdict": "resolved",
+        "reason": "show coal-country-off-broadway-2022 exists"
+      },
+      {
+        "i": 23,
+        "verdict": "resolved",
+        "reason": "show shhhh-off-broadway-2022 exists"
+      },
+      {
+        "i": 24,
+        "verdict": "resolved",
+        "reason": "show black-no-more-off-broadway-2022 exists"
+      }
+    ]
+  },
+  "supersededAt": "2026-11-07T20:58:07.982Z",
+  "supersededReason": "BRO-7092 triage against current data: every undone op is already in place (8 resolved); per-op reasons in triage.ops"
 }

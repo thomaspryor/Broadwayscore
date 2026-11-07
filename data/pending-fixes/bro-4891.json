@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-4891",
   "planId": "a00564f8-ebc1-4b11-9d57-805833f3491f",
-  "status": "partial",
+  "status": "superseded",
   "createdAt": "2026-10-13T00:29:44.505Z",
   "submitter": {
     "name": null,
@@ -77,5 +77,27 @@
       "ok": false,
       "reason": "openingDateSource: current value doesn't match expected (data changed since plan was created)"
     }
-  ]
+  ],
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "obsolete",
+    "counts": {
+      "obsolete": 2
+    },
+    "ops": [
+      {
+        "i": 1,
+        "verdict": "obsolete",
+        "reason": "paddington-the-musical-west-end-2025.openingDateSource changed since by a later write (now \"human-correction\")"
+      },
+      {
+        "i": 3,
+        "verdict": "obsolete",
+        "reason": "john-proctor-is-the-villain-west-end-2027.openingDateSource changed since by a later write (now \"human-correction\")"
+      }
+    ]
+  },
+  "supersededAt": "2026-11-07T20:58:07.982Z",
+  "supersededReason": "BRO-7092 triage against current data: every undone op is resolved or no longer applies (2 obsolete); per-op reasons in triage.ops"
 }

@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-4432-c",
   "planId": "c3f1a2d4-7e5b-4c19-9a0d-4432c0ffee01",
-  "status": "partial",
+  "status": "superseded",
   "createdAt": "2026-09-30T18:05:00.000Z",
   "submitter": {
     "name": null,
@@ -58,5 +58,22 @@
       "ok": false,
       "reason": "wrongProduction: current value doesn't match expected (data changed since plan was created)"
     }
-  ]
+  ],
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "resolved",
+    "counts": {
+      "resolved": 1
+    },
+    "ops": [
+      {
+        "i": 2,
+        "verdict": "resolved",
+        "reason": "oliver-west-end-2024/thestage--dave-fargnoli.json wrongProduction already true"
+      }
+    ]
+  },
+  "supersededAt": "2026-11-07T20:58:07.982Z",
+  "supersededReason": "BRO-7092 triage against current data: every undone op is already in place (1 resolved); per-op reasons in triage.ops"
 }

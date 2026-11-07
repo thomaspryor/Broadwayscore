@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5420-a",
   "planId": "d37137eb-a131-4fe4-9b7d-a86298cd4335",
-  "status": "partial",
+  "status": "superseded",
   "createdAt": "2026-10-16T02:20:00.000Z",
   "submitter": {
     "name": null,
@@ -265,5 +265,22 @@
       "ok": true,
       "msg": "thelma-and-louise-a-new-musical-off-west-end-2026/thestage--holly-o.json criticName: \"Holly O'\" -> \"Holly O'Mahony\""
     }
-  ]
+  ],
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "resolved",
+    "counts": {
+      "resolved": 1
+    },
+    "ops": [
+      {
+        "i": 9,
+        "verdict": "resolved",
+        "reason": "jesus-christ-superstar-west-end-2026/thestage--holly-o.json criticName already (text)"
+      }
+    ]
+  },
+  "supersededAt": "2026-11-07T20:58:07.982Z",
+  "supersededReason": "BRO-7092 triage against current data: every undone op is already in place (1 resolved); per-op reasons in triage.ops"
 }

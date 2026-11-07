@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5356-k",
   "planId": "ba010eed-eb59-4630-b7d9-d6094f95cbba",
-  "status": "partial",
+  "status": "superseded",
   "createdAt": "2026-10-14T17:45:00.000Z",
   "submitter": {
     "name": null,
@@ -136,5 +136,27 @@
       "ok": false,
       "reason": "duplicateReason: current value doesn't match expected (data changed since plan was created)"
     }
-  ]
+  ],
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "obsolete",
+    "counts": {
+      "obsolete": 2
+    },
+    "ops": [
+      {
+        "i": 6,
+        "verdict": "obsolete",
+        "reason": "the review write guard deliberately keeps duplicateReason url-collision-detected-at-write (BRO-7092 hand check)"
+      },
+      {
+        "i": 8,
+        "verdict": "obsolete",
+        "reason": "the-whos-tommy-2024/nysr--unknown.json duplicateReason changed since by a later write (now \"url-collision-detected-at-write\")"
+      }
+    ]
+  },
+  "supersededAt": "2026-11-07T20:58:07.982Z",
+  "supersededReason": "BRO-7092 triage against current data: every undone op is resolved or no longer applies (2 obsolete); per-op reasons in triage.ops"
 }

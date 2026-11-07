@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6254-b",
   "planId": "56da6123-03e0-4569-bce6-0777a9712223",
-  "status": "partial",
+  "status": "superseded",
   "createdAt": "2026-10-26T02:20:02.344Z",
   "submitter": {
     "name": null,
@@ -306,5 +306,47 @@
       "reason": "wrongProduction: current value doesn't match expected (data changed since plan was created)"
     }
   ],
-  "executedIn": "ci"
+  "executedIn": "ci",
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "resolved",
+    "counts": {
+      "resolved": 6
+    },
+    "ops": [
+      {
+        "i": 1,
+        "verdict": "resolved",
+        "reason": "prince-faggot-playwrights-horizons-off-broadway-2025/vulture--jackson-mchenry.json wrongProduction already false"
+      },
+      {
+        "i": 3,
+        "verdict": "resolved",
+        "reason": "prince-faggot-playwrights-horizons-off-broadway-2025/theatermania--zachary-stewart.json wrongProduction already false"
+      },
+      {
+        "i": 5,
+        "verdict": "resolved",
+        "reason": "prince-faggot-playwrights-horizons-off-broadway-2025/nytg--kyle-turner.json wrongProduction already false"
+      },
+      {
+        "i": 17,
+        "verdict": "resolved",
+        "reason": "prince-faggot-playwrights-horizons-off-broadway-2025/thewrap--robert-hofler.json wrongProduction already false"
+      },
+      {
+        "i": 19,
+        "verdict": "resolved",
+        "reason": "prince-faggot-playwrights-horizons-off-broadway-2025/this-week-in-new-york--unknown.json wrongProduction already false"
+      },
+      {
+        "i": 21,
+        "verdict": "resolved",
+        "reason": "prince-faggot-playwrights-horizons-off-broadway-2025/theater-scene--tony-marinelli.json wrongProduction already false"
+      }
+    ]
+  },
+  "supersededAt": "2026-11-07T20:58:07.982Z",
+  "supersededReason": "BRO-7092 triage against current data: every undone op is already in place (6 resolved); per-op reasons in triage.ops"
 }

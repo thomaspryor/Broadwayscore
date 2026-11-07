@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5582",
   "planId": "503f45e3-4e8c-4709-a5f8-9ff5c5cc2762",
-  "status": "partial",
+  "status": "superseded",
   "createdAt": "2026-10-29T09:50:00.000Z",
   "submitter": {
     "name": null,
@@ -30,5 +30,22 @@
       "reason": "Script backfill-wrongproduction-legacy-audit.js failed: Command failed: node scripts/backfill-wrongproduction-legacy-audit.js --apply --expect=1643"
     }
   ],
-  "executedIn": "ci"
+  "executedIn": "ci",
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "resolved",
+    "counts": {
+      "resolved": 1
+    },
+    "ops": [
+      {
+        "i": 0,
+        "verdict": "resolved",
+        "reason": "dry run in CI (run 42409636330): scanned 80775 review files, 0 still need the legacy-audit stamp (BRO-7092 hand check)"
+      }
+    ]
+  },
+  "supersededAt": "2026-11-07T20:58:07.982Z",
+  "supersededReason": "BRO-7092 triage against current data: every undone op is already in place (1 resolved); per-op reasons in triage.ops"
 }

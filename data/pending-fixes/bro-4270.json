@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-4270",
   "planId": "7f36b340-e452-4f82-a6ac-8bb9564f83ce",
-  "status": "partial",
+  "status": "superseded",
   "createdAt": "2026-10-14T01:34:46.631134Z",
   "submitter": {
     "name": null,
@@ -331,5 +331,38 @@
       "ok": true,
       "msg": "something-rotten-2015/broadwayworld--roy-berko.json wrongProductionReason: null -> \"Roy Berko's BroadwayWorld review covers the Beck Center for the Arts production (2022), not the 2015 Broadway production (BRO-4270)\""
     }
-  ]
+  ],
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "obsolete",
+    "counts": {
+      "resolved": 3,
+      "obsolete": 1
+    },
+    "ops": [
+      {
+        "i": 4,
+        "verdict": "resolved",
+        "reason": "death-of-a-salesman-2022/broadwayworld--team-bww.json isNonReview already true"
+      },
+      {
+        "i": 6,
+        "verdict": "resolved",
+        "reason": "glengarry-glen-ross-2005/broadwayworld--unknown.json isNonReview already true"
+      },
+      {
+        "i": 16,
+        "verdict": "resolved",
+        "reason": "othello-off-broadway-2026/broadwayworld--unknown.json isNonReview already true"
+      },
+      {
+        "i": 17,
+        "verdict": "obsolete",
+        "reason": "othello-off-broadway-2026/broadwayworld--unknown.json isNonReviewReason changed since by a later write (now (text))"
+      }
+    ]
+  },
+  "supersededAt": "2026-11-07T20:58:07.982Z",
+  "supersededReason": "BRO-7092 triage against current data: every undone op is resolved or no longer applies (3 resolved, 1 obsolete); per-op reasons in triage.ops"
 }

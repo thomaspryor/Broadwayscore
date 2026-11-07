@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5420-g5",
   "planId": "76a656a8-f62e-47a2-9da4-1c55a389c8c4",
-  "status": "partial",
+  "status": "superseded",
   "createdAt": "2026-10-16T04:45:00.000Z",
   "submitter": {
     "name": null,
@@ -330,5 +330,103 @@
       "ok": false,
       "reason": "wrongProduction: current value doesn't match expected (data changed since plan was created)"
     }
-  ]
+  ],
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "obsolete",
+    "counts": {
+      "resolved": 12,
+      "obsolete": 5
+    },
+    "ops": [
+      {
+        "i": 1,
+        "verdict": "resolved",
+        "reason": "passing-strange-2008/standard--nick-curtis.json wrongProduction already true"
+      },
+      {
+        "i": 3,
+        "verdict": "resolved",
+        "reason": "rock-n-roll-2007/all-that-dazzles-uk--sam-waite.json wrongProduction already true"
+      },
+      {
+        "i": 5,
+        "verdict": "resolved",
+        "reason": "rock-n-roll-2007/artsdesk--aleks-sierz.json wrongProduction already true"
+      },
+      {
+        "i": 7,
+        "verdict": "resolved",
+        "reason": "rock-n-roll-2007/london-theatre--matt-wolf.json wrongProduction already true"
+      },
+      {
+        "i": 9,
+        "verdict": "resolved",
+        "reason": "rock-n-roll-2007/standard--tim-bano.json wrongProduction already true"
+      },
+      {
+        "i": 11,
+        "verdict": "resolved",
+        "reason": "rock-n-roll-2007/west-end-best-friend--erifyli-gigante.json wrongProduction already true"
+      },
+      {
+        "i": 12,
+        "verdict": "obsolete",
+        "reason": "romeo-juliet-2024/london-theatre--unknown.json wrongProductionReason changed since by a later write (now \"audit-2026-06-21-prior-production-contamination\")"
+      },
+      {
+        "i": 13,
+        "verdict": "resolved",
+        "reason": "romeo-juliet-2024/london-theatre--unknown.json wrongProduction already true"
+      },
+      {
+        "i": 14,
+        "verdict": "obsolete",
+        "reason": "romeo-juliet-2024/whatsonstage--unknown.json wrongProductionReason changed since by a later write (now \"audit-2026-06-21-prior-production-contamination\")"
+      },
+      {
+        "i": 15,
+        "verdict": "resolved",
+        "reason": "romeo-juliet-2024/whatsonstage--unknown.json wrongProduction already true"
+      },
+      {
+        "i": 16,
+        "verdict": "obsolete",
+        "reason": "stephen-sondheims-old-friends-2025/london-theatre--unknown.json wrongProductionReason changed since by a later write (now \"audit-2026-06-21-prior-production-contamination\")"
+      },
+      {
+        "i": 17,
+        "verdict": "resolved",
+        "reason": "stephen-sondheims-old-friends-2025/london-theatre--unknown.json wrongProduction already true"
+      },
+      {
+        "i": 18,
+        "verdict": "obsolete",
+        "reason": "stephen-sondheims-old-friends-2025/west-end-best-friend--unknown.json wrongProductionReason changed since by a later write (now \"audit-2026-06-21-prior-production-contamination\")"
+      },
+      {
+        "i": 19,
+        "verdict": "resolved",
+        "reason": "stephen-sondheims-old-friends-2025/west-end-best-friend--unknown.json wrongProduction already true"
+      },
+      {
+        "i": 20,
+        "verdict": "obsolete",
+        "reason": "tammy-faye-2024/i-paper--fiona-mountford.json wrongProductionReason changed since by a later write (now \"audit-2026-06-21-prior-production-contamination\")"
+      },
+      {
+        "i": 21,
+        "verdict": "resolved",
+        "reason": "tammy-faye-2024/i-paper--fiona-mountford.json wrongProduction already true"
+      },
+      {
+        "i": 23,
+        "verdict": "resolved",
+        "reason": "the-assembled-parties-2013/all-that-dazzles-uk--daz-gale.json wrongProduction already true"
+      }
+    ]
+  },
+  "supersededAt": "2026-11-07T20:58:07.982Z",
+  "supersededReason": "BRO-7092 triage against current data: every undone op is resolved or no longer applies (12 resolved, 5 obsolete); per-op reasons in triage.ops"
 }

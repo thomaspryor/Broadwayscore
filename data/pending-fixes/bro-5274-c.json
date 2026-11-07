@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5274-c",
   "planId": "2906373b-8945-4582-abf1-8cda52178292",
-  "status": "partial",
+  "status": "superseded",
   "createdAt": "2026-10-14T01:33:02.756747Z",
   "submitter": {
     "name": null,
@@ -305,5 +305,22 @@
       "ok": true,
       "msg": "Deleted the-anarchist-2012/vulture--jesse-green.json"
     }
-  ]
+  ],
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "obsolete",
+    "counts": {
+      "obsolete": 1
+    },
+    "ops": [
+      {
+        "i": 2,
+        "verdict": "obsolete",
+        "reason": "review file the-shark-is-broken-2023/nyt-theater--david-nounou.json no longer exists and nothing in the-shark-is-broken-2023 looks like a rename"
+      }
+    ]
+  },
+  "supersededAt": "2026-11-07T20:58:07.982Z",
+  "supersededReason": "BRO-7092 triage against current data: every undone op is resolved or no longer applies (1 obsolete); per-op reasons in triage.ops"
 }

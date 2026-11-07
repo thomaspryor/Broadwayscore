@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5183-06",
   "planId": "11ed0cec-700f-46ab-a285-751d245994b6",
-  "status": "partial",
+  "status": "superseded",
   "createdAt": "2026-10-12T22:52:13.944Z",
   "submitter": {
     "name": null,
@@ -353,5 +353,77 @@
       "ok": false,
       "reason": "once-on-this-island-2017/vulture--jesse-green.json duplicateOf applied, but the write guard also changed _duplicateOfCleared; check the record before trusting it"
     }
-  ]
+  ],
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "resolved",
+    "counts": {
+      "resolved": 12
+    },
+    "ops": [
+      {
+        "i": 1,
+        "verdict": "resolved",
+        "reason": "mj-2022/variety--charles-isherwood.json duplicateOf already \"variety--naveen-kumar.json\""
+      },
+      {
+        "i": 3,
+        "verdict": "resolved",
+        "reason": "mrs-warrens-profession-2010/nytimes--ben-brantley.json and mrs-warrens-profession-2010/about-entertainment--ben-brantley.json share one counted row, so nothing is double-counted"
+      },
+      {
+        "i": 5,
+        "verdict": "resolved",
+        "reason": "relatively-speaking-2011/variety--charles-isherwood.json duplicateOf already \"variety--marilyn-stasio.json\""
+      },
+      {
+        "i": 7,
+        "verdict": "resolved",
+        "reason": "sister-act-2011/timeout--david-cote.json duplicateOf already \"timeout--adam-feldman.json\""
+      },
+      {
+        "i": 9,
+        "verdict": "resolved",
+        "reason": "spongebob-squarepants-2017/vulture--jesse-green.json duplicateOf already \"vulture--sara-holdren.json\""
+      },
+      {
+        "i": 11,
+        "verdict": "resolved",
+        "reason": "that-championship-season-2011/vulture--jesse-green.json duplicateOf already \"vulture--scott-brown.json\""
+      },
+      {
+        "i": 13,
+        "verdict": "resolved",
+        "reason": "the-mystery-of-edwin-drood-2012/variety--marilyn-stasio.json duplicateOf already \"variety--steven-suskin.json\""
+      },
+      {
+        "i": 15,
+        "verdict": "resolved",
+        "reason": "the-peewee-herman-show-2010/variety--david-rooney.json duplicateOf already \"variety--steven-suskin.json\""
+      },
+      {
+        "i": 17,
+        "verdict": "resolved",
+        "reason": "what-the-constitution-means-to-me-2019/observer--rex-reed.json duplicateOf already \"observer--david-cote.json\""
+      },
+      {
+        "i": 19,
+        "verdict": "resolved",
+        "reason": "in-the-next-room-2009/nytimes--ben-brantley.json duplicateOf already \"nytimes--charles-isherwood.json\""
+      },
+      {
+        "i": 21,
+        "verdict": "resolved",
+        "reason": "king-kong-2018/talkinbroadway--matthew-murray.json duplicateOf already \"talkinbroadway--howard-miller.json\""
+      },
+      {
+        "i": 23,
+        "verdict": "resolved",
+        "reason": "once-on-this-island-2017/vulture--jesse-green.json duplicateOf already \"vulture--sara-holdren.json\""
+      }
+    ]
+  },
+  "supersededAt": "2026-11-07T20:58:07.982Z",
+  "supersededReason": "BRO-7092 triage against current data: every undone op is already in place (12 resolved); per-op reasons in triage.ops"
 }

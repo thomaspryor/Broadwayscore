@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5647-g",
   "planId": "271759ab-5415-4f4f-aa1b-0d0e4137e3fe",
-  "status": "partial",
+  "status": "superseded",
   "createdAt": "2026-10-19T02:53:58.754140Z",
   "submitter": {
     "name": null,
@@ -171,5 +171,27 @@
       "ok": true,
       "msg": "commercial.json: notes updated for proof"
     }
-  ]
+  ],
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "resolved",
+    "counts": {
+      "resolved": 2
+    },
+    "ops": [
+      {
+        "i": 4,
+        "verdict": "resolved",
+        "reason": "john-proctor-is-the-villain-2025.recoupedSource already \"BroadwayWorld (Ben Waterhouse, Jul 17, 2026): \\\"John Pro..."
+      },
+      {
+        "i": 6,
+        "verdict": "resolved",
+        "reason": "john-proctor-is-the-villain-2025.designationBasis already \"reported-loss\""
+      }
+    ]
+  },
+  "supersededAt": "2026-11-07T20:58:07.982Z",
+  "supersededReason": "BRO-7092 triage against current data: every undone op is already in place (2 resolved); per-op reasons in triage.ops"
 }

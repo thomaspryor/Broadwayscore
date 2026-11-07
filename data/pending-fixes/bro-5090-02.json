@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5090-02",
   "planId": "eabae2ec-5f73-4390-830a-3608f5e2d649",
-  "status": "partial",
+  "status": "superseded",
   "createdAt": "2026-10-12T11:57:00.096Z",
   "submitter": {
     "name": null,
@@ -367,5 +367,38 @@
       "ok": true,
       "msg": "meteor-shower-2017/nytimes--ben-brantley.json duplicateOf: null -> \"nytimes--jesse-green.json\""
     }
-  ]
+  ],
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "obsolete",
+    "counts": {
+      "resolved": 3,
+      "obsolete": 1
+    },
+    "ops": [
+      {
+        "i": 2,
+        "verdict": "resolved",
+        "reason": "frankie-and-johnny-in-the-clair-de-lune-2019/nytimes--ben-brantley.json and frankie-and-johnny-in-the-clair-de-lune-2019/nytimes--jesse-green.json share one counted row, so nothing is double-counted"
+      },
+      {
+        "i": 12,
+        "verdict": "resolved",
+        "reason": "holiday-inn-the-new-irving-berlin-musical-2016/nytimes--ben-brantley.json and holiday-inn-the-new-irving-berlin-musical-2016/nytimes--charles-isherwood.json share one counted row, so nothing is double-counted"
+      },
+      {
+        "i": 16,
+        "verdict": "resolved",
+        "reason": "king-kong-2018/nytimes--ben-brantley.json and king-kong-2018/nytimes--ben-brantleyjesse-green.json share one counted row, so nothing is double-counted"
+      },
+      {
+        "i": 19,
+        "verdict": "obsolete",
+        "reason": "review file linda-vista-2019/wsj--charles-isherwood.json no longer exists and nothing in linda-vista-2019 looks like a rename"
+      }
+    ]
+  },
+  "supersededAt": "2026-11-07T20:58:07.982Z",
+  "supersededReason": "BRO-7092 triage against current data: every undone op is resolved or no longer applies (3 resolved, 1 obsolete); per-op reasons in triage.ops"
 }

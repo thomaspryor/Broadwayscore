@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5289-b",
   "planId": "3bc8fed7-77e1-45b2-a985-7c8c6834ed08",
-  "status": "partial",
+  "status": "superseded",
   "createdAt": "2026-10-26T00:55:20.821Z",
   "submitter": {
     "name": null,
@@ -102,5 +102,27 @@
       "msg": "the-glass-menagerie-2013/ap--mark-kennedy.json syndicatedPrimaryFile: \"the-glass-menagerie-2013/ap--mark-kennedy.json\" -> null"
     }
   ],
-  "executedIn": "ci"
+  "executedIn": "ci",
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "resolved",
+    "counts": {
+      "resolved": 2
+    },
+    "ops": [
+      {
+        "i": 2,
+        "verdict": "resolved",
+        "reason": "pippin-2013/ap--mark-kennedy.json isSyndicatedDuplicate already false"
+      },
+      {
+        "i": 3,
+        "verdict": "resolved",
+        "reason": "pippin-2013/ap--mark-kennedy.json syndicatedPrimaryFile already null"
+      }
+    ]
+  },
+  "supersededAt": "2026-11-07T20:58:07.982Z",
+  "supersededReason": "BRO-7092 triage against current data: every undone op is already in place (2 resolved); per-op reasons in triage.ops"
 }

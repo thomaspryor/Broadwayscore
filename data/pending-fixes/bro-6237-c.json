@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6237-c",
   "planId": "27c44e7e-3f54-472b-8e38-f6339b292f6e",
-  "status": "partial",
+  "status": "superseded",
   "createdAt": "2026-10-26T11:33:49.849Z",
   "submitter": {
     "name": null,
@@ -368,5 +368,22 @@
       "msg": "the-phantom-of-the-opera-west-end-1986/telegraph--unknown.json nonReviewManualClear: null -> true"
     }
   ],
-  "executedIn": "ci"
+  "executedIn": "ci",
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "obsolete",
+    "counts": {
+      "obsolete": 1
+    },
+    "ops": [
+      {
+        "i": 14,
+        "verdict": "obsolete",
+        "reason": "review file springwood-west-end-2026/london-box-office--stuart-king.json no longer exists and nothing in springwood-west-end-2026 looks like a rename"
+      }
+    ]
+  },
+  "supersededAt": "2026-11-07T20:58:07.982Z",
+  "supersededReason": "BRO-7092 triage against current data: every undone op is resolved or no longer applies (1 obsolete); per-op reasons in triage.ops"
 }

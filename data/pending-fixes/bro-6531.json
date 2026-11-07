@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6531",
   "planId": "d840f853-4e54-4ced-85eb-3bc05ba331b5",
-  "status": "partial",
+  "status": "superseded",
   "createdAt": "2026-10-31T03:06:41.703Z",
   "submitter": {
     "name": null,
@@ -33,5 +33,22 @@
       "reason": "retire-show peter-panto-off-broadway-2026: openingDate 2026-11-21 is set: a row dated as opened is a real run"
     }
   ],
-  "executedIn": "ci"
+  "executedIn": "ci",
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "resolved",
+    "counts": {
+      "resolved": 1
+    },
+    "ops": [
+      {
+        "i": 0,
+        "verdict": "resolved",
+        "reason": "show peter-panto-off-broadway-2026 is retired or gone"
+      }
+    ]
+  },
+  "supersededAt": "2026-11-07T20:58:07.982Z",
+  "supersededReason": "BRO-7092 triage against current data: every undone op is already in place (1 resolved); per-op reasons in triage.ops"
 }

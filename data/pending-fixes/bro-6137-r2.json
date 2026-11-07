@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6137-r2",
   "planId": "3f8d2cfb-a177-42a4-8bfd-bf0913bec5b0",
-  "status": "partial",
+  "status": "superseded",
   "createdAt": "2026-10-24T16:25:24.823Z",
   "submitter": {
     "name": null,
@@ -408,5 +408,42 @@
       "msg": "commercial.json: sources updated for long-days-journey-into-night-2016"
     }
   ],
-  "executedIn": "ci"
+  "executedIn": "ci",
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "obsolete",
+    "counts": {
+      "obsolete": 5
+    },
+    "ops": [
+      {
+        "i": 2,
+        "verdict": "obsolete",
+        "reason": "kiss-me-kate-2019.needsLossEvidence changed since by a later write (now unset)"
+      },
+      {
+        "i": 6,
+        "verdict": "obsolete",
+        "reason": "falsettos-2016.needsLossEvidence changed since by a later write (now unset)"
+      },
+      {
+        "i": 11,
+        "verdict": "obsolete",
+        "reason": "the-cherry-orchard-2016.needsLossEvidence changed since by a later write (now unset)"
+      },
+      {
+        "i": 16,
+        "verdict": "obsolete",
+        "reason": "heisenberg-2016.needsLossEvidence changed since by a later write (now unset)"
+      },
+      {
+        "i": 21,
+        "verdict": "obsolete",
+        "reason": "long-days-journey-into-night-2016.needsLossEvidence changed since by a later write (now unset)"
+      }
+    ]
+  },
+  "supersededAt": "2026-11-07T20:58:07.982Z",
+  "supersededReason": "BRO-7092 triage against current data: every undone op is resolved or no longer applies (5 obsolete); per-op reasons in triage.ops"
 }

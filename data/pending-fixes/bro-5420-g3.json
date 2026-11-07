@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5420-g3",
   "planId": "17861cc0-f615-4c32-bb20-40693f0677bf",
-  "status": "partial",
+  "status": "superseded",
   "createdAt": "2026-10-16T04:45:00.000Z",
   "submitter": {
     "name": null,
@@ -343,5 +343,78 @@
       "ok": true,
       "msg": "fosse-1999/daily-mail--michael-coveney.json wrongProduction: null -> true"
     }
-  ]
+  ],
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "obsolete",
+    "counts": {
+      "resolved": 11,
+      "obsolete": 1
+    },
+    "ops": [
+      {
+        "i": 1,
+        "verdict": "resolved",
+        "reason": "a-night-with-janis-joplin-2013/artsdesk--helen-hawkins.json wrongProduction already true"
+      },
+      {
+        "i": 3,
+        "verdict": "resolved",
+        "reason": "a-night-with-janis-joplin-2013/london-theatre--matt-wolf.json wrongProduction already true"
+      },
+      {
+        "i": 5,
+        "verdict": "resolved",
+        "reason": "a-night-with-janis-joplin-2013/standard--nick-curtis.json wrongProduction already true"
+      },
+      {
+        "i": 7,
+        "verdict": "resolved",
+        "reason": "a-night-with-janis-joplin-2013/theatre-weekly--magdalena-pulit.json wrongProduction already true"
+      },
+      {
+        "i": 9,
+        "verdict": "resolved",
+        "reason": "bengal-tiger-at-the-baghdad-zoo-2011/london-theatre--matt-wolf.json wrongProduction already true"
+      },
+      {
+        "i": 11,
+        "verdict": "resolved",
+        "reason": "bengal-tiger-at-the-baghdad-zoo-2011/standard--nick-curtis.json wrongProduction already true"
+      },
+      {
+        "i": 12,
+        "verdict": "obsolete",
+        "reason": "chess-2025/artsdesk--unknown.json wrongProductionReason changed since by a later write (now \"audit-2026-06-21-prior-production-contamination\")"
+      },
+      {
+        "i": 13,
+        "verdict": "resolved",
+        "reason": "chess-2025/artsdesk--unknown.json wrongProduction already true"
+      },
+      {
+        "i": 15,
+        "verdict": "resolved",
+        "reason": "clybourne-park-2012/artsdesk--helen-hawkins.json wrongProduction already true"
+      },
+      {
+        "i": 17,
+        "verdict": "resolved",
+        "reason": "clybourne-park-2012/london-theatre--matt-wolf.json wrongProduction already true"
+      },
+      {
+        "i": 19,
+        "verdict": "resolved",
+        "reason": "clybourne-park-2012/standard--nick-curtis.json wrongProduction already true"
+      },
+      {
+        "i": 20,
+        "verdict": "resolved",
+        "reason": "english-2025/independent--unknown.json is already out of the score (not in reviews.json)"
+      }
+    ]
+  },
+  "supersededAt": "2026-11-07T20:58:07.982Z",
+  "supersededReason": "BRO-7092 triage against current data: every undone op is resolved or no longer applies (11 resolved, 1 obsolete); per-op reasons in triage.ops"
 }

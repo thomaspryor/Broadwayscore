@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6237-d",
   "planId": "a5974801-ba84-453c-9441-8a5f54a57bd1",
-  "status": "partial",
+  "status": "superseded",
   "createdAt": "2026-10-26T11:33:49.849Z",
   "submitter": {
     "name": null,
@@ -186,5 +186,22 @@
       "msg": "water-for-elephants-2024/broadway-and-me--janice-c-simpson.json nonReviewManualClear: null -> true"
     }
   ],
-  "executedIn": "ci"
+  "executedIn": "ci",
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "obsolete",
+    "counts": {
+      "obsolete": 1
+    },
+    "ops": [
+      {
+        "i": 5,
+        "verdict": "obsolete",
+        "reason": "review file this-is-rambert-west-end-2026/voice-magazine--moni-fernandez.json no longer exists and nothing in this-is-rambert-west-end-2026 looks like a rename"
+      }
+    ]
+  },
+  "supersededAt": "2026-11-07T20:58:07.982Z",
+  "supersededReason": "BRO-7092 triage against current data: every undone op is resolved or no longer applies (1 obsolete); per-op reasons in triage.ops"
 }

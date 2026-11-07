@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-4490-2",
   "planId": "88b4d679-c4bc-451f-8ee7-989235284df8",
-  "status": "partial",
+  "status": "superseded",
   "createdAt": "2026-10-22T15:26:53.100Z",
   "submitter": {
     "name": null,
@@ -58,5 +58,22 @@
       "msg": "Ran backfill-text-fetched-at.js successfully"
     }
   ],
-  "executedIn": "ci"
+  "executedIn": "ci",
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "resolved",
+    "counts": {
+      "resolved": 1
+    },
+    "ops": [
+      {
+        "i": 0,
+        "verdict": "resolved",
+        "reason": "long-days-journey-into-night-2016/timeout--adam-feldman.json originalScore already \"5/5\""
+      }
+    ]
+  },
+  "supersededAt": "2026-11-07T20:58:07.982Z",
+  "supersededReason": "BRO-7092 triage against current data: every undone op is already in place (1 resolved); per-op reasons in triage.ops"
 }
