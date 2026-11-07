@@ -212,3 +212,21 @@ test('Needs your attention shows each item once: the question, not the question 
   assert.match(out, />Open</);
   assert.match(out, /Dispatch a fix/);
 });
+
+test('Resend payload: the report is a base64 text/html attachment named for the day; no report means no attachments key', () => {
+  const { buildResendPayload } = require('../../scripts/send-morning-digest.js');
+  const withReport = buildResendPayload({ to: 'o@example.com', subject: 'S', bodyHtml: '<p>b</p>', reportHtml: '<!doctype html><p>r</p>', dayKey: '2026-11-07' });
+  assert.deepEqual(withReport.to, ['o@example.com']);
+  assert.equal(withReport.html, '<p>b</p>');
+  assert.equal(withReport.attachments.length, 1);
+  assert.equal(withReport.attachments[0].filename, 'morning-digest-report-2026-11-07.html');
+  assert.equal(withReport.attachments[0].content_type, 'text/html');
+  assert.equal(Buffer.from(withReport.attachments[0].content, 'base64').toString('utf8'), '<!doctype html><p>r</p>');
+  assert.ok(!('attachments' in buildResendPayload({ to: 'o@example.com', subject: 'S', bodyHtml: 'b', reportHtml: null, dayKey: 'd' })));
+});
+
+test('the send site builds its payload with buildResendPayload and retries a 4xx without the attachment', () => {
+  const src = require('node:fs').readFileSync(new URL('../../scripts/send-morning-digest.js', import.meta.url), 'utf8');
+  assert.match(src, /buildResendPayload\(\{ to: sendTo,/);
+  assert.match(src, /retrying without the attachment/);
+});
