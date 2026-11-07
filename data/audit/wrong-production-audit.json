@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-07T22:59:57.012Z",
+  "timestamp": "2026-11-07T23:40:17.945Z",
   "stats": {
-    "totalReviews": 80511,
-    "alreadyFlagged": 22029,
+    "totalReviews": 80515,
+    "alreadyFlagged": 22030,
     "dateGuardCatches": 216,
-    "directorMismatch": 3524,
-    "tvFilmSignals": 2291,
-    "londonSignals": 3625,
-    "offBroadwaySignals": 747,
+    "directorMismatch": 3537,
+    "tvFilmSignals": 2292,
+    "londonSignals": 3627,
+    "offBroadwaySignals": 748,
     "yearMismatch": 364,
-    "noPublishDate": 8453
+    "noPublishDate": 8454
   },
   "findings": [
     {
@@ -131,6 +131,19 @@
       "score": 65,
       "publishDate": "2025-05-14",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/1536-almeida-review/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"lyndsey turner\" from 1536-west-end-2026"
+        }
+      ]
+    },
+    {
+      "showId": "1536-off-west-end-2026",
+      "file": "telegraph--dominic-cavendish.json",
+      "publishDate": null,
+      "url": null,
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -4737,6 +4750,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "american-psycho-off-west-end-2026",
+      "file": "standard--nick-curtis.json",
+      "score": 71,
+      "publishDate": null,
+      "url": "https://www.standard.co.uk/culture/theatre/american-psycho-review-musical-almeida-b1269227.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"rupert goold\" from american-psycho-2016"
         }
       ]
     },
@@ -19961,6 +19988,20 @@
     },
     {
       "showId": "english-off-broadway-2022",
+      "file": "observer--unknown.json",
+      "score": 87,
+      "publishDate": null,
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"knud adams\" from english-2025"
+        }
+      ]
+    },
+    {
+      "showId": "english-off-broadway-2022",
       "file": "theater-life--david-sheward.json",
       "score": 87,
       "publishDate": "2022-02-27",
@@ -20073,6 +20114,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"season 6\""
+        }
+      ]
+    },
+    {
+      "showId": "english-off-broadway-2022",
+      "file": "wsj--unknown.json",
+      "score": 81,
+      "publishDate": null,
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"knud adams\" from english-2025"
         }
       ]
     },
@@ -42492,6 +42547,20 @@
       ]
     },
     {
+      "showId": "million-dollar-quartet-off-west-end-2026",
+      "file": "standard--henry-hitchings.json",
+      "score": 70,
+      "publishDate": null,
+      "url": "https://www.thisislondon.co.uk/theatre/review-23927559-million-dollar-quartet-doesnt-throb-with-heart-and-soul.do",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"eric schaeffer\" from million-dollar-quartet-2010"
+        }
+      ]
+    },
+    {
       "showId": "million-dollar-quartet-west-end-2011",
       "file": "whatsonstage--michael-coveney.json",
       "score": 17,
@@ -42809,6 +42878,19 @@
       "score": 60,
       "publishDate": "2024-04-23",
       "url": "https://www.nysun.com/article/a-jukebox-musical-the-heart-of-rock-and-roll-wins-by-not-trying-too-hard",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"christopher wheeldon\" from mj-2022"
+        }
+      ]
+    },
+    {
+      "showId": "mj-the-musical-west-end-2024",
+      "file": "standard--unknown.json",
+      "publishDate": null,
+      "url": "https://www.standard.co.uk/culture/theatre/mj-the-musical-prince-edward-theatre-review-michael-jackson-b1148104.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -47891,6 +47973,62 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"bartlett sher\" from oslo-2017"
+        }
+      ]
+    },
+    {
+      "showId": "othello-1982",
+      "file": "ew--unknown.json",
+      "score": 61,
+      "publishDate": null,
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"kenny leon\" from othello-2025"
+        }
+      ]
+    },
+    {
+      "showId": "othello-1982",
+      "file": "guardian--unknown.json",
+      "score": 49,
+      "publishDate": null,
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"kenny leon\" from othello-2025"
+        }
+      ]
+    },
+    {
+      "showId": "othello-1982",
+      "file": "variety--unknown.json",
+      "score": 40,
+      "publishDate": null,
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"kenny leon\" from othello-2025"
+        }
+      ]
+    },
+    {
+      "showId": "othello-1982",
+      "file": "vulture--unknown.json",
+      "score": 36,
+      "publishDate": null,
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"kenny leon\" from othello-2025"
         }
       ]
     },
@@ -53399,6 +53537,25 @@
     },
     {
       "showId": "punch-west-end-2025",
+      "file": "thestage--sam-marlowe.json",
+      "score": 58,
+      "publishDate": "2025-03-07",
+      "url": "https://www.thestage.co.uk/reviews/punch-review-young-vic-london-james-graham-david-shields-julie-hesmondhalgh-tony-hirst-right-from-wrong-jacob-dunne",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 199d before show (2025-03-07 vs 2025-09-22)"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"adam penford\" from punch-2025"
+        }
+      ]
+    },
+    {
+      "showId": "punch-west-end-2025",
       "file": "timeout-london--unknown.json",
       "score": 82,
       "publishDate": null,
@@ -55368,6 +55525,19 @@
     },
     {
       "showId": "shifters-west-end-2024",
+      "file": "financialtimes--sarah-hemming.json",
+      "publishDate": "2024-08-22",
+      "url": "https://www.ft.com/content/11ba7f78-9713-4086-ba64-c800e6d9f688",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"lynette linton\" from shifters-off-broadway-2026"
+        }
+      ]
+    },
+    {
+      "showId": "shifters-west-end-2024",
       "file": "i-paper--fiona-mountford.json",
       "score": 84,
       "publishDate": "2024-08-22",
@@ -55396,10 +55566,38 @@
     },
     {
       "showId": "shifters-west-end-2024",
+      "file": "telegraph--dzifa-benson.json",
+      "score": 83,
+      "publishDate": "2024-08-22",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/shifters-duke-of-yorks-theatre-review/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "shifters-west-end-2024",
       "file": "telegraph--kirsten-grant.json",
       "score": 82,
       "publishDate": "2024-08-22",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/shifters-bush-theatre-review-genuinely-funny/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"lynette linton\" from shifters-off-broadway-2026"
+        }
+      ]
+    },
+    {
+      "showId": "shifters-west-end-2024",
+      "file": "thestage--tom-wicker.json",
+      "score": 82,
+      "publishDate": "2024-08-22",
+      "url": "https://www.thestage.co.uk/reviews/shifters-review-duke-of-yorks-theatre-london-benedict-lombe-lynette-linton#:~:text=Benedict%20Lombe's%20gorgeous%20piece,effortlessly%20into%20its%20bittersweet%20tenderness.",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -94770,6 +94968,8 @@
     {
       "showId": "cyrano-de-bergerac-west-end-2026",
       "file": "thestage--dave-fargnoli.json",
+      "publishDate": "2025-10-08",
+      "url": "https://www.thestage.co.uk/reviews/cyrano-de-bergerac-review-noel-coward-theatre-london-adrian-lester",
       "findings": [
         {
           "type": "DATE_GUARD",
@@ -105255,6 +105455,19 @@
     },
     {
       "showId": "im-almost-there-off-broadway-2026",
+      "file": "ctvoice--unknown.json",
+      "publishDate": null,
+      "url": "https://ctvoice.com/2026/06/11/off-broadway-preview-im-almost-there/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
+      "showId": "im-almost-there-off-broadway-2026",
       "file": "theatermania--kenji-fujishima.json",
       "score": 78,
       "publishDate": "2026-06-17",
@@ -113796,6 +114009,20 @@
       ]
     },
     {
+      "showId": "nero-off-west-end-2026",
+      "file": "theatreandtonic--emmie-newitt.json",
+      "score": 79,
+      "publishDate": "2026-11-07",
+      "url": "https://theatreandtonic.co.uk/blog/nero-at-southwark-playhouse-elephant-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"adelphi theatre\""
+        }
+      ]
+    },
+    {
       "showId": "network-2018",
       "file": "amny--matt-windman.json",
       "score": 90,
@@ -118716,18 +118943,8 @@
     {
       "showId": "punch-west-end-2025",
       "file": "telegraph--lindsay-johns.json",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 199d before show (2025-03-07 vs 2025-09-22)"
-        }
-      ]
-    },
-    {
-      "showId": "punch-west-end-2025",
-      "file": "thestage--sam-marlowe.json",
-      "score": 58,
+      "publishDate": "2025-03-07",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/punch-young-vic-review/",
       "findings": [
         {
           "type": "DATE_GUARD",
@@ -120874,6 +121091,8 @@
       "showId": "shifters-west-end-2024",
       "file": "thestage--holly-omahony.json",
       "score": 87,
+      "publishDate": "2024-02-27",
+      "url": "https://www.thestage.co.uk/reviews/shifters-review-at-bush-theatre-london-by-benedict-lombe-similar-to-david-nicholls-one-day",
       "findings": [
         {
           "type": "DATE_GUARD",
@@ -124072,6 +124291,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "tango-after-dark-off-west-end-2026",
+      "file": "theatreandtonic--emmie-newitt.json",
+      "score": 93,
+      "publishDate": "2026-11-07",
+      "url": "https://theatreandtonic.co.uk/blog/german-cornejos-tango-after-dark-sadlers-wells-theatre-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"adelphi theatre\""
         }
       ]
     },
@@ -133283,6 +133516,8 @@
     {
       "showId": "the-producers-west-end-2025",
       "file": "financialtimes--unknown.json",
+      "publishDate": "2024-12-11",
+      "url": "https://www.ft.com/content/c800b4fb-d3c2-4725-8401-a6489048ab96",
       "findings": [
         {
           "type": "DATE_GUARD",
@@ -135641,6 +135876,8 @@
       "showId": "the-years-west-end-2025",
       "file": "thestage--holly-omahony.json",
       "score": 87,
+      "publishDate": "2024-08-02",
+      "url": "https://www.thestage.co.uk/reviews/the-years-review-at-the-almeida-theatre-london-by-annie-ernaux-and-eline-arbo",
       "findings": [
         {
           "type": "DATE_GUARD",
@@ -135653,6 +135890,8 @@
       "showId": "the-years-west-end-2025",
       "file": "thestage--unknown.json",
       "score": 87,
+      "publishDate": "2024-08-02",
+      "url": "https://www.thestage.co.uk/reviews/the-years-review-at-the-almeida-theatre-london-by-annie-ernaux-and-eline-arbo",
       "findings": [
         {
           "type": "DATE_GUARD",
