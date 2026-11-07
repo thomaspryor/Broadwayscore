@@ -108,7 +108,8 @@
     "tru-off-west-end-2026/west-end-best-friend--unknown.json",
     "mystic-pizza-tour-2026/broadwayworld--jared-fessler.json",
     "the-wiz-tour-2026/channel3000--samantha-calderon.json",
-    "la-boheme-off-broadway-2026/operawire--david-salazar.json"
+    "la-boheme-off-broadway-2026/operawire--david-salazar.json",
+    "speculations-off-west-end-2026/jonathan-baz--unknown.json"
   ],
   "failed": [
     "in-transit-2016/nydailynews--joe-dziemianowicz.json",
@@ -143,7 +144,6 @@
     "reasons-to-be-pretty-2009/hollywood-reporter--unknown.json",
     "msblackforpresident-off-broadway-2026/theatermania--zachary-stewart.json",
     "222-a-ghost-story-off-broadway-2026/theatrely--kobi-kassal.json",
-    "speculations-off-west-end-2026/jonathan-baz--unknown.json",
     "speculations-off-west-end-2026/londonlivinglarge--london-living-large.json",
     "pulman-and-stilgoe-hooray-for-hollywood-off-west-end-2026/the-list--unknown.json",
     "the-bridge-off-west-end-2026/cherylmarkosky--cherylmarkosky.json",
@@ -181,7 +181,17 @@
     "jena-friedman-motherfucker-off-broadway-2026/oklahomatickets--unknown.json",
     "jena-friedman-motherfucker-off-broadway-2026/viptickets--unknown.json",
     "topdog-underdog-old-regional-2026/dc-theater-arts--unknown.json",
-    "mystic-pizza-tour-2026/talkinbroadway--arthur-dorman.json"
+    "mystic-pizza-tour-2026/talkinbroadway--arthur-dorman.json",
+    "speculations-off-west-end-2026/guardian--arifa-akbar.json",
+    "speculations-off-west-end-2026/guardian--unknown.json",
+    "tango-after-dark-off-west-end-2026/theatreandtonic--emmie-newitt.json",
+    "the-bridge-off-west-end-2026/sunday-times--unknown.json",
+    "the-bridge-off-west-end-2026/theatreandtonic--emmie-newitt.json",
+    "tosca-english-national-opera-west-end-2026/bachtrack--anna-bogdanova.json",
+    "tosca-english-national-opera-west-end-2026/bachtrack--clare-varney.json",
+    "tosca-english-national-opera-west-end-2026/bachtrack--mark-pullinger.json",
+    "tosca-english-national-opera-west-end-2026/bachtrack--peter-quantrill.json",
+    "tosca-english-national-opera-west-end-2026/cherylmarkosky--cherylmarkosky.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -239,7 +249,8 @@
       "school-girls-or-the-african-mean-girls-play-2026/the-recs--unknown.json",
       "tru-off-west-end-2026/west-end-best-friend--unknown.json",
       "the-wiz-tour-2026/channel3000--samantha-calderon.json",
-      "la-boheme-off-broadway-2026/operawire--david-salazar.json"
+      "la-boheme-off-broadway-2026/operawire--david-salazar.json",
+      "speculations-off-west-end-2026/jonathan-baz--unknown.json"
     ],
     "amp": [
       "data/review-texts/reasons-to-be-pretty-2009/variety--unknown.json"
@@ -304,7 +315,7 @@
     ]
   },
   "startTime": "2026-11-07T20:22:16.048Z",
-  "lastProcessed": "la-boheme-off-broadway-2026/operawire--david-salazar.json",
+  "lastProcessed": "tosca-english-national-opera-west-end-2026/cherylmarkosky--cherylmarkosky.json",
   "log": [
     {
       "t": "2026-11-07T20:32:46.887Z",
@@ -327,6 +338,33 @@
       "t": "2026-11-07T20:33:28.758Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-07T21:49:44.251Z",
+      "event": "bb-session",
+      "session": "e9abf76e",
+      "url": "https://bachtrack.com/review-lorfeo-william-kentridge-greek-national-opera-athen"
+    },
+    {
+      "t": "2026-11-07T21:50:48.768Z",
+      "event": "bb-session",
+      "session": "cbf0ecb9",
+      "url": "https://bachtrack.com/review-shostakovich-cherry-town-ahlbom-dutch-national-oper"
+    },
+    {
+      "t": "2026-11-07T21:51:55.199Z",
+      "event": "bb-session",
+      "session": "33b61e97",
+      "url": "https://bachtrack.com/review-tosca-miskimmon-glassberg-fanyo-english-national-op"
+    },
+    {
+      "t": "2026-11-07T21:52:31.172Z",
+      "event": "bb-session",
+      "session": "7f623a1c",
+      "url": "https://bachtrack.com/review-nozze-figaro-pountney-conta-bucharest-national-oper"
     }
+  ],
+  "recoveredAfterFailure": [
+    "speculations-off-west-end-2026/jonathan-baz--unknown.json"
   ]
 }
