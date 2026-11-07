@@ -139,6 +139,7 @@ const REVIEW_TEXT_EDITABLE_FIELDS = [
   // newspaper's host (online.wsj.com/article/AP<32 hex>.html). The text is the Associated Press's own
   // review; a rename alone is undone by the rebuild's filename-vs-outletId heal. See FIELD_VALUE_CHECKS.outletId.
   // BRO-5995: or to the registry outlet the record's own `outlet` label names, never to a higher tier.
+  // BRO-6848: or Guardian-hosted Observer publication/bylines, checked below.
   'outletId',
 ];
 
@@ -195,6 +196,11 @@ const FIELD_VALUE_CHECKS = {
     && typeof record.crossOutletVerifiedNote === 'string' && record.crossOutletVerifiedNote.trim().length >= 20
     ? null : 'crossOutletVerified may only be set true after an evidence note, with no wrongAttribution flag'),
   outletId: (v, record) => {
+    // BRO-6848: narrowly allow the Guardian-hosted Observer classification.
+    // The API publication wins; the three named Observer bylines are the
+    // fallback for historic aggregator/SERP rows. Market tier policy is separate.
+    if (v === 'observer' && record.outletId === 'guardian'
+        && require('./guardian-publication').guardianReviewOutletId(record) === 'observer') return null;
     if (v === 'ap') {
       const { AP_WIRE_URL } = require('./ap-wire-detect');
       let pathname = null;
@@ -499,7 +505,10 @@ function applyReviewFieldEdit(record, action, stamp, ctx = {}) {
       next.syndicatedPrimaryFile = null;
       next._apContentDetected = false;
     }
-    next.outletIdCorrectedReason = newValue === 'ap'
+    next.outletIdCorrectedReason = newValue === 'observer' && record.outletId === 'guardian'
+      && require('./guardian-publication').guardianReviewOutletId(record) === 'observer'
+      ? `approved fix ${stamp.fixId}: Guardian-hosted Observer publication or Observer critic byline, not The Guardian`
+      : newValue === 'ap'
       ? `approved fix ${stamp.fixId}: AP wire page ${record.url} is the Associated Press's review, not ${record.outletId || 'another outlet'}'s`
       : `approved fix ${stamp.fixId}: the record's own outlet label "${record.outlet}" names ${newValue}, not ${record.outletId || 'another outlet'}`;
   }

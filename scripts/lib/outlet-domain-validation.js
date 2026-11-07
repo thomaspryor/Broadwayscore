@@ -147,6 +147,8 @@ function hostMatchesOutletDomain(url, outletId, registry) {
   if (domains.length === 0) return null;
   const host = extractHost(url);
   if (!host) return null;
+  // Match the writer/audit publishing-group exception for UK Observer copy.
+  if (require('./aggregator-domains').isSharedDomainOutlet(resolveOutletFromUrl(url)?.outletId, canonicalId)) return true;
   if (domains.some((d) => hostMatchesDomain(host, d))) return true;
   // Blogger country mirror / open.substack.com/pub/<name> (BRO-6716).
   const mapped = canonicalPublicationHost(url);

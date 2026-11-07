@@ -64,6 +64,7 @@ const {
   outletOwnsUrlDomainIgnoringPath,
 } = require('./lib/review-normalization');
 const { resolveUrlEditionOutletId } = require('./lib/outlet-canonicalize');
+const { applyGuardianPublication } = require('./lib/guardian-publication');
 const { fallbackOutletIdFromHost, resolveUnlabelledShowScoreOutlet } = require('./lib/show-score-outlet-identity');
 const { findSiblingUrlOwner } = require('./lib/review-url-collision');
 const { extractBwwThumbIcons, pairBwwThumbsByCritic } = require('./lib/bww-thumb-pairing');
@@ -3179,7 +3180,9 @@ function createReviewFile(showId, reviewData, options = {}) {
     }
   }
   const outletForNormalization = reviewData.outletId || reviewData.outlet;
-  const normalizedOutletId = normalizeOutlet(outletForNormalization);
+  reviewData.outletId = normalizeOutlet(outletForNormalization);
+  applyGuardianPublication(reviewData);
+  const normalizedOutletId = reviewData.outletId;
 
   // Session 3 #14 — promote Unknown critic to the outlet's defaultCritic at gather time.
   // Without this, single-author outlets (Cote Notices / Substack criticsfeeds, newyorktheater.me,
@@ -4234,7 +4237,8 @@ function createReviewFile(showId, reviewData, options = {}) {
           // domains (timeout.com/london vs timeout.com/newyork) still refine
           // via outletOwnsUrlDomainIgnoringPath. Same rule as the mergeReviews
           // cross-outlet guard (isCrossOutletUrl).
-          if (!outletOwnsUrlDomainIgnoringPath(normalizedOutletId, review.url)) {
+          if (!outletOwnsUrlDomainIgnoringPath(normalizedOutletId, review.url)
+              && !require('./lib/aggregator-domains').isSharedDomainOutlet(resolved.outletId, normalizedOutletId)) {
             console.log(`    ✗ Skipping ${filename}: URL domain resolves to "${resolved.outletId}" but attributed to "${normalizedOutletId}"`);
             return 'domainMismatch';
           }
