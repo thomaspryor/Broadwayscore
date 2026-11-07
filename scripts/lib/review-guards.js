@@ -1554,6 +1554,12 @@ function urlTitleWordsPass(lowerUrl, showTitle) {
   // BRO-2760: "The Story"-style titles: a lone generic word is not identity.
   if (!passesGenericTitleIdentity(lowerUrl, showTitle)) return false;
 
+  // BRO-7077 (BRO-5866 cousin): every per-word check below counts a repeated
+  // word once, so "Fire Fire" passed on a single "fire" (Wirecutter
+  // best-smokeless-fire-pits). A one-repeated-word title needs the word twice,
+  // or once beside a stage/arts cue (see repeatedTitleWordsPresent).
+  if (!repeatedTitleWordsPresent(lowerUrl, titleWords)) return false;
+
   const isTBWorldPath = /talkinbroadway\.com\/(?:page\/)?world\//i.test(lowerUrl);
   if (isTBWorldPath) {
     const matchCountTB = titleWords.filter(w => lowerUrl.includes(w)).length;
@@ -1575,6 +1581,25 @@ function urlTitleWordsPass(lowerUrl, showTitle) {
   const matchCount = titleWords.filter(w => wordMatch(lowerUrl, w)).length;
   const minMatch = titleWords.length <= 3 ? titleWords.length : Math.ceil(titleWords.length * 0.5);
   return matchCount >= minMatch;
+}
+
+/**
+ * Titles whose significant words are ONE repeated word ("Fire Fire", "Love,
+ * Love, Love", "Bella Bella") have no distinctive token, the same class
+ * rss-discovery.js titleMatchesShow handles (BRO-4185). The word twice is
+ * identity; once is identity only beside a stage/arts cue in the URL, because
+ * outlets often slug these with one word ("/theater/.../promises_are_fulfilled",
+ * "lemons-harold-pinter-theatre-review"). Any other title passes (long titles
+ * repeat filler words: "Are You Now or Have You Ever Been"). Pure; exported.
+ */
+const REPEATED_TITLE_STAGE_CUE_RE = /theat(?:er|re)|broadway|west-?end|stage|musical|playhouse|entertainment|arts?[-_/]|culture/i;
+function repeatedTitleWordsPresent(haystack, titleWords) {
+  const words = titleWords || [];
+  if (words.length < 2 || new Set(words).size !== 1) return true;
+  const escaped = words[0].replace(/[.*+?${}()|[\]\\]/g, '\\$&');
+  const re = new RegExp('(?:^|[^a-z0-9])' + escaped + '(?=$|[^a-z])', 'gi');
+  const hits = (String(haystack || '').match(re) || []).length;
+  return hits >= 2 || (hits === 1 && REPEATED_TITLE_STAGE_CUE_RE.test(String(haystack || '')));
 }
 
 function urlLooksLikeReview(url, showTitle) {
@@ -6964,6 +6989,7 @@ module.exports = {
   getWrongProductionReasonForAudit,
   urlYearFromPath,
   urlLooksLikeReview,
+  repeatedTitleWordsPresent,
   isSluglessReviewUrl,
   isLikelyWrongProduction,
   isLikelyTourReview,
