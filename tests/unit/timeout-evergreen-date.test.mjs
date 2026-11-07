@@ -76,3 +76,9 @@ test('wiring: the sweep and the rebuild both call the shared predicates', () => 
   const rebuild = readFileSync(new URL('../../scripts/rebuild-all-reviews.js', import.meta.url), 'utf8');
   assert.match(rebuild, /republishGuardOpen\(d, \{ auditOpen: wpAuditOpen/);
 });
+
+test('a book\'s own republication in the same sentence is not a marker (The Pianist, Stage Door)', () => {
+  const show = { id: 'the-pianist-off-west-end-2026', title: 'The Pianist', category: 'off-west-end', market: 'west-end', previewsStartDate: '2026-10-20', openingDate: '2026-10-23' };
+  const r = { publishDate: '2026-10-25', fullText: 'An extraordinary story played beautifully ⭐⭐⭐⭐ What’s it about? The Pianist began as Władysław Szpilman’s account of surviving the Holocaust in Warsaw. First published in 1946 as Death of a City, the memoir was withdrawn by Poland’s censors before being republished in 1998 through the efforts of his son, Andreas.' };
+  assert.equal(textNamesEarlierRun(r, show), false);
+});

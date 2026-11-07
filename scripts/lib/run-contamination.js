@@ -51,6 +51,13 @@ function republishMarker(text) {
       const m = re.exec(seg);
       if (!m) continue;
       if (WORK_HISTORY_RE.test(m[0])) continue;
+      // "the memoir was withdrawn ... before being republished in 1998" (The Pianist,
+      // Stage Door): the work word sits earlier in the same sentence, not in the match.
+      // The article's own notice ("This review is from 2025") is never about the work.
+      if (re !== REPUBLISH_PATTERNS[0]) {
+        const lead = seg.slice(Math.max(0, m.index - 150), m.index);
+        if (WORK_HISTORY_RE.test(lead.slice(lead.search(/[^.!?\n]*$/)))) continue;
+      }
       const year = parseInt(m[m.length - 1], 10);
       if (!best || year < best.year) best = { year, snippet: m[0].replace(/\s+/g, ' ').slice(0, 120) };
     }
