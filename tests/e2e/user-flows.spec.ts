@@ -16,6 +16,7 @@ import { filterNonCriticalErrors } from './helpers/console-errors';
 
 const SHOW_SLUG = 'hamilton-2015'; // Stable, long-running show for testing
 const SECOND_SHOW_SLUG = 'wicked-2003';
+const THIRD_SHOW_SLUG = 'chicago-1996';
 
 test.describe('My Shows Page (Unauthenticated)', () => {
   test('shows sign-in prompt when not authenticated', async ({ page }) => {
@@ -110,30 +111,34 @@ test.describe('Sign-In Modal', () => {
 });
 
 test.describe('Show Page Rating Section', () => {
-  // Save first, ask right after (BRO-4616): the tap saves without an account,
-  // then the sign-in sheet opens; closing it keeps the save.
-  test('Want to See saves for a signed-out visitor, then asks them to sign in', async ({ page }) => {
+  // Save first, ask on the 3rd save (BRO-4616, BRO-6917 part 2): saves 1 and 2
+  // only show a quiet toast; the 3rd opens the sign-in sheet; closing it keeps
+  // the save. Within the cooldown a later save does not ask again.
+  test('Want to See saves for a signed-out visitor, asks to sign in on the 3rd save', async ({ page }) => {
     await page.goto(`/show/${SHOW_SLUG}`);
     await page.waitForLoadState('networkidle');
 
-    const wantToSee = page.getByRole('button', { name: /want to see/i });
-    if ((await wantToSee.count()) === 0) {
+    if ((await page.getByRole('button', { name: /want to see/i }).count()) === 0) {
       test.skip(true, 'User accounts feature not enabled');
       return;
     }
-    await wantToSee.first().click();
+    const onList = page.getByRole('button', { name: /on your list/i });
+    for (const slug of [SHOW_SLUG, SECOND_SHOW_SLUG]) {
+      await page.goto(`/show/${slug}`);
+      await page.waitForLoadState('networkidle');
+      await page.getByRole('button', { name: /want to see/i }).first().click();
+      await expect(onList.first()).toBeVisible({ timeout: 5000 });
+      await expect(signInDialog(page)).toBeHidden();
+    }
+
+    await page.goto(`/show/${THIRD_SHOW_SLUG}`);
+    await page.waitForLoadState('networkidle');
+    await page.getByRole('button', { name: /want to see/i }).first().click();
     await expect(signInDialog(page)).toBeVisible({ timeout: 5000 });
     await expect(signInDialog(page).getByText('Keep your list with a free account')).toBeVisible();
     await page.keyboard.press('Escape');
     await expect(signInDialog(page)).toBeHidden({ timeout: 3000 });
-    await expect(page.getByRole('button', { name: /on your list/i }).first()).toBeVisible({ timeout: 5000 });
-
-    // Within the cooldown, another save does not ask again.
-    await page.goto(`/show/${SECOND_SHOW_SLUG}`);
-    await page.waitForLoadState('networkidle');
-    await page.getByRole('button', { name: /want to see/i }).first().click();
-    await expect(page.getByRole('button', { name: /on your list/i }).first()).toBeVisible({ timeout: 5000 });
-    await expect(signInDialog(page)).toBeHidden();
+    await expect(onList.first()).toBeVisible({ timeout: 5000 });
   });
 
   test('Rate it opens the editor and Save asks a signed-out visitor to sign in', async ({ page }) => {
