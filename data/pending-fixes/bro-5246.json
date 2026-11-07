@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5246",
   "planId": "d12bbe06-ada5-4ddc-9f26-a50e0302f421",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-07T06:57:37.058Z",
   "submitter": {
     "name": null,
@@ -21,5 +21,14 @@
         "args": "--apply-proposals=data/audit/outlet-display-name-proposals-bro-5246.json --write"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-07T08:11:14.216Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran audit-registry-slug-displaynames.js successfully"
+    }
+  ],
+  "executedIn": "ci"
 }
