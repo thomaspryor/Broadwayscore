@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-07T19:14:41.802Z",
+  "generatedAt": "2026-11-07T19:44:54.196Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -190,9 +190,9 @@
       "status": "open",
       "slug": "nero-off-west-end",
       "thumbnail": "/images/shows/nero-off-west-end-2026/thumbnail.jpg",
-      "siteScore": 39.18,
-      "liveScore": 39,
-      "scoreDrift": -0.17999999999999972,
+      "siteScore": 38.41,
+      "liveScore": 38,
+      "scoreDrift": -0.4099999999999966,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
@@ -209,9 +209,9 @@
           "4/8 total",
           "T1:0/3",
           "T2:1/2",
-          "hi-conf:3/6"
+          "hi-conf:4/6"
         ],
-        "highConfidence": 3,
+        "highConfidence": 4,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -356,6 +356,18 @@
           "t": "2026-11-07T18:11:55.934Z",
           "rc": 4,
           "s": 39.18,
+          "t1": 0,
+          "t2": 1,
+          "t3": 3,
+          "p": 1,
+          "m": 0,
+          "n": 3,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-11-07T19:44:54.196Z",
+          "rc": 4,
+          "s": 38.41,
           "t1": 0,
           "t2": 1,
           "t3": 3,
@@ -768,7 +780,7 @@
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 13,
+        "highConfidence": 14,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -1398,7 +1410,7 @@
           "11/12 total",
           "T1:2/3"
         ],
-        "highConfidence": 10,
+        "highConfidence": 11,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -2395,9 +2407,9 @@
       "status": "open",
       "slug": "speculations-off-west-end",
       "thumbnail": "/images/shows/speculations-off-west-end-2026/thumbnail.jpg",
-      "siteScore": 47.97,
+      "siteScore": 47.95,
       "liveScore": 48,
-      "scoreDrift": 0.030000000000001137,
+      "scoreDrift": 0.04999999999999716,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
@@ -2668,6 +2680,18 @@
           "t": "2026-11-07T18:57:43.213Z",
           "rc": 30,
           "s": 47.97,
+          "t1": 5,
+          "t2": 6,
+          "t3": 19,
+          "p": 7,
+          "m": 8,
+          "n": 15,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-11-07T19:44:54.196Z",
+          "rc": 30,
+          "s": 47.95,
           "t1": 5,
           "t2": 6,
           "t3": 19,
