@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-07T18:11:35.062Z",
+  "timestamp": "2026-11-07T18:57:21.167Z",
   "stats": {
-    "totalReviews": 80498,
-    "alreadyFlagged": 22031,
+    "totalReviews": 80500,
+    "alreadyFlagged": 22032,
     "dateGuardCatches": 217,
-    "directorMismatch": 3522,
+    "directorMismatch": 3524,
     "tvFilmSignals": 2291,
     "londonSignals": 3624,
     "offBroadwaySignals": 747,
-    "yearMismatch": 362,
-    "noPublishDate": 8459
+    "yearMismatch": 363,
+    "noPublishDate": 8457
   },
   "findings": [
     {
@@ -48163,6 +48163,20 @@
     },
     {
       "showId": "other-desert-cities-2026",
+      "file": "reclining-standards--cameron-kelsall.json",
+      "score": 44,
+      "publishDate": "2026-10-25",
+      "url": "https://recliningstandards.com/2026/10/25/ck-reviews-other-desert-cities-at-broadways-hudson-theatre/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"joe mantello\" from other-desert-cities-2011"
+        }
+      ]
+    },
+    {
+      "showId": "other-desert-cities-2026",
       "file": "stageandcinema--carol-rocamora.json",
       "score": 77,
       "publishDate": "2026-10-26",
@@ -48252,6 +48266,25 @@
       "publishDate": "2026-10-19",
       "url": "https://www.theatrely.com/post/a-starry-thrilling-other-desert-cities-returns-to-broadway-review",
       "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2011 (3x) more than 2026 (0x). 2011 matches production: other-desert-cities-2011"
+        }
+      ]
+    },
+    {
+      "showId": "other-desert-cities-2026",
+      "file": "thedaviddesk2--davidsheward.json",
+      "score": 74,
+      "publishDate": "2026-10-20",
+      "url": "http://thedaviddesk2.blogspot.com/2026/10/bway-review-other-desert-cities.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"joe mantello\" from other-desert-cities-2011"
+        },
         {
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",

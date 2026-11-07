@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-07T18:11:55.934Z",
+  "generatedAt": "2026-11-07T18:57:43.213Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -1205,28 +1205,28 @@
       "status": "open",
       "slug": "tango-after-dark-west-end",
       "thumbnail": "/images/shows/tango-after-dark-off-west-end-2026/thumbnail.webp",
-      "siteScore": null,
-      "liveScore": 64,
-      "scoreDrift": null,
-      "belowThreshold": true,
-      "reviewsNeeded": 1,
+      "siteScore": 69.26,
+      "liveScore": 69,
+      "scoreDrift": -0.2600000000000051,
+      "belowThreshold": false,
+      "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 2,
+      "total": 3,
       "t1": 0,
       "t2": 1,
-      "t3": 1,
-      "positive": 0,
+      "t3": 2,
+      "positive": 1,
       "mixed": 1,
       "negative": 1,
       "readiness": {
         "ready": false,
         "reasons": [
-          "2/8 total",
+          "3/8 total",
           "T1:0/3",
           "T2:1/2",
-          "hi-conf:1/6"
+          "hi-conf:2/6"
         ],
-        "highConfidence": 1,
+        "highConfidence": 2,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -1351,6 +1351,18 @@
           "t2": 1,
           "t3": 1,
           "p": 0,
+          "m": 1,
+          "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-11-07T18:57:43.213Z",
+          "rc": 3,
+          "s": 69.26,
+          "t1": 0,
+          "t2": 1,
+          "t3": 2,
+          "p": 1,
           "m": 1,
           "n": 1,
           "bc": "waiting"
@@ -2383,23 +2395,23 @@
       "status": "open",
       "slug": "speculations-off-west-end",
       "thumbnail": "/images/shows/speculations-off-west-end-2026/thumbnail.jpg",
-      "siteScore": 47.56,
+      "siteScore": 47.97,
       "liveScore": 48,
-      "scoreDrift": 0.4399999999999977,
+      "scoreDrift": 0.030000000000001137,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 28,
+      "total": 30,
       "t1": 5,
       "t2": 6,
-      "t3": 17,
-      "positive": 6,
+      "t3": 19,
+      "positive": 7,
       "mixed": 8,
-      "negative": 14,
+      "negative": 15,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 26,
+        "highConfidence": 27,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -2650,6 +2662,18 @@
           "p": 6,
           "m": 8,
           "n": 14,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-11-07T18:57:43.213Z",
+          "rc": 30,
+          "s": 47.97,
+          "t1": 5,
+          "t2": 6,
+          "t3": 19,
+          "p": 7,
+          "m": 8,
+          "n": 15,
           "bc": "waiting"
         }
       ]
