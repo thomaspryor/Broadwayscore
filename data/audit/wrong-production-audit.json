@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-07T05:10:02.350Z",
+  "timestamp": "2026-11-07T05:29:25.273Z",
   "stats": {
     "totalReviews": 80383,
-    "alreadyFlagged": 22029,
+    "alreadyFlagged": 22033,
     "dateGuardCatches": 216,
     "directorMismatch": 3521,
-    "tvFilmSignals": 2289,
-    "londonSignals": 3627,
+    "tvFilmSignals": 2290,
+    "londonSignals": 3628,
     "offBroadwaySignals": 745,
     "yearMismatch": 362,
-    "noPublishDate": 8438
+    "noPublishDate": 8435
   },
   "findings": [
     {
@@ -83831,6 +83831,25 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "witness-for-the-prosecution-off-west-end-2022",
+      "file": "theatre-weekly--unknown.json",
+      "score": 87,
+      "publishDate": "2023-02-23",
+      "url": "https://theatreweekly.com/the-ninth-cast-of-witness-for-the-prosecution-announced/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
         }
       ]
     },
