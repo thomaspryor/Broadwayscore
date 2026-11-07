@@ -687,10 +687,8 @@ jobs:
           # 404. Bing ping is largely deprecated in favour of IndexNow
           # (submit-indexnow.js), but ping shard 0 rather than the dead index.
           curl -s "https://www.bing.com/ping?sitemap=https://broadwayscorecard.com/sitemap/0.xml" || true
-          # Google: re-submit sitemap via Search Console Sitemaps API
-          if [ -n "$GOOGLE_INDEXING_KEY" ]; then
-            node scripts/submit-google-indexing.js --submit-sitemap || true
-          fi
+          # Google: no sitemap API call. The service account is not a user on the Search
+          # Console property (403 on every shard, BRO-4602) and robots.txt lists every shard.
 
       - name: Check if newer deploy is already queued
         if: failure()
