@@ -725,7 +725,7 @@ const LISTING_PAGE_URL_PATTERNS = [
   // /shows/midnight/, BRO-5134/BRO-6731; mirvish.com /shows/juliet). Corpus
   // 2026-11-07: 0 of reviews.json's URLs match either shape; reviews on hub hosts
   // sit one level deeper (didtheylikeit /shows/<show>/<review>/).
-  { host: /./, path: /\/events?\/[^/]+\/\d{4}-\d\d-\d\d\/?$/i, reason: 'event-listing' },
+  { host: /./, path: /^(?![^?#]*review)[^?#]*\/events?\/[^/]+\/\d{4}-\d\d-\d\d\/?$/i, reason: 'event-listing' },
   { host: /./, path: /^\/shows\/[^/]+\/?$/i, reason: 'show-hub' },
   // BRO-5629: an aggregator cited bestoftheatre's "everything you need to know"
   // explainer as Affluenza's missing review (also /everything-you-need-to-know-dogstar,

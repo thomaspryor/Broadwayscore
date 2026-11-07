@@ -69,7 +69,8 @@ function isSlowMarketDailyWindow(show, now = Date.now()) {
 // (Other Desert Cities, Broadway, opened 2026-10-18: exeunt and a blog review
 // cited, row 166h old on 2026-11-07; 15 in-window shows sat in tier 2 that
 // day: 3 Broadway, 11 regional, 1 tour). Every in-window show now gets the
-// daily tier, whatever its market. Cost: ~15 more shows at <=20h, ~30
+// daily tier (sorted ahead of the back catalogue; open shows keep the 12h
+// skip, closed ones re-audit at <=20h), whatever its market. Cost: ~15 more shows at <=20h, ~30
 // audits/day against ~400/day of hourly capacity.
 function isInWindowDaily(show, now = Date.now()) {
   return inOpeningWindow(show, now, SLOW_MARKET_ALERT_DAYS);

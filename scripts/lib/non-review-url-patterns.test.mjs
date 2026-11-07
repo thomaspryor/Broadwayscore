@@ -814,6 +814,8 @@ test('BRO-7081: dated event pages and bare /shows/<slug>/ hubs are listings, not
     'https://www.dailymail.co.uk/home/event/article-10848817/ABBA-Voyage-review-electric-soul-touching-magical-trip-70s.html',
     'https://www.newyorker.com/arts/events/theatre/brief-encounter-studio-54',
     'https://exeuntnyc.com/reviews/review-garry-starr-classic-penguins-at-studio-seaview/',
+    'https://example.com/review/event/garry-starr/2026-06-25/',
+    'https://www.theatremonkey.com/show/midnight/',
   ]) assert.equal(listingPageUrlReason(url), null, url);
 });
 
