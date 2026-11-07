@@ -9,6 +9,7 @@
  */
 
 const { buildShowTitleVariants, normalizeForMention, countVariant, findVariantSpans, textMentionsTitle, textMentionsShortTitle } = require('./show-title-variants');
+const { hasExcerpt: hasAnyExcerpt, getLongestExcerpt } = require('./excerpt-fields');
 
 /**
  * Patterns that indicate ad blocker messages
@@ -2521,14 +2522,8 @@ function classifyContentTier(review) {
   const charCount = fullText.length;
 
   // Check for excerpts
-  const hasExcerpt = !!(review.dtliExcerpt || review.bwwExcerpt || review.showScoreExcerpt || review.nycTheatreExcerpt || review.lboRoundupExcerpt || review.metaExcerpt);
-  const longestExcerptLen = Math.max(
-    (review.dtliExcerpt || '').length,
-    (review.bwwExcerpt || '').length,
-    (review.showScoreExcerpt || '').length,
-    (review.lboRoundupExcerpt || '').length,
-    (review.metaExcerpt || '').length
-  );
+  const hasExcerpt = hasAnyExcerpt(review);
+  const longestExcerptLen = getLongestExcerpt(review).length;
 
   // T5: INVALID - Check first (garbage, wrong show, corrupted)
   const { effectivelyWrongProduction, effectivelyWrongShow } = isEffectivelyWrongProductionOrShow(review);

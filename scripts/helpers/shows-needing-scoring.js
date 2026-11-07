@@ -6,6 +6,7 @@
  */
 
 const { isReviewTextFile } = require('../lib/review-text-sidecars');
+const { hasExcerpt } = require('../lib/excerpt-fields');
 const fs = require('fs');
 const path = require('path');
 const { listShowDirs } = require('../lib/list-show-dirs');
@@ -22,7 +23,7 @@ listShowDirs(dir).forEach(showDir => {
     .filter(f => isReviewTextFile(f))
     .forEach(f => {
       const d = JSON.parse(fs.readFileSync(path.join(showPath, f)));
-      if (!d.assignedScore && (d.fullText || d.dtliExcerpt || d.bwwExcerpt || d.showScoreExcerpt || d.nycTheatreExcerpt || d.lboRoundupExcerpt)) {
+      if (!d.assignedScore && (d.fullText || hasExcerpt(d))) {
         count++;
       }
     });

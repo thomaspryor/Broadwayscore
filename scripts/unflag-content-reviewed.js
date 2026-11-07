@@ -8,6 +8,7 @@
  */
 
 const fs = require('fs');
+const { hasExcerpt } = require('./lib/excerpt-fields');
 const path = require('path');
 
 const BASE = path.join(__dirname, '..', 'data', 'review-texts');
@@ -62,7 +63,7 @@ for (const entry of manifest) {
   if (entry.action === 'unflag' || entry.action === 'unflagRestore') {
     // Fix contentTier if it was set to invalid due to wrongProduction
     if (data.contentTier === 'invalid' && data.incompleteReason === 'wrong_content') {
-      data.contentTier = data.fullText ? 'complete' : (data.showScoreExcerpt || data.bwwExcerpt || data.dtliExcerpt || data.nycTheatreExcerpt || data.lboRoundupExcerpt ? 'excerpt' : 'stub');
+      data.contentTier = data.fullText ? 'complete' : (hasExcerpt(data) ? 'excerpt' : 'stub');
       delete data.incompleteReason;
     }
   }
@@ -80,7 +81,7 @@ for (const entry of manifest) {
       delete data.wrongFullText;
     }
     if (data.contentTier === 'invalid') {
-      data.contentTier = data.fullText ? 'complete' : (data.showScoreExcerpt || data.bwwExcerpt || data.dtliExcerpt || data.nycTheatreExcerpt || data.lboRoundupExcerpt ? 'excerpt' : 'stub');
+      data.contentTier = data.fullText ? 'complete' : (hasExcerpt(data) ? 'excerpt' : 'stub');
     }
     if (data.incompleteReason === 'wrong_content') {
       delete data.incompleteReason;
@@ -90,7 +91,7 @@ for (const entry of manifest) {
   if (entry.action === 'fixShowId') {
     data.showId = entry.newShowId;
     if (data.contentTier === 'invalid' && data.incompleteReason === 'wrong_content') {
-      data.contentTier = data.fullText ? 'complete' : (data.showScoreExcerpt || data.bwwExcerpt || data.dtliExcerpt || data.nycTheatreExcerpt || data.lboRoundupExcerpt ? 'excerpt' : 'stub');
+      data.contentTier = data.fullText ? 'complete' : (hasExcerpt(data) ? 'excerpt' : 'stub');
       delete data.incompleteReason;
     }
   }

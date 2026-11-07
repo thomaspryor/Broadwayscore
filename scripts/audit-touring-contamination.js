@@ -62,6 +62,7 @@
  */
 
 const { isReviewTextFile } = require('./lib/review-text-sidecars');
+const { hasExcerpt, getExcerpts } = require('./lib/excerpt-fields');
 const { quarantineBody } = require('./lib/quarantine-body');
 const fs = require('fs');
 const { laneBypasses } = require('./lib/opening-night-lane/trust-model');
@@ -413,8 +414,7 @@ function proximitySignal(text) {
 }
 
 function gatherSignals(review) {
-  const text = review.fullText || review.bwwExcerpt || review.dtliExcerpt
-    || review.showScoreExcerpt || review.pullQuote || '';
+  const text = review.fullText || getExcerpts(review)[0] || review.pullQuote || '';
   const sigs = [];
   let s;
   if ((s = regionalOutletSignal(review))) sigs.push(s);
@@ -670,9 +670,7 @@ function buildUserPrompt(item, reviewData) {
   const venue = show?.venue || 'unknown';
 
   const text = reviewData.fullText
-    || reviewData.bwwExcerpt
-    || reviewData.dtliExcerpt
-    || reviewData.showScoreExcerpt
+    || getExcerpts(reviewData)[0]
     || reviewData.pullQuote
     || '';
 
@@ -753,7 +751,7 @@ function generateCandidates() {
       }
       const sigs = gatherSignals(r);
       if (sigs.length === 0) continue;
-      const text = r.fullText || r.bwwExcerpt || r.dtliExcerpt || r.showScoreExcerpt || r.pullQuote || '';
+      const text = r.fullText || getExcerpts(r)[0] || r.pullQuote || '';
       if (text.trim().length < 50) {
         stats.noText++;
         continue;

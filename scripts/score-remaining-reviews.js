@@ -5,6 +5,7 @@
  */
 
 const fs = require('fs');
+const { getExcerpts } = require('./lib/excerpt-fields');
 const path = require('path');
 const { listShowDirs } = require('./lib/list-show-dirs');
 
@@ -145,12 +146,12 @@ showDirs.forEach(showId => {
       }
 
       // Try improved sentiment analysis
-      const textToAnalyze = data.fullText || data.bwwExcerpt || data.dtliExcerpt || data.showScoreExcerpt || '';
+      const textToAnalyze = data.fullText || getExcerpts(data)[0] || '';
 
       // Skip if fullText is a 404 page
       if (data.fullText && (data.fullText.includes('Page Not Found') || data.fullText.includes('404'))) {
         // Use excerpt instead
-        const excerptText = data.bwwExcerpt || data.dtliExcerpt || data.showScoreExcerpt || '';
+        const excerptText = getExcerpts(data)[0] || '';
         const result = scoreBySentiment(excerptText);
 
         if (result) {

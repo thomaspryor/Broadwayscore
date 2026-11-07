@@ -200,7 +200,7 @@ const { shouldSkipPollerUpdate, invalidateWrongShowAutoClear, shouldMarkUrlColli
 const { updateFileUrlWithInvariant, isDifferentArticleRecovery } = require('./lib/url-change-invariant');
 const { extractDateFromUrl: extractDateFromUrlCanonical } = require('./lib/rebuild-helpers');
 const { verificationPublishDate } = require('./lib/verification-publish-date');
-const { verifierExcerpt } = require('./lib/excerpt-fields');
+const { verifierExcerpt, hasExcerpt } = require('./lib/excerpt-fields');
 const { discoveredPageVerdict } = require('./lib/discovered-page-verdict');
 const { isLegacyWebSearchOnly } = require('./lib/legacy-web-search');
 const { parseDate } = require('./lib/date-utils');
@@ -5257,7 +5257,7 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
       quarantineBody(data); // BRO-2788: records quarantinedWordCount
       data.showNotMentioned = true;
       data.suspectedLlmHallucination = true;
-      data.contentTier = (data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || data.nycTheatreExcerpt || data.lboRoundupExcerpt) ? 'excerpt' : 'needs-rescrape';
+      data.contentTier = (hasExcerpt(data)) ? 'excerpt' : 'needs-rescrape';
     } else {
       // LLM confirmed content is correct AND keyword gate passed (or was inapplicable).
       // Clear stale flag from previous bad fetches.
@@ -5319,7 +5319,7 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
       // Unscored review with substantive text that doesn't mention the show.
       data.showNotMentioned = true;
       quarantineBody(data); // BRO-2788: records quarantinedWordCount
-      data.contentTier = (data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || data.nycTheatreExcerpt || data.lboRoundupExcerpt) ? 'excerpt' : 'needs-rescrape';
+      data.contentTier = (hasExcerpt(data)) ? 'excerpt' : 'needs-rescrape';
       console.log(`    ⚠ Heuristic fallback — show not mentioned in text — fullText nulled: ${guard.reason}`);
     } else if (guard.action === 'skip' && guard.reason) {
       // Heuristic deferred (text too thin) — log so we can spot regressions
@@ -5585,7 +5585,7 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
           data.needsReviewReason = `Heuristic: content mismatch (score ${contentMatch.score}: ${contentMatch.negativeSignals.join(', ')}) but already scored — needs human verification`;
           console.log(`    ⚠ Heuristic: content mismatch — but already scored, flagging for review instead of nulling`);
         } else {
-          const hasExcerpts = !!(data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || data.nycTheatreExcerpt || data.lboRoundupExcerpt);
+          const hasExcerpts = hasExcerpt(data);
           quarantineBody(data); // BRO-2788: records quarantinedWordCount
           data.contentMismatchNote = contentMatch.negativeSignals.join('; ');
           data.contentMismatchScore = contentMatch.score;
@@ -5719,7 +5719,7 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
         data.needsReviewReason = `Collector LLM: wrong production (${contentVerification.confidence} conf) but already scored — needs human verification`;
         console.log(`    ⚠ LLM: Wrong production (${contentVerification.confidence}) — but already scored, flagging for review instead of nulling`);
       } else {
-        const hasExcerpts = !!(data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || data.nycTheatreExcerpt || data.lboRoundupExcerpt);
+        const hasExcerpts = hasExcerpt(data);
         if (data.fullText) {
           quarantineBody(data); // BRO-2788: records quarantinedWordCount
         }
@@ -5746,7 +5746,7 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
         data.needsReviewReason = `Collector LLM: film/TV content (${contentVerification.confidence} conf) but already scored — needs human verification`;
         console.log(`    ⚠ LLM: Film/TV content (${contentVerification.confidence}) — but already scored, flagging for review instead of nulling`);
       } else if (!wrongShowCleared(data)) {
-        const hasExcerpts = !!(data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || data.nycTheatreExcerpt || data.lboRoundupExcerpt);
+        const hasExcerpts = hasExcerpt(data);
         quarantineBody(data); // BRO-2788: records quarantinedWordCount
         data.wrongShow = true;
         data.wrongShowReason = `Collector LLM: film/TV content (${contentVerification.confidence}) — ${(contentVerification.reasoning || '').substring(0, 200)}`;

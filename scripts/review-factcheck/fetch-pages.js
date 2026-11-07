@@ -10,6 +10,7 @@
  */
 const fs = require('fs');
 const os = require('os');
+const { getExcerpts } = require('../lib/excerpt-fields');
 const path = require('path');
 const { execFile } = require('child_process');
 const { extractArticleText, extractPublishDate } = require('../lib/article-extractor');
@@ -95,7 +96,7 @@ async function getOne(item) {
   const stored = item.reviewFile ? safeJson(path.join(ROOT, 'data/review-texts', item.showId, item.reviewFile)) : null;
   const rec = { sampleId: item.sampleId, url: item.url, attempts: [], source: null, sourceUrl: null, text: '', meta: null,
     // No full text stored: the aggregator excerpts are what the score was built from.
-    storedText: stored ? (stored.fullText || [stored.dtliExcerpt, stored.bwwExcerpt, stored.showScoreExcerpt, stored.nycTheatreExcerpt, stored.playbillVerdictExcerpt].filter(Boolean).join('\n')) : '',
+    storedText: stored ? (stored.fullText || getExcerpts(stored).join('\n')) : '',
     storedTextKind: stored ? (stored.fullText ? 'fullText' : 'aggregator-excerpts') : null, storedMeta: stored ? { url: stored.url, publishDate: stored.publishDate, criticName: stored.criticName, outlet: stored.outlet, originalScore: stored.originalScore, archiveOrgUrl: stored.archiveOrgUrl || null, source: stored.source || null } : null };
   if (item.url) {
     const live = await curl(item.url);

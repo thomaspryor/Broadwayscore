@@ -26,6 +26,7 @@
  * Integrated into rebuild via: .github/workflows/rebuild-reviews.yml
  */
 const { isReviewTextFile } = require('./lib/review-text-sidecars');
+const { getExcerpts } = require('./lib/excerpt-fields');
 const fs = require('fs');
 const { laneBypasses } = require('./lib/opening-night-lane/trust-model');
 const path = require('path');
@@ -253,7 +254,7 @@ function findCandidates() {
         if (!VALID_SOURCES.has(data.source)) continue;
 
         // Get text
-        const text = data.fullText || data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || '';
+        const text = data.fullText || getExcerpts(data)[0] || '';
         if (text.length <= 500) continue;
 
         // Title-mention check — only candidates where text does NOT mention the show title
@@ -337,7 +338,7 @@ async function main() {
       // Double-check it hasn't been flagged since candidate scan
       if (data.wrongShow || data.wrongProduction || data.wsClassified) return;
 
-      const text = data.fullText || data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || '';
+      const text = data.fullText || getExcerpts(data)[0] || '';
 
       try {
         const raw = await callWithRetry(SYSTEM_PROMPT, buildUserPrompt(candidate.showTitle, candidate.showId, text));

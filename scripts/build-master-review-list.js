@@ -17,6 +17,7 @@
  */
 
 const { isReviewTextFile } = require('./lib/review-text-sidecars');
+const { getExcerpts } = require('./lib/excerpt-fields');
 const fs = require('fs');
 const path = require('path');
 const {
@@ -224,8 +225,8 @@ function isSameReview(review1, review2) {
     const hasUnknown2 = !critic2 || critic2 === 'unknown';
 
     if (hasUnknown1 || hasUnknown2) {
-      const excerpt1 = normalizeExcerpt(review1.dtliExcerpt || review1.bwwExcerpt || review1.showScoreExcerpt || review1.fullText);
-      const excerpt2 = normalizeExcerpt(review2.dtliExcerpt || review2.bwwExcerpt || review2.showScoreExcerpt || review2.fullText);
+      const excerpt1 = normalizeExcerpt(getExcerpts(review1)[0] || review1.fullText);
+      const excerpt2 = normalizeExcerpt(getExcerpts(review2)[0] || review2.fullText);
       if (excerpt1 && excerpt2 && excerpt1.length > 20 && excerpt2.length > 20) {
         if (levenshteinSimilarity(excerpt1, excerpt2) > 0.5) {
           return true;
@@ -236,8 +237,8 @@ function isSameReview(review1, review2) {
 
   // 4. Same outlet + similar excerpt (handles different critic name spellings)
   if (outlet1 === outlet2) {
-    const excerpt1 = normalizeExcerpt(review1.dtliExcerpt || review1.bwwExcerpt || review1.showScoreExcerpt || review1.fullText);
-    const excerpt2 = normalizeExcerpt(review2.dtliExcerpt || review2.bwwExcerpt || review2.showScoreExcerpt || review2.fullText);
+    const excerpt1 = normalizeExcerpt(getExcerpts(review1)[0] || review1.fullText);
+    const excerpt2 = normalizeExcerpt(getExcerpts(review2)[0] || review2.fullText);
 
     if (excerpt1 && excerpt2 && excerpt1.length > 20 && excerpt2.length > 20) {
       if (levenshteinSimilarity(excerpt1, excerpt2) > 0.7) {

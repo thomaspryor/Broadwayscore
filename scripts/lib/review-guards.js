@@ -5313,7 +5313,7 @@ function evaluateUrlYearGuard(data, show, guardEntry) {
 function evaluateDirectorGuard(data, show, directorMap) {
   if (!data || !directorMap || data.routedFromShowId || data.humanReviewedWrongProduction === false) return null;
   if (wrongProductionLaneBypass(data, show)) return null;
-  const text = (data.fullText || data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || data.lboRoundupExcerpt || '').toLowerCase();
+  const text = (data.fullText || require('./excerpt-fields').getExcerpts(data)[0] || '').toLowerCase();
   if (text.length < 30) return null;
   const { toDateMs } = require('./date-utils');
   const publishMs = data.publishDate ? toDateMs(data.publishDate) : NaN;
@@ -6692,10 +6692,7 @@ function isRejectedNonReview(data) {
 // first-party fullText is absent. Moved verbatim from the deleted
 // the deleted review-text mirror so the RETRIEVED axis has one home.
 function hasAggregatorExcerpt(data) {
-  return !!(
-    data.bwwExcerpt || data.dtliExcerpt || data.showScoreExcerpt ||
-    data.nycTheatreExcerpt || data.stagedoorExcerpt || data.lboRoundupExcerpt || data.metaExcerpt
-  );
+  return require('./excerpt-fields').hasExcerpt(data);
 }
 
 // The longest available aggregator excerpt field, or null. Picks the longest

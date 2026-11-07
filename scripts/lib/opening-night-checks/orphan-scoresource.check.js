@@ -1,5 +1,7 @@
 'use strict';
 
+const { hasExcerpt } = require('../excerpt-fields');
+
 const name = 'orphan-scoresource';
 const description = 'Flags reviews in reviews.json with scoreSource=null — indicates syndication/dedup orphans';
 
@@ -31,7 +33,7 @@ function run(show, context) {
     const looksScorable =
       Number.isFinite(r.assignedScore) ||
       (typeof r.fullText === 'string' && r.fullText.length >= 100) ||
-      !!r.dtliExcerpt || !!r.bwwExcerpt || !!r.showScoreExcerpt;
+      hasExcerpt(r);
     return looksScorable;
   });
 

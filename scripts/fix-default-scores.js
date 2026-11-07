@@ -9,6 +9,7 @@
  */
 
 const fs = require('fs');
+const { getExcerpts } = require('./lib/excerpt-fields');
 const path = require('path');
 const { setExtractedScore } = require('./lib/score-routing');
 const { LETTER_GRADES: LETTER_TO_SCORE } = require('./lib/score-conversion-rules');
@@ -130,7 +131,7 @@ showDirs.forEach(showId => {
         }
 
         // Try sentiment analysis on available text
-        const textToAnalyze = data.fullText || data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || '';
+        const textToAnalyze = data.fullText || getExcerpts(data)[0] || '';
         const sentimentResult = scoreBySentiment(textToAnalyze);
 
         if (sentimentResult && sentimentResult.confidence !== 'low') {

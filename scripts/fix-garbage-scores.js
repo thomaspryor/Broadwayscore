@@ -17,6 +17,7 @@
  */
 
 const { isReviewTextFile } = require('./lib/review-text-sidecars');
+const { hasExcerpt } = require('./lib/excerpt-fields');
 const fs = require('fs');
 const path = require('path');
 const { listShowDirs } = require('./lib/list-show-dirs');
@@ -149,7 +150,7 @@ function scanReviewFiles() {
                   garbageLength: data.garbageFullText.length,
                   llmScore: data.llmScore.score,
                   originalScoreNormalized: data.originalScoreNormalized,
-                  hasExcerpts: !!(data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt),
+                  hasExcerpts: hasExcerpt(data),
                   garbageFixedAt: data.garbageFixedAt,
                   scoredAt: data.llmMetadata?.scoredAt
                 });

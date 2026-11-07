@@ -15,6 +15,7 @@
  */
 
 const { isReviewTextFile } = require('./lib/review-text-sidecars');
+const { getExcerpts } = require('./lib/excerpt-fields');
 const fs = require('fs');
 const path = require('path');
 const { listShowDirs } = require('./lib/list-show-dirs');
@@ -181,8 +182,7 @@ function checkScoreSource(data) {
   }
 
   // Very short text
-  const textLength = (data.fullText || data.showScoreExcerpt ||
-                     data.dtliExcerpt || data.bwwExcerpt || '').length;
+  const textLength = (data.fullText || getExcerpts(data)[0] || '').length;
   if (textLength < 100) {
     issues.push('Very short text - hard to validate score');
   }
@@ -256,8 +256,7 @@ async function main() {
     const { data, numericScore, showId, file } = review;
 
     // Get best available text
-    const text = data.fullText || data.showScoreExcerpt ||
-                 data.dtliExcerpt || data.bwwExcerpt || '';
+    const text = data.fullText || getExcerpts(data)[0] || '';
 
     const issues = [];
 

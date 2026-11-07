@@ -27,6 +27,7 @@
  */
 
 const { isReviewTextFile } = require('./lib/review-text-sidecars');
+const { hasExcerpt: hasAnyExcerpt, getExcerpts } = require('./lib/excerpt-fields');
 const { parseVerdictTierId, verdictAppliesToSource } = require('./lib/score-tiers');
 const fs = require('fs');
 const path = require('path');
@@ -3992,7 +3993,7 @@ showDirs.forEach(showId => {
         const hasAggregatorScore = (data.assignedScore && data.assignedScore >= 1 && data.assignedScore <= 100)
           || (data.originalScore && parseOriginalScore(data.originalScore, data.outletId) !== null)
           || (data.aggregatorStars && parseOriginalScore(data.aggregatorStars, data.outletId) !== null);
-        const hasExcerpt = data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || data.nycTheatreExcerpt || data.lboRoundupExcerpt || data.stagedoorExcerpt || data.metaExcerpt;
+        const hasExcerpt = hasAnyExcerpt(data);
         if (!hasAggregatorScore && !hasExcerpt) {
           logExclusion("skippedScraperGarbage", showId, file, data);
           stats.skippedScraperGarbage = (stats.skippedScraperGarbage || 0) + 1;
@@ -4453,7 +4454,7 @@ showDirs.forEach(showId => {
         delete data.fullText;
         delete data.assignedScore;
         delete data.ensembleData;
-        const hasExcerpt = !!(data.bwwExcerpt || data.dtliExcerpt || data.showScoreExcerpt || data.nycTheatreExcerpt || data.stagedoorExcerpt || data.lboRoundupExcerpt || data.metaExcerpt);
+        const hasExcerpt = hasAnyExcerpt(data);
         // Respect a human contentTier override (the only direct contentTier setter
         // that bypassed classifyContentTier's manualContentTier check). Mirrors the
         // wrongProduction setter-guard discipline (shouldSkipWrongProductionAudit):
@@ -4739,7 +4740,7 @@ showDirs.forEach(showId => {
         delete data.fullText;
         delete data.assignedScore;
         delete data.ensembleData;
-        const hasExcerpt = !!(data.bwwExcerpt || data.dtliExcerpt || data.showScoreExcerpt || data.nycTheatreExcerpt || data.stagedoorExcerpt || data.lboRoundupExcerpt || data.metaExcerpt);
+        const hasExcerpt = hasAnyExcerpt(data);
         // Respect a human contentTier override (the only direct contentTier setter
         // that bypassed classifyContentTier's manualContentTier check). Mirrors the
         // wrongProduction setter-guard discipline (shouldSkipWrongProductionAudit):
@@ -4944,7 +4945,7 @@ showDirs.forEach(showId => {
         }
 
         if (data.showNotMentioned === true) {
-          const hasExcerpt = data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || data.nycTheatreExcerpt || data.lboRoundupExcerpt || data.stagedoorExcerpt || data.metaExcerpt;
+          const hasExcerpt = hasAnyExcerpt(data);
           // Allow through if review has an aggregator-provided star rating (e.g. from WET roundup)
           // even when scraped text was paywall junk that didn't mention the show
           const hasOriginalScore = (data.originalScore && parseOriginalScore(data.originalScore, data.outletId) !== null)
@@ -5567,7 +5568,7 @@ showDirs.forEach(showId => {
 
       // CHECK: Flag reviews that SHOULD have LLM scores but don't
       // These have scorable text but were never run through LLM scoring
-      const scorableText = data.fullText || data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || data.nycTheatreExcerpt || data.lboRoundupExcerpt || data.metaExcerpt || '';
+      const scorableText = data.fullText || getExcerpts(data)[0] || '';
       const hasScorableText = scorableText.length >= 100;
       const hasLlmScore = data.llmScore && data.llmScore.score;
 

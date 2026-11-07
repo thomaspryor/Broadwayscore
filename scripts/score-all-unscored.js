@@ -12,6 +12,7 @@
  */
 
 const fs = require('fs');
+const { hasExcerpt, getExcerpts } = require('./lib/excerpt-fields');
 const path = require('path');
 const { setExtractedScore } = require('./lib/score-routing');
 const { LETTER_GRADES: LETTER_TO_SCORE } = require('./lib/score-conversion-rules');
@@ -141,7 +142,7 @@ showDirs.forEach(showId => {
       let scored = false;
 
       // 1. Try grade extraction from text
-      const textToCheck = data.fullText || data.dtliExcerpt || data.bwwExcerpt || '';
+      const textToCheck = data.fullText || getExcerpts(data)[0] || '';
       const gradeResult = extractLetterGrade(textToCheck);
       if (gradeResult) {
         setExtractedScore(data, {
@@ -180,7 +181,7 @@ showDirs.forEach(showId => {
 
       // 4. Try sentiment analysis on available text
       if (!scored) {
-        const textForSentiment = data.fullText || data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || '';
+        const textForSentiment = data.fullText || getExcerpts(data)[0] || '';
         const sentimentResult = scoreBySentiment(textForSentiment);
 
         if (sentimentResult) {
@@ -206,7 +207,7 @@ showDirs.forEach(showId => {
           file,
           outlet: data.outlet,
           critic: data.criticName,
-          hasAnyText: !!(data.fullText || data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt)
+          hasAnyText: !!(data.fullText || hasExcerpt(data))
         });
         console.log(`⚠ ${showId}/${file}: No data to score (${data.outlet})`);
       }

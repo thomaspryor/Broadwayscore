@@ -23,6 +23,7 @@
  */
 
 const { isReviewTextFile } = require('./lib/review-text-sidecars');
+const { getExcerpts } = require('./lib/excerpt-fields');
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
@@ -195,8 +196,7 @@ async function main() {
 
       // Get best available text
       const text = data.fullText ||
-        data.dtliExcerpt || data.bwwExcerpt ||
-        data.showScoreExcerpt || data.nycTheatreExcerpt || '';
+        getExcerpts(data)[0] || '';
 
       if (text.length < 50) continue; // Too short to classify
 

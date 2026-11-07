@@ -15,6 +15,7 @@
  */
 
 const { isReviewTextFile } = require('./lib/review-text-sidecars');
+const { getExcerpts } = require('./lib/excerpt-fields');
 const fs = require('fs');
 const path = require('path');
 const { parseStarRating, parseLetterGrade, LETTER_GRADES } = require('./lib/score-parsers');
@@ -226,7 +227,7 @@ function checkAggregatorConflict(review) {
 
 function getScoreContext(review) {
   // Try to find the sentence or context containing the score
-  const text = review.fullText || review.dtliExcerpt || review.bwwExcerpt || '';
+  const text = review.fullText || getExcerpts(review)[0] || '';
   const score = review.originalScore;
 
   if (!score || !text) return null;

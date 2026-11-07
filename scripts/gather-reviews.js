@@ -38,6 +38,7 @@
  */
 
 const { isOffBroadwayUrlForBroadwayShow } = require('./lib/review-url-market-guard');
+const { hasExcerpt: hasAnyExcerpt } = require('./lib/excerpt-fields');
 const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const { withTimeout } = require('./lib/with-timeout');
@@ -4209,7 +4210,7 @@ function createReviewFile(showId, reviewData, options = {}) {
   // These are unfetchable and unverifiable — likely aggregator artifacts.
   // Named critics may legitimately have no URL (from ShowScore excerpts).
   if (!review.url && normalizedCriticName === 'unknown') {
-    const hasExcerpt = review.bwwExcerpt || review.dtliExcerpt || review.showScoreExcerpt || review.playbillExcerpt || review.nycTheatreExcerpt || review.lboRoundupExcerpt;
+    const hasExcerpt = hasAnyExcerpt(review) || review.playbillExcerpt;
     if (!hasExcerpt) {
       console.log(`    ✗ Skipping ${filename}: no URL and no excerpt — unfetchable/unverifiable`);
       return 'nullUrl';

@@ -10,6 +10,8 @@
  * Pure functions only (no I/O) so tests require() the real filters.
  */
 
+const { hasExcerpt } = require('./excerpt-fields');
+
 const WINDOW_DAYS_PAST = 3;
 const DAY_MS = 24 * 60 * 60 * 1000;
 // Markets with a press night. Tours and regional stops have none (BRO-4724).
@@ -109,7 +111,7 @@ function needsCollection(r, ctx = {}) {
       || r.contentTier === 'invalid' || r.isRoundupArticle || r.rejectionReason) return false;
   if (r.fetchDiscoveryAbandoned === true || r.fabricatedEntry === true) return false;
   if (r.incompleteReason === 'permanently_unavailable' || r.incompleteReason === MULTI_SHOW_NOT_FOUND) return false;
-  const hasText = r.fullText || r.bwwExcerpt || r.dtliExcerpt || r.showScoreExcerpt || r.nycTheatreExcerpt || r.lboRoundupExcerpt;
+  const hasText = r.fullText || hasExcerpt(r);
   if (hasText || typeof r.url !== 'string' || !r.url.startsWith('http')) return false;
   if (ctx.ledgerEntry && typeof ctx.shouldRetryFetch === 'function') {
     return !!ctx.shouldRetryFetch(ctx.show || null, r, ctx.ledgerEntry).shouldRetry;

@@ -13,6 +13,7 @@
  */
 
 const fs = require('fs');
+const { hasExcerpt: hasAnyExcerpt } = require('./lib/excerpt-fields');
 const path = require('path');
 const { safeWriteReview } = require('./lib/review-write-guard');
 
@@ -86,7 +87,7 @@ if (audit.authorMismatches && audit.authorMismatches.length > 0) {
       continue;
     }
 
-    const hasExcerpt = !!(data.bwwExcerpt || data.dtliExcerpt || data.showScoreExcerpt || data.nycTheatreExcerpt || data.lboRoundupExcerpt);
+    const hasExcerpt = hasAnyExcerpt(data);
     const action = hasExcerpt ? 'fullTextWrongAuthor (has excerpts)' : 'fullTextWrongAuthor (stub)';
 
     console.log(`  ${dryRun ? 'WOULD APPLY' : 'APPLYING'}: ${m.showId}/${m.file}`);
