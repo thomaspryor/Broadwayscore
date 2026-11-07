@@ -37,6 +37,22 @@ function devOwnerPreview(): { reachPeople: number | null } | null {
   } catch { return null; }
 }
 
+/** `?invite=<token>` from an owner's invite link (BRO-7087); checked on the server. */
+function readInvite(): string | null {
+  try {
+    const t = new URLSearchParams(window.location.search).get('invite');
+    return t && t.length <= 200 ? t : null;
+  } catch { return null; }
+}
+
+function dropInviteParam() {
+  try {
+    const u = new URL(window.location.href);
+    u.searchParams.delete('invite');
+    window.history.replaceState(window.history.state, '', u.pathname + u.search + u.hash);
+  } catch { /* old browsers keep the param; harmless */ }
+}
+
 export default function CriticClaimPanel({ slug, name, outlet, claimed, reviewOptions, onOwnerChange, onFlag }: {
   slug: string;
   name: string;
@@ -54,6 +70,10 @@ export default function CriticClaimPanel({ slug, name, outlet, claimed, reviewOp
   const [editOpen, setEditOpen] = useState(false);
   const [addOpen, setAddOpen] = useState(false);
   const [claimsOff, setClaimsOff] = useState(false);
+  const [invite, setInvite] = useState<string | null>(null);
+  const [inviteState, setInviteState] = useState<'idle' | 'working' | 'error'>('idle');
+  const [inviteError, setInviteError] = useState('');
+  useEffect(() => { setInvite(readInvite()); }, []);
   useEffect(() => {
     fetch('/api/critics/status').then((r) => (r.ok ? r.json() : null)).then((j) => { if (j?.claimsDisabled) setClaimsOff(true); }).catch(() => {});
   }, []);
@@ -74,6 +94,29 @@ export default function CriticClaimPanel({ slug, name, outlet, claimed, reviewOp
     if (!isAuthenticated) { setMe({ state: 'signed-out' }); return; }
     refresh();
   }, [loading, isAuthenticated, refresh]);
+
+  // BRO-7087: signed in with an invite link -> take over the page, then show the owner view.
+  useEffect(() => {
+    if (!invite) return;
+    if (me.state === 'owner') { dropInviteParam(); setInvite(null); return; }
+    if ((me.state !== 'none' && me.state !== 'pending') || inviteState !== 'idle') return;
+    setInviteState('working');
+    (async () => {
+      try {
+        const token = await accessToken();
+        if (!token) { setInviteState('error'); setInviteError('Please sign in again.'); return; }
+        const res = await fetch('/api/critics/accept-invite', {
+          method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+          body: JSON.stringify({ slug, token: invite }),
+        });
+        const j = await res.json().catch(() => ({}));
+        if (!res.ok) { setInviteState('error'); setInviteError(j.error || 'Something went wrong. Please try again.'); return; }
+        dropInviteParam();
+        setInvite(null);
+        await refresh();
+      } catch { setInviteState('error'); setInviteError('Something went wrong. Please try again.'); }
+    })();
+  }, [invite, me.state, inviteState, slug, refresh]);
 
   const isOwner = me.state === 'owner';
   useEffect(() => { onOwnerChange?.(isOwner); }, [isOwner, onOwnerChange]);
@@ -101,6 +144,21 @@ export default function CriticClaimPanel({ slug, name, outlet, claimed, reviewOp
         />
       </>
     );
+  }
+  if (invite) {
+    const first = name.trim().split(/\s+/)[0] || name;
+    if (me.state === 'signed-out') {
+      return (
+        <div className="mb-4 flex flex-wrap items-center justify-between gap-3 rounded-lg border border-brand/50 bg-brand/10 px-4 py-3 text-sm">
+          <span className="text-white"><strong>Welcome, {first}.</strong> <span className="text-fg-muted">Sign in to take over your page.</span></span>
+          <button type="button" onClick={() => showSignIn('critic', 'critic_invite', { returnTo: `/critics/${slug}?invite=${encodeURIComponent(invite)}` })} className={btnPrimary}>Sign in</button>
+        </div>
+      );
+    }
+    if (inviteState === 'error' || me.state === 'unavailable') {
+      return <div role="alert" className="mb-4 rounded-lg border border-white/10 bg-surface-raised px-4 py-3 text-sm text-white">{inviteError || 'Invites are not available right now. Please try again later.'}</div>;
+    }
+    return <div className="mb-4 rounded-lg border border-brand/30 bg-brand/10 px-4 py-3 text-sm text-white">Welcome, {first}. Setting up your page…</div>;
   }
   if (claimed) return null;
   if (me.state === 'pending') {
