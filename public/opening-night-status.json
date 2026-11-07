@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-07T17:16:45.094Z",
+  "generatedAt": "2026-11-07T17:37:41.319Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -756,7 +756,7 @@
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 14,
+        "highConfidence": 13,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -1374,7 +1374,7 @@
           "11/12 total",
           "T1:2/3"
         ],
-        "highConfidence": 11,
+        "highConfidence": 10,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -3030,28 +3030,27 @@
       "status": "open",
       "slug": "parcel-from-america-off-broadway",
       "thumbnail": "/images/shows/parcel-from-america-off-broadway-2026/thumbnail.webp",
-      "siteScore": 70.35,
-      "liveScore": 70,
-      "scoreDrift": -0.3499999999999943,
+      "siteScore": 71.58,
+      "liveScore": 72,
+      "scoreDrift": 0.4200000000000017,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 5,
+      "total": 6,
       "t1": 0,
-      "t2": 2,
+      "t2": 3,
       "t3": 3,
-      "positive": 4,
+      "positive": 5,
       "mixed": 0,
       "negative": 1,
       "readiness": {
         "ready": false,
         "reasons": [
-          "5/12 total",
+          "6/12 total",
           "T1:0/3",
-          "T2:2/3",
-          "hi-conf:5/8"
+          "hi-conf:6/8"
         ],
-        "highConfidence": 5,
+        "highConfidence": 6,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -3200,10 +3199,6 @@
         },
         {
           "name": "The New York Sun",
-          "isDualMarket": false
-        },
-        {
-          "name": "Theater Scene",
           "isDualMarket": false
         },
         {
@@ -3444,6 +3439,18 @@
           "t2": 2,
           "t3": 3,
           "p": 4,
+          "m": 0,
+          "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-11-07T17:37:41.319Z",
+          "rc": 6,
+          "s": 71.58,
+          "t1": 0,
+          "t2": 3,
+          "t3": 3,
+          "p": 5,
           "m": 0,
           "n": 1,
           "bc": "waiting"
