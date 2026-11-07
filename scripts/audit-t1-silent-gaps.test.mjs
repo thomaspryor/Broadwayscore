@@ -66,7 +66,7 @@ test('video-promo-stuck-in-rescore-loop class (end-of-the-rainbow): includable, 
   'silent gap (rescoreAttempts kept climbing, 69 in the wild) until the piece is ' +
   'terminally classified not_a_review', () => {
   const stuckInRescoreLoop = {
-    url: 'https://www.broadwayworld.com/article/Video-Jinkx-Monsoon-as-Judy-Garland-in-END-OF-THE-RAINBOW-20260520',
+    url: 'https://www.cbsnews.com/video/jinkx-monsoon-as-judy-garland-in-end-of-the-rainbow/',
     contentTier: 'truncated',
     fullText: 'y'.repeat(700),
     textFetchedAt: '2026-06-28T17:11:11.373Z',
@@ -90,6 +90,10 @@ test('video-promo-stuck-in-rescore-loop class (end-of-the-rainbow): includable, 
     rejectionReason: 'not_a_review',
   };
   assert.equal(classify(terminallyExcluded), null);
+  // BRO-7079: the incident's own BWW 'Video-...' url is now a listing page
+  // (feature-not-review), so it is never a gap even before triage.
+  assert.equal(classify({ ...stuckInRescoreLoop,
+    url: 'https://www.broadwayworld.com/article/Video-Jinkx-Monsoon-as-Judy-Garland-in-END-OF-THE-RAINBOW-20260520' }), null);
 });
 
 test('cross-production duplicate-stub class (paranormal-activity-boston-regional): a ' +
