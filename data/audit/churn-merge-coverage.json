@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-11-07T03:53:15.635Z",
+    "generatedAt": "2026-11-07T04:26:04.921Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": true,
@@ -17,18 +17,18 @@
   "exempt": [
     {
       "path": "data/audit/alert-ledger.json",
-      "churn": 52
+      "churn": 53
     }
   ],
   "covered": [
     {
       "path": "data/audit/scraper-spend-ledger.jsonl",
-      "churn": 80,
+      "churn": 85,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 59,
+      "churn": 57,
       "mergeAttr": "union"
     },
     {
@@ -58,12 +58,12 @@
     },
     {
       "path": "data/collection-state/live-progress.json",
-      "churn": 32,
+      "churn": 37,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/progress.json",
-      "churn": 32,
+      "churn": 37,
       "mergeAttr": "ours"
     },
     {
