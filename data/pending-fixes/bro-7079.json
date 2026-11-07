@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7079",
   "planId": "7b3ba14e-a757-401a-9cd9-1098e612f350",
-  "status": "pending",
+  "status": "partial",
   "createdAt": "2026-11-07T15:38:11.542Z",
   "submitter": {
     "name": null,
@@ -23,5 +23,14 @@
         "description": "BRO-4430 repair: url is the BWW Review Roundup page; R. Scott Reedy's own BWW Boston review is the 2026-06-14 article"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-07T17:51:42.395Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "url: the current url is not provably wrong (aggregator, non-review page, another critic's review, another show's review, or an unverified legacy web-search url)"
+    }
+  ],
+  "executedIn": "ci"
 }
