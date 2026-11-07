@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-11-07T10:04:26.682Z",
+  "generatedAt": "2026-11-07T11:55:13.926Z",
   "windowDays": 1095,
-  "targets": 908,
-  "auditedThisRun": 6,
-  "carriedForward": 2058,
+  "targets": 913,
+  "auditedThisRun": 5,
+  "carriedForward": 2059,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
     "withGap": 637,
-    "missingCurrentRun": 1192,
+    "missingCurrentRun": 1191,
     "totalCitedNoUrl": 0,
     "totalFlaggedMisses": 905,
     "totalRecoverable": 56,
@@ -16,7 +16,7 @@
     "humanExcluded": 26,
     "automatedExcluded": 1009,
     "automatedExcludedListed": 714,
-    "priorProductionCitations": 6031
+    "priorProductionCitations": 6035
   },
   "results": [
     {
@@ -142150,28 +142150,11 @@
       "category": "off-broadway",
       "previewsStartDate": "2026-11-05",
       "aggregatorArticles": [],
-      "aggregatorListedUrls": [
-        "https://www.latimes.com/socal/glendale-news-press/tn-gnp-film-review-artists-feature-film-heart-of-a-dog-defies-categorization-20151114-story.html"
-      ],
+      "aggregatorListedUrls": [],
       "dirFiles": 0,
       "dirClean": 0,
       "inReviewsJson": 0,
-      "missing": [
-        {
-          "url": "https://www.latimes.com/socal/glendale-news-press/tn-gnp-film-review-artists-feature-film-heart-of-a-dog-defies-categorization-20151114-story.html",
-          "host": "latimes.com",
-          "knownOutletId": "latimes",
-          "serpCensus": true,
-          "priorRun": true,
-          "priorRunSource": "pending-file-date:2015-11-15",
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ]
-        }
-      ],
+      "missing": [],
       "dirOnly": [],
       "flaggedMisses": [],
       "citedNoUrl": [],
@@ -142197,7 +142180,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 0,
+            "results": 10,
             "accepted": 0,
             "error": null
           },
@@ -142207,7 +142190,7 @@
             "page": 1,
             "geo": "us",
             "ok": true,
-            "results": 9,
+            "results": 10,
             "accepted": 0,
             "error": null
           },
@@ -142217,7 +142200,7 @@
             "page": 2,
             "geo": "us",
             "ok": true,
-            "results": 0,
+            "results": 10,
             "accepted": 0,
             "error": null
           }
@@ -142228,28 +142211,16 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 15,
+        "count": 37,
         "byReason": {
           "non-review-host": 10,
+          "not-http-url": 23,
           "aggregator-internal-nav": 1,
-          "venue-production-page": 3,
-          "non-review-path": 1
+          "venue-production-page": 3
         }
       },
       "dedupedVariants": [],
-      "automatedExcludedListed": 0,
       "unextractable": [],
-      "weIngestBlocked": [
-        {
-          "url": "https://www.latimes.com/socal/glendale-news-press/tn-gnp-film-review-artists-feature-film-heart-of-a-dog-defies-categorization-20151114-story.html",
-          "host": "latimes.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        }
-      ],
-      "ingestResults": [],
-      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "no-census-yet",
         "missing": [],
@@ -142260,7 +142231,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-11-06T22:26:51.704Z"
+      "computedAt": "2026-11-07T11:55:13.926Z"
     },
     {
       "showId": "heart-of-rock-and-roll-2024",
@@ -173502,7 +173473,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 9,
+            "results": 4,
             "accepted": 0,
             "error": null
           },
@@ -173522,7 +173493,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 9,
+            "results": 10,
             "accepted": 0,
             "error": null
           },
@@ -173553,16 +173524,12 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 37,
+        "count": 39,
         "byReason": {
-          "non-review-host": 18,
+          "non-review-host": 6,
           "no-review-evidence": 3,
-          "aggregator-internal-nav": 4,
-          "non-stage-review": 4,
-          "venue-production-page": 3,
-          "news-roundup-site": 1,
-          "merch-store": 1,
-          "news-article": 1,
+          "not-http-url": 26,
+          "non-stage-review": 2,
           "census-junk-host": 2
         }
       },
@@ -173578,7 +173545,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-11-06T22:26:51.704Z"
+      "computedAt": "2026-11-07T11:55:13.926Z"
     },
     {
       "showId": "kathy-and-stella-solve-a-murder-west-end-2024",
@@ -212122,20 +212089,30 @@
         }
       ],
       "aggregatorArticles": [
+        "https://playbill.com/article/reviews-what-did-critics-think-of-medea-at-the-metropolitan-opera",
+        "https://playbill.com/article/read-reviews-for-bams-medea-starring-rose-byrne-and-bobby-cannavale",
         "https://www.broadwayworld.com/article/Review-Roundup-BAMs-MEDEA-Starring-Rose-Byrne-and-Bobby-Cannavale-What-Did-the-Critics-Think-20200131",
         "https://www.broadwayworld.com/article/Review-Roundup-The-Met-Opera-Opens-New-Season-With-MEDEA-20220928",
         "https://www.broadwayworld.com/article/Review-Roundup-National-Theatres-MEDEA-with-Helen-McCrory-20140725"
       ],
       "aggregatorListedUrls": [
-        "https://www.nytimes.com/2020/01/30/theater/medea-review.html",
-        "https://www.thewrap.com/medea-theater-review-rose-byrne-bobby-cannavale/",
+        "https://newyorkclassicalreview.com/2022/09/radvanovsky-triumphs-in-mets-season-opening-medea/",
+        "https://www.nytimes.com/2022/09/28/arts/music/review-medea-met-opera.html",
+        "https://observer.com/2022/09/review-soprano-sondra-radvanovsky-brings-back-medea-with-vengeance/",
+        "https://operawire.com/metropolitan-opera-2022-23-review-medea/",
+        "https://parterre.com/2022/09/28/how-do-you-solve-a-problem-like-medea-2/",
+        "https://www.wsj.com/articles/medea-review-luigi-cherubini-metropolitan-opera-sondra-radvanosky-david-mcvicar-matthew-polenzani-francois-benoit-hoffman-carlo-zangarini-janai-brugger-michele-pertusi-carlo-rizzi-ekaterina-gubanova-11664398172",
+        "https://www.thedailybeast.com/rose-byrne-and-bobby-cannavale-take-medea-to-a-science-lab-and-charles-buschs-brilliant-lily-dare",
         "https://www.hollywoodreporter.com/review/medea-theater-review-1274662",
         "https://www.vulture.com/2020/01/how-do-you-solve-a-problem-like-medea.html",
-        "https://www.vulture.com/2020/01/rose-byrne-bobby-cannavale-medea.html",
-        "https://observer.com/2020/01/medea-bam-rose-byrne-bobby-cannavale-review/",
+        "https://www.nytimes.com/2020/01/30/theater/medea-review.html",
+        "http://nystagereview.com/2020/01/30/medea-another-woman-on-the-verge-and-past-it/",
         "http://nystagereview.com/2020/01/30/medea-simon-stones-not-too-searching-euripides-update/",
-        "https://operawire.com/metropolitan-opera-2022-23-review-medea/",
-        "https://www.nytimes.com/2022/09/28/arts/music/review-medea-met-opera.html",
+        "https://observer.com/2020/01/medea-bam-rose-byrne-bobby-cannavale-review/",
+        "https://www.timeout.com/newyork/theater/medea-2",
+        "https://www.washingtonpost.com/entertainment/theater_dance/beware-this-stylish-medea-adaptation-offers-no-escape-for-rose-byrne-or-for-you/2020/01/30/05b0ffdc-437a-11ea-b503-2b077c436617_story.html",
+        "https://www.thewrap.com/medea-theater-review-rose-byrne-bobby-cannavale/",
+        "https://www.vulture.com/2020/01/rose-byrne-bobby-cannavale-medea.html",
         "http://www.nytimes.com/2014/07/26/theater/theater-review-medea-kathleen-turner-and-noel-coward-on-london-stages.html",
         "https://www.theguardian.com/stage/2014/jul/22/medea-carrie-cracknell-helen-mccrory-national-theatre-review",
         "http://www.telegraph.co.uk/culture/theatre/theatre-reviews/10980862/Medea-National-Theatre-review-thrilling-and-merciless.html",
@@ -212146,11 +212123,9 @@
         "https://newyorktheatrereview.blogspot.com/2015/10/wesley-doucette-on-medea-as-presented.html",
         "http://www.ayoungertheatre.com/review-medea-wilton-music-hall-teatro-patalogico/",
         "https://newyorkclassicalreview.com/2026/10/yoncheva-spyres-provide-adrenaline-injection-to-mets-medea-revival/",
-        "https://operacanada.ca/the-metropolitan-opera-medea-sondra-radvanovsky-giving-one-of-the-most-fully-immersive-performances-ive-ever-seen-on-an-opera-stage/",
-        "https://bachtrack.com/review-cherubini-medea-radvanovsky-polenzani-mcvicar-metropolitan-opera-new-york-september-2022",
-        "https://operawire.com/metropolitan-opera-2026-27-review-medea/",
         "https://www.the-tls.com/arts/theatre/medea-metropolitan-opera-new-york-review-larry-wolff",
-        "https://indieopera.com/review-medea/",
+        "https://operawire.com/metropolitan-opera-2026-27-review-medea/",
+        "https://www.britishtheatreguide.info/reviews/medea-ardis-krainik-t-24993",
         "https://www.timeout.com/newyork/theater/medea-4",
         "https://www.broadwayworld.com/bwwopera/article/Review-Spectacular-Yoncheva-Shows-What-MEDEA-Is-All-About-at-the-Met-20261101",
         "https://operawire.com/metropolitan-operas-medea-heads-for-live-in-hd-this-weekend/",
@@ -212159,6 +212134,7 @@
         "https://www.theatermania.com/news/review-a-messy-divorce-plays-out-in-public-in-medea-at-the-metropolitan-opera_94358/",
         "https://aroundthetownchicago.com/theatre-reviews/medea-reviewed-by-jacob-davis/",
         "https://www.the-tls.com/arts/theatre/medea-sohoplace-phaedra-national-theatre-review-mary-beard",
+        "https://bachtrack.com/review-cherubini-medea-radvanovsky-polenzani-mcvicar-metropolitan-opera-new-york-september-2022",
         "https://bachtrack.com/fr_FR/review-cherubini-medea-radvanovsky-polenzani-mcvicar-metropolitan-opera-new-york-september-2022",
         "https://everything-theatre.co.uk/2026/10/review-the-musical-medea-upstairs-at-the-gatehouse/"
       ],
@@ -212167,23 +212143,57 @@
       "inReviewsJson": 4,
       "missing": [
         {
-          "url": "https://www.nytimes.com/2020/01/30/theater/medea-review.html",
+          "url": "https://www.nytimes.com/2022/09/28/arts/music/review-medea-met-opera.html",
           "host": "nytimes.com",
           "knownOutletId": "nytimes",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
           "sources": [
             {
               "source": "aggregator-article",
-              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-BAMs-MEDEA-Starring-Rose-Byrne-and-Bobby-Cannavale-What-Did-the-Critics-Think-20200131"
+              "sourceUrl": "https://playbill.com/article/reviews-what-did-critics-think-of-medea-at-the-metropolitan-opera"
+            },
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-The-Met-Opera-Opens-New-Season-With-MEDEA-20220928"
             }
-          ],
+          ]
+        },
+        {
+          "url": "https://observer.com/2022/09/review-soprano-sondra-radvanovsky-brings-back-medea-with-vengeance/",
+          "host": "observer.com",
+          "knownOutletId": "observer",
           "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-what-did-critics-think-of-medea-at-the-metropolitan-opera"
+            }
+          ]
+        },
+        {
+          "url": "https://www.wsj.com/articles/medea-review-luigi-cherubini-metropolitan-opera-sondra-radvanosky-david-mcvicar-matthew-polenzani-francois-benoit-hoffman-carlo-zangarini-janai-brugger-michele-pertusi-carlo-rizzi-ekaterina-gubanova-11664398172",
+          "host": "wsj.com",
+          "knownOutletId": "wsj",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-what-did-critics-think-of-medea-at-the-metropolitan-opera"
+            }
+          ]
         },
         {
           "url": "https://www.hollywoodreporter.com/review/medea-theater-review-1274662",
           "host": "hollywoodreporter.com",
           "knownOutletId": "hollywood-reporter",
           "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-reviews-for-bams-medea-starring-rose-byrne-and-bobby-cannavale"
+            },
             {
               "source": "aggregator-article",
               "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-BAMs-MEDEA-Starring-Rose-Byrne-and-Bobby-Cannavale-What-Did-the-Critics-Think-20200131"
@@ -212199,7 +212209,101 @@
           "sources": [
             {
               "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-reviews-for-bams-medea-starring-rose-byrne-and-bobby-cannavale"
+            },
+            {
+              "source": "aggregator-article",
               "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-BAMs-MEDEA-Starring-Rose-Byrne-and-Bobby-Cannavale-What-Did-the-Critics-Think-20200131"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.nytimes.com/2020/01/30/theater/medea-review.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-reviews-for-bams-medea-starring-rose-byrne-and-bobby-cannavale"
+            },
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-BAMs-MEDEA-Starring-Rose-Byrne-and-Bobby-Cannavale-What-Did-the-Critics-Think-20200131"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://nystagereview.com/2020/01/30/medea-another-woman-on-the-verge-and-past-it/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-reviews-for-bams-medea-starring-rose-byrne-and-bobby-cannavale"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://nystagereview.com/2020/01/30/medea-simon-stones-not-too-searching-euripides-update/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-reviews-for-bams-medea-starring-rose-byrne-and-bobby-cannavale"
+            },
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-BAMs-MEDEA-Starring-Rose-Byrne-and-Bobby-Cannavale-What-Did-the-Critics-Think-20200131"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://observer.com/2020/01/medea-bam-rose-byrne-bobby-cannavale-review/",
+          "host": "observer.com",
+          "knownOutletId": "observer",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-reviews-for-bams-medea-starring-rose-byrne-and-bobby-cannavale"
+            },
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-BAMs-MEDEA-Starring-Rose-Byrne-and-Bobby-Cannavale-What-Did-the-Critics-Think-20200131"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.timeout.com/newyork/theater/medea-2",
+          "host": "timeout.com",
+          "knownOutletId": "timeout",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-reviews-for-bams-medea-starring-rose-byrne-and-bobby-cannavale"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.washingtonpost.com/entertainment/theater_dance/beware-this-stylish-medea-adaptation-offers-no-escape-for-rose-byrne-or-for-you/2020/01/30/05b0ffdc-437a-11ea-b503-2b077c436617_story.html",
+          "host": "washingtonpost.com",
+          "knownOutletId": "washpost",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-reviews-for-bams-medea-starring-rose-byrne-and-bobby-cannavale"
             }
           ],
           "priorRun": true,
@@ -212217,45 +212321,6 @@
           ],
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://observer.com/2020/01/medea-bam-rose-byrne-bobby-cannavale-review/",
-          "host": "observer.com",
-          "knownOutletId": "observer",
-          "sources": [
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-BAMs-MEDEA-Starring-Rose-Byrne-and-Bobby-Cannavale-What-Did-the-Critics-Think-20200131"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://nystagereview.com/2020/01/30/medea-simon-stones-not-too-searching-euripides-update/",
-          "host": "nystagereview.com",
-          "knownOutletId": "nysr",
-          "sources": [
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-BAMs-MEDEA-Starring-Rose-Byrne-and-Bobby-Cannavale-What-Did-the-Critics-Think-20200131"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.nytimes.com/2022/09/28/arts/music/review-medea-met-opera.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date",
-          "sources": [
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-The-Met-Opera-Opens-New-Season-With-MEDEA-20220928"
-            }
-          ]
         },
         {
           "url": "http://www.nytimes.com/2014/07/26/theater/theater-review-medea-kathleen-turner-and-noel-coward-on-london-stages.html",
@@ -212362,20 +212427,6 @@
           "priorRunSource": "show-score-url-year"
         },
         {
-          "url": "https://operacanada.ca/the-metropolitan-opera-medea-sondra-radvanovsky-giving-one-of-the-most-fully-immersive-performances-ive-ever-seen-on-an-opera-stage/",
-          "host": "operacanada.ca",
-          "knownOutletId": "operacanada",
-          "serpCensus": true,
-          "priorRun": true,
-          "priorRunSource": "pending-file-date:2022-10-13",
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ]
-        },
-        {
           "url": "https://www.the-tls.com/arts/theatre/medea-metropolitan-opera-new-york-review-larry-wolff",
           "host": "the-tls.com",
           "knownOutletId": "the-tls",
@@ -212388,12 +212439,12 @@
           ]
         },
         {
-          "url": "https://indieopera.com/review-medea/",
-          "host": "indieopera.com",
-          "knownOutletId": "indie-opera",
+          "url": "https://www.britishtheatreguide.info/reviews/medea-ardis-krainik-t-24993",
+          "host": "britishtheatreguide.info",
+          "knownOutletId": "british-theatre",
           "serpCensus": true,
           "priorRun": true,
-          "priorRunSource": "pending-file-date:2022-10-01",
+          "priorRunSource": "pending-file-date:2025-10-14",
           "sources": [
             {
               "source": "serp-census",
@@ -212436,22 +212487,40 @@
               "sourceUrl": null
             }
           ]
-        },
-        {
-          "url": "https://www.the-tls.com/arts/theatre/medea-sohoplace-phaedra-national-theatre-review-mary-beard",
-          "host": "the-tls.com",
-          "knownOutletId": "the-tls",
-          "serpCensus": true,
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ]
         }
       ],
       "dirOnly": [],
       "flaggedMisses": [
+        {
+          "url": "https://www.thedailybeast.com/rose-byrne-and-bobby-cannavale-take-medea-to-a-science-lab-and-charles-buschs-brilliant-lily-dare",
+          "host": "thedailybeast.com",
+          "knownOutletId": "dailybeast",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "dailybeast--tim-teeman.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.thedailybeast.com/rose-byrne-and-bobby-cannavale-take-medea-to-a-science-lab-and-charles-buschs-brilliant-lily-dare"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-reviews-for-bams-medea-starring-rose-byrne-and-bobby-cannavale"
+            }
+          ],
+          "reverify": false
+        },
         {
           "url": "https://www.thewrap.com/medea-theater-review-rose-byrne-bobby-cannavale/",
           "host": "thewrap.com",
@@ -212475,6 +212544,10 @@
           "priorRun": true,
           "priorRunSource": "aggregator-article-date",
           "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-reviews-for-bams-medea-starring-rose-byrne-and-bobby-cannavale"
+            },
             {
               "source": "aggregator-article",
               "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-BAMs-MEDEA-Starring-Rose-Byrne-and-Bobby-Cannavale-What-Did-the-Critics-Think-20200131"
@@ -212613,7 +212686,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 9,
+            "results": 10,
             "accepted": 0,
             "error": null
           },
@@ -212623,8 +212696,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 8,
-            "accepted": 4,
+            "results": 0,
+            "accepted": 0,
             "error": null
           },
           {
@@ -212633,7 +212706,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 9,
+            "results": 10,
             "accepted": 0,
             "error": null
           },
@@ -212644,7 +212717,7 @@
             "geo": "us",
             "ok": true,
             "results": 8,
-            "accepted": 2,
+            "accepted": 3,
             "error": null
           },
           {
@@ -212654,7 +212727,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 0,
             "error": null
           },
           {
@@ -212664,35 +212737,40 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           }
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 8,
+        "resultCount": 4,
         "error": null
       },
       "candidatesRejected": {
-        "count": 831,
+        "count": 1071,
         "byReason": {
-          "non-review-host": 62,
-          "aggregator-internal-nav": 632,
-          "venue-production-page": 1,
-          "no-review-evidence": 2,
-          "ticketing-reseller": 1,
-          "not-http-url": 112,
-          "aggregator-section-root": 15,
-          "podcast-episode": 1,
+          "non-review-host": 92,
+          "no-review-evidence": 1,
+          "not-http-url": 151,
+          "non-stage-review": 2,
+          "aggregator-internal-nav": 775,
+          "production-database-listing": 21,
+          "aggregator-section-root": 22,
+          "roundup-page": 5,
           "show-listing-page": 1,
-          "census-junk-host": 1,
-          "event-listing": 1,
-          "review-hub-page": 1,
-          "non-stage-review": 1
+          "ticketing-reseller": 1
         }
       },
       "dedupedVariants": [],
       "priorRunArticles": [
+        {
+          "url": "https://playbill.com/article/reviews-what-did-critics-think-of-medea-at-the-metropolitan-opera",
+          "publishDate": "2022-09-29"
+        },
+        {
+          "url": "https://playbill.com/article/read-reviews-for-bams-medea-starring-rose-byrne-and-bobby-cannavale",
+          "publishDate": "2020-01-31"
+        },
         {
           "url": "https://www.broadwayworld.com/article/Review-Roundup-BAMs-MEDEA-Starring-Rose-Byrne-and-Bobby-Cannavale-What-Did-the-Critics-Think-20200131",
           "publishDate": "2020-01-31"
@@ -212716,11 +212794,39 @@
         }
       ],
       "automatedExcludedListed": 3,
-      "unextractable": [],
+      "unextractable": [
+        {
+          "url": "https://www.the-tls.com/arts/theatre/medea-sohoplace-phaedra-national-theatre-review-mary-beard",
+          "host": "the-tls.com",
+          "knownOutletId": "the-tls",
+          "serpCensus": true,
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
+          "zeroCharAttempts": 3
+        }
+      ],
       "weIngestBlocked": [
         {
-          "url": "https://www.nytimes.com/2020/01/30/theater/medea-review.html",
+          "url": "https://www.nytimes.com/2022/09/28/arts/music/review-medea-met-opera.html",
           "host": "nytimes.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://observer.com/2022/09/review-soprano-sondra-radvanovsky-brings-back-medea-with-vengeance/",
+          "host": "observer.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.wsj.com/articles/medea-review-luigi-cherubini-metropolitan-opera-sondra-radvanosky-david-mcvicar-matthew-polenzani-francois-benoit-hoffman-carlo-zangarini-janai-brugger-michele-pertusi-carlo-rizzi-ekaterina-gubanova-11664398172",
+          "host": "wsj.com",
           "priorRun": true,
           "reason": "prior-run",
           "censusGateOn": true
@@ -212740,15 +212846,15 @@
           "censusGateOn": true
         },
         {
-          "url": "https://www.vulture.com/2020/01/rose-byrne-bobby-cannavale-medea.html",
-          "host": "vulture.com",
+          "url": "https://www.nytimes.com/2020/01/30/theater/medea-review.html",
+          "host": "nytimes.com",
           "priorRun": true,
           "reason": "prior-run",
           "censusGateOn": true
         },
         {
-          "url": "https://observer.com/2020/01/medea-bam-rose-byrne-bobby-cannavale-review/",
-          "host": "observer.com",
+          "url": "http://nystagereview.com/2020/01/30/medea-another-woman-on-the-verge-and-past-it/",
+          "host": "nystagereview.com",
           "priorRun": true,
           "reason": "prior-run",
           "censusGateOn": true
@@ -212761,8 +212867,29 @@
           "censusGateOn": true
         },
         {
-          "url": "https://www.nytimes.com/2022/09/28/arts/music/review-medea-met-opera.html",
-          "host": "nytimes.com",
+          "url": "https://observer.com/2020/01/medea-bam-rose-byrne-bobby-cannavale-review/",
+          "host": "observer.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.timeout.com/newyork/theater/medea-2",
+          "host": "timeout.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.washingtonpost.com/entertainment/theater_dance/beware-this-stylish-medea-adaptation-offers-no-escape-for-rose-byrne-or-for-you/2020/01/30/05b0ffdc-437a-11ea-b503-2b077c436617_story.html",
+          "host": "washingtonpost.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.vulture.com/2020/01/rose-byrne-bobby-cannavale-medea.html",
+          "host": "vulture.com",
           "priorRun": true,
           "reason": "prior-run",
           "censusGateOn": true
@@ -212824,15 +212951,8 @@
           "censusGateOn": true
         },
         {
-          "url": "https://operacanada.ca/the-metropolitan-opera-medea-sondra-radvanovsky-giving-one-of-the-most-fully-immersive-performances-ive-ever-seen-on-an-opera-stage/",
-          "host": "operacanada.ca",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://indieopera.com/review-medea/",
-          "host": "indieopera.com",
+          "url": "https://www.britishtheatreguide.info/reviews/medea-ardis-krainik-t-24993",
+          "host": "britishtheatreguide.info",
           "priorRun": true,
           "reason": "prior-run",
           "censusGateOn": true
@@ -212961,13 +213081,6 @@
             "url": "https://aroundthetownchicago.com/theatre-reviews/medea-reviewed-by-jacob-davis/"
           },
           {
-            "outletId": "the-tls",
-            "outlet": "the-tls",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.the-tls.com/arts/theatre/medea-sohoplace-phaedra-national-theatre-review-mary-beard"
-          },
-          {
             "outletId": "bachtrack",
             "outlet": "bachtrack",
             "critic": "Unknown",
@@ -212992,10 +213105,22 @@
         "suppressedMissing": [],
         "candidates": [
           {
+            "url": "https://newyorkclassicalreview.com/2022/09/radvanovsky-triumphs-in-mets-season-opening-medea/",
+            "outletId": "newyorkclassicalreview.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-07T11:55:13.926Z"
+          },
+          {
             "url": "https://operawire.com/metropolitan-opera-2022-23-review-medea/",
             "outletId": "operawire.com",
             "state": "live",
             "firstSeenAt": "2026-11-01T16:44:25.468Z"
+          },
+          {
+            "url": "https://parterre.com/2022/09/28/how-do-you-solve-a-problem-like-medea-2/",
+            "outletId": "parterre.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-07T11:55:13.926Z"
           },
           {
             "url": "https://newyorkclassicalreview.com/2026/10/yoncheva-spyres-provide-adrenaline-injection-to-mets-medea-revival/",
@@ -213062,13 +213187,6 @@
             "firstSeenAt": "2026-11-01T23:23:22.746Z"
           },
           {
-            "url": "https://www.the-tls.com/arts/theatre/medea-sohoplace-phaedra-national-theatre-review-mary-beard",
-            "outletId": "the-tls",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-11-01T16:44:25.468Z"
-          },
-          {
             "url": "https://bachtrack.com/review-cherubini-medea-radvanovsky-polenzani-mcvicar-metropolitan-opera-new-york-september-2022",
             "outletId": "bachtrack",
             "state": "GAP",
@@ -213101,7 +213219,7 @@
         "liveCount": 5,
         "candidateCount": 11
       },
-      "computedAt": "2026-11-06T19:17:50.122Z"
+      "computedAt": "2026-11-07T11:55:13.926Z"
     },
     {
       "showId": "meet-the-cartozians-off-broadway-2025",
@@ -327255,7 +327373,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 0,
+            "results": 4,
             "accepted": 0,
             "error": null
           },
@@ -327285,7 +327403,7 @@
             "page": 1,
             "geo": "us",
             "ok": true,
-            "results": 0,
+            "results": 10,
             "accepted": 0,
             "error": null
           },
@@ -327295,7 +327413,7 @@
             "page": 2,
             "geo": "us",
             "ok": true,
-            "results": 0,
+            "results": 10,
             "accepted": 0,
             "error": null
           }
@@ -327306,8 +327424,15 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 19,
+        "byReason": {
+          "non-review-host": 5,
+          "not-http-url": 8,
+          "non-stage-review": 1,
+          "aggregator-internal-nav": 3,
+          "ticketing-reseller": 1,
+          "write-path-blocked": 1
+        }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 0,
@@ -327370,7 +327495,7 @@
         "liveCount": 0,
         "candidateCount": 2
       },
-      "computedAt": "2026-11-06T22:26:51.704Z"
+      "computedAt": "2026-11-07T11:55:13.926Z"
     },
     {
       "showId": "the-cherry-orchard-park-avenue-armory-off-broadway-2026",
@@ -398545,7 +398670,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 5,
+            "results": 7,
             "accepted": 0,
             "error": null
           },
@@ -398555,7 +398680,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 0,
+            "results": 10,
             "accepted": 0,
             "error": null
           },
@@ -398565,7 +398690,7 @@
             "page": 1,
             "geo": "us",
             "ok": true,
-            "results": 0,
+            "results": 10,
             "accepted": 0,
             "error": null
           },
@@ -398575,7 +398700,7 @@
             "page": 2,
             "geo": "us",
             "ok": true,
-            "results": 0,
+            "results": 10,
             "accepted": 0,
             "error": null
           }
@@ -398586,10 +398711,12 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 6,
+        "count": 38,
         "byReason": {
           "non-review-host": 4,
-          "aggregator-internal-nav": 1,
+          "not-http-url": 25,
+          "census-junk-host": 6,
+          "aggregator-internal-nav": 2,
           "write-path-blocked": 1
         }
       },
@@ -398605,7 +398732,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-11-06T22:26:51.704Z"
+      "computedAt": "2026-11-07T11:55:13.926Z"
     },
     {
       "showId": "transcendency-rising-short-plays-about-defying-limitations-off-broadway-2026",
@@ -423654,25 +423781,23 @@
     }
   ],
   "staleness": {
-    "at": "2026-11-07T10:04:26.681Z",
+    "at": "2026-11-07T11:55:13.925Z",
     "reserveEvery": 4,
     "reservedAttempted": [
-      "tosca-english-national-opera-west-end-2026"
+      "medea-off-broadway-2026"
     ],
     "catalogueReserveEvery": 8,
-    "catalogueAttempted": [
-      "orlando-off-west-end-2026"
-    ],
-    "neverAuditedDueAtStart": 631,
+    "catalogueAttempted": [],
+    "neverAuditedDueAtStart": 630,
     "oldestDueRowAtStart": {
       "showId": "this-is-my-favorite-song-off-broadway-2024",
       "computedAt": "2026-10-23T14:07:48.228Z",
-      "ageHours": 355.6
+      "ageHours": 357.5
     },
     "oldestDueRowAfterRun": {
       "showId": "this-is-my-favorite-song-off-broadway-2024",
       "computedAt": "2026-10-23T14:07:48.228Z",
-      "ageHours": 355.9
+      "ageHours": 357.8
     }
   }
 }
