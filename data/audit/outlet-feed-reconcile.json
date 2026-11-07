@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-07T04:54:15.380Z",
+  "generatedAt": "2026-11-07T07:06:43.543Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -101,10 +101,6 @@
   "feedsChecked": 84,
   "feedsFailed": [
     {
-      "outletId": "theater-life",
-      "error": "Timeout fetching https://theaterlife.com/feed"
-    },
-    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
@@ -125,8 +121,8 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 825,
-  "matchedGaps": 8,
+  "itemsScanned": 833,
+  "matchedGaps": 9,
   "possibleGaps": 4,
   "gaps": [
     {
@@ -146,6 +142,15 @@
       "url": "https://1minutecritic.com/adirondack-chair-circle-steppenwolf-review/",
       "headline": "The moms around this fire pit would like a word with the school librarian",
       "publishDate": "2026-11-03"
+    },
+    {
+      "showId": "speculations-off-west-end-2026",
+      "title": "Speculations",
+      "level": "matched",
+      "outletId": "readaboutstuff",
+      "url": "https://readaboutstuff.com/2026/11/07/review-speculations-marylebone-theatre-london/",
+      "headline": "Review: Speculations &#8211; Marylebone Theatre, London",
+      "publishDate": "2026-11-07"
     },
     {
       "showId": "the-blue-violinist-over-west-end-avenue-off-broadway-2026",

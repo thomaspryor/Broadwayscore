@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-11-07T04:50:57.436Z",
+  "generatedAt": "2026-11-07T07:06:02.282Z",
   "windowDays": 1095,
-  "targets": 902,
-  "auditedThisRun": 5,
-  "carriedForward": 2058,
+  "targets": 912,
+  "auditedThisRun": 4,
+  "carriedForward": 2059,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 639,
-    "missingCurrentRun": 1193,
+    "withGap": 638,
+    "missingCurrentRun": 1190,
     "totalCitedNoUrl": 0,
     "totalFlaggedMisses": 904,
     "totalRecoverable": 56,
@@ -16,7 +16,7 @@
     "humanExcluded": 26,
     "automatedExcluded": 1008,
     "automatedExcludedListed": 713,
-    "priorProductionCitations": 6076
+    "priorProductionCitations": 6075
   },
   "results": [
     {
@@ -386,25 +386,21 @@
       "status": "open",
       "category": "off-broadway",
       "previewsStartDate": "2026-10-20",
-      "aggregatorArticles": [
-        "https://playbill.com/article/what-are-the-reviews-for-222---a-ghost-story-off-broadway",
-        "https://www.broadwayworld.com/article/Review-Roundup-222-A-GHOST-STORY-Opens-Off-Broadway-with-Anna-Camp-Jasmine-Cephas-Jones-and-More-20261105"
-      ],
+      "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://1minutecritic.com/222-a-ghost-story-off-broadway-review/",
         "https://culturesauce.com/222-ghost-story-finn-jones-anna-camp-off-broadway-review/",
         "https://www.newyorktheatreguide.com/reviews/2-22-a-ghost-story-off-broadway-review",
         "https://nystagereview.com/2026/11/05/222-a-ghost-story-whos-afraid-of-the-spectral-woolf/",
+        "https://1minutecritic.com/222-a-ghost-story-off-broadway-review/",
         "https://www.wsj.com/articles/the-unbelievers-and-2-22a-ghost-story-review-off-broadway-stages-turn-unsettling-b758c396",
         "https://www.theatermania.com/news/review-222-a-ghost-story-a-boozy-dinner-party-becomes-a-late-night-vigil_1859012/",
         "https://mashable.com/entertainment/222-ghost-story-review",
         "https://www.timeout.com/newyork/theater/2-22-a-ghost-story",
-        "https://www.mixuptheatre.com/post/theatre-review-2-22-a-ghost-story-1",
         "https://www.londontheatre.co.uk/reviews/222-a-ghost-story-review-lyric-theatre-cheryl"
       ],
-      "dirFiles": 16,
-      "dirClean": 9,
-      "inReviewsJson": 9,
+      "dirFiles": 17,
+      "dirClean": 10,
+      "inReviewsJson": 10,
       "missing": [
         {
           "url": "https://www.londontheatre.co.uk/reviews/222-a-ghost-story-review-lyric-theatre-cheryl",
@@ -427,41 +423,13 @@
         {
           "host": "nytimes.com",
           "count": 1
-        }
-      ],
-      "flaggedMisses": [
+        },
         {
-          "url": "https://www.mixuptheatre.com/post/theatre-review-2-22-a-ghost-story-1",
-          "host": "mixuptheatre.com",
-          "knownOutletId": "mixuptheatre",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "mixuptheatre--mix-up-theatre-stewart.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.mixuptheatre.com/post/theatre-review-2-22-a-ghost-story-1"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "priorRun": true,
-          "priorRunSource": "flagged-file-date:2026-04-29",
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ],
-          "serpCensus": true,
-          "reverify": false
+          "host": "talkinbroadway.com",
+          "count": 1
         }
       ],
+      "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
@@ -475,8 +443,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 0,
-            "accepted": 0,
+            "results": 8,
+            "accepted": 1,
             "error": null
           },
           {
@@ -485,7 +453,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 0,
+            "results": 8,
             "accepted": 0,
             "error": null
           },
@@ -495,8 +463,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 10,
-            "accepted": 1,
+            "results": 2,
+            "accepted": 0,
             "error": null
           },
           {
@@ -505,7 +473,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 0,
+            "results": 8,
             "accepted": 0,
             "error": null
           },
@@ -516,7 +484,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 1,
             "error": null
           },
           {
@@ -532,26 +500,21 @@
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 3,
+        "resultCount": 2,
         "error": null
       },
       "candidatesRejected": {
-        "count": 407,
+        "count": 42,
         "byReason": {
-          "aggregator-internal-nav": 250,
-          "not-http-url": 76,
-          "production-database-listing": 5,
-          "aggregator-section-root": 10,
-          "non-review-host": 54,
-          "non-stage-review": 1,
-          "census-junk-host": 2,
-          "roundup-page": 2,
-          "podcast-episode": 1,
-          "non-review-path": 2,
-          "venue-production-page": 1,
-          "news-roundup-site": 1,
+          "non-review-host": 8,
+          "not-http-url": 26,
           "no-review-evidence": 1,
-          "show-blocklist": 1
+          "non-review-path": 2,
+          "news-roundup-site": 1,
+          "roundup-page": 1,
+          "show-listing-page": 1,
+          "production-database-listing": 1,
+          "census-junk-host": 1
         }
       },
       "dedupedVariants": [],
@@ -598,12 +561,6 @@
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://1minutecritic.com/222-a-ghost-story-off-broadway-review/",
-            "outletId": "1minutecritic.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-06T20:37:44.785Z"
-          },
-          {
             "url": "https://culturesauce.com/222-ghost-story-finn-jones-anna-camp-off-broadway-review/",
             "outletId": "culturesauce.com",
             "state": "live",
@@ -618,6 +575,12 @@
           {
             "url": "https://nystagereview.com/2026/11/05/222-a-ghost-story-whos-afraid-of-the-spectral-woolf/",
             "outletId": "nystagereview.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-06T20:37:44.785Z"
+          },
+          {
+            "url": "https://1minutecritic.com/222-a-ghost-story-off-broadway-review/",
+            "outletId": "1minutecritic.com",
             "state": "live",
             "firstSeenAt": "2026-11-06T20:37:44.785Z"
           },
@@ -664,7 +627,7 @@
         "liveCount": 8,
         "candidateCount": 9
       },
-      "computedAt": "2026-11-06T20:37:44.785Z"
+      "computedAt": "2026-11-07T07:06:02.282Z"
     },
     {
       "showId": "3-summers-of-lincoln-regional-2025",
@@ -91868,32 +91831,7 @@
       "dirFiles": 0,
       "dirClean": 0,
       "inReviewsJson": 0,
-      "missing": [
-        {
-          "url": "https://www.leagueofcincytheatres.info/review-dr-seuss-how-the-grinch-stole-christmas-the-musical/",
-          "host": "leagueofcincytheatres.info",
-          "knownOutletId": "leagueofcincytheatres",
-          "serpCensus": true,
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ]
-        },
-        {
-          "url": "https://www.newyorktheatreguide.com/reviews/dr-seuss-how-the-grinch-stole-christmas-0",
-          "host": "newyorktheatreguide.com",
-          "knownOutletId": "nytg",
-          "serpCensus": true,
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ]
-        }
-      ],
+      "missing": [],
       "dirOnly": [],
       "flaggedMisses": [],
       "citedNoUrl": [],
@@ -91909,7 +91847,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 0,
+            "results": 8,
             "accepted": 0,
             "error": null
           },
@@ -91919,7 +91857,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 0,
+            "results": 2,
             "accepted": 0,
             "error": null
           },
@@ -91929,7 +91867,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 0,
+            "results": 8,
             "accepted": 0,
             "error": null
           },
@@ -91960,90 +91898,70 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 7,
+        "count": 30,
         "byReason": {
-          "non-review-host": 5,
+          "non-review-host": 7,
+          "not-http-url": 21,
           "no-review-evidence": 1,
-          "show-listing-page": 1
+          "non-stage-review": 1
         }
       },
       "dedupedVariants": [],
-      "automatedExcludedListed": 0,
-      "unextractable": [],
-      "ingestResults": [
+      "nonReviewCandidates": [
         {
           "url": "https://www.leagueofcincytheatres.info/review-dr-seuss-how-the-grinch-stole-christmas-the-musical/",
           "host": "leagueofcincytheatres.info",
-          "outletId": "leagueofcincytheatres",
-          "provisional": false,
-          "ok": false,
-          "noop": true,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": true,
-          "expectedReason": "tour-review",
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "dr-seuss-how-the-grinch-stole-christmas-tour-2026: https://www.leagueofcincytheatres.info/review-dr-seuss-how-the-grinch-stole-christmas-the-musical/ looks like a tour-stop or regional-mounting review (BWW city subdirectory / local-paper tour coverage), not a review of this production — refused by the tour-contamination guard. Expected rejection; if this outlet genuinely reviewed THIS production, ingest with the correct production URL or fix isLikelyTourReview in review-guards.js."
+          "knownOutletId": "leagueofcincytheatres",
+          "serpCensus": true,
+          "nonReviewVerdict": "page-date-before-run",
+          "nonReviewDetail": "2024-12-11"
         },
         {
           "url": "https://www.newyorktheatreguide.com/reviews/dr-seuss-how-the-grinch-stole-christmas-0",
           "host": "newyorktheatreguide.com",
-          "outletId": "nytg",
-          "provisional": false,
-          "ok": false,
-          "noop": true,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": true,
-          "expectedReason": "tour-review",
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "dr-seuss-how-the-grinch-stole-christmas-tour-2026: https://www.newyorktheatreguide.com/reviews/dr-seuss-how-the-grinch-stole-christmas-0 looks like a tour-stop or regional-mounting review (BWW city subdirectory / local-paper tour coverage), not a review of this production — refused by the tour-contamination guard. Expected rejection; if this outlet genuinely reviewed THIS production, ingest with the correct production URL or fix isLikelyTourReview in review-guards.js."
+          "knownOutletId": "nytg",
+          "serpCensus": true,
+          "nonReviewVerdict": "page-date-before-run",
+          "nonReviewDetail": "2017-09-22"
         }
       ],
-      "ingestSkippedByCap": [],
+      "automatedExcludedListed": 0,
+      "unextractable": [],
       "censusVerdict": {
-        "verdict": "incomplete",
-        "missing": [
-          {
-            "outletId": "leagueofcincytheatres",
-            "outlet": "leagueofcincytheatres",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.leagueofcincytheatres.info/review-dr-seuss-how-the-grinch-stole-christmas-the-musical/"
-          },
-          {
-            "outletId": "nytg",
-            "outlet": "nytg",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.newyorktheatreguide.com/reviews/dr-seuss-how-the-grinch-stole-christmas-0"
-          }
-        ],
+        "verdict": "complete",
+        "missing": [],
         "suppressedMissing": [],
         "candidates": [
           {
             "url": "https://www.leagueofcincytheatres.info/review-dr-seuss-how-the-grinch-stole-christmas-the-musical/",
-            "outletId": "leagueofcincytheatres",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "outletId": "leagueofcincytheatres.info",
+            "state": "live",
             "firstSeenAt": "2026-11-06T19:17:50.122Z"
           },
           {
             "url": "https://www.newyorktheatreguide.com/reviews/dr-seuss-how-the-grinch-stole-christmas-0",
-            "outletId": "nytg",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "outletId": "newyorktheatreguide.com",
+            "state": "live",
             "firstSeenAt": "2026-11-06T19:17:50.122Z"
           }
         ],
         "censusSchema": 4,
-        "excluded": [],
-        "liveCount": 0,
+        "excluded": [
+          {
+            "url": "https://www.leagueofcincytheatres.info/review-dr-seuss-how-the-grinch-stole-christmas-the-musical/",
+            "host": "leagueofcincytheatres.info",
+            "reason": "page-date-before-run"
+          },
+          {
+            "url": "https://www.newyorktheatreguide.com/reviews/dr-seuss-how-the-grinch-stole-christmas-0",
+            "host": "newyorktheatreguide.com",
+            "reason": "page-date-before-run"
+          }
+        ],
+        "liveCount": 2,
         "candidateCount": 2
       },
-      "computedAt": "2026-11-06T19:17:50.122Z"
+      "computedAt": "2026-11-07T07:06:02.282Z"
     },
     {
       "showId": "dr-strangelove-west-end-2024",
@@ -113893,7 +113811,6 @@
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
         "https://www.londontheatre.co.uk/reviews/garry-starr-classic-penguins-review-the-other-palace",
-        "https://www.islingtontribune.co.uk/article/review-garry-starr-classic-penguins-at-the-other-place",
         "https://therecs.co.uk/garry-starr-classic-penguins/",
         "https://everything-theatre.co.uk/2026/10/review-garry-starr-classic-penguins-the-other-palace/",
         "https://www.broadwayworld.com/westend/article/Review-GARRY-STARR-CLASSIC-PENGUINS-The-Other-Palace-20261026",
@@ -113915,6 +113832,7 @@
         "https://ayoungishperspective.co.uk/2026/10/25/review-garry-starr-classic-penguins-3/",
         "https://theatreweekly.com/review-garry-starr-classic-penguins-at-the-other-palace/",
         "http://www.broadwayworld.com/westend/article/Review-GARRY-STARR-CLASSIC-PENGUINS-The-Other-Palace-20261026",
+        "https://www.islingtontribune.co.uk/article/review-garry-starr-classic-penguins-at-the-other-place",
         "https://www.timeout.com/london/comedy/garry-starr-classic-penguins",
         "https://limelight-arts.com.au/event/garry-starr-classic-penguins-2/2026-06-25/",
         "https://limelight-arts.com.au/event/garry-starr-classic-penguins/2026-06-21/",
@@ -113933,22 +113851,10 @@
         "https://limelight-arts.com.au/event/garry-starr-classic-penguins-2/2026-06-17/",
         "https://www.london-unattached.com/classic-penguins-gary-starr/"
       ],
-      "dirFiles": 34,
-      "dirClean": 15,
-      "inReviewsJson": 16,
+      "dirFiles": 35,
+      "dirClean": 16,
+      "inReviewsJson": 17,
       "missing": [
-        {
-          "url": "https://www.islingtontribune.co.uk/article/review-garry-starr-classic-penguins-at-the-other-place",
-          "host": "islingtontribune.co.uk",
-          "knownOutletId": "islingtontribune",
-          "serpCensus": true,
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ]
-        },
         {
           "url": "https://www.timeout.com/london/comedy/garry-starr-classic-penguins",
           "host": "timeout.com",
@@ -114296,7 +114202,7 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 0,
+            "results": 9,
             "accepted": 0,
             "error": null
           },
@@ -114317,7 +114223,7 @@
             "geo": "gb",
             "ok": true,
             "results": 9,
-            "accepted": 2,
+            "accepted": 1,
             "error": null
           },
           {
@@ -114337,20 +114243,21 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 0,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 5,
+        "resultCount": 2,
         "error": null
       },
       "candidatesRejected": {
-        "count": 24,
+        "count": 35,
         "byReason": {
-          "non-review-host": 1,
-          "not-http-url": 23
+          "non-review-host": 4,
+          "not-http-url": 30,
+          "write-path-blocked": 1
         }
       },
       "dedupedVariants": [],
@@ -114400,7 +114307,22 @@
       "unextractable": [],
       "ingestResults": [
         {
-          "url": "https://limelight-arts.com.au/event/garry-starr-classic-penguins/2026-06-21/",
+          "url": "https://exeuntnyc.com/reviews/review-garry-starr-classic-penguins-at-studio-seaview/",
+          "host": "exeuntnyc.com",
+          "outletId": "exeunt-magazine",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": true,
+          "conflictReason": "cross-show-url-owned",
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "garry-starr-classic-penguins-off-west-end-2026: https://exeuntnyc.com/reviews/review-garry-starr-classic-penguins-at-studio-seaview/ is already owned by garry-starr-classic-penguins-off-broadway-2026 — one of the two is contaminated. Inspect data/review-texts/garry-starr-classic-penguins-off-broadway-2026/ for this URL; if that copy is the misfiled one, flag it wrongShow with a manual wrongShowReason (that releases ownership), then re-ingest here."
+        },
+        {
+          "url": "https://limelight-arts.com.au/event/garry-starr-classic-penguins-2/2026-06-25/",
           "host": "limelight-arts.com.au",
           "outletId": "limelight-magazine-au",
           "provisional": false,
@@ -114412,55 +114334,25 @@
           "expectedReason": null,
           "unclassified": false,
           "zeroChar": false,
-          "reason": "❌ Refusing to ingest — collision with limelight-magazine-au--unknown.json\n   reason: stale-flag-on-existing-file\n   detail: {\n  \"existingUrl\": \"https://limelight-arts.com.au/event/garry-starr-classic-penguins-2/2026-06-17/\",\n  \"existingFlags\": {\n    \"wrongProduction\": true,\n    \"wrongShow\": false,\n    \"wrongProductionAutoCleared\": false\n  },\n  \"existingPublishDate\": \"2026-05-06\",\n  \"incomingUrl\": \"https://limelight-arts.com.au/event/garry-starr-classic-penguins/2026-06-21/\",\n  \"incomingPublishDate\": \"2026-03-29\"\n}\n\nManual remediation required: rename or clear the existing file."
+          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=limelight-arts.com.au): Scrapingdog HTTP 400: Oops! Something went wrong. You won’t be charged for this request. You can try enabling Stealth Mode using stealth_mode=true. If the issue continues, feel free to email us at info@scrapingdog.com.\n\n❌ Refusing to ingest — collision with limelight-magazine-au--unknown.json\n   reason: stale-flag-on-existing-file\n   detail: {\n  \"existingUrl\": \"https://limelight-arts.com.au/event/garry-starr-classic-penguins-2/2026-06-17/\",\n  \"existingFlags\": {\n    \"wrongProduction\": true,\n    \"wrongShow\": false,\n    \"wrongP"
         },
         {
-          "url": "https://limelight-arts.com.au/event/garry-starr-classic-penguins/2026-06-24/",
-          "host": "limelight-arts.com.au",
-          "outletId": "limelight-magazine-au",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "❌ Refusing to ingest — collision with limelight-magazine-au--unknown.json\n   reason: stale-flag-on-existing-file\n   detail: {\n  \"existingUrl\": \"https://limelight-arts.com.au/event/garry-starr-classic-penguins-2/2026-06-17/\",\n  \"existingFlags\": {\n    \"wrongProduction\": true,\n    \"wrongShow\": false,\n    \"wrongProductionAutoCleared\": false\n  },\n  \"existingPublishDate\": \"2026-05-06\",\n  \"incomingUrl\": \"https://limelight-arts.com.au/event/garry-starr-classic-penguins/2026-06-24/\",\n  \"incomingPublishDate\": \"2026-03-29\"\n}\n\nManual remediation required: rename or clear the existing file."
-        },
-        {
-          "url": "https://limelight-arts.com.au/event/garry-starr-classic-penguins-2/2026-06-18/",
-          "host": "limelight-arts.com.au",
-          "outletId": "limelight-magazine-au",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "❌ Refusing to ingest — collision with limelight-magazine-au--unknown.json\n   reason: stale-flag-on-existing-file\n   detail: {\n  \"existingUrl\": \"https://limelight-arts.com.au/event/garry-starr-classic-penguins-2/2026-06-17/\",\n  \"existingFlags\": {\n    \"wrongProduction\": true,\n    \"wrongShow\": false,\n    \"wrongProductionAutoCleared\": false\n  },\n  \"existingPublishDate\": \"2026-05-06\",\n  \"incomingUrl\": \"https://limelight-arts.com.au/event/garry-starr-classic-penguins-2/2026-06-18/\",\n  \"incomingPublishDate\": \"2026-05-06\"\n}\n\nManual remediation required: rename or clear the existing file."
-        },
-        {
-          "url": "https://www.timeout.com/london/comedy/garry-starr-classic-penguins",
-          "host": "timeout.com",
-          "outletId": "timeout-london",
+          "url": "https://www.londonbornandbred.co.uk/post/garry-starr-s-classic-penguins-a-delightfully-daft-evening-at-the-arts-theatre",
+          "host": "londonbornandbred.co.uk",
+          "outletId": "londonbornandbred",
           "provisional": false,
           "ok": false,
           "noop": true,
           "conflict": false,
           "conflictReason": null,
           "expected": true,
-          "expectedReason": "timeout-listing-capsule",
+          "expectedReason": "prior-production-quarantined",
           "unclassified": false,
           "zeroChar": false,
-          "reason": "garry-starr-classic-penguins-off-west-end-2026: https://www.timeout.com/london/comedy/garry-starr-classic-penguins is a Time Out listing capsule, not a review (lib/timeout-capsule.js). Expected rejection; no action needed unless Time Out later publishes a full review at this URL, which a later audit will then ingest."
+          "reason": "garry-starr-classic-penguins-off-west-end-2026: https://www.londonbornandbred.co.uk/post/garry-starr-s-classic-penguins-a-delightfully-daft-evening-at-the-arts-theatre dated 2025-11-05 predates this run; quarantined to _pending/ as the earlier production's review. Expected, no action needed."
         },
         {
-          "url": "https://limelight-arts.com.au/event/garry-starr-classic-penguins-2/2026-06-23/",
+          "url": "https://limelight-arts.com.au/event/garry-starr-classic-penguins-2/2026-06-21/",
           "host": "limelight-arts.com.au",
           "outletId": "limelight-magazine-au",
           "provisional": false,
@@ -114472,42 +114364,52 @@
           "expectedReason": null,
           "unclassified": false,
           "zeroChar": false,
-          "reason": "❌ Refusing to ingest — collision with limelight-magazine-au--unknown.json\n   reason: stale-flag-on-existing-file\n   detail: {\n  \"existingUrl\": \"https://limelight-arts.com.au/event/garry-starr-classic-penguins-2/2026-06-17/\",\n  \"existingFlags\": {\n    \"wrongProduction\": true,\n    \"wrongShow\": false,\n    \"wrongProductionAutoCleared\": false\n  },\n  \"existingPublishDate\": \"2026-05-06\",\n  \"incomingUrl\": \"https://limelight-arts.com.au/event/garry-starr-classic-penguins-2/2026-06-23/\",\n  \"incomingPublishDate\": \"2026-05-06\"\n}\n\nManual remediation required: rename or clear the existing file."
-        }
-      ],
-      "ingestSkippedByCap": [
-        {
-          "url": "https://exeuntnyc.com/reviews/review-garry-starr-classic-penguins-at-studio-seaview/",
-          "host": "exeuntnyc.com",
-          "outletId": "exeunt-magazine"
-        },
-        {
-          "url": "https://www.islingtontribune.co.uk/article/review-garry-starr-classic-penguins-at-the-other-place",
-          "host": "islingtontribune.co.uk",
-          "outletId": "islingtontribune"
-        },
-        {
-          "url": "https://limelight-arts.com.au/event/garry-starr-classic-penguins-2/2026-06-25/",
-          "host": "limelight-arts.com.au",
-          "outletId": "limelight-magazine-au"
-        },
-        {
-          "url": "https://www.londonbornandbred.co.uk/post/garry-starr-s-classic-penguins-a-delightfully-daft-evening-at-the-arts-theatre",
-          "host": "londonbornandbred.co.uk",
-          "outletId": "londonbornandbred"
-        },
-        {
-          "url": "https://limelight-arts.com.au/event/garry-starr-classic-penguins-2/2026-06-21/",
-          "host": "limelight-arts.com.au",
-          "outletId": "limelight-magazine-au"
+          "reason": "❌ Refusing to ingest — collision with limelight-magazine-au--unknown.json\n   reason: stale-flag-on-existing-file\n   detail: {\n  \"existingUrl\": \"https://limelight-arts.com.au/event/garry-starr-classic-penguins-2/2026-06-17/\",\n  \"existingFlags\": {\n    \"wrongProduction\": true,\n    \"wrongShow\": false,\n    \"wrongProductionAutoCleared\": false\n  },\n  \"existingPublishDate\": \"2026-05-06\",\n  \"incomingUrl\": \"https://limelight-arts.com.au/event/garry-starr-classic-penguins-2/2026-06-21/\",\n  \"incomingPublishDate\": \"2026-05-06\"\n}\n\nManual remediation required: rename or clear the existing file."
         },
         {
           "url": "https://limelight-arts.com.au/event/garry-starr-classic-penguins-2/2026-07-03/",
           "host": "limelight-arts.com.au",
+          "outletId": "limelight-magazine-au",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "❌ Refusing to ingest — collision with limelight-magazine-au--unknown.json\n   reason: stale-flag-on-existing-file\n   detail: {\n  \"existingUrl\": \"https://limelight-arts.com.au/event/garry-starr-classic-penguins-2/2026-06-17/\",\n  \"existingFlags\": {\n    \"wrongProduction\": true,\n    \"wrongShow\": false,\n    \"wrongProductionAutoCleared\": false\n  },\n  \"existingPublishDate\": \"2026-05-06\",\n  \"incomingUrl\": \"https://limelight-arts.com.au/event/garry-starr-classic-penguins-2/2026-07-03/\",\n  \"incomingPublishDate\": \"2026-05-06\"\n}\n\nManual remediation required: rename or clear the existing file."
+        }
+      ],
+      "ingestSkippedByCap": [
+        {
+          "url": "https://limelight-arts.com.au/event/garry-starr-classic-penguins-2/2026-07-01/",
+          "host": "limelight-arts.com.au",
           "outletId": "limelight-magazine-au"
         },
         {
-          "url": "https://limelight-arts.com.au/event/garry-starr-classic-penguins-2/2026-07-01/",
+          "url": "https://www.timeout.com/london/comedy/garry-starr-classic-penguins",
+          "host": "timeout.com",
+          "outletId": "timeout-london"
+        },
+        {
+          "url": "https://limelight-arts.com.au/event/garry-starr-classic-penguins/2026-06-21/",
+          "host": "limelight-arts.com.au",
+          "outletId": "limelight-magazine-au"
+        },
+        {
+          "url": "https://limelight-arts.com.au/event/garry-starr-classic-penguins/2026-06-24/",
+          "host": "limelight-arts.com.au",
+          "outletId": "limelight-magazine-au"
+        },
+        {
+          "url": "https://limelight-arts.com.au/event/garry-starr-classic-penguins-2/2026-06-18/",
+          "host": "limelight-arts.com.au",
+          "outletId": "limelight-magazine-au"
+        },
+        {
+          "url": "https://limelight-arts.com.au/event/garry-starr-classic-penguins-2/2026-06-23/",
           "host": "limelight-arts.com.au",
           "outletId": "limelight-magazine-au"
         }
@@ -114515,13 +114417,6 @@
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
-          {
-            "outletId": "islingtontribune",
-            "outlet": "islingtontribune",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.islingtontribune.co.uk/article/review-garry-starr-classic-penguins-at-the-other-place"
-          },
           {
             "outletId": "timeout-london",
             "outlet": "timeout-london",
@@ -114770,17 +114665,16 @@
             "firstSeenAt": "2026-10-26T18:53:32.675Z"
           },
           {
+            "url": "https://www.islingtontribune.co.uk/article/review-garry-starr-classic-penguins-at-the-other-place",
+            "outletId": "islingtontribune.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-11-06T14:48:30.602Z"
+          },
+          {
             "url": "https://www.london-unattached.com/classic-penguins-gary-starr/",
             "outletId": "london-unattached.com",
             "state": "live",
             "firstSeenAt": "2026-10-25T00:00:48.604Z"
-          },
-          {
-            "url": "https://www.islingtontribune.co.uk/article/review-garry-starr-classic-penguins-at-the-other-place",
-            "outletId": "islingtontribune",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-11-06T14:48:30.602Z"
           },
           {
             "url": "https://www.timeout.com/london/comedy/garry-starr-classic-penguins",
@@ -114923,10 +114817,10 @@
             "reason": "page-date-before-run"
           }
         ],
-        "liveCount": 19,
+        "liveCount": 20,
         "candidateCount": 28
       },
-      "computedAt": "2026-11-06T14:48:30.602Z"
+      "computedAt": "2026-11-07T07:06:02.282Z"
     },
     {
       "showId": "garsides-career-off-broadway-2025",
@@ -380892,7 +380786,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 8,
+            "results": 4,
             "accepted": 0,
             "error": null
           },
@@ -380912,7 +380806,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 0,
+            "results": 9,
             "accepted": 0,
             "error": null
           },
@@ -380943,13 +380837,15 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 28,
+        "count": 38,
         "byReason": {
-          "aggregator-internal-nav": 1,
-          "non-review-host": 22,
-          "no-review-evidence": 3,
-          "merch-store": 1,
-          "ticketing-listing": 1
+          "non-review-host": 11,
+          "not-http-url": 21,
+          "no-review-evidence": 1,
+          "census-junk-host": 1,
+          "ticketing-listing": 1,
+          "aggregator-internal-nav": 2,
+          "merch-store": 1
         }
       },
       "dedupedVariants": [],
@@ -380992,7 +380888,7 @@
         "liveCount": 0,
         "candidateCount": 1
       },
-      "computedAt": "2026-11-06T20:37:44.785Z"
+      "computedAt": "2026-11-07T07:06:02.282Z"
     },
     {
       "showId": "the-story-olivier-west-end-2026",
@@ -424574,10 +424470,10 @@
     }
   ],
   "staleness": {
-    "at": "2026-11-07T04:50:57.435Z",
+    "at": "2026-11-07T07:06:02.281Z",
     "reserveEvery": 4,
     "reservedAttempted": [
-      "king-of-the-yees-off-broadway-2026"
+      "garry-starr-classic-penguins-off-west-end-2026"
     ],
     "catalogueReserveEvery": 8,
     "catalogueAttempted": [],
@@ -424585,12 +424481,12 @@
     "oldestDueRowAtStart": {
       "showId": "this-is-my-favorite-song-off-broadway-2024",
       "computedAt": "2026-10-23T14:07:48.228Z",
-      "ageHours": 350.4
+      "ageHours": 352.7
     },
     "oldestDueRowAfterRun": {
       "showId": "this-is-my-favorite-song-off-broadway-2024",
       "computedAt": "2026-10-23T14:07:48.228Z",
-      "ageHours": 350.7
+      "ageHours": 353
     }
   }
 }
