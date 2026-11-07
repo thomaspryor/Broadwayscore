@@ -252,7 +252,11 @@ function setupWorktree() {
 let treeMode = 'slim';
 /** Put <tree> into the current tree mode. Idempotent, and also slims a full tree an earlier version made. */
 function applyTreeMode(tree) {
-  git(R.treeModeArgs(treeMode), tree);
+  // `sparse-checkout` turns on extensions.worktreeConfig in the SHARED .git/config the first time.
+  // Two slots doing that at once can lose a config lock, so set it once up front, and retry once.
+  let on = false; try { on = git(['config', '--get', 'extensions.worktreeConfig'], ROOT) === 'true'; } catch { /* unset */ }
+  if (!on) { try { git(['config', 'extensions.worktreeConfig', 'true'], ROOT); } catch { /* the sparse-checkout call below sets it too */ } }
+  try { git(R.treeModeArgs(treeMode), tree); } catch { git(R.treeModeArgs(treeMode), tree); }
 }
 /** A new detached worktree of origin/main in the current tree mode, without ever writing the excluded trees. */
 function addWorktree(tree) {
@@ -1461,7 +1465,9 @@ async function launchSlots() {
   });
   // BRO-7097: budget a worktree from a real one (any slot's existing tree), not a constant.
   const existingTree = [...Array(plan.slots).keys()].flatMap((k) => { const n = R.slotNames(plan.base + k); return [n.wt, n.base]; })
-    .map((w) => path.join(ROOT, '.claude/worktrees', w)).find((d) => fs.existsSync(path.join(d, '.git')));
+    .map((w) => path.join(ROOT, '.claude/worktrees', w))
+    // Only a slim tree stands for the budget: a legacy full tree (or one a full card holds) would read 1.8 GB and cost the slot.
+    .find((d) => fs.existsSync(path.join(d, '.git')) && R.isSlimTree(d));
   const measuredBytes = existingTree ? R.measureTreeBytes(existingTree) : null;
   const worktreeBytes = R.worktreeBytesFor({ mode: 'slim', measuredBytes });
   const disk = R.slotsForDisk({ slots: plan.slots, freeBytes: freeDisk(), missingBySlot, reserveBytes: R.LANES[OPTS.lane].diskReserveBytes, worktreeBytes });
@@ -1770,8 +1776,8 @@ async function runPr(n) {
     // Inside the try: a setup throw still turns the started comment into an error verdict.
     ensureTools({ codex: false });
     pruneDisk();
+    treeMode = 'full'; // a PR's files are not known before its diff: take the whole tree (set before setupWorktree so the tree is not slimmed and refilled)
     setupWorktree();
-    treeMode = 'full'; // a PR's files are not known before its diff: take the whole tree
     const data = resetWorktree(`codex-pr-${n}`);
     git(['fetch', 'origin', `+refs/pull/${n}/head:refs/remotes/origin/codex-pr/${n}`]);
     if (git(['rev-parse', `refs/remotes/origin/codex-pr/${n}`]) !== sha) { log(`PR #${n}: fetched head is not ${short}; a newer push's run handles it`); say('superseded'); return; }

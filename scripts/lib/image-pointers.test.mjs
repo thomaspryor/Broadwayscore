@@ -146,6 +146,9 @@ test('slim sparse trees: image finders report nothing instead of flagging every 
     assert.equal(mod.isSparseTree(publicDir), true);
     assert.deepEqual(mod.findImagePointerProblems(shows, { publicDir }), []);
     assert.deepEqual(mod.findDanglingLocalImageRefs(shows, { publicDir }), []);
+    // A missing file OUTSIDE the excluded dirs is still a real problem in a slim tree.
+    const other = [{ id: 'b', images: { hero: '/images/theaters/nope.webp' } }];
+    assert.equal(mod.findImagePointerProblems(other, { publicDir }).length, 1);
     g('sparse-checkout', 'disable');
     assert.equal(mod.isSparseTree(publicDir), false);
   } finally { fs.rmSync(dir, { recursive: true, force: true }); }

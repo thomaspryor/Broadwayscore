@@ -21,6 +21,9 @@ function imagePointerSeverity(problem) {
  * where every local image looks missing. A missing file proves nothing there, so the finders
  * below report no problems rather than nulling or failing every show.
  */
+// The public/images dirs a slim worktree leaves out (mirror of SLIM_EXCLUDED_DIRS in codex-runner.js).
+const SLIM_IMAGE_PREFIXES = ['/images/shows/', '/images/video-reviews/'];
+const inSlimExcluded = (pathname) => SLIM_IMAGE_PREFIXES.some((p) => pathname.startsWith(p));
 function isSparseTree(publicDir) {
   try {
     const r = require('child_process').spawnSync('git', ['-C', fs.existsSync(publicDir) ? publicDir : path.dirname(publicDir), 'config', '--get', 'core.sparseCheckout'], { encoding: 'utf8', timeout: 10_000 });
@@ -47,7 +50,7 @@ function findImagePointerProblems(shows, { publicDir, remotePatterns = [] }) {
           const relative = path.relative(imagesDir, file);
           if (!relative || relative.startsWith('..') || path.isAbsolute(relative)) {
             reason = 'local image must be under public/images/';
-          } else if (!sparse && (!fs.existsSync(file) || !fs.statSync(file).isFile())) {
+          } else if (!(sparse && inSlimExcluded(pathname)) && (!fs.existsSync(file) || !fs.statSync(file).isFile())) {
             reason = 'local image file does not exist';
           }
         } else {
@@ -74,13 +77,14 @@ function findImagePointerProblems(shows, { publicDir, remotePatterns = [] }) {
 const DANGLING_IMAGE_KEYS = ['thumbnail', 'poster', 'hero'];
 function findDanglingLocalImageRefs(shows, { publicDir, keys = DANGLING_IMAGE_KEYS } = {}) {
   const out = [];
-  if (isSparseTree(publicDir)) return out;
+  const sparse = isSparseTree(publicDir);
   for (const show of shows || []) {
     for (const key of keys) {
       const value = show && show.images && show.images[key];
       if (typeof value !== 'string' || !value.startsWith('/images/')) continue;
       let pathname;
       try { pathname = decodeURIComponent(value.split(/[?#]/)[0]); } catch { pathname = null; }
+      if (sparse && pathname && inSlimExcluded(pathname)) continue; // not checked out in a slim tree: proves nothing
       const file = pathname && path.resolve(publicDir, `.${pathname}`);
       let present = false;
       try { present = Boolean(file) && fs.statSync(file).isFile(); } catch { present = false; }

@@ -1034,7 +1034,7 @@ test('slotsForDisk: reserveBytes keeps room for the session\'s own work (BRO-708
 });
 
 test('slim worktrees (BRO-7097): three cloud slots fit at about 20 GB free with the lane reserve', () => {
-  // 3 slots x (worktree + base) x slim budget + 3 x per-card free-disk floor, 20 GB free, 8 GB reserved.
+  // 3 slots x (worktree + base) x slim budget + 3 x per-card free-disk floor, 20 GB free, the lane reserve (5.31 GB) held back.
   const d = r.slotsForDisk({ slots: 3, freeBytes: 20e9, missingBySlot: [2, 2, 2], reserveBytes: r.LANES.cloud.diskReserveBytes });
   assert.deepEqual(d, { slots: 3, why: null });
   // The old full-tree budget stopped at 2, which is what slim trees fix.
@@ -1053,7 +1053,7 @@ test('worktreeBytesFor: a measurement wins but is floored; no measurement uses t
 });
 
 test('cardNeedsImages: image, poster, video-review and validate-data cards get a full tree', () => {
-  for (const t of ['Fix hero image for show X', 'poster missing', 'public/images/shows/x.webp', 'node scripts/validate-data.js fails', 'video-reviews transcripts', 'thumbnail 404']) assert.equal(r.cardNeedsImages(t), true, t);
+  for (const t of ['rename show id foo-bar', 'Fix hero image for show X', 'poster missing', 'public/images/shows/x.webp', 'node scripts/validate-data.js fails', 'video-reviews transcripts', 'thumbnail 404']) assert.equal(r.cardNeedsImages(t), true, t);
   for (const t of ['Fix codex runner slot count', 'scoring tier weights', '', null]) assert.equal(r.cardNeedsImages(t), false, String(t));
 });
 
@@ -1073,12 +1073,14 @@ test('slim sparse patterns: a real git worktree drops the image trees, keeps the
     // Repeating the setup on a slim tree is a no-op (setupWorktree runs it every card).
     sh(dir, ...r.treeModeArgs('slim'));
     assert.ok(r.measureTreeBytes(dir) > 0);
+    assert.equal(r.isSlimTree(dir), true);
     // A new file under an excluded dir still stages with --sparse (commitAttempt).
     fs.mkdirSync(join(dir, 'public/images/shows'), { recursive: true }); writeFileSync(join(dir, 'public/images/shows/new.txt'), 'y');
     sh(dir, 'add', '-A', '--sparse');
     assert.match(sh(dir, 'diff', '--cached', '--name-only'), /public\/images\/shows\/new\.txt/);
     sh(dir, 'reset', '-q', '--hard', 'HEAD');
     sh(dir, ...r.treeModeArgs('full'));
+    assert.equal(r.isSlimTree(dir), false);
     for (const d of r.SLIM_EXCLUDED_DIRS) assert.equal(fs.existsSync(join(dir, d, 'a.txt')), true, d);
   } finally { fs.rmSync(dir, { recursive: true, force: true }); }
 });

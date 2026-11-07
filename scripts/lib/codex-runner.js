@@ -1624,7 +1624,7 @@ const SLIM_SPARSE_PATTERNS = ['/*', ...SLIM_EXCLUDED_DIRS.map((d) => `!/${d}/`)]
 // What the slim estimate is when nothing was measured: the full size less the excluded images.
 const SLIM_WORKTREE_BYTES = 0.72e9;
 // Card text that means the card reads or edits show images, or runs a script that does: it gets a full tree.
-const IMAGE_CARD_RE = /public\/images|\bimages?\b|\bhero\b|\bposter\b|\bthumbnail|\bvideo[- ]?reviews?\b|\btranscripts?\b|deleted-images|validate-data|image-pointer|image-null|\bphotos?\b/i;
+const IMAGE_CARD_RE = /public\/images|\bimages?\b|\bhero\b|\bposter\b|\bthumbnail|\bvideo[- ]?reviews?\b|\btranscripts?\b|deleted-images|rename[- ]show|show[- ]id|retitle|validate-data|image-pointer|image-null|\bphotos?\b/i;
 /** Does this card need the image trees? text = title + description + verify command. A conservative match: a false yes only costs disk. */
 function cardNeedsImages(text) {
   return IMAGE_CARD_RE.test(String(text || ''));
@@ -1647,6 +1647,11 @@ function worktreeSummaryLine({ mode, bytes, fullBytes = null }) {
   if (!Number.isFinite(bytes) || bytes <= 0) return '';
   const pct = Number.isFinite(fullBytes) && fullBytes > 0 ? `, ${Math.round((bytes / fullBytes) * 100)}% of a full tree (${(fullBytes / 1e9).toFixed(2)} GB)` : '';
   return `${mode} checkout, ${(bytes / 1e9).toFixed(2)} GB measured on disk${pct}`;
+}
+/** Is this worktree in slim (sparse-checkout) mode right now? */
+function isSlimTree(dir) {
+  const r = require('child_process').spawnSync('git', ['-C', dir, 'config', '--get', 'core.sparseCheckout'], { encoding: 'utf8', timeout: 10_000 });
+  return r.status === 0 && r.stdout.trim() === 'true';
 }
 /** Real disk use of a directory in bytes (du, skipping a node_modules link), or null. */
 function measureTreeBytes(dir) {
@@ -1822,7 +1827,7 @@ module.exports = {
   LATER_CARD_DISCOUNT_MS,
   slotsForDisk,
   SLIM_SPARSE_PATTERNS, SLIM_EXCLUDED_DIRS, SLIM_WORKTREE_BYTES, FULL_WORKTREE_BYTES,
-  cardNeedsImages, treeModeArgs, worktreeSummaryLine, worktreeBytesFor, measureTreeBytes,
+  cardNeedsImages, treeModeArgs, isSlimTree, worktreeSummaryLine, worktreeBytesFor, measureTreeBytes,
   isDiskFailure,
   encryptAuth,
   decryptAuth,
