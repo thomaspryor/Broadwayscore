@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-11-07T08:41:42.524Z",
+  "runDate": "2026-11-07T09:24:55.775Z",
   "config": {
     "batchSize": 50,
     "maxReviews": 1000,
@@ -11,13 +11,13 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 9,
-    "failed": 7,
+    "processed": 7,
+    "failed": 0,
     "skipped": 0,
-    "successRate": "56.3%"
+    "successRate": "100.0%"
   },
   "tierBreakdown": {
-    "playwright": 228,
+    "playwright": 235,
     "amp": 1,
     "browserbase": 0,
     "directCookies": 0,
@@ -28,8 +28,8 @@
     "archive": 144
   },
   "statistics": {
-    "tier1Attempts": 14,
-    "tier1Success": 14,
+    "tier1Attempts": 7,
+    "tier1Success": 7,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
@@ -42,9 +42,9 @@
     "tier3Success": 0,
     "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 2,
-    "tier4Success": 2,
-    "totalFailed": 7,
+    "tier4Attempts": 0,
+    "tier4Success": 0,
+    "totalFailed": 0,
     "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
@@ -54,43 +54,23 @@
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 9,
-    "failed": 7,
+    "processed": 7,
+    "failed": 0,
     "shows": [
-      "1536-west-end-2026",
       "a-slow-fire-off-west-end-2026",
       "affluenza-off-west-end-2026",
-      "catarina-and-the-beauty-of-killing-fascists-west-end-2026",
       "de-profundis-off-west-end-2026",
-      "game-of-thrones-the-mad-king-regional-2026",
-      "harry-potter-and-the-cursed-child-one-part-west-end-2026",
-      "ilford-boy-off-west-end-2026",
       "jane-eyre-rose-kingston-off-west-end-2026",
-      "lifeline-off-west-end-2026",
-      "man-to-man-west-end-2026",
       "speculations-off-west-end-2026",
-      "springwood-off-west-end-2026",
-      "the-bridge-off-west-end-2026",
-      "tristan-und-isolde-off-broadway-2026"
+      "springwood-off-west-end-2026"
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
-      "processed": 475,
-      "failed": 298
+      "processed": 484,
+      "failed": 303
     }
   },
   "processed": [
-    "the-bridge-off-west-end-2026/artsdesk--aleks-sierz.json",
-    "harry-potter-and-the-cursed-child-one-part-west-end-2026/artsdesk--unknown.json",
-    "ilford-boy-off-west-end-2026/artsdesk--aleks-sierz.json",
-    "catarina-and-the-beauty-of-killing-fascists-west-end-2026/artsdesk--aleks-sierz.json",
-    "man-to-man-west-end-2026/artsdesk--unknown.json",
-    "game-of-thrones-the-mad-king-regional-2026/artsdesk--unknown.json",
-    "1536-west-end-2026/artsdesk--helen-hawkins.json",
-    "lifeline-off-west-end-2026/artsdesk--gary-naylor.json",
-    "tristan-und-isolde-off-broadway-2026/artsdesk--david-nice.json"
-  ],
-  "failed": [
     "speculations-off-west-end-2026/artsdesk--gary-naylor.json",
     "speculations-off-west-end-2026/artsdesk--unknown.json",
     "affluenza-off-west-end-2026/artsdesk--gary-naylor.json",
@@ -99,6 +79,7 @@
     "a-slow-fire-off-west-end-2026/artsdesk--gary-naylor.json",
     "springwood-off-west-end-2026/artsdesk--unknown.json"
   ],
+  "failed": [],
   "cumulativeResumedState": {
     "processed": [
       "the-unbelievers-off-broadway-2026/nytimes--laura-collins-hughes.json",
@@ -584,11 +565,17 @@
       "game-of-thrones-the-mad-king-regional-2026/artsdesk--unknown.json",
       "1536-west-end-2026/artsdesk--helen-hawkins.json",
       "lifeline-off-west-end-2026/artsdesk--gary-naylor.json",
-      "tristan-und-isolde-off-broadway-2026/artsdesk--david-nice.json"
+      "tristan-und-isolde-off-broadway-2026/artsdesk--david-nice.json",
+      "speculations-off-west-end-2026/artsdesk--gary-naylor.json",
+      "speculations-off-west-end-2026/artsdesk--unknown.json",
+      "affluenza-off-west-end-2026/artsdesk--gary-naylor.json",
+      "jane-eyre-rose-kingston-off-west-end-2026/artsdesk--unknown.json",
+      "de-profundis-off-west-end-2026/artsdesk--unknown.json",
+      "a-slow-fire-off-west-end-2026/artsdesk--gary-naylor.json",
+      "springwood-off-west-end-2026/artsdesk--unknown.json"
     ],
     "failed": [
       "speculations-off-west-end-2026/guardian--unknown.json",
-      "speculations-off-west-end-2026/artsdesk--unknown.json",
       "the-bridge-off-west-end-2026/sunday-times--unknown.json",
       "the-bridge-off-west-end-2026/theatreandtonic--emmie-newitt.json",
       "tosca-english-national-opera-west-end-2026/bachtrack--anna-bogdanova.json",
@@ -661,7 +648,6 @@
       "jena-friedman-motherfucker-off-broadway-2026/viptickets--unknown.json",
       "mystic-pizza-tour-2026/talkinbroadway--arthur-dorman.json",
       "speculations-off-west-end-2026/guardian--arifa-akbar.json",
-      "speculations-off-west-end-2026/artsdesk--gary-naylor.json",
       "tosca-english-national-opera-west-end-2026/cherylmarkosky--cherylmarkosky.json",
       "tosca-english-national-opera-west-end-2026/times-uk--richard-morrison.json",
       "ceilidh-the-musical-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
@@ -884,12 +870,7 @@
       "grace-pervades-west-end-2026/standard--ghenet-pinderhughes-randall.json",
       "grace-pervades-west-end-2026/thestage--tom-wicker.json",
       "mercury-off-broadway-2026/theatrecat--unknown.json",
-      "mercury-off-broadway-2026/thestage--paul-vale.json",
-      "affluenza-off-west-end-2026/artsdesk--gary-naylor.json",
-      "jane-eyre-rose-kingston-off-west-end-2026/artsdesk--unknown.json",
-      "de-profundis-off-west-end-2026/artsdesk--unknown.json",
-      "a-slow-fire-off-west-end-2026/artsdesk--gary-naylor.json",
-      "springwood-off-west-end-2026/artsdesk--unknown.json"
+      "mercury-off-broadway-2026/thestage--paul-vale.json"
     ]
   },
   "tierDetails": {
@@ -1121,7 +1102,14 @@
       "catarina-and-the-beauty-of-killing-fascists-west-end-2026/artsdesk--aleks-sierz.json",
       "man-to-man-west-end-2026/artsdesk--unknown.json",
       "game-of-thrones-the-mad-king-regional-2026/artsdesk--unknown.json",
-      "1536-west-end-2026/artsdesk--helen-hawkins.json"
+      "1536-west-end-2026/artsdesk--helen-hawkins.json",
+      "speculations-off-west-end-2026/artsdesk--gary-naylor.json",
+      "speculations-off-west-end-2026/artsdesk--unknown.json",
+      "affluenza-off-west-end-2026/artsdesk--gary-naylor.json",
+      "jane-eyre-rose-kingston-off-west-end-2026/artsdesk--unknown.json",
+      "de-profundis-off-west-end-2026/artsdesk--unknown.json",
+      "a-slow-fire-off-west-end-2026/artsdesk--gary-naylor.json",
+      "springwood-off-west-end-2026/artsdesk--unknown.json"
     ],
     "amp": [
       "data/review-texts/mary-poppins-2006/variety--charles-isherwood.json"
