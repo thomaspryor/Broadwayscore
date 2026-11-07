@@ -1,16 +1,22 @@
 {
-  "generatedAt": "2026-11-06T09:45:50.002Z",
+  "generatedAt": "2026-11-07T09:08:02.007Z",
   "linearIssue": "BRO-80",
-  "scannedShows": 5922,
+  "scannedShows": 5926,
   "flaggedShows": 50,
-  "flaggedFiles": 172,
-  "readmissionRiskFiles": 1,
+  "flaggedFiles": 173,
+  "readmissionRiskFiles": 2,
   "readmissionRisks": [
     {
       "showId": "private-lives-2025",
       "file": "huffpost--michael-giltz.json",
       "publishDate": "2011-11-19",
       "outletId": "huffpost"
+    },
+    {
+      "showId": "private-lives-2025",
+      "file": "talkinbroadway--unknown.json",
+      "publishDate": "2011-11-17",
+      "outletId": "talkinbroadway"
     }
   ],
   "unevaluatedFiles": 0,
@@ -267,9 +273,9 @@
       "previewsStartDate": null,
       "openingDate": null,
       "verdict": "likely-contamination",
-      "reasoning": "12/13 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
+      "reasoning": "12/14 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
       "stats": {
-        "count": 13,
+        "count": 14,
         "distinctYears": [
           2011,
           2023
@@ -381,6 +387,19 @@
           "publishDate": "2023-04-15",
           "url": "https://www.standard.co.uk/culture/theatre/private-lives-donmar-warehouse-review-stephen-mangan-rachael-stirling-b1074068.html",
           "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "talkinbroadway--unknown.json",
+          "readmissionRisk": "readmits-on-open",
+          "beforeReason": "prematureForUnopenedShow",
+          "afterReason": null,
+          "outletId": "talkinbroadway",
+          "criticName": "Unknown",
+          "publishDate": "2011-11-17",
+          "url": "https://www.talkinbroadway.com/world/PrivateLives2011.html",
+          "wrongProduction": false,
           "wrongShow": false,
           "evaluationError": null
         },

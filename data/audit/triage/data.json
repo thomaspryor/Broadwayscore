@@ -1,7 +1,7 @@
 {
   "system": "data",
   "status": "warn",
-  "lastChecked": "2026-11-06T09:26:23.275Z",
+  "lastChecked": "2026-11-07T08:51:23.044Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
@@ -84,27 +84,27 @@
     {
       "name": "Data: undispatchable Linear backlog cards",
       "status": "warn",
-      "message": "11 of 374 open Linear card(s) have no runnable acceptance-criteria command (workers would skip them). First: [?] BRO-6957 iOS E2E: signed-out sweep, every sign-in prompt opens and closes cleanly"
+      "message": "10 of 351 open Linear card(s) have no runnable acceptance-criteria command (workers would skip them). First: [?] BRO-6957 iOS E2E: signed-out sweep, every sign-in prompt opens and closes cleanly"
     },
     {
       "name": "Data: Linear card-verifiability report stale",
       "status": "pass",
-      "message": "data/audit/card-verifiability-linear.json generated 2026-11-05"
+      "message": "data/audit/card-verifiability-linear.json generated 2026-11-06"
     },
     {
       "name": "Data: review coverage holes",
       "status": "warn",
-      "message": "109 review(s) with no usable text, 68 rejected although verified as a review, 18 never scored, 33 with a blocked URL (0 published on the site), across 653 current shows"
+      "message": "107 review(s) with no usable text, 68 rejected although verified as a review, 21 never scored, 33 with a blocked URL (0 published on the site), across 656 current shows"
     },
     {
       "name": "Data: published scores outside the critic's rating",
       "status": "pass",
-      "message": "No published review score contradicts the critic's rating (47312 checked)"
+      "message": "No published review score contradicts the critic's rating (47403 checked)"
     },
     {
       "name": "Data: early publish dates awaiting page-date recheck",
       "status": "warn",
-      "message": "100 review(s) carry an early or carried publish date no page read has confirmed (limit 40; 165 more already attempted)"
+      "message": "99 review(s) carry an early or carried publish date no page read has confirmed (limit 40; 164 more already attempted)"
     },
     {
       "name": "Data: duplicate-flag leaks (a wrong twin dropping a good review)",

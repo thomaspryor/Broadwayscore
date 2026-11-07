@@ -1,7 +1,7 @@
 {
   "system": "cron",
   "status": "warn",
-  "lastChecked": "2026-11-06T09:26:23.278Z",
+  "lastChecked": "2026-11-07T08:51:23.046Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -9,37 +9,37 @@
     {
       "name": "Cron: Update Show Status",
       "status": "pass",
-      "message": "18h ago, success"
+      "message": "17h ago, success"
     },
     {
       "name": "Cron: Rebuild Reviews",
-      "status": "pass",
-      "message": "0h ago, success"
-    },
-    {
-      "name": "Cron: Collect Review Texts",
-      "status": "pass",
-      "message": "1h ago, success"
-    },
-    {
-      "name": "Cron: LLM Ensemble Score",
-      "status": "pass",
-      "message": "0h ago, success"
-    },
-    {
-      "name": "Cron: Test Suite",
-      "status": "pass",
-      "message": "3h ago, success"
-    },
-    {
-      "name": "Cron: Opening Night Broadcast",
       "status": "warn",
       "message": "Last run still running (started 0h ago)"
     },
     {
+      "name": "Cron: Collect Review Texts",
+      "status": "pass",
+      "message": "0h ago, success"
+    },
+    {
+      "name": "Cron: LLM Ensemble Score",
+      "status": "warn",
+      "message": "Last run still running (started 0h ago)"
+    },
+    {
+      "name": "Cron: Test Suite",
+      "status": "warn",
+      "message": "Last run still running (started 0h ago)"
+    },
+    {
+      "name": "Cron: Opening Night Broadcast",
+      "status": "pass",
+      "message": "0h ago, success"
+    },
+    {
       "name": "Cron: Update Lottery/Rush",
       "status": "pass",
-      "message": "4d ago, success (newest run failure — superseded, not a failure)"
+      "message": "5d ago, success (newest run failure — superseded, not a failure)"
     },
     {
       "name": "Cron: Weekly Grosses",
@@ -59,7 +59,7 @@
     {
       "name": "Cron: Update Cast Changes",
       "status": "pass",
-      "message": "2d ago, success"
+      "message": "3d ago, success"
     },
     {
       "name": "Cron: NYT Critics Picks",
@@ -69,12 +69,12 @@
     {
       "name": "Cron: Weekly Video Reviews",
       "status": "pass",
-      "message": "4d ago, success"
+      "message": "5d ago, success"
     },
     {
       "name": "Cron: Weekly Show Origins",
       "status": "pass",
-      "message": "4d ago, success"
+      "message": "5d ago, success"
     },
     {
       "name": "Cron: Reverse Discovery",
@@ -84,27 +84,27 @@
     {
       "name": "Cron: Cron Health Watchdog",
       "status": "pass",
-      "message": "14h ago, ran (failure; liveness-only check)"
+      "message": "14h ago, ran (success; liveness-only check)"
     },
     {
       "name": "Cron: Affiliate Link Integrity",
       "status": "pass",
-      "message": "3d ago, success"
+      "message": "4d ago, success"
     },
     {
       "name": "Cron: Cloud Memory Reconcile",
       "status": "pass",
-      "message": "2h ago, success"
+      "message": "3h ago, success"
     },
     {
       "name": "Cron: exempt-cron liveness",
       "status": "warn",
-      "message": "2 of 139 exempt scheduled workflow(s) stopped starting: detect-revivals-ibdb.yml (last start 378h ago, limit 192h); scrape-bww-reviews.yml (last start 449h ago, limit 192h)."
+      "message": "2 of 139 exempt scheduled workflow(s) stopped starting: detect-revivals-ibdb.yml (last start 401h ago, limit 192h); scrape-bww-reviews.yml (last start 472h ago, limit 192h)."
     },
     {
       "name": "Cron: failing every scheduled run",
       "status": "warn",
-      "message": "6 of 144 scheduled workflow(s) failed their last 3 scheduled runs: audit-provisional-venues.yml (5+ in a row, last 2026-11-06); backfill-review-dates.yml (3+ in a row, last 2026-11-05); check-cookie-health.yml (3+ in a row, last 2026-11-03); check-corpus-drift.yml (5+ in a row, last 2026-11-05); detect-revivals-ibdb.yml (3+ in a row, last 2026-10-21); sweep-image-variants.yml (4+ in a row, last 2026-11-05)."
+      "message": "5 of 144 scheduled workflow(s) failed their last 3 scheduled runs: audit-provisional-venues.yml (5+ in a row, last 2026-11-07); backfill-review-dates.yml (4+ in a row, last 2026-11-06); check-corpus-drift.yml (5+ in a row, last 2026-11-06); detect-revivals-ibdb.yml (3+ in a row, last 2026-10-21); sweep-image-variants.yml (5+ in a row, last 2026-11-06)."
     }
   ]
 }
