@@ -534,21 +534,22 @@ function renderNeedsAttentionBlock(queued) {
   // composeDigestEmail attaches q.actionUrl (signed dispatch link, same HMAC
   // machinery as the API's approve/dispatch flow); prose-only cards are a
   // regression the content invariant now catches.
+  // BRO-7075: one bold title, ONE plain sentence (the question if there is one,
+  // else the description; they used to print both and read as the same text
+  // twice), then buttons. No raw links or URLs are ever printed.
+  const btn = (href, label, bg) => `<a href="${esc(href)}" style="display:inline-block;font-size:15px;font-weight:700;color:#fff;background-color:${bg};text-decoration:none;padding:9px 18px;border-radius:8px;margin:0 8px 0 0;">${label}</a>`;
   return validQueued.length
     ? `<div style="border:1px solid #e5e5e5;border-radius:10px;padding:14px 16px;margin:0 0 14px;">
-        <div style="font-size:13px;font-weight:700;margin-bottom:8px;">Needs your attention</div>
+        <div style="font-size:16px;font-weight:700;margin-bottom:8px;">Needs your attention</div>
         ${validQueued.map(q => {
           const href = safeUrl(q.url);
           const action = safeUrl(q.actionUrl);
-          // Every remaining queued row is a genuine decision (task #843):
-          // technical rows are folded into renderAutofixBlock's "Being fixed
-          // automatically" list before this ever runs — see
-          // send-morning-digest.js. decisionPrompt names the actual choice
-          // so a bare button never leaves the owner guessing what it does.
-          return `<div style="margin:0 0 10px;">
-            <div style="font-size:13px;color:#333;"><b>${esc(q.title || '(untitled)')}</b>${q.description ? ` \u2014 ${esc(clip(q.description, 200))}` : ''}${href ? ` <a href="${esc(href)}" style="color:#1d4ed8;text-decoration:underline;">view</a>` : ''}</div>
-            ${q.decisionPrompt ? `<div style="font-size:13px;font-weight:700;color:#b45309;margin:4px 0 0;">${esc(clip(q.decisionPrompt, 200).replace(/^Decision needed:\s*/i, ''))}</div>` : ''}
-            ${action ? `<div style="margin:4px 0 0;"><a href="${esc(action)}" style="display:inline-block;font-size:13px;font-weight:700;color:#fff;background-color:#16a34a;text-decoration:none;padding:7px 16px;border-radius:8px;">Dispatch a fix \u2192</a></div>` : ''}
+          const question = q.decisionPrompt ? clip(String(q.decisionPrompt).replace(/^Decision needed:\s*/i, ''), 220) : '';
+          const detail = question || (q.description ? clip(q.description, 160) : '');
+          return `<div style="margin:0 0 14px;">
+            <div style="font-size:15px;font-weight:700;color:#111;margin:0 0 4px;">${esc(clip(q.title || '(untitled)', 110))}</div>
+            ${detail ? `<div style="font-size:15px;color:${question ? '#b45309' : '#333'};margin:0 0 8px;">${esc(detail)}</div>` : ''}
+            <div>${href ? btn(href, 'Open', '#1d4ed8') : ''}${action ? btn(action, 'Dispatch a fix \u2192', '#16a34a') : ''}</div>
           </div>`;
         }).join('')}</div>`
     : '';

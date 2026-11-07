@@ -187,7 +187,7 @@ function tilesFor(m, { startedIdle = null } = {}) {
       m.waiting === null ? 'could not be read' : m.waiting ? 'listed at the top of this email' : 'no decisions pending'],
     // BRO-6870: with the board table present the tile IS its "Started, but no update for 2+ days" row (one number, two places).
     Number.isFinite(startedIdle)
-      ? ['Stuck', plural(startedIdle, 'card'), 'started, no update for 2+ days (the "Started, but no update" row below)']
+      ? ['Stuck', plural(startedIdle, 'card'), 'started, no update for 2+ days (see "Started, but no update" in the attached report)']
       : ['Stuck', m.stuckCards === null ? 'n/a' : `${m.stuckCards}${m.stuckCardsFloor ? '+' : ''} card${m.stuckCards === 1 && !m.stuckCardsFloor ? '' : 's'}`,
         'started, no progress in 2+ days'],
     ['Spent this week', costBig, costNote],
@@ -195,7 +195,7 @@ function tilesFor(m, { startedIdle = null } = {}) {
 }
 
 /** The owner-facing block. `daily` is fetchDailyFlow's days or null. */
-function renderBoardSummaryHtml(m, daily, esc = (s) => String(s), { now = new Date(), partial = false, startedIdle = null } = {}) {
+function renderBoardSummaryHtml(m, daily, esc = (s) => String(s), { now = new Date(), partial = false, startedIdle = null, compact = false } = {}) {
   const v = boardVerdict(m, daily, { partial });
   const tone = v.tone === 'good'
     ? { bg: '#e8f6e8', dot: '#0ca30c', icon: '&#10003;' }
@@ -209,7 +209,7 @@ function renderBoardSummaryHtml(m, daily, esc = (s) => String(s), { now = new Da
 <div style="background-color:${tone.bg};border-radius:8px;padding:10px 12px;">
 <div style="font-size:15px;font-weight:700;color:${INK};"><span style="display:inline-block;width:18px;height:18px;line-height:18px;border-radius:9px;background-color:${tone.dot};color:#fff;font-size:12px;text-align:center;margin-right:6px;">${tone.icon}</span>${esc(v.headline)}</div>
 <div style="font-size:13px;color:${INK};margin-top:4px;">${esc(v.sentence)}</div></div>
-${Array.isArray(daily) && daily.length ? renderChart(daily, esc, { now }) : ''}
+${!compact && Array.isArray(daily) && daily.length ? renderChart(daily, esc, { now }) : ''}
 ${tiles}
 </div>`;
 }
