@@ -1,12 +1,12 @@
 {
-  "updatedAt": "2026-11-07T15:43:31.000Z",
-  "processed": 68,
-  "failed": 78,
-  "successRate": "46.6%",
+  "updatedAt": "2026-11-07T15:52:31.885Z",
+  "processed": 87,
+  "failed": 76,
+  "successRate": "53.4%",
   "tierBreakdown": {
     "playwright": 37,
     "amp": 0,
-    "browserbase": 1,
+    "browserbase": 3,
     "directCookies": 0,
     "scrapingdog": 7,
     "scrapingbee": 4,
@@ -14,30 +14,8 @@
     "archiveToday": 0,
     "archive": 18
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 4,
   "recentActivity": [
-    {
-      "t": "2026-11-07T14:35:27.420Z",
-      "event": "bb-session",
-      "session": "abc8d13a",
-      "url": "http://www.talkinbroadway.com/ob/10_05_15.html"
-    },
-    {
-      "t": "2026-11-07T14:35:27.761Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-11-07T14:36:58.947Z",
-      "event": "bb-session",
-      "session": "20abff8b",
-      "url": "http://www.talkinbroadway.com/page/ob/2_29_16.html"
-    },
-    {
-      "t": "2026-11-07T14:36:59.262Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
     {
       "t": "2026-11-07T14:42:22.658Z",
       "event": "bb-session",
@@ -115,6 +93,40 @@
       "event": "bb-session",
       "session": "ad6148c2",
       "url": "http://www.publictheater.org/"
+    },
+    {
+      "t": "2026-11-07T15:43:46.129Z",
+      "event": "bb-session",
+      "session": "2a510a2c",
+      "url": "https://www.nytimes.com/2026/11/06/theater/the-unbelievers-222-a-ghost-story-rev"
+    },
+    {
+      "t": "2026-11-07T15:43:46.652Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-07T15:46:09.792Z",
+      "event": "bb-session",
+      "session": "a6857fc1",
+      "url": "https://bachtrack.com/review-medea-yoncheva-spyres-met-opera-new-york-october-20"
+    },
+    {
+      "t": "2026-11-07T15:50:33.663Z",
+      "event": "bb-session",
+      "session": "7a1e79e0",
+      "url": "https://hermes.talkinbroadway.com/allthatchat_new/d.php?id=2655044"
+    },
+    {
+      "t": "2026-11-07T15:50:34.183Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-07T15:51:47.394Z",
+      "event": "bb-session",
+      "session": "fdcae466",
+      "url": "https://www.dailymail.com/tvshowbiz/article-16250035/Keira-Knightleys-racy-West-"
     }
   ]
 }
