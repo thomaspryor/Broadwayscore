@@ -338,6 +338,15 @@ const AMBIGUOUS_VENUE_WORDS = new Set([
   'royal', 'garden', 'union', 'stage', 'studio', 'repertory', 'festival',
 ]);
 
+// House abbreviations the press writes in slugs instead of the venue's name
+// (BRO-7077, BRO-5386 follow-up): The Stage files the RSC's As You Like It as
+// "...-rsc-review" and BWW titles it "Opens at the RSC", which never named
+// "royal-shakespeare". Keyed on the venue slug prefix; aliases are explicit,
+// never derived, because short initials collide ("nt", "met").
+const VENUE_ALIASES = [
+  ['royal-shakespeare', ['rsc']],
+];
+
 /**
  * Slug phrases that identify a venue. Only the first comma part is the venue's
  * own name: later parts are a city or region ("Stratford-upon-Avon", "Cambridge, MA"),
@@ -357,7 +366,8 @@ function venuePhrases(venue) {
   const words = stripped.split('-');
   if (words.every(w => VENUE_STOPWORDS.has(w) || GENERIC_VENUE_SLUGS.has(w))) return [];
   if (words.length === 1 && (stripped.length < 7 || AMBIGUOUS_VENUE_WORDS.has(stripped))) return [];
-  return [...new Set([stripped, raw])];
+  const aliases = VENUE_ALIASES.filter(([prefix]) => stripped.startsWith(prefix)).flatMap(([, a]) => a);
+  return [...new Set([stripped, raw, ...aliases])];
 }
 
 /** True when `phrase` appears in the URL path on hyphen/slash boundaries. */
