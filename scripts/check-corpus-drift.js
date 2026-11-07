@@ -247,6 +247,29 @@ const AUDITS = [
     args: ['--max=0'],
     crashCodes: [3],           // 0 clean / 1 = phantom star stored (drift) / 3 = corpus missing or bad args
   },
+  // BRO-7077 (BRO-4594): one article URL filed under 2+ shows with one shared
+  // pull quote and no per-show score: a multi-show column copied whole. Some
+  // groups are real joint reviews; measured 62 groups on 2026-11-07, so only
+  // growth past that shows up here.
+  {
+    name: 'shared-url-quote',
+    healPathRequired: false,
+    label: 'article URL filed under 2+ shows sharing one pull quote (copied multi-show column)',
+    script: 'audit-shared-url-quote.js',
+    args: ['--max=62'],
+    crashCodes: [2],           // 0 at/under baseline / 1 = new shared-quote group / 2 = corpus missing
+  },
+  // BRO-7077 (BRO-4888): same text under two bylines + urls in one show, and
+  // isRoundupArticle set on an outlet's own url. Measured 2 pairs + 72 roundup
+  // flags = 74 on 2026-11-07; lower --max as the backlog is triaged.
+  {
+    name: 'review-pair-anomalies',
+    healPathRequired: false,
+    label: 'same-text pairs under different bylines, and roundup flags on an outlet\'s own url',
+    script: 'audit-review-pair-anomalies.js',
+    args: ['--max=74'],
+    crashCodes: [2],           // 0 at/under baseline / 1 = new anomaly / 2 = corpus missing or bad args
+  },
   {
     name: 'unknown-outlets',
     healPathRequired: false,
