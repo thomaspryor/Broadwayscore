@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-07T17:37:41.319Z",
+  "generatedAt": "2026-11-07T18:11:55.934Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -190,25 +190,25 @@
       "status": "open",
       "slug": "nero-off-west-end",
       "thumbnail": "/images/shows/nero-off-west-end-2026/thumbnail.jpg",
-      "siteScore": null,
+      "siteScore": 39.18,
       "liveScore": 39,
-      "scoreDrift": null,
-      "belowThreshold": true,
-      "reviewsNeeded": 2,
+      "scoreDrift": -0.17999999999999972,
+      "belowThreshold": false,
+      "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 3,
+      "total": 4,
       "t1": 0,
-      "t2": 0,
+      "t2": 1,
       "t3": 3,
       "positive": 1,
       "mixed": 0,
-      "negative": 2,
+      "negative": 3,
       "readiness": {
         "ready": false,
         "reasons": [
-          "3/8 total",
+          "4/8 total",
           "T1:0/3",
-          "T2:0/2",
+          "T2:1/2",
           "hi-conf:3/6"
         ],
         "highConfidence": 3,
@@ -350,6 +350,18 @@
           "p": 1,
           "m": 0,
           "n": 2,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-11-07T18:11:55.934Z",
+          "rc": 4,
+          "s": 39.18,
+          "t1": 0,
+          "t2": 1,
+          "t3": 3,
+          "p": 1,
+          "m": 0,
+          "n": 3,
           "bc": "waiting"
         }
       ]
@@ -2371,23 +2383,23 @@
       "status": "open",
       "slug": "speculations-off-west-end",
       "thumbnail": "/images/shows/speculations-off-west-end-2026/thumbnail.jpg",
-      "siteScore": 47.17,
-      "liveScore": 47,
-      "scoreDrift": -0.1700000000000017,
+      "siteScore": 47.56,
+      "liveScore": 48,
+      "scoreDrift": 0.4399999999999977,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 27,
+      "total": 28,
       "t1": 5,
       "t2": 6,
-      "t3": 16,
+      "t3": 17,
       "positive": 6,
-      "mixed": 7,
+      "mixed": 8,
       "negative": 14,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 25,
+        "highConfidence": 26,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -2625,6 +2637,18 @@
           "t3": 16,
           "p": 6,
           "m": 7,
+          "n": 14,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-11-07T18:11:55.934Z",
+          "rc": 28,
+          "s": 47.56,
+          "t1": 5,
+          "t2": 6,
+          "t3": 17,
+          "p": 6,
+          "m": 8,
           "n": 14,
           "bc": "waiting"
         }
@@ -3508,6 +3532,45 @@
       "status": "previews",
       "slug": "msblackforpresident",
       "thumbnail": "/images/shows/msblackforpresident-off-broadway-2026/thumbnail.jpg",
+      "daysUntil": 1,
+      "readinessChecks": {
+        "wrongProduction": {
+          "pass": true,
+          "detail": "No pre-existing score files"
+        },
+        "dtliSlug": {
+          "pass": false,
+          "detail": "No DTLI slug mapped — run discover-dtli-slugs.js"
+        },
+        "bwwRoundup": {
+          "pass": null,
+          "detail": "Not yet archived — bww-rr-discover.js will auto-fetch within minutes of publication",
+          "warn": true
+        },
+        "talkingBroadway": {
+          "pass": null,
+          "detail": "Not yet archived — tb-direct-url.js will discover at poll time",
+          "warn": true
+        }
+      },
+      "readinessSummary": {
+        "failures": 2,
+        "warnings": 2,
+        "unknowns": 4,
+        "total": 7
+      },
+      "preflight": false
+    },
+    {
+      "id": "the-steel-man-off-broadway-2026",
+      "title": "The Steel Man",
+      "market": "broadway",
+      "category": "off-broadway",
+      "type": "play",
+      "openingDate": "2026-11-08",
+      "status": "open",
+      "slug": "the-steel-man",
+      "thumbnail": "/images/shows/the-steel-man-off-broadway-2026/thumbnail.jpg",
       "daysUntil": 1,
       "readinessChecks": {
         "wrongProduction": {

@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-07T17:37:19.028Z",
+  "timestamp": "2026-11-07T18:11:35.062Z",
   "stats": {
-    "totalReviews": 80493,
-    "alreadyFlagged": 22023,
+    "totalReviews": 80498,
+    "alreadyFlagged": 22031,
     "dateGuardCatches": 217,
     "directorMismatch": 3522,
-    "tvFilmSignals": 2290,
+    "tvFilmSignals": 2291,
     "londonSignals": 3624,
     "offBroadwaySignals": 747,
     "yearMismatch": 362,
-    "noPublishDate": 8467
+    "noPublishDate": 8459
   },
   "findings": [
     {
@@ -39820,6 +39820,20 @@
       "score": 89,
       "publishDate": "2026-10-08",
       "url": "https://www.britishtheatreguide.info/reviews/little-shop-of-hope-mill-theat-26087",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "little-shop-of-horrors-hope-mill-regional-2026",
+      "file": "west-end-best-friend--jacob-bush.json",
+      "score": 79,
+      "publishDate": "2026-10-08",
+      "url": "https://www.westendbestfriend.co.uk/news/review-little-shop-of-horrors-hope-mill-theatre",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
