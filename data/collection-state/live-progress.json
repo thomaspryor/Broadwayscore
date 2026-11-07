@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-11-07T05:23:17.666Z",
-  "processed": 407,
-  "failed": 253,
-  "successRate": "61.7%",
+  "updatedAt": "2026-11-07T05:57:32.827Z",
+  "processed": 411,
+  "failed": 262,
+  "successRate": "61.1%",
   "tierBreakdown": {
-    "playwright": 204,
+    "playwright": 205,
     "amp": 1,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingdog": 0,
-    "scrapingbee": 0,
-    "brightdata": 0,
+    "scrapingdog": 33,
+    "scrapingbee": 17,
+    "brightdata": 1,
     "archiveToday": 0,
-    "archive": 112
+    "archive": 114
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 0,
   "recentActivity": [
     {
       "t": "2026-11-07T03:46:38.215Z",
@@ -34,70 +34,20 @@
       "url": "https://theater.nytimes.com/mem/theater/treview.html?html_title=&tols_title=IMAG"
     },
     {
-      "t": "2026-11-07T05:05:45.201Z",
+      "t": "2026-11-07T03:46:56.454Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     },
     {
-      "t": "2026-11-07T04:48:06.359Z",
+      "t": "2026-11-07T03:54:00.129Z",
       "event": "bb-session",
-      "session": "3b4596ac",
-      "url": "https://www.nytimes.com/2026/11/06/theater/the-unbelievers-222-a-ghost-story-rev"
+      "session": "3550d431",
+      "url": "https://theater.nytimes.com/mem/theater/treview.html?res=9E07E3D7113FF932A35752C"
     },
     {
-      "t": "2026-11-07T04:48:06.804Z",
+      "t": "2026-11-07T03:54:00.756Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-11-07T04:48:23.300Z",
-      "event": "bb-session",
-      "session": "62f37a20",
-      "url": "https://www.nytimes.com/2026/11/06/theater/the-unbelievers-222-a-ghost-story-rev"
-    },
-    {
-      "t": "2026-11-07T04:48:23.714Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-11-07T04:49:03.079Z",
-      "event": "bb-session",
-      "session": "8aab67b8",
-      "url": "https://www.nytimes.com/2026/11/05/theater/rope-the-verge-review-off-broadway-si"
-    },
-    {
-      "t": "2026-11-07T04:49:03.482Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-11-07T04:49:19.994Z",
-      "event": "bb-session",
-      "session": "d8847902",
-      "url": "https://www.nytimes.com/2026/11/05/theater/rope-the-verge-review-off-broadway-si"
-    },
-    {
-      "t": "2026-11-07T04:49:20.441Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-11-07T04:52:13.292Z",
-      "event": "bb-session",
-      "session": "70c7ba2e",
-      "url": "https://bachtrack.com/review-medea-yoncheva-spyres-met-opera-new-york-october-20"
-    },
-    {
-      "t": "2026-11-07T04:56:21.963Z",
-      "event": "bb-session",
-      "session": "89b8b846",
-      "url": "https://hermes.talkinbroadway.com/allthatchat_new/d.php?id=2655044"
-    },
-    {
-      "t": "2026-11-07T04:56:22.411Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
     }
   ]
 }
