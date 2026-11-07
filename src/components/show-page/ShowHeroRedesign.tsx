@@ -45,6 +45,7 @@ import {
   getScoreTier,
 } from '@/components/show-cards';
 import MiniStars from '@/components/user/Stars';
+import StarRating from '@/components/user/StarRating';
 import WatchlistPlanCard, { PlanRow, DateTile } from '@/components/user/WatchlistPlanCard';
 import { buildPlannedShowEvent } from '@/lib/calendar-event';
 import RatingEditor, { type RatingEditorSaveData } from '@/components/user/RatingEditor';
@@ -199,7 +200,14 @@ function Inner({
   // Return focus to the rate button when the editor closes — the inline
   // (desktop) editor is not a Modal, so nothing else restores focus and it
   // falls to <body>, stranding keyboard/screen-reader users (audit P2).
-  const refocusRateBtn = () => requestAnimationFrame(() => rateBtnRef.current?.focus());
+  // On phones the Rate it button is display:none while the star row shows, so
+  // focus goes to the first star instead (focus on a hidden button is a no-op).
+  const mobileStarsRef = useRef<HTMLDivElement>(null);
+  const refocusRateBtn = () => requestAnimationFrame(() => {
+    const btn = rateBtnRef.current;
+    if (btn && btn.offsetParent !== null) btn.focus();
+    else mobileStarsRef.current?.querySelector<HTMLButtonElement>('button')?.focus();
+  });
 
   // ?rate=1 / ?stars=N / ?edit=1 deep-link helpers (kept compatible with /my-shows entry points).
   // Read once after mount so the prerendered HTML stays server-rendered.
@@ -223,6 +231,8 @@ function Inner({
   const hasRating = ratingCount > 0;
   // Keep "Log another viewing" for a show already rated; hide a first "Rate it" until it could have been seen.
   const showRateButton = seeable || hasRating;
+  // Phone star row: only for a first rating on a show the viewer could have seen.
+  const showMobileStars = showRateButton && !hasRating;
   const isMulti = ratingCount > 1;
   const { isSavedLocally, toggleLocal } = useLocalWatchlist();
   // Signed out, "Want to See" saves on this device (BRO-4616).
@@ -753,9 +763,20 @@ function Inner({
       {/* Action buttons row — same geometry as the ticket buttons below
           (h-10 / rounded-lg / horizontal icon+label); a taller rounder shape
           here read as mismatched (owner report, 2026-07-17). */}
+      {/* Phones only: tap-to-rate star row, matching the iOS app. First rating only;
+          a rated show keeps "Log another viewing" and the rating card. A tap seeds
+          the same fresh rating panel as the poster stars (handlePosterStarsPick). */}
+      {userFeaturesEnabled && showMobileStars && (
+        <div ref={mobileStarsRef} className="sm:hidden rounded-lg border border-white/10 bg-white/5 px-3 pt-2.5 pb-2">
+          <p className="text-[11px] font-semibold uppercase tracking-widest text-fg-muted mb-1">Tap to rate</p>
+          <StarRating rating={null} onRatingChange={handlePosterStarsPick} size="lg" hideLabel fill />
+        </div>
+      )}
       {userFeaturesEnabled && (
         <div className={`grid gap-2 ${showRateButton
-          ? (isAuthenticated ? 'grid-cols-[1fr_1fr_auto]' : 'grid-cols-2')
+          ? (isAuthenticated
+              ? (showMobileStars ? 'grid-cols-[1fr_auto] sm:grid-cols-[1fr_1fr_auto]' : 'grid-cols-[1fr_1fr_auto]')
+              : (showMobileStars ? 'grid-cols-1 sm:grid-cols-2' : 'grid-cols-2'))
           : (isAuthenticated ? 'grid-cols-[1fr_auto]' : 'grid-cols-1')}`}>
           <button
             type="button"
@@ -776,7 +797,7 @@ function Inner({
             type="button"
             ref={rateBtnRef}
             onClick={handleRateIt}
-            className="flex items-center justify-center gap-1.5 h-10 px-2 rounded-lg border bg-white/10 border-white/15 text-white hover:bg-white/15 hover:border-white/25 transition-all whitespace-nowrap"
+            className={`${showMobileStars ? 'hidden sm:flex' : 'flex'} items-center justify-center gap-1.5 h-10 px-2 rounded-lg border bg-white/10 border-white/15 text-white hover:bg-white/15 hover:border-white/25 transition-all whitespace-nowrap`}
           >
             <svg className="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.196-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
