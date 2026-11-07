@@ -18,6 +18,8 @@
  * Advisory: exits 0 on success; 1 only on unusable input (no shows.json / no review-texts git).
  */
 
+require('./lib/cli-help').exitOnHelp(module);
+
 const fs = require('fs');
 const path = require('path');
 const { execFileSync } = require('child_process');
@@ -80,7 +82,7 @@ function main() {
   const nowMs = Date.now();
   const toDate = arg('to') || ymd(nowMs);
   const fromDate = arg('from') || ymd(nowMs - 14 * DAY);
-  const outPath = path.resolve(ROOT, arg('out') || 'data/audit/opening-grades.json');
+  const auditOutPath = path.resolve(ROOT, arg('out') || 'data/audit/opening-grades.json');
   const rtDir = path.resolve(ROOT, arg('review-texts') || 'data/review-texts');
 
   const showsDoc = readJson(path.join(ROOT, 'data/shows.json'), null);
@@ -127,9 +129,9 @@ function main() {
   for (const g of grades) console.log(`${g.verdict.padEnd(13)} ${g.showId}  ${og.gradeLine(g)}`);
   console.log(JSON.stringify(doc.summary));
   if (flag('dry-run')) return;
-  fs.mkdirSync(path.dirname(outPath), { recursive: true });
-  fs.writeFileSync(outPath, `${JSON.stringify(doc, null, 2)}\n`);
-  console.log(`wrote ${path.relative(ROOT, outPath)} (${grades.length} openings)`);
+  fs.mkdirSync(path.dirname(auditOutPath), { recursive: true });
+  fs.writeFileSync(auditOutPath, `${JSON.stringify(doc, null, 2)}\n`);
+  console.log(`wrote ${path.relative(ROOT, auditOutPath)} (${grades.length} openings)`);
 }
 
 if (require.main === module) main();
