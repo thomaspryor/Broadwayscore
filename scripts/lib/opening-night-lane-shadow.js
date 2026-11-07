@@ -86,9 +86,11 @@ function createShadowPublishPorts({ onRows, now = Date.now } = {}) {
 /** The printed rating the scorer was handed (inline-score.js ratingFields) as a short label: '2/5 (regex-stars)'. */
 function ratingLabel(r) {
   if (!r || typeof r !== 'object') return null;
-  const v = r.originalScore != null && r.originalScore !== '' ? r.originalScore : (r.aggregatorStars != null && r.aggregatorStars !== '' ? r.aggregatorStars : null);
+  const printed = r.originalScore != null && r.originalScore !== '';
+  const v = printed ? r.originalScore : (r.aggregatorStars != null && r.aggregatorStars !== '' ? r.aggregatorStars : null);
   if (v == null) return null;
-  const src = r.originalScoreSource || r.scoreSource || null;
+  // score-routing writes an aggregator's source to aggregatorStarsSource, never scoreSource (BRO-6872).
+  const src = (printed ? r.originalScoreSource : r.aggregatorStarsSource) || r.scoreSource || null;
   return `${String(v)}${src ? ` (${src})` : ''}`;
 }
 

@@ -199,11 +199,14 @@ test('a lane score records the printed rating it was anchored to, and its score 
   await rec.wrapScore(async () => ({ score: 41, extra: { scoreSource: 'anchored-v6', ensembleData: { claudeScore: 42, openaiScore: 40, geminiScore: 40 } } }))(
     { url: 'https://www.theaterscene.net/plays/x/a-critic/', fullText: TEXT, outletId: 'theater-scene' },
     { fullText: TEXT, rating: { originalScore: '2/5', originalScoreNormalized: 40, originalScoreSource: 'regex-stars', scoreSource: 'regex-stars' } });
-  await rec.wrapScore(async () => ({ score: 60, extra: { scoreSource: 'anchored-v6' } }))({ url: 'https://example.org/c', fullText: TEXT }, { fullText: TEXT, rating: { aggregatorStars: '3/5', scoreSource: 'lbo-stars' } });
+  await rec.wrapScore(async () => ({ score: 60, extra: { scoreSource: 'anchored-v6' } }))({ url: 'https://example.org/c', fullText: TEXT }, { fullText: TEXT, rating: inline.ratingFields({ originalScore: '3/5', normalizedScore: 60, source: 'lbo-star-rating' }) });
   await rec.wrapScore(async () => ({ score: 78, extra: { scoreSource: 'llm-v6' } }))({ url: 'https://example.org/b', fullText: TEXT }, { fullText: TEXT });
   const [a, c, b] = rec.snapshot();
   assert.deepEqual([a.rating, a.scoreSource], ['2/5 (regex-stars)', 'anchored-v6']);
-  assert.equal(c.rating, '3/5 (lbo-stars)', 'a rating routed to aggregatorStars is still recorded');
+  assert.equal(c.rating, '3/5 (lbo-star-rating)', 'a rating routed to aggregatorStars is recorded with its source (real ratingFields shape)');
+  const z = shadow.createScoreRecorder({ now: () => T0 });
+  await z.wrapScore(async () => ({ score: 10, extra: { scoreSource: 'anchored-v6' } }))({ url: 'https://example.org/z', fullText: TEXT }, { fullText: TEXT, rating: inline.ratingFields({ originalScore: 0, normalizedScore: 0, source: 'regex-stars' }) });
+  assert.equal(z.snapshot()[0].rating, '0 (regex-stars)', 'a zero rating is still a rating');
   assert.equal(b.rating, undefined, 'no printed rating, no field');
   assert.equal(b.scoreSource, 'llm-v6');
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'shadow-anchor-'));
