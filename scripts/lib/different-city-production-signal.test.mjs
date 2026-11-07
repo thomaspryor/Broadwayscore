@@ -109,3 +109,30 @@ test('original-bug wording that slipped through before now fires', () => {
   assert.equal(g.hasDifferentCityProductionSignal(['Review is of the Chicago premiere at Theater Wit, not the Off-Broadway production in New York City'], '', NYC_SHOW), true);
   assert.equal(g.hasDifferentCityProductionSignal(['Review is of Theater Wit (Chicago), not The Secret Theatre'], '', NYC_SHOW), true);
 });
+
+// BRO-7077: CV's other phrasing for the same King Lear review had no "not Off-Broadway"
+// clause, so the market-statement test missed it and the opening-week net still downgraded.
+test('BRO-7077: "a Chicago production by ..." fires without a not-this-market clause', () => {
+  const issues = ['The review is of a Chicago production by Babes with Blades at Theater Wit.'];
+  assert.equal(g.hasDifferentCityProductionSignal(issues, '', NYC_SHOW), true);
+  const r = g.applyTemporalOverrides(true, false, 'high', '2026-11-05', '2026-10-28', { issues, reasoning: '', show: NYC_SHOW });
+  assert.equal(r.wpConfidence, 'high');
+  assert.equal(g.hasDifferentCityProductionSignal(['Reviews a Boston-based company staging of the play.'], '', NYC_SHOW), true, '-based form');
+  assert.equal(g.hasDifferentCityProductionSignal(['Mentions a Boston-based troupe touring the piece.'], '', NYC_SHOW), false, 'tour veto still applies');
+});
+
+test('BRO-7077: locator phrase stays off for history and other markets', () => {
+  for (const s of [
+    'The critic compares it to the previous Chicago production.',
+    'The show premiered as a Chicago production before transferring.',
+    'Reviewer writes for the Chicago Tribune about the New York staging.',
+    // second-opinion: comparison/history mentions must never fire (they would beat the run-window veto)
+    'compares this staging to the Chicago production starring X',
+    'references the Boston revival as a point of comparison',
+    'the director previously helmed the Chicago staging',
+    'references the Los Angeles staging from 2019',
+    'praised the Atlanta company that developed the show',
+    'The review compares it to the Chicago production.',
+  ]) assert.equal(g.hasDifferentCityProductionSignal([s], '', NYC_SHOW), false, s);
+  assert.equal(g.hasDifferentCityProductionSignal(['The review is of a Chicago production.'], '', CHICAGO_SHOW), false, 'regional page');
+});
