@@ -7,12 +7,12 @@
   "embargoSource": "market-default",
   "probe": {
     "startedAt": "2026-11-06T20:30:04.188Z",
-    "endedAt": null,
+    "endedAt": "2026-11-07T03:00:31.848Z",
     "intervalMin": 5,
-    "samples": 30,
+    "samples": 77,
     "failedSamples": 0,
-    "lastSampleAt": "2026-11-06T22:55:11.565Z",
-    "lastOkSampleAt": "2026-11-06T22:55:11.565Z"
+    "lastSampleAt": "2026-11-07T02:56:17.643Z",
+    "lastOkSampleAt": "2026-11-07T02:56:17.643Z"
   },
   "firstLiveAt": null,
   "firstLiveBaseline": false,
@@ -20,12 +20,12 @@
   "liveCount": 0,
   "liveCountAt": {
     "1h": 0,
-    "2h": null,
+    "2h": 0,
     "6h": null
   },
   "liveCountSampleAt": {
     "1h": "2026-11-06T22:00:08.791Z",
-    "2h": null,
+    "2h": "2026-11-06T23:06:05.369Z",
     "6h": null
   },
   "firstOutletPublishAt": {
@@ -47,6 +47,17 @@
       "liveCount": 0,
       "fetchedAt": "2026-11-06T23:00:27.964Z",
       "censusNote": "archive only"
+    },
+    "end": {
+      "status": "no-census-yet",
+      "source": null,
+      "count": 0,
+      "covered": null,
+      "coverage": null,
+      "missing": [],
+      "liveCount": 0,
+      "fetchedAt": "2026-11-07T03:00:30.829Z",
+      "censusNote": "archive only"
     }
   },
   "manualActions": [],
@@ -57,6 +68,12 @@
       {
         "at": "2026-11-06T23:00:28.034Z",
         "label": "2h",
+        "standDown": false,
+        "reason": "market not lane-only"
+      },
+      {
+        "at": "2026-11-07T03:00:30.907Z",
+        "label": "end",
         "standDown": false,
         "reason": "market not lane-only"
       }
