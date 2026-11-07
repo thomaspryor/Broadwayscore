@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-11-06T20:41:24.502Z",
+  "generatedAt": "2026-11-07T19:15:20.313Z",
   "counts": {
-    "router": 214,
+    "router": 213,
     "digest": 1,
     "direct": 0,
     "humanCallerIgnoresDigest": 0
@@ -93,21 +93,21 @@
     },
     {
       "file": ".github/workflows/test.yml",
-      "line": 4483,
+      "line": 4485,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "unknown"
     },
     {
       "file": ".github/workflows/test.yml",
-      "line": 4492,
+      "line": 4494,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "unknown"
     },
     {
       "file": ".github/workflows/test.yml",
-      "line": 6637,
+      "line": 6641,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "digest"
@@ -478,14 +478,14 @@
     },
     {
       "file": "scripts/check-corpus-drift.js",
-      "line": 767,
+      "line": 804,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "digest"
     },
     {
       "file": "scripts/check-corpus-drift.js",
-      "line": 911,
+      "line": 948,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "digest"
@@ -1038,21 +1038,14 @@
     },
     {
       "file": "scripts/lib/cookie-expiry-alert.js",
-      "line": 45,
+      "line": 78,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "unknown"
     },
     {
       "file": "scripts/lib/cookie-expiry-alert.js",
-      "line": 79,
-      "kind": "routeAlert",
-      "classification": "router",
-      "disposition": "unknown"
-    },
-    {
-      "file": "scripts/lib/cookie-expiry-alert.js",
-      "line": 87,
+      "line": 117,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "unknown"
@@ -1332,7 +1325,7 @@
     },
     {
       "file": "scripts/replay-pending-bylines.js",
-      "line": 378,
+      "line": 433,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "unknown"
