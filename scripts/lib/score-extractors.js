@@ -100,10 +100,14 @@ const THUMB_SCORES = {
 // Spelled-out star ratings. "Rating: Four out of five stars" is the Daily
 // Mail's verdict line (BRO-6900): read its numerator first, and keep the bare
 // "five stars" pattern off its denominator, which read every such review as 5/5.
-const WORD_STAR_NUM = { one: 1, two: 2, three: 3, four: 4, five: 5 };
+// BRO-7080: the hyphenated "Four-out-of-five stars" and the digit "4 out of
+// five stars" slipped past both patterns and the bare one read the denominator
+// as 5/5, so the out/of/five joints also accept a hyphen and the numerator a digit.
+const WORD_STAR_NUM = { one: 1, two: 2, three: 3, four: 4, five: 5, 1: 1, 2: 2, 3: 3, 4: 4, 5: 5 };
 const GAP = '(?:\\s|&nbsp;|&#160;|<[^>]*>)+';
-const OUT_OF_FIVE_WORD_STARS = new RegExp(`\\b(one|two|three|four|five)${GAP}out${GAP}of${GAP}(?:five|5)${GAP}stars?\\s*(?:[!.,;:\\)<]|$)`, 'im');
-const BARE_WORD_STARS = new RegExp(`(?<!out${GAP}of${GAP})\\b(one|two|three|four|five)\\s+stars?\\s*(?:[!.,;:\\)<]|$)`, 'im');
+const WGAP = '(?:\\s|-|&nbsp;|&#160;|<[^>]*>)+';
+const OUT_OF_FIVE_WORD_STARS = new RegExp(`(?<![\\d.])\\b(one|two|three|four|five|[1-5])${WGAP}out${WGAP}of${WGAP}(?:five|5)${GAP}stars?\\s*(?:[!.,;:\\)<]|$)`, 'im');
+const BARE_WORD_STARS = new RegExp(`(?<!out${WGAP}of${WGAP})\\b(one|two|three|four|five)\\s+stars?\\s*(?:[!.,;:\\)<]|$)`, 'im');
 
 // BRO-6905: a news roundup relays OTHER critics' stars ("The Telegraph awarded
 // the production four out of five stars", "The Independent's Tim Bano gave the
@@ -476,15 +480,15 @@ function extractNYSRScore(html, text) {
   // This is the most reliable target — it's THIS review's stars, not sidebar content.
   // html.match() first-occurrence is unreliable because multi-critic show pages embed
   // other critics' stars in og:description and sidebar links before the article body.
-  const textXlMatch = html.match(/<p[^>]*class="[^"]*\btext-xl\b[^"]*"[^>]*>\s*([★☆]{1,5})/);
+  // BRO-7080: read the run with findStarGroups so a half star counts 0.5 and
+  // the denominator is 5. Counting glyphs made "★★★½☆" 3/3 = 100.
+  const textXlMatch = html.match(/<p[^>]*class="[^"]*\btext-xl\b[^"]*"[^>]*>\s*([★☆][★☆½ ]{0,10})/);
   if (textXlMatch) {
-    const stars = textXlMatch[1];
-    const filled = (stars.match(/★/g) || []).length;
-    const total = stars.length;
-    if (total >= 1 && total <= 5) {
+    const g = findStarGroups(textXlMatch[1])[0];
+    if (g && g.index === 0) {
       return {
-        originalScore: `${filled}/${total} stars`,
-        normalizedScore: starsToNumeric(filled, total),
+        originalScore: `${g.filled}/${g.total} stars`,
+        normalizedScore: starsToNumeric(g.filled, g.total),
         source: 'unicode-stars'
       };
     }
@@ -504,24 +508,18 @@ function extractNYSRScore(html, text) {
   // Do NOT match stars mid-body — critics occasionally quote other reviewers'
   // ratings ("The Times gave it ★★★★, but I disagree…"). Anchor to the first
   // or last 15% of text, same convention as KNOWN_STAR_OUTLETS fallthrough.
-  const textStarMatches = [...text.matchAll(/([★☆]{1,5})/g)];
-  if (textStarMatches.length > 0) {
+  // BRO-7080: findStarGroups also reads spaced runs ("★ ★ ★ ★ ☆") and half
+  // stars, with denominator 5; the old contiguous count stored "★★½" as 2/2.
+  const groups = findStarGroups(text);
+  if (groups.length > 0) {
     const len = text.length;
-    const anchored = textStarMatches.find(m => {
-      const pos = m.index;
-      return pos <= len * 0.15 || pos >= len * 0.85;
-    });
+    const anchored = groups.find(g => g.index <= len * 0.15 || g.index >= len * 0.85);
     if (anchored) {
-      const stars = anchored[1];
-      const filled = (stars.match(/★/g) || []).length;
-      const total = stars.length;
-      if (total >= 1 && total <= 5) {
-        return {
-          originalScore: `${filled}/${total} stars`,
-          normalizedScore: starsToNumeric(filled, total),
-          source: 'unicode-stars'
-        };
-      }
+      return {
+        originalScore: `${anchored.filled}/${anchored.total} stars`,
+        normalizedScore: starsToNumeric(anchored.filled, anchored.total),
+        source: 'unicode-stars'
+      };
     }
   }
 

@@ -45,7 +45,9 @@ const HOUSE_WORDS = new Set(['centre', 'center', 'theatre', 'theater', 'main', '
 // "Marjorie S. Deane Little Theater @ The West Side Y" names the building the room
 // sits in, and a leading "the" is formatting (BRO-6481), as in show-duplicate-detection.
 function houseKey(v) {
-  return normalizeVenueName(String(v || '').replace(/\s*@.*$/, '').replace(/^\s*the\s+/i, ''));
+  // A parenthesised stage name is a room of the same house
+  // ("The Old Globe (Donald and Darlene Shiley Stage)"), BRO-7080.
+  return normalizeVenueName(String(v || '').replace(/\s*\([^)]*\)/g, '').replace(/\s*@.*$/, '').replace(/^\s*the\s+/i, ''));
 }
 function sameHouse(a, b) {
   const ka = houseKey(a);
@@ -220,4 +222,28 @@ function applyRetireShow(shows, action, { retire, now, reviewCount, isRetired } 
   return { ok: true, msg: `retired ${a.id} ("${row.title}" @ ${row.venue})${a.blockTitleVenue ? ' — title+venue blocked' : ''}` };
 }
 
-module.exports = { applyRetireShow };
+// Reviews a retire would orphan. A reviews.json row whose review file this same
+// plan already moved or deleted is stale (the next rebuild re-attributes it), so
+// a plan can move a duplicate's reviews onto the kept row and retire the
+// duplicate in one run (BRO-7080). Files are named "<outletId>--<critic>.json".
+function remainingReviewCount({ showId, scoredRows = [], textFiles = [], removedPaths = [] }) {
+  // One stale row per file moved away, per outlet: a second row of that outlet
+  // with no file (a manual entry) still counts.
+  const removedByOutlet = new Map();
+  for (const p of removedPaths) {
+    const [dir, file] = String(p).split('/');
+    if (dir !== showId || !file) continue;
+    const outlet = file.split('--')[0];
+    removedByOutlet.set(outlet, (removedByOutlet.get(outlet) || 0) + 1);
+  }
+  let scored = 0;
+  for (const r of scoredRows) {
+    if (!r || r.showId !== showId) continue;
+    const left = removedByOutlet.get(r.outletId) || 0;
+    if (left > 0) removedByOutlet.set(r.outletId, left - 1);
+    else scored++;
+  }
+  return scored + textFiles.length;
+}
+
+module.exports = { applyRetireShow, remainingReviewCount };

@@ -131,3 +131,28 @@ test('a pre-2014 articleBody with plain <p> paragraphs is extracted, scripts dro
   assert.doesNotMatch(text, /adblock|Other story headline/);
   assert.equal(extractDailyMailBody(html).split('\n\n').length, 11);
 });
+
+// BRO-7080: the hyphenated and digit forms of the BRO-6900 verdict line. The
+// hyphen kept OUT_OF_FIVE_WORD_STARS from matching, and the bare "five stars"
+// pattern then read the denominator as 5/5 on every star outlet.
+{
+  const { extractScore } = __cr(import.meta.url)('./score-extractors.js');
+  const pad = ' lorem ipsum dolor.'.repeat(300);
+  for (const outlet of ['daily-mail', 'telegraph', 'theargus']) {
+    for (const [line, want] of [
+      ['Rating: Four-out-of-five stars', 80],
+      ['Rating: four out-of-five stars', 80],
+      ['Rating: Three-out-of-five stars', 60],
+      ['Rating: 4 out of five stars', 80],
+    ]) {
+      __test(`BRO-7080: ${outlet} "${line}" reads ${want}, never 100`, () => {
+        const r = extractScore('', `${pad}<p>${line}</p>${pad.slice(0, 50)}`, outlet);
+        __assert.equal(r && r.normalizedScore, want);
+      });
+    }
+  }
+  __test('BRO-7080: "4.4 out of five stars" style decimals are not read as 4/5', () => {
+    const r = extractScore('', `${pad}<p>Rating: 3.4 out of five stars</p>${pad.slice(0, 50)}`, 'daily-mail');
+    __assert.notEqual(r && r.normalizedScore, 80);
+  });
+}

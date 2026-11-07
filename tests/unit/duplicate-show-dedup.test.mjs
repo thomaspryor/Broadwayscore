@@ -82,3 +82,33 @@ test('isSameSubtitleTail: a different credit list before one distinctive subtitl
   assert.equal(r.isDuplicate, true);
   assert.equal(findExistingMatch({ title: b, venue: 'NYU Skirball' }, existing)?.match.id, 'cim');
 });
+
+// BRO-7080 (BRO-4503 class): the audit learned "SoHo Playhouse" ~ "Soho Playhouse
+// Main Stage" in BRO-4503, but the ingest-time check did not, so the stub was still
+// minted. Same gap let a San Diego plan add a second "Begin Again" at The Old Globe
+// beside the Shiley Stage row (2026-11-02), splitting its reviews.
+test('replay: a room-suffixed house name is the same venue at ingest', () => {
+  const kept = { id: 'jena-friedman-motherfucker-off-broadway-2026', slug: 'jena-friedman-motherfucker-off-broadway-2026',
+    title: 'Jena Friedman: Motherfucker', venue: 'SoHo Playhouse', status: 'open',
+    openingDate: '2026-10-01', closingDate: '2026-10-11', category: 'off-broadway' };
+  const stub = { id: 'motherfucker-off-broadway-2026', slug: 'motherfucker-off-broadway-2026', title: 'Motherfucker',
+    venue: 'Soho Playhouse Main Stage', openingDate: '2026-10-01', category: 'off-broadway' };
+  const r = checkForDuplicate(stub, [kept]);
+  assert.equal(r.isDuplicate, true);
+  assert.equal(r.existingShow.id, kept.id);
+});
+
+test('replay: Begin Again at The Old Globe vs its Shiley Stage row is one show', () => {
+  const kept = { id: 'begin-again-regional-2026', slug: 'begin-again-regional-2026', title: 'Begin Again',
+    venue: 'The Old Globe (Donald and Darlene Shiley Stage), San Diego, CA', status: 'closed',
+    previewsStartDate: '2026-09-06', openingDate: '2026-09-17', closingDate: '2026-10-18', category: 'regional' };
+  const dup = { id: 'begin-again-old-regional-2026', slug: 'begin-again-old-regional-2026', title: 'Begin Again',
+    venue: 'The Old Globe, San Diego, CA', status: 'closed', openingDate: '2026-09-18', category: 'regional' };
+  assert.equal(checkForDuplicate(dup, [kept]).isDuplicate, true);
+});
+
+test('a different house that merely starts the same is not a room suffix', () => {
+  const a = { id: 'a-off-broadway-2026', slug: 'a', title: 'Hamlet', venue: 'Park Avenue Armory', openingDate: '2026-10-01', category: 'off-broadway', status: 'open' };
+  const b = { id: 'b-off-broadway-2026', slug: 'b', title: 'Hamlet: Reloaded', venue: 'Park', openingDate: '2026-10-01', category: 'off-broadway' };
+  assert.notEqual(checkForDuplicate(b, [a]).reason || '', 'Same venue + colon-segment title: "Hamlet" vs "Hamlet: Reloaded"');
+});

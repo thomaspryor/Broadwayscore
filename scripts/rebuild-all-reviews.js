@@ -6468,8 +6468,11 @@ for (const sid of postDedupTouchedShows) {
       // Matching lives in scripts/lib/manual-entry-merge.js. This merge runs after
       // every dedup pass, so a missed match appends a permanent phantom duplicate —
       // the helper matches punctuation-insensitively and falls back to the URL.
-      const { preserved, appended, matchedByUrl } =
+      const { preserved, appended, matchedByUrl, refusedRoundup = [] } =
         mergeManualEntries(allReviews, manualEntries, normalizeUrlForDedup);
+      for (const key of refusedRoundup) {
+        console.warn(`⚠️  Manual entry refused (roundup page credited to its host, no own review to attach to): ${key}`);
+      }
       if (preserved > 0) {
         console.log(`\n✅ Preserved ${preserved} manual entries from previous reviews.json` +
           ` (${appended} appended, ${matchedByUrl} matched by URL after byline mismatch)`);

@@ -137,6 +137,16 @@ if (dryRun) {
   process.exit(0);
 }
 
+// BRO-7080: a roundup page credited to its own host is not a review; the
+// rebuild's manual-entry merge refuses it, so refuse it here before writing.
+{
+  const { isRoundupManualEntry } = require('./lib/manual-entry-merge');
+  if (isRoundupManualEntry({ showId, outletId, url })) {
+    console.error(`Refusing: ${url} is a multi-outlet roundup page, not ${outletId}'s own review. Use the quoted critic's own review URL and outlet.`);
+    process.exit(1);
+  }
+}
+
 // --- Step 1: Clone core-data and edit reviews.json ---
 const coreDataDir = '/tmp/core-data-direct';
 

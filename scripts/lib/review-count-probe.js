@@ -25,11 +25,15 @@ function countLocalIncluded(showId, reviewTextsRoot = 'data/review-texts', show,
   if (!fs.existsSync(dir)) {
     return { total: 0, included: 0, excluded: 0 };
   }
-  const files = fs.readdirSync(dir).filter(f => f.endsWith('.json'));
+  // Named critics before "unknown" stubs, the order the rebuild relies on for
+  // its unknown-critic dedup.
+  const files = fs.readdirSync(dir).filter(f => f.endsWith('.json'))
+    .sort((a, b) => Number(/--(unknown|unnamed)\b/i.test(a)) - Number(/--(unknown|unnamed)\b/i.test(b)) || a.localeCompare(b));
   let included = 0;
   let excluded = 0;
   const haveUrl = new Set();
   const havePerson = new Set();
+  const namedOutlets = new Set();
   for (const f of files) {
     let data;
     try {
@@ -38,13 +42,20 @@ function countLocalIncluded(showId, reviewTextsRoot = 'data/review-texts', show,
       excluded++;
       continue;
     }
-    if (isIncludableForRebuild(data, show)) {
-      included++;
-      haveUrl.add(canonicalizeUrlForDedup(data.url));
-      havePerson.add(personKey(data));
-    } else {
+    // BRO-7080 (BRO-6438/6202 drift): pass the path so the syndication-secondary
+    // and duplicateOf branches fire, and drop what the rebuild drops within a
+    // show (same URL, same outlet+critic, an unknown-critic stub beside a named
+    // critic at the outlet). Without these the drift check read 27 local vs 24
+    // published for Benjamin Button and 36 vs 32 for Other Desert Cities.
+    if (!isIncludableForRebuild(data, show, path.join(dir, f)) || isWithinShowDuplicate(data, haveUrl, havePerson, namedOutlets)) {
       excluded++;
+      continue;
     }
+    included++;
+    const cu = canonicalizeUrlForDedup(data.url);
+    if (cu) haveUrl.add(cu);
+    havePerson.add(personKey(data));
+    if (!isUnknownCritic(data)) namedOutlets.add(outletKey(data));
   }
 
   // BRO-4759: reviews the rebuild inherits from a declared earlier-run entry
@@ -62,7 +73,7 @@ function countLocalIncluded(showId, reviewTextsRoot = 'data/review-texts', show,
         } catch {
           continue;
         }
-        if (!isIncludableForRebuild(data, sibling)) continue;
+        if (!isIncludableForRebuild(data, sibling, path.join(sibDir, f))) continue;
         if (!isWithinPriorRun(data.publishDate, show.priorRuns)) continue;
         const cu = canonicalizeUrlForDedup(data.url);
         if (cu && haveUrl.has(cu)) continue;
@@ -77,7 +88,23 @@ function countLocalIncluded(showId, reviewTextsRoot = 'data/review-texts', show,
 }
 
 function personKey(r) {
-  return `${String(r.outletId || '').toLowerCase()}|${String(r.criticName || 'unknown').toLowerCase().replace(/\s+/g, '')}`;
+  return `${outletKey(r)}|${String(r.criticName || 'unknown').toLowerCase().replace(/\s+/g, '')}`;
+}
+
+function outletKey(r) {
+  return String(r.outletId || '').toLowerCase();
+}
+
+function isUnknownCritic(r) {
+  return /^(unknown|unnamed)$/i.test(String(r.criticName || 'unknown').trim());
+}
+
+/** A file the rebuild drops as a within-show duplicate of one already counted. */
+function isWithinShowDuplicate(data, haveUrl, havePerson, namedOutlets) {
+  const cu = canonicalizeUrlForDedup(data.url);
+  if (cu && haveUrl.has(cu)) return true;
+  if (havePerson.has(personKey(data))) return true;
+  return isUnknownCritic(data) && namedOutlets.has(outletKey(data));
 }
 
 /**

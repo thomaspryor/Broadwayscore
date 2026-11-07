@@ -8,7 +8,7 @@ import os from 'node:os';
 import path from 'node:path';
 
 const require = createRequire(import.meta.url);
-const { applyRetireShow } = require('./retire-show-action.js');
+const { applyRetireShow, remainingReviewCount } = require('./retire-show-action.js');
 const { retireId, unretireId, loadRetiredIds, matchesRetired } = require('./retired-show-ids.js');
 const { mergeRetiredRecords } = require('./merge-retired-ids.js');
 
@@ -300,4 +300,37 @@ test('outOfTier: an upcoming row with a future scheduled opening date retires (B
   const r = applyRetireShow(shows, action, { retire, reviewCount: none, now: new Date('2026-10-31T00:00:00Z') });
   assert.equal(r.ok, true, r.reason);
   assert.equal(shows.length, 0);
+});
+
+test('BRO-7080: a parenthesised stage name is a room of the same house (Begin Again replay)', () => {
+  const row = (id, venue, extra = {}) => ({ id, title: 'Begin Again', venue, category: 'regional', status: 'closed', ...extra });
+  const opts = { retire: () => ({ ok: true }), now: '2026-11-07', reviewCount: () => 0, isRetired: () => false };
+  const shows = [
+    row('ba', 'The Old Globe (Donald and Darlene Shiley Stage), San Diego, CA', { previewsStartDate: '2026-09-06', closingDate: '2026-10-18', provisional: true }),
+    row('ba-old', 'The Old Globe, San Diego, CA', { openingDate: '2026-09-18' }),
+  ];
+  assert.equal(applyRetireShow(shows, { type: 'retire-show', id: 'ba-old', expectTitle: 'Begin Again', duplicateOf: 'ba', reason: 'test dup' }, opts).ok, true);
+  // A different house in another parenthetical-free name still refuses.
+  const other = [row('a', 'The Old Globe (Donald and Darlene Shiley Stage), San Diego, CA', { previewsStartDate: '2026-09-06', closingDate: '2026-10-18' }),
+    row('b', 'La Jolla Playhouse, San Diego, CA', { openingDate: '2026-09-18' })];
+  assert.equal(applyRetireShow(other, { type: 'retire-show', id: 'b', expectTitle: 'Begin Again', duplicateOf: 'a', reason: 'test dup' }, opts).ok, false);
+});
+
+test('BRO-7080: rows whose file this plan moved away do not block the duplicate retire; anything left does', () => {
+  const rows = [{ showId: 'old', outletId: 'a' }, { showId: 'old', outletId: 'b' }, { showId: 'kept', outletId: 'a' }];
+  const moved = ['old/a--x.json', 'old/b--unknown.json'];
+  assert.equal(remainingReviewCount({ showId: 'old', scoredRows: rows, textFiles: [], removedPaths: moved }), 0);
+  // One file left behind, or a row with no moved file, still counts.
+  assert.equal(remainingReviewCount({ showId: 'old', scoredRows: rows, textFiles: ['c--y.json'], removedPaths: moved }), 1);
+  assert.equal(remainingReviewCount({ showId: 'old', scoredRows: rows, textFiles: [], removedPaths: ['old/a--x.json'] }), 1);
+  // A move out of a different folder never discounts this show's rows.
+  assert.equal(remainingReviewCount({ showId: 'old', scoredRows: rows, textFiles: [], removedPaths: ['kept/a--x.json', 'kept/b--y.json'] }), 2);
+  // No moves: the plain count (back-compat).
+  assert.equal(remainingReviewCount({ showId: 'old', scoredRows: rows }), 2);
+});
+
+test('BRO-7080: a second row of a moved outlet with no file of its own still blocks the retire', () => {
+  const rows = [{ showId: 'old', outletId: 'a' }, { showId: 'old', outletId: 'a' }];
+  assert.equal(remainingReviewCount({ showId: 'old', scoredRows: rows, textFiles: [], removedPaths: ['old/a--x.json'] }), 1);
+  assert.equal(remainingReviewCount({ showId: 'old', scoredRows: rows, textFiles: [], removedPaths: ['old/a--x.json', 'old/a--y.json'] }), 0);
 });

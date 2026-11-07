@@ -297,12 +297,12 @@ function executeAddShow(action) {
 function reviewCountFor(showId) {
   const data = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/reviews.json'), 'utf8'));
   const list = Array.isArray(data) ? data : (data.reviews || []);
-  const scored = list.filter(r => r && r.showId === showId).length;
   // Collected texts not yet rebuilt into reviews.json (unscored, or newer
-  // than the last rebuild) live here and would be orphaned too.
+  // than the last rebuild) live here and would be orphaned too. Rows whose file
+  // an earlier action of this plan moved away do not count (BRO-7080).
   const dir = path.join(ROOT, 'data/review-texts', showId);
-  const texts = fs.existsSync(dir) ? fs.readdirSync(dir).filter(f => isReviewTextFile(f)).length : 0;
-  return scored + texts;
+  const textFiles = fs.existsSync(dir) ? fs.readdirSync(dir).filter(f => isReviewTextFile(f)) : [];
+  return require('./lib/retire-show-action').remainingReviewCount({ showId, scoredRows: list, textFiles, removedPaths: [...deletedReviewPaths] });
 }
 
 function executeRetireShow(action) {
