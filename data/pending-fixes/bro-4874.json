@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-4874",
   "planId": "aad41e61-92cb-4d64-9c5d-41d4ec9b93c8",
-  "status": "pending",
+  "status": "partial",
   "createdAt": "2026-11-07T19:54:59.551Z",
   "submitter": {
     "name": null,
@@ -239,5 +239,134 @@
         "description": "game-of-thrones-the-mad-king-regional-2026/partially-obstructed-view--nick730.json: criticName"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-07T22:26:32.113Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "1536-west-end-2026/the-recs--the-recs-jdh.json criticName: \"The Recs Jdh\" -> \"Unknown\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-ghost-in-your-ear-off-west-end-2026/partially-obstructed-view--view-my-complete.json criticName: \"View my Complete\" -> \"Unknown\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "affluenza-off-west-end-2026/partially-obstructed-view--nick730.json criticName: \"nick730\" -> \"Unknown\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "criticName: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "amaze-magic-off-broadway-2025/luxury-experience--debra-c-argenedward-f-nesta.json criticName: \"Debra C ArgenEdward F Nesta\" -> \"Unknown\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "angels-in-america-2018/ew--national-theatre.json criticName: \"National Theatre\" -> \"Unknown\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "archduke-west-end-2026/boycotting-trends--view-my-complete.json criticName: \"View my Complete\" -> \"Unknown\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "as-you-like-it-globe-off-west-end-2026/partially-obstructed-view--nick730.json criticName: \"nick730\" -> \"Unknown\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "criticName: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "criticName: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "blue-mist-west-end-2023/partially-obstructed-view--view-my-complete.json criticName: \"View my Complete\" -> \"Unknown\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "born-with-teeth-west-end-2025/partially-obstructed-view--view-my-complete.json criticName: \"View my Complete\" -> \"Unknown\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "criticName: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "crazysexycool-regional-2026/morris-theatre-dc--morris-theatre-dc.json criticName: \"Morris Theatre DC\" -> \"Unknown\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "criticName: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "darkling-off-west-end-2026/khambayswordswordswords--view-more-posts.json criticName: \"View more posts\" -> \"Unknown\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "criticName: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "dog-mom-off-west-end-2026/notesfromrowh--helena6.json criticName: \"helena6\" -> \"Unknown\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "dugsi-dayz-west-end-2024/partially-obstructed-view--view-my-complete.json criticName: \"View my Complete\" -> \"Unknown\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "east-is-east-west-end-2021/partially-obstructed-view--view-my-complete.json criticName: \"View my Complete\" -> \"Unknown\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "enron-2010/chicagotribune--shanxi-radio-and.json criticName: \"Shanxi Radio and\" -> \"Unknown\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "equus-off-west-end-2026/partially-obstructed-view--view-my-complete.json criticName: \"View my Complete\" -> \"Unknown\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "evita-west-end-2025/the-recs--the-recs-it.json criticName: \"The Recs IT\" -> \"Unknown\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "frozen-west-end-2021/partially-obstructed-view--view-my-complete.json criticName: \"View my Complete\" -> \"Unknown\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "game-of-thrones-the-mad-king-regional-2026/partially-obstructed-view--nick730.json criticName: \"nick730\" -> \"Unknown\""
+    }
+  ],
+  "executedIn": "ci"
 }
