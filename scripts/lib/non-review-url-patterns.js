@@ -727,6 +727,12 @@ const LISTING_PAGE_URL_PATTERNS = [
   // sit one level deeper (didtheylikeit /shows/<show>/<review>/).
   { host: /./, path: /\/events?\/[^/]+\/\d{4}-\d\d-\d\d\/?$/i, reason: 'event-listing' },
   { host: /./, path: /^\/shows\/[^/]+\/?$/i, reason: 'show-hub' },
+  // BRO-5629: an aggregator cited bestoftheatre's "everything you need to know"
+  // explainer as Affluenza's missing review (also /everything-you-need-to-know-dogstar,
+  // oldvictheatre /things-you-need-to-know-about-martin-guerre/). A slug that also
+  // says "review" stays a review (kiddoadventures "review-beetlejuice-...-everything-
+  // you-need-to-know-before-you-go"). Corpus 2026-11-07: 0 live reviews match.
+  { host: /./, path: /^(?![^?#]*review)[^?#]*(?:^|[-/])(?:everything|things)-(?:you-)?need-to-know(?:[-/._]|$)/i, reason: 'guide-article' },
 ];
 
 /**

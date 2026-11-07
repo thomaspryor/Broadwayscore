@@ -816,3 +816,19 @@ test('BRO-7081: dated event pages and bare /shows/<slug>/ hubs are listings, not
     'https://exeuntnyc.com/reviews/review-garry-starr-classic-penguins-at-studio-seaview/',
   ]) assert.equal(listingPageUrlReason(url), null, url);
 });
+
+test('BRO-5629: "everything you need to know" explainers are guide articles, not reviews', () => {
+  const { listingPageUrlReason } = require('./non-review-url-patterns.js');
+  for (const url of [
+    'https://www.bestoftheatre.co.uk/blog/post/everything-you-need-to-know-dogstar',
+    'https://www.bestoftheatre.co.uk/blog/post/everything-you-need-to-know-girls-young-vic',
+    'https://www.oldvictheatre.com/news/things-you-need-to-know-about-martin-guerre/',
+  ]) {
+    assert.equal(listingPageUrlReason(url), 'guide-article', url);
+    assert.notEqual(classifyGapCandidateUrl(url).ok, true, url);
+  }
+  for (const url of [
+    'https://kiddoadventures.com/2026/06/04/review-beetlejuice-the-musical-london-everything-you-need-to-know-before-you-go/',
+    'https://www.washingtonpost.com/entertainment/theater_dance/my-daughter-enjoyed-broadways-frozen-what-more-do-you-need-to-know/2018/03/22/40aa9cea-2d17-11e8-911f-ca7f68bff0fc_story.html',
+  ]) assert.equal(listingPageUrlReason(url), null, url);
+});
