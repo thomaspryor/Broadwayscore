@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-11-07T17:10:36.826Z",
+  "generatedAt": "2026-11-07T17:35:13.213Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 323,
-  "clean": 316,
-  "defective": 7,
+  "clean": 315,
+  "defective": 8,
   "byType": {
-    "missing-from-prod": 5,
+    "missing-from-prod": 6,
     "score-drift": 6
   },
   "shows": [
@@ -28,6 +28,24 @@
       "localCount": 3,
       "deployedCount": 2,
       "firstDefectAt": "2026-11-07T16:41:43.565Z"
+    },
+    {
+      "showId": "adirondack-chair-circle-regional-2026",
+      "title": "Adirondack Chair Circle",
+      "openingDate": "2026-11-02",
+      "ok": false,
+      "defects": [
+        {
+          "type": "missing-from-prod",
+          "detail": "1 scored outlet(s) absent from the deployed payload: one-minute-critic"
+        }
+      ],
+      "missingFromProd": [
+        "one-minute-critic"
+      ],
+      "localCount": 12,
+      "deployedCount": 11,
+      "firstDefectAt": "2026-11-07T17:35:08.332Z"
     },
     {
       "showId": "other-desert-cities-2026",

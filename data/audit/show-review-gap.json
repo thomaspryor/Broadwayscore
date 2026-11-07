@@ -1,22 +1,22 @@
 {
-  "generatedAt": "2026-11-07T17:08:58.264Z",
+  "generatedAt": "2026-11-07T17:34:33.025Z",
   "windowDays": 21,
-  "targets": 18,
-  "auditedThisRun": 14,
-  "carriedForward": 2056,
+  "targets": 8,
+  "auditedThisRun": 8,
+  "carriedForward": 2062,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
     "withGap": 637,
-    "missingCurrentRun": 1188,
+    "missingCurrentRun": 1186,
     "totalCitedNoUrl": 0,
-    "totalFlaggedMisses": 907,
-    "totalRecoverable": 56,
-    "totalRecovered": 90,
+    "totalFlaggedMisses": 908,
+    "totalRecoverable": 57,
+    "totalRecovered": 92,
     "humanExcluded": 26,
-    "automatedExcluded": 1010,
-    "automatedExcludedListed": 716,
-    "priorProductionCitations": 6058
+    "automatedExcluded": 1011,
+    "automatedExcludedListed": 717,
+    "priorProductionCitations": 6090
   },
   "results": [
     {
@@ -86113,11 +86113,9 @@
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
         "https://theatreandtonic.co.uk/blog/derren-brown-only-human-at-apollo-theatre-reviewnbsp",
-        "https://www.timeout.com/london/theatre/derren-brown-only-human-review",
-        "http://www.jonathanbaz.com/2026/10/derren-brown-only-human-review.html",
-        "https://matineemouse.substack.com/p/derren-brown-only-human-review",
-        "https://liamodell.com/2026/10/22/derren-brown-only-human-review-apollo-theatre-west-end-live-show-london/",
         "https://www.londontheatre.co.uk/reviews/derren-brown-only-human-review-apollo-theatre",
+        "https://www.broadwayworld.com/westend/article/Review-DERREN-BROWN-ONLY-HUMAN-Apollo-Theatre-20261023",
+        "https://www.timeout.com/london/theatre/derren-brown-only-human-review",
         "https://www.theguardian.com/stage/2026/oct/25/derren-brown-only-human-review-gasp-inducing-stunts-apollo-london",
         "https://www.londontheatre1.com/reviews/derren-brown-only-human-apollo-theatre/",
         "https://www.telegraph.co.uk/theatre/what-to-see/derren-brown-only-human-review/",
@@ -86206,7 +86204,42 @@
           "count": 1
         }
       ],
-      "flaggedMisses": [],
+      "flaggedMisses": [
+        {
+          "url": "https://www.broadwayworld.com/westend/article/Review-DERREN-BROWN-ONLY-HUMAN-Apollo-Theatre-20261023",
+          "host": "broadwayworld.com",
+          "knownOutletId": "broadwayworld",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "broadwayworld--unknown.json",
+              "flag": "duplicate",
+              "urlInDir": "https://www.broadwayworld.com/westend/article/Review-DERREN-BROWN-ONLY-HUMAN-Apollo-Theatre-20261023"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "duplicateOf"
+          ],
+          "confirmedNonReview": true,
+          "confirmedBasis": [
+            "duplicate-of-held"
+          ],
+          "copyOfLiveReview": true,
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
+          "serpCensus": true,
+          "reverify": false
+        }
+      ],
       "citedNoUrl": [],
       "weReference": {
         "rowCount": 21,
@@ -86273,7 +86306,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 0,
             "error": null
           },
           {
@@ -86283,7 +86316,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 2,
             "error": null
           },
           {
@@ -86319,15 +86352,16 @@
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 5,
+        "resultCount": 3,
         "error": null
       },
       "candidatesRejected": {
         "count": 41,
         "byReason": {
-          "not-http-url": 38,
-          "non-review-host": 2,
-          "ticketing-listing": 1
+          "not-http-url": 39,
+          "non-review-host": 3,
+          "write-path-blocked": 1,
+          "non-review-path": 1
         }
       },
       "dedupedVariants": [],
@@ -86401,14 +86435,14 @@
             "firstSeenAt": "2026-11-04T19:31:35.837Z"
           },
           {
-            "url": "https://www.timeout.com/london/theatre/derren-brown-only-human-review",
-            "outletId": "timeout.com",
+            "url": "https://www.londontheatre.co.uk/reviews/derren-brown-only-human-review-apollo-theatre",
+            "outletId": "londontheatre.co.uk",
             "state": "live",
             "firstSeenAt": "2026-11-04T19:31:35.837Z"
           },
           {
-            "url": "http://www.jonathanbaz.com/2026/10/derren-brown-only-human-review.html",
-            "outletId": "jonathanbaz.com",
+            "url": "https://www.timeout.com/london/theatre/derren-brown-only-human-review",
+            "outletId": "timeout.com",
             "state": "live",
             "firstSeenAt": "2026-11-06T15:49:21.638Z"
           },
@@ -86555,11 +86589,17 @@
           }
         ],
         "censusSchema": 4,
-        "excluded": [],
+        "excluded": [
+          {
+            "url": "https://www.broadwayworld.com/westend/article/Review-DERREN-BROWN-ONLY-HUMAN-Apollo-Theatre-20261023",
+            "host": "broadwayworld.com",
+            "reason": "confirmed-non-review"
+          }
+        ],
         "liveCount": 21,
         "candidateCount": 24
       },
-      "computedAt": "2026-11-07T17:08:58.264Z"
+      "computedAt": "2026-11-07T17:34:33.025Z"
     },
     {
       "showId": "derren-brown-only-human-west-end-2026",
@@ -155775,23 +155815,23 @@
         "https://www.theguardian.com/stage/2026/oct/21/ilford-boy-review-donmar-warehouse-london",
         "https://www.telegraph.co.uk/theatre/what-to-see/ilford-boy-review/",
         "https://monstagigz.com/2026/10/13/theatre-review-ilford-boy-starring-leo-whitfield-harris-craig-steen-ria-zmitrowicz-lindsey-coulson-at-the-donmar-warehouse/",
-        "https://observer.co.uk/culture/theatre/article/ilford-boy-coming-out-in-a-blaze-of-glorious-one-liners",
-        "https://www.thereviewshub.com/ilford-boy-donmar-warehouse-london/",
-        "http://boycottingtrends.blogspot.com/2026/10/theatre-review-ilford-boy-donmar.html",
         "https://www.britishtheatreguide.info/reviews/ilford-boy-donmar-warehous-26145",
-        "https://theartsdesk.com/theatre/ilford-boy-donmar-warehouse-review-writing-numbers-can-be-fun",
-        "https://redbuslondinium.uk/2026/10/31/review-ilford-boy-donmar-warehouse-%E2%98%85%E2%98%85%E2%98%85/",
+        "http://boycottingtrends.blogspot.com/2026/10/theatre-review-ilford-boy-donmar.html",
+        "https://www.allthatdazzles.co.uk/post/review-ilford-boy-donmar-warehouse",
         "https://sierz.co.uk/reviews/ilford-boy-donmar-warehouse/",
         "http://partially-obstructed-view.blogspot.com/2026/10/theatre-review-ilford-boy.html",
         "https://www.broadwayworld.com/westend/article/Review-ILFORD-BOY-Donmar-Warehouse-20261021",
+        "https://www.londonboxoffice.co.uk/news/post/ilford-boy-donmar-warehouse-review",
         "https://www.aol.com/articles/ilford-boy-donmar-witty-coming-094958000.html",
-        "https://www.allthatdazzles.co.uk/post/review-ilford-boy-donmar-warehouse",
         "https://www.afridiziak.com/reviews/ilford-boy-by-danny-lee-wynter-donmar-warehouse/",
+        "https://www.thereviewshub.com/ilford-boy-donmar-warehouse-london/",
+        "https://observer.co.uk/culture/theatre/article/ilford-boy-coming-out-in-a-blaze-of-glorious-one-liners",
+        "https://theartsdesk.com/theatre/ilford-boy-donmar-warehouse-review-writing-numbers-can-be-fun",
         "https://www.theatremonkey.com/show/ilford-boy/",
+        "https://redbuslondinium.uk/2026/10/31/review-ilford-boy-donmar-warehouse-%E2%98%85%E2%98%85%E2%98%85/",
         "https://www.islingtontribune.co.uk/article/review-ilford-boy-at-donmar-warehouse",
         "https://www.thetimes.com/culture/theatre-dance/article/ilford-boy-review-donmar-warehouse-9rksgq2r2",
         "https://www.thestage.co.uk/reviews/ilford-boy-review-donmar-warehouse-london",
-        "https://www.londonboxoffice.co.uk/news/post/ilford-boy-donmar-warehouse-review",
         "https://theatreandtonic.co.uk/blog/ilford-boy-donmar-warehouse-review",
         "https://www.reviewsgate.co.uk/all-reviews/ilford-boy-by-danny-lee-wynter-the-donmar-warehouse-earlham-street-london-wc2-until-2026-review-by-william-russell",
         "https://theatreweekly.com/review-ilford-boy-at-donmar-warehouse/",
@@ -155963,7 +156003,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 3,
             "error": null
           },
           {
@@ -155973,7 +156013,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 0,
             "error": null
           },
           {
@@ -155983,7 +156023,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 0,
             "error": null
           },
           {
@@ -155993,7 +156033,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 1,
             "error": null
           },
           {
@@ -156003,7 +156043,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 3,
             "error": null
           }
         ],
@@ -156013,11 +156053,10 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 51,
+        "count": 50,
         "byReason": {
-          "not-http-url": 45,
-          "non-review-host": 2,
-          "tag-index-page": 1,
+          "not-http-url": 44,
+          "non-review-host": 3,
           "write-path-blocked": 1,
           "bare-host": 2
         }
@@ -156083,8 +156122,50 @@
             "firstSeenAt": "2026-11-04T19:31:35.837Z"
           },
           {
-            "url": "https://observer.co.uk/culture/theatre/article/ilford-boy-coming-out-in-a-blaze-of-glorious-one-liners",
-            "outletId": "observer.co.uk",
+            "url": "https://www.britishtheatreguide.info/reviews/ilford-boy-donmar-warehous-26145",
+            "outletId": "britishtheatreguide.info",
+            "state": "live",
+            "firstSeenAt": "2026-11-04T19:31:35.837Z"
+          },
+          {
+            "url": "https://www.telegraph.co.uk/theatre/what-to-see/ilford-boy-review/",
+            "outletId": "telegraph.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-11-04T19:31:35.837Z"
+          },
+          {
+            "url": "https://www.allthatdazzles.co.uk/post/review-ilford-boy-donmar-warehouse",
+            "outletId": "allthatdazzles.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-11-04T19:31:35.837Z"
+          },
+          {
+            "url": "http://partially-obstructed-view.blogspot.com/2026/10/theatre-review-ilford-boy.html",
+            "outletId": "partially-obstructed-view.blogspot.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-07T17:34:33.025Z"
+          },
+          {
+            "url": "https://www.broadwayworld.com/westend/article/Review-ILFORD-BOY-Donmar-Warehouse-20261021",
+            "outletId": "broadwayworld.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-04T19:31:35.837Z"
+          },
+          {
+            "url": "https://www.londonboxoffice.co.uk/news/post/ilford-boy-donmar-warehouse-review",
+            "outletId": "londonboxoffice.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-11-04T19:31:35.837Z"
+          },
+          {
+            "url": "https://www.aol.com/articles/ilford-boy-donmar-witty-coming-094958000.html",
+            "outletId": "aol.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-04T19:31:35.837Z"
+          },
+          {
+            "url": "https://www.afridiziak.com/reviews/ilford-boy-by-danny-lee-wynter-donmar-warehouse/",
+            "outletId": "afridiziak.com",
             "state": "live",
             "firstSeenAt": "2026-11-04T19:31:35.837Z"
           },
@@ -156095,38 +156176,14 @@
             "firstSeenAt": "2026-11-04T19:31:35.837Z"
           },
           {
-            "url": "http://boycottingtrends.blogspot.com/2026/10/theatre-review-ilford-boy-donmar.html",
-            "outletId": "boycottingtrends.blogspot.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-04T19:31:35.837Z"
-          },
-          {
-            "url": "https://www.britishtheatreguide.info/reviews/ilford-boy-donmar-warehous-26145",
-            "outletId": "britishtheatreguide.info",
-            "state": "live",
-            "firstSeenAt": "2026-11-04T19:31:35.837Z"
-          },
-          {
-            "url": "https://theartsdesk.com/theatre/ilford-boy-donmar-warehouse-review-writing-numbers-can-be-fun",
-            "outletId": "theartsdesk.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-04T19:31:35.837Z"
-          },
-          {
-            "url": "https://redbuslondinium.uk/2026/10/31/review-ilford-boy-donmar-warehouse-%E2%98%85%E2%98%85%E2%98%85/",
-            "outletId": "redbuslondinium.uk",
-            "state": "live",
-            "firstSeenAt": "2026-11-04T19:31:35.837Z"
-          },
-          {
-            "url": "http://partially-obstructed-view.blogspot.com/2026/10/theatre-review-ilford-boy.html",
-            "outletId": "partially-obstructed-view.blogspot.com",
+            "url": "https://observer.co.uk/culture/theatre/article/ilford-boy-coming-out-in-a-blaze-of-glorious-one-liners",
+            "outletId": "observer.co.uk",
             "state": "live",
             "firstSeenAt": "2026-11-07T17:08:58.264Z"
           },
           {
-            "url": "https://www.broadwayworld.com/westend/article/Review-ILFORD-BOY-Donmar-Warehouse-20261021",
-            "outletId": "broadwayworld.com",
+            "url": "https://theartsdesk.com/theatre/ilford-boy-donmar-warehouse-review-writing-numbers-can-be-fun",
+            "outletId": "theartsdesk.com",
             "state": "live",
             "firstSeenAt": "2026-11-04T19:31:35.837Z"
           },
@@ -156155,26 +156212,8 @@
             "firstSeenAt": "2026-11-04T19:31:35.837Z"
           },
           {
-            "url": "https://www.islingtontribune.co.uk/article/review-ilford-boy-at-donmar-warehouse",
-            "outletId": "islingtontribune.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-11-04T19:31:35.837Z"
-          },
-          {
-            "url": "https://www.thetimes.com/culture/theatre-dance/article/ilford-boy-review-donmar-warehouse-9rksgq2r2",
-            "outletId": "thetimes.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-04T19:31:35.837Z"
-          },
-          {
             "url": "https://www.thestage.co.uk/reviews/ilford-boy-review-donmar-warehouse-london",
             "outletId": "thestage.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-11-04T19:31:35.837Z"
-          },
-          {
-            "url": "https://www.londonboxoffice.co.uk/news/post/ilford-boy-donmar-warehouse-review",
-            "outletId": "londonboxoffice.co.uk",
             "state": "live",
             "firstSeenAt": "2026-11-04T19:31:35.837Z"
           },
@@ -156239,7 +156278,7 @@
         "liveCount": 28,
         "candidateCount": 29
       },
-      "computedAt": "2026-11-07T17:08:58.264Z"
+      "computedAt": "2026-11-07T17:34:33.025Z"
     },
     {
       "showId": "ilford-boy-west-end-2026",
@@ -176983,25 +177022,52 @@
       "status": "open",
       "category": "off-broadway",
       "aggregatorArticles": [
-        "https://playbill.com/article/reviews-what-do-critics-think-of-kenneth-branagh-led-king-lear",
-        "https://playbill.com/article/what-do-critics-think-of-shakespeare-theatre-companys-king-lear-starring-patrick-page"
+        "https://playbill.com/article/read-reviews-for-broadways-king-lear-with-glenda-jackson",
+        "https://playbill.com/article/what-do-critics-think-of-shakespeare-theatre-companys-king-lear-starring-patrick-page",
+        "https://playbill.com/article/read-reviews-for-king-lear-starring-anthony-hopkins-and-emma-thompson",
+        "https://www.broadwayworld.com/article/Review-Roundup-KING-LEAR-Starring-Glenda-Jackson-Opens-On-Broadway-20190404"
       ],
       "aggregatorListedUrls": [
-        "https://www.nytimes.com/2023/10/31/theater/review-kenneth-branaghs-short-shallow-king-lear.html",
-        "https://www.theguardian.com/stage/2023/oct/31/king-lear-review-kenneth-branagh-shakespeare-tragedy-wyndhams-theatre-london",
-        "https://www.dailymail.co.uk/tvshowbiz/article-12695241/PATRICK-MARMION-Kenneth-Branagh-King-Lear-play-mad-dash-tragedy.html",
-        "https://theartsdesk.com/theatre/king-lear-wyndhams-theatre-review-kenneth-branagh-helms-pared-down-tragedy",
-        "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/king-lear-review-kenneth-branagh-wyndhams-b2439245.html",
-        "https://www.newstatesman.com/culture/theatre/2023/11/kenneth-branagh-king-lear-review-callow-utterly-unmoving",
-        "https://www.telegraph.co.uk/theatre/what-to-see/king-lear-wyndhams-theatre-review-kenneth-branagh/",
-        "https://www.thetimes.co.uk/article/king-lear-theatre-review-kenneth-branagh-6cwrgk03v",
-        "https://www.timeout.com/london/theatre/king-lear-25-review",
-        "https://www.thestage.co.uk/reviews/king-lear-review-at-wyndhams-theatre-london-with-kenneth-branagh",
-        "https://www.whatsonstage.com/news/king-lear-review-kenneth-branaghs-banal-tragedy_1543275/",
+        "http://broadway.news/2019/04/04/review-a-scorching-glenda-jackson-leads-the-way-for-the-women-of-king-lear/",
+        "http://dctheatrescene.com/2019/04/04/king-lear-review-glenda-jackson-in-must-see-if-imperfect-shakespeare/",
+        "http://deadline.com/2019/04/glenda-jackson-king-lear-broadway-review-ruth-wilson-pedro-pascal-1202587083/",
+        "http://ew.com/theater-reviews/2019/04/04/glenda-jackson-king-lear-review/",
+        "http://www.hollywoodreporter.com/review/king-lear-theater-review-1199652",
+        "http://www.latimes.com/entertainment/arts/theater/reviews/la-et-cm-king-lear-review-20190404-story.html",
+        "http://www.vulture.com/2019/04/theater-review-once-more-into-the-storm-with-king-lear.html",
+        "http://nystagereview.com/2019/04/04/king-lear-glenda-jackson-rants-raves-and-rules/",
+        "http://nystagereview.com/2019/04/04/king-lear-a-role-fit-for-a-commander/",
+        "http://www.nytimes.com/2019/04/04/theater/king-lear-review-glenda-jackson.html",
+        "http://www.nj.com/entertainment/2019/04/glenda-jackson-roars-in-an-amazing-king-lear-on-broadway-review.html",
+        "http://www.ny1.com/nyc/all-boroughs/news/2019/04/05/theater-review---king-lear-",
+        "http://www.nydailynews.com/entertainment/broadway/ny-king-lear-broadway-review-20190405-hensmh363bdgvh7fiewqorn25m-story.html",
+        "http://www.timeout.com/newyork/theater/review-king-lear-glenda-jackson",
+        "http://www.towleroad.com/2019/04/glenda-jackson-king-lear/",
+        "http://variety.com/2019/legit/reviews/king-lear-review-glenda-jackson-broadway-1203180018/",
         "https://www.broadwayworld.com/washington-dc/article/Review-KING-LEAR-at-Shakespeare-Theatre-Company-20230303",
         "https://www.washingtonpost.com/theater-dance/2023/03/03/king-lear-patrick-page-godwin-stc/",
+        "http://www.theguardian.com/tv-and-radio/2018/may/28/bbc-king-lear-review-anthony-hopkins",
+        "http://www.hollywoodreporter.com/review/king-lear-review-amazon-1143459",
+        "https://www.hollywoodreporter.com/review/king-lear-theater-review-258884",
+        "https://www.nytimes.com/2019/04/04/theater/king-lear-review-glenda-jackson.html",
+        "https://www.timeout.com/newyork/theater/review-king-lear-glenda-jackson",
+        "https://www.latimes.com/entertainment/arts/theater/reviews/la-et-cm-king-lear-review-20190404-story.html",
+        "https://www.thewrap.com/king-lear-broadway-review-glenda-jackson-triumphs-in-cluttered-mess-of-a-revival/",
+        "https://www.hollywoodreporter.com/review/king-lear-theater-review-1199652",
+        "https://deadline.com/2019/04/glenda-jackson-king-lear-broadway-review-ruth-wilson-pedro-pascal-1202587083/",
+        "https://www.washingtonpost.com/entertainment/theater_dance/glenda-jackson-as-king-lear-was-a-good-idea-why-is-everything-around-her-so-wrong/2019/04/04/ed786ad0-56db-11e9-8ef3-fbd41a2ce4d5_story.html",
+        "https://variety.com/2019/legit/reviews/king-lear-review-glenda-jackson-broadway-1203180018/",
+        "https://ew.com/theater-reviews/2019/04/04/glenda-jackson-king-lear-review/",
+        "https://www.amny.com/entertainment/king-lear-broadway-review-1.29377016",
+        "https://www.nydailynews.com/entertainment/broadway/ny-king-lear-broadway-review-20190405-hensmh363bdgvh7fiewqorn25m-story.html",
+        "https://www.ny1.com/nyc/all-boroughs/news/2019/04/05/theater-review---king-lear-",
+        "https://www.vulture.com/2019/04/theater-review-once-more-into-the-storm-with-king-lear.html",
+        "https://www.nj.com/entertainment/2019/04/glenda-jackson-roars-in-an-amazing-king-lear-on-broadway-review.html",
+        "https://www.thedailybeast.com/glenda-jackson-in-shakespeares-king-lear-on-broadway-tragedy-and-a-lot-of-trump-era-sighing",
+        "https://www.theguardian.com/stage/2019/apr/04/king-lear-shakespeare-glenda-jackson-broadway",
         "https://patch.com/connecticut/naugatuck/theater-review-king-lear-theatreworks-new-milford-nodx",
-        "https://www.playshakespeare.com/king-lear-reviews/theatre-reviews",
+        "https://www.backstage.com/casting/king-lear-3206702/",
+        "https://www.theatermania.com/news/review-power-slips-away-one-lear-at-a-time-in-king-lear-at-la-mama_1822401/",
         "http://www.timeout.com/newyork/theater/king-lear-12",
         "https://www.theatretradge.com/post/review-king-lear-royal-exchange-theatre-08-10-26",
         "https://morristheatredc.com/reviews/review-king-lear-stc",
@@ -177011,6 +177077,7 @@
         "https://familyaffairsandothermatters.com/king-lear-review-richmond-theatre/",
         "https://jadar.uk/2026/10/11/review-king-lear-royal-exchange-theatre/",
         "https://www.theguardian.com/stage/2026/oct/10/king-lear-review-david-threlfall-royal-exchange-theatre-manchester",
+        "https://www.playshakespeare.com/king-lear-reviews/theatre-reviews",
         "https://chicagoreader.com/performing-arts/theater/theater-review/king-lear-babes-with-blades/",
         "https://ctxlivetheatre.com/reviews/review-the-history-of-king-lear-nahum-tate-adap/"
       ],
@@ -177019,147 +177086,220 @@
       "inReviewsJson": 0,
       "missing": [
         {
-          "url": "https://www.nytimes.com/2023/10/31/theater/review-kenneth-branaghs-short-shallow-king-lear.html",
+          "url": "http://broadway.news/2019/04/04/review-a-scorching-glenda-jackson-leads-the-way-for-the-women-of-king-lear/",
+          "host": "broadway.news",
+          "knownOutletId": "broadwaynews",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-reviews-for-broadways-king-lear-with-glenda-jackson"
+            }
+          ]
+        },
+        {
+          "url": "http://dctheatrescene.com/2019/04/04/king-lear-review-glenda-jackson-in-must-see-if-imperfect-shakespeare/",
+          "host": "dctheatrescene.com",
+          "knownOutletId": "dctheatrescene",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-reviews-for-broadways-king-lear-with-glenda-jackson"
+            }
+          ]
+        },
+        {
+          "url": "http://deadline.com/2019/04/glenda-jackson-king-lear-broadway-review-ruth-wilson-pedro-pascal-1202587083/",
+          "host": "deadline.com",
+          "knownOutletId": "deadline",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-reviews-for-broadways-king-lear-with-glenda-jackson"
+            }
+          ]
+        },
+        {
+          "url": "http://ew.com/theater-reviews/2019/04/04/glenda-jackson-king-lear-review/",
+          "host": "ew.com",
+          "knownOutletId": "ew",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-reviews-for-broadways-king-lear-with-glenda-jackson"
+            }
+          ]
+        },
+        {
+          "url": "http://www.hollywoodreporter.com/review/king-lear-theater-review-1199652",
+          "host": "hollywoodreporter.com",
+          "knownOutletId": "hollywood-reporter",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-reviews-for-broadways-king-lear-with-glenda-jackson"
+            }
+          ]
+        },
+        {
+          "url": "http://www.latimes.com/entertainment/arts/theater/reviews/la-et-cm-king-lear-review-20190404-story.html",
+          "host": "latimes.com",
+          "knownOutletId": "latimes",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-reviews-for-broadways-king-lear-with-glenda-jackson"
+            }
+          ]
+        },
+        {
+          "url": "http://www.vulture.com/2019/04/theater-review-once-more-into-the-storm-with-king-lear.html",
+          "host": "vulture.com",
+          "knownOutletId": "vulture",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-reviews-for-broadways-king-lear-with-glenda-jackson"
+            }
+          ]
+        },
+        {
+          "url": "http://nystagereview.com/2019/04/04/king-lear-glenda-jackson-rants-raves-and-rules/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-reviews-for-broadways-king-lear-with-glenda-jackson"
+            },
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-KING-LEAR-Starring-Glenda-Jackson-Opens-On-Broadway-20190404"
+            }
+          ]
+        },
+        {
+          "url": "http://nystagereview.com/2019/04/04/king-lear-a-role-fit-for-a-commander/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-reviews-for-broadways-king-lear-with-glenda-jackson"
+            },
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-KING-LEAR-Starring-Glenda-Jackson-Opens-On-Broadway-20190404"
+            }
+          ]
+        },
+        {
+          "url": "http://www.nytimes.com/2019/04/04/theater/king-lear-review-glenda-jackson.html",
           "host": "nytimes.com",
           "knownOutletId": "nytimes",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
           "sources": [
             {
               "source": "aggregator-article",
-              "sourceUrl": "https://playbill.com/article/reviews-what-do-critics-think-of-kenneth-branagh-led-king-lear"
+              "sourceUrl": "https://playbill.com/article/read-reviews-for-broadways-king-lear-with-glenda-jackson"
             }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
+          ]
         },
         {
-          "url": "https://www.theguardian.com/stage/2023/oct/31/king-lear-review-kenneth-branagh-shakespeare-tragedy-wyndhams-theatre-london",
-          "host": "theguardian.com",
-          "knownOutletId": "guardian",
+          "url": "http://www.nj.com/entertainment/2019/04/glenda-jackson-roars-in-an-amazing-king-lear-on-broadway-review.html",
+          "host": "nj.com",
+          "knownOutletId": "njcom",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
           "sources": [
             {
               "source": "aggregator-article",
-              "sourceUrl": "https://playbill.com/article/reviews-what-do-critics-think-of-kenneth-branagh-led-king-lear"
+              "sourceUrl": "https://playbill.com/article/read-reviews-for-broadways-king-lear-with-glenda-jackson"
             }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
+          ]
         },
         {
-          "url": "https://www.dailymail.co.uk/tvshowbiz/article-12695241/PATRICK-MARMION-Kenneth-Branagh-King-Lear-play-mad-dash-tragedy.html",
-          "host": "dailymail.co.uk",
-          "knownOutletId": "mail-on-sunday",
+          "url": "http://www.ny1.com/nyc/all-boroughs/news/2019/04/05/theater-review---king-lear-",
+          "host": "ny1.com",
+          "knownOutletId": "ny1",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
           "sources": [
             {
               "source": "aggregator-article",
-              "sourceUrl": "https://playbill.com/article/reviews-what-do-critics-think-of-kenneth-branagh-led-king-lear"
+              "sourceUrl": "https://playbill.com/article/read-reviews-for-broadways-king-lear-with-glenda-jackson"
             }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
+          ]
         },
         {
-          "url": "https://theartsdesk.com/theatre/king-lear-wyndhams-theatre-review-kenneth-branagh-helms-pared-down-tragedy",
-          "host": "theartsdesk.com",
-          "knownOutletId": "artsdesk",
+          "url": "http://www.nydailynews.com/entertainment/broadway/ny-king-lear-broadway-review-20190405-hensmh363bdgvh7fiewqorn25m-story.html",
+          "host": "nydailynews.com",
+          "knownOutletId": "nydailynews",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
           "sources": [
             {
               "source": "aggregator-article",
-              "sourceUrl": "https://playbill.com/article/reviews-what-do-critics-think-of-kenneth-branagh-led-king-lear"
+              "sourceUrl": "https://playbill.com/article/read-reviews-for-broadways-king-lear-with-glenda-jackson"
             }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
+          ]
         },
         {
-          "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/king-lear-review-kenneth-branagh-wyndhams-b2439245.html",
-          "host": "independent.co.uk",
-          "knownOutletId": "independent",
-          "sources": [
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://playbill.com/article/reviews-what-do-critics-think-of-kenneth-branagh-led-king-lear"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.newstatesman.com/culture/theatre/2023/11/kenneth-branagh-king-lear-review-callow-utterly-unmoving",
-          "host": "newstatesman.com",
-          "knownOutletId": "new-statesman",
-          "sources": [
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://playbill.com/article/reviews-what-do-critics-think-of-kenneth-branagh-led-king-lear"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.telegraph.co.uk/theatre/what-to-see/king-lear-wyndhams-theatre-review-kenneth-branagh/",
-          "host": "telegraph.co.uk",
-          "knownOutletId": "sunday-telegraph",
-          "sources": [
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://playbill.com/article/reviews-what-do-critics-think-of-kenneth-branagh-led-king-lear"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.thetimes.co.uk/article/king-lear-theatre-review-kenneth-branagh-6cwrgk03v",
-          "host": "thetimes.co.uk",
-          "knownOutletId": "sunday-times",
-          "sources": [
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://playbill.com/article/reviews-what-do-critics-think-of-kenneth-branagh-led-king-lear"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.timeout.com/london/theatre/king-lear-25-review",
+          "url": "http://www.timeout.com/newyork/theater/review-king-lear-glenda-jackson",
           "host": "timeout.com",
-          "knownOutletId": "timeout-london",
+          "knownOutletId": "timeout",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
           "sources": [
             {
               "source": "aggregator-article",
-              "sourceUrl": "https://playbill.com/article/reviews-what-do-critics-think-of-kenneth-branagh-led-king-lear"
+              "sourceUrl": "https://playbill.com/article/read-reviews-for-broadways-king-lear-with-glenda-jackson"
             }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
+          ]
         },
         {
-          "url": "https://www.thestage.co.uk/reviews/king-lear-review-at-wyndhams-theatre-london-with-kenneth-branagh",
-          "host": "thestage.co.uk",
-          "knownOutletId": "thestage",
+          "url": "http://www.towleroad.com/2019/04/glenda-jackson-king-lear/",
+          "host": "towleroad.com",
+          "knownOutletId": "towleroad",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
           "sources": [
             {
               "source": "aggregator-article",
-              "sourceUrl": "https://playbill.com/article/reviews-what-do-critics-think-of-kenneth-branagh-led-king-lear"
+              "sourceUrl": "https://playbill.com/article/read-reviews-for-broadways-king-lear-with-glenda-jackson"
             }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
+          ]
         },
         {
-          "url": "https://www.whatsonstage.com/news/king-lear-review-kenneth-branaghs-banal-tragedy_1543275/",
-          "host": "whatsonstage.com",
-          "knownOutletId": "whatsonstage",
+          "url": "http://variety.com/2019/legit/reviews/king-lear-review-glenda-jackson-broadway-1203180018/",
+          "host": "variety.com",
+          "knownOutletId": "variety",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
           "sources": [
             {
               "source": "aggregator-article",
-              "sourceUrl": "https://playbill.com/article/reviews-what-do-critics-think-of-kenneth-branagh-led-king-lear"
+              "sourceUrl": "https://playbill.com/article/read-reviews-for-broadways-king-lear-with-glenda-jackson"
             }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
+          ]
         },
         {
           "url": "https://www.broadwayworld.com/washington-dc/article/Review-KING-LEAR-at-Shakespeare-Theatre-Company-20230303",
@@ -177188,6 +177328,253 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
+          "url": "http://www.theguardian.com/tv-and-radio/2018/may/28/bbc-king-lear-review-anthony-hopkins",
+          "host": "theguardian.com",
+          "knownOutletId": "guardian",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-reviews-for-king-lear-starring-anthony-hopkins-and-emma-thompson"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.hollywoodreporter.com/review/king-lear-review-amazon-1143459",
+          "host": "hollywoodreporter.com",
+          "knownOutletId": "hollywood-reporter",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-reviews-for-king-lear-starring-anthony-hopkins-and-emma-thompson"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.hollywoodreporter.com/review/king-lear-theater-review-258884",
+          "host": "hollywoodreporter.com",
+          "knownOutletId": "hollywood-reporter",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-KING-LEAR-Starring-Glenda-Jackson-Opens-On-Broadway-20190404"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.nytimes.com/2019/04/04/theater/king-lear-review-glenda-jackson.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-KING-LEAR-Starring-Glenda-Jackson-Opens-On-Broadway-20190404"
+            }
+          ]
+        },
+        {
+          "url": "https://www.timeout.com/newyork/theater/review-king-lear-glenda-jackson",
+          "host": "timeout.com",
+          "knownOutletId": "timeout",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-KING-LEAR-Starring-Glenda-Jackson-Opens-On-Broadway-20190404"
+            }
+          ]
+        },
+        {
+          "url": "https://www.latimes.com/entertainment/arts/theater/reviews/la-et-cm-king-lear-review-20190404-story.html",
+          "host": "latimes.com",
+          "knownOutletId": "latimes",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-KING-LEAR-Starring-Glenda-Jackson-Opens-On-Broadway-20190404"
+            }
+          ]
+        },
+        {
+          "url": "https://www.thewrap.com/king-lear-broadway-review-glenda-jackson-triumphs-in-cluttered-mess-of-a-revival/",
+          "host": "thewrap.com",
+          "knownOutletId": "thewrap",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-KING-LEAR-Starring-Glenda-Jackson-Opens-On-Broadway-20190404"
+            }
+          ]
+        },
+        {
+          "url": "https://www.hollywoodreporter.com/review/king-lear-theater-review-1199652",
+          "host": "hollywoodreporter.com",
+          "knownOutletId": "hollywood-reporter",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-KING-LEAR-Starring-Glenda-Jackson-Opens-On-Broadway-20190404"
+            }
+          ]
+        },
+        {
+          "url": "https://deadline.com/2019/04/glenda-jackson-king-lear-broadway-review-ruth-wilson-pedro-pascal-1202587083/",
+          "host": "deadline.com",
+          "knownOutletId": "deadline",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-KING-LEAR-Starring-Glenda-Jackson-Opens-On-Broadway-20190404"
+            }
+          ]
+        },
+        {
+          "url": "https://www.washingtonpost.com/entertainment/theater_dance/glenda-jackson-as-king-lear-was-a-good-idea-why-is-everything-around-her-so-wrong/2019/04/04/ed786ad0-56db-11e9-8ef3-fbd41a2ce4d5_story.html",
+          "host": "washingtonpost.com",
+          "knownOutletId": "washpost",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-KING-LEAR-Starring-Glenda-Jackson-Opens-On-Broadway-20190404"
+            }
+          ]
+        },
+        {
+          "url": "https://variety.com/2019/legit/reviews/king-lear-review-glenda-jackson-broadway-1203180018/",
+          "host": "variety.com",
+          "knownOutletId": "variety",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-KING-LEAR-Starring-Glenda-Jackson-Opens-On-Broadway-20190404"
+            }
+          ]
+        },
+        {
+          "url": "https://ew.com/theater-reviews/2019/04/04/glenda-jackson-king-lear-review/",
+          "host": "ew.com",
+          "knownOutletId": "ew",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-KING-LEAR-Starring-Glenda-Jackson-Opens-On-Broadway-20190404"
+            }
+          ]
+        },
+        {
+          "url": "https://www.amny.com/entertainment/king-lear-broadway-review-1.29377016",
+          "host": "amny.com",
+          "knownOutletId": "amny",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-KING-LEAR-Starring-Glenda-Jackson-Opens-On-Broadway-20190404"
+            }
+          ]
+        },
+        {
+          "url": "https://www.nydailynews.com/entertainment/broadway/ny-king-lear-broadway-review-20190405-hensmh363bdgvh7fiewqorn25m-story.html",
+          "host": "nydailynews.com",
+          "knownOutletId": "nydailynews",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-KING-LEAR-Starring-Glenda-Jackson-Opens-On-Broadway-20190404"
+            }
+          ]
+        },
+        {
+          "url": "https://www.ny1.com/nyc/all-boroughs/news/2019/04/05/theater-review---king-lear-",
+          "host": "ny1.com",
+          "knownOutletId": "ny1",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-KING-LEAR-Starring-Glenda-Jackson-Opens-On-Broadway-20190404"
+            }
+          ]
+        },
+        {
+          "url": "https://www.vulture.com/2019/04/theater-review-once-more-into-the-storm-with-king-lear.html",
+          "host": "vulture.com",
+          "knownOutletId": "vulture",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-KING-LEAR-Starring-Glenda-Jackson-Opens-On-Broadway-20190404"
+            }
+          ]
+        },
+        {
+          "url": "https://www.nj.com/entertainment/2019/04/glenda-jackson-roars-in-an-amazing-king-lear-on-broadway-review.html",
+          "host": "nj.com",
+          "knownOutletId": "njcom",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-KING-LEAR-Starring-Glenda-Jackson-Opens-On-Broadway-20190404"
+            }
+          ]
+        },
+        {
+          "url": "https://www.thedailybeast.com/glenda-jackson-in-shakespeares-king-lear-on-broadway-tragedy-and-a-lot-of-trump-era-sighing",
+          "host": "thedailybeast.com",
+          "knownOutletId": "dailybeast",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-KING-LEAR-Starring-Glenda-Jackson-Opens-On-Broadway-20190404"
+            }
+          ]
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2019/apr/04/king-lear-shakespeare-glenda-jackson-broadway",
+          "host": "theguardian.com",
+          "knownOutletId": "guardian",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-KING-LEAR-Starring-Glenda-Jackson-Opens-On-Broadway-20190404"
+            }
+          ]
+        },
+        {
           "url": "https://patch.com/connecticut/naugatuck/theater-review-king-lear-theatreworks-new-milford-nodx",
           "host": "patch.com",
           "knownOutletId": "patch",
@@ -177202,10 +177589,12 @@
           ]
         },
         {
-          "url": "https://www.playshakespeare.com/king-lear-reviews/theatre-reviews",
-          "host": "playshakespeare.com",
-          "knownOutletId": null,
+          "url": "https://www.theatermania.com/news/review-power-slips-away-one-lear-at-a-time-in-king-lear-at-la-mama_1822401/",
+          "host": "theatermania.com",
+          "knownOutletId": "theatermania",
           "serpCensus": true,
+          "priorRun": true,
+          "priorRunSource": "pending-file-date:2026-01-28",
           "sources": [
             {
               "source": "serp-census",
@@ -177398,7 +177787,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 6,
+            "results": 10,
             "accepted": 0,
             "error": null
           },
@@ -177419,7 +177808,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 2,
             "error": null
           },
           {
@@ -177435,33 +177824,40 @@
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 2,
+        "resultCount": 3,
         "error": null
       },
       "candidatesRejected": {
-        "count": 305,
+        "count": 692,
         "byReason": {
-          "not-http-url": 40,
-          "non-review-host": 45,
+          "not-http-url": 98,
+          "non-review-host": 80,
           "write-path-blocked": 2,
-          "bare-host": 1,
-          "aggregator-internal-nav": 161,
-          "aggregator-section-root": 8,
-          "census-junk-host": 2,
-          "production-database-listing": 43,
-          "non-stage-review": 2,
-          "no-review-evidence": 1
+          "aggregator-internal-nav": 446,
+          "production-database-listing": 45,
+          "aggregator-section-root": 16,
+          "non-stage-review": 3,
+          "census-junk-host": 1,
+          "venue-production-page": 1
         }
       },
       "dedupedVariants": [],
       "priorRunArticles": [
         {
-          "url": "https://playbill.com/article/reviews-what-do-critics-think-of-kenneth-branagh-led-king-lear",
-          "publishDate": "2023-11-01"
+          "url": "https://playbill.com/article/read-reviews-for-broadways-king-lear-with-glenda-jackson",
+          "publishDate": "2019-04-04"
         },
         {
           "url": "https://playbill.com/article/what-do-critics-think-of-shakespeare-theatre-companys-king-lear-starring-patrick-page",
           "publishDate": "2023-03-04"
+        },
+        {
+          "url": "https://playbill.com/article/read-reviews-for-king-lear-starring-anthony-hopkins-and-emma-thompson",
+          "publishDate": "2018-09-27"
+        },
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-KING-LEAR-Starring-Glenda-Jackson-Opens-On-Broadway-20190404",
+          "publishDate": "2019-04-04"
         }
       ],
       "nonReviewCandidates": [
@@ -177474,81 +177870,130 @@
         }
       ],
       "automatedExcludedListed": 2,
-      "unextractable": [],
+      "unextractable": [
+        {
+          "url": "https://www.backstage.com/casting/king-lear-3206702/",
+          "host": "backstage.com",
+          "knownOutletId": "backstage",
+          "serpCensus": true,
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
+          "zeroCharAttempts": 5
+        }
+      ],
       "weIngestBlocked": [
         {
-          "url": "https://www.nytimes.com/2023/10/31/theater/review-kenneth-branaghs-short-shallow-king-lear.html",
+          "url": "http://broadway.news/2019/04/04/review-a-scorching-glenda-jackson-leads-the-way-for-the-women-of-king-lear/",
+          "host": "broadway.news",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://dctheatrescene.com/2019/04/04/king-lear-review-glenda-jackson-in-must-see-if-imperfect-shakespeare/",
+          "host": "dctheatrescene.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://deadline.com/2019/04/glenda-jackson-king-lear-broadway-review-ruth-wilson-pedro-pascal-1202587083/",
+          "host": "deadline.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://ew.com/theater-reviews/2019/04/04/glenda-jackson-king-lear-review/",
+          "host": "ew.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.hollywoodreporter.com/review/king-lear-theater-review-1199652",
+          "host": "hollywoodreporter.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.latimes.com/entertainment/arts/theater/reviews/la-et-cm-king-lear-review-20190404-story.html",
+          "host": "latimes.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.vulture.com/2019/04/theater-review-once-more-into-the-storm-with-king-lear.html",
+          "host": "vulture.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://nystagereview.com/2019/04/04/king-lear-glenda-jackson-rants-raves-and-rules/",
+          "host": "nystagereview.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://nystagereview.com/2019/04/04/king-lear-a-role-fit-for-a-commander/",
+          "host": "nystagereview.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.nytimes.com/2019/04/04/theater/king-lear-review-glenda-jackson.html",
           "host": "nytimes.com",
           "priorRun": true,
           "reason": "prior-run",
           "censusGateOn": true
         },
         {
-          "url": "https://www.theguardian.com/stage/2023/oct/31/king-lear-review-kenneth-branagh-shakespeare-tragedy-wyndhams-theatre-london",
-          "host": "theguardian.com",
+          "url": "http://www.nj.com/entertainment/2019/04/glenda-jackson-roars-in-an-amazing-king-lear-on-broadway-review.html",
+          "host": "nj.com",
           "priorRun": true,
           "reason": "prior-run",
           "censusGateOn": true
         },
         {
-          "url": "https://www.dailymail.co.uk/tvshowbiz/article-12695241/PATRICK-MARMION-Kenneth-Branagh-King-Lear-play-mad-dash-tragedy.html",
-          "host": "dailymail.co.uk",
+          "url": "http://www.ny1.com/nyc/all-boroughs/news/2019/04/05/theater-review---king-lear-",
+          "host": "ny1.com",
           "priorRun": true,
           "reason": "prior-run",
           "censusGateOn": true
         },
         {
-          "url": "https://theartsdesk.com/theatre/king-lear-wyndhams-theatre-review-kenneth-branagh-helms-pared-down-tragedy",
-          "host": "theartsdesk.com",
+          "url": "http://www.nydailynews.com/entertainment/broadway/ny-king-lear-broadway-review-20190405-hensmh363bdgvh7fiewqorn25m-story.html",
+          "host": "nydailynews.com",
           "priorRun": true,
           "reason": "prior-run",
           "censusGateOn": true
         },
         {
-          "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/king-lear-review-kenneth-branagh-wyndhams-b2439245.html",
-          "host": "independent.co.uk",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.newstatesman.com/culture/theatre/2023/11/kenneth-branagh-king-lear-review-callow-utterly-unmoving",
-          "host": "newstatesman.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.telegraph.co.uk/theatre/what-to-see/king-lear-wyndhams-theatre-review-kenneth-branagh/",
-          "host": "telegraph.co.uk",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.thetimes.co.uk/article/king-lear-theatre-review-kenneth-branagh-6cwrgk03v",
-          "host": "thetimes.co.uk",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.timeout.com/london/theatre/king-lear-25-review",
+          "url": "http://www.timeout.com/newyork/theater/review-king-lear-glenda-jackson",
           "host": "timeout.com",
           "priorRun": true,
           "reason": "prior-run",
           "censusGateOn": true
         },
         {
-          "url": "https://www.thestage.co.uk/reviews/king-lear-review-at-wyndhams-theatre-london-with-kenneth-branagh",
-          "host": "thestage.co.uk",
+          "url": "http://www.towleroad.com/2019/04/glenda-jackson-king-lear/",
+          "host": "towleroad.com",
           "priorRun": true,
           "reason": "prior-run",
           "censusGateOn": true
         },
         {
-          "url": "https://www.whatsonstage.com/news/king-lear-review-kenneth-branaghs-banal-tragedy_1543275/",
-          "host": "whatsonstage.com",
+          "url": "http://variety.com/2019/legit/reviews/king-lear-review-glenda-jackson-broadway-1203180018/",
+          "host": "variety.com",
           "priorRun": true,
           "reason": "prior-run",
           "censusGateOn": true
@@ -177568,6 +178013,139 @@
           "censusGateOn": true
         },
         {
+          "url": "http://www.theguardian.com/tv-and-radio/2018/may/28/bbc-king-lear-review-anthony-hopkins",
+          "host": "theguardian.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.hollywoodreporter.com/review/king-lear-review-amazon-1143459",
+          "host": "hollywoodreporter.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.hollywoodreporter.com/review/king-lear-theater-review-258884",
+          "host": "hollywoodreporter.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.nytimes.com/2019/04/04/theater/king-lear-review-glenda-jackson.html",
+          "host": "nytimes.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.timeout.com/newyork/theater/review-king-lear-glenda-jackson",
+          "host": "timeout.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.latimes.com/entertainment/arts/theater/reviews/la-et-cm-king-lear-review-20190404-story.html",
+          "host": "latimes.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.thewrap.com/king-lear-broadway-review-glenda-jackson-triumphs-in-cluttered-mess-of-a-revival/",
+          "host": "thewrap.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.hollywoodreporter.com/review/king-lear-theater-review-1199652",
+          "host": "hollywoodreporter.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://deadline.com/2019/04/glenda-jackson-king-lear-broadway-review-ruth-wilson-pedro-pascal-1202587083/",
+          "host": "deadline.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.washingtonpost.com/entertainment/theater_dance/glenda-jackson-as-king-lear-was-a-good-idea-why-is-everything-around-her-so-wrong/2019/04/04/ed786ad0-56db-11e9-8ef3-fbd41a2ce4d5_story.html",
+          "host": "washingtonpost.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://variety.com/2019/legit/reviews/king-lear-review-glenda-jackson-broadway-1203180018/",
+          "host": "variety.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://ew.com/theater-reviews/2019/04/04/glenda-jackson-king-lear-review/",
+          "host": "ew.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.amny.com/entertainment/king-lear-broadway-review-1.29377016",
+          "host": "amny.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.nydailynews.com/entertainment/broadway/ny-king-lear-broadway-review-20190405-hensmh363bdgvh7fiewqorn25m-story.html",
+          "host": "nydailynews.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.ny1.com/nyc/all-boroughs/news/2019/04/05/theater-review---king-lear-",
+          "host": "ny1.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.vulture.com/2019/04/theater-review-once-more-into-the-storm-with-king-lear.html",
+          "host": "vulture.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.nj.com/entertainment/2019/04/glenda-jackson-roars-in-an-amazing-king-lear-on-broadway-review.html",
+          "host": "nj.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.thedailybeast.com/glenda-jackson-in-shakespeares-king-lear-on-broadway-tragedy-and-a-lot-of-trump-era-sighing",
+          "host": "thedailybeast.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2019/apr/04/king-lear-shakespeare-glenda-jackson-broadway",
+          "host": "theguardian.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
           "url": "https://patch.com/connecticut/naugatuck/theater-review-king-lear-theatreworks-new-milford-nodx",
           "host": "patch.com",
           "priorRun": true,
@@ -177575,8 +178153,29 @@
           "censusGateOn": true
         },
         {
-          "url": "https://www.playshakespeare.com/king-lear-reviews/theatre-reviews",
-          "host": "playshakespeare.com",
+          "url": "https://www.theguardian.com/stage/2023/oct/31/king-lear-review-kenneth-branagh-shakespeare-tragedy-wyndhams-theatre-london",
+          "host": "theguardian.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://morristheatredc.com/reviews/review-king-lear-stc",
+          "host": "morristheatredc.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.theaterscene.net/plays/offbway-plays/king-lear-2/tony-marinelli/",
+          "host": "theaterscene.net",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.outalldaynola.com/new-orleans-weekly-news/first-night-review-king-lear-the-lupin-theater",
+          "host": "outalldaynola.com",
           "priorRun": false,
           "reason": "unregistered-host",
           "censusGateOn": true
@@ -177677,13 +178276,6 @@
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "playshakespeare.com",
-            "outlet": "playshakespeare.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.playshakespeare.com/king-lear-reviews/theatre-reviews"
-          },
-          {
             "outletId": "theatretradge",
             "outlet": "theatretradge",
             "critic": "Unknown",
@@ -177747,13 +178339,6 @@
             "outletId": "timeout.com",
             "state": "live",
             "firstSeenAt": "2026-11-04T01:35:14.329Z"
-          },
-          {
-            "url": "https://www.playshakespeare.com/king-lear-reviews/theatre-reviews",
-            "outletId": "playshakespeare.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-11-05T03:08:07.157Z"
           },
           {
             "url": "https://www.theatretradge.com/post/review-king-lear-royal-exchange-theatre-08-10-26",
@@ -177823,7 +178408,7 @@
         "liveCount": 1,
         "candidateCount": 10
       },
-      "computedAt": "2026-11-07T17:08:58.264Z"
+      "computedAt": "2026-11-07T17:34:33.025Z"
     },
     {
       "showId": "king-lear-royal-exchange-regional-2026",
@@ -299097,40 +299682,66 @@
       "category": "off-west-end",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
+        "https://www.londonboxoffice.co.uk/news/post/speculations-marylebone-theatre-review",
+        "https://www.uktw.co.uk/Play/Speculations/S6816446/",
+        "https://theatreweekly.com/rehearsal-images-released-for-trevor-nunn-directed-political-thriller-speculations/",
+        "https://theartsdesk.com/theatre/speculations-marylebone-theatre-review-real-mystery-how-it-got-made",
+        "https://www.allthatdazzles.co.uk/post/review-speculations-marylebone-theatre",
+        "https://loureviews.blog/2026/11/05/play-review-speculations-at-marylebone-theatre/",
+        "http://www.jonathanbaz.com/2026/11/speculations-review.html",
+        "https://thespyinthestalls.com/2026/11/speculations/",
+        "https://theatrevibe.co.uk/2026/11/06/review-speculations-marylebone-theatre-2026/",
+        "https://www.thereviewshub.com/speculations-marylebone-theatre-london/",
+        "https://www.jackstage.co.uk/post/speculations-review-marilyn-monroe-john-f-kennedy-lee-harvey-oswald-you-know-how-they-died-or",
         "https://www.londonboxoffice.co.uk/search/month/speculations-tickets/2026/11/30/2",
         "https://theatreandtonic.co.uk/blog/speculations-at-marylebone-theatre-review",
         "https://www.whatsonstage.com/news/speculations-at-marylebone-theatre-review_1736394/",
-        "https://loureviews.blog/2026/11/05/play-review-speculations-at-marylebone-theatre/",
         "https://www.pinkprincetheatre.com/post/review-speculations-marylebone-theatre",
-        "https://www.jackstage.co.uk/post/speculations-review-marilyn-monroe-john-f-kennedy-lee-harvey-oswald-you-know-how-they-died-or",
         "https://www.broadwayworld.com/westend/article/Review-SPECULATIONS-Marylebone-Theatre-20261104",
         "https://www.timeout.com/london/theatre/speculations-review",
-        "https://www.londonboxoffice.co.uk/news/post/speculations-marylebone-theatre-review",
         "https://www.standard.co.uk/culture/theatre/speculations-at-marylebone-theatre-review-b1303733.html",
         "https://www.theguardian.com/stage/2026/nov/06/marilyn-monroe-speculations-conspiracy-drama-marylebone-theatre-london-trevor-nunn",
         "https://www.thetimes.com/culture/theatre-dance/article/speculations-review-marylebone-theatre-trevor-nunn-janie-dee-jfk-marilyn-monroe-kdvk3tjzr",
         "https://therecs.co.uk/speculations-marylebone-theatre/",
         "https://everything-theatre.co.uk/2026/11/review-speculations-marylebone-theatre/",
         "https://www.londontheatre1.com/reviews/speculations-marylebone-theatre/",
-        "https://www.allthatdazzles.co.uk/post/review-speculations-marylebone-theatre",
         "https://firstnightmagazine.com/2026/11/05/review-of-speculations-conspiracy-theory-play-is-riddled-with-hollowness/",
         "https://www.westendbestfriend.co.uk/news/review-speculations-marylebone-theatre",
         "https://www.london-unattached.com/speculations-marylebone-theatre/",
-        "https://theartsdesk.com/theatre/speculations-marylebone-theatre-review-real-mystery-how-it-got-made",
         "https://www.thestage.co.uk/reviews/speculations-review-marylebone-theatre-london-torben-betts-trevor-nunn-janie-dee",
-        "https://maninlondon.com/speculations-review-marylebone-theatre-sir-trevor-nunn/",
-        "https://thespyinthestalls.com/2026/11/speculations/",
-        "http://www.jonathanbaz.com/2026/11/speculations-review.html",
         "https://readaboutstuff.com/2026/11/07/review-speculations-marylebone-theatre-london/",
         "https://www.theatreandtonic.co.uk/blog/speculations-at-marylebone-theatre-review",
-        "https://www.thereviewshub.com/speculations-marylebone-theatre-london/",
-        "https://theatrevibe.co.uk/2026/11/06/review-speculations-marylebone-theatre-2026/",
-        "https://fairypoweredproductions.com/speculations-review/"
+        "https://fairypoweredproductions.com/speculations-review/",
+        "https://maninlondon.com/speculations-review-marylebone-theatre-sir-trevor-nunn/"
       ],
-      "dirFiles": 35,
-      "dirClean": 28,
-      "inReviewsJson": 28,
+      "dirFiles": 37,
+      "dirClean": 27,
+      "inReviewsJson": 27,
       "missing": [
+        {
+          "url": "https://www.uktw.co.uk/Play/Speculations/S6816446/",
+          "host": "uktw.co.uk",
+          "knownOutletId": "uktw",
+          "serpCensus": true,
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ]
+        },
+        {
+          "url": "https://theatreweekly.com/rehearsal-images-released-for-trevor-nunn-directed-political-thriller-speculations/",
+          "host": "theatreweekly.com",
+          "knownOutletId": "theatre-weekly",
+          "serpCensus": true,
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ]
+        },
         {
           "url": "https://maninlondon.com/speculations-review-marylebone-theatre-sir-trevor-nunn/",
           "host": "maninlondon.com",
@@ -299154,7 +299765,52 @@
           "count": 1
         }
       ],
-      "flaggedMisses": [],
+      "flaggedMisses": [
+        {
+          "url": "https://theatrevibe.co.uk/2026/11/06/review-speculations-marylebone-theatre-2026/",
+          "host": "theatrevibe.co.uk",
+          "knownOutletId": "theatre-vibe",
+          "recoverable": true,
+          "recoverableFile": "theatre-vibe--unknown.json",
+          "recoverableOutletId": "theatre-vibe",
+          "recoverableCritic": "Unknown",
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theatre-vibe--lizzie-loveridge.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://theatrevibe.co.uk/2026/11/06/review-speculations-marylebone-theatre-2026/"
+            },
+            {
+              "file": "theatre-vibe--unknown.json",
+              "flag": "duplicate",
+              "urlInDir": "https://theatrevibe.co.uk/2026/11/06/review-speculations-marylebone-theatre-2026/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction",
+            "duplicateOf"
+          ],
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            },
+            {
+              "source": "bestoftheatre",
+              "sourceUrl": "https://www.bestoftheatre.co.uk/blog/post/review-roundup-speculations-marylebone-theatre"
+            }
+          ],
+          "listingDate": "2026-11-05",
+          "listingSource": "bestoftheatre",
+          "weRef": true,
+          "weRefSources": [
+            "bestoftheatre"
+          ],
+          "reverify": true
+        }
+      ],
       "citedNoUrl": [],
       "weReference": {
         "rowCount": 25,
@@ -299197,7 +299853,7 @@
         },
         "allSourcesFailed": false,
         "currentRunRows": 25,
-        "corroborated": 24,
+        "corroborated": 23,
         "perSource": {
           "lbo-roundup": {
             "cited": 1,
@@ -299205,7 +299861,7 @@
           },
           "bestoftheatre": {
             "cited": 24,
-            "corroborated": 24
+            "corroborated": 23
           }
         }
       },
@@ -299230,8 +299886,8 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 9,
-            "accepted": 1,
+            "results": 10,
+            "accepted": 2,
             "error": null
           },
           {
@@ -299241,7 +299897,7 @@
             "geo": "gb",
             "ok": true,
             "results": 9,
-            "accepted": 2,
+            "accepted": 3,
             "error": null
           },
           {
@@ -299251,7 +299907,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 3,
             "error": null
           },
           {
@@ -299260,28 +299916,26 @@
             "page": 2,
             "geo": "gb",
             "ok": true,
-            "results": 9,
-            "accepted": 1,
+            "results": 10,
+            "accepted": 2,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 6,
+        "resultCount": 11,
         "error": null
       },
       "candidatesRejected": {
-        "count": 40,
+        "count": 36,
         "byReason": {
-          "not-http-url": 35,
-          "non-review-host": 2,
-          "ticketing-listing": 1,
-          "no-review-evidence": 1,
-          "tag-index-page": 1
+          "not-http-url": 34,
+          "non-review-host": 1,
+          "guide-article": 1
         }
       },
       "dedupedVariants": [],
-      "automatedExcludedListed": 0,
+      "automatedExcludedListed": 1,
       "unextractable": [],
       "weIngestBlocked": [
         {
@@ -299292,21 +299946,146 @@
           "censusGateOn": true
         }
       ],
-      "ingestResults": [],
+      "ingestResults": [
+        {
+          "url": "https://www.uktw.co.uk/Play/Speculations/S6816446/",
+          "host": "uktw.co.uk",
+          "outletId": "uktw",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": true,
+          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS."
+        },
+        {
+          "url": "https://theatreweekly.com/rehearsal-images-released-for-trevor-nunn-directed-political-thriller-speculations/",
+          "host": "theatreweekly.com",
+          "outletId": "theatre-weekly",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": true,
+          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS."
+        }
+      ],
       "ingestSkippedByCap": [],
+      "recoveryResults": [
+        {
+          "url": "https://theatrevibe.co.uk/2026/11/06/review-speculations-marylebone-theatre-2026/",
+          "host": "theatrevibe.co.uk",
+          "file": "theatre-vibe--unknown.json",
+          "recovered": false,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": "⛔ Refusing write: theatre-vibe--unknown.json is a flagged/rejected record (wrongProduction/duplicateOf/rejectionReason) and the incoming critic is unresolved — a human/override flow must clear it first\n\n❌ Write-guard refused the write — nothing changed on disk (flagged-filename-collision)",
+          "recoveryCount": 1
+        },
+        {
+          "url": "https://theatresoutheast.com/speculations-marylebone-theatre-review/",
+          "host": "theatresoutheast.com",
+          "file": "theatre-south-east--unknown.json",
+          "recovered": true,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": null,
+          "recoveryCount": 0,
+          "uncited": true
+        }
+      ],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
+          {
+            "outletId": "uktw",
+            "outlet": "uktw",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.uktw.co.uk/Play/Speculations/S6816446/"
+          },
+          {
+            "outletId": "theatre-weekly",
+            "outlet": "theatre-weekly",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://theatreweekly.com/rehearsal-images-released-for-trevor-nunn-directed-political-thriller-speculations/"
+          },
           {
             "outletId": "maninlondon.com",
             "outlet": "maninlondon.com",
             "critic": "Unknown",
             "stars": null,
             "url": "https://maninlondon.com/speculations-review-marylebone-theatre-sir-trevor-nunn/"
+          },
+          {
+            "outletId": "theatre-vibe",
+            "outlet": "theatre-vibe",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://theatrevibe.co.uk/2026/11/06/review-speculations-marylebone-theatre-2026/"
           }
         ],
         "suppressedMissing": [],
         "candidates": [
+          {
+            "url": "https://www.londonboxoffice.co.uk/news/post/speculations-marylebone-theatre-review",
+            "outletId": "londonboxoffice.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-11-06T17:07:51.339Z"
+          },
+          {
+            "url": "https://theartsdesk.com/theatre/speculations-marylebone-theatre-review-real-mystery-how-it-got-made",
+            "outletId": "theartsdesk.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-06T17:07:51.339Z"
+          },
+          {
+            "url": "https://www.allthatdazzles.co.uk/post/review-speculations-marylebone-theatre",
+            "outletId": "allthatdazzles.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-11-06T17:07:51.339Z"
+          },
+          {
+            "url": "https://loureviews.blog/2026/11/05/play-review-speculations-at-marylebone-theatre/",
+            "outletId": "loureviews.blog",
+            "state": "live",
+            "firstSeenAt": "2026-11-06T17:07:51.339Z"
+          },
+          {
+            "url": "http://www.jonathanbaz.com/2026/11/speculations-review.html",
+            "outletId": "jonathanbaz.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-06T17:07:51.339Z"
+          },
+          {
+            "url": "https://thespyinthestalls.com/2026/11/speculations/",
+            "outletId": "thespyinthestalls.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-06T17:07:51.339Z"
+          },
+          {
+            "url": "https://www.thereviewshub.com/speculations-marylebone-theatre-london/",
+            "outletId": "thereviewshub.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-07T15:26:55.890Z"
+          },
+          {
+            "url": "https://www.jackstage.co.uk/post/speculations-review-marilyn-monroe-john-f-kennedy-lee-harvey-oswald-you-know-how-they-died-or",
+            "outletId": "jackstage.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-11-07T15:26:55.890Z"
+          },
           {
             "url": "https://www.londonboxoffice.co.uk/search/month/speculations-tickets/2026/11/30/2",
             "outletId": "londonboxoffice.co.uk",
@@ -299326,20 +300105,8 @@
             "firstSeenAt": "2026-11-06T17:07:51.339Z"
           },
           {
-            "url": "https://loureviews.blog/2026/11/05/play-review-speculations-at-marylebone-theatre/",
-            "outletId": "loureviews.blog",
-            "state": "live",
-            "firstSeenAt": "2026-11-06T17:07:51.339Z"
-          },
-          {
             "url": "https://www.pinkprincetheatre.com/post/review-speculations-marylebone-theatre",
             "outletId": "pinkprincetheatre.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-07T15:26:55.890Z"
-          },
-          {
-            "url": "https://www.jackstage.co.uk/post/speculations-review-marilyn-monroe-john-f-kennedy-lee-harvey-oswald-you-know-how-they-died-or",
-            "outletId": "jackstage.co.uk",
             "state": "live",
             "firstSeenAt": "2026-11-07T15:26:55.890Z"
           },
@@ -299352,12 +300119,6 @@
           {
             "url": "https://www.timeout.com/london/theatre/speculations-review",
             "outletId": "timeout.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-06T17:07:51.339Z"
-          },
-          {
-            "url": "https://www.londonboxoffice.co.uk/news/post/speculations-marylebone-theatre-review",
-            "outletId": "londonboxoffice.co.uk",
             "state": "live",
             "firstSeenAt": "2026-11-06T17:07:51.339Z"
           },
@@ -299398,12 +300159,6 @@
             "firstSeenAt": "2026-11-06T17:07:51.339Z"
           },
           {
-            "url": "https://www.allthatdazzles.co.uk/post/review-speculations-marylebone-theatre",
-            "outletId": "allthatdazzles.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-11-06T17:07:51.339Z"
-          },
-          {
             "url": "https://firstnightmagazine.com/2026/11/05/review-of-speculations-conspiracy-theory-play-is-riddled-with-hollowness/",
             "outletId": "firstnightmagazine.com",
             "state": "live",
@@ -299422,26 +300177,8 @@
             "firstSeenAt": "2026-11-06T17:07:51.339Z"
           },
           {
-            "url": "https://theartsdesk.com/theatre/speculations-marylebone-theatre-review-real-mystery-how-it-got-made",
-            "outletId": "theartsdesk.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-06T17:07:51.339Z"
-          },
-          {
             "url": "https://www.thestage.co.uk/reviews/speculations-review-marylebone-theatre-london-torben-betts-trevor-nunn-janie-dee",
             "outletId": "thestage.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-11-06T17:07:51.339Z"
-          },
-          {
-            "url": "https://thespyinthestalls.com/2026/11/speculations/",
-            "outletId": "thespyinthestalls.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-06T17:07:51.339Z"
-          },
-          {
-            "url": "http://www.jonathanbaz.com/2026/11/speculations-review.html",
-            "outletId": "jonathanbaz.com",
             "state": "live",
             "firstSeenAt": "2026-11-06T17:07:51.339Z"
           },
@@ -299458,22 +300195,24 @@
             "firstSeenAt": "2026-11-07T15:26:55.890Z"
           },
           {
-            "url": "https://www.thereviewshub.com/speculations-marylebone-theatre-london/",
-            "outletId": "thereviewshub.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-07T15:26:55.890Z"
-          },
-          {
-            "url": "https://theatrevibe.co.uk/2026/11/06/review-speculations-marylebone-theatre-2026/",
-            "outletId": "theatrevibe.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-11-07T15:26:55.890Z"
-          },
-          {
             "url": "https://fairypoweredproductions.com/speculations-review/",
             "outletId": "fairypoweredproductions.com",
             "state": "live",
             "firstSeenAt": "2026-11-07T15:26:55.890Z"
+          },
+          {
+            "url": "https://www.uktw.co.uk/Play/Speculations/S6816446/",
+            "outletId": "uktw",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-11-07T17:34:33.025Z"
+          },
+          {
+            "url": "https://theatreweekly.com/rehearsal-images-released-for-trevor-nunn-directed-political-thriller-speculations/",
+            "outletId": "theatre-weekly",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-11-07T17:34:33.025Z"
           },
           {
             "url": "https://maninlondon.com/speculations-review-marylebone-theatre-sir-trevor-nunn/",
@@ -299481,14 +300220,21 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-11-07T02:45:45.915Z"
+          },
+          {
+            "url": "https://theatrevibe.co.uk/2026/11/06/review-speculations-marylebone-theatre-2026/",
+            "outletId": "theatre-vibe",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-11-07T15:26:55.890Z"
           }
         ],
         "censusSchema": 4,
         "excluded": [],
-        "liveCount": 26,
-        "candidateCount": 27
+        "liveCount": 25,
+        "candidateCount": 29
       },
-      "computedAt": "2026-11-07T15:26:55.890Z"
+      "computedAt": "2026-11-07T17:34:33.025Z"
     },
     {
       "showId": "spellbound-off-broadway-2026",
@@ -326995,21 +327741,25 @@
       "status": "open",
       "category": "off-west-end",
       "previewsStartDate": "2026-10-28",
-      "aggregatorArticles": [],
+      "aggregatorArticles": [
+        "https://playbill.com/article/read-reviews-for-caryl-churchills-a-number-at-the-bridge-theatre-in-london"
+      ],
       "aggregatorListedUrls": [
-        "https://www.londontheatre.co.uk/reviews/the-bridge-review-bush-theatre",
-        "https://liamodell.com/2026/11/03/the-bridge-review-bush-theatre-alaa-shehada-palestine/",
-        "https://www.theguardian.com/culture/2026/aug/30/the-bridge-review-alaa-shehada",
+        "https://www.theguardian.com/stage/2020/feb/19/a-number-review-caryl-churchill-roger-allam-bridge-theatre-london",
+        "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/a-number-bridge-theatre-review-roger-allam-colin-morgan-caryl-churchill-a9345706.html",
+        "https://www.londontheatre.co.uk/reviews/review-caryl-churchills-a-number-at-the-bridge-theatre",
+        "https://www.telegraph.co.uk/theatre/what-to-see/number-bridge-theatre-review-superb-revival-caryl-churchills/",
+        "https://www.thestage.co.uk/reviews/2020/a-number-roger-allam-colin-morgan-review-at-bridge-theatre-london/",
+        "https://theatreandtonic.co.uk/blog/the-bridge-bush-theatre-london-review",
+        "https://chiswickcalendar.co.uk/the-bridge-bush-theatre-review/",
+        "https://redbuslondinium.uk/2026/11/03/review-the-bridge-bush-theatre-%E2%98%85%E2%98%85%E2%98%85%E2%98%85/",
         "https://sierz.co.uk/reviews/the-bridge-bush-theatre/",
-        "https://www.timeout.com/london/theatre/the-bridge-4-review",
+        "https://www.pinkprincetheatre.com/post/review-the-bridge-bush-theatre",
+        "https://theartsdispatch.substack.com/p/the-bridge-review-bush-theatre-london",
         "https://www.thestage.co.uk/reviews/the-bridge-review-bush-theatre-london-alaa-shehada",
-        "https://www.timeout.com/london/theatre/the-bridge-4",
         "https://www.standard.co.uk/culture/theatre/richard-ii-bridge-theatre-review-jonathan-bailey-b1211568.html",
         "https://www.whatsonstage.com/news/richard-ii-at-bridge-theatre-review-jonathan-bailey-is-a-vicious-monarch_1665507/",
         "https://www.allthatdazzles.co.uk/post/review-the-bridge-bush-theatre",
-        "https://theatreandtonic.co.uk/blog/the-bridge-bush-theatre-london-review",
-        "https://www.pinkprincetheatre.com/post/review-the-bridge-bush-theatre",
-        "https://theartsdispatch.substack.com/p/the-bridge-review-bush-theatre-london",
         "https://www.thereviewshub.com/the-bridge-bush-theatre-london/",
         "https://www.standard.co.uk/culture/theatre/guys-dolls-at-bridge-theatre-review-marisha-wallace-daniel-mays-nicholas-hytner-b1067134.html",
         "https://www.whatsonstage.com/london-theatre/news/guys-dolls-bridge-revival-five-star-review_58533.html",
@@ -327019,8 +327769,6 @@
         "https://www.standard.co.uk/culture/theatre/the-bridge-at-bush-theatre-review-b1303391.html",
         "https://theartsdesk.com/theatre/bridge-bush-theatre-review-entertaining-stand-one-sided-theatre",
         "https://www.whatsonstage.com/news/the-bridge-at-bush-theatre-review_1736389/",
-        "https://chiswickcalendar.co.uk/the-bridge-bush-theatre-review/",
-        "https://redbuslondinium.uk/2026/11/03/review-the-bridge-bush-theatre-%E2%98%85%E2%98%85%E2%98%85%E2%98%85/",
         "https://susanelkin.co.uk/articles/the-bridge-susan-elkin-reviews/",
         "https://theatreweekly.com/review-the-bridge-at-bush-theatre/",
         "https://www.standard.co.uk/go/london/theatre/beat-the-devil-review-david-hare-the-bridge-a4536291.html",
@@ -327036,19 +327784,44 @@
         "https://snackmag.co.uk/alaa-shehada-one-people-not-two-a-conversation-about-and-review-of-the-bridge",
         "https://viewfromthegods.co.uk/2026/11/05/the-bridge-bush-theatre/"
       ],
-      "dirFiles": 40,
-      "dirClean": 24,
+      "dirFiles": 41,
+      "dirClean": 25,
       "inReviewsJson": 24,
       "missing": [
         {
-          "url": "https://sierz.co.uk/reviews/the-bridge-bush-theatre/",
-          "host": "sierz.co.uk",
-          "knownOutletId": "sierz-co-uk",
-          "serpCensus": true,
+          "url": "https://www.theguardian.com/stage/2020/feb/19/a-number-review-caryl-churchill-roger-allam-bridge-theatre-london",
+          "host": "theguardian.com",
+          "knownOutletId": "guardian",
           "sources": [
             {
-              "source": "serp-census",
-              "sourceUrl": null
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-reviews-for-caryl-churchills-a-number-at-the-bridge-theatre-in-london"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/a-number-bridge-theatre-review-roger-allam-colin-morgan-caryl-churchill-a9345706.html",
+          "host": "independent.co.uk",
+          "knownOutletId": "independent",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-reviews-for-caryl-churchills-a-number-at-the-bridge-theatre-in-london"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.telegraph.co.uk/theatre/what-to-see/number-bridge-theatre-review-superb-revival-caryl-churchills/",
+          "host": "telegraph.co.uk",
+          "knownOutletId": "sunday-telegraph",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-reviews-for-caryl-churchills-a-number-at-the-bridge-theatre-in-london"
             }
           ]
         }
@@ -327284,7 +328057,7 @@
             "geo": "gb",
             "ok": true,
             "results": 9,
-            "accepted": 1,
+            "accepted": 2,
             "error": null
           },
           {
@@ -327294,7 +328067,7 @@
             "geo": "gb",
             "ok": true,
             "results": 9,
-            "accepted": 1,
+            "accepted": 0,
             "error": null
           },
           {
@@ -327304,7 +328077,7 @@
             "geo": "gb",
             "ok": true,
             "results": 9,
-            "accepted": 2,
+            "accepted": 3,
             "error": null
           },
           {
@@ -327324,7 +328097,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 1,
             "error": null
           }
         ],
@@ -327334,15 +328107,25 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 39,
+        "count": 136,
         "byReason": {
-          "not-http-url": 33,
-          "non-review-host": 3,
+          "not-http-url": 39,
+          "non-review-host": 23,
           "write-path-blocked": 2,
+          "aggregator-internal-nav": 56,
+          "production-database-listing": 10,
+          "aggregator-section-root": 4,
+          "non-stage-review": 1,
           "ticket-seller-product-page": 1
         }
       },
       "dedupedVariants": [],
+      "priorRunArticles": [
+        {
+          "url": "https://playbill.com/article/read-reviews-for-caryl-churchills-a-number-at-the-bridge-theatre-in-london",
+          "publishDate": "2020-02-20"
+        }
+      ],
       "nonReviewCandidates": [
         {
           "url": "https://www.theguardian.com/culture/2026/aug/30/the-bridge-review-alaa-shehada",
@@ -327355,21 +328138,27 @@
       ],
       "automatedExcludedListed": 4,
       "unextractable": [],
-      "ingestResults": [
+      "weIngestBlocked": [
         {
-          "url": "https://sierz.co.uk/reviews/the-bridge-bush-theatre/",
-          "host": "sierz.co.uk",
-          "outletId": "sierz-co-uk",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": null
+          "url": "https://www.theguardian.com/stage/2020/feb/19/a-number-review-caryl-churchill-roger-allam-bridge-theatre-london",
+          "host": "theguardian.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/a-number-bridge-theatre-review-roger-allam-colin-morgan-caryl-churchill-a9345706.html",
+          "host": "independent.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.telegraph.co.uk/theatre/what-to-see/number-bridge-theatre-review-superb-revival-caryl-churchills/",
+          "host": "telegraph.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
         }
       ],
       "ingestSkippedByCap": [],
@@ -327415,40 +328204,58 @@
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://www.londontheatre.co.uk/reviews/the-bridge-review-bush-theatre",
+            "url": "https://www.londontheatre.co.uk/reviews/review-caryl-churchills-a-number-at-the-bridge-theatre",
             "outletId": "londontheatre.co.uk",
             "state": "live",
-            "firstSeenAt": "2026-11-03T23:57:50.737Z"
+            "firstSeenAt": "2026-11-07T17:34:33.025Z"
           },
           {
-            "url": "https://liamodell.com/2026/11/03/the-bridge-review-bush-theatre-alaa-shehada-palestine/",
-            "outletId": "liamodell.com",
+            "url": "https://www.thestage.co.uk/reviews/2020/a-number-roger-allam-colin-morgan-review-at-bridge-theatre-london/",
+            "outletId": "thestage.co.uk",
             "state": "live",
-            "firstSeenAt": "2026-11-03T23:57:50.737Z"
+            "firstSeenAt": "2026-11-07T17:34:33.025Z"
           },
           {
-            "url": "https://www.theguardian.com/culture/2026/aug/30/the-bridge-review-alaa-shehada",
-            "outletId": "theguardian.com",
+            "url": "https://theatreandtonic.co.uk/blog/the-bridge-bush-theatre-london-review",
+            "outletId": "theatreandtonic.co.uk",
             "state": "live",
-            "firstSeenAt": "2026-10-30T22:24:22.326Z"
+            "firstSeenAt": "2026-11-04T07:52:26.614Z"
           },
           {
-            "url": "https://www.timeout.com/london/theatre/the-bridge-4-review",
-            "outletId": "timeout.com",
+            "url": "https://chiswickcalendar.co.uk/the-bridge-bush-theatre-review/",
+            "outletId": "chiswickcalendar.co.uk",
             "state": "live",
-            "firstSeenAt": "2026-11-06T22:26:51.704Z"
+            "firstSeenAt": "2026-11-03T14:15:10.547Z"
+          },
+          {
+            "url": "https://redbuslondinium.uk/2026/11/03/review-the-bridge-bush-theatre-%E2%98%85%E2%98%85%E2%98%85%E2%98%85/",
+            "outletId": "redbuslondinium.uk",
+            "state": "live",
+            "firstSeenAt": "2026-11-04T07:52:26.614Z"
+          },
+          {
+            "url": "https://sierz.co.uk/reviews/the-bridge-bush-theatre/",
+            "outletId": "sierz.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-11-07T17:34:33.025Z"
+          },
+          {
+            "url": "https://www.pinkprincetheatre.com/post/review-the-bridge-bush-theatre",
+            "outletId": "pinkprincetheatre.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-04T19:31:35.837Z"
+          },
+          {
+            "url": "https://theartsdispatch.substack.com/p/the-bridge-review-bush-theatre-london",
+            "outletId": "theartsdispatch.substack.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-07T13:27:57.642Z"
           },
           {
             "url": "https://www.thestage.co.uk/reviews/the-bridge-review-bush-theatre-london-alaa-shehada",
             "outletId": "thestage.co.uk",
             "state": "live",
             "firstSeenAt": "2026-11-03T14:15:10.547Z"
-          },
-          {
-            "url": "https://www.timeout.com/london/theatre/the-bridge-4",
-            "outletId": "timeout.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-30T22:24:22.326Z"
           },
           {
             "url": "https://www.standard.co.uk/culture/theatre/richard-ii-bridge-theatre-review-jonathan-bailey-b1211568.html",
@@ -327467,24 +328274,6 @@
             "outletId": "allthatdazzles.co.uk",
             "state": "live",
             "firstSeenAt": "2026-11-04T19:31:35.837Z"
-          },
-          {
-            "url": "https://theatreandtonic.co.uk/blog/the-bridge-bush-theatre-london-review",
-            "outletId": "theatreandtonic.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-11-04T07:52:26.614Z"
-          },
-          {
-            "url": "https://www.pinkprincetheatre.com/post/review-the-bridge-bush-theatre",
-            "outletId": "pinkprincetheatre.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-04T19:31:35.837Z"
-          },
-          {
-            "url": "https://theartsdispatch.substack.com/p/the-bridge-review-bush-theatre-london",
-            "outletId": "theartsdispatch.substack.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-07T13:27:57.642Z"
           },
           {
             "url": "https://www.thereviewshub.com/the-bridge-bush-theatre-london/",
@@ -327539,18 +328328,6 @@
             "outletId": "whatsonstage.com",
             "state": "live",
             "firstSeenAt": "2026-11-03T14:15:10.547Z"
-          },
-          {
-            "url": "https://chiswickcalendar.co.uk/the-bridge-bush-theatre-review/",
-            "outletId": "chiswickcalendar.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-11-03T14:15:10.547Z"
-          },
-          {
-            "url": "https://redbuslondinium.uk/2026/11/03/review-the-bridge-bush-theatre-%E2%98%85%E2%98%85%E2%98%85%E2%98%85/",
-            "outletId": "redbuslondinium.uk",
-            "state": "live",
-            "firstSeenAt": "2026-11-04T07:52:26.614Z"
           },
           {
             "url": "https://susanelkin.co.uk/articles/the-bridge-susan-elkin-reviews/",
@@ -327655,10 +328432,10 @@
             "reason": "confirmed-non-review"
           }
         ],
-        "liveCount": 23,
+        "liveCount": 24,
         "candidateCount": 28
       },
-      "computedAt": "2026-11-07T17:08:58.264Z"
+      "computedAt": "2026-11-07T17:34:33.025Z"
     },
     {
       "showId": "the-brief-wondrous-life-of-oscar-wao-regional-2026",
@@ -397846,32 +398623,44 @@
       "previewsStartDate": "2026-10-30",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
+        "https://weave-news.lovable.app/en/culture/tosca-review-eno-s-new-staging-abandons-puccini-s-realism-for-baffling-and-near--8536cdf3",
+        "https://www.thereviewshub.com/eno-tosca-london-coliseum/",
         "https://www.musicomh.com/classical/opera-reviews/tosca-review-puccini-english-national-opera-coliseum",
+        "https://theatreweekly.com/review-tosca-at-london-coliseum/",
         "https://theoperacritic.com/English_National_Opera/eno",
-        "https://www.britishtheatre.com/posts/tosca-eno-london-coliseum-reviews",
         "https://www.classicalsource.com/concert/english-national-opera-tosca/",
         "https://www.musicomh.com/classical/opera-reviews/tosca-coliseum-london-3",
         "https://www.thestage.co.uk/reviews/tosca-review-london-coliseum-puccini-annilese-miskimmon",
         "https://www.londontheatre.co.uk/reviews/tosca-review-london-coliseum",
-        "https://theatreweekly.com/review-tosca-at-london-coliseum/",
         "https://www.broadwayworld.com/westend/article/Review-TOSCA-London-Coliseum-20261031",
         "https://www.london-unattached.com/tosca-english-national-opera-review/",
         "https://www.thetimes.com/culture/classical-opera/article/tosca-review-london-coliseum-nqwpdjr9t",
         "https://theatreweekly.com/english-national-opera-unveils-new-staging-of-tosca-at-the-london-coliseum/",
         "https://cherylmarkosky.com/2026/10/31/london-theatre-review-tosca-english-national-opera-the-coliseum/",
         "https://www.broadwayworld.com/translate/ru/Review-TOSCA-London-Coliseum-20261031",
-        "https://www.thereviewshub.com/eno-tosca-london-coliseum/",
         "https://bachtrack.com/review-tosca-eno-malfitano",
         "https://www.scenemag.co.uk/review-tosca-eno/",
-        "https://weave-news.lovable.app/en/culture/tosca-review-eno-s-new-staging-abandons-puccini-s-realism-for-baffling-and-near--8536cdf3",
+        "https://www.britishtheatre.com/posts/tosca-eno-london-coliseum-reviews",
         "https://www.opera-now.com/content/reviews/puccini-tosca-at-english-national-opera-live-review",
         "https://bachtrack.com/es_ES/review-tosca-miskimmon-glassberg-fanyo-english-national-opera-london-october-2026",
         "https://bachtrack.com/review-tosca-miskimmon-glassberg-fanyo-english-national-opera-london-october-2026"
       ],
-      "dirFiles": 24,
-      "dirClean": 17,
+      "dirFiles": 25,
+      "dirClean": 18,
       "inReviewsJson": 17,
       "missing": [
+        {
+          "url": "https://weave-news.lovable.app/en/culture/tosca-review-eno-s-new-staging-abandons-puccini-s-realism-for-baffling-and-near--8536cdf3",
+          "host": "lovable.app",
+          "knownOutletId": null,
+          "serpCensus": true,
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ]
+        },
         {
           "url": "https://theoperacritic.com/English_National_Opera/eno",
           "host": "theoperacritic.com",
@@ -397887,18 +398676,6 @@
         {
           "url": "https://www.scenemag.co.uk/review-tosca-eno/",
           "host": "scenemag.co.uk",
-          "knownOutletId": null,
-          "serpCensus": true,
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ]
-        },
-        {
-          "url": "https://weave-news.lovable.app/en/culture/tosca-review-eno-s-new-staging-abandons-puccini-s-realism-for-baffling-and-near--8536cdf3",
-          "host": "lovable.app",
           "knownOutletId": null,
           "serpCensus": true,
           "sources": [
@@ -397936,6 +398713,10 @@
       "dirOnly": [
         {
           "host": "ayoungishperspective.co.uk",
+          "count": 1
+        },
+        {
+          "host": "britishtheatreguide.info",
           "count": 1
         },
         {
@@ -398088,7 +398869,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           },
           {
@@ -398118,7 +398899,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 3,
             "error": null
           },
           {
@@ -398138,24 +398919,23 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 0,
             "error": null
           }
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 3,
+        "resultCount": 5,
         "error": null
       },
       "candidatesRejected": {
         "count": 53,
         "byReason": {
-          "not-http-url": 46,
-          "non-review-host": 2,
-          "tag-index-page": 1,
+          "not-http-url": 45,
+          "non-review-host": 3,
+          "non-review-path": 2,
           "ticketing-listing": 1,
-          "no-review-evidence": 2,
-          "event-listing": 1
+          "roundup-page": 2
         }
       },
       "dedupedVariants": [],
@@ -398181,6 +398961,13 @@
       "unextractable": [],
       "weIngestBlocked": [
         {
+          "url": "https://weave-news.lovable.app/en/culture/tosca-review-eno-s-new-staging-abandons-puccini-s-realism-for-baffling-and-near--8536cdf3",
+          "host": "lovable.app",
+          "priorRun": false,
+          "reason": "unregistered-host",
+          "censusGateOn": true
+        },
+        {
           "url": "https://theoperacritic.com/English_National_Opera/eno",
           "host": "theoperacritic.com",
           "priorRun": false,
@@ -398190,13 +398977,6 @@
         {
           "url": "https://www.scenemag.co.uk/review-tosca-eno/",
           "host": "scenemag.co.uk",
-          "priorRun": false,
-          "reason": "unregistered-host",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://weave-news.lovable.app/en/culture/tosca-review-eno-s-new-staging-abandons-puccini-s-realism-for-baffling-and-near--8536cdf3",
-          "host": "lovable.app",
           "priorRun": false,
           "reason": "unregistered-host",
           "censusGateOn": true
@@ -398231,6 +399011,13 @@
         "verdict": "incomplete",
         "missing": [
           {
+            "outletId": "lovable.app",
+            "outlet": "lovable.app",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://weave-news.lovable.app/en/culture/tosca-review-eno-s-new-staging-abandons-puccini-s-realism-for-baffling-and-near--8536cdf3"
+          },
+          {
             "outletId": "theoperacritic.com",
             "outlet": "theoperacritic.com",
             "critic": "Unknown",
@@ -398243,13 +399030,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.scenemag.co.uk/review-tosca-eno/"
-          },
-          {
-            "outletId": "lovable.app",
-            "outlet": "lovable.app",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://weave-news.lovable.app/en/culture/tosca-review-eno-s-new-staging-abandons-puccini-s-realism-for-baffling-and-near--8536cdf3"
           },
           {
             "outletId": "opera-now.com",
@@ -398276,10 +399056,22 @@
         "suppressedMissing": [],
         "candidates": [
           {
+            "url": "https://www.thereviewshub.com/eno-tosca-london-coliseum/",
+            "outletId": "thereviewshub.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-03T23:57:50.737Z"
+          },
+          {
             "url": "https://www.musicomh.com/classical/opera-reviews/tosca-review-puccini-english-national-opera-coliseum",
             "outletId": "musicomh.com",
             "state": "live",
             "firstSeenAt": "2026-11-01T12:45:30.098Z"
+          },
+          {
+            "url": "https://theatreweekly.com/review-tosca-at-london-coliseum/",
+            "outletId": "theatreweekly.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-03T23:57:50.737Z"
           },
           {
             "url": "https://www.classicalsource.com/concert/english-national-opera-tosca/",
@@ -398302,12 +399094,6 @@
           {
             "url": "https://www.londontheatre.co.uk/reviews/tosca-review-london-coliseum",
             "outletId": "londontheatre.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-11-03T23:57:50.737Z"
-          },
-          {
-            "url": "https://theatreweekly.com/review-tosca-at-london-coliseum/",
-            "outletId": "theatreweekly.com",
             "state": "live",
             "firstSeenAt": "2026-11-03T23:57:50.737Z"
           },
@@ -398348,30 +399134,10 @@
             "firstSeenAt": "2026-11-04T17:07:25.311Z"
           },
           {
-            "url": "https://www.thereviewshub.com/eno-tosca-london-coliseum/",
-            "outletId": "thereviewshub.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-03T23:57:50.737Z"
-          },
-          {
             "url": "https://bachtrack.com/review-tosca-eno-malfitano",
             "outletId": "bachtrack.com",
             "state": "live",
             "firstSeenAt": "2026-11-04T07:52:26.614Z"
-          },
-          {
-            "url": "https://theoperacritic.com/English_National_Opera/eno",
-            "outletId": "theoperacritic.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-11-07T17:08:58.264Z"
-          },
-          {
-            "url": "https://www.scenemag.co.uk/review-tosca-eno/",
-            "outletId": "scenemag.co.uk",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-11-07T10:04:26.682Z"
           },
           {
             "url": "https://weave-news.lovable.app/en/culture/tosca-review-eno-s-new-staging-abandons-puccini-s-realism-for-baffling-and-near--8536cdf3",
@@ -398379,6 +399145,20 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-11-04T16:42:04.576Z"
+          },
+          {
+            "url": "https://theoperacritic.com/English_National_Opera/eno",
+            "outletId": "theoperacritic.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-11-07T17:34:33.025Z"
+          },
+          {
+            "url": "https://www.scenemag.co.uk/review-tosca-eno/",
+            "outletId": "scenemag.co.uk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-11-07T10:04:26.682Z"
           },
           {
             "url": "https://www.opera-now.com/content/reviews/puccini-tosca-at-english-national-opera-live-review",
@@ -398423,7 +399203,7 @@
         "liveCount": 11,
         "candidateCount": 16
       },
-      "computedAt": "2026-11-07T17:08:58.264Z"
+      "computedAt": "2026-11-07T17:34:33.025Z"
     },
     {
       "showId": "tosca-off-broadway-2026",
@@ -398440,9 +399220,14 @@
           "inheritReviews": false
         }
       ],
-      "aggregatorArticles": [],
+      "aggregatorArticles": [
+        "https://playbill.com/article/what-did-critics-think-of-the-metropolitan-operas-new-production-of-tosca"
+      ],
       "aggregatorListedUrls": [
-        "https://www.britishtheatreguide.info/reviews/tosca-metropolitan-op-19674",
+        "http://newyorkclassicalreview.com/2018/01/yoncheva-triumphs-in-premiere-of-mets-new-and-dazzling-tosca/",
+        "https://www.nytimes.com/2018/01/01/arts/music/tosca-metropolitan-opera.html",
+        "http://www.zealnyc.com/review-a-traditional-tosca-returns-with-cheers-to-the-met/",
+        "https://theclassicreview.com/album-reviews/review-puccini-tosca-buratto-tetelman-tezier-orchestra-coro-dellaccademia-nazionale-di-santa-cecilia-harding/",
         "https://www.classicalsource.com/concert/the-metropolitan-opera-tosca-sondra-radvanovsky-marcelo-alvarez-falk-struckmann/",
         "https://aatmanvakil.substack.com/p/review-tosca-at-the-metropolitan",
         "https://www.thecwordmag.co.uk/tv-shows/a-review-of-tosca-by-puccini-the-opera",
@@ -398460,12 +399245,23 @@
       "inReviewsJson": 1,
       "missing": [
         {
-          "url": "https://www.britishtheatreguide.info/reviews/tosca-metropolitan-op-19674",
-          "host": "britishtheatreguide.info",
-          "knownOutletId": "british-theatre",
-          "serpCensus": true,
+          "url": "https://www.nytimes.com/2018/01/01/arts/music/tosca-metropolitan-opera.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
           "priorRun": true,
-          "priorRunSource": "pending-file-date:2020-12-31",
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/what-did-critics-think-of-the-metropolitan-operas-new-production-of-tosca"
+            }
+          ]
+        },
+        {
+          "url": "https://theclassicreview.com/album-reviews/review-puccini-tosca-buratto-tetelman-tezier-orchestra-coro-dellaccademia-nazionale-di-santa-cecilia-harding/",
+          "host": "theclassicreview.com",
+          "knownOutletId": null,
+          "serpCensus": true,
           "sources": [
             {
               "source": "serp-census",
@@ -398598,13 +399394,38 @@
           ]
         }
       ],
-      "dirOnly": [
-        {
-          "host": "newyorkclassicalreview.com",
-          "count": 1
-        }
-      ],
+      "dirOnly": [],
       "flaggedMisses": [
+        {
+          "url": "http://www.zealnyc.com/review-a-traditional-tosca-returns-with-cheers-to-the-met/",
+          "host": "zealnyc.com",
+          "knownOutletId": "zeal-nyc",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "zeal-nyc--herman-spencer.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://www.zealnyc.com/review-a-traditional-tosca-returns-with-cheers-to-the-met/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/what-did-critics-think-of-the-metropolitan-operas-new-production-of-tosca"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
+        },
         {
           "url": "https://www.theguardian.com/music/2026/nov/01/tosca-review-axelle-fanyo-christopher-purves",
           "host": "theguardian.com",
@@ -398689,7 +399510,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 0,
             "error": null
           },
           {
@@ -398709,25 +399530,42 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 54,
+        "count": 155,
         "byReason": {
-          "not-http-url": 47,
-          "non-review-host": 2,
-          "census-junk-host": 1,
-          "non-stage-review": 1,
+          "not-http-url": 53,
+          "non-review-host": 26,
+          "roundup-page": 2,
+          "aggregator-internal-nav": 55,
+          "production-database-listing": 10,
+          "aggregator-section-root": 4,
+          "non-stage-review": 2,
+          "tag-index-page": 1,
           "no-review-evidence": 1,
-          "ticketing-reseller": 2
+          "ticketing-reseller": 1
         }
       },
       "dedupedVariants": [],
+      "priorRunArticles": [
+        {
+          "url": "https://playbill.com/article/what-did-critics-think-of-the-metropolitan-operas-new-production-of-tosca",
+          "publishDate": "2018-01-02"
+        }
+      ],
       "automatedExcludedListed": 1,
       "unextractable": [],
       "weIngestBlocked": [
         {
-          "url": "https://www.britishtheatreguide.info/reviews/tosca-metropolitan-op-19674",
-          "host": "britishtheatreguide.info",
+          "url": "https://www.nytimes.com/2018/01/01/arts/music/tosca-metropolitan-opera.html",
+          "host": "nytimes.com",
           "priorRun": true,
           "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://theclassicreview.com/album-reviews/review-puccini-tosca-buratto-tetelman-tezier-orchestra-coro-dellaccademia-nazionale-di-santa-cecilia-harding/",
+          "host": "theclassicreview.com",
+          "priorRun": false,
+          "reason": "unregistered-host",
           "censusGateOn": true
         },
         {
@@ -398787,14 +399625,14 @@
           "outletId": "sunday-express",
           "provisional": false,
           "ok": false,
-          "noop": false,
+          "noop": true,
           "conflict": false,
           "conflictReason": null,
           "expected": false,
           "expectedReason": null,
           "unclassified": false,
           "zeroChar": false,
-          "reason": "⚠️  Cross-market reroute: tosca-off-broadway-2026 → tosca-off-broadway-2017 (sibling opening 28d from publishDate vs current 3199d)\n\n❌ Stale merge: fullText still hold a pre-existing value at /home/runner/work/Broadwayscore/Broadwayscore/data/review-texts/tosca-off-broadway-2017/sunday-express--clare-colvin.json that does not match this ingest — merge-into-existing only fills blank fields, it does not correct a non-blank-but-wrong one. Manual field correction needed."
+          "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir (no-changes)"
         },
         {
           "url": "https://aroundthetownchicago.com/theatre-reviews/tosca-reviewed-by-jacob-davis/",
@@ -398831,6 +399669,13 @@
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
+          {
+            "outletId": "theclassicreview.com",
+            "outlet": "theclassicreview.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://theclassicreview.com/album-reviews/review-puccini-tosca-buratto-tetelman-tezier-orchestra-coro-dellaccademia-nazionale-di-santa-cecilia-harding/"
+          },
           {
             "outletId": "aatmanvakil.substack.com",
             "outlet": "aatmanvakil.substack.com",
@@ -398898,6 +399743,19 @@
         "suppressedMissing": [],
         "candidates": [
           {
+            "url": "http://newyorkclassicalreview.com/2018/01/yoncheva-triumphs-in-premiere-of-mets-new-and-dazzling-tosca/",
+            "outletId": "newyorkclassicalreview.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-07T17:34:33.025Z"
+          },
+          {
+            "url": "https://theclassicreview.com/album-reviews/review-puccini-tosca-buratto-tetelman-tezier-orchestra-coro-dellaccademia-nazionale-di-santa-cecilia-harding/",
+            "outletId": "theclassicreview.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-11-07T17:34:33.025Z"
+          },
+          {
             "url": "https://aatmanvakil.substack.com/p/review-tosca-at-the-metropolitan",
             "outletId": "aatmanvakil.substack.com",
             "state": "GAP",
@@ -398963,10 +399821,10 @@
         ],
         "censusSchema": 4,
         "excluded": [],
-        "liveCount": 0,
-        "candidateCount": 9
+        "liveCount": 1,
+        "candidateCount": 11
       },
-      "computedAt": "2026-11-07T17:08:58.264Z"
+      "computedAt": "2026-11-07T17:34:33.025Z"
     },
     {
       "showId": "touch-off-broadway-2026",
@@ -399895,48 +400753,23 @@
       "previewsStartDate": "2026-11-01",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://thefrontrowcenter.com/2026/11/tristan-and-yseult/",
         "https://www.newyorktheatreguide.com/reviews/tristan-and-yseult-off-broadway-review",
-        "https://www.lisainthetheatre.com/post/tristan-yseult-review",
+        "https://oxfordshireguardian.co.uk/emma-rices-tristan-yseult-returns-to-oxford-playhouse-in-january/",
+        "https://exeuntnyc.com/reviews/tristan-yseult/",
         "https://exeuntnyc.com/reviews/review-tristan-yseult-at-st-anns-warehouse/",
         "https://www.theguardian.com/stage/2026/sep/19/tristan-and-yseult-review-theatre-royal-bath-kneehigh-emma-rice",
         "https://www.broadwayworld.com/westend/article/Review-TRISTAN-YSEULT-Theatre-Royal-Bath-20260918",
         "https://www.whatsonstage.com/news/tristan-yseult-at-theatre-royal-bath-and-on-tour-review_1731590/",
         "https://fairypoweredproductions.com/tristan-yseult-review/",
-        "https://oxfordshireguardian.co.uk/emma-rices-tristan-yseult-returns-to-oxford-playhouse-in-january/",
         "https://www.thetimes.com/culture/theatre-dance/article/emma-rices-tristan-and-yseult-review-t8jmccphs",
         "https://ayoungishperspective.co.uk/2026/10/02/review-tristan-yseult/",
         "https://www.thereviewshub.com/tristan-yseult-theatr-clwyd-mold/",
         "https://www.newyorker.com/goings-on-about-town/theatre/tristan-yseult-2"
       ],
-      "dirFiles": 10,
-      "dirClean": 1,
+      "dirFiles": 15,
+      "dirClean": 3,
       "inReviewsJson": 1,
       "missing": [
-        {
-          "url": "https://thefrontrowcenter.com/2026/11/tristan-and-yseult/",
-          "host": "thefrontrowcenter.com",
-          "knownOutletId": "front-row-center",
-          "serpCensus": true,
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ]
-        },
-        {
-          "url": "https://www.newyorktheatreguide.com/reviews/tristan-and-yseult-off-broadway-review",
-          "host": "newyorktheatreguide.com",
-          "knownOutletId": "nytg",
-          "serpCensus": true,
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ]
-        },
         {
           "url": "https://www.theguardian.com/stage/2026/sep/19/tristan-and-yseult-review-theatre-royal-bath-kneehigh-emma-rice",
           "host": "theguardian.com",
@@ -399974,12 +400807,17 @@
           ]
         }
       ],
-      "dirOnly": [],
+      "dirOnly": [
+        {
+          "host": "thefrontrowcenter.com",
+          "count": 1
+        }
+      ],
       "flaggedMisses": [
         {
-          "url": "https://www.lisainthetheatre.com/post/tristan-yseult-review",
-          "host": "lisainthetheatre.com",
-          "knownOutletId": "lisa-in-the-theatre",
+          "url": "https://oxfordshireguardian.co.uk/emma-rices-tristan-yseult-returns-to-oxford-playhouse-in-january/",
+          "host": "oxfordshireguardian.co.uk",
+          "knownOutletId": "oxfordshire-guardian",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -399987,42 +400825,9 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "lisa-in-the-theatre--lisa-in-the-theatre.json",
+              "file": "oxfordshire-guardian--samuel-macgregor.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://www.lisainthetheatre.com/post/tristan-yseult-review"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "confirmedNonReview": true,
-          "confirmedBasis": [
-            "ensemble-3-agree"
-          ],
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ],
-          "serpCensus": true,
-          "reverify": false
-        },
-        {
-          "url": "https://fairypoweredproductions.com/tristan-yseult-review/",
-          "host": "fairypoweredproductions.com",
-          "knownOutletId": "fairypoweredproductions",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "fairypoweredproductions--heather-chalkley.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://fairypoweredproductions.com/tristan-yseult-review/"
+              "urlInDir": "https://oxfordshireguardian.co.uk/emma-rices-tristan-yseult-returns-to-oxford-playhouse-in-january/"
             }
           ],
           "exclusion": "automatedExcluded",
@@ -400039,9 +400844,9 @@
           "reverify": true
         },
         {
-          "url": "https://oxfordshireguardian.co.uk/emma-rices-tristan-yseult-returns-to-oxford-playhouse-in-january/",
-          "host": "oxfordshireguardian.co.uk",
-          "knownOutletId": "oxfordshire-guardian",
+          "url": "https://fairypoweredproductions.com/tristan-yseult-review/",
+          "host": "fairypoweredproductions.com",
+          "knownOutletId": "fairypoweredproductions",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -400049,9 +400854,9 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "oxfordshire-guardian--samuel-macgregor.json",
+              "file": "fairypoweredproductions--heather-chalkley.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://oxfordshireguardian.co.uk/emma-rices-tristan-yseult-returns-to-oxford-playhouse-in-january/"
+              "urlInDir": "https://fairypoweredproductions.com/tristan-yseult-review/"
             }
           ],
           "exclusion": "automatedExcluded",
@@ -400198,7 +401003,7 @@
             "geo": "us",
             "ok": true,
             "results": 9,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           },
           {
@@ -400227,8 +401032,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 9,
-            "accepted": 0,
+            "results": 10,
+            "accepted": 1,
             "error": null
           },
           {
@@ -400248,7 +401053,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 0,
             "error": null
           }
         ],
@@ -400258,11 +401063,10 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 52,
+        "count": 53,
         "byReason": {
-          "not-http-url": 40,
+          "not-http-url": 42,
           "non-review-host": 9,
-          "ticketing-listing": 1,
           "census-junk-host": 2
         }
       },
@@ -400270,36 +401074,6 @@
       "automatedExcludedListed": 6,
       "unextractable": [],
       "ingestResults": [
-        {
-          "url": "https://thefrontrowcenter.com/2026/11/tristan-and-yseult/",
-          "host": "thefrontrowcenter.com",
-          "outletId": "front-row-center",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": null
-        },
-        {
-          "url": "https://www.newyorktheatreguide.com/reviews/tristan-and-yseult-off-broadway-review",
-          "host": "newyorktheatreguide.com",
-          "outletId": "nytg",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": null
-        },
         {
           "url": "https://www.theguardian.com/stage/2026/sep/19/tristan-and-yseult-review-theatre-royal-bath-kneehigh-emma-rice",
           "host": "theguardian.com",
@@ -400347,23 +401121,23 @@
         }
       ],
       "ingestSkippedByCap": [],
+      "recoveryResults": [
+        {
+          "url": "https://culturesauce.com/tristan-and-yseult-emma-rice-off-broadway-review/",
+          "host": "culturesauce.com",
+          "file": "culturesauce--unknown.json",
+          "recovered": true,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": null,
+          "recoveryCount": 0,
+          "uncited": true
+        }
+      ],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
-          {
-            "outletId": "front-row-center",
-            "outlet": "front-row-center",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://thefrontrowcenter.com/2026/11/tristan-and-yseult/"
-          },
-          {
-            "outletId": "nytg",
-            "outlet": "nytg",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.newyorktheatreguide.com/reviews/tristan-and-yseult-off-broadway-review"
-          },
           {
             "outletId": "guardian",
             "outlet": "guardian",
@@ -400386,18 +401160,18 @@
             "url": "https://www.whatsonstage.com/news/tristan-yseult-at-theatre-royal-bath-and-on-tour-review_1731590/"
           },
           {
-            "outletId": "fairypoweredproductions",
-            "outlet": "fairypoweredproductions",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://fairypoweredproductions.com/tristan-yseult-review/"
-          },
-          {
             "outletId": "oxfordshire-guardian",
             "outlet": "oxfordshire-guardian",
             "critic": "Unknown",
             "stars": null,
             "url": "https://oxfordshireguardian.co.uk/emma-rices-tristan-yseult-returns-to-oxford-playhouse-in-january/"
+          },
+          {
+            "outletId": "fairypoweredproductions",
+            "outlet": "fairypoweredproductions",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://fairypoweredproductions.com/tristan-yseult-review/"
           },
           {
             "outletId": "sunday-times",
@@ -400432,24 +401206,22 @@
         ],
         "candidates": [
           {
+            "url": "https://www.newyorktheatreguide.com/reviews/tristan-and-yseult-off-broadway-review",
+            "outletId": "newyorktheatreguide.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-07T17:34:33.025Z"
+          },
+          {
+            "url": "https://exeuntnyc.com/reviews/tristan-yseult/",
+            "outletId": "exeuntnyc.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-07T17:34:33.025Z"
+          },
+          {
             "url": "https://exeuntnyc.com/reviews/review-tristan-yseult-at-st-anns-warehouse/",
             "outletId": "exeuntnyc.com",
             "state": "live",
             "firstSeenAt": "2026-11-07T13:27:57.642Z"
-          },
-          {
-            "url": "https://thefrontrowcenter.com/2026/11/tristan-and-yseult/",
-            "outletId": "front-row-center",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-11-07T17:08:58.264Z"
-          },
-          {
-            "url": "https://www.newyorktheatreguide.com/reviews/tristan-and-yseult-off-broadway-review",
-            "outletId": "nytg",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-11-07T17:08:58.264Z"
           },
           {
             "url": "https://www.theguardian.com/stage/2026/sep/19/tristan-and-yseult-review-theatre-royal-bath-kneehigh-emma-rice",
@@ -400473,18 +401245,18 @@
             "firstSeenAt": "2026-11-03T10:44:11.039Z"
           },
           {
-            "url": "https://fairypoweredproductions.com/tristan-yseult-review/",
-            "outletId": "fairypoweredproductions",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-11-01T15:05:11.876Z"
-          },
-          {
             "url": "https://oxfordshireguardian.co.uk/emma-rices-tristan-yseult-returns-to-oxford-playhouse-in-january/",
             "outletId": "oxfordshire-guardian",
             "state": "IN_FLIGHT",
             "reason": "within-grace",
             "firstSeenAt": "2026-11-05T22:39:41.205Z"
+          },
+          {
+            "url": "https://fairypoweredproductions.com/tristan-yseult-review/",
+            "outletId": "fairypoweredproductions",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-11-01T15:05:11.876Z"
           },
           {
             "url": "https://www.thetimes.com/culture/theatre-dance/article/emma-rices-tristan-and-yseult-review-t8jmccphs",
@@ -400516,17 +401288,11 @@
           }
         ],
         "censusSchema": 4,
-        "excluded": [
-          {
-            "url": "https://www.lisainthetheatre.com/post/tristan-yseult-review",
-            "host": "lisainthetheatre.com",
-            "reason": "confirmed-non-review"
-          }
-        ],
-        "liveCount": 1,
-        "candidateCount": 12
+        "excluded": [],
+        "liveCount": 2,
+        "candidateCount": 11
       },
-      "computedAt": "2026-11-07T17:08:58.264Z"
+      "computedAt": "2026-11-07T17:34:33.025Z"
     },
     {
       "showId": "tristan-and-yseult-royal-bath-regional-2026",
