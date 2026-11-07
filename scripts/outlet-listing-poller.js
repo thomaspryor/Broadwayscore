@@ -60,6 +60,7 @@ const { dailyLaneFeedConfigs, laneFeedAccepts } = require('./lib/daily-lane-feed
 const { extractPublishDate } = require('./lib/article-extractor');
 const ow = require('./lib/outlet-opening-window');
 const { describeSkip } = require('./lib/ingest-skip-classify');
+const censusListing = require('./lib/outlet-listing-census');
 const {
   findMatchingShows,
   findPageConfirmCandidates,
@@ -532,7 +533,7 @@ function alreadyFiled(showId, outletId, url) {
   if (!existing) return false;
   // If existing file has the same URL, skip
   const existingUrl = existing.data && existing.data.url;
-  return existingUrl === url;
+  return existingUrl === url || (!!existingUrl && normalizeUrl(existingUrl) === normalizeUrl(url));
 }
 
 function createStub(showId, outletId, outletDisplayName, url, headline, publishDate, isMultiShow, nytCriticsPick, dryRun) {
@@ -817,8 +818,8 @@ function saveUnconfirmedCache(cache, file = UNCONFIRMED_CACHE) {
  * @param {{fetcher?: (url: string) => Promise<string>, activeShows?: Array,
  *   publishDate?: string|null, unconfirmedCache?: object}} [opts]
  */
-async function confirmOnPage(url, candidates, stats, { fetcher = fetchArticleHtml, activeShows = [], publishDate = null, unconfirmedCache = null } = {}) {
-  if (stats.fetched >= PAGE_CONFIRM_MAX_FETCHES) { stats.overBudget += candidates.length; return []; }
+async function confirmOnPage(url, candidates, stats, { fetcher = fetchArticleHtml, activeShows = [], publishDate = null, unconfirmedCache = null, maxFetches = PAGE_CONFIRM_MAX_FETCHES, titleOnly = null } = {}) {
+  if (stats.fetched >= maxFetches) { stats.overBudget += candidates.length; return []; }
   stats.fetched++;
   const markUnreadable = () => { stats.failed++; if (unconfirmedCache) unconfirmedCache[unconfirmedKey(url, FAILED_SHOW_ID)] = new Date().toISOString(); return []; };
   const namesACandidate = (h) => { const t = pageText(h); return candidates.some(({ show }) => pageNamesTitle(t, show)); };
@@ -840,7 +841,7 @@ async function confirmOnPage(url, candidates, stats, { fetcher = fetchArticleHtm
   out.pageDate = pageDate;
   for (const { show, needsPageDate } of candidates) {
     const dated = !needsPageDate || (pageDate && publishedInRunWindow(show, pageDate));
-    if (dated && pageConfirmsShow(text, show, { nowMs, otherShows: activeShows })) { out.push(show); stats.confirmed++; }
+    if (dated && (pageConfirmsShow(text, show, { nowMs, otherShows: activeShows }) || (titleOnly && pageNamesTitle(text, show) && titleOnly(show)))) { out.push(show); stats.confirmed++; }
     else {
       stats.unconfirmed++;
       if (unconfirmedCache) unconfirmedCache[unconfirmedKey(url, show.id)] = new Date().toISOString();
@@ -899,6 +900,28 @@ async function main() {
   if (opts.market) activeShows = activeShows.filter(s => s.category === opts.market || s.market === opts.market);
   console.log(`Active shows: ${activeShows.length}${opts.market ? ` (${opts.market})` : ''}`);
 
+  // --- Census listing source (BRO-7076) ---
+  // Report-only unless CENSUS_LISTING_WRITE=1: census items are matched and run through the writer
+  // in dry-run mode, logged as "CENSUS would-add", and nothing is written or cached.
+  const censusDisabled = win || censusListing.isDisabled();
+  const censusWrite = /^(1|true)$/i.test(process.env.CENSUS_LISTING_WRITE || '');
+  const censusOnly = new Set();
+  const hasFeedEntry = (id) => !!(WP_API_CONFIG[id] || OUTLET_STRATEGY_CONFIG[id]);
+  const censusStats = { outlets: 0, items: 0, wouldAdd: 0, added: 0, reasons: {} };
+  // Paid retries stay capped per run (CENSUS_PROXY_MAX, default 6) so a blocked index cannot fan out into dozens of paid child fetches.
+  let censusProxyLeft = Math.max(0, parseInt(process.env.CENSUS_PROXY_MAX || '6', 10) || 0);
+  const censusDeps = { fetchText: (u, label, ok, o) => { const want = (o && o.proxyRetry) || label === 'sitemap'; const use = want && censusProxyLeft > 0; if (use) censusProxyLeft--; return fetchXmlWithProxyRetry(u, label, ok, { proxyRetry: use, timeoutMs: 30000 }); }, fetchViaSitemap }; // a sitemap that blocks the plain fetch (406) goes through the poller's own fetchPage retry
+  if (censusListing.isDisabled()) console.log('CENSUS_LISTING_DISABLED is set: census listing sources are not read.');
+  const latestByOutlet = latestReviewDateByOutlet(allReviews);
+  // Census reads a whole window, so it also sees shows that closed inside it (a review of a
+  // show that just closed is still a real miss). Announced shows have no dates to check.
+  const closedSince = new Date(cutoff.getTime() - 14 * 86400000).toISOString().slice(0, 10);
+  const censusShows = [...activeShows, ...allShows.filter(s => ((s.status === 'closed' && (s.closingDate || '') >= closedSince) || s.status === 'announced')
+    && (!opts.market || s.category === opts.market || s.market === opts.market))];
+  // Census page checks have their own counters and a per-outlet cap, so they never use up the feed budget.
+  const censusPageStats = { fetched: 0, confirmed: 0, unconfirmed: 0, overBudget: 0, failed: 0 };
+  const CENSUS_PAGE_MAX = parseInt(process.env.CENSUS_PAGE_MAX_FETCHES || '80', 10);
+
   // --- Derive qualifying outlets ---
   let qualifyingOutlets;
   if (win && !opts.outlets) {
@@ -927,6 +950,13 @@ async function main() {
     // The Recs' 5-star The Lost Boys review (opened late in a busy week, 2026-04).
     const configured = [...Object.keys(OUTLET_STRATEGY_CONFIG), ...Object.keys(WP_API_CONFIG)];
     qualifyingOutlets = mergeAlwaysOnOutlets(derived, configured, SKIP_OUTLETS);
+    // BRO-7076: outlets with a free census source but no feed are read from that source
+    // (census-only: no paid SERP sweep is added for them).
+    if (!censusDisabled) {
+      for (const id of censusListing.censusOnlyCandidates(hasFeedEntry)) {
+        if (!SKIP_OUTLETS.has(id) && !qualifyingOutlets.includes(id) && outletRegistry[id]) { qualifyingOutlets.push(id); censusOnly.add(id); }
+      }
+    }
     const added = qualifyingOutlets.length - derived.length;
     console.log(`Qualifying outlets: ${qualifyingOutlets.length} (${derived.length} derived ≥${opts.minShowCount} shows/4mo + ${added} always-on configured)`);
   }
@@ -948,6 +978,7 @@ async function main() {
   const feedHealthFor = (outletId, sc) => (feedHealth[outletId] = { strategy: sc.strategy, url: null, newestAny: null, oldestAny: null, newestFiltered: null, directBlocked: false });
 
   for (const outletId of qualifyingOutlets) {
+    const censusPageBase = censusPageStats.fetched; // the census page-check cap is per outlet, so one big backlog cannot starve the rest
     const outletEntry = outletRegistry[outletId] || {};
     const domain = outletEntry.domain || outletEntry.url;
     const displayName = outletEntry.displayName || outletId;
@@ -1003,21 +1034,27 @@ async function main() {
         } catch (err) {
           if (feedHealth[outletId]) feedHealth[outletId].error = String(err.message || err).slice(0, 200);
           console.warn(`  ⚠ ${sc.strategy} failed (${err.message});${win ? " no SERP in opening-window mode" : " falling back to SERP"}`);
-          if (win || !domain || sc.laneRules) { outletsFailed++; continue; } // lane-derived feeds never fall back to paid SERP (BRO-6965)
-          try {
-            viaSerp = true;
-            articles = await fetchViaSerp(outletId, domain, cutoff, opts);
-          } catch (serpErr) {
-            console.warn(`  ⚠ SERP fallback also failed: ${serpErr.message}`);
-            outletsFailed++;
-            continue;
+          if (!win && !censusDisabled && (!domain || sc.laneRules) && censusListing.censusSourceFor(outletId)) {
+            outletsFailed++; // BRO-7076: the census source can still cover this outlet (no SERP either way)
+          } else if (win || !domain || sc.laneRules) { outletsFailed++; continue; } // lane-derived feeds never fall back to paid SERP (BRO-6965)
+          else {
+            try {
+              viaSerp = true;
+              articles = await fetchViaSerp(outletId, domain, cutoff, opts);
+            } catch (serpErr) {
+              console.warn(`  ⚠ SERP fallback also failed: ${serpErr.message}`);
+              outletsFailed++;
+              continue;
+            }
           }
         }
 
       } else {
         // No outlet-specific strategy — SERP only (covers paywalled and uncharted outlets)
-        if (!domain) { console.log(`  Skipping — no domain in registry`); continue; }
-        try {
+        if (censusOnly.has(outletId)) {
+          // census-only outlet: read below from its census source, no paid SERP sweep
+        } else if (!domain) { console.log(`  Skipping — no domain in registry`); continue; }
+        else try {
           viaSerp = true;
           articles = await fetchViaSerp(outletId, domain, cutoff, opts);
         } catch (err) {
@@ -1028,8 +1065,29 @@ async function main() {
       }
     }
 
+    // BRO-7076: read the outlet's free census source over the lookback when the feed is absent,
+    // failed, stale or shorter than the lookback. Items join `articles` flagged viaCensus.
+    if (!censusDisabled) {
+      const why = censusListing.shouldUseCensus({
+        outletId, hasFeed: hasFeedEntry(outletId), health: feedHealth[outletId] || null,
+        latestReviewDate: latestByOutlet[outletId] || null, lookbackDays: opts.lookbackDays,
+      });
+      if (why.use) {
+        try {
+          const have = new Set(articles.map(a => { try { return normalizeUrl(a.url); } catch { return a.url; } }));
+          const got = (await censusListing.enumerateCensusItems(outletId, cutoff, censusDeps))
+            .filter(a => { try { return !have.has(normalizeUrl(a.url)); } catch { return true; } });
+          console.log(`  [census] ${why.reason}: ${got.length} extra item(s) from the census source in the lookback`);
+          censusStats.outlets++; censusStats.items += got.length; censusStats.reasons[why.reason] = (censusStats.reasons[why.reason] || 0) + 1;
+          articles = articles.concat(got);
+        } catch (err) {
+          console.warn(`  ⚠ census source failed for ${outletId}: ${err.message}`);
+        }
+      }
+    }
+
     if (articles.length === 0) {
-      const serpOnly = !WP_API_CONFIG[outletId] && !OUTLET_STRATEGY_CONFIG[outletId];
+      const serpOnly = !WP_API_CONFIG[outletId] && !OUTLET_STRATEGY_CONFIG[outletId] && !censusOnly.has(outletId);
       if (serpOnly) serpOnlyEmpty.push(outletId);
       console.log(serpOnly
         ? `  No articles found — SERP-only outlet, so this is unverified (add a feed entry: scripts/probe-outlet-feeds.js --outlets ${outletId})`
@@ -1046,11 +1104,16 @@ async function main() {
     // --- Match each article to shows ---
     let outletNewStubs = 0;
 
-    for (const { url, headline, publishDate, description, viaSerp: itemViaSerp } of articles) {
+    for (const { url, headline, publishDate, description, viaSerp: itemViaSerp, viaCensus } of articles) {
+      // Census items run report-only unless CENSUS_LISTING_WRITE=1: dry writer, plain fetches, no cache writes.
+      const censusDry = !!viaCensus && !censusWrite;
+      const itemDry = opts.dryRun || censusDry;
+      const showPool = viaCensus ? censusShows : activeShows;
+      const censusOk = (show) => !viaCensus || censusListing.censusItemAccepted({ url, headline, description, publishDate }, show);
       const urlSlug = (() => { try { return new URL(url).pathname; } catch { return url; } })();
       const outletCfg = WP_API_CONFIG[outletId] || OUTLET_STRATEGY_CONFIG[outletId] || {};
       const fromFeed = !viaSerp && !itemViaSerp;
-      let feedMatched = findMatchingShows(headline, urlSlug, activeShows, description, { publishDate });
+      let feedMatched = findMatchingShows(headline, urlSlug, showPool, description, { publishDate }).filter(censusOk);
       // A mixed review/news feed: a match must also read as a review (BRO-6921 follow-up).
       if (fromFeed && outletCfg.titleLedReviews) {
         feedMatched = feedMatched.filter(show => itemReadsAsReview({ url, headline, description }, show));
@@ -1064,22 +1127,25 @@ async function main() {
         feedMatched = feedMatched.filter(show => laneFeedAccepts(outletCfg, outletId, { url, headline, description }, show));
       }
       // pageConfirmAll outlets: feed matches go through the page check too.
-      const matchedShows = outletCfg.pageConfirmAll ? [] : feedMatched;
+      // Census items are matched on a slug or headline only, so every one is page-confirmed.
+      const matchedShows = (outletCfg.pageConfirmAll || viaCensus) ? [] : feedMatched;
 
       // BRO-6921: subtitled or short titles the headline alone cannot prove.
-      const reviewOnlyFeed = fromFeed && !!outletCfg.reviewsOnly;
+      const reviewOnlyFeed = fromFeed && !viaCensus && !!outletCfg.reviewsOnly;
       const candidates = [
-        ...(outletCfg.pageConfirmAll ? feedMatched.map(show => ({ show, form: 'feed-match' })) : []),
-        ...findPageConfirmCandidates({ url, headline, publishDate, description }, activeShows, { alreadyMatched: feedMatched, reviewOnlyFeed, titleLedReviews: fromFeed && !!outletCfg.titleLedReviews }),
-      ].filter(c => !(fromFeed && outletCfg.laneRules) || laneFeedAccepts(outletCfg, outletId, { url, headline, description }, c.show))
+        ...((outletCfg.pageConfirmAll || viaCensus) ? feedMatched.map(show => ({ show, form: 'feed-match' })) : []),
+        ...findPageConfirmCandidates({ url, headline, publishDate, description }, showPool, { alreadyMatched: feedMatched, reviewOnlyFeed, titleLedReviews: fromFeed && !!outletCfg.titleLedReviews }),
+      ].filter(c => censusOk(c.show))
+        .filter(c => !(fromFeed && outletCfg.laneRules) || laneFeedAccepts(outletCfg, outletId, { url, headline, description }, c.show))
         .filter(c => !alreadyFiled(c.show.id, outletId, url) && !isRejectedCached(url, c.show.id)
-          && !isUnconfirmedCached(unconfirmedCache, url, c.show.id));
+          && !(!censusDry && isUnconfirmedCached(unconfirmedCache, url, c.show.id)));
       let stubDate = publishDate;
       if (candidates.length > 0) {
-        const confirmed = await confirmOnPage(url, candidates, pageConfirmStats, {
-          activeShows, publishDate, unconfirmedCache,
+        const confirmed = await confirmOnPage(url, candidates, viaCensus ? censusPageStats : pageConfirmStats, {
+          activeShows: showPool, publishDate, maxFetches: viaCensus ? censusPageBase + CENSUS_PAGE_MAX : PAGE_CONFIRM_MAX_FETCHES,
+          titleOnly: viaCensus ? (show) => censusListing.censusTitleOnly({ url, headline, publishDate }, show, showPool) : null, unconfirmedCache: censusDry ? null : unconfirmedCache,
           // A dry run never spends paid scraper fetches: plain fetch only.
-          fetcher: opts.dryRun ? (u => fetchSimple(u, 20000)) : fetchArticleHtml,
+          fetcher: itemDry ? (u => fetchSimple(u, 20000)) : fetchArticleHtml,
         });
         if (!publishDate && confirmed.pageDate) stubDate = confirmed.pageDate;
         for (const show of confirmed) {
@@ -1103,18 +1169,23 @@ async function main() {
         // writer would just reject them again and we'd burn classifier work.
         if (isRejectedCached(url, show.id)) continue;
 
-        const result = createStub(show.id, outletId, displayName, url, headline, stubDate, isMultiShow, nytCriticsPick, opts.dryRun);
+        const result = createStub(show.id, outletId, displayName, url, headline, stubDate, isMultiShow, nytCriticsPick, itemDry);
+        if (viaCensus && result && result.action === 'new') {
+          console.log(`  CENSUS ${censusWrite && !opts.dryRun ? 'added' : 'would-add'}: ${show.id} / ${outletId}: ${url}`);
+          if (censusWrite && !opts.dryRun) censusStats.added++; else censusStats.wouldAdd++;
+          if (censusDry) continue; // report-only: not a new stub, no cache entries
+        }
         // Only count NEW writes — the shared writer may also reject (cross-market
         // classifier), reroute, or merge into an existing file. None of those
         // are "new stubs" for the workflow output.
-        if (result && result.action === 'skipped' && result.reason === 'flagged-filename-collision') {
+        if (result && result.action === 'skipped' && result.reason === 'flagged-filename-collision' && !censusDry) {
           if (isSameUrlFlaggedTarget(show.id, outletId, url)) sameUrlFlagged.push({ showId: show.id, outletId, url });
           else blockedCollisions.push({ showId: show.id, outletId, url });
         }
         if (result && result.action === 'new') {
           if (!opts.dryRun) outletNewStubs++;
           totalNewStubs++;
-        } else if (result && result.action === 'skipped' && !opts.dryRun
+        } else if (result && result.action === 'skipped' && !itemDry
             && shouldCacheSkipReason(result.reason)) {
           // Record durable rejections (cross-market classifier, junk outlet,
           // domain mismatch) so the next poll cycle doesn't re-process them.
@@ -1131,6 +1202,7 @@ async function main() {
   console.log(`New stubs: ${totalNewStubs}`);
   if (win) console.log(`OPENING_WINDOW_STATS fetches=${windowFetches} paid=${paidBudget.used} paidRefused=${paidBudget.refused} cap=${paidBudget.max}`);
   if (pageConfirmStats.overBudget > 0) console.warn(`⚠ Page-confirm budget (${PAGE_CONFIRM_MAX_FETCHES} pages${paidBudget && paidBudget.refused ? ', paid cap ' + paidBudget.max : ''}) ran out: ${pageConfirmStats.overBudget} candidate(s) not checked this run`);
+  console.log(`Census listing (BRO-7076): ${censusStats.outlets} outlet(s) read, ${censusStats.items} extra item(s), ${censusStats.wouldAdd} would-add, ${censusStats.added} added; page-confirm ${censusPageStats.fetched} fetched/${censusPageStats.confirmed} confirmed/${censusPageStats.overBudget} over cap; mode=${censusDisabled ? 'disabled' : censusWrite ? 'write' : 'report-only'}; reasons=${JSON.stringify(censusStats.reasons)}`);
   console.log(`Page-confirm (BRO-6921): ${pageConfirmStats.fetched} pages fetched, ${pageConfirmStats.confirmed} confirmed, ${pageConfirmStats.unconfirmed} not confirmed, ${pageConfirmStats.overBudget} over budget, ${pageConfirmStats.failed} fetch failures`);
   if (outletsFailed > 0) console.warn(`Outlets with errors: ${outletsFailed}`);
   if (serpOnlyEmpty.length > 0) {

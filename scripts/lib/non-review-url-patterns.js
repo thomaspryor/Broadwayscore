@@ -718,6 +718,25 @@ const LISTING_PAGE_URL_PATTERNS = [
   { host: /./, path: /^\/tags?\/[^/]+(?:\/page\/\d+)?\/?$/i, reason: 'tag-index-page',
     exceptHosts: /(^|\.)(?:twi-ny\.com|whatsonoffbroadway\.com)$/ },
   { host: /./, path: /^\/author\/[^/]+(?:\/page\/\d+)?\/?$/i, reason: 'tag-index-page' },
+  // BRO-7081: the hourly gap audit kept alerting on listing pages the SERP census
+  // cited. A per-performance event page ends in its date (limelight-arts.com.au
+  // /event/garry-starr-classic-penguins-2/2026-06-25/, nine of them for one show,
+  // BRO-6950), and a bare /shows/<slug>/ page is a show hub (broadwayblack.com
+  // /shows/midnight/, BRO-5134/BRO-6731; mirvish.com /shows/juliet). Corpus
+  // 2026-11-07: 0 of reviews.json's URLs match either shape; reviews on hub hosts
+  // sit one level deeper (didtheylikeit /shows/<show>/<review>/).
+  { host: /./, path: /^(?![^?#]*review)[^?#]*\/events?\/[^/]+\/\d{4}-\d\d-\d\d\/?$/i, reason: 'event-listing' },
+  // Registered aggregators (stagedoor.com, show-score.com, ...) are exempt: their
+  // /shows/<slug> page is the citation URL an aggregator star-stub is filed under
+  // (aggregator-outlet-refinement.test.mjs), so refusing it would drop exactly the
+  // aggregator-cited reviews this rule exists to protect.
+  { host: new RegExp(`^(?!(?:.*\\.)?(?:${[...require('./aggregator-domains').AGGREGATOR_DOMAINS].map((d) => d.replace(/\./g, '\\.')).join('|')})$)`), path: /^\/shows\/[^/]+\/?$/i, reason: 'show-hub' },
+  // BRO-5629: an aggregator cited bestoftheatre's "everything you need to know"
+  // explainer as Affluenza's missing review (also /everything-you-need-to-know-dogstar,
+  // oldvictheatre /things-you-need-to-know-about-martin-guerre/). A slug that also
+  // says "review" stays a review (kiddoadventures "review-beetlejuice-...-everything-
+  // you-need-to-know-before-you-go"). Corpus 2026-11-07: 0 live reviews match.
+  { host: /./, path: /^(?![^?#]*review)[^?#]*(?:^|[-/])(?:everything|things)-(?:you-)?need-to-know(?:[-/._]|$)/i, reason: 'guide-article' },
 ];
 
 /**

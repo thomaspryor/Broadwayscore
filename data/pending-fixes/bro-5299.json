@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5299",
   "planId": "7b38c07d-3051-43e3-b23b-15b2b1a0a074",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-18T02:59:26.287Z",
   "submitter": {
     "name": null,
@@ -71,5 +71,44 @@
         "description": "BRO-5299: stored fullText is the By Royal Appointment review (a different show), CV-promoted wrongProduction. The url is the correct Adelphi review (live page checked); delete so ingest-urls re-fetches it."
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-07T15:38:24.561Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-comedy-about-spies-west-end-2026/thetheatreflyer-co-uk--unknown.json rejectedAt: \"2026-08-22T21:30:09.255Z\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-comedy-about-spies-west-end-2026/thetheatreflyer-co-uk--unknown.json rejectedBy: \"ensemble-scoreability-check\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-comedy-about-spies-west-end-2026/thetheatreflyer-co-uk--unknown.json rejectionReason: \"wrong_production\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-comedy-about-spies-west-end-2026/thetheatreflyer-co-uk--unknown.json rejectionReasoning: \"claude: The review covers The Comedy About Spies at the Adelphi Theatre in 2026, whereas the specified production ran at the Noël Coward Theatre from April to August 2025. Different venue and date range = wrong production.; openai: The review discusses a production at the Adelphi Theatre in 2026, which does not match the specified venue and date range for the target production at the West End (Off-West End) or the earlier run at Noël Coward Theatre.\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-comedy-about-spies-west-end-2026/thetheatreflyer-co-uk--unknown.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-comedy-about-spies-west-end-2026/thetheatreflyer-co-uk--unknown.json wrongProduction: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-comedy-about-spies-west-end-2026/theatreandtonic--penny-walshe.json"
+    }
+  ],
+  "executedIn": "ci"
 }

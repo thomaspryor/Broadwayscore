@@ -204,7 +204,7 @@ async function sendBrandMentionDigest({ pairs, totalFetched, dropped, dryRun = f
 
   const runStartedAt = new Date().toISOString();
   const subject = buildSubject({ pairs });
-  const html = buildDigestHtml({ pairs, totalFetched, dropped, runStartedAt });
+  const html = require('./email-type-floor.js').enforceTypeFloor(buildDigestHtml({ pairs, totalFetched, dropped, runStartedAt }));
 
   if (dryRun) {
     console.log(`[email] DRY RUN — would send "${subject}" to ${OWNER_EMAIL} (${html.length} bytes HTML)`);

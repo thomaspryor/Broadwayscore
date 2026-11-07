@@ -950,12 +950,9 @@ function buildHtml(opts) { return buildHtmlParts(opts).full; }
 // BRO-7075 (owner: "a wall of tiny text"): nothing in the email BODY renders
 // below this size. One choke point instead of 60 inline styles: any smaller
 // font-size the renderers emit is raised here, and a test pins the floor.
-const BODY_MIN_FONT_PX = 14;
+const { enforceTypeFloor: enforceBodyTypeFloor, MIN_FONT_PX: BODY_MIN_FONT_PX } = require('./lib/email-type-floor.js');
 const REPORT_ATTACHED_NOTE = 'The full board, spend and technical report is attached to this email (tap the attachment to open it).';
 const REPORT_NOT_ATTACHED_NOTE = 'The full board, spend and technical report could not be attached this morning.';
-function enforceBodyTypeFloor(html, min = BODY_MIN_FONT_PX) {
-  return String(html).replace(/font-size:\s*(\d+(?:\.\d+)?)px/g, (m, n) => (Number(n) < min ? `font-size:${min}px` : m));
-}
 
 /** The attachment: the full board, spend and technical report as its own page. */
 function buildReportDocument({ dateLabel, inner }) {

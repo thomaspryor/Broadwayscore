@@ -793,3 +793,53 @@ test('forum, aggregator-repost and blog tag pages are listing pages, their revie
     'https://twi-ny.com/tag/an-american-daughter/',
   ]) assert.equal(listingPageUrlReason(url), null, url);
 });
+
+test('BRO-7081: dated event pages and bare /shows/<slug>/ hubs are listings, not owed reviews', () => {
+  const { listingPageUrlReason } = require('./non-review-url-patterns.js');
+  const bad = {
+    // BRO-6950: nine dated performance pages for Garry Starr: Classic Penguins.
+    'https://limelight-arts.com.au/event/garry-starr-classic-penguins-2/2026-06-25/': 'event-listing',
+    'https://limelight-arts.com.au/event/garry-starr-classic-penguins/2026-06-21/': 'event-listing',
+    'https://limelight-arts.com.au/event/a-beautiful-noise-the-neil-diamond-musical-2/2026-10-07/': 'event-listing',
+    // BRO-5134 / BRO-6731: Broadway Black show hub cited for Midnight.
+    'https://www.broadwayblack.com/shows/midnight/': 'show-hub',
+    'https://www.mirvish.com/shows/juliet': 'show-hub',
+  };
+  for (const [url, reason] of Object.entries(bad)) {
+    assert.equal(listingPageUrlReason(url), reason, url);
+    assert.notEqual(classifyGapCandidateUrl(url).ok, true, url);
+  }
+  for (const url of [
+    'https://didtheylikeit.com/shows/midnight/review-roundup/',
+    'https://www.dailymail.co.uk/home/event/article-10848817/ABBA-Voyage-review-electric-soul-touching-magical-trip-70s.html',
+    'https://www.newyorker.com/arts/events/theatre/brief-encounter-studio-54',
+    'https://exeuntnyc.com/reviews/review-garry-starr-classic-penguins-at-studio-seaview/',
+    'https://example.com/review/event/garry-starr/2026-06-25/',
+    'https://www.theatremonkey.com/show/midnight/',
+  ]) assert.equal(listingPageUrlReason(url), null, url);
+});
+
+test('BRO-7081: registered aggregator /shows/<slug> pages stay citation URLs, not show hubs', () => {
+  const { listingPageUrlReason } = require('./non-review-url-patterns.js');
+  for (const url of ['https://www.stagedoor.com/shows/some-show', 'https://stagedoor.com/shows/some-show/', 'https://www.show-score.com/shows/x']) {
+    assert.notEqual(listingPageUrlReason(url), 'show-hub', url);
+  }
+  assert.equal(listingPageUrlReason('https://notstagedoor.com/shows/some-show'), 'show-hub');
+  assert.equal(listingPageUrlReason('https://www.broadwayblack.com/shows/midnight/'), 'show-hub');
+});
+
+test('BRO-5629: "everything you need to know" explainers are guide articles, not reviews', () => {
+  const { listingPageUrlReason } = require('./non-review-url-patterns.js');
+  for (const url of [
+    'https://www.bestoftheatre.co.uk/blog/post/everything-you-need-to-know-dogstar',
+    'https://www.bestoftheatre.co.uk/blog/post/everything-you-need-to-know-girls-young-vic',
+    'https://www.oldvictheatre.com/news/things-you-need-to-know-about-martin-guerre/',
+  ]) {
+    assert.equal(listingPageUrlReason(url), 'guide-article', url);
+    assert.notEqual(classifyGapCandidateUrl(url).ok, true, url);
+  }
+  for (const url of [
+    'https://kiddoadventures.com/2026/06/04/review-beetlejuice-the-musical-london-everything-you-need-to-know-before-you-go/',
+    'https://www.washingtonpost.com/entertainment/theater_dance/my-daughter-enjoyed-broadways-frozen-what-more-do-you-need-to-know/2018/03/22/40aa9cea-2d17-11e8-911f-ca7f68bff0fc_story.html',
+  ]) assert.equal(listingPageUrlReason(url), null, url);
+});
