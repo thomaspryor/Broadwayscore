@@ -22,7 +22,8 @@
  *     and the same closing date, BRO-5706), or a
  *     non-production named with `nonProduction` (BRO-4449/BRO-4505: a film
  *     screening, one-night concert or stand-up set minted before the dated
- *     venue readers existed): still announced/upcoming, never dated as
+ *     venue readers existed): still announced/upcoming (or previews with no
+ *     openingDate, BRO-7080: an open-ended attraction), never dated as
  *     opened, zero reviews, and `evidenceUrl` cites the venue listing;
  *   - `reason` is required (the registry breadcrumb);
  *   - `blockTitleVenue: true` for junk that must never return under any id;
@@ -145,7 +146,12 @@ function duplicateRefusal(row, duplicateOf, shows, reviewCount, evidenceUrl) {
 function nonProductionRefusal(row, action, reviewCount, now) {
   if (action.duplicateOf !== undefined) return 'nonProduction and duplicateOf are exclusive';
   if (typeof action.evidenceUrl !== 'string' || !/^https:\/\/[^\s/]+\.[^\s]+$/.test(action.evidenceUrl)) return 'nonProduction needs evidenceUrl (https link to the venue listing that shows it is not a production)';
-  if (!NON_PRODUCTION_STATUSES.has(row.status)) return `status is "${row.status}": only an announced/upcoming row can be retired as a non-production`;
+  // A `previews` row with no openingDate (BRO-7080): TodayTix gives an open-ended
+  // attraction (Shrek's Adventure, Armory Public Tours) a start date, so status
+  // derivation files it as previews forever. It was never dated as opened, and
+  // the zero-review and evidence checks below still apply.
+  const undatedPreviews = row.status === 'previews' && !row.openingDate;
+  if (!NON_PRODUCTION_STATUSES.has(row.status) && !undatedPreviews) return `status is "${row.status}": only an announced/upcoming row (or a previews row with no openingDate) can be retired as a non-production`;
   // `outOfTier: true` (BRO-6531): an out-of-tier listing (Off-Off-Broadway) carries a scheduled
   // opening date from its source. It may go while that date is still ahead; one that has
   // opened is a real run either way.

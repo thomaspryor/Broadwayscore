@@ -1,0 +1,37 @@
+{
+  "issueNumber": "bro-7080-attractions",
+  "planId": "c5a0dd91-eb31-408a-8de1-42e5888d5359",
+  "status": "pending",
+  "createdAt": "2026-11-07T19:43:39.000Z",
+  "submitter": { "name": null, "email": null },
+  "plan": {
+    "summary": "Remove two TodayTix attraction listings that sat in previews with no openingDate: Shrek's Adventure! London (TodayTix category Amusement Parks, walk-through attraction at County Hall) and Armory Public Tours (TodayTix category Tours, guided building tour). Neither is a staged production (docs/show-inclusion-policy.md admit rule; the Landmarks category rule). Both have zero reviews. Discovery now refuses the attraction categories at isNonTheaterContent gate 1b (BRO-7080).",
+    "steps": [
+      "Retire shreks-adventure-london-standard-entry-off-west-end-2026, blocking the title at this venue",
+      "Retire armory-public-tours-off-broadway-2026, blocking the title at this venue"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "retire-show",
+        "id": "shreks-adventure-london-standard-entry-off-west-end-2026",
+        "expectTitle": "Shrek's Adventure! London Standard Entry",
+        "reason": "Walk-through amusement attraction at County Hall (TodayTix category Amusement Parks), not a stage production; minted by TodayTix discovery before the attraction categories were gated (BRO-7080)",
+        "nonProduction": true,
+        "evidenceUrl": "https://www.todaytix.com/london/shows/22835",
+        "blockTitleVenue": true,
+        "description": "Retire amusement attraction row"
+      },
+      {
+        "type": "retire-show",
+        "id": "armory-public-tours-off-broadway-2026",
+        "expectTitle": "Armory Public Tours",
+        "reason": "Guided building tour of Park Avenue Armory (TodayTix category Tours), not a stage production; minted by TodayTix discovery before the attraction categories were gated (BRO-7080)",
+        "nonProduction": true,
+        "evidenceUrl": "https://www.todaytix.com/nyc/shows/38901-public-tour-the-armory",
+        "blockTitleVenue": true,
+        "description": "Retire building tour row"
+      }
+    ]
+  }
+}

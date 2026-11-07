@@ -282,7 +282,17 @@ const NON_THEATRE_TITLE_RE = /^nt live\b|\blive in (?:london|new york|concert)\b
 // Manual Cinema), which the NYT reviews — and the owner's rule (2026 audit,
 // D3) is to keep anything that gets or might get reviewed. Junk that rides
 // "Events" still falls to the title regex, the venue gate and the one-night gate.
-const NON_THEATRE_TODAYTIX_CATEGORIES = new Set(['Concerts', 'Landmarks', 'Films', 'Conversations']);
+// BRO-7080: the attraction siblings of "Landmarks". Live feeds 2026-11-07:
+// Tours (Armory Public Tours, Chelsea/London Stadium tours, Globe Guided Tour),
+// Amusement Parks (Shrek's Adventure, London Dungeon, Thorpe Park, Legoland),
+// Museums and Galleries (Madame Tussauds, Museum of Broadway), Zoos and
+// Aquariums (Sea Life), Cruises, Gardens (Kew), Gift Cards. Every title in them
+// was a non-production; Armory Public Tours and Shrek's Adventure reached
+// shows.json this way and sat in previews with no openingDate.
+const NON_THEATRE_TODAYTIX_CATEGORIES = new Set([
+  'Concerts', 'Landmarks', 'Films', 'Conversations',
+  'Tours', 'Amusement Parks', 'Museums and Galleries', 'Zoos and Aquariums', 'Cruises', 'Gardens', 'Gift Cards',
+]);
 
 // TodayTix categories that vouch for a listing at a non-theatre venue: a
 // TodayTix Off-Broadway row at Radio City / Carnegie Hall / 54 Below is
