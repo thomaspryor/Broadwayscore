@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-07T11:37:18.749Z",
+  "timestamp": "2026-11-07T12:15:02.007Z",
   "stats": {
-    "totalReviews": 80390,
-    "alreadyFlagged": 22033,
-    "dateGuardCatches": 216,
-    "directorMismatch": 3521,
+    "totalReviews": 80391,
+    "alreadyFlagged": 22035,
+    "dateGuardCatches": 215,
+    "directorMismatch": 3520,
     "tvFilmSignals": 2290,
     "londonSignals": 3624,
     "offBroadwaySignals": 745,
     "yearMismatch": 361,
-    "noPublishDate": 8436
+    "noPublishDate": 8435
   },
   "findings": [
     {
@@ -180,7 +180,7 @@
     {
       "showId": "1536-west-end-2026",
       "file": "times-uk--dominic-maxwell.json",
-      "score": 82,
+      "score": 81,
       "publishDate": "2026-05-13",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/1536-review-theatre-henry-viii-anne-boleyn-v6hg7frjb",
       "findings": [
@@ -3289,7 +3289,7 @@
     {
       "showId": "affluenza-off-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "score": 61,
+      "score": 55,
       "publishDate": "2026-10-05",
       "url": "https://www.londonboxoffice.co.uk/news/post/affluenza-riverside-studios-review",
       "findings": [
@@ -3411,7 +3411,7 @@
     {
       "showId": "affluenza-off-west-end-2026",
       "file": "thelivereview--tanya-howard.json",
-      "score": 60,
+      "score": 59,
       "publishDate": "2026-10-06",
       "url": "https://thelivereview.co.uk/affluenza-review-riverside-studios/",
       "findings": [
@@ -9151,6 +9151,7 @@
     {
       "showId": "book-of-mormon-tour-2022",
       "file": "broadwayworld--deborah-bostock-kelley.json",
+      "score": 89,
       "publishDate": "2024-04-17",
       "url": "https://www.broadwayworld.com/tampa/article/Review-THE-BOOK-OF-MORMON-at-Straz-Center-20240417",
       "findings": [
@@ -9633,6 +9634,7 @@
     {
       "showId": "boop-tour-2026",
       "file": "broadwayworld--taylor-clemons.json",
+      "score": 79,
       "publishDate": "2026-10-23",
       "url": "https://www.broadwayworld.com/louisville/article/Review-Broadway-in-Cincinnati-presents-BOOP-THE-MUSICAL-at-The-Aronoff-Center-20261023",
       "findings": [
@@ -13168,7 +13170,7 @@
     {
       "showId": "clarkston-west-end-2025",
       "file": "artsdesk--gary-naylor.json",
-      "score": 44,
+      "score": 37,
       "publishDate": "2025-10-10",
       "url": "https://theartsdesk.com/theatre/clarkston-trafalgar-theatre-review-two-lads-road-nowhere",
       "findings": [
@@ -13280,7 +13282,7 @@
     {
       "showId": "clarkston-west-end-2025",
       "file": "times-uk--dominic-maxwell.json",
-      "score": 63,
+      "score": 66,
       "publishDate": "2025-09-25",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/clarkston-review-joe-locke-west-end-tk73tvclz",
       "findings": [
@@ -53150,7 +53152,7 @@
     {
       "showId": "punch-west-end-2025",
       "file": "all-that-dazzles-uk--all-that-dazzles.json",
-      "score": 100,
+      "score": 97,
       "publishDate": "2025-09-28",
       "url": "https://www.allthatdazzles.co.uk/post/review-punch-apollo-theatre",
       "findings": [
@@ -53202,7 +53204,7 @@
     {
       "showId": "punch-west-end-2025",
       "file": "independent--alice-saville.json",
-      "score": 55,
+      "score": 63,
       "publishDate": "2025-03-07",
       "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/james-graham-punch-review-b2710837.html",
       "findings": [
@@ -53221,7 +53223,7 @@
     {
       "showId": "punch-west-end-2025",
       "file": "independent--unknown.json",
-      "score": 58,
+      "score": 63,
       "publishDate": null,
       "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/james-graham-punch-review-b2710837.html",
       "findings": [
@@ -53249,7 +53251,7 @@
     {
       "showId": "punch-west-end-2025",
       "file": "london-theatre--olivia-rook.json",
-      "score": 62,
+      "score": 58,
       "publishDate": "2025-03-07",
       "url": "https://www.londontheatre.co.uk/reviews/punch-review-james-graham-young-vic",
       "findings": [
@@ -53292,7 +53294,7 @@
     {
       "showId": "punch-west-end-2025",
       "file": "telegraph--lindsay-john.json",
-      "score": 97,
+      "score": 94,
       "publishDate": "2025-03-07",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/punch-young-vic-review/",
       "findings": [
@@ -53300,25 +53302,6 @@
           "type": "DATE_GUARD",
           "severity": "MEDIUM",
           "detail": "Published 199d before show (2025-03-07 vs 2025-09-22)"
-        },
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"adam penford\" from punch-2025"
-        }
-      ]
-    },
-    {
-      "showId": "punch-west-end-2025",
-      "file": "timeout-london--andrzej-lukowski.json",
-      "score": 81,
-      "publishDate": "2025-03-31",
-      "url": "https://www.timeout.com/london/theatre/punch-review",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 175d before show (2025-03-31 vs 2025-09-22)"
         },
         {
           "type": "DIRECTOR_MISMATCH",
@@ -79436,7 +79419,7 @@
     },
     {
       "showId": "twelfth-night-west-end-2012",
-      "file": "variety--unknown.json",
+      "file": "variety--david-benedict.json",
       "score": 63,
       "publishDate": "2012-11-19",
       "url": "https://variety.com/2012/legit/reviews/twelfth-night-2-1117948779/",
@@ -80259,7 +80242,7 @@
     {
       "showId": "waiting-for-godot-2025",
       "file": "theatre-reviews-limited--david-roberts.json",
-      "score": 81,
+      "score": 90,
       "publishDate": "October 13th, 2025",
       "url": "https://www.theatrereviews.com/broadway-review-waiting-for-godot-at-the-hudson-theatre-through-sunday-january-4-2026/",
       "findings": [
@@ -82892,7 +82875,7 @@
     },
     {
       "showId": "white-christmas-west-end-2014",
-      "file": "guardian--unknown.json",
+      "file": "guardian--alfred-hickling.json",
       "score": null,
       "publishDate": null,
       "url": "https://www.theguardian.com/stage/2014/dec/05/white-christmas-west-yorkshire-playhouse-review",
@@ -83939,7 +83922,7 @@
     },
     {
       "showId": "women-on-the-verge-of-a-nervous-breakdown-west-end-2015",
-      "file": "londontheatre1--unknown.json",
+      "file": "londontheatre1--terry-eastham.json",
       "score": 89,
       "publishDate": "2015-03-31",
       "url": "https://www.londontheatre1.com/reviews/review-of-women-on-the-verge-of-a-nervous-breakdown/",
@@ -83953,7 +83936,7 @@
     },
     {
       "showId": "women-on-the-verge-of-a-nervous-breakdown-west-end-2015",
-      "file": "standard--unknown.json",
+      "file": "standard--henry-hitchings.json",
       "score": 74,
       "publishDate": "2015-03-09",
       "url": "https://www.standard.co.uk/culture/theatre/women-on-the-verge-of-a-nervous-breakdown-playhouse-theatre-theatre-review-tamsin-greig-is-the-show-s-emotional-core-9974225.html",
@@ -87894,7 +87877,7 @@
     {
       "showId": "anatomy-of-a-suicide-west-end-2017",
       "file": "variety--matt-trueman.json",
-      "score": null,
+      "score": 78,
       "publishDate": "2017-06-13",
       "url": "https://variety.com/2017/legit/reviews/anatomy-of-a-suicide-review-royal-court-1202464426/",
       "findings": [
@@ -92683,7 +92666,7 @@
     {
       "showId": "catarina-and-the-beauty-of-killing-fascists-west-end-2026",
       "file": "guardian--arifa-akbar.json",
-      "score": 55,
+      "score": 57,
       "publishDate": "2026-09-22",
       "url": "https://www.theguardian.com/stage/2026/sep/22/catarina-and-the-beauty-of-killing-fascists-review-fury-europe",
       "findings": [
@@ -102058,7 +102041,7 @@
     {
       "showId": "hamlet-west-end-2025",
       "file": "london-theatre--anya-ryan.json",
-      "score": 64,
+      "score": 61,
       "publishDate": "2025-10-03",
       "url": null,
       "findings": [
@@ -102086,7 +102069,7 @@
     {
       "showId": "hamlet-west-end-2025",
       "file": "plays-international--maryam-philpott.json",
-      "score": 38,
+      "score": 36,
       "publishDate": "2025-10-05",
       "url": "https://playsinternational.org.uk/hamlet-lyttelton-national-theatre/",
       "findings": [
@@ -105159,7 +105142,7 @@
     {
       "showId": "im-every-woman-off-west-end-2026",
       "file": "all-that-dazzles-uk--daz-gale.json",
-      "score": 38,
+      "score": 35,
       "publishDate": "2026-08-05",
       "url": "https://www.allthatdazzles.co.uk/post/review-i-m-every-woman-the-chaka-khan-musical-troubadour-wembley-park-theatre",
       "findings": [
@@ -105186,7 +105169,7 @@
     {
       "showId": "im-every-woman-off-west-end-2026",
       "file": "theatreandtonic--emmie-newitt.json",
-      "score": 41,
+      "score": 40,
       "publishDate": "2026-08-05",
       "url": "https://theatreandtonic.co.uk/blog/im-every-woman-the-chaka-khan-musical-review",
       "findings": [
@@ -114675,7 +114658,7 @@
     {
       "showId": "nye-west-end-2024",
       "file": "liamodell--liam-odell.json",
-      "score": 85,
+      "score": 96,
       "publishDate": "2024-03-10",
       "url": "https://liamodell.com/2024/03/11/nye-bevan-review-michael-sheen-nhs-national-theatre-live-olivier-wales-millennium-centre-sharon-small-tim-price/",
       "findings": [
@@ -124108,7 +124091,7 @@
     {
       "showId": "teeth-n-smiles-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "score": 61,
+      "score": 59,
       "publishDate": null,
       "url": "https://www.londonboxoffice.co.uk/news/post/teeth-n-smiles-review-duke-of-york",
       "findings": [
@@ -124122,7 +124105,7 @@
     {
       "showId": "teeth-n-smiles-west-end-2026",
       "file": "sunday-times--dominic-maxwell.json",
-      "score": 66,
+      "score": 56,
       "publishDate": "2026-03-28",
       "url": "https://www.thetimes.com/article/e3368f7f-d81b-46f9-8bde-85e8b63e3285",
       "findings": [
@@ -124136,7 +124119,7 @@
     {
       "showId": "teeth-n-smiles-west-end-2026",
       "file": "telegraph--fiona-mountford.json",
-      "score": 55,
+      "score": 57,
       "publishDate": "2026-03-26",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/teeth-n-smiles-duke-of-yorks-review/",
       "findings": [
@@ -125687,7 +125670,7 @@
     {
       "showId": "the-car-man-off-west-end-2026",
       "file": "cheeky-little-matinee--cheekylittlematinee.json",
-      "score": 96,
+      "score": 100,
       "publishDate": "2026-06-17",
       "url": "https://www.cheekylittlematinee.com/post/the-car-man-matthew-bourne-review",
       "findings": [
@@ -132978,6 +132961,7 @@
     {
       "showId": "the-price-off-west-end-2026",
       "file": "guardian--unknown.json",
+      "score": 82,
       "publishDate": "2026-04-24",
       "url": "https://www.theguardian.com/stage/2026/apr/24/the-price-review-marylebone-theatre-london-arthur-miller-henry-goodman",
       "findings": [
@@ -136721,7 +136705,7 @@
     },
     {
       "showId": "top-hat-chichester-festival-regional-2025",
-      "file": "artsdesk--unknown.json",
+      "file": "artsdesk--gary-naylor.json",
       "score": 77,
       "publishDate": null,
       "url": "https://theartsdesk.com/theatre/top-hat-chichester-festival-theatre-review-top-spectacle-book-tails",
@@ -136903,7 +136887,7 @@
     },
     {
       "showId": "translations-west-end-2018",
-      "file": "artsdesk--unknown.json",
+      "file": "artsdesk--matt-wolf.json",
       "score": 93,
       "publishDate": null,
       "url": "https://theartsdesk.com/theatre/translations-national-theatre-review-irish-classic-returns-cascading-force",
@@ -138019,7 +138003,7 @@
     },
     {
       "showId": "violence-and-son-west-end-2015",
-      "file": "guardian--unknown.json",
+      "file": "guardian--michael-billington.json",
       "score": 63,
       "publishDate": "2015-06-09",
       "url": "https://www.theguardian.com/stage/2015/jun/09/violence-and-son-review-royal-court",
