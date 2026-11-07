@@ -5,6 +5,7 @@ const path = require('path');
 const {
   hasStrongDifferentShowSignal,
   hasNamedDifferentDirectorSignal,
+  hasDifferentCityProductionSignal,
   shouldSkipWrongProductionAudit,
   explainExclusion,
 } = require('../review-guards');
@@ -63,7 +64,8 @@ function isCorroboratedTemporalOverride(data, show) {
   if (cv.confidence !== 'low' || !TEMPORAL_OVERRIDE_RE.test(String(cv.reasoning || ''))) return false;
   if (!show || !withinTemporalWindow(data.publishDate, show.openingDate)) return false;
   if (hasStrongDifferentShowSignal(cv.issues, cv.reasoning)
-      || hasNamedDifferentDirectorSignal(cv.issues, cv.reasoning, show, data.fullText)) return false;
+      || hasNamedDifferentDirectorSignal(cv.issues, cv.reasoning, show, data.fullText)
+      || hasDifferentCityProductionSignal(cv.issues, cv.reasoning, show)) return false;
   const cvText = [...(Array.isArray(cv.issues) ? cv.issues : []), String(cv.reasoning || '').replace(TEMPORAL_OVERRIDE_RE, '')].join(' ');
   if (OTHER_SHOW_RE.test(cvText)) return false;
   // A one-word title (Company, Six, Hair) appears in ledes of unrelated reviews.
@@ -133,7 +135,8 @@ function handledReason(data, show, filePath, opts = {}) {
   if (cv.confidence === 'low' && TEMPORAL_OVERRIDE_RE.test(String(cv.reasoning || ''))
       && show && withinTemporalWindow(data.publishDate, show.openingDate)
       && !hasStrongDifferentShowSignal(cv.issues, cv.reasoning)
-      && !hasNamedDifferentDirectorSignal(cv.issues, cv.reasoning, show, data.fullText)) {
+      && !hasNamedDifferentDirectorSignal(cv.issues, cv.reasoning, show, data.fullText)
+      && !hasDifferentCityProductionSignal(cv.issues, cv.reasoning, show)) {
     return 'temporal-override-low-confidence';
   }
   return null;
