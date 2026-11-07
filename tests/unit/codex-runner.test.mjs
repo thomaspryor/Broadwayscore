@@ -1082,7 +1082,7 @@ test('slim sparse patterns: a real git worktree drops the image trees, keeps the
     sh(dir, ...r.treeModeArgs('full'));
     assert.equal(r.isSlimTree(dir), false);
     for (const d of r.SLIM_EXCLUDED_DIRS) assert.equal(fs.existsSync(join(dir, d, 'a.txt')), true, d);
-  } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+  } finally { fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
 });
 
 test('worktreeSummaryLine prints the measured size and its share of a full tree', () => {

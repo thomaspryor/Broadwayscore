@@ -8,7 +8,7 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const { findImagePointerProblems, imagePointerSeverity } = require('./image-pointers');
 const publicDir = fs.mkdtempSync(path.join(os.tmpdir(), 'image-pointers-'));
-after(() => fs.rmSync(publicDir, { recursive: true, force: true }));
+after(() => fs.rmSync(publicDir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
 fs.mkdirSync(path.join(publicDir, 'images', 'shows', 'show'), { recursive: true });
 fs.writeFileSync(path.join(publicDir, 'images', 'shows', 'show', 'poster.jpg'), 'image');
 fs.writeFileSync(path.join(publicDir, 'outside.jpg'), 'image');
@@ -151,5 +151,5 @@ test('slim sparse trees: image finders report nothing instead of flagging every 
     assert.equal(mod.findImagePointerProblems(other, { publicDir }).length, 1);
     g('sparse-checkout', 'disable');
     assert.equal(mod.isSparseTree(publicDir), false);
-  } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+  } finally { fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
 });
