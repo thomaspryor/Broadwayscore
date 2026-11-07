@@ -1,63 +1,63 @@
 {
-  "runDate": "2026-11-07T00:59:42.269Z",
+  "runDate": "2026-11-07T01:09:41.274Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 1000,
+    "maxReviews": 60,
     "priority": "all",
-    "showFilter": "speculations-off-west-end-2026",
-    "aggressive": false,
+    "showFilter": "the-unbelievers-off-broadway-2026",
+    "aggressive": true,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 1,
-    "failed": 4,
+    "processed": 2,
+    "failed": 1,
     "skipped": 0,
-    "successRate": "20.0%"
+    "successRate": "66.7%"
   },
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 0,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 2,
     "directCookies": 0,
     "scrapingdog": 0,
-    "scrapingbee": 0,
+    "scrapingbee": 1,
     "brightdata": 0,
     "archiveToday": 0,
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 3,
-    "tier1Success": 3,
+    "tier1Attempts": 2,
+    "tier1Success": 0,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 0,
-    "tier1_5Success": 0,
-    "tier1_9Attempts": 0,
+    "tier1_5Attempts": 1,
+    "tier1_5Success": 1,
+    "tier1_9Attempts": 1,
     "tier1_9Success": 0,
-    "tier2Attempts": 0,
-    "tier2Success": 0,
-    "tier3Attempts": 0,
+    "tier2Attempts": 3,
+    "tier2Success": 2,
+    "tier3Attempts": 1,
     "tier3Success": 0,
-    "tier3_6Attempts": 0,
+    "tier3_6Attempts": 1,
     "tier3_6Success": 0,
     "tier4Attempts": 1,
     "tier4Success": 0,
-    "totalFailed": 4,
-    "scrapingBeePageCredits": 0,
+    "totalFailed": 1,
+    "scrapingBeePageCredits": 12,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 0,
-    "browserbaseMinutesUsed": 0,
+    "browserbaseSessionsUsed": 1,
+    "browserbaseMinutesUsed": 0.2,
     "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 1,
-    "failed": 4,
+    "processed": 2,
+    "failed": 1,
     "shows": [
-      "speculations-off-west-end-2026"
+      "the-unbelievers-off-broadway-2026"
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
@@ -66,38 +66,45 @@
     }
   },
   "processed": [
-    "speculations-off-west-end-2026/theatre-vibe--lizzie-loveridge.json"
+    "the-unbelievers-off-broadway-2026/nytimes--laura-collins-hughes.json",
+    "the-unbelievers-off-broadway-2026/new-york-sun--unknown.json"
   ],
   "failed": [
-    "speculations-off-west-end-2026/guardian--arifa-akbar.json",
-    "speculations-off-west-end-2026/guardian--unknown.json",
-    "speculations-off-west-end-2026/artsdesk--gary-naylor.json",
-    "speculations-off-west-end-2026/artsdesk--unknown.json"
+    "the-unbelievers-off-broadway-2026/bobs-theater-blog--unknown.json"
   ],
   "cumulativeResumedState": {
     "processed": [
-      "speculations-off-west-end-2026/theatre-vibe--lizzie-loveridge.json"
+      "the-unbelievers-off-broadway-2026/nytimes--laura-collins-hughes.json",
+      "the-unbelievers-off-broadway-2026/new-york-sun--unknown.json"
     ],
     "failed": [
-      "speculations-off-west-end-2026/guardian--arifa-akbar.json",
-      "speculations-off-west-end-2026/guardian--unknown.json",
-      "speculations-off-west-end-2026/artsdesk--gary-naylor.json",
-      "speculations-off-west-end-2026/artsdesk--unknown.json"
+      "the-unbelievers-off-broadway-2026/bobs-theater-blog--unknown.json"
     ]
   },
   "tierDetails": {
-    "playwright": [
-      "speculations-off-west-end-2026/theatre-vibe--lizzie-loveridge.json"
-    ],
+    "playwright": [],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/the-unbelievers-off-broadway-2026/nytimes--laura-collins-hughes.json",
+      "the-unbelievers-off-broadway-2026/nytimes--laura-collins-hughes.json"
+    ],
     "directCookies": [],
     "scrapingdog": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "the-unbelievers-off-broadway-2026/new-york-sun--unknown.json"
+    ],
     "brightdata": [],
     "archiveToday": [],
     "archive": []
   },
-  "failuresByOutlet": {},
+  "failuresByOutlet": {
+    "Bob's Theater Blog": {
+      "count": 1,
+      "domain": "gotham-playgoer.blogspot.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    }
+  },
   "urlDiscoveries": []
 }
