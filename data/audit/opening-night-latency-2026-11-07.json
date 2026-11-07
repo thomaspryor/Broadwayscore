@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-11-07T10:20:52.660Z",
+  "generatedAt": "2026-11-07T13:38:57.720Z",
   "date": "2026-11-07",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 167272,
+  "entryCount": 177928,
   "shows": [
     {
       "showId": "ceilidh-the-musical-off-west-end-2026",
@@ -185,6 +185,21 @@
       "slowest_reviews": []
     },
     {
+      "showId": "dogstar-off-west-end-2026",
+      "reviewCount": 1,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
       "showId": "kelly-mccaughan-catholic-guilt-off-broadway-2026",
       "reviewCount": 1,
       "median_e2e_ms": null,
@@ -194,6 +209,21 @@
         "collected-to-scored": null,
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "the-lives-of-others-west-end-2026",
+      "reviewCount": 29,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 101588,
+        "rebuilt-to-deployed": 206234419
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -335,21 +365,6 @@
       "slowest_reviews": []
     },
     {
-      "showId": "the-lives-of-others-west-end-2026",
-      "reviewCount": 29,
-      "median_e2e_ms": null,
-      "p90_e2e_ms": null,
-      "per_stage_median_ms": {
-        "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": 101588,
-        "rebuilt-to-deployed": 206234419
-      },
-      "reviews_over_15min": 0,
-      "reviews_over_60min": 0,
-      "slowest_reviews": []
-    },
-    {
       "showId": "high-school-musical-off-west-end-2026",
       "reviewCount": 28,
       "median_e2e_ms": null,
@@ -410,21 +425,6 @@
       "slowest_reviews": []
     },
     {
-      "showId": "ilford-boy-off-west-end-2026",
-      "reviewCount": 30,
-      "median_e2e_ms": null,
-      "p90_e2e_ms": null,
-      "per_stage_median_ms": {
-        "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": 2195116,
-        "rebuilt-to-deployed": 67404783
-      },
-      "reviews_over_15min": 0,
-      "reviews_over_60min": 0,
-      "slowest_reviews": []
-    },
-    {
       "showId": "the-curious-case-of-benjamin-button-off-broadway-2026",
       "reviewCount": 27,
       "median_e2e_ms": null,
@@ -434,6 +434,51 @@
         "collected-to-scored": 3537204,
         "scored-to-rebuilt": 727620,
         "rebuilt-to-deployed": 200133680
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "jest-to-impress-off-broadway-2026",
+      "reviewCount": 1,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "ilford-boy-off-west-end-2026",
+      "reviewCount": 30,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": 10347476,
+        "scored-to-rebuilt": 1142374,
+        "rebuilt-to-deployed": 67404783
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "mud-row-regional-2026",
+      "reviewCount": 13,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -581,9 +626,9 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": null,
-        "rebuilt-to-deployed": null
+        "collected-to-scored": 3142229,
+        "scored-to-rebuilt": 660575,
+        "rebuilt-to-deployed": 200133681
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -695,6 +740,21 @@
       "slowest_reviews": []
     },
     {
+      "showId": "contact-oran-mor-regional-2026",
+      "reviewCount": 2,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
       "showId": "little-shop-of-horrors-hope-mill-regional-2026",
       "reviewCount": 7,
       "median_e2e_ms": null,
@@ -704,6 +764,21 @@
         "collected-to-scored": null,
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "affluenza-off-west-end-2026",
+      "reviewCount": 33,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": 7716133,
+        "scored-to-rebuilt": 192045,
+        "rebuilt-to-deployed": 120664041
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -771,13 +846,13 @@
     },
     {
       "showId": "boop-tour-2026",
-      "reviewCount": 7,
+      "reviewCount": 8,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 12031,
+        "scored-to-rebuilt": 88712,
         "rebuilt-to-deployed": 20156181
       },
       "reviews_over_15min": 0,
@@ -884,6 +959,21 @@
         "collected-to-scored": 11932024,
         "scored-to-rebuilt": 759993,
         "rebuilt-to-deployed": 190300048
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "ill-be-seeing-you-pitlochry-festival-regional-2026",
+      "reviewCount": 2,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -1016,8 +1106,8 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "collected-to-scored": 10340093,
+        "scored-to-rebuilt": 78918,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -1040,6 +1130,21 @@
       "slowest_reviews": []
     },
     {
+      "showId": "tristan-and-yseult-royal-bath-regional-2026",
+      "reviewCount": 6,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
       "showId": "deep-heat-rivalry-off-west-end-2026",
       "reviewCount": 12,
       "median_e2e_ms": null,
@@ -1049,6 +1154,21 @@
         "collected-to-scored": null,
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "fences-leeds-regional-2026",
+      "reviewCount": 6,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 759985,
+        "rebuilt-to-deployed": 190300051
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -1102,6 +1222,21 @@
     {
       "showId": "night-city-off-west-end-2026",
       "reviewCount": 28,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "death-becomes-her-tour-2026",
+      "reviewCount": 8,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -1557,7 +1692,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 71116,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -1715,6 +1850,21 @@
       "slowest_reviews": []
     },
     {
+      "showId": "the-wiz-tour-2026",
+      "reviewCount": 2,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
       "showId": "stranger-things-the-first-shadow-west-end-2023",
       "reviewCount": 34,
       "median_e2e_ms": null,
@@ -1746,13 +1896,13 @@
     },
     {
       "showId": "book-of-mormon-tour-2022",
-      "reviewCount": 32,
+      "reviewCount": 33,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 45802305,
-        "scored-to-rebuilt": 267441,
+        "scored-to-rebuilt": 165392,
         "rebuilt-to-deployed": 154722237
       },
       "reviews_over_15min": 0,
@@ -1775,6 +1925,21 @@
       "slowest_reviews": []
     },
     {
+      "showId": "the-lion-king-tour-2021",
+      "reviewCount": 56,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 2517587,
+        "rebuilt-to-deployed": 67404780
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
       "showId": "wicked-tour-2021",
       "reviewCount": 47,
       "median_e2e_ms": null,
@@ -1784,6 +1949,21 @@
         "collected-to-scored": null,
         "scored-to-rebuilt": 2517587,
         "rebuilt-to-deployed": 67404779
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "little-shop-of-horrors-off-broadway-2019",
+      "reviewCount": 23,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -1811,8 +1991,8 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "collected-to-scored": 22803869,
+        "scored-to-rebuilt": 52290,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -2307,8 +2487,8 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "collected-to-scored": 7245462,
+        "scored-to-rebuilt": 165390,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -2691,21 +2871,6 @@
         "collected-to-scored": null,
         "scored-to-rebuilt": 885800,
         "rebuilt-to-deployed": 192273669
-      },
-      "reviews_over_15min": 0,
-      "reviews_over_60min": 0,
-      "slowest_reviews": []
-    },
-    {
-      "showId": "fences-leeds-regional-2026",
-      "reviewCount": 6,
-      "median_e2e_ms": null,
-      "p90_e2e_ms": null,
-      "per_stage_median_ms": {
-        "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": 759985,
-        "rebuilt-to-deployed": 190300051
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -3399,8 +3564,8 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "collected-to-scored": 31619408,
+        "scored-to-rebuilt": 47186,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -3504,8 +3669,8 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "collected-to-scored": 32983100,
+        "scored-to-rebuilt": 29876,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -3564,8 +3729,8 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": 823596,
-        "scored-to-rebuilt": 12045,
+        "collected-to-scored": 17387498,
+        "scored-to-rebuilt": 68080,
         "rebuilt-to-deployed": 20156180
       },
       "reviews_over_15min": 0,
@@ -3684,8 +3849,8 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "collected-to-scored": 32898115,
+        "scored-to-rebuilt": 24181,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -4764,8 +4929,8 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "collected-to-scored": 10356823,
+        "scored-to-rebuilt": 8467,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -4930,7 +5095,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 2030784,
+        "scored-to-rebuilt": 1535840,
         "rebuilt-to-deployed": 153177875
       },
       "reviews_over_15min": 0,
@@ -5014,14 +5179,14 @@
     },
     {
       "showId": "back-to-the-future-tour-2024",
-      "reviewCount": 32,
+      "reviewCount": 31,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 2517574,
-        "rebuilt-to-deployed": 67404784
+        "scored-to-rebuilt": 1501994,
+        "rebuilt-to-deployed": 111063511
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -5029,7 +5194,7 @@
     },
     {
       "showId": "mrs-doubtfire-tour-2023",
-      "reviewCount": 8,
+      "reviewCount": 9,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -5674,13 +5839,13 @@
     },
     {
       "showId": "harry-potter-and-the-cursed-child-one-part-west-end-2026",
-      "reviewCount": 4,
+      "reviewCount": 3,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": 611679,
-        "scored-to-rebuilt": 173148,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 314712,
         "rebuilt-to-deployed": 128830623
       },
       "reviews_over_15min": 0,
@@ -5694,8 +5859,8 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": 365930,
-        "scored-to-rebuilt": 470924,
+        "collected-to-scored": 422404,
+        "scored-to-rebuilt": 468515,
         "rebuilt-to-deployed": 130789422
       },
       "reviews_over_15min": 0,
@@ -6010,13 +6175,13 @@
     },
     {
       "showId": "speculations-off-west-end-2026",
-      "reviewCount": 27,
+      "reviewCount": 28,
       "median_e2e_ms": 53912250,
       "p90_e2e_ms": 53913632,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": 962396,
-        "scored-to-rebuilt": 394671,
+        "collected-to-scored": 956193,
+        "scored-to-rebuilt": 398800,
         "rebuilt-to-deployed": 51296447
       },
       "reviews_over_15min": 7,
@@ -6201,13 +6366,13 @@
     },
     {
       "showId": "vietgone-off-broadway-2016",
-      "reviewCount": 25,
+      "reviewCount": 26,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 1675646,
+        "scored-to-rebuilt": 920510,
         "rebuilt-to-deployed": 133798748
       },
       "reviews_over_15min": 0,
@@ -6261,13 +6426,13 @@
     },
     {
       "showId": "lazarus-off-broadway-2015",
-      "reviewCount": 35,
+      "reviewCount": 36,
       "median_e2e_ms": 54879849,
       "p90_e2e_ms": 54879849,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 529627,
+        "scored-to-rebuilt": 347498,
         "rebuilt-to-deployed": 94846726
       },
       "reviews_over_15min": 1,
@@ -6401,21 +6566,6 @@
         "collected-to-scored": 1563185,
         "scored-to-rebuilt": 636705,
         "rebuilt-to-deployed": 33248332
-      },
-      "reviews_over_15min": 0,
-      "reviews_over_60min": 0,
-      "slowest_reviews": []
-    },
-    {
-      "showId": "affluenza-off-west-end-2026",
-      "reviewCount": 33,
-      "median_e2e_ms": null,
-      "p90_e2e_ms": null,
-      "per_stage_median_ms": {
-        "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": 300021,
-        "rebuilt-to-deployed": 120664041
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -6690,21 +6840,6 @@
       "slowest_reviews": []
     },
     {
-      "showId": "the-lion-king-tour-2021",
-      "reviewCount": 56,
-      "median_e2e_ms": null,
-      "p90_e2e_ms": null,
-      "per_stage_median_ms": {
-        "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": 2517587,
-        "rebuilt-to-deployed": 67404780
-      },
-      "reviews_over_15min": 0,
-      "reviews_over_60min": 0,
-      "slowest_reviews": []
-    },
-    {
       "showId": "beetlejuice-tour-2022",
       "reviewCount": 58,
       "median_e2e_ms": null,
@@ -6907,7 +7042,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 2292095,
+        "scored-to-rebuilt": 1087724,
         "rebuilt-to-deployed": 67085891
       },
       "reviews_over_15min": 0,
@@ -7296,8 +7431,8 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": 726179,
+        "collected-to-scored": 10341572,
+        "scored-to-rebuilt": 383662,
         "rebuilt-to-deployed": 19442032
       },
       "reviews_over_15min": 0,
@@ -7567,7 +7702,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 1456799,
+        "scored-to-rebuilt": 1456797,
         "rebuilt-to-deployed": 18711419
       },
       "reviews_over_15min": 0,
@@ -7656,8 +7791,8 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "collected-to-scored": 31001405,
+        "scored-to-rebuilt": 165391,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -7666,13 +7801,13 @@
     },
     {
       "showId": "well-ill-let-you-go-off-broadway-2026",
-      "reviewCount": 13,
+      "reviewCount": 14,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "collected-to-scored": 30985546,
+        "scored-to-rebuilt": 165393,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -7771,13 +7906,13 @@
     },
     {
       "showId": "anatomy-of-a-suicide-west-end-2017",
-      "reviewCount": 14,
+      "reviewCount": 15,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "collected-to-scored": 29833202,
+        "scored-to-rebuilt": 165375,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -7846,13 +7981,13 @@
     },
     {
       "showId": "eric-and-little-ern-west-end-2013",
-      "reviewCount": 6,
+      "reviewCount": 7,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "collected-to-scored": 28364034,
+        "scored-to-rebuilt": 165375,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -7881,8 +8016,8 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "collected-to-scored": 27835364,
+        "scored-to-rebuilt": 57742,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -7971,8 +8106,8 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "collected-to-scored": 26630885,
+        "scored-to-rebuilt": 111610,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -8026,7 +8161,7 @@
     },
     {
       "showId": "the-king-and-i-west-end-2024",
-      "reviewCount": 13,
+      "reviewCount": 14,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -8091,8 +8226,8 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "collected-to-scored": 23088548,
+        "scored-to-rebuilt": 165388,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -8181,8 +8316,8 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "collected-to-scored": 17867789,
+        "scored-to-rebuilt": 165389,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -8226,8 +8361,8 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "collected-to-scored": 9820550,
+        "scored-to-rebuilt": 165386,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -8241,8 +8376,8 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "collected-to-scored": 7236407,
+        "scored-to-rebuilt": 165388,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -8256,8 +8391,263 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
+        "collected-to-scored": 7748754,
+        "scored-to-rebuilt": 13715,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "julius-caesar-globe-off-west-end-2026",
+      "reviewCount": 2,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "parsifal-off-broadway-2013",
+      "reviewCount": 3,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 874708,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "king-lear-royal-exchange-regional-2026",
+      "reviewCount": 17,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 1644072,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "moulin-rouge-tour-2022",
+      "reviewCount": 15,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 1644061,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "we-will-rock-you-west-end-2023",
+      "reviewCount": 25,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 1644056,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "bleak-expectations-west-end-2023",
+      "reviewCount": 20,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 1644048,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "the-treasurer-off-broadway-2017",
+      "reviewCount": 31,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 1644052,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "sweetee-off-broadway-2017",
+      "reviewCount": 12,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 1644049,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "miss-saigon-2017",
+      "reviewCount": 45,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 1644047,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "peer-gynt-off-broadway-2016",
+      "reviewCount": 20,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 1644046,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "teeth-n-smiles-west-end-2026",
+      "reviewCount": 24,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 1111533,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "end-west-end-2025",
+      "reviewCount": 15,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 1103739,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "punch-2025",
+      "reviewCount": 30,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 1058707,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "the-honey-trap-off-broadway-2025",
+      "reviewCount": 16,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 1047483,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "punch-west-end-2025",
+      "reviewCount": 14,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 1023598,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "clarkston-west-end-2025",
+      "reviewCount": 22,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 993424,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "nero-off-west-end-2026",
+      "reviewCount": 1,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": 284089,
+        "scored-to-rebuilt": 864787,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,

@@ -1061,5 +1061,19 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-07T13:28:15.046Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-empty-cast:dogstar-off-west-end-2026",
+    "title": "Auto-remediation gave up on dogstar-off-west-end-2026",
+    "description": "empty-cast keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: backfill-cast-web.yml {\"show_filter\":\"dogstar-off-west-end-2026\",\"category\":\"off-west-end\",\"force\":\"true\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-07T13:38:57.159Z"
   }
 ]
