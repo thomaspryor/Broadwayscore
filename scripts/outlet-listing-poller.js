@@ -882,6 +882,7 @@ async function main() {
   const { shows: allShows } = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf-8'));
   const { reviews: allReviews } = JSON.parse(fs.readFileSync(REVIEWS_PATH, 'utf-8'));
   const { outlets: outletRegistry } = JSON.parse(fs.readFileSync(REGISTRY_PATH, 'utf-8'));
+  const outletMarkets = censusListing.outletMarketCounts(allReviews, allShows); // BRO-7083 census wrong-city guard
 
   // Active shows only (open or previews), optionally filtered by market
   let activeShows = allShows.filter(s => s.status === 'open' || s.status === 'previews');
@@ -1116,7 +1117,7 @@ async function main() {
       // Census items run report-only unless CENSUS_LISTING_WRITE=1: dry writer, plain fetches, no cache writes.
       const { censusDry, itemDry } = censusListing.censusItemMode({ viaCensus, censusWrite, dryRun: opts.dryRun, added: censusStats.added, maxAdds: CENSUS_MAX_ADDS });
       const showPool = viaCensus ? censusShows : activeShows;
-      const censusOk = (show) => !viaCensus || (censusListing.censusMarketOk(outletId, show) && censusListing.censusItemAccepted({ url, headline, description, publishDate }, show));
+      const censusOk = (show) => !viaCensus || (censusListing.censusMarketOk(outletId, show, outletMarkets) && censusListing.censusItemAccepted({ url, headline, description, publishDate }, show));
       const urlSlug = (() => { try { return new URL(url).pathname; } catch { return url; } })();
       const outletCfg = WP_API_CONFIG[outletId] || OUTLET_STRATEGY_CONFIG[outletId] || {};
       const fromFeed = !viaSerp && !itemViaSerp;
@@ -1176,23 +1177,27 @@ async function main() {
         // writer would just reject them again and we'd burn classifier work.
         if (isRejectedCached(url, show.id)) continue;
 
-        const result = createStub(show.id, outletId, displayName, url, headline, stubDate, isMultiShow, nytCriticsPick, itemDry);
+        // Re-check the add cap per show: one census item can match several shows (BRO-7083).
+        const showMode = viaCensus
+          ? censusListing.censusItemMode({ viaCensus, censusWrite, dryRun: opts.dryRun, added: censusStats.added, maxAdds: CENSUS_MAX_ADDS })
+          : { censusDry, itemDry };
+        const result = createStub(show.id, outletId, displayName, url, headline, stubDate, isMultiShow, nytCriticsPick, showMode.itemDry);
         if (viaCensus && result && result.action === 'new') {
-          console.log(`  CENSUS ${!itemDry ? 'added' : 'would-add'}: ${show.id} / ${outletId}: ${url}`);
-          if (!itemDry) censusStats.added++; else censusStats.wouldAdd++;
-          if (censusDry) continue; // report-only: not a new stub, no cache entries
+          console.log(`  CENSUS ${!showMode.itemDry ? 'added' : 'would-add'}: ${show.id} / ${outletId}: ${url}`);
+          if (!showMode.itemDry) censusStats.added++; else censusStats.wouldAdd++;
+          if (showMode.censusDry) continue; // report-only or over the cap: not a new stub, no cache entries
         }
         // Only count NEW writes — the shared writer may also reject (cross-market
         // classifier), reroute, or merge into an existing file. None of those
         // are "new stubs" for the workflow output.
-        if (result && result.action === 'skipped' && result.reason === 'flagged-filename-collision' && !censusDry) {
+        if (result && result.action === 'skipped' && result.reason === 'flagged-filename-collision' && !showMode.censusDry) {
           if (isSameUrlFlaggedTarget(show.id, outletId, url)) sameUrlFlagged.push({ showId: show.id, outletId, url });
           else blockedCollisions.push({ showId: show.id, outletId, url });
         }
         if (result && result.action === 'new') {
           if (!opts.dryRun) outletNewStubs++;
           totalNewStubs++;
-        } else if (result && result.action === 'skipped' && !itemDry
+        } else if (result && result.action === 'skipped' && !showMode.itemDry
             && shouldCacheSkipReason(result.reason)) {
           // Record durable rejections (cross-market classifier, junk outlet,
           // domain mismatch) so the next poll cycle doesn't re-process them.
