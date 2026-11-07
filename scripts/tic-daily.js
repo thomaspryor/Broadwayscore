@@ -94,7 +94,7 @@ function dispatchIngest() {
     const cap = checkCap({ workflow: 'ingest-urls.yml' });
     if (!cap.ok) { console.log(`[tic-daily] deferred: ${cap.reason}`); left.push(a); continue; }
     try {
-      dispatch({ workflow: 'ingest-urls.yml', inputs: { show_id: a.id, urls: ingestLines(a.urls) } });
+      dispatch({ workflow: 'ingest-urls.yml', inputs: { show_id: a.id, urls: ingestLines(a.urls), caller: 'tic-daily' } });
       console.log(`[tic-daily] ingest dispatched for ${a.id}`);
     } catch (e) {
       console.log(`::warning::ingest dispatch failed for ${a.id}: ${e.message}`);
