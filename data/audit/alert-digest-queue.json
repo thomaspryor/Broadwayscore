@@ -1089,5 +1089,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-07T15:27:53.757Z"
+  },
+  {
+    "conditionKey": "land:land/bro-7081-discovery",
+    "title": "Landing blocked: scripts-lib-tests red on land/bro-7081-discovery",
+    "description": "land.yml did not land land/bro-7081-discovery: the scripts-lib-tests gate went red at 8ff18403e6. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/42385606797",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-7081-discovery"
+      },
+      {
+        "name": "gate",
+        "value": "scripts-lib-tests"
+      },
+      {
+        "name": "tip",
+        "value": "8ff18403e67e97e987304e7de9ae7fd8497072b4"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42385606797"
+      }
+    ],
+    "queuedAt": "2026-11-07T15:35:40.316Z"
   }
 ]
