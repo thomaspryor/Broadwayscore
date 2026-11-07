@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-07T02:15:32.661Z",
+  "timestamp": "2026-11-07T02:36:06.646Z",
   "stats": {
     "totalReviews": 80370,
-    "alreadyFlagged": 22013,
+    "alreadyFlagged": 22017,
     "dateGuardCatches": 216,
     "directorMismatch": 3518,
     "tvFilmSignals": 2287,
     "londonSignals": 3624,
-    "offBroadwaySignals": 743,
+    "offBroadwaySignals": 744,
     "yearMismatch": 362,
-    "noPublishDate": 8473
+    "noPublishDate": 8460
   },
   "findings": [
     {
@@ -55794,6 +55794,7 @@
     {
       "showId": "six-2021",
       "file": "cititour--brian-scott-lipton.json",
+      "score": 90,
       "publishDate": "2021-10-04",
       "url": "https://cititour.com/NYC_Broadway/Six/1045",
       "findings": [
@@ -62437,6 +62438,7 @@
     {
       "showId": "tango-after-dark-off-west-end-2026",
       "file": "london-unattached--teresa-guerreiro.json",
+      "score": 39,
       "publishDate": "2026-11-06",
       "url": "https://www.london-unattached.com/german-cornejos-tango-after-dark/",
       "findings": [
@@ -63776,6 +63778,7 @@
     {
       "showId": "the-book-of-mormon-west-end-2024",
       "file": "telegraph--claire-allfree.json",
+      "score": 62,
       "publishDate": "2013-03-20",
       "url": "https://www.telegraph.co.uk/culture/theatre/theatre-reviews/9944210/The-Book-of-Mormon-at-Prince-of-Wales-theatre.html",
       "findings": [
@@ -63840,7 +63843,7 @@
     {
       "showId": "the-book-of-mormon-west-end-2024",
       "file": "thestage--mark-shenton.json",
-      "score": 66,
+      "score": 63,
       "publishDate": "2013-03-22",
       "url": "https://www.thestage.co.uk/reviews/the-book-of-mormon-review-at-prince-of-wales-theatre",
       "findings": [
@@ -95225,7 +95228,7 @@
     {
       "showId": "death-note-the-musical-off-west-end-2026",
       "file": "londontheatre1--john-groves.json",
-      "score": 94,
+      "score": 93,
       "publishDate": "2026-08-12",
       "url": "https://www.londontheatre1.com/reviews/death-note-the-musical-barbican-theatre/",
       "findings": [
@@ -95321,6 +95324,7 @@
     {
       "showId": "death-note-the-musical-off-west-end-2026",
       "file": "radio-times--katelyn-mensah.json",
+      "score": 100,
       "publishDate": "2026-08-12",
       "url": "https://www.radiotimes.com/going-out/going-out-reviews/death-note-the-musical-review/",
       "findings": [
@@ -95390,7 +95394,7 @@
     {
       "showId": "death-note-the-musical-off-west-end-2026",
       "file": "theatreandtonic--emmie-newitt.json",
-      "score": 99,
+      "score": 98,
       "publishDate": "2026-08-12",
       "url": "https://theatreandtonic.co.uk/blog/death-note-the-musical-barbican-theatre-review",
       "findings": [
@@ -99278,6 +99282,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "game-of-thrones-the-mad-king-regional-2026",
+      "file": "playbill--unknown.json",
+      "publishDate": "2026-08-10",
+      "url": "https://playbill.com/article/reviews-what-do-the-critics-think-of-the-game-of-thrones-prequel-play-mad-king",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"classic stage\""
         }
       ]
     },
@@ -112673,6 +112690,7 @@
     {
       "showId": "monty-pythons-spamalot-west-end-2012",
       "file": "timeout-london--andrzej-lukowski.json",
+      "score": 59,
       "publishDate": "2012-11-27",
       "url": null,
       "findings": [
