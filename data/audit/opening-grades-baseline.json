@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-11-07T15:28:08.284Z",
+  "generatedAt": "2026-11-07T15:38:37.535Z",
   "generator": "scripts/grade-openings.js (BRO-7082)",
   "from": "2026-09-08",
   "to": "2026-11-05",
@@ -9,7 +9,7 @@
     "after": 168
   },
   "historyFrom": "2026-08-25T15:16:39.000Z",
-  "commitsScanned": 2739,
+  "commitsScanned": 2800,
   "summary": {
     "broadway": {
       "openings": 5,
@@ -21,9 +21,9 @@
     },
     "off-broadway": {
       "openings": 118,
-      "onItsOwn": 60,
-      "neededHands": 41,
-      "neededHandsIngestOnly": 2,
+      "onItsOwn": 56,
+      "neededHands": 45,
+      "neededHandsIngestOnly": 6,
       "noReviews": 17,
       "notGradable": 0
     },
@@ -1293,6 +1293,18 @@
           "at": "2026-10-22T16:12:15.000Z",
           "outletId": "talkinbroadway",
           "source": "2e80324f ingest-urls: 1 review(s) for billy-crystal-860-2026"
+        },
+        {
+          "kind": "ingest-dispatch",
+          "at": "2026-10-22T04:00:51.000Z",
+          "outletId": null,
+          "source": "10c6d1cc data: Ingest URLs for billy-crystal-860-2026"
+        },
+        {
+          "kind": "ingest-dispatch",
+          "at": "2026-10-22T03:17:30.000Z",
+          "outletId": null,
+          "source": "d2f4b5ac data: Ingest URLs for billy-crystal-860-2026"
         }
       ],
       "historyCovers": true
@@ -1403,6 +1415,12 @@
       "onlyIngestDispatches": false,
       "signals": [
         {
+          "kind": "ingest-dispatch",
+          "at": "2026-10-22T03:10:04.000Z",
+          "outletId": null,
+          "source": "e2e7ad1a data: Ingest URLs for the-curious-case-of-benjamin-button-off-broadway-2026"
+        },
+        {
           "kind": "approved-fix",
           "at": "2026-10-23T06:35:08.160Z",
           "file": "the-curious-case-of-benjamin-button-off-broadway-2026/talkinbroadway--howard-miller.json",
@@ -1483,9 +1501,16 @@
       "live": 18,
       "known": 15,
       "hoursToLive": null,
-      "verdict": "on-its-own",
-      "onlyIngestDispatches": false,
-      "signals": [],
+      "verdict": "needed-hands",
+      "onlyIngestDispatches": true,
+      "signals": [
+        {
+          "kind": "ingest-dispatch",
+          "at": "2026-10-21T17:54:31.000Z",
+          "outletId": null,
+          "source": "4651f4c2 data: Ingest URLs for copperfield-the-new-musical-off-broadway-2026"
+        }
+      ],
       "historyCovers": true
     },
     {
@@ -1500,9 +1525,16 @@
       "live": 25,
       "known": 20,
       "hoursToLive": null,
-      "verdict": "on-its-own",
-      "onlyIngestDispatches": false,
-      "signals": [],
+      "verdict": "needed-hands",
+      "onlyIngestDispatches": true,
+      "signals": [
+        {
+          "kind": "ingest-dispatch",
+          "at": "2026-10-21T17:53:58.000Z",
+          "outletId": null,
+          "source": "0e110bee data: Ingest URLs for king-of-the-yees-off-broadway-2026"
+        }
+      ],
       "historyCovers": true
     },
     {
@@ -1520,6 +1552,18 @@
       "verdict": "needed-hands",
       "onlyIngestDispatches": false,
       "signals": [
+        {
+          "kind": "ingest-dispatch",
+          "at": "2026-10-22T03:26:49.000Z",
+          "outletId": null,
+          "source": "d46f12f6 data: Ingest URLs for lincoln-in-the-bardo-off-broadway-2026"
+        },
+        {
+          "kind": "ingest-dispatch",
+          "at": "2026-10-21T17:54:42.000Z",
+          "outletId": null,
+          "source": "b1a08fcf data: Ingest URLs for lincoln-in-the-bardo-off-broadway-2026"
+        },
         {
           "kind": "approved-fix",
           "at": "2026-10-22T10:47:41.262Z",
@@ -2084,6 +2128,12 @@
           "source": "cdd1e6e1 data: mark Memoirs of Amorous Gentlemen announcement pieces as non-review (BRO-5391)"
         },
         {
+          "kind": "ingest-dispatch",
+          "at": "2026-10-16T17:40:17.000Z",
+          "outletId": null,
+          "source": "ebd30d39 data: Ingest URLs for memoirs-of-amorous-gentlemen-off-broadway-2026"
+        },
+        {
           "kind": "approved-fix",
           "at": "2026-10-16T20:11:25.605Z",
           "file": "memoirs-of-amorous-gentlemen-off-broadway-2026/culturesauce--thom-geier.json",
@@ -2149,6 +2199,24 @@
       "verdict": "needed-hands",
       "onlyIngestDispatches": false,
       "signals": [
+        {
+          "kind": "ingest-dispatch",
+          "at": "2026-10-22T03:22:42.000Z",
+          "outletId": null,
+          "source": "b6213d38 data: Ingest URLs for midnight-off-broadway-2026"
+        },
+        {
+          "kind": "ingest-dispatch",
+          "at": "2026-10-16T19:55:53.000Z",
+          "outletId": null,
+          "source": "38792ffe data: Ingest URLs for midnight-off-broadway-2026"
+        },
+        {
+          "kind": "ingest-dispatch",
+          "at": "2026-10-16T17:17:18.000Z",
+          "outletId": null,
+          "source": "3fe58739 data: Ingest URLs for midnight-off-broadway-2026"
+        },
         {
           "kind": "approved-fix",
           "at": "2026-10-16T20:27:00.646Z",
@@ -2316,6 +2384,12 @@
       "verdict": "needed-hands",
       "onlyIngestDispatches": false,
       "signals": [
+        {
+          "kind": "ingest-dispatch",
+          "at": "2026-10-16T23:12:14.000Z",
+          "outletId": null,
+          "source": "c1e9bf3e data: Ingest URLs for anon-a-tempest-at-our-kitchen-table-off-broadway-2026"
+        },
         {
           "kind": "approved-fix",
           "at": "2026-10-17T00:00:58.267Z",
@@ -2547,9 +2621,22 @@
       "live": 13,
       "known": 7,
       "hoursToLive": null,
-      "verdict": "on-its-own",
-      "onlyIngestDispatches": false,
-      "signals": [],
+      "verdict": "needed-hands",
+      "onlyIngestDispatches": true,
+      "signals": [
+        {
+          "kind": "ingest-dispatch",
+          "at": "2026-10-18T14:36:16.000Z",
+          "outletId": null,
+          "source": "01100e80 data: Ingest URLs for fish-off-broadway-2026"
+        },
+        {
+          "kind": "ingest-dispatch",
+          "at": "2026-10-14T03:44:04.000Z",
+          "outletId": null,
+          "source": "f68dea16 data: Ingest URLs for fish-off-broadway-2026"
+        }
+      ],
       "historyCovers": true
     },
     {
@@ -3065,6 +3152,12 @@
           "at": "2026-10-07T21:02:51.000Z",
           "outletId": "seatplan",
           "source": "d06ca105 data: direct-URL ingest SeatPlan review for into-the-woods-noel-coward-west-end-2026 (on-monitor missed-discovery)"
+        },
+        {
+          "kind": "ingest-dispatch",
+          "at": "2026-10-08T16:59:28.000Z",
+          "outletId": null,
+          "source": "f0948f21 data: Ingest URLs for into-the-woods-noel-coward-west-end-2026"
         }
       ],
       "historyCovers": true
@@ -3607,9 +3700,16 @@
       "live": 15,
       "known": 5,
       "hoursToLive": null,
-      "verdict": "on-its-own",
-      "onlyIngestDispatches": false,
-      "signals": [],
+      "verdict": "needed-hands",
+      "onlyIngestDispatches": true,
+      "signals": [
+        {
+          "kind": "ingest-dispatch",
+          "at": "2026-10-02T04:55:30.000Z",
+          "outletId": null,
+          "source": "ce8b68d7 data: Ingest URLs for creation-stories-and-all-the-important-importants-off-broadway-2026"
+        }
+      ],
       "historyCovers": true
     },
     {
@@ -3632,6 +3732,12 @@
           "at": "2026-10-01T16:29:41.000Z",
           "outletId": "theatreinedinburgh",
           "source": "a9f8bad3 data(flamenc-oh): flag Edinburgh Fringe reviews wrongProduction on Peacock entry (Stage, Theatreinedinburgh) — rebuild UK-URL auto-"
+        },
+        {
+          "kind": "ingest-dispatch",
+          "at": "2026-10-01T19:15:43.000Z",
+          "outletId": null,
+          "source": "2bb91700 data: Ingest URLs for flamenc-oh-off-west-end-2026"
         },
         {
           "kind": "hand-step",
@@ -3687,6 +3793,42 @@
           "at": "2026-10-01T17:49:03.000Z",
           "outletId": "artsdesk",
           "source": "97a1dc5c data(hay-fever): Arts Desk Helen Hawkins 3/5, publishDate 2026-10-01 (on-monitor pass 36)"
+        },
+        {
+          "kind": "ingest-dispatch",
+          "at": "2026-10-01T23:45:57.000Z",
+          "outletId": null,
+          "source": "dc204682 data: Ingest URLs for hay-fever-west-end-2026"
+        },
+        {
+          "kind": "ingest-dispatch",
+          "at": "2026-10-01T23:44:15.000Z",
+          "outletId": null,
+          "source": "46ac2727 data: Ingest URLs for hay-fever-west-end-2026"
+        },
+        {
+          "kind": "ingest-dispatch",
+          "at": "2026-10-01T23:20:32.000Z",
+          "outletId": null,
+          "source": "8560a96a data: Ingest URLs for hay-fever-west-end-2026"
+        },
+        {
+          "kind": "ingest-dispatch",
+          "at": "2026-10-01T23:18:23.000Z",
+          "outletId": null,
+          "source": "45e63b5f data: Ingest URLs for hay-fever-west-end-2026"
+        },
+        {
+          "kind": "ingest-dispatch",
+          "at": "2026-10-01T23:16:52.000Z",
+          "outletId": null,
+          "source": "59762cf4 data: Ingest URLs for hay-fever-west-end-2026"
+        },
+        {
+          "kind": "ingest-dispatch",
+          "at": "2026-10-01T17:47:14.000Z",
+          "outletId": null,
+          "source": "c80c85c7 data: Ingest URLs for hay-fever-west-end-2026"
         },
         {
           "kind": "hand-step",
@@ -3796,6 +3938,54 @@
           "source": "39622743 data: flag outinjersey WAOVW review as wrongProduction (NJ Shakespeare Theatre production leaked onto West End show)"
         },
         {
+          "kind": "ingest-dispatch",
+          "at": "2026-10-01T20:40:12.000Z",
+          "outletId": null,
+          "source": "7a41b6fe data: Ingest URLs for whos-afraid-of-virginia-woolf-west-end-2026"
+        },
+        {
+          "kind": "ingest-dispatch",
+          "at": "2026-10-01T14:29:00.000Z",
+          "outletId": null,
+          "source": "ee9d36ff data: Ingest URLs for whos-afraid-of-virginia-woolf-west-end-2026"
+        },
+        {
+          "kind": "ingest-dispatch",
+          "at": "2026-10-01T14:27:22.000Z",
+          "outletId": null,
+          "source": "e978218f data: Ingest URLs for whos-afraid-of-virginia-woolf-west-end-2026"
+        },
+        {
+          "kind": "ingest-dispatch",
+          "at": "2026-10-01T13:37:09.000Z",
+          "outletId": null,
+          "source": "335f4a9a data: Ingest URLs for whos-afraid-of-virginia-woolf-west-end-2026"
+        },
+        {
+          "kind": "ingest-dispatch",
+          "at": "2026-10-01T12:48:47.000Z",
+          "outletId": null,
+          "source": "ae3be298 data: Ingest URLs for whos-afraid-of-virginia-woolf-west-end-2026"
+        },
+        {
+          "kind": "ingest-dispatch",
+          "at": "2026-10-01T12:20:58.000Z",
+          "outletId": null,
+          "source": "7a713b2a data: Ingest URLs for whos-afraid-of-virginia-woolf-west-end-2026"
+        },
+        {
+          "kind": "ingest-dispatch",
+          "at": "2026-10-01T11:32:39.000Z",
+          "outletId": null,
+          "source": "3d18f353 data: Ingest URLs for whos-afraid-of-virginia-woolf-west-end-2026"
+        },
+        {
+          "kind": "ingest-dispatch",
+          "at": "2026-10-01T11:31:06.000Z",
+          "outletId": null,
+          "source": "5780299a data: Ingest URLs for whos-afraid-of-virginia-woolf-west-end-2026"
+        },
+        {
           "kind": "hand-step",
           "at": "2026-10-01T13:36:58.237Z",
           "file": "whos-afraid-of-virginia-woolf-west-end-2026/west-end-best-friend--alexandra-tullah.json",
@@ -3839,6 +4029,12 @@
           "at": "2026-09-29T19:34:32.000Z",
           "outletId": "new-york-notebook",
           "source": "028ca91e data: ingest New York Notebook review for degenerates-off-broadway-2026 (opening-night monitor, true-missed-discovery)"
+        },
+        {
+          "kind": "ingest-dispatch",
+          "at": "2026-09-30T16:43:40.000Z",
+          "outletId": null,
+          "source": "dde16495 data: Ingest URLs for degenerates-off-broadway-2026"
         }
       ],
       "historyCovers": true
@@ -3989,6 +4185,12 @@
           "at": "2026-09-28T15:54:38.000Z",
           "outletId": "manhattantheatreclub",
           "source": "23e7e49e data: School Girls 2026 — drop two non-review files and blocklist their URLs (BRO-4208)"
+        },
+        {
+          "kind": "ingest-dispatch",
+          "at": "2026-09-29T04:49:12.000Z",
+          "outletId": null,
+          "source": "b27534b0 data: Ingest URLs for school-girls-or-the-african-mean-girls-play-2026"
         },
         {
           "kind": "hand-step",
@@ -4251,6 +4453,12 @@
           "at": "2026-09-29T06:04:29.000Z",
           "outletId": "thestage",
           "source": "5e08a634 data: flag two live wrong-show/wrong-production The Stage reviews"
+        },
+        {
+          "kind": "ingest-dispatch",
+          "at": "2026-09-27T14:42:28.000Z",
+          "outletId": null,
+          "source": "f290991f data: Ingest URLs for la-boheme-off-broadway-2026"
         }
       ],
       "historyCovers": true
@@ -4317,6 +4525,12 @@
           "at": "2026-09-25T02:10:59.000Z",
           "outletId": "culturesauce",
           "source": "5f1bacd8 data: ingest Culture Sauce (Thom Geier) Delirium review — opening-night monitor"
+        },
+        {
+          "kind": "ingest-dispatch",
+          "at": "2026-09-27T14:28:20.000Z",
+          "outletId": null,
+          "source": "b307f569 data: Ingest URLs for delirium-off-broadway-2026"
         },
         {
           "kind": "hand-step",
@@ -4603,6 +4817,12 @@
           "source": "10f84202 on-monitor: direct-ingest WhatsOnStage (Alex Wood) review for the-last-ship-west-end-2026 (missed discovery; existing WOS file was "
         },
         {
+          "kind": "ingest-dispatch",
+          "at": "2026-09-27T14:43:07.000Z",
+          "outletId": null,
+          "source": "ce628b35 data: Ingest URLs for the-last-ship-west-end-2026"
+        },
+        {
           "kind": "hand-step",
           "at": "2026-09-24T17:54:55.978Z",
           "file": "the-last-ship-west-end-2026/beyondthecurtain--jess.json",
@@ -4723,6 +4943,12 @@
           "at": "2026-09-22T21:15:33.000Z",
           "outletId": "huffpost",
           "source": "d56fd896 data: flag 2013 HuffPost Hawke Macbeth as wrongProduction for Met Opera macbeth-off-broadway-2026 (opening-night monitor)"
+        },
+        {
+          "kind": "ingest-dispatch",
+          "at": "2026-09-27T14:40:47.000Z",
+          "outletId": null,
+          "source": "981e18db data: Ingest URLs for macbeth-off-broadway-2026"
         }
       ],
       "historyCovers": true
@@ -4765,6 +4991,12 @@
           "at": "2026-09-24T14:46:31.000Z",
           "outletId": "exeunt-magazine",
           "source": "35ecde14 fix(the-holes): clear false-positive wrongProduction on Exeunt NYC review (Wild Project, 2026-09-23)"
+        },
+        {
+          "kind": "ingest-dispatch",
+          "at": "2026-09-27T14:28:28.000Z",
+          "outletId": null,
+          "source": "dafc68e9 data: Ingest URLs for the-holes-off-broadway-2026"
         },
         {
           "kind": "hand-step",
@@ -4917,6 +5149,12 @@
           "at": "2026-09-21T23:25:23.000Z",
           "outletId": "timeout-london",
           "source": "e68e5945 recover: Time Out London (Tim Bano) review for Catarina — direct-URL ingest by opening-night monitor"
+        },
+        {
+          "kind": "ingest-dispatch",
+          "at": "2026-09-27T14:43:09.000Z",
+          "outletId": null,
+          "source": "95f97528 data: Ingest URLs for catarina-and-the-beauty-of-killing-fascists-west-end-2026"
         },
         {
           "kind": "hand-step",

@@ -95,7 +95,7 @@ test('safeWriteReview stamps origin on create only', () => {
     const { ingestOrigin, ingestOriginBy, ...rest } = created;
     safeWriteReview(fp, { ...rest, criticName: 'Jane Doe' });
     const after = JSON.parse(fs.readFileSync(fp, 'utf8'));
-    assert.notEqual(after.ingestOrigin, 'manual');
+    assert.equal(after.ingestOrigin, 'automated', 'the create-time stamp survives a later write');
 
     // Kill switch: create without stamp.
     process.env.REVIEW_ORIGIN_STAMP = 'off';

@@ -115,6 +115,16 @@ function gradeOpening({ show, files = [], commits = [], historyFromMs = null, pr
     const kind = c && isBotAuthor(c.author, c.email) ? 'ingest-dispatch' : 'hand-commit';
     signals.push({ kind, at: a.at, outletId: a.outletId, source: String(a.source).slice(0, 140) });
   }
+  // ingest-urls.yml's fallback commit ("data: Ingest URLs for <show>") is a
+  // hand dispatch the frozen press-night rule does not recognise.
+  for (const c of fixCommits) {
+    const sha = String(c.sha).slice(0, 8);
+    const at = toMs(c.at);
+    if (seen.has(sha) || !inWin(at) || !/^data: Ingest URLs for /.test(c.subject || '')) continue;
+    if (!(c.files || []).some((f) => f.startsWith(`${show.id}/`))) continue;
+    seen.add(sha);
+    signals.push({ kind: 'ingest-dispatch', at: new Date(at).toISOString(), outletId: null, source: `${sha} ${String(c.subject).slice(0, 120)}` });
+  }
   for (const a of (pressNight && Array.isArray(pressNight.manualActions) ? pressNight.manualActions : [])) {
     const shas = String(a.source || '').match(/\b[0-9a-f]{8}\b/g) || [];
     if (shas.some((s) => seen.has(s))) continue;
@@ -233,7 +243,8 @@ function renderOpeningGradesBlock(snapshot, { esc = defaultEsc, nowMs = Date.now
     // No reviews live is only news when reviews are known to exist (a miss).
     && (g.verdict !== 'no-reviews' || (g.known || 0) > 0));
   const rows = recent.map((g) => `<div style="margin:0 0 6px;font-size:14px;"><span style="color:${DOT[g.verdict] || '#999'};">&#9679;</span> ${esc(gradeLine(g))}</div>`).join('\n    ');
-  const days = Math.max(1, Math.round((Date.parse(`${snapshot.to}T00:00:00Z`) - Date.parse(`${snapshot.from}T00:00:00Z`)) / 86400000));
+  const rawDays = Math.round((Date.parse(`${snapshot.to}T00:00:00Z`) - Date.parse(`${snapshot.from}T00:00:00Z`)) / 86400000);
+  const days = Number.isFinite(rawDays) && rawDays >= 1 ? rawDays : 14;
   const tally = tallyLine(snapshot.summary || summarize(snapshot.grades), days);
   return `<div style="margin:0 0 16px;">
     <p style="font-size:14px;font-weight:700;margin:0 0 8px;">${title}</p>

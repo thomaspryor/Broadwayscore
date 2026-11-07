@@ -56,8 +56,11 @@ function loadCommits(rtDir, sinceIso, untilIso) {
   const base = ['log', 'HEAD', `--since=${sinceIso}`, `--until=${untilIso}`, `--format=${pm.LOG_FORMAT}`, '--name-only', '--no-renames'];
   const human = pm.parseGitLog(git(rtDir, [...base, '--perl-regexp', '--author=^(?!GitHub Action|github-actions)']));
   const ingest = pm.parseGitLog(git(rtDir, [...base, '--grep=^ingest-urls:']));
+  // ingest-urls.yml's own fallback commit when the script did not commit
+  // itself: bot-authored, but still a hand dispatch (never caller-tagged).
+  const fallback = pm.parseGitLog(git(rtDir, [...base, '--grep=^data: Ingest URLs for ']));
   const bySha = new Map();
-  for (const c of [...human, ...ingest]) bySha.set(c.sha, c);
+  for (const c of [...human, ...ingest, ...fallback]) bySha.set(c.sha, c);
   return [...bySha.values()];
 }
 
