@@ -1,13 +1,22 @@
 {
-  "generatedAt": "2026-11-06T13:08:22.347Z",
-  "total": 351,
-  "armedCount": 341,
+  "generatedAt": "2026-11-07T11:52:09.203Z",
+  "total": 327,
+  "armedCount": 317,
   "refusedCount": 10,
   "byKind": {
-    "shape": 9,
+    "basename": 1,
+    "shape": 8,
     "no-section": 1
   },
   "refused": [
+    {
+      "id": "BRO-7049",
+      "name": "Raise web sub-12px text (458 uses) to the 12px floor, section by section",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7049/raise-web-sub-12px-text-458-uses-to-the-12px-floor-section-by-section",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/lint-font-floor.js)",
+      "kind": "basename"
+    },
     {
       "id": "BRO-6957",
       "name": "iOS E2E: signed-out sweep, every sign-in prompt opens and closes cleanly",
@@ -73,14 +82,6 @@
       "kind": "shape"
     },
     {
-      "id": "BRO-6642",
-      "name": "Email sign-in: add a captcha (Cloudflare Turnstile) to code sends",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6642/email-sign-in-add-a-captcha-cloudflare-turnstile-to-code-sends",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node -e \"fetch('[https://api.supabase.com/v1/projects/'+process.env.SUPABASE_PROJECT_REF+'/config/auth',{headers:{Author)",
-      "kind": "shape"
-    },
-    {
       "id": "BRO-6275",
       "name": "Mac: sync pre-push-visual-gate.sh master copy to the narrowed UI pattern + visual-hold/visual-evidence exemption (BRO-6241)",
       "priority": null,
@@ -90,27 +91,37 @@
     }
   ],
   "ownerJudgmentLimbo": {
-    "total": 276,
-    "checked": 276,
+    "total": 261,
+    "checked": 261,
     "complete": true,
-    "cards": [
-      {
-        "id": "BRO-6642",
-        "name": "Email sign-in: add a captcha (Cloudflare Turnstile) to code sends",
-        "priority": 3,
-        "url": "https://linear.app/broadway-scorecard/issue/BRO-6642/email-sign-in-add-a-captcha-cloudflare-turnstile-to-code-sends",
-        "source": "description"
-      }
-    ]
+    "cards": []
   },
   "missingCheckPaths": [
     {
-      "id": "BRO-7024",
-      "name": "Make critic byline distinct from pull quote on review cards",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7024/make-critic-byline-distinct-from-pull-quote-on-review-cards",
-      "cmd": "node --test tests/unit/review-card-byline-distinction.test.mjs",
+      "id": "BRO-7060",
+      "name": "Audit url_content_mismatch rejections for false positives (74 files from BRO-7055 re-collect)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7060/audit-url-content-mismatch-rejections-for-false-positives-74-files",
+      "cmd": "node --test tests/unit/url-content-mismatch.test.mjs",
       "missingPaths": [
-        "tests/unit/review-card-byline-distinction.test.mjs"
+        "tests/unit/url-content-mismatch.test.mjs"
+      ]
+    },
+    {
+      "id": "BRO-7052",
+      "name": "Fan-out: re-trim a split child restored on its own (parent untouched)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7052/fan-out-re-trim-a-split-child-restored-on-its-own-parent-untouched",
+      "cmd": "node --test tests/unit/multi-show-split-child-restore.test.mjs",
+      "missingPaths": [
+        "tests/unit/multi-show-split-child-restore.test.mjs"
+      ]
+    },
+    {
+      "id": "BRO-7046",
+      "name": "Stop discovery fetching theverge.com tech articles for The Verge (play) and London prior-production pages filed under off-Broadway The Unbelievers",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7046/stop-discovery-fetching-thevergecom-tech-articles-for-the-verge-play",
+      "cmd": "node --test tests/unit/stop-discovery-theverge-verge.test.mjs",
+      "missingPaths": [
+        "tests/unit/stop-discovery-theverge-verge.test.mjs"
       ]
     },
     {
@@ -129,15 +140,6 @@
       "cmd": "test -f memory/critic-outreach-approved.txt",
       "missingPaths": [
         "memory/critic-outreach-approved.txt"
-      ]
-    },
-    {
-      "id": "BRO-6909",
-      "name": "Waiting for Lefty lost Vulture/NYSR/Pizzazz/Cititour to the cross-show URL guard (author-credit title vs closed 2024 regional)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6909/waiting-for-lefty-lost-vulturenysrpizzazzcititour-to-the-cross-show",
-      "cmd": "node --test tests/unit/cross-show-url-guard.test.mjs",
-      "missingPaths": [
-        "tests/unit/cross-show-url-guard.test.mjs"
       ]
     },
     {
@@ -177,15 +179,6 @@
       ]
     },
     {
-      "id": "BRO-6510",
-      "name": "gather-reviews: push-aggregator-archive loses the race after 5 rebase attempts when several gathers finish together",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6510/gather-reviews-push-aggregator-archive-loses-the-race-after-5-rebase",
-      "cmd": "node --test scripts/lib/push-aggregator-archive.test.mjs",
-      "missingPaths": [
-        "scripts/lib/push-aggregator-archive.test.mjs"
-      ]
-    },
-    {
       "id": "BRO-6449",
       "name": "Video templates: apply puzzle-open + closing-question rule to versus/duo/verdict/top5 compositions (BRO-6417 follow-on)",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-6449/video-templates-apply-puzzle-open-closing-question-rule-to",
@@ -201,15 +194,6 @@
       "cmd": "node --test scripts/check-we-historical-tr-coverage.test.mjs",
       "missingPaths": [
         "scripts/check-we-historical-tr-coverage.test.mjs"
-      ]
-    },
-    {
-      "id": "BRO-6417",
-      "name": "Social voice: every post, video and reply informs AND sparks discussion (owner principle 2026-10-27)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6417/social-voice-every-post-video-and-reply-informs-and-sparks-discussion",
-      "cmd": "node --test scripts/social-autopost/captions.test.mjs",
-      "missingPaths": [
-        "scripts/social-autopost/captions.test.mjs"
       ]
     },
     {
@@ -501,15 +485,6 @@
       ]
     },
     {
-      "id": "BRO-5246",
-      "name": "Outlet registry: ~165 auto-onboarded outlets show squashed display names (e.g. Chicagoontheaisle, Newjerseystage)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5246/outlet-registry-165-auto-onboarded-outlets-show-squashed-display-names",
-      "cmd": "node --test scripts/lib/outlet-registry.test.mjs",
-      "missingPaths": [
-        "scripts/lib/outlet-registry.test.mjs"
-      ]
-    },
-    {
       "id": "BRO-5123",
       "name": "Star deals: find sources for the 3 old deals, then checker before/after for the sourcedStarDeals live switch (BRO-5029 follow-up)",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-5123/star-deals-find-sources-for-the-3-old-deals-then-checker-beforeafter",
@@ -582,15 +557,6 @@
       ]
     },
     {
-      "id": "BRO-4602",
-      "name": "Deploy's Google sitemap submission gets 403 (service account lacks Search Console permission)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-4602/deploys-google-sitemap-submission-gets-403-service-account-lacks",
-      "cmd": "node --test tests/unit/vercel-deploy-no-sitemap-submit.test.mjs",
-      "missingPaths": [
-        "tests/unit/vercel-deploy-no-sitemap-submit.test.mjs"
-      ]
-    },
-    {
       "id": "BRO-4343",
       "name": "Video reviews: YouTube transcripts blocked on GitHub runners ('Sign in to confirm you're not a bot')",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-4343/video-reviews-youtube-transcripts-blocked-on-github-runners-sign-in-to",
@@ -645,15 +611,6 @@
       ]
     },
     {
-      "id": "BRO-3902",
-      "name": "P2: nothing measures GitHub Actions cache occupancy — rule (m) only catches run-id KEYS",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-3902/p2-nothing-measures-github-actions-cache-occupancy-rule-m-only-catches",
-      "cmd": "node --test tests/unit/actions-cache-budget.test.mjs",
-      "missingPaths": [
-        "tests/unit/actions-cache-budget.test.mjs"
-      ]
-    },
-    {
       "id": "BRO-3569",
       "name": "iOS E2E: diary-show/[id], (tabs)/lists, (tabs)/to-watch have zero Maestro coverage",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-3569/ios-e2e-diary-showid-tabslists-tabsto-watch-have-zero-maestro-coverage",
@@ -690,15 +647,6 @@
       ]
     },
     {
-      "id": "BRO-2901",
-      "name": "Worktree-integration stashes leak one per run; one would truncate backlog-drain.js if applied",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2901/worktree-integration-stashes-leak-one-per-run-one-would-truncate",
-      "cmd": "node --test scripts/worktree-integration.test.mjs",
-      "missingPaths": [
-        "scripts/worktree-integration.test.mjs"
-      ]
-    },
-    {
       "id": "BRO-2762",
       "name": "BrowseListClient: 'Default' sort button still no-ops on customSort pages",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-2762/browselistclient-default-sort-button-still-no-ops-on-customsort-pages",
@@ -714,15 +662,6 @@
       "cmd": "node --test tests/unit/dmarc-reject.test.mjs",
       "missingPaths": [
         "tests/unit/dmarc-reject.test.mjs"
-      ]
-    },
-    {
-      "id": "BRO-2485",
-      "name": "OB discovery S4-T3..T6: getCity/type-union/venue-list/sitemap gate for off-off-broadway",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2485/ob-discovery-s4-t3t6-getcitytype-unionvenue-listsitemap-gate-for-off",
-      "cmd": "node --test tests/unit/getCity.test.mjs",
-      "missingPaths": [
-        "tests/unit/getCity.test.mjs"
       ]
     },
     {
@@ -798,18 +737,5 @@
       ]
     }
   ],
-  "vacuousChecks": [
-    {
-      "id": "BRO-6965",
-      "name": "Regular pipeline reads the lane's 24 outlet feeds daily (Bob's Theater Blog reviews missing for AGM, ODC)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6965/regular-pipeline-reads-the-lanes-24-outlet-feeds-daily-bobs-theater",
-      "cmd": "test -f scripts/lib/titled-blog-collect.js",
-      "kind": "test-f-satisfied",
-      "polarity": "never-fails",
-      "paths": [
-        "scripts/lib/titled-blog-collect.js"
-      ],
-      "reason": "`test -f scripts/lib/titled-blog-collect.js` already passes on origin/main, so re-running it at Done time cannot distinguish finished work from untouched work"
-    }
-  ]
+  "vacuousChecks": []
 }
