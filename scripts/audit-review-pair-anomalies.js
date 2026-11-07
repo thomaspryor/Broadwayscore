@@ -15,6 +15,7 @@
  *   node scripts/audit-review-pair-anomalies.js --list=pairs|roundup   # every finding
  *   node scripts/audit-review-pair-anomalies.js --json=<path> # write all findings
  *   node scripts/audit-review-pair-anomalies.js --strict      # exit 1 when anything is found
+ *   node scripts/audit-review-pair-anomalies.js --max=N       # exit 1 when pairs+roundup > N (2 = corpus missing)
  * Never writes review data. Default exit 0 (new audits land advisory, CLAUDE.md rule 19).
  */
 
@@ -30,7 +31,7 @@ const { findSameTextDifferentByline, findOwnDomainRoundupFlags } = require('./li
 const USAGE = `audit-review-pair-anomalies.js — read-only review-pair audit (BRO-4888).
 
 Usage:
-  node scripts/audit-review-pair-anomalies.js [--show=<id>] [--list=pairs|roundup] [--json=<path>] [--strict]
+  node scripts/audit-review-pair-anomalies.js [--show=<id>] [--list=pairs|roundup] [--json=<path>] [--strict] [--max=N]
   node scripts/audit-review-pair-anomalies.js --help, -h    print this usage and exit
 `;
 
@@ -42,6 +43,7 @@ function arg(name) {
 function main() {
   if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return 0; }
   const root = resolveReviewTextsDir();
+  if (!root || !fs.existsSync(root)) { console.error(`review-texts dir not found: ${root}`); return 2; }
   const registryPath = path.join(__dirname, '..', 'data', 'outlet-registry.json');
   const registry = fs.existsSync(registryPath) ? JSON.parse(fs.readFileSync(registryPath, 'utf8')) : null;
   const only = arg('show');
@@ -71,6 +73,16 @@ function main() {
   if (!list || list === 'roundup') for (const r of roundup.slice(0, cap)) console.log(`  roundup ${r.show}/${r.file}  ${r.url}`);
   const jsonPath = arg('json');
   if (jsonPath) fs.writeFileSync(jsonPath, JSON.stringify({ generatedAt: new Date().toISOString(), showDirs: dirs.length, files, pairs, roundup }, null, 2));
+  // --max=N (BRO-7077, check-corpus-drift): gate on growth past a measured
+  // baseline instead of any finding, since the roundup flags carry a backlog.
+  const max = arg('max');
+  if (max != null) {
+    const n = Number(max);
+    if (!Number.isFinite(n)) { console.error(`bad --max=${max}`); return 2; }
+    const total = pairs.length + roundup.length;
+    if (total > n) { console.log(`  DRIFT: ${total} > --max=${n}`); return 1; }
+    return 0;
+  }
   return process.argv.includes('--strict') && (pairs.length || roundup.length) ? 1 : 0;
 }
 
