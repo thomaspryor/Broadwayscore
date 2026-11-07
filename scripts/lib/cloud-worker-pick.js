@@ -759,6 +759,8 @@ function namesOwnerHold(text) {
 // "owner approval" next to it is no hold.
 const OWNER_ANSWERED_WORDING_RE = /^\*\*Owner decision\*\* \(answered by the owner\b|^Owner answered:|\b(?:DECISION NEEDED|owner (?:decision|approval|call))\s*:?\s*(?:none|n\/a)\b|\bowner (?:approval|decision|answer|sign[- ]?off|go[- ]ahead)\b[^.\n]{0,30}\b(?:came in|arrived|received|given|granted|recorded)\b/i;
 const OWNER_WAIT_MAX_MS = AWAITING_OWNER_MAX_MS;
+// "it is waiting on the owner's OK" (the BRO-6984 wording): the possessive form namesOwnerHold skips on purpose.
+const OWNER_WAIT_POSSESSIVE_RE = /\b(?:waiting|waits|held|blocked|pending)\s+(?:on|for)\s+the\s+owner['\u2019]s\s+(?:ok|approval|decision|go[- ]?ahead|sign[- ]?off|call|answer|judg(?:e)?ment)\b/i;
 const OWNER_WAIT_LINE_RE = /(?:^|[.!?]\s+)\s*(?:[-*>]\s*)?(?:\*\*|__)?(?:DECISION NEEDED\b|(?:waiting|waits|held|blocked|pending)\s+(?:on|for)\s+(?:the\s+|an?\s+)?(?:owner|thomas)\b|needs?\s+(?:the\s+|an?\s+)?owner\b|owner(?:'s)?\s+(?:decision|approval|sign[- ]?off|go[- ]ahead|judg(?:e)?ment|call)\s+(?:needed|required|pending)\b)/im;
 
 /**
@@ -779,6 +781,7 @@ function ownerWaitHolds(comments, nowMs) {
   if (OWNER_ANSWERED_WORDING_RE.test(body) || OWNER_DRAIN_ANSWER_RE.test(body)) return false;
   // The owner-gate clear line (OWNER-CLEARED:, "not an owner decision") is the sweep's release, never a hold.
   if (require('./headless-dispatchability.js').commentClearsOwnerGate([body], '')) return false;
+  if (OWNER_WAIT_POSSESSIVE_RE.test(body) && !OWNER_NEGATED_BEFORE_RE.test(body.slice(0, body.search(OWNER_WAIT_POSSESSIVE_RE)).slice(-30))) return true;
   // A bare mention ("fixed the bug where DECISION NEEDED blocks mis-parsed", "owner approval: yes") is no hold:
   // only wording that opens a line or sentence counts.
   if (!/\bDECISION NEEDED:/.test(body) && !OWNER_WAIT_LINE_RE.test(body)) return false;
