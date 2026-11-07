@@ -762820,21 +762820,21 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-11-07T15:08:37.457Z",
-    "completedAt": "2026-11-07T15:08:52.929Z",
-    "totalReviews": 6,
-    "processed": 3,
-    "skipped": 3,
+    "startedAt": "2026-11-07T15:09:23.784Z",
+    "completedAt": "2026-11-07T15:09:34.947Z",
+    "totalReviews": 3,
+    "processed": 2,
+    "skipped": 1,
     "errors": 0,
     "tokensUsed": {
-      "input": 16353,
-      "output": 963,
-      "cacheRead": 7614,
+      "input": 11542,
+      "output": 661,
+      "cacheRead": 3807,
       "cacheWrite": 3762,
-      "total": 42729
+      "total": 29412
     },
-    "costUsd": 0.076668,
-    "runId": "42384371372",
+    "costUsd": 0.057558200000000004,
+    "runId": "42384388061",
     "source": "index",
     "errorDetails": [],
     "validation": [
@@ -773895,10 +773895,10 @@
       {
         "showId": "crybabies-the-scaring-off-west-end-2026",
         "ourDistribution": {
-          "up": 4,
+          "up": 1,
           "flat": 0,
           "down": 0,
-          "total": 4
+          "total": 1
         },
         "hasDisagreement": false
       },
@@ -783542,6 +783542,16 @@
           "flat": 2,
           "down": 2,
           "total": 6
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "iphigenie-en-tauride-english-national-opera-west-end-2026",
+        "ourDistribution": {
+          "up": 0,
+          "flat": 1,
+          "down": 1,
+          "total": 2
         },
         "hasDisagreement": false
       },
@@ -813617,8 +813627,8 @@
     ]
   },
   {
-    "startedAt": "2026-11-07T15:13:50.021Z",
-    "completedAt": "2026-11-07T15:13:50.031Z",
+    "startedAt": "2026-11-07T15:14:32.450Z",
+    "completedAt": "2026-11-07T15:14:32.458Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -813631,7 +813641,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "42384371372",
+    "runId": "42384388061",
     "source": "comparative-rescore",
     "errorDetails": []
   }
