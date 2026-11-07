@@ -29,6 +29,15 @@ for (const f of OWNER_SENDERS) {
   });
 }
 
+test('the floor rewrites the background shorthand to background-color and leaves other backgrounds alone', () => {
+  const out = enforceTypeFloor('<div style="padding:8px;background:#f9fafb;color:#111"></div><td style="background-color:#fff"></td><p style="background:linear-gradient(red,blue)"></p><b style="x-background:#abc"></b>');
+  assert.match(out, /;background-color:#f9fafb;/);
+  assert.match(out, /style="background-color:#fff"/);
+  assert.match(out, /background:linear-gradient/);
+  assert.match(out, /x-background:#abc/);
+  assert.doesNotMatch(out, /[;"\s]background:#/);
+});
+
 test('the real opening-digest and reddit email builders still produce HTML the floor can clean', () => {
   const od = require('../../scripts/send-opening-digest.js');
   const html = enforceTypeFloor(od.buildHtml({ needsHelp: [], broadcastReady: [], comingUp: [], otherRecent: [], otherUpcoming: [], todayHuman: 'Saturday' }));
