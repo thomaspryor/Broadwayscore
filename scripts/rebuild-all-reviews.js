@@ -2045,9 +2045,17 @@ const crossShowFingerprints = new Map();
         // earliest date — a prior-production review is wrong regardless of manual override.
         // Threshold raised from 180→365 and requires publishDate specifically (no URL fallback)
         // because the 180-day threshold combined with URL-extracted dates caused false overrides.
+        // BRO-7085: a SCRIPT's clear (sweep verdict) still faces the republish-marker guard below
+        // (An Oak Tree: in-window republish date + script ManualClear exited here before it ran).
+        const republishOpen = republishGuardOpen(d, { auditOpen: wpAuditOpen, laneHeld: laneHolds(d, 'wrongProduction') });
+        const retractScriptClearForRepublish = () => { if (!wpAuditOpen) retractScriptWrongProductionClear(d); };
+        let republishOnly = false;
         if (d.wrongProductionManualClear) {
           let mcReviewDate = parseDate(d.publishDate);
-          if (!mcReviewDate || (showEarliest - mcReviewDate) <= 365 * 86400000) continue;
+          if (!mcReviewDate || (showEarliest - mcReviewDate) <= 365 * 86400000) {
+            if (!(republishOpen && !wpAuditOpen)) continue;
+            republishOnly = true;
+          }
           // Extreme date mismatch (>1 year with reliable publishDate) — override manual clear
         }
         // Prior-run republish guard (BRO-4641): body text says the review is of an
@@ -2055,9 +2063,6 @@ const crossShowFingerprints = new Map();
         // Theater") even though the page was republished with an in-window date.
         // Runs regardless of reviewDate: the date guards cannot see this.
         // lane-guarded: wpAuditOpen includes laneHolds(d, 'wrongProduction')
-        // BRO-7085: also over a script's clear (An Oak Tree); retractScriptClearForRepublish drops it.
-        const republishOpen = republishGuardOpen(d, { auditOpen: wpAuditOpen, laneHeld: laneHolds(d, 'wrongProduction') });
-        const retractScriptClearForRepublish = () => { if (!wpAuditOpen) retractScriptWrongProductionClear(d); };
         if (republishOpen) {
           const republish = detectPriorRunRepublish({ text: d.fullText, show: showRecord });
           if (republish.flag) {
@@ -2089,6 +2094,7 @@ const crossShowFingerprints = new Map();
             continue;
           }
         }
+        if (republishOnly) continue; // a script-cleared record gets only the republish checks above
         // (reviewDate resolved above, shared with the dateless-revival auto-clear.
         // YYYY-only URL fallback intentionally omitted: a year alone defaults to
         // July 1st — too imprecise for the pre-window guard, caused 74 false positives

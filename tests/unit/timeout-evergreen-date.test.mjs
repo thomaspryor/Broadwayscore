@@ -82,3 +82,12 @@ test('a book\'s own republication in the same sentence is not a marker (The Pian
   const r = { publishDate: '2026-10-25', fullText: 'An extraordinary story played beautifully ⭐⭐⭐⭐ What’s it about? The Pianist began as Władysław Szpilman’s account of surviving the Holocaust in Warsaw. First published in 1946 as Death of a City, the memoir was withdrawn by Poland’s censors before being republished in 1998 through the efforts of his son, Andreas.' };
   assert.equal(textNamesEarlierRun(r, show), false);
 });
+
+test('article datelines that use a work word still match (story/film/play)', () => {
+  const { republishMarker } = require('../../scripts/lib/run-contamination.js');
+  assert.equal(republishMarker('This story was originally published in The Guardian on 12 May 2021.')?.year, 2021);
+  assert.equal(republishMarker('A version of this story was originally published in Time Out on May 3, 2023.')?.year, 2023);
+  assert.equal(republishMarker('Theater Film Music Originally published on May 3 2021')?.year, 2021);
+  assert.equal(republishMarker('This story was republished in 2022 with new reporting.')?.year, 2022);
+  assert.equal(republishMarker('the memoir was withdrawn by censors before being republished in 1998'), null);
+});

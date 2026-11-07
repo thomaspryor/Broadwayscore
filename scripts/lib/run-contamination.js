@@ -54,9 +54,13 @@ function republishMarker(text) {
       // "the memoir was withdrawn ... before being republished in 1998" (The Pianist,
       // Stage Door): the work word sits earlier in the same sentence, not in the match.
       // The article's own notice ("This review is from 2025") is never about the work.
-      if (re !== REPUBLISH_PATTERNS[0]) {
+      // Only the bare "republished in <year>" shape needs this: the dated "originally
+      // published in <outlet>, <date>" shapes already require a month before the year, and
+      // "this story/article was ..." datelines use work words (story, film) about the article.
+      if (re === REPUBLISH_PATTERNS[3]) {
         const lead = seg.slice(Math.max(0, m.index - 150), m.index);
-        if (WORK_HISTORY_RE.test(lead.slice(lead.search(/[^.!?\n]*$/)))) continue;
+        const sentence = lead.slice(lead.search(/[^.!?\n]*$/));
+        if (WORK_HISTORY_RE.test(sentence) && !/\b(?:this|the|our)\s+(?:story|article|piece|post|review|interview|page)\b[^.]*$/i.test(sentence)) continue;
       }
       const year = parseInt(m[m.length - 1], 10);
       if (!best || year < best.year) best = { year, snippet: m[0].replace(/\s+/g, ' ').slice(0, 120) };
