@@ -374,7 +374,7 @@ async function processShow(showId, deps = {}) {
       && (data.title || data.articleTitle || isDescriptiveNonReviewSlug(data.url))
       && !require('./lib/rss-discovery').rssStubIdentityOk(data, show.title);
     let identityFinal = identityFails;
-    if (identityFails && /^fetch failed/.test(reason)) {
+    if (identityFails && /^fetch (failed|returned no content)/.test(reason)) { // transient: 3 strikes (BRO-7078 review P2)
       const n = (Number(data.rssIdentityFetchFailures) || 0) + 1;
       identityFinal = n >= RSS_IDENTITY_FETCH_STRIKES;
       if (!identityFinal && !dry) {
