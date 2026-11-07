@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-07T02:36:06.646Z",
+  "timestamp": "2026-11-07T02:49:06.764Z",
   "stats": {
-    "totalReviews": 80370,
-    "alreadyFlagged": 22017,
+    "totalReviews": 80375,
+    "alreadyFlagged": 22019,
     "dateGuardCatches": 216,
-    "directorMismatch": 3518,
-    "tvFilmSignals": 2287,
-    "londonSignals": 3624,
+    "directorMismatch": 3520,
+    "tvFilmSignals": 2288,
+    "londonSignals": 3625,
     "offBroadwaySignals": 744,
     "yearMismatch": 362,
-    "noPublishDate": 8460
+    "noPublishDate": 8454
   },
   "findings": [
     {
@@ -9150,6 +9150,19 @@
     },
     {
       "showId": "book-of-mormon-tour-2022",
+      "file": "broadwayworld--deborah-bostock-kelley.json",
+      "publishDate": "2024-04-17",
+      "url": "https://www.broadwayworld.com/tampa/article/Review-THE-BOOK-OF-MORMON-at-Straz-Center-20240417",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"trey parker\" from book-of-mormon-2011"
+        }
+      ]
+    },
+    {
+      "showId": "book-of-mormon-tour-2022",
       "file": "broadwayworld--erinmarie-reiter.json",
       "score": 88,
       "publishDate": "2025-06-12",
@@ -9609,6 +9622,19 @@
       "score": 88,
       "publishDate": "2026-10-21",
       "url": "https://behindthecurtaincincy.com/2026/10/21/boop-the-musical-review/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jerry mitchell\" from boop-2025"
+        }
+      ]
+    },
+    {
+      "showId": "boop-tour-2026",
+      "file": "broadwayworld--taylor-clemons.json",
+      "publishDate": "2026-10-23",
+      "url": "https://www.broadwayworld.com/louisville/article/Review-Broadway-in-Cincinnati-presents-BOOP-THE-MUSICAL-at-The-Aronoff-Center-20261023",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -62871,6 +62897,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "the-amazing-sex-life-of-rabbits-off-broadway-2026",
+      "file": "nytg--unknown.json",
+      "score": null,
+      "publishDate": "2026-03-02",
+      "url": "https://www.newyorktheatreguide.com/show/45803-the-amazing-sex-life-of-rabbits",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"hulu\""
         }
       ]
     },
@@ -121083,6 +121123,20 @@
       "score": 91,
       "publishDate": null,
       "url": "https://apnews.com/68995e0af1a841279e28b3c693cf3cf2",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "skylight-2015",
+      "file": "denver-post--mark-kennedy.json",
+      "score": 88,
+      "publishDate": null,
+      "url": "http://www.denverpost.com/election2014/ci_27840153/review-skylight-broadway-is-funny-and-poignant",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
