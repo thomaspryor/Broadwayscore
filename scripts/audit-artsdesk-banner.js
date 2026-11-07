@@ -43,7 +43,8 @@ function scan(root, { show, year } = {}) {
     if (year && !new RegExp(`-${year}$`).test(s)) continue;
     const dir = path.join(root, s);
     if (!fs.existsSync(dir)) continue;
-    for (const f of fs.readdirSync(dir).filter((x) => x.endsWith('.json'))) {
+    let names; try { names = fs.readdirSync(dir); } catch { continue; }
+    for (const f of names.filter((x) => x.endsWith('.json'))) {
       let d; try { d = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8')); } catch { continue; }
       if (!isArtsDeskFile(f, d)) continue;
       out.push({ show: s, file: f, contentTier: d.contentTier || null, url: d.url || null, ...classify(d) });
