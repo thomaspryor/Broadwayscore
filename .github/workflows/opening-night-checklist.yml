@@ -391,6 +391,27 @@ jobs:
           PRESS_NIGHT_FIX_CARDS_DISABLED: ${{ vars.PRESS_NIGHT_FIX_CARDS_DISABLED }}
         run: timeout -k 10 180 node scripts/produce-press-night-digest-snapshot.js --file-cards || echo "::warning::press-night morning grade failed"
 
+      # BRO-7082: grade every opening of the last 14 days in all four markets:
+      # did its reviews go live on their own, or did a person / Claude session
+      # step in during opening week (scripts/lib/opening-grade.js). Once a day:
+      # skips while data/audit/opening-grades.json is under 20h old. The grade
+      # reads review-texts git history, so it first deepens the depth-1 clone
+      # to 25 days (commits and trees only, --filter=blob:none: ~50 MB, ~15s
+      # measured); without that history every opening grades "not-gradable",
+      # never a pass. Advisory (§19): never fails the job. Single writer of
+      # the file; the telemetry commit below stages it.
+      - name: Opening grades (BRO-7082)
+        if: always() && inputs.dry_run != true
+        continue-on-error: true
+        run: |
+          if node -e "const f='data/audit/opening-grades.json';let t=0;try{t=Date.parse(require('./'+f).generatedAt)}catch{}process.exit(Date.now()-t<20*3600e3?0:1)"; then
+            echo "opening grades are under 20h old, skipping"; exit 0
+          fi
+          SINCE=$(date -u -d '25 days ago' +%Y-%m-%d)
+          timeout -k 10 240 git -C data/review-texts fetch -q --filter=blob:none --shallow-since="$SINCE" origin main \
+            || echo "::warning::review-texts history deepen failed; openings will grade not-gradable"
+          timeout -k 10 180 node scripts/grade-openings.js || echo "::warning::opening grades failed"
+
       - name: Commit shared audit telemetry
         # W2.1 (task #1073): must run even when an earlier step now fails hard
         # (checklist crash, or SLA dispatch no longer has continue-on-error) —
@@ -450,6 +471,8 @@ jobs:
           # press-night-digest-snapshot.json (BRO-6645): single writer (the step
           # above), regenerated every hour, so a lost push self-heals next tick.
           git add data/audit/press-night-digest-snapshot.json 2>/dev/null || true
+          # opening-grades.json (BRO-7082): single writer (the step above), daily.
+          git add data/audit/opening-grades.json 2>/dev/null || true
           if git diff --staged --quiet; then
             echo "No shared audit telemetry changes to commit"
           else

@@ -64,6 +64,10 @@ const SNAPSHOTS = [
   // opening-night-checklist.yml and committed. Rendered in the owner-first top of the email.
   // optionalIfMissing until the first run lands the file on main.
   { key: 'pressNight', label: "last night's openings", file: 'press-night-digest-snapshot.json', maxAgeH: 36, optionalIfMissing: true },
+  // scripts/grade-openings.js (BRO-7082): did each opening of the last two weeks, in all four markets,
+  // get its reviews live on its own or need a person / Claude session. Produced daily in
+  // opening-night-checklist.yml. Missing renders "not checked yet" in the block itself.
+  { key: 'openingGrades', label: 'opening grades', file: 'opening-grades.json', maxAgeH: 36, optionalIfMissing: true },
   // backlogDrain REMOVED 2026-09-15 (BRO-3390). Its producer,
   // scripts/backlog-drain.js, was deliberately decommissioned on 2026-08-31
   // when the board moved to Linear — so data/audit/backlog-drain-metric.json

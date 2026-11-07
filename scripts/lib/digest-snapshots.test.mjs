@@ -92,8 +92,8 @@ test('describeProblems names every non-fresh source; null when all fresh', () =>
   assert.match(note, /^didn't update overnight:/);
 });
 
-test('registry covers exactly the folded digests (opening digest is standalone again since 2026-07-30; coverageVerdict added #905; trunk added #1003; p1RelevanceAudit added #1719; predispatchQueue added #1801; dispatchGuardQueue added #1802; doneEvidence added BRO-3426; guardAudit added BRO-3011; backlogDrain REMOVED BRO-3390 when its producer was retired; newShowTypes added BRO-6542; pressNight added BRO-6645)', () => {
-  assert.deepEqual(SNAPSHOTS.map((s) => s.key).sort(), ['coverageVerdict', 'dailyDigest', 'dispatchGuardQueue', 'doneEvidence', 'guardAudit', 'health', 'newShowTypes', 'p1RelevanceAudit', 'predispatchQueue', 'pressNight', 'providerSpend', 'redditDigest', 'trunk']);
+test('registry covers exactly the folded digests (opening digest is standalone again since 2026-07-30; coverageVerdict added #905; trunk added #1003; p1RelevanceAudit added #1719; predispatchQueue added #1801; dispatchGuardQueue added #1802; doneEvidence added BRO-3426; guardAudit added BRO-3011; backlogDrain REMOVED BRO-3390 when its producer was retired; newShowTypes added BRO-6542; pressNight added BRO-6645; openingGrades added BRO-7082)', () => {
+  assert.deepEqual(SNAPSHOTS.map((s) => s.key).sort(), ['coverageVerdict', 'dailyDigest', 'dispatchGuardQueue', 'doneEvidence', 'guardAudit', 'health', 'newShowTypes', 'openingGrades', 'p1RelevanceAudit', 'predispatchQueue', 'pressNight', 'providerSpend', 'redditDigest', 'trunk']);
   assert.ok(!SNAPSHOTS.some((s) => s.key === 'backlogDrain'),
     'backlog-drain-metric.json froze on 2026-08-31 when scripts/backlog-drain.js was decommissioned; re-registering it would resume a permanent daily "stale" warning in the owner digest');
 });
@@ -120,6 +120,10 @@ function sampleSnapshotValue(key) {
   if (key === 'pressNight') {
     // The night before the test's "now" (2026-07-30 12:00Z), as the producer writes it.
     return { generatedAt: '2026-07-30T06:54:26.128Z', night: '2026-07-29', lines: [{ verdict: 'PASS', line: 'Sample: 18 of 18 reviews live by 1:04am, passed.' }] };
+  }
+  if (key === 'openingGrades') {
+    return { generatedAt: '2026-07-30T06:54:26.128Z', from: '2026-07-16', to: '2026-07-30', summary: null,
+      grades: [{ showId: 's', title: 'Sample', category: 'broadway', openingDate: '2026-07-28', live: 3, known: null, verdict: 'on-its-own', windowClosed: false, signals: [] }] };
   }
   if (key === 'health') {
     return {
