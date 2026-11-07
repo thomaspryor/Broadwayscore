@@ -1,7 +1,7 @@
 {
-  "generated": "2026-11-07T02:41:20.523Z",
+  "generated": "2026-11-07T02:53:41.982Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 42,
+  "count": 43,
   "orphans": [
     {
       "showId": "33-variations-2009",
@@ -267,6 +267,13 @@
       "loserFile": "whatsonstage--unknown.json",
       "targetFile": "whatsonstage--sarah-crompton.json",
       "reason": "orphaned-duplicate-heal: whatsonstage--sarah-crompton.json was flagged invalid after whatsonstage--unknown.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
+      "showId": "the-lives-of-others-west-end-2026",
+      "loserFile": "independent--unknown.json",
+      "targetFile": "independent--lizzie-edmonds.json",
+      "reason": "orphaned-duplicate-heal: independent--lizzie-edmonds.json was flagged invalid after independent--unknown.json was pointed at it",
       "field": "duplicateOf"
     },
     {

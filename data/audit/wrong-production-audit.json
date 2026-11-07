@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-07T02:49:06.764Z",
+  "timestamp": "2026-11-07T03:02:00.647Z",
   "stats": {
-    "totalReviews": 80375,
-    "alreadyFlagged": 22019,
+    "totalReviews": 80378,
+    "alreadyFlagged": 22020,
     "dateGuardCatches": 216,
     "directorMismatch": 3520,
-    "tvFilmSignals": 2288,
+    "tvFilmSignals": 2289,
     "londonSignals": 3625,
     "offBroadwaySignals": 744,
     "yearMismatch": 362,
-    "noPublishDate": 8454
+    "noPublishDate": 8453
   },
   "findings": [
     {
@@ -58190,6 +58190,19 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2023 (2x) more than 2025 (0x). 2023 matches production: spamalot-2023"
+        }
+      ]
+    },
+    {
+      "showId": "speculations-off-west-end-2026",
+      "file": "jonathan-baz--unknown.json",
+      "publishDate": "2026-11-04",
+      "url": "http://www.jonathanbaz.com/2026/11/speculations-review.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
@@ -131410,7 +131423,7 @@
     },
     {
       "showId": "the-moderate-soprano-west-end-2018",
-      "file": "artsdesk--unknown.json",
+      "file": "artsdesk--david-nice.json",
       "score": 81,
       "publishDate": null,
       "url": "https://theartsdesk.com/theatre/moderate-soprano-duke-yorks-theatre-review-love-and-opera-flinty-edge",
@@ -132291,7 +132304,7 @@
     },
     {
       "showId": "the-philanthropist-west-end-2017",
-      "file": "artsdesk--unknown.json",
+      "file": "artsdesk--veronica-lee.json",
       "score": 41,
       "publishDate": null,
       "url": "https://theartsdesk.com/theatre/philanthropist-trafalgar-studios-review-simon-callows-direction-underpowered",
@@ -132959,7 +132972,7 @@
     {
       "showId": "the-price-off-west-end-2026",
       "file": "guardian--unknown.json",
-      "publishDate": "April 24th, 2026",
+      "publishDate": "2026-04-24",
       "url": "https://www.theguardian.com/stage/2026/apr/24/the-price-review-marylebone-theatre-london-arthur-miller-henry-goodman",
       "findings": [
         {
@@ -134349,7 +134362,7 @@
     },
     {
       "showId": "the-tell-tale-heart-west-end-2018",
-      "file": "artsdesk--unknown.json",
+      "file": "artsdesk--matt-wolf.json",
       "score": 83,
       "publishDate": null,
       "url": "https://theartsdesk.com/theatre/tell-tale-heart-national-theatre-review-bloody-good-fun-well-bloody",
@@ -134600,7 +134613,7 @@
     },
     {
       "showId": "the-two-gentlemen-of-verona-royal-shakespeare-regional-2025",
-      "file": "artsdesk--unknown.json",
+      "file": "artsdesk--gary-naylor.json",
       "score": 66,
       "publishDate": null,
       "url": "https://theartsdesk.com/theatre/two-gentlemen-verona-rsc-stratford-review-not-quite-intended-gateway-drug-shakespeare",
