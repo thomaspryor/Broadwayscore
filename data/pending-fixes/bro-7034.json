@@ -1,0 +1,45 @@
+{
+  "issueNumber": "bro-7034",
+  "planId": "75f48814-80a2-4ff5-b8a5-490745d44a15",
+  "status": "pending",
+  "createdAt": "2026-11-07T20:57:28.350Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7034: correct First Date and Ghost NYT critic names and normalize Paul Taylor; review refetches, OCR cleanup and URL recovery remain outstanding",
+    "steps": [
+      "BRO-7034: correct the mislabeled NYT copy to Charles Isherwood. BRO-6774-c confirmed the article byline; the same article already has a nytimes--charles-isherwood.json sibling. The About Entertainment copy already has the correct critic name and is excluded as a duplicate.",
+      "BRO-7034: correct the mislabeled NYT copy to Charles Isherwood. BRO-6774-c confirmed the article byline; its body is byte-identical to the existing nytimes--charles-isherwood.json sibling. Preserve the existing duplicate decisions.",
+      "BRO-7034: normalize the stored PaulTaylor name to Paul Taylor, as named by the card and filename. This metadata correction does not validate the mixed OCR body or repair the bomb-threat URL; those still need review recovery outside this worker."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "first-date-2013/nytimes--ben-brantley.json",
+        "field": "criticName",
+        "oldValue": "Ben Brantley",
+        "newValue": "Charles Isherwood",
+        "description": "BRO-7034: correct the mislabeled NYT copy to Charles Isherwood. BRO-6774-c confirmed the article byline; the same article already has a nytimes--charles-isherwood.json sibling. The About Entertainment copy already has the correct critic name and is excluded as a duplicate."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "ghost-the-musical-2012/nytimes--ben-brantley.json",
+        "field": "criticName",
+        "oldValue": "Ben Brantley",
+        "newValue": "Charles Isherwood",
+        "description": "BRO-7034: correct the mislabeled NYT copy to Charles Isherwood. BRO-6774-c confirmed the article byline; its body is byte-identical to the existing nytimes--charles-isherwood.json sibling. Preserve the existing duplicate decisions."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-lion-king-west-end-2021/independent--paul-taylor.json",
+        "field": "criticName",
+        "oldValue": "PaulTaylor",
+        "newValue": "Paul Taylor",
+        "description": "BRO-7034: normalize the stored PaulTaylor name to Paul Taylor, as named by the card and filename. This metadata correction does not validate the mixed OCR body or repair the bomb-threat URL; those still need review recovery outside this worker."
+      }
+    ]
+  }
+}
