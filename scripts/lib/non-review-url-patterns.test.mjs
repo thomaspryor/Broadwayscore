@@ -840,8 +840,9 @@ test('listingPageUrlReason: BWW Previews/Interview/Photos features are not revie
 
 // BRO-7079 (BRO-4430 class): a live review whose url is a roundup/aggregator
 // page. The ingest and merge guards now refuse new ones; this ratchet catches
-// any that reach reviews.json another way. Baseline 1 = Black Swan BWW row,
-// repaired by data/pending-fixes/bro-7079.json; lower it to 0 once applied.
+// any that reach reviews.json another way. Baseline 1 = Black Swan BWW row, a
+// manualEntry carried over by manual-entry-merge.js (fixed there); lower to 0
+// after the next rebuild.
 test('reviews.json: no new included review stores an aggregator-page url', () => {
   const fs = require('fs');
   const path = require('path');

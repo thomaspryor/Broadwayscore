@@ -47,6 +47,15 @@ if (!showId || !outletArg || !criticName) {
   process.exit(1);
 }
 
+// BRO-7079 (BRO-4430 class): a roundup / aggregator page is never the critic's
+// own review url. The manual entry is the last write into reviews.json, so a
+// roundup url typed here replaced the real article url on every rebuild.
+if (url && require('./lib/review-slot-guards').isAggregatorPageUrl(url)) {
+  console.error(`Refused: --url is a roundup/aggregator page, not ${criticName}'s own review: ${url}`);
+  console.error('Pass the critic\'s own article url (follow the link from the roundup), or omit --url.');
+  process.exit(1);
+}
+
 // --- Resolve outlet ---
 const { resolveCanonicalOutletId } = require('./lib/outlet-canonicalize');
 const _resolved = resolveCanonicalOutletId({ outletArg, url });

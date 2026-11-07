@@ -117,6 +117,12 @@ function findPipelineTwin(manual, reviews, normalizeUrl) {
   return null;
 }
 
+/** True when the manual row points at a roundup/aggregator page and its scored twin has the critic's own url (BRO-7079). */
+function manualUrlIsAggregatorOverOwn(manual, twin) {
+  const { isAggregatorPageUrl } = require('./review-slot-guards');
+  return !!(manual.url && twin && twin.url && isAggregatorPageUrl(manual.url) && !isAggregatorPageUrl(twin.url));
+}
+
 /**
  * Merge manual entries into the rebuilt review set, in place.
  *
@@ -159,6 +165,15 @@ function mergeManualEntries(reviews, manualEntries, normalizeUrl) {
       const merged = { ...manual };
       if (twin.review.designation) merged.designation = twin.review.designation;
       else delete merged.designation;
+      // BRO-7079 (BRO-4430 class): a manual score typed against a review
+      // roundup keeps the roundup url, and this merge is the last write, so it
+      // replaced the critic's own article url on every rebuild (Black Swan,
+      // R. Scott Reedy). The human owns the score; the url and its date belong
+      // to the twin when the manual url is an aggregator page and the twin's is not.
+      if (manualUrlIsAggregatorOverOwn(manual, twin.review)) {
+        merged.url = twin.review.url;
+        if (twin.review.publishDate) merged.publishDate = twin.review.publishDate;
+      }
       if (idx >= 0) reviews[idx] = merged;
       preserved++;
       if (twin.matchedBy.startsWith('url')) matchedByUrl++;
@@ -178,4 +193,4 @@ function mergeManualEntries(reviews, manualEntries, normalizeUrl) {
   return { preserved, appended, matchedByUrl, matchedCrossOutlet };
 }
 
-module.exports = { criticKey, tierRank, isUnknownByline, isMergeFossilAnchor, findPipelineTwin, mergeManualEntries };
+module.exports = { manualUrlIsAggregatorOverOwn, criticKey, tierRank, isUnknownByline, isMergeFossilAnchor, findPipelineTwin, mergeManualEntries };
