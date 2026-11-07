@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-07T03:21:10.264Z",
+  "timestamp": "2026-11-07T03:41:40.869Z",
   "stats": {
-    "totalReviews": 80377,
+    "totalReviews": 80378,
     "alreadyFlagged": 22020,
     "dateGuardCatches": 216,
     "directorMismatch": 3520,
     "tvFilmSignals": 2289,
-    "londonSignals": 3625,
+    "londonSignals": 3626,
     "offBroadwaySignals": 744,
     "yearMismatch": 362,
-    "noPublishDate": 8452
+    "noPublishDate": 8450
   },
   "findings": [
     {
@@ -87864,6 +87864,20 @@
       "score": null,
       "publishDate": "2017-06-12",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/brave-play-anatomy-suicide-royal-court-downstairs-review/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "anatomy-of-a-suicide-west-end-2017",
+      "file": "variety--matt-trueman.json",
+      "score": null,
+      "publishDate": "2017-06-13",
+      "url": "https://variety.com/2017/legit/reviews/anatomy-of-a-suicide-review-royal-court-1202464426/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
