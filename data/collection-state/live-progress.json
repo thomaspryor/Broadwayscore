@@ -1,42 +1,120 @@
 {
-  "updatedAt": "2026-11-07T16:16:30.252Z",
-  "processed": 36,
-  "failed": 44,
-  "successRate": "45.0%",
+  "updatedAt": "2026-11-07T15:43:31.000Z",
+  "processed": 68,
+  "failed": 78,
+  "successRate": "46.6%",
   "tierBreakdown": {
-    "playwright": 19,
+    "playwright": 37,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 1,
     "directCookies": 0,
-    "scrapingdog": 6,
-    "scrapingbee": 2,
+    "scrapingdog": 7,
+    "scrapingbee": 4,
     "brightdata": 1,
     "archiveToday": 0,
-    "archive": 10
+    "archive": 18
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 0,
   "recentActivity": [
     {
-      "t": "2026-11-07T15:59:59.432Z",
+      "t": "2026-11-07T14:35:27.420Z",
       "event": "bb-session",
-      "session": "2543d2e6",
-      "url": "https://www.nytimes.com/2026/11/05/theater/rope-the-verge-review-off-broadway-si"
+      "session": "abc8d13a",
+      "url": "http://www.talkinbroadway.com/ob/10_05_15.html"
     },
     {
-      "t": "2026-11-07T16:00:00.065Z",
+      "t": "2026-11-07T14:35:27.761Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-07T14:36:58.947Z",
+      "event": "bb-session",
+      "session": "20abff8b",
+      "url": "http://www.talkinbroadway.com/page/ob/2_29_16.html"
+    },
+    {
+      "t": "2026-11-07T14:36:59.262Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-07T14:42:22.658Z",
+      "event": "bb-session",
+      "session": "de3618cb",
+      "url": "http://dandwyeroffscript.tumblr.com/post/142079438846/straight"
+    },
+    {
+      "t": "2026-11-07T14:46:47.451Z",
+      "event": "bb-session",
+      "session": "f3945d36",
+      "url": "http://www.talkinbroadway.com/ob/11_11_15.html"
+    },
+    {
+      "t": "2026-11-07T14:46:47.817Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-07T14:51:06.827Z",
+      "event": "bb-session",
+      "session": "87896814",
+      "url": "http://www.talkinbroadway.com/page/ob/1_28_16.html"
+    },
+    {
+      "t": "2026-11-07T14:51:07.170Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-07T14:52:08.091Z",
+      "event": "bb-session",
+      "session": "8aac437f",
+      "url": "https://www.nytimes.com/2026/11/06/theater/the-unbelievers-222-a-ghost-story-rev"
+    },
+    {
+      "t": "2026-11-07T14:52:08.366Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     },
     {
-      "t": "2026-11-07T16:00:16.894Z",
+      "t": "2026-11-07T14:52:24.603Z",
       "event": "bb-session",
-      "session": "7501590c",
+      "session": "94c400aa",
+      "url": "https://www.nytimes.com/2026/11/06/theater/the-unbelievers-222-a-ghost-story-rev"
+    },
+    {
+      "t": "2026-11-07T14:52:24.923Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-07T14:53:04.165Z",
+      "event": "bb-session",
+      "session": "bbc8af7e",
       "url": "https://www.nytimes.com/2026/11/05/theater/rope-the-verge-review-off-broadway-si"
     },
     {
-      "t": "2026-11-07T16:00:17.447Z",
+      "t": "2026-11-07T14:53:04.539Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-07T14:53:20.729Z",
+      "event": "bb-session",
+      "session": "798ebe63",
+      "url": "https://www.nytimes.com/2026/11/05/theater/rope-the-verge-review-off-broadway-si"
+    },
+    {
+      "t": "2026-11-07T14:53:21.039Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-07T15:18:49.535Z",
+      "event": "bb-session",
+      "session": "ad6148c2",
+      "url": "http://www.publictheater.org/"
     }
   ]
 }

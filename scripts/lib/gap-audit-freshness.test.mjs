@@ -42,8 +42,8 @@ test('show opening within 24h is prioritized (Talkin Broadway publishes early)',
 
 test('closed show never gets opening-window freshness even if opened recently', () => {
   assert.equal(inOpeningPriorityWindow(closedRecentlyInWindow, NOW), false);
-  // closed with prior gaps → daily (in the 21-day window, BRO-7081), not 55min
-  assert.equal(freshnessMsFor(closedRecentlyInWindow, { gaps: 3 }, { now: NOW }), require('./gap-audit-freshness.js').SLOW_MARKET_DAILY_FRESHNESS_MS);
+  // closed with prior gaps → 14d retry, not 55min
+  assert.equal(freshnessMsFor(closedRecentlyInWindow, { gaps: 3 }, { now: NOW }), 14 * DAY);
 });
 
 test('opening-window show re-audits every hourly run (55min freshness)', () => {
@@ -133,7 +133,7 @@ test('never-audited ties: live show ahead of closed, newest opening first (BRO-4
 });
 
 test('audit age still wins over the new tie-break', () => {
-  const recentAudited = { id: 'recent', status: 'open', openingDate: iso(25 * DAY) }; // past the 21-day window (BRO-7081 tiers in-window shows ahead)
+  const recentAudited = { id: 'recent', status: 'open', openingDate: iso(11 * DAY) };
   const staleAudited = { id: 'stale', status: 'closed', openingDate: iso(400 * DAY) };
   const checkpoint = {
     stale: { at: new Date(NOW - 20 * DAY).toISOString() },
@@ -161,17 +161,17 @@ test('alerting show inside the 21-day alert window sorts ahead of an older back-
 });
 
 test('alert-window tier needs a live show with uncollected reviews on its row', () => {
-  const { auditTier, SLOW_MARKET_TIER } = require('./gap-audit-freshness.js');
+  const { auditTier } = require('./gap-audit-freshness.js');
   const show = { id: 'x', status: 'open', openingDate: iso(15 * DAY) };
   assert.equal(auditTier(show, { uncollected: 1 }, NOW), 1);
   // BRO-6687: recently audited (an undated entry reads as stale -> tier 1.75)
   const fresh = new Date(NOW - DAY).toISOString();
-  assert.equal(auditTier(show, { at: fresh, uncollected: 0 }, NOW), SLOW_MARKET_TIER, 'BRO-7081: clean in-window show keeps the daily tier');
+  assert.equal(auditTier(show, { at: fresh, uncollected: 0 }, NOW), 2);
   assert.equal(auditTier(show, undefined, NOW), 1, "never audited in the alert window: check it first");
   // BRO-5513: a closed show's stale row still fires the alert, so it refreshes like a live one
   assert.equal(auditTier({ ...show, status: 'closed' }, { uncollected: 1 }, NOW), 1);
-  assert.equal(auditTier({ ...show, status: 'closed' }, { at: fresh, uncollected: 16, alertUncollected: 0 }, NOW), SLOW_MARKET_TIER);
-  assert.equal(auditTier({ ...show, status: 'closed' }, { at: fresh, uncollected: 0 }, NOW), SLOW_MARKET_TIER);
+  assert.equal(auditTier({ ...show, status: 'closed' }, { at: fresh, uncollected: 16, alertUncollected: 0 }, NOW), 2);
+  assert.equal(auditTier({ ...show, status: 'closed' }, { at: fresh, uncollected: 0 }, NOW), 2);
   assert.equal(auditTier({ ...show, openingDate: iso(40 * DAY) }, { at: fresh, uncollected: 1 }, NOW), 2);
   assert.equal(auditTier(openedToday, undefined, NOW), 0);
 });
@@ -179,8 +179,8 @@ test('alert-window tier needs a live show with uncollected reviews on its row', 
 test('BRO-5513: closed in-window show with an alerting row re-audits at 12h, not 14d', () => {
   const closedAlerting = { id: 'mfm', status: 'closed', openingDate: iso(10 * DAY) };
   assert.equal(freshnessMsFor(closedAlerting, { gaps: 20, uncollected: 16 }, { freshnessHours: 12, now: NOW }), 12 * 60 * 60 * 1000);
-  // census-only churn (alertUncollected 0): daily while in the window (BRO-7081), 14d after
-  assert.equal(freshnessMsFor(closedAlerting, { gaps: 20, uncollected: 16, alertUncollected: 0 }, { now: NOW }), require('./gap-audit-freshness.js').SLOW_MARKET_DAILY_FRESHNESS_MS);
+  // census-only churn (alertUncollected 0) keeps the 14d retry
+  assert.equal(freshnessMsFor(closedAlerting, { gaps: 20, uncollected: 16, alertUncollected: 0 }, { now: NOW }), 14 * DAY);
   // past the alert window it is no longer read
   const old = { id: 'o', status: 'closed', openingDate: iso(60 * DAY) };
   assert.equal(freshnessMsFor(old, { gaps: 2, uncollected: 2 }, { now: NOW }), 14 * DAY);
@@ -221,12 +221,15 @@ test('closed slow-market show inside the window still re-audits daily (no 365d/1
   assert.equal(auditTier({ ...closed, openingDate: iso(40 * DAY) }, { at: fresh, gaps: 0 }, NOW), 2);
 });
 
-test('slow-market tier leaves alerting rows and out-of-window shows unchanged', () => {
+test('slow-market tier leaves alerting rows, Broadway and out-of-window shows unchanged', () => {
   const { auditTier } = require('./gap-audit-freshness.js');
   const we = { id: 'we', status: 'open', category: 'west-end', openingDate: iso(10 * DAY) };
   const clean = { at: new Date(NOW - DAY).toISOString(), gaps: 0, uncollected: 0 };
   assert.equal(auditTier(we, { uncollected: 2 }, NOW), 1, 'a row with a gap stays in the alerting tier');
   assert.equal(freshnessMsFor(we, { gaps: 2, uncollected: 2 }, { now: NOW }), 12 * 60 * 60 * 1000);
+  assert.equal(auditTier({ ...we, category: 'broadway' }, clean, NOW), 2);
+  assert.equal(freshnessMsFor({ ...we, category: 'broadway' }, clean, { now: NOW }), 12 * 60 * 60 * 1000);
+  assert.equal(freshnessMsFor({ ...we, category: 'broadway' }, clean, { freshnessHours: 72, now: NOW }), 72 * 60 * 60 * 1000);
   assert.equal(auditTier({ ...we, openingDate: iso(25 * DAY) }, clean, NOW), 2);
   assert.equal(auditTier({ ...we, openingDate: iso(3 * DAY) }, clean, NOW), 0, 'priority window still wins');
   assert.equal(freshnessMsFor({ ...we, openingDate: iso(1 * DAY) }, clean, { now: NOW }), 55 * 60 * 1000, 'hot window keeps its hourly freshness');
@@ -303,9 +306,7 @@ test('BRO-6751: last-year closed show keeps the 30d cap only while it has gaps o
   assert.equal(freshnessMsFor(closedClean, clean, { now: NOW }), 365 * DAY);
   assert.equal(freshnessMsFor(closedClean, { gaps: 2, uncollected: 0 }, { now: NOW }), 14 * DAY);
   const shortRun = { id: 'short', status: 'closed', category: 'broadway', openingDate: iso(10 * DAY) };
-  // in the 21-day window it re-audits daily (BRO-7081); at day 25 the 30d cap applies
-  assert.equal(freshnessMsFor(shortRun, clean, { now: NOW }), require('./gap-audit-freshness.js').SLOW_MARKET_DAILY_FRESHNESS_MS);
-  assert.equal(freshnessMsFor({ ...shortRun, openingDate: iso(25 * DAY) }, clean, { now: NOW }), LAST_YEAR_MAX_FRESHNESS_MS);
+  assert.equal(freshnessMsFor(shortRun, clean, { now: NOW }), LAST_YEAR_MAX_FRESHNESS_MS);
   // judged at audit time: clean audit on day 10, checked again on day 45, keeps the cap
   const openedDay45 = { id: 'd45', status: 'closed', category: 'broadway', openingDate: iso(45 * DAY) };
   const earlyClean = { at: new Date(NOW - 35 * DAY).toISOString(), gaps: 0, uncollected: 0 };
@@ -370,28 +371,4 @@ test('BRO-6687: an in-window slow-market row without a numeric residual never ea
   assert.ok(freshnessMsFor(show, clean, { now }) > 0);
   const { slowMarketResidual, ...noResidual } = clean;
   assert.equal(freshnessMsFor(show, noResidual, { now }), 0);
-});
-
-// BRO-7081: Broadway, regional and tour shows in days 8-21 starved the same way
-// (Other Desert Cities, Broadway, opened 2026-10-18, audited clean on day 6,
-// then sat 166h in tier 2 while an exeunt review and a blog review were cited).
-test('every market in days 8-21 gets the daily tier, not the back catalogue', () => {
-  const { auditTier, compareAuditPriority, SLOW_MARKET_TIER, SLOW_MARKET_DAILY_FRESHNESS_MS } = require('./gap-audit-freshness.js');
-  const clean = { at: new Date(NOW - 7 * DAY).toISOString(), gaps: 0, uncollected: 0, alertUncollected: 0 };
-  for (const category of ['broadway', 'regional', 'tour']) {
-    const show = { id: category, status: 'open', category, openingDate: iso(13 * DAY) };
-    assert.equal(auditTier(show, clean, NOW), SLOW_MARKET_TIER, category);
-    assert.equal(freshnessMsFor(show, clean, { now: NOW }), 12 * 60 * 60 * 1000, `${category} keeps the 12h default`);
-    assert.equal(freshnessMsFor(show, clean, { freshnessHours: 72, now: NOW }), SLOW_MARKET_DAILY_FRESHNESS_MS, `${category} capped daily`);
-    const closed = { ...show, status: 'closed' };
-    assert.equal(auditTier(closed, clean, NOW), SLOW_MARKET_TIER, `closed ${category}`);
-    assert.equal(freshnessMsFor(closed, clean, { now: NOW }), SLOW_MARKET_DAILY_FRESHNESS_MS, `closed ${category} re-audits daily`);
-    // past the window it falls back to the normal schedule
-    assert.equal(auditTier({ ...show, openingDate: iso(40 * DAY) }, { ...clean, at: new Date(NOW - DAY).toISOString() }, NOW), 2, `${category} day 40`);
-  }
-  // the replayed case: sorts ahead of a back-catalogue show audited longer ago
-  const odc = { id: 'other-desert-cities-2026', status: 'open', category: 'broadway', openingDate: iso(13 * DAY) };
-  const backlog = { id: 'old', status: 'closed', category: 'broadway', openingDate: iso(900 * DAY) };
-  const cp = { [odc.id]: clean, old: { at: new Date(NOW - 20 * DAY).toISOString(), gaps: 2, uncollected: 2 } };
-  assert.ok(compareAuditPriority(odc, backlog, cp, NOW) < 0, 'in-window Broadway show audits before the back catalogue');
 });

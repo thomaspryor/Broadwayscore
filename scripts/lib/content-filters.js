@@ -98,6 +98,7 @@ function isNotBroadway(text, options = {}) {
  *
  * Per CLAUDE.md §6, URL years are unreliable for positive matching
  * but safe as a reject filter.
+ * (Defined below, after the CurtainUp suffix-year helpers it uses.)
  */
 /**
  * CurtainUp names review pages with a two-digit year suffix and no /YYYY/

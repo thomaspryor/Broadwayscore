@@ -131,9 +131,8 @@ test('BRO-5275: refuses submissions on aggregator, event and listing hosts the v
     ]) {
       const r = submit(dir, outlet, url);
       assert.equal(r.guardRefused, true, url);
-      // show-score is refused earlier by the listing-page guard; so are the bare
-      // /shows/<slug> hubs since BRO-7081 (show-hub). inyougo reaches this guard.
-      if (!/show-score/.test(url)) assert.match(r.reason, /^(submitted-non-review-url: (blocked-domain|census-junk-host)|listing-page-url: show-hub)/, url);
+      // show-score is refused earlier by the listing-page guard; the other four by this one.
+      if (!/show-score/.test(url)) assert.match(r.reason, /^submitted-non-review-url: (blocked-domain|census-junk-host)/, url);
     }
     assert.equal(fs.existsSync(path.join(dir, SHOW)), false, 'nothing written');
   } finally { fs.rmSync(dir, { recursive: true, force: true }); }

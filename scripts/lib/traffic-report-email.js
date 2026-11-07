@@ -347,7 +347,7 @@ async function sendTrafficReportEmail({ reportPath, summaryPath, metricsPath, da
   }
   const accounts = loadAccountsSection(accountsPath, accountsUrl);
   const social = loadSocialSection(socialPath);
-  const html = require('./email-type-floor.js').enforceTypeFloor(buildHtml(body, { runUrl, tiles, images: charts.images, dashboardUrl, accounts, social }));
+  const html = buildHtml(body, { runUrl, tiles, images: charts.images, dashboardUrl, accounts, social });
   if (dryRun) {
     console.log(`[email] DRY RUN — would send "${subject}" to ${OWNER_EMAIL} (${html.length} bytes HTML, ${tiles ? tiles.length : 0} tiles, ${charts.images.length} charts, ${md.length} bytes attachment)`);
     return { sent: false, reason: 'dry-run', subject, html, attachments: charts.attachments };

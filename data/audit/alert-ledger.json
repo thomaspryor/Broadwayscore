@@ -5526,13 +5526,13 @@
       "title": "Data audits failing (non-blocking): Validate market expansion, Audit outlet-registry gaps",
       "firstSeen": "2026-09-23T19:33:16.776Z",
       "incidentOpenedAt": "2026-09-23T19:33:16.776Z",
-      "lastSeen": "2026-11-07T16:25:07.729Z",
+      "lastSeen": "2026-11-07T15:24:47.040Z",
       "lastNotifiedAt": "2026-11-07T12:49:33.576Z",
       "lastSurfacedAt": "2026-11-05T12:12:51.744Z",
       "notifyCount": 39,
       "cardId": null,
       "linearIdentifier": "BRO-5882",
-      "silentRefires": 5
+      "silentRefires": 2
     },
     "review-gap:opening-window:elf-lyons-the-woman-on-the-edge-off-broadway-2026": {
       "status": "resolved",
@@ -29269,13 +29269,13 @@
       "title": "LLM scoring repeated work detected",
       "firstSeen": "2026-10-28T01:59:32.020Z",
       "incidentOpenedAt": "2026-10-28T01:59:32.020Z",
-      "lastSeen": "2026-11-07T16:08:55.118Z",
+      "lastSeen": "2026-11-07T15:18:20.318Z",
       "lastNotifiedAt": "2026-11-07T12:24:52.785Z",
       "lastSurfacedAt": "2026-11-07T12:24:52.785Z",
       "notifyCount": 6,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 7
+      "silentRefires": 5
     },
     "opening-night-placeholder-synopsis-medea-off-broadway-2026": {
       "status": "resolved",
@@ -38228,7 +38228,7 @@
       "linearIdentifier": null
     },
     "land:land/bro-7081-discovery": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "digest",
       "title": "Landing blocked: scripts-lib-tests red on land/bro-7081-discovery",
       "firstSeen": "2026-11-07T15:35:40.315Z",
@@ -38236,59 +38236,6 @@
       "lastSeen": "2026-11-07T15:35:40.315Z",
       "lastNotifiedAt": "2026-11-07T15:35:40.315Z",
       "lastSurfacedAt": "2026-11-07T15:35:40.315Z",
-      "notifyCount": 1,
-      "cardId": null,
-      "linearIdentifier": null,
-      "resolvedAt": "2026-11-07T16:13:47.644Z"
-    },
-    "land:land/job/linear-BRO-7076-mw6ivj43": {
-      "status": "open",
-      "disposition": "digest",
-      "title": "Landing blocked: toplevel-regression red on land/job/linear-BRO-7076-mw6ivj43",
-      "firstSeen": "2026-11-07T15:53:10.534Z",
-      "incidentOpenedAt": "2026-11-07T15:53:10.534Z",
-      "lastSeen": "2026-11-07T15:53:10.534Z",
-      "lastNotifiedAt": "2026-11-07T15:53:10.534Z",
-      "lastSurfacedAt": "2026-11-07T15:53:10.534Z",
-      "notifyCount": 1,
-      "cardId": null,
-      "linearIdentifier": null
-    },
-    "land:land/bro-7082-opening-grade": {
-      "status": "open",
-      "disposition": "digest",
-      "title": "Landing blocked: unit-tests-node red on land/bro-7082-opening-grade",
-      "firstSeen": "2026-11-07T16:08:54.578Z",
-      "incidentOpenedAt": "2026-11-07T16:08:54.578Z",
-      "lastSeen": "2026-11-07T16:08:54.578Z",
-      "lastNotifiedAt": "2026-11-07T16:08:54.578Z",
-      "lastSurfacedAt": "2026-11-07T16:08:54.578Z",
-      "notifyCount": 1,
-      "cardId": null,
-      "linearIdentifier": null
-    },
-    "land:land/bro-7077-attr-guards": {
-      "status": "open",
-      "disposition": "digest",
-      "title": "Landing blocked: unit-tests-node red on land/bro-7077-attr-guards",
-      "firstSeen": "2026-11-07T16:22:48.135Z",
-      "incidentOpenedAt": "2026-11-07T16:22:48.135Z",
-      "lastSeen": "2026-11-07T16:22:48.135Z",
-      "lastNotifiedAt": "2026-11-07T16:22:48.135Z",
-      "lastSurfacedAt": "2026-11-07T16:22:48.135Z",
-      "notifyCount": 1,
-      "cardId": null,
-      "linearIdentifier": null
-    },
-    "land:land/bro-7079-retro-guards": {
-      "status": "open",
-      "disposition": "digest",
-      "title": "Landing blocked: rebase red on land/bro-7079-retro-guards",
-      "firstSeen": "2026-11-07T16:25:07.548Z",
-      "incidentOpenedAt": "2026-11-07T16:25:07.548Z",
-      "lastSeen": "2026-11-07T16:25:07.548Z",
-      "lastNotifiedAt": "2026-11-07T16:25:07.548Z",
-      "lastSurfacedAt": "2026-11-07T16:25:07.548Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
