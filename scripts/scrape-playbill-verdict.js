@@ -344,8 +344,10 @@ function extractReviewLinksFromArticle(html, showId) {
       showId,
       sourceName: 'playbill-verdict-domain-supplement',
       excludeDomains: ['playbill.com', 'playbillder.com', 'playbillstore.com', 'playbillvault.com'],
-      // Playbill Verdict accepts ANY review URL (it's a discovery aggregator); don't gate on title slug.
-      urlTitleCheck: () => true,
+      // BRO-7077 (BRO-4369): Verdict accepts creative slugs, but an anchor whose
+      // slug announces another show ("review-in-falls-for-jodie-...") is a
+      // sidebar/related link, not this show's review (School Girls 2026).
+      urlTitleCheck: (u, t) => !require('./lib/review-normalization').reviewSlugNamesDifferentShow(u, t, { reviewInOnly: true }),
       makeStub: (oid, url) => {
         let outletDomain = '';
         try { outletDomain = new URL(url).hostname.replace(/^www\./, ''); } catch {}
