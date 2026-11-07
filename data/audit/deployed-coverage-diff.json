@@ -1,32 +1,13 @@
 {
-  "generatedAt": "2026-11-07T21:27:56.896Z",
+  "generatedAt": "2026-11-07T22:31:30.587Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 324,
-  "clean": 323,
-  "defective": 1,
-  "byType": {
-    "score-drift": 1
-  },
-  "shows": [
-    {
-      "showId": "nero-off-west-end-2026",
-      "title": "Nero",
-      "openingDate": "2026-11-06",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 39.1 vs local 38.67 (Δ0.43)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 6,
-      "deployedCount": 6,
-      "firstDefectAt": "2026-11-07T16:41:43.565Z"
-    }
-  ],
+  "checked": 327,
+  "clean": 327,
+  "defective": 0,
+  "byType": {},
+  "shows": [],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }
