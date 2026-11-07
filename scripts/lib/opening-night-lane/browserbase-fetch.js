@@ -1,0 +1,259 @@
+/**
+ * The lane's Browserbase route for outlets only a real browser can read (BRO-6073).
+ *
+ * Talkin' Broadway sits behind a Cloudflare managed challenge that Bright Data, ScrapingBee and headless Playwright do
+ * not pass from CI ("every Talkin' Broadway index failed" 59 times on 2026-10-29). collect-review-texts.js and
+ * collect-talkinbroadway-index.js get it through a Browserbase session with solveCaptchas; this is the same route for
+ * the lane. Only TB is routed: WSJ keeps fetchPage's free cookies tier (browserbase-route.js keeps 'direct-cookies'
+ * ahead of Browserbase) and the paywall-teaser excerpt fallback (BRO-6066).
+ *
+ * Spend. One session is shared by every routed fetch of the process (discovery and review fetch alike, a new page per
+ * fetch), created on first use and once at a time (single-flight), rotated before its timeout, at most `maxSessions`
+ * per run. createBbSession is the chokepoint: kill switch, day ceiling, reserves and the lane's caller allowance
+ * (browserbase-caps.js CALLER_ALLOWANCES 'opening-night-lane'). Shadow runs and replays tag their sessions SHADOW_CALLER,
+ * which has no allowance: they cannot spend the live night's trailing-24h allowance, and they stop at the account's
+ * recovery and opening-window reserves, so they never take the last sessions of a day a live night may need (BRO-6872).
+ * Both reserves hold only while the run is not an exempt caller (brightdata-caps isExemptCaller: BD_OPENING_NIGHT, a
+ * workflow named "Opening night ...", an allowlisted script); the lane workflow is none of these, and a unit test pins it. A refusal that will not change tonight (kill switch, no
+ * keys, allowance used, denied host, run cap) turns the route off for the run; any other refusal or failure to create
+ * or connect pauses it for `cooldownMs`. While the route is off, routed hosts go to plain fetchPage, as before.
+ *
+ * A 404/410 is an error with `status`, as fetchPage reports one: discovery skips a named TB page that is not filed yet,
+ * and inline scoring never scores a not-found page. It is not a reason to fall back to a paid fetch. A page still behind
+ * the challenge is an error with status 403 (no fallback: fetchPage fails TB the same way, slower), so inline scoring's
+ * paywall-thumb fallback still applies. Any other status is content: after the challenge is solved, page.goto still
+ * reports the challenge's 403 for the real page, so only verifyTbPage (or the scorer) judges it.
+ */
+'use strict';
+
+const BROWSERBASE_HOSTS = Object.freeze(['talkinbroadway.com']);
+const CALLER = 'opening-night-lane';
+const SHADOW_CALLER = 'opening-night-lane-shadow';
+const LATCHING_REFUSAL = /kill switch|not set|caller allowance used|host denied/i;
+// The allowance check refuses when it cannot count (Browserbase's list API failed): that may lift, so it only pauses.
+const latches = (e) => !!(e && e.bbNoSession && LATCHING_REFUSAL.test(e.message) && !/count unknown/i.test(e.message));
+
+function hostOf(url) {
+  try { return new URL(url).hostname.toLowerCase().replace(/^www\./, ''); } catch { return null; }
+}
+
+/** True when the lane fetches this URL through Browserbase. */
+function routesThroughBrowserbase(url) {
+  const host = hostOf(url);
+  return !!host && BROWSERBASE_HOSTS.some((d) => host === d || host.endsWith(`.${d}`));
+}
+
+class BrowserbaseUnavailable extends Error {
+  constructor(message) { super(message); this.name = 'BrowserbaseUnavailable'; this.bbUnavailable = true; }
+}
+
+/**
+ * @param {object} p
+ * @param {(opts: object) => Promise<{id: string, connectUrl: string}>} p.createSession - createBbSession
+ * @param {(connectUrl: string) => Promise<import('playwright').Browser>} p.connect - chromium.connectOverCDP
+ * @param {(page: object, url: string, opts?: object) => Promise<object>} p.readPage - browser-read-page.js readBrowserPage
+ * @param {(sessionId: string) => Promise<void>} [p.releaseSession] - ends a created session that never got a browser
+ * @param {object} [p.env] - needs BROWSERBASE_API_KEY and BROWSERBASE_PROJECT_ID, or the route is off
+ * @param {string} [p.caller] - session attribution and allowance key: CALLER (the live night) or SHADOW_CALLER
+ * @param {number} [p.maxSessions] - sessions this run may create
+ * @param {number} [p.sessionTimeoutSec] - Browserbase session timeout; the session is replaced 5 min before it
+ * @param {number} [p.fetchTimeoutMs] - one fetch, navigation and challenge wait together
+ * @param {number} [p.cooldownMs] - pause after a refusal that may lift (reserve held, day cap, API error)
+ * @param {number} [p.reconnectTimeoutMs] - how long a reconnect to a dropped, still-running session may take
+ */
+function createBrowserbaseFetcher({
+  createSession, connect, readPage, releaseSession = async () => {}, env = process.env, now = Date.now, log = () => {},
+  caller = CALLER, maxSessions = 8, sessionTimeoutSec = 3600, fetchTimeoutMs = 60000, cooldownMs = 15 * 60 * 1000,
+  reconnectTimeoutMs = 15000,
+}) {
+  let offReason = env.BROWSERBASE_API_KEY && env.BROWSERBASE_PROJECT_ID ? null : 'BROWSERBASE_API_KEY / BROWSERBASE_PROJECT_ID not set';
+  let pausedUntil = 0;
+  let created = 0;
+  let current = null; // { browser, context, createdAt }
+  let pending = null; // the in-flight create, shared by every fetch waiting on it
+  let dropped = null; // the last session whose connection closed without us closing it
+  const retired = new Set();
+  const counts = { sessions: 0, fetches: 0, refusals: 0, drops: 0, reconnects: 0 };
+
+  const available = () => !offReason && now() >= pausedUntil;
+  const rotateAfterMs = (sessionTimeoutSec - Math.min(300, sessionTimeoutSec / 2)) * 1000;
+  const fresh = (s) => s && s.browser.isConnected() && now() - s.createdAt < rotateAfterMs;
+
+  async function open() {
+    // close() may run while a reconnect is pending; its fallback must not bill a session nobody will use.
+    if (offReason) throw new BrowserbaseUnavailable(offReason);
+    if (created >= maxSessions) { offReason = `run cap of ${maxSessions} sessions used`; throw new BrowserbaseUnavailable(offReason); }
+    created++;
+    let session;
+    try {
+      session = await createSession({
+        caller, purpose: 'opening-night lane Talkin Broadway fetch', host: BROWSERBASE_HOSTS[0], category: 'discovery',
+        body: { timeout: sessionTimeoutSec, browserSettings: { solveCaptchas: true } },
+      });
+    } catch (e) {
+      if (e && e.bbNoSession) created--; // refused before a session existed: it cost nothing
+      counts.refusals++;
+      if (latches(e)) offReason = e.message;
+      else pausedUntil = now() + cooldownMs;
+      log(`browserbase: no session (${e && e.message}); ${offReason ? 'off for the run' : `paused ${Math.round(cooldownMs / 60000)} min`}`);
+      throw new BrowserbaseUnavailable(e && e.message);
+    }
+    let browser; let context;
+    try {
+      browser = await connect(session.connectUrl);
+      context = browser.contexts()[0] || await browser.newContext();
+    } catch (e) {
+      // The session exists and bills until its timeout unless it is ended here.
+      if (browser) browser.close().catch(() => {});
+      await releaseSession(session.id).catch(() => {});
+      pausedUntil = now() + cooldownMs;
+      throw new BrowserbaseUnavailable(`connect failed: ${e && e.message}`);
+    }
+    counts.sessions++;
+    const s = adopt(browser, context, { id: session.id, connectUrl: session.connectUrl, createdAt: now(), cleared: false });
+    log(`browserbase: session ${String(session.id).slice(0, 8)} (${created}/${maxSessions} this run)`);
+    return s;
+  }
+
+  /**
+   * Track a connected browser. A connection that closes without the lane closing it is logged with the session's age:
+   * on 2026-11-04 three of five shadow sessions dropped within minutes with no trace in the run log (BRO-6872).
+   */
+  function adopt(browser, context, meta) {
+    const s = { browser, context, pages: 0, warmup: null, closing: false, ...meta };
+    browser.on('disconnected', () => {
+      if (!s.closing) {
+        counts.drops++;
+        log(`browserbase: session ${String(s.id).slice(0, 8)} dropped after ${Math.round((now() - s.createdAt) / 1000)} s (${s.pages} pages open)`);
+        if (current === s) dropped = s;
+      }
+      if (current === s) current = null;
+      retired.delete(s);
+    });
+    return s;
+  }
+
+  /**
+   * A dropped connection does not end the Browserbase session at once (they ran on for minutes on 2026-11-04), and a
+   * new session spends one of the night's allowance. Try the old one first, once per drop; it keeps its age, so it still rotates.
+   */
+  async function reconnect(old) {
+    if (!old.connectUrl || now() - old.createdAt >= rotateAfterMs) throw new Error('not reconnectable');
+    let timer;
+    const attempt = connect(old.connectUrl);
+    let browser;
+    try {
+      browser = await Promise.race([attempt, new Promise((_, reject) => { timer = setTimeout(() => reject(new Error('reconnect timed out')), reconnectTimeoutMs); })]);
+    } catch (e) {
+      attempt.then((b) => b && b.close()).catch(() => {}); // a late connection is not left open
+      log(`browserbase: reconnect to ${String(old.id).slice(0, 8)} failed (${e && e.message}); opening a new session`);
+      throw e;
+    } finally { clearTimeout(timer); }
+    let context;
+    try { context = browser.contexts()[0] || await browser.newContext(); } catch (e) { browser.close().catch(() => {}); throw e; }
+    counts.reconnects++;
+    log(`browserbase: reconnected to session ${String(old.id).slice(0, 8)}`);
+    return adopt(browser, context, { id: old.id, connectUrl: old.connectUrl, createdAt: old.createdAt, cleared: old.cleared });
+  }
+
+  async function session() {
+    if (fresh(current)) return current;
+    if (current) retire(current);
+    current = null;
+    if (!pending) {
+      const old = dropped;
+      dropped = null;
+      // A dropped session that is not taken back keeps billing until its timeout, so it is ended before a new one opens.
+      const replace = () => { releaseSession(old.id).catch(() => {}); return open(); };
+      pending = (old ? reconnect(old).catch(replace) : open())
+        .then((s) => { current = s; return s; }).finally(() => { pending = null; });
+    }
+    return pending;
+  }
+
+  /** Close a replaced session once its open pages are done (or straight away if none are). */
+  function retire(s) {
+    retired.add(s);
+    if (!s.pages) { retired.delete(s); s.closing = true; s.browser.close().catch(() => {}); }
+  }
+
+  async function fetch(url) {
+    if (!available()) throw new BrowserbaseUnavailable(offReason || 'paused after a refusal');
+    const s = await session();
+    counts.fetches++;
+    s.pages++;
+    let page = null; let timer; let warmupDone = null; let cleared = false;
+    const deadline = new Promise((_, reject) => { timer = setTimeout(() => reject(new Error(`browserbase fetch timed out after ${fetchTimeoutMs}ms: ${url}`)), fetchTimeoutMs); });
+    deadline.catch(() => {});
+    try {
+      // A new session clears TB's Cloudflare check with one page before opening more. On 2026-11-04 every shadow run's
+      // first pass opened six pages at once in a fresh session and only 2 of the 30 loaded (26 still showed the challenge after 26 s); once
+      // one page had cleared it, later pages loaded in about 7 s. The rest wait for the first to settle; if it stayed
+      // behind the challenge, the next waiter becomes the warm-up, so a session that never cleared never gets the burst.
+      while (!s.cleared) {
+        if (s.warmup) { await Promise.race([s.warmup, deadline]); continue; }
+        s.warmup = new Promise((resolve) => { warmupDone = resolve; });
+        break;
+      }
+      const opening = s.context.newPage();
+      try { page = await Promise.race([opening, deadline]); } catch (e) { opening.then((p) => p && p.close()).catch(() => {}); throw e; }
+      const r = await Promise.race([readPage(page, url, { timeoutMs: Math.max(5000, fetchTimeoutMs - 15000) }), deadline]);
+      cleared = !r.challenge;
+      if (r.challenge) throw Object.assign(new Error(`403 still behind the Cloudflare challenge: ${url}`), { status: 403 });
+      if (r.status === 404 || r.status === 410) throw Object.assign(new Error(`${r.status} not found: ${url}`), { status: r.status });
+      return { content: r.html, finalUrl: r.finalUrl && r.finalUrl !== url ? r.finalUrl : null, status: r.status, via: 'browserbase' };
+    } finally {
+      clearTimeout(timer);
+      if (warmupDone) { if (cleared) s.cleared = true; s.warmup = null; warmupDone(); }
+      if (page) page.close().catch(() => {});
+      s.pages--;
+      if (retired.has(s) && !s.pages) retire(s);
+    }
+  }
+
+  async function close() {
+    offReason = 'closed';
+    if (pending) await pending.catch(() => {}); // a create still in flight lands in `current` and is closed below
+    const all = [current, ...retired].filter(Boolean);
+    for (const s of all) s.closing = true;
+    current = null; retired.clear(); dropped = null;
+    await Promise.all(all.map((s) => s.browser.close().catch(() => {})));
+  }
+
+  return { available, fetch, close, stats: () => ({ ...counts, created, off: offReason }) };
+}
+
+/**
+ * fetchPage with the Browserbase route: routed hosts go through `browserbase` while it is available, everything else
+ * (and routed hosts while it is off) through `fetchPage`. Same shape as scraper.fetchPage: (url, opts) -> {content}.
+ */
+function laneFetchPage({ fetchPage, browserbase }) {
+  return async (url, opts) => {
+    if (!opts?.directOnly && browserbase && routesThroughBrowserbase(url) && browserbase.available()) {
+      try {
+        return await browserbase.fetch(url);
+      } catch (e) {
+        if (!e || !e.bbUnavailable) throw e;
+      }
+    }
+    return fetchPage(url, opts);
+  };
+}
+
+/** The real wiring: scraper.fetchPage plus a Browserbase fetcher over createBbSession and Playwright, loaded lazily. */
+function createLaneFetch({ env = process.env, log = (m) => console.log(m), caller = CALLER } = {}) {
+  const { fetchPage } = require('../scraper');
+  const browserbase = createBrowserbaseFetcher({
+    env, log, caller,
+    createSession: (opts) => require('../browserbase-session').createBbSession(opts),
+    connect: (connectUrl) => require('playwright').chromium.connectOverCDP(connectUrl),
+    readPage: (page, url, opts) => require('../browser-read-page').readBrowserPage(page, url, opts),
+    releaseSession: (id) => fetch(`${require('../browserbase-session').SESSIONS_URL}/${id}`, {
+      method: 'POST', headers: { 'Content-Type': 'application/json', 'X-BB-API-Key': env.BROWSERBASE_API_KEY },
+      body: JSON.stringify({ projectId: env.BROWSERBASE_PROJECT_ID, status: 'REQUEST_RELEASE' }),
+    }).then(() => {}),
+  });
+  return { fetchPage: laneFetchPage({ fetchPage, browserbase }), browserbase, close: () => browserbase.close() };
+}
+
+module.exports = { BROWSERBASE_HOSTS, CALLER, SHADOW_CALLER, routesThroughBrowserbase, BrowserbaseUnavailable, createBrowserbaseFetcher, laneFetchPage, createLaneFetch };

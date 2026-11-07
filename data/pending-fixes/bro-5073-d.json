@@ -1,0 +1,71 @@
+{
+  "issueNumber": "bro-5073-d",
+  "planId": "5b8e0d62-e253-4bb2-b446-db60d7374afb",
+  "status": "applied",
+  "createdAt": "2026-10-11T21:10:52.310Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Six: cite the production-sourced recoupment month and fix the note; MJ: flag its weekly cost as an estimate",
+    "steps": [
+      "Replace recoupedSource with the Broadway News quote, which attributes Dec 2022 to a release from the production",
+      "Rewrite the note to record the Dec 2021 vs Dec 2022 conflict between outlets",
+      "MJ: mark the $1.3M weekly cost as an estimate (industry-estimate, no source); it is the one backtest row the no-SVOG rule misses"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "six",
+        "showId": "six",
+        "field": "recoupedSource",
+        "oldValue": "BroadwayWorld (Mar 23, 2023): \"The show recouped in December 2022\"",
+        "newValue": "Broadway News (Mar 23, 2023): \"According to a release from the production,\" the show \"made back its investment in December of 2022.\" https://www.broadwaynews.com/broadways-six-recoups-ahead-of-its-600th-performance/",
+        "description": "six: production-sourced recoupment month, quote checked on the page (BRO-5073)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "six",
+        "showId": "six",
+        "field": "notes",
+        "oldValue": "Low capitalization (about $5M per Broadway Journal and Broadway News) and strong grosses. Recouped as of Dec 2021 (announced Mar 2023). Was in previews when Broadway shut down in Mar 2020 and reopened in Oct 2021. Closing Jan 3, 2027 at the Lena Horne.",
+        "newValue": "Low capitalization (about $5M per Broadway Journal and Broadway News) and strong grosses. Recouped Dec 2022 according to a release from the production (Broadway News, Mar 23, 2023); Playbill and the BroadwayWorld article body that day said Dec 2021. Announced Mar 23, 2023. Was in previews when Broadway shut down in Mar 2020 and reopened in Oct 2021. Closing Jan 3, 2027 at the Lena Horne.",
+        "description": "six: note said Dec 2021, field says 2022-12; outlets disagree, production release says Dec 2022 (BRO-5073)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "mj",
+        "showId": "mj",
+        "field": "isEstimate",
+        "oldValue": null,
+        "newValue": {
+          "weeklyRunningCost": true
+        },
+        "description": "mj: weekly cost has no source, flag it as an estimate (BRO-5073)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-11T22:24:31.993Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for six"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for six"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: isEstimate updated for mj"
+    }
+  ]
+}

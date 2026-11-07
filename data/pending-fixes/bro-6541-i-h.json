@@ -1,0 +1,322 @@
+{
+  "issueNumber": "bro-6541-i-h",
+  "planId": "6d44f156-80e9-44ac-8a26-6b1caddd6435",
+  "status": "applied",
+  "createdAt": "2026-10-29T20:34:32.412Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6541: ingest UK hub reviews (Guardian seeding reviews + census matches) (part 8 of 9)",
+    "steps": [
+      "BRO-6541: ingest west-end-best-friend review for the-sound-of-music-pitlochry-festival-regional-2024",
+      "BRO-6541: ingest west-end-best-friend review for peter-panto-and-the-incredible-stinkerbell-tron-regional-2024",
+      "BRO-6541: ingest west-end-best-friend review for the-cat-and-the-canary-chichester-festival-regional-2024",
+      "BRO-6541: ingest west-end-best-friend review for redlands-chichester-festival-regional-2024",
+      "BRO-6541: ingest west-end-best-friend review for a-dolls-house-crucible-regional-2024",
+      "BRO-6541: ingest west-end-best-friend review for war-horse-lowry-regional-2024",
+      "BRO-6541: ingest west-end-best-friend review for a-taste-of-honey-royal-exchange-regional-2024",
+      "BRO-6541: ingest whatsonstage review for twelfth-night-crucible-regional-2026",
+      "BRO-6541: ingest whatsonstage review for king-lear-crucible-regional-2026",
+      "BRO-6541: ingest whatsonstage review for my-fair-lady-chichester-festival-regional-2026",
+      "BRO-6541: ingest whatsonstage review for lear-pitlochry-festival-regional-2026",
+      "BRO-6541: ingest whatsonstage review for fun-home-royal-exchange-regional-2026",
+      "BRO-6541: ingest whatsonstage review for brassed-off-leeds-regional-2026",
+      "BRO-6541: ingest whatsonstage review for the-long-drop-citizens-regional-2026",
+      "BRO-6541: ingest whatsonstage review for atonement-chichester-festival-regional-2026",
+      "BRO-6541: ingest whatsonstage review for once-pitlochry-festival-regional-2026",
+      "BRO-6541: ingest whatsonstage review for even-these-things-royal-exchange-regional-2026",
+      "BRO-6541: ingest whatsonstage review for the-psychic-york-royal-regional-2026",
+      "BRO-6541: ingest whatsonstage review for magic-chichester-festival-regional-2026",
+      "BRO-6541: ingest whatsonstage review for private-lives-royal-exchange-regional-2026",
+      "BRO-6541: ingest whatsonstage review for the-ladies-football-club-crucible-regional-2026",
+      "BRO-6541: ingest whatsonstage review for waiting-for-godot-citizens-regional-2026",
+      "BRO-6541: ingest whatsonstage review for road-royal-exchange-regional-2026",
+      "BRO-6541: ingest whatsonstage review for the-memory-of-water-octagon-regional-2026",
+      "BRO-6541: ingest whatsonstage review for small-hotel-royal-bath-regional-2025"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-sound-of-music-pitlochry-festival-regional-2024 --url=https://www.westendbestfriend.co.uk/news/review-the-sound-of-music-pitlochry-festival-theatre --outlet=west-end-best-friend",
+        "description": "BRO-6541: ingest west-end-best-friend review for the-sound-of-music-pitlochry-festival-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=peter-panto-and-the-incredible-stinkerbell-tron-regional-2024 --url=https://www.westendbestfriend.co.uk/news/review-peter-panto-and-the-incredible-stinkerbell-tron-theatre --outlet=west-end-best-friend",
+        "description": "BRO-6541: ingest west-end-best-friend review for peter-panto-and-the-incredible-stinkerbell-tron-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-cat-and-the-canary-chichester-festival-regional-2024 --url=https://www.westendbestfriend.co.uk/news/review-the-cat-and-the-canary-chichester-festival-theatre --outlet=west-end-best-friend",
+        "description": "BRO-6541: ingest west-end-best-friend review for the-cat-and-the-canary-chichester-festival-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=redlands-chichester-festival-regional-2024 --url=https://www.westendbestfriend.co.uk/news/review-redlands-chichester-festival-theatre --outlet=west-end-best-friend",
+        "description": "BRO-6541: ingest west-end-best-friend review for redlands-chichester-festival-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=a-dolls-house-crucible-regional-2024 --url=https://www.westendbestfriend.co.uk/news/review-a-dolls-house-sheffield-crucible --outlet=west-end-best-friend",
+        "description": "BRO-6541: ingest west-end-best-friend review for a-dolls-house-crucible-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=war-horse-lowry-regional-2024 --url=https://www.westendbestfriend.co.uk/news/review-war-horse-the-lowry-tour --outlet=west-end-best-friend",
+        "description": "BRO-6541: ingest west-end-best-friend review for war-horse-lowry-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=a-taste-of-honey-royal-exchange-regional-2024 --url=https://www.westendbestfriend.co.uk/news/review-a-taste-of-honey-royal-exchange-theatre --outlet=west-end-best-friend",
+        "description": "BRO-6541: ingest west-end-best-friend review for a-taste-of-honey-royal-exchange-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=twelfth-night-crucible-regional-2026 --url=https://www.whatsonstage.com/news/twelfth-night-at-the-crucible-theatre-review_1735266/ --outlet=whatsonstage",
+        "description": "BRO-6541: ingest whatsonstage review for twelfth-night-crucible-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=king-lear-crucible-regional-2026 --url=https://www.whatsonstage.com/news/king-lear-at-the-crucible-theatre-review_1731031/ --outlet=whatsonstage",
+        "description": "BRO-6541: ingest whatsonstage review for king-lear-crucible-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=my-fair-lady-chichester-festival-regional-2026 --url=https://www.whatsonstage.com/news/my-fair-lady-at-chichester-festival-theatre-review_1727468/ --outlet=whatsonstage",
+        "description": "BRO-6541: ingest whatsonstage review for my-fair-lady-chichester-festival-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=lear-pitlochry-festival-regional-2026 --url=https://www.whatsonstage.com/news/lear-with-maureen-beattie-at-pitlochry-festival-theatre-review_1727047/ --outlet=whatsonstage",
+        "description": "BRO-6541: ingest whatsonstage review for lear-pitlochry-festival-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=fun-home-royal-exchange-regional-2026 --url=https://www.whatsonstage.com/news/fun-home-at-the-royal-exchange-theatre-review_1727044/ --outlet=whatsonstage",
+        "description": "BRO-6541: ingest whatsonstage review for fun-home-royal-exchange-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=brassed-off-leeds-regional-2026 --url=https://www.whatsonstage.com/news/brassed-off-at-leeds-playhouse-review_1725921/ --outlet=whatsonstage",
+        "description": "BRO-6541: ingest whatsonstage review for brassed-off-leeds-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-long-drop-citizens-regional-2026 --url=https://www.whatsonstage.com/news/the-long-drop-at-glasgows-citizens-theatre-review_1724424/ --outlet=whatsonstage",
+        "description": "BRO-6541: ingest whatsonstage review for the-long-drop-citizens-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=atonement-chichester-festival-regional-2026 --url=https://www.whatsonstage.com/news/atonement-at-chichester-festival-theatre-review_1724000/ --outlet=whatsonstage",
+        "description": "BRO-6541: ingest whatsonstage review for atonement-chichester-festival-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=once-pitlochry-festival-regional-2026 --url=https://www.whatsonstage.com/news/once-musical-at-pitlochry-festival-theatre-review_1722698/ --outlet=whatsonstage",
+        "description": "BRO-6541: ingest whatsonstage review for once-pitlochry-festival-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=even-these-things-royal-exchange-regional-2026 --url=https://www.whatsonstage.com/news/even-these-things-at-the-royal-exchange-theatre-review_1722201/ --outlet=whatsonstage",
+        "description": "BRO-6541: ingest whatsonstage review for even-these-things-royal-exchange-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-psychic-york-royal-regional-2026 --url=https://www.whatsonstage.com/news/the-psychic-at-theatre-royal-york-review_1720432/ --outlet=whatsonstage",
+        "description": "BRO-6541: ingest whatsonstage review for the-psychic-york-royal-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=magic-chichester-festival-regional-2026 --url=https://www.whatsonstage.com/news/magic-at-chichester-festival-theatre-review_1720258/ --outlet=whatsonstage",
+        "description": "BRO-6541: ingest whatsonstage review for magic-chichester-festival-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=private-lives-royal-exchange-regional-2026 --url=https://www.whatsonstage.com/news/private-lives-at-the-royal-exchange-theatre-review_1717267/ --outlet=whatsonstage",
+        "description": "BRO-6541: ingest whatsonstage review for private-lives-royal-exchange-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-ladies-football-club-crucible-regional-2026 --url=https://www.whatsonstage.com/news/the-ladies-football-club-at-sheffield-crucible-theatre-review_1714523/ --outlet=whatsonstage",
+        "description": "BRO-6541: ingest whatsonstage review for the-ladies-football-club-crucible-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=waiting-for-godot-citizens-regional-2026 --url=https://www.whatsonstage.com/news/waiting-for-godot-at-glasgows-citizens-theatre-review_1713610/ --outlet=whatsonstage",
+        "description": "BRO-6541: ingest whatsonstage review for waiting-for-godot-citizens-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=road-royal-exchange-regional-2026 --url=https://www.whatsonstage.com/news/road-at-the-royal-exchange-theatre-review_1712941/ --outlet=whatsonstage",
+        "description": "BRO-6541: ingest whatsonstage review for road-royal-exchange-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-memory-of-water-octagon-regional-2026 --url=https://www.whatsonstage.com/news/the-memory-of-water-at-octagon-theatre-bolton-review_1711066/ --outlet=whatsonstage",
+        "description": "BRO-6541: ingest whatsonstage review for the-memory-of-water-octagon-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=small-hotel-royal-bath-regional-2025 --url=https://www.whatsonstage.com/news/small-hotel-with-ralph-fiennes-at-theatre-royal-bath-review_1697795/ --outlet=whatsonstage",
+        "description": "BRO-6541: ingest whatsonstage review for small-hotel-royal-bath-regional-2025"
+      }
+    ]
+  },
+  "executedAt": "2026-10-29T23:57:11.760Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    }
+  ],
+  "executedIn": "ci"
+}

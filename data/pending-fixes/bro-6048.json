@@ -1,0 +1,51 @@
+{
+  "issueNumber": "bro-6048",
+  "planId": "7b1d3c52-4e0a-4f6e-9a57-2c8e61a0d9b4",
+  "status": "applied",
+  "createdAt": "2026-10-23T09:50:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6048: set the closing date of Betty's Summer Vacation (Heights Players), which closed 2026-10-18 per the venue.",
+    "steps": [
+      "Set closingDate and status on one shows.json row"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "bettys-summer-vacation-the-heights-players-off-broadway-2026",
+        "field": "closingDate",
+        "oldValue": null,
+        "newValue": "2026-10-18",
+        "description": "closingDate null -> 2026-10-18 (cited https://www.heightsplayers.org: performances October 9 to 18, 2026, final performance October 18)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "bettys-summer-vacation-the-heights-players-off-broadway-2026",
+        "field": "status",
+        "oldValue": "open",
+        "newValue": "closed",
+        "description": "status open -> closed after the 2026-10-18 final performance (cited https://www.heightsplayers.org)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-23T10:08:19.381Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for bettys-summer-vacation-the-heights-players-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: status updated for bettys-summer-vacation-the-heights-players-off-broadway-2026"
+    }
+  ],
+  "executedIn": "ci"
+}

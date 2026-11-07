@@ -1,0 +1,48 @@
+{
+  "issueNumber": "bro-5261-s2b",
+  "planId": "c70e9f51-4d45-477c-8b94-746673fc54d4",
+  "status": "partial",
+  "createdAt": "2026-10-13T20:10:38.106Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5261 retro-review of BRO-2716: the Louder Than War ABBA Voyage review (in-window: the show opened 2022-05-28, the review is dated 2022-06-13) was flagged wrongAttribution \"until it is re-filed under its real outlet\", but nothing re-filed it. The same change registers louder-than-war (louderthanwar.com, T3 london, the same tier as click-liverpool), so the rebuild outlet-mismatch pass relabels the file by its url (publisherDomainCorrection). Clearing the flag lets it score under its own outlet.",
+    "steps": [
+      "abba-voyage-off-west-end-2026/click-liverpool--filthy-dirty.json: set wrongAttribution false and supersede its reason (replaces bro-5261-s2, refused because the write guard restores a null clear of this flag). The next rebuild relabels it to louder-than-war--filthy-dirty.json (its url resolves to the newly registered louderthanwar.com)."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "abba-voyage-off-west-end-2026/click-liverpool--filthy-dirty.json",
+        "field": "wrongAttributionReason",
+        "oldValue": "BRO-2716: url is louderthanwar.com, not Click Liverpool (clickliverpool.com)",
+        "newValue": "superseded (BRO-5261): louderthanwar.com is now a registered outlet; the rebuild re-files this review under louder-than-war",
+        "description": "The outlet is now registered; the rebuild relabels by url."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "abba-voyage-off-west-end-2026/click-liverpool--filthy-dirty.json",
+        "field": "wrongAttribution",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Re-filed under louder-than-war by the rebuild publisher-domain relabel."
+      }
+    ]
+  },
+  "executedAt": "2026-10-13T21:27:25.892Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "Review file not found: abba-voyage-off-west-end-2026/click-liverpool--filthy-dirty.json"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "Review file not found: abba-voyage-off-west-end-2026/click-liverpool--filthy-dirty.json"
+    }
+  ]
+}

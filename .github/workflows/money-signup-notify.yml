@@ -1,0 +1,49 @@
+name: Money Signup Notify
+
+# BRO-6763: one owner-only email per new Profitability Scorecard sign-up.
+# Stateless: scripts/money-signup-notify.js emails rows newer than a baked-in
+# seed and younger than 20h; Resend's 24h Idempotency-Key stops repeats. A gap
+# in runs longer than 20h loses those rows (the BSC Daily digest still counts
+# them). More than 10 fresh rows at once go out as one digest email. Never emails the sign-ups.
+# No git writes. Dispatch with test_email=true to send one sample to the owner.
+on:
+  schedule:
+    - cron: '7,22,37,52 * * * *'
+  workflow_dispatch:
+    inputs:
+      test_email:
+        description: 'Send one sample notification to the owner instead of a real pass'
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: read
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    concurrency:
+      group: money-signup-notify
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          ref: main
+      - uses: ./.github/actions/setup-node
+      - name: Email owner about new sign-ups
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          TEST_EMAIL: ${{ inputs.test_email }}
+        run: |
+          if [ "$TEST_EMAIL" = "true" ]; then node scripts/money-signup-notify.js --test-email; else node scripts/money-signup-notify.js; fi
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Money Signup Notify Failed'
+          severity: 'warning'

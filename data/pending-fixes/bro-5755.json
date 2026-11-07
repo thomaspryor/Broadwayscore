@@ -1,0 +1,37 @@
+{
+  "issueNumber": "bro-5755",
+  "planId": "58dfb60b-452f-413c-9c2d-37546c718eb4",
+  "status": "applied",
+  "createdAt": "2026-10-26T14:58:04.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5755: fill the empty synopsis for triumph-off-west-end-2026 from the Almeida Theatre listing page.",
+    "steps": [
+      "triumph-off-west-end-2026: synopsis"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "triumph-off-west-end-2026",
+        "field": "synopsis",
+        "oldValue": null,
+        "newValue": "A new 15-minute play by Caryl Churchill, written with help from Suetonius's The Twelve Caesars, and a grim joke about where we are today. Directed by James Macdonald, it stars Matthew Beard and Kate O'Flynn in a joint world premiere with the Public Theater.",
+        "description": "Synopsis drawn from https://almeida.co.uk/whats-on/triumph/ (short Caryl Churchill play, Almeida, joint world premiere with the Public Theater)."
+      }
+    ]
+  },
+  "executedAt": "2026-10-26T15:06:07.776Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for triumph-off-west-end-2026"
+    }
+  ],
+  "executedIn": "ci"
+}

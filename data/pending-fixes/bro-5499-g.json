@@ -1,0 +1,213 @@
+{
+  "issueNumber": "bro-5499-g",
+  "planId": "cfac87b9-800a-4def-8bb4-4e59ffca839e",
+  "status": "applied",
+  "createdAt": "2026-10-16T17:35:48.985Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5499 (g): cast copied from a same-title sibling on two shows.json rows (Met Opera Macbeth 2026, 92NY Charlie Brown 2026); complete the 2019 Sea Wall / A Life cast.",
+    "steps": [
+      "edit"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "macbeth-off-broadway-2026",
+        "field": "cast",
+        "oldValue": [
+          {
+            "name": "Daniel Craig",
+            "role": "Macbeth"
+          },
+          {
+            "name": "Ruth Negga",
+            "role": "Lady Macbeth"
+          },
+          {
+            "name": "Grantham Coleman",
+            "role": "MacDuff"
+          },
+          {
+            "name": "Phillip James Brannon",
+            "role": "Ross"
+          },
+          {
+            "name": "Asia Kate Dillon",
+            "role": "Malcolm"
+          },
+          {
+            "name": "Maria Dizzia",
+            "role": "Lady Macduff"
+          },
+          {
+            "name": "Amber Gray",
+            "role": "Banquo"
+          },
+          {
+            "name": "Emeka Guindo",
+            "role": "Fleance"
+          },
+          {
+            "name": "Paul Lazar",
+            "role": "Duncan"
+          },
+          {
+            "name": "Bobbi MacKenzie",
+            "role": "Macduff's Child"
+          },
+          {
+            "name": "Michael Patrick Thornton",
+            "role": "Lennox"
+          },
+          {
+            "name": "Danny Wolohan",
+            "role": "Seyton"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Quinn Kelsey",
+            "role": "Macbeth"
+          },
+          {
+            "name": "Lise Davidsen",
+            "role": "Lady Macbeth"
+          },
+          {
+            "name": "Freddie De Tommaso",
+            "role": "Macduff"
+          },
+          {
+            "name": "Ryan Speedo Green",
+            "role": "Banquo"
+          }
+        ],
+        "description": "macbeth-off-broadway-2026: cast was the 2022 Broadway play cast (Daniel Craig, Ruth Negga); this is the Met Opera Verdi Macbeth, Sept 22 2026 (Met season announcement, Opera Online)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "macbeth-off-broadway-2026",
+        "field": "creativeTeam",
+        "oldValue": [
+          {
+            "name": "Giuseppe Verdi",
+            "role": "Composer",
+            "_source": "serp-verified-llm"
+          },
+          {
+            "name": "William Shakespeare",
+            "role": "Playwright",
+            "_source": "serp-verified-llm"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Giuseppe Verdi",
+            "role": "Composer",
+            "_source": "serp-verified-llm"
+          },
+          {
+            "name": "William Shakespeare",
+            "role": "Playwright",
+            "_source": "serp-verified-llm"
+          },
+          {
+            "name": "Louisa Proske",
+            "role": "Director"
+          },
+          {
+            "name": "Yannick Nézet-Séguin",
+            "role": "Conductor"
+          }
+        ],
+        "description": "macbeth-off-broadway-2026: add the Met production director and conductor"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "youre-a-good-man-charlie-brown-off-broadway-2026",
+        "field": "cast",
+        "oldValue": [
+          {
+            "name": "Roger Bart",
+            "role": "Snoopy"
+          },
+          {
+            "name": "Kristin Chenoweth",
+            "role": "Sally"
+          },
+          {
+            "name": "Ilana Levine",
+            "role": "Lucy"
+          },
+          {
+            "name": "Stanley Wayne Mathis",
+            "role": "Schroeder"
+          },
+          {
+            "name": "Anthony Rapp",
+            "role": "Charlie Brown"
+          },
+          {
+            "name": "B.D. Wong",
+            "role": "Linus"
+          }
+        ],
+        "newValue": [],
+        "description": "youre-a-good-man-charlie-brown-off-broadway-2026: cast was copied from the 1999 Broadway entry (Chenoweth, Rapp, Wong...); the 92NY March 2026 cast is not published in any source found, so the list is cleared rather than wrong"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "sea-wall-a-life-2019",
+        "field": "cast",
+        "oldValue": [
+          {
+            "name": "Tom Sturridge",
+            "role": "Alex"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Tom Sturridge",
+            "role": "Alex"
+          },
+          {
+            "name": "Jake Gyllenhaal",
+            "role": "Abe (A Life)"
+          }
+        ],
+        "description": "sea-wall-a-life-2019: cast lists only Tom Sturridge; the 2019 Hudson Theatre double bill starred Tom Sturridge (Sea Wall) and Jake Gyllenhaal (A Life), which the sibling-cast guard needs"
+      }
+    ]
+  },
+  "executedAt": "2026-10-16T20:23:01.560Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: cast updated for macbeth-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for macbeth-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: cast updated for youre-a-good-man-charlie-brown-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: cast updated for sea-wall-a-life-2019"
+    }
+  ]
+}

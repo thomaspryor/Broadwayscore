@@ -1,0 +1,993 @@
+{
+  "outletId": "one-minute-critic",
+  "generatedAt": "2026-10-28T20:51:51.686Z",
+  "since": "2021-06-01",
+  "source": {
+    "kind": "wp-json",
+    "notes": [],
+    "enumerated": 237,
+    "inWindow": 237,
+    "undated": 0,
+    "meta": null
+  },
+  "corpus": "reviews.json",
+  "summary": {
+    "counts": {
+      "held": 118,
+      "out-of-window": 32,
+      "held-unmatched": 10,
+      "not-review": 35,
+      "gap": 27,
+      "held-other-market": 3,
+      "held-alt-url": 2,
+      "catalog-gap": 10
+    },
+    "viaTitleVariant": {
+      "held": 10,
+      "not-review": 5,
+      "held-alt-url": 1,
+      "gap": 2
+    },
+    "recall": 0.816,
+    "recallWithCatalog": 0.764
+  },
+  "corpusSide": {
+    "rowsInWindow": 130,
+    "notEnumerated": 2,
+    "noUrl": 0,
+    "samples": [
+      {
+        "showId": "garry-starr-classic-penguins-off-broadway-2026",
+        "url": "https://1minutecritic.substack.com/p/garry-starr-classic-penguins-review",
+        "publishDate": "2026-09-10",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "the-real-ivanov-off-broadway-2026",
+        "url": "https://1minutecritic.com/real-ivanov-essay/",
+        "publishDate": "2026-09-12",
+        "why": "not-enumerated"
+      }
+    ]
+  },
+  "gaps": [
+    {
+      "url": "https://1minutecritic.com/kramer-fauci-review-daniel-fish-ny-skirball/",
+      "headline": "‘Kramer/Fauci’ proves the best friendships are forged in fury",
+      "publishDate": "2026-10-06",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "kramerfauci-st-anns-off-broadway-2026"
+      ],
+      "outOfWindow": [
+        "kramerfauci-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://1minutecritic.com/degenerates-else-went-review/",
+      "headline": "Love looks like a threat to the self-declared unlovable of ‘Degenerates’",
+      "publishDate": "2026-09-29",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "degenerates-off-broadway-2026"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://1minutecritic.com/merrily-we-roll-along-signature-theatre-review/",
+      "headline": "At Signature Theatre, ‘Merrily We Roll Along’ makes every small choice count",
+      "publishDate": "2026-09-05",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "small-off-broadway-2026"
+      ],
+      "outOfWindow": [
+        "merrily-we-roll-along-2023",
+        "merrily-we-roll-along-1981",
+        "merrily-we-roll-along-off-broadway-2022"
+      ]
+    },
+    {
+      "url": "https://1minutecritic.com/winters-tale-public-theater-central-park-review-2026/",
+      "headline": "Raúl Esparza and Lily Rabe anchor a gloriously messy ‘Winter’s Tale’",
+      "publishDate": "2026-08-22",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "the-winters-tale-off-broadway-2026"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://1minutecritic.com/cat-cohen-broad-strokes-review/",
+      "headline": "Cat Cohen turns a near-death experience into Off-Broadway’s funniest solo show",
+      "publishDate": "2026-07-27",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "cat-cohen-broad-strokes-off-broadway-2026"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://1minutecritic.com/bryan-safi-are-you-mad-at-me-review/",
+      "headline": "In ‘Are You Mad At Me??,’ Bryan Safi wants you to like him. Mission accomplished",
+      "publishDate": "2026-07-19",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "are-you-mad-at-me-off-broadway-2026"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://1minutecritic.com/jerome-playwrights-horizons-review/",
+      "headline": "In ‘Jerome,’ a dying man’s last gift is someone to leave behind",
+      "publishDate": "2026-06-02",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "jerome-off-broadway-2025"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://1minutecritic.com/girls-chance-music-off-broadway-review/",
+      "headline": "In ‘||: Girls :||: Chance :||: Music :||,’ big ideas can’t find their rhythm",
+      "publishDate": "2026-05-29",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "girls-chance-music-off-broadway-2024"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://1minutecritic.com/morgan-bassichis-can-i-be-frank-maya-review/",
+      "headline": "Why Morgan Bassichis won’t let Frank Maya stay dead",
+      "publishDate": "2026-05-21",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "morgan-bassichis-can-i-be-frank-off-broadway-2026"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://1minutecritic.com/joe-turners-come-and-gone-broadway-review-taraji-henson/",
+      "headline": "August Wilson’s words still sing in ‘Joe Turner’s Come and Gone’",
+      "publishDate": "2026-05-04",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "joe-turners-come-and-gone-2026"
+      ],
+      "outOfWindow": [
+        "joe-turners-come-and-gone-2009",
+        "joe-turners-come-and-gone-1988",
+        "still-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://1minutecritic.com/no-singing-in-the-navy-playwrights-horizons-review/",
+      "headline": "Despite a rogue crab, ‘No Singing in the Navy’ finds its sea legs",
+      "publishDate": "2026-03-30",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "no-singing-in-the-navy-off-broadway-2026"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://1minutecritic.com/our-house-review-barry-boehm-tosos/",
+      "headline": "Is Barry Boehm’s ‘Our House’ ready for the conversation it starts?",
+      "publishDate": "2026-03-07",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "our-house-off-broadway-2026"
+      ],
+      "outOfWindow": [
+        "the-conversation-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://1minutecritic.com/blood-love-vampire-musical-review/",
+      "headline": "‘Blood/Love’: The vampire pop opera thirsty for your attention",
+      "publishDate": "2026-03-04",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "bloodlove-off-broadway-2026"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://1minutecritic.com/the-dinosaurs-playwrights-horizons-review/",
+      "headline": "6 women, 1 room, infinite timelines: ‘The Dinosaurs’ at Playwrights Horizons",
+      "publishDate": "2026-02-17",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "the-dinosaurs-off-broadway-2026"
+      ],
+      "outOfWindow": [
+        "the-women-2001",
+        "the-women-1973"
+      ]
+    },
+    {
+      "url": "https://1minutecritic.com/11-to-midnight-review-cost-n-mayor/",
+      "headline": "In ’11 to Midnight,’ TikTok’s Cost n’ Mayor deliver the year’s best dance party",
+      "publishDate": "2026-02-11",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "11-to-midnight-off-broadway-2026"
+      ],
+      "outOfWindow": [
+        "midnight-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://1minutecritic.com/blackout-songs-off-broadway-review/",
+      "headline": "‘Blackout Songs’ spirals through a decade of addiction, but where does it land?",
+      "publishDate": "2026-01-27",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "blackout-songs-off-broadway-2026"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://1minutecritic.com/ian-mckellen-an-ark-shed-review/",
+      "headline": "Heaven can wait: Ian McKellen elevates ‘An Ark,’ but mixed reality can’t bridge the digital divide",
+      "publishDate": "2026-01-20",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "an-ark-off-broadway-2026"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://1minutecritic.com/burning-cauldron-fiery-fire-review-anne-washburn-vineyard-theatre/",
+      "headline": "Anne Washburn’s ‘The Burning Cauldron of Fiery Fire’ needs more time to simmer",
+      "publishDate": "2025-11-09",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "the-burning-cauldron-of-fiery-fire-off-broadway-2025"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://1minutecritic.com/not-ready-for-primetime-snl-play-review/",
+      "headline": "‘Not Ready for Prime Time’ nails SNL’s early years chaos. The narrative? Still in rehearsal.",
+      "publishDate": "2025-10-21",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "not-ready-for-prime-time-off-broadway-2025"
+      ],
+      "outOfWindow": [
+        "still-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://1minutecritic.com/punch-broadway-review-jacob-dunne/",
+      "headline": "One punch, two families, and a heart that won’t stop beating",
+      "publishDate": "2025-09-30",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "punch-2025"
+      ],
+      "outOfWindow": [
+        "the-heart-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://1minutecritic.com/amelie-kokandy-chicago-review/",
+      "headline": "This underground Chicago theater just made ‘Amélie’ better than Broadway",
+      "publishDate": "2025-08-04",
+      "via": "title-variant",
+      "held": [],
+      "matched": [
+        "chicago-1996"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://1minutecritic.com/lord-nil-seven-deadly-sins-review/",
+      "headline": "Smell burnt toast? It’s not a stroke, you’re at ‘Lord Nil: Seven Deadly Sins’",
+      "publishDate": "2025-07-31",
+      "via": "title-variant",
+      "held": [],
+      "matched": [
+        "lord-nil-7-deadly-sins-off-broadway-2025"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://1minutecritic.com/betsy-wolfe-joy-musical-off-broadway-review/",
+      "headline": "Betsy Wolfe wrings every drop from ‘Joy: A New True Musical,’ but will audiences buy in?",
+      "publishDate": "2025-07-20",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "joy-a-new-true-musical-off-broadway-2025"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://1minutecritic.com/john-krasinski-angry-alan-off-broadway-review/",
+      "headline": "In ‘Angry Alan,’ John Krasinski’s mid-life meltdown takes a torch to male victimhood",
+      "publishDate": "2025-06-11",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "angry-alan-off-broadway-2025"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://1minutecritic.com/hells-kitchen-alicia-keys-broadway-review/",
+      "headline": "‘Hell’s Kitchen’ jolts Broadway with a score by Alicia Keys and New York City soul",
+      "publishDate": "2025-04-02",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "hells-kitchen-2024"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://1minutecritic.com/sarah-snook-picture-of-dorian-gray/",
+      "headline": "The 26 faces of Sarah Snook",
+      "publishDate": "2025-03-28",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "the-picture-of-dorian-gray-2025"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://1minutecritic.com/sumo-review-public-theater/",
+      "headline": "‘Sumo’: Six rikishi, one heya, & countless secrets",
+      "publishDate": "2025-03-07",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "sumo-off-broadway-2025"
+      ],
+      "outOfWindow": []
+    }
+  ],
+  "heldAltUrl": [
+    {
+      "url": "https://1minutecritic.com/garry-starr-classic-penguins-review/",
+      "headline": "Off-Broadway’s most flippant book report comes courtesy of one nearly nude penguin",
+      "publishDate": "2026-09-09",
+      "matched": [
+        "garry-starr-classic-penguins-off-broadway-2026"
+      ],
+      "heldUrls": [
+        "https://1minutecritic.substack.com/p/garry-starr-classic-penguins-review"
+      ]
+    },
+    {
+      "url": "https://1minutecritic.com/jonathan-groff-june-squibb-5-star-theater-reviews-2025/",
+      "headline": "From Jonathan Groff in ‘Just in Time’ to June Squibb’s Broadway return, every 5-star review from 2025",
+      "publishDate": "2025-12-29",
+      "matched": [
+        "just-in-time-2025"
+      ],
+      "heldUrls": [
+        "https://1minutecritic.com/jonathan-groff-just-in-time-review/"
+      ]
+    }
+  ],
+  "misfiles": [],
+  "heldUnmatched": [
+    {
+      "url": "https://1minutecritic.com/copperfield-musical-review/",
+      "headline": "Dickens’ most personal novel finds its voice in ‘Copperfield!’",
+      "publishDate": "2026-10-19",
+      "via": null,
+      "held": [
+        "copperfield-the-new-musical-off-broadway-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "copperfield-1981"
+      ]
+    },
+    {
+      "url": "https://1minutecritic.com/creation-stories-review-mfoniso-udofia-lct3/",
+      "headline": "5 IVF cycles become a modern folktale in Mfoniso Udofia’s ‘creation stories’",
+      "publishDate": "2026-10-02",
+      "via": null,
+      "held": [
+        "creation-stories-and-all-the-important-importants-off-broadway-2026"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://1minutecritic.com/school-girls-broadway-review/",
+      "headline": "Denée Benton & Jasmine Amy Rogers turn a Ghanaian cafeteria into Broadway’s most cutthroat pageant race",
+      "publishDate": "2026-09-28",
+      "via": null,
+      "held": [
+        "school-girls-or-the-african-mean-girls-play-2026"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://1minutecritic.com/honor-jean-michel-basquiat-review/",
+      "headline": "From a Venice dance floor to a Brooklyn cemetery, Roger Guenveur Smith is still riffing with Jean-Michel Basquiat",
+      "publishDate": "2026-09-14",
+      "via": null,
+      "held": [
+        "in-honor-of-jean-michel-basquiat-off-broadway-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "still-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://1minutecritic.com/la-cage-aux-folles-billy-porter-wayne-brady-review/",
+      "headline": "Wayne Brady and Billy Porter find the heart of ‘La Cage aux Folles.’ Everything else needs a little more mascara",
+      "publishDate": "2026-06-24",
+      "via": null,
+      "held": [
+        "encores-la-cage-aux-folles-off-broadway-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "la-cage-aux-folles-2010",
+        "la-cage-aux-folles-2004",
+        "la-cage-aux-folles-1983",
+        "the-heart-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://1minutecritic.com/the-wild-party-encores-review/",
+      "headline": "‘The Wild Party’ gets a sharp new vision. The old problems remain.",
+      "publishDate": "2026-03-22",
+      "via": null,
+      "held": [
+        "encores-the-wild-party-off-broadway-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "the-wild-party-2000"
+      ]
+    },
+    {
+      "url": "https://1minutecritic.com/about-time-musical-review-maltby-shire/",
+      "headline": "‘About Time’ embraces aging wisely and warmly, then overstays its welcome",
+      "publishDate": "2026-03-09",
+      "via": null,
+      "held": [
+        "maltby-and-shires-about-time-off-broadway-2026"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://1minutecritic.com/pirates-a-penzance-musical-broadway-review/",
+      "headline": "Broadway’s ‘Pirates! A Penzance Musical’ sails on choppy waters",
+      "publishDate": "2025-05-10",
+      "via": null,
+      "held": [
+        "pirates-the-penzance-musical-2025"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://1minutecritic.com/sondheims-old-friends-broadway-review/",
+      "headline": "Sondheim’s latest Broadway tribute dazzles but disconnects",
+      "publishDate": "2025-04-09",
+      "via": null,
+      "held": [
+        "stephen-sondheims-old-friends-2025"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "tribute-1978"
+      ]
+    },
+    {
+      "url": "https://1minutecritic.com/six-broadway-review/",
+      "headline": "Dead queens still throwing shade: ‘SIX’ serves up tudor drama with a beat",
+      "publishDate": "2025-02-01",
+      "via": null,
+      "held": [
+        "six-2021"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "queens-off-broadway-2025",
+        "still-off-broadway-2024"
+      ]
+    }
+  ],
+  "ambiguous": [],
+  "catalogGaps": [
+    {
+      "url": "https://1minutecritic.com/2026-tony-nominations-broadway-reviews/",
+      "headline": "The 2025-26 Broadway season, reviewed",
+      "publishDate": "2026-05-24",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://1minutecritic.com/predictor-off-broadway-review/",
+      "headline": "The graphic designer who created the home pregnancy test finally gets her due",
+      "publishDate": "2025-12-17",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://1minutecritic.com/nutcracker-rouge-company-xiv-review/",
+      "headline": "15 years in, ‘Nutcracker Rouge’ remains NYC’s sexiest holiday tradition",
+      "publishDate": "2025-11-23",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://1minutecritic.com/rob-lake-magic-muppets-broadway-review/",
+      "headline": "Rob Lake saws his Broadway debut in half, Muppets and all",
+      "publishDate": "2025-11-13",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://1minutecritic.com/beau-the-musical-review-off-broadway/",
+      "headline": "‘Beau the Musical’: This honky tonk’s got secrets and they’re coming out",
+      "publishDate": "2025-10-27",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://1minutecritic.com/john-patrick-shanley-italian-american-rconciliation-review/",
+      "headline": "Before John Patrick Shanley won an Oscar for ‘Moonstruck,’ he wrote this Italian American heartbreaker",
+      "publishDate": "2025-10-11",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://1minutecritic.com/jeff-ross-broadway-review/",
+      "headline": "Roastmaster Jeff Ross offers a sentimental simmer in his Broadway debut",
+      "publishDate": "2025-08-18",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://1minutecritic.com/passengers-pac-nyc-review/",
+      "headline": "‘Passengers’ delivers breathtaking circus without a safety net (or much of a map)",
+      "publishDate": "2025-06-16",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://1minutecritic.com/a-body-a-briefcase-a-new-broadway-musical/",
+      "headline": "A body, a briefcase & a new Broadway musical",
+      "publishDate": "2025-04-03",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://1minutecritic.com/if-idina-menzel-sings-from-a-tree-will-anyone-on-broadway-listen/",
+      "headline": "If Idina Menzel sings from a tree, will anyone on Broadway listen?",
+      "publishDate": "2025-02-14",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    }
+  ],
+  "outOfWindow": [
+    {
+      "url": "https://1minutecritic.com/john-mellencamp-musical-small-town-ogunquit-review/",
+      "headline": "What happened to John Mellencamp’s Jack and Diane? Hint: don’t drink the water",
+      "publishDate": "2026-10-26",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "small-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://1minutecritic.com/harper-lee-to-kill-a-mockingbird-huntington-review/",
+      "headline": "While schools pull Harper Lee’s ‘To Kill a Mockingbird’ from classrooms, The Huntington puts it center stage",
+      "publishDate": "2026-10-17",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "to-kill-a-mockingbird-2018"
+      ]
+    },
+    {
+      "url": "https://1minutecritic.com/kowalski-johnny-galecki-review-chicago/",
+      "headline": "In ‘Kowalski,’ Johnny Galecki’s Tennessee Williams plays hard to get",
+      "publishDate": "2026-09-22",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "kowalski-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://1minutecritic.com/play-on-chicago-shakespeare-review/",
+      "headline": "If music be the food of love, ‘Play On!’ serves the full Harlem buffet",
+      "publishDate": "2026-09-21",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "play-on-1997"
+      ]
+    },
+    {
+      "url": "https://1minutecritic.com/kokandy-sunday-in-the-park-with-george-review/",
+      "headline": "Kokandy makes its point with an intimate ‘Sunday in the Park with George’",
+      "publishDate": "2026-08-31",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "sunday-in-the-park-with-george-2017",
+        "sunday-in-the-park-with-george-2008",
+        "sunday-in-the-park-with-george-1994",
+        "sunday-in-the-park-with-george-1984"
+      ]
+    },
+    {
+      "url": "https://1minutecritic.com/john-turturro-paul-giamatti-rhinoceros-review-art/",
+      "headline": "John Turturro and Paul Giamatti go head-to-horn in A.R.T.’s ‘Rhinoceros’",
+      "publishDate": "2026-08-24",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "rhinoceros-2027"
+      ]
+    },
+    {
+      "url": "https://1minutecritic.com/second-city-reality-detox-review/",
+      "headline": "In ‘Reality Detox,’ The Second City turns audience confessions into comedy gold",
+      "publishDate": "2026-06-27",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-audience-2015"
+      ]
+    },
+    {
+      "url": "https://1minutecritic.com/freak-the-mighty-musical-review/",
+      "headline": "‘Freak The Mighty’ has a star-making performance at its center and an identity crisis everywhere else",
+      "publishDate": "2026-06-11",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "freak-1998"
+      ]
+    },
+    {
+      "url": "https://1minutecritic.com/covenant-goodman-theatre-review/",
+      "headline": "The devil’s in the details, and Goodman Theatre’s ‘Covenant’ has plenty",
+      "publishDate": "2026-05-12",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "plenty-1983",
+        "covenant-off-broadway-2023"
+      ]
+    },
+    {
+      "url": "https://1minutecritic.com/master-harold-boys-review-geffen-playhouse/",
+      "headline": "The Geffen’s ‘ “Master Harold” … and the Boys’ reminds us why Athol Fugard endures",
+      "publishDate": "2026-04-24",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "master-haroldand-the-boys-2003",
+        "master-haroldand-the-boys-1982"
+      ]
+    },
+    {
+      "url": "https://1minutecritic.com/windfall-steppenwolf-review-tarell-alvin-mccraney/",
+      "headline": "What is a life worth? Steppenwolf’s ‘Windfall’ makes the question burn",
+      "publishDate": "2026-04-22",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "a-life-1980"
+      ]
+    },
+    {
+      "url": "https://1minutecritic.com/jonah-studio-theatre-washington-dc-review/",
+      "headline": "‘Jonah’ knows what it costs to keep loving. Studio Theatre’s production invites you to feel it.",
+      "publishDate": "2026-03-21",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "jonah-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://1minutecritic.com/a-chorus-line-review-theater-group-asia/",
+      "headline": "‘A Chorus Line’ turns 50, goes global & proves it was always bigger than Broadway",
+      "publishDate": "2026-03-15",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "a-chorus-line-2006",
+        "a-chorus-line-1975"
+      ]
+    },
+    {
+      "url": "https://1minutecritic.com/morning-noon-and-night-shattered-globe-theater-wit-review/",
+      "headline": "Lost in the algorithm: ‘Morning, Noon, and Night’ can’t find its human heart",
+      "publishDate": "2026-03-03",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-heart-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://1minutecritic.com/here-lies-love-review-center-theatre-group/",
+      "headline": "‘Here Lies Love’ asks who gets to tell Filipino history, then dances around the answer",
+      "publishDate": "2026-02-27",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "here-lies-love-2023"
+      ]
+    },
+    {
+      "url": "https://1minutecritic.com/miss-julie-review-court-theatre/",
+      "headline": "In ‘Miss Julie,’ Court Theatre finds something new inside a very old birdcage",
+      "publishDate": "2026-02-24",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "miss-julie-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://1minutecritic.com/goodman-theatre-holiday-review-2026/",
+      "headline": "Goodman Theatre’s ‘Holiday’ reimagines vintage wit for a modern audience",
+      "publishDate": "2026-02-11",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-audience-2015"
+      ]
+    },
+    {
+      "url": "https://1minutecritic.com/steppenwolf-dance-of-death-review/",
+      "headline": "Even with a stellar cast, Steppenwolf’s ‘The Dance of Death’ feels stale",
+      "publishDate": "2026-02-09",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "dance-of-death-2001",
+        "dance-of-death-1974",
+        "dance-of-death-1971"
+      ]
+    },
+    {
+      "url": "https://1minutecritic.com/review-high-spirits-new-york-city-encores/",
+      "headline": "‘High Spirits’: A musical ghost story that overstays its welcome",
+      "publishDate": "2026-02-06",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "ghost-the-musical-2012"
+      ]
+    },
+    {
+      "url": "https://1minutecritic.com/wonder-musical-review-american-repertory-theater/",
+      "headline": "‘Wonder’ brings heart and hope to American Repertory Theater",
+      "publishDate": "2025-12-31",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-heart-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://1minutecritic.com/momix-alice-joyce-theater-dance-review/",
+      "headline": "‘MOMIX: Alice’ at the Joyce: The rabbit hole you actually want to fall into",
+      "publishDate": "2025-12-19",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "rabbit-hole-2006"
+      ]
+    },
+    {
+      "url": "https://1minutecritic.com/its-a-wonderful-life-radio-play-irish-rep-review/",
+      "headline": "Irish Rep’s radio play adaptation of ‘It’s a Wonderful Life’ gets its wings",
+      "publishDate": "2025-12-08",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "wings-1979"
+      ]
+    },
+    {
+      "url": "https://1minutecritic.com/michael-cerveris-christmas-carol-pac-nyc-review/",
+      "headline": "Michael Cerveris leads a radiant ‘A Christmas Carol’ at PAC NYC",
+      "publishDate": "2025-12-04",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "a-christmas-carol-2022",
+        "a-christmas-carol-2019",
+        "a-christmas-carol-2001",
+        "a-christmas-carol-1994",
+        "a-christmas-carol-1991",
+        "a-christmas-carol-off-broadway-2026",
+        "a-christmas-carol-the-musical-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://1minutecritic.com/gotta-dance-york-theatre-review/",
+      "headline": "‘Gotta Dance!’ proves Broadway’s best choreography lives on",
+      "publishDate": "2025-12-03",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "gotta-dance-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://1minutecritic.com/amadeus-steppenwolf-theatre-review-robert-falls/",
+      "headline": "Steppenwolf’s ‘Amadeus’ orchestrates the bitter rivalry between genius and ambition",
+      "publishDate": "2025-11-17",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "amadeus-1980",
+        "amadeus-1999"
+      ]
+    },
+    {
+      "url": "https://1minutecritic.com/galas-anthony-roth-costanzo-review-little-island/",
+      "headline": "In ‘Galas,’ Anthony Roth Costanzo proves that camp and coloratura can co-exist",
+      "publishDate": "2025-09-14",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-island-1974"
+      ]
+    },
+    {
+      "url": "https://1minutecritic.com/twelfth-night-lupita-nyongo-free-shakespeare-in-the-park-review/",
+      "headline": "Free Shakespeare in the Park roars back to life with Lupita Nyong’o & Sandra Oh in a dazzling ‘Twelfth Night’",
+      "publishDate": "2025-08-21",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "twelfth-night-2013",
+        "twelfth-night-1998",
+        "twelfth-night-1972",
+        "sandra-off-broadway-2022"
+      ]
+    },
+    {
+      "url": "https://1minutecritic.com/gospel-at-colonus-little-island-review/",
+      "headline": "Divine intervention: ‘The Gospel at Colonus’ turns tragedy into testimony",
+      "publishDate": "2025-07-14",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-gospel-at-colonus-1988",
+        "the-island-1974"
+      ]
+    },
+    {
+      "url": "https://1minutecritic.com/the-reservoir-geffen-playhouse-review/",
+      "headline": "In ‘The Reservoir,’ bubbies, tough love & Jazzercise pave the road to recovery",
+      "publishDate": "2025-06-27",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-reservoir-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://1minutecritic.com/you-will-get-sick-steppenwolf-review/",
+      "headline": "‘You Will Get Sick’ delivers brains, heart & courage, but ocassionally stumbles over its own yellow brick road",
+      "publishDate": "2025-06-17",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-heart-off-broadway-2026",
+        "you-will-get-sick-off-broadway-2022"
+      ]
+    },
+    {
+      "url": "https://1minutecritic.com/my-sons-a-queer-rob-madge-review/",
+      "headline": "‘My Son’s a Queer’ creator Rob Madge turns a Broadway setback into a NYC victory lap",
+      "publishDate": "2025-06-14",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "a-broadway-musical-1978"
+      ]
+    },
+    {
+      "url": "https://1minutecritic.com/the-imaginary-invalid-off-broadway-review/",
+      "headline": "Red Bull’s treatment of Molière’s ‘The Imaginary Invalid’ shows promise; side effects may vary",
+      "publishDate": "2025-06-02",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-imaginary-invalid-2026"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,75 @@
+{
+  "issueNumber": "bro-4490",
+  "planId": "147a857a-8398-4f10-b6b2-67a6feab67cc",
+  "status": "applied",
+  "createdAt": "2026-10-18T21:06:48.403Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "bro-4490: 4 FT multi-review columns store another show's section star; set each to its own section's star (scripts/lib/multi-verdict-sections.js).",
+    "steps": [
+      "Each originalScore is the star run that ends the section naming this show (audit-multi-verdict-stars.js).",
+      "verified-original-score.js writes the rating set; late-star-anchor re-anchors the stale band on the next cron."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "my-neighbour-totoro-west-end-2025/financialtimes--sarah-hemming.json",
+        "field": "originalScore",
+        "oldValue": "3/5 stars",
+        "newValue": "5/5 stars",
+        "description": "my-neighbour-totoro-west-end-2025/financialtimes--sarah-hemming.json: multi-review FT column; the section naming this show ends 5/5 stars, stored 3/5 stars is another section's star (mentions per section [1,0,0])."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "orlando-off-west-end-2026/financialtimes--sarah-hemming.json",
+        "field": "originalScore",
+        "oldValue": "3/5 stars",
+        "newValue": "4/5 stars",
+        "description": "orlando-off-west-end-2026/financialtimes--sarah-hemming.json: multi-review FT column; the section naming this show ends 4/5 stars, stored 3/5 stars is another section's star (mentions per section [4,0,0])."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "peter-gynt-west-end-2019/financialtimes--unknown.json",
+        "field": "originalScore",
+        "oldValue": "4/5 stars",
+        "newValue": "2/5 stars",
+        "description": "peter-gynt-west-end-2019/financialtimes--unknown.json: multi-review FT column; the section naming this show ends 2/5 stars, stored 4/5 stars is another section's star (mentions per section [0,1,0])."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "standing-at-the-skys-edge-west-end-2024/financialtimes--sarah-hemming.json",
+        "field": "originalScore",
+        "oldValue": "4/5 stars",
+        "newValue": "5/5 stars",
+        "description": "standing-at-the-skys-edge-west-end-2024/financialtimes--sarah-hemming.json: multi-review FT column; the section naming this show ends 5/5 stars, stored 4/5 stars is another section's star (mentions per section [1,0,0])."
+      }
+    ]
+  },
+  "executedAt": "2026-10-18T22:17:25.891Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "my-neighbour-totoro-west-end-2025/financialtimes--sarah-hemming.json originalScore: \"3/5 stars\" -> \"5/5 stars\" (retracted originalScoreCorrectedFrom, originalScoreNormalized, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "orlando-off-west-end-2026/financialtimes--sarah-hemming.json originalScore: \"3/5 stars\" -> \"4/5 stars\" (retracted originalScoreCorrectedFrom, originalScoreNormalized, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "peter-gynt-west-end-2019/financialtimes--unknown.json originalScore: \"4/5 stars\" -> \"2/5 stars\" (retracted originalScoreCorrectedFrom, originalScoreNormalized, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "standing-at-the-skys-edge-west-end-2024/financialtimes--sarah-hemming.json originalScore: \"4/5 stars\" -> \"5/5 stars\" (retracted originalScoreCorrectedFrom, originalScoreNormalized, originalScoreSource, scoreSource)"
+    }
+  ]
+}

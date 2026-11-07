@@ -1,0 +1,113 @@
+{
+  "issueNumber": "bro-5420-f",
+  "planId": "c413fda5-23f6-43b9-a11b-1e876d81eae2",
+  "status": "partial",
+  "createdAt": "2026-10-16T04:00:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5420 (f): clean 7 live critic names carrying byline decoration (\"(she/her)\", \", Chief Dance Critic\", \"<br>\", escaped letters, \"Outlet (Name)\") or broken capitalisation. Submitter handles whose pages show no other byline (nick730, helena6, Stewart Who?), pen names, outlet names on unsigned pieces, joint bylines and Angels in America part labels are left as they are.",
+    "steps": [
+      "recredit"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "the-car-man-west-end-2026/times-uk--debra-craine-chief-dance-critic.json",
+        "field": "criticName",
+        "oldValue": "Debra Craine, Chief Dance Critic",
+        "newValue": "Debra Craine",
+        "description": "BRO-5420: byline decoration removed (pronoun tag, role title, HTML, escape or capitalisation); the critic is Debra Craine. Same rule sanitizeCriticName now applies at save time."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-hungry-ghost-off-west-end-2026/adventuresintheatreland--julie-fisher-sheher.json",
+        "field": "criticName",
+        "oldValue": "Julie Fisher (she/her)",
+        "newValue": "Julie Fisher",
+        "description": "BRO-5420: byline decoration removed (pronoun tag, role title, HTML, escape or capitalisation); the critic is Julie Fisher. Same rule sanitizeCriticName now applies at save time."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-last-ship-west-end-2026/adventuresintheatreland--megan-oneill-sheher.json",
+        "field": "criticName",
+        "oldValue": "Megan O'Neill (she/her)",
+        "newValue": "Megan O'Neill",
+        "description": "BRO-5420: byline decoration removed (pronoun tag, role title, HTML, escape or capitalisation); the critic is Megan O'Neill. Same rule sanitizeCriticName now applies at save time."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-parisian-woman-2017/huffpost--huffpost-steven-suskin.json",
+        "field": "criticName",
+        "oldValue": "HuffPost (Steven Suskin)",
+        "newValue": "Steven Suskin",
+        "description": "BRO-5420: byline decoration removed (pronoun tag, role title, HTML, escape or capitalisation); the critic is Steven Suskin. Same rule sanitizeCriticName now applies at save time."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026/thestudentnews--andmiddot.json",
+        "field": "criticName",
+        "oldValue": "&middot",
+        "newValue": "Unknown",
+        "description": "BRO-5420: byline decoration removed (pronoun tag, role title, HTML, escape or capitalisation); the critic is Unknown. Same rule sanitizeCriticName now applies at save time."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "three-men-in-a-boat-off-west-end-2026/adventuresintheatreland--oviya-thirumalai-sheher.json",
+        "field": "criticName",
+        "oldValue": "Oviya Thirumalai (she/her)",
+        "newValue": "Oviya Thirumalai",
+        "description": "BRO-5420: byline decoration removed (pronoun tag, role title, HTML, escape or capitalisation); the critic is Oviya Thirumalai. Same rule sanitizeCriticName now applies at save time."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "twelfth-night-off-west-end-2026/adventuresintheatreland--julie-fisher-sheher.json",
+        "field": "criticName",
+        "oldValue": "Julie Fisher (she/her)",
+        "newValue": "Julie Fisher",
+        "description": "BRO-5420: byline decoration removed (pronoun tag, role title, HTML, escape or capitalisation); the critic is Julie Fisher. Same rule sanitizeCriticName now applies at save time."
+      }
+    ]
+  },
+  "executedAt": "2026-10-16T04:07:16.259Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-car-man-west-end-2026/times-uk--debra-craine-chief-dance-critic.json criticName: \"Debra Craine, Chief Dance Critic\" -> \"Debra Craine\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-hungry-ghost-off-west-end-2026/adventuresintheatreland--julie-fisher-sheher.json criticName: \"Julie Fisher (she/her)\" -> \"Julie Fisher\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-last-ship-west-end-2026/adventuresintheatreland--megan-oneill-sheher.json criticName: \"Megan O'Neill (she/her)\" -> \"Megan O'Neill\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "the-parisian-woman-2017/huffpost--huffpost-steven-suskin.json criticName applied, but the write guard also changed duplicateOf, duplicateReason; check the record before trusting it"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026/thestudentnews--andmiddot.json criticName: \"&middot\" -> \"Unknown\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "three-men-in-a-boat-off-west-end-2026/adventuresintheatreland--oviya-thirumalai-sheher.json criticName: \"Oviya Thirumalai (she/her)\" -> \"Oviya Thirumalai\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "twelfth-night-off-west-end-2026/adventuresintheatreland--julie-fisher-sheher.json criticName: \"Julie Fisher (she/her)\" -> \"Julie Fisher\""
+    }
+  ]
+}

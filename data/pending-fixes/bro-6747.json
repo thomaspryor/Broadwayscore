@@ -1,0 +1,122 @@
+{
+  "issueNumber": "bro-6747",
+  "planId": "dfcacc37-c5e1-40a3-b1fe-e0a57f7cbee4",
+  "status": "applied",
+  "createdAt": "2026-11-01T07:16:40.106720Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6747: re-ingest review files whose stored body is a cookie banner or raw HTML page dump; the writer now replaces such bodies with the clean fetch",
+    "steps": [
+      "Re-ingest each listed review url (explicit-url ingest replaces the page-dump body)"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "run-script",
+        "description": "Re-ingest manic-street-creature-west-end-2026 whatsonstage review: stored body is a page dump, a clean fetch replaces it",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=manic-street-creature-west-end-2026 --url=https://www.whatsonstage.com/news/manic-street-creature-at-kiln-theatre-review_1715513/ --outlet=whatsonstage --critic=\"Miriam Sallon\""
+      },
+      {
+        "type": "run-script",
+        "description": "Re-ingest 11-to-midnight-off-broadway-2026 one-minute-critic review: stored body is a page dump, a clean fetch replaces it",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=11-to-midnight-off-broadway-2026 --url=https://1minutecritic.com/11-to-midnight-review-cost-n-mayor/ --outlet=one-minute-critic --critic=\"Ryan Leeds\""
+      },
+      {
+        "type": "run-script",
+        "description": "Re-ingest 1776-2022 newyorker review: stored body is a page dump, a clean fetch replaces it",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=1776-2022 --url=https://www.newyorker.com/goings-on-about-town/theatre/1776-10-17-22 --outlet=newyorker --critic=\"Helen Shaw\""
+      },
+      {
+        "type": "run-script",
+        "description": "Re-ingest jeezus-off-west-end-2026 whatsonstage review: stored body is a page dump, a clean fetch replaces it",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=jeezus-off-west-end-2026 --url=https://www.whatsonstage.com/news/jeezus-at-underbelly-cowgate-edinburgh-fringe-review_1691217/ --outlet=whatsonstage --critic=\"Alexander Cohen\""
+      },
+      {
+        "type": "run-script",
+        "description": "Re-ingest monte-cristo-the-york-theatre-company-off-broadway-2026 front-row-center review: stored body is a page dump, a clean fetch replaces it",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=monte-cristo-the-york-theatre-company-off-broadway-2026 --url=https://thefrontrowcenter.com/2026/03/monte-cristo-a-new-musical/ --outlet=front-row-center --critic=\"Holli Harms\""
+      },
+      {
+        "type": "run-script",
+        "description": "Re-ingest operation-mincemeat-west-end-2024 whatsonstage review: stored body is a page dump, a clean fetch replaces it",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=operation-mincemeat-west-end-2024 --url=https://www.whatsonstage.com/news/operation-mincemeat-review-genuine-hilarity-with-enormous-heart-on-the-west-end-stage_58905/ --outlet=whatsonstage --critic=\"Theo Bosanquet\""
+      },
+      {
+        "type": "run-script",
+        "description": "Re-ingest relics-west-end-2026 whatsonstage review: stored body is a page dump, a clean fetch replaces it",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=relics-west-end-2026 --url=https://www.whatsonstage.com/news/relics-at-lyric-hammersmith-theatre-review_1726499/ --outlet=whatsonstage --critic=\"Alun Hood\""
+      },
+      {
+        "type": "run-script",
+        "description": "Re-ingest seagull-true-story-off-broadway-2026 one-minute-critic review: stored body is a page dump, a clean fetch replaces it",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=seagull-true-story-off-broadway-2026 --url=https://1minutecritic.com/seagull-true-story-review/ --outlet=one-minute-critic --critic=\"Matthew Wexler\""
+      },
+      {
+        "type": "run-script",
+        "description": "Re-ingest stephen-sondheims-old-friends-2025 one-minute-critic review: stored body is a page dump, a clean fetch replaces it",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=stephen-sondheims-old-friends-2025 --url=https://1minutecritic.com/sondheims-old-friends-broadway-review/ --outlet=one-minute-critic --critic=\"Matthew Wexler\""
+      }
+    ]
+  },
+  "executedAt": "2026-11-01T08:15:55.836Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    }
+  ],
+  "executedIn": "ci"
+}

@@ -1,0 +1,36 @@
+{
+  "issueNumber": "bro-4931-a",
+  "planId": "aa9a9268-3059-4514-81d2-606c8eb3d8c1",
+  "status": "applied",
+  "createdAt": "2026-10-09T12:21:22.919Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Reopen the Operation Mincemeat national tour: it was created open on 2026-10-03 (BRO-4563) and is now status closed with no closing date while its schedule runs to 2027-07-25, so it shows under Closed tours.",
+    "steps": [
+      "Set operation-mincemeat-tour-2026 status closed -> open"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "operation-mincemeat-tour-2026",
+        "field": "status",
+        "oldValue": "closed",
+        "newValue": "open",
+        "description": "Tours To You lists 25 engagements through 2027-07-25 and there is no closingDate; closed was set by an automated job without a closing date (BRO-4931 ship-check)."
+      }
+    ]
+  },
+  "executedAt": "2026-10-09T14:13:49.523Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: status updated for operation-mincemeat-tour-2026"
+    }
+  ]
+}

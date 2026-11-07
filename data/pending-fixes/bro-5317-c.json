@@ -1,0 +1,126 @@
+{
+  "issueNumber": "bro-5317-c",
+  "planId": "fa1b81ed-c01d-4283-b217-f2bcd16b7073",
+  "status": "pending",
+  "createdAt": "2026-10-31T01:15:16.194Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Replace CMS uploader handles on 61 live rows: restore 54 verified bylines, clear seven uncredited names to Unknown, and preserve an existing duplicate pointer while explicitly normalizing its guard-written reason. Reserved staging and archive paths require separate private-data maintenance. (part 3 of 3)",
+    "steps": [
+      "Live article credits only Admin; no personal byline printed; remove uploader handle without guessing a critic (checked 2026-10-31). Evidence: https://www.myviewfromthestalls.co.uk/post/review-fences-oxford-playhouse",
+      "Live article sign-off checked 2026-10-31. Evidence: https://musicaltheatrereview.com/dirty-dancing-milton-keynes-theatre-and-touring-2/",
+      "Live article header byline checked 2026-10-31. Evidence: https://www.allthatdazzles.co.uk/post/review-the-bounds-royal-court-theatre",
+      "Live news article credits only admin; no personal byline printed; remove uploader handle without guessing a critic (checked 2026-10-31). Evidence: https://danceinforma.co.uk/comedy-flamenco-show-flamenc-oh-comes-to-the-peacock-theatre-this-autumn/",
+      "Live article header byline checked 2026-10-31. Evidence: https://www.allthatdazzles.co.uk/post/review-alterations-national-theatre-lyttleton",
+      "Live article header byline checked 2026-10-31. Evidence: https://www.allthatdazzles.co.uk/post/children-of-the-night-southwark-playhouse-borough",
+      "Live article header byline checked 2026-10-31. Evidence: https://www.allthatdazzles.co.uk/post/review-mates-in-chelsea-royal-court",
+      "Live article header byline checked 2026-10-31. Evidence: https://www.allthatdazzles.co.uk/post/review-present-laughter-exeter-northcott-theatre",
+      "Live article header byline checked 2026-10-31. Evidence: https://www.allthatdazzles.co.uk/post/review-the-unbelievers-royal-court-theatre",
+      "Live article sign-off checked 2026-10-31. Evidence: https://musicaltheatrereview.com/music-review-rob-madge-my-sons-a-queer-but-what-can-you-do-cast-album/",
+      "Live article header byline checked 2026-10-31. Evidence: https://www.allthatdazzles.co.uk/post/review-the-band-back-together-arcola-theatre",
+      "Live article header byline checked 2026-10-31. Evidence: https://www.allthatdazzles.co.uk/post/review-the-car-man-lyceum-theatre-sheffield-uk-tour"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "fences-off-west-end-2026/myviewfromthestalls--unknown.json",
+        "field": "criticName",
+        "oldValue": "Admin",
+        "newValue": "Unknown",
+        "description": "Live article credits only Admin; no personal byline printed; remove uploader handle without guessing a critic (checked 2026-10-31). Evidence: https://www.myviewfromthestalls.co.uk/post/review-fences-oxford-playhouse"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "dirty-dancing-tour-2026/musical-theatre-review--unknown.json",
+        "field": "criticName",
+        "oldValue": "Admin",
+        "newValue": "Hannah Grimmette",
+        "description": "Live article sign-off checked 2026-10-31. Evidence: https://musicaltheatrereview.com/dirty-dancing-milton-keynes-theatre-and-touring-2/"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-bounds-west-end-2024/all-that-dazzles-uk--sam-admin.json",
+        "field": "criticName",
+        "oldValue": "Sam - Admin",
+        "newValue": "Rosie Holmes",
+        "description": "Live article header byline checked 2026-10-31. Evidence: https://www.allthatdazzles.co.uk/post/review-the-bounds-royal-court-theatre"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "flamenc-oh-off-west-end-2026/danceinforma--unknown.json",
+        "field": "criticName",
+        "oldValue": "Admin",
+        "newValue": "Unknown",
+        "description": "Live news article credits only admin; no personal byline printed; remove uploader handle without guessing a critic (checked 2026-10-31). Evidence: https://danceinforma.co.uk/comedy-flamenco-show-flamenc-oh-comes-to-the-peacock-theatre-this-autumn/"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "alterations-west-end-2025/all-that-dazzles-uk--sam-admin.json",
+        "field": "criticName",
+        "oldValue": "Sam - Admin",
+        "newValue": "Sam Waite",
+        "description": "Live article header byline checked 2026-10-31. Evidence: https://www.allthatdazzles.co.uk/post/review-alterations-national-theatre-lyttleton"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "children-of-the-night-off-west-end-2026/all-that-dazzles-uk--lily-admin.json",
+        "field": "criticName",
+        "oldValue": "Lily - Admin",
+        "newValue": "Lily Melhuish",
+        "description": "Live article header byline checked 2026-10-31. Evidence: https://www.allthatdazzles.co.uk/post/children-of-the-night-southwark-playhouse-borough"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "mates-in-chelsea-west-end-2023/all-that-dazzles-uk--sam-admin.json",
+        "field": "criticName",
+        "oldValue": "Sam - Admin",
+        "newValue": "Harry Bower",
+        "description": "Live article header byline checked 2026-10-31. Evidence: https://www.allthatdazzles.co.uk/post/review-mates-in-chelsea-royal-court"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "present-laughter-west-end-2019/all-that-dazzles-uk--sam-admin.json",
+        "field": "criticName",
+        "oldValue": "Sam - Admin",
+        "newValue": "Josip Martinčić",
+        "description": "Live article header byline checked 2026-10-31. Evidence: https://www.allthatdazzles.co.uk/post/review-present-laughter-exeter-northcott-theatre"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-unbelievers-west-end-2025/all-that-dazzles-uk--sam-admin.json",
+        "field": "criticName",
+        "oldValue": "Sam - Admin",
+        "newValue": "Sam Waite",
+        "description": "Live article header byline checked 2026-10-31. Evidence: https://www.allthatdazzles.co.uk/post/review-the-unbelievers-royal-court-theatre"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "my-sons-a-queer-but-what-can-you-do-west-end-2026/musical-theatre-review--unknown.json",
+        "field": "criticName",
+        "oldValue": "Admin",
+        "newValue": "Ian Bowkett",
+        "description": "Live article sign-off checked 2026-10-31. Evidence: https://musicaltheatrereview.com/music-review-rob-madge-my-sons-a-queer-but-what-can-you-do-cast-album/"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-band-west-end-2018/all-that-dazzles-uk--sam-admin.json",
+        "field": "criticName",
+        "oldValue": "Sam - Admin",
+        "newValue": "Dan Sinclair",
+        "description": "Live article header byline checked 2026-10-31. Evidence: https://www.allthatdazzles.co.uk/post/review-the-band-back-together-arcola-theatre"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-car-man-west-end-2026/all-that-dazzles-uk--sam-admin.json",
+        "field": "criticName",
+        "oldValue": "Sam - Admin",
+        "newValue": "Sam Waite",
+        "description": "Live article header byline checked 2026-10-31. Evidence: https://www.allthatdazzles.co.uk/post/review-the-car-man-lyceum-theatre-sheffield-uk-tour"
+      }
+    ]
+  }
+}

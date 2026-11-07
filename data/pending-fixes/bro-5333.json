@@ -1,0 +1,35 @@
+{
+  "createdAt": "2026-10-14T04:50:00Z",
+  "issueNumber": "bro-5333",
+  "planId": "5d0b6a8e-3c1f-4f7e-9a52-5333c1a5e2b1",
+  "status": "applied",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5333: Sounds and Stage's review of The Comedy About Spies (publishDate 2025-05-13, the 2025 Noel Coward run that opened 2025-05-06) was re-collected from Show Score onto the 2026 entry on 2026-10-14 at a new soundsandstage.com URL, so the URL-ownership check did not recognise the copy BRO-4339 moved to 2025 on 2026-10-12 (that copy, soundsandstage--tim-todd.json, is invalid + wrongProduction). The class-A contamination gate fails main on it. Move the complete 2026 copy to the 2025 entry, where it becomes that run's only usable Sounds and Stage review.",
+    "riskLevel": "low",
+    "steps": [
+      "Move the-comedy-about-spies-west-end-2026/soundsandstage--sounds-and-stage.json (complete, 2359 chars) to the-comedy-about-spies-west-end-2025/"
+    ],
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "the-comedy-about-spies-west-end-2026/soundsandstage--sounds-and-stage.json",
+        "destPath": "the-comedy-about-spies-west-end-2025/soundsandstage--sounds-and-stage.json",
+        "description": "Review published 2025-05-13 is of the 2025 production (opened 2025-05-06); the 2026 entry opened ~450 days later."
+      }
+    ]
+  },
+  "executedAt": "2026-10-14T05:36:45.356Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved the-comedy-about-spies-west-end-2026/soundsandstage--sounds-and-stage.json → the-comedy-about-spies-west-end-2025/soundsandstage--sounds-and-stage.json",
+      "cleared": []
+    }
+  ]
+}

@@ -1,0 +1,353 @@
+{
+  "issueNumber": "bro-5562-d",
+  "planId": "7721e95d-b0fb-4c00-88ea-75c5729eb37f",
+  "status": "applied",
+  "createdAt": "2026-10-17T23:07:00.762Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5562 (part d): The Great Society (2019) and Torch Song (2018) were commercial productions recorded as nonprofit: Playbill says The Great Society was not an LCT production and its Form D shows $4.3M from 38 investors; Torch Song LLC raised investor money and the NYT reported it had not recouped. Both become Flop. Chicago and Sweeney Todd (2023) no longer read \"Not publicly announced\": their sources report the recoupment (New York Theatre Guide; BroadwayWorld). Into the Woods keeps it, with Broadway Journal quoted saying it did not announce.",
+    "steps": [
+      "Edits read every oldValue from live data; every quote was opened at its URL."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-great-society-2019",
+        "field": "designationBasis",
+        "oldValue": null,
+        "newValue": "no-recoupment-announced",
+        "description": "the-great-society-2019: closed in 2019, no recoupment ever announced."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-great-society-2019",
+        "field": "designation",
+        "oldValue": "Nonprofit",
+        "newValue": "Flop",
+        "description": "the-great-society-2019: a commercial production (Playbill: not a Lincoln Center Theater production; Form D investors), closed with no recoupment announced; the model returns about 0%."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-great-society-2019",
+        "field": "humanReviewedDesignation",
+        "oldValue": null,
+        "newValue": true,
+        "description": "the-great-society-2019: hand-reviewed from cited sources."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-great-society-2019",
+        "field": "recouped",
+        "oldValue": null,
+        "newValue": false,
+        "description": "the-great-society-2019: no recoupment announced."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-great-society-2019",
+        "field": "recoupedSource",
+        "oldValue": null,
+        "newValue": "No recoupment was announced for the limited engagement, which closed Nov 30, 2019. https://playbill.com/production/the-great-societyvivian-beaumont-theater-2019-2020",
+        "description": "the-great-society-2019: what the loss label rests on."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-great-society-2019",
+        "field": "nonprofitOrg",
+        "oldValue": "Lincoln Center Theater",
+        "newValue": null,
+        "description": "the-great-society-2019: Lincoln Center Theater only rented the Beaumont; it was not the producer."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-great-society-2019",
+        "field": "capitalization",
+        "oldValue": null,
+        "newValue": 4400000,
+        "description": "the-great-society-2019: the production company’s SEC Form D/A."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-great-society-2019",
+        "field": "capitalizationSource",
+        "oldValue": null,
+        "newValue": "SEC Form D filing (Great Society Broadway Ltd Liability Co, CIK 0001783749; managing member led by Jeffrey Richards; amended Oct 17, 2019): total offering amount $4,400,000, of which $4,302,500 was sold to 38 investors. https://www.sec.gov/Archives/edgar/data/1783749/000178374919000002/xslFormDX01/primary_doc.xml",
+        "description": "the-great-society-2019: cite the Form D."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-great-society-2019",
+        "field": "notes",
+        "oldValue": "LCT 2019-20 season at Vivian Beaumont. Robert Schenkkan play, Brian Cox as LBJ. Sequel to All The Way (which was a commercial Broadway run, not LCT). Closed 2019-11-30.",
+        "newValue": "A commercial production at Lincoln Center’s Vivian Beaumont Theater: \"Though the Vivian Beaumont is located at Lincoln Center, The Great Society is not a Lincoln Center Theater production\" (Playbill, Aug 21, 2019). Lead producers Jeffrey Richards and Louise Gund, who also produced All the Way. Robert Schenkkan’s play with Brian Cox as LBJ; closed Nov 30, 2019.",
+        "description": "the-great-society-2019: the notes called it an LCT season production."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-great-society-2019",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "manual",
+            "url": "https://www.lct.org/shows/great-society/",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://playbill.com/production/the-great-societyvivian-beaumont-theater-2019-2020",
+            "date": null
+          }
+        ],
+        "newValue": [
+          {
+            "type": "manual",
+            "url": "https://www.lct.org/shows/great-society/",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://playbill.com/production/the-great-societyvivian-beaumont-theater-2019-2020",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://playbill.com/article/see-broadways-the-great-society-meet-the-press",
+            "date": "2019-08-21"
+          },
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/1783749/000178374919000002/xslFormDX01/primary_doc.xml",
+            "date": "2019-10-17"
+          }
+        ],
+        "description": "the-great-society-2019: add the cited article(s) to sources."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "torch-song-2018",
+        "field": "designationBasis",
+        "oldValue": null,
+        "newValue": "reported-loss",
+        "description": "torch-song-2018: the NYT reported it had not recouped."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "torch-song-2018",
+        "field": "designation",
+        "oldValue": "Nonprofit",
+        "newValue": "Flop",
+        "description": "torch-song-2018: a commercial transfer (Torch Song LLC raised investor money; lead producer Richie Jackson) that the NYT reported had not recouped; the model returns about 0%."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "torch-song-2018",
+        "field": "capitalizationSource",
+        "oldValue": "New York Times article (via WRAL.com) citing an SEC filing",
+        "newValue": "The New York Times (Dec 5, 2018, republished by WRAL): \"The play was capitalized for up to $3.4 million, according to a filing with the Securities and Exchange Commission\". https://www.wral.com/broadway-s-torch-song-to-close-in-january/18040734/",
+        "description": "torch-song-2018: quote and link the source line."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "torch-song-2018",
+        "field": "recoupedSource",
+        "oldValue": "New York Times article (via WRAL.com) stating it has not recouped",
+        "newValue": "The New York Times (Dec 5, 2018, republished by WRAL): \"it has not recouped that investment.\" https://www.wral.com/broadway-s-torch-song-to-close-in-january/18040734/",
+        "description": "torch-song-2018: quote and link the source line."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "torch-song-2018",
+        "field": "notes",
+        "oldValue": "Capitalized at $3.4M and closed after 13 weeks without recoupment; weekly nut undisclosed",
+        "newValue": "Commercial Broadway transfer of Second Stage Theater’s 2017 off-Broadway revival, led by producer Richie Jackson, at Second Stage’s Hayes Theater. Capitalized for up to $3.4 million (SEC filing) and closed after 13 weeks without recouping (The New York Times).",
+        "description": "torch-song-2018: the record called it a nonprofit production."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "torch-song-2018",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://www.wral.com/broadway-s-torch-song-to-close-in-january/18040734/",
+            "date": "2018-12-05"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.wral.com/broadway-s-torch-song-to-close-in-january/18040734/",
+            "date": "2018-12-05"
+          },
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/1729706/000172970618000001/xslFormDX01/primary_doc.xml",
+            "date": "2018-02-02"
+          }
+        ],
+        "description": "torch-song-2018: add the cited article(s) to sources."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "betrayal-2013",
+        "field": "recoupedSource",
+        "oldValue": "The Hollywood Reporter (Jan 2014): recouped roughly ten weeks into its 14-week limited run; budget not disclosed.",
+        "newValue": "The Hollywood Reporter (Jan 2014): recouped roughly ten weeks into its 14-week limited run.",
+        "description": "betrayal-2013: the line said the budget was not disclosed; bro-5560 added its Form D figure."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "betrayal-2013",
+        "field": "notes",
+        "oldValue": "Mike Nichols' revival of Harold Pinter's play with Daniel Craig, Rachel Weisz and Rafe Spall at the Ethel Barrymore, Oct 2013 to Jan 5, 2014 (14-week limited run). Grossed just over $17.5M and set a record for a play with a $1.44M week. Recouped about ten weeks into the run (The Hollywood Reporter); capitalization not disclosed.",
+        "newValue": "Mike Nichols' revival of Harold Pinter's play with Daniel Craig, Rachel Weisz and Rafe Spall at the Ethel Barrymore, Oct 2013 to Jan 5, 2014 (14-week limited run). Grossed just over $17.5M and set a record for a play with a $1.44M week. Recouped about ten weeks into the run (The Hollywood Reporter); its SEC Form D (Betrayal Broadway LLC, July 2013) set the offering at up to $4.2 million.",
+        "description": "betrayal-2013: the notes said the capitalization was not disclosed; bro-5560 added the Form D figure."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "sweeney-todd-2023",
+        "field": "isEstimate",
+        "oldValue": {
+          "recouped": true
+        },
+        "newValue": {},
+        "description": "sweeney-todd-2023: BroadwayWorld reports it recouped in November 2023 (its recoupedSource quotes it), so the card should not say the recoupment was never announced."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "into-the-woods-2022",
+        "field": "recoupedSource",
+        "oldValue": "Broadway Journal (Aug 25, 2023) lists Into the Woods among the 2022-23 season's commercial winners; the month of recoupment was not reported.",
+        "newValue": "Broadway Journal (Aug 25, 2023) lists Into the Woods among the 2022-23 season's \"commercial winners\" but says Prima Facie \"is the only show from 2022-23 to announce that it recouped,\" so Into the Woods did not announce it; the month was not reported. https://broadwayjournal.com/solo-shows-deliver-as-aspiring-blockbusters-struggle/",
+        "description": "into-the-woods-2022: quote the article, including that it did not announce (why the card says \"Not publicly announced\")."
+      }
+    ]
+  },
+  "executedAt": "2026-10-18T00:37:15.351Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for the-great-society-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for the-great-society-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: humanReviewedDesignation updated for the-great-society-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recouped updated for the-great-society-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for the-great-society-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: nonprofitOrg updated for the-great-society-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for the-great-society-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for the-great-society-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for the-great-society-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for the-great-society-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for torch-song-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for torch-song-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for torch-song-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for torch-song-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for torch-song-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for torch-song-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for betrayal-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for betrayal-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: isEstimate updated for sweeney-todd-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for into-the-woods-2022"
+    }
+  ]
+}

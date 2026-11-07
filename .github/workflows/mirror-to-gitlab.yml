@@ -1,0 +1,110 @@
+# hygiene-push-ok: force-pushes to external GitLab remote (different host, push-with-retry.sh is GitHub-origin-only)
+name: Mirror to GitLab
+
+on:
+  schedule:
+    - cron: '0 */6 * * *'
+  workflow_dispatch:
+
+concurrency:
+  group: gitlab-mirror
+  # false: a self-heal redispatch (check-cron-health.yml, noon) must not cancel a
+  # healthy in-flight run; the 6-hourly cadence leaves no queueing pressure.
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+    # BRO-5883: 3 scheduled runs hit the old 30-min cap mid-clone (last success: 21 min).
+    timeout-minutes: 90
+    steps:
+      - name: Mirror clone from GitHub
+        # BRO-5883: only heads and tags are pushed, so fetch only those instead of
+        # `clone --mirror`, which also pulls every refs/pull/* ref (459) and the
+        # objects only they reach. Every branch and tag is still mirrored.
+        run: |
+          git init --bare repo.git
+          # hygiene-unbounded-clone-ok: whole-repo mirror transfer (21+ min); job timeout-minutes bounds it, a per-op cap or lowSpeedTime abort would kill a legit pack phase (BRO-6029)
+          git -C repo.git fetch --no-tags "https://github.com/thomaspryor/Broadwayscore.git" \
+            '+refs/heads/*:refs/heads/*' '+refs/tags/*:refs/tags/*'
+
+      - name: Unprotect main branch (allow force push)
+        run: |
+          PROJECT=$(echo "${GITLAB_NAMESPACE}/broadwayscorecard" | sed 's/\//%2F/g')
+          curl -s -X DELETE -H "PRIVATE-TOKEN: ${GITLAB_TOKEN}" \
+            "https://gitlab.com/api/v4/projects/${PROJECT}/protected_branches/main" || true
+        env:
+          GITLAB_TOKEN: ${{ secrets.GITLAB_MIRROR_TOKEN }}
+          GITLAB_NAMESPACE: ${{ vars.GITLAB_NAMESPACE }}
+
+      - name: Report GitLab storage and compact when near quota (BRO-6363)
+        # Pushes failed with "exceeded the allocated storage" (pre-receive hook declined)
+        # for 3+ days: GitLab held 12.2 GB (free limit 10 GB) vs 4 GB on GitHub, because
+        # force-pushes leave unreachable objects that only GitLab housekeeping removes.
+        # The failure alert mislabels this as push-contention, so log the numbers here and
+        # ask GitLab to prune + eager-repack when over 8 GB (valid task values: prune, eager). Never fails the job.
+        continue-on-error: true
+        run: |
+          PROJECT=$(echo "${GITLAB_NAMESPACE}/broadwayscorecard" | sed 's/\//%2F/g')
+          SIZE=$(curl -s -H "PRIVATE-TOKEN: ${GITLAB_TOKEN}" \
+            "https://gitlab.com/api/v4/projects/${PROJECT}?statistics=true" \
+            | jq -r '.statistics.repository_size // 0') || SIZE=0
+          case "$SIZE" in ''|*[!0-9]*) echo "::warning::GitLab storage stats unavailable (got '${SIZE}'); skipping housekeeping"; SIZE=0 ;; esac
+          echo "GitLab repository_size=${SIZE} bytes; GitHub clone: heads=$(git -C repo.git for-each-ref refs/heads | wc -l) size=$(du -sh repo.git | cut -f1)"
+          if [ "$SIZE" -gt 8000000000 ]; then
+            echo "Over 8 GB: requesting GitLab housekeeping (prune, then eager)"
+            for TASK in prune eager; do
+              CODE=$(curl -s -o /dev/null -w "%{http_code}" -X POST \
+                -H "PRIVATE-TOKEN: ${GITLAB_TOKEN}" \
+                "https://gitlab.com/api/v4/projects/${PROJECT}/housekeeping?task=${TASK}")
+              echo "housekeeping ${TASK}: HTTP ${CODE}"
+              case "$CODE" in 2*) ;; *) echo "::warning::GitLab housekeeping ${TASK} rejected (HTTP ${CODE})" ;; esac
+            done
+          fi
+        env:
+          GITLAB_TOKEN: ${{ secrets.GITLAB_MIRROR_TOKEN }}
+          GITLAB_NAMESPACE: ${{ vars.GITLAB_NAMESPACE }}
+
+      - name: Push to GitLab
+        id: push
+        run: |
+          cd repo.git
+          # hygiene-unbounded-clone-ok: whole-repo mirror transfer (21+ min); job timeout-minutes bounds it, a per-op cap or lowSpeedTime abort would kill a legit pack phase (BRO-6029)
+          git push --force --prune "https://oauth2:${GITLAB_TOKEN}@gitlab.com/${GITLAB_NAMESPACE}/broadwayscorecard.git" 'refs/heads/*:refs/heads/*' 'refs/tags/*:refs/tags/*' 2>&1
+        env:
+          GITLAB_TOKEN: ${{ secrets.GITLAB_MIRROR_TOKEN }}
+          GITLAB_NAMESPACE: ${{ vars.GITLAB_NAMESPACE }}
+
+      - name: Verify mirror is in sync
+        run: |
+          GITHUB_SHA=$(cd repo.git && git rev-parse refs/heads/main)
+          GITLAB_SHA=$(git ls-remote "https://oauth2:${GITLAB_TOKEN}@gitlab.com/${GITLAB_NAMESPACE}/broadwayscorecard.git" main | cut -f1)
+          if [ "$GITHUB_SHA" != "$GITLAB_SHA" ]; then
+            echo "::error::Mirror out of sync! GitHub=$GITHUB_SHA GitLab=$GITLAB_SHA"
+            exit 1
+          fi
+          echo "Mirror verified: $GITHUB_SHA"
+        env:
+          GITLAB_TOKEN: ${{ secrets.GITLAB_MIRROR_TOKEN }}
+          GITLAB_NAMESPACE: ${{ vars.GITLAB_NAMESPACE }}
+
+      - name: Checkout for notify action
+        if: failure() || cancelled()
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          sparse-checkout: |
+            .github/actions/notify-failure
+            scripts/lib/discord-notify.js
+
+      - name: Notify on failure
+        if: failure() || cancelled()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'GitLab Mirror Failed'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}

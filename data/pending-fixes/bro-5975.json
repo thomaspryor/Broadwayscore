@@ -1,0 +1,172 @@
+{
+  "issueNumber": "bro-5975",
+  "planId": "79e37c61-0eed-45b3-a85d-3bb2501ccc2b",
+  "status": "applied",
+  "createdAt": "2026-10-22T14:38:58.026Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Provisional-venue audit data fixes: isRevival, type, closing date, Playbill-page exemptions",
+    "steps": [
+      "shows.json: the-good-thief-off-broadway-2026.isRevival",
+      "shows.json: a-kidman-carol-off-broadway-2026.type",
+      "shows.json: arias-with-a-twist-off-broadway-2026.closingDate",
+      "shows.json: mystic-pizza-regional-2025.noPlaybillProductionPage",
+      "shows.json: purpose-regional-2026.noPlaybillProductionPage",
+      "shows.json: purpose-regional-2026.statusBackfillSource",
+      "shows.json: topdog-underdog-regional-2026.noPlaybillProductionPage",
+      "shows.json: topdog-underdog-regional-2026.statusBackfillSource",
+      "shows.json: school-pictures-off-broadway-2023.noPlaybillProductionPage",
+      "shows.json: school-pictures-off-broadway-2023.statusBackfillSource"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-good-thief-off-broadway-2026",
+        "field": "isRevival",
+        "oldValue": false,
+        "newValue": true,
+        "description": "shows.json: the-good-thief-off-broadway-2026.isRevival"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-kidman-carol-off-broadway-2026",
+        "field": "type",
+        "oldValue": "musical",
+        "newValue": "play",
+        "description": "shows.json: a-kidman-carol-off-broadway-2026.type"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "arias-with-a-twist-off-broadway-2026",
+        "field": "closingDate",
+        "oldValue": "2026-11-01",
+        "newValue": "2026-12-20",
+        "description": "shows.json: arias-with-a-twist-off-broadway-2026.closingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "mystic-pizza-regional-2025",
+        "field": "noPlaybillProductionPage",
+        "oldValue": false,
+        "newValue": true,
+        "description": "shows.json: mystic-pizza-regional-2025.noPlaybillProductionPage"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "purpose-regional-2026",
+        "field": "noPlaybillProductionPage",
+        "oldValue": null,
+        "newValue": true,
+        "description": "shows.json: purpose-regional-2026.noPlaybillProductionPage"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "purpose-regional-2026",
+        "field": "statusBackfillSource",
+        "oldValue": null,
+        "newValue": "manual research 2026-10-02: Huntington Theatre Company venue site and press confirm the Calderwood Pavilion run Sep 10-Oct 11 2026; the Playbill page for this title is the 2025 Broadway run at the Helen Hayes Theatre, a different production.",
+        "description": "shows.json: purpose-regional-2026.statusBackfillSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "topdog-underdog-regional-2026",
+        "field": "noPlaybillProductionPage",
+        "oldValue": null,
+        "newValue": true,
+        "description": "shows.json: topdog-underdog-regional-2026.noPlaybillProductionPage"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "topdog-underdog-regional-2026",
+        "field": "statusBackfillSource",
+        "oldValue": null,
+        "newValue": "manual research 2026-10-02: Steppenwolf venue site and press confirm the Kenny Leon revival Sep 17-Nov 1 2026; the Playbill page for this title is the 2022 Broadway run at the John Golden Theatre, a different production.",
+        "description": "shows.json: topdog-underdog-regional-2026.statusBackfillSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "school-pictures-off-broadway-2023",
+        "field": "noPlaybillProductionPage",
+        "oldValue": null,
+        "newValue": true,
+        "description": "shows.json: school-pictures-off-broadway-2023.noPlaybillProductionPage"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "school-pictures-off-broadway-2023",
+        "field": "statusBackfillSource",
+        "oldValue": null,
+        "newValue": "Playbill's /production/ database page for this title is the 2026 return at Cherry Lane, not the 2023 Playwrights Horizons run recorded here; the 2023 run is confirmed by Playbill news (extension at Playwrights Horizons), New York Theatre Guide and Time Out.",
+        "description": "shows.json: school-pictures-off-broadway-2023.statusBackfillSource"
+      }
+    ]
+  },
+  "executedAt": "2026-10-22T18:02:32.964Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: isRevival updated for the-good-thief-off-broadway-2026 (tags: [\"revival\"])"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for a-kidman-carol-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for arias-with-a-twist-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: noPlaybillProductionPage updated for mystic-pizza-regional-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: noPlaybillProductionPage updated for purpose-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: statusBackfillSource updated for purpose-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: noPlaybillProductionPage updated for topdog-underdog-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: statusBackfillSource updated for topdog-underdog-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: noPlaybillProductionPage updated for school-pictures-off-broadway-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: statusBackfillSource updated for school-pictures-off-broadway-2023"
+    }
+  ],
+  "executedIn": "ci"
+}

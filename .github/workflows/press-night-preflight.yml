@@ -1,0 +1,104 @@
+name: Press night preflight
+run-name: 'Press night preflight ${{ inputs.show_id }} ${{ inputs.night }} ${{ inputs.label }}'
+
+# BRO-6858: 24h and 3h before a Broadway press night (press-night-clock.yml dispatches it; the clock dedupes on
+# this run-name), check every key the night spends on and ScrapingBee credits. A broken key pages the owner
+# (press-night:preflight:, page-worthy) with time to fix it; a clean run resolves the page.
+# Verdict rules: scripts/lib/press-night-preflight.js (unit tested). Bright Data zone auto-recovery in
+# check-secrets-health cannot update the secret with this token; it then reports a warning, as weekly.
+
+on:
+  workflow_dispatch:
+    inputs:
+      show_id:
+        description: 'Show id (as in shows.json)'
+        required: true
+        type: string
+      night:
+        description: 'Opening night, YYYY-MM-DD'
+        required: true
+        type: string
+      label:
+        description: 'pf24 or pf3'
+        required: true
+        type: string
+
+permissions:
+  contents: write  # alert ledger
+
+concurrency:
+  group: press-night-preflight-${{ inputs.show_id }}-${{ inputs.night }}-${{ inputs.label }}
+  cancel-in-progress: false
+
+jobs:
+  preflight:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+
+      - name: Validate inputs
+        env:
+          SHOW: ${{ inputs.show_id }}
+          NIGHT: ${{ inputs.night }}
+          LABEL: ${{ inputs.label }}
+        run: |
+          printf '%s' "$SHOW" | grep -Eq '^[a-z0-9][a-z0-9-]{0,127}$' || { echo "::error::show_id must be a show id"; exit 1; }
+          printf '%s' "$NIGHT" | grep -Eq '^[0-9]{4}-[0-9]{2}-[0-9]{2}$' || { echo "::error::night needs YYYY-MM-DD"; exit 1; }
+          printf '%s' "$LABEL" | grep -Eq '^[a-z0-9-]{1,16}$' || { echo "::error::label must be pf24 or pf3"; exit 1; }
+
+      - uses: ./.github/actions/setup-node
+        with:
+          configure-git: 'true'
+
+      - name: Check keys and credits
+        env:
+          SHOW: ${{ inputs.show_id }}
+          NIGHT: ${{ inputs.night }}
+          LABEL: ${{ inputs.label }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          REVIEW_TEXTS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # Exit 1 = problems found and paged; the run stays green so the page, not a red run, is the signal.
+          status=0
+          node scripts/press-night-preflight.js --show="$SHOW" --night="$NIGHT" --label="$LABEL" || status=$?
+          [ "$status" -le 1 ] || exit "$status"
+
+      - name: Commit alert ledger
+        if: always() && github.ref == 'refs/heads/main'
+        continue-on-error: true
+        run: |
+          git add data/audit/alert-ledger.json 2>/dev/null || true
+          git add data/audit/alert-digest-queue.json 2>/dev/null || true
+          git add data/audit/alert-router-attempts.jsonl 2>/dev/null || true
+          if git diff --cached --quiet; then echo "No alert state to commit"; exit 0; fi
+          git commit -m "audit: press-night preflight alert ledger [skip ci]"
+          bash scripts/lib/push-with-retry.sh 5 main
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Press night preflight failed'
+          description: 'BRO-6858. The preflight itself crashed (not a key problem; those page separately). Read the "Check keys and credits" step.'
+          severity: 'warning'
+          email: 'false'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}

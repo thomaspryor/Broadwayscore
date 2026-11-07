@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <!-- Predispatch queue audit (task #1801/#1802): tallies predispatch-guard
+         and dispatch-guards.js refusal verdicts across every pending/
+         in_progress task in the local mirror, writing the digest snapshots
+         scripts/send-morning-digest.js reads (data/audit/predispatch-queue-
+         audit-snapshot.json + dispatch-guard-queue-audit-snapshot.json, both
+         gitignored, Mac-local — see the script header).
+
+         Scheduled BEFORE the 7:30am digest so its snapshots are fresh when
+         send-morning-digest.js reads them.
+
+         Task #1563: was missing this tracked template entirely and ran off
+         a hand-maintained ~/Library/LaunchAgents copy using the old inline
+         `git merge --ff-only || echo "skipped"` pattern, which silently lets
+         the job run on stale code whenever data/audit/* has local edits.
+         Now shares scripts/lib/sync-audit-checkout.sh with backlog-drain/
+         morning-digest/autonomous-shadow (task #732): fails loud instead of
+         swallowing a blocked merge.
+
+         StartCalendarInterval Hour/Minute is LOCAL TIME on this Mac
+         (America/New_York, DST-safe — launchd reads the system clock).
+
+         Secrets (NOTION_TOKEN for `notion-brain.js get`) come from the
+         repo's .env via the script's own preamble — launchd does NOT
+         inherit shell env.
+
+         Install:  cp scripts/launchd/com.broadwayscore.predispatch-queue-audit.plist ~/Library/LaunchAgents/
+                   launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.broadwayscore.predispatch-queue-audit.plist
+         Manual run: node scripts/predispatch-queue-audit.js
+         Manual tick via launchd: launchctl kickstart -k gui/$(id -u)/com.broadwayscore.predispatch-queue-audit
+         Kill:     launchctl bootout gui/$(id -u)/com.broadwayscore.predispatch-queue-audit -->
+    <key>Label</key>
+    <string>com.broadwayscore.predispatch-queue-audit</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/bin/bash</string>
+        <string>-c</string>
+        <string>cd /Users/tompryor/Broadwayscore &amp;&amp; SYNC_TAG=predispatch-queue-audit bash scripts/lib/sync-audit-checkout.sh &amp;&amp; exec node scripts/predispatch-queue-audit.js</string>
+    </array>
+    <key>StartCalendarInterval</key>
+    <dict>
+        <key>Hour</key>
+        <integer>6</integer>
+        <key>Minute</key>
+        <integer>50</integer>
+    </dict>
+    <key>StandardOutPath</key>
+    <string>/tmp/predispatch-queue-audit-launchd.log</string>
+    <key>StandardErrorPath</key>
+    <string>/tmp/predispatch-queue-audit-launchd.log</string>
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>PATH</key>
+        <string>/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/Users/tompryor/.local/bin</string>
+    </dict>
+</dict>
+</plist>

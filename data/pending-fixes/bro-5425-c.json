@@ -1,0 +1,246 @@
+{
+  "issueNumber": "bro-5425-c",
+  "planId": "835ed072-56dd-4af5-83fb-7ce1c62883c5",
+  "status": "applied",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5425: owner decision 2026-10-16 (\"A\"): mark The Lehman Trilogy (2021) and Death of a Salesman (2026) as low-confidence Easy Winners, on the same BroadwayWorld forum evidence the owner accepted for Plaza Suite. Both entries already exist (Lehman from bro-5020-b, Salesman from before bro-4634), so these are data-edits. The held rows for both are removed in the same commit (Salesman's held row cited a fabricated NYT host for a Fizzle label).",
+    "steps": [
+      "Forum thread for Lehman fetched 2026-10-16: post #11 lists PLAYS recouped since reopening: Enemy of the People, Prima Facie, Piano Lesson, Plaza Suite, A Doll's House, Lehman Trilogy.",
+      "Salesman thread page 4 fetched 2026-10-16: \"an $8 million play\" and \"Let's say the breakeven is $850K. In that case, they could be 3 weeks away from recoupment.\" (Jun 9, 2026). Weekly grosses from data/grosses-history.json, week ending 6/14 through 8/9: $18.6M."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-lehman-trilogy-2021",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Easy Winner",
+        "description": "the-lehman-trilogy-2021: designation (owner verdict 2026-10-16, low confidence)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-lehman-trilogy-2021",
+        "field": "recouped",
+        "oldValue": null,
+        "newValue": true,
+        "description": "the-lehman-trilogy-2021: recouped (forum-reported)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-lehman-trilogy-2021",
+        "field": "recoupedDate",
+        "oldValue": null,
+        "newValue": "2022",
+        "description": "the-lehman-trilogy-2021: recoupedDate (estimate: by the Jan 2, 2022 close)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-lehman-trilogy-2021",
+        "field": "recoupedSource",
+        "oldValue": null,
+        "newValue": "Low confidence: BroadwayWorld forum, \"& JULIET Recoups Its Investment\" thread (Jun 11, 2024). A regular poster listed The Lehman Trilogy among the six plays that recouped since Broadway reopened, after writing \"I believe Lehman Trilogy was one of those\" (shows that recouped without announcing it). No producer announcement; the date is an estimate (the run ended Jan 2, 2022).",
+        "description": "the-lehman-trilogy-2021: recoupedSource (forum source)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-lehman-trilogy-2021",
+        "field": "notes",
+        "oldValue": "Commercial transfer at the Nederlander (Oct 2021 to Jan 2022). Capitalized for up to $5.75M. No recoupment announced.",
+        "newValue": "Commercial transfer at the Nederlander (Oct 2021 to Jan 2022). Capitalized for up to $5.75M. No recoupment announced; marked a low-confidence winner on a forum report.",
+        "description": "the-lehman-trilogy-2021: notes (notes match new label)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-lehman-trilogy-2021",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://www.broadwaynews.com/the-lehman-trilogy-announces-broadway-return-date/",
+            "date": "2021-06-04"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.broadwaynews.com/the-lehman-trilogy-announces-broadway-return-date/",
+            "date": "2021-06-04"
+          },
+          {
+            "type": "reddit",
+            "url": "https://forum.broadwayworld.com/thread/JULIET-Recoups-Its-Investment",
+            "date": "2024-06-11"
+          }
+        ],
+        "description": "the-lehman-trilogy-2021: sources (add forum source)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "death-of-a-salesman",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Easy Winner",
+        "description": "death-of-a-salesman: designation (owner verdict 2026-10-16, low confidence)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "death-of-a-salesman",
+        "field": "recouped",
+        "oldValue": false,
+        "newValue": true,
+        "description": "death-of-a-salesman: recouped (inferred from forum estimate and grosses)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "death-of-a-salesman",
+        "field": "recoupedDate",
+        "oldValue": null,
+        "newValue": "2026",
+        "description": "death-of-a-salesman: recoupedDate (estimate)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "death-of-a-salesman",
+        "field": "recoupedSource",
+        "oldValue": null,
+        "newValue": "Low confidence, inferred: on the BroadwayWorld forum (Jun 9, 2026) a regular poster estimated breakeven at about $850K a week and wrote \"they could be 3 weeks away from recoupment.\" The production then grossed about $18.6M over its last nine weeks ($1.78M to $2.51M a week, Broadway League grosses). No producer announcement; the date is an estimate.",
+        "description": "death-of-a-salesman: recoupedSource (forum estimate plus grosses)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "death-of-a-salesman",
+        "field": "capitalization",
+        "oldValue": null,
+        "newValue": 8000000,
+        "description": "death-of-a-salesman: capitalization (forum figure, low confidence)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "death-of-a-salesman",
+        "field": "capitalizationSource",
+        "oldValue": null,
+        "newValue": "Low confidence: a BroadwayWorld forum poster (Jun 9, 2026) called it \"an $8 million play\". No trade report gives the capitalization.",
+        "description": "death-of-a-salesman: capitalizationSource (forum figure)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "death-of-a-salesman",
+        "field": "notes",
+        "oldValue": "Revival produced by Scott Rudin, Barry Diller and Roy Furman; opened Apr 9, 2026 and closed Aug 9, 2026, grossing about $36.9M. No capitalization reported and no recoupment announced (these producers typically do not announce one). The 2012 revival's recoupment does not apply to this production.",
+        "newValue": "Revival produced by Scott Rudin, Barry Diller and Roy Furman; opened Apr 9, 2026 and closed Aug 9, 2026, grossing about $36.9M. No recoupment announced (these producers typically do not announce one); marked a low-confidence winner from a forum estimate and the run's grosses. The 2012 revival's recoupment does not apply to this production.",
+        "description": "death-of-a-salesman: notes (notes match new label)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "death-of-a-salesman",
+        "field": "sources",
+        "oldValue": [],
+        "newValue": [
+          {
+            "type": "reddit",
+            "url": "https://forum.broadwayworld.com/thread/DEATH-OF-A-SALESMAN-2026-Reviews/4",
+            "date": "2026-06-09"
+          },
+          {
+            "type": "trade",
+            "url": "https://playbill.com/article/death-of-a-salesman-joins-the-2-million-club-and-more-from-last-weeks-broadway-grosses",
+            "date": "2026-07-14"
+          }
+        ],
+        "description": "death-of-a-salesman: sources (add sources)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-16T05:20:52.612Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for the-lehman-trilogy-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recouped updated for the-lehman-trilogy-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedDate updated for the-lehman-trilogy-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for the-lehman-trilogy-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for the-lehman-trilogy-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for the-lehman-trilogy-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for death-of-a-salesman"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recouped updated for death-of-a-salesman"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedDate updated for death-of-a-salesman"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for death-of-a-salesman"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for death-of-a-salesman"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for death-of-a-salesman"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for death-of-a-salesman"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for death-of-a-salesman"
+    }
+  ]
+}

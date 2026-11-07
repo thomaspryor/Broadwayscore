@@ -1,0 +1,597 @@
+{
+  "issueNumber": "bro-6221-c",
+  "planId": "25c82816-fafd-4c64-ab18-80b9b71537fc",
+  "status": "applied",
+  "createdAt": "2026-11-03T15:03:22.151Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6221: null images.thumbnail/poster that point at local files missing from public/ (272 refs on 215 closed shows). A placeholder beats a 404; the Mon/Thu fetch-show-images run refills a slot when art is found. Board-lead approved, no paid image search. (part 3 of 9)",
+    "steps": [
+      "shows.json: the-green-bird-2000.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: taller-than-a-dwarf-2000.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: dirty-blonde-2000.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: juno-and-the-paycock-1988.images thumbnail+poster -> null (file missing from public/, BRO-6221)",
+      "shows.json: canciones-de-mi-padre-1988.images thumbnail+poster -> null (file missing from public/, BRO-6221)",
+      "shows.json: checkmates-1988.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: aint-misbehavin-1988.images thumbnail+poster -> null (file missing from public/, BRO-6221)",
+      "shows.json: the-devils-disciple-1988.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: legs-diamond-1988.images thumbnail+poster -> null (file missing from public/, BRO-6221)",
+      "shows.json: eastern-standard-1989.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: black-and-blue-1989.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: cafe-crown-1989.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: hizzoner-1989.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: jerome-robbins-broadway-1989.images thumbnail+poster -> null (file missing from public/, BRO-6221)",
+      "shows.json: run-for-your-wife-1989.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: chu-chem-1989.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: welcome-to-the-club-1989.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: ghetto-1989.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: largely-new-york-1989.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: alone-together-1984.images thumbnail+poster -> null (file missing from public/, BRO-6221)",
+      "shows.json: whoopi-goldberg-1984.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: accidental-death-of-an-anarchist-1984.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: home-front-1985.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: dancing-in-the-end-zone-1985.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: harrigan-n-hart-1985.images thumbnail -> null (file missing from public/, BRO-6221)"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-green-bird-2000",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/the-green-bird-2000/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: the-green-bird-2000.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "taller-than-a-dwarf-2000",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/taller-than-a-dwarf-2000/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: taller-than-a-dwarf-2000.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "dirty-blonde-2000",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/dirty-blonde-2000/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: dirty-blonde-2000.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "juno-and-the-paycock-1988",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/juno-and-the-paycock-1988/thumbnail.jpg",
+          "poster": "/images/shows/juno-and-the-paycock-1988/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: juno-and-the-paycock-1988.images thumbnail+poster -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "canciones-de-mi-padre-1988",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/canciones-de-mi-padre-1988/thumbnail.jpg",
+          "poster": "/images/shows/canciones-de-mi-padre-1988/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: canciones-de-mi-padre-1988.images thumbnail+poster -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "checkmates-1988",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/checkmates-1988/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: checkmates-1988.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "aint-misbehavin-1988",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/aint-misbehavin-1988/thumbnail.jpg",
+          "poster": "/images/shows/aint-misbehavin-1988/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: aint-misbehavin-1988.images thumbnail+poster -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-devils-disciple-1988",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/the-devils-disciple-1988/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: the-devils-disciple-1988.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "legs-diamond-1988",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/legs-diamond-1988/thumbnail.jpg",
+          "poster": "/images/shows/legs-diamond-1988/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: legs-diamond-1988.images thumbnail+poster -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "eastern-standard-1989",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/eastern-standard-1989/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: eastern-standard-1989.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "black-and-blue-1989",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/black-and-blue-1989/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: black-and-blue-1989.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "cafe-crown-1989",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/cafe-crown-1989/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: cafe-crown-1989.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "hizzoner-1989",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/hizzoner-1989/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: hizzoner-1989.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "jerome-robbins-broadway-1989",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/jerome-robbins-broadway-1989/thumbnail.jpg",
+          "poster": "/images/shows/jerome-robbins-broadway-1989/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: jerome-robbins-broadway-1989.images thumbnail+poster -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "run-for-your-wife-1989",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/run-for-your-wife-1989/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: run-for-your-wife-1989.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "chu-chem-1989",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/chu-chem-1989/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: chu-chem-1989.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "welcome-to-the-club-1989",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/welcome-to-the-club-1989/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: welcome-to-the-club-1989.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "ghetto-1989",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/ghetto-1989/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: ghetto-1989.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "largely-new-york-1989",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/largely-new-york-1989/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: largely-new-york-1989.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "alone-together-1984",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/alone-together-1984/thumbnail.jpg",
+          "poster": "/images/shows/alone-together-1984/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: alone-together-1984.images thumbnail+poster -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "whoopi-goldberg-1984",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/whoopi-goldberg-1984/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: whoopi-goldberg-1984.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "accidental-death-of-an-anarchist-1984",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/accidental-death-of-an-anarchist-1984/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: accidental-death-of-an-anarchist-1984.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "home-front-1985",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/home-front-1985/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: home-front-1985.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "dancing-in-the-end-zone-1985",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/dancing-in-the-end-zone-1985/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: dancing-in-the-end-zone-1985.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "harrigan-n-hart-1985",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/harrigan-n-hart-1985/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: harrigan-n-hart-1985.images thumbnail -> null (file missing from public/, BRO-6221)"
+      }
+    ]
+  },
+  "executedAt": "2026-11-03T16:45:04.303Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for the-green-bird-2000"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for taller-than-a-dwarf-2000"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for dirty-blonde-2000"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for juno-and-the-paycock-1988"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for canciones-de-mi-padre-1988"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for checkmates-1988"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for aint-misbehavin-1988"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for the-devils-disciple-1988"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for legs-diamond-1988"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for eastern-standard-1989"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for black-and-blue-1989"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for cafe-crown-1989"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for hizzoner-1989"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for jerome-robbins-broadway-1989"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for run-for-your-wife-1989"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for chu-chem-1989"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for welcome-to-the-club-1989"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for ghetto-1989"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for largely-new-york-1989"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for alone-together-1984"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for whoopi-goldberg-1984"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for accidental-death-of-an-anarchist-1984"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for home-front-1985"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for dancing-in-the-end-zone-1985"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for harrigan-n-hart-1985"
+    }
+  ],
+  "executedIn": "ci"
+}

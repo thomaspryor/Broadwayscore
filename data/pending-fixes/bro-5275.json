@@ -1,0 +1,297 @@
+{
+  "issueNumber": "bro-5275",
+  "planId": "de3fbc44-01e7-4a3b-8e8f-b17f2718fe5a",
+  "status": "applied",
+  "createdAt": "2026-10-13T23:54:52.348542Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5275: delete 30 (part 1 of 2: first 25) review files whose outletId is not an outlet (sentence fragments from the BWW parser, ticket/event/listing pages and aggregator pages submitted through the review form, BWW critic-profile pages). Real outlets in the same list are registered in outlet-registry.json instead.",
+    "steps": [
+      "Delete each junk file; the submission guard now refuses these hosts so they cannot be re-created."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "angels-in-america-2018/should-appeal-to-two-audiences--national-theatre.json",
+        "description": "BRO-5275: should-appeal-to-two-audiences is not an outlet (parser fragment, listing/event/aggregator page or critic profile used as outletId); no review text to keep"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "bloodsport-after-helen-of-troy-off-west-end-2026/buy-tickets-direct-from-the-theatre--unknown.json",
+        "description": "BRO-5275: buy-tickets-direct-from-the-theatre is not an outlet (parser fragment, listing/event/aggregator page or critic profile used as outletId); no review text to keep"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "cat-cohen-broad-strokes-off-broadway-2026/show-score--unknown.json",
+        "description": "BRO-5275: show-score is not an outlet (parser fragment, listing/event/aggregator page or critic profile used as outletId); no review text to keep"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "disruption-off-broadway-2026/show-score--unknown.json",
+        "description": "BRO-5275: show-score is not an outlet (parser fragment, listing/event/aggregator page or critic profile used as outletId); no review text to keep"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "hungry-women-off-broadway-2026/show-score--unknown.json",
+        "description": "BRO-5275: show-score is not an outlet (parser fragment, listing/event/aggregator page or critic profile used as outletId); no review text to keep"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "isla-off-broadway-2026/show-score--unknown.json",
+        "description": "BRO-5275: show-score is not an outlet (parser fragment, listing/event/aggregator page or critic profile used as outletId); no review text to keep"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "rosie-odonnell-common-knowledge-off-broadway-2026/show-score--unknown.json",
+        "description": "BRO-5275: show-score is not an outlet (parser fragment, listing/event/aggregator page or critic profile used as outletId); no review text to keep"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "dinosaur-world-live-off-west-end-2026/inyougo--unknown.json",
+        "description": "BRO-5275: inyougo is not an outlet (parser fragment, listing/event/aggregator page or critic profile used as outletId); no review text to keep"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "heathers-the-musical-off-west-end-2026/broadwayscorecard--alicia-bridge.json",
+        "description": "BRO-5275: broadwayscorecard is not an outlet (parser fragment, listing/event/aggregator page or critic profile used as outletId); no review text to keep"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "high-school-musical-off-west-end-2026/bellecoaches--distinctive-systems-ltd.json",
+        "description": "BRO-5275: bellecoaches is not an outlet (parser fragment, listing/event/aggregator page or critic profile used as outletId); no review text to keep"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "how-shakespeare-saved-my-life-off-broadway-2026/broadwaylog--unknown.json",
+        "description": "BRO-5275: broadwaylog is not an outlet (parser fragment, listing/event/aggregator page or critic profile used as outletId); no review text to keep"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "how-shakespeare-saved-my-life-off-broadway-2026/showify--unknown.json",
+        "description": "BRO-5275: showify is not an outlet (parser fragment, listing/event/aggregator page or critic profile used as outletId); no review text to keep"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "red-riding-hood-off-broadway-2026/showify--unknown.json",
+        "description": "BRO-5275: showify is not an outlet (parser fragment, listing/event/aggregator page or critic profile used as outletId); no review text to keep"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "la-boheme-off-broadway-2026/opera--unknown.json",
+        "description": "BRO-5275: opera is not an outlet (parser fragment, listing/event/aggregator page or critic profile used as outletId); no review text to keep"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "man-to-man-west-end-2026/httpsroyalcourttheatrecom--unknown.json",
+        "description": "BRO-5275: httpsroyalcourttheatrecom is not an outlet (parser fragment, listing/event/aggregator page or critic profile used as outletId); no review text to keep"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "moonrise-a-theatrical-dinner-experience-at-paradise-club-off-broadway-2026/localwineevents--unknown.json",
+        "description": "BRO-5275: localwineevents is not an outlet (parser fragment, listing/event/aggregator page or critic profile used as outletId); no review text to keep"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "night-of-january-16th-off-broadway-2026/fandom--unknown.json",
+        "description": "BRO-5275: fandom is not an outlet (parser fragment, listing/event/aggregator page or critic profile used as outletId); no review text to keep"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "night-of-january-16th-off-broadway-2026/theatricalia--ayn-rand.json",
+        "description": "BRO-5275: theatricalia is not an outlet (parser fragment, listing/event/aggregator page or critic profile used as outletId); no review text to keep"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "one-man-two-guvnors-2012/titled--two-masters.json",
+        "description": "BRO-5275: titled is not an outlet (parser fragment, listing/event/aggregator page or critic profile used as outletId); no review text to keep"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "soon-off-broadway-2026/nick-blaemire--unknown.json",
+        "description": "BRO-5275: nick-blaemire is not an outlet (parser fragment, listing/event/aggregator page or critic profile used as outletId); no review text to keep"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "summer-1976-2023/frank-rizzo--frank-rizzo.json",
+        "description": "BRO-5275: frank-rizzo is not an outlet (parser fragment, listing/event/aggregator page or critic profile used as outletId); no review text to keep"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026/recast--unknown.json",
+        "description": "BRO-5275: recast is not an outlet (parser fragment, listing/event/aggregator page or critic profile used as outletId); no review text to keep"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-bridges-of-madison-county-2014/left-me-wondering-two-things-first--schoenfeld-theatre.json",
+        "description": "BRO-5275: left-me-wondering-two-things-first is not an outlet (parser fragment, listing/event/aggregator page or critic profile used as outletId); no review text to keep"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-hairy-ape-irish-repertory-theatre-off-broadway-2026/is-never-out-of-placeaverage-rating--irish-rep.json",
+        "description": "BRO-5275: is-never-out-of-placeaverage-rating is not an outlet (parser fragment, listing/event/aggregator page or critic profile used as outletId); no review text to keep"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-lehman-trilogy-west-end-2023/clive-davis--unknown.json",
+        "description": "BRO-5275: clive-davis is not an outlet (parser fragment, listing/event/aggregator page or critic profile used as outletId); no review text to keep"
+      }
+    ]
+  },
+  "executedAt": "2026-10-14T01:30:02.878Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted angels-in-america-2018/should-appeal-to-two-audiences--national-theatre.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted bloodsport-after-helen-of-troy-off-west-end-2026/buy-tickets-direct-from-the-theatre--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted cat-cohen-broad-strokes-off-broadway-2026/show-score--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted disruption-off-broadway-2026/show-score--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted hungry-women-off-broadway-2026/show-score--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted isla-off-broadway-2026/show-score--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted rosie-odonnell-common-knowledge-off-broadway-2026/show-score--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted dinosaur-world-live-off-west-end-2026/inyougo--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted heathers-the-musical-off-west-end-2026/broadwayscorecard--alicia-bridge.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted high-school-musical-off-west-end-2026/bellecoaches--distinctive-systems-ltd.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted how-shakespeare-saved-my-life-off-broadway-2026/broadwaylog--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted how-shakespeare-saved-my-life-off-broadway-2026/showify--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted red-riding-hood-off-broadway-2026/showify--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted la-boheme-off-broadway-2026/opera--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted man-to-man-west-end-2026/httpsroyalcourttheatrecom--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted moonrise-a-theatrical-dinner-experience-at-paradise-club-off-broadway-2026/localwineevents--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted night-of-january-16th-off-broadway-2026/fandom--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted night-of-january-16th-off-broadway-2026/theatricalia--ayn-rand.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted one-man-two-guvnors-2012/titled--two-masters.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted soon-off-broadway-2026/nick-blaemire--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted summer-1976-2023/frank-rizzo--frank-rizzo.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026/recast--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-bridges-of-madison-county-2014/left-me-wondering-two-things-first--schoenfeld-theatre.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-hairy-ape-irish-repertory-theatre-off-broadway-2026/is-never-out-of-placeaverage-rating--irish-rep.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-lehman-trilogy-west-end-2023/clive-davis--unknown.json"
+    }
+  ]
+}

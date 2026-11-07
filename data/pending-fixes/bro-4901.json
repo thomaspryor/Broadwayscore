@@ -1,0 +1,88 @@
+{
+  "issueNumber": "bro-4901",
+  "planId": "f88d9e9c-d573-49d3-acc3-9699a1e14d8c",
+  "status": "applied",
+  "createdAt": "2026-10-09T00:14:17.838Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4901: stop showing other productions art on 3 rows whose image files were checked by eye. Funny Girl 2002 (Actors Fund concert) shows the 1964 Streisand cast album; Sweeney Todd 1979 banner is the 2023 revival spray-paint art; We Had A World at Hampstead 2026 shows the New York Manhattan Theatre Club poster.",
+    "steps": [
+      "Null the wrong-production image fields (compare-and-set); the other fields stay"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "funny-girl-2002",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/funny-girl-2002/thumbnail.jpg",
+          "poster": "/images/shows/funny-girl-2002/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "funny-girl-2002: poster/thumbnail are the 1964 Original Broadway Cast album cover (Streisand/Chaplin), not the 2002 concert"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "sweeney-todd-1979",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/sweeney-todd-1979/thumbnail.jpg",
+          "poster": "/images/shows/sweeney-todd-1979/poster.jpg",
+          "hero": "/images/shows/sweeney-todd-1979/hero.png"
+        },
+        "newValue": {
+          "thumbnail": "/images/shows/sweeney-todd-1979/thumbnail.jpg",
+          "poster": "/images/shows/sweeney-todd-1979/poster.jpg",
+          "hero": null
+        },
+        "description": "sweeney-todd-1979: hero is the 2023 Broadway revival red spray-paint London skyline art; the 1979 poster/thumbnail stay"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "we-had-a-world-off-west-end-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/we-had-a-world-off-west-end-2026/thumbnail.jpg",
+          "poster": "/images/shows/we-had-a-world-off-west-end-2026/poster.png",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "we-had-a-world-off-west-end-2026: poster carries the Manhattan Theatre Club logo and the thumbnail names MTC director Trip Cullman; New York production art on the Hampstead row"
+      }
+    ]
+  },
+  "executedAt": "2026-10-09T01:56:28.618Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for funny-girl-2002"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for sweeney-todd-1979"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for we-had-a-world-off-west-end-2026"
+    }
+  ]
+}

@@ -1,0 +1,73 @@
+{
+  "issueNumber": "bro-4656-d",
+  "planId": "409b646d-0317-4196-8d1c-799893e66780",
+  "status": "applied",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4656: two non-review pages on the Spamalot tour (a Rough Draft Atlanta newsletter from per-stop discovery and a CBS Colorado preview) are flagged isNonReview so they never count.",
+    "steps": [
+      "Set isNonReview=true (with a reason) on the two non-review Spamalot tour files."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "spamalot-tour-2025/rough-draft-atlanta--rough-draft-staff.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Rough Draft Atlanta Stage & Screen newsletter (opens \"Stage & screen Friday, July 24\" with a police-arrest news item), not a review of Spamalot. Ingested by tour-stop discovery run 37405391971; the real Rough Draft review (katie-burkholder) stays."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "spamalot-tour-2025/rough-draft-atlanta--rough-draft-staff.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "Newsletter roundup, not a review (BRO-4656)",
+        "description": "Reason for the isNonReview flag above."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "spamalot-tour-2025/cbsnews--dillon-thomas.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "CBS Colorado news preview dated 2026-08-06, before the Denver stop (8/11-8/23); the scoring ensemble already rejected it with 3 of 3 agreeing before a URL refetch cleared the rejection. Not a review."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "spamalot-tour-2025/cbsnews--dillon-thomas.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "News preview published before the stop opened, not a review (BRO-4656)",
+        "description": "Reason for the isNonReview flag above."
+      }
+    ]
+  },
+  "executedAt": "2026-10-06T04:09:49.616Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "spamalot-tour-2025/rough-draft-atlanta--rough-draft-staff.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "spamalot-tour-2025/rough-draft-atlanta--rough-draft-staff.json isNonReviewReason: null -> \"Newsletter roundup, not a review (BRO-4656)\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "spamalot-tour-2025/cbsnews--dillon-thomas.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "spamalot-tour-2025/cbsnews--dillon-thomas.json isNonReviewReason: null -> \"News preview published before the stop opened, not a review (BRO-4656)\""
+    }
+  ]
+}

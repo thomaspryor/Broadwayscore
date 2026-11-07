@@ -1,0 +1,35 @@
+{
+  "issueNumber": "bro-5799",
+  "planId": "81fdfe50-162f-4835-bbf3-2d0a622f40ec",
+  "status": "applied",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5799: flag the 2018 Front Row Center review wrongProduction on the one-part West End 2026 entry.",
+    "steps": [
+      "harry-potter-and-the-cursed-child-one-part-west-end-2026/front-row-center--tulis-mccall.json: 2018 Broadway production review (Front Row Center, dated 2018-04-30) filed under the 2026 West End one-part run; no Broadway Cursed Child show exists to move it to, so it is flagged wrongProduction like the sibling 2016 Deadline review already is."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "harry-potter-and-the-cursed-child-one-part-west-end-2026/front-row-center--tulis-mccall.json",
+        "field": "wrongProduction",
+        "oldValue": false,
+        "newValue": true,
+        "description": "2018 Broadway production review (Front Row Center, dated 2018-04-30) filed under the 2026 West End one-part run; no Broadway Cursed Child show exists to move it to, so it is flagged wrongProduction like the sibling 2016 Deadline review already is."
+      }
+    ]
+  },
+  "executedAt": "2026-10-20T22:17:13.736Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "harry-potter-and-the-cursed-child-one-part-west-end-2026/front-row-center--tulis-mccall.json wrongProduction: false -> true (retracted wrongProductionAutoCleared, wrongProductionAutoClearedAt)"
+    }
+  ],
+  "executedIn": "ci"
+}

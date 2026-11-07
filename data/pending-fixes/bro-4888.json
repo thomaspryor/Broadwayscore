@@ -1,0 +1,155 @@
+{
+  "issueNumber": "bro-4888",
+  "planId": "bed3c034-c93f-4c9a-ae97-f0f9f0776cb9",
+  "status": "applied",
+  "createdAt": "2026-10-09T03:22:12.817Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4888: fix the London Into the Woods and Evita pages: put the FT review back on the Sarah Hemming file (95) with the Tim Bano copy as the duplicate, move four genuine Bridge reviews from the Noel Coward folder to the Bridge folder, delete a duplicate Plays International copy, and bring one Evita blog review up to its star band. The Telegraph flag and Sarah Crompton were already fixed (BRO-4875 and an earlier pass). Refetches and bylines that need live pages are left for a follow-up.",
+    "steps": [
+      "Both FT files hold the same ft.com review. The write guard clears the Hemming file's duplicate pointer when this is written (it refuses the Hemming-to-Bano / Bano-to-Hemming cycle) and stamps this exact reason, so the plan names it.",
+      "The Tim Bano file is the wrongly credited copy of the Hemming review: same url and text.",
+      "Review of the Bridge Theatre production (url 1883magazine.com/into-the-woods-review-the-bridge/) filed under the Noel Coward transfer folder; belongs on the Bridge page.",
+      "Review of the Bridge Theatre production (url onceaweektheatre.com/into-the-woods-at-the-bridge-theatre/) filed under the Noel Coward transfer folder; belongs on the Bridge page.",
+      "Review of the Bridge Theatre production (url theartsdispatch.substack.com/p/into-the-woods-review-bridge-) filed under the Noel Coward transfer folder; belongs on the Bridge page.",
+      "Review of the Bridge Theatre production (url partially-obstructed-view.blogspot.com/2025/12/theatre-revie) filed under the Noel Coward transfer folder; belongs on the Bridge page.",
+      "Plays International review at the same url as the Bridge page's Jeremy Malies file (identical text), credited to the wrong critic; the Bridge copy is the right one.",
+      "The review header carries a three-asterisk rating (London Palladium, London ***); 3/5 is the 51-70 band, so the LLM score of 40 sits below its own star band. Band floor because the prose is negative.",
+      "Provisional: the three-star reading rests on the asterisk line in the header.",
+      "Provenance for the score override"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "into-the-woods-west-end-2025/financialtimes--sarah-hemming.json",
+        "field": "duplicateClearReason",
+        "oldValue": null,
+        "newValue": "auto-cleared at write: refusing duplicateOf cycle with financialtimes--tim-bano.json (it already points back at us)",
+        "description": "Both FT files hold the same ft.com review. The write guard clears the Hemming file's duplicate pointer when this is written (it refuses the Hemming-to-Bano / Bano-to-Hemming cycle) and stamps this exact reason, so the plan names it."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "into-the-woods-west-end-2025/financialtimes--tim-bano.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "financialtimes--sarah-hemming.json",
+        "description": "The Tim Bano file is the wrongly credited copy of the Hemming review: same url and text."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "into-the-woods-noel-coward-west-end-2026/1883magazine--nick-barr.json",
+        "destPath": "into-the-woods-west-end-2025/1883magazine--nick-barr.json",
+        "description": "Review of the Bridge Theatre production (url 1883magazine.com/into-the-woods-review-the-bridge/) filed under the Noel Coward transfer folder; belongs on the Bridge page."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "into-the-woods-noel-coward-west-end-2026/onceaweektheatre--edward-lukes.json",
+        "destPath": "into-the-woods-west-end-2025/onceaweektheatre--edward-lukes.json",
+        "description": "Review of the Bridge Theatre production (url onceaweektheatre.com/into-the-woods-at-the-bridge-theatre/) filed under the Noel Coward transfer folder; belongs on the Bridge page."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "into-the-woods-noel-coward-west-end-2026/theartsdispatch--the-arts-dispatch.json",
+        "destPath": "into-the-woods-west-end-2025/theartsdispatch--the-arts-dispatch.json",
+        "description": "Review of the Bridge Theatre production (url theartsdispatch.substack.com/p/into-the-woods-review-bridge-) filed under the Noel Coward transfer folder; belongs on the Bridge page."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "into-the-woods-noel-coward-west-end-2026/partially-obstructed-view--view-my-complete.json",
+        "destPath": "into-the-woods-west-end-2025/partially-obstructed-view--view-my-complete.json",
+        "description": "Review of the Bridge Theatre production (url partially-obstructed-view.blogspot.com/2025/12/theatre-revie) filed under the Noel Coward transfer folder; belongs on the Bridge page."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "into-the-woods-noel-coward-west-end-2026/plays-international--maryam-philpott.json",
+        "description": "Plays International review at the same url as the Bridge page's Jeremy Malies file (identical text), credited to the wrong critic; the Bridge copy is the right one."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "evita-west-end-2025/jonathan-baz--unknown.json",
+        "field": "humanReviewScore",
+        "oldValue": null,
+        "newValue": 51,
+        "description": "The review header carries a three-asterisk rating (London Palladium, London ***); 3/5 is the 51-70 band, so the LLM score of 40 sits below its own star band. Band floor because the prose is negative."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "evita-west-end-2025/jonathan-baz--unknown.json",
+        "field": "humanReviewScoreProvisional",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Provisional: the three-star reading rests on the asterisk line in the header."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "evita-west-end-2025/jonathan-baz--unknown.json",
+        "field": "humanReviewNote",
+        "oldValue": null,
+        "newValue": "BRO-4888: header shows a three-asterisk (3/5) rating; star bands put 3/5 at 51-70; prose is negative so the band floor is used.",
+        "description": "Provenance for the score override"
+      }
+    ]
+  },
+  "executedAt": "2026-10-09T04:08:00.127Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "into-the-woods-west-end-2025/financialtimes--sarah-hemming.json duplicateClearReason: null -> \"auto-cleared at write: refusing duplicateOf cycle with financialtimes--tim-bano.json (it already points back at us)\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "into-the-woods-west-end-2025/financialtimes--tim-bano.json duplicateOf: null -> \"financialtimes--sarah-hemming.json\""
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved into-the-woods-noel-coward-west-end-2026/1883magazine--nick-barr.json → into-the-woods-west-end-2025/1883magazine--nick-barr.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved into-the-woods-noel-coward-west-end-2026/onceaweektheatre--edward-lukes.json → into-the-woods-west-end-2025/onceaweektheatre--edward-lukes.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved into-the-woods-noel-coward-west-end-2026/theartsdispatch--the-arts-dispatch.json → into-the-woods-west-end-2025/theartsdispatch--the-arts-dispatch.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved into-the-woods-noel-coward-west-end-2026/partially-obstructed-view--view-my-complete.json → into-the-woods-west-end-2025/partially-obstructed-view--view-my-complete.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted into-the-woods-noel-coward-west-end-2026/plays-international--maryam-philpott.json"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "evita-west-end-2025/jonathan-baz--unknown.json humanReviewScore: null -> 51"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "evita-west-end-2025/jonathan-baz--unknown.json humanReviewScoreProvisional: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "evita-west-end-2025/jonathan-baz--unknown.json humanReviewNote: null -> \"BRO-4888: header shows a three-asterisk (3/5) rating; star bands put 3/5 at 51-70; prose is negative so the band floor is used.\""
+    }
+  ]
+}

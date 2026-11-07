@@ -1,0 +1,203 @@
+{
+  "issueNumber": "bro-5397-b",
+  "planId": "989c3f48-579e-41bf-bb36-340d61fd6599",
+  "status": "applied",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5397 (b): same as (a), second half.",
+    "steps": [
+      "publishDate + dateSource compare-and-set edits"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "whos-afraid-of-virginia-woolf-west-end-2026/islingtontribune--unknown.json",
+        "field": "publishDate",
+        "oldValue": "2023-10-08",
+        "newValue": "2026-10-08",
+        "description": "BRO-5397: stored 2023-10-08 has the wrong year; text says \"Thursday, 8th October\" (a Thursday in 2026). The review is of the current run."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "whos-afraid-of-virginia-woolf-west-end-2026/islingtontribune--unknown.json",
+        "field": "dateSource",
+        "oldValue": "llm-scoring",
+        "newValue": "page-date",
+        "description": "BRO-5397: date read from the article text/url, not a guess."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-month-in-the-country-west-end-2026/camdennewjournal--unknown.json",
+        "field": "publishDate",
+        "oldValue": "2015-09-10",
+        "newValue": "2026-09-10",
+        "description": "BRO-5397: stored 2015-09-10 has the wrong year; text says \"Thursday, 10th September\" (a Thursday in 2026). The review is of the current run."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-month-in-the-country-west-end-2026/camdennewjournal--unknown.json",
+        "field": "dateSource",
+        "oldValue": "llm-scoring",
+        "newValue": "page-date",
+        "description": "BRO-5397: date read from the article text/url, not a guess."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "les-liaisons-dangereuses-west-end-2026/tribune--unknown.json",
+        "field": "publishDate",
+        "oldValue": "2025-04-16",
+        "newValue": "2026-04-16",
+        "description": "BRO-5397: stored 2025-04-16 has the wrong year; text says \"Thursday, 16th April\" (a Thursday in 2026). The review is of the current run."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "les-liaisons-dangereuses-west-end-2026/tribune--unknown.json",
+        "field": "dateSource",
+        "oldValue": "llm-scoring",
+        "newValue": "page-date",
+        "description": "BRO-5397: date read from the article text/url, not a guess."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-outsiders-tour-2025/daily-bruin--unknown.json",
+        "field": "publishDate",
+        "oldValue": "2024-10-06",
+        "newValue": "2026-10-06",
+        "description": "BRO-5397: stored 2024-10-06 has the wrong year; url /2026/10/06/ (the primary copy; daily-bruin--caitlin-brockenbrow.json is its duplicate). The review is of the current run."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-outsiders-tour-2025/daily-bruin--unknown.json",
+        "field": "dateSource",
+        "oldValue": "llm-scoring",
+        "newValue": "page-date",
+        "description": "BRO-5397: date read from the article text/url, not a guess."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-notebook-tour-2025/latimes--charles-mcnulty.json",
+        "field": "publishDate",
+        "oldValue": "2025-04-04",
+        "newValue": "2026-01-09",
+        "description": "BRO-5397: stored 2025-04-04 has the wrong year; url /story/2026-01-09/. The review is of the current run."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-notebook-tour-2025/latimes--charles-mcnulty.json",
+        "field": "dateSource",
+        "oldValue": "llm-scoring",
+        "newValue": "page-date",
+        "description": "BRO-5397: date read from the article text/url, not a guess."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-whos-tommy-2024/nysr--unknown.json",
+        "field": "publishDate",
+        "oldValue": "2023-03-28",
+        "newValue": "2024-03-28",
+        "description": "BRO-5397: stored 2023-03-28 has the wrong year; url /2024/03/28/ and the show opened 2024-03-28. The review is of the current run."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-whos-tommy-2024/nysr--unknown.json",
+        "field": "dateSource",
+        "oldValue": "llm-scoring",
+        "newValue": "page-date",
+        "description": "BRO-5397: date read from the article text/url, not a guess."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-whos-tommy-2024/nysr--unknown.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5397: the Date guard flag (\"review 2023-03-28 is 325d before 2024-03-08\") rested on the model-guessed year; the url /2024/03/28/ proves the review ran on opening night, so the flag is stale. It stayed dormant only while dateSource was llm-scoring."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-whos-tommy-2024/nysr--unknown.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5397: same: the corrected date 2024-03-28 is inside the run, so the Date guard flag no longer applies."
+      }
+    ]
+  },
+  "executedAt": "2026-10-15T14:56:52.759Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "whos-afraid-of-virginia-woolf-west-end-2026/islingtontribune--unknown.json publishDate: \"2023-10-08\" -> \"2026-10-08\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "whos-afraid-of-virginia-woolf-west-end-2026/islingtontribune--unknown.json dateSource: \"llm-scoring\" -> \"page-date\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-month-in-the-country-west-end-2026/camdennewjournal--unknown.json publishDate: \"2015-09-10\" -> \"2026-09-10\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-month-in-the-country-west-end-2026/camdennewjournal--unknown.json dateSource: \"llm-scoring\" -> \"page-date\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "les-liaisons-dangereuses-west-end-2026/tribune--unknown.json publishDate: \"2025-04-16\" -> \"2026-04-16\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "les-liaisons-dangereuses-west-end-2026/tribune--unknown.json dateSource: \"llm-scoring\" -> \"page-date\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-outsiders-tour-2025/daily-bruin--unknown.json publishDate: \"2024-10-06\" -> \"2026-10-06\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-outsiders-tour-2025/daily-bruin--unknown.json dateSource: \"llm-scoring\" -> \"page-date\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-notebook-tour-2025/latimes--charles-mcnulty.json publishDate: \"2025-04-04\" -> \"2026-01-09\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-notebook-tour-2025/latimes--charles-mcnulty.json dateSource: \"llm-scoring\" -> \"page-date\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-whos-tommy-2024/nysr--unknown.json publishDate: \"2023-03-28\" -> \"2024-03-28\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-whos-tommy-2024/nysr--unknown.json dateSource: \"llm-scoring\" -> \"page-date\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-whos-tommy-2024/nysr--unknown.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-whos-tommy-2024/nysr--unknown.json wrongProduction: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    }
+  ]
+}

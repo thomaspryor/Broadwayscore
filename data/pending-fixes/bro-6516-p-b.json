@@ -1,0 +1,804 @@
+{
+  "issueNumber": "bro-6516-p-b",
+  "planId": "0b84139b-c53d-4ae9-b1cf-4d371233c86d",
+  "status": "applied",
+  "createdAt": "2026-10-29T15:13:33.086Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6516: add UK hub productions from the Guardian list (23 chichester-uk,dundee-uk)",
+    "steps": [
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "add-show",
+        "show": {
+          "id": "45-years-chichester-festival-regional-2026",
+          "title": "45 Years",
+          "slug": "45-years-chichester-festival-regional-2026",
+          "venue": "Chichester Festival Theatre, Chichester",
+          "city": "chichester-uk",
+          "openingDate": "2026-06-19",
+          "openingDateSource": "guardian-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-guardian-backfill",
+          "discoveredAt": "2026-10-29T15:11:14.339Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.theguardian.com/stage/2026/jun/19/45-years-review-minerva-theatre-chichester-gabriel-byrne-geraldine-james"
+          ],
+          "statusSource": "guardian-review-age"
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "a-boy-called-christmas-chichester-festival-regional-2025",
+          "title": "A Boy Called Christmas",
+          "slug": "a-boy-called-christmas-chichester-festival-regional-2025",
+          "venue": "Chichester Festival Theatre, Chichester",
+          "city": "chichester-uk",
+          "openingDate": "2025-12-21",
+          "openingDateSource": "guardian-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-guardian-backfill",
+          "discoveredAt": "2026-10-29T15:11:31.122Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.theguardian.com/stage/2025/dec/21/a-boy-called-christmas-review-santa-origin-story-chichester-festival-theatre"
+          ],
+          "statusSource": "guardian-review-age"
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "a-midsummer-nights-dream-chichester-festival-regional-2026",
+          "title": "A Midsummer Night's Dream",
+          "slug": "a-midsummer-nights-dream-chichester-festival-regional-2026",
+          "venue": "Chichester Festival Theatre, Chichester",
+          "city": "chichester-uk",
+          "openingDate": "2026-09-27",
+          "openingDateSource": "guardian-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "open",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-guardian-backfill",
+          "discoveredAt": "2026-10-29T15:11:36.991Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.theguardian.com/stage/2026/sep/27/a-midsummer-nights-dream-review-munya-chawawa-chichester-festival-theatre"
+          ],
+          "statusSource": "guardian-review"
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "a-small-and-quiet-light-chichester-festival-regional-2026",
+          "title": "A Small and Quiet Light",
+          "slug": "a-small-and-quiet-light-chichester-festival-regional-2026",
+          "venue": "Chichester Festival Theatre, Chichester",
+          "city": "chichester-uk",
+          "openingDate": "2026-08-31",
+          "openingDateSource": "guardian-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "open",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-guardian-backfill",
+          "discoveredAt": "2026-10-29T15:11:39.085Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.theguardian.com/stage/2026/aug/31/a-small-and-quiet-light-review-minerva-theatre-chichester"
+          ],
+          "statusSource": "guardian-review"
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "anna-karenina-chichester-festival-regional-2025",
+          "title": "Anna Karenina",
+          "slug": "anna-karenina-chichester-festival-regional-2025",
+          "venue": "Chichester Festival Theatre, Chichester",
+          "city": "chichester-uk",
+          "openingDate": "2025-06-15",
+          "openingDateSource": "guardian-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "musical",
+          "discoverySource": "uk-regional-guardian-backfill",
+          "discoveredAt": "2026-10-29T15:12:15.606Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.theguardian.com/stage/2025/jun/15/anna-karenina-review-chichester-festival-theatre-tolstoy-natalie-dormer"
+          ],
+          "statusSource": "guardian-review-age"
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "atonement-chichester-festival-regional-2026",
+          "title": "Atonement",
+          "slug": "atonement-chichester-festival-regional-2026",
+          "venue": "Chichester Festival Theatre, Chichester",
+          "city": "chichester-uk",
+          "openingDate": "2026-06-07",
+          "openingDateSource": "guardian-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-guardian-backfill",
+          "discoveredAt": "2026-10-29T15:11:16.197Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.theguardian.com/stage/2026/jun/07/atonement-review-chichester-festival-theatre-ian-mcewan"
+          ],
+          "statusSource": "guardian-review-age"
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "choir-chichester-festival-regional-2025",
+          "title": "Choir",
+          "slug": "choir-chichester-festival-regional-2025",
+          "venue": "Chichester Festival Theatre, Chichester",
+          "city": "chichester-uk",
+          "openingDate": "2025-08-10",
+          "openingDateSource": "guardian-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-guardian-backfill",
+          "discoveredAt": "2026-10-29T15:12:09.563Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.theguardian.com/stage/2025/aug/10/choir-review-gurpreet-kaur-bhatti-minerva-chichester-festival-theatre"
+          ],
+          "statusSource": "guardian-review-age"
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "eclipse-chichester-festival-regional-2026",
+          "title": "Eclipse",
+          "slug": "eclipse-chichester-festival-regional-2026",
+          "venue": "Chichester Festival Theatre, Chichester",
+          "city": "chichester-uk",
+          "openingDate": "2026-05-15",
+          "openingDateSource": "guardian-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-guardian-backfill",
+          "discoveredAt": "2026-10-29T15:11:43.230Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.theguardian.com/stage/2026/may/15/eclipse-review-minerva-theatre-chichester-john-morton"
+          ],
+          "statusSource": "guardian-review-age"
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "hamlet-chichester-festival-regional-2025",
+          "title": "Hamlet",
+          "slug": "hamlet-chichester-festival-regional-2025",
+          "venue": "Chichester Festival Theatre, Chichester",
+          "city": "chichester-uk",
+          "openingDate": "2025-09-16",
+          "openingDateSource": "guardian-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-guardian-backfill",
+          "discoveredAt": "2026-10-29T15:12:03.863Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.theguardian.com/stage/2025/sep/17/hamlet-review-minerva-theatre-chichester-giles-terera-justin-audibert"
+          ],
+          "statusSource": "guardian-review-age"
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "it-walks-around-the-house-at-night-chichester-festival-regional-2026",
+          "title": "It Walks Around the House at Night",
+          "slug": "it-walks-around-the-house-at-night-chichester-festival-regional-2026",
+          "venue": "Chichester Festival Theatre, Chichester",
+          "city": "chichester-uk",
+          "openingDate": "2026-02-06",
+          "openingDateSource": "guardian-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-guardian-backfill",
+          "discoveredAt": "2026-10-29T15:11:27.435Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.theguardian.com/stage/2026/feb/06/it-walks-around-the-house-at-night-review-minerva-theatre-chichester"
+          ],
+          "statusSource": "guardian-review-age"
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "lord-of-the-flies-chichester-festival-regional-2025",
+          "title": "Lord of the Flies",
+          "slug": "lord-of-the-flies-chichester-festival-regional-2025",
+          "venue": "Chichester Festival Theatre, Chichester",
+          "city": "chichester-uk",
+          "openingDate": "2025-09-26",
+          "openingDateSource": "guardian-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-guardian-backfill",
+          "discoveredAt": "2026-10-29T15:12:02.035Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.theguardian.com/stage/2025/sep/26/lord-of-the-flies-review-chichester-festival-theatre-william-golding-nigel-williams"
+          ],
+          "statusSource": "guardian-review-age"
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "my-fair-lady-chichester-festival-regional-2026",
+          "title": "My Fair Lady",
+          "slug": "my-fair-lady-chichester-festival-regional-2026",
+          "venue": "Chichester Festival Theatre, Chichester",
+          "city": "chichester-uk",
+          "openingDate": "2026-07-16",
+          "openingDateSource": "guardian-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "musical",
+          "discoverySource": "uk-regional-guardian-backfill",
+          "discoveredAt": "2026-10-29T15:11:10.341Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.theguardian.com/stage/2026/jul/16/my-fair-lady-review-chichester-festival-theatre"
+          ],
+          "statusSource": "guardian-review-age"
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "redlands-chichester-festival-regional-2024",
+          "title": "Redlands",
+          "slug": "redlands-chichester-festival-regional-2024",
+          "venue": "Chichester Festival Theatre, Chichester",
+          "city": "chichester-uk",
+          "openingDate": "2024-10-01",
+          "openingDateSource": "guardian-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-guardian-backfill",
+          "discoveredAt": "2026-10-29T15:12:48.986Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.theguardian.com/stage/2024/oct/01/redlands-review-rolling-stones-chichester-festival-theatre-justin-audibert"
+          ],
+          "statusSource": "guardian-review-age"
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "safe-space-chichester-festival-regional-2025",
+          "title": "Safe Space",
+          "slug": "safe-space-chichester-festival-regional-2025",
+          "venue": "Chichester Festival Theatre, Chichester",
+          "city": "chichester-uk",
+          "openingDate": "2025-10-19",
+          "openingDateSource": "guardian-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-guardian-backfill",
+          "discoveredAt": "2026-10-29T15:12:01.960Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.theguardian.com/stage/2025/oct/19/safe-space-review-minerva-theatre-chichester"
+          ],
+          "statusSource": "guardian-review-age"
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-cat-and-the-canary-chichester-festival-regional-2024",
+          "title": "The Cat and the Canary",
+          "slug": "the-cat-and-the-canary-chichester-festival-regional-2024",
+          "venue": "Chichester Festival Theatre, Chichester",
+          "city": "chichester-uk",
+          "openingDate": "2024-10-08",
+          "openingDateSource": "guardian-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-guardian-backfill",
+          "discoveredAt": "2026-10-29T15:12:46.843Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.theguardian.com/stage/2024/oct/08/the-cat-and-the-canary-review-minerva-theatre-chichester"
+          ],
+          "statusSource": "guardian-review-age"
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-government-inspector-chichester-festival-regional-2025",
+          "title": "The Government Inspector",
+          "slug": "the-government-inspector-chichester-festival-regional-2025",
+          "venue": "Chichester Festival Theatre, Chichester",
+          "city": "chichester-uk",
+          "openingDate": "2025-05-02",
+          "openingDateSource": "guardian-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-guardian-backfill",
+          "discoveredAt": "2026-10-29T15:12:21.752Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.theguardian.com/stage/2025/may/02/the-government-inspector-review-tom-rosenthal-chichester-festival-theatre"
+          ],
+          "statusSource": "guardian-review-age"
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-other-boleyn-girl-chichester-festival-regional-2024",
+          "title": "The Other Boleyn Girl",
+          "slug": "the-other-boleyn-girl-chichester-festival-regional-2024",
+          "venue": "Chichester Festival Theatre, Chichester",
+          "city": "chichester-uk",
+          "openingDate": "2024-04-28",
+          "openingDateSource": "guardian-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-guardian-backfill",
+          "discoveredAt": "2026-10-29T15:12:54.510Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.theguardian.com/stage/2024/apr/28/the-other-boleyn-girl-review-the-sexual-strategising-of-the-conniving-boleyn-family-brought-sharply-to-life"
+          ],
+          "statusSource": "guardian-review-age"
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-unlikely-pilgrimage-of-harold-fry-chichester-festival-regional-2025",
+          "title": "The Unlikely Pilgrimage of Harold Fry",
+          "slug": "the-unlikely-pilgrimage-of-harold-fry-chichester-festival-regional-2025",
+          "venue": "Chichester Festival Theatre, Chichester",
+          "city": "chichester-uk",
+          "openingDate": "2025-05-16",
+          "openingDateSource": "guardian-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "musical",
+          "discoverySource": "uk-regional-guardian-backfill",
+          "discoveredAt": "2026-10-29T15:12:15.691Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.theguardian.com/stage/2025/may/16/the-unlikely-pilgrimage-of-harold-fry-review-minerva-theatre-chichester"
+          ],
+          "statusSource": "guardian-review-age"
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "top-hat-chichester-festival-regional-2025",
+          "title": "Top Hat",
+          "slug": "top-hat-chichester-festival-regional-2025",
+          "venue": "Chichester Festival Theatre, Chichester",
+          "city": "chichester-uk",
+          "openingDate": "2025-07-25",
+          "openingDateSource": "guardian-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "musical",
+          "discoverySource": "uk-regional-guardian-backfill",
+          "discoveredAt": "2026-10-29T15:12:13.542Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.theguardian.com/stage/2025/jul/25/top-hat-review-chichester-festival-theatre"
+          ],
+          "statusSource": "guardian-review-age"
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "jack-and-the-beanstalk-dundee-rep-regional-2025",
+          "title": "Jack and the Beanstalk",
+          "slug": "jack-and-the-beanstalk-dundee-rep-regional-2025",
+          "venue": "Dundee Rep, Dundee",
+          "city": "dundee-uk",
+          "openingDate": "2025-12-05",
+          "openingDateSource": "guardian-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "musical",
+          "discoverySource": "uk-regional-guardian-backfill",
+          "discoveredAt": "2026-10-29T15:11:56.303Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.theguardian.com/stage/2025/dec/05/jack-and-the-beanstalk-review-dundee-rep"
+          ],
+          "statusSource": "guardian-review-age"
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "sunset-song-dundee-rep-regional-2024",
+          "title": "Sunset Song",
+          "slug": "sunset-song-dundee-rep-regional-2024",
+          "venue": "Dundee Rep, Dundee",
+          "city": "dundee-uk",
+          "openingDate": "2024-04-28",
+          "openingDateSource": "guardian-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-guardian-backfill",
+          "discoveredAt": "2026-10-29T15:12:54.499Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.theguardian.com/stage/2024/apr/28/sunset-song-review-a-lively-if-melodramatic-take-on-lewis-grassic-gibbons-classic-novel"
+          ],
+          "statusSource": "guardian-review-age"
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-glass-menagerie-dundee-rep-regional-2025",
+          "title": "The Glass Menagerie",
+          "slug": "the-glass-menagerie-dundee-rep-regional-2025",
+          "venue": "Dundee Rep, Dundee",
+          "city": "dundee-uk",
+          "openingDate": "2025-10-09",
+          "openingDateSource": "guardian-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-guardian-backfill",
+          "discoveredAt": "2026-10-29T15:12:00.135Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.theguardian.com/stage/2025/oct/09/the-glass-menagerie-review-tennessee-williams-dundee-rep"
+          ],
+          "statusSource": "guardian-review-age"
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-high-life-the-musical-still-living-it-dundee-rep-regional-2026",
+          "title": "The High Life: The Musical, Still Living It!",
+          "slug": "the-high-life-the-musical-still-living-it-dundee-rep-regional-2026",
+          "venue": "Dundee Rep, Dundee",
+          "city": "dundee-uk",
+          "openingDate": "2026-04-03",
+          "openingDateSource": "guardian-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "musical",
+          "discoverySource": "uk-regional-guardian-backfill",
+          "discoveredAt": "2026-10-29T15:11:23.672Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.theguardian.com/stage/2026/apr/03/the-high-life-the-musical-still-living-it-review-dundee-rep-alan-cumming"
+          ],
+          "statusSource": "guardian-review-age"
+        }
+      }
+    ]
+  },
+  "executedAt": "2026-10-29T17:31:41.962Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added 45-years-chichester-festival-regional-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added a-boy-called-christmas-chichester-festival-regional-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added a-midsummer-nights-dream-chichester-festival-regional-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added a-small-and-quiet-light-chichester-festival-regional-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added anna-karenina-chichester-festival-regional-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added atonement-chichester-festival-regional-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added choir-chichester-festival-regional-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added eclipse-chichester-festival-regional-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added hamlet-chichester-festival-regional-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added it-walks-around-the-house-at-night-chichester-festival-regional-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added lord-of-the-flies-chichester-festival-regional-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added my-fair-lady-chichester-festival-regional-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added redlands-chichester-festival-regional-2024"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added safe-space-chichester-festival-regional-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-cat-and-the-canary-chichester-festival-regional-2024"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-government-inspector-chichester-festival-regional-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-other-boleyn-girl-chichester-festival-regional-2024"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-unlikely-pilgrimage-of-harold-fry-chichester-festival-regional-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added top-hat-chichester-festival-regional-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added jack-and-the-beanstalk-dundee-rep-regional-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added sunset-song-dundee-rep-regional-2024"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-glass-menagerie-dundee-rep-regional-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-high-life-the-musical-still-living-it-dundee-rep-regional-2026"
+    }
+  ],
+  "executedIn": "ci"
+}

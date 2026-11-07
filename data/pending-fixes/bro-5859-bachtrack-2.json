@@ -1,0 +1,46 @@
+{
+  "issueNumber": "bro-5859-bachtrack-2",
+  "planId": "40166d63-7623-46b9-a355-327ccbbe5b66",
+  "status": "partial",
+  "createdAt": "2026-10-21T21:03:22.921Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5859: retry the two Bachtrack ingests. Run 39674467865 deleted the Lincoln stubs and cleared the Innocence flag, but Playwright on the runner got a 175-char page (Lincoln) and a page with 182 chars of article (Innocence); the same fetch from a non-runner IP returns the full review.",
+    "steps": [
+      "Re-ingest the Lincoln review",
+      "Re-ingest the Innocence review"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=lincoln-in-the-bardo-off-broadway-2026 --url=https://bachtrack.com/review-mazzoli-lincoln-in-the-bardo-blain-cruz-mattei-metropolitan-opera-new-york-october-2026 --outlet=bachtrack",
+        "description": "BRO-5859: Bachtrack review of the Met production (byline and publishDate come from the page)"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=innocence-off-broadway-2026 --url=https://bachtrack.com/review-saariaho-innocence-malkki-didonato-metropolitan-opera-april-2026 --outlet=bachtrack",
+        "description": "BRO-5859: replace the 313-char invalid text, publishDate from page metadata"
+      }
+    ]
+  },
+  "executedAt": "2026-10-21T21:10:59.688Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=lincoln-in-the-bardo-off-broadway-2026 --url=https://bachtrack.com/review-mazzoli-lincoln-in-the-bardo-blain-cruz-mattei-metropolitan-opera-new-york-october-2026 --outlet=bachtrack"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=innocence-off-broadway-2026 --url=https://bachtrack.com/review-saariaho-innocence-malkki-didonato-metropolitan-opera-april-2026 --outlet=bachtrack"
+    }
+  ],
+  "executedIn": "ci"
+}

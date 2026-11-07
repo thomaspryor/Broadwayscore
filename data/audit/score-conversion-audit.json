@@ -1,0 +1,1155 @@
+{
+  "_meta": {
+    "generatedAt": "2026-01-28T20:51:45.165Z",
+    "tolerance": 10,
+    "reviewsFile": "data/reviews.json",
+    "notes": "LLM-scored reviews intentionally use full text analysis instead of originalRating conversion"
+  },
+  "summary": {
+    "total_reviews": 1934,
+    "with_original_rating": 113,
+    "without_original_rating": 1821,
+    "total_scorable": 113,
+    "correct": 77,
+    "miscalculated": 36,
+    "unparseable": 0,
+    "designation_only": 0,
+    "miscalculation_rate": "31.86%",
+    "unparseable_rate": "0.00%",
+    "miscalculation_breakdown": {
+      "total": 36,
+      "llm_scored_intentional": 36,
+      "true_errors": 0,
+      "true_error_rate": "0.00%"
+    },
+    "ai_scored": {
+      "total": 1821,
+      "sampled": 100,
+      "with_full_text": 75,
+      "without_full_text": 25,
+      "unknown": 0
+    }
+  },
+  "validation": {
+    "miscalculation_rate_pass": false,
+    "true_error_rate_pass": true,
+    "unparseable_rate_pass": true,
+    "overall_pass": true
+  },
+  "miscalculated": [
+    {
+      "showId": "aladdin-2014",
+      "outlet": "New York Daily News",
+      "criticName": "Joe Dziemianowicz",
+      "originalRating": 80,
+      "assignedScore": 37,
+      "expectedScore": 80,
+      "difference": 43,
+      "parseResult": {
+        "type": "numeric",
+        "expected": 80,
+        "parsedValue": 80,
+        "unparseable": false
+      },
+      "likelyLlmScored": true,
+      "scoreSourceInfo": {
+        "source": "bww-roundup",
+        "hasLlmScore": true,
+        "hasFullText": true,
+        "file": "nydailynews--joe-dziemianowicz.json"
+      }
+    },
+    {
+      "showId": "moulin-rouge-2019",
+      "outlet": "The Wrap",
+      "criticName": "Robert Hofler",
+      "originalRating": "A",
+      "assignedScore": 50,
+      "expectedScore": 93,
+      "difference": 43,
+      "parseResult": {
+        "type": "letter",
+        "expected": 93,
+        "parsedValue": "A",
+        "unparseable": false
+      },
+      "likelyLlmScored": true,
+      "scoreSourceInfo": {
+        "source": "bww-roundup",
+        "hasLlmScore": true,
+        "hasFullText": false,
+        "file": "thewrap--robert-hofler.json"
+      }
+    },
+    {
+      "showId": "back-to-the-future-2023",
+      "outlet": "Time Out New York",
+      "criticName": "Adam Feldman",
+      "originalRating": 60,
+      "assignedScore": 20,
+      "expectedScore": 60,
+      "difference": 40,
+      "parseResult": {
+        "type": "numeric",
+        "expected": 60,
+        "parsedValue": 60,
+        "unparseable": false
+      },
+      "likelyLlmScored": true,
+      "scoreSourceInfo": {
+        "source": "show-score",
+        "hasLlmScore": true,
+        "hasFullText": true,
+        "file": "timeout--adam-feldman.json"
+      }
+    },
+    {
+      "showId": "back-to-the-future-2023",
+      "outlet": "New York Stage Review",
+      "criticName": "Elysa Gardner",
+      "originalRating": "2 stars",
+      "assignedScore": 75,
+      "expectedScore": 40,
+      "difference": 35,
+      "parseResult": {
+        "type": "star_5",
+        "expected": 40,
+        "parsedValue": "2/5",
+        "unparseable": false
+      },
+      "likelyLlmScored": true,
+      "scoreSourceInfo": {
+        "source": "bww-roundup",
+        "hasLlmScore": true,
+        "hasFullText": true,
+        "file": "nysr--elysa-gardner.json"
+      }
+    },
+    {
+      "showId": "merrily-we-roll-along-2023",
+      "outlet": "Time Out New York",
+      "criticName": "Adam Feldman",
+      "originalRating": 80,
+      "assignedScore": 45,
+      "expectedScore": 80,
+      "difference": 35,
+      "parseResult": {
+        "type": "numeric",
+        "expected": 80,
+        "parsedValue": 80,
+        "unparseable": false
+      },
+      "likelyLlmScored": true,
+      "scoreSourceInfo": {
+        "source": "bww-roundup",
+        "hasLlmScore": true,
+        "hasFullText": true,
+        "file": "timeout--adam-feldman.json"
+      }
+    },
+    {
+      "showId": "boop-2025",
+      "outlet": "Time Out New York",
+      "criticName": "Adam Feldman",
+      "originalRating": 60,
+      "assignedScore": 82,
+      "expectedScore": 60,
+      "difference": 22,
+      "parseResult": {
+        "type": "numeric",
+        "expected": 60,
+        "parsedValue": 60,
+        "unparseable": false
+      },
+      "likelyLlmScored": true,
+      "scoreSourceInfo": {
+        "source": "bww-roundup",
+        "hasLlmScore": true,
+        "hasFullText": true,
+        "file": "timeout--adam-feldman.json"
+      }
+    },
+    {
+      "showId": "spamalot-2023",
+      "outlet": "Time Out New York",
+      "criticName": "Adam Feldman",
+      "originalRating": 60,
+      "assignedScore": 82,
+      "expectedScore": 60,
+      "difference": 22,
+      "parseResult": {
+        "type": "numeric",
+        "expected": 60,
+        "parsedValue": 60,
+        "unparseable": false
+      },
+      "likelyLlmScored": true,
+      "scoreSourceInfo": {
+        "source": "bww-roundup",
+        "hasLlmScore": true,
+        "hasFullText": true,
+        "file": "timeout--adam-feldman.json"
+      }
+    },
+    {
+      "showId": "prayer-for-the-french-republic-2024",
+      "outlet": "Time Out New York",
+      "criticName": "Adam Feldman",
+      "originalRating": 80,
+      "assignedScore": 59,
+      "expectedScore": 80,
+      "difference": 21,
+      "parseResult": {
+        "type": "numeric",
+        "expected": 80,
+        "parsedValue": 80,
+        "unparseable": false
+      },
+      "likelyLlmScored": true,
+      "scoreSourceInfo": {
+        "source": "bww-roundup",
+        "hasLlmScore": true,
+        "hasFullText": true,
+        "file": "timeout--adam-feldman.json"
+      }
+    },
+    {
+      "showId": "the-outsiders-2024",
+      "outlet": "Time Out New York",
+      "criticName": "Adam",
+      "originalRating": 80,
+      "assignedScore": 59,
+      "expectedScore": 80,
+      "difference": 21,
+      "parseResult": {
+        "type": "numeric",
+        "expected": 80,
+        "parsedValue": 80,
+        "unparseable": false
+      },
+      "likelyLlmScored": true,
+      "scoreSourceInfo": {
+        "source": "dtli",
+        "hasLlmScore": true,
+        "hasFullText": true,
+        "file": "timeout--adam.json"
+      }
+    },
+    {
+      "showId": "hells-kitchen-2024",
+      "outlet": "New York Stage Review",
+      "criticName": "Melissa Rose Bernardo",
+      "originalRating": "3/5",
+      "assignedScore": 79,
+      "expectedScore": 60,
+      "difference": 19,
+      "parseResult": {
+        "type": "star_5",
+        "expected": 60,
+        "parsedValue": "3/5",
+        "unparseable": false
+      },
+      "likelyLlmScored": true,
+      "scoreSourceInfo": {
+        "source": "playwright-scraped",
+        "hasLlmScore": true,
+        "hasFullText": true,
+        "file": "nysr--melissa-rose-bernardo.json"
+      }
+    },
+    {
+      "showId": "hells-kitchen-2024",
+      "outlet": "New York Stage Review",
+      "criticName": "Rose Bernardo",
+      "originalRating": "3/5",
+      "assignedScore": 79,
+      "expectedScore": 60,
+      "difference": 19,
+      "parseResult": {
+        "type": "star_5",
+        "expected": 60,
+        "parsedValue": "3/5",
+        "unparseable": false
+      },
+      "likelyLlmScored": true,
+      "scoreSourceInfo": {
+        "source": "playwright-scraped",
+        "hasLlmScore": true,
+        "hasFullText": true,
+        "file": "nysr--melissa-rose-bernardo.json"
+      }
+    },
+    {
+      "showId": "queen-versailles-2025",
+      "outlet": "culturesauce",
+      "criticName": "Thom Geier",
+      "originalRating": "1/5",
+      "assignedScore": 39,
+      "expectedScore": 20,
+      "difference": 19,
+      "parseResult": {
+        "type": "star_5",
+        "expected": 20,
+        "parsedValue": "1/5",
+        "unparseable": false
+      },
+      "likelyLlmScored": true,
+      "scoreSourceInfo": {
+        "source": "playwright-scraped",
+        "hasLlmScore": true,
+        "hasFullText": true,
+        "file": "culturesauce--thom-geier.json"
+      }
+    },
+    {
+      "showId": "water-for-elephants-2024",
+      "outlet": "Time Out New York",
+      "criticName": "Adam Feldman",
+      "originalRating": 60,
+      "assignedScore": 79,
+      "expectedScore": 60,
+      "difference": 19,
+      "parseResult": {
+        "type": "numeric",
+        "expected": 60,
+        "parsedValue": 60,
+        "unparseable": false
+      },
+      "likelyLlmScored": true,
+      "scoreSourceInfo": {
+        "source": "bww-roundup",
+        "hasLlmScore": true,
+        "hasFullText": true,
+        "file": "timeout--adam-feldman.json"
+      }
+    },
+    {
+      "showId": "back-to-the-future-2023",
+      "outlet": "Entertainment Weekly",
+      "criticName": "Dalton Ross",
+      "originalRating": "B",
+      "assignedScore": 65,
+      "expectedScore": 83,
+      "difference": 18,
+      "parseResult": {
+        "type": "letter",
+        "expected": 83,
+        "parsedValue": "B",
+        "unparseable": false
+      },
+      "likelyLlmScored": true,
+      "scoreSourceInfo": {
+        "source": "bww-roundup",
+        "hasLlmScore": true,
+        "hasFullText": true,
+        "file": "ew--dalton-ross.json"
+      }
+    },
+    {
+      "showId": "death-becomes-her-2024",
+      "outlet": "Time Out New York",
+      "criticName": "Adam Feldman",
+      "originalRating": 60,
+      "assignedScore": 77,
+      "expectedScore": 60,
+      "difference": 17,
+      "parseResult": {
+        "type": "numeric",
+        "expected": 60,
+        "parsedValue": 60,
+        "unparseable": false
+      },
+      "likelyLlmScored": true,
+      "scoreSourceInfo": {
+        "source": "show-score",
+        "hasLlmScore": true,
+        "hasFullText": true,
+        "file": "timeout--adam-feldman.json"
+      }
+    },
+    {
+      "showId": "mamma-mia-2025",
+      "outlet": "New York Stage Review",
+      "criticName": "David Finkle",
+      "originalRating": "3/5",
+      "assignedScore": 44,
+      "expectedScore": 60,
+      "difference": 16,
+      "parseResult": {
+        "type": "star_5",
+        "expected": 60,
+        "parsedValue": "3/5",
+        "unparseable": false
+      },
+      "likelyLlmScored": true,
+      "scoreSourceInfo": {
+        "source": "playwright-scraped",
+        "hasLlmScore": true,
+        "hasFullText": true,
+        "file": "nysr--david-finkle.json"
+      }
+    },
+    {
+      "showId": "back-to-the-future-2023",
+      "outlet": "New York Post",
+      "criticName": "Johnny Oleksinki",
+      "originalRating": "2 stars",
+      "assignedScore": 25,
+      "expectedScore": 40,
+      "difference": 15,
+      "parseResult": {
+        "type": "star_5",
+        "expected": 40,
+        "parsedValue": "2/5",
+        "unparseable": false
+      },
+      "likelyLlmScored": true,
+      "scoreSourceInfo": {
+        "source": "bww-roundup",
+        "hasLlmScore": true,
+        "hasFullText": false,
+        "file": "nypost--johnny-oleksinski.json"
+      }
+    },
+    {
+      "showId": "moulin-rouge-2019",
+      "outlet": "amNewYork",
+      "criticName": "Matt Windman",
+      "originalRating": "Negative",
+      "assignedScore": 25,
+      "expectedScore": 40,
+      "difference": 15,
+      "parseResult": {
+        "type": "sentiment",
+        "expected": 40,
+        "parsedValue": "negative",
+        "unparseable": false
+      },
+      "likelyLlmScored": true,
+      "scoreSourceInfo": {
+        "source": "reviews-json-stub",
+        "hasLlmScore": true,
+        "hasFullText": false,
+        "file": "amny--matt-windman.json"
+      }
+    },
+    {
+      "showId": "moulin-rouge-2019",
+      "outlet": "The Telegraph",
+      "criticName": "Diane Snyder",
+      "originalRating": "Sentiment: Positive",
+      "assignedScore": 60,
+      "expectedScore": 75,
+      "difference": 15,
+      "parseResult": {
+        "type": "sentiment",
+        "expected": 75,
+        "parsedValue": "positive",
+        "unparseable": false
+      },
+      "likelyLlmScored": true,
+      "scoreSourceInfo": {
+        "source": "bww-roundup",
+        "hasLlmScore": true,
+        "hasFullText": true,
+        "file": "telegraph--diane-snyder.json"
+      }
+    },
+    {
+      "showId": "oh-mary-2024",
+      "outlet": "Entertainment Weekly",
+      "criticName": "Kristen Baldwin",
+      "originalRating": 88,
+      "assignedScore": 73,
+      "expectedScore": 88,
+      "difference": 15,
+      "parseResult": {
+        "type": "numeric",
+        "expected": 88,
+        "parsedValue": 88,
+        "unparseable": false
+      },
+      "likelyLlmScored": true,
+      "scoreSourceInfo": {
+        "source": "web-search",
+        "hasLlmScore": true,
+        "hasFullText": true,
+        "file": "ew--kristen-baldwin.json"
+      }
+    },
+    {
+      "showId": "book-of-mormon-2011",
+      "outlet": "The Guardian",
+      "criticName": "Brian Logan",
+      "originalRating": 80,
+      "assignedScore": 94,
+      "expectedScore": 80,
+      "difference": 14,
+      "parseResult": {
+        "type": "numeric",
+        "expected": 80,
+        "parsedValue": 80,
+        "unparseable": false
+      },
+      "likelyLlmScored": true,
+      "scoreSourceInfo": {
+        "source": "web-search",
+        "hasLlmScore": true,
+        "hasFullText": true,
+        "file": "guardian--brian-logan.json"
+      }
+    },
+    {
+      "showId": "how-to-dance-in-ohio-2023",
+      "outlet": "Time Out New York",
+      "criticName": "Adam Feldman",
+      "originalRating": 60,
+      "assignedScore": 74,
+      "expectedScore": 60,
+      "difference": 14,
+      "parseResult": {
+        "type": "numeric",
+        "expected": 60,
+        "parsedValue": 60,
+        "unparseable": false
+      },
+      "likelyLlmScored": true,
+      "scoreSourceInfo": {
+        "source": "bww-roundup",
+        "hasLlmScore": true,
+        "hasFullText": true,
+        "file": "timeout--adam-feldman.json"
+      }
+    },
+    {
+      "showId": "mj-2022",
+      "outlet": "Time Out New York",
+      "criticName": "Adam Feldman",
+      "originalRating": "3/5",
+      "assignedScore": 74,
+      "expectedScore": 60,
+      "difference": 14,
+      "parseResult": {
+        "type": "star_5",
+        "expected": 60,
+        "parsedValue": "3/5",
+        "unparseable": false
+      },
+      "likelyLlmScored": true,
+      "scoreSourceInfo": {
+        "source": "playwright-scraped",
+        "hasLlmScore": true,
+        "hasFullText": true,
+        "file": "timeout--adam-feldman.json"
+      }
+    },
+    {
+      "showId": "oh-mary-2024",
+      "outlet": "Time Out New York",
+      "criticName": "Adam Feldman",
+      "originalRating": 80,
+      "assignedScore": 94,
+      "expectedScore": 80,
+      "difference": 14,
+      "parseResult": {
+        "type": "numeric",
+        "expected": 80,
+        "parsedValue": 80,
+        "unparseable": false
+      },
+      "likelyLlmScored": true,
+      "scoreSourceInfo": {
+        "source": "bww-roundup",
+        "hasLlmScore": true,
+        "hasFullText": true,
+        "file": "timeout--adam-feldman.json"
+      }
+    },
+    {
+      "showId": "the-notebook-2024",
+      "outlet": "Entertainment Weekly",
+      "criticName": "Alex Zalben",
+      "originalRating": 88,
+      "assignedScore": 74,
+      "expectedScore": 88,
+      "difference": 14,
+      "parseResult": {
+        "type": "numeric",
+        "expected": 88,
+        "parsedValue": 88,
+        "unparseable": false
+      },
+      "likelyLlmScored": true,
+      "scoreSourceInfo": {
+        "source": "web-search",
+        "hasLlmScore": true,
+        "hasFullText": true,
+        "file": "ew--alex-zalben.json"
+      }
+    },
+    {
+      "showId": "uncle-vanya-2024",
+      "outlet": "Entertainment Weekly",
+      "criticName": "Kristen Baldwin",
+      "originalRating": 88,
+      "assignedScore": 74,
+      "expectedScore": 88,
+      "difference": 14,
+      "parseResult": {
+        "type": "numeric",
+        "expected": 88,
+        "parsedValue": 88,
+        "unparseable": false
+      },
+      "likelyLlmScored": true,
+      "scoreSourceInfo": {
+        "source": "web-search",
+        "hasLlmScore": true,
+        "hasFullText": true,
+        "file": "ew--kristen-baldwin.json"
+      }
+    },
+    {
+      "showId": "hadestown-2019",
+      "outlet": "New York Stage Review",
+      "criticName": "Michael Sommers",
+      "originalRating": "4/5",
+      "assignedScore": 67,
+      "expectedScore": 80,
+      "difference": 13,
+      "parseResult": {
+        "type": "star_5",
+        "expected": 80,
+        "parsedValue": "4/5",
+        "unparseable": false
+      },
+      "likelyLlmScored": true,
+      "scoreSourceInfo": {
+        "source": "playwright-scraped",
+        "hasLlmScore": true,
+        "hasFullText": true,
+        "file": "nysr--michael-sommers.json"
+      }
+    },
+    {
+      "showId": "stereophonic-2024",
+      "outlet": "New York Stage Review",
+      "criticName": "Rose Bernardo",
+      "originalRating": "5/5",
+      "assignedScore": 87,
+      "expectedScore": 100,
+      "difference": 13,
+      "parseResult": {
+        "type": "star_5",
+        "expected": 100,
+        "parsedValue": "5/5",
+        "unparseable": false
+      },
+      "likelyLlmScored": true,
+      "scoreSourceInfo": {
+        "source": "playwright-scraped",
+        "hasLlmScore": true,
+        "hasFullText": true,
+        "file": "nysr--rose-bernardo.json"
+      }
+    },
+    {
+      "showId": "marjorie-prime-2025",
+      "outlet": "New York Stage Review",
+      "criticName": "Melissa Rose Bernardo",
+      "originalRating": "5/5",
+      "assignedScore": 88,
+      "expectedScore": 100,
+      "difference": 12,
+      "parseResult": {
+        "type": "star_5",
+        "expected": 100,
+        "parsedValue": "5/5",
+        "unparseable": false
+      },
+      "likelyLlmScored": true,
+      "scoreSourceInfo": {
+        "source": "playwright-scraped",
+        "hasLlmScore": true,
+        "hasFullText": true,
+        "file": "nysr--melissa-rose-bernardo.json"
+      }
+    },
+    {
+      "showId": "marjorie-prime-2025",
+      "outlet": "New York Stage Review",
+      "criticName": "Rose Bernardo",
+      "originalRating": "5/5",
+      "assignedScore": 88,
+      "expectedScore": 100,
+      "difference": 12,
+      "parseResult": {
+        "type": "star_5",
+        "expected": 100,
+        "parsedValue": "5/5",
+        "unparseable": false
+      },
+      "likelyLlmScored": true,
+      "scoreSourceInfo": {
+        "source": "playwright-scraped",
+        "hasLlmScore": true,
+        "hasFullText": true,
+        "file": "nysr--melissa-rose-bernardo.json"
+      }
+    },
+    {
+      "showId": "maybe-happy-ending-2024",
+      "outlet": "Time Out New York",
+      "criticName": "Adam Feldman",
+      "originalRating": "5/5",
+      "assignedScore": 88,
+      "expectedScore": 100,
+      "difference": 12,
+      "parseResult": {
+        "type": "star_5",
+        "expected": 100,
+        "parsedValue": "5/5",
+        "unparseable": false
+      },
+      "likelyLlmScored": true,
+      "scoreSourceInfo": {
+        "source": "playwright-scraped",
+        "hasLlmScore": true,
+        "hasFullText": true,
+        "file": "timeout--adam-feldman.json"
+      }
+    },
+    {
+      "showId": "ragtime-2025",
+      "outlet": "New York Stage Review",
+      "criticName": "Rose Bernardo",
+      "originalRating": "5/5",
+      "assignedScore": 88,
+      "expectedScore": 100,
+      "difference": 12,
+      "parseResult": {
+        "type": "star_5",
+        "expected": 100,
+        "parsedValue": "5/5",
+        "unparseable": false
+      },
+      "likelyLlmScored": true,
+      "scoreSourceInfo": {
+        "source": "playwright-scraped",
+        "hasLlmScore": true,
+        "hasFullText": true,
+        "file": "nysr--melissa-rose-bernardo.json"
+      }
+    },
+    {
+      "showId": "liberation-2025",
+      "outlet": "New York Stage Review",
+      "criticName": "Rose Bernardo",
+      "originalRating": "5/5",
+      "assignedScore": 89,
+      "expectedScore": 100,
+      "difference": 11,
+      "parseResult": {
+        "type": "star_5",
+        "expected": 100,
+        "parsedValue": "5/5",
+        "unparseable": false
+      },
+      "likelyLlmScored": true,
+      "scoreSourceInfo": {
+        "source": "scraped",
+        "hasLlmScore": true,
+        "hasFullText": true,
+        "file": "nysr--melissa-rose-bernardo.json"
+      }
+    },
+    {
+      "showId": "ragtime-2025",
+      "outlet": "New York Stage Review",
+      "criticName": "Melissa Rose Bernardo",
+      "originalRating": "5/5",
+      "assignedScore": 89,
+      "expectedScore": 100,
+      "difference": 11,
+      "parseResult": {
+        "type": "star_5",
+        "expected": 100,
+        "parsedValue": "5/5",
+        "unparseable": false
+      },
+      "likelyLlmScored": true,
+      "scoreSourceInfo": {
+        "source": "playwright-scraped",
+        "hasLlmScore": true,
+        "hasFullText": true,
+        "file": "nysr--melissa-rose-bernardo.json"
+      }
+    },
+    {
+      "showId": "stereophonic-2024",
+      "outlet": "Time Out New York",
+      "criticName": "Adam Feldman",
+      "originalRating": "5/5",
+      "assignedScore": 89,
+      "expectedScore": 100,
+      "difference": 11,
+      "parseResult": {
+        "type": "star_5",
+        "expected": 100,
+        "parsedValue": "5/5",
+        "unparseable": false
+      },
+      "likelyLlmScored": true,
+      "scoreSourceInfo": {
+        "source": "playwright-scraped",
+        "hasLlmScore": true,
+        "hasFullText": true,
+        "file": "timeout--adam-feldman.json"
+      }
+    },
+    {
+      "showId": "the-lion-king-1997",
+      "outlet": "New York Stage Review",
+      "criticName": "Steven Suskin",
+      "originalRating": "5 stars",
+      "assignedScore": 89,
+      "expectedScore": 100,
+      "difference": 11,
+      "parseResult": {
+        "type": "star_5",
+        "expected": 100,
+        "parsedValue": "5/5",
+        "unparseable": false
+      },
+      "likelyLlmScored": true,
+      "scoreSourceInfo": {
+        "source": "show-score",
+        "hasLlmScore": true,
+        "hasFullText": true,
+        "file": "nysr--steven-suskin.json"
+      }
+    }
+  ],
+  "true_errors": [],
+  "unparseable": [],
+  "designation_only": [],
+  "ai_scored_flagged": [
+    {
+      "showId": "aladdin-2014",
+      "outlet": "Associated Press",
+      "criticName": "Mark Kennedy",
+      "assignedScore": 77,
+      "hasFullText": false,
+      "flagged": true,
+      "reason": "AI-scored review without full text"
+    },
+    {
+      "showId": "aladdin-2014",
+      "outlet": "broadway-voice",
+      "criticName": "Kristen Balzano",
+      "assignedScore": 74,
+      "hasFullText": false,
+      "flagged": true,
+      "reason": "AI-scored review without full text"
+    },
+    {
+      "showId": "aladdin-2014",
+      "outlet": "new-jersey-newsroom",
+      "criticName": "Michael Sommers",
+      "assignedScore": 74,
+      "hasFullText": false,
+      "flagged": true,
+      "reason": "AI-scored review without full text"
+    },
+    {
+      "showId": "aladdin-2014",
+      "outlet": "Newsday",
+      "criticName": "Linda Winer",
+      "assignedScore": 78,
+      "hasFullText": false,
+      "flagged": true,
+      "reason": "AI-scored review without full text"
+    },
+    {
+      "showId": "aladdin-2014",
+      "outlet": "The Stage",
+      "criticName": "Mark Shenton",
+      "assignedScore": 71,
+      "hasFullText": false,
+      "flagged": true,
+      "reason": "AI-scored review without full text"
+    },
+    {
+      "showId": "aladdin-2014",
+      "outlet": "The Wall Street Journal",
+      "criticName": "Terry Teachout",
+      "assignedScore": 62,
+      "hasFullText": false,
+      "flagged": true,
+      "reason": "AI-scored review without full text"
+    },
+    {
+      "showId": "aladdin-2014",
+      "outlet": "The Wrap",
+      "criticName": "Robert Hofler",
+      "assignedScore": 37,
+      "hasFullText": false,
+      "flagged": true,
+      "reason": "AI-scored review without full text"
+    },
+    {
+      "showId": "an-enemy-of-the-people-2024",
+      "outlet": "Backstage",
+      "criticName": "Suzt Evans",
+      "assignedScore": 85,
+      "hasFullText": false,
+      "flagged": true,
+      "reason": "AI-scored review without full text"
+    },
+    {
+      "showId": "an-enemy-of-the-people-2024",
+      "outlet": "bergen-record",
+      "criticName": "Robert Feldberg",
+      "assignedScore": 35,
+      "hasFullText": false,
+      "flagged": true,
+      "reason": "AI-scored review without full text"
+    },
+    {
+      "showId": "an-enemy-of-the-people-2024",
+      "outlet": "bloomberg",
+      "criticName": "&nbsp;Jeremy Gerard",
+      "assignedScore": 43,
+      "hasFullText": false,
+      "flagged": true,
+      "reason": "AI-scored review without full text"
+    },
+    {
+      "showId": "an-enemy-of-the-people-2024",
+      "outlet": "Entertainment Weekly",
+      "criticName": "Adam Markavitz",
+      "assignedScore": 74,
+      "hasFullText": false,
+      "flagged": true,
+      "reason": "AI-scored review without full text"
+    },
+    {
+      "showId": "an-enemy-of-the-people-2024",
+      "outlet": "New York Daily News",
+      "criticName": "Chris",
+      "assignedScore": 79,
+      "hasFullText": false,
+      "flagged": true,
+      "reason": "AI-scored review without full text"
+    },
+    {
+      "showId": "an-enemy-of-the-people-2024",
+      "outlet": "New York Daily News",
+      "criticName": "Joe Dziemianowicz",
+      "assignedScore": 40,
+      "hasFullText": false,
+      "flagged": true,
+      "reason": "AI-scored review without full text"
+    },
+    {
+      "showId": "an-enemy-of-the-people-2024",
+      "outlet": "Newsday",
+      "criticName": "Linda Winer",
+      "assignedScore": 60,
+      "hasFullText": false,
+      "flagged": true,
+      "reason": "AI-scored review without full text"
+    },
+    {
+      "showId": "an-enemy-of-the-people-2024",
+      "outlet": "The Washington Post",
+      "criticName": "Naveen Kumar",
+      "assignedScore": 18,
+      "hasFullText": false,
+      "flagged": true,
+      "reason": "AI-scored review without full text"
+    },
+    {
+      "showId": "an-enemy-of-the-people-2024",
+      "outlet": "USA Today",
+      "criticName": "Elysa Gardner",
+      "assignedScore": 82,
+      "hasFullText": false,
+      "flagged": true,
+      "reason": "AI-scored review without full text"
+    },
+    {
+      "showId": "an-enemy-of-the-people-2024",
+      "outlet": "Variety",
+      "criticName": "Daniel D'Addario",
+      "assignedScore": 63,
+      "hasFullText": false,
+      "flagged": true,
+      "reason": "AI-scored review without full text"
+    },
+    {
+      "showId": "an-enemy-of-the-people-2024",
+      "outlet": "VARIETY",
+      "criticName": "Daniel",
+      "assignedScore": 74,
+      "hasFullText": false,
+      "flagged": true,
+      "reason": "AI-scored review without full text"
+    },
+    {
+      "showId": "an-enemy-of-the-people-2024",
+      "outlet": "village-voice",
+      "criticName": "Michael Musto",
+      "assignedScore": 71,
+      "hasFullText": false,
+      "flagged": true,
+      "reason": "AI-scored review without full text"
+    },
+    {
+      "showId": "an-enemy-of-the-people-2024",
+      "outlet": "Wallstreet Journal",
+      "criticName": "Terry Teachout",
+      "assignedScore": 39,
+      "hasFullText": false,
+      "flagged": true,
+      "reason": "AI-scored review without full text"
+    },
+    {
+      "showId": "and-juliet-2022",
+      "outlet": "The Washington Post",
+      "criticName": "Peter Marks",
+      "assignedScore": 69,
+      "hasFullText": false,
+      "flagged": true,
+      "reason": "AI-scored review without full text"
+    },
+    {
+      "showId": "and-juliet-2022",
+      "outlet": "The Wrap",
+      "criticName": "Robert Hofler",
+      "assignedScore": 44,
+      "hasFullText": false,
+      "flagged": true,
+      "reason": "AI-scored review without full text"
+    },
+    {
+      "showId": "appropriate-2023",
+      "outlet": "Cititour",
+      "criticName": "Brian Scott Lipton",
+      "assignedScore": 84,
+      "hasFullText": false,
+      "flagged": true,
+      "reason": "AI-scored review without full text"
+    },
+    {
+      "showId": "appropriate-2023",
+      "outlet": "Entertainment Weekly",
+      "criticName": "Allison Considine",
+      "assignedScore": 84,
+      "hasFullText": false,
+      "flagged": true,
+      "reason": "AI-scored review without full text"
+    },
+    {
+      "showId": "appropriate-2023",
+      "outlet": "New York Daily News",
+      "criticName": "Chris",
+      "assignedScore": 89,
+      "hasFullText": false,
+      "flagged": true,
+      "reason": "AI-scored review without full text"
+    }
+  ],
+  "correct_sample": [
+    {
+      "showId": "aladdin-2014",
+      "outlet": "Entertainment Weekly",
+      "criticName": "Thom Geier",
+      "originalRating": "B",
+      "assignedScore": 74,
+      "expectedScore": 83,
+      "difference": 9
+    },
+    {
+      "showId": "aladdin-2014",
+      "outlet": "Time Out New York",
+      "criticName": "Adam Feldman",
+      "originalRating": 60,
+      "assignedScore": 57,
+      "expectedScore": 60,
+      "difference": 3
+    },
+    {
+      "showId": "an-enemy-of-the-people-2024",
+      "outlet": "The Guardian",
+      "criticName": "Adrian Horton",
+      "originalRating": 60,
+      "assignedScore": 50,
+      "expectedScore": 60,
+      "difference": 10
+    },
+    {
+      "showId": "an-enemy-of-the-people-2024",
+      "outlet": "Time Out New York",
+      "criticName": "Adam Feldman",
+      "originalRating": 80,
+      "assignedScore": 75,
+      "expectedScore": 80,
+      "difference": 5
+    },
+    {
+      "showId": "and-juliet-2022",
+      "outlet": "Time Out New York",
+      "criticName": "Adam Feldman",
+      "originalRating": "3/5",
+      "assignedScore": 68,
+      "expectedScore": 60,
+      "difference": 8
+    },
+    {
+      "showId": "appropriate-2023",
+      "outlet": "Time Out New York",
+      "criticName": "Adam Feldman",
+      "originalRating": 80,
+      "assignedScore": 80,
+      "expectedScore": 80,
+      "difference": 0
+    },
+    {
+      "showId": "back-to-the-future-2023",
+      "outlet": "New York Stage Review",
+      "criticName": "Steven Suskin",
+      "originalRating": "4 stars",
+      "assignedScore": 75,
+      "expectedScore": 80,
+      "difference": 5
+    },
+    {
+      "showId": "boop-2025",
+      "outlet": "culturesauce",
+      "criticName": "Thom Geier",
+      "originalRating": "4/5",
+      "assignedScore": 77,
+      "expectedScore": 80,
+      "difference": 3
+    },
+    {
+      "showId": "boop-2025",
+      "outlet": "New York Stage Review",
+      "criticName": "Bob Verini",
+      "originalRating": "3/5",
+      "assignedScore": 62,
+      "expectedScore": 60,
+      "difference": 2
+    },
+    {
+      "showId": "boop-2025",
+      "outlet": "New York Stage Review",
+      "criticName": "Frank",
+      "originalRating": "4/5",
+      "assignedScore": 71,
+      "expectedScore": 80,
+      "difference": 9
+    }
+  ]
+}

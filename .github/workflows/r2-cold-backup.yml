@@ -1,0 +1,149 @@
+name: R2 Cold Backup
+
+on:
+  schedule:
+    - cron: '0 6 * * 0'  # Sundays at 6 AM UTC
+  workflow_dispatch:
+
+concurrency:
+  group: r2-cold-backup
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    # BRO-5884: the 2026-10-22 run took 56 min (web bundle alone 40) against the old 60 limit.
+    # The repo sits at GitHub's hard 100-secret-per-repo cap (verified 2026-07-26:
+    # setting a 101st returns HTTP 400). Environment secrets have their own separate
+    # quota, so the R2 credentials live in the 'backup' environment rather than
+    # displacing an existing repo secret.
+    environment: backup
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.BACKUP_R2_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.BACKUP_R2_SECRET_ACCESS_KEY }}
+      AWS_DEFAULT_REGION: auto
+      R2_ENDPOINT: https://${{ secrets.BACKUP_R2_ACCOUNT_ID }}.r2.cloudflarestorage.com
+      R2_BUCKET: broadwayscorecard-cold-backup  # not sensitive; hardcoded to avoid burning a secret slot
+      GPG_PASSPHRASE: ${{ secrets.BACKUP_GPG_PASSPHRASE }}
+      GH_PAT: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+    steps:
+      - name: Set backup date
+        id: date
+        run: echo "stamp=$(date -u +%Y-%m-%d)" >> "$GITHUB_OUTPUT"
+
+      - name: Validate required secrets present
+        run: |
+          missing=0
+          for v in AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY GPG_PASSPHRASE GH_PAT; do
+            if [ -z "${!v}" ]; then
+              echo "::error::Missing required secret: $v"
+              missing=1
+            fi
+          done
+          if [ -z "${{ secrets.BACKUP_R2_ACCOUNT_ID }}" ]; then
+            echo "::error::Missing required secret: BACKUP_R2_ACCOUNT_ID"
+            missing=1
+          fi
+          [ "$missing" -eq 0 ]
+
+      - name: Bundle Broadwayscore (web)
+        run: |
+          git clone --mirror "https://x-access-token:${GH_PAT}@github.com/thomaspryor/Broadwayscore.git" web.git
+          git -C web.git bundle create ../broadwayscore-web.bundle --all
+          git -C web.git bundle verify ../broadwayscore-web.bundle
+          rm -rf web.git   # free the mirror immediately; runner disk is ~14GB and the 3 mirrors alone are ~4.5GB
+          ls -lh broadwayscore-web.bundle
+          df -h / | tail -1
+
+      - name: Bundle broadway-review-texts
+        run: |
+          git clone --mirror "https://x-access-token:${GH_PAT}@github.com/thomaspryor/broadway-review-texts.git" texts.git
+          git -C texts.git bundle create ../broadway-review-texts.bundle --all
+          git -C texts.git bundle verify ../broadway-review-texts.bundle
+          rm -rf texts.git   # free the mirror immediately; runner disk is ~14GB and the 3 mirrors alone are ~4.5GB
+          ls -lh broadway-review-texts.bundle
+          df -h / | tail -1
+
+      - name: Bundle broadway-scorecard-data
+        run: |
+          git clone --mirror "https://x-access-token:${GH_PAT}@github.com/thomaspryor/broadway-scorecard-data.git" data.git
+          git -C data.git bundle create ../broadway-scorecard-data.bundle --all
+          git -C data.git bundle verify ../broadway-scorecard-data.bundle
+          rm -rf data.git   # free the mirror immediately; runner disk is ~14GB and the 3 mirrors alone are ~4.5GB
+          ls -lh broadway-scorecard-data.bundle
+          df -h / | tail -1
+
+      - name: Bundle BroadwayScorecard-app (iOS)
+        # BRO-5884: the iOS app repo was not backed up. Fails loudly if GH_PAT cannot read it.
+        run: |
+          git clone --mirror "https://x-access-token:${GH_PAT}@github.com/thomaspryor/BroadwayScorecard-app.git" app.git
+          git -C app.git bundle create ../broadwayscorecard-app.bundle --all
+          git -C app.git bundle verify ../broadwayscorecard-app.bundle
+          rm -rf app.git
+          ls -lh broadwayscorecard-app.bundle
+          df -h / | tail -1
+
+      - name: Encrypt bundles (GPG symmetric, AES256)
+        run: |
+          for f in broadwayscore-web broadway-review-texts broadway-scorecard-data broadwayscorecard-app; do
+            gpg --batch --yes --pinentry-mode loopback --passphrase "$GPG_PASSPHRASE" \
+              --cipher-algo AES256 --symmetric \
+              --output "${f}.bundle.gpg" "${f}.bundle"
+            rm -f "${f}.bundle"
+          done
+          ls -lh *.bundle.gpg
+
+      - name: Compute checksums
+        run: |
+          sha256sum *.bundle.gpg > MANIFEST.sha256
+          cat MANIFEST.sha256
+
+      - name: Upload to Cloudflare R2
+        run: |
+          STAMP="${{ steps.date.outputs.stamp }}"
+          # BRO-6132: the bucket lock refuses overwrites for 90 days, so every run and
+          # re-run attempt writes to its own folder and nothing writes a fixed key.
+          PREFIX="weekly/${STAMP}/run-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          for f in *.bundle.gpg MANIFEST.sha256; do
+            aws s3 cp "$f" "s3://${R2_BUCKET}/${PREFIX}/$f" --endpoint-url "$R2_ENDPOINT"
+          done
+          echo "Uploaded to s3://${R2_BUCKET}/${PREFIX}/"
+
+      - name: Verify upload by listing
+        run: |
+          STAMP="${{ steps.date.outputs.stamp }}"
+          aws s3 ls "s3://${R2_BUCKET}/weekly/${STAMP}/run-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}/" --endpoint-url "$R2_ENDPOINT" --human-readable --summarize
+
+      - name: Checkout for notify action
+        # BRO-3707: a hang hitting the job's own timeout-minutes: 120 reports
+        # conclusion "cancelled", not "failure" — a bare failure() here would
+        # skip this checkout, and the Notify step below would then be unable
+        # to resolve ./.github/actions/notify-failure.
+        if: failure() || cancelled()
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          sparse-checkout: |
+            .github/actions/notify-failure
+            scripts/lib/discord-notify.js
+
+      - name: Notify on failure
+        # BRO-3707: see "Checkout for notify action" above — same cancelled()
+        # gap, and this is the step that actually sends the critical alert.
+        if: failure() || cancelled()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'R2 Cold Backup Failed'
+          # BRO-4603: warning, no email. A failed weekly backup is not data loss in
+          # progress and the owner cannot fix it; check-cron-health.yml keys
+          # staleness off the last SUCCESSFUL run (184h), so a failed Sunday run
+          # is in the morning digest within ~2 days. Paging list:
+          # scripts/lib/page-worthy-alerts.js PAGE_WORTHY_WORKFLOWS.
+          severity: 'warning'
+          email: 'false'
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}

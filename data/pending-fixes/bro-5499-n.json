@@ -1,0 +1,48 @@
+{
+  "issueNumber": "bro-5499-n",
+  "planId": "14908208-e59b-49f2-a4f6-7d553fd04df4",
+  "status": "applied",
+  "createdAt": "2026-10-17T00:45:21.714Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5499 (n): ANON bylines for StageBuddy and Theater Pizzazz.",
+    "steps": [
+      "edit"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/stagebuddy--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Elyse Trevers",
+        "description": "BRO-5499: page prints \"Written by: Elyse Trevers\""
+      },
+      {
+        "type": "review-field-edit",
+        "file": "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/theater-pizzazz--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Stuart Miller",
+        "description": "BRO-5499: page prints \"Oct 14, 2026 By Stuart Miller\""
+      }
+    ]
+  },
+  "executedAt": "2026-10-17T01:28:23.859Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/stagebuddy--unknown.json criticName: \"Unknown\" -> \"Elyse Trevers\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/theater-pizzazz--unknown.json criticName: \"Unknown\" -> \"Stuart Miller\""
+    }
+  ]
+}

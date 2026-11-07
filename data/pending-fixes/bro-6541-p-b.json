@@ -1,0 +1,897 @@
+{
+  "issueNumber": "bro-6541-p-b",
+  "planId": "35ed2de4-8ea0-470f-9210-4047fcca742b",
+  "status": "applied",
+  "createdAt": "2026-10-29T20:55:20.929Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6541: add vetted UK hub productions (outlet census + skipped venues) (part 2 of 5)",
+    "steps": [
+      "BRO-6541: add dark-noon-aviva-studios-regional-2024 (outlet census)",
+      "BRO-6541: add coram-boy-chichester-festival-regional-2024 (outlet census)",
+      "BRO-6541: add the-caretaker-chichester-festival-regional-2024 (outlet census)",
+      "BRO-6541: add footloose-pitlochry-festival-regional-2024 (outlet census)",
+      "BRO-6541: add bluebelle-crucible-regional-2025 (outlet census)",
+      "BRO-6541: add arlington-tron-regional-2025 (outlet census)",
+      "BRO-6541: add the-hen-night-oran-mor-regional-2026 (outlet census)",
+      "BRO-6541: add peak-stuff-chichester-festival-regional-2024 (outlet census)",
+      "BRO-6541: add the-last-pearl-tron-regional-2024 (outlet census)",
+      "BRO-6541: add oor-wullie-dundee-rep-regional-2024 (outlet census)",
+      "BRO-6541: add cinderella-chichester-festival-regional-2024 (outlet census)",
+      "BRO-6541: add dookin-oot-oran-mor-regional-2025 (outlet census)",
+      "BRO-6541: add meme-girls-oran-mor-regional-2025 (outlet census)",
+      "BRO-6541: add the-inquisitor-oran-mor-regional-2025 (outlet census)",
+      "BRO-6541: add the-corinthian-oran-mor-regional-2026 (outlet census)",
+      "BRO-6541: add the-house-party-chichester-festival-regional-2024 (outlet census)",
+      "BRO-6541: add the-brenda-line-pitlochry-festival-regional-2024 (outlet census)",
+      "BRO-6541: add night-idiot-oran-mor-regional-2025 (outlet census)",
+      "BRO-6541: add planet-omar-leeds-regional-2026 (outlet census)",
+      "BRO-6541: add my-fair-lady-leeds-regional-2024 (outlet census)",
+      "BRO-6541: add water-colour-pitlochry-festival-regional-2025 (outlet census)",
+      "BRO-6541: add a-single-man-aviva-studios-regional-2025 (outlet census)",
+      "BRO-6541: add oliver-twist-hull-truck-regional-2025 (outlet census)",
+      "BRO-6541: add east-is-east-citizens-regional-2026 (outlet census)",
+      "BRO-6541: add escaped-alone-tron-regional-2024 (outlet census)"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "add-show",
+        "show": {
+          "id": "dark-noon-aviva-studios-regional-2024",
+          "title": "Dark Noon",
+          "slug": "dark-noon-aviva-studios-regional-2024",
+          "venue": "Aviva Studios, Manchester",
+          "city": "manchester-uk",
+          "openingDate": "2024-03-09",
+          "openingDateSource": "census-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-census-backfill",
+          "discoveredAt": "2026-10-29T20:45:12.993Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.allthatdazzles.co.uk/post/review-dark-noon-aviva-studios-manchester"
+          ],
+          "statusSource": "census-review-age"
+        },
+        "description": "BRO-6541: add dark-noon-aviva-studios-regional-2024 (outlet census)"
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "coram-boy-chichester-festival-regional-2024",
+          "title": "Coram Boy",
+          "slug": "coram-boy-chichester-festival-regional-2024",
+          "venue": "Chichester Festival Theatre, Chichester",
+          "city": "chichester-uk",
+          "openingDate": "2024-05-31",
+          "openingDateSource": "census-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-census-backfill",
+          "discoveredAt": "2026-10-29T20:45:13.021Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.westendbestfriend.co.uk/news/review-coram-boy-chichester-festival-theatre"
+          ],
+          "statusSource": "census-review-age"
+        },
+        "description": "BRO-6541: add coram-boy-chichester-festival-regional-2024 (outlet census)"
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-caretaker-chichester-festival-regional-2024",
+          "title": "The Caretaker",
+          "slug": "the-caretaker-chichester-festival-regional-2024",
+          "venue": "Chichester Festival Theatre, Chichester",
+          "city": "chichester-uk",
+          "openingDate": "2024-06-14",
+          "openingDateSource": "census-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-census-backfill",
+          "discoveredAt": "2026-10-29T20:45:13.052Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.thestage.co.uk/reviews/the-caretaker-review-at-chichester-festival-theatre-by-harold-pinter"
+          ],
+          "statusSource": "census-review-age"
+        },
+        "description": "BRO-6541: add the-caretaker-chichester-festival-regional-2024 (outlet census)"
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "footloose-pitlochry-festival-regional-2024",
+          "title": "Footloose",
+          "slug": "footloose-pitlochry-festival-regional-2024",
+          "venue": "Pitlochry Festival Theatre, Pitlochry",
+          "city": "pitlochry-uk",
+          "openingDate": "2024-06-17",
+          "openingDateSource": "census-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "musical",
+          "discoverySource": "uk-regional-census-backfill",
+          "discoveredAt": "2026-10-29T20:45:16.750Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.thestage.co.uk/reviews/footloose-review-at-pitlochry-festival-theatre-by-dean-pitchford-walter-bobbie-and-douglas-rintoul"
+          ],
+          "statusSource": "census-review-age"
+        },
+        "description": "BRO-6541: add footloose-pitlochry-festival-regional-2024 (outlet census)"
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "bluebelle-crucible-regional-2025",
+          "title": "Bluebelle",
+          "slug": "bluebelle-crucible-regional-2025",
+          "venue": "Crucible Theatre, Sheffield",
+          "city": "sheffield-uk",
+          "openingDate": "2025-06-12",
+          "openingDateSource": "census-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-census-backfill",
+          "discoveredAt": "2026-10-29T20:45:16.783Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://everything-theatre.co.uk/2025/06/review-bluebelle-crucible-theatre/"
+          ],
+          "statusSource": "census-review-age"
+        },
+        "description": "BRO-6541: add bluebelle-crucible-regional-2025 (outlet census)"
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "arlington-tron-regional-2025",
+          "title": "Arlington",
+          "slug": "arlington-tron-regional-2025",
+          "venue": "Tron Theatre, Glasgow",
+          "city": "glasgow-uk",
+          "openingDate": "2025-10-24",
+          "openingDateSource": "census-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-census-backfill",
+          "discoveredAt": "2026-10-29T20:45:16.807Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.thestage.co.uk/reviews/arlington-review-tron-theatre-glasgow-enda-walsh"
+          ],
+          "statusSource": "census-review-age"
+        },
+        "description": "BRO-6541: add arlington-tron-regional-2025 (outlet census)"
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-hen-night-oran-mor-regional-2026",
+          "title": "The Hen Night",
+          "slug": "the-hen-night-oran-mor-regional-2026",
+          "venue": "Òran Mór, Glasgow",
+          "city": "glasgow-uk",
+          "openingDate": "2026-06-10",
+          "openingDateSource": "census-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-census-backfill",
+          "discoveredAt": "2026-10-29T20:45:16.829Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.thestage.co.uk/reviews/the-hen-night-review-oran-mor-glasgow"
+          ],
+          "statusSource": "census-review-age"
+        },
+        "description": "BRO-6541: add the-hen-night-oran-mor-regional-2026 (outlet census)"
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "peak-stuff-chichester-festival-regional-2024",
+          "title": "Peak Stuff",
+          "slug": "peak-stuff-chichester-festival-regional-2024",
+          "venue": "Chichester Festival Theatre, Chichester",
+          "city": "chichester-uk",
+          "openingDate": "2024-02-19",
+          "openingDateSource": "census-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-census-backfill",
+          "discoveredAt": "2026-10-29T20:45:19.781Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.thestage.co.uk/reviews/peak-stuff-review-minerva-theatre-chichester-festival-theatre-billie-collins-neil-bettles-meg-lewis"
+          ],
+          "statusSource": "census-review-age"
+        },
+        "description": "BRO-6541: add peak-stuff-chichester-festival-regional-2024 (outlet census)"
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-last-pearl-tron-regional-2024",
+          "title": "The Last Pearl",
+          "slug": "the-last-pearl-tron-regional-2024",
+          "venue": "Tron Theatre, Glasgow",
+          "city": "glasgow-uk",
+          "openingDate": "2024-06-04",
+          "openingDateSource": "census-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-census-backfill",
+          "discoveredAt": "2026-10-29T20:45:19.807Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.thestage.co.uk/reviews/the-last-pearl-review-at-tron-theatre-glasgow-james-lovelock-shadow-puppetry"
+          ],
+          "statusSource": "census-review-age"
+        },
+        "description": "BRO-6541: add the-last-pearl-tron-regional-2024 (outlet census)"
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "oor-wullie-dundee-rep-regional-2024",
+          "title": "Oor Wullie",
+          "slug": "oor-wullie-dundee-rep-regional-2024",
+          "venue": "Dundee Rep, Dundee",
+          "city": "dundee-uk",
+          "openingDate": "2024-12-06",
+          "openingDateSource": "census-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-census-backfill",
+          "discoveredAt": "2026-10-29T20:45:22.505Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.thestage.co.uk/reviews/oor-wullie-review-dundee-rep-noisemaker-2024"
+          ],
+          "statusSource": "census-review-age"
+        },
+        "description": "BRO-6541: add oor-wullie-dundee-rep-regional-2024 (outlet census)"
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "cinderella-chichester-festival-regional-2024",
+          "title": "Cinderella",
+          "slug": "cinderella-chichester-festival-regional-2024",
+          "venue": "Chichester Festival Theatre, Chichester",
+          "city": "chichester-uk",
+          "openingDate": "2024-12-21",
+          "openingDateSource": "census-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-census-backfill",
+          "discoveredAt": "2026-10-29T20:45:22.531Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.westendbestfriend.co.uk/news/review-cinderella-chichester-festival-theatre"
+          ],
+          "statusSource": "census-review-age"
+        },
+        "description": "BRO-6541: add cinderella-chichester-festival-regional-2024 (outlet census)"
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "dookin-oot-oran-mor-regional-2025",
+          "title": "Dookin Oot",
+          "slug": "dookin-oot-oran-mor-regional-2025",
+          "venue": "Òran Mór, Glasgow",
+          "city": "glasgow-uk",
+          "openingDate": "2025-02-26",
+          "openingDateSource": "census-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-census-backfill",
+          "discoveredAt": "2026-10-29T20:45:22.553Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.thestage.co.uk/reviews/dookin-oot-review-oran-mor-glasgow-brian-logan-a-play-a-pie-and-a-pint"
+          ],
+          "statusSource": "census-review-age"
+        },
+        "description": "BRO-6541: add dookin-oot-oran-mor-regional-2025 (outlet census)"
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "meme-girls-oran-mor-regional-2025",
+          "title": "Meme Girls",
+          "slug": "meme-girls-oran-mor-regional-2025",
+          "venue": "Òran Mór, Glasgow",
+          "city": "glasgow-uk",
+          "openingDate": "2025-06-05",
+          "openingDateSource": "census-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-census-backfill",
+          "discoveredAt": "2026-10-29T20:45:22.582Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.thestage.co.uk/reviews/meme-girls-review-oran-mor-glasgow-andy-mcgregor-a-play-a-pie-and-a-pint-yana-harris-julia-murray"
+          ],
+          "statusSource": "census-review-age"
+        },
+        "description": "BRO-6541: add meme-girls-oran-mor-regional-2025 (outlet census)"
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-inquisitor-oran-mor-regional-2025",
+          "title": "The Inquisitor",
+          "slug": "the-inquisitor-oran-mor-regional-2025",
+          "venue": "Òran Mór, Glasgow",
+          "city": "glasgow-uk",
+          "openingDate": "2025-06-30",
+          "openingDateSource": "census-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-census-backfill",
+          "discoveredAt": "2026-10-29T20:45:22.605Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.thestage.co.uk/reviews/the-inquisitor-review-oran-mor-glasgow-a-play-a-pie-and-a-pint"
+          ],
+          "statusSource": "census-review-age"
+        },
+        "description": "BRO-6541: add the-inquisitor-oran-mor-regional-2025 (outlet census)"
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-corinthian-oran-mor-regional-2026",
+          "title": "The Corinthian",
+          "slug": "the-corinthian-oran-mor-regional-2026",
+          "venue": "Òran Mór, Glasgow",
+          "city": "glasgow-uk",
+          "openingDate": "2026-06-03",
+          "openingDateSource": "census-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-census-backfill",
+          "discoveredAt": "2026-10-29T20:45:25.439Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.thestage.co.uk/reviews/the-corinthian-review-oran-mor-glasgow"
+          ],
+          "statusSource": "census-review-age"
+        },
+        "description": "BRO-6541: add the-corinthian-oran-mor-regional-2026 (outlet census)"
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-house-party-chichester-festival-regional-2024",
+          "title": "The House Party",
+          "slug": "the-house-party-chichester-festival-regional-2024",
+          "venue": "Chichester Festival Theatre, Chichester",
+          "city": "chichester-uk",
+          "openingDate": "2024-05-13",
+          "openingDateSource": "census-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-census-backfill",
+          "discoveredAt": "2026-10-29T20:45:28.244Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.thestage.co.uk/reviews/the-house-party-review-chichester-festival-theatre-laura-lomas-miss-julie"
+          ],
+          "statusSource": "census-review-age"
+        },
+        "description": "BRO-6541: add the-house-party-chichester-festival-regional-2024 (outlet census)"
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-brenda-line-pitlochry-festival-regional-2024",
+          "title": "The Brenda Line",
+          "slug": "the-brenda-line-pitlochry-festival-regional-2024",
+          "venue": "Pitlochry Festival Theatre, Pitlochry",
+          "city": "pitlochry-uk",
+          "openingDate": "2024-08-22",
+          "openingDateSource": "census-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-census-backfill",
+          "discoveredAt": "2026-10-29T20:45:30.947Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.thestage.co.uk/reviews/the-brenda-line-review-pitlochry-festival-theatre-harry-mould"
+          ],
+          "statusSource": "census-review-age"
+        },
+        "description": "BRO-6541: add the-brenda-line-pitlochry-festival-regional-2024 (outlet census)"
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "night-idiot-oran-mor-regional-2025",
+          "title": "Night Idiot",
+          "slug": "night-idiot-oran-mor-regional-2025",
+          "venue": "Òran Mór, Glasgow",
+          "city": "glasgow-uk",
+          "openingDate": "2025-04-02",
+          "openingDateSource": "census-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-census-backfill",
+          "discoveredAt": "2026-10-29T20:45:33.947Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.thestage.co.uk/reviews/night-idiot-review-oran-mor-glasgow-by-zoe-bullock"
+          ],
+          "statusSource": "census-review-age"
+        },
+        "description": "BRO-6541: add night-idiot-oran-mor-regional-2025 (outlet census)"
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "planet-omar-leeds-regional-2026",
+          "title": "Planet Omar",
+          "slug": "planet-omar-leeds-regional-2026",
+          "venue": "Leeds Playhouse, Leeds",
+          "city": "leeds-uk",
+          "openingDate": "2026-04-13",
+          "openingDateSource": "census-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-census-backfill",
+          "discoveredAt": "2026-10-29T20:45:33.977Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.thestage.co.uk/reviews/planet-omar-review-zanib-mian-leeds-playhouse"
+          ],
+          "statusSource": "census-review-age"
+        },
+        "description": "BRO-6541: add planet-omar-leeds-regional-2026 (outlet census)"
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "my-fair-lady-leeds-regional-2024",
+          "title": "My Fair Lady",
+          "slug": "my-fair-lady-leeds-regional-2024",
+          "venue": "Leeds Playhouse, Leeds",
+          "city": "leeds-uk",
+          "openingDate": "2024-06-07",
+          "openingDateSource": "census-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "musical",
+          "discoverySource": "uk-regional-census-backfill",
+          "discoveredAt": "2026-10-29T20:45:33.998Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.thestage.co.uk/reviews/my-fair-lady-review-leeds-playhouse-frederick-loewe-alan-jay-lerner-george-bernard-shaw-pygmalion-james-brining"
+          ],
+          "statusSource": "census-review-age"
+        },
+        "description": "BRO-6541: add my-fair-lady-leeds-regional-2024 (outlet census)"
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "water-colour-pitlochry-festival-regional-2025",
+          "title": "Water Colour",
+          "slug": "water-colour-pitlochry-festival-regional-2025",
+          "venue": "Pitlochry Festival Theatre, Pitlochry",
+          "city": "pitlochry-uk",
+          "openingDate": "2025-05-15",
+          "openingDateSource": "census-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-census-backfill",
+          "discoveredAt": "2026-10-29T20:45:34.020Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.thestage.co.uk/reviews/water-colour-review-pitlochry-festival-theatre"
+          ],
+          "statusSource": "census-review-age"
+        },
+        "description": "BRO-6541: add water-colour-pitlochry-festival-regional-2025 (outlet census)"
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "a-single-man-aviva-studios-regional-2025",
+          "title": "A Single Man",
+          "slug": "a-single-man-aviva-studios-regional-2025",
+          "venue": "Aviva Studios, Manchester",
+          "city": "manchester-uk",
+          "openingDate": "2025-07-06",
+          "openingDateSource": "census-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-census-backfill",
+          "discoveredAt": "2026-10-29T20:45:34.045Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.thestage.co.uk/reviews/a-single-man-review-aviva-studios-manchester-jonathan-watkins-christopher-isherwood"
+          ],
+          "statusSource": "census-review-age"
+        },
+        "description": "BRO-6541: add a-single-man-aviva-studios-regional-2025 (outlet census)"
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "oliver-twist-hull-truck-regional-2025",
+          "title": "Oliver Twist",
+          "slug": "oliver-twist-hull-truck-regional-2025",
+          "venue": "Hull Truck Theatre, Hull",
+          "city": "hull-uk",
+          "openingDate": "2025-12-09",
+          "openingDateSource": "census-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-census-backfill",
+          "discoveredAt": "2026-10-29T20:45:34.076Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.thestage.co.uk/reviews/oliver-twist-review-hull-truck-theatre-deborah-mcandrew-john-biddle"
+          ],
+          "statusSource": "census-review-age"
+        },
+        "description": "BRO-6541: add oliver-twist-hull-truck-regional-2025 (outlet census)"
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "east-is-east-citizens-regional-2026",
+          "title": "East Is East",
+          "slug": "east-is-east-citizens-regional-2026",
+          "venue": "Citizens Theatre, Glasgow",
+          "city": "glasgow-uk",
+          "openingDate": "2026-10-07",
+          "openingDateSource": "census-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "open",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-census-backfill",
+          "discoveredAt": "2026-10-29T20:45:34.097Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://theatreweekly.com/review-east-is-east-at-citizens-theatre-glasgow/"
+          ],
+          "statusSource": "census-review"
+        },
+        "description": "BRO-6541: add east-is-east-citizens-regional-2026 (outlet census)"
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "escaped-alone-tron-regional-2024",
+          "title": "Escaped Alone",
+          "slug": "escaped-alone-tron-regional-2024",
+          "venue": "Tron Theatre, Glasgow",
+          "city": "glasgow-uk",
+          "openingDate": "2024-02-26",
+          "openingDateSource": "census-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-census-backfill",
+          "discoveredAt": "2026-10-29T20:45:34.119Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.thestage.co.uk/reviews/escaped-alone-review-tron-theatre-glasgow-caryl-churchill-joanna-bowman"
+          ],
+          "statusSource": "census-review-age"
+        },
+        "description": "BRO-6541: add escaped-alone-tron-regional-2024 (outlet census)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-30T00:36:36.653Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added dark-noon-aviva-studios-regional-2024"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added coram-boy-chichester-festival-regional-2024"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-caretaker-chichester-festival-regional-2024"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added footloose-pitlochry-festival-regional-2024"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added bluebelle-crucible-regional-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added arlington-tron-regional-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-hen-night-oran-mor-regional-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added peak-stuff-chichester-festival-regional-2024"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-last-pearl-tron-regional-2024"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added oor-wullie-dundee-rep-regional-2024"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added cinderella-chichester-festival-regional-2024"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added dookin-oot-oran-mor-regional-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added meme-girls-oran-mor-regional-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-inquisitor-oran-mor-regional-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-corinthian-oran-mor-regional-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-house-party-chichester-festival-regional-2024"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-brenda-line-pitlochry-festival-regional-2024"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added night-idiot-oran-mor-regional-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added planet-omar-leeds-regional-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added my-fair-lady-leeds-regional-2024"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added water-colour-pitlochry-festival-regional-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added a-single-man-aviva-studios-regional-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added oliver-twist-hull-truck-regional-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added east-is-east-citizens-regional-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added escaped-alone-tron-regional-2024"
+    }
+  ],
+  "executedIn": "ci"
+}

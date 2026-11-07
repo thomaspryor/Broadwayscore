@@ -1,0 +1,655 @@
+{
+  "issueNumber": "bro-4993",
+  "planId": "f24d69b9-0a26-4962-9d9c-0a2698b60675",
+  "status": "applied",
+  "createdAt": "2026-10-13T00:29:44.504Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4993: correct model-path directors on 15 current/upcoming/tour shows (hand-verified sources) and drop placeholder credits (TBA, N/A, unknown, TBC, a non-director on Hershey Felder).",
+    "steps": [
+      "the-receptionist-off-broadway-2026: creativeTeam -> Director Sarah Benson; Playwright Adam Bock",
+      "end-of-the-rainbow-west-end-2026: creativeTeam -> Director Rupert Hands; Playwright Peter Quilter",
+      "what-happened-was-off-broadway-2026: creativeTeam -> Director Ian Rickson; Playwright Tom Noonan",
+      "the-comedy-about-spies-west-end-2026: creativeTeam -> Director Matt DiCarlo; Playwright Henry Lewis; Playwright Jonathan Sayer; Playwright Henry Shields",
+      "the-last-ship-off-broadway-2026: creativeTeam -> Director Leo Warner; Book Writer Joe DiPietro",
+      "the-people-versus-lenny-bruce-off-broadway-2026: creativeTeam -> Director Antony Marsellis; Playwright Susan Charlotte",
+      "a-few-good-men-2026: creativeTeam -> Director Michael Arden; Playwright Aaron Sorkin",
+      "the-sound-of-music-2027: creativeTeam -> Director Lear deBessonet; Choreographer Christopher Gattelli; Book Howard Lindsay and Russel Crouse; Composer Richard Rodgers; Lyricist Oscar Hammerstein II",
+      "book-of-mormon-tour-2022: creativeTeam -> Director Jennifer Werner",
+      "waitress-tour-2026: creativeTeam -> Director Abbey O'Brien",
+      "water-for-elephants-tour-2025: creativeTeam -> Director Ryan Emmons; Book Rick Elice; Music & Lyrics PigPen Theatre Co.",
+      "hadestown-tour-2024: creativeTeam -> Director Keenan Tyler Oliphant",
+      "kinky-boots-tour-2025: creativeTeam -> Director DB Bonds; Book Writer Douglas Carter Beane",
+      "hershey-felder-the-piano-and-me-off-broadway-2026: creativeTeam -> Playwright Hershey Felder",
+      "spare-parts-off-broadway-2026: creativeTeam -> (empty)",
+      "la-ternura-off-broadway-2025: creativeTeam -> (empty)",
+      "manic-street-creature-west-end-2026: creativeTeam -> (empty)",
+      "john-proctor-is-the-villain-west-end-2026: creativeTeam -> (empty)"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-receptionist-off-broadway-2026",
+        "field": "creativeTeam",
+        "oldValue": [
+          {
+            "name": "Sam Gold",
+            "role": "Director",
+            "_source": "serp-verified-llm"
+          },
+          {
+            "name": "Adam Bock",
+            "role": "Playwright",
+            "_source": "search-grounded-check-bro-4884"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Sarah Benson",
+            "role": "Director",
+            "_source": "BRO-4993-hand-verified"
+          },
+          {
+            "name": "Adam Bock",
+            "role": "Playwright",
+            "_source": "search-grounded-check-bro-4884"
+          }
+        ],
+        "description": "BRO-4993: Second Stage show page https://2st.com/shows/the-receptionist credits Sarah Benson"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "end-of-the-rainbow-west-end-2026",
+        "field": "creativeTeam",
+        "oldValue": [
+          {
+            "name": "Richard Eyre",
+            "role": "Director",
+            "_source": "serp-verified-llm"
+          },
+          {
+            "name": "Peter Quilter",
+            "role": "Playwright",
+            "_source": "serp-verified-llm"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Rupert Hands",
+            "role": "Director",
+            "_source": "BRO-4993-hand-verified"
+          },
+          {
+            "name": "Peter Quilter",
+            "role": "Playwright",
+            "_source": "serp-verified-llm"
+          }
+        ],
+        "description": "BRO-4993: London Box Office first-look article (Soho Theatre Walthamstow, Jinkx Monsoon) credits Rupert Hands https://www.londonboxoffice.co.uk/news/post/first-look-at-jinkx-monsoon-in-end-of-the-rainbow"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "what-happened-was-off-broadway-2026",
+        "field": "creativeTeam",
+        "oldValue": [
+          {
+            "name": "Tom Noonan",
+            "role": "Playwright",
+            "_source": "serp-verified-llm"
+          },
+          {
+            "name": "Trip Cullman",
+            "role": "Director",
+            "_source": "serp-verified-llm"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Ian Rickson",
+            "role": "Director",
+            "_source": "BRO-4993-hand-verified"
+          },
+          {
+            "name": "Tom Noonan",
+            "role": "Playwright",
+            "_source": "serp-verified-llm"
+          }
+        ],
+        "description": "BRO-4993: TDF / Broadway.com listings (Minetta Lane, Corey Stoll, Cecily Strong) credit Ian Rickson https://www.broadway.com/shows/what-happened-was/"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-comedy-about-spies-west-end-2026",
+        "field": "creativeTeam",
+        "oldValue": [
+          {
+            "name": "Henry Lewis",
+            "role": "Director",
+            "_source": "serp-verified-llm"
+          },
+          {
+            "name": "Henry Lewis",
+            "role": "Playwright",
+            "_source": "serp-verified-llm"
+          },
+          {
+            "name": "Jonathan Sayer",
+            "role": "Playwright",
+            "_source": "serp-verified-llm"
+          },
+          {
+            "name": "Henry Shields",
+            "role": "Playwright",
+            "_source": "serp-verified-llm"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Matt DiCarlo",
+            "role": "Director",
+            "_source": "BRO-4993-hand-verified"
+          },
+          {
+            "name": "Henry Lewis",
+            "role": "Playwright",
+            "_source": "serp-verified-llm"
+          },
+          {
+            "name": "Jonathan Sayer",
+            "role": "Playwright",
+            "_source": "serp-verified-llm"
+          },
+          {
+            "name": "Henry Shields",
+            "role": "Playwright",
+            "_source": "serp-verified-llm"
+          }
+        ],
+        "description": "BRO-4993: Mischief production page https://www.mischiefcomedy.com/our-work/the-comedy-about-spies/ credits Matt DiCarlo as director; Henry Lewis is co-writer"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-last-ship-off-broadway-2026",
+        "field": "creativeTeam",
+        "oldValue": [
+          {
+            "name": "Joe DiPietro",
+            "role": "Book Writer",
+            "_source": "serp-verified-llm"
+          },
+          {
+            "name": "Lileana Blain-Cruz",
+            "role": "Director",
+            "_source": "serp-verified-llm"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Leo Warner",
+            "role": "Director",
+            "_source": "BRO-4993-hand-verified"
+          },
+          {
+            "name": "Joe DiPietro",
+            "role": "Book Writer",
+            "_source": "serp-verified-llm"
+          }
+        ],
+        "description": "BRO-4993: Metropolitan Opera listing credits Leo Warner https://www.metopera.org/link/c08bc9006ce6443b991ac74960a2760f.aspx"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-people-versus-lenny-bruce-off-broadway-2026",
+        "field": "creativeTeam",
+        "oldValue": [
+          {
+            "name": "Susan Charlotte",
+            "role": "Playwright",
+            "_source": "serp-verified-llm"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Antony Marsellis",
+            "role": "Director",
+            "_source": "BRO-4993-hand-verified"
+          },
+          {
+            "name": "Susan Charlotte",
+            "role": "Playwright",
+            "_source": "serp-verified-llm"
+          }
+        ],
+        "description": "BRO-4993: Theatre Row show page credits Antony Marsellis; stored name \"An\" was a truncated parse https://bfany.org/theatre-row/shows/the-people-versus-lenny-bruce/"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-few-good-men-2026",
+        "field": "creativeTeam",
+        "oldValue": [
+          {
+            "name": "Aaron Sorkin",
+            "role": "Playwright",
+            "_source": "serp-verified-llm"
+          },
+          {
+            "name": "David Esbjornson",
+            "role": "Director",
+            "_source": "serp-verified-llm"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Michael Arden",
+            "role": "Director",
+            "_source": "BRO-4993-hand-verified"
+          },
+          {
+            "name": "Aaron Sorkin",
+            "role": "Playwright",
+            "_source": "serp-verified-llm"
+          }
+        ],
+        "description": "BRO-4993: Broadway Direct announcement (LCT, Vivian Beaumont) credits Michael Arden; David Esbjornson directed the 2005 West End production https://broadwaydirect.com/a-few-good-men-and-the-sound-of-music-announce-broadway-revivals/"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-sound-of-music-2027",
+        "field": "creativeTeam",
+        "oldValue": [
+          {
+            "name": "Susan H. Schulman",
+            "role": "Director",
+            "_source": "serp-verified-llm"
+          },
+          {
+            "name": "Richard Rodgers",
+            "role": "Composer",
+            "_source": "serp-verified-llm"
+          },
+          {
+            "name": "Oscar Hammerstein II",
+            "role": "Lyricist",
+            "_source": "serp-verified-llm"
+          },
+          {
+            "name": "Howard Lindsay",
+            "role": "Book",
+            "_source": "search-grounded-check-bro-4884"
+          },
+          {
+            "name": "Russell Crouse",
+            "role": "Book",
+            "_source": "search-grounded-check-bro-4884"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Lear deBessonet",
+            "role": "Director",
+            "_source": "BRO-4993-hand-verified"
+          },
+          {
+            "name": "Christopher Gattelli",
+            "role": "Choreographer",
+            "_source": "BRO-4993-hand-verified"
+          },
+          {
+            "name": "Howard Lindsay and Russel Crouse",
+            "role": "Book",
+            "_source": "BRO-4993-hand-verified"
+          },
+          {
+            "name": "Richard Rodgers",
+            "role": "Composer",
+            "_source": "serp-verified-llm"
+          },
+          {
+            "name": "Oscar Hammerstein II",
+            "role": "Lyricist",
+            "_source": "serp-verified-llm"
+          }
+        ],
+        "description": "BRO-4993: Playbill production page credits Lear deBessonet (director) and Christopher Gattelli (choreographer); Susan H. Schulman directed 1998; book is by Howard Lindsay and Russel Crouse, not Rodgers and Hammerstein https://playbill.com/production/the-sound-of-music-broadway-vivian-beaumont-theater-2027"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "book-of-mormon-tour-2022",
+        "field": "creativeTeam",
+        "oldValue": [
+          {
+            "name": "Casey Nicholaw",
+            "role": "Director",
+            "_source": "serp-verified-llm"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Jennifer Werner",
+            "role": "Director",
+            "_source": "BRO-4993-hand-verified"
+          }
+        ],
+        "description": "BRO-4993: Playbill tour announcement: tour directed and choreographed by Jennifer Werner, original direction Casey Nicholaw and Trey Parker https://playbill.com/article/the-book-of-mormon-to-launch-new-u-s-tour"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "waitress-tour-2026",
+        "field": "creativeTeam",
+        "oldValue": [
+          {
+            "name": "Diane Paulus",
+            "role": "Director",
+            "_source": "serp-verified-llm"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Abbey O'Brien",
+            "role": "Director",
+            "_source": "BRO-4993-hand-verified"
+          }
+        ],
+        "description": "BRO-4993: Playbill: 10th anniversary tour direction recreated by Abbey O'Brien from Diane Paulus original https://playbill.com/article/sara-bareilles-musical-waitress-will-launch-10th-anniversary-tour"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "water-for-elephants-tour-2025",
+        "field": "creativeTeam",
+        "oldValue": [
+          {
+            "name": "Jessica Stone",
+            "role": "Director",
+            "_source": "search-grounded-check-bro-4884"
+          },
+          {
+            "name": "Rick Elice",
+            "role": "Book",
+            "_source": "serp-verified-llm"
+          },
+          {
+            "name": "PigPen Theatre Co.",
+            "role": "Lyricist",
+            "_source": "search-grounded-check-bro-4884"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Ryan Emmons",
+            "role": "Director",
+            "_source": "BRO-4993-hand-verified"
+          },
+          {
+            "name": "Rick Elice",
+            "role": "Book",
+            "_source": "serp-verified-llm"
+          },
+          {
+            "name": "PigPen Theatre Co.",
+            "role": "Music & Lyrics",
+            "_source": "BRO-4993-hand-verified"
+          }
+        ],
+        "description": "BRO-4993: BroadwayWorld tour article: directed by Ryan Emmons recreating Jessica Stone original direction (Diane Paulus never directed it); music and lyrics are by PigPen Theatre Co., not Joel Paley https://www.broadwayworld.com/baltimore/article/WATER-FOR-ELEPHANTS-National-Tour-is-Coming-to-Sheas-Buffalo-Theatre-20260407"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "hadestown-tour-2024",
+        "field": "creativeTeam",
+        "oldValue": [
+          {
+            "name": "Rachel Chavkin",
+            "role": "Director",
+            "_source": "serp-verified-llm"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Keenan Tyler Oliphant",
+            "role": "Director",
+            "_source": "BRO-4993-hand-verified"
+          }
+        ],
+        "description": "BRO-4993: Playbill tour launch article: directed by Keenan Tyler Oliphant based on Rachel Chavkin original direction https://playbill.com/article/new-north-american-tour-of-hadestown-launches-october-3"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "kinky-boots-tour-2025",
+        "field": "creativeTeam",
+        "oldValue": [
+          {
+            "name": "Jerry Mitchell",
+            "role": "Director",
+            "_source": "serp-verified-llm"
+          },
+          {
+            "name": "Douglas Carter Beane",
+            "role": "Book Writer",
+            "_source": "serp-verified-llm"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "DB Bonds",
+            "role": "Director",
+            "_source": "BRO-4993-hand-verified"
+          },
+          {
+            "name": "Douglas Carter Beane",
+            "role": "Book Writer",
+            "_source": "serp-verified-llm"
+          }
+        ],
+        "description": "BRO-4993: Shenandoah University article: tour direction recreated by DB Bonds from Jerry Mitchell original https://www.su.edu/blog/2025/11/10/gunter-25-gaida-26-and-bonds-24-collaborate-on-national-tour-of-kinky-boots"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "hershey-felder-the-piano-and-me-off-broadway-2026",
+        "field": "creativeTeam",
+        "oldValue": [
+          {
+            "name": "Hershey Felder",
+            "role": "Playwright",
+            "_source": "serp-verified-llm"
+          },
+          {
+            "name": "Hershey Felder",
+            "role": "Director",
+            "_source": "serp-verified-llm"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Hershey Felder",
+            "role": "Playwright",
+            "_source": "serp-verified-llm"
+          }
+        ],
+        "description": "BRO-4993: 59E59 show page credits no director: Felder wrote the piece and did the concept design https://www.59e59.org/shows/show-detail/hershey-felder-the-piano-and-me/"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "spare-parts-off-broadway-2026",
+        "field": "creativeTeam",
+        "oldValue": [
+          {
+            "name": "TBA",
+            "role": "Director"
+          }
+        ],
+        "newValue": [],
+        "description": "BRO-4993: drop placeholder credits (Director \"TBA\"); a placeholder is not a person"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "la-ternura-off-broadway-2025",
+        "field": "creativeTeam",
+        "oldValue": [
+          {
+            "name": "unknown",
+            "role": "Director"
+          }
+        ],
+        "newValue": [],
+        "description": "BRO-4993: drop placeholder credits (Director \"unknown\"); a placeholder is not a person"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "manic-street-creature-west-end-2026",
+        "field": "creativeTeam",
+        "oldValue": [
+          {
+            "name": "N/A",
+            "role": "Director"
+          },
+          {
+            "name": "N/A",
+            "role": "Book Writer"
+          },
+          {
+            "name": "N/A",
+            "role": "Composer"
+          },
+          {
+            "name": "N/A",
+            "role": "Lyricist"
+          },
+          {
+            "name": "N/A",
+            "role": "Choreographer"
+          }
+        ],
+        "newValue": [],
+        "description": "BRO-4993: drop placeholder credits (Director \"N/A\", Book Writer \"N/A\", Composer \"N/A\", Lyricist \"N/A\", Choreographer \"N/A\"); a placeholder is not a person"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "john-proctor-is-the-villain-west-end-2026",
+        "field": "creativeTeam",
+        "oldValue": [
+          {
+            "name": "TBC",
+            "role": "Director"
+          }
+        ],
+        "newValue": [],
+        "description": "BRO-4993: drop placeholder credits (Director \"TBC\"); a placeholder is not a person"
+      }
+    ]
+  },
+  "executedAt": "2026-10-13T01:21:30.487Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for the-receptionist-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for end-of-the-rainbow-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for what-happened-was-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for the-comedy-about-spies-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for the-last-ship-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for the-people-versus-lenny-bruce-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for a-few-good-men-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for the-sound-of-music-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for book-of-mormon-tour-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for waitress-tour-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for water-for-elephants-tour-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for hadestown-tour-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for kinky-boots-tour-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for hershey-felder-the-piano-and-me-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for spare-parts-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for la-ternura-off-broadway-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for manic-street-creature-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for john-proctor-is-the-villain-west-end-2026"
+    }
+  ]
+}

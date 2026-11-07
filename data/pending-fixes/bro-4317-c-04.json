@@ -1,0 +1,322 @@
+{
+  "issueNumber": "bro-4317-c-04",
+  "planId": "19b4a855-aad0-4a1a-9fb3-9fb07c7c93dc",
+  "status": "partial",
+  "createdAt": "2026-10-13T01:59:32.271Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4317 part 4/4: rehome review-text files from folders with no shows.json id (rebuild skips them) into the production whose run window holds the review's publishDate; drop exact duplicates of files the target already holds.",
+    "steps": [
+      "delete the-unknown-2026/nytimes--alexis-soloski.json",
+      "move two-strangers/theater-life--samuel-l-leiter.json -> two-strangers-bway-2025/theater-life--samuel-l-leiter.json",
+      "delete you-got-older-2026/nytimes--charles-isherwood.json",
+      "delete you-got-older-2026/theatermania--hayley-levitt.json",
+      "delete you-got-older-2026/timeout--adam-feldman.json",
+      "delete angels-in-america/theater-life--david-sheward.json",
+      "delete days-of-wine-and-roses/theater-life--david-sheward.json",
+      "delete days-of-wine-and-roses/theater-life--samuel-l-leiter.json",
+      "delete hamilton/theater-life--david-sheward.json",
+      "delete hells-kitchen/theater-life--samuel-l-leiter.json",
+      "delete merrily-we-roll-along/theater-life--samuel-l-leiter.json",
+      "delete table-17-off-west-end/theater-life--david-sheward.json",
+      "delete table-17-off-west-end/theater-life--samuel-l-leiter.json",
+      "delete the-harder-they-come-off-west-end/theater-life--paulanne-simmons.json",
+      "delete the-imaginary-invalid/theater-life--samuel-l-leiter.json",
+      "delete the-porch-on-windy-hill-off-broadway/theater-life--alix-cohen.json",
+      "delete the-winters-tale-off-broadway/theater-life--iris-wiener.json",
+      "delete uncle-vanya/theater-life--mark-rifkin.json",
+      "delete we-had-a-world-off-west-end/theater-life--samuel-l-leiter.json",
+      "delete well-ill-let-you-go-off-broadway/theater-life--david-sheward.json",
+      "delete well-ill-let-you-go-off-broadway/theater-life--isa-goldberg.json",
+      "delete a-hunger-artist-off-west-end/theater-life--isa-goldberg.json",
+      "delete counting-and-cracking-off-broadway/theater-life--samuel-l-leiter.json",
+      "delete stage-kiss-off-west-end/theater-life--eric-march.json",
+      "delete texas-in-paris-off-broadway/theater-life--paulanne-simmonsbased.json"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-unknown-2026/nytimes--alexis-soloski.json",
+        "description": "0-text or already-flagged copy of an earlier production that is not tracked (August 10, 2015)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "two-strangers/theater-life--samuel-l-leiter.json",
+        "destPath": "two-strangers-bway-2025/theater-life--samuel-l-leiter.json",
+        "description": "publishDate 2025-11-29T00:00:59 within 9 days of two-strangers-bway-2025 opening 2025-11-20; other hits are other cities"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "you-got-older-2026/nytimes--charles-isherwood.json",
+        "description": "0-text or already-flagged copy of an earlier production that is not tracked (November 7, 2014)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "you-got-older-2026/theatermania--hayley-levitt.json",
+        "description": "0-text or already-flagged copy of an earlier production that is not tracked (November 6, 2014)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "you-got-older-2026/timeout--adam-feldman.json",
+        "description": "0-text or already-flagged copy of an earlier production that is not tracked (November 7, 2014)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "angels-in-america/theater-life--david-sheward.json",
+        "description": "review of an earlier production than angels-in-america-2018 (publishDate 2017-06-22 predates angels-in-america-2018 (opened 2018-03-25); review of an earlier production); deleted instead of flagged so it cannot shadow this critic's file for the tracked production"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "days-of-wine-and-roses/theater-life--david-sheward.json",
+        "description": "review of an earlier production than days-of-wine-and-roses-2024 (publishDate 2023-06-15 predates days-of-wine-and-roses-2024 (opened 2024-01-28); review of an earlier production); deleted instead of flagged so it cannot shadow this critic's file for the tracked production"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "days-of-wine-and-roses/theater-life--samuel-l-leiter.json",
+        "description": "review of an earlier production than days-of-wine-and-roses-2024 (publishDate 2023-06-13 predates days-of-wine-and-roses-2024 (opened 2024-01-28); review of an earlier production); deleted instead of flagged so it cannot shadow this critic's file for the tracked production"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "hamilton/theater-life--david-sheward.json",
+        "description": "review of an earlier production than hamilton-2015 (publishDate 2015-03-12 predates hamilton-2015 (opened 2015-08-06); review of an earlier production); deleted instead of flagged so it cannot shadow this critic's file for the tracked production"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "hells-kitchen/theater-life--samuel-l-leiter.json",
+        "description": "review of an earlier production than hells-kitchen-2024 (publishDate 2023-11-27 predates hells-kitchen-2024 (opened 2024-04-20); review of an earlier production); deleted instead of flagged so it cannot shadow this critic's file for the tracked production"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "merrily-we-roll-along/theater-life--samuel-l-leiter.json",
+        "description": "review of an earlier production than merrily-we-roll-along-2023 (publishDate 2023-01-01 predates merrily-we-roll-along-2023 (opened 2023-10-10); review of an earlier production); deleted instead of flagged so it cannot shadow this critic's file for the tracked production"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "table-17-off-west-end/theater-life--david-sheward.json",
+        "description": "review of an earlier production than table-17-off-west-end-2026 (publishDate 2024-09-17 predates table-17-off-west-end-2026 (opened 2026-09-24); review of an earlier production); deleted instead of flagged so it cannot shadow this critic's file for the tracked production"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "table-17-off-west-end/theater-life--samuel-l-leiter.json",
+        "description": "review of an earlier production than table-17-off-west-end-2026 (publishDate 2024-09-18 predates table-17-off-west-end-2026 (opened 2026-09-24); review of an earlier production); deleted instead of flagged so it cannot shadow this critic's file for the tracked production"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-harder-they-come-off-west-end/theater-life--paulanne-simmons.json",
+        "description": "review of an earlier production than the-harder-they-come-off-west-end-2026 (publishDate 2023-03-16 predates the-harder-they-come-off-west-end-2026 (opened 2025-09-24); review of an earlier production); deleted instead of flagged so it cannot shadow this critic's file for the tracked production"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-imaginary-invalid/theater-life--samuel-l-leiter.json",
+        "description": "review of an earlier production than the-imaginary-invalid-2026 (publishDate 2025-06-17 predates the-imaginary-invalid-2026 (opened 2026-10-22); review of an earlier production); deleted instead of flagged so it cannot shadow this critic's file for the tracked production"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-porch-on-windy-hill-off-broadway/theater-life--alix-cohen.json",
+        "description": "review of an earlier production than the-porch-on-windy-hill-off-broadway-2026 (publishDate 2025-09-19 predates the-porch-on-windy-hill-off-broadway-2026 (opened 2026-01-25); review of an earlier production); deleted instead of flagged so it cannot shadow this critic's file for the tracked production"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-winters-tale-off-broadway/theater-life--iris-wiener.json",
+        "description": "review of an earlier production than the-winters-tale-off-broadway-2026 (publishDate 2018-04-11 predates the-winters-tale-off-broadway-2026 (opened 2026-08-12); review of an earlier production); deleted instead of flagged so it cannot shadow this critic's file for the tracked production"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "uncle-vanya/theater-life--mark-rifkin.json",
+        "description": "review of an earlier production than uncle-vanya-2024 (publishDate 2023-08-13 predates uncle-vanya-2024 (opened 2024-04-24); review of an earlier production); deleted instead of flagged so it cannot shadow this critic's file for the tracked production"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "we-had-a-world-off-west-end/theater-life--samuel-l-leiter.json",
+        "description": "review of an earlier production than we-had-a-world-off-west-end-2026 (publishDate 2025-04-02 predates we-had-a-world-off-west-end-2026 (opened 2026-06-09); review of an earlier production); deleted instead of flagged so it cannot shadow this critic's file for the tracked production"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "well-ill-let-you-go-off-broadway/theater-life--david-sheward.json",
+        "description": "review of an earlier production than well-ill-let-you-go-off-broadway-2026 (publishDate 2025-08-12 predates well-ill-let-you-go-off-broadway-2026 (opened 2026-04-30); review of an earlier production); deleted instead of flagged so it cannot shadow this critic's file for the tracked production"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "well-ill-let-you-go-off-broadway/theater-life--isa-goldberg.json",
+        "description": "review of an earlier production than well-ill-let-you-go-off-broadway-2026 (publishDate 2025-08-11 predates well-ill-let-you-go-off-broadway-2026 (opened 2026-04-30); review of an earlier production); deleted instead of flagged so it cannot shadow this critic's file for the tracked production"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "a-hunger-artist-off-west-end/theater-life--isa-goldberg.json",
+        "description": "review of an earlier production (2017-06-07T13:37:46) than the only same-name show a-hunger-artist-off-west-end-2027, which has not opened or has no opening date; nothing tracked to attach it to"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "counting-and-cracking-off-broadway/theater-life--samuel-l-leiter.json",
+        "description": "review of an earlier production (2024-09-23T07:42:13) than the only same-name show counting-and-cracking-off-broadway-2026, which has not opened or has no opening date; nothing tracked to attach it to"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "stage-kiss-off-west-end/theater-life--eric-march.json",
+        "description": "review of an earlier production (2014-03-08T02:18:00) than the only same-name show stage-kiss-off-west-end-2026, which has not opened or has no opening date; nothing tracked to attach it to"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "texas-in-paris-off-broadway/theater-life--paulanne-simmonsbased.json",
+        "description": "review of an earlier production (2015-02-05T02:31:00) than the only same-name show texas-in-paris-off-broadway-2027, which has not opened or has no opening date; nothing tracked to attach it to"
+      }
+    ]
+  },
+  "executedAt": "2026-10-13T02:49:03.840Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-unknown-2026/nytimes--alexis-soloski.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": false,
+      "reason": "Destination exists: two-strangers-bway-2025/theater-life--samuel-l-leiter.json (delete it first or set overwrite: true)"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted you-got-older-2026/nytimes--charles-isherwood.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted you-got-older-2026/theatermania--hayley-levitt.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted you-got-older-2026/timeout--adam-feldman.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted angels-in-america/theater-life--david-sheward.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted days-of-wine-and-roses/theater-life--david-sheward.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted days-of-wine-and-roses/theater-life--samuel-l-leiter.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted hamilton/theater-life--david-sheward.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted hells-kitchen/theater-life--samuel-l-leiter.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted merrily-we-roll-along/theater-life--samuel-l-leiter.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted table-17-off-west-end/theater-life--david-sheward.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted table-17-off-west-end/theater-life--samuel-l-leiter.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-harder-they-come-off-west-end/theater-life--paulanne-simmons.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-imaginary-invalid/theater-life--samuel-l-leiter.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-porch-on-windy-hill-off-broadway/theater-life--alix-cohen.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-winters-tale-off-broadway/theater-life--iris-wiener.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted uncle-vanya/theater-life--mark-rifkin.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted we-had-a-world-off-west-end/theater-life--samuel-l-leiter.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted well-ill-let-you-go-off-broadway/theater-life--david-sheward.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted well-ill-let-you-go-off-broadway/theater-life--isa-goldberg.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted a-hunger-artist-off-west-end/theater-life--isa-goldberg.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted counting-and-cracking-off-broadway/theater-life--samuel-l-leiter.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted stage-kiss-off-west-end/theater-life--eric-march.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted texas-in-paris-off-broadway/theater-life--paulanne-simmonsbased.json"
+    }
+  ]
+}

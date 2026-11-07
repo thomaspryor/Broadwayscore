@@ -1,0 +1,316 @@
+{
+  "generatedAt": "2026-11-07T09:01:10.396Z",
+  "shadow": true,
+  "checkoutSha": "2c730bc2777777c7a56ebd5597ead733c694161c",
+  "totalCandidates": 334,
+  "eligibleCandidates": 94,
+  "checked": 29,
+  "truncated": true,
+  "fetchError": null,
+  "counts": {
+    "pass": 24,
+    "fail": 2,
+    "unverifiable": 3
+  },
+  "alreadyDone": [
+    {
+      "id": "BRO-7053",
+      "name": "Junk-page check rejects real reviews whose subject names match other show titles (Speculations: Guardian, Arts Desk)",
+      "verifyCmd": "node --test tests/unit/multi-show-subject-names.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-7051",
+      "name": "Direct outlet checks every 3h during opening window (outlet-listing-poller), free feeds first",
+      "verifyCmd": "node --test tests/unit/outlet-listing-opening-window.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-7047",
+      "name": "Digest plain wording: 34 owner-visible health checks still show their raw check name",
+      "verifyCmd": "node --test tests/unit/morning-digest-quiet.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-7040",
+      "name": "Morning digest: shorter, quieter, plain-language (age gate, cleared-yesterday, decisions once, board collapsed)",
+      "verifyCmd": "node --test scripts/verify-bro-7040-recheck.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-7034",
+      "name": "Refetch real reviews hidden by BRO-6774 wrongAttribution marks (Mountford/Art, Dale/King Kong, McNulty/Groundhog Day, Cavendish/Play That Goes Wrong) and dedupe Letts/Treneman, Independent Paul Taylor lion-king, NYT mislabels first-date/ghost",
+      "verifyCmd": "node scripts/audit-review-contamination.js --strict",
+      "detail": null
+    },
+    {
+      "id": "BRO-6987",
+      "name": "P2: Opening night miss: Rope (2026-11-03)",
+      "verifyCmd": "node scripts/slow-market-grade.js --opened-from=2026-11-03 --opened-to=2026-11-03 --check-gaps",
+      "detail": null
+    },
+    {
+      "id": "BRO-6984",
+      "name": "Critic page: you vs. the consensus line + per-review flag a problem",
+      "verifyCmd": "npx tsx --test tests/unit/critic-standing.test.ts tests/unit/critic-claim.test.ts",
+      "detail": null
+    },
+    {
+      "id": "BRO-6972",
+      "name": "P1: Opening night miss: We'll See (2026-11-03)",
+      "verifyCmd": "node scripts/slow-market-grade.js --opened-from=2026-11-03 --opened-to=2026-11-03 --check-gaps",
+      "detail": null
+    },
+    {
+      "id": "BRO-6965",
+      "name": "Regular pipeline reads the lane's 24 outlet feeds daily (Bob's Theater Blog reviews missing for AGM, ODC)",
+      "verifyCmd": "test -f scripts/lib/titled-blog-collect.js",
+      "detail": null
+    },
+    {
+      "id": "BRO-6947",
+      "name": "Printed-byline follow-ups: auto-fill for outlets without registry critics, triage 341 unlisted, 14 destination-exists",
+      "verifyCmd": "node --test scripts/lib/printed-byline-conflict.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-6939",
+      "name": "Onboarding follow-ups: audit new tours' art in CI, keep genre tags through a lost-push redo",
+      "verifyCmd": "node scripts/validate-data.js --strict",
+      "detail": null
+    },
+    {
+      "id": "BRO-6916",
+      "name": "West End lane: capture the real Lives of Others pages into the private recordings archive",
+      "verifyCmd": "node --test tests/unit/west-end-fixture-replay.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-6904",
+      "name": "Daily Mail review files whose url points at a different review (low text overlap)",
+      "verifyCmd": "node --test scripts/lib/dailymail-url-discovery.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-6901",
+      "name": "Regional (UK/DC/Chicago) shows still missing images: root cause + systematic fix",
+      "verifyCmd": "node scripts/validate-data.js --strict",
+      "detail": null
+    },
+    {
+      "id": "BRO-6886",
+      "name": "P1: Opening night miss: Clifford Odets’ Waiting for Lefty (2026-11-02)",
+      "verifyCmd": "node --test tests/unit/press-night-scoring-dispatch.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-6877",
+      "name": "Keep past showtimes: archive every week's schedule and use it for diary entries",
+      "verifyCmd": "node --test tests/unit/show-schedule-history.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-6863",
+      "name": "Press-night record: capture scoring time and the night's workflow runs so watchdog replays cover every stage",
+      "verifyCmd": "node --test scripts/press-night-record.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-6848",
+      "name": "77 Observer reviews filed as guardian-- (scored at Guardian tier 1, not Observer)",
+      "verifyCmd": "node scripts/scoring-delta.js",
+      "detail": null
+    },
+    {
+      "id": "BRO-6802",
+      "name": "P1: Broadway press-night race is failing (first review 87-100 min after embargo vs 30-min bar); lane cutover stalled; 6 Broadway openings Nov 9-19",
+      "verifyCmd": "node scripts/lib/verify-data-backfill.js --show=here-there-are-blueberries-2026",
+      "detail": null
+    },
+    {
+      "id": "BRO-6801",
+      "name": "Make OB/OWE press-night search actually fire + prove Stagedoor fix on a real London opening",
+      "verifyCmd": "node --test tests/unit/press-window-serp.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-6763",
+      "name": "Owner email for each new Profitability Scorecard sign-up",
+      "verifyCmd": "node --test tests/unit/money-signup-notify.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-6762",
+      "name": "Fix gaps at the source: reviews regular gathering still misses and only the after-the-fact gap audit catches",
+      "verifyCmd": "node --test tests/unit/outlet-coverage-claim.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-6761",
+      "name": "Older-years every-review sweep: gap-audit ~2,400 never-checked shows opened >1 year ago, Broadway first (owner chose A 2026-11-01)",
+      "verifyCmd": "node scripts/lib/verify-data-backfill.js --show=appropriate-2023,and-juliet-2022 --reviews=2",
+      "detail": null
+    },
+    {
+      "id": "BRO-6737",
+      "name": "Video captions: tagged link on Facebook, link in bio on TikTok/Instagram, YouTube description link (per-channel)",
+      "verifyCmd": "node --test scripts/test-video-captions.test.mjs",
+      "detail": null
+    }
+  ],
+  "failing": [
+    {
+      "id": "BRO-6944",
+      "name": "iOS: signed-out rating Save shows no sign-in sheet and strands the user on the show page",
+      "verifyCmd": "npx tsc --noEmit",
+      "detail": "src/lib/data-actors.ts(22,26): error TS2307: Cannot find module '../../data/cast-manifest.json' or its corresponding type declarations.\nsrc/lib/data-cast-obc.ts(12,26): error TS2307: Cannot find module '../../data/cast-manifest.json' or its corresponding type declarations.\nsrc/lib/data-tony-nominees.ts(32,32): error TS2307: Cannot find module '../../data/actor-slugs.json' or its corresponding type"
+    },
+    {
+      "id": "BRO-6794",
+      "name": "Older-years sweep remainder: 1,835 never-audited older shows + blocked-host fetch failures",
+      "verifyCmd": "node scripts/lib/verify-data-backfill.js --show=broadway,west-end,regional,tour --reviews=1835",
+      "detail": "FAIL broadway: show missing; scored reviews 0 < 1835\nFAIL west-end: show missing; scored reviews 0 < 1835\nFAIL regional: show missing; scored reviews 0 < 1835\nFAIL tour: show missing; scored reviews 0 < 1835\n"
+    }
+  ],
+  "unverifiable": [
+    {
+      "id": "BRO-6959",
+      "name": "Social autopost: AI-written review posts from a ranked fact pool (Claude writes, GPT-5.5 fact-checks)",
+      "verifyCmd": "node --test scripts/verify-social-ai-live-post.test.mjs",
+      "detail": "ran no passing tests (all skipped or none ran)"
+    },
+    {
+      "id": "BRO-6932",
+      "name": "Social autopost: quiet-day backfill of older settled shows (Off-Broadway mostly)",
+      "verifyCmd": "node --test scripts/verify-bro-6932-recheck.test.mjs",
+      "detail": "ran no passing tests (all skipped or none ran)"
+    },
+    {
+      "id": "BRO-6724",
+      "name": "Pre-existing red checks seen during BRO-6716: cross-outlet attribution suspect tests + audit-regex-patterns --full overages",
+      "verifyCmd": "node scripts/run-unit-tests.js",
+      "detail": "check killed by SIGTERM after 46015ms (timeout — no verdict)"
+    }
+  ],
+  "landedButOpen": [
+    {
+      "id": "BRO-7053",
+      "name": "Junk-page check rejects real reviews whose subject names match other show titles (Speculations: Guardian, Arts Desk)",
+      "branch": "land/bro-7053-lowercase",
+      "sha": "1543a4081c3257b1639b92406a019b19aed3bd36",
+      "landedAt": "2026-11-07T00:46:02.180Z"
+    },
+    {
+      "id": "BRO-7051",
+      "name": "Direct outlet checks every 3h during opening window (outlet-listing-poller), free feeds first",
+      "branch": "land/bro-7051-nysun",
+      "sha": "223d1f31afacac2833f91c3bc303edddeebb1a0d",
+      "landedAt": "2026-11-06T20:40:26.525Z"
+    },
+    {
+      "id": "BRO-7040",
+      "name": "Morning digest: shorter, quieter, plain-language (age gate, cleared-yesterday, decisions once, board collapsed)",
+      "branch": "land/bro-7040-followup",
+      "sha": "95f8de1c65c8461a17d20000e443c6762c167a2c",
+      "landedAt": "2026-11-06T15:51:36.452Z"
+    },
+    {
+      "id": "BRO-6987",
+      "name": "P2: Opening night miss: Rope (2026-11-03)",
+      "branch": "land/codex-bro-6987",
+      "sha": "91a35c79cb12dcdf63480bcd2e866bd93e58d345",
+      "landedAt": "2026-11-05T22:02:44.152Z"
+    },
+    {
+      "id": "BRO-6972",
+      "name": "P1: Opening night miss: We'll See (2026-11-03)",
+      "branch": "land/bro-6972-uncovered-first",
+      "sha": "1ccaca0e1d67870b719120c7d75f60d6b7e7d785",
+      "landedAt": "2026-11-04T20:32:02.535Z"
+    },
+    {
+      "id": "BRO-6965",
+      "name": "Regular pipeline reads the lane's 24 outlet feeds daily (Bob's Theater Blog reviews missing for AGM, ODC)",
+      "branch": "land/bro-6965-collect2",
+      "sha": "454bfb8674b83db7682630f52e71c30e794b4a01",
+      "landedAt": "2026-11-04T08:45:01.327Z"
+    },
+    {
+      "id": "BRO-6947",
+      "name": "Printed-byline follow-ups: auto-fill for outlets without registry critics, triage 341 unlisted, 14 destination-exists",
+      "branch": "land/bro-6947-followup",
+      "sha": "dce76b5f3949ff3fddf47fd49166d9b37d6f8e21",
+      "landedAt": "2026-11-05T01:59:25.154Z"
+    },
+    {
+      "id": "BRO-6939",
+      "name": "Onboarding follow-ups: audit new tours' art in CI, keep genre tags through a lost-push redo",
+      "branch": "land/codex-bro-6939",
+      "sha": "d5cf7cb53df52a65818c590e50475505816b1e62",
+      "landedAt": "2026-11-05T22:24:25.170Z"
+    },
+    {
+      "id": "BRO-6901",
+      "name": "Regional (UK/DC/Chicago) shows still missing images: root cause + systematic fix",
+      "branch": "land/bro-6901-session-cost",
+      "sha": "b4e516950800ecb32407ef0f165151e1b0ebecb4",
+      "landedAt": "2026-11-03T19:48:31.859Z"
+    },
+    {
+      "id": "BRO-6886",
+      "name": "P1: Opening night miss: Clifford Odets’ Waiting for Lefty (2026-11-02)",
+      "branch": "land/job/linear-BRO-6886-mw0wu2u3",
+      "sha": "2fe919987307807ee5b3394bcf028e425ce04a71",
+      "landedAt": "2026-11-03T18:49:53.149Z"
+    },
+    {
+      "id": "BRO-6877",
+      "name": "Keep past showtimes: archive every week's schedule and use it for diary entries",
+      "branch": "land/bro-6877-lag-signed",
+      "sha": "201cc4a8ffb3c2e00b717709ed98052885dc369b",
+      "landedAt": "2026-11-03T04:12:40.828Z"
+    },
+    {
+      "id": "BRO-6802",
+      "name": "P1: Broadway press-night race is failing (first review 87-100 min after embargo vs 30-min bar); lane cutover stalled; 6 Broadway openings Nov 9-19",
+      "branch": "land/bro-6802-cost2",
+      "sha": "35b980a5d68060d193fc23c1c78589885a9ce67d",
+      "landedAt": "2026-11-02T05:56:05.079Z"
+    },
+    {
+      "id": "BRO-6801",
+      "name": "Make OB/OWE press-night search actually fire + prove Stagedoor fix on a real London opening",
+      "branch": "land/bro-6801-6687",
+      "sha": "0cdd2db73cfb83136911179c50411df59a94afa5",
+      "landedAt": "2026-11-02T17:40:19.636Z"
+    },
+    {
+      "id": "BRO-6763",
+      "name": "Owner email for each new Profitability Scorecard sign-up",
+      "branch": "land/bro-6763-money-signup-notify",
+      "sha": "7d99bd00bd1b289f0927590b6aa3010f81dbc71a",
+      "landedAt": "2026-11-01T14:47:03.789Z"
+    },
+    {
+      "id": "BRO-6762",
+      "name": "Fix gaps at the source: reviews regular gathering still misses and only the after-the-fact gap audit catches",
+      "branch": "land/bro-6762-cost-row",
+      "sha": "b8321d30fe59ebd3678a3d8a0886938f9d351bb7",
+      "landedAt": "2026-11-01T16:26:01.820Z"
+    },
+    {
+      "id": "BRO-6761",
+      "name": "Older-years every-review sweep: gap-audit ~2,400 never-checked shows opened >1 year ago, Broadway first (owner chose A 2026-11-01)",
+      "branch": "land/bro-6761-cost2",
+      "sha": "c57259baf6503648673d2e58b7016d7e76ca8972",
+      "landedAt": "2026-11-01T21:32:17.532Z"
+    },
+    {
+      "id": "BRO-6737",
+      "name": "Video captions: tagged link on Facebook, link in bio on TikTok/Instagram, YouTube description link (per-channel)",
+      "branch": "land/bro-6737-video-clean2",
+      "sha": "11f4cc38b7d71e57dac7ffb1d8a08c85082cbad5",
+      "landedAt": "2026-11-01T15:07:57.966Z"
+    }
+  ]
+}

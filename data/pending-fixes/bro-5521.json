@@ -1,0 +1,598 @@
+{
+  "issueNumber": "bro-5521",
+  "planId": "e11b0d9f-7e7d-415d-9822-476fc46206a8",
+  "status": "applied",
+  "createdAt": "2026-10-17T07:11:36.163Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5521: twelve capitalizations were 4 x the show’s NY tax credit (credit / 25%). The 25% applies to qualified production and running costs, so 4 x overstates: the SEC Form Ds found under the tax-credit recipients’ entity names put nine of these shows at 1.7x to 3.6x their credit (median 2.6). Nine get their filed figure with the filing cited (Hangmen stays an estimate: its 2019 filing predates the pandemic delay). Death of a Salesman (2022), Peter Pan Goes Wrong and Plaza Suite have no usable filing (Plaza Suite’s Suite 719 LLC filing says \"Indefinite\") and are re-estimated at 2.6 x credit with the range stated. Model rerun on apply; no designation conflicts (flops stay negative; Macbeth 52% -> 87%, Good Night Oscar 26% -> 40% central). (part 1 of 2: topdog-underdog-2022, macbeth-2022, potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022, the-minutes-2022, hangmen-2022)",
+    "steps": [
+      "Filed figures: capitalization, a Form D citation, the estimate flag, and the filing in sources; notes that repeated the 4 x figure are corrected.",
+      "Re-estimates: capitalization at 2.6 x credit (rounded to $0.1M) with the method and range in capitalizationSource."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "topdog-underdog-2022",
+        "field": "capitalization",
+        "oldValue": 6001504,
+        "newValue": 2500000,
+        "description": "topdog-underdog-2022: the SEC Form D gives 2.50M (was 4 x its NY tax credit, an overstatement: the 25% credit covers running costs too)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "topdog-underdog-2022",
+        "field": "capitalizationSource",
+        "oldValue": null,
+        "newValue": "SEC Form D filing (Topdog 20th Ltd Liability Co, CIK 0001931075, filed Jun 24, 2022): total offering amount $2,500,000. https://www.sec.gov/Archives/edgar/data/1931075/000193107522000002/xslFormDX01/primary_doc.xml",
+        "description": "topdog-underdog-2022: cite the Form D."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "topdog-underdog-2022",
+        "field": "isEstimate",
+        "oldValue": {
+          "capitalization": true
+        },
+        "newValue": {
+          "capitalization": false
+        },
+        "description": "topdog-underdog-2022: a filed figure, no longer an estimate."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "topdog-underdog-2022",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit",
+            "date": "2025-08-09"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwayworld.com/shows/Underdog-333924.html",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwayworld.com/grosses/TOPDOG-UNDERDOG",
+            "date": null
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit",
+            "date": "2025-08-09"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwayworld.com/shows/Underdog-333924.html",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwayworld.com/grosses/TOPDOG-UNDERDOG",
+            "date": null
+          },
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/1931075/000193107522000002/xslFormDX01/primary_doc.xml",
+            "date": "2022-06-24"
+          }
+        ],
+        "description": "topdog-underdog-2022: add the Form D to sources."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "topdog-underdog-2022",
+        "field": "recoupedSource",
+        "oldValue": "No public recoupment announcement found; inference from ~$4.58M lifetime gross versus ~$6.00M inferred capitalization. https://playbill.com/production/topdog-underdog-broadway-john-golden-theatre-2022",
+        "newValue": "No public recoupment announcement found; closed after 13 weeks with ~$4.58M in grosses. https://playbill.com/production/topdog-underdog-broadway-john-golden-theatre-2022",
+        "description": "topdog-underdog-2022: the loss call no longer leans on the inflated $6.0M."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "macbeth-2022",
+        "field": "capitalization",
+        "oldValue": 9875368,
+        "newValue": 5900000,
+        "description": "macbeth-2022: the SEC Form D gives 5.90M (was 4 x its NY tax credit, an overstatement: the 25% credit covers running costs too)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "macbeth-2022",
+        "field": "capitalizationSource",
+        "oldValue": null,
+        "newValue": "SEC Form D filing (Bardway, Ltd Liability Co, CIK 0001893815, filed Dec 6, 2021): total offering amount $5,900,000. https://www.sec.gov/Archives/edgar/data/1893815/000189381521000001/xslFormDX01/primary_doc.xml",
+        "description": "macbeth-2022: cite the Form D."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "macbeth-2022",
+        "field": "isEstimate",
+        "oldValue": {
+          "capitalization": true
+        },
+        "newValue": {
+          "capitalization": false
+        },
+        "description": "macbeth-2022: a filed figure, no longer an estimate."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "macbeth-2022",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://www.broadwayworld.com/article/Exclusive-Inside-the-Numbers-Who-Benefited-and-Why-Broadway",
+            "date": "2025-09-04"
+          },
+          {
+            "type": "manual",
+            "url": "https://www.tax.ny.gov/pit/credits/new-york-city-musical-and-theatrical-production-tax-credit.htm",
+            "date": "2024-12-10"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.ibdb.com/broadway-production/macbeth-532512",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://playbill.com/production/macbethlongacre-theatre-2021-2022",
+            "date": null
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.broadwayworld.com/article/Exclusive-Inside-the-Numbers-Who-Benefited-and-Why-Broadway",
+            "date": "2025-09-04"
+          },
+          {
+            "type": "manual",
+            "url": "https://www.tax.ny.gov/pit/credits/new-york-city-musical-and-theatrical-production-tax-credit.htm",
+            "date": "2024-12-10"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.ibdb.com/broadway-production/macbeth-532512",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://playbill.com/production/macbethlongacre-theatre-2021-2022",
+            "date": null
+          },
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/1893815/000189381521000001/xslFormDX01/primary_doc.xml",
+            "date": "2021-12-06"
+          }
+        ],
+        "description": "macbeth-2022: add the Form D to sources."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "macbeth-2022",
+        "field": "notes",
+        "oldValue": "Public tax-credit data implies a ~$9.88M capitalization for the Longacre production.",
+        "newValue": "Its SEC Form D (Bardway LLC, Dec 2021) offered $5.9 million for the Longacre production.",
+        "description": "macbeth-2022: the note cites the Form D."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022",
+        "field": "capitalization",
+        "oldValue": 9641432,
+        "newValue": 6075000,
+        "description": "potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022: the SEC Form D gives 6.075M (was 4 x its NY tax credit, an overstatement: the 25% credit covers running costs too)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022",
+        "field": "capitalizationSource",
+        "oldValue": null,
+        "newValue": "SEC Form D/A filing (Wing Women On Broadway Ltd Liability Co, CIK 0001822566, filed Apr 26, 2022): $6,075,000 sold of a $6,750,000 offering. https://www.sec.gov/Archives/edgar/data/1822566/000182256622000003/xslFormDX01/primary_doc.xml",
+        "description": "potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022: cite the Form D."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022",
+        "field": "isEstimate",
+        "oldValue": {
+          "capitalization": true
+        },
+        "newValue": {
+          "capitalization": false
+        },
+        "description": "potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022: a filed figure, no longer an estimate."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://www.broadwayworld.com/article/Exclusive-Inside-the-Numbers-Who-Benefited-and-Why-Broadway-Still-Needs-a-Tax-Credit-20010101",
+            "date": "2025-09-04"
+          },
+          {
+            "type": "trade",
+            "url": "https://playbill.com/production/potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-broadway-sam-s-shubert-theatre-2022",
+            "date": "2022-08-14"
+          },
+          {
+            "type": "manual",
+            "url": "https://shubert.nyc/press/potus-arrives-at-broadways-shubert/",
+            "date": null
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.broadwayworld.com/article/Exclusive-Inside-the-Numbers-Who-Benefited-and-Why-Broadway-Still-Needs-a-Tax-Credit-20010101",
+            "date": "2025-09-04"
+          },
+          {
+            "type": "trade",
+            "url": "https://playbill.com/production/potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-broadway-sam-s-shubert-theatre-2022",
+            "date": "2022-08-14"
+          },
+          {
+            "type": "manual",
+            "url": "https://shubert.nyc/press/potus-arrives-at-broadways-shubert/",
+            "date": null
+          },
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/1822566/000182256622000003/xslFormDX01/primary_doc.xml",
+            "date": "2022-04-26"
+          }
+        ],
+        "description": "potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022: add the Form D to sources."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022",
+        "field": "notes",
+        "oldValue": "Best public proxy for capitalization is the NYC tax credit amount. Playbill reports total gross of $8.15M through closing on August 14, 2022. Weekly nut was not publicly verified.",
+        "newValue": "Capitalized at $6,075,000 by Apr 2022 (SEC Form D/A). Playbill reports total gross of $8.15M through closing on August 14, 2022. Weekly nut was not publicly verified.",
+        "description": "potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022: the note cites the Form D."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-minutes-2022",
+        "field": "capitalization",
+        "oldValue": 7568644,
+        "newValue": 5000000,
+        "description": "the-minutes-2022: the SEC Form D gives 5.00M (was 4 x its NY tax credit, an overstatement: the 25% credit covers running costs too)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-minutes-2022",
+        "field": "capitalizationSource",
+        "oldValue": null,
+        "newValue": "SEC Form D/A filing (Big Cherry Ltd Liability Co, CIK 0001791504, filed May 6, 2022): $5,000,000 offering, fully sold. https://www.sec.gov/Archives/edgar/data/1791504/000179150422000001/xslFormDX01/primary_doc.xml",
+        "description": "the-minutes-2022: cite the Form D."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-minutes-2022",
+        "field": "isEstimate",
+        "oldValue": {
+          "capitalization": true
+        },
+        "newValue": {
+          "capitalization": false
+        },
+        "description": "the-minutes-2022: a filed figure, no longer an estimate."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-minutes-2022",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://www.broadwayworld.com/article/nys-theater-tax-credit-who-benefits-and-how-20240220",
+            "date": "2024-02-20"
+          },
+          {
+            "type": "manual",
+            "url": "https://www.tax.ny.gov/pit/credits/new-york-city-musical-and-theatrical-production-tax-credit.htm",
+            "date": "2024-12-10"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.playbill.com/production/the-minutesstudio-54-2021-2022",
+            "date": "2022-07-24"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.playbill.com/article/tracy-letts-the-minutes-completes-broadway-engagement-july-24",
+            "date": "2022-07-24"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.broadwayworld.com/article/nys-theater-tax-credit-who-benefits-and-how-20240220",
+            "date": "2024-02-20"
+          },
+          {
+            "type": "manual",
+            "url": "https://www.tax.ny.gov/pit/credits/new-york-city-musical-and-theatrical-production-tax-credit.htm",
+            "date": "2024-12-10"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.playbill.com/production/the-minutesstudio-54-2021-2022",
+            "date": "2022-07-24"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.playbill.com/article/tracy-letts-the-minutes-completes-broadway-engagement-july-24",
+            "date": "2022-07-24"
+          },
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/1791504/000179150422000001/xslFormDX01/primary_doc.xml",
+            "date": "2022-05-06"
+          }
+        ],
+        "description": "the-minutes-2022: add the Form D to sources."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-minutes-2022",
+        "field": "notes",
+        "oldValue": "BroadwayWorld lists The Minutes at $1,892,161 in NYC tax credit receipts; at a 25% credit rate that implies about $7.57M capitalization.",
+        "newValue": "BroadwayWorld lists The Minutes at $1,892,161 in NYC tax credit receipts. Capitalized at $5 million, fully raised (SEC Form D/A, May 2022).",
+        "description": "the-minutes-2022: the note cites the Form D."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "hangmen-2022",
+        "field": "capitalization",
+        "oldValue": 5700220,
+        "newValue": 4750000,
+        "description": "hangmen-2022: the SEC Form D gives 4.750M (was 4 x its NY tax credit, an overstatement: the 25% credit covers running costs too)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "hangmen-2022",
+        "field": "capitalizationSource",
+        "oldValue": null,
+        "newValue": "Estimate: SEC Form D filing (Hangmen Broadway LP, CIK 0001794544, filed Nov 19, 2019, before the pandemic postponed the run to 2022): total offering amount $4,750,000. https://www.sec.gov/Archives/edgar/data/1794544/000159140819000028/xslFormDX01/primary_doc.xml",
+        "description": "hangmen-2022: cite the Form D."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "hangmen-2022",
+        "field": "isEstimate",
+        "oldValue": {
+          "capitalization": true
+        },
+        "newValue": {
+          "capitalization": true
+        },
+        "description": "hangmen-2022: still an estimate: a pre-pandemic offering for a run postponed two years."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "hangmen-2022",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit",
+            "date": "2025-08-09"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwaynews.com/hangmen-announces-broadway-return-this-spring/",
+            "date": "2022-02-01"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwaynews.com/tony-awards-covid-19-impact-broadway-box-office/",
+            "date": "2022-06-23"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit",
+            "date": "2025-08-09"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwaynews.com/hangmen-announces-broadway-return-this-spring/",
+            "date": "2022-02-01"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwaynews.com/tony-awards-covid-19-impact-broadway-box-office/",
+            "date": "2022-06-23"
+          },
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/1794544/000159140819000028/xslFormDX01/primary_doc.xml",
+            "date": "2019-11-19"
+          }
+        ],
+        "description": "hangmen-2022: add the Form D to sources."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "hangmen-2022",
+        "field": "notes",
+        "oldValue": "Capitalization inferred from the NYC tax credit payment.",
+        "newValue": "Capitalization estimated from its 2019 SEC Form D ($4.75M offering), filed before the pandemic postponed the run to 2022.",
+        "description": "hangmen-2022: the note no longer cites the tax-credit inference."
+      }
+    ]
+  },
+  "executedAt": "2026-10-17T07:36:16.482Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for topdog-underdog-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for topdog-underdog-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: isEstimate updated for topdog-underdog-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for topdog-underdog-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for topdog-underdog-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for macbeth-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for macbeth-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: isEstimate updated for macbeth-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for macbeth-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for macbeth-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: isEstimate updated for potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for the-minutes-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for the-minutes-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: isEstimate updated for the-minutes-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for the-minutes-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for the-minutes-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for hangmen-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for hangmen-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: isEstimate updated for hangmen-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for hangmen-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for hangmen-2022"
+    }
+  ]
+}

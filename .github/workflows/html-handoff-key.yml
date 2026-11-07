@@ -1,0 +1,92 @@
+name: HTML Handoff Key
+
+# BRO-5886: makes the key pair for encrypted HTML handoff plans
+# (scripts/lib/html-handoff.js). The public key is committed at
+# scripts/lib/html-handoff-public-key.pem; the private key is the
+# HTML_HANDOFF_PRIVATE_KEY secret that execute-approved-fix.yml decrypts with.
+#
+# Safe to dispatch any time. With the secret set and a matching pem it does
+# nothing; with the secret set and no pem it re-derives the pem from the secret;
+# with no secret (or rotate=true) it mints a pair, saves the secret FIRST, then
+# commits the pem. Rotating makes every pending handoff plan unreadable: rebuild
+# them with make-html-handoff-plan.js.
+#
+# The private key never reaches the log: it is written 0600 to RUNNER_TEMP and
+# `gh secret set` reads it from stdin (same pattern as gmail-reauth.yml).
+
+on:
+  workflow_dispatch:
+    inputs:
+      rotate:
+        description: 'Replace the existing key pair (pending handoff plans must be rebuilt)'
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+concurrency:
+  # One at a time: two overlapping runs could leave the secret from one and the
+  # pem from the other, and every envelope would then be refused by key id.
+  group: html-handoff-key
+  cancel-in-progress: false
+
+jobs:
+  key:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with:
+          node-version: '22'
+
+      - name: Plan the key change
+        id: keygen
+        env:
+          HTML_HANDOFF_PRIVATE_KEY: ${{ secrets.HTML_HANDOFF_PRIVATE_KEY }}
+          ROTATE: ${{ inputs.rotate }}
+        run: |
+          flag=""
+          [ "$ROTATE" = "true" ] && flag="--rotate"
+          node scripts/html-handoff-keygen.js "--private-out=$RUNNER_TEMP/html-handoff-key.pem" $flag
+
+      - name: Save HTML_HANDOFF_PRIVATE_KEY
+        if: ${{ steps.keygen.outputs.action == 'set-secret' }}
+        env:
+          # Same PAT gmail-reauth.yml and update-theatr.yml use for `gh secret set`.
+          GH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+        run: |
+          f="$RUNNER_TEMP/html-handoff-key.pem"
+          trap 'rm -f "$f"' EXIT
+          for attempt in 1 2 3 4 5; do
+            if gh secret set HTML_HANDOFF_PRIVATE_KEY --repo "$GITHUB_REPOSITORY" < "$f"; then
+              echo "::notice::HTML_HANDOFF_PRIVATE_KEY saved (attempt $attempt)"
+              exit 0
+            fi
+            echo "::warning::gh secret set failed (attempt $attempt/5), retrying..."
+            [ "$attempt" -lt 5 ] && sleep $((attempt * 10))
+          done
+          echo "::error::could not save HTML_HANDOFF_PRIVATE_KEY after 5 attempts"
+          exit 1
+
+      - name: Commit the public key
+        if: ${{ steps.keygen.outputs.action == 'set-secret' || steps.keygen.outputs.action == 'commit' }}
+        env:
+          KID: ${{ steps.keygen.outputs.kid }}
+        run: |
+          rm -f "$RUNNER_TEMP/html-handoff-key.pem"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add scripts/lib/html-handoff-public-key.pem
+          git diff --staged --quiet || git commit -m "chore: html handoff public key $KID (BRO-5886) [skip ci]"
+          bash scripts/lib/push-with-retry.sh
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'HTML Handoff Key Failed'
+          severity: 'warning'
+          description: 'html-handoff-key.yml did not finish (BRO-5886). If the secret was saved but the pem push failed, dispatch it again: it re-derives the pem from the secret.'

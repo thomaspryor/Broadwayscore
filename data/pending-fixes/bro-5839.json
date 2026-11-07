@@ -1,0 +1,256 @@
+{
+  "issueNumber": "bro-5839",
+  "planId": "b0524f36-6cae-4714-8c45-8055717ba368",
+  "status": "applied",
+  "createdAt": "2026-10-26T02:56:33.255Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5839: add the 2008 National Theatre (Lyttelton) August: Osage County run and move its five UK reviews off the Broadway 2007 row",
+    "steps": [
+      "Add august-osage-county-national-theatre-west-end-2008",
+      "Clear the wrongProduction flag (with manual-clear marker) on 5 UK reviews and move them august-osage-county-2007 -> august-osage-county-national-theatre-west-end-2008"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "add-show",
+        "show": {
+          "id": "august-osage-county-national-theatre-west-end-2008",
+          "title": "August: Osage County",
+          "slug": "august-osage-county-national-theatre-west-end-2008",
+          "venue": "Lyttelton Theatre",
+          "previewsStartDate": "2008-11-21",
+          "openingDate": "2008-11-26",
+          "closingDate": "2009-01-21",
+          "status": "closed",
+          "type": "play",
+          "isRevival": false,
+          "category": "west-end",
+          "market": "west-end",
+          "tags": [
+            "historical"
+          ],
+          "openingDateSource": "bro-5839-card",
+          "discoverySource": "manual-user-request",
+          "images": {
+            "thumbnail": null,
+            "poster": null,
+            "hero": null
+          },
+          "theaterAddress": null,
+          "ticketLinks": [],
+          "cast": [],
+          "creativeTeam": []
+        },
+        "description": "Add the Nov 2008 National Theatre Lyttelton run of August: Osage County"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "august-osage-county-2007/express-uk--markshenton.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Review is genuine for the 2008 National Theatre run, which now has its own page"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "august-osage-county-2007/express-uk--markshenton.json",
+        "field": "wrongProductionManualClear",
+        "newValue": true,
+        "description": "Mark the clear as human-verified so cross-production guards do not re-flag it on the National Theatre page",
+        "oldValue": null
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "august-osage-county-2007/express-uk--markshenton.json",
+        "destPath": "august-osage-county-national-theatre-west-end-2008/express-uk--markshenton.json",
+        "description": "Nov-Dec 2008 review of the National Theatre Lyttelton run, filed on the Broadway 2007 row"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "august-osage-county-2007/financialtimes--sarah-hemming.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Review is genuine for the 2008 National Theatre run, which now has its own page"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "august-osage-county-2007/financialtimes--sarah-hemming.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Mark the clear as human-verified so cross-production guards do not re-flag it on the National Theatre page"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "august-osage-county-2007/financialtimes--sarah-hemming.json",
+        "destPath": "august-osage-county-national-theatre-west-end-2008/financialtimes--sarah-hemming.json",
+        "description": "Nov-Dec 2008 review of the National Theatre Lyttelton run, filed on the Broadway 2007 row"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "august-osage-county-2007/independent--michaelcoveney.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Review is genuine for the 2008 National Theatre run, which now has its own page"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "august-osage-county-2007/independent--michaelcoveney.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Mark the clear as human-verified so cross-production guards do not re-flag it on the National Theatre page"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "august-osage-county-2007/independent--michaelcoveney.json",
+        "destPath": "august-osage-county-national-theatre-west-end-2008/independent--michaelcoveney.json",
+        "description": "Nov-Dec 2008 review of the National Theatre Lyttelton run, filed on the Broadway 2007 row"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "august-osage-county-2007/observer--susannah-clapp.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Review is genuine for the 2008 National Theatre run, which now has its own page"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "august-osage-county-2007/observer--susannah-clapp.json",
+        "field": "wrongProductionManualClear",
+        "newValue": true,
+        "description": "Mark the clear as human-verified so cross-production guards do not re-flag it on the National Theatre page",
+        "oldValue": null
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "august-osage-county-2007/observer--susannah-clapp.json",
+        "destPath": "august-osage-county-national-theatre-west-end-2008/observer--susannah-clapp.json",
+        "description": "Nov-Dec 2008 review of the National Theatre Lyttelton run, filed on the Broadway 2007 row"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "august-osage-county-2007/sunday-telegraph--timauld.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Review is genuine for the 2008 National Theatre run, which now has its own page"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "august-osage-county-2007/sunday-telegraph--timauld.json",
+        "field": "wrongProductionManualClear",
+        "newValue": true,
+        "description": "Mark the clear as human-verified so cross-production guards do not re-flag it on the National Theatre page",
+        "oldValue": null
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "august-osage-county-2007/sunday-telegraph--timauld.json",
+        "destPath": "august-osage-county-national-theatre-west-end-2008/sunday-telegraph--timauld.json",
+        "description": "Nov-Dec 2008 review of the National Theatre Lyttelton run, filed on the Broadway 2007 row"
+      }
+    ]
+  },
+  "executedAt": "2026-10-29T05:20:56.561Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added august-osage-county-national-theatre-west-end-2008"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "august-osage-county-2007/express-uk--markshenton.json wrongProduction: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "august-osage-county-2007/express-uk--markshenton.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved august-osage-county-2007/express-uk--markshenton.json → august-osage-county-national-theatre-west-end-2008/express-uk--markshenton.json",
+      "cleared": []
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "august-osage-county-2007/financialtimes--sarah-hemming.json wrongProduction: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "august-osage-county-2007/financialtimes--sarah-hemming.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved august-osage-county-2007/financialtimes--sarah-hemming.json → august-osage-county-national-theatre-west-end-2008/financialtimes--sarah-hemming.json",
+      "cleared": []
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "august-osage-county-2007/independent--michaelcoveney.json wrongProduction: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "august-osage-county-2007/independent--michaelcoveney.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved august-osage-county-2007/independent--michaelcoveney.json → august-osage-county-national-theatre-west-end-2008/independent--michaelcoveney.json",
+      "cleared": []
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "august-osage-county-2007/observer--susannah-clapp.json wrongProduction: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "august-osage-county-2007/observer--susannah-clapp.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved august-osage-county-2007/observer--susannah-clapp.json → august-osage-county-national-theatre-west-end-2008/observer--susannah-clapp.json",
+      "cleared": []
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "august-osage-county-2007/sunday-telegraph--timauld.json wrongProduction: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "august-osage-county-2007/sunday-telegraph--timauld.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved august-osage-county-2007/sunday-telegraph--timauld.json → august-osage-county-national-theatre-west-end-2008/sunday-telegraph--timauld.json",
+      "cleared": []
+    }
+  ],
+  "executedIn": "ci"
+}

@@ -1,0 +1,201 @@
+{
+  "issueNumber": "bro-4331",
+  "planId": "cc4fd859-35f1-4e57-bb60-089c8a199bf6",
+  "status": "applied",
+  "createdAt": "2026-10-15T13:06:41.957Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Add four closed North American tours whose launch and closing dates are each stated by a source (hand-checked): Moulin Rouge 2022-03-19..2026-08-02, Back to the Future 2024-06-06..2026-06-21, Some Like It Hot 2024-09-17..2026-04-26, Parade 2025-01-11..2025-09-07. Built by create-tour-entries.js report mode; tour entries are behind the tours flag.",
+    "steps": [
+      "Append moulin-rouge-tour-2022",
+      "Append back-to-the-future-tour-2024",
+      "Append some-like-it-hot-tour-2024",
+      "Append parade-tour-2025"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "add-show",
+        "show": {
+          "id": "moulin-rouge-tour-2022",
+          "title": "Moulin Rouge! The Musical",
+          "slug": "moulin-rouge-tour-2022",
+          "venue": "North American Tour",
+          "openingDate": "2022-03-19",
+          "closingDate": "2026-08-02",
+          "status": "closed",
+          "type": "musical",
+          "isRevival": false,
+          "category": "tour",
+          "market": "tour",
+          "tourOf": "moulin-rouge-2019",
+          "tags": [
+            "tour"
+          ],
+          "provisional": true,
+          "discoverySource": "tour-schedule:tourstoyou",
+          "tourLaunchEvidence": "Tours To You schedule https://tourstoyou.org/shows/moulin-rouge-the-musical/, launch confirmed by Wikipedia",
+          "statusSource": "auto-created 2026-10-15 (BRO-4262): https://tourstoyou.org/shows/moulin-rouge-the-musical/, launch confirmed by Wikipedia; segment 2022-03-19..2026-08-02 (95 engagements) | dates hand-checked 2026-10-15 (BRO-4331): Wikipedia: tour began at Chicago Nederlander Theater March 19, 2022; final performance at Boston Opera House 2 August 2026",
+          "openingDateSource": "tourstoyou+wikipedia",
+          "tourScheduleSlug": "moulin-rouge-the-musical",
+          "closingDateSource": "tourstoyou+wikipedia",
+          "closingDateUpdatedAt": "2026-10-15",
+          "images": {
+            "hero": null,
+            "thumbnail": "/images/shows/moulin-rouge-2019/thumbnail.webp",
+            "poster": "/images/shows/moulin-rouge-2019/poster.webp"
+          },
+          "synopsis": "Enter a world of splendor and romance, of eye-popping excess, of glitz, grandeur and glory! A world where Bohemians and aristocrats rub elbows and revel in electrifying enchantment.",
+          "runtime": "2h 35m",
+          "evidenceUrls": [
+            "https://en.wikipedia.org/wiki/Moulin_Rouge!_(musical)",
+            "https://tourstoyou.org/shows/moulin-rouge-the-musical/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "back-to-the-future-tour-2024",
+          "title": "Back to the Future: The Musical",
+          "slug": "back-to-the-future-tour-2024",
+          "venue": "North American Tour",
+          "openingDate": "2024-06-06",
+          "closingDate": "2026-06-21",
+          "status": "closed",
+          "type": "musical",
+          "isRevival": false,
+          "category": "tour",
+          "market": "tour",
+          "tourOf": "back-to-the-future-2023",
+          "tags": [
+            "tour"
+          ],
+          "provisional": true,
+          "discoverySource": "tour-schedule:tourstoyou",
+          "tourLaunchEvidence": "Tours To You schedule https://tourstoyou.org/shows/back-to-the-future-the-musical/, launch confirmed by Wikipedia",
+          "statusSource": "auto-created 2026-10-15 (BRO-4262): https://tourstoyou.org/shows/back-to-the-future-the-musical/, launch confirmed by Wikipedia; segment 2024-06-06..2026-06-21 (59 engagements) | dates hand-checked 2026-10-15 (BRO-4331): Wikipedia: previews from 6 June 2024 at Proctors Schenectady, tour closed June 2026; Tours To You last stop Keller Auditorium Portland 2026-06-16..2026-06-21",
+          "openingDateSource": "tourstoyou+wikipedia",
+          "tourScheduleSlug": "back-to-the-future-the-musical",
+          "closingDateSource": "tourstoyou+wikipedia",
+          "closingDateUpdatedAt": "2026-10-15",
+          "images": {
+            "hero": null,
+            "thumbnail": "/images/shows/back-to-the-future-2023/thumbnail.webp",
+            "poster": "/images/shows/back-to-the-future-2023/poster.jpg"
+          },
+          "synopsis": "Based on the iconic 1985 film, Marty McFly travels back in time in the DeLorean.",
+          "runtime": "2h 35m",
+          "evidenceUrls": [
+            "https://en.wikipedia.org/wiki/Back_to_the_Future:_The_Musical",
+            "https://tourstoyou.org/shows/back-to-the-future-the-musical/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "some-like-it-hot-tour-2024",
+          "title": "Some Like It Hot",
+          "slug": "some-like-it-hot-tour-2024",
+          "venue": "North American Tour",
+          "openingDate": "2024-09-17",
+          "closingDate": "2026-04-26",
+          "status": "closed",
+          "type": "musical",
+          "isRevival": false,
+          "category": "tour",
+          "market": "tour",
+          "tourOf": "some-like-it-hot-2022",
+          "tags": [
+            "tour"
+          ],
+          "provisional": true,
+          "discoverySource": "tour-schedule:tourstoyou",
+          "tourLaunchEvidence": "Tours To You schedule https://tourstoyou.org/shows/some-like-it-hot/, launch confirmed by Wikipedia",
+          "statusSource": "auto-created 2026-10-15 (BRO-4262): https://tourstoyou.org/shows/some-like-it-hot/, launch confirmed by Wikipedia; segment 2024-09-17..2026-04-26 (55 engagements) | dates hand-checked 2026-10-15 (BRO-4331): Proctors: opens Sept 17, 2024 (official launch Sept 20); BroadwayWorld: final performance April 26, 2026 at TPAC Nashville (IBDB agrees)",
+          "openingDateSource": "tourstoyou+wikipedia",
+          "tourScheduleSlug": "some-like-it-hot",
+          "closingDateSource": "tourstoyou+wikipedia",
+          "closingDateUpdatedAt": "2026-10-15",
+          "images": {
+            "hero": null,
+            "thumbnail": "/images/shows/some-like-it-hot-2022/thumbnail.webp",
+            "poster": "/images/shows/some-like-it-hot-2022/poster.webp"
+          },
+          "synopsis": "Two struggling musicians, Joe and Jerry, witness a mob murder and must go on the run. Disguising themselves as women, they join an all-female band and end up entangled in a hilarious web of mistaken identities, high-stakes hijinks, and unexpected romance. Packed with big laughs, dazzling dance numbers, and an irresistible score, \"Some Like It Hot\" is a wildly entertaining musical adaptation of the classic comedy film.",
+          "evidenceUrls": [
+            "https://proctorscollaborative.org/2024/08/23/some-like-it-hot-kicks-off-24-25-broadway-series-at-proctors/",
+            "https://www.broadwayworld.com/appleton/article/SOME-LIKE-IT-HOT-North-American-Tour-Ends-Run-in-Nashville-20260424",
+            "https://tourstoyou.org/shows/some-like-it-hot/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "parade-tour-2025",
+          "title": "Parade",
+          "slug": "parade-tour-2025",
+          "venue": "North American Tour",
+          "openingDate": "2025-01-11",
+          "closingDate": "2025-09-07",
+          "status": "closed",
+          "type": "musical",
+          "isRevival": false,
+          "category": "tour",
+          "market": "tour",
+          "tourOf": "parade-2023",
+          "tags": [
+            "tour"
+          ],
+          "provisional": true,
+          "discoverySource": "tour-schedule:tourstoyou",
+          "tourLaunchEvidence": "Tours To You schedule https://tourstoyou.org/shows/parade/, launch confirmed by Wikipedia",
+          "statusSource": "auto-created 2026-10-15 (BRO-4262): https://tourstoyou.org/shows/parade/, launch confirmed by Wikipedia; segment 2025-01-11..2025-09-07 (17 engagements) | dates hand-checked 2026-10-15 (BRO-4331): Wikipedia: technical previews at Proctors Schenectady January 2025, tour ends September 7, 2025 at Kennedy Center; IBDB closing Sep 07, 2025; Tours To You first stop Proctors 2025-01-11, last Kennedy Center Opera House ending 2025-09-07",
+          "openingDateSource": "tourstoyou+wikipedia",
+          "tourScheduleSlug": "parade",
+          "closingDateSource": "tourstoyou+wikipedia",
+          "closingDateUpdatedAt": "2026-10-15",
+          "images": {
+            "hero": null,
+            "thumbnail": "/images/shows/parade-2023/thumbnail.webp",
+            "poster": "/images/shows/parade-2023/poster.webp"
+          },
+          "synopsis": "\"Parade\" tells the gripping true story of the 1913 trial of Leo Frank, a Jewish factory manager accused of murdering a young girl in Atlanta. As the trial unfolds, the community's antisemitism and political tensions threaten to tear the city apart. With soaring melodies and a powerful narrative, this Tony-winning musical explores the pursuit of justice and the human cost of prejudice in early 20th-century America.",
+          "evidenceUrls": [
+            "https://en.wikipedia.org/wiki/Parade_(musical)",
+            "https://www.ibdb.com/tour-production/parade-539158",
+            "https://tourstoyou.org/shows/parade/"
+          ]
+        }
+      }
+    ]
+  },
+  "executedAt": "2026-10-15T13:33:00.450Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added moulin-rouge-tour-2022"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added back-to-the-future-tour-2024"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added some-like-it-hot-tour-2024"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added parade-tour-2025"
+    }
+  ]
+}

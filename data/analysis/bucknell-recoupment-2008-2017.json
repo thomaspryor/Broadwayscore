@@ -1,0 +1,1517 @@
+{
+ "_meta": {
+  "source": "Gutekunst, Kopac & Detsky, \"Defying gravity or failing to launch?\", Significance 22(4), 2025, doi:10.1093/jrssig/qmaf037",
+  "dataUrl": "https://samgutekunst.com/broadway-data/",
+  "sheetUrl": "https://docs.google.com/spreadsheets/d/1WoFqIDcqVxOKO5kOR_TkThG034sMXT9cx6QBXlyB4bI",
+  "snapshotDate": "2026-10-24",
+  "scope": "Commercial Broadway musicals opening 2008-2017 (133); nonprofit, Disney-only, concert and return-engagement runs excluded by the authors",
+  "classifications": {
+   "Yes - Press": "press-reported recoupment",
+   "No - Press": "press-reported failure",
+   "No - Grosses below Cap": "lifetime gross below press-reported capitalization",
+   "Plausible": "authors judged recoupment plausible",
+   "Unlikely": "authors judged recoupment unlikely"
+  },
+  "use": "Answer key for scripts/backtest-recoupment-bucknell.js (BRO-6143). Never copied into commercial.json: a commercial.json recoupment needs its own citation."
+ },
+ "shows": [
+  {
+   "title": "13",
+   "opening": "2008-10-05",
+   "closing": "2009-01-04",
+   "theatre": "Bernard B. Jacobs Theatre",
+   "classification": "No - Press",
+   "capitalization": null,
+   "notes": null,
+   "sources": "https://archive.nytimes.com/artsbeat.blogs.nytimes.com/2009/07/14/on-broadway-recouping-and-not/"
+  },
+  {
+   "title": "[title of show]",
+   "opening": "2008-07-17",
+   "closing": "2008-10-12",
+   "theatre": "Lyceum Theatre (Broadway)",
+   "classification": "Unlikely",
+   "capitalization": null,
+   "notes": null,
+   "sources": null,
+   "manual": {
+    "weeks": 15.0,
+    "totalGross": 2188129.0,
+    "maxWeeklyRunningCost": -134299.0,
+    "context": "Even with an extremely modest capitalization and running costs, would have failed to recoup"
+   }
+  },
+  {
+   "title": "9 to 5",
+   "opening": "2009-04-30",
+   "closing": "2009-09-06",
+   "theatre": "Marquis Theatre",
+   "classification": "No - Press",
+   "capitalization": 14000000.0,
+   "notes": null,
+   "sources": "https://nypost.com/2009/07/29/feeble-9-to-5-gets-pink-slip/, https://variety.com/2015/legit/news/hollywood-broadway-studios-rushing-to-the-stage-despite-clashing-business-models-1201467028/"
+  },
+  {
+   "title": "A Bronx Tale The Musical",
+   "opening": "2016-12-01",
+   "closing": "2018-08-05",
+   "theatre": "Longacre Theatre",
+   "classification": "Plausible",
+   "capitalization": 10000000.0,
+   "notes": "Changed closing date from Aug 19 (in original Kaggle data) to Aug 5, to match Playbill and Gross Data",
+   "sources": "https://www.nytimes.com/2018/06/27/theater/a-bronx-tale-is-closing-on-broadway.html",
+   "manual": {
+    "weeks": 92.0,
+    "totalGross": 68722973.0,
+    "maxWeeklyRunningCost": 569122.0,
+    "context": "Reported as close to recouping about 1 month before close (https://www.nytimes.com/2018/06/27/theater/a-bronx-tale-is-closing-on-broadway.html); weekly grosses increased substantially after that announcement."
+   }
+  },
+  {
+   "title": "A Catered Affair",
+   "opening": "2008-04-17",
+   "closing": "2008-07-27",
+   "theatre": "Walter Kerr Theatre",
+   "classification": "No - Grosses below Cap",
+   "capitalization": 6500000.0,
+   "notes": null,
+   "sources": "https://6abc.com/archive/6216606/"
+  },
+  {
+   "title": "A Christmas Story, The Musical",
+   "opening": "2012-11-19",
+   "closing": "2012-12-30",
+   "theatre": "Lunt-Fontanne Theatre",
+   "classification": "No - Grosses below Cap",
+   "capitalization": 9000000.0,
+   "notes": null,
+   "sources": "https://archive.nytimes.com/artsbeat.blogs.nytimes.com/2012/12/17/a-christmas-story-climbs-the-broadway-box-office-charts/"
+  },
+  {
+   "title": "A Gentleman's Guide to Love and Murder",
+   "opening": "2013-11-17",
+   "closing": "2016-01-17",
+   "theatre": "Walter Kerr Theatre",
+   "classification": "Yes - Press",
+   "capitalization": 7500000.0,
+   "notes": null,
+   "sources": "https://www.nytimes.com/2015/04/06/theater/a-gentlemans-guide-recoups-costs-and-encourages-other-shows.html"
+  },
+  {
+   "title": "A Little Night Music",
+   "opening": "2009-12-13",
+   "closing": "2011-01-09",
+   "theatre": "Walter Kerr Theatre",
+   "classification": "Yes - Press",
+   "capitalization": null,
+   "notes": null,
+   "sources": "https://playbill.com/article/broadways-a-little-night-music-with-bernadette-peters-and-elaine-stritch-recoups-com-174975"
+  },
+  {
+   "title": "A Night With Janis Joplin",
+   "opening": "2013-10-10",
+   "closing": "2014-02-09",
+   "theatre": "Lyceum Theatre (Broadway)",
+   "classification": "No - Press",
+   "capitalization": 4400000.0,
+   "notes": null,
+   "sources": "https://archive.nytimes.com/artsbeat.blogs.nytimes.com/2014/01/21/joplin-will-make-way-for-joneses-on-broadway/"
+  },
+  {
+   "title": "A Tale of Two Cities",
+   "opening": "2008-09-18",
+   "closing": "2008-11-16",
+   "theatre": "Al Hirschfeld Theatre",
+   "classification": "No - Press",
+   "capitalization": 16000000.0,
+   "notes": null,
+   "sources": "https://playbill.com/article/the-revolution-is-silenced-tale-of-two-cities-will-close-nov-16-com-154901, https://archive.nytimes.com/artsbeat.blogs.nytimes.com/2009/07/14/on-broadway-recouping-and-not/"
+  },
+  {
+   "title": "After Midnight",
+   "opening": "2013-11-03",
+   "closing": "2014-06-29",
+   "theatre": "Brooks Atkinson Theatre",
+   "classification": "No - Press",
+   "capitalization": 7000000.0,
+   "notes": null,
+   "sources": "https://archive.nytimes.com/artsbeat.blogs.nytimes.com/2014/06/14/after-midnight-to-close-after-8-months/?_php=true&_type=blogs&_r=0"
+  },
+  {
+   "title": "Allegiance",
+   "opening": "2015-11-08",
+   "closing": "2016-02-14",
+   "theatre": "Longacre Theatre",
+   "classification": "No - Press",
+   "capitalization": 15000000.0,
+   "notes": null,
+   "sources": "https://www.hawaii-herald.com/2017/02/27/lead-story-allegiance-the-road-to-broadway/, https://archive.nytimes.com/artsbeat.blogs.nytimes.com/2016/01/06/allegiance-announces-broadway-closing-date/"
+  },
+  {
+   "title": "Amazing Grace",
+   "opening": "2015-07-16",
+   "closing": "2015-10-25",
+   "theatre": "Nederlander Theatre",
+   "classification": "No - Grosses below Cap",
+   "capitalization": 16000000.0,
+   "notes": null,
+   "sources": "https://www.nytimes.com/2015/06/21/theater/amazing-grace-a-musical-about-slavery-to-begin-previews.html"
+  },
+  {
+   "title": "Amelie, A New Musical",
+   "opening": "2017-04-03",
+   "closing": "2017-05-21",
+   "theatre": "Walter Kerr Theatre",
+   "classification": "No - Press",
+   "capitalization": 12000000.0,
+   "notes": null,
+   "sources": "https://www.forbes.com/sites/leeseymour/2017/05/08/amelie-is-first-to-close-after-tony-nominations-shake-broadway-box-office/?sh=3edcd0f93e5a"
+  },
+  {
+   "title": "American Idiot",
+   "opening": "2010-04-20",
+   "closing": "2011-04-24",
+   "theatre": "St. James Theatre (Broadway)",
+   "classification": "Unlikely",
+   "capitalization": null,
+   "notes": null,
+   "sources": null,
+   "manual": {
+    "weeks": 57.0,
+    "totalGross": 39798052.0,
+    "maxWeeklyRunningCost": 493206.0,
+    "context": "Described as a show that \"struggled or failed commercially\" by the NYT (https://www.nytimes.com/2011/03/24/theater/robin-williams-in-bengal-tiger-at-the-baghdad-zoo.html); Producers were not sure if it would recoup about 1.5 months before closing (https://archive.nytimes.com/artsbeat.blogs.nytimes.com/2011/03/10/american-idiot-to-close/), and weekly grosses were very low after that announcement.   The capitalization was between 8 and 10 million (https://www.nytimes.com/2010/09/28/theater/28billiejoe.html), and we are using the most conservative 8 million in our Estimated Max Weekly Running Cost"
+   }
+  },
+  {
+   "title": "American Psycho",
+   "opening": "2016-04-21",
+   "closing": "2016-06-05",
+   "theatre": "Gerald Schoenfeld Theatre",
+   "classification": "No - Press",
+   "capitalization": 8800000.0,
+   "notes": null,
+   "sources": "https://deadline.com/2016/05/american-psycho-sets-early-broadway-closing-1201763561/"
+  },
+  {
+   "title": "An American in Paris",
+   "opening": "2015-04-12",
+   "closing": "2016-10-09",
+   "theatre": "Palace Theatre (Broadway)",
+   "classification": "Unlikely",
+   "capitalization": 11500000.0,
+   "notes": null,
+   "sources": "https://www.nbcnewyork.com/entertainment/the-scene/new-york-live/broadway/au-revoir-an-american-in-paris-closing-on-broadway/2032033/",
+   "manual": {
+    "weeks": 82.0,
+    "totalGross": 85539240.0,
+    "maxWeeklyRunningCost": 806321.0,
+    "context": "On  6/23/2016, the NYT reported that the show would close on 1/1/2017 and expected to recoup before closing (https://www.nytimes.com/2016/06/24/theater/an-american-in-paris-to-close-on-broadway.html).  On 7/26/2016, the NYT reported that the show would close earlier, on 10/9/2016, missing the highly profitable holiday season (https://www.nytimes.com/2016/07/28/theater/an-american-in-paris-to-close-earlier-than-expected.html).  Based on the early close, lack of holiday season, and lack of recoupment announcement, it is possible but unlikely that the show recouped."
+   }
+  },
+  {
+   "title": "Anastasia",
+   "opening": "2017-04-24",
+   "closing": "2019-03-31",
+   "theatre": "Broadhurst Theatre",
+   "classification": "No - Press",
+   "capitalization": 15000000.0,
+   "notes": null,
+   "sources": "https://www.nytimes.com/2019/02/05/theater/anastasia-musical-closing.html#:~:text=The%20show%20began%20performances%20on,not%20recouped%20its%20capitalization%20costs."
+  },
+  {
+   "title": "Annie",
+   "opening": "2012-11-08",
+   "closing": "2014-01-05",
+   "theatre": "Palace Theatre (Broadway)",
+   "classification": "No - Press",
+   "capitalization": null,
+   "notes": null,
+   "sources": "https://www.nj.com/business/2012/09/broadway_economics_10_million.html"
+  },
+  {
+   "title": "Baby It's You!",
+   "opening": "2011-04-27",
+   "closing": "2011-09-04",
+   "theatre": "Broadhurst Theatre",
+   "classification": "No - Grosses below Cap",
+   "capitalization": 12000000.0,
+   "notes": null,
+   "sources": "https://www.forbes.com/sites/marchershberg/2019/03/28/as-beetlejuice-begins-to-haunt-broadway-warner-bros-faces-intense-scrutiny/?sh=1dd53f554394"
+  },
+  {
+   "title": "Bandstand",
+   "opening": "2017-04-26",
+   "closing": "2017-09-17",
+   "theatre": "Bernard B. Jacobs Theatre",
+   "classification": "No - Press",
+   "capitalization": 13500000.0,
+   "notes": null,
+   "sources": "https://www.nytimes.com/2017/08/09/theater/bandstand-broadway-musical-closing.html#:~:text=The%20production%20did%20not%20recoup,gotten%20lost%20in%20the%20noise.%E2%80%9D"
+  },
+  {
+   "title": "Beautiful: The Carole King Musical",
+   "opening": "2014-01-12",
+   "closing": "2019-10-27",
+   "theatre": "Stephen Sondheim Theatre",
+   "classification": "Yes - Press",
+   "capitalization": 13000000.0,
+   "notes": null,
+   "sources": "https://deadline.com/2014/09/carole-king-musical-beautiful-recoups-13-million-broadway-capitalization-as-tony-winner-mueller-re-ups-834495/"
+  },
+  {
+   "title": "Big Fish",
+   "opening": "2013-10-06",
+   "closing": "2013-12-29",
+   "theatre": "Neil Simon Theatre",
+   "classification": "No - Grosses below Cap",
+   "capitalization": 14000000.0,
+   "notes": null,
+   "sources": "https://www.hollywoodreporter.com/lifestyle/arts/broadways-big-fish-close-three-654944/"
+  },
+  {
+   "title": "Billy Elliot: The Musical",
+   "opening": "2008-11-13",
+   "closing": "2012-01-08",
+   "theatre": "Imperial Theatre (Broadway)",
+   "classification": "Yes - Press",
+   "capitalization": 18000000.0,
+   "notes": null,
+   "sources": "https://archive.nytimes.com/artsbeat.blogs.nytimes.com/2010/01/13/billy-elliot-recoups-original-18-million-investment/#:~:text=%E2%80%9CBilly%20Elliot%3A%20The%20Musical%E2%80%9D%20had%20to%20cover%20its%20weekly,to%20be%20more%20than%20%24600%2C000."
+  },
+  {
+   "title": "Bloody Bloody Andrew Jackson",
+   "opening": "2010-10-13",
+   "closing": "2011-01-02",
+   "theatre": "Bernard B. Jacobs Theatre",
+   "classification": "No - Press",
+   "capitalization": 4500000.0,
+   "notes": null,
+   "sources": "https://archive.nytimes.com/artsbeat.blogs.nytimes.com/2010/12/01/bloody-bloody-andrew-jackson-to-close/"
+  },
+  {
+   "title": "Bonnie & Clyde",
+   "opening": "2011-12-01",
+   "closing": "2011-12-30",
+   "theatre": "Gerald Schoenfeld Theatre",
+   "classification": "No - Grosses below Cap",
+   "capitalization": 6000000.0,
+   "notes": null,
+   "sources": "https://archive.nytimes.com/artsbeat.blogs.nytimes.com/2011/12/16/bonnie-clyde-will-close-on-dec-30/"
+  },
+  {
+   "title": "Bright Star",
+   "opening": "2016-03-24",
+   "closing": "2016-06-26",
+   "theatre": "Cort Theatre (Broadway)",
+   "classification": "No - Grosses below Cap",
+   "capitalization": 10500000.0,
+   "notes": null,
+   "sources": "https://www.nytimes.com/2016/06/23/theater/anatomy-of-a-broadway-flop-why-these-4-shows-failed.html"
+  },
+  {
+   "title": "Bring It On: The Musical",
+   "opening": "2012-08-01",
+   "closing": "2012-12-30",
+   "theatre": "St. James Theatre (Broadway)",
+   "classification": "Unlikely",
+   "capitalization": null,
+   "notes": null,
+   "sources": null,
+   "manual": {
+    "weeks": 25.0,
+    "totalGross": 11410177.0,
+    "maxWeeklyRunningCost": 214144.0,
+    "context": "Even with an extremely modest running costs, would have failed to recoup.  While the exact cap is not reported, we have used $5,000,000 for our Estimated Max Weekly Running Cost calculation, following the NYT estimate https://www.nytimes.com/2012/06/20/theater/fela-and-bring-it-on-go-to-broadway-in-summer.html"
+   }
+  },
+  {
+   "title": "Bullets Over Broadway",
+   "opening": "2014-04-10",
+   "closing": "2014-08-24",
+   "theatre": "St. James Theatre (Broadway)",
+   "classification": "No - Press",
+   "capitalization": 14000000.0,
+   "notes": null,
+   "sources": "https://archive.nytimes.com/artsbeat.blogs.nytimes.com/2014/07/22/bullets-over-broadway-the-musical-to-close-aug-24/#:~:text='Bullets%20Over%20Broadway%2C'%20the,24%20%2D%20The%20New%20York%20Times"
+  },
+  {
+   "title": "Catch Me If You Can",
+   "opening": "2011-04-10",
+   "closing": "2011-09-04",
+   "theatre": "Neil Simon Theatre",
+   "classification": "No - Press",
+   "capitalization": 13000000.0,
+   "notes": null,
+   "sources": "https://www.nytimes.com/2010/12/01/theater/01musical.html, https://www.nytimes.com/2011/11/03/theater/a-rush-to-get-musicals-to-broadway.html"
+  },
+  {
+   "title": "Cats",
+   "opening": "2016-07-31",
+   "closing": "2017-12-30",
+   "theatre": "Neil Simon Theatre",
+   "classification": "Plausible",
+   "capitalization": null,
+   "notes": null,
+   "sources": null,
+   "manual": {
+    "weeks": 77.0,
+    "totalGross": 65624091.0,
+    "maxWeeklyRunningCost": 721394.0,
+    "context": "In December 2016, roughly 2 months after opening, Crain's New York reported that the show expected to recoup by July 2017 (https://www.crainsnewyork.com/article/20161219/ENTERTAINMENT/161219894/cats-producer-predicts-that-it-will-recoup-by-july).  Its weekly average grosses did not dip substantially after that announcement, and the show closed in December 2017.  Note that using a $4,000,000 capitalization is very likely a substantial underestimate to compute the Max Weekly Running Cost: in 1989 the original production had a roughly $4,000,000 capitalization (https://www.crainsnewyork.com/article/20161219/ENTERTAINMENT/161219894/cats-producer-predicts-that-it-will-recoup-by-july), which is $7.5-8 million adjusting for inflation in July 2016 (https://www.bls.gov/data/inflation_calculator.htm); a 10-12 million dollar capitalization would be more typical, and the Estimated Max Weekly Running Costs would be $643,471 with a $10 million cap."
+   }
+  },
+  {
+   "title": "Chaplin",
+   "opening": "2012-09-10",
+   "closing": "2013-01-06",
+   "theatre": "Ethel Barrymore Theatre",
+   "classification": "No - Grosses below Cap",
+   "capitalization": 10000000.0,
+   "notes": null,
+   "sources": "https://www.nj.com/business/2012/09/broadway_economics_10_million.html"
+  },
+  {
+   "title": "Charlie and the Chocolate Factory",
+   "opening": "2017-04-23",
+   "closing": "2018-01-14",
+   "theatre": "Lunt-Fontanne Theatre",
+   "classification": "No - Press",
+   "capitalization": null,
+   "notes": null,
+   "sources": "https://www.nytimes.com/2017/11/15/theater/charlie-and-the-chocolate-factory-to-close-on-broadway.html#:~:text=The%20musical%20started%20strongly%20at,did%20not%20recoup%20its%20capitalization."
+  },
+  {
+   "title": "Cinderella",
+   "opening": "2013-03-03",
+   "closing": "2015-01-03",
+   "theatre": "Broadway Theatre (Broadway)",
+   "classification": "No - Press",
+   "capitalization": 13000000.0,
+   "notes": null,
+   "sources": "https://web.archive.org/web/20150103215451/http://www.playbill.com/news/article/broadway-theatres-clean-house-for-new-spring-arrivals-338290/P2"
+  },
+  {
+   "title": "Cirque du Soleil Paramour",
+   "opening": "2016-05-25",
+   "closing": "2017-04-16",
+   "theatre": "Lyric Theatre (Broadway)",
+   "classification": "Unlikely",
+   "capitalization": 25000000.0,
+   "notes": null,
+   "sources": "https://variety.com/2016/legit/news/paramour-cirque-du-soleil-changes-broadway-1201836435/",
+   "manual": {
+    "weeks": 53.0,
+    "totalGross": 50071361.0,
+    "maxWeeklyRunningCost": 385561.0,
+    "context": "The Wall Street Journal reported that running costs were higher than a typical musical, and that the needed to be in the \"million-dollar club to be comfortable\" (https://www.wsj.com/articles/paramour-aims-to-blend-acrobatics-into-broadway-1456787845); weekly grosses were very rarely above $1 million."
+   }
+  },
+  {
+   "title": "Come Fly Away",
+   "opening": "2010-03-25",
+   "closing": "2010-09-05",
+   "theatre": "Marquis Theatre",
+   "classification": "Unlikely",
+   "capitalization": null,
+   "notes": null,
+   "sources": null,
+   "manual": {
+    "weeks": 27.0,
+    "totalGross": 18368158.0,
+    "maxWeeklyRunningCost": 469158.0,
+    "context": "Even with an extremely modest capitalization and running costs, would have failed to recoup.  Production had a large orchestra, cast, and ensemble of dancers (https://playbill.com/article/learnin-the-blues-tharps-come-fly-away-will-close-on-broadway-sept-5-com-170449)."
+   }
+  },
+  {
+   "title": "Come From Away",
+   "opening": "2017-03-12",
+   "closing": null,
+   "theatre": "Gerald Schoenfeld Theatre",
+   "classification": "Yes - Press",
+   "capitalization": 12000000.0,
+   "notes": "Reopenned after COVID",
+   "sources": "https://playbill.com/article/broadways-come-from-away-recoups-investment"
+  },
+  {
+   "title": "Cry-Baby",
+   "opening": "2008-04-24",
+   "closing": "2008-06-22",
+   "theatre": "Marquis Theatre",
+   "classification": "No - Grosses below Cap",
+   "capitalization": 12500000.0,
+   "notes": null,
+   "sources": "https://www.baltimoresun.com/2008/05/14/jumping-for-joy-as-cry-baby-gets-four-tony-nods/"
+  },
+  {
+   "title": "Dames at Sea",
+   "opening": "2015-10-22",
+   "closing": "2016-01-03",
+   "theatre": "Hayes Theatre",
+   "classification": "Unlikely",
+   "capitalization": null,
+   "notes": null,
+   "sources": null,
+   "manual": {
+    "weeks": 14.0,
+    "totalGross": 2416629.0,
+    "maxWeeklyRunningCost": -129082.0,
+    "context": "Even with an extremely modest capitalization and running costs, would have failed to recoup"
+   }
+  },
+  {
+   "title": "Dear Evan Hansen",
+   "opening": "2016-12-04",
+   "closing": null,
+   "theatre": "Music Box Theatre",
+   "classification": "Yes - Press",
+   "capitalization": 9500000.0,
+   "notes": "Reopenned after COVID",
+   "sources": "https://www.hollywoodreporter.com/news/general-news/dear-evan-hansen-tony-winning-musical-recoups-broadway-1021662/"
+  },
+  {
+   "title": "Disaster!",
+   "opening": "2016-03-08",
+   "closing": "2016-05-08",
+   "theatre": "Nederlander Theatre",
+   "classification": "No - Grosses below Cap",
+   "capitalization": 6500000.0,
+   "notes": null,
+   "sources": "https://www.nytimes.com/2016/06/23/theater/anatomy-of-a-broadway-flop-why-these-4-shows-failed.html"
+  },
+  {
+   "title": "Doctor Zhivago",
+   "opening": "2015-04-21",
+   "closing": "2015-05-10",
+   "theatre": "Broadway Theatre (Broadway)",
+   "classification": "No - Press",
+   "capitalization": 12000000.0,
+   "notes": null,
+   "sources": "https://variety.com/2015/legit/news/doctor-zhivago-closing-broadway-1201487321/"
+  },
+  {
+   "title": "Elf - The Musical",
+   "opening": "2010-11-14",
+   "closing": "2013-01-06",
+   "theatre": "Al Hirschfeld Theatre",
+   "classification": "Unlikely",
+   "capitalization": 9000000.0,
+   "notes": "Merged with a subsequent holiday run, from 2012-11-18 to 2013-01-016.  Closing data manually modified to account for this merge.",
+   "sources": "https://www.npr.org/2012/12/21/167467459/broadways-profit-turning-crowd-pleasing-christmas-story, https://variety.com/2010/legit/news/broadway-builds-elf-esteem-1118026584/, https://www.nytimes.com/2010/12/01/theater/01musical.html/",
+   "manual": {
+    "weeks": 18.0,
+    "totalGross": 18492763.0,
+    "maxWeeklyRunningCost": 432241.0,
+    "context": "Variety reports a \"reliable estimate\" that Elf's running costs are between $500,000 and $600,000, and that the capitalization was \"only slightly under the typical $10 million-$12 million mark\" (https://variety.com/2010/legit/news/broadway-builds-elf-esteem-1118026584/).  The NYT gives a $9 million capitalization (https://www.nytimes.com/2010/12/01/theater/01musical.html/).  With a 9 million capitalization, $500,000 weekly running costs, and a ticketing commission of at least at least 2.67%, the show would have lost money.  Given that these are likely underestimates of the weekly running costs and ticketing commission, the show is unlikely to have recouped.  Note Broadway Grosses are split between https://www.broadwayworld.com/grosses/ELF-THE-MUSICAL (which has the one week of 2010) andhttps://www.broadwayworld.com/grosses/ELF (which has the remaining weeks)"
+   }
+  },
+  {
+   "title": "Evita",
+   "opening": "2012-04-05",
+   "closing": "2013-01-26",
+   "theatre": "Marquis Theatre",
+   "classification": "No - Press",
+   "capitalization": 9600000.0,
+   "notes": null,
+   "sources": "https://playbill.com/article/broadway-revival-of-evita-starring-ricky-martin-did-not-recoup-investment-com-201964, https://www.latimes.com/entertainment/arts/la-xpm-2013-jan-29-la-et-cm-broadway-evita-closes-20130128-story.html"
+  },
+  {
+   "title": "Falsettos",
+   "opening": "2016-10-27",
+   "closing": "2017-01-08",
+   "theatre": "Walter Kerr Theatre",
+   "classification": "Plausible",
+   "capitalization": null,
+   "notes": null,
+   "sources": null,
+   "manual": {
+    "weeks": 15.0,
+    "totalGross": 8311546.0,
+    "maxWeeklyRunningCost": 236126.0,
+    "context": "Unlikely to have recouped given grosses, but a small cast (12 including understudies) and a 1991 production was capitalized at only $1 million (https://www.nytimes.com/1992/11/26/theater/the-many-faces-and-facets-of-keeping-falsettos-afloat.html). Could plausibly have recouped with low capitalization and running costs"
+   }
+  },
+  {
+   "title": "Fela! (2009)",
+   "opening": "2009-11-23",
+   "closing": "2011-01-02",
+   "theatre": "Eugene O'Neill Theatre",
+   "classification": "No - Press",
+   "capitalization": 11000000.0,
+   "notes": "Treating as distinct from Fela! (2012), which is excluded from this study as it was effectively a stop on an international tour (https://www.nytimes.com/2012/06/20/theater/fela-and-bring-it-on-go-to-broadway-in-summer.html)",
+   "sources": "https://www.nytimes.com/2012/06/20/theater/fela-and-bring-it-on-go-to-broadway-in-summer.html"
+  },
+  {
+   "title": "Fiddler on the Roof",
+   "opening": "2015-12-20",
+   "closing": "2016-12-31",
+   "theatre": "Broadway Theatre (Broadway)",
+   "classification": "Unlikely",
+   "capitalization": 11500000.0,
+   "notes": null,
+   "sources": "https://www.nytimes.com/2016/07/20/theater/fiddler-on-the-roof-revival-to-close-in-december.html",
+   "manual": {
+    "weeks": 58.0,
+    "totalGross": 49724453.0,
+    "maxWeeklyRunningCost": 579655.0,
+    "context": "A large-scale show, with a cast of 37 and orchestra of 24 (https://playbill.com/production/fiddler-on-the-roof-broadway-theatre-vault-0000014089#carousel-cell109825).  Likely had relatively high running costs."
+   }
+  },
+  {
+   "title": "Finding Neverland",
+   "opening": "2015-04-15",
+   "closing": "2016-08-21",
+   "theatre": "Lunt-Fontanne Theatre",
+   "classification": "No - Press",
+   "capitalization": 15200000.0,
+   "notes": null,
+   "sources": "https://variety.com/2016/legit/news/finding-neverland-sales-broadway-1201842183/"
+  },
+  {
+   "title": "Finian's Rainbow",
+   "opening": "2009-10-29",
+   "closing": "2010-01-17",
+   "theatre": "St. James Theatre (Broadway)",
+   "classification": "No - Press",
+   "capitalization": null,
+   "notes": null,
+   "sources": "https://variety.com/2010/legit/news/pared-down-shows-fare-well-1118014188/"
+  },
+  {
+   "title": "First Date",
+   "opening": "2013-08-08",
+   "closing": "2014-01-05",
+   "theatre": "Longacre Theatre",
+   "classification": "Unlikely",
+   "capitalization": null,
+   "notes": null,
+   "sources": null,
+   "manual": {
+    "weeks": 26.0,
+    "totalGross": 10018641.0,
+    "maxWeeklyRunningCost": 195804.0,
+    "context": "Even with an extremely modest capitalization and running costs, would have failed to recoup"
+   }
+  },
+  {
+   "title": "Follies",
+   "opening": "2011-09-12",
+   "closing": "2012-01-22",
+   "theatre": "Marquis Theatre",
+   "classification": "No - Press",
+   "capitalization": 5500000.0,
+   "notes": null,
+   "sources": "https://archive.nytimes.com/artsbeat.blogs.nytimes.com/2012/01/23/follies-closes-without-turning-a-profit/"
+  },
+  {
+   "title": "Fun Home",
+   "opening": "2015-04-19",
+   "closing": "2016-09-10",
+   "theatre": "Circle in the Square (Broadway)",
+   "classification": "Yes - Press",
+   "capitalization": 5250000.0,
+   "notes": null,
+   "sources": "https://playbill.com/article/not-too-bad-if-they-say-so-themselves-fun-home-recoups-on-broadway-com-375415"
+  },
+  {
+   "title": "Funny Girl",
+   "opening": "2012-12-31",
+   "closing": null,
+   "theatre": null,
+   "classification": "No - Grosses below Cap",
+   "capitalization": null,
+   "notes": "Closed before opening; planned opening at the Imperial Theater. ",
+   "sources": "https://www.nytimes.com/2011/11/05/theater/producer-explains-the-scrapping-of-funny-girl.html"
+  },
+  {
+   "title": "Ghost The Musical",
+   "opening": "2012-04-23",
+   "closing": "2012-08-18",
+   "theatre": "Lunt-Fontanne Theatre",
+   "classification": "No - Press",
+   "capitalization": null,
+   "notes": null,
+   "sources": "https://archive.nytimes.com/artsbeat.blogs.nytimes.com/2012/07/24/ghost-the-musical-to-close-on-aug-18/"
+  },
+  {
+   "title": "Gigi",
+   "opening": "2015-04-08",
+   "closing": "2015-06-21",
+   "theatre": "Neil Simon Theatre",
+   "classification": "No - Press",
+   "capitalization": 12000000.0,
+   "notes": null,
+   "sources": "https://www.washingtonpost.com/news/arts-and-entertainment/wp/2015/01/14/vanessa-hudgens-gigi-now-at-kennedy-center-gets-its-broadway-date/; https://www.hollywoodreporter.com/lifestyle/lifestyle-news/shoulda-been-you-bid-goodbye-806110/"
+  },
+  {
+   "title": "Glory Days",
+   "opening": "2008-05-06",
+   "closing": "2008-05-06",
+   "theatre": "Circle in the Square (Broadway)",
+   "classification": "No - Press",
+   "capitalization": 2500000.0,
+   "notes": null,
+   "sources": "https://www.nytimes.com/2008/05/19/theater/19glory.html"
+  },
+  {
+   "title": "Godspell (2008)",
+   "opening": "2008-10-23",
+   "closing": "2008-09-29",
+   "theatre": null,
+   "classification": "No - Grosses below Cap",
+   "capitalization": null,
+   "notes": "Closed before opening; treated as distinct from Godspell (2011), with different producers.  Planned opening at the Shubert theatre.",
+   "sources": "https://playbill.com/article/godspell-to-return-to-broadway-in-summer-2008-com-144551"
+  },
+  {
+   "title": "Godspell (2011)",
+   "opening": "2011-11-07",
+   "closing": "2012-06-24",
+   "theatre": "Circle in the Square (Broadway)",
+   "classification": "Unlikely",
+   "capitalization": 5000000.0,
+   "notes": "Treated as distinct from Godspell (2008), with different producers",
+   "sources": "https://www.nytimes.com/2012/04/19/theater/for-godspell-on-broadway-crowd-sourced-producers.html",
+   "manual": {
+    "weeks": 37.0,
+    "totalGross": 11106035.0,
+    "maxWeeklyRunningCost": 137233.0,
+    "context": "Running costs were estimated to be $300,000 and reported to be \"a long way from profit\" about 2 months before closing (https://www.nytimes.com/2012/04/19/theater/for-godspell-on-broadway-crowd-sourced-producers.html)."
+   }
+  },
+  {
+   "title": "Groundhog Day",
+   "opening": "2017-04-17",
+   "closing": "2017-09-17",
+   "theatre": "August Wilson Theatre",
+   "classification": "No - Press",
+   "capitalization": 17500000.0,
+   "notes": null,
+   "sources": "https://deadline.com/2018/12/broadway-2018-review-movies-to-stage-to-kill-a-mocking-bird-waitress-bands-visit-1202522953/"
+  },
+  {
+   "title": "Guys and Dolls",
+   "opening": "2009-03-01",
+   "closing": "2009-06-14",
+   "theatre": "Nederlander Theatre",
+   "classification": "No - Press",
+   "capitalization": null,
+   "notes": null,
+   "sources": "https://archive.nytimes.com/artsbeat.blogs.nytimes.com/2009/07/14/on-broadway-recouping-and-not/"
+  },
+  {
+   "title": "Gypsy",
+   "opening": "2008-03-27",
+   "closing": "2009-01-11",
+   "theatre": "St. James Theatre (Broadway)",
+   "classification": "Unlikely",
+   "capitalization": null,
+   "notes": null,
+   "sources": null,
+   "manual": {
+    "weeks": 45.0,
+    "totalGross": 31430300.0,
+    "maxWeeklyRunningCost": 455997.0,
+    "context": "The show closed two months early in a limited run, with very low weekly grosses after the decision to close (https://www.wsj.com/articles/SB123145791115766141).  Capitalization reported to be between 8 and 9 million (https://nypost.com/2008/04/02/gypsy-revives-tony-spat/, https://variety.com/2008/legit/news/gypsy-revival-to-close-march-1-1117995801/); we have used the smallest 8 million in our Estimated Max Weekly Running Cost."
+   }
+  },
+  {
+   "title": "Hair (2009)",
+   "opening": "2009-03-31",
+   "closing": "2010-06-27",
+   "theatre": "Al Hirschfeld Theatre",
+   "classification": "Yes - Press",
+   "capitalization": 5760000.0,
+   "notes": null,
+   "sources": "https://www.newyorktheatreguide.com/theatre-news/news/hair-plays-final-performance-on-broadway"
+  },
+  {
+   "title": "Hamilton",
+   "opening": "2015-08-06",
+   "closing": null,
+   "theatre": "Richard Rodgers Theatre",
+   "classification": "Yes - Press",
+   "capitalization": 12500000.0,
+   "notes": "Still running",
+   "sources": "https://www.nytimes.com/2016/06/12/theater/hamilton-inc-the-path-to-a-billion-dollar-show.html"
+  },
+  {
+   "title": "Hands on a Hardbody",
+   "opening": "2013-03-21",
+   "closing": "2013-04-13",
+   "theatre": "Brooks Atkinson Theatre",
+   "classification": "No - Press",
+   "capitalization": null,
+   "notes": null,
+   "sources": "https://archive.nytimes.com/artsbeat.blogs.nytimes.com/2013/04/08/contest-over-hands-on-a-hardbody-will-close-this-weekend/"
+  },
+  {
+   "title": "Hedwig and the Angry Inch",
+   "opening": "2014-04-22",
+   "closing": "2015-09-13",
+   "theatre": "Belasco Theatre",
+   "classification": "Yes - Press",
+   "capitalization": 5000000.0,
+   "notes": null,
+   "sources": "https://variety.com/2014/legit/news/neil-patrick-harris-hedwig-angry-inch-recoup-broadway-1201262546/"
+  },
+  {
+   "title": "Hello, Dolly!",
+   "opening": "2017-04-20",
+   "closing": "2018-08-25",
+   "theatre": "Shubert Theatre (Broadway)",
+   "classification": "Yes - Press",
+   "capitalization": 15900000.0,
+   "notes": null,
+   "sources": "https://www.forbes.com/sites/leeseymour/2018/08/27/hello-dolly-closes-with-broken-records-trickling-roi/?sh=1b31b08a2dd0"
+  },
+  {
+   "title": "Holler If Ya Hear Me",
+   "opening": "2014-06-19",
+   "closing": "2014-07-20",
+   "theatre": "Palace Theatre (Broadway)",
+   "classification": "No - Press",
+   "capitalization": 8000000.0,
+   "notes": null,
+   "sources": "https://www.nytimes.com/2014/07/16/theater/closing-of-holler-if-ya-hear-me-raises-questions.html"
+  },
+  {
+   "title": "Honeymoon in Vegas",
+   "opening": "2015-01-15",
+   "closing": "2015-04-05",
+   "theatre": "Nederlander Theatre",
+   "classification": "No - Press",
+   "capitalization": null,
+   "notes": null,
+   "sources": "https://archive.nytimes.com/artsbeat.blogs.nytimes.com/2015/03/31/on-broadway-honeymoon-is-over/; https://deadline.com/2015/03/honeymooon-in-vegas-broadway-closing-1201402412/"
+  },
+  {
+   "title": "How to Succeed in Business Without Really Trying",
+   "opening": "2011-03-27",
+   "closing": "2012-05-20",
+   "theatre": "Al Hirschfeld Theatre",
+   "classification": "Yes - Press",
+   "capitalization": 9000000.0,
+   "notes": null,
+   "sources": "https://www.ticketnews.com/2012/05/how-to-succeed-scheduled-to-close-in-may/"
+  },
+  {
+   "title": "If/Then",
+   "opening": "2014-03-30",
+   "closing": "2015-03-22",
+   "theatre": "Richard Rodgers Theatre",
+   "classification": "No - Press",
+   "capitalization": 10000000.0,
+   "notes": null,
+   "sources": "https://playbill.com/article/idina-menzel-musical-if-then-to-close-on-broadway-com-338927"
+  },
+  {
+   "title": "In the Heights",
+   "opening": "2008-03-09",
+   "closing": "2011-01-09",
+   "theatre": "Richard Rodgers Theatre",
+   "classification": "Yes - Press",
+   "capitalization": 10000000.0,
+   "notes": null,
+   "sources": "https://archive.nytimes.com/artsbeat.blogs.nytimes.com/2009/01/08/in-the-heights-recoups-in-strong-broadway-week/"
+  },
+  {
+   "title": "In Transit",
+   "opening": "2016-12-11",
+   "closing": "2017-04-16",
+   "theatre": "Circle in the Square (Broadway)",
+   "classification": "No - Press",
+   "capitalization": 7000000.0,
+   "notes": null,
+   "sources": "https://www.nytimes.com/2017/04/11/theater/in-transit-broadways-first-a-cappella-musical-will-close-sunday.html#:~:text=According%20to%20a%20filing%20with,not%20all%20of%20their%20money."
+  },
+  {
+   "title": "Irving Berlin's White Christmas",
+   "opening": "2008-11-23",
+   "closing": "2010-01-03",
+   "theatre": "Marquis Theatre",
+   "classification": "Plausible",
+   "capitalization": 4000000.0,
+   "notes": "Merged with a subsequent holiday run, from 2009-11-22 to 2010-01-03.  Closing data manually modified to account for this merge.",
+   "sources": "https://variety.com/2008/legit/news/white-christmas-hits-broadway-1117996344/, https://playbill.com/article/limited-broadway-run-of-white-christmas-ends-will-it-snow-again-com-156579",
+   "manual": {
+    "weeks": 16.0,
+    "totalGross": 16226929.0,
+    "maxWeeklyRunningCost": 670270.0,
+    "context": "Producers estimated that it needed to gross $10.5 million during its first holiday season to recoup (https://variety.com/2008/legit/news/white-christmas-hits-broadway-1117996344/).  It grossed $9.3 million, closing much of that gap, but grossed $6.9 million during its second and final holiday run.  It is plausible that it recouped with those additional grosses.  Note Broadway Grosses are split between https://www.broadwayworld.com/grosses/IRVING-BERLIN-S-WHITE-CHRISTMAS (which has the one week of 2010) and https://www.broadwayworld.com/grosses/IRVING-BERLIN-S-WHITE-CHRISTMAS-2008-2009 (which has the remaining weeks)"
+   }
+  },
+  {
+   "title": "It Shoulda Been You",
+   "opening": "2015-04-14",
+   "closing": "2015-08-09",
+   "theatre": "Brooks Atkinson Theatre",
+   "classification": "No - Press",
+   "capitalization": null,
+   "notes": null,
+   "sources": "https://www.hollywoodreporter.com/lifestyle/lifestyle-news/shoulda-been-you-bid-goodbye-806110/"
+  },
+  {
+   "title": "Jekyll & Hyde",
+   "opening": "2013-04-18",
+   "closing": "2013-05-12",
+   "theatre": "Marquis Theatre",
+   "classification": "No - Press",
+   "capitalization": null,
+   "notes": null,
+   "sources": "https://www.nytimes.com/2014/01/01/theater/korean-cash-takes-broadway-bows.html"
+  },
+  {
+   "title": "Jesus Christ Superstar",
+   "opening": "2012-03-22",
+   "closing": "2012-07-01",
+   "theatre": "Neil Simon Theatre",
+   "classification": "Unlikely",
+   "capitalization": null,
+   "notes": null,
+   "sources": null,
+   "manual": {
+    "weeks": 18.0,
+    "totalGross": 10882991.0,
+    "maxWeeklyRunningCost": 326401.0,
+    "context": "Even with an extremely modest capitalization and running costs, would have failed to recoup.  An investor in the show is a coauthor of this study, and confirms that it did not recoup."
+   }
+  },
+  {
+   "title": "Kinky Boots",
+   "opening": "2013-04-04",
+   "closing": "2019-04-07",
+   "theatre": "Al Hirschfeld Theatre",
+   "classification": "Yes - Press",
+   "capitalization": 13500000.0,
+   "notes": null,
+   "sources": "https://www.thestar.com/entertainment/stage/kinky-boots-earns-back-its-13-5-million-on-broadway/article_48958965-da22-53c3-ae0a-c45fc4d26e32.html#:~:text=Kinky%20Boots%2C%20the%20hit%20Broadway,been%20recouped%20in%2030%20weeks."
+  },
+  {
+   "title": "La Cage aux Folles",
+   "opening": "2010-04-18",
+   "closing": "2011-05-01",
+   "theatre": "Longacre Theatre",
+   "classification": "Unlikely",
+   "capitalization": null,
+   "notes": null,
+   "sources": null,
+   "manual": {
+    "weeks": 56.0,
+    "totalGross": 29057813.0,
+    "maxWeeklyRunningCost": 399412.0,
+    "context": "Even with an modest capitalization and running costs, would have likely failed to recoup (but not impossible if the musical was extremely low budget)"
+   }
+  },
+  {
+   "title": "Leap of Faith",
+   "opening": "2012-04-26",
+   "closing": "2012-05-13",
+   "theatre": "St. James Theatre (Broadway)",
+   "classification": "No - Grosses below Cap",
+   "capitalization": 14700000.0,
+   "notes": null,
+   "sources": "https://www.nj.com/business/2012/09/broadway_economics_10_million.html"
+  },
+  {
+   "title": "Les Miserables",
+   "opening": "2014-03-23",
+   "closing": "2016-09-04",
+   "theatre": "Imperial Theatre (Broadway)",
+   "classification": "Yes - Press",
+   "capitalization": null,
+   "notes": null,
+   "sources": "https://playbill.com/article/hit-broadway-les-miserables-revival-ends-run-today"
+  },
+  {
+   "title": "Love Never Dies",
+   "opening": "2012-12-31",
+   "closing": null,
+   "theatre": null,
+   "classification": "No - Grosses below Cap",
+   "capitalization": null,
+   "notes": "Closed before opening; planned opening at the Neil Simon theatre. ",
+   "sources": "https://www.broadway.com/buzz/153762/love-never-dies-scraps-plans-for-spring-broadway-run/"
+  },
+  {
+   "title": "Lysistrata Jones",
+   "opening": "2011-12-14",
+   "closing": "2012-01-08",
+   "theatre": "Walter Kerr Theatre",
+   "classification": "No - Grosses below Cap",
+   "capitalization": 6000000.0,
+   "notes": null,
+   "sources": "https://archive.nytimes.com/artsbeat.blogs.nytimes.com/2011/08/03/playing-on-a-bigger-court-lysistrata-jones-taking-its-game-to-broadway/"
+  },
+  {
+   "title": "Matilda The Musical",
+   "opening": "2013-04-11",
+   "closing": "2017-01-01",
+   "theatre": "Shubert Theatre (Broadway)",
+   "classification": "Yes - Press",
+   "capitalization": 16000000.0,
+   "notes": null,
+   "sources": "https://variety.com/2014/legit/news/matilda-recoups-broadway-musical-1201372084/"
+  },
+  {
+   "title": "Memphis",
+   "opening": "2009-10-19",
+   "closing": "2012-08-05",
+   "theatre": "Shubert Theatre (Broadway)",
+   "classification": "Yes - Press",
+   "capitalization": 12000000.0,
+   "notes": null,
+   "sources": "https://playbill.com/article/tony-winning-musical-memphis-to-recoup-12-million-broadway-investment-com-196144#:~:text=News%20Tony%2DWinning%20Musical%20Memphis,Theatre%2C%20producers%20announced%20July%2030."
+  },
+  {
+   "title": "Million Dollar Quartet",
+   "opening": "2010-04-11",
+   "closing": "2011-06-12",
+   "theatre": "Nederlander Theatre",
+   "classification": "Unlikely",
+   "capitalization": null,
+   "notes": null,
+   "sources": null,
+   "manual": {
+    "weeks": 66.0,
+    "totalGross": 28585196.0,
+    "maxWeeklyRunningCost": 332397.0,
+    "context": "Even with an extremely modest capitalization and running costs, would have failed to recoup"
+   }
+  },
+  {
+   "title": "Miss Saigon",
+   "opening": "2017-03-23",
+   "closing": "2018-01-14",
+   "theatre": "Broadway Theatre (Broadway)",
+   "classification": "No - Press",
+   "capitalization": null,
+   "notes": null,
+   "sources": "https://www.nytix.com/news/miss-saigon-revival-closes-at-the-broadway-theatre"
+  },
+  {
+   "title": "Motown The Musical (2013)",
+   "opening": "2013-04-14",
+   "closing": "2015-01-18",
+   "theatre": "Lunt-Fontanne Theatre",
+   "classification": "Yes - Press",
+   "capitalization": 18000000.0,
+   "notes": null,
+   "sources": "https://www.broadway.com/buzz/179197/hail-to-the-beat-motown-the-musical-recoups-just-before-closing-on-broadway/"
+  },
+  {
+   "title": "Natasha, Pierre & The Great Comet of 1812",
+   "opening": "2016-11-14",
+   "closing": "2017-09-03",
+   "theatre": "Imperial Theatre (Broadway)",
+   "classification": "No - Press",
+   "capitalization": 14000000.0,
+   "notes": null,
+   "sources": "https://www.nytimes.com/2017/08/29/theater/great-comet-broadway-race.html"
+  },
+  {
+   "title": "Nerds",
+   "opening": null,
+   "closing": null,
+   "theatre": null,
+   "classification": "No - Grosses below Cap",
+   "capitalization": null,
+   "notes": "Closed before opening; planned opening at the Longacre Theatre. ",
+   "sources": "https://www.hollywoodreporter.com/movies/movie-features/how-bill-gates-steve-jobs-musical-nerds-became-a-debacle-1200105/"
+  },
+  {
+   "title": "Next to Normal",
+   "opening": "2009-04-15",
+   "closing": "2011-01-16",
+   "theatre": "Booth Theatre (Broadway)",
+   "classification": "Yes - Press",
+   "capitalization": 4000000.0,
+   "notes": null,
+   "sources": "https://www.nytimes.com/2010/03/29/theater/29normal.html"
+  },
+  {
+   "title": "Nice Work If You Can Get It",
+   "opening": "2012-04-24",
+   "closing": "2013-06-15",
+   "theatre": "Imperial Theatre (Broadway)",
+   "classification": "Unlikely",
+   "capitalization": 10000000.0,
+   "notes": null,
+   "sources": "https://www.hollywoodreporter.com/lifestyle/style/nice-work-you-can-get-445898/",
+   "manual": {
+    "weeks": 64.0,
+    "totalGross": 51461746.0,
+    "maxWeeklyRunningCost": 573381.0,
+    "context": "In April 2013, a little under two months before close, Hollywood Reported reported that the musical is not expected to recoup (https://www.hollywoodreporter.com/lifestyle/style/nice-work-you-can-get-445898/).  Weekly average grosses from that announcement through close were $659K.  This is substantially below the $834K average of all full-show weeks prior to that announcement, and thus unlikely to change expectations."
+   }
+  },
+  {
+   "title": "On a Clear Day You Can See Forever",
+   "opening": "2011-12-11",
+   "closing": "2012-01-29",
+   "theatre": "St. James Theatre (Broadway)",
+   "classification": "No - Grosses below Cap",
+   "capitalization": 8000000.0,
+   "notes": null,
+   "sources": "https://www.nytimes.com/2011/11/27/theater/on-a-clear-day-now-centers-on-the-psychiatrist.html"
+  },
+  {
+   "title": "On the Town",
+   "opening": "2014-10-16",
+   "closing": "2015-09-06",
+   "theatre": "Lyric Theatre (Broadway)",
+   "classification": "No - Press",
+   "capitalization": 8500000.0,
+   "notes": null,
+   "sources": "https://deadline.com/2014/08/broadways-8-5m-on-the-town-revival-looks-for-online-investors-819051/, https://www.nytimes.com/2015/09/27/theater/dames-at-sea-embraces-those-happy-days-and-corny-jokes.html"
+  },
+  {
+   "title": "On Your Feet!",
+   "opening": "2015-11-05",
+   "closing": "2017-08-20",
+   "theatre": "Marquis Theatre",
+   "classification": "No - Press",
+   "capitalization": null,
+   "notes": null,
+   "sources": "https://www.forbes.com/sites/leeseymour/2015/11/23/broadway-box-office-on-your-feet-has-best-week-fiddler-on-the-roof-starts-strong/?sh=552088b7297d, https://www.nytix.com/news/on-your-feet-to-play-its-final-performance#:~:text=While%20the%20Broadway%20production%20never,show%20for%20years%20to%20come."
+  },
+  {
+   "title": "Once",
+   "opening": "2012-03-18",
+   "closing": "2015-01-04",
+   "theatre": "Bernard B. Jacobs Theatre",
+   "classification": "Yes - Press",
+   "capitalization": 5500000.0,
+   "notes": null,
+   "sources": "https://variety.com/2014/legit/news/once-closing-broadway-musical-1201324122/, https://www.theatermania.com/news/broadways-once-recoups-capitalization_60497/"
+  },
+  {
+   "title": "Once On This Island",
+   "opening": "2017-12-03",
+   "closing": "2019-01-06",
+   "theatre": "Circle in the Square (Broadway)",
+   "classification": "No - Press",
+   "capitalization": 7500000.0,
+   "notes": null,
+   "sources": "https://www.forbes.com/sites/leeseymour/2018/12/03/multiple-broadway-shows-to-close-as-box-office-sinks/?sh=56c32d3b35e6"
+  },
+  {
+   "title": "Passing Strange",
+   "opening": "2008-02-28",
+   "closing": "2008-07-20",
+   "theatre": "Belasco Theatre",
+   "classification": "No - Press",
+   "capitalization": 5000000.0,
+   "notes": null,
+   "sources": "https://nypost.com/2017/07/13/passing-strange-the-best-musical-to-not-win-a-tony-is-back/"
+  },
+  {
+   "title": "Pippin",
+   "opening": "2013-04-25",
+   "closing": "2015-01-04",
+   "theatre": "Music Box Theatre",
+   "classification": "Yes - Press",
+   "capitalization": 8500000.0,
+   "notes": null,
+   "sources": "https://archive.nytimes.com/artsbeat.blogs.nytimes.com/2013/12/02/pippin-revival-recoups-investment/"
+  },
+  {
+   "title": "Porgy and Bess",
+   "opening": "2012-01-12",
+   "closing": "2012-09-23",
+   "theatre": "Richard Rodgers Theatre",
+   "classification": "Unlikely",
+   "capitalization": 6900000.0,
+   "notes": null,
+   "sources": "https://archive.nytimes.com/artsbeat.blogs.nytimes.com/2012/02/09/with-box-office-strong-porgy-and-bess-to-extend-its-run/",
+   "manual": {
+    "weeks": 41.0,
+    "totalGross": 26381453.0,
+    "maxWeeklyRunningCost": 415574.0,
+    "context": "Even with an extremely modest capitalization and running costs, would have failed to recoup"
+   }
+  },
+  {
+   "title": "Prince of Broadway",
+   "opening": "2017-08-24",
+   "closing": "2017-10-29",
+   "theatre": "Samuel J. Friedman Theatre",
+   "classification": "Unlikely",
+   "capitalization": null,
+   "notes": null,
+   "sources": null,
+   "manual": {
+    "weeks": 13.0,
+    "totalGross": 4171311.0,
+    "maxWeeklyRunningCost": -16535.0,
+    "context": "Even with an extremely modest capitalization and running costs, would have failed to recoup"
+   }
+  },
+  {
+   "title": "Priscilla Queen of the Desert",
+   "opening": "2011-03-20",
+   "closing": "2012-06-24",
+   "theatre": "Palace Theatre (Broadway)",
+   "classification": "No - Press",
+   "capitalization": 15000000.0,
+   "notes": null,
+   "sources": "https://archive.nytimes.com/artsbeat.blogs.nytimes.com/2012/05/16/broadway-musical-priscilla-queen-of-the-desert-to-close/"
+  },
+  {
+   "title": "Promises, Promises",
+   "opening": "2010-04-25",
+   "closing": "2011-01-02",
+   "theatre": "Broadway Theatre (Broadway)",
+   "classification": "Plausible",
+   "capitalization": null,
+   "notes": null,
+   "sources": "https://archive.nytimes.com/artsbeat.blogs.nytimes.com/2010/09/17/promises-promises-will-close-but-questions-remain/",
+   "manual": {
+    "weeks": 41.0,
+    "totalGross": 42951936.0,
+    "maxWeeklyRunningCost": 853039.0,
+    "context": "In the show's closing announcement about 3.5 months before closing, the producers indicated that they expected to recoup (https://archive.nytimes.com/artsbeat.blogs.nytimes.com/2010/09/17/promises-promises-will-close-but-questions-remain/).  The show continued through closing, and average grosses stayed strong: the show grossed an average of $1.09 million in full-show weeks up to the announced closure, and these increased to $1.043 million from that announcement through closing.  Given the producer's expectations and the show's sustained revenue, it is plausible that the show recouped."
+   }
+  },
+  {
+   "title": "Ragtime",
+   "opening": "2009-11-15",
+   "closing": "2010-01-10",
+   "theatre": "Neil Simon Theatre",
+   "classification": "No - Press",
+   "capitalization": 8500000.0,
+   "notes": null,
+   "sources": "https://variety.com/2010/legit/news/pared-down-shows-fare-well-1118014188/ , https://www.cbc.ca/mobile/text/story_arts.html?/ept/html/story/2009/12/29/ragtime-broadway-closure.html"
+  },
+  {
+   "title": "Rock of Ages",
+   "opening": "2009-04-07",
+   "closing": "2015-01-18",
+   "theatre": "Brooks Atkinson Theatre",
+   "classification": "Yes - Press",
+   "capitalization": 7250000.0,
+   "notes": "Started at the Brooks Atkinson Theatre, and then moved to the Helen Hayes Theatre.",
+   "sources": "https://playbill.com/article/the-final-countdown-rock-of-ages-ends-broadway-run-com-339447"
+  },
+  {
+   "title": "Rocky",
+   "opening": "2014-03-13",
+   "closing": "2014-08-17",
+   "theatre": "Winter Garden Theatre (Broadway)",
+   "classification": "No - Press",
+   "capitalization": 16500000.0,
+   "notes": null,
+   "sources": "https://www.latimes.com/entertainment/arts/culture/la-et-cm-rocky-musical-broadway-closing-20140716-story.html#:~:text=%E2%80%9CRocky%2C%E2%80%9D%20the%20high%2D,time%20it%20ends%20its%20run."
+  },
+  {
+   "title": "Scandalous: The Life and Trials of Aimee Semple McPherson",
+   "opening": "2012-11-15",
+   "closing": "2012-12-09",
+   "theatre": "Neil Simon Theatre",
+   "classification": "No - Press",
+   "capitalization": null,
+   "notes": null,
+   "sources": "https://playbill.com/article/charitable-wing-of-sister-aimees-foursquare-church-gets-shakeup-following-scandalous-investment-com-202597"
+  },
+  {
+   "title": "School of Rock - The Musical",
+   "opening": "2015-12-06",
+   "closing": "2019-01-20",
+   "theatre": "Winter Garden Theatre (Broadway)",
+   "classification": "Yes - Press",
+   "capitalization": 15000000.0,
+   "notes": null,
+   "sources": "https://variety.com/2017/legit/news/school-of-rock-recoup-broadway-1202421176/"
+  },
+  {
+   "title": "Shrek the Musical",
+   "opening": "2008-12-14",
+   "closing": "2010-01-03",
+   "theatre": "Broadway Theatre",
+   "classification": "No - Press",
+   "capitalization": 25000000.0,
+   "notes": "Changed theatre from Fifth Avenue Theatere (in Seattle, where the show had a pre-Broadway run) to Broadway Theatre (where the Broadway production was housed).",
+   "sources": "https://www.nytimes.com/2009/10/22/theater/22shrek.html?_r=0, https://www.nytimes.com/2010/03/29/theater/29normal.html, https://www.vulture.com/2013/11/spider-man-leaves-behind-broadways-biggest-bill.html"
+  },
+  {
+   "title": "Shuffle Along, or the Making of the Musical Sensation of 1921 and All That Followed",
+   "opening": "2016-04-28",
+   "closing": "2016-07-24",
+   "theatre": "Music Box Theatre",
+   "classification": "No - Press",
+   "capitalization": 12000000.0,
+   "notes": null,
+   "sources": "https://www.nytimes.com/2016/06/25/theater/decision-to-close-shuffle-along-is-debated-along-broadway.html"
+  },
+  {
+   "title": "Side Show",
+   "opening": "2014-11-17",
+   "closing": "2015-01-04",
+   "theatre": "St. James Theatre (Broadway)",
+   "classification": "No - Press",
+   "capitalization": 7800000.0,
+   "notes": null,
+   "sources": "https://archive.nytimes.com/artsbeat.blogs.nytimes.com/2014/12/15/the-last-ship-rises-with-sting-in-the-cast/"
+  },
+  {
+   "title": "Sister Act",
+   "opening": "2011-04-20",
+   "closing": "2012-08-26",
+   "theatre": "Broadway Theatre (Broadway)",
+   "classification": "Unlikely",
+   "capitalization": 10000000.0,
+   "notes": null,
+   "sources": "https://www.nytimes.com/2010/12/01/theater/01musical.html, https://www.ticketnews.com/2012/06/sister-act-to-close-this-august/, https://archive.nytimes.com/artsbeat.blogs.nytimes.com/2012/06/20/sister-act-set-to-close-on-broadway/",
+   "manual": {
+    "weeks": 75.0,
+    "totalGross": 52509237.0,
+    "maxWeeklyRunningCost": 501958.0,
+    "context": "In June 2012, roughly 2 months before close, the NYT reported that the musical would close without recouping (https://archive.nytimes.com/artsbeat.blogs.nytimes.com/2012/06/20/sister-act-set-to-close-on-broadway/).  Weekly average grosses from that announcement through close were $752K, a slight uptick from the $710K of all full-show weeks prior to that announcement.  This is a fairly small bump and unlikely to change the producers' expectations."
+   }
+  },
+  {
+   "title": "Something Rotten!",
+   "opening": "2015-04-22",
+   "closing": "2017-01-08",
+   "theatre": "St. James Theatre (Broadway)",
+   "classification": "No - Press",
+   "capitalization": 14000000.0,
+   "notes": null,
+   "sources": "https://variety.com/2016/legit/news/something-rotten-closing-broadway-1201862050/; https://www.hollywoodreporter.com/news/general-news/something-rotten-end-broadway-run-929373/"
+  },
+  {
+   "title": "Soul Doctor",
+   "opening": "2013-08-15",
+   "closing": "2013-10-13",
+   "theatre": "Circle in the Square (Broadway)",
+   "classification": "No - Grosses below Cap",
+   "capitalization": null,
+   "notes": "The exact capitalization was not reported, but it was reported to be at least $5,000,000, while total grosses were under $2,000,000",
+   "sources": "https://www.nytimes.com/2015/01/10/arts/soul-doctor-musical-moves-to-a-smaller-stage.html, https://www.broadwayworld.com/grosses/SOUL-DOCTOR"
+  },
+  {
+   "title": "Spider-Man Turn Off the Dark",
+   "opening": "2011-06-14",
+   "closing": "2014-01-04",
+   "theatre": "Foxwoods Theatre",
+   "classification": "No - Press",
+   "capitalization": 75000000.0,
+   "notes": "This musical had particularly long previews",
+   "sources": "https://www.nytimes.com/2011/06/23/theater/spider-man-by-the-numbers-breaking-down-its-costs.html, https://www.theguardian.com/stage/2013/nov/19/spider-man-turn-off-the-dark-broadway-close, https://www.vulture.com/2013/11/spider-man-leaves-behind-broadways-biggest-bill.html"
+  },
+  {
+   "title": "SpongeBob SquarePants, The Broadway Musical",
+   "opening": "2017-12-04",
+   "closing": "2018-09-16",
+   "theatre": "Palace Theatre (Broadway)",
+   "classification": "No - Press",
+   "capitalization": 18350000.0,
+   "notes": null,
+   "sources": "https://www.awn.com/news/spongebob-squarepants-broadway-musical-close"
+  },
+  {
+   "title": "Spring Awakening",
+   "opening": "2015-09-27",
+   "closing": "2016-01-24",
+   "theatre": "Brooks Atkinson Theatre",
+   "classification": "Unlikely",
+   "capitalization": 4500000.0,
+   "notes": null,
+   "sources": "https://www.latimes.com/entertainment/arts/culture/la-et-cm-spring-awakening-broadway-box-office-20151006-story.html",
+   "manual": {
+    "weeks": 19.0,
+    "totalGross": 9182156.0,
+    "maxWeeklyRunningCost": 201678.0,
+    "context": "Even with an extremely modest running costs, would have failed to recoup"
+   }
+  },
+  {
+   "title": "Sunday in the Park with George",
+   "opening": "2017-02-23",
+   "closing": "2017-04-23",
+   "theatre": "Hudson Theatre (Broadway)",
+   "classification": "Yes - Press",
+   "capitalization": null,
+   "notes": null,
+   "sources": "https://www.broadwayworld.com/article/Jake-Gyllenhaal-Led-SUNDAY-IN-THE-PARK-WITH-GEORGE-Will-Get-Cast-Recording-20170420"
+  },
+  {
+   "title": "Sunset Boulevard",
+   "opening": "2017-02-09",
+   "closing": "2017-06-25",
+   "theatre": "Palace Theatre (Broadway)",
+   "classification": "Plausible",
+   "capitalization": null,
+   "notes": null,
+   "sources": null,
+   "manual": {
+    "weeks": 21.0,
+    "totalGross": 23831697.0,
+    "maxWeeklyRunningCost": 839280.0,
+    "context": "Limited information about capitalization and running costs, but with modest capitalization and running costs, would have recouped."
+   }
+  },
+  {
+   "title": "The Addams Family",
+   "opening": "2010-04-08",
+   "closing": "2011-12-31",
+   "theatre": "Lunt-Fontanne Theatre",
+   "classification": "No - Press",
+   "capitalization": 15000000.0,
+   "notes": null,
+   "sources": "https://nypost.com/2009/06/08/big-shows-and-stars-in-wings-on-broadway/, https://www.nytimes.com/2020/04/07/theater/addams-family-musical-history.html"
+  },
+  {
+   "title": "The Band's Visit",
+   "opening": "2017-11-09",
+   "closing": "2019-04-07",
+   "theatre": "Ethel Barrymore Theatre",
+   "classification": "Yes - Press",
+   "capitalization": 8750000.0,
+   "notes": null,
+   "sources": "https://playbill.com/article/the-bands-visit-recoups-on-broadway#:~:text=This%20year%27s%20Tony%2Dwinning%20Best,John%20Styles%20and%20John%20Hart."
+  },
+  {
+   "title": "The Book of Mormon",
+   "opening": "2011-03-24",
+   "closing": null,
+   "theatre": "Eugene O'Neill Theatre",
+   "classification": "Yes - Press",
+   "capitalization": 11400000.0,
+   "notes": "Still running",
+   "sources": "https://www.hollywoodreporter.com/news/general-news/book-of-mormon-recoup-267128/"
+  },
+  {
+   "title": "The Bridges of Madison County",
+   "opening": "2014-02-20",
+   "closing": "2014-05-18",
+   "theatre": "Gerald Schoenfeld Theatre",
+   "classification": "No - Press",
+   "capitalization": 8500000.0,
+   "notes": null,
+   "sources": "https://archive.nytimes.com/artsbeat.blogs.nytimes.com/2014/05/01/bridges-of-madison-county-to-close-on-may-18/"
+  },
+  {
+   "title": "The Color Purple",
+   "opening": "2015-12-10",
+   "closing": "2017-01-08",
+   "theatre": "Bernard B. Jacobs Theatre",
+   "classification": "Unlikely",
+   "capitalization": 8000000.0,
+   "notes": null,
+   "sources": "https://www.hollywoodreporter.com/news/general-news/color-purple-sets-broadway-closing-date-942124/",
+   "manual": {
+    "weeks": 60.0,
+    "totalGross": 44724913.0,
+    "maxWeeklyRunningCost": 543056.0,
+    "context": "In an announcement roughly 1 month prior to closure, Hollywood Reporter indicated that the show had not yet recouped but hoped to close the gap on future tours (https://www.hollywoodreporter.com/news/general-news/color-purple-sets-broadway-closing-date-942124/)."
+   }
+  },
+  {
+   "title": "The Last Ship",
+   "opening": "2014-10-26",
+   "closing": "2015-01-24",
+   "theatre": "Neil Simon Theatre",
+   "classification": "No - Press",
+   "capitalization": 15000000.0,
+   "notes": null,
+   "sources": "https://variety.com/2015/legit/news/last-ship-closing-sting-broadway-1201393562/, https://deadline.com/2015/01/sting-last-ship-closing-1201342021/"
+  },
+  {
+   "title": "The Scottsboro Boys",
+   "opening": "2010-10-31",
+   "closing": "2010-12-12",
+   "theatre": "Lyceum Theatre (Broadway)",
+   "classification": "No - Press",
+   "capitalization": 5000000.0,
+   "notes": null,
+   "sources": "https://archive.nytimes.com/artsbeat.blogs.nytimes.com/2010/12/01/bloody-bloody-andrew-jackson-to-close/, https://www.nytimes.com/2010/12/01/theater/01musical.html"
+  },
+  {
+   "title": "The Story of My Life",
+   "opening": "2009-02-19",
+   "closing": "2009-02-22",
+   "theatre": "Booth Theatre (Broadway)",
+   "classification": "No - Press",
+   "capitalization": 5000000.0,
+   "notes": null,
+   "sources": "https://nymag.com/arts/theater/features/54303/, https://archive.nytimes.com/artsbeat.blogs.nytimes.com/2009/07/14/on-broadway-recouping-and-not/"
+  },
+  {
+   "title": "The Visit",
+   "opening": "2015-04-23",
+   "closing": "2015-06-14",
+   "theatre": "Lyceum Theatre (Broadway)",
+   "classification": "No - Press",
+   "capitalization": null,
+   "notes": null,
+   "sources": "https://www.hollywoodreporter.com/lifestyle/lifestyle-news/shoulda-been-you-bid-goodbye-806110/"
+  },
+  {
+   "title": "Tuck Everlasting",
+   "opening": "2016-04-26",
+   "closing": "2016-05-29",
+   "theatre": "Broadhurst Theatre",
+   "classification": "No - Grosses below Cap",
+   "capitalization": 11000000.0,
+   "notes": null,
+   "sources": "https://www.nytimes.com/2016/06/23/theater/anatomy-of-a-broadway-flop-why-these-4-shows-failed.html"
+  },
+  {
+   "title": "Waitress",
+   "opening": "2016-04-24",
+   "closing": "2020-01-05",
+   "theatre": "Brooks Atkinson Theatre",
+   "classification": "Yes - Press",
+   "capitalization": 12000000.0,
+   "notes": "Reopenned after COVID for limited engagement and filming",
+   "sources": "https://variety.com/2017/legit/news/waitress-musical-recoup-broadway-1201970660/"
+  },
+  {
+   "title": "War Paint",
+   "opening": "2017-04-06",
+   "closing": "2017-11-05",
+   "theatre": "Nederlander Theatre",
+   "classification": "Unlikely",
+   "capitalization": 11000000.0,
+   "notes": null,
+   "sources": "https://variety.com/2017/legit/news/war-paint-closing-broadway-patti-lupone-1202565274/",
+   "manual": {
+    "weeks": 34.0,
+    "totalGross": 24811139.0,
+    "maxWeeklyRunningCost": 338636.0,
+    "context": "Even with an extremely modest capitalization and running costs, would have failed to recoup.  Had not recouped on 9/21/17 (https://www.nytimes.com/2017/09/21/theater/war-paint-broadway-closing.html) when slated to close on 12/30/17; closed much earlier on 11/5/17, missing holidays."
+   }
+  },
+  {
+   "title": "West Side Story",
+   "opening": "2009-03-19",
+   "closing": "2011-01-02",
+   "theatre": "Palace Theatre",
+   "classification": "Yes - Press",
+   "capitalization": 14000000.0,
+   "notes": "Changed theatre from National Theatre (in Washington DC, where the show had a pre-Broadway run) to Palace Theatre (where the Broadway production was housed).",
+   "sources": "https://variety.com/2009/legit/news/west-side-revival-recoups-costs-1118009375/"
+  },
+  {
+   "title": "Women on the Verge of a Nervous Breakdown",
+   "opening": "2010-11-04",
+   "closing": "2011-01-02",
+   "theatre": "Belasco Theatre",
+   "classification": "No - Grosses below Cap",
+   "capitalization": 5000000.0,
+   "notes": null,
+   "sources": "https://www.nytimes.com/2010/12/01/theater/01musical.html, https://www.nytimes.com/2011/11/03/theater/a-rush-to-get-musicals-to-broadway.html"
+  },
+  {
+   "title": "Wonderland",
+   "opening": "2011-04-17",
+   "closing": "2011-05-15",
+   "theatre": "Marquis Theatre",
+   "classification": "No - Press",
+   "capitalization": 15000000.0,
+   "notes": null,
+   "sources": "https://www.nytimes.com/2010/12/01/theater/01musical.html, https://www.nytimes.com/2011/11/03/theater/a-rush-to-get-musicals-to-broadway.html"
+  }
+ ]
+}

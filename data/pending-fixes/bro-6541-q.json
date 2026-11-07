@@ -1,0 +1,322 @@
+{
+  "issueNumber": "bro-6541-q",
+  "planId": "5bfb738a-1983-47cf-8d93-12cab7ec99c2",
+  "status": "partial",
+  "createdAt": "2026-10-29T20:55:20.932Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6541: ingest reviews for the new UK hub productions (part 1 of 6)",
+    "steps": [
+      "BRO-6541: ingest thestage review for art-royal-bath-regional-2024",
+      "BRO-6541: ingest thestage review for jack-oran-mor-regional-2024",
+      "BRO-6541: ingest thestage review for 1984-royal-bath-regional-2024",
+      "BRO-6541: ingest thestage review for ivor-oran-mor-regional-2025",
+      "BRO-6541: ingest thestage review for emma-royal-bath-regional-2025",
+      "BRO-6541: ingest thestage review for lines-crucible-regional-2024",
+      "BRO-6541: ingest west-end-best-friend review for sweat-royal-exchange-regional-2024",
+      "BRO-6541: ingest whatsonstage review for sweat-royal-exchange-regional-2024",
+      "BRO-6541: ingest thestage review for sweat-royal-exchange-regional-2024",
+      "BRO-6541: ingest thestage review for roost-oran-mor-regional-2024",
+      "BRO-6541: ingest thestage review for dizzy-sheffield-regional-2024",
+      "BRO-6541: ingest thestage review for sweat-citizens-regional-2026",
+      "BRO-6541: ingest whatsonstage review for sweat-citizens-regional-2026",
+      "BRO-6541: ingest thestage review for armour-oran-mor-regional-2024",
+      "BRO-6541: ingest thestage review for grease-pitlochry-festival-regional-2025",
+      "BRO-6541: ingest whatsonstage review for grease-pitlochry-festival-regional-2025",
+      "BRO-6541: ingest west-end-best-friend review for grease-pitlochry-festival-regional-2025",
+      "BRO-6541: ingest thestage review for the-trials-tron-regional-2026",
+      "BRO-6541: ingest british-theatre review for the-trials-tron-regional-2026",
+      "BRO-6541: ingest west-end-best-friend review for macbeth-leeds-regional-2024",
+      "BRO-6541: ingest thestage review for the-promise-chichester-festival-regional-2024",
+      "BRO-6541: ingest thestage review for the-watsons-chichester-festival-regional-2025",
+      "BRO-6541: ingest everything-theatre review for earnest-crucible-regional-2025",
+      "BRO-6541: ingest thestage review for wallace-oran-mor-regional-2025",
+      "BRO-6541: ingest thestage review for macbeth-tobacco-factory-regional-2026"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=art-royal-bath-regional-2024 --url=https://www.thestage.co.uk/reviews/art-review-theatre-royal-bath-seann-walsh-chris-harper-aden-gillett-yasmina-reza-christopher-hampton-iqbal-khan --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for art-royal-bath-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=jack-oran-mor-regional-2024 --url=https://www.thestage.co.uk/reviews/jack-review-at-oran-mor-glasgow-by-liam-moffat-and-gareth-nicholls --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for jack-oran-mor-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=1984-royal-bath-regional-2024 --url=https://www.thestage.co.uk/reviews/1984-review-theatre-royal-bath-lindsay-posner-keith-allen-george-orwell-anniversary --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for 1984-royal-bath-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=ivor-oran-mor-regional-2025 --url=https://www.thestage.co.uk/reviews/ivor-review-oran-mor-glasgow-a-play-a-pie-and-a-pint-jennifer-adam-catriona-macleod --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for ivor-oran-mor-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=emma-royal-bath-regional-2025 --url=https://www.thestage.co.uk/reviews/emma-review-theatre-royal-bath --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for emma-royal-bath-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=lines-crucible-regional-2024 --url=https://www.thestage.co.uk/reviews/lines-review-at-tanya-moiseiwitsch-playhouse-crucible-sheffield-by-junaid-sarieddeen --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for lines-crucible-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=sweat-royal-exchange-regional-2024 --url=https://www.westendbestfriend.co.uk/news/review-sweat-royal-exchange-theatre --outlet=west-end-best-friend",
+        "description": "BRO-6541: ingest west-end-best-friend review for sweat-royal-exchange-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=sweat-royal-exchange-regional-2024 --url=https://www.whatsonstage.com/news/sweat-at-the-royal-exchange-theatre-review_1597388/ --outlet=whatsonstage",
+        "description": "BRO-6541: ingest whatsonstage review for sweat-royal-exchange-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=sweat-royal-exchange-regional-2024 --url=https://www.thestage.co.uk/reviews/sweat-review-royal-exchange-theatre-manchester-lynn-nottage --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for sweat-royal-exchange-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=roost-oran-mor-regional-2024 --url=https://www.thestage.co.uk/reviews/roost-review-oran-mor-glasgow --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for roost-oran-mor-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=dizzy-sheffield-regional-2024 --url=https://www.thestage.co.uk/reviews/dizzy-review-tanya-moiseiwitsch-playhouse-sheffield-mohamed-zain-dada-theatre-centre --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for dizzy-sheffield-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=sweat-citizens-regional-2026 --url=https://www.thestage.co.uk/reviews/sweat-review-citizens-theatre-glasgow --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for sweat-citizens-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=sweat-citizens-regional-2026 --url=https://www.whatsonstage.com/news/sweat-at-glasgows-citizens-theatre-review_1720437/ --outlet=whatsonstage",
+        "description": "BRO-6541: ingest whatsonstage review for sweat-citizens-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=armour-oran-mor-regional-2024 --url=https://www.thestage.co.uk/reviews/armour-review-oran-mor-glasgow-a-play-a-pie-and-a-pint-robert-burns --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for armour-oran-mor-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=grease-pitlochry-festival-regional-2025 --url=https://www.thestage.co.uk/reviews/grease-review-pitlochry-festival-theatre-sam-hardie --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for grease-pitlochry-festival-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=grease-pitlochry-festival-regional-2025 --url=https://www.whatsonstage.com/news/grease-at-pitlochry-festival-theatre-review_1683933/ --outlet=whatsonstage",
+        "description": "BRO-6541: ingest whatsonstage review for grease-pitlochry-festival-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=grease-pitlochry-festival-regional-2025 --url=https://www.westendbestfriend.co.uk/news/review-grease-the-musical-pitlochry-festival-theatre --outlet=west-end-best-friend",
+        "description": "BRO-6541: ingest west-end-best-friend review for grease-pitlochry-festival-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-trials-tron-regional-2026 --url=https://www.thestage.co.uk/reviews/the-trials-review-tron-theatre-glasgow --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for the-trials-tron-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-trials-tron-regional-2026 --url=https://www.britishtheatreguide.info/reviews/the-trials-tron-theatre-25417 --outlet=british-theatre",
+        "description": "BRO-6541: ingest british-theatre review for the-trials-tron-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=macbeth-leeds-regional-2024 --url=https://www.westendbestfriend.co.uk/news/review-macbeth-leeds-playhouse --outlet=west-end-best-friend",
+        "description": "BRO-6541: ingest west-end-best-friend review for macbeth-leeds-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-promise-chichester-festival-regional-2024 --url=https://www.thestage.co.uk/reviews/the-promise-review-minerva-theatre-chichester-paul-unwin-jonathan-kent-clare-burt --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for the-promise-chichester-festival-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-watsons-chichester-festival-regional-2025 --url=https://www.thestage.co.uk/reviews/the-watsons-review-at-minerva-theatre-chichester--inventive-adaptation-of-austens-unfinished-novel --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for the-watsons-chichester-festival-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=earnest-crucible-regional-2025 --url=https://everything-theatre.co.uk/2025/05/review-earnest-crucible-theatre-sheffield/ --outlet=everything-theatre",
+        "description": "BRO-6541: ingest everything-theatre review for earnest-crucible-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=wallace-oran-mor-regional-2025 --url=https://www.thestage.co.uk/reviews/wallace-review-oran-mor-glasgow-a-play-a-pie-a-pint-william-wallace --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for wallace-oran-mor-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=macbeth-tobacco-factory-regional-2026 --url=https://www.thestage.co.uk/reviews/macbeth-review-factory-theatre-tobacco-factory-theatres-bristol --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for macbeth-tobacco-factory-regional-2026"
+      }
+    ]
+  },
+  "executedAt": "2026-10-30T01:07:16.975Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=the-watsons-chichester-festival-regional-2025 --url=https://www.thestage.co.uk/reviews/the-watsons-review-at-minerva-theatre-chichester--inventive-adaptation-of-austens-unfinished-novel --outlet=thestage"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    }
+  ],
+  "executedIn": "ci"
+}

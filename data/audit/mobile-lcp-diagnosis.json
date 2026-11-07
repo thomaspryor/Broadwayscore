@@ -1,0 +1,50 @@
+{
+  "date": "2026-03-07",
+  "mobileLCP": "3.3s (target: <2.5s)",
+  "mobileTBT": "992ms (high)",
+  "desktopLCP": "706ms (good)",
+  "desktopTBT": "55ms (good)",
+  "rootCause": "JS bundle size — 580KB+ of JavaScript chunks loaded on homepage. Mobile CPUs take ~1s to parse/execute this.",
+  "jsChunks": [
+    {
+      "name": "7327-*.js",
+      "size": "195KB",
+      "note": "Likely React/framework"
+    },
+    {
+      "name": "fd9d-*.js",
+      "size": "173KB",
+      "note": "Framework dependency"
+    },
+    {
+      "name": "7023-*.js",
+      "size": "123KB",
+      "note": "Framework dependency"
+    },
+    {
+      "name": "polyfills-*.js",
+      "size": "91KB",
+      "note": "Polyfills"
+    },
+    {
+      "name": "page-*.js",
+      "size": "34KB",
+      "note": "Homepage page component"
+    },
+    {
+      "name": "layout-*.js",
+      "size": "32KB",
+      "note": "App layout"
+    }
+  ],
+  "imageAnalysis": "NOT the bottleneck — poster images are 21KB webp, already optimized and preloaded with fetchPriority=high",
+  "fontAnalysis": "Font preloaded as woff2 — not a bottleneck",
+  "recommendations": [
+    "LOW RISK: Add font-display: swap to prevent font blocking render",
+    "LOW RISK: Audit polyfills — 91KB may include unnecessary polyfills for modern browsers",
+    "MEDIUM RISK: Lazy-load below-fold client components (HomePageClient handles tabs, filters, etc.)",
+    "MEDIUM RISK: Move analytics/Sentry init to afterInteractive script strategy",
+    "HIGH RISK: Code-split large framework chunks — may cause hydration issues"
+  ],
+  "quickWin": "Check if polyfills chunk can be reduced by updating browserslist target"
+}

@@ -1,0 +1,385 @@
+{
+  "issueNumber": "bro-6450-we-2015-16-b",
+  "planId": "e2507c5c-1007-4b8c-aec4-a144854995bc",
+  "status": "applied",
+  "createdAt": "2026-10-27T23:55:49.868Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Add 11 closed West End production(s) for 2015-2016 from the historical backfill (we-historical:theatricalia; BRO-6450).",
+    "steps": [
+      "Append mrs-henderson-presents-west-end-2016 (Noël Coward Theatre, 2016-02-09 to 2016-06-18)",
+      "Append motown-the-musical-west-end-2016 (Shaftesbury Theatre, 2016-03-08 to 2019-04-20)",
+      "Append how-the-other-half-loves-west-end-2016 (Theatre Royal Haymarket, 2016-03-31 to 2016-06-25)",
+      "Append the-comedy-about-a-bank-robbery-west-end-2016 (Criterion Theatre, 2016-03-31 to 2020-03-15)",
+      "Append cyprus-avenue-west-end-2016 (Royal Court, 2016-04-05 to 2016-05-07)",
+      "Append the-taming-of-the-shrew-west-end-2016 (Arts Theatre, 2016-04-05 to 2016-05-01)",
+      "Append all-that-fall-west-end-2016 (Arts Theatre, 2016-04-13 to 2016-05-14)",
+      "Append aladdin-west-end-2016 (Prince Edward Theatre, 2016-06-15 to 2019-08-31)",
+      "Append the-truth-west-end-2016 (Wyndham's Theatre, 2016-06-27 to 2016-09-03)",
+      "Append 1984-west-end-2016 (Playhouse Theatre, 2016-06-28 to 2016-10-29)",
+      "Append dead-funny-west-end-2016 (Vaudeville Theatre, 2016-08-27 to 2017-02-04)"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "add-show",
+        "show": {
+          "id": "mrs-henderson-presents-west-end-2016",
+          "title": "Mrs Henderson Presents",
+          "slug": "mrs-henderson-presents-west-end-2016",
+          "venue": "Noël Coward Theatre",
+          "previewsStartDate": "2016-02-09",
+          "openingDate": "2016-02-09",
+          "closingDate": "2016-06-18",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "musical",
+          "tags": [
+            "historical"
+          ],
+          "season": "2015-2016",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:49.567Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/gnd/mrs-henderson-presents/production/12nf"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "motown-the-musical-west-end-2016",
+          "title": "Motown The Musical",
+          "slug": "motown-the-musical-west-end-2016",
+          "venue": "Shaftesbury Theatre",
+          "previewsStartDate": "2016-03-08",
+          "openingDate": "2016-03-08",
+          "closingDate": "2019-04-20",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "musical",
+          "tags": [
+            "historical"
+          ],
+          "season": "2015-2016",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:49.600Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/g0m/motown-the-musical/production/1175"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "how-the-other-half-loves-west-end-2016",
+          "title": "How the Other Half Loves",
+          "slug": "how-the-other-half-loves-west-end-2016",
+          "venue": "Theatre Royal Haymarket",
+          "previewsStartDate": "2016-03-31",
+          "openingDate": "2016-03-31",
+          "closingDate": "2016-06-25",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2015-2016",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:49.632Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/4sn/how-the-other-half-loves/production/108t"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-comedy-about-a-bank-robbery-west-end-2016",
+          "title": "The Comedy About A Bank Robbery",
+          "slug": "the-comedy-about-a-bank-robbery-west-end-2016",
+          "venue": "Criterion Theatre",
+          "previewsStartDate": "2016-03-31",
+          "openingDate": "2016-03-31",
+          "closingDate": "2020-03-15",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2015-2016",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:49.654Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/eps/the-comedy-about-a-bank-robbery/production/13jh"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "cyprus-avenue-west-end-2016",
+          "title": "Cyprus Avenue",
+          "slug": "cyprus-avenue-west-end-2016",
+          "venue": "Royal Court",
+          "previewsStartDate": "2016-04-05",
+          "openingDate": "2016-04-05",
+          "closingDate": "2016-05-07",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2015-2016",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:49.678Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/f7j/cyprus-avenue/production/zg9"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-taming-of-the-shrew-west-end-2016",
+          "title": "The Taming of the Shrew",
+          "slug": "the-taming-of-the-shrew-west-end-2016",
+          "venue": "Arts Theatre",
+          "previewsStartDate": "2016-04-05",
+          "openingDate": "2016-04-05",
+          "closingDate": "2016-05-01",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2015-2016",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:49.697Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/1f/the-taming-of-the-shrew/production/12er"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "all-that-fall-west-end-2016",
+          "title": "All That Fall",
+          "slug": "all-that-fall-west-end-2016",
+          "venue": "Arts Theatre",
+          "previewsStartDate": "2016-04-13",
+          "openingDate": "2016-04-13",
+          "closingDate": "2016-05-14",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2015-2016",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:49.719Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/dbj/all-that-fall/production/12et"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "aladdin-west-end-2016",
+          "title": "Aladdin",
+          "slug": "aladdin-west-end-2016",
+          "venue": "Prince Edward Theatre",
+          "previewsStartDate": "2016-06-15",
+          "openingDate": "2016-06-15",
+          "closingDate": "2019-08-31",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "musical",
+          "tags": [
+            "historical"
+          ],
+          "season": "2015-2016",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:49.748Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/ggb/disneys-aladdin/production/129x"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-truth-west-end-2016",
+          "title": "The Truth",
+          "slug": "the-truth-west-end-2016",
+          "venue": "Wyndham's Theatre",
+          "previewsStartDate": "2016-06-27",
+          "openingDate": "2016-06-27",
+          "closingDate": "2016-09-03",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2015-2016",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:49.770Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/e4g/the-truth/production/wh8"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "1984-west-end-2016",
+          "title": "1984",
+          "slug": "1984-west-end-2016",
+          "venue": "Playhouse Theatre",
+          "previewsStartDate": "2016-06-28",
+          "openingDate": "2016-06-28",
+          "closingDate": "2016-10-29",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2015-2016",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:49.796Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/e7m/1984/production/wry"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "dead-funny-west-end-2016",
+          "title": "Dead Funny",
+          "slug": "dead-funny-west-end-2016",
+          "venue": "Vaudeville Theatre",
+          "previewsStartDate": "2016-08-27",
+          "openingDate": "2016-08-27",
+          "closingDate": "2017-02-04",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2015-2016",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:49.832Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/62f/dead-funny/production/x3s"
+          ]
+        }
+      }
+    ]
+  },
+  "executedAt": "2026-10-28T01:23:36.997Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added mrs-henderson-presents-west-end-2016"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added motown-the-musical-west-end-2016"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added how-the-other-half-loves-west-end-2016"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-comedy-about-a-bank-robbery-west-end-2016"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added cyprus-avenue-west-end-2016"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-taming-of-the-shrew-west-end-2016"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added all-that-fall-west-end-2016"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added aladdin-west-end-2016"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-truth-west-end-2016"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added 1984-west-end-2016"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added dead-funny-west-end-2016"
+    }
+  ],
+  "executedIn": "ci"
+}

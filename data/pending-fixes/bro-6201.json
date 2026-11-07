@@ -1,0 +1,149 @@
+{
+  "issueNumber": "bro-6201",
+  "planId": "0158c3d3-ca19-4667-8834-04d0afe58dd2",
+  "status": "applied",
+  "createdAt": "2026-10-27T22:59:36.973Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Add synopses for two national tours whose AWAITING auto-fix window expired",
+    "steps": [
+      "shows.json: the-bodyguard-tour-2026.synopsis",
+      "shows.json: the-unauthorized-hallmark-ish-parody-musical-tour-2026.synopsis"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-bodyguard-tour-2026",
+        "field": "synopsis",
+        "oldValue": null,
+        "newValue": "Based on the 1992 film, a former Secret Service agent takes a job guarding a pop star from a stalker, and the two fall for each other. Features hits including \"I Will Always Love You.\"",
+        "description": "shows.json: the-bodyguard-tour-2026.synopsis"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-unauthorized-hallmark-ish-parody-musical-tour-2026",
+        "field": "synopsis",
+        "oldValue": null,
+        "newValue": "Holly, an overworked big-city executive, returns to her quirky hometown to help her mother run the family business and reconnects with an old flame who is now the local sheriff. A cookie contest cheating conspiracy, a moose on the loose and a looming corporate merger test whether love and community matter more than work.",
+        "description": "shows.json: the-unauthorized-hallmark-ish-parody-musical-tour-2026.synopsis"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "forbidden-broadway-merrily-we-stole-a-song-off-broadway-2024/times-square-chronicles--suzanna-bowling.json",
+        "destPath": null,
+        "description": "Delete misspelled-byline duplicate: Suzanna (BRO-4156 double-count shape)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "im-not-running-west-end-2018/sunday-times--davis-jays.json",
+        "destPath": null,
+        "description": "Delete misspelled-byline duplicate: Davis Jays typo of David Jays (BRO-4156 double-count shape)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "im-not-running-west-end-2018/telegraph--dominic-cavandish.json",
+        "destPath": null,
+        "description": "Delete misspelled-byline duplicate: Cavandish typo, identical text to Cavendish file (BRO-4156 double-count shape)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "oh-mary-off-broadway-2024/nytimes--joshua-baron.json",
+        "destPath": null,
+        "description": "Delete misspelled-byline duplicate: Baron typo of Barone, same URL (BRO-4156 double-count shape)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "rockets-and-blue-lights-west-end-2021/london-theatre--hayley-bachrach.json",
+        "destPath": null,
+        "description": "Delete misspelled-byline duplicate: Hayley typo of Hailey (BRO-4156 double-count shape)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-phantom-of-the-opera-west-end-1986/express-uk--stephan-kyriazis.json",
+        "destPath": null,
+        "description": "Delete misspelled-byline duplicate: Stephan typo of Stefan (BRO-4156 double-count shape)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "angels-in-america-west-end-2017/timeout-london--andrzej-lukowski.json",
+        "destPath": null,
+        "description": "Delete misspelled-byline duplicate: duplicate of the URL-bearing Lukowski review (BRO-4156 double-count shape)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "angels-in-america-west-end-2017/timeout-london--andrjez-lukowski.json",
+        "field": "criticName",
+        "oldValue": "Andrjez Lukowski",
+        "newValue": "Andrzej Lukowski",
+        "description": "Fix byline typo"
+      }
+    ]
+  },
+  "executedAt": "2026-10-28T00:31:59.869Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for the-bodyguard-tour-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for the-unauthorized-hallmark-ish-parody-musical-tour-2026"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted forbidden-broadway-merrily-we-stole-a-song-off-broadway-2024/times-square-chronicles--suzanna-bowling.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted im-not-running-west-end-2018/sunday-times--davis-jays.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted im-not-running-west-end-2018/telegraph--dominic-cavandish.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted oh-mary-off-broadway-2024/nytimes--joshua-baron.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted rockets-and-blue-lights-west-end-2021/london-theatre--hayley-bachrach.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-phantom-of-the-opera-west-end-1986/express-uk--stephan-kyriazis.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted angels-in-america-west-end-2017/timeout-london--andrzej-lukowski.json"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "angels-in-america-west-end-2017/timeout-london--andrjez-lukowski.json criticName: \"Andrjez Lukowski\" -> \"Andrzej Lukowski\""
+    }
+  ],
+  "executedIn": "ci"
+}

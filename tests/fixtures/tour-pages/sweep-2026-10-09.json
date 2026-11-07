@@ -1,0 +1,1076 @@
+{
+  "_doc": "Expected outcome of every Tours To You page the 2026-10-09 sweep found that no tracked Broadway show titled (BRO-4931), run through classifier -> candidate -> buildTourEntry without writing. node scripts/check-tour-sweep.js --expect=tests/fixtures/tour-pages/sweep-2026-10-09.json [--live]. \"planned\" marks where the live pages disagreed with the plan; \"seen\" is what the page showed on asOf. Saved pages under pages/ are trimmed to the segment under test; wiki/ holds the infobox and tour sentences of the Wikipedia article.",
+  "asOf": "2026-10-09",
+  "pages": {
+    "twas-the-night-before": {
+      "pageTitle": "‘Twas the Night Before…",
+      "expect": "skip-event",
+      "seen": {
+        "stopsOnPage": 41,
+        "status": "booked-ahead",
+        "start": "2026-11-13",
+        "end": "2027-01-02",
+        "stopsInSegment": 13,
+        "class": "event (override)"
+      }
+    },
+    "hallmarkish": {
+      "pageTitle": "The Unauthorized Hallmark(ish) Parody Musical",
+      "expect": [
+        "create",
+        "skip-tracked"
+      ],
+      "id": "the-unauthorized-hallmark-ish-parody-musical-tour-2026",
+      "parent": null,
+      "seen": {
+        "stopsOnPage": 24,
+        "status": "booked-ahead",
+        "start": "2026-11-20",
+        "end": "2026-12-30",
+        "stopsInSegment": 24,
+        "class": "production (override)"
+      },
+      "saved": true
+    },
+    "mexodus": {
+      "pageTitle": "Mexodus",
+      "expect": "suggest",
+      "seen": {
+        "stopsOnPage": 6,
+        "status": "running",
+        "start": "2026-07-08",
+        "end": "2027-08-01",
+        "stopsInSegment": 6,
+        "class": "production (title-match)"
+      },
+      "reason": "no launch date confirmed (by Wikipedia, a BWW roundup, or a fresh Tours To You launch)",
+      "saved": true
+    },
+    "beaches": {
+      "pageTitle": "Beaches: A New Musical",
+      "expect": "skip-nothing-running",
+      "seen": {
+        "stopsOnPage": 0,
+        "status": "no-engagements",
+        "start": null,
+        "end": null,
+        "stopsInSegment": 0,
+        "class": "production (title-match)"
+      },
+      "saved": true
+    },
+    "the-lord-of-the-rings": {
+      "pageTitle": "The Lord of the Rings – A Musical Tale",
+      "expect": "skip-nothing-running",
+      "seen": {
+        "stopsOnPage": 0,
+        "status": "no-engagements",
+        "start": null,
+        "end": null,
+        "stopsInSegment": 0,
+        "class": "unclassified (none)"
+      },
+      "saved": true
+    },
+    "bat-out-of-hell-1": {
+      "pageTitle": "Bat Out Of Hell",
+      "expect": "skip-nothing-running",
+      "seen": {
+        "stopsOnPage": 39,
+        "status": "none-now",
+        "start": null,
+        "end": null,
+        "stopsInSegment": 0,
+        "class": "unclassified (none)"
+      },
+      "saved": true
+    },
+    "the-mousetrap": {
+      "pageTitle": "The Mousetrap",
+      "expect": "skip-nothing-running",
+      "seen": {
+        "stopsOnPage": 0,
+        "status": "no-engagements",
+        "start": null,
+        "end": null,
+        "stopsInSegment": 0,
+        "class": "unclassified (none)"
+      },
+      "saved": true
+    },
+    "heathers-the-musical": {
+      "pageTitle": "Heathers the Musical",
+      "expect": "suggest",
+      "planned": "create",
+      "seen": {
+        "stopsOnPage": 7,
+        "status": "booked-ahead",
+        "start": "2027-05-15",
+        "end": "2027-08-29",
+        "stopsInSegment": 7,
+        "class": "production (title-match)"
+      },
+      "reason": "tour of a off-broadway production (heathers-the-musical-off-broadway-2025) needs more than the schedule alone: launch evidence is tourstoyou-upcoming; Wikipedia, a BWW roundup or a hand-verified launc",
+      "saved": true
+    },
+    "the-bodyguard": {
+      "pageTitle": "The Bodyguard",
+      "expect": [
+        "suggest",
+        "skip-tracked"
+      ],
+      "planned": "create",
+      "seen": {
+        "stopsOnPage": 47,
+        "status": "running",
+        "start": "2026-10-15",
+        "end": "2027-07-11",
+        "stopsInSegment": 47,
+        "class": "unclassified (none)"
+      },
+      "reason": "no launch date confirmed (by Wikipedia, a BWW roundup, or a fresh Tours To You launch)",
+      "saved": true
+    },
+    "show-page-template": {
+      "pageTitle": "Show page template",
+      "expect": "skip-template",
+      "seen": {
+        "stopsOnPage": 82,
+        "status": "none-now",
+        "start": null,
+        "end": null,
+        "stopsInSegment": 0,
+        "class": "template (override)"
+      }
+    },
+    "rain-a-beatles-christmas-tribute": {
+      "pageTitle": "Rain: A Beatles Christmas Tribute",
+      "expect": "skip-event",
+      "planned": "skip-nothing-running",
+      "seen": {
+        "stopsOnPage": 33,
+        "status": "none-now",
+        "start": null,
+        "end": null,
+        "stopsInSegment": 0,
+        "class": "event (keyword)"
+      },
+      "saved": true
+    },
+    "the-cat-in-the-hat": {
+      "pageTitle": "Dr. Seuss’ The Cat in the Hat",
+      "expect": [
+        "create",
+        "skip-tracked"
+      ],
+      "id": "dr-seuss-the-cat-in-the-hat-tour-2027",
+      "parent": null,
+      "seen": {
+        "stopsOnPage": 80,
+        "status": "booked-ahead",
+        "start": "2027-01-23",
+        "end": "2027-04-04",
+        "stopsInSegment": 40,
+        "class": "production (override)"
+      },
+      "saved": true
+    },
+    "austens-pride": {
+      "pageTitle": "Austen’s Pride",
+      "expect": "skip-nothing-running",
+      "seen": {
+        "stopsOnPage": 8,
+        "status": "none-now",
+        "start": null,
+        "end": null,
+        "stopsInSegment": 0,
+        "class": "unclassified (none)"
+      },
+      "saved": true
+    },
+    "primary-trust": {
+      "pageTitle": "Primary Trust",
+      "expect": "skip-nothing-running",
+      "seen": {
+        "stopsOnPage": 2,
+        "status": "none-now",
+        "start": null,
+        "end": null,
+        "stopsInSegment": 0,
+        "class": "production (title-match)"
+      },
+      "saved": true
+    },
+    "hamnet": {
+      "pageTitle": "Hamnet",
+      "expect": "skip-nothing-running",
+      "seen": {
+        "stopsOnPage": 3,
+        "status": "none-now",
+        "start": null,
+        "end": null,
+        "stopsInSegment": 0,
+        "class": "unclassified (none)"
+      },
+      "saved": true
+    },
+    "my-first-ex-husband": {
+      "pageTitle": "My First Ex-Husband",
+      "expect": "skip-nothing-running",
+      "seen": {
+        "stopsOnPage": 9,
+        "status": "none-now",
+        "start": null,
+        "end": null,
+        "stopsInSegment": 0,
+        "class": "unclassified (none)"
+      },
+      "saved": true
+    },
+    "conversations-with-mother": {
+      "pageTitle": "Conversations with Mother",
+      "expect": "skip-nothing-running",
+      "seen": {
+        "stopsOnPage": 0,
+        "status": "no-engagements",
+        "start": null,
+        "end": null,
+        "stopsInSegment": 0,
+        "class": "unclassified (none)"
+      },
+      "saved": true
+    },
+    "miracle-on-34th-street-the-musical": {
+      "pageTitle": "Miracle on 34th Street The Musical",
+      "expect": "skip-nothing-running",
+      "seen": {
+        "stopsOnPage": 8,
+        "status": "none-now",
+        "start": null,
+        "end": null,
+        "stopsInSegment": 0,
+        "class": "unclassified (none)"
+      },
+      "saved": true
+    },
+    "miscellaneous-shows": {
+      "pageTitle": "Miscellaneous Shows",
+      "expect": "skip-aggregator",
+      "seen": {
+        "stopsOnPage": 234,
+        "status": "running",
+        "start": "2024-06-05",
+        "end": "2027-05-23",
+        "stopsInSegment": 234,
+        "class": "aggregator (override)"
+      }
+    },
+    "holiday-shows": {
+      "pageTitle": "Holiday Shows",
+      "expect": "skip-aggregator",
+      "seen": {
+        "stopsOnPage": 374,
+        "status": "running",
+        "start": "2026-10-31",
+        "end": "2027-01-03",
+        "stopsInSegment": 374,
+        "class": "aggregator (override)"
+      }
+    },
+    "broadways-next-hit-musical": {
+      "pageTitle": "Broadway’s Next Hit Musical",
+      "expect": "skip-event",
+      "seen": {
+        "stopsOnPage": 39,
+        "status": "running",
+        "start": "2024-09-13",
+        "end": "2027-04-16",
+        "stopsInSegment": 39,
+        "class": "event (override)"
+      }
+    },
+    "saw-the-musical-the-unauthorized-parody-of-saw": {
+      "pageTitle": "SAW The Musical: The Unauthorized Parody of Saw",
+      "expect": "skip-nothing-running",
+      "seen": {
+        "stopsOnPage": 45,
+        "status": "none-now",
+        "start": null,
+        "end": null,
+        "stopsInSegment": 0,
+        "class": "unclassified (none)"
+      },
+      "saved": true
+    },
+    "forbidden-broadway-merrily-we-stole-a-song": {
+      "pageTitle": "Forbidden Broadway: Merrily We Stole a Song",
+      "expect": "skip-nothing-running",
+      "seen": {
+        "stopsOnPage": 14,
+        "status": "none-now",
+        "start": null,
+        "end": null,
+        "stopsInSegment": 0,
+        "class": "unclassified (none)"
+      },
+      "saved": true
+    },
+    "all-the-devils-are-here": {
+      "pageTitle": "All The Devils Are Here: How Shakespeare Invented The Villain",
+      "expect": [
+        "needs-classification",
+        "skip-tracked"
+      ],
+      "planned": "suggest",
+      "seen": {
+        "stopsOnPage": 10,
+        "status": "running",
+        "start": "2026-06-03",
+        "end": "2027-08-07",
+        "stopsInSegment": 8,
+        "class": "unclassified (none)"
+      },
+      "reason": "no tracked production, rule or Wikipedia infobox says what this page is",
+      "saved": true
+    },
+    "sesame-street-the-musical": {
+      "pageTitle": "Sesame Street the Musical",
+      "expect": "skip-nothing-running",
+      "seen": {
+        "stopsOnPage": 2,
+        "status": "none-now",
+        "start": null,
+        "end": null,
+        "stopsInSegment": 0,
+        "class": "unclassified (none)"
+      },
+      "saved": true
+    },
+    "lord-of-the-dance": {
+      "pageTitle": "Lord of the Dance",
+      "expect": "skip-event",
+      "planned": "skip-nothing-running",
+      "seen": {
+        "stopsOnPage": 76,
+        "status": "none-now",
+        "start": null,
+        "end": null,
+        "stopsInSegment": 0,
+        "class": "event (override)"
+      }
+    },
+    "the-hip-hop-nutcracker": {
+      "pageTitle": "The Hip Hop Nutcracker",
+      "expect": "skip-event",
+      "seen": {
+        "stopsOnPage": 77,
+        "status": "booked-ahead",
+        "start": "2026-11-14",
+        "end": "2027-01-03",
+        "stopsInSegment": 20,
+        "class": "event (override)"
+      }
+    },
+    "potted-potter": {
+      "pageTitle": "Potted Potter",
+      "expect": "skip-too-few-stops",
+      "seen": {
+        "stopsOnPage": 26,
+        "status": "booked-ahead",
+        "start": "2026-12-15",
+        "end": "2027-01-10",
+        "stopsInSegment": 3,
+        "class": "production (override)"
+      },
+      "saved": true
+    },
+    "the-illusionists-1": {
+      "pageTitle": "The Illusionists",
+      "expect": "skip-event",
+      "planned": "skip-nothing-running",
+      "seen": {
+        "stopsOnPage": 1,
+        "status": "none-now",
+        "start": null,
+        "end": null,
+        "stopsInSegment": 0,
+        "class": "event (keyword)"
+      },
+      "saved": true
+    },
+    "cirque-musica-holiday-wonderland": {
+      "pageTitle": "Cirque Musica Holiday Wonderland",
+      "expect": "skip-event",
+      "seen": {
+        "stopsOnPage": 253,
+        "status": "booked-ahead",
+        "start": "2026-11-17",
+        "end": "2026-12-27",
+        "stopsInSegment": 57,
+        "class": "event (override)"
+      }
+    },
+    "message-in-a-bottle": {
+      "pageTitle": "Message In A Bottle",
+      "expect": "skip-nothing-running",
+      "seen": {
+        "stopsOnPage": 10,
+        "status": "none-now",
+        "start": null,
+        "end": null,
+        "stopsInSegment": 0,
+        "class": "unclassified (none)"
+      },
+      "saved": true
+    },
+    "dolly-partons-smoky-mountain-christmas-carol": {
+      "pageTitle": "Dolly Parton’s Smoky Mountain Christmas Carol",
+      "expect": [
+        "create",
+        "skip-tracked"
+      ],
+      "id": "dolly-partons-smoky-mountain-christmas-carol-tour-2026",
+      "parent": null,
+      "seen": {
+        "stopsOnPage": 53,
+        "status": "booked-ahead",
+        "start": "2026-11-13",
+        "end": "2026-12-23",
+        "stopsInSegment": 26,
+        "class": "production (override)"
+      },
+      "saved": true
+    },
+    "mystic-pizza": {
+      "pageTitle": "Mystic Pizza",
+      "expect": [
+        "suggest",
+        "skip-tracked"
+      ],
+      "planned": "create",
+      "seen": {
+        "stopsOnPage": 49,
+        "status": "running",
+        "start": "2026-09-26",
+        "end": "2027-04-01",
+        "stopsInSegment": 40,
+        "class": "production (title-match)"
+      },
+      "reason": "no launch date confirmed (by Wikipedia, a BWW roundup, or a fresh Tours To You launch)",
+      "saved": true
+    },
+    "clue": {
+      "pageTitle": "Clue",
+      "expect": [
+        "needs-classification",
+        "skip-tracked"
+      ],
+      "planned": "suggest",
+      "seen": {
+        "stopsOnPage": 166,
+        "status": "running",
+        "start": "2024-02-27",
+        "end": "2027-03-14",
+        "stopsInSegment": 166,
+        "class": "unclassified (none)"
+      },
+      "reason": "the Wikipedia article \"Clue (musical)\" never mentions a tour, so it may be a different production of the title",
+      "saved": true
+    },
+    "forbidden-broadway-the-next-generation": {
+      "pageTitle": "Forbidden Broadway: The Next Generation",
+      "expect": "skip-nothing-running",
+      "seen": {
+        "stopsOnPage": 28,
+        "status": "none-now",
+        "start": null,
+        "end": null,
+        "stopsInSegment": 0,
+        "class": "unclassified (none)"
+      },
+      "saved": true
+    },
+    "winnie-the-pooh": {
+      "pageTitle": "Winnie the Pooh",
+      "expect": "skip-nothing-running",
+      "seen": {
+        "stopsOnPage": 52,
+        "status": "none-now",
+        "start": null,
+        "end": null,
+        "stopsInSegment": 0,
+        "class": "unclassified (none)"
+      },
+      "saved": true
+    },
+    "respect": {
+      "pageTitle": "R.E.S.P.E.C.T.",
+      "expect": "skip-nothing-running",
+      "seen": {
+        "stopsOnPage": 116,
+        "status": "none-now",
+        "start": null,
+        "end": null,
+        "stopsInSegment": 0,
+        "class": "unclassified (none)"
+      },
+      "saved": true
+    },
+    "emojiland-the-musical": {
+      "pageTitle": "Emojiland the Musical",
+      "expect": "skip-nothing-running",
+      "seen": {
+        "stopsOnPage": 5,
+        "status": "none-now",
+        "start": null,
+        "end": null,
+        "stopsInSegment": 0,
+        "class": "unclassified (none)"
+      },
+      "saved": true
+    },
+    "six-the-musical-aragon": {
+      "pageTitle": "Six the Musical (Aragon)",
+      "expect": "skip-company",
+      "seen": {
+        "stopsOnPage": 17,
+        "status": "none-now",
+        "start": null,
+        "end": null,
+        "stopsInSegment": 0,
+        "class": "company (override)"
+      }
+    },
+    "six-the-musical-boleyn": {
+      "pageTitle": "Six the Musical (Boleyn)",
+      "expect": "skip-company",
+      "seen": {
+        "stopsOnPage": 161,
+        "status": "running",
+        "start": "2022-09-20",
+        "end": "2027-06-27",
+        "stopsInSegment": 161,
+        "class": "company (override)"
+      }
+    },
+    "we-will-rock-you": {
+      "pageTitle": "We Will Rock You",
+      "expect": "skip-nothing-running",
+      "seen": {
+        "stopsOnPage": 0,
+        "status": "no-engagements",
+        "start": null,
+        "end": null,
+        "stopsInSegment": 0,
+        "class": "unclassified (none)"
+      },
+      "saved": true
+    },
+    "the-office-a-musical-parody": {
+      "pageTitle": "The Office! A Musical Parody",
+      "expect": "skip-nothing-running",
+      "seen": {
+        "stopsOnPage": 12,
+        "status": "none-now",
+        "start": null,
+        "end": null,
+        "stopsInSegment": 0,
+        "class": "production (title-match)"
+      },
+      "saved": true
+    },
+    "the-simon-and-garfunkel-story": {
+      "pageTitle": "The Simon & Garfunkel Story",
+      "expect": "skip-event",
+      "seen": {
+        "stopsOnPage": 438,
+        "status": "booked-ahead",
+        "start": "2027-02-07",
+        "end": "2027-05-23",
+        "stopsInSegment": 54,
+        "class": "event (override)"
+      }
+    },
+    "the-choir-of-man": {
+      "pageTitle": "The Choir of Man",
+      "expect": "skip-nothing-running",
+      "seen": {
+        "stopsOnPage": 90,
+        "status": "none-now",
+        "start": null,
+        "end": null,
+        "stopsInSegment": 0,
+        "class": "unclassified (none)"
+      },
+      "saved": true
+    },
+    "spamilton-an-american-parody": {
+      "pageTitle": "Spamilton: An American Parody",
+      "expect": [
+        "suggest",
+        "skip-tracked"
+      ],
+      "seen": {
+        "stopsOnPage": 59,
+        "status": "running",
+        "start": "2025-01-23",
+        "end": "2026-10-10",
+        "stopsInSegment": 31,
+        "class": "unclassified (none)"
+      },
+      "reason": "no launch date confirmed (by Wikipedia, a BWW roundup, or a fresh Tours To You launch)",
+      "saved": true
+    },
+    "riverdance": {
+      "pageTitle": "Riverdance",
+      "expect": "skip-event",
+      "seen": {
+        "stopsOnPage": 307,
+        "status": "booked-ahead",
+        "start": "2027-01-22",
+        "end": "2027-05-23",
+        "stopsInSegment": 36,
+        "class": "event (override)"
+      }
+    },
+    "rain-a-tribute-to-the-beatles": {
+      "pageTitle": "Rain: A Tribute to the Beatles",
+      "expect": "skip-event",
+      "planned": "skip-nothing-running",
+      "seen": {
+        "stopsOnPage": 300,
+        "status": "none-now",
+        "start": null,
+        "end": null,
+        "stopsInSegment": 0,
+        "class": "event (keyword)"
+      },
+      "saved": true
+    },
+    "menopause-the-musical": {
+      "pageTitle": "Menopause the Musical",
+      "expect": [
+        "suggest",
+        "skip-tracked"
+      ],
+      "seen": {
+        "stopsOnPage": 230,
+        "status": "running",
+        "start": "2026-07-14",
+        "end": "2027-05-23",
+        "stopsInSegment": 56,
+        "class": "unclassified (none)"
+      },
+      "reason": "no launch date confirmed (by Wikipedia, a BWW roundup, or a fresh Tours To You launch)",
+      "saved": true
+    },
+    "madagascar-the-musical": {
+      "pageTitle": "Madagascar the Musical",
+      "expect": "skip-nothing-running",
+      "seen": {
+        "stopsOnPage": 129,
+        "status": "none-now",
+        "start": null,
+        "end": null,
+        "stopsInSegment": 0,
+        "class": "unclassified (none)"
+      },
+      "saved": true
+    },
+    "friends-the-musical-parody": {
+      "pageTitle": "Friends! The Musical Parody",
+      "expect": "skip-nothing-running",
+      "seen": {
+        "stopsOnPage": 149,
+        "status": "none-now",
+        "start": null,
+        "end": null,
+        "stopsInSegment": 0,
+        "class": "production (title-match)"
+      },
+      "saved": true
+    },
+    "forever-young": {
+      "pageTitle": "Forever Young",
+      "expect": "skip-nothing-running",
+      "seen": {
+        "stopsOnPage": 41,
+        "status": "none-now",
+        "start": null,
+        "end": null,
+        "stopsInSegment": 0,
+        "class": "unclassified (none)"
+      },
+      "saved": true
+    },
+    "buddy-the-buddy-holly-story": {
+      "pageTitle": "Buddy: The Buddy Holly Story",
+      "expect": "skip-nothing-running",
+      "seen": {
+        "stopsOnPage": 59,
+        "status": "none-now",
+        "start": null,
+        "end": null,
+        "stopsInSegment": 0,
+        "class": "unclassified (none)"
+      },
+      "saved": true
+    },
+    "blue-man-group": {
+      "pageTitle": "Blue Man Group",
+      "expect": "skip-event",
+      "planned": "skip-nothing-running",
+      "seen": {
+        "stopsOnPage": 219,
+        "status": "none-now",
+        "start": null,
+        "end": null,
+        "stopsInSegment": 0,
+        "class": "event (override)"
+      }
+    },
+    "the-illusionists-magic-of-the-holidays": {
+      "pageTitle": "The Illusionists: Magic of the Holidays",
+      "expect": "skip-event",
+      "planned": "skip-nothing-running",
+      "seen": {
+        "stopsOnPage": 106,
+        "status": "none-now",
+        "start": null,
+        "end": null,
+        "stopsInSegment": 0,
+        "class": "event (keyword)"
+      },
+      "saved": true
+    },
+    "the-elf-on-the-shelf-the-musical": {
+      "pageTitle": "The Elf on the Shelf: The Musical",
+      "expect": "skip-nothing-running",
+      "seen": {
+        "stopsOnPage": 59,
+        "status": "none-now",
+        "start": null,
+        "end": null,
+        "stopsInSegment": 0,
+        "class": "unclassified (none)"
+      },
+      "saved": true
+    },
+    "rudolph-the-red-nosed-reindeer-the-musical": {
+      "pageTitle": "Rudolph the Red-Nosed Reindeer: The Musical",
+      "expect": "skip-nothing-running",
+      "seen": {
+        "stopsOnPage": 148,
+        "status": "none-now",
+        "start": null,
+        "end": null,
+        "stopsInSegment": 0,
+        "class": "unclassified (none)"
+      },
+      "saved": true
+    },
+    "million-dollar-quartet-christmas": {
+      "pageTitle": "Million Dollar Quartet Christmas",
+      "expect": "skip-nothing-running",
+      "seen": {
+        "stopsOnPage": 65,
+        "status": "none-now",
+        "start": null,
+        "end": null,
+        "stopsInSegment": 0,
+        "class": "unclassified (none)"
+      },
+      "saved": true
+    },
+    "mannheim-steamroller-christmas": {
+      "pageTitle": "Mannheim Steamroller Christmas",
+      "expect": "skip-event",
+      "seen": {
+        "stopsOnPage": 507,
+        "status": "booked-ahead",
+        "start": "2026-11-11",
+        "end": "2026-12-30",
+        "stopsInSegment": 68,
+        "class": "event (override)"
+      }
+    },
+    "cirque-dreams-holidaze": {
+      "pageTitle": "Cirque Dreams Holidaze",
+      "expect": "skip-event",
+      "seen": {
+        "stopsOnPage": 322,
+        "status": "booked-ahead",
+        "start": "2026-11-19",
+        "end": "2026-12-27",
+        "stopsInSegment": 33,
+        "class": "event (override)"
+      }
+    },
+    "a-magical-cirque-christmas": {
+      "pageTitle": "A Magical Cirque Christmas",
+      "expect": "skip-event",
+      "seen": {
+        "stopsOnPage": 243,
+        "status": "booked-ahead",
+        "start": "2026-11-13",
+        "end": "2026-12-30",
+        "stopsInSegment": 34,
+        "class": "event (override)"
+      }
+    },
+    "a-charlie-brown-christmas": {
+      "pageTitle": "A Charlie Brown Christmas",
+      "expect": "skip-event",
+      "seen": {
+        "stopsOnPage": 239,
+        "status": "booked-ahead",
+        "start": "2026-11-12",
+        "end": "2026-12-27",
+        "stopsInSegment": 36,
+        "class": "event (override)"
+      }
+    },
+    "tina-the-tina-turner-musical": {
+      "pageTitle": "Tina – The Tina Turner Musical",
+      "expect": "skip-nothing-running",
+      "seen": {
+        "stopsOnPage": 194,
+        "status": "none-now",
+        "start": null,
+        "end": null,
+        "stopsInSegment": 0,
+        "class": "unclassified (none)"
+      },
+      "saved": true
+    },
+    "the-woman-in-black": {
+      "pageTitle": "The Woman in Black",
+      "expect": "skip-nothing-running",
+      "seen": {
+        "stopsOnPage": 7,
+        "status": "none-now",
+        "start": null,
+        "end": null,
+        "stopsInSegment": 0,
+        "class": "unclassified (none)"
+      },
+      "saved": true
+    },
+    "dear-evan-hansen-show-template": {
+      "pageTitle": "Dear Evan Hansen SHOW TEMPLATE",
+      "expect": "skip-template",
+      "seen": {
+        "stopsOnPage": 27,
+        "status": "none-now",
+        "start": null,
+        "end": null,
+        "stopsInSegment": 0,
+        "class": "template (override)"
+      }
+    },
+    "may-we-all": {
+      "pageTitle": "May We All",
+      "expect": "skip-nothing-running",
+      "seen": {
+        "stopsOnPage": 0,
+        "status": "no-engagements",
+        "start": null,
+        "end": null,
+        "stopsInSegment": 0,
+        "class": "unclassified (none)"
+      },
+      "saved": true
+    },
+    "dear-evan-hansen-tester": {
+      "pageTitle": "Dear Evan Hansen TESTER",
+      "expect": "skip-template",
+      "seen": {
+        "stopsOnPage": 205,
+        "status": "running",
+        "start": "2026-10-10",
+        "end": "2027-06-27",
+        "stopsInSegment": 63,
+        "class": "template (override)"
+      }
+    },
+    "freestyle-love-supreme": {
+      "pageTitle": "Freestyle Love Supreme",
+      "expect": "skip-nothing-running",
+      "seen": {
+        "stopsOnPage": 15,
+        "status": "none-now",
+        "start": null,
+        "end": null,
+        "stopsInSegment": 0,
+        "class": "unclassified (none)"
+      },
+      "saved": true
+    },
+    "hamilton-peggy": {
+      "pageTitle": "Hamilton (Peggy)",
+      "expect": "skip-company",
+      "seen": {
+        "stopsOnPage": 37,
+        "status": "none-now",
+        "start": null,
+        "end": null,
+        "stopsInSegment": 0,
+        "class": "company (override)"
+      }
+    },
+    "1776-tour": {
+      "pageTitle": "1776",
+      "expect": "skip-nothing-running",
+      "seen": {
+        "stopsOnPage": 30,
+        "status": "none-now",
+        "start": null,
+        "end": null,
+        "stopsInSegment": 0,
+        "class": "production (title-match)"
+      },
+      "saved": true
+    },
+    "the-new-colossus": {
+      "pageTitle": "The New Colossus",
+      "expect": "skip-nothing-running",
+      "seen": {
+        "stopsOnPage": 8,
+        "status": "none-now",
+        "start": null,
+        "end": null,
+        "stopsInSegment": 0,
+        "class": "unclassified (none)"
+      },
+      "saved": true
+    },
+    "an-officer-and-a-gentleman": {
+      "pageTitle": "An Officer and a Gentleman",
+      "expect": "skip-nothing-running",
+      "seen": {
+        "stopsOnPage": 100,
+        "status": "none-now",
+        "start": null,
+        "end": null,
+        "stopsInSegment": 0,
+        "class": "unclassified (none)"
+      },
+      "saved": true
+    },
+    "hamilton-philip": {
+      "pageTitle": "Hamilton (Philip)",
+      "expect": "skip-company",
+      "seen": {
+        "stopsOnPage": 98,
+        "status": "none-now",
+        "start": null,
+        "end": null,
+        "stopsInSegment": 0,
+        "class": "company (override)"
+      }
+    },
+    "hamilton-angelica": {
+      "pageTitle": "Hamilton (Angelica)",
+      "expect": "skip-company",
+      "seen": {
+        "stopsOnPage": 116,
+        "status": "running",
+        "start": "2025-09-09",
+        "end": "2027-09-12",
+        "stopsInSegment": 37,
+        "class": "company (override)"
+      }
+    },
+    "beautiful": {
+      "pageTitle": "Beautiful – The Carole King Musical",
+      "expect": "skip-nothing-running",
+      "seen": {
+        "stopsOnPage": 127,
+        "status": "none-now",
+        "start": null,
+        "end": null,
+        "stopsInSegment": 0,
+        "class": "production (title-match)"
+      },
+      "saved": true
+    },
+    "the-illusionists": {
+      "pageTitle": "The Illusionists",
+      "expect": "skip-event",
+      "planned": "skip-nothing-running",
+      "seen": {
+        "stopsOnPage": 4,
+        "status": "none-now",
+        "start": null,
+        "end": null,
+        "stopsInSegment": 0,
+        "class": "event (keyword)"
+      },
+      "saved": true
+    },
+    "stomp": {
+      "pageTitle": "Stomp",
+      "expect": "skip-event",
+      "seen": {
+        "stopsOnPage": 413,
+        "status": "booked-ahead",
+        "start": "2026-11-12",
+        "end": "2027-05-02",
+        "stopsInSegment": 30,
+        "class": "event (override)"
+      }
+    },
+    "the-spongebob-musical": {
+      "pageTitle": "The SpongeBob Musical",
+      "expect": "skip-nothing-running",
+      "seen": {
+        "stopsOnPage": 50,
+        "status": "none-now",
+        "start": null,
+        "end": null,
+        "stopsInSegment": 0,
+        "class": "unclassified (none)"
+      },
+      "saved": true
+    },
+    "bat-out-of-hell": {
+      "pageTitle": "Bat Out Of Hell",
+      "expect": "skip-nothing-running",
+      "seen": {
+        "stopsOnPage": 15,
+        "status": "none-now",
+        "start": null,
+        "end": null,
+        "stopsInSegment": 0,
+        "class": "unclassified (none)"
+      },
+      "saved": true
+    },
+    "the-wizard-of-oz": {
+      "pageTitle": "The Wizard of Oz",
+      "expect": "skip-nothing-running",
+      "seen": {
+        "stopsOnPage": 55,
+        "status": "none-now",
+        "start": null,
+        "end": null,
+        "stopsInSegment": 0,
+        "class": "unclassified (none)"
+      },
+      "saved": true
+    },
+    "love-never-dies": {
+      "pageTitle": "Love Never Dies",
+      "expect": "skip-nothing-running",
+      "seen": {
+        "stopsOnPage": 41,
+        "status": "none-now",
+        "start": null,
+        "end": null,
+        "stopsInSegment": 0,
+        "class": "unclassified (none)"
+      },
+      "saved": true
+    }
+  }
+}

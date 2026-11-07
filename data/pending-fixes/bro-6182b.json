@@ -1,0 +1,78 @@
+{
+  "issueNumber": "bro-6182b",
+  "planId": "f2a4e32f-ce40-46b8-98d8-28030eaff68d",
+  "status": "applied",
+  "createdAt": "2026-10-25T10:20:40.647Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6182: add Hair 2009 and Spider-Man 2011 commercial entries (shows landed by bro-6182)",
+    "steps": [
+      "add-commercial-entry",
+      "add-commercial-entry"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "add-commercial-entry",
+        "slug": "hair-2009",
+        "entry": {
+          "designation": "Windfall",
+          "recouped": true,
+          "recoupedDate": "2009-08",
+          "capitalization": 5760000,
+          "capitalizationSource": "New York Theatre Guide: Hair \"recoups its entire $5,760,000 investment\" (producers' announcement, 2009-08-07)",
+          "recoupedSource": "TheaterMania (2009-08-07): the Hair revival recouped its investment in just four months; producers announced it August 7, 2009",
+          "notes": "Hair (Al Hirschfeld Theatre, opened Mar 31, 2009, closed Jun 27, 2010). The Public Theater transfer from Shakespeare in the Park recouped about four months after opening. Capitalization is $5.76M per New York Theatre Guide and Broadway.com closing coverage; TheaterMania prints $5.67M, which looks like a transposition.",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://www.theatermania.com/news/broadways-hair-recoups-investment_18251/",
+              "date": "2009-08-07"
+            },
+            {
+              "type": "trade",
+              "url": "https://www.newyorktheatreguide.com/theatre-news/news/hair-recoups-its-entire-5760000-investment",
+              "date": "2009-08-07"
+            }
+          ]
+        }
+      },
+      {
+        "type": "add-commercial-entry",
+        "slug": "spider-man-turn-off-the-dark-2011",
+        "entry": {
+          "designation": "Did Not Recoup",
+          "designationBasis": "reported-loss",
+          "recouped": false,
+          "capitalization": 75000000,
+          "capitalizationSource": "Playbill (2013-11-20): the musical was \"capitalized at $75 million\"",
+          "notes": "Spider-Man: Turn Off the Dark (Foxwoods Theatre, previews began Nov 28, 2010, officially opened Jun 14, 2011, closed Jan 4, 2014). Playbill, citing the New York Times, reported it would have \"historic losses of up to $60 million\" at closing and averaged a weekly cost of over $1 million. A show representative called the Times' math \"dubious\" and confirmed no financials.",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://playbill.com/article/broadways-spider-man-turn-off-the-dark-will-have-lost-nearly-60-million-by-closing-date-com-211971",
+              "date": "2013-11-20"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "executedAt": "2026-10-25T10:47:56.229Z",
+  "results": [
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added hair-2009 (Windfall)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added spider-man-turn-off-the-dark-2011 (Did Not Recoup)"
+    }
+  ],
+  "executedIn": "ci"
+}

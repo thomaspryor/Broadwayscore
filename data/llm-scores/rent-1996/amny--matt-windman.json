@@ -1,0 +1,49 @@
+{
+  "showId": "rent-1996",
+  "outletId": "amny",
+  "outlet": "amNewYork",
+  "criticName": "Matt Windman",
+  "score": 42,
+  "bucket": "Negative",
+  "thumb": "Down",
+  "confidence": "medium",
+  "keyPhrases": [
+    {
+      "text": "lively East Village social scene",
+      "sentiment": "positive"
+    },
+    {
+      "text": "first musical written for the MTV generation",
+      "sentiment": "positive"
+    },
+    {
+      "text": "is long gone",
+      "sentiment": "negative"
+    },
+    {
+      "text": "CBGB shut down",
+      "sentiment": "negative"
+    },
+    {
+      "text": "unlikely to find cheap or abandoned apartments",
+      "sentiment": "negative"
+    },
+    {
+      "text": "Attitudes on AIDS have evolved",
+      "sentiment": "negative"
+    }
+  ],
+  "reasoning": "Review focuses primarily on how the world depicted in Rent no longer exists, suggesting the musical feels outdated and disconnected from current reality. While acknowledging its historical significance, the overall tone implies the show has lost its relevance.",
+  "flags": [
+    {
+      "type": "dtli_thumb_mismatch",
+      "dtliThumb": "Up",
+      "llmThumb": "Down"
+    }
+  ],
+  "scoredAt": "2026-02-21T00:02:11.117Z",
+  "promptVersion": "3.0.0-calibrated",
+  "originalScore": null,
+  "dtliThumb": "Up",
+  "bwwThumb": null
+}

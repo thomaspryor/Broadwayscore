@@ -1,0 +1,322 @@
+{
+  "issueNumber": "bro-5634",
+  "planId": "26e8d9fc-09b1-4136-a1ce-9fc7efee5dc2",
+  "status": "applied",
+  "createdAt": "2026-10-25T22:28:07.403Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5634: give undated 'announced' rows the run dates their public sources state, so they stop winning the slug matcher's prefer-non-closed tiebreak by default. Five rows (Dreamgirls, Private Lives 2026-27, and the National Theatre's Death of a Salesman, West Side Story, Plenty) have no day-level date published yet and are left unchanged.",
+    "steps": [
+      "shows.json: cable-street-59e59-off-broadway-2026.previewsStartDate",
+      "shows.json: cable-street-59e59-off-broadway-2026.openingDate",
+      "shows.json: cable-street-59e59-off-broadway-2026.closingDate",
+      "shows.json: cable-street-59e59-off-broadway-2026.status",
+      "shows.json: amadeus-west-end-2026.previewsStartDate",
+      "shows.json: amadeus-west-end-2026.status",
+      "shows.json: kiss-of-the-spider-woman-off-broadway-2026.previewsStartDate",
+      "shows.json: kiss-of-the-spider-woman-off-broadway-2026.status",
+      "shows.json: come-back-to-the-5-and-dime-jimmy-dean-jimmy-dean-off-broadway-2026.previewsStartDate",
+      "shows.json: come-back-to-the-5-and-dime-jimmy-dean-jimmy-dean-off-broadway-2026.openingDate",
+      "shows.json: come-back-to-the-5-and-dime-jimmy-dean-jimmy-dean-off-broadway-2026.closingDate",
+      "shows.json: come-back-to-the-5-and-dime-jimmy-dean-jimmy-dean-off-broadway-2026.status",
+      "shows.json: charlie-and-the-chocolate-factory-west-end-2026.previewsStartDate",
+      "shows.json: charlie-and-the-chocolate-factory-west-end-2026.status",
+      "shows.json: gentlemen-prefer-blondes-west-end-2027.previewsStartDate",
+      "shows.json: gentlemen-prefer-blondes-west-end-2027.status",
+      "shows.json: legally-blonde-west-end-2027.previewsStartDate",
+      "shows.json: legally-blonde-west-end-2027.status",
+      "shows.json: singin-in-the-rain-off-west-end-2027.previewsStartDate",
+      "shows.json: singin-in-the-rain-off-west-end-2027.status"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "cable-street-59e59-off-broadway-2026",
+        "field": "previewsStartDate",
+        "oldValue": null,
+        "newValue": "2026-04-26",
+        "description": "shows.json: cable-street-59e59-off-broadway-2026.previewsStartDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "cable-street-59e59-off-broadway-2026",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2026-05-03",
+        "description": "shows.json: cable-street-59e59-off-broadway-2026.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "cable-street-59e59-off-broadway-2026",
+        "field": "closingDate",
+        "oldValue": null,
+        "newValue": "2026-05-24",
+        "description": "shows.json: cable-street-59e59-off-broadway-2026.closingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "cable-street-59e59-off-broadway-2026",
+        "field": "status",
+        "oldValue": "announced",
+        "newValue": "closed",
+        "description": "shows.json: cable-street-59e59-off-broadway-2026.status"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "amadeus-west-end-2026",
+        "field": "previewsStartDate",
+        "oldValue": null,
+        "newValue": "2027-04-17",
+        "description": "shows.json: amadeus-west-end-2026.previewsStartDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "amadeus-west-end-2026",
+        "field": "status",
+        "oldValue": "announced",
+        "newValue": "upcoming",
+        "description": "shows.json: amadeus-west-end-2026.status"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "kiss-of-the-spider-woman-off-broadway-2026",
+        "field": "previewsStartDate",
+        "oldValue": null,
+        "newValue": "2027-04-28",
+        "description": "shows.json: kiss-of-the-spider-woman-off-broadway-2026.previewsStartDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "kiss-of-the-spider-woman-off-broadway-2026",
+        "field": "status",
+        "oldValue": "announced",
+        "newValue": "upcoming",
+        "description": "shows.json: kiss-of-the-spider-woman-off-broadway-2026.status"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "come-back-to-the-5-and-dime-jimmy-dean-jimmy-dean-off-broadway-2026",
+        "field": "previewsStartDate",
+        "oldValue": null,
+        "newValue": "2027-02-11",
+        "description": "shows.json: come-back-to-the-5-and-dime-jimmy-dean-jimmy-dean-off-broadway-2026.previewsStartDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "come-back-to-the-5-and-dime-jimmy-dean-jimmy-dean-off-broadway-2026",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2027-03-01",
+        "description": "shows.json: come-back-to-the-5-and-dime-jimmy-dean-jimmy-dean-off-broadway-2026.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "come-back-to-the-5-and-dime-jimmy-dean-jimmy-dean-off-broadway-2026",
+        "field": "closingDate",
+        "oldValue": null,
+        "newValue": "2027-03-28",
+        "description": "shows.json: come-back-to-the-5-and-dime-jimmy-dean-jimmy-dean-off-broadway-2026.closingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "come-back-to-the-5-and-dime-jimmy-dean-jimmy-dean-off-broadway-2026",
+        "field": "status",
+        "oldValue": "announced",
+        "newValue": "upcoming",
+        "description": "shows.json: come-back-to-the-5-and-dime-jimmy-dean-jimmy-dean-off-broadway-2026.status"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "charlie-and-the-chocolate-factory-west-end-2026",
+        "field": "previewsStartDate",
+        "oldValue": null,
+        "newValue": "2027-06-04",
+        "description": "shows.json: charlie-and-the-chocolate-factory-west-end-2026.previewsStartDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "charlie-and-the-chocolate-factory-west-end-2026",
+        "field": "status",
+        "oldValue": "announced",
+        "newValue": "upcoming",
+        "description": "shows.json: charlie-and-the-chocolate-factory-west-end-2026.status"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "gentlemen-prefer-blondes-west-end-2027",
+        "field": "previewsStartDate",
+        "oldValue": null,
+        "newValue": "2027-03-26",
+        "description": "shows.json: gentlemen-prefer-blondes-west-end-2027.previewsStartDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "gentlemen-prefer-blondes-west-end-2027",
+        "field": "status",
+        "oldValue": "announced",
+        "newValue": "upcoming",
+        "description": "shows.json: gentlemen-prefer-blondes-west-end-2027.status"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "legally-blonde-west-end-2027",
+        "field": "previewsStartDate",
+        "oldValue": null,
+        "newValue": "2027-03-22",
+        "description": "shows.json: legally-blonde-west-end-2027.previewsStartDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "legally-blonde-west-end-2027",
+        "field": "status",
+        "oldValue": "announced",
+        "newValue": "upcoming",
+        "description": "shows.json: legally-blonde-west-end-2027.status"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "singin-in-the-rain-off-west-end-2027",
+        "field": "previewsStartDate",
+        "oldValue": null,
+        "newValue": "2027-06-02",
+        "description": "shows.json: singin-in-the-rain-off-west-end-2027.previewsStartDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "singin-in-the-rain-off-west-end-2027",
+        "field": "status",
+        "oldValue": "announced",
+        "newValue": "upcoming",
+        "description": "shows.json: singin-in-the-rain-off-west-end-2027.status"
+      }
+    ]
+  },
+  "executedAt": "2026-10-25T23:16:05.088Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for cable-street-59e59-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for cable-street-59e59-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for cable-street-59e59-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: status updated for cable-street-59e59-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for amadeus-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: status updated for amadeus-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for kiss-of-the-spider-woman-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: status updated for kiss-of-the-spider-woman-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for come-back-to-the-5-and-dime-jimmy-dean-jimmy-dean-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for come-back-to-the-5-and-dime-jimmy-dean-jimmy-dean-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for come-back-to-the-5-and-dime-jimmy-dean-jimmy-dean-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: status updated for come-back-to-the-5-and-dime-jimmy-dean-jimmy-dean-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for charlie-and-the-chocolate-factory-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: status updated for charlie-and-the-chocolate-factory-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for gentlemen-prefer-blondes-west-end-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: status updated for gentlemen-prefer-blondes-west-end-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for legally-blonde-west-end-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: status updated for legally-blonde-west-end-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for singin-in-the-rain-off-west-end-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: status updated for singin-in-the-rain-off-west-end-2027"
+    }
+  ],
+  "executedIn": "ci"
+}

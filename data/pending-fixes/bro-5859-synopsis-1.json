@@ -1,0 +1,373 @@
+{
+  "issueNumber": "bro-5859-synopsis-1",
+  "planId": "67c390fd-362e-443a-8afa-165824c82fdd",
+  "status": "applied",
+  "createdAt": "2026-10-21T19:23:30.640Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5859: repair 25 shows.json synopses that ended mid-word with an ellipsis (part 1 of 3)",
+    "steps": [
+      "Replace each truncated synopsis with complete text from its source, cut at a sentence end"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "encores-la-cage-aux-folles-off-broadway-2026",
+        "field": "synopsis",
+        "oldValue": "Heartfelt musical comedy about love, family, and drag, directed by Robert O’Hara. Set on the glittering French Riviera, this Tony Award–winning musical follows Georges and Albin, longtime partners who run a drag nightclub in St. Tropez. Their world is turned upside down when their son, Jean-Michel, announces his engagement to the daughter of conservative parents and invites them to dinner. This Encores! presentation revives the original 1983 orchestrations by Jerry Herman, heard live for the first time since the show’s Broadway debut. The creative team includes book writer Harvey Fierstein and composer-lyricist Jerry Herman, both Lifetime Achievement Tony Award recipients. Produced by New York City Center Encores!, the limited-run staging continues the company’s mission to celebrate and...",
+        "newValue": "Heartfelt musical comedy about love, family, and drag, directed by Robert O’Hara. Set on the glittering French Riviera, this Tony Award–winning musical follows Georges and Albin, longtime partners who run a drag nightclub in St. Tropez. Their world is turned upside down when their son, Jean-Michel, announces his engagement to the daughter of conservative parents and invites them to dinner. This Encores! presentation revives the original 1983 orchestrations by Jerry Herman, heard live for the first time since the show’s Broadway debut. The creative team includes book writer Harvey Fierstein and composer-lyricist Jerry Herman, both Lifetime Achievement Tony Award recipients.",
+        "description": "BRO-5859: synopsis ended mid-word at 800 chars + \"...\" (Show Score scraper hard cut); full Show Score About text, cut at its last sentence end inside 800 chars (stored text is a verbatim prefix of the page)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "titus-andronicus-off-broadway-2026",
+        "field": "synopsis",
+        "oldValue": "A revenge tragedy centered on a Roman general whose victory ignites a cycle of brutality. The play follows Titus Andronicus, Rome’s most celebrated general, whose victory over the Goths sets off a relentless cycle of retaliation. After Titus sacrifices a member of the defeated enemy, Queen Tamora and her lover Aaron the Moor orchestrate a series of brutal reprisals that engulf Titus’s family and destabilize Rome itself. What begins as a triumph of state power descends into escalating violence, exposing how vengeance corrodes personal, political, and moral order. Written early in his career, Titus Andronicus is widely regarded as William Shakespeare’s bloodiest work. This production is directed by Jesse Berger and stars Patrick Page as Titus, one of Shakespeare’s most demanding tragic ro...",
+        "newValue": "A revenge tragedy centered on a Roman general whose victory ignites a cycle of brutality. The play follows Titus Andronicus, Rome’s most celebrated general, whose victory over the Goths sets off a relentless cycle of retaliation. After Titus sacrifices a member of the defeated enemy, Queen Tamora and her lover Aaron the Moor orchestrate a series of brutal reprisals that engulf Titus’s family and destabilize Rome itself. What begins as a triumph of state power descends into escalating violence, exposing how vengeance corrodes personal, political, and moral order. Written early in his career, Titus Andronicus is widely regarded as William Shakespeare’s bloodiest work.",
+        "description": "BRO-5859: synopsis ended mid-word at 800 chars + \"...\" (Show Score scraper hard cut); full Show Score About text, cut at its last sentence end inside 800 chars (stored text is a verbatim prefix of the page)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "public-charge-off-broadway-2026",
+        "field": "synopsis",
+        "oldValue": "A world-premiere political drama directed by Doug Hughes. Set across decades of personal and political transformation, Public Charge follows Julissa, who immigrates from the Dominican Republic to the United States at age seven. After rising from a Wall Street law practice to serve as a senior official in the U.S. Department of State under Secretary Hillary Clinton, she confronts the human and moral complexities of public service—deploying aid to earthquake-stricken Haiti, navigating immigration politics, and negotiating the release of a wrongfully imprisoned American in Cuba. The play is co-written by former U.S. Ambassador Julissa Reynoso and award-winning playwright Michael J. Chepiga (The Rape of the Sabine Women, by Grace B. Matthias). Drawing from Reynoso’s firsthand experience in ...",
+        "newValue": "A world-premiere political drama directed by Doug Hughes. Set across decades of personal and political transformation, Public Charge follows Julissa, who immigrates from the Dominican Republic to the United States at age seven. After rising from a Wall Street law practice to serve as a senior official in the U.S. Department of State under Secretary Hillary Clinton, she confronts the human and moral complexities of public service—deploying aid to earthquake-stricken Haiti, navigating immigration politics, and negotiating the release of a wrongfully imprisoned American in Cuba. The play is co-written by former U.S. Ambassador Julissa Reynoso and award-winning playwright Michael J. Chepiga (The Rape of the Sabine Women, by Grace B. Matthias).",
+        "description": "BRO-5859: synopsis ended mid-word at 800 chars + \"...\" (Show Score scraper hard cut); full Show Score About text, cut at its last sentence end inside 800 chars (stored text is a verbatim prefix of the page)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "encores-the-wild-party-off-broadway-2026",
+        "field": "synopsis",
+        "oldValue": "Join Queenie's wild, gin-soaked 1920s party where desire and danger collide in a jazz-age tragedy. Set in the hedonistic world of late 1920s New York, The Wild Party follows Queenie, a vaudeville performer, and her volatile lover Burrs as they host a raucous party that spirals into chaos. Amid the haze of jazz, gin, and jealousy, the night exposes a crowd of guests chasing escape and excitement, only to confront bitter truths by morning. The musical is based on Joseph Moncure March’s once-banned narrative poem, whose raw depiction of excess and disillusionment shocked readers of its time. The production reunites composer and lyricist Michael John LaChiusa (The Gardens of Anuncia, Hello Again) and director George C. Wolfe (Jelly’s Last Jam) in a revival directed by Lili-Anne Brown, a two...",
+        "newValue": "Join Queenie's wild, gin-soaked 1920s party where desire and danger collide in a jazz-age tragedy. Set in the hedonistic world of late 1920s New York, The Wild Party follows Queenie, a vaudeville performer, and her volatile lover Burrs as they host a raucous party that spirals into chaos. Amid the haze of jazz, gin, and jealousy, the night exposes a crowd of guests chasing escape and excitement, only to confront bitter truths by morning. The musical is based on Joseph Moncure March’s once-banned narrative poem, whose raw depiction of excess and disillusionment shocked readers of its time.",
+        "description": "BRO-5859: synopsis ended mid-word at 800 chars + \"...\" (Show Score scraper hard cut); full Show Score About text, cut at its last sentence end inside 800 chars (stored text is a verbatim prefix of the page)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "body-count-off-broadway-2026",
+        "field": "synopsis",
+        "oldValue": "OnlyFans star attempts 1,000-subscriber stunt, exploring sex complexities via documentary maker. The play centers on Pollie, an OnlyFans creator who seeks significant fame by attempting an extreme public stunt: engaging sexually with 1,000 of her subscribers during the Edinburgh Fringe Festival. This premise reflects a current cultural climate where sex work is framed as highly competitive, leading to attention-seeking, extreme actions by creators vying for dominance in an oversaturated online market. The narrative acknowledges the recent viral nature of claims regarding high \"body counts\" and the resulting international debate among liberal feminists. The story is filtered through the perspective of an empathetic Documentary Maker, drawing focus to Pollie's complex relationship with se...",
+        "newValue": "OnlyFans star attempts 1,000-subscriber stunt, exploring sex complexities via documentary maker. The play centers on Pollie, an OnlyFans creator who seeks significant fame by attempting an extreme public stunt: engaging sexually with 1,000 of her subscribers during the Edinburgh Fringe Festival. This premise reflects a current cultural climate where sex work is framed as highly competitive, leading to attention-seeking, extreme actions by creators vying for dominance in an oversaturated online market. The narrative acknowledges the recent viral nature of claims regarding high \"body counts\" and the resulting international debate among liberal feminists.",
+        "description": "BRO-5859: synopsis ended mid-word at 800 chars + \"...\" (Show Score scraper hard cut); full Show Score About text, cut at its last sentence end inside 800 chars (stored text is a verbatim prefix of the page)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "trash-off-broadway-2026",
+        "field": "synopsis",
+        "oldValue": "A comic, insightful look at Deaf identity, co-written by James Caverly and Andrew Morrill. Tim and Jake are Deaf roommates living in a city apartment—but that’s about all they have in common. While one embraces Deaf culture with pride and resistance, the other seeks to navigate the hearing world with different priorities. As they clash over everyday tasks—like taking out the trash—their disagreement grows into a sharply comic, layered exploration of identity, communication, and what it really means to understand someone else’s experience. The play is co-written by James Caverly (known for Only Murders in the Building) and Andrew Morrill, both of whom bring personal insight and authenticity to the characters and their world. Directed by Nathaniel P. Claridad (Once Upon a Mattress at Tran...",
+        "newValue": "A comic, insightful look at Deaf identity, co-written by James Caverly and Andrew Morrill. Tim and Jake are Deaf roommates living in a city apartment—but that’s about all they have in common. While one embraces Deaf culture with pride and resistance, the other seeks to navigate the hearing world with different priorities. As they clash over everyday tasks—like taking out the trash—their disagreement grows into a sharply comic, layered exploration of identity, communication, and what it really means to understand someone else’s experience. The play is co-written by James Caverly (known for Only Murders in the Building) and Andrew Morrill, both of whom bring personal insight and authenticity to the characters and their world.",
+        "description": "BRO-5859: synopsis ended mid-word at 800 chars + \"...\" (Show Score scraper hard cut); full Show Score About text, cut at its last sentence end inside 800 chars (stored text is a verbatim prefix of the page)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-amazing-sex-life-of-rabbits-off-broadway-2026",
+        "field": "synopsis",
+        "oldValue": "Money, sex, and madness collide when exes reunite for a dinner party. The Amazing Sex Life of Rabbits follows two couples whose seemingly “friendly” dinner spirals into a volatile clash of love, lust, and class warfare. Bobby and Elise are struggling to keep their marriage—and their bank accounts—afloat when Bobby’s ex-wife, now a best-selling sex therapist, invites them to dinner with her new billionaire husband. What begins as an awkward reunion quickly devolves into a night of shocking revelations and psychological warfare, as the couples use every weapon at their disposal—nostalgia, sexuality, and money—to expose each other’s deepest desires and fears. This darkly comic new play unfolds as a modern-day morality test, examining what happens when ambition and desperation collide over ...",
+        "newValue": "Money, sex, and madness collide when exes reunite for a dinner party. The Amazing Sex Life of Rabbits follows two couples whose seemingly “friendly” dinner spirals into a volatile clash of love, lust, and class warfare. Bobby and Elise are struggling to keep their marriage—and their bank accounts—afloat when Bobby’s ex-wife, now a best-selling sex therapist, invites them to dinner with her new billionaire husband. What begins as an awkward reunion quickly devolves into a night of shocking revelations and psychological warfare, as the couples use every weapon at their disposal—nostalgia, sexuality, and money—to expose each other’s deepest desires and fears.",
+        "description": "BRO-5859: synopsis ended mid-word at 800 chars + \"...\" (Show Score scraper hard cut); full Show Score About text, cut at its last sentence end inside 800 chars (stored text is a verbatim prefix of the page)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "innocence-off-broadway-2026",
+        "field": "synopsis",
+        "oldValue": "A haunting opera exploring trauma, loss, and buried secrets in the aftermath of a school shooting. Innocence, the final opera by Finnish composer Kaija Saariaho, is a powerful exploration of the lasting trauma caused by a school shooting. With a libretto by renowned author Sofi Oksanen, the opera unfolds through a hauntingly beautiful soundscape that blends traditional opera, expressionistic speak-singing, and Scandinavian folk music. Set a decade after the tragedy, the story follows a young couple whose wedding unexpectedly reopens old wounds, revealing long-buried secrets. At its core is a grieving mother, portrayed by mezzo-soprano Joyce DiDonato, and her lost daughter, sung by Finnish ethno-pop artist Vilma Jää. Conducted by Susanna Mälkki in Simon Stone’s strikingly direct producti...",
+        "newValue": "A haunting opera exploring trauma, loss, and buried secrets in the aftermath of a school shooting. Innocence, the final opera by Finnish composer Kaija Saariaho, is a powerful exploration of the lasting trauma caused by a school shooting. With a libretto by renowned author Sofi Oksanen, the opera unfolds through a hauntingly beautiful soundscape that blends traditional opera, expressionistic speak-singing, and Scandinavian folk music. Set a decade after the tragedy, the story follows a young couple whose wedding unexpectedly reopens old wounds, revealing long-buried secrets. At its core is a grieving mother, portrayed by mezzo-soprano Joyce DiDonato, and her lost daughter, sung by Finnish ethno-pop artist Vilma Jää.",
+        "description": "BRO-5859: synopsis ended mid-word at 800 chars + \"...\" (Show Score scraper hard cut); full Show Score About text, cut at its last sentence end inside 800 chars (stored text is a verbatim prefix of the page)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "seagull-true-story-off-broadway-2026",
+        "field": "synopsis",
+        "oldValue": "A daring Chekhov-inspired satire directed by Alexander Molochnikov, written by Eli Rarey. SEAGULL: TRUE STORY blends autobiographical drama and sharp political satire with the timeless human questions at the heart of Chekhov’s The Seagull. Written by Eli Rarey and created and directed by Alexander Molochnikov, this inventive retelling dramatizes Molochnikov’s own struggle to stage Chekhov’s masterpiece in the face of artistic and political constraints. What begins as a production of a classic play spirals into a collision of comedy, chaos, and creative defiance. Molochnikov—an internationally acclaimed director from the Moscow Art Theatre—leads an ensemble of international artists in this daring exploration of censorship, identity, and the relentless fight for artistic freedom. SEAGULL:...",
+        "newValue": "A daring Chekhov-inspired satire directed by Alexander Molochnikov, written by Eli Rarey. SEAGULL: TRUE STORY blends autobiographical drama and sharp political satire with the timeless human questions at the heart of Chekhov’s The Seagull. Written by Eli Rarey and created and directed by Alexander Molochnikov, this inventive retelling dramatizes Molochnikov’s own struggle to stage Chekhov’s masterpiece in the face of artistic and political constraints. What begins as a production of a classic play spirals into a collision of comedy, chaos, and creative defiance. Molochnikov—an internationally acclaimed director from the Moscow Art Theatre—leads an ensemble of international artists in this daring exploration of censorship, identity, and the relentless fight for artistic freedom.",
+        "description": "BRO-5859: synopsis ended mid-word at 800 chars + \"...\" (Show Score scraper hard cut); full Show Score About text, cut at its last sentence end inside 800 chars (stored text is a verbatim prefix of the page)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "scorched-earth-off-broadway-2026",
+        "field": "synopsis",
+        "oldValue": "Cold-case investigation unfolds through a hybrid of dance, theatre, and fractured memory. Set within an unresolved crime reopened after twelve years, Scorched Earth follows a detective re-examining an old case rooted in questions of land, legacy, and personal conflict. As the investigation revisits conflicting accounts, the detective and the primary suspect move through shifting layers of recollection, imagination, and unresolved tension. Inspired by John B. Keane’s The Field, the production blends elements of crime drama and psychological inquiry with movement-based storytelling. The creative team includes director, choreographer, and performer Luke Murphy, with design by Alyson Cummins, lighting by Stephen Dodd, and music by Rob Moloney, reuniting collaborators from the multi-award-wi...",
+        "newValue": "Cold-case investigation unfolds through a hybrid of dance, theatre, and fractured memory. Set within an unresolved crime reopened after twelve years, Scorched Earth follows a detective re-examining an old case rooted in questions of land, legacy, and personal conflict. As the investigation revisits conflicting accounts, the detective and the primary suspect move through shifting layers of recollection, imagination, and unresolved tension. Inspired by John B. Keane’s The Field, the production blends elements of crime drama and psychological inquiry with movement-based storytelling.",
+        "description": "BRO-5859: synopsis ended mid-word at 800 chars + \"...\" (Show Score scraper hard cut); full Show Score About text, cut at its last sentence end inside 800 chars (stored text is a verbatim prefix of the page)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "romeo-and-juliet-suite-off-broadway-2026",
+        "field": "synopsis",
+        "oldValue": "Benjamin Millepied’s dance-drama uses live cameras and rotating casts in a site-wide staging. This production utilizes handheld cameras to expand the scope of the performance beyond the limits of a conventional stage. Live video footage is transmitted to screens onstage, tracking the action as it unfolds in various tableaux and locations both backstage and throughout the Armory venue. The dance-drama explores the intersection between theatrical artifice and reality. It features a concise adaptation of Shakespeare’s narrative, focusing solely on the core elements: the undying devotion of the central couple and the intense emotional fallout. A distinct element of the production is the use of a rotating cast for the star-crossed lovers in each performance. This approach deliberately deviat...",
+        "newValue": "Benjamin Millepied’s dance-drama uses live cameras and rotating casts in a site-wide staging. This production utilizes handheld cameras to expand the scope of the performance beyond the limits of a conventional stage. Live video footage is transmitted to screens onstage, tracking the action as it unfolds in various tableaux and locations both backstage and throughout the Armory venue. The dance-drama explores the intersection between theatrical artifice and reality. It features a concise adaptation of Shakespeare’s narrative, focusing solely on the core elements: the undying devotion of the central couple and the intense emotional fallout. A distinct element of the production is the use of a rotating cast for the star-crossed lovers in each performance.",
+        "description": "BRO-5859: synopsis ended mid-word at 800 chars + \"...\" (Show Score scraper hard cut); full Show Score About text, cut at its last sentence end inside 800 chars (stored text is a verbatim prefix of the page)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "calf-scramble-off-broadway-2026",
+        "field": "synopsis",
+        "oldValue": "Five Texas teens raise calves and navigate faith, girlhood, and competition in a rural barn. In a rural East Texas barn, five teenage girls prepare calves for competition while navigating the tangled terrain of adolescence. As they wrestle with school expectations, religious beliefs, and the complex rules of small-town life, their bonds are tested in unexpected ways. Faith, friendship, and survival collide in a world where tenderness can be as unruly as the animals they raise. Written by Libby Carr, Calf Scramble presents a darkly comedic take on the pressures of growing up under the gaze of both peers and tradition. The piece captures the distinctive rhythms of rural life, framing the girls’ struggles against a backdrop of competition and scripture. Produced by Primary Stages, the work...",
+        "newValue": "Five Texas teens raise calves and navigate faith, girlhood, and competition in a rural barn. In a rural East Texas barn, five teenage girls prepare calves for competition while navigating the tangled terrain of adolescence. As they wrestle with school expectations, religious beliefs, and the complex rules of small-town life, their bonds are tested in unexpected ways. Faith, friendship, and survival collide in a world where tenderness can be as unruly as the animals they raise. Written by Libby Carr, Calf Scramble presents a darkly comedic take on the pressures of growing up under the gaze of both peers and tradition.",
+        "description": "BRO-5859: synopsis ended mid-word at 800 chars + \"...\" (Show Score scraper hard cut); Show Score About text (page revised since capture; same show, first 625 chars identical), cut at a sentence end"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "heartbreak-hotel-off-broadway-2026",
+        "field": "synopsis",
+        "oldValue": "A two-hander comedy about heartbreak blending live music, science, and storytelling. The show follows Karin McCracken as a woman navigating the fallout of heartbreak, tracing a series of relationships, bad dates, and attempted reinventions. Opposite her, Simon Leary performs all the men in her life, shifting roles to reflect the recurring patterns and emotional echoes that define her experience. The narrative moves between humor and vulnerability, punctuated by lo-fi covers of well-known breakup songs that underscore the emotional terrain. Created by New Zealand company EBKM, the production integrates elements of science and technology to examine how heartbreak affects both body and mind. Through performance and music, the piece constructs a portrait of grief that situates romantic loss...",
+        "newValue": "A two-hander comedy about heartbreak blending live music, science, and storytelling. The show follows Karin McCracken as a woman navigating the fallout of heartbreak, tracing a series of relationships, bad dates, and attempted reinventions. Opposite her, Simon Leary performs all the men in her life, shifting roles to reflect the recurring patterns and emotional echoes that define her experience. The narrative moves between humor and vulnerability, punctuated by lo-fi covers of well-known breakup songs that underscore the emotional terrain. Created by New Zealand company EBKM, the production integrates elements of science and technology to examine how heartbreak affects both body and mind.",
+        "description": "BRO-5859: synopsis ended mid-word at 800 chars + \"...\" (Show Score scraper hard cut); full Show Score About text, cut at its last sentence end inside 800 chars (stored text is a verbatim prefix of the page)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-cherry-orchard-park-avenue-armory-off-broadway-2026",
+        "field": "synopsis",
+        "oldValue": "A Chekhov classic reset in modern Seoul, following a powerful family facing collapse amid rapid change. A wealthy family stands at the brink of financial ruin as the world around them rapidly transforms. Once secure in their inherited privilege, corporate heirs struggle to confront mounting debt, social change, and the loss of relevance in a society shaped by new wealth and ambition. As personal relationships fray, the family is forced to confront what must be sacrificed when tradition can no longer be sustained. This contemporary adaptation of Anton Chekhov’s final play is written and directed by Simon Stone (Yerma, Obie Award), who relocates the story from Russia to present-day Seoul. The production features a transparent glass house set designed by Saul Kim, with costumes by Mel Page...",
+        "newValue": "A Chekhov classic reset in modern Seoul, following a powerful family facing collapse amid rapid change. A wealthy family stands at the brink of financial ruin as the world around them rapidly transforms. Once secure in their inherited privilege, corporate heirs struggle to confront mounting debt, social change, and the loss of relevance in a society shaped by new wealth and ambition. As personal relationships fray, the family is forced to confront what must be sacrificed when tradition can no longer be sustained. This contemporary adaptation of Anton Chekhov’s final play is written and directed by Simon Stone (Yerma, Obie Award), who relocates the story from Russia to present-day Seoul.",
+        "description": "BRO-5859: synopsis ended mid-word at 800 chars + \"...\" (Show Score scraper hard cut); full Show Score About text, cut at its last sentence end inside 800 chars (stored text is a verbatim prefix of the page)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-gruffalo-west-end-2026",
+        "field": "synopsis",
+        "oldValue": "Mouse's adventure through the deep, dark wood, encountering cunning creatures in search of hazelnuts. Mouse's thrilling journey through the dense and mysterious forest in Tall Stories’ enchanting rendition of Julia Donaldson and Axel Scheffler’s beloved picture book. As Mouse searches for hazelnuts, they encounter the sly Fox, the wise old Owl, and the playful Snake. Each encounter adds layers of excitement and suspense to the story, leaving audiences wondering if Mouse will outsmart these hungry woodland creatures. Central to the tale is the mythical Gruffalo, a creature Mouse conjures up to escape becoming dinner for their cunning counterparts. Filled with catchy songs, infectious laughter, and delightful moments of monstrous fun, this production promises an unforgettable experience f...",
+        "newValue": "Mouse's adventure through the deep, dark wood, encountering cunning creatures in search of hazelnuts. Mouse's thrilling journey through the dense and mysterious forest in Tall Stories’ enchanting rendition of Julia Donaldson and Axel Scheffler’s beloved picture book. As Mouse searches for hazelnuts, they encounter the sly Fox, the wise old Owl, and the playful Snake. Each encounter adds layers of excitement and suspense to the story, leaving audiences wondering if Mouse will outsmart these hungry woodland creatures. Central to the tale is the mythical Gruffalo, a creature Mouse conjures up to escape becoming dinner for their cunning counterparts.",
+        "description": "BRO-5859: synopsis ended mid-word at 800 chars + \"...\" (Show Score scraper hard cut); full Show Score About text, cut at its last sentence end inside 800 chars (stored text is a verbatim prefix of the page)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "agatha-christies-black-coffee-grounds-for-murder-off-broadway-2026",
+        "field": "synopsis",
+        "oldValue": "A country house murder and missing formula draw Hercule Poirot into a high-stakes mystery. In a secluded country house, a government scientist’s top-secret formula vanishes just before he is found dead, leaving the room in darkness and the household under suspicion. Hercule Poirot is called in to investigate, navigating a web of relatives, romantic entanglements, and potential spies as he works to uncover both the killer and the fate of the missing weapon. The play is written by Agatha Christie (author of Murder on the Orient Express and The Mousetrap), marking her first work to feature the character of Hercule Poirot on stage. Set within the conventions of a classic drawing-room mystery, the production centers on intricate plotting, concealed motives, and the gradual revelation of clue...",
+        "newValue": "A country house murder and missing formula draw Hercule Poirot into a high-stakes mystery. In a secluded country house, a government scientist’s top-secret formula vanishes just before he is found dead, leaving the room in darkness and the household under suspicion. Hercule Poirot is called in to investigate, navigating a web of relatives, romantic entanglements, and potential spies as he works to uncover both the killer and the fate of the missing weapon. The play is written by Agatha Christie (author of Murder on the Orient Express and The Mousetrap), marking her first work to feature the character of Hercule Poirot on stage.",
+        "description": "BRO-5859: synopsis ended mid-word at 800 chars + \"...\" (Show Score scraper hard cut); full Show Score About text, cut at its last sentence end inside 800 chars (stored text is a verbatim prefix of the page)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "henry-vi-a-trilogy-in-two-parts-off-broadway-2026",
+        "field": "synopsis",
+        "oldValue": "Shakespeare’s history trilogy traces political collapse from foreign wars to civil conflict. Spanning decades of political upheaval, this adaptation of Shakespeare’s Henry VI trilogy charts England’s descent into instability following the death of Henry V. With an infant king on the throne, competing factions wage battles abroad while internal divisions deepen. The narrative continues nearly 30 years later as rivalries escalate into the War of the Roses, marking a prolonged period of civil war and shifting power. The production is adapted and directed by Stephen Brown-Fried, whose work includes staging classical texts in contemporary contexts. The text is drawn from the plays of William Shakespeare, one of the most widely produced playwrights in the theatrical canon. Presented by NAATCO...",
+        "newValue": "Shakespeare’s history trilogy traces political collapse from foreign wars to civil conflict. Spanning decades of political upheaval, this adaptation of Shakespeare’s Henry VI trilogy charts England’s descent into instability following the death of Henry V. With an infant king on the throne, competing factions wage battles abroad while internal divisions deepen. The narrative continues nearly 30 years later as rivalries escalate into the War of the Roses, marking a prolonged period of civil war and shifting power. The production is adapted and directed by Stephen Brown-Fried, whose work includes staging classical texts in contemporary contexts. The text is drawn from the plays of William Shakespeare, one of the most widely produced playwrights in the theatrical canon.",
+        "description": "BRO-5859: synopsis ended mid-word at 800 chars + \"...\" (Show Score scraper hard cut); full Show Score About text, cut at its last sentence end inside 800 chars (stored text is a verbatim prefix of the page)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-vessel-off-broadway-2026",
+        "field": "synopsis",
+        "oldValue": "Three workers navigate a controversial NYC landmark turned viral spectacle. Set at the site of a widely publicized New York City landmark, the play follows three minimum wage parks employees working at a towering interactive structure in Hudson Yards. As the installation becomes a subject of viral attention and repeated shutdowns, the trio must contend with its growing notoriety while managing their day-to-day responsibilities. Their interactions unfold against the backdrop of a space that shapes both their work environment and public scrutiny. The play is written by Brendan George and directed by Peter Charney. It is produced by Through The Tollbooth Co., a company focused on developing new theatrical works. The creative team previously collaborated on A Eulogy for Roman, which receive...",
+        "newValue": "Three workers navigate a controversial NYC landmark turned viral spectacle. Set at the site of a widely publicized New York City landmark, the play follows three minimum wage parks employees working at a towering interactive structure in Hudson Yards. As the installation becomes a subject of viral attention and repeated shutdowns, the trio must contend with its growing notoriety while managing their day-to-day responsibilities. Their interactions unfold against the backdrop of a space that shapes both their work environment and public scrutiny. The play is written by Brendan George and directed by Peter Charney. It is produced by Through The Tollbooth Co., a company focused on developing new theatrical works.",
+        "description": "BRO-5859: synopsis ended mid-word at 800 chars + \"...\" (Show Score scraper hard cut); full Show Score About text, cut at its last sentence end inside 800 chars (stored text is a verbatim prefix of the page)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-house-of-the-negro-insane-off-broadway-2026",
+        "field": "synopsis",
+        "oldValue": "A historical drama set inside a segregated psychiatric hospital in 1935 America. Set in 1935, the play follows Attius, a long-term resident of Central State Hospital, one of several psychiatric institutions in the United States designated for Black patients labeled “insane and idiotic.” Within the hospital walls, the homeless, impoverished, ill, and criminally institutionalized are housed together under harsh conditions. Attius survives by building coffins for patients who die inside the institution, carrying out his work in isolation and resignation. The arrival of two new patients disrupts the fragile routine he has constructed for himself. As relationships form and old hopes resurface, Attius begins to confront the possibility of a life beyond confinement. The play examines instituti...",
+        "newValue": "A historical drama set inside a segregated psychiatric hospital in 1935 America. Set in 1935, the play follows Attius, a long-term resident of Central State Hospital, one of several psychiatric institutions in the United States designated for Black patients labeled “insane and idiotic.” Within the hospital walls, the homeless, impoverished, ill, and criminally institutionalized are housed together under harsh conditions. Attius survives by building coffins for patients who die inside the institution, carrying out his work in isolation and resignation. The arrival of two new patients disrupts the fragile routine he has constructed for himself. As relationships form and old hopes resurface, Attius begins to confront the possibility of a life beyond confinement.",
+        "description": "BRO-5859: synopsis ended mid-word at 800 chars + \"...\" (Show Score scraper hard cut); full Show Score About text, cut at its last sentence end inside 800 chars (stored text is a verbatim prefix of the page)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "lean-to-off-broadway-2026",
+        "field": "synopsis",
+        "oldValue": "Three hikers share a woodland shelter in Stephen Sheffer’s comedy-drama. An overprepared hiker and a less-prepared couple unexpectedly find themselves sharing a rustic lean-to shelter deep in the woods. As the strangers swap supplies, stories, and conversations about escaping city life, their brief retreat becomes a space for unexpected intimacy and emotional honesty. Around the campfire, moments of humor and connection gradually reveal tensions beneath the surface. The play is written by Stephen Sheffer and directed by Jesse Jou. The production is presented by New Light Theater Project in association with Pendragon Theatre at 59E59 Theaters. The creative team includes scenic designer Connor Gallerani, costume designer Krista Grevas, lighting designer Elaine Wong, sound designer Jennie ...",
+        "newValue": "Three hikers share a woodland shelter in Stephen Sheffer’s comedy-drama. An overprepared hiker and a less-prepared couple unexpectedly find themselves sharing a rustic lean-to shelter deep in the woods. As the strangers swap supplies, stories, and conversations about escaping city life, their brief retreat becomes a space for unexpected intimacy and emotional honesty. Around the campfire, moments of humor and connection gradually reveal tensions beneath the surface. The play is written by Stephen Sheffer and directed by Jesse Jou. The production is presented by New Light Theater Project in association with Pendragon Theatre at 59E59 Theaters.",
+        "description": "BRO-5859: synopsis ended mid-word at 800 chars + \"...\" (Show Score scraper hard cut); full Show Score About text, cut at its last sentence end inside 800 chars (stored text is a verbatim prefix of the page)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-potluck-off-broadway-2026",
+        "field": "synopsis",
+        "oldValue": "A musical exploring inherited trauma, activism, and the legacy of the Greensboro Massacre. The musical draws on the 1979 Greensboro Massacre, in which five labor organizers were killed during a protest in Greensboro, North Carolina. It follows a narrative shaped by the aftermath of that violence, tracing how its impact extends across generations. What begins as an attempt to document history evolves into a broader exploration of memory, trauma, and the lingering presence of unresolved events. Created by César James Alvarez, who was born into the survivor community, the musical shifts between personal reflection and collective experience. Featuring a 12-person intergenerational cast, the work incorporates music and storytelling to examine capitalism, solidarity, and how individuals proce...",
+        "newValue": "A musical exploring inherited trauma, activism, and the legacy of the Greensboro Massacre. The musical draws on the 1979 Greensboro Massacre, in which five labor organizers were killed during a protest in Greensboro, North Carolina. It follows a narrative shaped by the aftermath of that violence, tracing how its impact extends across generations. What begins as an attempt to document history evolves into a broader exploration of memory, trauma, and the lingering presence of unresolved events. Created by César James Alvarez, who was born into the survivor community, the musical shifts between personal reflection and collective experience.",
+        "description": "BRO-5859: synopsis ended mid-word at 800 chars + \"...\" (Show Score scraper hard cut); full Show Score About text, cut at its last sentence end inside 800 chars (stored text is a verbatim prefix of the page)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "macbeth-off-broadway-2026",
+        "field": "synopsis",
+        "oldValue": "A Scottish nobleman and his wife descend into violence after seizing the throne. Based on William Shakespeare’s tragedy, Macbeth follows the rise and collapse of a Scottish nobleman driven by prophecy and political ambition. Urged on by Lady Macbeth, Macbeth murders King Duncan to seize the throne, setting off a cycle of paranoia, violence, and guilt that consumes both husband and wife. Giuseppe Verdi’s opera adaptation emphasizes the psychological unraveling of the central couple through large-scale choral scenes and dramatic vocal writing. This new production at The Metropolitan Opera is directed by Louisa Proske, whose recent international opera and theatre productions have drawn attention for contemporary reinterpretations of classic works. Yannick Nézet-Séguin conducts the producti...",
+        "newValue": "A Scottish nobleman and his wife descend into violence after seizing the throne. Based on William Shakespeare’s tragedy, Macbeth follows the rise and collapse of a Scottish nobleman driven by prophecy and political ambition. Urged on by Lady Macbeth, Macbeth murders King Duncan to seize the throne, setting off a cycle of paranoia, violence, and guilt that consumes both husband and wife. Giuseppe Verdi’s opera adaptation emphasizes the psychological unraveling of the central couple through large-scale choral scenes and dramatic vocal writing. This new production at The Metropolitan Opera is directed by Louisa Proske, whose recent international opera and theatre productions have drawn attention for contemporary reinterpretations of classic works.",
+        "description": "BRO-5859: synopsis ended mid-word at 800 chars + \"...\" (Show Score scraper hard cut); full Show Score About text, cut at its last sentence end inside 800 chars (stored text is a verbatim prefix of the page)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "fear-and-wonder-off-broadway-2026",
+        "field": "synopsis",
+        "oldValue": "Two teens at a Christian summer camp confront faith, desire, and identity. Forced to share a room at a conservative Christian summer camp, Ryan and Jabez begin the week expecting conflict rather than connection. Ryan appears composed and devout, while Jabez resists the camp’s rigid expectations with open cynicism. As late-night conversations deepen into attraction, the two are drawn into an increasingly risky emotional bond that challenges their understanding of faith, identity, and belonging. Set within the controlled environment of a religious camp, the play explores the tension between personal desire and institutional expectation. As pressures from the outside world intrude, Ryan and Jabez must decide whether protecting themselves means abandoning the connection they have found with...",
+        "newValue": "Two teens at a Christian summer camp confront faith, desire, and identity. Forced to share a room at a conservative Christian summer camp, Ryan and Jabez begin the week expecting conflict rather than connection. Ryan appears composed and devout, while Jabez resists the camp’s rigid expectations with open cynicism. As late-night conversations deepen into attraction, the two are drawn into an increasingly risky emotional bond that challenges their understanding of faith, identity, and belonging. Set within the controlled environment of a religious camp, the play explores the tension between personal desire and institutional expectation.",
+        "description": "BRO-5859: synopsis ended mid-word at 800 chars + \"...\" (Show Score scraper hard cut); no Show Score page for this row (or the mapped page is another production); stored text cut back to its last full sentence"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "phyl-off-broadway-2026",
+        "field": "synopsis",
+        "oldValue": "A governess risks scandal after rebelling against the life imposed on her. Written by Cicely Hamilton in 1911, PHYL follows Phyllis Chester, a governess trapped in an isolated and restrictive existence. Frustrated by the limitations placed on her life and desires, she acts impulsively in a way that threatens her social standing and future. The play examines questions of female independence, sexuality, and respectability within the constraints of early 20th-century society. Originally banned from performance at Oxford University despite passing official censorship without required edits, the play instead premiered in Manchester, where contemporary critics reacted strongly to its treatment of women’s desire and personal freedom. Hamilton described the work as a comedy with a happy ending,...",
+        "newValue": "A governess risks scandal after rebelling against the life imposed on her. Written by Cicely Hamilton in 1911, PHYL follows Phyllis Chester, a governess trapped in an isolated and restrictive existence. Frustrated by the limitations placed on her life and desires, she acts impulsively in a way that threatens her social standing and future. The play examines questions of female independence, sexuality, and respectability within the constraints of early 20th-century society. Originally banned from performance at Oxford University despite passing official censorship without required edits, the play instead premiered in Manchester, where contemporary critics reacted strongly to its treatment of women’s desire and personal freedom.",
+        "description": "BRO-5859: synopsis ended mid-word at 800 chars + \"...\" (Show Score scraper hard cut); full Show Score About text, cut at its last sentence end inside 800 chars (stored text is a verbatim prefix of the page)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "rosie-odonnell-common-knowledge-off-broadway-2026",
+        "field": "synopsis",
+        "oldValue": "Rosie O’Donnell delivers a solo stage memoir blending comedy and personal storytelling. Rosie O’Donnell returns to the stage with a solo performance shaped by reflections on her career, personal life, and recent experiences living abroad. The piece follows her journey through identity, motherhood, cultural transition, and the shifting landscape of her life after decades in entertainment. Written and performed by Rosie O’Donnell (A League of Their Own, Sleepless in Seattle, The Rosie O’Donnell Show) and directed by Gabriel Barre (Amazing Grace, Chaplin), the production draws on O’Donnell’s extensive career across film, television, and theatre. It marks her first new stage show in nearly a decade, presented following international engagements in Dublin, Edinburgh, and Australia. The produ...",
+        "newValue": "Rosie O’Donnell delivers a solo stage memoir blending comedy and personal storytelling. Rosie O’Donnell returns to the stage with a solo performance shaped by reflections on her career, personal life, and recent experiences living abroad. The piece follows her journey through identity, motherhood, cultural transition, and the shifting landscape of her life after decades in entertainment. Written and performed by Rosie O’Donnell (A League of Their Own, Sleepless in Seattle, The Rosie O’Donnell Show) and directed by Gabriel Barre (Amazing Grace, Chaplin), the production draws on O’Donnell’s extensive career across film, television, and theatre. It marks her first new stage show in nearly a decade, presented following international engagements in Dublin, Edinburgh, and Australia.",
+        "description": "BRO-5859: synopsis ended mid-word at 800 chars + \"...\" (Show Score scraper hard cut); no Show Score page for this row (or the mapped page is another production); stored text cut back to its last full sentence"
+      }
+    ]
+  },
+  "executedAt": "2026-10-21T20:59:10.810Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for encores-la-cage-aux-folles-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for titus-andronicus-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for public-charge-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for encores-the-wild-party-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for body-count-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for trash-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for the-amazing-sex-life-of-rabbits-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for innocence-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for seagull-true-story-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for scorched-earth-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for romeo-and-juliet-suite-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for calf-scramble-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for heartbreak-hotel-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for the-cherry-orchard-park-avenue-armory-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for the-gruffalo-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for agatha-christies-black-coffee-grounds-for-murder-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for henry-vi-a-trilogy-in-two-parts-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for the-vessel-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for the-house-of-the-negro-insane-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for lean-to-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for the-potluck-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for macbeth-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for fear-and-wonder-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for phyl-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for rosie-odonnell-common-knowledge-off-broadway-2026"
+    }
+  ],
+  "executedIn": "ci"
+}

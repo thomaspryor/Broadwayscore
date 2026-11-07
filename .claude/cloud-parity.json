@@ -1,0 +1,7 @@
+{
+  "comment": "Repo copies that must stay identical to their ~/.claude masters. Cloud sessions run ONLY the repo copy, so drift is a silent capability gap. strip-self-skip drops the repo-only guard (the if [ -f \"$HOME/.claude/hooks/<this hook>\" ] ... fi that exits when the master exists, one-line or multi-line) and the '# Self-skip' comment directly above it before comparing. See stripSelfSkip in scripts/lib/cloud-parity.js.",
+  "pairs": [
+    { "name": "commands", "repoDir": ".claude/commands", "globalDir": "commands", "pattern": "*.md", "mode": "exact" },
+    { "name": "hooks", "repoDir": ".claude/hooks", "globalDir": "hooks", "pattern": "*.sh", "mode": "strip-self-skip" }
+  ]
+}
