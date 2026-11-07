@@ -2722,14 +2722,27 @@ function urlSlugNamesShow(url, showTitle) {
   return tTokens.some((t) => segTokens.includes(t) || squashedSeg.includes(t));
 }
 
-function reviewSlugNamesDifferentShow(url, showTitle) {
+// opts.reviewInOnly (BRO-7077, BRO-4369): read ONLY TheaterMania's "Review: In
+// <Title>, ..." slug ("review-in-falls-for-jodie-..._1855201"). The Playbill
+// Verdict anchor sweep gates on it; 0 of 46,892 shipping rows match. The
+// trailing "<x>-review" form stays rebuild-only: alone it flags 50 legit rows
+// (creative headlines such as "showmanism-review-...").
+function reviewSlugNamesDifferentShow(url, showTitle, opts = {}) {
   if (!url || !showTitle) return false;
   let seg = '';
   try {
     seg = new URL(url).pathname.toLowerCase().split('/').filter(Boolean).pop() || '';
   } catch { return false; }
   seg = seg.replace(/\.[a-z]+$/, '');
-  const m = seg.match(/^([a-z0-9-]+?)-review(?:-|$)/);
+  let m;
+  if (opts.reviewInOnly) {
+    // "Review: In <Title>, ..." headline slug, with TheaterMania's _<id> tail.
+    seg = seg.replace(/_\d+$/, '');
+    const lead = seg.match(/^review-in-([a-z0-9-]+)$/);
+    if (lead) m = [lead[0], lead[1]];
+  } else {
+    m = seg.match(/^([a-z0-9-]+?)-review(?:-|$)/);
+  }
   if (!m) return false;
   const pre = m[1].split('-').filter(
     (t) => t.length >= 3 && !URL_GENERIC_SLUG_TOKENS.has(t) && !/^\d+$/.test(t)
