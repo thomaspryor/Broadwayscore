@@ -1,23 +1,23 @@
 {
-  "runDate": "2026-11-07T22:02:06.534Z",
+  "runDate": "2026-11-07T22:02:11.622Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 60,
     "priority": "all",
-    "showFilter": "parcel-from-america-off-broadway-2026",
+    "showFilter": "iphigenie-en-tauride-english-national-opera-west-end-2026",
     "aggressive": true,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 0,
-    "failed": 1,
+    "processed": 2,
+    "failed": 0,
     "skipped": 0,
-    "successRate": "0%"
+    "successRate": "100.0%"
   },
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 2,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
@@ -28,8 +28,8 @@
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 0,
-    "tier1Success": 0,
+    "tier1Attempts": 2,
+    "tier1Success": 2,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
@@ -38,11 +38,11 @@
     "tier1_9Success": 0,
     "tier2Attempts": 0,
     "tier2Success": 0,
-    "tier3Attempts": 1,
+    "tier3Attempts": 0,
     "tier3Success": 0,
     "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 1,
+    "tier4Attempts": 0,
     "tier4Success": 0,
     "totalFailed": 0,
     "scrapingBeePageCredits": 0,
@@ -54,10 +54,10 @@
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 0,
-    "failed": 1,
+    "processed": 2,
+    "failed": 0,
     "shows": [
-      "parcel-from-america-off-broadway-2026"
+      "iphigenie-en-tauride-english-national-opera-west-end-2026"
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
@@ -65,18 +65,23 @@
       "failed": 0
     }
   },
-  "processed": [],
-  "failed": [
-    "parcel-from-america-off-broadway-2026/talkinbroadway--unknown.json"
+  "processed": [
+    "iphigenie-en-tauride-english-national-opera-west-end-2026/thereviewshub--unknown.json",
+    "iphigenie-en-tauride-english-national-opera-west-end-2026/british-theatre--unknown.json"
   ],
+  "failed": [],
   "cumulativeResumedState": {
-    "processed": [],
-    "failed": [
-      "parcel-from-america-off-broadway-2026/talkinbroadway--unknown.json"
-    ]
+    "processed": [
+      "iphigenie-en-tauride-english-national-opera-west-end-2026/thereviewshub--unknown.json",
+      "iphigenie-en-tauride-english-national-opera-west-end-2026/british-theatre--unknown.json"
+    ],
+    "failed": []
   },
   "tierDetails": {
-    "playwright": [],
+    "playwright": [
+      "iphigenie-en-tauride-english-national-opera-west-end-2026/thereviewshub--unknown.json",
+      "iphigenie-en-tauride-english-national-opera-west-end-2026/british-theatre--unknown.json"
+    ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
