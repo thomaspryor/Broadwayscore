@@ -32,7 +32,7 @@ const route = (showId, url, publishDate, category) =>
   classifyMarketRouting({ showId, url, outletId: 'thestage', publishDate, category, siblingIndex });
 
 test('venuePhrases keeps distinctive venue names and drops generic ones', () => {
-  assert.deepEqual(venuePhrases('Royal Shakespeare Theatre, Stratford-upon-Avon'), ['royal-shakespeare', 'royal-shakespeare-theatre']);
+  assert.deepEqual(venuePhrases('Royal Shakespeare Theatre, Stratford-upon-Avon'), ['royal-shakespeare', 'royal-shakespeare-theatre', 'rsc']); // + VENUE_ALIASES (BRO-7077)
   assert.deepEqual(venuePhrases("Shakespeare's Globe"), ['shakespeares-globe']);
   assert.deepEqual(venuePhrases('Lyceum Theatre'), []); // GENERIC_VENUE_SLUGS
   assert.deepEqual(venuePhrases(null), []);

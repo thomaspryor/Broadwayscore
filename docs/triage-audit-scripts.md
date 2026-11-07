@@ -50,7 +50,6 @@ that a script already supports `--counts` or has a digest consumer.
 | 8 | `audit-corpus-determinism.js` | published review count moving down or flapping; PASS today; needs deploy-watermark git history |
 | 9 | `audit-flagged-file-contamination.js` | merge target landing inside a flagged review file (BRO-3219); only a test.yml path trigger; needs review-texts |
 | 10 | `audit-stale-review-texts.js` | stale manual-clear reasons hiding genuinely wrong texts (BRO-2395); only a test.yml path trigger; needs review-texts |
-| 11 | `audit-shared-url-quote.js` | multi-show column copied whole onto each show (BRO-4594); report only; needs review-texts |
 | 12 | `audit-form-d-capitalization.js` | commercial.json capitalization stored as the Form D maximum (BRO-5732); clean today (0 of 37); core data plus SEC fetch |
 
 ### Action plan for the top 8
@@ -163,7 +162,6 @@ without a scope, tied to a retired system, or unsafe without manual adjudication
 | `audit-multi-verdict-stars.js` | Finds stored star ratings borrowed from another section of multi-review articles; schedule mismatch counts separately from ambiguous sections using review-texts; --write-plan stays manual, no fetches. |
 | `audit-orphaned-audit-writes.js` | Finds workflow audit reports discarded because commit steps never stage them; schedule the source-only --check ratchet against reviewed persistence gaps, with shadow-mode visibility before blocking. |
 | `audit-paywall-leaks.js` | Detects subscriber-login boilerplate stored as fullText via the shared positional paywall detector; recurring cookie failures merit a weekly report with review-texts and --strict in shadow mode; no fetches. |
-| `audit-review-pair-anomalies.js` | Detects identical text under different critics/URLs and stale own-domain roundup flags across sibling files; per-file guards miss these, so schedule report-only pair and roundup counts with review-texts. |
 | `audit-soft-404-review-texts.js` | Finds stored soft-404 templates and byte-identical bodies across critics, complementing the collector guard on newly fetched text; schedule read-only finding counts with review-texts, no live fetches. |
 | `audit-url-collisions.js` | Classifies same-show/outlet URL groups to separate legitimate aggregator multi-critic pages from copied-text contamination; schedule contamination counts with review-texts, never --apply; no network calls. |
 | `audit-wet-roundup-bleed.js` | Cross-checks cached WET roundup rows and review files for borrowed critics/URLs and cross-outlet domains; schedule unflagged contamination counts, keeping weak leads separate; needs WET archive and review-texts, no fetches. |

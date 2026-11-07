@@ -51,11 +51,6 @@
       "rank": 10,
       "reason": "stale manual-clear reasons hiding genuinely wrong texts (BRO-2395); only a test.yml path trigger; needs review-texts"
     },
-    "audit-shared-url-quote.js": {
-      "bucket": "a",
-      "rank": 11,
-      "reason": "multi-show column copied whole onto each show (BRO-4594); report only; needs review-texts"
-    },
     "audit-form-d-capitalization.js": {
       "bucket": "a",
       "rank": 12,
@@ -365,11 +360,6 @@
       "bucket": "b",
       "rank": 0,
       "reason": "One-time inventory of already-flagged reviews that might fit sibling productions; requires the main checkout and .core-data-checkout/shows.json plus collision/year-only adjudication, so keep repair planning manual."
-    },
-    "audit-review-pair-anomalies.js": {
-      "bucket": "a",
-      "rank": 99,
-      "reason": "Detects identical text under different critics/URLs and stale own-domain roundup flags across sibling files; per-file guards miss these, so schedule report-only pair and roundup counts with review-texts."
     },
     "audit-safe-form-allowlist.js": {
       "bucket": "b",
