@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-11-07T10:26:46.049Z",
+    "generatedAt": "2026-11-07T11:36:55.652Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": true,
@@ -10,65 +10,55 @@
     "minChurn": 30,
     "flaggedCount": 0,
     "exemptCount": 1,
-    "coveredCount": 10,
-    "highChurnTracked": 11
+    "coveredCount": 8,
+    "highChurnTracked": 9
   },
   "flagged": [],
   "exempt": [
     {
       "path": "data/audit/alert-ledger.json",
-      "churn": 53
+      "churn": 56
     }
   ],
   "covered": [
-    {
-      "path": "data/audit/scraper-spend-ledger.jsonl",
-      "churn": 60,
-      "mergeAttr": "union"
-    },
     {
       "path": "data/audit/stage-latency.jsonl",
       "churn": 55,
       "mergeAttr": "union"
     },
     {
+      "path": "data/audit/scraper-spend-ledger.jsonl",
+      "churn": 54,
+      "mergeAttr": "union"
+    },
+    {
       "path": "data/audit/deploy-watermark.json",
-      "churn": 38,
+      "churn": 39,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/cross-show-fingerprint-collisions.json",
-      "churn": 37,
+      "churn": 38,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/needs-human-review.json",
-      "churn": 37,
+      "churn": 38,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/rebuild-score-drift.json",
-      "churn": 37,
+      "churn": 38,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/skipped-alias-collisions.json",
-      "churn": 37,
+      "churn": 38,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/opening-night-completeness-state.json",
-      "churn": 30,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/collection-state/live-progress.json",
-      "churn": 30,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/collection-state/progress.json",
-      "churn": 30,
+      "churn": 31,
       "mergeAttr": "ours"
     }
   ]
