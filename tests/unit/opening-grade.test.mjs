@@ -48,6 +48,15 @@ test('a caller-tagged scheduled ingest (ingest-urls(tic-daily):) is not a hand f
   assert.equal(grade({ commits: [routine, c] }).verdict, 'on-its-own');
 });
 
+test('the ingest-urls.yml fallback commit (data: Ingest URLs for) counts as a hand dispatch', () => {
+  const c = { sha: 'ffffffff66', at: '2026-10-31T14:20:00Z', ...BOT, subject: 'data: Ingest URLs for test-show-2026', files: ['test-show-2026/fb--e.json'] };
+  const g = grade({ commits: [routine, c] });
+  assert.equal(g.verdict, 'needed-hands');
+  assert.equal(g.signals[0].kind, 'ingest-dispatch');
+  const other = { ...c, files: ['other-show-2026/fb--e.json'] };
+  assert.equal(grade({ commits: [routine, other] }).verdict, 'on-its-own');
+});
+
 test('a person committing to the show during opening week needs hands; outside the window does not', () => {
   const c = (at) => ({ sha: 'cccccccc33', at, author: 'Tom Pryor', email: 'x@example.com', subject: 'fix publishDate', files: ['test-show-2026/variety--b.json'] });
   const g = grade({ commits: [c('2026-11-02T10:00:00Z')] });
