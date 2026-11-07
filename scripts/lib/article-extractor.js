@@ -656,6 +656,26 @@ function extractNubNewsBody(html) {
 }
 
 /**
+ * theartsdesk.com (Drupal, rebuilt autumn 2026, BRO-7061). The review body sits in the article-body block as two
+ * fields (#unsubscribed_summary lede + #pico rest) with <article class="media"> image figures between paragraphs.
+ * The generic fallback grabbed the site's "Help keep arts journalism alive" support banner (a separate body field
+ * earlier on the page) and stopped at the first figure's visually-hidden "Image" label, saving ~290 words that
+ * began with the banner and ended "Image". Keep only <p> text inside the article-body block, minus figures, and
+ * drop any banner paragraph. Returns null when the block is absent so a layout change fails loud.
+ */
+const ARTSDESK_BANNER_RE = /help keep arts journalism alive|we.re rebuilding theartsdesk|subscribe today/i;
+function extractArtsDeskBody(html) {
+  const src = String(html || '').replace(/<!--[\s\S]*?-->/g, '').replace(/<script[\s\S]*?<\/script>/gi, '');
+  const inner = extractBalancedDivByClass(src, 'block-field-blocknodearticlebody');
+  if (!inner) return null;
+  const body = inner.replace(/<article\b[\s\S]*?<\/article>/gi, '');
+  const paras = [...body.matchAll(/<p\b[^>]*>([\s\S]*?)<\/p>/gi)]
+    .map((p) => stripHtml(p[1]))
+    .filter((t) => t && !ARTSDESK_BANNER_RE.test(t));
+  return paras.length ? paras.join('\n\n') : null;
+}
+
+/**
  * Toledo Blade (PG Evoke CMS): the story body is not in the page markup but in
  * the pgStoryZeroJSON script as a JSON string field ("body": "<div ...>"), often
  * pasted from Word (OutlineElement/TextRun spans). Parse that string, keep <p> text.
@@ -955,7 +975,7 @@ const PATTERNS = [
 const DEDICATED_EXTRACTOR_HOSTS = [
   'wsj.com', 'variety.com', 'lavocedinewyork.com', 'thestage.co.uk',
   'thetimes.co.uk', 'thetimes.com', 'lightingandsoundamerica.com',
-  'talkinbroadway.com', 'theatreweekly.com',
+  'talkinbroadway.com', 'theatreweekly.com', 'theartsdesk.com',
 ];
 
 const PROMO_BOILERPLATE_PATTERNS = [
@@ -1163,6 +1183,12 @@ function extractArticleTextUnchecked(html, hostname, criticHint) {
   if (host.includes('theatreweekly.com')) {
     const twText = extractTheatreWeeklyBody(html);
     return twText && twText.length >= 300 ? twText : null;
+  }
+
+  // theartsdesk.com: see extractArtsDeskBody. Null on failure (not the generic fallbacks, which saved the support banner).
+  if (host.includes('theartsdesk.com')) {
+    const adText = extractArtsDeskBody(html);
+    return adText && adText.length >= 300 ? adText : null;
   }
 
   // stagebuddy.com — review body lives in <div class="articleblock">, not any
@@ -1475,4 +1501,10 @@ function isDedicatedExtractorHost(urlOrHost) {
   return DEDICATED_EXTRACTOR_HOSTS.some((d) => h.includes(d));
 }
 
-module.exports = { isDedicatedExtractorHost, extractArticleText, extractStandfirst, extractArticleTextFromUrl, extractPublishDate, stripHtml, extractLsaByline, extractZoxNewsBody, extractVarietyBody, extractNubNewsBody, extractLondonTheatreBody, extractToledoBladeBody, extractCurtainUpBody, extractDailyMailBody, dailyMailVerdictValues };
+// Hosts whose dedicated extractor is authoritative: callers keep its text even when the generic pass is longer
+// (theartsdesk's generic pass is longer only because it keeps the support banner, BRO-7061).
+function isExclusiveExtractorHost(urlOrHost) {
+  return /(?:^|\.)theartsdesk\.com(?:[/:?#]|$)/i.test(String(urlOrHost || '').replace(/^[a-z]+:\/\//i, ''));
+}
+
+module.exports = { isExclusiveExtractorHost, isDedicatedExtractorHost, extractArticleText, extractStandfirst, extractArticleTextFromUrl, extractPublishDate, stripHtml, extractLsaByline, extractZoxNewsBody, extractVarietyBody, extractNubNewsBody, extractLondonTheatreBody, extractArtsDeskBody, extractToledoBladeBody, extractCurtainUpBody, extractDailyMailBody, dailyMailVerdictValues };

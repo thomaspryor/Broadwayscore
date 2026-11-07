@@ -119,7 +119,7 @@ const { applyMultiShowFanoutToFile } = require('./lib/multi-show-review-fanout')
 const { extractExplicitScore } = require('./lib/llm-score-extractor');
 // BRO-912: shared byline-anchored extractor (article-extractor.js) — aliased
 // to avoid colliding with this file's own Playwright-DOM extractArticleText(page).
-const { extractArticleText: extractArticleTextFromHtml, extractZoxNewsBody, extractVarietyBody, isDedicatedExtractorHost } = require('./lib/article-extractor');
+const { extractArticleText: extractArticleTextFromHtml, extractZoxNewsBody, extractVarietyBody, isDedicatedExtractorHost, isExclusiveExtractorHost } = require('./lib/article-extractor');
 
 // Text cleaning (entity decoding, junk stripping)
 const { cleanText, stripTrailingJunk, TRAILING_JUNK_PATTERNS, hasStrippableConsentLayer } = require('./lib/text-cleaning');
@@ -4208,6 +4208,7 @@ function preferDedicatedText(generic, html, url) {
   if (!url || !html || !isDedicatedExtractorHost(url)) return base;
   let dedicated = null;
   try { dedicated = extractArticleTextFromHtml(html, url); } catch { dedicated = null; }
+  if (dedicated && isExclusiveExtractorHost(url)) return dedicated;
   return dedicated && dedicated.length > base.length ? dedicated : base;
 }
 
