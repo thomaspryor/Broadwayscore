@@ -121,7 +121,7 @@ const {
   isDateOnlyAutoReason,
 } = require('./lib/wrong-production-autoclear');
 const { isAnticipatoryPreviewPost } = require('./lib/content-filters');
-const { evaluateRepublishedReview, humanFlagOutranksScriptClear } = require('./lib/run-contamination');
+const { evaluateRepublishedReview, humanFlagOutranksScriptClear, republishGuardOpen } = require('./lib/run-contamination');
 const { detectPriorRunRepublish, shouldReleasePriorRunRepublish } = require('./lib/prior-run-republish-guard');
 const { detectOtherProductionUrl, shouldReleaseOtherProductionUrl, OTHER_PRODUCTION_URL_REASON } = require('./lib/other-production-signal');
 const { resolveBackfillPublishDate, resolveGuardReviewDate } = require('./lib/backfill-publish-date');
@@ -2055,10 +2055,14 @@ const crossShowFingerprints = new Map();
         // Theater") even though the page was republished with an in-window date.
         // Runs regardless of reviewDate: the date guards cannot see this.
         // lane-guarded: wpAuditOpen includes laneHolds(d, 'wrongProduction')
-        if (wpAuditOpen) {
+        // BRO-7085: also over a script's clear (An Oak Tree); retractScriptClearForRepublish drops it.
+        const republishOpen = republishGuardOpen(d, { auditOpen: wpAuditOpen, laneHeld: laneHolds(d, 'wrongProduction') });
+        const retractScriptClearForRepublish = () => { if (!wpAuditOpen) retractScriptWrongProductionClear(d); };
+        if (republishOpen) {
           const republish = detectPriorRunRepublish({ text: d.fullText, show: showRecord });
           if (republish.flag) {
             console.log(`  [PRIOR-RUN-REPUBLISH] ${sid}/${f}: ${republish.reason} — "${republish.evidence}"`);
+            retractScriptClearForRepublish();
             d.wrongProduction = true;
             invalidateWrongProductionAutoClear(d);
             d.wrongProductionReason = 'prior-run-republish';
@@ -2070,12 +2074,13 @@ const crossShowFingerprints = new Map();
           // 2026 run, a timeout.com/london page on a NYC show). The date guards below
           // trust publishDate, which a url swap or republish can stamp with the
           // current run's date.
-          if (flagOtherProductionUrl(d)) continue;
+          if (wpAuditOpen && flagOtherProductionUrl(d)) continue;
           // BRO-5000: a page that says outright it was written in an earlier year
           // ("This review is from 2025") on a show with no declared run in that year.
           const earlier = evaluateRepublishedReview({ fullText: d.fullText, show: showRecord, publishDate: d.publishDate });
           if (earlier.exclude) {
             console.log(`  [REPUBLISHED-EARLIER-YEAR] ${sid}/${f}: "${earlier.snippet}"`);
+            retractScriptClearForRepublish();
             d.wrongProduction = true;
             invalidateWrongProductionAutoClear(d);
             d.wrongProductionReason = earlier.reason;
