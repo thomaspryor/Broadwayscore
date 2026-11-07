@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7080-attractions-2",
   "planId": "e3da590d-58f6-499c-8f79-8fa32ad3cf96",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-07T21:01:07.295Z",
   "submitter": {
     "name": null,
@@ -124,5 +124,64 @@
         "description": "shows.json: 58th-street-off-west-end-2026.noReviewsExpectedReason"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-07T21:26:42.896Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: status updated for 58th-street-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for 58th-street-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for 58th-street-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: status updated for mas-sabe-el-saulo-por-viejo-off-broadway-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for mas-sabe-el-saulo-por-viejo-off-broadway-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for mas-sabe-el-saulo-por-viejo-off-broadway-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: status updated for inala-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for inala-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for inala-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: noReviewsExpected updated for 58th-street-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: noReviewsExpectedReason updated for 58th-street-off-west-end-2026"
+    }
+  ],
+  "executedIn": "ci"
 }
