@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-07T15:16:08.661Z",
+  "generatedAt": "2026-11-07T15:35:51.855Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -13,27 +13,27 @@
       "slug": "iphigenie-en-tauride-english-national-opera-west-end",
       "thumbnail": "/images/shows/iphigenie-en-tauride-english-national-opera-west-end-2026/thumbnail.jpg",
       "siteScore": null,
-      "liveScore": 60,
+      "liveScore": 56,
       "scoreDrift": null,
       "belowThreshold": true,
-      "reviewsNeeded": 6,
+      "reviewsNeeded": 5,
       "siteFileExists": true,
-      "total": 1,
+      "total": 2,
       "t1": 0,
       "t2": 0,
-      "t3": 1,
-      "positive": 0,
-      "mixed": 1,
-      "negative": 0,
+      "t3": 2,
+      "positive": 1,
+      "mixed": 0,
+      "negative": 1,
       "readiness": {
         "ready": false,
         "reasons": [
-          "1/8 total",
+          "2/8 total",
           "T1:0/3",
           "T2:0/2",
-          "hi-conf:0/6"
+          "hi-conf:2/6"
         ],
-        "highConfidence": 0,
+        "highConfidence": 2,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -164,6 +164,18 @@
           "p": 0,
           "m": 1,
           "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-11-07T15:35:51.855Z",
+          "rc": 2,
+          "s": 56,
+          "t1": 0,
+          "t2": 0,
+          "t3": 2,
+          "p": 1,
+          "m": 0,
+          "n": 1,
           "bc": "waiting"
         }
       ]
