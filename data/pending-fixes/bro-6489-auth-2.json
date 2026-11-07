@@ -1,0 +1,37 @@
+{
+  "issueNumber": "bro-6489-auth-2",
+  "planId": "1a747418-3a08-4721-8d99-992fb2baf297",
+  "status": "applied",
+  "createdAt": "2026-10-29T18:59:37.490Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "bro-6489-auth: Cat Cohen Broad Strokes closing per the Lucille Lortel Theatre page",
+    "steps": [
+      "shows.json: cat-cohen-broad-strokes-off-broadway-2026.closingDate"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "cat-cohen-broad-strokes-off-broadway-2026",
+        "field": "closingDate",
+        "oldValue": "2026-09-26",
+        "newValue": "2026-09-25",
+        "description": "shows.json: cat-cohen-broad-strokes-off-broadway-2026.closingDate (Lucille Lortel page https://lortel.org/broad-strokes: July 14 - September 25, 2026; extension release also says through Sep 25)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-29T19:41:44.998Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for cat-cohen-broad-strokes-off-broadway-2026"
+    }
+  ],
+  "executedIn": "ci"
+}

@@ -1,0 +1,243 @@
+{
+  "issueNumber": "bro-6237",
+  "planId": "676022f8-29e6-4e9f-ad47-15545d2aded5",
+  "status": "pending",
+  "createdAt": "2026-10-26T11:33:49.849Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6237: adjudicate 79 counted reviews carrying an unreviewed CV not-a-review flag (8 true non-reviews, 71 real reviews cleared) (part 1 of 4)",
+    "steps": [
+      "dracula-west-end-2025/mail-on-sunday--lily-jobson.json: isNonReviewReason",
+      "fences-off-west-end-2026/ground--unknown.json: isNonReviewReason",
+      "hamilton-2015/billboard--alex-gale.json: isNonReviewReason",
+      "kramerfauci-off-broadway-2026/nytimes--juan-a-ramirez.json: isNonReviewReason",
+      "m-butterfly-2017/theatermania--jesse-green.json: isNonReviewReason",
+      "punch-west-end-2025/daily-mail--frances-hardy.json: isNonReviewReason",
+      "sunset-boulevard-west-end-2023/bnn--sheena-oberoi.json: isNonReviewReason",
+      "the-normal-heart-2011/wsj--nancy-dewolf-smith.json: isNonReviewReason",
+      "dracula-west-end-2025/mail-on-sunday--lily-jobson.json: isNonReview",
+      "fences-off-west-end-2026/ground--unknown.json: isNonReview",
+      "hamilton-2015/billboard--alex-gale.json: isNonReview",
+      "kramerfauci-off-broadway-2026/nytimes--juan-a-ramirez.json: isNonReview",
+      "m-butterfly-2017/theatermania--jesse-green.json: isNonReview",
+      "punch-west-end-2025/daily-mail--frances-hardy.json: isNonReview",
+      "sunset-boulevard-west-end-2023/bnn--sheena-oberoi.json: isNonReview",
+      "the-normal-heart-2011/wsj--nancy-dewolf-smith.json: isNonReview",
+      "1776-2022/wsj--charles-isherwood.json: nonReviewManualClear",
+      "a-beautiful-noise-the-neil-diamond-musical-tour-2024/broadwayworld--scott-rawson.json: nonReviewManualClear",
+      "a-bronx-tale-the-musical-2016/timeout--adam-feldman.json: nonReviewManualClear",
+      "a-midsummer-nights-dream-west-end-2026/london-box-office--eve-jawara.json: nonReviewManualClear",
+      "a-midsummer-nights-dream-west-end-2026/london-box-office--marian-pashley.json: nonReviewManualClear",
+      "after-midnight-2013/timeout--adam-feldman.json: nonReviewManualClear",
+      "an-enemy-of-the-people-2024/nytimes--jesse-green.json: nonReviewManualClear",
+      "ann-2013/huffpost--danny-groner.json: nonReviewManualClear",
+      "avenue-q-west-end-2026/telegraph--marianka-swain.json: nonReviewManualClear"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "dracula-west-end-2025/mail-on-sunday--lily-jobson.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "manual (not a review): celebrity news piece about Cynthia Erivo press-tour reputation, no assessment of the production",
+        "description": "dracula-west-end-2025/mail-on-sunday--lily-jobson.json: isNonReviewReason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "fences-off-west-end-2026/ground--unknown.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "manual (not a review): Ground News aggregator summary page of a Reviews Hub piece, not the outlet review itself",
+        "description": "fences-off-west-end-2026/ground--unknown.json: isNonReviewReason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "hamilton-2015/billboard--alex-gale.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "manual (not a review): review of the Hamilton cast recording album, not of the stage production",
+        "description": "hamilton-2015/billboard--alex-gale.json: isNonReviewReason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "kramerfauci-off-broadway-2026/nytimes--juan-a-ramirez.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "manual (not a review): NYT interview/feature with director Daniel Fish about the play, not a review",
+        "description": "kramerfauci-off-broadway-2026/nytimes--juan-a-ramirez.json: isNonReviewReason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "m-butterfly-2017/theatermania--jesse-green.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "manual (not a review): TheaterMania news item announcing the Broadway opening, no critical evaluation",
+        "description": "m-butterfly-2017/theatermania--jesse-green.json: isNonReviewReason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "punch-west-end-2025/daily-mail--frances-hardy.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "manual (not a review): Daily Mail feature on the real people behind the play, not a review",
+        "description": "punch-west-end-2025/daily-mail--frances-hardy.json: isNonReviewReason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "sunset-boulevard-west-end-2023/bnn--sheena-oberoi.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "manual (not a review): BNN auto-written news rewrite of other critics reactions, no critic byline",
+        "description": "sunset-boulevard-west-end-2023/bnn--sheena-oberoi.json: isNonReviewReason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-normal-heart-2011/wsj--nancy-dewolf-smith.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "manual (not a review): scraped text is a WSJ piece on the History channel series The World Wars, not a review of this show",
+        "description": "the-normal-heart-2011/wsj--nancy-dewolf-smith.json: isNonReviewReason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "dracula-west-end-2025/mail-on-sunday--lily-jobson.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "dracula-west-end-2025/mail-on-sunday--lily-jobson.json: isNonReview"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "fences-off-west-end-2026/ground--unknown.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "fences-off-west-end-2026/ground--unknown.json: isNonReview"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "hamilton-2015/billboard--alex-gale.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "hamilton-2015/billboard--alex-gale.json: isNonReview"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "kramerfauci-off-broadway-2026/nytimes--juan-a-ramirez.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "kramerfauci-off-broadway-2026/nytimes--juan-a-ramirez.json: isNonReview"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "m-butterfly-2017/theatermania--jesse-green.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "m-butterfly-2017/theatermania--jesse-green.json: isNonReview"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "punch-west-end-2025/daily-mail--frances-hardy.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "punch-west-end-2025/daily-mail--frances-hardy.json: isNonReview"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "sunset-boulevard-west-end-2023/bnn--sheena-oberoi.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "sunset-boulevard-west-end-2023/bnn--sheena-oberoi.json: isNonReview"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-normal-heart-2011/wsj--nancy-dewolf-smith.json",
+        "field": "isNonReview",
+        "oldValue": false,
+        "newValue": true,
+        "description": "the-normal-heart-2011/wsj--nancy-dewolf-smith.json: isNonReview"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "1776-2022/wsj--charles-isherwood.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "1776-2022/wsj--charles-isherwood.json: nonReviewManualClear"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-beautiful-noise-the-neil-diamond-musical-tour-2024/broadwayworld--scott-rawson.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "a-beautiful-noise-the-neil-diamond-musical-tour-2024/broadwayworld--scott-rawson.json: nonReviewManualClear"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-bronx-tale-the-musical-2016/timeout--adam-feldman.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "a-bronx-tale-the-musical-2016/timeout--adam-feldman.json: nonReviewManualClear"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-midsummer-nights-dream-west-end-2026/london-box-office--eve-jawara.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "a-midsummer-nights-dream-west-end-2026/london-box-office--eve-jawara.json: nonReviewManualClear"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-midsummer-nights-dream-west-end-2026/london-box-office--marian-pashley.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "a-midsummer-nights-dream-west-end-2026/london-box-office--marian-pashley.json: nonReviewManualClear"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "after-midnight-2013/timeout--adam-feldman.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "after-midnight-2013/timeout--adam-feldman.json: nonReviewManualClear"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "an-enemy-of-the-people-2024/nytimes--jesse-green.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "an-enemy-of-the-people-2024/nytimes--jesse-green.json: nonReviewManualClear"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "ann-2013/huffpost--danny-groner.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "ann-2013/huffpost--danny-groner.json: nonReviewManualClear"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "avenue-q-west-end-2026/telegraph--marianka-swain.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "avenue-q-west-end-2026/telegraph--marianka-swain.json: nonReviewManualClear"
+      }
+    ]
+  }
+}

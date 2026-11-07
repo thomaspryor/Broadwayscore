@@ -1,0 +1,357 @@
+{
+  "issueNumber": "bro-5183-04",
+  "planId": "bfc11e47-6c6f-4849-941c-8401e995c513",
+  "status": "partial",
+  "createdAt": "2026-10-12T20:35:54.048Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5183 round 2: repair made-up urls of legacy web-search reviews to the outlet's real review url (and byline), or mark the row a duplicate of the real review already on file.",
+    "steps": [
+      "come-fly-away-2010/talkinbroadway--matthew-murray.json: url -> https://talkinbroadway.com/page/world/ComeFlyAway.html",
+      "disaster-2016/talkinbroadway--matthew-murray.json: url -> https://talkinbroadway.com/page/world/Disaster2016.html",
+      "in-the-next-room-2009/nytimes--ben-brantley.json: duplicateOf -> nytimes--charles-isherwood.json",
+      "journeys-end-2007/variety--david-rooney.json: url -> http://www.variety.com/review/VE1117932884.html",
+      "king-kong-2018/talkinbroadway--matthew-murray.json: duplicateOf -> talkinbroadway--howard-miller.json",
+      "lady-day-at-emersons-bar-and-grill-2014/nytimes--ben-brantley.json: url -> http://www.nytimes.com/2014/04/14/theater/audra-mcdonald-in-lady-day-at-emersons-bar-and-grill.html",
+      "no-mans-land-2013/talkinbroadway--matthew-murray.json: url -> https://talkinbroadway.com/page/world/NoMansLandGodot.html",
+      "once-on-this-island-2017/vulture--jesse-green.json: duplicateOf -> vulture--sara-holdren.json",
+      "one-man-two-guvnors-2012/talkinbroadway--matthew-murray.json: url -> https://talkinbroadway.com/page/world/1Man2Guvnors.html",
+      "paradise-square-2022/talkinbroadway--matthew-murray.json: duplicateOf -> talkinbroadway--james-wilson.json",
+      "picnic-2013/talkinbroadway--matthew-murray.json: url -> https://talkinbroadway.com/page/world/Picnic2013.html",
+      "present-laughter-2017/talkinbroadway--matthew-murray.json: url -> https://talkinbroadway.com/page/world/PresentLaughter2017.html",
+      "private-lives-2011/talkinbroadway--matthew-murray.json: url -> https://talkinbroadway.com/page/world/PrivateLives2011.html",
+      "radio-golf-2007/talkinbroadway--matthew-murray.json: url -> https://talkinbroadway.com/page/world/RadioGolf2007.html",
+      "rocky-2014/talkinbroadway--matthew-murray.json: url -> https://talkinbroadway.com/page/world/Rocky2014.html",
+      "sweeney-todd-2023/talkinbroadway--matthew-murray.json: url -> https://www.talkinbroadway.com/page/world/SweeneyTodd23.html",
+      "sweeney-todd-2023/talkinbroadway--matthew-murray.json: criticName -> Howard Miller",
+      "talk-radio-2007/variety--charles-isherwood.json: url -> https://variety.com/2007/film/awards/talk-radio-2-1117933046/",
+      "tarzan-2006/variety--charles-isherwood.json: url -> https://variety.com/2006/legit/markets-festivals/tarzan-2-1200516354/",
+      "the-bands-visit-2017/talkinbroadway--matthew-murray.json: duplicateOf -> talkinbroadway--michael-portantiere.json",
+      "the-country-house-2014/talkinbroadway--matthew-murray.json: url -> https://www.talkinbroadway.com/page/world/CountryHouse2014.html",
+      "the-ferryman-2018/talkinbroadway--matthew-murray.json: duplicateOf -> talkinbroadway--howard-miller.json",
+      "the-little-mermaid-2008/washpost--peter-marks.json: url -> https://www.washingtonpost.com/wp-dyn/content/article/2008/01/10/AR2008011003871.html",
+      "the-other-place-2013/talkinbroadway--matthew-murray.json: url -> https://talkinbroadway.com/page/world/TheOtherPlace2013.html"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "come-fly-away-2010/talkinbroadway--matthew-murray.json",
+        "field": "url",
+        "oldValue": "https://www.talkinbroadway.com/world/ComeFlywithMe.html",
+        "newValue": "https://talkinbroadway.com/page/world/ComeFlyAway.html",
+        "description": "Stored url https://www.talkinbroadway.com/world/ComeFlywithMe.html came from the legacy LLM web-search step; the outlet's real review of this production is https://talkinbroadway.com/page/world/ComeFlyAway.html. Found by web search / aggregator listing, 2026-10-12; the collector refetches and verifies the page before it counts."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "disaster-2016/talkinbroadway--matthew-murray.json",
+        "field": "url",
+        "oldValue": "https://www.talkinbroadway.com/world/Disaster.html",
+        "newValue": "https://talkinbroadway.com/page/world/Disaster2016.html",
+        "description": "Stored url https://www.talkinbroadway.com/world/Disaster.html came from the legacy LLM web-search step; the outlet's real review of this production is https://talkinbroadway.com/page/world/Disaster2016.html. Found by web search / aggregator listing, 2026-10-12; the collector refetches and verifies the page before it counts."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "in-the-next-room-2009/nytimes--ben-brantley.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "nytimes--charles-isherwood.json",
+        "description": "The outlet's real review of this production (https://www.nytimes.com/2009/11/20/theater/reviews/20innextroom.html) is already on file as nytimes--charles-isherwood.json with its page text; this legacy web-search row (made-up url https://www.nytimes.com/2009/11/20/theater/reviews/20room.html, byline Ben Brantley) duplicates it. Found by web search / aggregator listing, 2026-10-12; the collector refetches and verifies the page before it counts."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "journeys-end-2007/variety--david-rooney.json",
+        "field": "url",
+        "oldValue": "https://variety.com/2007/legit/reviews/journey-s-end-1200558958/",
+        "newValue": "http://www.variety.com/review/VE1117932884.html",
+        "description": "Stored url https://variety.com/2007/legit/reviews/journey-s-end-1200558958/ came from the legacy LLM web-search step; the outlet's real review of this production is http://www.variety.com/review/VE1117932884.html. Found by web search / aggregator listing, 2026-10-12; the collector refetches and verifies the page before it counts."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "king-kong-2018/talkinbroadway--matthew-murray.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "talkinbroadway--howard-miller.json",
+        "description": "The outlet's real review of this production (https://talkinbroadway.com/page/world/KingKong2018.html) is already on file as talkinbroadway--howard-miller.json with its page text; this legacy web-search row (made-up url https://www.talkinbroadway.com/world/KingKong.html, byline Matthew Murray) duplicates it. Found by web search / aggregator listing, 2026-10-12; the collector refetches and verifies the page before it counts."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "lady-day-at-emersons-bar-and-grill-2014/nytimes--ben-brantley.json",
+        "field": "url",
+        "oldValue": "https://www.nytimes.com/2014/04/14/theater/reviews/audra-mcdonald-in-lady-day-at-emersons-bar-grill.html",
+        "newValue": "http://www.nytimes.com/2014/04/14/theater/audra-mcdonald-in-lady-day-at-emersons-bar-and-grill.html",
+        "description": "Stored url https://www.nytimes.com/2014/04/14/theater/reviews/audra-mcdonald-in-lady-day-at-emersons-bar-grill.html came from the legacy LLM web-search step; the outlet's real review of this production is http://www.nytimes.com/2014/04/14/theater/audra-mcdonald-in-lady-day-at-emersons-bar-and-grill.html. Found by web search / aggregator listing, 2026-10-12; the collector refetches and verifies the page before it counts."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "no-mans-land-2013/talkinbroadway--matthew-murray.json",
+        "field": "url",
+        "oldValue": "https://www.talkinbroadway.com/world/NoMansLand.html",
+        "newValue": "https://talkinbroadway.com/page/world/NoMansLandGodot.html",
+        "description": "Stored url https://www.talkinbroadway.com/world/NoMansLand.html came from the legacy LLM web-search step; the outlet's real review of this production is https://talkinbroadway.com/page/world/NoMansLandGodot.html. Found by web search / aggregator listing, 2026-10-12; the collector refetches and verifies the page before it counts."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "once-on-this-island-2017/vulture--jesse-green.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "vulture--sara-holdren.json",
+        "description": "The outlet's real review of this production (https://www.vulture.com/2017/12/theater-the-performances-that-carry-once-on-this-island.html) is already on file as vulture--sara-holdren.json with its page text; this legacy web-search row (made-up url https://www.vulture.com/2017/12/theater-review-once-on-this-island-revival.html, byline Jesse Green) duplicates it. Found by web search / aggregator listing, 2026-10-12; the collector refetches and verifies the page before it counts."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "one-man-two-guvnors-2012/talkinbroadway--matthew-murray.json",
+        "field": "url",
+        "oldValue": "https://www.talkinbroadway.com/world/OneManTwoGuvnors.html",
+        "newValue": "https://talkinbroadway.com/page/world/1Man2Guvnors.html",
+        "description": "Stored url https://www.talkinbroadway.com/world/OneManTwoGuvnors.html came from the legacy LLM web-search step; the outlet's real review of this production is https://talkinbroadway.com/page/world/1Man2Guvnors.html. Found by web search / aggregator listing, 2026-10-12; the collector refetches and verifies the page before it counts."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "paradise-square-2022/talkinbroadway--matthew-murray.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "talkinbroadway--james-wilson.json",
+        "description": "The outlet's real review of this production (https://www.talkinbroadway.com/page/world/ParadiseSquare.html) is already on file as talkinbroadway--james-wilson.json with its page text; this legacy web-search row (made-up url https://talkinbroadway.com/page/world/nyc/paradise_square.html, byline Matthew Murray) duplicates it. Found by web search / aggregator listing, 2026-10-12; the collector refetches and verifies the page before it counts."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "picnic-2013/talkinbroadway--matthew-murray.json",
+        "field": "url",
+        "oldValue": "https://www.talkinbroadway.com/world/Picnic.html",
+        "newValue": "https://talkinbroadway.com/page/world/Picnic2013.html",
+        "description": "Stored url https://www.talkinbroadway.com/world/Picnic.html came from the legacy LLM web-search step; the outlet's real review of this production is https://talkinbroadway.com/page/world/Picnic2013.html. Found by web search / aggregator listing, 2026-10-12; the collector refetches and verifies the page before it counts."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "present-laughter-2017/talkinbroadway--matthew-murray.json",
+        "field": "url",
+        "oldValue": "https://www.talkinbroadway.com/world/PresentLaughter.html",
+        "newValue": "https://talkinbroadway.com/page/world/PresentLaughter2017.html",
+        "description": "Stored url https://www.talkinbroadway.com/world/PresentLaughter.html came from the legacy LLM web-search step; the outlet's real review of this production is https://talkinbroadway.com/page/world/PresentLaughter2017.html. Found by web search / aggregator listing, 2026-10-12; the collector refetches and verifies the page before it counts."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "private-lives-2011/talkinbroadway--matthew-murray.json",
+        "field": "url",
+        "oldValue": "https://www.talkinbroadway.com/world/PrivateLives.html",
+        "newValue": "https://talkinbroadway.com/page/world/PrivateLives2011.html",
+        "description": "Stored url https://www.talkinbroadway.com/world/PrivateLives.html came from the legacy LLM web-search step; the outlet's real review of this production is https://talkinbroadway.com/page/world/PrivateLives2011.html. Found by web search / aggregator listing, 2026-10-12; the collector refetches and verifies the page before it counts."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "radio-golf-2007/talkinbroadway--matthew-murray.json",
+        "field": "url",
+        "oldValue": "https://www.talkinbroadway.com/world/RadioGolf.html",
+        "newValue": "https://talkinbroadway.com/page/world/RadioGolf2007.html",
+        "description": "Stored url https://www.talkinbroadway.com/world/RadioGolf.html came from the legacy LLM web-search step; the outlet's real review of this production is https://talkinbroadway.com/page/world/RadioGolf2007.html. Found by web search / aggregator listing, 2026-10-12; the collector refetches and verifies the page before it counts."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "rocky-2014/talkinbroadway--matthew-murray.json",
+        "field": "url",
+        "oldValue": "https://www.talkinbroadway.com/world/Rocky.html",
+        "newValue": "https://talkinbroadway.com/page/world/Rocky2014.html",
+        "description": "Stored url https://www.talkinbroadway.com/world/Rocky.html came from the legacy LLM web-search step; the outlet's real review of this production is https://talkinbroadway.com/page/world/Rocky2014.html. Found by web search / aggregator listing, 2026-10-12; the collector refetches and verifies the page before it counts."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "sweeney-todd-2023/talkinbroadway--matthew-murray.json",
+        "field": "url",
+        "oldValue": "https://talkinbroadway.com/world/SweeneyTodd.html",
+        "newValue": "https://www.talkinbroadway.com/page/world/SweeneyTodd23.html",
+        "description": "Stored url https://talkinbroadway.com/world/SweeneyTodd.html came from the legacy LLM web-search step; the outlet's real review of this production is https://www.talkinbroadway.com/page/world/SweeneyTodd23.html. Found by web search / aggregator listing, 2026-10-12; the collector refetches and verifies the page before it counts."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "sweeney-todd-2023/talkinbroadway--matthew-murray.json",
+        "field": "criticName",
+        "oldValue": "Matthew Murray",
+        "newValue": "Howard Miller",
+        "description": "Byline of https://www.talkinbroadway.com/page/world/SweeneyTodd23.html is Howard Miller; Matthew Murray came from the legacy web-search step. Found by web search / aggregator listing, 2026-10-12; the collector refetches and verifies the page before it counts."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "talk-radio-2007/variety--charles-isherwood.json",
+        "field": "url",
+        "oldValue": "https://variety.com/2007/legit/reviews/talk-radio-1200558845/",
+        "newValue": "https://variety.com/2007/film/awards/talk-radio-2-1117933046/",
+        "description": "Stored url https://variety.com/2007/legit/reviews/talk-radio-1200558845/ came from the legacy LLM web-search step; the outlet's real review of this production is https://variety.com/2007/film/awards/talk-radio-2-1117933046/. Found by web search / aggregator listing, 2026-10-12; the collector refetches and verifies the page before it counts."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "tarzan-2006/variety--charles-isherwood.json",
+        "field": "url",
+        "oldValue": "https://variety.com/2006/film/reviews/brothers-sisters-1200513334/",
+        "newValue": "https://variety.com/2006/legit/markets-festivals/tarzan-2-1200516354/",
+        "description": "Stored url https://variety.com/2006/film/reviews/brothers-sisters-1200513334/ came from the legacy LLM web-search step; the outlet's real review of this production is https://variety.com/2006/legit/markets-festivals/tarzan-2-1200516354/. Found by web search / aggregator listing, 2026-10-12; the collector refetches and verifies the page before it counts."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-bands-visit-2017/talkinbroadway--matthew-murray.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "talkinbroadway--michael-portantiere.json",
+        "description": "The outlet's real review of this production (https://www.talkinbroadway.com/page/world/BandsVisit2017.html) is already on file as talkinbroadway--michael-portantiere.json with its page text; this legacy web-search row (made-up url https://www.talkinbroadway.com/page/world/off/bandsvisit.html, byline Matthew Murray) duplicates it. Found by web search / aggregator listing, 2026-10-12; the collector refetches and verifies the page before it counts."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-country-house-2014/talkinbroadway--matthew-murray.json",
+        "field": "url",
+        "oldValue": "https://www.talkinbroadway.com/world/CountryHouse.html",
+        "newValue": "https://www.talkinbroadway.com/page/world/CountryHouse2014.html",
+        "description": "Stored url https://www.talkinbroadway.com/world/CountryHouse.html came from the legacy LLM web-search step; the outlet's real review of this production is https://www.talkinbroadway.com/page/world/CountryHouse2014.html. Found by web search / aggregator listing, 2026-10-12; the collector refetches and verifies the page before it counts."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-ferryman-2018/talkinbroadway--matthew-murray.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "talkinbroadway--howard-miller.json",
+        "description": "The outlet's real review of this production (https://www.talkinbroadway.com/page/world/Ferryman2018.html) is already on file as talkinbroadway--howard-miller.json with its page text; this legacy web-search row (made-up url https://www.talkinbroadway.com/world/Ferryman.html, byline Matthew Murray) duplicates it. Found by web search / aggregator listing, 2026-10-12; the collector refetches and verifies the page before it counts."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-little-mermaid-2008/washpost--peter-marks.json",
+        "field": "url",
+        "oldValue": "https://www.washingtonpost.com/wp-dyn/content/article/2008/01/10/AR2008011003281.html",
+        "newValue": "https://www.washingtonpost.com/wp-dyn/content/article/2008/01/10/AR2008011003871.html",
+        "description": "Stored url https://www.washingtonpost.com/wp-dyn/content/article/2008/01/10/AR2008011003281.html came from the legacy LLM web-search step; the outlet's real review of this production is https://www.washingtonpost.com/wp-dyn/content/article/2008/01/10/AR2008011003871.html. Found by web search / aggregator listing, 2026-10-12; the collector refetches and verifies the page before it counts."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-other-place-2013/talkinbroadway--matthew-murray.json",
+        "field": "url",
+        "oldValue": "https://www.talkinbroadway.com/world/OtherPlace.html",
+        "newValue": "https://talkinbroadway.com/page/world/TheOtherPlace2013.html",
+        "description": "Stored url https://www.talkinbroadway.com/world/OtherPlace.html came from the legacy LLM web-search step; the outlet's real review of this production is https://talkinbroadway.com/page/world/TheOtherPlace2013.html. Found by web search / aggregator listing, 2026-10-12; the collector refetches and verifies the page before it counts."
+      }
+    ]
+  },
+  "executedAt": "2026-10-12T22:50:43.718Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "come-fly-away-2010/talkinbroadway--matthew-murray.json url: \"https://www.talkinbroadway.com/world/ComeFlywithMe.html\" -> \"https://talkinbroadway.com/page/world/ComeFlyAway.html\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "disaster-2016/talkinbroadway--matthew-murray.json url: \"https://www.talkinbroadway.com/world/Disaster.html\" -> \"https://talkinbroadway.com/page/world/Disaster2016.html\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "in-the-next-room-2009/nytimes--ben-brantley.json duplicateOf: write guard kept null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "journeys-end-2007/variety--david-rooney.json url: \"https://variety.com/2007/legit/reviews/journey-s-end-1200558958/\" -> \"http://www.variety.com/review/VE1117932884.html\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "king-kong-2018/talkinbroadway--matthew-murray.json duplicateOf: write guard kept null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "lady-day-at-emersons-bar-and-grill-2014/nytimes--ben-brantley.json url: \"https://www.nytimes.com/2014/04/14/theater/reviews/audra-mcdonald-in-lady-day-at-emersons-bar-grill.html\" -> \"http://www.nytimes.com/2014/04/14/theater/audra-mcdonald-in-lady-day-at-emersons-bar-and-grill.html\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "no-mans-land-2013/talkinbroadway--matthew-murray.json url: \"https://www.talkinbroadway.com/world/NoMansLand.html\" -> \"https://talkinbroadway.com/page/world/NoMansLandGodot.html\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "once-on-this-island-2017/vulture--jesse-green.json duplicateOf: write guard kept null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "one-man-two-guvnors-2012/talkinbroadway--matthew-murray.json url: \"https://www.talkinbroadway.com/world/OneManTwoGuvnors.html\" -> \"https://talkinbroadway.com/page/world/1Man2Guvnors.html\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "paradise-square-2022/talkinbroadway--matthew-murray.json duplicateOf: write guard kept null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "picnic-2013/talkinbroadway--matthew-murray.json url: \"https://www.talkinbroadway.com/world/Picnic.html\" -> \"https://talkinbroadway.com/page/world/Picnic2013.html\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "present-laughter-2017/talkinbroadway--matthew-murray.json url: \"https://www.talkinbroadway.com/world/PresentLaughter.html\" -> \"https://talkinbroadway.com/page/world/PresentLaughter2017.html\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "private-lives-2011/talkinbroadway--matthew-murray.json url: \"https://www.talkinbroadway.com/world/PrivateLives.html\" -> \"https://talkinbroadway.com/page/world/PrivateLives2011.html\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "radio-golf-2007/talkinbroadway--matthew-murray.json url: \"https://www.talkinbroadway.com/world/RadioGolf.html\" -> \"https://talkinbroadway.com/page/world/RadioGolf2007.html\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "rocky-2014/talkinbroadway--matthew-murray.json url: \"https://www.talkinbroadway.com/world/Rocky.html\" -> \"https://talkinbroadway.com/page/world/Rocky2014.html\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "sweeney-todd-2023/talkinbroadway--matthew-murray.json url: \"https://talkinbroadway.com/world/SweeneyTodd.html\" -> \"https://www.talkinbroadway.com/page/world/SweeneyTodd23.html\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "sweeney-todd-2023/talkinbroadway--matthew-murray.json criticName: \"Matthew Murray\" -> \"Howard Miller\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "talk-radio-2007/variety--charles-isherwood.json url: \"https://variety.com/2007/legit/reviews/talk-radio-1200558845/\" -> \"https://variety.com/2007/film/awards/talk-radio-2-1117933046/\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "tarzan-2006/variety--charles-isherwood.json url: \"https://variety.com/2006/film/reviews/brothers-sisters-1200513334/\" -> \"https://variety.com/2006/legit/markets-festivals/tarzan-2-1200516354/\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "the-bands-visit-2017/talkinbroadway--matthew-murray.json duplicateOf: write guard kept null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-country-house-2014/talkinbroadway--matthew-murray.json url: \"https://www.talkinbroadway.com/world/CountryHouse.html\" -> \"https://www.talkinbroadway.com/page/world/CountryHouse2014.html\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "the-ferryman-2018/talkinbroadway--matthew-murray.json duplicateOf: write guard kept null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-little-mermaid-2008/washpost--peter-marks.json url: \"https://www.washingtonpost.com/wp-dyn/content/article/2008/01/10/AR2008011003281.html\" -> \"https://www.washingtonpost.com/wp-dyn/content/article/2008/01/10/AR2008011003871.html\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-other-place-2013/talkinbroadway--matthew-murray.json url: \"https://www.talkinbroadway.com/world/OtherPlace.html\" -> \"https://talkinbroadway.com/page/world/TheOtherPlace2013.html\""
+    }
+  ]
+}

@@ -1,0 +1,93 @@
+{
+  "issueNumber": "bro-5063-e",
+  "planId": "c373b6b5-3c17-4c9b-8c83-0ce37a2d4165",
+  "status": "applied",
+  "createdAt": "2026-10-11T18:19:18.198Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Part 5 of 5. Synopsis cleanup (BRO-5063). Checking the live data after parts 1-4 found two rows the backfill saved from TodayTix pages the cleaner mis-split (Schmigadoon!, The Comedy About Spies; cleaner fixed in the same change) and three more \"Get ...\" pitch openers the widened pitch rule now catches.",
+    "steps": [
+      "Rewrite 4 synopses from each production’s own text",
+      "Clear Dirty Dancing for the verified writer"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "schmigadoon-2026",
+        "field": "synopsis",
+        "oldValue": "Get Schmigadoon! A love letter to Broadway's Golden Age wrapped in a modern musical comedy, Schmigadoon! if you manage to get out. on Broadway after The Kennedy Center production in 2024.",
+        "newValue": "Two doctors, Josh Skinner and Melissa Gimble, visit a magical town they can't escape from and that won't stop singing, in this musical comedy adapted from the television series Schmigadoon! as a love letter to Broadway's Golden Age.",
+        "description": "Backfill run 38156863782 saved TodayTix copy the cleaner split at the \"!\" in the title (\"Get Schmigadoon! ... if you manage to get out.\"). Written from the production’s own TodayTix page text (fetched 2026-10-11)."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-comedy-about-spies-west-end-2026",
+        "field": "synopsis",
+        "oldValue": "When a rogue British agent pilfers plans for a top-secret weapon, CIA and KGB spies converge on London's Piccadilly Hotel in pursuit of the elusive file. Subject matters in the show include : • Characters include Spies from the United States of America and the USSR who discriminate against each other. • Physical and verbal abuse are depicted throughout the show with violence in multiple scenes. • Characters are often jump scared for comedic effect.",
+        "newValue": "When a rogue British agent pilfers plans for a top-secret weapon, CIA and KGB spies converge on London's Piccadilly Hotel in pursuit of the elusive file, joined by a clueless young couple, a hapless actor angling for a spy movie role and enough double agents to confuse even the sharpest operative.",
+        "description": "Backfill run 38156863782 saved a content-warning bullet list after the story sentence. Trimmed to the story, extended from the production’s own TodayTix page text (fetched 2026-10-11)."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "im-every-woman-off-west-end-2026",
+        "field": "synopsis",
+        "oldValue": "Get ready to witness the incredible untold life story and music of multi-platinum selling, 10-time GRAMMY® winner and global icon, Chaka Khan! With 22 albums, 25 chart-topping hits, 70 million records sold and a career spanning five decades, Chaka Khan has shaped the sound of generations. Now, her story explodes onto stage starring Alexandra Burke (Sister Act, The Bodyguard, Chicago, The X Factor winner 2008) for a limited season at London’s Troubadour Wembley Park Theatre.",
+        "newValue": "The musical tells the untold life story of Chaka Khan, the multi-platinum, 10-time GRAMMY-winning singer whose career has spanned five decades and shaped the sound of generations, through her music.",
+        "description": "Pitch copy (\"Get ready to witness ...\"). Written from the row’s own previous text, minus the sales and billing lines."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "dirty-dancing-the-classic-story-on-stage-west-end-2026",
+        "field": "synopsis",
+        "oldValue": "Get Ready for the ‘Time of Your Life’ as the record-breaking Dirty Dancing the Classic Story on Stage becomes the opening production at the Capital Theatre, Westfield London from 16 October 2026.",
+        "newValue": null,
+        "description": "Pitch copy only (\"Get Ready for the ‘Time of Your Life’ ...\"). Cleared so the verified writer (backfill-historical-metadata.yml) refills it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "no-excuses-no-limits-off-broadway-2026",
+        "field": "synopsis",
+        "oldValue": "Get ready for a dance party! The b-boys of ILL-Abilities™ are flying in from four continents to bust expectations with moves so sick your head will spin. After wowing the world at the Olympics and Paralympics in Paris, nothing can stop this international all-star crew! Upending stereotypes and flipping disability into pure power, their boisterous blend of breaking and biographical storytelling centers self-determination and proves that there are No Excuses, No Limits to what they are capable of.",
+        "newValue": "The b-boys of ILL-Abilities™ fly in from four continents, fresh from performing at the Olympics and Paralympics in Paris. Their blend of breaking and biographical storytelling upends stereotypes about disability and centers self-determination.",
+        "description": "Pitch opener (\"Get ready for a dance party!\"). Rewritten from the row’s own text without the sales lines (oldValue from the 2026-10-06 core-data snapshot; closed show, not in public data)."
+      }
+    ]
+  },
+  "executedAt": "2026-10-11T18:57:40.597Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for schmigadoon-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for the-comedy-about-spies-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for im-every-woman-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for dirty-dancing-the-classic-story-on-stage-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for no-excuses-no-limits-off-broadway-2026"
+    }
+  ]
+}

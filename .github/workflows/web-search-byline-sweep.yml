@@ -1,0 +1,182 @@
+name: Web-search byline sweep (BRO-5090)
+
+# Manual only. Re-reads the review pages behind reviews the legacy LLM
+# web-search step created (BRO-5081 found invented bylines, dates and
+# excerpts) through scripts/lib/scraper.js fetchPage, for the rows plain curl
+# could not read (NYT, WSJ, WaPo). Writes:
+#   data/audit/review-factcheck/web-search-bylines.json   per-row verdicts (urls, bylines, dates; no review text)
+#   data/audit/review-factcheck/web-search-text-targets.json   REVIEW_FILTER entries for collect-review-texts.yml
+#   data/pending-fixes/bro-5090-NN.json (write_plans only)   compare-and-set byline/date edits, inert until
+#                                                            execute-approved-fix.yml is dispatched for them
+# Run limit=5 first (CLAUDE.md §8), then the full set.
+on:
+  workflow_dispatch:
+    inputs:
+      limit:
+        description: 'Max rows to fetch this run (0 = all rows with the recheck verdict)'
+        required: true
+        default: '5'
+        type: string
+      recheck:
+        description: 'Re-fetch rows a previous pass gave this verdict'
+        required: true
+        default: 'unreachable'
+        type: string
+      concurrency:
+        description: 'Parallel page fetches'
+        required: false
+        default: '6'
+        type: string
+      time_budget_min:
+        description: 'Stop starting new fetches after N minutes (results so far are kept)'
+        required: false
+        default: '60'
+        type: string
+      retry_fetched:
+        description: 'Also re-try rows an earlier fetchPage pass already failed on'
+        required: false
+        default: false
+        type: boolean
+      write_plans:
+        description: 'Also write data/pending-fixes/bro-5090-NN.json plans'
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: write
+
+env:
+  FACTCHECK_CACHE: data/audit/review-factcheck
+
+concurrency:
+  group: web-search-byline-sweep
+  cancel-in-progress: false
+
+jobs:
+  sweep:
+    name: Web-search byline sweep
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+          # depth 300 keeps push-with-retry.sh's shallow boundary an ancestor of main (BRO-2388)
+          fetch-depth: 300
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Checkout review-texts
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - uses: ./.github/actions/setup-node
+        with:
+          configure-git: 'true'
+
+      - name: Setup Playwright
+        uses: ./.github/actions/setup-playwright
+
+      - name: Validate inputs
+        env:
+          LIMIT: ${{ inputs.limit }}
+          RECHECK: ${{ inputs.recheck }}
+          CONC: ${{ inputs.concurrency }}
+          BUDGET: ${{ inputs.time_budget_min }}
+        run: |
+          for v in "$LIMIT" "$CONC" "$BUDGET"; do
+            case "$v" in ''|*[!0-9]*) echo "::error::limit/concurrency/time_budget_min must be integers"; exit 1 ;; esac
+          done
+          if [ "$CONC" -lt 1 ] || [ "$BUDGET" -lt 1 ]; then echo "::error::concurrency and time_budget_min must be at least 1 (a 0 budget would run into the job timeout)"; exit 1; fi
+          case "$RECHECK" in unreachable|unknown|different|match) ;; *) echo "::error::recheck must be unreachable|unknown|different|match"; exit 1 ;; esac
+
+      - name: Sweep bylines and dates through fetchPage
+        id: sweep
+        env:
+          LIMIT: ${{ inputs.limit }}
+          RECHECK: ${{ inputs.recheck }}
+          CONC: ${{ inputs.concurrency }}
+          BUDGET: ${{ inputs.time_budget_min }}
+          RETRY_FETCHED: ${{ inputs.retry_fetched }}
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+          COOKIES_BUNDLE_1: ${{ secrets.COOKIES_BUNDLE_1 }}
+          COOKIES_BUNDLE_2: ${{ secrets.COOKIES_BUNDLE_2 }}
+          COOKIES_BUNDLE_3: ${{ secrets.COOKIES_BUNDLE_3 }}
+          COOKIES_BUNDLE_4: ${{ secrets.COOKIES_BUNDLE_4 }}
+          COOKIES_BUNDLE_5: ${{ secrets.COOKIES_BUNDLE_5 }}
+          COOKIES_BUNDLE_6: ${{ secrets.COOKIES_BUNDLE_6 }}
+          COOKIES_BUNDLE_7: ${{ secrets.COOKIES_BUNDLE_7 }}
+          COOKIES_BUNDLE_8: ${{ secrets.COOKIES_BUNDLE_8 }}
+          COOKIES_BUNDLE_9: ${{ secrets.COOKIES_BUNDLE_9 }}
+          COOKIES_BUNDLE_10: ${{ secrets.COOKIES_BUNDLE_10 }}
+          COOKIES_BUNDLE_11: ${{ secrets.COOKIES_BUNDLE_11 }}
+          WSJ_COOKIES: ${{ secrets.WSJ_COOKIES }}
+          WSJ_COOKIES_META: ${{ secrets.WSJ_COOKIES_META }}
+        shell: bash
+        run: |
+          set -o pipefail
+          RETRY=""
+          [ "$RETRY_FETCHED" = "true" ] && RETRY="--retry-fetched"
+          node scripts/review-factcheck/sweep-web-search-bylines.js --fetcher=fetchpage $RETRY \
+            --recheck="$RECHECK" --limit="$LIMIT" --concurrency="$CONC" --time-budget-min="$BUDGET" \
+            2>&1 | tee /tmp/sweep.log
+          echo '### Sweep result' >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+          tail -n 1 /tmp/sweep.log >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Fix plans and text targets
+        env:
+          WRITE_PLANS: ${{ inputs.write_plans }}
+        shell: bash
+        run: |
+          set -o pipefail
+          WRITE=""
+          [ "$WRITE_PLANS" = "true" ] && WRITE="--write"
+          node scripts/review-factcheck/make-byline-fix-plans.js --issue=bro-5090 $WRITE \
+            --text-targets=data/audit/review-factcheck/web-search-text-targets.json | tee -a "$GITHUB_STEP_SUMMARY"
+
+      - name: Commit sweep results
+        if: always() && steps.sweep.outcome != 'skipped'
+        shell: bash
+        env:
+          INPUT_LIMIT: ${{ inputs.limit }}
+        run: |
+          git add data/audit/review-factcheck/web-search-bylines.json
+          [ -f data/audit/review-factcheck/web-search-text-targets.json ] && git add data/audit/review-factcheck/web-search-text-targets.json
+          # data/pending-fixes/* is gitignored except issue-number plans: force-add
+          # (and stage deletions of regenerated pending plans).
+          # Only when there is something to stage: a pathspec matching no file
+          # (no plans written, none tracked) is a fatal git error.
+          if compgen -G 'data/pending-fixes/bro-5090-*.json' >/dev/null || [ -n "$(git ls-files 'data/pending-fixes/bro-5090-*.json')" ]; then
+            git add -f -A -- 'data/pending-fixes/bro-5090-*.json'
+          fi
+          if git diff --staged --quiet; then echo "nothing to commit"; exit 0; fi
+          git commit -m "data: web-search byline sweep (fetchPage, limit=${INPUT_LIMIT}) [BRO-5090] [skip ci]"
+          bash scripts/lib/push-with-retry.sh
+
+      - name: Commit scraper-spend ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: web-search-byline-sweep
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Web-search byline sweep failed'
+          severity: 'warning'

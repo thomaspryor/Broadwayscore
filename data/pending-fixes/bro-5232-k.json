@@ -1,0 +1,257 @@
+{
+  "issueNumber": "bro-5232-k",
+  "planId": "d2d6e8e1-279e-432e-b84a-aeb34778cd55",
+  "status": "applied",
+  "createdAt": "2026-10-13T12:14:40.424Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5232 k: USA Today rows carrying Charles Isherwood (he wrote for the WSJ and Broadway News) and two other unconfirmed web-search bylines; two made-up news-story urls marked non-review.",
+    "steps": [
+      "wrongAttribution on 7 unconfirmed web-search bylines",
+      "isNonReview on 2 news-story urls"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "cabaret-2024/usatoday--charles-isherwood.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5232: Charles Isherwood reviewed this Cabaret for the Wall Street Journal (wsj--charles-isherwood.json, https://www.wsj.com/articles/cabaret-review-eddie-redmayne-gayle-rankin-bebe-neuwirth-broadway-revival-7905c413); he did not write for USA Today. This web-search row put his name on a USA Today url whose byline was never confirmed, so it double counts him."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cabaret-2024/usatoday--charles-isherwood.json",
+        "field": "wrongAttributionReason",
+        "oldValue": null,
+        "newValue": "BRO-5232: Charles Isherwood reviewed this Cabaret for the Wall Street Journal (wsj--charles-isherwood.json, https://www.wsj.com/articles/cabaret-review-eddie-redmayne-gayle-rankin-bebe-neuwirth-broadway-revival-7905c413); he did not write for USA Today. This web-search row put his name on a USA Today url whose byline was never confirmed, so it double counts him.",
+        "description": "BRO-5232: reason for the flag above"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "our-town-2024/usatoday--charles-isherwood.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5232: Charles Isherwood reviewed Our Town for the Wall Street Journal (wsj--charles-isherwood.json, https://www.wsj.com/articles/our-town-review-thornton-wilder-back-on-broadway-23333989); this web-search USA Today row carries his name on an unconfirmed byline."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "our-town-2024/usatoday--charles-isherwood.json",
+        "field": "wrongAttributionReason",
+        "oldValue": null,
+        "newValue": "BRO-5232: Charles Isherwood reviewed Our Town for the Wall Street Journal (wsj--charles-isherwood.json, https://www.wsj.com/articles/our-town-review-thornton-wilder-back-on-broadway-23333989); this web-search USA Today row carries his name on an unconfirmed byline.",
+        "description": "BRO-5232: reason for the flag above"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "some-like-it-hot-2022/usatoday--charles-isherwood.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5232: Charles Isherwood reviewed Some Like It Hot for the Wall Street Journal (wsj--charles-isherwood.json, https://www.wsj.com/articles/some-like-it-hot-review-broadway-musical-christian-borle-j-harrison-ghee-marc-shaiman-11670625546); this web-search USA Today row carries his name on an unconfirmed byline."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "some-like-it-hot-2022/usatoday--charles-isherwood.json",
+        "field": "wrongAttributionReason",
+        "oldValue": null,
+        "newValue": "BRO-5232: Charles Isherwood reviewed Some Like It Hot for the Wall Street Journal (wsj--charles-isherwood.json, https://www.wsj.com/articles/some-like-it-hot-review-broadway-musical-christian-borle-j-harrison-ghee-marc-shaiman-11670625546); this web-search USA Today row carries his name on an unconfirmed byline.",
+        "description": "BRO-5232: reason for the flag above"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "suffs-2024/usatoday--charles-isherwood.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5232: Charles Isherwood reviewed Suffs for the Wall Street Journal (wsj--charles-isherwood.json, https://www.wsj.com/articles/suffs-review-a-musical-of-marching-women-shaina-taub-hillary-clinton-fe175dc0); USA Today's review is already counted as usatoday--melissa-ruggieri.json."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "suffs-2024/usatoday--charles-isherwood.json",
+        "field": "wrongAttributionReason",
+        "oldValue": null,
+        "newValue": "BRO-5232: Charles Isherwood reviewed Suffs for the Wall Street Journal (wsj--charles-isherwood.json, https://www.wsj.com/articles/suffs-review-a-musical-of-marching-women-shaina-taub-hillary-clinton-fe175dc0); USA Today's review is already counted as usatoday--melissa-ruggieri.json.",
+        "description": "BRO-5232: reason for the flag above"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "thoughts-of-a-colored-man-2021/usatoday--charles-isherwood.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5232: the url is a Giants Wire (USA Today Sports fan site) post whose JSON-LD author is Bill Canacci (https://giantswire.usatoday.com/story/entertainment/events/2021/10/20/broadway-review-thoughts-colored-man-keenan-scott-debut/8515726002/, cloud byline check run 38394312235). Isherwood's review is broadwaynews--charles-isherwood.json."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "thoughts-of-a-colored-man-2021/usatoday--charles-isherwood.json",
+        "field": "wrongAttributionReason",
+        "oldValue": null,
+        "newValue": "BRO-5232: the url is a Giants Wire (USA Today Sports fan site) post whose JSON-LD author is Bill Canacci (https://giantswire.usatoday.com/story/entertainment/events/2021/10/20/broadway-review-thoughts-colored-man-keenan-scott-debut/8515726002/, cloud byline check run 38394312235). Isherwood's review is broadwaynews--charles-isherwood.json.",
+        "description": "BRO-5232: reason for the flag above"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-strange-loop-2022/usatoday--elysa-gardner.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5232: Elysa Gardner reviewed A Strange Loop for the New York Sun (new-york-sun--elysa-gardner.json, https://www.nysun.com/article/although-beguiling-and-funny-this-meta-exercise-has-aged-a-bit-since-2019); she had left USA Today years earlier. This web-search row's byline at https://www.usatoday.com/story/life/theater/2022/04/26/strange-loop-review-broadway/7450028001/ was never confirmed."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-strange-loop-2022/usatoday--elysa-gardner.json",
+        "field": "wrongAttributionReason",
+        "oldValue": null,
+        "newValue": "BRO-5232: Elysa Gardner reviewed A Strange Loop for the New York Sun (new-york-sun--elysa-gardner.json, https://www.nysun.com/article/although-beguiling-and-funny-this-meta-exercise-has-aged-a-bit-since-2019); she had left USA Today years earlier. This web-search row's byline at https://www.usatoday.com/story/life/theater/2022/04/26/strange-loop-review-broadway/7450028001/ was never confirmed.",
+        "description": "BRO-5232: reason for the flag above"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "newsies-the-musical-2012/forward--jesse-green.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5232: byline unconfirmed. Web-search row; https://forward.com/culture/153314/disney-s-newsies-the-musical-delivers/ returns 403 here and the cloud fetch (run 38394312235) found no mention of Green on the page. Jesse Green has no verified Forward review. Not counted, so no score moves."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "newsies-the-musical-2012/forward--jesse-green.json",
+        "field": "wrongAttributionReason",
+        "oldValue": null,
+        "newValue": "BRO-5232: byline unconfirmed. Web-search row; https://forward.com/culture/153314/disney-s-newsies-the-musical-delivers/ returns 403 here and the cloud fetch (run 38394312235) found no mention of Green on the page. Jesse Green has no verified Forward review. Not counted, so no score moves.",
+        "description": "BRO-5232: reason for the flag above"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "fat-ham-2023/usatoday--charles-isherwood.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": true,
+        "description": "BRO-5232: url is a local news story, not a review: https://www.usatoday.com/story/news/local/2023/04/27/transfer-trauma-blamed-after-resident (made-up review url)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "fat-ham-2023/usatoday--charles-isherwood.json",
+        "field": "isNonReviewReason",
+        "oldValue": "BRO-5183: invented web-search row. Charles Isherwood never wrote for USA Today: he was chief critic at The New York Times (2004-2017), then Broadway News and The Wall Street Journal (2022-)",
+        "newValue": "BRO-5232: url is a local news story, not a review: https://www.usatoday.com/story/news/local/2023/04/27/transfer-trauma-blamed-after-resident (made-up review url)",
+        "description": "BRO-5232: reason for the flag above"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "stereophonic-2024/usatoday--charles-isherwood.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": true,
+        "description": "BRO-5232: url is a health news story, not a review: https://www.usatoday.com/story/news/healthcare/2024/04/23/where-to-dispose-unused-prescrip (made-up review url)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "stereophonic-2024/usatoday--charles-isherwood.json",
+        "field": "isNonReviewReason",
+        "oldValue": "BRO-5183: invented web-search row. Charles Isherwood never wrote for USA Today: he was chief critic at The New York Times (2004-2017), then Broadway News and The Wall Street Journal (2022-)",
+        "newValue": "BRO-5232: url is a health news story, not a review: https://www.usatoday.com/story/news/healthcare/2024/04/23/where-to-dispose-unused-prescrip (made-up review url)",
+        "description": "BRO-5232: reason for the flag above"
+      }
+    ]
+  },
+  "executedAt": "2026-10-13T13:04:59.626Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cabaret-2024/usatoday--charles-isherwood.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cabaret-2024/usatoday--charles-isherwood.json wrongAttributionReason: null -> \"BRO-5232: Charles Isherwood reviewed this Cabaret for the Wall Street Journal (wsj--charles-isherwood.json, https://www.wsj.com/articles/cabaret-review-eddie-redmayne-gayle-rankin-bebe-neuwirth-broadway-revival-7905c413); he did not write for USA Today. This web-search row put his name on a USA Today url whose byline was never confirmed, so it double counts him.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "our-town-2024/usatoday--charles-isherwood.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "our-town-2024/usatoday--charles-isherwood.json wrongAttributionReason: null -> \"BRO-5232: Charles Isherwood reviewed Our Town for the Wall Street Journal (wsj--charles-isherwood.json, https://www.wsj.com/articles/our-town-review-thornton-wilder-back-on-broadway-23333989); this web-search USA Today row carries his name on an unconfirmed byline.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "some-like-it-hot-2022/usatoday--charles-isherwood.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "some-like-it-hot-2022/usatoday--charles-isherwood.json wrongAttributionReason: null -> \"BRO-5232: Charles Isherwood reviewed Some Like It Hot for the Wall Street Journal (wsj--charles-isherwood.json, https://www.wsj.com/articles/some-like-it-hot-review-broadway-musical-christian-borle-j-harrison-ghee-marc-shaiman-11670625546); this web-search USA Today row carries his name on an unconfirmed byline.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "suffs-2024/usatoday--charles-isherwood.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "suffs-2024/usatoday--charles-isherwood.json wrongAttributionReason: null -> \"BRO-5232: Charles Isherwood reviewed Suffs for the Wall Street Journal (wsj--charles-isherwood.json, https://www.wsj.com/articles/suffs-review-a-musical-of-marching-women-shaina-taub-hillary-clinton-fe175dc0); USA Today's review is already counted as usatoday--melissa-ruggieri.json.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "thoughts-of-a-colored-man-2021/usatoday--charles-isherwood.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "thoughts-of-a-colored-man-2021/usatoday--charles-isherwood.json wrongAttributionReason: null -> \"BRO-5232: the url is a Giants Wire (USA Today Sports fan site) post whose JSON-LD author is Bill Canacci (https://giantswire.usatoday.com/story/entertainment/events/2021/10/20/broadway-review-thoughts-colored-man-keenan-scott-debut/8515726002/, cloud byline check run 38394312235). Isherwood's review is broadwaynews--charles-isherwood.json.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-strange-loop-2022/usatoday--elysa-gardner.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-strange-loop-2022/usatoday--elysa-gardner.json wrongAttributionReason: null -> \"BRO-5232: Elysa Gardner reviewed A Strange Loop for the New York Sun (new-york-sun--elysa-gardner.json, https://www.nysun.com/article/although-beguiling-and-funny-this-meta-exercise-has-aged-a-bit-since-2019); she had left USA Today years earlier. This web-search row's byline at https://www.usatoday.com/story/life/theater/2022/04/26/strange-loop-review-broadway/7450028001/ was never confirmed.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "newsies-the-musical-2012/forward--jesse-green.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "newsies-the-musical-2012/forward--jesse-green.json wrongAttributionReason: null -> \"BRO-5232: byline unconfirmed. Web-search row; https://forward.com/culture/153314/disney-s-newsies-the-musical-delivers/ returns 403 here and the cloud fetch (run 38394312235) found no mention of Green on the page. Jesse Green has no verified Forward review. Not counted, so no score moves.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "fat-ham-2023/usatoday--charles-isherwood.json isNonReview: true -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "fat-ham-2023/usatoday--charles-isherwood.json isNonReviewReason: \"BRO-5183: invented web-search row. Charles Isherwood never wrote for USA Today: he was chief critic at The New York Times (2004-2017), then Broadway News and The Wall Street Journal (2022-)\" -> \"BRO-5232: url is a local news story, not a review: https://www.usatoday.com/story/news/local/2023/04/27/transfer-trauma-blamed-after-resident (made-up review url)\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "stereophonic-2024/usatoday--charles-isherwood.json isNonReview: true -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "stereophonic-2024/usatoday--charles-isherwood.json isNonReviewReason: \"BRO-5183: invented web-search row. Charles Isherwood never wrote for USA Today: he was chief critic at The New York Times (2004-2017), then Broadway News and The Wall Street Journal (2022-)\" -> \"BRO-5232: url is a health news story, not a review: https://www.usatoday.com/story/news/healthcare/2024/04/23/where-to-dispose-unused-prescrip (made-up review url)\""
+    }
+  ]
+}

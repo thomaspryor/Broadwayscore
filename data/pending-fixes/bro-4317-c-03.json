@@ -1,0 +1,323 @@
+{
+  "issueNumber": "bro-4317-c-03",
+  "planId": "5aba6e1e-24b8-406a-a3b4-9e27cab98cbd",
+  "status": "partial",
+  "createdAt": "2026-10-13T01:59:32.271Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4317 part 3/4: rehome review-text files from folders with no shows.json id (rebuild skips them) into the production whose run window holds the review's publishDate; drop exact duplicates of files the target already holds.",
+    "steps": [
+      "delete spamalot-off-broadway-2026/deadline--greg-evans.json",
+      "delete spamalot-off-broadway-2026/deadline--unknown.json",
+      "delete spamalot-off-broadway-2026/hollywood-reporter--jordan-riefe.json",
+      "delete spamalot-off-broadway-2026/queerty--matthew-wexler.json",
+      "delete spamalot-off-broadway-2026/slantmagazine--dan-rubins.json",
+      "delete spamalot-off-broadway-2026/theatermania--unknown.json",
+      "delete spamalot-off-broadway-2026/theatrely--emily-wyrwa.json",
+      "delete spamalot-off-broadway-2026/theatrely--juan-a-ramirez.json",
+      "delete spamalot-off-broadway-2026/theatrely--unknown.json",
+      "delete spamalot-off-broadway-2026/vulture--jackson-mchenry.json",
+      "delete spamalot-off-broadway-2026/vulture--sara-holdren.json",
+      "delete spamalot-off-broadway-2026/vulture--unknown.json",
+      "move stranger-things/theater-life--samuel-l-leiter.json -> stranger-things-2024/theater-life--samuel-l-leiter.json",
+      "delete the-karate-kid-the-musical-west-end-2026/st-louis-mag--christine-jackson.json",
+      "delete the-karate-kid-the-musical-west-end-2026/wbkr--chadwick-benefield.json",
+      "delete the-karate-kid-the-musical-west-end-2026/whatsonstage--tanyel-gumushan.json",
+      "delete the-music-man-off-broadway-2026/amny--matt-windman.json",
+      "delete the-music-man-off-broadway-2026/broadwayworld--unknown.json",
+      "delete the-music-man-off-broadway-2026/laexcites--imaan-jalali.json",
+      "delete the-music-man-off-broadway-2026/nydailynews--chris-jones.json",
+      "delete the-music-man-off-broadway-2026/slantmagazine--dan-rubins.json",
+      "delete the-music-man-off-broadway-2026/theatrely--unknown.json",
+      "delete the-music-man-off-broadway-2026/washpost--peter-marks.json",
+      "move the-outsiders/theater-life--david-sheward.json -> the-outsiders-2024/theater-life--david-sheward.json",
+      "delete the-story-olivier-west-end-2026/westminsterextra--unknown.json"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "spamalot-off-broadway-2026/deadline--greg-evans.json",
+        "description": "no such production; flagged/dateless copy, same outlet+critic already counted on the real production or a regional stub"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "spamalot-off-broadway-2026/deadline--unknown.json",
+        "description": "no such production; flagged/dateless copy, same outlet+critic already counted on the real production or a regional stub"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "spamalot-off-broadway-2026/hollywood-reporter--jordan-riefe.json",
+        "description": "no such production; flagged/dateless copy, same outlet+critic already counted on the real production or a regional stub"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "spamalot-off-broadway-2026/queerty--matthew-wexler.json",
+        "description": "no such production; flagged/dateless copy, same outlet+critic already counted on the real production or a regional stub"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "spamalot-off-broadway-2026/slantmagazine--dan-rubins.json",
+        "description": "no such production; flagged/dateless copy, same outlet+critic already counted on the real production or a regional stub"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "spamalot-off-broadway-2026/theatermania--unknown.json",
+        "description": "no such production; flagged/dateless copy, same outlet+critic already counted on the real production or a regional stub"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "spamalot-off-broadway-2026/theatrely--emily-wyrwa.json",
+        "description": "no such production; flagged/dateless copy, same outlet+critic already counted on the real production or a regional stub"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "spamalot-off-broadway-2026/theatrely--juan-a-ramirez.json",
+        "description": "no such production; flagged/dateless copy, same outlet+critic already counted on the real production or a regional stub"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "spamalot-off-broadway-2026/theatrely--unknown.json",
+        "description": "no such production; flagged/dateless copy, same outlet+critic already counted on the real production or a regional stub"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "spamalot-off-broadway-2026/vulture--jackson-mchenry.json",
+        "description": "no such production; flagged/dateless copy, same outlet+critic already counted on the real production or a regional stub"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "spamalot-off-broadway-2026/vulture--sara-holdren.json",
+        "description": "no such production; flagged/dateless copy, same outlet+critic already counted on the real production or a regional stub"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "spamalot-off-broadway-2026/vulture--unknown.json",
+        "description": "no such production; flagged/dateless copy, same outlet+critic already counted on the real production or a regional stub"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "stranger-things/theater-life--samuel-l-leiter.json",
+        "destPath": "stranger-things-2024/theater-life--samuel-l-leiter.json",
+        "description": "publishDate 2025-04-27T17:22:55 within 9 days of stranger-things-2024 opening 2025-04-22; other hits are other cities"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-karate-kid-the-musical-west-end-2026/st-louis-mag--christine-jackson.json",
+        "description": "show id deliberately retired (2026 data audit S8-T2 (owner D3): Tour stops at receiving ho)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-karate-kid-the-musical-west-end-2026/wbkr--chadwick-benefield.json",
+        "description": "show id deliberately retired (2026 data audit S8-T2 (owner D3): Tour stops at receiving ho)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-karate-kid-the-musical-west-end-2026/whatsonstage--tanyel-gumushan.json",
+        "description": "show id deliberately retired (2026 data audit S8-T2 (owner D3): Tour stops at receiving ho)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-music-man-off-broadway-2026/amny--matt-windman.json",
+        "description": "no such production; flagged/dateless copy, same outlet+critic already counted on the real production or a regional stub"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-music-man-off-broadway-2026/broadwayworld--unknown.json",
+        "description": "no such production; flagged/dateless copy, same outlet+critic already counted on the real production or a regional stub"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-music-man-off-broadway-2026/laexcites--imaan-jalali.json",
+        "description": "no such production; flagged/dateless copy, same outlet+critic already counted on the real production or a regional stub"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-music-man-off-broadway-2026/nydailynews--chris-jones.json",
+        "description": "no such production; flagged/dateless copy, same outlet+critic already counted on the real production or a regional stub"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-music-man-off-broadway-2026/slantmagazine--dan-rubins.json",
+        "description": "no such production; flagged/dateless copy, same outlet+critic already counted on the real production or a regional stub"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-music-man-off-broadway-2026/theatrely--unknown.json",
+        "description": "no such production; flagged/dateless copy, same outlet+critic already counted on the real production or a regional stub"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-music-man-off-broadway-2026/washpost--peter-marks.json",
+        "description": "no such production; flagged/dateless copy, same outlet+critic already counted on the real production or a regional stub"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "the-outsiders/theater-life--david-sheward.json",
+        "destPath": "the-outsiders-2024/theater-life--david-sheward.json",
+        "description": "publishDate 2024-04-11T21:00:00 within 9 days of the-outsiders-2024 opening 2024-04-11; other hits are other cities"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-story-olivier-west-end-2026/westminsterextra--unknown.json",
+        "description": "0-text or already-flagged copy of an earlier production that is not tracked (2015-09-11)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-13T02:48:54.821Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted spamalot-off-broadway-2026/deadline--greg-evans.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted spamalot-off-broadway-2026/deadline--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted spamalot-off-broadway-2026/hollywood-reporter--jordan-riefe.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted spamalot-off-broadway-2026/queerty--matthew-wexler.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted spamalot-off-broadway-2026/slantmagazine--dan-rubins.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted spamalot-off-broadway-2026/theatermania--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted spamalot-off-broadway-2026/theatrely--emily-wyrwa.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted spamalot-off-broadway-2026/theatrely--juan-a-ramirez.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted spamalot-off-broadway-2026/theatrely--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted spamalot-off-broadway-2026/vulture--jackson-mchenry.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted spamalot-off-broadway-2026/vulture--sara-holdren.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted spamalot-off-broadway-2026/vulture--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved stranger-things/theater-life--samuel-l-leiter.json → stranger-things-2024/theater-life--samuel-l-leiter.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-karate-kid-the-musical-west-end-2026/st-louis-mag--christine-jackson.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-karate-kid-the-musical-west-end-2026/wbkr--chadwick-benefield.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-karate-kid-the-musical-west-end-2026/whatsonstage--tanyel-gumushan.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-music-man-off-broadway-2026/amny--matt-windman.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-music-man-off-broadway-2026/broadwayworld--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-music-man-off-broadway-2026/laexcites--imaan-jalali.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-music-man-off-broadway-2026/nydailynews--chris-jones.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-music-man-off-broadway-2026/slantmagazine--dan-rubins.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-music-man-off-broadway-2026/theatrely--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-music-man-off-broadway-2026/washpost--peter-marks.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": false,
+      "reason": "Destination exists: the-outsiders-2024/theater-life--david-sheward.json (delete it first or set overwrite: true)"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-story-olivier-west-end-2026/westminsterextra--unknown.json"
+    }
+  ]
+}

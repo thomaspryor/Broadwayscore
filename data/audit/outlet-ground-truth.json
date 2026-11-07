@@ -1,0 +1,56 @@
+{
+  "generatedAt": "2026-11-07T11:58:01.030Z",
+  "phase": "done",
+  "days": 21,
+  "shows": 75,
+  "sources": {
+    "theatermania": {
+      "queries": 49,
+      "listed": 23,
+      "errors": 0
+    },
+    "whatsonstage": {
+      "queries": 26,
+      "listed": 9,
+      "errors": 0
+    },
+    "nysr": {
+      "queries": 49,
+      "listed": 18,
+      "errors": 0
+    },
+    "newyorktheater": {
+      "queries": 49,
+      "listed": 8,
+      "errors": 0
+    },
+    "nytimes": {
+      "queries": 4,
+      "listed": 2,
+      "errors": 0
+    },
+    "theatre-reviews": {
+      "queries": 26,
+      "listed": 37,
+      "errors": 0
+    }
+  },
+  "listingTruncated": false,
+  "listed": 97,
+  "ingested": [
+    {
+      "showId": "king-lear-off-broadway-2026",
+      "url": "https://www.theatermania.com/news/review-anon-the-one-about-the-maga-neighbor-and-the-ugly-flag_1857163/",
+      "ok": true
+    }
+  ],
+  "missing": [
+    {
+      "source": "theatermania",
+      "showId": "king-lear-off-broadway-2026",
+      "outletId": "theatermania",
+      "url": "https://www.theatermania.com/news/review-anon-the-one-about-the-maga-neighbor-and-the-ugly-flag_1857163/",
+      "date": "2026-10-14"
+    }
+  ]
+}

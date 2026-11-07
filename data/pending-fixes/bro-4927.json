@@ -1,0 +1,63 @@
+{
+  "issueNumber": "bro-4927",
+  "planId": "27459c27-36fd-4aa1-9c14-3ed140995dc2",
+  "status": "applied",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4927: restore THR's Purpose review (Lovia Gyarkye, 2025-03-19), excluded as wrongAttribution after a typo-variant fix pointed the file at itself. Fix the byline typo and clear the self-referential flag so the rebuild includes exactly one record.",
+    "steps": [
+      "Correct criticName Gayarkye to Gyarkye",
+      "Clear wrongAttribution",
+      "Set wrongArticleManualClear so the clear survives the write guard"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "purpose-2025/hollywood-reporter--lovia-gyarkye.json",
+        "field": "criticName",
+        "oldValue": "Lovia Gayarkye",
+        "newValue": "Lovia Gyarkye",
+        "description": "BRO-4927: byline typo; THR article syndicated on Yahoo under Lovia Gyarkye, March 19, 2025"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "purpose-2025/hollywood-reporter--lovia-gyarkye.json",
+        "field": "wrongAttribution",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-4927: flag was set by a typo-variant fix whose _c2CorrectFile points at this same file; stored url is THR's own Purpose review, full text, 1012 words"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "purpose-2025/hollywood-reporter--lovia-gyarkye.json",
+        "field": "wrongArticleManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4927: human-clear marker so the write guard honors the wrongAttribution clear; stored text is THR Purpose review, url is THR own page"
+      }
+    ]
+  },
+  "executedAt": "2026-10-20T09:49:21.141Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "purpose-2025/hollywood-reporter--lovia-gyarkye.json criticName: \"Lovia Gayarkye\" -> \"Lovia Gyarkye\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "purpose-2025/hollywood-reporter--lovia-gyarkye.json wrongAttribution: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "purpose-2025/hollywood-reporter--lovia-gyarkye.json wrongArticleManualClear: null -> true"
+    }
+  ],
+  "executedIn": "ci"
+}

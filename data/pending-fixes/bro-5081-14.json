@@ -1,0 +1,49 @@
+{
+  "issueNumber": "bro-5081-14",
+  "planId": "34e431d5-b728-44fd-8919-2fad9d3b5c2e",
+  "status": "applied",
+  "createdAt": "2026-10-11T21:44:24.951911Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5081 part 14: flag The Stage's Captain Corelli's Mandolin review as another run (Rose Theatre Kingston tryout), counted under the Harold Pinter Theatre West End run.",
+    "steps": [
+      "Set wrongProduction on the Kingston review",
+      "Record the reason"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "captain-corellis-mandolin-west-end-2019/thestage--dave-fargnoli.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-5081: The Stage reviewed the pre-West End run at the Rose Theatre Kingston (April 2019), not the Harold Pinter Theatre run this show records (url names Rose Theatre Kingston).",
+        "description": "Reason for the flag below."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "captain-corellis-mandolin-west-end-2019/thestage--dave-fargnoli.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "https://www.thestage.co.uk/reviews/captain-corellis-mandolin-review-at-rose-theatre-kingston-upon-thames--feels-diminished reviews the Rose Theatre Kingston run (April 2019)."
+      }
+    ]
+  },
+  "executedAt": "2026-10-11T23:04:30.896Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "captain-corellis-mandolin-west-end-2019/thestage--dave-fargnoli.json wrongProductionReason: null -> \"BRO-5081: The Stage reviewed the pre-West End run at the Rose Theatre Kingston (April 2019), not the Harold Pinter Theatre run this show records (url names Rose Theatre Kingston).\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "captain-corellis-mandolin-west-end-2019/thestage--dave-fargnoli.json wrongProduction: null -> true"
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "issueNumber": "bro-5325-b",
+  "planId": "556cd1a8-14e0-4b6a-b071-b0b6ae396948",
+  "status": "applied",
+  "createdAt": "2026-10-14T07:50:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5325 (b): venus-in-fur-2011's copied WSJ row still listed only its discovery source 'web-search', so review-guards isUnverifiableWebSearchRow (996 chars < 1000, no CV yet) kept it from the scorer ('No reviews to process' twice). Re-run the copy: it now records 'multi-show-split' in sources and, for a row it already filed with the same section, only refreshes provenance.",
+    "steps": [
+      "copy-multishow-section.js godspell-2011 -> venus-in-fur-2011 (refresh)",
+      "then llm-ensemble-score.yml show_id=venus-in-fur-2011 needs_rescore=true"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "run-script",
+        "script": "copy-multishow-section.js",
+        "args": "--from=godspell-2011/wsj--terry-teachout.json --to-show=venus-in-fur-2011 --expect-start=If_it_s_possible_to_become --expect-end=fry_a_carton_of_eggs_on_her --apply",
+        "description": "Refresh provenance on the row filed by bro-5325-a: sources gains 'multi-show-split'; text, url and date unchanged. Refuses unless the stored section is identical."
+      }
+    ]
+  },
+  "executedAt": "2026-10-14T08:12:37.884Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran copy-multishow-section.js successfully"
+    }
+  ]
+}

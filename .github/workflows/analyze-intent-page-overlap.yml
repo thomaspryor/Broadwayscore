@@ -1,0 +1,32 @@
+name: Analyze Intent Page Overlap
+
+# hygiene-notify-ok: read-only ad-hoc analysis, no data writes, failure is self-evident in the run log
+# BRO-5988: query+page overlap across /guides, /best, /browse (feeds src/config/search-intents.ts).
+on:
+  workflow_dispatch: {}
+
+concurrency:
+  group: analyze-intent-page-overlap
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+
+      - name: Setup Node.js
+        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with:
+          node-version: '22'
+
+      - name: Analyze intent page overlap
+        env:
+          GOOGLE_INDEXING_KEY: ${{ secrets.GOOGLE_INDEXING_KEY }}
+        run: node scripts/analyze-intent-page-overlap.js

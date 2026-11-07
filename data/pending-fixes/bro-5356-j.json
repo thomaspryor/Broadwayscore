@@ -1,0 +1,126 @@
+{
+  "issueNumber": "bro-5356-j",
+  "planId": "55bcb697-412b-460a-9ac3-e6452aa7ed59",
+  "status": "partial",
+  "createdAt": "2026-10-14T16:00:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5356 (j), found in the scan of moves onto occupied paths: 4 NYSR reviews published on their show's Broadway opening night are excluded by wrongProduction flags judged on an earlier copy (the production's origin venue read as the reviewed production). Clear them with the manual-clear marker.",
+    "steps": [
+      "wrongProductionManualClear + wrongProduction false on 4 rows"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "buena-vista-social-club-2025/nysr--bob-verini.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5356: New York Stage Review published this review on the Broadway opening night (2025-03-19; url dated the same day) of the production this folder holds (Gerald Schoenfeld Theatre). The wrongProduction flag came from 'ambiguous-production' (stamped on the earlier copy at this path, before the BRO-4317 rehome); the review is of the Broadway production. It hides a real review from the show."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "buena-vista-social-club-2025/nysr--bob-verini.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Clear the flag (see above)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "buena-vista-social-club-2025/nysr--michael-sommers.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5356: New York Stage Review published this review on the Broadway opening night (2025-03-19; url dated the same day) of the production this folder holds (Gerald Schoenfeld Theatre). The wrongProduction flag came from 'ambiguous-production' (stamped on the earlier copy at this path, before the BRO-4317 rehome); the review is of the Broadway production. It hides a real review from the show."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "buena-vista-social-club-2025/nysr--michael-sommers.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Clear the flag (see above)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "spamalot-2023/nysr--sandy-macdonald.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5356: New York Stage Review published this review on the Broadway opening night (2023-11-16; url dated the same day) of the production this folder holds (St. James Theatre). The wrongProduction flag came from a touring/non-NYC audit that read 'last spring's Kennedy Center revival' (the production's origin) as the production under review; the review is of the Broadway production. It hides a real review from the show."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "spamalot-2023/nysr--sandy-macdonald.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Clear the flag (see above)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-whos-tommy-2024/nysr--david-finkle.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5356: New York Stage Review published this review on the Broadway opening night (2024-03-28; url dated the same day) of the production this folder holds (Nederlander Theatre). The wrongProduction flag came from a touring/non-NYC audit that read 'direct from Chicago's Goodman Theatre' (the transfer's origin) as the production under review; the review is of the Broadway production. It hides a real review from the show."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-whos-tommy-2024/nysr--david-finkle.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Clear the flag (see above)."
+      }
+    ]
+  },
+  "executedAt": "2026-10-14T16:21:43.782Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "wrongProductionManualClear: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "buena-vista-social-club-2025/nysr--bob-verini.json wrongProduction: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "wrongProductionManualClear: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "buena-vista-social-club-2025/nysr--michael-sommers.json wrongProduction: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "spamalot-2023/nysr--sandy-macdonald.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "spamalot-2023/nysr--sandy-macdonald.json wrongProduction: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "the-whos-tommy-2024/nysr--david-finkle.json wrongProductionManualClear applied, but the write guard also changed duplicateOf, duplicateReason; check the record before trusting it"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-whos-tommy-2024/nysr--david-finkle.json wrongProduction: true -> false"
+    }
+  ]
+}

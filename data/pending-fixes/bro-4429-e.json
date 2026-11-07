@@ -1,0 +1,152 @@
+{
+  "issueNumber": "bro-4429-e",
+  "planId": "f17c9e1e-0859-4e9f-bf65-7e5f7c4950ce",
+  "status": "applied",
+  "createdAt": "2026-09-30T17:56:50.919Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Re-include real reviews that classifiers dropped after reading only part of the text (BRO-4429). The code fix that stops new cases lands in the same change. Same-class files: reviews the Gemini non-review pass stamped over a high-confidence content-verifier \"review\" verdict, a human clear, or bot-truncated text (the landed fix now blocks such stamps). Each file was read and is a review of this production.",
+    "steps": [
+      "Clear isNonReview and lock it with nonReviewManualClear"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "the-people-versus-lenny-bruce-off-broadway-2026/dc-theater-arts--deb-miller.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Real review: DC Theater Arts review of the Theatre Row production (CV high-confidence review, manual wrongArticle clear)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-people-versus-lenny-bruce-off-broadway-2026/dc-theater-arts--deb-miller.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Lock the clear so the non-review passes skip this file"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-real-ivanov-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Real review: One Minute Critic review essay (CV high-confidence review)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-real-ivanov-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Lock the clear so the non-review passes skip this file"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "first-date-2013/bloomberg--jeremy-gerard.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Real review: Bloomberg column reviewing First Date at the Longacre (text is bot-truncated)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "first-date-2013/bloomberg--jeremy-gerard.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Lock the clear so the non-review passes skip this file"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "silver-manhattan-off-broadway-2026/la-voce-di-new-york--jk-clarke.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Real review: La Voce column with a 4/5 review of Silver Manhattan (manual wrongProduction clear)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "silver-manhattan-off-broadway-2026/la-voce-di-new-york--jk-clarke.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Lock the clear so the non-review passes skip this file"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "violet-2014/ap--mark-kennedy.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Real review: AP review \"Review: B'way's Violet shows beauty\" (CV high-confidence review)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "violet-2014/ap--mark-kennedy.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Lock the clear so the non-review passes skip this file"
+      }
+    ]
+  },
+  "executedAt": "2026-09-30T18:46:47.111Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-people-versus-lenny-bruce-off-broadway-2026/dc-theater-arts--deb-miller.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-people-versus-lenny-bruce-off-broadway-2026/dc-theater-arts--deb-miller.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-real-ivanov-off-broadway-2026/one-minute-critic--matthew-wexler.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-real-ivanov-off-broadway-2026/one-minute-critic--matthew-wexler.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "first-date-2013/bloomberg--jeremy-gerard.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "first-date-2013/bloomberg--jeremy-gerard.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "silver-manhattan-off-broadway-2026/la-voce-di-new-york--jk-clarke.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "silver-manhattan-off-broadway-2026/la-voce-di-new-york--jk-clarke.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "violet-2014/ap--mark-kennedy.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "violet-2014/ap--mark-kennedy.json nonReviewManualClear: null -> true"
+    }
+  ]
+}

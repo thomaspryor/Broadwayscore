@@ -1,0 +1,112 @@
+{
+  "issueNumber": "bro-6493-c",
+  "planId": "802b0fc1-00b6-436a-96e3-281b458feb48",
+  "status": "applied",
+  "createdAt": "2026-10-29T23:07:42.862Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6493: page-validated opening and preview dates for closed off-Broadway same-date rows; source confirmations retain legitimate same-day openings (part 3 of 3)",
+    "steps": [
+      "BRO-6493: Producer advertises world premiere April 7 to 12, 2026 only; TDF explicitly confirms April 7 opening. Source: https://experiences.aks-tickets.com/THE-LISTENING-HOME/ Corroboration: https://www.tdf.org/shows/23116/the-listening/",
+      "BRO-6493: Venue advertises the October 2, 2026 touring comedy performance; TheaterMania confirms October 2 opening and October 3 closing. Source: https://tribecapac.org/event/brian-hensons-puppet-up/ Corroboration: https://www.theatermania.com/shows/new-york-city-theater/off-broadway/puppet-up_1850321/",
+      "BRO-6493: Venue dates touring musical October 17 to 25, 2026, with author signing after first performance; TDF confirms October 17 opening. Source: https://www.newvictory.org/events/2627-live-performance-rosie-revere-ada-twist-and-iggy-peck Corroboration: https://www.tdf.org/shows/23576/rosie-revere-ada-twist-and-iggy-peck-the-questioneers/",
+      "BRO-6493: New York premiere of touring breakdance show starts March 7, 2026; TheaterMania explicitly confirms March 7 opening. Source: https://www.broadwayworld.com/off-broadway/article/ILL-Abilities-Breakdancing-Troupe-to-Perform-at-New-Victory-Theater-20260210 Corroboration: https://www.theatermania.com/shows/new-york-city-theater/no-excuses-no-limits_1822672/",
+      "BRO-6493: Contemporary eyewitness explicitly dates opening March 20, 2026; Met's indexed dated program labels that performance the season premiere. Source: https://parterre.com/2026/04/07/cavalcade-of-stars/ Corroboration: https://www.metopera.org/globalassets/season/2025-26/la-traviata/programs/032026-traviata.pdf",
+      "BRO-6493: Indexed production page explicitly lists both first preview and opening March 18, 2026; contemporaneous article confirms the City Center Encores run. Source: https://playbill.com/production/the-wild-party-off-broadway-new-york-city-center-2026 Corroboration: https://playbill.com/article/jasmine-amy-rogers-adrienne-warren-more-star-in-encores-the-wild-party-beginning-march-18"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-listening-off-broadway-2026",
+        "field": "openingDateSource",
+        "oldValue": "ibdb",
+        "newValue": "official-production:aks-immersive:no-previews",
+        "description": "BRO-6493: Producer advertises world premiere April 7 to 12, 2026 only; TDF explicitly confirms April 7 opening. Source: https://experiences.aks-tickets.com/THE-LISTENING-HOME/ Corroboration: https://www.tdf.org/shows/23116/the-listening/"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "puppet-up-off-broadway-2026",
+        "field": "openingDateSource",
+        "oldValue": "previews-fallback",
+        "newValue": "venue-page:tribeca-performing-arts-center:no-previews",
+        "description": "BRO-6493: Venue advertises the October 2, 2026 touring comedy performance; TheaterMania confirms October 2 opening and October 3 closing. Source: https://tribecapac.org/event/brian-hensons-puppet-up/ Corroboration: https://www.theatermania.com/shows/new-york-city-theater/off-broadway/puppet-up_1850321/"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "rosie-revere-ada-twist-and-iggy-peck-off-broadway-2026",
+        "field": "openingDateSource",
+        "oldValue": "previews-fallback",
+        "newValue": "venue-page:new-victory:no-previews",
+        "description": "BRO-6493: Venue dates touring musical October 17 to 25, 2026, with author signing after first performance; TDF confirms October 17 opening. Source: https://www.newvictory.org/events/2627-live-performance-rosie-revere-ada-twist-and-iggy-peck Corroboration: https://www.tdf.org/shows/23576/rosie-revere-ada-twist-and-iggy-peck-the-questioneers/"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "no-excuses-no-limits-off-broadway-2026",
+        "field": "openingDateSource",
+        "oldValue": "ibdb",
+        "newValue": "broadwayworld:no-previews",
+        "description": "BRO-6493: New York premiere of touring breakdance show starts March 7, 2026; TheaterMania explicitly confirms March 7 opening. Source: https://www.broadwayworld.com/off-broadway/article/ILL-Abilities-Breakdancing-Troupe-to-Perform-at-New-Victory-Theater-20260210 Corroboration: https://www.theatermania.com/shows/new-york-city-theater/no-excuses-no-limits_1822672/"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "la-traviata-off-broadway-2026",
+        "field": "openingDateSource",
+        "oldValue": "ibdb",
+        "newValue": "parterre-box:no-previews",
+        "description": "BRO-6493: Contemporary eyewitness explicitly dates opening March 20, 2026; Met's indexed dated program labels that performance the season premiere. Source: https://parterre.com/2026/04/07/cavalcade-of-stars/ Corroboration: https://www.metopera.org/globalassets/season/2025-26/la-traviata/programs/032026-traviata.pdf"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "encores-the-wild-party-off-broadway-2026",
+        "field": "openingDateSource",
+        "oldValue": "ibdb",
+        "newValue": "playbill-production-page",
+        "description": "BRO-6493: Indexed production page explicitly lists both first preview and opening March 18, 2026; contemporaneous article confirms the City Center Encores run. Source: https://playbill.com/production/the-wild-party-off-broadway-new-york-city-center-2026 Corroboration: https://playbill.com/article/jasmine-amy-rogers-adrienne-warren-more-star-in-encores-the-wild-party-beginning-march-18"
+      }
+    ]
+  },
+  "executedAt": "2026-10-30T00:36:54.052Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for the-listening-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for puppet-up-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for rosie-revere-ada-twist-and-iggy-peck-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for no-excuses-no-limits-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for la-traviata-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for encores-the-wild-party-off-broadway-2026"
+    }
+  ],
+  "executedIn": "ci"
+}

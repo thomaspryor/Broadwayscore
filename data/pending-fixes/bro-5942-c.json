@@ -1,0 +1,255 @@
+{
+  "issueNumber": "bro-5942-c",
+  "planId": "535b1be4-d19b-4174-b707-cbc668fdd38c",
+  "status": "applied",
+  "createdAt": "2026-10-22T15:44:56.952Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5942 batch 3: split older critic articles that review two or more shows, so each reviewed show gets its own section scored on its own text (joint fan-out backfill; every hit read in full on the main-branch dry run).",
+    "steps": [
+      "Run the joint multi-show splitter on each parent file (parent trimmed to its own section, a child row written or held for each sibling show); marker cuts where the automatic split would keep another show in a section",
+      "Scoring and rebuild then pick up the trimmed parents and the new child rows"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "run-script",
+        "script": "split-multi-show-roundups.js",
+        "args": "--apply --scan-all --joint --show=no-mans-land-2013 --file=nbcny--robert-kahn.json",
+        "description": "Joint split of no-mans-land-2013/nbcny--robert-kahn.json (read in full on the BRO-5942 main-branch dry run)"
+      },
+      {
+        "type": "run-script",
+        "script": "split-multi-show-roundups.js",
+        "args": "--apply --scan-all --joint --show=operation-mincemeat-2025 --file=washpost--naveen-kumar.json",
+        "description": "Joint split of operation-mincemeat-2025/washpost--naveen-kumar.json (read in full on the BRO-5942 main-branch dry run)"
+      },
+      {
+        "type": "run-script",
+        "script": "split-multi-show-roundups.js",
+        "args": "--apply --scan-all --joint --show=orphans-2013 --file=wsj--terry-teachout.json",
+        "description": "Joint split of orphans-2013/wsj--terry-teachout.json (read in full on the BRO-5942 main-branch dry run)"
+      },
+      {
+        "type": "run-script",
+        "script": "split-multi-show-roundups.js",
+        "args": "--apply --scan-all --joint --show=our-town-2024 --file=slantmagazine--dan-rubins.json",
+        "description": "Joint split of our-town-2024/slantmagazine--dan-rubins.json (read in full on the BRO-5942 main-branch dry run)"
+      },
+      {
+        "type": "run-script",
+        "script": "split-multi-show-roundups.js",
+        "args": "--apply --scan-all --joint --show=purpose-2025 --file=newyorker--helen-shaw.json",
+        "description": "Joint split of purpose-2025/newyorker--helen-shaw.json (read in full on the BRO-5942 main-branch dry run)"
+      },
+      {
+        "type": "run-script",
+        "script": "split-multi-show-roundups.js",
+        "args": "--apply --scan-all --joint --show=red-pitch-west-end-2024 --file=guardian--susannah-clapp.json",
+        "description": "Joint split of red-pitch-west-end-2024/guardian--susannah-clapp.json (read in full on the BRO-5942 main-branch dry run)"
+      },
+      {
+        "type": "run-script",
+        "script": "split-multi-show-roundups.js",
+        "args": "--apply --scan-all --joint --show=romeo-juliet-2024 --file=washpost--naveen-kumar.json",
+        "description": "Joint split of romeo-juliet-2024/washpost--naveen-kumar.json (read in full on the BRO-5942 main-branch dry run)"
+      },
+      {
+        "type": "run-script",
+        "script": "split-multi-show-roundups.js",
+        "args": "--apply --scan-all --joint --show=six-degrees-of-separation-2017 --file=njcom--christopher-kelly.json",
+        "description": "Joint split of six-degrees-of-separation-2017/njcom--christopher-kelly.json (read in full on the BRO-5942 main-branch dry run)"
+      },
+      {
+        "type": "run-script",
+        "script": "split-multi-show-roundups.js",
+        "args": "--apply --scan-all --joint --show=slam-frank-off-broadway-2026 --file=theater-life--david-sheward.json",
+        "description": "Joint split of slam-frank-off-broadway-2026/theater-life--david-sheward.json (read in full on the BRO-5942 main-branch dry run)"
+      },
+      {
+        "type": "run-script",
+        "script": "split-multi-show-roundups.js",
+        "args": "--apply --scan-all --joint --show=sweat-2017 --file=theater-life--david-sheward.json",
+        "description": "Joint split of sweat-2017/theater-life--david-sheward.json (read in full on the BRO-5942 main-branch dry run)"
+      },
+      {
+        "type": "run-script",
+        "script": "split-multi-show-roundups.js",
+        "args": "--apply --scan-all --joint --show=the-cher-show-2018 --file=wsj--terry-teachout.json",
+        "description": "Joint split of the-cher-show-2018/wsj--terry-teachout.json (read in full on the BRO-5942 main-branch dry run)"
+      },
+      {
+        "type": "run-script",
+        "script": "split-multi-show-roundups.js",
+        "args": "--apply --scan-all --joint --show=the-crucible-west-end-2022 --file=observer--susannah-clapp.json",
+        "description": "Joint split of the-crucible-west-end-2022/observer--susannah-clapp.json (read in full on the BRO-5942 main-branch dry run)"
+      },
+      {
+        "type": "run-script",
+        "script": "split-multi-show-roundups.js",
+        "args": "--apply --scan-all --joint --show=the-dinosaurs-off-broadway-2026 --file=vulture--jackson-mchenry.json",
+        "description": "Joint split of the-dinosaurs-off-broadway-2026/vulture--jackson-mchenry.json (read in full on the BRO-5942 main-branch dry run)"
+      },
+      {
+        "type": "run-script",
+        "script": "split-multi-show-roundups.js",
+        "args": "--apply --scan-all --joint --show=the-parisian-woman-2017 --file=adriandimanlig--adrian-dimanlig.json",
+        "description": "Joint split of the-parisian-woman-2017/adriandimanlig--adrian-dimanlig.json (read in full on the BRO-5942 main-branch dry run)"
+      },
+      {
+        "type": "run-script",
+        "script": "split-multi-show-roundups.js",
+        "args": "--apply --scan-all --joint --show=the-parisian-woman-2017 --file=theater-life--isa-goldberg.json",
+        "description": "Joint split of the-parisian-woman-2017/theater-life--isa-goldberg.json (read in full on the BRO-5942 main-branch dry run)"
+      },
+      {
+        "type": "run-script",
+        "script": "split-multi-show-roundups.js",
+        "args": "--apply --scan-all --joint --show=the-play-that-goes-wrong-2017 --file=theater-life--david-sheward.json",
+        "description": "Joint split of the-play-that-goes-wrong-2017/theater-life--david-sheward.json (read in full on the BRO-5942 main-branch dry run)"
+      },
+      {
+        "type": "run-script",
+        "script": "split-multi-show-roundups.js",
+        "args": "--apply --scan-all --joint --show=the-whoopi-monologues-off-broadway-2026 --file=vulture--jackson-mchenry.json",
+        "description": "Joint split of the-whoopi-monologues-off-broadway-2026/vulture--jackson-mchenry.json (read in full on the BRO-5942 main-branch dry run)"
+      },
+      {
+        "type": "run-script",
+        "script": "copy-multishow-section.js",
+        "args": "--from=uncle-vanya-2024/washpost--elisabeth-vincentelli.json --to-show=cabaret-2024 --method=markers --expect-start=Which_brings_me_to --expect-end=feat_of_some_kind --own-start=The_demonstrative_admirer_who --own-end=screen_stars_in_stage_works --apply",
+        "description": "WaPo four-show column, step 1 of 3: file the Cabaret section to cabaret-2024 and trim the source to the Mary Jane + Vanya + Mother Play stretch (the joint splitter missed Cabaret, whose shows.json title is Cabaret at the Kit Kat Club, and left that review inside the Mother Play section)"
+      },
+      {
+        "type": "run-script",
+        "script": "copy-multishow-section.js",
+        "args": "--from=uncle-vanya-2024/washpost--elisabeth-vincentelli.json --to-show=mother-play-2024 --method=markers --expect-start=Jessica_Lange_also_has --expect-end=screen_stars_in_stage_works --own-start=The_demonstrative_admirer_who --own-end=hard_to_pull_off --apply",
+        "description": "WaPo column step 2 of 3: file the Mother Play section and trim the source to Mary Jane + Vanya"
+      },
+      {
+        "type": "run-script",
+        "script": "copy-multishow-section.js",
+        "args": "--from=uncle-vanya-2024/washpost--elisabeth-vincentelli.json --to-show=mary-jane-2024 --method=markers --expect-start=The_demonstrative_admirer_who --expect-end=humor_become_a_shield --own-start=Like_McAdams_Steve_Carell --own-end=hard_to_pull_off --apply",
+        "description": "WaPo column step 3 of 3: file the Mary Jane section and trim the source to its own Uncle Vanya section"
+      },
+      {
+        "type": "run-script",
+        "script": "copy-multishow-section.js",
+        "args": "--from=plaza-suite-west-end-2024/observer--susannah-clapp.json --to-show=till-the-stars-come-down-west-end-2024 --method=markers --expect-start=Beth_Steel_s_new_play --expect-end=struggling_post_industrial_Britain --own-start=Plaza_Suite_First_there --own-end=crisply_directed_sharply_written_play --apply",
+        "description": "Observer column: file the Till the Stars Come Down section without the Othello review that follows it (the joint splitter would have kept Othello in it) and trim Plaza Suite to its own section"
+      }
+    ]
+  },
+  "executedAt": "2026-10-22T20:19:37.084Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran split-multi-show-roundups.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran split-multi-show-roundups.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran split-multi-show-roundups.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran split-multi-show-roundups.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran split-multi-show-roundups.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran split-multi-show-roundups.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran split-multi-show-roundups.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran split-multi-show-roundups.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran split-multi-show-roundups.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran split-multi-show-roundups.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran split-multi-show-roundups.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran split-multi-show-roundups.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran split-multi-show-roundups.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran split-multi-show-roundups.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran split-multi-show-roundups.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran split-multi-show-roundups.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran split-multi-show-roundups.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran copy-multishow-section.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran copy-multishow-section.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran copy-multishow-section.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran copy-multishow-section.js successfully"
+    }
+  ],
+  "executedIn": "ci"
+}

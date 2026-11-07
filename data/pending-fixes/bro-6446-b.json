@@ -1,0 +1,52 @@
+{
+  "issueNumber": "bro-6446-b",
+  "planId": "52d2c33b-b536-4b18-a212-fcc3bd0ad1bb",
+  "status": "applied",
+  "createdAt": "2026-10-28T19:22:25.057Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6446 (owner 2026-10-28): The Lehman Trilogy is not a star-led run, so not Easy Winner; recoupment never announced, keep recouped and show Recouped, return undisclosed (TBD)",
+    "steps": [
+      "commercial.json: the-lehman-trilogy-2021.designation",
+      "commercial.json: the-lehman-trilogy-2021.humanReviewedDesignation"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-lehman-trilogy-2021",
+        "field": "designation",
+        "oldValue": "Easy Winner",
+        "newValue": "TBD",
+        "description": "commercial.json: the-lehman-trilogy-2021.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-lehman-trilogy-2021",
+        "field": "humanReviewedDesignation",
+        "oldValue": null,
+        "newValue": true,
+        "description": "commercial.json: the-lehman-trilogy-2021.humanReviewedDesignation"
+      }
+    ]
+  },
+  "executedAt": "2026-10-28T19:36:38.080Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for the-lehman-trilogy-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: humanReviewedDesignation updated for the-lehman-trilogy-2021"
+    }
+  ],
+  "executedIn": "ci"
+}

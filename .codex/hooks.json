@@ -1,0 +1,72 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "f=\"$(git rev-parse --show-toplevel 2>/dev/null)/scripts/codex/hook-adapter.js\"; if [ -f \"$f\" ]; then exec node \"$f\" --event SessionStart; elif [ -f \"$(git rev-parse --show-toplevel 2>/dev/null)/.claude/settings.json\" ]; then echo \"codex hooks: this checkout predates scripts/codex/hook-adapter.js, so the repo guards are not running here. Pull main.\" >&2; fi; exit 0",
+            "timeout": 600
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "f=\"$(git rev-parse --show-toplevel 2>/dev/null)/scripts/codex/hook-adapter.js\"; if [ -f \"$f\" ]; then exec node \"$f\" --event UserPromptSubmit; elif [ -f \"$(git rev-parse --show-toplevel 2>/dev/null)/.claude/settings.json\" ]; then echo \"codex hooks: this checkout predates scripts/codex/hook-adapter.js, so the repo guards are not running here. Pull main.\" >&2; fi; exit 0",
+            "timeout": 600
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "f=\"$(git rev-parse --show-toplevel 2>/dev/null)/scripts/codex/hook-adapter.js\"; if [ -f \"$f\" ]; then exec node \"$f\" --event PreToolUse; elif [ -f \"$(git rev-parse --show-toplevel 2>/dev/null)/.claude/settings.json\" ]; then echo \"codex hooks: this checkout predates scripts/codex/hook-adapter.js, so the repo guards are not running here. Pull main.\" >&2; fi; exit 0",
+            "timeout": 600
+          }
+        ],
+        "matcher": "*"
+      }
+    ],
+    "PostToolUse": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "f=\"$(git rev-parse --show-toplevel 2>/dev/null)/scripts/codex/hook-adapter.js\"; if [ -f \"$f\" ]; then exec node \"$f\" --event PostToolUse; elif [ -f \"$(git rev-parse --show-toplevel 2>/dev/null)/.claude/settings.json\" ]; then echo \"codex hooks: this checkout predates scripts/codex/hook-adapter.js, so the repo guards are not running here. Pull main.\" >&2; fi; exit 0",
+            "timeout": 600
+          }
+        ],
+        "matcher": "*"
+      }
+    ],
+    "PreCompact": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "f=\"$(git rev-parse --show-toplevel 2>/dev/null)/scripts/codex/hook-adapter.js\"; if [ -f \"$f\" ]; then exec node \"$f\" --event PreCompact; elif [ -f \"$(git rev-parse --show-toplevel 2>/dev/null)/.claude/settings.json\" ]; then echo \"codex hooks: this checkout predates scripts/codex/hook-adapter.js, so the repo guards are not running here. Pull main.\" >&2; fi; exit 0",
+            "timeout": 600
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "f=\"$(git rev-parse --show-toplevel 2>/dev/null)/scripts/codex/hook-adapter.js\"; if [ -f \"$f\" ]; then exec node \"$f\" --event Stop; elif [ -f \"$(git rev-parse --show-toplevel 2>/dev/null)/.claude/settings.json\" ]; then echo \"codex hooks: this checkout predates scripts/codex/hook-adapter.js, so the repo guards are not running here. Pull main.\" >&2; fi; exit 0",
+            "timeout": 600
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,218 @@
+{
+  "issueNumber": "bro-4937",
+  "planId": "a129d9e5-fc93-4d21-bf27-bfa00875169a",
+  "status": "applied",
+  "createdAt": "2026-10-25T00:38:53.725Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Triage the remaining 14 orphaned wrongProduction records: eight evidence-backed manual clears and six restored exclusions; six of the original 20 are already resolved.",
+    "steps": [
+      "BRO-4937: Body names Emily Lim, Michael Grady-Hall and Mel Lowe at the Globe, matching the current show cast and director. Current publishDate is opening day; missing URL is not evidence of another production.",
+      "BRO-4937: Body names Atri Banerjee and Regent's Park Open Air Theatre. Current html-paid publishDate 2026-06-30 is one day after the 2026-06-29 opening; the five-day pre-opening provenance is stale.",
+      "BRO-4937: Body names Mike Nichols, Daniel Craig, Rachel Weisz, Rafe Spall and the Barrymore, matching the 2013 production. publishDate is absent; the legacy URL-based verdict is unsupported by the body.",
+      "BRO-4937: Body names Douglas Hodge, Jamie Lloyd and Roundabout, matching the 2012 production rather than the 2007 revival. No publication date was inferred from the URL.",
+      "BRO-4937: Body discusses the 2025 London Palladium Evita and its casting, while this show opens at the Winter Garden in 2027. isNonReview:true already excludes it; retain that flag.",
+      "BRO-4937: Body names Audra McDonald, Danny Burstein, Joy Woods, George C. Wolfe and the Majestic, matching the 2024 production rather than 2008.",
+      "BRO-4937: Body names Audra McDonald, Joy Woods and the Majestic, with a booking window into 2025, matching the 2024 production rather than 2008.",
+      "BRO-4937: Body names Luke Brady, Mae Ann Jorolan, Casey Nicholaw and Theatre Royal Drury Lane. Stored publishDate June 24th, 2025 matches the current opening 2025-06-24; provenance used an obsolete 2025-07-10 opening.",
+      "BRO-4937: Body names Ramin Karimloo, Will Swenson, Laurence Connor, James Powell and the Imperial, identifying the 2014 revival. Missing publication date does not contradict that evidence.",
+      "BRO-4937: Body is a show synopsis and email-alert promotion, not a review. isNonReview:true and its BRO-4270 show-hub reason already exclude it; retain those flags and restore the historical exclusion.",
+      "BRO-4937: Body is return-engagement promotional copy quoting other outlets, not an Alex Wood review. isNonReview:true and nonReviewType:preview already exclude it; retain those flags and restore the historical exclusion.",
+      "BRO-4937: Body is a May 2007 cast-change review of Fantasia replacing LaChanze, not the 2005 opening review already covered by nytimes--ben-brantley.json. The 2007 NYT review is misattributed to Alissa Wilkinson. The stored llmPullQuote comes from the 2015 revival review and is absent from this body. Restore the exclusion for this contaminated record.",
+      "BRO-4937: Surviving text explicitly names Sam Gold as director. The 2013 show director is John Tiffany; the 2017 show director is Sam Gold. Missing URL does not justify clearing this production mismatch.",
+      "BRO-4937: Current record has tierReason:Wrong show, incompleteReason:url_content_mismatch and no body to support a production clear. Restore the historical exclusion; no metadata inferred from the current URL."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "a-midsummer-nights-dream-globe-west-end-2026/whatsonstage--daniel-perks.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4937: Body names Emily Lim, Michael Grady-Hall and Mel Lowe at the Globe, matching the current show cast and director. Current publishDate is opening day; missing URL is not evidence of another production."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-midsummer-nights-dream-west-end-2026/broadwayworld--cheryl-markosky.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4937: Body names Atri Banerjee and Regent's Park Open Air Theatre. Current html-paid publishDate 2026-06-30 is one day after the 2026-06-29 opening; the five-day pre-opening provenance is stale."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "betrayal-2013/financialtimes--financial-times.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4937: Body names Mike Nichols, Daniel Craig, Rachel Weisz, Rafe Spall and the Barrymore, matching the 2013 production. publishDate is absent; the legacy URL-based verdict is unsupported by the body."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cyrano-de-bergerac-2012/ew--tanner-stransky.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4937: Body names Douglas Hodge, Jamie Lloyd and Roundabout, matching the 2012 production rather than the 2007 revival. No publication date was inferred from the URL."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "evita-2026/whatsonstage--sarah-crompton.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4937: Body discusses the 2025 London Palladium Evita and its casting, while this show opens at the Winter Garden in 2027. isNonReview:true already excludes it; retain that flag."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "gypsy-2024/cititour--brian-scott-lipton.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4937: Body names Audra McDonald, Danny Burstein, Joy Woods, George C. Wolfe and the Majestic, matching the 2024 production rather than 2008."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "gypsy-2024/dailybeast--tim-teeman.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4937: Body names Audra McDonald, Joy Woods and the Majestic, with a booking window into 2025, matching the 2024 production rather than 2008."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "hercules-west-end-2025/times-uk--clive-davis.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4937: Body names Luke Brady, Mae Ann Jorolan, Casey Nicholaw and Theatre Royal Drury Lane. Stored publishDate June 24th, 2025 matches the current opening 2025-06-24; provenance used an obsolete 2025-07-10 opening."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "les-miserables-2014/northjerseycom--robert-feldberg.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4937: Body names Ramin Karimloo, Will Swenson, Laurence Connor, James Powell and the Imperial, identifying the 2014 revival. Missing publication date does not contradict that evidence."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "miles-for-mary-off-broadway-2026/broadwayworld--bww-news-desk.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4937: Body is a show synopsis and email-alert promotion, not a review. isNonReview:true and its BRO-4270 show-hub reason already exclude it; retain those flags and restore the historical exclusion."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "ride-the-cyclone-off-west-end-2026/whatsonstage--alex-wood.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4937: Body is return-engagement promotional copy quoting other outlets, not an Alex Wood review. isNonReview:true and nonReviewType:preview already exclude it; retain those flags and restore the historical exclusion."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-color-purple-2005/nytimes--alissa-wilkinson.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4937: Body is a May 2007 cast-change review of Fantasia replacing LaChanze, not the 2005 opening review already covered by nytimes--ben-brantley.json. The 2007 NYT review is misattributed to Alissa Wilkinson. The stored llmPullQuote comes from the 2015 revival review and is absent from this body. Restore the exclusion for this contaminated record."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-glass-menagerie-2013/dailybeast--tim-teeman.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4937: Surviving text explicitly names Sam Gold as director. The 2013 show director is John Tiffany; the 2017 show director is Sam Gold. Missing URL does not justify clearing this production mismatch."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-truth-a-comedy-by-florian-zeller-west-end-2026/i-paper--sarah-carson.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4937: Current record has tierReason:Wrong show, incompleteReason:url_content_mismatch and no body to support a production clear. Restore the historical exclusion; no metadata inferred from the current URL."
+      }
+    ]
+  },
+  "executedAt": "2026-10-25T02:08:37.930Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-midsummer-nights-dream-globe-west-end-2026/whatsonstage--daniel-perks.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-midsummer-nights-dream-west-end-2026/broadwayworld--cheryl-markosky.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "betrayal-2013/financialtimes--financial-times.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cyrano-de-bergerac-2012/ew--tanner-stransky.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "evita-2026/whatsonstage--sarah-crompton.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "gypsy-2024/cititour--brian-scott-lipton.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "gypsy-2024/dailybeast--tim-teeman.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "hercules-west-end-2025/times-uk--clive-davis.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "les-miserables-2014/northjerseycom--robert-feldberg.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "miles-for-mary-off-broadway-2026/broadwayworld--bww-news-desk.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "ride-the-cyclone-off-west-end-2026/whatsonstage--alex-wood.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-color-purple-2005/nytimes--alissa-wilkinson.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-glass-menagerie-2013/dailybeast--tim-teeman.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-truth-a-comedy-by-florian-zeller-west-end-2026/i-paper--sarah-carson.json wrongProduction: null -> true"
+    }
+  ],
+  "executedIn": "ci"
+}

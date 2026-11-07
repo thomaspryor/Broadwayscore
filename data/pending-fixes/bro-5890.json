@@ -1,0 +1,62 @@
+{
+  "issueNumber": "bro-5890",
+  "planId": "38e3afcc-fe85-4164-b497-ab82368d1942",
+  "status": "applied",
+  "createdAt": "2026-10-22T03:33:06.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5890 coverage sweep: put back Good Time Charlie's 1 Minute Critic review (Matthew Wexler), which is flagged not-a-review although its own CV verdict calls it a review. (ANON's stranded NYT and Vulture were moved by BRO-5897; Midnight's Out in Jersey review was released by BRO-5896.)",
+    "steps": [
+      "Clear the false not-a-review flag on Good Time Charlie / 1 Minute Critic"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "good-time-charlie-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5890: read the stored text and the url (1minutecritic.com/ryan-j-haddad-good-time-charlie-review/): Matthew Wexler's review of Good Time Charlie, listed in Playbill's critics roundup. The isNonReviewReason itself says the content 'appears to be a review ... with substantive critical assessment'. Breadcrumb before the clear."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "good-time-charlie-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5890: false positive (Collector LLM called it a listicle); it is a review."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "good-time-charlie-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+        "field": "rejectionReason",
+        "oldValue": "not_a_review",
+        "newValue": null,
+        "description": "BRO-5890: the not-a-review rejection rode on the same false positive."
+      }
+    ]
+  },
+  "executedAt": "2026-10-22T07:59:00.374Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "good-time-charlie-off-broadway-2026/one-minute-critic--matthew-wexler.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "good-time-charlie-off-broadway-2026/one-minute-critic--matthew-wexler.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "good-time-charlie-off-broadway-2026/one-minute-critic--matthew-wexler.json rejectionReason: \"not_a_review\" -> null"
+    }
+  ],
+  "executedIn": "ci"
+}

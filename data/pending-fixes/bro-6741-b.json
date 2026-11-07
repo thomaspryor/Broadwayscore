@@ -1,0 +1,48 @@
+{
+  "issueNumber": "bro-6741-b",
+  "planId": "51ba8641-3318-4bd5-8f82-10fc6f349092",
+  "status": "applied",
+  "createdAt": "2026-10-31T22:44:47.082Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "UK regional: retire the 2 emptied duplicate rows (High Life Dundee Rep, Studio3 Tron); run after the rebuild moves their reviews",
+    "steps": [
+      "retire-show",
+      "retire-show"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "retire-show",
+        "id": "the-high-life-the-musical-dundee-rep-regional-2026",
+        "expectTitle": "The High Life the Musical",
+        "duplicateOf": "the-high-life-the-musical-still-living-it-dundee-rep-regional-2026",
+        "reason": "BRO-6741: duplicate of the-high-life-the-musical-still-living-it-dundee-rep-regional-2026 (Dundee Rep, April 2026, one run; reviews of both titles cover the same Alan Cumming production). Its census-seeded opening date could not move to the first review date without tripping the shows duplicate rule."
+      },
+      {
+        "type": "retire-show",
+        "id": "studio3-alright-sunshine-fleg-and-fruitcake-tron-regional-2025",
+        "expectTitle": "Studio3: Alright Sunshine, Fleg and Fruitcake",
+        "duplicateOf": "studio3-tron-regional-2025",
+        "reason": "BRO-6741: duplicate of studio3-tron-regional-2025 (Tron Theatre Glasgow Studio3 season, May 2025; the Guardian reviewed the same triple bill under the Studio3 name). Its census-seeded opening date could not move to the first review date without tripping the shows duplicate rule."
+      }
+    ]
+  },
+  "executedAt": "2026-10-31T23:08:41.667Z",
+  "results": [
+    {
+      "action": "retire-show",
+      "ok": true,
+      "msg": "retired the-high-life-the-musical-dundee-rep-regional-2026 (\"The High Life the Musical\" @ Dundee Rep, Dundee)"
+    },
+    {
+      "action": "retire-show",
+      "ok": true,
+      "msg": "retired studio3-alright-sunshine-fleg-and-fruitcake-tron-regional-2025 (\"Studio3: Alright Sunshine, Fleg and Fruitcake\" @ Tron Theatre, Glasgow)"
+    }
+  ],
+  "executedIn": "ci"
+}

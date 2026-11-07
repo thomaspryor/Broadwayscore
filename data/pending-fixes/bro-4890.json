@@ -1,0 +1,186 @@
+{
+  "issueNumber": "bro-4890",
+  "planId": "612323e4-c37d-483b-b11c-a24b126884b4",
+  "status": "applied",
+  "createdAt": "2026-10-09T09:25:28.395Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4890 (revival promo): file the 2005 Woolf review under the 2005 page, flag three web-search rows with no text on Death of a Salesman 2022, remove a doubled Inquirer row on 2012, and clear four false-positive flags on genuine Miss Saigon 2017 reviews. Other items on the card could not be verified from cloud and are left for follow-ups.",
+    "steps": [
+      "New York Theatre Guide review of the 2005 Longacre production (Kathleen Turner, Bill Irwin) filed under the 2020 revival that closed in previews without opening; belongs on the 2005 page.",
+      "BRO-4890: web-search row with no stored text whose excerpt is a templated sentence repeated under other outlets; no verifiable review behind it. Reversible: a verified url and text can clear it.",
+      "Reason for the flag",
+      "BRO-4890: web-search row with no stored text whose excerpt is a templated sentence repeated under other outlets; no verifiable review behind it. Reversible: a verified url and text can clear it.",
+      "Reason for the flag",
+      "BRO-4890: web-search row with no stored text whose excerpt is a templated sentence repeated under other outlets; no verifiable review behind it. Reversible: a verified url and text can clear it.",
+      "Reason for the flag",
+      "The Unknown-byline Inquirer row is the same 2012-03-15 article as philadelphia-inquirer--howard-shapiro.json (identical 20120315_Broadway_review_Death_of_a_Salesman path, philly.com vs inquirer.com), a shorter scrape counted a second time (90 and 88). The write guard will not link them as duplicates because the hostnames differ, so the shorter copy is removed.",
+      "Genuine review of the 2017 Broadway revival (names Eva Noblezada / Jon Jon Briones, dated March 2017); the wrongProduction flag is a false positive.",
+      "Genuine review of the 2017 Broadway revival (names Eva Noblezada / Jon Jon Briones, dated March 2017); the wrongProduction flag is a false positive.",
+      "Genuine review of the 2017 Broadway revival (names Eva Noblezada / Jon Jon Briones, dated March 2017); the wrongProduction flag is a false positive.",
+      "Genuine review of the 2017 Broadway revival (names Eva Noblezada / Jon Jon Briones, dated March 2017); the wrongProduction flag is a false positive."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "whos-afraid-of-virginia-woolf-2020/nytg--unknown.json",
+        "destPath": "whos-afraid-of-virginia-woolf-2005/nytg--unknown.json",
+        "description": "New York Theatre Guide review of the 2005 Longacre production (Kathleen Turner, Bill Irwin) filed under the 2020 revival that closed in previews without opening; belongs on the 2005 page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "death-of-a-salesman-2022/timeout--adam-feldman.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4890: web-search row with no stored text whose excerpt is a templated sentence repeated under other outlets; no verifiable review behind it. Reversible: a verified url and text can clear it."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "death-of-a-salesman-2022/timeout--adam-feldman.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "web-search row, no stored text, excerpt cloned across outlets (BRO-4890)",
+        "description": "Reason for the flag"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "death-of-a-salesman-2022/talkinbroadway--matthew-murray.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4890: web-search row with no stored text whose excerpt is a templated sentence repeated under other outlets; no verifiable review behind it. Reversible: a verified url and text can clear it."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "death-of-a-salesman-2022/talkinbroadway--matthew-murray.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "web-search row, no stored text, excerpt cloned across outlets (BRO-4890)",
+        "description": "Reason for the flag"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "death-of-a-salesman-2022/hollywood-reporter--anita-gates.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4890: web-search row with no stored text whose excerpt is a templated sentence repeated under other outlets; no verifiable review behind it. Reversible: a verified url and text can clear it."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "death-of-a-salesman-2022/hollywood-reporter--anita-gates.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "web-search row, no stored text, excerpt cloned across outlets (BRO-4890)",
+        "description": "Reason for the flag"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "death-of-a-salesman-2012/philadelphia-inquirer--unknown.json",
+        "description": "The Unknown-byline Inquirer row is the same 2012-03-15 article as philadelphia-inquirer--howard-shapiro.json (identical 20120315_Broadway_review_Death_of_a_Salesman path, philly.com vs inquirer.com), a shorter scrape counted a second time (90 and 88). The write guard will not link them as duplicates because the hostnames differ, so the shorter copy is removed."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "miss-saigon-2017/broadway-blog--matthew-wexler.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Genuine review of the 2017 Broadway revival (names Eva Noblezada / Jon Jon Briones, dated March 2017); the wrongProduction flag is a false positive."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "miss-saigon-2017/theater-pizzazz--samuel-l-leiter.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Genuine review of the 2017 Broadway revival (names Eva Noblezada / Jon Jon Briones, dated March 2017); the wrongProduction flag is a false positive."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "miss-saigon-2017/times-square-chronicles--suzanna-bowling.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Genuine review of the 2017 Broadway revival (names Eva Noblezada / Jon Jon Briones, dated March 2017); the wrongProduction flag is a false positive."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "miss-saigon-2017/stagezine--david-nounou.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Genuine review of the 2017 Broadway revival (names Eva Noblezada / Jon Jon Briones, dated March 2017); the wrongProduction flag is a false positive."
+      }
+    ]
+  },
+  "executedAt": "2026-10-09T09:52:20.792Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved whos-afraid-of-virginia-woolf-2020/nytg--unknown.json → whos-afraid-of-virginia-woolf-2005/nytg--unknown.json"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "death-of-a-salesman-2022/timeout--adam-feldman.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "death-of-a-salesman-2022/timeout--adam-feldman.json isNonReviewReason: null -> \"web-search row, no stored text, excerpt cloned across outlets (BRO-4890)\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "death-of-a-salesman-2022/talkinbroadway--matthew-murray.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "death-of-a-salesman-2022/talkinbroadway--matthew-murray.json isNonReviewReason: null -> \"web-search row, no stored text, excerpt cloned across outlets (BRO-4890)\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "death-of-a-salesman-2022/hollywood-reporter--anita-gates.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "death-of-a-salesman-2022/hollywood-reporter--anita-gates.json isNonReviewReason: null -> \"web-search row, no stored text, excerpt cloned across outlets (BRO-4890)\""
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted death-of-a-salesman-2012/philadelphia-inquirer--unknown.json"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "miss-saigon-2017/broadway-blog--matthew-wexler.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "miss-saigon-2017/theater-pizzazz--samuel-l-leiter.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "miss-saigon-2017/times-square-chronicles--suzanna-bowling.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "miss-saigon-2017/stagezine--david-nounou.json wrongProductionManualClear: null -> true"
+    }
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "issueNumber": "bro-5625",
+  "planId": "eba523a2-60cf-45ba-ae18-a052f42226de",
+  "status": "applied",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5625: stop two non-2026 files in the-ask-off-broadway-2026 from counting as review gaps or ever being scored for the 2026 Theater 555 production.",
+    "steps": [
+      "New Yorker Goings On About Town capsule by Helen Shaw is dated September 16, 2024 (Wild Project production), not the 2026 run.",
+      "WSJ Vanessa Bohns piece is a careers column (how to ask colleagues to agree to requests), not a review of The Ask."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "the-ask-off-broadway-2026/newyorker--helen-shaw.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "New Yorker capsule is dated Sept 16, 2024 (Wild Project run), a prior production of The Ask."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-ask-off-broadway-2026/wsj--vanessa-bohns.json",
+        "field": "wrongShow",
+        "oldValue": null,
+        "newValue": true,
+        "description": "WSJ careers column 'how to ask colleagues agree requests', not a theatre review."
+      }
+    ]
+  },
+  "executedAt": "2026-10-18T13:16:07.639Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-ask-off-broadway-2026/newyorker--helen-shaw.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-ask-off-broadway-2026/wsj--vanessa-bohns.json wrongShow: null -> true"
+    }
+  ]
+}

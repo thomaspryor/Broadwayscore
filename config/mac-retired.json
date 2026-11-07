@@ -1,0 +1,118 @@
+{
+  "_comment": "Mac launchd jobs retired for good (BRO-5085, plan BRO-4622). com.broadwayscore.checkout-sync reads this after every successful sync and, once an entry is RETIRE_GRACE_DAYS old, boots the job out and renames its ~/Library/LaunchAgents plist to <label>.plist.retired-<date>. Remove an entry (and restore the plist) to un-retire. Every entry must name its watchers: the pagers/health checks that watched the job, updated in the same change so retiring it does not page. Logic + rules: scripts/lib/mac-retired-reconciler.js.",
+  "_rollback": "To un-retire a label: (1) delete its entry here and land; (2) on the Mac, mv ~/Library/LaunchAgents/<label>.plist.retired-<date> back to <label>.plist; (3) launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/<label>.plist; (4) clear any kill-switch marker the job still honours (com.bwsc.opening-night-monitor: delete data/opening-night-monitor/DISABLED); (5) pause the cloud replacement in replacedBy so both don't run.",
+  "entries": [
+    {
+      "label": "com.bwsc.opening-night-monitor",
+      "retiredAt": "2026-10-11",
+      "replacedBy": [
+        "docs/cloud-routines/opening-night-watch.md: cloud Routines 'Opening night live watch (Broadway)' (23:17 ET) and 'Opening night morning-after audit (Broadway)' (06:47 ET); the doc records them and the selection gap they leave"
+      ],
+      "watchers": [
+        {
+          "conditionKey": "on-monitor-kill-switch-stale",
+          "file": "scripts/opening-night-monitor-launch.js",
+          "note": "Only runs inside the launcher itself, and already skips on the RETIRED: marker in data/opening-night-monitor/DISABLED (BRO-4638). After bootout the launcher never runs, so it cannot page."
+        }
+      ]
+    },
+    {
+      "label": "com.bwsc.weekly-retro",
+      "retiredAt": "2026-10-21",
+      "replacedBy": [
+        "cloud Routine: Weekly retro (cloud), docs/cloud-routines/weekly-retro.md"
+      ],
+      "watchers": [
+        {
+          "conditionKey": "weekly-retro",
+          "file": "scripts/local-triggers/weekly-retro.sh",
+          "note": "No pager watched the Mac job. Cloud run proven 2026-10-18: it filed BRO-5630 at 13:57Z, before the Mac run at 14:01Z, which found it and filed nothing (BRO-5846)."
+        }
+      ]
+    },
+    {
+      "label": "com.broadwayscore.overhaul-driver",
+      "retiredAt": "2026-10-21",
+      "replacedBy": [
+        "nothing: the overhaul program finished, no replacement needed"
+      ],
+      "watchers": [
+        {
+          "conditionKey": "overhaul-driver",
+          "file": "scripts/claude-auth-preflight.js",
+          "note": "Session-system overhaul chain (S3/V1-V3) finished in September; log stops 2026-09-15 and every launchd tick since failed with node: command not found. No pager watched it (BRO-5846)."
+        }
+      ]
+    },
+    {
+      "label": "com.broadwayscore.cyrus-webhook-drain",
+      "retiredAt": "2026-10-24",
+      "replacedBy": [
+        "nothing: owner retired Cyrus Team Cloud (BRO-6110, 2026-10-24); the Vercel relay returns 404 and only BRO-338 was ever delegated to it"
+      ],
+      "watchers": [
+        {
+          "conditionKey": "localCyrusRelayMessage",
+          "file": "scripts/send-morning-digest.js",
+          "note": "Retired with Cyrus (owner chose Option A on BRO-6110, 2026-10-24). The morning digest line localCyrusRelayMessage() would otherwise report the drain as stale every day once the job stops writing its status file, so it now stays silent for a retired label."
+        }
+      ]
+    },
+    {
+      "label": "com.broadwayscore.cyrus-runner",
+      "retiredAt": "2026-10-24",
+      "replacedBy": [
+        "nothing: owner retired Cyrus Team Cloud (BRO-6110, 2026-10-24)"
+      ],
+      "watchers": [
+        {
+          "conditionKey": "localRunnerHealthMessage",
+          "file": "scripts/send-morning-digest.js",
+          "note": "Same retirement. localRunnerHealthMessage() in the morning digest stays silent for a retired label, otherwise a stopped scheduler would be reported as stale every day."
+        }
+      ]
+    },
+    {
+      "label": "com.broadwayscore.cyrus-edge",
+      "retiredAt": "2026-10-24",
+      "replacedBy": [
+        "nothing: owner retired Cyrus Team Cloud (BRO-6110, 2026-10-24); this is the local edge worker the webhook drain replayed events into (127.0.0.1:3456)"
+      ],
+      "watchers": [
+        {
+          "conditionKey": "linear-delegation-status.json",
+          "file": "scripts/check-linear-delegations.js",
+          "note": "No pager watched the edge worker itself (it last showed exit status 1 in August and nothing alarmed). The only Cyrus-side reader left is the delegation check, which judges delegated Linear issues by their agent sessions; BRO-338, the one issue ever delegated, is closed."
+        }
+      ]
+    },
+    {
+      "label": "com.broadwayscore.linear-delegation-check",
+      "retiredAt": "2026-10-25",
+      "replacedBy": [
+        "nothing: Cyrus delegation machinery, owner retired Cyrus Team Cloud (BRO-6110, 2026-10-24); BRO-338, the one delegated issue, is closed; the digest's Codex connection line (written by the same script) goes with it"
+      ],
+      "watchers": [
+        {
+          "conditionKey": "localLinearDelegationMessage",
+          "file": "scripts/send-morning-digest.js",
+          "note": "The digest reader of ~/.cyrus/linear-delegation-status.json would report \"delegation check has not run\" every morning once the job stops writing it, so it and localCodexConnectionLine stay silent for a retired label (BRO-6216)."
+        }
+      ]
+    },
+    {
+      "label": "com.broadwayscore.linear-drain-parked",
+      "retiredAt": "2026-10-25",
+      "replacedBy": [
+        ".github/workflows/linear-unpark-drain.yml (daily cloud drain, last 5 scheduled runs green through 2026-10-25; moves takeable parked cards to Todo for the cloud workers)"
+      ],
+      "watchers": [
+        {
+          "conditionKey": "assessCloudCoverage",
+          "file": "scripts/lib/drain-ledger-health.js",
+          "note": "check-linear-drain-health.yml judges a silent Mac drain ledger (assessCloudCoverage, called from scripts/check-linear-drain-health.js) by cloud-worker coverage of the parked queue (BRO-5360), so a stopped Mac drain pages only when the cloud cannot reach the queue either."
+        }
+      ]
+    }
+  ]
+}

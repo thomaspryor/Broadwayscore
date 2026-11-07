@@ -1,0 +1,50 @@
+{
+  "issueNumber": "bro-5897",
+  "planId": "a18ee092-c475-4e9a-908c-1db70af9f5f5",
+  "status": "applied",
+  "createdAt": "2026-10-22T03:42:18.816Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5897: move the two reviews stranded in the retired anne-washburns-anon folder to the kept ANON show (NYT Helen Shaw, Vulture Sara Holdren).",
+    "steps": [
+      "Move nytimes--helen-shaw.json",
+      "Move vulture--sara-holdren.json"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "anne-washburns-anon-off-broadway-2026/nytimes--helen-shaw.json",
+        "destPath": "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/nytimes--helen-shaw.json",
+        "description": "Stranded by the 2026-10-17 retirement of anne-washburns-anon-off-broadway-2026 (duplicateOf anon-a-tempest-at-our-kitchen-table-off-broadway-2026, BRO-5557): the review belongs on the kept show page"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "anne-washburns-anon-off-broadway-2026/vulture--sara-holdren.json",
+        "destPath": "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/vulture--sara-holdren.json",
+        "description": "Stranded by the 2026-10-17 retirement of anne-washburns-anon-off-broadway-2026 (duplicateOf anon-a-tempest-at-our-kitchen-table-off-broadway-2026, BRO-5557): the review belongs on the kept show page"
+      }
+    ]
+  },
+  "executedAt": "2026-10-22T04:38:33.474Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved anne-washburns-anon-off-broadway-2026/nytimes--helen-shaw.json → anon-a-tempest-at-our-kitchen-table-off-broadway-2026/nytimes--helen-shaw.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved anne-washburns-anon-off-broadway-2026/vulture--sara-holdren.json → anon-a-tempest-at-our-kitchen-table-off-broadway-2026/vulture--sara-holdren.json",
+      "cleared": []
+    }
+  ],
+  "executedIn": "ci"
+}

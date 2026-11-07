@@ -1,0 +1,373 @@
+{
+  "issueNumber": "bro-5859-synopsis-2",
+  "planId": "e4cb876c-0072-4a4b-9535-0167f15a73fa",
+  "status": "applied",
+  "createdAt": "2026-10-21T19:23:30.642Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5859: repair 25 shows.json synopses that ended mid-word with an ellipsis (part 2 of 3)",
+    "steps": [
+      "Replace each truncated synopsis with complete text from its source, cut at a sentence end"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "matilda-the-musical-theatre-row-off-broadway-2026",
+        "field": "synopsis",
+        "oldValue": "A brilliant girl uses courage and imagination to change her world in this musical. KOTA Productions brings the Tony Award-winning Matilda The Musical to the stage in a fresh and vibrant new production inspired by Roald Dahl’s beloved novel. Featuring a book by Dennis Kelly and an original score by Tim Minchin, the musical follows an extraordinary young girl whose intelligence, determination, and imagination help her overcome challenges and inspire those around her. Performed by a talented cast from across the country, this reimagined Off-Broadway staging celebrates the power of resilience, creativity, and standing up for what is right. Filled with memorable songs, humor, and heart, Matilda The Musical is an uplifting story about finding your voice and believing in the possibility of cha...",
+        "newValue": "A brilliant girl uses courage and imagination to change her world in this musical. KOTA Productions brings the Tony Award-winning Matilda The Musical to the stage in a fresh and vibrant new production inspired by Roald Dahl’s beloved novel. Featuring a book by Dennis Kelly and an original score by Tim Minchin, the musical follows an extraordinary young girl whose intelligence, determination, and imagination help her overcome challenges and inspire those around her. Performed by a talented cast from across the country, this reimagined Off-Broadway staging celebrates the power of resilience, creativity, and standing up for what is right.",
+        "description": "BRO-5859: synopsis ended mid-word at 800 chars + \"...\" (Show Score scraper hard cut); no Show Score page for this row (or the mapped page is another production); stored text cut back to its last full sentence"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "masticate-off-broadway-2026",
+        "field": "synopsis",
+        "oldValue": "A new waitress sparks chaos in a dark comedy about service, desire, and collapse. Masticate is a darkly comic exploration of workplace tension, human desire, and the fragile balance that keeps everyday life functioning. Set inside a casual dining restaurant, the story follows the arrival of an enigmatic new waitress whose presence disrupts the establishment’s delicate social order. As stress mounts and hidden frustrations rise to the surface, the staff find themselves spiraling toward inevitable chaos. Blending sharp humor with biting social commentary, the play examines how people navigate anger, ambition, and personal connection while maintaining the illusion of excellent customer service. As the pressures of work and life intensify, Masticate reveals what happens when a seemingly ord...",
+        "newValue": "A new waitress sparks chaos in a dark comedy about service, desire, and collapse. Masticate is a darkly comic exploration of workplace tension, human desire, and the fragile balance that keeps everyday life functioning. Set inside a casual dining restaurant, the story follows the arrival of an enigmatic new waitress whose presence disrupts the establishment’s delicate social order. As stress mounts and hidden frustrations rise to the surface, the staff find themselves spiraling toward inevitable chaos. Blending sharp humor with biting social commentary, the play examines how people navigate anger, ambition, and personal connection while maintaining the illusion of excellent customer service.",
+        "description": "BRO-5859: synopsis ended mid-word at 800 chars + \"...\" (Show Score scraper hard cut); full Show Score About text, cut at its last sentence end inside 800 chars (stored text is a verbatim prefix of the page)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "misterman-theatre-row-off-broadway-2026",
+        "field": "synopsis",
+        "oldValue": "A zealous man’s quest to save his town spirals into obsession and madness. Misterman is a powerful and unsettling portrait of faith, obsession, and psychological unraveling set in a small Irish town. Thomas Magill, a deeply devout evangelist, sees moral corruption everywhere around him—from neighbors he views as sinners to everyday behaviors he believes threaten the soul of the community. Convinced that he has been chosen to lead others toward salvation, Thomas embarks on a mission to reform the town, certain that God is guiding his actions. As his efforts are ignored and resisted, his grip on reality begins to weaken. Strange visions, intrusive thoughts, and mounting frustrations blur the line between spiritual conviction and dangerous fanaticism. Intensely theatrical and emotionally c...",
+        "newValue": "A zealous man’s quest to save his town spirals into obsession and madness. Misterman is a powerful and unsettling portrait of faith, obsession, and psychological unraveling set in a small Irish town. Thomas Magill, a deeply devout evangelist, sees moral corruption everywhere around him—from neighbors he views as sinners to everyday behaviors he believes threaten the soul of the community. Convinced that he has been chosen to lead others toward salvation, Thomas embarks on a mission to reform the town, certain that God is guiding his actions. As his efforts are ignored and resisted, his grip on reality begins to weaken. Strange visions, intrusive thoughts, and mounting frustrations blur the line between spiritual conviction and dangerous fanaticism.",
+        "description": "BRO-5859: synopsis ended mid-word at 800 chars + \"...\" (Show Score scraper hard cut); full Show Score About text, cut at its last sentence end inside 800 chars (stored text is a verbatim prefix of the page)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "day-of-the-hog-off-broadway-2026",
+        "field": "synopsis",
+        "oldValue": "Two hedgehogs confront survival, love, and an uncertain winter in dark woodland satire. Set in Punxsutawney, Pennsylvania, Day of the Hog follows two hedgehogs preparing for Groundhog Day as the prospect of six more weeks of winter threatens their home and survival. What begins as an absurdist woodland comedy gradually narrows its focus to the pressures of scarcity, partnership, and endurance as the shadow of Punxsutawney Phil hangs over their future. The play is a new work that blends animal fable, dark comedy, and social satire. Through the perspective of its hedgehog protagonists, the story examines how larger systems and traditions shape the lives of those with little power to influence them. Information regarding the playwright and director has not yet been released in the availabl...",
+        "newValue": "Two hedgehogs confront survival, love, and an uncertain winter in dark woodland satire. Set in Punxsutawney, Pennsylvania, Day of the Hog follows two hedgehogs preparing for Groundhog Day as the prospect of six more weeks of winter threatens their home and survival. What begins as an absurdist woodland comedy gradually narrows its focus to the pressures of scarcity, partnership, and endurance as the shadow of Punxsutawney Phil hangs over their future. The play is a new work that blends animal fable, dark comedy, and social satire. Through the perspective of its hedgehog protagonists, the story examines how larger systems and traditions shape the lives of those with little power to influence them.",
+        "description": "BRO-5859: synopsis ended mid-word at 800 chars + \"...\" (Show Score scraper hard cut); full Show Score About text, cut at its last sentence end inside 800 chars (stored text is a verbatim prefix of the page)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "spellbound-off-broadway-2026",
+        "field": "synopsis",
+        "oldValue": "A mentalism show from India's most-subscribed mentalist Suhani Shah blending mind-reading, comedy, and audience interaction. Spellbound is a solo mentalism show in which Suhani Shah weaves her own life story into an evening of increasingly extraordinary feats of mind-reading, comedy, and audience participation. Highly interactive in format, the show invites audience members to engage directly while remaining unpredictable for those who choose to observe. Shah moves between personal narrative and mentalism across the course of the evening, building toward an experience in which the audience becomes as much a part of the show as the performer herself. Shah began performing at age seven and has spent three decades building a career across more than 5,000 shows in 20 countries. She is the m...",
+        "newValue": "A mentalism show from India's most-subscribed mentalist Suhani Shah blending mind-reading, comedy, and audience interaction. Spellbound is a solo mentalism show in which Suhani Shah weaves her own life story into an evening of increasingly extraordinary feats of mind-reading, comedy, and audience participation. Highly interactive in format, the show invites audience members to engage directly while remaining unpredictable for those who choose to observe. Shah moves between personal narrative and mentalism across the course of the evening, building toward an experience in which the audience becomes as much a part of the show as the performer herself. Shah began performing at age seven and has spent three decades building a career across more than 5,000 shows in 20 countries.",
+        "description": "BRO-5859: synopsis ended mid-word at 800 chars + \"...\" (Show Score scraper hard cut); full Show Score About text, cut at its last sentence end inside 800 chars (stored text is a verbatim prefix of the page)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-real-ivanov-off-broadway-2026",
+        "field": "synopsis",
+        "oldValue": "A fast-paced adaptation of Chekhov exploring depression, misunderstanding, and human connection. Nikolai Ivanov, once admired and full of promise, finds himself overwhelmed by depression as those around him attempt to explain his unhappiness. Over the course of a year, conflicting assumptions, strained relationships, and missed connections expose the comic and tragic consequences of people failing to understand one another. This adaptation of Anton Chekhov's Ivanov presents the playwright's first major work in a contemporary, fast-moving form. The production is adapted and directed by Laura Strausfeld, whose version remains faithful to Chekhov's original while emphasizing its pace and wit. Presented by Initiative Productions, The Real Ivanov runs at The Lynn F. Angelson Theater in New Y...",
+        "newValue": "A fast-paced adaptation of Chekhov exploring depression, misunderstanding, and human connection. Nikolai Ivanov, once admired and full of promise, finds himself overwhelmed by depression as those around him attempt to explain his unhappiness. Over the course of a year, conflicting assumptions, strained relationships, and missed connections expose the comic and tragic consequences of people failing to understand one another. This adaptation of Anton Chekhov's Ivanov presents the playwright's first major work in a contemporary, fast-moving form. The production is adapted and directed by Laura Strausfeld, whose version remains faithful to Chekhov's original while emphasizing its pace and wit.",
+        "description": "BRO-5859: synopsis ended mid-word at 800 chars + \"...\" (Show Score scraper hard cut); full Show Score About text, cut at its last sentence end inside 800 chars (stored text is a verbatim prefix of the page)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "hungry-women-off-broadway-2026",
+        "field": "synopsis",
+        "oldValue": "Women navigate a future without men in a dark comedy spanning generations. Set in a world where men have mysteriously disappeared, Hungry Women follows generations of women as they navigate the social, political, and personal consequences of a radically transformed society. Beginning in 19th-century Massachusetts and extending far into the future, the play examines questions of survival, identity, motherhood, sexuality, and power through a blend of dark comedy and speculative fiction. The play is written by Melissa Maney and directed by Iris Dukatt. Developed through SoHo Playhouse’s Lighthouse Series, the production features an ensemble cast portraying women across different eras as they confront the opportunities and challenges created by the collapse of patriarchal structures. The de...",
+        "newValue": "Women navigate a future without men in a dark comedy spanning generations. Set in a world where men have mysteriously disappeared, Hungry Women follows generations of women as they navigate the social, political, and personal consequences of a radically transformed society. Beginning in 19th-century Massachusetts and extending far into the future, the play examines questions of survival, identity, motherhood, sexuality, and power through a blend of dark comedy and speculative fiction. The play is written by Melissa Maney and directed by Iris Dukatt. Developed through SoHo Playhouse’s Lighthouse Series, the production features an ensemble cast portraying women across different eras as they confront the opportunities and challenges created by the collapse of patriarchal structures.",
+        "description": "BRO-5859: synopsis ended mid-word at 800 chars + \"...\" (Show Score scraper hard cut); full Show Score About text, cut at its last sentence end inside 800 chars (stored text is a verbatim prefix of the page)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "weve-been-here-before-a-one-woman-musical-off-broadway-2026",
+        "field": "synopsis",
+        "oldValue": "A woman finds her voice through songwriting in Lindsey Kraft's autobiographical solo musical. Liv is 40, codependent, and unexpectedly driven to write music. With no previous musical experience, she teaches herself piano while forming a relationship with a secret online confidant. As she writes a deeply personal collection of songs, she confronts family secrets, her father's addiction, years of silence, and the process of finding the confidence to stand on her own. Written, composed, and lyricized by Lindsey Kraft, the autobiographical one-woman musical draws on her own experience of discovering songwriting later in life. Kraft also stars in the production, joined onstage by acclaimed singer-songwriter Ben Folds and bassist Dan Rudin, who perform the live musical accompaniment. Presente...",
+        "newValue": "A woman finds her voice through songwriting in Lindsey Kraft's autobiographical solo musical. Liv is 40, codependent, and unexpectedly driven to write music. With no previous musical experience, she teaches herself piano while forming a relationship with a secret online confidant. As she writes a deeply personal collection of songs, she confronts family secrets, her father's addiction, years of silence, and the process of finding the confidence to stand on her own. Written, composed, and lyricized by Lindsey Kraft, the autobiographical one-woman musical draws on her own experience of discovering songwriting later in life. Kraft also stars in the production, joined onstage by acclaimed singer-songwriter Ben Folds and bassist Dan Rudin, who perform the live musical accompaniment.",
+        "description": "BRO-5859: synopsis ended mid-word at 800 chars + \"...\" (Show Score scraper hard cut); no Show Score page for this row (or the mapped page is another production); stored text cut back to its last full sentence"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "an-american-daughter-off-broadway-2026",
+        "field": "synopsis",
+        "oldValue": "A political family drama by Wendy Wasserstein directed by Sarna Lapine. Wendy Wasserstein’s An American Daughter follows a highly accomplished woman on the verge of national political prominence whose future is threatened after a minor personal mistake ignites an intense media scandal. Set within an influential political family, the play examines public scrutiny, gender expectations, sexual politics, and the pressures placed on women in positions of power. Originally premiering in 1996, the work blends comedy with political and social commentary as private lives become public spectacle. The New York revival is directed by Sarna Lapine, whose credits include Broadway’s Sunday in the Park with George and the world premiere of Call Me Izzy starring Jean Smart. The production marks the firs...",
+        "newValue": "A political family drama by Wendy Wasserstein directed by Sarna Lapine. Wendy Wasserstein’s An American Daughter follows a highly accomplished woman on the verge of national political prominence whose future is threatened after a minor personal mistake ignites an intense media scandal. Set within an influential political family, the play examines public scrutiny, gender expectations, sexual politics, and the pressures placed on women in positions of power. Originally premiering in 1996, the work blends comedy with political and social commentary as private lives become public spectacle. The New York revival is directed by Sarna Lapine, whose credits include Broadway’s Sunday in the Park with George and the world premiere of Call Me Izzy starring Jean Smart.",
+        "description": "BRO-5859: synopsis ended mid-word at 800 chars + \"...\" (Show Score scraper hard cut); full Show Score About text, cut at its last sentence end inside 800 chars (stored text is a verbatim prefix of the page)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "delirium-off-broadway-2026",
+        "field": "synopsis",
+        "oldValue": "A couple's surreal battle unfolds as reality dissolves in Igor Golyak's adaptation. A couple remains trapped in an endless argument while the world outside descends into chaos. As the line between reality and delusion blurs, \"Her\" and \"Him\" navigate a shifting landscape where conflict becomes an expression of devotion. The play is a new adaptation of Eugène Ionesco's Frenzy for Two, Or More, transforming absurdist comedy into an intimate portrait of two people fighting to preserve one another's existence. The production is adapted and directed by Igor Golyak (Our Class, founder of Arlekin). The creative team includes scenic and properties designer Jan Pappelbaum (Our Class), costume designer Sasha Ageeva, composer Anna Drubich, lighting designer Jeff Adelberg, and sound designer Denis Z...",
+        "newValue": "A couple's surreal battle unfolds as reality dissolves in Igor Golyak's adaptation. A couple remains trapped in an endless argument while the world outside descends into chaos. As the line between reality and delusion blurs, \"Her\" and \"Him\" navigate a shifting landscape where conflict becomes an expression of devotion. The play is a new adaptation of Eugène Ionesco's Frenzy for Two, Or More, transforming absurdist comedy into an intimate portrait of two people fighting to preserve one another's existence. The production is adapted and directed by Igor Golyak (Our Class, founder of Arlekin).",
+        "description": "BRO-5859: synopsis ended mid-word at 800 chars + \"...\" (Show Score scraper hard cut); full Show Score About text, cut at its last sentence end inside 800 chars (stored text is a verbatim prefix of the page)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "jest-to-impress-off-broadway-2026",
+        "field": "synopsis",
+        "oldValue": "A master of one-liners delivers fast-paced laughs and crowd-fueled comedy. Jest to Impress sees acclaimed comedian Mark Simmons return with a brand-new stand-up show packed with his signature rapid-fire one-liners and razor-sharp wit. Fresh from a hugely successful sell-out international debut tour, Simmons delivers another hour of expertly crafted jokes, blending meticulously written punchlines with spontaneous humor inspired by audience suggestions. Known for his appearances on Mock The Week, BT Sport, and ITV, as well as his popular podcast Jokes With Mark Simmons, he continues to showcase the clever wordplay and inventive comedy that have earned him widespread acclaim, including the Dave’s Funniest Joke of the Fringe 2024 award. This lively performance promises an evening of quick-t...",
+        "newValue": "A master of one-liners delivers fast-paced laughs and crowd-fueled comedy. Jest to Impress sees acclaimed comedian Mark Simmons return with a brand-new stand-up show packed with his signature rapid-fire one-liners and razor-sharp wit. Fresh from a hugely successful sell-out international debut tour, Simmons delivers another hour of expertly crafted jokes, blending meticulously written punchlines with spontaneous humor inspired by audience suggestions. Known for his appearances on Mock The Week, BT Sport, and ITV, as well as his popular podcast Jokes With Mark Simmons, he continues to showcase the clever wordplay and inventive comedy that have earned him widespread acclaim, including the Dave’s Funniest Joke of the Fringe 2024 award.",
+        "description": "BRO-5859: synopsis ended mid-word at 800 chars + \"...\" (Show Score scraper hard cut); full Show Score About text, cut at its last sentence end inside 800 chars (stored text is a verbatim prefix of the page)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "la-distance-bam-off-broadway-2026",
+        "field": "synopsis",
+        "oldValue": "A North American premiere by Tiago Rodrigues set in 2077, following a father and daughter separated by planets. Set in 2077, the play follows a daughter who chooses exile on Mars, leaving her father on a struggling Earth to contend with the distance between them — measured not only in miles but in the weight of the choice she has made. As humanity faces the consequences of decisions taken generations earlier, the play traces the difficulty of sustaining love and connection across an unnavigable divide, using the vast physical separation of its two characters to examine what remains when proximity is no longer possible. The North American premiere is written and directed by Tiago Rodrigues, Director of the Festival d'Avignon, and was a breakout work at the 2025 festival. The production s...",
+        "newValue": "A North American premiere by Tiago Rodrigues set in 2077, following a father and daughter separated by planets. Set in 2077, the play follows a daughter who chooses exile on Mars, leaving her father on a struggling Earth to contend with the distance between them — measured not only in miles but in the weight of the choice she has made. As humanity faces the consequences of decisions taken generations earlier, the play traces the difficulty of sustaining love and connection across an unnavigable divide, using the vast physical separation of its two characters to examine what remains when proximity is no longer possible. The North American premiere is written and directed by Tiago Rodrigues, Director of the Festival d'Avignon, and was a breakout work at the 2025 festival.",
+        "description": "BRO-5859: synopsis ended mid-word at 800 chars + \"...\" (Show Score scraper hard cut); full Show Score About text, cut at its last sentence end inside 800 chars (stored text is a verbatim prefix of the page)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "isla-off-broadway-2026",
+        "field": "synopsis",
+        "oldValue": "Music-driven play with live Latin jazz, puppetry, and projections inspired by family history. ISLA follows three young women in Cuba whose lives are shaped by family, memory, and migration. Inspired by the true story of Samantha Blain's family and the 1960s Freedom Flights to Miami, this Latin American coming-of-age story blends Caribbean storytelling with magical realism as the sisters navigate an uncertain future. Live music, documentary interviews, shadow puppetry, and projections weave together generations of one immigrant family's history. The production is a devised work created by Hit The Lights! Company and co-directed by Roman Sanchez and Mikayla Stanley. The production features a full original songbook, a live Latin jazz-influenced score, handmade shadow puppetry, cinematic pr...",
+        "newValue": "Music-driven play with live Latin jazz, puppetry, and projections inspired by family history. ISLA follows three young women in Cuba whose lives are shaped by family, memory, and migration. Inspired by the true story of Samantha Blain's family and the 1960s Freedom Flights to Miami, this Latin American coming-of-age story blends Caribbean storytelling with magical realism as the sisters navigate an uncertain future. Live music, documentary interviews, shadow puppetry, and projections weave together generations of one immigrant family's history. The production is a devised work created by Hit The Lights! Company and co-directed by Roman Sanchez and Mikayla Stanley.",
+        "description": "BRO-5859: synopsis ended mid-word at 800 chars + \"...\" (Show Score scraper hard cut); full Show Score About text, cut at its last sentence end inside 800 chars (stored text is a verbatim prefix of the page)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "after-all-these-years-off-broadway-2026",
+        "field": "synopsis",
+        "oldValue": "Musical memoir blending concert, comedy, and personal stories by Al Tapper. After All These Years is a musical memoir built around the life and songs of Al Tapper. Structured as part concert, part comedy, and part personal reflection, it traces memories of first loves, show business ambitions, political satire, romantic misadventures, and everyday experiences. Tapper appears on screen while a live cast performs his songs, creating a theatrical portrait that moves between storytelling and musical performance. The musical features a book, music, and lyrics by Al Tapper, whose songwriting career spans theatre and popular music. The production is directed by Brian Childers (Love Quirks). The score references a wide range of cultural touchstones, from Stephen Sondheim and Doris Day to contem...",
+        "newValue": "Musical memoir blending concert, comedy, and personal stories by Al Tapper. After All These Years is a musical memoir built around the life and songs of Al Tapper. Structured as part concert, part comedy, and part personal reflection, it traces memories of first loves, show business ambitions, political satire, romantic misadventures, and everyday experiences. Tapper appears on screen while a live cast performs his songs, creating a theatrical portrait that moves between storytelling and musical performance. The musical features a book, music, and lyrics by Al Tapper, whose songwriting career spans theatre and popular music. The production is directed by Brian Childers (Love Quirks).",
+        "description": "BRO-5859: synopsis ended mid-word at 800 chars + \"...\" (Show Score scraper hard cut); full Show Score About text, cut at its last sentence end inside 800 chars (stored text is a verbatim prefix of the page)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "degenerates-off-broadway-2026",
+        "field": "synopsis",
+        "oldValue": "A darkly funny drama exploring loneliness, masculinity, and the search for connection. Degenerates is a darkly comic drama that examines loneliness, identity, and the online spaces where frustration and isolation can take root. Set within a small, insular internet community, the play follows a group of young men who reinforce one another's belief that they are destined to be rejected and disconnected from the world around them. As their shared outlook deepens, an unexpected relationship begins to challenge their assumptions, revealing the emotional cost of hopelessness and self-defeating beliefs. Blending sharp humor with emotional honesty, Degenerates offers a compelling exploration of masculinity, belonging, and the human need for connection. Through its intimate and thought-provoking...",
+        "newValue": "A darkly funny drama exploring loneliness, masculinity, and the search for connection. Degenerates is a darkly comic drama that examines loneliness, identity, and the online spaces where frustration and isolation can take root. Set within a small, insular internet community, the play follows a group of young men who reinforce one another's belief that they are destined to be rejected and disconnected from the world around them. As their shared outlook deepens, an unexpected relationship begins to challenge their assumptions, revealing the emotional cost of hopelessness and self-defeating beliefs. Blending sharp humor with emotional honesty, Degenerates offers a compelling exploration of masculinity, belonging, and the human need for connection.",
+        "description": "BRO-5859: synopsis ended mid-word at 800 chars + \"...\" (Show Score scraper hard cut); full Show Score About text, cut at its last sentence end inside 800 chars (stored text is a verbatim prefix of the page)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "downstate-2026",
+        "field": "synopsis",
+        "oldValue": "A Broadway premiere of Bruce Norris's award-winning drama set in a group home for convicted sex offenders. Downstate is set in a state-sanctioned group home where four men convicted of sex crimes against minors live together under the conditions of their release. Having served their prison sentences, each navigates the narrow and fraught space between legal freedom and social consequence. When a survivor arrives unannounced to confront his abuser, the encounter sets off a chain of events that destabilizes the household and everyone connected to it. Written by Bruce Norris and winner of the New York Drama Critics' Circle Award for Best Play, the production makes its Broadway premiere in a strictly limited 12-week engagement at the Booth Theatre, directed by three-time Tony Award winner J...",
+        "newValue": "A Broadway premiere of Bruce Norris's award-winning drama set in a group home for convicted sex offenders. Downstate is set in a state-sanctioned group home where four men convicted of sex crimes against minors live together under the conditions of their release. Having served their prison sentences, each navigates the narrow and fraught space between legal freedom and social consequence. When a survivor arrives unannounced to confront his abuser, the encounter sets off a chain of events that destabilizes the household and everyone connected to it.",
+        "description": "BRO-5859: synopsis ended mid-word at 800 chars + \"...\" (Show Score scraper hard cut); full Show Score About text, cut at its last sentence end inside 800 chars (stored text is a verbatim prefix of the page)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "becoming-hamlet-off-broadway-2026",
+        "field": "synopsis",
+        "oldValue": "A participatory adaptation of Hamlet told entirely from the prince's perspective with optional audience involvement. This adaptation of Hamlet places the audience inside the prince's inner world, presenting the play entirely from Hamlet's point of view. Rather than observing the action from a distance, audience members are invited to see and experience events as Hamlet does, with the production structured to draw them into the emotional and psychological landscape of the character. Participation is optional throughout, with opportunities to speak lines or engage with the drama as it unfolds. Audience members who wish to be more actively involved can choose dedicated on-stage seating, where facilitators guide them into the action. Those who prefer to watch may do so without any obligatio...",
+        "newValue": "A participatory adaptation of Hamlet told entirely from the prince's perspective with optional audience involvement. This adaptation of Hamlet places the audience inside the prince's inner world, presenting the play entirely from Hamlet's point of view. Rather than observing the action from a distance, audience members are invited to see and experience events as Hamlet does, with the production structured to draw them into the emotional and psychological landscape of the character. Participation is optional throughout, with opportunities to speak lines or engage with the drama as it unfolds. Audience members who wish to be more actively involved can choose dedicated on-stage seating, where facilitators guide them into the action.",
+        "description": "BRO-5859: synopsis ended mid-word at 800 chars + \"...\" (Show Score scraper hard cut); full Show Score About text, cut at its last sentence end inside 800 chars (stored text is a verbatim prefix of the page)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "la-gringa-off-broadway-2026",
+        "field": "synopsis",
+        "oldValue": "A play following a New York-born woman traveling to Puerto Rico for the first time to find her roots. La Gringa follows a young woman born and raised in New York City who travels to Puerto Rico for the first time to meet her family and explore her cultural heritage. What she encounters challenges the assumptions she has carried about the island and the people she comes from, gradually reshaping her understanding of what it means to be Puerto Rican beyond geography or upbringing. Written by Carmen Rivera and directed by René Buch, the play is presented in Spanish with English translation. The production centers on questions of identity, belonging, and cultural inheritance as experienced by someone navigating the distance between the place they are from and the place that formed them. Per...",
+        "newValue": "A play following a New York-born woman traveling to Puerto Rico for the first time to find her roots. La Gringa follows a young woman born and raised in New York City who travels to Puerto Rico for the first time to meet her family and explore her cultural heritage. What she encounters challenges the assumptions she has carried about the island and the people she comes from, gradually reshaping her understanding of what it means to be Puerto Rican beyond geography or upbringing. Written by Carmen Rivera and directed by René Buch, the play is presented in Spanish with English translation. The production centers on questions of identity, belonging, and cultural inheritance as experienced by someone navigating the distance between the place they are from and the place that formed them.",
+        "description": "BRO-5859: synopsis ended mid-word at 800 chars + \"...\" (Show Score scraper hard cut); full Show Score About text, cut at its last sentence end inside 800 chars (stored text is a verbatim prefix of the page)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-hope-theory-off-broadway-2026",
+        "field": "synopsis",
+        "oldValue": "A Portuguese immigrant uses storytelling and sleight of hand to build a life in America. A Portuguese immigrant, storyteller, and sleight-of-hand magician, Helder Guimarães arrives in America at age 29 and confronts the cultural and professional challenges of building a new home. Drawing on his own experiences, the solo production combines autobiographical storytelling with magic and follows Guimarães as he works to establish himself in the United States. The production is written and performed by Helder Guimarães, whose previous Geffen Playhouse credits include Invisible Tango, The Present, and The Future. It is directed and produced by Frank Marshall, the Academy Award-winning producer and director whose film credits include Raiders of the Lost Ark, The Sixth Sense, and The Curious Ca...",
+        "newValue": "A Portuguese immigrant uses storytelling and sleight of hand to build a life in America. A Portuguese immigrant, storyteller, and sleight-of-hand magician, Helder Guimarães arrives in America at age 29 and confronts the cultural and professional challenges of building a new home. Drawing on his own experiences, the solo production combines autobiographical storytelling with magic and follows Guimarães as he works to establish himself in the United States. The production is written and performed by Helder Guimarães, whose previous Geffen Playhouse credits include Invisible Tango, The Present, and The Future.",
+        "description": "BRO-5859: synopsis ended mid-word at 800 chars + \"...\" (Show Score scraper hard cut); full Show Score About text, cut at its last sentence end inside 800 chars (stored text is a verbatim prefix of the page)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "safe-house-off-broadway-2026",
+        "field": "synopsis",
+        "oldValue": "A family drama about a dying father building a doomsday bunker as his estranged daughter returns home pregnant. Safe House is set in the days before a United States presidential election, in the basement of a Pennsylvania suburban home that a father named Rock has methodically converted into a doomsday bunker. Convinced that a second American civil war is approaching and secretly dying of a hereditary neurodegenerative disease, Rock has narrowed his world to the task of protecting his family from what he believes is coming. When his estranged teenage daughter returns home pregnant, the tensions held in place by the household's routines begin to fracture. The play is a family drama that uses the bunker and the election as twin pressure systems bearing down on a household already strained...",
+        "newValue": "A family drama about a dying father building a doomsday bunker as his estranged daughter returns home pregnant. Safe House is set in the days before a United States presidential election, in the basement of a Pennsylvania suburban home that a father named Rock has methodically converted into a doomsday bunker. Convinced that a second American civil war is approaching and secretly dying of a hereditary neurodegenerative disease, Rock has narrowed his world to the task of protecting his family from what he believes is coming. When his estranged teenage daughter returns home pregnant, the tensions held in place by the household's routines begin to fracture.",
+        "description": "BRO-5859: synopsis ended mid-word at 800 chars + \"...\" (Show Score scraper hard cut); no Show Score page for this row (or the mapped page is another production); stored text cut back to its last full sentence"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-kick-inside-off-broadway-2026",
+        "field": "synopsis",
+        "oldValue": "A woman navigates a chaotic world where humans, animals, and machines struggle to understand each other. In a strange city where language is increasingly shaped by algorithms, emotions, and animal instincts, Alenka struggles to make sense of the world around her. Her cousin Frankie is on the way to visit, filling her phone with an endless stream of reels, while the house itself begins speaking its own mind. As human, animal, and machine voices collide, Alenka finds herself questioning how we communicate and whether we can truly understand one another. Inspired by Kate Bush’s album of the same name, this inventive theatrical work explores the confusion and possibilities of communication in an increasingly fragmented world. Created from text by a diverse group of writers and brought to li...",
+        "newValue": "A woman navigates a chaotic world where humans, animals, and machines struggle to understand each other. In a strange city where language is increasingly shaped by algorithms, emotions, and animal instincts, Alenka struggles to make sense of the world around her. Her cousin Frankie is on the way to visit, filling her phone with an endless stream of reels, while the house itself begins speaking its own mind. As human, animal, and machine voices collide, Alenka finds herself questioning how we communicate and whether we can truly understand one another. Inspired by Kate Bush’s album of the same name, this inventive theatrical work explores the confusion and possibilities of communication in an increasingly fragmented world.",
+        "description": "BRO-5859: synopsis ended mid-word at 800 chars + \"...\" (Show Score scraper hard cut); full Show Score About text, cut at its last sentence end inside 800 chars (stored text is a verbatim prefix of the page)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-thousand-natural-shocks-off-broadway-2026",
+        "field": "synopsis",
+        "oldValue": "A new comedy-drama about a couple whose IVF journey disrupts a carefully managed life and marriage. A Thousand Natural Shocks follows Kennedy, whose depression is under control and whose life — a stable job, a loving marriage to Laurel — has reached a point of relative equilibrium. When the couple decides to have a child and enters the world of IVF, the process sets off a cascade of stress, grief, and uncertainty that tests both their relationship and their sense of what family means. Into this already strained household arrives a teenager from TikTok, adding an additional layer of chaos to an already precarious situation. Written by Jacob Marx Rice, whose work has been produced in over fifteen cities across three continents and recognized by the Kennedy Center, the O'Neill, and the Bla...",
+        "newValue": "A new comedy-drama about a couple whose IVF journey disrupts a carefully managed life and marriage. A Thousand Natural Shocks follows Kennedy, whose depression is under control and whose life — a stable job, a loving marriage to Laurel — has reached a point of relative equilibrium. When the couple decides to have a child and enters the world of IVF, the process sets off a cascade of stress, grief, and uncertainty that tests both their relationship and their sense of what family means. Into this already strained household arrives a teenager from TikTok, adding an additional layer of chaos to an already precarious situation.",
+        "description": "BRO-5859: synopsis ended mid-word at 800 chars + \"...\" (Show Score scraper hard cut); full Show Score About text, cut at its last sentence end inside 800 chars (stored text is a verbatim prefix of the page)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "doll-day-afternoon-off-broadway-2026",
+        "field": "synopsis",
+        "oldValue": "A new queer theatre piece reclaiming the true story behind Dog Day Afternoon through trans icon Elizabeth Eden. Doll Day Afternoon centers on Elizabeth Eden, the transgender woman whose surgery was the stated motivation behind the 1975 bank robbery depicted in the film Dog Day Afternoon. Where the film cast Al Pacino as her husband and largely sidelined Eden’s own perspective, this production draws directly on her memoir, in which she sought to reclaim her story from those who exploited it and offer a firsthand account of life as a trans woman in Stonewall-era New York City. Conceived and directed by Dmitri Barcomi, the production is presented by Vice Squad, an award-winning international artist collective whose work draws on queer history and unconventional source material. The show ca...",
+        "newValue": "A new queer theatre piece reclaiming the true story behind Dog Day Afternoon through trans icon Elizabeth Eden. Doll Day Afternoon centers on Elizabeth Eden, the transgender woman whose surgery was the stated motivation behind the 1975 bank robbery depicted in the film Dog Day Afternoon. Where the film cast Al Pacino as her husband and largely sidelined Eden’s own perspective, this production draws directly on her memoir, in which she sought to reclaim her story from those who exploited it and offer a firsthand account of life as a trans woman in Stonewall-era New York City. Conceived and directed by Dmitri Barcomi, the production is presented by Vice Squad, an award-winning international artist collective whose work draws on queer history and unconventional source material.",
+        "description": "BRO-5859: synopsis ended mid-word at 800 chars + \"...\" (Show Score scraper hard cut); full Show Score About text, cut at its last sentence end inside 800 chars (stored text is a verbatim prefix of the page)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "myth-off-broadway-2026",
+        "field": "synopsis",
+        "oldValue": "A wordless sci-fi mime piece follows two lovers whose discovery challenges their community’s history. On a distant planet with two moons, an apparently idyllic village sits among alien flora and fauna. There, two unlikely lovers make a life-changing discovery. Through speculative fiction and physical storytelling without spoken dialogue, *MYTH* explores how communities remember, revise, and forget their histories, and how the experiences and wisdom of flawed ancestors shape the present. The production is directed by Becky Baumwoll, with Marissa Molnar serving as lead writer. Live music is composed and performed by Wet Hands. The production is presented by Broken Box Mime Theater, a company specializing in contemporary mime and ensemble-based physical storytelling. *MYTH* runs September ...",
+        "newValue": "A wordless sci-fi mime piece follows two lovers whose discovery challenges their community’s history. On a distant planet with two moons, an apparently idyllic village sits among alien flora and fauna. There, two unlikely lovers make a life-changing discovery. Through speculative fiction and physical storytelling without spoken dialogue, *MYTH* explores how communities remember, revise, and forget their histories, and how the experiences and wisdom of flawed ancestors shape the present. The production is directed by Becky Baumwoll, with Marissa Molnar serving as lead writer. Live music is composed and performed by Wet Hands. The production is presented by Broken Box Mime Theater, a company specializing in contemporary mime and ensemble-based physical storytelling.",
+        "description": "BRO-5859: synopsis ended mid-word at 800 chars + \"...\" (Show Score scraper hard cut); full Show Score About text, cut at its last sentence end inside 800 chars (stored text is a verbatim prefix of the page)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-misanthrope-1975",
+        "field": "synopsis",
+        "oldValue": "Much to the horror of his friends and companions, Alceste rejects la politesse, the social conventions of the seventeenth-century French ruelles (later called salons in the 18th century). His refusal to \"make nice\" makes him tremendously unpopular and he laments his isolation in a world he sees as superficial and base, saying early in Act I, \"...",
+        "newValue": "Much to the horror of his friends and companions, Alceste rejects la politesse, the social conventions of the seventeenth-century French ruelles (later called salons in the 18th century). His refusal to \"make nice\" makes him tremendously unpopular and he laments his isolation in a world he sees as superficial and base.",
+        "description": "BRO-5859: synopsis ended on an open quote and \"...\" (the Act I quotation was cut off); ends at the clause before the quote"
+      }
+    ]
+  },
+  "executedAt": "2026-10-21T20:59:02.579Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for matilda-the-musical-theatre-row-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for masticate-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for misterman-theatre-row-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for day-of-the-hog-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for spellbound-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for the-real-ivanov-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for hungry-women-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for weve-been-here-before-a-one-woman-musical-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for an-american-daughter-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for delirium-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for jest-to-impress-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for la-distance-bam-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for isla-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for after-all-these-years-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for degenerates-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for downstate-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for becoming-hamlet-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for la-gringa-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for the-hope-theory-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for safe-house-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for the-kick-inside-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for a-thousand-natural-shocks-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for doll-day-afternoon-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for myth-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for the-misanthrope-1975"
+    }
+  ],
+  "executedIn": "ci"
+}

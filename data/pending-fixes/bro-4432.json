@@ -1,0 +1,359 @@
+{
+  "issueNumber": "bro-4432",
+  "planId": "5cdf35ff-6173-4fa3-8e47-241f144f0384",
+  "status": "partial",
+  "createdAt": "2026-09-30T16:33:36.601Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Take older/other-production reviews off current shows (BRO-4432): As You Like It 2026 Globe (Guardian 2022 Sohoplace, Times 2023 Globe), Oliver! (a Stage review of The Other Place), a Rosie O'Donnell news post, and five Broadway entries carrying the Guardian's London review of a different production (found by the new audit class G). Also clears the wrong 1916 cast on As You Like It. Kept on purpose (same production, declared priorRuns): My Son's a Queer, Abigail's Party, The Enormous Crocodile, The Comedy About Spies, Going Bacharach return, and the London-to-Broadway transfers of Enron, Jerusalem, Oslo and Prima Facie. Shows and dates are in bro-4432-b.json.",
+    "steps": [
+      "Set wrongProduction + a manual wrongProductionReason on 8 review files",
+      "Reject the Rosie O'Donnell announcement post as not_a_review",
+      "Clear the As You Like It 2026 cast array"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "as-you-like-it-globe-west-end-2026/guardian--arifa-akbar.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Different production live on this show: as-you-like-it-globe-west-end-2026/guardian--arifa-akbar.json"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "as-you-like-it-globe-west-end-2026/guardian--arifa-akbar.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-4432: Guardian review of Josie Rourke's 2022 Sohoplace As You Like It (URL /stage/2022/dec/15/), not the 2026 Globe production; publishDate was stamped with the 2026 date.",
+        "description": "Reason for the flag (a manual reason also blocks the date/URL-year auto-clears)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Different production live on this show: as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-4432: Times article created 2023-09-05 (version-1 UUID in the URL): the 2023 Globe As You Like It, not the 2026 production. Undated in the file, so the date backstops never saw it.",
+        "description": "Reason for the flag (a manual reason also blocks the date/URL-year auto-clears)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "oliver-west-end-2024/thestage--dave-fargnoli.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Different production live on this show: oliver-west-end-2024/thestage--dave-fargnoli.json"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "oliver-west-end-2024/thestage--dave-fargnoli.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-4432: Review of The Other Place (Lyttelton, National Theatre, 2024), not Oliver!. contentTierReason still said \"Wrong production\" after the wrongShow flag was auto-cleared by the UK-outlet rule.",
+        "description": "Reason for the flag (a manual reason also blocks the date/URL-year auto-clears)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "pass-over-2021/guardian--jesse-green.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Different production live on this show: pass-over-2021/guardian--jesse-green.json"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "pass-over-2021/guardian--jesse-green.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-4432: URL is a March 2020 Guardian London round-up (Kiln, Riverside, Coronet, Bush), not the 2021 Broadway Pass Over.",
+        "description": "Reason for the flag (a manual reason also blocks the date/URL-year auto-clears)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "pretty-woman-the-musical-2018/guardian--adrian-horton.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Different production live on this show: pretty-woman-the-musical-2018/guardian--adrian-horton.json"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "pretty-woman-the-musical-2018/guardian--adrian-horton.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-4432: URL is the Guardian review of the 2020 Piccadilly Theatre London production, not the 2018 Broadway run.",
+        "description": "Reason for the flag (a manual reason also blocks the date/URL-year auto-clears)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "torch-song-2018/guardian--jesse-green.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Different production live on this show: torch-song-2018/guardian--jesse-green.json"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "torch-song-2018/guardian--jesse-green.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-4432: URL is the Guardian's June 2012 review of a London Torch Song Trilogy, not the 2018 Broadway Torch Song.",
+        "description": "Reason for the flag (a manual reason also blocks the date/URL-year auto-clears)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "waiting-for-godot-2013/guardian--michael-billington.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Different production live on this show: waiting-for-godot-2013/guardian--michael-billington.json"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "waiting-for-godot-2013/guardian--michael-billington.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-4432: URL is Michael Billington's May 2009 review of the Theatre Royal Haymarket Godot, not the 2013 Broadway production.",
+        "description": "Reason for the flag (a manual reason also blocks the date/URL-year auto-clears)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "between-riverside-and-crazy-2022/guardian--jesse-dorris.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Different production live on this show: between-riverside-and-crazy-2022/guardian--jesse-dorris.json"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "between-riverside-and-crazy-2022/guardian--jesse-dorris.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-4432: URL is the Guardian review of the May 2024 Hampstead Theatre production, not the 2022 Broadway run.",
+        "description": "Reason for the flag (a manual reason also blocks the date/URL-year auto-clears)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "rosie-odonnell-common-knowledge-off-broadway-2026/nyt-theater--jonathan.json",
+        "field": "rejectionReason",
+        "oldValue": null,
+        "newValue": "not_a_review",
+        "description": "June 13 2026 announcement post, not a review"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "rosie-odonnell-common-knowledge-off-broadway-2026/nyt-theater--jonathan.json",
+        "field": "rejectionReasoning",
+        "oldValue": null,
+        "newValue": "BRO-4432: newyorktheater.me news post announcing the NYC run (URL .../rosie-odonnells-common-knowledge-coming-to-nyc/, 2026-06-13), published before previews; not a review.",
+        "description": "Reason for the rejection"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "rosie-odonnell-common-knowledge-off-broadway-2026/nyt-theater--jonathan.json",
+        "field": "rejectedBy",
+        "oldValue": null,
+        "newValue": "human",
+        "description": "Human (session) rejection"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "rosie-odonnell-common-knowledge-off-broadway-2026/nyt-theater--jonathan.json",
+        "field": "rejectedAt",
+        "oldValue": null,
+        "newValue": "2026-09-30T00:00:00.000Z",
+        "description": "Rejection timestamp (keeps the rejectedAt backstop if rejectionReason is later cleared)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "as-you-like-it-globe-west-end-2026",
+        "field": "cast",
+        "oldValue": [
+          {
+            "name": "David Abrahams",
+            "role": "Mouser"
+          },
+          {
+            "name": "Edna Bates",
+            "role": "Irma"
+          },
+          {
+            "name": "Samuel Burbank",
+            "role": "Albrecht"
+          },
+          {
+            "name": "Vernon Castle",
+            "role": "Atzel"
+          },
+          {
+            "name": "Allene Crater",
+            "role": "Romneya"
+          },
+          {
+            "name": "Helen Falconer",
+            "role": "Clara"
+          },
+          {
+            "name": "Edgar Lee Hay",
+            "role": "Joseph"
+          },
+          {
+            "name": "Elsie Janis",
+            "role": "Cinderella"
+          },
+          {
+            "name": "Lillian Lee",
+            "role": "Dollbabia"
+          },
+          {
+            "name": "Lydia Lopokova",
+            "role": "Premiere Danseuse"
+          },
+          {
+            "name": "Charles Mason",
+            "role": "Baron von Nix"
+          },
+          {
+            "name": "David C. Montgomery",
+            "role": "Punks"
+          },
+          {
+            "name": "Ed Randall",
+            "role": "Matthias"
+          },
+          {
+            "name": "James Reaney",
+            "role": "Captain Ladislaw"
+          },
+          {
+            "name": "Eugene Revere",
+            "role": "Prince Ulrich"
+          }
+        ],
+        "newValue": [],
+        "description": "Clear the wrong cast list (The Century Girl, 1916: Vernon Castle, Irma, Atzel...); nothing replaces it until a real 2026 Globe cast is sourced"
+      }
+    ]
+  },
+  "executedAt": "2026-09-30T17:17:38.393Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "wrongProduction: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "as-you-like-it-globe-west-end-2026/guardian--arifa-akbar.json wrongProductionReason: null -> \"BRO-4432: Guardian review of Josie Rourke's 2022 Sohoplace As You Like It (URL /stage/2022/dec/15/), not the 2026 Globe production; publishDate was stamped with the 2026 date.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json wrongProductionReason: null -> \"BRO-4432: Times article created 2023-09-05 (version-1 UUID in the URL): the 2023 Globe As You Like It, not the 2026 production. Undated in the file, so the date backstops never saw it.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "wrongProduction: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "wrongProductionReason: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "pass-over-2021/guardian--jesse-green.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "pass-over-2021/guardian--jesse-green.json wrongProductionReason: null -> \"BRO-4432: URL is a March 2020 Guardian London round-up (Kiln, Riverside, Coronet, Bush), not the 2021 Broadway Pass Over.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "pretty-woman-the-musical-2018/guardian--adrian-horton.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "pretty-woman-the-musical-2018/guardian--adrian-horton.json wrongProductionReason: null -> \"BRO-4432: URL is the Guardian review of the 2020 Piccadilly Theatre London production, not the 2018 Broadway run.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "torch-song-2018/guardian--jesse-green.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "torch-song-2018/guardian--jesse-green.json wrongProductionReason: null -> \"BRO-4432: URL is the Guardian's June 2012 review of a London Torch Song Trilogy, not the 2018 Broadway Torch Song.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "waiting-for-godot-2013/guardian--michael-billington.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "wrongProductionReason: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "between-riverside-and-crazy-2022/guardian--jesse-dorris.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "between-riverside-and-crazy-2022/guardian--jesse-dorris.json wrongProductionReason: null -> \"BRO-4432: URL is the Guardian review of the May 2024 Hampstead Theatre production, not the 2022 Broadway run.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "rosie-odonnell-common-knowledge-off-broadway-2026/nyt-theater--jonathan.json rejectionReason: null -> \"not_a_review\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "rosie-odonnell-common-knowledge-off-broadway-2026/nyt-theater--jonathan.json rejectionReasoning: null -> \"BRO-4432: newyorktheater.me news post announcing the NYC run (URL .../rosie-odonnells-common-knowledge-coming-to-nyc/, 2026-06-13), published before previews; not a review.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "rosie-odonnell-common-knowledge-off-broadway-2026/nyt-theater--jonathan.json rejectedBy: null -> \"human\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "rosie-odonnell-common-knowledge-off-broadway-2026/nyt-theater--jonathan.json rejectedAt: null -> \"2026-09-30T00:00:00.000Z\""
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: cast updated for as-you-like-it-globe-west-end-2026"
+    }
+  ]
+}

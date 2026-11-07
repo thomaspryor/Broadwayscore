@@ -1,0 +1,32 @@
+{
+  "issueNumber": "bro-4304",
+  "planId": "f8e56a18-890f-4f59-b4ad-1fbd685bd252",
+  "status": "applied",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4304: remove the West End Liam O'Dell review (Trafalgar Theatre) misfiled under Oh, Mary! Broadway, where a contradictory override set (wrongProductionOverride + humanReviewedWrongProduction=false) defeats its own wrongProduction flag. An identical copy (same url, same text) already sits in oh-mary-west-end-2025.",
+    "steps": [
+      "Delete oh-mary-2024/liamodell--liam-odell.json; the correct copy stays in oh-mary-west-end-2025."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "oh-mary-2024/liamodell--liam-odell.json",
+        "description": "Trafalgar Theatre (London) review misfiled under the Broadway show; identical copy exists under oh-mary-west-end-2025."
+      }
+    ]
+  },
+  "executedAt": "2026-10-14T03:39:38.831Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted oh-mary-2024/liamodell--liam-odell.json"
+    }
+  ]
+}

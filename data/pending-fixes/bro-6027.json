@@ -1,0 +1,78 @@
+{
+  "issueNumber": "bro-6027",
+  "planId": "802c0654-80e4-4a0a-b91d-5e67852eb94f",
+  "status": "applied",
+  "createdAt": "2026-10-27T01:24:38.314Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Correct four independently verified TheaterMania bylines; Absurd Person Singular remains unresolved.",
+    "steps": [
+      "BRO-6027: Contemporary roundup identifies Andy Propst and links the TheaterMania review; its excerpt matches the stored review and publisher page. Evidence checked 2026-10-27: https://criticometer.blogspot.com/2009/05/9-to-5.html",
+      "BRO-6027: Contemporary roundup identifies Brian Scott Lipton and links the TheaterMania review; its excerpt matches the stored review and publisher page. Evidence checked 2026-10-27: https://criticometer.blogspot.com/2009/08/burn-floor.html",
+      "BRO-6027: Publisher page explicitly credits Brian Scott Lipton above the December 9, 2012 review. Evidence checked 2026-10-27: https://www.theatermania.com/news/glengarry-glen-ross_63906/",
+      "BRO-6027: Contemporary roundup table identifies David Finkle at Theatre Mania; its excerpt matches the stored review and publisher page. Evidence checked 2026-10-27: https://www.ticketnews.com/2010/04/the-addams-family-scares-up-boffo-ticket-sales-mixed-reviews-on-broadway/"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "9-to-5-2009/theatermania--david-rooney.json",
+        "field": "criticName",
+        "oldValue": "David Rooney",
+        "newValue": "Andy Propst",
+        "description": "BRO-6027: Contemporary roundup identifies Andy Propst and links the TheaterMania review; its excerpt matches the stored review and publisher page. Evidence checked 2026-10-27: https://criticometer.blogspot.com/2009/05/9-to-5.html"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "burn-the-floor-2009/theatermania--david-rooney.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Brian Scott Lipton",
+        "description": "BRO-6027: Contemporary roundup identifies Brian Scott Lipton and links the TheaterMania review; its excerpt matches the stored review and publisher page. Evidence checked 2026-10-27: https://criticometer.blogspot.com/2009/08/burn-floor.html"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "glengarry-glen-ross-2012/theatermania--david-rooney.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Brian Scott Lipton",
+        "description": "BRO-6027: Publisher page explicitly credits Brian Scott Lipton above the December 9, 2012 review. Evidence checked 2026-10-27: https://www.theatermania.com/news/glengarry-glen-ross_63906/"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-addams-family-2010/theatermania--david-rooney.json",
+        "field": "criticName",
+        "oldValue": "David Rooney",
+        "newValue": "David Finkle",
+        "description": "BRO-6027: Contemporary roundup table identifies David Finkle at Theatre Mania; its excerpt matches the stored review and publisher page. Evidence checked 2026-10-27: https://www.ticketnews.com/2010/04/the-addams-family-scares-up-boffo-ticket-sales-mixed-reviews-on-broadway/"
+      }
+    ]
+  },
+  "executedAt": "2026-10-27T02:24:53.621Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "9-to-5-2009/theatermania--david-rooney.json criticName: \"David Rooney\" -> \"Andy Propst\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "burn-the-floor-2009/theatermania--david-rooney.json criticName: \"Unknown\" -> \"Brian Scott Lipton\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "glengarry-glen-ross-2012/theatermania--david-rooney.json criticName: \"Unknown\" -> \"Brian Scott Lipton\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-addams-family-2010/theatermania--david-rooney.json criticName: \"David Rooney\" -> \"David Finkle\""
+    }
+  ],
+  "executedIn": "ci"
+}

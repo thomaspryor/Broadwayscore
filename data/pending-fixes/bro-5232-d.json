@@ -1,0 +1,350 @@
+{
+  "issueNumber": "bro-5232-d",
+  "planId": "c21193f8-af0b-4d7d-b148-59cd2f6c5536",
+  "status": "applied",
+  "createdAt": "2026-10-13T09:05:05.171Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5232 batch d: byline/outlet/production fixes for BRO-5222 follow-up rows, each cited to the live page, an aggregator or a sitemap.",
+    "steps": [
+      "duplicateOf or wrongAttribution for cross-outlet copies",
+      "isNonReview for reviews that do not exist",
+      "wrongProduction for other-production texts",
+      "criticName for wrong bylines"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "six-degrees-of-separation-2017/outbuzz--steven-ross.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5232: Outbuzz URL slug (quote omitted) is a cross-post of Ross's Front Mezz Junkies review; the FMJ original (posted by (quote omitted), 2017-04-25) is live. Outbuzz page now returns an error page. Evidence: https://frontmezzjunkies.com/2017/04/25/six-degrees-of-separation/"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "six-degrees-of-separation-2017/outbuzz--steven-ross.json",
+        "field": "wrongAttributionReason",
+        "oldValue": null,
+        "newValue": "BRO-5232: copy of frontmezzjunkies--steven-ross.json credited to the wrong outlet/critic; evidence https://frontmezzjunkies.com/2017/04/25/six-degrees-of-separation/",
+        "description": "Reason for the flag above."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "end-of-the-rainbow-west-end-2026/broadwayworld--adam-bloodworth.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5232: The URL is a BWW 'Video:' trailer post and the stored text is trailer/news copy, not a review; the BWW review of this production is the sibling by Cindy Marcolina. Evidence: https://www.broadwayworld.com/article/Video-Jinkx-Monsoon-as-Judy-Garland-in-END-OF-THE-RAINBOW-20260520"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "end-of-the-rainbow-west-end-2026/broadwayworld--adam-bloodworth.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "BRO-5232: no such review by this critic at this outlet; evidence https://www.broadwayworld.com/article/Video-Jinkx-Monsoon-as-Judy-Garland-in-END-OF-THE-RAINBOW-20260520",
+        "description": "Reason for the flag above."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "here-we-are-west-end-2025/city-am--arifa-akbar.json",
+        "field": "criticName",
+        "oldValue": "Arifa Akbar",
+        "newValue": "Adam Bloodworth",
+        "description": "BRO-5232: Live City AM review page has meta author and JSON-LD author 'Adam Bloodworth'; Arifa Akbar reviewed it for the Guardian (sibling). Evidence: https://www.cityam.com/here-we-are-national-theatre-review-final-stephen-sondheim-musical-is-more-severance-than-sing-a-long/"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cabaret-at-the-kit-kat-club-west-end-2021/london-theatre--chris-omaweng.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "londontheatre1--chris-omaweng.json",
+        "description": "BRO-5232: Text shares 93% of 8-word shingles with the LondonTheatre1 sibling, whose live page has meta author 'Chris Omaweng'; Omaweng writes for LondonTheatre1, not londontheatre.co.uk (whose review is Suzy Evans). Evidence: https://www.londontheatre1.com/reviews/cabaret-at-the-kit-kat-club-review/"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cabaret-at-the-kit-kat-club-west-end-2021/london-theatre--chris-omaweng.json",
+        "field": "duplicateReason",
+        "oldValue": null,
+        "newValue": "BRO-5232: same review as londontheatre1--chris-omaweng.json; evidence https://www.londontheatre1.com/reviews/cabaret-at-the-kit-kat-club-review/",
+        "description": "Reason for the pointer above."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cyrano-de-bergerac-west-end-2026/metro-uk--claire-allfree.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5232: metro.news article id 1828065 falls just after the Nov 2019 Dear Evan Hansen piece (1803201), i.e. Dec 2019, so it is the Jamie Lloyd/James McAvoy Playhouse Cyrano, not the June 2026 Noel Coward production; metro.news now redirects so byline could not be read. Evidence: https://www.metro.news/theatre-review-cyrano-de-bergerac/1828065/"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cyrano-de-bergerac-west-end-2026/metro-uk--claire-allfree.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-5232: text reviews a different production; evidence https://www.metro.news/theatre-review-cyrano-de-bergerac/1828065/",
+        "description": "Reason for the flag above."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "dear-england-west-end-2025/london-times--clive-davis.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5232: BWW roundup of 21 June 2023 (original NT run) quotes Clive Davis, The Times, (quote omitted) (the row's excerpt); this is the 2023 production, not the March 2025 Olivier run; stored url (quote omitted) is junk. Evidence: https://www.broadwayworld.com/westend/article/Review-Roundup-DEAR-ENGLAND-Starring-Joseph-Fiennes-20230621"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "dear-england-west-end-2025/london-times--clive-davis.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-5232: text reviews a different production; evidence https://www.broadwayworld.com/westend/article/Review-Roundup-DEAR-ENGLAND-Starring-Joseph-Fiennes-20230621",
+        "description": "Reason for the flag above."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "peter-pan-goes-wrong-2023/the-sun--elysa-gardner.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "new-york-sun--elysa-gardner.json",
+        "description": "BRO-5232: Same nysun.com URL and same BWW excerpt as the New York Sun sibling; outlet 'the-sun' (UK Sun) is a mis-mapping of The New York Sun. The sibling is currently tiered invalid ('Wrong production'), which looks wrong too. Evidence: https://www.broadwayworld.com/article/Review-Roundup-PETER-PAN-GOES-WRONG-Opens-On-Broadway-20230421"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "peter-pan-goes-wrong-2023/the-sun--elysa-gardner.json",
+        "field": "duplicateReason",
+        "oldValue": null,
+        "newValue": "BRO-5232: same review as new-york-sun--elysa-gardner.json; evidence https://www.broadwayworld.com/article/Review-Roundup-PETER-PAN-GOES-WRONG-Opens-On-Broadway-20230421",
+        "description": "Reason for the pointer above."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-little-life-west-end-2023/british-theatre--greg-stewart.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5232: Row text (opens 'Hanya Yanagihara's harrowing 2015 novel is over 800 pages') is the British Theatre Guide review, page credits (quote omitted); Greg Stewart's review is the separate Theatre Weekly sibling. Evidence: https://www.britishtheatreguide.info/reviews/a-little-life-harold-pinter-t-21862"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-little-life-west-end-2023/british-theatre--greg-stewart.json",
+        "field": "wrongAttributionReason",
+        "oldValue": null,
+        "newValue": "BRO-5232: byline/outlet wrong, real: British Theatre Guide / Howard Loxton; evidence https://www.britishtheatreguide.info/reviews/a-little-life-harold-pinter-t-21862",
+        "description": "Reason for the flag above."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "fat-ham-2023/observer--jesse-green.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5232: Stored URL returns 404 (quote omitted) and the one-sentence text is a generic web-search summary; Jesse Green was NYT chief theatre critic then and has no Observer review of this show (his real review is the nytimes sibling). Evidence: https://observer.com/2023/04/fat-ham-review-broadway-james-ijames/"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "fat-ham-2023/observer--jesse-green.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "BRO-5232: no such review by this critic at this outlet; evidence https://observer.com/2023/04/fat-ham-review-broadway-james-ijames/",
+        "description": "Reason for the flag above."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "stereophonic-2024/observer--jesse-green.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5232: Stored URL returns 404 (quote omitted) and the one-sentence text is a generic web-search summary; Jesse Green was NYT chief theatre critic then and has no Observer review of this show (his real review is the nytimes sibling). Evidence: https://observer.com/2024/04/stereophonic-broadway-review/"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "stereophonic-2024/observer--jesse-green.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "BRO-5232: no such review by this critic at this outlet; evidence https://observer.com/2024/04/stereophonic-broadway-review/",
+        "description": "Reason for the flag above."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-lehman-trilogy-2021/observer--jesse-green.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5232: Stored URL returns 404 (quote omitted) and the one-sentence text is a generic web-search summary; Jesse Green was NYT chief theatre critic then and has no Observer review of this show (his real review is the nytimes sibling). Evidence: https://observer.com/2021/10/the-lehman-trilogy-broadway-review/"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-lehman-trilogy-2021/observer--jesse-green.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "BRO-5232: no such review by this critic at this outlet; evidence https://observer.com/2021/10/the-lehman-trilogy-broadway-review/",
+        "description": "Reason for the flag above."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "don-quixote-west-end-2018/guardian--kate-kellaway.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5232: Page is Kate Kellaway's Observer 'week in theatre' column (byline Kate Kellaway, commissioningDesk observer-new-review, 2018-11-25) hosted on theguardian.com; same piece as the observer sibling, so this guardian row double-counts it. Evidence: https://www.theguardian.com/stage/2018/nov/25/macbeth-sam-wanamaker-globe-review-pinter-three-and-four-don-quixote-a-small-place"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "don-quixote-west-end-2018/guardian--kate-kellaway.json",
+        "field": "wrongAttributionReason",
+        "oldValue": null,
+        "newValue": "BRO-5232: copy of observer--kate-kellaway.json credited to the wrong outlet/critic; evidence https://www.theguardian.com/stage/2018/nov/25/macbeth-sam-wanamaker-globe-review-pinter-three-and-four-don-quixote-a-small-place",
+        "description": "Reason for the flag above."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "jane-eyre-off-west-end-2026/daily-mail--libby-purves.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5232: Stored text reviews the Sally Cookson adaptation directed by Lily Dyble with Olivia Marcus as Jane (Mercury Colchester/touring co-production, per WhatsOnStage 9 Oct 2026), not the Southwark Playhouse Elephant Jane Eyre musical (Charlie Burn as Jane) this showId points to; Purves/Daily Mail byline it Evidence: https://www.whatsonstage.com/news/jane-eyre-at-mercury-theatre-and-on-tour-review_1734669/"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "jane-eyre-off-west-end-2026/daily-mail--libby-purves.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-5232: text reviews a different production; evidence https://www.whatsonstage.com/news/jane-eyre-at-mercury-theatre-and-on-tour-review_1734669/",
+        "description": "Reason for the flag above."
+      }
+    ]
+  },
+  "executedAt": "2026-10-13T12:13:59.765Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "six-degrees-of-separation-2017/outbuzz--steven-ross.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "six-degrees-of-separation-2017/outbuzz--steven-ross.json wrongAttributionReason: null -> \"BRO-5232: copy of frontmezzjunkies--steven-ross.json credited to the wrong outlet/critic; evidence https://frontmezzjunkies.com/2017/04/25/six-degrees-of-separation/\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "end-of-the-rainbow-west-end-2026/broadwayworld--adam-bloodworth.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "end-of-the-rainbow-west-end-2026/broadwayworld--adam-bloodworth.json isNonReviewReason: null -> \"BRO-5232: no such review by this critic at this outlet; evidence https://www.broadwayworld.com/article/Video-Jinkx-Monsoon-as-Judy-Garland-in-END-OF-THE-RAINBOW-20260520\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "here-we-are-west-end-2025/city-am--arifa-akbar.json criticName: \"Arifa Akbar\" -> \"Adam Bloodworth\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cabaret-at-the-kit-kat-club-west-end-2021/london-theatre--chris-omaweng.json duplicateOf: null -> \"londontheatre1--chris-omaweng.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cabaret-at-the-kit-kat-club-west-end-2021/london-theatre--chris-omaweng.json duplicateReason: null -> \"BRO-5232: same review as londontheatre1--chris-omaweng.json; evidence https://www.londontheatre1.com/reviews/cabaret-at-the-kit-kat-club-review/\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cyrano-de-bergerac-west-end-2026/metro-uk--claire-allfree.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cyrano-de-bergerac-west-end-2026/metro-uk--claire-allfree.json wrongProductionReason: null -> \"BRO-5232: text reviews a different production; evidence https://www.metro.news/theatre-review-cyrano-de-bergerac/1828065/\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "dear-england-west-end-2025/london-times--clive-davis.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "dear-england-west-end-2025/london-times--clive-davis.json wrongProductionReason: null -> \"BRO-5232: text reviews a different production; evidence https://www.broadwayworld.com/westend/article/Review-Roundup-DEAR-ENGLAND-Starring-Joseph-Fiennes-20230621\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "peter-pan-goes-wrong-2023/the-sun--elysa-gardner.json duplicateOf: null -> \"new-york-sun--elysa-gardner.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "peter-pan-goes-wrong-2023/the-sun--elysa-gardner.json duplicateReason: null -> \"BRO-5232: same review as new-york-sun--elysa-gardner.json; evidence https://www.broadwayworld.com/article/Review-Roundup-PETER-PAN-GOES-WRONG-Opens-On-Broadway-20230421\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-little-life-west-end-2023/british-theatre--greg-stewart.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-little-life-west-end-2023/british-theatre--greg-stewart.json wrongAttributionReason: null -> \"BRO-5232: byline/outlet wrong, real: British Theatre Guide / Howard Loxton; evidence https://www.britishtheatreguide.info/reviews/a-little-life-harold-pinter-t-21862\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "fat-ham-2023/observer--jesse-green.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "fat-ham-2023/observer--jesse-green.json isNonReviewReason: null -> \"BRO-5232: no such review by this critic at this outlet; evidence https://observer.com/2023/04/fat-ham-review-broadway-james-ijames/\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "stereophonic-2024/observer--jesse-green.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "stereophonic-2024/observer--jesse-green.json isNonReviewReason: null -> \"BRO-5232: no such review by this critic at this outlet; evidence https://observer.com/2024/04/stereophonic-broadway-review/\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-lehman-trilogy-2021/observer--jesse-green.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-lehman-trilogy-2021/observer--jesse-green.json isNonReviewReason: null -> \"BRO-5232: no such review by this critic at this outlet; evidence https://observer.com/2021/10/the-lehman-trilogy-broadway-review/\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "don-quixote-west-end-2018/guardian--kate-kellaway.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "don-quixote-west-end-2018/guardian--kate-kellaway.json wrongAttributionReason: null -> \"BRO-5232: copy of observer--kate-kellaway.json credited to the wrong outlet/critic; evidence https://www.theguardian.com/stage/2018/nov/25/macbeth-sam-wanamaker-globe-review-pinter-three-and-four-don-quixote-a-small-place\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "jane-eyre-off-west-end-2026/daily-mail--libby-purves.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "jane-eyre-off-west-end-2026/daily-mail--libby-purves.json wrongProductionReason: null -> \"BRO-5232: text reviews a different production; evidence https://www.whatsonstage.com/news/jane-eyre-at-mercury-theatre-and-on-tour-review_1734669/\""
+    }
+  ]
+}

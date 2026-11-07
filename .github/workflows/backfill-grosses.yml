@@ -1,0 +1,119 @@
+name: Backfill Grosses History
+
+on:
+  workflow_dispatch:
+    inputs:
+      weeks:
+        description: 'Number of weeks to backfill (default 55 for ~1 year)'
+        required: false
+        default: '55'
+        type: string
+      start_from:
+        description: 'Start date (YYYY-MM-DD, defaults to most recent Sunday)'
+        required: false
+        default: ''
+        type: string
+      refill_gaps:
+        description: 'Refill stored weeks that miss a show held the weeks either side (ignores weeks/start_from)'
+        required: false
+        default: false
+        type: boolean
+      recheck_totals:
+        description: 'Refetch weeks whose rows miss the saved League total and settle them against the page table (ignores weeks/start_from)'
+        required: false
+        default: false
+        type: boolean
+
+# BRO-934: manual grosses-history writer; shares the group with the other grosses writers.
+concurrency:
+  group: data-grosses-writers
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  backfill:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Setup Node.js
+        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Setup Playwright
+        uses: ./.github/actions/setup-playwright
+
+      - name: Run backfill
+        run: |
+          ARGS="--weeks ${INPUT_WEEKS}"
+          if [ -n "${INPUT_START_FROM}" ]; then
+            ARGS="$ARGS --start-from ${INPUT_START_FROM}"
+          fi
+          if [ "${{ inputs.refill_gaps }}" = "true" ]; then
+            ARGS="--refill-gaps"
+          fi
+          if [ "${{ inputs.recheck_totals }}" = "true" ]; then
+            ARGS="--recheck-totals"
+          fi
+          npx tsx scripts/backfill-grosses-history.ts $ARGS
+        env:
+          NODE_ENV: production
+          INPUT_WEEKS: ${{ github.event.inputs.weeks || '55' }}
+          INPUT_START_FROM: ${{ github.event.inputs.start_from }}
+
+      - name: Check for changes
+        if: always()
+        id: changes
+        run: |
+          # BRO-5033: grosses-history.json is gitignored core data, so `git
+          # diff` on it always said "no changes". Compare to the snapshot.
+          if [ ! -f data/grosses-history.json ] || ! node scripts/lib/core-data-changed.js grosses-history.json; then
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+          else
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+            WEEK_COUNT=$(node -e "const d=JSON.parse(require('fs').readFileSync('data/grosses-history.json','utf-8'));console.log(Object.keys(d.weeks).length)")
+            echo "week_count=$WEEK_COUNT" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Push core data to private repo
+        if: always()
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: Update from backfill-grosses'
+      - name: Summary
+        if: always()
+        run: |
+          if [ "${{ steps.changes.outputs.has_changes }}" = "true" ]; then
+            echo "## Backfill Complete" >> $GITHUB_STEP_SUMMARY
+            echo "Updated historical grosses data. Total weeks in history: **${{ steps.changes.outputs.week_count }}**" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "## No Changes" >> $GITHUB_STEP_SUMMARY
+            echo "Nothing was added: the requested weeks were already present, (refill) Playbill had none of the missing rows, or (recheck) no week's rows missed its saved total." >> $GITHUB_STEP_SUMMARY
+          fi
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Backfill Grosses Failed'
+          severity: 'warning'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}

@@ -1,0 +1,131 @@
+{
+  "issueNumber": "bro-4505",
+  "planId": "3190a458-b608-422b-948f-064adf7fcaaa",
+  "status": "applied",
+  "createdAt": "2026-10-12T12:34:19.629Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Retire 3 Kiln Theatre cinema rows (films, not stage productions) after deleting 3 misrouted King's Head reviews from Kings 2; fix 2 slug-derived Orange Tree titles.",
+    "steps": [
+      "Delete 3 London Box Office review files misrouted to kings-2 (two already live under their real shows, one is FANNY at King's Head, wrongProduction, not in the catalog)",
+      "Retire kings-2, the-stranger-2, the-devil-wears-prada-2 (nonProduction, title+venue blocked)",
+      "Retitle \"King Lear 2\" -> \"King Lear\" and \"Richard Ii\" -> \"Richard II\" (Orange Tree Spektrix names)"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "kings-2-off-west-end-2026/london-box-office--eve-jawara.json",
+        "destPath": null,
+        "description": "HERE COMES J. EDGAR! at King's Head; the same review already lives in here-comes-j-edgar-off-west-end-2026/"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "kings-2-off-west-end-2026/london-box-office--stuart-king.json",
+        "destPath": null,
+        "description": "IN THE PRINT at King's Head; the same review already lives in in-the-print-off-west-end-2026/"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "kings-2-off-west-end-2026/london-box-office--miriam-gibson.json",
+        "destPath": null,
+        "description": "FANNY at King's Head (2025), flagged wrongProduction; that show is not in the catalog"
+      },
+      {
+        "type": "retire-show",
+        "id": "kings-2-off-west-end-2026",
+        "expectTitle": "Kings 2",
+        "reason": "Kiln Theatre cinema screening (Kings, dir. Tom Collins, 88 mins, Kilburn High Road Festival film), not a stage production (BRO-4505)",
+        "nonProduction": true,
+        "evidenceUrl": "https://kilntheatre.com/whats-on/kings-2/",
+        "blockTitleVenue": true,
+        "description": "Retire \"Kings 2\": Kiln lists it under Cinema Listings (Kings, dir. Tom Collins, 88 mins, Kilburn High Road Festival film)"
+      },
+      {
+        "type": "retire-show",
+        "id": "the-stranger-2-off-west-end-2026",
+        "expectTitle": "The Stranger 2",
+        "reason": "Kiln Theatre cinema screening (The Stranger, dir. François Ozon, 122 mins), not a stage production (BRO-4505)",
+        "nonProduction": true,
+        "evidenceUrl": "https://kilntheatre.com/whats-on/the-stranger-2/",
+        "blockTitleVenue": true,
+        "description": "Retire \"The Stranger 2\": Kiln lists it under Cinema Listings (The Stranger, dir. François Ozon, 122 mins)"
+      },
+      {
+        "type": "retire-show",
+        "id": "the-devil-wears-prada-2-off-west-end-2026",
+        "expectTitle": "The Devil Wears Prada 2",
+        "reason": "Kiln Theatre cinema screening (dir. David Frankel, 119 mins), not a stage production (BRO-4505)",
+        "nonProduction": true,
+        "evidenceUrl": "https://kilntheatre.com/whats-on/the-devil-wears-prada-2/",
+        "blockTitleVenue": true,
+        "description": "Retire \"The Devil Wears Prada 2\": Kiln lists it under Cinema Listings (dir. David Frankel, 119 mins)"
+      },
+      {
+        "type": "retitle-show",
+        "id": "king-lear-2-off-west-end-2026",
+        "expectTitle": "King Lear 2",
+        "newTitle": "King Lear",
+        "reason": "Orange Tree Spektrix event name is \"King Lear\"; the \" 2\" was a WordPress duplicate-slug counter",
+        "description": "Retitle King Lear 2 -> King Lear"
+      },
+      {
+        "type": "retitle-show",
+        "id": "richard-ii-off-west-end-2026",
+        "expectTitle": "Richard Ii",
+        "newTitle": "Richard II",
+        "reason": "Orange Tree Spektrix event name is \"Richard II\"; slug title-casing produced \"Ii\"",
+        "description": "Retitle Richard Ii -> Richard II"
+      }
+    ]
+  },
+  "executedAt": "2026-10-12T14:16:46.016Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted kings-2-off-west-end-2026/london-box-office--eve-jawara.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted kings-2-off-west-end-2026/london-box-office--stuart-king.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted kings-2-off-west-end-2026/london-box-office--miriam-gibson.json"
+    },
+    {
+      "action": "retire-show",
+      "ok": true,
+      "msg": "retired kings-2-off-west-end-2026 (\"Kings 2\" @ Kiln Theatre) — title+venue blocked"
+    },
+    {
+      "action": "retire-show",
+      "ok": true,
+      "msg": "retired the-stranger-2-off-west-end-2026 (\"The Stranger 2\" @ Kiln Theatre) — title+venue blocked"
+    },
+    {
+      "action": "retire-show",
+      "ok": true,
+      "msg": "retired the-devil-wears-prada-2-off-west-end-2026 (\"The Devil Wears Prada 2\" @ Kiln Theatre) — title+venue blocked"
+    },
+    {
+      "action": "retitle-show",
+      "ok": true,
+      "msg": "retitled king-lear-2-off-west-end-2026: \"King Lear 2\" -> \"King Lear\""
+    },
+    {
+      "action": "retitle-show",
+      "ok": true,
+      "msg": "retitled richard-ii-off-west-end-2026: \"Richard Ii\" -> \"Richard II\""
+    }
+  ]
+}

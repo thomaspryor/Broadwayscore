@@ -1,0 +1,344 @@
+{
+  "issueNumber": "bro-5623",
+  "planId": "db04bd16-1a85-4e88-bcfa-ade9b6236990",
+  "status": "applied",
+  "createdAt": "2026-10-18T13:00:21.476Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5623 (part a): Fizzle/Flop must rest on an estimate (owner 2026-10-18). Five default Fizzles that our model (decent inputs) puts under 30% become Flop; six default Fizzles with no estimate at all become Undisclosed (TBD, flagged for research).",
+    "steps": [
+      "Each edit reads its oldValue from live commercial.json."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "tootsie-2019",
+        "field": "designation",
+        "oldValue": "Fizzle",
+        "newValue": "Flop",
+        "description": "tootsie-2019: Fizzle claims 30% or more returned with no estimate behind it (the old default); our model, with decent inputs, puts about -6% returned, under 30%, so Flop (owner decision 2026-10-18, option A)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-whos-tommy",
+        "field": "designation",
+        "oldValue": "Fizzle",
+        "newValue": "Flop",
+        "description": "the-whos-tommy: Fizzle claims 30% or more returned with no estimate behind it (the old default); our model, with decent inputs, puts about 10% returned, under 30%, so Flop (owner decision 2026-10-18, option A)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "purlie-victorious",
+        "field": "designation",
+        "oldValue": "Fizzle",
+        "newValue": "Flop",
+        "description": "purlie-victorious: Fizzle claims 30% or more returned with no estimate behind it (the old default); our model, with decent inputs, puts about -6% returned, under 30%, so Flop (owner decision 2026-10-18, option A)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "shucked-2023",
+        "field": "designation",
+        "oldValue": "Fizzle",
+        "newValue": "Flop",
+        "description": "shucked-2023: Fizzle claims 30% or more returned with no estimate behind it (the old default); our model, with decent inputs, puts about 7% returned, under 30%, so Flop (owner decision 2026-10-18, option A)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "a-christmas-carol-2019",
+        "field": "designation",
+        "oldValue": "Fizzle",
+        "newValue": "Flop",
+        "description": "a-christmas-carol-2019: Fizzle claims 30% or more returned with no estimate behind it (the old default); our model, with decent inputs, puts about -20% returned, under 30%, so Flop (owner decision 2026-10-18, option A)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "liberation",
+        "field": "designation",
+        "oldValue": "Fizzle",
+        "newValue": "TBD",
+        "description": "liberation: the Fizzle was the old default for a show that never announced a recoupment, with no estimate of how much came back; the owner ruled out default claims (2026-10-18), so it shows as Undisclosed until an estimate exists (the basis drops with the label)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "liberation",
+        "field": "recouped",
+        "oldValue": false,
+        "newValue": null,
+        "description": "liberation: matches every other closed show shown as Undisclosed: no recoupment was announced, so the outcome stays unknown rather than \"did not recoup\"."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "liberation",
+        "field": "needsLossEvidence",
+        "oldValue": null,
+        "newValue": true,
+        "description": "liberation: flagged for research, as the classifier does for a closed show with no estimate (BRO-5623)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "oedipus",
+        "field": "designation",
+        "oldValue": "Fizzle",
+        "newValue": "TBD",
+        "description": "oedipus: the Fizzle was the old default for a show that never announced a recoupment, with no estimate of how much came back; the owner ruled out default claims (2026-10-18), so it shows as Undisclosed until an estimate exists (the basis drops with the label)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "oedipus",
+        "field": "recouped",
+        "oldValue": false,
+        "newValue": null,
+        "description": "oedipus: matches every other closed show shown as Undisclosed: no recoupment was announced, so the outcome stays unknown rather than \"did not recoup\"."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "oedipus",
+        "field": "needsLossEvidence",
+        "oldValue": null,
+        "newValue": true,
+        "description": "oedipus: flagged for research, as the classifier does for a closed show with no estimate (BRO-5623)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-music-man-2022",
+        "field": "designation",
+        "oldValue": "Fizzle",
+        "newValue": "TBD",
+        "description": "the-music-man-2022: the Fizzle was the old default for a show that never announced a recoupment, with no estimate of how much came back; the owner ruled out default claims (2026-10-18), so it shows as Undisclosed until an estimate exists (the basis drops with the label)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-music-man-2022",
+        "field": "recouped",
+        "oldValue": false,
+        "newValue": null,
+        "description": "the-music-man-2022: matches every other closed show shown as Undisclosed: no recoupment was announced, so the outcome stays unknown rather than \"did not recoup\"."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-music-man-2022",
+        "field": "needsLossEvidence",
+        "oldValue": null,
+        "newValue": true,
+        "description": "the-music-man-2022: flagged for research, as the classifier does for a closed show with no estimate (BRO-5623)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "spamalot",
+        "field": "designation",
+        "oldValue": "Fizzle",
+        "newValue": "TBD",
+        "description": "spamalot: the Fizzle was the old default for a show that never announced a recoupment, with no estimate of how much came back; the owner ruled out default claims (2026-10-18), so it shows as Undisclosed until an estimate exists (the basis drops with the label)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "spamalot",
+        "field": "recouped",
+        "oldValue": false,
+        "newValue": null,
+        "description": "spamalot: matches every other closed show shown as Undisclosed: no recoupment was announced, so the outcome stays unknown rather than \"did not recoup\"."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "spamalot",
+        "field": "needsLossEvidence",
+        "oldValue": null,
+        "newValue": true,
+        "description": "spamalot: flagged for research, as the classifier does for a closed show with no estimate (BRO-5623)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "sunset-boulevard-2017",
+        "field": "designation",
+        "oldValue": "Fizzle",
+        "newValue": "TBD",
+        "description": "sunset-boulevard-2017: the Fizzle was the old default for a show that never announced a recoupment, with no estimate of how much came back; the owner ruled out default claims (2026-10-18), so it shows as Undisclosed until an estimate exists (the basis drops with the label)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "sunset-boulevard-2017",
+        "field": "recouped",
+        "oldValue": false,
+        "newValue": null,
+        "description": "sunset-boulevard-2017: matches every other closed show shown as Undisclosed: no recoupment was announced, so the outcome stays unknown rather than \"did not recoup\"."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "sunset-boulevard-2017",
+        "field": "needsLossEvidence",
+        "oldValue": null,
+        "newValue": true,
+        "description": "sunset-boulevard-2017: flagged for research, as the classifier does for a closed show with no estimate (BRO-5623)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "jerusalem-2011",
+        "field": "designation",
+        "oldValue": "Fizzle",
+        "newValue": "TBD",
+        "description": "jerusalem-2011: the Fizzle was the old default for a show that never announced a recoupment, with no estimate of how much came back; the owner ruled out default claims (2026-10-18), so it shows as Undisclosed until an estimate exists (the basis drops with the label)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "jerusalem-2011",
+        "field": "recouped",
+        "oldValue": false,
+        "newValue": null,
+        "description": "jerusalem-2011: matches every other closed show shown as Undisclosed: no recoupment was announced, so the outcome stays unknown rather than \"did not recoup\"."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "jerusalem-2011",
+        "field": "needsLossEvidence",
+        "oldValue": null,
+        "newValue": true,
+        "description": "jerusalem-2011: flagged for research, as the classifier does for a closed show with no estimate (BRO-5623)."
+      }
+    ]
+  },
+  "executedAt": "2026-10-18T13:44:50.965Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for tootsie-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for the-whos-tommy"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for purlie-victorious"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for shucked-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for a-christmas-carol-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for liberation"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recouped updated for liberation"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: needsLossEvidence updated for liberation"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for oedipus"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recouped updated for oedipus"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: needsLossEvidence updated for oedipus"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for the-music-man-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recouped updated for the-music-man-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: needsLossEvidence updated for the-music-man-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for spamalot"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recouped updated for spamalot"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: needsLossEvidence updated for spamalot"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for sunset-boulevard-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recouped updated for sunset-boulevard-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: needsLossEvidence updated for sunset-boulevard-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for jerusalem-2011"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recouped updated for jerusalem-2011"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: needsLossEvidence updated for jerusalem-2011"
+    }
+  ]
+}

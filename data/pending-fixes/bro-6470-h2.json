@@ -1,0 +1,613 @@
+{
+  "issueNumber": "bro-6470-h2",
+  "planId": "af6c5d8e-bf7d-412f-834a-75fd93e7dbb2",
+  "status": "applied",
+  "createdAt": "2026-10-28T19:49:31.791Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6470 cohort 4: add 18 Off-Broadway shows that opened 2021-12 to 2022-05 (TheaterMania listings, Playbill-validated)",
+    "steps": [
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-bedwetter-off-broadway-2022",
+          "title": "The Bedwetter",
+          "slug": "the-bedwetter-off-broadway-2022",
+          "venue": "Atlantic Theater Company/Linda Gross Theater",
+          "previewsStartDate": "2022-04-30",
+          "openingDate": "2022-05-23",
+          "closingDate": "2022-07-10",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [
+            "revival"
+          ],
+          "isRevival": true,
+          "discoverySource": "ob-historical:tm",
+          "discoveredAt": "2026-10-28T00:00:00.000Z",
+          "openingDateSource": "playbill-ob-historical",
+          "closingDateSource": "playbill-ob-historical",
+          "evidenceUrls": [
+            "https://playbill.com/production/the-bedwetteratlantic-theater-company-linda-gross-theater-2021-2022",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/the-bedwetter_333236/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "a-case-for-the-existence-of-god-off-broadway-2022",
+          "title": "A Case for the Existence of God",
+          "slug": "a-case-for-the-existence-of-god-off-broadway-2022",
+          "venue": "The Pershing Square Signature Center/Irene Diamond Stage",
+          "previewsStartDate": "2022-04-12",
+          "openingDate": "2022-05-02",
+          "closingDate": "2022-06-05",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [
+            "new"
+          ],
+          "isRevival": false,
+          "discoverySource": "ob-historical:tm",
+          "discoveredAt": "2026-10-28T00:00:00.000Z",
+          "openingDateSource": "playbill-ob-historical",
+          "closingDateSource": "playbill-ob-historical",
+          "evidenceUrls": [
+            "https://playbill.com/production/a-case-for-the-existence-of-godthe-pershing-square-signature-center-irene-diamond-stage-2021-2022",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/a-case-for-the-existence-of-god_345060/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "confederates-off-broadway-2022",
+          "title": "Confederates",
+          "slug": "confederates-off-broadway-2022",
+          "venue": "The Pershing Square Signature Center/Alice Griffin Jewel Box Theatre",
+          "previewsStartDate": null,
+          "openingDate": "2022-03-08",
+          "closingDate": "2022-04-24",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [
+            "revival"
+          ],
+          "isRevival": true,
+          "discoverySource": "ob-historical:tm",
+          "discoveredAt": "2026-10-28T00:00:00.000Z",
+          "openingDateSource": "playbill-ob-historical",
+          "closingDateSource": "playbill-ob-historical",
+          "evidenceUrls": [
+            "https://playbill.com/production/confederatesthe-pershing-square-signature-center-alice-griffin-jewel-box-theatre-2021-2022",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/confederates_345058/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "dreaming-zenzile-off-broadway-2022",
+          "title": "Dreaming Zenzile",
+          "slug": "dreaming-zenzile-off-broadway-2022",
+          "venue": "New York Theatre Workshop",
+          "previewsStartDate": null,
+          "openingDate": "2022-05-17",
+          "closingDate": "2022-06-26",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:tm",
+          "discoveredAt": "2026-10-28T00:00:00.000Z",
+          "openingDateSource": "playbill-ob-historical",
+          "closingDateSource": "playbill-ob-historical",
+          "evidenceUrls": [
+            "https://playbill.com/production/dreaming-zenzile-off-broadway-new-york-theatre-workshop-2022",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/dreaming-zenzile_385704/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "how-the-hell-did-i-get-here-off-broadway-2022",
+          "title": "How the Hell Did I Get Here?",
+          "slug": "how-the-hell-did-i-get-here-off-broadway-2022",
+          "venue": "The McKittrick Hotel",
+          "previewsStartDate": null,
+          "openingDate": "2022-04-20",
+          "closingDate": "2022-05-22",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "musical",
+          "tags": [],
+          "discoverySource": "ob-historical:tm",
+          "discoveredAt": "2026-10-28T00:00:00.000Z",
+          "openingDateSource": "playbill-ob-historical",
+          "closingDateSource": "playbill-ob-historical",
+          "evidenceUrls": [
+            "https://playbill.com/production/how-the-hell-did-i-get-here-off-broadway-the-mckittrick-hotel-2022",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/how-the-hell-did-i-get-here_376519/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "suffs-off-broadway-2022",
+          "title": "Suffs",
+          "slug": "suffs-off-broadway-2022",
+          "venue": "Public Theater/Newman Theater",
+          "previewsStartDate": "2022-03-13",
+          "openingDate": "2022-04-06",
+          "closingDate": "2022-05-29",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "musical",
+          "tags": [],
+          "discoverySource": "ob-historical:tm",
+          "discoveredAt": "2026-10-28T00:00:00.000Z",
+          "openingDateSource": "playbill-ob-historical",
+          "closingDateSource": "playbill-ob-historical",
+          "evidenceUrls": [
+            "https://playbill.com/production/suffs-off-broadway-public-theater-newman-theater-2022",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/suffs_372748/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "harmony-off-broadway-2022",
+          "title": "Harmony",
+          "slug": "harmony-off-broadway-2022",
+          "venue": "Museum of Jewish Heritage",
+          "previewsStartDate": "2022-03-23",
+          "openingDate": "2022-04-14",
+          "closingDate": "2022-05-15",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "musical",
+          "tags": [],
+          "discoverySource": "ob-historical:tm",
+          "discoveredAt": "2026-10-28T00:00:00.000Z",
+          "openingDateSource": "playbill-ob-historical",
+          "closingDateSource": "playbill-ob-historical",
+          "evidenceUrls": [
+            "https://playbill.com/production/harmony-off-broadway-museum-of-jewish-heritage-2022",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/harmony_371138/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-chinese-lady-off-broadway-2022",
+          "title": "The Chinese Lady",
+          "slug": "the-chinese-lady-off-broadway-2022",
+          "venue": "Public Theater/Shiva Theater",
+          "previewsStartDate": "2022-02-23",
+          "openingDate": "2022-03-09",
+          "closingDate": "2022-04-10",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:tm",
+          "discoveredAt": "2026-10-28T00:00:00.000Z",
+          "openingDateSource": "playbill-ob-historical",
+          "closingDateSource": "playbill-ob-historical",
+          "evidenceUrls": [
+            "https://playbill.com/production/the-chinese-lady-off-broadway-public-theater-shiva-theater-2022",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/the-chinese-lady_370287/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "wish-you-were-here-off-broadway-2022",
+          "title": "Wish You Were Here",
+          "slug": "wish-you-were-here-off-broadway-2022",
+          "venue": "Playwrights Horizons/Peter Jay Sharp Theater",
+          "previewsStartDate": "2022-04-13",
+          "openingDate": "2022-05-03",
+          "closingDate": "2022-06-05",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [
+            "revival"
+          ],
+          "isRevival": true,
+          "discoverySource": "ob-historical:tm",
+          "discoveredAt": "2026-10-28T00:00:00.000Z",
+          "openingDateSource": "playbill-ob-historical",
+          "closingDateSource": "playbill-ob-historical",
+          "evidenceUrls": [
+            "https://playbill.com/production/wish-you-were-hereplaywrights-horizons-peter-jay-sharp-theater-2021-2022",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/wish-you-were-here_370284/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "little-girl-blue-off-broadway-2022",
+          "title": "Little Girl Blue",
+          "slug": "little-girl-blue-off-broadway-2022",
+          "venue": "New World Stages Stage 5",
+          "previewsStartDate": "2022-03-05",
+          "openingDate": "2022-03-14",
+          "closingDate": "2022-05-22",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "musical",
+          "tags": [
+            "new"
+          ],
+          "isRevival": false,
+          "discoverySource": "ob-historical:tm",
+          "discoveredAt": "2026-10-28T00:00:00.000Z",
+          "openingDateSource": "playbill-ob-historical",
+          "closingDateSource": "playbill-ob-historical",
+          "evidenceUrls": [
+            "https://playbill.com/production/little-girl-blue-off-broadway-new-world-stages-stage-5-2022",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/little-girl-blue_368576/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "on-sugarland-off-broadway-2022",
+          "title": "On Sugarland",
+          "slug": "on-sugarland-off-broadway-2022",
+          "venue": "New York Theatre Workshop",
+          "previewsStartDate": "2022-02-02",
+          "openingDate": "2022-03-03",
+          "closingDate": "2022-03-20",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [
+            "revival"
+          ],
+          "isRevival": true,
+          "discoverySource": "ob-historical:tm",
+          "discoveredAt": "2026-10-28T00:00:00.000Z",
+          "openingDateSource": "playbill-ob-historical",
+          "closingDateSource": "playbill-ob-historical",
+          "evidenceUrls": [
+            "https://playbill.com/production/on-sugarlandnew-york-theatre-workshop-2021-2022",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/on-sugarland_366994/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "english-off-broadway-2022",
+          "title": "English",
+          "slug": "english-off-broadway-2022",
+          "venue": "Atlantic Theater Company/Linda Gross Theater",
+          "previewsStartDate": "2022-02-04",
+          "openingDate": "2022-02-22",
+          "closingDate": "2022-03-20",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [
+            "new"
+          ],
+          "isRevival": false,
+          "discoverySource": "ob-historical:tm",
+          "discoveredAt": "2026-10-28T00:00:00.000Z",
+          "openingDateSource": "playbill-ob-historical",
+          "closingDateSource": "playbill-ob-historical",
+          "evidenceUrls": [
+            "https://playbill.com/production/englishatlantic-theater-company-linda-gross-theater-2021-2022",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/english_366465/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "coal-country-off-broadway-2022",
+          "title": "Coal Country",
+          "slug": "coal-country-off-broadway-2022",
+          "venue": "Cherry Lane Theatre",
+          "previewsStartDate": "2022-03-04",
+          "openingDate": "2022-03-10",
+          "closingDate": "2022-04-17",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [
+            "new"
+          ],
+          "isRevival": false,
+          "discoverySource": "ob-historical:tm",
+          "discoveredAt": "2026-10-28T00:00:00.000Z",
+          "openingDateSource": "playbill-ob-historical",
+          "closingDateSource": "playbill-ob-historical",
+          "evidenceUrls": [
+            "https://playbill.com/production/coal-country-off-broadway-cherry-lane-theatre-2022",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/coal-country_366227/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "out-of-time-off-broadway-2022",
+          "title": "Out of Time",
+          "slug": "out-of-time-off-broadway-2022",
+          "venue": "Public Theater/Martinson Hall",
+          "previewsStartDate": "2022-02-15",
+          "openingDate": "2022-03-01",
+          "closingDate": "2022-03-13",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [
+            "new"
+          ],
+          "isRevival": false,
+          "discoverySource": "ob-historical:tm",
+          "discoveredAt": "2026-10-28T00:00:00.000Z",
+          "openingDateSource": "playbill-ob-historical",
+          "closingDateSource": "playbill-ob-historical",
+          "evidenceUrls": [
+            "https://playbill.com/production/out-of-time-off-broadway-public-theater-martinson-hall-2022",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/out-of-time_365287/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "long-days-journey-into-night-off-broadway-2022",
+          "title": "Long Day's Journey Into Night",
+          "slug": "long-days-journey-into-night-off-broadway-2022",
+          "venue": "Minetta Lane Theatre",
+          "previewsStartDate": "2022-01-18",
+          "openingDate": "2022-01-25",
+          "closingDate": "2022-02-20",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:tm",
+          "discoveredAt": "2026-10-28T00:00:00.000Z",
+          "openingDateSource": "playbill-ob-historical",
+          "closingDateSource": "playbill-ob-historical",
+          "evidenceUrls": [
+            "https://playbill.com/production/long-days-journey-into-night-off-broadway-minetta-lane-theatre-2022",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/long-days-journey-into-night_365240/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "shhhh-off-broadway-2022",
+          "title": "Shhhh",
+          "slug": "shhhh-off-broadway-2022",
+          "venue": "Atlantic Theater Company/Stage 2",
+          "previewsStartDate": "2022-01-14",
+          "openingDate": "2022-01-31",
+          "closingDate": "2022-02-20",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:tm",
+          "discoveredAt": "2026-10-28T00:00:00.000Z",
+          "openingDateSource": "playbill-ob-historical",
+          "closingDateSource": "playbill-ob-historical",
+          "evidenceUrls": [
+            "https://playbill.com/production/shhhh-off-broadway-atlantic-theater-company-stage-2-2022",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/shhhh_364116/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-streets-of-new-york-off-broadway-2021",
+          "title": "The Streets of New York",
+          "slug": "the-streets-of-new-york-off-broadway-2021",
+          "venue": "Irish Repertory Theatre",
+          "previewsStartDate": "2021-12-04",
+          "openingDate": "2021-12-14",
+          "closingDate": "2022-01-30",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [
+            "revival"
+          ],
+          "isRevival": true,
+          "discoverySource": "ob-historical:tm",
+          "discoveredAt": "2026-10-28T00:00:00.000Z",
+          "openingDateSource": "playbill-ob-historical",
+          "closingDateSource": "playbill-ob-historical",
+          "evidenceUrls": [
+            "https://playbill.com/production/the-streets-of-new-yorkirish-repertory-theatre-2021-2022",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/the-streets-of-new-york_357220/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "black-no-more-off-broadway-2022",
+          "title": "Black No More",
+          "slug": "black-no-more-off-broadway-2022",
+          "venue": "The Pershing Square Signature Theatre Center",
+          "previewsStartDate": "2022-01-19",
+          "openingDate": "2022-02-15",
+          "closingDate": "2022-02-27",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [
+            "revival"
+          ],
+          "isRevival": true,
+          "discoverySource": "ob-historical:tm",
+          "discoveredAt": "2026-10-28T00:00:00.000Z",
+          "openingDateSource": "playbill-ob-historical",
+          "closingDateSource": "playbill-ob-historical",
+          "evidenceUrls": [
+            "https://playbill.com/production/black-no-morethe-pershing-square-signature-theatre-center-2021-2022",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/black-no-more_354270/"
+          ]
+        }
+      }
+    ]
+  },
+  "executedAt": "2026-10-28T20:05:09.365Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-bedwetter-off-broadway-2022"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added a-case-for-the-existence-of-god-off-broadway-2022"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added confederates-off-broadway-2022"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added dreaming-zenzile-off-broadway-2022"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added how-the-hell-did-i-get-here-off-broadway-2022"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added suffs-off-broadway-2022"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added harmony-off-broadway-2022"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-chinese-lady-off-broadway-2022"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added wish-you-were-here-off-broadway-2022"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added little-girl-blue-off-broadway-2022"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added on-sugarland-off-broadway-2022"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added english-off-broadway-2022"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added coal-country-off-broadway-2022"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added out-of-time-off-broadway-2022"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added long-days-journey-into-night-off-broadway-2022"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added shhhh-off-broadway-2022"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-streets-of-new-york-off-broadway-2021"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added black-no-more-off-broadway-2022"
+    }
+  ],
+  "executedIn": "ci"
+}

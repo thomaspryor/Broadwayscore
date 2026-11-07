@@ -1,0 +1,98 @@
+{
+  "issueNumber": "bro-4251",
+  "planId": "cc1fe48b-a259-467d-99bd-56c8cd6a21d1",
+  "status": "partial",
+  "createdAt": "2026-10-12T21:06:48.710Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4251: remove two bad heroes and one wrong poster checked by eye (Hangmen 2022 hero is a text-only FINAL WEEK / ENDS JUNE 18 banner; The Snowman West End 2026 hero and poster are a Chamber Music Society \"Youthful Genius\" pianist ad), and clear the NYC Theatre excerpt on Shucked's Variety review, which carries Fat Ham review text and is what the site prints as the quote.",
+    "steps": [
+      "Null the bad image fields (compare-and-set); other fields stay. The files themselves are deleted in the same landing.",
+      "Add the Snowman wrong source URLs to rejectedImageUrls (add-only) so no fetch takes them again. Hangmen gets no rejection: its poster and thumbnail are good crops of the same source asset.",
+      "Clear nycTheatreExcerpt on shucked-2023/variety--aramide-tinubu.json; the rebuild then picks the stored llmPullQuote (verified with selectBestExcerpt on the real record)."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "hangmen-2022",
+        "field": "images",
+        "oldValue": {
+          "hero": "/images/shows/hangmen-2022/hero.webp",
+          "thumbnail": "/images/shows/hangmen-2022/thumbnail.webp",
+          "poster": "/images/shows/hangmen-2022/poster.webp"
+        },
+        "newValue": {
+          "hero": null,
+          "thumbnail": "/images/shows/hangmen-2022/thumbnail.webp",
+          "poster": "/images/shows/hangmen-2022/poster.webp"
+        },
+        "description": "hangmen-2022: hero is a text-only closing banner, not show art (BRO-4251)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-snowman-west-end-2026",
+        "field": "images",
+        "oldValue": {
+          "hero": "/images/shows/the-snowman-west-end-2026/hero.webp",
+          "thumbnail": "/images/shows/the-snowman-west-end-2026/thumbnail.jpg",
+          "poster": "/images/shows/the-snowman-west-end-2026/poster.webp"
+        },
+        "newValue": {
+          "hero": null,
+          "thumbnail": "/images/shows/the-snowman-west-end-2026/thumbnail.jpg",
+          "poster": null
+        },
+        "description": "the-snowman-west-end-2026: hero and poster show a Chamber Music Society concert ad, not The Snowman (BRO-4251)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-snowman-west-end-2026",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/DthTta26ssnml4eaDffCD/94fdc49bc9a74ba53ab19b257d4577e3/Youthful_Genius_Poster_Image.png?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/DthTta26ssnml4eaDffCD/94fdc49bc9a74ba53ab19b257d4577e3/Youthful_Genius_Poster_Image.png?w=1920&h=800&fit=fill&f=center&fm=webp&q=90"
+        ],
+        "description": "the-snowman-west-end-2026: never re-take the wrong poster/hero source (BRO-4251)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "shucked-2023/variety--aramide-tinubu.json",
+        "field": "nycTheatreExcerpt",
+        "oldValue": "\"The funniest and most invigorating new show on Broadway...Winner of the 2022 Pulitzer Prize, \"Fat Ham\" recasts its source material to imagine what Shakespeare did not  how people might overcome circumstances, expectations and their own demons to forge new paths through life.\"",
+        "newValue": null,
+        "description": "BRO-4251: NYC Theatre excerpt ends with Fat Ham review text and is printed as the Shucked Variety quote; clear it"
+      }
+    ]
+  },
+  "executedAt": "2026-10-14T20:54:19.871Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "images: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "images: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "rejectedImageUrls: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "shucked-2023/variety--aramide-tinubu.json nycTheatreExcerpt: \"\\\"The funniest and most invigorating new show on Broadway...Winner of the 2022 Pulitzer Prize, \\\"Fat Ham\\\" recasts its source material to imagine what Shakespeare did not  how people might overcome circumstances, expectations and their own demons to forge new paths through life.\\\"\" -> null"
+    }
+  ]
+}

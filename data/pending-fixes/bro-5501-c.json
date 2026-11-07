@@ -1,0 +1,32 @@
+{
+  "issueNumber": "bro-5501-c",
+  "planId": "d63fac32-7d75-4a37-806f-f61965df61fd",
+  "status": "applied",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5501 item 3 cleanup: delete and tombstone the 6 sibling-misfiled Show Score/DTLI archive pages the bro-5501-b probe found (les-liaisons-dangereuses-west-end-2026 x2, school-pictures-off-broadway-2026, the-play-that-goes-wrong-off-broadway-2019, oh-mary-west-end-2025, stranger-things-the-first-shadow-west-end-2023). Extractors already reject them; removal stops the weekly scrape re-saving them.",
+    "steps": [
+      "Run audit-sibling-misfile-archive.js --delete --expect=6"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "run-script",
+        "script": "audit-sibling-misfile-archive.js",
+        "args": "--delete --expect=6",
+        "description": "Delete + tombstone the 6 misfiled archive pages"
+      }
+    ]
+  },
+  "executedAt": "2026-10-16T21:21:46.330Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran audit-sibling-misfile-archive.js successfully"
+    }
+  ]
+}

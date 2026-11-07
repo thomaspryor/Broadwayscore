@@ -1,0 +1,60 @@
+{
+  "issueNumber": "bro-5243-j",
+  "planId": "0cf326f5-806d-4b0e-ae81-a7141335f1ea",
+  "status": "applied",
+  "createdAt": "2026-10-15T21:45:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5243 (j): two WSJ columns recovered on 2026-10-15 are kept out by verdicts made on earlier text: True West 2019 (audit-non-reviews nonReviewFlag) and Saint Joan 2018 (June cvWrongArticle verdict). Clear the first, re-verify the second against its stored text.",
+    "steps": [
+      "nonReviewManualClear + nonReviewFlag clear on true-west-2019 WSJ",
+      "re-verify saint-joan-2018 WSJ"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "true-west-2019/wsj--terry-teachout.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5243: run 38787935229 (2026-10-15) recovered Teachout's full True West review (4,815 chars, 'True West review: Family Feud via Tinseltown', 2019-01-25, content verifier valid high, 2026-10-15T19:13). The nonReviewFlag was stamped by audit-non-reviews.js on the earlier fragment; a person read the recovered text's opening and confirms it is the review."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "true-west-2019/wsj--terry-teachout.json",
+        "field": "nonReviewFlag",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5243: clear the stale audit-non-reviews marker on the recovered True West review (see nonReviewManualClear above)."
+      },
+      {
+        "type": "run-script",
+        "script": "reverify-stale-cv-promoted.js",
+        "args": "--file=saint-joan-2018/wsj--terry-teachout.json",
+        "description": "BRO-5243: the stored text is Teachout's 2018-04-26 column reviewing The Iceman Cometh and Saint Joan (5,157 chars; the Iceman row with the same text verified valid high on 2026-10-15). The June 2026 wrongArticle verdict judged it before the scorer read multi-show columns by section; re-verify the stored text (file mode never writes an excluding verdict)."
+      }
+    ]
+  },
+  "executedAt": "2026-10-15T22:24:54.100Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "true-west-2019/wsj--terry-teachout.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "true-west-2019/wsj--terry-teachout.json nonReviewFlag: true -> false"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran reverify-stale-cv-promoted.js successfully"
+    }
+  ]
+}

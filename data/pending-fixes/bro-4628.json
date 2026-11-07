@@ -1,0 +1,263 @@
+{
+  "issueNumber": "bro-4628",
+  "planId": "3a6ea1f8-40c2-4e85-b9da-48bfa08ee70f",
+  "status": "applied",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4623 part 5: Betrayal (2013, Daniel Craig/Rachel Weisz) carried the Rebecca musical's investor-fraud story, its sources and a Flop label; The Hollywood Reporter reports it recouped about ten weeks into its 14-week run. Also removes false statements from the notes of MJ, The Music Man, The Outsiders, Stranger Things and Operation Mincemeat.",
+    "steps": [
+      "Betrayal: THR 'Betrayal Concludes Smash Broadway Run' (Jan 2014): $17.5M cumulative gross, recouped roughly ten weeks in, budget not disclosed. Deadline (Dec 2013): $1.44M week, a record for a play.",
+      "MJ: recoupedDate 2023-05 (16 months after opening); the note's 'Recouped Nov 2023' contradicted it.",
+      "The Music Man closed Jan 15, 2023, not Jan 2024.",
+      "The Outsiders: Stranger Things has not recouped, so 'first new musical to recoup since Stranger Things' is false.",
+      "Stranger Things: Harry Potter and the Cursed Child and Spider-Man cost more; 'largest Broadway capitalization on record' is false.",
+      "Operation Mincemeat: extended through Mar 14, 2027 (10th extension), not Feb 2026."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "betrayal-2013",
+        "showId": "betrayal-2013",
+        "field": "designation",
+        "oldValue": "Flop",
+        "newValue": "Easy Winner",
+        "description": "betrayal-2013: designation (wrong-entity record (Rebecca fraud))"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "betrayal-2013",
+        "showId": "betrayal-2013",
+        "field": "recouped",
+        "oldValue": false,
+        "newValue": true,
+        "description": "betrayal-2013: recouped (wrong-entity record (Rebecca fraud))"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "betrayal-2013",
+        "showId": "betrayal-2013",
+        "field": "recoupedDate",
+        "oldValue": null,
+        "newValue": "2013-12",
+        "description": "betrayal-2013: recoupedDate (wrong-entity record (Rebecca fraud))"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "betrayal-2013",
+        "showId": "betrayal-2013",
+        "field": "recoupedSource",
+        "oldValue": "Production never materialized on Broadway",
+        "newValue": "The Hollywood Reporter (Jan 2014): recouped roughly ten weeks into its 14-week limited run; budget not disclosed.",
+        "description": "betrayal-2013: recoupedSource (wrong-entity record (Rebecca fraud))"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "betrayal-2013",
+        "showId": "betrayal-2013",
+        "field": "capitalization",
+        "oldValue": 12000000,
+        "newValue": null,
+        "description": "betrayal-2013: capitalization (wrong-entity record (Rebecca fraud))"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "betrayal-2013",
+        "showId": "betrayal-2013",
+        "field": "capitalizationSource",
+        "oldValue": "Initial budget mentioned as $12 million before fraud inflated it to $16 million",
+        "newValue": null,
+        "description": "betrayal-2013: capitalizationSource (wrong-entity record (Rebecca fraud))"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "betrayal-2013",
+        "showId": "betrayal-2013",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "manual",
+            "url": "https://www.vanityfair.com/culture/2013/06/rebecca-musical-betrayal-fake-death?srsltid=AfmBOoq5wGN2FgJQCaGIV-0SxbfvpBK5vBPsigtZeXz-oLxV5drAVCgg",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwayjournal.com/p/rebecca-partnership-seeks-11-million-plus-punitive-damages-in-press-agent-betrayal",
+            "date": null
+          },
+          {
+            "type": "manual",
+            "url": "https://grokipedia.com/page/ben_sprecher",
+            "date": null
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.hollywoodreporter.com/news/general-news/betrayal-concludes-smash-broadway-run-668680/",
+            "date": "2014-01-05"
+          },
+          {
+            "type": "trade",
+            "url": "https://deadline.com/2013/12/mike-nichols-betrayal-revival-with-daniel-craig-and-rachel-weisz-sets-broadway-weekly-gross-record-657767/",
+            "date": "2013-12-31"
+          }
+        ],
+        "description": "betrayal-2013: sources (wrong-entity record (Rebecca fraud))"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "betrayal-2013",
+        "showId": "betrayal-2013",
+        "field": "notes",
+        "oldValue": "Broadway production was cancelled due to investor fraud scandal. Initial $12M budget inflated to $16M due to fraud. Show never opened on Broadway despite years of development.",
+        "newValue": "Mike Nichols' revival of Harold Pinter's play with Daniel Craig, Rachel Weisz and Rafe Spall at the Ethel Barrymore, Oct 2013 to Jan 5, 2014 (14-week limited run). Grossed just over $17.5M and set a record for a play with a $1.44M week. Recouped about ten weeks into the run (The Hollywood Reporter); capitalization not disclosed.",
+        "description": "betrayal-2013: notes (wrong-entity record (Rebecca fraud))"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "betrayal-2013",
+        "showId": "betrayal-2013",
+        "field": "humanReviewedDesignation",
+        "oldValue": null,
+        "newValue": true,
+        "description": "betrayal-2013: humanReviewedDesignation (wrong-entity record (Rebecca fraud))"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "mj",
+        "showId": "mj",
+        "field": "notes",
+        "oldValue": "Recouped in ~16 months. Received $10M SVOG grant. Has grossed over $200M. National tour also profitable. Note: Jackson Estate receives 100% of producer profit share — actual investor returns depend on estate's profit participation terms, which are not publicly disclosed. Weekly cost ~$1.3M. Recouped Nov 2023. $10M SVOG grant. Jackson Estate negotiated 100% of lead-producer profits + 13% off-the-top after recoup+10%.",
+        "newValue": "Recouped about 16 months after opening (May 2023). Received a $10M SVOG grant. Has grossed over $200M. Weekly cost about $1.3M. The Michael Jackson estate negotiated 100% of lead-producer profits plus 13% off the top after recoupment plus 10%, so investor returns depend on terms that are not public.",
+        "description": "mj: notes (note contradicted recoupedDate)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-music-man-2022",
+        "showId": "the-music-man-2022",
+        "field": "notes",
+        "oldValue": "Star-driven revival with Hugh Jackman and Sutton Foster that opened Feb 2022. Capitalized at ~$24M with ~$1M weekly running costs. Despite strong grosses (regularly $2-3M/week, $187.8M total over 374 performances), the extremely high capitalization and running costs meant it came close but likely did not fully recoup before closing Jan 2024.",
+        "newValue": "Star-driven revival with Hugh Jackman and Sutton Foster that opened Feb 2022 and closed Jan 15, 2023. Capitalized at about $24M with about $1M weekly running costs. Grossed $2-3M a week ($187.8M over 374 performances), but no recoupment was announced before closing.",
+        "description": "the-music-man-2022: notes (wrong closing year)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-outsiders",
+        "showId": "the-outsiders",
+        "field": "notes",
+        "oldValue": "Won Best Musical Tony 2024. Recouped $22M investment week ending December 28, 2025 after 744 performances (89 weeks) and $121M+ total grosses. First new musical to recoup since Stranger Things (2022). Actors from developmental workshops entitled to profit-sharing per NYT.",
+        "newValue": "Won the 2024 Tony for Best Musical. Recouped its $22M investment in the week ending Dec 28, 2025, after 744 performances (89 weeks) and $121M+ in grosses. Actors from developmental workshops are entitled to profit-sharing (NYT).",
+        "description": "the-outsiders: notes (false comparison)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "stranger-things",
+        "showId": "stranger-things",
+        "field": "notes",
+        "oldValue": "Netflix/Sonia Friedman production. Won 4 Tony Awards 2025. SEC Form D shows $29M-$31.5M capitalization ('Now A Warning LLC' — largest Broadway capitalization on record). Being filmed Feb 2026 for future release.",
+        "newValue": "Netflix/Sonia Friedman production; won 4 Tony Awards in 2025. SEC Form D (Now A Warning LLC) shows a $29M-$31.5M capitalization. Closing Jan 3, 2027 with no recoupment announced.",
+        "description": "stranger-things: notes (false record claim)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "operation-mincemeat",
+        "showId": "operation-mincemeat",
+        "field": "notes",
+        "oldValue": "West End hit transferred to Broadway. Weekly costs $500K vs London's £100K. Break-even ~$600K weekly but averaging $580K - running below break-even. Extended through Feb 2026 on strong word-of-mouth despite soft grosses. [Merged from duplicate operation-mincemeat-2025 entry: Broadway transfer from London (originally capitalized at £2 million). Reports indicate show needs to average $146/ticket for a year to recoup, and at current pace would not recoup until 2028. Show is not losing money but faces long path to profitability.]",
+        "newValue": "West End hit transferred to Broadway (opened Mar 20, 2025; extended through Mar 14, 2027). Weekly costs about $500K against a break-even near $600K. BroadwayWorld reported that at its pace it would not recoup until about 2028; no recoupment announced.",
+        "description": "operation-mincemeat: notes (stale extension note)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-05T00:59:12.902Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for betrayal-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recouped updated for betrayal-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedDate updated for betrayal-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for betrayal-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for betrayal-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for betrayal-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for betrayal-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for betrayal-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: humanReviewedDesignation updated for betrayal-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for mj"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for the-music-man-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for the-outsiders"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for stranger-things"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for operation-mincemeat"
+    }
+  ]
+}

@@ -1,0 +1,301 @@
+{
+  "issueNumber": "bro-5183-03",
+  "planId": "466dfb75-5ba8-4aac-8361-93a72207dad8",
+  "status": "partial",
+  "createdAt": "2026-10-12T19:00:46.384Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5183: repair made-up urls of legacy web-search reviews to the real review url (and byline), and mark web-search phantoms whose outlet review is already on file as duplicates of that record.",
+    "steps": [
+      "its-only-a-play-2014/talkinbroadway--matthew-murray.json: url -> https://talkinbroadway.com/page/world/OnlyaPlay2014.html",
+      "mary-poppins-2006/variety--charles-isherwood.json: duplicateOf -> variety--david-rooney.json",
+      "mj-2022/variety--charles-isherwood.json: duplicateOf -> variety--naveen-kumar.json",
+      "mrs-warrens-profession-2010/nytimes--ben-brantley.json: duplicateOf -> about-entertainment--ben-brantley.json",
+      "relatively-speaking-2011/variety--charles-isherwood.json: duplicateOf -> variety--marilyn-stasio.json",
+      "rodgers-hammersteins-cinderella-2013/theatermania--david-gordon.json: url -> https://www.theatermania.com/new-york-city-theater/reviews/cinderella-_64482.html",
+      "rodgers-hammersteins-cinderella-2013/theatermania--david-gordon.json: criticName -> Brian Scott Lipton",
+      "school-of-rock-the-musical-2015/talkinbroadway--matthew-murray.json: url -> https://www.talkinbroadway.com/page/world/SchoolofRock2015.html",
+      "sister-act-2011/timeout--david-cote.json: duplicateOf -> timeout--adam-feldman.json",
+      "spongebob-squarepants-2017/vulture--jesse-green.json: duplicateOf -> vulture--sara-holdren.json",
+      "that-championship-season-2011/vulture--jesse-green.json: duplicateOf -> vulture--scott-brown.json",
+      "the-minutes-2022/timeout--adam-feldman.json: url -> https://www.timeout.com/newyork/theater/the-minutes",
+      "the-mystery-of-edwin-drood-2012/variety--marilyn-stasio.json: duplicateOf -> variety--steven-suskin.json",
+      "the-peewee-herman-show-2010/variety--david-rooney.json: duplicateOf -> variety--steven-suskin.json",
+      "the-people-in-the-picture-2011/talkinbroadway--matthew-murray.json: url -> https://talkinbroadway.com/page/world/PeoplePicture.html",
+      "the-testament-of-mary-2013/talkinbroadway--matthew-murray.json: url -> https://talkinbroadway.com/page/world/TestamentMary2013.html",
+      "title-of-show-2008/talkinbroadway--matthew-murray.json: url -> https://www.talkinbroadway.com/page/world/tos.html",
+      "what-the-constitution-means-to-me-2019/observer--rex-reed.json: duplicateOf -> observer--david-cote.json",
+      "women-on-the-verge-of-a-nervous-breakdown-2010/variety--charles-isherwood.json: url -> http://www.variety.com/review/VE1117943995.html",
+      "women-on-the-verge-of-a-nervous-breakdown-2010/variety--charles-isherwood.json: criticName -> Steven Suskin"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "its-only-a-play-2014/talkinbroadway--matthew-murray.json",
+        "field": "url",
+        "oldValue": "https://www.talkinbroadway.com/world/ItsOnlyaPlay.html",
+        "newValue": "https://talkinbroadway.com/page/world/OnlyaPlay2014.html",
+        "description": "Stored url https://www.talkinbroadway.com/world/ItsOnlyaPlay.html came from the legacy LLM web-search step (scraper_timeout). The outlet's real review of this production is https://talkinbroadway.com/page/world/OnlyaPlay2014.html. Found by web search / BroadwayWorld roundup, 2026-10-12; the collector refetches and verifies the page before it counts."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "mary-poppins-2006/variety--charles-isherwood.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "variety--david-rooney.json",
+        "description": "The outlet's real review of this production (http://www.variety.com/review/VE1117932135.html, David Rooney) is already on file as variety--david-rooney.json with its page text. This row came from the legacy LLM web-search step with a made-up url/byline (https://variety.com/2006/legit/reviews/mary-poppins-5-1200511933/, Charles Isherwood), so it is a duplicate of that record. Found by web search / BroadwayWorld roundup, 2026-10-12; the collector refetches and verifies the page before it counts."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "mj-2022/variety--charles-isherwood.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "variety--naveen-kumar.json",
+        "description": "The outlet's real review of this production (https://variety.com/2022/legit/reviews/mj-review-michael-jackson-broadway-musical-1235168798/, Naveen Kumar) is already on file as variety--naveen-kumar.json with its page text. This row came from the legacy LLM web-search step with a made-up url/byline (https://variety.com/2022/legit/reviews/mj-the-musical-review-broadway-1235179126/, Charles Isherwood), so it is a duplicate of that record. Found by web search / BroadwayWorld roundup, 2026-10-12; the collector refetches and verifies the page before it counts."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "mrs-warrens-profession-2010/nytimes--ben-brantley.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "about-entertainment--ben-brantley.json",
+        "description": "The outlet's real review of this production (https://www.nytimes.com/2010/10/04/theater/reviews/04mrs.html, Ben Brantley) is already on file as about-entertainment--ben-brantley.json with its page text. This row came from the legacy LLM web-search step with a made-up url/byline (https://www.nytimes.com/2010/10/04/theater/reviews/04warren.html, Ben Brantley), so it is a duplicate of that record. Found by web search / BroadwayWorld roundup, 2026-10-12; the collector refetches and verifies the page before it counts."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "relatively-speaking-2011/variety--charles-isherwood.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "variety--marilyn-stasio.json",
+        "description": "The outlet's real review of this production (http://www.variety.com/review/VE1117946401, Marilyn Stasio) is already on file as variety--marilyn-stasio.json with its page text. This row came from the legacy LLM web-search step with a made-up url/byline (https://variety.com/2011/legit/reviews/talking-cure-1118045506/, Charles Isherwood), so it is a duplicate of that record. Found by web search / BroadwayWorld roundup, 2026-10-12; the collector refetches and verifies the page before it counts."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "rodgers-hammersteins-cinderella-2013/theatermania--david-gordon.json",
+        "field": "url",
+        "oldValue": "https://www.theatermania.com/new-york-city-theater/reviews/rodgers-hammersteins-cinderella_64239.html",
+        "newValue": "https://www.theatermania.com/new-york-city-theater/reviews/cinderella-_64482.html",
+        "description": "Stored url https://www.theatermania.com/new-york-city-theater/reviews/rodgers-hammersteins-cinderella_64239.html came from the legacy LLM web-search step (scraper_garbage). The outlet's real review of this production is https://www.theatermania.com/new-york-city-theater/reviews/cinderella-_64482.html. Found by web search / BroadwayWorld roundup, 2026-10-12; the collector refetches and verifies the page before it counts."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "rodgers-hammersteins-cinderella-2013/theatermania--david-gordon.json",
+        "field": "criticName",
+        "oldValue": "David Gordon",
+        "newValue": "Brian Scott Lipton",
+        "description": "Byline of https://www.theatermania.com/new-york-city-theater/reviews/cinderella-_64482.html is Brian Scott Lipton; David Gordon came from the legacy web-search step. Found by web search / BroadwayWorld roundup, 2026-10-12; the collector refetches and verifies the page before it counts."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "school-of-rock-the-musical-2015/talkinbroadway--matthew-murray.json",
+        "field": "url",
+        "oldValue": "https://www.talkinbroadway.com/world/SchoolofRock.html",
+        "newValue": "https://www.talkinbroadway.com/page/world/SchoolofRock2015.html",
+        "description": "Stored url https://www.talkinbroadway.com/world/SchoolofRock.html came from the legacy LLM web-search step (bot_blocked). The outlet's real review of this production is https://www.talkinbroadway.com/page/world/SchoolofRock2015.html. Found by web search / BroadwayWorld roundup, 2026-10-12; the collector refetches and verifies the page before it counts."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "sister-act-2011/timeout--david-cote.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "timeout--adam-feldman.json",
+        "description": "The outlet's real review of this production (https://www.timeout.com/newyork/theater/sister-act, Adam Feldman) is already on file as timeout--adam-feldman.json with its page text. This row came from the legacy LLM web-search step with a made-up url/byline (https://www.timeout.com/newyork/theater/sister-act-review, David Cote), so it is a duplicate of that record. Found by web search / BroadwayWorld roundup, 2026-10-12; the collector refetches and verifies the page before it counts."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "spongebob-squarepants-2017/vulture--jesse-green.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "vulture--sara-holdren.json",
+        "description": "The outlet's real review of this production (https://www.vulture.com/2017/12/adaptable-yellow-and-porous-is-he-spongebob-broadway.html, Sara Holdren) is already on file as vulture--sara-holdren.json with its page text. This row came from the legacy LLM web-search step with a made-up url/byline (https://www.vulture.com/2017/12/theater-review-spongebob-squarepants-the-broadway-musical.html, Jesse Green), so it is a duplicate of that record. Found by web search / BroadwayWorld roundup, 2026-10-12; the collector refetches and verifies the page before it counts."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "that-championship-season-2011/vulture--jesse-green.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "vulture--scott-brown.json",
+        "description": "The outlet's real review of this production (http://nymag.com/daily/entertainment/2011/03/stage_dive_the_faded_glory_of.html, Scott Brown) is already on file as vulture--scott-brown.json with its page text. This row came from the legacy LLM web-search step with a made-up url/byline (https://www.vulture.com/2011/03/theater_review_that_champions.html, Jesse Green), so it is a duplicate of that record. Found by web search / BroadwayWorld roundup, 2026-10-12; the collector refetches and verifies the page before it counts."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-minutes-2022/timeout--adam-feldman.json",
+        "field": "url",
+        "oldValue": "https://www.timeout.com/newyork/theater/the-minutes-review",
+        "newValue": "https://www.timeout.com/newyork/theater/the-minutes",
+        "description": "Stored url https://www.timeout.com/newyork/theater/the-minutes-review came from the legacy LLM web-search step (scraper_garbage). The outlet's real review of this production is https://www.timeout.com/newyork/theater/the-minutes. Found by web search / BroadwayWorld roundup, 2026-10-12; the collector refetches and verifies the page before it counts."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-mystery-of-edwin-drood-2012/variety--marilyn-stasio.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "variety--steven-suskin.json",
+        "description": "The outlet's real review of this production (https://www.variety.com/review/VE1117948742, Steven Suskin) is already on file as variety--steven-suskin.json with its page text. This row came from the legacy LLM web-search step with a made-up url/byline (https://variety.com/2012/legit/reviews/the-mystery-of-edwin-drood-1117948959/, Marilyn Stasio), so it is a duplicate of that record. Found by web search / BroadwayWorld roundup, 2026-10-12; the collector refetches and verifies the page before it counts."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-peewee-herman-show-2010/variety--david-rooney.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "variety--steven-suskin.json",
+        "description": "The outlet's real review of this production (http://www.variety.com/review/VE1117944035/, Steven Suskin) is already on file as variety--steven-suskin.json with its page text. This row came from the legacy LLM web-search step with a made-up url/byline (https://variety.com/2010/legit/reviews/the-pee-wee-herman-show-1117945092/, David Rooney), so it is a duplicate of that record. Found by web search / BroadwayWorld roundup, 2026-10-12; the collector refetches and verifies the page before it counts."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-people-in-the-picture-2011/talkinbroadway--matthew-murray.json",
+        "field": "url",
+        "oldValue": "https://www.talkinbroadway.com/world/PeopleinthePicture.html",
+        "newValue": "https://talkinbroadway.com/page/world/PeoplePicture.html",
+        "description": "Stored url https://www.talkinbroadway.com/world/PeopleinthePicture.html came from the legacy LLM web-search step (bot_blocked). The outlet's real review of this production is https://talkinbroadway.com/page/world/PeoplePicture.html. Found by web search / BroadwayWorld roundup, 2026-10-12; the collector refetches and verifies the page before it counts."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-testament-of-mary-2013/talkinbroadway--matthew-murray.json",
+        "field": "url",
+        "oldValue": "https://www.talkinbroadway.com/world/TestamentofMary.html",
+        "newValue": "https://talkinbroadway.com/page/world/TestamentMary2013.html",
+        "description": "Stored url https://www.talkinbroadway.com/world/TestamentofMary.html came from the legacy LLM web-search step (scraper_timeout). The outlet's real review of this production is https://talkinbroadway.com/page/world/TestamentMary2013.html. Found by web search / BroadwayWorld roundup, 2026-10-12; the collector refetches and verifies the page before it counts."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "title-of-show-2008/talkinbroadway--matthew-murray.json",
+        "field": "url",
+        "oldValue": "https://www.talkinbroadway.com/world/TitleofShow.html",
+        "newValue": "https://www.talkinbroadway.com/page/world/tos.html",
+        "description": "Stored url https://www.talkinbroadway.com/world/TitleofShow.html came from the legacy LLM web-search step (scraper_timeout). The outlet's real review of this production is https://www.talkinbroadway.com/page/world/tos.html. Found by web search / BroadwayWorld roundup, 2026-10-12; the collector refetches and verifies the page before it counts."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "what-the-constitution-means-to-me-2019/observer--rex-reed.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "observer--david-cote.json",
+        "description": "The outlet's real review of this production (https://observer.com/2019/03/she-the-people-heidi-schreck-shreds-our-toxic-constitution/, David Cote) is already on file as observer--david-cote.json with its page text. This row came from the legacy LLM web-search step with a made-up url/byline (https://observer.com/2019/04/what-the-constitution-means-to-me-broadway-review/, Rex Reed), so it is a duplicate of that record. Found by web search / BroadwayWorld roundup, 2026-10-12; the collector refetches and verifies the page before it counts."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "women-on-the-verge-of-a-nervous-breakdown-2010/variety--charles-isherwood.json",
+        "field": "url",
+        "oldValue": "https://variety.com/2010/legit/reviews/women-on-the-verge-of-a-nervous-breakdown-1117944219/",
+        "newValue": "http://www.variety.com/review/VE1117943995.html",
+        "description": "Stored url https://variety.com/2010/legit/reviews/women-on-the-verge-of-a-nervous-breakdown-1117944219/ came from the legacy LLM web-search step (partial_text). The outlet's real review of this production is http://www.variety.com/review/VE1117943995.html. Found by web search / BroadwayWorld roundup, 2026-10-12; the collector refetches and verifies the page before it counts."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "women-on-the-verge-of-a-nervous-breakdown-2010/variety--charles-isherwood.json",
+        "field": "criticName",
+        "oldValue": "Charles Isherwood",
+        "newValue": "Steven Suskin",
+        "description": "Byline of http://www.variety.com/review/VE1117943995.html is Steven Suskin; Charles Isherwood came from the legacy web-search step. Found by web search / BroadwayWorld roundup, 2026-10-12; the collector refetches and verifies the page before it counts."
+      }
+    ]
+  },
+  "executedAt": "2026-10-12T22:46:40.322Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "its-only-a-play-2014/talkinbroadway--matthew-murray.json url: \"https://www.talkinbroadway.com/world/ItsOnlyaPlay.html\" -> \"https://talkinbroadway.com/page/world/OnlyaPlay2014.html\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "mary-poppins-2006/variety--charles-isherwood.json duplicateOf: write guard kept null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "mj-2022/variety--charles-isherwood.json duplicateOf: write guard kept null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "mrs-warrens-profession-2010/nytimes--ben-brantley.json duplicateOf: write guard kept null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "relatively-speaking-2011/variety--charles-isherwood.json duplicateOf: write guard kept null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "rodgers-hammersteins-cinderella-2013/theatermania--david-gordon.json url: \"https://www.theatermania.com/new-york-city-theater/reviews/rodgers-hammersteins-cinderella_64239.html\" -> \"https://www.theatermania.com/new-york-city-theater/reviews/cinderella-_64482.html\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "rodgers-hammersteins-cinderella-2013/theatermania--david-gordon.json criticName: \"David Gordon\" -> \"Brian Scott Lipton\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "school-of-rock-the-musical-2015/talkinbroadway--matthew-murray.json url: \"https://www.talkinbroadway.com/world/SchoolofRock.html\" -> \"https://www.talkinbroadway.com/page/world/SchoolofRock2015.html\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "sister-act-2011/timeout--david-cote.json duplicateOf: write guard kept null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "spongebob-squarepants-2017/vulture--jesse-green.json duplicateOf: write guard kept null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "that-championship-season-2011/vulture--jesse-green.json duplicateOf: write guard kept null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-minutes-2022/timeout--adam-feldman.json url: \"https://www.timeout.com/newyork/theater/the-minutes-review\" -> \"https://www.timeout.com/newyork/theater/the-minutes\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "the-mystery-of-edwin-drood-2012/variety--marilyn-stasio.json duplicateOf: write guard kept null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "the-peewee-herman-show-2010/variety--david-rooney.json duplicateOf: write guard kept null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-people-in-the-picture-2011/talkinbroadway--matthew-murray.json url: \"https://www.talkinbroadway.com/world/PeopleinthePicture.html\" -> \"https://talkinbroadway.com/page/world/PeoplePicture.html\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-testament-of-mary-2013/talkinbroadway--matthew-murray.json url: \"https://www.talkinbroadway.com/world/TestamentofMary.html\" -> \"https://talkinbroadway.com/page/world/TestamentMary2013.html\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "title-of-show-2008/talkinbroadway--matthew-murray.json url: \"https://www.talkinbroadway.com/world/TitleofShow.html\" -> \"https://www.talkinbroadway.com/page/world/tos.html\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "what-the-constitution-means-to-me-2019/observer--rex-reed.json duplicateOf: write guard kept null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "women-on-the-verge-of-a-nervous-breakdown-2010/variety--charles-isherwood.json url: \"https://variety.com/2010/legit/reviews/women-on-the-verge-of-a-nervous-breakdown-1117944219/\" -> \"http://www.variety.com/review/VE1117943995.html\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "women-on-the-verge-of-a-nervous-breakdown-2010/variety--charles-isherwood.json criticName: \"Charles Isherwood\" -> \"Steven Suskin\""
+    }
+  ]
+}

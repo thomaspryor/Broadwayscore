@@ -1,0 +1,157 @@
+{
+  "issueNumber": "bro-6725-n",
+  "planId": "af39523a-4a47-4ef7-994c-0a0801659916",
+  "status": "applied",
+  "createdAt": "2026-10-31T16:46:14.493Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "UK regional: move review-seeded opening dates to the earliest review date (part 14 of 14)",
+    "steps": [
+      "Earliest review is 4d before the review-seeded opening date",
+      "Opening date now the earliest review date (unconfirmed upper bound)",
+      "Clear the pin so Playbill/theatremonkey press-night dates can still refine this date",
+      "Earliest review is 1d before the review-seeded opening date",
+      "Opening date now the earliest review date (unconfirmed upper bound)",
+      "Clear the pin so Playbill/theatremonkey press-night dates can still refine this date",
+      "Earliest review is 2d before the review-seeded opening date",
+      "Opening date now the earliest review date (unconfirmed upper bound)",
+      "Clear the pin so Playbill/theatremonkey press-night dates can still refine this date"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "withnail-and-i-birmingham-rep-regional-2024",
+        "field": "openingDate",
+        "oldValue": "2024-05-19",
+        "newValue": "2024-05-15",
+        "description": "Earliest review is 4d before the review-seeded opening date"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "withnail-and-i-birmingham-rep-regional-2024",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "first-review-date",
+        "description": "Opening date now the earliest review date (unconfirmed upper bound)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "withnail-and-i-birmingham-rep-regional-2024",
+        "field": "humanCorrectedOpeningDate",
+        "oldValue": "2024-05-15",
+        "newValue": null,
+        "description": "Clear the pin so Playbill/theatremonkey press-night dates can still refine this date"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "all-my-pretty-ones-birmingham-rep-regional-2025",
+        "field": "openingDate",
+        "oldValue": "2025-05-16",
+        "newValue": "2025-05-15",
+        "description": "Earliest review is 1d before the review-seeded opening date"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "all-my-pretty-ones-birmingham-rep-regional-2025",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "first-review-date",
+        "description": "Opening date now the earliest review date (unconfirmed upper bound)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "all-my-pretty-ones-birmingham-rep-regional-2025",
+        "field": "humanCorrectedOpeningDate",
+        "oldValue": "2025-05-15",
+        "newValue": null,
+        "description": "Clear the pin so Playbill/theatremonkey press-night dates can still refine this date"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "death-of-a-salesman-liverpool-everyman-regional-2026",
+        "field": "openingDate",
+        "oldValue": "2026-09-27",
+        "newValue": "2026-09-25",
+        "description": "Earliest review is 2d before the review-seeded opening date"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "death-of-a-salesman-liverpool-everyman-regional-2026",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "first-review-date",
+        "description": "Opening date now the earliest review date (unconfirmed upper bound)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "death-of-a-salesman-liverpool-everyman-regional-2026",
+        "field": "humanCorrectedOpeningDate",
+        "oldValue": "2026-09-25",
+        "newValue": null,
+        "description": "Clear the pin so Playbill/theatremonkey press-night dates can still refine this date"
+      }
+    ]
+  },
+  "executedAt": "2026-10-31T18:27:47.212Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for withnail-and-i-birmingham-rep-regional-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for withnail-and-i-birmingham-rep-regional-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: humanCorrectedOpeningDate updated for withnail-and-i-birmingham-rep-regional-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for all-my-pretty-ones-birmingham-rep-regional-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for all-my-pretty-ones-birmingham-rep-regional-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: humanCorrectedOpeningDate updated for all-my-pretty-ones-birmingham-rep-regional-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for death-of-a-salesman-liverpool-everyman-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for death-of-a-salesman-liverpool-everyman-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: humanCorrectedOpeningDate updated for death-of-a-salesman-liverpool-everyman-regional-2026"
+    }
+  ],
+  "executedIn": "ci"
+}

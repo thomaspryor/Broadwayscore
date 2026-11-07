@@ -1,0 +1,59 @@
+-- TEMPLATE: rename a show id in Supabase (2026 data audit, S5-T8).
+--
+-- This file is a .txt on purpose: the migration runner only picks up *.sql,
+-- and this template must never run as-is. `node scripts/rename-show-id.js
+-- <old-id> <new-id>` prints a filled-in copy of this pattern for every rename
+-- (see SUPABASE_SHOW_ID_TABLES in scripts/lib/show-id-rename.js); paste that
+-- output into the Supabase SQL editor AFTER the data-side rename has landed
+-- (shows.json / review-texts / the web build), never before — the app reads
+-- show_id from the static data, so a row pointing at an id the site does not
+-- serve yet is a broken "My Shows" entry until the deploy catches up.
+--
+-- Tables with a show_id column, confirmed from the repo (2026-09-28):
+--   reviews.show_id      supabase-schema.sql; src/types/database.ts; src/hooks/useMyRating.ts
+--   watchlist.show_id    supabase-schema.sql; src/types/database.ts; src/hooks/useWatchlist.ts
+--                        UNIQUE(user_id, show_id) — a user who somehow holds BOTH ids
+--                        would violate it; the pre-flight below finds that case.
+--   list_items.show_id   supabase-schema.sql; src/hooks/useUserLists.ts
+--                        UNIQUE(list_id, show_id) — same caveat.
+-- JSONB columns embedding show ids (fantasy_entries.picks = array of ids,
+-- fantasy_entries.picks_prices_snapshot = {id: price}) get the jsonb rewrites
+-- at the bottom — optional, review before uncommenting.
+-- NOT shows.json ids, left alone: unmatched_imports.mezz_show_id (Mezzanine
+-- Show objectId), unmatched_imports.resolved_show_id (diary-shows.json id),
+-- import_fetch_log.slug (Show-Score slug), user_show_stubs.mezz_prod_id.
+-- Unverifiable: push_tokens is altered by 20260422_security_advisor_fixes.sql
+-- but has no CREATE TABLE anywhere in the repo, so its columns are unknown.
+--
+-- psql usage:  psql "$SUPABASE_DB_URL" -v old_id='<old-id>' -v new_id='<new-id>' -f <this file renamed to .sql>
+-- (or substitute the two literals by hand in the SQL editor)
+
+-- Pre-flight: counts (0 is fine) and the UNIQUE-collision check (must be 0 rows).
+SELECT 'reviews'    AS t, count(*) FROM reviews    WHERE show_id = :'old_id'
+UNION ALL SELECT 'watchlist',  count(*) FROM watchlist  WHERE show_id = :'old_id'
+UNION ALL SELECT 'list_items', count(*) FROM list_items WHERE show_id = :'old_id';
+
+SELECT w.user_id FROM watchlist w WHERE w.show_id = :'old_id'
+  AND EXISTS (SELECT 1 FROM watchlist x WHERE x.user_id = w.user_id AND x.show_id = :'new_id');
+SELECT li.list_id FROM list_items li WHERE li.show_id = :'old_id'
+  AND EXISTS (SELECT 1 FROM list_items x WHERE x.list_id = li.list_id AND x.show_id = :'new_id');
+
+BEGIN;
+UPDATE reviews    SET show_id = :'new_id' WHERE show_id = :'old_id';
+UPDATE watchlist  SET show_id = :'new_id' WHERE show_id = :'old_id';
+UPDATE list_items SET show_id = :'new_id' WHERE show_id = :'old_id';
+
+-- Optional JSONB rewrites (fantasy league):
+-- UPDATE fantasy_entries SET picks = (
+--   SELECT COALESCE(jsonb_agg(CASE WHEN elem = to_jsonb(:'old_id'::text) THEN to_jsonb(:'new_id'::text) ELSE elem END), '[]'::jsonb)
+--   FROM jsonb_array_elements(picks) AS elem)
+-- WHERE picks @> jsonb_build_array(:'old_id'::text);
+-- UPDATE fantasy_entries SET picks_prices_snapshot =
+--   (picks_prices_snapshot - :'old_id') || jsonb_build_object(:'new_id', picks_prices_snapshot -> :'old_id')
+-- WHERE picks_prices_snapshot ? :'old_id';
+COMMIT;
+
+-- Post-check: nothing left on the old id.
+SELECT 'reviews'    AS t, count(*) FROM reviews    WHERE show_id = :'old_id'
+UNION ALL SELECT 'watchlist',  count(*) FROM watchlist  WHERE show_id = :'old_id'
+UNION ALL SELECT 'list_items', count(*) FROM list_items WHERE show_id = :'old_id';

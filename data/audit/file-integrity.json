@@ -1,0 +1,1628 @@
+{
+  "timestamp": "2026-01-28T20:50:36.202Z",
+  "summary": {
+    "total_files": 2128,
+    "valid_files": 2124,
+    "issues_found": 75,
+    "empty_files": 0,
+    "invalid_json": 0,
+    "missing_required_fields": 4,
+    "unknown_value_fields": 71
+  },
+  "issues": [
+    {
+      "file": "data/review-texts/aladdin-2014/unknown--unknown.json",
+      "type": "unknown_value_fields",
+      "severity": "medium",
+      "message": "Fields with 'unknown' value: outletId, outlet, criticName",
+      "details": {
+        "unknown_fields": [
+          {
+            "field": "outletId",
+            "value": "unknown"
+          },
+          {
+            "field": "outlet",
+            "value": "unknown"
+          },
+          {
+            "field": "criticName",
+            "value": "Unknown"
+          }
+        ]
+      }
+    },
+    {
+      "file": "data/review-texts/an-enemy-of-the-people-2024/unknown--unknown.json",
+      "type": "unknown_value_fields",
+      "severity": "medium",
+      "message": "Fields with 'unknown' value: outletId, outlet, criticName",
+      "details": {
+        "unknown_fields": [
+          {
+            "field": "outletId",
+            "value": "unknown"
+          },
+          {
+            "field": "outlet",
+            "value": "unknown"
+          },
+          {
+            "field": "criticName",
+            "value": "Unknown"
+          }
+        ]
+      }
+    },
+    {
+      "file": "data/review-texts/and-juliet-2022/unknown--unknown.json",
+      "type": "unknown_value_fields",
+      "severity": "medium",
+      "message": "Fields with 'unknown' value: outletId, outlet, criticName",
+      "details": {
+        "unknown_fields": [
+          {
+            "field": "outletId",
+            "value": "unknown"
+          },
+          {
+            "field": "outlet",
+            "value": "unknown"
+          },
+          {
+            "field": "criticName",
+            "value": "Unknown"
+          }
+        ]
+      }
+    },
+    {
+      "file": "data/review-texts/appropriate-2023/unknown--unknown.json",
+      "type": "unknown_value_fields",
+      "severity": "medium",
+      "message": "Fields with 'unknown' value: outletId, outlet, criticName",
+      "details": {
+        "unknown_fields": [
+          {
+            "field": "outletId",
+            "value": "unknown"
+          },
+          {
+            "field": "outlet",
+            "value": "unknown"
+          },
+          {
+            "field": "criticName",
+            "value": "Unknown"
+          }
+        ]
+      }
+    },
+    {
+      "file": "data/review-texts/back-to-the-future-2023/unknown--unknown.json",
+      "type": "unknown_value_fields",
+      "severity": "medium",
+      "message": "Fields with 'unknown' value: outletId, outlet, criticName",
+      "details": {
+        "unknown_fields": [
+          {
+            "field": "outletId",
+            "value": "unknown"
+          },
+          {
+            "field": "outlet",
+            "value": "unknown"
+          },
+          {
+            "field": "criticName",
+            "value": "Unknown"
+          }
+        ]
+      }
+    },
+    {
+      "file": "data/review-texts/book-of-mormon-2011/amny--unknown.json",
+      "type": "missing_required_fields",
+      "severity": "high",
+      "message": "Missing required fields: criticName",
+      "details": {
+        "missing": [
+          "criticName"
+        ],
+        "present": [
+          "showId",
+          "outletId",
+          "outlet"
+        ]
+      }
+    },
+    {
+      "file": "data/review-texts/book-of-mormon-2011/unknown--unknown.json",
+      "type": "unknown_value_fields",
+      "severity": "medium",
+      "message": "Fields with 'unknown' value: outletId, outlet, criticName",
+      "details": {
+        "unknown_fields": [
+          {
+            "field": "outletId",
+            "value": "unknown"
+          },
+          {
+            "field": "outlet",
+            "value": "unknown"
+          },
+          {
+            "field": "criticName",
+            "value": "Unknown"
+          }
+        ]
+      }
+    },
+    {
+      "file": "data/review-texts/boop-2025/unknown--unknown.json",
+      "type": "unknown_value_fields",
+      "severity": "medium",
+      "message": "Fields with 'unknown' value: outletId, outlet, criticName",
+      "details": {
+        "unknown_fields": [
+          {
+            "field": "outletId",
+            "value": "unknown"
+          },
+          {
+            "field": "outlet",
+            "value": "unknown"
+          },
+          {
+            "field": "criticName",
+            "value": "Unknown"
+          }
+        ]
+      }
+    },
+    {
+      "file": "data/review-texts/buena-vista-social-club-2025/unknown--unknown.json",
+      "type": "unknown_value_fields",
+      "severity": "medium",
+      "message": "Fields with 'unknown' value: outletId, outlet, criticName",
+      "details": {
+        "unknown_fields": [
+          {
+            "field": "outletId",
+            "value": "unknown"
+          },
+          {
+            "field": "outlet",
+            "value": "unknown"
+          },
+          {
+            "field": "criticName",
+            "value": "Unknown"
+          }
+        ]
+      }
+    },
+    {
+      "file": "data/review-texts/bug-2026/unknown--unknown.json",
+      "type": "unknown_value_fields",
+      "severity": "medium",
+      "message": "Fields with 'unknown' value: outletId, outlet, criticName",
+      "details": {
+        "unknown_fields": [
+          {
+            "field": "outletId",
+            "value": "unknown"
+          },
+          {
+            "field": "outlet",
+            "value": "unknown"
+          },
+          {
+            "field": "criticName",
+            "value": "Unknown"
+          }
+        ]
+      }
+    },
+    {
+      "file": "data/review-texts/cabaret-2024/unknown--unknown.json",
+      "type": "unknown_value_fields",
+      "severity": "medium",
+      "message": "Fields with 'unknown' value: outletId, outlet, criticName",
+      "details": {
+        "unknown_fields": [
+          {
+            "field": "outletId",
+            "value": "unknown"
+          },
+          {
+            "field": "outlet",
+            "value": "unknown"
+          },
+          {
+            "field": "criticName",
+            "value": "Unknown"
+          }
+        ]
+      }
+    },
+    {
+      "file": "data/review-texts/chess-2025/unknown--unknown.json",
+      "type": "unknown_value_fields",
+      "severity": "medium",
+      "message": "Fields with 'unknown' value: outletId, outlet, criticName",
+      "details": {
+        "unknown_fields": [
+          {
+            "field": "outletId",
+            "value": "unknown"
+          },
+          {
+            "field": "outlet",
+            "value": "unknown"
+          },
+          {
+            "field": "criticName",
+            "value": "Unknown"
+          }
+        ]
+      }
+    },
+    {
+      "file": "data/review-texts/chicago-1996/unknown--unknown.json",
+      "type": "unknown_value_fields",
+      "severity": "medium",
+      "message": "Fields with 'unknown' value: outletId, outlet, criticName",
+      "details": {
+        "unknown_fields": [
+          {
+            "field": "outletId",
+            "value": "unknown"
+          },
+          {
+            "field": "outlet",
+            "value": "unknown"
+          },
+          {
+            "field": "criticName",
+            "value": "Unknown"
+          }
+        ]
+      }
+    },
+    {
+      "file": "data/review-texts/days-of-wine-and-roses-2024/unknown--unknown.json",
+      "type": "unknown_value_fields",
+      "severity": "medium",
+      "message": "Fields with 'unknown' value: outletId, outlet, criticName",
+      "details": {
+        "unknown_fields": [
+          {
+            "field": "outletId",
+            "value": "unknown"
+          },
+          {
+            "field": "outlet",
+            "value": "unknown"
+          },
+          {
+            "field": "criticName",
+            "value": "Unknown"
+          }
+        ]
+      }
+    },
+    {
+      "file": "data/review-texts/death-becomes-her-2024/unknown--unknown.json",
+      "type": "unknown_value_fields",
+      "severity": "medium",
+      "message": "Fields with 'unknown' value: outletId, outlet, criticName",
+      "details": {
+        "unknown_fields": [
+          {
+            "field": "outletId",
+            "value": "unknown"
+          },
+          {
+            "field": "outlet",
+            "value": "unknown"
+          },
+          {
+            "field": "criticName",
+            "value": "Unknown"
+          }
+        ]
+      }
+    },
+    {
+      "file": "data/review-texts/death-of-a-salesman-2026/unknown--unknown.json",
+      "type": "unknown_value_fields",
+      "severity": "medium",
+      "message": "Fields with 'unknown' value: outletId, outlet, criticName",
+      "details": {
+        "unknown_fields": [
+          {
+            "field": "outletId",
+            "value": "unknown"
+          },
+          {
+            "field": "outlet",
+            "value": "unknown"
+          },
+          {
+            "field": "criticName",
+            "value": "Unknown"
+          }
+        ]
+      }
+    },
+    {
+      "file": "data/review-texts/grey-house-2023/unknown--unknown.json",
+      "type": "unknown_value_fields",
+      "severity": "medium",
+      "message": "Fields with 'unknown' value: outletId, outlet, criticName",
+      "details": {
+        "unknown_fields": [
+          {
+            "field": "outletId",
+            "value": "unknown"
+          },
+          {
+            "field": "outlet",
+            "value": "unknown"
+          },
+          {
+            "field": "criticName",
+            "value": "Unknown"
+          }
+        ]
+      }
+    },
+    {
+      "file": "data/review-texts/gutenberg-2023/unknown--unknown.json",
+      "type": "unknown_value_fields",
+      "severity": "medium",
+      "message": "Fields with 'unknown' value: outletId, outlet, criticName",
+      "details": {
+        "unknown_fields": [
+          {
+            "field": "outletId",
+            "value": "unknown"
+          },
+          {
+            "field": "outlet",
+            "value": "unknown"
+          },
+          {
+            "field": "criticName",
+            "value": "Unknown"
+          }
+        ]
+      }
+    },
+    {
+      "file": "data/review-texts/hadestown-2019/unknown--unknown.json",
+      "type": "unknown_value_fields",
+      "severity": "medium",
+      "message": "Fields with 'unknown' value: outletId, outlet, criticName",
+      "details": {
+        "unknown_fields": [
+          {
+            "field": "outletId",
+            "value": "unknown"
+          },
+          {
+            "field": "outlet",
+            "value": "unknown"
+          },
+          {
+            "field": "criticName",
+            "value": "Unknown"
+          }
+        ]
+      }
+    },
+    {
+      "file": "data/review-texts/hamilton-2015/unknown--unknown.json",
+      "type": "unknown_value_fields",
+      "severity": "medium",
+      "message": "Fields with 'unknown' value: outletId, outlet, criticName",
+      "details": {
+        "unknown_fields": [
+          {
+            "field": "outletId",
+            "value": "unknown"
+          },
+          {
+            "field": "outlet",
+            "value": "unknown"
+          },
+          {
+            "field": "criticName",
+            "value": "Unknown"
+          }
+        ]
+      }
+    },
+    {
+      "file": "data/review-texts/harmony-2023/unknown--unknown.json",
+      "type": "unknown_value_fields",
+      "severity": "medium",
+      "message": "Fields with 'unknown' value: outletId, outlet, criticName",
+      "details": {
+        "unknown_fields": [
+          {
+            "field": "outletId",
+            "value": "unknown"
+          },
+          {
+            "field": "outlet",
+            "value": "unknown"
+          },
+          {
+            "field": "criticName",
+            "value": "Unknown"
+          }
+        ]
+      }
+    },
+    {
+      "file": "data/review-texts/harry-potter-2021/unknown--unknown.json",
+      "type": "unknown_value_fields",
+      "severity": "medium",
+      "message": "Fields with 'unknown' value: outletId, outlet, criticName",
+      "details": {
+        "unknown_fields": [
+          {
+            "field": "outletId",
+            "value": "unknown"
+          },
+          {
+            "field": "outlet",
+            "value": "unknown"
+          },
+          {
+            "field": "criticName",
+            "value": "Unknown"
+          }
+        ]
+      }
+    },
+    {
+      "file": "data/review-texts/heart-of-rock-and-roll-2024/unknown--unknown.json",
+      "type": "unknown_value_fields",
+      "severity": "medium",
+      "message": "Fields with 'unknown' value: outletId, outlet, criticName",
+      "details": {
+        "unknown_fields": [
+          {
+            "field": "outletId",
+            "value": "unknown"
+          },
+          {
+            "field": "outlet",
+            "value": "unknown"
+          },
+          {
+            "field": "criticName",
+            "value": "Unknown"
+          }
+        ]
+      }
+    },
+    {
+      "file": "data/review-texts/hells-kitchen-2024/unknown--unknown.json",
+      "type": "unknown_value_fields",
+      "severity": "medium",
+      "message": "Fields with 'unknown' value: outletId, outlet, criticName",
+      "details": {
+        "unknown_fields": [
+          {
+            "field": "outletId",
+            "value": "unknown"
+          },
+          {
+            "field": "outlet",
+            "value": "unknown"
+          },
+          {
+            "field": "criticName",
+            "value": "Unknown"
+          }
+        ]
+      }
+    },
+    {
+      "file": "data/review-texts/here-lies-love-2023/unknown--unknown.json",
+      "type": "unknown_value_fields",
+      "severity": "medium",
+      "message": "Fields with 'unknown' value: outletId, outlet, criticName",
+      "details": {
+        "unknown_fields": [
+          {
+            "field": "outletId",
+            "value": "unknown"
+          },
+          {
+            "field": "outlet",
+            "value": "unknown"
+          },
+          {
+            "field": "criticName",
+            "value": "Unknown"
+          }
+        ]
+      }
+    },
+    {
+      "file": "data/review-texts/how-to-dance-in-ohio-2023/unknown--unknown.json",
+      "type": "unknown_value_fields",
+      "severity": "medium",
+      "message": "Fields with 'unknown' value: outletId, outlet, criticName",
+      "details": {
+        "unknown_fields": [
+          {
+            "field": "outletId",
+            "value": "unknown"
+          },
+          {
+            "field": "outlet",
+            "value": "unknown"
+          },
+          {
+            "field": "criticName",
+            "value": "Unknown"
+          }
+        ]
+      }
+    },
+    {
+      "file": "data/review-texts/i-need-that-2023/unknown--unknown.json",
+      "type": "unknown_value_fields",
+      "severity": "medium",
+      "message": "Fields with 'unknown' value: outletId, outlet, criticName",
+      "details": {
+        "unknown_fields": [
+          {
+            "field": "outletId",
+            "value": "unknown"
+          },
+          {
+            "field": "outlet",
+            "value": "unknown"
+          },
+          {
+            "field": "criticName",
+            "value": "Unknown"
+          }
+        ]
+      }
+    },
+    {
+      "file": "data/review-texts/illinoise-2024/unknown--thom-geier.json",
+      "type": "missing_required_fields",
+      "severity": "high",
+      "message": "Missing required fields: outlet",
+      "details": {
+        "missing": [
+          "outlet"
+        ],
+        "present": [
+          "showId",
+          "outletId",
+          "criticName"
+        ]
+      }
+    },
+    {
+      "file": "data/review-texts/illinoise-2024/unknown--unknown.json",
+      "type": "unknown_value_fields",
+      "severity": "medium",
+      "message": "Fields with 'unknown' value: outletId, outlet, criticName",
+      "details": {
+        "unknown_fields": [
+          {
+            "field": "outletId",
+            "value": "unknown"
+          },
+          {
+            "field": "outlet",
+            "value": "unknown"
+          },
+          {
+            "field": "criticName",
+            "value": "Unknown"
+          }
+        ]
+      }
+    },
+    {
+      "file": "data/review-texts/jajas-african-hair-braiding-2023/unknown--unknown.json",
+      "type": "unknown_value_fields",
+      "severity": "medium",
+      "message": "Fields with 'unknown' value: outletId, outlet, criticName",
+      "details": {
+        "unknown_fields": [
+          {
+            "field": "outletId",
+            "value": "unknown"
+          },
+          {
+            "field": "outlet",
+            "value": "unknown"
+          },
+          {
+            "field": "criticName",
+            "value": "Unknown"
+          }
+        ]
+      }
+    },
+    {
+      "file": "data/review-texts/just-in-time-2025/unknown--unknown.json",
+      "type": "unknown_value_fields",
+      "severity": "medium",
+      "message": "Fields with 'unknown' value: outletId, outlet, criticName",
+      "details": {
+        "unknown_fields": [
+          {
+            "field": "outletId",
+            "value": "unknown"
+          },
+          {
+            "field": "outlet",
+            "value": "unknown"
+          },
+          {
+            "field": "criticName",
+            "value": "Unknown"
+          }
+        ]
+      }
+    },
+    {
+      "file": "data/review-texts/lempicka-2024/unknown--unknown.json",
+      "type": "unknown_value_fields",
+      "severity": "medium",
+      "message": "Fields with 'unknown' value: outletId, outlet, criticName",
+      "details": {
+        "unknown_fields": [
+          {
+            "field": "outletId",
+            "value": "unknown"
+          },
+          {
+            "field": "outlet",
+            "value": "unknown"
+          },
+          {
+            "field": "criticName",
+            "value": "Unknown"
+          }
+        ]
+      }
+    },
+    {
+      "file": "data/review-texts/liberation-2025/unknown--unknown.json",
+      "type": "unknown_value_fields",
+      "severity": "medium",
+      "message": "Fields with 'unknown' value: outletId, outlet, criticName",
+      "details": {
+        "unknown_fields": [
+          {
+            "field": "outletId",
+            "value": "unknown"
+          },
+          {
+            "field": "outlet",
+            "value": "unknown"
+          },
+          {
+            "field": "criticName",
+            "value": "Unknown"
+          }
+        ]
+      }
+    },
+    {
+      "file": "data/review-texts/mamma-mia-2025/unknown--unknown.json",
+      "type": "unknown_value_fields",
+      "severity": "medium",
+      "message": "Fields with 'unknown' value: outletId, outlet, criticName",
+      "details": {
+        "unknown_fields": [
+          {
+            "field": "outletId",
+            "value": "unknown"
+          },
+          {
+            "field": "outlet",
+            "value": "unknown"
+          },
+          {
+            "field": "criticName",
+            "value": "Unknown"
+          }
+        ]
+      }
+    },
+    {
+      "file": "data/review-texts/marjorie-prime-2025/unknown--unknown.json",
+      "type": "unknown_value_fields",
+      "severity": "medium",
+      "message": "Fields with 'unknown' value: outletId, outlet, criticName",
+      "details": {
+        "unknown_fields": [
+          {
+            "field": "outletId",
+            "value": "unknown"
+          },
+          {
+            "field": "outlet",
+            "value": "unknown"
+          },
+          {
+            "field": "criticName",
+            "value": "Unknown"
+          }
+        ]
+      }
+    },
+    {
+      "file": "data/review-texts/mary-jane-2024/unknown--unknown.json",
+      "type": "unknown_value_fields",
+      "severity": "medium",
+      "message": "Fields with 'unknown' value: outletId, outlet, criticName",
+      "details": {
+        "unknown_fields": [
+          {
+            "field": "outletId",
+            "value": "unknown"
+          },
+          {
+            "field": "outlet",
+            "value": "unknown"
+          },
+          {
+            "field": "criticName",
+            "value": "Unknown"
+          }
+        ]
+      }
+    },
+    {
+      "file": "data/review-texts/maybe-happy-ending-2024/unknown--unknown.json",
+      "type": "unknown_value_fields",
+      "severity": "medium",
+      "message": "Fields with 'unknown' value: outletId, outlet, criticName",
+      "details": {
+        "unknown_fields": [
+          {
+            "field": "outletId",
+            "value": "unknown"
+          },
+          {
+            "field": "outlet",
+            "value": "unknown"
+          },
+          {
+            "field": "criticName",
+            "value": "Unknown"
+          }
+        ]
+      }
+    },
+    {
+      "file": "data/review-texts/merrily-we-roll-along-2023/unknown--unknown.json",
+      "type": "unknown_value_fields",
+      "severity": "medium",
+      "message": "Fields with 'unknown' value: outletId, outlet, criticName",
+      "details": {
+        "unknown_fields": [
+          {
+            "field": "outletId",
+            "value": "unknown"
+          },
+          {
+            "field": "outlet",
+            "value": "unknown"
+          },
+          {
+            "field": "criticName",
+            "value": "Unknown"
+          }
+        ]
+      }
+    },
+    {
+      "file": "data/review-texts/mj-2022/unknown--unknown.json",
+      "type": "unknown_value_fields",
+      "severity": "medium",
+      "message": "Fields with 'unknown' value: outletId, outlet, criticName",
+      "details": {
+        "unknown_fields": [
+          {
+            "field": "outletId",
+            "value": "unknown"
+          },
+          {
+            "field": "outlet",
+            "value": "unknown"
+          },
+          {
+            "field": "criticName",
+            "value": "Unknown"
+          }
+        ]
+      }
+    },
+    {
+      "file": "data/review-texts/mother-play-2024/unknown--unknown.json",
+      "type": "unknown_value_fields",
+      "severity": "medium",
+      "message": "Fields with 'unknown' value: outletId, outlet, criticName",
+      "details": {
+        "unknown_fields": [
+          {
+            "field": "outletId",
+            "value": "unknown"
+          },
+          {
+            "field": "outlet",
+            "value": "unknown"
+          },
+          {
+            "field": "criticName",
+            "value": "Unknown"
+          }
+        ]
+      }
+    },
+    {
+      "file": "data/review-texts/moulin-rouge-2019/unknown--unknown.json",
+      "type": "unknown_value_fields",
+      "severity": "medium",
+      "message": "Fields with 'unknown' value: outletId, outlet, criticName",
+      "details": {
+        "unknown_fields": [
+          {
+            "field": "outletId",
+            "value": "unknown"
+          },
+          {
+            "field": "outlet",
+            "value": "unknown"
+          },
+          {
+            "field": "criticName",
+            "value": "Unknown"
+          }
+        ]
+      }
+    },
+    {
+      "file": "data/review-texts/oedipus-2025/unknown--unknown.json",
+      "type": "unknown_value_fields",
+      "severity": "medium",
+      "message": "Fields with 'unknown' value: outletId, outlet, criticName",
+      "details": {
+        "unknown_fields": [
+          {
+            "field": "outletId",
+            "value": "unknown"
+          },
+          {
+            "field": "outlet",
+            "value": "unknown"
+          },
+          {
+            "field": "criticName",
+            "value": "Unknown"
+          }
+        ]
+      }
+    },
+    {
+      "file": "data/review-texts/oh-mary-2024/unknown--unknown.json",
+      "type": "unknown_value_fields",
+      "severity": "medium",
+      "message": "Fields with 'unknown' value: outletId, outlet, criticName",
+      "details": {
+        "unknown_fields": [
+          {
+            "field": "outletId",
+            "value": "unknown"
+          },
+          {
+            "field": "outlet",
+            "value": "unknown"
+          },
+          {
+            "field": "criticName",
+            "value": "Unknown"
+          }
+        ]
+      }
+    },
+    {
+      "file": "data/review-texts/once-upon-a-one-more-time-2023/unknown--unknown.json",
+      "type": "unknown_value_fields",
+      "severity": "medium",
+      "message": "Fields with 'unknown' value: outletId, outlet, criticName",
+      "details": {
+        "unknown_fields": [
+          {
+            "field": "outletId",
+            "value": "unknown"
+          },
+          {
+            "field": "outlet",
+            "value": "unknown"
+          },
+          {
+            "field": "criticName",
+            "value": "Unknown"
+          }
+        ]
+      }
+    },
+    {
+      "file": "data/review-texts/operation-mincemeat-2025/unknown--unknown.json",
+      "type": "unknown_value_fields",
+      "severity": "medium",
+      "message": "Fields with 'unknown' value: outletId, outlet, criticName",
+      "details": {
+        "unknown_fields": [
+          {
+            "field": "outletId",
+            "value": "unknown"
+          },
+          {
+            "field": "outlet",
+            "value": "unknown"
+          },
+          {
+            "field": "criticName",
+            "value": "Unknown"
+          }
+        ]
+      }
+    },
+    {
+      "file": "data/review-texts/our-town-2024/unknown--unknown.json",
+      "type": "unknown_value_fields",
+      "severity": "medium",
+      "message": "Fields with 'unknown' value: outletId, outlet, criticName",
+      "details": {
+        "unknown_fields": [
+          {
+            "field": "outletId",
+            "value": "unknown"
+          },
+          {
+            "field": "outlet",
+            "value": "unknown"
+          },
+          {
+            "field": "criticName",
+            "value": "Unknown"
+          }
+        ]
+      }
+    },
+    {
+      "file": "data/review-texts/patriots-2024/unknown--unknown.json",
+      "type": "unknown_value_fields",
+      "severity": "medium",
+      "message": "Fields with 'unknown' value: outletId, outlet, criticName",
+      "details": {
+        "unknown_fields": [
+          {
+            "field": "outletId",
+            "value": "unknown"
+          },
+          {
+            "field": "outlet",
+            "value": "unknown"
+          },
+          {
+            "field": "criticName",
+            "value": "Unknown"
+          }
+        ]
+      }
+    },
+    {
+      "file": "data/review-texts/prayer-for-the-french-republic-2024/unknown--unknown.json",
+      "type": "unknown_value_fields",
+      "severity": "medium",
+      "message": "Fields with 'unknown' value: outletId, outlet, criticName",
+      "details": {
+        "unknown_fields": [
+          {
+            "field": "outletId",
+            "value": "unknown"
+          },
+          {
+            "field": "outlet",
+            "value": "unknown"
+          },
+          {
+            "field": "criticName",
+            "value": "Unknown"
+          }
+        ]
+      }
+    },
+    {
+      "file": "data/review-texts/purlie-victorious-2023/unknown--unknown.json",
+      "type": "unknown_value_fields",
+      "severity": "medium",
+      "message": "Fields with 'unknown' value: outletId, outlet, criticName",
+      "details": {
+        "unknown_fields": [
+          {
+            "field": "outletId",
+            "value": "unknown"
+          },
+          {
+            "field": "outlet",
+            "value": "unknown"
+          },
+          {
+            "field": "criticName",
+            "value": "Unknown"
+          }
+        ]
+      }
+    },
+    {
+      "file": "data/review-texts/queen-versailles-2025/unknown--unknown.json",
+      "type": "unknown_value_fields",
+      "severity": "medium",
+      "message": "Fields with 'unknown' value: outletId, outlet, criticName",
+      "details": {
+        "unknown_fields": [
+          {
+            "field": "outletId",
+            "value": "unknown"
+          },
+          {
+            "field": "outlet",
+            "value": "unknown"
+          },
+          {
+            "field": "criticName",
+            "value": "Unknown"
+          }
+        ]
+      }
+    },
+    {
+      "file": "data/review-texts/ragtime-2025/unknown--unknown.json",
+      "type": "unknown_value_fields",
+      "severity": "medium",
+      "message": "Fields with 'unknown' value: outletId, outlet, criticName",
+      "details": {
+        "unknown_fields": [
+          {
+            "field": "outletId",
+            "value": "unknown"
+          },
+          {
+            "field": "outlet",
+            "value": "unknown"
+          },
+          {
+            "field": "criticName",
+            "value": "Unknown"
+          }
+        ]
+      }
+    },
+    {
+      "file": "data/review-texts/real-women-have-curves-2025/deadline--unknown.json",
+      "type": "unknown_value_fields",
+      "severity": "medium",
+      "message": "Fields with 'unknown' value: criticName",
+      "details": {
+        "unknown_fields": [
+          {
+            "field": "criticName",
+            "value": "Unknown"
+          }
+        ]
+      }
+    },
+    {
+      "file": "data/review-texts/real-women-have-curves-2025/unknown--unknown.json",
+      "type": "unknown_value_fields",
+      "severity": "medium",
+      "message": "Fields with 'unknown' value: outletId, outlet, criticName",
+      "details": {
+        "unknown_fields": [
+          {
+            "field": "outletId",
+            "value": "unknown"
+          },
+          {
+            "field": "outlet",
+            "value": "unknown"
+          },
+          {
+            "field": "criticName",
+            "value": "Unknown"
+          }
+        ]
+      }
+    },
+    {
+      "file": "data/review-texts/redwood-2025/unknown--unknown.json",
+      "type": "unknown_value_fields",
+      "severity": "medium",
+      "message": "Fields with 'unknown' value: outletId, outlet, criticName",
+      "details": {
+        "unknown_fields": [
+          {
+            "field": "outletId",
+            "value": "unknown"
+          },
+          {
+            "field": "outlet",
+            "value": "unknown"
+          },
+          {
+            "field": "criticName",
+            "value": "Unknown"
+          }
+        ]
+      }
+    },
+    {
+      "file": "data/review-texts/six-2021/unknown--unknown.json",
+      "type": "unknown_value_fields",
+      "severity": "medium",
+      "message": "Fields with 'unknown' value: outletId, outlet, criticName",
+      "details": {
+        "unknown_fields": [
+          {
+            "field": "outletId",
+            "value": "unknown"
+          },
+          {
+            "field": "outlet",
+            "value": "unknown"
+          },
+          {
+            "field": "criticName",
+            "value": "Unknown"
+          }
+        ]
+      }
+    },
+    {
+      "file": "data/review-texts/spamalot-2023/unknown--unknown.json",
+      "type": "unknown_value_fields",
+      "severity": "medium",
+      "message": "Fields with 'unknown' value: outletId, outlet, criticName",
+      "details": {
+        "unknown_fields": [
+          {
+            "field": "outletId",
+            "value": "unknown"
+          },
+          {
+            "field": "outlet",
+            "value": "unknown"
+          },
+          {
+            "field": "criticName",
+            "value": "Unknown"
+          }
+        ]
+      }
+    },
+    {
+      "file": "data/review-texts/stereophonic-2024/unknown--unknown.json",
+      "type": "unknown_value_fields",
+      "severity": "medium",
+      "message": "Fields with 'unknown' value: outletId, outlet, criticName",
+      "details": {
+        "unknown_fields": [
+          {
+            "field": "outletId",
+            "value": "unknown"
+          },
+          {
+            "field": "outlet",
+            "value": "unknown"
+          },
+          {
+            "field": "criticName",
+            "value": "Unknown"
+          }
+        ]
+      }
+    },
+    {
+      "file": "data/review-texts/stranger-things-2024/unknown--unknown.json",
+      "type": "unknown_value_fields",
+      "severity": "medium",
+      "message": "Fields with 'unknown' value: outletId, outlet, criticName",
+      "details": {
+        "unknown_fields": [
+          {
+            "field": "outletId",
+            "value": "unknown"
+          },
+          {
+            "field": "outlet",
+            "value": "unknown"
+          },
+          {
+            "field": "criticName",
+            "value": "Unknown"
+          }
+        ]
+      }
+    },
+    {
+      "file": "data/review-texts/suffs-2024/unknown--unknown.json",
+      "type": "unknown_value_fields",
+      "severity": "medium",
+      "message": "Fields with 'unknown' value: outletId, outlet, criticName",
+      "details": {
+        "unknown_fields": [
+          {
+            "field": "outletId",
+            "value": "unknown"
+          },
+          {
+            "field": "outlet",
+            "value": "unknown"
+          },
+          {
+            "field": "criticName",
+            "value": "Unknown"
+          }
+        ]
+      }
+    },
+    {
+      "file": "data/review-texts/the-cottage-2023/unknown--unknown.json",
+      "type": "unknown_value_fields",
+      "severity": "medium",
+      "message": "Fields with 'unknown' value: outletId, outlet, criticName",
+      "details": {
+        "unknown_fields": [
+          {
+            "field": "outletId",
+            "value": "unknown"
+          },
+          {
+            "field": "outlet",
+            "value": "unknown"
+          },
+          {
+            "field": "criticName",
+            "value": "Unknown"
+          }
+        ]
+      }
+    },
+    {
+      "file": "data/review-texts/the-great-gatsby-2024/unknown--david-sheward.json",
+      "type": "unknown_value_fields",
+      "severity": "medium",
+      "message": "Fields with 'unknown' value: outletId, outlet",
+      "details": {
+        "unknown_fields": [
+          {
+            "field": "outletId",
+            "value": "unknown"
+          },
+          {
+            "field": "outlet",
+            "value": "unknown"
+          }
+        ]
+      }
+    },
+    {
+      "file": "data/review-texts/the-great-gatsby-2024/unknown--unknown.json",
+      "type": "unknown_value_fields",
+      "severity": "medium",
+      "message": "Fields with 'unknown' value: outletId, outlet, criticName",
+      "details": {
+        "unknown_fields": [
+          {
+            "field": "outletId",
+            "value": "unknown"
+          },
+          {
+            "field": "outlet",
+            "value": "unknown"
+          },
+          {
+            "field": "criticName",
+            "value": "Unknown"
+          }
+        ]
+      }
+    },
+    {
+      "file": "data/review-texts/the-lion-king-1997/unknown--frank-scheck.json",
+      "type": "missing_required_fields",
+      "severity": "high",
+      "message": "Missing required fields: outlet",
+      "details": {
+        "missing": [
+          "outlet"
+        ],
+        "present": [
+          "showId",
+          "outletId",
+          "criticName"
+        ]
+      }
+    },
+    {
+      "file": "data/review-texts/the-lion-king-1997/unknown--unknown.json",
+      "type": "unknown_value_fields",
+      "severity": "medium",
+      "message": "Fields with 'unknown' value: outletId, outlet, criticName",
+      "details": {
+        "unknown_fields": [
+          {
+            "field": "outletId",
+            "value": "unknown"
+          },
+          {
+            "field": "outlet",
+            "value": "unknown"
+          },
+          {
+            "field": "criticName",
+            "value": "Unknown"
+          }
+        ]
+      }
+    },
+    {
+      "file": "data/review-texts/the-notebook-2024/unknown--unknown.json",
+      "type": "unknown_value_fields",
+      "severity": "medium",
+      "message": "Fields with 'unknown' value: outletId, outlet, criticName",
+      "details": {
+        "unknown_fields": [
+          {
+            "field": "outletId",
+            "value": "unknown"
+          },
+          {
+            "field": "outlet",
+            "value": "unknown"
+          },
+          {
+            "field": "criticName",
+            "value": "Unknown"
+          }
+        ]
+      }
+    },
+    {
+      "file": "data/review-texts/the-outsiders-2024/unknown--unknown.json",
+      "type": "unknown_value_fields",
+      "severity": "medium",
+      "message": "Fields with 'unknown' value: outletId, outlet, criticName",
+      "details": {
+        "unknown_fields": [
+          {
+            "field": "outletId",
+            "value": "unknown"
+          },
+          {
+            "field": "outlet",
+            "value": "unknown"
+          },
+          {
+            "field": "criticName",
+            "value": "Unknown"
+          }
+        ]
+      }
+    },
+    {
+      "file": "data/review-texts/the-roommate-2024/unknown--unknown.json",
+      "type": "unknown_value_fields",
+      "severity": "medium",
+      "message": "Fields with 'unknown' value: outletId, outlet, criticName",
+      "details": {
+        "unknown_fields": [
+          {
+            "field": "outletId",
+            "value": "unknown"
+          },
+          {
+            "field": "outlet",
+            "value": "unknown"
+          },
+          {
+            "field": "criticName",
+            "value": "Unknown"
+          }
+        ]
+      }
+    },
+    {
+      "file": "data/review-texts/the-shark-is-broken-2023/unknown--unknown.json",
+      "type": "unknown_value_fields",
+      "severity": "medium",
+      "message": "Fields with 'unknown' value: outletId, outlet, criticName",
+      "details": {
+        "unknown_fields": [
+          {
+            "field": "outletId",
+            "value": "unknown"
+          },
+          {
+            "field": "outlet",
+            "value": "unknown"
+          },
+          {
+            "field": "criticName",
+            "value": "Unknown"
+          }
+        ]
+      }
+    },
+    {
+      "file": "data/review-texts/the-whos-tommy-2024/unknown--unknown.json",
+      "type": "unknown_value_fields",
+      "severity": "medium",
+      "message": "Fields with 'unknown' value: outletId, outlet, criticName",
+      "details": {
+        "unknown_fields": [
+          {
+            "field": "outletId",
+            "value": "unknown"
+          },
+          {
+            "field": "outlet",
+            "value": "unknown"
+          },
+          {
+            "field": "criticName",
+            "value": "Unknown"
+          }
+        ]
+      }
+    },
+    {
+      "file": "data/review-texts/the-wiz-2024/unknown--unknown.json",
+      "type": "unknown_value_fields",
+      "severity": "medium",
+      "message": "Fields with 'unknown' value: outletId, outlet, criticName",
+      "details": {
+        "unknown_fields": [
+          {
+            "field": "outletId",
+            "value": "unknown"
+          },
+          {
+            "field": "outlet",
+            "value": "unknown"
+          },
+          {
+            "field": "criticName",
+            "value": "Unknown"
+          }
+        ]
+      }
+    },
+    {
+      "file": "data/review-texts/two-strangers-bway-2025/unknown--unknown.json",
+      "type": "unknown_value_fields",
+      "severity": "medium",
+      "message": "Fields with 'unknown' value: outletId, outlet, criticName",
+      "details": {
+        "unknown_fields": [
+          {
+            "field": "outletId",
+            "value": "unknown"
+          },
+          {
+            "field": "outlet",
+            "value": "unknown"
+          },
+          {
+            "field": "criticName",
+            "value": "Unknown"
+          }
+        ]
+      }
+    },
+    {
+      "file": "data/review-texts/uncle-vanya-2024/unknown--unknown.json",
+      "type": "unknown_value_fields",
+      "severity": "medium",
+      "message": "Fields with 'unknown' value: outletId, outlet, criticName",
+      "details": {
+        "unknown_fields": [
+          {
+            "field": "outletId",
+            "value": "unknown"
+          },
+          {
+            "field": "outlet",
+            "value": "unknown"
+          },
+          {
+            "field": "criticName",
+            "value": "Unknown"
+          }
+        ]
+      }
+    },
+    {
+      "file": "data/review-texts/water-for-elephants-2024/unknown--unknown.json",
+      "type": "unknown_value_fields",
+      "severity": "medium",
+      "message": "Fields with 'unknown' value: outletId, outlet, criticName",
+      "details": {
+        "unknown_fields": [
+          {
+            "field": "outletId",
+            "value": "unknown"
+          },
+          {
+            "field": "outlet",
+            "value": "unknown"
+          },
+          {
+            "field": "criticName",
+            "value": "Unknown"
+          }
+        ]
+      }
+    },
+    {
+      "file": "data/review-texts/wicked-2003/newyorker--unknown.json",
+      "type": "missing_required_fields",
+      "severity": "high",
+      "message": "Missing required fields: criticName",
+      "details": {
+        "missing": [
+          "criticName"
+        ],
+        "present": [
+          "showId",
+          "outletId",
+          "outlet"
+        ]
+      }
+    },
+    {
+      "file": "data/review-texts/wicked-2003/unknown--unknown.json",
+      "type": "unknown_value_fields",
+      "severity": "medium",
+      "message": "Fields with 'unknown' value: outletId, outlet, criticName",
+      "details": {
+        "unknown_fields": [
+          {
+            "field": "outletId",
+            "value": "unknown"
+          },
+          {
+            "field": "outlet",
+            "value": "unknown"
+          },
+          {
+            "field": "criticName",
+            "value": "Unknown"
+          }
+        ]
+      }
+    }
+  ]
+}

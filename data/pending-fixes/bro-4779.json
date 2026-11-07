@@ -1,0 +1,34 @@
+{
+  "issueNumber": "bro-4779",
+  "planId": "7c1b6a52-4f0e-4d3a-9b8e-2a5d6f4c1e79",
+  "status": "partial",
+  "createdAt": "2026-10-16T03:10:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4779: delete the sibling-misfiled Show Score/DTLI aggregator-archive pages found by the BRO-2121 detector and tombstone their ids in _not-found.json so the weekly scrape does not re-fetch them.",
+    "steps": [
+      "Run audit-sibling-misfile-archive.js --delete --expect=60 on the checked-out private archive (aborts, deleting nothing, if the count differs)",
+      "The workflow pushes the deletions and tombstones to the private repo"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "run-script",
+        "script": "audit-sibling-misfile-archive.js",
+        "args": "--delete --expect=60",
+        "description": "Delete sibling-misfiled archive pages and tombstone their ids"
+      }
+    ]
+  },
+  "executedAt": "2026-10-16T03:55:23.921Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script audit-sibling-misfile-archive.js failed: Command failed: node scripts/audit-sibling-misfile-archive.js --delete --expect=60"
+    }
+  ]
+}

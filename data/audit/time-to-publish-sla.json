@@ -1,0 +1,39 @@
+{
+  "generatedAt": "2026-11-07T09:10:46.765Z",
+  "scope": "2 opening window(s): iphigenie-en-tauride-english-national-opera-west-end-2026 (2026-11-06), dr-seuss-how-the-grinch-stole-christmas-tour-2026 (2026-11-06)",
+  "degraded": null,
+  "windows": [
+    {
+      "showId": "iphigenie-en-tauride-english-national-opera-west-end-2026",
+      "openingDate": "2026-11-06",
+      "from": "2026-11-05T00:00:00.000Z",
+      "to": "2026-11-10T23:59:59.999Z"
+    },
+    {
+      "showId": "dr-seuss-how-the-grinch-stole-christmas-tour-2026",
+      "openingDate": "2026-11-06",
+      "from": "2026-11-05T00:00:00.000Z",
+      "to": "2026-11-10T23:59:59.999Z"
+    }
+  ],
+  "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
+  "logEntryCount": 165632,
+  "logOldestEntryAt": "2026-11-04T20:45:01.174Z",
+  "publishTimesLoaded": 0,
+  "verdict": {
+    "verdict": "insufficient-data",
+    "pass": false,
+    "evaluated": 0,
+    "inFlight": 0,
+    "compliant": 0,
+    "compliancePct": null,
+    "p50Ms": null,
+    "p90Ms": null,
+    "targetMinutes": 15,
+    "targetPct": 90,
+    "minSample": 5,
+    "breaches": [],
+    "byBasis": {}
+  },
+  "records": []
+}

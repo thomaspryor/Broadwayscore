@@ -1,0 +1,354 @@
+{
+  "_meta": {
+    "snapshotAt": "2026-04-29T04:00:35.096Z",
+    "snapshotTag": "as-of-2026-04-29",
+    "tonySeason": "2015-16",
+    "sourceLastUpdated": "2026-04-29T00:26:22.829Z",
+    "nomineeCount": 18,
+    "eligibleShowCount": 0,
+    "totalShows": 18,
+    "note": "Audience grades captured at this point in time. Tony Predictions backtest evaluation should read THIS snapshot rather than live audience-buzz.json (which accumulates post-Tony halo ratings). Re-running on the same day overwrites; tag distinct snapshots with --tag."
+  },
+  "shows": {
+    "hamilton-2015": {
+      "title": "Hamilton",
+      "tonyCategoriesNominated": [
+        "Best Musical"
+      ],
+      "combinedScore": 95.41,
+      "designation": "Loving",
+      "sources": {
+        "showScore": {
+          "score": 96,
+          "reviewCount": 14401
+        },
+        "mezzanine": {
+          "score": 94,
+          "reviewCount": 5776
+        },
+        "theatr": {
+          "score": 96,
+          "reviewCount": 4156
+        },
+        "broadwayCom": {
+          "score": 96,
+          "reviewCount": 513
+        },
+        "reddit": {
+          "score": 80,
+          "reviewCount": 310
+        }
+      }
+    },
+    "the-humans-2016": {
+      "title": "The Humans",
+      "tonyCategoriesNominated": [
+        "Best Play"
+      ],
+      "combinedScore": 83.4,
+      "designation": "Liking",
+      "sources": {
+        "showScore": {
+          "score": 85,
+          "reviewCount": 1424
+        },
+        "mezzanine": {
+          "score": 77,
+          "reviewCount": 117
+        }
+      }
+    },
+    "eclipsed-2016": {
+      "title": "Eclipsed",
+      "tonyCategoriesNominated": [
+        "Best Play"
+      ],
+      "combinedScore": 85,
+      "designation": "Liking",
+      "sources": {
+        "showScore": {
+          "score": 88,
+          "reviewCount": 570
+        },
+        "mezzanine": {
+          "score": 73,
+          "reviewCount": 32
+        }
+      }
+    },
+    "the-father-2016": {
+      "title": "The Father",
+      "tonyCategoriesNominated": [
+        "Best Play"
+      ],
+      "combinedScore": 84.6,
+      "designation": "Liking",
+      "sources": {
+        "showScore": {
+          "score": 85,
+          "reviewCount": 325
+        },
+        "mezzanine": {
+          "score": 83,
+          "reviewCount": 12
+        }
+      }
+    },
+    "king-charles-iii-2015": {
+      "title": "King Charles III",
+      "tonyCategoriesNominated": [
+        "Best Play"
+      ],
+      "combinedScore": 83.8,
+      "designation": "Liking",
+      "sources": {
+        "showScore": {
+          "score": 85,
+          "reviewCount": 382
+        },
+        "mezzanine": {
+          "score": 79,
+          "reviewCount": 32
+        }
+      }
+    },
+    "bright-star-2016": {
+      "title": "Bright Star",
+      "tonyCategoriesNominated": [
+        "Best Musical"
+      ],
+      "combinedScore": 83,
+      "designation": "Liking",
+      "sources": {
+        "showScore": {
+          "score": 84,
+          "reviewCount": 1007
+        },
+        "mezzanine": {
+          "score": 79,
+          "reviewCount": 120
+        },
+        "reddit": {
+          "score": 64,
+          "reviewCount": 830
+        }
+      }
+    },
+    "school-of-rock-the-musical-2015": {
+      "title": "School of Rock – The Musical",
+      "tonyCategoriesNominated": [
+        "Best Musical"
+      ],
+      "combinedScore": 76,
+      "designation": "Shrugging",
+      "sources": {
+        "mezzanine": {
+          "score": 76,
+          "reviewCount": 938
+        }
+      }
+    },
+    "waitress-2016": {
+      "title": "Waitress",
+      "tonyCategoriesNominated": [
+        "Best Musical"
+      ],
+      "combinedScore": 89,
+      "designation": "Loving",
+      "sources": {
+        "mezzanine": {
+          "score": 89,
+          "reviewCount": 2580
+        }
+      }
+    },
+    "a-view-from-the-bridge-2015": {
+      "title": "A View From the Bridge",
+      "tonyCategoriesNominated": [
+        "Best Revival of a Play"
+      ],
+      "combinedScore": 87.2,
+      "designation": "Liking",
+      "sources": {
+        "showScore": {
+          "score": 89,
+          "reviewCount": 620
+        },
+        "mezzanine": {
+          "score": 80,
+          "reviewCount": 48
+        },
+        "reddit": {
+          "score": 74,
+          "reviewCount": 2
+        }
+      }
+    },
+    "blackbird-2016": {
+      "title": "Blackbird",
+      "tonyCategoriesNominated": [
+        "Best Revival of a Play"
+      ],
+      "combinedScore": 82,
+      "designation": "Liking",
+      "sources": {
+        "showScore": {
+          "score": 82,
+          "reviewCount": 602
+        },
+        "mezzanine": {
+          "score": 82,
+          "reviewCount": 54
+        },
+        "reddit": {
+          "score": 67,
+          "reviewCount": 1003
+        }
+      }
+    },
+    "the-crucible-2016": {
+      "title": "The Crucible",
+      "tonyCategoriesNominated": [
+        "Best Revival of a Play"
+      ],
+      "combinedScore": 78,
+      "designation": "Liking",
+      "sources": {
+        "showScore": {
+          "score": 79,
+          "reviewCount": 843
+        },
+        "mezzanine": {
+          "score": 74,
+          "reviewCount": 107
+        }
+      }
+    },
+    "long-days-journey-into-night-2016": {
+      "title": "Long Day's Journey Into Night",
+      "tonyCategoriesNominated": [
+        "Best Revival of a Play"
+      ],
+      "combinedScore": 80.4,
+      "designation": "Liking",
+      "sources": {
+        "showScore": {
+          "score": 84,
+          "reviewCount": 436
+        },
+        "mezzanine": {
+          "score": 66,
+          "reviewCount": 52
+        }
+      }
+    },
+    "noises-off-2016": {
+      "title": "Noises Off",
+      "tonyCategoriesNominated": [
+        "Best Revival of a Play"
+      ],
+      "combinedScore": 86.6,
+      "designation": "Liking",
+      "sources": {
+        "showScore": {
+          "score": 88,
+          "reviewCount": 542
+        },
+        "mezzanine": {
+          "score": 81,
+          "reviewCount": 62
+        }
+      }
+    },
+    "the-color-purple-2015": {
+      "title": "The Color Purple",
+      "tonyCategoriesNominated": [
+        "Best Revival of a Musical"
+      ],
+      "combinedScore": 93.6,
+      "designation": "Loving",
+      "sources": {
+        "showScore": {
+          "score": 94,
+          "reviewCount": 3072
+        },
+        "mezzanine": {
+          "score": 92,
+          "reviewCount": 428
+        }
+      }
+    },
+    "fiddler-on-the-roof-2015": {
+      "title": "Fiddler on the Roof",
+      "tonyCategoriesNominated": [
+        "Best Revival of a Musical"
+      ],
+      "combinedScore": 87.83,
+      "designation": "Liking",
+      "sources": {
+        "showScore": {
+          "score": 89,
+          "reviewCount": 3123
+        },
+        "mezzanine": {
+          "score": 83,
+          "reviewCount": 483
+        },
+        "theatr": {
+          "score": 86,
+          "reviewCount": 22
+        }
+      }
+    },
+    "she-loves-me-2016": {
+      "title": "She Loves Me",
+      "tonyCategoriesNominated": [
+        "Best Revival of a Musical"
+      ],
+      "combinedScore": 88.6,
+      "designation": "Loving",
+      "sources": {
+        "showScore": {
+          "score": 90,
+          "reviewCount": 1688
+        },
+        "mezzanine": {
+          "score": 83,
+          "reviewCount": 226
+        }
+      }
+    },
+    "spring-awakening-2015": {
+      "title": "Spring Awakening",
+      "tonyCategoriesNominated": [
+        "Best Revival of a Musical"
+      ],
+      "combinedScore": 92,
+      "designation": "Loving",
+      "sources": {
+        "showScore": {
+          "score": 92,
+          "reviewCount": 1430
+        },
+        "mezzanine": {
+          "score": 92,
+          "reviewCount": 320
+        }
+      }
+    },
+    "shuffle-along-or-the-making-of-the-musical-sensation-of-1921-and-all-that-followed-2016": {
+      "title": "Shuffle Along, Or The Making of the Musical Sensation of 1921 and All That Followed",
+      "tonyCategoriesNominated": [
+        "Best Musical"
+      ],
+      "combinedScore": 70,
+      "designation": "Shrugging",
+      "sources": {
+        "mezzanine": {
+          "score": 70,
+          "reviewCount": 93
+        }
+      }
+    }
+  }
+}

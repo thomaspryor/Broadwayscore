@@ -1,0 +1,148 @@
+{
+  "issueNumber": "bro-6470-revival",
+  "planId": "08eecffe-9999-4bfc-9d93-4bc9e8685fd2",
+  "status": "applied",
+  "createdAt": "2026-10-29T01:07:04.513Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6470 cohort 4: 7 new works Playbill tagged \"Revival\" (COVID-postponed premieres) set to isRevival false; The Bedwetter and Black No More are musicals",
+    "steps": [
+      "data-edit",
+      "data-edit",
+      "data-edit",
+      "data-edit",
+      "data-edit",
+      "data-edit",
+      "data-edit",
+      "data-edit",
+      "data-edit"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-bedwetter-off-broadway-2022",
+        "field": "isRevival",
+        "oldValue": true,
+        "newValue": false
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "confederates-off-broadway-2022",
+        "field": "isRevival",
+        "oldValue": true,
+        "newValue": false
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "wish-you-were-here-off-broadway-2022",
+        "field": "isRevival",
+        "oldValue": true,
+        "newValue": false
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "on-sugarland-off-broadway-2022",
+        "field": "isRevival",
+        "oldValue": true,
+        "newValue": false
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "black-no-more-off-broadway-2022",
+        "field": "isRevival",
+        "oldValue": true,
+        "newValue": false
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "trevor-off-broadway-2021",
+        "field": "isRevival",
+        "oldValue": true,
+        "newValue": false
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "kimberly-akimbo-off-broadway-2021",
+        "field": "isRevival",
+        "oldValue": true,
+        "newValue": false
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-bedwetter-off-broadway-2022",
+        "field": "type",
+        "oldValue": "play",
+        "newValue": "musical"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "black-no-more-off-broadway-2022",
+        "field": "type",
+        "oldValue": "play",
+        "newValue": "musical"
+      }
+    ]
+  },
+  "executedAt": "2026-10-29T01:28:06.116Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: isRevival updated for the-bedwetter-off-broadway-2022 (tags: [])"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: isRevival updated for confederates-off-broadway-2022 (tags: [])"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: isRevival updated for wish-you-were-here-off-broadway-2022 (tags: [])"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: isRevival updated for on-sugarland-off-broadway-2022 (tags: [])"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: isRevival updated for black-no-more-off-broadway-2022 (tags: [])"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: isRevival updated for trevor-off-broadway-2021 (tags: [])"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: isRevival updated for kimberly-akimbo-off-broadway-2021 (tags: [])"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for the-bedwetter-off-broadway-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for black-no-more-off-broadway-2022"
+    }
+  ],
+  "executedIn": "ci"
+}

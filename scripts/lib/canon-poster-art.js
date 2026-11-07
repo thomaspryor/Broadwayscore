@@ -1,0 +1,66 @@
+// Pure decision logic for canon (Tony winner) poster-art sourcing.
+//
+// A closed show whose title collides with a newer, currently-running
+// production (e.g. a Broadway original vs. a regional/West End/revival
+// listed under TodayTix) must not have its art auto-sourced from TodayTix —
+// TodayTix returns art for whichever production is CURRENTLY live under that
+// title, not the historical one we're trying to illustrate (BRO-119: the
+// 2008 "In the Heights" OBC entry picked up CenterREP's regional poster this
+// way). Extracted from scripts/fetch-show-images-auto.js's processOneShow
+// guard so it can be unit tested without the network/API-key dependencies of
+// the full fetch pipeline.
+'use strict';
+
+/**
+ * The other show in `allShows` that made `show` unsafe to auto-source from
+ * TodayTix — closed, shares `show`'s title (allowing punctuation-separated
+ * variants like "The Tempest - Globe"), and opened later — or `null` if none
+ * exists. When truthy, TodayTix sourcing must be skipped in favor of
+ * production-specific sources (IBDB, ShowScore, Google Images, Playbill).
+ *
+ * @param {{id: string, title: string, status: string, openingDate?: string|null}} show
+ * @param {Array<{id: string, title: string, openingDate?: string|null}>} allShows
+ * @returns {{id: string, title: string, openingDate?: string|null}|null}
+ */
+function findNewerSameTitleProduction(show, allShows) {
+  if (show.status !== 'closed') return null;
+
+  const showYear = show.openingDate ? new Date(show.openingDate).getFullYear() : 0;
+
+  return allShows.find((s) => {
+    if (s.id === show.id) return false;
+    if (!sameTitle(show, s)) return false;
+    const sYear = s.openingDate ? new Date(s.openingDate).getFullYear() : 0;
+    return sYear > showYear;
+  }) ?? null;
+}
+
+const baseTitleOf = (t) => String(t || '').toLowerCase().replace(/\s*\(\d{4}\)\s*$/, '').trim();
+
+// Exact match OR the full base title (2+ words) appears separated by punctuation (- : , !)
+// Catches "The Tempest - Globe", "Encores! The Wild Party", "Doubt: A Parable"
+// but NOT short titles like "Big" → "Big Fish" (space-only, no punct) or single words
+function sameTitle(show, s) {
+  const baseTitle = baseTitleOf(show.title);
+  const sBase = baseTitleOf(s.title);
+  if (sBase === baseTitle) return true;
+  const escaped = baseTitle.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  return baseTitle.includes(' ')
+    && new RegExp(`(^${escaped}\\s*[-:,]|[-:!]\\s*${escaped}$)`).test(sBase);
+}
+
+/**
+ * Any OTHER row sharing `show`'s title (older or newer), or null. With
+ * `sameMarket`, only rows in the same TodayTix city count. A closed London row
+ * with a same-title sibling must not take TodayTix art: the page serves
+ * whichever production is current, so the 2025 Old Vic Oedipus could get the
+ * 2024 Wyndham's art and vice versa (BRO-4851).
+ */
+function findOtherSameTitleProduction(show, allShows, { sameMarket = false } = {}) {
+  const { todaytixMarket } = require('./todaytix-market');
+  const market = todaytixMarket(show);
+  return (allShows || []).find((s) => s.id !== show.id && sameTitle(show, s)
+    && (!sameMarket || todaytixMarket(s) === market)) ?? null;
+}
+
+module.exports = { findNewerSameTitleProduction, findOtherSameTitleProduction, sameTitle };

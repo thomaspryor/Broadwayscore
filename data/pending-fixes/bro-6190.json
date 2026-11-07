@@ -1,0 +1,50 @@
+{
+  "issueNumber": "bro-6190",
+  "planId": "1c8a8144-70aa-437a-8112-92de29374e25",
+  "status": "applied",
+  "createdAt": "2026-10-25T01:05:51.287Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Absolute Hell (2018): the Guardian file is Susannah Clapp's joint review of The Writer (4 stars) and Absolute Hell (2 stars) and scored 80, The Writer's rating. Set humanReviewScore 40 (2/5 band 31-50) with a note, so the rebuild scores Absolute Hell on its own star rating.",
+    "steps": [
+      "absolute-hell-west-end-2018/guardian--susannah-clapp.json: humanReviewScore",
+      "absolute-hell-west-end-2018/guardian--susannah-clapp.json: humanReviewNote"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "absolute-hell-west-end-2018/guardian--susannah-clapp.json",
+        "field": "humanReviewScore",
+        "oldValue": null,
+        "newValue": 40,
+        "description": "absolute-hell-west-end-2018/guardian--susannah-clapp.json: humanReviewScore"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "absolute-hell-west-end-2018/guardian--susannah-clapp.json",
+        "field": "humanReviewNote",
+        "oldValue": null,
+        "newValue": "BRO-6190: joint review; the Absolute Hell rating is 2/5 stars (The Writer 4/5 is the other show)",
+        "description": "absolute-hell-west-end-2018/guardian--susannah-clapp.json: humanReviewNote"
+      }
+    ]
+  },
+  "executedAt": "2026-10-25T02:11:00.354Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "absolute-hell-west-end-2018/guardian--susannah-clapp.json humanReviewScore: null -> 40"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "absolute-hell-west-end-2018/guardian--susannah-clapp.json humanReviewNote: null -> \"BRO-6190: joint review; the Absolute Hell rating is 2/5 stars (The Writer 4/5 is the other show)\""
+    }
+  ],
+  "executedIn": "ci"
+}

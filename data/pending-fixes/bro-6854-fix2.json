@@ -1,0 +1,155 @@
+{
+  "issueNumber": "bro-6854-fix2",
+  "planId": "eec4cee3-5df9-470f-8f73-639dfbf79a6e",
+  "status": "applied",
+  "createdAt": "2026-11-03T02:37:04.901Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6854: add production photos (from the BroadwayWorld review pages) to 7 San Diego shows that had no image",
+    "steps": [
+      "shows.json: a-room-in-the-castle-regional-2026.images",
+      "shows.json: rent-regional-2026.images",
+      "shows.json: the-hombres-regional-2026.images",
+      "shows.json: isaacs-eye-regional-2026.images",
+      "shows.json: cyrano-regional-2026.images",
+      "shows.json: guys-and-dolls-regional-2026.images",
+      "shows.json: mensa-regional-2026.images"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-room-in-the-castle-regional-2026",
+        "field": "images",
+        "oldValue": null,
+        "newValue": {
+          "thumbnail": "/images/shows/a-room-in-the-castle-regional-2026/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: a-room-in-the-castle-regional-2026.images"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "rent-regional-2026",
+        "field": "images",
+        "oldValue": null,
+        "newValue": {
+          "thumbnail": "/images/shows/rent-regional-2026/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: rent-regional-2026.images"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-hombres-regional-2026",
+        "field": "images",
+        "oldValue": null,
+        "newValue": {
+          "thumbnail": "/images/shows/the-hombres-regional-2026/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: the-hombres-regional-2026.images"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "isaacs-eye-regional-2026",
+        "field": "images",
+        "oldValue": null,
+        "newValue": {
+          "thumbnail": "/images/shows/isaacs-eye-regional-2026/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: isaacs-eye-regional-2026.images"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "cyrano-regional-2026",
+        "field": "images",
+        "oldValue": null,
+        "newValue": {
+          "thumbnail": "/images/shows/cyrano-regional-2026/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: cyrano-regional-2026.images"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "guys-and-dolls-regional-2026",
+        "field": "images",
+        "oldValue": null,
+        "newValue": {
+          "thumbnail": "/images/shows/guys-and-dolls-regional-2026/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: guys-and-dolls-regional-2026.images"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "mensa-regional-2026",
+        "field": "images",
+        "oldValue": null,
+        "newValue": {
+          "thumbnail": "/images/shows/mensa-regional-2026/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: mensa-regional-2026.images"
+      }
+    ]
+  },
+  "executedAt": "2026-11-03T03:07:53.408Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for a-room-in-the-castle-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for rent-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for the-hombres-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for isaacs-eye-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for cyrano-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for guys-and-dolls-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for mensa-regional-2026"
+    }
+  ],
+  "executedIn": "ci"
+}
