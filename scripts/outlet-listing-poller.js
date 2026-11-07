@@ -921,6 +921,14 @@ async function main() {
   // Census page checks have their own counters and a per-outlet cap, so they never use up the feed budget.
   const censusPageStats = { fetched: 0, confirmed: 0, unconfirmed: 0, overBudget: 0, failed: 0 };
   const CENSUS_PAGE_MAX = parseInt(process.env.CENSUS_PAGE_MAX_FETCHES || '80', 10);
+  // BRO-7083 write-mode caps: at most CENSUS_MAX_ADDS census files per run (the rest stay
+  // would-add), and at most CENSUS_PAID_MAX paid page fetches across all census outlets.
+  const CENSUS_MAX_ADDS = Math.max(0, parseInt(process.env.CENSUS_MAX_ADDS || '40', 10) || 0);
+  const censusFetch = censusListing.makeCensusFetcher({
+    plain: (u) => fetchSimple(u, 20000),
+    paid: async (u) => { const r = await paidFetchPage(u, { timeout: 25000 }); return r && typeof r === 'object' ? r.content : r; },
+    maxPaid: Math.max(0, parseInt(process.env.CENSUS_PAID_MAX || '30', 10) || 0),
+  });
 
   // --- Derive qualifying outlets ---
   let qualifyingOutlets;
@@ -1106,10 +1114,9 @@ async function main() {
 
     for (const { url, headline, publishDate, description, viaSerp: itemViaSerp, viaCensus } of articles) {
       // Census items run report-only unless CENSUS_LISTING_WRITE=1: dry writer, plain fetches, no cache writes.
-      const censusDry = !!viaCensus && !censusWrite;
-      const itemDry = opts.dryRun || censusDry;
+      const { censusDry, itemDry } = censusListing.censusItemMode({ viaCensus, censusWrite, dryRun: opts.dryRun, added: censusStats.added, maxAdds: CENSUS_MAX_ADDS });
       const showPool = viaCensus ? censusShows : activeShows;
-      const censusOk = (show) => !viaCensus || censusListing.censusItemAccepted({ url, headline, description, publishDate }, show);
+      const censusOk = (show) => !viaCensus || (censusListing.censusMarketOk(outletId, show) && censusListing.censusItemAccepted({ url, headline, description, publishDate }, show));
       const urlSlug = (() => { try { return new URL(url).pathname; } catch { return url; } })();
       const outletCfg = WP_API_CONFIG[outletId] || OUTLET_STRATEGY_CONFIG[outletId] || {};
       const fromFeed = !viaSerp && !itemViaSerp;
@@ -1145,7 +1152,7 @@ async function main() {
           activeShows: showPool, publishDate, maxFetches: viaCensus ? censusPageBase + CENSUS_PAGE_MAX : PAGE_CONFIRM_MAX_FETCHES,
           titleOnly: viaCensus ? (show) => censusListing.censusTitleOnly({ url, headline, publishDate }, show, showPool) : null, unconfirmedCache: censusDry ? null : unconfirmedCache,
           // A dry run never spends paid scraper fetches: plain fetch only.
-          fetcher: itemDry ? (u => fetchSimple(u, 20000)) : fetchArticleHtml,
+          fetcher: itemDry ? (u => fetchSimple(u, 20000)) : viaCensus ? censusFetch.fetcher : fetchArticleHtml,
         });
         if (!publishDate && confirmed.pageDate) stubDate = confirmed.pageDate;
         for (const show of confirmed) {
@@ -1171,8 +1178,8 @@ async function main() {
 
         const result = createStub(show.id, outletId, displayName, url, headline, stubDate, isMultiShow, nytCriticsPick, itemDry);
         if (viaCensus && result && result.action === 'new') {
-          console.log(`  CENSUS ${censusWrite && !opts.dryRun ? 'added' : 'would-add'}: ${show.id} / ${outletId}: ${url}`);
-          if (censusWrite && !opts.dryRun) censusStats.added++; else censusStats.wouldAdd++;
+          console.log(`  CENSUS ${!itemDry ? 'added' : 'would-add'}: ${show.id} / ${outletId}: ${url}`);
+          if (!itemDry) censusStats.added++; else censusStats.wouldAdd++;
           if (censusDry) continue; // report-only: not a new stub, no cache entries
         }
         // Only count NEW writes — the shared writer may also reject (cross-market
@@ -1202,7 +1209,7 @@ async function main() {
   console.log(`New stubs: ${totalNewStubs}`);
   if (win) console.log(`OPENING_WINDOW_STATS fetches=${windowFetches} paid=${paidBudget.used} paidRefused=${paidBudget.refused} cap=${paidBudget.max}`);
   if (pageConfirmStats.overBudget > 0) console.warn(`⚠ Page-confirm budget (${PAGE_CONFIRM_MAX_FETCHES} pages${paidBudget && paidBudget.refused ? ', paid cap ' + paidBudget.max : ''}) ran out: ${pageConfirmStats.overBudget} candidate(s) not checked this run`);
-  console.log(`Census listing (BRO-7076): ${censusStats.outlets} outlet(s) read, ${censusStats.items} extra item(s), ${censusStats.wouldAdd} would-add, ${censusStats.added} added; page-confirm ${censusPageStats.fetched} fetched/${censusPageStats.confirmed} confirmed/${censusPageStats.overBudget} over cap; mode=${censusDisabled ? 'disabled' : censusWrite ? 'write' : 'report-only'}; reasons=${JSON.stringify(censusStats.reasons)}`);
+  console.log(`Census listing (BRO-7076): ${censusStats.outlets} outlet(s) read, ${censusStats.items} extra item(s), ${censusStats.wouldAdd} would-add, ${censusStats.added} added; page-confirm ${censusPageStats.fetched} fetched/${censusPageStats.confirmed} confirmed/${censusPageStats.overBudget} over cap; paid ${censusFetch.stats.paid}/${censusFetch.stats.paidRefused} refused; add cap ${CENSUS_MAX_ADDS}; mode=${censusDisabled ? 'disabled' : censusWrite ? 'write' : 'report-only'}; reasons=${JSON.stringify(censusStats.reasons)}`);
   console.log(`Page-confirm (BRO-6921): ${pageConfirmStats.fetched} pages fetched, ${pageConfirmStats.confirmed} confirmed, ${pageConfirmStats.unconfirmed} not confirmed, ${pageConfirmStats.overBudget} over budget, ${pageConfirmStats.failed} fetch failures`);
   if (outletsFailed > 0) console.warn(`Outlets with errors: ${outletsFailed}`);
   if (serpOnlyEmpty.length > 0) {

@@ -205,13 +205,73 @@ function censusTitleOnly(item, show, pool) {
   let path = '';
   try { path = new URL(item.url).pathname; } catch { path = String(item.url || ''); }
   const hay = slugWords(`${item.headline || ''} ${path}`);
-  const longForms = (sh) => titleForms(sh).map((f) => slugWords(f)).filter((f) => f.trim().split(' ').length >= 2 && f.trim().length >= 10);
+  // A shortened form (one contained in a longer form of the same title, e.g. the "Double Bill" in
+  // "Double Bill: Tell Me Straight & Aggy") needs 3+ words: two generic words matched "Firebird: A
+  // Double Bill" at Sadler's Wells to that King's Head show (BRO-7083).
+  const longForms = (sh) => {
+    const all = titleForms(sh).map((f) => slugWords(f));
+    return all.filter((f) => {
+      const words = f.trim().split(' ').length;
+      if (words < 2 || f.trim().length < 10) return false;
+      const shortened = all.some((g) => g !== f && g.includes(f));
+      return !shortened || words >= 3;
+    });
+  };
   const mine = longForms(show);
   if (!mine.some((f) => hay.includes(f))) return false;
   return !pool.some((o) => o.id !== show.id && longForms(o).some((f) => hay.includes(f) && !mine.some((m) => m.includes(f) || f.includes(m))));
 }
 
+/**
+ * The census source table says which city an outlet covers: an outlet listed only for London cannot
+ * review a New York show (an Everything Theatre review of "Tom at the Farm" at the Barbican matched
+ * the NYU Skirball production, BRO-7083), and a New York-only outlet cannot review a London show.
+ * Regional and touring shows are not constrained (both cities' outlets cover them).
+ */
+function censusMarketOk(outletId, show, { sources = SOURCES, londonSources = LONDON_SOURCES } = {}) {
+  const nyc = !!sources[outletId];
+  const london = !!londonSources[outletId];
+  const market = show && show.market;
+  if (london && !nyc && market === 'broadway') return false;
+  if (nyc && !london && market === 'west-end') return false;
+  return true;
+}
+
+// BRO-7083: write mode is capped per run. After maxAdds census files are written, the rest of
+// the run's census items go back to report-only (dry writer, no caches), so one run can never
+// flood review-texts. dryRun always wins.
+function censusItemMode({ viaCensus, censusWrite, dryRun, added = 0, maxAdds = Infinity }) {
+  const capped = !!viaCensus && !!censusWrite && added >= maxAdds;
+  const censusDry = !!viaCensus && (!censusWrite || capped);
+  return { censusDry, itemDry: !!dryRun || censusDry, capped };
+}
+
+// BRO-7083: census page checks try a plain fetch first and fall back to the paid scraper chain
+// only while the run-wide paid budget lasts; after that a failed plain fetch just fails (the page
+// is retried on a later run). paid(url) returns html.
+function makeCensusFetcher({ plain, paid, maxPaid = 0 }) {
+  const stats = { paid: 0, paidRefused: 0 };
+  async function fetcher(url, looksRight = () => true) {
+    let html = null;
+    try { html = await plain(url); } catch { html = null; }
+    if (html && html.length >= 2000 && looksRight(html)) return html;
+    if (stats.paid >= maxPaid) {
+      // Never hand back the weak plain page here: confirmOnPage would mark a real review
+      // "unconfirmed" for 7 days (the whole lookback) and it would never be filed. PAID_BUDGET
+      // tells confirmOnPage to leave the URL unmarked so the next run retries it.
+      stats.paidRefused++;
+      const e = new Error('census paid fetch budget exhausted');
+      e.code = 'PAID_BUDGET';
+      throw e;
+    }
+    stats.paid++;
+    return paid(url);
+  }
+  return { fetcher, stats };
+}
+
 module.exports = {
+  censusItemMode, makeCensusFetcher, censusMarketOk,
   censusTitleOnly,
   FREE_KINDS, ROUNDUP_RE, isDisabled, censusSourceFor, shouldUseCensus, censusOnlyCandidates,
   headlineFromUrl, datedSitemapUrls, enumerateCensusItems, censusItemAccepted,
