@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-11-06T22:44:16.160Z",
+    "generatedAt": "2026-11-07T01:39:15.474Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": true,
@@ -10,59 +10,69 @@
     "minChurn": 30,
     "flaggedCount": 0,
     "exemptCount": 2,
-    "coveredCount": 8,
-    "highChurnTracked": 10
+    "coveredCount": 10,
+    "highChurnTracked": 12
   },
   "flagged": [],
   "exempt": [
     {
       "path": "data/audit/alert-ledger.json",
-      "churn": 47
+      "churn": 58
     },
     {
       "path": "data/llm-scoring-runs.json",
-      "churn": 39
+      "churn": 41
     }
   ],
   "covered": [
     {
       "path": "data/audit/scraper-spend-ledger.jsonl",
-      "churn": 68,
+      "churn": 86,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 62,
+      "churn": 70,
       "mergeAttr": "union"
     },
     {
-      "path": "data/collection-state/scoring-progress.json",
-      "churn": 40,
-      "mergeAttr": "ours"
-    },
-    {
       "path": "data/audit/cross-show-fingerprint-collisions.json",
-      "churn": 37,
+      "churn": 44,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/deploy-watermark.json",
-      "churn": 37,
+      "churn": 44,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/needs-human-review.json",
-      "churn": 37,
+      "churn": 44,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/rebuild-score-drift.json",
-      "churn": 37,
+      "churn": 44,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/skipped-alias-collisions.json",
-      "churn": 37,
+      "churn": 44,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/collection-state/scoring-progress.json",
+      "churn": 42,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/exclusion-daily-totals.json",
+      "churn": 30,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/opening-night-completeness-state.json",
+      "churn": 30,
       "mergeAttr": "ours"
     }
   ]
