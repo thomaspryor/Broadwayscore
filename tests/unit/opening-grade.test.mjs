@@ -106,6 +106,14 @@ test('summary, tally and digest block (missing snapshot says not checked yet)', 
   const html = og.renderOpeningGradesBlock({ from: '2026-10-20', to: '2026-11-03', grades: gs, summary: sum }, { nowMs: Date.parse('2026-11-03T12:00:00Z') });
   assert.match(html, /needed a person or a Claude session/);
   assert.match(html, /Broadway 1 of 2/);
+  // No-reviews and not-gradable openings stay out of the denominator.
+  const extra = { ...sum, broadway: { ...sum.broadway, openings: 4, noReviews: 1, notGradable: 1 } };
+  assert.equal(og.tallyLine(extra, 14), 'Openings in the last 14 days that ran on their own: Broadway 1 of 2.');
+  // A no-reviews line shows only when reviews are known to exist (a miss).
+  const nr = (known) => ({ showId: 'x', title: 'X', category: 'broadway', openingDate: '2026-11-02', live: 0, known, verdict: 'no-reviews', signals: [], windowClosed: false });
+  const opts = { nowMs: Date.parse('2026-11-03T12:00:00Z') };
+  assert.doesNotMatch(og.renderOpeningGradesBlock({ from: '2026-10-20', to: '2026-11-03', grades: [nr(0)] }, opts), /0 reviews live/);
+  assert.match(og.renderOpeningGradesBlock({ from: '2026-10-20', to: '2026-11-03', grades: [nr(5)] }, opts), /0 reviews live of 5 known, reviews are out but none are on the site yet/);
 });
 
 test('ingest dispatches use the same isBotAuthor rule as the press-night record', () => {
