@@ -546,4 +546,18 @@ async function checkRSSFeeds(showTitle, options = {}) {
   return results;
 }
 
-module.exports = { checkRSSFeeds, ALL_FEEDS, BROADWAY_BUSINESS_FEEDS, SUBSTACK_CRITIC_FEEDS, TRACK_RECOUPMENT_FEEDS, titleMatchesShow, urlSlugMatchesShow, isWithinOpeningWindow, openingWindowFeedAccepts, singleBylineName, parseRSSItems, parseAtomItems, parseFeedItems, fetchUrl };
+/**
+ * True when a stored rss-discovery stub still passes the CURRENT identity rule:
+ * its headline (title / articleTitle) or its url slug names the show. Every rss
+ * admission path needs one of these (checkRSSFeeds), so a stub that fails was
+ * filed under an older, looser rule. Shared by sweep-rss-pending-junk.js and
+ * replay-pending-bylines.js (BRO-7078) so the rule lives in one place.
+ */
+function rssStubIdentityOk(stub, showTitle) {
+  if (!stub || !showTitle) return true;
+  return Boolean((stub.title && titleMatchesShow(stub.title, showTitle))
+    || (stub.articleTitle && titleMatchesShow(stub.articleTitle, showTitle))
+    || urlSlugMatchesShow(stub.url, showTitle));
+}
+
+module.exports = { rssStubIdentityOk, checkRSSFeeds, ALL_FEEDS, BROADWAY_BUSINESS_FEEDS, SUBSTACK_CRITIC_FEEDS, TRACK_RECOUPMENT_FEEDS, titleMatchesShow, urlSlugMatchesShow, isWithinOpeningWindow, openingWindowFeedAccepts, singleBylineName, parseRSSItems, parseAtomItems, parseFeedItems, fetchUrl };

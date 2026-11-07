@@ -99,11 +99,57 @@ function isNotBroadway(text, options = {}) {
  * Per CLAUDE.md §6, URL years are unreliable for positive matching
  * but safe as a reject filter.
  */
+/**
+ * CurtainUp names review pages with a two-digit year suffix and no /YYYY/
+ * segment (visitwtf14.html, bronxtalebway16.html, frozenbway18): BRO-4548
+ * filed a 2014 Williamstown review on a later production because no year
+ * check could read it. Returns the 4-digit year, or null when the host is not
+ * CurtainUp, the digits do not follow a letter (title numbers such as 1776 or
+ * 1984 are not years), or the year falls outside CurtainUp's life (1996 on).
+ * @param {string} url
+ * @param {Date} [now]
+ * @returns {number|null}
+ */
+const NUMBERED_TITLE_WORDS_STATIC = ['catch22', 'apollo13', 'ocean11', 'area51', 'rent96'];
+let numberedTitleWordsCache = null;
+/** Compact "word+2-digit number" tokens from show titles (catch22, photograph51). */
+function numberedTitleWords() {
+  if (numberedTitleWordsCache) return numberedTitleWordsCache;
+  const words = new Set(NUMBERED_TITLE_WORDS_STATIC);
+  try {
+    const raw = require('path').join(__dirname, '..', '..', 'data', 'shows.json');
+    const data = JSON.parse(require('fs').readFileSync(raw, 'utf8'));
+    for (const s of (Array.isArray(data) ? data : data.shows || [])) {
+      const title = String((s && s.title) || '').toLowerCase().replace(/['’]s\b/g, '').replace(/['’]/g, '');
+      for (const m of title.matchAll(/([a-z]+)[\s-]?(\d{2})(?!\d)/g)) words.add(m[1] + m[2]);
+    }
+  } catch { /* shows.json absent: static list only */ }
+  numberedTitleWordsCache = words;
+  return words;
+}
+
+function curtainupSuffixYear(url, now = new Date()) {
+  let u;
+  try { u = new URL(String(url || '')); } catch { return null; }
+  if (!/(^|\.)curtainup\.com$/i.test(u.hostname)) return null;
+  const last = u.pathname.split('/').filter(Boolean).pop() || '';
+  const m = last.match(/[a-z](\d{2})(?:\.html?)?$/i);
+  if (!m) return null;
+  // A title that ends in a number (Catch-22, Apollo 13, Photograph 51) would
+  // read as a year: never trust the suffix when the slug ends in such a title.
+  const stem = last.replace(/\.html?$/i, '').toLowerCase();
+  for (const word of numberedTitleWords()) if (stem.endsWith(word)) return null;
+  const yy = Number(m[1]);
+  const currentYear = now.getUTCFullYear();
+  const year = yy <= (currentYear % 100) + 1 ? 2000 + yy : 1900 + yy;
+  return year >= 1996 && year <= currentYear + 1 ? year : null;
+}
+
 function isUrlYearOutsideWindow(url, openingYear, closingYear) {
   if (!url || !openingYear) return false;
   const m = url.match(/\/((?:19|20)\d{2})\//);
-  if (!m) return false;
-  const urlYear = parseInt(m[1]);
+  const urlYear = m ? parseInt(m[1]) : curtainupSuffixYear(url);
+  if (!urlYear) return false;
   // If show is still running (no closingYear), allow up to current year + 1
   const currentYear = new Date().getFullYear();
   const upper = closingYear
@@ -391,6 +437,7 @@ module.exports = {
   OFF_BROADWAY_GRACE_DAYS_BEFORE_OPENING,
   isNotBroadway,
   isUrlYearOutsideWindow,
+  curtainupSuffixYear,
   TRYOUT_URL_MARKERS,
   hasTryoutUrlMarker,
   NON_MET_OPERA_URL_MARKERS,

@@ -1628,6 +1628,8 @@ function urlYearOf(url) {
   // Artsdesk has undated headline slugs: 1959 and 1960 describe the subject,
   // including mid-slug references such as "barts-1960-masterpiece".
   if (/(^|\.)theartsdesk\.com$/.test(host)) return null;
+  // BRO-4548: CurtainUp's only year is a two-digit filename suffix.
+  if (/(^|\.)curtainup\.com$/.test(host)) return require('./content-filters').curtainupSuffixYear(withoutSeasons);
   const token = withoutSeasons.match(URL_YEAR_PATTERN);
   return token ? parseInt(token[1], 10) : null;
 }

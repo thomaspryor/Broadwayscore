@@ -315,6 +315,22 @@ function isRedundantPendingStub(data, landedFile) {
   return !hasByline && !hasText && !hasScore && !hasExcerpt;
 }
 
+// BRO-7078: failed fetches before a no-identity rss stub is tagged.
+const RSS_IDENTITY_FETCH_STRIKES = 3;
+
+/**
+ * True when the url's last word-slug has 3+ words and no review/theatre cue,
+ * e.g. paul-mccartney-upcoming-beatles-biopics. Numeric ids and short slugs
+ * carry no evidence either way (BRO-7078).
+ */
+function isDescriptiveNonReviewSlug(url) {
+  let parts;
+  try { parts = new URL(String(url || '')).pathname.split('/').filter(Boolean); } catch { return false; }
+  const slug = parts.reverse().find(p => /[a-z]/i.test(p) && p.includes('-')) || '';
+  if (slug.split('-').filter(w => /[a-z]/i.test(w)).length < 3) return false;
+  return !/review|theat|stage|musical|opera|play|critic|ballet|danc|broadway|west-?end/i.test(slug);
+}
+
 /**
  * @param {string} showId
  * @param {object} [deps] injectable for tests (BRO-2735): root, show, fetch
@@ -346,6 +362,36 @@ async function processShow(showId, deps = {}) {
   // after the loop — never a silent "keep".
   const unrecoverable = [];
   const noteUnrecoverable = (file, filepath, data, reason) => {
+    // BRO-7078 (The Ask, BRO-6061): an rss stub filed before the identity rule
+    // tightened (BRO-5627) kept alerting after the rule held for new input.
+    // Once it is unrecoverable anyway, replay the CURRENT rule on its stored
+    // headline; a stub with no headline has no evidence and stays reported.
+    // A thrown fetch (timeout, block) may be transient and the tag is
+    // permanent, so a failed fetch tags only on its third separate run.
+    // Evidence is a stored headline, or (no headline, as on the real BRO-6061
+    // stub) a descriptive url slug with no review cue that never names the show.
+    const identityFails = data.source === 'rss-discovery' && show?.title
+      && (data.title || data.articleTitle || isDescriptiveNonReviewSlug(data.url))
+      && !require('./lib/rss-discovery').rssStubIdentityOk(data, show.title);
+    let identityFinal = identityFails;
+    if (identityFails && /^fetch failed/.test(reason)) {
+      const n = (Number(data.rssIdentityFetchFailures) || 0) + 1;
+      identityFinal = n >= RSS_IDENTITY_FETCH_STRIKES;
+      if (!identityFinal && !dry) {
+        data.rssIdentityFetchFailures = n;
+        try { require('./lib/review-write-guard').safeWriteReview(filepath, data); } catch (e) { console.log(`  [${file}] could not count strike: ${e.message}`); }
+      }
+    }
+    if (identityFinal) {
+      console.log(`  [${file}] rss identity reject at replay (headline/slug no longer match "${show.title}") — tagged, not a stuck review`);
+      if (!dry) {
+        data.rssIdentityRejected = true;
+        data.rssIdentityRejectedReason = 'unrecoverable and no title/slug match to show at replay (BRO-7078)';
+        data.rssIdentityRejectedAt = now().toISOString();
+        try { require('./lib/review-write-guard').safeWriteReview(filepath, data); } catch (e) { console.log(`  [${file}] could not tag: ${e.message}`); }
+      }
+      return;
+    }
     console.log(`  [${file}] UNRECOVERABLE: no text, no byline (${reason}) — kept in _pending, reported below`);
     unrecoverable.push({ file, filepath, data, reason, outletId: data.outletId || null, url: data.url || null });
   };
@@ -361,7 +407,16 @@ async function processShow(showId, deps = {}) {
     }
     const alertable = shouldAlertUnrecoverable(show, { explicitScope, nowMs: now().getTime() });
     console.log(`  ⚠ [${showId}] ${unrecoverable.length} pending-unrecoverable stub(s)${alertable ? '' : ' (outside post-opening week — logged, not alerted)'}`);
-    if (!alertable) return { unrecoverable: unrecoverable.length, alerted: false };
+    if (!alertable) {
+      // BRO-7078: outside the alert window nothing re-checks this show's condition,
+      // so one opened in the post-opening week stayed open forever (18 of 41 open
+      // pending-unrecoverable conditions were past their window). A complete scan
+      // that would not alert closes it; the stubs stay listed in the log.
+      if (scanComplete && !dry) {
+        try { (deps.resolve || defaultResolveCondition)(`${PENDING_UNRECOVERABLE_STAGE}:${showId}`, { reason: 'outside the post-opening alert window on a complete scan' }); } catch (e) { console.log(`  resolve failed: ${e.message}`); }
+      }
+      return { unrecoverable: unrecoverable.length, alerted: false };
+    }
     for (const u of unrecoverable) {
       if (u.data.pendingUnrecoverableAt) continue; // one stage event per stub, not per run
       if (dry) { console.log(`  DRY → would emit ${PENDING_UNRECOVERABLE_STAGE} for ${u.file}`); continue; }
@@ -406,11 +461,10 @@ async function processShow(showId, deps = {}) {
     // BRO-6321: an rss-discovery stub whose headline AND url slug do not name the
     // show (celebrity-baby news filed under the musical "Baby") is junk, not a
     // stuck review. Tag it like the sweep does so it never reaches the alert.
+    // Other titles are re-judged only once the stub proves unrecoverable
+    // (noteUnrecoverable, BRO-7078), so a tag never stops a fetch that could work.
     if (data.source === 'rss-discovery' && show?.title && require('./lib/generic-title-guard').genericSingleWordTitle(show.title)) {
-      const { titleMatchesShow, urlSlugMatchesShow } = require('./lib/rss-discovery');
-      const identityOk = (data.title && titleMatchesShow(data.title, show.title))
-        || (data.articleTitle && titleMatchesShow(data.articleTitle, show.title))
-        || urlSlugMatchesShow(data.url, show.title);
+      const identityOk = require('./lib/rss-discovery').rssStubIdentityOk(data, show.title);
       if (!identityOk) {
         console.log(`  [${file}] rss identity reject (no title/slug match to "${show.title}") — tagged, not a stuck review`);
         if (!dry) {

@@ -199,14 +199,32 @@ function siteUtilityPathReason(url) {
 const OFF_TOPIC_SECTION_RE = /\/(sports?|obituar(y|ies))\/|\/films?\/news\//i;
 NON_REVIEW_PATH_PATTERNS.push(OFF_TOPIC_SECTION_RE);
 
+// BRO-7027: The Times files hard news under a section + subsection
+// (/uk/politics/article/<slug>, /world/europe/article/<slug>, /money/tax/...),
+// and title-word discovery filed a politics story about the City Bridge
+// Foundation under the play "Bridge". Its arts pages live under /culture/ or a
+// bare /uk/article/<slug> (Lehman Trilogy), and a theatre story in a news
+// section names the stage in its slug, so a slug with a theatre cue or a London
+// postcode is left alone. Host-scoped: other papers use these words for arts.
+// Replayed over the 581 Times URLs in reviews.json: only the Bridge story and a
+// student-loans piece filed under Proof (2026) match. /sport/ is already above.
+const TIMES_HOST_RE = /(^|\.)thetimes\.(co\.uk|com)$/i;
+const TIMES_NEWS_SECTION_RE = /^\/(?:(?:uk|world|us)\/[^/]+|money|business(?:-money)?|comment|life-style|sunday-times-rich-list|edition\/news)\/(?:[^/]+\/)*article\/(?![a-z0-9-]*(?:review|theat|stage|musical|opera|ballet|danc|play|comedy|panto|-at-|wc\d|se\d|sw\d|ec\d|nw\d|-w\d|-n\d))[a-z0-9-]+\/?$/i;
+
 /**
- * 'off-topic-section' when the URL sits in a sport/obituary/film-news section, else null.
+ * 'off-topic-section' when the URL sits in a sport/obituary/film-news section
+ * (any host) or a Times hard-news section (BRO-7027), else null.
  * @param {string} url
  * @returns {string|null}
  */
 function offTopicSectionReason(url) {
   if (typeof url !== 'string' || !url) return null;
-  try { return OFF_TOPIC_SECTION_RE.test(new URL(url).pathname) ? 'off-topic-section' : null; } catch { return null; }
+  try {
+    const u = new URL(url);
+    if (OFF_TOPIC_SECTION_RE.test(u.pathname)) return 'off-topic-section';
+    if (TIMES_HOST_RE.test(u.hostname) && TIMES_NEWS_SECTION_RE.test(u.pathname)) return 'off-topic-section';
+    return null;
+  } catch { return null; }
 }
 
 /**

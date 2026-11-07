@@ -48,7 +48,7 @@ function parseReviewFileText(raw) {
 }
 const { decodeHtmlEntities, cleanText } = require('./lib/text-cleaning');
 const { resolveRelativeReviewUrl, reverseCrossMarketExclusion } = require('./lib/recovery-exclusions');
-const { buildOutletRegionMap, buildRegisteredOutletIds, evaluateForwardCrossMarketGuard, evaluateReverseLondonCrossMarketGuard, evaluateUrlPathCrossMarketGuard, urlPathOppositeMarketIndicator, evaluateLateDualMarketUkOnBroadway, outletIsUkSideSelfHealRegion, UK_MARKET_REGIONS, outletIsUkMarketRegion, buildCrossMarketCriticIndex, findSiblingInOtherMarket, classifyDualMarketNullUrl, outletRegionExplicitlyNotLondon } = require('./lib/cross-market-guard');
+const { buildOutletRegionMap, buildRegisteredOutletIds, evaluateForwardCrossMarketGuard, evaluateReverseLondonCrossMarketGuard, evaluateUrlPathCrossMarketGuard, urlPathOppositeMarketIndicator, urlPathGuardTreatsShowAsUk, evaluateLateDualMarketUkOnBroadway, outletIsUkSideSelfHealRegion, UK_MARKET_REGIONS, outletIsUkMarketRegion, buildCrossMarketCriticIndex, findSiblingInOtherMarket, classifyDualMarketNullUrl, outletRegionExplicitlyNotLondon } = require('./lib/cross-market-guard');
 const { computeContentFingerprint } = require('./lib/content-quality');
 const { textMentionsTitle, textMentionsShortTitle } = require('./lib/show-title-variants');
 const { classifyTierWriteBack } = require('./lib/content-tier-reason-sync');
@@ -4247,8 +4247,8 @@ showDirs.forEach(showId => {
           const urlPath = urlObj.pathname.toLowerCase();
           const urlPathGuardReviewDate = data.publishDate ? parseDate(data.publishDate) : null;
           const urlPathGuardPriorRuns = showById[showId] && showById[showId].priorRuns;
-          if (isLondonMarket(showCategory) && hostname !== 'broadwayworld.com' && !hostname.endsWith('.broadwayworld.com')) {
-            // WE show but URL path contains Broadway production indicators
+          if (urlPathGuardTreatsShowAsUk(showCategory, showById[showId] && showById[showId].venue) && hostname !== 'broadwayworld.com' && !hostname.endsWith('.broadwayworld.com')) {
+            // WE (or UK regional, BRO-5790) show but URL path contains Broadway production indicators
             const urlPathImpliesBroadway = urlPathOppositeMarketIndicator({ urlPath, oppositeMarket: 'us', showTitle: showById[showId] && showById[showId].title });
             // priorRuns exemption (card #1532, 3rd cousin of BRO-222/#1528): a review
             // in-window for a declared US priorRun (e.g. a Chicago tryout before this

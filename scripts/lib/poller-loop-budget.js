@@ -39,7 +39,8 @@ function showTimeoutSec(remainingSec, capSec = 600, minUsefulSec = 240) {
 // tier, then newest first; stable otherwise.
 //
 // `hot` = main-stage shows within HOT_SPAN_HOURS of their window opening
-// (17:00 -> 01:00 local, when embargoes lift; max 3): the loop re-polls them
+// (17:00 -> 01:00 local, when embargoes lift; max 3), or on a night with none,
+// the Off openers in that span (BRO-7078): the loop re-polls them
 // every HOT_REPOLL_SEC so an embargo lift is seen within minutes, not next run.
 // Kept short on purpose: re-polls and the early publish break both take time
 // from the tail, so they must not run through the whole next day.
@@ -51,6 +52,7 @@ const { computeWindow } = require('./opening-night-windows');
 const { localDateString, tzForMarket } = require('./local-date');
 
 const MAIN_STAGE = new Set(['broadway', 'west-end']);
+const OFF_STAGE = new Set(['off-broadway', 'off-west-end']);
 const MAX_HOT = 3;
 const HOT_SPAN_HOURS = 8;
 
@@ -69,12 +71,16 @@ function pollTier(show, now) {
   return 2;
 }
 
-function isHot(show, now) {
-  if (!MAIN_STAGE.has(show.category || 'broadway')) return false;
+// Within HOT_SPAN_HOURS of the press-night window opening, any market.
+function inHotSpan(show, now) {
   const od = typeof show.openingDate === 'string' ? show.openingDate.slice(0, 10) : null;
   if (!od) return false;
   const w = computeWindow({ ...show, openingDate: od, category: show.category || 'broadway' }, { now });
   return Boolean(w) && w.windowStart <= now && now.getTime() <= w.windowStart.getTime() + HOT_SPAN_HOURS * 3600 * 1000;
+}
+
+function isHot(show, now) {
+  return MAIN_STAGE.has(show.category || 'broadway') && inHotSpan(show, now);
 }
 
 function orderPollShows(shows, now = new Date()) {
@@ -86,13 +92,25 @@ function orderPollShows(shows, now = new Date()) {
   }));
   rows.sort((a, b) => a.tier - b.tier || a.main - b.main || (a.od < b.od ? 1 : a.od > b.od ? -1 : 0) || a.i - b.i);
   const order = rows.map((r) => r.s.id);
-  const hot = rows.filter((r) => r.tier === 0 && isHot(r.s, now)).slice(0, MAX_HOT).map((r) => r.s.id);
+  let hot = rows.filter((r) => r.tier === 0 && isHot(r.s, now)).slice(0, MAX_HOT).map((r) => r.s.id);
+  // BRO-7078 (BRO-5890/6972/7031-7033): on a night with no main-stage opener in
+  // its hot span, Off-Broadway / off-West End openers were never hot, so a
+  // 2am ET embargo was seen only on the next run (1-2h late on every Off-only
+  // night measured). Those nights have no main-stage show to protect, so the
+  // Off openers in their hot span take the hot slots (same cap and span).
+  // Nights with any main-stage hot show are unchanged.
+  const offHotNight = hot.length === 0;
+  if (offHotNight) hot = rows.filter((r) => r.tier === 0 && OFF_STAGE.has(r.s.category) && inHotSpan(r.s, now)).slice(0, MAX_HOT).map((r) => r.s.id);
   // BRO-7032: every show in its press-night window (any market), not just the main-stage
   // hot ones: the workflow drains _pending/ no-byline stubs for these right after each poll.
   const window = rows.filter((r) => r.tier === 0).map((r) => r.s.id);
   const front = rows.filter((r) => r.tier <= 1).length;
   let mainFrontEnd = 0;
   rows.forEach((r, idx) => { if (r.tier <= 1 && r.main === 0) mainFrontEnd = idx + 1; });
+  // Off-hot night: the first-wave shortcut must not end the loop before the
+  // other Off openers in the front were polled (one Off show's wave would
+  // otherwise defer another's), so it keeps the full-front rule.
+  if (offHotNight && hot.length) mainFrontEnd = front;
   return { order, hot, window, front, mainFrontEnd };
 }
 
@@ -127,7 +145,7 @@ function isFirstWave(show, files, now = new Date(), minNew = 3) {
   return tonight < Math.max(1, minNew);
 }
 
-module.exports = { rotateShows, showTimeoutSec, orderPollShows, pollTier, isHot, shouldBreakEarly, isFirstWave, HOT_SPAN_HOURS };
+module.exports = { rotateShows, showTimeoutSec, orderPollShows, pollTier, isHot, inHotSpan, shouldBreakEarly, isFirstWave, HOT_SPAN_HOURS };
 
 if (require.main === module) {
   const [cmd, a, b, c] = process.argv.slice(2);
