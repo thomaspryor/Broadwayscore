@@ -1620,15 +1620,20 @@ const WORKTREE_BYTES = 1.4e9;
 /**
  * How many slots the free disk carries: slot k needs its worktree and base worktree created
  * (missingBySlot[k] of the two do not exist yet) and still MIN_FREE_DISK_BYTES to run a card.
+ * reserveBytes (BRO-7088) is held back for work on the same volume that is not a Codex slot (the
+ * cloud routine's own Claude cards). It only trims slots 2+: one slot always runs, and a
+ * disk that fills later is stopReason's per-card check, not this one.
  * -> { slots, why }
  */
-function slotsForDisk({ slots, freeBytes, missingBySlot = [] }) {
+function slotsForDisk({ slots, freeBytes, missingBySlot = [], reserveBytes = 0 }) {
   if (!(slots > 1) || !Number.isFinite(freeBytes)) return { slots: Math.max(1, slots || 1), why: null };
+  const reserve = Number.isFinite(reserveBytes) && reserveBytes > 0 ? reserveBytes : 0;
   const need = (n) => MIN_FREE_DISK_BYTES * n
     + WORKTREE_BYTES * missingBySlot.slice(0, n).reduce((a, m) => a + (Number(m) || 0), 0);
   let n = slots;
-  while (n > 1 && freeBytes < need(n)) n--;
-  return n === slots ? { slots, why: null } : { slots: n, why: `only ${(freeBytes / 1e9).toFixed(1)} GB of disk free` };
+  while (n > 1 && freeBytes - reserve < need(n)) n--;
+  if (n === slots) return { slots, why: null };
+  return { slots: n, why: `only ${(freeBytes / 1e9).toFixed(1)} GB of disk free${reserve ? `, ${(reserve / 1e9).toFixed(1)} GB of it kept for the session's own work` : ''}` };
 }
 
 /**

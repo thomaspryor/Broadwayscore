@@ -8,7 +8,13 @@
  * Codex lanes (BRO-5730). Each lane owns its own slots, so the cloud routine (cloud) and the
  * GitHub runner (gha) run at the same time without sharing a slot's lock or worktrees.
  */
-const LANES = Object.freeze({ cloud: Object.freeze({ base: 0, max: 3 }), gha: Object.freeze({ base: 3, max: 2 }) });
+// diskReserveBytes (BRO-7088): disk the lane's machine needs for work that is not Codex. The cloud routine's
+// wrapper session works its own Claude-lane cards (about 1.3 GB per worktree, ~6 at once per
+// docs/cloud-routines/board-workers.md) on the same volume; an estimate, not a measurement. The GitHub runner is Codex's alone.
+const LANES = Object.freeze({
+  cloud: Object.freeze({ base: 0, max: 3, diskReserveBytes: 8e9 }),
+  gha: Object.freeze({ base: 3, max: 2, diskReserveBytes: 0 }),
+});
 
 /**
  * The run summary heading (BRO-6139). Before it, a single-slot launch of EITHER lane posted no

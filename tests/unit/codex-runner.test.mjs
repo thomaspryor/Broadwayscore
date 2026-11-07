@@ -1018,6 +1018,28 @@ test('slotsForDisk: budgets worktrees not yet created plus the per-card reserve'
   assert.deepEqual(r.slotsForDisk({ slots: 3, freeBytes: NaN }), { slots: 3, why: null });
 });
 
+test('slotsForDisk: reserveBytes keeps room for the session\'s own work (BRO-7088)', () => {
+  // 20 GB free, 8 GB reserved, nothing created yet: 12 GB left; 3 slots need 17.4, 2 need 11.6.
+  const tight = r.slotsForDisk({ slots: 3, freeBytes: 20e9, missingBySlot: [2, 2, 2], reserveBytes: 8e9 });
+  assert.equal(tight.slots, 2);
+  assert.match(tight.why, /20\.0 GB of disk free, 8\.0 GB of it kept/);
+  // The same disk without a reserve carries all 3.
+  assert.deepEqual(r.slotsForDisk({ slots: 3, freeBytes: 20e9, missingBySlot: [2, 2, 2] }), { slots: 3, why: null });
+  // A reserve bigger than the free disk still leaves one slot (stopReason owns the per-card stop).
+  assert.equal(r.slotsForDisk({ slots: 3, freeBytes: 5e9, missingBySlot: [2, 2, 2], reserveBytes: 8e9 }).slots, 1);
+  // One slot, an unmeasurable disk, and a junk reserve are all no-ops.
+  assert.deepEqual(r.slotsForDisk({ slots: 1, freeBytes: 1e9, reserveBytes: 8e9 }), { slots: 1, why: null });
+  assert.deepEqual(r.slotsForDisk({ slots: 3, freeBytes: NaN, reserveBytes: 8e9 }), { slots: 3, why: null });
+  assert.deepEqual(r.slotsForDisk({ slots: 3, freeBytes: 20e9, missingBySlot: [0, 0, 0], reserveBytes: NaN }), { slots: 3, why: null });
+});
+
+test('the runner passes its lane\'s disk reserve to slotsForDisk, and only the cloud lane has one', () => {
+  assert.ok(r.LANES.cloud.diskReserveBytes > 0);
+  assert.equal(r.LANES.gha.diskReserveBytes, 0);
+  const src = fs.readFileSync(new URL('../../scripts/codex/daily-runner.js', import.meta.url), 'utf8');
+  assert.match(src, /slotsForDisk\(\{[^}]*reserveBytes: R\.LANES\[OPTS\.lane\]\.diskReserveBytes/);
+});
+
 test('isDiskFailure: the system message counts on its own, a bare ENOSPC only while the disk is low', () => {
   // A batch that filled the disk has usually freed it again by the time it is judged.
   assert.equal(r.isDiskFailure('copyfile: ENOSPC: no space left on device', 20e9), true);

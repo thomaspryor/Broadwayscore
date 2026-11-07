@@ -1443,7 +1443,7 @@ async function launchSlots() {
     const n = R.slotNames(plan.base + k);
     return [n.wt, n.base].filter((w) => !fs.existsSync(path.join(ROOT, '.claude/worktrees', w, '.git'))).length;
   });
-  const disk = R.slotsForDisk({ slots: plan.slots, freeBytes: freeDisk(), missingBySlot });
+  const disk = R.slotsForDisk({ slots: plan.slots, freeBytes: freeDisk(), missingBySlot, reserveBytes: R.LANES[OPTS.lane].diskReserveBytes });
   if (disk.slots < plan.slots) Object.assign(plan, { slots: disk.slots, why: [plan.why, disk.why].filter(Boolean).join('; ') });
   log(`launching ${plan.slots} slot(s) from slot ${plan.base} (${plan.lane} lane)${plan.why ? ` instead of ${OPTS.slots}: ${plan.why}` : ''}`);
   // One slot: no run dir, so it runs exactly as a lone runner (2 landings in flight, plain summary).
