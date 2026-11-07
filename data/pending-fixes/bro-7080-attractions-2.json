@@ -1,0 +1,128 @@
+{
+  "issueNumber": "bro-7080-attractions-2",
+  "planId": "e3da590d-58f6-499c-8f79-8fa32ad3cf96",
+  "status": "pending",
+  "createdAt": "2026-11-07T21:01:07.295Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7080 owner decision B: 3 listings performing for months with no press night (58th Street Country Club, Mas sabe el Saulo por viejo, Inala) become open from their first performance; 58th Street (immersive attraction) is marked no critic reviews expected",
+    "steps": [
+      "shows.json: 58th-street-off-west-end-2026.status",
+      "shows.json: 58th-street-off-west-end-2026.openingDate",
+      "shows.json: 58th-street-off-west-end-2026.openingDateSource",
+      "shows.json: mas-sabe-el-saulo-por-viejo-off-broadway-2025.status",
+      "shows.json: mas-sabe-el-saulo-por-viejo-off-broadway-2025.openingDate",
+      "shows.json: mas-sabe-el-saulo-por-viejo-off-broadway-2025.openingDateSource",
+      "shows.json: inala-off-west-end-2026.status",
+      "shows.json: inala-off-west-end-2026.openingDate",
+      "shows.json: inala-off-west-end-2026.openingDateSource",
+      "shows.json: 58th-street-off-west-end-2026.noReviewsExpected",
+      "shows.json: 58th-street-off-west-end-2026.noReviewsExpectedReason"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "58th-street-off-west-end-2026",
+        "field": "status",
+        "oldValue": "previews",
+        "newValue": "open",
+        "description": "shows.json: 58th-street-off-west-end-2026.status"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "58th-street-off-west-end-2026",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2025-07-31",
+        "description": "shows.json: 58th-street-off-west-end-2026.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "58th-street-off-west-end-2026",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "first-performance-no-press-night",
+        "description": "shows.json: 58th-street-off-west-end-2026.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "mas-sabe-el-saulo-por-viejo-off-broadway-2025",
+        "field": "status",
+        "oldValue": "previews",
+        "newValue": "open",
+        "description": "shows.json: mas-sabe-el-saulo-por-viejo-off-broadway-2025.status"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "mas-sabe-el-saulo-por-viejo-off-broadway-2025",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2025-12-19",
+        "description": "shows.json: mas-sabe-el-saulo-por-viejo-off-broadway-2025.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "mas-sabe-el-saulo-por-viejo-off-broadway-2025",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "first-performance-no-press-night",
+        "description": "shows.json: mas-sabe-el-saulo-por-viejo-off-broadway-2025.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "inala-off-west-end-2026",
+        "field": "status",
+        "oldValue": "previews",
+        "newValue": "open",
+        "description": "shows.json: inala-off-west-end-2026.status"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "inala-off-west-end-2026",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2026-01-15",
+        "description": "shows.json: inala-off-west-end-2026.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "inala-off-west-end-2026",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "first-performance-no-press-night",
+        "description": "shows.json: inala-off-west-end-2026.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "58th-street-off-west-end-2026",
+        "field": "noReviewsExpected",
+        "oldValue": null,
+        "newValue": true,
+        "description": "shows.json: 58th-street-off-west-end-2026.noReviewsExpected"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "58th-street-off-west-end-2026",
+        "field": "noReviewsExpectedReason",
+        "oldValue": null,
+        "newValue": "Open-ended immersive attraction with no press night (owner decision 2026-11-07, BRO-7080): opening date is the first performance, no critic coverage expected.",
+        "description": "shows.json: 58th-street-off-west-end-2026.noReviewsExpectedReason"
+      }
+    ]
+  }
+}
