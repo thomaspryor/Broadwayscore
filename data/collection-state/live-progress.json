@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-11-07T17:19:07.705Z",
-  "processed": 25,
-  "failed": 45,
-  "successRate": "35.7%",
+  "updatedAt": "2026-11-07T17:49:17.979Z",
+  "processed": 85,
+  "failed": 65,
+  "successRate": "56.7%",
   "tierBreakdown": {
-    "playwright": 11,
+    "playwright": 40,
     "amp": 0,
     "browserbase": 4,
     "directCookies": 0,
-    "scrapingdog": 6,
-    "scrapingbee": 2,
+    "scrapingdog": 11,
+    "scrapingbee": 6,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 7
+    "archive": 33
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
       "t": "2026-11-07T17:02:27.105Z",
@@ -37,45 +37,6 @@
       "t": "2026-11-07T17:02:58.581Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-11-07T16:56:13.381Z",
-      "event": "bb-session",
-      "session": "ede05b8a",
-      "url": "https://www.nytimes.com/2026/11/06/theater/the-unbelievers-222-a-ghost-story-rev"
-    },
-    {
-      "t": "2026-11-07T16:56:14.239Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-11-07T16:56:31.448Z",
-      "event": "bb-session",
-      "session": "816a7116",
-      "url": "https://www.nytimes.com/2026/11/06/theater/the-unbelievers-222-a-ghost-story-rev"
-    },
-    {
-      "t": "2026-11-07T16:56:32.228Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-11-07T17:00:06.016Z",
-      "event": "bb-session",
-      "session": "41d982d0",
-      "url": "https://bachtrack.com/review-medea-yoncheva-spyres-met-opera-new-york-october-20"
-    },
-    {
-      "t": "2026-11-07T17:04:34.701Z",
-      "event": "bb-session",
-      "session": "42ade87e",
-      "url": "https://hermes.talkinbroadway.com/allthatchat_new/d.php?id=2655044"
-    },
-    {
-      "t": "2026-11-07T17:04:35.552Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
     }
   ]
 }
