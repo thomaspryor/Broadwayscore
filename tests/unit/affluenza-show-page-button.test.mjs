@@ -120,8 +120,8 @@ test('Affluenza Want to See and poster bookmark visibly toggle the same local sa
   await click(want);
   assert.equal(want.textContent, 'On your list');
   assert.equal(JSON.parse(localStorage.getItem(LIST_KEY))[0].showId, show.id);
-  assert.ok(doc.querySelector('[role="dialog"][aria-label="Sign in or create a free account"]'));
-  await click(doc.querySelector('button[aria-label="Close"]'));
+  // BRO-6917: the first save is quiet; the sign-in sheet waits for the 3rd save.
+  assert.equal(doc.querySelector('[role="dialog"][aria-label="Sign in or create a free account"]'), null);
   await click(doc.querySelector('button[aria-label="Remove from To See"]'));
   assert.equal(want.textContent, 'Want to See');
   assert.equal(localStorage.getItem(LIST_KEY), null);
