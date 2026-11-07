@@ -140,7 +140,7 @@ async function main() {
       images = [];
       attachments = [];
     }
-    const html = buildHtml(draft, kind, images, { siteBehind });
+    const html = require('./lib/email-type-floor.js').enforceTypeFloor(buildHtml(draft, kind, images, { siteBehind }));
     if (DRY_RUN) {
       console.log(`\nSubject: ${subject}\nRecipient: ${SEND_TO}\nImages: ${shots.map(sh => sh.file).join(', ') || 'none'}\n---HTML---\n${html}`);
       continue;

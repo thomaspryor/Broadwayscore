@@ -949,7 +949,7 @@ async function main() {
 
   const todayHuman = new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
   const subject = buildSubject(sections);
-  const html = buildHtml({ ...sections, todayHuman });
+  const html = require('./lib/email-type-floor.js').enforceTypeFloor(buildHtml({ ...sections, todayHuman }));
 
   if (DRY_RUN) {
     console.log(`Subject: ${subject}`);
