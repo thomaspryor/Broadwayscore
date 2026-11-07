@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-11-07T00:48:05.706Z",
+  "timestamp": "2026-11-07T01:20:59.682Z",
   "stats": {
-    "totalReviews": 80367,
-    "alreadyFlagged": 22013,
+    "totalReviews": 80369,
+    "alreadyFlagged": 22012,
     "dateGuardCatches": 216,
-    "directorMismatch": 3517,
+    "directorMismatch": 3518,
     "tvFilmSignals": 2287,
-    "londonSignals": 3621,
+    "londonSignals": 3622,
     "offBroadwaySignals": 743,
     "yearMismatch": 362,
     "noPublishDate": 8475
@@ -63770,6 +63770,24 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"casey nicholaw\" from book-of-mormon-2011"
+        }
+      ]
+    },
+    {
+      "showId": "the-book-of-mormon-west-end-2024",
+      "file": "telegraph--claire-allfree.json",
+      "publishDate": "2013-03-20",
+      "url": "https://www.telegraph.co.uk/culture/theatre/theatre-reviews/9944210/The-Book-of-Mormon-at-Prince-of-Wales-theatre.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"trey parker\" from book-of-mormon-2011"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
         }
       ]
     },
