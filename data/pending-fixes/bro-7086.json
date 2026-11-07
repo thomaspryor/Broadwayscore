@@ -1,0 +1,162 @@
+{
+  "issueNumber": "bro-7086",
+  "planId": "42fdd17f-fec8-4744-98e7-0a31a4ae5f4b",
+  "status": "pending",
+  "createdAt": "2026-11-07T16:28:33.422Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7086: 9 undated included reviews whose URL slug names another production or venue (scripts/audit-undated-venue-url.js). 8 are flagged wrongProduction/wrongShow so they leave the score; the Phantom Telegraph row keeps its (real Phantom) text and loses its wrong link. No review text in this plan.",
+    "steps": [
+      "9-to-5-the-musical-west-end-2019/all-that-dazzles-uk--unknown.json: wrongShow",
+      "assassins-off-broadway-2021/musical-theatre-review--ron-cohen.json: wrongProduction",
+      "assassins-off-broadway-2021/curtainup--elyse-sommer.json: wrongProduction",
+      "good-night-oscar-regional-2022/telegraph--fiona-mountford.json: wrongProduction",
+      "good-west-end-2022/thestage--paul-vale.json: wrongShow",
+      "henry-v-west-end-2013/artsdesk--rachel-halliburton.json: wrongProduction",
+      "queens-off-broadway-2025/theater-reviews-from-my-seat--joe-lombardi.json: wrongProduction",
+      "twelfth-night-west-end-2017/whatsonstage--matt-trueman.json: wrongProduction"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "9-to-5-the-musical-west-end-2019/all-that-dazzles-uk--unknown.json",
+        "field": "wrongShow",
+        "oldValue": null,
+        "newValue": true,
+        "description": "9-to-5-the-musical-west-end-2019/all-that-dazzles-uk--unknown.json: wrongShow (BRO-7086 audit-undated-venue-url)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "9-to-5-the-musical-west-end-2019/all-that-dazzles-uk--unknown.json",
+        "field": "wrongShowReason",
+        "oldValue": null,
+        "newValue": "BRO-7086: URL is a review of Your Lie in April (concert, Theatre Royal Drury Lane), not 9 to 5.",
+        "description": "9-to-5-the-musical-west-end-2019/all-that-dazzles-uk--unknown.json: wrongShowReason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "assassins-off-broadway-2021/musical-theatre-review--ron-cohen.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "assassins-off-broadway-2021/musical-theatre-review--ron-cohen.json: wrongProduction (BRO-7086 audit-undated-venue-url)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "assassins-off-broadway-2021/musical-theatre-review--ron-cohen.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-7086: Review of the 2017 Encores! Off-Center concert at New York City Center, not the 2021 Classic Stage Company run.",
+        "description": "assassins-off-broadway-2021/musical-theatre-review--ron-cohen.json: wrongProductionReason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "assassins-off-broadway-2021/curtainup--elyse-sommer.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "assassins-off-broadway-2021/curtainup--elyse-sommer.json: wrongProduction (BRO-7086 audit-undated-venue-url)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "assassins-off-broadway-2021/curtainup--elyse-sommer.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-7086: URL encores-assassins.html is the Encores! Off-Center concert (2017), not the 2021 Classic Stage Company run.",
+        "description": "assassins-off-broadway-2021/curtainup--elyse-sommer.json: wrongProductionReason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "good-night-oscar-regional-2022/telegraph--fiona-mountford.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "good-night-oscar-regional-2022/telegraph--fiona-mountford.json: wrongProduction (BRO-7086 audit-undated-venue-url)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "good-night-oscar-regional-2022/telegraph--fiona-mountford.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-7086: URL names the Barbican Theatre London production, not the 2022 Goodman Theatre Chicago run.",
+        "description": "good-night-oscar-regional-2022/telegraph--fiona-mountford.json: wrongProductionReason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "good-west-end-2022/thestage--paul-vale.json",
+        "field": "wrongShow",
+        "oldValue": null,
+        "newValue": true,
+        "description": "good-west-end-2022/thestage--paul-vale.json: wrongShow (BRO-7086 audit-undated-venue-url)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "good-west-end-2022/thestage--paul-vale.json",
+        "field": "wrongShowReason",
+        "oldValue": null,
+        "newValue": "BRO-7086: URL is a review of Good Luck Studio at the Mercury Theatre Colchester, not Good.",
+        "description": "good-west-end-2022/thestage--paul-vale.json: wrongShowReason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "henry-v-west-end-2013/artsdesk--rachel-halliburton.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "henry-v-west-end-2013/artsdesk--rachel-halliburton.json: wrongProduction (BRO-7086 audit-undated-venue-url)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "henry-v-west-end-2013/artsdesk--rachel-halliburton.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-7086: Review of the Shakespeare's Globe Henry V (text names the Globe), not the 2013 Noel Coward Theatre run.",
+        "description": "henry-v-west-end-2013/artsdesk--rachel-halliburton.json: wrongProductionReason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "queens-off-broadway-2025/theater-reviews-from-my-seat--joe-lombardi.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "queens-off-broadway-2025/theater-reviews-from-my-seat--joe-lombardi.json: wrongProduction (BRO-7086 audit-undated-venue-url)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "queens-off-broadway-2025/theater-reviews-from-my-seat--joe-lombardi.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-7086: URL is the earlier Lincoln Center Theater production; the 2025 run was Manhattan Theatre Club at New York City Center.",
+        "description": "queens-off-broadway-2025/theater-reviews-from-my-seat--joe-lombardi.json: wrongProductionReason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "twelfth-night-west-end-2017/whatsonstage--matt-trueman.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "twelfth-night-west-end-2017/whatsonstage--matt-trueman.json: wrongProduction (BRO-7086 audit-undated-venue-url)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "twelfth-night-west-end-2017/whatsonstage--matt-trueman.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-7086: Review of the Shakespeare's Globe Twelfth Night (URL and text name the Globe), not the 2017 National Theatre Olivier run.",
+        "description": "twelfth-night-west-end-2017/whatsonstage--matt-trueman.json: wrongProductionReason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-phantom-of-the-opera-west-end-1986/telegraph--claire-allfree.json",
+        "field": "url",
+        "oldValue": "https://www.telegraph.co.uk/theatre/what-to-see/when-we-are-married-donmar-warehouse-review/",
+        "newValue": null,
+        "description": "Phantom Telegraph row: URL is a When We Are Married (Donmar) review; the stored text is a real Phantom review, so only the link is cleared (BRO-7086)."
+      }
+    ]
+  }
+}

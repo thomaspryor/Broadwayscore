@@ -224,6 +224,20 @@ const AUDITS = [
     args: ['--strict', '--max=50'],
     crashCodes: [2],           // 0 clean / 1 a contradicted show / 2 = corpus missing
   },
+  // BRO-7086: undated included reviews whose URL slug names a venue the show never
+  // played. Undated rows skip date-guard / collected-before-previews and market-routing
+  // only compares URL venues with sibling shows, so these stay on the wrong production.
+  // Advisory (CLAUDE.md s19): baseline = hits still queued in data/pending-fixes/bro-7086.json
+  // (measured 9 on 2026-11-07: 8 queued in bro-7086.json, 1 in bro-7077.json; 8 more settled legit in data/undated-venue-url-legit.json).
+  // Lower to 0 once the plan has applied and a rebuild ran.
+  {
+    name: 'undated-venue-url',
+    healPathRequired: false,
+    label: 'undated reviews whose URL names a venue the show never played',
+    script: 'audit-undated-venue-url.js',
+    args: ['--max=9'],
+    crashCodes: [2],           // 0 within baseline / 1 over baseline / 2 = corpus missing
+  },
   // BRO-2770: byline date in the body vs publishDate (>3 days) on a record that
   // still ships. Body and metadata describe different articles, or publishDate
   // is wrong, so the date guards judge the review on a date that isn't its own.
