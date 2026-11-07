@@ -176,6 +176,11 @@ runs:
             : path.resolve('scripts/lib/review-write-guard.js');
           const { PROTECTED_FIELDS, isIntentionalClear } = require(guardPath);
           const ACTION_EXTRA = [
+            // BRO-7082 create-time origin stamp: immutable, kept out of the
+            // guard's PROTECTED_FIELDS (stub quarantine / staged-deletion
+            // side effects), but a rebase must not drop it.
+            'ingestOrigin',
+            'ingestOriginBy',
             // SERP retry state intentionally excluded from guard's PROTECTED_FIELDS
             // because clearFailureFlags() clears them on success. But on rebase,
             // losing them would reset the cooldown backoff and re-trigger 13K stuck

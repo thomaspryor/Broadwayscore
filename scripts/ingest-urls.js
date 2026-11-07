@@ -48,6 +48,9 @@ const showId = getArg('show');
 const urlsFile = getArg('urls');
 const dryRun = hasFlag('dry-run');
 const noRebuild = hasFlag('no-rebuild');
+// BRO-7082: the automated dispatcher that asked for this run (tic-daily, ...). Unset = a
+// person or session dispatched it. Validated: it lands in a commit subject.
+const ingestCaller = require('./lib/review-provenance').sanitizeCaller(getArg('caller') || process.env.INGEST_CALLER);
 const noFetch = hasFlag('no-fetch');
 const noPushReviewTexts = hasFlag('no-push-review-texts');
 const defaultOutlet = getArg('default-outlet');
@@ -275,7 +278,7 @@ async function main() {
       bylineFromListing: byline.bylineFromListing,
       url,
       source: 'ingest-urls',
-      fields: {},
+      fields: ingestCaller ? { ingestSource: ingestCaller } : {},
     };
     if (publishDate) input.publishDate = publishDate;
 
@@ -389,7 +392,9 @@ async function main() {
     console.log('\nPushing review-texts to private repo...');
     const push = pushReviewTexts({
       reviewTextsDir, touchedPaths: results.touchedPaths,
-      message: `ingest-urls: ${newReviews} review(s) for ${showId}`,
+      // `ingest-urls:` (no caller) is what press-night-manual-actions counts as a hand fix;
+      // a scheduled caller's run is `ingest-urls(<caller>):` and is not.
+      message: `${ingestCaller ? `ingest-urls(${ingestCaller})` : 'ingest-urls'}: ${newReviews} review(s) for ${showId}`,
     });
     if (!push.pushed) {
       // BRO-5890: dispatching anyway scored a clone without the files (run
