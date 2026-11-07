@@ -1,0 +1,34 @@
+{
+  "issueNumber": "bro-5015",
+  "planId": "8c4704cd-4fd8-4ffb-b4ed-a5023576e459",
+  "status": "applied",
+  "createdAt": "2026-10-12T01:37:33.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5015: Good Time Charlie Talkin' Broadway file carries a forum announcement thread url (allthatchat_new/d.php), swapped in by a pre-guard maybeUpgradeUrl; it is an empty stub that no refetch can fill and it keeps audit-url-downgrade --gate red. Move it aside so discovery can ingest the real /page/ob/ review.",
+    "steps": [
+      "Move good-time-charlie-off-broadway-2026/talkinbroadway--unknown.json to _superseded-misattributed/"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "good-time-charlie-off-broadway-2026/talkinbroadway--unknown.json",
+        "destPath": "_superseded-misattributed/good-time-charlie-off-broadway-2026--talkinbroadway--unknown--forum-thread-url-2026-10-12.json",
+        "description": "url is a Talkin' Broadway forum thread (not a review page); file is not scored on the live page"
+      }
+    ]
+  },
+  "executedAt": "2026-10-12T05:19:45.059Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved good-time-charlie-off-broadway-2026/talkinbroadway--unknown.json → _superseded-misattributed/good-time-charlie-off-broadway-2026--talkinbroadway--unknown--forum-thread-url-2026-10-12.json"
+    }
+  ]
+}

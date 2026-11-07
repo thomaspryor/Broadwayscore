@@ -1,0 +1,137 @@
+{
+  "runDate": "2026-11-07T18:25:18.840Z",
+  "config": {
+    "batchSize": 10,
+    "maxReviews": 100,
+    "priority": "all",
+    "showFilter": "the-unbelievers-off-broadway-2026,tango-after-dark-off-west-end-2026,the-verge-off-broadway-2026,iphigenie-en-tauride-english-national-opera-west-end-2026,222-a-ghost-story-off-broadway-2026,nero-off-west-end-2026,parcel-from-america-off-broadway-2026,speculations-off-west-end-2026,dr-seuss-how-the-grinch-stole-christmas-tour-2026,king-lear-off-broadway-2026",
+    "aggressive": false,
+    "scrapingBeeEnabled": true,
+    "brightDataEnabled": true,
+    "stealthPluginLoaded": true
+  },
+  "summary": {
+    "processed": 7,
+    "failed": 4,
+    "skipped": 0,
+    "successRate": "63.6%"
+  },
+  "tierBreakdown": {
+    "playwright": 4,
+    "amp": 0,
+    "browserbase": 6,
+    "directCookies": 0,
+    "scrapingdog": 0,
+    "scrapingbee": 0,
+    "brightdata": 0,
+    "archiveToday": 0,
+    "archive": 0
+  },
+  "statistics": {
+    "tier1Attempts": 5,
+    "tier1Success": 4,
+    "ampAttempts": 0,
+    "ampSuccess": 0,
+    "tier1_5Attempts": 3,
+    "tier1_5Success": 3,
+    "tier1_9Attempts": 1,
+    "tier1_9Success": 0,
+    "tier2Attempts": 3,
+    "tier2Success": 0,
+    "tier3Attempts": 1,
+    "tier3Success": 0,
+    "tier3_6Attempts": 1,
+    "tier3_6Success": 0,
+    "tier4Attempts": 4,
+    "tier4Success": 0,
+    "totalFailed": 4,
+    "scrapingBeePageCredits": 1,
+    "scrapingBeeSerpCredits": 0,
+    "browserbaseSessionsUsed": 3,
+    "browserbaseMinutesUsed": 0.6,
+    "urlDiscoveryAttempts": 1,
+    "urlDiscoverySuccess": 0,
+    "urlDiscoveryCapped": 0
+  },
+  "thisRun": {
+    "processed": 7,
+    "failed": 4,
+    "shows": [
+      "222-a-ghost-story-off-broadway-2026",
+      "speculations-off-west-end-2026",
+      "tango-after-dark-off-west-end-2026",
+      "the-unbelievers-off-broadway-2026",
+      "the-verge-off-broadway-2026"
+    ],
+    "outOfScopeShows": [],
+    "inheritedFromResume": {
+      "processed": 0,
+      "failed": 0
+    }
+  },
+  "processed": [
+    "222-a-ghost-story-off-broadway-2026/wsj--charles-isherwood.json",
+    "the-unbelievers-off-broadway-2026/nytimes--laura-collins-hughes.json",
+    "the-verge-off-broadway-2026/nytimes--helen-shaw.json",
+    "speculations-off-west-end-2026/jonathan-baz--unknown.json",
+    "speculations-off-west-end-2026/londonlivinglarge--unknown.json",
+    "speculations-off-west-end-2026/theatre-vibe--unknown.json",
+    "tango-after-dark-off-west-end-2026/bestoftheatre--unknown.json"
+  ],
+  "failed": [
+    "speculations-off-west-end-2026/guardian--arifa-akbar.json",
+    "speculations-off-west-end-2026/guardian--unknown.json",
+    "222-a-ghost-story-off-broadway-2026/theatrely--kobi-kassal.json",
+    "the-unbelievers-off-broadway-2026/bobs-theater-blog--unknown.json"
+  ],
+  "cumulativeResumedState": {
+    "processed": [
+      "222-a-ghost-story-off-broadway-2026/wsj--charles-isherwood.json",
+      "the-unbelievers-off-broadway-2026/nytimes--laura-collins-hughes.json",
+      "the-verge-off-broadway-2026/nytimes--helen-shaw.json",
+      "speculations-off-west-end-2026/jonathan-baz--unknown.json",
+      "speculations-off-west-end-2026/londonlivinglarge--unknown.json",
+      "speculations-off-west-end-2026/theatre-vibe--unknown.json",
+      "tango-after-dark-off-west-end-2026/bestoftheatre--unknown.json"
+    ],
+    "failed": [
+      "speculations-off-west-end-2026/guardian--arifa-akbar.json",
+      "speculations-off-west-end-2026/guardian--unknown.json",
+      "222-a-ghost-story-off-broadway-2026/theatrely--kobi-kassal.json",
+      "the-unbelievers-off-broadway-2026/bobs-theater-blog--unknown.json"
+    ]
+  },
+  "tierDetails": {
+    "playwright": [
+      "speculations-off-west-end-2026/jonathan-baz--unknown.json",
+      "speculations-off-west-end-2026/londonlivinglarge--unknown.json",
+      "speculations-off-west-end-2026/theatre-vibe--unknown.json",
+      "tango-after-dark-off-west-end-2026/bestoftheatre--unknown.json"
+    ],
+    "amp": [],
+    "browserbase": [
+      "data/review-texts/222-a-ghost-story-off-broadway-2026/wsj--charles-isherwood.json",
+      "222-a-ghost-story-off-broadway-2026/wsj--charles-isherwood.json",
+      "data/review-texts/the-unbelievers-off-broadway-2026/nytimes--laura-collins-hughes.json",
+      "the-unbelievers-off-broadway-2026/nytimes--laura-collins-hughes.json",
+      "data/review-texts/the-verge-off-broadway-2026/nytimes--helen-shaw.json",
+      "the-verge-off-broadway-2026/nytimes--helen-shaw.json"
+    ],
+    "directCookies": [],
+    "scrapingdog": [],
+    "scrapingbee": [],
+    "brightdata": [],
+    "archiveToday": [],
+    "archive": []
+  },
+  "failuresByOutlet": {
+    "Bob's Theater Blog": {
+      "count": 1,
+      "domain": "gotham-playgoer.blogspot.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    }
+  },
+  "urlDiscoveries": []
+}

@@ -1,0 +1,80 @@
+{
+  "system": "quality",
+  "status": "warn",
+  "lastChecked": "2026-11-07T08:51:23.044Z",
+  "lastAlertTimestamp": null,
+  "autoFixAttempts": 0,
+  "escalationState": "resolved",
+  "details": [
+    {
+      "name": "Quality: opening date vs review dates",
+      "status": "pass",
+      "message": "No opening date contradicts its reviews (1 acked)"
+    },
+    {
+      "name": "Quality: star-vs-score mismatch",
+      "status": "pass",
+      "message": "No new star/score contradictions (30 known/baselined)"
+    },
+    {
+      "name": "Quality: scored review ratio",
+      "status": "pass",
+      "message": "98.2% scored (49602/50536)"
+    },
+    {
+      "name": "Quality: corpus drift",
+      "status": "pass",
+      "message": "25 audit(s) drifting, each reported on its own card or the digest FYI line (3h ago)"
+    },
+    {
+      "name": "Quality: DMARC deliverability",
+      "status": "pass",
+      "message": "17969 messages, 0 auth failures (p=reject)"
+    },
+    {
+      "name": "Quality: missing contentTier",
+      "status": "pass",
+      "message": "No scored reviews missing contentTier"
+    },
+    {
+      "name": "Quality: outlet domain moves",
+      "status": "pass",
+      "message": "No probable domain moves in 305 unregistered host(s)"
+    },
+    {
+      "name": "Quality: Show Score gap",
+      "status": "pass",
+      "message": "Every opened Broadway/off-Broadway show with a cached Show Score URL has a Show Score audience score"
+    },
+    {
+      "name": "Quality: outlet stub rate",
+      "status": "pass",
+      "message": "No broken-extractor signature in 1860 outlet(s), 80343 review(s)"
+    },
+    {
+      "name": "Quality: outlet invalid-content rate",
+      "status": "pass",
+      "message": "No broken-extractor signature in 1860 outlet(s), 80343 review(s)"
+    },
+    {
+      "name": "Quality: standingCoverage drift",
+      "status": "pass",
+      "message": "No standingCoverage drift"
+    },
+    {
+      "name": "Quality: coverageExpectation drift",
+      "status": "pass",
+      "message": "No coverageExpectation re-probes needed"
+    },
+    {
+      "name": "Quality: outlet-heartbeat red flags",
+      "status": "pass",
+      "message": "148 outlet×market rows checked, none NEW silent 2+ consecutive weeks (31 known/baselined, 5d ago)"
+    },
+    {
+      "name": "Quality: outlet feed staleness",
+      "status": "warn",
+      "message": "Of 80 feed(s), outlet still publishing but feed 1 stale: exeunt-magazine (feed newest none, review 2026-11-05); 1 failing: slantmagazine (paid fetch budget exhausted)"
+    }
+  ]
+}

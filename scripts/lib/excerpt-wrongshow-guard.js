@@ -1,0 +1,112 @@
+/**
+ * BRO-5785: an ensemble `wrong_show` verdict that only ever saw an aggregator
+ * EXCERPT is a verdict on the excerpt, not on the review. Aggregators mis-pair
+ * excerpts (New York Theatre Guide's "Two Girls" review carried School Girls
+ * text), and writing wrongShow=true + rejected* on that evidence excludes a
+ * correct review. When there is no fullText to confirm it and the review URL
+ * slug names the show, hold the flag and queue a text fetch instead.
+ *
+ * The URL is used only to SUPPRESS a destructive write, never to derive
+ * metadata (CLAUDE.md §3).
+ */
+const { foldDiacritics } = require('./url-slug');
+const { EXCERPT_FIELDS } = require('./excerpt-fields');
+
+const AGGREGATOR_EXCERPT_FIELDS = EXCERPT_FIELDS.filter((f) => f !== 'metaExcerpt');
+
+const MIN_FULLTEXT = 100; // same floor as selectScorableText (scorable-text.js)
+
+function normalize(s) {
+  return foldDiacritics(s).toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+}
+
+/**
+ * True when the LAST path segment of the URL opens with the show title (word
+ * boundary, optional leading "the"), e.g. two-girls-off-broadway-review for
+ * "Two Girls". Anchoring to the segment start avoids matching a title that
+ * merely appears inside another show's or outlet's slug (a "Company" gala, a
+ * "Girls" fragment of "school-girls"). Misses are the safe direction: the
+ * verdict then stands, as before.
+ */
+function urlSlugNamesShow(url, showTitle) {
+  if (!url || !showTitle) return false;
+  let path;
+  try { path = new URL(url).pathname; } catch { path = String(url); }
+  const segment = normalize(path.split('/').filter(Boolean).pop() || '');
+  const title = normalize(String(showTitle).replace(/&/g, ' and ')).replace(/^the /, '');
+  if (title.length < 5 && title.split(' ').length < 2) return false;
+  const seg = segment.replace(/^the /, '');
+  return seg === title || seg.startsWith(`${title} `);
+}
+
+/**
+ * @param {Object} args
+ * @param {string} args.rejection - ensemble rejection type
+ * @param {string|null} args.scoredTextType - getBestTextForScoring().type
+ * @param {Object} args.fileData - review file (fullText, url)
+ * @param {string} [args.showTitle]
+ * @returns {{suppress: boolean, reason: string|null}}
+ */
+function shouldSuppressExcerptOnlyWrongShow({ rejection, scoredTextType, fileData, showTitle }) {
+  if (rejection !== 'wrong_show') return { suppress: false, reason: null };
+  if (scoredTextType !== 'excerpt') return { suppress: false, reason: null };
+  const hasFullText = typeof fileData?.fullText === 'string' && fileData.fullText.length >= MIN_FULLTEXT;
+  if (hasFullText) return { suppress: false, reason: null };
+  if (!urlSlugNamesShow(fileData?.url, showTitle)) return { suppress: false, reason: null };
+  return { suppress: true, reason: 'excerpt_only_wrong_show_url_names_show' };
+}
+
+/**
+ * True when the LAST path segment names the show AND carries a "review" token
+ * (the-unbelievers-off-broadway-review-lauren-ambrose). A slug that only names
+ * the show could be a listing, a feature or a ticket page.
+ */
+function urlSlugIsReviewOfShow(url, showTitle) {
+  if (!urlSlugNamesShow(url, showTitle)) return false;
+  let path;
+  try { path = new URL(url).pathname; } catch { path = String(url); }
+  const segment = normalize(path.split('/').filter(Boolean).pop() || '');
+  const words = segment.split(' ');
+  return words.includes('review') && !words.includes('roundup') && !words.includes('reviews');
+}
+
+/**
+ * BRO-7044: a not_a_review verdict that only saw an aggregator EXCERPT judges
+ * the excerpt, not the article. BWW roundup excerpts are often the lede (cast
+ * list, premise) with no verdict language; Time Out's Unbelievers review was
+ * rejected on a 303-char premise blurb and sat excluded while the real review
+ * waited behind the rejection. When no fullText exists and the review URL is
+ * itself a "<show>-review" slug, hold the flag and let the text fetch decide.
+ * Same destructive-write-only use of the URL as the wrong_show guard (§3).
+ *
+ * @param {Object} args same shape as shouldSuppressExcerptOnlyWrongShow
+ * @returns {{suppress: boolean, reason: string|null}}
+ */
+function shouldSuppressExcerptOnlyNotAReview({ rejection, scoredTextType, fileData, showTitle }) {
+  if (rejection !== 'not_a_review') return { suppress: false, reason: null };
+  if (scoredTextType !== 'excerpt') return { suppress: false, reason: null };
+  const hasFullText = typeof fileData?.fullText === 'string' && fileData.fullText.length >= MIN_FULLTEXT;
+  if (hasFullText) return { suppress: false, reason: null };
+  if (!urlSlugIsReviewOfShow(fileData?.url, showTitle)) return { suppress: false, reason: null };
+  return { suppress: true, reason: 'excerpt_only_not_a_review_url_is_review_slug' };
+}
+
+/**
+ * BRO-7050: the general form of the two guards above. An ensemble rejection (any reason) judged on an
+ * aggregator excerpt alone, for a file an aggregator itself lists, is a verdict on a snippet the aggregator
+ * paired by critic+outlet, not on the article. It writes no flag; the file stays excerpt-tier and queued for
+ * the fullText refetch (fetchPage chain + archive fallback), exactly as the URL-slug guards leave it.
+ * Needs no URL slug: the listing is the evidence. A fullText of 100+ chars means the verdict read a real body
+ * and is not suppressed here.
+ */
+function shouldSuppressExcerptOnlyAggregatorListed({ rejection, scoredTextType, fileData }) {
+  if (!['not_a_review', 'wrong_show', 'wrong_production'].includes(rejection)) return { suppress: false, reason: null };
+  if (scoredTextType !== 'excerpt') return { suppress: false, reason: null };
+  const hasFullText = typeof fileData?.fullText === 'string' && fileData.fullText.length >= MIN_FULLTEXT;
+  if (hasFullText) return { suppress: false, reason: null };
+  const listed = AGGREGATOR_EXCERPT_FIELDS.some((f) => typeof fileData?.[f] === 'string' && fileData[f].trim().length > 0);
+  if (!listed) return { suppress: false, reason: null };
+  return { suppress: true, reason: `excerpt_only_${rejection}_aggregator_listed` };
+}
+
+module.exports = { shouldSuppressExcerptOnlyWrongShow, shouldSuppressExcerptOnlyNotAReview, shouldSuppressExcerptOnlyAggregatorListed, urlSlugNamesShow, urlSlugIsReviewOfShow };

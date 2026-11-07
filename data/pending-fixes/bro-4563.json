@@ -1,0 +1,138 @@
+{
+  "issueNumber": "bro-4563",
+  "planId": "d0b5bf60-d06f-4ff4-9f82-df41b247805d",
+  "status": "applied",
+  "createdAt": "2026-10-03T22:01:32.574Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Add the Operation Mincemeat North American tour (launched 2026-09-20 per Tours To You, confirmed by BroadwayWorld's 2026-09-30 launch roundup) and restore the Baltimore Sun review of the Maybe Happy Ending tour, which was excluded as 'not a review' after a paywalled fetch returned only the lede.",
+    "steps": [
+      "Append operation-mincemeat-tour-2026 (category tour, tourOf operation-mincemeat-2025)",
+      "Clear the CV-promoted wrongShow / isNonReview / wrongArticle verdict on maybe-happy-ending-tour-2026/baltimoresun--luke-parker.json through the human-clear markers"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "add-show",
+        "show": {
+          "id": "operation-mincemeat-tour-2026",
+          "title": "Operation Mincemeat",
+          "slug": "operation-mincemeat-tour-2026",
+          "venue": "North American Tour",
+          "openingDate": "2026-09-20",
+          "closingDate": null,
+          "status": "open",
+          "type": "musical",
+          "isRevival": false,
+          "category": "tour",
+          "market": "tour",
+          "tourOf": "operation-mincemeat-2025",
+          "tags": [
+            "tour"
+          ],
+          "provisional": true,
+          "discoverySource": "aggregator-roundup:bww-tour-roundup",
+          "tourLaunchEvidence": "BroadwayWorld national-tour roundup https://www.broadwayworld.com/article/Review-Roundup-OPERATION-MINCEMEAT-Launches-North-American-Leg-of-World-Tour-20260930",
+          "statusSource": "added 2026-10-03 via approved fix (BRO-4563): https://tourstoyou.org/shows/operation-mincemeat/ + BroadwayWorld roundup; segment 2026-09-20..2027-07-25 (25 engagements); launch 2026-09-20 confirmed by the BroadwayWorld roundup dated 2026-09-30 (Wikipedia silent). Same entry create-tour-entries.js builds in report mode.",
+          "openingDateSource": "tourstoyou+bww-roundup",
+          "tourScheduleSlug": "operation-mincemeat",
+          "images": {
+            "hero": null,
+            "thumbnail": "/images/shows/operation-mincemeat-2025/thumbnail.webp",
+            "poster": "/images/shows/operation-mincemeat-2025/poster.webp"
+          },
+          "synopsis": "The Olivier Award-winning Best New Musical tells the outrageous true story of the WWII plot to fool Hitler with a corpse, fake documents, and an idealistic intelligence team."
+        }
+      },
+      {
+        "type": "review-field-edit",
+        "file": "maybe-happy-ending-tour-2026/baltimoresun--luke-parker.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "The url is the Baltimore Sun's review of this tour (.../2026/09/17/maybe-happy-ending-review/) and BroadwayWorld's tour roundup quotes it; the CV-promoted wrongShow came from a verdict on a paywalled fetch that held only the lede (the verifier itself said 'severely truncated')."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "maybe-happy-ending-tour-2026/baltimoresun--luke-parker.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Clear the CV-promoted wrongShow (marker set above)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "maybe-happy-ending-tour-2026/baltimoresun--luke-parker.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "It is a review: the 'news' verdict was judged on the lede alone (BRO-4563)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "maybe-happy-ending-tour-2026/baltimoresun--luke-parker.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Clear the CV-promoted isNonReview (marker set above)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "maybe-happy-ending-tour-2026/baltimoresun--luke-parker.json",
+        "field": "wrongArticleManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Stop rebuild re-promoting the stored contentVerification.wrongArticle verdict."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "maybe-happy-ending-tour-2026/baltimoresun--luke-parker.json",
+        "field": "rejectionReason",
+        "oldValue": "not_a_review",
+        "newValue": null,
+        "description": "The not_a_review rejection came from the same truncated-fetch verdict."
+      }
+    ]
+  },
+  "executedAt": "2026-10-03T22:41:17.749Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added operation-mincemeat-tour-2026"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "maybe-happy-ending-tour-2026/baltimoresun--luke-parker.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "maybe-happy-ending-tour-2026/baltimoresun--luke-parker.json wrongShow: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "maybe-happy-ending-tour-2026/baltimoresun--luke-parker.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "maybe-happy-ending-tour-2026/baltimoresun--luke-parker.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "maybe-happy-ending-tour-2026/baltimoresun--luke-parker.json wrongArticleManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "maybe-happy-ending-tour-2026/baltimoresun--luke-parker.json rejectionReason: \"not_a_review\" -> null"
+    }
+  ]
+}

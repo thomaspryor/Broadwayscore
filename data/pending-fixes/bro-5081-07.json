@@ -1,0 +1,371 @@
+{
+  "issueNumber": "bro-5081-07",
+  "planId": "4bdabe94-289c-4825-8d1f-64db43438d4f",
+  "status": "partial",
+  "createdAt": "2026-10-11T21:42:49.528Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5081 part 7: correct 25 critic bylines and publish dates. The legacy LLM web-search step (Feb 2026 backfill) invented them; each review page's own metadata (JSON-LD/meta author, published time) says otherwise.",
+    "steps": [
+      "Page byline at https://www.vulture.com/2013/09/theater-review-romeo-and-juliet.html is Scott Brown; Jesse Green came from the legacy web-search step and is not on the page.",
+      "Page byline at https://variety.com/2018/legit/reviews/saint-joan-review-broadway-condola-rashad-1202785638/ is Frank Rizzo; Marilyn Stasio came from the legacy web-search step and is not on the page.",
+      "Page byline at http://www.timeout.com/newyork/theater/school-of-rock is David Cote; Adam Feldman came from the legacy web-search step and is not on the page. The page critic already has the live record timeout--david-cote.json for this url, so this web-search copy is a duplicate of it.",
+      "Page byline at https://www.vulture.com/2012/11/theater-review-scandalous.html is Scott Brown; Jesse Green came from the legacy web-search step and is not on the page.",
+      "Page byline at https://www.theguardian.com/stage/2019/feb/14/sea-wall-a-life-review-jake-gyllenhaal-new-york is Jake Nevins; Jesse Green came from the legacy web-search step and is not on the page.",
+      "Page byline at https://www.vulture.com/2011/11/theater-review-writing-about-seminars-writing-about-writing.html is Scott Brown; Jesse Green came from the legacy web-search step and is not on the page.",
+      "Page byline at https://www.newyorker.com/magazine/2023/04/17/shucked-theatre-review-broadway is Vinson Cunningham; Naomi Fry came from the legacy web-search step and is not on the page.",
+      "Page byline at https://variety.com/2023/legit/reviews/shucked-review-corn-musical-broadway-brandy-clark-shane-mcanally-1235574263/ is Frank Rizzo; Aramide Tinubu came from the legacy web-search step and is not on the page. The page critic already has the live record variety--frank-rizzo.json for this url, so this web-search copy is a duplicate of it.",
+      "Page byline at https://www.vulture.com/2013/08/theater-reviews-shida.html is Scott Brown; Jesse Green came from the legacy web-search step and is not on the page. The page critic already has the live record vulture--scott-brown.json for this url, so this web-search copy is a duplicate of it.",
+      "Page byline at https://www.theatermania.com/news/review-monty-pythons-spamalot-returns-to-broadway-in-a-test-of-expiration-dates_1721545/ is Zachary Stewart; Adam Feldman came from the legacy web-search step and is not on the page.",
+      "Page byline at https://variety.com/2005/legit/reviews/souvenir-1200529515/ is David Rooney; Charles Isherwood came from the legacy web-search step and is not on the page.",
+      "Page byline at http://variety.com/2015/legit/reviews/spring-awakening-review-deaf-west-broadway-1201603519/ is Peter Debruge; Marilyn Stasio came from the legacy web-search step and is not on the page. The page critic already has the live record variety--peter-debruge.json for this url, so this web-search copy is a duplicate of it.",
+      "Page byline at https://www.newyorker.com/magazine/2024/05/06/stereophonic-theatre-review-cabaret is Helen Shaw; Naomi Fry came from the legacy web-search step and is not on the page.",
+      "Page byline at https://variety.com/2011/legit/reviews/stick-fly-1117946728/ is Steven Suskin; Marilyn Stasio came from the legacy web-search step and is not on the page.",
+      "Page byline at https://www.vulture.com/2018/07/theater-review-straight-white-men-dares-to-be-complicated.html#:~:text=Broadway%20by%20an%20Asian%2DAmerican%20woman.,The%20article%20digs%20into is Sara Holdren; Jesse Green came from the legacy web-search step and is not on the page.",
+      "Page byline at https://variety.com/2024/legit/reviews/suffs-review-musical-broadway-1235974881/ is Frank Rizzo; Aramide Tinubu came from the legacy web-search step and is not on the page.",
+      "Page byline at https://www.timeout.com/newyork/blog/broadway-review-jake-gyllenhaal-is-amazing-in-sunday-in-the-park-with-george-022317 is David Cote; Adam Feldman came from the legacy web-search step and is not on the page.",
+      "Page byline at https://variety.com/2005/legit/reviews/sweeney-todd-the-demon-barber-of-fleet-street-2-1200520509/ is David Rooney; Charles Isherwood came from the legacy web-search step and is not on the page.",
+      "Page byline at https://variety.com/2023/legit/reviews/sweeney-todd-review-josh-groban-broadway-annaleigh-ashford-1235564843/ is Naveen Kumar; David Rooney came from the legacy web-search step and is not on the page.",
+      "Page byline at https://www.newyorker.com/magazine/2023/04/10/sweeney-todd-theatre-review-broadway is Helen Shaw; Naomi Fry came from the legacy web-search step and is not on the page.",
+      "Page byline at https://variety.com/2024/legit/reviews/tammy-faye-review-broadway-musical-elton-john-1236210176/ is Frank Rizzo; Aramide Tinubu came from the legacy web-search step and is not on the page.",
+      "Page byline at https://www.vulture.com/article/theater-review-broadway-musical-tammy-faye.html is Sara Holdren; Jackson McHenry came from the legacy web-search step and is not on the page.",
+      "Page byline at https://variety.com/2005/legit/reviews/the-25th-annual-putnam-county-spelling-bee-3-1200526206/ is David Rooney; Charles Isherwood came from the legacy web-search step and is not on the page.",
+      "Page byline at https://www.vulture.com/2012/12/theater-review-the-anarchist.html is Scott Brown; Jesse Green came from the legacy web-search step and is not on the page. The page critic already has the live record vulture--scott-brown.json for this url, so this web-search copy is a duplicate of it.",
+      "Page byline at https://variety.com/2006/legit/reviews/the-apple-tree-1200514524/ is David Rooney; Charles Isherwood came from the legacy web-search step and is not on the page."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "romeo-and-juliet-2013/vulture--jesse-green.json",
+        "field": "criticName",
+        "oldValue": "Jesse Green",
+        "newValue": "Scott Brown",
+        "description": "Page byline at https://www.vulture.com/2013/09/theater-review-romeo-and-juliet.html is Scott Brown; Jesse Green came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "saint-joan-2018/variety--marilyn-stasio.json",
+        "field": "criticName",
+        "oldValue": "Marilyn Stasio",
+        "newValue": "Frank Rizzo",
+        "description": "Page byline at https://variety.com/2018/legit/reviews/saint-joan-review-broadway-condola-rashad-1202785638/ is Frank Rizzo; Marilyn Stasio came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "school-of-rock-the-musical-2015/timeout--adam-feldman.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "timeout--david-cote.json",
+        "description": "Page byline at http://www.timeout.com/newyork/theater/school-of-rock is David Cote; Adam Feldman came from the legacy web-search step and is not on the page. The page critic already has the live record timeout--david-cote.json for this url, so this web-search copy is a duplicate of it."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "scandalous-2012/vulture--jesse-green.json",
+        "field": "criticName",
+        "oldValue": "Jesse Green",
+        "newValue": "Scott Brown",
+        "description": "Page byline at https://www.vulture.com/2012/11/theater-review-scandalous.html is Scott Brown; Jesse Green came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "sea-wall-a-life-2019/guardian--jesse-green.json",
+        "field": "criticName",
+        "oldValue": "Jesse Green",
+        "newValue": "Jake Nevins",
+        "description": "Page byline at https://www.theguardian.com/stage/2019/feb/14/sea-wall-a-life-review-jake-gyllenhaal-new-york is Jake Nevins; Jesse Green came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "seminar-2011/vulture--jesse-green.json",
+        "field": "criticName",
+        "oldValue": "Jesse Green",
+        "newValue": "Scott Brown",
+        "description": "Page byline at https://www.vulture.com/2011/11/theater-review-writing-about-seminars-writing-about-writing.html is Scott Brown; Jesse Green came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "shucked-2023/newyorker--naomi-fry.json",
+        "field": "criticName",
+        "oldValue": "Naomi Fry",
+        "newValue": "Vinson Cunningham",
+        "description": "Page byline at https://www.newyorker.com/magazine/2023/04/17/shucked-theatre-review-broadway is Vinson Cunningham; Naomi Fry came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "shucked-2023/variety--aramide-tinubu.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "variety--frank-rizzo.json",
+        "description": "Page byline at https://variety.com/2023/legit/reviews/shucked-review-corn-musical-broadway-brandy-clark-shane-mcanally-1235574263/ is Frank Rizzo; Aramide Tinubu came from the legacy web-search step and is not on the page. The page critic already has the live record variety--frank-rizzo.json for this url, so this web-search copy is a duplicate of it."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "soul-doctor-2013/vulture--jesse-green.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "vulture--scott-brown.json",
+        "description": "Page byline at https://www.vulture.com/2013/08/theater-reviews-shida.html is Scott Brown; Jesse Green came from the legacy web-search step and is not on the page. The page critic already has the live record vulture--scott-brown.json for this url, so this web-search copy is a duplicate of it."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "spamalot-2023/theatermania--adam-feldman.json",
+        "field": "criticName",
+        "oldValue": "Adam Feldman",
+        "newValue": "Zachary Stewart",
+        "description": "Page byline at https://www.theatermania.com/news/review-monty-pythons-spamalot-returns-to-broadway-in-a-test-of-expiration-dates_1721545/ is Zachary Stewart; Adam Feldman came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "souvenir-2005/variety--charles-isherwood.json",
+        "field": "criticName",
+        "oldValue": "Charles Isherwood",
+        "newValue": "David Rooney",
+        "description": "Page byline at https://variety.com/2005/legit/reviews/souvenir-1200529515/ is David Rooney; Charles Isherwood came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "spring-awakening-2015/variety--marilyn-stasio.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "variety--peter-debruge.json",
+        "description": "Page byline at http://variety.com/2015/legit/reviews/spring-awakening-review-deaf-west-broadway-1201603519/ is Peter Debruge; Marilyn Stasio came from the legacy web-search step and is not on the page. The page critic already has the live record variety--peter-debruge.json for this url, so this web-search copy is a duplicate of it."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "stereophonic-2024/newyorker--naomi-fry.json",
+        "field": "criticName",
+        "oldValue": "Naomi Fry",
+        "newValue": "Helen Shaw",
+        "description": "Page byline at https://www.newyorker.com/magazine/2024/05/06/stereophonic-theatre-review-cabaret is Helen Shaw; Naomi Fry came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "stick-fly-2011/variety--marilyn-stasio.json",
+        "field": "criticName",
+        "oldValue": "Marilyn Stasio",
+        "newValue": "Steven Suskin",
+        "description": "Page byline at https://variety.com/2011/legit/reviews/stick-fly-1117946728/ is Steven Suskin; Marilyn Stasio came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "straight-white-men-2018/vulture--jesse-green.json",
+        "field": "criticName",
+        "oldValue": "Jesse Green",
+        "newValue": "Sara Holdren",
+        "description": "Page byline at https://www.vulture.com/2018/07/theater-review-straight-white-men-dares-to-be-complicated.html#:~:text=Broadway%20by%20an%20Asian%2DAmerican%20woman.,The%20article%20digs%20into is Sara Holdren; Jesse Green came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "suffs-2024/variety--aramide-tinubu.json",
+        "field": "criticName",
+        "oldValue": "Aramide Tinubu",
+        "newValue": "Frank Rizzo",
+        "description": "Page byline at https://variety.com/2024/legit/reviews/suffs-review-musical-broadway-1235974881/ is Frank Rizzo; Aramide Tinubu came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "sunday-in-the-park-with-george-2017/timeout--adam-feldman.json",
+        "field": "criticName",
+        "oldValue": "Adam Feldman",
+        "newValue": "David Cote",
+        "description": "Page byline at https://www.timeout.com/newyork/blog/broadway-review-jake-gyllenhaal-is-amazing-in-sunday-in-the-park-with-george-022317 is David Cote; Adam Feldman came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "sweeney-todd-2005/variety--charles-isherwood.json",
+        "field": "criticName",
+        "oldValue": "Charles Isherwood",
+        "newValue": "David Rooney",
+        "description": "Page byline at https://variety.com/2005/legit/reviews/sweeney-todd-the-demon-barber-of-fleet-street-2-1200520509/ is David Rooney; Charles Isherwood came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "sweeney-todd-2023/variety--david-rooney.json",
+        "field": "criticName",
+        "oldValue": "David Rooney",
+        "newValue": "Naveen Kumar",
+        "description": "Page byline at https://variety.com/2023/legit/reviews/sweeney-todd-review-josh-groban-broadway-annaleigh-ashford-1235564843/ is Naveen Kumar; David Rooney came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "sweeney-todd-2023/newyorker--naomi-fry.json",
+        "field": "criticName",
+        "oldValue": "Naomi Fry",
+        "newValue": "Helen Shaw",
+        "description": "Page byline at https://www.newyorker.com/magazine/2023/04/10/sweeney-todd-theatre-review-broadway is Helen Shaw; Naomi Fry came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "tammy-faye-2024/variety--aramide-tinubu.json",
+        "field": "criticName",
+        "oldValue": "Aramide Tinubu",
+        "newValue": "Frank Rizzo",
+        "description": "Page byline at https://variety.com/2024/legit/reviews/tammy-faye-review-broadway-musical-elton-john-1236210176/ is Frank Rizzo; Aramide Tinubu came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "tammy-faye-2024/vulture--jackson-mchenry.json",
+        "field": "criticName",
+        "oldValue": "Jackson McHenry",
+        "newValue": "Sara Holdren",
+        "description": "Page byline at https://www.vulture.com/article/theater-review-broadway-musical-tammy-faye.html is Sara Holdren; Jackson McHenry came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-25th-annual-putnam-county-spelling-bee-2005/variety--charles-isherwood.json",
+        "field": "criticName",
+        "oldValue": "Charles Isherwood",
+        "newValue": "David Rooney",
+        "description": "Page byline at https://variety.com/2005/legit/reviews/the-25th-annual-putnam-county-spelling-bee-3-1200526206/ is David Rooney; Charles Isherwood came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-anarchist-2012/vulture--jesse-green.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "vulture--scott-brown.json",
+        "description": "Page byline at https://www.vulture.com/2012/12/theater-review-the-anarchist.html is Scott Brown; Jesse Green came from the legacy web-search step and is not on the page. The page critic already has the live record vulture--scott-brown.json for this url, so this web-search copy is a duplicate of it."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-apple-tree-2006/variety--charles-isherwood.json",
+        "field": "criticName",
+        "oldValue": "Charles Isherwood",
+        "newValue": "David Rooney",
+        "description": "Page byline at https://variety.com/2006/legit/reviews/the-apple-tree-1200514524/ is David Rooney; Charles Isherwood came from the legacy web-search step and is not on the page."
+      }
+    ]
+  },
+  "executedAt": "2026-10-11T23:39:45.854Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "romeo-and-juliet-2013/vulture--jesse-green.json criticName: \"Jesse Green\" -> \"Scott Brown\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "saint-joan-2018/variety--marilyn-stasio.json criticName: \"Marilyn Stasio\" -> \"Frank Rizzo\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "school-of-rock-the-musical-2015/timeout--adam-feldman.json duplicateOf: write guard kept null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "scandalous-2012/vulture--jesse-green.json criticName: \"Jesse Green\" -> \"Scott Brown\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "sea-wall-a-life-2019/guardian--jesse-green.json criticName: \"Jesse Green\" -> \"Jake Nevins\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "seminar-2011/vulture--jesse-green.json criticName: \"Jesse Green\" -> \"Scott Brown\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "shucked-2023/newyorker--naomi-fry.json criticName: \"Naomi Fry\" -> \"Vinson Cunningham\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "shucked-2023/variety--aramide-tinubu.json duplicateOf: write guard kept null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "soul-doctor-2013/vulture--jesse-green.json duplicateOf: write guard kept null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "spamalot-2023/theatermania--adam-feldman.json criticName: \"Adam Feldman\" -> \"Zachary Stewart\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "souvenir-2005/variety--charles-isherwood.json criticName: \"Charles Isherwood\" -> \"David Rooney\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "spring-awakening-2015/variety--marilyn-stasio.json duplicateOf: write guard kept null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "stereophonic-2024/newyorker--naomi-fry.json criticName: \"Naomi Fry\" -> \"Helen Shaw\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "stick-fly-2011/variety--marilyn-stasio.json criticName: \"Marilyn Stasio\" -> \"Steven Suskin\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "straight-white-men-2018/vulture--jesse-green.json criticName: \"Jesse Green\" -> \"Sara Holdren\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "suffs-2024/variety--aramide-tinubu.json criticName: \"Aramide Tinubu\" -> \"Frank Rizzo\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "sunday-in-the-park-with-george-2017/timeout--adam-feldman.json criticName: \"Adam Feldman\" -> \"David Cote\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "sweeney-todd-2005/variety--charles-isherwood.json criticName: \"Charles Isherwood\" -> \"David Rooney\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "sweeney-todd-2023/variety--david-rooney.json criticName: \"David Rooney\" -> \"Naveen Kumar\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "sweeney-todd-2023/newyorker--naomi-fry.json criticName: \"Naomi Fry\" -> \"Helen Shaw\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "tammy-faye-2024/variety--aramide-tinubu.json criticName: \"Aramide Tinubu\" -> \"Frank Rizzo\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "tammy-faye-2024/vulture--jackson-mchenry.json criticName: \"Jackson McHenry\" -> \"Sara Holdren\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-25th-annual-putnam-county-spelling-bee-2005/variety--charles-isherwood.json criticName: \"Charles Isherwood\" -> \"David Rooney\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "the-anarchist-2012/vulture--jesse-green.json duplicateOf: write guard kept null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-apple-tree-2006/variety--charles-isherwood.json criticName: \"Charles Isherwood\" -> \"David Rooney\""
+    }
+  ]
+}

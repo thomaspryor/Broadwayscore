@@ -1,0 +1,132 @@
+{
+  "issueNumber": "bro-5420-g2",
+  "planId": "c5f1baed-b20a-4b34-a15b-3719cffd12ae",
+  "status": "partial",
+  "createdAt": "2026-10-16T04:45:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5420 (g2): London reviews live on Broadway shows (audit-uk-rows-on-broadway: UK outlet or Theatre Record, dated outside the Broadway opening window and priorRuns; each url hand-checked and names a London venue or production). This plan: move to the London show, 9 actions.",
+    "steps": [
+      "move"
+    ],
+    "riskLevel": "medium",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "the-hills-of-california-2024/london-theatre--unknown.json",
+        "destPath": "the-hills-of-california-west-end-2024/london-theatre--unknown.json",
+        "description": "BRO-5420: london-theatre 2024-02-08 review of the London production (https://www.londontheatre.co.uk/reviews/the-hills-of-california-review-harold-pinter-theatre); filed under the Broadway id the-hills-of-california-2024 (run 2024-09-29..2024-12-22). Moves to the-hills-of-california-west-end-2024, whose run contains the date."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "the-hills-of-california-2024/radio-times--olivia-garrett.json",
+        "destPath": "the-hills-of-california-west-end-2024/radio-times--olivia-garrett.json",
+        "description": "BRO-5420: radio-times 2024-02-08 review of the London production (https://www.radiotimes.com/going-out/going-out-reviews/the-hills-of-california-review/); filed under the Broadway id the-hills-of-california-2024 (run 2024-09-29..2024-12-22). Moves to the-hills-of-california-west-end-2024, whose run contains the date."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "the-shark-is-broken-2023/guardian--httpswwwtheguardiancomprofileryangilbey.json",
+        "destPath": "the-shark-is-broken-west-end-2021/guardian--httpswwwtheguardiancomprofileryangilbey.json",
+        "description": "BRO-5420: guardian 2021-10-21 review of the London production (https://www.theguardian.com/stage/2021/oct/21/the-shark-is-broken-review-making-of-jaws); filed under the Broadway id the-shark-is-broken-2023 (run 2023-08-10..2023-11-19). Moves to the-shark-is-broken-west-end-2021, whose run contains the date."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "the-shark-is-broken-2023/i-paper--sam-marlowe.json",
+        "destPath": "the-shark-is-broken-west-end-2021/i-paper--sam-marlowe.json",
+        "description": "BRO-5420: i-paper 2021-10-22 review of the London production (https://inews.co.uk/culture/the-shark-is-broken-ambassadors-theatre-london-review-jaws-robert-ian-shaw-1263368); filed under the Broadway id the-shark-is-broken-2023 (run 2023-08-10..2023-11-19). Moves to the-shark-is-broken-west-end-2021, whose run contains the date."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "the-shark-is-broken-2023/independent--unknown.json",
+        "destPath": "the-shark-is-broken-west-end-2021/independent--unknown.json",
+        "description": "BRO-5420: independent 2021-10-22 review of the London production (https://www.independent.co.uk/independentpremium/culture/shark-is-broken-review-ambassador-theatre-b1942569.html); filed under the Broadway id the-shark-is-broken-2023 (run 2023-08-10..2023-11-19). Moves to the-shark-is-broken-west-end-2021, whose run contains the date."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "the-shark-is-broken-2023/london-theatre--unknown.json",
+        "destPath": "the-shark-is-broken-west-end-2021/london-theatre--unknown.json",
+        "description": "BRO-5420: london-theatre 2021-10-19 review of the London production (https://www.londontheatre.co.uk/reviews/the-shark-is-broken-review-ambassadors-theatre); filed under the Broadway id the-shark-is-broken-2023 (run 2023-08-10..2023-11-19). Moves to the-shark-is-broken-west-end-2021, whose run contains the date."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "uncle-vanya-2024/london-theatre--unknown.json",
+        "destPath": "uncle-vanya-west-end-2020/london-theatre--unknown.json",
+        "description": "BRO-5420: london-theatre 2020-01-24 review of the London production (https://www.londontheatre.co.uk/reviews/review-uncle-vanya-starring-richard-armitage-at-the-harold-pinter-theatre); filed under the Broadway id uncle-vanya-2024 (run 2024-04-24..2024-06-16). Moves to uncle-vanya-west-end-2020, whose run contains the date."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "uncle-vanya-2024/theupcoming--unknown.json",
+        "destPath": "uncle-vanya-west-end-2020/theupcoming--unknown.json",
+        "description": "BRO-5420: theupcoming 2020-01-24 review of the London production (https://www.theupcoming.co.uk/2020/01/24/uncle-vanya-at-harold-pinter-theatre-theatre-review/); filed under the Broadway id uncle-vanya-2024 (run 2024-04-24..2024-06-16). Moves to uncle-vanya-west-end-2020, whose run contains the date."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "waiting-for-godot-2025/city-am--adam-bloodworth.json",
+        "destPath": "waiting-for-godot-west-end-2024/city-am--adam-bloodworth.json",
+        "description": "BRO-5420: city-am 2024-09-20 review of the London production (https://www.cityam.com/waiting-for-godot-review-ben-whishaw-finds-joy-in-samuel-becketts-wondrous-misery/); filed under the Broadway id waiting-for-godot-2025 (run 2025-09-28..2026-01-04). Moves to waiting-for-godot-west-end-2024, whose run contains the date."
+      }
+    ]
+  },
+  "executedAt": "2026-10-16T05:20:10.508Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": false,
+      "reason": "Move refused (same-url-exists): the-hills-of-california-2024/london-theatre--unknown.json → the-hills-of-california-west-end-2024/london-theatre--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": false,
+      "reason": "Destination exists: the-hills-of-california-west-end-2024/radio-times--olivia-garrett.json (delete it first or set overwrite: true)"
+    },
+    {
+      "action": "review-file-op",
+      "ok": false,
+      "reason": "Move refused (same-url-exists): the-shark-is-broken-2023/guardian--httpswwwtheguardiancomprofileryangilbey.json → the-shark-is-broken-west-end-2021/guardian--httpswwwtheguardiancomprofileryangilbey.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": false,
+      "reason": "Destination exists: the-shark-is-broken-west-end-2021/i-paper--sam-marlowe.json (delete it first or set overwrite: true)"
+    },
+    {
+      "action": "review-file-op",
+      "ok": false,
+      "reason": "Move refused (same-url-exists): the-shark-is-broken-2023/independent--unknown.json → the-shark-is-broken-west-end-2021/independent--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": false,
+      "reason": "Move refused (same-url-exists): the-shark-is-broken-2023/london-theatre--unknown.json → the-shark-is-broken-west-end-2021/london-theatre--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": false,
+      "reason": "Move refused (same-url-exists): uncle-vanya-2024/london-theatre--unknown.json → uncle-vanya-west-end-2020/london-theatre--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved uncle-vanya-2024/theupcoming--unknown.json → uncle-vanya-west-end-2020/theupcoming--unknown.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved waiting-for-godot-2025/city-am--adam-bloodworth.json → waiting-for-godot-west-end-2024/city-am--adam-bloodworth.json",
+      "cleared": []
+    }
+  ]
+}

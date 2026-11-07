@@ -1,0 +1,74 @@
+{
+  "issueNumber": "bro-5647",
+  "planId": "29776033-3c07-4301-9237-2ba61683a991",
+  "status": "applied",
+  "createdAt": "2026-10-18T21:30:12.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5647: re-checked the owner's pasted Gemini deep research (prompts p1-p6, p10, p10b, p12, p12b, all already processed) for figures that slipped through. Two new records: Sea Wall / A Life (recouped at the end of its nine-week run, Broadway News Oct 1, 2019; capitalization is the $2.8M Form D maximum it reports, while the producer's homepage says $2.3M was raised, which the source guard cannot cite) and Latin History for Morons (recouped its capitalization after 15 weeks at Studio 54, Broadway News Feb 5, 2018; no figure). Rejected: the paste's Celebrity Autobiography '$2.3M recouped' (the producer's page attaches that figure to Sea Wall / A Life; Celebrity Autobiography closed early on Jun 21, 2026), Lion King ~$15M (no primary source; Disney never disclosed), Rocky Horror 'recouped' (Roundabout nonprofit production; a Facebook relay only), All Out 'up to $31.5M' (the figure belongs to another show).",
+    "steps": [
+      "Two add-commercial-entry actions create records for shows.json slugs that have no commercial.json entry."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "add-commercial-entry",
+        "slug": "sea-wall-a-life-2019",
+        "entry": {
+          "designation": "Easy Winner",
+          "capitalization": 2800000,
+          "capitalizationSource": "Broadway News (Oct 1, 2019): \"was capitalized for up to $2.8 million, according to documents filed with the Securities and Exchange Commission.\" This is the Form D maximum. https://broadwaynews.com/sea-wall-a-life-announces-recoupment",
+          "recouped": true,
+          "recoupedDate": "2019-09",
+          "recoupedSource": "Broadway News (Oct 1, 2019): \"‘Sea Wall/A Life’ announced recoupment of its initial investment at the conclusion of its nine-week Broadway run.\" https://broadwaynews.com/sea-wall-a-life-announces-recoupment",
+          "notes": "Limited nine-week run at the Hudson Theatre (Aug 8 to Sep 29, 2019) with Jake Gyllenhaal and Tom Sturridge. Recouped at the end of the run, the first show of the 2019-20 season to recoup (Broadway News). The $2.8 million is the SEC Form D maximum; producer Sutton Square Entertainment's own site says it recouped its entire $2.3M investment within the run. No weekly running cost reported.",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://broadwaynews.com/sea-wall-a-life-announces-recoupment",
+              "date": "2019-10-01"
+            }
+          ]
+        },
+        "description": "sea-wall-a-life-2019: no commercial record yet; Broadway News reports it recouped at the end of its nine-week run and a Form D maximum of $2.8M (the producer's site says $2.3M was raised). Easy Winner: limited run that recouped."
+      },
+      {
+        "type": "add-commercial-entry",
+        "slug": "latin-history-for-morons-2017",
+        "entry": {
+          "designation": "Easy Winner",
+          "capitalization": null,
+          "capitalizationSource": "Not disclosed. Broadway News (Feb 5, 2018) reports the recoupment without a figure.",
+          "recouped": true,
+          "recoupedDate": "2018-02",
+          "recoupedSource": "Broadway News (Feb 5, 2018): \"the one-man play starring John Leguizamo has recouped its capitalization\" ... \"The show recouped after 15 weeks of running at Studio 54 on Broadway.\" https://www.broadwaynews.com/latin-history-morons-announces-recoupment/",
+          "notes": "John Leguizamo's solo show, a limited engagement at Studio 54 (Nov 15, 2017 to Feb 25, 2018). Recouped its capitalization after 15 weeks, announced Feb 5, 2018 (Broadway News). Capitalization and weekly running cost not reported.",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://www.broadwaynews.com/latin-history-morons-announces-recoupment/",
+              "date": "2018-02-05"
+            }
+          ]
+        },
+        "description": "latin-history-for-morons-2017: no commercial record yet; Broadway News reports it recouped after 15 weeks of a limited run. Easy Winner."
+      }
+    ]
+  },
+  "executedAt": "2026-10-18T21:39:12.346Z",
+  "results": [
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added sea-wall-a-life-2019 (Easy Winner)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added latin-history-for-morons-2017 (Easy Winner)"
+    }
+  ]
+}

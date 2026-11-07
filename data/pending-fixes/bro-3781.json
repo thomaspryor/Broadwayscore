@@ -1,0 +1,77 @@
+{
+  "issueNumber": "bro-3781",
+  "planId": "8553ce2c-8108-43a0-8df6-20f501d1185d",
+  "status": "applied",
+  "createdAt": "2026-10-11T23:00:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-3781: flag two prior-production reviews that audit-url-downgrade reports as live scoring exposure (Gypsy 2024 Hartford Courant 2014 stub; La Traviata 2026 NY Classical Review 2022 text).",
+    "steps": [
+      "Url is a 2014 Hartford Courant review (hc-review-gypsy-0715-20140715), a prior regional Gypsy; stub with no text on the 2024 Broadway revival",
+      "Reason for the flag",
+      "The earlier sweep-clear covered Met productions in general; this text is of the 2022 revival (url /2022/10/, 'three years since last seen at the Met', cites 2019/2020 openings)",
+      "New York Classical Review text of the 2022 Met La Traviata revival, live on the 2026 production"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "gypsy-2024/hartford-courant--christopher-arnott.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Url is a 2014 Hartford Courant review (hc-review-gypsy-0715-20140715), a prior regional Gypsy; stub with no text on the 2024 Broadway revival"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "gypsy-2024/hartford-courant--christopher-arnott.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "Review url dated 2014-07-15 belongs to a prior production of Gypsy, not the 2024 Broadway revival (audit-url-downgrade, BRO-3781)",
+        "description": "Reason for the flag"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "la-traviata-off-broadway-2026/new-york-classical-review--rick-perdian.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": true,
+        "newValue": false,
+        "description": "The earlier sweep-clear covered Met productions in general; this text is of the 2022 revival (url /2022/10/, 'three years since last seen at the Met', cites 2019/2020 openings)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "la-traviata-off-broadway-2026/new-york-classical-review--rick-perdian.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "New York Classical Review text of the 2022 Met La Traviata revival, live on the 2026 production"
+      }
+    ]
+  },
+  "executedAt": "2026-10-12T00:06:16.290Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "gypsy-2024/hartford-courant--christopher-arnott.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "gypsy-2024/hartford-courant--christopher-arnott.json wrongProductionReason: null -> \"Review url dated 2014-07-15 belongs to a prior production of Gypsy, not the 2024 Broadway revival (audit-url-downgrade, BRO-3781)\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "la-traviata-off-broadway-2026/new-york-classical-review--rick-perdian.json wrongProductionManualClear: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "la-traviata-off-broadway-2026/new-york-classical-review--rick-perdian.json wrongProduction: null -> true (retracted _previousWrongProductionClear, clearBreadcrumbRetracted, clearBreadcrumbRetractedAt, clearBreadcrumbRetractedFields, wrongProductionManualClear)"
+    }
+  ]
+}

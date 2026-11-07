@@ -1,0 +1,35 @@
+{
+  "issueNumber": "bro-5261-s7-b",
+  "planId": "becfc26c-edc5-4830-910e-e54da5b494fb",
+  "status": "applied",
+  "createdAt": "2026-10-14T01:50:36.281Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5261 retro-review (BRO-5222 tenure check): the Plays International review of NINA at Battersea Arts Centre is credited to \"Ri-admin\", the site WordPress account (JSON-LD author ri-admin). The review header names its critic: \"NINA at Battersea Arts Centre, Tom Bolton in South London\". Tom Bolton reviews for Plays International (the-p-word-off-west-end-2026).",
+    "steps": [
+      "criticName Ri-admin -> Tom Bolton"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "nina-off-west-end-2026/plays-international--unknown.json",
+        "field": "criticName",
+        "oldValue": "Ri-admin",
+        "newValue": "Tom Bolton",
+        "description": "Stored text opens: “NINA” at Battersea Arts Centre Tom Bolton in South London ★★★★★ 9 February 2026. ri-admin is the CMS account (https://playsinternational.org.uk/nina-battersea-arts-centre/ JSON-LD author), not a critic."
+      }
+    ]
+  },
+  "executedAt": "2026-10-14T03:23:01.674Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "nina-off-west-end-2026/plays-international--unknown.json criticName: \"Ri-admin\" -> \"Tom Bolton\""
+    }
+  ]
+}

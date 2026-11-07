@@ -1,0 +1,136 @@
+{
+  "issueNumber": "bro-5522",
+  "planId": "932b2bb4-f749-46bf-a891-8112b0bb71ac",
+  "status": "applied",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5522: the Orange Tree / Guildford Shakespeare Company summer 2026 double bill (Much Ado About Nothing and Love's Labour's Lost, OT on the Hill at Thomas's College, Richmond) played and closed in August 2026, but both rows are still announced with no dates. Give them their real run so the stale-announced health row clears.",
+    "steps": [
+      "Orange Tree pages (orangetreetheatre.co.uk/whats-on/much-ado-about-nothing and /whats-on/loves-labours-lost): Much Ado 1 to 22 August 2026, Love's Labour's Lost 31 July to 22 August 2026, in repertory at Thomas's College, Richmond Hill, co-produced with Guildford Shakespeare Company. The cast announcement (orangetreetheatre.co.uk/about/news/full-cast-and-creative-team-announced-for-loves-labours-lost-and-much-ado-about-nothing/) gives the same 31 July to 22 August window.",
+      "Reviews of the Richmond run: North West End (8 Aug 2026, both plays), Time Out (Nina Culley, 10 Aug 2026), The Upcoming. North West End says the run continues through 22 August 2026.",
+      "No press night is published, so openingDate is the first Richmond performance (execute-approved-fix stamps openingDateSource human-correction, which pins it against the date enrichers; a later published press night can replace it by another plan).",
+      "Much Ado has a collected WhatsOnStage review (Braboeuf Manor leg, wrongProductionManualClear) which is why audit-stale-announced-shows.js flags it; Love's Labour's Lost is the same production pair and only escapes the audit because its two review files are wrong-production, so it is fixed in the same plan."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "much-ado-about-nothing-off-west-end-2026",
+        "field": "previewsStartDate",
+        "oldValue": null,
+        "newValue": "2026-08-01",
+        "description": "First Richmond performance 1 Aug 2026 (Orange Tree listing)."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "much-ado-about-nothing-off-west-end-2026",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2026-08-01",
+        "description": "No published press night; first performance 1 Aug 2026 (Orange Tree listing)."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "much-ado-about-nothing-off-west-end-2026",
+        "field": "closingDate",
+        "oldValue": null,
+        "newValue": "2026-08-22",
+        "description": "Run ended 22 Aug 2026 (Orange Tree listing, North West End review)."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "much-ado-about-nothing-off-west-end-2026",
+        "field": "status",
+        "oldValue": "announced",
+        "newValue": "closed",
+        "description": "Played 1 to 22 Aug 2026; reviewed by Time Out and North West End."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "loves-labours-lost-off-west-end-2026",
+        "field": "previewsStartDate",
+        "oldValue": null,
+        "newValue": "2026-07-31",
+        "description": "First Richmond performance 31 Jul 2026 (Orange Tree listing)."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "loves-labours-lost-off-west-end-2026",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2026-07-31",
+        "description": "No published press night; first performance 31 Jul 2026 (Orange Tree listing)."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "loves-labours-lost-off-west-end-2026",
+        "field": "closingDate",
+        "oldValue": null,
+        "newValue": "2026-08-22",
+        "description": "Run ended 22 Aug 2026 (Orange Tree listing, North West End review)."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "loves-labours-lost-off-west-end-2026",
+        "field": "status",
+        "oldValue": "announced",
+        "newValue": "closed",
+        "description": "Played 31 Jul to 22 Aug 2026; reviewed by North West End."
+      }
+    ]
+  },
+  "executedAt": "2026-10-19T01:09:57.642Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for much-ado-about-nothing-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for much-ado-about-nothing-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for much-ado-about-nothing-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: status updated for much-ado-about-nothing-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for loves-labours-lost-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for loves-labours-lost-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for loves-labours-lost-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: status updated for loves-labours-lost-off-west-end-2026"
+    }
+  ]
+}

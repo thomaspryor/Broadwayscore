@@ -1,0 +1,349 @@
+{
+  "issueNumber": "bro-3414-l",
+  "planId": "a157492b-65c8-4c0f-86a2-521595405931",
+  "status": "applied",
+  "createdAt": "2026-10-12T15:32:33.183569Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Correct placeholder bylines on live reviews (BRO-3414). \"Eric March\" is the theaterlife.com WordPress import account shown as post author on every Drupal-imported review; each live page names the real critic in a \"By X\" line, or carries no byline. theaterscene.net \"Archive\"/\"Unknown\" files take the JSON-LD author (matching the URL author slug); New Yorker \"Condé Nast\" files take the \"By X\" critic, or Unknown where only the house byline appears. Every page was fetched live on 2026-10-12 and its canonical URL matched the file URL. Also un-glues 9 theaterlife bylines fused to the first word of the article. (part 11 of 12, split for the 25-action cap)",
+    "steps": [
+      "Set criticName to the byline printed on each live page",
+      "Set Unknown where the page names no critic",
+      "Strip the article word glued onto 9 theaterlife bylines"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "some-like-it-hot-2022/newyorker--conde-nast.json",
+        "field": "criticName",
+        "oldValue": "Condé Nast",
+        "newValue": "Unknown",
+        "description": "live page credits only the house byline \"The New Yorker\"; \"Condé Nast\" is the publisher, not a critic (https://www.newyorker.com/magazine/2022/11/28/some-like-it-hot-dresses-up-for-broadway)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "stereophonic-off-broadway-2023/theater-scene--archive.json",
+        "field": "criticName",
+        "oldValue": "Archive",
+        "newValue": "Tony Marinelli",
+        "description": "JSON-LD author Person on the live page is Tony Marinelli, matching the author slug in the URL (http://www.theaterscene.net/plays/offbway-plays/stereophonic/tony-marinelli/)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "sunset-boulevard-2017/newyorker--conde-nast.json",
+        "field": "criticName",
+        "oldValue": "Condé Nast",
+        "newValue": "Unknown",
+        "description": "live page credits only the house byline \"The New Yorker\"; \"Condé Nast\" is the publisher, not a critic (https://www.newyorker.com/goings-on-about-town/theatre/sunset-boulevard-2)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-adding-machine-off-broadway-2026/theater-scene--archive.json",
+        "field": "criticName",
+        "oldValue": "Archive",
+        "newValue": "Victor Gluck",
+        "description": "JSON-LD author Person on the live page is Victor Gluck, matching the author slug in the URL (https://www.theaterscene.net/plays/offbway-plays/the-adding-machine/victor-gluck/)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-bathroom-attendant-off-broadway-2026/theater-scene--archive.json",
+        "field": "criticName",
+        "oldValue": "Archive",
+        "newValue": "Tony Marinelli",
+        "description": "JSON-LD author Person on the live page is Tony Marinelli, matching the author slug in the URL (https://www.theaterscene.net/plays/offbway-plays/the-bathroom-attendant/tony-marinelli/)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-brothers-paranormal-off-broadway-2019/newyorker--conde-nast.json",
+        "field": "criticName",
+        "oldValue": "Condé Nast",
+        "newValue": "Rollo Romig",
+        "description": "live page byline reads \"By Rollo Romig\" (https://www.newyorker.com/goings-on-about-town/theatre/the-brothers-paranormal-05-20-19)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-collaboration-2022/newyorker--conde-nast.json",
+        "field": "criticName",
+        "oldValue": "Condé Nast",
+        "newValue": "Vinson Cunningham",
+        "description": "live page byline reads \"By Vinson Cunningham\" (https://www.newyorker.com/goings-on-about-town/theatre/the-collaboration-01-16-23)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-ford-hill-project-off-broadway-2026/theater-scene--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Victor Gluck",
+        "description": "JSON-LD author Person on the live page is Victor Gluck, matching the author slug in the URL (https://www.theaterscene.net/plays/offbway-plays/the-ford-hill-project/victor-gluck/)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-invention-of-love-off-broadway-2026/theater-scene--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Tony Marinelli",
+        "description": "JSON-LD author Person on the live page is Tony Marinelli, matching the author slug in the URL (https://www.theaterscene.net/plays/offbway-plays/the-invention-of-love/tony-marinelli/)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-pass-off-broadway-2026/theater-scene--archive.json",
+        "field": "criticName",
+        "oldValue": "Archive",
+        "newValue": "Tony Marinelli",
+        "description": "JSON-LD author Person on the live page is Tony Marinelli, matching the author slug in the URL (https://www.theaterscene.net/plays/offbway-plays/the-pass/tony-marinelli/)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-realistic-joneses-2014/newyorker--conde-nast.json",
+        "field": "criticName",
+        "oldValue": "Condé Nast",
+        "newValue": "Unknown",
+        "description": "live page credits only the house byline \"The New Yorker\"; \"Condé Nast\" is the publisher, not a critic (https://www.newyorker.com/goings-on-about-town/theatre/the-realistic-joneses-2)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-saviors-off-broadway-2026/theater-scene--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Victor Gluck",
+        "description": "JSON-LD author Person on the live page is Victor Gluck, matching the author slug in the URL (https://www.theaterscene.net/plays/offbway-plays/the-saviors/victor-gluck/)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-unknown-off-broadway-2026/theater-scene--archive.json",
+        "field": "criticName",
+        "oldValue": "Archive",
+        "newValue": "Tony Marinelli",
+        "description": "JSON-LD author Person on the live page is Tony Marinelli, matching the author slug in the URL (https://www.theaterscene.net/plays/solo-plays/the-unknown/tony-marinelli/)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-vessel-off-broadway-2026/theater-scene--archive.json",
+        "field": "criticName",
+        "oldValue": "Archive",
+        "newValue": "Tony Marinelli",
+        "description": "JSON-LD author Person on the live page is Tony Marinelli, matching the author slug in the URL (https://www.theaterscene.net/plays/offbway-plays/the-vessel/tony-marinelli/)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "tina-2019/newyorker--conde-nast.json",
+        "field": "criticName",
+        "oldValue": "Condé Nast",
+        "newValue": "Unknown",
+        "description": "live page credits only the house byline \"The New Yorker\"; \"Condé Nast\" is the publisher, not a critic (https://www.newyorker.com/magazine/2019/10/21/tina-the-tina-turner-musical-comes-to-broadway)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "trash-off-broadway-2026/theater-scene--archive.json",
+        "field": "criticName",
+        "oldValue": "Archive",
+        "newValue": "Victor Gluck",
+        "description": "JSON-LD author Person on the live page is Victor Gluck, matching the author slug in the URL (https://www.theaterscene.net/plays/offbway-plays/trash/victor-gluck/)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "vanya-off-broadway-2025/theater-scene--archive.json",
+        "field": "criticName",
+        "oldValue": "Archive",
+        "newValue": "Joel Benjamin",
+        "description": "JSON-LD author Person on the live page is Joel Benjamin, matching the author slug in the URL (https://www.theaterscene.net/plays/solo-plays/vanya/joel-benjamin/)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "waiting-for-godot-2025/theater-scene--archive.json",
+        "field": "criticName",
+        "oldValue": "Archive",
+        "newValue": "Joseph Pisano",
+        "description": "JSON-LD author Person on the live page is Joseph Pisano, matching the author slug in the URL (https://www.theaterscene.net/plays/broadway-plays/waiting-for-godot-2/joseph-pisano/)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "macbeth-2013/theater-life--david-shewardpart.json",
+        "field": "criticName",
+        "oldValue": "David ShewardPart",
+        "newValue": "David Sheward",
+        "description": "byline was glued to the first word of the article (\"David Sheward\" + \"Part\")"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "texas-in-paris-off-broadway/theater-life--paulanne-simmonsbased.json",
+        "field": "criticName",
+        "oldValue": "Paulanne SimmonsBased",
+        "newValue": "Paulanne Simmons",
+        "description": "byline was glued to the first word of the article (\"Paulanne Simmons\" + \"Based\")"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "man-and-superman-1978/theater-life--david-shewardwhen.json",
+        "field": "criticName",
+        "oldValue": "David ShewardWhen",
+        "newValue": "David Sheward",
+        "description": "byline was glued to the first word of the article (\"David Sheward\" + \"When\")"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "little-me-1982/theater-life--paulanne-simmonsthe.json",
+        "field": "criticName",
+        "oldValue": "Paulanne SimmonsThe",
+        "newValue": "Paulanne Simmons",
+        "description": "byline was glued to the first word of the article (\"Paulanne Simmons\" + \"The\")"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "passion-2004/theater-life--david-shewardoriginally.json",
+        "field": "criticName",
+        "oldValue": "David ShewardOriginally",
+        "newValue": "David Sheward",
+        "description": "byline was glued to the first word of the article (\"David Sheward\" + \"Originally\")"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-rivals-2004/theater-life--paulanne-simmonsfirst.json",
+        "field": "criticName",
+        "oldValue": "Paulanne SimmonsFirst",
+        "newValue": "Paulanne Simmons",
+        "description": "byline was glued to the first word of the article (\"Paulanne Simmons\" + \"First\")"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-three-sisters-1996/theater-life--isa-goldbergtrapped.json",
+        "field": "criticName",
+        "oldValue": "Isa GoldbergTrapped",
+        "newValue": "Isa Goldberg",
+        "description": "byline was glued to the first word of the article (\"Isa Goldberg\" + \"Trapped\")"
+      }
+    ]
+  },
+  "executedAt": "2026-10-12T18:41:38.812Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "some-like-it-hot-2022/newyorker--conde-nast.json criticName: \"Condé Nast\" -> \"Unknown\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "stereophonic-off-broadway-2023/theater-scene--archive.json criticName: \"Archive\" -> \"Tony Marinelli\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "sunset-boulevard-2017/newyorker--conde-nast.json criticName: \"Condé Nast\" -> \"Unknown\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-adding-machine-off-broadway-2026/theater-scene--archive.json criticName: \"Archive\" -> \"Victor Gluck\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-bathroom-attendant-off-broadway-2026/theater-scene--archive.json criticName: \"Archive\" -> \"Tony Marinelli\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-brothers-paranormal-off-broadway-2019/newyorker--conde-nast.json criticName: \"Condé Nast\" -> \"Rollo Romig\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-collaboration-2022/newyorker--conde-nast.json criticName: \"Condé Nast\" -> \"Vinson Cunningham\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-ford-hill-project-off-broadway-2026/theater-scene--unknown.json criticName: \"Unknown\" -> \"Victor Gluck\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-invention-of-love-off-broadway-2026/theater-scene--unknown.json criticName: \"Unknown\" -> \"Tony Marinelli\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-pass-off-broadway-2026/theater-scene--archive.json criticName: \"Archive\" -> \"Tony Marinelli\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-realistic-joneses-2014/newyorker--conde-nast.json criticName: \"Condé Nast\" -> \"Unknown\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-saviors-off-broadway-2026/theater-scene--unknown.json criticName: \"Unknown\" -> \"Victor Gluck\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-unknown-off-broadway-2026/theater-scene--archive.json criticName: \"Archive\" -> \"Tony Marinelli\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-vessel-off-broadway-2026/theater-scene--archive.json criticName: \"Archive\" -> \"Tony Marinelli\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "tina-2019/newyorker--conde-nast.json criticName: \"Condé Nast\" -> \"Unknown\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "trash-off-broadway-2026/theater-scene--archive.json criticName: \"Archive\" -> \"Victor Gluck\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "vanya-off-broadway-2025/theater-scene--archive.json criticName: \"Archive\" -> \"Joel Benjamin\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "waiting-for-godot-2025/theater-scene--archive.json criticName: \"Archive\" -> \"Joseph Pisano\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "macbeth-2013/theater-life--david-shewardpart.json criticName: \"David ShewardPart\" -> \"David Sheward\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "texas-in-paris-off-broadway/theater-life--paulanne-simmonsbased.json criticName: \"Paulanne SimmonsBased\" -> \"Paulanne Simmons\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "man-and-superman-1978/theater-life--david-shewardwhen.json criticName: \"David ShewardWhen\" -> \"David Sheward\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "little-me-1982/theater-life--paulanne-simmonsthe.json criticName: \"Paulanne SimmonsThe\" -> \"Paulanne Simmons\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "passion-2004/theater-life--david-shewardoriginally.json criticName: \"David ShewardOriginally\" -> \"David Sheward\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-rivals-2004/theater-life--paulanne-simmonsfirst.json criticName: \"Paulanne SimmonsFirst\" -> \"Paulanne Simmons\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-three-sisters-1996/theater-life--isa-goldbergtrapped.json criticName: \"Isa GoldbergTrapped\" -> \"Isa Goldberg\""
+    }
+  ]
+}

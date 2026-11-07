@@ -1,0 +1,98 @@
+{
+  "issueNumber": "bro-6268",
+  "planId": "31d2a4b7-4461-4833-ac99-32f7734a2cdb",
+  "status": "partial",
+  "createdAt": "2026-10-30T13:07:17.745Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Correct two historical press nights from existing review-date clusters and exclude an unrelated Singapore visual-arts article incorrectly attached to Art at the Old Vic.",
+    "steps": [
+      "shows.json: sweeney-todd-west-end-2012.openingDate",
+      "shows.json: sweeney-todd-west-end-2012.openingDateSource",
+      "shows.json: the-country-girl-west-end-2010.openingDate",
+      "shows.json: the-country-girl-west-end-2010.openingDateSource",
+      "art-west-end-2016/artshub--gina-fairley.json: wrongProduction",
+      "Press-night inference: five independent outlets published on 2012-03-21 for Sweeney Todd; three published on 2010-10-12 for The Country Girl. Existing repairTheatricaliaOpening infers the preceding day.",
+      "Art review identity: article text discusses Art Stage Singapore 2016 and visual-art institutions; publication predates the Old Vic run by 326 days."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "sweeney-todd-west-end-2012",
+        "field": "openingDate",
+        "oldValue": "2012-03-10",
+        "newValue": "2012-03-20",
+        "description": "shows.json: sweeney-todd-west-end-2012.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "sweeney-todd-west-end-2012",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "inferred-from-reviews-mode",
+        "description": "shows.json: sweeney-todd-west-end-2012.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-country-girl-west-end-2010",
+        "field": "openingDate",
+        "oldValue": "2010-10-06",
+        "newValue": "2010-10-11",
+        "description": "shows.json: the-country-girl-west-end-2010.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-country-girl-west-end-2010",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "inferred-from-reviews-mode",
+        "description": "shows.json: the-country-girl-west-end-2010.openingDateSource"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "art-west-end-2016/artshub--gina-fairley.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "art-west-end-2016/artshub--gina-fairley.json: wrongProduction"
+      }
+    ]
+  },
+  "executedAt": "2026-10-30T14:16:07.715Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for sweeney-todd-west-end-2012"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for sweeney-todd-west-end-2012"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for the-country-girl-west-end-2010"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for the-country-girl-west-end-2010"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "wrongProduction: current value doesn't match expected (data changed since plan was created)"
+    }
+  ],
+  "executedIn": "ci"
+}

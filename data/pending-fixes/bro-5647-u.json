@@ -1,0 +1,98 @@
+{
+  "issueNumber": "bro-5647-u",
+  "planId": "62846845-967c-4091-b9af-a4ef62ed8665",
+  "status": "applied",
+  "createdAt": "2026-10-21T18:59:36.867Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "From the owner's Oct 21 ChatGPT outcomes report, re-read at source: The Kite Runner's producer put its weekly running cost at about $300,000 (Broadway News, Oct 17 2022), and its Broadway and tour capitalization were bundled, so its loss-on-silence label is noted as depending on the tour. Held: The Sign in Sidney Brustein's Window loss (Next Avenue article has moved; archive unreachable here). Already current: Purpose $5.25M, Giant $5.6M, The Lehman Trilogy $5.75M, Life of Pi's court-paper quote. Old values from the private core data.",
+    "steps": [
+      "The Kite Runner weekly cost and bundling note"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-kite-runner-2022",
+        "showId": "the-kite-runner-2022",
+        "field": "weeklyRunningCost",
+        "oldValue": null,
+        "newValue": 300000,
+        "description": "the-kite-runner-2022: producer-stated weekly cost"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-kite-runner-2022",
+        "showId": "the-kite-runner-2022",
+        "field": "weeklyRunningCostSource",
+        "oldValue": null,
+        "newValue": "Broadway News (Oct 17, 2022): the production \"costs about $300,000 per week to run,\" according to producer Ryan Bogner. https://www.broadwaynews.com/with-the-kite-runner-one-theatrical-production-company-is-revolutionizing-traditional-business-models/",
+        "description": "the-kite-runner-2022: cost source"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-kite-runner-2022",
+        "showId": "the-kite-runner-2022",
+        "field": "weeklyRunningCostBasis",
+        "oldValue": null,
+        "newValue": "running",
+        "description": "the-kite-runner-2022: running cost, not a stated all-in break-even"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-kite-runner-2022",
+        "showId": "the-kite-runner-2022",
+        "field": "costMethodology",
+        "oldValue": null,
+        "newValue": "producer-confirmed",
+        "description": "the-kite-runner-2022: stated by its producer"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-kite-runner-2022",
+        "showId": "the-kite-runner-2022",
+        "field": "notes",
+        "oldValue": "Commercial rental at 2ST's Hayes Theater during 2ST's summer dark months. West End transfer (Nottingham Playhouse + Wyndham's origin). Lead producers: Victoria Lang + Ryan Bogner + Tracey McFarland (Broadway & Beyond Theatricals) + Jayne Baron Sherman; in association with UK Productions Ltd + Flying Entertainment/Kilimanjaro; Daryl Roth Executive Producer. 2ST is landlord only — NO nonprofitOrg tag.",
+        "newValue": "Commercial rental at 2ST's Hayes Theater during 2ST's summer dark months. West End transfer (Nottingham Playhouse + Wyndham's origin). Lead producers: Victoria Lang + Ryan Bogner + Tracey McFarland (Broadway & Beyond Theatricals) + Jayne Baron Sherman; in association with UK Productions Ltd + Flying Entertainment/Kilimanjaro; Daryl Roth Executive Producer. 2ST is landlord only — NO nonprofitOrg tag. Broadway News (Oct 17, 2022): \"Bogner, Lang and McFarland bundled together the capitalization for Broadway and the eventual tour,\" so the investors' result depends on the tour too; no final result has been reported.",
+        "description": "the-kite-runner-2022: note the bundled Broadway and tour capitalization"
+      }
+    ]
+  },
+  "executedAt": "2026-10-21T19:06:30.265Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCost updated for the-kite-runner-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCostSource updated for the-kite-runner-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCostBasis updated for the-kite-runner-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: costMethodology updated for the-kite-runner-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for the-kite-runner-2022"
+    }
+  ],
+  "executedIn": "ci"
+}

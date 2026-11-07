@@ -1,0 +1,134 @@
+name: Commercial Pending Review
+
+# BRO-6336. 180 deep-research results sat in data/commercial-pending-review.json for four months because the weekly and
+# Friday apply steps only take high-confidence entries. This pass applies ANY entry, whatever its research confidence,
+# whose capitalization / weekly cost a fetched trusted page confirms (scripts/lib/commercial-source-verify.js), moves
+# entries no page confirms to the rejected log (commercial-pending-archive.json) with the reason. Rows only a person
+# can settle stay pending; the daily health check files a worker card for any held past 7 days (BRO-6471).
+# Nothing here emails the owner: BRO-6471 retired that digest because it asked nothing of them. Runs after every
+# deep-research run and daily. The daily health check fails over 25 pending entries or an oldest entry past 14 days.
+#
+# Concurrency group commercial-data-write queues with the other commercial writers.
+
+on:
+  schedule:
+    - cron: '17 9 * * *'  # daily, after commercial-stale-closures (08:00 UTC)
+  workflow_run:
+    workflows: ['Deep Research Commercial']
+    types: [completed]
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Dry run (nothing written, no email)'
+        required: false
+        type: boolean
+        default: false
+
+concurrency:
+  # concurrency-queue-ok: shares the commercial writers' group; an evicted run here is retried by the next daily
+  # cron, and the weekly and Friday jobs keep their own schedules.
+  group: commercial-data-write
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  actions: write
+
+jobs:
+  verified-apply:
+    # A failed or cancelled deep-research run has nothing new to apply; the daily run still covers the queue.
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    # Page verification stops after 12 minutes (run-budget); the rest is the commit and push under contention.
+    timeout-minutes: 30
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - uses: ./.github/actions/setup-node
+        with:
+          configure-git: 'true'
+
+      - name: Apply entries a source page confirms (any confidence)
+        # NOT continue-on-error: a failed apply must stop the commit and push below (same rule as commercial-weekly).
+        env:
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+        run: |
+          ARGS="--all --verified-only"
+          if [ "${{ inputs.dry_run }}" = "true" ]; then ARGS="$ARGS --dry-run"; fi
+          if [ -f data/commercial-pending-review.json ]; then
+            node scripts/apply-commercial-pending.js $ARGS
+          else
+            echo "No pending file, nothing to apply"
+          fi
+
+      - name: Dedupe ID-keyed commercial entries
+        if: inputs.dry_run != true
+        # Same rule as commercial-friday.yml: heal ID/slug pairs before the strict gate; a conflicting pair blocks the push.
+        run: |
+          if ! node scripts/dedupe-commercial-id-keys.js --apply; then
+            echo "dedupe-commercial-id-keys refused a conflicting ID/slug pair, blocking core-data push" \
+              > "${RUNNER_TEMP:-/tmp}/.skip-push-core-data"
+            exit 1
+          fi
+
+      - name: Commercial data strict gate (required)
+        if: inputs.dry_run != true
+        run: node scripts/audit-commercial-data.js --strict
+
+      - name: Refresh recoupment model
+        if: inputs.dry_run != true
+        run: node scripts/merge-model-recoupment.js
+
+      - name: Report pending-review backlog (count + oldest age)
+        if: always()
+        continue-on-error: true
+        run: node scripts/pending-review-backlog.js
+
+      - name: Commit pending queue and rejected log
+        id: commit-public
+        if: inputs.dry_run != true
+        env:
+          PUSH_RECONCILE_MERGED_JSON: '1'
+          PUSH_DEADLINE_SEC: '600'
+          GIT_NET_TIMEOUT_SEC: '30'
+        run: |
+          bash scripts/lib/git-add-existing.sh data/commercial-pending-review.json data/commercial-pending-archive.json
+          bash scripts/lib/stage-data-changes.sh
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "data: Verified auto-apply of commercial pending entries
+
+          Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+            bash scripts/lib/push-with-retry.sh
+          fi
+
+      - name: Push core data to private repo
+        if: steps.commit-public.outcome == 'success'
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: Commercial verified auto-apply'
+
+      - name: Dispatch deploy
+        if: steps.commit-public.outcome == 'success'
+        uses: ./.github/actions/dispatch-deploy
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Commercial Pending Review Failed'
+          severity: 'warning'

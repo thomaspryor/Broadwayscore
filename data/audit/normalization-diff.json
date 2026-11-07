@@ -1,0 +1,227 @@
+{
+  "summary": {
+    "totalConflicts": 19,
+    "missingFromCanonical": 13,
+    "scriptsAnalyzed": [
+      "review-normalization.js",
+      "extract-bww-reviews.js",
+      "extract-dtli-reviews.js"
+    ],
+    "generatedAt": "2026-01-28T05:09:31.493Z"
+  },
+  "conflicts": [
+    {
+      "outletName": "chicago tribune",
+      "canonical": "chicagotribune",
+      "bww": "chicago-tribune",
+      "dtli": "chicago-tribune"
+    },
+    {
+      "outletName": "daily beast",
+      "canonical": "dailybeast",
+      "bww": "daily-beast",
+      "dtli": "daily-beast"
+    },
+    {
+      "outletName": "daily news",
+      "canonical": "nydailynews",
+      "bww": "ny-daily-news",
+      "dtli": "ny-daily-news"
+    },
+    {
+      "outletName": "financial times",
+      "canonical": "financialtimes",
+      "bww": "financial-times",
+      "dtli": "financial-times"
+    },
+    {
+      "outletName": "new york daily news",
+      "canonical": "nydailynews",
+      "bww": "ny-daily-news",
+      "dtli": "ny-daily-news"
+    },
+    {
+      "outletName": "new york stage review",
+      "canonical": "nysr",
+      "bww": "ny-stage-review",
+      "dtli": "ny-stage-review"
+    },
+    {
+      "outletName": "new yorker",
+      "canonical": "newyorker",
+      "bww": "new-yorker",
+      "dtli": "new-yorker"
+    },
+    {
+      "outletName": "ny daily news",
+      "canonical": "nydailynews",
+      "bww": null,
+      "dtli": "ny-daily-news"
+    },
+    {
+      "outletName": "ny stage review",
+      "canonical": "nysr",
+      "bww": null,
+      "dtli": "ny-stage-review"
+    },
+    {
+      "outletName": "rolling stone",
+      "canonical": "rollingstone",
+      "bww": "rolling-stone",
+      "dtli": "rolling-stone"
+    },
+    {
+      "outletName": "stage",
+      "canonical": "thestage",
+      "bww": null,
+      "dtli": "the-stage"
+    },
+    {
+      "outletName": "the daily beast",
+      "canonical": "dailybeast",
+      "bww": "daily-beast",
+      "dtli": "daily-beast"
+    },
+    {
+      "outletName": "the new yorker",
+      "canonical": "newyorker",
+      "bww": "new-yorker",
+      "dtli": "new-yorker"
+    },
+    {
+      "outletName": "the stage",
+      "canonical": "thestage",
+      "bww": "the-stage",
+      "dtli": "the-stage"
+    },
+    {
+      "outletName": "time out",
+      "canonical": "timeout",
+      "bww": null,
+      "dtli": "timeout-ny"
+    },
+    {
+      "outletName": "time out new york",
+      "canonical": "timeout",
+      "bww": "timeout-ny",
+      "dtli": "timeout-ny"
+    },
+    {
+      "outletName": "time out ny",
+      "canonical": "timeout",
+      "bww": "timeout-ny",
+      "dtli": null
+    },
+    {
+      "outletName": "timeout",
+      "canonical": "timeout",
+      "bww": "timeout-ny",
+      "dtli": null
+    },
+    {
+      "outletName": "usa today",
+      "canonical": "usatoday",
+      "bww": "usa-today",
+      "dtli": "usa-today"
+    }
+  ],
+  "missingFromCanonical": [
+    {
+      "outletName": "dc theatre scene",
+      "bwwId": "dc-theatre-scene",
+      "dtliId": null
+    },
+    {
+      "outletName": "london theatre",
+      "bwwId": null,
+      "dtliId": "london-theatre"
+    },
+    {
+      "outletName": "nbc new york",
+      "bwwId": "nbc-ny",
+      "dtliId": "nbc-ny"
+    },
+    {
+      "outletName": "newsday",
+      "bwwId": "newsday",
+      "dtliId": "newsday"
+    },
+    {
+      "outletName": "nj.com",
+      "bwwId": "nj-com",
+      "dtliId": null
+    },
+    {
+      "outletName": "npr",
+      "bwwId": null,
+      "dtliId": "npr"
+    },
+    {
+      "outletName": "the arts desk",
+      "bwwId": null,
+      "dtliId": "arts-desk"
+    },
+    {
+      "outletName": "the new york post",
+      "bwwId": "nypost",
+      "dtliId": null
+    },
+    {
+      "outletName": "the ny daily news",
+      "bwwId": "ny-daily-news",
+      "dtliId": null
+    },
+    {
+      "outletName": "town & country",
+      "bwwId": null,
+      "dtliId": "town-country"
+    },
+    {
+      "outletName": "vanity fair",
+      "bwwId": null,
+      "dtliId": "vanity-fair"
+    },
+    {
+      "outletName": "vogue",
+      "bwwId": null,
+      "dtliId": "vogue"
+    },
+    {
+      "outletName": "whats on stage",
+      "bwwId": null,
+      "dtliId": "whats-on-stage"
+    }
+  ],
+  "aliasesToAdd": {
+    "timeout": [
+      "timeout-ny"
+    ],
+    "usatoday": [
+      "usa-today"
+    ],
+    "nydailynews": [
+      "ny-daily-news"
+    ],
+    "rollingstone": [
+      "rolling-stone"
+    ],
+    "dailybeast": [
+      "daily-beast"
+    ],
+    "nysr": [
+      "ny-stage-review"
+    ],
+    "chicagotribune": [
+      "chicago-tribune"
+    ],
+    "thestage": [
+      "the-stage"
+    ],
+    "financialtimes": [
+      "financial-times"
+    ],
+    "newyorker": [
+      "new-yorker"
+    ]
+  }
+}

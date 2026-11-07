@@ -1,0 +1,35 @@
+{
+  "issueNumber": "bro-5261-s12-a",
+  "planId": "eeb280e0-615b-4d60-ae2b-72098f48c9c1",
+  "status": "applied",
+  "createdAt": "2026-10-14T04:47:58.817Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5261 retro-review of BRO-4790: the restored Islington Tribune review of The Last Ship (Drury Lane 2026) is still credited to \"Unknown\". The article byline reads \"Friday, 2nd October — By Lucy Popescu\" (live page https://www.islingtontribune.co.uk/article/review-the-last-ship-at-theatre-royal-drury-lane, checked 2026-10-14) and the stored fullText carries the same byline. No other Islington Tribune file exists for this show, so there is no double count.",
+    "steps": [
+      "criticName Unknown -> Lucy Popescu on the-last-ship-west-end-2026/islingtontribune--unknown.json"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "the-last-ship-west-end-2026/islingtontribune--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Lucy Popescu",
+        "description": "Byline on the live article and in the stored text: By Lucy Popescu (Friday, 2nd October 2026)."
+      }
+    ]
+  },
+  "executedAt": "2026-10-14T06:00:41.910Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-last-ship-west-end-2026/islingtontribune--unknown.json criticName: \"Unknown\" -> \"Lucy Popescu\""
+    }
+  ]
+}

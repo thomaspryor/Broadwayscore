@@ -1,0 +1,64 @@
+{
+  "issueNumber": "bro-6018-c",
+  "planId": "d280fc59-4095-4d55-85c0-409483d4e146",
+  "status": "applied",
+  "createdAt": "2026-10-23T01:03:25.471Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Upstart Crow Time Out review: stored date came from the scorer and made a valid 2022 review look pre-opening",
+    "steps": [
+      "the-upstart-crow-west-end-2022/timeout-london--unknown.json publishDate",
+      "the-upstart-crow-west-end-2022/timeout-london--unknown.json dateSource",
+      "the-upstart-crow-west-end-2022/timeout-london--unknown.json wrongProduction"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "the-upstart-crow-west-end-2022/timeout-london--unknown.json",
+        "field": "publishDate",
+        "oldValue": "2020-02-18",
+        "newValue": "2022-10-03",
+        "description": "the-upstart-crow-west-end-2022/timeout-london--unknown.json publishDate"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-upstart-crow-west-end-2022/timeout-london--unknown.json",
+        "field": "dateSource",
+        "oldValue": "llm-scoring",
+        "newValue": "human-correction",
+        "description": "the-upstart-crow-west-end-2022/timeout-london--unknown.json dateSource"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-upstart-crow-west-end-2022/timeout-london--unknown.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "the-upstart-crow-west-end-2022/timeout-london--unknown.json wrongProduction"
+      }
+    ]
+  },
+  "executedAt": "2026-10-23T05:03:43.291Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-upstart-crow-west-end-2022/timeout-london--unknown.json publishDate: \"2020-02-18\" -> \"2022-10-03\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-upstart-crow-west-end-2022/timeout-london--unknown.json dateSource: \"llm-scoring\" -> \"human-correction\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-upstart-crow-west-end-2022/timeout-london--unknown.json wrongProduction: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    }
+  ],
+  "executedIn": "ci"
+}

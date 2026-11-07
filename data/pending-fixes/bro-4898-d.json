@@ -1,0 +1,244 @@
+{
+  "issueNumber": "bro-4898-d",
+  "planId": "bd6b152d-8b35-4c24-bba4-2b361b237a50",
+  "status": "partial",
+  "createdAt": "2026-10-13T02:58:14.229Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4898: Marie and Rosetta (West End 2026) counts eight review files (seven reviews, Fitter filed twice) of the May 2025 Rose Theatre Kingston run; flag them wrongProduction",
+    "steps": [
+      "Set wrongProduction + reason on 8 Kingston-run review files",
+      "Remove the mistaken early-date allowance on two of them"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "marie-and-rosetta-west-end-2026/broadwayworld--aliya-al-hassan.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "review of the May 2025 Rose Theatre Kingston run, not the Soho Place West End production (opened 2026-02-28)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "marie-and-rosetta-west-end-2026/broadwayworld--aliya-al-hassan.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-4898: review of the May 2025 Rose Theatre Kingston run, not the Soho Place West End production (opened 2026-02-28)",
+        "description": "Reason for the flag"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "marie-and-rosetta-west-end-2026/everything-theatre--rob-warren.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "review of the May 2025 Rose Theatre Kingston run, not the Soho Place West End production (opened 2026-02-28)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "marie-and-rosetta-west-end-2026/everything-theatre--rob-warren.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-4898: review of the May 2025 Rose Theatre Kingston run, not the Soho Place West End production (opened 2026-02-28)",
+        "description": "Reason for the flag"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "marie-and-rosetta-west-end-2026/londontheatre1--alan-fitter.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "review of the May 2025 Rose Theatre Kingston run, not the Soho Place West End production (opened 2026-02-28)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "marie-and-rosetta-west-end-2026/londontheatre1--alan-fitter.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-4898: review of the May 2025 Rose Theatre Kingston run, not the Soho Place West End production (opened 2026-02-28)",
+        "description": "Reason for the flag"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "marie-and-rosetta-west-end-2026/londontheatre1--allan-fitter.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "review of the May 2025 Rose Theatre Kingston run, not the Soho Place West End production (opened 2026-02-28)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "marie-and-rosetta-west-end-2026/londontheatre1--allan-fitter.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-4898: review of the May 2025 Rose Theatre Kingston run, not the Soho Place West End production (opened 2026-02-28)",
+        "description": "Reason for the flag"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "marie-and-rosetta-west-end-2026/thestage--holly-omahony.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "review of the May 2025 Rose Theatre Kingston run, not the Soho Place West End production (opened 2026-02-28)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "marie-and-rosetta-west-end-2026/thestage--holly-omahony.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-4898: review of the May 2025 Rose Theatre Kingston run, not the Soho Place West End production (opened 2026-02-28)",
+        "description": "Reason for the flag"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "marie-and-rosetta-west-end-2026/whatsonstage--rachel-agyekum.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "review of the May 2025 Rose Theatre Kingston run, not the Soho Place West End production (opened 2026-02-28)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "marie-and-rosetta-west-end-2026/whatsonstage--rachel-agyekum.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-4898: review of the May 2025 Rose Theatre Kingston run, not the Soho Place West End production (opened 2026-02-28)",
+        "description": "Reason for the flag"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "marie-and-rosetta-west-end-2026/whatsonstage--rachel-agyekum.json",
+        "field": "allowEarlyDate",
+        "oldValue": true,
+        "newValue": false,
+        "description": "early-date allowance was granted in error: this is a review of the 2025 Kingston run, not an early review of this production"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "marie-and-rosetta-west-end-2026/standard--nick-curtis.json",
+        "field": "wrongProduction",
+        "oldValue": false,
+        "newValue": true,
+        "description": "review of the May 2025 Rose Theatre Kingston run, not the Soho Place West End production (opened 2026-02-28)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "marie-and-rosetta-west-end-2026/times-uk--clive-davis.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "review of the May 2025 Rose Theatre Kingston run, not the Soho Place West End production (opened 2026-02-28)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "marie-and-rosetta-west-end-2026/times-uk--clive-davis.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-4898: review of the May 2025 Rose Theatre Kingston run, not the Soho Place West End production (opened 2026-02-28)",
+        "description": "Reason for the flag"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "marie-and-rosetta-west-end-2026/times-uk--clive-davis.json",
+        "field": "allowEarlyDate",
+        "oldValue": true,
+        "newValue": false,
+        "description": "early-date allowance was granted in error: this is a review of the 2025 Kingston run, not an early review of this production"
+      }
+    ]
+  },
+  "executedAt": "2026-10-13T03:38:15.437Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "marie-and-rosetta-west-end-2026/broadwayworld--aliya-al-hassan.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "marie-and-rosetta-west-end-2026/broadwayworld--aliya-al-hassan.json wrongProductionReason: null -> \"BRO-4898: review of the May 2025 Rose Theatre Kingston run, not the Soho Place West End production (opened 2026-02-28)\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "marie-and-rosetta-west-end-2026/everything-theatre--rob-warren.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "marie-and-rosetta-west-end-2026/everything-theatre--rob-warren.json wrongProductionReason: null -> \"BRO-4898: review of the May 2025 Rose Theatre Kingston run, not the Soho Place West End production (opened 2026-02-28)\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "marie-and-rosetta-west-end-2026/londontheatre1--alan-fitter.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "marie-and-rosetta-west-end-2026/londontheatre1--alan-fitter.json wrongProductionReason: null -> \"BRO-4898: review of the May 2025 Rose Theatre Kingston run, not the Soho Place West End production (opened 2026-02-28)\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "marie-and-rosetta-west-end-2026/londontheatre1--allan-fitter.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "marie-and-rosetta-west-end-2026/londontheatre1--allan-fitter.json wrongProductionReason: null -> \"BRO-4898: review of the May 2025 Rose Theatre Kingston run, not the Soho Place West End production (opened 2026-02-28)\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "marie-and-rosetta-west-end-2026/thestage--holly-omahony.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "marie-and-rosetta-west-end-2026/thestage--holly-omahony.json wrongProductionReason: null -> \"BRO-4898: review of the May 2025 Rose Theatre Kingston run, not the Soho Place West End production (opened 2026-02-28)\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "marie-and-rosetta-west-end-2026/whatsonstage--rachel-agyekum.json wrongProduction: null -> true (retracted clearBreadcrumbRetracted, clearBreadcrumbRetractedAt, clearBreadcrumbRetractedFields, wrongProductionAutoCleared, wrongProductionAutoClearedAt)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "wrongProductionReason: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "Field \"allowEarlyDate\" not allowed for review-field-edit"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "marie-and-rosetta-west-end-2026/standard--nick-curtis.json wrongProduction: false -> true (retracted clearBreadcrumbRetracted, clearBreadcrumbRetractedAt, clearBreadcrumbRetractedFields, wrongProductionAutoCleared, wrongProductionAutoClearedAt)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "marie-and-rosetta-west-end-2026/times-uk--clive-davis.json wrongProduction: null -> true (retracted clearBreadcrumbRetracted, clearBreadcrumbRetractedAt, clearBreadcrumbRetractedFields, wrongProductionAutoCleared, wrongProductionAutoClearedAt)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "wrongProductionReason: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "Field \"allowEarlyDate\" not allowed for review-field-edit"
+    }
+  ]
+}

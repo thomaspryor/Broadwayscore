@@ -1,0 +1,31 @@
+{
+  "_note": "RECONSTRUCTED, not a verbatim export (BRO-6717). The BRO-6518 child transcripts (session_01RUGH9ofwN3mfkzprugvLhL, a cloud session) are not reachable from the Mac that wrote this fixture. Built from the facts on BRO-6717 and on BRO-6518's takeover comment (2026-10-31T13:48Z): the child ended its turn at 2026-10-29T23:52Z and again at 2026-10-30T18:17Z on 'KEEP OPEN ... I'll check back on them', its container-local ingest loop and crawl died both times, nothing was armed, and it sat idle 17h then 19h. The parent waited on its report-back and was never woken. get_session payload shape follows the real one in scripts/tests/verify-edits-cloud-session-gates.test.mjs (ccr.status_bucket). Turn 2's background launcher has no completion notice on purpose: that is the 'errs live' case where the generic WAKELESS gate counts the launcher as a live wake.",
+  "childSessionId": "session_01RUGH9ofwN3mfkzprugvLhL",
+  "firstPrompt": "BRO-6518: BRO-6498: Chicago local shows from Theatre In Chicago, 2021 to now.\nClaim via node scripts/linear-session.js claim --issue=BRO-6518.\nBUDGET: 6h\nREPORT-BACK: last, send_message @parent with the card, outcome and run URL.",
+  "turns": [
+    {
+      "endedAt": "2026-10-29T23:52:00Z",
+      "idleHours": 17,
+      "closing": "Chicago local shows are in: 488 entries, hub fix live. Review collection for the 2024+ shows is going.\n\nStill running: the ingest dispatch loop (4 in flight) and the 2021-2023 archive crawl.\n\nYou need to: nothing.\n\nKEEP OPEN — jobs still running; I'll check back on them and report to the parent when the ingest finishes.",
+      "tools": [
+        { "idx": 40, "name": "Bash", "input": { "command": "node scripts/tic-daily.js --collect-urls --since 2024", "run_in_background": true, "description": "collect review URLs" }, "ok": true, "taskId": "bq7tic01" },
+        { "idx": 52, "name": "Bash", "input": { "command": "nohup bash -c 'while read id; do node scripts/workflow-queue-cap.js --max 4 && gh workflow run ingest-urls.yml -f show=$id; done < /tmp/tic-queue.txt' > /tmp/ingest-loop.log 2>&1 &", "description": "start ingest dispatch loop" }, "ok": true },
+        { "idx": 55, "name": "Bash", "input": { "command": "nohup node scripts/tic-archive-crawl.js --from 2021 --to 2023 > /tmp/crawl.log 2>&1 &", "description": "start archive crawl" }, "ok": true }
+      ],
+      "done": ["bq7tic01"]
+    },
+    {
+      "endedAt": "2026-10-30T18:17:00Z",
+      "idleHours": 19,
+      "closing": "Resumed after the nudge: the loop had died, so I restarted it from the queue file.\n\nStill running: the ingest loop is working through the remaining 217 shows.\n\nYou need to: nothing.\n\nKEEP OPEN — the ingest jobs are still running; I'll check back on them.",
+      "tools": [
+        { "idx": 70, "name": "Bash", "input": { "command": "nohup bash /tmp/ingest-loop.sh > /tmp/ingest-loop.log 2>&1 & echo started", "run_in_background": true, "description": "restart ingest loop" }, "ok": true, "taskId": "bx9loop2" }
+      ],
+      "done": []
+    }
+  ],
+  "parent": {
+    "closing": "Started a worker session for the Chicago backfill. It is collecting and scoring reviews for the new shows.\n\nStill running: the Chicago backfill session.\n\nYou need to: nothing.\n\nKEEP OPEN — waiting on the backfill session's report-back.",
+    "getSessionWhileIdle": { "ccr": { "id": "session_01RUGH9ofwN3mfkzprugvLhL", "title": "BRO-6498: Chicago local shows backfill", "session_status": "SESSION_STATUS_IDLE", "status_bucket": "SESSION_STATUS_BUCKET_IDLE", "updated_at": "2026-10-29T23:52:00Z" } }
+  }
+}

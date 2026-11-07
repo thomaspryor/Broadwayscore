@@ -1,0 +1,34 @@
+{
+  "issueNumber": "bro-6694",
+  "planId": "fa45e212-fc33-4e34-8f0b-199d94facd63",
+  "status": "applied",
+  "createdAt": "2026-11-01T06:59:49.021Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6694: delete 19 leftover WestEndTheatre archives (13 post-predates-run, 6 unknown-show)",
+    "steps": [
+      "BRO-6694: delete the 19 leftover WestEndTheatre archives (13 post-predates-run: roundup is for an earlier run; 6 unknown-show: no show row, 4 have a live successor archive, 2 are another market's roundup). Aborts without deleting if the count differs. The RSC Stratford regional archive is kept."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "run-script",
+        "description": "BRO-6694: delete the 19 leftover WestEndTheatre archives (13 post-predates-run: roundup is for an earlier run; 6 unknown-show: no show row, 4 have a live successor archive, 2 are another market's roundup). Aborts without deleting if the count differs. The RSC Stratford regional archive is kept.",
+        "script": "audit-wet-archive-market.js",
+        "args": "--delete --codes=post-predates-run,unknown-show --expect=19"
+      }
+    ]
+  },
+  "executedAt": "2026-11-01T08:46:59.482Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran audit-wet-archive-market.js successfully"
+    }
+  ],
+  "executedIn": "ci"
+}

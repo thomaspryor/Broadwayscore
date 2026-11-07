@@ -1,0 +1,696 @@
+{
+  "issueNumber": "bro-5857",
+  "planId": "d96c8e3b-f7e9-4e9c-92d1-4146b951b589",
+  "status": "applied",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5857: resolve the 7 shows the cast-vs-reviews audit held. sticks-and-bones-1972 (1972 Broadway row) still lists 5 undated files reviewing the 2014 New Group off-Broadway revival, 4 of them scored; the date guard that flagged their 12 siblings never fired. Flag them wrongProduction. The Play That Goes Wrong and Magic Mike Live (West End long runs; reviews are of the row's own production) carry casts no review names; replace each with the performers its newest live reviews credit (2026 and 2025 reviews). Les Miserables and The Mousetrap keep their rows: those list a company newer than any review (checked against 2026 cast announcements), so the audit lists them as hand-checked with an expiry instead. Five more rows the audit only marked suspect carry a different production's cast (equus-west-end-2026, girl-interrupted-off-broadway-2026, avenue-q-west-end-2026, les-liaisons-dangereuses-west-end-2026, the-amazing-adventures-of-kavalier-and-clay-off-broadway-2025); replace those from their reviews too. Operation Mincemeat 2025 and Chicago 1996 need no data change: their rows list the IBDB current company and the reviews (all of the Broadway run) name the opening cast on file; the audit now recognises that. Also left: a 2016 McCarter (Princeton) review under the-mousetrap-west-end-2021 carries a human wrongProductionManualClear the plan path may not retract; the rebuild already leaves it unscored.",
+    "steps": [
+      "Flag the 5 undated Sticks and Bones 2014 revival files wrongProduction with reason",
+      "Replace the cast on 2 West End long-run rows with the performers their newest reviews credit",
+      "Replace the cast on 5 rows whose cast belongs to a different production of the title (Equus, Girl, Interrupted, Avenue Q, Les Liaisons Dangereuses, Kavalier & Clay)"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "sticks-and-bones-1972/nydailynews--joe-dziemianowicz.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5857: 2014 New Group off-Broadway revival (text: \"Credit the intrepid ... New Group for reviving this early work\"); the row is the 1972 Broadway production at the John Golden. No row for that production exists to move it to, so it is flagged like its already-flagged siblings."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "sticks-and-bones-1972/nydailynews--joe-dziemianowicz.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "2014 New Group off-Broadway revival (text: \"Credit the intrepid ... New Group for reviving this early work\"); the row is the 1972 Broadway production at the John Golden",
+        "description": "BRO-5857: reason for the flag above."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "sticks-and-bones-1972/thewrap--robert-hofler.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5857: 2014 New Group off-Broadway revival (text: \"Watching the New Group's tough, horrifyingly funny revival\"); the row is the 1972 Broadway production. No row for that production exists to move it to, so it is flagged like its already-flagged siblings."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "sticks-and-bones-1972/thewrap--robert-hofler.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "2014 New Group off-Broadway revival (text: \"Watching the New Group's tough, horrifyingly funny revival\"); the row is the 1972 Broadway production",
+        "description": "BRO-5857: reason for the flag above."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "sticks-and-bones-1972/timeout--adam-feldman.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5857: 2014 New Group off-Broadway revival (text: \"Pershing Square Signature Center (Off Broadway) ... With Bill Pullman, Holly Hunter\"); the row is the 1972 Broadway production. No row for that production exists to move it to, so it is flagged like its already-flagged siblings."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "sticks-and-bones-1972/timeout--adam-feldman.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "2014 New Group off-Broadway revival (text: \"Pershing Square Signature Center (Off Broadway) ... With Bill Pullman, Holly Hunter\"); the row is the 1972 Broadway production",
+        "description": "BRO-5857: reason for the flag above."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "sticks-and-bones-1972/ew--jason-clark.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5857: 2014 New Group off-Broadway revival (excerpt credits \"Scott Elliott's expertly rendered production\"; BWW roundup Review-Roundup-STICKS-AND-BONES-Opens-Off-Broadway-20141106); the row is the 1972 Broadway production. No row for that production exists to move it to, so it is flagged like its already-flagged siblings."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "sticks-and-bones-1972/ew--jason-clark.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "2014 New Group off-Broadway revival (excerpt credits \"Scott Elliott's expertly rendered production\"; BWW roundup Review-Roundup-STICKS-AND-BONES-Opens-Off-Broadway-20141106); the row is the 1972 Broadway production",
+        "description": "BRO-5857: reason for the flag above."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "sticks-and-bones-1972/financialtimes--brendan-lemon.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5857: 2014 New Group off-Broadway revival (paywalled stub; the FT content id 40d072a2-64df-11e4 is a time-based UUID minted 2014-11-05, the revival's opening week); the row is the 1972 Broadway production. Unscored stub, flagged so the set is consistent."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "sticks-and-bones-1972/financialtimes--brendan-lemon.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "2014 New Group off-Broadway revival (paywalled stub; the FT content id 40d072a2-64df-11e4 is a time-based UUID minted 2014-11-05, the revival's opening week); the row is the 1972 Broadway production",
+        "description": "BRO-5857: reason for the flag above."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-play-that-goes-wrong-west-end-2021",
+        "field": "cast",
+        "oldValue": [
+          {
+            "name": "Tomisin Ajani",
+            "role": "Trevor"
+          },
+          {
+            "name": "Jo Ben Ayed",
+            "role": "Dennis"
+          },
+          {
+            "name": "Ashh Blackwood",
+            "role": "Annie"
+          },
+          {
+            "name": "Anya de Villiers",
+            "role": "Sandra"
+          },
+          {
+            "name": "Tendai Humphrey Sitima",
+            "role": "Robert"
+          },
+          {
+            "name": "Scott Hunter",
+            "role": "Max"
+          },
+          {
+            "name": "Oliver Mott",
+            "role": "Jonathan"
+          },
+          {
+            "name": "Mikhail Sen",
+            "role": "Chris"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Raphael Bushay"
+          },
+          {
+            "name": "Joshua Lendon",
+            "role": "Max"
+          },
+          {
+            "name": "Alex Bird"
+          },
+          {
+            "name": "Ruby Ablett"
+          },
+          {
+            "name": "Kieron Michael"
+          }
+        ],
+        "description": "BRO-5857: the row cast is named in no live review and its source is unknown (cast file empty). Afridiziak Theatre News review of 1 Jul 2026 (the newest live review, \"on its 13th cast\") credits Raphael Bushay, Joshua Lendon (\"Lendon's character Max\"), Alex Bird, Ruby Ablett and Kieron Michael. Roles are given only where the review states them."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "magic-mike-live-west-end-2021",
+        "field": "cast",
+        "oldValue": [
+          {
+            "name": "Kevin Vélez",
+            "role": "Performer"
+          },
+          {
+            "name": "Ryan Elson",
+            "role": "Performer"
+          },
+          {
+            "name": "Reece Darlington-Delaire",
+            "role": "Performer"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Samantha Baines"
+          },
+          {
+            "name": "Daniel Ralph"
+          }
+        ],
+        "description": "BRO-5857: the row cast is named in no live review and its source is unknown (cast file empty). Samantha Baines (compere) is named in the 2018, 2024 and Time Out reviews; Time Out (Laura Richards) also credits Daniel Ralph. No live review names Kevin Velez, Ryan Elson or Reece Darlington-Delaire."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "equus-west-end-2026",
+        "field": "cast",
+        "oldValue": [
+          {
+            "name": "Peter Firth",
+            "role": "Alan Strang"
+          },
+          {
+            "name": "Anthony Hopkins",
+            "role": "Martin Dysart"
+          },
+          {
+            "name": "Michael Higgins",
+            "role": "Frank Strang"
+          },
+          {
+            "name": "Roberta Maxwell",
+            "role": "Jill Mason"
+          },
+          {
+            "name": "Marian Seldes",
+            "role": "Hesther Saloman"
+          },
+          {
+            "name": "Frances Sternhagen",
+            "role": "Dora Strang"
+          },
+          {
+            "name": "Mary Doyle",
+            "role": "Nurse"
+          },
+          {
+            "name": "Gus Kaikkonen",
+            "role": "Horse"
+          },
+          {
+            "name": "Philip Kraus",
+            "role": "Horse"
+          },
+          {
+            "name": "Walter Mathews",
+            "role": "Harry Dalton"
+          },
+          {
+            "name": "Everett McGill",
+            "role": "Young Horseman"
+          },
+          {
+            "name": "Gabriel Oshen",
+            "role": "Horse"
+          },
+          {
+            "name": "David Ramsey",
+            "role": "Horse"
+          },
+          {
+            "name": "John Tyrrell",
+            "role": "Horse"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Toby Stephens",
+            "role": "Martin Dysart"
+          },
+          {
+            "name": "Noah Valentine",
+            "role": "Alan Strang"
+          },
+          {
+            "name": "Amanda Abbington",
+            "role": "Hesther Salomon"
+          },
+          {
+            "name": "Colin Mace",
+            "role": "Frank Strang"
+          },
+          {
+            "name": "Emma Cunniffe",
+            "role": "Dora Strang"
+          },
+          {
+            "name": "Bella Aubin",
+            "role": "Jill Mason"
+          }
+        ],
+        "description": "BRO-5857: row lists the 1974 Broadway company (Hopkins, Firth); the reviews are of the 2026 Menier production. Replace with the performers its live reviews credit (each name appears in at least one live review text)."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "girl-interrupted-off-broadway-2026",
+        "field": "cast",
+        "oldValue": [
+          {
+            "name": "Mary Barker",
+            "role": "Suzuki"
+          },
+          {
+            "name": "Blanche Bates",
+            "role": "Cho-Cho San"
+          },
+          {
+            "name": "Katherine Black",
+            "role": "Kate"
+          },
+          {
+            "name": "Albert Bruning",
+            "role": "Yamadori"
+          },
+          {
+            "name": "Claude Gillingwater",
+            "role": "Mr. Sharpless"
+          },
+          {
+            "name": "Little Kittie",
+            "role": "\"Trouble\""
+          },
+          {
+            "name": "William Lamp",
+            "role": "Attendant"
+          },
+          {
+            "name": "Westropp Saunders",
+            "role": "Second Attendant"
+          },
+          {
+            "name": "E. P. Wilkes",
+            "role": "Nakado"
+          },
+          {
+            "name": "Frank Worthing",
+            "role": "Lieut. Pinkerton"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Juliana Canfield",
+            "role": "Susanna Kaysen"
+          },
+          {
+            "name": "King Princess",
+            "role": "Lisa"
+          },
+          {
+            "name": "Sally Shaw",
+            "role": "Polly"
+          },
+          {
+            "name": "Gabi Campo",
+            "role": "Tori"
+          },
+          {
+            "name": "Mia Pak",
+            "role": "Grace"
+          },
+          {
+            "name": "Katherine Reis",
+            "role": "Daisy"
+          },
+          {
+            "name": "Ta’Rea Campbell",
+            "role": "Valerie"
+          },
+          {
+            "name": "Emily Skinner",
+            "role": "Dr. Wick"
+          },
+          {
+            "name": "Manoel Felciano",
+            "role": "Male roles"
+          }
+        ],
+        "description": "BRO-5857: row lists unrelated performers named in no review; the reviews are of the 2026 Public Theater production. Replace with the performers its live reviews credit (each name appears in at least one live review text)."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "avenue-q-west-end-2026",
+        "field": "cast",
+        "oldValue": [
+          {
+            "name": "Jennifer Barnhart",
+            "role": "Mrs. T"
+          },
+          {
+            "name": "Natalie Venetia Belcon",
+            "role": "Gary Coleman"
+          },
+          {
+            "name": "Stephanie D'Abruzzo",
+            "role": "Kate Monster"
+          },
+          {
+            "name": "Jordan Gelber",
+            "role": "Brian"
+          },
+          {
+            "name": "Ann Harada",
+            "role": "Christmas Eve"
+          },
+          {
+            "name": "Rick Lyon",
+            "role": "Nicky"
+          },
+          {
+            "name": "John Tartaglia",
+            "role": "Princeton"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Noah Harrison",
+            "role": "Princeton / Rod"
+          },
+          {
+            "name": "Emily Benjamin",
+            "role": "Kate Monster / Lucy The Slut"
+          },
+          {
+            "name": "Amelia Kinu Muus",
+            "role": "Christmas Eve"
+          },
+          {
+            "name": "Oliver Jacobson",
+            "role": "Brian"
+          },
+          {
+            "name": "Charlie McCullagh",
+            "role": "Nicky / Trekkie Monster"
+          },
+          {
+            "name": "Dionne Ward-Anderson",
+            "role": "Gary Coleman"
+          }
+        ],
+        "description": "BRO-5857: row lists the 2003 Broadway company; the reviews are of the 2026 Shaftesbury production. Replace with the performers its live reviews credit (each name appears in at least one live review text)."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "les-liaisons-dangereuses-west-end-2026",
+        "field": "cast",
+        "oldValue": [
+          {
+            "name": "Jean Anderson",
+            "role": "Madame de Rosemonde"
+          },
+          {
+            "name": "Lucy Aston",
+            "role": "Émilie"
+          },
+          {
+            "name": "Suzanne Burden",
+            "role": "La Présidente de Tourvel"
+          },
+          {
+            "name": "Michael Dansicker",
+            "role": "Harpsichord"
+          },
+          {
+            "name": "Lindsay Duncan",
+            "role": "La Marquise de Merteuil"
+          },
+          {
+            "name": "Beatie Edney",
+            "role": "Cécile Volanges"
+          },
+          {
+            "name": "Barry Heins",
+            "role": "Major-domo"
+          },
+          {
+            "name": "Hilton McRae",
+            "role": "Le Chevalier Danceny"
+          },
+          {
+            "name": "Kristin Milward",
+            "role": "Madame de Volanges"
+          },
+          {
+            "name": "Alan Rickman",
+            "role": "Le Vicomte de Valmont"
+          },
+          {
+            "name": "Hugh Simon",
+            "role": "Azolan"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Lesley Manville",
+            "role": "Marquise de Merteuil"
+          },
+          {
+            "name": "Aidan Turner",
+            "role": "Vicomte de Valmont"
+          },
+          {
+            "name": "Monica Barbaro",
+            "role": "Madame de Tourvel"
+          },
+          {
+            "name": "Hannah van der Westhuysen",
+            "role": "Cécile de Volanges"
+          },
+          {
+            "name": "Darragh Hand",
+            "role": "Danceny"
+          },
+          {
+            "name": "Cat Simmons",
+            "role": "Madame de Volanges"
+          },
+          {
+            "name": "Gabrielle Drake",
+            "role": "Madame de Rosemonde"
+          }
+        ],
+        "description": "BRO-5857: row lists the 1987 Broadway company; the reviews are of the 2026 National Theatre (Lyttelton) production. Replace with the performers its live reviews credit (each name appears in at least one live review text)."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-amazing-adventures-of-kavalier-and-clay-off-broadway-2025",
+        "field": "cast",
+        "oldValue": [
+          {
+            "name": "Corinne Winters",
+            "role": "Cavalleria rusticana"
+          },
+          {
+            "name": "Brian Jagde",
+            "role": "Cavalleria rusticana"
+          },
+          {
+            "name": "Luciano Ganci",
+            "role": "Pagliacci"
+          },
+          {
+            "name": "Martina Belli",
+            "role": "Pagliacci"
+          },
+          {
+            "name": "Amartuvshin Enkhbat",
+            "role": "Nabucco"
+          },
+          {
+            "name": "Anna Netrebko",
+            "role": "Abigaille"
+          },
+          {
+            "name": "Igor Golovatenko",
+            "role": "Rigoletto"
+          },
+          {
+            "name": "Serena Sáenz",
+            "role": "Rigoletto"
+          },
+          {
+            "name": "Bekhzod Davronov",
+            "role": "Rigoletto"
+          },
+          {
+            "name": "Michael Spyres",
+            "role": "Tristan"
+          },
+          {
+            "name": "Lise Davidsen",
+            "role": "Isolde"
+          },
+          {
+            "name": "Katleho Mokhoabane",
+            "role": "Tito"
+          },
+          {
+            "name": "Ailyn Pérez",
+            "role": "Madama Butterfly"
+          },
+          {
+            "name": "Asmik Grigoria",
+            "role": "Eugene Onegin"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Andrzej Filończyk",
+            "role": "Joe Kavalier"
+          },
+          {
+            "name": "Miles Mykkanen",
+            "role": "Sam Clay"
+          },
+          {
+            "name": "Sun-Ly Pierce",
+            "role": "Rosa Saks"
+          },
+          {
+            "name": "Lauren Snouffer",
+            "role": "Sarah Kavalier"
+          },
+          {
+            "name": "Edward Nelson",
+            "role": "Tracy"
+          },
+          {
+            "name": "Richard Croft",
+            "role": "Solomon Kavalier"
+          },
+          {
+            "name": "Patrick Carfizzi",
+            "role": "Sheldon Anapol"
+          }
+        ],
+        "description": "BRO-5857: row lists the Met Opera season roster (Netrebko, Davidsen and others in other operas); the reviews are of this opera's world premiere. Replace with the performers its live reviews credit (each name appears in at least one live review text)."
+      }
+    ]
+  },
+  "executedAt": "2026-10-21T19:30:01.890Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "sticks-and-bones-1972/nydailynews--joe-dziemianowicz.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "sticks-and-bones-1972/nydailynews--joe-dziemianowicz.json wrongProductionReason: null -> \"2014 New Group off-Broadway revival (text: \\\"Credit the intrepid ... New Group for reviving this early work\\\"); the row is the 1972 Broadway production at the John Golden\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "sticks-and-bones-1972/thewrap--robert-hofler.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "sticks-and-bones-1972/thewrap--robert-hofler.json wrongProductionReason: null -> \"2014 New Group off-Broadway revival (text: \\\"Watching the New Group's tough, horrifyingly funny revival\\\"); the row is the 1972 Broadway production\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "sticks-and-bones-1972/timeout--adam-feldman.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "sticks-and-bones-1972/timeout--adam-feldman.json wrongProductionReason: null -> \"2014 New Group off-Broadway revival (text: \\\"Pershing Square Signature Center (Off Broadway) ... With Bill Pullman, Holly Hunter\\\"); the row is the 1972 Broadway production\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "sticks-and-bones-1972/ew--jason-clark.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "sticks-and-bones-1972/ew--jason-clark.json wrongProductionReason: null -> \"2014 New Group off-Broadway revival (excerpt credits \\\"Scott Elliott's expertly rendered production\\\"; BWW roundup Review-Roundup-STICKS-AND-BONES-Opens-Off-Broadway-20141106); the row is the 1972 Broadway production\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "sticks-and-bones-1972/financialtimes--brendan-lemon.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "sticks-and-bones-1972/financialtimes--brendan-lemon.json wrongProductionReason: null -> \"2014 New Group off-Broadway revival (paywalled stub; the FT content id 40d072a2-64df-11e4 is a time-based UUID minted 2014-11-05, the revival's opening week); the row is the 1972 Broadway production\""
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: cast updated for the-play-that-goes-wrong-west-end-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: cast updated for magic-mike-live-west-end-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: cast updated for equus-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: cast updated for girl-interrupted-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: cast updated for avenue-q-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: cast updated for les-liaisons-dangereuses-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: cast updated for the-amazing-adventures-of-kavalier-and-clay-off-broadway-2025"
+    }
+  ],
+  "executedIn": "ci"
+}

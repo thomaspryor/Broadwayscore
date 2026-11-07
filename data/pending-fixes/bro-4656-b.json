@@ -1,0 +1,74 @@
+{
+  "issueNumber": "bro-4656-b",
+  "planId": "29fa9326-0e0e-4010-abd0-cbdb093ddb73",
+  "status": "partial",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4656: four book reviews the outlet-listing poller attached to stage shows (one on the Wicked national tour) are flagged wrongShow so they can never be scored. None is scored today.",
+    "steps": [
+      "Flag wrongShow on four book reviews: Wicked tour (Galinda novel), The Outsiders (Auslander), Art (Serge novel), Spare Parts (Larry Bird biography).",
+      "The matcher fix (findMatchingShows skips 'book review' headlines and /books/ paths without a theatre word) lands with this plan; over all 41k review files it hits 17 URLs, 13 already flagged wrongShow, these 4 are the rest (the 17th, a Gruffalo duplicate, is already duplicateOf)."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "wicked-tour-2021/one-minute-critic--unknown.json",
+        "field": "wrongShow",
+        "oldValue": null,
+        "newValue": true,
+        "description": "1 Minute Critic review of Gregory Maguire's novel 'Galinda: A Charmed Childhood' (page title: \"book review\"), not the Wicked tour. outlet-listing-poller matched it; findMatchingShows now skips book reviews."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-outsiders-2024/wsj--diane-cole.json",
+        "field": "wrongShow",
+        "oldValue": null,
+        "newValue": true,
+        "description": "WSJ books-section review of the book 'Auslander' (\"The Lives of Outsiders\"), not The Outsiders musical."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "art-2025/forward--pj-grisar.json",
+        "field": "wrongShow",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Forward books-section piece on Yasmina Reza's novel 'Serge', not the play Art."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "spare-parts-off-broadway-2026/wsj--jack-mccallum.json",
+        "field": "wrongShow",
+        "oldValue": null,
+        "newValue": true,
+        "description": "WSJ books-section review of 'Heartland' (Larry Bird biography), not Spare Parts."
+      }
+    ]
+  },
+  "executedAt": "2026-10-05T23:35:59.085Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "Review file not found: wicked-tour-2021/one-minute-critic--unknown.json"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-outsiders-2024/wsj--diane-cole.json wrongShow: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "art-2025/forward--pj-grisar.json wrongShow: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "spare-parts-off-broadway-2026/wsj--jack-mccallum.json wrongShow: null -> true"
+    }
+  ]
+}

@@ -1,0 +1,243 @@
+{
+  "issueNumber": "bro-6237-c",
+  "planId": "27c44e7e-3f54-472b-8e38-f6339b292f6e",
+  "status": "pending",
+  "createdAt": "2026-10-26T11:33:49.849Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6237: adjudicate 79 counted reviews carrying an unreviewed CV not-a-review flag (8 true non-reviews, 71 real reviews cleared) (part 3 of 4)",
+    "steps": [
+      "next-to-normal-2009/nydailynews--joe-dziemianowicz.json: nonReviewManualClear",
+      "oklahoma-2019/front-row-center--tulis-mccall.json: nonReviewManualClear",
+      "operation-mincemeat-tour-2026/warwick-post--joe-siegel.json: nonReviewManualClear",
+      "paradise-square-2022/broadway-and-me--janice-c-simpson.json: nonReviewManualClear",
+      "paranormal-activity-2026/nytimes--helen-shaw.json: nonReviewManualClear",
+      "paranormal-activity-chicago-regional-2025/thefourthwalsh--unknown.json: nonReviewManualClear",
+      "pirates-the-penzance-musical-2025/broadwaynews--brittani-samuel.json: nonReviewManualClear",
+      "plaza-suite-2022/broadway-and-me--janice-c-simpson.json: nonReviewManualClear",
+      "proof-2026/variety--aramide-tinubu.json: nonReviewManualClear",
+      "saint-joan-2018/wsj--terry-teachout.json: nonReviewManualClear",
+      "shucked-tour-2024/edge-media-network--will-demers.json: nonReviewManualClear",
+      "shucked-tour-2024/ladue-news--mark-bretz.json: nonReviewManualClear",
+      "side-show-2014/nytimes--ben-brantley.json: nonReviewManualClear",
+      "spellbound-off-broadway-2026/front-row-center--david-walters.json: nonReviewManualClear",
+      "springwood-west-end-2026/london-box-office--stuart-king.json: nonReviewManualClear",
+      "stick-fly-2011/timeout--david-cote.json: nonReviewManualClear",
+      "sweat-2017/reading-eagle--george-hatza.json: nonReviewManualClear",
+      "tao-of-glass-west-end-2026/artsdesk--helen-hawkins.json: nonReviewManualClear",
+      "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026/new-statesman--rachel-cunliffe.json: nonReviewManualClear",
+      "the-glass-menagerie-2017/wsj--terry-teachout.json: nonReviewManualClear",
+      "the-great-gatsby-2024/nytimes--laura-collins-hughes.json: nonReviewManualClear",
+      "the-guy-who-didnt-like-musicals-west-end-2026/whatsonstage--sonny-waheed.json: nonReviewManualClear",
+      "the-last-ship-2014/nytimes--charles-isherwood.json: nonReviewManualClear",
+      "the-notebook-2024/broadway-and-me--janice-c-simpson.json: nonReviewManualClear",
+      "the-phantom-of-the-opera-west-end-1986/telegraph--unknown.json: nonReviewManualClear"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "next-to-normal-2009/nydailynews--joe-dziemianowicz.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "next-to-normal-2009/nydailynews--joe-dziemianowicz.json: nonReviewManualClear"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "oklahoma-2019/front-row-center--tulis-mccall.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "oklahoma-2019/front-row-center--tulis-mccall.json: nonReviewManualClear"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "operation-mincemeat-tour-2026/warwick-post--joe-siegel.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "operation-mincemeat-tour-2026/warwick-post--joe-siegel.json: nonReviewManualClear"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "paradise-square-2022/broadway-and-me--janice-c-simpson.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "paradise-square-2022/broadway-and-me--janice-c-simpson.json: nonReviewManualClear"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "paranormal-activity-2026/nytimes--helen-shaw.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "paranormal-activity-2026/nytimes--helen-shaw.json: nonReviewManualClear"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "paranormal-activity-chicago-regional-2025/thefourthwalsh--unknown.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "paranormal-activity-chicago-regional-2025/thefourthwalsh--unknown.json: nonReviewManualClear"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "pirates-the-penzance-musical-2025/broadwaynews--brittani-samuel.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "pirates-the-penzance-musical-2025/broadwaynews--brittani-samuel.json: nonReviewManualClear"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "plaza-suite-2022/broadway-and-me--janice-c-simpson.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "plaza-suite-2022/broadway-and-me--janice-c-simpson.json: nonReviewManualClear"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "proof-2026/variety--aramide-tinubu.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "proof-2026/variety--aramide-tinubu.json: nonReviewManualClear"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "saint-joan-2018/wsj--terry-teachout.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "saint-joan-2018/wsj--terry-teachout.json: nonReviewManualClear"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "shucked-tour-2024/edge-media-network--will-demers.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "shucked-tour-2024/edge-media-network--will-demers.json: nonReviewManualClear"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "shucked-tour-2024/ladue-news--mark-bretz.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "shucked-tour-2024/ladue-news--mark-bretz.json: nonReviewManualClear"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "side-show-2014/nytimes--ben-brantley.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "side-show-2014/nytimes--ben-brantley.json: nonReviewManualClear"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "spellbound-off-broadway-2026/front-row-center--david-walters.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "spellbound-off-broadway-2026/front-row-center--david-walters.json: nonReviewManualClear"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "springwood-west-end-2026/london-box-office--stuart-king.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "springwood-west-end-2026/london-box-office--stuart-king.json: nonReviewManualClear"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "stick-fly-2011/timeout--david-cote.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "stick-fly-2011/timeout--david-cote.json: nonReviewManualClear"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "sweat-2017/reading-eagle--george-hatza.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "sweat-2017/reading-eagle--george-hatza.json: nonReviewManualClear"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "tao-of-glass-west-end-2026/artsdesk--helen-hawkins.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "tao-of-glass-west-end-2026/artsdesk--helen-hawkins.json: nonReviewManualClear"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026/new-statesman--rachel-cunliffe.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026/new-statesman--rachel-cunliffe.json: nonReviewManualClear"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-glass-menagerie-2017/wsj--terry-teachout.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "the-glass-menagerie-2017/wsj--terry-teachout.json: nonReviewManualClear"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-great-gatsby-2024/nytimes--laura-collins-hughes.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "the-great-gatsby-2024/nytimes--laura-collins-hughes.json: nonReviewManualClear"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-guy-who-didnt-like-musicals-west-end-2026/whatsonstage--sonny-waheed.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "the-guy-who-didnt-like-musicals-west-end-2026/whatsonstage--sonny-waheed.json: nonReviewManualClear"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-last-ship-2014/nytimes--charles-isherwood.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "the-last-ship-2014/nytimes--charles-isherwood.json: nonReviewManualClear"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-notebook-2024/broadway-and-me--janice-c-simpson.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "the-notebook-2024/broadway-and-me--janice-c-simpson.json: nonReviewManualClear"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-phantom-of-the-opera-west-end-1986/telegraph--unknown.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "the-phantom-of-the-opera-west-end-1986/telegraph--unknown.json: nonReviewManualClear"
+      }
+    ]
+  }
+}

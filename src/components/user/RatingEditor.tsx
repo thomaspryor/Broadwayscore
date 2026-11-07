@@ -1,0 +1,518 @@
+'use client';
+
+import { isIsoDateOnly } from '@/lib/iso-date-only';
+import { useState, useCallback, useEffect, useRef } from 'react';
+import dynamic from 'next/dynamic';
+import Modal from '@/components/show-cards/Modal';
+import StarRating from './StarRating';
+import { sanitizeRating } from '@/lib/rating';
+import DatePickerButton from './DatePickerButton';
+import { localToday } from '@/lib/date-utils';
+import { trackUgc } from '@/lib/ugc-analytics';
+import { buildShowtimeSeatPatch, normalizeSeat, SEAT_MAX_CHARS, type ShowtimeSeat } from '@/lib/review-showtime';
+
+export interface RatingEditorSaveData {
+  rating: number;
+  reviewText: string | null;
+  dateSeen: string | null;
+  /** Present → edit/replace this review; absent → append a new viewing. */
+  reviewId?: string;
+  /** Which performance + seat as entered (drafts restore from these). */
+  timeSlot?: ShowtimeSeat['time_slot'];
+  curtainTime?: string | null;
+  seat?: string | null;
+  /**
+   * The reviews columns to send for time + seat (BRO-6783). Only keys that
+   * have, or had, a value: spread it into the insert/update payload.
+   */
+  showtimeSeat?: Partial<ShowtimeSeat>;
+  /** Photos staged on a brand-new rating (only when `stagePhotos`); the caller uploads them once the review has an id. */
+  photos?: File[];
+}
+
+interface RatingEditorProps {
+  showTitle: string;
+  /** Existing review id when editing/replacing; omit to append a new viewing. */
+  reviewId?: string;
+  /** Stars to open with (the star the user tapped, or an existing review's rating). */
+  initialRating: number;
+  initialReviewText?: string | null;
+  initialDateSeen?: string | null;
+  /** Pre-fill Date Seen for brand-new ratings (e.g. watchlist planned date). */
+  suggestedDateSeen?: string | null;
+  /** Show id: drives the Matinee/Evening schedule defaults. Omit to hide the Time row. */
+  showId?: string;
+  /** Saved performance + seat when editing (or a restored draft's). */
+  initialTimeSlot?: ShowtimeSeat['time_slot'];
+  initialCurtainTime?: string | null;
+  initialSeat?: string | null;
+  /** The plan's showtime; prefills Time when Date Seen is the plan's date. */
+  suggestedShowtime?: Pick<ShowtimeSeat, 'time_slot' | 'curtain_time'> | null;
+  /** 'new' first viewing, 'edit' amend latest, 'replace' overwrite the single rating, 'append' log another. */
+  mode?: 'new' | 'edit' | 'replace' | 'append';
+  /**
+   * Persist the rating. MUST throw on failure — the editor stays open with the
+   * typed text intact and shows an inline error + Retry. Resolve on success.
+   * Resolve with 'auth-gated' when the save was deferred to a sign-in flow:
+   * the editor stays open (draft visible behind the sign-in modal), no error.
+   * Resolve with 'saved-local' when it was kept on this device (signed out):
+   * the editor closes but it is not a submitted rating yet.
+   */
+  onSave: (data: RatingEditorSaveData) => Promise<void | 'auth-gated' | 'saved-local'>;
+  /** Called after a successful save so the parent can close the editor. */
+  onSaved: () => void;
+  onCancel: () => void;
+  /** Optional delete affordance, shown only when editing an existing review. */
+  onDelete?: () => void;
+  /** Force a presentation; default 'auto' = bottom-sheet on mobile, inline card on desktop. */
+  presentation?: 'auto' | 'inline' | 'modal';
+  /** Offer a Photos field on a brand-new rating; the files come back in `onSave` data (BRO-6963). */
+  stagePhotos?: boolean;
+  /** Where the editor was opened from + which show; drives rating_* analytics events. */
+  analytics?: { source: string; showId: string };
+}
+
+const MAX_CHARS = 2000;
+
+// The schedule data (~170 KB) only loads once a date is set and the Time row shows.
+const ShowtimeSegmented = dynamic(() => import('./ShowtimeSegmented'), { ssr: false });
+
+// Diary photos for an existing entry (BRO-6170). Lazy: the field (upload
+// pipeline, photo list) only loads when an editor opens on a saved review.
+const StagedPhotosField = dynamic(() => import('./StagedPhotosField'), { ssr: false });
+const ReviewPhotosField = dynamic(() => import('@/components/my-shows/feed/ReviewPhotosField'), { ssr: false });
+
+const HEADER_COPY: Record<NonNullable<RatingEditorProps['mode']>, string> = {
+  new: 'Your rating for',
+  edit: 'Editing your rating for',
+  replace: 'Re-rating',
+  append: 'Log another viewing of',
+};
+
+export default function RatingEditor({
+  showTitle,
+  reviewId,
+  initialRating,
+  initialReviewText,
+  initialDateSeen,
+  suggestedDateSeen,
+  showId,
+  initialTimeSlot = null,
+  initialCurtainTime = null,
+  initialSeat = null,
+  suggestedShowtime = null,
+  mode = reviewId ? 'edit' : 'new',
+  onSave,
+  onSaved,
+  onCancel,
+  onDelete,
+  presentation = 'auto',
+  stagePhotos = false,
+  analytics,
+}: RatingEditorProps) {
+  const today = localToday();
+  // Cap only at today. Do NOT cap at the show's closing date: users log return
+  // engagements/Encores runs against the same entry, and diary imports can map
+  // a viewing to an earlier production — the closing-date cap anchored the
+  // native picker years in the past and read as "completely locked"
+  // (La Cage aux Folles report, 2026-07-13).
+  const maxDate = today;
+
+  const [stagedFiles, setStagedFiles] = useState<File[]>([]);
+  const [rating, setRating] = useState<number>(() => sanitizeRating(initialRating));
+  const [reviewText, setReviewText] = useState<string>(initialReviewText || '');
+  const [dateSeen, setDateSeen] = useState<string>(() => {
+    // Editing keeps the review's stored date (may be empty). New viewings default
+    // to today (local), unless a watchlist planned-date was supplied — never past
+    // the cap (e.g. a show that closed years ago).
+    if (reviewId) return initialDateSeen || '';
+    const fallback = initialDateSeen || (isIsoDateOnly(suggestedDateSeen) ? suggestedDateSeen : null) || today;
+    return fallback > maxDate ? maxDate : fallback;
+  });
+  // Which performance (BRO-6783). A new entry whose date is the plan's date
+  // starts from the plan's showtime.
+  const [showtime, setShowtime] = useState<Pick<ShowtimeSeat, 'time_slot' | 'curtain_time'>>(() => {
+    if (reviewId || initialTimeSlot) return { time_slot: initialTimeSlot ?? null, curtain_time: initialTimeSlot ? initialCurtainTime ?? null : null };
+    if (suggestedShowtime?.time_slot && isIsoDateOnly(suggestedDateSeen) && dateSeen === suggestedDateSeen) {
+      return { time_slot: suggestedShowtime.time_slot, curtain_time: suggestedShowtime.curtain_time ?? null };
+    }
+    return { time_slot: null, curtain_time: null };
+  });
+  const [seat, setSeat] = useState<string>(initialSeat ?? '');
+  // Collapsed variants start open when there is already something to show.
+  // Showtime + Seat sit folded under "More details" (owner pick, BRO-6783 option 2);
+  // the fold starts open when the entry already has either, so saved data never hides.
+  const [extrasOpen, setExtrasOpen] = useState(() => !!showtime.time_slot || !!initialSeat);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  // Delete now renders as a full-weight button (same size as Save) rather
+  // than a faint text link, so it needs its own confirm step to avoid
+  // accidental taps — mirrors the arm/confirm/auto-revert pattern already
+  // shipped for "Delete List" in MyShowsClient's ListsTab.tsx.
+  const [confirmDelete, setConfirmDelete] = useState(false);
+  const deleteTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  useEffect(() => () => { if (deleteTimerRef.current) clearTimeout(deleteTimerRef.current); }, []);
+  // True once the user has interacted with the date field — a late-arriving
+  // suggestion must never clobber a date they picked themselves.
+  const dateTouched = useRef(false);
+
+  // suggestedDateSeen often arrives AFTER mount: the ?rate=1 deep-link opens
+  // this editor as soon as auth resolves, while the watchlist (source of the
+  // "Saw Jun 24" planned date) is still being fetched. The useState initializer
+  // above has already run by then, so without this effect the field stayed on
+  // today's date (owner report, 2026-07-17).
+  useEffect(() => {
+    if (reviewId || initialDateSeen || dateTouched.current || !isIsoDateOnly(suggestedDateSeen)) return;
+    const next = suggestedDateSeen > maxDate ? maxDate : suggestedDateSeen;
+    setDateSeen(next);
+    // The plan's time arrives with its date; only carry it when the date is the plan's.
+    if (next === suggestedDateSeen && suggestedShowtime?.time_slot) {
+      setShowtime({ time_slot: suggestedShowtime.time_slot, curtain_time: suggestedShowtime.curtain_time ?? null });
+    }
+  }, [suggestedDateSeen, suggestedShowtime, reviewId, initialDateSeen, maxDate]);
+  // Live hover value from the stars — previewed in the big number so half-star
+  // targeting is legible before the click (owner report, 2026-07-13).
+  const [hoverValue, setHoverValue] = useState<number | null>(null);
+
+  const [isDesktop, setIsDesktop] = useState<boolean>(
+    () => typeof window !== 'undefined' && window.matchMedia('(min-width: 640px)').matches,
+  );
+  // Track viewport changes (rotate / window resize) so the presentation doesn't
+  // go stale mid-edit — the two branches differ structurally (scroll lock etc.).
+  useEffect(() => {
+    const mq = window.matchMedia('(min-width: 640px)');
+    const onChange = (e: MediaQueryListEvent) => setIsDesktop(e.matches);
+    mq.addEventListener('change', onChange);
+    return () => mq.removeEventListener('change', onChange);
+  }, []);
+
+  // Fire once per open, keyed on the values at mount.
+  const analyticsRef = useRef({ analytics, mode, initialRating });
+  useEffect(() => {
+    const a = analyticsRef.current;
+    if (!a.analytics) return;
+    trackUgc('rating_editor_opened', {
+      show_id: a.analytics.showId,
+      source: a.analytics.source,
+      mode: a.mode,
+      initial_rating: a.initialRating || null,
+    });
+  }, []);
+
+  const charsRemaining = MAX_CHARS - reviewText.length;
+  const isOverLimit = charsRemaining < 0;
+
+  const handleSave = useCallback(async () => {
+    if (saving || isOverLimit || rating < 0.5 || rating > 5) return;
+    setSaving(true);
+    setError(null);
+    try {
+      const current: ShowtimeSeat = {
+        // A performance without a date means nothing: dropping the date drops it.
+        time_slot: dateSeen ? showtime.time_slot : null,
+        curtain_time: dateSeen && showtime.time_slot ? showtime.curtain_time : null,
+        seat: normalizeSeat(seat),
+      };
+      const result = await onSave({
+        rating: sanitizeRating(rating),
+        reviewText: reviewText.trim() || null,
+        dateSeen: dateSeen || null,
+        reviewId,
+        timeSlot: current.time_slot,
+        curtainTime: current.curtain_time,
+        seat: current.seat,
+        ...(stagePhotos && !reviewId && stagedFiles.length ? { photos: stagedFiles } : {}),
+        showtimeSeat: buildShowtimeSeatPatch(
+          reviewId ? { time_slot: initialTimeSlot, curtain_time: initialCurtainTime, seat: initialSeat } : null,
+          current,
+        ),
+      });
+      if (result === 'auth-gated') {
+        // Save deferred to sign-in: keep the editor (and the typed draft)
+        // visible behind the sign-in modal so cancelling auth loses nothing.
+        setSaving(false);
+        return;
+      }
+      if (result === 'saved-local') {
+        onSaved();
+        return;
+      }
+      if (analytics) {
+        trackUgc('rating_submitted', {
+          show_id: analytics.showId,
+          source: analytics.source,
+          mode,
+          rating: sanitizeRating(rating),
+          has_review_text: !!reviewText.trim(),
+          review_length: reviewText.trim().length,
+          has_date_seen: !!dateSeen,
+          has_showtime: !!(dateSeen && showtime.time_slot),
+          has_seat: !!normalizeSeat(seat),
+          photo_count: stagePhotos && !reviewId ? stagedFiles.length : 0,
+          is_edit: !!reviewId,
+        });
+      }
+      onSaved();
+    } catch (e) {
+      // Failed save keeps the editor open with the typed text intact.
+      const message = e instanceof Error && e.message ? e.message : 'Could not save. Please try again.';
+      if (analytics) {
+        trackUgc('rating_save_failed', {
+          show_id: analytics.showId,
+          source: analytics.source,
+          mode,
+          error_message: message.slice(0, 200),
+        });
+      }
+      setError(message);
+      setSaving(false);
+    }
+  }, [saving, isOverLimit, rating, reviewText, dateSeen, reviewId, stagePhotos, stagedFiles, onSave, onSaved, analytics, mode, showtime, seat, initialTimeSlot, initialCurtainTime, initialSeat]);
+
+  // Time: which performance (BRO-6783). Only meaningful once a date is set.
+  const timeRow = showId && dateSeen && (
+        <div className="mb-3">
+          <label className="block text-xs font-medium text-gray-400 mb-1">
+            Time <span className="text-fg-muted">(optional)</span>
+          </label>
+          <div className="w-full sm:w-96">
+            <ShowtimeSegmented
+              showId={showId}
+              date={dateSeen}
+              value={showtime}
+              onChange={setShowtime}
+              autoPick={false}
+              disabled={saving}
+            />
+          </div>
+        </div>
+  );
+  // Seat: owner-only free text, never on public pages or shares.
+  const seatRow = (
+    <div className="mb-3">
+        <label htmlFor="rating-editor-seat" className="block text-xs font-medium text-gray-400 mb-1">
+          Seat <span className="text-fg-muted">(optional)</span>
+        </label>
+        <input
+          id="rating-editor-seat"
+          type="text"
+          value={seat}
+          onChange={(e) => setSeat(e.target.value.slice(0, SEAT_MAX_CHARS))}
+          maxLength={SEAT_MAX_CHARS}
+          placeholder="e.g. Balcony, A-25"
+          autoComplete="off"
+          data-1p-ignore
+          data-lpignore="true"
+          data-testid="seat-input"
+          // 16px on mobile: smaller makes iOS Safari zoom on focus (see notes below).
+          className="ph-mask w-full sm:w-96 px-3 py-2 text-base sm:text-sm bg-white/[0.05] border border-white/10 rounded-lg text-white placeholder-fg-placeholder focus:outline-none focus:border-brand/50 focus:ring-1 focus:ring-brand/30"
+        />
+      </div>
+  );
+  const timeAndSeat = <>{timeRow}{seatRow}</>;
+  const notesBlock = (
+    <div className="mb-3">
+        <label className="block text-xs font-medium text-gray-400 mb-1">
+          Private Notes <span className="text-fg-muted">(optional)</span>
+        </label>
+        <textarea
+          value={reviewText}
+          onChange={e => setReviewText(e.target.value)}
+          placeholder="What did you think?"
+          rows={3}
+          maxLength={MAX_CHARS + 100}
+          // text-base on mobile is load-bearing: a sub-16px font makes iOS
+          // Safari zoom the whole page on focus and stay zoomed after save
+          // (owner report, 2026-07-17). Never drop below 16px here.
+          className="w-full px-3 py-2 text-base sm:text-sm bg-white/[0.05] border border-white/10 rounded-lg text-white placeholder-fg-placeholder focus:outline-none focus:border-brand/50 focus:ring-1 focus:ring-brand/30 resize-none"
+        />
+        <div className="flex items-center justify-between mt-0.5">
+          <div className="flex items-center gap-1.5 text-xs text-fg-muted">
+            <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+            </svg>
+            <span>Only visible to you</span>
+          </div>
+          <span className={`text-xs ${isOverLimit ? 'text-red-400' : charsRemaining < 200 ? 'text-amber-400' : 'text-fg-muted'}`}>
+            {charsRemaining.toLocaleString()} left
+          </span>
+        </div>
+      </div>
+  );
+
+  const content = (
+    <div data-testid="rating-editor" className="overflow-hidden">
+      {/* Title */}
+      <div className="flex items-baseline gap-2 mb-3 min-w-0">
+        <span className="text-sm text-gray-400 shrink-0">{HEADER_COPY[mode]}</span>
+        <span className="text-sm font-semibold text-white truncate min-w-0">{showTitle}</span>
+      </div>
+
+      {/* Adjustable stars — the core fix (editor no longer opens locked at 5.0).
+          While hovering, the big number previews the would-be value (slightly
+          dimmer) so left-half = X.5 / right-half = X.0 is legible pre-click. */}
+      <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-3 mb-4">
+        <StarRating rating={rating > 0 ? rating : null} onRatingChange={setRating} onHoverChange={setHoverValue} size="lg" hideLabel fill />
+        {(hoverValue ?? rating) >= 0.5 ? (
+          <span
+            className={`text-lg font-bold tabular-nums ${hoverValue !== null ? 'text-amber-300/80' : 'text-amber-400'}`}
+            data-testid="rating-value"
+          >
+            {(hoverValue ?? rating).toFixed(1)}
+          </span>
+        ) : (
+          <span className="text-xs text-fg-muted" data-testid="pick-stars-hint">Tap a star to rate</span>
+        )}
+      </div>
+
+      {/* Date Seen */}
+      <div className="mb-3">
+        <label className="block text-xs font-medium text-gray-400 mb-1">
+          Date Seen <span className="text-fg-muted">(optional)</span>
+        </label>
+        <DatePickerButton
+          value={dateSeen}
+          onChange={(v) => { dateTouched.current = true; setDateSeen(v); }}
+          min="1950-01-01"
+          max={maxDate}
+          ariaLabel="Date seen"
+          wrapClassName="relative w-full sm:w-48"
+          className={`w-full flex items-center gap-2 px-3 py-2 text-sm bg-white/[0.05] border border-white/10 rounded-lg focus:outline-none focus:border-brand/50 focus:ring-1 focus:ring-brand/30 transition-colors ${dateSeen ? 'text-white pr-9' : 'text-fg-muted'}`}
+          onClear={() => { dateTouched.current = true; setDateSeen(''); setShowtime({ time_slot: null, curtain_time: null }); }}
+        >
+          <svg className="w-4 h-4 shrink-0 text-fg-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+          </svg>
+          <span data-testid="date-seen-display">
+            {dateSeen
+              ? new Date(dateSeen + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+              : 'Add a date'}
+          </span>
+        </DatePickerButton>
+      </div>
+
+      {/* Private notes */}
+      {notesBlock}
+
+      {/* More details: showtime + seat, folded for non-power users */}
+      <div className="mb-3 border-t border-white/10 pt-2">
+          <button
+            type="button"
+            onClick={() => setExtrasOpen(o => !o)}
+            aria-expanded={extrasOpen}
+            className="w-full flex items-center justify-between py-2 text-xs font-medium text-gray-400 hover:text-white"
+            data-testid="extras-toggle"
+          >
+            <span>More details <span className="text-fg-muted font-normal">({showId && dateSeen ? 'showtime, seat' : 'seat'})</span></span>
+            <svg className={`w-4 h-4 transition-transform ${extrasOpen ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+          {extrasOpen && <div className="pt-1">{timeAndSeat}</div>}
+        </div>
+
+      {/* Photos attach to a saved review (user_review_photos.review_id is a
+          FK). An existing entry uploads straight away; a brand-new rating
+          (stagePhotos) holds them here and the caller uploads after its insert. */}
+      {reviewId && <ReviewPhotosField reviewId={reviewId} showTitle={showTitle} />}
+      {!reviewId && stagePhotos && <StagedPhotosField files={stagedFiles} onChange={setStagedFiles} showTitle={showTitle} />}
+
+      {/* Inline error — save failed, nothing was lost */}
+      {error && (
+        <div role="alert" className="mb-3 flex items-start gap-2 px-3 py-2 rounded-lg bg-score-skip/10 border border-score-skip/20 text-xs text-score-skip">
+          <svg className="w-3.5 h-3.5 mt-0.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01M5.07 19h13.86a2 2 0 001.74-3L13.74 4a2 2 0 00-3.48 0L3.33 16a2 2 0 001.74 3z" />
+          </svg>
+          <span>{error} Your note wasn&apos;t lost. Tap Retry.</span>
+        </div>
+      )}
+
+      {/* Actions */}
+      <div className="flex items-center gap-2 mt-3">
+        <button
+          type="button"
+          onClick={handleSave}
+          disabled={isOverLimit || saving || rating < 0.5}
+          className="btn-primary text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          {saving ? 'Saving…' : error ? 'Retry' : 'Save'}
+        </button>
+        <button
+          type="button"
+          onClick={onCancel}
+          disabled={saving}
+          className="px-4 py-2 text-sm font-medium text-gray-400 hover:text-white transition-colors"
+        >
+          Cancel
+        </button>
+        {onDelete && reviewId && (
+          confirmDelete ? (
+            <div className="ml-auto flex items-center gap-2">
+              <button
+                type="button"
+                onClick={() => {
+                  if (deleteTimerRef.current) clearTimeout(deleteTimerRef.current);
+                  onDelete();
+                }}
+                className="btn bg-score-skip-bg text-score-skip border border-score-skip/30 hover:bg-score-skip/20 hover:border-score-skip/50 text-sm"
+              >
+                Confirm delete
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  if (deleteTimerRef.current) clearTimeout(deleteTimerRef.current);
+                  setConfirmDelete(false);
+                }}
+                className="px-4 py-2 text-sm font-medium text-gray-400 hover:text-white transition-colors"
+              >
+                No
+              </button>
+            </div>
+          ) : (
+            <button
+              type="button"
+              onClick={() => {
+                setConfirmDelete(true);
+                if (deleteTimerRef.current) clearTimeout(deleteTimerRef.current);
+                deleteTimerRef.current = setTimeout(() => setConfirmDelete(false), 4000);
+              }}
+              disabled={saving}
+              className="btn ml-auto bg-score-skip-bg text-score-skip border border-score-skip/30 hover:bg-score-skip/20 hover:border-score-skip/50 text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              Delete this rating
+            </button>
+          )
+        )}
+      </div>
+    </div>
+  );
+
+  const asInline = presentation === 'inline' || (presentation === 'auto' && isDesktop);
+
+  if (asInline) {
+    return (
+      <div className="mt-3 p-3 sm:p-4 rounded-xl bg-white/[0.03] border border-white/[0.06]">
+        {content}
+      </div>
+    );
+  }
+
+  return (
+    <Modal
+      isOpen
+      onClose={onCancel}
+      bottomSheet
+      maxWidth="md"
+      // Below SignInModal's z=80: the auth-gated flow opens sign-in ON TOP of
+      // this editor, and the editor's backdrop must not cover the sign-in
+      // dialog or intercept its clicks.
+      zIndex={60}
+      closeOnBackdrop={!saving}
+      closeOnEscape={!saving}
+      ariaLabel={`Rate ${showTitle}`}
+    >
+      <div className="p-4 sm:p-5">{content}</div>
+    </Modal>
+  );
+}

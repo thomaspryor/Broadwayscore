@@ -1,0 +1,908 @@
+{
+  "generatedAt": "2026-11-02T20:58:22.225Z",
+  "naivePages": 2,
+  "settlingHours": 24,
+  "totals": {
+    "shows": 5,
+    "excluded": [],
+    "undatedCandidates": 3,
+    "truthUrls": 61,
+    "scopedUrls": 7,
+    "naiveUrls": 20,
+    "onDiskUrls": 53,
+    "newFromNaive": 7,
+    "perArm": {
+      "naive-p0": {
+        "found": 14,
+        "queries": 5,
+        "failed": 0,
+        "recall": 0.23
+      },
+      "naive-p1": {
+        "found": 10,
+        "queries": 5,
+        "failed": 0,
+        "recall": 0.164
+      },
+      "onDisk": {
+        "found": 53,
+        "queries": 5,
+        "failed": 0,
+        "recall": 0.869
+      },
+      "scoped-q0": {
+        "found": 3,
+        "queries": 5,
+        "failed": 0,
+        "recall": 0.049
+      },
+      "scoped-q1": {
+        "found": 5,
+        "queries": 5,
+        "failed": 0,
+        "recall": 0.082
+      }
+    },
+    "perFamily": {
+      "naive": {
+        "found": 20,
+        "arms": 2,
+        "failed": 0,
+        "recall": 0.328
+      },
+      "onDisk": {
+        "found": 53,
+        "arms": 1,
+        "failed": 0,
+        "recall": 0.869
+      },
+      "scoped": {
+        "found": 7,
+        "arms": 2,
+        "failed": 0,
+        "recall": 0.115
+      }
+    },
+    "byCategory": {
+      "off-broadway": {
+        "shows": 1,
+        "truthUrls": 6,
+        "families": {
+          "naive": {
+            "found": 3,
+            "arms": 2,
+            "failed": 0,
+            "recall": 0.5
+          },
+          "onDisk": {
+            "found": 6,
+            "arms": 1,
+            "failed": 0,
+            "recall": 1
+          },
+          "scoped": {
+            "found": 1,
+            "arms": 2,
+            "failed": 0,
+            "recall": 0.167
+          }
+        }
+      },
+      "off-west-end": {
+        "shows": 3,
+        "truthUrls": 38,
+        "families": {
+          "naive": {
+            "found": 16,
+            "arms": 2,
+            "failed": 0,
+            "recall": 0.421
+          },
+          "onDisk": {
+            "found": 31,
+            "arms": 1,
+            "failed": 0,
+            "recall": 0.816
+          },
+          "scoped": {
+            "found": 6,
+            "arms": 2,
+            "failed": 0,
+            "recall": 0.158
+          }
+        }
+      },
+      "tour": {
+        "shows": 1,
+        "truthUrls": 17,
+        "families": {
+          "naive": {
+            "found": 1,
+            "arms": 2,
+            "failed": 0,
+            "recall": 0.059
+          },
+          "onDisk": {
+            "found": 16,
+            "arms": 1,
+            "failed": 0,
+            "recall": 0.941
+          },
+          "scoped": {
+            "found": 0,
+            "arms": 2,
+            "failed": 0,
+            "recall": 0
+          }
+        }
+      }
+    },
+    "scopedRecall": 0.115,
+    "naiveRecall": 0.328
+  },
+  "shows": [
+    {
+      "showId": "dogstar-off-west-end-2026",
+      "title": "Dogstar",
+      "market": "off-west-end",
+      "openingDate": "2026-10-31",
+      "sampleState": "measured",
+      "sampleReason": "opened 2d ago",
+      "geo": "gb",
+      "naiveQuery": "Dogstar Hampstead Theatre review",
+      "counts": {
+        "truth": 7,
+        "scoped": 0,
+        "naive": 5,
+        "onDisk": 4
+      },
+      "recall": {
+        "scoped": 0,
+        "naive": 0.714,
+        "onDisk": 0.571,
+        "censusPlusDisk": 0.571
+      },
+      "newFromNaive": [
+        "https://www.timeout.com/london/theatre/dogstar-1",
+        "https://www.mariannebritsstrodl.co.uk/review-dogstar-at-roundhouse",
+        "https://www.theatrescotland.com/Scottish-theatre-writing/Reviews/dogstar.html"
+      ],
+      "missedByCensus": [
+        "https://theatreboard.co.uk/thread/16312/dogstar-hampstead-theatre",
+        "https://www.timeout.com/london/theatre/dogstar-1",
+        "https://www.bestoftheatre.co.uk/blog/post/everything-you-need-to-know-dogstar",
+        "https://www.mariannebritsstrodl.co.uk/review-dogstar-at-roundhouse",
+        "https://www.theatrescotland.com/Scottish-theatre-writing/Reviews/dogstar.html",
+        "https://louderthanwar.com/dogstar-the-roundhouse-london-live-review/",
+        "https://theatreweekly.com/first-look-rehearsal-images-released-for-daisy-halls-dogstar-at-hampstead-theatre/"
+      ],
+      "arms": [
+        {
+          "arm": "scoped-q0",
+          "query": "\"Dogstar\" West End review 2026",
+          "page": 0,
+          "geo": null,
+          "raw": 10,
+          "accepted": 0,
+          "urls": [],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "scoped-q1",
+          "query": "\"Dogstar\" review hampstead",
+          "page": 0,
+          "geo": null,
+          "raw": 7,
+          "accepted": 0,
+          "urls": [],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "naive-p0",
+          "query": "Dogstar Hampstead Theatre review",
+          "page": 0,
+          "geo": "gb",
+          "raw": 10,
+          "accepted": 4,
+          "urls": [
+            "https://theatreboard.co.uk/thread/16312/dogstar-hampstead-theatre",
+            "https://www.timeout.com/london/theatre/dogstar-1",
+            "https://www.bestoftheatre.co.uk/blog/post/everything-you-need-to-know-dogstar",
+            "https://www.mariannebritsstrodl.co.uk/review-dogstar-at-roundhouse"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "naive-p1",
+          "query": "Dogstar Hampstead Theatre review",
+          "page": 1,
+          "geo": "gb",
+          "raw": 10,
+          "accepted": 4,
+          "urls": [
+            "https://www.bestoftheatre.co.uk/blog/post/everything-you-need-to-know-dogstar",
+            "https://www.theatrescotland.com/Scottish-theatre-writing/Reviews/dogstar.html",
+            "https://www.timeout.com/london/theatre/dogstar-1",
+            "https://www.mariannebritsstrodl.co.uk/review-dogstar-at-roundhouse"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "onDisk",
+          "query": null,
+          "page": null,
+          "geo": null,
+          "raw": 4,
+          "accepted": 4,
+          "urls": [
+            "https://www.bestoftheatre.co.uk/blog/post/everything-you-need-to-know-dogstar",
+            "https://louderthanwar.com/dogstar-the-roundhouse-london-live-review/",
+            "https://theatreweekly.com/first-look-rehearsal-images-released-for-daisy-halls-dogstar-at-hampstead-theatre/",
+            "https://theatreboard.co.uk/thread/16312/dogstar-hampstead-theatre"
+          ],
+          "ok": true,
+          "error": null
+        }
+      ]
+    },
+    {
+      "showId": "a-beautiful-noise-the-neil-diamond-musical-tour-2026",
+      "title": "A Beautiful Noise, The Neil Diamond Musical",
+      "market": "tour",
+      "openingDate": "2026-10-30",
+      "sampleState": "measured",
+      "sampleReason": "opened 3d ago",
+      "geo": "us",
+      "naiveQuery": "A Beautiful Noise, The Neil Diamond Musical North American Tour review",
+      "counts": {
+        "truth": 17,
+        "scoped": 0,
+        "naive": 1,
+        "onDisk": 16
+      },
+      "recall": {
+        "scoped": 0,
+        "naive": 0.059,
+        "onDisk": 0.941,
+        "censusPlusDisk": 0.941
+      },
+      "newFromNaive": [
+        "https://hotchka.com/a-beautiful-noise-the-neil-diamond-musical-tour-review-baltimore-hippodrome"
+      ],
+      "missedByCensus": [
+        "https://hotchka.com/a-beautiful-noise-the-neil-diamond-musical-tour-review-baltimore-hippodrome",
+        "https://www.buffalorising.com/2025/04/a-beautiful-noise-at-sheas-strikes-gold-with-longtime-fans-of-neil-diamonds-iconic-songbook/",
+        "https://chicago.suntimes.com/theater/2024/11/14/a-beautiful-noise-neil-diamond-musical-review-chicago-theater-great-music-mundane-script",
+        "https://www.daytonlocal.com/news/entertainment/review-a-beautiful-noise-the-neil-diamond-musical/",
+        "https://deadline.com/2022/12/aint-no-mo-beautiful-noise-neil-diamond-musical-broadway-reviews-1235188689/",
+        "https://frontmezzjunkies.com/2023/01/31/broadway-a-beautiful-noise/",
+        "https://gephardtdaily.com/local/review-the-neil-diamond-musical-a-beautiful-noise-delivers-hit-songs-saga-of-troubled-troubadour/",
+        "https://www.ludwig-van.com/toronto/2026/05/01/scrutiny-neil-diamond-musical-beautiful-noise-will-appeal-fans-revealing-artist-underneath-hits/",
+        "https://www.startribune.com/review-beautiful-noise-boasts-stellar-lead-but-has-a-wanting-script/601480278",
+        "https://www.newjerseystage.com/events/2027/03/20/a-beautiful-noise-the-neil-diamond-musical-at-state-theatre-new-jersey-in-new-brunswick-nj-on-2027-03-20",
+        "https://www.palmbeachdailynews.com/story/entertainment/theater/2026/04/09/a-beautiful-noise-at-the-kravis-center-in-west-palm-beach-is-a-celebration-of-neil-diamond/89537691007/",
+        "https://www.sarasotamagazine.com/arts-and-entertainment/2026/04/review-a-beautiful-noise-the-neil-diamond-musical-van-wezel",
+        "https://www.sun-sentinel.com/2025/01/23/review-a-beautiful-noise-the-neil-diamond-musical-mixes-razzle-dazzle-with-quiet-moments-but-does-it-work/",
+        "https://journalrecord.com/2026/03/05/neil-diamond-beautiful-noise-okc/",
+        "https://www.thesuburban.com/fyi/a-beautiful-noise-the-neil-diamond-musical-is-moving-and-joyful/article_506f9b80-7010-4056-8061-de772a5362ba.html",
+        "https://www.thestar.com/entertainment/stage/neil-diamond-a-beautiful-noise-mirvish-review/article_cf7d99c7-37db-4d03-938f-1838db2a583c.html",
+        "https://www.tulsapeople.com/about-town/review-a-beautiful-noise-the-neil-diamond-musical-at-the-tulsa-pac-through-feb-22/article_5aca618d-db5d-4660-a616-ffc4d144eb10.html"
+      ],
+      "arms": [
+        {
+          "arm": "scoped-q0",
+          "query": "\"A Beautiful Noise, The Neil Diamond Musical\" Broadway review 2026",
+          "page": 0,
+          "geo": null,
+          "raw": 10,
+          "accepted": 0,
+          "urls": [],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "scoped-q1",
+          "query": "\"A Beautiful Noise, The Neil Diamond Musical\" review american",
+          "page": 0,
+          "geo": null,
+          "raw": 4,
+          "accepted": 0,
+          "urls": [],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "naive-p0",
+          "query": "A Beautiful Noise, The Neil Diamond Musical North American Tour review",
+          "page": 0,
+          "geo": "us",
+          "raw": 10,
+          "accepted": 1,
+          "urls": [
+            "https://hotchka.com/a-beautiful-noise-the-neil-diamond-musical-tour-review-baltimore-hippodrome"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "naive-p1",
+          "query": "A Beautiful Noise, The Neil Diamond Musical North American Tour review",
+          "page": 1,
+          "geo": "us",
+          "raw": 10,
+          "accepted": 1,
+          "urls": [
+            "https://hotchka.com/a-beautiful-noise-the-neil-diamond-musical-tour-review-baltimore-hippodrome"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "onDisk",
+          "query": null,
+          "page": null,
+          "geo": null,
+          "raw": 16,
+          "accepted": 16,
+          "urls": [
+            "https://www.buffalorising.com/2025/04/a-beautiful-noise-at-sheas-strikes-gold-with-longtime-fans-of-neil-diamonds-iconic-songbook/",
+            "https://chicago.suntimes.com/theater/2024/11/14/a-beautiful-noise-neil-diamond-musical-review-chicago-theater-great-music-mundane-script",
+            "https://www.daytonlocal.com/news/entertainment/review-a-beautiful-noise-the-neil-diamond-musical/",
+            "https://deadline.com/2022/12/aint-no-mo-beautiful-noise-neil-diamond-musical-broadway-reviews-1235188689/",
+            "https://frontmezzjunkies.com/2023/01/31/broadway-a-beautiful-noise/",
+            "https://gephardtdaily.com/local/review-the-neil-diamond-musical-a-beautiful-noise-delivers-hit-songs-saga-of-troubled-troubadour/",
+            "https://www.ludwig-van.com/toronto/2026/05/01/scrutiny-neil-diamond-musical-beautiful-noise-will-appeal-fans-revealing-artist-underneath-hits/",
+            "https://www.startribune.com/review-beautiful-noise-boasts-stellar-lead-but-has-a-wanting-script/601480278",
+            "https://www.newjerseystage.com/events/2027/03/20/a-beautiful-noise-the-neil-diamond-musical-at-state-theatre-new-jersey-in-new-brunswick-nj-on-2027-03-20",
+            "https://www.palmbeachdailynews.com/story/entertainment/theater/2026/04/09/a-beautiful-noise-at-the-kravis-center-in-west-palm-beach-is-a-celebration-of-neil-diamond/89537691007/",
+            "https://www.sarasotamagazine.com/arts-and-entertainment/2026/04/review-a-beautiful-noise-the-neil-diamond-musical-van-wezel",
+            "https://www.sun-sentinel.com/2025/01/23/review-a-beautiful-noise-the-neil-diamond-musical-mixes-razzle-dazzle-with-quiet-moments-but-does-it-work/",
+            "https://journalrecord.com/2026/03/05/neil-diamond-beautiful-noise-okc/",
+            "https://www.thesuburban.com/fyi/a-beautiful-noise-the-neil-diamond-musical-is-moving-and-joyful/article_506f9b80-7010-4056-8061-de772a5362ba.html",
+            "https://www.thestar.com/entertainment/stage/neil-diamond-a-beautiful-noise-mirvish-review/article_cf7d99c7-37db-4d03-938f-1838db2a583c.html",
+            "https://www.tulsapeople.com/about-town/review-a-beautiful-noise-the-neil-diamond-musical-at-the-tulsa-pac-through-feb-22/article_5aca618d-db5d-4660-a616-ffc4d144eb10.html"
+          ],
+          "ok": true,
+          "error": null
+        }
+      ]
+    },
+    {
+      "showId": "stoker-wilde-off-west-end-2026",
+      "title": "Stoker Wilde",
+      "market": "off-west-end",
+      "openingDate": "2026-10-30",
+      "sampleState": "measured",
+      "sampleReason": "opened 3d ago",
+      "geo": "gb",
+      "naiveQuery": "Stoker Wilde Wilton's Music Hall review",
+      "counts": {
+        "truth": 11,
+        "scoped": 1,
+        "naive": 8,
+        "onDisk": 10
+      },
+      "recall": {
+        "scoped": 0.091,
+        "naive": 0.727,
+        "onDisk": 0.909,
+        "censusPlusDisk": 1
+      },
+      "newFromNaive": [],
+      "missedByCensus": [
+        "https://everything-theatre.co.uk/2026/10/review-stoker-wilde-wiltons-music-hall/",
+        "https://www.londonboxoffice.co.uk/news/post/review-stoker-wilde-wiltons-music-hall",
+        "https://theatreweekly.com/review-stoker-wilde-at-wiltons-music-hall/",
+        "https://theatreboard.co.uk/thread/16298/stoker-wilde-wiltons-music-hall",
+        "https://susanelkin.co.uk/articles/stoker-wilde-susan-elkin-reviews/",
+        "https://www.bestoftheatre.co.uk/blog/post/jamie-bogyo-glenn-adamson-stoker-wilde",
+        "https://www.whatsonstage.com/news/wiltons-music-hall-autumn-season-led-by-new-stoker-wilde-glam-rock-musical_1726600/",
+        "https://www.bestoftheatre.co.uk/blog/post/connor-carson-bram-stoker-stoker-wilde-wiltons",
+        "https://westendwilma.com/stoker-wilde-wiltons-music-hall/",
+        "https://www.whatsonstage.com/news/jamie-bogyo-and-glenn-adamson-to-star-in-new-musical-about-bram-stoker-and-oscar-wilde_1731734/"
+      ],
+      "arms": [
+        {
+          "arm": "scoped-q0",
+          "query": "\"Stoker Wilde\" West End review 2026",
+          "page": 0,
+          "geo": null,
+          "raw": 7,
+          "accepted": 1,
+          "urls": [
+            "https://thespyinthestalls.com/2026/10/stoker-wilde/"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "scoped-q1",
+          "query": "\"Stoker Wilde\" review wilton",
+          "page": 0,
+          "geo": null,
+          "raw": 10,
+          "accepted": 0,
+          "urls": [],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "naive-p0",
+          "query": "Stoker Wilde Wilton's Music Hall review",
+          "page": 0,
+          "geo": "gb",
+          "raw": 10,
+          "accepted": 4,
+          "urls": [
+            "https://everything-theatre.co.uk/2026/10/review-stoker-wilde-wiltons-music-hall/",
+            "https://www.londonboxoffice.co.uk/news/post/review-stoker-wilde-wiltons-music-hall",
+            "https://theatreweekly.com/review-stoker-wilde-at-wiltons-music-hall/",
+            "https://theatreboard.co.uk/thread/16298/stoker-wilde-wiltons-music-hall"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "naive-p1",
+          "query": "Stoker Wilde Wilton's Music Hall review",
+          "page": 1,
+          "geo": "gb",
+          "raw": 10,
+          "accepted": 4,
+          "urls": [
+            "https://thespyinthestalls.com/2026/10/stoker-wilde/",
+            "https://susanelkin.co.uk/articles/stoker-wilde-susan-elkin-reviews/",
+            "https://www.bestoftheatre.co.uk/blog/post/jamie-bogyo-glenn-adamson-stoker-wilde",
+            "https://www.whatsonstage.com/news/wiltons-music-hall-autumn-season-led-by-new-stoker-wilde-glam-rock-musical_1726600/"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "onDisk",
+          "query": null,
+          "page": null,
+          "geo": null,
+          "raw": 10,
+          "accepted": 10,
+          "urls": [
+            "https://www.bestoftheatre.co.uk/blog/post/connor-carson-bram-stoker-stoker-wilde-wiltons",
+            "https://www.bestoftheatre.co.uk/blog/post/jamie-bogyo-glenn-adamson-stoker-wilde",
+            "https://everything-theatre.co.uk/2026/10/review-stoker-wilde-wiltons-music-hall/",
+            "https://www.londonboxoffice.co.uk/news/post/review-stoker-wilde-wiltons-music-hall",
+            "https://susanelkin.co.uk/articles/stoker-wilde-susan-elkin-reviews/",
+            "https://theatreweekly.com/review-stoker-wilde-at-wiltons-music-hall/",
+            "https://theatreboard.co.uk/thread/16298/stoker-wilde-wiltons-music-hall",
+            "https://westendwilma.com/stoker-wilde-wiltons-music-hall/",
+            "https://www.whatsonstage.com/news/jamie-bogyo-and-glenn-adamson-to-star-in-new-musical-about-bram-stoker-and-oscar-wilde_1731734/",
+            "https://www.whatsonstage.com/news/wiltons-music-hall-autumn-season-led-by-new-stoker-wilde-glam-rock-musical_1726600/"
+          ],
+          "ok": true,
+          "error": null
+        }
+      ]
+    },
+    {
+      "showId": "specimen-off-broadway-2026",
+      "title": "Specimen",
+      "market": "off-broadway",
+      "openingDate": "2026-10-30",
+      "sampleState": "measured",
+      "sampleReason": "opened 3d ago",
+      "geo": "us",
+      "naiveQuery": "Specimen Axis Theatre review",
+      "counts": {
+        "truth": 6,
+        "scoped": 1,
+        "naive": 3,
+        "onDisk": 6
+      },
+      "recall": {
+        "scoped": 0.167,
+        "naive": 0.5,
+        "onDisk": 1,
+        "censusPlusDisk": 1
+      },
+      "newFromNaive": [],
+      "missedByCensus": [
+        "https://twi-ny.com/2026/05/20/axis-theatre-specimen-randall-sharp/",
+        "https://www.theatrely.com/post/specimen-returns-to-axis-theatre-company-this-fall",
+        "https://thefrontrowcenter.com/2026/05/specimen/",
+        "https://www.theaterscene.net/plays/offbway-plays/specimen/tony-marinelli/",
+        "https://www.theatermania.com/news/axis-theatre-companys-specimen-will-return-for-an-encore-engagement_1847152/"
+      ],
+      "arms": [
+        {
+          "arm": "scoped-q0",
+          "query": "\"Specimen\" Off-Broadway review 2026",
+          "page": 0,
+          "geo": null,
+          "raw": 10,
+          "accepted": 1,
+          "urls": [
+            "https://www.offoffonline.com/offoffonline/2026/5/4/specimen"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "scoped-q1",
+          "query": "\"Specimen\" review axis",
+          "page": 0,
+          "geo": null,
+          "raw": 10,
+          "accepted": 1,
+          "urls": [
+            "https://www.offoffonline.com/offoffonline/2026/5/4/specimen"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "naive-p0",
+          "query": "Specimen Axis Theatre review",
+          "page": 0,
+          "geo": "us",
+          "raw": 10,
+          "accepted": 2,
+          "urls": [
+            "https://www.offoffonline.com/offoffonline/2026/5/4/specimen",
+            "https://twi-ny.com/2026/05/20/axis-theatre-specimen-randall-sharp/"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "naive-p1",
+          "query": "Specimen Axis Theatre review",
+          "page": 1,
+          "geo": "us",
+          "raw": 10,
+          "accepted": 1,
+          "urls": [
+            "https://www.theatrely.com/post/specimen-returns-to-axis-theatre-company-this-fall"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "onDisk",
+          "query": null,
+          "page": null,
+          "geo": null,
+          "raw": 6,
+          "accepted": 6,
+          "urls": [
+            "https://thefrontrowcenter.com/2026/05/specimen/",
+            "https://www.offoffonline.com/offoffonline/2026/5/4/specimen",
+            "https://www.theaterscene.net/plays/offbway-plays/specimen/tony-marinelli/",
+            "https://www.theatermania.com/news/axis-theatre-companys-specimen-will-return-for-an-encore-engagement_1847152/",
+            "https://www.theatrely.com/post/specimen-returns-to-axis-theatre-company-this-fall",
+            "https://twi-ny.com/2026/05/20/axis-theatre-specimen-randall-sharp/"
+          ],
+          "ok": true,
+          "error": null
+        }
+      ]
+    },
+    {
+      "showId": "the-moth-off-west-end-2026",
+      "title": "The Moth",
+      "market": "off-west-end",
+      "openingDate": "2026-10-30",
+      "sampleState": "measured",
+      "sampleReason": "opened 3d ago",
+      "geo": "gb",
+      "naiveQuery": "The Moth Finborough Theatre review",
+      "counts": {
+        "truth": 20,
+        "scoped": 5,
+        "naive": 3,
+        "onDisk": 17
+      },
+      "recall": {
+        "scoped": 0.25,
+        "naive": 0.15,
+        "onDisk": 0.85,
+        "censusPlusDisk": 0.85
+      },
+      "newFromNaive": [
+        "https://theatreweekly.com/the-moth-transfers-to-finborough-theatre-for-london-premiere-after-acclaimed-tour/",
+        "https://quayslife.com/reviews/the-moth-review/",
+        "https://northernartsreview.co.uk/north-east/review-the-moth-at-live-theatre/"
+      ],
+      "missedByCensus": [
+        "https://theatreweekly.com/the-moth-transfers-to-finborough-theatre-for-london-premiere-after-acclaimed-tour/",
+        "https://quayslife.com/reviews/the-moth-review/",
+        "https://northernartsreview.co.uk/north-east/review-the-moth-at-live-theatre/",
+        "https://www.afridiziak.com/news/the-london-premiere-direct-from-a-sell-out-northern-tour-the-moth/",
+        "https://andyjordanproductions.co.uk/the-moth/",
+        "https://theartsdesk.com/theatre/moth-finborough-theatre-review-apartheids-legacy-lingering-bad-smell",
+        "https://firstnightmagazine.com/2026/10/30/review-of-the-moth-dusty-play-doesnt-emerge-from-its-cocoon/",
+        "https://fringereview.co.uk/review/fringereview-uk/2026/the-moth/",
+        "https://www.jewishnews.co.uk/apartheid-era-play-the-moth-has-unsettling-parallels-to-todays-world/",
+        "https://www.londonboxoffice.co.uk/news/post/the-moth-finborough-theatre-review",
+        "https://www.londonpubtheatres.com/review-the-moth-at-finborough-theatre-27-oct-21-nov-2026",
+        "https://www.londontheatre1.com/reviews/the-moth-finborough-theatre/",
+        "https://readaboutstuff.com/2026/10/31/review-the-moth-finborough-theatre-london/",
+        "https://theatreweekly.com/elysium-theatre-company-brings-acclaimed-political-thriller-the-moth-to-londons-finborough-theatre/",
+        "https://www.thereviewshub.com/the-moth-finborough-theatre-london/"
+      ],
+      "arms": [
+        {
+          "arm": "scoped-q0",
+          "query": "\"The Moth\" West End review 2026",
+          "page": 0,
+          "geo": null,
+          "raw": 6,
+          "accepted": 1,
+          "urls": [
+            "https://www.pinkprincetheatre.com/post/review-the-moth-finborough-theatre"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "scoped-q1",
+          "query": "\"The Moth\" review finborough",
+          "page": 0,
+          "geo": null,
+          "raw": 9,
+          "accepted": 4,
+          "urls": [
+            "https://theartsdispatch.substack.com/p/the-moth-review-finborough-theatre",
+            "https://www.allthatdazzles.co.uk/post/review-the-moth-finborough-theatre",
+            "https://viewfromthegods.co.uk/2026/10/30/the-moth-finborough-theatre/",
+            "https://broadwaybaby.com/shows/the-moth/839368"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "naive-p0",
+          "query": "The Moth Finborough Theatre review",
+          "page": 0,
+          "geo": "gb",
+          "raw": 10,
+          "accepted": 3,
+          "urls": [
+            "https://theatreweekly.com/the-moth-transfers-to-finborough-theatre-for-london-premiere-after-acclaimed-tour/",
+            "https://quayslife.com/reviews/the-moth-review/",
+            "https://northernartsreview.co.uk/north-east/review-the-moth-at-live-theatre/"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "naive-p1",
+          "query": "The Moth Finborough Theatre review",
+          "page": 1,
+          "geo": "gb",
+          "raw": 10,
+          "accepted": 0,
+          "urls": [],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "onDisk",
+          "query": null,
+          "page": null,
+          "geo": null,
+          "raw": 17,
+          "accepted": 17,
+          "urls": [
+            "https://www.afridiziak.com/news/the-london-premiere-direct-from-a-sell-out-northern-tour-the-moth/",
+            "https://www.allthatdazzles.co.uk/post/review-the-moth-finborough-theatre",
+            "https://andyjordanproductions.co.uk/the-moth/",
+            "https://theartsdesk.com/theatre/moth-finborough-theatre-review-apartheids-legacy-lingering-bad-smell",
+            "https://broadwaybaby.com/shows/the-moth/839368",
+            "https://firstnightmagazine.com/2026/10/30/review-of-the-moth-dusty-play-doesnt-emerge-from-its-cocoon/",
+            "https://fringereview.co.uk/review/fringereview-uk/2026/the-moth/",
+            "https://www.jewishnews.co.uk/apartheid-era-play-the-moth-has-unsettling-parallels-to-todays-world/",
+            "https://www.londonboxoffice.co.uk/news/post/the-moth-finborough-theatre-review",
+            "https://www.londonpubtheatres.com/review-the-moth-at-finborough-theatre-27-oct-21-nov-2026",
+            "https://www.londontheatre1.com/reviews/the-moth-finborough-theatre/",
+            "https://www.pinkprincetheatre.com/post/review-the-moth-finborough-theatre",
+            "https://readaboutstuff.com/2026/10/31/review-the-moth-finborough-theatre-london/",
+            "https://theartsdispatch.substack.com/p/the-moth-review-finborough-theatre",
+            "https://theatreweekly.com/elysium-theatre-company-brings-acclaimed-political-thriller-the-moth-to-londons-finborough-theatre/",
+            "https://www.thereviewshub.com/the-moth-finborough-theatre-london/",
+            "https://viewfromthegods.co.uk/2026/10/30/the-moth-finborough-theatre/"
+          ],
+          "ok": true,
+          "error": null
+        }
+      ]
+    }
+  ],
+  "providerOutage": false,
+  "onDiskUnavailable": false,
+  "trend": {
+    "entry": {
+      "date": "2026-11-02",
+      "generatedAt": "2026-11-02T20:58:22.225Z",
+      "naivePages": 2,
+      "shows": 5,
+      "informativeShows": 5,
+      "excluded": {
+        "settling": 6
+      },
+      "truthUrls": 61,
+      "onDiskUrls": 53,
+      "newFromNaive": 7,
+      "families": {
+        "naive": 0.328,
+        "onDisk": 0.869,
+        "scoped": 0.115
+      },
+      "arms": {
+        "naive-p0": 0.23,
+        "naive-p1": 0.164,
+        "onDisk": 0.869,
+        "scoped-q0": 0.049,
+        "scoped-q1": 0.082
+      },
+      "combinedRecall": 0.885,
+      "familyYield": {
+        "naive": 4,
+        "onDisk": 10.6,
+        "scoped": 1.4
+      },
+      "armYield": {
+        "naive-p0": 2.8,
+        "naive-p1": 2,
+        "onDisk": 10.6,
+        "scoped-q0": 0.6,
+        "scoped-q1": 1
+      },
+      "armsFailed": {
+        "naive-p0": 0,
+        "naive-p1": 0,
+        "onDisk": 0,
+        "scoped-q0": 0,
+        "scoped-q1": 0
+      },
+      "unavailableArms": [],
+      "byCategory": {
+        "off-broadway": {
+          "shows": 1,
+          "truthUrls": 6,
+          "families": {
+            "naive": 0.5,
+            "onDisk": 1,
+            "scoped": 0.167
+          }
+        },
+        "off-west-end": {
+          "shows": 3,
+          "truthUrls": 38,
+          "families": {
+            "naive": 0.421,
+            "onDisk": 0.816,
+            "scoped": 0.158
+          }
+        },
+        "tour": {
+          "shows": 1,
+          "truthUrls": 17,
+          "families": {
+            "naive": 0.059,
+            "onDisk": 0.941,
+            "scoped": 0
+          }
+        }
+      },
+      "sampleIds": [
+        "dogstar-off-west-end-2026",
+        "a-beautiful-noise-the-neil-diamond-musical-tour-2026",
+        "stoker-wilde-off-west-end-2026",
+        "specimen-off-broadway-2026",
+        "the-moth-off-west-end-2026"
+      ]
+    },
+    "judgement": {
+      "verdict": "regressed",
+      "reason": "scoped: recall 0.115 vs 0.267 median over 4 prior run(s) — down 0.152 (threshold 0.15), yield 1.4 vs 3.367 URLs/show",
+      "regressions": [
+        {
+          "level": "families",
+          "arm": "scoped",
+          "baseline": 0.267,
+          "current": 0.115,
+          "drop": 0.152,
+          "rule": "week-on-week",
+          "reason": "recall 0.115 vs 0.267 median over 4 prior run(s) — down 0.152 (threshold 0.15), yield 1.4 vs 3.367 URLs/show"
+        }
+      ],
+      "latest": {
+        "date": "2026-11-02",
+        "generatedAt": "2026-11-02T20:58:22.225Z",
+        "naivePages": 2,
+        "shows": 5,
+        "informativeShows": 5,
+        "excluded": {
+          "settling": 6
+        },
+        "truthUrls": 61,
+        "onDiskUrls": 53,
+        "newFromNaive": 7,
+        "families": {
+          "naive": 0.328,
+          "onDisk": 0.869,
+          "scoped": 0.115
+        },
+        "arms": {
+          "naive-p0": 0.23,
+          "naive-p1": 0.164,
+          "onDisk": 0.869,
+          "scoped-q0": 0.049,
+          "scoped-q1": 0.082
+        },
+        "combinedRecall": 0.885,
+        "familyYield": {
+          "naive": 4,
+          "onDisk": 10.6,
+          "scoped": 1.4
+        },
+        "armYield": {
+          "naive-p0": 2.8,
+          "naive-p1": 2,
+          "onDisk": 10.6,
+          "scoped-q0": 0.6,
+          "scoped-q1": 1
+        },
+        "armsFailed": {
+          "naive-p0": 0,
+          "naive-p1": 0,
+          "onDisk": 0,
+          "scoped-q0": 0,
+          "scoped-q1": 0
+        },
+        "unavailableArms": [],
+        "byCategory": {
+          "off-broadway": {
+            "shows": 1,
+            "truthUrls": 6,
+            "families": {
+              "naive": 0.5,
+              "onDisk": 1,
+              "scoped": 0.167
+            }
+          },
+          "off-west-end": {
+            "shows": 3,
+            "truthUrls": 38,
+            "families": {
+              "naive": 0.421,
+              "onDisk": 0.816,
+              "scoped": 0.158
+            }
+          },
+          "tour": {
+            "shows": 1,
+            "truthUrls": 17,
+            "families": {
+              "naive": 0.059,
+              "onDisk": 0.941,
+              "scoped": 0
+            }
+          }
+        },
+        "sampleIds": [
+          "dogstar-off-west-end-2026",
+          "a-beautiful-noise-the-neil-diamond-musical-tour-2026",
+          "stoker-wilde-off-west-end-2026",
+          "specimen-off-broadway-2026",
+          "the-moth-off-west-end-2026"
+        ]
+      },
+      "comparedArms": 3,
+      "skipped": []
+    }
+  }
+}

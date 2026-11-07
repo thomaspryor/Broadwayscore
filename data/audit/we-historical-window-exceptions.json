@@ -1,0 +1,23 @@
+{
+  "_doc": "Reviewed exceptions to audit-we-historical-season.js's in-window check: a review dated outside its show's run window that a session checked and kept. One entry per review (showId + outletId + publishDate), with the evidence. Add an entry only after reading the review; a review of a different production gets wrongProduction instead.",
+  "exceptions": [
+    {
+      "showId": "death-of-england-delroy-west-end-2020",
+      "outletId": "sierz-co-uk",
+      "publishDate": "2020-11-27",
+      "reason": "Second lockdown closed the NT Olivier run on its press night (4 Nov 2020). The review covers the filmed press-night performance of this staging (\"Because the press night performance was filmed\"), so it is this production, published 23 days after close.",
+      "url": "https://sierz.co.uk/reviews/death-of-england-delroy-national-theatre/",
+      "decidedIn": "BRO-5141",
+      "decidedAt": "2026-10-12"
+    },
+    {
+      "showId": "anna-x-west-end-2021",
+      "outletId": "quays-life",
+      "publishDate": "2021-08-12",
+      "reason": "Review of the Harold Pinter Re:Emerge staging with Emma Corrin (the text names Corrin and the Re:Emerge season); the run closed 4 Aug 2021 (ATG and SeatPlan list 10 Jul to 4 Aug), and Quays Life published it 8 days later. Same production, late publication.",
+      "url": "https://quayslife.com/reviews/anna-x-starring-emma-corrin-review/",
+      "decidedIn": "BRO-5851",
+      "decidedAt": "2026-10-23"
+    }
+  ]
+}

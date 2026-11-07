@@ -1,0 +1,337 @@
+{
+  "issueNumber": "bro-5232-e",
+  "planId": "78c43632-a80b-4188-9a16-6ab08dd6e35b",
+  "status": "applied",
+  "createdAt": "2026-10-13T09:05:05.171Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5232 batch e: byline/outlet/production fixes for BRO-5222 follow-up rows, each cited to the live page, an aggregator or a sitemap.",
+    "steps": [
+      "duplicateOf or wrongAttribution for cross-outlet copies",
+      "isNonReview for reviews that do not exist",
+      "wrongProduction for other-production texts",
+      "criticName for wrong bylines"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "moulin-rouge-the-musical-west-end-2021/the-sun--neil-norman.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "express-uk--neil-norman.json",
+        "description": "BRO-5232: Express.co.uk review, meta author 'Neil Norman', datePublished 2022-01-29, matches the stored text; the-sun row (its own outlet field says 'The Sunday Express') is byte-identical to the express-uk and sunday-express siblings, Norman did not write it for The Sun. Evidence: https://www.express.co.uk/entertainment/theatre/1557705/Moulin-Rouge-review-Piccadilly-Theatre-London"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "moulin-rouge-the-musical-west-end-2021/the-sun--neil-norman.json",
+        "field": "duplicateReason",
+        "oldValue": null,
+        "newValue": "BRO-5232: same review as express-uk--neil-norman.json; evidence https://www.express.co.uk/entertainment/theatre/1557705/Moulin-Rouge-review-Piccadilly-Theatre-London",
+        "description": "Reason for the pointer above."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-lehman-trilogy-west-end-2023/nick-curtis--nick-curtis.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5232: BWW roundup excerpt reads (quote omitted); outlet was mis-parsed from the BWW people link, it is the same review as the standard--nick-curtis sibling. Evidence: https://www.broadwayworld.com/article/Review-Roundup-What-Did-the-Critics-Make-of-Sam-Mendes-THE-LEHMAN-TRILOGY-20230209"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-lehman-trilogy-west-end-2023/nick-curtis--nick-curtis.json",
+        "field": "wrongAttributionReason",
+        "oldValue": null,
+        "newValue": "BRO-5232: copy of standard--nick-curtis.json credited to the wrong outlet/critic; evidence https://www.broadwayworld.com/article/Review-Roundup-What-Did-the-Critics-Make-of-Sam-Mendes-THE-LEHMAN-TRILOGY-20230209",
+        "description": "Reason for the flag above."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-book-of-mormon-west-end-2024/guardian--rachel-agyekum.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5232: Stored excerpt describes an intimate two-hander directed by Monique Touko with Beverley Knight as Rosetta Tharpe (Marie and Rosetta), not The Book of Mormon, and its url is an Avenue Q roundup; no Guardian review of Book of Mormon by Rachel Agyekum exists. Evidence: https://www.westendtheatre.com/350319/news/reviews/avenue-q-reviews-round-up-at-shaftesbury-theatre-in-london/"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-book-of-mormon-west-end-2024/guardian--rachel-agyekum.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-5232: text reviews a different production; evidence https://www.westendtheatre.com/350319/news/reviews/avenue-q-reviews-round-up-at-shaftesbury-theatre-in-london/",
+        "description": "Reason for the flag above."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-lehman-trilogy-west-end-2023/richard-maguire--richard-maguire.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5232: BWW roundup excerpt reads (quote omitted); outlet mis-parsed from BWW people link, same review as the thereviewshub--richard-maguire sibling. Evidence: https://www.broadwayworld.com/article/Review-Roundup-What-Did-the-Critics-Make-of-Sam-Mendes-THE-LEHMAN-TRILOGY-20230209"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-lehman-trilogy-west-end-2023/richard-maguire--richard-maguire.json",
+        "field": "wrongAttributionReason",
+        "oldValue": null,
+        "newValue": "BRO-5232: copy of thereviewshub--richard-maguire.json credited to the wrong outlet/critic; evidence https://www.broadwayworld.com/article/Review-Roundup-What-Did-the-Critics-Make-of-Sam-Mendes-THE-LEHMAN-TRILOGY-20230209",
+        "description": "Reason for the flag above."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-phantom-of-the-opera-west-end-1986/sunday-express--stefan-kyriazis.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "express-uk--stefan-kyriazis.json",
+        "description": "BRO-5232: Text is identical (469/469 shingles) to the express-uk sibling, whose express.co.uk URL has meta author 'Stefan Kyriazis', datePublished 2021-08-15; one review stored under two outlets. Evidence: https://www.express.co.uk/entertainment/theatre/1476966/Phantom-of-the-Opera-review-West-End-theatre-musical-Andrew-Lloyd-Webber-Christine"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-phantom-of-the-opera-west-end-1986/sunday-express--stefan-kyriazis.json",
+        "field": "duplicateReason",
+        "oldValue": null,
+        "newValue": "BRO-5232: same review as express-uk--stefan-kyriazis.json; evidence https://www.express.co.uk/entertainment/theatre/1476966/Phantom-of-the-Opera-review-West-End-theatre-musical-Andrew-Lloyd-Webber-Christine",
+        "description": "Reason for the pointer above."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-phantom-of-the-opera-west-end-1986/the-sun--stefan-kyriazis.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "express-uk--stefan-kyriazis.json",
+        "description": "BRO-5232: Identical text (469/469 shingles) to the express-uk sibling (Express.co.uk, byline Stefan Kyriazis, 2021-08-15); row's own outlet field says 'The Sunday Express', so the-sun is a mis-slug of the same review. Evidence: https://www.express.co.uk/entertainment/theatre/1476966/Phantom-of-the-Opera-review-West-End-theatre-musical-Andrew-Lloyd-Webber-Christine"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-phantom-of-the-opera-west-end-1986/the-sun--stefan-kyriazis.json",
+        "field": "duplicateReason",
+        "oldValue": null,
+        "newValue": "BRO-5232: same review as express-uk--stefan-kyriazis.json; evidence https://www.express.co.uk/entertainment/theatre/1476966/Phantom-of-the-Opera-review-West-End-theatre-musical-Andrew-Lloyd-Webber-Christine",
+        "description": "Reason for the pointer above."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cats-2016/reflections-in-the-light--dan-dwyer.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "off-script-with-dan-dwyer--dan-dwyer.json",
+        "description": "BRO-5232: Show Score lists Dan Dwyer's Aug 7 2016 Cats review only at Off Script with Dan Dwyer (dandwyeroffscript.tumblr.com); Reflections in the Light's review is Lauren Yarger's (Aug 6), already a sibling; this stub is a crossed critic/outlet pair. Evidence: https://www.show-score.com/shows/cats/paginate_critic_reviews?page=5"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cats-2016/reflections-in-the-light--dan-dwyer.json",
+        "field": "duplicateReason",
+        "oldValue": null,
+        "newValue": "BRO-5232: same review as off-script-with-dan-dwyer--dan-dwyer.json; evidence https://www.show-score.com/shows/cats/paginate_critic_reviews?page=5",
+        "description": "Reason for the pointer above."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "long-days-journey-into-night-2016/stageandcinema--david-nounou.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5232: Stage and Cinema WordPress API (posts search and date-window listing) has no post on this show near this date and no author by this name; row URL 404s and its text reads as generated. Evidence: https://stageandcinema.com/wp-json/wp/v2/posts?after=2016-04-01T00:00:00&before=2016-06-01T00:00:00&per_page=100&_fields=link"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "long-days-journey-into-night-2016/stageandcinema--david-nounou.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "BRO-5232: no such review by this critic at this outlet; evidence https://stageandcinema.com/wp-json/wp/v2/posts?after=2016-04-01T00:00:00&before=2016-06-01T00:00:00&per_page=100&_fields=link",
+        "description": "Reason for the flag above."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-big-knife-2013/stageandcinema--joel-benjamin.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5232: Stage and Cinema WordPress API (posts search and date-window listing) has no post on this show near this date and no author by this name; row URL 404s and its text reads as generated. Joel Benjamin writes for TheaterScene.net. Evidence: https://stageandcinema.com/wp-json/wp/v2/posts?after=2013-04-01T00:00:00&before=2013-05-31T00:00:00&per_page=100&_fields=link"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-big-knife-2013/stageandcinema--joel-benjamin.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "BRO-5232: no such review by this critic at this outlet; evidence https://stageandcinema.com/wp-json/wp/v2/posts?after=2013-04-01T00:00:00&before=2013-05-31T00:00:00&per_page=100&_fields=link",
+        "description": "Reason for the flag above."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cats-2016/huffpost--jonathan-mandell.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "thestage--jonathan-mandell.json",
+        "description": "BRO-5232: Show Score lists Jonathan Mandell's Aug 1 2016 Cats review at The Stage (UK) and HuffPost's review as David Finkle's (sibling huffpost--david-finkle.json); this stub is a crossed critic/outlet pair. Evidence: https://www.show-score.com/shows/cats/paginate_critic_reviews?page=4"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cats-2016/huffpost--jonathan-mandell.json",
+        "field": "duplicateReason",
+        "oldValue": null,
+        "newValue": "BRO-5232: same review as thestage--jonathan-mandell.json; evidence https://www.show-score.com/shows/cats/paginate_critic_reviews?page=4",
+        "description": "Reason for the pointer above."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "beetlejuice-2019/stageandcinema--juan-a-ramirez.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5232: Stage and Cinema WordPress API (posts search and date-window listing) has no post on this show near this date and no author by this name; row URL 404s and its text reads as generated. Its Beetlejuice posts are 2021 remount and 2026 tour only. Evidence: https://stageandcinema.com/wp-json/wp/v2/posts?search=beetlejuice&per_page=20&_fields=date,link,author"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "beetlejuice-2019/stageandcinema--juan-a-ramirez.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "BRO-5232: no such review by this critic at this outlet; evidence https://stageandcinema.com/wp-json/wp/v2/posts?search=beetlejuice&per_page=20&_fields=date,link,author",
+        "description": "Reason for the flag above."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cats-2016/stagezine--lauren-yarger.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "reflections-in-the-light--lauren-yarger.json",
+        "description": "BRO-5232: Show Score lists Lauren Yarger's Aug 6 2016 Cats review at Reflections in the Light and StageZine's review as Scott Harrah's (sibling stagezine--scott-harrah.json); this stub is a crossed critic/outlet pair. Evidence: https://www.show-score.com/shows/cats/paginate_critic_reviews?page=5"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cats-2016/stagezine--lauren-yarger.json",
+        "field": "duplicateReason",
+        "oldValue": null,
+        "newValue": "BRO-5232: same review as reflections-in-the-light--lauren-yarger.json; evidence https://www.show-score.com/shows/cats/paginate_critic_reviews?page=5",
+        "description": "Reason for the pointer above."
+      }
+    ]
+  },
+  "executedAt": "2026-10-13T12:14:12.151Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "moulin-rouge-the-musical-west-end-2021/the-sun--neil-norman.json duplicateOf: null -> \"express-uk--neil-norman.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "moulin-rouge-the-musical-west-end-2021/the-sun--neil-norman.json duplicateReason: null -> \"BRO-5232: same review as express-uk--neil-norman.json; evidence https://www.express.co.uk/entertainment/theatre/1557705/Moulin-Rouge-review-Piccadilly-Theatre-London\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-lehman-trilogy-west-end-2023/nick-curtis--nick-curtis.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-lehman-trilogy-west-end-2023/nick-curtis--nick-curtis.json wrongAttributionReason: null -> \"BRO-5232: copy of standard--nick-curtis.json credited to the wrong outlet/critic; evidence https://www.broadwayworld.com/article/Review-Roundup-What-Did-the-Critics-Make-of-Sam-Mendes-THE-LEHMAN-TRILOGY-20230209\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-book-of-mormon-west-end-2024/guardian--rachel-agyekum.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-book-of-mormon-west-end-2024/guardian--rachel-agyekum.json wrongProductionReason: null -> \"BRO-5232: text reviews a different production; evidence https://www.westendtheatre.com/350319/news/reviews/avenue-q-reviews-round-up-at-shaftesbury-theatre-in-london/\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-lehman-trilogy-west-end-2023/richard-maguire--richard-maguire.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-lehman-trilogy-west-end-2023/richard-maguire--richard-maguire.json wrongAttributionReason: null -> \"BRO-5232: copy of thereviewshub--richard-maguire.json credited to the wrong outlet/critic; evidence https://www.broadwayworld.com/article/Review-Roundup-What-Did-the-Critics-Make-of-Sam-Mendes-THE-LEHMAN-TRILOGY-20230209\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-phantom-of-the-opera-west-end-1986/sunday-express--stefan-kyriazis.json duplicateOf: null -> \"express-uk--stefan-kyriazis.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-phantom-of-the-opera-west-end-1986/sunday-express--stefan-kyriazis.json duplicateReason: null -> \"BRO-5232: same review as express-uk--stefan-kyriazis.json; evidence https://www.express.co.uk/entertainment/theatre/1476966/Phantom-of-the-Opera-review-West-End-theatre-musical-Andrew-Lloyd-Webber-Christine\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-phantom-of-the-opera-west-end-1986/the-sun--stefan-kyriazis.json duplicateOf: null -> \"express-uk--stefan-kyriazis.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-phantom-of-the-opera-west-end-1986/the-sun--stefan-kyriazis.json duplicateReason: null -> \"BRO-5232: same review as express-uk--stefan-kyriazis.json; evidence https://www.express.co.uk/entertainment/theatre/1476966/Phantom-of-the-Opera-review-West-End-theatre-musical-Andrew-Lloyd-Webber-Christine\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cats-2016/reflections-in-the-light--dan-dwyer.json duplicateOf: null -> \"off-script-with-dan-dwyer--dan-dwyer.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cats-2016/reflections-in-the-light--dan-dwyer.json duplicateReason: null -> \"BRO-5232: same review as off-script-with-dan-dwyer--dan-dwyer.json; evidence https://www.show-score.com/shows/cats/paginate_critic_reviews?page=5\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "long-days-journey-into-night-2016/stageandcinema--david-nounou.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "long-days-journey-into-night-2016/stageandcinema--david-nounou.json isNonReviewReason: null -> \"BRO-5232: no such review by this critic at this outlet; evidence https://stageandcinema.com/wp-json/wp/v2/posts?after=2016-04-01T00:00:00&before=2016-06-01T00:00:00&per_page=100&_fields=link\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-big-knife-2013/stageandcinema--joel-benjamin.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-big-knife-2013/stageandcinema--joel-benjamin.json isNonReviewReason: null -> \"BRO-5232: no such review by this critic at this outlet; evidence https://stageandcinema.com/wp-json/wp/v2/posts?after=2013-04-01T00:00:00&before=2013-05-31T00:00:00&per_page=100&_fields=link\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cats-2016/huffpost--jonathan-mandell.json duplicateOf: null -> \"thestage--jonathan-mandell.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cats-2016/huffpost--jonathan-mandell.json duplicateReason: null -> \"BRO-5232: same review as thestage--jonathan-mandell.json; evidence https://www.show-score.com/shows/cats/paginate_critic_reviews?page=4\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "beetlejuice-2019/stageandcinema--juan-a-ramirez.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "beetlejuice-2019/stageandcinema--juan-a-ramirez.json isNonReviewReason: null -> \"BRO-5232: no such review by this critic at this outlet; evidence https://stageandcinema.com/wp-json/wp/v2/posts?search=beetlejuice&per_page=20&_fields=date,link,author\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cats-2016/stagezine--lauren-yarger.json duplicateOf: null -> \"reflections-in-the-light--lauren-yarger.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cats-2016/stagezine--lauren-yarger.json duplicateReason: null -> \"BRO-5232: same review as reflections-in-the-light--lauren-yarger.json; evidence https://www.show-score.com/shows/cats/paginate_critic_reviews?page=5\""
+    }
+  ]
+}

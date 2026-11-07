@@ -1,0 +1,162 @@
+{
+  "issueNumber": "bro-5330",
+  "planId": "d8474c18-121d-4c48-a9f0-84a069c9c48c",
+  "status": "applied",
+  "createdAt": "2026-10-22T15:25:20.901Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5330: four Standing at the Sky's Edge 2024 rows and one A Beautiful Noise 2022 row review a different run. Evidence from each page (date, venue line), read 2026-10-22. Move the Evening Standard review to the 2023 National Theatre page with its real date; flag the 2024 copies of the Express and i reviews (both already filed on 2023); move the Star 102 Cleveland review to the 2024 tour with its byline date. The Express Stefan Kyriazis row is the real transfer review and stays.",
+    "steps": [
+      "Evening Standard review of the 2023 National Theatre run (page JSON-LD datePublished 2023-02-14; text ends 'National Theatre, to 25 March'). Filed on the 2024 Gillian Lynne transfer.",
+      "Page JSON-LD datePublished; the 2024-02-29 value was the transfer's opening date",
+      "Date read from the article page",
+      "Reason before the flag",
+      "2023 National Theatre review misfiled on the 2024 West End transfer",
+      "Reason before the flag",
+      "2023 National Theatre review misfiled on the 2024 West End transfer",
+      "Star 102 Cleveland review of the national tour at the Connor Palace, Playhouse Square (byline dated Oct 10, 2024; BWW national-tour roundup 2024-09-26). Filed on the 2022 Broadway run.",
+      "Byline date on the page",
+      "Date read from the article page"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "standing-at-the-skys-edge-west-end-2024/standard--nick-curtis.json",
+        "destPath": "standing-at-the-skys-edge-west-end-2023/standard--nick-curtis.json",
+        "description": "Evening Standard review of the 2023 National Theatre run (page JSON-LD datePublished 2023-02-14; text ends 'National Theatre, to 25 March'). Filed on the 2024 Gillian Lynne transfer."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "standing-at-the-skys-edge-west-end-2023/standard--nick-curtis.json",
+        "field": "publishDate",
+        "oldValue": "2024-02-29",
+        "newValue": "2023-02-14",
+        "description": "Page JSON-LD datePublished; the 2024-02-29 value was the transfer's opening date"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "standing-at-the-skys-edge-west-end-2023/standard--nick-curtis.json",
+        "field": "dateSource",
+        "oldValue": null,
+        "newValue": "html-page",
+        "description": "Date read from the article page"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "standing-at-the-skys-edge-west-end-2024/express-uk--neil-norman.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-5330: Express article 1738843 is the 2023 National Theatre review, already filed on standing-at-the-skys-edge-west-end-2023 (express-uk--neil-norman.json, 2023-02-23). This copy carried the 2024 transfer's opening date.",
+        "description": "Reason before the flag"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "standing-at-the-skys-edge-west-end-2024/express-uk--neil-norman.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "2023 National Theatre review misfiled on the 2024 West End transfer"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "standing-at-the-skys-edge-west-end-2024/i-paper--fiona-mountford.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-5330: i article 2147627 is the 2023 National Theatre review, already filed (as a stub) on standing-at-the-skys-edge-west-end-2023. This 0-char copy carried the 2024 transfer's opening date.",
+        "description": "Reason before the flag"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "standing-at-the-skys-edge-west-end-2024/i-paper--fiona-mountford.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "2023 National Theatre review misfiled on the 2024 West End transfer"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "a-beautiful-noise-the-neil-diamond-musical-2022/cleveland-plain-dealer--glenn-anderson.json",
+        "destPath": "a-beautiful-noise-the-neil-diamond-musical-tour-2024/cleveland-plain-dealer--glenn-anderson.json",
+        "description": "Star 102 Cleveland review of the national tour at the Connor Palace, Playhouse Square (byline dated Oct 10, 2024; BWW national-tour roundup 2024-09-26). Filed on the 2022 Broadway run."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-beautiful-noise-the-neil-diamond-musical-tour-2024/cleveland-plain-dealer--glenn-anderson.json",
+        "field": "publishDate",
+        "oldValue": null,
+        "newValue": "2024-10-10",
+        "description": "Byline date on the page"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-beautiful-noise-the-neil-diamond-musical-tour-2024/cleveland-plain-dealer--glenn-anderson.json",
+        "field": "dateSource",
+        "oldValue": null,
+        "newValue": "html-page",
+        "description": "Date read from the article page"
+      }
+    ]
+  },
+  "executedAt": "2026-10-22T21:52:27.359Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved standing-at-the-skys-edge-west-end-2024/standard--nick-curtis.json → standing-at-the-skys-edge-west-end-2023/standard--nick-curtis.json",
+      "cleared": []
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "standing-at-the-skys-edge-west-end-2023/standard--nick-curtis.json publishDate: \"2024-02-29\" -> \"2023-02-14\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "standing-at-the-skys-edge-west-end-2023/standard--nick-curtis.json dateSource: null -> \"html-page\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "standing-at-the-skys-edge-west-end-2024/express-uk--neil-norman.json wrongProductionReason: null -> \"BRO-5330: Express article 1738843 is the 2023 National Theatre review, already filed on standing-at-the-skys-edge-west-end-2023 (express-uk--neil-norman.json, 2023-02-23). This copy carried the 2024 transfer's opening date.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "standing-at-the-skys-edge-west-end-2024/express-uk--neil-norman.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "standing-at-the-skys-edge-west-end-2024/i-paper--fiona-mountford.json wrongProductionReason: null -> \"BRO-5330: i article 2147627 is the 2023 National Theatre review, already filed (as a stub) on standing-at-the-skys-edge-west-end-2023. This 0-char copy carried the 2024 transfer's opening date.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "standing-at-the-skys-edge-west-end-2024/i-paper--fiona-mountford.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved a-beautiful-noise-the-neil-diamond-musical-2022/cleveland-plain-dealer--glenn-anderson.json → a-beautiful-noise-the-neil-diamond-musical-tour-2024/cleveland-plain-dealer--glenn-anderson.json",
+      "cleared": []
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-beautiful-noise-the-neil-diamond-musical-tour-2024/cleveland-plain-dealer--glenn-anderson.json publishDate: null -> \"2024-10-10\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-beautiful-noise-the-neil-diamond-musical-tour-2024/cleveland-plain-dealer--glenn-anderson.json dateSource: null -> \"html-page\""
+    }
+  ],
+  "executedIn": "ci"
+}

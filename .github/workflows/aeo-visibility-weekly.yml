@@ -1,0 +1,59 @@
+name: AEO Visibility Weekly
+
+# BRO-6841: weekly AI visibility tracker (replaces scripts/check-ai-citations.js).
+# ADVISORY: continue-on-error on the run step; nothing blocks on this. ~$2.30 per run
+# (prints per-run cost, hard budget guard $4.50 under the $5/week cap).
+
+on:
+  schedule:
+    - cron: '17 11 * * 1'
+  workflow_dispatch:
+
+concurrency:
+  group: aeo-visibility-weekly
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  track:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+
+      - name: Set up Node
+        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with:
+          node-version: '22'
+
+      - name: Run AI visibility tracker
+        id: run
+        continue-on-error: true
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: node scripts/aeo-visibility-tracker.js --budget=4.5
+
+      - name: Commit results
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/aeo/ 2>/dev/null || true
+          if git diff --cached --quiet; then
+            echo "No AEO changes to commit."
+          else
+            git commit -m "data: weekly AI visibility run [skip ci]"
+            bash scripts/lib/push-with-retry.sh
+          fi
+
+      # severity-low-ok: weekly AI-visibility measurement, advisory; nothing on the site reads it and check-cron-health raises a chronic-stale card after 3 days
+      - name: Notify on failure
+        if: failure() || steps.run.outcome == 'failure'
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'AEO Visibility Weekly Failed'
+          severity: 'low'

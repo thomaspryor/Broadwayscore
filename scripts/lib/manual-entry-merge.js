@@ -1,0 +1,221 @@
+/**
+ * Manual-entry merge — the LAST write into reviews.json during a rebuild.
+ *
+ * manual-review-direct.js writes `manualEntry: true` reviews straight into
+ * reviews.json. Every rebuild has to carry those forward, because the pipeline
+ * regenerates reviews.json from review-texts and would otherwise drop them.
+ *
+ * The danger: this merge runs AFTER every dedup pass (URL dedup, outlet-name
+ * dedup, fingerprint dedup). Anything it appends is appended unchecked. So the
+ * match between a manual entry and its pipeline twin must be robust, or the
+ * manual entry lands as a permanent phantom duplicate that no later pass can
+ * ever collapse.
+ *
+ * Two ways the old showId+outletId+lowercased-criticName match failed live
+ * (both confirmed in reviews.json 2026-08-02):
+ *   - punctuation drift — "R. Scott Reedy" (manual) vs "R Scott Reedy"
+ *     (pipeline byline capture) on wonder-regional-2026
+ *   - byline disagreement — manual says "Chris Jones", the scraper captured
+ *     "Christopher Borrelli", same Chicago Tribune article on iceboy-regional-2026
+ *
+ * Fix is two-layered:
+ *   1. criticKey() folds punctuation + diacritics, so cosmetic byline drift
+ *      still matches.
+ *   2. When the name match fails, fall back to the URL. Same show + same
+ *      article URL is the same review no matter whose name is on it:
+ *      so it REPLACES rather than appends. The URL is the identity of record.
+ *
+ * @see scripts/rebuild-all-reviews.js (sole caller)
+ */
+
+const { isPlaceholderByline } = require('./placeholder-byline');
+const { isRoundupUrl, isQuotingRoundupHostUrl, isRoundupPageAsReview } = require('./review-guards');
+
+/**
+ * BRO-7080 (BRO-4875 class): a manual entry whose URL is a multi-outlet roundup
+ * page, credited to the roundup host itself, is the roundup scored as a review.
+ * The rebuild flags such pipeline files isRoundupArticle; manual entries skipped
+ * that check, so black-swan-regional-2026 published BroadwayWorld's
+ * "Review-Roundup-BLACK-SWAN..." page at 85. A review merely SOURCED from a
+ * quoting roundup (another outlet's critic) stays allowed.
+ */
+function isRoundupManualEntry(manual) {
+  if (!manual || !manual.url) return false;
+  if (!isRoundupUrl(manual.url).isRoundup) return false;
+  if (!isQuotingRoundupHostUrl(manual.url)) return true;
+  return isRoundupPageAsReview(manual);
+}
+
+const TIER_RANK = { complete: 5, truncated: 4, excerpt: 3, stub: 2, invalid: 1 };
+
+function tierRank(review) {
+  return TIER_RANK[review && review.contentTier] || 0;
+}
+
+/** Is this criticName the pipeline's no-byline sentinel rather than a person?
+ * rebuild-all-reviews.js and review-file-writer.js both normalise a missing
+ * byline to the literal string 'Unknown' (review-file-writer.js:707,
+ * `sanitizeCriticName(input.criticName) || 'Unknown'`), and null/'' reach
+ * reviews.json from older rows written before that default existed. Deliberately
+ * an exact match on the sentinel, NOT a fuzzy "looks anonymous" test: a real
+ * byline such as "Unknown Theatre Collective" must stay a distinct identity. */
+function isUnknownByline(criticName) {
+  if (criticName === null || criticName === undefined) return true;
+  const s = String(criticName).trim();
+  return s === '' || s.toLowerCase() === 'unknown';
+}
+
+/** A conservative byline check shared by the rebuild and concurrent merge.
+ * Outlet names, generic desk terms and punctuation cannot supersede an
+ * unbylined record. Without registry context, self-branded critics also
+ * decline to anchor a deletion (isPlaceholderByline's defaultCritic caveat).
+ */
+function isMergeFossilAnchor(rec) {
+  const name = rec && rec.criticName;
+  return !isUnknownByline(name)
+    && !isPlaceholderByline(name, rec && rec.outlet)
+    && criticKey(name) !== 'unknown';
+}
+
+/**
+ * Punctuation- and diacritic-insensitive critic key.
+ * "R. Scott Reedy" and "R Scott Reedy" collapse to "r scott reedy".
+ * "Kelly O'Hara" and "Kelly OHara" collapse to "kelly ohara".
+ */
+function criticKey(name) {
+  if (!name || typeof name !== 'string') return 'unknown';
+  return name
+    .normalize('NFD')
+    .replace(/[̀-ͯ]/g, '')   // strip combining accents
+    .toLowerCase()
+    .replace(/[^a-z0-9\s]/g, '')       // drop periods, apostrophes, hyphens
+    .replace(/\s+/g, ' ')
+    .trim() || 'unknown';
+}
+
+/**
+ * Find the pipeline-produced review a manual entry corresponds to.
+ * Name match first (the common case); URL match as the identity backstop.
+ *
+ * @param {object} manual - the manualEntry review
+ * @param {object[]} reviews - pipeline-produced reviews
+ * @param {(url: string) => string|null} normalizeUrl - caller's URL canonicalizer
+ * @returns {{ review: object, matchedBy: 'critic'|'url' }|null}
+ */
+function findPipelineTwin(manual, reviews, normalizeUrl) {
+  const sameSlot = (r) => r.showId === manual.showId && r.outletId === manual.outletId;
+
+  const wantCritic = criticKey(manual.criticName);
+  const byCritic = reviews.find(r => sameSlot(r) && criticKey(r.criticName) === wantCritic);
+  if (byCritic) return { review: byCritic, matchedBy: 'critic' };
+
+  // Byline disagreement — same article, different name on it. The URL decides.
+  //
+  // Deliberately NOT scoped to outletId: the outlet ID itself drifts. When a
+  // canonical registry entry lists a bare domain (suntimes.com) and the article
+  // lives on a subdomain (chicago.suntimes.com), provisionalOutletIdFromHost
+  // mints a second outlet, so the manual entry and its pipeline twin disagree
+  // on outletId and an outlet-scoped URL match cannot fire. That is exactly how
+  // iceboy-regional-2026 kept Steven Oxman's Sun-Times review twice — pipeline
+  // 'suntimes' scored 75 alongside the human's 'chicago-sun-times' correction of
+  // 65, on one identical URL (found 2026-08-02, verifying the first fix).
+  //
+  // Safe because a URL identifies one page at one publisher: syndicated
+  // republications live at different URLs, so show + URL is a true identity.
+  const wantUrl = manual.url ? normalizeUrl(manual.url) : null;
+  if (!wantUrl) return null;
+  const byUrl = reviews.find(r =>
+    r.showId === manual.showId && r.url && normalizeUrl(r.url) === wantUrl);
+  if (byUrl) {
+    return { review: byUrl, matchedBy: byUrl.outletId === manual.outletId ? 'url' : 'url-cross-outlet' };
+  }
+
+  return null;
+}
+
+/** True when the manual row points at a roundup/aggregator page and its scored twin has the critic's own url (BRO-7079). */
+function manualUrlIsAggregatorOverOwn(manual, twin) {
+  const { isAggregatorPageUrl } = require('./review-slot-guards');
+  return !!(manual.url && twin && twin.url && isAggregatorPageUrl(manual.url) && !isAggregatorPageUrl(twin.url));
+}
+
+/**
+ * Merge manual entries into the rebuilt review set, in place.
+ *
+ * Rules, in order:
+ *   - a roundup page credited to its own host → refused (BRO-7080).
+ *   - twin has scoreSource 'human-review' → pipeline already consumed the
+ *     manual score from the source file; it is authoritative, skip.
+ *   - unbylined manual with a bylined, finite-scored twin of at least the same
+ *     content tier → keep the enriched pipeline row (BRO-2919).
+ *   - twin has a score → replace it (a human score beats an LLM score).
+ *   - no twin at all → append (a genuinely pipeline-less manual review).
+ *
+ * @param {object[]} reviews - mutated in place
+ * @param {object[]} manualEntries
+ * @param {(url: string) => string|null} normalizeUrl
+ * @returns {{preserved: number, appended: number, matchedByUrl: number, matchedCrossOutlet: number, refusedRoundup: string[]}}
+ */
+function mergeManualEntries(reviews, manualEntries, normalizeUrl) {
+  let preserved = 0;
+  let appended = 0;
+  let matchedByUrl = 0;
+  let matchedCrossOutlet = 0;
+  const refusedRoundup = [];
+
+  for (const manual of manualEntries) {
+    const twin = findPipelineTwin(manual, reviews, normalizeUrl);
+
+    if (twin && twin.review.scoreSource === 'human-review') continue;
+
+    if (twin && isUnknownByline(manual.criticName)
+      && isMergeFossilAnchor(twin.review) && Number.isFinite(twin.review.assignedScore)
+      && tierRank(twin.review) >= tierRank(manual)) continue;
+
+    if (twin && twin.review.assignedScore) {
+      const idx = reviews.indexOf(twin.review);
+      // BRO-4192: designation (e.g. NYT Critics_Pick) is pipeline-derived from
+      // the twin's canonical outlet URL on every rebuild; manual-review-direct
+      // never sets it (0 of 119 manual entries carried one). Take the twin's
+      // current value so a manual score never hides the badge — gun-and-powder
+      // Paper Mill's NYT pick sat under a papermill.org PDF URL — and never
+      // keeps a stale one the twin has since lost.
+      const merged = { ...manual };
+      if (twin.review.designation) merged.designation = twin.review.designation;
+      else delete merged.designation;
+      // BRO-7079 (BRO-4430 class): a manual score typed against a review
+      // roundup keeps the roundup url, and this merge is the last write, so it
+      // replaced the critic's own article url on every rebuild (Black Swan,
+      // R. Scott Reedy). The human owns the score; the url and its date belong
+      // to the twin when the manual url is an aggregator page and the twin's is not.
+      if (manualUrlIsAggregatorOverOwn(manual, twin.review)) {
+        merged.url = twin.review.url;
+        if (twin.review.publishDate) merged.publishDate = twin.review.publishDate;
+      }
+      if (idx >= 0) reviews[idx] = merged;
+      preserved++;
+      if (twin.matchedBy.startsWith('url')) matchedByUrl++;
+      if (twin.matchedBy === 'url-cross-outlet') matchedCrossOutlet++;
+      continue;
+    }
+
+    if (!twin) {
+      // BRO-7080 (BRO-4875 class): with no own review to attach the score to,
+      // appending would publish the roundup page itself as the host's review.
+      // When a twin exists the human score is kept and BRO-7079 swaps the url.
+      if (isRoundupManualEntry(manual)) {
+        refusedRoundup.push(`${manual.showId}|${manual.outletId}|${manual.url}`);
+        continue;
+      }
+      reviews.push(manual);
+      preserved++;
+      appended++;
+    }
+    // twin exists but has no score: pipeline knows the slot, manual adds
+    // nothing scoreable — appending here would duplicate, so do nothing.
+  }
+
+  return { preserved, appended, matchedByUrl, matchedCrossOutlet, refusedRoundup };
+}
+
+module.exports = { isRoundupManualEntry, manualUrlIsAggregatorOverOwn, criticKey, tierRank, isUnknownByline, isMergeFossilAnchor, findPipelineTwin, mergeManualEntries };

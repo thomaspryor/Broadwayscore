@@ -1,0 +1,33 @@
+{
+  "issueNumber": "bro-4976",
+  "planId": "296c5147-b9a1-4f28-8711-6c8b13327917",
+  "status": "applied",
+  "createdAt": "2026-10-14T00:00:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4976 stage 2: two observer rows filed under the wrong publication move to fordham-observer and theater-news-online. No tier changes. Rules are code (scripts/lib/outlet-id-migrations.js); already-applied stage 1 rules are no-ops.",
+    "steps": [
+      "BRO-4976: apply the outlet-id migration rules (2 new one-off observer rules)."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "run-script",
+        "script": "migrate-outlet-ids.js",
+        "args": "--apply",
+        "description": "BRO-4976: apply the outlet-id migration rules (2 new one-off observer rules)."
+      }
+    ]
+  },
+  "executedAt": "2026-10-14T04:48:07.165Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran migrate-outlet-ids.js successfully"
+    }
+  ]
+}

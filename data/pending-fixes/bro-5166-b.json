@@ -1,0 +1,47 @@
+{
+  "issueNumber": "bro-5166-b",
+  "planId": "ec8f2481-c067-4c9e-b4e9-252cf8eb85c4",
+  "status": "partial",
+  "createdAt": "2026-10-12T16:20:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5166 part 2. (1) Re-ingest the Talkin Broadway review of Human Things: part 1 failed on a Bright Data timeout, and the url guard that would have dropped the text is fixed on main (1e0d0817). (2) Re-flag the Fire Fire Times UK record as wrongShow: part 1 set it, then the rebuild UK-URL heal cleared it; the heal now honours a plan-approved flag (isWrongShowHeld, BRO-5166).",
+    "steps": [
+      "Ingest the real Talkin Broadway review page for human-things-off-broadway-2026.",
+      "Set wrongShow=true on fire-fire-off-west-end-2026/times-uk--unknown.json again."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=human-things-off-broadway-2026 --url=https://www.talkinbroadway.com/page/ob/09_25_26.html --outlet=talkinbroadway --critic=\"Moshe A. Bloxenheim\"",
+        "description": "BRO-5166: Talkin' Broadway review page behind forum thread 2653913 (retry after the url-guard fix)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "fire-fire-off-west-end-2026/times-uk--unknown.json",
+        "field": "wrongShow",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5166: Times review of a different opera (Fire in my mouth), matched by SERP discovery on the title words. Re-flag after the rebuild UK-URL heal cleared part 1."
+      }
+    ]
+  },
+  "executedAt": "2026-10-12T20:47:55.021Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=human-things-off-broadway-2026 --url=https://www.talkinbroadway.com/page/ob/09_25_26.html --outlet=talkinbroadway --critic=\"Moshe A. Bloxenheim\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "fire-fire-off-west-end-2026/times-uk--unknown.json wrongShow: null -> true (retracted wrongShowAutoCleared, wrongShowAutoClearedAt)"
+    }
+  ]
+}

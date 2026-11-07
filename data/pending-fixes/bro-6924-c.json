@@ -1,0 +1,268 @@
+{
+  "issueNumber": "bro-6924-c",
+  "planId": "0e19a00c-e92a-486a-84dc-7e0293f60339",
+  "status": "applied",
+  "createdAt": "2026-11-03T23:51:14.528Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6924: redo the ENO-folder half of bro-6924-b that a stale fast rebuild overwrote (3 off-production files, leftover ensemble rejection fields)",
+    "steps": [
+      "BRO-6924: cherylmarkosky.com/tag/english-national-opera/ is a tag index page, not a review; her review is london-theatre--cheryl-markosky. Re-applied: a Rebuild Reviews (Fast) run that checked out review-texts before plan bro-6924-b landed pushed its stale copy over that plan (review-texts cf36f9a5a); this redoes it.",
+      "BRO-6924: Bachtrack review of Shostakovich's Cherry Town at Dutch National Opera, Amsterdam (2026-10-09): another work. Re-applied: a Rebuild Reviews (Fast) run that checked out review-texts before plan bro-6924-b landed pushed its stale copy over that plan (review-texts cf36f9a5a); this redoes it.",
+      "BRO-6924: Bachtrack review of Le nozze di Figaro at Bucharest National Opera (2026-10-18): another work. Re-applied: a Rebuild Reviews (Fast) run that checked out review-texts before plan bro-6924-b landed pushed its stale copy over that plan (review-texts cf36f9a5a); this redoes it.",
+      "BRO-6924: the ensemble rejected it as wrong_production for the Met's Tosca; it is the ENO London production's own review. Re-applied: a Rebuild Reviews (Fast) run that checked out review-texts before plan bro-6924-b landed pushed its stale copy over that plan (review-texts cf36f9a5a); this redoes it.",
+      "BRO-6924: the ensemble rejected it as wrong_production for the Met's Tosca; it is the ENO London production's own review. Re-applied: a Rebuild Reviews (Fast) run that checked out review-texts before plan bro-6924-b landed pushed its stale copy over that plan (review-texts cf36f9a5a); this redoes it.",
+      "BRO-6924: the ensemble rejected it as wrong_production for the Met's Tosca; it is the ENO London production's own review. Re-applied: a Rebuild Reviews (Fast) run that checked out review-texts before plan bro-6924-b landed pushed its stale copy over that plan (review-texts cf36f9a5a); this redoes it.",
+      "BRO-6924: the ensemble rejected it as wrong_production for the Met's Tosca; it is the ENO London production's own review. Re-applied: a Rebuild Reviews (Fast) run that checked out review-texts before plan bro-6924-b landed pushed its stale copy over that plan (review-texts cf36f9a5a); this redoes it.",
+      "BRO-6924: the ensemble rejected it as wrong_production for the Met's Tosca; it is the ENO London production's own review. Re-applied: a Rebuild Reviews (Fast) run that checked out review-texts before plan bro-6924-b landed pushed its stale copy over that plan (review-texts cf36f9a5a); this redoes it.",
+      "BRO-6924: the ensemble rejected it as wrong_production for the Met's Tosca; it is the ENO London production's own review. Re-applied: a Rebuild Reviews (Fast) run that checked out review-texts before plan bro-6924-b landed pushed its stale copy over that plan (review-texts cf36f9a5a); this redoes it.",
+      "BRO-6924: the ensemble rejected it as wrong_production for the Met's Tosca; it is the ENO London production's own review. Re-applied: a Rebuild Reviews (Fast) run that checked out review-texts before plan bro-6924-b landed pushed its stale copy over that plan (review-texts cf36f9a5a); this redoes it.",
+      "BRO-6924: the ensemble rejected it as wrong_production for the Met's Tosca; it is the ENO London production's own review. Re-applied: a Rebuild Reviews (Fast) run that checked out review-texts before plan bro-6924-b landed pushed its stale copy over that plan (review-texts cf36f9a5a); this redoes it.",
+      "BRO-6924: the ensemble rejected it as wrong_production for the Met's Tosca; it is the ENO London production's own review. Re-applied: a Rebuild Reviews (Fast) run that checked out review-texts before plan bro-6924-b landed pushed its stale copy over that plan (review-texts cf36f9a5a); this redoes it.",
+      "BRO-6924: the ensemble rejected it as wrong_production for the Met's Tosca; it is the ENO London production's own review. Re-applied: a Rebuild Reviews (Fast) run that checked out review-texts before plan bro-6924-b landed pushed its stale copy over that plan (review-texts cf36f9a5a); this redoes it.",
+      "BRO-6924: the ensemble rejected it as wrong_production for the Met's Tosca; it is the ENO London production's own review. Re-applied: a Rebuild Reviews (Fast) run that checked out review-texts before plan bro-6924-b landed pushed its stale copy over that plan (review-texts cf36f9a5a); this redoes it.",
+      "BRO-6924: the ensemble rejected it as wrong_production for the Met's Tosca; it is the ENO London production's own review. Re-applied: a Rebuild Reviews (Fast) run that checked out review-texts before plan bro-6924-b landed pushed its stale copy over that plan (review-texts cf36f9a5a); this redoes it.",
+      "BRO-6924: the ensemble rejected it as wrong_production for the Met's Tosca; it is the ENO London production's own review. Re-applied: a Rebuild Reviews (Fast) run that checked out review-texts before plan bro-6924-b landed pushed its stale copy over that plan (review-texts cf36f9a5a); this redoes it.",
+      "BRO-6924: the ensemble rejected it as wrong_production for the Met's Tosca; it is the ENO London production's own review. Re-applied: a Rebuild Reviews (Fast) run that checked out review-texts before plan bro-6924-b landed pushed its stale copy over that plan (review-texts cf36f9a5a); this redoes it.",
+      "BRO-6924: the ensemble rejected it as wrong_production for the Met's Tosca; it is the ENO London production's own review. Re-applied: a Rebuild Reviews (Fast) run that checked out review-texts before plan bro-6924-b landed pushed its stale copy over that plan (review-texts cf36f9a5a); this redoes it."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "tosca-english-national-opera-west-end-2026/cherylmarkosky--cherylmarkosky.json",
+        "description": "BRO-6924: cherylmarkosky.com/tag/english-national-opera/ is a tag index page, not a review; her review is london-theatre--cheryl-markosky. Re-applied: a Rebuild Reviews (Fast) run that checked out review-texts before plan bro-6924-b landed pushed its stale copy over that plan (review-texts cf36f9a5a); this redoes it."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "tosca-english-national-opera-west-end-2026/bachtrack--clare-varney.json",
+        "description": "BRO-6924: Bachtrack review of Shostakovich's Cherry Town at Dutch National Opera, Amsterdam (2026-10-09): another work. Re-applied: a Rebuild Reviews (Fast) run that checked out review-texts before plan bro-6924-b landed pushed its stale copy over that plan (review-texts cf36f9a5a); this redoes it."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "tosca-english-national-opera-west-end-2026/bachtrack--peter-quantrill.json",
+        "description": "BRO-6924: Bachtrack review of Le nozze di Figaro at Bucharest National Opera (2026-10-18): another work. Re-applied: a Rebuild Reviews (Fast) run that checked out review-texts before plan bro-6924-b landed pushed its stale copy over that plan (review-texts cf36f9a5a); this redoes it."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "tosca-english-national-opera-west-end-2026/broadwayworld--gary-naylor.json",
+        "field": "rejectedBy",
+        "oldValue": "ensemble-scoreability-check",
+        "newValue": null,
+        "description": "BRO-6924: the ensemble rejected it as wrong_production for the Met's Tosca; it is the ENO London production's own review. Re-applied: a Rebuild Reviews (Fast) run that checked out review-texts before plan bro-6924-b landed pushed its stale copy over that plan (review-texts cf36f9a5a); this redoes it."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "tosca-english-national-opera-west-end-2026/broadwayworld--gary-naylor.json",
+        "field": "rejectedAt",
+        "oldValue": "2026-11-01T02:20:42.838Z",
+        "newValue": null,
+        "description": "BRO-6924: the ensemble rejected it as wrong_production for the Met's Tosca; it is the ENO London production's own review. Re-applied: a Rebuild Reviews (Fast) run that checked out review-texts before plan bro-6924-b landed pushed its stale copy over that plan (review-texts cf36f9a5a); this redoes it."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "tosca-english-national-opera-west-end-2026/broadwayworld--gary-naylor.json",
+        "field": "rejectionReasoning",
+        "oldValue": "claude: This review is of the English National Opera production of Tosca at the London Coliseum, not the Metropolitan Opera production at the Metropolitan Opera House. Different venue, different market, different production.; openai: The review discusses a production of Tosca at the English National Opera, not the Metropolitan Opera House as specified in the Show context.",
+        "newValue": null,
+        "description": "BRO-6924: the ensemble rejected it as wrong_production for the Met's Tosca; it is the ENO London production's own review. Re-applied: a Rebuild Reviews (Fast) run that checked out review-texts before plan bro-6924-b landed pushed its stale copy over that plan (review-texts cf36f9a5a); this redoes it."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "tosca-english-national-opera-west-end-2026/financialtimes--richard-fairman.json",
+        "field": "rejectedBy",
+        "oldValue": "ensemble-scoreability-check",
+        "newValue": null,
+        "description": "BRO-6924: the ensemble rejected it as wrong_production for the Met's Tosca; it is the ENO London production's own review. Re-applied: a Rebuild Reviews (Fast) run that checked out review-texts before plan bro-6924-b landed pushed its stale copy over that plan (review-texts cf36f9a5a); this redoes it."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "tosca-english-national-opera-west-end-2026/financialtimes--richard-fairman.json",
+        "field": "rejectedAt",
+        "oldValue": "2026-11-02T19:59:01.729Z",
+        "newValue": null,
+        "description": "BRO-6924: the ensemble rejected it as wrong_production for the Met's Tosca; it is the ENO London production's own review. Re-applied: a Rebuild Reviews (Fast) run that checked out review-texts before plan bro-6924-b landed pushed its stale copy over that plan (review-texts cf36f9a5a); this redoes it."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "tosca-english-national-opera-west-end-2026/financialtimes--richard-fairman.json",
+        "field": "rejectionReasoning",
+        "oldValue": "claude: This review is of English National Opera's production of Tosca at the London Coliseum, not the Metropolitan Opera production at Metropolitan Opera House. The review explicitly discusses ENO, the Coliseum, and English-language performances, which is a completely different production from the one specified.; openai: The review discusses a production of Tosca by the English National Opera, not the Metropolitan Opera production specified in the context.; gemini: The review is for a production of Tosca by the English National Opera (ENO), but the target show is Tosca at the Metropolitan Opera House. This is a different company and production.",
+        "newValue": null,
+        "description": "BRO-6924: the ensemble rejected it as wrong_production for the Met's Tosca; it is the ENO London production's own review. Re-applied: a Rebuild Reviews (Fast) run that checked out review-texts before plan bro-6924-b landed pushed its stale copy over that plan (review-texts cf36f9a5a); this redoes it."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "tosca-english-national-opera-west-end-2026/london-theatre--cheryl-markosky.json",
+        "field": "rejectedBy",
+        "oldValue": "ensemble-scoreability-check",
+        "newValue": null,
+        "description": "BRO-6924: the ensemble rejected it as wrong_production for the Met's Tosca; it is the ENO London production's own review. Re-applied: a Rebuild Reviews (Fast) run that checked out review-texts before plan bro-6924-b landed pushed its stale copy over that plan (review-texts cf36f9a5a); this redoes it."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "tosca-english-national-opera-west-end-2026/london-theatre--cheryl-markosky.json",
+        "field": "rejectedAt",
+        "oldValue": "2026-11-01T02:20:45.019Z",
+        "newValue": null,
+        "description": "BRO-6924: the ensemble rejected it as wrong_production for the Met's Tosca; it is the ENO London production's own review. Re-applied: a Rebuild Reviews (Fast) run that checked out review-texts before plan bro-6924-b landed pushed its stale copy over that plan (review-texts cf36f9a5a); this redoes it."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "tosca-english-national-opera-west-end-2026/london-theatre--cheryl-markosky.json",
+        "field": "rejectionReasoning",
+        "oldValue": "claude: This review covers the English National Opera's production of Tosca at the London Coliseum, not the Metropolitan Opera House production. The venue and company are entirely different from the specified show context.; openai: The review is about a production of Tosca at the London Coliseum by the English National Opera, not the Metropolitan Opera House production.; gemini: The review is for Tosca at the London Coliseum (English National Opera), but the target show is Tosca at the Metropolitan Opera House.",
+        "newValue": null,
+        "description": "BRO-6924: the ensemble rejected it as wrong_production for the Met's Tosca; it is the ENO London production's own review. Re-applied: a Rebuild Reviews (Fast) run that checked out review-texts before plan bro-6924-b landed pushed its stale copy over that plan (review-texts cf36f9a5a); this redoes it."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "tosca-english-national-opera-west-end-2026/plays-to-see--rene-weis-frsa.json",
+        "field": "rejectedBy",
+        "oldValue": "ensemble-scoreability-check",
+        "newValue": null,
+        "description": "BRO-6924: the ensemble rejected it as wrong_production for the Met's Tosca; it is the ENO London production's own review. Re-applied: a Rebuild Reviews (Fast) run that checked out review-texts before plan bro-6924-b landed pushed its stale copy over that plan (review-texts cf36f9a5a); this redoes it."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "tosca-english-national-opera-west-end-2026/plays-to-see--rene-weis-frsa.json",
+        "field": "rejectedAt",
+        "oldValue": "2026-11-01T18:31:11.454Z",
+        "newValue": null,
+        "description": "BRO-6924: the ensemble rejected it as wrong_production for the Met's Tosca; it is the ENO London production's own review. Re-applied: a Rebuild Reviews (Fast) run that checked out review-texts before plan bro-6924-b landed pushed its stale copy over that plan (review-texts cf36f9a5a); this redoes it."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "tosca-english-national-opera-west-end-2026/plays-to-see--rene-weis-frsa.json",
+        "field": "rejectionReasoning",
+        "oldValue": "claude: This review is of an English National Opera (ENO) production of Tosca, not a Metropolitan Opera production. The review explicitly mentions ENO, conductor Ben Glassberg, and cast members (Axelle Fanyo, Christopher Purves, Chaz'men Williams-Ali) who are not associated with the Metropolitan Opera production. The venue and company are entirely different from the specified Metropolitan Opera House production.; openai: The review discusses a production by the English National Opera, not the Metropolitan Opera production of Tosca at the Metropolitan Opera House.; gemini: The review is for a production of Tosca by English National Opera (ENO) at a generic concert hall, not the specified Metropolitan Opera House production.",
+        "newValue": null,
+        "description": "BRO-6924: the ensemble rejected it as wrong_production for the Met's Tosca; it is the ENO London production's own review. Re-applied: a Rebuild Reviews (Fast) run that checked out review-texts before plan bro-6924-b landed pushed its stale copy over that plan (review-texts cf36f9a5a); this redoes it."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "tosca-english-national-opera-west-end-2026/sunday-telegraph--nicholas-kenyon.json",
+        "field": "rejectedBy",
+        "oldValue": "ensemble-scoreability-check",
+        "newValue": null,
+        "description": "BRO-6924: the ensemble rejected it as wrong_production for the Met's Tosca; it is the ENO London production's own review. Re-applied: a Rebuild Reviews (Fast) run that checked out review-texts before plan bro-6924-b landed pushed its stale copy over that plan (review-texts cf36f9a5a); this redoes it."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "tosca-english-national-opera-west-end-2026/sunday-telegraph--nicholas-kenyon.json",
+        "field": "rejectedAt",
+        "oldValue": "2026-11-01T02:20:49.679Z",
+        "newValue": null,
+        "description": "BRO-6924: the ensemble rejected it as wrong_production for the Met's Tosca; it is the ENO London production's own review. Re-applied: a Rebuild Reviews (Fast) run that checked out review-texts before plan bro-6924-b landed pushed its stale copy over that plan (review-texts cf36f9a5a); this redoes it."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "tosca-english-national-opera-west-end-2026/sunday-telegraph--nicholas-kenyon.json",
+        "field": "rejectionReasoning",
+        "oldValue": "claude: This review is of an English National Opera (ENO) production directed by Annilese Miskimmon, not a Metropolitan Opera production. The Show context specifies Tosca at the Metropolitan Opera House.; openai: The review discusses a production of Tosca at the English National Opera, not the Metropolitan Opera House as specified in the show context.",
+        "newValue": null,
+        "description": "BRO-6924: the ensemble rejected it as wrong_production for the Met's Tosca; it is the ENO London production's own review. Re-applied: a Rebuild Reviews (Fast) run that checked out review-texts before plan bro-6924-b landed pushed its stale copy over that plan (review-texts cf36f9a5a); this redoes it."
+      }
+    ]
+  },
+  "executedAt": "2026-11-04T00:04:51.445Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted tosca-english-national-opera-west-end-2026/cherylmarkosky--cherylmarkosky.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted tosca-english-national-opera-west-end-2026/bachtrack--clare-varney.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted tosca-english-national-opera-west-end-2026/bachtrack--peter-quantrill.json"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "tosca-english-national-opera-west-end-2026/broadwayworld--gary-naylor.json rejectedBy: \"ensemble-scoreability-check\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "tosca-english-national-opera-west-end-2026/broadwayworld--gary-naylor.json rejectedAt: \"2026-11-01T02:20:42.838Z\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "tosca-english-national-opera-west-end-2026/broadwayworld--gary-naylor.json rejectionReasoning: \"claude: This review is of the English National Opera production of Tosca at the London Coliseum, not the Metropolitan Opera production at the Metropolitan Opera House. Different venue, different market, different production.; openai: The review discusses a production of Tosca at the English National Opera, not the Metropolitan Opera House as specified in the Show context.\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "tosca-english-national-opera-west-end-2026/financialtimes--richard-fairman.json rejectedBy: \"ensemble-scoreability-check\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "tosca-english-national-opera-west-end-2026/financialtimes--richard-fairman.json rejectedAt: \"2026-11-02T19:59:01.729Z\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "tosca-english-national-opera-west-end-2026/financialtimes--richard-fairman.json rejectionReasoning: \"claude: This review is of English National Opera's production of Tosca at the London Coliseum, not the Metropolitan Opera production at Metropolitan Opera House. The review explicitly discusses ENO, the Coliseum, and English-language performances, which is a completely different production from the one specified.; openai: The review discusses a production of Tosca by the English National Opera, not the Metropolitan Opera production specified in the context.; gemini: The review is for a production of Tosca by the English National Opera (ENO), but the target show is Tosca at the Metropolitan Opera House. This is a different company and production.\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "tosca-english-national-opera-west-end-2026/london-theatre--cheryl-markosky.json rejectedBy: \"ensemble-scoreability-check\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "tosca-english-national-opera-west-end-2026/london-theatre--cheryl-markosky.json rejectedAt: \"2026-11-01T02:20:45.019Z\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "tosca-english-national-opera-west-end-2026/london-theatre--cheryl-markosky.json rejectionReasoning: \"claude: This review covers the English National Opera's production of Tosca at the London Coliseum, not the Metropolitan Opera House production. The venue and company are entirely different from the specified show context.; openai: The review is about a production of Tosca at the London Coliseum by the English National Opera, not the Metropolitan Opera House production.; gemini: The review is for Tosca at the London Coliseum (English National Opera), but the target show is Tosca at the Metropolitan Opera House.\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "tosca-english-national-opera-west-end-2026/plays-to-see--rene-weis-frsa.json rejectedBy: \"ensemble-scoreability-check\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "tosca-english-national-opera-west-end-2026/plays-to-see--rene-weis-frsa.json rejectedAt: \"2026-11-01T18:31:11.454Z\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "tosca-english-national-opera-west-end-2026/plays-to-see--rene-weis-frsa.json rejectionReasoning: \"claude: This review is of an English National Opera (ENO) production of Tosca, not a Metropolitan Opera production. The review explicitly mentions ENO, conductor Ben Glassberg, and cast members (Axelle Fanyo, Christopher Purves, Chaz'men Williams-Ali) who are not associated with the Metropolitan Opera production. The venue and company are entirely different from the specified Metropolitan Opera House production.; openai: The review discusses a production by the English National Opera, not the Metropolitan Opera production of Tosca at the Metropolitan Opera House.; gemini: The review is for a production of Tosca by English National Opera (ENO) at a generic concert hall, not the specified Metropolitan Opera House production.\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "tosca-english-national-opera-west-end-2026/sunday-telegraph--nicholas-kenyon.json rejectedBy: \"ensemble-scoreability-check\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "tosca-english-national-opera-west-end-2026/sunday-telegraph--nicholas-kenyon.json rejectedAt: \"2026-11-01T02:20:49.679Z\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "tosca-english-national-opera-west-end-2026/sunday-telegraph--nicholas-kenyon.json rejectionReasoning: \"claude: This review is of an English National Opera (ENO) production directed by Annilese Miskimmon, not a Metropolitan Opera production. The Show context specifies Tosca at the Metropolitan Opera House.; openai: The review discusses a production of Tosca at the English National Opera, not the Metropolitan Opera House as specified in the show context.\" -> null"
+    }
+  ],
+  "executedIn": "ci"
+}

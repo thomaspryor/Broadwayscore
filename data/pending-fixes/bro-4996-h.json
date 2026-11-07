@@ -1,0 +1,44 @@
+{
+  "issueNumber": "bro-4996-h",
+  "planId": "be197af0-99b5-491d-b1f8-e8aafa7edd67",
+  "status": "applied",
+  "createdAt": "2026-10-10T21:52:15.862Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4996 (8): re-null a-dolls-house-off-west-end-2026 thumbnail (the Broadway Tony-nominations art). Plan bro-4996-a nulled it at 21:27; a fetch-show-image run that had read shows.json earlier wrote its stale row back at 21:30.",
+    "steps": [
+      "Null the thumbnail (compare-and-set)"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-dolls-house-off-west-end-2026",
+        "field": "images",
+        "oldValue": {
+          "poster": "/images/shows/a-dolls-house-off-west-end-2026/poster.jpg",
+          "thumbnail": "/images/shows/a-dolls-house-off-west-end-2026/thumbnail.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "poster": "/images/shows/a-dolls-house-off-west-end-2026/poster.jpg",
+          "thumbnail": null,
+          "hero": null
+        },
+        "description": "a-dolls-house-off-west-end-2026: thumbnail shows another production's art (BRO-4996)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-10T22:33:22.193Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for a-dolls-house-off-west-end-2026"
+    }
+  ]
+}

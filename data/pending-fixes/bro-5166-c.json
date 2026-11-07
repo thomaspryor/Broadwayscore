@@ -1,0 +1,33 @@
+{
+  "issueNumber": "bro-5166-c",
+  "planId": "819f56ed-2289-4be8-bd3f-00dd7c4e77d6",
+  "status": "partial",
+  "createdAt": "2026-10-12T20:51:24.967Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5166 part 3: retry the Talkin Broadway ingest for Human Things. Plan b hit a Bright Data timeout (TB is ~55% BD success on 2026-10-12: 177 ok / 140 timeouts in the spend ledger).",
+    "steps": [
+      "Ingest the real Talkin Broadway review page for human-things-off-broadway-2026."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=human-things-off-broadway-2026 --url=https://www.talkinbroadway.com/page/ob/09_25_26.html --outlet=talkinbroadway --critic=\"Moshe A. Bloxenheim\"",
+        "description": "BRO-5166: Talkin' Broadway review page behind forum thread 2653913 (retry after the url-guard fix)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-12T22:36:11.273Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=human-things-off-broadway-2026 --url=https://www.talkinbroadway.com/page/ob/09_25_26.html --outlet=talkinbroadway --critic=\"Moshe A. Bloxenheim\""
+    }
+  ]
+}

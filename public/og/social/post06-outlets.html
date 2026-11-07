@@ -1,0 +1,157 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><style>
+  
+  @import url('https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800;14..32,900&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    width: 2160px; height: 2160px;
+    background: #0f0f14;
+    font-family: 'Inter', ui-sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    color: #e5e7eb; overflow: hidden; -webkit-font-smoothing: antialiased;
+  } .page { padding: 96px 100px 80px; height: 100%; display: flex; flex-direction: column; } 
+  .header { text-align: center; margin-bottom: 72px; }
+  .header h1 { font-size: 100px; font-weight: 900; line-height: 1.05; color: #fff; letter-spacing: -0.02em; margin-bottom: 24px; }
+  .header .sub { font-size: 32px; font-weight: 400; color: #9ca3af; }
+  .header .sub .brand { color: #d4a574; font-weight: 700; }
+  .section-label { font-size: 28px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 24px; padding-left: 8px; }
+  .section-label.tough { color: #ef4444; }
+  .section-label.generous { color: #22c55e; }
+  .columns { display: flex; gap: 64px; flex: 1; padding: 0 24px; }
+  .column { flex: 1; }
+  .outlet-row { display: flex; align-items: center; gap: 20px; padding: 20px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+  .outlet-rank { font-size: 48px; font-weight: 800; opacity: 0.6; width: 60px; text-align: center; flex-shrink: 0; }
+  .outlet-info { min-width: 0; flex: 1; }
+  .outlet-name { font-size: 36px; font-weight: 700; color: #fff; margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .outlet-meta { font-size: 22px; color: #6b7280; }
+  .outlet-score-area { display: flex; align-items: center; gap: 16px; flex-shrink: 0; width: 280px; }
+  .outlet-bar-bg { flex: 1; height: 12px; background: rgba(255,255,255,0.06); border-radius: 6px; overflow: hidden; }
+  .outlet-bar { height: 100%; border-radius: 6px; }
+  .outlet-avg { font-size: 44px; font-weight: 800; width: 80px; text-align: right; }
+  .divider-v { width: 2px; background: rgba(255,255,255,0.08); }
+  
+  .footer { text-align: center; margin-top: auto; }
+  .footer-logo { font-size: 48px; font-weight: 900; margin-bottom: 16px; letter-spacing: -0.5px; }
+  .footer-logo .white { color: #fff; }
+  .footer-logo .gold { background: linear-gradient(135deg, #d4a574 0%, #b8956a 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .footer-logo .tm { font-size: 16px; font-weight: 400; vertical-align: super; margin-left: 4px; color: #9ca3af; -webkit-text-fill-color: #9ca3af; }
+  .footer-meta { font-size: 24px; font-weight: 400; color: #6b7280; }
+  </style></head><body><div class="page">
+    <div class="header">
+      <h1>Broadway's Toughest &<br>Most Generous Outlets</h1>
+      <div class="sub">Average <span class="brand">CriticScore™</span> across 20+ reviewed shows</div>
+    </div>
+    <div class="columns">
+      <div class="column">
+        <div class="section-label tough">Toughest Critics</div>
+        <div class="outlet-row">
+      <div class="outlet-rank" style="color:#ef4444">1</div>
+      <div class="outlet-info">
+        <div class="outlet-name">Backstage</div>
+        <div class="outlet-meta">127 reviews scored</div>
+      </div>
+      <div class="outlet-score-area">
+        <div class="outlet-bar-bg"><div class="outlet-bar" style="width:64%;background:#ef4444"></div></div>
+        <div class="outlet-avg" style="color:#ef4444">63.8</div>
+      </div>
+    </div><div class="outlet-row">
+      <div class="outlet-rank" style="color:#ef4444">2</div>
+      <div class="outlet-info">
+        <div class="outlet-name">TheWrap</div>
+        <div class="outlet-meta">351 reviews scored</div>
+      </div>
+      <div class="outlet-score-area">
+        <div class="outlet-bar-bg"><div class="outlet-bar" style="width:64%;background:#ef4444"></div></div>
+        <div class="outlet-avg" style="color:#ef4444">64.2</div>
+      </div>
+    </div><div class="outlet-row">
+      <div class="outlet-rank" style="color:#ef4444">3</div>
+      <div class="outlet-info">
+        <div class="outlet-name">NorthJersey.com</div>
+        <div class="outlet-meta">185 reviews scored</div>
+      </div>
+      <div class="outlet-score-area">
+        <div class="outlet-bar-bg"><div class="outlet-bar" style="width:65%;background:#ef4444"></div></div>
+        <div class="outlet-avg" style="color:#ef4444">64.8</div>
+      </div>
+    </div><div class="outlet-row">
+      <div class="outlet-rank" style="color:#ef4444">4</div>
+      <div class="outlet-info">
+        <div class="outlet-name">Theater News Online</div>
+        <div class="outlet-meta">62 reviews scored</div>
+      </div>
+      <div class="outlet-score-area">
+        <div class="outlet-bar-bg"><div class="outlet-bar" style="width:65%;background:#ef4444"></div></div>
+        <div class="outlet-avg" style="color:#ef4444">65</div>
+      </div>
+    </div><div class="outlet-row">
+      <div class="outlet-rank" style="color:#ef4444">5</div>
+      <div class="outlet-info">
+        <div class="outlet-name">Broadway & Me</div>
+        <div class="outlet-meta">22 reviews scored</div>
+      </div>
+      <div class="outlet-score-area">
+        <div class="outlet-bar-bg"><div class="outlet-bar" style="width:65%;background:#ef4444"></div></div>
+        <div class="outlet-avg" style="color:#ef4444">65.3</div>
+      </div>
+    </div>
+      </div>
+      <div class="divider-v"></div>
+      <div class="column">
+        <div class="section-label generous">Most Generous</div>
+        <div class="outlet-row">
+      <div class="outlet-rank" style="color:#22c55e">1</div>
+      <div class="outlet-info">
+        <div class="outlet-name">Digital Journal</div>
+        <div class="outlet-meta">25 reviews scored</div>
+      </div>
+      <div class="outlet-score-area">
+        <div class="outlet-bar-bg"><div class="outlet-bar" style="width:83%;background:#22c55e"></div></div>
+        <div class="outlet-avg" style="color:#22c55e">83.2</div>
+      </div>
+    </div><div class="outlet-row">
+      <div class="outlet-rank" style="color:#22c55e">2</div>
+      <div class="outlet-info">
+        <div class="outlet-name">Drama Queen NYC</div>
+        <div class="outlet-meta">24 reviews scored</div>
+      </div>
+      <div class="outlet-score-area">
+        <div class="outlet-bar-bg"><div class="outlet-bar" style="width:80%;background:#22c55e"></div></div>
+        <div class="outlet-avg" style="color:#22c55e">79.9</div>
+      </div>
+    </div><div class="outlet-row">
+      <div class="outlet-rank" style="color:#22c55e">3</div>
+      <div class="outlet-info">
+        <div class="outlet-name">Wolf Entertainment Guide</div>
+        <div class="outlet-meta">50 reviews scored</div>
+      </div>
+      <div class="outlet-score-area">
+        <div class="outlet-bar-bg"><div class="outlet-bar" style="width:79%;background:#22c55e"></div></div>
+        <div class="outlet-avg" style="color:#22c55e">79.1</div>
+      </div>
+    </div><div class="outlet-row">
+      <div class="outlet-rank" style="color:#22c55e">4</div>
+      <div class="outlet-info">
+        <div class="outlet-name">Stu on Broadway</div>
+        <div class="outlet-meta">23 reviews scored</div>
+      </div>
+      <div class="outlet-score-area">
+        <div class="outlet-bar-bg"><div class="outlet-bar" style="width:79%;background:#22c55e"></div></div>
+        <div class="outlet-avg" style="color:#22c55e">79.1</div>
+      </div>
+    </div><div class="outlet-row">
+      <div class="outlet-rank" style="color:#22c55e">5</div>
+      <div class="outlet-info">
+        <div class="outlet-name">Front Mezz Junkies</div>
+        <div class="outlet-meta">88 reviews scored</div>
+      </div>
+      <div class="outlet-score-area">
+        <div class="outlet-bar-bg"><div class="outlet-bar" style="width:78%;background:#22c55e"></div></div>
+        <div class="outlet-avg" style="color:#22c55e">78.1</div>
+      </div>
+    </div>
+      </div>
+    </div>
+    <div class="footer">
+    <div class="footer-logo"><span class="white">Broadway</span><span class="gold">Scorecard</span><span class="tm">™</span></div>
+    <div class="footer-meta">Updated March 2026 · 700+ shows · 18,000+ scored reviews · broadwayscorecard.com</div>
+  </div>
+  </div></body></html>

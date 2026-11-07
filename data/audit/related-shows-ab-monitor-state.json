@@ -1,0 +1,40 @@
+{
+  "lastDataProblemAlertAt": 1793657675175,
+  "lastRunAt": "2026-11-02T22:14:35.176Z",
+  "lastSummary": {
+    "flag": "related-shows-position",
+    "startDate": "2026-10-23 02:11:00",
+    "endDate": "2026-11-02T22:14:35.117Z",
+    "stoppingNPerArm": 3140,
+    "floorNPerArm": 906,
+    "flagHealth": {
+      "ok": true,
+      "problem": null
+    },
+    "variants": [
+      {
+        "name": "control",
+        "n": 893,
+        "conv": 93,
+        "searchLanders": 377,
+        "missingSession": 48,
+        "crossVariantPeople": 0
+      },
+      {
+        "name": "compact-after-reviews",
+        "n": 950,
+        "conv": 114,
+        "searchLanders": 419,
+        "missingSession": 38,
+        "crossVariantPeople": 0
+      }
+    ],
+    "primary": {
+      "metric": "person-level first-exposed-session search show landing and second pageview / exposed people",
+      "p": null,
+      "z": null,
+      "suppressed": "exposed people without a usable first-session pageview join",
+      "degenerate": null
+    }
+  }
+}

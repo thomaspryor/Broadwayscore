@@ -1,0 +1,296 @@
+name: Notify on failure
+description: Send email alert when a workflow fails (with 2-hour cooldown per workflow)
+
+inputs:
+  title:
+    description: Alert title (e.g., "Weekly Grosses Failed")
+    required: true
+  description:
+    description: Optional extra context (action required, likely cause)
+    required: false
+    default: ''
+  severity:
+    description: >-
+      '"critical" sends a real-time email (if configured) ONLY for workflows listed in
+      scripts/lib/page-worthy-alerts.js PAGE_WORTHY_WORKFLOWS (BRO-4603); any other
+      value, or an unlisted workflow, never emails. Failures still reach the morning
+      digest via check-cron-health.yml / health-check.js.'
+    required: false
+    default: 'low'
+  email:
+    description: Also send email alert (for critical pipelines)
+    required: false
+    default: 'false'
+  discord_webhook:
+    description: 'Unused — kept for backwards compatibility with existing callers.'
+    required: false
+    default: ''
+  resend_api_key:
+    description: Resend API key (required if email=true)
+    required: false
+    default: ''
+  owner_email:
+    description: Owner email (required if email=true)
+    required: false
+    default: ''
+  cooldown_minutes:
+    description: 'Minutes to suppress duplicate alerts for the same workflow (default: 120)'
+    required: false
+    default: '120'
+  min_consecutive_failures:
+    description: >-
+      Only alert once this many CONSECUTIVE completed runs have failed (default 1 =
+      alert on every failure). Set '2' for high-frequency crons (30-45 min cadence)
+      whose one-off failures self-resolve on the next run — a single push-contention
+      or scraper blip never pages; persistent breakage still does (the next failed
+      run alerts). Cancelled runs count when their Notify step ran or was cut
+      off. Skipped Notify steps (e.g. Express takeovers), queued cancellations,
+      and skipped runs neither extend nor reset the streak.
+    required: false
+    default: '1'
+
+  auto_fix_first:
+    description: >-
+      'true' on the callers listed in scripts/lib/page-worthy-alerts.js
+      AUTO_FIX_FIRST_WORKFLOWS (BRO-5477): a failure that would page files a
+      START-NOW fix card instead, and the owner is emailed only if the fix
+      fails (scripts/auto-fix-first.js). Pass 'false' to turn it off (the
+      callers wire the AUTO_FIX_FIRST_DISABLED repo variable here).
+    required: false
+    default: 'false'
+  linear_api_key:
+    description: Linear API key, needed when auto_fix_first is 'true' (without it the card cannot be filed and the owner is emailed as before)
+    required: false
+    default: ''
+  email_with_auto_fix:
+    description: >-
+      'true' also emails the owner right away when the auto-fix gate held the
+      failure for its fix card (the gate itself sent nothing). The fix card is
+      still filed and still escalates if the fix fails. Opening-night-poller
+      passes it for a poll that includes a Broadway show (BRO-5479, owner
+      decision 2026-10-16). Default 'false'.
+    required: false
+    default: 'false'
+
+outputs:
+  suppressed:
+    description: >-
+      'true' whenever this call did not page: non-critical severity, a workflow
+      not on the page-worthy list, cooldown, or consecutive-failure grace.
+      Gate follow-up steps (e.g. investigation dispatch) on this != 'true' so they
+      only fire when the failure actually paged. (Before BRO-4603 a non-critical
+      call left this EMPTY, so `!= 'true'` let investigate-alert.yml email anyway.)
+      An auto-fix-first failure held for its fix card (BRO-5477) is suppressed too,
+      even when email_with_auto_fix also sent the normal email (BRO-5479).
+    value: ${{ steps.policy.outputs.page != 'true' && 'true' || steps.autofix.outputs.held == 'true' && 'true' || steps.cooldown.outputs.suppressed }}
+
+runs:
+  using: composite
+  steps:
+    # BRO-4603: the owner's page-worthy policy runs FIRST, before the streak and
+    # cooldown branches below (streak mode returns early, so a check placed
+    # after it would never run for min_consecutive_failures callers). Only
+    # workflows in scripts/lib/page-worthy-alerts.js PAGE_WORTHY_WORKFLOWS may
+    # email; tests/unit/page-worthy-workflows.test.mjs keeps the YAML severities
+    # equal to that list. Fails OPEN (pages) if the policy file can't be read.
+    - name: Page-worthiness policy
+      id: policy
+      uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7
+      # Via env, not ${{ }} inside the script: this step runs for EVERY caller,
+      # and a title carrying a workflow input (e.g. a show id) with a backtick
+      # would otherwise break the script and leave `page` empty.
+      env:
+        NOTIFY_SEVERITY: ${{ inputs.severity }}
+        NOTIFY_TITLE: ${{ inputs.title }}
+      with:
+        script: |
+          const severity = process.env.NOTIFY_SEVERITY || '';
+          const title = process.env.NOTIFY_TITLE || '';
+          if (severity !== 'critical') {
+            core.setOutput('page', 'false');
+            return;
+          }
+          const ref = process.env.GITHUB_WORKFLOW_REF || '';
+          const fileMatch = ref.match(/\.github\/workflows\/([^@]+)/);
+          if (!fileMatch) {
+            console.log(`[Alert policy] could not read the workflow file from GITHUB_WORKFLOW_REF ('${ref}') — failing open (may page).`);
+            core.setOutput('page', 'true');
+            return;
+          }
+          const workflowFile = fileMatch[1];
+          let pageWorthy = true;
+          try {
+            pageWorthy = require('./scripts/lib/page-worthy-alerts.js').isPageWorthyWorkflow(workflowFile);
+          } catch (e) {
+            console.log(`[Alert policy] page-worthy-alerts.js unavailable (${e.message}) — failing open (may page).`);
+          }
+          if (!pageWorthy) {
+            const msg = `${workflowFile} is not on the owner's page-worthy list (scripts/lib/page-worthy-alerts.js PAGE_WORTHY_WORKFLOWS) — no email. The morning digest reports this failure.`;
+            console.log(`[Alert policy] ${msg}`);
+            if (process.env.GITHUB_STEP_SUMMARY) {
+              require('fs').appendFileSync(process.env.GITHUB_STEP_SUMMARY, `\n> 🔕 **${title}** — ${msg}\n`);
+            }
+          }
+          core.setOutput('page', pageWorthy ? 'true' : 'false');
+
+    - name: Check cooldown
+      id: cooldown
+      if: steps.policy.outputs.page == 'true'
+      uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7
+      env:
+        INPUT_COOLDOWN_MINUTES: ${{ inputs.cooldown_minutes }}
+        INPUT_MIN_CONSECUTIVE_FAILURES: ${{ inputs.min_consecutive_failures }}
+      with:
+        script: |
+          const workflowName = context.workflow;
+          const cooldownMinutes = parseInt(process.env.INPUT_COOLDOWN_MINUTES) || 120;
+          const minConsecutive = parseInt(process.env.INPUT_MIN_CONSECUTIVE_FAILURES) || 1;
+
+          try {
+            // context.workflow is the display name (e.g., "Test Suite"), but
+            // listWorkflowRuns needs the filename or numeric ID. Extract the
+            // filename from the workflow_ref which looks like:
+            //   owner/repo/.github/workflows/test.yml@refs/heads/main
+            const ref = process.env.GITHUB_WORKFLOW_REF || '';
+            const fileMatch = ref.match(/\.github\/workflows\/([^@]+)/);
+            const workflowFile = fileMatch ? fileMatch[1] : workflowName;
+
+            if (minConsecutive > 1) {
+              // Streak mode (high-frequency crons): a one-off failure that
+              // self-resolves on the next run never pages. Page when the streak of
+              // consecutive failed runs reaches minConsecutive, then re-page every
+              // 4th failure past it (reminder for long outages; also self-corrects
+              // if the threshold-hitting run's notify was cancelled or raced —
+              // "page exactly at ==threshold" can go permanently dark in those
+              // cases, so periodic re-arm is deliberate).
+              // The time cooldown below is NOT also applied: it counts failures
+              // that never alerted (the graced first one), so combining the two
+              // would suppress every page of a real streak.
+              // NO inner .catch here: an API error must fall through to the outer
+              // catch and alert (fail open) — swallowing it would suppress pages
+              // for entire outages whenever the API is rate-limited.
+              const recent = await github.rest.actions.listWorkflowRuns({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                workflow_id: workflowFile,
+                status: 'completed',
+                per_page: 30,
+              });
+              // BRO-3931: use the auto-fix sweep's Notify-step evidence for
+              // cancelled runs, so timeout cancellations extend the streak but
+              // Express takeovers and queued cancellations do not.
+              // Sort by COMPLETION time (updated_at), not created_at: runs of
+              // high-frequency crons overlap, and in creation order an
+              // interleaved success keeps resetting the streak to exactly the
+              // threshold, re-paging on every failure pair (2026-08-03 storm:
+              // two "streak 2" pages in 28 min). In completion order a recent
+              // success correctly suppresses transient races, while a real
+              // outage — nothing but failures completing — still pages.
+              const { failureStreak } = require('./scripts/lib/notify-failure-streak.js');
+              const streak = await failureStreak(recent.data.workflow_runs, context.runId,
+                runId => github.paginate(github.rest.actions.listJobsForWorkflowRun, {
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  run_id: runId,
+                  per_page: 100,
+                }));
+              const pastThreshold = streak - minConsecutive;
+              if (pastThreshold >= 0 && pastThreshold % 4 === 0) {
+                console.log(`[Streak] ${streak} consecutive failure(s) — threshold ${minConsecutive} reached, alerting.`);
+                core.setOutput('suppressed', 'false');
+              } else {
+                const why = streak < minConsecutive
+                  ? `first failure in streak — pages if the next run also fails`
+                  : `streak paged at ${minConsecutive} — next reminder at ${streak + (4 - pastThreshold % 4)} consecutive failures`;
+                console.log(`[Streak] ${streak} consecutive failure(s) (threshold ${minConsecutive}) — suppressing: ${why}.`);
+                if (process.env.GITHUB_STEP_SUMMARY) {
+                  require('fs').appendFileSync(process.env.GITHUB_STEP_SUMMARY,
+                    `\n> ⏳ **Alert suppressed** (${why}).\n`);
+                }
+                core.setOutput('suppressed', 'true');
+              }
+              return;
+            }
+
+            // Default mode: 2h time cooldown per workflow. The helper is loaded here, inside the
+            // try and after the streak branch, so a missing file fails open without touching
+            // streak mode.
+            const { isRecentOtherFailure, createdFilterDate } = require('./scripts/lib/notify-cooldown.js');
+            const cutoff = new Date(Date.now() - cooldownMinutes * 60 * 1000);
+            const runs = await github.rest.actions.listWorkflowRuns({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              workflow_id: workflowFile,
+              status: 'failure',
+              per_page: 5,
+              created: `>=${createdFilterDate(cutoff)}`
+            }).catch(() => ({ data: { workflow_runs: [] } }));
+
+            // Count how many failed runs FINISHED failing in the cooldown window (completion
+            // time, not creation: a 5h orchestrator run created long before its sibling failed
+            // must still suppress the duplicate page, BRO-5302).
+            const recentFailures = (runs.data.workflow_runs || []).filter(
+              r => isRecentOtherFailure(r, cutoff, context.runId)
+            );
+
+            if (recentFailures.length > 0) {
+              // Another failure already happened in the cooldown window — it would have alerted
+              console.log(`[Cooldown] ${recentFailures.length} other failure(s) for "${workflowName}" in last ${cooldownMinutes}min. Suppressing duplicate alert.`);
+              core.setOutput('suppressed', 'true');
+            } else {
+              core.setOutput('suppressed', 'false');
+            }
+          } catch (e) {
+            // On any error, don't suppress — better to alert than miss
+            console.log(`[Cooldown] Check failed (${e.message}), sending alert anyway`);
+            core.setOutput('suppressed', 'false');
+          }
+
+    # BRO-5477 (owner decision 2026-10-16): opening-night pipeline failures
+    # start an automatic fix first and email the owner only if it fails. The
+    # script files/holds/escalates and sets handled=true; for any other
+    # workflow, or if it crashes (continue-on-error), handled stays empty and
+    # the send step below emails exactly as before (fail loud).
+    - name: Auto-fix first
+      id: autofix
+      if: steps.policy.outputs.page == 'true' && steps.cooldown.outputs.suppressed != 'true' && inputs.auto_fix_first == 'true'
+      continue-on-error: true
+      shell: bash
+      env:
+        LINEAR_API_KEY: ${{ inputs.linear_api_key }}
+        RESEND_API_KEY: ${{ inputs.resend_api_key }}
+        OWNER_EMAIL: ${{ inputs.owner_email }}
+        GITHUB_TOKEN: ${{ github.token }}
+        INPUT_TITLE: ${{ inputs.title }}
+        INPUT_DESCRIPTION: ${{ inputs.description }}
+        INPUT_EMAIL: ${{ inputs.email }}
+      run: node scripts/auto-fix-first.js gate
+
+    - name: Send failure alert
+      # BRO-5479: email_with_auto_fix also sends when the gate only held the
+      # alert (held=true means it emailed nothing), never after its own email.
+      if: steps.policy.outputs.page == 'true' && steps.cooldown.outputs.suppressed != 'true' && (steps.autofix.outputs.handled != 'true' || (inputs.email_with_auto_fix == 'true' && steps.autofix.outputs.held == 'true'))
+      uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7
+      env:
+        RESEND_API_KEY: ${{ inputs.resend_api_key }}
+        OWNER_EMAIL: ${{ inputs.owner_email }}
+        INPUT_TITLE: ${{ inputs.title }}
+        INPUT_DESCRIPTION: ${{ inputs.description }}
+        INPUT_EMAIL: ${{ inputs.email }}
+      with:
+        script: |
+          const { sendAlert } = require('./scripts/lib/discord-notify.js');
+          const runUrl = `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+          const desc = process.env.INPUT_DESCRIPTION || 'Check the run logs for details.';
+          // BRO-5498: open the owner's email with what they do about it.
+          const { withOwnerAction } = require('./scripts/lib/page-worthy-alerts.js');
+          await sendAlert({
+            title: process.env.INPUT_TITLE,
+            description: withOwnerAction(process.env.GITHUB_WORKFLOW_REF || '', desc),
+            severity: 'error',
+            email: process.env.INPUT_EMAIL === 'true',
+            fields: [
+              { name: 'Run', value: `[View logs](${runUrl})` }
+            ],
+            url: runUrl
+          }).catch(e => console.error('Alert notification failed:', e.message));

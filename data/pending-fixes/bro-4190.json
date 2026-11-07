@@ -1,0 +1,152 @@
+{
+  "issueNumber": "bro-4190",
+  "planId": "76fb67a5-83f6-45b6-aff4-245fccd98261",
+  "status": "partial",
+  "createdAt": "2026-10-11T21:33:03.327Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4190 gap-junk cluster follow-up: flag two scored London-production reviews filed under Broadway shows as wrongProduction, and ingest the 7 real same-production reviews the gap audit still lists as missing on the cluster cards (the rest of those cards' gaps were junk URLs the landed candidate gate now excludes, or reviews collected since the last audit).",
+    "steps": [
+      "Set wrongProduction on all-my-sons-2019 Telegraph (2019 Old Vic, Bill Pullman/Sally Field) and high-society-1998 WhatsOnStage (Old Vic production).",
+      "Ingest each real missing review URL with ingest-review-from-url.js --stub-on-failure (write guards still apply)."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "all-my-sons-2019/telegraph--serena-davies.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4190: URL slug and text review the 2019 Old Vic London production (Bill Pullman, Sally Field), not the Roundabout Broadway run at the Todd Haimes. Found by the other-production venue signal."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "all-my-sons-2019/telegraph--serena-davies.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-4190: Old Vic London 2019 production (url slug names old-vic, Pullman/Field cast); show is the Broadway Roundabout revival",
+        "description": "Reason for the flag above."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "high-society-1998/whatsonstage--unknown.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4190: WhatsOnStage piece on the Old Vic London High Society, not the 1998 Broadway production at the St. James."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "high-society-1998/whatsonstage--unknown.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-4190: Old Vic London production (url slug high-society-old-vic); show is the 1998 Broadway run",
+        "description": "Reason for the flag above."
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=macbeth-off-broadway-2026 --url=https://bachtrack.com/review-macbeth-proske-nezet-seguin-kelsey-davidsen-metropolitan-opera-new-york-september-2026 --stub-on-failure",
+        "description": "BRO-4190: Bachtrack review of the 2026 Met Macbeth"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-last-ship-west-end-2026 --url=https://www.londontheatre.co.uk/reviews/the-last-ship-review-theatre-royal-drury-lane --stub-on-failure",
+        "description": "BRO-4190: London Theatre review, Drury Lane 2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-last-ship-west-end-2026 --url=https://theatrevibe.co.uk/2026/09/25/review-the-last-ship-theatre-royal-drury-lane-2026/ --stub-on-failure",
+        "description": "BRO-4190: TheatreVibe review, Drury Lane 2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=darkling-off-west-end-2026 --url=https://redbuslondinium.uk/2026/09/15/review-darkling-bush-theatre-%E2%98%85%E2%98%85%E2%98%85%E2%98%85/ --stub-on-failure",
+        "description": "BRO-4190: Red Bus Londinium review, Bush Theatre 2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=la-boheme-off-broadway-2026 --url=https://www.wsj.com/opinion/a-transportive-boheme-returns-to-the-met-01f33e89 --stub-on-failure",
+        "description": "BRO-4190: WSJ review of the 2026 Met revival"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=la-boheme-off-broadway-2026 --url=https://parterre.com/broadcast/104107/la-boheme/ --stub-on-failure",
+        "description": "BRO-4190: parterre box review of the 2026 Met run"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=alvin-ailey-american-dance-theater-new-works-west-end-2026 --url=https://www.theamerican.co.uk/pr/rev-th-Alvin-Ailey-American-Dance-Theater_New-Works_Legacy_Sadlers-Wells --stub-on-failure",
+        "description": "BRO-4190: The American review, Sadler's Wells 2026"
+      }
+    ]
+  },
+  "executedAt": "2026-10-11T23:57:22.616Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "all-my-sons-2019/telegraph--serena-davies.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "all-my-sons-2019/telegraph--serena-davies.json wrongProductionReason: null -> \"BRO-4190: Old Vic London 2019 production (url slug names old-vic, Pullman/Field cast); show is the Broadway Roundabout revival\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "high-society-1998/whatsonstage--unknown.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "high-society-1998/whatsonstage--unknown.json wrongProductionReason: null -> \"BRO-4190: Old Vic London production (url slug high-society-old-vic); show is the 1998 Broadway run\""
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=the-last-ship-west-end-2026 --url=https://theatrevibe.co.uk/2026/09/25/review-the-last-ship-theatre-royal-drury-lane-2026/ --stub-on-failure"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=la-boheme-off-broadway-2026 --url=https://www.wsj.com/opinion/a-transportive-boheme-returns-to-the-met-01f33e89 --stub-on-failure"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    }
+  ]
+}

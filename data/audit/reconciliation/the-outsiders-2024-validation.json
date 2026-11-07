@@ -1,0 +1,52 @@
+{
+  "_meta": {
+    "generatedAt": "2026-01-24T12:00:00Z",
+    "source": "dtli-validation"
+  },
+  "showId": "the-outsiders-2024",
+  "dtli": {
+    "sourceUrl": "https://didtheylikeit.com/shows/the-outsiders/",
+    "archiveDate": "2026-01-22T19:49:14.274Z",
+    "totalReviews": 14,
+    "thumbsUp": 4,
+    "thumbsFlat": 9,
+    "thumbsDown": 1
+  },
+  "ourData": {
+    "totalReviews": 24,
+    "note": "Includes duplicates"
+  },
+  "validation": {
+    "matched": 10,
+    "allDtliInOurs": true,
+    "missingFromUs": [],
+    "onlyInUs": [
+      {"outlet": "Variety", "critic": "Naveen Kumar"},
+      {"outlet": "The Guardian", "critic": "Alexis Soloski"},
+      {"outlet": "Culture Sauce", "critic": "Thom Geier"},
+      {"outlet": "The Washington Post", "critic": "Peter Marks"},
+      {"outlet": "The Washington Post", "critic": "Elisabeth Vincentelli"},
+      {"outlet": "New York Theater", "critic": "Jonathan Mandell"},
+      {"outlet": "New York Stage Review", "critic": "Roma Torre"},
+      {"outlet": "New York Stage Review", "critic": "Frank Scheck"},
+      {"outlet": "Slant Magazine", "critic": "Dan Rubins"},
+      {"outlet": "Chicago Tribune", "critic": "Chris Jones"}
+    ],
+    "thumbMismatches": [
+      {"outlet": "New York Times", "critic": "Jesse Green", "dtliThumb": "Flat", "ourThumb": "Up"},
+      {"outlet": "Entertainment Weekly", "critic": "Emlyn Travis", "dtliThumb": "Flat", "ourThumb": "Up"},
+      {"outlet": "New York Daily News", "critic": "Chris Jones", "dtliThumb": "Down", "ourThumb": "Flat"},
+      {"outlet": "The Wrap", "critic": "Robert Hofler", "dtliThumb": "Flat", "ourThumb": "Up"}
+    ],
+    "duplicatesInOurData": [
+      {"outlet": "Entertainment Weekly", "critic": "Emlyn Travis", "note": "Two entries with different scores"},
+      {"outlet": "New York Theatre Guide", "critic": "Joe Dziemianowicz", "note": "Two entries with conflicting thumbs"},
+      {"outlet": "Cititour", "note": "Two entries for same critic with different name spellings"}
+    ]
+  },
+  "issues": [
+    "4 thumb mismatches between DTLI and our assigned thumbs",
+    "Multiple duplicate entries in our data need cleanup",
+    "Chris Jones appears under both NY Daily News and Chicago Tribune"
+  ]
+}

@@ -1,0 +1,105 @@
+{
+  "issueNumber": "bro-5183-07",
+  "planId": "2f2b6392-7e1f-4376-9f8b-85a71472a8f8",
+  "status": "partial",
+  "createdAt": "2026-10-12T22:52:13.944Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5183: mark legacy web-search phantoms as duplicates of the outlet's real review already on file (url aligned first, as the write guard requires).",
+    "steps": [
+      "paradise-square-2022/talkinbroadway--matthew-murray.json: url -> https://www.talkinbroadway.com/page/world/ParadiseSquare.html",
+      "paradise-square-2022/talkinbroadway--matthew-murray.json: duplicateOf -> talkinbroadway--james-wilson.json",
+      "the-bands-visit-2017/talkinbroadway--matthew-murray.json: url -> https://www.talkinbroadway.com/page/world/index.html",
+      "the-bands-visit-2017/talkinbroadway--matthew-murray.json: duplicateOf -> talkinbroadway--michael-portantiere.json",
+      "the-ferryman-2018/talkinbroadway--matthew-murray.json: url -> https://www.talkinbroadway.com/page/world/Ferryman2018.html",
+      "the-ferryman-2018/talkinbroadway--matthew-murray.json: duplicateOf -> talkinbroadway--howard-miller.json"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "paradise-square-2022/talkinbroadway--matthew-murray.json",
+        "field": "url",
+        "oldValue": "https://talkinbroadway.com/page/world/nyc/paradise_square.html",
+        "newValue": "https://www.talkinbroadway.com/page/world/ParadiseSquare.html",
+        "description": "This legacy web-search row (made-up url https://talkinbroadway.com/page/world/nyc/paradise_square.html, byline Matthew Murray) is a copy of the outlet's real review, already on file as talkinbroadway--james-wilson.json. Point it at that review's url so it can be marked a duplicate of it (the write guard requires matching urls)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "paradise-square-2022/talkinbroadway--matthew-murray.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "talkinbroadway--james-wilson.json",
+        "description": "Duplicate of talkinbroadway--james-wilson.json (same outlet, same production, real page text on file); this row came from the legacy LLM web-search step."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-bands-visit-2017/talkinbroadway--matthew-murray.json",
+        "field": "url",
+        "oldValue": "https://www.talkinbroadway.com/page/world/off/bandsvisit.html",
+        "newValue": "https://www.talkinbroadway.com/page/world/index.html",
+        "description": "This legacy web-search row (made-up url https://www.talkinbroadway.com/page/world/off/bandsvisit.html, byline Matthew Murray) is a copy of the outlet's real review, already on file as talkinbroadway--michael-portantiere.json. Point it at that review's url so it can be marked a duplicate of it (the write guard requires matching urls)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-bands-visit-2017/talkinbroadway--matthew-murray.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "talkinbroadway--michael-portantiere.json",
+        "description": "Duplicate of talkinbroadway--michael-portantiere.json (same outlet, same production, real page text on file); this row came from the legacy LLM web-search step."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-ferryman-2018/talkinbroadway--matthew-murray.json",
+        "field": "url",
+        "oldValue": "https://www.talkinbroadway.com/world/Ferryman.html",
+        "newValue": "https://www.talkinbroadway.com/page/world/Ferryman2018.html",
+        "description": "This legacy web-search row (made-up url https://www.talkinbroadway.com/world/Ferryman.html, byline Matthew Murray) is a copy of the outlet's real review, already on file as talkinbroadway--howard-miller.json. Point it at that review's url so it can be marked a duplicate of it (the write guard requires matching urls)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-ferryman-2018/talkinbroadway--matthew-murray.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "talkinbroadway--howard-miller.json",
+        "description": "Duplicate of talkinbroadway--howard-miller.json (same outlet, same production, real page text on file); this row came from the legacy LLM web-search step."
+      }
+    ]
+  },
+  "executedAt": "2026-10-12T23:43:04.883Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "paradise-square-2022/talkinbroadway--matthew-murray.json url: \"https://talkinbroadway.com/page/world/nyc/paradise_square.html\" -> \"https://www.talkinbroadway.com/page/world/ParadiseSquare.html\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "duplicateOf: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-bands-visit-2017/talkinbroadway--matthew-murray.json url: \"https://www.talkinbroadway.com/page/world/off/bandsvisit.html\" -> \"https://www.talkinbroadway.com/page/world/index.html\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "duplicateOf: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-ferryman-2018/talkinbroadway--matthew-murray.json url: \"https://www.talkinbroadway.com/world/Ferryman.html\" -> \"https://www.talkinbroadway.com/page/world/Ferryman2018.html\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "duplicateOf: current value doesn't match expected (data changed since plan was created)"
+    }
+  ]
+}
