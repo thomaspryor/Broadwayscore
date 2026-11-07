@@ -147,22 +147,29 @@ test('BRO-7083: a shortened two-word title form ("Double Bill") does not prove a
   // a three-word shortened form still counts (Jane Eyre style prefixes need 3+ words)
   const ltl = { id: 'ltl', title: 'Larger Than Life: Starring Wallace and Gromit', status: 'open' };
   assert.equal(census.censusTitleOnly({ url: 'https://x.test/post/review-larger-than-life-lightroom', headline: '', publishDate: day(3) }, ltl, [ltl]), true);
+  // a two-word shortened form counts when a distinctive word from the rest of the title is there too
+  const db2 = { url: 'https://x.test/review-double-bill-kings-head-aggy/', headline: '', publishDate: day(3) };
+  assert.equal(census.censusTitleOnly(db2, db, [db]), true);
 });
 
-test('BRO-7083: censusMarketOk keeps a London-only outlet off New York shows and vice versa', () => {
-  const sources = { 'nyc-only': {}, both: {} };
-  const londonSources = { 'london-only': {}, both: {} };
-  const opt = { sources, londonSources };
+test('BRO-7083: censusMarketOk uses what the outlet has published, not the source tables', () => {
+  const shows = [
+    { id: 'ny1', market: 'broadway' }, { id: 'ldn1', market: 'west-end' }, { id: 'reg1', market: 'regional' },
+  ];
+  const rev = (outletId, showId, n) => Array.from({ length: n }, () => ({ outletId, showId }));
+  const counts = census.outletMarketCounts([
+    ...rev('london-blog', 'ldn1', 30),               // London-only history
+    ...rev('variety', 'ny1', 40), ...rev('variety', 'ldn1', 5), // both cities
+    ...rev('tiny', 'ldn1', 3),                        // too little history
+  ], shows);
   const ny = { id: 'tom-at-the-farm-off-broadway-2026', market: 'broadway' };
   const ldn = { id: 'x-off-west-end-2026', market: 'west-end' };
   const reg = { id: 'y-regional-2026', market: 'regional' };
-  assert.equal(census.censusMarketOk('london-only', ny, opt), false);
-  assert.equal(census.censusMarketOk('london-only', ldn, opt), true);
-  assert.equal(census.censusMarketOk('nyc-only', ldn, opt), false);
-  assert.equal(census.censusMarketOk('nyc-only', ny, opt), true);
-  assert.equal(census.censusMarketOk('both', ny, opt), true);
-  assert.equal(census.censusMarketOk('london-only', reg, opt), true);
-  // the real source tables: everything-theatre is London-only, exeunt-magazine New York-only
-  assert.equal(census.censusMarketOk('everything-theatre', ny), false);
-  assert.equal(census.censusMarketOk('exeunt-magazine', ny), true);
+  assert.equal(census.censusMarketOk('london-blog', ny, counts), false);
+  assert.equal(census.censusMarketOk('london-blog', ldn, counts), true);
+  assert.equal(census.censusMarketOk('london-blog', reg, counts), true);
+  assert.equal(census.censusMarketOk('variety', ldn, counts), true);
+  assert.equal(census.censusMarketOk('variety', ny, counts), true);
+  assert.equal(census.censusMarketOk('tiny', ny, counts), true);
+  assert.equal(census.censusMarketOk('unknown-outlet', ny, counts), true);
 });

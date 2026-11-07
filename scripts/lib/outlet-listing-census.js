@@ -205,16 +205,20 @@ function censusTitleOnly(item, show, pool) {
   let path = '';
   try { path = new URL(item.url).pathname; } catch { path = String(item.url || ''); }
   const hay = slugWords(`${item.headline || ''} ${path}`);
-  // A shortened form (one contained in a longer form of the same title, e.g. the "Double Bill" in
-  // "Double Bill: Tell Me Straight & Aggy") needs 3+ words: two generic words matched "Firebird: A
-  // Double Bill" at Sadler's Wells to that King's Head show (BRO-7083).
+  // A shortened two-word form (one contained in a longer form of the same title, e.g. the "Double
+  // Bill" in "Double Bill: Tell Me Straight & Aggy") counts only when the slug or headline also has a
+  // distinctive word (4+ letters) from the rest of the title: two generic words alone matched
+  // "Firebird: A Double Bill" at Sadler's Wells to that King's Head show (BRO-7083).
+  const STOP = new Set(['with', 'from', 'that', 'this', 'what', 'when', 'your', 'their', 'into', 'over', 'about', 'review', 'musical', 'play', 'theatre', 'theater']);
   const longForms = (sh) => {
     const all = titleForms(sh).map((f) => slugWords(f));
     return all.filter((f) => {
-      const words = f.trim().split(' ').length;
-      if (words < 2 || f.trim().length < 10) return false;
-      const shortened = all.some((g) => g !== f && g.includes(f));
-      return !shortened || words >= 3;
+      const words = f.trim().split(' ');
+      if (words.length < 2 || f.trim().length < 10) return false;
+      const longer = all.filter((g) => g !== f && g.includes(f));
+      if (!longer.length || words.length >= 3) return true;
+      const rest = new Set(longer.flatMap((g) => g.trim().split(' ')).filter((w) => w.length >= 4 && !STOP.has(w) && !words.includes(w)));
+      return [...rest].some((w) => hay.includes(` ${w} `));
     });
   };
   const mine = longForms(show);
@@ -223,18 +227,36 @@ function censusTitleOnly(item, show, pool) {
 }
 
 /**
- * The census source table says which city an outlet covers: an outlet listed only for London cannot
- * review a New York show (an Everything Theatre review of "Tom at the Farm" at the Barbican matched
- * the NYU Skirball production, BRO-7083), and a New York-only outlet cannot review a London show.
- * Regional and touring shows are not constrained (both cities' outlets cover them).
+ * Per-outlet review counts by show market, from the live corpus. Feeds censusMarketOk.
  */
-function censusMarketOk(outletId, show, { sources = SOURCES, londonSources = LONDON_SOURCES } = {}) {
-  const nyc = !!sources[outletId];
-  const london = !!londonSources[outletId];
+function outletMarketCounts(reviews = [], shows = []) {
+  const marketOf = new Map(shows.map((s) => [s.id, s.market]));
+  const counts = new Map();
+  for (const r of reviews) {
+    if (!r || !r.outletId) continue;
+    const m = marketOf.get(r.showId) || 'unknown';
+    const c = counts.get(r.outletId) || { total: 0 };
+    c.total++;
+    c[m] = (c[m] || 0) + 1;
+    counts.set(r.outletId, c);
+  }
+  return counts;
+}
+
+/**
+ * A census item matched on a slug or headline may not land on a show in a city the outlet has never
+ * reviewed: an outlet with minReviews+ reviews and none for a Broadway-market (New York) show cannot
+ * match one, and likewise for West End (London). Everything Theatre's Barbican "Tom at the Farm"
+ * matched the NYU Skirball production (BRO-7083). The source tables are not used for this: the FT,
+ * Telegraph and BroadwayWorld are London-table outlets with hundreds of Broadway reviews, and Variety
+ * is a New York-table outlet with 115 West End ones. Regional and touring shows are not constrained.
+ */
+function censusMarketOk(outletId, show, counts, { minReviews = 20 } = {}) {
   const market = show && show.market;
-  if (london && !nyc && market === 'broadway') return false;
-  if (nyc && !london && market === 'west-end') return false;
-  return true;
+  if (market !== 'broadway' && market !== 'west-end') return true;
+  const c = counts && counts.get(outletId);
+  if (!c || c.total < minReviews) return true; // too little history to say
+  return (c[market] || 0) > 0;
 }
 
 // BRO-7083: write mode is capped per run. After maxAdds census files are written, the rest of
@@ -271,7 +293,7 @@ function makeCensusFetcher({ plain, paid, maxPaid = 0 }) {
 }
 
 module.exports = {
-  censusItemMode, makeCensusFetcher, censusMarketOk,
+  censusItemMode, makeCensusFetcher, censusMarketOk, outletMarketCounts,
   censusTitleOnly,
   FREE_KINDS, ROUNDUP_RE, isDisabled, censusSourceFor, shouldUseCensus, censusOnlyCandidates,
   headlineFromUrl, datedSitemapUrls, enumerateCensusItems, censusItemAccepted,
