@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-07T22:14:52.881Z",
+  "generatedAt": "2026-11-07T23:00:18.380Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -12,28 +12,27 @@
       "status": "open",
       "slug": "iphigenie-en-tauride-english-national-opera-west-end",
       "thumbnail": "/images/shows/iphigenie-en-tauride-english-national-opera-west-end-2026/thumbnail.jpg",
-      "siteScore": null,
-      "liveScore": 66,
-      "scoreDrift": null,
-      "belowThreshold": true,
-      "reviewsNeeded": 1,
+      "siteScore": 65.6,
+      "liveScore": 69,
+      "scoreDrift": 3.4000000000000057,
+      "belowThreshold": false,
+      "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 4,
+      "total": 5,
       "t1": 1,
-      "t2": 1,
+      "t2": 2,
       "t3": 2,
-      "positive": 2,
+      "positive": 3,
       "mixed": 1,
       "negative": 1,
       "readiness": {
         "ready": false,
         "reasons": [
-          "4/8 total",
+          "5/8 total",
           "T1:1/3",
-          "T2:1/2",
-          "hi-conf:3/6"
+          "hi-conf:5/6"
         ],
-        "highConfidence": 3,
+        "highConfidence": 5,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -186,6 +185,18 @@
           "t2": 1,
           "t3": 2,
           "p": 2,
+          "m": 1,
+          "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-11-07T23:00:18.380Z",
+          "rc": 5,
+          "s": 65.6,
+          "t1": 1,
+          "t2": 2,
+          "t3": 2,
+          "p": 3,
           "m": 1,
           "n": 1,
           "bc": "waiting"
@@ -806,7 +817,7 @@
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 14,
+        "highConfidence": 13,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -1436,7 +1447,7 @@
           "11/12 total",
           "T1:2/3"
         ],
-        "highConfidence": 11,
+        "highConfidence": 10,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
