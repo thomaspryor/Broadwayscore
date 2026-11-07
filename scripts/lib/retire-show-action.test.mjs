@@ -132,6 +132,8 @@ test('nonProduction: a non-provisional announced row with no reviews retires wit
     [{ ...base, nonProduction: 'yes' }, {}, none, /must be true/],
     [{ ...base, duplicateOf: 'other-show' }, {}, none, /exclusive/],
     [base, { status: 'open' }, none, /announced\/upcoming/],
+    [base, { status: 'previews', openingDate: '2026-10-01' }, none, /announced\/upcoming|real run/],
+    [base, { status: 'previews' }, () => 1, /1 review/],
     [base, { status: 'closed' }, none, /announced\/upcoming/],
     [base, { openingDate: '2026-10-01' }, none, /real run/],
     [base, { openingDate: '2099-01-01' }, none, /real run/],
@@ -333,4 +335,14 @@ test('BRO-7080: a second row of a moved outlet with no file of its own still blo
   const rows = [{ showId: 'old', outletId: 'a' }, { showId: 'old', outletId: 'a' }];
   assert.equal(remainingReviewCount({ showId: 'old', scoredRows: rows, textFiles: [], removedPaths: ['old/a--x.json'] }), 1);
   assert.equal(remainingReviewCount({ showId: 'old', scoredRows: rows, textFiles: [], removedPaths: ['old/a--x.json', 'old/a--y.json'] }), 0);
+});
+
+test('nonProduction: a previews row with no openingDate (an open-ended attraction) retires with evidence and zero reviews (BRO-7080)', () => {
+  const { retire } = scratch();
+  const shrek = row('shreks-adventure-london-standard-entry-off-west-end-2026', "Shrek's Adventure! London Standard Entry", { provisional: undefined, status: 'previews', openingDate: null, previewsStartDate: '2021-05-31', venue: 'County Hall' });
+  const action = { id: shrek.id, expectTitle: shrek.title, reason: 'walk-through attraction, not a stage production', nonProduction: true, evidenceUrl: 'https://www.todaytix.com/london/shows/22835' };
+  const shows = [{ ...shrek }, row('keep-me-2026', 'Keep Me')];
+  const r = applyRetireShow(shows, action, { retire, reviewCount: none });
+  assert.equal(r.ok, true, r.reason);
+  assert.deepEqual(shows.map(s => s.id), ['keep-me-2026']);
 });
