@@ -768,7 +768,7 @@ async function fetchViaSerp(outletId, domain, cutoff, opts) {
 
 // Cap on article pages fetched per run. A candidate needs a title form in the
 // headline or slug plus a run-window date, so a normal day yields a handful.
-const PAGE_CONFIRM_MAX_FETCHES = parseInt(process.env.PAGE_CONFIRM_MAX_FETCHES || '30', 10);
+const PAGE_CONFIRM_MAX_FETCHES = (() => { const n = parseInt(process.env.PAGE_CONFIRM_MAX_FETCHES || '30', 10); return Number.isFinite(n) && n >= 0 ? n : 30; })(); // a typo'd value must not remove the cap (BRO-7083)
 
 // looksRight: the plain-fetch page must pass it (it names a candidate's title),
 // otherwise it is a bot wall, paywall stub or JS shell and the scraper chain runs.
@@ -921,7 +921,7 @@ async function main() {
     && (!opts.market || s.category === opts.market || s.market === opts.market))];
   // Census page checks have their own counters and a per-outlet cap, so they never use up the feed budget.
   const censusPageStats = { fetched: 0, confirmed: 0, unconfirmed: 0, overBudget: 0, failed: 0 };
-  const CENSUS_PAGE_MAX = parseInt(process.env.CENSUS_PAGE_MAX_FETCHES || '80', 10);
+  const CENSUS_PAGE_MAX = (() => { const n = parseInt(process.env.CENSUS_PAGE_MAX_FETCHES || '80', 10); return Number.isFinite(n) && n >= 0 ? n : 80; })(); // a typo'd value must not remove the cap (BRO-7083)
   // BRO-7083 write-mode caps: at most CENSUS_MAX_ADDS census files per run (the rest stay
   // would-add), and at most CENSUS_PAID_MAX paid page fetches across all census outlets.
   const CENSUS_MAX_ADDS = Math.max(0, parseInt(process.env.CENSUS_MAX_ADDS || '40', 10) || 0);
