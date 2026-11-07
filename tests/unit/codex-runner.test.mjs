@@ -1592,6 +1592,11 @@ test('BRO-7098: ownerWaitHolds / historySkipReason skip a card that waits on the
   assert.equal(P.ownerWaitHolds([c('**Owner decision** (answered by the owner via email)\n\nChose: Option A', 1)], now), false);
   assert.equal(P.ownerWaitHolds([c('The owner approval came in, proceeding.', 1)], now), false);
   assert.equal(P.ownerWaitHolds([c('DECISION NEEDED: none', 1)], now), false);
+  // Bare mentions inside an ordinary Outcome comment are no hold (reviewer finding).
+  assert.equal(P.ownerWaitHolds([c('Updated AWAITING_OWNER_RE so owner decision cards are skipped.', 1)], now), false);
+  assert.equal(P.ownerWaitHolds([c('Fixed the bug where DECISION NEEDED blocks were mis-parsed.', 1)], now), false);
+  assert.equal(P.ownerWaitHolds([c('Owner approval: yes', 1)], now), false);
+  assert.equal(P.ownerWaitHolds([c('Waiting on the owner to pick a tier policy.', 1)], now), true);
   assert.equal(P.ownerWaitHolds([c('No owner decision needed.', 1)], now), false);
   // age: held at 13 days, released at 15
   assert.equal(P.ownerWaitHolds([c(hold, 13)], now), true);
