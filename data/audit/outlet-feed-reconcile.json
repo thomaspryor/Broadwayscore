@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-07T16:41:52.837Z",
+  "generatedAt": "2026-11-07T17:10:37.162Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -121,16 +121,12 @@
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
     {
+      "outletId": "theater-pizzazz",
+      "error": "Timeout fetching https://theaterpizzazz.com/feed/"
+    },
+    {
       "outletId": "cote-notices",
       "error": "HTTP 403 for https://davidcote1.substack.com/feed"
-    },
-    {
-      "outletId": "south-london",
-      "error": "Timeout fetching https://southlondon.co.uk/feed/"
-    },
-    {
-      "outletId": "theatre-vibe",
-      "error": "Timeout fetching https://theatrevibe.co.uk/feed/"
     },
     {
       "outletId": "theartsdispatch",
@@ -143,10 +139,18 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
+    },
+    {
+      "outletId": "fringereview",
+      "error": "Timeout fetching https://fringereview.co.uk/feed/"
+    },
+    {
+      "outletId": "lighting-and-sound-america",
+      "error": "Timeout fetching https://lightingandsoundamerica.com/news/rss.asp"
     }
   ],
-  "itemsScanned": 828,
-  "matchedGaps": 9,
+  "itemsScanned": 811,
+  "matchedGaps": 6,
   "possibleGaps": 5,
   "gaps": [
     {
@@ -166,33 +170,6 @@
       "url": "https://t2conline.com/222-a-ghost-story-the-loudest-thing-in-the-room-isnt-the-ghost/",
       "headline": "2:22 – A Ghost Story: The Loudest Thing in the Room Isn’t the Ghost",
       "publishDate": "2026-11-07"
-    },
-    {
-      "showId": "nero-off-west-end-2026",
-      "title": "Nero",
-      "level": "matched",
-      "outletId": "londontheatre1",
-      "url": "https://www.londontheatre1.com/reviews/nero-southwark-playhouse-elephant/",
-      "headline": "Nero | Southwark Playhouse Elephant",
-      "publishDate": "2026-11-07"
-    },
-    {
-      "showId": "the-blue-violinist-over-west-end-avenue-off-broadway-2026",
-      "title": "The Blue Violinist Over West End Avenue",
-      "level": "matched",
-      "outletId": "stageandcinema",
-      "url": "https://stageandcinema.com/2026/11/05/the-blue-violinist-over-west-end-avenue-review/",
-      "headline": "Off-Broadway Review: THE BLUE VIOLINIST OVER WEST END AVENUE (Prism Stage Company at Theatre Row)",
-      "publishDate": "2026-11-05"
-    },
-    {
-      "showId": "the-blue-violinist-over-west-end-avenue-off-broadway-2026",
-      "title": "The Blue Violinist Over West End Avenue",
-      "level": "matched",
-      "outletId": "the-knockturnal",
-      "url": "https://theknockturnal.com/the-blue-violinist-over-west-end-avenue-review/",
-      "headline": "&#8216;The Blue Violinist Over West End Avenue&#8217;: Review",
-      "publishDate": "2026-11-05"
     },
     {
       "showId": "tosca-off-broadway-2026",
