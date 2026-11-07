@@ -561,3 +561,14 @@ describe('feed staleness (BRO-6352)', async () => {
     assert.match(evaluateOutletFeedHealth({ filePath: file, now }).message, /1 failing: thewrap/);
   });
 });
+
+describe('slantmagazine feed (BRO-6953)', () => {
+  test('uses the reachable all-site feed and keeps only /theater/ slugs', () => {
+    const { OUTLET_STRATEGY_CONFIG } = require('../../scripts/outlet-listing-poller.js');
+    const cfg = OUTLET_STRATEGY_CONFIG.slantmagazine;
+    assert.equal(cfg.url, 'https://slantmagazine.com/feed/');
+    assert.ok(cfg.urlFilter.test('https://www.slantmagazine.com/theater/some-show-broadway-review/'));
+    assert.ok(!cfg.urlFilter.test('https://www.slantmagazine.com/film/a-film-review/'));
+    assert.ok(!cfg.urlFilter.test('https://www.slantmagazine.com/music/an-album-review/'));
+  });
+});

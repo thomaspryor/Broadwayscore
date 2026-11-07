@@ -215,8 +215,9 @@ const OUTLET_STRATEGY_CONFIG = {
   operawire:                { strategy: 'rss', url: 'https://operawire.com/feed/' },
   // Stage and Cinema: theater + film coverage; findMatchingShows guards film-only items
   stageandcinema:           { strategy: 'rss', url: 'https://www.stageandcinema.com/feed/' },
-  // Slant Magazine: film + theater criticism; theater-specific feed for precision
-  slantmagazine:            { strategy: 'rss', url: 'https://www.slantmagazine.com/theater/feed/' },
+  // Slant Magazine: film + music + theater criticism. The /theater/ feed is Cloudflare-blocked on every
+  // provider (BRO-6953), so read the all-site feed through the proxy chain and keep /theater/ slugs only.
+  slantmagazine:            { strategy: 'rss', url: 'https://slantmagazine.com/feed/', urlFilter: /\/theater\// },
   // David Cote (Cote Notices) Substack: theater criticism newsletter; all content is theater
   'cote-notices':           { strategy: 'rss', url: 'https://davidcote1.substack.com/feed' },
   // City A.M.: London business paper; theatre category RSS has West End reviews
