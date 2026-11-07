@@ -1,22 +1,22 @@
 {
-  "generatedAt": "2026-11-06T22:26:51.704Z",
+  "generatedAt": "2026-11-07T00:27:24.504Z",
   "windowDays": 1095,
-  "targets": 905,
-  "auditedThisRun": 11,
-  "carriedForward": 2050,
+  "targets": 899,
+  "auditedThisRun": 5,
+  "carriedForward": 2056,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
     "withGap": 641,
-    "missingCurrentRun": 1213,
+    "missingCurrentRun": 1214,
     "totalCitedNoUrl": 0,
     "totalFlaggedMisses": 903,
     "totalRecoverable": 56,
     "totalRecovered": 90,
     "humanExcluded": 26,
-    "automatedExcluded": 1008,
+    "automatedExcluded": 1009,
     "automatedExcludedListed": 712,
-    "priorProductionCitations": 6092
+    "priorProductionCitations": 6088
   },
   "results": [
     {
@@ -62148,10 +62148,10 @@
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
         "https://www.tkqlhce.com/click-8360975-13869954",
+        "https://coffeetablenotes.blogspot.com/2026/10/ceilidh-not-so-merry-dance.html",
+        "https://herring-gerbil-e2c7.squarespace.com/reviews/review-ceilidh-at-shoreditch-town-hall",
         "https://everything-theatre.co.uk/2026/11/review-ceilidh-the-musical-shoreditch-town-hall/",
         "https://www.whatsonstage.com/news/ceilidh-the-musical-at-shoreditch-town-hall-and-on-tour-review_1736207/",
-        "https://www.theatre-news.com/news/UK/127828/Ceilidh-A-New-Musical-reels-into-Shoreditch-Town-Hall-ahead-of-extensive-tour",
-        "https://broadwaybaby.com/shows/ceilidh-the-musical/839235",
         "https://www.londontheatre.co.uk/reviews/ceilidh-the-musical-review-shoreditch-town-hall",
         "https://www.thestage.co.uk/reviews/ceilidh-the-musical-review",
         "https://www.broadwayworld.com/westend/article/Review-CEILIDH-Shoreditch-Town-Hall-20261030",
@@ -62169,15 +62169,16 @@
         "https://therecs.co.uk/ceilidh-the-musical-touring/",
         "https://firstnightmagazine.com/2026/11/02/review-of-ceilidh-unconventional-scottish-musical-isnt-that-brave-but-it-teems-with-heart/",
         "https://musicaltheatrereview.com/ceilidh-a-new-musical-shoreditch-town-hall-and-touring/",
+        "https://broadwaybaby.com/shows/ceilidh-the-musical/839235",
         "https://www.bestoftheatre.co.uk/blog/post/circa-duck-pond-ceilidh-the-musical-brighton-dome-christmas-2026",
         "https://musicalzentrale.de/151521/ceilidh-the-musical/",
         "https://www.lsbo.co.uk/musical/ceilidh",
         "https://www.theatrebookings.com/musical/ceilidh",
         "https://www.londontheatrereviews.co.uk/post.cfm?p=29488"
       ],
-      "dirFiles": 37,
-      "dirClean": 20,
-      "inReviewsJson": 20,
+      "dirFiles": 38,
+      "dirClean": 21,
+      "inReviewsJson": 21,
       "missing": [
         {
           "url": "https://www.tkqlhce.com/click-8360975-13869954",
@@ -62189,9 +62190,25 @@
               "sourceUrl": "https://www.show-score.com/uk/london/west-end-shows/ceilidh-the-musical"
             }
           ]
+        },
+        {
+          "url": "https://herring-gerbil-e2c7.squarespace.com/reviews/review-ceilidh-at-shoreditch-town-hall",
+          "host": "herring-gerbil-e2c7.squarespace.com",
+          "knownOutletId": null,
+          "serpCensus": true,
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ]
         }
       ],
       "dirOnly": [
+        {
+          "host": "islingtontribune.co.uk",
+          "count": 1
+        },
         {
           "host": "unmissabletheatre.co.uk",
           "count": 1
@@ -62199,9 +62216,9 @@
       ],
       "flaggedMisses": [
         {
-          "url": "https://www.theatre-news.com/news/UK/127828/Ceilidh-A-New-Musical-reels-into-Shoreditch-Town-Hall-ahead-of-extensive-tour",
-          "host": "theatre-news.com",
-          "knownOutletId": "theatre-news",
+          "url": "https://coffeetablenotes.blogspot.com/2026/10/ceilidh-not-so-merry-dance.html",
+          "host": "coffeetablenotes.blogspot.com",
+          "knownOutletId": "coffee-table-notes",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -62209,17 +62226,19 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "theatre-news--unknown.json",
+              "file": "coffee-table-notes--labels.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://www.theatre-news.com/news/UK/127828/Ceilidh-A-New-Musical-reels-into-Shoreditch-Town-Hall-ahead-of-extensive-tour"
+              "urlInDir": "https://coffeetablenotes.blogspot.com/2026/10/ceilidh-not-so-merry-dance.html"
             }
           ],
           "exclusion": "automatedExcluded",
           "basis": [
             "wrongProduction"
           ],
-          "priorRun": true,
-          "priorRunSource": "flagged-file-date:2026-07-09",
+          "confirmedNonReview": true,
+          "confirmedBasis": [
+            "non-review"
+          ],
           "sources": [
             {
               "source": "serp-census",
@@ -62436,7 +62455,7 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 8,
+            "results": 0,
             "accepted": 0,
             "error": null
           },
@@ -62446,8 +62465,8 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 8,
-            "accepted": 2,
+            "results": 0,
+            "accepted": 0,
             "error": null
           },
           {
@@ -62456,7 +62475,7 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 8,
+            "results": 0,
             "accepted": 0,
             "error": null
           },
@@ -62467,7 +62486,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           },
           {
@@ -62476,23 +62495,23 @@
             "page": 2,
             "geo": "gb",
             "ok": true,
-            "results": 10,
-            "accepted": 2,
+            "results": 9,
+            "accepted": 1,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 4,
+        "resultCount": 2,
         "error": null
       },
       "candidatesRejected": {
-        "count": 40,
+        "count": 17,
         "byReason": {
-          "non-review-host": 12,
-          "not-http-url": 26,
-          "no-review-evidence": 1,
-          "aggregator-internal-nav": 1
+          "non-review-host": 6,
+          "not-http-url": 8,
+          "census-junk-host": 2,
+          "ticketing-reseller": 1
         }
       },
       "dedupedVariants": [],
@@ -62514,6 +62533,13 @@
           "priorRun": false,
           "reason": "unregistered-host",
           "censusGateOn": true
+        },
+        {
+          "url": "https://herring-gerbil-e2c7.squarespace.com/reviews/review-ceilidh-at-shoreditch-town-hall",
+          "host": "herring-gerbil-e2c7.squarespace.com",
+          "priorRun": false,
+          "reason": "unregistered-host",
+          "censusGateOn": true
         }
       ],
       "ingestResults": [],
@@ -62527,6 +62553,13 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.tkqlhce.com/click-8360975-13869954"
+          },
+          {
+            "outletId": "herring-gerbil-e2c7.squarespace.com",
+            "outlet": "herring-gerbil-e2c7.squarespace.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://herring-gerbil-e2c7.squarespace.com/reviews/review-ceilidh-at-shoreditch-town-hall"
           },
           {
             "outletId": "broadway-baby",
@@ -62694,6 +62727,13 @@
             "firstSeenAt": "2026-11-02T22:17:21.424Z"
           },
           {
+            "url": "https://herring-gerbil-e2c7.squarespace.com/reviews/review-ceilidh-at-shoreditch-town-hall",
+            "outletId": "herring-gerbil-e2c7.squarespace.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-11-07T00:27:24.504Z"
+          },
+          {
             "url": "https://broadwaybaby.com/shows/ceilidh-the-musical/839235",
             "outletId": "broadway-baby",
             "state": "GAP",
@@ -62735,12 +62775,17 @@
             "url": "https://www.timeout.com/london/theatre/ceilidh-the-musical",
             "host": "timeout.com",
             "reason": "timeout-listing-blurb"
+          },
+          {
+            "url": "https://coffeetablenotes.blogspot.com/2026/10/ceilidh-not-so-merry-dance.html",
+            "host": "coffeetablenotes.blogspot.com",
+            "reason": "confirmed-non-review"
           }
         ],
         "liveCount": 20,
-        "candidateCount": 26
+        "candidateCount": 27
       },
-      "computedAt": "2026-11-06T05:00:24.054Z"
+      "computedAt": "2026-11-07T00:27:24.504Z"
     },
     {
       "showId": "celebrity-autobiography-2026",
@@ -162611,7 +162656,7 @@
       "showId": "iphigenie-en-tauride-english-national-opera-west-end-2026",
       "title": "Iphigenie en Tauride - English National Opera",
       "openingDate": "2026-11-06",
-      "status": "upcoming",
+      "status": "open",
       "category": "west-end",
       "previewsStartDate": "2026-11-06",
       "aggregatorArticles": [],
@@ -162675,7 +162720,7 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 9,
+            "results": 0,
             "accepted": 0,
             "error": null
           },
@@ -162685,7 +162730,7 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 9,
+            "results": 4,
             "accepted": 0,
             "error": null
           },
@@ -162695,7 +162740,7 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 0,
+            "results": 9,
             "accepted": 0,
             "error": null
           },
@@ -162715,7 +162760,7 @@
             "page": 2,
             "geo": "gb",
             "ok": true,
-            "results": 10,
+            "results": 0,
             "accepted": 0,
             "error": null
           }
@@ -162726,12 +162771,13 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 35,
+        "count": 17,
         "byReason": {
-          "not-http-url": 30,
-          "non-review-host": 2,
-          "census-junk-host": 2,
-          "no-review-evidence": 1
+          "non-review-host": 4,
+          "not-http-url": 10,
+          "census-junk-host": 1,
+          "event-listing": 1,
+          "ticketing-listing": 1
         }
       },
       "dedupedVariants": [],
@@ -162746,7 +162792,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-11-06T13:00:59.974Z"
+      "computedAt": "2026-11-07T00:27:24.504Z"
     },
     {
       "showId": "iphigenie-en-tauride-west-end-2026",
@@ -227779,17 +227825,12 @@
     {
       "showId": "msblackforpresident-off-broadway-2026",
       "title": "Ms. Blakk for President",
-      "openingDate": "2026-11-01",
-      "status": "open",
+      "openingDate": "2026-11-08",
+      "status": "previews",
       "category": "off-broadway",
-      "previewsStartDate": "2026-10-15",
-      "aggregatorArticles": [
-        "https://playbill.com/article/read-reviews-for-tarell-alvin-mccraneys-ms-blakk-for-president"
-      ],
+      "previewsStartDate": "2026-10-22",
+      "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://www.chicagoreader.com/chicago/ms-blakk-for-president-steppenwolf/Content",
-        "https://chicago.suntimes.com/2019/6/4/18652634/ms-blakk-for-president-review-steppenwolf-chicago-powerfully-moving-and-fun",
-        "https://www.nytimes.com/2019/06/04/theater/ms-blakk-for-president-review-tarell-mccraney.html",
         "https://variety.com/2026/legit/news/wayne-brady-starring-tina-landau-tarell-alvin-mccraney-ms-blakk-for-president-vineyard-theatre-1236736622/",
         "https://storefrontrebellion.substack.com/p/sr-review-ms-blakk-for-president",
         "https://aroundthetownchicago.com/theatre-reviews/ms-blakk-for-president/",
@@ -227799,19 +227840,6 @@
       "dirClean": 0,
       "inReviewsJson": 0,
       "missing": [
-        {
-          "url": "https://chicago.suntimes.com/2019/6/4/18652634/ms-blakk-for-president-review-steppenwolf-chicago-powerfully-moving-and-fun",
-          "host": "suntimes.com",
-          "knownOutletId": "chicago-sun-times",
-          "sources": [
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://playbill.com/article/read-reviews-for-tarell-alvin-mccraneys-ms-blakk-for-president"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
         {
           "url": "https://variety.com/2026/legit/news/wayne-brady-starring-tina-landau-tarell-alvin-mccraney-ms-blakk-for-president-vineyard-theatre-1236736622/",
           "host": "variety.com",
@@ -227862,102 +227890,21 @@
         }
       ],
       "dirOnly": [],
-      "flaggedMisses": [
-        {
-          "url": "https://www.chicagoreader.com/chicago/ms-blakk-for-president-steppenwolf/Content",
-          "host": "chicagoreader.com",
-          "knownOutletId": "chicago-reader",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "chicago-reader--dan-jakes.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.chicagoreader.com/chicago/ms-blakk-for-president-steppenwolf/Content?oid=70761615"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date",
-          "sources": [
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://playbill.com/article/read-reviews-for-tarell-alvin-mccraneys-ms-blakk-for-president"
-            }
-          ],
-          "reverify": false
-        },
-        {
-          "url": "https://www.nytimes.com/2019/06/04/theater/ms-blakk-for-president-review-tarell-mccraney.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nytimes--jesse-green.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.nytimes.com/2019/06/04/theater/ms-blakk-for-president-review-tarell-mccraney.html"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date",
-          "sources": [
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://playbill.com/article/read-reviews-for-tarell-alvin-mccraneys-ms-blakk-for-president"
-            }
-          ],
-          "reverify": false
-        }
-      ],
+      "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
         "ran": false,
-        "reason": "cooldown"
+        "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 103,
-        "byReason": {
-          "not-http-url": 5,
-          "non-review-host": 20,
-          "aggregator-internal-nav": 62,
-          "aggregator-section-root": 4,
-          "production-database-listing": 11,
-          "non-stage-review": 1
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
-      "priorRunArticles": [
-        {
-          "url": "https://playbill.com/article/read-reviews-for-tarell-alvin-mccraneys-ms-blakk-for-president",
-          "publishDate": "2019-06-05"
-        }
-      ],
       "automatedExcludedListed": 0,
       "unextractable": [],
       "weIngestBlocked": [
-        {
-          "url": "https://chicago.suntimes.com/2019/6/4/18652634/ms-blakk-for-president-review-steppenwolf-chicago-powerfully-moving-and-fun",
-          "host": "suntimes.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
         {
           "url": "https://storefrontrebellion.substack.com/p/sr-review-ms-blakk-for-president",
           "host": "storefrontrebellion.substack.com",
@@ -228051,29 +227998,29 @@
           {
             "url": "https://variety.com/2026/legit/news/wayne-brady-starring-tina-landau-tarell-alvin-mccraney-ms-blakk-for-president-vineyard-theatre-1236736622/",
             "outletId": "variety",
-            "state": "GAP",
-            "reason": "sla-breach",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
             "firstSeenAt": "2026-11-01T02:12:48.530Z"
           },
           {
             "url": "https://storefrontrebellion.substack.com/p/sr-review-ms-blakk-for-president",
             "outletId": "storefrontrebellion.substack.com",
-            "state": "GAP",
-            "reason": "sla-breach",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
             "firstSeenAt": "2026-11-01T02:12:48.530Z"
           },
           {
             "url": "https://aroundthetownchicago.com/theatre-reviews/ms-blakk-for-president/",
             "outletId": "around-the-town-chicago",
-            "state": "GAP",
-            "reason": "sla-breach",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
             "firstSeenAt": "2026-11-01T02:12:48.530Z"
           },
           {
             "url": "https://www.spotlightonlake.com/posts/ms-blakk-president-review-jeffrey-leibham",
             "outletId": "spotlightonlake",
-            "state": "GAP",
-            "reason": "sla-breach",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
             "firstSeenAt": "2026-11-01T05:20:32.260Z"
           }
         ],
@@ -228082,7 +228029,7 @@
         "liveCount": 0,
         "candidateCount": 4
       },
-      "computedAt": "2026-11-03T22:38:02.538Z"
+      "computedAt": "2026-11-07T00:27:24.504Z"
     },
     {
       "showId": "much-ado-about-nothing-globe-off-west-end-2026",
@@ -412874,7 +412821,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-11-05T00:54:32.366Z"
+      "computedAt": "2026-11-07T00:27:24.504Z"
     },
     {
       "showId": "war-horse-west-end-2026",
@@ -414935,7 +414882,6 @@
       "previewsStartDate": "2026-10-25",
       "aggregatorArticles": [
         "https://playbill.com/article/read-the-reviews-for-midterm-election-play-well-see-off-broadway",
-        "https://playbill.com/article/reviews-see-what-critics-had-to-say-about-sanaz-toossis-wish-you-were-here",
         "https://www.broadwayworld.com/article/Review-Roundup-WELL-SEE-Opens-at-The-Public-Theater-20261104"
       ],
       "aggregatorListedUrls": [
@@ -414947,11 +414893,28 @@
         "https://www.newyorktheatreguide.com/reviews/well-see-off-broadway-review",
         "https://www.theatermania.com/news/review-richard-nelsons-apple-family-confront-the-end-of-history-in-well-see_1858880/"
       ],
-      "dirFiles": 8,
-      "dirClean": 7,
-      "inReviewsJson": 7,
+      "dirFiles": 14,
+      "dirClean": 11,
+      "inReviewsJson": 11,
       "missing": [],
-      "dirOnly": [],
+      "dirOnly": [
+        {
+          "host": "lightingandsoundamerica.com",
+          "count": 1
+        },
+        {
+          "host": "nysun.com",
+          "count": 1
+        },
+        {
+          "host": "theaterpizzazz.com",
+          "count": 1
+        },
+        {
+          "host": "t2conline.com",
+          "count": 1
+        }
+      ],
       "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
@@ -414976,7 +414939,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 7,
+            "results": 0,
             "accepted": 0,
             "error": null
           },
@@ -414996,7 +414959,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 8,
+            "results": 9,
             "accepted": 0,
             "error": null
           },
@@ -415006,7 +414969,7 @@
             "page": 1,
             "geo": "us",
             "ok": true,
-            "results": 0,
+            "results": 10,
             "accepted": 0,
             "error": null
           },
@@ -415027,25 +414990,19 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 545,
+        "count": 414,
         "byReason": {
-          "aggregator-internal-nav": 292,
+          "non-review-host": 37,
           "not-http-url": 103,
-          "production-database-listing": 20,
-          "aggregator-section-root": 14,
-          "non-review-host": 60,
-          "non-stage-review": 2,
-          "roundup-page": 53,
+          "aggregator-internal-nav": 248,
+          "production-database-listing": 9,
+          "aggregator-section-root": 10,
+          "non-stage-review": 1,
+          "roundup-page": 5,
           "podcast-episode": 1
         }
       },
       "dedupedVariants": [],
-      "priorRunArticles": [
-        {
-          "url": "https://playbill.com/article/reviews-see-what-critics-had-to-say-about-sanaz-toossis-wish-you-were-here",
-          "publishDate": "2022-05-04"
-        }
-      ],
       "automatedExcludedListed": 0,
       "unextractable": [],
       "censusVerdict": {
@@ -415101,7 +415058,7 @@
         "liveCount": 6,
         "candidateCount": 6
       },
-      "computedAt": "2026-11-06T13:00:59.974Z"
+      "computedAt": "2026-11-07T00:27:24.504Z"
     },
     {
       "showId": "wesley-off-broadway-2025",
@@ -425482,26 +425439,23 @@
     }
   ],
   "staleness": {
-    "at": "2026-11-06T22:26:51.703Z",
+    "at": "2026-11-07T00:27:24.503Z",
     "reserveEvery": 4,
     "reservedAttempted": [
-      "a-few-good-men-2026",
-      "kelly-mccaughan-catholic-guilt-off-broadway-2026"
+      "ceilidh-the-musical-off-west-end-2026"
     ],
     "catalogueReserveEvery": 8,
-    "catalogueAttempted": [
-      "4-48-psychosis-west-end-2025"
-    ],
-    "neverAuditedDueAtStart": 630,
+    "catalogueAttempted": [],
+    "neverAuditedDueAtStart": 632,
     "oldestDueRowAtStart": {
       "showId": "this-is-my-favorite-song-off-broadway-2024",
       "computedAt": "2026-10-23T14:07:48.228Z",
-      "ageHours": 344
+      "ageHours": 346
     },
     "oldestDueRowAfterRun": {
       "showId": "this-is-my-favorite-song-off-broadway-2024",
       "computedAt": "2026-10-23T14:07:48.228Z",
-      "ageHours": 344.3
+      "ageHours": 346.3
     }
   }
 }

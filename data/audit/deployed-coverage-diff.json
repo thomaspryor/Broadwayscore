@@ -1,13 +1,48 @@
 {
-  "generatedAt": "2026-11-06T22:27:48.027Z",
+  "generatedAt": "2026-11-07T00:28:00.979Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 323,
-  "clean": 323,
-  "defective": 0,
-  "byType": {},
-  "shows": [],
+  "checked": 320,
+  "clean": 318,
+  "defective": 2,
+  "byType": {
+    "score-drift": 2
+  },
+  "shows": [
+    {
+      "showId": "the-unbelievers-off-broadway-2026",
+      "title": "The Unbelievers",
+      "openingDate": "2026-11-05",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 69.79 vs local 69.7 (Δ0.09)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 13,
+      "deployedCount": 13,
+      "firstDefectAt": "2026-11-07T00:27:55.756Z"
+    },
+    {
+      "showId": "parcel-from-america-off-broadway-2026",
+      "title": "Parcel from America",
+      "openingDate": "2026-11-04",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 70.35 vs local 69.2 (Δ1.15)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 4,
+      "deployedCount": 5,
+      "firstDefectAt": "2026-11-07T00:27:55.756Z"
+    }
+  ],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }

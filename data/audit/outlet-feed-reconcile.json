@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-06T22:27:48.474Z",
+  "generatedAt": "2026-11-07T00:28:01.416Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -27,6 +27,11 @@
       "id": "tosca-off-broadway-2026",
       "title": "Tosca",
       "openingDate": "2026-11-01"
+    },
+    {
+      "id": "msblackforpresident-off-broadway-2026",
+      "title": "Ms. Blakk for President",
+      "openingDate": "2026-11-08"
     },
     {
       "id": "222-a-ghost-story-off-broadway-2026",
@@ -81,6 +86,10 @@
   ],
   "skipped": [
     {
+      "showId": "wanted-2022",
+      "reason": "no data/review-texts directory for this show"
+    },
+    {
       "showId": "iphigenie-en-tauride-english-national-opera-west-end-2026",
       "reason": "no data/review-texts directory for this show"
     },
@@ -116,7 +125,7 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 836,
+  "itemsScanned": 832,
   "matchedGaps": 8,
   "possibleGaps": 4,
   "gaps": [
