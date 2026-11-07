@@ -1830,9 +1830,15 @@ const URL_BODY_FIELDS = [
  * @returns {string[]} keys reverted
  */
 function revertBodyFromRefusedUrl(before, existing, input, fields) {
-  if (!input || !input.url || !existing.url || !fields) return [];
-  const { urlCanonicallyChanged } = require('./url-change-invariant');
-  if (!urlCanonicallyChanged(existing.url, input.url)) return [];
+  if (!input || !input.url || !fields) return [];
+  if (existing.url) {
+    const { urlCanonicallyChanged } = require('./url-change-invariant');
+    if (!urlCanonicallyChanged(existing.url, input.url)) return [];
+  } else if (!isAggregatorPageUrl(input.url)) {
+    // BRO-7091: a url-less file whose first-set url was refused as an
+    // aggregator/roundup page keeps no body or date from that roundup either.
+    return [];
+  }
   const reverted = [];
   for (const key of URL_BODY_FIELDS) {
     if (fields[key] == null || before[key]) continue;

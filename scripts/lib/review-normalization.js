@@ -815,8 +815,8 @@ function mergeReviews(existing, incoming, options = {}, context = {}) {
   // page, but mergeReviews did not: a Gold Derby review file merged with an
   // incoming record carrying the "-reviews/" roundup url swapped onto it and
   // wiped its own state. Soft refusal like urlCollidesWithSibling: the url
-  // and incoming fullText are refused, while aggregator metadata (bwwExcerpt,
-  // bwwScore, ...) still merges. Covers first-set too (review-file-writer
+  // and incoming fullText are refused (and its date and score, BRO-7091),
+  // while aggregator excerpts and thumbs still merge. Covers first-set too (review-file-writer
   // refuses the same first-set at its aggregator-url guard).
   const urlIsAggregatorPage = !!incoming.url && !incomingUrlGarbage
     && (urlChanged || !existing.url)
@@ -1027,6 +1027,13 @@ function mergeReviews(existing, incoming, options = {}, context = {}) {
     && /^https?:\/\//i.test(incoming.url) && /^https?:\/\//i.test(merged.url)
     && normalizeUrl(incoming.url) !== normalizeUrl(merged.url)
     && _movedAwayFrom.includes(normalizeUrl(incoming.url)));
+  // BRO-7091: a refused aggregator-page url (BRO-7079) means the incoming
+  // row's date is the roundup's (Black Swan BWW 2026-06-15 vs the review's
+  // own 06-14) and its score comes from the roundup listing, so neither is
+  // copied. Its byline still fills an Unknown one: per-critic roundup rows
+  // (WET, BWW RR) name this review's own critic, and gather-reviews renames
+  // the file to that critic right after this merge (Unknown→named).
+  const incomingMetaRefused = incomingIsOtherArticle || urlIsAggregatorPage;
 
   // Upgrade Unknown critic name from incoming data
   if (!incomingIsOtherArticle && incoming.criticName && incoming.criticName !== 'Unknown'
@@ -1065,13 +1072,13 @@ function mergeReviews(existing, incoming, options = {}, context = {}) {
   const incomingIsAggregator = AGGREGATOR_SCORE_SOURCES.has(incoming.scoreSource);
   // BRO-5064: never onto an outlet that publishes no critic rating (london-theatre).
   const outletTakesScore = !require('./score-extractors').publishesNoCriticRating(merged.outletId || existing.outletId);
-  if (incoming.originalScore && !existing.originalScore && !incomingIsAggregator && outletTakesScore) {
+  if (incoming.originalScore && !existing.originalScore && !incomingIsAggregator && outletTakesScore && !incomingMetaRefused) {
     merged.originalScore = incoming.originalScore;
     merged.originalRating = incoming.originalRating;
   }
 
   // Keep better publish date
-  if (incoming.publishDate && !existing.publishDate && !incomingIsOtherArticle) {
+  if (incoming.publishDate && !existing.publishDate && !incomingMetaRefused) {
     merged.publishDate = incoming.publishDate;
   }
 

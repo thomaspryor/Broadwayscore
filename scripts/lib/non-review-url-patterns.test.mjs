@@ -702,6 +702,50 @@ test('mergeReviews: refuses an aggregator-page url (swap or first-set), keeps me
   assert.notEqual(normal.url, GD_NEWS);
 });
 
+// BRO-7091: a refused aggregator url copied the roundup's date and score
+// onto the critic's file (Black Swan BWW: roundup 2026-06-15 won over the
+// review's own 06-14). The byline still fills: gather-reviews renames the
+// file to that critic right after the merge (Unknown→named).
+test('mergeReviews: a refused aggregator-page url copies no publishDate or originalScore, still fills an Unknown byline', () => {
+  const { mergeReviews } = require('./review-normalization.js');
+  const ctx = { showId: 'black-swan-regional-2026', script: 'test' };
+  const roundupRow = {
+    url: 'https://www.broadwayworld.com/article/Review-Roundup-BLACK-SWAN-Opens-at-American-Repertory-Theater-20260615',
+    publishDate: '2026-06-15', criticName: 'R. Scott Reedy', originalScore: 70, originalRating: '3.5/5', bwwExcerpt: 'excerpt',
+  };
+  const OWN = 'https://www.broadwayworld.com/boston/article/Review-BLACK-SWAN-at-American-Repertory-Theater-20260614';
+  const swap = mergeReviews({ outletId: 'broadwayworld', criticName: 'Unknown', url: OWN }, { ...roundupRow }, {}, ctx);
+  assert.equal(swap.url, OWN);
+  assert.equal(swap.publishDate, undefined);
+  assert.equal(swap.criticName, 'R. Scott Reedy');
+  assert.equal(swap.originalScore, undefined);
+  assert.equal(swap.bwwExcerpt, 'excerpt'); // aggregator excerpt still merges
+  const firstSet = mergeReviews({ outletId: 'broadwayworld' }, { ...roundupRow }, {}, ctx);
+  assert.ok(!firstSet.url);
+  assert.equal(firstSet.publishDate, undefined);
+  assert.equal(firstSet.criticName, 'R. Scott Reedy');
+  assert.equal(firstSet.originalScore, undefined);
+  // control: a normal own-article url still fills all three
+  const own = mergeReviews({ outletId: 'broadwayworld', criticName: 'Unknown' },
+    { url: OWN, publishDate: '2026-06-14', criticName: 'R. Scott Reedy', originalScore: 70 }, {}, ctx);
+  assert.equal(own.publishDate, '2026-06-14');
+  assert.equal(own.criticName, 'R. Scott Reedy');
+  assert.equal(own.originalScore, 70);
+});
+
+test('revertBodyFromRefusedUrl: a refused aggregator first-set on a url-less file drops the roundup body and date (BRO-7091)', () => {
+  const { revertBodyFromRefusedUrl } = require('./review-file-writer.js');
+  const roundup = 'https://www.broadwayworld.com/article/Review-Roundup-BLACK-SWAN-Opens-at-American-Repertory-Theater-20260615';
+  const fields = { publishDate: '2026-06-15', fullText: 'roundup text' };
+  const existing = { outletId: 'broadwayworld', ...fields };
+  const keys = revertBodyFromRefusedUrl({ outletId: 'broadwayworld' }, existing, { url: roundup }, fields);
+  assert.deepEqual(keys.sort(), ['fullText', 'publishDate']);
+  assert.equal(existing.publishDate, undefined);
+  // a url-less file with a non-aggregator url is untouched (unchanged behavior)
+  const own = { outletId: 'x', ...fields };
+  assert.deepEqual(revertBodyFromRefusedUrl({ outletId: 'x' }, own, { url: 'https://www.goldderby.com/theater/2026/black-swan-review/' }, fields), []);
+});
+
 test('ingestBlockReason: a host outside the outlet registry is refused (BRO-6685)', () => {
   const { ingestBlockReason } = require('./gap-ingest-policy.js');
   const opts = { showIsWe: false, weGateOn: false, lowTrustSources: new Set(), serpCensusGateOn: false };
