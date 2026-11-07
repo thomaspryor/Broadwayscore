@@ -1,427 +1,217 @@
 {
-  "generatedAt": "2026-11-06T23:53:35.856Z",
+  "generatedAt": "2026-11-07T03:35:45.551Z",
   "thresholdHours": 24,
   "cooldownHours": 12,
   "escalateAfterAttempts": 3,
   "maxDispatchesPerRun": 30,
   "flagged": [
     {
-      "firstFlaggedAt": "2026-10-29T11:34:10.500Z",
-      "dispatchAttempts": 1,
-      "lastDispatchedAt": "2026-11-06T23:53:35.856Z",
-      "id": "children-of-the-sun-west-end-2013",
-      "title": "Children of the Sun"
-    },
-    {
-      "firstFlaggedAt": "2026-10-29T11:34:10.500Z",
-      "dispatchAttempts": 1,
-      "lastDispatchedAt": "2026-11-06T23:53:35.856Z",
-      "id": "peter-and-alice-west-end-2013",
-      "title": "Peter and Alice"
-    },
-    {
-      "firstFlaggedAt": "2026-10-29T11:34:10.500Z",
-      "dispatchAttempts": 1,
-      "lastDispatchedAt": "2026-11-06T23:53:35.856Z",
-      "id": "the-winslow-boy-west-end-2013",
-      "title": "The Winslow Boy"
-    },
-    {
-      "firstFlaggedAt": "2026-10-29T11:34:10.500Z",
-      "dispatchAttempts": 1,
-      "lastDispatchedAt": "2026-11-06T23:53:35.856Z",
-      "id": "damned-by-despair-west-end-2012",
-      "title": "Damned by Despair"
-    },
-    {
-      "firstFlaggedAt": "2026-10-29T11:34:10.500Z",
-      "dispatchAttempts": 1,
-      "lastDispatchedAt": "2026-11-06T23:53:35.856Z",
-      "id": "jumpy-west-end-2012",
-      "title": "Jumpy"
-    },
-    {
-      "firstFlaggedAt": "2026-10-29T11:34:10.500Z",
-      "dispatchAttempts": 1,
-      "lastDispatchedAt": "2026-11-06T23:53:35.856Z",
-      "id": "the-curious-incident-of-the-dog-in-the-night-time-west-end-2012",
-      "title": "The Curious Incident of the Dog in the Night-Time"
-    },
-    {
-      "firstFlaggedAt": "2026-10-29T11:34:10.500Z",
-      "dispatchAttempts": 1,
-      "lastDispatchedAt": "2026-11-06T23:53:35.856Z",
-      "id": "the-awkward-squad-west-end-2012",
-      "title": "The Awkward Squad"
-    },
-    {
-      "firstFlaggedAt": "2026-10-29T11:34:10.500Z",
-      "dispatchAttempts": 1,
-      "lastDispatchedAt": "2026-11-06T23:53:35.856Z",
-      "id": "august-osage-county-national-theatre-west-end-2008",
-      "title": "August: Osage County"
-    },
-    {
-      "firstFlaggedAt": "2026-10-29T17:48:37.465Z",
-      "dispatchAttempts": 1,
-      "lastDispatchedAt": "2026-11-06T23:53:35.856Z",
-      "id": "ode-to-the-wasp-woman-off-broadway-2023",
-      "title": "Ode to the Wasp Woman"
-    },
-    {
-      "firstFlaggedAt": "2026-10-29T17:48:37.465Z",
-      "dispatchAttempts": 1,
-      "lastDispatchedAt": "2026-11-06T23:53:35.856Z",
-      "id": "the-smuggler-off-broadway-2023",
-      "title": "The Smuggler"
-    },
-    {
-      "firstFlaggedAt": "2026-10-29T17:48:37.465Z",
-      "dispatchAttempts": 1,
-      "lastDispatchedAt": "2026-11-06T23:53:35.856Z",
-      "id": "fleabag-west-end-2019",
-      "title": "Fleabag"
-    },
-    {
-      "firstFlaggedAt": "2026-10-29T17:48:37.465Z",
-      "dispatchAttempts": 1,
-      "lastDispatchedAt": "2026-11-06T23:53:35.856Z",
-      "id": "let-it-be-west-end-2014",
-      "title": "Let It Be"
-    },
-    {
-      "firstFlaggedAt": "2026-10-29T17:48:37.465Z",
-      "dispatchAttempts": 1,
-      "lastDispatchedAt": "2026-11-06T23:53:35.856Z",
-      "id": "seussical-the-musical-west-end-2013",
-      "title": "Seussical the Musical"
-    },
-    {
-      "firstFlaggedAt": "2026-10-29T17:48:37.465Z",
-      "dispatchAttempts": 1,
-      "lastDispatchedAt": "2026-11-06T23:53:35.856Z",
-      "id": "let-it-be-west-end-2012",
-      "title": "Let It Be"
-    },
-    {
-      "firstFlaggedAt": "2026-10-29T17:48:37.465Z",
-      "dispatchAttempts": 1,
-      "lastDispatchedAt": "2026-11-06T23:53:35.856Z",
-      "id": "rosencrantz-and-guildenstern-are-dead-west-end-2011",
-      "title": "Rosencrantz and Guildenstern are Dead"
-    },
-    {
-      "firstFlaggedAt": "2026-10-29T17:48:37.465Z",
-      "dispatchAttempts": 1,
-      "lastDispatchedAt": "2026-11-06T23:53:35.856Z",
-      "id": "butley-west-end-2011",
-      "title": "Butley"
-    },
-    {
-      "firstFlaggedAt": "2026-10-29T17:48:37.465Z",
-      "dispatchAttempts": 1,
-      "lastDispatchedAt": "2026-11-06T23:53:35.856Z",
-      "id": "pygmalion-west-end-2011",
-      "title": "Pygmalion"
-    },
-    {
       "firstFlaggedAt": "2026-10-29T23:42:17.735Z",
       "dispatchAttempts": 1,
-      "lastDispatchedAt": "2026-11-06T23:53:35.856Z",
-      "id": "the-high-life-the-musical-still-living-it-dundee-rep-regional-2026",
-      "title": "The High Life: The Musical, Still Living It!"
-    },
-    {
-      "firstFlaggedAt": "2026-10-29T23:42:17.735Z",
-      "dispatchAttempts": 1,
-      "lastDispatchedAt": "2026-11-06T23:53:35.856Z",
-      "id": "what-im-here-for-tron-regional-2026",
-      "title": "What I'm Here For"
-    },
-    {
-      "firstFlaggedAt": "2026-10-29T23:42:17.735Z",
-      "dispatchAttempts": 1,
-      "lastDispatchedAt": "2026-11-06T23:53:35.856Z",
-      "id": "private-lives-royal-exchange-regional-2026",
-      "title": "Private Lives"
-    },
-    {
-      "firstFlaggedAt": "2026-10-29T23:42:17.735Z",
-      "dispatchAttempts": 1,
-      "lastDispatchedAt": "2026-11-06T23:53:35.856Z",
-      "id": "the-complete-works-of-william-shakespeare-abridged-bristol-old-vic-regional-2026",
-      "title": "The Complete Works of William Shakespeare (Abridged)"
-    },
-    {
-      "firstFlaggedAt": "2026-10-29T23:42:17.735Z",
-      "dispatchAttempts": 1,
-      "lastDispatchedAt": "2026-11-06T23:53:35.856Z",
-      "id": "henry-v-royal-shakespeare-regional-2026",
-      "title": "Henry V"
-    },
-    {
-      "firstFlaggedAt": "2026-10-29T23:42:17.735Z",
-      "dispatchAttempts": 1,
-      "lastDispatchedAt": "2026-11-06T23:53:35.856Z",
-      "id": "living-sheffield-regional-2026",
-      "title": "Living"
-    },
-    {
-      "firstFlaggedAt": "2026-10-29T23:42:17.735Z",
-      "dispatchAttempts": 1,
-      "lastDispatchedAt": "2026-11-06T23:53:35.856Z",
-      "id": "the-secret-garden-york-royal-regional-2026",
-      "title": "The Secret Garden"
-    },
-    {
-      "firstFlaggedAt": "2026-10-29T23:42:17.735Z",
-      "dispatchAttempts": 1,
-      "lastDispatchedAt": "2026-11-06T23:53:35.856Z",
-      "id": "small-island-leeds-regional-2026",
-      "title": "Small Island"
-    },
-    {
-      "firstFlaggedAt": "2026-10-29T23:42:17.735Z",
-      "dispatchAttempts": 1,
-      "lastDispatchedAt": "2026-11-06T23:53:35.856Z",
-      "id": "the-ladies-football-club-crucible-regional-2026",
-      "title": "The Ladies Football Club"
-    },
-    {
-      "firstFlaggedAt": "2026-10-29T23:42:17.735Z",
-      "dispatchAttempts": 1,
-      "lastDispatchedAt": "2026-11-06T23:53:35.856Z",
-      "id": "the-legend-of-davie-mckenzie-oran-mor-regional-2026",
-      "title": "The Legend of Davie McKenzie"
-    },
-    {
-      "firstFlaggedAt": "2026-10-29T23:42:17.735Z",
-      "dispatchAttempts": 1,
-      "lastDispatchedAt": "2026-11-06T23:53:35.856Z",
-      "id": "waiting-for-godot-citizens-regional-2026",
-      "title": "Waiting for Godot"
-    },
-    {
-      "firstFlaggedAt": "2026-10-29T23:42:17.735Z",
-      "dispatchAttempts": 1,
-      "lastDispatchedAt": "2026-11-06T23:53:35.856Z",
-      "id": "someones-knockin-at-the-door-oran-mor-regional-2026",
-      "title": "Someone's Knockin' at the Door"
-    },
-    {
-      "firstFlaggedAt": "2026-10-29T23:42:17.735Z",
-      "dispatchAttempts": 1,
-      "lastDispatchedAt": "2026-11-06T23:53:35.856Z",
-      "id": "road-royal-exchange-regional-2026",
-      "title": "Road"
-    },
-    {
-      "firstFlaggedAt": "2026-10-29T23:42:17.735Z",
-      "dispatchAttempts": 0,
-      "lastDispatchedAt": null,
+      "lastDispatchedAt": "2026-11-07T03:35:45.551Z",
       "id": "the-boy-who-harnessed-the-wind-royal-shakespeare-regional-2026",
       "title": "The Boy Who Harnessed the Wind"
     },
     {
       "firstFlaggedAt": "2026-10-29T23:42:17.735Z",
-      "dispatchAttempts": 0,
-      "lastDispatchedAt": null,
+      "dispatchAttempts": 1,
+      "lastDispatchedAt": "2026-11-07T03:35:45.551Z",
       "id": "saint-joan-citizens-regional-2026",
       "title": "Saint Joan"
     },
     {
       "firstFlaggedAt": "2026-10-29T23:42:17.735Z",
-      "dispatchAttempts": 0,
-      "lastDispatchedAt": null,
+      "dispatchAttempts": 1,
+      "lastDispatchedAt": "2026-11-07T03:35:45.551Z",
       "id": "macbeth-hull-truck-regional-2026",
       "title": "Macbeth"
     },
     {
       "firstFlaggedAt": "2026-10-29T23:42:17.735Z",
-      "dispatchAttempts": 0,
-      "lastDispatchedAt": null,
+      "dispatchAttempts": 1,
+      "lastDispatchedAt": "2026-11-07T03:35:45.551Z",
       "id": "the-last-picture-york-royal-regional-2026",
       "title": "The Last Picture"
     },
     {
       "firstFlaggedAt": "2026-10-29T23:42:17.735Z",
-      "dispatchAttempts": 0,
-      "lastDispatchedAt": null,
+      "dispatchAttempts": 1,
+      "lastDispatchedAt": "2026-11-07T03:35:45.551Z",
       "id": "it-walks-around-the-house-at-night-chichester-festival-regional-2026",
       "title": "It Walks Around the House at Night"
     },
     {
       "firstFlaggedAt": "2026-10-29T23:42:17.735Z",
-      "dispatchAttempts": 0,
-      "lastDispatchedAt": null,
+      "dispatchAttempts": 1,
+      "lastDispatchedAt": "2026-11-07T03:35:45.551Z",
       "id": "all-is-but-fantasy-royal-shakespeare-regional-2026",
       "title": "All Is But Fantasy"
     },
     {
       "firstFlaggedAt": "2026-10-29T23:42:17.735Z",
-      "dispatchAttempts": 0,
-      "lastDispatchedAt": null,
+      "dispatchAttempts": 1,
+      "lastDispatchedAt": "2026-11-07T03:35:45.551Z",
       "id": "the-memory-of-water-octagon-regional-2026",
       "title": "The Memory of Water"
     },
     {
       "firstFlaggedAt": "2026-10-29T23:42:17.735Z",
-      "dispatchAttempts": 0,
-      "lastDispatchedAt": null,
+      "dispatchAttempts": 1,
+      "lastDispatchedAt": "2026-11-07T03:35:45.551Z",
       "id": "crown-of-blood-crucible-regional-2026",
       "title": "Crown of Blood"
     },
     {
       "firstFlaggedAt": "2026-10-29T23:42:17.735Z",
-      "dispatchAttempts": 0,
-      "lastDispatchedAt": null,
+      "dispatchAttempts": 1,
+      "lastDispatchedAt": "2026-11-07T03:35:45.551Z",
       "id": "my-brothers-a-genius-sheffield-regional-2026",
       "title": "My Brother's a Genius"
     },
     {
       "firstFlaggedAt": "2026-10-29T23:42:17.735Z",
-      "dispatchAttempts": 0,
-      "lastDispatchedAt": null,
+      "dispatchAttempts": 1,
+      "lastDispatchedAt": "2026-11-07T03:35:45.551Z",
       "id": "a-boy-called-christmas-chichester-festival-regional-2025",
       "title": "A Boy Called Christmas"
     },
     {
       "firstFlaggedAt": "2026-10-29T23:42:17.735Z",
-      "dispatchAttempts": 0,
-      "lastDispatchedAt": null,
+      "dispatchAttempts": 1,
+      "lastDispatchedAt": "2026-11-07T03:35:45.551Z",
       "id": "treasure-island-bristol-old-vic-regional-2025",
       "title": "Treasure Island"
     },
     {
       "firstFlaggedAt": "2026-10-29T23:42:17.735Z",
-      "dispatchAttempts": 0,
-      "lastDispatchedAt": null,
+      "dispatchAttempts": 1,
+      "lastDispatchedAt": "2026-11-07T03:35:45.551Z",
       "id": "the-bfg-royal-shakespeare-regional-2025",
       "title": "The BFG"
     },
     {
       "firstFlaggedAt": "2026-10-29T23:42:17.735Z",
-      "dispatchAttempts": 0,
-      "lastDispatchedAt": null,
+      "dispatchAttempts": 1,
+      "lastDispatchedAt": "2026-11-07T03:35:45.551Z",
       "id": "sleeping-beauty-york-royal-regional-2025",
       "title": "Sleeping Beauty"
     },
     {
       "firstFlaggedAt": "2026-10-29T23:42:17.735Z",
-      "dispatchAttempts": 0,
-      "lastDispatchedAt": null,
+      "dispatchAttempts": 1,
+      "lastDispatchedAt": "2026-11-07T03:35:45.551Z",
       "id": "the-forsyte-saga-parts-1-and-2-royal-shakespeare-regional-2025",
       "title": "The Forsyte Saga Parts 1 & 2"
     },
     {
       "firstFlaggedAt": "2026-10-29T23:42:17.735Z",
-      "dispatchAttempts": 0,
-      "lastDispatchedAt": null,
+      "dispatchAttempts": 1,
+      "lastDispatchedAt": "2026-11-07T03:35:45.551Z",
       "id": "beauty-and-the-beast-citizens-regional-2025",
       "title": "Beauty and the Beast"
     },
     {
       "firstFlaggedAt": "2026-10-29T23:42:17.735Z",
-      "dispatchAttempts": 0,
-      "lastDispatchedAt": null,
+      "dispatchAttempts": 1,
+      "lastDispatchedAt": "2026-11-07T03:35:45.551Z",
       "id": "singin-in-the-rain-royal-exchange-regional-2025",
       "title": "Singin' in the Rain"
     },
     {
       "firstFlaggedAt": "2026-10-29T23:42:17.735Z",
-      "dispatchAttempts": 0,
-      "lastDispatchedAt": null,
+      "dispatchAttempts": 1,
+      "lastDispatchedAt": "2026-11-07T03:35:45.551Z",
       "id": "jack-and-the-beanstalk-dundee-rep-regional-2025",
       "title": "Jack and the Beanstalk"
     },
     {
       "firstFlaggedAt": "2026-10-29T23:42:17.735Z",
-      "dispatchAttempts": 0,
-      "lastDispatchedAt": null,
+      "dispatchAttempts": 1,
+      "lastDispatchedAt": "2026-11-07T03:35:45.551Z",
       "id": "gallus-in-weegieland-tron-regional-2025",
       "title": "Gallus in Weegieland"
     },
     {
       "firstFlaggedAt": "2026-10-29T23:42:17.735Z",
-      "dispatchAttempts": 0,
-      "lastDispatchedAt": null,
+      "dispatchAttempts": 1,
+      "lastDispatchedAt": "2026-11-07T03:35:45.551Z",
       "id": "macbeth-royal-shakespeare-regional-2025",
       "title": "Macbeth"
     },
     {
       "firstFlaggedAt": "2026-10-29T23:42:17.735Z",
-      "dispatchAttempts": 0,
-      "lastDispatchedAt": null,
+      "dispatchAttempts": 1,
+      "lastDispatchedAt": "2026-11-07T03:35:45.551Z",
       "id": "safe-space-chichester-festival-regional-2025",
       "title": "Safe Space"
     },
     {
       "firstFlaggedAt": "2026-10-29T23:42:17.735Z",
-      "dispatchAttempts": 0,
-      "lastDispatchedAt": null,
+      "dispatchAttempts": 1,
+      "lastDispatchedAt": "2026-11-07T03:35:45.551Z",
       "id": "gwendas-garage-sheffield-regional-2025",
       "title": "Gwenda's Garage"
     },
     {
       "firstFlaggedAt": "2026-10-29T23:42:17.735Z",
-      "dispatchAttempts": 0,
-      "lastDispatchedAt": null,
+      "dispatchAttempts": 1,
+      "lastDispatchedAt": "2026-11-07T03:35:45.551Z",
       "id": "small-hotel-royal-bath-regional-2025",
       "title": "Small Hotel"
     },
     {
       "firstFlaggedAt": "2026-10-29T23:42:17.735Z",
-      "dispatchAttempts": 0,
-      "lastDispatchedAt": null,
+      "dispatchAttempts": 1,
+      "lastDispatchedAt": "2026-11-07T03:35:45.551Z",
       "id": "marina-abramovic-balkan-erotic-epic-aviva-studios-regional-2025",
       "title": "Marina Abramović: Balkan Erotic Epic"
     },
     {
       "firstFlaggedAt": "2026-10-29T23:42:17.735Z",
-      "dispatchAttempts": 0,
-      "lastDispatchedAt": null,
+      "dispatchAttempts": 1,
+      "lastDispatchedAt": "2026-11-07T03:35:45.551Z",
       "id": "the-glass-menagerie-dundee-rep-regional-2025",
       "title": "The Glass Menagerie"
     },
     {
       "firstFlaggedAt": "2026-10-29T23:42:17.735Z",
-      "dispatchAttempts": 0,
-      "lastDispatchedAt": null,
+      "dispatchAttempts": 1,
+      "lastDispatchedAt": "2026-11-07T03:35:45.551Z",
       "id": "cheapo-oran-mor-regional-2025",
       "title": "Cheapo"
     },
     {
       "firstFlaggedAt": "2026-10-29T23:42:17.735Z",
-      "dispatchAttempts": 0,
-      "lastDispatchedAt": null,
+      "dispatchAttempts": 1,
+      "lastDispatchedAt": "2026-11-07T03:35:45.551Z",
       "id": "lord-of-the-flies-chichester-festival-regional-2025",
       "title": "Lord of the Flies"
     },
     {
       "firstFlaggedAt": "2026-10-29T23:42:17.735Z",
-      "dispatchAttempts": 0,
-      "lastDispatchedAt": null,
+      "dispatchAttempts": 1,
+      "lastDispatchedAt": "2026-11-07T03:35:45.551Z",
       "id": "black-hole-sign-tron-regional-2025",
       "title": "Black Hole Sign"
     },
     {
       "firstFlaggedAt": "2026-10-29T23:42:17.735Z",
-      "dispatchAttempts": 0,
-      "lastDispatchedAt": null,
+      "dispatchAttempts": 1,
+      "lastDispatchedAt": "2026-11-07T03:35:45.551Z",
       "id": "measure-for-measure-royal-shakespeare-regional-2025",
       "title": "Measure for Measure"
     },
     {
       "firstFlaggedAt": "2026-10-29T23:42:17.735Z",
-      "dispatchAttempts": 0,
-      "lastDispatchedAt": null,
+      "dispatchAttempts": 1,
+      "lastDispatchedAt": "2026-11-07T03:35:45.551Z",
       "id": "dancing-at-lughnasa-crucible-regional-2025",
       "title": "Dancing at Lughnasa"
     },
     {
       "firstFlaggedAt": "2026-10-29T23:42:17.735Z",
-      "dispatchAttempts": 0,
-      "lastDispatchedAt": null,
+      "dispatchAttempts": 1,
+      "lastDispatchedAt": "2026-11-07T03:35:45.551Z",
       "id": "earth-angel-stephen-joseph-regional-2025",
       "title": "Earth Angel"
     },
@@ -3072,6 +2862,62 @@
       "title": "Sweat"
     },
     {
+      "firstFlaggedAt": "2026-10-29T23:42:17.735Z",
+      "dispatchAttempts": 1,
+      "lastDispatchedAt": "2026-11-06T23:53:35.856Z",
+      "id": "the-high-life-the-musical-still-living-it-dundee-rep-regional-2026",
+      "title": "The High Life: The Musical, Still Living It!"
+    },
+    {
+      "firstFlaggedAt": "2026-10-29T23:42:17.735Z",
+      "dispatchAttempts": 1,
+      "lastDispatchedAt": "2026-11-06T23:53:35.856Z",
+      "id": "what-im-here-for-tron-regional-2026",
+      "title": "What I'm Here For"
+    },
+    {
+      "firstFlaggedAt": "2026-10-29T23:42:17.735Z",
+      "dispatchAttempts": 1,
+      "lastDispatchedAt": "2026-11-06T23:53:35.856Z",
+      "id": "the-complete-works-of-william-shakespeare-abridged-bristol-old-vic-regional-2026",
+      "title": "The Complete Works of William Shakespeare (Abridged)"
+    },
+    {
+      "firstFlaggedAt": "2026-10-29T23:42:17.735Z",
+      "dispatchAttempts": 1,
+      "lastDispatchedAt": "2026-11-06T23:53:35.856Z",
+      "id": "henry-v-royal-shakespeare-regional-2026",
+      "title": "Henry V"
+    },
+    {
+      "firstFlaggedAt": "2026-10-29T23:42:17.735Z",
+      "dispatchAttempts": 1,
+      "lastDispatchedAt": "2026-11-06T23:53:35.856Z",
+      "id": "living-sheffield-regional-2026",
+      "title": "Living"
+    },
+    {
+      "firstFlaggedAt": "2026-10-29T23:42:17.735Z",
+      "dispatchAttempts": 1,
+      "lastDispatchedAt": "2026-11-06T23:53:35.856Z",
+      "id": "the-secret-garden-york-royal-regional-2026",
+      "title": "The Secret Garden"
+    },
+    {
+      "firstFlaggedAt": "2026-10-29T23:42:17.735Z",
+      "dispatchAttempts": 1,
+      "lastDispatchedAt": "2026-11-06T23:53:35.856Z",
+      "id": "the-legend-of-davie-mckenzie-oran-mor-regional-2026",
+      "title": "The Legend of Davie McKenzie"
+    },
+    {
+      "firstFlaggedAt": "2026-10-29T23:42:17.735Z",
+      "dispatchAttempts": 1,
+      "lastDispatchedAt": "2026-11-06T23:53:35.856Z",
+      "id": "someones-knockin-at-the-door-oran-mor-regional-2026",
+      "title": "Someone's Knockin' at the Door"
+    },
+    {
       "firstFlaggedAt": "2026-10-24T15:00:49.084Z",
       "dispatchAttempts": 1,
       "lastDispatchedAt": "2026-10-24T18:26:37.482Z",
@@ -3121,6 +2967,13 @@
       "title": "White Christmas"
     },
     {
+      "firstFlaggedAt": "2026-10-29T17:48:37.465Z",
+      "dispatchAttempts": 1,
+      "lastDispatchedAt": "2026-11-06T23:53:35.856Z",
+      "id": "let-it-be-west-end-2014",
+      "title": "Let It Be"
+    },
+    {
       "firstFlaggedAt": "2026-10-28T23:43:22.432Z",
       "dispatchAttempts": 1,
       "lastDispatchedAt": "2026-11-06T11:42:12.417Z",
@@ -3133,6 +2986,13 @@
       "lastDispatchedAt": "2026-11-06T11:42:12.417Z",
       "id": "tell-me-on-a-sunday-west-end-2014",
       "title": "Tell Me On A Sunday"
+    },
+    {
+      "firstFlaggedAt": "2026-10-29T17:48:37.465Z",
+      "dispatchAttempts": 1,
+      "lastDispatchedAt": "2026-11-06T23:53:35.856Z",
+      "id": "seussical-the-musical-west-end-2013",
+      "title": "Seussical the Musical"
     },
     {
       "firstFlaggedAt": "2026-10-28T23:43:22.432Z",
@@ -3226,11 +3086,32 @@
       "title": "Doktor Glas"
     },
     {
+      "firstFlaggedAt": "2026-10-29T11:34:10.500Z",
+      "dispatchAttempts": 1,
+      "lastDispatchedAt": "2026-11-06T23:53:35.856Z",
+      "id": "children-of-the-sun-west-end-2013",
+      "title": "Children of the Sun"
+    },
+    {
       "firstFlaggedAt": "2026-10-28T23:43:22.432Z",
       "dispatchAttempts": 1,
       "lastDispatchedAt": "2026-11-06T11:42:12.417Z",
       "id": "the-low-road-west-end-2013",
       "title": "The Low Road"
+    },
+    {
+      "firstFlaggedAt": "2026-10-29T11:34:10.500Z",
+      "dispatchAttempts": 1,
+      "lastDispatchedAt": "2026-11-06T23:53:35.856Z",
+      "id": "peter-and-alice-west-end-2013",
+      "title": "Peter and Alice"
+    },
+    {
+      "firstFlaggedAt": "2026-10-29T11:34:10.500Z",
+      "dispatchAttempts": 1,
+      "lastDispatchedAt": "2026-11-06T23:53:35.856Z",
+      "id": "the-winslow-boy-west-end-2013",
+      "title": "The Winslow Boy"
     },
     {
       "firstFlaggedAt": "2026-10-28T23:43:22.432Z",
@@ -3296,11 +3177,74 @@
       "title": "Uncle Vanya"
     },
     {
+      "firstFlaggedAt": "2026-10-29T11:34:10.500Z",
+      "dispatchAttempts": 1,
+      "lastDispatchedAt": "2026-11-06T23:53:35.856Z",
+      "id": "damned-by-despair-west-end-2012",
+      "title": "Damned by Despair"
+    },
+    {
       "firstFlaggedAt": "2026-10-29T03:17:08.927Z",
       "dispatchAttempts": 1,
       "lastDispatchedAt": "2026-11-06T18:40:27.699Z",
       "id": "our-boys-west-end-2012",
       "title": "Our Boys"
+    },
+    {
+      "firstFlaggedAt": "2026-10-29T17:48:37.465Z",
+      "dispatchAttempts": 1,
+      "lastDispatchedAt": "2026-11-06T23:53:35.856Z",
+      "id": "let-it-be-west-end-2012",
+      "title": "Let It Be"
+    },
+    {
+      "firstFlaggedAt": "2026-10-29T11:34:10.500Z",
+      "dispatchAttempts": 1,
+      "lastDispatchedAt": "2026-11-06T23:53:35.856Z",
+      "id": "jumpy-west-end-2012",
+      "title": "Jumpy"
+    },
+    {
+      "firstFlaggedAt": "2026-10-29T11:34:10.500Z",
+      "dispatchAttempts": 1,
+      "lastDispatchedAt": "2026-11-06T23:53:35.856Z",
+      "id": "the-curious-incident-of-the-dog-in-the-night-time-west-end-2012",
+      "title": "The Curious Incident of the Dog in the Night-Time"
+    },
+    {
+      "firstFlaggedAt": "2026-10-29T11:34:10.500Z",
+      "dispatchAttempts": 1,
+      "lastDispatchedAt": "2026-11-06T23:53:35.856Z",
+      "id": "the-awkward-squad-west-end-2012",
+      "title": "The Awkward Squad"
+    },
+    {
+      "firstFlaggedAt": "2026-10-29T17:48:37.465Z",
+      "dispatchAttempts": 1,
+      "lastDispatchedAt": "2026-11-06T23:53:35.856Z",
+      "id": "rosencrantz-and-guildenstern-are-dead-west-end-2011",
+      "title": "Rosencrantz and Guildenstern are Dead"
+    },
+    {
+      "firstFlaggedAt": "2026-10-29T17:48:37.465Z",
+      "dispatchAttempts": 1,
+      "lastDispatchedAt": "2026-11-06T23:53:35.856Z",
+      "id": "butley-west-end-2011",
+      "title": "Butley"
+    },
+    {
+      "firstFlaggedAt": "2026-10-29T17:48:37.465Z",
+      "dispatchAttempts": 1,
+      "lastDispatchedAt": "2026-11-06T23:53:35.856Z",
+      "id": "pygmalion-west-end-2011",
+      "title": "Pygmalion"
+    },
+    {
+      "firstFlaggedAt": "2026-10-29T11:34:10.500Z",
+      "dispatchAttempts": 1,
+      "lastDispatchedAt": "2026-11-06T23:53:35.856Z",
+      "id": "august-osage-county-national-theatre-west-end-2008",
+      "title": "August: Osage County"
     },
     {
       "firstFlaggedAt": "2026-11-01T23:13:50.724Z",
