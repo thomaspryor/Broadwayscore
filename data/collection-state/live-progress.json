@@ -1,19 +1,134 @@
 {
-  "updatedAt": "2026-11-07T02:31:28.104Z",
-  "processed": 11,
-  "failed": 14,
-  "successRate": "44.0%",
+  "updatedAt": "2026-11-07T02:50:20.493Z",
+  "processed": 290,
+  "failed": 209,
+  "successRate": "58.1%",
   "tierBreakdown": {
     "playwright": 9,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 7,
     "directCookies": 0,
-    "scrapingdog": 0,
-    "scrapingbee": 0,
-    "brightdata": 1,
+    "scrapingdog": 26,
+    "scrapingbee": 12,
+    "brightdata": 2,
     "archiveToday": 0,
     "archive": 1
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 10,
+  "recentActivity": [
+    {
+      "t": "2026-11-06T23:59:13.164Z",
+      "event": "bb-session",
+      "session": "038ce0b5",
+      "url": "https://www.nytimes.com/2026/08/25/theater/paranormal-activity-review-broadway.h"
+    },
+    {
+      "t": "2026-11-06T23:59:13.990Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-07T00:20:59.756Z",
+      "event": "bb-session",
+      "session": "0dd50af0",
+      "url": "https://talkinbroadway.com/review-maybe-happy-ending/"
+    },
+    {
+      "t": "2026-11-07T00:21:00.585Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-07T00:23:49.118Z",
+      "event": "bb-session",
+      "session": "df95f777",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review-1"
+    },
+    {
+      "t": "2026-11-07T00:23:59.427Z",
+      "event": "bb-session",
+      "session": "7c8f309b",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review-1"
+    },
+    {
+      "t": "2026-11-07T01:55:26.573Z",
+      "event": "bb-session",
+      "session": "e02f9564",
+      "url": "http://www.talkinbroadway.com/ob/12_07_15.html"
+    },
+    {
+      "t": "2026-11-07T01:55:27.489Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-07T01:57:57.444Z",
+      "event": "bb-session",
+      "session": "cf0ea26e",
+      "url": "http://www.talkinbroadway.com/ob/11_18_15.html"
+    },
+    {
+      "t": "2026-11-07T01:57:58.239Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-07T02:05:06.167Z",
+      "event": "bb-session",
+      "session": "50b93d4f",
+      "url": "https://www.londontheatre1.com/.well-known/captcha/?y=ipr:20.83.175.21:179330283"
+    },
+    {
+      "t": "2026-11-07T02:19:21.178Z",
+      "event": "bb-session",
+      "session": "a5a4076a",
+      "url": "https://publictheater.org/productions/season/2627/the-curious-case-of-benjamin-b"
+    },
+    {
+      "t": "2026-11-07T02:26:23.614Z",
+      "event": "bb-session",
+      "session": "4ec276e4",
+      "url": "https://www.talkinbroadway.com/regional/minn/minn1534.html"
+    },
+    {
+      "t": "2026-11-07T02:26:24.389Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-07T02:37:17.422Z",
+      "event": "bb-session",
+      "session": "87d1eaa8",
+      "url": "https://talkinbroadway.com/review-maybe-happy-ending/"
+    },
+    {
+      "t": "2026-11-07T02:37:17.513Z",
+      "event": "bb-session",
+      "session": "acde3ad4",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review-1"
+    },
+    {
+      "t": "2026-11-07T02:37:18.282Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-07T02:37:26.587Z",
+      "event": "bb-session",
+      "session": "c84a9d9d",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review-1"
+    },
+    {
+      "t": "2026-11-07T02:38:47.083Z",
+      "event": "bb-session",
+      "session": "939ebc2f",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review/"
+    },
+    {
+      "t": "2026-11-07T02:38:56.274Z",
+      "event": "bb-session",
+      "session": "fea9e3bb",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review/"
+    }
+  ]
 }
