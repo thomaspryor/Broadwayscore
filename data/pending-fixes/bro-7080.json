@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7080",
   "planId": "0aa747e2-dd2b-4379-ab68-2cd935346a42",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-07T15:28:14.025Z",
   "submitter": {
     "name": null,
@@ -57,5 +57,44 @@
         "reason": "BRO-7080: duplicate of begin-again-regional-2026 (same Old Globe run, Donald and Darlene Shiley Stage); its 5 reviews moved onto the kept row by the actions above"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-07T19:14:45.786Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved begin-again-old-regional-2026/from-another-zero--alejandra-enciso.json → begin-again-regional-2026/from-another-zero--alejandra-enciso.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved begin-again-old-regional-2026/san-diego-jewish-world--unknown.json → begin-again-regional-2026/san-diego-jewish-world--unknown.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved begin-again-old-regional-2026/san-diego-story--david-dixon.json → begin-again-regional-2026/san-diego-story--david-dixon.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved begin-again-old-regional-2026/stageandcinema--milo-shapiro.json → begin-again-regional-2026/stageandcinema--milo-shapiro.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved begin-again-old-regional-2026/talk-theatre-to-me--unknown.json → begin-again-regional-2026/talk-theatre-to-me--unknown.json",
+      "cleared": []
+    },
+    {
+      "action": "retire-show",
+      "ok": true,
+      "msg": "retired begin-again-old-regional-2026 (\"Begin Again\" @ The Old Globe, San Diego, CA)"
+    }
+  ],
+  "executedIn": "ci"
 }
