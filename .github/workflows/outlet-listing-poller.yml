@@ -78,6 +78,11 @@ jobs:
           GITHUB_OUTPUT: ${{ env.GITHUB_OUTPUT }}
           INPUT_LOOKBACK_DAYS: ${{ github.event.inputs.lookback_days }}
           INPUT_OUTLETS: ${{ github.event.inputs.outlets }}
+          # BRO-7076/BRO-7083: census listing files reviews for real (owner chose "file now").
+          # Kill switch without a commit: set repo variable CENSUS_LISTING_DISABLED=1 (or CENSUS_LISTING_WRITE=0 for report-only).
+          CENSUS_LISTING_WRITE: ${{ vars.CENSUS_LISTING_WRITE || '1' }}
+          CENSUS_LISTING_DISABLED: ${{ vars.CENSUS_LISTING_DISABLED || '' }}
+          CENSUS_PAGE_MAX_FETCHES: ${{ vars.CENSUS_PAGE_MAX_FETCHES || '80' }}
         run: |
           ARGS=""
           if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then
