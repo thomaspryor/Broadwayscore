@@ -140,20 +140,6 @@
     "queuedAt": "2026-11-06T13:09:05.238Z"
   },
   {
-    "conditionKey": "llm-scoring:cost-repeat-signature",
-    "title": "LLM scoring repeated work detected",
-    "description": "Repeated scoring signatures in the last 24h (processed/input tokens): 1/5071 seen 3 times.",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-06T13:34:10.784Z"
-  },
-  {
     "conditionKey": "land:land/job/linear-BRO-7033-mw4zx3hi",
     "title": "Landing blocked: rebase red on land/job/linear-BRO-7033-mw4zx3hi",
     "description": "land.yml did not land land/job/linear-BRO-7033-mw4zx3hi: the rebase gate went red at 83478e7a62. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/job/linear-BRO-7033-mw4zx3hi @ 83478e7a62 (origin/land/job/linear-BRO-7033-mw4zx3hi) → origin/main @ 176216b8b4 REFUSED: rebase: branch would not rebase cleanly onto origin/main @ 176216b8b4: Rebasing (1/2) error: could not apply cb89a41c4a8... BRO-7033: drain pending no-byline stubs in the poll loop for any show with new stubs, not just hot (Off-Broadway never hot) hint: Resolve all c Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/42226582770",
@@ -1075,5 +1061,19 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-07T12:05:47.382Z"
+  },
+  {
+    "conditionKey": "llm-scoring:cost-repeat-signature",
+    "title": "LLM scoring repeated work detected",
+    "description": "Repeated scoring signatures in the last 24h (processed/input tokens): 1/5071 seen 3 times.",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-07T12:24:52.795Z"
   }
 ]
