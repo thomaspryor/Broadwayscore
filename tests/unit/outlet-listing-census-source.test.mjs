@@ -150,6 +150,10 @@ test('BRO-7083: a shortened two-word title form ("Double Bill") does not prove a
   // a two-word shortened form counts when a distinctive word from the rest of the title is there too
   const db2 = { url: 'https://x.test/review-double-bill-kings-head-aggy/', headline: '', publishDate: day(3) };
   assert.equal(census.censusTitleOnly(db2, db, [db]), true);
+  // a generic rest word ("story") or a word only in a URL folder does not count
+  const gen = { id: 'gen', title: 'Paper Lanterns: A Story of Hope', status: 'open' };
+  assert.equal(census.censusTitleOnly({ url: 'https://x.test/review-paper-lanterns-love-story-almeida/', headline: '', publishDate: day(3) }, gen, [gen]), false);
+  assert.equal(census.censusTitleOnly({ url: 'https://x.test/aggy/review-double-bill-kings-head/', headline: '', publishDate: day(3) }, db, [db]), false);
 });
 
 test('BRO-7083: censusMarketOk uses what the outlet has published, not the source tables', () => {
@@ -161,6 +165,7 @@ test('BRO-7083: censusMarketOk uses what the outlet has published, not the sourc
     ...rev('london-blog', 'ldn1', 30),               // London-only history
     ...rev('variety', 'ny1', 40), ...rev('variety', 'ldn1', 5), // both cities
     ...rev('tiny', 'ldn1', 3),                        // too little history
+    ...rev('stray', 'ldn1', 300), ...rev('stray', 'ny1', 1), // one stray Broadway review
   ], shows);
   const ny = { id: 'tom-at-the-farm-off-broadway-2026', market: 'broadway' };
   const ldn = { id: 'x-off-west-end-2026', market: 'west-end' };
@@ -172,4 +177,5 @@ test('BRO-7083: censusMarketOk uses what the outlet has published, not the sourc
   assert.equal(census.censusMarketOk('variety', ny, counts), true);
   assert.equal(census.censusMarketOk('tiny', ny, counts), true);
   assert.equal(census.censusMarketOk('unknown-outlet', ny, counts), true);
+  assert.equal(census.censusMarketOk('stray', ny, counts), false); // one review does not open the guard
 });
