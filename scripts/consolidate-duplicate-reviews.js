@@ -14,6 +14,7 @@
  *   node scripts/consolidate-duplicate-reviews.js             # execute
  *   node scripts/consolidate-duplicate-reviews.js --limit 20  # first 20 groups
  */
+const { EXCERPT_FIELDS } = require('./lib/excerpt-fields');
 const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
@@ -52,7 +53,7 @@ function scoreFile(data) {
     try { s += new Date(data.llmMetadata.scoredAt).getTime() / 1e12; } catch {}
   }
   // Excerpts from various sources
-  for (const key of ['dtliExcerpt', 'bwwExcerpt', 'showScoreExcerpt', 'playbillExcerpt']) {
+  for (const key of [...EXCERPT_FIELDS, 'playbillExcerpt']) {
     if (data[key]) s += 30;
   }
   return s;

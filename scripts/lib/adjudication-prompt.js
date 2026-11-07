@@ -14,6 +14,7 @@
 // Side effect of unification: 'londontheatre1' is no longer treated as a star outlet
 // by adjudication (score-extractors.js marks it noScoreExtractor). This matches the
 // outlet's actual behavior — LT reviews are text-only with no published ratings.
+const { EXCERPT_FIELDS } = require('./excerpt-fields');
 const { KNOWN_STAR_OUTLETS } = require('./score-extractors');
 const { isGenericPatternStar } = require('./star-reliability');
 
@@ -62,7 +63,7 @@ function buildUserPrompt(review, sourceData, showTitle) {
     textSources.push(`### Full Review Text\n${text}`);
   }
 
-  const excerptFields = ['dtliExcerpt', 'bwwExcerpt', 'showScoreExcerpt', 'nycTheatreExcerpt', 'lboRoundupExcerpt'];
+  const excerptFields = EXCERPT_FIELDS; // shared list: West End excerpts were missing
   for (const field of excerptFields) {
     if (sourceData[field]) {
       const label = field.replace('Excerpt', '').toUpperCase();
