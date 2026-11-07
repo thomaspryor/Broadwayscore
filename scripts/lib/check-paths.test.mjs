@@ -47,3 +47,13 @@ test('plain node --test on a .test.ts file stays refused (shape) but carries a v
   assert.equal(explainUnsafeCheckCommand('node --test scripts/lib/x.test.mjs').ok, true);
   assert.equal(explainUnsafeCheckCommand('node --test scripts/lib/x.test.ts.bak').hint, undefined);
 });
+
+// BRO-7098: the owner-alert-router "main red" cards carry the failing CI step's own command as VERIFY.
+test('the tsc llm-scoring and playwright chromium CI steps are safe check forms; look-alikes stay refused', () => {
+  const { isSafeCheckCommand } = require('./check-paths.js');
+  assert.equal(isSafeCheckCommand('npx tsc --noEmit -p scripts/llm-scoring/tsconfig.json'), true);
+  assert.equal(isSafeCheckCommand('npx playwright test --project=chromium'), true);
+  assert.equal(isSafeCheckCommand('npx tsc --noEmit -p ../evil/tsconfig.json'), false);
+  assert.equal(isSafeCheckCommand('npx tsc --noEmit -p scripts/llm-scoring/tsconfig.json && rm -rf x'), false);
+  assert.equal(isSafeCheckCommand('npx playwright test --project=chromium --update-snapshots'), false);
+});
