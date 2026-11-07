@@ -1,13 +1,15 @@
 {
-  "updatedAt": "2026-11-06T09:48:00.307Z",
-  "scanned": 4761,
+  "updatedAt": "2026-11-07T09:10:26.672Z",
+  "scanned": 4765,
   "showsWithViolations": 11,
   "totalViolations": 11,
-  "newSinceLastRun": 0,
-  "newViolationKeys": [],
+  "newSinceLastRun": 1,
+  "newViolationKeys": [
+    "tosca-english-national-opera-west-end-2026"
+  ],
   "violationKeys": [
     "six-2021",
-    "clifford-odets-waiting-for-lefty-off-broadway-2026",
+    "tosca-english-national-opera-west-end-2026",
     "maria-stuarda-off-broadway-2026",
     "otello-off-broadway-2027",
     "parsifal-off-broadway-2027",
@@ -29,10 +31,10 @@
       ]
     },
     {
-      "showId": "clifford-odets-waiting-for-lefty-off-broadway-2026",
-      "title": "Clifford Odets’ Waiting for Lefty",
-      "openingDate": "2026-11-02",
-      "message": "clifford-odets-waiting-for-lefty-off-broadway-2026 review text mentions \"revival\" 28x but isRevival is not true — verify and set isRevival if this is a revival",
+      "showId": "tosca-english-national-opera-west-end-2026",
+      "title": "Tosca - English National Opera",
+      "openingDate": "2026-10-30",
+      "message": "tosca-english-national-opera-west-end-2026 review text mentions \"revival\" 3x but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
         {}
       ]

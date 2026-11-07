@@ -1,21 +1,19 @@
 {
-  "updatedAt": "2026-11-06T09:45:19.217Z",
-  "scanned": 4761,
-  "showsWithViolations": 169,
+  "updatedAt": "2026-11-07T09:07:32.162Z",
+  "scanned": 4765,
+  "showsWithViolations": 170,
   "totalViolations": 224,
-  "newSinceLastRun": 3,
+  "newSinceLastRun": 1,
   "handled": {
-    "temporal-override-low-confidence": 958,
+    "temporal-override-low-confidence": 961,
     "not-shipped": 55,
-    "duplicate-not-shipped": 53,
+    "duplicate-not-shipped": 55,
     "rebuild-skip-audit": 32,
     "manual-clear-reason": 12,
     "prior-run-or-tour-leg": 43
   },
   "newViolationKeys": [
-    "blood-of-my-blood-west-end-2026::islingtontribune--unknown.json",
-    "operation-mincemeat-west-end-2024::the-recs--unknown.json",
-    "operation-mincemeat-west-end-2024::thereviewshub--the-reviews-hub-scotland.json"
+    "tango-after-dark-off-west-end-2026::london-box-office--stuart-king.json"
   ],
   "violationKeys": [
     "cats-the-jellicle-ball-2026::nytg--kyle-turner.json",
@@ -140,7 +138,6 @@
     "archduke-west-end-2026::artsdesk--unknown.json",
     "the-enormous-crocodile-off-west-end-2026::musical-theatre-review--unknown.json",
     "operation-mincemeat-west-end-2024::the-recs--unknown.json",
-    "operation-mincemeat-west-end-2024::thereviewshub--the-reviews-hub-scotland.json",
     "titanique-west-end-2024::telegraph--dominic-cavendish.json",
     "burlesque-off-west-end-2026::telegraph--claire-allfree.json",
     "making-a-show-of-myself-off-broadway-2026::pages-on-stages--mason-pilevsky.json",
@@ -151,6 +148,7 @@
     "dark-of-the-moon-off-west-end-2026::artsdesk--unknown.json",
     "dark-of-the-moon-off-west-end-2026::musical-theatre-review--unknown.json",
     "sherlock-holmes-off-west-end-2026::standard--nick-curtis.json",
+    "tango-after-dark-off-west-end-2026::london-box-office--stuart-king.json",
     "trainspotting-the-musical-west-end-2026::musical-theatre-review--scott-matthewman.json",
     "now-you-see-me-live-off-west-end-2026::london-box-office--stuart-king.json",
     "the-oresteia-off-west-end-2026::artsdesk--unknown.json",
@@ -2445,7 +2443,7 @@
       "showId": "blood-of-my-blood-west-end-2026",
       "title": "Blood of my Blood",
       "openingDate": "2026-10-07",
-      "message": "guardian/Unknown (guardian--unknown.json) SHIPPED with CV.wrongProduction=true (undefined confidence) and no clear flag; reasoning: (none) — https://www.theguardian.com/stage/2026/oct/10/blood-of-my-blood-review-royal-court-theatre-london\nislingtontribune/Unknown (islingtontribune--unknown.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 29d of opening, likely correct production] The scraped review is dated 15th October but the exp — https://www.islingtontribune.co.uk/article/review-blood-of-my-blood-at-royal-court-theatre",
+      "message": "guardian/Unknown (guardian--unknown.json) SHIPPED with CV.wrongProduction=true (undefined confidence) and no clear flag; reasoning: (none) — https://www.theguardian.com/stage/2026/oct/10/blood-of-my-blood-review-royal-court-theatre-london\nislingtontribune/Unknown (islingtontribune--unknown.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 30d of opening, likely correct production] This is a valid review of 'Blood of my Blood,' but t — https://www.islingtontribune.co.uk/article/review-blood-of-my-blood-at-royal-court-theatre",
       "violations": [
         {
           "filename": "guardian--unknown.json",
@@ -2463,10 +2461,10 @@
           "criticName": "Unknown",
           "matchedBy": "url",
           "cvConfidence": "low",
-          "cvReasoning": "[OVERRIDE: review within 29d of opening, likely correct production] The scraped review is dated 15th October but the exp",
+          "cvReasoning": "[OVERRIDE: review within 30d of opening, likely correct production] This is a valid review of 'Blood of my Blood,' but t",
           "cvIssues": [
-            "Review publish date (15th October) does not match expected date (2026-11-05)",
-            "Review does not name Royal Court as the venue; no West End venue is mentioned in the text"
+            "Review publish date (15 October) does not match expected West End opening date (7 October 2026) or review publish date (6 November 2026)",
+            "Review does not name Royal Court or any West End venue as the performance location"
           ]
         }
       ]
@@ -2517,7 +2515,7 @@
       "showId": "operation-mincemeat-west-end-2024",
       "title": "Operation Mincemeat",
       "openingDate": "2023-05-09",
-      "message": "the-recs/Unknown (the-recs--unknown.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This is a genuine review with critical assessment (5-star rating), but the critic attended and is evaluating the Edinbur — https://therecs.co.uk/operation-mincemeat-touring/\nthereviewshub/The Reviews Hub - Scotland (thereviewshub--the-reviews-hub-scotland.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This is a legitimate theater review with critical assessment, but it reviews a touring production of Operation Mincemeat — https://www.thereviewshub.com/operation-mincemeat-kings-theatre-edinburgh/",
+      "message": "the-recs/Unknown (the-recs--unknown.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This is a genuine review with critical assessment (5-star rating), but the critic attended and is evaluating the Edinbur — https://therecs.co.uk/operation-mincemeat-touring/",
       "violations": [
         {
           "filename": "the-recs--unknown.json",
@@ -2530,19 +2528,6 @@
           "cvIssues": [
             "Review describes Edinburgh touring production (Kings Theatre, Edinburgh, Nov 2026), not West End production at Fortune Theatre",
             "Review publish date (2026-11-03) aligns with Edinburgh tour performance date, not West End opening (2023-05-09)"
-          ]
-        },
-        {
-          "filename": "thereviewshub--the-reviews-hub-scotland.json",
-          "url": "https://www.thereviewshub.com/operation-mincemeat-kings-theatre-edinburgh/",
-          "outletId": "thereviewshub",
-          "criticName": "The Reviews Hub - Scotland",
-          "matchedBy": "url",
-          "cvConfidence": "high",
-          "cvReasoning": "This is a legitimate theater review with critical assessment, but it reviews a touring production of Operation Mincemeat",
-          "cvIssues": [
-            "Review describes a touring production, not the West End run at Fortune Theatre",
-            "Critic explicitly states 'on tour' and references 'when it tours back to Edinburgh next year'"
           ]
         }
       ]
@@ -2737,6 +2722,27 @@
           "cvIssues": [
             "Review evaluates a West End or other non-Off-West End production, not Regent's Park Open Air Theatre staging",
             "Content is truncated mid-sentence ('Sometimes you can see the thinki')"
+          ]
+        }
+      ]
+    },
+    {
+      "showId": "tango-after-dark-off-west-end-2026",
+      "title": "Tango After Dark",
+      "openingDate": null,
+      "message": "london-box-office/Stuart King (london-box-office--stuart-king.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: The scraped review is a legitimate theater review of 'Tango After Dark,' but it reviews a production at Sadler's Wells,  — https://www.londonboxoffice.co.uk/news/post/tango-after-dark-sadlers-wells-review",
+      "violations": [
+        {
+          "filename": "london-box-office--stuart-king.json",
+          "url": "https://www.londonboxoffice.co.uk/news/post/tango-after-dark-sadlers-wells-review",
+          "outletId": "london-box-office",
+          "criticName": "Stuart King",
+          "matchedBy": "url",
+          "cvConfidence": "low",
+          "cvReasoning": "The scraped review is a legitimate theater review of 'Tango After Dark,' but it reviews a production at Sadler's Wells, ",
+          "cvIssues": [
+            "Venue mismatch: Review is of Sadler's Wells production, not Peacock Theatre",
+            "Expected Off-West End venue is Peacock Theatre, but scraped content reviews Tango After Dark at Sadler's Wells"
           ]
         }
       ]
