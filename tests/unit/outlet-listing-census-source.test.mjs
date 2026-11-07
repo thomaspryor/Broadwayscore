@@ -84,12 +84,19 @@ test('census title-led match: distinctive multi-word title in the slug, nothing 
   const mdq = { id: 'mdq', title: 'Million Dollar Quartet', status: 'open' };
   const other = { id: 'other', title: 'Hamlet', status: 'open' };
   const pool = [mdq, other];
-  const it = { url: 'https://x.test/2026/09/review-million-dollar-quartet-arts-at-marble-arch/', headline: 'review million dollar quartet arts at marble arch' };
+  const it = { url: 'https://x.test/2026/09/review-million-dollar-quartet-arts-at-marble-arch/', headline: 'review million dollar quartet arts at marble arch', publishDate: day(3) };
   assert.equal(census.censusTitleOnly(it, mdq, pool), true);
   // one-word titles are too ambiguous for a slug-only match
-  assert.equal(census.censusTitleOnly({ url: 'https://x.test/review-hamlet-globe/', headline: 'review hamlet globe' }, other, pool), false);
+  assert.equal(census.censusTitleOnly({ url: 'https://x.test/review-hamlet-globe/', headline: 'review hamlet globe', publishDate: day(3) }, other, pool), false);
   // a second show spelled in the same slug blocks it
   const both = { id: 'b', title: 'Pride and Prejudice', status: 'open' };
-  const two = { url: 'https://x.test/review-million-dollar-quartet-pride-and-prejudice/', headline: '' };
+  const two = { url: 'https://x.test/review-million-dollar-quartet-pride-and-prejudice/', headline: '', publishDate: day(3) };
   assert.equal(census.censusTitleOnly(two, mdq, [mdq, both]), false);
+});
+
+test('censusTitleOnly refuses an undated item, and a malformed % slug does not throw', () => {
+  const mdq = { id: 'a', title: 'Million Dollar Quartet', status: 'open' };
+  const undated = { url: 'https://x.test/2019/review-million-dollar-quartet-arts/', headline: '' };
+  assert.equal(census.censusTitleOnly(undated, mdq, [mdq]), false);
+  assert.doesNotThrow(() => census.headlineFromUrl('https://x.test/review-100%-sure-show/'));
 });

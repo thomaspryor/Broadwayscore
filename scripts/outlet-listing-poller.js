@@ -533,7 +533,7 @@ function alreadyFiled(showId, outletId, url) {
   if (!existing) return false;
   // If existing file has the same URL, skip
   const existingUrl = existing.data && existing.data.url;
-  return existingUrl === url;
+  return existingUrl === url || (!!existingUrl && normalizeUrl(existingUrl) === normalizeUrl(url));
 }
 
 function createStub(showId, outletId, outletDisplayName, url, headline, publishDate, isMultiShow, nytCriticsPick, dryRun) {
@@ -908,7 +908,9 @@ async function main() {
   const censusOnly = new Set();
   const hasFeedEntry = (id) => !!(WP_API_CONFIG[id] || OUTLET_STRATEGY_CONFIG[id]);
   const censusStats = { outlets: 0, items: 0, wouldAdd: 0, added: 0, reasons: {} };
-  const censusDeps = { fetchText: (u, label, ok, o) => fetchXmlWithProxyRetry(u, label, ok, { proxyRetry: (o && o.proxyRetry) || label === 'sitemap', timeoutMs: 30000 }), fetchViaSitemap }; // a sitemap that blocks the plain fetch (406) goes through the poller's own fetchPage retry
+  // Paid retries stay capped per run (CENSUS_PROXY_MAX, default 6) so a blocked index cannot fan out into dozens of paid child fetches.
+  let censusProxyLeft = Math.max(0, parseInt(process.env.CENSUS_PROXY_MAX || '6', 10) || 0);
+  const censusDeps = { fetchText: (u, label, ok, o) => { const want = (o && o.proxyRetry) || label === 'sitemap'; const use = want && censusProxyLeft > 0; if (use) censusProxyLeft--; return fetchXmlWithProxyRetry(u, label, ok, { proxyRetry: use, timeoutMs: 30000 }); }, fetchViaSitemap }; // a sitemap that blocks the plain fetch (406) goes through the poller's own fetchPage retry
   if (censusListing.isDisabled()) console.log('CENSUS_LISTING_DISABLED is set: census listing sources are not read.');
   const latestByOutlet = latestReviewDateByOutlet(allReviews);
   // Census reads a whole window, so it also sees shows that closed inside it (a review of a
@@ -1141,7 +1143,7 @@ async function main() {
       if (candidates.length > 0) {
         const confirmed = await confirmOnPage(url, candidates, viaCensus ? censusPageStats : pageConfirmStats, {
           activeShows: showPool, publishDate, maxFetches: viaCensus ? censusPageBase + CENSUS_PAGE_MAX : PAGE_CONFIRM_MAX_FETCHES,
-          titleOnly: viaCensus ? (show) => censusListing.censusTitleOnly({ url, headline }, show, showPool) : null, unconfirmedCache: censusDry ? null : unconfirmedCache,
+          titleOnly: viaCensus ? (show) => censusListing.censusTitleOnly({ url, headline, publishDate }, show, showPool) : null, unconfirmedCache: censusDry ? null : unconfirmedCache,
           // A dry run never spends paid scraper fetches: plain fetch only.
           fetcher: itemDry ? (u => fetchSimple(u, 20000)) : fetchArticleHtml,
         });
@@ -1176,7 +1178,7 @@ async function main() {
         // Only count NEW writes — the shared writer may also reject (cross-market
         // classifier), reroute, or merge into an existing file. None of those
         // are "new stubs" for the workflow output.
-        if (result && result.action === 'skipped' && result.reason === 'flagged-filename-collision') {
+        if (result && result.action === 'skipped' && result.reason === 'flagged-filename-collision' && !censusDry) {
           if (isSameUrlFlaggedTarget(show.id, outletId, url)) sameUrlFlagged.push({ showId: show.id, outletId, url });
           else blockedCollisions.push({ showId: show.id, outletId, url });
         }

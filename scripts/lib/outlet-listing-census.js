@@ -90,7 +90,8 @@ function headlineFromUrl(url) {
   let p = '';
   try { p = new URL(url).pathname; } catch { p = String(url || ''); }
   const seg = p.split('/').filter(Boolean).pop() || '';
-  return decodeURIComponent(seg).replace(/\.(html?|php|aspx?)$/i, '').replace(/_\d+$/, '').replace(/[-_]+/g, ' ').trim();
+  let dec = seg; try { dec = decodeURIComponent(seg); } catch { /* malformed %: keep the raw segment */ }
+  return dec.replace(/\.(html?|php|aspx?)$/i, '').replace(/_\d+$/, '').replace(/[-_]+/g, ' ').trim();
 }
 
 function datedSitemapUrls(template, step, since, until) {
@@ -200,6 +201,7 @@ const slugWords = (x) => ` ${String(x || '').toLowerCase().normalize('NFKD').rep
  * name the title and the item to pass censusItemAccepted.
  */
 function censusTitleOnly(item, show, pool) {
+  if (!item.publishDate) return false; // title-only proof needs a listing date: an undated archive URL could be a prior production
   let path = '';
   try { path = new URL(item.url).pathname; } catch { path = String(item.url || ''); }
   const hay = slugWords(`${item.headline || ''} ${path}`);
