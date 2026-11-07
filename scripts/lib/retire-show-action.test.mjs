@@ -133,7 +133,11 @@ test('nonProduction: a non-provisional announced row with no reviews retires wit
     [{ ...base, duplicateOf: 'other-show' }, {}, none, /exclusive/],
     [base, { status: 'open' }, none, /announced\/upcoming/],
     [base, { status: 'previews', openingDate: '2026-10-01' }, none, /announced\/upcoming|real run/],
-    [base, { status: 'previews' }, () => 1, /1 review/],
+    [base, { status: 'previews', previewsStartDate: '2021-05-31' }, () => 1, /1 review/],
+    // A real show in its first weeks of previews has no opening date and no reviews yet.
+    [base, { status: 'previews', previewsStartDate: new Date(Date.now() - 5 * 864e5).toISOString().slice(0, 10) }, none, /days ago/],
+    [base, { status: 'previews', previewsStartDate: undefined }, none, /no previewsStartDate/],
+    [base, { status: 'previews', openingDate: '', previewsStartDate: '2021-05-31' }, () => 3, /3 review/],
     [base, { status: 'closed' }, none, /announced\/upcoming/],
     [base, { openingDate: '2026-10-01' }, none, /real run/],
     [base, { openingDate: '2099-01-01' }, none, /real run/],

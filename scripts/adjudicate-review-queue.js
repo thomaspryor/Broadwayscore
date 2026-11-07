@@ -25,6 +25,7 @@ const { adjudicationExpectation } = require('./lib/adjudication-expectation');
 const { autoAcceptOutcome } = require('./lib/published-score-star-band');
 const { laneBypasses } = require('./lib/opening-night-lane/trust-model');
 const { KNOWN_STAR_OUTLETS, buildUserPrompt } = require('./lib/adjudication-prompt');
+const { getExcerpts } = require('./lib/excerpt-fields');
 const { shouldSkipWrongProductionAudit } = require('./lib/review-guards');
 const { ADJUDICATED_NOTE_PREFIX } = require('./lib/wrong-production-autoclear');
 const { invalidateWrongProductionAutoClear } = require('./lib/review-write-guard');
@@ -303,7 +304,8 @@ async function main() {
         continue;
       }
 
-      const text = sourceData.fullText || sourceData.dtliExcerpt || sourceData.bwwExcerpt || '';
+      // Every excerpt field, so a West-End-only row is adjudicated too (was dtli/bww only).
+      const text = sourceData.fullText || getExcerpts(sourceData).join('\n\n');
       if (!text || text.length < 50) {
         console.log(`  ⚠️  No text to adjudicate contamination — skipping`);
         results.skipped++;

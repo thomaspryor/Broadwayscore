@@ -66,8 +66,11 @@ function buildUserPrompt(review, sourceData, showTitle) {
   const excerptFields = EXCERPT_FIELDS; // shared list: West End excerpts were missing
   for (const field of excerptFields) {
     if (sourceData[field]) {
-      const label = field.replace('Excerpt', '').toUpperCase();
-      textSources.push(`### ${label} Excerpt\n${sourceData[field]}`);
+      // metaExcerpt is the review page's own headline/standfirst, not an aggregator quote.
+      const heading = field === 'metaExcerpt'
+        ? 'Review page headline and standfirst (not a quote from the body)'
+        : `${field.replace('Excerpt', '').toUpperCase()} Excerpt`;
+      textSources.push(`### ${heading}\n${sourceData[field]}`);
     }
   }
 

@@ -13,7 +13,7 @@ const { listShowDirs } = require('./lib/list-show-dirs');
 const { MAIN_REPO_ROOT } = require('./lib/repo-root');
 
 // Replicate isScoreable from scripts/llm-scoring/is-scoreable.ts
-const EXCERPT_FIELDS = ['bwwExcerpt', 'dtliExcerpt', 'showScoreExcerpt', 'nycTheatreExcerpt', 'playbillVerdictExcerpt'];
+const { EXCERPT_FIELDS } = require('./lib/excerpt-fields');
 function hasAnyExcerpt(d) {
   return EXCERPT_FIELDS.some(f => d[f] && typeof d[f] === 'string' && d[f].length > 0);
 }

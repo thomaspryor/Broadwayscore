@@ -62,6 +62,7 @@ function sameHouse(a, b) {
 }
 
 const NON_PRODUCTION_STATUSES = new Set(['announced', 'upcoming']);
+const UNDATED_PREVIEWS_MIN_DAYS = 180;
 
 function isoOrNull(v) {
   return typeof v === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(v) ? v : null;
@@ -150,8 +151,18 @@ function nonProductionRefusal(row, action, reviewCount, now) {
   // attraction (Shrek's Adventure, Armory Public Tours) a start date, so status
   // derivation files it as previews forever. It was never dated as opened, and
   // the zero-review and evidence checks below still apply.
-  const undatedPreviews = row.status === 'previews' && !row.openingDate;
-  if (!NON_PRODUCTION_STATUSES.has(row.status) && !undatedPreviews) return `status is "${row.status}": only an announced/upcoming row (or a previews row with no openingDate) can be retired as a non-production`;
+  // A real show in its first weeks of previews also has no openingDate and no
+  // reviews, so the start must be at least UNDATED_PREVIEWS_MIN_DAYS old: no real
+  // production previews for six months without announcing an opening.
+  const undatedPreviews = row.status === 'previews' && !isoOrNull(row.openingDate);
+  if (undatedPreviews) {
+    const start = isoOrNull(row.previewsStartDate);
+    const nowMs = (now instanceof Date ? now : now ? new Date(now) : new Date()).getTime();
+    if (!start) return 'previews row with no openingDate and no previewsStartDate: cannot tell an attraction from a new show';
+    const days = Math.floor((nowMs - Date.parse(start)) / 86400000);
+    if (days < UNDATED_PREVIEWS_MIN_DAYS) return `previews started ${start} (${days} days ago): a previews row must be ${UNDATED_PREVIEWS_MIN_DAYS}+ days old with no opening before it can be retired as a non-production`;
+  }
+  if (!NON_PRODUCTION_STATUSES.has(row.status) && !undatedPreviews) return `status is "${row.status}": only an announced/upcoming row (or a long-running previews row with no openingDate) can be retired as a non-production`;
   // `outOfTier: true` (BRO-6531): an out-of-tier listing (Off-Off-Broadway) carries a scheduled
   // opening date from its source. It may go while that date is still ahead; one that has
   // opened is a real run either way.

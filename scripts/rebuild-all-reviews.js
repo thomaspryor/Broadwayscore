@@ -5542,7 +5542,7 @@ showDirs.forEach(showId => {
       if (data.fullText && data.fullText.length >= 800 &&
           data.contentTier === 'complete' && data.textStatus === 'complete') {
         const ftWords = new Set(data.fullText.toLowerCase().match(/\b[a-z]{5,}\b/g) || []);
-        const excerptFields = ['dtliExcerpt', 'showScoreExcerpt'];
+        const excerptFields = ['dtliExcerpt', 'showScoreExcerpt']; // excerpt-subset-ok: report-only check, the two aggregators that quote one critic per outlet
         for (const field of excerptFields) {
           if (data[field] && data[field].length >= 50) {
             const exWords = (data[field].toLowerCase().match(/\b[a-z]{5,}\b/g) || []);
