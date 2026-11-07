@@ -1,0 +1,21 @@
+{
+  "issueNumber": "bro-7092-b",
+  "planId": "8f431799-bd88-4b4f-b237-36f3aa52d7d0",
+  "status": "pending",
+  "createdAt": "2026-11-07T20:10:13.202Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7092: BRO-4779 failed because --expect=60 no longer matched the archive. Run the sibling-misfile audit read-only (no --delete) to get the current count; a follow-up plan deletes with the new --expect.",
+    "actions": [
+      {
+        "type": "run-script",
+        "script": "audit-sibling-misfile-archive.js",
+        "args": "--json",
+        "description": "Read-only: list sibling-misfiled Show Score/DTLI archive pages now on file (BRO-4779)."
+      }
+    ]
+  }
+}

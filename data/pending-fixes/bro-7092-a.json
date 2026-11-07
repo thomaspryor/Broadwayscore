@@ -1,0 +1,63 @@
+{
+  "issueNumber": "bro-7092-a",
+  "planId": "c3b9bb82-c5f2-43df-a2b1-40a906b5570d",
+  "status": "pending",
+  "createdAt": "2026-11-07T20:10:02.913Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7092: finish BRO-5420 g1/g2. Eight London reviews still sit on Broadway shows; their moves to the West End production were refused (same-url-exists) because the West End show already has the same URL on file under another file name. Delete the Broadway-side copy so the London review counts only on the West End production.",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "machinal-2014/all-that-dazzles-uk--daz-gale.json",
+        "description": "London review misfiled on a Broadway show (BRO-5420 audit-uk-rows-on-broadway). Its move to machinal-west-end-2024 was refused same-url-exists: machinal-west-end-2024 already holds this URL. Remove the Broadway copy."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "sunset-boulevard-2024/all-that-dazzles-uk--daz-gale.json",
+        "description": "London review misfiled on a Broadway show (BRO-5420 audit-uk-rows-on-broadway). Its move to sunset-boulevard-west-end-2023 was refused same-url-exists: sunset-boulevard-west-end-2023 already holds this URL. Remove the Broadway copy."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-great-gatsby-2024/london-theatre--unknown.json",
+        "description": "London review misfiled on a Broadway show (BRO-5420 audit-uk-rows-on-broadway). Its move to the-great-gatsby-west-end-2025 was refused same-url-exists: the-great-gatsby-west-end-2025 already holds this URL. Remove the Broadway copy."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-hills-of-california-2024/london-theatre--unknown.json",
+        "description": "London review misfiled on a Broadway show (BRO-5420 audit-uk-rows-on-broadway). Its move to the-hills-of-california-west-end-2024 was refused same-url-exists: the-hills-of-california-west-end-2024 already holds this URL. Remove the Broadway copy."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-shark-is-broken-2023/guardian--httpswwwtheguardiancomprofileryangilbey.json",
+        "description": "London review misfiled on a Broadway show (BRO-5420 audit-uk-rows-on-broadway). Its move to the-shark-is-broken-west-end-2021 was refused same-url-exists: the-shark-is-broken-west-end-2021 already holds this URL. Remove the Broadway copy."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-shark-is-broken-2023/independent--unknown.json",
+        "description": "London review misfiled on a Broadway show (BRO-5420 audit-uk-rows-on-broadway). Its move to the-shark-is-broken-west-end-2021 was refused same-url-exists: the-shark-is-broken-west-end-2021 already holds this URL. Remove the Broadway copy."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-shark-is-broken-2023/london-theatre--unknown.json",
+        "description": "London review misfiled on a Broadway show (BRO-5420 audit-uk-rows-on-broadway). Its move to the-shark-is-broken-west-end-2021 was refused same-url-exists: the-shark-is-broken-west-end-2021 already holds this URL. Remove the Broadway copy."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "uncle-vanya-2024/london-theatre--unknown.json",
+        "description": "London review misfiled on a Broadway show (BRO-5420 audit-uk-rows-on-broadway). Its move to uncle-vanya-west-end-2020 was refused same-url-exists: uncle-vanya-west-end-2020 already holds this URL. Remove the Broadway copy."
+      }
+    ]
+  }
+}
