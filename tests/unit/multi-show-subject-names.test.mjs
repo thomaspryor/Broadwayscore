@@ -112,3 +112,13 @@ test('the ordinary-word additions only apply in subject mode (subjectNames:false
   assert.equal(detectMultiShowContent(text, SHOW).showsFound.length, 0);
   assert.ok(detectMultiShowContent(text, SHOW, { subjectNames: false }).showsFound.length >= 3);
 });
+
+test('lowercase single-word titles in prose are not cross-show mentions; Title Case listings still are', () => {
+  const words = singleWord.slice(0, 8);
+  const prose = filler.repeat(4) + words.map((w) => `a ${w} came and went.`).join(' ') + ' ' + filler.repeat(6);
+  assert.ok(prose.length > 1000 && prose.length < 3000, String(prose.length));
+  assert.equal(detectMultiShowContent(prose, SHOW).detected, false);
+  assert.equal(detectMultiShowContent(prose, SHOW, { subjectNames: false }).detected, true);
+  const listing = filler.repeat(4) + words.map(cap2).join(' | ') + ' ' + filler.repeat(6);
+  assert.equal(detectMultiShowContent(listing, SHOW).detected, true);
+});

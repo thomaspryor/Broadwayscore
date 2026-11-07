@@ -1283,6 +1283,9 @@ function detectMultiShowContent(text, expectedShowId, opts = {}) {
     const hits = [];
     for (const m of text.matchAll(regex)) {
       if (requireTitleCase && !titleCaseMatch(m[0])) continue;
+      // BRO-7053: a single-word title written entirely in lowercase is prose
+      // ("a stalker", "imitations"); listings and nav name shows in Title Case or caps.
+      if (subjectNames && showWords.length === 1 && m[0] === m[0].toLowerCase()) continue;
       hits.push(m.index);
     }
     if (hits.length === 0) continue;
