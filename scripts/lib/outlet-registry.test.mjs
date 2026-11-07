@@ -1,8 +1,8 @@
 // BRO-5246: auto-onboarded outlets must not print a run-together slug as their
 // display name ("Newjerseystage"). Every id-shaped name must be renamed from the
 // outlet's homepage masthead or stamped displayNameReviewed (a real one-word name).
-// The registry is private data and absent in some checkouts, so the registry
-// checks skip there; the proposals-file checks always run.
+// The registry checks skip when data/outlet-registry.json is absent; the
+// proposals-file checks always run.
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
