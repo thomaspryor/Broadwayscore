@@ -24,7 +24,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { titleMatchesShow, urlSlugMatchesShow } = require('./lib/rss-discovery');
+const { rssStubIdentityOk } = require('./lib/rss-discovery');
 const { safeWriteReview } = require('./lib/review-write-guard');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { listShowDirs } = require('./lib/list-show-dirs');
@@ -78,10 +78,7 @@ function main() {
       if (j.source !== 'rss-discovery') continue;
       scanned++;
       if (j.rssIdentityRejected) { alreadyTagged++; continue; }
-      const identityOk =
-        (j.title && titleMatchesShow(j.title, showTitle)) ||
-        (j.articleTitle && titleMatchesShow(j.articleTitle, showTitle)) ||
-        urlSlugMatchesShow(j.url, showTitle);
+      const identityOk = rssStubIdentityOk(j, showTitle);
       if (identityOk) { kept++; continue; }
       tagged++;
       console.log(`${APPLY ? 'TAG' : 'would-tag'} ${showId}/${f} — ${j.url}`);

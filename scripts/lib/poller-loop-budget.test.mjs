@@ -248,9 +248,46 @@ test('poll loop breaks through shouldBreakEarly with the first-wave inputs', () 
   assert.match(find.run, /echo "main_front_end=/);
 });
 
-test('BRO-7032: window lists every press-night-window show, Off-Broadway included, while hot stays main-stage', () => {
+test('BRO-7032: window lists every press-night-window show, Off-Broadway included', () => {
   const ob = { id: 'ob-show', category: 'off-broadway', openingDate: '2026-11-05' };
   const r = orderPollShows([ob], new Date('2026-11-06T03:30:00Z')); // 10:30pm ET press night
   assert.deepEqual(r.window, ['ob-show']);
-  assert.deepEqual(r.hot, []);
+  // BRO-7078 reversed the old "hot stays main-stage" pin: with no main-stage
+  // opener that night, the Off opener is re-polled within the run.
+  assert.deepEqual(r.hot, ['ob-show']);
+});
+
+test('BRO-7078: Off-only night (2026-11-06T03:40Z replay) makes the Off openers hot, capped at 3, full-front break', () => {
+  const ob = (id, od = '2026-11-05', category = 'off-broadway') => ({ id, category, openingDate: od });
+  const shows = [
+    ob('the-unbelievers'), ob('the-verge'), ob('222-a-ghost-story'), ob('king-lear'), ob('parcel-from-america', '2026-11-04'),
+    ob('speculations', '2026-11-05', 'off-west-end'), ob('grinch-tour', '2026-11-05', 'tour'),
+    ob('iphigenie', '2026-11-06', 'west-end'), ob('old-show', '2026-09-01'),
+  ];
+  const r = orderPollShows(shows, new Date('2026-11-06T03:40:00Z'));
+  assert.deepEqual(r.hot, ['the-unbelievers', 'the-verge', '222-a-ghost-story']);
+  assert.ok(!r.hot.includes('grinch-tour'), 'tours never take an Off-hot slot');
+  assert.ok(!r.hot.includes('speculations'), 'off-West End is past its own hot span at 3:40Z');
+  assert.equal(r.mainFrontEnd, r.front, 'first-wave shortcut keeps the full-front rule on an Off-hot night');
+  // the shortcut then cannot end the loop before every front show was polled
+  assert.equal(shouldBreakEarly({ polled: 1, total: shows.length, front: r.front, mainFrontEnd: r.mainFrontEnd, hotNewCount: 9, firstWaveNewCount: 9 }), false);
+  assert.equal(shouldBreakEarly({ polled: r.front, total: shows.length, front: r.front, mainFrontEnd: r.mainFrontEnd, hotNewCount: 9, firstWaveNewCount: 9 }), true);
+});
+
+test('BRO-7078: six Off openers in their hot span still give at most 3 hot shows', () => {
+  const shows = Array.from({ length: 6 }, (_, i) => ({ id: `ob-${i}`, category: 'off-broadway', openingDate: '2026-11-05' }));
+  const r = orderPollShows(shows, new Date('2026-11-06T01:00:00Z'));
+  assert.equal(r.hot.length, 3);
+  assert.equal(r.front, 6);
+  assert.equal(r.mainFrontEnd, 6);
+});
+
+test('BRO-7078: a main-stage hot night is unchanged (Off openers stay out of hot)', () => {
+  const shows = [
+    { id: 'bway', category: 'broadway', openingDate: '2026-11-05' },
+    { id: 'ob', category: 'off-broadway', openingDate: '2026-11-05' },
+  ];
+  const r = orderPollShows(shows, new Date('2026-11-06T02:00:00Z'));
+  assert.deepEqual(r.hot, ['bway']);
+  assert.equal(r.mainFrontEnd, 1);
 });

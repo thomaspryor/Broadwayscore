@@ -324,3 +324,105 @@ describe('replay-pending-bylines: rss stub that never names the show (BRO-6321)'
     assert.equal(JSON.parse(fs.readFileSync(s.filepath, 'utf8')).rssIdentityRejected, true);
   });
 });
+
+describe('replay-pending-bylines: old rss stubs replay the current identity rule (BRO-7078)', () => {
+  const ASK = { ...SHOW, title: 'The Ask' };
+  const nbcStub = (extra = {}) => zeroTextStub({
+    outletId: 'nbcny', outlet: 'NBC New York', source: 'rss-discovery',
+    url: 'https://www.nbcnewyork.com/entertainment/entertainment-news/paul-mccartney-upcoming-beatles-biopics/6560611/',
+    ...extra,
+  });
+
+  test('The Ask: once unrecoverable, a headline that no longer names the show is tagged, not alerted', async (t) => {
+    const s = seed(nbcStub({ title: 'Paul McCartney asks fans about upcoming Beatles biopics' }), 'nbcny--24124b82.json');
+    t.after(() => fs.rmSync(s.root, { recursive: true, force: true }));
+    // A thrown fetch may be transient: strikes 1 and 2 keep reporting, strike 3 tags.
+    for (const strike of [1, 2]) {
+      const f = fakes({ fetchImpl: () => { throw new Error('All scraping methods failed'); } });
+      const r = await replay.processShow(SHOW.id, { root: s.root, show: ASK, dryRun: false, explicitScope: true, ...f.deps });
+      if (r.alertPromise) await r.alertPromise;
+      assert.equal(r.unrecoverable, 1, `strike ${strike} still reports`);
+      const d = JSON.parse(fs.readFileSync(s.filepath, 'utf8'));
+      assert.equal(d.rssIdentityRejected, undefined);
+      assert.equal(d.rssIdentityFetchFailures, strike);
+    }
+    const f = fakes({ fetchImpl: () => { throw new Error('All scraping methods failed'); } });
+    const r = await replay.processShow(SHOW.id, { root: s.root, show: ASK, dryRun: false, explicitScope: true, ...f.deps });
+    if (r.alertPromise) await r.alertPromise;
+    assert.equal(r.unrecoverable, 0);
+    assert.equal(f.calls.fetch.length, 1, 'the fetch is still tried first: a tag never stops a recovery that could work');
+    assert.deepEqual([f.calls.alert, f.calls.emit], [[], []]);
+    assert.equal(JSON.parse(fs.readFileSync(s.filepath, 'utf8')).rssIdentityRejected, true);
+  });
+
+  test('stored headline that names the show still goes through the normal replay', async (t) => {
+    const s = seed(zeroTextStub({ source: 'rss-discovery', title: 'Zephyr Nights review: a gripping evening' }));
+    t.after(() => fs.rmSync(s.root, { recursive: true, force: true }));
+    const f = fakes();
+    await run(s, f);
+    assert.deepEqual(f.calls.fetch, [URL_]);
+  });
+
+  test('no headline: a descriptive off-topic slug (the real BRO-6061 stub) tags on the third failed run', async (t) => {
+    const s = seed(nbcStub(), 'nbcny--24124b82.json');
+    t.after(() => fs.rmSync(s.root, { recursive: true, force: true }));
+    let r;
+    for (let i = 0; i < 3; i++) {
+      const f = fakes({ fetchImpl: () => { throw new Error('All scraping methods failed'); } });
+      r = await replay.processShow(SHOW.id, { root: s.root, show: ASK, dryRun: false, explicitScope: true, ...f.deps });
+      if (r.alertPromise) await r.alertPromise;
+    }
+    assert.equal(r.unrecoverable, 0);
+    assert.equal(JSON.parse(fs.readFileSync(s.filepath, 'utf8')).rssIdentityRejected, true);
+  });
+
+  test('no headline and a slug that carries a review cue is left alone', async (t) => {
+    const s = seed(nbcStub({ url: 'https://www.nbcnewyork.com/entertainment/the-new-off-broadway-play-everyone-is-talking-about/6560612/' }), 'nbcny--24124b83.json');
+    t.after(() => fs.rmSync(s.root, { recursive: true, force: true }));
+    for (let i = 0; i < 3; i++) {
+      const f = fakes({ fetchImpl: () => { throw new Error('blocked'); } });
+      const r = await replay.processShow(SHOW.id, { root: s.root, show: ASK, dryRun: false, explicitScope: true, ...f.deps });
+      if (r.alertPromise) await r.alertPromise;
+      assert.equal(r.unrecoverable, 1);
+    }
+    assert.equal(JSON.parse(fs.readFileSync(s.filepath, 'utf8')).rssIdentityRejected, undefined);
+  });
+
+  test('no stored headline and a short/numeric slug is left alone (no evidence)', async (t) => {
+    const s = seed(nbcStub({ url: 'https://www.nbcnewyork.com/entertainment/6560613/' }), 'nbcny--24124b82.json');
+    t.after(() => fs.rmSync(s.root, { recursive: true, force: true }));
+    const f = fakes({ fetchImpl: () => { throw new Error('blocked'); } });
+    const r = await replay.processShow(SHOW.id, { root: s.root, show: ASK, dryRun: false, explicitScope: true, ...f.deps });
+    if (r.alertPromise) await r.alertPromise;
+    assert.equal(r.unrecoverable, 1);
+    assert.equal(JSON.parse(fs.readFileSync(s.filepath, 'utf8')).rssIdentityRejected, undefined);
+  });
+});
+
+describe('replay-pending-bylines: stale conditions close outside the alert window (BRO-7078)', () => {
+  test('complete scan past the post-opening week resolves the condition and never alerts', async (t) => {
+    const s = seed();
+    t.after(() => fs.rmSync(s.root, { recursive: true, force: true }));
+    const f = fakes({ fetchImpl: () => { throw new Error('blocked'); } });
+    f.deps.now = () => new Date('2026-11-20T12:00:00Z');
+    const resolved = [];
+    const r = await run(s, f, { resolve: (k) => resolved.push(k) });
+    assert.equal(r.unrecoverable, 1);
+    assert.equal(r.alerted, false);
+    assert.deepEqual(f.calls.alert, []);
+    assert.deepEqual(resolved, [`pending-unrecoverable:${SHOW.id}`]);
+  });
+
+  test('dry run and budget stop past the window leave the condition alone', async (t) => {
+    const resolved = [];
+    for (const variant of ['dry', 'budget']) {
+      const s = seed();
+      t.after(() => fs.rmSync(s.root, { recursive: true, force: true }));
+      const f = fakes({ fetchImpl: () => { throw new Error('blocked'); } });
+      f.deps.now = () => new Date('2026-11-20T12:00:00Z');
+      if (variant === 'budget') f.deps.budget = { exceeded: () => true, minutes: 0 };
+      await run(s, f, { dryRun: variant === 'dry', resolve: (k) => resolved.push(k) });
+    }
+    assert.deepEqual(resolved, []);
+  });
+});
