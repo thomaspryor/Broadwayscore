@@ -386,11 +386,6 @@
       "rank": 0,
       "reason": "Uses critic distribution and staff-turnover exceptions to propose multiAuthor registry changes; low-data and legitimate turnover cases need attribution review, and --apply changes scoring inputs, so keep manual."
     },
-    "audit-artsdesk-banner.js": {
-      "bucket": "b",
-      "rank": 0,
-      "reason": "BRO-7061 one-off re-audit of theartsdesk.com captures for the support banner and trailing Image artefact; needs private review texts, prints metadata only, run on demand via cloud-run-script.js --review-texts."
-    },
     "audit-soft-404-review-texts.js": {
       "bucket": "a",
       "rank": 99,
