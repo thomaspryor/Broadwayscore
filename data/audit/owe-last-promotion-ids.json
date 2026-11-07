@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-06T20:58:44.453Z",
+  "generatedAt": "2026-11-07T19:31:35.833Z",
   "promoted": [],
   "rejected": [
     {
@@ -393,14 +393,6 @@
       "sourceUrl": null,
       "kind": "skip-duplicate",
       "reason": "already in shows.json as an-oak-tree-off-west-end-2026 (london-pool-title-equal (venue \"The Other Palace\" vs \"The Other Palace - Main Theatre\"))"
-    },
-    {
-      "title": "Boys Who Dance",
-      "venue": "The Other Palace",
-      "source": "venue-page:the-other-palace",
-      "sourceUrl": null,
-      "kind": "skip-duplicate",
-      "reason": "already in shows.json as boys-who-dance-off-west-end-2026 (normalized-equal)"
     },
     {
       "title": "Garry Starr Classic Penguins",
@@ -1147,6 +1139,14 @@
       "reason": "already in shows.json as cadel-lungs-on-legs-off-west-end-2026 (normalized-equal)"
     },
     {
+      "title": "Concrete",
+      "venue": "Riverside Studios",
+      "source": "venue-page:riverside-studios",
+      "sourceUrl": null,
+      "kind": "skip-unconfirmed",
+      "reason": "venue's dated listing does not confirm a run: only 4 performance(s) listed — a short booking, not a run"
+    },
+    {
       "title": "Cradle: Stories of Iran, Exile & Belonging",
       "venue": "Riverside Studios",
       "source": "venue-page:riverside-studios",
@@ -1209,6 +1209,14 @@
       "sourceUrl": null,
       "kind": "skip-unconfirmed",
       "reason": "venue's dated listing does not confirm a run: not a production (one-night event (2027-01-15))"
+    },
+    {
+      "title": "Midnight Train to Nowhere",
+      "venue": "Riverside Studios",
+      "source": "venue-page:riverside-studios",
+      "sourceUrl": null,
+      "kind": "skip-unconfirmed",
+      "reason": "venue's dated listing does not confirm a run: only 2 performance(s) listed — a short booking, not a run"
     },
     {
       "title": "Mother Ignacia",
