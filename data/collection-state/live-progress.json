@@ -1,43 +1,53 @@
 {
-  "updatedAt": "2026-11-07T03:22:28.584Z",
-  "processed": 326,
-  "failed": 212,
-  "successRate": "60.6%",
+  "updatedAt": "2026-11-07T03:37:11.594Z",
+  "processed": 4,
+  "failed": 20,
+  "successRate": "16.7%",
   "tierBreakdown": {
     "playwright": 164,
     "amp": 0,
-    "browserbase": 2,
+    "browserbase": 0,
     "directCookies": 0,
-    "scrapingdog": 30,
-    "scrapingbee": 14,
-    "brightdata": 2,
+    "scrapingdog": 0,
+    "scrapingbee": 0,
+    "brightdata": 0,
     "archiveToday": 0,
     "archive": 87
   },
   "browserbaseSessions": 3,
   "recentActivity": [
     {
-      "t": "2026-11-07T03:09:32.035Z",
+      "t": "2026-11-07T03:22:40.497Z",
       "event": "bb-session",
-      "session": "f4b46a9b",
-      "url": "https://www.express.co.uk/entertainment/theatre/470203/Birdland-Another-Country-"
+      "session": "23754364",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?pagewanted=print&res=980DE3D"
     },
     {
-      "t": "2026-11-07T03:10:46.210Z",
-      "event": "bb-session",
-      "session": "373c64e9",
-      "url": "https://www.express.co.uk/entertainment/theatre/202870/Review-Birdsong-Comedy-Th"
-    },
-    {
-      "t": "2026-11-07T03:11:04.149Z",
-      "event": "bb-session",
-      "session": "44f01dd1",
-      "url": "https://theater.nytimes.com/mem/theater/treview.html?res=9400e4d61038f934a25752c"
-    },
-    {
-      "t": "2026-11-07T03:11:04.423Z",
+      "t": "2026-11-07T03:22:40.810Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-07T03:22:57.290Z",
+      "event": "bb-session",
+      "session": "7a15306f",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?pagewanted=print&res=980DE3D"
+    },
+    {
+      "t": "2026-11-07T03:22:57.538Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-07T03:32:42.365Z",
+      "event": "bb-session",
+      "session": "fdf90d39",
+      "url": "http://www.northjersey.com/arts_entertainment/142894205__Salesman__revival_buckl"
+    },
+    {
+      "t": "2026-11-07T03:32:46.405Z",
+      "event": "bb-login-uncertain",
+      "domain": "northjersey.com"
     }
   ]
 }
