@@ -918,7 +918,7 @@ function buildHtmlParts({ sections = {}, problemsNote = null, changesHtml = null
   // sent has the owner sections, a four-tile board glance and one line
   // pointing at the attachment; the full report is a separate HTML document.
   const body = [...head, glanceHtml,
-    `<p style="font-size:15px;color:#444;margin:6px 0 0;">${reportInner ? 'The full board, spend and technical report is attached to this email (tap the attachment to open it).' : ''}</p>`,
+    reportInner ? `<p style="font-size:15px;color:#444;margin:6px 0 0;">${REPORT_ATTACHED_NOTE}</p>` : '',
     ...footer].filter(Boolean).join('\n');
   const full = [...head, `<div style="margin:18px 0 0;border-top:1px solid #e5e5e5;padding-top:8px;">`, reportInner, `</div>`, ...footer].join('\n');
   return { body: enforceBodyTypeFloor(body), full, report: reportInner ? buildReportDocument({ dateLabel, inner: reportInner }) : null };
@@ -944,6 +944,8 @@ function buildHtml(opts) { return buildHtmlParts(opts).full; }
 // below this size. One choke point instead of 60 inline styles: any smaller
 // font-size the renderers emit is raised here, and a test pins the floor.
 const BODY_MIN_FONT_PX = 14;
+const REPORT_ATTACHED_NOTE = 'The full board, spend and technical report is attached to this email (tap the attachment to open it).';
+const REPORT_NOT_ATTACHED_NOTE = 'The full board, spend and technical report could not be attached this morning.';
 function enforceBodyTypeFloor(html, min = BODY_MIN_FONT_PX) {
   return String(html).replace(/font-size:\s*(\d+(?:\.\d+)?)px/g, (m, n) => (Number(n) < min ? `font-size:${min}px` : m));
 }
@@ -1782,13 +1784,16 @@ async function main() {
   try {
     const { assertDigestInvariants } = require('./lib/digest-content-invariants.js');
     const { ok, violations } = assertDigestInvariants(html, { health: sections.health, subject, verifySecret: process.env.APPROVAL_HMAC_SECRET });
-    if (!ok) {
-      invariantViolations = violations;
-      console.error(`[digest] FAIL content invariant violation(s): ${violations.join('; ')}`);
+    // BRO-7075: the invariants above run on every section together; the owner only sees the body.
+    const { assertBodyInvariants } = require('./lib/digest-content-invariants.js');
+    const allViolations = [...violations, ...assertBodyInvariants(bodyHtml).violations];
+    if (allViolations.length) {
+      invariantViolations = allViolations;
+      console.error(`[digest] FAIL content invariant violation(s): ${allViolations.join('; ')}`);
       try {
         const ledgerPath = path.join(REPO, 'data', 'audit', 'digest-invariant-fail-ledger.jsonl');
         fs.mkdirSync(path.dirname(ledgerPath), { recursive: true });
-        fs.appendFileSync(ledgerPath, JSON.stringify({ ts: new Date().toISOString(), violations, subject, dryRun: !!dryRun }) + '\n');
+        fs.appendFileSync(ledgerPath, JSON.stringify({ ts: new Date().toISOString(), violations: allViolations, subject, dryRun: !!dryRun }) + '\n');
       } catch (ledgerErr) {
         console.error(`[digest] WARN could not persist invariant-fail ledger record: ${String(ledgerErr.message).slice(0, 120)}`);
       }
@@ -1872,7 +1877,9 @@ async function main() {
   // retry once with the body alone, which is self-sufficient. 5xx/429 are not retried here (a duplicate send is worse).
   if (payload.attachments && res.status >= 400 && res.status < 500 && res.status !== 429) {
     console.error(`[digest] WARN send with attachment rejected (${res.status} ${JSON.stringify(res.json || {}).slice(0, 160)}); retrying without the attachment`);
-    const { attachments: _dropped, ...bodyOnly } = payload;
+    const { attachments: _dropped, ...rest } = payload;
+    // The body must not claim an attachment that is not there.
+    const bodyOnly = { ...rest, html: String(rest.html).replace(REPORT_ATTACHED_NOTE, REPORT_NOT_ATTACHED_NOTE) };
     res = await httpsJson('POST', 'https://api.resend.com/emails', { Authorization: `Bearer ${apiKey}` }, bodyOnly);
   }
   if (res.status < 200 || res.status >= 300) {
@@ -1903,4 +1910,4 @@ if (require.main === module) {
   main().catch((err) => { console.error(`[digest] fatal: ${err.message}`); process.exit(1); });
 }
 
-module.exports = { decisionsListLinkHtml, buildSubject, buildHtml, buildHtmlParts, buildResendPayload, enforceBodyTypeFloor, BODY_MIN_FONT_PX, parseArgs, composeDigestEmail, mergeNeedsYouSections, macLabelRetired, localCyrusRelayMessage, localRunnerHealthMessage, localLinearDelegationMessage, localCodexConnectionLine, retiredSyncTags, autofixShouldDryRun, DIGEST_SYNC_TAG, localDispatchWatchdogLeakMessage, macLocalSkippedLine, resendSentToday, fetchBoardTable, boardWaitingFallback, boardStartedIdle, saveBoardTableSnapshot };
+module.exports = { decisionsListLinkHtml, buildSubject, buildHtml, buildHtmlParts, buildResendPayload, REPORT_ATTACHED_NOTE, REPORT_NOT_ATTACHED_NOTE, enforceBodyTypeFloor, BODY_MIN_FONT_PX, parseArgs, composeDigestEmail, mergeNeedsYouSections, macLabelRetired, localCyrusRelayMessage, localRunnerHealthMessage, localLinearDelegationMessage, localCodexConnectionLine, retiredSyncTags, autofixShouldDryRun, DIGEST_SYNC_TAG, localDispatchWatchdogLeakMessage, macLocalSkippedLine, resendSentToday, fetchBoardTable, boardWaitingFallback, boardStartedIdle, saveBoardTableSnapshot };

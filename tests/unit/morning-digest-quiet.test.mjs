@@ -230,3 +230,32 @@ test('the send site builds its payload with buildResendPayload and retries a 4xx
   assert.match(src, /buildResendPayload\(\{ to: sendTo,/);
   assert.match(src, /retrying without the attachment/);
 });
+
+// ---- BRO-7075 ship-check follow-ups ----
+
+test('body invariants: a decision card with no button, leaked report content and <details> are all caught; the real body passes', () => {
+  const { assertBodyInvariants } = require('../../scripts/lib/digest-content-invariants.js');
+  assert.equal(assertBodyInvariants('<div>Needs your attention</div><p>text only</p>').ok, false);
+  assert.equal(assertBodyInvariants('<div>Needs your attention</div><a href="https://linear.app/x">Open</a>').ok, true);
+  assert.equal(assertBodyInvariants('<h2>Technical details</h2>').ok, false);
+  assert.equal(assertBodyInvariants('<details><summary>x</summary></details>').ok, false);
+  const sections = { needsYou: { items: [{ title: 'BRO-1: Pick one', url: 'https://linear.app/x/BRO-1', ageDays: 15 }], moreCount: 0 } };
+  const real = mail(healthWith(), { sections });
+  assert.deepEqual(assertBodyInvariants(real.bodyHtml).violations, []);
+});
+
+test('the attachment note and its not-attached twin both exist, and the body claims an attachment only when there is one', () => {
+  const { REPORT_ATTACHED_NOTE, REPORT_NOT_ATTACHED_NOTE, buildHtmlParts } = require('../../scripts/send-morning-digest.js');
+  assert.ok(mail(healthWith()).bodyHtml.includes(REPORT_ATTACHED_NOTE));
+  assert.ok(!REPORT_NOT_ATTACHED_NOTE.includes('is attached'));
+  const none = buildHtmlParts({ sections: {}, now: NOW });
+  assert.ok(none.report === null || none.body.includes(REPORT_ATTACHED_NOTE));
+  assert.ok(!/<p[^>]*><\/p>/.test(none.body), 'no empty paragraph when there is nothing to point at');
+});
+
+test('Stuck tile: the glance points at the attachment, the in-report copy points at the table below', () => {
+  const { tilesFor } = require('../../scripts/lib/board-summary.js');
+  const m = { waiting: 0, stuckCards: 1, daily: null, lanes: {}, cost: {} };
+  assert.match(tilesFor(m, { startedIdle: 7, compact: true })[2][2], /attached report/);
+  assert.match(tilesFor(m, { startedIdle: 7 })[2][2], /row below/);
+});
