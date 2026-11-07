@@ -36,13 +36,13 @@ function scan(root, { show, year } = {}) {
   for (const s of dirs) {
     expanded.push(s);
     if (s === '_pending' && fs.existsSync(path.join(root, s))) {
-      for (const c of fs.readdirSync(path.join(root, s))) expanded.push(path.join(s, c));
+      for (const c of listShowDirs(path.join(root, s), { silent: true })) expanded.push(path.join(s, c));
     }
   }
   for (const s of expanded) {
     if (year && !new RegExp(`-${year}$`).test(s)) continue;
     const dir = path.join(root, s);
-    if (!fs.existsSync(dir) || !fs.statSync(dir).isDirectory()) continue;
+    if (!fs.existsSync(dir)) continue;
     for (const f of fs.readdirSync(dir).filter((x) => x.endsWith('.json'))) {
       let d; try { d = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8')); } catch { continue; }
       if (!isArtsDeskFile(f, d)) continue;
