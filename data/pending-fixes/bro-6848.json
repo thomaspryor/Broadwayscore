@@ -1,0 +1,243 @@
+{
+  "issueNumber": "bro-6848",
+  "planId": "dccbaa0c-edf5-4c30-aa24-74f2593bf5ff",
+  "status": "pending",
+  "createdAt": "2026-11-07T21:02:21.953Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Classify the 78 solo Guardian-hosted reviews by Susannah Clapp, Kate Kellaway and Clare Brennan as the UK Observer using the existing observer id; leave the authoritative market tiers unchanged. Leave the 52 Observer-twin pairs alone; preserve all ratings, texts and exclusion flags. (part 1 of 4)",
+    "steps": [
+      "BRO-6848: Susannah Clapp is an Observer critic; theguardian.com hosts the UK Observer. Relabel the solo record to the existing observer id; preserve rating and exclusion verdicts.",
+      "BRO-6848: Susannah Clapp is an Observer critic; theguardian.com hosts the UK Observer. Relabel the solo record to the existing observer id; preserve rating and exclusion verdicts.",
+      "BRO-6848: Clare Brennan is an Observer critic; theguardian.com hosts the UK Observer. Relabel the solo record to the existing observer id; preserve rating and exclusion verdicts.",
+      "BRO-6848: Clare Brennan is an Observer critic; theguardian.com hosts the UK Observer. Relabel the solo record to the existing observer id; preserve rating and exclusion verdicts.",
+      "BRO-6848: Susannah Clapp is an Observer critic; theguardian.com hosts the UK Observer. Relabel the solo record to the existing observer id; preserve rating and exclusion verdicts.",
+      "BRO-6848: Susannah Clapp is an Observer critic; theguardian.com hosts the UK Observer. Relabel the solo record to the existing observer id; preserve rating and exclusion verdicts.",
+      "BRO-6848: Clare Brennan is an Observer critic; theguardian.com hosts the UK Observer. Relabel the solo record to the existing observer id; preserve rating and exclusion verdicts.",
+      "BRO-6848: Clare Brennan is an Observer critic; theguardian.com hosts the UK Observer. Relabel the solo record to the existing observer id; preserve rating and exclusion verdicts.",
+      "BRO-6848: Clare Brennan is an Observer critic; theguardian.com hosts the UK Observer. Relabel the solo record to the existing observer id; preserve rating and exclusion verdicts.",
+      "BRO-6848: Clare Brennan is an Observer critic; theguardian.com hosts the UK Observer. Relabel the solo record to the existing observer id; preserve rating and exclusion verdicts.",
+      "BRO-6848: Susannah Clapp is an Observer critic; theguardian.com hosts the UK Observer. Relabel the solo record to the existing observer id; preserve rating and exclusion verdicts.",
+      "BRO-6848: Susannah Clapp is an Observer critic; theguardian.com hosts the UK Observer. Relabel the solo record to the existing observer id; preserve rating and exclusion verdicts.",
+      "BRO-6848: Susannah Clapp is an Observer critic; theguardian.com hosts the UK Observer. Relabel the solo record to the existing observer id; preserve rating and exclusion verdicts.",
+      "BRO-6848: Susannah Clapp is an Observer critic; theguardian.com hosts the UK Observer. Relabel the solo record to the existing observer id; preserve rating and exclusion verdicts.",
+      "BRO-6848: Clare Brennan is an Observer critic; theguardian.com hosts the UK Observer. Relabel the solo record to the existing observer id; preserve rating and exclusion verdicts.",
+      "BRO-6848: Susannah Clapp is an Observer critic; theguardian.com hosts the UK Observer. Relabel the solo record to the existing observer id; preserve rating and exclusion verdicts.",
+      "BRO-6848: Susannah Clapp is an Observer critic; theguardian.com hosts the UK Observer. Relabel the solo record to the existing observer id; preserve rating and exclusion verdicts.",
+      "BRO-6848: Clare Brennan is an Observer critic; theguardian.com hosts the UK Observer. Relabel the solo record to the existing observer id; preserve rating and exclusion verdicts.",
+      "BRO-6848: Susannah Clapp is an Observer critic; theguardian.com hosts the UK Observer. Relabel the solo record to the existing observer id; preserve rating and exclusion verdicts.",
+      "BRO-6848: Susannah Clapp is an Observer critic; theguardian.com hosts the UK Observer. Relabel the solo record to the existing observer id; preserve rating and exclusion verdicts.",
+      "BRO-6848: Susannah Clapp is an Observer critic; theguardian.com hosts the UK Observer. Relabel the solo record to the existing observer id; preserve rating and exclusion verdicts.",
+      "BRO-6848: Susannah Clapp is an Observer critic; theguardian.com hosts the UK Observer. Relabel the solo record to the existing observer id; preserve rating and exclusion verdicts.",
+      "BRO-6848: Susannah Clapp is an Observer critic; theguardian.com hosts the UK Observer. Relabel the solo record to the existing observer id; preserve rating and exclusion verdicts.",
+      "BRO-6848: Kate Kellaway is an Observer critic; theguardian.com hosts the UK Observer. Relabel the solo record to the existing observer id; preserve rating and exclusion verdicts.",
+      "BRO-6848: Susannah Clapp is an Observer critic; theguardian.com hosts the UK Observer. Relabel the solo record to the existing observer id; preserve rating and exclusion verdicts."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "2-22-a-ghost-story-west-end-2023/guardian--susannah-clapp.json",
+        "field": "outletId",
+        "oldValue": "guardian",
+        "newValue": "observer",
+        "description": "BRO-6848: Susannah Clapp is an Observer critic; theguardian.com hosts the UK Observer. Relabel the solo record to the existing observer id; preserve rating and exclusion verdicts."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "42nd-street-west-end-2017/guardian--susannah-clapp.json",
+        "field": "outletId",
+        "oldValue": "guardian",
+        "newValue": "observer",
+        "description": "BRO-6848: Susannah Clapp is an Observer critic; theguardian.com hosts the UK Observer. Relabel the solo record to the existing observer id; preserve rating and exclusion verdicts."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-christmas-carol-west-end-2018/guardian--clare-brennan.json",
+        "field": "outletId",
+        "oldValue": "guardian",
+        "newValue": "observer",
+        "description": "BRO-6848: Clare Brennan is an Observer critic; theguardian.com hosts the UK Observer. Relabel the solo record to the existing observer id; preserve rating and exclusion verdicts."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-man-for-all-seasons-royal-bath-regional-2025/guardian--clare-brennan.json",
+        "field": "outletId",
+        "oldValue": "guardian",
+        "newValue": "observer",
+        "description": "BRO-6848: Clare Brennan is an Observer critic; theguardian.com hosts the UK Observer. Relabel the solo record to the existing observer id; preserve rating and exclusion verdicts."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-streetcar-named-desire-2012/guardian--susannah-clapp.json",
+        "field": "outletId",
+        "oldValue": "guardian",
+        "newValue": "observer",
+        "description": "BRO-6848: Susannah Clapp is an Observer critic; theguardian.com hosts the UK Observer. Relabel the solo record to the existing observer id; preserve rating and exclusion verdicts."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-view-from-the-bridge-2015/guardian--susannah-clapp.json",
+        "field": "outletId",
+        "oldValue": "guardian",
+        "newValue": "observer",
+        "description": "BRO-6848: Susannah Clapp is an Observer critic; theguardian.com hosts the UK Observer. Relabel the solo record to the existing observer id; preserve rating and exclusion verdicts."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "aladdin-stephen-joseph-regional-2024/guardian--clare-brennan.json",
+        "field": "outletId",
+        "oldValue": "guardian",
+        "newValue": "observer",
+        "description": "BRO-6848: Clare Brennan is an Observer critic; theguardian.com hosts the UK Observer. Relabel the solo record to the existing observer id; preserve rating and exclusion verdicts."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "ben-and-imo-royal-shakespeare-regional-2024/guardian--clare-brennan.json",
+        "field": "outletId",
+        "oldValue": "guardian",
+        "newValue": "observer",
+        "description": "BRO-6848: Clare Brennan is an Observer critic; theguardian.com hosts the UK Observer. Relabel the solo record to the existing observer id; preserve rating and exclusion verdicts."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "bhangra-nation-birmingham-rep-regional-2024/guardian--clare-brennan.json",
+        "field": "outletId",
+        "oldValue": "guardian",
+        "newValue": "observer",
+        "description": "BRO-6848: Clare Brennan is an Observer critic; theguardian.com hosts the UK Observer. Relabel the solo record to the existing observer id; preserve rating and exclusion verdicts."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "care-west-end-2026/guardian--clare-brennan.json",
+        "field": "outletId",
+        "oldValue": "guardian",
+        "newValue": "observer",
+        "description": "BRO-6848: Clare Brennan is an Observer critic; theguardian.com hosts the UK Observer. Relabel the solo record to the existing observer id; preserve rating and exclusion verdicts."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "clydes-2021/guardian--susannah-clapp.json",
+        "field": "outletId",
+        "oldValue": "guardian",
+        "newValue": "observer",
+        "description": "BRO-6848: Susannah Clapp is an Observer critic; theguardian.com hosts the UK Observer. Relabel the solo record to the existing observer id; preserve rating and exclusion verdicts."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cruise-west-end-2021/guardian--susannah-clapp.json",
+        "field": "outletId",
+        "oldValue": "guardian",
+        "newValue": "observer",
+        "description": "BRO-6848: Susannah Clapp is an Observer critic; theguardian.com hosts the UK Observer. Relabel the solo record to the existing observer id; preserve rating and exclusion verdicts."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cyprus-avenue-west-end-2016/guardian--susannah-clapp.json",
+        "field": "outletId",
+        "oldValue": "guardian",
+        "newValue": "observer",
+        "description": "BRO-6848: Susannah Clapp is an Observer critic; theguardian.com hosts the UK Observer. Relabel the solo record to the existing observer id; preserve rating and exclusion verdicts."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "driving-miss-daisy-west-end-2011/guardian--susannah-clapp.json",
+        "field": "outletId",
+        "oldValue": "guardian",
+        "newValue": "observer",
+        "description": "BRO-6848: Susannah Clapp is an Observer critic; theguardian.com hosts the UK Observer. Relabel the solo record to the existing observer id; preserve rating and exclusion verdicts."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "escaped-alone-and-what-if-if-only-royal-exchange-regional-2025/guardian--clare-brennan.json",
+        "field": "outletId",
+        "oldValue": "guardian",
+        "newValue": "observer",
+        "description": "BRO-6848: Clare Brennan is an Observer critic; theguardian.com hosts the UK Observer. Relabel the solo record to the existing observer id; preserve rating and exclusion verdicts."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "eureka-day-2024/guardian--susannah-clapp.json",
+        "field": "outletId",
+        "oldValue": "guardian",
+        "newValue": "observer",
+        "description": "BRO-6848: Susannah Clapp is an Observer critic; theguardian.com hosts the UK Observer. Relabel the solo record to the existing observer id; preserve rating and exclusion verdicts."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "exit-the-king-2009/guardian--susannah-clapp.json",
+        "field": "outletId",
+        "oldValue": "guardian",
+        "newValue": "observer",
+        "description": "BRO-6848: Susannah Clapp is an Observer critic; theguardian.com hosts the UK Observer. Relabel the solo record to the existing observer id; preserve rating and exclusion verdicts."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "frankenstein-leeds-regional-2024/guardian--clare-brennan.json",
+        "field": "outletId",
+        "oldValue": "guardian",
+        "newValue": "observer",
+        "description": "BRO-6848: Clare Brennan is an Observer critic; theguardian.com hosts the UK Observer. Relabel the solo record to the existing observer id; preserve rating and exclusion verdicts."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "g-west-end-2024/guardian--susannah-clapp.json",
+        "field": "outletId",
+        "oldValue": "guardian",
+        "newValue": "observer",
+        "description": "BRO-6848: Susannah Clapp is an Observer critic; theguardian.com hosts the UK Observer. Relabel the solo record to the existing observer id; preserve rating and exclusion verdicts."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "good-1982/guardian--susannah-clapp.json",
+        "field": "outletId",
+        "oldValue": "guardian",
+        "newValue": "observer",
+        "description": "BRO-6848: Susannah Clapp is an Observer critic; theguardian.com hosts the UK Observer. Relabel the solo record to the existing observer id; preserve rating and exclusion verdicts."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "groundhog-day-2017/guardian--susannah-clapp.json",
+        "field": "outletId",
+        "oldValue": "guardian",
+        "newValue": "observer",
+        "description": "BRO-6848: Susannah Clapp is an Observer critic; theguardian.com hosts the UK Observer. Relabel the solo record to the existing observer id; preserve rating and exclusion verdicts."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "henry-v-west-end-2013/guardian--susannah-clapp.json",
+        "field": "outletId",
+        "oldValue": "guardian",
+        "newValue": "observer",
+        "description": "BRO-6848: Susannah Clapp is an Observer critic; theguardian.com hosts the UK Observer. Relabel the solo record to the existing observer id; preserve rating and exclusion verdicts."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "jane-eyre-west-end-2015/guardian--susannah-clapp.json",
+        "field": "outletId",
+        "oldValue": "guardian",
+        "newValue": "observer",
+        "description": "BRO-6848: Susannah Clapp is an Observer critic; theguardian.com hosts the UK Observer. Relabel the solo record to the existing observer id; preserve rating and exclusion verdicts."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "jews-in-their-own-words-west-end-2022/guardian--kate-kellaway.json",
+        "field": "outletId",
+        "oldValue": "guardian",
+        "newValue": "observer",
+        "description": "BRO-6848: Kate Kellaway is an Observer critic; theguardian.com hosts the UK Observer. Relabel the solo record to the existing observer id; preserve rating and exclusion verdicts."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "king-lear-2019/guardian--susannah-clapp.json",
+        "field": "outletId",
+        "oldValue": "guardian",
+        "newValue": "observer",
+        "description": "BRO-6848: Susannah Clapp is an Observer critic; theguardian.com hosts the UK Observer. Relabel the solo record to the existing observer id; preserve rating and exclusion verdicts."
+      }
+    ]
+  }
+}

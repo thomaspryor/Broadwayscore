@@ -65,8 +65,9 @@ let _creditGuardInertWarned = false;
 const { findCrossShowOwners, shouldBlockCrossShowCreate, recordUrlOwner, showDirHoldsUrl } = require('./url-ownership');
 const { decodeHtmlEntities, hasUndecodedHtmlEntities, hasJsonLdArtifact } = require('./text-cleaning');
 const { emitStage } = require('./stage-latency');
-const { shouldSkipAggregatorUrlWrite, shouldRefuseAggregatorOutletRefinement, hasPreservableAggregatorScore, isAggregatorReviewSource } = require('./aggregator-domains');
+const { shouldSkipAggregatorUrlWrite, shouldRefuseAggregatorOutletRefinement, hasPreservableAggregatorScore, isAggregatorReviewSource, isSharedDomainOutlet } = require('./aggregator-domains');
 const { EXCERPT_FIELDS } = require('./excerpt-fields');
+const { guardianReviewOutletId } = require('./guardian-publication');
 const { isUrlSwapRegression } = require('./url-downgrade-guard');
 const { loadBlocklist, findBlockedEntry } = require('./poller-blocklist');
 
@@ -521,7 +522,8 @@ function _createOrMergeReviewFile(showId, input, options = {}) {
     // become the aggregator's — skip the general refinement logic below entirely
     // whenever the URL resolved onto an aggregator at all, or the cross-domain
     // "Case 2" branch would immediately undo that decision.
-    if (!urlResolvesToAggregator && urlResolved && urlResolved.outletId !== outletId) {
+    if (!urlResolvesToAggregator && urlResolved && urlResolved.outletId !== outletId
+        && !isSharedDomainOutlet(urlResolved.outletId, outletId)) {
       const registry = loadOutletRegistry();
       const urlOutlet = registry?.outlets?.[urlResolved.outletId];
       const nameOutlet = registry?.outlets?.[outletId];
@@ -933,6 +935,9 @@ function _createOrMergeReviewFile(showId, input, options = {}) {
     console.warn(`  ✎ Byline: ${outletId} page prints "${printedByline}", replacing "${criticName}"`);
     criticName = sanitizeCriticName(printedByline);
   }
+  // Guardian hosts the Observer too. Use the final byline before naming the
+  // file, including SERP and roundup inputs without publication metadata.
+  outletId = guardianReviewOutletId({ outletId, criticName, url: input.url, guardianApi: fields.guardianApi });
   if (!laneHolds('scraperGarbage') && criticName === 'Unknown' && !input.url && !fields.fullText && !fields.bwwExcerpt
       && !fields.dtliExcerpt && !fields.showScoreExcerpt && !fields.nycTheatreExcerpt
       && !fields.stagedoorExcerpt && !fields.lboRoundupExcerpt) {

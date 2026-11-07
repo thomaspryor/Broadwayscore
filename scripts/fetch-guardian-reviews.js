@@ -41,6 +41,7 @@ const { isArticleOutsideProductionWindow } = require('./lib/date-guard');
 const { shouldSkipWrongProductionAudit } = require('./lib/review-guards');
 const { invalidateWrongProductionAutoClear } = require('./lib/review-write-guard');
 const { guardianFetchEligibility } = require('./lib/guardian-fetch-eligibility');
+const { GUARDIAN_API_FIELDS, applyGuardianPublication } = require('./lib/guardian-publication');
 
 // Lazy show lookup so the Guardian fetcher can reject a prior-production article
 // the API returns for a revival's stale slug (see updateReviewFile date guard).
@@ -116,7 +117,7 @@ async function fetchArticleFromAPI(articleId) {
   return new Promise((resolve, reject) => {
     const params = new URLSearchParams({
       'api-key': CONFIG.apiKey,
-      'show-fields': 'body,bodyText,headline,byline,standfirst,starRating',
+      'show-fields': GUARDIAN_API_FIELDS,
     });
 
     const url = `${CONFIG.baseUrl}/${articleId}?${params}`;
@@ -150,6 +151,7 @@ async function fetchArticleFromAPI(articleId) {
               text: text,
               headline: fields.headline || content.webTitle,
               byline: fields.byline,
+              publication: fields.publication || null,
               standfirst: fields.standfirst,
               starRating: fields.starRating != null ? parseInt(fields.starRating) : null,
               webUrl: content.webUrl,
@@ -349,11 +351,13 @@ function updateReviewFile(review, apiResult) {
   data.guardianApi = {
     headline: apiResult.headline,
     byline: apiResult.byline,
+    publication: apiResult.publication || null,
     standfirst: apiResult.standfirst,
     starRating: apiResult.starRating,
     webUrl: apiResult.webUrl,
     fetchedAt: new Date().toISOString(),
   };
+  applyGuardianPublication(data, apiResult.publication);
 
   if (!CLI.dryRun) {
     persistReviewSnapshot({ filePath: review.filePath, data: data });

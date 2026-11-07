@@ -1790,6 +1790,10 @@ function validateUrlDomain(url, outletId) {
   }
   try {
     const urlDomain = new URL(url).hostname.replace(/^www\./, '');
+    // The Observer's UK reviews are hosted by the Guardian. Use the same
+    // directional publishing-group exception as the outlet mismatch audit.
+    const resolved = require('./review-normalization').resolveOutletFromUrl(url);
+    if (require('./aggregator-domains').isSharedDomainOutlet(resolved?.outletId, String(outletId).toLowerCase())) return { valid: true };
     if (!domainMatchesExpected(expectedDomain.replace(/^www\./, ''), urlDomain)) {
       return { valid: false, reason: `URL domain ${urlDomain} doesn't match outlet ${outletId} (expected ${expectedDomain})` };
     }

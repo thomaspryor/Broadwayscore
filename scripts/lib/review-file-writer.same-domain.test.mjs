@@ -18,7 +18,7 @@
  * findExistingReviewFile matching a real file and forking into the merge
  * path instead. dryRun:true means nothing is ever written to this temp dir.
  */
-import { test } from 'node:test';
+import { test, after } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 import fs from 'node:fs';
@@ -29,6 +29,7 @@ const require = createRequire(import.meta.url);
 const { createOrMergeReviewFile } = require('./review-file-writer.js');
 
 const reviewTextsDir = fs.mkdtempSync(path.join(os.tmpdir(), 'review-file-writer-same-domain-'));
+after(() => fs.rmSync(reviewTextsDir, { recursive: true, force: true }));
 
 const quiet = (fn) => {
   const w = console.warn, l = console.log;
@@ -56,9 +57,15 @@ test('timeout path split still authoritative: NY label + /london URL → timeout
   assert.match(r.filepath, /timeout-london--andrzej-lukowski\.json$/);
 });
 
-test('cross-domain misattribution still corrected by URL domain', () => {
+test('Observer label on its shared Guardian host keeps the Observer outlet', () => {
   const r = call('Observer', 'Susannah Clapp',
     'https://www.theguardian.com/stage/2026/jun/01/some-observer-review');
   assert.equal(r.action, 'new');
-  assert.match(r.filepath, /guardian--susannah-clapp\.json$/);
+  assert.match(r.filepath, /observer--susannah-clapp\.json$/);
+});
+
+test('cross-domain misattribution still corrected by URL domain', () => {
+  const r = call('The Guardian', 'David Cote', 'https://observer.com/2026/06/a-theatre-review/');
+  assert.equal(r.action, 'new');
+  assert.match(r.filepath, /observer--david-cote\.json$/);
 });

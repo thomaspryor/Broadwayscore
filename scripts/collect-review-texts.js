@@ -56,6 +56,7 @@ const { pointsAtFile, planCanonicalPointerClear, applyCanonicalPointerClear } = 
 const { quarantineBody } = require('./lib/quarantine-body');
 const { withTimeout: sharedWithTimeout } = require('./lib/with-timeout');
 const { guardianContentToResult, titleHtmlFor, guardianMentionWaiver } = require('./lib/guardian-api-result');
+const { GUARDIAN_API_FIELDS, applyGuardianPublication } = require('./lib/guardian-publication');
 const { isTitledBlogUrl, titledBlogMentionWaiver } = require('./lib/titled-blog-collect');
 const fs = require('fs');
 const { readReviewForUpdate, persistReviewSnapshot, renameReviewSnapshot } = require('./lib/persist-review-snapshot');
@@ -3867,7 +3868,7 @@ async function fetchReviewText(review) {
   if (url && url.includes('theguardian.com') && process.env.GUARDIAN_API_KEY) {
     try {
       const articlePath = url.replace(/^https?:\/\/(www\.)?theguardian\.com\//, '').replace(/\/$/, '');
-      const apiUrl = `https://content.guardianapis.com/${articlePath}?api-key=${process.env.GUARDIAN_API_KEY}&show-fields=body,starRating,bodyText,headline`;
+      const apiUrl = `https://content.guardianapis.com/${articlePath}?api-key=${process.env.GUARDIAN_API_KEY}&show-fields=${GUARDIAN_API_FIELDS}`;
       const resp = await fetch(apiUrl, { signal: AbortSignal.timeout(60000) });
       if (resp.ok) {
         const json = await resp.json();
@@ -4623,6 +4624,7 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
     console.log(`    [PROTECTED] ${protectionGate.reason} — skipping updateReviewJson`);
     return;
   }
+  if (method === 'guardian-api') applyGuardianPublication(data, apiMeta?.publication);
 
   // Get excerpt length for truncation detection
   const excerptLength = Math.max(
