@@ -718,6 +718,15 @@ const LISTING_PAGE_URL_PATTERNS = [
   { host: /./, path: /^\/tags?\/[^/]+(?:\/page\/\d+)?\/?$/i, reason: 'tag-index-page',
     exceptHosts: /(^|\.)(?:twi-ny\.com|whatsonoffbroadway\.com)$/ },
   { host: /./, path: /^\/author\/[^/]+(?:\/page\/\d+)?\/?$/i, reason: 'tag-index-page' },
+  // BRO-7081: the hourly gap audit kept alerting on listing pages the SERP census
+  // cited. A per-performance event page ends in its date (limelight-arts.com.au
+  // /event/garry-starr-classic-penguins-2/2026-06-25/, nine of them for one show,
+  // BRO-6950), and a bare /shows/<slug>/ page is a show hub (broadwayblack.com
+  // /shows/midnight/, BRO-5134/BRO-6731; mirvish.com /shows/juliet). Corpus
+  // 2026-11-07: 0 of reviews.json's URLs match either shape; reviews on hub hosts
+  // sit one level deeper (didtheylikeit /shows/<show>/<review>/).
+  { host: /./, path: /\/events?\/[^/]+\/\d{4}-\d\d-\d\d\/?$/i, reason: 'event-listing' },
+  { host: /./, path: /^\/shows\/[^/]+\/?$/i, reason: 'show-hub' },
 ];
 
 /**

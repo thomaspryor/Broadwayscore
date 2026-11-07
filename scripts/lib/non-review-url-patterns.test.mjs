@@ -793,3 +793,26 @@ test('forum, aggregator-repost and blog tag pages are listing pages, their revie
     'https://twi-ny.com/tag/an-american-daughter/',
   ]) assert.equal(listingPageUrlReason(url), null, url);
 });
+
+test('BRO-7081: dated event pages and bare /shows/<slug>/ hubs are listings, not owed reviews', () => {
+  const { listingPageUrlReason } = require('./non-review-url-patterns.js');
+  const bad = {
+    // BRO-6950: nine dated performance pages for Garry Starr: Classic Penguins.
+    'https://limelight-arts.com.au/event/garry-starr-classic-penguins-2/2026-06-25/': 'event-listing',
+    'https://limelight-arts.com.au/event/garry-starr-classic-penguins/2026-06-21/': 'event-listing',
+    'https://limelight-arts.com.au/event/a-beautiful-noise-the-neil-diamond-musical-2/2026-10-07/': 'event-listing',
+    // BRO-5134 / BRO-6731: Broadway Black show hub cited for Midnight.
+    'https://www.broadwayblack.com/shows/midnight/': 'show-hub',
+    'https://www.mirvish.com/shows/juliet': 'show-hub',
+  };
+  for (const [url, reason] of Object.entries(bad)) {
+    assert.equal(listingPageUrlReason(url), reason, url);
+    assert.notEqual(classifyGapCandidateUrl(url).ok, true, url);
+  }
+  for (const url of [
+    'https://didtheylikeit.com/shows/midnight/review-roundup/',
+    'https://www.dailymail.co.uk/home/event/article-10848817/ABBA-Voyage-review-electric-soul-touching-magical-trip-70s.html',
+    'https://www.newyorker.com/arts/events/theatre/brief-encounter-studio-54',
+    'https://exeuntnyc.com/reviews/review-garry-starr-classic-penguins-at-studio-seaview/',
+  ]) assert.equal(listingPageUrlReason(url), null, url);
+});
