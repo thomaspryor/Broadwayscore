@@ -103,6 +103,18 @@ test('runner: unreadable step list on a failing job queues one fallback digest l
   assert.deepEqual(router.calls.routed.map((o) => [o.conditionKey, o.disposition]), [[UNLISTED_KEY, 'digest']]);
 });
 
+test('runner: an empty step list on a failing job also queues the fallback line', async () => {
+  const router = fakeRouter({});
+  await routeDataValidationRun({ steps: [], ymlText: YML, runUrl: 'u', jobStatus: 'failure' }, { router, escalate: async () => {} });
+  assert.deepEqual(router.calls.routed.map((o) => o.conditionKey), [UNLISTED_KEY]);
+});
+
+test('a step that has not finished (conclusion null) is neither routed nor resolved', () => {
+  const plan = planDataValidationRouting({ steps: [{ name: MARKET, conclusion: null }], ledgerConditions: { [stepConditionKey(MARKET)]: open() } });
+  assert.deepEqual(plan.route, []);
+  assert.deepEqual(plan.resolve, []);
+});
+
 test('runner: a green run routes nothing and escalates nothing', async () => {
   const router = fakeRouter({});
   let escalated;

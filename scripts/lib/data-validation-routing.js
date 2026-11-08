@@ -137,7 +137,8 @@ async function routeDataValidationRun({ steps, ymlText, runUrl, jobStatus }, dep
       console.error(`::warning::[data-validation-routing] routing "${step}" failed: ${e.message}`);
     }
   }
-  if (!Array.isArray(steps) && jobStatus === 'failure') {
+  // An empty list is as uninformative as a failed lookup: a failing job must still reach the digest.
+  if ((!Array.isArray(steps) || !steps.length) && jobStatus === 'failure') {
     try {
       await router.routeAlert({
         conditionKey: UNLISTED_KEY,

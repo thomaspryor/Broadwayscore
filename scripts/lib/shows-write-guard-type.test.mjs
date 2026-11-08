@@ -45,7 +45,7 @@ test('an announced -> open flip saved through saveShows() gets a type', () => {
   assert.equal(findMissingRequiredFields([onDisk('m')]).length, 0, 'validator accepts the saved row');
 });
 
-test('an announced row and an exempt upcoming venue-page stub are left untyped', () => {
+test('an announced row is left untyped, and a title naming no type is never guessed', () => {
   seed([stub('a', 'Some Musical'), stub('u', 'Unknown Thing', { status: 'upcoming' })]);
   const g = createShowsWriteGuard(file);
   g.saveShows(g.loadShows());
