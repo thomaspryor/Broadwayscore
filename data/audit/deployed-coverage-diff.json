@@ -1,32 +1,13 @@
 {
-  "generatedAt": "2026-11-08T14:41:41.414Z",
+  "generatedAt": "2026-11-08T15:50:49.970Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 319,
-  "clean": 318,
-  "defective": 1,
-  "byType": {
-    "score-drift": 1
-  },
-  "shows": [
-    {
-      "showId": "tango-after-dark-off-west-end-2026",
-      "title": "Tango After Dark",
-      "openingDate": "2026-11-05",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 70.56 vs local 70.85 (Δ0.29)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 4,
-      "deployedCount": 4,
-      "firstDefectAt": "2026-11-08T14:41:32.215Z"
-    }
-  ],
+  "checked": 322,
+  "clean": 322,
+  "defective": 0,
+  "byType": {},
+  "shows": [],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }
