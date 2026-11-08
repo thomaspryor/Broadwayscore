@@ -1,22 +1,22 @@
 {
-  "generatedAt": "2026-11-08T01:43:57.871Z",
+  "generatedAt": "2026-11-08T03:03:01.431Z",
   "windowDays": 1095,
-  "targets": 857,
-  "auditedThisRun": 27,
-  "carriedForward": 2062,
+  "targets": 839,
+  "auditedThisRun": 24,
+  "carriedForward": 2068,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 641,
-    "missingCurrentRun": 1164,
+    "withGap": 642,
+    "missingCurrentRun": 1165,
     "totalCitedNoUrl": 0,
-    "totalFlaggedMisses": 896,
+    "totalFlaggedMisses": 895,
     "totalRecoverable": 56,
     "totalRecovered": 91,
     "humanExcluded": 25,
-    "automatedExcluded": 990,
-    "automatedExcludedListed": 701,
-    "priorProductionCitations": 6077
+    "automatedExcluded": 994,
+    "automatedExcludedListed": 700,
+    "priorProductionCitations": 6094
   },
   "results": [
     {
@@ -13674,8 +13674,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 8,
-            "accepted": 0,
+            "results": 10,
+            "accepted": 1,
             "error": null
           },
           {
@@ -13684,7 +13684,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 7,
+            "results": 10,
             "accepted": 0,
             "error": null
           },
@@ -13694,7 +13694,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 9,
+            "results": 10,
             "accepted": 0,
             "error": null
           },
@@ -13721,15 +13721,13 @@
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 0,
+        "resultCount": 1,
         "error": null
       },
       "candidatesRejected": {
-        "count": 41,
+        "count": 44,
         "byReason": {
-          "non-review-host": 6,
-          "not-http-url": 34,
-          "news-roundup-site": 1
+          "non-review-host": 44
         }
       },
       "dedupedVariants": [],
@@ -13794,7 +13792,7 @@
         "liveCount": 7,
         "candidateCount": 7
       },
-      "computedAt": "2026-11-06T00:04:03.170Z"
+      "computedAt": "2026-11-08T03:03:01.431Z"
     },
     {
       "showId": "agatha-christies-black-coffee-grounds-for-murder-off-broadway-2026",
@@ -64965,8 +64963,8 @@
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
         "https://www.broadwayworld.com/westend/article/Review-CIRQUE-BERSERK-at-Riverside-Studios-20230220",
-        "https://www.timeout.com/london/theatre/cirque-berserk-1",
         "https://www.jackstage.co.uk/post/cirque-berserk-review-dazzling-circus-artistry-in-search-of-theatrical-purpose",
+        "https://www.timeout.com/london/theatre/cirque-berserk-1",
         "https://www.voicemag.uk/review/11651/cirque-berserk",
         "https://www.bestoftheatre.co.uk/blog/post/first-look-cirque-berserk-garrick-theatre"
       ],
@@ -65105,8 +65103,8 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 0,
-            "accepted": 0,
+            "results": 10,
+            "accepted": 1,
             "error": null
           },
           {
@@ -65115,7 +65113,7 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 0,
+            "results": 9,
             "accepted": 0,
             "error": null
           },
@@ -65125,7 +65123,7 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 0,
+            "results": 10,
             "accepted": 0,
             "error": null
           },
@@ -65135,7 +65133,7 @@
             "page": 1,
             "geo": "gb",
             "ok": true,
-            "results": 0,
+            "results": 10,
             "accepted": 0,
             "error": null
           },
@@ -65145,20 +65143,22 @@
             "page": 2,
             "geo": "gb",
             "ok": true,
-            "results": 0,
+            "results": 10,
             "accepted": 0,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 0,
+        "resultCount": 1,
         "error": null
       },
       "candidatesRejected": {
-        "count": 1,
+        "count": 46,
         "byReason": {
-          "show-hub": 1
+          "non-review-host": 44,
+          "ticketing-reseller": 1,
+          "no-review-evidence": 1
         }
       },
       "dedupedVariants": [],
@@ -65212,16 +65212,16 @@
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://www.timeout.com/london/theatre/cirque-berserk-1",
-            "outletId": "timeout.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-03T03:31:41.115Z"
-          },
-          {
             "url": "https://www.jackstage.co.uk/post/cirque-berserk-review-dazzling-circus-artistry-in-search-of-theatrical-purpose",
             "outletId": "jackstage.co.uk",
             "state": "live",
             "firstSeenAt": "2026-10-23T08:15:37.359Z"
+          },
+          {
+            "url": "https://www.timeout.com/london/theatre/cirque-berserk-1",
+            "outletId": "timeout.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-03T03:31:41.115Z"
           },
           {
             "url": "https://www.voicemag.uk/review/11651/cirque-berserk",
@@ -65249,7 +65249,7 @@
         "liveCount": 2,
         "candidateCount": 4
       },
-      "computedAt": "2026-11-06T00:04:03.170Z"
+      "computedAt": "2026-11-08T03:03:01.431Z"
     },
     {
       "showId": "cirque-du-soleil-paramour-2016",
@@ -73585,74 +73585,12 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"Curtains\" Off-Broadway review",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"Curtains\" Off-Broadway review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"Curtains\" review jean",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 3,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "Curtains Theater at St. Jean's review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "Curtains Theater at St. Jean's review",
-            "page": 1,
-            "geo": "us",
-            "ok": true,
-            "results": 9,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "Curtains Theater at St. Jean's review",
-            "page": 2,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          }
-        ],
-        "queriesOk": 5,
-        "queriesTotal": 5,
-        "resultCount": 0,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 39,
-        "byReason": {
-          "non-review-host": 36,
-          "no-review-evidence": 1,
-          "aggregator-internal-nav": 1,
-          "ticketing-reseller": 1
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 0,
@@ -73724,7 +73662,7 @@
         "liveCount": 0,
         "candidateCount": 2
       },
-      "computedAt": "2026-11-07T23:21:21.182Z"
+      "computedAt": "2026-11-08T03:03:01.431Z"
     },
     {
       "showId": "cyrano-de-bergerac-west-end-2026",
@@ -88019,6 +87957,7 @@
       "openingDate": "2026-08-01",
       "status": "closed",
       "category": "off-west-end",
+      "previewsStartDate": "2026-07-28",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [],
       "dirFiles": 0,
@@ -88044,11 +87983,12 @@
         "missing": [],
         "suppressedMissing": [],
         "candidates": [],
-        "censusSchema": 3,
+        "censusSchema": 4,
+        "excluded": [],
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-11-08T03:03:01.431Z"
     },
     {
       "showId": "dirty-books-off-broadway-2025",
@@ -92235,74 +92175,12 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"Dr. Seuss' How the Grinch Stole Christmas!\" Broadway review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"Dr. Seuss' How the Grinch Stole Christmas!\" Broadway review 2026",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"Dr. Seuss' How the Grinch Stole Christmas!\" review american",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 2,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "Dr. Seuss' How the Grinch Stole Christmas! North American Tour review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "Dr. Seuss' How the Grinch Stole Christmas! North American Tour review",
-            "page": 1,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "Dr. Seuss' How the Grinch Stole Christmas! North American Tour review",
-            "page": 2,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          }
-        ],
-        "queriesOk": 5,
-        "queriesTotal": 5,
-        "resultCount": 0,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 38,
-        "byReason": {
-          "non-review-host": 35,
-          "no-review-evidence": 1,
-          "aggregator-internal-nav": 1,
-          "non-stage-review": 1
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
       "nonReviewCandidates": [
@@ -92359,7 +92237,7 @@
         "liveCount": 2,
         "candidateCount": 2
       },
-      "computedAt": "2026-11-07T23:21:21.182Z"
+      "computedAt": "2026-11-08T03:03:01.431Z"
     },
     {
       "showId": "dr-strangelove-west-end-2024",
@@ -99166,6 +99044,383 @@
         "since": "2026-11-01T16:17:39.850Z",
         "lastAt": "2026-11-01T16:17:39.850Z"
       }
+    },
+    {
+      "showId": "endgame-regional-2025",
+      "title": "Endgame",
+      "openingDate": "2025-05-29",
+      "status": "closed",
+      "category": "regional",
+      "aggregatorArticles": [
+        "https://playbill.com/article/read-reviews-for-londons-endgame-starring-alan-cumming-and-daniel-radcliffe",
+        "https://playbill.com/article/reviews-what-did-critics-think-of-the-off-broadway-revival-of-endgame-at-irish-rep"
+      ],
+      "aggregatorListedUrls": [
+        "https://www.standard.co.uk/go/london/theatre/endgame-review-rough-for-theatre-old-vic-daniel-radcliffe-a4353236.html",
+        "https://www.theguardian.com/stage/2020/feb/05/endgame-review-daniel-radcliffe-alan-cumming",
+        "https://www.londontheatre.co.uk/reviews/review-alan-cumming-and-daniel-radcliffe-in-endgame-at-the-old-vic",
+        "https://www.metro.news/theatre-review-endgame/1899007/",
+        "https://www.thestage.co.uk/reviews/2020/endgame-and-rough-for-theatre-ii-review-at-the-old-vic-london-wonderful-comic-performances-from-alan-cumming-and-daniel-radcliffe/",
+        "https://www.telegraph.co.uk/theatre/what-to-see/endgame-old-vic-review-daniel-radcliffe-lacks-magic-theatrical/",
+        "https://www.timeout.com/london/theatre/endgame-review",
+        "https://www.thetimes.co.uk/article/endgame-rough-for-theatre-ii-review-magnetic-lead-is-becketts-main-attraction-njzrzns8f",
+        "https://variety.com/2020/legit/reviews/endgame-review-daniel-radcliffe-alan-cumming-1203494240/",
+        "https://cititour.com/NYC_Broadway/ENDGAME/1125",
+        "https://nystagereview.com/2023/02/02/endgame-bill-irwin-john-douglas-thompson-play-becketts-work-to-win/",
+        "https://www.nytimes.com/2023/02/02/theater/endgame-review.html",
+        "https://www.theatermania.com/off-broadway/reviews/endgame-2023-irish-rep_94822.html",
+        "https://www.wsj.com/articles/endgame-review-samuel-becketts-bleak-eternity-11675386001"
+      ],
+      "dirFiles": 4,
+      "dirClean": 4,
+      "inReviewsJson": 4,
+      "missing": [
+        {
+          "url": "https://www.standard.co.uk/go/london/theatre/endgame-review-rough-for-theatre-old-vic-daniel-radcliffe-a4353236.html",
+          "host": "standard.co.uk",
+          "knownOutletId": "standard",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-reviews-for-londons-endgame-starring-alan-cumming-and-daniel-radcliffe"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2020/feb/05/endgame-review-daniel-radcliffe-alan-cumming",
+          "host": "theguardian.com",
+          "knownOutletId": "guardian",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-reviews-for-londons-endgame-starring-alan-cumming-and-daniel-radcliffe"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.londontheatre.co.uk/reviews/review-alan-cumming-and-daniel-radcliffe-in-endgame-at-the-old-vic",
+          "host": "londontheatre.co.uk",
+          "knownOutletId": "london-theatre",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-reviews-for-londons-endgame-starring-alan-cumming-and-daniel-radcliffe"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.metro.news/theatre-review-endgame/1899007/",
+          "host": "metro.news",
+          "knownOutletId": "metro-uk",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-reviews-for-londons-endgame-starring-alan-cumming-and-daniel-radcliffe"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.thestage.co.uk/reviews/2020/endgame-and-rough-for-theatre-ii-review-at-the-old-vic-london-wonderful-comic-performances-from-alan-cumming-and-daniel-radcliffe/",
+          "host": "thestage.co.uk",
+          "knownOutletId": "thestage",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-reviews-for-londons-endgame-starring-alan-cumming-and-daniel-radcliffe"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.telegraph.co.uk/theatre/what-to-see/endgame-old-vic-review-daniel-radcliffe-lacks-magic-theatrical/",
+          "host": "telegraph.co.uk",
+          "knownOutletId": "sunday-telegraph",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-reviews-for-londons-endgame-starring-alan-cumming-and-daniel-radcliffe"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.timeout.com/london/theatre/endgame-review",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-reviews-for-londons-endgame-starring-alan-cumming-and-daniel-radcliffe"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.thetimes.co.uk/article/endgame-rough-for-theatre-ii-review-magnetic-lead-is-becketts-main-attraction-njzrzns8f",
+          "host": "thetimes.co.uk",
+          "knownOutletId": "sunday-times",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-reviews-for-londons-endgame-starring-alan-cumming-and-daniel-radcliffe"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://variety.com/2020/legit/reviews/endgame-review-daniel-radcliffe-alan-cumming-1203494240/",
+          "host": "variety.com",
+          "knownOutletId": "variety",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-reviews-for-londons-endgame-starring-alan-cumming-and-daniel-radcliffe"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://cititour.com/NYC_Broadway/ENDGAME/1125",
+          "host": "cititour.com",
+          "knownOutletId": "cititour",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-what-did-critics-think-of-the-off-broadway-revival-of-endgame-at-irish-rep"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://nystagereview.com/2023/02/02/endgame-bill-irwin-john-douglas-thompson-play-becketts-work-to-win/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-what-did-critics-think-of-the-off-broadway-revival-of-endgame-at-irish-rep"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.nytimes.com/2023/02/02/theater/endgame-review.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-what-did-critics-think-of-the-off-broadway-revival-of-endgame-at-irish-rep"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.theatermania.com/off-broadway/reviews/endgame-2023-irish-rep_94822.html",
+          "host": "theatermania.com",
+          "knownOutletId": "theatermania",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-what-did-critics-think-of-the-off-broadway-revival-of-endgame-at-irish-rep"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.wsj.com/articles/endgame-review-samuel-becketts-bleak-eternity-11675386001",
+          "host": "wsj.com",
+          "knownOutletId": "wsj",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-what-did-critics-think-of-the-off-broadway-revival-of-endgame-at-irish-rep"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        }
+      ],
+      "dirOnly": [
+        {
+          "host": "chicagoreader.com",
+          "count": 1
+        },
+        {
+          "host": "chicagostageandscreen.com",
+          "count": 1
+        },
+        {
+          "host": "chicagotribune.com",
+          "count": 1
+        },
+        {
+          "host": "newcitystage.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 254,
+        "byReason": {
+          "non-review-host": 40,
+          "aggregator-internal-nav": 117,
+          "not-http-url": 12,
+          "production-database-listing": 27,
+          "aggregator-section-root": 8,
+          "non-stage-review": 2,
+          "roundup-page": 48
+        }
+      },
+      "dedupedVariants": [],
+      "priorRunArticles": [
+        {
+          "url": "https://playbill.com/article/read-reviews-for-londons-endgame-starring-alan-cumming-and-daniel-radcliffe",
+          "publishDate": "2020-02-05"
+        },
+        {
+          "url": "https://playbill.com/article/reviews-what-did-critics-think-of-the-off-broadway-revival-of-endgame-at-irish-rep",
+          "publishDate": "2023-02-03"
+        }
+      ],
+      "automatedExcludedListed": 0,
+      "unextractable": [],
+      "weIngestBlocked": [
+        {
+          "url": "https://www.standard.co.uk/go/london/theatre/endgame-review-rough-for-theatre-old-vic-daniel-radcliffe-a4353236.html",
+          "host": "standard.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2020/feb/05/endgame-review-daniel-radcliffe-alan-cumming",
+          "host": "theguardian.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.londontheatre.co.uk/reviews/review-alan-cumming-and-daniel-radcliffe-in-endgame-at-the-old-vic",
+          "host": "londontheatre.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.metro.news/theatre-review-endgame/1899007/",
+          "host": "metro.news",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.thestage.co.uk/reviews/2020/endgame-and-rough-for-theatre-ii-review-at-the-old-vic-london-wonderful-comic-performances-from-alan-cumming-and-daniel-radcliffe/",
+          "host": "thestage.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.telegraph.co.uk/theatre/what-to-see/endgame-old-vic-review-daniel-radcliffe-lacks-magic-theatrical/",
+          "host": "telegraph.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.timeout.com/london/theatre/endgame-review",
+          "host": "timeout.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.thetimes.co.uk/article/endgame-rough-for-theatre-ii-review-magnetic-lead-is-becketts-main-attraction-njzrzns8f",
+          "host": "thetimes.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://variety.com/2020/legit/reviews/endgame-review-daniel-radcliffe-alan-cumming-1203494240/",
+          "host": "variety.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://cititour.com/NYC_Broadway/ENDGAME/1125",
+          "host": "cititour.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://nystagereview.com/2023/02/02/endgame-bill-irwin-john-douglas-thompson-play-becketts-work-to-win/",
+          "host": "nystagereview.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.nytimes.com/2023/02/02/theater/endgame-review.html",
+          "host": "nytimes.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.theatermania.com/off-broadway/reviews/endgame-2023-irish-rep_94822.html",
+          "host": "theatermania.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.wsj.com/articles/endgame-review-samuel-becketts-bleak-eternity-11675386001",
+          "host": "wsj.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        }
+      ],
+      "ingestResults": [],
+      "ingestSkippedByCap": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 4,
+        "excluded": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-11-08T03:03:01.431Z"
     },
     {
       "showId": "endgame-royal-bath-regional-2025",
@@ -121226,6 +121481,44 @@
         "candidateCount": 18
       },
       "computedAt": "2026-10-31T23:26:39.769Z"
+    },
+    {
+      "showId": "golden-leaf-ragtime-blues-regional-2025",
+      "title": "Golden Leaf Ragtime Blues",
+      "openingDate": "2025-05-29",
+      "status": "closed",
+      "category": "regional",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "unextractable": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 4,
+        "excluded": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-11-08T03:03:01.431Z"
     },
     {
       "showId": "good-bones-off-broadway-2024",
@@ -152542,8 +152835,8 @@
       "aggregatorListedUrls": [
         "https://www.newyorktheatreguide.com/reviews/hospital-hour-off-broadway-review-rachel-kaly",
         "https://www.theatermania.com/news/review-rachel-kaly-is-mentally-ill-and-shes-here-to-make-you-laugh-about-it-in-hospital-hour_1858178/",
-        "https://variety.com/2026/legit/news/rachel-kaly-hospital-hour-nyc-chris-fleming-1236863484/",
         "https://1minutecritic.com/rachel-kaly-hospital-hour-review/",
+        "https://variety.com/2026/legit/news/rachel-kaly-hospital-hour-nyc-chris-fleming-1236863484/",
         "https://broadwaybaby.com/shows/rachel-kaly-hospital-hour/826988"
       ],
       "dirFiles": 7,
@@ -152624,8 +152917,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 9,
-            "accepted": 0,
+            "results": 10,
+            "accepted": 1,
             "error": null
           },
           {
@@ -152634,8 +152927,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 8,
-            "accepted": 2,
+            "results": 10,
+            "accepted": 1,
             "error": null
           },
           {
@@ -152644,8 +152937,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 8,
-            "accepted": 0,
+            "results": 10,
+            "accepted": 1,
             "error": null
           },
           {
@@ -152654,7 +152947,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 9,
+            "results": 10,
             "accepted": 0,
             "error": null
           },
@@ -152675,7 +152968,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 0,
             "error": null
           }
         ],
@@ -152685,19 +152978,14 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 42,
+        "count": 54,
         "byReason": {
-          "aggregator-internal-nav": 3,
-          "not-http-url": 19,
-          "production-database-listing": 1,
-          "non-review-host": 11,
+          "non-review-host": 48,
+          "aggregator-internal-nav": 1,
+          "tag-index-page": 1,
           "ticketing-listing": 1,
-          "ticketing-reseller": 2,
-          "census-junk-host": 1,
-          "venue-production-page": 1,
-          "merch-store": 1,
-          "write-path-blocked": 1,
-          "tag-index-page": 1
+          "census-junk-host": 2,
+          "venue-production-page": 1
         }
       },
       "dedupedVariants": [],
@@ -152761,7 +153049,7 @@
         "liveCount": 3,
         "candidateCount": 5
       },
-      "computedAt": "2026-11-06T01:02:18.510Z"
+      "computedAt": "2026-11-08T03:03:01.431Z"
     },
     {
       "showId": "hot-mess-a-new-musical-off-west-end-2026",
@@ -163523,7 +163811,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-11-07T23:21:21.182Z"
+      "computedAt": "2026-11-08T03:03:01.431Z"
     },
     {
       "showId": "iphigenie-en-tauride-west-end-2026",
@@ -183501,6 +183789,45 @@
       "computedAt": "2026-08-03T15:54:33.136Z"
     },
     {
+      "showId": "la-ternura-off-broadway-2025",
+      "title": "La ternura",
+      "openingDate": "2025-05-30",
+      "status": "closed",
+      "category": "off-broadway",
+      "previewsStartDate": "2025-05-29",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "unextractable": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 4,
+        "excluded": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-11-08T03:03:01.431Z"
+    },
+    {
       "showId": "la-traviata-off-broadway-2026",
       "title": "La Traviata",
       "openingDate": "2026-03-20",
@@ -196152,25 +196479,45 @@
         "https://donyc.com/events/2026/11/20/love-me-tickets",
         "https://concerts.consequence.net/events/love-me-at-soho-playhouse-on-2026-10-24-19-00"
       ],
-      "dirFiles": 5,
+      "dirFiles": 7,
       "dirClean": 1,
       "inReviewsJson": 1,
-      "missing": [
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [
         {
           "url": "https://donyc.com/events/2026/11/20/love-me-tickets",
           "host": "donyc.com",
           "knownOutletId": "donyc",
-          "serpCensus": true,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "donyc--unknown.json",
+              "flag": "clean",
+              "urlInDir": "https://donyc.com/events/2026/11/20/love-me-tickets"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "rejectionReason"
+          ],
+          "confirmedNonReview": true,
+          "confirmedBasis": [
+            "non-review"
+          ],
           "sources": [
             {
               "source": "serp-census",
               "sourceUrl": null
             }
-          ]
-        }
-      ],
-      "dirOnly": [],
-      "flaggedMisses": [
+          ],
+          "serpCensus": true,
+          "reverify": false
+        },
         {
           "url": "https://concerts.consequence.net/events/love-me-at-soho-playhouse-on-2026-10-24-19-00",
           "host": "consequence.net",
@@ -196214,8 +196561,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 0,
-            "accepted": 0,
+            "results": 10,
+            "accepted": 1,
             "error": null
           },
           {
@@ -196224,7 +196571,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 0,
+            "results": 10,
             "accepted": 0,
             "error": null
           },
@@ -196234,7 +196581,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 0,
+            "results": 10,
             "accepted": 0,
             "error": null
           },
@@ -196244,7 +196591,7 @@
             "page": 1,
             "geo": "us",
             "ok": true,
-            "results": 0,
+            "results": 10,
             "accepted": 0,
             "error": null
           },
@@ -196254,51 +196601,36 @@
             "page": 2,
             "geo": "us",
             "ok": true,
-            "results": 0,
+            "results": 10,
             "accepted": 0,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 0,
+        "resultCount": 1,
         "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 47,
+        "byReason": {
+          "non-review-host": 36,
+          "aggregator-internal-nav": 3,
+          "show-listing-page": 1,
+          "ticketing-listing": 1,
+          "ticketing-reseller": 1,
+          "write-path-blocked": 2,
+          "show-hub": 1,
+          "bare-host": 1,
+          "census-junk-host": 1
+        }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 1,
       "unextractable": [],
-      "ingestResults": [
-        {
-          "url": "https://donyc.com/events/2026/11/20/love-me-tickets",
-          "host": "donyc.com",
-          "outletId": "donyc",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": null
-        }
-      ],
-      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
-          {
-            "outletId": "donyc",
-            "outlet": "donyc",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://donyc.com/events/2026/11/20/love-me-tickets"
-          },
           {
             "outletId": "consequence",
             "outlet": "consequence",
@@ -196316,13 +196648,6 @@
             "firstSeenAt": "2026-11-01T12:45:30.098Z"
           },
           {
-            "url": "https://donyc.com/events/2026/11/20/love-me-tickets",
-            "outletId": "donyc",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-11-03T03:31:41.115Z"
-          },
-          {
             "url": "https://concerts.consequence.net/events/love-me-at-soho-playhouse-on-2026-10-24-19-00",
             "outletId": "consequence",
             "state": "GAP",
@@ -196331,11 +196656,17 @@
           }
         ],
         "censusSchema": 4,
-        "excluded": [],
+        "excluded": [
+          {
+            "url": "https://donyc.com/events/2026/11/20/love-me-tickets",
+            "host": "donyc.com",
+            "reason": "confirmed-non-review"
+          }
+        ],
         "liveCount": 1,
-        "candidateCount": 3
+        "candidateCount": 2
       },
-      "computedAt": "2026-11-06T00:04:03.170Z"
+      "computedAt": "2026-11-08T03:03:01.431Z"
     },
     {
       "showId": "love-off-broadway-2023",
@@ -206018,11 +206349,12 @@
         "missing": [],
         "suppressedMissing": [],
         "candidates": [],
-        "censusSchema": 3,
+        "censusSchema": 4,
+        "excluded": [],
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-11-08T03:03:01.431Z"
     },
     {
       "showId": "marry-harry-off-broadway-2017",
@@ -206268,12 +206600,15 @@
       "previewsStartDate": "2026-10-01",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
+        "https://musicaltheatrereview.com/casting-for-the-old-vics-martin-guerre/",
+        "https://thespyinthestalls.com/2026/10/martin-guerre/",
+        "https://www.londontheatredirect.com/news/10-reasons-to-see-martin-guerre-at-the-old-vic",
+        "https://www.standard.co.uk/culture/theatre/martin-guerre-at-the-old-vic-b1301716.html",
         "https://www.london-now.co.uk/news/26665516.martin-guerre-old-vic-theatre-london-review/",
         "https://www.londontheatre.co.uk/reviews/martin-guerre-review-old-vic",
         "https://www.thereviewshub.com/martin-guerre-the-old-vic-london/",
         "https://musicaltheatremusings.co.uk/martin-guerre/",
         "https://theatreandtonic.co.uk/blog/martin-guerre-the-old-vic-review",
-        "https://thespyinthestalls.com/2026/10/martin-guerre/",
         "https://www.whatsonstage.com/news/martin-guerre-review-a-compelling-case-for-a-musical-with-a-complicated-past_1735581/",
         "https://www.westendbestfriend.co.uk/news/review-martin-guerre-old-vic-theatre",
         "https://stagedtheatre.co.uk/blogs/theatre-reviews/martin-guerre-the-old-vic",
@@ -206282,7 +206617,6 @@
         "https://www.islingtontribune.co.uk/article/review-martin-guerre-at-old-vic-theatre",
         "https://www.broadwayworld.com/westend/article/Review-MARTIN-GUERRE-The-Old-Vic-20261021",
         "https://musicaltheatrereview.com/new-look-martin-guerre-to-debut-at-the-old-vic/",
-        "https://www.standard.co.uk/culture/theatre/martin-guerre-at-the-old-vic-b1301716.html",
         "https://www.allthatdazzles.co.uk/post/review-martin-guerre-the-old-vic",
         "https://www.musicomh.com/classical/martin-guerre-review-schonberg-boublils-cameron-mackintosh-the-old-vic",
         "https://therecs.co.uk/martin-guerre-old-vic-theatre/",
@@ -206299,25 +206633,12 @@
         "https://playsinternational.org.uk/martin-guerre-the-old-vic/",
         "https://firstnightmagazine.com/2026/10/22/review-of-martin-guerre-old-vic-2026-new-revival-features-more-historical-accuracy-but-loses-its-identity/",
         "https://broadwaybaby.com/shows/martin-guerre/839230",
-        "https://www.theatremonkey.com/show/martin-guerre/",
-        "https://www.oldvictheatre.com/news/things-you-need-to-know-about-martin-guerre/"
+        "https://www.theatremonkey.com/show/martin-guerre/"
       ],
-      "dirFiles": 47,
+      "dirFiles": 48,
       "dirClean": 29,
       "inReviewsJson": 31,
       "missing": [
-        {
-          "url": "https://broadwaybaby.com/shows/martin-guerre/839230",
-          "host": "broadwaybaby.com",
-          "knownOutletId": "broadway-baby",
-          "serpCensus": true,
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ]
-        },
         {
           "url": "https://www.theatremonkey.com/show/martin-guerre/",
           "host": "theatremonkey.com",
@@ -206343,9 +206664,9 @@
       ],
       "flaggedMisses": [
         {
-          "url": "https://www.oldvictheatre.com/news/things-you-need-to-know-about-martin-guerre/",
-          "host": "oldvictheatre.com",
-          "knownOutletId": "oldvictheatrecom",
+          "url": "https://musicaltheatrereview.com/casting-for-the-old-vics-martin-guerre/",
+          "host": "musicaltheatrereview.com",
+          "knownOutletId": "musical-theatre-review",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -206353,14 +206674,18 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "oldvictheatrecom--magid-el-bushra.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.oldvictheatre.com/news/things-you-need-to-know-about-martin-guerre/"
+              "file": "musical-theatre-review--angela-thomas.json",
+              "flag": "clean",
+              "urlInDir": "https://musicaltheatrereview.com/casting-for-the-old-vics-martin-guerre/"
             }
           ],
           "exclusion": "automatedExcluded",
           "basis": [
-            "wrongProduction"
+            "rejectionReason"
+          ],
+          "confirmedNonReview": true,
+          "confirmedBasis": [
+            "non-review"
           ],
           "sources": [
             {
@@ -206369,7 +206694,73 @@
             }
           ],
           "serpCensus": true,
-          "reverify": true
+          "reverify": false
+        },
+        {
+          "url": "https://www.londontheatredirect.com/news/10-reasons-to-see-martin-guerre-at-the-old-vic",
+          "host": "londontheatredirect.com",
+          "knownOutletId": "londontheatredirect",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "londontheatredirect--lyn-gardner.json",
+              "flag": "clean",
+              "urlInDir": "https://www.londontheatredirect.com/news/10-reasons-to-see-martin-guerre-at-the-old-vic"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "rejectionReason"
+          ],
+          "confirmedNonReview": true,
+          "confirmedBasis": [
+            "non-review"
+          ],
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
+          "serpCensus": true,
+          "reverify": false
+        },
+        {
+          "url": "https://broadwaybaby.com/shows/martin-guerre/839230",
+          "host": "broadwaybaby.com",
+          "knownOutletId": "broadway-baby",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "broadway-baby--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://broadwaybaby.com/shows/martin-guerre/839230"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "confirmedNonReview": true,
+          "confirmedBasis": [
+            "non-review"
+          ],
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
+          "serpCensus": true,
+          "reverify": false
         }
       ],
       "citedNoUrl": [],
@@ -206445,7 +206836,7 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 0,
+            "results": 10,
             "accepted": 0,
             "error": null
           },
@@ -206455,8 +206846,8 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 0,
-            "accepted": 0,
+            "results": 10,
+            "accepted": 1,
             "error": null
           },
           {
@@ -206465,8 +206856,8 @@
             "page": 1,
             "geo": "gb",
             "ok": true,
-            "results": 0,
-            "accepted": 0,
+            "results": 10,
+            "accepted": 2,
             "error": null
           },
           {
@@ -206475,43 +206866,31 @@
             "page": 2,
             "geo": "gb",
             "ok": true,
-            "results": 0,
-            "accepted": 0,
+            "results": 10,
+            "accepted": 1,
             "error": null
           }
         ],
         "queriesOk": 4,
         "queriesTotal": 4,
-        "resultCount": 0,
+        "resultCount": 4,
         "error": null
       },
       "candidatesRejected": {
-        "count": 7,
+        "count": 39,
         "byReason": {
-          "non-review-host": 4,
-          "tag-index-page": 1,
-          "bare-host": 2
+          "non-review-host": 32,
+          "ticket-seller-product-page": 1,
+          "bare-host": 2,
+          "no-review-evidence": 1,
+          "guide-article": 2,
+          "non-review-path": 1
         }
       },
       "dedupedVariants": [],
-      "automatedExcludedListed": 1,
+      "automatedExcludedListed": 0,
       "unextractable": [],
       "ingestResults": [
-        {
-          "url": "https://broadwaybaby.com/shows/martin-guerre/839230",
-          "host": "broadwaybaby.com",
-          "outletId": "broadway-baby",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": null
-        },
         {
           "url": "https://www.theatremonkey.com/show/martin-guerre/",
           "host": "theatremonkey.com",
@@ -206525,7 +206904,7 @@
           "expectedReason": null,
           "unclassified": false,
           "zeroChar": false,
-          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=theatremonkey.com): Scrapingdog HTTP 400: Oops! Something went wrong. You won’t be charged for this request. You can try enabling Stealth Mode using stealth_mode=true. If the issue continues, feel free to email us at info@scrapingdog.com.\n⚠️  Scrapingdog failed (dynamic=false, stealth_mode, domain=theatremonkey.com): Scrapingdog HTTP 500: {\"message\":\"Oops! Something went wrong. You won’t be charged for this request. If the issue continues, feel free to email us at info@scrapingdog.com.\",\"help\":\"info@scrapingdog.com\",\"success\":false,\"st\nFetch failed"
+          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=theatremonkey.com): Scrapingdog HTTP 400: Oops! Something went wrong. You won’t be charged for this request. You can try enabling Stealth Mode using stealth_mode=true. If the issue continues, feel free to email us at info@scrapingdog.com.\nFetch failed: fetch failed: All scraping methods failed; no archive.org capture"
         }
       ],
       "ingestSkippedByCap": [],
@@ -206533,29 +206912,27 @@
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "broadway-baby",
-            "outlet": "broadway-baby",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://broadwaybaby.com/shows/martin-guerre/839230"
-          },
-          {
             "outletId": "theatremonkey",
             "outlet": "theatremonkey",
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.theatremonkey.com/show/martin-guerre/"
-          },
-          {
-            "outletId": "oldvictheatrecom",
-            "outlet": "oldvictheatrecom",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.oldvictheatre.com/news/things-you-need-to-know-about-martin-guerre/"
           }
         ],
         "suppressedMissing": [],
         "candidates": [
+          {
+            "url": "https://thespyinthestalls.com/2026/10/martin-guerre/",
+            "outletId": "thespyinthestalls.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-26T01:58:58.789Z"
+          },
+          {
+            "url": "https://www.standard.co.uk/culture/theatre/martin-guerre-at-the-old-vic-b1301716.html",
+            "outletId": "standard.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-21T19:57:41.264Z"
+          },
           {
             "url": "https://www.london-now.co.uk/news/26665516.martin-guerre-old-vic-theatre-london-review/",
             "outletId": "london-now.co.uk",
@@ -206585,12 +206962,6 @@
             "outletId": "theatreandtonic.co.uk",
             "state": "live",
             "firstSeenAt": "2026-10-21T19:57:41.264Z"
-          },
-          {
-            "url": "https://thespyinthestalls.com/2026/10/martin-guerre/",
-            "outletId": "thespyinthestalls.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-26T01:58:58.789Z"
           },
           {
             "url": "https://www.whatsonstage.com/news/martin-guerre-review-a-compelling-case-for-a-musical-with-a-complicated-past_1735581/",
@@ -206639,12 +207010,6 @@
             "outletId": "musicaltheatrereview.com",
             "state": "live",
             "firstSeenAt": "2026-10-30T00:11:50.524Z"
-          },
-          {
-            "url": "https://www.standard.co.uk/culture/theatre/martin-guerre-at-the-old-vic-b1301716.html",
-            "outletId": "standard.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-10-21T19:57:41.264Z"
           },
           {
             "url": "https://www.allthatdazzles.co.uk/post/review-martin-guerre-the-old-vic",
@@ -206737,33 +207102,35 @@
             "firstSeenAt": "2026-10-23T17:42:57.462Z"
           },
           {
-            "url": "https://broadwaybaby.com/shows/martin-guerre/839230",
-            "outletId": "broadway-baby",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-29T08:17:58.876Z"
-          },
-          {
             "url": "https://www.theatremonkey.com/show/martin-guerre/",
             "outletId": "theatremonkey",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-10-28T19:57:53.939Z"
-          },
-          {
-            "url": "https://www.oldvictheatre.com/news/things-you-need-to-know-about-martin-guerre/",
-            "outletId": "oldvictheatrecom",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-30T00:11:50.524Z"
           }
         ],
         "censusSchema": 4,
-        "excluded": [],
+        "excluded": [
+          {
+            "url": "https://musicaltheatrereview.com/casting-for-the-old-vics-martin-guerre/",
+            "host": "musicaltheatrereview.com",
+            "reason": "confirmed-non-review"
+          },
+          {
+            "url": "https://www.londontheatredirect.com/news/10-reasons-to-see-martin-guerre-at-the-old-vic",
+            "host": "londontheatredirect.com",
+            "reason": "confirmed-non-review"
+          },
+          {
+            "url": "https://broadwaybaby.com/shows/martin-guerre/839230",
+            "host": "broadwaybaby.com",
+            "reason": "confirmed-non-review"
+          }
+        ],
         "liveCount": 27,
-        "candidateCount": 30
+        "candidateCount": 28
       },
-      "computedAt": "2026-11-06T00:04:03.170Z"
+      "computedAt": "2026-11-08T03:03:01.431Z"
     },
     {
       "showId": "marvins-room-2017",
@@ -227718,12 +228085,12 @@
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
         "https://essilfie.substack.com/p/review-ms-blakk-for-president",
-        "https://www.theguardian.com/stage/2026/nov/05/ms-blakk-for-president-play",
         "https://www.theatermania.com/news/ato-blankson-wood-to-replace-wayne-brady-in-ms-blakk-for-president_1855437/",
         "https://aroundthetownchicago.com/theatre-reviews/ms-blakk-for-president/",
         "https://variety.com/2026/legit/news/wayne-brady-starring-tina-landau-tarell-alvin-mccraney-ms-blakk-for-president-vineyard-theatre-1236736622/",
         "https://storefrontrebellion.substack.com/p/sr-review-ms-blakk-for-president",
-        "https://www.spotlightonlake.com/posts/ms-blakk-president-review-jeffrey-leibham"
+        "https://www.spotlightonlake.com/posts/ms-blakk-president-review-jeffrey-leibham",
+        "https://www.theguardian.com/stage/2026/nov/05/ms-blakk-for-president-play"
       ],
       "dirFiles": 7,
       "dirClean": 0,
@@ -228036,7 +228403,7 @@
         "liveCount": 0,
         "candidateCount": 7
       },
-      "computedAt": "2026-11-08T01:43:57.871Z"
+      "computedAt": "2026-11-08T03:03:01.431Z"
     },
     {
       "showId": "much-ado-about-nothing-globe-off-west-end-2026",
@@ -228753,36 +229120,91 @@
       "previewsStartDate": "2026-10-12",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://www.theguardian.com/stage/2026/oct/20/ts-eliot-murder-in-the-cathedral-review-david-suchet",
-        "https://thespyinthestalls.com/2026/10/murder-in-the-cathedral/",
         "https://www.thetimes.com/culture/theatre-dance/article/murder-in-the-cathedral-review-david-suchet-7mvrc5g08",
+        "https://playstosee.com/reviews/uk-reviews/murder-in-the-cathedral/",
+        "https://thespyinthestalls.com/2026/10/murder-in-the-cathedral/",
+        "https://www.whatsonstage.com/news/murder-in-the-cathedral-with-david-suchet-review_1735285/",
+        "https://www.standard.co.uk/culture/theatre/murder-in-the-cathedral-review-b1301555.html",
+        "https://oxinabox.co.uk/it-made-such-a-lasting-impression-on-me-otg-gives-t-s-eliots-murder-in-the-cathedral-a-fresh-lick-of-paint-at-oxford-playhouse/",
+        "https://www.westendbestfriend.co.uk/news/review-murder-in-the-cathedral-st-john-the-divine-richmond",
+        "https://www.myviewfromthestalls.co.uk/post/review-murder-in-the-cathedral-oxford-playhouse",
+        "https://www.theguardian.com/stage/2026/oct/20/ts-eliot-murder-in-the-cathedral-review-david-suchet",
         "https://www.thereviewshub.com/murder-in-the-cathedral-st-john-the-divine-london/",
         "https://www.thestage.co.uk/reviews/murder-in-the-cathedral-review-st-johns-the-divine-london",
-        "https://www.standard.co.uk/culture/theatre/murder-in-the-cathedral-review-b1301555.html",
         "https://www.timeout.com/london/theatre/murder-in-the-cathedral-2",
         "https://www.telegraph.co.uk/theatre/what-to-see/murder-in-cathedral-review/",
-        "https://aroundthetownchicago.com/theatre-reviews/murder-in-the-cathedral-reviewed-by-julia-w-rath/",
         "https://www.lbc.co.uk/article/murder-in-the-cathedral-review-5HjdkMJ_2/",
         "https://susanelkin.co.uk/articles/murder-cathedral-susan-elkin-reviews/",
         "https://www.londontheatre1.com/reviews/murder-in-the-cathedral-st-john-the-divine-richmond/",
         "https://www.broadwayworld.com/westend/article/Review-MURDER-IN-THE-CATHEDRAL-Starring-David-Suchet-20261020",
-        "https://playstosee.com/reviews/uk-reviews/murder-in-the-cathedral/",
         "https://fringereview.co.uk/review/fringereview-uk/2026/murder-in-the-cathedral/",
-        "https://www.whatsonstage.com/news/murder-in-the-cathedral-with-david-suchet-review_1735285/",
         "https://theatrecat.com/2026/10/20/murder-in-the-cathedral-orange-tree-richmond/",
         "https://playsinternational.org.uk/murder-in-the-cathedral-orange-tree-theatre-church-of-saint-john-the-divine-richmond/",
         "https://www.theatre-news.com/review/UK/6683/Theatre/Murder-At-The-Cathedral-Orange-Tree-Theatre",
-        "https://www.westendbestfriend.co.uk/news/review-murder-in-the-cathedral-st-john-the-divine-richmond",
         "https://theatreweekly.com/first-look-rehearsal-images-released-for-orange-tree-theatres-murder-in-the-cathedral/",
         "https://therecs.co.uk/t-s-eliots-murder-in-the-cathedral/",
         "https://everything-theatre.co.uk/2026/10/review-murder-in-the-cathedral-orange-tree-theatre-st-john-the-divine/",
         "https://markaspen.com/2026/10/20/murder-cathedral/",
-        "https://www.timeout.com/london/theatre/murder-in-the-cathedral-3"
+        "https://www.timeout.com/london/theatre/murder-in-the-cathedral-3",
+        "https://aroundthetownchicago.com/theatre-reviews/murder-in-the-cathedral-reviewed-by-julia-w-rath/"
       ],
       "dirFiles": 39,
       "dirClean": 24,
       "inReviewsJson": 24,
-      "missing": [],
+      "missing": [
+        {
+          "url": "https://oxinabox.co.uk/it-made-such-a-lasting-impression-on-me-otg-gives-t-s-eliots-murder-in-the-cathedral-a-fresh-lick-of-paint-at-oxford-playhouse/",
+          "host": "oxinabox.co.uk",
+          "knownOutletId": "ox-in-a-box",
+          "serpCensus": true,
+          "priorRun": true,
+          "priorRunSource": "pending-file-date:2026-04-13",
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ]
+        },
+        {
+          "url": "https://www.timeout.com/london/theatre/murder-in-the-cathedral-2",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london",
+          "serpCensus": true,
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ]
+        },
+        {
+          "url": "https://susanelkin.co.uk/articles/murder-cathedral-susan-elkin-reviews/",
+          "host": "susanelkin.co.uk",
+          "knownOutletId": "susanelkin",
+          "serpCensus": true,
+          "priorRun": true,
+          "priorRunSource": "pending-file-date:2019-11-12",
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ]
+        },
+        {
+          "url": "https://www.timeout.com/london/theatre/murder-in-the-cathedral-3",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london",
+          "serpCensus": true,
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ]
+        }
+      ],
       "dirOnly": [
         {
           "host": "artshub.co.uk",
@@ -228798,6 +229220,37 @@
         }
       ],
       "flaggedMisses": [
+        {
+          "url": "https://www.myviewfromthestalls.co.uk/post/review-murder-in-the-cathedral-oxford-playhouse",
+          "host": "myviewfromthestalls.co.uk",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "myviewfromthestalls--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.myviewfromthestalls.co.uk/post/review-murder-in-the-cathedral-oxford-playhouse"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "flagged-file-date:2026-04-23",
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
+          "serpCensus": true,
+          "reverify": false
+        },
         {
           "url": "https://aroundthetownchicago.com/theatre-reviews/murder-in-the-cathedral-reviewed-by-julia-w-rath/",
           "host": "aroundthetownchicago.com",
@@ -228884,7 +229337,7 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 9,
+            "results": 10,
             "accepted": 0,
             "error": null
           },
@@ -228894,8 +229347,8 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 7,
-            "accepted": 4,
+            "results": 10,
+            "accepted": 2,
             "error": null
           },
           {
@@ -228904,8 +229357,8 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 9,
-            "accepted": 1,
+            "results": 10,
+            "accepted": 2,
             "error": null
           },
           {
@@ -228915,7 +229368,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 5,
+            "accepted": 1,
             "error": null
           },
           {
@@ -228925,56 +229378,91 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 3,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 11,
+        "resultCount": 8,
         "error": null
       },
       "candidatesRejected": {
-        "count": 32,
+        "count": 41,
         "byReason": {
-          "aggregator-internal-nav": 1,
-          "not-http-url": 14,
-          "non-review-host": 11,
-          "no-review-evidence": 2,
-          "census-junk-host": 1,
-          "tag-index-page": 3
+          "non-review-host": 40,
+          "tag-index-page": 1
         }
       },
       "dedupedVariants": [],
-      "nonReviewCandidates": [
+      "automatedExcludedListed": 1,
+      "unextractable": [],
+      "weIngestBlocked": [
         {
-          "url": "https://www.timeout.com/london/theatre/murder-in-the-cathedral-2",
-          "host": "timeout.com",
-          "knownOutletId": "timeout-london",
-          "nonReviewVerdict": "timeout-listing-blurb",
-          "nonReviewDetail": "unauthored-and-pre-opening"
-        },
-        {
-          "url": "https://www.timeout.com/london/theatre/murder-in-the-cathedral-3",
-          "host": "timeout.com",
-          "knownOutletId": "timeout-london",
-          "nonReviewVerdict": "timeout-listing-blurb",
-          "nonReviewDetail": "unauthored-and-pre-opening"
+          "url": "https://oxinabox.co.uk/it-made-such-a-lasting-impression-on-me-otg-gives-t-s-eliots-murder-in-the-cathedral-a-fresh-lick-of-paint-at-oxford-playhouse/",
+          "host": "oxinabox.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
         },
         {
           "url": "https://susanelkin.co.uk/articles/murder-cathedral-susan-elkin-reviews/",
           "host": "susanelkin.co.uk",
-          "knownOutletId": "susanelkin",
-          "serpCensus": true,
-          "nonReviewVerdict": "page-date-before-run",
-          "nonReviewDetail": "2019-11-12"
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
         }
       ],
-      "automatedExcludedListed": 1,
-      "unextractable": [],
+      "ingestResults": [
+        {
+          "url": "https://www.timeout.com/london/theatre/murder-in-the-cathedral-2",
+          "host": "timeout.com",
+          "outletId": "timeout-london",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": true,
+          "expectedReason": "timeout-listing-capsule",
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "murder-cathedral-off-west-end-2026: https://www.timeout.com/london/theatre/murder-in-the-cathedral-2 is a Time Out listing capsule, not a review (lib/timeout-capsule.js). Expected rejection; no action needed unless Time Out later publishes a full review at this URL, which a later audit will then ingest."
+        },
+        {
+          "url": "https://www.timeout.com/london/theatre/murder-in-the-cathedral-3",
+          "host": "timeout.com",
+          "outletId": "timeout-london",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": true,
+          "expectedReason": "timeout-listing-capsule",
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "murder-cathedral-off-west-end-2026: https://www.timeout.com/london/theatre/murder-in-the-cathedral-3 is a Time Out listing capsule, not a review (lib/timeout-capsule.js). Expected rejection; no action needed unless Time Out later publishes a full review at this URL, which a later audit will then ingest."
+        }
+      ],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
+          {
+            "outletId": "timeout-london",
+            "outlet": "timeout-london",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.timeout.com/london/theatre/murder-in-the-cathedral-2"
+          },
+          {
+            "outletId": "timeout-london",
+            "outlet": "timeout-london",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.timeout.com/london/theatre/murder-in-the-cathedral-3"
+          },
           {
             "outletId": "around-the-town-chicago",
             "outlet": "around-the-town-chicago",
@@ -228986,10 +229474,16 @@
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://www.theguardian.com/stage/2026/oct/20/ts-eliot-murder-in-the-cathedral-review-david-suchet",
-            "outletId": "theguardian.com",
+            "url": "https://www.thetimes.com/culture/theatre-dance/article/murder-in-the-cathedral-review-david-suchet-7mvrc5g08",
+            "outletId": "thetimes.com",
             "state": "live",
             "firstSeenAt": "2026-10-21T14:08:29.336Z"
+          },
+          {
+            "url": "https://playstosee.com/reviews/uk-reviews/murder-in-the-cathedral/",
+            "outletId": "playstosee.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-23T22:56:12.541Z"
           },
           {
             "url": "https://thespyinthestalls.com/2026/10/murder-in-the-cathedral/",
@@ -228998,8 +229492,26 @@
             "firstSeenAt": "2026-10-21T14:08:29.336Z"
           },
           {
-            "url": "https://www.thetimes.com/culture/theatre-dance/article/murder-in-the-cathedral-review-david-suchet-7mvrc5g08",
-            "outletId": "thetimes.com",
+            "url": "https://www.whatsonstage.com/news/murder-in-the-cathedral-with-david-suchet-review_1735285/",
+            "outletId": "whatsonstage.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-21T14:08:29.336Z"
+          },
+          {
+            "url": "https://www.standard.co.uk/culture/theatre/murder-in-the-cathedral-review-b1301555.html",
+            "outletId": "standard.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-23T08:15:37.359Z"
+          },
+          {
+            "url": "https://www.westendbestfriend.co.uk/news/review-murder-in-the-cathedral-st-john-the-divine-richmond",
+            "outletId": "westendbestfriend.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-24T11:53:28.442Z"
+          },
+          {
+            "url": "https://www.theguardian.com/stage/2026/oct/20/ts-eliot-murder-in-the-cathedral-review-david-suchet",
+            "outletId": "theguardian.com",
             "state": "live",
             "firstSeenAt": "2026-10-21T14:08:29.336Z"
           },
@@ -229016,18 +229528,6 @@
             "firstSeenAt": "2026-10-27T13:01:02.139Z"
           },
           {
-            "url": "https://www.standard.co.uk/culture/theatre/murder-in-the-cathedral-review-b1301555.html",
-            "outletId": "standard.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-10-23T08:15:37.359Z"
-          },
-          {
-            "url": "https://www.timeout.com/london/theatre/murder-in-the-cathedral-2",
-            "outletId": "timeout.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-06T01:02:18.510Z"
-          },
-          {
             "url": "https://www.telegraph.co.uk/theatre/what-to-see/murder-in-cathedral-review/",
             "outletId": "telegraph.co.uk",
             "state": "live",
@@ -229038,12 +229538,6 @@
             "outletId": "lbc.co.uk",
             "state": "live",
             "firstSeenAt": "2026-10-24T14:39:26.381Z"
-          },
-          {
-            "url": "https://susanelkin.co.uk/articles/murder-cathedral-susan-elkin-reviews/",
-            "outletId": "susanelkin.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-11-06T01:02:18.510Z"
           },
           {
             "url": "https://www.londontheatre1.com/reviews/murder-in-the-cathedral-st-john-the-divine-richmond/",
@@ -229058,20 +229552,8 @@
             "firstSeenAt": "2026-10-23T08:15:37.359Z"
           },
           {
-            "url": "https://playstosee.com/reviews/uk-reviews/murder-in-the-cathedral/",
-            "outletId": "playstosee.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-23T22:56:12.541Z"
-          },
-          {
             "url": "https://fringereview.co.uk/review/fringereview-uk/2026/murder-in-the-cathedral/",
             "outletId": "fringereview.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-10-21T14:08:29.336Z"
-          },
-          {
-            "url": "https://www.whatsonstage.com/news/murder-in-the-cathedral-with-david-suchet-review_1735285/",
-            "outletId": "whatsonstage.com",
             "state": "live",
             "firstSeenAt": "2026-10-21T14:08:29.336Z"
           },
@@ -229092,12 +229574,6 @@
             "outletId": "theatre-news.com",
             "state": "live",
             "firstSeenAt": "2026-10-26T08:25:08.978Z"
-          },
-          {
-            "url": "https://www.westendbestfriend.co.uk/news/review-murder-in-the-cathedral-st-john-the-divine-richmond",
-            "outletId": "westendbestfriend.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-10-24T11:53:28.442Z"
           },
           {
             "url": "https://theatreweekly.com/first-look-rehearsal-images-released-for-orange-tree-theatres-murder-in-the-cathedral/",
@@ -229124,9 +229600,17 @@
             "firstSeenAt": "2026-10-28T02:53:45.143Z"
           },
           {
+            "url": "https://www.timeout.com/london/theatre/murder-in-the-cathedral-2",
+            "outletId": "timeout-london",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-11-06T01:02:18.510Z"
+          },
+          {
             "url": "https://www.timeout.com/london/theatre/murder-in-the-cathedral-3",
-            "outletId": "timeout.com",
-            "state": "live",
+            "outletId": "timeout-london",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-10-27T13:01:02.139Z"
           },
           {
@@ -229138,27 +229622,11 @@
           }
         ],
         "censusSchema": 4,
-        "excluded": [
-          {
-            "url": "https://www.timeout.com/london/theatre/murder-in-the-cathedral-2",
-            "host": "timeout.com",
-            "reason": "timeout-listing-blurb"
-          },
-          {
-            "url": "https://www.timeout.com/london/theatre/murder-in-the-cathedral-3",
-            "host": "timeout.com",
-            "reason": "timeout-listing-blurb"
-          },
-          {
-            "url": "https://susanelkin.co.uk/articles/murder-cathedral-susan-elkin-reviews/",
-            "host": "susanelkin.co.uk",
-            "reason": "page-date-before-run"
-          }
-        ],
-        "liveCount": 23,
-        "candidateCount": 24
+        "excluded": [],
+        "liveCount": 21,
+        "candidateCount": 23
       },
-      "computedAt": "2026-11-06T01:02:18.510Z"
+      "computedAt": "2026-11-08T03:03:01.431Z"
     },
     {
       "showId": "murder-she-didnt-write-west-end-2025",
@@ -232187,7 +232655,7 @@
       ],
       "dirFiles": 17,
       "dirClean": 8,
-      "inReviewsJson": 7,
+      "inReviewsJson": 8,
       "missing": [
         {
           "url": "https://www.londonboxoffice.co.uk/search/month/nero-tickets/2026/11/03/2",
@@ -232447,7 +232915,7 @@
         "liveCount": 2,
         "candidateCount": 5
       },
-      "computedAt": "2026-11-07T23:21:21.182Z"
+      "computedAt": "2026-11-08T03:03:01.431Z"
     },
     {
       "showId": "new-born-off-broadway-2026",
@@ -250950,7 +251418,7 @@
         "liveCount": 1,
         "candidateCount": 3
       },
-      "computedAt": "2026-11-08T01:43:57.871Z"
+      "computedAt": "2026-11-08T03:03:01.431Z"
     },
     {
       "showId": "othello-off-broadway-2016",
@@ -288057,7 +288525,7 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 0,
+            "results": 10,
             "accepted": 0,
             "error": null
           },
@@ -288067,7 +288535,7 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 0,
+            "results": 10,
             "accepted": 0,
             "error": null
           },
@@ -288077,7 +288545,7 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 0,
+            "results": 10,
             "accepted": 0,
             "error": null
           },
@@ -288087,7 +288555,7 @@
             "page": 1,
             "geo": "gb",
             "ok": true,
-            "results": 0,
+            "results": 9,
             "accepted": 0,
             "error": null
           },
@@ -288097,7 +288565,7 @@
             "page": 2,
             "geo": "gb",
             "ok": true,
-            "results": 0,
+            "results": 10,
             "accepted": 0,
             "error": null
           }
@@ -288108,8 +288576,14 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 43,
+        "byReason": {
+          "non-review-host": 36,
+          "aggregator-internal-nav": 3,
+          "event-listing": 2,
+          "tag-index-page": 1,
+          "ticket-seller-product-page": 1
+        }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 2,
@@ -288160,7 +288634,7 @@
         "liveCount": 1,
         "candidateCount": 3
       },
-      "computedAt": "2026-11-06T00:04:03.170Z"
+      "computedAt": "2026-11-08T03:03:01.431Z"
     },
     {
       "showId": "shucked-2023",
@@ -303977,11 +304451,12 @@
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
         "https://www.londonboxoffice.co.uk/news/post/review-stoker-wilde-wiltons-music-hall",
-        "https://theatreweekly.com/jamie-bogyo-and-glenn-adamson-to-star-in-world-premiere-glam-rock-musical-stoker-wilde-at-wiltons-music-hall/",
-        "https://everything-theatre.co.uk/2026/10/review-stoker-wilde-wiltons-music-hall/",
-        "https://theatreweekly.com/review-stoker-wilde-at-wiltons-music-hall/",
         "https://www.bestoftheatre.co.uk/blog/post/connor-carson-bram-stoker-stoker-wilde-wiltons",
-        "https://susanelkin.co.uk/articles/stoker-wilde-susan-elkin-reviews/"
+        "https://susanelkin.co.uk/articles/stoker-wilde-susan-elkin-reviews/",
+        "https://thespyinthestalls.com/2026/10/stoker-wilde/",
+        "https://westendwilma.com/stoker-wilde-wiltons-music-hall/",
+        "https://everything-theatre.co.uk/2026/10/review-stoker-wilde-wiltons-music-hall/",
+        "https://theatreweekly.com/review-stoker-wilde-at-wiltons-music-hall/"
       ],
       "dirFiles": 10,
       "dirClean": 1,
@@ -303989,64 +304464,6 @@
       "missing": [],
       "dirOnly": [],
       "flaggedMisses": [
-        {
-          "url": "https://everything-theatre.co.uk/2026/10/review-stoker-wilde-wiltons-music-hall/",
-          "host": "everything-theatre.co.uk",
-          "knownOutletId": "everything-theatre",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "everything-theatre--everything-theatre.json",
-              "flag": "emptyBody",
-              "urlInDir": "https://everything-theatre.co.uk/2026/10/review-stoker-wilde-wiltons-music-hall/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "noTextOrScoreSignal"
-          ],
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ],
-          "serpCensus": true,
-          "reverify": true
-        },
-        {
-          "url": "https://theatreweekly.com/review-stoker-wilde-at-wiltons-music-hall/",
-          "host": "theatreweekly.com",
-          "knownOutletId": "theatre-weekly",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "theatre-weekly--unknown.json",
-              "flag": "emptyBody",
-              "urlInDir": "https://theatreweekly.com/review-stoker-wilde-at-wiltons-music-hall/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "noTextOrScoreSignal"
-          ],
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ],
-          "serpCensus": true,
-          "reverify": true
-        },
         {
           "url": "https://www.bestoftheatre.co.uk/blog/post/connor-carson-bram-stoker-stoker-wilde-wiltons",
           "host": "bestoftheatre.co.uk",
@@ -304090,6 +304507,97 @@
               "file": "susanelkin--unknown.json",
               "flag": "emptyBody",
               "urlInDir": "https://susanelkin.co.uk/articles/stoker-wilde-susan-elkin-reviews/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "noTextOrScoreSignal"
+          ],
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
+          "serpCensus": true,
+          "reverify": true
+        },
+        {
+          "url": "https://westendwilma.com/stoker-wilde-wiltons-music-hall/",
+          "host": "westendwilma.com",
+          "knownOutletId": "west-end-wilma",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "west-end-wilma--westendwilma.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://westendwilma.com/stoker-wilde-wiltons-music-hall/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "confirmedNonReview": true,
+          "confirmedBasis": [
+            "non-review"
+          ],
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
+          "serpCensus": true,
+          "reverify": false
+        },
+        {
+          "url": "https://everything-theatre.co.uk/2026/10/review-stoker-wilde-wiltons-music-hall/",
+          "host": "everything-theatre.co.uk",
+          "knownOutletId": "everything-theatre",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "everything-theatre--everything-theatre.json",
+              "flag": "emptyBody",
+              "urlInDir": "https://everything-theatre.co.uk/2026/10/review-stoker-wilde-wiltons-music-hall/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "noTextOrScoreSignal"
+          ],
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
+          "serpCensus": true,
+          "reverify": true
+        },
+        {
+          "url": "https://theatreweekly.com/review-stoker-wilde-at-wiltons-music-hall/",
+          "host": "theatreweekly.com",
+          "knownOutletId": "theatre-weekly",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theatre-weekly--unknown.json",
+              "flag": "emptyBody",
+              "urlInDir": "https://theatreweekly.com/review-stoker-wilde-at-wiltons-music-hall/"
             }
           ],
           "exclusion": "automatedExcluded",
@@ -304168,7 +304676,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 2,
             "error": null
           },
           {
@@ -304177,7 +304685,7 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 0,
+            "results": 10,
             "accepted": 0,
             "error": null
           },
@@ -304187,8 +304695,8 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 0,
-            "accepted": 0,
+            "results": 10,
+            "accepted": 2,
             "error": null
           },
           {
@@ -304197,7 +304705,7 @@
             "page": 1,
             "geo": "gb",
             "ok": true,
-            "results": 0,
+            "results": 10,
             "accepted": 0,
             "error": null
           },
@@ -304207,32 +304715,31 @@
             "page": 2,
             "geo": "gb",
             "ok": true,
-            "results": 0,
-            "accepted": 0,
+            "results": 10,
+            "accepted": 1,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 0,
+        "resultCount": 5,
         "error": null
       },
       "candidatesRejected": {
-        "count": 11,
+        "count": 43,
         "byReason": {
-          "non-review-host": 5,
-          "ticketing-reseller": 2,
-          "census-junk-host": 2,
-          "no-review-evidence": 2
+          "non-review-host": 41,
+          "aggregator-internal-nav": 1,
+          "write-path-blocked": 1
         }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 4,
       "unextractable": [
         {
-          "url": "https://theatreweekly.com/jamie-bogyo-and-glenn-adamson-to-star-in-world-premiere-glam-rock-musical-stoker-wilde-at-wiltons-music-hall/",
-          "host": "theatreweekly.com",
-          "knownOutletId": "theatre-weekly",
+          "url": "https://thespyinthestalls.com/2026/10/stoker-wilde/",
+          "host": "thespyinthestalls.com",
+          "knownOutletId": "the-spy-in-the-stalls",
           "serpCensus": true,
           "sources": [
             {
@@ -304240,44 +304747,12 @@
               "sourceUrl": null
             }
           ],
-          "zeroCharAttempts": 3
+          "zeroCharAttempts": 6
         }
       ],
-      "ingestResults": [
-        {
-          "url": "https://theatreweekly.com/jamie-bogyo-and-glenn-adamson-to-star-in-world-premiere-glam-rock-musical-stoker-wilde-at-wiltons-music-hall/",
-          "host": "theatreweekly.com",
-          "outletId": "theatre-weekly",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": true,
-          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS."
-        }
-      ],
-      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
-          {
-            "outletId": "everything-theatre",
-            "outlet": "everything-theatre",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://everything-theatre.co.uk/2026/10/review-stoker-wilde-wiltons-music-hall/"
-          },
-          {
-            "outletId": "theatre-weekly",
-            "outlet": "theatre-weekly",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://theatreweekly.com/review-stoker-wilde-at-wiltons-music-hall/"
-          },
           {
             "outletId": "bestoftheatre",
             "outlet": "bestoftheatre",
@@ -304291,6 +304766,20 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://susanelkin.co.uk/articles/stoker-wilde-susan-elkin-reviews/"
+          },
+          {
+            "outletId": "everything-theatre",
+            "outlet": "everything-theatre",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://everything-theatre.co.uk/2026/10/review-stoker-wilde-wiltons-music-hall/"
+          },
+          {
+            "outletId": "theatre-weekly",
+            "outlet": "theatre-weekly",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://theatreweekly.com/review-stoker-wilde-at-wiltons-music-hall/"
           }
         ],
         "suppressedMissing": [],
@@ -304300,20 +304789,6 @@
             "outletId": "londonboxoffice.co.uk",
             "state": "live",
             "firstSeenAt": "2026-10-30T22:24:22.326Z"
-          },
-          {
-            "url": "https://everything-theatre.co.uk/2026/10/review-stoker-wilde-wiltons-music-hall/",
-            "outletId": "everything-theatre",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-30T22:24:22.326Z"
-          },
-          {
-            "url": "https://theatreweekly.com/review-stoker-wilde-at-wiltons-music-hall/",
-            "outletId": "theatre-weekly",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-31T17:58:22.702Z"
           },
           {
             "url": "https://www.bestoftheatre.co.uk/blog/post/connor-carson-bram-stoker-stoker-wilde-wiltons",
@@ -304328,14 +304803,34 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-10-31T21:45:18.470Z"
+          },
+          {
+            "url": "https://everything-theatre.co.uk/2026/10/review-stoker-wilde-wiltons-music-hall/",
+            "outletId": "everything-theatre",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-30T22:24:22.326Z"
+          },
+          {
+            "url": "https://theatreweekly.com/review-stoker-wilde-at-wiltons-music-hall/",
+            "outletId": "theatre-weekly",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-31T17:58:22.702Z"
           }
         ],
         "censusSchema": 4,
-        "excluded": [],
+        "excluded": [
+          {
+            "url": "https://westendwilma.com/stoker-wilde-wiltons-music-hall/",
+            "host": "westendwilma.com",
+            "reason": "confirmed-non-review"
+          }
+        ],
         "liveCount": 1,
         "candidateCount": 5
       },
-      "computedAt": "2026-11-06T00:04:03.170Z"
+      "computedAt": "2026-11-08T03:03:01.431Z"
     },
     {
       "showId": "stonewalls-bust-regional-2026",
@@ -320162,6 +320657,7 @@
       "openingDate": "2026-07-30",
       "status": "closed",
       "category": "west-end",
+      "previewsStartDate": "2026-07-25",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [],
       "dirFiles": 0,
@@ -320187,11 +320683,12 @@
         "missing": [],
         "suppressedMissing": [],
         "candidates": [],
-        "censusSchema": 3,
+        "censusSchema": 4,
+        "excluded": [],
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-11-08T03:03:01.431Z"
     },
     {
       "showId": "tartuffe-off-broadway-2025",
@@ -352089,15 +352586,29 @@
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
         "https://www.theaterscene.net/plays/offbway-plays/the-kick-inside/tony-marinelli/",
+        "https://exeuntnyc.com/reviews/review-the-kick-inside-at-here-arts-center/",
+        "https://www.ultimate-guitar.com/reviews/compact_discs/kate_bush/the_kick_inside/17314/",
         "https://twi-ny.com/2026/10/26/the-kick-inside-nicolas-norena-here-arts-center/",
         "http://www.theaterscene.net/plays/offbway-plays/the-kick-inside/tony-marinelli/",
-        "https://thefrontrowcenter.com/2026/10/the-kick-inside/",
-        "https://exeuntnyc.com/reviews/review-the-kick-inside-at-here-arts-center/"
+        "https://thefrontrowcenter.com/2026/10/the-kick-inside/"
       ],
       "dirFiles": 8,
       "dirClean": 5,
       "inReviewsJson": 5,
-      "missing": [],
+      "missing": [
+        {
+          "url": "https://www.ultimate-guitar.com/reviews/compact_discs/kate_bush/the_kick_inside/17314/",
+          "host": "ultimate-guitar.com",
+          "knownOutletId": null,
+          "serpCensus": true,
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ]
+        }
+      ],
       "dirOnly": [
         {
           "host": "offoffonline.com",
@@ -352118,7 +352629,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 9,
+            "results": 10,
             "accepted": 0,
             "error": null
           },
@@ -352128,8 +352639,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 1,
-            "accepted": 0,
+            "results": 10,
+            "accepted": 1,
             "error": null
           },
           {
@@ -352138,8 +352649,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 9,
-            "accepted": 0,
+            "results": 10,
+            "accepted": 1,
             "error": null
           },
           {
@@ -352149,7 +352660,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 0,
             "error": null
           },
           {
@@ -352169,22 +352680,40 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 33,
+        "count": 47,
         "byReason": {
-          "not-http-url": 22,
-          "non-review-host": 3,
-          "non-stage-review": 3,
-          "no-review-evidence": 1,
-          "census-junk-host": 3,
-          "news-roundup-site": 1
+          "non-review-host": 42,
+          "aggregator-internal-nav": 1,
+          "tag-index-page": 1,
+          "non-stage-review": 2,
+          "no-review-evidence": 1
         }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 0,
       "unextractable": [],
+      "weIngestBlocked": [
+        {
+          "url": "https://www.ultimate-guitar.com/reviews/compact_discs/kate_bush/the_kick_inside/17314/",
+          "host": "ultimate-guitar.com",
+          "priorRun": false,
+          "reason": "unregistered-host",
+          "censusGateOn": true
+        }
+      ],
+      "ingestResults": [],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "complete",
-        "missing": [],
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "ultimate-guitar.com",
+            "outlet": "ultimate-guitar.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.ultimate-guitar.com/reviews/compact_discs/kate_bush/the_kick_inside/17314/"
+          }
+        ],
         "suppressedMissing": [],
         "candidates": [
           {
@@ -352192,6 +352721,12 @@
             "outletId": "theaterscene.net",
             "state": "live",
             "firstSeenAt": "2026-11-03T04:04:29.618Z"
+          },
+          {
+            "url": "https://exeuntnyc.com/reviews/review-the-kick-inside-at-here-arts-center/",
+            "outletId": "exeuntnyc.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-24T06:45:39.049Z"
           },
           {
             "url": "https://twi-ny.com/2026/10/26/the-kick-inside-nicolas-norena-here-arts-center/",
@@ -352212,18 +352747,19 @@
             "firstSeenAt": "2026-10-24T06:45:39.049Z"
           },
           {
-            "url": "https://exeuntnyc.com/reviews/review-the-kick-inside-at-here-arts-center/",
-            "outletId": "exeuntnyc.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-24T06:45:39.049Z"
+            "url": "https://www.ultimate-guitar.com/reviews/compact_discs/kate_bush/the_kick_inside/17314/",
+            "outletId": "ultimate-guitar.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-11-08T03:03:01.431Z"
           }
         ],
         "censusSchema": 4,
         "excluded": [],
         "liveCount": 4,
-        "candidateCount": 4
+        "candidateCount": 5
       },
-      "computedAt": "2026-11-06T01:02:18.510Z"
+      "computedAt": "2026-11-08T03:03:01.431Z"
     },
     {
       "showId": "the-king-and-i-west-end-2024",
@@ -381883,7 +382419,7 @@
         "liveCount": 0,
         "candidateCount": 1
       },
-      "computedAt": "2026-11-08T01:43:57.871Z"
+      "computedAt": "2026-11-08T03:03:01.431Z"
     },
     {
       "showId": "the-story-olivier-west-end-2026",
@@ -412477,7 +413013,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-11-08T01:43:57.871Z"
+      "computedAt": "2026-11-08T03:03:01.431Z"
     },
     {
       "showId": "war-horse-west-end-2026",
@@ -423775,7 +424311,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 0,
+            "results": 9,
             "accepted": 0,
             "error": null
           },
@@ -423785,7 +424321,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 0,
+            "results": 8,
             "accepted": 0,
             "error": null
           },
@@ -423795,7 +424331,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 0,
+            "results": 10,
             "accepted": 0,
             "error": null
           },
@@ -423805,7 +424341,7 @@
             "page": 1,
             "geo": "us",
             "ok": true,
-            "results": 0,
+            "results": 10,
             "accepted": 0,
             "error": null
           },
@@ -423815,7 +424351,7 @@
             "page": 2,
             "geo": "us",
             "ok": true,
-            "results": 0,
+            "results": 10,
             "accepted": 0,
             "error": null
           }
@@ -423826,8 +424362,14 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 42,
+        "byReason": {
+          "non-review-host": 38,
+          "aggregator-internal-nav": 1,
+          "news-roundup-site": 1,
+          "feature-not-review": 1,
+          "no-review-evidence": 1
+        }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 0,
@@ -423848,7 +424390,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-11-06T00:04:03.170Z"
+      "computedAt": "2026-11-08T03:03:01.431Z"
     },
     {
       "showId": "wonder-regional-2026",
@@ -425173,30 +425715,29 @@
     }
   ],
   "staleness": {
-    "at": "2026-11-08T01:43:57.871Z",
+    "at": "2026-11-08T03:03:01.431Z",
     "reserveEvery": 4,
     "reservedAttempted": [
-      "a-few-good-men-2026",
-      "malory-towers-off-west-end-2026",
-      "are-you-mad-at-me-off-broadway-2026",
-      "the-importance-of-being-oscar-off-west-end-2026"
+      "tao-of-glass-west-end-2026",
+      "dinosaur-world-live-off-west-end-2026",
+      "marlise-off-broadway-2026"
     ],
     "catalogueReserveEvery": 8,
     "catalogueAttempted": [
-      "adaku-part-2-off-broadway-2026",
-      "six-men-dressed-like-joseph-stalin-regional-2025",
-      "neighborhood-watch-regional-2025"
+      "la-ternura-off-broadway-2025",
+      "endgame-regional-2025",
+      "golden-leaf-ragtime-blues-regional-2025"
     ],
-    "neverAuditedDueAtStart": 606,
+    "neverAuditedDueAtStart": 603,
     "oldestDueRowAtStart": {
-      "showId": "malory-towers-off-west-end-2026",
-      "computedAt": "2026-10-31T17:07:08.919Z",
-      "ageHours": 176.3
-    },
-    "oldestDueRowAfterRun": {
       "showId": "tao-of-glass-west-end-2026",
       "computedAt": "2026-10-31T17:07:08.919Z",
-      "ageHours": 176.6
+      "ageHours": 177.6
+    },
+    "oldestDueRowAfterRun": {
+      "showId": "horrible-histories-barmy-britain-the-best-bits-west-end-2026",
+      "computedAt": "2026-10-31T17:07:08.919Z",
+      "ageHours": 177.9
     }
   }
 }
