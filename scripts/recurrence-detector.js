@@ -6,12 +6,13 @@
  * A class is recurring at 3+ cards in 30 days, or when one of its alert
  * conditions came back after being resolved. Each recurring class gets
  * exactly one root-cause card (P1, START-NOW, marker
- * `<!-- root-cause-class: v1:KEY -->`); later runs comment the new instances
+ * `root-cause-class: v1:KEY` line); later runs comment the new instances
  * on it instead of filing again. Grouping logic: scripts/lib/recurrence-classes.js.
  *
  * Modes:
- *   (default)                dry run: print what --apply would do, write the snapshot
- *   --apply                  file/comment root-cause cards (cap 3 new per run)
+ *   (default)                dry run: print what --apply would do (writes nothing)
+ *   --apply                  file/comment root-cause cards (cap 3 new per run), write the snapshot
+ *   --write                  dry run that still writes the snapshot
  *   --backtest [--days 60]   replay day by day, write data/audit/recurrence-backtest.json
  *                            + docs/recurrence-backtest.md (hit list, false positives)
  *   --check                  exit 0 when the snapshot is fresh, complete and has no
@@ -54,7 +55,7 @@ function readJson(p, fallback = null) {
 
 // ---------- Linear reads ----------
 
-const ISSUE_FIELDS = 'id identifier title createdAt completedAt canceledAt archivedAt priority state { name type } description';
+const ISSUE_FIELDS = 'id identifier title createdAt startedAt completedAt canceledAt archivedAt priority state { name type } description';
 
 async function fetchCards(days) {
   const lc = require('./lib/linear-client.js');
@@ -91,7 +92,7 @@ async function fetchRootCards(known) {
 
 // ---------- snapshot ----------
 
-function buildSnapshot({ cards, ledger, now, complete, commentsById = {} }) {
+function buildSnapshot({ cards, ledger, now, complete, commentsById = {}, prevKnown = [] }) {
   const classes = rc.detectClasses(cards, ledger, { now, windowDays: WINDOW_DAYS });
   const byId = new Map(cards.map((c) => [c.identifier, c]));
   const recurring = [...classes.values()].filter((c) => c.recurring);
@@ -120,6 +121,7 @@ function buildSnapshot({ cards, ledger, now, complete, commentsById = {} }) {
       rootCauseState: root && root.state ? root.state.type : null,
       rootCauseStartedNow: root ? /^START-NOW:/m.test(root.description || '') : false,
       rootCauseCreatedAt: root ? root.createdAt : null,
+      rootCauseStartedAt: root ? root.startedAt || null : null,
       extraRootCauses: cls.extraRootCauses,
       subtypes: cls.subtypes,
       example: cls.instances[cls.instances.length - 1].title,
@@ -147,6 +149,9 @@ function buildSnapshot({ cards, ledger, now, complete, commentsById = {} }) {
     expected,
     instances,
     lastSeenByKey,
+    // Every class that was ever recurring, so --check-class can tell a quiet
+    // class from a mistyped slug after the class drops out of the window.
+    knownKeys: [...new Set([...((prevKnown) || []), ...out.map((c) => c.key)])].sort(),
   };
 }
 
@@ -200,14 +205,26 @@ function rootCardDescription(cls) {
   ].join('\n');
 }
 
-function statusComment(rootId, newIds) {
-  return `${rc.STATUS_COMMENT_MARKER}\nRecurrence detector: ${newIds.length} new case(s) of this class since the last note: ${newIds.join(', ')}. ` +
-    `The class is still coming back, so the prevention is not in place yet (BRO-7103).`;
+// First line lists the cases, so the next run can skip ones already named
+// even if the snapshot commit was lost (one comment per root card per run).
+function statusComment(newIds, closed) {
+  const head = `${rc.STATUS_COMMENT_MARKER} ${newIds.join(', ')}`;
+  return closed
+    ? `${head}\nRecurrence detector: this card is closed, but ${newIds.length} new case(s) of its problem came in: ${newIds.join(', ')}. ` +
+      'The fix did not hold. Reopen this card or link the card that now owns the cause (BRO-7103).'
+    : `${head}\nRecurrence detector: ${newIds.length} new case(s) of this problem since the last note: ${newIds.join(', ')}. ` +
+      'The problem is still coming back, so the prevention is not in place yet (BRO-7103).';
 }
 
-function closedRootComment(rootId, newIds) {
-  return `${rc.STATUS_COMMENT_MARKER}\nRecurrence detector: this card is closed, but ${newIds.length} new case(s) of its problem came in since the last note: ${newIds.join(', ')}. ` +
-    `The fix did not hold. Reopen this card or link the card that now owns the cause (BRO-7103).`;
+/** PURE. Card ids already named on a root card by earlier detector comments. */
+function alreadyNoted(comments) {
+  const seen = new Set();
+  for (const c of comments || []) {
+    const first = String((c && c.body) || '').split('\n')[0];
+    if (!first.startsWith(rc.STATUS_COMMENT_MARKER)) continue;
+    for (const id of first.match(/\bBRO-\d+\b/g) || []) seen.add(id);
+  }
+  return seen;
 }
 
 // ---------- apply ----------
@@ -218,6 +235,7 @@ async function apply(snapshot, prevSnapshot) {
   const prevById = new Map(((prevSnapshot && prevSnapshot.classes) || []).map((c) => [c.key, c]));
   const filed = [];
   const commented = [];
+  const byRoot = new Map(); // root card -> new cases from every class it owns
   let pending = 0;
   for (const cls of snapshot.classes) {
     if (cls.extraRootCauses && cls.extraRootCauses.length) {
@@ -234,6 +252,11 @@ async function apply(snapshot, prevSnapshot) {
         dedupeOptOut: 'recurrence-detector',
         source: 'recurrence-detector',
       });
+      // Read the card back: the marker line is how later runs find it, so a
+      // card whose marker did not survive must stop the run, not repeat daily.
+      const back = await lc.getIssue(issue.identifier);
+      const mk = back && rc.rootCauseMarker(back.description);
+      if (!mk || mk.key !== cls.key) throw new Error(`root card ${issue.identifier} lost its marker line; not filing more`);
       cls.rootCause = issue.identifier;
       cls.rootCauseState = 'unstarted';
       cls.rootCauseStartedNow = true;
@@ -247,13 +270,23 @@ async function apply(snapshot, prevSnapshot) {
     const seen = new Set(prev.instances);
     const fresh = cls.instances.filter((id) => !seen.has(id));
     if (!fresh.length) continue;
+    const g = byRoot.get(cls.rootCause) || { fresh: new Set(), closed: false };
+    fresh.forEach((id) => g.fresh.add(id));
     // A closed root card whose class keeps coming back is a fix that did not
     // hold: say so on that card instead of going quiet (ship-check, BRO-7103).
-    const closed = ['completed', 'canceled', 'duplicate'].includes(cls.rootCauseState);
-    const root = await lc.getIssue(cls.rootCause);
+    g.closed = g.closed || ['completed', 'canceled', 'duplicate'].includes(cls.rootCauseState);
+    byRoot.set(cls.rootCause, g);
+  }
+  for (const [rootId, g] of byRoot) {
+    const root = await lc.getIssue(rootId);
     if (!root || !root.id) continue;
-    await lc.createComment(root.id, closed ? closedRootComment(cls.rootCause, fresh) : statusComment(cls.rootCause, fresh));
-    commented.push({ key: cls.key, card: cls.rootCause, fresh });
+    // getIssue holds only the first 50 comments; a busy root (BRO-3425) has more.
+    const all = await lc.listIssueComments([rootId], undefined, { includeArchived: true });
+    const noted = alreadyNoted(all.get(rootId) || []);
+    const fresh = [...g.fresh].filter((id) => !noted.has(id));
+    if (!fresh.length) continue;
+    await lc.createComment(root.id, statusComment(fresh, g.closed));
+    commented.push({ card: rootId, fresh });
   }
   snapshot.withRootCause = snapshot.classes.filter((c) => c.rootCause).length;
   snapshot.pendingRootCards = pending;
@@ -348,6 +381,9 @@ function checkClass(want, quiet) {
   const keys = Object.keys(snap.lastSeenByKey || {});
   const key = keys.find((k) => k === want || slugOf(k) === slugOf(want));
   if (!key) {
+    // A slug no run has ever seen is a typo in a VERIFY line, not a quiet class.
+    const known = (snap.knownKeys || []).some((k) => slugOf(k) === slugOf(want));
+    if (!known) { console.log(`FAIL: "${want}" is not a class the detector has ever reported`); return 1; }
     console.log(`OK: no case of "${want}" in the last ${snap.windowDays} days`);
     return snap.complete ? 0 : 1;
   }
@@ -402,7 +438,7 @@ async function main() {
     }
   }
   const prev = readJson(SNAPSHOT);
-  const snap = buildSnapshot({ cards, ledger, now, complete, commentsById });
+  const snap = buildSnapshot({ cards, ledger, now, complete, commentsById, prevKnown: (prev && prev.knownKeys) || (prev && prev.classes || []).map((c) => c.key) });
   snap.pendingRootCards = snap.classes.filter((c) => !c.rootCause).length;
 
   if (has('--apply')) {
@@ -417,7 +453,9 @@ async function main() {
     for (const c of todo.slice(0, NEW_ROOT_CAP)) console.log(`  + ${rootCardTitle(c)}`);
   }
   console.log(`root-cause share: this week ${snap.share.thisWeek.share}% of ${snap.share.thisWeek.total} done, last week ${snap.share.lastWeek.share}% of ${snap.share.lastWeek.total}; preventions claimed ${snap.preventions.claimed}, failed ${snap.preventions.failed}, closed without one ${snap.preventions.unclaimed}`);
-  if (!has('--no-write')) fs.writeFileSync(SNAPSHOT, JSON.stringify(snap, null, 2) + '\n');
+  // Only the daily --apply run (or an explicit --write) owns the snapshot, so
+  // a worker's dry run never becomes a second writer of a CI-owned file.
+  if ((has('--apply') || has('--write')) && !has('--no-write')) fs.writeFileSync(SNAPSHOT, JSON.stringify(snap, null, 2) + '\n');
   return process.exitCode || 0;
 }
 
@@ -425,4 +463,4 @@ if (require.main === module) {
   main().then((code) => process.exit(code), (e) => { console.error(`[recurrence] ${e.stack || e.message}`); process.exit(1); });
 }
 
-module.exports = { buildSnapshot, backtest, rootCardTitle, rootCardDescription, slugOf, checkClass, checkAll };
+module.exports = { alreadyNoted, statusComment, buildSnapshot, backtest, rootCardTitle, rootCardDescription, slugOf, checkClass, checkAll };

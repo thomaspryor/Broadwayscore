@@ -259,3 +259,32 @@ test('a class that comes back after its root card closed is surfaced, not silenc
   const line = rc.improvementLine({ share: { thisWeek: { share: 50, total: 2 }, lastWeek: {} }, recurringCount: 1, withRootCause: 1, classes: [{ recurredAfterRootClosed: ['BRO-2'] }] });
   assert.match(line, /1 problem came back after the card fixing the cause was closed/);
 });
+
+test('marker is a plain line (Linear drops HTML comments); the old comment form still parses', () => {
+  const line = rc.markerLine('opening night poller failed');
+  assert.ok(!line.includes('<!--'));
+  assert.deepEqual(rc.rootCauseMarker(`START-NOW: x\n\n${line}\n`), { version: 'v1', key: 'opening night poller failed' });
+  assert.deepEqual(rc.rootCauseMarker('a\n<!-- root-cause-class: v0:some old key -->'), { version: 'v0', key: 'some old key' });
+  assert.equal(rc.rootCauseMarker('prose that mentions root-cause-class: in a sentence'), null);
+  assert.ok(det.rootCardDescription({ key: 'k', slug: 'k', reasons: ['3 cards'], instances: ['BRO-1'] }).includes(line.replace('opening night poller failed', 'k')));
+});
+
+test('status comments name their cases on line one, so a rerun never repeats them', () => {
+  const body = det.statusComment(['BRO-11', 'BRO-12'], false);
+  assert.ok(body.startsWith(`${rc.STATUS_COMMENT_MARKER} BRO-11, BRO-12\n`));
+  assert.match(det.statusComment(['BRO-13'], true), /fix did not hold/);
+  const seen = det.alreadyNoted([{ body }, { body: 'a person said BRO-99' }]);
+  assert.deepEqual([...seen].sort(), ['BRO-11', 'BRO-12']);
+});
+
+test('a root card In Progress for more than 14 days stops holding its cases back', () => {
+  const started = (d) => ({ ...SNAP, classes: [{ ...SNAP.classes[0], rootCauseState: 'started', rootCauseStartedAt: iso(d) }] });
+  assert.equal(rc.rootCauseRouteReason({ identifier: 'BRO-1', priority: 3 }, started(3), NOW), 'routed-to-root-cause');
+  assert.equal(rc.rootCauseRouteReason({ identifier: 'BRO-1', priority: 3 }, started(20), NOW), null);
+});
+
+test('a routed START-NOW card says why it was held back', () => {
+  const iss = { identifier: 'BRO-1', title: 'Opening night poller failed', priority: 2, state: { type: 'unstarted' }, description: 'START-NOW: go' };
+  const r = pickCloudCard([iss], { nowMs: NOW, recurrence: SNAP });
+  assert.equal(r.startNowSkipped['BRO-1'], 'routed-to-root-cause');
+});
