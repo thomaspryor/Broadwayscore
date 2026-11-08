@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7156",
   "planId": "a9fafc43-7389-4640-a0b4-ef64d2162882",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-08T21:39:26.316Z",
   "submitter": {
     "name": null,
@@ -24,5 +24,14 @@
         "description": "shows.json: the-gall-of-her-travels-off-broadway-2027.type"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-08T21:48:55.545Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for the-gall-of-her-travels-off-broadway-2027"
+    }
+  ],
+  "executedIn": "ci"
 }
