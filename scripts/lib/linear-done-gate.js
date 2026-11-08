@@ -254,6 +254,22 @@ function rootCauseCloseCheck({ identifier, title, description = '', commentText 
   }
 }
 
+// BRO-7102 item 5: a main test.yml red card's close should say why main went
+// red (CAUSE: data-drift | stale-test | landing-collision | flake | infra), so
+// ci-green-rate.js --cause-mix can count it. ADVISORY ONLY (§19): it warns and
+// never refuses. Any error fails open.
+function redCauseCloseWarning({ identifier, title, description = '', commentText = '', existingComments = [] } = {}) {
+  if (!title) return null;
+  try {
+    const { checkRedCauseClose } = require('./red-cause-tag.js');
+    // existingComments come oldest first (sortedCommentBodies); the close comment is newest of all.
+    const texts = [description, ...(Array.isArray(existingComments) ? existingComments : []), commentText];
+    return checkRedCauseClose({ identifier, title, description, texts }).message || null;
+  } catch {
+    return null;
+  }
+}
+
 function addWarning(result, w) {
   return { ...result, warning: result.warning ? `${result.warning}\n${w}` : w };
 }
@@ -269,6 +285,8 @@ function checkLinearDoneTransition(args = {}) {
       result = addWarning(result, rw.message);
     }
   }
+  const cause = redCauseCloseWarning(args);
+  if (cause) result = addWarning(result, cause);
   const rcc = rootCauseCloseCheck(args);
   if (rcc) {
     if (rcc.blocking && result.allowed !== false) {
@@ -280,4 +298,4 @@ function checkLinearDoneTransition(args = {}) {
   return result;
 }
 
-module.exports = { checkLinearDoneTransition, applyCmdExecution, recurrenceWarning, rootCauseCloseCheck };
+module.exports = { checkLinearDoneTransition, applyCmdExecution, recurrenceWarning, rootCauseCloseCheck, redCauseCloseWarning };

@@ -57,6 +57,7 @@ function usage() {
     '  --min M        minimum green rate percent for PASS (default 80)',
     '  --json         print the full result object instead of the table',
     '  --record       append this reading to data/audit/ci-green-rate.jsonl (health-check.js nightly; not an acceptance form)',
+    '  --cause-mix    also print a CAUSE-MIX line: CAUSE: tags on main test.yml red cards closed in the window (reads Linear)',
     'Exit 0 = PASS, 1 = FAIL, 2 = usage or gh API error.',
   ].join('\n');
 }
@@ -234,8 +235,28 @@ function main(argv, deps = {}) {
   return result.verdict === 'PASS' ? 0 : 1;
 }
 
-if (require.main === module) {
-  process.exit(main(process.argv.slice(2)));
+// BRO-7102 item 5: --cause-mix adds one CAUSE-MIX line counting the CAUSE: tags
+// on main test.yml red cards closed in the window (scripts/lib/red-cause-tag.js).
+// It reads Linear, so it is opt-in and never changes the green-rate exit code.
+async function printCauseMix(argv, { log = console.log, error = console.error, fromLinear } = {}) {
+  const i = argv.indexOf('--days');
+  const days = i >= 0 && Number.isInteger(Number(argv[i + 1])) ? Number(argv[i + 1]) : core.DEFAULTS.days;
+  const rct = require('./lib/red-cause-tag.js');
+  try {
+    log(rct.formatCauseMix(await (fromLinear || rct.causeMixFromLinear)(days), days));
+  } catch (err) {
+    error(`ci-green-rate: cause mix unavailable: ${String((err && err.message) || err).split('\n')[0]}`);
+    log(`CAUSE-MIX: n/a over ${days}d (Linear read failed)`);
+  }
 }
 
-module.exports = { main, fetchRuns, fetchStable, resolveRepo, readLedger, LEDGER_PATH };
+if (require.main === module) {
+  const argv = process.argv.slice(2);
+  const wantMix = argv.includes('--cause-mix') && !hasHelpFlag(argv);
+  const code = main(argv.filter((a) => a !== '--cause-mix'));
+  // With --json, stdout stays pure JSON: the CAUSE-MIX line goes to stderr.
+  if (wantMix) printCauseMix(argv, argv.includes('--json') ? { log: console.error } : {}).then(() => process.exit(code));
+  else process.exit(code);
+}
+
+module.exports = { main, printCauseMix, fetchRuns, fetchStable, resolveRepo, readLedger, LEDGER_PATH };

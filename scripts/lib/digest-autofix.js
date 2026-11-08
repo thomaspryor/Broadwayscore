@@ -421,6 +421,8 @@ function normalizeQueuedRows(queued) {
     model: q.model && VALID_MODELS.has(q.model) ? q.model : null,
     conditionKey: q.conditionKey || null,
     tracked: q.tracked || null,
+    // BRO-7102 item 4: the failing test's shared identity (router-queued test rows).
+    testId: q.testId || null,
   }));
 }
 
@@ -485,6 +487,7 @@ function buildPlanRow(r, { tasks, today, titleOverride = null } = {}) {
     state,
     taskId: existing ? existing.id : null,
     conditionKey,
+    ...(r.testId ? { testId: r.testId } : {}),
     model: r.model || null,
     // Plan-time guess (BRO-232 S4 digest-subject split, send-morning-
     // digest.js's buildSubject): true only when NOTHING already tracked
@@ -655,6 +658,7 @@ function planAutofix({ health, extraIssues = [], tasks = [], today, queued } = {
 // dispatch. See that module's header for the incident.
 const { rowAbsentCheckCmd, alertAbsentCheckCmd, sanitizeRowText } = require('./health-row-check-cmd.js');
 const { CONDITION_PREFIX: LAND_CONDITION_PREFIX } = require('./land-alert.js');
+const { testIdMarker } = require('./test-identity.js');
 
 // BRO-6475: what a folded row's affected items are. The "<condition> on <X>"
 // fold is shape-based, so land.yml's "Landing blocked: <gate> red on <land ref>"
@@ -721,6 +725,10 @@ function buildCardNotes(row) {
       row.affected && row.affected[0] && row.affected[0].conditionKey
         ? `\`${alertAbsentCheckCmd(row.affected[0].conditionKey)}\` passes — i.e. the alert condition for "${name}" is no longer open.`
         : `\`${rowAbsentCheckCmd(row.name)}\` passes — i.e. the daily health check no longer lists "${name}" among errors or warnings.`,
+      // BRO-7102 item 4: lets the alert router's test filers find this card.
+      // Never on a fold (affected[], even a one-item fold): a fold card can grow to
+      // many tests, and runAutofix never searches the marker for one.
+      ...(row.testId && !Array.isArray(row.affected) ? ['', testIdMarker(row.testId)] : []),
     ].join('\n');
   }
 
@@ -808,7 +816,7 @@ function reattachedLiveState(filed) {
   return filed.stateType === 'started' ? 'tracked' : null;
 }
 
-function fileCard(title, notes, { log = () => {}, refreshNotesOnReattach = false, startNow = false, ignoreNumbers = false } = {}) {
+function fileCard(title, notes, { log = () => {}, refreshNotesOnReattach = false, startNow = false, ignoreNumbers = false, testId = null, execFn = execFileSync } = {}) {
   // Dedup BEFORE filing (BRO-286 merge-review P0): a persistent health row
   // hits this every morning, and the Notion-mirror dedup (matchOpenTask in
   // planAutofix) can't see Linear issues — without this check the same row
@@ -819,8 +827,15 @@ function fileCard(title, notes, { log = () => {}, refreshNotesOnReattach = false
   // working. Fail-open: a find error just means we file (worst case one
   // duplicate, same as a transient Linear outage).
   try {
-    const found = execFileSync('node', [path.join(REPO, 'scripts', 'linear-brain.js'), 'find', title, '--exact-title', ...(ignoreNumbers ? ['--ignore-numbers'] : [])],
+    const findBy = (term, extra) => execFn('node', [path.join(REPO, 'scripts', 'linear-brain.js'), 'find', term, ...extra],
       { cwd: REPO, encoding: 'utf8', timeout: 30000 });
+    // BRO-7102 item 4: an open card for the SAME failing test, filed by the alert
+    // router's live-data or main test.yml filer under another title, is this row's card.
+    // A failed marker lookup falls through to the title lookup (one Linear blip
+    // must not skip the exact-title dedupe and file a duplicate).
+    let found = '';
+    if (testId) { try { found = findBy(testIdMarker(testId), []); } catch { found = ''; } }
+    if (!LINEAR_IDENTIFIER_IN_JSON_RE.test(found || '')) found = findBy(title, ['--exact-title', ...(ignoreNumbers ? ['--ignore-numbers'] : [])]);
     const fm = found.match(LINEAR_IDENTIFIER_IN_JSON_RE);
     if (fm) {
       log(`[digest-autofix] row already tracked as ${fm[1]} — reattaching instead of filing a duplicate`);
@@ -1359,6 +1374,7 @@ function runAutofix({
     // comment for why this is scoped to folded rows only.
     const filed = fileCardFn(row.title, buildCardNotes(row), {
       log, refreshNotesOnReattach: Array.isArray(row.affected), startNow: isVisitorFacingRow(row), ignoreNumbers: true,
+      testId: Array.isArray(row.affected) ? null : (row.testId || null),
     });
     if (filed.ok) {
       row.state = 'card-filed';

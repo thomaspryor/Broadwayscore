@@ -6,6 +6,7 @@
 // card once it stays red (owner-alert-router digest escalation) and resolves
 // when green. Same shape as routePerAuditAlerts in check-corpus-drift.js.
 
+const { testIdentity } = require('./test-identity.js');
 const KEY_PREFIX = 'live-data-test:';
 const MAX_KEY_LEN = 200;
 
@@ -80,6 +81,8 @@ function planLiveDataRouting(failures, openKeys, parsed, exitCode) {
     seen.add(conditionKey);
     route.push({
       conditionKey,
+      // BRO-7102 item 4: shared test identity, so main test.yml red on the same test finds this card.
+      ...(testIdentity(f.file, f.name) ? { testId: testIdentity(f.file, f.name) } : {}),
       title: `Live-data test failing: ${f.name} (${f.file})`,
       description: `check-corpus-drift.yml "Live-data assertions" step: node:test "${f.name}" in ${f.file} is red against the live corpus.\n\n${String(f.payload || '(no assertion payload captured)').slice(0, 1500)}`,
       hint: f.file === '?' ? 'Open the latest Check Corpus Drift run, "Live-data assertions" step.' : `Run: node --test ${f.file}`,

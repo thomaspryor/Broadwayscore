@@ -49,6 +49,7 @@
  */
 'use strict';
 
+const { testIdForSignature } = require('./lib/test-identity.js');
 const fs = require('fs');
 const path = require('path');
 const { execFileSync } = require('child_process');
@@ -271,8 +272,11 @@ async function main() {
   for (const sig of currentSignatures) {
     const label = sig.testName ? `${sig.job} / ${sig.step} — "${sig.testName}"` : `${sig.job} / ${sig.step}`;
     const verify = verifyForSignature({ job: sig.job, step: sig.step, testFile: sig.testName ? testFileByJob.get(sig.job) : undefined }, testYmlText);
+    // BRO-7102 item 4: shared test identity, so a live-data or digest card for the same test is reused.
+    const testId = testIdForSignature({ testName: sig.testName, testFile: testFileByJob.get(sig.job) });
     await routeAlert({
       conditionKey: sig.conditionKey,
+      ...(testId ? { testId } : {}),
       title: `main test.yml red: ${label}`,
       description: `main's Test Suite is failing on ${label} (${opts.streak} consecutive push${opts.streak === '1' ? '' : 'es'} red). Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. This card is scoped to THIS specific breakage — a different job/step/test failing at the same time gets its own card instead of deduping into this one.`,
       severity: 'error',

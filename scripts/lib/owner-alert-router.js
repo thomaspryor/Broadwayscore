@@ -102,6 +102,7 @@ const { classifyHealthCheck } = require('./digest-audience.js');
 // findLinearDuplicate() below. Every Linear GraphQL call stays inside
 // linear-client.js (audit-linear-issuecreate-chokepoint.js convention).
 const linearClient = require('./linear-client');
+const { testIdMarker } = require('./test-identity.js');
 const { isTerminalStateType } = require('./linear-state-types.js');
 
 const REPO_ROOT = path.join(__dirname, '..', '..');
@@ -372,7 +373,7 @@ function decideDigestEscalation({ conditionKey, existing, notifyCount, now, thre
 // land right on the edge — pad explicitly rather than relying on margin.
 const MIN_NOTES_LENGTH = 320;
 
-function buildCardNotes({ description, hint, fields, conditionKey, verify, diagnosis }) {
+function buildCardNotes({ description, hint, fields, conditionKey, verify, diagnosis, testId }) {
   const fieldLines = (fields || []).map(f => `- **${f.name}:** ${f.value}`).join('\n');
   const parts = [
     '## Problem',
@@ -442,6 +443,9 @@ function buildCardNotes({ description, hint, fields, conditionKey, verify, diagn
   // conditionKey too, so this is belt-and-suspenders for a future consumer
   // that wants an exact marker rather than a prose substring.
   parts.push(`\n[conditionKey:${conditionKey}]`);
+  // BRO-7102 item 4: the failing test's shared identity, so the other test
+  // filers (live-data lane, main test.yml red, digest-autofix) find this card.
+  if (testId) parts.push(testIdMarker(testId));
   let notes = parts.join('\n');
   if (notes.length < MIN_NOTES_LENGTH) {
     notes += `\n\nFiled automatically by owner-alert-router.js (conditionKey: ${conditionKey}).`;
@@ -484,6 +488,15 @@ function logDispatchAttempt({ conditionKey, title, ok, error }) {
   }
 }
 
+// BRO-7102 item 4 (ship-check P1): a dispatchAtFiling alert (main test.yml red)
+// must file its own Todo card and dispatch it; reusing a parked live-data or
+// digest card by test identity would silence it with nothing dispatched and the
+// other card's VERIFY. So such an alert never dedupes by test id: it writes the
+// marker, and the other lanes attach to ITS card instead.
+function testIdForDedupe(testId, dispatchAtFiling) {
+  return testId && !dispatchAtFiling ? testId : null;
+}
+
 // Cross-system dedupe (Phase 0 rail 2, plan 2026-08-12, task #1341): before
 // dispatchCard() files a NEW Notion card, check whether an OPEN Linear issue
 // already tracks this conditionKey — linear-import.js already migrated most
@@ -498,10 +511,16 @@ function logDispatchAttempt({ conditionKey, title, ok, error }) {
 // exactly as it did before this rail existed. `searchIssuesFn` is an
 // injectable seam (tests stub linear-client.js's export) — production always
 // resolves to the real linearClient.searchIssues.
-async function findLinearDuplicate(conditionKey, { searchIssuesFn = linearClient.searchIssues, title = null } = {}) {
+async function findLinearDuplicate(conditionKey, { searchIssuesFn = linearClient.searchIssues, title = null, testId = null } = {}) {
   try {
     const match = await searchIssuesFn(conditionKey);
     if (match) return { matched: true, identifier: match.identifier };
+    // BRO-7102 item 4: another filer's card for the SAME failing test (a
+    // live-data card when main test.yml goes red on that test, or the reverse).
+    if (testId) {
+      const byTest = await searchIssuesFn(testIdMarker(testId));
+      if (byTest) return { matched: true, identifier: byTest.identifier, byTestId: true };
+    }
     // BRO-4487: a deferred condition reaches its filing age on the same day
     // digest-autofix may file its own "BSC Daily: ..." card for the same row,
     // and that card carries no conditionKey. An OPEN issue with this exact
@@ -568,12 +587,12 @@ function startNowEligible({ conditionKey, description, verify, workerFixable }) 
   return startNowHealthRowReason({ name, message: description }, undefined, { allowInternal: workerFixable === true }) === null;
 }
 
-async function dispatchCard({ title, description, hint, fields, severity, cardAction, priority, category, tags, conditionKey, verify, dispatchAtFiling, workerFixable }) {
+async function dispatchCard({ title, description, hint, fields, severity, cardAction, priority, category, tags, conditionKey, verify, dispatchAtFiling, workerFixable, testId }) {
   // Dedupe/cooldown have already run. Spend diagnostic requests only for a
   // chronic incident that is actually about to receive a new tracker.
   const { chronicDiagnosisSection } = require('./cron-health-chronic-diagnosis.js');
   const diagnosis = chronicDiagnosisSection(conditionKey);
-  let notes = buildCardNotes({ description, hint, fields, conditionKey, verify, diagnosis });
+  let notes = buildCardNotes({ description, hint, fields, conditionKey, verify, diagnosis, testId });
   // Linear priority ints: 1=Urgent 2=High 3=Medium 4=Low. Alert-filed issues
   // map error-class severities to High, everything else Medium — Urgent is
   // reserved for humans. (`priority`, when a caller passes one, is the OLD
@@ -743,7 +762,7 @@ function headStandsAlone(description, subject) {
 // auto-dispatch attempt (e.g. test.yml's streak escalation, which wants
 // opus immediately since it's already the SECOND machine attempt at the
 // underlying failure — the first, disposition:'auto', card already failed).
-function queueDigestLine({ title, description, severity, conditionKey, url, decision, info, decisionPrompt, model, fields, tracked }) {
+function queueDigestLine({ title, description, severity, conditionKey, url, decision, info, decisionPrompt, model, fields, tracked, testId }) {
   // Non-throwing (card #1078): an alert must still reach the owner even if
   // its own head would clip badly — this is a loud warning, not a gate.
   // description renders as "<b>title</b> — description" (autonomous-email-
@@ -771,6 +790,7 @@ function queueDigestLine({ title, description, severity, conditionKey, url, deci
     conditionKey, title, description, severity, url: url || null,
     decision: !!decision, info: !!info, decisionPrompt: decisionPrompt || null, model: model || null,
     tracked: tracked || null,
+    ...(testId ? { testId } : {}),
     // routeAlert's caller-supplied fields ([{name,value}]) — dispatchCard and
     // sendAlert both carry these through (e.g. the 'Shows' list on overdue/
     // checklist/drift alerts); the digest path was silently dropping them.
@@ -972,6 +992,7 @@ async function routeAlert(opts) {
     deferFilingHours,
     subjectLabel,
     workerFixable,
+    testId,
   } = opts || {};
 
   if (!conditionKey) throw new Error('routeAlert requires a stable conditionKey');
@@ -1079,7 +1100,7 @@ async function routeAlert(opts) {
   // call within cooldownHours hits the ledger-cooldown short-circuit above
   // instead of re-querying Linear every time.
   if (effectiveDisposition === 'auto') {
-    const linearDup = await findLinearDuplicate(conditionKey, deferAuto ? { title } : {});
+    const linearDup = await findLinearDuplicate(conditionKey, { ...(deferAuto ? { title } : {}), testId: testIdForDedupe(testId, dispatchAtFiling) });
     if (linearDup.matched) {
       console.log(`[alert-router] conditionKey ${conditionKey} already tracked as ${linearDup.identifier} — not double-filing`);
       // BRO-3030 ship-check catch (Bug 2): a promoted-from-digest call that
@@ -1133,7 +1154,7 @@ async function routeAlert(opts) {
   if (pageGated) result.requestedDisposition = disposition;
   let notifyOk = true;
   if (effectiveDisposition === 'auto') {
-    const dispatch = await dispatchCard({ title, description, hint, fields, severity, cardAction, priority, category, tags, conditionKey, verify, dispatchAtFiling, workerFixable });
+    const dispatch = await dispatchCard({ title, description, hint, fields, severity, cardAction, priority, category, tags, conditionKey, verify, dispatchAtFiling, workerFixable, testId });
     result.cardId = dispatch.cardId || null;
     // BRO-4054: the durable "dispatch requested" stamp. The Mac-side pass
     // selects candidates from Linear itself (a lost ledger push must not
@@ -1177,12 +1198,12 @@ async function routeAlert(opts) {
         // back to the plain line so visibility isn't worse than before this
         // fix. The ledger write below is skipped on notifyOk===false either
         // way, so the NEXT call retries escalation from the same state.
-        queueDigestLine({ title, description, severity, conditionKey, url, decision, info, decisionPrompt, model, fields });
+        queueDigestLine({ title, description, severity, conditionKey, url, decision, info, decisionPrompt, model, fields, testId });
       }
     }
   } else if (effectiveDisposition === 'digest') {
     if (digestDecision.action === 'normal') {
-      queueDigestLine({ title, description, severity, conditionKey, url, decision, info, decisionPrompt, model, fields });
+      queueDigestLine({ title, description, severity, conditionKey, url, decision, info, decisionPrompt, model, fields, testId });
       result.lastSurfacedAt = now;
     } else if (digestDecision.action === 'resurface') {
       // Carry the caller's OWN description through (BRO-3030 P0 follow-up).
@@ -1445,6 +1466,7 @@ function readDispatchAttempts({ days = 7 } = {}) {
 }
 
 module.exports = {
+  testIdForDedupe,
   routeAlert,
   carriedRedFirstFields,
   alertIdempotencyKey,
