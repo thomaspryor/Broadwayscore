@@ -19477,13 +19477,13 @@
     "roundup-gap:all": {
       "status": "open",
       "disposition": "auto",
-      "title": "Roundup gaps: 3 listed review(s) not captured across 2 show(s)",
+      "title": "Roundup gaps: 4 listed review(s) not captured across 2 show(s)",
       "firstSeen": "2026-10-16T17:15:04.341Z",
       "incidentOpenedAt": "2026-10-16T17:15:04.341Z",
-      "lastSeen": "2026-11-08T15:50:05.714Z",
-      "lastNotifiedAt": "2026-11-08T04:04:59.592Z",
+      "lastSeen": "2026-11-08T17:12:00.408Z",
+      "lastNotifiedAt": "2026-11-08T17:12:00.408Z",
       "lastSurfacedAt": null,
-      "notifyCount": 41,
+      "notifyCount": 42,
       "cardId": null,
       "linearIdentifier": "BRO-5500",
       "rollupMembers": [
@@ -19542,8 +19542,7 @@
         "king-lear-off-broadway-2026",
         "the-unbelievers-off-broadway-2026",
         "speculations-off-west-end-2026"
-      ],
-      "silentRefires": 8
+      ]
     },
     "land:land/bro-5478-land-hold-doc": {
       "status": "resolved",
@@ -29015,7 +29014,7 @@
       "resolveReason": "absent"
     },
     "review-gap:opening-window:the-morbs-off-broadway-2026": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Review gap — \"The Morbs\" missing 1 cited review(s)",
       "firstSeen": "2026-10-27T01:23:57.427Z",
@@ -29026,7 +29025,9 @@
       "notifyCount": 4,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 2
+      "silentRefires": 2,
+      "resolvedAt": "2026-11-08T17:12:00.340Z",
+      "resolveReason": "review-gap: no uncollected cited reviews on the latest audit, only SERP-census gaps, or show id retired"
     },
     "opening-night-placeholder-synopsis-the-greatest-story-ever-off-broadway-2026": {
       "status": "resolved",
@@ -38354,13 +38355,13 @@
       "title": "Review gap — \"Othello (Bedlam)\" missing 2 cited review(s)",
       "firstSeen": "2026-11-07T15:26:56.754Z",
       "incidentOpenedAt": "2026-11-07T15:26:56.754Z",
-      "lastSeen": "2026-11-08T15:50:05.643Z",
+      "lastSeen": "2026-11-08T17:12:00.365Z",
       "lastNotifiedAt": "2026-11-08T13:30:30.696Z",
       "lastSurfacedAt": "2026-11-08T13:30:30.696Z",
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "land:land/bro-7081-discovery": {
       "status": "resolved",
