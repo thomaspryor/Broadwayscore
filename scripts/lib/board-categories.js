@@ -40,7 +40,7 @@ const CATEGORIES = [
   { key: 'dated-past-failed', label: 'Date passed, its check failed', handlers: [] }, // the recheck only reports a failure
   { key: 'dated-past', label: 'Date passed, waiting for its check', handlers: ['autonomous-acceptance-recheck'] },
   { key: 'parked-real-block', label: 'Needs a password, money or your devices', handlers: [] },
-  { key: 'parked-automatic', label: 'Automatic alert or estimate', handlers: ['sweep-resolved-alert-cards'] },
+  { key: 'parked-automatic', label: 'Automatic alert or estimate', handlers: ['sweep-resolved-alert-cards', 'sweep-recovered-alert-cards'] },
   { key: 'parked-owner-wording', label: 'Says it needs you, but asks nothing', handlers: ['owner-hold-sweep'] },
   { key: 'parked-no-reason', label: 'Parked with no reason written', handlers: ['board-hygiene-sweep'] },
   { key: 'parked-prose-wait', label: 'Waits on a time written in words, so never restarts', handlers: ['board-hygiene-sweep'] },
