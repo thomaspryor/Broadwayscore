@@ -40,6 +40,7 @@ const { RECHECK_AFTER_RE, parseRecheckAfter, parseRecheckAfterFromCard } = requi
 // are a TRUNCATED PREVIEW" instead of silently judging a card on 1800 chars
 // of it — see needsOverflowHydration below.
 const { cardHasOverflow } = require('./overflow-marker.js');
+const { envCauseOf, plainEnvCause } = require('./check-env-cause.js');
 const { isFilerRefreshComment } = require('./filer-refresh-marker.js');
 
 /**
@@ -413,7 +414,62 @@ function describeResult(r) {
   if (r.skip) return `${r.name}: skipped, ${r.skip}`;
   if (r.status === 'pass') return `${r.name}: still works`;
   if (r.status === 'fail') return `${r.name}: its own check does not pass any more`;
+  if (r.envCause) return `${r.name}: could not be checked, ${plainEnvCause(r.envCause)}`;
   return `${r.name}: no way to check this automatically`;
+}
+
+// ── Honest verdicts (BRO-7138) ──────────────────────────────────────────────
+//
+// runVerify now returns 'unverifiable' + envCause when a check fails on
+// something the check machine withholds by design (check-env-cause.js).
+// Ledger rows written before that say 'fail'. recheckVerdict is the ONE
+// reader every consumer of the ledger uses, so old and new rows count the
+// same way. `tsxTests` (autonomous-checks.js readTsxRunTests) lets an old
+// plain-node run of a tsx-manifest test count as the wrong runner.
+function recheckVerdict(row, { tsxTests = null } = {}) {
+  if (!row || !row.status) return { status: row ? row.status : null, envCause: null };
+  if (row.envCause) return { status: 'unverifiable', envCause: row.envCause };
+  if (row.status !== 'fail') return { status: row.status, envCause: null };
+  let argv = null;
+  try { argv = row.verifyCmd ? require('./autonomous-checks.js').tokenizeCheckCommand(String(row.verifyCmd)) : null; } catch { argv = null; }
+  const cause = envCauseOf(row.detail || row.note, { argv, tsxTests });
+  return cause ? { status: 'unverifiable', envCause: cause.key } : { status: 'fail', envCause: null };
+}
+
+/**
+ * "Done claims that held": among Done claims the nightly recheck could
+ * actually test in the window, the share whose own check still passes.
+ * Latest verdict per card; skipped rows and could-not-run rows are left out
+ * of the share (they are counted, not hidden). share is null when nothing
+ * was testable, never NaN.
+ */
+function heldShare(entries, { now = Date.now(), days = 30, tsxTests = null } = {}) {
+  const since = now - days * 86400000;
+  const latest = new Map();
+  for (const e of entries || []) {
+    if (!e || e.event !== 'recheck' || !e.cardId || !e.status || e.skip) continue;
+    const t = Date.parse(e.ts);
+    if (!Number.isFinite(t) || t < since || t > now) continue;
+    const prev = latest.get(e.cardId);
+    if (!prev || Date.parse(prev.ts) <= t) latest.set(e.cardId, e);
+  }
+  const c = { cards: latest.size, pass: 0, fail: 0, couldNotRun: 0, unverifiable: 0 };
+  for (const row of latest.values()) {
+    const v = recheckVerdict(row, { tsxTests });
+    if (v.status === 'pass') c.pass++;
+    else if (v.status === 'fail') c.fail++;
+    else if (v.envCause) c.couldNotRun++;
+    else c.unverifiable++;
+  }
+  const tested = c.pass + c.fail;
+  return { ...c, days, share: tested ? c.pass / tested : null };
+}
+
+/** Plain line for the digest's internal section and the health row. */
+function heldShareLine(h30, h7) {
+  const pct = (h) => (h.share == null ? 'nothing testable' : `${Math.round(h.share * 100)}% (${h.pass} of ${h.pass + h.fail})`);
+  return `Done claims that held: ${pct(h30)} over 30 days, ${pct(h7)} over 7 days`
+    + `; ${h30.couldNotRun} more could not be checked on the recheck machine.`;
 }
 
 // ── Open-backlog acceptance sweep (BRO-3551) ────────────────────────────────
@@ -598,6 +654,9 @@ module.exports = {
   summarize,
   shouldExitShadow,
   describeResult,
+  recheckVerdict,
+  heldShare,
+  heldShareLine,
   OPEN_BACKLOG_SWEEP_PRIORITIES,
   OPEN_BACKLOG_SWEEP_STATE_TYPES,
   selectOpenBacklogSweepCandidates,
