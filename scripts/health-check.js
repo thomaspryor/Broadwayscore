@@ -346,8 +346,11 @@ const AUTO_FIX_PLAYBOOK = [
 
   // Quality — needs investigation
   { match: /^Quality: standingCoverage drift$/, urgency: 'this-week',
-    ownerText: "Some critic outlets may need to be added to or removed from the list of outlets that review every Broadway opening, based on what they actually cover. Nothing is needed from you.",
-    workerInstruction: "Check the standingCoverage drift and update outlet-registry.json." },
+    ownerText: "Some critic outlets may need to be added to or removed from the list of outlets that review every opening in a market, based on what they actually cover. Nothing is needed from you.",
+    workerInstruction: "Run node scripts/audit-standing-coverage.js --market=<market from the warning>; apply the change with an outlet-registry-flag plan that sets market to that market." },
+  { match: /^Quality: expected critics missing$/, urgency: 'this-week',
+    ownerText: "A critic that reviews nearly every opening has no review on the site for a show that opened recently. It is either missing from the site or the critic skipped the show. Nothing is needed from you.",
+    workerInstruction: "Run node scripts/audit-expected-critics.js; ingest each missing review or ack it with evidence that the outlet did not review the show." },
   { match: /^Quality: outlet feed staleness$/, urgency: 'this-week',
     ownerText: "A critic outlet's news feed stopped updating while the outlet keeps publishing reviews, so new reviews from it may arrive late. Nothing is needed from you.",
     workerInstruction: "Open the outlet-listing poller feed-health snapshot (OUTLET_FEED_HEALTH_REL in scripts/lib/outlet-listing-helpers.js), take each outlet in stale[] or failing[], probe a replacement with `node scripts/probe-outlet-feeds.js --outlets <id>` and update its OUTLET_STRATEGY_CONFIG entry in scripts/outlet-listing-poller.js (BRO-6352; BRO-6340 fixed thewrap/observer this way)." },
@@ -2147,20 +2150,50 @@ function checkOutletHealth() {
       if (!core) {
         return { name: 'Quality: standingCoverage drift', status: 'pass', message: 'Skipped (core data not checked out)' };
       }
-      const { evaluateStandingCoverage } = require('./audit-standing-coverage');
-      const result = evaluateStandingCoverage(core.shows, core.reviews, core.outlets, Date.now());
-      const drifted = result.promote.length + result.demote.length;
+      // Per market (BRO-7166): West End and Off-Broadway have their own standing sets.
+      const { evaluateStandingCoverage, STANDING_MARKETS } = require('./audit-standing-coverage');
+      const parts = [];
+      let drifted = 0;
+      for (const category of STANDING_MARKETS) {
+        const result = evaluateStandingCoverage(core.shows, core.reviews, core.outlets, Date.now(), { category });
+        drifted += result.promote.length + result.demote.length;
+        if (result.promote.length) parts.push(`${category} promote: ${result.promote.join(', ')}`);
+        if (result.demote.length) parts.push(`${category} demote: ${result.demote.join(', ')}`);
+      }
       if (drifted === 0) {
         return { name: 'Quality: standingCoverage drift', status: 'pass', message: 'No standingCoverage drift' };
       }
-      const parts = [];
-      if (result.promote.length) parts.push(`promote: ${result.promote.join(', ')}`);
-      if (result.demote.length) parts.push(`demote: ${result.demote.join(', ')}`);
       return {
         name: 'Quality: standingCoverage drift',
         status: 'warn',
         message: `${drifted} outlet(s) drifted from outlet-registry.json standingCoverage flags (${parts.join('; ')})`,
-        hint: 'Run `node scripts/audit-standing-coverage.js` and update outlet-registry.json standingCoverage flags.',
+        hint: 'Run `node scripts/audit-standing-coverage.js --market=<market>` and apply an outlet-registry-flag plan with that market.',
+      };
+    }),
+
+    // Usual critics with no review of a recent opening (BRO-7166). The ledger's
+    // one-email-per-cell alert let School Girls / NY Post sit unasked for six
+    // weeks; this row repeats every day until the cell is live or acked as not
+    // reviewed. Advisory (warn only).
+    runCheck('Quality: expected critics missing', () => {
+      const name = 'Quality: expected critics missing';
+      if (!core) return { name, status: 'pass', message: 'Skipped (core data not checked out)' };
+      const { findExpectedCriticGaps } = require('./lib/expected-critics');
+      const { loadAcks } = require('./lib/t1-scoreboard');
+      const gaps = findExpectedCriticGaps({ shows: core.shows, reviews: core.reviews, outlets: core.outlets, acks: loadAcks(), nowMs: Date.now() })
+        .filter((g) => g.status === 'missing');
+      if (gaps.length === 0) return { name, status: 'pass', message: 'Every usual critic has reviewed (or is acked) for openings 4-42 days old' };
+      const byShow = new Map();
+      for (const g of gaps) {
+        if (!byShow.has(g.showId)) byShow.set(g.showId, []);
+        byShow.get(g.showId).push(g.outletId);
+      }
+      const list = [...byShow].slice(0, 8).map(([id, o]) => `${id} (${o.join(', ')})`).join('; ');
+      return {
+        name,
+        status: 'warn',
+        message: `${gaps.length} usual-critic review(s) missing across ${byShow.size} opening(s): ${list}${byShow.size > 8 ? '; ...' : ''}`,
+        hint: 'Run `node scripts/audit-expected-critics.js`; ingest the review, or `--ack=show::outlet --note="<evidence>"` when the outlet did not review it.',
       };
     }),
 
@@ -6551,4 +6584,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { checkBoardDispatchFreshness, checkSync, reviewTextsSkipReason, evaluateOutletFeedHealth, checkScheduledFailureStreak, checkNeverRunWorkflowHealth, checkAPICredits, corpusAuditResults, generateApproveUrl, checkAuditFreshness, checkFreshness, freshnessValue, FRESHNESS_CHECKS, formatResultLine, buildExclusionSummaryHtml, providerSpendLedgerResult, hoursAgo, ghRunsQuery, sortRunsNewestFirst, firstRunCreatedAt, runCacheKey, RUN_CACHE_VERSION, diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, isGateWorkflowBroken, GATE_WORKFLOWS, summarizeRepeatFailures, effectiveUrgencyLevel, feedbackBacklogResults, obClosingBacklogResults, cloudMemoryDriftResults, tourAutomationResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, worktreeGcFreshnessResults, notionScheduleCouplingResults, cardVerifiabilityBacklogResults, coverageHolesResults, starBandDriftResults, earlyPublishDatesResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, isActionableResult, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkMainRedStreak, checkCiGreenRate, checkCiMidSetupCancels, jobHeadroomRow, checkSharedCheckoutShallow, computeCoreHealthResults, checkQuality, checkStuckPipelineItems, checkDataFreshnessGaps, dataFreshnessGapsResult, DATA_FRESHNESS_GAPS_CHECK, checkAutofixEffectiveness, checkAutofixCanary, checkAutofixThroughput, checkUntrackedPersistentRows, checkDigestInvariantFail, checkAlertRouterDeadman, checkCommercialModelDrift, checkCommercialPendingQueue, checkExemptCronLiveness, checkUncollectedStrands };
+module.exports = { checkBoardDispatchFreshness, checkSync, reviewTextsSkipReason, evaluateOutletFeedHealth, checkScheduledFailureStreak, checkNeverRunWorkflowHealth, checkAPICredits, corpusAuditResults, generateApproveUrl, checkAuditFreshness, checkFreshness, freshnessValue, FRESHNESS_CHECKS, formatResultLine, buildExclusionSummaryHtml, providerSpendLedgerResult, hoursAgo, ghRunsQuery, sortRunsNewestFirst, firstRunCreatedAt, runCacheKey, RUN_CACHE_VERSION, diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, isGateWorkflowBroken, GATE_WORKFLOWS, summarizeRepeatFailures, effectiveUrgencyLevel, feedbackBacklogResults, obClosingBacklogResults, cloudMemoryDriftResults, tourAutomationResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, worktreeGcFreshnessResults, notionScheduleCouplingResults, cardVerifiabilityBacklogResults, coverageHolesResults, starBandDriftResults, earlyPublishDatesResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, isActionableResult, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkMainRedStreak, checkCiGreenRate, checkCiMidSetupCancels, jobHeadroomRow, checkSharedCheckoutShallow, computeCoreHealthResults, checkQuality, checkStuckPipelineItems, checkDataFreshnessGaps, dataFreshnessGapsResult, DATA_FRESHNESS_GAPS_CHECK, checkAutofixEffectiveness, checkAutofixCanary, checkAutofixThroughput, checkUntrackedPersistentRows, checkDigestInvariantFail, checkAlertRouterDeadman, checkCommercialModelDrift, checkCommercialPendingQueue, checkExemptCronLiveness, checkUncollectedStrands, checkOutletHealth };

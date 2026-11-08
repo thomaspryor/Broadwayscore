@@ -35,9 +35,12 @@ function optionalJobs(file) {
 const OPTED_IN = {
   'gather-reviews.yml': ['gather-reviews'],
   'opening-night-poller.yml': ['poll'],
+  // The lane's night job: Playwright is a last-resort fetcher and Google News unwrap aid there too; the lane runs
+  // without a browser (Wanted 2026-11-08 pre-flight review).
+  'opening-night-lane-live.yml': ['night'],
 };
 
-test('only the gather-reviews and poller poll jobs pass optional: true to Setup Playwright', () => {
+test('only the gather-reviews, poller poll and lane night jobs pass optional: true to Setup Playwright', () => {
   for (const [f, jobs] of Object.entries(OPTED_IN)) {
     assert.deepEqual(optionalJobs(`.github/workflows/${f}`), jobs, f);
   }

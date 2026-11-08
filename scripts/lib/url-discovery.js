@@ -1812,6 +1812,19 @@ function validateUrlDomain(url, outletId) {
 }
 
 /**
+ * BRO-7162 F14: is any SERP provider configured? serpQuery's chain starts with ScrapingDog, but the old gate
+ * looked only at ScrapingBee/Bright Data, so a ScrapingDog-only environment was refused before the chain ran.
+ * Callers use this instead of testing SCRAPINGBEE_API_KEY / BRIGHTDATA_TOKEN themselves.
+ */
+function hasSerpProvider(opts = {}) {
+  const sb = opts.scrapingBeeKey ?? process.env.SCRAPINGBEE_API_KEY;
+  const bd = opts.brightDataKey ?? process.env.BRIGHTDATA_TOKEN;
+  const sdKey = opts.scrapingdogKey ?? process.env.SCRAPINGDOG_API_KEY;
+  const sdOn = opts.useScrapingdog ?? (process.env.SCRAPER_USE_SCRAPINGDOG !== '0');
+  return !!(sb || bd || (sdKey && sdOn));
+}
+
+/**
  * General-purpose Google SERP query.
  * Provider chain: Bright Data (cheap) → ScrapingBee (25 credits/query fallback).
  * With preferSpeed=true: ScrapingBee first → Bright Data fallback.
@@ -1850,8 +1863,8 @@ async function serpQuery(query, options = {}) {
   // read past page 1, where niche outlets actually rank (task #872).
   const page = Number.isInteger(options.page) && options.page > 0 ? options.page : 0;
 
-  if (!sbKey && !bdKey) {
-    log('    ⚠ No SERP API keys available (SCRAPINGBEE_API_KEY / BRIGHTDATA_TOKEN)');
+  if (!hasSerpProvider({ scrapingBeeKey: sbKey, brightDataKey: bdKey })) {
+    log('    ⚠ No SERP API keys available (SCRAPINGBEE_API_KEY / BRIGHTDATA_TOKEN / SCRAPINGDOG_API_KEY)');
     return null;
   }
 
@@ -2079,6 +2092,7 @@ async function serpImagesQuery(query, options = {}) {
 }
 
 module.exports = {
+  hasSerpProvider,
   _serpWithChainForTests: _serpWithChain,
   OUTLET_DOMAINS,
   REGISTRY_DOMAIN_ALIASES,

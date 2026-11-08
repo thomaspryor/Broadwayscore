@@ -27,9 +27,9 @@ const { createOrMergeReviewFile } = require('./lib/review-file-writer');
 const { prefetchDiscoveredArticle, applyPrefetch } = require('./lib/discovery-prefetch');
 const { isUrlYearOutsideWindow } = require('./lib/content-filters');
 const { isSerpUrlWrongProductionForOpeningNight } = require('./lib/opening-night-discovery');
-const { OUTLET_DOMAINS: _OUTLET_DOMAINS, REGISTRY_DOMAIN_ALIASES: _REGISTRY_DOMAIN_ALIASES, serpQuery, serpNewsQuery } = require('./lib/url-discovery');
+const { OUTLET_DOMAINS: _OUTLET_DOMAINS, REGISTRY_DOMAIN_ALIASES: _REGISTRY_DOMAIN_ALIASES, serpQuery, serpNewsQuery, hasSerpProvider } = require('./lib/url-discovery');
 const { isLondonMarket } = require('./lib/venue-classification');
-const { getLondonSupplementalOutlets, reviewSearchKeyword } = require('./lib/opening-night-discovery-policy');
+const { getLondonSupplementalOutlets, reviewSearchKeyword, strategyOneCap, planStrategyOneTargets } = require('./lib/opening-night-discovery-policy');
 const { isSyndicationHost, makeRegisteredOutletPredicate, resolveSyndicatedHit } = require('./lib/syndication-canonical');
 const { resolveIntEnv } = require('./lib/resolve-int-env');
 
@@ -276,9 +276,35 @@ function isReviewUrl(url, title) {
 const { serpResultMentionsShow } = require('./lib/serp-show-match');
 const { passesProductionMatch } = require('./lib/production-match-gate');
 
+/**
+ * BRO-7162 F01: URL-first dedupe + byline prefetch. Returns {skip:true} for a duplicate article/named slot,
+ * otherwise {pre} (the prefetch, reused for the write). An unknown-critic slot holding a different URL is
+ * logged and queued in data/audit/discovery-slot-collisions.jsonl instead of silently dropped.
+ */
+async function prefetchWithSlotGate({ showId, showDir, url, criticName, canonicalOutletId }) {
+  const dedupe = require('./lib/discovery-slot-dedupe');
+  const norm = { normalizeOutlet, normalizeCritic };
+  const input = { url, canonicalOutletId, criticName };
+  const first = dedupe.decideBeforePrefetch(showDir, input, norm);
+  if (first.action === 'skip') return { skip: true, reason: first.reason };
+  const pre = await prefetchDiscoveredArticle(url, { criticName, outletId: canonicalOutletId, showId });
+  if (first.action === 'proceed') return { skip: false, pre };
+  const second = dedupe.decideAfterPrefetch(showDir, input, pre && pre.criticName, norm, first.slotFile);
+  if (second.action === 'skip') return { skip: true, reason: second.reason };
+  if (second.action === 'unresolved-collision') {
+    console.log(`  [QUEUED] ${url}: byline unresolved and ${second.slotFile} holds a different review; recorded for review, not merged`);
+    try {
+      const f = path.join(__dirname, '..', 'data', 'audit', 'discovery-slot-collisions.jsonl');
+      fs.appendFileSync(f, JSON.stringify({ at: new Date().toISOString(), showId, outletId: canonicalOutletId, url, slotFile: second.slotFile }) + '\n');
+    } catch { /* telemetry only */ }
+    return { skip: true, reason: 'unresolved-collision', queued: true };
+  }
+  return { skip: false, pre };
+}
+
 async function main() {
-  if (!SCRAPINGBEE_KEY && !BRIGHTDATA_TOKEN) {
-    console.error('Missing SCRAPINGBEE_API_KEY and BRIGHTDATA_TOKEN — need at least one');
+  if (!hasSerpProvider()) {
+    console.error('Missing SERP provider keys (SCRAPINGBEE_API_KEY, BRIGHTDATA_TOKEN or SCRAPINGDOG_API_KEY) — need at least one');
     process.exit(1);
   }
 
@@ -341,6 +367,7 @@ async function main() {
   let searched = 0;
   let skippedDupe = 0;
   let skippedCovered = 0;
+  let strategyOneCalls = 0; // attempts, so searches that throw still count against the cap
 
   // === Strategy 1: Site-specific SERP for each outlet ===
   const TIER1_OUTLETS = isWestEnd ? TIER1_OUTLETS_WE : TIER1_OUTLETS_BW;
@@ -348,11 +375,21 @@ async function main() {
   const outletIds = [];
   if (TIERS.includes(1)) outletIds.push(...TIER1_OUTLETS);
   if (TIERS.includes(2)) outletIds.push(...TIER2_OUTLETS);
-  // The opening-night workflow passes --tiers=1,2. Fringe coverage also
-  // needs the poller's specialist sweep; it shares the existing SERP cap.
-  if (show.category === 'off-west-end') {
-    outletIds.push(...getLondonSupplementalOutlets(_reg, new Set(), show).map(o => o.id));
-  }
+  // The opening-night workflow passes --tiers=1,2. Fringe coverage also needs the poller's specialist
+  // sweep. BRO-7162 F07: Strategy 1 keeps calls for the news and broad queries (total cap unchanged),
+  // the list is one entry per domain with covered domains removed first, it rotates by 12h run index so
+  // every domain is reached over successive runs, and specialists sit inside the cap rather than behind
+  // a general list long enough to use the whole budget.
+  const specialistIds = show.category === 'off-west-end'
+    ? getLondonSupplementalOutlets(_reg, new Set(), show).map(o => o.id)
+    : [];
+  const uncovered = id => (outletCounts.get(OUTLET_DOMAINS[id]) || 0) < 2;
+  const plannedIds = planStrategyOneTargets(outletIds.filter(uncovered), specialistIds.filter(uncovered), id => OUTLET_DOMAINS[id], {
+    cap: strategyOneCap(SERP_CALL_BUDGET),
+    runIndex: Math.floor(Date.now() / (12 * 3600000)),
+  });
+  outletIds.length = 0;
+  outletIds.push(...plannedIds);
 
   // Deduplicate outlet domains (some IDs map to same domain)
   const searchedDomains = new Set();
@@ -373,13 +410,14 @@ async function main() {
     // Hard per-run SERP cap — applies to Strategy 1 too, so the budget actually
     // bounds total spend (ship-check: Codex + Claude) rather than only gating 2b
     // after Strategy 1 already overspent.
-    if (!underSerpBudget()) {
-      console.log(`  ⚠ SERP budget ${SERP_CALL_BUDGET} reached — stopping Strategy 1 outlet search (used ${_serpCallsUsed})`);
+    if (!underSerpBudget() || strategyOneCalls >= strategyOneCap(SERP_CALL_BUDGET)) {
+      console.log(`  ⚠ Strategy 1 stopped at ${searched} outlet searches (SERP budget ${SERP_CALL_BUDGET}, used ${_serpCallsUsed}); remaining budget kept for news + broad`);
       break;
     }
 
     const query = `site:${domain} "${showTitle}" ${reviewKeyword}${year ? ` ${year}` : ''}${dateFilter}`;
 
+    strategyOneCalls++;
     try {
       const results = await searchGoogle(query, 3);
       searched++;
@@ -445,42 +483,15 @@ async function main() {
           const filename = generateReviewFilename(discoveredOutletId, criticName);
           const filepath = path.join(showDir, filename);
 
-          // Don't overwrite existing files (scan all variants for canonical match)
-          if (fs.existsSync(filepath)) {
-            skippedDupe++;
-            continue;
-          }
-          if (fs.existsSync(showDir)) {
-            const criticSlug = normalizeCritic(criticName);
-            const existingFiles = fs.readdirSync(showDir);
-            const hasDupe = existingFiles.some(f => {
-              const m = f.match(/^(.+?)--(.+)\.json$/);
-              return m && normalizeOutlet(m[1]) === canonicalOutletId && m[2] === criticSlug;
-            });
-            if (hasDupe) {
-              skippedDupe++;
-              continue;
-            }
-            // URL-based dedup: skip if same URL already exists under a different filename
-            const normalizedUrl = url.toLowerCase().replace(/\/+$/, '');
-            const urlDupe = existingFiles.some(f => {
-              if (!f.endsWith('.json')) return false;
-              try {
-                const existing = JSON.parse(fs.readFileSync(path.join(showDir, f), 'utf8'));
-                return existing.url && existing.url.toLowerCase().replace(/\/+$/, '') === normalizedUrl;
-              } catch { return false; }
-            });
-            if (urlDupe) {
-              skippedDupe++;
-              continue;
-            }
-          }
-
+          // BRO-7162 F01: dedupe by article (URL), then by NAMED-critic slot; an unknown-critic slot never vetoes a
+          // distinct URL before its byline is fetched.
+          const _gate = await prefetchWithSlotGate({ showId, showDir, url, criticName, canonicalOutletId });
+          if (_gate.skip) { skippedDupe++; continue; }
+          const _pre = _gate.pre;
           // Route through createOrMergeReviewFile for Guard E (auto-flag
           // BWW Review-Roundup URLs) and URL-based outletId refinement
           // (resolveOutletFromUrl handles cases like metro.co.uk → metro-uk
           // that the local domainToOutletId fallback misses).
-          const _pre = await prefetchDiscoveredArticle(url, { criticName, outletId: canonicalOutletId, showId });
           const writeResult = createOrMergeReviewFile(showId, applyPrefetch({
             outletId: canonicalOutletId,
             outlet: getOutletDisplayName(canonicalOutletId) || result.title?.split(/[-–—|]/)[0]?.trim() || canonicalOutletId,
@@ -600,29 +611,11 @@ async function main() {
 
       if (!DRY_RUN) {
         const canonicalOutletId = normalizeOutlet(outletId);
-        const filename = generateReviewFilename(outletId, criticName);
-        const filepath = path.join(showDir, filename);
-
-        if (fs.existsSync(filepath)) {
-          skippedDupe++;
-          continue;
-        }
-        if (fs.existsSync(showDir)) {
-          const criticSlug = normalizeCritic(criticName);
-          const existingFiles = fs.readdirSync(showDir);
-          const hasDupe = existingFiles.some(f => {
-            const m = f.match(/^(.+?)--(.+)\.json$/);
-            return m && normalizeOutlet(m[1]) === canonicalOutletId && m[2] === criticSlug;
-          });
-          if (hasDupe) {
-            skippedDupe++;
-            continue;
-          }
-        }
-
+        const _gate = await prefetchWithSlotGate({ showId, showDir, url, criticName, canonicalOutletId });
+        if (_gate.skip) { skippedDupe++; continue; }
         // Route through createOrMergeReviewFile for Guard E (auto-flag
         // BWW Review-Roundup URLs) and URL-based outletId refinement.
-        const _pre = await prefetchDiscoveredArticle(url, { criticName, outletId: canonicalOutletId, showId });
+        const _pre = _gate.pre;
         const writeResult = createOrMergeReviewFile(showId, applyPrefetch({
           outletId: canonicalOutletId,
           outlet: getOutletDisplayName(canonicalOutletId) || canonicalOutletId,
@@ -726,19 +719,9 @@ async function main() {
         console.log(`         Outlet: ${outletId}, Critic: ${criticName}`);
         if (!DRY_RUN) {
           const canonicalOutletId = normalizeOutlet(outletId);
-          const filename = generateReviewFilename(outletId, criticName);
-          const filepath = path.join(showDir, filename);
-          if (fs.existsSync(filepath)) { skippedDupe++; continue; }
-          if (fs.existsSync(showDir)) {
-            const criticSlug = normalizeCritic(criticName);
-            const existingFiles = fs.readdirSync(showDir);
-            const hasDupe = existingFiles.some(f => {
-              const m = f.match(/^(.+?)--(.+)\.json$/);
-              return m && normalizeOutlet(m[1]) === canonicalOutletId && m[2] === criticSlug;
-            });
-            if (hasDupe) { skippedDupe++; continue; }
-          }
-          const _pre = await prefetchDiscoveredArticle(url, { criticName, outletId: canonicalOutletId, showId });
+          const _gate = await prefetchWithSlotGate({ showId, showDir, url, criticName, canonicalOutletId });
+          if (_gate.skip) { skippedDupe++; continue; }
+          const _pre = _gate.pre;
           const writeResult = createOrMergeReviewFile(showId, applyPrefetch({
             outletId: canonicalOutletId,
             outlet: getOutletDisplayName(canonicalOutletId) || canonicalOutletId,
