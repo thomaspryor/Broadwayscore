@@ -462,6 +462,21 @@ jobs:
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
         run: node scripts/audit-coverage-holes.js --recent-days=14 --alert --counts=data/audit/coverage-holes.json
 
+      # BRO-7131: class-A rows (fetch abandoned) never healed on their own. Retry recent tier 3+ ones whose URL names
+      # the show through ingest-urls.yml (max 5 shows a run, capped dispatch), then file a dispatch-at-filing card for
+      # a worker outside GitHub. Writes data/audit/abandoned-review-rescue.json (ids, file names, URLs; no text),
+      # committed by "Commit provider spend ledger". Advisory (CLAUDE.md rule 19).
+      - name: Rescue abandoned reviews on recent shows
+        if: always()
+        continue-on-error: true
+        timeout-minutes: 10
+        env:
+          GH_TOKEN: ${{ github.token }}
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+        run: node scripts/rescue-abandoned-reviews.js --apply --alert
+
       # BRO-4840: published scores vs the critic's own rating (daily, ~12s). Counts only go to the digest row.
       # Advisory first (CLAUDE.md rule 19): --strict makes the step red, continue-on-error keeps the job green until
       # the rebuilt reviews.json has been seen clean.
@@ -633,6 +648,8 @@ jobs:
           git add data/audit/provider-spend-snapshot.json 2>/dev/null || true
           # BRO-4861: counts-only coverage-holes snapshot written by the step above.
           git add data/audit/coverage-holes.json 2>/dev/null || true
+          # BRO-7131: abandoned-review rescue ledger (attempts per show/file).
+          git add data/audit/abandoned-review-rescue.json 2>/dev/null || true
           # BRO-4840: counts-only published-score audit written by the step above.
           git add data/audit/star-band-drift.json 2>/dev/null || true
           # BRO-5769: counts-only early-publish-date audit written by the step above.

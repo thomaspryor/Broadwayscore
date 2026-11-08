@@ -16,13 +16,16 @@
  *   2. decide()      retry it through ingest-urls.yml (which bypasses the abandonment gate) at most MAX_ATTEMPTS
  *                    times, RETRY_SPACING_DAYS apart; after that, escalate to a worker card (some sites only serve a
  *                    machine outside GitHub: make-html-handoff-plan.js), never drop it silently
- *   3. the ledger    data/audit/abandoned-review-rescue.json records attempts per URL (public data: show ids, file
+ *   3. the ledger    data/audit/abandoned-review-rescue.json records attempts per show/file (public data: show ids, file
  *                    names and URLs only, never review text)
  * Pure: no fs, no network. The runner and the test share these functions.
  */
 
 const RETRYABLE_BUCKETS = ['url_content_mismatch', 'scraper_timeout', 'scraper_garbage', 'bot_blocked', 'route_capped'];
 const MAX_ATTEMPTS = 2;
+// A block page or JS shell comes back the same from the same scraper chain: one retry, then a worker.
+const SINGLE_RETRY_BUCKETS = new Set(['url_content_mismatch', 'bot_blocked']);
+function maxAttemptsFor(bucket) { return SINGLE_RETRY_BUCKETS.has(bucket) ? 1 : MAX_ATTEMPTS; }
 const RETRY_SPACING_DAYS = 3;
 const MIN_TIER = 3; // tier 1-2 belong to audit-t1-silent-gaps.js, which already recovers and alerts
 
@@ -69,13 +72,14 @@ function candidate({ row, data, show, tier, countedOutlets }) {
 }
 
 /**
- * @param {object|undefined} entry ledger entry for this URL ({attempts, lastAttemptAt, escalatedAt})
+ * @param {object|undefined} entry ledger entry for this file ({attempts, lastAttemptAt, escalatedAt})
  * @param {number} now ms
+ * @param {string} [bucket] the row's failure bucket (block-page buckets get one retry)
  * @returns {'retry'|'wait'|'escalate'|'escalated'}
  */
-function decide(entry, now) {
+function decide(entry, now, bucket) {
   const attempts = (entry && entry.attempts) || 0;
-  if (attempts >= MAX_ATTEMPTS) return entry && entry.escalatedAt ? 'escalated' : 'escalate';
+  if (attempts >= maxAttemptsFor(bucket)) return entry && entry.escalatedAt ? 'escalated' : 'escalate';
   const last = Date.parse((entry && entry.lastAttemptAt) || '');
   if (Number.isFinite(last) && now - last < RETRY_SPACING_DAYS * 864e5) return 'wait';
   return 'retry';
@@ -87,4 +91,4 @@ function recordAttempt(ledger, key, meta, now) {
   return ledger[key];
 }
 
-module.exports = { RETRYABLE_BUCKETS, MAX_ATTEMPTS, RETRY_SPACING_DAYS, MIN_TIER, titleTokens, slugNamesShowReview, candidate, decide, recordAttempt };
+module.exports = { RETRYABLE_BUCKETS, MAX_ATTEMPTS, maxAttemptsFor, RETRY_SPACING_DAYS, MIN_TIER, titleTokens, slugNamesShowReview, candidate, decide, recordAttempt };
