@@ -452,6 +452,8 @@ async function main(argv = process.argv.slice(2), deps = {}) {
       // as the state-name resolve above. Gated on `target.type`, not the
       // literal state NAME, so a team rename of "Done" doesn't silently stop
       // gating (see linear-done-gate.js's header).
+      // BRO-7132: a root-cause advisory, repeated as the last output line.
+      let rootCauseNote = null;
       if (target && target.type === 'completed') {
         const bypassReason =
           args.force && typeof args.force === 'string' && args.force.length >= 10 ? args.force : null;
@@ -518,6 +520,7 @@ async function main(argv = process.argv.slice(2), deps = {}) {
             landedFiles: deps.landedFiles !== undefined ? deps.landedFiles : landedFilesIfFix(issue),
           });
           if (gate.warning) console.error(`⚠️  ${gate.warning}`);
+          if (gate.rootCauseSummary) rootCauseNote = { summary: gate.rootCauseSummary, missing: gate.rootCauseMissing || [] };
           if (gate.gated && !gate.allowed) {
             console.error(`\n❌ REFUSED (${gate.verdict}) — ${issue.identifier} not moved to ${target.name}\n`);
             console.error(gate.reason);
@@ -748,6 +751,7 @@ async function main(argv = process.argv.slice(2), deps = {}) {
         // — the part that makes the state move legal at all — actually
         // happened, or which issue it pointed at (fresh-eyes review finding).
         ...(duplicateTwin ? { duplicateOf: duplicateTwin } : {}),
+        ...(rootCauseNote ? { rootCauseMissing: rootCauseNote.missing } : {}),
       }, null, 2));
       // NOT __BOARD_CARD_ID__. That marker is the gate hooks' proof that a card
       // was FILED (notion-brain.js:669, consumed by notion-create-verify.sh),
@@ -760,6 +764,7 @@ async function main(argv = process.argv.slice(2), deps = {}) {
       // the write succeeded). Hooks grep this instead of state names.
       const reported = target ? require('./lib/linear-state-types').reportedMarker(issue.identifier, target.type) : '';
       if (reported) console.error(reported);
+      if (rootCauseNote) console.error(`⚠️  ${rootCauseNote.summary}`);
     } catch (err) {
       console.error(`\n❌ ${err.message}\n`);
       process.exit(2);

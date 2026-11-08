@@ -173,3 +173,88 @@ test('the Done path never fetches; a parentless (shallow-edge) commit is not gra
   assert.equal(rcc.cardDiff('BRO-77', { landingsText: landings, exec }), null, 'whole-tree diff skipped');
   assert.ok(calls.includes('fetch'), 'the sampler may fetch in a shallow clone');
 });
+
+// BRO-7132: closes written in the PREVENTION format (bsc-runner prompt, global
+// close rule) read as all-missing. The alias reads them; the bar does not drop.
+test('PREVENTION aliases CLASS-GUARD and its ; cousins: tail fills COUSINS', () => {
+  const p = rcc.parseRootCauseBlock(['- **PREVENTION:** scripts/lib/a.test.mjs fails on any stale stamp ; cousins: grepped scripts/lib/b.js, fixed it']);
+  assert.equal(p.fields['CLASS-GUARD'], 'scripts/lib/a.test.mjs fails on any stale stamp');
+  assert.equal(p.fields.COUSINS, 'grepped scripts/lib/b.js, fixed it');
+  // `**NAME**:` bold form reads too.
+  assert.equal(rcc.parseRootCauseBlock(['**ROOT-CAUSE**: the clone was shallow here']).fields['ROOT-CAUSE'], 'the clone was shallow here');
+  // A PREVENTION-only close still lacks ROOT-CAUSE and RED-THEN-GREEN.
+  const r = rcc.checkRootCauseClose({ title: 'Stale copy bug', texts: ['PREVENTION: scripts/lib/a.test.mjs ; cousins: looked in scripts/lib, none'] });
+  assert.deepEqual(r.missing, ['ROOT-CAUSE', 'RED-THEN-GREEN']);
+});
+
+test('a path named only in the cousins tail never counts as the guard', () => {
+  const texts = [
+    'ROOT-CAUSE: the clone was shallow so origin/main was missing',
+    'PREVENTION: a new fixture test for it ; cousins: patched scripts/setup-local-data.sh, nothing else',
+    'RED-THEN-GREEN: the test failed without the fix and passed with it',
+  ];
+  const r = rcc.checkRootCauseClose({ title: 'Stale copy bug', texts, landedFiles: ['scripts/setup-local-data.sh'] });
+  assert.equal(r.ok, false);
+  assert.deepEqual(r.missing, ['CLASS-GUARD']);
+  assert.match(r.notes.join(), /names no file path/);
+  // Same for an explicit CLASS-GUARD line carrying the tail.
+  const g = rcc.parseRootCauseBlock(['CLASS-GUARD: a unit test ; cousins: scripts/x.js']);
+  assert.equal(g.fields['CLASS-GUARD'], 'a unit test');
+  assert.equal(g.fields.COUSINS, 'scripts/x.js');
+});
+
+test('an explicit CLASS-GUARD or COUSINS line beats PREVENTION in either order', () => {
+  const explicit = 'CLASS-GUARD: scripts/lib/real.test.mjs catches the class';
+  const later = 'PREVENTION: the new guard (no path) ; cousins: looked around';
+  for (const texts of [[explicit, later], [later, explicit]]) {
+    const p = rcc.parseRootCauseBlock(texts);
+    assert.equal(p.fields['CLASS-GUARD'], 'scripts/lib/real.test.mjs catches the class');
+    assert.equal(p.fields.COUSINS, 'looked around');
+  }
+  const p = rcc.parseRootCauseBlock(['COUSINS: searched data/ and src/, two found and fixed', 'PREVENTION: scripts/a.js ; cousins: short']);
+  assert.equal(p.fields.COUSINS, 'searched data/ and src/, two found and fixed');
+  // A full block written in the PREVENTION format passes.
+  const full = rcc.checkRootCauseClose({ title: 'Fixture date bug', landedFiles: ['scripts/lib/fixture-dates.test.mjs'], texts: [
+    'ROOT-CAUSE: the fixture hardcoded a date that aged past the TTL',
+    'PREVENTION: scripts/lib/fixture-dates.test.mjs fails on absolute dates ; cousins: grepped tests/unit, fixed 2',
+    'RED-THEN-GREEN: failed with the fix reverted, passed with it',
+  ] });
+  assert.deepEqual([full.ok, full.kind], [true, 'root-cause']);
+});
+
+test('the one-line summary names what is missing and never reads as a refused close', () => {
+  const r = { applies: true, ok: false, missing: ['ROOT-CAUSE', 'RED-THEN-GREEN'], notes: [] };
+  for (const blocking of [false, true]) {
+    const s = rcc.rootCauseCloseSummary('BRO-1', r, blocking);
+    assert.match(s, /BRO-1 closed without ROOT-CAUSE, RED-THEN-GREEN/);
+    assert.equal(s.includes('\n'), false);
+    assert.doesNotMatch(s, /\bREFUSED\b|❌/); // verify-edits.sh _CLOSEOUT_REFUSED_RE
+  }
+  assert.equal(rcc.rootCauseCloseSummary('BRO-1', { applies: true, ok: true }, false), null);
+  assert.match(rcc.rootCauseCloseMessage('BRO-1', r, false), /PREVENTION: <path> ; cousins:/);
+});
+
+test('linear-brain update Done on a fix card repeats the advisory as the last output line', async () => {
+  const { spawnSync } = await import('node:child_process');
+  const { fileURLToPath } = await import('node:url');
+  const root = fileURLToPath(new URL('../..', import.meta.url));
+  const run = (comment) => spawnSync(process.execPath, ['-e', `
+    const { main } = require('./scripts/linear-brain.js');
+    main(['update', 'BRO-1', '--state', 'Done', '--comment', ${JSON.stringify(comment)}], {
+      getIssue: async () => ({ id: 'u', identifier: 'BRO-1', title: 'Opening night poller failed', description: '', state: { name: 'In Progress', type: 'started' }, comments: { nodes: [] }, relations: { nodes: [] } }),
+      getTeam: async () => ({ states: [{ id: 's-d', name: 'Done', type: 'completed' }, { id: 's-t', name: 'Todo', type: 'unstarted' }] }),
+      updateIssue: async () => { console.error('UPDATE_ISSUE_CALLED'); },
+      createComment: async () => { console.error('CREATE_COMMENT_CALLED'); },
+      verifyEvidence: () => ({ verified: true, reason: 'stub' }),
+      verifyCmdEvidence: () => ({ verified: true, reason: 'stub' }),
+      landedFiles: null,
+    });`], { cwd: root, encoding: 'utf8', timeout: 20000, env: { ...process.env, ROOT_CAUSE_CLOSE_GATE: 'advisory', LINEAR_DONE_GATE_DISABLED: '' } });
+  const bare = run('PR-EVIDENCE: merged deployed checked (https://github.com/o/r/commit/abc1234)\nPREVENTION: scripts/a.test.mjs ; cousins: none');
+  assert.match(bare.stderr, /UPDATE_ISSUE_CALLED/, bare.stderr);
+  const last = bare.stderr.trim().split('\n').pop();
+  assert.match(last, /ROOT-CAUSE CHECK: BRO-1 closed without ROOT-CAUSE, RED-THEN-GREEN/, bare.stderr);
+  assert.match(bare.stdout, /"rootCauseMissing"/);
+  const full = run(`PR-EVIDENCE: merged deployed checked (https://github.com/o/r/commit/abc1234)\n${FULL}`);
+  assert.match(full.stderr, /UPDATE_ISSUE_CALLED/, full.stderr);
+  assert.doesNotMatch(full.stderr, /ROOT-CAUSE CHECK/);
+});

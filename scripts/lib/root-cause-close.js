@@ -61,7 +61,11 @@ function buildShowTitleRegex(titles) {
 const PREFIX_RE = /^(?:\s*(?:P[0-4]|BSC Daily|Daily digest|Auto-?fix|\[[^\]]{1,40}\])\s*[:\-–]\s*)+/i;
 
 const FIELDS = ['ROOT-CAUSE', 'CLASS-GUARD', 'RED-THEN-GREEN', 'COUSINS'];
-const FIELD_RE = /^[ \t>*_-]*(ROOT-CAUSE|CLASS-GUARD|RED-THEN-GREEN|COUSINS|NO-ROOT-CAUSE)[ \t]*:[ \t]*(.*)$/gim;
+// `**NAME:**`, `**NAME**:` and `- NAME:` all read. PREVENTION is the older
+// close format (`PREVENTION: <guard> ; cousins: <where looked>`, BRO-4134) and
+// fills CLASS-GUARD / COUSINS only when no explicit line does (BRO-7132).
+const FIELD_RE = /^[ \t>*_-]*(ROOT-CAUSE|CLASS-GUARD|RED-THEN-GREEN|COUSINS|NO-ROOT-CAUSE|PREVENTION)(?:\*\*|__)?[ \t]*:(?:\*\*|__)?[ \t]*(.*)$/gim;
+const COUSINS_TAIL_RE = /\s*;\s*cousins\s*:\s*/i;
 const PATH_RE = /(?:^|[\s`'"(])((?:\.?[\w@-]+\/)+[\w.@-]+\.[a-z0-9]{1,5})\b/gi;
 
 /** PURE. Is this a fix card (a defect repaired), as opposed to new work? */
@@ -76,19 +80,30 @@ function isFixCard({ title } = {}, { showTitles } = {}) {
 /**
  * PURE. The newest value of each field across the texts (oldest first, the
  * close comment last). Returns { fields: {ROOT-CAUSE: '...', ...}, noRootCause }.
+ * A `; cousins: ...` tail is split off a CLASS-GUARD or PREVENTION value into
+ * COUSINS, so a path named only in the cousins text never counts as the guard.
+ * An explicit CLASS-GUARD / COUSINS line beats a PREVENTION line in any order.
  */
 function parseRootCauseBlock(texts) {
-  const fields = {};
+  const explicit = {};
+  const alias = {};
   let noRootCause = null;
   for (const t of [].concat(texts || [])) {
     for (const m of String(t || '').matchAll(FIELD_RE)) {
       const name = m[1].toUpperCase();
-      const val = m[2].trim();
-      if (name === 'NO-ROOT-CAUSE') noRootCause = val;
-      else fields[name] = val;
+      const val = m[2].replace(/[ \t]*(?:\*\*|__)[ \t]*$/, '').trim();
+      if (name === 'NO-ROOT-CAUSE') { noRootCause = val; continue; }
+      if (name === 'CLASS-GUARD' || name === 'PREVENTION') {
+        const [guard, ...rest] = val.split(COUSINS_TAIL_RE);
+        const into = name === 'PREVENTION' ? alias : explicit;
+        into['CLASS-GUARD'] = guard.trim();
+        if (rest.length) into.COUSINS = rest.join('; ').trim();
+        continue;
+      }
+      explicit[name] = val;
     }
   }
-  return { fields, noRootCause };
+  return { fields: { ...alias, ...explicit }, noRootCause };
 }
 
 /** PURE. Repo-relative file paths named in a CLASS-GUARD value. */
@@ -154,11 +169,24 @@ function rootCauseCloseMessage(identifier, result, blocking) {
     '    CLASS-GUARD: <path> (the test, lint rule, gate or type in this diff that catches the whole class)',
     '    RED-THEN-GREEN: the guard failed with the fix reverted and passed with it',
     '    COUSINS: where else you searched for the pattern, what you found and fixed',
+    '  (A `PREVENTION: <path> ; cousins: <...>` line counts as CLASS-GUARD + COUSINS.)',
     '  Or one line: NO-ROOT-CAUSE: <reason> (counts as a spot fix).',
     blocking
       ? `  Blocking since ${ROOT_CAUSE_CLOSE_BLOCKING_FROM}. Rollback: ROOT_CAUSE_CLOSE_GATE=advisory.`
       : `  Advisory now; blocking from ${ROOT_CAUSE_CLOSE_BLOCKING_FROM}.`,
   ].join('\n');
+}
+
+/**
+ * PURE. One line for the end of a close's output, where `| tail` sees it
+ * (BRO-7132: the multi-line message prints before the success lines and was
+ * missed). Never contains "REFUSED" or the cross mark: verify-edits.sh reads
+ * those anywhere in the output as a failed close.
+ */
+function rootCauseCloseSummary(identifier, result, blocking) {
+  if (!result || !result.applies || result.ok) return null;
+  return `ROOT-CAUSE CHECK: ${identifier || 'this card'} closed without ${result.missing.join(', ')}; `
+    + `post them in a comment now (${blocking ? 'blocking' : `advisory until ${ROOT_CAUSE_CLOSE_BLOCKING_FROM}`}).`;
 }
 
 /**
@@ -311,6 +339,7 @@ module.exports = {
   checkRootCauseClose,
   rootCauseCloseBlocking,
   rootCauseCloseMessage,
+  rootCauseCloseSummary,
   ownCommitsForCard,
   landedFilesForCard,
   cardDiff,
