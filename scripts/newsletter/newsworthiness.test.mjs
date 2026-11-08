@@ -432,7 +432,7 @@ test('WE catch-up opening is not described as "opens" (BRO-7126)', () => {
       });
       const c = candidates.find((x) => x.kind === 'we-opening');
       assert.ok(c.isCatchUp);
-      assert.match(c.headline, /which recently opened/);
+      assert.match(c.headline, /Late Show recently opened/);
       assert.doesNotMatch(c.headline, /\bopens\b/);
       const subject = buildSubjectFromCandidates(candidates).subject;
       const lede = JSON.stringify(buildLedeSentences(candidates));
@@ -449,4 +449,15 @@ test('in-week WE opening still says "opens" (BRO-7126)', () => {
     aggregateScore: () => ({ avg: 80 }),
   });
   assert.equal(candidates[0].headline, 'Now Show opens to strong reviews');
+});
+
+test('catch-up in a 3+ WE opening run is never folded as opening alongside this week (BRO-7126)', () => {
+  const mk = (id, isCatchUp) => ({ show: { id, slug: id, title: `Show ${id}`, category: 'west-end' }, isCatchUp });
+  const candidates = scoreCandidates({
+    edition: 'west-end',
+    weGoldOpenings: [mk('a', false), mk('b', false), mk('c', false), mk('late', true)],
+    aggregateScore: () => ({ avg: 80 }),
+  });
+  const lede = JSON.stringify(buildLedeSentences(candidates, 4));
+  assert.doesNotMatch(lede, /Show late[^"]*\b(opens|alongside)\b/, lede);
 });

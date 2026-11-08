@@ -227,13 +227,14 @@ export function scoreCandidates(input) {
     // BRO-7126: a grace-window catch-up (openingDate outside this week, scored
     // late) did NOT open this week — never word it as "opens".
     const catchUp = !!item.isCatchUp;
-    const leadIn = catchUp ? `${s.title}${venueSuffix}, which recently opened${loc},` : `${s.title}${venueSuffix} opens${loc}`;
-    const verdictVerb = catchUp ? 'draws' : 'to';
     const headline = verdict
-      ? `${leadIn} ${verdictVerb} ${verdict}`
-      : leadIn.replace(/,$/, '');
+      ? `${s.title}${venueSuffix} ${catchUp ? 'recently opened' : 'opens'}${loc} to ${verdict}`
+      : `${s.title}${venueSuffix} ${catchUp ? 'recently opened' : 'opens'}${loc}`;
+    // Catch-ups carry no verdictTier: that keeps them out of the 3+ opening
+    // fold (which would imply they opened alongside this week's shows) and
+    // out of the verdict-variant swap.
     out.push({ kind: 'we-opening', weight: weWeight, headline, show: s, slug: s.slug, isCatchUp: catchUp,
-      verdictTier: tier, verdictPrefix: `${leadIn} ${verdictVerb} `,
+      ...(catchUp ? {} : { verdictTier: tier, verdictPrefix: `${s.title}${venueSuffix} opens${loc} to ` }),
       openingVenue: isWeEdition ? (isWestEndVenue ? 'the West End' : 'Off West End') : 'London' });
   }
 
