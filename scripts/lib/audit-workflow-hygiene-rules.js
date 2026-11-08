@@ -1523,7 +1523,73 @@ function findEolNodeVersions(raw) {
   return hits;
 }
 
+/**
+ * Sparse re-checkout over a populated tree (gitleaks.yml, 2026-10-31..11-08).
+ * actions/checkout in cone mode runs `git sparse-checkout set <entries>`; a
+ * FILE entry is accepted on a fresh checkout but refused on a tree an earlier
+ * checkout step of the same job already populated ("'x.js' is not a
+ * directory", exit 128). Flags a checkout step whose `sparse-checkout:` lists
+ * a file-looking entry into a `path:` (default '.') an earlier checkout step
+ * of the same job filled, unless `sparse-checkout-cone-mode: false`, an
+ * `if:` that runs it only when the tree is missing (`hashFiles(...) == ''`),
+ * or a `# hygiene-sparse-file-ok: <reason>` marker. Returns
+ * [{ job, lineNum, step, entry }]. `checkoutSteps` counts every checkout step
+ * seen, so a sweep can assert the parser found any (indent drift would
+ * otherwise read as "no offenders").
+ */
+const SPARSE_FILE_OK_RE = /hygiene-sparse-file-ok:/;
+function sparseCheckoutStepInfo(stepLines) {
+  const text = stepLines.join('\n');
+  if (!/^\s*(?:-\s+)?uses\s*:\s*['"]?actions\/checkout@/m.test(text)) return null;
+  const pathM = /^\s+path\s*:\s*['"]?([^'"#\s]+)/m.exec(text);
+  const coneOff = /^\s+sparse-checkout-cone-mode\s*:\s*['"]?false\b/m.test(text);
+  const ifM = /^\s*(?:-\s+)?if\s*:\s*(.+)$/m.exec(text);
+  const missingGuard = !!ifM && /hashFiles\([^)]*\)\s*==\s*''/.test(ifM[1]);
+  const entries = [];
+  for (let i = 0; i < stepLines.length; i++) {
+    const m = /^(\s+)sparse-checkout\s*:\s*(.*)$/.exec(stepLines[i]);
+    if (!m) continue;
+    const inline = m[2].replace(/#.*$/, '').trim();
+    if (inline && inline !== '|' && inline !== '>') entries.push(inline);
+    else {
+      for (let j = i + 1; j < stepLines.length; j++) {
+        const l = stepLines[j];
+        if (l.trim() === '') continue;
+        if (indentOf(l) <= m[1].length) break;
+        if (!l.trimStart().startsWith('#')) entries.push(l.trim());
+      }
+    }
+  }
+  const files = entries.filter((e) => !e.endsWith('/') && /[^/.][^/]*\.[A-Za-z0-9]{1,8}$/.test(e.split('/').pop()));
+  return { path: (pathM ? pathM[1] : '.').replace(/\/+$/, '') || '.', coneOff, missingGuard, files, exempt: SPARSE_FILE_OK_RE.test(text) };
+}
+
+function findSparseFileRecheckouts(raw) {
+  const hits = [];
+  let checkoutSteps = 0;
+  for (const [job, jobLines] of Object.entries(readWorkflowJobBlocks(raw.replace(/\r\n?/g, '\n')))) {
+    const jobStart = raw.replace(/\r\n?/g, '\n').split('\n').indexOf(jobLines[0]);
+    const filled = new Set();
+    for (const step of splitWorkflowSteps(jobLines.join('\n'))) {
+      const info = sparseCheckoutStepInfo(step.lines);
+      if (!info) continue;
+      checkoutSteps++;
+      // A marker may also sit in the comment block just above the step.
+      for (let k = step.startLine - 1; k >= 0 && jobLines[k].trimStart().startsWith('#'); k--) {
+        if (SPARSE_FILE_OK_RE.test(jobLines[k])) info.exempt = true;
+      }
+      if (filled.has(info.path) && info.files.length && !info.coneOff && !info.missingGuard && !info.exempt) {
+        hits.push({ job, lineNum: jobStart + step.startLine + 1, step: step.name, entry: info.files[0] });
+      }
+      filled.add(info.path);
+    }
+  }
+  hits.checkoutSteps = checkoutSteps;
+  return hits;
+}
+
 module.exports = {
+  findSparseFileRecheckouts,
   findMissingTopLevelPermissions,
   findUnpinnedActionUses,
   findEolNodeVersions,

@@ -13,7 +13,7 @@
  * Each cause below is anchored on a string only the environment produces,
  * never on a generic "Cannot find module" (a genuinely deleted module is a
  * real regression and must stay a fail). Measured on the real ledger rows in
- * scripts/lib/fixtures/recheck-real-fails-2026-11.jsonl (check-env-cause.test.mjs).
+ * tests/fixtures/recheck-real-fails-2026-11.jsonl (check-env-cause.test.mjs).
  *
  * Builtins only: required by the check runner, which stays dependency-free.
  */

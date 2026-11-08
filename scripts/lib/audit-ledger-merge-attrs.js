@@ -247,7 +247,7 @@ const EXEMPT_LEDGERS = [
       'fixture edit.',
   },
   {
-    file: 'scripts/lib/fixtures/recheck-real-fails-2026-11.jsonl',
+    file: 'tests/fixtures/recheck-real-fails-2026-11.jsonl',
     reason:
       '2026-11-08 (BRO-7138): static snapshot of real recheck-ledger fail rows ' +
       'read by check-env-cause / recheck-route tests. Hand-captured once, never ' +

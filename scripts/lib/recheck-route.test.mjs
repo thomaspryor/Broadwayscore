@@ -11,7 +11,7 @@ const require = createRequire(import.meta.url);
 const here = path.dirname(fileURLToPath(import.meta.url));
 const { routeMode, buildRouteBatch, fileRouteBatch, MAX_ROUTED, DEFAULT_ROUTE_FROM } = require('./recheck-route.js');
 
-const realRows = fs.readFileSync(path.join(here, 'fixtures', 'recheck-real-fails-2026-11.jsonl'), 'utf8')
+const realRows = fs.readFileSync(path.join(here, '..', '..', 'tests', 'fixtures', 'recheck-real-fails-2026-11.jsonl'), 'utf8')
   .trim().split('\n').map((l) => JSON.parse(l));
 const TSX = new Set(['tests/unit/gate-logic.test.mjs', 'tests/unit/seo-show-no-venue.test.mjs', 'tests/unit/uk-regional-placement.test.mjs']);
 const NOW = Date.parse('2026-11-16T08:00:00Z');

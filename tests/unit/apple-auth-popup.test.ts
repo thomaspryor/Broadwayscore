@@ -39,11 +39,14 @@ test('a prepared Apple sign-in opens the popup synchronously, inside the tap', a
 });
 
 test('each attempt gets a fresh nonce, and a retry is prepared after the first settles', async () => {
-  const { signInWithAppleSDK } = await import('../../src/lib/apple-auth');
-  await new Promise((res) => setTimeout(res, 20)); // let the re-prepare finish
+  const { prepareAppleSignIn, signInWithAppleSDK } = await import('../../src/lib/apple-auth');
+  // Wait for the re-prepare itself, not a fixed sleep: it hashes the nonce with
+  // crypto.subtle (thread pool), which took over 20ms on a loaded CI runner
+  // (test.yml run 42531505934). prepareAppleSignIn() returns the in-flight promise.
+  await prepareAppleSignIn();
   calls.length = 0;
   const first = await signInWithAppleSDK();
-  await new Promise((res) => setTimeout(res, 20));
+  await prepareAppleSignIn();
   const p = signInWithAppleSDK();
   assert.deepEqual(calls, ['signIn', 'signIn'], 'the retry also opens without waiting');
   const second = await p;
