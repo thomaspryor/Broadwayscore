@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7131c",
   "planId": "6e69d427-20d2-4332-a889-59188b87e0fc",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-08T19:27:54.563Z",
   "submitter": {
     "name": null,
@@ -50,5 +50,29 @@
         "description": "nantucket-sleigh-ride-off-broadway-2019/front-row-center--sarah-downs.json: isNonReview"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-08T19:36:31.572Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "tosca-english-national-opera-west-end-2026/cherylmarkosky--cherylmarkosky.json isNonReviewReason: null -> \"manual (not a review): blog teaser linking to the same critic's full review counted as london-theatre--cheryl-markosky.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "tosca-english-national-opera-west-end-2026/cherylmarkosky--cherylmarkosky.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "nantucket-sleigh-ride-off-broadway-2019/front-row-center--sarah-downs.json isNonReviewReason: null -> \"manual (not a review): teaser linking to the same critic's full review counted as nytg--sarah-downs.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "nantucket-sleigh-ride-off-broadway-2019/front-row-center--sarah-downs.json isNonReview: null -> true"
+    }
+  ],
+  "executedIn": "ci"
 }
