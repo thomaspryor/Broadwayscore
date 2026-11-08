@@ -48,6 +48,7 @@ const {
   NO_FILL_OUTLETS,
   isPlaceholderName,
   sameCritic,
+  isMastheadLabel,
   REJECTED_FILES,
 } = require('./lib/printed-byline-conflict');
 
@@ -93,14 +94,11 @@ function outletOf(rec) {
   return normalizeOutlet(rec.r.outletId || rec.r.outlet || rec.file.split('--')[0]);
 }
 
-// Company and outlet names that credit lines sometimes carry ("Condé Nast", "Financial Times"): never a critic.
-const COMPANY_NAME_RE = /\b(?:times|cond[eé] nast|inc|llc|ltd|limited|media|network|group|magazine|news|post|journal|today|broadcasting|publishing|tube|staff|desk|team)\b/i;
-
 function buildKnown(recs, registryIndex) {
   const counts = new Map(); // outlet -> name -> { files, shows:Set }
   for (const rec of recs) {
     const name = rec.r.criticName;
-    if (isPlaceholderName(name) || !isPlausiblePersonName(name) || COMPANY_NAME_RE.test(name)) continue;
+    if (isPlaceholderName(name) || !isPlausiblePersonName(name) || isMastheadLabel(name)) continue;
     // Only clean, unflagged, unlocked-by-nothing files count as evidence a critic writes here (BRO-6947):
     // misattributed, duplicate or roundup files would otherwise make a wrong name "known".
     if (rec.r.wrongProduction || rec.r.wrongShow || rec.r.isRoundupArticle || rec.r.duplicateOf || rec.r.fullTextWrongAuthor || rec.r._authorMismatch || rec.r.misattributedFullText) continue;

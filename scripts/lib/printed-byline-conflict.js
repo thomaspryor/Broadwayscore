@@ -359,6 +359,17 @@ const REJECTED_FILES = [
 
 const NO_FILL_OUTLETS = new Set(['playbill', 'broadwayworld', 'around-the-town-chicago', 'stagebuddy', 'chicagotribune', 'londontheatredirect']);
 
+// Company, outlet and role labels that credit lines carry in place of a person ("Condé Nast", "Time Out",
+// "WhatsOnStage Reviewer", "Contributing Writer", "Reviewer Upload"). The corpus files reviews under these,
+// so 3+ files is no proof of a critic. Applied to corpus-derived names only: registry names are curated
+// (and carry forms like "Mateo Moreno (Critic)").
+const MASTHEAD_LABEL_RE = /\b(?:times|time out|cond[eé] nast|inc|llc|ltd|limited|media|network|group|magazine|news|post|journal|today|broadcasting|publishing|tube|staff|desk|team|reviewers?|critics?|editors?|contributing writer|contributors?|correspondent|upload)\b/i;
+
+/** True when a corpus credit is a company, outlet or role label rather than a person. */
+function isMastheadLabel(name) {
+  return typeof name === 'string' && MASTHEAD_LABEL_RE.test(name);
+}
+
 /**
  * Merge the registry index with the corpus-derived cache (BRO-6947): outlets with no registry critics
  * (camdennewjournal, theater-pizzazz, talkinbroadway ...) get the critics the corpus already files there.
@@ -374,7 +385,8 @@ function mergeCorpusCritics(registryIndex, corpusCache) {
     if (!Array.isArray(names)) continue;
     const list = out.get(id) || [];
     for (const n of names) {
-      if (typeof n !== 'string' || isPlaceholderName(n)) continue;
+      // Labels are dropped on read too, so a cache written before this filter stops feeding them at once.
+      if (typeof n !== 'string' || isPlaceholderName(n) || isMastheadLabel(n)) continue;
       if (!list.some((k) => sameCritic(k, n))) list.push(n);
     }
     if (list.length) out.set(id, list);
@@ -387,6 +399,13 @@ function knownCriticsForOutlet(index, outletId) {
   if (!index || typeof index.get !== 'function') return [];
   const names = index.get(outletId);
   return names ? [...names] : [];
+}
+
+// a + the names in b that are real and not already in a (as the same critic).
+function mergeNames(a, b) {
+  const out = Array.isArray(a) ? [...a] : [];
+  for (const n of b) if (typeof n === 'string' && !isPlaceholderName(n) && !out.some((k) => sameCritic(k, n))) out.push(n);
+  return out;
 }
 
 /**
@@ -404,19 +423,13 @@ function knownCriticsForOutlet(index, outletId) {
  * @param {boolean} [a.excluded] roundup, wrong show/production or duplicate file: not a review to re-credit
  * @returns {{ printedName: string, unnamed: boolean } | null}
  */
-function mergeNames(a, b) {
-  const out = Array.isArray(a) ? [...a] : [];
-  for (const n of b) if (typeof n === 'string' && !isPlaceholderName(n) && !out.some((k) => sameCritic(k, n))) out.push(n);
-  return out;
-}
-
 function decidePrintedByline({ criticName, outletId, fullText, knownCritics, corpusCritics, locked, excluded, relPath }) {
   if (locked || excluded || !fullText) return null;
   if (relPath && REJECTED_FILES.includes(relPath)) return null;
   const unnamed = isPlaceholderName(criticName);
   // Corpus-derived critics are a weaker source than the registry: they only fill unnamed files, they never
   // override a named credit (a wrong name in the corpus would otherwise feed itself).
-  if (unnamed && Array.isArray(corpusCritics)) knownCritics = mergeNames(knownCritics, corpusCritics);
+  if (unnamed && Array.isArray(corpusCritics)) knownCritics = mergeNames(knownCritics, corpusCritics.filter((n) => !isMastheadLabel(n)));
   if (!Array.isArray(knownCritics) || knownCritics.length === 0) return null;
   if (unnamed && NO_FILL_OUTLETS.has(outletId)) return null;
   const hit = unnamed
@@ -440,6 +453,7 @@ module.exports = {
   extractHeaderByline,
   buildKnownCriticsIndex,
   mergeCorpusCritics,
+  isMastheadLabel,
   REJECTED_FILES,
   bylineContinuesList,
 };

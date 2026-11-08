@@ -23,6 +23,7 @@ const {
   decidePrintedByline,
   looksLikeListingHead,
   mergeCorpusCritics,
+  isMastheadLabel,
   REJECTED_FILES,
   bylineContinuesList,
 } = require('./printed-byline-conflict.js');
@@ -167,19 +168,19 @@ test('decidePrintedByline: the pipeline decision (conflict, fill, locked, no-fil
 
 test('BRO-6947: corpus cache covers an outlet with no registry critics; decidePrintedByline uses it', () => {
   const registry = buildKnownCriticsIndex({ outlets: { nysr: { defaultCritics: ['Michael Sommers'] } } });
-  const cache = { outlets: { 'theater-pizzazz': ['Jane Reviewer', 'Unknown'], nysr: ['M. Sommers', 'Frank Scheck'] } };
+  const cache = { outlets: { 'theater-pizzazz': ['Jane Rivera', 'Unknown'], nysr: ['M. Sommers', 'Frank Scheck'] } };
   const idx = mergeCorpusCritics(registry, cache);
   // registry-less outlet gets the corpus critics (placeholders dropped)
-  assert.deepEqual(knownCriticsForOutlet(idx, 'theater-pizzazz'), ['Jane Reviewer']);
+  assert.deepEqual(knownCriticsForOutlet(idx, 'theater-pizzazz'), ['Jane Rivera']);
   // registry outlet keeps registry first, adds only critics that are not the same person
   const nysr = knownCriticsForOutlet(idx, 'nysr');
   assert.equal(nysr[0], 'Michael Sommers');
   assert.ok(nysr.includes('Frank Scheck'));
   assert.ok(!nysr.includes('M. Sommers'));
   // without the cache the registry-less outlet is untouched (the pre-fix behaviour)
-  assert.equal(decidePrintedByline({ criticName: 'Unknown', outletId: 'theater-pizzazz', fullText: `By Jane Reviewer${FILLER}`, knownCritics: knownCriticsForOutlet(registry, 'theater-pizzazz') }), null);
-  const hit = decidePrintedByline({ criticName: 'Unknown', outletId: 'theater-pizzazz', fullText: `By Jane Reviewer${FILLER}`, knownCritics: knownCriticsForOutlet(idx, 'theater-pizzazz') });
-  assert.deepEqual(hit, { printedName: 'Jane Reviewer', unnamed: true });
+  assert.equal(decidePrintedByline({ criticName: 'Unknown', outletId: 'theater-pizzazz', fullText: `By Jane Rivera${FILLER}`, knownCritics: knownCriticsForOutlet(registry, 'theater-pizzazz') }), null);
+  const hit = decidePrintedByline({ criticName: 'Unknown', outletId: 'theater-pizzazz', fullText: `By Jane Rivera${FILLER}`, knownCritics: knownCriticsForOutlet(idx, 'theater-pizzazz') });
+  assert.deepEqual(hit, { printedName: 'Jane Rivera', unnamed: true });
 });
 
 test('BRO-6947: mergeCorpusCritics tolerates a missing or malformed cache and does not mutate the registry index', () => {
@@ -193,16 +194,30 @@ test('BRO-6947: mergeCorpusCritics tolerates a missing or malformed cache and do
 });
 
 test('BRO-6947: corpus critics fill unnamed files only, never override a named credit', () => {
-  const text = `By Jane Reviewer${FILLER}`;
-  assert.deepEqual(decidePrintedByline({ criticName: 'Unknown', outletId: 'x', fullText: text, knownCritics: [], corpusCritics: ['Jane Reviewer'] }), { printedName: 'Jane Reviewer', unnamed: true });
-  assert.equal(decidePrintedByline({ criticName: 'Other Person', outletId: 'x', fullText: text, knownCritics: ['Other Person'], corpusCritics: ['Jane Reviewer'] }), null);
+  const text = `By Jane Rivera${FILLER}`;
+  assert.deepEqual(decidePrintedByline({ criticName: 'Unknown', outletId: 'x', fullText: text, knownCritics: [], corpusCritics: ['Jane Rivera'] }), { printedName: 'Jane Rivera', unnamed: true });
+  assert.equal(decidePrintedByline({ criticName: 'Other Person', outletId: 'x', fullText: text, knownCritics: ['Other Person'], corpusCritics: ['Jane Rivera'] }), null);
+});
+
+test('BRO-6947: masthead labels in the corpus cache never fill a credit (cache read and direct corpusCritics)', () => {
+  // The four labels the live cache held on 2026-11-08, and real critics it must keep.
+  const labels = ['Contributing Writer', 'Reviewer Upload', 'Time Out', 'WhatsOnStage Reviewer', 'Condé Nast'];
+  const people = ['Andrzej Lukowski', 'Carey Purcell', 'Carl Woodward', 'West End Wilma', 'Sarah Crompton', 'Jane Rivera'];
+  for (const l of labels) assert.equal(isMastheadLabel(l), true, l);
+  for (const p of people) assert.equal(isMastheadLabel(p), false, p);
+  assert.equal(isMastheadLabel(undefined), false);
+  const idx = mergeCorpusCritics(new Map(), { outlets: { whatsonstage: ['WhatsOnStage Reviewer', 'Sarah Crompton'], 'kc-studio': ['Contributing Writer'] } });
+  assert.deepEqual(knownCriticsForOutlet(idx, 'whatsonstage'), ['Sarah Crompton']);
+  assert.equal(idx.has('kc-studio'), false);
+  const text = `By WhatsOnStage Reviewer${FILLER}`;
+  assert.equal(decidePrintedByline({ criticName: 'Unknown', outletId: 'whatsonstage', fullText: text, knownCritics: [], corpusCritics: ['WhatsOnStage Reviewer'] }), null);
 });
 
 test('BRO-6947: human-rejected files are never re-credited', () => {
   assert.ok(REJECTED_FILES.length >= 2);
-  const text = `By Jane Reviewer${FILLER}`;
-  assert.equal(decidePrintedByline({ criticName: 'Unknown', outletId: 'x', fullText: text, knownCritics: ['Jane Reviewer'], relPath: REJECTED_FILES[0] }), null);
-  assert.ok(decidePrintedByline({ criticName: 'Unknown', outletId: 'x', fullText: text, knownCritics: ['Jane Reviewer'], relPath: 'ok/file.json' }));
+  const text = `By Jane Rivera${FILLER}`;
+  assert.equal(decidePrintedByline({ criticName: 'Unknown', outletId: 'x', fullText: text, knownCritics: ['Jane Rivera'], relPath: REJECTED_FILES[0] }), null);
+  assert.ok(decidePrintedByline({ criticName: 'Unknown', outletId: 'x', fullText: text, knownCritics: ['Jane Rivera'], relPath: 'ok/file.json' }));
 });
 
 test('BRO-6947: a multi-author byline list is not a verdict (Goings On roundup)', () => {
