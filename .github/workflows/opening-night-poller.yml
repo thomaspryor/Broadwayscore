@@ -423,7 +423,6 @@ jobs:
           ANY_NEW=false
           ANY_READY=false
           NEEDS_COLLECTION=false
-          COLLECT_SHOWS=""
           SKIP_SERP_FLAG=""
           if [ "${{ inputs.skip_serp }}" = "true" ]; then
             SKIP_SERP_FLAG="--skip-serp"
@@ -590,7 +589,6 @@ jobs:
                 case "$NEED_COLLECT" in ''|*[!0-9]*) NEED_COLLECT=0 ;; esac
                 if [ "$NEED_COLLECT" -gt 0 ]; then
                   NEEDS_COLLECTION=true
-                  [[ ",$COLLECT_SHOWS," == *",$SHOW_ID,"* ]] || COLLECT_SHOWS="$COLLECT_SHOWS,$SHOW_ID"
                   [[ ",$ACTION_SHOWS," == *",$SHOW_ID,"* ]] || ACTION_SHOWS="$ACTION_SHOWS,$SHOW_ID"
                   echo "  → $NEED_COLLECT review(s) on disk still need full text for $SHOW_ID"
                 fi
@@ -669,7 +667,6 @@ jobs:
           echo "any_action=$ANY_ACTION" >> $GITHUB_OUTPUT
           echo "needs_collection=$NEEDS_COLLECTION" >> $GITHUB_OUTPUT
           echo "any_collect=$ANY_COLLECT" >> $GITHUB_OUTPUT
-          echo "collect_shows=${COLLECT_SHOWS#,}" >> $GITHUB_OUTPUT
           echo "action_shows=${ACTION_SHOWS#,}" >> $GITHUB_OUTPUT
           echo "gather_failed=$GATHER_FAILED" >> $GITHUB_OUTPUT
           echo "gather_total=$GATHER_TOTAL" >> $GITHUB_OUTPUT
@@ -804,8 +801,8 @@ jobs:
         id: collect
         if: steps.find.outputs.has_shows == 'true' && steps.poll.outputs.any_collect == 'true'
         env:
-          # BRO-7160: every polled show when the poll wrote new files, else only the shows with texts still missing.
-          SHOW_FILTER: ${{ steps.poll.outputs.any_new == 'true' && steps.find.outputs.shows || steps.poll.outputs.collect_shows }}
+          # BRO-7160: a collect_existing sweep is a targeted run, so this list is already that one show.
+          SHOW_FILTER: ${{ steps.find.outputs.shows }}
           MAX_REVIEWS: '100'
           BATCH_SIZE: '10'
           # BRO-6972: a show with no scored review yet is collected first (collection-priority.js).

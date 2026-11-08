@@ -112,5 +112,5 @@ function main() {
   return r.reason && /in-flight|contended/.test(r.reason) ? 0 : 1;
 }
 
-if (require.main === module) process.exit(main());
+if (require.main === module) require('./lib/exit-flushed').exitFlushed(main());
 module.exports = { main };
