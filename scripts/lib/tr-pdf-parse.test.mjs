@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/audit/we-historical-tr-skeletons/1984-west-end-2015.raw.txt (read by the test); data/audit/we-historical-tr-skeletons/di-and-viv-and-rose-west-end-2015.default.txt (read by the test); data/audit/we-historical-tr-skeletons/the-dresser-west-end-2016.default.txt (read by the test); +15 more. Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * BRO-5141: the Joseph and the Amazing Technicolor Dreamcoat (West End 2021)
  * run filed Anna X, FRIEND (The One With Gunther) and other reviews from

@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/review-texts (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // #1146/#1156 — an auto-clear path (allowEarlyDate/allowCrossMarket bypass,
 // UK-URL/registry-region heuristic) must never silently strip wrongProduction/
 // wrongShow off a file the LLM ensemble already unanimously rejected on

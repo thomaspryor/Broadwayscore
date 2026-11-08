@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/reviews.json (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * Pull-quote quality — named-case data pin (card em-20260801-000455 / #727 /
  * #728, re-armed 2026-08-16 as a P1: "bad and missing pull quotes on new and

@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/pending-fixes/bro-5839.json (read by the test); data/reviews.json (read by the test); data/shows.json (read by the test); +2 more. Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // Older Broadway pages behind upcoming revivals (BRO-4889).
 //
 // The filing audit found other productions' reviews counted on older pages

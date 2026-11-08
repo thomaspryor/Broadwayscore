@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * Author-credit titles vs a closed bare-title production (cross-show URL guard).
  *

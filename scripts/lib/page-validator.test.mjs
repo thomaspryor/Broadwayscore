@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * Regression test for #1650: same-title Broadway transfer contaminating a
  * regional predecessor's aggregator scrape. Playbill's own "What Do Critics

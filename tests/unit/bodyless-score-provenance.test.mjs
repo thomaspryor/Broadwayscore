@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-3135: body-less review-texts stubs may only be scored when the star was
 // page-parsed, or when the file's own text corroborates the production.
 import { test } from 'node:test';

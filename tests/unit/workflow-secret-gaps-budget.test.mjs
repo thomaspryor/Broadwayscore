@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data); data/reviews.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-5151: ratchet on scripts/audit-workflow-secret-gaps.js. Every gap is a
 // workflow step running a script that reads a secret the step never gets, so
 // the read silently no-ops (BRO-67 class). The budget only goes down: when a

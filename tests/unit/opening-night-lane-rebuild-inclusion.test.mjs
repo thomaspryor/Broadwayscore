@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data); data/review-texts (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-4806 (epic BRO-4210, BRO-4782 wiring B): the rebuild inclusion path keeps opening-night lane reviews.
 // Real functions only (CLAUDE.md section 15): explainExclusion / isIncludableForRebuild / isScoreable / decideInclusion
 // are driven with a lane review and the SAME review stripped of its stamp (ordinary). Lane is included; ordinary is

@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: hand-listed in check-corpus-drift.yml since BRO-3425/BRO-4750; asserts on bot-rewritten data, so it never blocks main (BRO-7101).
 /**
  * Real-data invariants for data/cast-changes.json.
  *

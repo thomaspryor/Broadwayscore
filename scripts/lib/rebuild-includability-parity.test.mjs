@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/review-texts (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-4404: rebuild-all-reviews.js and review-guards.js explainExclusion must
 // agree on the rejectionReason / rejectedAt exclusion. Rebuild used to carry a
 // narrower inline copy (structural-star exception only), so files the guards

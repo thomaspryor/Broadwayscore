@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * BRO-332: T1/T2 silent gap on near-opening show: An American Daughter —
  * nytimes--laura-collins-hughes.json was auto-filed as a gap

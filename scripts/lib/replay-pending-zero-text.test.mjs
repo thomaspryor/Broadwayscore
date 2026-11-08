@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/audit/alert-ledger.json (bot ledger); data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * BRO-2735: zero-text _pending stubs swallowed T1/T2 reviews.
  *

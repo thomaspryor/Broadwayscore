@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/retired-show-ids.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-6578: a census stub (tristan-yseult-royal-bath-regional-2026) duplicated an
 // existing row (same title, same venue) and the prebuild gate blocked every Vercel
 // build for 3h. The write path now refuses what the prebuild rule flags.

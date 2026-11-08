@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * Regression tests for task #764: backfill-lbo-individual-stars.js's cousin
  * --help bug (#498 class — --help fell through to a real network+write

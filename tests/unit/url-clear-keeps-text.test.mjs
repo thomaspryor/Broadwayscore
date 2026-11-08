@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-5374: a wrong "Full review" link on a review whose text is right is
 // cleared to "" (no url-change invariant, so text and score stay). Allowed for
 // aggregator urls, malformed urls, and provably wrong urls on Theatre Record

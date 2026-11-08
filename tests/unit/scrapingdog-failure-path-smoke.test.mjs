@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/audit/sd-circuit-breaker.json (bot ledger). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // Smoke test for the REAL Scrapingdog failure path (BRO-3325 hotfix, 2026-09-15):
 // a9d790dfb18 referenced sdBilledCredits inside fetchWithScrapingdog without
 // importing it, so every SD failure threw ReferenceError instead of returning

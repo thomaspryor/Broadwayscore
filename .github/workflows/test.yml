@@ -1765,6 +1765,7 @@ on:
       # exemptions). Unlisted until 2026-08-01, so an edit to the exempt map
       # shipped with ZERO CI — exactly the hole this allow-list exists to close.
       - 'scripts/audit-orphan-tests.js'
+      - 'scripts/live-data-lane.js' # BRO-7101: lane filter + trace classifier (tests/unit/live-data-lane.test.mjs)
       - 'scripts/audit-orphaned-audit-writes.js'
       # BRO-3431 reopen: root-level scripts/*.js + *.test.mjs pair, no
       # scripts/** broad glob covers it.
@@ -4924,15 +4925,19 @@ jobs:
           # BRO-2483: the node batch is collected (scripts/lib/unit-test-collection.js),
           # not read from the retired tests/unit-test-manifest.txt tombstone. --min
           # exits 1 on an empty list or one under its MIN_NODE_BATCH floor.
-          node_list=$(node scripts/lib/unit-test-collection.js --min) || { echo "::error::scripts/lib/unit-test-collection.js --min failed (empty, under MIN_NODE_BATCH, or crashed)"; exit 1; }
+          # BRO-7101: --lane=blocking leaves out tests that declare LIVE-DATA-LANE
+          # (they assert on bot-rewritten data and run in check-corpus-drift.yml), so a
+          # bot data commit cannot turn main red. Land still runs every test.
+          node_list=$(node scripts/lib/unit-test-collection.js --lane=blocking --min) || { echo "::error::scripts/lib/unit-test-collection.js --lane=blocking --min failed (empty, under MIN_NODE_BATCH, or crashed)"; exit 1; }
           mapfile -t node_tests <<< "$node_list"
           [ ${#node_tests[@]} -eq 0 ] && { echo "::error::scripts/lib/unit-test-collection.js collected no node unit tests"; exit 1; }
           run_batch node /tmp/unit-node-batch.log \
             node --test --test-timeout 300000 "${node_tests[@]}"
           node_rc=$?; node_pass=$BATCH_PASS; node_fail=$BATCH_FAIL
 
-          mapfile -t tsx_tests < tests/unit-test-manifest-tsx.txt
-          [ ${#tsx_tests[@]} -eq 0 ] && { echo "::error::tests/unit-test-manifest-tsx.txt is empty or missing"; exit 1; }
+          # BRO-7101: same lane split for the tsx manifest.
+          mapfile -t tsx_tests < <(node scripts/live-data-lane.js --filter=blocking < tests/unit-test-manifest-tsx.txt)
+          [ ${#tsx_tests[@]} -eq 0 ] && { echo "::error::tests/unit-test-manifest-tsx.txt is empty or missing (or every entry is LIVE-DATA-LANE)"; exit 1; }
           run_batch tsx /tmp/unit-tsx-batch.log \
             npx tsx --test --test-timeout 300000 "${tsx_tests[@]}"
           tsx_rc=$?; tsx_pass=$BATCH_PASS; tsx_fail=$BATCH_FAIL
@@ -5074,8 +5079,11 @@ jobs:
         if: always()
         run: |
           shopt -s nullglob
-          tests=(scripts/lib/*.test.mjs)
-          [ ${#tests[@]} -eq 0 ] && { echo "no scripts/lib tests"; exit 0; }
+          # BRO-7101: LIVE-DATA-LANE files run in check-corpus-drift.yml, not here.
+          all_lib=(scripts/lib/*.test.mjs)
+          [ ${#all_lib[@]} -eq 0 ] && { echo "no scripts/lib tests"; exit 0; }
+          mapfile -t tests < <(node scripts/live-data-lane.js --filter=blocking "${all_lib[@]}")
+          [ ${#tests[@]} -eq 0 ] && { echo "::error::live-data-lane.js --filter=blocking returned no scripts/lib tests"; exit 1; }
           # BRO-5588: name failing tests; exit code preserved.
           set +e
           node --test --test-timeout 300000 "${tests[@]}" 2>&1 | tee /tmp/scripts-lib-batch.log

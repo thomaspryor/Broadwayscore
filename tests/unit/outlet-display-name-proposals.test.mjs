@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/audit/outlet-display-name-proposals.json (read by the test); data/outlet-registry.json (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-5507: hand-reviewed outlet display names (data/audit/outlet-display-name-proposals.json)
 // applied by scripts/audit-registry-slug-displaynames.js --apply-proposals through a
 // pending-fix plan. Rules: scripts/lib/outlet-display-name-proposals.js.

@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/audit/triage (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-2782: data/audit/triage/*.json is covered by one glob registry entry
 // with an ours-wins merge, so push-with-retry.sh's Git Data API fallback is
 // reachable for it, while unregistered data/audit/ paths stay disqualified.

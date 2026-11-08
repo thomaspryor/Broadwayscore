@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * BRO-3139: londontheatre.co.uk review stars live in embedded page data
  * (pageProps.initialState.content.pageContent.ourCriticsRating), not the article body.

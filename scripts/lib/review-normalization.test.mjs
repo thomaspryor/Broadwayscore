@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-2717: URL-aware junk detection — listing/PR/venue URLs must not become outletIds.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';

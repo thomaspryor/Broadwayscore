@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-5201: the lane's review files carry firstSeenAt, the retrieval clock press-night-record's same-night gate reads.
 import test from 'node:test';
 import assert from 'node:assert/strict';

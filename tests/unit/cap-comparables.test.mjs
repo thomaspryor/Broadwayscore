@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (read by the test); data/commercial.json (read by the test); data/grosses.json (read by the test); +5 more. Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-5849 step 3: comparables fallback for a missing capitalization.
 // Real modules via require() (CLAUDE.md §15); real shows/grosses from data/.
 import { describe, it } from 'node:test';

@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * Regression tests for the SEO health alerting guards (task #530).
  *

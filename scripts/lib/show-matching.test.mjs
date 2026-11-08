@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (read by the test); data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // Regression fixtures for Playbill-Verdict slug → show matching.
 //
 // Real article slugs harvested from the 2026-05-24 cached category page

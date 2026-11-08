@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/site-image-versions.json (untracked core data); data/grosses.json (untracked core data); data/audience-buzz.json (untracked core data); +7 more. Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * National-tour listing, indexing and copy (BRO-4931). Calls the real exported
  * functions (CLAUDE.md rule 15). The tours page used to hide every tour below

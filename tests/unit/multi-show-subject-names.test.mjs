@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-7053: subject names that are also show titles must not mark a real review
 // as multi-show junk. Requires the real detector (CLAUDE.md section 15).
 import test from 'node:test';

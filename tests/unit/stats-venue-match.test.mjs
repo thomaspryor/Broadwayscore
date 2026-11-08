@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/theater-metadata.json (read by the test); data/west-end-venues.json (read by the test); data/shows.json (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
 // TESTS-VS-DERIVED-DATA-EXEMPT: matcher canary against the LIVE theater-metadata house list on purpose; assertions are structural (match/no-match classes), not hardcoded facts
  * venue-match — normalizeVenueKey extraction parity + diary→house matching.

@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // TESTS-VS-DERIVED-DATA-EXEMPT: real-data case is structural (siblings exist, window computed), pins no facts beyond ids
 
 // BRO-30: title-keyed Reddit scrapes must not mix sibling productions.

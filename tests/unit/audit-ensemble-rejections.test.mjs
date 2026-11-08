@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/audit/bro-79-ensemble-rejection-audit.json (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * BRO-79: audit of the 2026-07-21/22 NYC-rollout ensemble-scoreability-check rescore.
  *

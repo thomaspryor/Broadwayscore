@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/awards.json (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // TESTS-VS-DERIVED-DATA-EXEMPT: deny-list canary — asserts specific bad entries do NOT reappear (negative pin); intentional regression guard, not a factual claim about who won what.
 /**
  * Tony deny-list canary (Sprint B, 2026-05-17).

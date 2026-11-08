@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/outlet-registry.json (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-7038: AP's Mark Kennedy was registered as news-tribune's defaultCritic, so
 // every newspaper's syndicated copy of his AP story read as cross-outlet drift.
 // Wire-service critics must not be some newspaper's defaultCritic.

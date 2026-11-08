@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * BRO-6909: the gap audit's URL gate must recognise a show under every title it is
  * billed by. Playbill's Verdict for "Clifford Odets’ Waiting for Lefty" and two of

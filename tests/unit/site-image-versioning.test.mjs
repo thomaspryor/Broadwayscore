@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/site-image-versions.json (untracked core data); data/grosses.json (untracked core data); data/audience-buzz.json (untracked core data); +7 more. Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // TESTS-VS-DERIVED-DATA-EXEMPT: URL parity against hashes of the actual image bytes, with no factual data pins.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';

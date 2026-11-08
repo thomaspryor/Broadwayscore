@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/review-texts (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // Regression coverage for BRO-2283: audit-self-contradictory-clears.js
 // reported "0 review file(s) scanned, 0 contradiction(s)" — a vacuous clean
 // pass — whenever data/review-texts (a private-repo checkout) was missing

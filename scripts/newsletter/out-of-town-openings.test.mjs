@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/reviews.json (untracked core data); data/shows.json (untracked core data); data/audience-buzz.json (untracked core data); +7 more. Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // Regression guard: out-of-town (regional/pre-Broadway-tryout) shows were
 // entirely invisible in the Weekly Round-up newsletter — PRIMARY only ever
 // covers broadway/off-broadway (or west-end/off-west-end for the WE

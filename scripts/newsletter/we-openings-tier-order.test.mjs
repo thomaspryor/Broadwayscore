@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/reviews.json (untracked core data); data/shows.json (untracked core data); data/audience-buzz.json (untracked core data); +3 more. Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // Regression guard (2026-08-23): the West End weekly draft for week
 // 2026-08-17 led its subject line and editorial lede with "Jeeves Takes
 // Charge opens to decent reviews" (Off West End, Charing Cross Theatre, 25

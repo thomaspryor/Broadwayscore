@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/lottery-rush.json (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-6862: keep the card's acceptance command runnable in the unit batch.
 import test from 'node:test';
 import assert from 'node:assert/strict';

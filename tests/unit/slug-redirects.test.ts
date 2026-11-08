@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/site-image-versions.json (untracked core data); data/grosses.json (untracked core data); data/audience-buzz.json (untracked core data); +7 more. Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * src/lib/slug-redirects.ts — pure redirect resolution over the compact map
  * (2026 data audit, S5-T9), plus the data-reviews.ts wiring that reads it

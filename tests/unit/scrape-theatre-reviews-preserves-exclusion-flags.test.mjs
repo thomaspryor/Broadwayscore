@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/opening-night/leases.json (untracked core data); data/shows.json (untracked core data); data/critic-registry.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // Task #816 — sibling of extract-dtli-preserves-exclusion-flags.test.mjs.
 //
 // scrape-theatre-reviews.js's writeReviewFiles() looks up an existing file

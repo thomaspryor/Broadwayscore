@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/video-creators.json (read by the test); data/video-reviews.json (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-4328: video reviews were published under show ids missing from
 // shows.json, and one video appeared on two shows. require()s the real guard.
 import { test } from 'node:test';

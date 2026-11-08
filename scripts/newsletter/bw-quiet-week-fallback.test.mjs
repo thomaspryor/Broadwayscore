@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/audience-buzz.json (untracked core data); data/audit/score-public-since.json (bot ledger); data/grosses.json (untracked core data); +3 more. Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // Regression guard for the 2026-09-06 incident: the Broadway edition for
 // week 2026-08-31 had zero new Broadway/Off-Broadway openings that week, so
 // the US-edition subject/lede (only London openings scoring >=75 were even

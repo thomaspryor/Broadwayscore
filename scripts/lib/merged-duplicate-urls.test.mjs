@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * BRO-4414: URLs folded into a survivor by a merge must never be re-adopted.
  * Culture Sauce "How Shakespeare Saved My Life" (2026-09-30): the merge deleted

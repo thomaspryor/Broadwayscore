@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-5243: critic tenure at an outlet. Teachout's WSJ reviews (2017-2021) were
 // credited to Isherwood, who became WSJ's critic only after Teachout died.
 import { test } from 'node:test';

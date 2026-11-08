@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data); data/critic-registry.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-6872: a fix plan ran ingest-review-from-url.js --stub-on-failure, the ingest wrote only a retry stub and exited 0,
 // and execute-approved-fix.js marked the plan applied although no review reached the site. The ingest now reports a stub
 // outcome to INGEST_OUTCOME_FILE and the fix runner fails the action (plan status partial).

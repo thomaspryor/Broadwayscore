@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-2764: generic-title shows need a second corroborating signal at candidate time.
 import test from 'node:test';
 import assert from 'node:assert/strict';

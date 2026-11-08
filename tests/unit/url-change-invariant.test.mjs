@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data); data/llm-scores/zz-test-scope-29375 (read by the test); data/review-texts/zz-test-url-invariant-29375/telegraph--dominic-cavendish.json (untracked core data); +2 more. Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * Write-topology invariant: URL change must clear old-URL-derived state
  * (Notion 399637c5-416f-81fc).

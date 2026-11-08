@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/outlet-registry.json (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * Near-duplicate outlet-registry detector (task #1838 / BRO-90; extended to
  * the slugify()/concatenated class by task #1844).

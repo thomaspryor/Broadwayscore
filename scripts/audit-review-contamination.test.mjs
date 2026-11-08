@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/review-texts (read by the test); data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * audit-review-contamination.test.mjs — regression coverage for BRO-65
  * (Notion 345637c5-416f-81ef): a lone strict-class contamination hit must

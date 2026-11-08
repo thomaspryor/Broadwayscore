@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/auto-critic-aliases.json (read by the test); data/critic-registry.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * BRO-6928: critic pages split by byline spelling. Runs the real emission path
  * (scripts/lib/critic-display-name.js displayCriticName, which rebuild-all-reviews.js

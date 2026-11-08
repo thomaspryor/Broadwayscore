@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/grosses.json (untracked core data); data/commercial.json (untracked core data); data/grosses-history.json (untracked core data); +7 more. Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * /box-office "This week" rows (BRO-5007 v3): the public table keeps open and
  * closed shows; the v3 table lists every show that reported in the market

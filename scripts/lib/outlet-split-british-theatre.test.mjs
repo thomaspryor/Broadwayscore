@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/outlet-registry.json (read by the test); data/shows.json (untracked core data); data/critic-registry.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * BRO-5128: outletId `british-theatre` covered two publications, British
  * Theatre Guide (britishtheatreguide.info) and BritishTheatre.com

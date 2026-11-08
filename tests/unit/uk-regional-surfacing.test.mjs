@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/site-image-versions.json (untracked core data); data/grosses.json (untracked core data); data/audience-buzz.json (untracked core data); +7 more. Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-6713: UK Regional (Beyond London, /browse/beyond-london) must be reachable from every
 // place the site links between markets. Before this, the header dropdown and footer had no entry
 // and a visitor could only find the page through a West End shelf. Source-level guard: the link

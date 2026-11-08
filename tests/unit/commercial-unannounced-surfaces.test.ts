@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/grosses.json (untracked core data); data/commercial.json (untracked core data); data/grosses-history.json (untracked core data); +1 more. Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * BRO-4623: a recoupment that was never announced (Appropriate, Sweeney Todd,
  * Into the Woods) reads "Not publicly announced" on the show page. The /biz

@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/audit/stale-announced-shows-ack.json (bot ledger). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-4913 VERIFY: the audit exits nonzero and flags a fixture show whose
 // official page shows a future first-performance date.
 import test from 'node:test';

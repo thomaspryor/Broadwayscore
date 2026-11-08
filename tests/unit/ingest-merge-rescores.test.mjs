@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-4042: a body ingested onto an existing canonical review-texts file must
 // also record the page's explicit rating, and a merge that leaves a body with
 // no score signal must be visible in the audit log rather than silent.

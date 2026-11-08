@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-3381 — LLM scoring cost is computed every run and thrown away. This
 // pins the fix: costUsd gets persisted onto each run summary and a run
 // summing above the configured threshold produces a real, never-silenced

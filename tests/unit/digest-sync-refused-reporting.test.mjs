@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/audit/digest-autofix-ledger.jsonl (bot ledger); data/audit/backlog-drain-ledger.jsonl (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // Task #1818: com.broadwayscore.morning-digest.plist chained
 // `SYNC_TAG=digest bash scripts/lib/sync-audit-checkout.sh && exec node
 // scripts/send-morning-digest.js --send-to-owner`. sync-audit-checkout.sh

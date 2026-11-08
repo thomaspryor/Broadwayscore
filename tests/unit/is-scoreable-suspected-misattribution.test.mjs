@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/critic-registry.json (read by the test); data/critic-registry.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * Unit tests for the LLM scoring gate (scripts/lib/is-scoreable.js + the TS
  * source of truth scripts/llm-scoring/is-scoreable.ts).

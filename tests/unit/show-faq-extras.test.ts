@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * Show-page FAQ: audience and cheap-ticket answers (BRO-6851). Calls the real
  * exported functions (CLAUDE.md rule 15). The visible FAQ and its FAQPage

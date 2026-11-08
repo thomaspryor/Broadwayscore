@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-5356: clearing wrongShow/wrongProduction left contentTier 'invalid'
 // ('Wrong show'), so the rebuild kept the review off the site (spamalot-2023 and
 // the-whos-tommy-2024 NYSR opening-night reviews). Invented placeholder text.

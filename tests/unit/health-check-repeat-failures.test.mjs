@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/audit/t1-silent-gaps.json (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // Repeat workflow failures must be promoted from a passive digest body section
 // into first-class check results so they drive the digest subject line and the
 // escalation machinery — the gap that let main test.yml fail 11/19 push runs

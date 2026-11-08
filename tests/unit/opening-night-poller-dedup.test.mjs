@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/review-texts/__test-bro909-preview-dedup__ (untracked core data); data/review-texts/__test-bro909-preview-dedup__/notreview-outlet-0--unknown.json (untracked core data); data/review-texts/__test-bro909-preview-dedup__/notreview-outlet-1--unknown.json (untracked core data); +14 more. Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * BRO-909: Preview-period scraping poisons opening night dedup.
  *

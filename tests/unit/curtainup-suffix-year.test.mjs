@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-4548: CurtainUp's only year signal is a two-digit filename suffix.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';

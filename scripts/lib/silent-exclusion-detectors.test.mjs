@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/outlet-registry.json (read by the test); data/audit/unknown-aggregator-outlets.json (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // Tests for silent-exclusion-detectors.js — card #1188, two more instances of
 // the #1147 silent-exclusion class (see scripts/lib/ingest-skip-classify.js
 // for the sibling module this one follows).

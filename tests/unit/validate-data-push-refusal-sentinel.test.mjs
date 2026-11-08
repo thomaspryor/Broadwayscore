@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/retired-show-ids.json (untracked core data); data/site-image-versions.json (untracked core data); data/grosses.json (untracked core data); +17 more. Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // TESTS-VS-DERIVED-DATA-EXEMPT: tests validate-data.js exit-code + sentinel-file behavior using shows.json as fixture input; no factual pins.
 /**
  * validate-data.js must write /tmp/.skip-push-core-data when it exits with errors,

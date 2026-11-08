@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/fantasy-league.json (read by the test); data/fantasy-scores.json (read by the test); data/awards.json (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // Acceptance regression tests for BRO-760 (Broadway Fantasy League).
 // require()s the real pure functions (scripts/lib/fantasy-helpers.js) and
 // checks the real data files — no logic duplicated here (CLAUDE.md rule 15).

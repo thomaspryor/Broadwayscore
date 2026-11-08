@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/outlet-registry.json (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * BRO-254 follow-up: validateBWWRoundupGeography()'s NON_LOCAL_OUTLET_IDS was
  * re-derived from the outlet-registry-to-region-map pattern inline instead of

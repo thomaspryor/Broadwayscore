@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * BRO-2689: rejectionReason decides whether a T1/T2 file surfaces as a silent
  * gap. 'garbage_text' = bad fetch (surfaced as rejected-unscoreable), while

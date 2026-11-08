@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/site-image-versions.json (untracked core data); data/grosses.json (untracked core data); data/audience-buzz.json (untracked core data); +7 more. Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * BRO-5988: the search-intent map must point at real pages, and pages that share an
  * intent must not share a title (the cannibalization the map exists to stop).

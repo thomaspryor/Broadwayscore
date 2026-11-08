@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-5437: cv-wrongproduction-unhandled.check.js listed 1153 shipped reviews
 // across 586 shows, almost all already handled by a documented pipeline
 // decision. handledReason() sets those classes aside; the real bypass shapes

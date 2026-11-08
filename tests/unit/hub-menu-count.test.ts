@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/site-image-versions.json (untracked core data); data/grosses.json (untracked core data); data/audience-buzz.json (untracked core data); +7 more. Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // The market menu's "N playing now" for a city hub must equal the hub page's
 // Now Playing list: local productions plus tour stops playing today (ship-check
 // on BRO-6760/6771: the menu counted local productions only, so DC read 6 while

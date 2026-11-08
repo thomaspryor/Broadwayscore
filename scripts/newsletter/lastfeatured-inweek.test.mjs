@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/audience-buzz.json (untracked core data); data/critic-consensus.json (untracked core data); data/audit/score-public-since.json (bot ledger); +7 more. Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // Regression guard (owner-reported 2026-08-30/31, BRO-2573): The Real Ivanov
 // (opened 2026-08-25, off-broadway, 14 clean scored reviews) appeared as the
 // Broadway edition's Pan of the Week that issue but never got its own

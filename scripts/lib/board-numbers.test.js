@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/audit/claude-session-cost.jsonl (bot ledger). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 'use strict';
 const test = require('node:test');
 const assert = require('node:assert/strict');

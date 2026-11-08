@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/pending-fixes/bro-6348.json (read by the test); data/shows.json (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-6348: "Hundred Days" (The Bengsons, New York Theatre Workshop, Dec 2017) was missing.
 // Added through the approved-fix plan data/pending-fixes/bro-6348.json. This test checks the
 // plan, the real venue classifier, and (when core data is present) the live shows.json row.

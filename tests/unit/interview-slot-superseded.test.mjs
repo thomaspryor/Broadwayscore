@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data); data/critic-registry.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * BRO-6742: an interview held the critic's outlet+critic slot, so the same
  * critic's review of the show could never be ingested ("Stale merge").

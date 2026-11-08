@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/outlet-registry.json (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-5859: Bachtrack (London-based, reviews the Met and other New York houses)
 // was registered as a London-only outlet, so the rebuild's reverse cross-market
 // guard flagged its Met reviews ("Cross-market: London outlet reviewing

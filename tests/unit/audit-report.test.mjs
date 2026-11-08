@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-4973: an opening-night SERP record must not inherit another outlet's excerpt.
 import test from 'node:test';
 import assert from 'node:assert/strict';

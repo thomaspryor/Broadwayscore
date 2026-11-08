@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // rename-show-id (2026 data audit, S5-T6 + S5-T8).
 //
 // Builds a temp copy of a minimal three-tree fixture (web data/ + public/,

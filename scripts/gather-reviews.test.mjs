@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * Regression test for gather-reviews.js's production-verification guards
  * (scripts/lib/production-verifier.js), using the exact scenario from

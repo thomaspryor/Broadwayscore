@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-4784 (epic BRO-4210 phase 2c): inline fetch, extract and score per review, with visible failures and bounded retries.
 // Real functions only (CLAUDE.md section 15); fetch and scorer are injected.
 import test from 'node:test';

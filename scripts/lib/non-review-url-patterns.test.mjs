@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/outlet-registry.json (read by the test); data/reviews.json (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // non-review-url-patterns.js — canonical not-a-review host/path patterns
 // shared between audit-show-review-gap.js's isReviewUrl() and the S5
 // adversarial probe's classifyNonReviewUrl() (task #907 ship-check finding:

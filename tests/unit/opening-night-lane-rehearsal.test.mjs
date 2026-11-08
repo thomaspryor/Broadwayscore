@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-4787 (epic BRO-4210 phase 4): the rehearsal is the epic's acceptance test. Real functions only (CLAUDE.md section 15).
 import test from 'node:test';
 import assert from 'node:assert/strict';

@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/retired-show-ids.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-4891: prior-production pages for revival promo + one-word-title contamination.
 import test from 'node:test';
 import assert from 'node:assert/strict';

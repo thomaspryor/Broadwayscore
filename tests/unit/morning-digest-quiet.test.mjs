@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/audit/digest-autofix-ledger.jsonl (bot ledger); data/audit/backlog-drain-ledger.jsonl (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-7040: the quiet morning digest. Calls the REAL composeDigestEmail /
 // buildOwnerView / renderOwnerTopBlock (CLAUDE.md §15), never a copy of their logic.
 import { test } from 'node:test';

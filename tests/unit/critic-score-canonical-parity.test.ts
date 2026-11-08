@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/site-image-versions.json (untracked core data); data/grosses.json (untracked core data); data/audience-buzz.json (untracked core data); +9 more. Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // TESTS-VS-DERIVED-DATA-EXEMPT: parity test — the same core data fed through the website path (data-core/engine.ts) and the slim-file path (slim-critic-score.js); asserts equality, no factual pins.
 /**
  * BRO-4312: every page that displays a Critic Score must show the same value

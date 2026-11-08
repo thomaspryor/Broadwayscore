@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * Regression test (BRO-318): dedupe-same-url-bylines.js's fix() must clear a
  * STALE duplicateOf/duplicateTextOf the chosen canonical carries at one of

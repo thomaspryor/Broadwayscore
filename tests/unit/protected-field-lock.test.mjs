@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * Tests for per-file protectedFields override in review-write-guard.js
  * Uses real functions via require() per §15 pattern.

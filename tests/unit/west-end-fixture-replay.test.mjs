@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data); data/audit/theatre-reviews-coverage.json (bot ledger). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-5956: the West End opening-night fixture (The Lives of Others, Adelphi Theatre, opened 2026-10-29) replayed
 // through the lane's West End adapters: WestEndTheatre.com, theatre.reviews, Stagedoor, The Stage and London Box Office.
 // The committed fixture is SYNTHETIC (invented pages in the real sites' markup; see

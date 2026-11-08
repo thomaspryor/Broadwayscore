@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/site-image-versions.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-6305: a server module that touches public/ through fs with a dynamic
 // path makes Next's file tracing copy that tree into every function that
 // imports it. On 2026-10-26 one fs.existsSync(public/images/...) check

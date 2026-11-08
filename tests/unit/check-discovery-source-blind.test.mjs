@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/audit/off-broadway-source-coverage-state.json (bot ledger). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // S4-T3 (2026 data audit, BRO-4204): update-show-status goes red when a
 // discovery source is blind. Requires the REAL decision function (CLAUDE.md
 // §15), runs the real CLI against fixtures, and pins the workflow wiring —

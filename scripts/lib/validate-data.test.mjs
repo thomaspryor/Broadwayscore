@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-4567: validate-data.js's show-title gate (validateShowTitles) asks
 // normalizeShowTitle() whether a stored title is correct. These tests pin the
 // Roman-numeral-case step it gained ("Richard Ii" -> "Richard II") by

@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-5795: the small-blog tier rule and the two held-back-review bugs found with it.
 // Requires the real functions (CLAUDE.md §15), no copied logic.
 import { test } from "node:test";

@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // timebomb-audit-exempt: the opening-window test stamps fixtures with new Date() (shifted by the audit preload) but the script under test runs as a real child process with an unshifted clock, so the fixture reads as future-dated; same child-process class as validate-added-review-ownership.test.mjs
 // BRO-4759 / BRO-4767: check-review-count-drift.js scans EVERY show for scored review files that
 // never reached reviews.json. Shows outside the opening window alert only on a NEW suppression

@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (read by the test); data/shows.json (untracked core data); data/critic-registry.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // TESTS-VS-DERIVED-DATA-EXEMPT: structural; shows.json is read only to pick any show id/title/openingDate for fixtures, no fact is pinned
 // BRO-4805 (epic BRO-4210, BRO-4782 wiring A): the write-time guards stand down for a lane review, and a slot collision
 // with a flagged file writes a NEW file named by outlet + critic + night instead of merging. Real createOrMergeReviewFile

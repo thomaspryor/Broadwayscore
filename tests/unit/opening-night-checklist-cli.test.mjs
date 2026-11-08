@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/audit/score-history.jsonl (bot ledger). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-2777: drives scripts/opening-night-checklist.js the way its production
 // callers do (opening-night-checklist.yml, opening-night-orchestrator.yml:
 // `--json --out=<file>`), never by parsing stdout, which carries progress and

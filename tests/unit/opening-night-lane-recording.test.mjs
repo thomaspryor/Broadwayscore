@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-6651 (plan v2 Step 8): each lane pass records the aggregator/index pages it read, encrypted, and the recorded-night
 // loader replays that recording. The repo is public, so page bodies must never reach disk in the clear.
 import test from 'node:test';

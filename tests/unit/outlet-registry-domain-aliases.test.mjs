@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/outlet-registry.json (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * BRO-2263: "Quality: outlet domain moves" fired for theatrereviews.design,
  * which name-matches the registered outlet theatre-reviews-limited. The host is

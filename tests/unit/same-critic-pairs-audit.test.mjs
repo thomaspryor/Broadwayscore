@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/outlet-registry.json (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * BRO-6054: one named critic shipping a show at two outlets is a double count
  * or a wrong outlet attribution unless syndication-pairs explains it or the

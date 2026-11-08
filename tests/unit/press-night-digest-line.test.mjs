@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/audit/press-night/a-few-good-men-2026-2026-10-29.json (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-6645: the morning email's one-line grade per opening night, and the fix-card filer.
 // Records are the real Oct 29 press-night records (copied from data/audit/press-night so a later
 // re-capture cannot change these sentences under the test).

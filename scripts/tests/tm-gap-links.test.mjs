@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // Task #956: TM-link backfill for TodayTix-gap shows.
 //
 // IMPORTANT CONTEXT for anyone re-running this after a gap-list change:

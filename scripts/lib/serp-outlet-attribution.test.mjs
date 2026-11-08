@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-6537: exercise real discovery and ledger writers with provider I/O stubbed.
 import { test, beforeEach, after } from 'node:test';
 import assert from 'node:assert/strict';

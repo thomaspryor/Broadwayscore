@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/audit/codex-trust-ladder.json (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-4745: decisions of the daily unattended Codex runner (scripts/codex/daily-runner.js).
 // Requires the real helpers (CLAUDE.md §15), never a copy.
 import { test } from 'node:test';

@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/commercial.json (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-5849: guesses fill model gaps but never count as disclosed facts.
 // Real functions via require() (CLAUDE.md §15); real data for the counts.
 import { describe, it } from 'node:test';

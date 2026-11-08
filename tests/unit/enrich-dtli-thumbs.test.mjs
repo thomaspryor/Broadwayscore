@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data); data/review-texts/__enrich-dtli-wrong-production-test__/amny--matt-windman.json (read by the test); data/review-texts/__enrich-dtli-wrong-production-test__ (untracked core data); +2 more. Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // enrich-dtli-thumbs must not copy an earlier production's DTLI verdicts onto
 // a revival. Other Desert Cities 2026: the title slug `other-desert-cities` is
 // the 2011 page; amNY's Matt Windman reviewed both and his 2011 thumbs-up

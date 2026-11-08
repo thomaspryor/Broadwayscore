@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // timebomb-audit-exempt: the rejected-page ledger tests inject `now`, and the
 //   ENOENT test only checks a vanished file; no fixture depends on the real
 //   clock against a filesystem mtime.

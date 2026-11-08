@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/outlet-registry.json (read by the test); data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-6623 (Cutover 9): the opening-night broadcast gates accept a lane-only night.
 // The BRO-5201 recorded replay of A Few Good Men is run with the production inline scorer shape
 // (inline-score.js ensembleScoreText over a stubbed scoreReviewFile, so no LLM calls). Its written review files and

@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-6082: digest rows that parked as "kept failing" because no cloud session
 // could close them. Covers the off-topic-section URL rule (discovery + write +
 // silent-gap audit), the needs-manual-recovery split of the T1/T2 gap row, and

@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/grosses.json (untracked core data); data/grosses-history.json (untracked core data); data/audience-buzz.json (untracked core data); +9 more. Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-6769: Live in HD wording helpers and expiry. Real src/lib/met-live-in-hd.ts is exercised via tsx.
 import test from 'node:test';
 import assert from 'node:assert/strict';

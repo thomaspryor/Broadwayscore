@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/analysis/bucknell-recoupment-2008-2017.json (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // Tests for scripts/lib/bucknell-backtest.js (BRO-6143). Requires the real module.
 // Run: node --test scripts/lib/bucknell-backtest.test.mjs
 import test from 'node:test';

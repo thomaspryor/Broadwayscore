@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data); data/retired-show-ids.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * tour-roundup-candidate (BRO-4211 Phase E): which BroadwayWorld roundups
  * become "add this national tour?" digest suggestions.

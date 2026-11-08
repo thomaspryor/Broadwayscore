@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * BRO-3126: a preview-period "first look" (jane-eyre-off-west-end-2026, LBO, scored 79,
  * shipped to prod) must not count as a critic review. Per CLAUDE.md rule 15 these

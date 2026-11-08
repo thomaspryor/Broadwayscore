@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/audit/digest-autofix-ledger.jsonl (bot ledger); data/audit/backlog-drain-ledger.jsonl (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-6131: the morning digest shows each DECISION NEEDED card as a readable
 // card. These use the real BRO-6111 / BRO-6112 text (markdown escapes included).
 import { test } from 'node:test';

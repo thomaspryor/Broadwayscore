@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/show-origins.json (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 'use strict';
 // BRO-5842: checks on model answers before they reach data/show-origins.json.
 const test = require('node:test');

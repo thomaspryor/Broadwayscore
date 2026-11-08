@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data); data/reviews.json (untracked core data); data/review-texts (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-4839: a PUBLISHED score must not contradict the critic's own high-reliability rating, whatever produced it.
 // Real functions only (CLAUDE.md section 15); no copies of the rules.
 import test from 'node:test';

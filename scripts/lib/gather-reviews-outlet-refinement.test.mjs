@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * BRO-226 cousin (task #1506): gather-reviews.js's own extractDTLIReviews()
  * had no URL-based outlet refinement at all (unlike scripts/extract-dtli-reviews.js,

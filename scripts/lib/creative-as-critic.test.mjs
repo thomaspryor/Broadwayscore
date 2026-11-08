@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data); data/critic-registry.json (untracked core data); data/shows.json (read by the test); +1 more. Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 import { test, describe } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'fs';

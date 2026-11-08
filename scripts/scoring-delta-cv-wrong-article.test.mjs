@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-6233: the CV wrongArticle routing is one helper (cvWrongArticlePromotion)
 // shared by both rebuild CV pre-passes and scoring-delta's replay, the BRO-6225
 // partial-window rescore hook is one helper used by both pre-passes, and the

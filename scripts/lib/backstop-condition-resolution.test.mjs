@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-4457: the ">24h T1/T2 review stuck" backstop card for a known-syndication
 // SECONDARY (nydailynews Chris Jones, whose chicagotribune primary is scored)
 // never closed. The scorer skips the secondary on purpose (explainExclusion ->

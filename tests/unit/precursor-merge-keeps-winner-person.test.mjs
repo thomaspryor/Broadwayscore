@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/precursors (read by the test); data/precursors/critics-circle.json (read by the test); data/precursors/drama-desk.json (read by the test); +10 more. Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-5817: a per-category precursor write must not drop the year-page
 // winnerPersonName/winnerEntries from a stored year entry.
 import { test } from 'node:test';

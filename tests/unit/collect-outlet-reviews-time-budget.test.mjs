@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // TESTS-VS-DERIVED-DATA-EXEMPT: structural only — data/shows.json is touched
 // solely by fs.existsSync() as a skip-guard (a bare worktree has no core data),
 // and no assertion reads or pins any show/review fact. The behavioural test

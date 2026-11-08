@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // Unit tests for scripts/social-autopost/ (BRO-6242): which posts fire, when,
 // that every caption fits its network, and that the card's badge CSS is the
 // site's. Offline: no Buffer, no browser.

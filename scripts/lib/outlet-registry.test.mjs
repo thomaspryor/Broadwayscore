@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/audit/outlet-display-name-proposals.json (read by the test); data/audit/outlet-display-name-proposals-bro-5246.json (read by the test); data/outlet-registry.json (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-5246: auto-onboarded outlets must not print a run-together slug as their
 // display name ("Newjerseystage"). Every id-shaped name must be renamed from the
 // outlet's homepage masthead or stamped displayNameReviewed (a real one-word name).

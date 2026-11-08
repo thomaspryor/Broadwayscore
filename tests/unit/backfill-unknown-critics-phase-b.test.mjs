@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * BRO-4485: backfill-unknown-critics Phase B was stuck. It took
  * unknownCritics.slice(0, limit) in directory order with no memory of

@@ -58,7 +58,7 @@ jobs:
     # confirm against the first few real runs' logged durations and adjust
     # (see BRO-2706 for the measured-cost-model precedent this should follow
     # if 20 turns out to be wrong in either direction).
-    timeout-minutes: 60 # BRO-5788: 30->60 (reached live-data at 29m + 22m step cap + 8m routing/commit), real runs reached the live-data step at 29m10s (Deepen 13m + monitor 6.5m), leaving no room for routing; BRO-5729: +verify-contamination-gate (2 audit runs, up to 600s each) in the live-data step
+    timeout-minutes: 80 # BRO-7101: 60->80 (live-data step cap 22->40 for the collected lane). BRO-5788: 30->60 (reached live-data at 29m + 22m step cap + 8m routing/commit), real runs reached the live-data step at 29m10s (Deepen 13m + monitor 6.5m), leaving no room for routing; BRO-5729: +verify-contamination-gate (2 audit runs, up to 600s each) in the live-data step
 
     steps:
       - name: Checkout repository
@@ -458,37 +458,62 @@ jobs:
         # BRO-6983: pass/fail is decided by the last step, "Fail on NEW live-data failures",
         # so a failure that already has an owner stops reddening the job. steps.livedata.outcome
         # still reports the raw result for the routing step below.
+        # lint-allow-swallow: outcome is judged by "Fail on NEW live-data failures" below; live-data-lane.js only filters file lists (BRO-7101)
         continue-on-error: true
         # BRO-5788: bounded so the routing + ledger-commit steps below still fit the job timeout.
-        timeout-minutes: 22
+        # BRO-7101: 22 -> 40. The lane grew from a 20-file hand list to every test that
+        # declares LIVE-DATA-LANE (669 files, 604s measured locally on 4 cores).
+        timeout-minutes: 40
         env:
           GH_TOKEN: ${{ github.token }}
           REQUIRE_REVIEW_CORPUS: '1' # a failed review-texts checkout must fail here, not skip green (BRO-5729)
         run: |
-          # BRO-5788: spec to stdout (the log reads as before), TAP to a file for
-          # the routing step. The exit code is node --test's own, unchanged.
-          node --test --test-reporter=spec --test-reporter-destination=stdout \
-            --test-reporter=tap --test-reporter-destination="$RUNNER_TEMP/live-data.tap" \
-            tests/unit/cast-changes-real-data.test.mjs \
-            tests/unit/bro3887-cache-fix-acceptance.test.mjs \
-            tests/unit/image-presence.test.mjs \
-            tests/unit/outlet-registry-live-data.test.mjs \
-            tests/unit/venue-complex-live-data.test.mjs \
-            tests/unit/tour-runtime-coverage.test.mjs \
-            tests/unit/merge-reviews-json-live-data.test.mjs \
-            tests/unit/cast-changes-data-quality-live-data.test.mjs \
-            tests/unit/duplicate-images-live-data.test.mjs \
-            tests/unit/drain-unknown-outlets-live-data.test.mjs \
-            tests/unit/discover-playbill-urls-target-live-data.test.mjs \
-            tests/unit/audit-bad-stub-visibility-live-data.test.mjs \
-            tests/unit/doubled-market-ids-live-data.test.mjs \
-            tests/unit/outlet-domain-validation-live-data.test.mjs \
-            tests/unit/automated-clear-not-manual-live-data.test.mjs \
-            tests/unit/critic-spelling-duplicates-live-data.test.mjs \
-            tests/unit/review-pullquotes-live-data.test.mjs \
-            tests/unit/duplicate-show-dedup-live-data.test.mjs \
-            tests/unit/review-gap-remediation-live-data.test.mjs \
-            scripts/verify-contamination-gate.test.mjs
+          # BRO-7101: the lane is collected, not hand-listed. A test that asserts on
+          # bot-rewritten data declares "// LIVE-DATA-LANE: <why>" in its first 40
+          # lines (or is named *-live-data.test.*); test.yml's blocking batches skip
+          # it and it runs here. Sources: the unit collector's live lane, the
+          # scripts/lib glob and the tsx manifest, each filtered by the marker.
+          # Each source is collected on its own so a crashed collector fails the step
+          # (process substitution would discard its exit code), and each has a floor
+          # well under today's count (451 / 169 / 46 on 2026-11-08) so a broken
+          # marker scan or collector cannot silently drop most of the lane.
+          lane_src() { # <label> <floor> <cmd...>
+            local label=$1 floor=$2 out; shift 2
+            out=$("$@") || { echo "::error::live-data lane: the $label source failed (exit $?)" >&2; return 1; }
+            local n; n=$(printf '%s' "$out" | grep -c . || true)
+            [ "$n" -ge "$floor" ] || { echo "::error::live-data lane: the $label source listed only $n files (floor $floor); the collector or the LIVE-DATA-LANE markers broke" >&2; return 1; }
+            printf '%s\n' "$out"
+          }
+          unit_live=$(lane_src unit-collector 300 node scripts/lib/unit-test-collection.js --lane=live) || exit 1
+          lib_live=$(lane_src scripts/lib 100 node scripts/live-data-lane.js --filter=live scripts/lib/*.test.mjs) || exit 1
+          tsx_out=$(lane_src tsx-manifest 30 sh -c 'node scripts/live-data-lane.js --filter=live < tests/unit-test-manifest-tsx.txt') || exit 1
+          mapfile -t node_live < <(printf '%s\n%s\n' "$unit_live" "$lib_live" | grep .)
+          mapfile -t tsx_live < <(printf '%s\n' "$tsx_out" | grep .)
+          echo "live-data lane: ${#node_live[@]} node + ${#tsx_live[@]} tsx files"
+          # BRO-5788: dot to stdout, TAP to a file for the routing step. node and tsx
+          # run separately (tsx's loader breaks some plain .mjs tests); their TAP is
+          # concatenated, the parser is line-based. Exit code: non-zero if either failed.
+          rc=0
+          node --test --test-timeout 300000 --test-reporter=dot --test-reporter-destination=stdout \
+            --test-reporter=tap --test-reporter-destination="$RUNNER_TEMP/live-data-node.tap" \
+            "${node_live[@]}" || rc=$?
+          npx tsx --test --test-timeout 300000 --test-reporter=dot --test-reporter-destination=stdout \
+            --test-reporter=tap --test-reporter-destination="$RUNNER_TEMP/live-data-tsx.tap" \
+            "${tsx_live[@]}" || rc=$?
+          # The parser keeps the LAST "# tests N" summary, so a tsx run that died
+          # before its summary would let the node summary vouch for it and resolve
+          # the tsx tests' cards as green. Both runs must reach a summary; if one
+          # did not, drop every summary line so routing sees a crashed run (no
+          # resolves, run-crashed card) and force a non-zero exit.
+          if grep -q '^# tests [0-9]' "$RUNNER_TEMP/live-data-node.tap" 2>/dev/null \
+             && grep -q '^# tests [0-9]' "$RUNNER_TEMP/live-data-tsx.tap" 2>/dev/null; then
+            cat "$RUNNER_TEMP/live-data-node.tap" "$RUNNER_TEMP/live-data-tsx.tap" > "$RUNNER_TEMP/live-data.tap"
+          else
+            echo "::error::live-data lane: the node or tsx run ended without a TAP summary (crash or timeout); treating the whole run as crashed"
+            cat "$RUNNER_TEMP/live-data-node.tap" "$RUNNER_TEMP/live-data-tsx.tap" 2>/dev/null | grep -vE '^# (tests|fail|pass) [0-9]' > "$RUNNER_TEMP/live-data.tap" || true
+            [ "$rc" -ne 0 ] || rc=1
+          fi
+          exit $rc
 
       # BRO-5788: every failing live-data test above becomes its own routed
       # condition (live-data-test:<file>::<name>): a Linear card once it stays
@@ -540,7 +565,7 @@ jobs:
           # failure, cancelled (a step timeout reports cancelled, .github/workflows/CLAUDE.md) or skipped:
           # only "failure with every failure already owned" is allowed through.
           if [ "$OUTCOME" != failure ]; then
-            echo "::error::Live-data assertions did not finish (outcome=$OUTCOME), e.g. the 22-minute step timeout. Treated as a new failure."
+            echo "::error::Live-data assertions did not finish (outcome=$OUTCOME), e.g. the 40-minute step timeout. Treated as a new failure."
             exit 1
           fi
           NEW='${{ steps.route.outputs.new_failures }}'

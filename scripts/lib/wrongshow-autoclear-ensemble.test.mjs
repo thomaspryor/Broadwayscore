@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/review-texts (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * Dispatch-verifiable acceptance for task #1146: the rebuild's UK/major-outlet
  * and allowCrossMarket wrongShow auto-clear paths must never override a

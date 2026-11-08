@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-5260: an ensemble not_a_review rejection made on a stub/excerpt must be
 // re-evaluated once a refetch upgrades the row to a complete full text. The
 // daily sweep (clear-stale-automated-text-verdicts.js) is the writer-agnostic

@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // TESTS-VS-DERIVED-DATA-EXEMPT: structural only — reads shows.json solely to
 // enumerate the SET of distinct `type` values and assert each has a label
 // handler. It pins no fact about any show (no title, score, date or count) and

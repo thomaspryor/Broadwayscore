@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * Tests for scripts/unabandon-fetch-cycles.js — the rollback for the fetch
  * retry lifecycle gate (BRO-787's shouldRetryFetch/recordFetchAttempt).

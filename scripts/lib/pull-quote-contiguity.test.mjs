@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/critic-registry.json (untracked core data); data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // Pull-quote contiguity (2026-10-19): displayed quotes must be a passage the
 // critic actually wrote. Covers the four Other Desert Cities shapes with
 // synthetic fullText: a dropped mid-sentence clause (NY Post), a trailing

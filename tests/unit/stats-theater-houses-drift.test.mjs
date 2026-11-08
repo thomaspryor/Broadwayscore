@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/theater-metadata.json (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * Drift gate: src/lib/stats-ui/theater-houses.json must equal the projection
  * of data/theater-metadata.json (the REAL scripts/lib/theater-houses.js, per

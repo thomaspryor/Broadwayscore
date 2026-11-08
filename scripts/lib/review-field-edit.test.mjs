@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * Tests for scripts/lib/review-field-edit.js (BRO-4216).
  * Run: node --test scripts/lib/review-field-edit.test.mjs

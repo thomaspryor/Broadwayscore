@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/commercial.json (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * BRO-5632: the site and the cost model agree on which weekly costs are
  * reported. The site prints a weekly cost as an "Estimate" unless it is a

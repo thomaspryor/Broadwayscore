@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/site-image-versions.json (untracked core data); data/grosses.json (untracked core data); data/audience-buzz.json (untracked core data); +9 more. Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // TESTS-VS-DERIVED-DATA-EXEMPT: parity test, the same core data fed through the website path (data-core/engine.ts + ScoreBadge/score-buckets) and the app feed path (scripts/lib/mobile-critic-score.js); asserts equality, no factual pins.
 /**
  * The iOS app shows `cr.l` from public/data/mobile-shows.json as the tier

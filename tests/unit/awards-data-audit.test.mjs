@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/awards.json (read by the test); data/shows.json (read by the test); data/awards-confirmed-ties.json (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // TESTS-VS-DERIVED-DATA-EXEMPT: live data is advisory diagnostics only; assertions use source-cited fixtures.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';

@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * Guards audit-show-review-gap.js `isCoveredFile`, which decides whether a dir file
  * "covers" an aggregator-listed review.

@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * BRO-4490: FT multi-review columns carry one star verdict per show. The star
  * extractor must take the run that ends this show's section, and must not

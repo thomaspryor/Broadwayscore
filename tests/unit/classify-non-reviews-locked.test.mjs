@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * Verifies classify-non-reviews.js's per-file write path preserves PROTECTED
  * fields on locked files (S1-T3i).

@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/.test-pending-drain-6Zhupj/fetches.jsonl (read by the test); data/.test-pending-drain-6Zhupj/review-texts/broadway-in-window/thewrap--robert-hofler.json (read by the test); data/.test-pending-drain-6Zhupj/review-texts/west-end-in-window/thewrap--robert-hofler.json (read by the test); +21 more. Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-4408: opening-night-poller.yml must drain _pending/ no-byline strands
 // for the in-window shows before the poll loop, with the BD breaker exemption.
 import test from 'node:test';

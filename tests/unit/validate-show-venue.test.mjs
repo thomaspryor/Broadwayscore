@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // Tests for scripts/validate-show-venue.js's pure decision functions (card
 // #590, Bronco Billy: The Musical). Guards against stub entries where the
 // venue/year are wrong by exercising the actual comparison logic against a

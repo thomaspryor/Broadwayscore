@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-6066: replay of the 2026-10-22 shadow night for The Imaginary Invalid (run 39873028216). The lane found 11 of the
 // 19 reviews the regular pipeline published. These pages are rebuilt from that night's inputs: the same URLs, the same
 // page shapes that broke discovery (Playbill's sidebar <article> cards ahead of the roundup body, `/news/` review slugs,

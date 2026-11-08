@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * BRO-6886: a press-night review with no stars must get a scoring run the
  * moment it is pushed, not when the pushing workflow finishes.

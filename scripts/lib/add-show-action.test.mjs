@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/retired-show-ids.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * Tests for scripts/lib/add-show-action.js
  * Run: node --test scripts/lib/add-show-action.test.mjs

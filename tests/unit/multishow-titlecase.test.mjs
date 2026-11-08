@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * BRO-5373: detectMultiShowContent's requireTitleCase option. Ordinary-word
  * show titles in lowercase prose ("miles around", "the estate") stop counting;

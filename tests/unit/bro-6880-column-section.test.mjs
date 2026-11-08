@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (read by the test); data/review-texts (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-6880: a T1/T2 multi-show critic column (Washington Post shape) keeps only the
 // target show's section; a true roundup (quotes other critics) is still refused.
 // v2: the isolation runs only after the verifier rejects the page as a multi-show page (never on the write path).

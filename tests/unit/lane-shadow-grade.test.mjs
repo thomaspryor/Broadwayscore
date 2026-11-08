@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/reviews.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-6872: the graded replay gate. canonicalUrl maps an outlet's old host to its current one (The Independent was
 // scored twice on 2026-10-29, once per host), the grader reads a shadow report into pass/fail checks, and a replayed
 // night runs on a clock anchored at its embargo so the trust window judges rows as on the night.

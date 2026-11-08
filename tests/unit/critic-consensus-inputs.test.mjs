@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * BRO-4869: the contamination audit compares a stored Critics' Take
  * fingerprint against the one a regeneration would write, built from the same

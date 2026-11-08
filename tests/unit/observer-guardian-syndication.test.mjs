@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * BRO-6046: The Observer prints on theguardian.com, so one Observer column was
  * filed twice (observer from Theatre Record, guardian from the Guardian API /

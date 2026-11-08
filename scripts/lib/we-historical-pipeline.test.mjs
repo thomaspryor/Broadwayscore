@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/retired-show-ids.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // End-to-end logic tests for the WE historical backfill (BRO-4851):
 // discover-historical-shows-we.js buildCandidates() and
 // promote-historical-we.js planPromotions(). Root-level scripts/*.test.mjs

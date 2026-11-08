@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (read by the test); data/reviews.json (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-5501: Cherry Orchard 2026 (West End + Park Avenue Armory) data regressions.
 // Reads core data (shows.json / reviews.json); skips when the private core data is absent.
 import { test } from 'node:test';

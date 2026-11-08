@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/reviews.json (untracked core data); data/shows.json (untracked core data); data/audience-buzz.json (untracked core data); +7 more. Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // Regression guard (BRO-2606, found 2026-08-31 while verifying BRO-2590):
 // scripts/newsletter/generate.mjs persisted data/newsletter-state.json BEFORE
 // the london-openings, broadway-we and also-opened-recently sections ran, so

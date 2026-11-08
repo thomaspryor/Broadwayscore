@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/video-reviews-discovery (read by the test); data/video-reviews-discovery/5throwcenter.json (read by the test); data/video-reviews-discovery/ashleyhufford.json (read by the test); +1 more. Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * Unit tests for preserveLlmFlags — carrying LLM pre-classification flags
  * across weekly video-discovery rescans (scripts/lib/video-discovery-merge.js).

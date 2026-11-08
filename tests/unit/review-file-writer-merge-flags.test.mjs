@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data); data/critic-registry.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-3911: current scraper callers select individual fields, and
 // buildManualReviewFields supplies false flags, so these replay/override shapes
 // are defensive coverage of the public writer's unrestricted fields contract.

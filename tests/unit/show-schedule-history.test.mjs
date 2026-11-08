@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/show-schedules.json (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * BRO-6877: past-week showtime archive (scripts/lib/show-schedule-history.js)
  * and the committed archive file it maintains.

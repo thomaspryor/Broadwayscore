@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/west-end-venues.json (read by the test); data/uk-regional-venues.json (read by the test); data/curated-historical-shows.json (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 import test, { after } from 'node:test';
 import assert from 'node:assert/strict';
 import Module, { createRequire } from 'node:module';

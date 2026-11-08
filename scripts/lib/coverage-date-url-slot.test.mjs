@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-4430: real reviews of the right production dropped because a date, URL
 // or byline on the file was wrong, or a stale file blocked the outlet's slot.
 // Every assertion require()s the production function (CLAUDE.md rule 15).

@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-58: the 2026-04-22 baseline run of the OLD expected-vs-actual delta
 // algorithm flagged 86 shows as "drift" — review-text files existing on disk
 // with no matching reviews.json entry. That algorithm was retired wholesale

@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/critic-registry.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * Unit tests for scripts/lib/critic-display-name.js — audit S7-T1 (BRO-4204).
  *

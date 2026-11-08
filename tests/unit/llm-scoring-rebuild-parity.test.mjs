@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/critic-registry.json (read by the test); data/critic-registry.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * Parity contract: scripts/lib/is-scoreable.js MUST be no-more-permissive
  * than scripts/lib/review-guards.js#isIncludableForRebuild.

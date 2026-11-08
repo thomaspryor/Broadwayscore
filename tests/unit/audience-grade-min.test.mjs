@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+// LIVE-DATA-LANE: reads data/audience-buzz.json (read by the test); data/shows.json (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // TESTS-VS-DERIVED-DATA-EXEMPT: Show metadata is input to scoring/count parity; no metadata values are pinned.
 /**
  * Guards the Audience Grade review minimum (owner decision 2026-10-31: 15 -> 10).

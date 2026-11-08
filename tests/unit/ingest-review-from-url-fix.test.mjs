@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // Regression test for BRO-2605: benevolent-off-broadway-2026's Talkin'
 // Broadway review sat rejected-unscoreable for >24h. Root cause: the stored
 // URL was the allthatchat forum announcement thread, which only ever carries

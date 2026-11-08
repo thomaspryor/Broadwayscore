@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/review-texts/__synthetic-orphan-test-show-30318__ (untracked core data); data/review-texts/__synthetic-orphan-test-show-30318__/amny--matt-windman-stub.json (untracked core data); data/review-texts/__synthetic-orphan-test-show-30318__/exeunt-magazine--loren-noveck.json (untracked core data); +10 more. Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * Integration tests for scripts/verify-all-scored.js (Gap 1 — Lost Boys
  * 2026-04-26 #8 defense).

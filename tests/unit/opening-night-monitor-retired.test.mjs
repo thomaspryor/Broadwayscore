@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/opening-night-monitor/DISABLED (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-4638: the Mac opening-night monitor is retired through its existing
 // kill switch (data/opening-night-monitor/DISABLED), committed with a
 // "RETIRED:" first line so the Mac's 30-minute checkout-sync carries it in.

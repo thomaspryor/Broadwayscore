@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/audit/exclusion-flags-audit.json (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * BRO-2237: audit-exclusion-flags.js runs on a schedule, report-only.
  *

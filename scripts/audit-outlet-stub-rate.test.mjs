@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/review-texts (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // Tests for the outlet stub-rate & invalid-content-rate monitor
 // (scripts/audit-outlet-stub-rate.js, card #100, generalized by card #1244).
 // Requires the REAL collectReviewRecords/computeOutletStubRates/

@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data); data/audit/theatre-reviews-coverage.json (bot ledger). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * Unit + wiring tests for the WE roundup discovery libs extracted from
  * opening-night-poller.js (2026-07-10, WE completeness gate Phase A2).

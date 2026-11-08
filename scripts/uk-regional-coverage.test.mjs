@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (read by the test); data/outlet-registry.json (read by the test); data/reviews.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-6516 acceptance: >=300 UK regional productions (Jan 2024 on) are in shows.json with a city;
 // each is scoreable (3+ scored reviews, or 5 if all T3 via hasEnoughReviews) or listed as below-bar.
 import { test } from 'node:test';

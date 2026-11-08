@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/audit/digest-autofix-ledger.jsonl (bot ledger); data/audit/backlog-drain-ledger.jsonl (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * cmux-triage-digest.test.mjs — BRO-3050 piece 1.
  *

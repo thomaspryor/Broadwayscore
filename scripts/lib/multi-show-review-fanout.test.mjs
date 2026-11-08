@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data); data/retired-show-ids.json (untracked core data); data/critic-registry.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // Tests for multi-show-review-fanout.js (BRO-4431): one critic article that
 // reviews several shows is filed under every show it reviews.
 // Run: node --test scripts/lib/multi-show-review-fanout.test.mjs

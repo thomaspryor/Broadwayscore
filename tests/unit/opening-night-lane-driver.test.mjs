@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-4831: the production lane driver. Real runProductionLane (CLAUDE.md section 15) with injected deps; nothing here
 // touches a lease store, a scraper or a scorer.
 import test from 'node:test';

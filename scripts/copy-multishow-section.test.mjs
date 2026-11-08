@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-5325: end-to-end run of scripts/copy-multishow-section.js on fixture
 // review-texts. Shapes follow the card's three cases: venus-in-fur-2011 (a short
 // own WSJ row, the section in godspell-2011's column), of-mice-and-men-2014 (no

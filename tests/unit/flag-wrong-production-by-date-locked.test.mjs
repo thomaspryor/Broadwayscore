@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * Verifies flag-wrong-production-by-date.js's per-file write path honors
  * _locked. The script writes wrongProduction + wrongProductionNote (both

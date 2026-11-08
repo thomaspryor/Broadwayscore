@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * Regression test (BRO-3247, 2026-09-15): the per-show URL blocklist was not
  * honored by scripts/ingest-review-from-url.js.

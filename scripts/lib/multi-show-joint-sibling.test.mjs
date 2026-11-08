@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-6736: joint reviews (one article covering several shows) must go live on
 // EVERY show. Fixtures replay the SHAPE of the real articles; prose is invented.
 // Run: node --test scripts/lib/multi-show-joint-sibling.test.mjs

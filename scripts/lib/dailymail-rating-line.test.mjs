@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-6900: the Daily Mail prints its verdict as a bold heading paragraph,
 // "Rating: Four out of five stars". Two bugs lost it: the text extractor
 // stored the body without that line (or read the page's inline JavaScript),

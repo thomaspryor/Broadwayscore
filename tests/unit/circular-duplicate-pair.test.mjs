@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * Regression tests for the circular-duplicateOf class (Notion 2026-07-11):
  * fileA.duplicateOf=fileB AND fileB.duplicateOf=fileA excludes BOTH from the

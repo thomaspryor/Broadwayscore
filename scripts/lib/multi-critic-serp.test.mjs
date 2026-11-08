@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/outlet-registry.json (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-6535: category-backed discovery must receive the configured critic lists.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';

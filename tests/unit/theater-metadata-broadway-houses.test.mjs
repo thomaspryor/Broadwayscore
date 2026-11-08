@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/theater-metadata.json (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-5088: the Stats house list (data/theater-metadata.json keys) is the
 // denominator for the diary completion ring, so it must hold Broadway houses
 // only. The Steinberg Center (Laura Pels + Black Box) was off-Broadway but sat

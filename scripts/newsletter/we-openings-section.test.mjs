@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/reviews.json (untracked core data); data/shows.json (untracked core data); data/audience-buzz.json (untracked core data); +3 more. Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // Regression guard for card #1152 (2026-08-09): the West End weekly draft for
 // week 2026-08-03 reached Resend with NO openings section at all — the subject
 // line named "Now You See Me Live opens to decent reviews." but the body had

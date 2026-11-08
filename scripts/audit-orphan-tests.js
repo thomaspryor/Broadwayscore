@@ -391,6 +391,16 @@ function collectCiCoverage(root = ROOT) {
     }
     for (const entry of entries) manifestEntries.add(entry);
   }
+  // BRO-7101: check-corpus-drift.yml runs the collector's live lane
+  // (`unit-test-collection.js --lane=live`), which also takes quarantined and
+  // verify-* files that declare LIVE-DATA-LANE. Count them only while some
+  // workflow actually runs that lane.
+  if (/unit-test-collection\.js --lane=live\b/.test(runText)) {
+    try {
+      const { collectLane } = require('./lib/unit-test-collection.js');
+      for (const entry of collectLane(root, 'live')) manifestEntries.add(entry);
+    } catch { /* a collector failure is reported by checkManifests() */ }
+  }
   const ci = { manifestEntries, runText };
   return { ...ci, coverageOf: (rel) => ciCoverageOf(rel, ci) };
 }

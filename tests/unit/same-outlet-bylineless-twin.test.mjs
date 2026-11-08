@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/critic-registry.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-5398 — one review must not render twice because one copy carries a
 // placeholder byline. Affluenza, Time Out London (2026-10-15 report): the
 // person-bylined file (Andrzej Lukowski, 45) and a raw SERP capture bylined

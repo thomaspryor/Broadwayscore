@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data); data/critic-registry.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-5499: TheaterScene.net prints the real critic on "Posted on <date> by X in <category>"; the
 // site editor (Victor Gluck) is credited by listing metadata on pages other critics wrote.
 import { test } from 'node:test';

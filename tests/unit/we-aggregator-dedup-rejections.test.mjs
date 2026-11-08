@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/retired-show-ids.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-4204 S4-T9 / S4-T10 — West End aggregator promoter batch safety:
 //   - slug-derived titles no longer carry roundup ("review2", "review-round-
 //     up") or venue-noise tokens (matchWestEndVenueFromSlug);

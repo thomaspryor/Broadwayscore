@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/retired-show-ids.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-160: buildShowEntry() stops hardcoding category/market/date fields.
 // Tests the REAL exported functions per CLAUDE.md §15 — no logic copies.
 //

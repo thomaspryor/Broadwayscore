@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/awards.json (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // TESTS-VS-DERIVED-DATA-EXEMPT: pins the just-for-us-2023 eligible:false flag — a deliberate ineligibility marker, not a fact derivable from a precursor source.
 /**
  * Regression test for the Tony eligibility canary fix.

@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * BRO-4956: Best of Theatre round-ups as a WE gap-audit reference source.
  * Fixtures are trimmed copies of the live markup (Rent, An Oak Tree, Oct 2026).

@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/outlet-registry.json (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-5376: Seen and Heard International (UK-based, covers London + NYC) had no
 // region/isDualMarket in the registry, so the forward cross-market guard flagged
 // its London reviews as "US outlet reviewing London show". gaytimes.com also

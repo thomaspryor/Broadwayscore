@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/outlet-registry.json (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * BRO-254: outletId 'westend' is a real, legitimate West End review outlet
  * (westend.com — has its own byline files across multiple shows), but it had

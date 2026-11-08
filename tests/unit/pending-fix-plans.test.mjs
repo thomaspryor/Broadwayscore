@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/pending-fixes (read by the test); data/pending-fixes/bro-2255.json (read by the test); data/pending-fixes/bro-2618.json (read by the test); +1303 more. Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // Every pending session plan in data/pending-fixes must be applicable by
 // execute-approved-fix.js. BRO-4492: a 41-action plan landed and was refused
 // only at apply time. BRO-5007: a notes edit carrying "[Plausibility warning:

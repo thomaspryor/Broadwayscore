@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-5183: recovering real text for the legacy web-search rows BRO-5107 excludes.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';

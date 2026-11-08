@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/site-image-versions.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // applyCoverageFloor: the show page's score floor, shared by the website and
 // the app feed's cr.pq. Run: node --test scripts/lib/coverage-floor.test.mjs
 import { test } from 'node:test';

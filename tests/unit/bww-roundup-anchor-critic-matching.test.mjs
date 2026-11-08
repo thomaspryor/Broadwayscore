@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * BRO-3504: BWW roundup anchor URLs are matched to critics by the name written
  * right before each anchor ("<p>Critic Name, <a href>Outlet:</a> ..."), not by

@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/opening-night/leases.json (untracked core data); data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-3388: gather-reviews.js honours --time-budget-min so a multi-show batch
 // exits 0 before the GHA job timeout instead of being SIGKILLed with its
 // if: always() push steps skipped (which discarded every SERP discovery).

@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/commercial.json (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // Shadow cost split (BRO-5073, opts.costSplit). require()s the real helpers (§15).
 import { test } from 'node:test';
 import assert from 'node:assert/strict';

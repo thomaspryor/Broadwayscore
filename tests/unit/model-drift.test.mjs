@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/audit/commercial-data-history.json (bot ledger); data/shows.json (untracked core data); data/commercial.json (untracked core data); +3 more. Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-5004: stored model values that a fresh run no longer reproduces are
 // caught. require()s the real helpers and model (§15).
 import { test, describe } from 'node:test';

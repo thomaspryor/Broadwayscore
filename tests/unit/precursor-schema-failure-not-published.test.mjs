@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/precursors/critics-circle.json (read by the test); data/precursors/evening-standard.json (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-3951: unknown show columns must not replace count-stable baseline winners.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';

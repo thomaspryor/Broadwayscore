@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/critic-registry.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * BRO-5373 (per the BRO-5137 owner decision 2026-10-13: a Sunday edition is
  * its own critic vote): The Mail on Sunday is outletId `mail-on-sunday`,

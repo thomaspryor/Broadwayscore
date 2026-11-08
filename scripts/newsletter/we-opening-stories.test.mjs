@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/reviews.json (untracked core data); data/shows.json (untracked core data); data/audience-buzz.json (untracked core data); +3 more. Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // Regression guard for BRO-273 (recovered from stale Notion card
 // 3b0637c5-416f-81ad-8f39-c48edb915177): the West End weekly draft for week
 // 2026-07-27 (send day 2026-08-02) named "Tao of Glass" in the card stack's

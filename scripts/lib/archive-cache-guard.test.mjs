@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (read by the test); data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // timebomb-audit-exempt: archive-cache-guard.js measures cache age as
 //   (Date.now() - fs.statSync(archivePath).mtimeMs). audit-time-bomb-
 //   tests.js shifts the PROCESS clock but cannot shift the FILESYSTEM, so

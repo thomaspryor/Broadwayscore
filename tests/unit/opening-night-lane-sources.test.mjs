@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/reviews.json (read by the test); data/shows.json (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-6872: every outlet that publishes on time on Broadway opening nights needs a source the lane polls (a feed or a
 // section page), or a stated reason it cannot have one. Fails when an on-time outlet has neither.
 // TESTS-VS-DERIVED-DATA-EXEMPT: structural coverage check (every on-time outlet has a source); pins no review facts.

@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // TESTS-VS-DERIVED-DATA-EXEMPT: parity test — same shows.json fed to classifyMarketRouting and resolveWriteTarget; expects 0 diffs, no factual pins.
 // BRO-2110: resolveWriteTarget (the shared caller idiom) must decide exactly like
 // classifyMarketRouting when no bypass option is set, and bypass correctly when one is.

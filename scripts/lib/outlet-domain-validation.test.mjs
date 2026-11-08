@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/outlet-registry.json (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // outlet-domain-validation.test.mjs — task #1926.
 //
 // Real incident: data/review-texts/paranormal-activity-2026/vulture--sandy-macdonald.json

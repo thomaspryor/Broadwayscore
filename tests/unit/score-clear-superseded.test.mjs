@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * BRO-3171: a page-structure star (Time Out SVG, London Theatre page data)
  * retires an "extraction-no-evidence-in-text" / "outlet publishes no rating"

@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-4783 (epic BRO-4210): the opening-night lane's discovery pass. Real functions, injected fetch, no network.
 // The pages below are hand-built in the shape of the real ones, INCLUDING page chrome (nav, footer, rails, ads,
 // related stories), because what a pass admits is stamped aggregator-verified and the corpus guards stand down for it.

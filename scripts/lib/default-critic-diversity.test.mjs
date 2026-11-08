@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/outlet-registry.json (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-6056: scripts/lib/default-critic-diversity.js decides when an outlet's
 // defaultCritic is one of several critics and must not fill blank bylines.
 import { test } from 'node:test';

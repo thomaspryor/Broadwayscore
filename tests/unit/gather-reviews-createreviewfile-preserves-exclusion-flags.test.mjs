@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data); data/critic-registry.json (untracked core data); data/review-texts/__test-createreviewfile-816-9386 (untracked core data); +3 more. Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // Task #816 P1 follow-up (adversarial-review finding).
 //
 // createReviewFile()'s STALE-FLAG COLLISION GUARD only blocks a raw write

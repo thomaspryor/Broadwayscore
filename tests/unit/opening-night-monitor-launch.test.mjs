@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/audit/alert-ledger.json (read by the test); data/audit/alert-ledger.json (bot ledger). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import fs, { readFileSync } from 'node:fs';

@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/retired-show-ids.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-6771: Theatre In DC rides the Theatre In Chicago code path through a city config.
 import test from 'node:test';
 import assert from 'node:assert/strict';

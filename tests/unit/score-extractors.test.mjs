@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * BRO-866: explicit star ratings at star-rating outlets must win over LLM scores.
  * Cases from the card: NYSR "Data" (5 unicode stars), Guardian "Cats" (4 stars),

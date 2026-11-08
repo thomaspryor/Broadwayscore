@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/audit/sb-circuit-breaker.json (bot ledger). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * Integration tests for cookie-loader wiring into scripts/lib/scraper.js.
  *

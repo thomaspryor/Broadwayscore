@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-7050: one automated classifier verdict must not hide an aggregator-listed review.
 // Requires the real functions (review-guards.js explainExclusion / soloVerdictHeld /
 // isRejectedByReasonExclusion / isRejectedAtExclusion, single-verdict-guard.js).

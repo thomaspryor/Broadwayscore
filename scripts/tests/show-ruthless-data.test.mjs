@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * BRO-3630: "Ruthless! The Musical" was a zero-results search. Guards the
  * catalogue entry (Playbill: St. Luke's Theatre, previews 2015-06-25, opened

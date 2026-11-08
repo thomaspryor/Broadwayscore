@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/awards.json (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * Regression test for the per-performer DL "Distinguished Performance Award"
  * chip-render logic. DL gives ONE Distinguished Performance per year and it

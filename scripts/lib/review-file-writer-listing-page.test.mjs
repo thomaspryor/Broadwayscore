@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data); data/critic-registry.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * BRO-4596: createOrMergeReviewFile must refuse a write whose URL is a listing
  * or section-index page (LISTING_PAGE_URL_PATTERNS), for any source. Live case:

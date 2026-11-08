@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/reviews.json (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // Regression coverage for TB URL candidate generation and page verification.
 // BRO-1013: buildTbCandidateUrls missed the short-title variant for comma-subtitled
 // shows (e.g. "Beaches, A New Musical" → real TB URL is "Beaches.html", not

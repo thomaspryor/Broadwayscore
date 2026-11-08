@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * Verifies strip-stale-single-model-scores.js's locked-file behavior
  * (S1-T3g + S1-T4).

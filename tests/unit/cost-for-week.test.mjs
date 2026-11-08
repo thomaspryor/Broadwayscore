@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/broadway-cost-index.json (read by the test); data/commercial.json (untracked core data); data/cost-anchor-seeds.json (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-4989: the cost index, costForWeek(), Near Cost, and the backtest stop.
 // Tests the real modules via require() (CLAUDE.md §15).
 import { describe, it } from 'node:test';

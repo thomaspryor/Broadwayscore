@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (read by the test); data/review-texts (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // Acceptance test for BRO-185: drain the self-contradictory-clear backlog and
 // ratchet the gate to 0.
 //

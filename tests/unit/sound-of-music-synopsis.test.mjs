@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * BRO-4763: live-data coverage for the 1998 revival and its national tour.
  * Imported by tour-runtime-coverage.test.mjs in check-corpus-drift.yml's

@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * BRO-329: T1/T2 silent gap on "An American Daughter" —
  * data/review-texts/an-american-daughter-off-broadway-2026/nysr--david-finkle.json.

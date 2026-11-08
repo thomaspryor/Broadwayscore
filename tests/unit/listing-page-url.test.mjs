@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // Listing pages scored as reviews (2026 data audit, S1-T0).
 //
 // Four listing-page URL shapes were live-scored as reviews: Talkin' Broadway's

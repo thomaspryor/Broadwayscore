@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * Regression: a "no-star" outlet (one that publishes review TEXT but no star
  * rating) must still be LLM-scoreable. The LLM ensemble scores text into

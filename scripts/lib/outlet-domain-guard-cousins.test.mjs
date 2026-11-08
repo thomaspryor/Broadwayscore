@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data); data/review-texts/__test-odgc-gather-timeout (untracked core data); data/critic-registry.json (untracked core data); +17 more. Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // Task #1531 (BRO cousin of #1529, Notion 3bc637c5). outletOwnsUrlDomain() is
 // coarse — it only checks bare domain ownership, so a path-split domain like
 // timeout.com/london vs timeout.com/newyork is invisible to it. Task #1529

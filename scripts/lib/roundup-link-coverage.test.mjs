@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-5561: require the actual archive matcher and the audit's link policy.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';

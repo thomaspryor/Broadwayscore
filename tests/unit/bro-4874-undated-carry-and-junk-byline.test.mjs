@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/critic-registry.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-4874: (a) capture junk bylines ("View my Complete", "nick730", "The Recs IT")
 // reached the site as critics; (b) undated reviews of an earlier run were never
 // carried onto the returning entry. Real functions are required (CLAUDE.md §15).

@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data); data/critic-registry.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-6747: a clean refetch replaces a stored body that is a page dump (a cookie
 // banner glued to the article, or a raw HTML document), lifts the old body's
 // ensemble rejection, and moves a wrong-outlet junk file to its right slot.

@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/audit/seo-thin-cohort.json (read by the test); data/seo-gsc-impressions.json (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 const isThinClosedShow = (s) => _thinShow(s, true);
 const isThinCritic = (c) => _thinCritic(c, true);
 // BRO-5969: index-bloat rules live in one pure module shared by pages and sitemap.

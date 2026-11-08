@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // Recurrence guard for punctuation-sensitive show-mention checks (2026-09-24).
 // shows.json "Dog Man - The Musical" vs reviews' "Dog Man: The Musical" made
 // every show-mention check count 0 mentions: real reviews were nulled as

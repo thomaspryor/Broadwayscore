@@ -88,7 +88,9 @@ test('both bare batches in test.yml call the summarizer and keep the exit code',
     assert.ok(block.includes(`summarize-failing-tests.sh "${label}" ${log} "$rc"`), `${label} summarizer call missing`);
     assert.match(block, /exit "\$rc"/);
   }
-  assert.match(yml, /tests=\(scripts\/lib\/\*\.test\.mjs\)/);
+  // BRO-7101: the scripts/lib glob is filtered to the blocking lane (live-data tests run in check-corpus-drift.yml).
+  assert.match(yml, /all_lib=\(scripts\/lib\/\*\.test\.mjs\)/);
+  assert.match(yml, /node scripts\/live-data-lane\.js --filter=blocking "\$\{all_lib\[@\]\}"/);
 });
 
 test('extraction awk matches run_batch() in test.yml (no drift)', () => {

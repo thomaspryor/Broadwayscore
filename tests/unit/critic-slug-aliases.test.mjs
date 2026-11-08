@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/cast-manifest.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // Critic-slug alias registry + redirect emission (2026 data audit, S5-T9).
 //
 // Requires the real module (CLAUDE.md §15) and points it at temp files via the

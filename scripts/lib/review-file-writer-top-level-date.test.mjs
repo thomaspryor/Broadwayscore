@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data); data/critic-registry.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-6585: ingest-urls passes the page date as input.publishDate (top level);
 // the writer used it for its guards but never wrote it, so the file was undated.
 import { test } from 'node:test';
