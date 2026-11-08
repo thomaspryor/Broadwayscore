@@ -71,7 +71,7 @@ const { sameUrlDuplicateKey } = require('./lib/review-url-collision');
 const { hasRealImage, PLACEHOLDER_FILE_HASHES } = require('./lib/show-images');
 const { findImagePointerProblems, imagePointerSeverity } = require('./lib/image-pointers');
 const { buildOutletMaps } = require('./lib/outlet-region-map');
-const { previewsAfterOpening, excessivePreviewGap, inheritedDateFromSibling, suspiciousInheritedYear, normTitle } = require('./lib/show-date-integrity');
+const { previewsAfterOpening, excessivePreviewGap, longPreviewGap, inheritedDateFromSibling, suspiciousInheritedYear, normTitle } = require('./lib/show-date-integrity');
 
 // Canonical Broadway-category predicate. Treats null category as Broadway
 // per historical-import convention; use this instead of raw string compare.
@@ -945,6 +945,12 @@ function validateDates(shows) {
     // diffuse/older writers that bypass it.
     else if (excessivePreviewGap(show)) {
       error(`Show "${show.title}" (${show.id}) has previewsStartDate (${show.previewsStartDate}) implausibly far before openingDate (${show.openingDate}) — likely a wrong-production previews date.`);
+    }
+
+    // BRO-7131: >120 days of previews on a 2024+ opening is usually a stale record (a moved
+    // venue or postponed run kept the old previews date). Warning: a few long runs are real.
+    else if (longPreviewGap(show)) {
+      warn(`Show "${show.title}" (${show.id}) has previewsStartDate (${show.previewsStartDate}) over 120 days before openingDate (${show.openingDate}). Check the current listing: a moved or postponed run often keeps its old previews date.`);
     }
 
     // Collapsed press night: West End openingDate === previewsStartDate with a

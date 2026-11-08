@@ -12,8 +12,9 @@
  *
  * --apply dispatches ingest-urls.yml per show (capped-workflow-dispatch.js, caller=rescue-abandoned-reviews) and
  * records each attempt in data/audit/abandoned-review-rescue.json. --alert files one worker card per show whose rows
- * spent every retry (owner-alert-router 'auto', workerFixable): a worker fetches the page from outside GitHub with
- * make-html-handoff-plan.js. A row that recovers leaves the sweep; its ledger entry is pruned and its card resolved.
+ * spent every retry (owner-alert-router 'auto', dispatchAtFiling): a worker fetches the page from outside GitHub with
+ * make-html-handoff-plan.js. A file whose A row leaves the full sweep recovered; its ledger entry is pruned and its
+ * card resolved. Ledger keys are show/file (a multi-show URL has one file per show).
  */
 const fs = require('fs');
 const path = require('path');
@@ -47,6 +48,8 @@ function collect(now) {
   }
   const { getTier } = require('./lib/outlet-tiers');
   const rows = [];
+  rows.allA = new Set(out.A.map((r) => r.file));
+  rows.sweptFiles = out.files;
   for (const row of out.A) {
     const show = shows.get(row.show);
     const data = readJson(path.join(ROOT, 'data', 'review-texts', row.file), null);
@@ -58,6 +61,7 @@ function collect(now) {
   return rows;
 }
 
+const CAP_DEFERRED = 3; // capped-workflow-dispatch.js: the workflow's in-flight cap is full (not a failure)
 function dispatch(showId, urls) {
   execFileSync('node', [path.join(__dirname, 'capped-workflow-dispatch.js'), '--workflow=ingest-urls.yml',
     '-f', `show_id=${showId}`, '-f', `urls=${urls.join('\n')}`, '-f', 'caller=rescue-abandoned-reviews'], { stdio: 'inherit' });
@@ -67,11 +71,10 @@ async function main() {
   const now = Date.now();
   const ledger = readJson(LEDGER, {});
   const rows = collect(now);
-  const live = new Set(rows.map((r) => r.url));
   const retry = new Map();
   const escalate = new Map();
   for (const r of rows) {
-    const verdict = rescue.decide(ledger[r.url], now);
+    const verdict = rescue.decide(ledger[r.file], now, r.bucket);
     console.log(`${verdict.padEnd(9)} ${r.file} (${r.bucket}) ${r.url}`);
     const bucket = verdict === 'retry' ? retry : (verdict === 'escalate' || verdict === 'escalated') ? escalate : null;
     if (!bucket) continue;
@@ -80,12 +83,16 @@ async function main() {
   }
   console.log(`\n${rows.length} rescue candidate(s): ${[...retry.values()].flat().length} to retry, ${[...escalate.values()].flat().length} spent every retry.`);
 
-  // Recovered rows leave the sweep: prune them and clear their show's card once none are left.
+  // A file whose A row is gone from the full sweep recovered: prune it, and clear its show's card once none are
+  // left. Rows that only left the candidate list (show aged out, outlet now counted) keep their entry and card.
+  // Never prune on a partial view: --show, or a sweep that read no files (review-texts checkout failed).
   const resolvedShows = new Set();
-  for (const [url, e] of Object.entries(ledger)) {
-    if (live.has(url)) continue;
-    if (e.escalatedAt) resolvedShows.add(e.show);
-    delete ledger[url];
+  if (!arg('show', null) && rows.sweptFiles > 0) {
+    for (const [file, e] of Object.entries(ledger)) {
+      if (rows.allA.has(file)) continue;
+      if (e.escalatedAt) resolvedShows.add(e.show);
+      delete ledger[file];
+    }
   }
 
   let dispatched = 0;
@@ -95,9 +102,11 @@ async function main() {
       if (dispatched >= MAX_DISPATCH) { console.log(`max-dispatch ${MAX_DISPATCH} reached; the rest go next run`); break; }
       try {
         dispatch(showId, list.map((r) => r.url));
-        for (const r of list) rescue.recordAttempt(ledger, r.url, { show: showId, file: r.file }, now);
+        for (const r of list) rescue.recordAttempt(ledger, r.file, { show: showId, url: r.url }, now);
         dispatched++;
-      } catch (err) { failed++; console.error(`[rescue] dispatch for ${showId} failed: ${err.message}`); }
+      } catch (err) {
+        if (err.status === CAP_DEFERRED) { console.log('ingest-urls.yml in-flight cap is full; the rest go next run'); break; }
+        failed++; console.error(`[rescue] dispatch for ${showId} failed: ${err.message}`); }
     }
   }
 
@@ -110,16 +119,18 @@ async function main() {
           conditionKey: `abandoned-review-rescue:${showId}`,
           title: `${showId}: ${list.length} real review(s) the servers cannot fetch`,
           description: `${list.map((r) => `- ${r.file} (${r.bucket}): ${r.url}`).join('\n')}\n\n`
-            + `Each URL names the show and is a review, and ${rescue.MAX_ATTEMPTS} ingest-urls.yml retries failed from GitHub. `
+            + `Each URL names the show and is a review, and the ingest-urls.yml retries failed from GitHub. `
             + 'From this session (outside GitHub), for each URL: open it and confirm it is this production\'s review; then '
             + '`node scripts/make-html-handoff-plan.js --plan=bro-N --show=ID --url=URL --outlet=ID --critic="Name" --publish-date=YYYY-MM-DD`, '
             + 'land the plan and run execute-approved-fix.yml. A URL that is not this production\'s review: flag the file wrongProduction or isNonReview through the same plan.',
           severity: 'warning',
           disposition: 'auto',
-          workerFixable: true,
+          // Filed in dispatch mode (route-workflow-alerts.js's pattern): the Mac-side pass starts a worker on it, and
+          // the Mac is outside GitHub, so it can fetch pages that block the runners.
+          dispatchAtFiling: true,
           cooldownHours: 72,
         });
-        if (APPLY) for (const r of list) { if (ledger[r.url] && !ledger[r.url].escalatedAt) ledger[r.url].escalatedAt = new Date(now).toISOString(); }
+        if (APPLY) for (const r of list) { if (ledger[r.file] && !ledger[r.file].escalatedAt) ledger[r.file].escalatedAt = new Date(now).toISOString(); }
       } catch (err) { failed++; console.error(`[rescue] alert for ${showId} failed: ${err.message}`); }
     }
   }
