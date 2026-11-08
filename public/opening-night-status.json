@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-08T18:03:53.880Z",
+  "generatedAt": "2026-11-08T18:59:27.814Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -1731,25 +1731,25 @@
       "status": "open",
       "slug": "nero-off-west-end",
       "thumbnail": "/images/shows/nero-off-west-end-2026/thumbnail.jpg",
-      "siteScore": 40.5,
-      "liveScore": 41,
-      "scoreDrift": 0.5,
+      "siteScore": 38.76,
+      "liveScore": 39,
+      "scoreDrift": 0.240000000000002,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 10,
+      "total": 11,
       "t1": 0,
       "t2": 4,
-      "t3": 6,
+      "t3": 7,
       "positive": 2,
       "mixed": 2,
-      "negative": 6,
+      "negative": 7,
       "readiness": {
         "ready": false,
         "reasons": [
           "T1:0/3"
         ],
-        "highConfidence": 10,
+        "highConfidence": 11,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -1984,6 +1984,18 @@
           "p": 2,
           "m": 2,
           "n": 6,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-11-08T18:59:27.814Z",
+          "rc": 11,
+          "s": 38.76,
+          "t1": 0,
+          "t2": 4,
+          "t3": 7,
+          "p": 2,
+          "m": 2,
+          "n": 7,
           "bc": "waiting"
         }
       ]
@@ -4156,23 +4168,23 @@
       "status": "open",
       "slug": "speculations-off-west-end",
       "thumbnail": "/images/shows/speculations-off-west-end-2026/thumbnail.jpg",
-      "siteScore": 47.95,
+      "siteScore": 47.59,
       "liveScore": 48,
-      "scoreDrift": 0.04999999999999716,
+      "scoreDrift": 0.4099999999999966,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 30,
+      "total": 31,
       "t1": 5,
       "t2": 6,
-      "t3": 19,
+      "t3": 20,
       "positive": 7,
       "mixed": 8,
-      "negative": 15,
+      "negative": 16,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 27,
+        "highConfidence": 28,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -4447,6 +4459,18 @@
           "p": 7,
           "m": 8,
           "n": 15,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-11-08T18:59:27.814Z",
+          "rc": 31,
+          "s": 47.59,
+          "t1": 5,
+          "t2": 6,
+          "t3": 20,
+          "p": 7,
+          "m": 8,
+          "n": 16,
           "bc": "waiting"
         }
       ]
