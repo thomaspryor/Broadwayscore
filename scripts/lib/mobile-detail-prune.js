@@ -44,4 +44,29 @@ function planPrune({ orphanIds, previousCandidates = {}, priorIndexIds = null, i
   return { toPrune, nextCandidates, skipped: false, ceiling };
 }
 
-module.exports = { loadPriorIndexIds, planPrune };
+// Committed candidate ledger (BRO-7118). Tours are absent from the app index, so
+// (b) is no evidence for them and (a) lives in a cache only vercel-deploy.yml
+// restores, while the workflows that commit public/data/shows never see it: a
+// closed tour whose reviews were all excluded kept its stale `rv` file forever
+// (annie-tour-2022: page 0 reviews, public JSON 2). data/audit/*.json is staged
+// by every committing workflow, so the candidates ride along in git.
+function loadLedger(p) {
+  try {
+    const d = JSON.parse(fs.readFileSync(p, 'utf8'));
+    return d && typeof d.candidates === 'object' && d.candidates ? d.candidates : {};
+  } catch {
+    return {};
+  }
+}
+
+// Writes only on change, so a quiet run leaves no diff.
+function saveLedger(p, candidates) {
+  const sorted = {};
+  for (const id of Object.keys(candidates).sort()) sorted[id] = true;
+  const body = JSON.stringify({ _doc: 'Detail files invisible on the last full run (BRO-7118); a second consecutive run prunes them.', candidates: sorted }, null, 2) + '\n';
+  let prev = null;
+  try { prev = fs.readFileSync(p, 'utf8'); } catch { /* first write */ }
+  if (prev !== body) fs.writeFileSync(p, body);
+}
+
+module.exports = { loadPriorIndexIds, planPrune, loadLedger, saveLedger };

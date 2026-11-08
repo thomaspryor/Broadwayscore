@@ -69,7 +69,8 @@ const DETAIL_SCHEMA_VERSION = 3;
 // Lives at data/cache/mobile-show-details/last-hash.json (gitignored;
 // persisted across CI runs via the .github/workflows/vercel-deploy.yml
 // "Cache Next.js build" step which includes data/cache/).
-const { loadPriorIndexIds, planPrune } = require('./lib/mobile-detail-prune');
+const { loadPriorIndexIds, planPrune, loadLedger, saveLedger } = require('./lib/mobile-detail-prune');
+const PRUNE_LEDGER = path.join(__dirname, '../data/audit/mobile-detail-prune-candidates.json');
 const HASH_CACHE_DIR = path.join(__dirname, '../data/cache/mobile-show-details');
 const HASH_CACHE_FILE = path.join(HASH_CACHE_DIR, 'last-hash.json');
 
@@ -967,7 +968,7 @@ if (!SHOW_ARG) {
   // here regardless, or a --force run would never see a candidate as
   // grace-period-satisfied and pruning would silently never fire under --force.
   const priorCache = FORCE_REGEN ? readCachedHash() : cachedHashes;
-  const previousCandidates = (priorCache && priorCache.pruneCandidates) || {};
+  const previousCandidates = { ...loadLedger(PRUNE_LEDGER), ...((priorCache && priorCache.pruneCandidates) || {}) };
   // BRO-4826: also treat "absent from the committed (prior-run) mobile-shows.json"
   // as grace-satisfied, since workflows that commit never restore the hash cache.
   const showById = new Map(shows.map(s => [s.id, s]));
@@ -995,6 +996,8 @@ if (!SHOW_ARG) {
     if (pruned > 0) console.log(`✓ Pruned ${pruned} orphaned show detail file(s) (invisible for 2 consecutive runs)`);
   }
   pruneCandidatesForCache = nextCandidates;
+  // Skipped (ceiling) runs leave nextCandidates armed, so the ledger stays armed too.
+  saveLedger(PRUNE_LEDGER, nextCandidates);
 }
 
 const avgSize = generated > 0 ? (totalSize / generated / 1024).toFixed(1) : 0;
