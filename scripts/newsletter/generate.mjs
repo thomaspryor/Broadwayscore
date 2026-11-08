@@ -2944,7 +2944,7 @@ const newsworthyCandidates = scoreCandidates(newsworthyInputs);
 // same order bwO/obO render their cards in). Every other week (a closing or
 // mover leads, a quiet Broadway week, the West End edition) keeps the
 // newsworthiness subject/lede below. NEWSLETTER_VOICE=legacy turns it off.
-const { composeWeekVoice } = await import('./week-voice.mjs');
+const { composeWeekVoice, composeWeOpener } = await import('./week-voice.mjs');
 const _NYC_OPENING_KINDS = new Set(['bw-opening', 'bw-reopening', 'ob-opening', 'ob-reopening']);
 // The voice says "this week", so it only names and counts shows whose opening
 // night fell in the week: the OB section's 14-day grace catch-ups stay out,
@@ -3061,16 +3061,7 @@ const _ledeParts = buildLedeSentences(newsworthyCandidates, _maxLedeSentences) |
 // sentence to make room (second-opinion review, 2026-08-02).
 let _weOpener = '';
 if (IS_WE && !process.env.LEDE_OVERRIDE) {
-  const _stories = weOpeningStories();
-  if (_stories.length >= 3) {
-    const _hot = _stories.filter(x => (x.agg.avg ?? 0) >= 75).length;
-    const _w = (n) => ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten'][n] || String(n);
-    _weOpener = _hot === _stories.length
-      ? `A big week for London theatre: ${_w(_stories.length)} shows opened, every one scoring 75 or higher.`
-      : _hot >= 2
-        ? `A big week for London theatre: ${_w(_stories.length)} shows opened, ${_w(_hot)} scoring 75 or higher.`
-        : `A busy week for London theatre, with ${_w(_stories.length)} new openings.`;
-  }
+  _weOpener = composeWeOpener(weOpeningStories());
 }
 // US-edition counterpart: on a quiet Broadway week (see quietBroadwayWeek
 // above) the lede can now be built entirely from secondary London

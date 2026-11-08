@@ -279,3 +279,19 @@ function composeAnnouncedBroadwayWeek({ bwScored, obScored, bwN, obN, notableIds
     .map(x => ({ id: x.id, slug: x.slug, title: x.title }));
   return { subject, sentences: sentences.filter(Boolean).slice(0, 5), showRefs, lead: obScored[0].show };
 }
+
+// West End edition aggregate opener (owner, 2026-08-02): "A big week for
+// London theatre: six shows opened, four scoring 75 or higher." It says
+// "opened" of this week, so it counts only in-week openings: the London
+// section's grace-window catch-ups (opened in an earlier week, scored late)
+// stay out. Counting them claimed eight London openings for Nov 2-8 2026,
+// when five had opened (Tosca, Derren Brown, Ilford Boy were October
+// openings). Input: weOpeningStories() rows ({ agg: { avg }, isCatchUp }).
+export function composeWeOpener(stories) {
+  const inWeek = (stories || []).filter(x => !x.isCatchUp);
+  if (inWeek.length < 3) return '';
+  const hot = inWeek.filter(x => (x.agg?.avg ?? 0) >= 75).length;
+  if (hot === inWeek.length) return `A big week for London theatre: ${word(inWeek.length)} shows opened, every one scoring 75 or higher.`;
+  if (hot >= 2) return `A big week for London theatre: ${word(inWeek.length)} shows opened, ${word(hot)} scoring 75 or higher.`;
+  return `A busy week for London theatre, with ${word(inWeek.length)} new openings.`;
+}

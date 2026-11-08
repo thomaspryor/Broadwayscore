@@ -3,7 +3,7 @@
 // which show they name first. Imports the real functions (CLAUDE.md §15).
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { composeWeekVoice } from './week-voice.mjs';
+import { composeWeekVoice, composeWeOpener } from './week-voice.mjs';
 import { scoreCandidates } from './newsworthiness.mjs';
 import { createRequire } from 'node:module';
 const { compareOpeningStories, sortOpeningStoriesByNewsworthiness } = createRequire(import.meta.url)('../lib/opening-story-order.js');
@@ -161,4 +161,13 @@ test('Oct 26: a Broadway opening NOT yet announced still leads, with the three O
   const lede = plain(v.sentences.join(' '));
   assert.match(lede, /Off Broadway, nine shows opened\. The Heart opens to strong reviews \(77\)\. I Became We earned the strongest reviews \(81\) and the In the Heights revival scored 75\./);
   assert.ok(!lede.includes('Hospital Hour'));
+});
+
+test('WE opener counts only in-week openings, never grace-window catch-ups (Nov 2-8 2026: said eight, five opened)', () => {
+  const st = (avg, isCatchUp = false) => ({ agg: { avg }, isCatchUp });
+  const week = [st(66), st(75.7), st(70.9), st(48), st(41), st(65.3, true), st(83.2, true), st(76.1, true)];
+  assert.equal(composeWeOpener(week), 'A busy week for London theatre, with five new openings.');
+  assert.equal(composeWeOpener([st(80), st(76), st(60), st(90, true)]), 'A big week for London theatre: three shows opened, two scoring 75 or higher.');
+  assert.equal(composeWeOpener([st(80), st(76), st(77)]), 'A big week for London theatre: three shows opened, every one scoring 75 or higher.');
+  assert.equal(composeWeOpener([st(80), st(76), st(90, true), st(91, true)]), '');
 });
