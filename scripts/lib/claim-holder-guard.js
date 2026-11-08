@@ -11,7 +11,14 @@
 const { reclaimDecision } = require('./linear-reclaim-abandoned.js');
 const { HOLDER_COMMENT_RE, isSessionSpecificRef } = require('./linear-session-reporting.js');
 
-const CLAIM_RE = /^Claimed by /;
+// Machine claims only (buildClaimComment refs); a person's "Claimed by me" comment is not a session claim.
+const CLAIM_RE = /^Claimed by (?:https:\/\/claude\.ai\/code\/|local session |a session on )/;
+const DISPATCH_RE = /^Dispatched\b/;
+// A parent's --child handoff only covers the child for this long; after that the parent's claim is just a claim.
+const CHILD_HANDOFF_MAX_MS = 2 * 60 * 60 * 1000;
+// Reclaim-rule skip reasons that mean the holder is still active (or unknowable). Every other skip reason
+// (blocked report, owner card, NO-RECLAIM, reported In Review) is only reached after 48h idle: a stopped holder.
+const LIVE_REASONS = new Set(['recent', 'recent-comment', 'live-land-ref', 'no-updated-at', 'comments-truncated']);
 // linear-brain.js create --child appends this to the parent's claim: the parent hands the card to a
 // create_session child that will run `claim` itself (CLOUD.md "Starting a worker session").
 const CHILD_HANDOFF_RE = /Child session starting on this card now:/;
@@ -44,10 +51,21 @@ function claimHolderDecision({ issue, selfRef, nowMs = Date.now(), force = false
   // The host-only ref is shared by every session on a machine, so it can never prove "this is me".
   if (selfRef && isSessionSpecificRef(selfRef) && body.includes(selfRef)) return { action: 'own', holder, claimedAt, reason: 'this session holds it' };
   if (force) return { action: 'takeover', holder, claimedAt, reason: 'forced' };
-  const abandoned = reclaimDecision({ issue, comments, landRefs: [], nowMs });
-  if (abandoned.action !== 'skip') return { action: 'takeover', holder, claimedAt, reason: `holder idle ${abandoned.idleHours}h (reclaim rule)` };
-  if (CHILD_HANDOFF_RE.test(body)) return { action: 'handoff', holder, claimedAt, reason: 'parent handed the card to a child session' };
-  return { action: 'refuse', holder, claimedAt, reason: `live (${abandoned.reason})` };
+  // The In Review rules belong to the sweep's own purposes; for a claim only "any activity in 48h" matters.
+  const asStarted = { ...issue, state: { name: 'In Progress', type: 'started' } };
+  const verdict = reclaimDecision({ issue: asStarted, comments, landRefs: [], nowMs });
+  if (verdict.action !== 'skip' || !LIVE_REASONS.has(verdict.reason)) {
+    return { action: 'takeover', holder, claimedAt, reason: verdict.action === 'skip' ? `holder idle 48h+ (${verdict.reason})` : `holder idle ${verdict.idleHours}h (reclaim rule)` };
+  }
+  const claimMs = Date.parse(claimedAt);
+  if (CHILD_HANDOFF_RE.test(body) && nowMs - claimMs < CHILD_HANDOFF_MAX_MS) return { action: 'handoff', holder, claimedAt, reason: 'parent handed the card to a child session' };
+  // A dispatch receipt newer than the claim is the dispatcher handing the card to its worker. A Mac "(headless)"
+  // job runs in a local session; a cloud session is never that job (BRO-7133: a cloud worker took a Mac-held card).
+  const cloudSelf = /^https:\/\/claude\.ai\//.test(selfRef || '');
+  const dispatch = comments.filter((c) => DISPATCH_RE.test(String(c.body).trim()) && Date.parse(c.createdAt) > claimMs)
+    .sort((a, b) => String(b.createdAt).localeCompare(String(a.createdAt)))[0];
+  if (dispatch && !(cloudSelf && /\(headless\)/.test(String(dispatch.body)))) return { action: 'handoff', holder, claimedAt, reason: 'the dispatcher handed the card to this worker' };
+  return { action: 'refuse', holder, claimedAt, reason: `live (${verdict.reason})` };
 }
 
 /** Refusal text, naming the holder. */

@@ -48,9 +48,34 @@ test('a recent comment keeps an old claim live even when updatedAt is old', () =
   assert.equal(claimHolderDecision({ issue: card(comments, old), selfRef: CLOUD, nowMs: NOW }).action, 'refuse');
 });
 
-test('owner cards and NO-RECLAIM cards are never abandoned, so they refuse', () => {
+test('NO-RECLAIM and owner cards still refuse while the holder is recently active', () => {
+  const d = claimHolderDecision({ issue: card([claim(MAC, NOW - 600e3)], NOW - 600e3, { description: 'NO-RECLAIM: tracker' }), selfRef: CLOUD, nowMs: NOW });
+  assert.equal(d.action, 'refuse');
+});
+
+test('a protected or blocked card whose holder has been idle 48h+ is claimable (holder is gone)', () => {
   const old = NOW - RECLAIM_IDLE_MS - 86400e3;
-  assert.equal(claimHolderDecision({ issue: card([claim(MAC, old)], old, { description: 'NO-RECLAIM: tracker' }), selfRef: CLOUD, nowMs: NOW }).action, 'refuse');
+  const blocked = { body: '**Session report (blocked)**\nneeds owner', createdAt: iso(old + 1000) };
+  for (const over of [{ description: 'NO-RECLAIM: tracker' }, { labels: { nodes: [{ name: 'owner' }] } }]) {
+    assert.equal(claimHolderDecision({ issue: card([claim(MAC, old), blocked], old, over), selfRef: CLOUD, nowMs: NOW }).action, 'takeover');
+  }
+});
+
+test('a Dispatched receipt newer than the claim hands the card to a local worker (re-dispatch flow)', () => {
+  const comments = [claim(MAC, NOW - 7200e3), { body: 'Dispatched abc to linear:BRO-7133 at x (headless)', createdAt: iso(NOW - 300e3) }];
+  const d = claimHolderDecision({ issue: card(comments, NOW - 300e3), selfRef: MAC.replace('4f7ce9ae', '11111111'), nowMs: NOW });
+  assert.equal(d.action, 'handoff');
+});
+
+test('a person comment starting "Claimed by me" is not a session claim', () => {
+  const comments = [{ body: 'Claimed by me, will do this week', createdAt: iso(NOW - 600e3) }];
+  assert.equal(claimHolderDecision({ issue: card(comments, NOW - 600e3), selfRef: CLOUD, nowMs: NOW }).action, 'unknown-holder');
+});
+
+test('a --child handoff older than 2h no longer covers a stranger', () => {
+  const c = claim(MAC, NOW - 3 * 3600e3, '\nChild session starting on this card now: x. Workers: do not take it.');
+  const d = claimHolderDecision({ issue: card([c], NOW - 600e3), selfRef: CLOUD, nowMs: NOW });
+  assert.equal(d.action, 'refuse');
 });
 
 test('the same session re-claiming its own card proceeds', () => {
