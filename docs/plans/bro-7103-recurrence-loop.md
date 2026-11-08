@@ -61,3 +61,34 @@ Phase 0: approach sound; first step is already the smallest unit (backtest + dry
 | Not in v1 (filed as cards): router re-pointing a ledger condition's tracker to the root card; files-touched grouping | router change is its own infra review | structure |
 
 Gemini P0 ("expected repeats contradiction") was a misreading of one sentence; the sentence is fixed above: digest-liveness failures are NOT expected repeats.
+
+## Addendum (2026-11-08): items 8 and 9, close-time root-cause check + weekly independent sample
+
+Owner scope addition (BRO-7103 comment 2026-11-07 23:46Z): one-off problems can be spot-fixed too, and the
+Mac-only Gate 6 PREVENTION line is self-reported and absent in cloud.
+
+### 8. Close-time root-cause check (advisory until 2026-12-15, then blocking)
+- New pure lib `scripts/lib/root-cause-close.js`:
+  - `parseRootCauseBlock(text)` reads `ROOT-CAUSE:`, `CLASS-GUARD:`, `RED-THEN-GREEN:`, `COUSINS:`, `NO-ROOT-CAUSE:` lines
+    (newest wins) from the close comment + existing comments + description.
+  - `isFixCard(card)`: auto-filed failure titles (AUTO_FILED_RE), recurrence instances, or fix-shaped titles
+    (fix/broken/fails/red/wrong/missing/regression/error/stale/crash). Root-cause marker cards and feature/docs-shaped
+    titles are not fix cards. `NO-ROOT-CAUSE: <reason>` is always accepted (counts as a spot fix).
+  - `checkRootCauseClose({card, text, landedFiles})` returns the missing items, or null. Validation: CLASS-GUARD names a
+    repo path; when the landed diff is known (data/audit/landings.jsonl row whose branch carries the card id, diff
+    base..sha) that path must be in it; RED-THEN-GREEN must carry a command plus a fail/red and a pass/green result;
+    ROOT-CAUSE and COUSINS must be non-trivial (>= 20 chars, not "n/a").
+- Wired into `checkLinearDoneTransition` beside the recurrence warning (same advisory `warning` field, `allowed`
+  untouched), so `linear-brain.js update --state Done` and `linear-session.js report` both show it, cloud and Mac.
+- Digest metric: a Done card with a valid block counts as root-cause work; `NO-ROOT-CAUSE` counts as a spot fix.
+
+### 9. Weekly independent sample
+- `scripts/root-cause-sample.js`: runs in the daily data-health-check step but self-skips unless the last sample is
+  6+ days old (survives dropped crons). Picks up to 8 random Done fix cards from the last 7 days that have a landing,
+  fetches the landed diff (git fetch base and sha, capped at 12KB), and asks a different model family
+  (gpt-5.4-mini, OPENAI_API_KEY) to grade root-cause vs spot-fix from the diff only, never the card's claims.
+- Writes `data/audit/root-cause-sample.json`; the digest and health row show the graded share and how many
+  self-reported ROOT-CAUSE blocks the grader disagreed with. Advisory, never fails the job.
+
+### Rollback
+`ROOT_CAUSE_CLOSE_DISABLED=1` silences the close warning; `ROOT_CAUSE_SAMPLE_DISABLED=true` (repo var) skips the sampler.
