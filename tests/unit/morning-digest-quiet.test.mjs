@@ -222,7 +222,14 @@ test('plain wording: no visitor-facing health check shows its raw name (BRO-7047
   ];
   let history = [];
   try { history = (JSON.parse(fs.readFileSync(path.join(process.cwd(), 'data/audit/health-check-history.json'), 'utf8')).results || []).map((x) => x.name); } catch { /* data absent: fixed list only */ }
-  for (const n of new Set([...fixed, ...history])) {
+  // BRO-7132: every literal runCheck name in health-check.js too, so a NEW
+  // check is caught before it lands, not only after it has run once and
+  // reached health-check-history.json ("Improvement: root-cause share" shipped
+  // red on main that way).
+  const hcSrc = fs.readFileSync(path.join(process.cwd(), 'scripts/health-check.js'), 'utf8');
+  const declared = [...hcSrc.matchAll(/runCheck\(\s*(['"])([^'"`$]+)\1/g)].map((m) => m[2]);
+  assert.ok(declared.length >= 30, `expected 30+ literal runCheck names in health-check.js, found ${declared.length}`);
+  for (const n of new Set([...fixed, ...history, ...declared])) {
     if (classifyHealthCheck({ name: n }) !== 'visitors') continue;
     const line = plainHealthLine(n, '');
     assert.notEqual(line, n, `${n} still shows its raw check name: add a PLAIN_HEALTH entry`);

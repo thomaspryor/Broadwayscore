@@ -350,11 +350,26 @@ function suspectReason(instances, reopens = []) {
   return null;
 }
 
-/** PREVENTION: lines in a text blob. */
+/**
+ * PURE. Comment bodies oldest first. listIssueComments returns Linear's page
+ * order (newest first), but checkRootCauseClose lets the LAST value of a field
+ * win, so unsorted input made the digest count a card's stale line (BRO-7132).
+ */
+function commentBodiesOldestFirst(nodes) {
+  return [...(nodes || [])]
+    .sort((a, b) => String((a && a.createdAt) || '').localeCompare(String((b && b.createdAt) || '')))
+    .map((n) => (n && n.body) || '');
+}
+
+/**
+ * PREVENTION: or CLASS-GUARD: lines in a text blob. Both name the guard; the
+ * close check (root-cause-close.js) reads both, so the claim count must too
+ * (BRO-7132).
+ */
 function preventionLines(text) {
   const out = [];
   for (const line of String(text || '').split('\n')) {
-    const m = line.match(/^\s*(?:[-*]\s+)?(?:\*\*)?PREVENTION:(?:\*\*)?\s*(.+)$/);
+    const m = line.match(/^\s*(?:[-*]\s+)?(?:\*\*)?(?:PREVENTION|CLASS-GUARD)(?:\*\*)?:(?:\*\*)?\s*(.+)$/);
     if (m) out.push(m[1].trim().slice(0, 300));
   }
   return out;
@@ -535,6 +550,7 @@ module.exports = {
   suspectReason,
   detectClasses,
   preventionLines,
+  commentBodiesOldestFirst,
   checkPreventionClaims,
   workKind,
   rootCauseShare,

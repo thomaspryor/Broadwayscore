@@ -41,6 +41,7 @@ const INTERNAL_CATEGORIES = new Set([
   'Alert Router',       // alert auto-dispatch deadman
   'Codex runner',       // unattended Codex card runner landing cards (BRO-5287)
   'Workflow coverage',  // workflows that never ran (CI hygiene)
+  'Improvement',        // root-cause share / recurring classes: how we fix things, not the site (BRO-7132)
 ]);
 
 // Individual checks whose category is otherwise visitor-facing ("Data:",

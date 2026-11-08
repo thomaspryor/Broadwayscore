@@ -5516,7 +5516,7 @@
       "resolveReason": "review-gap: no uncollected cited reviews on the latest audit"
     },
     "test-yml:data-validation-red": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Data audits failing (non-blocking): Audit review contamination",
       "firstSeen": "2026-09-23T19:33:16.776Z",
@@ -5527,7 +5527,9 @@
       "notifyCount": 40,
       "cardId": null,
       "linearIdentifier": "BRO-5882",
-      "silentRefires": 3
+      "silentRefires": 3,
+      "resolvedAt": "2026-11-08T17:41:33.405Z",
+      "resolveReason": "retired: per-step keys (BRO-7130)"
     },
     "review-gap:opening-window:elf-lyons-the-woman-on-the-edge-off-broadway-2026": {
       "status": "resolved",
@@ -19480,8 +19482,8 @@
       "title": "Roundup gaps: 4 listed review(s) not captured across 2 show(s)",
       "firstSeen": "2026-10-16T17:15:04.341Z",
       "incidentOpenedAt": "2026-10-16T17:15:04.341Z",
-      "lastSeen": "2026-11-08T17:12:00.408Z",
-      "lastNotifiedAt": "2026-11-08T17:12:00.408Z",
+      "lastSeen": "2026-11-08T17:40:40.953Z",
+      "lastNotifiedAt": "2026-11-08T17:40:40.953Z",
       "lastSurfacedAt": null,
       "notifyCount": 42,
       "cardId": null,
@@ -21914,10 +21916,10 @@
       "title": "Cron's latest run failed (not yet stale): Fetch All Image Formats",
       "firstSeen": "2026-10-19T18:07:12.430Z",
       "incidentOpenedAt": "2026-11-06T18:45:30.510Z",
-      "lastSeen": "2026-11-07T17:17:52.499Z",
-      "lastNotifiedAt": "2026-11-07T17:17:52.499Z",
-      "lastSurfacedAt": "2026-11-07T17:17:52.499Z",
-      "notifyCount": 6,
+      "lastSeen": "2026-11-08T17:31:33.797Z",
+      "lastNotifiedAt": "2026-11-08T17:31:33.797Z",
+      "lastSurfacedAt": "2026-11-08T17:31:33.797Z",
+      "notifyCount": 7,
       "cardId": null,
       "linearIdentifier": null
     },
@@ -29026,7 +29028,7 @@
       "cardId": null,
       "linearIdentifier": null,
       "silentRefires": 2,
-      "resolvedAt": "2026-11-08T17:12:00.340Z",
+      "resolvedAt": "2026-11-08T17:40:40.827Z",
       "resolveReason": "review-gap: no uncollected cited reviews on the latest audit, only SERP-census gaps, or show id retired"
     },
     "opening-night-placeholder-synopsis-the-greatest-story-ever-off-broadway-2026": {
@@ -33149,13 +33151,13 @@
       "title": "1 review(s) for in-the-heights-off-broadway-2026 stuck in _pending with no text and no byline",
       "firstSeen": "2026-10-30T17:21:01.709Z",
       "incidentOpenedAt": "2026-11-08T14:53:36.333Z",
-      "lastSeen": "2026-11-08T15:54:07.734Z",
+      "lastSeen": "2026-11-08T17:41:05.249Z",
       "lastNotifiedAt": "2026-11-08T14:53:36.333Z",
       "lastSurfacedAt": "2026-11-08T14:53:36.333Z",
       "notifyCount": 9,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "opening-night-placeholder-synopsis-the-moth-off-west-end-2026": {
       "status": "resolved",
@@ -37278,13 +37280,13 @@
       "title": "1 review(s) for well-see-off-broadway-2026 stuck in _pending with no text and no byline",
       "firstSeen": "2026-11-04T16:06:40.931Z",
       "incidentOpenedAt": "2026-11-04T16:06:40.931Z",
-      "lastSeen": "2026-11-08T14:54:44.940Z",
+      "lastSeen": "2026-11-08T17:41:38.714Z",
       "lastNotifiedAt": "2026-11-07T20:45:14.894Z",
       "lastSurfacedAt": "2026-11-07T20:45:14.894Z",
       "notifyCount": 4,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 4
+      "silentRefires": 5
     },
     "land:land/job/linear-BRO-6975-mw2c95n8": {
       "status": "resolved",
@@ -38137,13 +38139,13 @@
       "title": "1 review(s) for parcel-from-america-off-broadway-2026 stuck in _pending with no text and no byline",
       "firstSeen": "2026-11-06T20:46:29.742Z",
       "incidentOpenedAt": "2026-11-06T20:46:29.742Z",
-      "lastSeen": "2026-11-08T14:54:41.547Z",
+      "lastSeen": "2026-11-08T17:41:36.736Z",
       "lastNotifiedAt": "2026-11-08T02:07:37.167Z",
       "lastSurfacedAt": "2026-11-08T02:07:37.167Z",
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 4
+      "silentRefires": 5
     },
     "uncollected-blackout:tango-after-dark-off-west-end-2026": {
       "status": "resolved",
@@ -38355,7 +38357,7 @@
       "title": "Review gap — \"Othello (Bedlam)\" missing 2 cited review(s)",
       "firstSeen": "2026-11-07T15:26:56.754Z",
       "incidentOpenedAt": "2026-11-07T15:26:56.754Z",
-      "lastSeen": "2026-11-08T17:12:00.365Z",
+      "lastSeen": "2026-11-08T17:40:40.872Z",
       "lastNotifiedAt": "2026-11-08T13:30:30.696Z",
       "lastSurfacedAt": "2026-11-08T13:30:30.696Z",
       "notifyCount": 2,
@@ -38953,7 +38955,7 @@
       "linearIdentifier": "BRO-7136"
     },
     "land:land/bro-7132-rc-close-fields": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Landing blocked: unit-tests-node red on land/bro-7132-rc-close-fields",
       "firstSeen": "2026-11-08T16:54:07.319Z",
@@ -38961,6 +38963,76 @@
       "lastSeen": "2026-11-08T16:54:07.319Z",
       "lastNotifiedAt": "2026-11-08T16:54:07.319Z",
       "lastSurfacedAt": "2026-11-08T16:54:07.319Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null,
+      "resolvedAt": "2026-11-08T17:39:27.653Z"
+    },
+    "test-yml:data-validation-red:validate-market-expansion": {
+      "status": "resolved",
+      "disposition": "digest",
+      "title": "Data audit failing: Validate market expansion",
+      "firstSeen": "2026-11-08T17:41:33.442Z",
+      "incidentOpenedAt": "2026-11-08T17:41:33.442Z",
+      "deferredAuto": true,
+      "lastSeen": "2026-11-08T17:41:33.442Z",
+      "lastNotifiedAt": "2026-11-08T17:41:33.442Z",
+      "lastSurfacedAt": "2026-11-08T17:41:33.442Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null,
+      "resolvedAt": "2026-11-08T17:49:17.189Z",
+      "resolveReason": "step passed"
+    },
+    "cron-health-failed:Commercial Pending Review": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Cron's latest run failed (not yet stale): Commercial Pending Review",
+      "firstSeen": "2026-11-08T17:31:33.780Z",
+      "incidentOpenedAt": "2026-11-08T17:31:33.780Z",
+      "lastSeen": "2026-11-08T17:31:33.780Z",
+      "lastNotifiedAt": "2026-11-08T17:31:33.780Z",
+      "lastSurfacedAt": "2026-11-08T17:31:33.780Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "land:land/bro-7131-rescue-abandoned": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Landing blocked: unit-tests-node red on land/bro-7131-rescue-abandoned",
+      "firstSeen": "2026-11-08T17:44:20.504Z",
+      "incidentOpenedAt": "2026-11-08T17:44:20.504Z",
+      "lastSeen": "2026-11-08T17:44:20.504Z",
+      "lastNotifiedAt": "2026-11-08T17:44:20.504Z",
+      "lastSurfacedAt": "2026-11-08T17:44:20.504Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "land:land/bro-7135-board-closer": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Landing blocked: unit-tests-node red on land/bro-7135-board-closer",
+      "firstSeen": "2026-11-08T17:53:22.861Z",
+      "incidentOpenedAt": "2026-11-08T17:53:22.861Z",
+      "lastSeen": "2026-11-08T17:53:22.861Z",
+      "lastNotifiedAt": "2026-11-08T17:53:22.861Z",
+      "lastSurfacedAt": "2026-11-08T17:53:22.861Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "pending-unrecoverable:tristan-and-yseult-off-broadway-2026": {
+      "status": "open",
+      "disposition": "digest",
+      "requestedDisposition": "human",
+      "title": "1 review(s) for tristan-and-yseult-off-broadway-2026 stuck in _pending with no text and no byline",
+      "firstSeen": "2026-11-08T17:42:05.149Z",
+      "incidentOpenedAt": "2026-11-08T17:42:05.149Z",
+      "lastSeen": "2026-11-08T17:42:05.149Z",
+      "lastNotifiedAt": "2026-11-08T17:42:05.149Z",
+      "lastSurfacedAt": "2026-11-08T17:42:05.149Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
