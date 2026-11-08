@@ -3,7 +3,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
-const { extractPublishTime, precisionOf, nightRow } = require('./test-bench-publish-times.js');
+const { extractPublishTime, precisionOf, nightRow, keepPrevious } = require('./test-bench-publish-times.js');
 
 test('extracts published_time in either attribute order, then JSON-LD, then <time>', () => {
   assert.deepEqual(extractPublishTime('<meta property="article:published_time" content="2026-10-30T03:00:00+00:00">'), { value: '2026-10-30T03:00:00+00:00', source: 'article:published_time' });
@@ -32,4 +32,12 @@ test('night row marks a corrected embargo and counts fetch failures', () => {
   const est = nightRow({ show, pressNight: null, rows: [], collectedAt: 't' });
   assert.equal(est.estimate.at, '2026-10-30T02:00:00.000Z'); // 22:00 EDT
   assert.equal(est.embargoCorrected, false);
+});
+
+test('keepPrevious: a blocked re-run keeps the earlier night, a working one replaces it', () => {
+  const prev = { observed: { source: 'observed-cluster' } };
+  assert.equal(keepPrevious(prev, [{ status: 403 }, { status: 'timeout' }]), true);
+  assert.equal(keepPrevious(prev, []), true);
+  assert.equal(keepPrevious(prev, [{ status: 403 }, { status: 200 }]), false);
+  assert.equal(keepPrevious(undefined, [{ status: 403 }]), false);
 });

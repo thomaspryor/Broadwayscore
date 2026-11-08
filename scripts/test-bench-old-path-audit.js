@@ -56,6 +56,7 @@ function main() {
   const targets = ids.map((id) => shows.find((s) => s.id === id)).filter(Boolean);
   const dates = targets.map((s) => Date.parse(`${s.openingDate}T00:00:00Z`)).filter(Number.isFinite);
   const nowMs = Date.now();
+  if (!dates.length) { console.error('no night in nights.json has a show with a valid openingDate'); process.exit(1); }
   const sinceMs = Math.min(...dates) - (og.BEFORE_H + 24) * 3600000;
   const untilMs = Math.min(nowMs, Math.max(...dates) + (og.AFTER_H + 48) * 3600000);
   const commits = targets.length ? loadCommits(rtDir, new Date(sinceMs).toISOString(), new Date(untilMs).toISOString()) : [];
