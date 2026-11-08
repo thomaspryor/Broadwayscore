@@ -4,7 +4,8 @@ import { Metadata } from 'next';
 import fs from 'fs';
 import crypto from 'crypto';
 import path from 'path';
-import { getWestEndShows, getUkRegionalShows, getMarketStats } from '@/lib/data-core';
+import { getWestEndShows, getUkRegionalShows, getOperaShows, getMarketStats } from '@/lib/data-core';
+import { getOperaMarketLabel } from '@/lib/show-market';
 import { SHELF_MAX_ITEMS } from '@/lib/market-list-window';
 import { getAwardWinnerSets } from '@/lib/data-awards';
 import { pickRegionalShelf } from '@/lib/regional-shelf';
@@ -124,6 +125,34 @@ export default function WestEndPage() {
     : [];
   const beyondLondonShelf = beyondLondonShows.slice(0, SHELF_MAX_ITEMS);
 
+  // Opera in London (owner, 2026-11-08): ENO and Royal Opera House productions
+  // are opera, not West End theatre, so getWestEndShows() leaves them out of the
+  // list, counts and shelves above. Like the homepage's opera shelf below Best
+  // Off-Broadway, they get their own section lower on the page. Running ones
+  // first (best score first), then the next to open.
+  const operaStart = (s: { previewsStartDate?: string | null; openingDate?: string | null }) =>
+    s.previewsStartDate || s.openingDate || '9999-12-31';
+  const londonOperaShelf = getOperaShows()
+    .filter(s => (s.category === 'west-end' || s.category === 'off-west-end') && s.status !== 'closed')
+    .sort((a, b) => {
+      const aLater = a.status === 'upcoming' ? 1 : 0;
+      const bLater = b.status === 'upcoming' ? 1 : 0;
+      if (aLater !== bLater) return aLater - bLater;
+      if (!aLater) {
+        const byScore = (b.criticScore?.score ?? -1) - (a.criticScore?.score ?? -1);
+        if (byScore !== 0) return byScore;
+      }
+      return operaStart(a).localeCompare(operaStart(b));
+    })
+    .slice(0, SHELF_MAX_ITEMS)
+    .map(s => ({
+      ...(serialize(s, { isOffWestEnd: false, category: s.category as string, slim: true }) as WestEndShow),
+      // Name the house under the title, as Beyond London names the city
+      // (skipped when the title already does: "Tosca - English National Opera").
+      subtitle: s.title.includes(getOperaMarketLabel(s)) ? undefined : getOperaMarketLabel(s),
+      subtitleColor: 'text-gray-400',
+    }));
+
   // WE Lottery/Rush shelves
   const lotteryShowsList = shows
     .filter(s => (s.status === 'open' || s.status === 'previews') && lrShows[s.id]?.lottery)
@@ -214,6 +243,7 @@ export default function WestEndPage() {
           lotteryShows={lotteryShowsList}
           rushShows={rushShowsList}
           beyondLondonShows={beyondLondonShelf}
+          operaShows={londonOperaShelf}
           marketOpenCounts={marketOpenCounts}
           awardWinnerSets={getAwardWinnerSets()}
           archiveHash={archiveHash}

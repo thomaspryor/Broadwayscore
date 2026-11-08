@@ -16,6 +16,9 @@ export const OPERA_SHOW_ID_PREFIXES: ReadonlySet<string> = new Set([
   'adriana-mater-english-national-opera-west-end',
   'iphigenie-en-tauride-english-national-opera-west-end',
   'breaking-the-waves-english-national-opera-west-end',
+  // ENO at the London Coliseum, retyped to opera (BRO-7170)
+  'trial-by-jury-and-the-zoo-english-national-opera-west-end',
+  'angels-bone-west-end',
   // San Francisco Opera (BRO-6782)
   'the-monkey-king-off-broadway',
   'simon-boccanegra-off-broadway',
