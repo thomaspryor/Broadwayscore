@@ -741,6 +741,6 @@ test('BRO-7111: a verdict over 1MB reaches a piped reader whole (FAIL line, NEW 
     assert.match(r.stdout, /::error::tsc: NEW failure on the branch \(absent on origin\/main\): src\/new\.ts/);
     assert.match(r.stdout, /\| tsc \| \*\*FAIL\*\* \|/, 'the markdown summary printed last must arrive');
   } finally {
-    fs.rmSync(tmp, { recursive: true, force: true });
+    fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
