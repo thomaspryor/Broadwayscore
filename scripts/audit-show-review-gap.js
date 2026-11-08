@@ -2203,6 +2203,7 @@ function openingWindowConditionKey(showId) {
 // window filter here: resolving needs 96h of quiet, so a gap that last fired
 // after ~day 17 leaves the 21-day window before it could resolve and would
 // stay open forever. Keys that were never opened are a no-op in the router.
+// BRO-7116: census-only rows are quiet in or out of window (alertUncollected below).
 // BRO-5252: a show past its window whose only uncollected rows are SERP-census
 // hits is quiet too. The alert loop below skips it, so it can never fire again,
 // and a row carried forward from before the census-gate fix (Alice in
@@ -2229,10 +2230,6 @@ function alertShowState(r, showById) {
   const s = showById && showById.get(r.showId);
   if (!s) return { openingDate: r.openingDate, status: r.status };
   return { openingDate: s.openingDate || r.openingDate, previewsStartDate: s.previewsStartDate, status: s.status };
-}
-
-function censusGapsAlert(state, now = Date.now()) {
-  return inOpeningWindow(state, now) && state.status !== 'closed';
 }
 
 // BRO-7116: the per-show owner alert (and its Linear card) counts only gaps an
@@ -2766,7 +2763,7 @@ async function main(argv = process.argv.slice(2)) {
         uncollected: currentRunUncollected(r),
         // BRO-5513: the opening-window alert's own count (a closed show ignores census-only
         // hits), so gap-audit-freshness refreshes only rows that alert still reads.
-        alertUncollected: currentRunUncollected(r, { ignoreCensusTagged: !censusGapsAlert(alertShowState(r, new Map([[s.id, s]]))) }),
+        alertUncollected: alertUncollected(r),
         // BRO-6687: the slow-market rollup's own count (cited rows plus reverify
         // exclusions, which `uncollected` leaves out), so a show the rollup still
         // alerts on keeps the 12h alerting cadence instead of the clean 48h one.
@@ -2983,7 +2980,7 @@ async function main(argv = process.argv.slice(2)) {
       // newsletter gate don't keep a just-closed gap at > 0 for another cycle.
       if (useCheckpoint && r.ingestResults.length && checkpoint[s.id]) {
         const recount = currentRunUncollected(r);
-        const alertRecount = currentRunUncollected(r, { ignoreCensusTagged: !censusGapsAlert(alertShowState(r, new Map([[s.id, s]]))) });
+        const alertRecount = alertUncollected(r);
         const slowRecount = SLOW_MARKETS.has(s.category) ? slowMarketListedGap(r).residual : undefined;
         if (recount !== checkpoint[s.id].uncollected || alertRecount !== checkpoint[s.id].alertUncollected || slowRecount !== checkpoint[s.id].slowMarketResidual) {
           checkpoint[s.id] = { ...checkpoint[s.id], uncollected: recount, alertUncollected: alertRecount, ...(slowRecount !== undefined ? { slowMarketResidual: slowRecount } : {}) };
@@ -3581,7 +3578,7 @@ async function main(argv = process.argv.slice(2)) {
       // the per-show condition stayed 'open' forever and its card's
       // check-alert-condition-absent VERIFY could never pass.
       try {
-        const cleared = resolveQuietConditions(openingWindowClearedKeys(reportedResults, Date.now(), { liveShowIds }), { reason: 'review-gap: no uncollected cited reviews on the latest audit, show past its opening window (or closed) with only SERP-census gaps, or show id retired' });
+        const cleared = resolveQuietConditions(openingWindowClearedKeys(reportedResults, Date.now(), { liveShowIds }), { reason: 'review-gap: no uncollected cited reviews on the latest audit, only SERP-census gaps, or show id retired' });
         if (cleared.length) console.log(`[Alert Router] resolved ${cleared.length} cleared opening-window gap condition(s): ${cleared.join(', ')}`);
       } catch (e) {
         console.error(`::warning::resolving cleared opening-window gap conditions failed: ${(e.message || '').slice(0, 120)}`);
@@ -3591,7 +3588,7 @@ async function main(argv = process.argv.slice(2)) {
         const state = alertShowState(r, showById);
         if (!inOpeningWindow(state)) continue;
         const conditionKey = openingWindowConditionKey(r.showId);
-        // BRO-5489: a closed show alerts only on non-census gaps (see alertShowState).
+        // BRO-7116: census gaps never alert, in or out of window (see alertUncollected).
         const uncollected = alertUncollected(r);
         if (uncollected <= 0) {
           // Trim the not-yet-sent digest queue. The ledger resolve is the

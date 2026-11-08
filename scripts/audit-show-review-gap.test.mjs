@@ -1010,7 +1010,7 @@ test('openingWindowClearedKeys: a row for a retired show id counts as cleared ev
   assert.deepEqual(openingWindowClearedKeys(rows, now), []);
 });
 
-test('openingWindowClearedKeys: window and status come from shows.json, not the frozen row (BRO-5489)', () => {
+test('openingWindowClearedKeys: census-only rows clear whatever the window or status; an aggregator-cited gap stays open (BRO-5489, BRO-7116)', () => {
   const { openingWindowClearedKeys } = require('./audit-show-review-gap.js');
   const now = Date.parse('2026-10-21T03:00:00Z');
   const censusRow = (showId, openingDate) => ({
