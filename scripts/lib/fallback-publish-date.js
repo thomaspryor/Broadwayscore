@@ -89,4 +89,20 @@ function fallbackDateArgs(listing) {
   return [`--fallback-publish-date=${listing.date}`, `--fallback-date-source=${listing.source || ''}`];
 }
 
-module.exports = { fallbackDateArgs, listingDateForRun, inReviewWindow, cdxTimestampToDate, archiveFirstCaptureDate, pickFallbackPublishDate };
+/**
+ * BRO-6762 hole 3, gathering side: a discovered stub the writer would park for having no
+ * publish date (gather-reviews.js, The Stage's year-less /reviews/<slug> URLs, BRO-7084) gets
+ * the same weaker date source the audit's ingest already uses: the archive.org FIRST capture,
+ * accepted only inside the show's review window (pickFallbackPublishDate). A page first
+ * captured years before this opening stays undated, so the park still fires for an earlier
+ * staging's review. Never throws; returns { publishDate, dateSource } or null.
+ * `fetchJson` is injectable for tests.
+ */
+async function fallbackDateForUndatedStub({ url, openingDate, fetchJson } = {}) {
+  if (!url || !openingDate || !ISO.test(String(openingDate).slice(0, 10))) return null;
+  let archiveDate = null;
+  try { archiveDate = await archiveFirstCaptureDate(url, { fetchJson }); } catch { return null; }
+  return pickFallbackPublishDate({ archiveDate, openingDate: String(openingDate).slice(0, 10) });
+}
+
+module.exports = { fallbackDateArgs, listingDateForRun, inReviewWindow, cdxTimestampToDate, archiveFirstCaptureDate, pickFallbackPublishDate, fallbackDateForUndatedStub };

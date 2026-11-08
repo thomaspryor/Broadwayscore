@@ -5851,6 +5851,15 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
         const _pre = await require('./lib/discovery-prefetch').prefetchDiscoveredArticle(review.url, { outletId: review.outletId, showId });
         if (_pre && _pre.publishDate) review.publishDate = _pre.publishDate;
       } catch { /* parked below */ }
+      if (!review.publishDate) {
+        // BRO-6762 hole 3: archive.org first capture inside the review window, before parking.
+        const _fb = await require('./lib/fallback-publish-date').fallbackDateForUndatedStub({ url: review.url, openingDate: show && show.openingDate });
+        if (_fb) {
+          review.publishDate = _fb.publishDate;
+          review.dateSource = _fb.dateSource; // createReviewFile persists dateSource (provenance: an upper bound, not a page date)
+          console.log(`    → ${review.outletId}: no page date; using ${_fb.dateSource} ${_fb.publishDate}: ${review.url}`);
+        }
+      }
       const _stage = require('./lib/undated-stage-stub-guard').evaluateUndatedStageStub({ outletId: review.outletId, url: review.url, publishDate: review.publishDate });
       if (_stage.park) {
         console.log(`    ⊘ ${review.outletId}: ${_stage.reason} — parked (BRO-7084): ${review.url}`);
