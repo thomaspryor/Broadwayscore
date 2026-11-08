@@ -8,7 +8,7 @@ const { SOCIAL_WRITER, GPT55 } = require('../lib/models.js');
 const { finalResponseText, firstJsonObject } = require('../lib/anthropic-response-text.js');
 const { callWithTimeout } = require('../lib/llm-call-budget.js');
 const { buildFactPool, factSheet } = require('./facts');
-const { buildCaptions, showUrl, showPath, hashtagLine, audienceNumber, strayNumbers, LIMITS, SHORT_BUDGET, SCORE_SENTENCE } = require('./captions');
+const { buildCaptions, showUrl, showPath, hashtagLine, audienceNumber, strayNumbers, LIMITS, SHORT_BUDGET, shortBudget, SCORE_SENTENCE } = require('./captions');
 const { MARKETS, marketOf } = require('./config');
 
 const LONG_MAX = 420; // Facebook, Instagram, Threads when it fits
@@ -160,7 +160,7 @@ function captionsFromDraft(desc, draft) {
   return {
     twitter: withUrl(draft.x, 'twitter'),
     // Bluesky counts the whole link; the X cut rarely fits beside it, so the template stands in.
-    bluesky: fits(draft.x, 'bluesky', Math.min(SHORT_BUDGET, LIMITS.bluesky)) ? withUrl(draft.x, 'bluesky') : template.bluesky,
+    bluesky: fits(draft.x, 'bluesky', shortBudget('bluesky')) ? withUrl(draft.x, 'bluesky') : template.bluesky,
     threads: withUrl(fits(draft.post, 'threads') ? draft.post : draft.x, 'threads'),
     instagram: `${draft.post}\n\nFull reviews: ${MARKETS[marketOf(show)].domain}${showPath(show)} (link in bio)\n\n${hashtagLine(show)}`,
     facebook: withUrl(draft.post, 'facebook'),
