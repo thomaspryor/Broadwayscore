@@ -331,5 +331,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-08T16:27:26.288Z"
+  },
+  {
+    "conditionKey": "land:land/bro-2453-inclusion-fn",
+    "title": "Landing blocked: unit-tests-node red on land/bro-2453-inclusion-fn",
+    "description": "land.yml did not land land/bro-2453-inclusion-fn: the unit-tests-node gate went red at 24283dfa08. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/42499110079",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-2453-inclusion-fn"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "24283dfa082e3be1c98753e8e99a72c4de787c45"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42499110079"
+      }
+    ],
+    "queuedAt": "2026-11-08T16:45:06.818Z"
   }
 ]
