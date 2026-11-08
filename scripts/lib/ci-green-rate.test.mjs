@@ -257,7 +257,7 @@ test('CLI fetchRuns paginates until total_count, and flags the page cap as trunc
   assert.equal(r.runs.length, 201);
   assert.equal(r.truncated, false);
   assert.match(calls[1], /^repos\/thomaspryor\/Broadwayscore\/.*&page=2&/);
-  const capped = cli.fetchRuns({ repo: 'thomaspryor/Broadwayscore', workflow: 'test.yml', branch: 'main', days: 7, maxPages: 2, now: NOW }, () => JSON.stringify({ total: 500, runs: full }));
+  const capped = cli.fetchWindow({ repo: 'thomaspryor/Broadwayscore', workflow: 'test.yml', branch: 'main', days: 7, maxPages: 2, now: NOW }, () => JSON.stringify({ total: 500, runs: full }));
   assert.equal(capped.truncated, true);
   assert.equal(capped.runs.length, 200);
   assert.throws(() => cli.fetchRuns({ workflow: 'test.yml', branch: 'main', days: 7, maxPages: 1, now: NOW }, exec), /repo is required/);
@@ -362,9 +362,30 @@ test('BRO-4465: the 1000-result API ceiling is the page cap (truncated), not a s
   const cli = require('../ci-green-rate.js');
   let id = 0;
   const exec = () => JSON.stringify({ total: 1500, runs: Array.from({ length: 100 }, () => run(++id, 'success')) });
-  const r = cli.fetchRuns({ repo: 'thomaspryor/Broadwayscore', workflow: 'test.yml', branch: 'main', days: 60, maxPages: 20, now: NOW }, exec);
+  const r = cli.fetchWindow({ repo: 'thomaspryor/Broadwayscore', workflow: 'test.yml', branch: 'main', days: 60, maxPages: 20, now: NOW }, exec);
   assert.equal(r.truncated, true);
   assert.equal(r.runs.length, 1000);
+});
+
+test('BRO-3425: a window over the 1000-result ceiling is re-read in one-day slices, so it is complete instead of forced FAIL', () => {
+  const cli = require('../ci-green-rate.js');
+  const paths = [];
+  let id = 0;
+  // The whole-window query reports 1500 (over the ceiling); each one-day slice holds 3 runs.
+  const exec = (_gh, args) => {
+    paths.push(args[1]);
+    if (/created=%3E%3D/.test(args[1])) return JSON.stringify({ total: 1500, runs: Array.from({ length: 100 }, () => run(++id, 'success')) });
+    return JSON.stringify({ total: 3, runs: Array.from({ length: 3 }, () => run(++id, 'success')) });
+  };
+  const r = cli.fetchRuns({ repo: 'thomaspryor/Broadwayscore', workflow: 'test.yml', branch: 'main', days: 14, maxPages: 10, now: NOW }, exec);
+  assert.equal(r.truncated, false);
+  const slices = paths.filter((p) => /created=\d{4}-\d{2}-\d{2}\.\./.test(p));
+  assert.equal(slices.length, 16, '14d window = 15 day-slices + the start-date margin day');
+  assert.ok(r.runs.length >= 3 * 16, 'only slice runs are kept');
+  // A single day that itself hits the ceiling stays truncated (never a silent PASS).
+  const hot = cli.fetchRuns({ repo: 'thomaspryor/Broadwayscore', workflow: 'test.yml', branch: 'main', days: 14, maxPages: 10, now: NOW },
+    () => JSON.stringify({ total: 1500, runs: Array.from({ length: 100 }, () => run(++id, 'success')) }));
+  assert.equal(hot.truncated, true);
 });
 
 test('formatReport ends with the verdict line and never says "fixed"', () => {

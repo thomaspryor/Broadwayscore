@@ -210,12 +210,13 @@ function parseRepoFromRemote(url) {
  * event=push + branch=main + status=completed are fixed at the query so
  * pull_request / workflow_dispatch / schedule runs never enter the sample.
  */
-function buildRunsApiPath({ repo = '{owner}/{repo}', workflow = DEFAULTS.workflow, branch = DEFAULTS.branch, event = DEFAULTS.event, perPage = DEFAULTS.perPage, page = 1, sinceDate }) {
+function buildRunsApiPath({ repo = '{owner}/{repo}', workflow = DEFAULTS.workflow, branch = DEFAULTS.branch, event = DEFAULTS.event, perPage = DEFAULTS.perPage, page = 1, sinceDate, untilDate }) {
   if (!Number.isInteger(perPage) || perPage < 1 || perPage > 100) {
     throw new Error(`perPage must be an integer 1-100 (REST per_page cap), got ${perPage}`);
   }
   const q = [`per_page=${perPage}`, `page=${page}`, `branch=${branch}`, `event=${event}`, 'status=completed'];
-  if (sinceDate) q.push(`created=%3E%3D${sinceDate}`);
+  if (sinceDate && untilDate) q.push(`created=${sinceDate}..${untilDate}`);
+  else if (sinceDate) q.push(`created=%3E%3D${sinceDate}`);
   return `repos/${repo}/actions/workflows/${workflow}/runs?${q.join('&')}`;
 }
 

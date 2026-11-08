@@ -97,9 +97,35 @@ function appendLedger(row, file = LEDGER_PATH) {
  * One-shot paginated fetch against an EXPLICIT repo (never the
  * `{owner}/{repo}` placeholder). Returns { runs, truncated }.
  */
-function fetchRuns({ repo, workflow, branch, days, maxPages, now }, exec = execFileSync) {
-  if (!repo) throw new Error('fetchRuns: repo is required');
-  const sinceDate = core.windowStartDate(days, now);
+function fetchRuns(opts, exec = execFileSync) {
+  if (!opts.repo) throw new Error('fetchRuns: repo is required');
+  const whole = fetchWindow(opts, exec);
+  if (!whole.truncated) return whole;
+  // BRO-3425: GitHub serves at most 1000 results per filtered query, and main
+  // makes ~70 runs/day, so any window over ~14d hit the cap and was FORCED to
+  // FAIL no matter how green main was. Re-read in one-day slices (each far
+  // under 1000); only a single day over the cap stays truncated.
+  const runs = [];
+  const seen = new Set();
+  let truncated = false;
+  const start = Date.parse(core.windowStartDate(opts.days, opts.now));
+  const end = Date.parse(new Date(opts.now).toISOString().slice(0, 10));
+  for (let t = start; t <= end; t += 86400000) {
+    const day = new Date(t).toISOString().slice(0, 10);
+    const slice = fetchWindow({ ...opts, sinceDate: day, untilDate: day }, exec);
+    if (slice.truncated) truncated = true;
+    for (const r of slice.runs) {
+      const id = r && r.databaseId;
+      if (seen.has(id)) continue;
+      seen.add(id);
+      runs.push(r);
+    }
+  }
+  return { runs, truncated };
+}
+
+function fetchWindow({ repo, workflow, branch, days, maxPages, now, sinceDate: sd, untilDate }, exec = execFileSync) {
+  const sinceDate = sd || core.windowStartDate(days, now);
   const runs = [];
   const seen = new Set();
   let truncated = false;
@@ -107,7 +133,7 @@ function fetchRuns({ repo, workflow, branch, days, maxPages, now }, exec = execF
   const env = { ...process.env };
   delete env.GH_REPO; // belt-and-braces: the path is explicit, but never let an override leak into gh
   for (let page = 1; page <= maxPages; page++) {
-    const apiPath = core.buildRunsApiPath({ repo, workflow, branch, page, sinceDate, perPage: core.DEFAULTS.perPage });
+    const apiPath = core.buildRunsApiPath({ repo, workflow, branch, page, sinceDate, untilDate, perPage: core.DEFAULTS.perPage });
     const parsed = ghApiJson(apiPath, {
       exec,
       jq: JQ,
@@ -259,4 +285,4 @@ if (require.main === module) {
   else process.exit(code);
 }
 
-module.exports = { main, printCauseMix, fetchRuns, fetchStable, resolveRepo, readLedger, LEDGER_PATH };
+module.exports = { main, printCauseMix, fetchRuns, fetchWindow, fetchStable, resolveRepo, readLedger, LEDGER_PATH };
