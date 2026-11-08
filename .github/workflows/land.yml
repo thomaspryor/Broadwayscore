@@ -857,7 +857,11 @@ jobs:
         run: |
           # Stage the tip's harness: the base checkout below replaces the tree.
           H="$RUNNER_TEMP/e2e-harness"; mkdir -p "$H"
-          cp scripts/lib/land-e2e-local.sh scripts/lib/land-e2e-local-report.js scripts/lib/land-gate-delta.js "$H/"
+          # All of scripts/lib, not a hand list: land-gate-delta.js requires ~25 sibling
+          # modules, and a missing one crashed the verdict step (BRO-7106). The --help
+          # load proves the staged copy is complete before the base checkout.
+          cp scripts/lib/*.js scripts/lib/*.sh "$H/"
+          node "$H/land-gate-delta.js" --help > /dev/null
           bash "$H/land-e2e-local.sh" "$RUNNER_TEMP/e2e-local/branch"
           echo "exit=$(cat "$RUNNER_TEMP/e2e-local/branch/e2e-local.exit")" >> "$GITHUB_OUTPUT"
 

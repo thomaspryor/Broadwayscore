@@ -821,3 +821,26 @@ test('e2e-local CLI: --gates e2e-local over result dirs written in the gauntlet 
   assert.equal(armed.status, 1);
   fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
+
+// BRO-7106: land.yml's e2e-local job stages a copy of the harness outside the tree (the base
+// checkout replaces it), then runs land-gate-delta.js from that copy. A hand-picked file list
+// missed its sibling requires and the verdict step crashed (MODULE_NOT_FOUND) on its first land.
+// Re-run land.yml's own staging line into a temp dir and load the copy.
+test('BRO-7106: land.yml e2e-harness staging copies everything land-gate-delta.js requires', () => {
+  const root = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..', '..');
+  const yml = fs.readFileSync(path.join(root, '.github/workflows/land.yml'), 'utf8');
+  const line = yml.split('\n').map((l) => l.trim()).find((l) => /^cp .*"\$H\/"$/.test(l));
+  assert.ok(line, 'land.yml no longer has the e2e-harness `cp ... "$H/"` staging line');
+  const H = fs.mkdtempSync(path.join(os.tmpdir(), 'e2e-harness-'));
+  try {
+    execFileSync('bash', ['-c', line], { cwd: root, env: { ...process.env, H } });
+    for (const f of ['land-e2e-local.sh', 'land-e2e-local-report.js', 'land-gate-delta.js']) {
+      assert.ok(fs.existsSync(path.join(H, f)), `staging misses ${f}`);
+    }
+    const r = spawnSync(process.execPath, [path.join(H, 'land-gate-delta.js'), '--help'], { encoding: 'utf8' });
+    assert.doesNotMatch(r.stderr, /Cannot find module/, r.stderr);
+    assert.match(r.stdout + r.stderr, /usage: land-gate-delta\.js/);
+  } finally {
+    fs.rmSync(H, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
+  }
+});
