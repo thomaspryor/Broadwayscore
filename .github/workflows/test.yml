@@ -461,6 +461,8 @@ on:
       - 'scripts/close-stuck-verified-cards.js'
       # scripts/lib/board-closer.test.mjs (BRO-7135 sweep CLI end-to-end)
       - 'scripts/sweep-recovered-alert-cards.js'
+      # scripts/lib/board-dispatch.test.mjs (BRO-7139 nightly board dispatch report)
+      - 'scripts/board-dispatch.js'
       # tests/unit/detect-venue-transfers.test.mjs
       - 'scripts/detect-venue-transfers.js'
       # tests/unit/promote-historical-auto.test.mjs
