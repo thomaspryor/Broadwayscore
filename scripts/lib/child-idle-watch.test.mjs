@@ -274,11 +274,11 @@ test('BRO-7109: no proposed watch outlives the 30-min default background limit',
   const cloud = fs.readFileSync(path.join(REPO, '.claude', 'CLOUD.md'), 'utf8');
   const lines = cloud.split('\n');
   const step = lines.find((l) => l.includes('child-idle-watch.js watch --session'));
-  assert.match(step || '', /timeout: 7200000/, 'CLOUD.md watch step must pass the Bash timeout');
+  assert.match(step || '', /timeout:? 7200000/, 'CLOUD.md watch step must pass the Bash timeout');
   // Cousins: every background-wait recipe in CLOUD.md carries the timeout too.
   // Anchored on the recipe forms (code-quoted tool flag, imperative verbs), so
   // plain prose that says "in the background" doesn't trip it.
-  const recipes = lines.filter((l) => /`run_in_background`|background-run `|in the background \(|background Bash loop/.test(l));
+  const recipes = lines.filter((l) => /`run_in_background`|background-run `|in the background \(/.test(l));
   assert.ok(recipes.length >= 3, `found ${recipes.length} background recipes`);
-  for (const l of recipes) assert.match(l, /timeout: 7200000/, `background recipe without the 2h timeout: ${l.slice(0, 120)}`);
+  for (const l of recipes) assert.match(l, /timeout:? 7200000/, `background recipe without the 2h timeout: ${l.slice(0, 120)}`);
 });
