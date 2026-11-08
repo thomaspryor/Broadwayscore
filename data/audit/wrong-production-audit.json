@@ -1,14 +1,14 @@
 {
-  "timestamp": "2026-11-08T10:26:54.401Z",
+  "timestamp": "2026-11-08T10:45:45.187Z",
   "stats": {
-    "totalReviews": 80519,
+    "totalReviews": 80520,
     "alreadyFlagged": 22030,
     "dateGuardCatches": 216,
     "directorMismatch": 3547,
     "tvFilmSignals": 2294,
     "londonSignals": 3626,
     "offBroadwaySignals": 748,
-    "yearMismatch": 363,
+    "yearMismatch": 364,
     "noPublishDate": 8430
   },
   "findings": [
@@ -37209,6 +37209,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "king-lear-off-broadway-2026",
+      "file": "third-coast-review--unknown.json",
+      "publishDate": "2026-10-26",
+      "url": "https://thirdcoastreview.com/stages/2026/10/26/review-babes-with-blades-king-lear",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2014 (2x) more than 2026 (1x). 2014 matches production: king-lear-west-end-2014"
         }
       ]
     },
