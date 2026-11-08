@@ -187,7 +187,8 @@ jobs:
     # cap); the margin was 15.15% and the added caps would have dropped it to
     # 13.6%, below the gate's 15%. 345min = 20700s keeps ~16% margin.
     # BRO-5769: 345->350 for the 1-min early-publish-date audit step (job-timeout-margin gate).
-    timeout-minutes: 350
+    # BRO-7131: 350->355 for the 5-min abandoned-review rescue step (job-timeout-margin gate).
+    timeout-minutes: 355
     permissions:
       contents: write
       issues: write
@@ -469,7 +470,7 @@ jobs:
       - name: Rescue abandoned reviews on recent shows
         if: always()
         continue-on-error: true
-        timeout-minutes: 10
+        timeout-minutes: 5
         env:
           GH_TOKEN: ${{ github.token }}
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
