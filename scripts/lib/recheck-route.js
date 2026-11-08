@@ -105,7 +105,7 @@ function buildRouteBatch({ rows, handedOff = [], ledgerEntries = [], now = Date.
   const tail = (s) => { const t = String(s || '').replace(/\s+/g, ' ').trim(); return t.length > 220 ? `...${t.slice(-220)}` : t; };
   const quietNote = (c) => {
     const h = quietAlertHours(c);
-    return h === null ? '' : `\n  - note: the alert last fired ${Math.round(h)}h ago and the check still counts it until its quiet window ends. Look at data/audit/alert-ledger.json first: if it has not fired since the card closed, the fix is likely holding; say so on the original card and close this entry without code changes.`;
+    return h === null ? '' : `\n  - note: the alert last fired ${Math.round(h)}h ago and the check still counts it until its quiet window ends. Look at data/audit/alert-ledger.json first. If it has not fired since the card closed, confirm the condition itself is gone (quiet alone proves nothing for weekly or throttled alerts) before saying on the original card that the fix holds.`;
   };
   const commit = sha ? String(sha).slice(0, 12) : 'unknown';
   const body = [
