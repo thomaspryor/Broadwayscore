@@ -1725,6 +1725,35 @@ test('codexCardFit: cards blocked outside the code are skipped by name before an
   assert.equal(fit('CODEX-OK\nThe code under test is ~/.claude/hooks/x.sh.').skip, null);
 });
 
+test('codexCardFit: a card that only NAMES the app repo is web work, not other-repo (BRO-7141, a)', () => {
+  const now = Date.parse('2026-11-08T12:00:00Z');
+  const fit = (description) => r.codexCardFit({ title: 'Fix the thing', description, verify: 'node --test tests/unit/x.test.mjs', nowMs: now, canDispatch: true }).skip;
+  // The BRO-7133 worker's case, plus the full-slug and consumer-side wordings.
+  assert.equal(fit('Fix the API that BroadwayScorecard-app calls (scripts/build-api.js).'), null);
+  assert.equal(fit('Fix the API that thomaspryor/BroadwayScorecard-app calls (scripts/build-api.js).'), null);
+  assert.equal(fit('The iOS app (BroadwayScorecard-app) consumes /api/x; keep the response shape.'), null);
+  // Work that lands IN the app repo is still other-repo.
+  assert.equal(fit('Mirror it in BroadwayScorecard-app components/user/StarRating.tsx.'), 'other-repo');
+  assert.equal(fit('Update BroadwayScorecard-app to show the new badge.'), 'other-repo');
+  assert.equal(fit('Add the field to thomaspryor/BroadwayScorecard-app.'), 'other-repo');
+  assert.equal(fit('Put the change in the app repo.'), 'other-repo');
+});
+
+test('futureDeferral: "valid until <date>" is a fact, not a wait; a deferring word makes it one (BRO-7141, b)', () => {
+  const now = Date.parse('2026-11-08T12:00:00Z');
+  const fit = (description) => r.codexCardFit({ title: 'Fix the thing', description, verify: 'node --test tests/unit/x.test.mjs', nowMs: now, canDispatch: true }).skip;
+  assert.equal(r.futureDeferral('Cache entries are valid until 2026-12-01.', now), null);
+  assert.equal(r.futureDeferral('Tokens are valid until Dec 1.', now), null);
+  assert.equal(fit('Cache entries are valid until 2026-12-01; make the TTL a constant.'), null);
+  // Real waits still read as waits, with or without a bare until/after.
+  assert.equal(r.futureDeferral('Hold off until Nov 30.', now).iso, '2026-11-30');
+  assert.equal(r.futureDeferral('Defer the edit until after November 9.', now).iso, '2026-11-09');
+  assert.equal(r.futureDeferral('Seasons run until 2026-12-01. Wait until 2026-11-20 for the data.', now).iso, '2026-11-20');
+  assert.equal(fit('Do not edit the poller until 2026-11-09, after press night.'), 'deferred-date');
+  // A date that does not exist (Feb 30 rolls to Mar 2 in Date.UTC) is no wait.
+  assert.equal(r.futureDeferral('Not before Feb 30.', Date.parse('2027-01-10T00:00:00Z')), null);
+});
+
 test('futureDeferral reads ISO and month-day dates, only when still ahead (BRO-7133)', () => {
   const now = Date.parse('2026-11-08T12:00:00Z');
   assert.equal(r.futureDeferral('RECHECK-AFTER: 2026-11-22', now).iso, '2026-11-22');
