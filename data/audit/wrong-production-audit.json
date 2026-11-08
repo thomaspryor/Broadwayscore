@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-08T22:15:51.212Z",
+  "timestamp": "2026-11-08T23:15:05.754Z",
   "stats": {
-    "totalReviews": 80614,
-    "alreadyFlagged": 22080,
+    "totalReviews": 80619,
+    "alreadyFlagged": 22083,
     "dateGuardCatches": 219,
-    "directorMismatch": 3563,
-    "tvFilmSignals": 2295,
-    "londonSignals": 3638,
+    "directorMismatch": 3564,
+    "tvFilmSignals": 2296,
+    "londonSignals": 3639,
     "offBroadwaySignals": 749,
     "yearMismatch": 368,
-    "noPublishDate": 8398
+    "noPublishDate": 8383
   },
   "findings": [
     {
@@ -63150,6 +63150,19 @@
     },
     {
       "showId": "tango-after-dark-off-west-end-2026",
+      "file": "gramilano--graham-watts.json",
+      "publishDate": "2026-11-08",
+      "url": "https://www.gramilano.com/2026/11/review-tango-after-dark/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "tango-after-dark-off-west-end-2026",
       "file": "london-unattached--teresa-guerreiro.json",
       "score": 39,
       "publishDate": "2026-11-06",
@@ -66032,6 +66045,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "the-country-girl-west-end-2010",
+      "file": "standard--fiona-mountford.json",
+      "publishDate": "2010-10-19",
+      "url": "http://www.thisislondon.co.uk/theatre/review-23886896-the-country-girl-flops-or-soars.do",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"mike nichols\" from the-country-girl-2008"
         }
       ]
     },
@@ -139882,6 +139908,19 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"new york theatre workshop\""
+        }
+      ]
+    },
+    {
+      "showId": "when-we-are-married-west-end-2010",
+      "file": "independent--paul-taylor.json",
+      "publishDate": "2010-11-01",
+      "url": "http://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/when-we-are-married-garrick-theatre-london-2121720.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
