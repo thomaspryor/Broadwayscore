@@ -114,3 +114,21 @@ test('quiet-alert hold: an alert quiet > 48h is held; a recent fire and other ch
   assert.deepEqual(b.cards.map((c) => c.cardId), ['BRO-2', 'BRO-3']);
   assert.equal(b.skipped.quietAlert, 1);
 });
+
+// The hold reads the check's own failure prose; this pins that coupling, so a
+// rewording in check-alert-condition-absent.js fails here instead of silently
+// routing quiet alerts again (ship-check review, 2026-11-08).
+test('quiet-alert hold recognises the message the real check writes', () => {
+  const { quietAlertHold } = require('./recheck-route.js');
+  const { decide } = require('../check-alert-condition-absent.js');
+  const now = Date.parse('2026-11-08T09:13:45Z');
+  const iso = (h) => new Date(now - h * 36e5).toISOString();
+  const key = `opening-night-revival-unverified-${'x'.repeat(100)}`; // long key: the hours still survive
+  const ledgers = [{ path: 'fx', conditions: { [key]: { status: 'open', lastSeen: iso(107.9) }, 'heartbeat:x': { status: 'open', lastSeen: iso(1) } } }];
+  const quiet = decide(ledgers, key, now);
+  assert.equal(quiet.code, 1);
+  const row = { cardId: 'BRO-1', status: 'fail', verifyCmd: 'node scripts/check-alert-condition-absent.js --key-b64 abc', detail: `[check-alert-condition-absent] ${quiet.message}\n` };
+  assert.equal(quietAlertHold(row), 107.9);
+  const recent = decide([{ ...ledgers[0], conditions: { ...ledgers[0].conditions, [key]: { status: 'open', lastSeen: iso(5) } } }], key, now);
+  assert.equal(quietAlertHold({ ...row, detail: `[check-alert-condition-absent] ${recent.message}` }), null);
+});
