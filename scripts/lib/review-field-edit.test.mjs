@@ -721,6 +721,24 @@ test('allowCrossMarket can be set true (a UK critic who reviewed the NYC product
   assert.equal(applyReviewFieldEdit(rec, { field: 'allowCrossMarket', oldValue: null, newValue: 'yes' }, stamp).ok, false);
 });
 
+test('BRO-6599: reviewed cross-show URL exceptions are true-only and preserve other fields', () => {
+  const rec = { outletId: 'theater-life', assignedScore: 65, wrongProduction: true };
+  const action = { field: 'allowCrossShowUrl', oldValue: null, newValue: true };
+  const ok = applyReviewFieldEdit(rec, action, stamp);
+  assert.equal(ok.ok, true, ok.reason);
+  assert.equal(ok.record.allowCrossShowUrl, true);
+  assert.equal(ok.record.assignedScore, 65);
+  assert.equal(ok.record.wrongProduction, true);
+  assert.equal(ok.record.approvedFixes.at(-1).field, 'allowCrossShowUrl');
+  assert.equal(rec.allowCrossShowUrl, undefined, 'input is not mutated');
+  for (const newValue of [false, null, 'true', 1, {}]) {
+    assert.equal(applyReviewFieldEdit(rec, { ...action, newValue }, stamp).ok, false);
+  }
+  assert.equal(applyReviewFieldEdit({ ...rec, _locked: true }, action, stamp).ok, false);
+  assert.equal(applyReviewFieldEdit({ ...rec, allowCrossShowUrl: true }, action, stamp).ok, false,
+    'a stale oldValue is refused');
+});
+
 // BRO-5858: stranger-things WhatsOnStage. A stale bulk fabricatedEntry kept Alex
 // Wood's real review out, so the rebuild scored a same-url twin under the wrong critic.
 test('fabricatedEntry can only be cleared (BRO-5858)', () => {

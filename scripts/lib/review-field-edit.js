@@ -47,6 +47,9 @@ const REVIEW_TEXT_EDITABLE_FIELDS = [
   // It also switches off the content-verifier wrongShow / nonReview / film-TV promotions for that review, and a plan
   // cannot clear it (a manual edit is needed to undo a mistake), so set it only after reading the page.
   'allowCrossMarket',
+  // BRO-6599: after checking the stored review, acknowledge a title collision
+  // or a shared article URL. This does not clear other exclusion flags.
+  'allowCrossShowUrl',
   // _auditAllowCrossMarket (BRO-6323): TRUE ONLY. audit-review-contamination class A / A2 skip the file. For a
   // review whose date lands near a cross-market sibling's opening but whose URL and text name the folder's own
   // production. Also switches off the write guard's class-A quarantine and lets fix-circular-duplicate-pairs treat
@@ -205,6 +208,7 @@ const FIELD_VALUE_CHECKS = {
     return storedLabelRelabelError(v, record);
   },
   allowCrossMarket: (v) => (v === true ? null : 'allowCrossMarket may only be set to true'),
+  allowCrossShowUrl: (v) => (v === true ? null : 'allowCrossShowUrl may only be set to true'),
   _auditAllowCrossMarket: (v) => (v === true ? null : '_auditAllowCrossMarket may only be set to true'),
   fabricatedEntry: (v) => (v === false ? null : 'fabricatedEntry may only be cleared (false)'),
   // BRO-4415: or when the executor's syndicated-duplicate-heal decision (ctx.syndicatedHeal) is 'clear':

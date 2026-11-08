@@ -1,0 +1,243 @@
+{
+  "issueNumber": "bro-6599",
+  "planId": "f4766f8a-74bd-4d38-8584-644665e6bb5d",
+  "status": "pending",
+  "createdAt": "2026-11-08T00:46:46.539Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Resolve 25 cross-show URL false positives verified against stored review sections; retain the existing title guard and exclusion flags.",
+    "steps": [
+      "Stored text explicitly reviews the West End run of The Old Man and the Pool; the other indexed title includes the performer credit.",
+      "Stored text is the Scarlett Johansson and Rob Ashford Cat on a Hot Tin Roof review section of a joint column.",
+      "Stored text is the Barcelona review section, naming Lily Collins, Alvaro Morte and director Lynette Linton.",
+      "Stored text is the Lemons review section, naming Sam Steiner, Aidan Turner and Jenna Coleman.",
+      "Stored text is the Mother Play review section, naming Paula Vogel, Jessica Lange and director Tina Landau.",
+      "Stored text reviews Simon Godwin's Much Ado at the National with Katherine Parkinson and John Heffernan.",
+      "Stored text reviews Carrie Cracknell's The Grapes of Wrath with Harry Treadaway and Cherry Jones.",
+      "Stored text is the Anon review section at MCC, naming Anne Washburn, Crystal Finn and the production cast.",
+      "Stored text reviews Monsieur Chopin at Writers Theatre; Hershey Felder is the performer, not evidence of a different show.",
+      "Stored text is the Anon review section at MCC, naming Anne Kauffman and Crystal Finn.",
+      "Stored text is the Celebrity Autobiography review section at the Shubert, with its rotating Broadway cast.",
+      "Stored text reviews After Midnight with Fantasia Barrino, Warren Carlyle and the Jazz at Lincoln Center orchestra.",
+      "Stored text reviews Manual Cinema's Christmas Carol at Writers Theatre with LaKecia Harris and shadow puppetry.",
+      "Stored text is the Real Women Have Curves review section at the James Earl Jones Theatre with Tatianna Cordoba and Justina Machado.",
+      "Stored text is the Fallen Angels review section at the Todd Haimes Theatre with Kelli O'Hara and Rose Byrne.",
+      "Stored text reviews brother sister cyborg space at Raven Theatre; beautiful describes that production rather than the Carole King musical.",
+      "Stored text reviews Porchlight's Anything Goes at the Ruth Page Center; after all these years is descriptive wording.",
+      "Stored text reviews Mrs. Krishnan's Party at Chicago Shakespeare; Indian Ink is the visiting theatre company.",
+      "Stored text is the Pen Pals review section at Theatre at St. Clement's with Nancy McKeon and Johanna Day.",
+      "Stored text reviews Jamie Lloyd's Much Ado with Hayley Atwell and Tom Hiddleston; opening night is an event description.",
+      "Stored text is the Tammy Faye review section at the Palace Theatre with Katie Brayben and Christian Borle.",
+      "Stored text is the Maybe Happy Ending review section at the Belasco with Darren Criss and Helen J. Shen.",
+      "Stored text reviews Right Now at Facility Theatre; stranger things is descriptive wording rather than the separate play.",
+      "Stored text is The Balusters review section at the Samuel J. Friedman with Anika Noni Rose and Richard Thomas.",
+      "Stored text is the isolated Midnight in the Garden of Good and Evil section at the Goodman; existing split metadata confirms the shared article was separated."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "the-old-man-and-the-pool-west-end-2023/times-uk--dominic-maxwell.json",
+        "field": "allowCrossShowUrl",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Stored text explicitly reviews the West End run of The Old Man and the Pool; the other indexed title includes the performer credit."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cat-on-a-hot-tin-roof-2013/washpost--peter-marks.json",
+        "field": "allowCrossShowUrl",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Stored text is the Scarlett Johansson and Rob Ashford Cat on a Hot Tin Roof review section of a joint column."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "barcelona-west-end-2024/times-uk--dominic-maxwell.json",
+        "field": "allowCrossShowUrl",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Stored text is the Barcelona review section, naming Lily Collins, Alvaro Morte and director Lynette Linton."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "lemons-lemons-lemons-lemons-lemons-west-end-2023/sunday-times--quentin-letts.json",
+        "field": "allowCrossShowUrl",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Stored text is the Lemons review section, naming Sam Steiner, Aidan Turner and Jenna Coleman."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "mother-play-2024/washpost--elisabeth-vincentelli.json",
+        "field": "allowCrossShowUrl",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Stored text is the Mother Play review section, naming Paula Vogel, Jessica Lange and director Tina Landau."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "much-ado-about-nothing-west-end-2022/sunday-times--quentin-letts.json",
+        "field": "allowCrossShowUrl",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Stored text reviews Simon Godwin's Much Ado at the National with Katherine Parkinson and John Heffernan."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-grapes-of-wrath-west-end-2024/daily-mail--patrick-marmion.json",
+        "field": "allowCrossShowUrl",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Stored text reviews Carrie Cracknell's The Grapes of Wrath with Harry Treadaway and Cherry Jones."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/theater-life--david-sheward.json",
+        "field": "allowCrossShowUrl",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Stored text is the Anon review section at MCC, naming Anne Washburn, Crystal Finn and the production cast."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "monsieur-chopin-regional-2024/splash-magazines--mira-temkin.json",
+        "field": "allowCrossShowUrl",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Stored text reviews Monsieur Chopin at Writers Theatre; Hershey Felder is the performer, not evidence of a different show."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/wsj--charles-isherwood.json",
+        "field": "allowCrossShowUrl",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Stored text is the Anon review section at MCC, naming Anne Kauffman and Crystal Finn."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "celebrity-autobiography-2026/the-interested-bystander--cary-wong.json",
+        "field": "allowCrossShowUrl",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Stored text is the Celebrity Autobiography review section at the Shubert, with its rotating Broadway cast."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "after-midnight-2013/nydailynews--joe-dziemianowicz.json",
+        "field": "allowCrossShowUrl",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Stored text reviews After Midnight with Fantasia Barrino, Warren Carlyle and the Jazz at Lincoln Center orchestra."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "manual-cinemas-christmas-carol-regional-2023/chicagostageandscreen--angela-allyn.json",
+        "field": "allowCrossShowUrl",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Stored text reviews Manual Cinema's Christmas Carol at Writers Theatre with LaKecia Harris and shadow puppetry."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "real-women-have-curves-2025/the-interested-bystander--interested-bystander.json",
+        "field": "allowCrossShowUrl",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Stored text is the Real Women Have Curves review section at the James Earl Jones Theatre with Tatianna Cordoba and Justina Machado."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "fallen-angels-2026/the-interested-bystander--interested-bystander.json",
+        "field": "allowCrossShowUrl",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Stored text is the Fallen Angels review section at the Todd Haimes Theatre with Kelli O'Hara and Rose Byrne."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "brother-sister-cyborg-space-regional-2024/chicagostageandscreen--angela-allyn.json",
+        "field": "allowCrossShowUrl",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Stored text reviews brother sister cyborg space at Raven Theatre; beautiful describes that production rather than the Carole King musical."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "anything-goes-regional-2024/chicagostageandscreen--angela-allyn.json",
+        "field": "allowCrossShowUrl",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Stored text reviews Porchlight's Anything Goes at the Ruth Page Center; after all these years is descriptive wording."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "mrs-krishnans-party-regional-2026/chicago-reader--kerry-reid.json",
+        "field": "allowCrossShowUrl",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Stored text reviews Mrs. Krishnan's Party at Chicago Shakespeare; Indian Ink is the visiting theatre company."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "pen-pals-off-broadway-2025/the-interested-bystander--cary-wong.json",
+        "field": "allowCrossShowUrl",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Stored text is the Pen Pals review section at Theatre at St. Clement's with Nancy McKeon and Johanna Day."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "much-ado-about-nothing-west-end-2025/daily-mail--patrick-marmion.json",
+        "field": "allowCrossShowUrl",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Stored text reviews Jamie Lloyd's Much Ado with Hayley Atwell and Tom Hiddleston; opening night is an event description."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "tammy-faye-2024/the-interested-bystander--interested-bystander.json",
+        "field": "allowCrossShowUrl",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Stored text is the Tammy Faye review section at the Palace Theatre with Katie Brayben and Christian Borle."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "maybe-happy-ending-2024/the-interested-bystander--interested-bystander.json",
+        "field": "allowCrossShowUrl",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Stored text is the Maybe Happy Ending review section at the Belasco with Darren Criss and Helen J. Shen."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "right-now-regional-2023/chicagostageandscreen--angela-allyn.json",
+        "field": "allowCrossShowUrl",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Stored text reviews Right Now at Facility Theatre; stranger things is descriptive wording rather than the separate play."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-balusters-2026/the-interested-bystander--interested-bystander.json",
+        "field": "allowCrossShowUrl",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Stored text is The Balusters review section at the Samuel J. Friedman with Anika Noni Rose and Richard Thomas."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "midnight-in-the-garden-of-good-and-evil-regional-2024/chi-mt--patrick-obrien.json",
+        "field": "allowCrossShowUrl",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Stored text is the isolated Midnight in the Garden of Good and Evil section at the Goodman; existing split metadata confirms the shared article was separated."
+      }
+    ]
+  }
+}
