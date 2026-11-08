@@ -26889,13 +26889,13 @@
       "firstSeen": "2026-10-24T23:08:26.440Z",
       "incidentOpenedAt": "2026-10-31T00:35:50.727Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-08T06:47:11.145Z",
+      "lastSeen": "2026-11-08T11:49:18.603Z",
       "lastNotifiedAt": "2026-11-07T15:26:17.803Z",
       "lastSurfacedAt": "2026-11-05T12:32:07.725Z",
       "notifyCount": 12,
       "cardId": null,
       "linearIdentifier": "BRO-7013",
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "test-yml:red:Unit Tests:196541b4": {
       "status": "resolved",
@@ -38720,12 +38720,13 @@
       "firstSeen": "2026-11-08T06:47:11.004Z",
       "incidentOpenedAt": "2026-11-08T06:47:11.004Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-08T06:47:11.004Z",
+      "lastSeen": "2026-11-08T11:49:18.484Z",
       "lastNotifiedAt": "2026-11-08T06:47:11.004Z",
       "lastSurfacedAt": "2026-11-08T06:47:11.004Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "live-data-test:scripts/audit-stale-announced-shows.test.mjs::BRO-93 acceptance: current shows.json produces zero stale announced flags": {
       "status": "open",
@@ -38734,12 +38735,13 @@
       "firstSeen": "2026-11-08T06:47:11.040Z",
       "incidentOpenedAt": "2026-11-08T06:47:11.040Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-08T06:47:11.040Z",
+      "lastSeen": "2026-11-08T11:49:18.505Z",
       "lastNotifiedAt": "2026-11-08T06:47:11.040Z",
       "lastSurfacedAt": "2026-11-08T06:47:11.040Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "live-data-test:scripts/verify-contamination-gate.test.mjs::scripts/verify-contamination-gate.test.mjs": {
       "status": "open",
@@ -38748,12 +38750,13 @@
       "firstSeen": "2026-11-08T06:47:11.073Z",
       "incidentOpenedAt": "2026-11-08T06:47:11.073Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-08T06:47:11.073Z",
+      "lastSeen": "2026-11-08T11:49:18.528Z",
       "lastNotifiedAt": "2026-11-08T06:47:11.073Z",
       "lastSurfacedAt": "2026-11-08T06:47:11.073Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "live-data-test:tests/unit/audit-stale-baseline-detection.test.mjs::audit-cv-flag-contradiction.js: baseline holds no stale entries": {
       "status": "open",
@@ -38762,12 +38765,13 @@
       "firstSeen": "2026-11-08T06:47:11.105Z",
       "incidentOpenedAt": "2026-11-08T06:47:11.105Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-08T06:47:11.105Z",
+      "lastSeen": "2026-11-08T11:49:18.547Z",
       "lastNotifiedAt": "2026-11-08T06:47:11.105Z",
       "lastSurfacedAt": "2026-11-08T06:47:11.105Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "live-data-test:tests/unit/validate-data-push-refusal-sentinel.test.mjs::tests/unit/validate-data-push-refusal-sentinel.test.mjs": {
       "status": "open",
@@ -38776,12 +38780,13 @@
       "firstSeen": "2026-11-08T06:47:11.124Z",
       "incidentOpenedAt": "2026-11-08T06:47:11.124Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-08T06:47:11.124Z",
+      "lastSeen": "2026-11-08T11:49:18.581Z",
       "lastNotifiedAt": "2026-11-08T06:47:11.124Z",
       "lastSurfacedAt": "2026-11-08T06:47:11.124Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "live-data-test:tests/unit/wrong-article-llm-flagging.test.mjs::every confirmed wrong article is flagged wrongShow or hand-verified # TODO advisory (BRO-4606)": {
       "status": "open",
@@ -38790,12 +38795,13 @@
       "firstSeen": "2026-11-08T06:47:11.393Z",
       "incidentOpenedAt": "2026-11-08T06:47:11.393Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-08T06:47:11.393Z",
+      "lastSeen": "2026-11-08T11:49:18.906Z",
       "lastNotifiedAt": "2026-11-08T06:47:11.393Z",
       "lastSurfacedAt": "2026-11-08T06:47:11.393Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "land:land/bro-7102-job-headroom": {
       "status": "open",
@@ -38853,6 +38859,34 @@
       "linearIdentifier": null,
       "silentRefires": 2,
       "resolvedAt": "2026-11-08T10:15:43.140Z"
+    },
+    "live-data-test:scripts/audit-cross-outlet-attributions.test.mjs::no unreviewed cross-outlet attribution suspects remain": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Live-data test failing: no unreviewed cross-outlet attribution suspects remain (scripts/audit-cross-outlet-attributions.test.mjs)",
+      "firstSeen": "2026-11-08T11:49:18.462Z",
+      "incidentOpenedAt": "2026-11-08T11:49:18.462Z",
+      "deferredAuto": true,
+      "lastSeen": "2026-11-08T11:49:18.462Z",
+      "lastNotifiedAt": "2026-11-08T11:49:18.462Z",
+      "lastSurfacedAt": "2026-11-08T11:49:18.462Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "live-data-test:tests/unit/morning-digest-quiet.test.mjs::plain wording: no visitor-facing health check shows its raw name (BRO-7047)": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Live-data test failing: plain wording: no visitor-facing health check shows its raw name (BRO-7047) (tests/unit/morning-digest-quiet.test.mjs)",
+      "firstSeen": "2026-11-08T11:49:18.563Z",
+      "incidentOpenedAt": "2026-11-08T11:49:18.563Z",
+      "deferredAuto": true,
+      "lastSeen": "2026-11-08T11:49:18.563Z",
+      "lastNotifiedAt": "2026-11-08T11:49:18.563Z",
+      "lastSurfacedAt": "2026-11-08T11:49:18.563Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
     }
   }
 }
