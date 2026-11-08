@@ -4922,18 +4922,11 @@ jobs:
             return "$rc"
           }
 
-          # BRO-2483: the node batch is collected (scripts/lib/unit-test-collection.js),
-          # not read from the retired tests/unit-test-manifest.txt tombstone. --min
-          # exits 1 on an empty list or one under its MIN_NODE_BATCH floor.
-          # BRO-7101: --lane=blocking leaves out tests that declare LIVE-DATA-LANE
-          # (they assert on bot-rewritten data and run in check-corpus-drift.yml), so a
-          # bot data commit cannot turn main red. Land still runs every test.
-          node_list=$(node scripts/lib/unit-test-collection.js --lane=blocking --min) || { echo "::error::scripts/lib/unit-test-collection.js --lane=blocking --min failed (empty, under MIN_NODE_BATCH, or crashed)"; exit 1; }
-          mapfile -t node_tests <<< "$node_list"
-          [ ${#node_tests[@]} -eq 0 ] && { echo "::error::scripts/lib/unit-test-collection.js collected no node unit tests"; exit 1; }
-          run_batch node /tmp/unit-node-batch.log \
-            node --test --test-timeout 300000 "${node_tests[@]}"
-          node_rc=$?; node_pass=$BATCH_PASS; node_fail=$BATCH_FAIL
+          # BRO-7113: the node batch (1,600+ files, ~16 min on a 4-core runner)
+          # moved to the `unit-test-shards` matrix job below; this step keeps
+          # only the tsx batch. node_rc stays defined so the summary is unchanged.
+          node_rc=0; node_pass=sharded; node_fail=sharded
+          node_tests=()
 
           # BRO-7101: same lane split for the tsx manifest.
           mapfile -t tsx_tests < <(node scripts/live-data-lane.js --filter=blocking < tests/unit-test-manifest-tsx.txt)
@@ -4943,7 +4936,7 @@ jobs:
           tsx_rc=$?; tsx_pass=$BATCH_PASS; tsx_fail=$BATCH_FAIL
 
           echo "── unit test batches ──────────────────────────────"
-          echo "node batch: ${#node_tests[@]} files, pass=$node_pass fail=$node_fail exit=$node_rc"
+          echo "node batch: moved to the unit-test-shards job (BRO-7113)"
           echo "tsx  batch: ${#tsx_tests[@]} files, pass=$tsx_pass fail=$tsx_fail exit=$tsx_rc"
           if [ "$node_rc" -ne 0 ] || [ "$tsx_rc" -ne 0 ]; then
             echo "::error::unit tests failed (node exit=$node_rc, tsx exit=$tsx_rc) — see the per-batch groups above"
@@ -5044,52 +5037,6 @@ jobs:
         # Advisory first (CLAUDE.md section 19).
         continue-on-error: true
         run: node scripts/audit-cross-show-url.js --source=reviews.json --strict --max=92
-
-      - name: Run scripts/lib tests (visual-qa transcript-scan etc.)
-        # Tests colocated with the helpers they cover (scripts/lib/*.test.mjs)
-        # per CLAUDE.md §15 test-extraction pattern. Covered helpers:
-        #   - scripts/lib/transcript-scan.mjs (visual-qa gate helper)
-        #
-        # MEASURED 2026-08-14 (the "25/25 pass in <100ms" this comment used to
-        # claim was true when one helper was covered; it is now 279 files /
-        # ~3,700 tests): the glob runs in 34s wall locally. It is not slow.
-        #
-        # --test-timeout 300000 is the load-bearing part. `node --test` has NO
-        # default per-test timeout, so a single wedged file blocks until the
-        # JOB timeout fires and the runner SIGTERMs everything. Run 31823977918
-        # is the worked example: scripts/lib/intake-breaker.test.mjs hung for
-        # 635.9s (`signal: 'SIGTERM'`, `exitCode: ~`), this step burned 645s of
-        # a 10-minute budget, and the whole run concluded `cancelled` — so the
-        # `# fail 1` it did report was never surfaced and four other jobs' worth
-        # of results were thrown away. With a per-test ceiling the same hang
-        # fails as one named test and every other result survives.
-        #
-        # SIZING (corrected in run 31827505814 — the first attempt used 120s and
-        # cancelled a legitimate test, so this number is measured, not guessed):
-        # the slowest honest test is tests/unit/validate-data-push-refusal-
-        # sentinel.test.mjs, which shells out to validate-data.js against the
-        # full corpus — 52.5s locally, ~121s on a runner (CI is ~2.3x slower
-        # than the dev machine). 300s is ~2.5x that CI figure, and still less
-        # than a third of the 15-minute job budget, so a genuine hang (the 635s
-        # one above included) is still caught and NAMED rather than eating the
-        # job. Raise this only against a fresh measurement of the slowest
-        # legitimate test — not to silence a hang.
-        # if: always() so a red earlier test batch (e.g. tests/unit/*) can't skip
-        # this step — otherwise a new scripts/lib/*.test.mjs gets ZERO CI coverage.
-        if: always()
-        run: |
-          shopt -s nullglob
-          # BRO-7101: LIVE-DATA-LANE files run in check-corpus-drift.yml, not here.
-          all_lib=(scripts/lib/*.test.mjs)
-          [ ${#all_lib[@]} -eq 0 ] && { echo "no scripts/lib tests"; exit 0; }
-          mapfile -t tests < <(node scripts/live-data-lane.js --filter=blocking "${all_lib[@]}")
-          [ ${#tests[@]} -eq 0 ] && { echo "::error::live-data-lane.js --filter=blocking returned no scripts/lib tests"; exit 1; }
-          # BRO-5588: name failing tests; exit code preserved.
-          set +e
-          node --test --test-timeout 300000 "${tests[@]}" 2>&1 | tee /tmp/scripts-lib-batch.log
-          rc=${PIPESTATUS[0]}
-          bash scripts/lib/summarize-failing-tests.sh "scripts/lib" /tmp/scripts-lib-batch.log "$rc"
-          exit "$rc"
 
       - name: Repeat file-lock race test 20x (stale-break regression guard)
         # scripts/lib/file-lock.test.mjs's 'racing stale-lock breakers' test
@@ -5703,6 +5650,101 @@ jobs:
               if [ -e "$f" ]; then echo "$f (modified $(date -u -r "$f" +%H:%M:%S) UTC)"; else echo "$f (deleted)"; fi
             done <<< "$new"
             echo "Isolate the test: redirect the ledger path to a tmp dir (see BRO-2656)."
+          else
+            echo "OK: no test wrote to data/audit."
+          fi
+
+  unit-test-shards:
+    name: Unit Test Shard
+    # BRO-7113: the node --test batch (tests/unit via scripts/lib/unit-test-collection.js)
+    # and the scripts/lib/*.test.mjs glob used to run serially inside `unit-tests`
+    # (~16 + ~5 min on a 4-core runner), pushing the job to a 25 min mean / 29 max.
+    # They are independent of every other step in that job, so they run here as
+    # 4 parallel node --test-shard slices. Measured per-shard budget is in
+    # tests/unit/test-yml-timeout-headroom.test.mjs. Do NOT raise timeout-minutes:
+    # add shards (matrix `shard` + SHARD_TOTAL) when a shard nears 80% of it.
+    if: github.actor != 'dependabot[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [1, 2, 3, 4]
+    env:
+      SHARD_TOTAL: 4
+    steps:
+      - name: Checkout
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+      - name: Disable git auto-maintenance (global config)
+        # Same reason as unit-tests (BRO-4720/4749). Guard: tests/unit/ci-git-auto-maintenance-off.test.mjs.
+        run: |
+          git config --global gc.auto 0
+          git config --global gc.autoDetach false
+          git config --global maintenance.auto false
+          git config --global receive.autogc false
+      - name: Setup Node.js
+        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with:
+          node-version: '22'
+      - name: Install dependencies
+        run: npm ci --prefer-offline --no-audit
+      - name: Checkout core data
+        id: core-data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Refresh gold lists from current reviews
+        run: node scripts/compute-gold-lists.js
+      - name: Snapshot data/audit before tests (BRO-2664)
+        if: always()
+        run: find data/audit -type f -exec sha256sum {} + 2>/dev/null | sort -k2 > "$RUNNER_TEMP/audit-before.txt" || true
+      - name: Run unit tests (node batch shard)
+        env:
+          BSC_STAGE_LATENCY_MUTE: '1'
+        run: |
+          # Same collector, lane and per-test ceiling as the pre-shard step
+          # (BRO-2483, BRO-7101); --test-shard slices the file list by index.
+          node_list=$(node scripts/lib/unit-test-collection.js --lane=blocking --min) || { echo "::error::scripts/lib/unit-test-collection.js --lane=blocking --min failed (empty, under MIN_NODE_BATCH, or crashed)"; exit 1; }
+          mapfile -t node_tests <<< "$node_list"
+          [ ${#node_tests[@]} -eq 0 ] && { echo "::error::scripts/lib/unit-test-collection.js collected no node unit tests"; exit 1; }
+          echo "shard ${{ matrix.shard }}/$SHARD_TOTAL of ${#node_tests[@]} node unit test files"
+          set +e
+          node --test --test-timeout 300000 --test-shard="${{ matrix.shard }}/$SHARD_TOTAL" "${node_tests[@]}" 2>&1 | tee /tmp/unit-node-batch.log
+          rc=${PIPESTATUS[0]}
+          bash scripts/lib/summarize-failing-tests.sh "unit-node-shard-${{ matrix.shard }}" /tmp/unit-node-batch.log "$rc"
+          exit "$rc"
+      - name: Run scripts/lib tests shard
+        # Moved verbatim from `unit-tests` (BRO-7113); see git history for the
+        # sizing notes on --test-timeout 300000 (runs 31823977918, 31827505814).
+        # if: always() so a red node shard cannot skip a new scripts/lib test's only CI coverage.
+        if: always()
+        run: |
+          shopt -s nullglob
+          # BRO-7101: LIVE-DATA-LANE files run in check-corpus-drift.yml, not here.
+          all_lib=(scripts/lib/*.test.mjs)
+          [ ${#all_lib[@]} -eq 0 ] && { echo "no scripts/lib tests"; exit 0; }
+          mapfile -t tests < <(node scripts/live-data-lane.js --filter=blocking "${all_lib[@]}")
+          [ ${#tests[@]} -eq 0 ] && { echo "::error::live-data-lane.js --filter=blocking returned no scripts/lib tests"; exit 1; }
+          # BRO-5588: name failing tests; exit code preserved.
+          set +e
+          node --test --test-timeout 300000 --test-shard="${{ matrix.shard }}/$SHARD_TOTAL" "${tests[@]}" 2>&1 | tee /tmp/scripts-lib-batch.log
+          rc=${PIPESTATUS[0]}
+          bash scripts/lib/summarize-failing-tests.sh "scripts/lib" /tmp/scripts-lib-batch.log "$rc"
+          exit "$rc"
+      - name: Ledger isolation check (BRO-2664, advisory)
+        if: always()
+        continue-on-error: true
+        run: |
+          before="$RUNNER_TEMP/audit-before.txt"
+          [ -f "$before" ] || { echo "No snapshot; skipping."; exit 0; }
+          after="$RUNNER_TEMP/audit-after.txt"
+          find data/audit -type f -exec sha256sum {} + 2>/dev/null | sort -k2 > "$after" || true
+          new=$(comm -3 <(sort "$before") <(sort "$after") | sed -E 's/^\t?[0-9a-f]{64}  //' | sort -u)
+          if [ -n "$new" ]; then
+            echo "::warning::Unit tests wrote to production ledgers under data/audit:"
+            while IFS= read -r f; do
+              if [ -e "$f" ]; then echo "$f (modified $(date -u -r "$f" +%H:%M:%S) UTC)"; else echo "$f (deleted)"; fi
+            done <<< "$new"
           else
             echo "OK: no test wrote to data/audit."
           fi
@@ -6977,7 +7019,7 @@ jobs:
     # until 2026-09-30 and turned main red with no code change).
     # data-validation is deliberately NOT here: it audits corpus state, is
     # continue-on-error, and routes failures to the daily digest (BRO-3425).
-    needs: [unit-tests, data-safety-guards, e2e-tests, visual-regression, design-tokens-lint, lint-workflows, typescript-check]
+    needs: [unit-tests, unit-test-shards, data-safety-guards, e2e-tests, visual-regression, design-tokens-lint, lint-workflows, typescript-check]
     if: always()
     steps:
       - name: Check results
