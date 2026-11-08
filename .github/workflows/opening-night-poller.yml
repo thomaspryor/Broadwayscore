@@ -352,6 +352,8 @@ jobs:
         if: steps.find.outputs.has_shows == 'true'
         id: poll
         env:
+          # BRO-7160: targeted runs (post-lane sweep, manual) also collect text for reviews already on disk.
+          INPUT_SHOW_ID: ${{ inputs.show_id }}
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
@@ -413,6 +415,8 @@ jobs:
           SKIPPED_SHOWS=""
           ANY_NEW=false
           ANY_READY=false
+          NEEDS_COLLECTION=false
+          COLLECT_SHOWS=""
           SKIP_SERP_FLAG=""
           if [ "${{ inputs.skip_serp }}" = "true" ]; then
             SKIP_SERP_FLAG="--skip-serp"
@@ -571,6 +575,19 @@ jobs:
               if [ "$SHOW_DIRTY" -gt 0 ] || [ "$UNSCORED" -gt 0 ]; then
                 [[ ",$ACTION_SHOWS," == *",$SHOW_ID,"* ]] || ACTION_SHOWS="$ACTION_SHOWS,$SHOW_ID"
               fi
+              # BRO-7160: on a targeted run, reviews already on disk whose full text was never fetched (excerpt,
+              # stub, truncated) are collected even when this poll found nothing new. The post-lane sweep relies on
+              # it: after the fast lane releases, the gate below used to skip collection on every no-new-file poll.
+              if [ -n "$INPUT_SHOW_ID" ]; then
+                NEED_COLLECT=$(node scripts/lib/poller-needs-collection.js "$SHOW_ID" 2>/dev/null || echo 0)
+                case "$NEED_COLLECT" in ''|*[!0-9]*) NEED_COLLECT=0 ;; esac
+                if [ "$NEED_COLLECT" -gt 0 ]; then
+                  NEEDS_COLLECTION=true
+                  [[ ",$COLLECT_SHOWS," == *",$SHOW_ID,"* ]] || COLLECT_SHOWS="$COLLECT_SHOWS,$SHOW_ID"
+                  [[ ",$ACTION_SHOWS," == *",$SHOW_ID,"* ]] || ACTION_SHOWS="$ACTION_SHOWS,$SHOW_ID"
+                  echo "  → $NEED_COLLECT review(s) on disk still need full text for $SHOW_ID"
+                fi
+              fi
               # Balusters postmortem CLASS 4 — collect shows needing Guardian redispatch
               if grep -q "\[GUARDIAN\] Guardian URL discovered without originalScore" "$PER_SHOW_OUT" 2>/dev/null; then
                 [[ ",$GUARDIAN_REDISPATCH_SHOWS," == *",$SHOW_ID,"* ]] || GUARDIAN_REDISPATCH_SHOWS="$GUARDIAN_REDISPATCH_SHOWS,$SHOW_ID"
@@ -635,11 +652,17 @@ jobs:
           # any_new gates file-commit steps (only fire when files actually changed).
           # any_action gates score/rebuild/deploy (fires for new files OR existing
           # unscored reviews — closes the Joe-Turner gap).
+          # any_collect gates collect + its commits (new files OR, on a targeted run, texts still missing; BRO-7160).
+          ANY_COLLECT=$ANY_NEW
+          if [ "$NEEDS_COLLECTION" = "true" ]; then ANY_COLLECT=true; fi
           ANY_ACTION=false
-          if [ "$ANY_NEW" = "true" ] || [ "$ANY_READY" = "true" ]; then ANY_ACTION=true; fi
+          if [ "$ANY_NEW" = "true" ] || [ "$ANY_READY" = "true" ] || [ "$NEEDS_COLLECTION" = "true" ]; then ANY_ACTION=true; fi
           echo "any_new=$ANY_NEW" >> $GITHUB_OUTPUT
           echo "any_ready=$ANY_READY" >> $GITHUB_OUTPUT
           echo "any_action=$ANY_ACTION" >> $GITHUB_OUTPUT
+          echo "needs_collection=$NEEDS_COLLECTION" >> $GITHUB_OUTPUT
+          echo "any_collect=$ANY_COLLECT" >> $GITHUB_OUTPUT
+          echo "collect_shows=${COLLECT_SHOWS#,}" >> $GITHUB_OUTPUT
           echo "action_shows=${ACTION_SHOWS#,}" >> $GITHUB_OUTPUT
           echo "gather_failed=$GATHER_FAILED" >> $GITHUB_OUTPUT
           echo "gather_total=$GATHER_TOTAL" >> $GITHUB_OUTPUT
@@ -773,9 +796,10 @@ jobs:
 
       - name: Collect full text inline
         id: collect
-        if: steps.find.outputs.has_shows == 'true' && steps.poll.outputs.any_new == 'true'
+        if: steps.find.outputs.has_shows == 'true' && steps.poll.outputs.any_collect == 'true'
         env:
-          SHOW_FILTER: ${{ steps.find.outputs.shows }}
+          # BRO-7160: every polled show when the poll wrote new files, else only the shows with texts still missing.
+          SHOW_FILTER: ${{ steps.poll.outputs.any_new == 'true' && steps.find.outputs.shows || steps.poll.outputs.collect_shows }}
           MAX_REVIEWS: '100'
           BATCH_SIZE: '10'
           # BRO-6972: a show with no scored review yet is collected first (collection-priority.js).
@@ -848,7 +872,7 @@ jobs:
         timeout-minutes: 12
 
       - name: Commit collected texts
-        if: steps.find.outputs.has_shows == 'true' && steps.poll.outputs.any_new == 'true'
+        if: steps.find.outputs.has_shows == 'true' && steps.poll.outputs.any_collect == 'true'
         env:
           # BRO-3068: lower push-with-retry.sh's per-attempt network cap from
           # its 90s default to 30s — a pre-transfer connection stall burns the
@@ -869,7 +893,7 @@ jobs:
         continue-on-error: true
 
       - name: Flag combined (joint) reviews
-        if: steps.find.outputs.has_shows == 'true' && steps.poll.outputs.any_new == 'true'
+        if: steps.find.outputs.has_shows == 'true' && steps.poll.outputs.any_collect == 'true'
         # MUST run before scoring. The ensemble's scoreability check rejects
         # joint reviews as wrong_show on the half of the article that's about
         # the OTHER show in the pairing. Marking the file isCombinedReview:true
@@ -885,7 +909,7 @@ jobs:
         # bundled "Commit scores" step at line 388 would skip the push and the
         # flag changes would only exist on this runner. Issue #316 ship-check
         # (P1/D).
-        if: steps.find.outputs.has_shows == 'true' && steps.poll.outputs.any_new == 'true'
+        if: steps.find.outputs.has_shows == 'true' && steps.poll.outputs.any_collect == 'true'
         env:
           # BRO-3068: lower push-with-retry.sh's per-attempt network cap from
           # its 90s default to 30s — a pre-transfer connection stall burns the
@@ -1504,7 +1528,7 @@ jobs:
         env:
           GATHER_FAILED: ${{ steps.poll.outputs.gather_failed }}
           GATHER_TOTAL: ${{ steps.poll.outputs.gather_total }}
-          COLLECT_ATTEMPTED_RAW: ${{ steps.poll.outputs.any_new }}
+          COLLECT_ATTEMPTED_RAW: ${{ steps.poll.outputs.any_collect }}
           COLLECT_OUTCOME: ${{ steps.collect.outcome }}
           SCORE_ATTEMPTED_RAW: ${{ steps.poll.outputs.any_action }}
           SCORE_OUTCOME: ${{ steps.score.outcome }}
