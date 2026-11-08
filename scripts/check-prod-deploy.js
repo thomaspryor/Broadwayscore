@@ -174,7 +174,7 @@ function ensureLocalCommit(sha, { exec = execFileSync, cwd = process.cwd() } = {
   try {
     const { repoDepthArgs } = require('./lib/shallow-fetch-args');
     // unbounded-fetch-ok: repoDepthArgs IS the bound; the lint can't evaluate a spread.
-    exec('git', ['fetch', '-q', ...repoDepthArgs({ repoRoot: cwd }), 'origin', 'main'], { cwd, stdio: ['ignore', 'ignore', 'pipe'], timeout: 120_000 });
+    exec('git', ['fetch', '-q', ...repoDepthArgs({ repoRoot: cwd }), 'origin', 'main'], { cwd, stdio: ['ignore', 'ignore', 'pipe'], timeout: 60_000 });
   } catch (e) {
     console.error(`⚠️  could not fetch origin main to find ${sha.slice(0, 10)}: ${firstLine(String(e.stderr || e.message).trimStart())}`);
     return false;
@@ -196,11 +196,20 @@ function deployIsBehind(commit, deployedSha, cwd = process.cwd()) {
   }
 }
 
-function isLive(commit, deployedSha) {
+// The full sha a commit-ish names now, or the raw argument if git can't say.
+function pinCommit(commit, cwd = process.cwd()) {
+  try {
+    return execFileSync('git', ['rev-parse', '--verify', `${commit}^{commit}`], { cwd, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim() || commit;
+  } catch {
+    return commit;
+  }
+}
+
+function isLive(commit, deployedSha, cwd = process.cwd()) {
   if (!deployedSha) return false;
-  ensureLocalCommit(deployedSha);
-  if (deployIsBehind(commit, deployedSha)) return false;
-  const result = checkLanded({ sha: commit, ref: deployedSha, cwd: process.cwd(), log: (m) => console.error(m) });
+  ensureLocalCommit(deployedSha, { cwd });
+  if (deployIsBehind(commit, deployedSha, cwd)) return false;
+  const result = checkLanded({ sha: commit, ref: deployedSha, cwd, log: (m) => console.error(m) });
   if (result.verdict === 'UNKNOWN') {
     console.error(`⚠️  Could not determine whether ${commit} is live (reason=${result.reason}); verify via VERCEL_TOKEN dashboard or 'git ls-remote origin main'.`);
     return null; // exit 2, same as the GitHub fallback (BRO-5836)
@@ -232,11 +241,14 @@ function fmtAge(sec) {
 
 async function main() {
   const { commit, json, wait } = parseArgs(process.argv.slice(2));
+  // Pin a symbolic target (origin/main, HEAD) to its sha now: ensureLocalCommit's
+  // fetch moves origin/main, and a --wait loop would otherwise chase the tip.
+  const target = commit ? pinCommit(commit) : commit;
   const deadline = wait != null ? Date.now() + wait * 1000 : 0;
 
   for (;;) {
     const dep = await latestProdDeploy({ json, wait });
-    const live = commit ? (dep.via ? isLiveViaGithub(commit, dep.sha) : isLive(commit, dep.sha)) : null;
+    const live = commit ? (dep.via ? isLiveViaGithub(target, dep.sha) : isLive(target, dep.sha)) : null;
 
     const done = wait == null || live || Date.now() >= deadline;
     if (done) {
@@ -253,7 +265,7 @@ async function main() {
           // stderr silenced: a bogus commit-ish makes git print "fatal: Needed a
           // single revision" — harmless here (we fall back to the raw arg), so
           // don't leak it to the user.
-          try { shortTarget = execSync(`git rev-parse --short ${commit}`, { stdio: ['ignore', 'pipe', 'ignore'] }).toString().trim(); } catch {}
+          try { shortTarget = execSync(`git rev-parse --short ${target}`, { stdio: ['ignore', 'pipe', 'ignore'] }).toString().trim(); } catch {}
           if (live === null) console.log(`❓ could not check whether ${shortTarget} is live (production is at ${shortDeployed}).`);
           else console.log(live ? `✅ ${shortTarget} is LIVE on production.` : `⏳ ${shortTarget} is NOT live yet (production is at ${shortDeployed}).`);
         }
@@ -270,6 +282,6 @@ async function main() {
 // Exported for scripts/lib/e2e-await-deploy.js (BRO-4668), which needs the
 // deployed SHA without the shallow-unsafe local ancestry check above, and
 // must not be killed by the CLI's process.exit on a transient Vercel error.
-module.exports = { fetchLatestProdDeploy, ensureLocalCommit, deployIsBehind };
+module.exports = { fetchLatestProdDeploy, ensureLocalCommit, deployIsBehind, isLive, pinCommit };
 
 if (require.main === module) main();

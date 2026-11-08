@@ -66,3 +66,29 @@ test('a deploy behind the target reads as behind in a shallow clone; equal, ahea
   assert.equal(deployIsBehind(deployed, target, clone), false, 'prod newer than the target is not behind');
   assert.equal(deployIsBehind(target, 'f'.repeat(40), clone), false, 'a missing deploy object is not behind');
 });
+
+// isLive end to end on a shallow clone, unshallow skipped as in cloud: fails if
+// either new isLive line (fetch, behind check) is reverted (BRO-7110 review).
+test('isLive: deploy behind reads not-live (false), deploy pushed after the clone reads live (true), never unknown', (t) => {
+  const { isLive, pinCommit } = require('../check-prod-deploy.js');
+  const prev = process.env.PUSH_SKIP_UNSHALLOW;
+  process.env.PUSH_SKIP_UNSHALLOW = '1';
+  const { dir, origin, clone } = fixture();
+  t.after(() => {
+    if (prev === undefined) delete process.env.PUSH_SKIP_UNSHALLOW; else process.env.PUSH_SKIP_UNSHALLOW = prev;
+    rmSync(dir, { recursive: true, force: true });
+  });
+  const errs = [];
+  const origErr = console.error;
+  console.error = (m) => errs.push(String(m));
+  t.after(() => { console.error = origErr; });
+  const deployedOld = git(clone, 'rev-parse', 'HEAD');
+  commit(origin, 'c');
+  git(clone, 'fetch', '-q', '--depth=2', 'origin', 'main');
+  const target = git(clone, 'rev-parse', 'origin/main');
+  assert.equal(isLive(target, deployedOld, clone), false, 'prod behind the target');
+  const deployedNew = commit(origin, 'd');
+  assert.equal(isLive(target, deployedNew, clone), true, 'prod ahead of this clone, fetched');
+  assert.equal(pinCommit('origin/main', clone), deployedNew, 'the fetch moved origin/main, which is why main() pins first');
+  assert.equal(pinCommit('no-such-ref', clone), 'no-such-ref');
+});
