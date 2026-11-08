@@ -36,6 +36,20 @@ test('passes: first checkout, missing-tree guard, no-cone, directory-only, other
   }
 });
 
+test('reads every way of writing the list and the path (review findings)', () => {
+  const hdr = (h) => job(FULL + RE().replace('          sparse-checkout: |', `          sparse-checkout: ${h}`));
+  for (const h of ['|-', '|+', '>-', '|2']) assert.equal(findSparseFileRecheckouts(hdr(h)).length, 1, h);
+  const inline = (v) => job(FULL + `      - uses: actions/checkout@abc\n        with:\n          sparse-checkout: ${v}\n`);
+  assert.equal(findSparseFileRecheckouts(inline('"scripts/lib/discord-notify.js"')).length, 1, 'double-quoted inline');
+  assert.equal(findSparseFileRecheckouts(inline("'scripts/lib/discord-notify.js' # why")).length, 1, 'single-quoted inline + comment');
+  const withPath = (p1, p2) => job(
+    `      - uses: actions/checkout@abc\n        with:\n          path: ${p1}\n` +
+    RE().replace('        with:\n          sparse', `        with:\n          path: ${p2}\n          sparse`));
+  assert.equal(findSparseFileRecheckouts(withPath('./sub', 'sub/')).length, 1, './sub and sub/ are one path');
+  assert.equal(findSparseFileRecheckouts(withPath('${{ github.workspace }}/x', '${{ github.workspace }}/y')).length, 0, 'different ${{ }} paths');
+  assert.equal(findSparseFileRecheckouts(withPath('"${{ github.workspace }}/x"', '${{ github.workspace }}/x')).length, 1, 'same ${{ }} path, quoted or not');
+});
+
 test('separate jobs do not share a populated tree', () => {
   const wf = `on: push\njobs:\n  a:\n    runs-on: x\n    steps:\n${FULL}  b:\n    runs-on: x\n    steps:\n${RE()}`;
   assert.deepEqual([...findSparseFileRecheckouts(wf)], []);
