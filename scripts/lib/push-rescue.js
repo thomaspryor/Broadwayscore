@@ -130,7 +130,7 @@ function mainSupersedesRescue(rescueText, mainText) {
   const waivable = (k) => CONTENT_KEYS.has(k)
     || ((k === 'incompleteReason' || k === 'incompleteDetail') && isFetchStateOnly(a))
     || (k === 'criticName' && UNKNOWN_CRITIC.test(String(a[k])));
-  // BRO-7139: a rescued copy with no text (no fullText, excerpts equal to
+  // BRO-7173: a rescued copy with no text (no fullText, excerpts equal to
   // main's) loses nothing to main at an equal or higher tier (or one main
   // judged invalid), provided every other value it holds matches main or is
   // retry bookkeeping a later run rewrote.
