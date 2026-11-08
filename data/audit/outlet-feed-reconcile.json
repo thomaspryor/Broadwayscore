@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-07T23:22:11.584Z",
+  "generatedAt": "2026-11-08T00:34:10.096Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -34,14 +34,19 @@
       "openingDate": "2026-11-02"
     },
     {
-      "id": "tosca-off-broadway-2026",
-      "title": "Tosca",
-      "openingDate": "2026-11-01"
-    },
-    {
       "id": "msblackforpresident-off-broadway-2026",
       "title": "Ms. Blakk for President",
       "openingDate": "2026-11-08"
+    },
+    {
+      "id": "the-visitors-off-broadway-2026",
+      "title": "The Visitors",
+      "openingDate": "2026-11-09"
+    },
+    {
+      "id": "dogstar-off-west-end-2026",
+      "title": "Dogstar",
+      "openingDate": "2026-11-09"
     },
     {
       "id": "222-a-ghost-story-off-broadway-2026",
@@ -57,6 +62,11 @@
       "id": "nero-off-west-end-2026",
       "title": "Nero",
       "openingDate": "2026-11-06"
+    },
+    {
+      "id": "here-there-are-blueberries-2026",
+      "title": "Here There Are Blueberries",
+      "openingDate": "2026-11-09"
     },
     {
       "id": "rope-off-broadway-2026",
@@ -77,11 +87,6 @@
       "id": "the-morbs-off-broadway-2026",
       "title": "The Morbs",
       "openingDate": "2026-11-02"
-    },
-    {
-      "id": "the-blue-violinist-over-west-end-avenue-off-broadway-2026",
-      "title": "The Blue Violinist Over West End Avenue",
-      "openingDate": "2026-11-01"
     },
     {
       "id": "dr-seuss-how-the-grinch-stole-christmas-tour-2026",
@@ -122,6 +127,14 @@
   "feedsChecked": 84,
   "feedsFailed": [
     {
+      "outletId": "theatre-weekly",
+      "error": "HTTP 523 for https://theatreweekly.com/feed"
+    },
+    {
+      "outletId": "theater-life",
+      "error": "Timeout fetching https://theaterlife.com/feed"
+    },
+    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
@@ -142,9 +155,9 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 829,
-  "matchedGaps": 6,
-  "possibleGaps": 4,
+  "itemsScanned": 820,
+  "matchedGaps": 2,
+  "possibleGaps": 3,
   "gaps": [
     {
       "showId": "222-a-ghost-story-off-broadway-2026",
@@ -163,42 +176,6 @@
       "url": "https://t2conline.com/222-a-ghost-story-the-loudest-thing-in-the-room-isnt-the-ghost/",
       "headline": "2:22 – A Ghost Story: The Loudest Thing in the Room Isn’t the Ghost",
       "publishDate": "2026-11-07"
-    },
-    {
-      "showId": "tosca-off-broadway-2026",
-      "title": "Tosca",
-      "level": "matched",
-      "outletId": "plays-to-see",
-      "url": "https://playstosee.com/reviews/tosca-17/?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=tosca-17",
-      "headline": "TOSCA",
-      "publishDate": "2026-10-31"
-    },
-    {
-      "showId": "tosca-off-broadway-2026",
-      "title": "Tosca",
-      "level": "matched",
-      "outletId": "british-theatre",
-      "url": "https://www.britishtheatreguide.info/reviews/tosca-london-coliseum-26187",
-      "headline": "Tosca",
-      "publishDate": "2026-11-06"
-    },
-    {
-      "showId": "tosca-off-broadway-2026",
-      "title": "Tosca",
-      "level": "matched",
-      "outletId": "jackstage",
-      "url": "https://www.jackstage.co.uk/post/eno-s-tosca-review-a-fiery-revival-of-puccini-s-opera-without-political-grounding",
-      "headline": "ENO's Tosca Review: a fiery revival of Puccini's opera without political grounding",
-      "publishDate": "2026-11-06"
-    },
-    {
-      "showId": "tosca-off-broadway-2026",
-      "title": "Tosca",
-      "level": "matched",
-      "outletId": "thereviewshub",
-      "url": "https://www.thereviewshub.com/eno-tosca-london-coliseum/",
-      "headline": "ENO: Tosca &#8211; London Coliseum",
-      "publishDate": "2026-10-31"
     },
     {
       "showId": "king-lear-off-broadway-2026",
@@ -226,15 +203,6 @@
       "url": "https://standard.co.uk/culture/theatre/the-oresteia-at-the-bridge-review-b1290028.html",
       "headline": "The Oresteia at the Bridge: Thrillingly stripped back and bloody",
       "publishDate": null
-    },
-    {
-      "showId": "tosca-off-broadway-2026",
-      "title": "Tosca",
-      "level": "possible",
-      "outletId": "london-unattached",
-      "url": "https://www.london-unattached.com/tosca-english-national-opera/",
-      "headline": "Tosca, English National Opera",
-      "publishDate": "2026-11-01"
     }
   ]
 }
