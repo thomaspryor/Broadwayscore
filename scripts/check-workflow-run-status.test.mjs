@@ -66,6 +66,14 @@ test('in-progress runs are not credited as clean', () => {
   assert.equal(evaluate([ip, r('success'), r('success'), r('success')], { expect: 'failure', limit: 3, maxMatch: 0 }).ok, true);
 });
 
+test('single-run mode reads the newest FINISHED run, not a queued one (flaky 2026-11-08)', () => {
+  const q = { conclusion: '', status: 'queued', url: 'u' };
+  const ip = { conclusion: '', status: 'in_progress', url: 'u' };
+  assert.equal(evaluate([q, r('success')], { expect: 'success' }).ok, true, 'a newly queued run does not flip a green check');
+  assert.equal(evaluate([ip, r('failure'), r('success')], { expect: 'success' }).ok, false, 'the newest finished run still decides');
+  assert.equal(evaluate([q, ip], { expect: 'success' }).ok, false, 'no finished run is not a pass');
+});
+
 test('CLI rejects vacuous/impossible bounds with exit 2', async () => {
   const { spawnSync } = await import('node:child_process');
   for (const extra of ['--limit=5 --min-match=0', '--limit=5 --max-match=5', '--limit=3 --min-match=4', '--limit=5 --min-match=3 --max-match=2']) {
