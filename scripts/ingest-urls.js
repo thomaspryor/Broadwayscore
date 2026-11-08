@@ -97,6 +97,7 @@ const reviewTextsDir = resolveReviewTextsDir();
 // Verify show exists
 const showsData = require('../data/shows.json');
 const { isTbObIndexUrl, resolveTbObIndexUrl } = require('./lib/tb-direct-url');
+const { fetchWithArchiveFallback, archiveCopyDisposition } = require('./lib/fetch-archive-fallback');
 const show = showsData.shows.find(s => s.id === showId);
 if (!show) {
   console.error(`Show not found: ${showId}`);
@@ -197,7 +198,17 @@ async function main() {
     if (fetchPage && !noFetch) {
       try {
         if (verbose) console.log(`    Fetching text...`);
-        const result = await fetchPage(fetchUrl);
+        // BRO-7147: live fetch, then the newest existing archive.org copy (same
+        // helper ingest-review-from-url uses). An unlocker's 200 "Page not found"
+        // template counts as a failed live fetch, so a removed or moved review
+        // is read from its archive copy instead of ending with no text.
+        let liveSource = null;
+        const got = await fetchWithArchiveFallback(fetchUrl, {
+          fetchPageFn: async (u) => { const r = await fetchPage(u); if (u === fetchUrl) liveSource = r && r.source; return r; },
+        });
+        const result = got.html ? { content: got.html, source: got.via === 'archive' ? `archive.org:${got.snapshot}` : liveSource } : null;
+        if (!result) throw new Error(got.error || 'no usable HTML');
+        if (got.via === 'archive' && verbose) console.log(`    → Live fetch failed; read the archive.org copy from ${got.snapshot}`);
         if (result && result.content) {
           fetchMethod = result.source;
           // Extract main article text from outlet HTML rather than storing
@@ -214,7 +225,9 @@ async function main() {
           // guard on in-window reviews (BRO-4185 B). Merges fill it only
           // when the file has none.
           try { publishDate = extractPublishDate(result.content, url) || null; } catch { publishDate = null; }
-          if (extracted && extracted.length >= 200) {
+          // A thin archive copy is refused, as in ingest-review-from-url (BRO-5874).
+          const thinArchive = got.via === 'archive' && archiveCopyDisposition({ viaArchive: true, explicitSnapshot: false, stubOnFailure: false, textLength: extracted ? extracted.length : 0 }) !== 'ok';
+          if (extracted && extracted.length >= 200 && !thinArchive) {
             fullText = extracted;
             if (verbose) console.log(`    ✓ Extracted ${fullText.length} chars (article body) via ${fetchMethod}`);
           } else {

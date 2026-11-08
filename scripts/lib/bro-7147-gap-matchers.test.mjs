@@ -41,3 +41,17 @@ test('cited-missing count ignores census hits and reviews collected since the au
   assert.equal(citedUncollectedNow(row, { blocklist }), 1);
   assert.equal(citedUncollectedNow(null), null);
 });
+
+test('held-URL match keeps query-addressed posts apart and drops only tracking params', () => {
+  const { urlKey } = require('./audit-show-review-gap.js');
+  assert.notEqual(urlKey('https://blog.example.com/?p=101'), urlKey('https://blog.example.com/?p=202'));
+  assert.equal(urlKey('https://www.example.com/r/x/?utm_source=t#top'), urlKey('http://example.com/r/x'));
+  const row = { showId: 's', missing: [{ url: 'https://blog.example.com/?p=202' }] };
+  assert.equal(citedUncollectedNow(row, { heldFiles: [{ url: 'https://blog.example.com/?p=101' }] }), 1);
+});
+
+test('cited-missing count drops a Squarespace origin copy of a held review', () => {
+  const row = { showId: 'ceilidh', missing: [{ url: 'https://herring-gerbil-e2c7.squarespace.com/reviews/review-ceilidh-at-shoreditch-town-hall' }] };
+  assert.equal(citedUncollectedNow(row), 1);
+  assert.equal(citedUncollectedNow(row, { heldFiles: [{ url: 'https://www.unmissabletheatre.co.uk/reviews/review-ceilidh-at-shoreditch-town-hall' }] }), 0);
+});

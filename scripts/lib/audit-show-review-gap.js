@@ -7,6 +7,7 @@ const { classifyIngestSkip, classifyReason } = require('./ingest-skip-classify')
 const { findBlockedEntry } = require('./poller-blocklist');
 const { syndicatedReprintOf } = require('./syndicated-reprint-match');
 const { isSyndicationHost, isSisterSiteHost } = require('./syndication-canonical');
+const { platformOriginMirrorOf } = require('./outlet-canonicalize');
 
 function defaultCollectable(m) {
   return !m || !m.url || classifyGapCandidateUrl(m.url).ok;
@@ -60,8 +61,15 @@ function currentRunUncollected(r, { isCollectable = defaultCollectable, ignoreCe
 // would otherwise count as both live and missing. Same rules as the per-show
 // alert (BRO-7116, census hits excluded) plus the read-time blocklist and
 // syndicated-reprint checks the CLI's stillCollectable applies.
-const urlKey = (u) => String(u || '').trim().toLowerCase()
-  .replace(/^https?:\/\//, '').replace(/^www\./, '').replace(/[?#].*$/, '').replace(/\/+$/, '');
+// Query strings are kept: ?p=123 and ?ID=9 address different posts on many
+// small blogs. Only the fragment and utm_* tracking params are dropped.
+function urlKey(u) {
+  const s = String(u || '').trim().toLowerCase().replace(/#.*$/, '');
+  const [base, query = ''] = s.split('?');
+  const kept = query.split('&').filter(p => p && !/^utm_/.test(p)).join('&');
+  const head = base.replace(/^https?:\/\//, '').replace(/^www\./, '').replace(/\/+$/, '');
+  return kept ? `${head}?${kept}` : head;
+}
 
 function citedUncollectedNow(r, { heldFiles = [], blocklist = null, show = null } = {}) {
   if (!r) return null;
@@ -74,6 +82,7 @@ function citedUncollectedNow(r, { heldFiles = [], blocklist = null, show = null 
       if (!defaultCollectable(m)) return false;
       if (!m || !m.url) return true;
       if (heldKeys.has(urlKey(m.url))) return false;
+      if (platformOriginMirrorOf({ candidateUrl: m.url, heldUrls: held.map(f => f.url) }).dup) return false;
       if (blocklist && findBlockedEntry(blocklist, m.url)) return false;
       if ((isSyndicationHost(m.url) || isSisterSiteHost(m.url))
         && syndicatedReprintOf({ candidateUrl: m.url, heldFiles: clean, showTitle: r.title || (show && show.title), venue: show && show.venue }).dup) return false;
@@ -126,4 +135,4 @@ function gapIngestRequiresPublishDate(row, evidence) {
   return !!evidence || !!(row && row.datelessCitationOnly);
 }
 
-module.exports = { currentRunUncollected, citedUncollectedNow, earlierDatedCitation, gapIngestRequiresPublishDate, runWindowStartMs };
+module.exports = { currentRunUncollected, citedUncollectedNow, urlKey, earlierDatedCitation, gapIngestRequiresPublishDate, runWindowStartMs };

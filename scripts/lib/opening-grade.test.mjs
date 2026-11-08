@@ -55,11 +55,21 @@ test('digest block colours an incomplete opening and older summaries without the
   assert.match(og.tallyLine(legacy, 14), /Off-Broadway 1 of 1/);
 });
 
-test('hand fixes outrank incomplete; no live reviews with cited ones out is no-reviews and still shown', () => {
+test('hand fixes outrank incomplete; a closed window with none live but cited ones out is incomplete', () => {
   const hand = og.gradeOpening({ show, files: [{ ...files[0], ingestOrigin: 'manual', firstSeenAt: new Date(embargo + 3600000).toISOString() }, ...files.slice(1)],
     gapResult, missingCited: 2, nowMs: closed });
   assert.equal(hand.verdict, 'needed-hands');
   const none = og.gradeOpening({ show, files: [], gapResult, missingCited: 2, nowMs: closed });
-  assert.equal(none.verdict, 'no-reviews');
-  assert.match(og.gradeLine(none), /0 reviews live of 2 cited, cited reviews are out but none are on the site yet/);
+  assert.equal(none.verdict, 'incomplete');
+  assert.match(og.gradeLine(none), /0 reviews live of 2 cited, opening week ended with 2 cited reviews still missing/);
+  const stillOpen = og.gradeOpening({ show, files: [], gapResult, missingCited: 2, nowMs: embargo + 3600000 });
+  assert.equal(stillOpen.verdict, 'no-reviews');
+  assert.match(og.gradeLine(stillOpen), /cited reviews are out but none are on the site yet/);
+});
+
+test('no gap audit row means missing and known are unknown, not zero', () => {
+  const g = og.gradeOpening({ show, files, gapResult: null, missingCited: null, nowMs: closed });
+  assert.equal(g.missing, null);
+  assert.equal(g.known, null);
+  assert.equal(g.verdict, 'on-its-own');
 });

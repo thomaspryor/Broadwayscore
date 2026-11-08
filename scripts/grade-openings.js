@@ -124,7 +124,7 @@ function main() {
   }); }).sort((a, b) => (b.openingDate.localeCompare(a.openingDate)) || a.showId.localeCompare(b.showId));
 
   const doc = {
-    schemaVersion: 1,
+    schemaVersion: 2, // BRO-7147: known = live + cited-missing; verdict incomplete; missing null when unaudited
     generatedAt: new Date(nowMs).toISOString(),
     generator: 'scripts/grade-openings.js (BRO-7082)',
     from: fromDate,

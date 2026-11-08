@@ -156,8 +156,9 @@ function gradeOpening({ show, files = [], commits = [], historyFromMs = null, pr
   // censusCandidates for reference only.
   const cv = gapResult && gapResult.censusVerdict;
   const censusCandidates = cv && Number.isInteger(cv.candidateCount) ? cv.candidateCount : null;
-  const missing = Number.isInteger(missingCited) && missingCited > 0 ? missingCited : 0;
-  const known = Number.isInteger(missingCited) ? live + missing : null;
+  // null when no gap audit row exists for the show (unknown, not zero).
+  const missing = Number.isInteger(missingCited) ? Math.max(0, missingCited) : null;
+  const known = missing === null ? null : live + missing;
   const windowClosed = nowMs > hi;
   let hoursToLive = null;
   if (pressNight && toMs(pressNight.embargoAt) != null && Array.isArray(pressNight.perReview)) {
@@ -170,10 +171,11 @@ function gradeOpening({ show, files = [], commits = [], historyFromMs = null, pr
   let verdict;
   if (signals.length) verdict = 'needed-hands';
   else if (!historyCovers) verdict = 'not-gradable';
-  else if (live === 0) verdict = 'no-reviews';
   // BRO-7147: a window that closed with cited reviews still missing did not run
-  // on its own, whether or not anyone touched it.
+  // on its own, whether or not anyone touched it, and with none live at all it
+  // is the worst case, so it outranks no-reviews.
   else if (windowClosed && missing > 0) verdict = 'incomplete';
+  else if (live === 0) verdict = 'no-reviews';
   else verdict = 'on-its-own';
 
   return {
