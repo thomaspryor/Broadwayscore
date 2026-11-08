@@ -1,10 +1,10 @@
 {
-  "timestamp": "2026-11-08T06:28:39.463Z",
+  "timestamp": "2026-11-08T06:52:18.373Z",
   "stats": {
     "totalReviews": 80517,
-    "alreadyFlagged": 22031,
+    "alreadyFlagged": 22029,
     "dateGuardCatches": 216,
-    "directorMismatch": 3545,
+    "directorMismatch": 3547,
     "tvFilmSignals": 2294,
     "londonSignals": 3627,
     "offBroadwaySignals": 749,
@@ -46581,10 +46581,36 @@
     },
     {
       "showId": "oh-mary-off-broadway-2024",
+      "file": "thewrap--robert-hofler.json",
+      "publishDate": "2024-02-08",
+      "url": "https://www.thewrap.com/oh-mary-off-broadway-review-cole-escola/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sam pinkleton\" from oh-mary-2024"
+        }
+      ]
+    },
+    {
+      "showId": "oh-mary-off-broadway-2024",
       "file": "this-week-in-new-york--mark-rifkin.json",
       "score": 95,
       "publishDate": "May 5, 2024",
       "url": "https://twi-ny.com/2024/05/05/oh-mary/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sam pinkleton\" from oh-mary-2024"
+        }
+      ]
+    },
+    {
+      "showId": "oh-mary-off-broadway-2024",
+      "file": "timeout--adam-feldman.json",
+      "publishDate": "2024-02-08",
+      "url": "https://www.timeout.com/newyork/theater/oh-mary-review-comedy-cole-escola-mary-todd-lincoln",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
