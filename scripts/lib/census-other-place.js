@@ -40,7 +40,7 @@ const OTHER_HOUSES = [
   'donmar', 'young-vic', 'old-vic', 'bridge-theatre', 'hampstead-theatre', 'menier-chocolate-factory',
   'barbican', 'southwark-playhouse', 'kiln-theatre', 'orange-tree-theatre', 'shakespeares-globe',
   'sam-wanamaker', 'national-theatre', 'royal-shakespeare-company', 'theatre-royal', 'crucible-theatre',
-  'leeds-playhouse', 'london-coliseum', 'chichester-festival', 'chicago-shakespeare', 'chicago-shakes',
+  'leeds-playhouse', 'oxford-playhouse', 'london-coliseum', 'chichester-festival', 'chicago-shakespeare', 'chicago-shakes',
   'goodman-theatre', 'lupin-theater', 'kennedy-center', 'arena-stage', 'guthrie-theater',
   'mark-taper', 'pasadena-playhouse', 'old-globe', 'la-jolla-playhouse', 'huntington-theatre',
   'american-repertory-theater', 'alley-theatre', 'wales-millennium-centre',
@@ -48,24 +48,31 @@ const OTHER_HOUSES = [
 
 // Cities: a city in a slug is often the subject ("madness in Detroit", "from Texas to the
 // hospital") or a modifier ("London-born revival", "London hit Cable Street"), so a city only
-// counts as a staging place when it starts a path segment (/london/, /los-angeles-theater/,
-// /new-orleans-weekly-news/) or sits next to a staging word ("musical-chicago-review",
-// "palace-theatre-london"). Cities that are also common surnames or NYC streets (Austin
-// Pendleton, Houston Street, Phoenix Theatre Ensemble) are left out.
+// counts as a staging place when it IS a path segment (an edition path: /london/, /chicago/)
+// or sits next to a staging word ("musical-chicago-review", "palace-theatre-london",
+// "los-angeles-theater"). A segment that merely starts with a city ("chicago-duo-zaps",
+// "manchester-by-the-sea-author", "london-transplant-...") is not enough. Cities that are also
+// common surnames, streets or words (Austin Pendleton, Houston Street, Phoenix Theatre
+// Ensemble, Bath, Oxford) are left out.
 const CITIES = [
   'chicago', 'los-angeles', 'san-francisco', 'san-diego', 'boston', 'philadelphia', 'washington-dc',
   'seattle', 'atlanta', 'minneapolis', 'pittsburgh', 'new-orleans', 'nola', 'baltimore', 'nashville',
   'st-louis', 'kansas-city', 'milwaukee', 'cincinnati', 'toronto', 'chicagoland',
   'london', 'west-end', 'manchester', 'birmingham', 'liverpool', 'leeds', 'bristol', 'edinburgh',
-  'glasgow', 'cardiff', 'chichester', 'sheffield', 'nottingham', 'dublin', 'belfast', 'oxford',
-  'stratford-upon-avon', 'bath',
+  'glasgow', 'cardiff', 'chichester', 'sheffield', 'nottingham', 'dublin', 'belfast',
+  'stratford-upon-avon',
 ];
 const STAGING_WORDS = new Set([
   'review', 'reviews', 'theatre', 'theater', 'theatres', 'theaters', 'musical', 'production', 'staging',
   'premiere', 'playhouse', 'opera', 'coliseum', 'centre', 'stage', 'run', 'revival', 'shakes',
 ]);
+// A house noun one word further on still names a staging place ("st-louis-family-theatre").
+const HOUSE_NOUNS = new Set(['theatre', 'theater', 'playhouse', 'opera', 'centre']);
 // "London hit", "London-born", "Chicago transfer": the city describes this show's history.
 const CITY_MODIFIER_VETO = new Set(['hit', 'born', 'import', 'transfer', 'transfers', 'transplant', 'smash', 'favorite', 'favourite', 'sensation', 'success', 'bound']);
+// "from the West End", "her West End staging", "reprises his London performance": the city is
+// where the show came from, so this staging is elsewhere (New York).
+const CITY_ORIGIN_VETO = new Set(['from', 'her', 'his', 'their', 'its', 'reprises', 'reprise', 'reprising', 'after']);
 
 const NY_MARKERS = [
   'new-york', 'newyork', 'nyc', 'ny', 'manhattan', 'brooklyn', 'queens', 'bronx', 'harlem',
@@ -76,8 +83,10 @@ const NY_MARKERS = [
 // New York transfers; that call is otherProductionUrlSignal's, not this one's).
 const NOT_REGIONAL = new Set(['nyc', 'nj', 'us', 'dual', 'london', 'uk']);
 // A regional outlet with this many reviews already live on New York shows covers New York
-// (Arts Fuse: 22) and keeps its census rows.
-const NY_COVERAGE_MIN = 3;
+// (Arts Fuse 22, Third Coast Review 2, Theater Mirror 1) and keeps its census rows: one live
+// New York review is proof it sends critics here, and dropping its rows would blind the
+// recall probes (coverage-adversarial-probe, audit-serp-census-recall) to that outlet.
+const NY_COVERAGE_MIN = 1;
 
 function tokensOf(s) {
   return String(s || '').toLowerCase()
@@ -105,7 +114,10 @@ function cityStaged(tokens, city) {
     const after = tokens[i + len];
     // "London hit", "Edinburgh Fringe hit", "London-born": the show's history, not this staging.
     if (CITY_MODIFIER_VETO.has(after) || CITY_MODIFIER_VETO.has(tokens[i + len + 1])) return false;
-    return STAGING_WORDS.has(before) || STAGING_WORDS.has(after);
+    if (CITY_ORIGIN_VETO.has(before) || (before === 'the' && CITY_ORIGIN_VETO.has(tokens[i - 2]))) return false;
+    // "London Review of Books" is a magazine, not a London review.
+    if (after === 'review' && tokens[i + len + 1] === 'of') return false;
+    return STAGING_WORDS.has(before) || STAGING_WORDS.has(after) || HOUSE_NOUNS.has(tokens[i + len + 1]);
   });
 }
 
@@ -117,16 +129,19 @@ function pathOf(u) {
  * @param {string} url candidate URL
  * @param {string|null} serpTitle SERP result title (empty for prior-census reseeds)
  * @param {{category?: string, title?: string, venue?: string, priorRuns?: any[]}} show
- * @param {{region?: string, tier?: number, isDualMarket?: boolean, standingMarkets?: string[], standingCoverage?: any, displayName?: string, nyReviewCount?: number}|null} outlet
- *   registry entry for the URL's host plus nyReviewCount (its live reviews on New York shows)
+ * @param {{region?: string, tier?: number, isDualMarket?: boolean, standingMarkets?: string[], standingCoverage?: any, displayName?: string, nyReviewCount?: number}|null|(() => object|null)} outletArg
+ *   registry entry for the URL's host plus nyReviewCount (its live reviews on New York shows),
+ *   or a function returning it (called only for an in-scope show, so London shows never pay
+ *   for the lookup)
  * @returns {{signal: string, detail: string}|null}
  */
-function censusOtherPlaceSignal(url, serpTitle, show, outlet) {
+function censusOtherPlaceSignal(url, serpTitle, show, outletArg) {
   if (process.env.CENSUS_OTHER_PLACE_DISABLED === '1') return null;
   if (!show || !NY_CATEGORIES.has(show.category)) return null;
   if (Array.isArray(show.priorRuns) && show.priorRuns.length > 0) return null;
   const path = pathOf(url);
   if (path == null) return null;
+  const outlet = typeof outletArg === 'function' ? outletArg() : outletArg;
 
   // The show's own title words never count ("Chicago" the musical, "London Road").
   const titleSet = new Set(tokensOf(show.title));
@@ -136,13 +151,16 @@ function censusOtherPlaceSignal(url, serpTitle, show, outlet) {
   const segments = path.split('/').filter(Boolean).map(strip);
   const all = [...segments.flat(), ...titleToks];
 
+  // The New York / venue veto reads the UNSTRIPPED words: a show titled "New York, New York"
+  // or named for its venue must still be vetoed by them.
+  const raw = [...path.split('/').flatMap(tokensOf), ...tokensOf(serpTitle)];
   const venueKey = tokensOf(String(show.venue || '').replace(/^the\s+/i, '')).join('-');
-  if ((venueKey.replace(/-/g, '').length >= 6 && hasRun(all, venueKey)) || NY_MARKERS.some((m) => hasRun(all, m))) return null;
+  if ((venueKey.replace(/-/g, '').length >= 6 && hasRun(raw, venueKey)) || NY_MARKERS.some((m) => hasRun(raw, m))) return null;
 
   const house = OTHER_HOUSES.find((h) => hasRun(all, h));
   if (house) return { signal: 'place-in-slug', detail: `url/title names "${house.replace(/-/g, ' ')}", not New York or ${show.venue || 'the venue'}` };
   const pathToks = segments.flat();
-  const city = CITIES.find((c) => segments.some((seg) => runsAt(seg, c).includes(0))
+  const city = CITIES.find((c) => segments.some((seg) => seg.join('-') === c)
     || cityStaged(pathToks, c) || cityStaged(titleToks, c));
   if (city) return { signal: 'place-in-slug', detail: `url/title places it in ${city.replace(/-/g, ' ')}, not New York` };
 

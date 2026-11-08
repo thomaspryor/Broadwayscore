@@ -422,7 +422,11 @@ function nyReviewCountByOutlet() {
   _nyReviewCounts = new Map();
   try {
     const ny = new Set(loadShows().filter((s) => s && (s.category === 'broadway' || s.category === 'off-broadway')).map((s) => s.id));
-    for (const r of loadReviews()) {
+    const reviews = cachedReviews();
+    // A sample or truncated reviews.json would read every regional outlet as 0 and drop
+    // its rows: fail open below a plausible corpus size.
+    if (reviews.length < 1000) throw new Error(`reviews.json holds only ${reviews.length} rows`);
+    for (const r of reviews) {
       if (r && ny.has(r.showId) && r.outletId) _nyReviewCounts.set(r.outletId, (_nyReviewCounts.get(r.outletId) || 0) + 1);
     }
   } catch (e) {
@@ -431,6 +435,23 @@ function nyReviewCountByOutlet() {
     _nyReviewCounts = { get: () => Infinity };
   }
   return _nyReviewCounts;
+}
+// URLs already live as reviews of each show: the census never rejects its own live review
+// (BRO-7129 review: the NYT's Donmar Henry IV at St. Ann's names only the London house).
+let _liveUrlsByShow = null;
+function liveReviewUrl(showId, u) {
+  if (!_liveUrlsByShow) {
+    _liveUrlsByShow = new Map();
+    try {
+      for (const r of cachedReviews()) {
+        if (!r || !r.showId || !r.url) continue;
+        if (!_liveUrlsByShow.has(r.showId)) _liveUrlsByShow.set(r.showId, new Set());
+        _liveUrlsByShow.get(r.showId).add(gapUrlIdentity(r.url));
+      }
+    } catch { /* no reviews.json: nothing is live */ }
+  }
+  const set = _liveUrlsByShow.get(showId);
+  return !!set && set.has(gapUrlIdentity(u));
 }
 
 // Curated show → Show Score page URL map (data/show-score-urls.json), loaded once.
@@ -459,8 +480,12 @@ let _reviewsForBlind = null;
 function blindOutletCount(show, row) {
   if (!show || show.category !== 'off-broadway') return 0;
   if (Array.isArray(row.aggregatorArticles) && row.aggregatorArticles.length) return 0;
+  return majorOutletCountFor(show.id, { reviews: cachedReviews(), ledgerRows: readCrossShowUrlRows({ showId: show.id }) });
+}
+
+function cachedReviews() {
   if (!_reviewsForBlind) _reviewsForBlind = loadReviews();
-  return majorOutletCountFor(show.id, { reviews: _reviewsForBlind, ledgerRows: readCrossShowUrlRows({ showId: show.id }) });
+  return _reviewsForBlind;
 }
 
 function loadReviews() {
@@ -992,7 +1017,7 @@ function acceptSerpCensusResult(sr, { show, showInfo, priorVetted = false }) {
   if (otherProductionUrlSignal(u, show, sr.title, { census: true }) || edinburghFringeUrlSignal(u, show) || phillyFringeUrlSignal(u, show)) return null;
   // BRO-7129: same title staged in another city or house (King Lear OB counted
   // Manchester, London, Chicago and New Orleans stagings as "known" reviews).
-  if (censusOtherPlaceSignal(u, sr.title, show, registryEntryForUrl(u))) {
+  if (show && !liveReviewUrl(show.id, u) && censusOtherPlaceSignal(u, sr.title, show, () => registryEntryForUrl(u))) {
     candidateRejections.count++;
     candidateRejections.byReason['other-place'] = (candidateRejections.byReason['other-place'] || 0) + 1;
     return null;
