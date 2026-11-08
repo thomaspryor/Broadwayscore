@@ -26896,13 +26896,13 @@
       "firstSeen": "2026-10-24T23:08:26.440Z",
       "incidentOpenedAt": "2026-10-31T00:35:50.727Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-08T16:46:42.013Z",
+      "lastSeen": "2026-11-08T22:05:06.199Z",
       "lastNotifiedAt": "2026-11-08T16:02:55.270Z",
       "lastSurfacedAt": "2026-11-05T12:32:07.725Z",
       "notifyCount": 13,
       "cardId": null,
       "linearIdentifier": "BRO-7013",
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "test-yml:red:Unit Tests:196541b4": {
       "status": "resolved",
@@ -29415,20 +29415,18 @@
       "silentRefires": 1
     },
     "live-data-test:tests/unit/venue-complex-live-data.test.mjs::no West End venue-complex has an unlinked bare-form/keyword-overlap sub-venue slug": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "digest",
       "title": "Live-data test failing: no West End venue-complex has an unlinked bare-form/keyword-overlap sub-venue slug (tests/unit/venue-complex-live-data.test.mjs)",
       "firstSeen": "2026-10-28T10:58:13.736Z",
-      "incidentOpenedAt": "2026-10-28T10:58:13.736Z",
-      "lastSeen": "2026-10-29T01:09:19.943Z",
-      "lastNotifiedAt": "2026-10-28T10:58:13.736Z",
-      "lastSurfacedAt": "2026-10-28T10:58:13.736Z",
-      "notifyCount": 1,
+      "incidentOpenedAt": "2026-11-08T22:05:06.585Z",
+      "deferredAuto": true,
+      "lastSeen": "2026-11-08T22:05:06.585Z",
+      "lastNotifiedAt": "2026-11-08T22:05:06.585Z",
+      "lastSurfacedAt": "2026-11-08T22:05:06.585Z",
+      "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": null,
-      "silentRefires": 10,
-      "resolvedAt": "2026-10-29T02:57:50.487Z",
-      "resolveReason": "live-data test green"
+      "linearIdentifier": null
     },
     "land:land/job/linear-BRO-6114-mvs1f793": {
       "status": "resolved",
@@ -37707,20 +37705,18 @@
       "resolveReason": "live-data test green"
     },
     "live-data-test:tests/unit/critic-spelling-duplicates-live-data.test.mjs::reviews.json: no NEW critic page split by a byline spelling variant": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "digest",
       "title": "Live-data test failing: reviews.json: no NEW critic page split by a byline spelling variant (tests/unit/critic-spelling-duplicates-live-data.test.mjs)",
       "firstSeen": "2026-11-06T04:56:22.650Z",
-      "incidentOpenedAt": "2026-11-06T04:56:22.650Z",
+      "incidentOpenedAt": "2026-11-08T22:05:06.150Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-06T04:56:22.650Z",
-      "lastNotifiedAt": "2026-11-06T04:56:22.650Z",
-      "lastSurfacedAt": "2026-11-06T04:56:22.650Z",
-      "notifyCount": 1,
+      "lastSeen": "2026-11-08T22:05:06.150Z",
+      "lastNotifiedAt": "2026-11-08T22:05:06.150Z",
+      "lastSurfacedAt": "2026-11-08T22:05:06.150Z",
+      "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": null,
-      "resolvedAt": "2026-11-06T12:25:00.481Z",
-      "resolveReason": "live-data test green"
+      "linearIdentifier": null
     },
     "live-data-test:tests/unit/drain-unknown-outlets-live-data.test.mjs::tests/unit/drain-unknown-outlets-live-data.test.mjs": {
       "status": "resolved",
@@ -38732,13 +38728,13 @@
       "firstSeen": "2026-11-08T06:47:11.004Z",
       "incidentOpenedAt": "2026-11-08T06:47:11.004Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-08T16:46:41.855Z",
+      "lastSeen": "2026-11-08T22:05:06.073Z",
       "lastNotifiedAt": "2026-11-08T06:47:11.004Z",
       "lastSurfacedAt": "2026-11-08T06:47:11.004Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 3
+      "silentRefires": 4
     },
     "live-data-test:scripts/audit-stale-announced-shows.test.mjs::BRO-93 acceptance: current shows.json produces zero stale announced flags": {
       "status": "open",
@@ -38747,13 +38743,13 @@
       "firstSeen": "2026-11-08T06:47:11.040Z",
       "incidentOpenedAt": "2026-11-08T06:47:11.040Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-08T16:46:41.896Z",
+      "lastSeen": "2026-11-08T22:05:06.091Z",
       "lastNotifiedAt": "2026-11-08T06:47:11.040Z",
       "lastSurfacedAt": "2026-11-08T06:47:11.040Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 3
+      "silentRefires": 4
     },
     "live-data-test:scripts/verify-contamination-gate.test.mjs::scripts/verify-contamination-gate.test.mjs": {
       "status": "open",
@@ -38762,13 +38758,13 @@
       "firstSeen": "2026-11-08T06:47:11.073Z",
       "incidentOpenedAt": "2026-11-08T06:47:11.073Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-08T16:46:41.930Z",
+      "lastSeen": "2026-11-08T22:05:06.108Z",
       "lastNotifiedAt": "2026-11-08T06:47:11.073Z",
       "lastSurfacedAt": "2026-11-08T06:47:11.073Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 3
+      "silentRefires": 4
     },
     "live-data-test:tests/unit/audit-stale-baseline-detection.test.mjs::audit-cv-flag-contradiction.js: baseline holds no stale entries": {
       "status": "open",
@@ -38777,13 +38773,13 @@
       "firstSeen": "2026-11-08T06:47:11.105Z",
       "incidentOpenedAt": "2026-11-08T06:47:11.105Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-08T16:46:41.950Z",
+      "lastSeen": "2026-11-08T22:05:06.129Z",
       "lastNotifiedAt": "2026-11-08T06:47:11.105Z",
       "lastSurfacedAt": "2026-11-08T06:47:11.105Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 3
+      "silentRefires": 4
     },
     "live-data-test:tests/unit/validate-data-push-refusal-sentinel.test.mjs::tests/unit/validate-data-push-refusal-sentinel.test.mjs": {
       "status": "open",
@@ -38792,13 +38788,13 @@
       "firstSeen": "2026-11-08T06:47:11.124Z",
       "incidentOpenedAt": "2026-11-08T06:47:11.124Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-08T16:46:41.993Z",
+      "lastSeen": "2026-11-08T22:05:06.183Z",
       "lastNotifiedAt": "2026-11-08T06:47:11.124Z",
       "lastSurfacedAt": "2026-11-08T06:47:11.124Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 3
+      "silentRefires": 4
     },
     "live-data-test:tests/unit/wrong-article-llm-flagging.test.mjs::every confirmed wrong article is flagged wrongShow or hand-verified # TODO advisory (BRO-4606)": {
       "status": "open",
@@ -38807,13 +38803,13 @@
       "firstSeen": "2026-11-08T06:47:11.393Z",
       "incidentOpenedAt": "2026-11-08T06:47:11.393Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-08T16:46:42.366Z",
+      "lastSeen": "2026-11-08T22:05:06.608Z",
       "lastNotifiedAt": "2026-11-08T06:47:11.393Z",
       "lastSurfacedAt": "2026-11-08T06:47:11.393Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 3
+      "silentRefires": 4
     },
     "land:land/bro-7102-job-headroom": {
       "status": "open",
@@ -38889,7 +38885,7 @@
       "resolveReason": "live-data test green"
     },
     "live-data-test:tests/unit/morning-digest-quiet.test.mjs::plain wording: no visitor-facing health check shows its raw name (BRO-7047)": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Live-data test failing: plain wording: no visitor-facing health check shows its raw name (BRO-7047) (tests/unit/morning-digest-quiet.test.mjs)",
       "firstSeen": "2026-11-08T11:49:18.563Z",
@@ -38901,7 +38897,9 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 2
+      "silentRefires": 2,
+      "resolvedAt": "2026-11-08T22:05:06.626Z",
+      "resolveReason": "live-data test green"
     },
     "land:land/job/linear-BRO-7126-mw7xdyzq": {
       "status": "resolved",
@@ -39205,26 +39203,35 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 1,
+      "resolvedAt": "2026-11-08T21:39:57.277Z"
+    },
+    "live-data-test:tests/unit/review-file-creation-same-url-check.test.mjs::correction refuses to clobber a pre-existing file already at the target filename": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Live-data test failing: correction refuses to clobber a pre-existing file already at the target filename (tests/unit/review-file-creation-same-url-check.test.mjs)",
+      "firstSeen": "2026-11-08T22:05:06.167Z",
+      "incidentOpenedAt": "2026-11-08T22:05:06.167Z",
+      "deferredAuto": true,
+      "lastSeen": "2026-11-08T22:05:06.167Z",
+      "lastNotifiedAt": "2026-11-08T22:05:06.167Z",
+      "lastSurfacedAt": "2026-11-08T22:05:06.167Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
     },
     "test-yml:red:Unit Test Shard:0e0a79a5": {
       "status": "open",
       "disposition": "auto",
       "title": "main test.yml red: Unit Test Shard (4) / Run scripts/lib tests shard — \"REGRESSION: every real tracked *.jsonl (repo-wide) is either merge=union or a documented exemption\"",
-      "firstSeen": "2026-11-08T21:50:59.934Z",
-      "incidentOpenedAt": "2026-11-08T21:50:59.934Z",
-      "lastSeen": "2026-11-08T21:50:59.934Z",
-      "lastNotifiedAt": "2026-11-08T21:50:59.934Z",
+      "firstSeen": "2026-11-08T22:03:17.171Z",
+      "incidentOpenedAt": "2026-11-08T22:03:17.171Z",
+      "lastSeen": "2026-11-08T22:03:17.171Z",
+      "lastNotifiedAt": "2026-11-08T22:03:17.171Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-7164",
-      "dispatch": {
-        "requestedAt": "2026-11-08T21:50:59.934Z",
-        "mode": "dispatch-at-filing",
-        "runId": "42526321922",
-        "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42526321922"
-      }
+      "linearIdentifier": "BRO-7164"
     }
   }
 }

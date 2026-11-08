@@ -180,7 +180,16 @@
     "little-shop-of-horrors-off-broadway-2019/amny--matt-windman.json",
     "hadestown-2019/theatrely--theatrely-staff.json",
     "harry-potter-2021/latimes--erin-ben-moche.json",
-    "harry-potter-2021/sfgate--lily-janiak.json"
+    "harry-potter-2021/sfgate--lily-janiak.json",
+    "witness-for-the-prosecution-off-west-end-2022/broadwayworld--emma-watkins.json",
+    "witness-for-the-prosecution-off-west-end-2022/everything-theatre--mary-pollard.json",
+    "witness-for-the-prosecution-off-west-end-2022/london-box-office--phil-willmott.json",
+    "witness-for-the-prosecution-off-west-end-2022/london-box-office--stuart-king.json",
+    "witness-for-the-prosecution-off-west-end-2022/standard--henry-hitchings.json",
+    "witness-for-the-prosecution-off-west-end-2022/west-end-wilma--unknown.json",
+    "the-book-of-mormon-west-end-2024/musical-theatre-review--unknown.json",
+    "matilda-the-musical-west-end-2021/guardian--imogen-carter.json",
+    "matilda-the-musical-west-end-2021/guardian--lyn-gardner.json"
   ],
   "failed": [
     "_superseded-misattributed/coal-country-off-broadway-2022--theatermania--hayley-levitt--1793290921151.json",
@@ -211,6 +220,7 @@
     "long-days-journey-into-night-2016/whatsonstage--sarah-crompton.json",
     "msblackforpresident-off-broadway-2026/theatermania--zachary-stewart.json",
     "222-a-ghost-story-off-broadway-2026/theatrely--kobi-kassal.json",
+    "the-moth-off-west-end-2026/creative-reviews-uk--creative-reviews-uk.json",
     "medea-off-broadway-2026/express-uk--neil-norman.json",
     "the-heart-off-broadway-2026/frontmezzjunkies--unknown.json",
     "the-lives-of-others-west-end-2026/whatsonstage--alex-wood.json",
@@ -284,7 +294,18 @@
     "hadestown-2019/broadwaynews--charles-isherwood.json",
     "hadestown-2019/theater-life--isa-goldberg.json",
     "the-play-that-goes-wrong-off-broadway-2019/talkinbroadway--unknown.json",
-    "harry-potter-2021/woman-around-town--alix-cohen.json"
+    "harry-potter-2021/woman-around-town--alix-cohen.json",
+    "hamilton-west-end-2021/ew--unknown.json",
+    "hamilton-2015/nyt-theater--jonathan-mandell.json",
+    "the-play-that-goes-wrong-west-end-2021/chicagotribune--chris-jones.json",
+    "the-play-that-goes-wrong-west-end-2021/telegraph--claire-allfree.json",
+    "aladdin-2014/ap--mark-kennedy.json",
+    "the-book-of-mormon-west-end-2024/talkinbroadway--unknown.json",
+    "the-book-of-mormon-west-end-2024/washpost--unknown.json",
+    "matilda-the-musical-west-end-2021/ew--unknown.json",
+    "book-of-mormon-2011/vulture--jesse-green.json",
+    "book-of-mormon-2011/deadline--unknown.json",
+    "book-of-mormon-2011/new-jersey-newsroom--michael-sommers.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -377,7 +398,12 @@
       "book-of-mormon-tour-2022/orlando-sentinel--matthew-j-palm.json",
       "abba-voyage-off-west-end-2026/fairypoweredproductions--unknown.json",
       "the-lion-king-tour-2021/orlando-sentinel--matthew-j-palm.json",
-      "little-shop-of-horrors-off-broadway-2019/ew--maureen-lee-lenker.json"
+      "little-shop-of-horrors-off-broadway-2019/ew--maureen-lee-lenker.json",
+      "witness-for-the-prosecution-off-west-end-2022/everything-theatre--mary-pollard.json",
+      "witness-for-the-prosecution-off-west-end-2022/london-box-office--phil-willmott.json",
+      "witness-for-the-prosecution-off-west-end-2022/london-box-office--stuart-king.json",
+      "witness-for-the-prosecution-off-west-end-2022/standard--henry-hitchings.json",
+      "witness-for-the-prosecution-off-west-end-2022/west-end-wilma--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -408,7 +434,8 @@
       "degenerates-off-broadway-2026/new-york-notebook--sandy-macdonald.json",
       "kimberly-akimbo-off-west-end-2026/ground--unknown.json",
       "oh-mary-west-end-2025/matineemouse--matinee-mouse.json",
-      "the-lion-king-tour-2021/ground--unknown.json"
+      "the-lion-king-tour-2021/ground--unknown.json",
+      "the-book-of-mormon-west-end-2024/musical-theatre-review--unknown.json"
     ],
     "scrapingbee": [
       "roleplay-off-west-end-2026/broadwayworld--cindy-marcolina.json",
@@ -468,11 +495,13 @@
       "book-of-mormon-tour-2022/clickorlando--lisa-bell.json",
       "wicked-tour-2021/baltimoremediablog--nfrisone.json",
       "little-shop-of-horrors-off-broadway-2019/amny--matt-windman.json",
-      "harry-potter-2021/sfgate--lily-janiak.json"
+      "harry-potter-2021/sfgate--lily-janiak.json",
+      "hadestown-2019/theater-life--isa-goldberg.json",
+      "witness-for-the-prosecution-off-west-end-2022/broadwayworld--emma-watkins.json"
     ]
   },
   "startTime": "2026-11-08T19:50:31.589Z",
-  "lastProcessed": "harry-potter-2021/woman-around-town--alix-cohen.json",
+  "lastProcessed": "book-of-mormon-2011/new-jersey-newsroom--michael-sommers.json",
   "log": [
     {
       "t": "2026-11-08T20:19:26.121Z",
@@ -517,27 +546,6 @@
       "t": "2026-11-08T21:17:08.988Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-11-08T21:24:14.920Z",
-      "event": "bb-session",
-      "session": "a8170b24",
-      "url": "https://bachtrack.com/review-lorfeo-william-kentridge-greek-national-opera-athen"
-    },
-    {
-      "t": "2026-11-08T21:24:50.521Z",
-      "event": "bb-session",
-      "session": "fb6ae027",
-      "url": "https://bachtrack.com/review-shostakovich-cherry-town-ahlbom-dutch-national-oper"
-    },
-    {
-      "t": "2026-11-08T21:25:25.067Z",
-      "event": "bb-session",
-      "session": "199092ce",
-      "url": "https://bachtrack.com/review-nozze-figaro-pountney-conta-bucharest-national-oper"
     }
-  ],
-  "recoveredAfterFailure": [
-    "the-moth-off-west-end-2026/creative-reviews-uk--creative-reviews-uk.json"
   ]
 }
