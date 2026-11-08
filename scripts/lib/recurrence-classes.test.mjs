@@ -248,3 +248,14 @@ test('comment-by-number query can include archived cards (old Done cards are aut
   const src = require('node:fs').readFileSync(new URL('../recurrence-detector.js', import.meta.url), 'utf8');
   assert.match(src, /listIssueComments\([^)]*includeArchived: true/);
 });
+
+test('a class that comes back after its root card closed is surfaced, not silenced', () => {
+  const inst = [{ identifier: 'BRO-1', createdAt: '2026-10-01T00:00:00Z' }, { identifier: 'BRO-2', createdAt: '2026-10-20T00:00:00Z' }];
+  const done = { state: { type: 'completed' }, completedAt: '2026-10-10T00:00:00Z' };
+  assert.deepEqual(rc.recurredAfterRootClosed(done, inst), ['BRO-2']);
+  assert.deepEqual(rc.recurredAfterRootClosed({ state: { type: 'canceled' }, canceledAt: '2026-09-01T00:00:00Z' }, inst), ['BRO-1', 'BRO-2']);
+  assert.deepEqual(rc.recurredAfterRootClosed({ state: { type: 'started' } }, inst), []);
+  assert.deepEqual(rc.recurredAfterRootClosed(null, inst), []);
+  const line = rc.improvementLine({ share: { thisWeek: { share: 50, total: 2 }, lastWeek: {} }, recurringCount: 1, withRootCause: 1, classes: [{ recurredAfterRootClosed: ['BRO-2'] }] });
+  assert.match(line, /1 problem came back after the card fixing the cause was closed/);
+});

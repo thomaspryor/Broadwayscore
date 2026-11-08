@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-08T00:03:07.754Z",
+  "generatedAt": "2026-11-08T00:08:50.491Z",
   "complete": true,
   "windowDays": 30,
   "quietDays": 21,
@@ -14,11 +14,11 @@
       "share": 72.6
     },
     "lastWeek": {
-      "total": 515,
+      "total": 511,
       "root-cause": 0,
-      "system": 409,
-      "instance": 106,
-      "share": 79.4
+      "system": 406,
+      "instance": 105,
+      "share": 79.5
     }
   },
   "recurringCount": 31,
@@ -120,7 +120,8 @@
           "claim": "generator drops aliases to vanished critics; test treats committed lag as diagnostic.",
           "recurredAs": "BRO-5594"
         }
-      ]
+      ],
+      "recurredAfterRootClosed": []
     },
     {
       "key": "review gap missing cited",
@@ -210,7 +211,8 @@
           "claim": "gap audit uses the same refusal function as ingest (shared lib), conditions auto-resolve after 96h quiet, admin ingest gate for venue URLs, WAF block-page detection in the scraper, and a restore op for future lost reviews; unit tests for each. ; cousins: swept all review-texts for flagged venue URLs",
           "recurredAs": "BRO-5764"
         }
-      ]
+      ],
+      "recurredAfterRootClosed": []
     },
     {
       "key": "unit tests run scripts lib",
@@ -248,7 +250,8 @@
         "BRO-6952",
         "BRO-6955"
       ],
-      "failedPreventions": []
+      "failedPreventions": [],
+      "recurredAfterRootClosed": []
     },
     {
       "key": "opening night poller failed",
@@ -286,7 +289,8 @@
           "claim": "scripts/lib/merge-pending-stub.test.mjs (pure rules + real push-with-retry replay of the rename/delete race; replay test fails on the old script). Replayed the real incident blobs from broadway-review-texts: same CONFLICT line, merge resolves. cousins: non-pending review files with the same race sha",
           "recurredAs": "BRO-5861"
         }
-      ]
+      ],
+      "recurredAfterRootClosed": []
     },
     {
       "key": "national tour pages show wrong information page problem",
@@ -334,7 +338,8 @@
         "BRO-6540",
         "BRO-6728"
       ],
-      "failedPreventions": []
+      "failedPreventions": [],
+      "recurredAfterRootClosed": []
     },
     {
       "key": "roundup listed review captured",
@@ -375,7 +380,8 @@
         "BRO-5391",
         "BRO-5421"
       ],
-      "failedPreventions": []
+      "failedPreventions": [],
+      "recurredAfterRootClosed": []
     },
     {
       "key": "main test yml red auto dispatch did resolve",
@@ -403,7 +409,8 @@
         "BRO-6890",
         "BRO-7048"
       ],
-      "failedPreventions": []
+      "failedPreventions": [],
+      "recurredAfterRootClosed": []
     },
     {
       "key": "bright data daily breaker tripped web unlocker2",
@@ -441,7 +448,8 @@
         "BRO-6829",
         "BRO-6885"
       ],
-      "failedPreventions": []
+      "failedPreventions": [],
+      "recurredAfterRootClosed": []
     },
     {
       "key": "e2e tests run unit",
@@ -469,7 +477,8 @@
         "BRO-6558",
         "BRO-6563"
       ],
-      "failedPreventions": []
+      "failedPreventions": [],
+      "recurredAfterRootClosed": []
     },
     {
       "key": "e2e tests run",
@@ -496,7 +505,8 @@
         "BRO-6281",
         "BRO-6452"
       ],
-      "failedPreventions": []
+      "failedPreventions": [],
+      "recurredAfterRootClosed": []
     },
     {
       "key": "stuck pipeline items",
@@ -523,7 +533,8 @@
         "BRO-6888",
         "BRO-7069"
       ],
-      "failedPreventions": []
+      "failedPreventions": [],
+      "recurredAfterRootClosed": []
     },
     {
       "key": "show need review",
@@ -553,7 +564,8 @@
         "BRO-6792",
         "BRO-7093"
       ],
-      "failedPreventions": []
+      "failedPreventions": [],
+      "recurredAfterRootClosed": []
     },
     {
       "key": "slug mismatch lifetime sweep",
@@ -579,7 +591,8 @@
         "BRO-5693",
         "BRO-6524"
       ],
-      "failedPreventions": []
+      "failedPreventions": [],
+      "recurredAfterRootClosed": []
     },
     {
       "key": "unit tests ordinal publishdate guard parity",
@@ -603,7 +616,8 @@
         "BRO-5116",
         "BRO-5139"
       ],
-      "failedPreventions": []
+      "failedPreventions": [],
+      "recurredAfterRootClosed": []
     },
     {
       "key": "real data byte identical art across unrelated unlinked",
@@ -629,7 +643,8 @@
         "BRO-7020",
         "BRO-7070"
       ],
-      "failedPreventions": []
+      "failedPreventions": [],
+      "recurredAfterRootClosed": []
     },
     {
       "key": "cross outlet attribution drift",
@@ -654,7 +669,8 @@
         "BRO-6976",
         "BRO-7038"
       ],
-      "failedPreventions": []
+      "failedPreventions": [],
+      "recurredAfterRootClosed": []
     },
     {
       "key": "reddit post ready",
@@ -684,7 +700,8 @@
         "BRO-4997",
         "BRO-7026"
       ],
-      "failedPreventions": []
+      "failedPreventions": [],
+      "recurredAfterRootClosed": []
     },
     {
       "key": "off broadway venue complex unlinked bare form keyword",
@@ -710,7 +727,8 @@
         "BRO-7008",
         "BRO-7013"
       ],
-      "failedPreventions": []
+      "failedPreventions": [],
+      "recurredAfterRootClosed": []
     },
     {
       "key": "review missing pullquote recoverable excerpt sitting unused texts",
@@ -736,7 +754,8 @@
         "BRO-6439",
         "BRO-7012"
       ],
-      "failedPreventions": []
+      "failedPreventions": [],
+      "recurredAfterRootClosed": []
     },
     {
       "key": "bro repo actions cache stays below size evicts",
@@ -762,7 +781,8 @@
         "BRO-6826",
         "BRO-6993"
       ],
-      "failedPreventions": []
+      "failedPreventions": [],
+      "recurredAfterRootClosed": []
     },
     {
       "key": "review files wrongproduction provenance but flag dropped",
@@ -788,7 +808,8 @@
         "BRO-6063",
         "BRO-6992"
       ],
-      "failedPreventions": []
+      "failedPreventions": [],
+      "recurredAfterRootClosed": []
     },
     {
       "key": "stale announced shows",
@@ -812,7 +833,8 @@
         "BRO-5522",
         "BRO-6815"
       ],
-      "failedPreventions": []
+      "failedPreventions": [],
+      "recurredAfterRootClosed": []
     },
     {
       "key": "commercial model drift",
@@ -836,7 +858,8 @@
         "BRO-5749",
         "BRO-6755"
       ],
-      "failedPreventions": []
+      "failedPreventions": [],
+      "recurredAfterRootClosed": []
     },
     {
       "key": "same title sibling review misrouted wrong production",
@@ -862,7 +885,8 @@
         "BRO-6113",
         "BRO-6754"
       ],
-      "failedPreventions": []
+      "failedPreventions": [],
+      "recurredAfterRootClosed": []
     },
     {
       "key": "llm scoring daily spend over budget",
@@ -886,7 +910,8 @@
         "BRO-6317",
         "BRO-6732"
       ],
-      "failedPreventions": []
+      "failedPreventions": [],
+      "recurredAfterRootClosed": []
     },
     {
       "key": "revival unverified lifetime sweep",
@@ -910,7 +935,8 @@
         "BRO-6509",
         "BRO-6706"
       ],
-      "failedPreventions": []
+      "failedPreventions": [],
+      "recurredAfterRootClosed": []
     },
     {
       "key": "scripts lib tests red",
@@ -934,7 +960,8 @@
         "BRO-6319",
         "BRO-6527"
       ],
-      "failedPreventions": []
+      "failedPreventions": [],
+      "recurredAfterRootClosed": []
     },
     {
       "key": "wrongproduction lifetime sweep",
@@ -958,7 +985,8 @@
         "BRO-6459",
         "BRO-6523"
       ],
-      "failedPreventions": []
+      "failedPreventions": [],
+      "recurredAfterRootClosed": []
     },
     {
       "key": "lint workflows audit submitter pii committed data files",
@@ -981,7 +1009,8 @@
         "BRO-6423",
         "BRO-6520"
       ],
-      "failedPreventions": []
+      "failedPreventions": [],
+      "recurredAfterRootClosed": []
     },
     {
       "key": "headless dispatch success rate",
@@ -1008,7 +1037,8 @@
         "BRO-6313",
         "BRO-6430"
       ],
-      "failedPreventions": []
+      "failedPreventions": [],
+      "recurredAfterRootClosed": []
     },
     {
       "key": "older than 24h",
@@ -1032,7 +1062,8 @@
         "BRO-5539",
         "BRO-5613"
       ],
-      "failedPreventions": []
+      "failedPreventions": [],
+      "recurredAfterRootClosed": []
     }
   ],
   "expected": [
@@ -4100,8 +4131,7 @@
     "image fetcher writes unverified google candidates over live": "2026-10-09T00:34:54.672Z",
     "signal bars counts key": "2026-10-09T00:25:21.622Z",
     "deleted account ghost session keeps failing saves hour": "2026-10-09T00:17:46.035Z",
-    "after first save sheet signed out shows device": "2026-10-09T00:17:45.404Z",
-    "closed shows inlined after historical backfill": "2026-10-09T00:05:46.919Z"
+    "after first save sheet signed out shows device": "2026-10-09T00:17:45.404Z"
   },
   "pendingRootCards": 24
 }
