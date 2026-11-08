@@ -8,12 +8,12 @@
  * a tour with no clean candidate is recorded as null so the quiz leaves it out rather than show
  * wrong art. Writes src/config/onboarding-tour-art.json ({ [tourId]: posterPath | null }).
  *
- *   node scripts/audit-tour-art.js [--dry] [--tour=ID] [--redo]
+ *   node scripts/audit-tour-art.js [--dry] [--tour=ID] [--redo] [--prune]
  */
 const fs = require('fs');
 const path = require('path');
 const { hasHelpFlag } = require('./lib/cli-help.js');
-if (hasHelpFlag(process.argv.slice(2))) { console.log('Usage: node scripts/audit-tour-art.js [--dry] [--tour=ID] [--redo]'); process.exit(0); }
+if (hasHelpFlag(process.argv.slice(2))) { console.log('Usage: node scripts/audit-tour-art.js [--dry] [--tour=ID] [--redo] [--prune]'); process.exit(0); }
 const { GoogleGenerativeAI } = require('@google/generative-ai');
 const { GEMINI_FLASH } = require('./lib/models');
 const { foldDiacritics } = require('./lib/title-match');
@@ -58,6 +58,16 @@ async function judge(model, file) {
 }
 
 async function main() {
+  if (args.includes('--prune')) {
+    const kept = {}; const dropped = [];
+    for (const [id, v] of Object.entries(prior)) {
+      if (v && !fs.existsSync(path.join(root, 'public', v))) dropped.push(id); else kept[id] = v;
+    }
+    dropped.forEach(id => console.log(`pruned ${id} (missing file)`));
+    if (dropped.length && !args.includes('--dry')) fs.writeFileSync(OUT, JSON.stringify(kept, null, 1) + '\n');
+    console.log(`prune: ${dropped.length} dropped`);
+    return;
+  }
   const model = new GoogleGenerativeAI(process.env.GEMINI_API_KEY).getGenerativeModel({ model: GEMINI_FLASH, generationConfig: { responseMimeType: 'application/json', thinkingConfig: { thinkingBudget: 0 } } });
   const out = { ...prior };
   const report = [];
@@ -65,14 +75,16 @@ async function main() {
     if (only && t.id !== only) continue;
     if (!only && t.id in prior && !args.includes('--redo')) continue;
     const cands = candidates(t);
-    let pick = null; const tried = [];
+    let pick = null; const tried = []; let onDisk = 0;
     for (const c of cands) {
       const file = path.join(root, 'public', c.src);
       if (!fs.existsSync(file)) continue;
+      onDisk++;
       const v = await judge(model, file);
       tried.push(`${c.who}:${v.ok ? 'clean' : 'dirty'}(${(v.text || []).slice(0, 4).join('/')})`);
       if (v.ok) { pick = c.src; break; }
     }
+    if (!onDisk) { console.log(`${t.id} -> SKIP (no candidate file on disk yet)`); continue; }
     out[t.id] = pick;
     report.push(`${t.id} -> ${pick || 'NONE'} | ${tried.join('; ')}`);
     console.log(report[report.length - 1]);

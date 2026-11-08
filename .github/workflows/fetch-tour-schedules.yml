@@ -110,6 +110,25 @@ jobs:
             exit 1
           fi
 
+      # Onboarding quiz art audit (BRO-6939). Judges only tours not yet in
+      # src/config/onboarding-tour-art.json (no --redo), so a day with no new
+      # tour makes no Gemini call. Advisory (continue-on-error): a failure must
+      # not hold back the schedule update; it is logged as a warning instead.
+      # Skips cleanly when the key is empty. The quiz picks the result up at the
+      # next rebuild-fast run (generate-onboarding-data), not this run's deploy.
+      - name: Audit new tour art
+        id: tourart
+        continue-on-error: true
+        if: ${{ !cancelled() && steps.schedules.outcome == 'success' }}
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          if [ -z "$GEMINI_API_KEY" ]; then
+            echo "::notice::GEMINI_API_KEY is empty; skipping tour art audit"
+            exit 0
+          fi
+          timeout 900 node scripts/audit-tour-art.js || echo "::warning::audit-tour-art.js failed; new tours stay unaudited until the next run"
+
       - name: Check for changes
         id: changes
         if: ${{ !cancelled() && steps.schedules.outcome == 'success' }}
@@ -121,7 +140,7 @@ jobs:
           # byte-identical would never ship the shows.json that points at them.
           shows_changed=false
           if ! cmp -s data/shows.json /tmp/core-data-snapshot/shows.json; then shows_changed=true; fi
-          if [ "$shows_changed" = false ] && [ -z "$(git status --porcelain -- data/tour-schedules.json data/tour-tickets.json data/image-sources.json data/tour-art-attempts.json public/images/shows/)" ]; then
+          if [ "$shows_changed" = false ] && [ -z "$(git status --porcelain -- data/tour-schedules.json data/tour-tickets.json data/image-sources.json data/tour-art-attempts.json public/images/shows/ src/config/onboarding-tour-art.json)" ]; then
             echo "has_changes=false" >> $GITHUB_OUTPUT
           else
             echo "has_changes=true" >> $GITHUB_OUTPUT
@@ -143,6 +162,9 @@ jobs:
           bash scripts/lib/stage-data-changes.sh data/ public/images/shows/
           # Drop an aspect violator instead of losing the whole batch.
           node scripts/check-image-aspect.js --staged --quarantine
+          # BRO-6939: drop audit entries whose poster the quarantine just deleted, then stage the audit file.
+          node scripts/audit-tour-art.js --prune || echo "::warning::tour art prune failed"
+          git add src/config/onboarding-tour-art.json
           # BRO-6277: list-size variants (sm/) for the art that survived quarantine, staged with it.
           node scripts/resize-show-images.js --variants --staged || echo "::warning::sm/ variant generation failed; check-variants will flag it"
           # Nothing staged (quarantine dropped it all, or only shows.json
@@ -152,7 +174,7 @@ jobs:
             echo "No public files to commit"
             exit 0
           fi
-          git commit -m "data: Update tour schedules, ticket links and tour art [skip ci]"
+          git commit -m "data: Update tour schedules, ticket links, tour art and onboarding art audit [skip ci]"
           bash scripts/lib/push-with-retry.sh 10 HEAD:$BRANCH
 
       # shows.json now points at /images/shows/<tour>/ files that exist only
