@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-08T14:11:22.754Z",
+  "timestamp": "2026-11-08T15:01:21.693Z",
   "stats": {
-    "totalReviews": 80526,
-    "alreadyFlagged": 22048,
+    "totalReviews": 80532,
+    "alreadyFlagged": 22051,
     "dateGuardCatches": 216,
-    "directorMismatch": 3550,
-    "tvFilmSignals": 2293,
-    "londonSignals": 3631,
+    "directorMismatch": 3552,
+    "tvFilmSignals": 2292,
+    "londonSignals": 3632,
     "offBroadwaySignals": 748,
     "yearMismatch": 363,
-    "noPublishDate": 8410
+    "noPublishDate": 8408
   },
   "findings": [
     {
@@ -1443,19 +1443,6 @@
       "score": 79,
       "publishDate": "2025-07-30",
       "url": "https://www.theshowreport.org/post/review-the-neil-diamond-musical-a-beautiful-noise",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"michael mayer\" from a-beautiful-noise-the-neil-diamond-musical-2022"
-        }
-      ]
-    },
-    {
-      "showId": "a-beautiful-noise-the-neil-diamond-musical-tour-2024",
-      "file": "theatermania--meg-masseron.json",
-      "publishDate": "2025-02-26",
-      "url": "https://www.theatermania.com/news/a-beautiful-noise-national-tour-recoups-after-just-five-months_1765701/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -57882,6 +57869,19 @@
     },
     {
       "showId": "some-like-it-hot-tour-2024",
+      "file": "the-detroit-jewish-news--ronelle-grier.json",
+      "publishDate": "2024-10-09",
+      "url": "https://www.thejewishnews.com/culture/review-some-like-it-hot-sizzles-across-the-fisher-theater-stage/article_d542e1d2-8666-11ef-a3d7-2f3b755781f9.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"casey nicholaw\" from some-like-it-hot-2022"
+        }
+      ]
+    },
+    {
+      "showId": "some-like-it-hot-tour-2024",
       "file": "the-news-herald--mark-meszoros.json",
       "publishDate": "2024-11-01",
       "url": "https://www.news-herald.com/2024/11/01/costume-designer-gregg-barnes-talks-playhouse-square-bound-some-like-it-hot/",
@@ -74869,19 +74869,6 @@
       ]
     },
     {
-      "showId": "the-red-shoes-royal-shakespeare-regional-2024",
-      "file": "broadwayworld--gary-naylor.json",
-      "publishDate": "2024-11-21",
-      "url": "https://www.broadwayworld.com/westend/article/Review-THE-RED-SHOES-Swan-Theatre-Stratford-Upon-Avon-20241121",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"season 2\""
-        }
-      ]
-    },
-    {
       "showId": "the-refuge-plays-off-broadway-2023",
       "file": "frontmezzjunkies--unknown.json",
       "score": 86,
@@ -83055,6 +83042,25 @@
       "score": 86,
       "publishDate": "2020-02-20",
       "url": "https://www.washingtonpost.com/entertainment/theater_dance/this-gutsy-new-west-side-story-is-unlike-any-youve-seen--and-its-exhilarating/2020/02/20/3f3533e6-5017-11ea-9b5c-eac5b16dafaa_story.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"arthur laurents\" from west-side-story-2009"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jerome robbins\" from west-side-story-1980"
+        }
+      ]
+    },
+    {
+      "showId": "west-side-story-2020",
+      "file": "wsj--terry-teachout.json",
+      "score": 81,
+      "publishDate": "February 20, 2020",
+      "url": "https://www.wsj.com/articles/worst-side-story-11582246801",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -139743,6 +139749,20 @@
       "score": 94,
       "publishDate": "2026-10-01",
       "url": "https://firstnightmagazine.com/2026/10/01/review-of-whos-afraid-of-virginia-woolf-soho-place-2026-billy-crudup-and-gillian-anderson-are-the-hottest-hateful-couple-in-town/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "whos-afraid-of-virginia-woolf-west-end-2026",
+      "file": "ground--unknown.json",
+      "score": null,
+      "publishDate": "2026-09-30",
+      "url": "https://ground.news/article/production-images-released-for-gillian-anderson-and-billy-crudup-in-whos-afraid-of-virginia-woolf-theatre-weekly",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
