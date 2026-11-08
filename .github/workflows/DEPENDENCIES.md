@@ -375,7 +375,7 @@ Workflows without any concurrency block, by class (read-only / alerting / test j
 | `GH_DISPATCH_TOKEN` | 3 cross-repo writers (of 4 workflows using it): `process-feedback.yml`, `process-review-submission.yml`, `rebuild-fast.yml` |
 | `GITHUB_TOKEN` | 98 cross-repo writers (of 155 workflows using it) |
 | `GOOGLE_INDEXING_KEY` | 2 cross-repo writers (of 6 workflows using it): `opening-night-broadcast.yml`, `update-show-status.yml` |
-| `GUARDIAN_API_KEY` | 11 cross-repo writers (of 13 workflows using it) |
+| `GUARDIAN_API_KEY` | 12 cross-repo writers (of 14 workflows using it) |
 | `HTML_HANDOFF_PRIVATE_KEY` | 1 cross-repo writers (of 2 workflows using it): `execute-approved-fix.yml` |
 | `LANE_RECORDING_KEY` | 1 cross-repo writers (of 2 workflows using it): `opening-night-lane-live.yml` |
 | `LINEAR_API_KEY` | 30 cross-repo writers (of 89 workflows using it) |
