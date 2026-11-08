@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-08T11:05:45.606Z",
+  "generatedAt": "2026-11-08T13:31:27.006Z",
   "windowDays": 45,
   "showsScanned": 247,
   "gaps": [
@@ -21,10 +21,34 @@
       "forumLinkRecoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=lincoln-in-the-bardo-off-broadway-2026",
       "firstSeen": "2026-10-25T17:52:33.957Z",
-      "fileAgeHours": 329.2186361111111,
+      "fileAgeHours": 331.6374852777778,
       "gapSeenAt": "2026-10-26T08:25:16.367Z",
-      "nonTerminalAgeHours": 314.6747886111111,
+      "nonTerminalAgeHours": 317.10295527777777,
       "needsManualRecovery": true
+    },
+    {
+      "showId": "king-lear-off-broadway-2026",
+      "title": "King Lear",
+      "openingDate": "2026-11-05",
+      "file": "sunday-times--unknown.json",
+      "outletId": "sunday-times",
+      "tier": 2,
+      "type": "empty-body",
+      "recoverable": true,
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/king-lear-review-david-threlfall-kb6mrfglj",
+      "recovery": {
+        "attempted": true,
+        "ok": false,
+        "reason": "⚠️  outletId drift detected — operator input \"sunday-times\" resolved to \"sunday-times\" but URL domain maps to canonical \"times-uk\". Using URL-derived canonical.\nArticle extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS."
+      },
+      "recoveryCount": 0,
+      "forumLinkRecoveryCount": 0,
+      "fix": "node scripts/ingest-review-from-url.js --show=king-lear-off-broadway-2026 --url=https://www.thetimes.com/culture/theatre-dance/article/king-lear-review-david-threlfall-kb6mrfglj --outlet=sunday-times   # run LOCALLY (cookie jar lives on the Mac)",
+      "firstSeen": "2026-11-08T13:05:54.965Z",
+      "fileAgeHours": 0.4255338888888889,
+      "gapSeenAt": "2026-11-08T13:31:27.006Z",
+      "nonTerminalAgeHours": 0,
+      "needsManualRecovery": false
     }
   ],
   "contradictions": []
