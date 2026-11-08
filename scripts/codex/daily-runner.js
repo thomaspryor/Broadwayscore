@@ -816,6 +816,21 @@ async function settleLanded(id, stats, { partial, remaining = [], body, countRef
     }
     if (ap.kind === 'applied') body = `${body}\n\n### Data-fix plan applied\n${ap.lines.map((l) => `- ${l}`).join('\n')}\n\nAny item above that asks to approve or apply this plan is already done; only the other items remain.`;
   }
+  if (partial && remaining.length && !OPTS.dryRun) {
+    // BRO-7133: items only the owner can do go to their own parked card, so the code part can close.
+    const { owner, code } = R.splitOwnerSteps(remaining);
+    if (owner.length) {
+      const card = await linear.getIssue(id).catch(() => null);
+      const made = await linearBrain(R.ownerStepCardArgs(id, card && card.title, owner));
+      const ref = /\bBRO-\d+\b/.exec((made && made.out) || '');
+      if (made && made.code === 0) {
+        log(`${id}: owner steps split to ${ref ? ref[0] : 'a parked card'}`);
+        body = `${body}\n\n### Owner steps split off\n${ref ? `${ref[0]} (parked)` : 'A parked card'} carries:\n${owner.map((x) => `- ${x}`).join('\n')}`;
+        remaining = code;
+        partial = code.length > 0;
+      }
+    }
+  }
   if (partial) {
     const left = remaining.length ? `Still open on this card:\n${remaining.map((x) => `- ${x}`).join('\n')}\n\n` : 'Some card items are still open (see the runner\'s "landing a partial fix" note).\n\n';
     const r = await moveCard(id, 'Todo', `${R.BOUNCED_MARKER}\n${R.PARTIAL_HEADING}\n\n${left}${body}\n\n${R.PARTIAL_MARKER}`);
@@ -1010,6 +1025,7 @@ async function workCard(pick, stats, inFlight) {
       }
     };
     const failed = (cx) => `Codex exited ${cx.code}: ${tail(R.stripHookNoise(R.redactSecrets(R.codexExitTransient(cx.out) ? cx.out : cx.report, process.env)).trim(), 400)}`;
+    let lastHasDiff = null; // the branch holds a Codex commit after the newest attempt (BRO-7133)
     for (;;) {
       // The first exec gets the full timeout unless the hard stop is near; fix rounds fit the card budget.
       const cx = await exec(prompt(extra), execs === 0 ? firstExecMs() : fixExecMs());
@@ -1017,6 +1033,7 @@ async function workCard(pick, stats, inFlight) {
       // A failed exec (quota, login, crash) is not a fix attempt: hand back unmarked and stop the run.
       if (cx.code !== 0) { abort = failed(cx); break; }
       let c = commitAttempt(card, attempt);
+      lastHasDiff = c.hasDiff;
       if (c.blocked) { check = { verdict: 'REJECT', text: `Blocked before review: ${c.blocked}.` }; step = 'bounce'; break; }
       // Land refuses new unit/audit failures half an hour after the push, when the worktree has
       // moved on; catch them here and hand them straight back to Codex in the same attempt.
@@ -1106,6 +1123,7 @@ async function workCard(pick, stats, inFlight) {
     const remaining = step === 'land' || step === 'close-already-fixed' ? R.parseRemaining(check.text) : [];
     if (step === 'close-already-fixed' && remaining.length) step = 'bounce'; // nothing to land, items still open
     let landBlocked = false;
+    let refusedClose = false;
 
     if (step === 'land') {
       if (!OPTS.land) { stats.wouldLand.push(id); handedBack = (await moveCard(id, 'Todo', `${R.BOUNCED_MARKER}\n## Codex runner: passed the check, not landed (--no-land run)\n\n${summary}`)).code === 0; disposed = true; return 'done'; }
@@ -1158,6 +1176,7 @@ async function workCard(pick, stats, inFlight) {
         const rev = await moveCard(id, 'In Review', `## Codex runner: already fixed on main, no code change\n\nThe independent check found nothing left to do, but the card has no check the Done gate can run, so it waits here for a person to close it.\n\n${summary}`);
         if (rev.code === 0) { stats.inReview.push(id); handedBack = true; disposed = true; return 'done'; }
       }
+      if (r.code === 5) refusedClose = true;
       if (r.code === 5) summary += `\n\n### Not fixed after all\nThe reviewer judged it already fixed, but the card's own check still fails on main (the Done gate refused to close it):\n${fence(tail(R.redactSecrets(r.out || '', process.env), 800))}`;
     }
     stats.bounced.push(id);
@@ -1168,6 +1187,16 @@ async function workCard(pick, stats, inFlight) {
     const blockedText = /^Blocked before review: /.test(check.text || '') ? check.text : null;
     const bounceClass = R.classifyBounce({ envBlocked, blocked: blockedText, remaining: [...remaining, ...R.parseRemaining(check.text)], report });
     log(`${id}: bounce class ${bounceClass}`);
+    // BRO-7133: Codex changed nothing (a later date, another repo, the owner's Mac, missing telemetry): another
+    // try changes nothing again, so the card is parked with Codex's reason instead of circling back after 14 days.
+    // A Done-gate refusal of an "already fixed" claim is Codex's miss, not a block, and keeps the plain bounce.
+    if (lastHasDiff === false && !landBlocked && !refusedClose) {
+      const park = R.blockedParkNote({ report, remaining: [...remaining, ...R.parseRemaining(check.text)], nowMs: Date.now() });
+      log(`${id}: no change, parking (${park.reason.slice(0, 120)})`);
+      const parked = await moveCard(id, 'Paused', R.blockedParkBody({ ...park, summary: `${why} Findings for whoever takes it next:\n\n${summary}` }));
+      if (parked.code === 0) { handedBack = true; disposed = true; return 'done'; }
+      log(`${id}: could not park (exit ${parked.code}); bouncing to Todo`);
+    }
     handedBack = (await moveCard(id, 'Todo', `${R.BOUNCED_MARKER}\n## Codex runner: not landed, left for the Claude worker\n${R.bounceClassLine(bounceClass)}\n\n${why} Findings for whoever takes it next:\n\n${summary}`)).code === 0;
     disposed = true;
     return 'done';

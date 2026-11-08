@@ -720,7 +720,7 @@ const CODEX_HARD_SKIPS = [
   // the work is in another repo or ~/.claude, needs the owner's Mac or login, or waits on telemetry or recordings.
   ['other-repo', /\bBroadwayScorecard-app\b|\btech-scorecard\b|\bthomaspryor\/(?!Broadwayscore\b|broadway-(?:review-texts|scorecard-data)\b)[\w.-]+|~\/\.claude\/|\bprivate hooks?\b|\b(?:in|to) the (?:iOS )?app repo\b/i],
   ['owner-device', /\bowner'?s (?:Mac|laptop|browser|device)\b|\bMac[- ]host\b|\bowner\b[^.\n]{0,40}\b(?:password|2FA|one-time code|log(?:s|ging)? ?in|sign(?:s)? in)\b|\b(?:password|2FA|one-time code)\b[^.\n]{0,40}\bowner\b/i],
-  ['missing-prerequisite', /\b(?:needs?|requires?|waits? (?:on|for)|until|once)\b[^.\n]{0,40}\b(?:telemetry|recordings?)\b[^.\n]{0,30}\b(?:exists?|lands?|arrives?|captured|collected|accumulates?)\b|\bno (?:fleet |structured |real )?(?:telemetry|recordings?) (?:exists?|yet|available)\b|\b(?:telemetry|recordings?) (?:do(?:es)?n[o']?t|do(?:es)? not) exist\b|\bprivate recordings archive\b/i],
+  ['missing-prerequisite', /\b(?:needs?|requires?|waits? (?:on|for)|until|once)\b[^.\n]{0,40}\b(?:telemetry|recordings?)\b[^.\n]{0,30}\b(?:exists?|lands?|landed|arrives?|arrived|captured|collected|accumulat(?:es|ed|e))\b|\bno (?:fleet |structured |real )?(?:telemetry|recordings?) (?:exists?|yet|available)\b|\b(?:telemetry|recordings?) (?:do(?:es)?n[o']?t|do(?:es)? not) exist\b|\bprivate recordings archive\b/i],
   ['corpus-wide-data', /\bcorpus[- ]wide\b|\bbulk[- ](?:edit|fix|update|rewrite|repair|rescore)\b|(?<![\d,])(?!(?:19|20)\d\d\b)\d[\d,]{2,}\s+(?:shipped\s+|existing\s+|affected\s+|scored\s+)?(?:reviews|shows|files|rows|records)\b/i],
 ];
 // Card shapes the independent Claude check rejected most (BRO-6086: 98 "not landed, left for the Claude
@@ -836,6 +836,7 @@ function ownerStepCardArgs(id, title, owner) {
   const short = String(title || '').replace(/\s+/g, ' ').slice(0, 70);
   return ['create', `Owner step from ${id}: ${short}`,
     '--park', `needs the owner: ${String(owner[0]).replace(/\s+/g, ' ').slice(0, 120)}`,
+    '--source', 'codex-runner',
     '--notes', [`Split from ${id} by the Codex runner (BRO-7133): Codex landed the code part; these steps need the owner.`, '', ...owner.map((x) => `- ${x}`)].join('\n')];
 }
 
@@ -1764,8 +1765,10 @@ function isSlimTree(dir) {
   return r.status === 0 && r.stdout.trim() === 'true';
 }
 /** Real disk use of a directory in bytes (du, skipping a node_modules link), or null. */
+// BSD du (macOS) has no --exclude; its -I takes the same name mask (BRO-7133: null on the Mac, test red there).
+const duArgs = (dir, platform = process.platform) => (platform === 'darwin' ? ['-sk', '-I', 'node_modules', dir] : ['-sk', '--exclude=node_modules', dir]);
 function measureTreeBytes(dir) {
-  const r = require('child_process').spawnSync('du', ['-sk', '--exclude=node_modules', dir], { encoding: 'utf8', timeout: 120_000 });
+  const r = require('child_process').spawnSync('du', duArgs(dir), { encoding: 'utf8', timeout: 120_000 });
   const kb = r.status === 0 ? Number(String(r.stdout).split(/\s/)[0]) : NaN;
   return Number.isFinite(kb) && kb > 0 ? kb * 1024 : null;
 }

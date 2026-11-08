@@ -1679,3 +1679,106 @@ test('BRO-7098: ownerWaitHolds / historySkipReason skip a card that waits on the
   // a card with no owner wording is untouched
   assert.equal(P.historySkipReason({ priority: 3 }, [c('Plain progress note.', 2)], now), null);
 });
+
+// BRO-7133: Codex spent two attempts on cards blocked outside the code (12 of 62 bounced cards on 2026-11-08),
+// and a disk-full crash in git's own words banned the card for 14 days.
+test('isDiskFailure: git and npm disk-full phrasings count as the machine, not the card (BRO-7133)', () => {
+  for (const t of ['npm ERR! Out of diskspace', 'error: failed to write object\nfatal: unable to write sha1 file', 'error: unpack-objects failed']) {
+    assert.equal(r.isDiskFailure(t, 20e9), true, t);
+    assert.ok(r.DISK_FULL_RE.test(t), t);
+  }
+  // The crash note that names it does not count toward the card's two crashes.
+  const now = Date.parse('2026-11-08T00:00:00Z');
+  const crash = (msg, at) => ({ body: `## Codex runner: stopped mid-card\n\n${msg}`, createdAt: at });
+  assert.equal(r.codexBouncedRecently([crash('error: unpack-objects failed', '2026-11-06T00:00:00Z'), crash('npm ERR! Out of diskspace', '2026-11-07T00:00:00Z')], now), false);
+  assert.equal(r.codexBouncedRecently([crash('TypeError: x', '2026-11-06T00:00:00Z'), crash('TypeError: y', '2026-11-07T00:00:00Z')], now), true);
+  // The lane-health report classes the same stop as a disk stop.
+  const h = require('../../scripts/lib/codex-lane-health.js');
+  assert.ok(h.DISK_STOP.test('out of disk: error: failed to write object'));
+});
+
+test('codexCardFit: cards blocked outside the code are skipped by name before any attempt (BRO-7133)', () => {
+  const now = Date.parse('2026-11-08T12:00:00Z');
+  const fit = (description, title = 'Fix the thing') => r.codexCardFit({ title, description, verify: 'node --test tests/unit/x.test.mjs', nowMs: now, canDispatch: true });
+  // Shapes from the bounced cards: tech-scorecard (BRO-5996), ~/.claude hooks (BRO-3681), the app repo.
+  assert.equal(fit('Put the photos in thomaspryor/tech-scorecard under public/img.').skip, 'other-repo');
+  assert.equal(fit('The code under test is ~/.claude/hooks/exit-status-gate.sh.').skip, 'other-repo');
+  assert.equal(fit('Mirror it in BroadwayScorecard-app components/user/StarRating.tsx.').skip, 'other-repo');
+  assert.equal(fit('Export the cookie from the owner\'s browser and paste it in.').skip, 'owner-device');
+  assert.equal(fit('The owner enters the password once, then the script refreshes.').skip, 'owner-device');
+  assert.equal(fit('Capture the real pages into the private recordings archive.').skip, 'missing-prerequisite');
+  assert.equal(fit('Pick the threshold once fleet telemetry has accumulated for a week.').skip, 'missing-prerequisite');
+  // A later date the card waits for; a passed one is no wait (BRO-6863: "defer edits until after November 9").
+  assert.equal(fit('Do not edit the poller until 2026-11-09, after press night.').skip, 'deferred-date');
+  assert.equal(fit('The freeze lasts until Nov 13; change nothing before.').skip, 'deferred-date');
+  assert.equal(fit('On/after 2027-01-02 pull the PostHog market numbers.').skip, 'deferred-date');
+  assert.equal(fit('Not before 2026-10-23 (already passed).').skip, null);
+  assert.equal(fit('Broke after October 30 when the cron moved.').skip, null);
+  // Code work that only mentions these words stays fit.
+  assert.equal(fit('Add telemetry for queue depth to dispatch-flow-health.js.').skip, null);
+  assert.equal(fit('Fix the password reset form on the web sign-in page.').skip, null);
+  // CODEX-OK still sends a card to Codex.
+  assert.equal(fit('CODEX-OK\nThe code under test is ~/.claude/hooks/x.sh.').skip, null);
+});
+
+test('futureDeferral reads ISO and month-day dates, only when still ahead (BRO-7133)', () => {
+  const now = Date.parse('2026-11-08T12:00:00Z');
+  assert.equal(r.futureDeferral('RECHECK-AFTER: 2026-11-22', now).iso, '2026-11-22');
+  assert.equal(r.futureDeferral('wait until December 3, 2026 for the season', now).iso, '2026-12-03');
+  assert.equal(r.futureDeferral('until 2026-11-01', now), null);
+  assert.equal(r.futureDeferral('nothing dated here', now), null);
+});
+
+test('codexFoundBlocked: a bounce where Codex changed nothing keeps the card from Codex until a person answers (BRO-7133)', () => {
+  const at = (h) => new Date(Date.parse('2026-11-01T00:00:00Z') + h * 3600_000).toISOString();
+  const legacy = { body: `${r.BOUNCED_MARKER}\n## Codex runner: not landed, left for the Claude worker\n<!-- codex-bounce-class: genuine-failure -->\n\n2 Codex attempt(s) did not pass the checks, so nothing was pushed. Findings for whoever takes it next:\n\n### Codex report\n\`\`\`\nBRO-3890 remains blocked by missing fleet telemetry. No files changed; choosing a threshold would be guessing.\n\`\`\`\n\n### Independent check (REJECT)\n\`\`\`\nREJECT\n\`\`\``, createdAt: at(0) };
+  assert.match(r.codexFoundBlocked([legacy]), /missing fleet telemetry/);
+  const fresh = { body: r.blockedParkBody({ reason: 'the card defers edits until after November 9', recheckAfter: '2026-11-09' }), createdAt: at(0) };
+  assert.equal(r.codexFoundBlocked([fresh]), 'the card defers edits until after November 9');
+  // A plain REJECT with a diff is not this; "No files changed" in the check's text does not count either.
+  const plain = { body: `${r.BOUNCED_MARKER}\n## Codex runner: not landed, left for the Claude worker\n\n### Codex report\n\`\`\`\nFixed the parser; 12 tests pass.\n\`\`\`\n\n### Independent check (REJECT)\n\`\`\`\nNo files changed in the test dir\n\`\`\``, createdAt: at(0) };
+  assert.equal(r.codexFoundBlocked([plain]), null);
+  // A person's comment or CODEX-OK after it lifts it; a partial landing is not it.
+  assert.equal(r.codexFoundBlocked([legacy, { body: 'Telemetry is in now, try again.', createdAt: at(1) }]), null);
+  assert.equal(r.codexFoundBlocked([legacy, { body: 'CODEX-OK', createdAt: at(1) }]), null);
+  assert.equal(r.codexFoundBlocked([{ body: `${r.BOUNCED_MARKER}\n${r.PARTIAL_HEADING}\n\nNo files changed`, createdAt: at(0) }]), null);
+  // codexCardFit names it, and the new note is a structural hold (no 14-day return).
+  const f = r.codexCardFit({ title: 'Re-measure the threshold', description: 'x', comments: [legacy], nowMs: Date.parse(at(2)), canDispatch: true });
+  assert.equal(f.skip, 'codex-found-blocked');
+  assert.equal(r.codexBouncedRecently([fresh], Date.parse(at(24 * 30))), true, 'blocked-no-change holds past 14 days');
+});
+
+test('blockedParkNote: Codex\'s verdict line is the reason and a later date becomes RECHECK-AFTER (BRO-7133)', () => {
+  const now = Date.parse('2026-11-03T00:00:00Z');
+  const p = r.blockedParkNote({ report: 'No files changed. The card defers edits until 2026-11-09.\n\nChecklist a-e:\n- a. ...', nowMs: now });
+  assert.equal(p.reason, 'No files changed. The card defers edits until 2026-11-09.');
+  assert.equal(p.recheckAfter, '2026-11-09');
+  const q = r.blockedParkNote({ report: '', remaining: ['On the owner\'s Mac, run the hook test'], nowMs: now });
+  assert.equal(q.reason, 'On the owner\'s Mac, run the hook test');
+  assert.equal(q.recheckAfter, null);
+  const body = r.blockedParkBody({ ...p, summary: 'S' });
+  assert.ok(body.startsWith(`${r.BOUNCED_MARKER}\n## Codex runner: blocked`));
+  assert.equal(r.bounceClassOf(body), 'blocked-no-change');
+  assert.match(body, /^BLOCKED: No files changed/m);
+  assert.match(body, /^RECHECK-AFTER: 2026-11-09$/m);
+  const { parseRecheckAfter } = require('../../scripts/lib/recheck-stamp.js');
+  assert.equal(parseRecheckAfter(body), Date.parse('2026-11-09T00:00:00Z'), 'the pick\'s recheck-pending hold reads the stamp');
+});
+
+test('splitOwnerSteps: owner/Mac items split to their own parked card, code items stay (BRO-7133)', () => {
+  const s = r.splitOwnerSteps(['On the owner\'s Mac, run node --test scripts/lib/x.test.mjs', 'Approve the money-card visuals', 'Add the missing unit test for parseFoo', 'Needs an owner decision on the threshold']);
+  assert.deepEqual(s.code, ['Add the missing unit test for parseFoo']);
+  assert.equal(s.owner.length, 3);
+  assert.deepEqual(r.splitOwnerSteps(['No owner decision needed; fix the regex']).owner, []);
+  const args = r.ownerStepCardArgs('BRO-1', 'Money card ranges', s.owner);
+  assert.deepEqual(args.slice(0, 2), ['create', 'Owner step from BRO-1: Money card ranges']);
+  assert.equal(args[args.indexOf('--park') + 1].startsWith('needs the owner: '), true);
+  assert.match(args[args.indexOf('--notes') + 1], /Split from BRO-1/);
+});
+
+test('daily-runner parks a no-change bounce and splits owner steps off a partial landing (BRO-7133)', () => {
+  const src = fs.readFileSync(new URL('../../scripts/codex/daily-runner.js', import.meta.url), 'utf8');
+  assert.match(src, /lastHasDiff = c\.hasDiff;/);
+  assert.match(src, /if \(lastHasDiff === false && !landBlocked && !refusedClose\) \{[\s\S]{0,400}moveCard\(id, 'Paused', R\.blockedParkBody\(/);
+  assert.match(src, /R\.splitOwnerSteps\(remaining\)[\s\S]{0,400}linearBrain\(R\.ownerStepCardArgs\(/);
+});
