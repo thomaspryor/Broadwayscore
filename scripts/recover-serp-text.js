@@ -106,8 +106,8 @@ const RUN_WRITES = createWriteTracker();
 function checkpointReviewTexts(label) {
   if (!RUN_WRITES.size) return null;
   const paths = [...RUN_WRITES];
-  const res = landReviewTexts({ repoDir: CONFIG.reviewTextsDir, paths, message: `data: ${label} checkpoint` });
-  for (const p of paths) RUN_WRITES.delete(p);
+  const res = landReviewTexts({ repoDir: CONFIG.reviewTextsDir, paths, expected: RUN_WRITES.expected, message: `data: ${label} checkpoint` });
+  for (const p of paths) { RUN_WRITES.delete(p); RUN_WRITES.expected.delete(p); }
   console.log(`  [checkpoint] ${res.pushed ? 'pushed' : 'nothing new to push'}; ${res.landed.length} file(s) confirmed on origin/main`);
   for (const n of res.notLanded) console.log(`  [checkpoint] NOT on origin/main after push: ${n.rel}`);
   return res;
@@ -285,10 +285,14 @@ async function processRecovered(candidate, text, html, newUrl, method) {
     fetchMethod: `serp-text-recovery-${method}`,
     sourceMethod: 'serp-text-recovery',
     contentTierReasonFallback: 'Recovered via SERP text recovery',
+    urlDiscoveryMethod: 'google-serp',
   };
   const url = newUrl || candidate.url;
+  // The record must still carry the url this candidate was built from; a
+  // concurrent writer that moved it wins and this recovery is refused.
+  const expectUrl = candidate.url || null;
   const ctxOpts = { reviewTextsDir: CONFIG.reviewTextsDir };
-  let pre = recoverReviewText({ filePath: candidate.filePath, rawText: text, url, labels, dryRun: true, ctxOpts });
+  let pre = recoverReviewText({ filePath: candidate.filePath, rawText: text, url, expectUrl, labels, dryRun: true, ctxOpts });
   // identity_unproven is the one refusal an LLM verdict can overturn, and only
   // when the verdict is the ONLY missing proof (outlet domain, critic named and
   // no cross-show owner already hold); otherwise the paid call cannot help.
@@ -302,7 +306,7 @@ async function processRecovered(candidate, text, html, newUrl, method) {
     const cleaned = require('./lib/gap-acceptance').cleanCandidateText(text, { url, showId: candidate.showId });
     if (!cleaned.refused) {
       ctxOpts.llmIdentityVerified = await verifyMovedReview(candidate, cleaned.text, url);
-      pre = recoverReviewText({ filePath: candidate.filePath, rawText: text, url, labels, dryRun: true, ctxOpts });
+      pre = recoverReviewText({ filePath: candidate.filePath, rawText: text, url, expectUrl, labels, dryRun: true, ctxOpts });
     }
   }
   if (!pre.ok) {
@@ -323,6 +327,7 @@ async function processRecovered(candidate, text, html, newUrl, method) {
     filePath: candidate.filePath,
     rawText: text,
     url,
+    expectUrl,
     labels,
     tracker: RUN_WRITES,
     ctxOpts,

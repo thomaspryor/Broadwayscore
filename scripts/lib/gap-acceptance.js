@@ -347,18 +347,31 @@ function buildAcceptanceContext(filePath, existing, candidateUrl, opts = {}) {
  * @param {string} args.filePath
  * @param {string} args.rawText
  * @param {string} [args.url]          where the text came from (omit = existing url)
- * @param {{fetchMethod: string, sourceMethod: string, contentTierReasonFallback?: string}} args.labels
+ * @param {string|null} [args.expectUrl] the url on disk when the caller chose
+ *                                     what to fetch. When given, a record whose url
+ *                                     moved since (another writer) is refused, so
+ *                                     old-page text never lands under a new url.
+ * @param {{fetchMethod: string, sourceMethod: string, contentTierReasonFallback?: string, urlDiscoveryMethod?: string}} args.labels
  * @param {boolean} [args.dryRun]      decide only
- * @param {Set<string>} [args.tracker] absolute paths this run wrote (scoped staging)
+ * @param {Set<string>} [args.tracker] absolute paths this run wrote (scoped staging);
+ *                                     tracker.expected (Map) gets each path's landing key
  * @param {object} [args.ctxOpts]      buildAcceptanceContext opts
  * @param {(data: object, decision: object) => void} [args.beforeWrite] add score fields etc.
  * @returns {{ok: boolean, code: string, reason: string, newLen?: number, decision: object, write?: object}}
  */
-function recoverReviewText({ filePath, rawText, url, labels, dryRun = false, tracker, ctxOpts = {}, beforeWrite }) {
+function recoverReviewText({ filePath, rawText, url, expectUrl, labels, dryRun = false, tracker, ctxOpts = {}, beforeWrite }) {
   const { withReviewTextsLock } = require('./review-texts-lock');
   const run = () => {
     const { readReviewForUpdate, persistReviewViaSafeWrite } = require('./persist-review-snapshot');
     const data = readReviewForUpdate(filePath);
+    if (expectUrl !== undefined) {
+      const disk = data.url || null;
+      const exp = expectUrl || null;
+      const moved = (!disk !== !exp) || (!!disk && require('./url-change-invariant').urlCanonicallyChanged(exp, disk));
+      if (moved) {
+        return { ok: false, code: 'url_moved_during_fetch', reason: `record url changed while fetching (${exp || 'none'} -> ${disk || 'none'})`, decision: null, dryRun };
+      }
+    }
     const ctx = buildAcceptanceContext(filePath, data, url, ctxOpts);
     const decision = acceptRecoveredText(data, { rawText, url }, ctx);
     if (!decision.accept || dryRun) {
@@ -379,6 +392,10 @@ function recoverReviewText({ filePath, rawText, url, labels, dryRun = false, tra
       if (data.url) data.previousUrl = data.url;
       data.url = url;
       data.urlDiscoveredAt = at;
+      // Readers key on this (review-guards SERP_DISCOVERY_METHODS, abandonment
+      // backfills, rediscovery-candidate repair); a stale value must not survive
+      // the move (and a delete would be copied back by merge-mode safeWriteReview).
+      data.urlDiscoveryMethod = labels.urlDiscoveryMethod || labels.sourceMethod;
     }
     const { countWords } = require('./content-quality');
     data.fullText = text;
@@ -401,6 +418,7 @@ function recoverReviewText({ filePath, rawText, url, labels, dryRun = false, tra
     );
     if (tracker && write.wrote) tracker.add(path.resolve(filePath));
     if (!write.wrote) {
+      if (tracker && tracker.expected) tracker.expected.delete(path.resolve(filePath));
       return { ok: false, code: 'write_refused', reason: `write refused by safeWriteReview (${write.skipped || 'unknown'})`, decision, write };
     }
     // safeWriteReview can still flag the record, or keep the old url and roll
@@ -409,8 +427,12 @@ function recoverReviewText({ filePath, rawText, url, labels, dryRun = false, tra
     const landed = JSON.parse(fs.readFileSync(filePath, 'utf8'));
     const verdict = landedAsRecovered(landed, { text, url: decision.urlChanged ? url : landed.url }, write);
     if (!verdict.ok) {
+      if (tracker && tracker.expected) tracker.expected.delete(path.resolve(filePath));
       return { ok: false, code: 'write_rolled_back', reason: `write landed but ${verdict.why}`, decision, write };
     }
+    // The checkpoint confirms THIS text + url reached origin/main, not whatever
+    // another writer left in the file by commit time.
+    if (tracker && tracker.expected) tracker.expected.set(path.resolve(filePath), require('./review-texts-checkpoint').landingKey(landed));
     return { ok: true, code: 'accepted', reason: decision.reason, newLen: text.length, decision, write };
   };
   if (dryRun) return run();

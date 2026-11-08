@@ -165,3 +165,33 @@ test('adapter: an accepted recovery records priorFullTextHash for rollback', () 
   assert.equal(onDisk.textRecoveryProvenance.priorFullTextHash, gate.sha256('Short excerpt.'));
   assert.equal(onDisk.textRecoveryProvenance.priorContentTier, 'excerpt');
 });
+
+test('adapter: the record url moved while the browser fetched the old one: refused, file untouched', () => {
+  const { processRecoveredText } = require('./browser-recovery-helpers.js');
+  const c = candidateFile({});
+  const moved = { ...JSON.parse(fs.readFileSync(c.filePath, 'utf8')), url: 'https://www.nytimes.com/2026/03/20/theater/corrected-url.html' };
+  fs.writeFileSync(c.filePath, JSON.stringify(moved, null, 2) + '\n');
+  const before = fs.readFileSync(c.filePath, 'utf8');
+  const r = processRecoveredText(c, GOOD, LABELS); // c.url is the url the browser loaded
+  assert.equal(r.ok, false);
+  assert.equal(r.code, 'url_moved_during_fetch');
+  assert.equal(fs.readFileSync(c.filePath, 'utf8'), before, 'old-page text not written under the new url');
+});
+
+test('a url move stamps the caller urlDiscoveryMethod (and drops a stale one); tracker gets the landing key', () => {
+  const { createWriteTracker, landingKey } = require('./review-texts-checkpoint.js');
+  const c = candidateFile({ dtliExcerpt: GOOD.slice(0, 240), urlDiscoveryMethod: 'http-redirect' });
+  const newUrl = 'https://www.nytimes.com/2026/03/17/theater/joe-turner-review-moved.html';
+  const tracker = createWriteTracker();
+  const r = gate.recoverReviewText({ filePath: c.filePath, rawText: GOOD, url: newUrl, expectUrl: c.url, labels: { ...LABELS, urlDiscoveryMethod: 'google-serp' }, tracker });
+  assert.equal(r.ok, true, r.reason);
+  const onDisk = JSON.parse(fs.readFileSync(c.filePath, 'utf8'));
+  assert.equal(onDisk.url, newUrl);
+  assert.equal(onDisk.urlDiscoveryMethod, 'google-serp');
+  assert.equal(tracker.expected.get(path.resolve(c.filePath)), landingKey(onDisk));
+
+  const c2 = candidateFile({ dtliExcerpt: GOOD.slice(0, 240), urlDiscoveryMethod: 'http-redirect' });
+  const r2 = gate.recoverReviewText({ filePath: c2.filePath, rawText: GOOD, url: newUrl.replace('moved', 'moved-2'), labels: LABELS });
+  assert.equal(r2.ok, true, r2.reason);
+  assert.equal(JSON.parse(fs.readFileSync(c2.filePath, 'utf8')).urlDiscoveryMethod, 'test-recovery', 'stale method replaced by the recovery method');
+});

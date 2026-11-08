@@ -112,6 +112,9 @@ function processRecoveredText(candidate, rawText, labels, opts = {}) {
   const r = recoverReviewText({
     filePath: candidate.filePath,
     rawText,
+    // The browser fetched candidate.url: refuse if another writer moved the
+    // record's url meanwhile, so old-page text never lands under a new url.
+    expectUrl: candidate.url || null,
     labels,
     dryRun: !!opts.dryRun,
     tracker: opts.tracker || RUN_WRITES,
@@ -163,13 +166,14 @@ function checkpoint(stats, commitMessagePrefix, opts = {}) {
   const res = checkpointReviewTexts({
     repoDir: opts.repoDir || REVIEW_TEXTS_DIR,
     paths,
+    expected: tracker.expected,
     message: `feat: ${commitMessagePrefix} - ${stats.recovered} reviews recovered (task #831)`,
     onLanded: opts.onLanded,
     pushScript: opts.pushScript,
     pushEnv: opts.pushEnv,
     retries: opts.retries,
   });
-  for (const p of paths) tracker.delete(p);
+  for (const p of paths) { tracker.delete(p); if (tracker.expected) tracker.expected.delete(p); }
   console.log(`  [Checkpoint] ${res.pushed ? 'Pushed' : 'Nothing new to push'} (${stats.recovered} recovered so far; ${res.landed.length} file(s) confirmed on origin/main)`);
   for (const n of res.notLanded) console.log(`  [Checkpoint] NOT on origin/main after push: ${n.rel}`);
   return res;
