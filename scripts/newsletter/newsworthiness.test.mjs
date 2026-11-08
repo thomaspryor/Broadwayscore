@@ -419,3 +419,34 @@ test('Broadway is never secondary-weighted in the Broadway edition itself', () =
   assert.equal(candidates[0].weight, 85); // WEIGHTS.BW_OPENING_BASE, unaffected by BRO-2598
   assert.doesNotMatch(candidates[0].headline, /on Broadway/);
 });
+
+// BRO-7126: grace-window catch-up WE rows (openingDate outside this week) must
+// not be worded as "opens" in the headline, subject or lede.
+test('WE catch-up opening is not described as "opens" (BRO-7126)', () => {
+  for (const edition of ['west-end', 'broadway']) {
+    for (const avg of [80, null]) {
+      const candidates = scoreCandidates({
+        edition,
+        weGoldOpenings: [{ show: { id: 'late', slug: 'late', title: 'Late Show', category: 'west-end' }, isCatchUp: true }],
+        aggregateScore: () => ({ avg }),
+      });
+      const c = candidates.find((x) => x.kind === 'we-opening');
+      assert.ok(c.isCatchUp);
+      assert.match(c.headline, /which recently opened/);
+      assert.doesNotMatch(c.headline, /\bopens\b/);
+      const subject = buildSubjectFromCandidates(candidates).subject;
+      const lede = JSON.stringify(buildLedeSentences(candidates));
+      assert.doesNotMatch(subject, /\bopens\b/, subject);
+      assert.doesNotMatch(lede, /\bopens\b/, lede);
+    }
+  }
+});
+
+test('in-week WE opening still says "opens" (BRO-7126)', () => {
+  const candidates = scoreCandidates({
+    edition: 'west-end',
+    weGoldOpenings: [{ show: { id: 'now', slug: 'now', title: 'Now Show', category: 'west-end' }, isCatchUp: false }],
+    aggregateScore: () => ({ avg: 80 }),
+  });
+  assert.equal(candidates[0].headline, 'Now Show opens to strong reviews');
+});

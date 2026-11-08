@@ -2850,7 +2850,7 @@ bwEvents = IS_WE
 // entry here is the one the subject/lede names. weOpeningStories() ranks
 // most-reviewed-first and londonSection floats the same show to the top card,
 // so subject, lede, and card stack always agree.
-const weGoldEvents = weOpeningStories().map(x => ({ show: x.s }));
+const weGoldEvents = weOpeningStories().map(x => ({ show: x.s, isCatchUp: !!x.isCatchUp }));
 
 const newsworthyInputs = {
   edition: EDITION,  // West End openings are primary in the WE edition, secondary in the US edition
