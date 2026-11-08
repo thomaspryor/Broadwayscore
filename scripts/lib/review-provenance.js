@@ -38,16 +38,19 @@ const HAND_ADJUDICATED_CLEAR_SCRIPTS = new Set([
 ]);
 
 /**
- * A wrongProduction clear stamped by a script rather than a person. Delegates to the
- * write guard's own definition (".js" names plus the bare-name batch scripts, BRO-5239),
- * lazily because scripts/lib is copied flat into fixtures.
+ * A wrongProduction clear stamped by a script rather than a person. Mirrors
+ * review-write-guard's isScriptWrongProductionClear (".js" names plus the bare-name batch
+ * scripts, BRO-5239) WITHOUT importing it: the guard pulls the scraper into the morning
+ * digest's import closure. A parity test in opening-grade.test.mjs keeps the two equal.
  */
+const SCRIPT_CLEAR_BARE_NAMES = new Set([
+  'clear-own-venue-tour-fps-2026-10', 'reverify-era-venue-wrongprod', 'clear-we-longrunner-fps-2026-04-24',
+]);
 function isScriptClearSetBy(by) {
   if (typeof by !== 'string' || !by.trim()) return false;
-  if (HAND_ADJUDICATED_CLEAR_SCRIPTS.has(by.trim().replace(/\.js\b.*$/, ''))) return false;
-  return require('./review-write-guard').isScriptWrongProductionClear({
-    wrongProductionManualClear: true, wrongProductionOverrideSetBy: by,
-  });
+  const t = by.trim();
+  if (HAND_ADJUDICATED_CLEAR_SCRIPTS.has(t.replace(/\.js\b.*$/, ''))) return false;
+  return /\.js\b/.test(t) || SCRIPT_CLEAR_BARE_NAMES.has(t);
 }
 
 /** Steps a person took that a file needed before it could go live. */

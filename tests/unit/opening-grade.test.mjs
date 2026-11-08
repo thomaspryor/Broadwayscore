@@ -172,3 +172,11 @@ test('BRO-7145: a person-stamped or hand-adjudicated .js clear still needs hands
   assert.equal(og.causeOfSubject('recover wrongProduction flag on X'), 'wrong-label');
   assert.equal(og.causeOfSubject('fix redirect duplicate'), 'duplicate-identity');
 });
+
+test('BRO-7145: provenance script-clear test agrees with the write guard (except hand-adjudicated scripts)', () => {
+  const { isScriptClearSetBy } = require('../../scripts/lib/review-provenance.js');
+  const guard = require('../../scripts/lib/review-write-guard.js');
+  for (const by of ['x.js', 'reverify-era-venue-wrongprod', 'clear-own-venue-tour-fps-2026-10', 'owner', 'tom', 'verify-existing-reviews.js:recover']) {
+    assert.equal(isScriptClearSetBy(by), guard.isScriptWrongProductionClear({ wrongProductionManualClear: true, wrongProductionOverrideSetBy: by }), by);
+  }
+});
