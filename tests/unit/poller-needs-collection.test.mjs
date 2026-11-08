@@ -61,7 +61,8 @@ test('the poller wires needs_collection into every post-collect gate (targeted r
   for (const name of ['Collect full text inline', 'Commit collected texts', 'Flag combined (joint) reviews', 'Commit combined-review flags']) {
     assert.match(stepIf(name), /if:[^\n]*steps\.poll\.outputs\.any_collect == 'true'/, name);
   }
-  assert.match(stepIf('Collect full text inline'), /SHOW_FILTER: \$\{\{ steps\.poll\.outputs\.any_new == 'true' && steps\.find\.outputs\.shows \|\| steps\.poll\.outputs\.collect_shows \}\}/);
+  // A collect_existing run is targeted, so the find step's list is already that one show.
+  assert.match(stepIf('Collect full text inline'), /SHOW_FILTER: \$\{\{ steps\.find\.outputs\.shows \}\}/);
   assert.match(yml, /COLLECT_ATTEMPTED_RAW: \$\{\{ steps\.poll\.outputs\.any_collect \}\}/);
   // Only a run that asks for it (the post-lane sweep), never every targeted run: the orchestrator's press-night loop
   // dispatches targeted runs too, and an unfetchable excerpt would make each of them collect, rebuild and deploy.
