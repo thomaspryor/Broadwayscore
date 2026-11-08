@@ -76,6 +76,19 @@ function restorePrebuildResidue(root, git = (...a) => run('git', a, { cwd: root 
   return residue;
 }
 
+// BRO-7110: a run stopped mid-gauntlet never reaches restorePrebuildResidue, so
+// its regenerated outputs block the next run. Not restored here (the tree's
+// state at start is unknown), but named, with the one command that clears them.
+/** porcelain status -> the refusal text */
+function dirtyTreeMessage(porcelain) {
+  const { PREBUILD_OUTPUTS } = require('./prebuild-outputs.js');
+  const files = porcelain.split('\n').filter(Boolean).map((l) => l.slice(3));
+  const base = 'land-local-check: commit or discard tracked changes first:\n' + porcelain;
+  if (!files.length || !files.every((f) => PREBUILD_OUTPUTS.some((re) => re.test(f)))) return base;
+  return base + (base.endsWith('\n') ? '' : '\n') +
+    `  only generated prebuild outputs changed (often left by a stopped run); if you did not mean to change them: git checkout -- ${files.join(' ')}`;
+}
+
 // BRO-7110: a worktree under the main checkout with no node_modules of its own
 // still type-checks, resolving packages from the parent directory, but the /tmp
 // base copy finds none. The two sides then fail with different error text and
@@ -254,7 +267,7 @@ function main(argv = process.argv.slice(2)) {
   // The branch run judges the working tree as committed; uncommitted tracked edits would make it
   // judge something no push carries. (The base run no longer touches this tree: BRO-6252.)
   const dirty = git('status', '--porcelain', '--untracked-files=no');
-  if (dirty.stdout) { console.error('land-local-check: commit or discard tracked changes first:\n' + dirty.stdout); return 3; }
+  if (dirty.stdout) { console.error(dirtyTreeMessage(dirty.stdout)); return 3; }
   const missing = missingCoreData(ROOT);
   if (missing.length) {
     console.error(`land-local-check: ${missing.join(', ')} missing in this checkout (a worktree has no local data). `
@@ -345,7 +358,7 @@ function main(argv = process.argv.slice(2)) {
   }
 }
 
-module.exports = { nodeModulesRemedy, main, withBaseWorktree, depsChangedSince, linkIgnored, ignoredPaths, parseArgs, newFailureFiles, missingCoreData, hasOwnNodeModules, restorePrebuildResidue, stageGauntletHarness, HARNESS_FILES, CORE_DATA_FILES, DEFAULT_GATES, LOCAL_SKIPPED_GATES };
+module.exports = { dirtyTreeMessage, nodeModulesRemedy, main, withBaseWorktree, depsChangedSince, linkIgnored, ignoredPaths, parseArgs, newFailureFiles, missingCoreData, hasOwnNodeModules, restorePrebuildResidue, stageGauntletHarness, HARNESS_FILES, CORE_DATA_FILES, DEFAULT_GATES, LOCAL_SKIPPED_GATES };
 
 if (require.main === module) {
   // Capture the tip before the ~20 min run: the session may commit meanwhile, and that commit was not tested.

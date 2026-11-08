@@ -384,3 +384,12 @@ test('BRO-7110: the node_modules remedy links a worktree to the main checkout, a
   assert.equal(nodeModulesRemedy('/repo', '.git'), 'Install them first: npm ci');
   assert.equal(nodeModulesRemedy('/repo', ''), 'Install them first: npm ci');
 });
+
+test('BRO-7110: a tree dirty only with prebuild outputs names them and the restore command', () => {
+  const { dirtyTreeMessage } = require('./land-local-check.js');
+  const onlyGenerated = dirtyTreeMessage(' M data/gold-lists-computed.json\n');
+  assert.match(onlyGenerated, /commit or discard tracked changes first/);
+  assert.match(onlyGenerated, /git checkout -- data\/gold-lists-computed\.json$/);
+  const mixed = dirtyTreeMessage(' M data/gold-lists-computed.json\n M scripts/foo.js\n');
+  assert.doesNotMatch(mixed, /git checkout --/, 'a real edit in the mix gets no discard hint');
+});
