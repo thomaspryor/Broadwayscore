@@ -274,6 +274,10 @@ const SAFE_CHECK_FORMS = [
   // silently admit any FUTURE script sharing the naming convention without
   // the same review.
   { re: /^node scripts\/validate-data\.js( --strict)?$/ },
+  // BRO-7130: Data Validation's "Validate market expansion" step. Reads
+  // data/*.json and prints; no writes, spawns or network (read 2026-11-08).
+  // Bare only, so a per-step Data Validation card can arm its own command.
+  { re: /^node scripts\/validate-market-expansion\.js$/ },
   // BRO-3907: run-unit-tests.js is the local equivalent of CI's "Unit Tests"
   // job (spawns `node --test`/`npx tsx --test` over the same two committed
   // manifests CI reads) — no fs writes of its own, only spawnSync calls (see

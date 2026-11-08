@@ -6670,40 +6670,46 @@ jobs:
       - name: Route data-audit failures to the daily digest
         env:
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          JOB_STATUS: ${{ job.status }}
         # BRO-3425: this job is continue-on-error, so a corpus-state audit going
-        # red no longer reddens main or pages anyone. It queues ONE digest line
-        # (24h cooldown) naming the failing steps. The old Discord "Test Suite
-        # Failed" ping fired on every data drift and is gone with the demotion.
-        if: failure() && (github.event_name == 'schedule' || (github.event_name == 'push' && github.ref == 'refs/heads/main'))
+        # red no longer reddens main. BRO-7130: each failing step gets its own
+        # alert (digest first, a card after 24h, escalation after 48h) and is
+        # resolved when that step passes, so this runs on green runs too.
+        # Logic: scripts/lib/data-validation-routing.js.
+        if: ${{ !cancelled() && (github.event_name == 'schedule' || (github.event_name == 'push' && github.ref == 'refs/heads/main')) }}
         uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7
         with:
           script: |
-            // A failed lookup must not drop the digest line — fall back to a
-            // generic title (ship-check finding).
-            let failing = [];
+            // A failed lookup passes steps=null: the lib then routes one
+            // "step list unavailable" digest line if the job is failing.
+            let steps = null;
             try {
               const { data } = await github.rest.actions.listJobsForWorkflowRunAttempt({
                 owner: context.repo.owner, repo: context.repo.repo,
                 run_id: context.runId, attempt_number: Number(process.env.GITHUB_RUN_ATTEMPT || 1), per_page: 100,
               });
               const job = (data.jobs || []).find(j => j.name === 'Data Validation');
-              failing = ((job && job.steps) || []).filter(s => s.conclusion === 'failure').map(s => s.name);
+              if (job && Array.isArray(job.steps)) steps = job.steps.map(s => ({ name: s.name, conclusion: s.conclusion }));
             } catch (e) {
-              core.warning(`could not list failing Data Validation steps: ${e.message}`);
+              core.warning(`could not list Data Validation steps: ${e.message}`);
             }
-            const { routeAlert } = require('./scripts/lib/owner-alert-router.js');
-            await routeAlert({
-              conditionKey: 'test-yml:data-validation-red',
-              title: `Data audits failing (non-blocking): ${failing.join(', ') || 'see run'}`,
-              description: `Corpus-state audits in test.yml Data Validation failed. They no longer decide main's color (BRO-3425). Run: ${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`,
-              disposition: 'digest',
-              severity: 'warning',
-              cooldownHours: 24,
-            });
+            try {
+              const fs = require('fs');
+              const { routeDataValidationRun } = require('./scripts/lib/data-validation-routing.js');
+              await routeDataValidationRun({
+                steps,
+                ymlText: fs.readFileSync('.github/workflows/test.yml', 'utf8'),
+                runUrl: `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`,
+                jobStatus: process.env.JOB_STATUS,
+              });
+            } catch (e) {
+              core.warning(`data-audit routing failed: ${e.message}`);
+            }
 
       - name: Commit data-audit digest line
         continue-on-error: true
-        if: failure() && (github.event_name == 'schedule' || (github.event_name == 'push' && github.ref == 'refs/heads/main'))
+        # BRO-7130: also on green runs, which now resolve per-step conditions.
+        if: ${{ !cancelled() && (github.event_name == 'schedule' || (github.event_name == 'push' && github.ref == 'refs/heads/main')) }}
         run: |
           git add data/audit/alert-ledger.json data/audit/alert-digest-queue.json data/audit/alert-router-attempts.jsonl 2>/dev/null || true
           if ! git diff --staged --quiet; then
