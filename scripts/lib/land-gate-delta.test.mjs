@@ -744,3 +744,80 @@ test('BRO-7111: a verdict over 1MB reaches a piped reader whole (FAIL line, NEW 
     fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
+
+// ── e2e-local (BRO-7106): browser E2E on a local build, its own land.yml job ──
+function withE2eBrowserBlocking(value, fn) {
+  const prev = process.env.LAND_E2E_BROWSER_BLOCKING;
+  try {
+    if (value === undefined) delete process.env.LAND_E2E_BROWSER_BLOCKING; else process.env.LAND_E2E_BROWSER_BLOCKING = value;
+    return fn();
+  } finally {
+    if (prev === undefined) delete process.env.LAND_E2E_BROWSER_BLOCKING; else process.env.LAND_E2E_BROWSER_BLOCKING = prev;
+  }
+}
+const E2E_A = '::error::e2e-local gate failed: tests/e2e/user-flows.spec.ts > Diary > search works (exit 1)';
+const E2E_B = '::error::e2e-local gate failed: tests/e2e/smoke.spec.ts > Homepage > loads (exit 1)';
+
+test('e2e-local (BRO-7106): not a checks-job gate, keyed per test, advisory until LAND_E2E_BROWSER_BLOCKING=1', () => {
+  assert.equal(GATES.includes('e2e-local'), false, 'run by its own land.yml job with --gates e2e-local, not the gauntlet');
+  assert.deepEqual([...parseGateFailures('e2e-local', `noise\n\x1b[31m${E2E_A}\x1b[0m\n${E2E_B}\n`).keys()].sort(), [
+    'e2e-local::tests/e2e/smoke.spec.ts > Homepage > loads',
+    'e2e-local::tests/e2e/user-flows.spec.ts > Diary > search works',
+  ]);
+  const read = (dir) => (dir === 'branch' ? { exit: 1, text: E2E_A } : { exit: 0, text: '' });
+  for (const unset of [undefined, '', '0']) {
+    const [adv] = withE2eBrowserBlocking(unset, () => decideAllGates({ gates: ['e2e-local'], base: 'base', branch: 'branch', read }));
+    assert.equal(adv.verdict, 'pass', `LAND_E2E_BROWSER_BLOCKING=${JSON.stringify(unset)} stays advisory`);
+    assert.equal(adv.mode, 'advisory');
+    assert.equal(adv.newFailures.length, 1);
+  }
+  const [armed] = withE2eBrowserBlocking('1', () => decideAllGates({ gates: ['e2e-local'], base: 'base', branch: 'branch', read }));
+  assert.equal(armed.verdict, 'fail');
+});
+
+test('e2e-local armed: a test red on base too is pre-existing; a newly red one blocks', () => {
+  const read = (dir) => (dir === 'branch' ? { exit: 1, text: `${E2E_A}\n${E2E_B}` } : { exit: 1, text: E2E_A });
+  const [d] = withE2eBrowserBlocking('1', () => decideAllGates({ gates: ['e2e-local'], base: 'base', branch: 'branch', read }));
+  assert.equal(d.verdict, 'fail');
+  assert.equal(d.preExisting.length, 1);
+  assert.equal(d.newFailures.length, 1);
+  assert.match(d.newFailures[0].name, /smoke\.spec\.ts > Homepage > loads/);
+});
+
+test('e2e-local advisory never downgrades a run that produced no result', () => {
+  const [d] = withE2eBrowserBlocking(undefined, () => decideAllGates({ gates: ['e2e-local'], base: 'base', branch: 'branch', read: () => null }));
+  assert.equal(d.verdict, 'fail');
+});
+
+test('land-e2e-local-report.js: unexpected tests become keyed lines; flaky and passed do not', () => {
+  const { failingTests, formatLines } = require('./land-e2e-local-report.js');
+  const report = { suites: [{ title: 'smoke.spec.ts', file: 'smoke.spec.ts', specs: [], suites: [{ title: 'Homepage', specs: [
+    { title: 'loads', file: 'smoke.spec.ts', tests: [{ status: 'unexpected' }] },
+    { title: 'retried', file: 'smoke.spec.ts', tests: [{ status: 'flaky' }] },
+    { title: 'ok', file: 'smoke.spec.ts', tests: [{ status: 'expected' }] },
+  ] }] }] };
+  const lines = formatLines(failingTests(report));
+  assert.deepEqual(lines, ['::error::e2e-local gate failed: smoke.spec.ts > Homepage > loads (exit 1)']);
+  assert.equal(parseGateFailures('e2e-local', lines.join('\n')).size, 1, 'the delta parser reads what the report writes');
+});
+
+test('e2e-local CLI: --gates e2e-local over result dirs written in the gauntlet shape', () => {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'e2e-local-delta-'));
+  const mk = (name, exit, log) => {
+    const d = path.join(tmp, name); fs.mkdirSync(d);
+    fs.writeFileSync(path.join(d, 'e2e-local.exit'), `${exit}\n`);
+    fs.writeFileSync(path.join(d, 'e2e-local.log'), log);
+    fs.writeFileSync(path.join(d, 'meta.json'), JSON.stringify({ sha: name, root: tmp }));
+    return d;
+  };
+  const base = mk('base', 1, E2E_A);
+  const branch = mk('branch', 1, `${E2E_A}\n${E2E_B}`);
+  const cli = path.join(path.dirname(new URL(import.meta.url).pathname), 'land-gate-delta.js');
+  const env = { ...process.env }; delete env.LAND_E2E_BROWSER_BLOCKING; delete env.LAND_STRICT_GATES;
+  const adv = spawnSync('node', [cli, '--base-dir', base, '--branch-dir', branch, '--gates', 'e2e-local'], { env, encoding: 'utf8' });
+  assert.equal(adv.status, 0, adv.stdout + adv.stderr);
+  assert.match(adv.stdout, /::warning::e2e-local: NEW failure.*smoke\.spec\.ts > Homepage > loads/);
+  const armed = spawnSync('node', [cli, '--base-dir', base, '--branch-dir', branch, '--gates', 'e2e-local'], { env: { ...env, LAND_E2E_BROWSER_BLOCKING: '1' }, encoding: 'utf8' });
+  assert.equal(armed.status, 1);
+  fs.rmSync(tmp, { recursive: true, force: true });
+});

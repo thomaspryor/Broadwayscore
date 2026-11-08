@@ -766,6 +766,133 @@ jobs:
           retention-days: 7
           if-no-files-found: warn
 
+  # ── Browser E2E on a local build (BRO-7106), ADVISORY (CLAUDE.md §19) ──────
+  # test.yml's E2E job runs Playwright against PRODUCTION after a change has
+  # landed, so a src/ change that breaks a user flow surfaces only once live.
+  # This job builds the rebased tip, serves it with `next start` and runs the
+  # smoke-first spec set (scripts/lib/land-e2e-local.sh) on chromium. If the
+  # tip is red it runs the same on origin/main @ base, and land-gate-delta.js
+  # (--gates e2e-local) reports only the tests the branch newly breaks.
+  # Its own job, in parallel with `checks` (second-opinion review): the
+  # gauntlet is the checks job's serial critical path and the build rewrites
+  # tracked files. It is NOT in the land job's `needs`, so it never delays or
+  # refuses a landing. Arming (BRO-7106 follow-up card) = add it to `needs`
+  # and set repo variable LAND_E2E_BROWSER_BLOCKING=1, after 3 measured lands.
+  e2e-local:
+    name: E2E on a local build (advisory)
+    needs: dispatch-guard
+    runs-on: ubuntu-latest
+    concurrency:
+      group: land-e2e-local-${{ github.event_name }}-${{ github.event.inputs.branch || github.ref_name }}
+      # concurrency-cancel-ok: per-branch group on land/** pushes only (never
+      # main); an advisory report for a superseded tip has no reader.
+      cancel-in-progress: true
+    # Budget: checkout + npm ci + core data ~2 min, Playwright install ~1 min
+    # (cached), build ~5-8 min, smoke-first specs ~2 min; doubled when the tip
+    # is red and the base is built too. Each run is capped by E2E_LOCAL_TIMEOUT.
+    timeout-minutes: 45
+    steps:
+      - name: Checkout the land branch
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          ref: ${{ github.event.inputs.branch && format('refs/heads/{0}', github.event.inputs.branch) || github.ref }}
+          fetch-depth: 0
+          filter: blob:none
+
+      - name: Rebase onto origin/main
+        id: rebase
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          . "${GITHUB_WORKSPACE}/scripts/lib/git-net-timeout.sh" 2>/dev/null || git_net() { shift; git "$@"; }
+          git_net 180 fetch origin main
+          BASE=$(git rev-parse origin/main)
+          echo "base=$BASE" >> "$GITHUB_OUTPUT"
+          HELPER="$RUNNER_TEMP/land-rebase"; mkdir -p "$HELPER"
+          for f in land-rebase.sh promisor-fetch-failure.js; do
+            git show "$BASE:scripts/lib/$f" > "$HELPER/$f" 2>/dev/null || git show "HEAD:scripts/lib/$f" > "$HELPER/$f"
+          done
+          BRANCH="$BRANCH" bash "$HELPER/land-rebase.sh" "$BASE" "$BRANCH" || exit $?
+          # Diff scope: only a change that can alter what the browser sees.
+          if git diff --name-only "$BASE"...HEAD | grep -qE '^(src/|tests/e2e/|public/|next\.config\.js$|playwright\.config\.ts$|package(-lock)?\.json$)'; then
+            echo "site_diff=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "site_diff=false" >> "$GITHUB_OUTPUT"; echo "No site-relevant change vs origin/main: e2e-local skipped."
+          fi
+          if git diff --name-only "$BASE"...HEAD -- package.json package-lock.json | grep -q .; then
+            echo "deps_changed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "deps_changed=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Setup Node.js
+        if: steps.rebase.outputs.site_diff == 'true'
+        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install dependencies
+        if: steps.rebase.outputs.site_diff == 'true'
+        run: npm ci --prefer-offline --no-audit --no-fund
+
+      - name: Checkout core data
+        if: steps.rebase.outputs.site_diff == 'true'
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Setup Playwright
+        if: steps.rebase.outputs.site_diff == 'true'
+        uses: ./.github/actions/setup-playwright
+
+      - name: E2E on the rebased tip
+        id: branch
+        if: steps.rebase.outputs.site_diff == 'true'
+        run: |
+          # Stage the tip's harness: the base checkout below replaces the tree.
+          H="$RUNNER_TEMP/e2e-harness"; mkdir -p "$H"
+          cp scripts/lib/land-e2e-local.sh scripts/lib/land-e2e-local-report.js scripts/lib/land-gate-delta.js "$H/"
+          bash "$H/land-e2e-local.sh" "$RUNNER_TEMP/e2e-local/branch"
+          echo "exit=$(cat "$RUNNER_TEMP/e2e-local/branch/e2e-local.exit")" >> "$GITHUB_OUTPUT"
+
+      - name: E2E on origin/main @ base (only when the tip is red)
+        if: steps.rebase.outputs.site_diff == 'true' && steps.branch.outputs.exit != '0' && vars.LAND_STRICT_GATES != '1'
+        env:
+          BASE: ${{ steps.rebase.outputs.base }}
+          DEPS_CHANGED: ${{ steps.rebase.outputs.deps_changed }}
+        run: |
+          git checkout --force --detach "$BASE"
+          [ "$DEPS_CHANGED" = "true" ] && npm ci --prefer-offline --no-audit --no-fund
+          bash "$RUNNER_TEMP/e2e-harness/land-e2e-local.sh" "$RUNNER_TEMP/e2e-local/base"
+
+      - name: E2E verdict — new failures vs base
+        if: steps.rebase.outputs.site_diff == 'true' && !cancelled()
+        # Advisory while LAND_E2E_BROWSER_BLOCKING is unset: land-gate-delta.js
+        # downgrades e2e-local to report-only, and this job gates nothing.
+        continue-on-error: true
+        shell: bash
+        env:
+          LAND_E2E_BROWSER_BLOCKING: ${{ vars.LAND_E2E_BROWSER_BLOCKING }}
+          LAND_STRICT_GATES: ${{ vars.LAND_STRICT_GATES }}
+        run: |
+          [ -f "$RUNNER_TEMP/e2e-local/branch/meta.json" ] || { echo "::error::e2e-local produced no branch result"; exit 1; }
+          echo "e2e-local wall time (branch): $(node -e 'console.log(Math.round(require(process.argv[1]).wallMs/1000))' "$RUNNER_TEMP/e2e-local/branch/meta.json")s" | tee -a "$GITHUB_STEP_SUMMARY"
+          node "$RUNNER_TEMP/e2e-harness/land-gate-delta.js" --gates e2e-local \
+            --base-dir "$RUNNER_TEMP/e2e-local/base" --branch-dir "$RUNNER_TEMP/e2e-local/branch" \
+            --summary-file "$GITHUB_STEP_SUMMARY"
+
+      - name: Keep the E2E report
+        if: steps.rebase.outputs.site_diff == 'true' && !cancelled()
+        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5
+        with:
+          name: e2e-local-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/e2e-local
+            test-results
+          retention-days: 7
+          if-no-files-found: ignore
+
   land:
     name: Land
     needs: checks

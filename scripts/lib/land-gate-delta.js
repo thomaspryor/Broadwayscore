@@ -124,6 +124,12 @@ const ADVISORY_GATES = {
     ? 'BRO-5117; LAND_TOPLEVEL_ADVISORY=1 is set' : null),
   'unit-tests-e2e': () => (process.env.LAND_E2E_UNIT_BLOCKING === '1'
     ? null : 'BRO-5161; arm with LAND_E2E_UNIT_BLOCKING=1'),
+  // e2e-local (BRO-7106): browser E2E on a local build, run by land.yml's own
+  // parallel `e2e-local` job (scripts/lib/land-e2e-local.sh), NOT the checks
+  // job's gauntlet, so it is deliberately absent from GATES above; that job
+  // passes --gates e2e-local. Report-only until LAND_E2E_BROWSER_BLOCKING=1.
+  'e2e-local': () => (process.env.LAND_E2E_BROWSER_BLOCKING === '1'
+    ? null : 'BRO-7106; arm with LAND_E2E_BROWSER_BLOCKING=1'),
 };
 const TAP_GATES = new Set(['unit-tests-node', 'unit-tests-tsx', 'unit-tests-e2e', 'scripts-lib-tests']);
 // Gates whose failure key is the failing script's path in `.name` (BRO-5766).
@@ -131,6 +137,20 @@ const FILE_KEYED_GATES = new Set(['bash-integration', 'toplevel-regression']);
 const TSC_GATES = new Set(['tsc', 'tsc-llm-scoring']);
 
 // ── Parsers: gate output → Map<key, {file, name}> ───────────────────────────
+
+// e2e-local (BRO-7106): one line per failing Playwright test, printed by
+// scripts/lib/land-e2e-local-report.js, or one per infrastructure failure
+// (build, server, missing browser, timeout) printed by land-e2e-local.sh.
+// Key = `<spec file> > <title path>`, so a test red on base and branch alike
+// is pre-existing and only a newly failing test counts.
+function parseE2eLocalFailures(text) {
+  const out = new Map();
+  for (const raw of stripAnsi(text).split('\n')) {
+    const m = /^::error::e2e-local gate failed: (.+?) \(exit \d+\)$/.exec(raw.trimEnd());
+    if (m) out.set(`e2e-local::${m[1]}`, { file: 'e2e-local', name: m[1] });
+  }
+  return out;
+}
 
 const ANSI_RE = /\x1b\[[0-9;]*m/g;
 const stripAnsi = (s) => String(s || '').replace(ANSI_RE, '');
@@ -242,6 +262,7 @@ function parseGateFailures(gate, text, treeRoot) {
   if (gate === 'lint-workflows') return parseLintWorkflowsFailures(text);
   if (gate === 'bash-integration') return parseBashIntegrationFailures(text);
   if (gate === 'toplevel-regression') return parseToplevelRegressionFailures(text);
+  if (gate === 'e2e-local') return parseE2eLocalFailures(text);
   throw new Error(`land-gate-delta: no parser for gate ${JSON.stringify(gate)}`);
 }
 
@@ -562,6 +583,7 @@ module.exports = {
   parseLintWorkflowsFailures,
   parseBashIntegrationFailures,
   parseTapGateFailures,
+  parseE2eLocalFailures,
   addWithMultiplicity,
   isCacheKeyRelevant,
   decideGateDelta,
