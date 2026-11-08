@@ -1,23 +1,23 @@
 {
-  "runDate": "2026-11-08T19:52:56.609Z",
+  "runDate": "2026-11-08T19:52:04.498Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 60,
     "priority": "all",
-    "showFilter": "speculations-off-west-end-2026",
+    "showFilter": "the-steel-man-off-broadway-2026",
     "aggressive": true,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 4,
-    "failed": 2,
+    "processed": 1,
+    "failed": 0,
     "skipped": 0,
-    "successRate": "66.7%"
+    "successRate": "100.0%"
   },
   "tierBreakdown": {
-    "playwright": 4,
+    "playwright": 1,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
@@ -28,8 +28,8 @@
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 4,
-    "tier1Success": 4,
+    "tier1Attempts": 1,
+    "tier1Success": 1,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
@@ -42,9 +42,9 @@
     "tier3Success": 0,
     "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 2,
+    "tier4Attempts": 0,
     "tier4Success": 0,
-    "totalFailed": 2,
+    "totalFailed": 0,
     "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
@@ -54,10 +54,10 @@
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 4,
-    "failed": 2,
+    "processed": 1,
+    "failed": 0,
     "shows": [
-      "speculations-off-west-end-2026"
+      "the-steel-man-off-broadway-2026"
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
@@ -66,33 +66,18 @@
     }
   },
   "processed": [
-    "speculations-off-west-end-2026/adventuresintheatreland--unknown.json",
-    "speculations-off-west-end-2026/jonathan-baz--unknown.json",
-    "speculations-off-west-end-2026/londonlivinglarge--london-living-large.json",
-    "speculations-off-west-end-2026/theatre-vibe--lizzie-loveridge.json"
+    "the-steel-man-off-broadway-2026/theater-pizzazz--unknown.json"
   ],
-  "failed": [
-    "speculations-off-west-end-2026/guardian--arifa-akbar.json",
-    "speculations-off-west-end-2026/guardian--unknown.json"
-  ],
+  "failed": [],
   "cumulativeResumedState": {
     "processed": [
-      "speculations-off-west-end-2026/adventuresintheatreland--unknown.json",
-      "speculations-off-west-end-2026/jonathan-baz--unknown.json",
-      "speculations-off-west-end-2026/londonlivinglarge--london-living-large.json",
-      "speculations-off-west-end-2026/theatre-vibe--lizzie-loveridge.json"
+      "the-steel-man-off-broadway-2026/theater-pizzazz--unknown.json"
     ],
-    "failed": [
-      "speculations-off-west-end-2026/guardian--arifa-akbar.json",
-      "speculations-off-west-end-2026/guardian--unknown.json"
-    ]
+    "failed": []
   },
   "tierDetails": {
     "playwright": [
-      "speculations-off-west-end-2026/adventuresintheatreland--unknown.json",
-      "speculations-off-west-end-2026/jonathan-baz--unknown.json",
-      "speculations-off-west-end-2026/londonlivinglarge--london-living-large.json",
-      "speculations-off-west-end-2026/theatre-vibe--lizzie-loveridge.json"
+      "the-steel-man-off-broadway-2026/theater-pizzazz--unknown.json"
     ],
     "amp": [],
     "browserbase": [],
