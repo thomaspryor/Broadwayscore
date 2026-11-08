@@ -27,19 +27,7 @@ function isResolvedIngest(result, showId) {
   return !!(reroute && reroute[1] === showId && reroute[2] !== showId);
 }
 
-// BRO-7116: SERP-census candidates are discovery hits, not aggregator citations,
-// and the audit only ingests them when SERP_CENSUS_INGEST=1. With the gate off
-// (the shipped default) they can never be collected, so counting them minted a
-// "missing cited review(s)" card per opening-window show (19 of the 20 shows
-// alerting on 2026-11-08 were census-only; 45 cards in 30 days). The gate, not
-// the show's window/status, decides: census-tagged rows count only when the
-// audit could actually ingest them.
-function censusIngestOn(env = process.env) {
-  return env.SERP_CENSUS_INGEST === '1';
-}
-
-function currentRunUncollected(r, { isCollectable = defaultCollectable, ignoreCensusTagged = false, censusGateOn = censusIngestOn() } = {}) {
-  if (!censusGateOn) ignoreCensusTagged = true;
+function currentRunUncollected(r, { isCollectable = defaultCollectable, ignoreCensusTagged = false } = {}) {
   // BRO-5134: an ingest the writer correctly and permanently refused (expected
   // rejection: e.g. a Time Out listing capsule) can never be collected, so it
   // must not re-fire the alert hourly. Conflicts and unclassified skips still count.
@@ -107,4 +95,4 @@ function gapIngestRequiresPublishDate(row, evidence) {
   return !!evidence || !!(row && row.datelessCitationOnly);
 }
 
-module.exports = { currentRunUncollected, censusIngestOn, earlierDatedCitation, gapIngestRequiresPublishDate, runWindowStartMs };
+module.exports = { currentRunUncollected, earlierDatedCitation, gapIngestRequiresPublishDate, runWindowStartMs };

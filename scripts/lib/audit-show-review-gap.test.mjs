@@ -8,10 +8,6 @@ const { classifyGapCandidateUrl } = require('./non-review-url-patterns');
 const { syndicatedReprintOf } = require('./syndicated-reprint-match');
 const { gapDisclosureDecisions } = require('./newsletter-preflight');
 
-// BRO-7116: census rows only count when the census ingest gate is on; these tests model that case.
-// The gate-off default is covered by the BRO-7116 tests.
-process.env.SERP_CENSUS_INGEST = '1';
-
 const URL = 'https://www.theguardian.com/stage/2026/oct/05/de-profundis-review-oscar-wilde-coronet-theatre-london';
 const row = (result) => ({ showId: 'rose-kingston', missing: [{ url: URL }], ingestResults: [result] });
 
@@ -198,36 +194,4 @@ test('BRO-5627: "The X" RSS gate keeps theatre-context headlines that drop the a
   assert.equal(titleMatchesShow('Outsiders musical wins best musical Tony', 'The Outsiders'), true);
   assert.equal(titleMatchesShow('Notebook musical opens on Broadway', 'The Notebook'), true);
   assert.equal(titleMatchesShow('How to Ask Colleagues for a Raise', 'The Ask'), false);
-});
-
-// BRO-7116: census-only gaps minted "missing cited review(s)" cards (45 in 30 days).
-test('BRO-7116 census-tagged rows are report-only while the census ingest gate is off', async () => {
-  const lib = await import('./audit-show-review-gap.js').then(m => m.default || m);
-  const row = {
-    showId: 'x-off-broadway-2026',
-    missing: [
-      { url: 'https://perform.ink/review-x/', serpCensus: true, sources: [{ source: 'serp-census' }] },
-      { url: 'https://example-outlet.com/2026/review-x', sources: [{ source: 'aggregator-article' }] },
-    ],
-  };
-  assert.equal(lib.currentRunUncollected(row, { censusGateOn: false }), 1, 'only the aggregator-cited row counts');
-  assert.equal(lib.currentRunUncollected(row, { censusGateOn: true }), 2, 'gate on: census rows are collectable, so they count');
-  const censusOnly = { ...row, missing: [row.missing[0]] };
-  assert.equal(lib.currentRunUncollected(censusOnly, { censusGateOn: false }), 0);
-  assert.equal(lib.censusIngestOn({}), false);
-  assert.equal(lib.censusIngestOn({ SERP_CENSUS_INGEST: '1' }), true);
-});
-
-test('BRO-7116 default follows SERP_CENSUS_INGEST env at call time', async () => {
-  const lib = await import('./audit-show-review-gap.js').then(m => m.default || m);
-  const censusOnly = { showId: 'y', missing: [{ url: 'https://perform.ink/r/', serpCensus: true }] };
-  const prev = process.env.SERP_CENSUS_INGEST;
-  try {
-    delete process.env.SERP_CENSUS_INGEST;
-    assert.equal(lib.currentRunUncollected(censusOnly), 0);
-    process.env.SERP_CENSUS_INGEST = '1';
-    assert.equal(lib.currentRunUncollected(censusOnly), 1);
-  } finally {
-    if (prev === undefined) delete process.env.SERP_CENSUS_INGEST; else process.env.SERP_CENSUS_INGEST = prev;
-  }
 });

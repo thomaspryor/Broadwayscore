@@ -12,9 +12,6 @@ const require = createRequire(import.meta.url);
 const { showScoreSiblingPriorRunSources } = require('./lib/show-score-gap-identity.js');
 const { fetchAllShowScoreCriticTiles } = require('./lib/show-score-discover.js');
 
-// BRO-7116: census rows only count when the census ingest gate is on; these tests model that case.
-process.env.SERP_CENSUS_INGEST = '1';
-
 for (const [title, opening, closing, transferOpening] of [
   ['Sweat', '2016-11-03', '2016-12-04', '2017-03-26'],
   ['Dear Evan Hansen', '2016-05-01', '2016-05-29', '2016-12-04'],
