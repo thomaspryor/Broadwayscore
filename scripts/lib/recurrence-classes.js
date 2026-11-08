@@ -282,7 +282,14 @@ function checkPreventionClaims(cls, commentsById = {}) {
  * build). The digest's root-cause share = (root-cause + system) / all Done.
  */
 const AUTO_FILED_RE = /^\s*(?:\[[^\]]+\]|bsc daily:|auto-fix|main test\.yml|main red|cron stale|time-bomb test armed|t1\/t2 review stuck)/i;
-function workKind(card, classes, ledgerCards = new Set()) {
+function workKind(card, classes, ledgerCards = new Set(), comments = null) {
+  // What the closer declared wins (item 8): a full ROOT-CAUSE block is
+  // root-cause work, NO-ROOT-CAUSE is a spot fix (root-cause-close.js).
+  if (comments && comments.length) {
+    const declared = require('./root-cause-close.js').checkRootCauseClose({ title: card.title, texts: comments });
+    if (declared.kind === 'root-cause') return 'root-cause';
+    if (declared.kind === 'spot') return 'instance';
+  }
   if (rootCauseMarker(card.description)) return 'root-cause';
   if (ROOT_CAUSE_OVERRIDES.some((o) => o.card === card.identifier)) return 'root-cause';
   const cls = classes.get(classKey(card.title));
@@ -292,10 +299,10 @@ function workKind(card, classes, ledgerCards = new Set()) {
 }
 
 /** Share of Done work in [from,to) that was root-cause or system work. */
-function rootCauseShare(cards, classes, { from, to, ledgerCards } = {}) {
+function rootCauseShare(cards, classes, { from, to, ledgerCards, commentsById = {} } = {}) {
   const done = cards.filter((c) => isDone(c) && c.completedAt && ms(c.completedAt) >= from && ms(c.completedAt) < to && !expectedRepeatReason(c.title));
   const counts = { 'root-cause': 0, system: 0, instance: 0 };
-  for (const c of done) counts[workKind(c, classes, ledgerCards)]++;
+  for (const c of done) counts[workKind(c, classes, ledgerCards, commentsById[c.identifier])]++;
   const total = done.length;
   return { total, ...counts, share: total ? Math.round(((counts['root-cause'] + counts.system) / total) * 1000) / 10 : null };
 }

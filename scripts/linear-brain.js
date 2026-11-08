@@ -34,6 +34,12 @@ const { warnPriorAnswers } = require('./lib/owner-decision-recall');
 const { hasHelpFlag } = require('./lib/cli-help');
 const linearClient = require('./lib/linear-client');
 const { checkLinearDoneTransition } = require('./lib/linear-done-gate');
+const rootCauseClose = require('./lib/root-cause-close.js');
+// Only a fix card pays for the git reads behind its landed-file list.
+function landedFilesIfFix(issue) {
+  if (!issue || !rootCauseClose.isFixCard({ title: issue.title })) return null;
+  return rootCauseClose.landedFilesForCard(issue.identifier);
+}
 const { makeVerifyEvidence } = require('./lib/done-evidence-verify');
 const { makeVerifyCmdEvidence } = require('./lib/linear-cmd-execution');
 const { appendBypassRow, bypassCommentLine } = require('./lib/linear-gate-bypass-ledger');
@@ -507,6 +513,9 @@ async function main(argv = process.argv.slice(2), deps = {}) {
             verifyEvidence,
             verifyCmdEvidence,
             identifier: issue.identifier, // BRO-7103 recurrence close warning (advisory)
+            // BRO-7103 item 8: root-cause check for fix cards (advisory, then blocking)
+            title: issue.title || '',
+            landedFiles: deps.landedFiles !== undefined ? deps.landedFiles : landedFilesIfFix(issue),
           });
           if (gate.warning) console.error(`⚠️  ${gate.warning}`);
           if (gate.gated && !gate.allowed) {

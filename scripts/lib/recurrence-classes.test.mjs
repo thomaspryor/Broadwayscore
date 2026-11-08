@@ -288,3 +288,12 @@ test('a routed START-NOW card says why it was held back', () => {
   const r = pickCloudCard([iss], { nowMs: NOW, recurrence: SNAP });
   assert.equal(r.startNowSkipped['BRO-1'], 'routed-to-root-cause');
 });
+
+test('declared close answers move the share: full ROOT-CAUSE block counts as root-cause, NO-ROOT-CAUSE as a spot fix', () => {
+  const a = done('Widget page shows wrong totals', 3, 1);
+  const b = done('Gizmo crashes on load', 3, 1);
+  const classes = rc.detectClasses([a, b], { conditions: {} }, { now: NOW, windowDays: 30 });
+  const block = 'ROOT-CAUSE: totals summed the wrong field\nCLASS-GUARD: scripts/lib/totals.test.mjs\nRED-THEN-GREEN: failed with the fix reverted, passed with it\nCOUSINS: searched other sum sites, none';
+  const r = rc.rootCauseShare([a, b], classes, { from: NOW - 7 * DAY, to: NOW + DAY, commentsById: { [a.identifier]: [block], [b.identifier]: ['NO-ROOT-CAUSE: one-off bad upstream file'] } });
+  assert.deepEqual([r['root-cause'], r.instance, r.share], [1, 1, 50]);
+});
