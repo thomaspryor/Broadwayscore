@@ -11,7 +11,7 @@
  * Usage:
  *   node scripts/llm-triage.js --ids=BRO-1,BRO-2 [--prompts-dir=DIR] [--ask] [--out=FILE]
  *     [--run-verify]   run each card's VERIFY on a fresh origin/main checkout (slow)
- *     [--model=ID]     default claude-sonnet-5-5
+ *     [--model=ID]     default models.js DISPATCH_SONNET
  *
  * Needs LINEAR_API_KEY. --ask needs ANTHROPIC_API_KEY. Commit search uses
  * GITHUB_TOKEN/GH_TOKEN, else the gh CLI.
@@ -22,7 +22,7 @@ const { execFileSync } = require('child_process');
 const F = require('./lib/llm-triage-facts.js');
 
 const USAGE = 'Usage: node scripts/llm-triage.js --ids=BRO-1,BRO-2 [--prompts-dir=DIR] [--ask] [--out=FILE] [--run-verify] [--model=ID]';
-const DEFAULT_MODEL = 'claude-sonnet-5-5';
+const DEFAULT_MODEL = require('./lib/models.js').DISPATCH_SONNET;
 const REPO = 'thomaspryor/Broadwayscore';
 
 function parseArgs(argv) {
