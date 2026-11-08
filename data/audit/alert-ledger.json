@@ -39221,7 +39221,7 @@
       "linearIdentifier": null
     },
     "test-yml:red:Unit Test Shard:0e0a79a5": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "main test.yml red: Unit Test Shard (4) / Run scripts/lib tests shard — \"REGRESSION: every real tracked *.jsonl (repo-wide) is either merge=union or a documented exemption\"",
       "firstSeen": "2026-11-08T22:03:17.171Z",
@@ -39232,7 +39232,9 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-7164",
-      "silentRefires": 1
+      "silentRefires": 1,
+      "resolvedAt": "2026-11-08T22:34:14.151Z",
+      "resolveReason": "job-green"
     },
     "land:land/bro-7150-fast-land": {
       "status": "open",
