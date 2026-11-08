@@ -190,32 +190,18 @@
     "queuedAt": "2026-11-08T13:30:30.697Z"
   },
   {
-    "conditionKey": "pending-unrecoverable:harry-potter-and-the-cursed-child-one-part-west-end-2026",
-    "title": "1 review(s) for harry-potter-and-the-cursed-child-one-part-west-end-2026 stuck in _pending with no text and no byline",
-    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- thestage--unknown.json (thestage): no byline in page and no recoverable body https://www.thestage.co.uk/reviews/harry-potter-and-the-cursed-child-review-at-palace-theatre-london--new-cast-equals-the-original",
-    "severity": "warning",
+    "conditionKey": "t1-gaps:needs-manual-recovery",
+    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (Lincoln in the Bardo (washpost)). Checked 2026-11-08.",
+    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
+    "severity": "info",
     "url": null,
     "decision": false,
-    "info": false,
+    "info": true,
     "decisionPrompt": null,
     "model": null,
     "tracked": null,
     "fields": [],
-    "queuedAt": "2026-11-08T14:30:19.634Z"
-  },
-  {
-    "conditionKey": "pending-unrecoverable:the-pianist-off-west-end-2026",
-    "title": "1 review(s) for the-pianist-off-west-end-2026 stuck in _pending with no text and no byline",
-    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- thestage--5e07c019.json (thestage): no byline in page and no recoverable body https://www.thestage.co.uk/reviews/the-pianist-review-park-theatre-london",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-08T14:30:24.486Z"
+    "queuedAt": "2026-11-08T15:50:24.419Z"
   },
   {
     "conditionKey": "pending-unrecoverable:in-the-heights-off-broadway-2026",
@@ -263,20 +249,6 @@
     "queuedAt": "2026-11-08T14:59:41.178Z"
   },
   {
-    "conditionKey": "t1-gaps:needs-manual-recovery",
-    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (Lincoln in the Bardo (washpost)). Checked 2026-11-08.",
-    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-08T15:50:24.419Z"
-  },
-  {
     "conditionKey": "corpus-drift:sibling-title-misroute",
     "title": "Corpus drift: same-title-sibling review misrouted to the wrong production (baseline-diff) (still open — BRO-6754)",
     "description": "Still firing after 36 notifications since it was filed. Tracked at BRO-6754.\n\ncheck-corpus-drift.js audit \"sibling-title-misroute\" (node scripts/audit-sibling-title-misroute.js --strict) has been drifting. Latest output:\n\n    [reroute] private-lives-2025 -> private-lives-2011  variety--frank-rizzo.json  (year-level sibling match (review year 2006 vs current show year 2025))\n    [reroute] she-loves-me-regional-2023 -> she-loves-me-regional-2022  chicago-theatre-review--colin-douglas.json  (same-title-sibling: url-year, venue-substring)\n    [reroute] the-boy-who-harnessed-the-wind-royal-shakespeare-regional-2026 -> the-boy-who-harnessed-the-wind-west-end-2026  plays-international--unknown.json  (same-title-sibling: publish-date, venue-substring)\n    [reroute] the-crucible-2016 -> the-crucible-crucible-regional-2024  ap--unknown.json  (sibling-venue-in-url: \"crucible\")\n    [reroute] the-crucible-2016 -> the-crucible-crucible-regional-2024  backstage-barbie--backstage-barbie.json  (sibling-venue-in-url: \"crucible\")\n    [reroute] the-crucible-2016 -> the-crucible-crucible-regional-2024  broadwayselect--peter-filichia.json  (sibling-venue-in-url: \"crucible\")\n    [reroute] the-crucible-2016 -> the-crucible-crucible-regional-2024  magical-misstari-tour--tari-stratton.json  (sibling-venue-in-url: \"crucible\")\n    [reroute] the-crucible-2016 -> the-crucible-crucible-regional-2024  theater-scene--rachel-goddard.json  (sibling-venue-in-url: \"crucible\")\n    [reroute] the-crucible-west-end-2014 -> the-crucible-crucible-regional-2024  plays-to-see--rowena-hawkins.json  (sibling-venue-in-url: \"crucible\")\n    [reroute] the-crucible-west-end-2022 -> the-crucible-crucible-regional-2024  i-paper--fiona-mountford.json  (sibling-venue-in-url: \"crucible\")\n    [reroute] the-crucible-west-end-2022 -> the-crucible-crucible-regional-2024  telegraph--unknown.json  (sibling-venue-in-url: \"crucible\")\n    [reroute] the-crucible-west-end-2022 -> the-crucible-crucible-regional-2024  variety--unknown.json  (sibling-venue-in-url: \"crucible\")\n    [reroute] the-crucible-west-end-2023 -> the-crucible-crucible-regional-2024  timeout-london--andrzej-lukowski.json  (sibling-venue-in-url: \"crucible\")\n    [reroute] the-play-that-goes-wrong-west-end-2021 -> the-play-that-goes-wrong-regional-2026  afridiziak-theatre-news--althyr-pivatto.json  (sibling opening 17d from publishDate vs current 4307d)\n    [reroute] the-thanksgiving-play-2023 -> the-thanksgiving-play-regional-2024  chicagotribune--chris-jones.json  (same-title-sibling: url-year, venue-substring)\n    [ambiguous] a-time-to-kill-2013  northjerseycom--robert-feldberg.json  (ambiguous-production)\n    [ambiguous] eclipsed-2016  curtainup--elyse-sommer.json  (ambiguous-production)\n    [ambiguous] godspell-2011  northjerseycom--robert-feldberg.json  (ambiguous-production)\n    [ambiguous] guys-and-dolls-2009  northjerseycom--robert-feldberg.json  (ambiguous-production)\n    [ambiguous] little-shop-of-horrors-off-broadway-2019  nytg--gillian-russo.json  (ambiguous-production)\n    [ambiguous] loves-labours-lost-off-west-end-2026  gay-times--chris-selman.json  (ambiguous-production)\n    [ambiguous] midnight-in-the-garden-of-good-and-evil-2024  deadline--greg-evans.json  (ambiguous-production)\n    [ambiguous] midnight-in-the-garden-of-good-and-evil-2024  nydailynews--karu-f-daniels.json  (ambiguous-production)\n    [ambiguous] much-ado-about-nothing-west-end-2022  artsdesk--unknown.json  (ambiguous-production)\n    [ambiguous] north-by-northwest-old-regional-2026  timeout--adam-feldman.json  (ambiguous-production)\n    [ambiguous] pericles-off-broadway-2024  culturesauce--thom-geier.json  (ambiguous-production)\n    [ambiguous] pericles-off-broadway-2024  theatermania--pete-hempstead.json  (ambiguous-production)\n    [ambiguous] pippin-2013  northjerseycom--robert-feldberg.json  (ambiguous-production)\n    [ambiguous] private-lives-2025  boston-globe--don-aucoin.json  (ambiguous-production)\n    [ambiguous] she-loves-me-regional-2023  around-the-town-chicago--alan-bresloff.json  (ambiguous-production)\n    [ambiguous] she-loves-me-regional-2023  chicagoonstage--mira-temkin.json  (ambiguous-production)\n    [ambiguous] sister-act-regional-2025  around-the-town-chicago--alan-bresloff.json  (ambiguous-production)\n    [ambiguous] this-is-our-youth-2014  chicagotribune--chris-jones.json  (ambiguous-production)\n    [ambiguous] titanique-off-broadway-2022  frontmezzjunkies--unknown.json  (ambiguous-production)\n    [ambiguous] twelfth-night-off-west-end-2026  show-score--unknown.json  (ambiguous-production)\n    [ambiguous] war-horse-west-end-2018  whatsonstage--jane-kemp.json  (ambiguous-production)\n    [same-url] trouble-in-mind-2021 -> trouble-in-mind-west-end-2021  whatsonstage--alun-hood.json  (same url as trouble-in-mind-west-end-2021/whatsonstage--alun-hood.json)\n    [same-url] jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026 -> jesus-christ-superstar-west-end-2026  standard--nick-curtis.json  (same url as jesus-christ-superstar-west-end-2026/standard--nick-curtis.json)\n    [same-url] fences-leeds-regional-2026 -> fences-off-west-end-2026  whatsonstage--jim-keaveney.json  (same url as fences-off-west-end-2026/whatsonstage--jim-keaveney.json)\n  Verify by hand, then either fix the file or run --update-baseline once it's a confirmed, deliberately-unfixed FP.",
@@ -317,5 +289,47 @@
     "tracked": "BRO-5503",
     "fields": [],
     "queuedAt": "2026-11-08T15:43:22.904Z"
+  },
+  {
+    "conditionKey": "corpus-drift:monitor-only",
+    "title": "Data-quality monitors drifting from baseline: 19 (backfill-everybodys-talking-about-jamie-show-exists, pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, +13 more). Checked 2026-11-08.",
+    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-08T15:43:22.958Z"
+  },
+  {
+    "conditionKey": "pending-unrecoverable:harry-potter-and-the-cursed-child-one-part-west-end-2026",
+    "title": "1 review(s) for harry-potter-and-the-cursed-child-one-part-west-end-2026 stuck in _pending with no text and no byline",
+    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- thestage--unknown.json (thestage): no byline in page and no recoverable body https://www.thestage.co.uk/reviews/harry-potter-and-the-cursed-child-review-at-palace-theatre-london--new-cast-equals-the-original",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-08T15:52:38.755Z"
+  },
+  {
+    "conditionKey": "pending-unrecoverable:the-pianist-off-west-end-2026",
+    "title": "1 review(s) for the-pianist-off-west-end-2026 stuck in _pending with no text and no byline",
+    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- thestage--5e07c019.json (thestage): no byline in page and no recoverable body https://www.thestage.co.uk/reviews/the-pianist-review-park-theatre-london",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-08T15:52:45.742Z"
   }
 ]
