@@ -338,6 +338,17 @@ function rootCauseRouteReason(issue, snapshot, nowMs = Date.now()) {
  * detector snapshot. Share = root-cause or new-system work / all Done work
  * (expected repeats such as canaries left out).
  */
+/**
+ * PURE. Cases created after the class's root card was closed (done, canceled
+ * or duplicate): the cause fix did not hold. [] when the root is open.
+ */
+function recurredAfterRootClosed(root, instances) {
+  if (!root || !root.state || !['completed', 'canceled', 'duplicate'].includes(root.state.type)) return [];
+  const closedAt = ms(root.completedAt || root.canceledAt);
+  if (!Number.isFinite(closedAt)) return [];
+  return instances.filter((c) => ms(c.createdAt) > closedAt).map((c) => c.identifier);
+}
+
 function improvementLine(snap) {
   if (!snap || !snap.share) return null;
   const tw = snap.share.thisWeek || {};
@@ -350,11 +361,14 @@ function improvementLine(snap) {
   ];
   const p = snap.preventions || {};
   if (p.failed) parts.push(`${p.failed} fix${p.failed === 1 ? '' : 'es'} claimed to stop a repeat, and it came back anyway.`);
+  const reopened = (snap.classes || []).filter((c) => c.recurredAfterRootClosed && c.recurredAfterRootClosed.length).length;
+  if (reopened) parts.push(`${reopened} problem${reopened === 1 ? '' : 's'} came back after the card fixing the cause was closed.`);
   return parts.join(' ');
 }
 
 module.exports = {
   improvementLine,
+  recurredAfterRootClosed,
   rootCauseRouteReason,
   KEY_VERSION,
   ROOT_CAUSE_MARKER_RE,

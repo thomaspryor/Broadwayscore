@@ -125,6 +125,7 @@ function buildSnapshot({ cards, ledger, now, complete, commentsById = {} }) {
       example: cls.instances[cls.instances.length - 1].title,
       instances: cls.instances.map((c) => c.identifier),
       failedPreventions: f.map((p) => ({ card: p.card, claim: p.claim, recurredAs: p.recurredAs })),
+      recurredAfterRootClosed: rc.recurredAfterRootClosed(root, cls.instances),
     });
   }
   const expected = [...classes.values()].filter((c) => c.expected && c.inWindow >= 3)
@@ -204,6 +205,11 @@ function statusComment(rootId, newIds) {
     `The class is still coming back, so the prevention is not in place yet (BRO-7103).`;
 }
 
+function closedRootComment(rootId, newIds) {
+  return `${rc.STATUS_COMMENT_MARKER}\nRecurrence detector: this card is closed, but ${newIds.length} new case(s) of its problem came in since the last note: ${newIds.join(', ')}. ` +
+    `The fix did not hold. Reopen this card or link the card that now owns the cause (BRO-7103).`;
+}
+
 // ---------- apply ----------
 
 async function apply(snapshot, prevSnapshot) {
@@ -240,10 +246,13 @@ async function apply(snapshot, prevSnapshot) {
     if (!prev || prev.rootCause !== cls.rootCause) continue; // first sight of this root: its own text lists the cases
     const seen = new Set(prev.instances);
     const fresh = cls.instances.filter((id) => !seen.has(id));
-    if (!fresh.length || ['completed', 'canceled', 'duplicate'].includes(cls.rootCauseState)) continue;
+    if (!fresh.length) continue;
+    // A closed root card whose class keeps coming back is a fix that did not
+    // hold: say so on that card instead of going quiet (ship-check, BRO-7103).
+    const closed = ['completed', 'canceled', 'duplicate'].includes(cls.rootCauseState);
     const root = await lc.getIssue(cls.rootCause);
     if (!root || !root.id) continue;
-    await lc.createComment(root.id, statusComment(cls.rootCause, fresh));
+    await lc.createComment(root.id, closed ? closedRootComment(cls.rootCause, fresh) : statusComment(cls.rootCause, fresh));
     commented.push({ key: cls.key, card: cls.rootCause, fresh });
   }
   snapshot.withRootCause = snapshot.classes.filter((c) => c.rootCause).length;
