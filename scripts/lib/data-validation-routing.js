@@ -31,7 +31,8 @@ const UNLISTED_KEY = `${KEY_PREFIX}step-lookup-failed`;
 
 /** PURE. Ledger key for one Data Validation step. */
 function stepConditionKey(stepName) {
-  const slug = String(stepName || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 80);
+  const { foldDiacritics } = require('./title-match');
+  const slug = foldDiacritics(String(stepName || '')).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 80);
   return KEY_PREFIX + (slug || 'unnamed-step');
 }
 
