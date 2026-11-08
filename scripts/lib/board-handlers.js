@@ -45,6 +45,11 @@ const HANDLERS = {
     invocation: 'node scripts/sweep-resolved-alert-cards.js --apply', mode: 'apply',
     does: 'closes alert cards whose alert condition has recovered',
   },
+  'sweep-recovered-alert-cards': {
+    script: 'scripts/sweep-recovered-alert-cards.js', workflow: '.github/workflows/data-health-check.yml',
+    invocation: 'node scripts/sweep-recovered-alert-cards.js --apply', mode: 'apply',
+    does: 'BRO-7135: closes alert cards whose alert the ledger marks resolved and whose health row is gone (max 25 a run); partial coverage, alert cards with no condition key are skipped',
+  },
   'owner-hold-sweep': {
     script: 'scripts/owner-hold-sweep.js', workflow: '.github/workflows/linear-unpark-drain.yml',
     invocation: 'node scripts/owner-hold-sweep.js --apply', mode: 'apply',
