@@ -276,7 +276,8 @@
     "darkling-off-west-end-2026/london-theatre-reviews--kay-johal.json",
     "darkling-off-west-end-2026/broadwayworld--cindy-marcolina.json",
     "purpose-regional-2026/atlanta-theater--unknown.json",
-    "purpose-regional-2026/boston-theater--unknown.json"
+    "purpose-regional-2026/boston-theater--unknown.json",
+    "speculations-off-west-end-2026/jonathan-baz--unknown.json"
   ],
   "failed": [
     "in-transit-2016/nydailynews--joe-dziemianowicz.json",
@@ -308,7 +309,6 @@
     "long-days-journey-into-night-2016/whatsonstage--sarah-crompton.json",
     "msblackforpresident-off-broadway-2026/theatermania--zachary-stewart.json",
     "222-a-ghost-story-off-broadway-2026/theatrely--kobi-kassal.json",
-    "speculations-off-west-end-2026/jonathan-baz--unknown.json",
     "tango-after-dark-off-west-end-2026/theatreandtonic--emmie-newitt.json",
     "parcel-from-america-off-broadway-2026/talkinbroadway--unknown.json",
     "medea-off-broadway-2026/express-uk--neil-norman.json",
@@ -450,7 +450,19 @@
     "macbeth-off-broadway-2026/thewrap--robert-hofler.json",
     "the-invention-of-love-off-broadway-2026/whatsonstage--miriam-sallon.json",
     "my-sons-a-queer-but-what-can-you-do-west-end-2026/standard--nick-curtis.json",
-    "darkling-off-west-end-2026/thestage--holly-omahony.json"
+    "darkling-off-west-end-2026/thestage--holly-omahony.json",
+    "speculations-off-west-end-2026/guardian--arifa-akbar.json",
+    "speculations-off-west-end-2026/guardian--unknown.json",
+    "pulman-and-stilgoe-hooray-for-hollywood-off-west-end-2026/the-list--unknown.json",
+    "the-bridge-off-west-end-2026/cherylmarkosky--cherylmarkosky.json",
+    "the-bridge-off-west-end-2026/sunday-times--unknown.json",
+    "the-bridge-off-west-end-2026/theatreandtonic--emmie-newitt.json",
+    "tosca-english-national-opera-west-end-2026/bachtrack--anna-bogdanova.json",
+    "tosca-english-national-opera-west-end-2026/bachtrack--clare-varney.json",
+    "tosca-english-national-opera-west-end-2026/bachtrack--mark-pullinger.json",
+    "tosca-english-national-opera-west-end-2026/bachtrack--peter-quantrill.json",
+    "tosca-english-national-opera-west-end-2026/cherylmarkosky--cherylmarkosky.json",
+    "tosca-english-national-opera-west-end-2026/times-uk--richard-morrison.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -589,7 +601,8 @@
       "macbeth-off-broadway-2026/slippedisc--susan-hall.json",
       "darkling-off-west-end-2026/london-theatre-reviews--kay-johal.json",
       "purpose-regional-2026/atlanta-theater--unknown.json",
-      "purpose-regional-2026/boston-theater--unknown.json"
+      "purpose-regional-2026/boston-theater--unknown.json",
+      "speculations-off-west-end-2026/jonathan-baz--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -727,7 +740,7 @@
     ]
   },
   "startTime": "2026-11-07T21:59:56.711Z",
-  "lastProcessed": "purpose-regional-2026/boston-theater--unknown.json",
+  "lastProcessed": "tosca-english-national-opera-west-end-2026/times-uk--richard-morrison.json",
   "log": [
     {
       "t": "2026-11-07T22:12:30.784Z",
@@ -905,6 +918,33 @@
       "t": "2026-11-08T00:46:37.708Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-11-08T01:31:24.917Z",
+      "event": "bb-session",
+      "session": "9bdebdef",
+      "url": "https://bachtrack.com/review-lorfeo-william-kentridge-greek-national-opera-athen"
+    },
+    {
+      "t": "2026-11-08T01:32:00.130Z",
+      "event": "bb-session",
+      "session": "f16433d4",
+      "url": "https://bachtrack.com/review-shostakovich-cherry-town-ahlbom-dutch-national-oper"
+    },
+    {
+      "t": "2026-11-08T01:33:03.574Z",
+      "event": "bb-session",
+      "session": "f516d7ce",
+      "url": "https://bachtrack.com/review-tosca-miskimmon-glassberg-fanyo-english-national-op"
+    },
+    {
+      "t": "2026-11-08T01:33:39.010Z",
+      "event": "bb-session",
+      "session": "dc8566dd",
+      "url": "https://bachtrack.com/review-nozze-figaro-pountney-conta-bucharest-national-oper"
     }
+  ],
+  "recoveredAfterFailure": [
+    "speculations-off-west-end-2026/jonathan-baz--unknown.json"
   ]
 }
