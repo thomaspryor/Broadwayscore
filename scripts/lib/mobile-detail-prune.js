@@ -50,7 +50,13 @@ function planPrune({ orphanIds, previousCandidates = {}, priorIndexIds = null, i
 // closed tour whose reviews were all excluded kept its stale `rv` file forever
 // (annie-tour-2022: page 0 reviews, public JSON 2). data/audit/*.json is staged
 // by every committing workflow, so the candidates ride along in git.
-function loadLedger(p) {
+// Entries carry the time they were first seen. Several workflows share the
+// ledger, so "a second run" could be a poller minutes after rebuild-fast; only
+// entries at least MIN_AGE_MS old count as grace evidence (the ~4h rebuild
+// cycle is what lets a bad wrongProduction pass self-heal).
+const MIN_AGE_MS = 3 * 60 * 60 * 1000;
+
+function readLedger(p) {
   try {
     const d = JSON.parse(fs.readFileSync(p, 'utf8'));
     return d && typeof d.candidates === 'object' && d.candidates ? d.candidates : {};
@@ -59,11 +65,22 @@ function loadLedger(p) {
   }
 }
 
-// Writes only on change, so a quiet run leaves no diff.
-function saveLedger(p, candidates) {
+// { id: true } for ids first seen at least minAgeMs before now.
+function loadLedger(p, now = Date.now(), minAgeMs = MIN_AGE_MS) {
+  const out = {};
+  for (const [id, ts] of Object.entries(readLedger(p))) {
+    const t = Date.parse(ts);
+    if (Number.isFinite(t) && now - t >= minAgeMs) out[id] = true;
+  }
+  return out;
+}
+
+// Keeps first-seen times of ids already armed. Writes only on change.
+function saveLedger(p, candidates, now = Date.now()) {
+  const prior = readLedger(p);
   const sorted = {};
-  for (const id of Object.keys(candidates).sort()) sorted[id] = true;
-  const body = JSON.stringify({ _doc: 'Detail files invisible on the last full run (BRO-7118); a second consecutive run prunes them.', candidates: sorted }, null, 2) + '\n';
+  for (const id of Object.keys(candidates).sort()) sorted[id] = Number.isFinite(Date.parse(prior[id])) ? prior[id] : new Date(now).toISOString();
+  const body = JSON.stringify({ _doc: 'Detail files invisible on the last full run, with first-seen time (BRO-7118); pruned once seen on a later run at least 3h later.', candidates: sorted }, null, 2) + '\n';
   let prev = null;
   try { prev = fs.readFileSync(p, 'utf8'); } catch { /* first write */ }
   if (prev !== body) fs.writeFileSync(p, body);

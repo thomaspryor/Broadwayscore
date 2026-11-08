@@ -997,7 +997,8 @@ if (!SHOW_ARG) {
   }
   pruneCandidatesForCache = nextCandidates;
   // Skipped (ceiling) runs leave nextCandidates armed, so the ledger stays armed too.
-  saveLedger(PRUNE_LEDGER, nextCandidates);
+  // CI only: a local build must not dirty a tracked file with its own stale view.
+  if (process.env.CI) saveLedger(PRUNE_LEDGER, nextCandidates);
 }
 
 const avgSize = generated > 0 ? (totalSize / generated / 1024).toFixed(1) : 0;

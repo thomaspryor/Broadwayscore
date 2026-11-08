@@ -1,4 +1,4 @@
 {
-  "_doc": "Detail files invisible on the last full run (BRO-7118); a second consecutive run prunes them.",
+  "_doc": "Detail files invisible on the last full run, with first-seen time (BRO-7118); pruned once seen on a later run at least 3h later.",
   "candidates": {}
 }
