@@ -152,4 +152,4 @@ function main(argv) {
 
 module.exports = { mergeJson, layoutOf };
 
-if (require.main === module) process.exit(main(process.argv.slice(2)));
+if (require.main === module) require('./exit-flushed.js').exitFlushed(main(process.argv.slice(2)));

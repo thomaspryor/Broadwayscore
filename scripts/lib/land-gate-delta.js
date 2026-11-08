@@ -578,7 +578,7 @@ module.exports = {
 
 if (require.main === module) {
   try {
-    process.exit(main());
+    require('./exit-flushed.js').exitFlushed(main());
   } catch (err) {
     console.error(`land-gate-delta: fatal: ${err && err.message ? err.message : err}`);
     process.exit(1);

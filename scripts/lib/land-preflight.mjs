@@ -1043,7 +1043,7 @@ function main(argv) {
 
 if (process.argv[1] && fs.realpathSync(process.argv[1]) === fileURLToPath(import.meta.url)) {
   try {
-    process.exit(main(process.argv.slice(2)));
+    createRequire(import.meta.url)('./exit-flushed.js').exitFlushed(main(process.argv.slice(2)));
   } catch (e) {
     // Fail open: an infrastructure error must never wedge a push.
     process.stderr.write(`land-preflight: internal error, not blocking: ${e && e.message}\n`);

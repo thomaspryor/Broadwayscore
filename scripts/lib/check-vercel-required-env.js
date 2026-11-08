@@ -132,4 +132,4 @@ function main(argv = process.argv.slice(2)) {
 
 module.exports = { RUNTIME_ENV, requiredNames, checkEnv, scanApiRouteEnv, main };
 
-if (require.main === module) process.exit(main());
+if (require.main === module) require('./exit-flushed.js').exitFlushed(main());

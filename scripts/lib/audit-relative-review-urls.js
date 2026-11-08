@@ -41,5 +41,5 @@ function main(argv) {
   return argv.includes('--strict') && rows.length > 0 ? 1 : 0;
 }
 
-if (require.main === module) process.exit(main(process.argv.slice(2)));
+if (require.main === module) require('./exit-flushed.js').exitFlushed(main(process.argv.slice(2)));
 module.exports = { scan, main };

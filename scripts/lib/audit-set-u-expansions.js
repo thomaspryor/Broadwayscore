@@ -264,4 +264,4 @@ module.exports = {
   main,
 };
 
-if (require.main === module) process.exit(main());
+if (require.main === module) require('./exit-flushed.js').exitFlushed(main());

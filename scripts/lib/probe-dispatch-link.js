@@ -87,5 +87,5 @@ async function main(argv = process.argv.slice(2)) {
 module.exports = { pageTitle };
 
 if (require.main === module) {
-  main().then(code => process.exit(code), err => { console.error(err.message); process.exit(1); });
+  main().then((code) => require('./exit-flushed.js').exitFlushed(code), err => { console.error(err.message); process.exit(1); });
 }
