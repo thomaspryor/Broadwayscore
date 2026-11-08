@@ -83,7 +83,8 @@ jobs:
             WAIT=$(( $(date -u -d "$KICK" +%s) - $(date +%s) ))
             echo "Next event: $KIND for $SHOW $NIGHT at $KICK (embargo $EMBARGO), in ${WAIT}s"
             # A Broadway event within 24h makes a failure of this run email the owner (BRO-6858); otherwise digest only.
-            if [ "$WAIT" -lt 86400 ] && node -e 'const a=require("./data/shows.json");const L=Array.isArray(a)?a:a.shows;const s=L.find(x=>(x.id||x.slug)===process.argv[1]);process.exit(s&&s.category==="broadway"?0:1)' "$SHOW"; then
+            # The advisory post-lane sweep slots (sw*, BRO-7160) never do: they run to about embargo +12h.
+            if [ "$WAIT" -lt 86400 ] && [ "${KIND#sw}" = "$KIND" ] && node -e 'const a=require("./data/shows.json");const L=Array.isArray(a)?a:a.shows;const s=L.find(x=>(x.id||x.slug)===process.argv[1]);process.exit(s&&s.category==="broadway"?0:1)' "$SHOW"; then
               echo "broadway_soon=true" >> "$GITHUB_OUTPUT"
             fi
             if [ "$DRY_RUN" = "true" ]; then exit 0; fi

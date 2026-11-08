@@ -70,7 +70,7 @@ test('the verify slot redispatches once when the last sweep failed or never ran,
 });
 
 test('the dispatch is a targeted fast-path SERP poller run, claimed once per show, night and slot', () => {
-  assert.deepEqual(sweep.dispatchArgs(SHOW), ['workflow', 'run', 'opening-night-poller.yml', '-f', `show_id=${SHOW}`, '-f', 'fast_path=true', '-f', 'force_serp=true']);
+  assert.deepEqual(sweep.dispatchArgs(SHOW), ['workflow', 'run', 'opening-night-poller.yml', '-f', `show_id=${SHOW}`, '-f', 'fast_path=true', '-f', 'force_serp=true', '-f', 'collect_existing=true']);
   const id = sweep.claimId(SHOW, 'sw1');
   const holder = sweep.claimHolder(SHOW, NIGHT, 'sw1');
   let state = { leases: {} };
@@ -90,11 +90,18 @@ test('the dispatch is a targeted fast-path SERP poller run, claimed once per sho
   assert.notEqual(sweep.claimId(SHOW, 'sw2'), id, 'each slot has its own claim');
 });
 
+test('a broken claim branch still sweeps (fail toward collecting); a contended or spent claim never does', () => {
+  const refused = (reason) => wd.claimThenDispatch({ claim: () => ({ ok: false, reason }), dispatch: () => assert.fail('no dispatch'), mark: () => ({}), unclaim: () => ({}) });
+  for (const r of ['state-unreadable', 'commit-failed', 'push-failed']) assert.equal(sweep.dispatchDespiteClaim(refused(r)), true, r);
+  for (const r of ['cas-contended', 'claim-in-flight', 'already-dispatched']) assert.equal(sweep.dispatchDespiteClaim(refused(r)), false, r);
+  assert.equal(sweep.dispatchDespiteClaim({ sent: false, spent: false, reason: 'dispatch failed (state-unreadable)' }), false, 'a failed gh is not a broken branch');
+});
+
 test('CLI dry run for a past night prints the slot times and the decision without dispatching', () => {
   const cli = new URL('../../scripts/post-lane-sweep.js', import.meta.url).pathname;
   const out = execFileSync('node', [cli, `--show=${SHOW}`, `--night=${NIGHT}`, '--embargo-at=2026-11-09T03:00:00Z', '--slot=sw1', '--now=2026-11-09T07:16:00Z', '--dry-run'], { encoding: 'utf8' });
   for (const t of ['sw1  2026-11-09T07:15:00.000Z', 'sw2  2026-11-09T08:15:00.000Z', 'sw3  2026-11-09T09:15:00.000Z', 'swv  2026-11-09T10:30:00.000Z']) assert.ok(out.includes(t), t);
-  assert.match(out, /DRY RUN: would run gh workflow run opening-night-poller\.yml -f show_id=wanted-2022 -f fast_path=true -f force_serp=true/);
+  assert.match(out, /DRY RUN: would run gh workflow run opening-night-poller\.yml -f show_id=wanted-2022 -f fast_path=true -f force_serp=true -f collect_existing=true/);
   const off = execFileSync('node', [cli, `--show=${SHOW}`, `--night=${NIGHT}`, '--embargo-at=2026-11-09T03:00:00Z', '--slot=sw2', '--dry-run'], { encoding: 'utf8', env: { ...process.env, POST_LANE_SWEEP_DISABLED: 'true' } });
   assert.match(off, /skip \(POST_LANE_SWEEP_DISABLED/);
   assert.doesNotMatch(off, /would run/);
@@ -109,4 +116,6 @@ test('press-night-clock.yml runs the sweep for sw* events before the preflight b
   assert.match(y, /POST_LANE_SWEEP_DISABLED: \$\{\{ vars\.POST_LANE_SWEEP_DISABLED \}\}/);
   assert.match(y, /^\s+contents: write/m);
   assert.match(y, /configure-git: 'true'/);
+  // The advisory sweep slots never arm the owner's critical failure email (broadway_soon).
+  assert.match(y, /if \[ "\$WAIT" -lt 86400 \] && \[ "\$\{KIND#sw\}" = "\$KIND" \] && node/);
 });
