@@ -14,7 +14,11 @@ run_clone() {
   local what="$1" hint="$2"
   shift 2
   local errf rc
-  errf="$(mktemp 2>/dev/null || echo "/tmp/run-clone.$$")"
+  # No temp file (full /tmp): run uncaptured so git's own stderr still shows.
+  if ! errf="$(mktemp 2>/dev/null)"; then
+    "$@"
+    return $?
+  fi
   "$@" 2>"$errf"
   rc=$?
   if [ "$rc" -ne 0 ]; then
