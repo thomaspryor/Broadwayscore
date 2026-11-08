@@ -1,22 +1,31 @@
 {
-  "totalCandidates": 6,
-  "cdxFound": 1,
-  "cdxNotFound": 3,
-  "recovered": 1,
+  "totalCandidates": 33,
+  "cdxFound": 15,
+  "cdxNotFound": 2,
+  "recovered": 10,
   "recoveredByTier": {
-    "1": 0,
-    "2": 0,
-    "3": 1
+    "1": 2,
+    "2": 4,
+    "3": 4
   },
   "recoveredByDomain": {
-    "denverpost.com": 1
+    "latimes.com": 1,
+    "vulture.com": 1,
+    "slate.com": 1,
+    "huffingtonpost.com": 1,
+    "nydailynews.com": 1,
+    "villagevoice.com": 1,
+    "independent.co.uk": 1,
+    "exeuntnyc.com": 1,
+    "thestage.co.uk": 1,
+    "artsfuse.org": 1
   },
-  "tooShort": 0,
+  "tooShort": 4,
   "garbage": 0,
   "wrongShow": 0,
   "archiveTodayRecovered": 0,
-  "errors": 2,
-  "notInArchive": 3,
+  "errors": 16,
+  "notInArchive": 2,
   "domainSkipped": 0,
   "circuitBrokenDomains": []
 }
