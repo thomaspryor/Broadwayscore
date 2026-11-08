@@ -28,6 +28,8 @@ const all = rawShows.shows || rawShows;
 const mobile = JSON.parse(fs.readFileSync(path.join(root, 'public', 'data', 'mobile-shows.json'), 'utf8')).shows;
 const tours = all.filter(s => s.category === 'tour' && /-tour-\d{4}$/.test(s.id));
 const prior = fs.existsSync(OUT) ? JSON.parse(fs.readFileSync(OUT, 'utf8')) : {};
+// Atomic write: a timeout mid-write must not leave broken JSON for --prune or generate-onboarding-data.
+const writeOut = obj => { const tmp = OUT + '.tmp'; fs.writeFileSync(tmp, JSON.stringify(obj, null, 1) + '\n'); fs.renameSync(tmp, OUT); };
 const strip = p => (p || '').split('?')[0];
 
 function candidates(tour) {
@@ -64,7 +66,7 @@ async function main() {
       if (v && !fs.existsSync(path.join(root, 'public', v))) dropped.push(id); else kept[id] = v;
     }
     dropped.forEach(id => console.log(`pruned ${id} (missing file)`));
-    if (dropped.length && !args.includes('--dry')) fs.writeFileSync(OUT, JSON.stringify(kept, null, 1) + '\n');
+    if (dropped.length && !args.includes('--dry')) writeOut(kept);
     console.log(`prune: ${dropped.length} dropped`);
     return;
   }
@@ -74,6 +76,9 @@ async function main() {
   for (const t of tours) {
     if (only && t.id !== only) continue;
     if (!only && t.id in prior && !args.includes('--redo')) continue;
+    // The tour's own poster is recorded but its file has not landed yet (fetch-tour-images hit its
+    // time cap): wait for it rather than lock in a Broadway pick or null before it is judged.
+    if (!only && t.images && t.images.poster && !fs.existsSync(path.join(root, 'public', t.images.poster))) { console.log(`${t.id} -> SKIP (own poster not on disk yet)`); continue; }
     const cands = candidates(t);
     let pick = null; const tried = []; let onDisk = 0;
     for (const c of cands) {
@@ -88,7 +93,7 @@ async function main() {
     out[t.id] = pick;
     report.push(`${t.id} -> ${pick || 'NONE'} | ${tried.join('; ')}`);
     console.log(report[report.length - 1]);
-    if (!args.includes('--dry')) fs.writeFileSync(OUT, JSON.stringify(out, null, 1) + '\n'); // checkpoint
+    if (!args.includes('--dry')) writeOut(out); // checkpoint
   }
 }
 main().catch(e => { console.error(e); process.exit(1); });
