@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-08T04:05:34.533Z",
+  "generatedAt": "2026-11-08T05:23:20.955Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -127,10 +127,6 @@
   "feedsChecked": 84,
   "feedsFailed": [
     {
-      "outletId": "theater-life",
-      "error": "Timeout fetching https://theaterlife.com/feed"
-    },
-    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
@@ -151,8 +147,8 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 821,
-  "matchedGaps": 2,
+  "itemsScanned": 828,
+  "matchedGaps": 3,
   "possibleGaps": 3,
   "gaps": [
     {
@@ -171,6 +167,15 @@
       "outletId": "times-square-chronicles",
       "url": "https://t2conline.com/222-a-ghost-story-the-loudest-thing-in-the-room-isnt-the-ghost/",
       "headline": "2:22 – A Ghost Story: The Loudest Thing in the Room Isn’t the Ghost",
+      "publishDate": "2026-11-07"
+    },
+    {
+      "showId": "the-verge-off-broadway-2026",
+      "title": "The Verge",
+      "level": "matched",
+      "outletId": "theater-scene",
+      "url": "https://www.theaterscene.net/plays/offbway-plays/the-verge/samuel-l-leiter/",
+      "headline": "The Verge",
       "publishDate": "2026-11-07"
     },
     {
