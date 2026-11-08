@@ -27,6 +27,8 @@ const pm = require('./lib/press-night-manual-actions');
 const og = require('./lib/opening-grade');
 const { citedUncollectedNow } = require('./lib/audit-show-review-gap');
 const { loadBlocklist } = require('./lib/poller-blocklist');
+const { findExpectedCriticGaps, expectedMissingForShow } = require('./lib/expected-critics');
+const { loadAcks } = require('./lib/t1-scoreboard');
 
 const ROOT = path.join(__dirname, '..');
 const arg = (k) => { const a = process.argv.find((x) => x.startsWith(`--${k}=`)); return a ? a.slice(k.length + 3) : null; };
@@ -36,6 +38,18 @@ const ymd = (ms) => new Date(ms).toISOString().slice(0, 10);
 
 function readJson(p, fallback) {
   try { return JSON.parse(fs.readFileSync(p, 'utf8')); } catch { return fallback; }
+}
+
+/** Missing usual-critic cells for these openings (BRO-7166). Never throws: a grade without it is still a grade. */
+function expectedCriticGaps(openings, nowMs) {
+  try {
+    const reviews = readJson(path.join(ROOT, 'data/reviews.json'), { reviews: [] }).reviews || [];
+    const outlets = readJson(path.join(ROOT, 'data/outlet-registry.json'), { outlets: {} }).outlets || {};
+    return findExpectedCriticGaps({ shows: openings, reviews, outlets, acks: loadAcks(), nowMs, since: '0000-01-01' });
+  } catch (e) {
+    console.error(`grade-openings: expected-critics skipped (${e.message})`);
+    return [];
+  }
 }
 
 function git(rtDir, args) {
@@ -108,6 +122,9 @@ function main() {
   const untilMs = Math.min(nowMs, Date.parse(`${toDate}T00:00:00Z`) + (og.AFTER_H + 48) * 3600000);
   const commits = openings.length ? loadCommits(rtDir, new Date(sinceMs).toISOString(), new Date(untilMs).toISOString()) : [];
 
+  // BRO-7166: usual critics still missing per opening (search-free, from reviews.json + the registry's standing sets).
+  const expectedGaps = expectedCriticGaps(openings, nowMs);
+
   const grades = openings.map((show) => { const files = loadFiles(rtDir, show.id); const pn = og.pickPressNight(records, show); const hi = og.openingWindow(show, pn).hi; return og.gradeOpening({
     show,
     files,
@@ -123,11 +140,12 @@ function main() {
       // held, so a later rescue cannot erase a gap that existed at the deadline.
       ? citedUncollectedNow(gapById.get(show.id), { heldFiles: files.filter((f) => !(Date.parse(f.firstSeenAt) > hi)), blocklist: loadBlocklist(path.join(rtDir, show.id)), show })
       : null,
+    expectedMissing: expectedMissingForShow(show.id, expectedGaps),
     nowMs,
   }); }).sort((a, b) => (b.openingDate.localeCompare(a.openingDate)) || a.showId.localeCompare(b.showId));
 
   const doc = {
-    schemaVersion: 3, // BRO-7147: known = live + cited-missing; verdict incomplete. BRO-7161: live = rebuild-includable, week-frozen (lateLive), verdict coverage-unknown, summary noReviewsClosed/coverageUnknown
+    schemaVersion: 3, // BRO-7147: known = live + cited-missing; verdict incomplete. BRO-7161: live = rebuild-includable, week-frozen (lateLive), verdict coverage-unknown, summary noReviewsClosed/coverageUnknown. BRO-7166: expectedMissing
     generatedAt: new Date(nowMs).toISOString(),
     generator: 'scripts/grade-openings.js (BRO-7082)',
     from: fromDate,

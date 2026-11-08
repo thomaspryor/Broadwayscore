@@ -1,9 +1,9 @@
 {
   "_meta": {
     "description": "Canonical outlet registry - ALL scripts must use this for outlet normalization",
-    "lastUpdated": "2026-11-07T08:11:14.193Z",
+    "lastUpdated": "2026-11-08T22:20:13.459Z",
     "version": "2.1.0",
-    "lastChange": "BRO-5507: 48 reviewed outlet display name(s) from outlet-display-name-proposals-bro-5246.json"
+    "lastChange": "BRO-6122: standingCoverage[off-broadway] promote theatermania (BRO-7166: measured 3-season coverage clears the promote bar)"
   },
   "outlets": {
     "westendtheatre": {
@@ -308,7 +308,8 @@
       "accessModel": "free",
       "standingCoverage": true,
       "standingMarkets": [
-        "broadway"
+        "broadway",
+        "off-broadway"
       ]
     },
     "broadwayworld": {
@@ -324,7 +325,11 @@
         "broadwayworld.com"
       ],
       "domain": "broadwayworld.com",
-      "accessModel": "free"
+      "accessModel": "free",
+      "standingCoverage": true,
+      "standingMarkets": [
+        "west-end"
+      ]
     },
     "deadline": {
       "displayName": "Deadline",
@@ -2172,7 +2177,11 @@
       "domain": "whatsonstage.com",
       "region": "london",
       "accessModel": "free",
-      "starScale": 5
+      "starScale": 5,
+      "standingCoverage": true,
+      "standingMarkets": [
+        "west-end"
+      ]
     },
     "theater-news-online": {
       "displayName": "Theater News Online",
@@ -8319,7 +8328,11 @@
       ],
       "domain": "londontheatre.co.uk",
       "region": "london",
-      "accessModel": "free"
+      "accessModel": "free",
+      "standingCoverage": true,
+      "standingMarkets": [
+        "west-end"
+      ]
     },
     "londontheatre1": {
       "displayName": "LondonTheatre1",
@@ -8355,7 +8368,11 @@
       ],
       "domain": "timeout.com",
       "accessModel": "free",
-      "starScale": 5
+      "starScale": 5,
+      "standingCoverage": true,
+      "standingMarkets": [
+        "west-end"
+      ]
     },
     "daily-mail": {
       "displayName": "Daily Mail",
@@ -8682,7 +8699,11 @@
       "accessModel": "paywalled",
       "displayName": "The Stage",
       "domain": "thestage.co.uk",
-      "starScale": 5
+      "starScale": 5,
+      "standingCoverage": true,
+      "standingMarkets": [
+        "west-end"
+      ]
     },
     "everything-theatre": {
       "tier": 3,

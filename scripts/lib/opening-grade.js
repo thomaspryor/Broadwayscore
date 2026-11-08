@@ -202,7 +202,7 @@ const median = (a) => {
  *   when there is no audit row
  * @param {number} p.nowMs
  */
-function gradeOpening({ show, files = [], commits = [], historyFromMs = null, pressNight = null, gapResult = null, missingCited = null, rtDir = null, nowMs = Date.now() }) {
+function gradeOpening({ show, files = [], commits = [], historyFromMs = null, pressNight = null, gapResult = null, missingCited = null, rtDir = null, expectedMissing = null, nowMs = Date.now() }) {
   const { embargoMs, lo, hi } = openingWindow(show, pressNight);
   const inWin = (t) => t != null && t >= lo && t <= hi;
 
@@ -313,6 +313,8 @@ function gradeOpening({ show, files = [], commits = [], historyFromMs = null, pr
     onlyIngestDispatches: verdict === 'needed-hands' && hard.length === 0,
     signals,
     historyCovers,
+    // BRO-7166: usual critics (standing set) with no review yet; never moves the verdict.
+    expectedMissing: Array.isArray(expectedMissing) && expectedMissing.length ? expectedMissing : null,
   };
 }
 
@@ -353,7 +355,10 @@ function gradeLine(g) {
   else if (g.verdict === 'coverage-unknown') tail = 'not graded clean: the missing-review check has no fresh result for it';
   else if (g.verdict === 'no-reviews') tail = (g.known || 0) > 0 ? 'cited reviews are out but none are on the site yet' : g.windowClosed ? 'opening week ended and no reviews were found' : 'no reviews live yet';
   else tail = 'not graded (edit history missing)';
-  return `${head}: ${count}${late}, ${tail}.`;
+  const usual = Array.isArray(g.expectedMissing) && g.expectedMissing.length
+    ? ` Usual critics with no review yet: ${g.expectedMissing.map((m) => m.name || m.outletId).join(', ')}.`
+    : '';
+  return `${head}: ${count}${late}, ${tail}.${usual}`;
 }
 
 /** Per-market tallies. */
