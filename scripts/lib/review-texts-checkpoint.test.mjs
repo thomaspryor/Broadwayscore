@@ -28,7 +28,7 @@ Object.assign(process.env, {
   PUSH_DEADLINE_SEC: '60',
 });
 
-const { checkpointReviewTexts, retryPendingPushes, ReviewTextsPushError, readPending } = require('./review-texts-checkpoint.js');
+const { checkpointReviewTexts, retryPendingPushes, ReviewTextsPushError, ReviewTextsLandingError, readPending, contentKey, createWriteTracker } = require('./review-texts-checkpoint.js');
 
 const sha = (s) => crypto.createHash('sha256').update(s).digest('hex');
 const git = (cwd, ...args) => execFileSync('git', args, { cwd, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] });
@@ -93,7 +93,7 @@ test('CI commit lands between our commit and our push: nothing lost, onLanded on
     onLanded: (l) => {
       // 'recovered' may only be recorded once origin really holds our text.
       const remote = originHas(env, l.path);
-      landedCalls.push({ path: l.path, onOrigin: remote !== null && sha(JSON.parse(remote).fullText) === l.fullTextHash });
+      landedCalls.push({ path: l.path, onOrigin: remote !== null && contentKey(remote) === l.fullTextHash });
     },
   });
   assert.equal(res.pushed, true);
@@ -227,4 +227,72 @@ test('nothing changed: no commit, no throw, landed confirmed by content', () => 
   assert.equal(res.committed, false);
   assert.equal(res.pushed, false);
   assert.equal(res.landed.length, 1);
+});
+
+test('push reports success but origin lacks our text: throws, keeps the path pending, no onLanded', () => {
+  const env = setup();
+  fs.writeFileSync(env.file, review(RECOVERED));
+  const fakePush = path.join(env.dir, 'push-says-ok.sh');
+  fs.writeFileSync(fakePush, '#!/bin/bash\nexit 0\n');
+  const calls = [];
+  assert.throws(
+    () => checkpointReviewTexts({ repoDir: env.local, paths: [env.file], message: 'feat: test', pendingPath: env.pendingPath, pushScript: fakePush, onLanded: (l) => calls.push(l) }),
+    (e) => e instanceof ReviewTextsLandingError && e.notLanded.length === 1,
+  );
+  assert.deepEqual(calls, []);
+  const pending = readPending(env.pendingPath);
+  assert.equal(pending.length, 1, 'the not-landed path stays in the ledger for the next run');
+  assert.deepEqual(pending[0].paths.map((p) => p.rel), [REL]);
+  // The next run (real push) lands it.
+  const r = retryPendingPushes({ repoDir: env.local, pendingPath: env.pendingPath, pushScript: env.pushScript, retries: 1, onLanded: (l) => calls.push(l.path) });
+  assert.equal(r.landed.length, 1);
+  assert.deepEqual(calls, [REL]);
+  assert.deepEqual(readPending(env.pendingPath), []);
+});
+
+test('another writer replaces our recovered record before the commit: reported lost, never landed', () => {
+  const env = setup();
+  const tracker = createWriteTracker();
+  fs.writeFileSync(env.file, review(RECOVERED));
+  tracker.add(env.file);
+  tracker.expected.set(env.file, contentKey(fs.readFileSync(env.file, 'utf8')));
+  fs.writeFileSync(env.file, review('collector overwrote it with an excerpt'));
+  const calls = [];
+  assert.throws(
+    () => checkpointReviewTexts({ repoDir: env.local, paths: [...tracker], expected: tracker.expected, message: 'feat: test', pendingPath: env.pendingPath, pushScript: env.pushScript, onLanded: (l) => calls.push(l) }),
+    (e) => e instanceof ReviewTextsLandingError && /overwritten by another writer/.test(e.message),
+  );
+  assert.deepEqual(calls, [], 'the overwrite is not reported as our recovery');
+});
+
+test('a tracked path that vanished (never committed) does not break the checkpoint for the rest', () => {
+  const env = setup();
+  fs.writeFileSync(env.file, review(RECOVERED));
+  const ghost = path.join(env.local, 'show-2026', 'ghost--x.json');
+  let err;
+  try {
+    checkpointReviewTexts({ repoDir: env.local, paths: [env.file, ghost], message: 'feat: test', pendingPath: env.pendingPath, pushScript: env.pushScript });
+  } catch (e) { err = e; }
+  assert.ok(err instanceof ReviewTextsLandingError, String(err && err.message));
+  assert.match(err.message, /vanished/);
+  assert.deepEqual(err.landed.map((l) => l.rel), [REL]);
+  assert.equal(JSON.parse(originHas(env, REL)).fullText, RECOVERED, 'the real file still landed');
+});
+
+test('two unpushed checkpoints of one file, both wiped by a reset: the NEWER text is restored', () => {
+  const env = setup();
+  const hook = path.join(env.origin, 'hooks', 'pre-receive');
+  fs.writeFileSync(hook, '#!/bin/bash\nexit 1\n');
+  fs.chmodSync(hook, 0o755);
+  fs.writeFileSync(env.file, review('first recovery '.repeat(40)));
+  assert.throws(() => checkpointReviewTexts({ repoDir: env.local, paths: [env.file], message: 'feat: one', pendingPath: env.pendingPath, pushScript: env.pushScript, retries: 1 }), ReviewTextsPushError);
+  fs.writeFileSync(env.file, review(RECOVERED));
+  assert.throws(() => checkpointReviewTexts({ repoDir: env.local, paths: [env.file], message: 'feat: two', pendingPath: env.pendingPath, pushScript: env.pushScript, retries: 1 }), ReviewTextsPushError);
+  git(env.local, 'fetch', '-q', 'origin');
+  git(env.local, 'reset', '-q', '--hard', 'origin/main');
+  fs.unlinkSync(hook);
+  const r = retryPendingPushes({ repoDir: env.local, pendingPath: env.pendingPath, pushScript: env.pushScript, retries: 1 });
+  assert.equal(r.restored.length, 1, JSON.stringify(r));
+  assert.equal(JSON.parse(originHas(env, REL)).fullText, RECOVERED, 'newest recovery restored, not the older one');
+  assert.deepEqual(readPending(env.pendingPath), []);
 });

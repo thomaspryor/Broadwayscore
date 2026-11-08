@@ -47,8 +47,23 @@ class ReviewTextsPushError extends Error {
   }
 }
 
+class ReviewTextsLandingError extends ReviewTextsPushError {
+  constructor(message, detail = {}) {
+    super(message, detail);
+    this.name = 'ReviewTextsLandingError';
+    this.code = 'EREVIEWTEXTSLANDING';
+  }
+}
+
+/**
+ * Set of absolute paths a run wrote. `.expected` maps a path to the landing
+ * key of the record the run wrote there (gap-acceptance sets it), so the
+ * checkpoint confirms OUR text + url landed, not whatever another writer left.
+ */
 function createWriteTracker() {
-  return new Set();
+  const s = new Set();
+  s.expected = new Map();
+  return s;
 }
 
 function pendingPathDefault() {
@@ -60,12 +75,17 @@ function sha256(s) {
   return crypto.createHash('sha256').update(String(s)).digest('hex');
 }
 
-/** Hash of a review file's fullText (falls back to the whole content). */
+/** Landing key of a review record: its fullText and url together. */
+function landingKey(obj) {
+  return sha256(JSON.stringify([typeof obj.fullText === 'string' ? obj.fullText : null, obj.url || null]));
+}
+
+/** Landing key of a review file's content (whole-content hash if not JSON). */
 function contentKey(text) {
   if (text == null) return null;
   try {
     const j = JSON.parse(text);
-    return sha256(typeof j.fullText === 'string' ? j.fullText : text);
+    return j && typeof j === 'object' ? landingKey(j) : sha256(text);
   } catch {
     return sha256(text);
   }
@@ -175,11 +195,21 @@ function fireLanded(onLanded, landed, entry) {
  * @param {object} [args.pushEnv]
  * @returns {{committed: boolean, pushed: boolean, commit: string|null, landed: object[], notLanded: object[]}}
  */
-function checkpointReviewTexts({ repoDir, paths, message, onLanded, meta, pendingPath = pendingPathDefault(), pushScript, pushEnv, retries }) {
+function checkpointReviewTexts({ repoDir, paths, expected, message, onLanded, meta, pendingPath = pendingPathDefault(), pushScript, pushEnv, retries }) {
   const repo = fs.realpathSync(repoDir);
-  const rels = [...new Set([...paths].map((p) => relPath(repo, p)))].sort();
-  if (!rels.length) return { committed: false, pushed: false, commit: null, landed: [], notLanded: [] };
+  const expectedByRel = new Map();
+  const allRels = [...new Set([...paths].map((p) => {
+    const rel = relPath(repo, p);
+    if (expected && expected.has(p)) expectedByRel.set(rel, expected.get(p));
+    return rel;
+  }))].sort();
+  if (!allRels.length) return { committed: false, pushed: false, commit: null, landed: [], notLanded: [] };
   return withReviewTextsLock(`checkpoint:${message.slice(0, 60)}`, () => {
+    // A path that is gone and was never committed would make `git add` fail
+    // and wedge every later checkpoint of the run; there is nothing to land.
+    const rels = allRels.filter((rel) => fs.existsSync(path.join(repo, rel)) || blobOrNull(repo, 'HEAD', rel));
+    const vanished = allRels.filter((rel) => !rels.includes(rel)).map((rel) => ({ rel, abs: path.join(repo, rel), landed: false, why: 'file vanished before commit' }));
+    if (!rels.length) return { committed: false, pushed: false, commit: null, landed: [], notLanded: vanished };
     git(repo, ['add', '-A', '--', ...rels]);
     const hasStagedChanges = !gitOk(repo, ['diff', '--cached', '--quiet', '--', ...rels]);
     let committed = false;
@@ -199,13 +229,28 @@ function checkpointReviewTexts({ repoDir, paths, message, onLanded, meta, pendin
         return {
           rel,
           abs: path.join(repo, rel),
-          fullTextHash: contentKey(content),
+          fullTextHash: expectedByRel.get(rel) || contentKey(content),
+          committedKey: contentKey(content),
           blob: blobOrNull(repo, 'HEAD', rel),
-          // The baseline a wiped commit may be restored over: our commit's
-          // parent, or (nothing of ours committed) what origin/main held.
-          parentBlob: committed ? blobOrNull(repo, 'HEAD~1', rel) : blobOrNull(repo, 'origin/main', rel),
+          // The baseline a wiped commit may be restored over: what origin/main
+          // held before this push (HEAD~1 may itself be an unpushed commit).
+          parentBlob: blobOrNull(repo, 'origin/main', rel),
         };
       }),
+    };
+    // Another writer replaced our record between our write and this commit:
+    // what got committed is not the recovery. Report it lost (it never existed
+    // in git, so it cannot be restored) and keep it out of the landed set.
+    const lost = entry.paths.filter((p) => expectedByRel.has(p.rel) && p.committedKey !== p.fullTextHash)
+      .map((p) => ({ ...p, landed: false, why: 'overwritten by another writer before commit' }));
+    const lostRels = new Set(lost.map((p) => p.rel));
+    entry.paths = entry.paths.filter((p) => !lostRels.has(p.rel));
+    const failLanding = (notLanded, landed, pushed) => {
+      const all = [...lost, ...vanished, ...notLanded];
+      throw new ReviewTextsLandingError(
+        `review-texts: ${all.length} recovered file(s) did not land as written (${all.map((r) => `${r.rel}: ${r.why || 'not on origin/main after push'}`).join('; ').slice(0, 600)})`,
+        { commit, pendingPath, pushed, landed, notLanded: all },
+      );
     };
     const action = decideCheckpointAction({ hasStagedChanges: committed, unpushedCommits: countUnpushedCommits(repo) });
     if (action === 'skip') {
@@ -221,6 +266,7 @@ function checkpointReviewTexts({ repoDir, paths, message, onLanded, meta, pendin
         const keep = new Set(notLanded.map((r) => r.rel));
         writePending(pendingPath, [...readPending(pendingPath), { ...entry, paths: entry.paths.filter((p) => keep.has(p.rel)) }]);
       }
+      if (lost.length || vanished.length) failLanding([], landed, false);
       return { committed: false, pushed: false, commit, landed, notLanded };
     }
     const pending = readPending(pendingPath);
@@ -234,8 +280,12 @@ function checkpointReviewTexts({ repoDir, paths, message, onLanded, meta, pendin
     const res = confirmLanding(repo, entry.paths);
     const landed = res.filter((r) => r.landed);
     const notLanded = res.filter((r) => !r.landed);
-    writePending(pendingPath, readPending(pendingPath).filter((e) => e.id !== entry.id));
+    // Paths still missing from origin/main after a successful push stay in the
+    // ledger for the next run's retry; only landed ones leave it.
+    const keep = new Set(notLanded.map((r) => r.rel));
+    writePending(pendingPath, readPending(pendingPath).map((e) => (e.id === entry.id ? { ...e, paths: e.paths.filter((p) => keep.has(p.rel)) } : e)).filter((e) => e.paths.length));
     fireLanded(onLanded, landed, entry);
+    if (notLanded.length || lost.length || vanished.length) failLanding(notLanded, landed, true);
     return { committed, pushed: true, commit, landed, notLanded };
   });
 }
@@ -262,8 +312,12 @@ function retryPendingPushes({ repoDir, onLanded, pendingPath = pendingPathDefaul
     const out = { entries: entries.length, landed: [], restored: [], notLanded: [] };
     if (!entries.length) return out;
     const toRestore = [];
-    for (const entry of entries) {
-      const res = confirmLanding(repo, entry.paths);
+    // Newest first: when two unpushed checkpoints wrote the same file, the
+    // newer one is the record to restore and the older one is superseded.
+    const claimed = new Set();
+    for (const entry of [...entries].reverse()) {
+      const res = confirmLanding(repo, entry.paths.filter((p) => !claimed.has(p.rel)));
+      for (const p of entry.paths) claimed.add(p.rel);
       const landed = res.filter((r) => r.landed);
       out.landed.push(...landed);
       fireLanded(onLanded, landed, entry);
@@ -287,20 +341,32 @@ function retryPendingPushes({ repoDir, onLanded, pendingPath = pendingPathDefaul
         }
       }
     }
-    // Every pending entry is now resolved (landed, terminal, or re-queued
-    // below through a fresh checkpoint with its own pending entry).
-    writePending(pendingPath, readPending(pendingPath).filter((e) => !entries.some((x) => x.id === e.id)));
+    // Entries with nothing to restore are resolved (landed or terminal). An
+    // entry being restored leaves the journal only once the restore
+    // checkpoint has recorded its own pending entry (it does so before
+    // pushing, so a ReviewTextsPushError means it did): a crash or a git
+    // failure before that keeps the original record for the next run.
+    const restoring = new Set(toRestore.map((r) => r.entry.id));
+    const dropEntries = (ids) => writePending(pendingPath, readPending(pendingPath).filter((e) => !ids.has(e.id)));
+    dropEntries(new Set(entries.filter((e) => !restoring.has(e.id)).map((e) => e.id)));
     if (toRestore.length) {
-      const res = checkpointReviewTexts({
-        repoDir: repo,
-        paths: toRestore.map((r) => path.join(repo, r.rel)),
-        message: `fix: restore ${toRestore.length} review file(s) whose pending commit was lost before push (BRO-7171)`,
-        onLanded,
-        meta: { restoredFrom: toRestore.map((r) => r.entry.id) },
-        pendingPath, pushScript, pushEnv, retries,
-      });
+      let res;
+      try {
+        res = checkpointReviewTexts({
+          repoDir: repo,
+          paths: toRestore.map((r) => path.join(repo, r.rel)),
+          expected: new Map(toRestore.map((r) => [path.join(repo, r.rel), r.fullTextHash])),
+          message: `fix: restore ${toRestore.length} review file(s) whose pending commit was lost before push (BRO-7171)`,
+          onLanded,
+          meta: { restoredFrom: toRestore.map((r) => r.entry.id) },
+          pendingPath, pushScript, pushEnv, retries,
+        });
+      } catch (e) {
+        if (e instanceof ReviewTextsPushError) dropEntries(restoring);
+        throw e;
+      }
+      dropEntries(restoring);
       out.restored.push(...res.landed);
-      out.notLanded.push(...res.notLanded.map((r) => ({ ...r, why: 'restored but not on origin/main after push' })));
     }
     return out;
   });
@@ -311,7 +377,9 @@ module.exports = {
   retryPendingPushes,
   createWriteTracker,
   ReviewTextsPushError,
+  ReviewTextsLandingError,
   contentKey,
+  landingKey,
   readPending,
   pendingPathDefault,
 };
