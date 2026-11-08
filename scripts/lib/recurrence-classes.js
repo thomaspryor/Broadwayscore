@@ -313,14 +313,29 @@ function rootCauseShare(cards, classes, { from, to, ledgerCards, commentsById = 
  * `relatedIds` are identifiers the card already relates to.
  */
 const CLOSE_GATE_BLOCKING_FROM = '2026-12-15';
-function recurrenceCloseWarning(identifier, snapshot, relatedIds = []) {
+const CLOSE_GATE_SNAPSHOT_MAX_MS = 48 * 36e5;
+
+/**
+ * PURE. Does the "name the root card" check refuse the close? Only from
+ * CLOSE_GATE_BLOCKING_FROM, only on a snapshot under 48h old (a stale one
+ * fails open), and never with RECURRENCE_CLOSE_GATE=advisory (rollback, no deploy).
+ */
+function recurrenceCloseBlocking(snapshot, nowMs = Date.now(), env = process.env) {
+  if (String(env.RECURRENCE_CLOSE_GATE || '').toLowerCase() === 'advisory') return false;
+  if (!snapshot || !(nowMs - ms(snapshot.generatedAt) < CLOSE_GATE_SNAPSHOT_MAX_MS)) return false;
+  return nowMs >= Date.parse(`${CLOSE_GATE_BLOCKING_FROM}T00:00:00Z`);
+}
+
+function recurrenceCloseWarning(identifier, snapshot, relatedIds = [], blocking = false) {
   if (!snapshot || !snapshot.instances) return null;
   const hit = snapshot.instances[identifier];
   if (!hit || !hit.rootCause || hit.rootCause === identifier) return null;
   if (relatedIds.includes(hit.rootCause)) return null;
   return `${identifier} is one more case of a problem that keeps coming back ("${hit.classKey}"). ` +
     `Name the root-cause card ${hit.rootCause} in the close comment (or link it) so the fix lands on the cause, not one more case. ` +
-    `Advisory now; blocking from ${CLOSE_GATE_BLOCKING_FROM} (BRO-7103).`;
+    (blocking
+      ? `Refused until it is named (BRO-7103; rollback: RECURRENCE_CLOSE_GATE=advisory).`
+      : `Advisory now; blocking from ${CLOSE_GATE_BLOCKING_FROM} (BRO-7103).`);
 }
 
 /**
@@ -397,6 +412,7 @@ module.exports = {
   EXPECTED_REPEATS,
   ROOT_CAUSE_OVERRIDES,
   CLOSE_GATE_BLOCKING_FROM,
+  recurrenceCloseBlocking,
   stripFilerPrefixes,
   subtypeOf,
   classKey,
