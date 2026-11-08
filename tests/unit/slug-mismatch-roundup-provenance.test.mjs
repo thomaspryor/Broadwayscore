@@ -15,7 +15,7 @@ import { createRequire } from 'module';
 const require = createRequire(import.meta.url);
 const check = require('../../scripts/lib/opening-night-checks/slug-mismatch.check.js');
 
-const RED = { id: 'red-2010', title: 'Red', slug: 'red-2010' };
+const RED = { id: 'red-2010', title: 'Red', slug: 'red-2010', openingDate: '2010-04-01' };
 const GODOT = { id: 'waiting-for-godot-2009', title: 'Waiting for Godot', slug: 'waiting-for-godot-2009' };
 const TIME = { id: 'time-stands-still-2010', title: 'Time Stands Still', slug: 'time-stands-still-2010' };
 const COMPANY = { id: 'company-2006', title: 'Company', slug: 'company-2006' };
@@ -32,7 +32,7 @@ before(() => {
   };
   put(RED, 'a.json', { url: RED_URL.replace('https://www.', 'http://www.'), bwwExcerpt: 'Logan\'s vivid play manages the same strokes.', bwwRoundupUrl: `${BWW}Broadway-Blog-RED-Review-Roundup-20100402` });
   put(GODOT, 'a.json', { url: GODOT_URL, bwwExcerpt: 'The show is wholly harmless.', bwwRoundupUrl: `${BWW}Broadway-Blog-Double-Review-Roundup-9-to-5-and-Waiting-for-Godot-20090501` });
-  put(TIME, 'a.json', { url: 'https://example.com/a-column', bwwExcerpt: 'Moving.', bwwRoundupUrl: `${BWW}Broadway-Blog-Review-Roundup-Exit-the-King-and-More-Time-Stands-Still-20090327` });
+  put(TIME, 'a.json', { url: 'https://example.com/a-column', bwwExcerpt: 'Moving.', bwwRoundupUrl: `${BWW}Broadway-Blogs-Review-Roundup-Exit-the-King-and-More-Time-Stands-Still-20090327` });
   put(COMPANY, 'a.json', { url: 'https://example.com/a-column', bwwExcerpt: 'Fine.', bwwRoundupUrl: `${BWW}Review-Roundup-THE-COMPANY-MEN-20100101` });
 });
 after(() => fs.rmSync(root, { recursive: true, force: true }));
@@ -60,6 +60,24 @@ describe('roundup provenance confirms a URL that cannot name the show', () => {
   });
   it('a one-word title is not confirmed by a different show\'s roundup URL', () => {
     assert.strictEqual(runOne(COMPANY, 'https://example.com/a-column').ok, false);
+  });
+  it('a roundup years away from the opening date (other production) never confirms', () => {
+    const u = [`${BWW}Review-Roundup-RED-Opens-in-the-West-End-20091202`];
+    assert.strictEqual(check.roundupNamesShow(u, ['red'], '2010-04-01'), false);
+    assert.strictEqual(check.roundupNamesShow([`${BWW}Broadway-Blog-RED-Review-Roundup-20100402`], ['red'], '2010-04-01'), true);
+  });
+  it('a preceding title word defeats the review-roundup form', () => {
+    assert.strictEqual(check.roundupNamesShow([`${BWW}Big-Red-Review-Roundup-20100402`], ['red'], '2010-04-01'), false);
+  });
+  it('a single-show cast-list "and More" roundup still confirms a multi-word title', () => {
+    const u = [`${BWW}Review-Roundup-A-FEW-GOOD-MEN-Tom-Blyth-and-More-20250401`];
+    assert.strictEqual(check.roundupNamesShow(u, ['a-few-good-men'], '2025-04-01'), true);
+  });
+  it('a wrongShow-flagged file contributes no roundup provenance', () => {
+    const dir = path.join(root, 'flagged-2010');
+    fs.mkdirSync(dir, { recursive: true });
+    fs.writeFileSync(path.join(dir, 'a.json'), JSON.stringify({ url: 'https://x.com/a', wrongShow: true, bwwRoundupUrl: `${BWW}Broadway-Blog-FLAGGED-Review-Roundup-20100402` }));
+    assert.strictEqual(check.loadSourceTextByUrl(root, 'flagged-2010').roundupUrls.size, 0);
   });
   it('roundupNamesShow ignores a missing roundup URL', () => {
     assert.strictEqual(check.roundupNamesShow(undefined, ['red']), false);

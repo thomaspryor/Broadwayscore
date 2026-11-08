@@ -296,7 +296,8 @@ function readSourceTextDir(dir, byUrl) {
     const segments = [d.fullText, d.bwwExcerpt, d.dtliExcerpt, d.showScoreExcerpt, d.pullQuote]
       .filter(t => typeof t === 'string' && t);
     byUrl.set(urlKey(d.url), (byUrl.get(urlKey(d.url)) || []).concat(segments));
-    if (typeof d.bwwRoundupUrl === 'string' && d.bwwRoundupUrl) {
+    if (typeof d.bwwRoundupUrl === 'string' && d.bwwRoundupUrl
+        && !d.wrongShow && !d.wrongProduction && !d.isRoundupArticle) {
       byUrl.roundupUrls.set(urlKey(d.url), (byUrl.roundupUrls.get(urlKey(d.url)) || []).concat(d.bwwRoundupUrl));
     }
     if (typeof d.fullText === 'string' && d.fullText
@@ -350,20 +351,28 @@ function fullTextNamesShowRepeatedly(fullTexts, mentionRe) {
  * nothing, so it never confirms. Whole-title slugs only: one common title
  * word in a roundup URL is no evidence.
  */
-const MULTI_SHOW_ROUNDUP_RE = /double|triple|and-more/i;
+const MULTI_SHOW_ROUNDUP_RE = /(^|-)(double|triple)-|roundup-and-more|broadway-blogs/i;
+// A roundup is dated in its URL; a revival's or other market's roundup of the
+// same title is years away from this production's opening (ship-check).
+const ROUNDUP_DATE_WINDOW_DAYS = 75;
 // A one-word title ("Red", "Company") sits inside other titles' roundup URLs
 // ("Review-Roundup-THE-COMPANY-MEN"), so it must be followed by a date or one
 // of the tails BWW puts after a show name, never by another title word.
-const ROUNDUP_TITLE_TAIL = '(?:\\d{4,}|opens?|updating|live|on|in|at|is|review|roundup|starring|see)';
-function roundupNamesShow(roundupUrls, wholeTitleSlugs) {
+const ROUNDUP_TITLE_TAIL = '(?:\\d{4,}|opens?|updating|live|on|in|at|is|review|roundup|starring|see|returns?|revival)';
+function roundupNamesShow(roundupUrls, wholeTitleSlugs, openingDate) {
   if (!roundupUrls || roundupUrls.length === 0) return false;
   return roundupUrls.some(u => {
     const slug = urlSearchSlug(u);
     if (MULTI_SHOW_ROUNDUP_RE.test(slug)) return false;
+    const dm = slug.match(/(?:^|-)(\d{4})(\d{2})(\d{2})$/);
+    if (dm && openingDate) {
+      const days = Math.abs(Date.parse(`${dm[1]}-${dm[2]}-${dm[3]}`) - Date.parse(openingDate)) / 86400000;
+      if (!(days <= ROUNDUP_DATE_WINDOW_DAYS)) return false;
+    }
     return wholeTitleSlugs.some(t => {
       if (!/[-\s]/.test(t)) {
         return new RegExp(`(^|[^a-z0-9])roundup-${slugPattern(t)}(-${ROUNDUP_TITLE_TAIL}[^a-z]|-${ROUNDUP_TITLE_TAIL}$|$)`, 'i').test(slug)
-          || new RegExp(`(^|[^a-z0-9])${slugPattern(t)}-review-roundup`, 'i').test(slug);
+          || new RegExp(`(^|\\s)(?:broadway-)?(?:blogs?-)?${slugPattern(t)}-review-roundup`, 'i').test(slug);
       }
       return urlMentionsAnySlug(slug, [t]);
     });
@@ -471,7 +480,7 @@ function run(show, context) {
     if (sourceTextNamesShow(segs, mentionRe)
         || fullTextNamesShowRepeatedly(fullTexts, repeatRe)
         || fullTextNamesVenueAndTitleWords(fullTexts, show, venueRe, mentionRe)
-        || roundupNamesShow(sourceTextByUrl.roundupUrls.get(urlKey(review.url)), wholeTitleSlugs)) { textConfirmed++; continue; }
+        || roundupNamesShow(sourceTextByUrl.roundupUrls.get(urlKey(review.url)), wholeTitleSlugs, show.openingDate)) { textConfirmed++; continue; }
     if ((!segs || segs.length === 0) && isIdOnlyCmsUrl(urlSlug)) {
       opaqueSkipped.push({ outletId: review.outletId, url: review.url });
       continue;
