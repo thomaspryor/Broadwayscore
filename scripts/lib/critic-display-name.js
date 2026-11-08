@@ -540,15 +540,16 @@ function matchesOutletName(key, ctx) {
   if (!key) return false;
   const global = outletNameSet();
   const own = new Set();
-  if (typeof ctx.outlet === 'string') {
-    const n = normalizeForCompare(ctx.outlet);
-    if (n) { own.add(n); own.add(stripLeadingThe(n)); }
+  const addOwn = (n) => {
+    if (!n) return;
+    own.add(n); own.add(stripLeadingThe(n));
     // "MAGNET Staff" at "Magnet Magazine": the outlet minus its kind word.
     const bare = n.replace(/\s+(?:magazine|newspaper)$/, '');
-    if (bare && bare !== n && bare.length >= 3) own.add(bare);
-  }
+    if (bare !== n && bare.length >= 3) own.add(bare);
+  };
+  if (typeof ctx.outlet === 'string') addOwn(normalizeForCompare(ctx.outlet));
   if (ctx.entry && !isSelfBrandedOutlet(ctx.id, ctx.entry)) {
-    for (const n of ownNamesOf(ctx.id, ctx.entry)) { own.add(n); own.add(stripLeadingThe(n)); }
+    for (const n of ownNamesOf(ctx.id, ctx.entry)) addOwn(n);
   } else if (ctx.entry) {
     own.clear(); // self-branded outlet: its own name is the critic
   }
@@ -617,8 +618,9 @@ function isNonPerson(name, ctx) {
   const dcKey = registryDefaultCriticKey(ctx);
   if (dcKey && dcKey === key) return false;
   if (isPlaceholderPhrase(key)) return true;
-  if (isAllGeneric(key)) return true;
+  // Curated first: a hand-confirmed critic is never hidden by the word lists.
   if (isCuratedCritic(name)) return false;
+  if (isAllGeneric(key)) return true;
   if (matchesOutletName(key, ctx)) return true;
   return false;
 }
