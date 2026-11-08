@@ -11,8 +11,9 @@
  *                                                             instead of the GitHub API
  *   node scripts/close-stuck-verified-cards.js --only BRO-N   consider just one card
  *
- * Input: data/audit/done-evidence-audit.json (written earlier the same run of
- * data-health-check.yml). Output: data/audit/stuck-card-closer.json.
+ * Input: data/audit/done-evidence-audit.json and, for Backlog/Todo cards,
+ * data/audit/open-backlog-acceptance-sweep.json (both written earlier the same
+ * run of data-health-check.yml; backlog kill switch BACKLOG_CLOSE_DISABLED=true). Output: data/audit/stuck-card-closer.json.
  * Closes through linear-brain.js, so the Done gate re-runs the check on a
  * fresh origin/main checkout. Exit 0 on success (including nothing to do and
  * a stale audit), 2 for a shallow --git-repo, 3 when the audit, Linear or
@@ -30,12 +31,14 @@ const {
   planCandidates, decideClosure, parseLandingRows, buildClosureComment, closeRunStopReason,
   decideBounce, buildBounceComment, MAX_BOUNCES, MAX_BOUNCES_PER_RUN, MAX_REFUSALS_PER_RUN,
   planInReviewSweep, decideSweep, buildSweepBounceComment, buildSweepClosureComment, buildSweepRefusedComment, MAX_SWEEP_PER_RUN,
+  planBacklogCandidates, decideBacklogClosure, buildBacklogClosureComment, MAX_BACKLOG_CLOSES_PER_RUN,
 } = require('./lib/stuck-card-closer.js');
 
 const REPO = path.join(__dirname, '..');
 const AUDIT = path.join(REPO, 'data', 'audit', 'done-evidence-audit.json');
 const OUT = path.join(REPO, 'data', 'audit', 'stuck-card-closer.json');
 const LANDINGS = path.join(REPO, 'data', 'audit', 'landings.jsonl');
+const BACKLOG_SWEEP = path.join(REPO, 'data', 'audit', 'open-backlog-acceptance-sweep.json');
 const TIME_BUDGET_MS = 18 * 60 * 1000;
 // One close re-runs the card's check through the Done gate; never start one
 // that could outlive the workflow step (25 min) if it hits its own timeout.
@@ -247,6 +250,89 @@ async function main(argv = process.argv.slice(2), deps = {}) {
       write();
     }
   }
+  // Backlog close (BRO-7139 Step 1): Backlog/Todo cards whose own single-test
+  // check passed in today's open-backlog sweep, closed only on a commit that
+  // finishes the card. Shares the close and refusal counters (and so the
+  // breaker) with the audit path above; its own cap keeps a bad day small.
+  // Kill switch: BACKLOG_CLOSE_DISABLED=true (repo variable).
+  if (!['1', 'true'].includes(String(process.env.BACKLOG_CLOSE_DISABLED || '').trim().toLowerCase())) {
+    let sweepReport = null;
+    try {
+      // Sibling of the audit file, so a test's temp audit never picks up the live sweep.
+      sweepReport = JSON.parse(fs.readFileSync(deps.backlogSweepPath
+        || (deps.auditPath ? path.join(path.dirname(deps.auditPath), path.basename(BACKLOG_SWEEP)) : BACKLOG_SWEEP), 'utf8'));
+    } catch (err) {
+      console.error(`[close-stuck-verified-cards] backlog sweep report unreadable (${err.code || err.message}); no backlog closes this run`);
+      count('backlog:report-unreadable');
+    }
+    const bplan = sweepReport ? planBacklogCandidates(sweepReport, nowMs) : null;
+    out.backlogSweepGeneratedAt = (sweepReport && sweepReport.generatedAt) || null;
+    if (!bplan) {
+      // counted above
+    } else if (bplan.error) {
+      count('backlog:report-unusable');
+      out.backlogError = bplan.error;
+    } else {
+      Object.entries(bplan.skipped).forEach(([k, v]) => { out.counts[`backlog:skip:${k}`] = v; });
+      const handledIds = new Set(candidates.map((c) => c.id));
+      let backlogClosed = 0;
+      for (const candidate of bplan.candidates) {
+        if (only && candidate.id !== only) continue;
+        if (handledIds.has(candidate.id)) { count('backlog:already-handled'); continue; }
+        if (Date.now() - startMs > TIME_BUDGET_MS - CLOSE_TIMEOUT_MS) { count('backlog:over-time-budget'); continue; }
+        let issue;
+        let commits;
+        try {
+          const data = await linear.graphql(ISSUE_QUERY, { id: candidate.id });
+          issue = data && data.issue ? { ...data.issue, comments: (data.issue.comments && data.issue.comments.nodes) || [] } : null;
+          commits = issue ? await commitsTouching(candidate.testPath, issue.createdAt) : [];
+        } catch (err) {
+          console.error(`[close-stuck-verified-cards] could not read ${candidate.id}: ${err.message}`);
+          count('backlog:read-failed');
+          out.rows.push({ id: candidate.id, action: 'backlog-read-failed', reason: err.message.slice(0, 200) });
+          exitCode = 3;
+          continue;
+        }
+        const decision = decideBacklogClosure({ candidate, issue, commits, nowMs });
+        const state = issue && issue.state && issue.state.name;
+        if (!decision.close) {
+          count(`backlog:${decision.reason}`);
+          out.rows.push({ id: candidate.id, state, action: 'backlog-leave', reason: decision.reason });
+          continue;
+        }
+        if (!apply) {
+          count('backlog:would-close');
+          console.log(`would close ${candidate.id} (${state}, backlog sweep; commit ${decision.sha.slice(0, 9)}, ${decision.evidence})`);
+          out.rows.push({ id: candidate.id, state, action: 'backlog-would-close', sha: decision.sha });
+          continue;
+        }
+        if (backlogClosed >= MAX_BACKLOG_CLOSES_PER_RUN) { count('backlog:over-run-cap'); continue; }
+        const stop = closeRunStopReason({ closed, refused, remainingMs: TIME_BUDGET_MS - (Date.now() - startMs), closeTimeoutMs: CLOSE_TIMEOUT_MS });
+        if (stop) { count(`backlog:${stop}`); continue; }
+        const comment = buildBacklogClosureComment({ candidate, sha: decision.sha, sweepGeneratedAt: sweepReport.generatedAt, checkoutSha: sweepReport.checkoutSha });
+        const r = (deps.spawn || spawnSync)('node', [path.join(__dirname, 'linear-brain.js'), 'update', candidate.id, '--state', 'Done', '--comment', comment],
+          { cwd: REPO, encoding: 'utf8', timeout: CLOSE_TIMEOUT_MS });
+        if (r.status === 0) {
+          closed++;
+          backlogClosed++;
+          count('backlog:closed');
+          console.log(`closed ${candidate.id} (backlog sweep, commit ${decision.sha.slice(0, 9)})`);
+          out.rows.push({ id: candidate.id, state, action: 'backlog-closed', sha: decision.sha });
+        } else {
+          const why = r.status === 5 ? 'gate-refused' : 'close-failed';
+          refused++;
+          count(`backlog:${why}`);
+          const tail = (r.stderr || r.stdout || '').trim().split('\n').slice(-2).join(' ').slice(0, 300);
+          console.error(`${why} for ${candidate.id} (backlog sweep): ${tail}`);
+          out.rows.push({ id: candidate.id, state, action: `backlog-${why}`, reason: tail });
+        }
+        write();
+      }
+    }
+  } else {
+    count('backlog:disabled');
+  }
+
   // In Review sweep (BRO-5433): technical cards the audit paths above never
   // touch. Close through the Done gate when the card carries evidence; if the
   // gate refuses, or there is none, send it back to a worker (shared bounce
