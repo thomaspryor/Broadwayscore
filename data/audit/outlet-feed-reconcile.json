@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-08T18:36:08.844Z",
+  "generatedAt": "2026-11-08T19:56:07.556Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -94,6 +94,11 @@
       "openingDate": "2026-11-07"
     },
     {
+      "id": "the-steel-man-off-broadway-2026",
+      "title": "The Steel Man",
+      "openingDate": "2026-11-08"
+    },
+    {
       "id": "dr-seuss-how-the-grinch-stole-christmas-tour-2026",
       "title": "Dr. Seuss' How the Grinch Stole Christmas!",
       "openingDate": "2026-11-06"
@@ -123,14 +128,14 @@
     {
       "showId": "wanted-2022",
       "reason": "no data/review-texts directory for this show"
-    },
-    {
-      "showId": "the-steel-man-off-broadway-2026",
-      "reason": "no data/review-texts directory for this show"
     }
   ],
   "feedsChecked": 84,
   "feedsFailed": [
+    {
+      "outletId": "theater-life",
+      "error": "Timeout fetching https://theaterlife.com/feed"
+    },
     {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
@@ -138,10 +143,6 @@
     {
       "outletId": "cote-notices",
       "error": "HTTP 403 for https://davidcote1.substack.com/feed"
-    },
-    {
-      "outletId": "readaboutstuff",
-      "error": "HTTP 403 for https://readaboutstuff.com/feed/"
     },
     {
       "outletId": "theartsdispatch",
@@ -156,8 +157,8 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 809,
-  "matchedGaps": 2,
+  "itemsScanned": 818,
+  "matchedGaps": 3,
   "possibleGaps": 3,
   "gaps": [
     {
@@ -177,6 +178,15 @@
       "url": "https://t2conline.com/222-a-ghost-story-the-loudest-thing-in-the-room-isnt-the-ghost/",
       "headline": "2:22 – A Ghost Story: The Loudest Thing in the Room Isn’t the Ghost",
       "publishDate": "2026-11-07"
+    },
+    {
+      "showId": "the-bridge-off-west-end-2026",
+      "title": "The Bridge",
+      "level": "matched",
+      "outletId": "la-voce-di-new-york",
+      "url": "https://lavocedinewyork.com/en/new-york/2026/11/08/seven-injured-in-bronx-crash-near-university-heights-bridge/",
+      "headline": "Seven Injured in Bronx Crash Near University Heights Bridge",
+      "publishDate": "2026-11-08"
     },
     {
       "showId": "king-lear-off-broadway-2026",
