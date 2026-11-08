@@ -53,6 +53,7 @@ const { laneBypasses } = require('./lib/opening-night-lane/trust-model');
 const path = require('path');
 const { readCrossShowUrlRows } = require('./lib/cross-show-url-ledger'); // BRO-6910
 const { trackedPendingFiles } = require('./lib/pending-coverage'); // BRO-7163 F11
+const { isOpaqueArticleUrl, headlineAsUrl } = require('./lib/opaque-article-url'); // BRO-7163 F02
 const { isAggregatorBlind, majorOutletCountFor } = require('./lib/aggregator-blind'); // BRO-6910
 const cheerio = require('cheerio');
 const { execSync, execFileSync } = require('child_process');
@@ -965,7 +966,14 @@ function isOwnVenueUrl(u, show) {
 function acceptSerpCensusResult(sr, { show, showInfo, priorVetted = false }) {
   const u = sr && (sr.url || sr.link);
   if (!u || !isReviewUrl(u)) return null;
-  const passing = matchingTitleVariants(u, show, { context: 'census' });
+  let passing = matchingTitleVariants(u, show, { context: 'census' });
+  // BRO-7163 F02: an opaque URL (story.asp?ID=48291) has no title tokens to match. The SERP headline
+  // stands in, but only on an outlet we know, so a random host's opaque page is not accepted on a headline alone.
+  if (!passing.length && isOpaqueArticleUrl(u) && sr.title
+      && (getKnownDomainMap().has(registrableHost(hostOf(u))) || getKnownDomainMap().has(publicationHostOf(u)))) {
+    const hu = headlineAsUrl(sr.title);
+    if (hu) passing = matchingTitleVariants(hu, show, { context: 'census' });
+  }
   if (!passing.length) return null;
   // BRO-5732: fail closed. An unregistered host must show review-shaped evidence
   // (url/title/snippet), not merely avoid every known-bad pattern. `priorVetted`:
@@ -1112,7 +1120,13 @@ async function extractAggregatorReviewUrls(articleUrl, show) {
   $('a[href]').each((_, el) => {
     const href = $(el).attr('href') || '';
     if (!isReviewUrl(href)) return;
-    if (!urlMatchesShowTitle(href, show, { context: 'article-link' })) return;
+    if (!urlMatchesShowTitle(href, show, { context: 'article-link' })) {
+      // BRO-7163 F02: an opaque href (story.asp?ID=48291) is judged on its link text / list item instead.
+      if (!isOpaqueArticleUrl(href)) return;
+      const blockText = ($(el).closest('li,p,tr,dd,dt').first().text() || '').replace(/\s+/g, ' ').slice(0, 400);
+      const hu = headlineAsUrl(`${$(el).text()} ${blockText}`);
+      if (!hu || !urlMatchesShowTitle(hu, show, { context: 'article-link' })) return;
+    }
     urls.add(normalizeReviewUrl(href));
   });
   // Production identity (2026-07-11): urlMatchesShow filters wrong SHOWS, not
