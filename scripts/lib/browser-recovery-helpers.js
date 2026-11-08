@@ -12,15 +12,14 @@
  * outlet script only supplies its login/cookie/selector specifics.
  */
 
-const { isolateMultiShowSectionForShowId } = require('./multi-show-section-extract');
 const fs = require('fs');
 const { readReviewForUpdate, persistReviewSnapshot } = require('./persist-review-snapshot');
 const path = require('path');
-const { execSync } = require('child_process');
 
-const { classifyContentTier, isGarbageContent, validateShowMentioned, countWords } = require('./content-quality');
-const { cleanText, stripTrailingJunk } = require('./text-cleaning');
 const { evaluateDatePlausibility } = require('./date-plausibility');
+const { recoverReviewText } = require('./gap-acceptance');
+const { withReviewTextsLock } = require('./review-texts-lock');
+const { checkpointReviewTexts, retryPendingPushes, createWriteTracker } = require('./review-texts-checkpoint');
 
 // Same worktree-symlink gap as REVIEW_TEXTS_DIR above — data/shows.json is a
 // gitignored symlink into the private ~/broadway-scorecard-data clone, so a
@@ -82,7 +81,10 @@ function checkDatePlausibility(candidate, data) {
 // silently ignored — confirmed live 2026-08-02.
 const REVIEW_TEXTS_DIR = process.env.REVIEW_TEXTS_DIR || path.join(__dirname, '..', '..', 'data', 'review-texts');
 
-const PUSH_WITH_RETRY = path.join(__dirname, 'push-with-retry.sh');
+// Every review file this process writes (recovered text or a dead-candidate
+// stamp). checkpoint() stages exactly these paths, never `git add -A`
+// (BRO-7171): the review-texts checkout is shared with other local writers.
+const RUN_WRITES = createWriteTracker();
 
 /**
  * Find review-text files for `filePrefix` (e.g. "nytimes", or a list of
@@ -145,101 +147,81 @@ function loadCandidates({ filePrefix, showsAllowlist, maxUrls = Infinity }) {
 }
 
 /**
- * Clean, quality-gate, and write recovered text into a candidate's review
- * file. Mirrors recover-wsj-browser.js's processRecoveredText exactly.
+ * Gate and write recovered text into a candidate's review file. A thin
+ * adapter over gap-acceptance.js's recoverReviewText (BRO-7171), the single
+ * gate every recovery route shares: lock, fresh read, acceptRecoveredText,
+ * one safeWriteReview write with priorFullTextHash provenance.
  *
  * @param {object} candidate - from loadCandidates()
  * @param {string} rawText - text extracted from the live authenticated DOM
  * @param {object} labels - { fetchMethod, sourceMethod, contentTierReasonFallback }
+ * @param {{dryRun?: boolean, tracker?: Set<string>}} [opts]
+ * @returns {{ok: boolean, code: string, reason?: string, newLen?: number}}
  */
-function processRecoveredText(candidate, rawText, labels) {
-  let cleanedText = cleanText(rawText);
-  cleanedText = stripTrailingJunk(cleanedText);
-  // Multi-show posts: isolate before the length/mention/upgrade guards below.
-  {
-    const iso = isolateMultiShowSectionForShowId(candidate.url, cleanedText, candidate.showId);
-    if (iso.action === 'refuse') return { ok: false, reason: 'multi-show post: no unique section for this show' };
-    cleanedText = iso.text;
-  }
-  if (cleanedText.length < 300) {
-    return { ok: false, reason: `too short after cleaning (${cleanedText.length})` };
-  }
-
-  const garbageCheck = isGarbageContent(cleanedText);
-  if (garbageCheck.isGarbage) {
-    return { ok: false, reason: `garbage content: ${garbageCheck.reason}` };
-  }
-
-  // Order matters: "off-west-end" must be checked before the shorter
-  // "west-end" alternative, or the "off-" prefix is left dangling in the
-  // derived title (360-allstars-off-west-end-2026 -> "360 allstars off",
-  // confirmed live 2026-08-02 — validateShowMentioned then rejects a real,
-  // correctly-recovered Off-West-End review as "show not mentioned").
-  const showTitle = candidate.showId.replace(/-\d{4}$/, '').replace(/-(off-west-end|west-end|off-broadway|regional)$/, '').replace(/-/g, ' ');
-  const mentionResult = validateShowMentioned(cleanedText, showTitle, candidate.showId);
-  if (!mentionResult.valid) {
-    return { ok: false, reason: `show not mentioned: "${showTitle}"` };
-  }
-
-  const data = readReviewForUpdate(candidate.filePath);
-  if (data.fullText && data.fullText.length >= cleanedText.length) {
-    return { ok: false, reason: `not longer than existing (${data.fullText.length} >= ${cleanedText.length})` };
-  }
-
-  const dateRejection = checkDatePlausibility(candidate, data);
-  if (dateRejection) {
-    return { ok: false, reason: dateRejection };
-  }
-
-  data.fullText = cleanedText;
-  data.isFullReview = cleanedText.length > 1500;
-  data.textWordCount = countWords(cleanedText);
-  data.textFetchedAt = new Date().toISOString();
-  data.fetchMethod = labels.fetchMethod;
-  data.sourceMethod = labels.sourceMethod;
-
-  const tierResult = classifyContentTier(data);
-  data.contentTier = tierResult.contentTier || tierResult.tier;
-  data.contentTierReason = tierResult.tierReason || tierResult.reason || labels.contentTierReasonFallback;
-
-  if (data.llmScore?.score) {
-    require('./rescore-flagging').markRescoreNeeded(data, `fullText recovered via ${labels.sourceMethod} (task #831)`, undefined, { requeue: true });
-  }
-
-  persistReviewSnapshot({ filePath: candidate.filePath, data: data, trailingNewline: true });
-  return { ok: true, newLen: cleanedText.length };
+function processRecoveredText(candidate, rawText, labels, opts = {}) {
+  const r = recoverReviewText({
+    filePath: candidate.filePath,
+    rawText,
+    labels,
+    dryRun: !!opts.dryRun,
+    tracker: opts.tracker || RUN_WRITES,
+  });
+  return { ok: r.ok, code: r.code, reason: r.reason, newLen: r.newLen };
 }
 
 /**
- * Stamp a dead-candidate's incompleteReason and checkpoint-commit any
- * recovered files to the (separate) review-texts repo. Identical retry/backoff
- * shape to recover-wsj-browser.js.
+ * Stamp a candidate whose fetch failed, under the review-texts lock, and
+ * track the file for the next checkpoint.
+ * @param {{filePath: string}} candidate
+ * @param {object} fields - fields to set (e.g. incompleteReason, incompleteDetail)
+ * @param {{tracker?: Set<string>}} [opts]
  */
-function checkpoint(stats, commitMessagePrefix) {
-  if (stats.dryRun) return;
-  const reviewTextsRepo = REVIEW_TEXTS_DIR;
-  try {
-    execSync('git add -A', { stdio: 'pipe', cwd: reviewTextsRepo });
-    try {
-      execSync('git diff --staged --quiet', { stdio: 'pipe', cwd: reviewTextsRepo });
-      return; // nothing staged
-    } catch {} // non-zero = there ARE staged changes
-    const msg = `feat: ${commitMessagePrefix} - ${stats.recovered} reviews recovered (task #831)`;
-    execSync(`git commit -m "${msg}"`, { stdio: 'pipe', cwd: reviewTextsRepo });
-    // push-with-retry.sh (not a hand-rolled `git pull --rebase`) — a bare
-    // rebase-fetch carries no depth bound, and ~130 of this repo's CI
-    // workflows check out on fetch-depth:1, so an unbounded fetch here would
-    // pull the whole ~2.1GB/165k-commit history instead of the small delta
-    // (task #466, caught by the unbounded-fetch push audit).
-    try {
-      execSync(`bash "${PUSH_WITH_RETRY}" 5`, { stdio: 'pipe', cwd: reviewTextsRepo, timeout: 180000 });
-      console.log(`  [Checkpoint] Pushed (${stats.recovered} recovered so far)`);
-    } catch {
-      console.log('  [Checkpoint] WARNING: could not push after retries');
-    }
-  } catch (e) {
-    console.log(`  [Checkpoint] Error: ${e.message}`);
-  }
+function stampDead(candidate, fields, opts = {}) {
+  withReviewTextsLock(`stamp:${path.basename(candidate.filePath)}`, () => {
+    const data = readReviewForUpdate(candidate.filePath);
+    Object.assign(data, fields);
+    persistReviewSnapshot({ filePath: candidate.filePath, data, trailingNewline: true });
+  });
+  (opts.tracker || RUN_WRITES).add(path.resolve(candidate.filePath));
 }
 
-module.exports = { loadCandidates, processRecoveredText, checkpoint, REVIEW_TEXTS_DIR, checkDatePlausibility, getShowById };
+/**
+ * Run before any new work: push what an earlier run committed but could not
+ * push, restore commits a concurrent reset wiped. Throws when the push still
+ * fails, so a run never piles new work onto an unpushed backlog.
+ */
+function startRun(opts = {}) {
+  const r = retryPendingPushes({ repoDir: opts.repoDir || REVIEW_TEXTS_DIR, onLanded: opts.onLanded });
+  if (r.entries) {
+    console.log(`  [Pending] ${r.entries} earlier checkpoint(s): ${r.landed.length} landed, ${r.restored.length} restored, ${r.notLanded.length} not landed`);
+    for (const n of r.notLanded) console.log(`    not landed: ${n.rel} (${n.why || 'text not on origin/main'})`);
+  }
+  return r;
+}
+
+/**
+ * Commit and push exactly the files this run wrote. A failed push THROWS
+ * (ReviewTextsPushError): the caller's run stops instead of counting reviews
+ * that exist only on this disk. Returns the checkpoint result; `landed` lists
+ * the paths origin/main now holds.
+ */
+function checkpoint(stats, commitMessagePrefix, opts = {}) {
+  if (stats.dryRun) return null;
+  const tracker = opts.tracker || RUN_WRITES;
+  if (!tracker.size) return null;
+  const paths = [...tracker];
+  const res = checkpointReviewTexts({
+    repoDir: opts.repoDir || REVIEW_TEXTS_DIR,
+    paths,
+    message: `feat: ${commitMessagePrefix} - ${stats.recovered} reviews recovered (task #831)`,
+    onLanded: opts.onLanded,
+    pushScript: opts.pushScript,
+    pushEnv: opts.pushEnv,
+  });
+  for (const p of paths) tracker.delete(p);
+  console.log(`  [Checkpoint] ${res.pushed ? 'Pushed' : 'Nothing new to push'} (${stats.recovered} recovered so far; ${res.landed.length} file(s) confirmed on origin/main)`);
+  for (const n of res.notLanded) console.log(`  [Checkpoint] NOT on origin/main after push: ${n.rel}`);
+  return res;
+}
+
+module.exports = { loadCandidates, processRecoveredText, stampDead, startRun, checkpoint, RUN_WRITES, REVIEW_TEXTS_DIR, checkDatePlausibility, getShowById };
