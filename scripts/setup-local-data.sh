@@ -369,7 +369,7 @@ if [ "${1:-}" = "--all" ] && [ "$RT_LINKED" = 0 ]; then
       exit 1
     fi
   elif [ "$AUTH_METHOD" = "proxy" ]; then
-    if ! GIT_TERMINAL_PROMPT=0 run_clone "Proxy clone of broadway-review-texts failed" "Set REVIEW_TEXTS_TOKEN as a fallback." git clone --depth 1 "https://github.com/thomaspryor/broadway-review-texts.git" "$TEMP_DIR/review-texts"; then
+    if ! GIT_TERMINAL_PROMPT=0 run_clone "Proxy clone of broadway-review-texts failed" "The connected GitHub account may lack access to the private repo. Set REVIEW_TEXTS_TOKEN as a fallback." git clone --depth 1 "https://github.com/thomaspryor/broadway-review-texts.git" "$TEMP_DIR/review-texts"; then
       exit 1
     fi
   else

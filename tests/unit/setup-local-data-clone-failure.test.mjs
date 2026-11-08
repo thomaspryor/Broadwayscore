@@ -75,3 +75,22 @@ test('clone_review_texts_source names a full disk on stderr and keeps stdout for
   assert.equal(r.stdout, '');
   assert.match(r.stderr, /disk is full/);
 });
+
+test('a full /tmp (no temp file possible) still names the disk and keeps the ERROR prefix', () => {
+  const bin = stubBin();
+  writeFileSync(path.join(bin, 'mktemp'), '#!/bin/sh\necho "mktemp: No space left on device" >&2\nexit 1\n');
+  chmodSync(path.join(bin, 'mktemp'), 0o755);
+  const r = spawnSync('bash', ['-c', `. "${LIB}"; run_clone "Failed to clone x" "Check your access permissions." git clone u /tmp/x`], {
+    encoding: 'utf8',
+    env: { ...process.env, PATH: `${bin}:${process.env.PATH}`, TMPDIR: '/nonexistent-dir', STUB_ERR: 'fatal: write error: No space left on device', STUB_RC: '128' },
+  });
+  assert.equal(r.status, 128);
+  assert.match(r.stdout, /disk is full/);
+  for (const line of r.stdout.trim().split('\n')) assert.match(line, /^ERROR:/);
+});
+
+test('the command\'s own stdout still reaches the caller', () => {
+  const r = spawnSync('bash', ['-c', `. "${LIB}"; run_clone "x" "y" sh -c 'echo out; echo err >&2'`], { encoding: 'utf8' });
+  assert.equal(r.status, 0);
+  assert.equal(r.stdout, 'out\n');
+});
