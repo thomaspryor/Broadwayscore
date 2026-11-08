@@ -129,6 +129,58 @@ test('ingest dispatches use the same isBotAuthor rule as the press-night record'
   assert.equal(pm.isBotAuthor('GitHub Action', 'action@github.com'), true);
 });
 
+// BRO-7145: script-made wrongProduction clears are the pipeline healing itself, not hands.
+const rp = require(path.join(repoRoot, 'scripts/lib/review-provenance.js'));
+const inWin = '2026-10-30T03:00:00Z';
+
+test('a wrongProduction clear stamped by clear-stale-wrong-production-flags.js is not a hand step', () => {
+  const f = { _file: 'test-show-2026/thestage--a.json', firstSeenAt: inWin, wrongProductionManualClear: true, wrongProductionOverrideSetBy: 'clear-stale-wrong-production-flags.js' };
+  assert.deepEqual(rp.handSteps(f).gating, []);
+  assert.equal(grade({ files: [f] }).verdict, 'on-its-own');
+});
+
+test('a clear with no script setBy (reader form, manual entry) still needs hands, tagged with outlet and cause', () => {
+  const f = { _file: 'test-show-2026/thestage--a.json', firstSeenAt: inWin, wrongProductionManualClear: true };
+  const g = grade({ files: [f] });
+  assert.equal(g.verdict, 'needed-hands');
+  assert.equal(g.signals[0].outletId, 'thestage');
+  assert.equal(g.signals[0].cause, 'wrong-label');
+  assert.match(og.gradeLine(g), /by hand: wrong-production or wrong-show flag \(thestage\)\)/);
+});
+
+test('approved fixes and hand commits carry a cause', () => {
+  const f = { _file: 'test-show-2026/cititour--b.json', firstSeenAt: inWin, approvedFixes: [{ field: 'publishDate', at: inWin }] };
+  const a = grade({ files: [f] }).signals[0];
+  assert.deepEqual([a.kind, a.outletId, a.cause], ['approved-fix', 'cititour', 'date-guard']);
+  assert.equal(og.causeOfSubject('rent-west-end-2026: ingest Guardian review missed by discovery - opening-night monitor'), 'discovery-gap');
+  assert.equal(og.causeOfSubject('fix: criticName for 2 Culture Sauce reviews'), 'attribution');
+  assert.equal(og.causeOfFields(['approvedFix:duplicateOf']), 'duplicate-identity');
+});
+
+test('BRO-7145: bare-name batch script stamps (no .js) are also not hand steps', () => {
+  const { handSteps } = require('../../scripts/lib/review-provenance.js');
+  const r = handSteps({ wrongProductionManualClear: true, wrongProductionOverrideSetBy: 'reverify-era-venue-wrongprod' });
+  assert.ok(!(r.gating || []).includes('wrongProductionManualClear'));
+});
+
+test('BRO-7145: a person-stamped or hand-adjudicated .js clear still needs hands; redirect and wrongProd recover are classified right', () => {
+  const { handSteps } = require('../../scripts/lib/review-provenance.js');
+  for (const by of ['owner', 'clear-contradicted-flag-basis.js', 'fix-wrong-reviews.js:unflag']) {
+    const r = handSteps({ wrongProductionManualClear: true, wrongProductionOverrideSetBy: by });
+    assert.ok(r.gating.includes('wrongProductionManualClear'), by);
+  }
+  assert.equal(og.causeOfSubject('recover wrongProduction flag on X'), 'wrong-label');
+  assert.equal(og.causeOfSubject('fix redirect duplicate'), 'duplicate-identity');
+});
+
+test('BRO-7145: provenance script-clear test agrees with the write guard (except hand-adjudicated scripts)', () => {
+  const { isScriptClearSetBy } = require('../../scripts/lib/review-provenance.js');
+  const guard = require('../../scripts/lib/review-write-guard.js');
+  for (const by of ['x.js', 'reverify-era-venue-wrongprod', 'clear-own-venue-tour-fps-2026-10', 'owner', 'tom', 'verify-existing-reviews.js:recover']) {
+    assert.equal(isScriptClearSetBy(by), guard.isScriptWrongProductionClear({ wrongProductionManualClear: true, wrongProductionOverrideSetBy: by }), by);
+  }
+});
+
 // BRO-7149: undated reviews are what made openings need a person (date-guard class).
 const hpd = require(path.join(repoRoot, 'scripts/lib/html-publish-date.js'));
 test('resolveMissingPublishDate: html first, then strict byline, never prose or run dates', () => {

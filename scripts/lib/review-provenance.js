@@ -29,6 +29,30 @@ function sanitizeCaller(v) {
   return CALLER_RE.test(s) ? s : null;
 }
 
+/**
+ * One-off scripts that only APPLY a person's verdict (hand-adjudicated lists). Their clears
+ * are hands even though a script stamped them (BRO-7145 review).
+ */
+const HAND_ADJUDICATED_CLEAR_SCRIPTS = new Set([
+  'clear-contradicted-flag-basis', 'clear-contradicted-flag-basis-bro2772', 'fix-wrong-reviews',
+]);
+
+/**
+ * A wrongProduction clear stamped by a script rather than a person. Mirrors
+ * review-write-guard's isScriptWrongProductionClear (".js" names plus the bare-name batch
+ * scripts, BRO-5239) WITHOUT importing it: the guard pulls the scraper into the morning
+ * digest's import closure. A parity test in opening-grade.test.mjs keeps the two equal.
+ */
+const SCRIPT_CLEAR_BARE_NAMES = new Set([
+  'clear-own-venue-tour-fps-2026-10', 'reverify-era-venue-wrongprod', 'clear-we-longrunner-fps-2026-04-24',
+]);
+function isScriptClearSetBy(by) {
+  if (typeof by !== 'string' || !by.trim()) return false;
+  const t = by.trim();
+  if (HAND_ADJUDICATED_CLEAR_SCRIPTS.has(t.replace(/\.js\b.*$/, ''))) return false;
+  return /\.js\b/.test(t) || SCRIPT_CLEAR_BARE_NAMES.has(t);
+}
+
 /** Steps a person took that a file needed before it could go live. */
 function handSteps(file) {
   const gating = [];
@@ -38,7 +62,14 @@ function handSteps(file) {
   for (const fx of Array.isArray(file.approvedFixes) ? file.approvedFixes : []) {
     (GATING_FIX_FIELDS.has(fx && fx.field) ? gating : cosmetic).push(`approvedFix:${fx && fx.field}`);
   }
-  if (file.wrongProductionManualClear) gating.push('wrongProductionManualClear');
+  if (file.wrongProductionManualClear) {
+    // BRO-7145: the weekly clear-stale-wrong-production-flags sweep (and other
+    // scripts) write ManualClear=true as a durable breadcrumb. A clear stamped
+    // by a script is the pipeline healing itself, not a person stepping in
+    // (24 of 67 hand-steps in the 2026-09-08..11-05 baseline). A clear with no
+    // setBy stays a hand step (the reader form, manual entry, an owner fix).
+    (isScriptClearSetBy(file.wrongProductionOverrideSetBy) ? cosmetic : gating).push('wrongProductionManualClear');
+  }
   if (file.suspectedMisattributionClearedNote) cosmetic.push('misattributionCleared');
   if (file.humanReviewScore != null) gating.push('humanReviewScore');
   return { gating, cosmetic };
@@ -95,6 +126,7 @@ function stampIngestOrigin(data, env = process.env) {
 }
 
 module.exports = {
+  isScriptClearSetBy,
   GATING_FIX_FIELDS, HAND_CALLERS, CALLER_DECIDES_SOURCES,
   sanitizeCaller, handSteps, discoveryMode, originFor, stampIngestOrigin,
 };
