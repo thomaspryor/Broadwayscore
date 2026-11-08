@@ -23,6 +23,7 @@ const { findOwnerDecisions } = require('./owner-decision-notify.js');
 const { holdReason } = require('./owner-decision-quiet-period.js');
 const { isAutomationParked, OWNER_HOLD_PARK_RE, visualAskOpen, commentClearsOwnerGate } = require('./headless-dispatchability.js');
 const { parseRecheckAfterFromCard } = require('./recheck-stamp.js');
+const { recheckVerdict } = require('./check-env-cause.js');
 const { skipReason, historySkipReason } = require('./cloud-worker-pick.js');
 const { codexBouncedRecently, codexBounceCapped } = require('./codex-runner.js');
 const { proseDateWait } = require('./prose-date-wait.js');
@@ -227,6 +228,8 @@ function categorizeBoard(issues, { now = new Date(), secret = null, lastRecheckS
       url: issue.url || null,
       priority: Number(issue.priority) || 0,
       state: issue.state && issue.state.name || null,
+      // BRO-7137: the digest's stuck-pile count reads card age from this same report.
+      createdAt: issue.createdAt || null,
       category,
       reason: category === 'other' ? reason : null,
       traits: CATEGORIES.map((c) => c.key).filter((k) => k !== 'other' && traits.has(k)),
@@ -321,7 +324,8 @@ function lastRecheckStatuses(entries) {
   const rows = (entries || []).filter(Boolean).slice().sort((a, b) => String(a.ts || '').localeCompare(String(b.ts || '')));
   for (const e of rows) {
     if (!e || e.event !== 'recheck' || !/^BRO-\d+$/.test(String(e.cardId || '')) || !e.status) continue;
-    out.set(e.cardId, e.status);
+    // BRO-7138: a check that could not run on the recheck machine did not fail.
+    out.set(e.cardId, recheckVerdict(e).status);
   }
   return out;
 }

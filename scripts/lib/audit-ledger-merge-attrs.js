@@ -246,6 +246,14 @@ const EXEMPT_LEDGERS = [
       'script, so merge=union protects nothing and could mask a conflicting ' +
       'fixture edit.',
   },
+  {
+    file: 'scripts/lib/fixtures/recheck-real-fails-2026-11.jsonl',
+    reason:
+      '2026-11-08 (BRO-7138): static snapshot of real recheck-ledger fail rows ' +
+      'read by check-env-cause / recheck-route tests. Hand-captured once, never ' +
+      'appended to by any script, so merge=union protects nothing and could ' +
+      'mask a conflicting fixture edit.',
+  },
 ];
 
 // BRO-5951 cross-model audit caches: single-writer one-off audit outputs. readRows()

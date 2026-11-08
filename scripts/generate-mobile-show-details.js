@@ -18,6 +18,7 @@ const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
 const { loadReviewsWithBlog } = require('./lib/load-reviews-with-blog');
+const { formatOriginalRating } = require('./lib/format-original-rating');
 const { getTier: getAuthoritativeTier } = require('./lib/outlet-tiers');
 const { computeSlimCriticScore } = require('./lib/slim-critic-score');
 const { consensusDisplayCount } = require('./lib/consensus-display-count');
@@ -572,6 +573,9 @@ for (const show of visibleShows) {
       if (r.publishDate) entry.d = r.publishDate;
       if (r.pullQuote) entry.q = r.pullQuote;
       if (r.designation) entry.dg = r.designation;
+      // The critic's published rating ("4/5 stars", "B+"), display-ready; the app shows it by the date.
+      const rating = formatOriginalRating(r.originalRating);
+      if (rating) entry.or = rating;
       // Top critic promoted to T1: the app's tier sheet says why (BRO-4881).
       if (isTopCritic) entry.tc = 1;
 

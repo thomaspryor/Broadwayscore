@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-08T17:42:26.733Z",
+  "timestamp": "2026-11-08T18:59:09.323Z",
   "stats": {
     "totalReviews": 80578,
-    "alreadyFlagged": 22056,
-    "dateGuardCatches": 217,
-    "directorMismatch": 3553,
+    "alreadyFlagged": 22064,
+    "dateGuardCatches": 219,
+    "directorMismatch": 3562,
     "tvFilmSignals": 2293,
-    "londonSignals": 3633,
-    "offBroadwaySignals": 748,
-    "yearMismatch": 363,
-    "noPublishDate": 8416
+    "londonSignals": 3635,
+    "offBroadwaySignals": 749,
+    "yearMismatch": 367,
+    "noPublishDate": 8410
   },
   "findings": [
     {
@@ -5884,6 +5884,19 @@
       "score": 82,
       "publishDate": "November 8, 2012",
       "url": "https://www.washingtonpost.com/entertainment/theater_dance/for-annie-actress-on-broadway-the-sun-has-come-out/2012/11/08/69514322-29e1-11e2-aaa5-ac786110c486_story.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"martin charnin\" from annie-1997"
+        }
+      ]
+    },
+    {
+      "showId": "annie-2012",
+      "file": "wsj--terry-teachout.json",
+      "publishDate": "2012-11-09",
+      "url": "https://www.wsj.com/articles/SB10001424127887323894704578106924093403596",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -14787,6 +14800,19 @@
       ]
     },
     {
+      "showId": "cult-of-love-2024",
+      "file": "washpost--peter-marks.json",
+      "publishDate": null,
+      "url": "https://www.washingtonpost.com/entertainment/theater/2024/12/12/cult-of-love-broadway-shailene-woodley-zachary-quinto/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
       "showId": "curse-of-the-starving-class-off-broadway-2025",
       "file": "new-york-sun--elysa-gardner.json",
       "score": 78,
@@ -16432,6 +16458,20 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2026 (3x) more than 2016 (0x). 2026 matches production: dear-evan-hansen-regional-2026"
+        }
+      ]
+    },
+    {
+      "showId": "dear-evan-hansen-off-broadway-2016",
+      "file": "washpost--peter-marks.json",
+      "score": 94,
+      "publishDate": "2016-05-02",
+      "url": "https://www.washingtonpost.com/news/arts-and-entertainment/wp/2016/05/01/bring-the-tissue-box-to-the-extraordinary-dear-evan-hansen/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael greif\" from dear-evan-hansen-2016"
         }
       ]
     },
@@ -19593,6 +19633,20 @@
       ]
     },
     {
+      "showId": "eclipsed-off-broadway-2015",
+      "file": "wsj--terry-teachout.json",
+      "score": 90,
+      "publishDate": "2015-10-15",
+      "url": "http://www.wsj.com/articles/eclipsed-review-a-world-made-by-madmen-1444947200",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"liesl tommy\" from eclipsed-2016"
+        }
+      ]
+    },
+    {
       "showId": "ectoplasm-off-broadway-2026",
       "file": "spitnvigor--unknown.json",
       "publishDate": null,
@@ -20196,6 +20250,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"season 6\""
+        }
+      ]
+    },
+    {
+      "showId": "english-off-broadway-2022",
+      "file": "washpost--peter-marks.json",
+      "score": 88,
+      "publishDate": null,
+      "url": "https://www.washingtonpost.com/theater-dance/2022/03/01/english-iran-atlantic-theater-review/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"knud adams\" from english-2025"
         }
       ]
     },
@@ -21555,6 +21623,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"season 4\""
+        }
+      ]
+    },
+    {
+      "showId": "fences-2010",
+      "file": "wsj--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.wsj.com/articles/BL-SEB-31268?gaa_at=eafs&gaa_n=AWEtsqcuKiIxNc3JV2LCfyR6PyBQzIiWzevjH9I73EYi77z6xUQK6_4WZxay&gaa_ts=69d02018&gaa_sig=SntuVlW00KG1GktITuSMwAIGMUP5ztY-Tqd4tNPShviH5_KQ0DTl-UFq0L7nhBKzZ2iBoxcGA6u17zbYa4Jftw%3D%3D",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2026 (3x) more than 2010 (1x). 2026 matches production: fences-off-west-end-2026"
         }
       ]
     },
@@ -29043,6 +29125,25 @@
       ]
     },
     {
+      "showId": "hangmen-off-broadway-2018",
+      "file": "wsj--terry-teachout.json",
+      "score": 91,
+      "publishDate": "February 15th, 2018",
+      "url": "https://www.wsj.com/articles/hangmen-review-a-comedy-as-black-as-sin-1518719052",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"matthew dunster\" from hangmen-2022"
+        },
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2015 (2x) more than 2018 (1x). 2015 matches production: hangmen-west-end-2015"
+        }
+      ]
+    },
+    {
       "showId": "hansard-west-end-2019",
       "file": "nytimes--matt-wolf.json",
       "score": 63,
@@ -33600,25 +33701,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
-        }
-      ]
-    },
-    {
-      "showId": "into-the-woods-2022",
-      "file": "thestage--neil-norman.json",
-      "score": 80,
-      "publishDate": "2022-08-25",
-      "url": "https://www.thestage.co.uk/long-reviews/into-the-woods-directed-by-terry-gilliam-review-at-theatre-royal-bath",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
-        },
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -40609,6 +40691,19 @@
       ]
     },
     {
+      "showId": "m-butterfly-2017",
+      "file": "wsj--terry-teachout.json",
+      "publishDate": "October 26th, 2017",
+      "url": "https://www.wsj.com/articles/m-butterfly-review-too-busy-to-take-flight-1509064201",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"john dexter\" from m-butterfly-1988"
+        }
+      ]
+    },
+    {
       "showId": "macbeth-1981",
       "file": "lighting-and-sound-america--david-barbour.json",
       "score": 43,
@@ -44576,7 +44671,7 @@
         {
           "type": "DATE_GUARD",
           "severity": "HIGH",
-          "detail": "Published 490d before show (2024-11-18 vs 2026-03-23)"
+          "detail": "Published 574d before show (2024-11-18 vs 2026-06-15)"
         }
       ]
     },
@@ -44618,7 +44713,7 @@
         {
           "type": "DATE_GUARD",
           "severity": "HIGH",
-          "detail": "Published 487d before show (2024-11-21 vs 2026-03-23)"
+          "detail": "Published 571d before show (2024-11-21 vs 2026-06-15)"
         },
         {
           "type": "TV_FILM_SIGNAL",
@@ -44656,7 +44751,7 @@
         {
           "type": "DATE_GUARD",
           "severity": "HIGH",
-          "detail": "Published 491d before show (November 17th, 2024 vs 2026-03-23)"
+          "detail": "Published 575d before show (November 17th, 2024 vs 2026-06-15)"
         },
         {
           "type": "TV_FILM_SIGNAL",
@@ -44714,6 +44809,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "my-fair-lady-2018",
+      "file": "wsj--terry-teachout.json",
+      "publishDate": "April 19th, 2018",
+      "url": "https://www.wsj.com/articles/my-fair-lady-review-grown-accustomed-to-success-1524184200",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2026 (3x) more than 2018 (1x). 2026 matches production: my-fair-lady-chichester-festival-regional-2026"
         }
       ]
     },
@@ -44868,7 +44976,7 @@
         {
           "type": "DATE_GUARD",
           "severity": "HIGH",
-          "detail": "Published 575d before show (October 20th, 2022 vs 2024-05-17)"
+          "detail": "Published 870d before show (October 20th, 2022 vs 2025-03-08)"
         },
         {
           "type": "LONDON_SIGNAL",
@@ -44887,7 +44995,7 @@
         {
           "type": "DATE_GUARD",
           "severity": "HIGH",
-          "detail": "Published 575d before show (October 20th, 2022 vs 2024-05-17)"
+          "detail": "Published 870d before show (October 20th, 2022 vs 2025-03-08)"
         }
       ]
     },
@@ -44901,7 +45009,7 @@
         {
           "type": "DATE_GUARD",
           "severity": "HIGH",
-          "detail": "Published 576d before show (2022-10-19 vs 2024-05-17)"
+          "detail": "Published 871d before show (2022-10-19 vs 2025-03-08)"
         }
       ]
     },
@@ -44915,7 +45023,7 @@
         {
           "type": "DATE_GUARD",
           "severity": "HIGH",
-          "detail": "Published 576d before show (2022-10-19 vs 2024-05-17)"
+          "detail": "Published 871d before show (2022-10-19 vs 2025-03-08)"
         }
       ]
     },
@@ -44929,7 +45037,7 @@
         {
           "type": "DATE_GUARD",
           "severity": "HIGH",
-          "detail": "Published 568d before show (2022-10-27 vs 2024-05-17)"
+          "detail": "Published 863d before show (2022-10-27 vs 2025-03-08)"
         },
         {
           "type": "LONDON_SIGNAL",
@@ -44948,7 +45056,7 @@
         {
           "type": "DATE_GUARD",
           "severity": "HIGH",
-          "detail": "Published 576d before show (2022-10-19 vs 2024-05-17)"
+          "detail": "Published 871d before show (2022-10-19 vs 2025-03-08)"
         },
         {
           "type": "LONDON_SIGNAL",
@@ -44967,7 +45075,7 @@
         {
           "type": "DATE_GUARD",
           "severity": "HIGH",
-          "detail": "Published 576d before show (2022-10-19 vs 2024-05-17)"
+          "detail": "Published 871d before show (2022-10-19 vs 2025-03-08)"
         },
         {
           "type": "LONDON_SIGNAL",
@@ -44986,7 +45094,7 @@
         {
           "type": "DATE_GUARD",
           "severity": "HIGH",
-          "detail": "Published 576d before show (October 19th, 2022 vs 2024-05-17)"
+          "detail": "Published 871d before show (October 19th, 2022 vs 2025-03-08)"
         },
         {
           "type": "LONDON_SIGNAL",
@@ -45005,7 +45113,7 @@
         {
           "type": "DATE_GUARD",
           "severity": "HIGH",
-          "detail": "Published 556d before show (2022-11-08 vs 2024-05-17)"
+          "detail": "Published 851d before show (2022-11-08 vs 2025-03-08)"
         },
         {
           "type": "LONDON_SIGNAL",
@@ -45024,7 +45132,7 @@
         {
           "type": "DATE_GUARD",
           "severity": "HIGH",
-          "detail": "Published 576d before show (2022-10-19 vs 2024-05-17)"
+          "detail": "Published 871d before show (2022-10-19 vs 2025-03-08)"
         }
       ]
     },
@@ -45038,7 +45146,7 @@
         {
           "type": "DATE_GUARD",
           "severity": "HIGH",
-          "detail": "Published 581d before show (2022-10-14 vs 2024-05-17)"
+          "detail": "Published 876d before show (2022-10-14 vs 2025-03-08)"
         }
       ]
     },
@@ -45052,7 +45160,7 @@
         {
           "type": "DATE_GUARD",
           "severity": "HIGH",
-          "detail": "Published 575d before show (October 20th, 2022 vs 2024-05-17)"
+          "detail": "Published 870d before show (October 20th, 2022 vs 2025-03-08)"
         },
         {
           "type": "LONDON_SIGNAL",
@@ -45071,7 +45179,7 @@
         {
           "type": "DATE_GUARD",
           "severity": "HIGH",
-          "detail": "Published 561d before show (2022-11-03 vs 2024-05-17)"
+          "detail": "Published 856d before show (2022-11-03 vs 2025-03-08)"
         },
         {
           "type": "TV_FILM_SIGNAL",
@@ -45095,7 +45203,7 @@
         {
           "type": "DATE_GUARD",
           "severity": "HIGH",
-          "detail": "Published 572d before show (2022-10-23 vs 2024-05-17)"
+          "detail": "Published 867d before show (2022-10-23 vs 2025-03-08)"
         },
         {
           "type": "LONDON_SIGNAL",
@@ -45114,7 +45222,7 @@
         {
           "type": "DATE_GUARD",
           "severity": "HIGH",
-          "detail": "Published 575d before show (October 20th, 2022 vs 2024-05-17)"
+          "detail": "Published 870d before show (October 20th, 2022 vs 2025-03-08)"
         },
         {
           "type": "LONDON_SIGNAL",
@@ -45133,7 +45241,7 @@
         {
           "type": "DATE_GUARD",
           "severity": "HIGH",
-          "detail": "Published 573d before show (2022-10-22 vs 2024-05-17)"
+          "detail": "Published 868d before show (2022-10-22 vs 2025-03-08)"
         }
       ]
     },
@@ -45147,7 +45255,7 @@
         {
           "type": "DATE_GUARD",
           "severity": "HIGH",
-          "detail": "Published 577d before show (2022-10-18 vs 2024-05-17)"
+          "detail": "Published 872d before show (2022-10-18 vs 2025-03-08)"
         }
       ]
     },
@@ -45161,7 +45269,7 @@
         {
           "type": "DATE_GUARD",
           "severity": "HIGH",
-          "detail": "Published 575d before show (2022-10-20 vs 2024-05-17)"
+          "detail": "Published 870d before show (2022-10-20 vs 2025-03-08)"
         },
         {
           "type": "LONDON_SIGNAL",
@@ -45180,7 +45288,7 @@
         {
           "type": "DATE_GUARD",
           "severity": "HIGH",
-          "detail": "Published 576d before show (October 19th, 2022 vs 2024-05-17)"
+          "detail": "Published 871d before show (October 19th, 2022 vs 2025-03-08)"
         }
       ]
     },
@@ -45193,7 +45301,7 @@
         {
           "type": "DATE_GUARD",
           "severity": "HIGH",
-          "detail": "Published 579d before show (2022-10-16 vs 2024-05-17)"
+          "detail": "Published 874d before show (2022-10-16 vs 2025-03-08)"
         },
         {
           "type": "TV_FILM_SIGNAL",
@@ -45217,7 +45325,7 @@
         {
           "type": "DATE_GUARD",
           "severity": "HIGH",
-          "detail": "Published 576d before show (October 19th, 2022 vs 2024-05-17)"
+          "detail": "Published 871d before show (October 19th, 2022 vs 2025-03-08)"
         }
       ]
     },
@@ -45231,7 +45339,7 @@
         {
           "type": "DATE_GUARD",
           "severity": "HIGH",
-          "detail": "Published 575d before show (October 20th, 2022 vs 2024-05-17)"
+          "detail": "Published 870d before show (October 20th, 2022 vs 2025-03-08)"
         }
       ]
     },
@@ -48524,6 +48632,7 @@
     {
       "showId": "other-desert-cities-2026",
       "file": "the-komisar-scoop--unknown.json",
+      "score": 58,
       "publishDate": "2026-11-05",
       "url": "https://www.thekomisarscoop.com/2026/11/other-desert-cities-a-political-soap-opera-that-trips-over-a-red-herring/",
       "findings": [
@@ -49544,6 +49653,24 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"michael arden\" from parade-2023"
+        }
+      ]
+    },
+    {
+      "showId": "parade-tour-2025",
+      "file": "washpost--thomas-floyd.json",
+      "publishDate": "2025-08-22",
+      "url": "https://www.washingtonpost.com/entertainment/theater/2025/08/22/parade-kennedy-center-review/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael arden\" from parade-2023"
+        },
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2023 (2x) more than 2025 (0x). 2023 matches production: parade-2023"
         }
       ]
     },
@@ -61810,6 +61937,19 @@
       ]
     },
     {
+      "showId": "sweat-off-broadway-2016",
+      "file": "wsj--terry-teachout.json",
+      "publishDate": "2016-11-03",
+      "url": "http://www.wsj.com/articles/sweat-review-when-your-job-is-your-life-1478219403",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"kate whoriskey\" from sweat-2017"
+        }
+      ]
+    },
+    {
       "showId": "sweeney-todd-2005",
       "file": "nytimes--ben-brantley.json",
       "score": 93,
@@ -62539,6 +62679,20 @@
       "score": 78,
       "publishDate": "November 21st, 2016",
       "url": "https://www.washingtonpost.com/entertainment/theater_dance/review-foster-shines-in-perky-revival-of-sweet-charity/2016/11/21/4f9d5920-affc-11e6-bc2d-19b3d759cfe7_story.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bob fosse\" from sweet-charity-1986"
+        }
+      ]
+    },
+    {
+      "showId": "sweet-charity-off-broadway-2016",
+      "file": "wsj--terry-teachout.json",
+      "score": 91,
+      "publishDate": "2016-11-24",
+      "url": "http://www.wsj.com/articles/sutton-foster-stars-a-revival-of-neil-simons-sweet-charity-1480023229",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -83878,6 +84032,20 @@
       ]
     },
     {
+      "showId": "whos-afraid-of-virginia-woolf-2020",
+      "file": "wsj--charles-isherwood.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.wsj.com/articles/whos-afraid-of-virginia-woolf-review-pain-and-promise-whos-afraid-of-virginia-woolf-edward-albee-calista-flockart-zachary-quinto-gordon-greenberg-graham-phillips-aimee-carrero-11652382337",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"edward albee\" from whos-afraid-of-virginia-woolf-1976"
+        }
+      ]
+    },
+    {
       "showId": "whos-afraid-of-virginia-woolf-west-end-2017",
       "file": "artsdesk--unknown.json",
       "score": 76,
@@ -90234,7 +90402,7 @@
     {
       "showId": "ballet-shoes-west-end-2024",
       "file": "telegraph--dominic-cavendish.json",
-      "score": 98,
+      "score": 93,
       "publishDate": "2024-12-06",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/ballet-shoes-national-theatre-review/",
       "findings": [
@@ -94349,6 +94517,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "company-tour-2023",
+      "file": "wsj--charles-isherwood.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.wsj.com/articles/buena-vista-social-club-review-cuban-musical-atlantic-theater-company-6f575112",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"atlantic theater\""
         }
       ]
     },
@@ -109674,6 +109856,19 @@
       ]
     },
     {
+      "showId": "les-miserables-tour-2022",
+      "file": "washpost--zachary-pincus-roth.json",
+      "publishDate": "2025-06-14",
+      "url": "https://www.washingtonpost.com/entertainment/theater/2025/06/11/les-miserables-kennedy-center-trump-fundraiser/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "let-it-be-west-end-2014",
       "file": "london-box-office--phil-willmott.json",
       "score": 59,
@@ -110271,6 +110466,20 @@
       "score": 78,
       "publishDate": "2023-03-02",
       "url": "https://www.vulture.com/2023/03/theater-review-love-zeldin-park-avenue-armory.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "love-off-broadway-2023",
+      "file": "wsj--charles-isherwood.json",
+      "score": 64,
+      "publishDate": "March 2nd, 2023",
+      "url": "https://www.wsj.com/articles/love-review-a-naturalistic-look-at-lives-in-limbo-482b035d",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -114037,7 +114246,7 @@
         {
           "type": "DATE_GUARD",
           "severity": "MEDIUM",
-          "detail": "Published 58d before show (2024-03-20 vs 2024-05-17)"
+          "detail": "Published 353d before show (2024-03-20 vs 2025-03-08)"
         },
         {
           "type": "LONDON_SIGNAL",
@@ -116238,6 +116447,11 @@
       "url": "https://www.dailymail.co.uk/tvshowbiz/article-13674445/Oliver-review-Dickens-writes-GEORGINA-BROWN.html",
       "findings": [
         {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 141d before show (2024-07-26 vs 2024-12-14)"
+        },
+        {
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
@@ -116362,6 +116576,11 @@
       "publishDate": "2024-07-25",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/oliver-musical-review-matthew-bourne-revival-tqnw6rp2z",
       "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 142d before show (2024-07-25 vs 2024-12-14)"
+        },
         {
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
@@ -123966,6 +124185,19 @@
       ]
     },
     {
+      "showId": "suffs-tour-2025",
+      "file": "washpost--thomas-floyd.json",
+      "publishDate": "2026-06-18",
+      "url": "https://www.washingtonpost.com/entertainment/theater/2026/06/18/suffragist-musical-suffs-arrives-trumps-dc/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
       "showId": "summerfolk-west-end-2026",
       "file": "broadwayworld--gary-naylor.json",
       "score": 82,
@@ -131359,6 +131591,7 @@
     {
       "showId": "the-lives-of-others-west-end-2026",
       "file": "partially-obstructed-view--view-my-complete.json",
+      "score": 76,
       "publishDate": "2026-11-05",
       "url": "http://partially-obstructed-view.blogspot.com/2026/11/theatre-review-lives-of-others.html",
       "findings": [
@@ -138161,20 +138394,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"almeida\""
-        }
-      ]
-    },
-    {
-      "showId": "trouble-in-mind-2021",
-      "file": "guardian--arifa-akbar.json",
-      "score": 62,
-      "publishDate": "2021-12-10",
-      "url": "https://www.theguardian.com/stage/2021/dec/10/trouble-in-mind-review-national-theatre",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"dorfman\""
         }
       ]
     },

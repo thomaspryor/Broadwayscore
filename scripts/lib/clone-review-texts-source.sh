@@ -17,8 +17,13 @@
 # git rejects the ref ("shallow roots are not allowed to be updated").
 clone_review_texts_source() {
   local src="$1" dest="$2" sha
-  if ! git clone -q "$src" "$dest"; then
-    echo "ERROR: Local clone of $src failed." >&2
+  # BRO-7130: run_clone names the real cause (e.g. a full disk). stdout carries
+  # only the sha, so its diagnostics go to stderr.
+  if ! declare -F run_clone >/dev/null; then
+    # shellcheck source=clone-failure.sh
+    . "$(dirname "${BASH_SOURCE[0]}")/clone-failure.sh" || return 1
+  fi
+  if ! run_clone "Local clone of $src failed" "" git clone -q "$src" "$dest" >&2; then
     return 1
   fi
   if sha="$(git -C "$src" rev-parse -q --verify 'refs/remotes/origin/main^{commit}')"; then

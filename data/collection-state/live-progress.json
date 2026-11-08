@@ -1,38 +1,21 @@
 {
-  "updatedAt": "2026-11-08T17:48:02.826Z",
-  "processed": 1154,
-  "failed": 522,
-  "successRate": "68.9%",
+  "updatedAt": "2026-11-08T19:14:26.221Z",
+  "processed": 1160,
+  "failed": 525,
+  "successRate": "68.8%",
   "tierBreakdown": {
-    "playwright": 384,
+    "playwright": 387,
     "amp": 0,
     "browserbase": 23,
     "directCookies": 0,
-    "scrapingdog": 61,
+    "scrapingdog": 62,
     "scrapingbee": 35,
-    "brightdata": 0,
+    "brightdata": 17,
     "archiveToday": 0,
     "archive": 502
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 3,
   "recentActivity": [
-    {
-      "t": "2026-11-08T11:34:53.455Z",
-      "event": "bb-session",
-      "session": "a95a9f7c",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/tracee-ellis-ross-broadway-ever"
-    },
-    {
-      "t": "2026-11-08T11:37:45.021Z",
-      "event": "bb-session",
-      "session": "2575f017",
-      "url": "https://www.nytimes.com/2026/03/06/theater/jordan-fein-broken-glass.html"
-    },
-    {
-      "t": "2026-11-08T11:37:45.366Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-11-08T11:52:24.394Z",
       "event": "bb-session",
@@ -113,22 +96,37 @@
       "domain": "nytimes.com"
     },
     {
-      "t": "2026-11-08T17:05:53.130Z",
+      "t": "2026-11-08T19:07:52.164Z",
       "event": "bb-session",
-      "session": "fe06364f",
-      "url": "https://bachtrack.com/review-lorfeo-william-kentridge-greek-national-opera-athen"
+      "session": "e5234e4d",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655534"
     },
     {
-      "t": "2026-11-08T17:06:28.114Z",
-      "event": "bb-session",
-      "session": "a3e15716",
-      "url": "https://bachtrack.com/review-shostakovich-cherry-town-ahlbom-dutch-national-oper"
+      "t": "2026-11-08T19:07:52.786Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     },
     {
-      "t": "2026-11-08T17:07:32.423Z",
+      "t": "2026-11-08T19:08:26.904Z",
       "event": "bb-session",
-      "session": "8740a5d5",
-      "url": "https://bachtrack.com/review-nozze-figaro-pountney-conta-bucharest-national-oper"
+      "session": "411108bd",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655510"
+    },
+    {
+      "t": "2026-11-08T19:08:27.509Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-08T19:14:04.420Z",
+      "event": "bb-session",
+      "session": "a0210ca4",
+      "url": "https://hermes.talkinbroadway.com/allthatchat_new/d.php?id=2655044"
+    },
+    {
+      "t": "2026-11-08T19:14:05.032Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }

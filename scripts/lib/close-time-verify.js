@@ -210,8 +210,11 @@ function decideClose({ dispatch = null, verifyResult = null, disabled = false, b
   // with `missingPath: true` rather than letting the command fail — so this
   // refusal must not depend on status being 'fail' any more, only on the
   // path being confirmed absent from origin/main either way.
-  const notOnMain = verifyResult.missingPath === true ||
-    /could not find|cannot find module|no such file or directory/i.test(String(verifyResult.detail || ''));
+  // BRO-7138: an envCause result ("TS2307: Cannot find module
+  // '../../data/cast-manifest.json'", a gitignored generated file) is the
+  // check machine lacking something, not a path missing from main.
+  const notOnMain = verifyResult.missingPath === true || (!verifyResult.envCause &&
+    /could not find|cannot find module|no such file or directory/i.test(String(verifyResult.detail || '')));
   if (notOnMain) {
     return {
       allowed: false,

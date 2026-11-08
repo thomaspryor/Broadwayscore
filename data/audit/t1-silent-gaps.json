@@ -1,31 +1,7 @@
 {
-  "generatedAt": "2026-11-08T17:41:05.193Z",
+  "generatedAt": "2026-11-08T18:35:44.830Z",
   "windowDays": 45,
   "showsScanned": 248,
-  "gaps": [
-    {
-      "showId": "lincoln-in-the-bardo-off-broadway-2026",
-      "title": "Lincoln in the Bardo",
-      "openingDate": "2026-10-19",
-      "file": "washpost--philip-kennicott.json",
-      "outletId": "washpost",
-      "tier": 1,
-      "type": "unscored",
-      "dispatchable": false,
-      "skipReason": "no_scorable_text",
-      "fetchAbandoned": true,
-      "recoverable": false,
-      "url": "https://www.washingtonpost.com/entertainment/theater/2026/10/22/how-lincoln-bardo-found-words-presidents-operatic-grief/",
-      "recovery": null,
-      "recoveryCount": 0,
-      "forumLinkRecoveryCount": 0,
-      "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=lincoln-in-the-bardo-off-broadway-2026",
-      "firstSeen": "2026-10-25T17:52:33.957Z",
-      "fileAgeHours": 335.8074786111111,
-      "gapSeenAt": "2026-10-26T08:25:16.367Z",
-      "nonTerminalAgeHours": 321.2635625,
-      "needsManualRecovery": true
-    }
-  ],
+  "gaps": [],
   "contradictions": []
 }

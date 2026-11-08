@@ -1934,11 +1934,12 @@ function _mergeIntoExisting(filepath, existing, ctx) {
   // invalid, merge-reviews-json TIER_RANK). A split parent's section is
   // complete, so its whole article must be complete too; any other stored
   // body must be strictly beaten, or matched only by 'complete'.
-  const _bodyUpgradeTierOk = () => {
+  const _bodyUpgradeTierOk = ({ requireComplete = false } = {}) => {
     const { tierRank } = require('./merge-reviews-json');
     const r = classifyContentTier({ ...existing, fullText: fields.fullText, contentTier: undefined });
     const cand = r && r.contentTier;
     if (!cand) return false;
+    if (requireComplete && cand !== 'complete') return false;
     if (existing.multiShowSplitParent === true) {
       if (cand !== 'complete') return false;
       // The fan-out that follows must be able to act on the whole article
@@ -1989,8 +1990,13 @@ function _mergeIntoExisting(filepath, existing, ctx) {
       });
     } catch { return false; }
   };
+  // BRO-7131: the same-url teaser rule skips the lede/shingle proof, so it only takes a COMPLETE incoming body (a
+  // consent or paywall page at the same url must not beat a stored excerpt on length alone).
+  const _sameUrl = () => !!(existing.url && input.url && require('./review-url-collision').sameArticleUrl(existing.url, input.url));
+  const _teaserOnly = () => !isSameArticleBodyUpgrade(existing, fields.fullText);
   if (input && input.replaceBadBody === true && typeof fields.fullText === 'string'
-      && (isSameArticleBodyUpgrade(existing, fields.fullText)
+      && ((isSameArticleBodyUpgrade(existing, fields.fullText, { sameUrl: _sameUrl() })
+        && (!_teaserOnly() || _bodyUpgradeTierOk({ requireComplete: true })))
         || (_multiShowWhole() && isSameArticleBodyUpgrade(existing, fields.fullText, { multiShowWhole: true })))
       && _bodyUpgradeTierOk()) {
     console.log(`  ↑ Replacing stored body (${fullTextBefore.length} chars) with a longer copy of the same article (${fields.fullText.length} chars)`);

@@ -8,5 +8,6 @@ export const {
   MIN_CREATED_FOR_ALARM, DIGEST_GRAPHQL_OPTS, buildInflowCountQuery, windowStart,
   buildCreatedFilter, buildCompletedFilter, buildCanceledFilter, buildOpenFilter,
   fetchInflowCounts, assessInflowRatio, countMatching,
+  STUCK_AGE_DAYS, READY_MIN, summarizeStuckPile, withBacklogHealth,
 } = inflow;
 export default inflow;

@@ -82,11 +82,12 @@ function buildIssueQuery() {
       priority
       url
       startedAt
+      updatedAt
       completedAt
       state { id name type }
       project { name }
       labels(first: 20) { nodes { id name } }
-      comments(first: 50, orderBy: createdAt) { nodes { id body createdAt user { name } } }
+      comments(first: 250, orderBy: createdAt) { nodes { id body createdAt user { name } } }
       relations(first: ${RELATIONS_PAGE_SIZE}) { nodes { type relatedIssue { id identifier } } }
     }
   }`;

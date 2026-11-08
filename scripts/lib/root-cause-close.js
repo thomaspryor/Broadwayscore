@@ -11,6 +11,10 @@
  *   COUSINS: where else the pattern was searched, what was found and fixed
  * or opt out with one line:
  *   NO-ROOT-CAUSE: <reason>   (counted as a spot fix in the digest share)
+ * and, spot fix or not (BRO-7138: done claims that never had their effect):
+ *   EFFECT: what was measured on real data after landing, before and after
+ *           (a NEW check, gate or rule: its dry run over real past inputs and hit rate)
+ * or NO-EFFECT-CHECK: <reason>.
  *
  * ADVISORY until ROOT_CAUSE_CLOSE_BLOCKING_FROM: linear-done-gate.js adds a
  * warning and never refuses. From that date it refuses, unless
@@ -27,6 +31,11 @@
 'use strict';
 
 const ROOT_CAUSE_CLOSE_BLOCKING_FROM = '2026-12-22';
+// BRO-7138: EFFECT is newer, so a close missing ONLY EFFECT gets its own,
+// later date (four weeks after ROOT-CAUSE) and its own advisory notice.
+const EFFECT_CLOSE_BLOCKING_FROM = '2027-01-19';
+const onlyEffectMissing = (r) => !!(r && Array.isArray(r.missing) && r.missing.length && r.missing.every((m) => m === 'EFFECT'));
+const blockingFromFor = (r) => (onlyEffectMissing(r) ? EFFECT_CLOSE_BLOCKING_FROM : ROOT_CAUSE_CLOSE_BLOCKING_FROM);
 const MIN_FIELD_CHARS = 10;
 
 // "red" only as a CI state ("main red: x", "test.yml red", "red again"), never
@@ -64,7 +73,7 @@ const FIELDS = ['ROOT-CAUSE', 'CLASS-GUARD', 'RED-THEN-GREEN', 'COUSINS'];
 // `**NAME:**`, `**NAME**:` and `- NAME:` all read. PREVENTION is the older
 // close format (`PREVENTION: <guard> ; cousins: <where looked>`, BRO-4134) and
 // fills CLASS-GUARD / COUSINS only when no explicit line does (BRO-7132).
-const FIELD_RE = /^[ \t>*_-]*(ROOT-CAUSE|CLASS-GUARD|RED-THEN-GREEN|COUSINS|NO-ROOT-CAUSE|PREVENTION)(?:\*\*|__)?[ \t]*:(?:\*\*|__)?[ \t]*(.*)$/gim;
+const FIELD_RE = /^[ \t>*_-]*(ROOT-CAUSE|CLASS-GUARD|RED-THEN-GREEN|COUSINS|NO-ROOT-CAUSE|PREVENTION|EFFECT|NO-EFFECT-CHECK)(?:\*\*|__)?[ \t]*:(?:\*\*|__)?[ \t]*(.*)$/gim;
 // `; cousins:`, `, cousins:`, `— cousins checked:` and ` - cousins:` all split.
 const COUSINS_TAIL_RE = /\s*(?:[,;\u2014\u2013]|\s-)\s*cousins\b[^:\n]{0,30}:\s*/i;
 const PATH_RE = /(?:^|[\s`'"(])((?:\.?[\w@-]+\/)+[\w.@-]+\.[a-z0-9]{1,5})\b/gi;
@@ -89,12 +98,14 @@ function parseRootCauseBlock(texts) {
   const explicit = {};
   const alias = {};
   let noRootCause = null;
+  let noEffectCheck = null;
   for (const t of [].concat(texts || [])) {
     for (const m of String(t || '').matchAll(FIELD_RE)) {
       const name = m[1].toUpperCase();
       const val = m[2].replace(/[ \t]*(?:\*\*|__)[ \t]*$/, '').trim();
       if (!val) continue; // an empty line never erases an earlier value
       if (name === 'NO-ROOT-CAUSE') { noRootCause = val; continue; }
+      if (name === 'NO-EFFECT-CHECK') { noEffectCheck = val; continue; }
       if (name === 'CLASS-GUARD' || name === 'PREVENTION') {
         const [guard, ...rest] = val.split(COUSINS_TAIL_RE);
         const into = name === 'PREVENTION' ? alias : explicit;
@@ -105,7 +116,19 @@ function parseRootCauseBlock(texts) {
       explicit[name] = val;
     }
   }
-  return { fields: { ...alias, ...explicit }, noRootCause };
+  return { fields: { ...alias, ...explicit }, noRootCause, noEffectCheck };
+}
+
+/**
+ * PURE (BRO-7138). Did the close show the change had its effect on real data?
+ * Returns { ok, notes }. A measurement names a number; a bare "it works" does not.
+ */
+function checkEffect({ fields, noEffectCheck }) {
+  if (noEffectCheck !== null && noEffectCheck !== undefined && noEffectCheck.length >= MIN_FIELD_CHARS) return { ok: true, notes: [] };
+  const v = fields && fields.EFFECT;
+  if (!(v && v.length >= MIN_FIELD_CHARS)) return { ok: false, notes: [] };
+  if (!/\d/.test(v)) return { ok: false, notes: ['EFFECT should name the measurement on real data, before and after (numbers)'] };
+  return { ok: true, notes: [] };
 }
 
 /** PURE. Repo-relative file paths named in a CLASS-GUARD value. */
@@ -121,9 +144,14 @@ function guardPaths(value) {
  */
 function checkRootCauseClose({ title, texts, landedFiles = null } = {}) {
   if (!isFixCard({ title })) return { applies: false, ok: true, kind: null, missing: [], notes: [] };
-  const { fields, noRootCause } = parseRootCauseBlock(texts);
+  const parsed = parseRootCauseBlock(texts);
+  const { fields, noRootCause } = parsed;
+  const effect = checkEffect(parsed);
   if (noRootCause !== null && noRootCause.length >= MIN_FIELD_CHARS) {
-    return { applies: true, ok: true, kind: 'spot', missing: [], notes: [] };
+    // A spot fix still has to show it worked; kind stays 'spot' for the digest share.
+    return effect.ok
+      ? { applies: true, ok: true, kind: 'spot', missing: [], notes: [] }
+      : { applies: true, ok: false, kind: 'spot', missing: ['EFFECT'], notes: effect.notes };
   }
   const missing = FIELDS.filter((f) => !(fields[f] && fields[f].length >= MIN_FIELD_CHARS));
   const notes = [];
@@ -149,33 +177,38 @@ function checkRootCauseClose({ title, texts, landedFiles = null } = {}) {
       notes.push('RED-THEN-GREEN should say the guard failed without the fix and passed with it');
     }
   }
+  if (!effect.ok) { missing.push('EFFECT'); notes.push(...effect.notes); }
+  // Only EFFECT missing: the root cause WAS fixed, so the digest share counts it as one.
+  if (missing.length === 1 && missing[0] === 'EFFECT') return { applies: true, ok: false, kind: 'root-cause', missing, notes };
   return missing.length
     ? { applies: true, ok: false, kind: 'missing', missing, notes }
     : { applies: true, ok: true, kind: 'root-cause', missing: [], notes };
 }
 
 /** PURE. Blocking from the date unless the rollback switch says advisory. */
-function rootCauseCloseBlocking(nowMs = Date.now(), env = process.env) {
+function rootCauseCloseBlocking(nowMs = Date.now(), env = process.env, result = null) {
   if (String(env.ROOT_CAUSE_CLOSE_GATE || '').toLowerCase() === 'advisory') return false;
-  return nowMs >= Date.parse(`${ROOT_CAUSE_CLOSE_BLOCKING_FROM}T00:00:00Z`);
+  return nowMs >= Date.parse(`${blockingFromFor(result)}T00:00:00Z`);
 }
 
 /** PURE. The message a closer sees. */
 function rootCauseCloseMessage(identifier, result, blocking) {
   if (!result || !result.applies || result.ok) return null;
   return [
-    `${identifier || 'This card'} looks like a fix card but its close does not show the root cause was fixed. Missing: ${result.missing.join(', ')}.`,
+    `${identifier || 'This card'} looks like a fix card but its close does not show ${result.missing.length === 1 && result.missing[0] === 'EFFECT' ? 'the fix had its effect on real data' : 'the root cause was fixed'}. Missing: ${result.missing.join(', ')}.`,
     ...result.notes.map((n) => `  - ${n}`),
     '  Add these lines to the close comment (BRO-7103):',
     '    ROOT-CAUSE: why the defect was possible',
     '    CLASS-GUARD: <path> (the test, lint rule, gate or type in this diff that catches the whole class)',
     '    RED-THEN-GREEN: the guard failed with the fix reverted and passed with it',
     '    COUSINS: where else you searched for the pattern, what you found and fixed',
+    '    EFFECT: what you measured on real data after landing, before and after (a new check, gate or rule: its dry run over real past inputs and hit rate)',
+    '    (or NO-EFFECT-CHECK: <reason>, BRO-7138)',
     '  (A `PREVENTION: <path> ; cousins: <...>` line counts as CLASS-GUARD + COUSINS.)',
-    '  Or one line: NO-ROOT-CAUSE: <reason> (counts as a spot fix).',
+    '  Or for a spot fix: NO-ROOT-CAUSE: <reason>, plus EFFECT or NO-EFFECT-CHECK.',
     blocking
-      ? `  Blocking since ${ROOT_CAUSE_CLOSE_BLOCKING_FROM}. Rollback: ROOT_CAUSE_CLOSE_GATE=advisory.`
-      : `  Advisory now; blocking from ${ROOT_CAUSE_CLOSE_BLOCKING_FROM}.`,
+      ? `  Blocking since ${blockingFromFor(result)}. Rollback: ROOT_CAUSE_CLOSE_GATE=advisory.`
+      : `  Advisory now; blocking from ${blockingFromFor(result)}.`,
   ].join('\n');
 }
 
@@ -333,6 +366,7 @@ function seededPick(ids, n, seed) {
 }
 
 module.exports = {
+  EFFECT_CLOSE_BLOCKING_FROM,
   ROOT_CAUSE_CLOSE_BLOCKING_FROM,
   FIX_RE,
   isFixCard,
