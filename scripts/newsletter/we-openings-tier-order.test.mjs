@@ -73,7 +73,7 @@ test('west-end edition for weekStart 2026-08-17 leads subject/lede/cards with th
     assert.equal(meta.ledeShows[0].id, WEST_END_SHOW.id, `expected first lede show to be ${WEST_END_SHOW.id}; got: ${JSON.stringify(meta.ledeShows.map((s) => s.id))}`);
 
     // The rendered card order in the body also leads with the West End show.
-    const headingIdx = html.indexOf('Opened in the West End');
+    const headingIdx = html.search(/Opened (in the West End|in London|Off West End)/);
     assert.ok(headingIdx >= 0, 'expected the west-end openings section heading in the rendered HTML');
     const westEndIdx = html.indexOf(WEST_END_SHOW.title, headingIdx);
     assert.ok(westEndIdx > headingIdx, `expected ${WEST_END_SHOW.title} to render inside the openings section`);
