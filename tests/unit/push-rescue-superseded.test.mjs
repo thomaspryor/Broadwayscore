@@ -51,7 +51,7 @@ test('main holding every rescued field plus more is superseded at equal tier', (
   assert.equal(mainSupersedesRescue(j({ ...stub, note: 'x' }), j({ ...stub, extra: 1 })), false);
 });
 
-// BRO-7139: 2026-11-08 rescue branch held 32 "conflicts" where main was ahead.
+// BRO-7173: 2026-11-08 rescue branch held 32 "conflicts" where main was ahead.
 test('fetch-state incomplete notes a fuller main cleared do not block; verdict reasons do', () => {
   const rescued = { ...stub, contentTier: 'excerpt', incompleteReason: 'not_attempted', incompleteDetail: 'Fetched via x, 0 words' };
   assert.equal(mainSupersedesRescue(j(rescued), j(full)), true);
