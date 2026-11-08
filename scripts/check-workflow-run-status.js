@@ -27,7 +27,8 @@
  * `--expect`. "3 consecutive successes" = --limit=3 --expect=success
  * --min-match=3; "at most 1 failure in last 5" = --limit=5 --expect=failure
  * --max-match=1; "none cancelled in last 20" = --limit=20 --expect=cancelled
- * --max-match=0. Without --limit the single most-recent-run check is unchanged.
+ * --max-match=0. Without --limit it checks the single most recent FINISHED run
+ * (a queued or in-progress run has no conclusion yet and is skipped).
  *
  * Usage:
  *   node scripts/check-workflow-run-status.js --workflow=<name.yml or "Display Name"> \
@@ -70,6 +71,8 @@ function evaluate(runs, { expect, limit, minMatch, maxMatch }) {
     // so counting it made the check flip to MISMATCH every time the workflow
     // started a new run (opening-night-poller.yml: pass,pass,fail,fail,fail
     // back to back, 2026-11-08 flaky simulation).
+    // A stuck run is hidden only until GitHub ends it (job timeout 6h, queue
+    // 24h); it then concludes 'cancelled' and this check reports it.
     const run = runs.find((r) => r.conclusion);
     if (!run) return { ok: false, message: 'No finished runs found' };
     const ok = run.conclusion === expect;
