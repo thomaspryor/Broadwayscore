@@ -158,7 +158,8 @@ function sameCritic(a, b) {
  */
 function teaserTwin(d, included) {
   if (!isTeaserPointer(d)) return null;
-  const twin = (included || []).find((o) => o.outletId !== d.outletId && sameCritic(o.criticName, d.criticName));
+  // The twin must be the full review: if both are pointers, flagging both would drop the critic entirely.
+  const twin = (included || []).find((o) => o.outletId !== d.outletId && !o.teaser && sameCritic(o.criticName, d.criticName));
   return twin ? { twin: twin.file, twinOutlet: twin.outletId } : null;
 }
 

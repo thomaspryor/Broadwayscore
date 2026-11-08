@@ -43,3 +43,8 @@ test('the same outlet is never its own twin', () => {
 test('"complete review" wording is a pointer too', () => {
   assert.equal(isTeaserPointer({ fullText: 'A fine evening. Read the complete review here.' }), true);
 });
+
+test('a twin that is itself a teaser is never the full review', () => {
+  const d = { outletId: 'blog', criticName: 'Cheryl Markosky', fullText: 'Nice. Read my full London Theatre review here.' };
+  assert.equal(teaserTwin(d, [{ file: 'b.json', outletId: 'lt', criticName: 'Cheryl Markosky', teaser: true }]), null);
+});

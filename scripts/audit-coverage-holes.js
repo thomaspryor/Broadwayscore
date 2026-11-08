@@ -98,14 +98,14 @@ function sweep({ root = ROOT, days = 120, only = null, now = Date.now(), recentD
     }
     // G pairs files, so it needs the show's included set before the per-file pass (BRO-7131).
     const included = entries.filter((e) => !excludedBy(e.d, show, e.filePath))
-      .map((e) => ({ file: e.f, outletId: e.d.outletId || null, criticName: e.d.criticName || null }));
+      .map((e) => ({ file: e.f, outletId: e.d.outletId || null, criticName: e.d.criticName || null, teaser: holes.isTeaserPointer(e.d) }));
     const includedFiles = new Set(included.map((e) => e.file));
     for (const { f, filePath, d } of entries) {
       const row = d.url ? published.get(`${show.id}|${normUrl(d.url)}`) : null;
       // reviews.json rows carry no file name, so the join is by URL. A duplicate or otherwise excluded file shares its
       // URL with the file that IS published: judging F on it compared the published file's score with the excluded
       // copy's stored rating (BRO-4849: 9 of 29 F rows). Only a file the rebuild includes owns the published score.
-      const owns = row && typeof row.assignedScore === 'number' && !excludedBy(d, show, filePath);
+      const owns = row && typeof row.assignedScore === 'number' && includedFiles.has(f);
       const c = holes.classify(d, show, filePath, owns ? row.assignedScore : undefined);
       if (includedFiles.has(f)) {
         const g = holes.teaserTwin(d, included.filter((e) => e.file !== f));
@@ -150,8 +150,8 @@ function summary(out) {
     `C neverScored=${out.C.length} (recent ${recent(out.C)}) alreadyQueued=${out.C.filter((r) => r.queued).length} scorer=${JSON.stringify(tally(out.C, 'scorer'))}`,
     `D blockedUrlUnflagged=${out.D.length} ${JSON.stringify(tally(out.D, 'kind'))} publishedOnSite=${out.D.filter((r) => r.published).length} (the harm; the rest is hygiene)`,
     `E uncapturedStar=${out.E.length} (recent ${recent(out.E)})`,
-    `G teaserTwin=${out.G.length} (recent ${recent(out.G)}) explained=${explained(out.G)}`,
     `F scoreOutsideBand=${out.F.length} (recent ${recent(out.F)}) queued=${out.F.filter((r) => r.queued).length} explained=${out.F.filter((r) => !r.queued && r.decision).length} unqueued=${out.F.filter((r) => !r.queued && !r.decision).length}`,
+    `G teaserTwin=${out.G.length} (recent ${recent(out.G)}) explained=${explained(out.G)}`,
     ...(out.staleDecisions && out.staleDecisions.length ? [`stale decisions (row gone, prune from ${LEDGER}): ${out.staleDecisions.length}`] : []),
   ].join('\n');
 }
@@ -176,7 +176,7 @@ async function alert(out) {
     const rows = needsPerson(out, showId);
     // One show's router failure (Linear, Resend) must not skip the shows after it.
     try {
-      if (!rows.length) { resolveCondition(key, { reason: 'no rejected-but-verified review and no unqueued out-of-band score' }); continue; }
+      if (!rows.length) { resolveCondition(key, { reason: 'no rejected-but-verified review, no unqueued out-of-band score and no double-counted teaser' }); continue; }
       const lines = rows.map((r) => (r.cls === 'B'
         ? `- rejected as not-a-review, verification says review: ${r.file}${r.urlOtherShow ? ' (stored URL looks like another show: repair the URL)' : ''}`
         : r.cls === 'G'
