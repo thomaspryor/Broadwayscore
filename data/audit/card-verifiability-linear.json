@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-11-07T11:52:09.203Z",
-  "total": 327,
-  "armedCount": 317,
+  "generatedAt": "2026-11-08T12:05:49.107Z",
+  "total": 332,
+  "armedCount": 322,
   "refusedCount": 10,
   "byKind": {
     "basename": 1,
@@ -91,8 +91,8 @@
     }
   ],
   "ownerJudgmentLimbo": {
-    "total": 261,
-    "checked": 261,
+    "total": 256,
+    "checked": 256,
     "complete": true,
     "cards": []
   },
@@ -104,24 +104,6 @@
       "cmd": "node --test tests/unit/url-content-mismatch.test.mjs",
       "missingPaths": [
         "tests/unit/url-content-mismatch.test.mjs"
-      ]
-    },
-    {
-      "id": "BRO-7052",
-      "name": "Fan-out: re-trim a split child restored on its own (parent untouched)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7052/fan-out-re-trim-a-split-child-restored-on-its-own-parent-untouched",
-      "cmd": "node --test tests/unit/multi-show-split-child-restore.test.mjs",
-      "missingPaths": [
-        "tests/unit/multi-show-split-child-restore.test.mjs"
-      ]
-    },
-    {
-      "id": "BRO-7046",
-      "name": "Stop discovery fetching theverge.com tech articles for The Verge (play) and London prior-production pages filed under off-Broadway The Unbelievers",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7046/stop-discovery-fetching-thevergecom-tech-articles-for-the-verge-play",
-      "cmd": "node --test tests/unit/stop-discovery-theverge-verge.test.mjs",
-      "missingPaths": [
-        "tests/unit/stop-discovery-theverge-verge.test.mjs"
       ]
     },
     {
@@ -737,5 +719,18 @@
       ]
     }
   ],
-  "vacuousChecks": []
+  "vacuousChecks": [
+    {
+      "id": "BRO-7075",
+      "name": "Morning digest still a wall of text in Gmail: move board/spend/technical detail out of the email body, larger type, tidy 'Needs your attention'",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7075/morning-digest-still-a-wall-of-text-in-gmail-move-boardspendtechnical",
+      "cmd": "test -f scripts/lib/email-type-floor.js",
+      "kind": "test-f-satisfied",
+      "polarity": "never-fails",
+      "paths": [
+        "scripts/lib/email-type-floor.js"
+      ],
+      "reason": "`test -f scripts/lib/email-type-floor.js` already passes on origin/main, so re-running it at Done time cannot distinguish finished work from untouched work"
+    }
+  ]
 }
