@@ -68,6 +68,23 @@ function verifyResultWord(result) {
   return 'not-run';
 }
 
+/**
+ * One plain clause saying WHY a VERIFY result is what it is. A bare 'fail'
+ * hid the commonest case: the command names a test or script that never
+ * reached main, so it fails without saying anything about the work (BRO-7139).
+ */
+function verifyDetail(result) {
+  const word = verifyResultWord(result);
+  if (word === 'fail') {
+    return result.notOnMain
+      ? 'the file this command names is NOT ON MAIN (never landed or was removed); the failure says nothing about the work itself'
+      : 'the command ran on main and failed';
+  }
+  if (word === 'pass') return 'the command ran on main and passed';
+  if (result) return 'the command could not be run to a verdict (timeout, unsafe or runner error)';
+  return 'not run';
+}
+
 function titleTokens(title) {
   return new Set(String(title || '').toLowerCase()
     .replace(/\bbro-\d+\b/g, ' ')
@@ -157,6 +174,7 @@ function buildFacts({ issue, category, verify, verifyResult, commits, refStates,
     CATEGORY: category || 'unknown',
     VERIFY_CMD: verify.cmd ? `\`${verify.cmd}\`` : (verify.status === 'unsafe' ? `(unsafe: ${String(verify.reason).slice(0, 120)})` : '(none)'),
     VERIFY_RESULT: verify.cmd ? verifyResultWord(verifyResult) : (verify.status === 'unsafe' ? 'unsafe' : 'none'),
+    VERIFY_DETAIL: verify.cmd ? verifyDetail(verifyResult) : 'no command',
     CONDITION: condition.key || '(none)',
     CONDITION_STATE: condition.state || 'unknown',
     LANDINGS: lands.length ? lands.map((c) => `${String(c.sha).slice(0, 9)} ${String(c.date).slice(0, 10)} "${String(c.subject).slice(0, 90)}"`).join('; ') : 'none',
@@ -215,6 +233,6 @@ function parseVerdict(text, { id, facts } = {}) {
 
 module.exports = {
   VERDICTS, OVERLAP_MIN, PROMPT_PATH,
-  cardText, referencedIds, verifyCommandOf, verifyResultWord, titleSimilarity, findOverlaps,
+  cardText, referencedIds, verifyCommandOf, verifyResultWord, verifyDetail, titleSimilarity, findOverlaps,
   conditionFacts, landingsAfter, lastWorkerComment, buildFacts, renderCard, renderPrompt, parseVerdict,
 };

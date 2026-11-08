@@ -48,6 +48,15 @@ test('verifyResultWord maps execution evidence', () => {
   assert.equal(F.verifyResultWord({ allowed: false, verdict: 'verify-cmd-infra-timeout' }), 'not-run');
 });
 
+test('verifyDetail separates a NOT ON MAIN failure from a real one', () => {
+  const { VERDICTS } = require('./close-time-verify.js');
+  assert.match(F.verifyDetail({ allowed: false, verdict: VERDICTS.FAIL, notOnMain: true }), /NOT ON MAIN/);
+  assert.equal(F.verifyDetail({ allowed: false, verdict: VERDICTS.FAIL, notOnMain: false }), 'the command ran on main and failed');
+  assert.equal(F.verifyDetail({ allowed: true, verdict: VERDICTS.PASS }), 'the command ran on main and passed');
+  assert.match(F.verifyDetail({ allowed: false, verdict: VERDICTS.UNVERIFIABLE }), /could not be run/);
+  assert.equal(F.verifyDetail(null), 'not run');
+});
+
 test('titleSimilarity: short titles never overlap; near-identical titles do', () => {
   assert.equal(F.titleSimilarity('Fix it', 'Fix it'), 0);
   assert.ok(F.titleSimilarity('Opening night review pipeline stuck again', 'Opening night review pipeline stuck') >= F.OVERLAP_MIN);
