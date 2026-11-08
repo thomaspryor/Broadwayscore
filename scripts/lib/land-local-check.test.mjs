@@ -363,3 +363,17 @@ test('main() skips the base run when deps changed, so red gates count as new', (
   assert.match(src, /const depsChanged = red && depsChangedSince\(git, base, head\);/);
   assert.match(src, /if \(red && !depsChanged\) \{[\s\S]*?withBaseWorktree\(/, 'the base worktree run is gated on !depsChanged');
 });
+
+test('BRO-7110: restorePrebuildResidue puts back regenerated prebuild outputs only', () => {
+  const { restorePrebuildResidue } = require('./land-local-check.js');
+  const calls = [];
+  const git = (...a) => { calls.push(a); return { stdout: a[0] === 'diff' ? 'data/gold-lists-computed.json\nscripts/x.js\npublic/data/mobile-shows.json\n' : '' }; };
+  assert.deepEqual(restorePrebuildResidue('/r', git), ['data/gold-lists-computed.json', 'public/data/mobile-shows.json']);
+  assert.deepEqual(calls[1], ['checkout', '--', 'data/gold-lists-computed.json', 'public/data/mobile-shows.json'], 'a real edit (scripts/x.js) is never touched');
+  const quiet = [];
+  assert.deepEqual(restorePrebuildResidue('/r', (...a) => { quiet.push(a); return { stdout: '' }; }), []);
+  assert.equal(quiet.length, 1, 'nothing to restore: no checkout');
+  const src = fs.readFileSync(new URL('./land-local-check.js', import.meta.url), 'utf8');
+  const main = src.slice(src.indexOf('function main('));
+  assert.ok(main.indexOf('restorePrebuildResidue(ROOT)') > main.indexOf("'scripts/lib/land-gauntlet.sh', branchDir"), 'restored right after the branch run');
+});
