@@ -463,7 +463,7 @@ jobs:
         run: node scripts/audit-coverage-holes.js --recent-days=14 --alert --counts=data/audit/coverage-holes.json
 
       # BRO-7131: class-A rows (fetch abandoned) never healed on their own. Retry recent tier 3+ ones whose URL names
-      # the show through ingest-urls.yml (max 5 shows a run, capped dispatch), then file a dispatch-at-filing card for
+      # the show through ingest-urls.yml (max 4 shows a run, its in-flight cap), then file a dispatch-at-filing card for
       # a worker outside GitHub. Writes data/audit/abandoned-review-rescue.json (ids, file names, URLs; no text),
       # committed by "Commit provider spend ledger". Advisory (CLAUDE.md rule 19).
       - name: Rescue abandoned reviews on recent shows
