@@ -98,16 +98,7 @@ function hasOwnNodeModules(root, exists = fs.existsSync) {
   return exists(path.join(root, 'node_modules'));
 }
 
-// BRO-7110: a container's node_modules can be a shell (558 of 927 package dirs
-// empty); every gate then fails on both sides and the check burns 33 minutes
-// before saying NEW FAILURES. A declared package with no package.json is the cheap tell.
-/** -> names in package.json dependencies/devDependencies with no node_modules/<name>/package.json */
-function missingDeclaredPackages(root, exists = fs.existsSync, readPkg = () => JSON.parse(fs.readFileSync(path.join(root, 'package.json'), 'utf8'))) {
-  let pkg;
-  try { pkg = readPkg(); } catch { return []; }
-  const names = Object.keys({ ...(pkg.dependencies || {}), ...(pkg.devDependencies || {}) });
-  return names.filter((n) => !exists(path.join(root, 'node_modules', n, 'package.json')));
-}
+const { missingDeclaredPackages } = require('./declared-packages.js');
 
 // The main checkout links nothing (its git-common-dir is its own .git): install there.
 // -sfn replaces a dangling link, which existsSync also reports as missing.

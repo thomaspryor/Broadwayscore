@@ -396,7 +396,7 @@ test('BRO-7110: a tree dirty only with prebuild outputs names them and the resto
 });
 
 test('BRO-7110: declared packages with no package.json are reported before any gate runs', () => {
-  const { missingDeclaredPackages } = require('./land-local-check.js');
+  const { missingDeclaredPackages } = require('./declared-packages.js');
   const present = new Set(['/r/node_modules/next/package.json', '/r/node_modules/@types/node/package.json']);
   const readPkg = () => ({ dependencies: { next: '1' }, devDependencies: { '@types/node': '1', acorn: '8' } });
   assert.deepEqual(missingDeclaredPackages('/r', (p) => present.has(p), readPkg), ['acorn']);

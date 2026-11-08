@@ -78,6 +78,7 @@ function gather({ quick }) {
     const dir = require('./lib/review-texts-dir').resolveReviewTextsDir();
     facts.resolvedReviewTexts = dir && fs.existsSync(dir) && fs.readdirSync(dir).some((e) => !e.startsWith('.')) ? dir : null;
   } catch { facts.resolvedReviewTexts = null; }
+  facts.missingPkgs = require('./lib/declared-packages.js').missingDeclaredPackages(ROOT); // BRO-7110: every declared package, not 3 probes
   facts.deps = {};
   for (const m of ['next/package.json', 'cheerio', 'typescript/package.json']) {
     try { require.resolve(m, { paths: [ROOT] }); facts.deps[m] = true; } catch { facts.deps[m] = false; }
@@ -161,8 +162,10 @@ function evaluate(f, { now = Date.now() } = {}) {
 
   add('review-resolver', f.resolvedReviewTexts ? 'ok' : 'fail', f.resolvedReviewTexts ? `resolveReviewTextsDir() -> ${f.resolvedReviewTexts}` : 'resolveReviewTextsDir() finds no review texts', f.resolvedReviewTexts ? null : 'copy-review-texts');
 
-  const missing = Object.entries(f.deps || {}).filter(([, ok]) => !ok).map(([m]) => m.replace('/package.json', ''));
-  add('node-modules', missing.length ? 'fail' : 'ok', missing.length ? `cannot resolve ${missing.join(', ')} (partial install)` : 'next, cheerio, typescript resolve', missing.length ? 'npm-ci' : null);
+  const probed = Object.entries(f.deps || {}).filter(([, ok]) => !ok).map(([m]) => m.replace('/package.json', ''));
+  const missing = [...new Set([...probed, ...(f.missingPkgs || [])])];
+  const shown = missing.length > 6 ? `${missing.slice(0, 6).join(', ')} and ${missing.length - 6} more` : missing.join(', ');
+  add('node-modules', missing.length ? 'fail' : 'ok', missing.length ? `cannot resolve ${shown} (partial install)` : 'next, cheerio, typescript resolve; every declared package installed', missing.length ? 'npm-ci' : null);
 
   if (f.ghPush === true) add('github', f.fixWorkflowState === 'active' ? 'ok' : 'fail', f.fixWorkflowState === 'active' ? 'REST push access; execute-approved-fix.yml active' : `execute-approved-fix.yml state: ${f.fixWorkflowState || 'unreadable'}`);
   else add('github', 'fail', f.ghPush === false ? 'no push permission on the repo' : `gh api failed: ${f.ghError}`);
