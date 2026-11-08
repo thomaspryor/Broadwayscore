@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-08T15:01:21.693Z",
+  "timestamp": "2026-11-08T15:29:24.246Z",
   "stats": {
-    "totalReviews": 80532,
-    "alreadyFlagged": 22051,
-    "dateGuardCatches": 216,
-    "directorMismatch": 3552,
+    "totalReviews": 80555,
+    "alreadyFlagged": 22052,
+    "dateGuardCatches": 217,
+    "directorMismatch": 3553,
     "tvFilmSignals": 2292,
     "londonSignals": 3632,
     "offBroadwaySignals": 748,
     "yearMismatch": 363,
-    "noPublishDate": 8408
+    "noPublishDate": 8421
   },
   "findings": [
     {
@@ -5186,6 +5186,20 @@
       "score": 57,
       "publishDate": "2017-10-02",
       "url": "https://www.timeout.com/london/theatre/an-american-in-paris-review",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"christopher wheeldon\" from an-american-in-paris-2015"
+        }
+      ]
+    },
+    {
+      "showId": "an-american-in-paris-west-end-2017",
+      "file": "whatsonstage--sarah-crompton.json",
+      "score": 96,
+      "publishDate": "2017-03-22",
+      "url": "https://www.whatsonstage.com/london-theatre/news/an-american-in-paris-dominion-christopher-wheeldon_43172.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -105572,9 +105586,14 @@
       "showId": "illinoise-2024",
       "file": "observer--jesse-green.json",
       "score": 77,
-      "publishDate": "April 25, 2024",
+      "publishDate": "2024-03-20",
       "url": "https://observer.com/2024/03/review-illinoise-musical-dance-broadway/",
       "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 35d before show (2024-03-20 vs 2024-04-24)"
+        },
         {
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
