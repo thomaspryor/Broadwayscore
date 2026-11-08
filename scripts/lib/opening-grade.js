@@ -203,8 +203,10 @@ const fmtDate = (d) => new Date(`${d}T12:00:00Z`).toLocaleDateString('en-US', { 
 function gradeLine(g) {
   const head = `${g.title} (${MARKET_LABEL[g.category] || g.category}, opened ${fmtDate(g.openingDate)})`;
   const n = `${g.live} review${g.live === 1 ? '' : 's'} live`;
-  // known can trail live (the census lags new files), so only show it when reviews are still missing.
-  const count = g.known != null && g.known > g.live ? `${n} of ${g.known} known` : n;
+  // BRO-7147: known = live + aggregator-cited reviews still missing, so it only
+  // differs from live when a cited review is missing. Older snapshots carried the
+  // census count here (other productions included); they age out in 14 days.
+  const count = g.known != null && g.known > g.live ? `${n} of ${g.known} cited` : n;
   const sofar = g.windowClosed ? '' : ' so far';
   let tail;
   if (g.verdict === 'needed-hands') {
@@ -215,7 +217,7 @@ function gradeLine(g) {
     const m = g.missing || Math.max(0, (g.known || 0) - g.live);
     tail = `opening week ended with ${m} cited review${m === 1 ? '' : 's'} still missing`;
   }
-  else if (g.verdict === 'no-reviews') tail = (g.known || 0) > 0 ? 'reviews are out but none are on the site yet' : 'no reviews live yet';
+  else if (g.verdict === 'no-reviews') tail = (g.known || 0) > 0 ? 'cited reviews are out but none are on the site yet' : 'no reviews live yet';
   else tail = 'not graded (edit history missing)';
   return `${head}: ${count}, ${tail}.`;
 }

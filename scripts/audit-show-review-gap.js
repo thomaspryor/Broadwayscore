@@ -64,6 +64,7 @@ const { parseShowFilter, selectShowsById } = require('./lib/gap-audit-show-filte
 const {
   provisionalOutletIdFromHost,
   sameOutletUrlVariant,
+  platformOriginMirrorOf,
   _buildDomainMap,
   resolveUrlEditionOutletId,
 } = require('./lib/outlet-canonicalize');
@@ -1653,6 +1654,12 @@ async function auditShow(show, opts = {}) {
           url: aggUrl, host: aggHost, matchedUrl: variant.matchedUrl,
           outletId: variant.outletId, reason: variant.reason,
         });
+        continue;
+      }
+      // BRO-7147: a Squarespace origin-host copy of a review held at its custom domain.
+      const mirror = platformOriginMirrorOf({ candidateUrl: aggUrl, heldUrls: coveredUrls });
+      if (mirror.dup) {
+        result.dedupedVariants.push({ url: aggUrl, host: aggHost, matchedUrl: mirror.matchedUrl, outletId: null, reason: mirror.reason });
         continue;
       }
       // BRO-5489: an aol/yahoo/msn reprint of a review we already hold (the

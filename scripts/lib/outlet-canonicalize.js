@@ -593,6 +593,38 @@ function sameOutletUrlVariant({ candidateUrl, heldUrls, domainToOutlet, ambiguou
   return miss;
 }
 
+// BRO-7147: Squarespace serves every site on a generated origin host
+// (<word>-<word>-<4 chars>.squarespace.com) as well as its custom domain. A
+// citation of the origin copy (Ceilidh: herring-gerbil-e2c7.squarespace.com/
+// reviews/review-ceilidh-at-shoreditch-town-hall) is the same review we hold at
+// unmissabletheatre.co.uk under the same path, but the audit counted it missing
+// and proposed the origin host as a new outlet. Only a same-path held copy makes
+// it a duplicate: an origin URL with no held twin stays a real candidate.
+const SQUARESPACE_ORIGIN_RE = /^[a-z]+-[a-z]+-[a-z0-9]{4}\.squarespace\.com$/;
+
+function isSquarespaceOriginHost(host) {
+  return SQUARESPACE_ORIGIN_RE.test(String(host || '').toLowerCase().replace(/^www\./, ''));
+}
+
+function platformOriginMirrorOf({ candidateUrl, heldUrls }) {
+  const miss = { dup: false, matchedUrl: null, reason: null };
+  let cand;
+  try { cand = new URL(candidateUrl); } catch { return miss; }
+  if (!isSquarespaceOriginHost(cand.hostname)) return miss;
+  const pathKey = (u) => u.pathname.replace(/\/+$/, '').toLowerCase();
+  const want = pathKey(cand);
+  if (want.length < 2) return miss;
+  for (const held of heldUrls || []) {
+    let h;
+    try { h = new URL(held); } catch { continue; }
+    if (h.hostname === cand.hostname || isSquarespaceOriginHost(h.hostname)) continue;
+    if (pathKey(h) === want) {
+      return { dup: true, matchedUrl: held, reason: `squarespace origin copy of ${h.hostname}${h.pathname} (held)` };
+    }
+  }
+  return miss;
+}
+
 module.exports = {
   resolveCanonicalOutletId,
   resolveUrlEditionOutletId,
@@ -610,6 +642,8 @@ module.exports = {
   provisionalOutletIdFromHost,
   lookupOutletForHost,
   sameOutletUrlVariant,
+  isSquarespaceOriginHost,
+  platformOriginMirrorOf,
   // exposed for tests
   _buildDomainMap: buildDomainMap,
   _parseDomain: parseDomain,
