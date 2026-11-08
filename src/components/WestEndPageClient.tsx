@@ -63,6 +63,8 @@ interface WestEndPageClientProps {
   rushShows?: WestEndShow[];
   /** Scored productions at flagship UK houses outside London (BRO-5103). */
   beyondLondonShows?: WestEndShow[];
+  /** ENO + Royal Opera House productions: own section, never in the West End list (owner, 2026-11-08). */
+  operaShows?: WestEndShow[];
   /** Open-show counts for the market pills */
   marketOpenCounts: { westEnd: number; offWestEnd: number };
   awardWinnerSets?: AwardWinnerSets;
@@ -155,7 +157,7 @@ function filtersFromParams(initialSearchParams: URLSearchParams) {
 }
 
 // Inner component that uses searchParams
-function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows, lotteryShows = [], rushShows = [], beyondLondonShows = [], marketOpenCounts, awardWinnerSets, archiveHash, skipAboveFold = false, renderedAt }: WestEndPageClientProps) {
+function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows, lotteryShows = [], rushShows = [], beyondLondonShows = [], operaShows = [], marketOpenCounts, awardWinnerSets, archiveHash, skipAboveFold = false, renderedAt }: WestEndPageClientProps) {
   const nowMs = useHydrationSafeNow(renderedAt);
 
   const [filters, setFilters] = useState(() => filtersFromParams(new URLSearchParams()));
@@ -829,6 +831,8 @@ function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows, lotter
       <div className="mt-8 pt-8 border-t border-white/5">
         <FeaturedRow title="Top Plays" subtitle="Ranked by critical consensus" shows={topPlays} />
         <FeaturedRow title="Best Off-West End" subtitle="Top-rated shows outside the West End proper" shows={bestOffWestEnd} />
+        {/* Opera has its own section, as on the Broadway homepage (below Best Off-Broadway). */}
+        <FeaturedRow title="Opera in London" subtitle="English National Opera and the Royal Opera House" shows={operaShows} minShows={1} viewAllHref="/opera" />
         <FeaturedRow title="Beyond London" subtitle="Major UK productions outside the capital" shows={beyondLondonShows} minShows={1} viewAllHref="/browse/beyond-london" />
         <FeaturedRow title="Olivier Award Winning Shows" subtitle="Current productions that have won Olivier Awards" shows={olivierWinners} />
         <FeaturedRow title="West End Lotteries" subtitle="Enter for a chance at discounted tickets" shows={lotteryShows} />
