@@ -406,7 +406,16 @@
     "macbeth-2008/usatoday--elysa-gardner.json",
     "is-he-dead-2007/nypost--clive-barnes.json",
     "iphigenie-en-tauride-english-national-opera-west-end-2026/sunday-times--unknown.json",
-    "speculations-off-west-end-2026/reviewsgate--unknown.json"
+    "nero-off-west-end-2026/times-uk--rachel-halliburton.json",
+    "speculations-off-west-end-2026/guardian--arifa-akbar.json",
+    "speculations-off-west-end-2026/guardian--unknown.json",
+    "the-bridge-off-west-end-2026/cherylmarkosky--cherylmarkosky.json",
+    "the-bridge-off-west-end-2026/sunday-times--unknown.json",
+    "the-bridge-off-west-end-2026/theatreandtonic--emmie-newitt.json",
+    "tosca-english-national-opera-west-end-2026/bachtrack--anna-bogdanova.json",
+    "tosca-english-national-opera-west-end-2026/bachtrack--clare-varney.json",
+    "tosca-english-national-opera-west-end-2026/bachtrack--peter-quantrill.json",
+    "tosca-english-national-opera-west-end-2026/cherylmarkosky--cherylmarkosky.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -633,7 +642,7 @@
     ]
   },
   "startTime": "2026-11-08T19:50:31.589Z",
-  "lastProcessed": "is-he-dead-2007/nypost--clive-barnes.json",
+  "lastProcessed": "tosca-english-national-opera-west-end-2026/cherylmarkosky--cherylmarkosky.json",
   "log": [
     {
       "t": "2026-11-08T20:19:26.121Z",
@@ -678,6 +687,24 @@
       "t": "2026-11-08T21:17:08.988Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-08T23:37:24.841Z",
+      "event": "bb-session",
+      "session": "1986d2ba",
+      "url": "https://bachtrack.com/review-lorfeo-william-kentridge-greek-national-opera-athen"
+    },
+    {
+      "t": "2026-11-08T23:38:00.535Z",
+      "event": "bb-session",
+      "session": "b652ef2e",
+      "url": "https://bachtrack.com/review-shostakovich-cherry-town-ahlbom-dutch-national-oper"
+    },
+    {
+      "t": "2026-11-08T23:38:36.487Z",
+      "event": "bb-session",
+      "session": "4357164c",
+      "url": "https://bachtrack.com/review-nozze-figaro-pountney-conta-bucharest-national-oper"
     }
   ]
 }
