@@ -402,7 +402,7 @@
     "title": "Data audit failing: Validate market expansion",
     "description": "The \"Validate market expansion\" step of test.yml's Data Validation job is failing on main. The job is non-blocking (BRO-3425), so main stays green, but the audit is reporting a real data or code problem. This card is scoped to this one step; another failing step gets its own card.",
     "severity": "warning",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42504542162",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42505023384",
     "decision": false,
     "info": false,
     "decisionPrompt": null,
@@ -419,10 +419,10 @@
       },
       {
         "name": "Run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/42504542162)"
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/42505023384)"
       }
     ],
-    "queuedAt": "2026-11-08T17:36:11.439Z"
+    "queuedAt": "2026-11-08T17:41:33.443Z"
   },
   {
     "conditionKey": "cron-health-failed:Commercial Pending Review",
