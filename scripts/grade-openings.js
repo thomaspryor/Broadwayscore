@@ -111,6 +111,7 @@ function main() {
   const grades = openings.map((show) => { const files = loadFiles(rtDir, show.id); return og.gradeOpening({
     show,
     files,
+    rtDir,
     commits,
     historyFromMs: hist,
     pressNight: og.pickPressNight(records, show),
@@ -118,13 +119,15 @@ function main() {
     // BRO-7147: aggregator-cited reviews the gap audit still lists as missing,
     // minus any collected since that audit ran.
     missingCited: gapById.has(show.id)
-      ? citedUncollectedNow(gapById.get(show.id), { heldFiles: files, blocklist: loadBlocklist(path.join(rtDir, show.id)), show })
+      // BRO-7161 F20: only files first seen by the end of opening week count as
+      // held, so a later rescue cannot erase a gap that existed at the deadline.
+      ? citedUncollectedNow(gapById.get(show.id), { heldFiles: files.filter((f) => !(Date.parse(f.firstSeenAt) > og.openingWindow(show, og.pickPressNight(records, show)).hi)), blocklist: loadBlocklist(path.join(rtDir, show.id)), show })
       : null,
     nowMs,
   }); }).sort((a, b) => (b.openingDate.localeCompare(a.openingDate)) || a.showId.localeCompare(b.showId));
 
   const doc = {
-    schemaVersion: 2, // BRO-7147: known = live + cited-missing; verdict incomplete; missing null when unaudited
+    schemaVersion: 3, // BRO-7147: known = live + cited-missing; verdict incomplete. BRO-7161: live = rebuild-includable, week-frozen (lateLive), verdict coverage-unknown, summary noReviewsClosed/coverageUnknown
     generatedAt: new Date(nowMs).toISOString(),
     generator: 'scripts/grade-openings.js (BRO-7082)',
     from: fromDate,

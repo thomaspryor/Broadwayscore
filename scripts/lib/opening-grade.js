@@ -1,5 +1,7 @@
 'use strict';
 
+const path = require('path');
+
 /**
  * BRO-7082: grade every opening, in all four markets, on one question: did the
  * pipeline get its reviews live on its own, or did a person / Claude session
@@ -23,6 +25,7 @@
 
 const { manualActionsFromCommits, isBotAuthor } = require('./press-night-manual-actions');
 const { handSteps, GATING_FIX_FIELDS } = require('./review-provenance');
+const { isIncludableForRebuild } = require('./review-guards');
 
 const HOUR = 3600000;
 const MARKETS = ['broadway', 'off-broadway', 'west-end', 'off-west-end'];
@@ -31,6 +34,14 @@ const MARKET_TZ = { broadway: 'America/New_York', 'off-broadway': 'America/New_Y
 const BEFORE_H = 72; // previews and early embargo lifts
 const AFTER_H = 7 * 24; // opening week
 const SWEEP_SHOWS = 3;
+// BRO-7161 F19: breadth alone is not proof of maintenance (a person fixing four
+// shows in one commit is hand work). A commit touching more than SWEEP_SHOWS
+// shows is ignored only when its subject names a maintenance operation, or it
+// touches more than SWEEP_CEILING shows (no human fixes that many at once).
+const SWEEP_CEILING = 12;
+const MAINTENANCE_SUBJECT = /re-?verif|\bsweep|backfill|re-?build|migrat|normali[sz]e|\bbulk\b|checkpoint|re-?score|refresh|clean-?up|\bpurge|\bprune|dedup|reindex|retrofit|\bstamp\b/i;
+// BRO-7161 F18: a gap-audit row older than this no longer vouches that nothing is missing.
+const STALE_AUDIT_H = 72;
 
 const toMs = (v) => { const t = Date.parse(v); return Number.isFinite(t) ? t : null; };
 const round1 = (n) => (Number.isFinite(n) ? Math.round(n * 10) / 10 : null);
@@ -77,6 +88,38 @@ function showsTouched(commit) {
 
 function isExcludedFile(f) {
   return !!(f && (f.wrongProduction || f.wrongShow || f.isRoundupArticle || f.duplicateOf || f.contentTier === 'invalid'));
+}
+
+/**
+ * BRO-7161 F17: is this review file actually live on the site? Delegates to the
+ * rebuild's own inclusion rule (review-guards.isIncludableForRebuild, the same
+ * definition the gap audit uses for "covered"), so a stub, empty body, non-review
+ * or preview placeholder never counts. A throw counts as not live (fail closed).
+ * @param {object} f review file with _file = '<show>/<name>.json'
+ * @param {object} show shows.json entry
+ * @param {string|null} rtDir review-texts root, for guards that read sibling files
+ */
+function isLiveFile(f, show, rtDir = null) {
+  if (!f) return false;
+  try {
+    const filePath = rtDir && f._file ? path.join(rtDir, f._file) : null;
+    return isIncludableForRebuild(f, show, filePath) === true;
+  } catch (_) {
+    return false;
+  }
+}
+
+/** True when a commit is corpus-wide maintenance, not a person fixing this opening (BRO-7161 F19). */
+function isSweepCommit(c) {
+  const n = showsTouched(c).size;
+  if (n <= SWEEP_SHOWS) return false;
+  return n > SWEEP_CEILING || MAINTENANCE_SUBJECT.test(String(c.subject || ''));
+}
+
+/** Embargo and hand-evidence window bounds for an opening (shared with grade-openings.js). */
+function openingWindow(show, pressNight) {
+  const embargoMs = toMs(pressNight && pressNight.embargoAt) ?? estimateEmbargoMs(show.openingDate, show.category);
+  return { embargoMs, lo: embargoMs - BEFORE_H * HOUR, hi: embargoMs + AFTER_H * HOUR };
 }
 
 
@@ -149,15 +192,13 @@ const median = (a) => {
  *   when there is no audit row
  * @param {number} p.nowMs
  */
-function gradeOpening({ show, files = [], commits = [], historyFromMs = null, pressNight = null, gapResult = null, missingCited = null, nowMs = Date.now() }) {
-  const embargoMs = toMs(pressNight && pressNight.embargoAt) ?? estimateEmbargoMs(show.openingDate, show.category);
-  const lo = embargoMs - BEFORE_H * HOUR;
-  const hi = embargoMs + AFTER_H * HOUR;
+function gradeOpening({ show, files = [], commits = [], historyFromMs = null, pressNight = null, gapResult = null, missingCited = null, rtDir = null, nowMs = Date.now() }) {
+  const { embargoMs, lo, hi } = openingWindow(show, pressNight);
   const inWin = (t) => t != null && t >= lo && t <= hi;
 
   const signals = [];
   const bySha = new Map((commits || []).map((c) => [String(c.sha).slice(0, 8), c]));
-  const fixCommits = (commits || []).filter((c) => showsTouched(c).size <= SWEEP_SHOWS);
+  const fixCommits = (commits || []).filter((c) => !isSweepCommit(c));
   const seen = new Set();
   for (const a of manualActionsFromCommits(fixCommits, { showId: show.id, embargoAt: new Date(embargoMs).toISOString(), nightStartH: BEFORE_H, endH: AFTER_H })) {
     const sha = String(a.source || '').split(' ')[0];
@@ -196,7 +237,14 @@ function gradeOpening({ show, files = [], commits = [], historyFromMs = null, pr
     }
   }
 
-  const live = (files || []).filter((f) => !isExcludedFile(f)).length;
+  // BRO-7161 F17: live = files the rebuild would include. F20: only files first
+  // seen by the end of opening week count toward the week's outcome; later
+  // rescues are reported as lateLive, never folded into the week's grade. A file
+  // with no firstSeenAt cannot be shown to be late, so it counts.
+  const liveFiles = (files || []).filter((f) => isLiveFile(f, show, rtDir));
+  const isLate = (f) => { const t = toMs(f.firstSeenAt); return t != null && t > hi; };
+  const live = liveFiles.filter((f) => !isLate(f)).length;
+  const lateLive = liveFiles.length - live;
   // BRO-7147: "known" was the census candidateCount, which counts every URL any
   // source ever surfaced, other productions included (King Lear OB "2 of 10":
   // all 8 extra were a DC, a Sydney, a Chicago and a Texas staging). Known is now
@@ -207,6 +255,11 @@ function gradeOpening({ show, files = [], commits = [], historyFromMs = null, pr
   const censusCandidates = cv && Number.isInteger(cv.candidateCount) ? cv.candidateCount : null;
   // null when no gap audit row exists for the show (unknown, not zero).
   const missing = Number.isInteger(missingCited) ? Math.max(0, missingCited) : null;
+  // BRO-7161 F18: unknown coverage is not zero missing. No audit row, or a row
+  // too old to vouch for today, cannot back a clean grade.
+  const auditAt = toMs(gapResult && gapResult.computedAt);
+  const auditStale = gapResult != null && (auditAt == null || nowMs - auditAt > STALE_AUDIT_H * HOUR);
+  const coverageUnknown = missing === null || auditStale;
   const known = missing === null ? null : live + missing;
   const windowClosed = nowMs > hi;
   let hoursToLive = null;
@@ -224,6 +277,7 @@ function gradeOpening({ show, files = [], commits = [], historyFromMs = null, pr
   // on its own, whether or not anyone touched it, and with none live at all it
   // is the worst case, so it outranks no-reviews.
   else if (windowClosed && missing > 0) verdict = 'incomplete';
+  else if (coverageUnknown) verdict = 'coverage-unknown';
   else if (live === 0) verdict = 'no-reviews';
   else verdict = 'on-its-own';
 
@@ -237,6 +291,7 @@ function gradeOpening({ show, files = [], commits = [], historyFromMs = null, pr
     windowEnd: new Date(hi).toISOString(),
     windowClosed,
     live,
+    lateLive,
     known,
     missing,
     censusCandidates,
@@ -270,6 +325,7 @@ function gradeLine(g) {
   // census count here (other productions included); they age out in 14 days.
   const count = g.known != null && g.known > g.live ? `${n} of ${g.known} cited` : n;
   const sofar = g.windowClosed ? '' : ' so far';
+  const late = g.lateLive > 0 ? ` (${g.lateLive} more added after opening week)` : '';
   let tail;
   if (g.verdict === 'needed-hands') {
     const n = g.signals.length;
@@ -280,15 +336,16 @@ function gradeLine(g) {
     const m = g.missing || Math.max(0, (g.known || 0) - g.live);
     tail = `opening week ended with ${m} cited review${m === 1 ? '' : 's'} still missing`;
   }
-  else if (g.verdict === 'no-reviews') tail = (g.known || 0) > 0 ? 'cited reviews are out but none are on the site yet' : 'no reviews live yet';
+  else if (g.verdict === 'coverage-unknown') tail = 'not graded clean: the missing-review check has no fresh result for it';
+  else if (g.verdict === 'no-reviews') tail = (g.known || 0) > 0 ? 'cited reviews are out but none are on the site yet' : g.windowClosed ? 'opening week ended and no reviews were found' : 'no reviews live yet';
   else tail = 'not graded (edit history missing)';
-  return `${head}: ${count}, ${tail}.`;
+  return `${head}: ${count}${late}, ${tail}.`;
 }
 
 /** Per-market tallies. */
 function summarize(grades) {
   const out = {};
-  for (const m of MARKETS) out[m] = { openings: 0, onItsOwn: 0, neededHands: 0, neededHandsIngestOnly: 0, incomplete: 0, noReviews: 0, notGradable: 0 };
+  for (const m of MARKETS) out[m] = { openings: 0, onItsOwn: 0, neededHands: 0, neededHandsIngestOnly: 0, incomplete: 0, noReviews: 0, noReviewsClosed: 0, coverageUnknown: 0, notGradable: 0 };
   for (const g of grades || []) {
     const s = out[g.category];
     if (!s) continue;
@@ -296,7 +353,8 @@ function summarize(grades) {
     if (g.verdict === 'on-its-own') s.onItsOwn += 1;
     else if (g.verdict === 'needed-hands') { s.neededHands += 1; if (g.onlyIngestDispatches) s.neededHandsIngestOnly += 1; }
     else if (g.verdict === 'incomplete') s.incomplete += 1;
-    else if (g.verdict === 'no-reviews') s.noReviews += 1;
+    else if (g.verdict === 'no-reviews') { s.noReviews += 1; if (g.windowClosed) s.noReviewsClosed += 1; }
+    else if (g.verdict === 'coverage-unknown') s.coverageUnknown += 1;
     else s.notGradable += 1;
   }
   return out;
@@ -310,10 +368,16 @@ function tallyLine(summary, days) {
   const graded = (s) => s.onItsOwn + s.neededHands + (s.incomplete || 0);
   const parts = MARKETS.filter((m) => summary[m] && graded(summary[m]))
     .map((m) => `${MARKET_LABEL[m]} ${summary[m].onItsOwn} of ${graded(summary[m])}`);
-  return parts.length ? `Openings in the last ${days} days that ran on their own: ${parts.join(', ')}.` : `No graded openings in the last ${days} days.`;
+  // BRO-7161 F18: openings left out of the denominator are named, never silent.
+  const sum = (k) => MARKETS.reduce((n, m) => n + ((summary[m] && summary[m][k]) || 0), 0);
+  const notes = [];
+  if (sum('noReviewsClosed')) notes.push(`${sum('noReviewsClosed')} ended opening week with no reviews found`);
+  if (sum('coverageUnknown')) notes.push(`${sum('coverageUnknown')} not graded clean (missing-review check stale or absent)`);
+  const extra = notes.length ? ` Not counted: ${notes.join('; ')}.` : '';
+  return (parts.length ? `Openings in the last ${days} days that ran on their own: ${parts.join(', ')}.` : `No graded openings in the last ${days} days.`) + extra;
 }
 
-const DOT = { 'on-its-own': '#15803d', 'needed-hands': '#b45309', incomplete: '#b91c1c', 'no-reviews': '#999', 'not-gradable': '#999' };
+const DOT = { 'coverage-unknown': '#b45309', 'on-its-own': '#15803d', 'needed-hands': '#b45309', incomplete: '#b91c1c', 'no-reviews': '#999', 'not-gradable': '#999' };
 const defaultEsc = (v) => String(v).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
 /**
@@ -328,8 +392,9 @@ function renderOpeningGradesBlock(snapshot, { esc = defaultEsc, nowMs = Date.now
   }
   const cutoff = new Date(nowMs - lineDays * 86400000).toISOString().slice(0, 10);
   const recent = snapshot.grades.filter((g) => g.openingDate >= cutoff
-    // No reviews live is only news when reviews are known to exist (a miss).
-    && (g.verdict !== 'no-reviews' || (g.known || 0) > 0));
+    // No reviews live is only news when reviews are known to exist (a miss) or
+    // opening week already ended (BRO-7161 F18: a closed week with nothing found is a finding).
+    && (g.verdict !== 'no-reviews' || (g.known || 0) > 0 || g.windowClosed));
   const rows = recent.map((g) => `<div style="margin:0 0 6px;font-size:14px;"><span style="color:${DOT[g.verdict] || '#999'};">&#9679;</span> ${esc(gradeLine(g))}</div>`).join('\n    ');
   const rawDays = Math.round((Date.parse(`${snapshot.to}T00:00:00Z`) - Date.parse(`${snapshot.from}T00:00:00Z`)) / 86400000);
   const days = Number.isFinite(rawDays) && rawDays >= 1 ? rawDays : 14;
@@ -342,6 +407,6 @@ function renderOpeningGradesBlock(snapshot, { esc = defaultEsc, nowMs = Date.now
 }
 
 module.exports = {
-  MARKETS, MARKET_LABEL, BEFORE_H, AFTER_H, SWEEP_SHOWS,
+  MARKETS, MARKET_LABEL, BEFORE_H, AFTER_H, SWEEP_SHOWS, SWEEP_CEILING, STALE_AUDIT_H, isLiveFile, isSweepCommit, openingWindow,
   estimateEmbargoMs, selectOpenings, CAUSE_LABEL, causeOfFields, causeOfSubject, outletOfFile, causeSummary, pickPressNight, showsTouched, isExcludedFile, gradeOpening, gradeLine, summarize, tallyLine, renderOpeningGradesBlock,
 };
