@@ -719,48 +719,6 @@
     "queuedAt": "2026-11-07T00:22:05.629Z"
   },
   {
-    "conditionKey": "review-gap:opening-window:curtains-off-broadway-2026",
-    "title": "Review gap — \"Curtains\" missing 1 cited review(s)",
-    "description": "Curtains (curtains-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=curtains-off-broadway-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-07T04:50:58.040Z"
-  },
-  {
-    "conditionKey": "review-gap:opening-window:nero-off-west-end-2026",
-    "title": "Review gap — \"Nero\" missing 1 cited review(s)",
-    "description": "Nero (nero-off-west-end-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=nero-off-west-end-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-07T04:50:58.175Z"
-  },
-  {
-    "conditionKey": "review-gap:opening-window:tosca-off-broadway-2026",
-    "title": "Review gap — \"Tosca\" missing 3 cited review(s)",
-    "description": "Tosca (tosca-off-broadway-2026): 3 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=tosca-off-broadway-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-07T04:50:58.276Z"
-  },
-  {
     "conditionKey": "pending-unrecoverable:in-the-heights-off-broadway-2026",
     "title": "1 review(s) for in-the-heights-off-broadway-2026 stuck in _pending with no text and no byline",
     "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- nycitycenter-org--7d6014eb.json (nycitycenter-org): fetch failed: All scraping methods failed https://www.nycitycenter.org/pdps/2026-2027/in-the-heights34/",
@@ -1664,20 +1622,6 @@
     "queuedAt": "2026-11-08T00:30:13.413Z"
   },
   {
-    "conditionKey": "t1-gaps:needs-manual-recovery",
-    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (Lincoln in the Bardo (washpost)). Checked 2026-11-08.",
-    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-08T00:30:36.874Z"
-  },
-  {
     "conditionKey": "corpus-drift:monitor-only",
     "title": "Data-quality monitors drifting from baseline: 18 (backfill-everybodys-talking-about-jamie-show-exists, pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, +12 more). Checked 2026-11-08.",
     "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
@@ -1723,9 +1667,9 @@
     "queuedAt": "2026-11-08T01:06:58.002Z"
   },
   {
-    "conditionKey": "pending-unrecoverable:harry-potter-and-the-cursed-child-one-part-west-end-2026",
-    "title": "1 review(s) for harry-potter-and-the-cursed-child-one-part-west-end-2026 stuck in _pending with no text and no byline",
-    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- thestage--unknown.json (thestage): no byline in page and no recoverable body https://www.thestage.co.uk/reviews/harry-potter-and-the-cursed-child-review-at-palace-theatre-london--new-cast-equals-the-original",
+    "conditionKey": "review-gap:opening-window:curtains-off-broadway-2026",
+    "title": "Review gap — \"Curtains\" missing 1 cited review(s)",
+    "description": "Curtains (curtains-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=curtains-off-broadway-2026 --checkpoint --ingest-missing",
     "severity": "warning",
     "url": null,
     "decision": false,
@@ -1734,6 +1678,48 @@
     "model": null,
     "tracked": null,
     "fields": [],
-    "queuedAt": "2026-11-08T01:16:12.893Z"
+    "queuedAt": "2026-11-08T01:43:58.342Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:nero-off-west-end-2026",
+    "title": "Review gap — \"Nero\" missing 1 cited review(s)",
+    "description": "Nero (nero-off-west-end-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=nero-off-west-end-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-08T01:43:58.452Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:tosca-off-broadway-2026",
+    "title": "Review gap — \"Tosca\" missing 1 cited review(s)",
+    "description": "Tosca (tosca-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=tosca-off-broadway-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-08T01:43:58.542Z"
+  },
+  {
+    "conditionKey": "t1-gaps:needs-manual-recovery",
+    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (Lincoln in the Bardo (washpost)). Checked 2026-11-08.",
+    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-08T01:44:16.034Z"
   }
 ]
