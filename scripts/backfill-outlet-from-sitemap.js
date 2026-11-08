@@ -503,7 +503,9 @@ async function main() {
       ingestedAt: new Date().toISOString(),
       backfillCandidateConfidence: m.confidence,
       backfillUrlYear: m.urlYear,
-      // The slug+year match IS the human verification. Pre-clear the LLM-verifier
+      // The slug+year match stands in for human verification, but it is a script clear (setBy stamped
+      // below, BRO-7157): a person's later wrongProduction flag outranks it via retractScriptWrongProductionClear.
+      //  Pre-clear the LLM-verifier
       // hallucinations that fire on historical pre-2020 reviews ("future date",
       // "wrong venue", "different production") — see feedback_historical_review_recovery.md.
       humanReviewedWrongProduction: false,
