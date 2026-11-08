@@ -1,15 +1,15 @@
 {
   "system": "stuck pipeline items",
-  "status": "pass",
-  "lastChecked": "2026-11-07T08:51:23.049Z",
+  "status": "warn",
+  "lastChecked": "2026-11-08T09:07:13.288Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
   "details": [
     {
       "name": "Stuck pipeline items",
-      "status": "pass",
-      "message": "No pipeline signals flagged possibly-stuck by the overnight digest."
+      "status": "warn",
+      "message": "1 pipeline signal(s) flagged possibly-stuck by the overnight digest — investigate and unstick. Shows losing scored reviews: othello-1982: 10→6 reviews (scored files exist but being dropped)"
     }
   ]
 }
