@@ -98,6 +98,17 @@ function hasOwnNodeModules(root, exists = fs.existsSync) {
   return exists(path.join(root, 'node_modules'));
 }
 
+// BRO-7110: a container's node_modules can be a shell (558 of 927 package dirs
+// empty); every gate then fails on both sides and the check burns 33 minutes
+// before saying NEW FAILURES. A declared package with no package.json is the cheap tell.
+/** -> names in package.json dependencies/devDependencies with no node_modules/<name>/package.json */
+function missingDeclaredPackages(root, exists = fs.existsSync, readPkg = () => JSON.parse(fs.readFileSync(path.join(root, 'package.json'), 'utf8'))) {
+  let pkg;
+  try { pkg = readPkg(); } catch { return []; }
+  const names = Object.keys({ ...(pkg.dependencies || {}), ...(pkg.devDependencies || {}) });
+  return names.filter((n) => !exists(path.join(root, 'node_modules', n, 'package.json')));
+}
+
 // The main checkout links nothing (its git-common-dir is its own .git): install there.
 // -sfn replaces a dangling link, which existsSync also reports as missing.
 /** -> the one-line fix for a checkout with no node_modules */
@@ -282,6 +293,12 @@ function main(argv = process.argv.slice(2)) {
       + nodeModulesRemedy(ROOT, git('rev-parse', '--git-common-dir').stdout));
     return 3;
   }
+  const missingPkgs = missingDeclaredPackages(ROOT);
+  if (missingPkgs.length) {
+    console.error(`land-local-check: node_modules is incomplete (${missingPkgs.length} declared package(s) have no package.json, e.g. ${missingPkgs.slice(0, 5).join(', ')}). `
+      + 'Both runs would fail the same way and nothing could be judged. Reinstall first: npm ci (in the checkout that owns node_modules).');
+    return 3;
+  }
   const fetch = git('fetch', '-q', 'origin', 'main');
   if (fetch.code !== 0) console.error(`land-local-check: git fetch failed, judging against the local origin/main (${fetch.stderr.split('\n').pop()})`);
   const head = git('rev-parse', 'HEAD').stdout;
@@ -358,7 +375,7 @@ function main(argv = process.argv.slice(2)) {
   }
 }
 
-module.exports = { dirtyTreeMessage, nodeModulesRemedy, main, withBaseWorktree, depsChangedSince, linkIgnored, ignoredPaths, parseArgs, newFailureFiles, missingCoreData, hasOwnNodeModules, restorePrebuildResidue, stageGauntletHarness, HARNESS_FILES, CORE_DATA_FILES, DEFAULT_GATES, LOCAL_SKIPPED_GATES };
+module.exports = { missingDeclaredPackages, dirtyTreeMessage, nodeModulesRemedy, main, withBaseWorktree, depsChangedSince, linkIgnored, ignoredPaths, parseArgs, newFailureFiles, missingCoreData, hasOwnNodeModules, restorePrebuildResidue, stageGauntletHarness, HARNESS_FILES, CORE_DATA_FILES, DEFAULT_GATES, LOCAL_SKIPPED_GATES };
 
 if (require.main === module) {
   // Capture the tip before the ~20 min run: the session may commit meanwhile, and that commit was not tested.

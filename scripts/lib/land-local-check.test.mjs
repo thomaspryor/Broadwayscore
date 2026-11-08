@@ -119,7 +119,7 @@ test('base comparison runs the staged gauntlet in a throwaway worktree, never ch
   t.mock.method(console, 'log', (message) => messages.push(message));
   t.mock.method(R, 'withFileMutex', (_lock, fn) => fn());
   const exists = fs.existsSync;
-  t.mock.method(fs, 'existsSync', (p) => /data\/(shows|reviews|cast-manifest|actor-slugs)\.json$|\/node_modules$/.test(String(p)) || exists(p));
+  t.mock.method(fs, 'existsSync', (p) => /data\/(shows|reviews|cast-manifest|actor-slugs)\.json$|\/node_modules$|\/node_modules\/.+\/package\.json$/.test(String(p)) || exists(p));
   const checker = checkerWithRunner(t, (cmd, args, opts) => {
     const result = (stdout = '') => ({ status: 0, stdout, stderr: '' });
     if (cmd === 'git') {
@@ -393,4 +393,13 @@ test('BRO-7110: a tree dirty only with prebuild outputs names them and the resto
   assert.match(dirtyTreeMessage('M data/gold-lists-computed.json'), /git checkout -- data\/gold-lists-computed\.json$/, 'trimmed status, as run() returns it');
   const mixed = dirtyTreeMessage(' M data/gold-lists-computed.json\n M scripts/foo.js\n');
   assert.doesNotMatch(mixed, /git checkout --/, 'a real edit in the mix gets no discard hint');
+});
+
+test('BRO-7110: declared packages with no package.json are reported before any gate runs', () => {
+  const { missingDeclaredPackages } = require('./land-local-check.js');
+  const present = new Set(['/r/node_modules/next/package.json', '/r/node_modules/@types/node/package.json']);
+  const readPkg = () => ({ dependencies: { next: '1' }, devDependencies: { '@types/node': '1', acorn: '8' } });
+  assert.deepEqual(missingDeclaredPackages('/r', (p) => present.has(p), readPkg), ['acorn']);
+  assert.deepEqual(missingDeclaredPackages('/r', () => true, readPkg), []);
+  assert.deepEqual(missingDeclaredPackages('/r', () => false, () => { throw new Error('no package.json'); }), [], 'unreadable package.json: no opinion');
 });
