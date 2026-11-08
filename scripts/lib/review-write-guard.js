@@ -1544,6 +1544,31 @@ function stripDowJonesChromeForWrite(filePath, newData) {
   return out;
 }
 
+/**
+ * Replace a review file atomically: write a unique dot-prefixed temp file in
+ * the same directory, then rename over the target (BRO-7171). A crash or a
+ * concurrent reader never sees a half-written JSON. The target is resolved
+ * through symlinks first so a rename never replaces a link with a file.
+ * @param {string} filePath
+ * @param {string} contents
+ */
+function writeReviewFileAtomic(filePath, contents) {
+  let target = filePath;
+  try { target = fs.realpathSync(filePath); } catch (e) { if (e.code !== 'ENOENT') throw e; }
+  if (target === filePath) {
+    // New file: resolve its directory (data/review-texts is a symlink).
+    try { target = path.join(fs.realpathSync(path.dirname(filePath)), path.basename(filePath)); } catch { /* dir missing: write fails below */ }
+  }
+  const tmp = path.join(path.dirname(target), `.${path.basename(target)}.tmp-${process.pid}-${Math.random().toString(36).slice(2, 10)}`);
+  try {
+    fs.writeFileSync(tmp, contents);
+    fs.renameSync(tmp, target);
+  } catch (e) {
+    try { fs.unlinkSync(tmp); } catch { /* never created */ }
+    throw e;
+  }
+}
+
 function safeWriteReview(filePath, newData, options = {}) {
   const { force = false, merge = true } = options;
   // A file missing only because this checkout is sparse is not new: writing it
@@ -2133,9 +2158,17 @@ function safeWriteReview(filePath, newData, options = {}) {
           const manualMerge = options.manualUrlChangeFields
             ? require('./manual-review-fields').prepareManualUrlChangeFields(newData, options.manualUrlChangeFields)
             : null;
+          // options.preserveUrlDerivedFields (BRO-7171): a recovery that PROVED
+          // the new url is the same review (gap-acceptance identity proof)
+          // keeps the review's aggregator excerpts/stars across the move, the
+          // rule recover-serp-text/rediscover-review-urls already applied via
+          // updateFileUrlWithInvariant's preserveFields.
+          const preserveUrlDerived = Array.isArray(options.preserveUrlDerivedFields) && options.preserveUrlDerivedFields.length
+            ? new Set([...(manualMerge && manualMerge.preserveFields ? manualMerge.preserveFields : []), ...options.preserveUrlDerivedFields])
+            : (manualMerge && manualMerge.preserveFields);
           const inv = applyUrlChangeInvariant(existing, newData, {
             fileLabel: path.basename(filePath),
-            preserveFields: manualMerge && manualMerge.preserveFields,
+            preserveFields: preserveUrlDerived,
           });
           // BRO-3151: equality with the old body is not evidence of stale
           // content when a manual ingest explicitly supplied that body. Apply
@@ -2715,7 +2748,7 @@ function safeWriteReview(filePath, newData, options = {}) {
   // creation. Never guessed from where the process runs; never blocks the write.
   if (!fs.existsSync(filePath)) require('./review-provenance').stampIngestOrigin(newData);
 
-  fs.writeFileSync(filePath, JSON.stringify(newData, null, 2) + '\n');
+  writeReviewFileAtomic(filePath, JSON.stringify(newData, null, 2) + '\n');
   return { wrote: true, preserved, lockedSkipped, ...(autoFlaggedWrongProduction ? { autoFlaggedWrongProduction: true } : {}) };
 }
 
@@ -3997,4 +4030,4 @@ function flagSiblingEraDateOnPersist(filePath, priorRecord, record) {
   return { flagged: true, detail };
 }
 
-module.exports = { safeWriteReview, flagSiblingEraDateOnPersist, safeRenameReview, safeUnlinkReview, checkForDataLoss, getEffectiveProtectedFields, checkUrlCollision, isExcludedIgnoringDuplicate, shouldMarkUrlCollisionDuplicate, shouldMarkPostCorrectionDuplicate, wouldFormDuplicateCycle, coerceAssignedScore, shouldSkipPollerUpdate, shouldSkipLockedEnrichment, hasPlaceholderUrlPattern, preserveFlaggedFields, protectStagedDeletions, PROTECTED_FIELDS, CLEAR_BREADCRUMBS, CLEARABLE_VERDICT_FLAGS, isIntentionalClear, invalidateWrongProductionAutoClear, retractScriptWrongProductionClear, isScriptWrongProductionClear, WRONG_PRODUCTION_CLEAR_MARKERS, retractScriptWrongShowClear, isScriptWrongShowClear, WRONG_SHOW_CLEAR_MARKERS, isFreshWrongProductionAutoClear: _freshWrongProductionAutoClear, invalidateWrongShowAutoClear, isFreshWrongShowAutoClear: _freshWrongShowAutoClear, _setShowsCacheForTest, SUBSTANTIVE_BODY_CHARS, NEAR_EMPTY_BODY_CHARS, _flipFlopShouldTakeIncoming, writeReviewOrThrow };
+module.exports = { safeWriteReview, writeReviewFileAtomic, flagSiblingEraDateOnPersist, safeRenameReview, safeUnlinkReview, checkForDataLoss, getEffectiveProtectedFields, checkUrlCollision, isExcludedIgnoringDuplicate, shouldMarkUrlCollisionDuplicate, shouldMarkPostCorrectionDuplicate, wouldFormDuplicateCycle, coerceAssignedScore, shouldSkipPollerUpdate, shouldSkipLockedEnrichment, hasPlaceholderUrlPattern, preserveFlaggedFields, protectStagedDeletions, PROTECTED_FIELDS, CLEAR_BREADCRUMBS, CLEARABLE_VERDICT_FLAGS, isIntentionalClear, invalidateWrongProductionAutoClear, retractScriptWrongProductionClear, isScriptWrongProductionClear, WRONG_PRODUCTION_CLEAR_MARKERS, retractScriptWrongShowClear, isScriptWrongShowClear, WRONG_SHOW_CLEAR_MARKERS, isFreshWrongProductionAutoClear: _freshWrongProductionAutoClear, invalidateWrongShowAutoClear, isFreshWrongShowAutoClear: _freshWrongShowAutoClear, _setShowsCacheForTest, SUBSTANTIVE_BODY_CHARS, NEAR_EMPTY_BODY_CHARS, _flipFlopShouldTakeIncoming, writeReviewOrThrow };
