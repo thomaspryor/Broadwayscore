@@ -25,6 +25,7 @@ const path = require('path');
 const { execFileSync } = require('child_process');
 const pm = require('./lib/press-night-manual-actions');
 const og = require('./lib/opening-grade');
+const { alertUncollected } = require('./audit-show-review-gap');
 
 const ROOT = path.join(__dirname, '..');
 const arg = (k) => { const a = process.argv.find((x) => x.startsWith(`--${k}=`)); return a ? a.slice(k.length + 3) : null; };
@@ -113,6 +114,8 @@ function main() {
     historyFromMs: hist,
     pressNight: og.pickPressNight(records, show),
     gapResult: gapById.get(show.id) || null,
+    // BRO-7147: same aggregator-cited count the per-show gap alert uses.
+    missingCited: gapById.has(show.id) ? alertUncollected(gapById.get(show.id)) : null,
     nowMs,
   })).sort((a, b) => (b.openingDate.localeCompare(a.openingDate)) || a.showId.localeCompare(b.showId));
 

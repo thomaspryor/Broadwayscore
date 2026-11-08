@@ -95,9 +95,12 @@ const median = (a) => {
  * @param {number|null} p.historyFromMs  earliest instant the git history covers (null = full history)
  * @param {object|null} p.pressNight press-night record or null
  * @param {object|null} p.gapResult  show-review-gap.json result for the show, or null
+ * @param {number|null} p.missingCited  aggregator-cited reviews the gap audit still
+ *   has not collected (audit-show-review-gap.alertUncollected of gapResult), or null
+ *   when there is no audit row
  * @param {number} p.nowMs
  */
-function gradeOpening({ show, files = [], commits = [], historyFromMs = null, pressNight = null, gapResult = null, nowMs = Date.now() }) {
+function gradeOpening({ show, files = [], commits = [], historyFromMs = null, pressNight = null, gapResult = null, missingCited = null, nowMs = Date.now() }) {
   const embargoMs = toMs(pressNight && pressNight.embargoAt) ?? estimateEmbargoMs(show.openingDate, show.category);
   const lo = embargoMs - BEFORE_H * HOUR;
   const hi = embargoMs + AFTER_H * HOUR;
@@ -145,8 +148,17 @@ function gradeOpening({ show, files = [], commits = [], historyFromMs = null, pr
   }
 
   const live = (files || []).filter((f) => !isExcludedFile(f)).length;
+  // BRO-7147: "known" was the census candidateCount, which counts every URL any
+  // source ever surfaced, other productions included (King Lear OB "2 of 10":
+  // all 8 extra were a DC, a Sydney, a Chicago and a Texas staging). Known is now
+  // live plus the aggregator-cited reviews the gap audit still cannot collect,
+  // the same count the per-show alert uses (BRO-7116). The census count stays as
+  // censusCandidates for reference only.
   const cv = gapResult && gapResult.censusVerdict;
-  const known = cv && Number.isInteger(cv.candidateCount) && cv.candidateCount > 0 ? cv.candidateCount : null;
+  const censusCandidates = cv && Number.isInteger(cv.candidateCount) ? cv.candidateCount : null;
+  const missing = Number.isInteger(missingCited) && missingCited > 0 ? missingCited : 0;
+  const known = Number.isInteger(missingCited) ? live + missing : null;
+  const windowClosed = nowMs > hi;
   let hoursToLive = null;
   if (pressNight && toMs(pressNight.embargoAt) != null && Array.isArray(pressNight.perReview)) {
     hoursToLive = median(pressNight.perReview.filter((r) => r && !r.baseline && toMs(r.firstLiveAt) != null)
@@ -159,6 +171,9 @@ function gradeOpening({ show, files = [], commits = [], historyFromMs = null, pr
   if (signals.length) verdict = 'needed-hands';
   else if (!historyCovers) verdict = 'not-gradable';
   else if (live === 0) verdict = 'no-reviews';
+  // BRO-7147: a window that closed with cited reviews still missing did not run
+  // on its own, whether or not anyone touched it.
+  else if (windowClosed && missing > 0) verdict = 'incomplete';
   else verdict = 'on-its-own';
 
   return {
@@ -169,9 +184,11 @@ function gradeOpening({ show, files = [], commits = [], historyFromMs = null, pr
     embargoAt: new Date(embargoMs).toISOString(),
     embargoFrom: pressNight && pressNight.embargoAt ? 'press-night record' : '22:00 local estimate',
     windowEnd: new Date(hi).toISOString(),
-    windowClosed: nowMs > hi,
+    windowClosed,
     live,
     known,
+    missing,
+    censusCandidates,
     hoursToLive: round1(hoursToLive),
     verdict,
     onlyIngestDispatches: verdict === 'needed-hands' && hard.length === 0,
@@ -194,6 +211,10 @@ function gradeLine(g) {
     const n = g.signals.length;
     tail = `needed a person or a Claude session${sofar} (${n} fix${n === 1 ? '' : 'es'} by hand)`;
   } else if (g.verdict === 'on-its-own') tail = `ran on its own${sofar}`;
+  else if (g.verdict === 'incomplete') {
+    const m = g.missing || Math.max(0, (g.known || 0) - g.live);
+    tail = `opening week ended with ${m} cited review${m === 1 ? '' : 's'} still missing`;
+  }
   else if (g.verdict === 'no-reviews') tail = (g.known || 0) > 0 ? 'reviews are out but none are on the site yet' : 'no reviews live yet';
   else tail = 'not graded (edit history missing)';
   return `${head}: ${count}, ${tail}.`;
@@ -202,13 +223,14 @@ function gradeLine(g) {
 /** Per-market tallies. */
 function summarize(grades) {
   const out = {};
-  for (const m of MARKETS) out[m] = { openings: 0, onItsOwn: 0, neededHands: 0, neededHandsIngestOnly: 0, noReviews: 0, notGradable: 0 };
+  for (const m of MARKETS) out[m] = { openings: 0, onItsOwn: 0, neededHands: 0, neededHandsIngestOnly: 0, incomplete: 0, noReviews: 0, notGradable: 0 };
   for (const g of grades || []) {
     const s = out[g.category];
     if (!s) continue;
     s.openings += 1;
     if (g.verdict === 'on-its-own') s.onItsOwn += 1;
     else if (g.verdict === 'needed-hands') { s.neededHands += 1; if (g.onlyIngestDispatches) s.neededHandsIngestOnly += 1; }
+    else if (g.verdict === 'incomplete') s.incomplete += 1;
     else if (g.verdict === 'no-reviews') s.noReviews += 1;
     else s.notGradable += 1;
   }
@@ -219,13 +241,14 @@ function summarize(grades) {
 function tallyLine(summary, days) {
   // Denominator is graded openings only: a show with no reviews yet, or with
   // missing edit history, neither passed nor failed.
-  const graded = (s) => s.onItsOwn + s.neededHands;
+  // An incomplete opening is graded (it failed), so it counts in the denominator.
+  const graded = (s) => s.onItsOwn + s.neededHands + (s.incomplete || 0);
   const parts = MARKETS.filter((m) => summary[m] && graded(summary[m]))
     .map((m) => `${MARKET_LABEL[m]} ${summary[m].onItsOwn} of ${graded(summary[m])}`);
   return parts.length ? `Openings in the last ${days} days that ran on their own: ${parts.join(', ')}.` : `No graded openings in the last ${days} days.`;
 }
 
-const DOT = { 'on-its-own': '#15803d', 'needed-hands': '#b45309', 'no-reviews': '#999', 'not-gradable': '#999' };
+const DOT = { 'on-its-own': '#15803d', 'needed-hands': '#b45309', incomplete: '#b91c1c', 'no-reviews': '#999', 'not-gradable': '#999' };
 const defaultEsc = (v) => String(v).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
 /**
