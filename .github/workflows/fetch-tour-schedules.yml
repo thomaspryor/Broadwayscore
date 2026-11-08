@@ -163,6 +163,7 @@ jobs:
           # Drop an aspect violator instead of losing the whole batch.
           node scripts/check-image-aspect.js --staged --quarantine
           # BRO-6939: drop audit entries whose poster the quarantine just deleted, then stage the audit file.
+          # audit-secret-gap-ok: GEMINI_API_KEY (--prune only reads local files, no API call)
           node scripts/audit-tour-art.js --prune || echo "::warning::tour art prune failed"
           git add src/config/onboarding-tour-art.json
           # BRO-6277: list-size variants (sm/) for the art that survived quarantine, staged with it.
