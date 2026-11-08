@@ -58,6 +58,24 @@ test('START-NOW only applies inside its age window and to Todo cards', () => {
   assert.equal(isStartNow(startNowCard({ description: `## Problem\nx\nstart-now: soon\n${BODY}` }), NOW), true);
 });
 
+test('BRO-7102: a START-NOW-SINCE stamp re-anchors the 48h window on an old card', () => {
+  const OLD_CARD = new Date(NOW - 5 * 24 * 3600_000).toISOString();
+  const since = (ms) => new Date(NOW - ms).toISOString();
+  const card = (stamp) => startNowCard({ createdAt: OLD_CARD, description: `START-NOW: red 7h\nSTART-NOW-SINCE: ${stamp}\n\n${BODY}` });
+  // A 5-day-old card escalated 20 minutes ago is in the window again.
+  assert.equal(isStartNow(card(since(20 * 60_000)), NOW), true);
+  assert.equal(skipReason(card(since(20 * 60_000)), NOW), null);
+  // Stamped 2 minutes ago: the escalating run may still be writing it.
+  assert.equal(isStartNow(card(since(2 * 60_000)), NOW), false);
+  // A stamp older than 48h is as stale as the card.
+  assert.equal(isStartNow(card(since(START_NOW_MAX_AGE_MS + 60_000)), NOW), false);
+  // A future or garbage stamp never widens the window.
+  assert.equal(isStartNow(card(new Date(NOW + 3600_000).toISOString()), NOW), false);
+  assert.equal(isStartNow(card('not-a-date'), NOW), false);
+  // Without a stamp the old card stays outside the window.
+  assert.equal(isStartNow(startNowCard({ createdAt: OLD_CARD }), NOW), false);
+});
+
 test('START-NOW cards that cannot run are reported in startNowSkipped', () => {
   const tooNew = startNowCard({ identifier: 'BRO-5001', createdAt: new Date(NOW - 60_000).toISOString() });
   const noVerify = startNowCard({ identifier: 'BRO-5002', description: 'START-NOW: x\nno command here' });

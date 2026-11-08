@@ -5,7 +5,7 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const {
   assessMainRedStreak, failingJobsFromNeeds,
-  stepFailureSignature, firstFailingTestNameInJobLog, firstFailingTestFileInJobLog, isBashIntegrationStep, isBashTestStepCommand, failingStepSignatures, signaturesToResolve,
+  stepFailureSignature, firstFailingTestNameInJobLog, firstFailingTestFileInJobLog, firstFailingPlaywrightTestInJobLog, isBashIntegrationStep, isBashTestStepCommand, failingStepSignatures, signaturesToResolve,
   trackSignatureAbsence, jobNameFromRedKey, STALE_ABSENT_RUN_THRESHOLD,
 } = require('./main-red-streak.js');
 
@@ -602,4 +602,75 @@ test('firstFailingTestFileInJobLog returns null with no location, and never reac
 test('firstFailingTestFileInJobLog needs a path boundary before the tests/ segment', () => {
   const log = "not ok 1 - a\n  location: '/x/contests/a.test.mjs:1:1'";
   assert.equal(firstFailingTestFileInJobLog(log), null);
+});
+
+// BRO-7102: Playwright per-test signatures. Fixture cut from the real E2E job log
+// of run 42423538842 (github reporter, 2 retries, then the final summary).
+const PW_SPEC = 'tests/e2e/user-flows.spec.ts';
+const PW_TITLE = 'Show Page Rating Section › Want to See saves for a signed-out visitor, then asks them to sign in';
+const PW_REAL_LOG = [
+  '2026-11-07T23:08:50.4605758Z # fail 0',
+  '2026-11-07T23:12:56.6827977Z Running 130 tests using 4 workers',
+  '2026-11-07T23:15:43.3763069Z ······························°°°········×°·°····°×F',
+  `2026-11-07T23:15:43.3793051Z ##[error]  1) [chromium] › ${PW_SPEC}:115:7 › ${PW_TITLE} `,
+  '    Error: expect(locator).toBeVisible() failed',
+  `2026-11-07T23:15:43.3815638Z ##[error]  1) [chromium] › ${PW_SPEC}:115:7 › ${PW_TITLE} `,
+  '    Retry #1 ───────────────────────────────────────',
+  `2026-11-07T23:15:43.5940095Z   1) [chromium] › ${PW_SPEC}:115:7 › ${PW_TITLE} `,
+  '2026-11-07T23:15:43.5941856Z     Error: expect(locator).toBeVisible() failed',
+  '2026-11-07T23:15:43.6054569Z   1 failed',
+  `2026-11-07T23:15:43.6055947Z     [chromium] › ${PW_SPEC}:115:7 › ${PW_TITLE} `,
+  '2026-11-07T23:15:43.6057114Z   34 skipped',
+  '2026-11-07T23:15:43.6057520Z   95 passed (2.8m)',
+  '2026-11-07T23:15:43.7433011Z ##[error]Process completed with exit code 1.',
+].join('\n');
+
+test('BRO-7102: E2E log from run 42423538842 yields a per-test signature name (spec › suite › title, no project or line:col)', () => {
+  const want = `${PW_SPEC} › ${PW_TITLE}`;
+  assert.equal(firstFailingPlaywrightTestInJobLog(PW_REAL_LOG), want);
+  // The job-wide name falls through to it when there is no TAP failure.
+  assert.equal(firstFailingTestNameInJobLog(PW_REAL_LOG), want);
+  // The file helper stays TAP-only: it feeds `node --test`, which cannot run a spec.
+  assert.equal(firstFailingTestFileInJobLog(PW_REAL_LOG), null);
+});
+
+test('BRO-7102: the summary failed block wins over a flaky test printed earlier', () => {
+  const log = [
+    '2026-11-07T23:15:40.0Z   1) [chromium] › tests/e2e/a.spec.ts:10:5 › Flaky › passes on retry ',
+    '2026-11-07T23:15:41.0Z   2) [mobile-safari] › tests/e2e/b.spec.ts:20:3 › Nav › opens menu (retry #1) ',
+    '2026-11-07T23:15:43.0Z   1 failed',
+    '2026-11-07T23:15:43.0Z     [mobile-safari] › tests/e2e/b.spec.ts:20:3 › Nav › opens menu ',
+    '2026-11-07T23:15:43.0Z   1 flaky',
+    '2026-11-07T23:15:43.0Z     [chromium] › tests/e2e/a.spec.ts:10:5 › Flaky › passes on retry ',
+    '2026-11-07T23:15:43.0Z   90 passed (2.0m)',
+  ].join('\n');
+  assert.equal(firstFailingPlaywrightTestInJobLog(log), 'tests/e2e/b.spec.ts › Nav › opens menu');
+});
+
+test('BRO-7102: a summary with only flaky tests names no test (the red is elsewhere)', () => {
+  const log = [
+    '2026-11-07T23:15:40.0Z   1) [chromium] › tests/e2e/a.spec.ts:10:5 › Flaky › passes on retry ',
+    '2026-11-07T23:15:43.0Z   1 flaky',
+    '2026-11-07T23:15:43.0Z     [chromium] › tests/e2e/a.spec.ts:10:5 › Flaky › passes on retry ',
+    '2026-11-07T23:15:43.0Z   90 passed (2.0m)',
+  ].join('\n');
+  assert.equal(firstFailingPlaywrightTestInJobLog(log), null);
+  assert.equal(firstFailingTestNameInJobLog(log), null);
+});
+
+test('BRO-7102: a killed job with no summary falls back to the first numbered header, ANSI and retry suffix stripped', () => {
+  const log = [
+    '2026-11-07T23:15:40.0Z \u001b[31m  1) [chromium] › tests/e2e/c.spec.ts:7:1 › Home › loads (retry #2) (5.2s)\u001b[39m',
+    '2026-11-07T23:45:00.0Z ##[error]The job running on runner X has exceeded the maximum execution time of 30 minutes.',
+  ].join('\n');
+  assert.equal(firstFailingPlaywrightTestInJobLog(log), 'tests/e2e/c.spec.ts › Home › loads');
+});
+
+test('BRO-7102: a TAP failure still wins over Playwright lines in the same job', () => {
+  const log = [
+    '2026-11-07T23:08:50.0Z not ok 3 - unit thing breaks',
+    '2026-11-07T23:15:43.0Z   1 failed',
+    '2026-11-07T23:15:43.0Z     [chromium] › tests/e2e/b.spec.ts:20:3 › Nav › opens menu ',
+  ].join('\n');
+  assert.equal(firstFailingTestNameInJobLog(log), 'unit thing breaks');
 });

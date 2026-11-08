@@ -2973,19 +2973,13 @@ async function checkMainRedStreak(isCI) {
     // used (.github/workflows/test.yml) — not a new one keyed on
     // firstRedSha — so test.yml's "Resolve alert — main test.yml green
     // again" step (which resolves this key on every green run) keeps
-    // closing this one too. disposition:'human' (BRO-3865, changed from
-    // 'auto'): test.yml's push-triggered dispatch now files a PER-SIGNATURE
-    // 'auto' card per distinct failing job/step/test
-    // (scripts/route-main-streak-signatures.js, conditionKey
-    // 'test-yml:red:<job>:<hash>') instead of one shared 'auto' card under
-    // THIS key — so this aggregate condition is no longer "diagnose one
-    // failing test", it's "nobody's per-signature card is stemming a
-    // long-running red trunk", the same severity class as the
-    // 'test-yml:main-streak-escalation' human page below. 'test-yml:main-
-    // streak' was REMOVED from scripts/lib/page-worthy-alerts.js's
-    // allowlist 2026-09-23 (owner email-noise complaint), so this 'human'
-    // disposition is downgraded to the digest by the router — a red trunk is
-    // for the automated fixers, not an owner page. cooldownHours matches the escalation tier's 24h (NOT the old
+    // closing this one too. disposition:'digest' (BRO-7102; was 'human'
+    // since BRO-3865, which the page gate downgraded to the digest on every
+    // fire because 'test-yml:main-streak' left page-worthy-alerts.js on
+    // 2026-09-23). This aggregate row is the owner's digest view of a long red
+    // trunk; the action is route-main-streak-signatures.js's 6h escalation,
+    // which puts each still-failing signature's own card in front of a worker.
+    // cooldownHours matches the escalation tier's 24h (NOT the old
     // 6h — under 'auto' this key only ever paged once, since
     // findLinearDuplicate's tracker dedupe made every later hit
     // action:'silent' with no email at all; under 'human' there is no such
@@ -3000,7 +2994,11 @@ async function checkMainRedStreak(isCI) {
           description: assessment.alarm,
           hint: `git log ${assessment.firstRedSha} — start from the first red commit, not the latest push.`,
           severity: 'error',
-          disposition: 'human',
+          // BRO-7102: was 'human', which the page gate always turned into a
+          // digest line anyway. Say so: the digest line is for the owner to
+          // see; the work goes to each signature's own card, which
+          // route-main-streak-signatures.js escalates once red 6h+.
+          disposition: 'digest',
           cardAction: 'Fix',
           fields: [{ name: 'First red commit', value: assessment.firstRedSha || 'unknown' }],
           cooldownHours: 24,

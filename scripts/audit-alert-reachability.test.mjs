@@ -10,6 +10,7 @@ const {
   extractRouteAlertCalls,
   isPageWorthyLiteralPrefix,
   findUnreachableAlerts,
+  findDowngradedHumanAlerts,
   collectFindings,
 } = require('./audit-alert-reachability.js');
 
@@ -254,4 +255,32 @@ test('an earlier gate with continue-on-error: true does not make later alerts un
 test('collectFindings reports zero findings against the live .github/workflows/ corpus', () => {
   const { findings } = collectFindings();
   assert.deepEqual(findings, []);
+});
+
+// --- BRO-7102: 'human' alerts whose key can never page -----------------------
+
+// Baseline at BRO-7102 (2026-11-08). Each of these is downgraded to the digest on
+// every fire. Shrinking this list is welcome; a NEW entry fails: write
+// disposition 'digest' (or 'auto' for a card) instead, or make the key
+// page-worthy in scripts/lib/page-worthy-alerts.js (an owner call, BRO-4141).
+const DOWNGRADED_HUMAN_BASELINE = new Set([
+  '.github/workflows/update-mezzanine.yml :: mezzanine:session-token-expired',
+  '.github/workflows/update-show-status.yml :: update-show-status:repeat-failure',
+  'scripts/audit-opening-night-coverage.js :: t1-coverage:new-gaps-24h',
+  'scripts/audit-show-review-gap.js :: we-gate:enabled-delayed-notice',
+  'scripts/audit-show-review-gap.js :: we-gate:proven-variable-already-set',
+  'scripts/lib/broadcast-gate-alert.js :: broadcast-gate:',
+  'scripts/replay-pending-bylines.js :: ',
+]);
+
+test('no NEW routeAlert uses disposition human with a key that can never page (BRO-7102)', () => {
+  const found = findDowngradedHumanAlerts().map((f) => `${f.file} :: ${f.conditionKey}`);
+  const fresh = [...new Set(found)].filter((k) => !DOWNGRADED_HUMAN_BASELINE.has(k));
+  assert.deepEqual(fresh, [], `these 'human' alerts can never page and would silently become digest lines: ${fresh.join('; ')}`);
+});
+
+test('the retired main-streak escalation is no longer a downgraded human alert (BRO-7102)', () => {
+  const found = findDowngradedHumanAlerts();
+  assert.ok(found.length > 0, 'scanner found nothing: it is not reading the corpus');
+  assert.equal(found.some((f) => f.conditionKey.startsWith('test-yml:main-streak')), false);
 });

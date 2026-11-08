@@ -7171,9 +7171,11 @@ jobs:
       # which only gate the NEW dispatch on the streak's own 2+/4+
       # thresholds (unchanged from before). The aggregate 'test-yml:main-
       # streak'/'-escalation' keys (health-check.js backstop + "Resolve
-      # alert" step below) are untouched by this — they stay the human-paged
-      # "main has been down a long time, nobody's per-signature card is
-      # stemming it" signal, not a per-breakage one. continue-on-error:true
+      # alert" step below) only resolve here; the "red too long" action is
+      # this script's BRO-7102 escalation: a signature red 6h+ gets its own
+      # card bumped to High and stamped START-NOW for the cloud worker
+      # (needs LINEAR_API_KEY; kill switch RED_ESCALATION_DISABLED=true).
+      # continue-on-error:true
       # is a deliberate backstop (adversarial review): every gh/API call
       # inside the script already degrades gracefully rather than throwing,
       # but this ensures even an unforeseen bug in the script can never flip

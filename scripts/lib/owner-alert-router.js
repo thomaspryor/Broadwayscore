@@ -1279,6 +1279,12 @@ function carriedRedFirstFields(existing) {
   // BRO-5261: releaseSweptTracker's escalation baseline and audit stamp.
   if (existing && Number.isFinite(existing.notifyCountAtRelease)) out.notifyCountAtRelease = existing.notifyCountAtRelease;
   if (existing && existing.sweptTracker) out.sweptTracker = existing.sweptTracker;
+  // BRO-7102: the red-escalation re-stamp clock, only while the same incident is open
+  // (a new incident after a resolve starts its own clock).
+  if (existing && existing.status === 'open' && existing.escalatedAt) {
+    out.escalatedAt = existing.escalatedAt;
+    if (existing.escalationLane) out.escalationLane = existing.escalationLane;
+  }
   return out;
 }
 
@@ -1440,6 +1446,7 @@ function readDispatchAttempts({ days = 7 } = {}) {
 
 module.exports = {
   routeAlert,
+  carriedRedFirstFields,
   alertIdempotencyKey,
   DIGEST_ROW_FIELDS,
   toSnapshotQueuedRow,

@@ -129,9 +129,21 @@ const START_NOW_MAX_AGE_MS = 48 * HOUR_MS;
 function hasStartNowLine(issue) {
   return !!(issue && START_NOW_RE.test(issue.description || ''));
 }
+// BRO-7102: an escalator that puts an OLDER card back in front (red-escalation.js)
+// stamps "START-NOW-SINCE: <iso>"; the window then runs from that stamp, not
+// from filing. The newest stamp wins.
+const START_NOW_SINCE_RE = /^\s*START-NOW-SINCE\s*:\s*(\S+)/gim;
+function startNowAnchorMs(issue) {
+  let best = Date.parse(issue && issue.createdAt);
+  for (const m of String((issue && issue.description) || '').matchAll(START_NOW_SINCE_RE)) {
+    const t = Date.parse(m[1]);
+    if (Number.isFinite(t) && !(t <= best)) best = t;
+  }
+  return best;
+}
 function isStartNow(issue, nowMs) {
   if (!hasStartNowLine(issue) || !issue.state || issue.state.type !== 'unstarted') return false;
-  const age = nowMs - Date.parse(issue.createdAt);
+  const age = nowMs - startNowAnchorMs(issue);
   return Number.isFinite(age) && age >= START_NOW_MIN_AGE_MS && age < START_NOW_MAX_AGE_MS;
 }
 // BRO-6654: the owner tapped Done on a Mac-only task emailed from this card
