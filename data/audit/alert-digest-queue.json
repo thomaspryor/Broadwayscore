@@ -1653,20 +1653,6 @@
     "queuedAt": "2026-11-08T01:43:58.542Z"
   },
   {
-    "conditionKey": "t1-gaps:needs-manual-recovery",
-    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (Lincoln in the Bardo (washpost)). Checked 2026-11-08.",
-    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-08T03:04:17.213Z"
-  },
-  {
     "conditionKey": "land:land/bro-7105-followups",
     "title": "Landing blocked: merged-tree-tests red on land/bro-7105-followups",
     "description": "land.yml did not land land/bro-7105-followups: the merged-tree-tests gate went red at 9cd5000d08. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-7105-followups @ 9cd5000d08 (origin/land/bro-7105-followups) → origin/main @ a8fbbc9a28 [land] attempt 1/3: rebased onto a8fbbc9a28, 3 file(s) changed — running checks [land] verified-base: main moved c7275fdad1 → a8fbbc9a28 across 729 file(s), substantive — re-checking on the merged tree (+622 test file(s) changed on main since the verified base); small re-check: no file changed o Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/42437882546",
@@ -1741,6 +1727,48 @@
       }
     ],
     "queuedAt": "2026-11-08T03:08:11.801Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:jest-to-impress-off-broadway-2026",
+    "title": "Review gap — \"Jest to Impress\" missing 3 cited review(s)",
+    "description": "Jest to Impress (jest-to-impress-off-broadway-2026): 3 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=jest-to-impress-off-broadway-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-08T04:04:59.237Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:kelly-mccaughan-catholic-guilt-off-broadway-2026",
+    "title": "Review gap — \"Kelly McCaughan: Catholic Guilt\" missing 1 cited review(s)",
+    "description": "Kelly McCaughan: Catholic Guilt (kelly-mccaughan-catholic-guilt-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=kelly-mccaughan-catholic-guilt-off-broadway-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-08T04:04:59.258Z"
+  },
+  {
+    "conditionKey": "t1-gaps:needs-manual-recovery",
+    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (Lincoln in the Bardo (washpost)). Checked 2026-11-08.",
+    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-08T04:05:08.787Z"
   },
   {
     "conditionKey": "land:land/bro-7111-exit-flush",
