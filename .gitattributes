@@ -506,4 +506,5 @@ data/audit/coverage-adversarial-probe-trend.jsonl merge=union
 # can neither resurrect a pruned row nor disturb a reader. Landed tracked with no
 # attribute, which failed audit-ledger-merge-attrs.test.mjs's repo-wide check.
 data/audit/routine-logs.jsonl merge=union
-data/audit/mobile-detail-prune-candidates.json merge=ours  # BRO-7118
+# BRO-7118 prune ledger: keep this run snapshot
+data/audit/mobile-detail-prune-candidates.json merge=ours
