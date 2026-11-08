@@ -82,6 +82,34 @@ test('works from a shallow session clone (cloud clones are shallow)', (t) => {
   assert.equal(git(dest, 'rev-parse', 'HEAD'), c2);
 });
 
+// The real cloud shape: a depth-1 clone whose origin/main later moved by a
+// depth-1 fetch, so the session branch and origin/main are separate shallow
+// roots. Without --update-shallow git rejects the fetched ref.
+test('copies origin/main when it and the session branch are separate shallow roots', (t) => {
+  const dir = tmp(t);
+  const [bare] = upstream(dir);
+  const src = path.join(dir, 'src');
+  git(dir, 'clone', '-q', '--depth', '1', `file://${bare}`, src);
+  git(src, 'checkout', '-q', '-b', 'claude/session');
+  git(src, 'branch', '-q', '-D', 'main');
+  const work = path.join(dir, 'work');
+  for (const n of ['3', '4', '5']) {
+    fs.writeFileSync(path.join(work, 'a.json'), n);
+    git(work, 'commit', '-qam', `c${n}`);
+  }
+  git(work, 'push', '-q', bare, 'main');
+  git(src, 'fetch', '-q', '--depth', '1', 'origin', 'main');
+  const c5 = git(work, 'rev-parse', 'HEAD');
+  assert.equal(git(src, 'rev-parse', 'refs/remotes/origin/main'), c5);
+  const dest = path.join(dir, 'dest');
+  const r = run(src, dest);
+  assert.equal(r.status, 0, r.stderr);
+  assert.doesNotMatch(r.stderr, /rejected/);
+  assert.equal(git(dest, 'rev-parse', 'HEAD'), c5);
+  assert.equal(fs.readFileSync(path.join(dest, 'a.json'), 'utf8'), '5');
+  git(dest, 'fsck', '--no-progress');
+});
+
 test('falls back to HEAD when the source has no origin/main', (t) => {
   const dir = tmp(t);
   const [bare, , c2] = upstream(dir);

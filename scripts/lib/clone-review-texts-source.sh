@@ -12,7 +12,9 @@
 # only what its local branches reach. A session clone sits on its session branch,
 # usually behind its origin/main, so that commit was never in the new clone: the
 # checkout failed and every cloud session kept a stale data/review-texts. Fetch
-# origin/main in by ref before checking it out.
+# origin/main in by ref before checking it out, with --update-shallow: the
+# session branch and origin/main are often separate shallow roots, and without it
+# git rejects the ref ("shallow roots are not allowed to be updated").
 clone_review_texts_source() {
   local src="$1" dest="$2" sha
   if ! git clone -q "$src" "$dest"; then
@@ -21,7 +23,10 @@ clone_review_texts_source() {
   fi
   if sha="$(git -C "$src" rev-parse -q --verify 'refs/remotes/origin/main^{commit}')"; then
     if ! git -C "$dest" cat-file -e "$sha^{commit}" 2>/dev/null; then
-      git -C "$dest" fetch -q "$src" '+refs/remotes/origin/main:refs/remotes/source/main' >&2 || true
+      if ! git -C "$dest" fetch -q --update-shallow "$src" '+refs/remotes/origin/main:refs/remotes/source/main' >&2; then
+        echo "ERROR: Could not fetch origin/main ($sha) from $src." >&2
+        return 1
+      fi
     fi
   else
     sha="$(git -C "$src" rev-parse HEAD)" || return 1
