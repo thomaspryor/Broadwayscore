@@ -211,6 +211,16 @@ test('only tracked paths are committed: another writer\'s dirty file stays out o
   assert.equal(JSON.parse(fs.readFileSync(other, 'utf8')).fullText, 'half-written by another local writer', 'and not discarded either');
 });
 
+test('a run that died between commit and pending entry: the next run still pushes the orphan commit', () => {
+  const env = setup();
+  fs.writeFileSync(env.file, review(RECOVERED));
+  git(env.local, 'commit', '-q', '-am', 'feat: committed, then the process died');
+  assert.deepEqual(readPending(env.pendingPath), []);
+  const r = retryPendingPushes({ repoDir: env.local, pendingPath: env.pendingPath, pushScript: env.pushScript, retries: 1 });
+  assert.equal(r.entries, 0);
+  assert.equal(JSON.parse(originHas(env, REL)).fullText, RECOVERED, 'orphan commit reached origin');
+});
+
 test('nothing changed: no commit, no throw, landed confirmed by content', () => {
   const env = setup();
   const res = checkpointReviewTexts({ repoDir: env.local, paths: [env.file], message: 'feat: test', pendingPath: env.pendingPath, pushScript: env.pushScript });

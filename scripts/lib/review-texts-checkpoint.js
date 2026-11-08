@@ -201,7 +201,9 @@ function checkpointReviewTexts({ repoDir, paths, message, onLanded, meta, pendin
           abs: path.join(repo, rel),
           fullTextHash: contentKey(content),
           blob: blobOrNull(repo, 'HEAD', rel),
-          parentBlob: committed ? blobOrNull(repo, 'HEAD~1', rel) : null,
+          // The baseline a wiped commit may be restored over: our commit's
+          // parent, or (nothing of ours committed) what origin/main held.
+          parentBlob: committed ? blobOrNull(repo, 'HEAD~1', rel) : blobOrNull(repo, 'origin/main', rel),
         };
       }),
     };
@@ -211,8 +213,15 @@ function checkpointReviewTexts({ repoDir, paths, message, onLanded, meta, pendin
       // these files. Landed only if origin/main really has our text.
       const res = confirmLanding(repo, entry.paths);
       const landed = res.filter((r) => r.landed);
+      const notLanded = res.filter((r) => !r.landed);
       fireLanded(onLanded, landed, entry);
-      return { committed: false, pushed: false, commit, landed, notLanded: res.filter((r) => !r.landed) };
+      if (notLanded.length) {
+        // Committed by someone else and not on origin yet: keep them pending
+        // so the next run confirms (and reports) them instead of losing them.
+        const keep = new Set(notLanded.map((r) => r.rel));
+        writePending(pendingPath, [...readPending(pendingPath), { ...entry, paths: entry.paths.filter((p) => keep.has(p.rel)) }]);
+      }
+      return { committed: false, pushed: false, commit, landed, notLanded };
     }
     const pending = readPending(pendingPath);
     pending.push(entry);
@@ -238,10 +247,11 @@ function checkpointReviewTexts({ repoDir, paths, message, onLanded, meta, pendin
  * @returns {{entries: number, landed: object[], restored: object[], notLanded: object[]}}
  */
 function retryPendingPushes({ repoDir, onLanded, pendingPath = pendingPathDefault(), pushScript, pushEnv, retries }) {
-  const entries = readPending(pendingPath);
-  if (!entries.length) return { entries: 0, landed: [], restored: [], notLanded: [] };
   const repo = fs.realpathSync(repoDir);
   return withReviewTextsLock('checkpoint:retry-pending', () => {
+    const entries = readPending(pendingPath);
+    // A run that died between its commit and its pending entry leaves an
+    // unpushed commit with no record: push it even with no entries.
     const unpushed = countUnpushedCommits(repo);
     if (Number.isFinite(unpushed) && unpushed > 0) {
       const push = runPush(repo, { pushScript, pushEnv, retries });
@@ -250,6 +260,7 @@ function retryPendingPushes({ repoDir, onLanded, pendingPath = pendingPathDefaul
       }
     }
     const out = { entries: entries.length, landed: [], restored: [], notLanded: [] };
+    if (!entries.length) return out;
     const toRestore = [];
     for (const entry of entries) {
       const res = confirmLanding(repo, entry.paths);
