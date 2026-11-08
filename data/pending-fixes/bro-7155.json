@@ -1,0 +1,45 @@
+{
+  "issueNumber": "bro-7155",
+  "planId": "c7c9c43c-2413-4b6e-b455-db48ed7000f2",
+  "status": "pending",
+  "createdAt": "2026-11-08T21:41:29.681Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7155: restore three approved exclusion verdicts a later writer erased (Godot Backstage review is a 9 to 5 review; two same-URL duplicate copies were un-pointed while their target was briefly invalid)",
+    "steps": [
+      "waiting-for-godot-2009/backstage--erik-haagensen.json: wrongShow",
+      "she-loves-me-2016/nypost--johnny-oleksinski.json: duplicateOf",
+      "hells-kitchen-2024/thewrap--steve-pond.json: duplicateOf"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "waiting-for-godot-2009/backstage--erik-haagensen.json",
+        "field": "wrongShow",
+        "oldValue": false,
+        "newValue": true,
+        "description": "waiting-for-godot-2009/backstage--erik-haagensen.json: wrongShow"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "she-loves-me-2016/nypost--johnny-oleksinski.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "nypost--elisabeth-vincentelli.json",
+        "description": "she-loves-me-2016/nypost--johnny-oleksinski.json: duplicateOf"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "hells-kitchen-2024/thewrap--steve-pond.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "thewrap--robert-hofler.json",
+        "description": "hells-kitchen-2024/thewrap--steve-pond.json: duplicateOf"
+      }
+    ]
+  }
+}

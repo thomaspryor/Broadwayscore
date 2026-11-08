@@ -597,6 +597,14 @@ jobs:
         timeout-minutes: 1
         run: node scripts/audit-wet-archive-market.js
 
+      # BRO-7155: approved fixes (approvedFixes[] stamps) a later writer silently undid. Lists each unexplained
+      # drift; restore with a pending-fix plan, then close the writer's hole. Advisory first (CLAUDE.md rule 19).
+      - name: Approved-fix drift audit
+        if: always()
+        continue-on-error: true
+        timeout-minutes: 2
+        run: node scripts/audit-approved-fix-drift.js --strict
+
       # BRO-6147: the daily batched decision email moved to owner-decision-emails.yml
       # (one email per decision, tap-to-answer buttons, every 20 minutes).
 
