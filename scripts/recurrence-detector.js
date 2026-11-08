@@ -39,6 +39,9 @@ const LEDGER = path.join(ROOT, 'data/audit/alert-ledger.json');
 const SAMPLE_FILE = path.join(ROOT, 'data/audit/root-cause-sample.json');
 const SAMPLE_EVERY_DAYS = 6;
 const SAMPLE_MAX = 8;
+// Known answers, hand-graded 2026-11-08, re-graded every week. If either flips,
+// the grader (model, prompt or diff input) has drifted and the share is withheld.
+const SAMPLE_ANCHORS = [{ card: 'BRO-7066', expect: 'spot-fix' }, { card: 'BRO-7098', expect: 'root-cause' }];
 const BACKTEST_JSON = path.join(ROOT, 'data/audit/recurrence-backtest.json');
 const BACKTEST_MD = path.join(ROOT, 'docs/recurrence-backtest.md');
 const DAY = 864e5;
@@ -331,6 +334,19 @@ function gradeDiff(diff) {
  * their own diffs (never the card text). Self-skips when the last sample is
  * under 6 days old, so the daily step runs it once a week.
  */
+/** Grade one diff GRADE_VOTES times and take the majority; a failed call is an "unclear" vote. */
+async function voteGrade(grade, diff) {
+  const rcc = require('./lib/root-cause-close.js');
+  const votes = [];
+  let failures = 0;
+  let lastErr = null;
+  for (let i = 0; i < rcc.GRADE_VOTES; i++) {
+    try { votes.push(rcc.parseGrade(await grade(diff))); } catch (e) { failures++; lastErr = e; votes.push(rcc.parseGrade('')); }
+  }
+  if (failures === rcc.GRADE_VOTES) throw lastErr;
+  return rcc.majorityGrade(votes);
+}
+
 async function sample(cards, now, { grade = gradeDiff, diffFor, file = SAMPLE_FILE, landingsText } = {}) {
   const rcc = require('./lib/root-cause-close.js');
   const prev = readJson(file);
@@ -349,10 +365,20 @@ async function sample(cards, now, { grade = gradeDiff, diffFor, file = SAMPLE_FI
     const d = diffFor ? diffFor(id) : rcc.cardDiff(id, { cwd: ROOT });
     if (!d || !d.diff.trim()) { noDiff++; continue; }
     let g;
-    try { g = rcc.parseGrade(await grade(d.diff)); } catch (e) { console.warn(`[recurrence] sample: ${id} not graded (${e.message})`); continue; }
+    try { g = await voteGrade(grade, d.diff); } catch (e) { console.warn(`[recurrence] sample: ${id} not graded (${e.message})`); continue; }
     const diffHash = require('crypto').createHash('sha256').update(d.diff).digest('hex').slice(0, 12);
     items.push({ card: id, ...g, diffHash, truncated: d.truncated, files: d.files.slice(0, 20) });
   }
+  const calibration = [];
+  for (const a of SAMPLE_ANCHORS) {
+    const d = diffFor ? diffFor(a.card) : rcc.cardDiff(a.card, { cwd: ROOT });
+    if (!d || !d.diff.trim()) continue; // history too shallow to find it: no verdict either way
+    let got = 'unclear';
+    try { got = (await voteGrade(grade, d.diff)).grade; } catch { /* counted as a miss below */ }
+    calibration.push({ card: a.card, expect: a.expect, got });
+  }
+  const calibrationOk = calibration.every((c) => c.got === c.expect);
+  if (!calibrationOk) console.warn(`[recurrence] sample: grader drifted on known cards (${calibration.filter((c) => c.got !== c.expect).map((c) => `${c.card} ${c.got}, expected ${c.expect}`).join('; ')}); share withheld from the digest`);
   let landingsWithoutId = 0;
   try {
     const rows = require('./lib/stuck-card-closer.js').parseLandingRows(landingsText != null ? landingsText : fs.readFileSync(path.join(ROOT, 'data/audit/landings.jsonl'), 'utf8'));
@@ -360,11 +386,13 @@ async function sample(cards, now, { grade = gradeDiff, diffFor, file = SAMPLE_FI
   } catch { /* ledger missing: count unknown */ }
   const out = {
     generatedAt: new Date(now).toISOString(),
-    grader: 'gpt-5.4-mini (diff only)',
+    grader: 'gpt-5.4-mini (diff only, majority of 3)',
     poolSize: week.length,
     noDiff,
     landingsWithoutId,
     ...rcc.summarizeSample(items),
+    calibrationOk,
+    calibration,
     items,
   };
   fs.writeFileSync(file, JSON.stringify(out, null, 2) + '\n');
@@ -527,7 +555,7 @@ async function main() {
   snap.pendingRootCards = snap.classes.filter((c) => !c.rootCause).length;
   // The weekly independent sample rides along so the digest line has it.
   const smp = readJson(SAMPLE_FILE);
-  if (smp && smp.generatedAt) snap.sample = { generatedAt: smp.generatedAt, graded: smp.graded, rootCause: smp.rootCause, spot: smp.spot, share: smp.share };
+  if (smp && smp.generatedAt) snap.sample = { generatedAt: smp.generatedAt, graded: smp.graded, rootCause: smp.rootCause, spot: smp.spot, share: smp.share, calibrationOk: smp.calibrationOk !== false };
 
   if (has('--apply')) {
     if (!complete) { console.error('[recurrence] Linear read was partial; refusing to file (would risk a duplicate root card)'); process.exitCode = 1; }

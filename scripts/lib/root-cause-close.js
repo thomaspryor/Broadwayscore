@@ -200,10 +200,9 @@ function cardDiff(identifier, { maxBytes = 20000, ...opts } = {}) {
       diff += own.run(['show', '--format=commit %h %s', c, '--', '.', ...exclude]);
       for (const f of own.run(['show', '--name-only', '--format=', c]).split('\n')) if (f.trim()) files.add(f.trim());
     }
-    // The file list leads, so a cut-off diff still shows the grader that a test or guard landed.
-    const list = [...files].sort();
-    const head = `Files changed (data files included here, left out of the diff below):\n${list.join('\n')}\n\n`;
-    return { diff: head + diff.slice(0, maxBytes), files: list, truncated: diff.length > maxBytes };
+    // No file-list header: tried 2026-11-08, it flipped the hand-graded spot fix BRO-7066
+    // to root-cause (a test file in the list read as a guard). The grader sees the diff alone.
+    return { diff: diff.slice(0, maxBytes), files: [...files].sort(), truncated: diff.length > maxBytes };
   } catch {
     return null;
   }
@@ -230,6 +229,24 @@ function parseGrade(text) {
   } catch {
     return { grade: 'unclear', confidence: 0, reason: 'unparseable grader reply', guardFile: null };
   }
+}
+
+/**
+ * PURE. Majority of several grades of the same diff. A single grade is not
+ * stable (2026-11-08: the same BRO-7066 diff graded spot-fix 0.98 and then
+ * root-cause in one run), so each diff is graded GRADE_VOTES times. No
+ * majority means "unclear"; votes are kept so a split stays visible.
+ */
+const GRADE_VOTES = 3;
+function majorityGrade(grades) {
+  const count = {};
+  for (const g of grades) count[g.grade] = (count[g.grade] || 0) + 1;
+  const [top, n] = Object.entries(count).sort((a, b) => b[1] - a[1])[0] || ['unclear', 0];
+  const grade = n * 2 > grades.length ? top : 'unclear';
+  const agree = grades.filter((g) => g.grade === grade);
+  const confidence = agree.length ? Math.round((agree.reduce((t, g) => t + g.confidence, 0) / agree.length) * 100) / 100 : 0;
+  const first = agree[0] || grades[0] || {};
+  return { grade, confidence, reason: first.reason || '', guardFile: first.guardFile || null, votes: grades.map((g) => g.grade) };
 }
 
 /** PURE. Share of graded cards that fixed the cause (unclear left out). */
@@ -263,6 +280,8 @@ module.exports = {
   cardDiff,
   GRADER_SYSTEM,
   parseGrade,
+  GRADE_VOTES,
+  majorityGrade,
   summarizeSample,
   seededPick,
 };

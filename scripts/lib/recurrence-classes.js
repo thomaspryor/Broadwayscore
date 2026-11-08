@@ -379,7 +379,7 @@ function improvementLine(snap) {
   const reopened = (snap.classes || []).filter((c) => c.recurredAfterRootClosed && c.recurredAfterRootClosed.length).length;
   if (reopened) parts.push(`${reopened} problem${reopened === 1 ? '' : 's'} came back after the card fixing the cause was closed.`);
   const smp = snap.sample;
-  if (smp && smp.graded && smp.share != null && Date.now() - ms(smp.generatedAt) <= 8 * 24 * 36e5) {
+  if (smp && smp.graded && smp.share != null && smp.calibrationOk !== false && Date.now() - ms(smp.generatedAt) <= 8 * 24 * 36e5) {
     parts.push(`An independent check of ${smp.graded} fix${smp.graded === 1 ? '' : 'es'} from this week, reading only the code, found ${Math.round(smp.share)}% fixed the cause.`);
   }
   return parts.join(' ');

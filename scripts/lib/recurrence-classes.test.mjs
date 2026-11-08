@@ -304,4 +304,6 @@ test('improvementLine adds the independent sample share while it is fresh', () =
   assert.match(fresh, /independent check of 8 fixes .* found 38% fixed the cause/);
   const stale = rc.improvementLine({ ...base, sample: { generatedAt: '2026-01-01T00:00:00Z', graded: 8, share: 37.5 } });
   assert.ok(!/independent/.test(stale));
+  const drifted = rc.improvementLine({ ...base, sample: { generatedAt: new Date().toISOString(), graded: 8, share: 37.5, calibrationOk: false } });
+  assert.ok(!/independent/.test(drifted), 'a drifted grader does not publish a share');
 });
