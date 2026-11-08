@@ -1,21 +1,43 @@
 {
-  "updatedAt": "2026-11-08T13:41:29.823Z",
-  "processed": 831,
-  "failed": 422,
-  "successRate": "66.3%",
+  "updatedAt": "2026-11-08T14:05:47.268Z",
+  "processed": 1012,
+  "failed": 466,
+  "successRate": "68.5%",
   "tierBreakdown": {
-    "playwright": 297,
+    "playwright": 339,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 22,
     "directCookies": 0,
-    "scrapingdog": 0,
-    "scrapingbee": 0,
-    "brightdata": 0,
+    "scrapingdog": 53,
+    "scrapingbee": 34,
+    "brightdata": 12,
     "archiveToday": 0,
-    "archive": 0
+    "archive": 438
   },
   "browserbaseSessions": 4,
   "recentActivity": [
+    {
+      "t": "2026-11-08T10:56:39.638Z",
+      "event": "bb-login-uncertain",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-11-08T10:56:55.992Z",
+      "event": "bb-session",
+      "session": "b3f4294f",
+      "url": "http://www.northjersey.com/story-archives/theater-review-the-book-of-mormon-1.11"
+    },
+    {
+      "t": "2026-11-08T10:56:59.910Z",
+      "event": "bb-login-uncertain",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-11-08T11:04:13.547Z",
+      "event": "bb-session",
+      "session": "84cc2128",
+      "url": "https://deadline.com/2026/09/wonder-man-most-watched-canceled-series-streaming-b"
+    },
     {
       "t": "2026-11-08T11:06:08.737Z",
       "event": "bb-session",
@@ -45,6 +67,45 @@
       "event": "bb-session",
       "session": "03a689b3",
       "url": "https://www.hollywoodreporter.com/lifestyle/arts/giant-recoups-broadway-investme"
+    },
+    {
+      "t": "2026-11-08T11:34:53.455Z",
+      "event": "bb-session",
+      "session": "a95a9f7c",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/tracee-ellis-ross-broadway-ever"
+    },
+    {
+      "t": "2026-11-08T11:37:45.021Z",
+      "event": "bb-session",
+      "session": "2575f017",
+      "url": "https://www.nytimes.com/2026/03/06/theater/jordan-fein-broken-glass.html"
+    },
+    {
+      "t": "2026-11-08T11:37:45.366Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-08T11:52:24.394Z",
+      "event": "bb-session",
+      "session": "3e617f14",
+      "url": "https://www.nytimes.com/2026/01/12/theater/ark-ian-mckellen-shed.html"
+    },
+    {
+      "t": "2026-11-08T11:52:24.689Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-08T11:55:20.421Z",
+      "event": "bb-session",
+      "session": "abeda074",
+      "url": "https://www.wsj.com/arts-culture/theater/i-puritani-review-beautifully-sung-bell"
+    },
+    {
+      "t": "2026-11-08T11:55:20.763Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     },
     {
       "t": "2026-11-08T11:34:53.455Z",
