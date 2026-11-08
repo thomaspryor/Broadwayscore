@@ -818,9 +818,17 @@ function buildOffWestEndVenueShowEntry(candidate, venueVocabulary, options = {})
     status,
     category: 'off-west-end',
     market: marketForCategory('off-west-end'),
-    type: status === 'announced'
-      ? null
-      : (VALID_SHOW_TYPES.has(candidate.type) ? candidate.type : showTypeFor(normalizedTitle, candidate.listingGenre)),
+    // BRO-7146: an announced stub takes the type the listing or title states
+    // (explicit candidate.type, a "Musical" genre label, "Musical" in the
+    // title) and stays null only when nothing says what the show is, so it is
+    // never guessed 'play' (a gala or concert is not a play). Once the row is
+    // past announced a type is mandatory (validate-market-expansion.js), so
+    // the 'play' default applies there.
+    type: VALID_SHOW_TYPES.has(candidate.type)
+      ? candidate.type
+      : (status === 'announced'
+        ? knownShowType(normalizedTitle, candidate.listingGenre)
+        : showTypeFor(normalizedTitle, candidate.listingGenre)),
     discoverySource: evidenceBacked ? AUDIT_EVIDENCE_SOURCE : (candidate.source || candidate.discoverySource || 'venue-page'),
     discoveredAt: candidate.discoveredAt || now.toISOString(),
     // Provisional — no cross-source corroboration beyond the venue's own

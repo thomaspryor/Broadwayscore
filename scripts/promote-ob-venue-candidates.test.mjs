@@ -256,3 +256,11 @@ test('closing date alone: closing year, still flagged provisional', () => {
   assert.match(e.id, /-1998$/);
   assert.equal(e.idYearProvisional, true);
 });
+
+// BRO-7146: a hand-staged candidate.type is honoured at creation (Off-West-End builder already did).
+test('buildShowEntry: explicit candidate.type is set at creation; unknown stays null', () => {
+  const base = { title: 'Puppetopia', venue: 'HERE Arts Center', source: 'venue-page:here-arts-center', discoveredAt: '2026-11-01T00:00:00.000Z' };
+  assert.equal(buildShowEntry({ ...base, type: 'special' }).type, 'special');
+  assert.equal(buildShowEntry({ ...base, listingGenre: 'Musical Theater' }).type, 'musical');
+  assert.equal(buildShowEntry({ ...base }).type, null);
+});
