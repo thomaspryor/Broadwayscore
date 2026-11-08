@@ -1114,5 +1114,36 @@
     "testId": "tests/unit/venue-complex-live-data.test.mjs::no West End venue-complex has an unlinked bare-form/keyword-overlap sub-venue slug",
     "fields": [],
     "queuedAt": "2026-11-08T22:05:06.585Z"
+  },
+  {
+    "conditionKey": "land:land/bro-7150-fast-land",
+    "title": "Landing blocked: unit-tests-node red on land/bro-7150-fast-land",
+    "description": "land.yml did not land land/bro-7150-fast-land: the unit-tests-node gate went red at 8785440d3c. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/42528417442",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-7150-fast-land"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "8785440d3ca2751e7d8be3806110988fcd86b1f2"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42528417442"
+      }
+    ],
+    "queuedAt": "2026-11-08T22:09:38.267Z"
   }
 ]
