@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-08T00:48:08.379Z",
+  "generatedAt": "2026-11-08T02:10:34.008Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -469,6 +469,10 @@
         {
           "name": "Newsday",
           "isDualMarket": false
+        },
+        {
+          "name": "The Guardian",
+          "isDualMarket": true
         },
         {
           "name": "Broadway News",
@@ -3095,9 +3099,9 @@
       "status": "open",
       "slug": "222-a-ghost-story-off-broadway",
       "thumbnail": "/images/shows/222-a-ghost-story-off-broadway-2026/thumbnail.jpg",
-      "siteScore": 60.68,
-      "liveScore": 61,
-      "scoreDrift": 0.3200000000000003,
+      "siteScore": 59.81,
+      "liveScore": 60,
+      "scoreDrift": 0.18999999999999773,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
@@ -3114,7 +3118,7 @@
           "10/12 total",
           "T1:2/3"
         ],
-        "highConfidence": 10,
+        "highConfidence": 9,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -3598,6 +3602,18 @@
           "m": 3,
           "n": 3,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-11-08T02:10:34.008Z",
+          "rc": 10,
+          "s": 59.81,
+          "t1": 2,
+          "t2": 5,
+          "t3": 3,
+          "p": 4,
+          "m": 3,
+          "n": 3,
+          "bc": "waiting"
         }
       ]
     },
@@ -3606,7 +3622,7 @@
       "title": "Speculations",
       "market": "west-end",
       "category": "off-west-end",
-      "type": "show",
+      "type": "play",
       "openingDate": "2026-11-05",
       "status": "open",
       "slug": "speculations-off-west-end",

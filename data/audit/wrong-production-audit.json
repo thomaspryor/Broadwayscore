@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-08T00:47:47.454Z",
+  "timestamp": "2026-11-08T02:10:13.048Z",
   "stats": {
-    "totalReviews": 80516,
+    "totalReviews": 80505,
     "alreadyFlagged": 22030,
     "dateGuardCatches": 216,
-    "directorMismatch": 3537,
+    "directorMismatch": 3545,
     "tvFilmSignals": 2292,
-    "londonSignals": 3627,
+    "londonSignals": 3628,
     "offBroadwaySignals": 748,
-    "yearMismatch": 364,
-    "noPublishDate": 8453
+    "yearMismatch": 363,
+    "noPublishDate": 8432
   },
   "findings": [
     {
@@ -9229,6 +9229,19 @@
     },
     {
       "showId": "book-of-mormon-tour-2022",
+      "file": "broadwayworld--jill-ripa.json",
+      "publishDate": "2024-04-09",
+      "url": "https://www.broadwayworld.com/san-antonio/article/Review-THE-BOOK-OF-MORMON-at-Majestic-Theatre-20240409",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"trey parker\" from book-of-mormon-2011"
+        }
+      ]
+    },
+    {
+      "showId": "book-of-mormon-tour-2022",
       "file": "broadwayworld--jonas-schwartz-owen.json",
       "score": 81,
       "publishDate": "2025-02-07",
@@ -9299,6 +9312,24 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"trey parker\" from book-of-mormon-2011"
+        }
+      ]
+    },
+    {
+      "showId": "book-of-mormon-tour-2022",
+      "file": "dc-theater-arts--haley-huchler.json",
+      "publishDate": "2024-03-07",
+      "url": "https://dctheaterarts.org/2024/03/07/big-laughs-and-bawdy-fun-in-the-book-of-mormon-on-tour-at-the-national/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"trey parker\" from book-of-mormon-2011"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
@@ -9412,6 +9443,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "book-of-mormon-tour-2022",
+      "file": "onstagepittsburgh--jessica-neu.json",
+      "publishDate": "2024-02-28",
+      "url": "https://onstagepittsburgh.com/2024/02/28/review-the-book-of-mormon-is-a-satirical-sermon-that-preaches-big-laughs-and-big-societal-commentary/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"trey parker\" from book-of-mormon-2011"
         }
       ]
     },
@@ -18442,6 +18486,19 @@
       "score": 77,
       "publishDate": "2026-09-30",
       "url": "https://www.broadwayworld.com/washington-dc/article/Review-DIRTY-DANCING-at-The-National-Theatre-20260930",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"lonny price\" from dirty-dancing-2027"
+        }
+      ]
+    },
+    {
+      "showId": "dirty-dancing-tour-2026",
+      "file": "broadwayworld--theresa-bertram.json",
+      "publishDate": "2026-10-26",
+      "url": "https://www.broadwayworld.com/little-rock/article/Review-DIRTY-DANCING-THE-MUSICAL-at-Walton-Arts-Center-in-Fayetteville-20261026",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -35101,6 +35158,19 @@
       ]
     },
     {
+      "showId": "jagged-little-pill-tour-2022",
+      "file": "broadwayworld--jeffrey-ellis.json",
+      "publishDate": "2024-03-11",
+      "url": "https://www.broadwayworld.com/nashville/article/Review-Round-up-JAGGED-LITTLE-PILL-THE-39-STEPS-MRS-KRISHNANS-PARTY-and-THE-REVOLUTIONISTS-20240311",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"diane paulus\" from jagged-little-pill-2019"
+        }
+      ]
+    },
+    {
       "showId": "jajas-african-hair-braiding-2023",
       "file": "frontmezzjunkies--unknown.json",
       "score": 78,
@@ -43387,6 +43457,19 @@
       ]
     },
     {
+      "showId": "moulin-rouge-tour-2022",
+      "file": "wtlgomag--unknown.json",
+      "publishDate": "2024-03-08",
+      "url": "https://wtlgomag.com/2024/03/08/review-moulin-rouge-the-musical-shines-bright-at-the-broward-center/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"alex timbers\" from moulin-rouge-2019"
+        }
+      ]
+    },
+    {
       "showId": "mr-saturday-night-2022",
       "file": "amny--matt-windman.json",
       "score": 42,
@@ -43551,6 +43634,32 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "mrs-doubtfire-tour-2023",
+      "file": "broadwayworld--tara-bennett.json",
+      "publishDate": "2024-05-17",
+      "url": "https://www.broadwayworld.com/new-orleans/article/Review-MRS-DOUBTFIRE-at-Saenger-Theatre-20240517",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jerry zaks\" from mrs-doubtfire-2021"
+        }
+      ]
+    },
+    {
+      "showId": "mrs-doubtfire-tour-2023",
+      "file": "chicagotribune--chris-jones.json",
+      "publishDate": "2024-02-29",
+      "url": "https://www.chicagotribune.com/2024/02/29/review-a-warm-laugh-filled-mrs-doubtfire-at-nederlander-theatre/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jerry zaks\" from mrs-doubtfire-2021"
         }
       ]
     },
@@ -47768,19 +47877,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"robert hastie\" from operation-mincemeat-2025"
-        }
-      ]
-    },
-    {
-      "showId": "operation-mincemeat-west-end-2024",
-      "file": "a-youngish-perspective--ross-bevan.json",
-      "publishDate": "2026-11-05",
-      "url": "https://ayoungishperspective.co.uk/2026/11/05/review-operation-mincemeat-4/",
-      "findings": [
-        {
-          "type": "YEAR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions year 2026 (3x) more than 2023 (0x). 2026 matches production: operation-mincemeat-tour-2026"
         }
       ]
     },
@@ -70704,6 +70800,20 @@
       ]
     },
     {
+      "showId": "the-master-builder-off-west-end-2026",
+      "file": "grandgoldman--claire-hodges.json",
+      "score": 78,
+      "publishDate": "2026-10-27",
+      "url": "https://grandgoldman.com/blogs/celebrity/the-master-builder-review-false-swagger-and-queasy-infidelity",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"amazon prime\""
+        }
+      ]
+    },
+    {
       "showId": "the-merchant-of-venice-1973",
       "file": "backstage--erik-haagensen.json",
       "score": null,
@@ -72200,24 +72310,6 @@
       ]
     },
     {
-      "showId": "the-oresteia-off-west-end-2026",
-      "file": "broadwayworld--persson-alexander-cohen.json",
-      "publishDate": "2026-07-15",
-      "url": "https://www.broadwayworld.com/westend/article/Review-THE-ORESTEIA-Bridge-Theatre-20260715",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"national theatre\""
-        }
-      ]
-    },
-    {
       "showId": "the-other-americans-off-broadway-2025",
       "file": "the-recs--randall-david-cook.json",
       "score": 78,
@@ -72828,6 +72920,7 @@
     {
       "showId": "the-outsiders-tour-2025",
       "file": "stageandcinema--milo-shapiro.json",
+      "score": 91,
       "publishDate": "2026-11-04",
       "url": "https://stageandcinema.com/2026/11/04/the-outsiders-tour-san-diego/",
       "findings": [
@@ -91000,6 +91093,7 @@
     {
       "showId": "blood-of-my-blood-west-end-2026",
       "file": "partially-obstructed-view--unknown.json",
+      "score": 74,
       "publishDate": "2026-11-02",
       "url": "http://partially-obstructed-view.blogspot.com/2026/11/theatre-review-blood-of-my-blood.html",
       "findings": [
@@ -91595,6 +91689,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "book-of-mormon-tour-2022",
+      "file": "broadwayworld--jackson-malmgren.json",
+      "publishDate": "2024-03-07",
+      "url": "https://www.broadwayworld.com/washington-dc/article/Review-THE-BOOK-OF-MORMON-at-the-National-Theatre-20240307",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
@@ -105456,6 +105563,7 @@
     {
       "showId": "im-almost-there-off-broadway-2026",
       "file": "ctvoice--unknown.json",
+      "score": 82,
       "publishDate": null,
       "url": "https://ctvoice.com/2026/06/11/off-broadway-preview-im-almost-there/",
       "findings": [
@@ -115011,7 +115119,7 @@
     },
     {
       "showId": "nye-west-end-2024",
-      "file": "broadwayworld--persson-gary-naylor.json",
+      "file": "broadwayworld--gary-naylor.json",
       "score": 86,
       "publishDate": "2024-03-07",
       "url": "https://www.broadwayworld.com/westend/article/Review-NYE-National-Theatre-20240307",
