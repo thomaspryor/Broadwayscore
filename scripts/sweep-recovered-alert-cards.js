@@ -55,9 +55,11 @@ function readLandings() {
   return r.rows;
 }
 
+const CHILD_ENV = { ...process.env }; // snapshot before releaseTracker sets ALERT_LEDGER_PATH
+
 function close(identifier, comment) {
   const r = spawnSync('node', [path.join(__dirname, 'linear-brain.js'), 'update', identifier, '--state', 'Done', '--comment', comment],
-    { cwd: REPO, encoding: 'utf8', timeout: 180000 });
+    { cwd: REPO, encoding: 'utf8', timeout: 180000, env: CHILD_ENV });
   if (r.status !== 0) console.error(`close failed for ${identifier}: ${(r.stderr || r.stdout || '').trim().split('\n').pop()}`);
   return r.status === 0;
 }
@@ -81,6 +83,7 @@ async function main(argv = process.argv.slice(2), deps = {}) {
   });
   const bump = (k) => { counts[k] = (counts[k] || 0) + 1; };
   let closed = 0;
+  let attempts = 0;
 
   let open;
   try { open = await linear.listOpenIssuesWithDescriptions(); } catch (err) {
@@ -104,7 +107,8 @@ async function main(argv = process.argv.slice(2), deps = {}) {
     const d = bc.decideRecovered(exitByRow.get(c.row));
     if (d.action !== 'close') { bump(d.reason); continue; }
     if (!apply) { console.log(`would close ${c.issue.identifier} (${c.row})`); bump('recovered'); continue; }
-    if (closed >= MAX_PER_RUN) { bump('over-run-cap'); continue; }
+    if (attempts >= MAX_PER_RUN) { bump('over-run-cap'); continue; }
+    attempts++;
     if ((deps.close || close)(c.issue.identifier, bc.recoveredComment(c.row))) {
       closed++; bump('closed');
       const released = releaseTracker(c.conditionKey, c.issue.identifier);
@@ -125,12 +129,13 @@ async function main(argv = process.argv.slice(2), deps = {}) {
       const branch = bc.landBranchFromComments(comments.get(issue.identifier));
       if (!branch) continue;
       const newest = (comments.get(issue.identifier) || [])[0];
-      const landing = bc.landingForBranch(rows, branch, Date.parse(newest && newest.createdAt));
+      const landing = bc.landingForBranch(rows, branch, Date.parse(newest && newest.createdAt) - bc.LANDING_SLACK_MS);
       const liveExit = landing ? (deps.prodExit || prodExit)(landing.sha) : null;
       const d = bc.decideLanded(issue, { branch, landing, liveExit });
       if (d.action !== 'close') { bump(`landed:${d.reason}`); continue; }
       if (!apply) { console.log(`would close ${issue.identifier} (${branch} live at ${d.sha.slice(0, 10)})`); bump('landed:eligible'); continue; }
-      if (closed >= MAX_PER_RUN) { bump('over-run-cap'); continue; }
+      if (attempts >= MAX_PER_RUN) { bump('over-run-cap'); continue; }
+    attempts++;
       if ((deps.close || close)(issue.identifier, bc.landedComment(branch, d.sha))) { closed++; console.log(`closed ${issue.identifier} (${branch})`); bump('landed:closed'); }
       else bump('close-failed');
     }

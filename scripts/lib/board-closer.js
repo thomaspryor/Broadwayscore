@@ -63,7 +63,8 @@ function ledgerSaysRecovered(ledger, identifier, conditionKey) {
   const c = ledger && ledger.conditions && ledger.conditions[conditionKey];
   if (!c) return { ok: false, reason: 'not-in-ledger' };
   if (c.status !== 'resolved') return { ok: false, reason: 'ledger-open' };
-  if (c.linearIdentifier && c.linearIdentifier !== identifier) return { ok: false, reason: 'ledger-other-card' };
+  if (!c.linearIdentifier) return { ok: false, reason: 'ledger-no-pointer' };
+  if (c.linearIdentifier !== identifier) return { ok: false, reason: 'ledger-other-card' };
   const e = cardConditionIndex(ledger).get(identifier);
   if (e && e.open.length > 0) return { ok: false, reason: 'rollup-has-open-condition' };
   return { ok: true };
@@ -104,8 +105,12 @@ function landBranchFromComments(commentsNewestFirst) {
 /**
  * Newest landings.jsonl row for a branch (rows oldest-first as the ledger appends) or null.
  * With sinceMs, rows older than that are ignored: a reused branch name or a
- * "land/x refused" comment must not match an earlier landing.
+ * "land/x refused" comment must not match a much earlier landing. Callers pass
+ * the naming comment's time minus LANDING_SLACK_MS, because the usual stuck
+ * card is land, then comment "landed via land/x", then the session dies.
  */
+const LANDING_SLACK_MS = 24 * 3600 * 1000;
+
 function landingForBranch(rows, branch, sinceMs) {
   let hit = null;
   for (const r of rows || []) {
@@ -137,6 +142,6 @@ function landedComment(branch, sha) {
 }
 
 module.exports = {
-  ALERT_TITLE_PREFIXES, ledgerSaysRecovered, conditionKeyOf, isAlertCard, classifyAlertCard, decideRecovered,
+  ALERT_TITLE_PREFIXES, LANDING_SLACK_MS, ledgerSaysRecovered, conditionKeyOf, isAlertCard, classifyAlertCard, decideRecovered,
   recoveredComment, landBranchFromComments, landingForBranch, decideLanded, landedComment,
 };

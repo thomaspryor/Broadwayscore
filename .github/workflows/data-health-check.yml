@@ -558,8 +558,10 @@ jobs:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          node scripts/sweep-recovered-alert-cards.js --apply
-          node scripts/sweep-recovered-alert-cards.js --landed --dry-run
+          rc=0
+          node scripts/sweep-recovered-alert-cards.js --apply || rc=$?
+          node scripts/sweep-recovered-alert-cards.js --landed --dry-run || true
+          exit $rc
 
       # BRO-3011 (spend-guards Sprint 3): spend-guard audit over the last 7
       # days — trip days per breaker from data/audit/breaker-transitions.jsonl,

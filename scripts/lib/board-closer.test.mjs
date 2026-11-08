@@ -50,6 +50,8 @@ test('ledgerSaysRecovered: resolved only; open, missing, other card and rollup r
   assert.equal(bc.ledgerSaysRecovered(LEDGER, 'BRO-1', 'health-check:Recovered Row').ok, true);
   assert.equal(bc.ledgerSaysRecovered(LEDGER, 'BRO-2', 'health-check:Still Red Row').reason, 'ledger-open');
   assert.equal(bc.ledgerSaysRecovered(LEDGER, 'BRO-9', 'health-check:Nope').reason, 'not-in-ledger');
+  const released = { conditions: { k: { status: 'resolved', linearIdentifier: null } } };
+  assert.equal(bc.ledgerSaysRecovered(released, 'BRO-5', 'k').reason, 'ledger-no-pointer');
   assert.equal(bc.ledgerSaysRecovered(LEDGER, 'BRO-8', 'health-check:Recovered Row').reason, 'ledger-other-card');
   const rollup = { conditions: { a: { status: 'resolved', linearIdentifier: 'BRO-1' }, b: { status: 'open', linearIdentifier: 'BRO-1' } } };
   assert.equal(bc.ledgerSaysRecovered(rollup, 'BRO-1', 'a').reason, 'rollup-has-open-condition');
@@ -101,7 +103,10 @@ test('decideLanded: live, not live, not landed, no branch', () => {
   const landing = bc.landingForBranch(rows, 'land/a');
   assert.equal(landing.sha, 'b'.repeat(40));
   const dated = [{ branch: 'land/a', sha: 'c'.repeat(40), ts: '2026-01-01T00:00:00Z' }];
-  assert.equal(bc.landingForBranch(dated, 'land/a', Date.parse('2026-02-01T00:00:00Z')), null, 'older landing than the comment is ignored');
+  assert.equal(bc.landingForBranch(dated, 'land/a', Date.parse('2026-02-01T00:00:00Z')), null, 'much older landing is ignored');
+  // land, then comment "landed via land/a" 2h later, then the session died: must still match
+  const commentMs = Date.parse('2026-01-01T02:00:00Z');
+  assert.equal(bc.landingForBranch(dated, 'land/a', commentMs - bc.LANDING_SLACK_MS).sha, 'c'.repeat(40));
   const i = card('BRO-6', 't', '');
   assert.equal(bc.decideLanded(i, { branch: 'land/a', landing, liveExit: 0 }).action, 'close');
   assert.equal(bc.decideLanded(i, { branch: 'land/a', landing, liveExit: 1 }).reason, 'landed-not-live');
