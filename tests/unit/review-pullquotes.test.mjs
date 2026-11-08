@@ -164,6 +164,16 @@ test('BRO-7127: applyScoreRelevantMigrations does not recover a "Cross-show dupl
   assert.equal(applyScoreRelevantMigrations(dup).garbageRecovered, false);
   assert.equal(dup.fullText, null);
   assert.equal(finalizePullQuote(dup, 'Some Show', 'open'), null);
+  for (const extra of [
+    { showNotMentioned: true },
+    { garbageReason: 'Wrong outlet: BroadwayNews content scraped from EW URL' },
+    { garbageReason: 'TheaterMania 404 page, not a review' },
+    { wrongShowReason: 'Cross-attribution: content matches another-show-1972' },
+  ]) {
+    const d = { ...base, ...extra };
+    assert.equal(applyScoreRelevantMigrations(d).garbageRecovered, false, JSON.stringify(extra));
+    assert.equal(d.fullText, null);
+  }
   const other = { ...base, garbageFullTextNote: 'Truncated by scraper' };
   assert.equal(applyScoreRelevantMigrations(other).garbageRecovered, true, 'control: other garbage notes still recover');
 });
