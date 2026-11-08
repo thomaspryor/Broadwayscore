@@ -260,13 +260,12 @@ jobs:
 
       # fetchPage's free Playwright tier and discovery's Google News unwrap (discovery.js preferPlaywright) need a
       # local browser; without one every fetch falls through to paid providers and News links stay unresolved
-      # (Wanted 2026-11-08 pre-flight review). optional: a failed install is a warning, the lane runs without it,
-      # as in the shadow job and opening-night-poller.yml. The composite bounds its own install with `timeout`.
+      # (Wanted 2026-11-08 pre-flight review). continue-on-error: a failed install does not stop the lane, which runs
+      # without it, exactly as the shadow job below does. Not `optional:`: gather-shard-continue-on-error.test.mjs
+      # keeps that input to gather and the poller. The composite bounds its own install with `timeout` either way.
       - name: Setup Playwright
         continue-on-error: true
         uses: ./.github/actions/setup-playwright
-        with:
-          optional: 'true'
 
       - name: Checkout core data (root JSON only)
         uses: ./.github/actions/checkout-core-data
