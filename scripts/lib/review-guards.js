@@ -5578,7 +5578,9 @@ function rebuildOnlyPassExclusion(filePath, rebuildExclusions) {
  * @returns {{statKey: string, reason: string}|null}
  */
 function decideEarlyFileExclusion(data, show, cfg = {}) {
-  const g = cfg.guards || module.exports;
+  const g = cfg.guards || {
+    isCancelledBeforeOpeningShow, isUnverifiableWebSearchRow, isPreviewFirstLookPiece, isCombinedReviewOfOtherMemberOnly,
+  };
   const call = (name, ...args) => {
     if (typeof g[name] !== 'function') {
       if (cfg.tolerateMissing) return false;

@@ -62,7 +62,10 @@ test('source shape: callers use the shared function, no inline chain', () => {
   assert.match(rebuild, /decideEarlyFileExclusion\(data, showById\[showId\]\)/);
   assert.doesNotMatch(rebuild, /if \(isCancelledBeforeOpeningShow\(/);
   assert.doesNotMatch(rebuild, /if \(isCombinedReviewOfOtherMemberOnly\(/);
-  assert.match(delta, /decideEarlyFileExclusion/);
+  assert.match(delta, /\)\(review, show, \{ guards, tolerateMissing: true \}\)/);
+  for (const n of ['isCancelledBeforeOpeningShow', 'isUnverifiableWebSearchRow', 'isCombinedReviewOfOtherMemberOnly']) {
+    assert.doesNotMatch(delta, new RegExp('guards\\.' + n + '\\(review'), n + ' inline copy returned to decideInclusion');
+  }
   assert.doesNotMatch(delta, /guards\.isPreviewFirstLookPiece\(review\)/);
   assert.match(guardsSrc, /decideEarlyFileExclusion\(data, show, \{ opts \}\)/);
 });
