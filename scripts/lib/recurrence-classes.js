@@ -295,6 +295,9 @@ function workKind(card, classes, ledgerCards = new Set(), comments = null) {
   const cls = classes.get(classKey(card.title));
   if (cls && cls.instances.length >= 2) return 'instance';
   if (AUTO_FILED_RE.test(card.title) || ledgerCards.has(card.identifier)) return 'instance';
+  // A one-off fix that declared nothing is a spot fix, not system work
+  // (BRO-7103 review: counting it as system inflated the share).
+  if (require('./root-cause-close.js').isFixCard({ title: card.title })) return 'instance';
   return 'system';
 }
 
@@ -348,7 +351,8 @@ function recurrenceCloseWarning(identifier, snapshot, relatedIds = [], blocking 
 const ROUTE_STALE_MS = 48 * 36e5;
 const ROOT_WORK_MAX_MS = 14 * 24 * 36e5;
 function rootCauseRouteReason(issue, snapshot, nowMs = Date.now()) {
-  if (!issue || !snapshot || !snapshot.instances || Number(issue.priority) === 1) return null;
+  // Urgent and High cases (main red, outages) are never held back.
+  if (!issue || !snapshot || !snapshot.instances || [1, 2].includes(Number(issue.priority))) return null;
   if (!(nowMs - ms(snapshot.generatedAt) <= ROUTE_STALE_MS)) return null;
   const hit = snapshot.instances[issue.identifier];
   if (!hit || !hit.rootCause || hit.rootCause === issue.identifier) return null;
@@ -358,7 +362,8 @@ function rootCauseRouteReason(issue, snapshot, nowMs = Date.now()) {
   // its cases back (startedAt, not updatedAt: the detector's own comments
   // bump updatedAt every day).
   const startedAt = ms(cls.rootCauseStartedAt);
-  const working = (cls.rootCauseState === 'started' && !(nowMs - startedAt > ROOT_WORK_MAX_MS))
+  // No start time means no way to age it out: do not hold cases behind it.
+  const working = (cls.rootCauseState === 'started' && Number.isFinite(startedAt) && nowMs - startedAt <= ROOT_WORK_MAX_MS)
     || (cls.rootCauseState === 'unstarted' && cls.rootCauseStartedNow && nowMs - ms(cls.rootCauseCreatedAt) < ROUTE_STALE_MS);
   return working ? 'routed-to-root-cause' : null;
 }
@@ -394,8 +399,9 @@ function improvementLine(snap) {
   const reopened = (snap.classes || []).filter((c) => c.recurredAfterRootClosed && c.recurredAfterRootClosed.length).length;
   if (reopened) parts.push(`${reopened} problem${reopened === 1 ? '' : 's'} came back after the card fixing the cause was closed.`);
   const smp = snap.sample;
-  if (smp && smp.graded && smp.share != null && smp.calibrationOk !== false && Date.now() - ms(smp.generatedAt) <= 8 * 24 * 36e5) {
-    parts.push(`An independent check of ${smp.graded} fix${smp.graded === 1 ? '' : 'es'} from this week, reading only the code, found ${Math.round(smp.share)}% fixed the cause.`);
+  const decided = smp ? (smp.rootCause || 0) + (smp.spot || 0) : 0;
+  if (smp && decided >= 4 && smp.share != null && smp.calibrationOk === true && Date.now() - ms(smp.generatedAt) <= 8 * 24 * 36e5) {
+    parts.push(`An independent check of ${decided} fixes from this week, reading only the code, found ${smp.rootCause} of ${decided} fixed the cause.`);
   }
   return parts.join(' ');
 }

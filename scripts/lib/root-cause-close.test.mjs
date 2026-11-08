@@ -144,3 +144,32 @@ test('the weekly sample grades only this week\'s fix cards from their diffs and 
   const again = await sample(cards, now + 864e5, { file, grade: async () => { throw new Error('should not grade'); } });
   assert.equal(again, null);
 });
+
+test('show titles and build verbs do not make a fix card; "red" only as a CI state', () => {
+  const showTitles = ['Dead Outlaw', 'Red Carpet', 'Never Gonna Dance', 'Hamilton'];
+  for (const t of ['Dead Outlaw page shows old poster', 'Red Carpet card layout tweak', 'Never Gonna Dance show stub', 'Improve error messages in CLI', 'Retire stale cron']) {
+    assert.equal(rcc.isFixCard({ title: t }, { showTitles }), false, t);
+  }
+  for (const t of ['P1: main test.yml red: E2E Tests', 'CI red again', 'Hamilton page shows wrong score', 'Dispatch flow is DEAD']) {
+    assert.equal(rcc.isFixCard({ title: t }, { showTitles }), true, t);
+  }
+});
+
+test('the Done path never fetches; a parentless (shallow-edge) commit is not graded', () => {
+  const landings = JSON.stringify({ ts: '2026-11-01', branch: 'land/bro-77-x', sha: 'aaa' });
+  const calls = [];
+  const exec = (args) => {
+    calls.push(args[0]);
+    if (args[0] === 'cat-file') throw new Error('missing');
+    if (args[0] === 'rev-parse' && args[1] === '--is-shallow-repository') return 'true\n';
+    if (args[0] === 'log') return 'c1\tBRO-77: fix it';
+    if (args[0] === 'rev-parse') throw new Error('no parent');
+    if (args[0] === 'show') return 'x.js\n';
+    return '';
+  };
+  rcc.landedFilesForCard('BRO-77', { landingsText: landings, exec });
+  assert.ok(!calls.includes('fetch'), 'close-time read does not fetch');
+  calls.length = 0;
+  assert.equal(rcc.cardDiff('BRO-77', { landingsText: landings, exec }), null, 'whole-tree diff skipped');
+  assert.ok(calls.includes('fetch'), 'the sampler may fetch in a shallow clone');
+});

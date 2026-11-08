@@ -279,7 +279,7 @@ jobs:
         run: |
           # Weekly independent sample first (self-skips unless the last one is
           # 6+ days old), so --apply carries its share into the digest snapshot.
-          timeout -k 10 300 node scripts/recurrence-detector.js --sample \
+          timeout -k 10 600 node scripts/recurrence-detector.js --sample \
             || echo "::warning::recurrence-detector.js --sample failed (non-blocking)"
           rc=0
           timeout -k 10 240 node scripts/recurrence-detector.js --apply || rc=$?

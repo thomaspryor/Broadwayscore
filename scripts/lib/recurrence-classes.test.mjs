@@ -162,7 +162,7 @@ test('workKind and rootCauseShare', () => {
 const SNAP = {
   generatedAt: new Date(NOW - 3600e3).toISOString(),
   instances: { 'BRO-1': { rootCause: 'BRO-9', classKey: 'opening night poller failed' } },
-  classes: [{ key: 'opening night poller failed', rootCause: 'BRO-9', rootCauseState: 'started' }],
+  classes: [{ key: 'opening night poller failed', rootCause: 'BRO-9', rootCauseState: 'started', rootCauseStartedAt: new Date(NOW - 2 * 864e5).toISOString() }],
 };
 
 test('close warning names the root card and the blocking date; silent once linked', () => {
@@ -187,6 +187,9 @@ test('done gate: warning added, allowed never changed, comment naming root silen
 test('routing: started root skips the instance; P0 and stale snapshot never do', () => {
   assert.equal(rc.rootCauseRouteReason({ identifier: 'BRO-1', priority: 3 }, SNAP, NOW), 'routed-to-root-cause');
   assert.equal(rc.rootCauseRouteReason({ identifier: 'BRO-1', priority: 1 }, SNAP, NOW), null);
+  assert.equal(rc.rootCauseRouteReason({ identifier: 'BRO-1', priority: 2 }, SNAP, NOW), null, 'High (main red) is never held back');
+  const noStart = { ...SNAP, classes: [{ ...SNAP.classes[0], rootCauseStartedAt: null }] };
+  assert.equal(rc.rootCauseRouteReason({ identifier: 'BRO-1', priority: 3 }, noStart, NOW), null, 'no start time: no endless hold');
   assert.equal(rc.rootCauseRouteReason({ identifier: 'BRO-1', priority: 3 }, SNAP, NOW + 3 * DAY), null);
   const paused = { ...SNAP, classes: [{ ...SNAP.classes[0], rootCauseState: 'backlog' }] };
   assert.equal(rc.rootCauseRouteReason({ identifier: 'BRO-1', priority: 3 }, paused, NOW), null);
@@ -284,7 +287,7 @@ test('a root card In Progress for more than 14 days stops holding its cases back
 });
 
 test('a routed START-NOW card says why it was held back', () => {
-  const iss = { identifier: 'BRO-1', title: 'Opening night poller failed', priority: 2, state: { type: 'unstarted' }, description: 'START-NOW: go' };
+  const iss = { identifier: 'BRO-1', title: 'Opening night poller failed', priority: 3, state: { type: 'unstarted' }, description: 'START-NOW: go' };
   const r = pickCloudCard([iss], { nowMs: NOW, recurrence: SNAP });
   assert.equal(r.startNowSkipped['BRO-1'], 'routed-to-root-cause');
 });
@@ -300,11 +303,16 @@ test('declared close answers move the share: full ROOT-CAUSE block counts as roo
 
 test('improvementLine adds the independent sample share while it is fresh', () => {
   const base = { share: { thisWeek: { share: 70, total: 100 }, lastWeek: null }, recurringCount: 3, withRootCause: 1 };
-  const fresh = rc.improvementLine({ ...base, sample: { generatedAt: new Date().toISOString(), graded: 8, share: 37.5 } });
-  assert.match(fresh, /independent check of 8 fixes .* found 38% fixed the cause/);
-  const stale = rc.improvementLine({ ...base, sample: { generatedAt: '2026-01-01T00:00:00Z', graded: 8, share: 37.5 } });
+  const S = { generatedAt: new Date().toISOString(), graded: 8, rootCause: 3, spot: 5, share: 37.5, calibrationOk: true };
+  const fresh = rc.improvementLine({ ...base, sample: S });
+  assert.match(fresh, /independent check of 8 fixes .* found 3 of 8 fixed the cause/);
+  const stale = rc.improvementLine({ ...base, sample: { ...S, generatedAt: '2026-01-01T00:00:00Z' } });
   assert.ok(!/independent/.test(stale));
-  const drifted = rc.improvementLine({ ...base, sample: { generatedAt: new Date().toISOString(), graded: 8, share: 37.5, calibrationOk: false } });
+  const thin = rc.improvementLine({ ...base, sample: { ...S, graded: 8, rootCause: 1, spot: 1, share: 50 } });
+  assert.ok(!/independent/.test(thin), 'fewer than 4 decided grades publish nothing');
+  const unchecked = rc.improvementLine({ ...base, sample: { ...S, calibrationOk: undefined } });
+  assert.ok(!/independent/.test(unchecked), 'no anchor checked: withheld');
+  const drifted = rc.improvementLine({ ...base, sample: { ...S, calibrationOk: false } });
   assert.ok(!/independent/.test(drifted), 'a drifted grader does not publish a share');
 });
 
