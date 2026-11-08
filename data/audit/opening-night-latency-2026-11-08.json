@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-11-08T23:07:08.949Z",
+  "generatedAt": "2026-11-08T23:48:26.742Z",
   "date": "2026-11-08",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 156046,
+  "entryCount": 159882,
   "shows": [
     {
       "showId": "speculations-off-west-end-2026",
@@ -12,7 +12,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 3045700,
-        "scored-to-rebuilt": 461362,
+        "scored-to-rebuilt": 416354,
         "rebuilt-to-deployed": 99161790
       },
       "reviews_over_15min": 0,
@@ -501,13 +501,13 @@
     },
     {
       "showId": "tango-after-dark-off-west-end-2026",
-      "reviewCount": 5,
+      "reviewCount": 6,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 633062,
-        "scored-to-rebuilt": 63364,
+        "scored-to-rebuilt": 114678,
         "rebuilt-to-deployed": 102402579
       },
       "reviews_over_15min": 0,
@@ -4303,13 +4303,13 @@
     },
     {
       "showId": "nero-off-west-end-2026",
-      "reviewCount": 11,
+      "reviewCount": 12,
       "median_e2e_ms": 82585129,
       "p90_e2e_ms": 93253878,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 468514,
-        "scored-to-rebuilt": 270110,
+        "scored-to-rebuilt": 273044,
         "rebuilt-to-deployed": 66445247
       },
       "reviews_over_15min": 5,
@@ -13980,7 +13980,7 @@
     },
     {
       "showId": "blithe-spirit-west-end-2011",
-      "reviewCount": 2,
+      "reviewCount": 3,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -14010,7 +14010,7 @@
     },
     {
       "showId": "frankenstein-west-end-2011",
-      "reviewCount": 7,
+      "reviewCount": 8,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -14025,7 +14025,7 @@
     },
     {
       "showId": "clybourne-park-west-end-2011",
-      "reviewCount": 2,
+      "reviewCount": 3,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -14040,7 +14040,7 @@
     },
     {
       "showId": "the-rivals-west-end-2010",
-      "reviewCount": 2,
+      "reviewCount": 4,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -14055,7 +14055,7 @@
     },
     {
       "showId": "end-of-the-rainbow-west-end-2010",
-      "reviewCount": 2,
+      "reviewCount": 3,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -14070,7 +14070,7 @@
     },
     {
       "showId": "fela-west-end-2010",
-      "reviewCount": 2,
+      "reviewCount": 3,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -14085,7 +14085,7 @@
     },
     {
       "showId": "when-we-are-married-west-end-2010",
-      "reviewCount": 4,
+      "reviewCount": 5,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -14100,7 +14100,7 @@
     },
     {
       "showId": "the-country-girl-west-end-2010",
-      "reviewCount": 4,
+      "reviewCount": 6,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -14115,22 +14115,7 @@
     },
     {
       "showId": "is-this-a-room-2021",
-      "reviewCount": 1,
-      "median_e2e_ms": null,
-      "p90_e2e_ms": null,
-      "per_stage_median_ms": {
-        "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": null,
-        "rebuilt-to-deployed": null
-      },
-      "reviews_over_15min": 0,
-      "reviews_over_60min": 0,
-      "slowest_reviews": []
-    },
-    {
-      "showId": "head-over-heels-2018",
-      "reviewCount": 1,
+      "reviewCount": 19,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -14145,7 +14130,7 @@
     },
     {
       "showId": "john-lithgow-stories-by-heart-2018",
-      "reviewCount": 1,
+      "reviewCount": 50,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -14175,22 +14160,7 @@
     },
     {
       "showId": "tuck-everlasting-2016",
-      "reviewCount": 2,
-      "median_e2e_ms": null,
-      "p90_e2e_ms": null,
-      "per_stage_median_ms": {
-        "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": null,
-        "rebuilt-to-deployed": null
-      },
-      "reviews_over_15min": 0,
-      "reviews_over_60min": 0,
-      "slowest_reviews": []
-    },
-    {
-      "showId": "sweeney-todd-2005",
-      "reviewCount": 1,
+      "reviewCount": 40,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -14235,21 +14205,6 @@
     },
     {
       "showId": "fences-1987",
-      "reviewCount": 1,
-      "median_e2e_ms": null,
-      "p90_e2e_ms": null,
-      "per_stage_median_ms": {
-        "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": null,
-        "rebuilt-to-deployed": null
-      },
-      "reviews_over_15min": 0,
-      "reviews_over_60min": 0,
-      "slowest_reviews": []
-    },
-    {
-      "showId": "a-little-night-music-1973",
       "reviewCount": 1,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
