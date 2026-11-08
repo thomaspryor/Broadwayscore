@@ -1,7 +1,7 @@
 {
-  "timestamp": "2026-11-08T10:45:45.187Z",
+  "timestamp": "2026-11-08T11:07:55.022Z",
   "stats": {
-    "totalReviews": 80520,
+    "totalReviews": 80521,
     "alreadyFlagged": 22030,
     "dateGuardCatches": 216,
     "directorMismatch": 3547,
@@ -43940,20 +43940,6 @@
     },
     {
       "showId": "much-ado-about-nothing-globe-off-west-end-2026",
-      "file": "guardian--susannah-clapp.json",
-      "score": 63,
-      "publishDate": "2026-06-21",
-      "url": "https://www.theguardian.com/stage/2026/jun/21/much-ado-about-nothing-review-shakespeare-globe-london",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jamie lloyd\" from much-ado-about-nothing-2026"
-        }
-      ]
-    },
-    {
-      "showId": "much-ado-about-nothing-globe-off-west-end-2026",
       "file": "london-box-office--stuart-king.json",
       "score": 76,
       "publishDate": "2026-06-20",
@@ -43990,6 +43976,20 @@
       "score": 96,
       "publishDate": "2026-06-20",
       "url": "https://www.londontheatre.co.uk/reviews/much-ado-about-nothing-review-shakespeares-globe-2026",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jamie lloyd\" from much-ado-about-nothing-2026"
+        }
+      ]
+    },
+    {
+      "showId": "much-ado-about-nothing-globe-off-west-end-2026",
+      "file": "observer--susannah-clapp.json",
+      "score": 63,
+      "publishDate": "2026-06-21",
+      "url": "https://www.theguardian.com/stage/2026/jun/21/much-ado-about-nothing-review-shakespeare-globe-london",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -51547,7 +51547,7 @@
     },
     {
       "showId": "play-on-bristol-old-vic-regional-2025",
-      "file": "guardian--susannah-clapp.json",
+      "file": "observer--susannah-clapp.json",
       "score": 84,
       "publishDate": "2025-01-26",
       "url": "https://www.theguardian.com/stage/2025/jan/26/the-week-in-theatre-play-on-bristol-old-vic-a-good-house-amy-jephta-royal-court-plexus-polaire-moby-dick-barbican-review",
@@ -119655,7 +119655,7 @@
     },
     {
       "showId": "richard-iii-west-end-2014",
-      "file": "guardian--susannah-clapp.json",
+      "file": "observer--susannah-clapp.json",
       "score": 62,
       "publishDate": "2014-07-13",
       "url": "http://www.theguardian.com/stage/2014/jul/13/richard-iii-martin-freeman-trafalgar-studios-review",
