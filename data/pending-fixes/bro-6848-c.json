@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6848-c",
   "planId": "2508adc2-3fda-476a-b4f4-6abab184aba4",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-07T21:02:21.953Z",
   "submitter": {
     "name": null,
@@ -239,5 +239,134 @@
         "description": "BRO-6848: Susannah Clapp is an Observer critic; theguardian.com hosts the UK Observer. Relabel the solo record to the existing observer id; preserve rating and exclusion verdicts."
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-08T11:15:50.901Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "romeo-and-juliet-west-end-2024/guardian--susannah-clapp.json outletId: \"guardian\" -> \"observer\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "shed-exploded-view-royal-exchange-regional-2024/guardian--clare-brennan.json outletId: \"guardian\" -> \"observer\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "shifters-off-broadway-2026/guardian--susannah-clapp.json outletId: \"guardian\" -> \"observer\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "shifters-west-end-2024/guardian--susannah-clapp.json outletId: \"guardian\" -> \"observer\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "skylight-2015/guardian--susannah-clapp.json outletId: \"guardian\" -> \"observer\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "skylight-west-end-2014/guardian--susannah-clapp.json outletId: \"guardian\" -> \"observer\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "spamalot-west-end-2012/guardian--kate-kellaway.json outletId: \"guardian\" -> \"observer\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "stephen-sondheims-old-friends-2025/guardian--susannah-clapp.json outletId: \"guardian\" -> \"observer\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "summer-1954-royal-bath-regional-2024/guardian--clare-brennan.json outletId: \"guardian\" -> \"observer\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "sunset-song-dundee-rep-regional-2024/guardian--clare-brennan.json outletId: \"guardian\" -> \"observer\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "sylvia-2015/guardian--susannah-clapp.json outletId: \"guardian\" -> \"observer\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "sylvia-west-end-2023/guardian--susannah-clapp.json outletId: \"guardian\" -> \"observer\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "taken-at-midnight-west-end-2015/guardian--kate-kellaway.json outletId: \"guardian\" -> \"observer\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-borrowers-hull-truck-regional-2024/guardian--clare-brennan.json outletId: \"guardian\" -> \"observer\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-hills-of-california-2024/guardian--susannah-clapp.json outletId: \"guardian\" -> \"observer\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-homecoming-2007/guardian--susannah-clapp.json outletId: \"guardian\" -> \"observer\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-lehman-trilogy-2021/guardian--susannah-clapp.json outletId: \"guardian\" -> \"observer\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-picture-of-dorian-gray-2025/guardian--kate-kellaway.json outletId: \"guardian\" -> \"observer\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-play-that-goes-wrong-west-end-2021/guardian--kate-kellaway.json outletId: \"guardian\" -> \"observer\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-real-thing-2014/guardian--susannah-clapp.json outletId: \"guardian\" -> \"observer\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-seagull-globe-off-west-end-2026/guardian--susannah-clapp.json outletId: \"guardian\" -> \"observer\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-sound-of-music-pitlochry-festival-regional-2024/guardian--clare-brennan.json outletId: \"guardian\" -> \"observer\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-spy-who-came-in-from-the-cold-west-end-2025/guardian--susannah-clapp.json outletId: \"guardian\" -> \"observer\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-tempest-1995/guardian--susannah-clapp.json outletId: \"guardian\" -> \"observer\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-years-west-end-2025/guardian--susannah-clapp.json outletId: \"guardian\" -> \"observer\""
+    }
+  ],
+  "executedIn": "ci"
 }
