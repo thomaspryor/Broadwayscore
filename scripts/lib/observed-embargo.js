@@ -55,27 +55,28 @@ function observedEmbargo({ estimateMs = null, publishTimes = [] } = {}, opts = {
   const lo = estimateMs == null ? -Infinity : estimateMs - SEARCH_BEFORE_MIN * MIN;
   const hi = estimateMs == null ? Infinity : estimateMs + SEARCH_AFTER_MIN * MIN;
 
-  // One time per outlet (its earliest), exact with a zone only: a date-only or
-  // zone-less time could be hours off and would fake or break a cluster.
-  const byOutlet = new Map();
+  // Every exact, zoned time counts (a date-only or zone-less time could be hours
+  // off and would fake or break a cluster). A window's size is its number of
+  // DISTINCT outlets, so one outlet's second critic or an early post from one
+  // outlet neither inflates a cluster nor pulls that outlet out of the real one.
+  const pts = [];
   for (const r of publishTimes || []) {
     if (!r || !isExactWithZone(r.publishedTime)) continue;
     const t = toMs(r.publishedTime);
     if (t == null || t < lo || t > hi) continue;
     const key = String(r.outlet || r.url || '').trim().toLowerCase();
-    if (!key) continue;
-    if (!byOutlet.has(key) || t < byOutlet.get(key).t) byOutlet.set(key, { t, outlet: r.outlet || r.url });
+    if (key) pts.push({ t, key, outlet: r.outlet || r.url });
   }
-  const pts = [...byOutlet.values()].sort((a, b) => a.t - b.t);
+  pts.sort((a, b) => a.t - b.t);
 
   for (let i = 0; i < pts.length; i++) {
-    let j = i;
-    while (j + 1 < pts.length && pts[j + 1].t - pts[i].t <= windowMs) j++;
-    if (j - i + 1 >= minCluster) {
+    const inWindow = new Map();
+    for (let j = i; j < pts.length && pts[j].t - pts[i].t <= windowMs; j++) if (!inWindow.has(pts[j].key)) inWindow.set(pts[j].key, pts[j].outlet);
+    if (inWindow.size >= minCluster) {
       const atMs = snapQuarter(pts[i].t);
       return {
-        at: new Date(atMs).toISOString(), atMs, source: 'observed-cluster', n: j - i + 1,
-        outlets: pts.slice(i, j + 1).map((p) => p.outlet),
+        at: new Date(atMs).toISOString(), atMs, source: 'observed-cluster', n: inWindow.size,
+        outlets: [...inWindow.values()],
         shiftMin: estimateMs == null ? null : Math.round((atMs - estimateMs) / MIN),
       };
     }
