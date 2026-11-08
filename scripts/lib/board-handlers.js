@@ -96,4 +96,43 @@ function gapsOf(categories, handlers = HANDLERS) {
     .map((c) => c.key);
 }
 
-module.exports = { HANDLERS, KNOWN_GAPS, gapsOf };
+const SAMPLE = 5;
+
+/**
+ * PURE (BRO-7139 Step 2). Group a categorizeBoard() report's cards by the handler that owns them.
+ * A card goes to every handler its category names; a card whose category has no applying handler
+ * is also listed under gaps. Returns { open, handlers: {id: {mode, categories, count, sample}},
+ * gaps: [{category, count, sample}] } with handler ids and gap keys in a stable order.
+ */
+function planDispatch(report, handlers = HANDLERS) {
+  const cats = new Map((report.categories || []).map((c) => [c.key, c]));
+  const out = {};
+  const gapCards = new Map();
+  const gapKeys = new Set(gapsOf([...cats.values()], handlers));
+  for (const card of report.cards || []) {
+    const cat = cats.get(card.category);
+    for (const id of (cat && cat.handlers) || []) {
+      const h = handlers[id];
+      if (!h) continue;
+      const row = out[id] || (out[id] = { mode: h.mode, categories: [], count: 0, sample: [] });
+      if (!row.categories.includes(card.category)) row.categories.push(card.category);
+      row.count += 1;
+      if (row.sample.length < SAMPLE) row.sample.push(card.identifier);
+    }
+    if (!cat || gapKeys.has(card.category)) {
+      const g = gapCards.get(card.category) || { category: card.category, count: 0, sample: [] };
+      g.count += 1;
+      if (g.sample.length < SAMPLE) g.sample.push(card.identifier);
+      gapCards.set(card.category, g);
+    }
+  }
+  const sorted = {};
+  for (const id of Object.keys(out).sort()) sorted[id] = { ...out[id], categories: out[id].categories.sort() };
+  return {
+    open: (report.cards || []).length,
+    handlers: sorted,
+    gaps: [...gapCards.values()].sort((a, b) => b.count - a.count || String(a.category).localeCompare(String(b.category))),
+  };
+}
+
+module.exports = { HANDLERS, KNOWN_GAPS, gapsOf, planDispatch };
