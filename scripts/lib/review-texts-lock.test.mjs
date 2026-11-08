@@ -43,9 +43,11 @@ test('holderAlive: dead pid is dead; other host is alive for 2h only', () => {
   assert.equal(lock.holderAlive(body(meta), { alive: () => false }), false);
   const now = Date.now();
   const remote = { ...meta, host: 'other-mac', acquiredAt: new Date(now - 60 * 60 * 1000).toISOString() };
-  assert.equal(lock.holderAlive(body(remote), { now }), true);
+  assert.equal(lock.holderAlive(body(remote), { now, alive: () => true }), true);
   const old = { ...remote, acquiredAt: new Date(now - 3 * 60 * 60 * 1000).toISOString() };
-  assert.equal(lock.holderAlive(body(old), { now }), false);
+  assert.equal(lock.holderAlive(body(old), { now, alive: () => true }), false);
+  // Another hostname whose pid is dead here: this Mac renamed itself, holder is gone.
+  assert.equal(lock.holderAlive(body(remote), { now, alive: () => false }), false);
 });
 
 test('runs fn under the lock, writes holder metadata, releases afterwards', () => {
@@ -103,4 +105,26 @@ test('a recycled pid holder is taken over (pid alive, start time differs)', () =
   lock.withReviewTextsLock('taker', () => { ran = true; }, { timeoutMs: 5000 });
   assert.equal(ran, true);
   assert.ok(Date.now() - t0 < 3000, 'taken over as stale, not by waiting out the timeout');
+});
+
+test('a just-created EMPTY lock (holder mid-create) is not stolen; an old empty one is', () => {
+  const now = Date.now();
+  assert.equal(lock.holderAlive('', { now, mtimeMs: now - 50 }), true);
+  assert.equal(lock.holderAlive('', { now, mtimeMs: now - 60 * 1000 }), false);
+  const p = lock.lockPath();
+  fs.writeFileSync(p, '');
+  let ran = false;
+  assert.throws(() => lock.withReviewTextsLock('thief', () => { ran = true; }, { timeoutMs: 400 }), (e) => e.code === 'ELOCKTIMEOUT');
+  assert.equal(ran, false, 'did not steal a lock whose holder had not written its body yet');
+  fs.unlinkSync(p);
+});
+
+test('a dead local pid stamped with a stale hostname (macOS renames on network change) is taken over', () => {
+  const p = lock.lockPath();
+  fs.writeFileSync(p, body({ pid: deadPid(), procStart: 'gone', host: 'old-dhcp-name.local', label: 'crashed', acquiredAt: new Date().toISOString() }));
+  let ran = false;
+  const t0 = Date.now();
+  lock.withReviewTextsLock('taker', () => { ran = true; }, { timeoutMs: 3000 });
+  assert.equal(ran, true);
+  assert.ok(Date.now() - t0 < 2000, 'not blocked for 2h by a hostname change');
 });

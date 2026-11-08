@@ -57,6 +57,8 @@ function processStartTime(pid) {
   }
 }
 
+const EMPTY_GRACE_MS = 10 * 1000;
+
 let _selfStart;
 function selfStartTime() {
   if (_selfStart === undefined) _selfStart = processStartTime(process.pid);
@@ -92,14 +94,23 @@ function holderAlive(contents, probe = {}) {
   const startOf = probe.startOf || processStartTime;
   const host = probe.host || os.hostname();
   const meta = parseBody(contents);
+  if (!String(contents || '').trim()) {
+    // file-lock creates the file before its body lands. With staleMs 0 an empty
+    // file would look abandoned and a second contender could steal it from a
+    // holder that is mid-create. Empty counts as held until it is 10s old.
+    let mtime = probe.mtimeMs;
+    if (mtime == null) { try { mtime = fs.statSync(lockPath()).mtimeMs; } catch { return false; } }
+    return (probe.now || Date.now()) - mtime < EMPTY_GRACE_MS;
+  }
   if (!meta || !Number.isInteger(meta.pid)) {
     // Not our format (or torn): fall back to the bare pid at its head.
     const pid = parseInt(String(contents || '').split(' ')[0], 10);
     return Number.isInteger(pid) && pid > 0 && alive(pid);
   }
-  if (meta.host && meta.host !== host) {
-    // Another machine's process can't be probed. The lock lives under $HOME
-    // on local disk, so this only happens with a synced home dir; give it 2h.
+  if (meta.host && meta.host !== host && alive(meta.pid)) {
+    // A different hostname is usually this Mac after a network change (macOS
+    // renames itself), so a pid that is dead here is a dead holder. A live pid
+    // under another name could be another machine's on a synced home: give 2h.
     const t = Date.parse(meta.acquiredAt);
     return Number.isFinite(t) && (probe.now || Date.now()) - t < 2 * 60 * 60 * 1000;
   }
