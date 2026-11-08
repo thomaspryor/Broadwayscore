@@ -39,6 +39,7 @@ const LEDGER = path.join(ROOT, 'data/audit/alert-ledger.json');
 const SAMPLE_FILE = path.join(ROOT, 'data/audit/root-cause-sample.json');
 const SAMPLE_EVERY_DAYS = 6;
 const SAMPLE_MAX = 8;
+const SAMPLE_BUDGET_MS = 360000;
 // Known answers, hand-graded 2026-11-08, re-graded every week. If either flips,
 // the grader (model, prompt or diff input) has drifted and the share is withheld.
 const SAMPLE_ANCHORS = [{ card: 'BRO-7066', expect: 'spot-fix' }, { card: 'BRO-7098', expect: 'root-cause' }];
@@ -263,9 +264,23 @@ async function apply(snapshot, prevSnapshot) {
       });
       // Read the card back: the marker line is how later runs find it, so a
       // card whose marker did not survive must stop the run, not repeat daily.
-      const back = await lc.getIssue(issue.identifier);
-      const mk = back && rc.rootCauseMarker(back.description);
-      if (!mk || mk.key !== cls.key) throw new Error(`root card ${issue.identifier} lost its marker line; not filing more`);
+      // A card that lost it would be invisible tomorrow and filed again, so
+      // write the description back once; if it still has no marker, cancel the
+      // card before stopping (BRO-7103 review: throwing alone left it behind).
+      let back = await lc.getIssue(issue.identifier);
+      let mk = back && rc.rootCauseMarker(back.description);
+      if (!mk || mk.key !== cls.key) {
+        try { await lc.updateIssue(back ? back.id : issue.identifier, { description: rootCardDescription(cls) }); } catch { /* checked below */ }
+        back = await lc.getIssue(issue.identifier);
+        mk = back && rc.rootCauseMarker(back.description);
+      }
+      if (!mk || mk.key !== cls.key) {
+        try {
+          const r = require('./lib/linear-state-resolve.js').resolveState('Canceled', (await lc.getTeam()).states);
+          if (r.ok) await lc.updateIssue(back ? back.id : issue.identifier, { stateId: r.state.id });
+        } catch { /* reported below */ }
+        throw new Error(`root card ${issue.identifier} lost its marker line (canceled it); not filing more`);
+      }
       cls.rootCause = issue.identifier;
       cls.rootCauseState = 'unstarted';
       cls.rootCauseStartedNow = true;
@@ -313,7 +328,7 @@ function gradeDiff(diff) {
   });
   return new Promise((resolve, reject) => {
     const req = https.request('https://api.openai.com/v1/chat/completions', {
-      method: 'POST', timeout: 60000,
+      method: 'POST', timeout: 30000,
       headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${process.env.OPENAI_API_KEY}` },
     }, (res) => {
       let data = '';
@@ -360,8 +375,12 @@ async function sample(cards, now, { grade = gradeDiff, diffFor, file = SAMPLE_FI
   const order = rcc.seededPick(week.map((c) => c.identifier), week.length, new Date(now).toISOString().slice(0, 10));
   const items = [];
   let noDiff = 0;
+  // Stop starting new cards well inside the workflow step's 600s budget, so
+  // a slow API still writes what was graded instead of losing the week.
+  const started = Date.now();
   for (const id of order) {
     if (items.length >= SAMPLE_MAX) break;
+    if (Date.now() - started > SAMPLE_BUDGET_MS) { console.warn('[recurrence] sample: time budget reached, writing what was graded'); break; }
     const d = diffFor ? diffFor(id) : rcc.cardDiff(id, { cwd: ROOT });
     if (!d || !d.diff.trim()) { noDiff++; continue; }
     let g;
@@ -377,7 +396,8 @@ async function sample(cards, now, { grade = gradeDiff, diffFor, file = SAMPLE_FI
     try { got = (await voteGrade(grade, d.diff)).grade; } catch { /* counted as a miss below */ }
     calibration.push({ card: a.card, expect: a.expect, got });
   }
-  const calibrationOk = calibration.every((c) => c.got === c.expect);
+  // No anchor found (history too shallow) means nothing was checked: withhold.
+  const calibrationOk = calibration.length > 0 && calibration.every((c) => c.got === c.expect);
   if (!calibrationOk) console.warn(`[recurrence] sample: grader drifted on known cards (${calibration.filter((c) => c.got !== c.expect).map((c) => `${c.card} ${c.got}, expected ${c.expect}`).join('; ')}); share withheld from the digest`);
   let landingsWithoutId = 0;
   try {

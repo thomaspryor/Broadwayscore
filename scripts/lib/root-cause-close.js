@@ -29,9 +29,34 @@
 const ROOT_CAUSE_CLOSE_BLOCKING_FROM = '2026-12-22';
 const MIN_FIELD_CHARS = 10;
 
-const FIX_RE = /\b(fix(es|ed|ing)?|broken|break(s|ing)?|bug|fail(s|ed|ing|ure|ures)?|wrong|incorrect|missing|errors?|crash(es|ed)?|regress(ion|ed)?|stale|stuck|leak(s|ed)?|not (working|showing|loading|updating|running|firing)|doesn'?t|isn'?t|won'?t|can'?t|never|red|404|500|timed? ?out|flak(y|e)|duplicate[sd]?|mismatch|drift|(under|over)counts?|silently|dropped|blank|ignores|hides|dead|skips|misses|loses)\b/i;
+// "red" only as a CI state ("main red: x", "test.yml red", "red again"), never
+// inside a show title like Red Carpet (BRO-7103 review).
+const FIX_RE = /\b(fix(es|ed|ing)?|broken|break(s|ing)?|bug|fail(s|ed|ing|ure|ures)?|wrong|incorrect|missing|errors?|crash(es|ed)?|regress(ion|ed)?|stale|stuck|leak(s|ed)?|not (working|showing|loading|updating|running|firing)|doesn'?t|isn'?t|won'?t|can'?t|never|red(?=\s*[:,)]|\s*$|\s+(?:on|in|since|after|again|for)\b)|404|500|timed? ?out|flak(y|e)|duplicate[sd]?|mismatch|drift|(under|over)counts?|silently|dropped|blank|ignores|hides|dead|skips|misses|loses)\b/i;
 // Titles that start with a build verb are new work even when they name a problem.
-const NOT_FIX_RE = /^(add|build|create|new|design|research|explore|plan|draft|write|publish|post|launch|expand|backfill|migrate|document)\b/i;
+const NOT_FIX_RE = /^(add|build|create|new|design|research|explore|plan|draft|write|publish|post|launch|expand|backfill|migrate|document|improve|retire|remove|refactor|tweak|polish|clean ?up|rename)\b/i;
+
+// Show titles ("Dead Outlaw", "Never Gonna Dance") hold fix words. They are
+// blanked out before matching. Loaded once from data/shows.json when present.
+let showTitleRe;
+function showTitleRegex() {
+  if (showTitleRe !== undefined) return showTitleRe;
+  showTitleRe = null;
+  try {
+    const path = require('path');
+    const file = [path.join(__dirname, '../../data/shows.json'), path.join(process.cwd(), 'data/shows.json')]
+      .find((f) => require('fs').existsSync(f));
+    if (!file) return null;
+    const raw = JSON.parse(require('fs').readFileSync(file, 'utf8'));
+    showTitleRe = buildShowTitleRegex((Array.isArray(raw) ? raw : raw.shows || []).map((x) => x && x.title));
+  } catch { showTitleRe = null; }
+  return showTitleRe;
+}
+function buildShowTitleRegex(titles) {
+  const esc = [...new Set(titles.filter((t) => typeof t === 'string' && t.trim().length >= 4).map((t) => t.trim()))]
+    .sort((a, b) => b.length - a.length)
+    .map((t) => t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
+  return esc.length ? new RegExp(`(?<![\\w'])(?:${esc.join('|')})(?![\\w'])`, 'gi') : null;
+}
 // Who-filed-it prefixes and priority tags, so "P1: Fix x" reads as "Fix x".
 const PREFIX_RE = /^(?:\s*(?:P[0-4]|BSC Daily|Daily digest|Auto-?fix|\[[^\]]{1,40}\])\s*[:\-–]\s*)+/i;
 
@@ -40,11 +65,12 @@ const FIELD_RE = /^[ \t>*_-]*(ROOT-CAUSE|CLASS-GUARD|RED-THEN-GREEN|COUSINS|NO-R
 const PATH_RE = /(?:^|[\s`'"(])((?:\.?[\w@-]+\/)+[\w.@-]+\.[a-z0-9]{1,5})\b/gi;
 
 /** PURE. Is this a fix card (a defect repaired), as opposed to new work? */
-function isFixCard({ title } = {}) {
+function isFixCard({ title } = {}, { showTitles } = {}) {
   const t = String(title || '').replace(PREFIX_RE, '').trim();
   if (!t || NOT_FIX_RE.test(t)) return false;
   if (/^root cause: /i.test(t)) return true; // recurrence-detector root cards
-  return FIX_RE.test(t);
+  const titleRe = showTitles ? buildShowTitleRegex(showTitles) : showTitleRegex();
+  return FIX_RE.test(titleRe ? t.replace(titleRe, ' ') : t);
 }
 
 /**
@@ -141,9 +167,9 @@ function rootCauseCloseMessage(identifier, result, blocking) {
  * in the same range (rebases, trains) are left out. Returns
  * { commits: string[], run } or null when git could not be read.
  */
-function ownCommitsForCard(identifier, { cwd = process.cwd(), landingsText = null, exec = null } = {}) {
+function ownCommitsForCard(identifier, { cwd = process.cwd(), landingsText = null, exec = null, allowFetch = true, timeoutMs = 60000 } = {}) {
   const { execFileSync } = require('child_process');
-  const run = exec || ((args) => execFileSync('git', args, { cwd, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'], timeout: 60000, maxBuffer: 32 * 1024 * 1024 }));
+  const run = exec || ((args) => execFileSync('git', args, { cwd, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'], timeout: timeoutMs, maxBuffer: 32 * 1024 * 1024 }));
   const sc = require('./stuck-card-closer.js');
   let text = landingsText;
   if (text === null) {
@@ -153,9 +179,14 @@ function ownCommitsForCard(identifier, { cwd = process.cwd(), landingsText = nul
     .filter((l) => !/revert/i.test(l.branch) && sc.branchIsForCard(l.branch, identifier))
     .map((l) => l.sha);
   const idRe = new RegExp(`(?<![A-Za-z0-9])${identifier.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(?![0-9])`, 'i');
+  // Fetch a missing landing sha only in a shallow clone (CI) and only when
+  // the caller allows it: a --depth fetch in a full clone would make it
+  // shallow, and the Done path must not touch the network (BRO-7103 review).
+  let shallow = false;
+  if (allowFetch) { try { shallow = run(['rev-parse', '--is-shallow-repository']).trim() === 'true'; } catch { shallow = false; } }
   for (const sha of shas) {
     try { run(['cat-file', '-e', `${sha}^{commit}`]); } catch {
-      try { run(['fetch', '-q', '--depth=30', 'origin', sha]); } catch { /* unreachable sha: skip */ }
+      if (shallow) { try { run(['fetch', '-q', '--depth=30', 'origin', sha]); } catch { /* unreachable sha: skip */ } }
     }
   }
   const commits = [];
@@ -173,7 +204,8 @@ function ownCommitsForCard(identifier, { cwd = process.cwd(), landingsText = nul
 /** Files the card's own commits changed: string[], or null when unknown. */
 function landedFilesForCard(identifier, opts = {}) {
   try {
-    const own = ownCommitsForCard(identifier, opts);
+    // Runs inside `--state Done`: local reads only, short timeouts.
+    const own = ownCommitsForCard(identifier, { allowFetch: false, timeoutMs: 5000, ...opts });
     if (!own || !own.commits.length) return null;
     const files = new Set();
     for (const c of own.commits) {
@@ -197,11 +229,15 @@ function cardDiff(identifier, { maxBytes = 20000, ...opts } = {}) {
     let diff = '';
     const files = new Set();
     for (const c of own.commits) {
+      // A commit at the edge of a shallow clone has no parent, so `git show`
+      // would print the whole tree as added. Skip it rather than grade junk.
+      try { own.run(['rev-parse', '-q', '--verify', `${c}^`]); } catch { continue; }
       diff += own.run(['show', '--format=commit %h %s', c, '--', '.', ...exclude]);
       for (const f of own.run(['show', '--name-only', '--format=', c]).split('\n')) if (f.trim()) files.add(f.trim());
     }
     // No file-list header: tried 2026-11-08, it flipped the hand-graded spot fix BRO-7066
     // to root-cause (a test file in the list read as a guard). The grader sees the diff alone.
+    if (!diff) return null;
     return { diff: diff.slice(0, maxBytes), files: [...files].sort(), truncated: diff.length > maxBytes };
   } catch {
     return null;
