@@ -102,7 +102,11 @@ async function fallbackDateForUndatedStub({ url, openingDate, fetchJson } = {}) 
   if (!url || !openingDate || !ISO.test(String(openingDate).slice(0, 10))) return null;
   let archiveDate = null;
   try { archiveDate = await archiveFirstCaptureDate(url, { fetchJson }); } catch { return null; }
-  return pickFallbackPublishDate({ archiveDate, openingDate: String(openingDate).slice(0, 10) });
+  const open = String(openingDate).slice(0, 10);
+  // A year-less Stage stub has no body to cross-check, so a first capture is only an upper bound on
+  // the publish date: accept it just inside the press-week window (7 days), tighter than the audit's 30.
+  if (archiveDate && !inReviewWindow(archiveDate, open, { daysBefore: 3, daysAfter: 7 })) return null;
+  return pickFallbackPublishDate({ archiveDate, openingDate: open });
 }
 
 module.exports = { fallbackDateArgs, listingDateForRun, inReviewWindow, cdxTimestampToDate, archiveFirstCaptureDate, pickFallbackPublishDate, fallbackDateForUndatedStub };

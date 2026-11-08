@@ -49,3 +49,12 @@ test('the fallback tag is recognised downstream as a weak (fallback) date', asyn
   const r = await fb.fallbackDateForUndatedStub({ url: STAGE_URL, openingDate: '2026-10-29', fetchJson: cdx('20261030090000') });
   assert.equal(isFallbackPublishDate({ dateSource: r.dateSource }), true);
 });
+
+import { createRequire as _cr } from 'node:module';
+import _test from 'node:test';
+import _assert from 'node:assert/strict';
+const _fp = _cr(import.meta.url)('../../scripts/lib/fallback-publish-date.js');
+_test('gather stub: a first capture 20 days after opening is refused (7-day window)', async () => {
+  const fetchJson = async () => [['timestamp'], ['20260120000000']];
+  _assert.equal(await _fp.fallbackDateForUndatedStub({ url: 'https://x.test/a', openingDate: '2026-01-01', fetchJson }), null);
+});
