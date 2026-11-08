@@ -350,6 +350,17 @@ function suspectReason(instances, reopens = []) {
   return null;
 }
 
+/**
+ * PURE. Comment bodies oldest first. listIssueComments returns Linear's page
+ * order (newest first), but checkRootCauseClose lets the LAST value of a field
+ * win, so unsorted input made the digest count a card's stale line (BRO-7132).
+ */
+function commentBodiesOldestFirst(nodes) {
+  return [...(nodes || [])]
+    .sort((a, b) => String((a && a.createdAt) || '').localeCompare(String((b && b.createdAt) || '')))
+    .map((n) => (n && n.body) || '');
+}
+
 /** PREVENTION: lines in a text blob. */
 function preventionLines(text) {
   const out = [];
@@ -535,6 +546,7 @@ module.exports = {
   suspectReason,
   detectClasses,
   preventionLines,
+  commentBodiesOldestFirst,
   checkPreventionClaims,
   workKind,
   rootCauseShare,

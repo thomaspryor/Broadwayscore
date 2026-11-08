@@ -466,3 +466,19 @@ test('BRO-7105: two classes that each have a root card never join', () => {
   for (const cls of m.values()) assert.equal(cls.extraRootCauses.length, 0, `${cls.key} reads as having duplicate root cards`);
   assert.ok([...m.values()].some((x) => x.instances.some((i) => i.identifier === b.identifier) && x.instances.length === 1), 'beta kept its own class');
 });
+
+// BRO-7132: the root-cause share read comments newest first, so the oldest
+// value of a close field won. The detector must hand them over oldest first.
+test('commentBodiesOldestFirst sorts Linear page order and the detector uses it', async () => {
+  const fs = await import('node:fs');
+  const nodes = [
+    { body: 'COUSINS: newer, searched data/ and src/, fixed two', createdAt: '2026-11-08T16:00:00Z' },
+    { body: 'COUSINS: older line', createdAt: '2026-11-08T10:00:00Z' },
+  ];
+  const bodies = rc.commentBodiesOldestFirst(nodes);
+  assert.deepEqual(bodies, ['COUSINS: older line', 'COUSINS: newer, searched data/ and src/, fixed two']);
+  const { parseRootCauseBlock } = require('./root-cause-close.js');
+  assert.match(parseRootCauseBlock(bodies).fields.COUSINS, /^newer/);
+  const src = fs.readFileSync(new URL('../recurrence-detector.js', import.meta.url), 'utf8');
+  assert.match(src, /commentsById\[id\] = rc\.commentBodiesOldestFirst\(nodes\)/);
+});

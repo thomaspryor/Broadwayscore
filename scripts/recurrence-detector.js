@@ -626,7 +626,7 @@ async function main() {
     for (const c of cards) if (rc.isDone(c) && Date.parse(c.completedAt) >= now - 14 * DAY) doneIds.push(c.identifier);
     try {
       const m = await require('./lib/linear-client.js').listIssueComments([...new Set(doneIds)], undefined, { includeArchived: true });
-      for (const [id, nodes] of m) commentsById[id] = nodes.map((n) => n.body || '');
+      for (const [id, nodes] of m) commentsById[id] = rc.commentBodiesOldestFirst(nodes);
     } catch (e) {
       console.warn(`[recurrence] comment read failed (${e.message}); prevention stats are partial`);
       complete = false;
