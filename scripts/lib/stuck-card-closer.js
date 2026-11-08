@@ -401,7 +401,7 @@ const MAX_BACKLOG_CLOSES_PER_RUN = 5;
 const BACKLOG_CLOSER_NOTE = 'backlog sweep';
 const ANY_RECHECK_RE = /RECHECK-AFTER\s*:/i;
 // Subjects that create or push work to the card rather than finish it.
-const FOLLOWUP_SUBJECT_RE = /\b(?:follow[- ]?ups?|defer\w*|fil(?:e|es|ed|ing)\s+(?:a\s+|the\s+)?(?:card|issue|ticket|bro-)|carded|split\s+(?:out|to|into)|tracked\s+(?:in|as)|left\s+for)\b/i;
+const FOLLOWUP_SUBJECT_RE = /\b(?:follow[- ]?ups?|defer\w*|fil(?:e|es|ed|ing)\s+(?:a\s+|the\s+)?(?:card|issue|ticket|bro-)|carded|split\s+(?:out|off|to|into)|tracked\s+(?:in|as)|left\s+for|mov(?:e|ed|es|ing)\s+(?:the\s+)?(?:rest|remainder)|remaining\s+work)\b/i;
 
 /**
  * Pick candidates from the open-backlog acceptance sweep report.
@@ -416,12 +416,16 @@ function planBacklogCandidates(sweep, nowMs) {
   const candidates = [];
   const skipped = {};
   const skip = (reason) => { skipped[reason] = (skipped[reason] || 0) + 1; };
-  for (const r of Array.isArray(sweep.alreadyDone) ? sweep.alreadyDone : []) {
-    if (!r || !r.id) continue;
+  const rows = (Array.isArray(sweep.alreadyDone) ? sweep.alreadyDone : []).filter((r) => r && r.id);
+  // A test file two cards both name says nothing about which of them it finished.
+  const pathCount = {};
+  for (const r of rows) { const tp = cardTestPath(r.verifyCmd); if (tp) pathCount[tp] = (pathCount[tp] || 0) + 1; }
+  for (const r of rows) {
     if (/retry|flak/i.test(String(r.detail || ''))) { skip('passed-only-on-retry'); continue; }
     const testPath = cardTestPath(r.verifyCmd);
     // A generic checker proves nothing about one unclaimed card.
     if (!testPath) { skip('not-a-single-test-file'); continue; }
+    if (pathCount[testPath] > 1) { skip('test-shared-with-another-card'); continue; }
     candidates.push({ id: r.id, cmd: r.verifyCmd, testPath });
   }
   return { candidates, skipped };
