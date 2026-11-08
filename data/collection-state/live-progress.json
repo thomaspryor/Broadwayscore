@@ -1,23 +1,47 @@
 {
-  "updatedAt": "2026-11-08T16:53:30.530Z",
-  "processed": 101,
-  "failed": 71,
-  "successRate": "58.7%",
+  "updatedAt": "2026-11-08T17:00:14.948Z",
+  "processed": 1132,
+  "failed": 507,
+  "successRate": "69.1%",
   "tierBreakdown": {
-    "playwright": 57,
+    "playwright": 374,
     "amp": 0,
     "browserbase": 6,
     "directCookies": 0,
-    "scrapingdog": 11,
-    "scrapingbee": 1,
-    "brightdata": 0,
+    "scrapingdog": 60,
+    "scrapingbee": 35,
+    "brightdata": 17,
     "archiveToday": 0,
-    "archive": 18
+    "archive": 498
   },
-  "browserbaseSessions": 6,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
-      "t": "2026-11-08T16:43:53.037Z",
+      "t": "2026-11-08T11:07:28.352Z",
+      "event": "bb-session",
+      "session": "2d1e4a17",
+      "url": "https://observer.com/2026/03/grammarly-ceo-shishir-mehortra-go-expert-review/"
+    },
+    {
+      "t": "2026-11-08T11:13:50.110Z",
+      "event": "bb-session",
+      "session": "799449e6",
+      "url": "https://www.radiotimes.com/tv/drama/tom-ellis-cia-heartbreaking-truth-exclusive-"
+    },
+    {
+      "t": "2026-11-08T11:33:52.348Z",
+      "event": "bb-session",
+      "session": "03a689b3",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/giant-recoups-broadway-investme"
+    },
+    {
+      "t": "2026-11-08T11:34:53.455Z",
+      "event": "bb-session",
+      "session": "a95a9f7c",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/tracee-ellis-ross-broadway-ever"
+    },
+    {
+      "t": "2026-11-08T11:37:45.021Z",
       "event": "bb-session",
       "session": "d9a5a9ae",
       "url": "https://www.nytimes.com/2026/11/06/theater/the-unbelievers-222-a-ghost-story-rev"
@@ -69,13 +93,7 @@
     {
       "t": "2026-11-08T16:49:25.311Z",
       "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-11-08T16:50:25.662Z",
-      "event": "bb-session",
-      "session": "59d56551",
-      "url": "https://bachtrack.com/review-medea-yoncheva-spyres-met-opera-new-york-october-20"
+      "domain": "nytimes.com"
     }
   ]
 }
