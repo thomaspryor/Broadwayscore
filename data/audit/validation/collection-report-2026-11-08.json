@@ -1,25 +1,25 @@
 {
-  "runDate": "2026-11-08T13:34:36.422Z",
+  "runDate": "2026-11-08T13:38:22.134Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 60,
     "priority": "all",
-    "showFilter": "222-a-ghost-story-off-broadway-2026",
+    "showFilter": "king-lear-off-broadway-2026",
     "aggressive": true,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 3,
+    "processed": 0,
     "failed": 1,
     "skipped": 0,
-    "successRate": "75.0%"
+    "successRate": "0%"
   },
   "tierBreakdown": {
-    "playwright": 2,
+    "playwright": 0,
     "amp": 0,
-    "browserbase": 2,
+    "browserbase": 0,
     "directCookies": 0,
     "scrapingdog": 0,
     "scrapingbee": 0,
@@ -28,36 +28,36 @@
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 2,
-    "tier1Success": 2,
+    "tier1Attempts": 1,
+    "tier1Success": 0,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 1,
-    "tier1_5Success": 1,
-    "tier1_9Attempts": 0,
+    "tier1_5Attempts": 0,
+    "tier1_5Success": 0,
+    "tier1_9Attempts": 1,
     "tier1_9Success": 0,
-    "tier2Attempts": 0,
+    "tier2Attempts": 1,
     "tier2Success": 0,
-    "tier3Attempts": 0,
+    "tier3Attempts": 1,
     "tier3Success": 0,
-    "tier3_6Attempts": 0,
+    "tier3_6Attempts": 1,
     "tier3_6Success": 0,
     "tier4Attempts": 1,
     "tier4Success": 0,
     "totalFailed": 1,
-    "scrapingBeePageCredits": 0,
+    "scrapingBeePageCredits": 10,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 1,
-    "browserbaseMinutesUsed": 0.2,
-    "urlDiscoveryAttempts": 1,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 3,
+    "processed": 0,
     "failed": 1,
     "shows": [
-      "222-a-ghost-story-off-broadway-2026"
+      "king-lear-off-broadway-2026"
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
@@ -65,34 +65,20 @@
       "failed": 0
     }
   },
-  "processed": [
-    "222-a-ghost-story-off-broadway-2026/wsj--charles-isherwood.json",
-    "222-a-ghost-story-off-broadway-2026/consequence--alex-young.json",
-    "222-a-ghost-story-off-broadway-2026/mashable--unknown.json"
-  ],
+  "processed": [],
   "failed": [
-    "222-a-ghost-story-off-broadway-2026/theatrely--kobi-kassal.json"
+    "king-lear-off-broadway-2026/sunday-times--unknown.json"
   ],
   "cumulativeResumedState": {
-    "processed": [
-      "222-a-ghost-story-off-broadway-2026/wsj--charles-isherwood.json",
-      "222-a-ghost-story-off-broadway-2026/consequence--alex-young.json",
-      "222-a-ghost-story-off-broadway-2026/mashable--unknown.json"
-    ],
+    "processed": [],
     "failed": [
-      "222-a-ghost-story-off-broadway-2026/theatrely--kobi-kassal.json"
+      "king-lear-off-broadway-2026/sunday-times--unknown.json"
     ]
   },
   "tierDetails": {
-    "playwright": [
-      "222-a-ghost-story-off-broadway-2026/consequence--alex-young.json",
-      "222-a-ghost-story-off-broadway-2026/mashable--unknown.json"
-    ],
+    "playwright": [],
     "amp": [],
-    "browserbase": [
-      "data/review-texts/222-a-ghost-story-off-broadway-2026/wsj--charles-isherwood.json",
-      "222-a-ghost-story-off-broadway-2026/wsj--charles-isherwood.json"
-    ],
+    "browserbase": [],
     "directCookies": [],
     "scrapingdog": [],
     "scrapingbee": [],
@@ -100,6 +86,14 @@
     "archiveToday": [],
     "archive": []
   },
-  "failuresByOutlet": {},
+  "failuresByOutlet": {
+    "The Sunday Times": {
+      "count": 1,
+      "domain": "thetimes.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    }
+  },
   "urlDiscoveries": []
 }
