@@ -50,3 +50,35 @@ test('main holding every rescued field plus more is superseded at equal tier', (
   assert.equal(mainSupersedesRescue(j(stub), j({ ...stub, extra: 1 })), true);
   assert.equal(mainSupersedesRescue(j({ ...stub, note: 'x' }), j({ ...stub, extra: 1 })), false);
 });
+
+// BRO-7139: 2026-11-08 rescue branch held 32 "conflicts" where main was ahead.
+test('fetch-state incomplete notes a fuller main cleared do not block; verdict reasons do', () => {
+  const rescued = { ...stub, contentTier: 'excerpt', incompleteReason: 'not_attempted', incompleteDetail: 'Fetched via x, 0 words' };
+  assert.equal(mainSupersedesRescue(j(rescued), j(full)), true);
+  assert.equal(mainSupersedesRescue(j({ ...rescued, incompleteReason: 'wrong_content' }), j(full)), false, 'a verdict is never dropped');
+  assert.equal(mainSupersedesRescue(j({ ...stub, contentTier: 'invalid', incompleteReason: 'url_content_mismatch' }), j(full)), false);
+});
+test('a rescue-side Unknown critic that main named is not a conflict; the reverse is', () => {
+  assert.equal(mainSupersedesRescue(j({ ...stub, criticName: 'Unknown' }), j({ ...full, criticName: 'Jane Roe' })), true);
+  assert.equal(mainSupersedesRescue(j({ ...stub, criticName: 'Jane Roe' }), j({ ...full, criticName: 'Unknown' })), false);
+  assert.equal(mainSupersedesRescue(j({ ...stub, criticName: 'Jane Roe' }), j({ ...full, criticName: 'John Doe' })), false);
+});
+test('a no-text rescue at the same tier or vs main-invalid loses only retry bookkeeping', () => {
+  const s1 = { ...stub, fetchRetryAfter: '2026-11-01', incompleteReason: 'paywall', textRetryAttemptedAt: 't1' };
+  const m1 = { ...stub, fetchRetryAfter: '2026-11-09', incompleteReason: 'paywall', textRetryAttemptedAt: 't2' };
+  assert.equal(mainSupersedesRescue(j(s1), j(m1)), true, 'stub->stub, newer retry stamps');
+  assert.equal(mainSupersedesRescue(j(s1), j({ ...m1, contentTier: 'invalid', contentTierReason: 'author mismatch' })), true, 'main judged it invalid');
+  assert.equal(mainSupersedesRescue(j({ ...s1, contentTier: 'excerpt' }), j(m1)), false, 'main downgraded excerpt->stub');
+  assert.equal(mainSupersedesRescue(j({ ...s1, publishDate: '2026-10-01' }), j({ ...m1, publishDate: '2026-10-02' })), false, 'a differing real field stays a conflict');
+});
+test('excerpt text counts as text: a different excerpt is never lost', () => {
+  const ex = { ...stub, contentTier: 'excerpt', bwwExcerpt: 'longer rescued excerpt' };
+  assert.equal(mainSupersedesRescue(j(ex), j({ ...ex, bwwExcerpt: 'short', fetchRetryAfter: 'x' })), false);
+  assert.equal(mainSupersedesRescue(j({ ...ex, fetchRetryAfter: 'a' }), j({ ...ex, fetchRetryAfter: 'b' })), true);
+});
+test('the 2026-11-08 judgment cases stay conflicts', () => {
+  const t = { ...full, contentTier: 'truncated' };
+  assert.equal(mainSupersedesRescue(j({ ...t, fullText: 'longer older text' }), j({ ...t, fullText: 'newer', textFetchedAt: 'z' })), false, 'rescue text differs, same tier');
+  assert.equal(mainSupersedesRescue(j({ ...t, duplicateClearReason: 'healed' }), j({ ...t, duplicateOf: 'x.json' })), false, 'duplicate pointer judgment');
+  assert.equal(mainSupersedesRescue(j({ ...t, assignedScore: 93 }), j({ ...t, assignedScore: 96 })), false, 'score differs');
+});
