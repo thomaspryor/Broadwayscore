@@ -128,3 +128,31 @@ test('summary, tally and digest block (missing snapshot says not checked yet)', 
 test('ingest dispatches use the same isBotAuthor rule as the press-night record', () => {
   assert.equal(pm.isBotAuthor('GitHub Action', 'action@github.com'), true);
 });
+
+// BRO-7145: script-made wrongProduction clears are the pipeline healing itself, not hands.
+const rp = require(path.join(repoRoot, 'scripts/lib/review-provenance.js'));
+const inWin = '2026-10-30T03:00:00Z';
+
+test('a wrongProduction clear stamped by clear-stale-wrong-production-flags.js is not a hand step', () => {
+  const f = { _file: 'test-show-2026/thestage--a.json', firstSeenAt: inWin, wrongProductionManualClear: true, wrongProductionOverrideSetBy: 'clear-stale-wrong-production-flags.js' };
+  assert.deepEqual(rp.handSteps(f).gating, []);
+  assert.equal(grade({ files: [f] }).verdict, 'on-its-own');
+});
+
+test('a clear with no script setBy (reader form, manual entry) still needs hands, tagged with outlet and cause', () => {
+  const f = { _file: 'test-show-2026/thestage--a.json', firstSeenAt: inWin, wrongProductionManualClear: true };
+  const g = grade({ files: [f] });
+  assert.equal(g.verdict, 'needed-hands');
+  assert.equal(g.signals[0].outletId, 'thestage');
+  assert.equal(g.signals[0].cause, 'wrong-label');
+  assert.match(og.gradeLine(g), /by hand: wrong-production or wrong-show flag \(thestage\)\)/);
+});
+
+test('approved fixes and hand commits carry a cause', () => {
+  const f = { _file: 'test-show-2026/cititour--b.json', firstSeenAt: inWin, approvedFixes: [{ field: 'publishDate', at: inWin }] };
+  const a = grade({ files: [f] }).signals[0];
+  assert.deepEqual([a.kind, a.outletId, a.cause], ['approved-fix', 'cititour', 'date-guard']);
+  assert.equal(og.causeOfSubject('rent-west-end-2026: ingest Guardian review missed by discovery - opening-night monitor'), 'discovery-gap');
+  assert.equal(og.causeOfSubject('fix: criticName for 2 Culture Sauce reviews'), 'attribution');
+  assert.equal(og.causeOfFields(['approvedFix:duplicateOf']), 'duplicate-identity');
+});

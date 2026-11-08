@@ -29,6 +29,11 @@ function sanitizeCaller(v) {
   return CALLER_RE.test(s) ? s : null;
 }
 
+/** A wrongProduction clear stamped by a script (".js" name) rather than a person. */
+function isScriptClearSetBy(by) {
+  return typeof by === 'string' && /\.js\b/.test(by.trim());
+}
+
 /** Steps a person took that a file needed before it could go live. */
 function handSteps(file) {
   const gating = [];
@@ -38,7 +43,14 @@ function handSteps(file) {
   for (const fx of Array.isArray(file.approvedFixes) ? file.approvedFixes : []) {
     (GATING_FIX_FIELDS.has(fx && fx.field) ? gating : cosmetic).push(`approvedFix:${fx && fx.field}`);
   }
-  if (file.wrongProductionManualClear) gating.push('wrongProductionManualClear');
+  if (file.wrongProductionManualClear) {
+    // BRO-7145: the weekly clear-stale-wrong-production-flags sweep (and other
+    // scripts) write ManualClear=true as a durable breadcrumb. A clear stamped
+    // by a script is the pipeline healing itself, not a person stepping in
+    // (24 of 67 hand-steps in the 2026-09-08..11-05 baseline). A clear with no
+    // setBy stays a hand step (the reader form, manual entry, an owner fix).
+    (isScriptClearSetBy(file.wrongProductionOverrideSetBy) ? cosmetic : gating).push('wrongProductionManualClear');
+  }
   if (file.suspectedMisattributionClearedNote) cosmetic.push('misattributionCleared');
   if (file.humanReviewScore != null) gating.push('humanReviewScore');
   return { gating, cosmetic };
@@ -95,6 +107,7 @@ function stampIngestOrigin(data, env = process.env) {
 }
 
 module.exports = {
+  isScriptClearSetBy,
   GATING_FIX_FIELDS, HAND_CALLERS, CALLER_DECIDES_SOURCES,
   sanitizeCaller, handSteps, discoveryMode, originFor, stampIngestOrigin,
 };

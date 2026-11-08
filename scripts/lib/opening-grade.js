@@ -79,6 +79,54 @@ function isExcludedFile(f) {
   return !!(f && (f.wrongProduction || f.wrongShow || f.isRoundupArticle || f.duplicateOf || f.contentTier === 'invalid'));
 }
 
+
+// BRO-7145: every hand signal names its cause so the weekly email can say WHY an
+// opening needed a person, and a repeat outlet shows up as a repeat class.
+const CAUSE_LABEL = {
+  'discovery-gap': 'review missed by discovery',
+  'wrong-label': 'wrong-production or wrong-show flag',
+  'date-guard': 'publish-date guard',
+  'duplicate-identity': 'duplicate or URL identity',
+  attribution: 'critic or outlet attribution',
+  'scoring-by-hand': 'score set by hand',
+  'content-tier': 'content tier or non-review flag',
+  other: 'other fix',
+};
+const CAUSE_BY_FIELD = {
+  wrongProduction: 'wrong-label', wrongShow: 'wrong-label', wrongProductionManualClear: 'wrong-label',
+  publishDate: 'date-guard', combinedWith: 'date-guard',
+  duplicateOf: 'duplicate-identity', url: 'duplicate-identity', showId: 'duplicate-identity',
+  contentTier: 'content-tier', isRoundupArticle: 'content-tier',
+  humanReviewScore: 'scoring-by-hand',
+};
+const field = (x) => String(x).replace(/^approvedFix:/, '');
+
+/** Cause class of a set of gating fields / hand steps (first known field wins). */
+function causeOfFields(fields) {
+  for (const f of fields || []) { const c = CAUSE_BY_FIELD[field(f)]; if (c) return c; }
+  return 'other';
+}
+
+/** Cause class of a hand commit or log line, from its subject. */
+function causeOfSubject(subject) {
+  const t = String(subject || '').toLowerCase();
+  if (/ingest|missed|discovery|on-monitor|opening.night monitor|direct|recover|full.?text|pull quote|\badd(ed)?\b.*review|\bfeat: .*review/.test(t)) return 'discovery-gap';
+  if (/byline|criticname|re-credit|attribut|outletid/.test(t)) return 'attribution';
+  if (/publishdate|date guard/.test(t)) return 'date-guard';
+  if (/duplic|syndicat/.test(t)) return 'duplicate-identity';
+  if (/wrongprod|wrongshow|wrong.show|stale|combinedwith|tour|cross-market|misfiled/.test(t)) return 'wrong-label';
+  if (/override|score|rating|isnonreview|non-review|not_a_review|box-office|junk/.test(t)) return /override|score|rating/.test(t) ? 'scoring-by-hand' : 'content-tier';
+  return 'other';
+}
+
+/** Outlet id of a review file: its own outletId, else the "<outlet>--<critic>.json" name. */
+function outletOfFile(f) {
+  if (f && typeof f.outletId === 'string' && f.outletId) return f.outletId;
+  const name = String((f && f._file) || '').split('/')[1] || '';
+  const o = name.split('--')[0];
+  return o && !o.endsWith('.json') ? o : null;
+}
+
 const median = (a) => {
   const v = a.filter(Number.isFinite).sort((x, y) => x - y);
   if (!v.length) return null;
@@ -113,7 +161,7 @@ function gradeOpening({ show, files = [], commits = [], historyFromMs = null, pr
     seen.add(sha);
     const c = bySha.get(sha);
     const kind = c && isBotAuthor(c.author, c.email) ? 'ingest-dispatch' : 'hand-commit';
-    signals.push({ kind, at: a.at, outletId: a.outletId, source: String(a.source).slice(0, 140) });
+    signals.push({ kind, at: a.at, outletId: a.outletId, cause: kind === 'ingest-dispatch' ? 'discovery-gap' : causeOfSubject(a.source), source: String(a.source).slice(0, 140) });
   }
   // ingest-urls.yml's fallback commit ("data: Ingest URLs for <show>") is a
   // hand dispatch the frozen press-night rule does not recognise.
@@ -123,24 +171,24 @@ function gradeOpening({ show, files = [], commits = [], historyFromMs = null, pr
     if (seen.has(sha) || !inWin(at) || !/^data: Ingest URLs for /.test(c.subject || '')) continue;
     if (!(c.files || []).some((f) => f.startsWith(`${show.id}/`))) continue;
     seen.add(sha);
-    signals.push({ kind: 'ingest-dispatch', at: new Date(at).toISOString(), outletId: null, source: `${sha} ${String(c.subject).slice(0, 120)}` });
+    signals.push({ kind: 'ingest-dispatch', at: new Date(at).toISOString(), outletId: null, cause: 'discovery-gap', source: `${sha} ${String(c.subject).slice(0, 120)}` });
   }
   for (const a of (pressNight && Array.isArray(pressNight.manualActions) ? pressNight.manualActions : [])) {
     const shas = String(a.source || '').match(/\b[0-9a-f]{8}\b/g) || [];
     if (shas.some((s) => seen.has(s))) continue;
-    signals.push({ kind: 'press-night-log', at: a.at || null, outletId: a.outletId || null, source: String(a.source || '').slice(0, 140) });
+    signals.push({ kind: 'press-night-log', at: a.at || null, outletId: a.outletId || null, cause: causeOfSubject(a.source), source: String(a.source || '').slice(0, 140) });
   }
   for (const f of files || []) {
     const created = toMs(f.firstSeenAt);
     if (f.ingestOrigin === 'manual' && inWin(created)) {
-      signals.push({ kind: 'hand-created-file', at: f.firstSeenAt, file: f._file || null, by: f.ingestOriginBy || null });
+      signals.push({ kind: 'hand-created-file', at: f.firstSeenAt, file: f._file || null, outletId: outletOfFile(f), cause: 'discovery-gap', by: f.ingestOriginBy || null });
       continue;
     }
     const fixes = (Array.isArray(f.approvedFixes) ? f.approvedFixes : []).filter((x) => x && GATING_FIX_FIELDS.has(x.field) && inWin(toMs(x.at)));
-    if (fixes.length) { signals.push({ kind: 'approved-fix', at: fixes[0].at, file: f._file || null, fields: fixes.map((x) => x.field) }); continue; }
+    if (fixes.length) { signals.push({ kind: 'approved-fix', at: fixes[0].at, file: f._file || null, outletId: outletOfFile(f), cause: causeOfFields(fixes.map((x) => x.field)), fields: fixes.map((x) => x.field) }); continue; }
     if (inWin(created)) {
       const gating = handSteps({ ...f, approvedFixes: [] }).gating;
-      if (gating.length) signals.push({ kind: 'hand-step', at: f.firstSeenAt, file: f._file || null, steps: gating });
+      if (gating.length) signals.push({ kind: 'hand-step', at: f.firstSeenAt, file: f._file || null, outletId: outletOfFile(f), cause: causeOfFields(gating), steps: gating });
     }
   }
 
@@ -182,6 +230,17 @@ function gradeOpening({ show, files = [], commits = [], historyFromMs = null, pr
 
 const fmtDate = (d) => new Date(`${d}T12:00:00Z`).toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' });
 
+/** "review missed by discovery (thestage, guardian); publish-date guard" from a grade's signals. */
+function causeSummary(signals) {
+  const by = new Map();
+  for (const s of signals || []) {
+    if (!s.cause) continue;
+    if (!by.has(s.cause)) by.set(s.cause, new Set());
+    if (s.outletId) by.get(s.cause).add(s.outletId);
+  }
+  return [...by].map(([c, o]) => `${CAUSE_LABEL[c] || c}${o.size ? ` (${[...o].slice(0, 3).join(', ')}${o.size > 3 ? ', ...' : ''})` : ''}`).join('; ');
+}
+
 /** One plain-English line for the owner's morning email. */
 function gradeLine(g) {
   const head = `${g.title} (${MARKET_LABEL[g.category] || g.category}, opened ${fmtDate(g.openingDate)})`;
@@ -192,7 +251,8 @@ function gradeLine(g) {
   let tail;
   if (g.verdict === 'needed-hands') {
     const n = g.signals.length;
-    tail = `needed a person or a Claude session${sofar} (${n} fix${n === 1 ? '' : 'es'} by hand)`;
+    const why = causeSummary(g.signals);
+    tail = `needed a person or a Claude session${sofar} (${n} fix${n === 1 ? '' : 'es'} by hand${why ? `: ${why}` : ''})`;
   } else if (g.verdict === 'on-its-own') tail = `ran on its own${sofar}`;
   else if (g.verdict === 'no-reviews') tail = (g.known || 0) > 0 ? 'reviews are out but none are on the site yet' : 'no reviews live yet';
   else tail = 'not graded (edit history missing)';
@@ -255,5 +315,5 @@ function renderOpeningGradesBlock(snapshot, { esc = defaultEsc, nowMs = Date.now
 
 module.exports = {
   MARKETS, MARKET_LABEL, BEFORE_H, AFTER_H, SWEEP_SHOWS,
-  estimateEmbargoMs, selectOpenings, pickPressNight, showsTouched, isExcludedFile, gradeOpening, gradeLine, summarize, tallyLine, renderOpeningGradesBlock,
+  estimateEmbargoMs, selectOpenings, CAUSE_LABEL, causeOfFields, causeOfSubject, outletOfFile, causeSummary, pickPressNight, showsTouched, isExcludedFile, gradeOpening, gradeLine, summarize, tallyLine, renderOpeningGradesBlock,
 };
