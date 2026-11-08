@@ -360,13 +360,9 @@ if [ "${1:-}" = "--all" ] && [ "$RT_LINKED" = 0 ]; then
     # fresh clone next to this repo. Clone it locally (hardlinked objects, no
     # network, no token) and check out its origin/main, so a working branch or
     # uncommitted edits in that clone never leak into data/.
-    if ! git clone -q "$REVIEW_TEXTS_SOURCE" "$TEMP_DIR/review-texts"; then
-      echo "ERROR: Local clone of $REVIEW_TEXTS_SOURCE failed."
-      exit 1
-    fi
-    RT_SHA="$(git -C "$REVIEW_TEXTS_SOURCE" rev-parse -q --verify refs/remotes/origin/main || git -C "$REVIEW_TEXTS_SOURCE" rev-parse HEAD)"
-    if ! git -C "$TEMP_DIR/review-texts" checkout -q --detach "$RT_SHA"; then
-      echo "ERROR: Could not check out $RT_SHA from $REVIEW_TEXTS_SOURCE."
+    # shellcheck source=lib/clone-review-texts-source.sh
+    . "$SCRIPT_DIR/lib/clone-review-texts-source.sh" || { echo "FATAL: cannot load lib/clone-review-texts-source.sh" >&2; exit 1; }
+    if ! clone_review_texts_source "$REVIEW_TEXTS_SOURCE" "$TEMP_DIR/review-texts" >/dev/null; then
       exit 1
     fi
   elif [ "$AUTH_METHOD" = "gh" ]; then
