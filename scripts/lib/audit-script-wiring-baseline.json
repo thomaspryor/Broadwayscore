@@ -464,6 +464,11 @@
     "audit-route-alert.js": {
       "bucket": "b",
       "reason": "BRO-2454 read-only sweep of routeAlert() call sites for write-before-notify ordering; standing prevention is the real-tree gate in scripts/lib/audit-route-alert-core.test.mjs, which CI runs. The CLI is for manual review."
+    },
+    "audit-pending-promotion-latency.js": {
+      "bucket": "b",
+      "rank": 99,
+      "reason": "BRO-7032 read-only measure of how long press-night no-byline stubs sat in _pending before replay promotion; needs the private review-texts corpus. Used as the card's recheck command after a press night; logic is covered by scripts/lib/pending-promotion-latency.test.mjs, which CI runs."
     }
   }
 }

@@ -15,11 +15,11 @@ path triggers do not count as wiring.
 
 | Population | Count |
 | --- | --- |
-| `scripts/audit-*.js` files | 283 |
+| `scripts/audit-*.js` files | 284 |
 | Referenced by workflow/action/package or other non-test code (bucket c) | 192 |
-| Unreferenced and retained in the baseline | 91 |
+| Unreferenced and retained in the baseline | 92 |
 | Bucket a: alertable, awaiting wiring | 33 |
-| Bucket b: manual, one-shot, local-only or already covered by tests | 58 |
+| Bucket b: manual, one-shot, local-only or already covered by tests | 59 |
 | Bucket u: untriaged | 0 |
 
 The baseline actually contained **58** bucket-u entries, not the card's 59 or the
@@ -221,3 +221,4 @@ No new cron, fetch, LLM request or API call is introduced by this classification
 | `audit-excluded-with-own-show-evidence.js` | BRO-5805 read-only sweep of excluded review files whose text names the show's own cast; needs the private review-texts corpus, so run it through cloud-run-script. Gate mode exists but is unwired. Promote to (a) once a run finds real hits. |
 | `audit-malformed-review-urls.js` | BRO-5162 read-only sweep of review-text files whose url is not an absolute http(s) url with a dotted host, and which of them ship in reviews.json; needs the private review-texts corpus, so run it through cloud-run-script. Standing prevention is the write-time guard in review-write-guard. |
 | `audit-route-alert.js` | BRO-2454 read-only sweep of routeAlert() call sites for write-before-notify ordering; standing prevention is the real-tree gate in scripts/lib/audit-route-alert-core.test.mjs, which CI runs. The CLI is for manual review. |
+| `audit-pending-promotion-latency.js` | BRO-7032 read-only measure of how long press-night no-byline stubs sat in _pending before replay promotion; needs the private review-texts corpus. Used as the card's recheck command after a press night; logic is covered by scripts/lib/pending-promotion-latency.test.mjs, which CI runs. |
