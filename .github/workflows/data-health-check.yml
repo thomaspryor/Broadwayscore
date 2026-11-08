@@ -58,6 +58,60 @@ permissions:
   pull-requests: write
 
 jobs:
+  # BRO-7139 Step 2: the board dispatcher, REPORT-ONLY for now. It reads the open
+  # Linear board, records which scheduled job owns each card and which cards
+  # nothing owns, and appends one row to data/audit/board-dispatch.jsonl. It never
+  # writes Linear. Its own job (not steps in health-check) because health-check's
+  # push-retry job-timeout margin (audit-push-retry-budgets.js, 15%) has no room
+  # left. needs + always(): runs after tonight's acceptance recheck wrote its
+  # ledger, whatever happened to that job. Kill switch: vars.BOARD_DISPATCH_DISABLED.
+  board-dispatch:
+    needs: health-check
+    if: always()
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          ref: main
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with:
+          node-version: 22
+      - name: Install dependencies
+        run: npm ci --prefer-offline --no-audit --no-fund
+
+      - name: Board dispatch report (report-only)
+        # lint-allow-swallow: report-only and advisory (CLAUDE.md §19); a failed
+        # night still appends an error row, and the committed ledger's last ts
+        # shows a missed night.
+        continue-on-error: true
+        timeout-minutes: 5
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          APPROVAL_HMAC_SECRET: ${{ secrets.APPROVAL_HMAC_SECRET }}
+          BOARD_DISPATCH_DISABLED: ${{ vars.BOARD_DISPATCH_DISABLED }}
+        run: node scripts/board-dispatch.js
+
+      - name: Commit board dispatch ledger
+        if: always()
+        continue-on-error: true
+        env:
+          PUSH_DEADLINE_SEC: '900'
+          PUSH_API_FALLBACK_AFTER_ATTEMPTS: '3'
+          GIT_NET_TIMEOUT_SEC: '30'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/audit/board-dispatch.jsonl 2>/dev/null || true
+          if git diff --staged --quiet; then
+            echo "No board dispatch changes"
+          else
+            git commit -m "data: Update board dispatch ledger [skip ci]"
+            bash scripts/lib/push-with-retry.sh 25 main
+          fi
+
   health-check:
     runs-on: ubuntu-latest
     # Raised 10->15 (task #695 ship-check finding): adding the "Acceptance
@@ -1918,57 +1972,3 @@ jobs:
             -f alert_title="Daily Data Health Check Crashed" \
             -f alert_context='{"note":"Health check script crashed — BSC Daily email may not have sent."}' \
             -f run_url="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-
-  # BRO-7139 Step 2: the board dispatcher, REPORT-ONLY for now. It reads the open
-  # Linear board, records which scheduled job owns each card and which cards
-  # nothing owns, and appends one row to data/audit/board-dispatch.jsonl. It never
-  # writes Linear. Its own job (not steps in health-check) because health-check's
-  # push-retry job-timeout margin (audit-push-retry-budgets.js, 15%) has no room
-  # left. needs + always(): runs after tonight's acceptance recheck wrote its
-  # ledger, whatever happened to that job. Kill switch: vars.BOARD_DISPATCH_DISABLED.
-  board-dispatch:
-    needs: health-check
-    if: always()
-    runs-on: ubuntu-latest
-    timeout-minutes: 30
-    permissions:
-      contents: write
-    steps:
-      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
-        with:
-          ref: main
-      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
-        with:
-          node-version: 22
-      - name: Install dependencies
-        run: npm ci --prefer-offline --no-audit --no-fund
-
-      - name: Board dispatch report (report-only)
-        # lint-allow-swallow: report-only and advisory (CLAUDE.md §19); a failed
-        # night still appends an error row, and the committed ledger's last ts
-        # shows a missed night.
-        continue-on-error: true
-        timeout-minutes: 5
-        env:
-          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
-          APPROVAL_HMAC_SECRET: ${{ secrets.APPROVAL_HMAC_SECRET }}
-          BOARD_DISPATCH_DISABLED: ${{ vars.BOARD_DISPATCH_DISABLED }}
-        run: node scripts/board-dispatch.js
-
-      - name: Commit board dispatch ledger
-        if: always()
-        continue-on-error: true
-        env:
-          PUSH_DEADLINE_SEC: '900'
-          PUSH_API_FALLBACK_AFTER_ATTEMPTS: '3'
-          GIT_NET_TIMEOUT_SEC: '30'
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/audit/board-dispatch.jsonl 2>/dev/null || true
-          if git diff --staged --quiet; then
-            echo "No board dispatch changes"
-          else
-            git commit -m "data: Update board dispatch ledger [skip ci]"
-            bash scripts/lib/push-with-retry.sh 25 main
-          fi

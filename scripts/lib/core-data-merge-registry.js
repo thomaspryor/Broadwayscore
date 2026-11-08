@@ -568,6 +568,15 @@ const CORE_DATA_MERGE_REGISTRY = [
     verifiedBy: '2026-11-04 (BRO-6947): written only by the Printed byline conflict audit step in data-health-check.yml (--cache-out), group data-health-check.',
   },
   {
+    file: 'audit/board-dispatch.jsonl',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'data-health-check',
+    verifiedBy: '2026-11-08 (BRO-7139): sole WRITER scripts/board-dispatch.js (appends one row; a bare local run writes nothing, shouldWrite), invoked only by data-health-check.yml\'s "Board dispatch report" step; the same job\'s "Commit board dispatch ledger" step is the only git-add of the path. The job checks out main fresh, so the local copy already holds every earlier row and the API fallback\'s ours-wins cannot drop history. Residual risk: a hand run with an explicit --ledger pushed between checkout and push would lose its row (report-only telemetry, accepted).',
+    note: 'nightly report-only board dispatch rows: per-handler card counts and unowned gaps',
+  },
+  {
     file: 'audit/linear-archive-done.jsonl',
     surface: 'public-repo',
     status: 'single-writer',
