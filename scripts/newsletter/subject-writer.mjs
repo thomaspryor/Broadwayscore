@@ -26,6 +26,7 @@ const require_ = createRequire(import.meta.url);
 const { SOCIAL_WRITER, GPT55 } = require_('../lib/models.js');
 const { finalResponseText, firstJsonObject } = require_('../lib/anthropic-response-text.js');
 const { callWithTimeout } = require_('../lib/llm-call-budget.js');
+const { foldDiacritics } = require_('../lib/title-match.js');
 
 export const SUBJECT_MAX = 60;      // phones show about 40; hard stop at 60
 export const PREHEADER_MAX = 110;
@@ -85,14 +86,14 @@ function stripTitles(text, titles) {
 const mentions = (text, title) => !!title && new RegExp(`(^|[^\\p{L}\\p{N}])${escRe(title)}(?![\\p{L}\\p{N}])`, 'u').test(String(text || ''));
 
 const weekdaysIn = (text) => WEEKDAYS.filter(d => new RegExp(`\\b${d}s?\\b`, 'i').test(String(text || '')));
-const words = (t) => new Set(String(t || '').toLowerCase().replace(/[^a-z0-9' ]+/g, ' ').split(/\s+/).filter(w => w.length > 2));
+const words = (t) => new Set(foldDiacritics(String(t || '')).toLowerCase().replace(/[^a-z0-9' ]+/g, ' ').split(/\s+/).filter(w => w.length > 2));
 function jaccard(a, b) {
   const A = words(a), B = words(b);
   if (!A.size || !B.size) return 0;
   let n = 0; for (const w of A) if (B.has(w)) n++;
   return n / (A.size + B.size - n);
 }
-const firstWords = (t, n = 2) => String(t || '').toLowerCase().replace(/[^a-z0-9' ]+/g, ' ').trim().split(/\s+/).slice(0, n).join(' ');
+const firstWords = (t, n = 2) => foldDiacritics(String(t || '')).toLowerCase().replace(/[^a-z0-9' ]+/g, ' ').trim().split(/\s+/).slice(0, n).join(' ');
 
 /**
  * The fact pool behind one issue.

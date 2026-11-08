@@ -2996,6 +2996,7 @@ const _weekVoice = (!IS_WE && process.env.NEWSLETTER_VOICE !== 'legacy' && _NYC_
     ob: _dropSet.has('offbroadway-openings') ? [] : obEvents.filter(e => inWeek(e.show.openingDate)).map(e => ({ show: e.show, agg: aggregateScore(e.show.id) })),
     counts: { bw: _calendarOpenings('broadway'), ob: _calendarOpenings('off-broadway') },
     typical: {
+      // Intentionally NOT isBroadwayCategory: strict categories, matching openingEventsForWeek()'s counts.
       total: _typicalWeekly(s => s.category === 'broadway' || s.category === 'off-broadway'),
       ob: _typicalWeekly(s => s.category === 'off-broadway'),
     },
