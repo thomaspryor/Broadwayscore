@@ -62,3 +62,7 @@ test('playbook routes the row to a this-week human action', () => {
   assert.equal(e.urgency, 'this-week');
   assert.ok(e.humanAction);
 });
+test('messages state hours, so 40h never reads as "2d (threshold 2d)"', () => {
+  const r = evaluateBoardDispatchFreshness({ ledgerText: row({ ts: at(40), source: 'ci' }), nowMs: NOW });
+  assert.match(r.message, /40h old \(warn threshold: 36h\)/);
+});
