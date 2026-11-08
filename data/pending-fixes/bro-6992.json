@@ -1,0 +1,27 @@
+{
+  "issueNumber": "bro-6992",
+  "planId": "d0df4857-768d-4f9b-a248-1ea262b332ba",
+  "status": "pending",
+  "createdAt": "2026-11-08T15:12:30.116Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6992: the-whoopi-monologues playbill file kept stale wrongProduction provenance (anticipatory gate hit on the old pre-opening URL; the URL was corrected 2026-07-31 and the flag cleared, provenance left behind). Record the decision with wrongProduction=false; file is already a non-review news roundup, so no scoring change.",
+    "steps": [
+      "the-whoopi-monologues-off-broadway-2026/playbill--unknown.json: wrongProduction"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "the-whoopi-monologues-off-broadway-2026/playbill--unknown.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": false,
+        "description": "the-whoopi-monologues-off-broadway-2026/playbill--unknown.json: wrongProduction"
+      }
+    ]
+  }
+}
