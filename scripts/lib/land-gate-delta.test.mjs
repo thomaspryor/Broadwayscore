@@ -819,5 +819,5 @@ test('e2e-local CLI: --gates e2e-local over result dirs written in the gauntlet 
   assert.match(adv.stdout, /::warning::e2e-local: NEW failure.*smoke\.spec\.ts > Homepage > loads/);
   const armed = spawnSync('node', [cli, '--base-dir', base, '--branch-dir', branch, '--gates', 'e2e-local'], { env: { ...env, LAND_E2E_BROWSER_BLOCKING: '1' }, encoding: 'utf8' });
   assert.equal(armed.status, 1);
-  fs.rmSync(tmp, { recursive: true, force: true });
+  fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
