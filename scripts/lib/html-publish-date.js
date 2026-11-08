@@ -354,7 +354,25 @@ function extractPublishDateFromHtml(html, pageUrl) {
   return r ? r.date : null;
 }
 
+/**
+ * BRO-7149: one date resolver for ingest writers that skipped the extractor.
+ * Order: page html (extractor) -> a written date in the first 300 chars of the
+ * body (a byline/dateline, never a URL). Returns {date, method} or null.
+ * @param {{html?: string, fullText?: string, url?: string, now?: Date}} src
+ */
+function resolveMissingPublishDate({ html, fullText, url, now = new Date() } = {}) {
+  const ok = (d) => d && d >= '2000-01-01' && d <= now.toISOString().slice(0, 10);
+  const fromHtml = extractPublishDateDetailed(html, url);
+  if (fromHtml && ok(fromHtml.date)) return { date: fromHtml.date, method: 'html-' + fromHtml.method };
+  if (typeof fullText === 'string' && fullText) {
+    const d = firstPublishDateIn(fullText.slice(0, 300));
+    if (ok(d)) return { date: d, method: 'text-dateline' };
+  }
+  return null;
+}
+
 module.exports = {
+  resolveMissingPublishDate,
   extractPublishDateFromHtml,
   extractPublishDateDetailed,
   normalizeExtractedDate,

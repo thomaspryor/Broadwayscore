@@ -381,6 +381,15 @@ function _createOrMergeReviewFile(showId, input, options = {}) {
   // only fields are spread into the file, so every ingest-urls review landed
   // undated (NY Sun on A Few Good Men, BRO-6585). Persist it like fields.publishDate.
   if (input.publishDate && !fields.publishDate) fields.publishDate = input.publishDate;
+  // BRO-7149: ingest paths that skipped the extractor landed undated reviews that a person
+  // then had to date. Resolve here once, for every writer (html if the caller passed it, else
+  // the body's own dateline). Never overrides a date; truly dateless pages stay undated.
+  if (!fields.publishDate && !input.publishDate) {
+    const r = require('./html-publish-date').resolveMissingPublishDate({
+      html: input.html || fields.html, fullText: fields.fullText || input.fullText, url: input.url,
+    });
+    if (r) { fields.publishDate = r.date; if (!fields.dateSource) fields.dateSource = r.method; }
+  }
   // BRO-4807: a lane review (provenance + productionVerified:"aggregator") is already production-verified by an
   // aggregator, so the corpus guards below stand down for it, and only for it. laneBypasses is the single predicate.
   const laneHolds = (guard) => {

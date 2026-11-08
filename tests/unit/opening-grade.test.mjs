@@ -128,3 +128,21 @@ test('summary, tally and digest block (missing snapshot says not checked yet)', 
 test('ingest dispatches use the same isBotAuthor rule as the press-night record', () => {
   assert.equal(pm.isBotAuthor('GitHub Action', 'action@github.com'), true);
 });
+
+// BRO-7149: undated reviews are what made openings need a person (date-guard class).
+const hpd = require(path.join(repoRoot, 'scripts/lib/html-publish-date.js'));
+test('resolveMissingPublishDate: html first, then body dateline, never edit/print dates', () => {
+  const html = '<html><head><meta property="article:published_time" content="2026-10-30T12:00:00Z"></head><body>' + 'x'.repeat(200) + '</body></html>';
+  assert.equal(hpd.resolveMissingPublishDate({ html, url: 'https://example.com/a' }).date, '2026-10-30');
+  assert.deepEqual(hpd.resolveMissingPublishDate({ fullText: 'By A. Critic\nOctober 30, 2026\nBody' }), { date: '2026-10-30', method: 'text-dateline' });
+  assert.equal(hpd.resolveMissingPublishDate({ fullText: 'Updated October 30, 2026 Body' }), null);
+  assert.equal(hpd.resolveMissingPublishDate({ fullText: 'No date anywhere' }), null);
+  assert.equal(hpd.resolveMissingPublishDate({ fullText: 'December 1, 2099 Body' }), null, 'future date rejected');
+});
+
+test('class guard: the shared review writer calls the resolver, so every writer path dates reviews', async () => {
+  const fs = await import('node:fs');
+  const src = fs.readFileSync(path.join(repoRoot, 'scripts/lib/review-file-writer.js'), 'utf8');
+  assert.match(src, /resolveMissingPublishDate\(/);
+  assert.ok(src.indexOf('resolveMissingPublishDate(') < src.indexOf('const laneHolds'), 'runs before the guards');
+});
