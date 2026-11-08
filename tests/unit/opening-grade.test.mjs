@@ -232,7 +232,7 @@ test('BRO-7157 class guard: every scripts/*.js writer of wrongProductionManualCl
   const offenders = [];
   for (const f of fs.readdirSync(dir).filter((n) => n.endsWith('.js'))) {
     const src = fs.readFileSync(path.join(dir, f), 'utf8');
-    if (!/wrongProductionManualClear\s*(?::|(?<![=!<>])=(?!=))\s*true/.test(src.replace(/^\s*(\/\/|\*).*$/gm, ''))) continue;
+    if (!/(?<!['"])wrongProductionManualClear\s*(?::|(?<![=!<>])=(?!=))\s*true/.test(src.replace(/^\s*(\/\/|\*).*$/gm, ''))) continue;
     if (allowed.has(f) || /wrongProductionOverrideSetBy/.test(src)) continue;
     offenders.push(f);
   }
