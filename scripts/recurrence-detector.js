@@ -116,7 +116,9 @@ function loadFilesById(days, { cwd = ROOT, exec = null } = {}) {
   const since = new Date(Date.now() - days * DAY).toISOString();
   try {
     if (run(['rev-parse', '--is-shallow-repository']).trim() === 'true') {
-      try { run(['fetch', '-q', '--filter=blob:none', `--shallow-since=${since}`, 'origin', 'main'], 45000); } catch { /* keep what we have */ }
+      try { run(['fetch', '-q', '--filter=blob:none', `--shallow-since=${since}`, 'origin', 'main'], 45000); } catch (e) {
+        console.warn(`[recurrence] could not deepen the shallow clone (${String(e.message).split('\n')[0]}); files grouping sees only recent history`);
+      }
     }
     // Carded commits only, code paths only: the full log (data commits list
     // thousands of files) took 79s here; this takes about 5s.
@@ -139,7 +141,9 @@ function fixCardFiles(cards, allFiles) {
 // local run is not in that group and can race it into a duplicate root card.
 function applyRefusal(env = process.env, argv = process.argv) {
   if (!argv.includes('--apply')) return null;
-  if (String(env.GITHUB_ACTIONS || '').toLowerCase() === 'true') return null;
+  // Only the data-health-check workflow is in the serializing group; another
+  // Actions job (a worker run) is not.
+  if (String(env.GITHUB_ACTIONS || '').toLowerCase() === 'true' && /data health check/i.test(env.GITHUB_WORKFLOW || '')) return null;
   if (argv.includes('--force-local')) return null;
   return '--apply runs in CI only (data-health-check serializes it); a local run can race it into a duplicate root card. Pass --force-local if CI is paused and you mean it.';
 }
@@ -605,10 +609,17 @@ async function main() {
   }
 
   const now = Date.now();
+  // Read before the comment pre-read so classes that only recur after a
+  // files join get their Outcome comments read too.
+  // Only fix cards' commits join classes (measured 2026-11-08 on 2,604 live
+  // cards: all cards turned 31 classes into 45, mostly feature work sharing
+  // files; fix cards only gave 33, every join a real repeat).
+  const allFiles = input || has('--no-files') ? null : loadFilesById(WINDOW_DAYS + 7);
+  const filesById = allFiles && fixCardFiles(cards, allFiles);
   // Prevention claims live in Outcome comments of finished instances.
   let commentsById = {};
   if (!input) {
-    const pre = rc.detectClasses(cards, ledger, { now, windowDays: WINDOW_DAYS });
+    const pre = rc.detectClasses(cards, ledger, { now, windowDays: WINDOW_DAYS, filesById });
     const doneIds = [...pre.values()].filter((c) => c.recurring).flatMap((c) => c.instances.filter(rc.isDone).map((x) => x.identifier));
     // Plus every card closed in the two share weeks: their close comments
     // carry the ROOT-CAUSE / NO-ROOT-CAUSE answer the share counts (item 8).
@@ -623,11 +634,6 @@ async function main() {
     }
   }
   const prev = readJson(SNAPSHOT);
-  // Only fix cards' commits join classes (measured 2026-11-08 on 2,604 live
-  // cards: all cards turned 31 classes into 45, mostly feature work sharing
-  // files; fix cards only gave 33, every join a real repeat).
-  const allFiles = input || has('--no-files') ? null : loadFilesById(WINDOW_DAYS + 7);
-  const filesById = allFiles && fixCardFiles(cards, allFiles);
   const snap = buildSnapshot({ cards, ledger, now, complete, commentsById, filesById, prevKnown: (prev && prev.knownKeys) || (prev && prev.classes || []).map((c) => c.key) });
   snap.pendingRootCards = snap.classes.filter((c) => !c.rootCause).length;
   // The weekly independent sample rides along so the digest line has it.

@@ -409,7 +409,8 @@ test('BRO-7105: root-card lookup has no date window', async () => {
 
 test('BRO-7105: --apply refuses outside CI unless --force-local', () => {
   assert.match(det.applyRefusal({}, ['node', 'x', '--apply']), /CI only/);
-  assert.equal(det.applyRefusal({ GITHUB_ACTIONS: 'true' }, ['node', 'x', '--apply']), null);
+  assert.equal(det.applyRefusal({ GITHUB_ACTIONS: 'true', GITHUB_WORKFLOW: 'Daily Data Health Check' }, ['node', 'x', '--apply']), null);
+  assert.match(det.applyRefusal({ GITHUB_ACTIONS: 'true', GITHUB_WORKFLOW: 'Worker run' }, ['node', 'x', '--apply']), /CI only/, 'another Actions job is not in the serializing group');
   assert.equal(det.applyRefusal({}, ['node', 'x', '--apply', '--force-local']), null);
   assert.equal(det.applyRefusal({}, ['node', 'x']), null, 'dry run is never refused');
   const { spawnSync } = require('node:child_process');
@@ -443,10 +444,25 @@ test('BRO-7105: one shared file is not enough, and joins never chain', () => {
   const a = done('Alpha problem one', 10, 9); const b = done('Beta problem two', 8, 7); const c = done('Gamma problem three', 6, 5);
   const one = rc.detectClasses([a, b], null, { now: NOW, filesById: new Map([[a.identifier, ['scripts/x.js']], [b.identifier, ['scripts/x.js']]]) });
   assert.equal(one.size, 2, 'a single shared file joins nothing');
-  // a~b share {x,y}, b~c share {y,z}: a and c are not alike, so no chain.
-  const m = rc.detectClasses([a, b, c], null, { now: NOW, filesById: new Map([
-    [a.identifier, ['scripts/w.js', 'scripts/x.js', 'scripts/y.js']],
-    [b.identifier, ['scripts/x.js', 'scripts/y.js', 'scripts/z.js']],
-    [c.identifier, ['scripts/y.js', 'scripts/z.js', 'scripts/v.js']]]) });
-  assert.ok(![...m.values()].some((x) => x.instances.length === 3), 'no class of 3 by chaining');
+  // Alpha (2 cards) ~ Beta 0.6, Beta ~ Gamma 0.75, Alpha ~ Gamma 0.4: Beta
+  // joins Alpha, Gamma must stay out (reviewer repro, 2026-11-08).
+  const a2 = done('Alpha problem one', 9, 8);
+  const F = (...f) => f.map((x) => `scripts/${x}.js`);
+  const m = rc.detectClasses([a, a2, b, c], null, { now: NOW, filesById: new Map([
+    [a.identifier, F('a', 'b', 'c', 'd')], [a2.identifier, F('a', 'b', 'c', 'd')],
+    [b.identifier, F('a', 'b', 'c', 'e')], [c.identifier, F('b', 'c', 'e')]]) });
+  const alpha = [...m.values()].find((x) => x.instances.some((i) => i.identifier === a.identifier));
+  assert.equal(alpha.instances.length, 3, 'Beta joined Alpha');
+  assert.ok(!alpha.instances.some((i) => i.identifier === c.identifier), 'Gamma did not chain in through Beta');
+  assert.ok([...m.values()].some((x) => x.instances.length === 1 && x.instances[0].identifier === c.identifier));
+});
+
+test('BRO-7105: two classes that each have a root card never join', () => {
+  const ra = card('Root cause: alpha', 300, { description: rc.markerLine('alpha problem one') + '\n' });
+  const rb = card('Root cause: beta', 300, { description: rc.markerLine('beta problem two') + '\n' });
+  const a = done('Alpha problem one', 10, 9); const a2 = done('Alpha problem one', 9, 8); const b = done('Beta problem two', 8, 7);
+  const files = new Map([[a.identifier, ['scripts/x.js', 'scripts/y.js']], [a2.identifier, ['scripts/x.js', 'scripts/y.js']], [b.identifier, ['scripts/x.js', 'scripts/y.js']]]);
+  const m = rc.detectClasses([ra, rb, a, a2, b], null, { now: NOW, filesById: files });
+  for (const cls of m.values()) assert.equal(cls.extraRootCauses.length, 0, `${cls.key} reads as having duplicate root cards`);
+  assert.ok([...m.values()].some((x) => x.instances.some((i) => i.identifier === b.identifier) && x.instances.length === 1), 'beta kept its own class');
 });

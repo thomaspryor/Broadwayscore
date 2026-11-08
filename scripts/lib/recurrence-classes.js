@@ -200,7 +200,7 @@ function filesByCardFromLog(logText) {
  * First pass (2026-11-08) linked single cards transitively: one class soaked
  * up 104 unrelated cards. Class profiles plus the 2-file floor stop that.
  */
-function mergeByFiles(classes, filesById) {
+function mergeByFiles(classes, filesById, { pinned = new Set() } = {}) {
   const get = (id) => (filesById instanceof Map ? filesById.get(id) : filesById[id]) || null;
   const perClass = new Map();
   const freq = new Map();
@@ -222,19 +222,23 @@ function mergeByFiles(classes, filesById) {
   }
   const keys = [...profile.keys()].sort((x, y) => classes.get(y).instances.length - classes.get(x).instances.length || (x < y ? -1 : 1));
   const absorbed = new Set();
+  const marked = new Set(pinned); // grows as a target takes in a marked class
   const into = new Map(); // small key -> big key
-  for (let i = keys.length - 1; i >= 0; i--) {
+  // Largest first, so a class is settled (kept or absorbed) before any
+  // smaller class looks at it: an absorbed class is never a target.
+  for (let i = 1; i < keys.length; i++) {
     const small = keys[i];
     let best = null; let bestJ = 0;
     for (let j = 0; j < i; j++) {
       const big = keys[j];
-      if (absorbed.has(big) || into.has(big)) continue;
+      if (absorbed.has(big)) continue;
+      if (marked.has(small) && marked.has(big)) continue; // both have a root card
       const A = profile.get(small); const B = profile.get(big);
       let inter = 0; for (const f of A) if (B.has(f)) inter++;
       const jac = inter / (A.size + B.size - inter);
       if (inter >= FILES_MIN_SHARED && jac >= FILES_JACCARD && jac > bestJ) { best = big; bestJ = jac; }
     }
-    if (best) { into.set(small, best); absorbed.add(small); }
+    if (best) { into.set(small, best); absorbed.add(small); if (marked.has(small)) marked.add(best); }
   }
   for (const [k, target] of into) {
     const keep = classes.get(target); const o = classes.get(k);
@@ -246,7 +250,7 @@ function mergeByFiles(classes, filesById) {
     for (const [st, n] of Object.entries(o.subtypes)) keep.subtypes[st] = (keep.subtypes[st] || 0) + n;
     if (o.firstSeen && (!keep.firstSeen || o.firstSeen < keep.firstSeen)) keep.firstSeen = o.firstSeen;
     if (o.lastSeen && (!keep.lastSeen || o.lastSeen > keep.lastSeen)) keep.lastSeen = o.lastSeen;
-    keep.mergedFrom.push(k);
+    keep.mergedFrom.push(k, ...(o.mergedFrom || []));
     classes.delete(k);
   }
 }
@@ -299,7 +303,9 @@ function detectClasses(cards, ledger, opts = {}) {
     if (key && classes.has(key)) classes.get(key).reopens.push(r);
   }
 
-  if (opts.filesById) mergeByFiles(classes, opts.filesById);
+  // Two classes that each have a root card never join: the result would read
+  // as a duplicate root card and both would stop being worked.
+  if (opts.filesById) mergeByFiles(classes, opts.filesById, { pinned: new Set(rootCards.map((r) => r.marker.key)) });
 
   for (const cls of classes.values()) {
     cls.instances.sort((a, b) => (a.createdAt < b.createdAt ? -1 : 1));
