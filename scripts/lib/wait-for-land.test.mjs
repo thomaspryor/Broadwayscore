@@ -389,3 +389,14 @@ test('reportLandedSha: null tip, failed fetch and unreadable ledger never throw'
   assert.equal(await waitForLand.reportLandedSha('aaa111', { io }), null);
   assert.deepEqual(waits, []);
 });
+
+test('BRO-7110: a refusal says to fix on top without rebasing and re-push the same ref', () => {
+  const { refusedMessage } = require('./wait-for-land.js');
+  const msg = refusedMessage('land/x', 'run 1 failure', 'https://example.test/run/1');
+  const [first, next] = msg.split('\n');
+  assert.equal(first, 'REFUSED: land/x run 1 failure https://example.test/run/1');
+  assert.match(next, /fix on top of the refused commit/);
+  assert.match(next, /do not rebase/);
+  assert.match(next, /push the same ref land\/x$/);
+  assert.equal(refusedMessage('land/y', 'why', null).split('\n')[0], 'REFUSED: land/y why');
+});

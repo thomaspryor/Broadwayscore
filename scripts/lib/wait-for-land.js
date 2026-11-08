@@ -305,6 +305,15 @@ async function waitForProd({ siteFiles, prodMin }) {
   }
 }
 
+// BRO-7110: the next step after a refusal, said where the session reads it.
+// Rebasing a refused land/ branch makes the re-push non-fast-forward, and the
+// cloud git proxy refuses that (and refuses deleting the ref), which stranded
+// re-lands under new names. land.yml rebases onto main itself.
+function refusedMessage(ref, why, url) {
+  return `REFUSED: ${ref} ${why}${url ? ` ${url}` : ''}\n` +
+    `  next: fix on top of the refused commit (do not rebase: land.yml rebases, and a rebased re-push is refused as non-fast-forward), then push the same ref ${ref}`;
+}
+
 const sleep = (ms) => new Promise((res) => setTimeout(res, ms));
 const stamp = () => new Date().toISOString().slice(11, 19) + 'Z';
 
@@ -395,7 +404,7 @@ async function main(argv) {
         return 3;
       }
       if (v.verdict === 'refused') {
-        console.log(`${stamp()} REFUSED: ${args.ref} ${v.why}${run && run.url ? ` ${run.url}` : ''}`);
+        console.log(`${stamp()} ${refusedMessage(args.ref, v.why, run && run.url)}`);
         return 1;
       }
       const line = `waiting: ${v.why}`;
@@ -421,4 +430,4 @@ if (require.main === module) {
   );
 }
 
-module.exports = { reportLandedSha, landVerdict, readLatestRun, waitForProd, prodPlan, prodVerdict, parseArgs, sitePathsIn, firstLine, lastLine, RED_CONCLUSIONS };
+module.exports = { refusedMessage, reportLandedSha, landVerdict, readLatestRun, waitForProd, prodPlan, prodVerdict, parseArgs, sitePathsIn, firstLine, lastLine, RED_CONCLUSIONS };
