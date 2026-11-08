@@ -47,7 +47,6 @@ const INTERNAL_CATEGORIES = new Set([
 // Individual checks whose category is otherwise visitor-facing ("Data:",
 // "Push:") but which are about the work queue, not the site.
 const INTERNAL_CHECK_NAMES = new Set([
-  'Improvement: done claims that held', // BRO-7138: nightly recheck honesty metric
   'Data: undispatchable backlog cards',
   'Data: undispatchable Linear backlog cards',
   'Data: armed-but-vacuous backlog cards',
