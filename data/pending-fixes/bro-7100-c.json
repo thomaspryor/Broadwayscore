@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7100-c",
   "planId": "0fb53fbf-03ee-416f-8c6d-5a2bb6614c32",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-07T23:10:05.268Z",
   "submitter": {
     "name": null,
@@ -31,5 +31,19 @@
         "description": "theatre.reviews link text \"Tickets available from the theatre\" parsed as the outlet; points at the venue homepage, never scored"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-08T01:45:11.132Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for speculations-off-west-end-2026"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted thelma-and-louise-a-new-musical-off-west-end-2026/tickets-available-from-the-theatre--unknown.json"
+    }
+  ],
+  "executedIn": "ci"
 }
