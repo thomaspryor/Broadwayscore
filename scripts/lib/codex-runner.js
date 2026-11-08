@@ -706,7 +706,17 @@ const CODEX_PENALTIES = [
 ];
 // BRO-7141. Work that lands in the iOS app repo: an edit verb (or in/to/inside/into/within/for) before the repo name,
 // the repo name followed by a path or an app-source path, or the "app repo" phrases.
-const APP_REPO_TARGET_RE = /\b(?:in|to|into|inside|within|mirror(?:ed)? (?:it )?in|port(?:ed)? (?:it )?to|edit|change|update|fix|patch|modify|add (?:\w+ ){0,3}to)\s+(?:the\s+)?(?:thomaspryor\/)?BroadwayScorecard-app\b|\b(?:thomaspryor\/)?BroadwayScorecard-app[\/\s]+(?:components|screens|src|app|ios|Sources|Views|ViewModels)\b[\w\/.-]*|\bBroadwayScorecard-app\b[^.\n]{0,20}\.(?:swift|tsx?)\b|\b(?:in|to) the (?:iOS )?app repo\b/;
+const APP_REPO_NAME = '(?:thomaspryor\\/)?BroadwayScorecard-app';
+const APP_REPO_TARGET_RE = new RegExp(
+  // edit verb right before the repo, or a placement verb then in/into/inside/to the repo
+  `\\b(?:edit|change|update|patch|modify|mirror (?:it )?in|port (?:it )?to|make)\\s+(?:the\\s+)?${APP_REPO_NAME}\\b`
+  + `|\\b(?:put|add|implement|land|ship|build|write|apply|commit)\\b[^.\\n]{0,40}\\b(?:in|into|inside|to)\\s+(?:the\\s+)?${APP_REPO_NAME}\\b`
+  // the repo (or "the iOS app repo") as the subject that needs work
+  + `|\\b(?:${APP_REPO_NAME}|(?:the )?(?:iOS )?app repo)\\s+(?:needs?|must|should|requires?|has to)\\b`
+  // the repo followed by an app source path or file
+  + `|\\b${APP_REPO_NAME}[\\/\\s]+(?:components|screens|src|app|ios|Sources|Views|ViewModels)\\b[\\w\\/.-]*`
+  + `|\\b${APP_REPO_NAME}\\b[^.\\n]{0,60}\\.(?:swift|tsx?)\\b`
+  + `|\\b(?:in|to) the (?:iOS )?app repo\\b`);
 // Work the runner cannot finish however small the card (BRO-5384: 12 of 24 cards rejected on
 // 2026-10-13/15; BRO-3475 needed a workflow step, BRO-4299 land/ pushes, BRO-4427 and BRO-4855
 // hundreds of shipped reviews, BRO-5223 a data repair). The runner never lands
@@ -751,12 +761,15 @@ const DEFER_DATE_RE = /\b(?:not before|no earlier than|until|on or after|after|d
 // "RECHECK-AFTER:"). A bare "until"/"after" needs a deferring word in the same sentence: "Cache entries are valid
 // until 2026-12-01" is a fact about the code, not a wait.
 const STRONG_DEFER_RE = /^(?:not before|no earlier than|on or after|defer|wait)/i;
-const DEFER_CUE_RE = /\b(?:defer\w*|wait\w*|freeze\w*|frozen|hold(?:s|ing)? off|postpone\w*|paused?|blocked|do not|don'?t|must not|should not|cannot|can'?t|change nothing|no (?:edits?|changes?|work)|not (?:yet|until)|only after|lasts?|until further|resume|revisit|retry|re-?run|come back|check back)\b/i;
+const DEFER_CUE_RE = /\b(?:defer\w*|wait\w*|freeze\w*|frozen|hold(?:s|ing)? off|postpone\w*|paused?|blocked|do not|don'?t|change nothing|no (?:edits?|changes?|work)|not yet|only after|until further|resume|revisit|retry|re-?run|come back|check back)\b/i;
+// A bare "after <date>" also defers when the sentence is an instruction to do something then ("Run the backfill after Nov 20").
+const DO_AFTER_RE = /\b(?:run|start|ship|merge|enable|launch|pull|rescore|rebuild|deploy)\b/i;
 function isDeferringMatch(text, m) {
   const before = text.slice(Math.max(0, m.index - 12), m.index);
   if (STRONG_DEFER_RE.test(m[0]) || /(?:on\/|recheck-)$/i.test(before)) return true;
   const sentenceStart = Math.max(text.lastIndexOf('. ', m.index), text.lastIndexOf('\n', m.index), text.lastIndexOf('; ', m.index));
-  return DEFER_CUE_RE.test(text.slice(sentenceStart + 1, m.index + m[0].length));
+  const sentence = text.slice(sentenceStart + 1, m.index + m[0].length);
+  return DEFER_CUE_RE.test(sentence) || (/^after\b/i.test(m[0]) && DO_AFTER_RE.test(sentence));
 }
 const HALF_YEAR_MS = 183 * 24 * 3600_000;
 /**

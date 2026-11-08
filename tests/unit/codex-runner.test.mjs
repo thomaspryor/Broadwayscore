@@ -1754,6 +1754,18 @@ test('futureDeferral: "valid until <date>" is a fact, not a wait; a deferring wo
   assert.equal(r.futureDeferral('Not before Feb 30.', Date.parse('2027-01-10T00:00:00Z')), null);
 });
 
+test('BRO-7141 reviewer cases: app repo as an API peer or past tense is not other-repo; real app-repo work is', () => {
+  const skip = (d) => r.codexCardFit({ title: 'Fix', description: d, verify: 'node --test tests/unit/x.test.mjs', nowMs: Date.parse('2026-11-08T12:00:00Z'), canDispatch: true }).skip;
+  for (const d of ['Ported to BroadwayScorecard-app already (done). Web fix only.', 'Send scores to BroadwayScorecard-app via the API', 'Keep the response shape the same as in BroadwayScorecard-app', 'Fix the API that BroadwayScorecard-app calls']) assert.notEqual(skip(d), 'other-repo', d);
+  for (const d of ['BroadwayScorecard-app needs a new screen', 'Make BroadwayScorecard-app show the badge (StarRating.swift)', 'The iOS app repo needs updating', 'Put the change in the app repo.']) assert.equal(skip(d), 'other-repo', d);
+});
+
+test('BRO-7141 reviewer cases: "lasts/should not ... until <date>" is not a deferral; "Run X after <date>" is', () => {
+  const skip = (d) => r.codexCardFit({ title: 'Fix', description: d, verify: 'node --test tests/unit/x.test.mjs', nowMs: Date.parse('2026-11-08T12:00:00Z'), canDispatch: true }).skip;
+  for (const d of ['The redirect lasts until Dec 1', 'Ship this now; it should not break anything until Dec 1', 'Broke after Nov 20']) assert.notEqual(skip(d), 'deferred-date', d);
+  for (const d of ['Run the backfill after Nov 20', 'The freeze lasts until Nov 13; change nothing before.']) assert.equal(skip(d), 'deferred-date', d);
+});
+
 test('futureDeferral reads ISO and month-day dates, only when still ahead (BRO-7133)', () => {
   const now = Date.parse('2026-11-08T12:00:00Z');
   assert.equal(r.futureDeferral('RECHECK-AFTER: 2026-11-22', now).iso, '2026-11-22');
