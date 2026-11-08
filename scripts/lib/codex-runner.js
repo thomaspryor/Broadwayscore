@@ -719,7 +719,7 @@ const CODEX_HARD_SKIPS = [
   // BRO-7133: 12 of 62 bounced cards were blocked outside the code, which Codex found only after two attempts:
   // the work is in another repo or ~/.claude, needs the owner's Mac or login, or waits on telemetry or recordings.
   ['other-repo', /\bBroadwayScorecard-app\b|\btech-scorecard\b|\bthomaspryor\/(?!Broadwayscore\b|broadway-(?:review-texts|scorecard-data)\b)[\w.-]+|~\/\.claude\/|\bprivate hooks?\b|\b(?:in|to) the (?:iOS )?app repo\b/i],
-  ['owner-device', /\bowner'?s (?:Mac|laptop|browser|device)\b|\bMac[- ]host\b|\bowner\b[^.\n]{0,40}\b(?:password|2FA|one-time code|log(?:s|ging)? ?in|sign(?:s)? in)\b|\b(?:password|2FA|one-time code)\b[^.\n]{0,40}\bowner\b/i],
+  ['owner-device', /\bowner'?s (?:Mac|laptop|browser|device)\b|\bMac[- ]host\b|\bowner (?:must|needs? to|has to|should) (?:[\w']+ ){0,3}(?:enter|type|log ?in|sign in|re-?login|re-?authenticate)\b|\bowner'?s (?:password|2FA|one-time code)\b|\b(?:password|2FA|one-time code)\b[^.\n]{0,40}\bfrom the owner\b/i],
   ['missing-prerequisite', /\b(?:needs?|requires?|waits? (?:on|for)|until|once)\b[^.\n]{0,40}\b(?:telemetry|recordings?)\b[^.\n]{0,30}\b(?:exists?|lands?|landed|arrives?|arrived|captured|collected|accumulat(?:es|ed|e))\b|\bno (?:fleet |structured |real )?(?:telemetry|recordings?) (?:exists?|yet|available)\b|\b(?:telemetry|recordings?) (?:do(?:es)?n[o']?t|do(?:es)? not) exist\b|\bprivate recordings archive\b/i],
   ['corpus-wide-data', /\bcorpus[- ]wide\b|\bbulk[- ](?:edit|fix|update|rewrite|repair|rescore)\b|(?<![\d,])(?!(?:19|20)\d\d\b)\d[\d,]{2,}\s+(?:shipped\s+|existing\s+|affected\s+|scored\s+)?(?:reviews|shows|files|rows|records)\b/i],
 ];
@@ -741,11 +741,12 @@ const CODEX_DIRECT_PRIVATE_RE = /\bbroadway-(?:review-texts|scorecard-data)\b/i;
 // A `CODEX-OK` line (description or a comment) sends a card to Codex despite the hard skips.
 const CODEX_OK_RE = /^[\s>*_#-]*CODEX-OK\b/m;
 const MONTHS = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
-const DEFER_DATE_RE = /\b(?:not before|no earlier than|until|on or after|after|defer(?:red)? (?:to|until)|wait (?:until|for))\b:?\s+(?:(\d{4}-\d\d-\d\d)|((?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\.? \d{1,2})(?:st|nd|rd|th)?(?:,? (\d{4}))?)\b/ig;
+const DEFER_DATE_RE = /\b(?:not before|no earlier than|until|on or after|after|defer(?:red)? (?:to|until)|wait (?:until|for))\b:?\s+(?:(\d{4}-\d\d-\d\d)(?!\d)|((?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\.? \d{1,2})(?:st|nd|rd|th)?(?:,? (\d{4}))?\b)/ig;
+const HALF_YEAR_MS = 183 * 24 * 3600_000;
 /**
  * BRO-7133. The first date the text says to wait for ("until 2026-11-09", "not before Nov 13",
  * "RECHECK-AFTER: 2026-11-22", "freeze lasts until October 30") that is still after nowMs, as
- * { ms, text, iso }, or null. A month-day without a year is read in nowMs's year. A past date is not a wait.
+ * { ms, text, iso }, or null. A month-day without a year is the nearest such day. A past date is not a wait.
  */
 function futureDeferral(text, nowMs = Date.now()) {
   for (const m of String(text || '').matchAll(DEFER_DATE_RE)) {
@@ -756,6 +757,9 @@ function futureDeferral(text, nowMs = Date.now()) {
       const year = m[3] ? Number(m[3]) : new Date(nowMs).getUTCFullYear();
       const mi = MONTHS.indexOf(mon.slice(0, 3).toLowerCase());
       if (mi >= 0) ms = Date.UTC(year, mi, Number(day));
+      // No year: the nearest such day ("broke after Dec 30" read on Jan 2 is last year's, "not before Jan 5" in late December is next year's).
+      if (!m[3] && ms - nowMs > HALF_YEAR_MS) ms = Date.UTC(year - 1, mi, Number(day));
+      else if (!m[3] && nowMs - ms > HALF_YEAR_MS) ms = Date.UTC(year + 1, mi, Number(day));
     }
     if (Number.isFinite(ms) && ms > nowMs) return { ms, text: m[0], iso: new Date(ms).toISOString().slice(0, 10) };
   }
@@ -766,17 +770,23 @@ function futureDeferral(text, nowMs = Date.now()) {
 const NO_CHANGE_RE = /\bNo (?:files|code) (?:were )?changed\b|\bchanged nothing\b|\bmade no (?:code )?change\b|^Nothing needed landing\b/im;
 /**
  * BRO-7133. The newest Codex bounce note when Codex changed nothing on its last try ('blocked-no-change',
- * or an older note whose report says no files changed), and no person's comment or CODEX-OK line came
- * after it: the card was blocked outside the code, so another Codex run changes nothing again.
+ * or an older note whose report says no files changed), under STRUCTURAL_MEMORY_MS old, and no person's
+ * comment, CODEX-OK line or retry note came after it, and its RECHECK-AFTER date (if any) is still ahead:
+ * the card was blocked outside the code, so another Codex run changes nothing again.
  * -> the note's first reason line (<= 160 chars) or null.
  */
-function codexFoundBlocked(comments) {
-  const raw = (Array.isArray(comments) ? comments : []).filter((c) => c && Number.isFinite(Date.parse(c.createdAt)))
+function codexFoundBlocked(comments, nowMs = Date.now()) {
+  const raw = sinceRetry((Array.isArray(comments) ? comments : []).filter((c) => c && Number.isFinite(Date.parse(c.createdAt))))
     .sort((a, b) => Date.parse(a.createdAt) - Date.parse(b.createdAt));
   let last = -1;
   raw.forEach((c, i) => { if (isCodexBounce(c.body) && !String(c.body).startsWith(`${BOUNCED_MARKER}\n${PARTIAL_HEADING}`)) last = i; });
-  if (last < 0) return null;
+  if (last < 0 || nowMs - Date.parse(raw[last].createdAt) >= STRUCTURAL_MEMORY_MS) return null;
   const body = String(raw[last].body);
+  // A Done-gate refusal of "already fixed" is Codex's miss, not a block; a passed RECHECK-AFTER date frees the card.
+  if (/^### Not fixed after all$/m.test(body)) return null;
+  const { parseRecheckAfter } = require('./recheck-stamp.js');
+  const recheck = parseRecheckAfter(body);
+  if (recheck != null && recheck <= nowMs) return null;
   const cls = bounceClassOf(body);
   // The heading, the runner's why line and the head of Codex's report (its verdict), not the report's tail.
   const [before, after = ''] = body.split('### Independent check')[0].split('### Codex report');
@@ -805,6 +815,17 @@ function blockedParkNote({ report = '', remaining = [], nowMs = Date.now() } = {
   return { reason, recheckAfter: wait ? wait.iso : null };
 }
 
+/**
+ * BRO-7133. Park (instead of a plain bounce) only when Codex left no commit AND named a block: a
+ * structural class, an ENVIRONMENT-BLOCKED line, items left open, or a blocker sentence at the head of
+ * its report. A land-blocked change or a refused "already fixed" claim is Codex's miss and bounces.
+ */
+function parkOnNoChange({ hasDiff, landBlocked = false, refusedClose = false, bounceClass = 'genuine-failure', envBlocked = null, remaining = [], report = '' } = {}) {
+  if (hasDiff !== false || landBlocked || refusedClose) return false;
+  if (bounceClass !== 'genuine-failure' || envBlocked || (Array.isArray(remaining) && remaining.length)) return true;
+  return bounceSays(BOUNCE_BLOCKER_VERB_RE, String(report || '').replace(/^\.\.\./, '').slice(0, 700));
+}
+
 /** The parked card's runner note: the bounce marker and class, then the BLOCKED (and RECHECK-AFTER) lines. */
 function blockedParkBody({ reason, recheckAfter = null, summary = '' }) {
   return [
@@ -821,21 +842,32 @@ function blockedParkBody({ reason, recheckAfter = null, summary = '' }) {
   ].join('\n');
 }
 
-// BRO-7133: a REMAINING item that only the owner (or their Mac, login or device) can do.
-const OWNER_STEP_RE = new RegExp(`${BOUNCE_MAC_RE.source}|${BOUNCE_OWNER_RE.source}|\\bowner (?:must|needs? to|should)\\b|\\b(?:on|from) the Mac\\b|\\bvisual approval\\b|\\bapprove the\\b`, 'i');
+// BRO-7133: a REMAINING item the owner does by hand (on their Mac, a login, a visual approval). An owner
+// DECISION is not split: its card needs a DECISION NEEDED question the runner cannot write (owner-judgment-limbo-guard).
+const OWNER_STEP_RE = new RegExp(`${BOUNCE_MAC_RE.source}|\\b(?:on|from) the Mac\\b|\\bvisual approval\\b|\\bapprove the (?:\\w+[- ]){0,3}(?:visuals?|screenshots?|render|video|reel|post)\\b|\\bowner (?:must|needs? to|has to) (?:log ?in|sign in|re-?login|export|paste|enter|run)\\b`, 'i');
+// An item that also asks for code is not the owner's alone.
+const CODE_WORK_RE = /\b(?:implement|add|fix|write|edit|change|refactor|patch|wire|extract|remove|delete)\b/i;
 /** -> { owner: [items only the owner can do], code: [the rest] } for a partial landing's REMAINING items. */
 function splitOwnerSteps(remaining) {
   const owner = [];
   const code = [];
-  for (const item of Array.isArray(remaining) ? remaining : []) (bounceSays(OWNER_STEP_RE, item) ? owner : code).push(item);
+  for (const item of Array.isArray(remaining) ? remaining : []) {
+    const ownerOnly = bounceSays(OWNER_STEP_RE, item) && !bounceSays(BOUNCE_OWNER_RE, item) && !CODE_WORK_RE.test(item);
+    (ownerOnly ? owner : code).push(item);
+  }
   return { owner, code };
+}
+/** The card id linear-brain create filed or reused, from its marker line (never the source card's id in a title). */
+function filedCardId(out) {
+  const m = /^(?:PARKED|ISSUE-FILED|ISSUE-REUSED|ROLLED-UP):\s*(BRO-\d+)\b/m.exec(String(out || ''));
+  return m ? m[1] : null;
 }
 
 /** linear-brain create args for the parked card that carries a partial landing's owner steps. */
 function ownerStepCardArgs(id, title, owner) {
   const short = String(title || '').replace(/\s+/g, ' ').slice(0, 70);
   return ['create', `Owner step from ${id}: ${short}`,
-    '--park', `needs the owner: ${String(owner[0]).replace(/\s+/g, ' ').slice(0, 120)}`,
+    '--park', `needs the owner's own hands: ${String(owner[0]).replace(/\s+/g, ' ').slice(0, 120)}`,
     '--source', 'codex-runner',
     '--notes', [`Split from ${id} by the Codex runner (BRO-7133): Codex landed the code part; these steps need the owner.`, '', ...owner.map((x) => `- ${x}`)].join('\n')];
 }
@@ -875,7 +907,7 @@ function codexCardFit({
   if (!ok) {
     const wait = futureDeferral(text, nowMs);
     if (wait) return { skip: 'deferred-date', score: -Infinity, why: [`deferred-date: ${wait.text.slice(0, 60)}`] };
-    const blocked = codexFoundBlocked(comments);
+    const blocked = codexFoundBlocked(comments, nowMs);
     if (blocked) return { skip: 'codex-found-blocked', score: -Infinity, why: [`codex-found-blocked: ${blocked.slice(0, 80)}`] };
     for (const [name, re, flag] of CODEX_TITLE_SKIPS) {
       if (flag === 'data-route' && viaRoute) continue;
@@ -1799,11 +1831,14 @@ function slotsForDisk({ slots, freeBytes, missingBySlot = [], reserveBytes = 0, 
  */
 // BRO-7133: git and npm word a full disk their own way ("Out of diskspace", "error: failed to write
 // object", "unpack-objects failed"); missing those counted a disk crash as the card's bounce (14-day ban).
+// The last two also follow a dropped fetch or a permissions error, so they stop a run (isDiskFailure) only
+// while the disk is low, like a bare ENOSPC; a crash note naming any of them never counts against the card.
 const DISK_FULL_RE = /No space left on device|Out of disk ?space|failed to write object|unpack-objects failed/i;
+const DISK_SURE_RE = /No space left on device|Out of disk ?space/i;
 function isDiskFailure(text, freeDiskBytes) {
   const t = String(text || '');
-  return DISK_FULL_RE.test(t)
-    || (/\bENOSPC\b/.test(t) && Number.isFinite(freeDiskBytes) && freeDiskBytes < MIN_FREE_DISK_BYTES);
+  return DISK_SURE_RE.test(t)
+    || (/\bENOSPC\b|failed to write object|unpack-objects failed/i.test(t) && Number.isFinite(freeDiskBytes) && freeDiskBytes < MIN_FREE_DISK_BYTES);
 }
 
 /**
@@ -1951,6 +1986,8 @@ module.exports = {
   blockedParkBody,
   splitOwnerSteps,
   ownerStepCardArgs,
+  filedCardId,
+  parkOnNoChange,
   encryptAuth,
   decryptAuth,
   authLastRefresh,

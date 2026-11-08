@@ -821,11 +821,12 @@ async function settleLanded(id, stats, { partial, remaining = [], body, countRef
     const { owner, code } = R.splitOwnerSteps(remaining);
     if (owner.length) {
       const card = await linear.getIssue(id).catch(() => null);
-      const made = await linearBrain(R.ownerStepCardArgs(id, card && card.title, owner));
-      const ref = /\bBRO-\d+\b/.exec((made && made.out) || '');
-      if (made && made.code === 0) {
-        log(`${id}: owner steps split to ${ref ? ref[0] : 'a parked card'}`);
-        body = `${body}\n\n### Owner steps split off\n${ref ? `${ref[0]} (parked)` : 'A parked card'} carries:\n${owner.map((x) => `- ${x}`).join('\n')}`;
+      // One try, not linearBrain's retries: create is not idempotent, and a failed split only leaves the items on this card.
+      const made = sh('node', ['scripts/linear-brain.js', ...R.ownerStepCardArgs(id, card && card.title, owner)], { timeoutMs: 600_000 });
+      const ref = R.filedCardId(made && made.out);
+      if (made && made.code === 0 && ref) {
+        log(`${id}: owner steps split to ${ref}`);
+        body = `${body}\n\n### Owner steps split off\n${ref} (parked) carries:\n${owner.map((x) => `- ${x}`).join('\n')}`;
         remaining = code;
         partial = code.length > 0;
       }
@@ -1190,11 +1191,15 @@ async function workCard(pick, stats, inFlight) {
     // BRO-7133: Codex changed nothing (a later date, another repo, the owner's Mac, missing telemetry): another
     // try changes nothing again, so the card is parked with Codex's reason instead of circling back after 14 days.
     // A Done-gate refusal of an "already fixed" claim is Codex's miss, not a block, and keeps the plain bounce.
-    if (lastHasDiff === false && !landBlocked && !refusedClose) {
-      const park = R.blockedParkNote({ report, remaining: [...remaining, ...R.parseRemaining(check.text)], nowMs: Date.now() });
+    const openItems = [...remaining, ...R.parseRemaining(check.text)];
+    if (R.parkOnNoChange({ hasDiff: lastHasDiff, landBlocked, refusedClose, bounceClass, envBlocked, remaining: openItems, report })) {
+      const park = R.blockedParkNote({ report, remaining: openItems, nowMs: Date.now() });
       log(`${id}: no change, parking (${park.reason.slice(0, 120)})`);
-      const parked = await moveCard(id, 'Paused', R.blockedParkBody({ ...park, summary: `${why} Findings for whoever takes it next:\n\n${summary}` }));
-      if (parked.code === 0) { handedBack = true; disposed = true; return 'done'; }
+      const note = R.blockedParkBody({ ...park, summary: `${why} Findings for whoever takes it next:\n\n${summary}` });
+      // "Paused" is a state the team may not have (linear-session-reporting STATUS_TO_STATE_NAME): Backlog then.
+      let parked = await moveCard(id, 'Paused', note);
+      if (parked.code !== 0 && parked.code !== 5) parked = await moveCard(id, 'Backlog', note);
+      if (parked.code === 0) { stats.bounced.push(id); handedBack = true; disposed = true; return 'done'; }
       log(`${id}: could not park (exit ${parked.code}); bouncing to Todo`);
     }
     handedBack = (await moveCard(id, 'Todo', `${R.BOUNCED_MARKER}\n## Codex runner: not landed, left for the Claude worker\n${R.bounceClassLine(bounceClass)}\n\n${why} Findings for whoever takes it next:\n\n${summary}`)).code === 0;
