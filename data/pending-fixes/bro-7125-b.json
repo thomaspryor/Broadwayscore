@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7125-b",
   "planId": "a5a196fc-ec51-46c2-99f9-b03c94c898f1",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-08T13:26:45.087Z",
   "submitter": {
     "name": null,
@@ -21,5 +21,15 @@
         "destPath": "kramerfauci-st-anns-off-broadway-2026/one-minute-critic--matthew-wexler.json"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-08T13:41:49.353Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved kramerfauci-off-broadway-2026/one-minute-critic--matthew-wexler.json → kramerfauci-st-anns-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+      "cleared": []
+    }
+  ],
+  "executedIn": "ci"
 }
