@@ -137,6 +137,12 @@ jobs:
       # popular-pages.mjs returns null and the section silently no-ops.
       GA4_PROPERTY_ID: ${{ secrets.GA4_PROPERTY_ID }}
       GA_SERVICE_ACCOUNT_KEY: ${{ secrets.GA_SERVICE_ACCOUNT_KEY }}
+      # Subject writer (scripts/newsletter/subject-writer.mjs, BRO-7168): Claude
+      # writes subject/preview/opening candidates, GPT-5.5 fact-checks them.
+      # Job-level so pre-send-check's regen writes the same way. Missing key or
+      # any API failure keeps the template subject; never blocks the draft.
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
       LEDE_OVERRIDE: ${{ github.event.inputs.ledeOverride }}
       SUBJECT_OVERRIDE: ${{ github.event.inputs.subjectOverride }}
       NEWSLETTER_OB_LEAD: ${{ github.event.inputs.obLead }}

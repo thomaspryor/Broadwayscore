@@ -103,7 +103,8 @@ let current;
 try {
   execFileSync('node', [path.join(__dirname, 'generate.mjs'), weekStart], {
     cwd: repoRoot,
-    env: { ...process.env, NEWSLETTER_EDITION: pinnedEdition, NEWSLETTER_OUT_DIR: scratchDir, NEWSLETTER_STATE_PATH: scratchStatePath },
+    // No AI subject pass on the comparison re-run (BRO-7168): it only checks structure.
+    env: { ...process.env, NEWSLETTER_EDITION: pinnedEdition, NEWSLETTER_OUT_DIR: scratchDir, NEWSLETTER_STATE_PATH: scratchStatePath, NEWSLETTER_AI_SUBJECT_DISABLED: '1' },
     stdio: ['ignore', 'pipe', 'inherit'],
   });
   if (!fs.existsSync(metaPath)) {
