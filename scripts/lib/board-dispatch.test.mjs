@@ -53,6 +53,8 @@ test('parseArgs and ledgerRow', () => {
   assert.equal(parseArgs(['--no-write']).write, false);
   const row = ledgerRow(planDispatch(report), { now: new Date('2026-11-08T00:00:00Z'), broken: 1 });
   assert.equal(row.mode, 'report-only');
+  assert.equal(row.v, 1);
+  assert.deepEqual(row.handlers['owner-decision-emails'].categories, ['waiting-owner']);
   assert.equal(row.ts, '2026-11-08T00:00:00.000Z');
   assert.equal(row.uncategorized, 1);
   assert.equal(row.handlers['owner-decision-emails'].count, 1);

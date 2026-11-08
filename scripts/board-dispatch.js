@@ -19,6 +19,8 @@ const bc = require('./lib/board-categories.js');
 const { planDispatch } = require('./lib/board-handlers.js');
 
 const USAGE = 'Usage: node scripts/board-dispatch.js [--json] [--no-write] [--ledger=<file>]';
+// Bump when a row's shape changes, so readers of the ledger can tell old rows from new ones.
+const LEDGER_VERSION = 1;
 const DEFAULT_LEDGER = path.join(__dirname, '..', 'data', 'audit', 'board-dispatch.jsonl');
 
 function parseArgs(argv) {
@@ -45,12 +47,13 @@ function appendRow(file, row) {
 /** PURE. The ledger row for one run. */
 function ledgerRow(plan, { now, broken = 0, env = process.env } = {}) {
   return {
+    v: LEDGER_VERSION,
     ts: now.toISOString(),
     mode: 'report-only',
     ...runSource(env),
     open: plan.open,
     uncategorized: broken,
-    handlers: Object.fromEntries(Object.entries(plan.handlers).map(([id, h]) => [id, { mode: h.mode, count: h.count, sample: h.sample }])),
+    handlers: Object.fromEntries(Object.entries(plan.handlers).map(([id, h]) => [id, { mode: h.mode, categories: h.categories, count: h.count, sample: h.sample }])),
     gaps: plan.gaps,
   };
 }
@@ -68,7 +71,7 @@ async function main(argv = process.argv.slice(2), { graphql = null, now = new Da
   } catch (err) {
     console.error(`[board-dispatch] FAILED: ${err.message}`);
     // A failed night still leaves a row, so "ran but failing" differs from "never ran".
-    if (opts.write) appendRow(opts.ledger, { ts: now.toISOString(), mode: 'report-only', ...runSource(env), error: String(err.message).slice(0, 300) });
+    if (opts.write) appendRow(opts.ledger, { v: LEDGER_VERSION, ts: now.toISOString(), mode: 'report-only', ...runSource(env), error: String(err.message).slice(0, 300) });
     return 1;
   }
   const broken = report.cards.filter((c) => /^categorize-error/.test(c.reason || '')).length;
