@@ -813,8 +813,9 @@ jobs:
             git show "$BASE:scripts/lib/$f" > "$HELPER/$f" 2>/dev/null || git show "HEAD:scripts/lib/$f" > "$HELPER/$f"
           done
           BRANCH="$BRANCH" bash "$HELPER/land-rebase.sh" "$BASE" "$BRANCH" || exit $?
-          # Diff scope: only a change that can alter what the browser sees.
-          if git diff --name-only "$BASE"...HEAD | grep -qE '^(src/|tests/e2e/|public/|next\.config\.js$|playwright\.config\.ts$|package(-lock)?\.json$)'; then
+          # Diff scope: only a change that can alter what the browser sees, or the
+          # harness itself (so a harness change exercises and measures it).
+          if git diff --name-only "$BASE"...HEAD | grep -qE '^(src/|tests/e2e/|public/|next\.config\.js$|playwright\.config\.ts$|package(-lock)?\.json$|scripts/lib/land-e2e-local)'; then
             echo "site_diff=true" >> "$GITHUB_OUTPUT"
           else
             echo "site_diff=false" >> "$GITHUB_OUTPUT"; echo "No site-relevant change vs origin/main: e2e-local skipped."
