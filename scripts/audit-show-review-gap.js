@@ -1124,6 +1124,10 @@ async function extractAggregatorReviewUrls(articleUrl, show) {
     if (!urlMatchesShowTitle(href, show, { context: 'article-link' })) {
       // BRO-7163 F02: an opaque href (story.asp?ID=48291) is judged on its link text / list item instead.
       if (!isOpaqueArticleUrl(href)) return;
+      // Same bar as the SERP path: only a registered outlet host may be accepted on headline evidence.
+      let hrefAbs = href;
+      try { hrefAbs = new URL(href, 'https://base.invalid').href; } catch { /* keep raw */ }
+      if (!(getKnownDomainMap().has(registrableHost(hostOf(hrefAbs))) || getKnownDomainMap().has(publicationHostOf(hrefAbs)))) return;
       const blockText = ($(el).closest('li,p,tr,dd,dt').first().text() || '').replace(/\s+/g, ' ').slice(0, 400);
       const hu = headlineAsUrl(`${$(el).text()} ${blockText}`);
       if (!hu || !urlMatchesShowTitle(hu, show, { context: 'article-link' })) return;

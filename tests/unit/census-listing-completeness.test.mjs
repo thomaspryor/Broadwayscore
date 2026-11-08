@@ -55,16 +55,16 @@ test('F13: review-named child preference reports skipped generic children unless
 test('F03: a healthy, long-span feed is still reconciled against the listing on a rotation', () => {
   const fine = { newestFiltered: day(1), filteredCount: 10, newestAny: day(1), oldestAny: day(30) };
   const reasons = new Set();
-  for (let d = 0; d < census.RECONCILE_EVERY_DAYS * 2; d++) {
-    reasons.add(census.shouldUseCensus({ outletId: 'wp', hasFeed: true, health: fine, latestReviewDate: day(2), lookbackDays: 14, now: NOW + d * 86400000, env: {}, ...o }).reason);
+  for (let d = 0; d < census.RECONCILE_EVERY_DAYS * 16; d++) {
+    reasons.add(census.shouldUseCensus({ outletId: 'wp', hasFeed: true, health: fine, latestReviewDate: day(2), lookbackDays: 14, now: NOW + d * 10800000, env: {}, ...o }).reason);
   }
   assert.ok(reasons.has('reconcile'), 'listing never read while the feed looks healthy');
   assert.ok(reasons.has('none'), 'must not read every day');
 });
 
-test('F03: every outlet is reconciled at least once per RECONCILE_EVERY_DAYS days', () => {
+test('F03: every outlet is reconciled in exactly one 3h slot per RECONCILE_EVERY_DAYS days (not all day)', () => {
   for (const id of ['a', 'exeunt-magazine', 'all-that-dazzles-uk', 'thestage']) {
-    const hits = Array.from({ length: census.RECONCILE_EVERY_DAYS }, (_, d) => census.reconcileDue(id, NOW + d * 86400000)).filter(Boolean).length;
+    const hits = Array.from({ length: census.RECONCILE_EVERY_DAYS * 8 }, (_, d) => census.reconcileDue(id, NOW + d * 10800000)).filter(Boolean).length;
     assert.equal(hits, 1, id);
   }
 });

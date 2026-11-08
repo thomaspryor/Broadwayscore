@@ -32,3 +32,11 @@ test('roundup link extraction falls back to link text for opaque hrefs (wiring)'
   const src = fs.readFileSync(new URL('../../scripts/audit-show-review-gap.js', import.meta.url), 'utf8');
   assert.match(src, /if \(!isOpaqueArticleUrl\(href\)\) return;/);
 });
+
+test('F02 roundup path: headline evidence for an opaque href requires a registered outlet host', async () => {
+  const fs = await import('node:fs');
+  const src = fs.readFileSync(new URL('../../scripts/audit-show-review-gap.js', import.meta.url), 'utf8');
+  const i = src.indexOf('an opaque href (story.asp?ID=48291) is judged on its link text');
+  assert.ok(i > 0);
+  assert.match(src.slice(i, i + 900), /getKnownDomainMap\(\)\.has\(registrableHost\(hostOf\(hrefAbs\)\)\)/);
+});

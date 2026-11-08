@@ -18,10 +18,16 @@ test('F12: shared title with two sibling productions in window is refused as tit
 });
 
 test('F12: sibling out of its run window leaves the in-window show eligible', () => {
-  const it = item('https://x.com/review-an-enemy-of-the-people', '2024-03-05');
+  const it = item('https://x.com/review-an-enemy-of-the-people', '2024-03-12');
   assert.equal(C.censusTitleOnly(it, we, pool), true);
 });
 
 test('F12: unique title still passes', () => {
   assert.equal(C.censusTitleOnly({ url: 'https://x.com/review-million-dollar-quartet', headline: 'Million Dollar Quartet review', publishDate: '2024-02-01' }, solo, pool), true);
+});
+
+test('F12: a sibling the outlet could never review (siblingOk false) does not block the title-only proof', () => {
+  const it = item('https://x.com/review-an-enemy-of-the-people', '2024-03-20');
+  assert.equal(C.censusTitleOnly(it, we, pool, { siblingOk: (o) => o.market === 'west-end' }), true);
+  assert.equal(C.censusTitleOnly(it, we, pool, { siblingOk: () => true }), false);
 });

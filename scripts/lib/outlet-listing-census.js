@@ -90,10 +90,16 @@ function shouldUseCensus({ outletId, hasFeed, health = null, latestReviewDate = 
 }
 
 const RECONCILE_EVERY_DAYS = 3;
+const RECONCILE_SLOT_MS = 3 * 3600000; // the window poller ticks every 3h, so one slot is one tick
+/**
+ * An outlet is reconciled in exactly ONE 3-hour slot of each RECONCILE_EVERY_DAYS-day cycle (24 slots),
+ * not for a whole day: the poller runs daily plus every 3h, and a whole-day rule read the listing ~9 times.
+ */
 function reconcileDue(outletId, now = Date.now()) {
   let h = 0;
   for (const ch of String(outletId)) h = (h * 31 + ch.charCodeAt(0)) >>> 0;
-  return Math.floor(now / DAY_MS) % RECONCILE_EVERY_DAYS === h % RECONCILE_EVERY_DAYS;
+  const slots = RECONCILE_EVERY_DAYS * (DAY_MS / RECONCILE_SLOT_MS);
+  return Math.floor(now / RECONCILE_SLOT_MS) % slots === h % slots;
 }
 
 /** Outlets that have a readable census source but no poller feed or API entry. */
@@ -284,7 +290,7 @@ const slugWords = (x) => ` ${String(x || '').toLowerCase().normalize('NFKD').rep
  * headline, and no OTHER show in the pool spelled there too. The caller still requires the page to
  * name the title and the item to pass censusItemAccepted.
  */
-function censusTitleOnly(item, show, pool) {
+function censusTitleOnly(item, show, pool, { siblingOk = null } = {}) {
   if (!item.publishDate) return false; // title-only proof needs a listing date: an undated archive URL could be a prior production
   let path = '';
   try { path = new URL(item.url).pathname; } catch { path = String(item.url || ''); }
@@ -320,7 +326,7 @@ function censusTitleOnly(item, show, pool) {
   // the title alone. If another show spelling the same title is also in its run window on the item's
   // date, the slug does not say which production it reviews, so title-only proof is refused and the
   // cast/creative/venue proof has to decide.
-  if (pool.some((o) => o.id !== show.id && publishedInRunWindow(o, item.publishDate)
+  if (pool.some((o) => o.id !== show.id && (!siblingOk || siblingOk(o)) && publishedInRunWindow(o, item.publishDate)
     && longForms(o).some((f) => mine.some((m) => m === f)))) return false;
   return !pool.some((o) => o.id !== show.id && longForms(o).some((f) => hay.includes(f) && !mine.some((m) => m.includes(f) || f.includes(m))));
 }
