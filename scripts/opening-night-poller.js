@@ -76,7 +76,7 @@ const { discoverTrRoundupHtml } = require('./lib/tr-roundup-discover');
 const { discoverWetRoundupRows } = require('./lib/wet-roundup-discover');
 const { tryTbDirectUrl } = require('./lib/tb-direct-url');
 const { isInOpeningWindow, nextPollDelayMs } = require('./lib/opening-window-backoff');
-const { getLondonSupplementalOutlets, rotateMissingOutlets, warnStalledReviewStubs } = require('./lib/opening-night-discovery-policy');
+const { getLondonSupplementalOutlets, rotateMissingOutlets, advanceSerpOutletOffset, warnStalledReviewStubs } = require('./lib/opening-night-discovery-policy');
 const {
   DEFAULT_SERP_BURST_CONFIG,
   DEFAULT_BW_SERP_BURST_CONFIG,
@@ -1447,8 +1447,11 @@ function isBrightDataAllowedForShow(show) {
 /**
  * Run Layer 4: SERP Backup
  */
-async function runSERPBackup(show, missingOutlets, knownUrls) {
+async function runSERPBackup(show, missingOutlets, knownUrls, stats = null) {
   console.log('\n[Layer 4] SERP Backup...');
+  // BRO-7162 F08: report how many outlets of the list were really reached so the caller advances its
+  // rotation cursor by that many, not by the budget. Stays 0 when the run stopped before the first one.
+  if (stats) stats.consumed = 0;
 
   if (!process.env.SCRAPINGBEE_API_KEY && !process.env.BRIGHTDATA_TOKEN) {
     console.log('  Skipped: no SERP API keys');
@@ -1471,6 +1474,7 @@ async function runSERPBackup(show, missingOutlets, knownUrls) {
       console.log(`  SERP stopped: ${deadlineSec}s wall-clock deadline reached (${calls} calls) — saving discovered reviews first`);
       break;
     }
+    if (stats) stats.consumed++;
     if (!outlet.domain) continue;
 
     try {
@@ -1755,14 +1759,29 @@ async function pollShow(show) {
     ? selectApplicableSiteSearchOutlets(market, show, new Set(), false)
     : [];
 
+  // BRO-7162 F06: persist each layer the moment it settles. Promise.allSettled is a barrier, so one
+  // slow layer (aggregators can run for minutes) used to hold every other layer's finds in memory
+  // until the 600s kill discarded them. processDiscoveredReviews dedupes through knownUrls, so
+  // incremental calls are idempotent and the later pre-SERP pass only sees what is still new.
+  const processOpts = { allowOffBroadway: isOffBroadway, allowWestEnd: isWestEnd, allowOpera: show.type === 'opera', allowRegional: isRegional };
+  const layerTotals = { created: 0, skipped: 0, rejected: 0 };
+  const persistLayerOnSettle = (label, promise) => promise.then((results) => {
+    if (Array.isArray(results) && results.length > 0) {
+      const r = processDiscoveredReviews(SHOW_ID, results, knownUrls, processOpts);
+      layerTotals.created += r.created; layerTotals.skipped += r.skipped; layerTotals.rejected += r.rejected;
+      console.log(`  [${label}] persisted on completion: ${r.created} created, ${r.skipped} skipped, ${r.rejected} rejected`);
+    }
+    return results;
+  });
+
   const [aggSettled, rssSettled, ssrSettled, omcSettled, googleNewsSettled] = await Promise.allSettled([
-    runAggregators(show),
-    runRSSFeeds(show.title, knownUrls, show.openingDate || null, market),
-    ssrSiteSearchIds.length > 0
+    persistLayerOnSettle('Layer 1', runAggregators(show)),
+    persistLayerOnSettle('Layer 2', runRSSFeeds(show.title, knownUrls, show.openingDate || null, market)),
+    persistLayerOnSettle('Layer 3 SSR', ssrSiteSearchIds.length > 0
       ? runSiteSearch(show.title, ssrSiteSearchIds, knownUrls, market, show.openingDate || null, show)
-      : Promise.resolve([]),
-    SKIP_OMC ? Promise.resolve([]) : runOMC(SHOW_ID, show, market),
-    discoverGoogleNewsReviews(show, { knownUrls, verbose: true }),
+      : Promise.resolve([])),
+    persistLayerOnSettle('Layer 2b', SKIP_OMC ? Promise.resolve([]) : runOMC(SHOW_ID, show, market)),
+    persistLayerOnSettle('google-news-rss', discoverGoogleNewsReviews(show, { knownUrls, verbose: true })),
   ]);
   const aggResults = aggSettled.status === 'fulfilled' ? aggSettled.value : (console.log(`  [Layer 1] ERROR: ${aggSettled.reason?.message}`), []);
   const rssResults = rssSettled.status === 'fulfilled' ? rssSettled.value : (console.log(`  [Layer 2] ERROR: ${rssSettled.reason?.message}`), []);
@@ -1948,10 +1967,15 @@ async function pollShow(show) {
   // The workflow kills this process at 600s, and one SERP outlet can run for
   // minutes on provider timeouts. Write what we already found first so a kill
   // during SERP can no longer discard it (Other Desert Cities 2026 lost 36).
-  const processOpts = { allowOffBroadway: isOffBroadway, allowWestEnd: isWestEnd, allowOpera: show.type === 'opera', allowRegional: isRegional };
   const preSerpDiscovered = [...aggResults, ...rssResults, ...siteSearchResults, ...omcResults, ...googleNewsResults];
   console.log(`\n━━━ Processing ${preSerpDiscovered.length} discovered reviews (before SERP) ━━━`);
-  const preSerp = processDiscoveredReviews(SHOW_ID, preSerpDiscovered, knownUrls, processOpts);
+  const preSerpPass = processDiscoveredReviews(SHOW_ID, preSerpDiscovered, knownUrls, processOpts);
+  // Layers 1-3 were already persisted as they settled; fold those counts in so the summary stays whole.
+  const preSerp = {
+    created: layerTotals.created + preSerpPass.created,
+    skipped: layerTotals.skipped + preSerpPass.skipped,
+    rejected: layerTotals.rejected + preSerpPass.rejected,
+  };
 
   let serpResults = [];
   if ((!SKIP_SERP && shouldRunSerp()) || serpBurstActive) {
@@ -2081,9 +2105,10 @@ async function pollShow(show) {
           rotation: sessionLedger.perShow[SHOW_ID] || 0,
         });
       }
-      serpResults = await runSERPBackup(show, missingOutlets, knownUrls);
+      const serpStats = {};
+      serpResults = await runSERPBackup(show, missingOutlets, knownUrls, serpStats);
       if (show.category === 'off-west-end') {
-        nextSerpOutletOffset = (nextSerpOutletOffset + SERP_BUDGET) % missingOutlets.length;
+        nextSerpOutletOffset = advanceSerpOutletOffset(nextSerpOutletOffset, serpStats.consumed, missingOutlets.length);
       }
       } // end: daily SERP-session cap allowed
     } else {
