@@ -14,7 +14,7 @@ const { envCauseOf, needsTsxRunner } = require('./check-env-cause.js');
 const { recheckVerdict, heldShare, heldShareLine, describeResult, doneClaimsHeldRow } = require('./autonomous-recheck-core.js');
 const { tokenizeCheckCommand } = require('./autonomous-checks.js');
 
-const rows = fs.readFileSync(path.join(here, 'fixtures', 'recheck-real-fails-2026-11.jsonl'), 'utf8')
+const rows = fs.readFileSync(path.join(here, '..', '..', 'tests', 'fixtures', 'recheck-real-fails-2026-11.jsonl'), 'utf8')
   .trim().split('\n').map((l) => JSON.parse(l));
 // The three tests CI runs under tsx that the old recheck ran under plain node
 // (tests/unit-test-manifest-tsx.txt lines as of 2026-11-08).
