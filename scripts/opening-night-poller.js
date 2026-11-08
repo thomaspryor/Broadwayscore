@@ -93,7 +93,7 @@ const { maybeAlertSerpBurstTripwire } = require('./lib/serp-burst-tripwire');
 const { getFoundOutletIds, isInDiscoveryUnblockWindow } = require('./lib/found-outlet-ids');
 const { addClaimedOutletIds, buildStagedoorRow } = require('./lib/outlet-coverage-claim'); // BRO-6762: url-less stagedoor rows must not claim an outlet
 const { isPressWindowSerpSlot } = require('./lib/press-window-serp');
-const { DEFAULT_GIVEUP_THRESHOLD, isOutletGivenUp, updateOutletMisses } = require('./lib/js-outlet-giveup');
+const { DEFAULT_GIVEUP_THRESHOLD, isOutletGivenUp, updateOutletMisses, countableMissIds } = require('./lib/js-outlet-giveup');
 
 // Paths
 const DATA_DIR = path.join(__dirname, '..', 'data');
@@ -1390,7 +1390,7 @@ async function runOMC(showId, show, market) {
  * @param {string} [openingDate] - Show's opening date. Passed to date-aware endpoints (e.g. TheaterMania).
  * @param {Object} [show] - Full show object; passed to applies() predicates (e.g. opera-only outlets).
  */
-async function runSiteSearch(showTitle, missingOutletIds, knownUrls, market = 'broadway', openingDate = null, show = null) {
+async function runSiteSearch(showTitle, missingOutletIds, knownUrls, market = 'broadway', openingDate = null, show = null, outcomes = null) {
   console.log('\n[Layer 3] Site Search...');
 
   // Only search outlets that have site-search configs AND are missing
@@ -1410,11 +1410,13 @@ async function runSiteSearch(showTitle, missingOutletIds, knownUrls, market = 'b
       market,
       openingDate,
       show,
+      outcomes,
     });
     console.log(`  [Layer 3 Total] ${results.length} reviews from site search`);
     return results;
   } catch (err) {
     console.log(`  Site search error: ${err.message}`);
+    if (outcomes) for (const id of searchable) outcomes[id] = 'failed'; // BRO-7162 F04: an error is not a miss
     return [];
   }
 }
@@ -1812,10 +1814,12 @@ async function pollShow(show) {
       console.log(`  [JS outlet give-up] ${givenUpIds.length} outlet(s) past the miss threshold but still attempted (${FORCE_SERP ? '--force-serp' : 'inside opening window'}): ${givenUpIds.join(', ')}`);
     }
     if (missingJsIds.length > 0) {
-      jsSiteSearchResults = await runSiteSearch(show.title, missingJsIds, knownUrls, market, show.openingDate || null, show);
+      const jsOutcomes = {};
+      jsSiteSearchResults = await runSiteSearch(show.title, missingJsIds, knownUrls, market, show.openingDate || null, show, jsOutcomes);
       if (process.env.SCRAPINGBEE_API_KEY) {
         const foundEffectiveIds = new Set(jsSiteSearchResults.filter(r => r.outletId).map(r => r.outletId.toLowerCase()));
-        const attemptedEffectiveIds = missingJsIds.map(id => (SITE_SEARCH_ENDPOINTS[id].outletIdOverride || id).toLowerCase());
+        // BRO-7162 F04: only searches that completed count toward give-up; errors/timeouts are skipped.
+        const attemptedEffectiveIds = countableMissIds(missingJsIds, jsOutcomes, id => (SITE_SEARCH_ENDPOINTS[id].outletIdOverride || id).toLowerCase());
         jsOutletMisses = updateOutletMisses(jsOutletMisses, attemptedEffectiveIds, foundEffectiveIds);
       }
     }
