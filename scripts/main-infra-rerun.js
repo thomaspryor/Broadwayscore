@@ -19,7 +19,7 @@
 const { execFileSync } = require('child_process');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { runGhWithFallback } = require('./lib/land-retry-on-cancel');
-const { decideInfraRerun, waitMsFor, candidateJobs } = require('./lib/main-infra-rerun');
+const { decideInfraRerun, decideConfirmRerun, waitMsFor, candidateJobs } = require('./lib/main-infra-rerun');
 
 const USAGE = 'usage: node scripts/main-infra-rerun.js [--wait] [--dry-run]';
 if (hasHelpFlag(process.argv.slice(2))) {
@@ -34,7 +34,7 @@ const gh = (args) => JSON.parse(ghRaw(args));
 const repo = process.env.GITHUB_REPOSITORY || 'thomaspryor/Broadwayscore';
 
 function fetchState() {
-  const runs = gh([`repos/${repo}/actions/workflows/test.yml/runs?branch=main&event=push&per_page=5`]).workflow_runs || [];
+  const runs = gh([`repos/${repo}/actions/workflows/test.yml/runs?branch=main&event=push&per_page=10`]).workflow_runs || [];
   const newest = runs[0];
   let jobs = [];
   const annotationsByJobId = {};
@@ -62,7 +62,16 @@ async function main() {
     d = decideInfraRerun(state);
     report(d);
   }
-  if (!d.retry) return;
+  if (!d.retry) {
+    // BRO-7102: not starvation. A fresh green->red real failure gets one confirm re-run.
+    const c = decideConfirmRerun(state);
+    console.log(`main-infra-rerun: confirm re-run ${c.retry ? 'RERUN' : 'skip'} (${c.reason})${c.failed ? ` failed: ${c.failed.join(', ')}` : ''}`);
+    if (!c.retry) return;
+    if (dry) { console.log(`dry-run: would re-run failed jobs of ${c.runId} to confirm the red`); return; }
+    ghRaw(['-X', 'POST', `repos/${repo}/actions/runs/${c.runId}/rerun-failed-jobs`]);
+    console.log(`::notice::confirm re-run of a new main red (BRO-7102): https://github.com/${repo}/actions/runs/${c.runId}`);
+    return;
+  }
   if (dry) { console.log(`dry-run: would re-run failed jobs of ${d.runId} (attempt ${d.attempt} -> ${d.attempt + 1})`); return; }
   ghRaw(['-X', 'POST', `repos/${repo}/actions/runs/${d.runId}/rerun-failed-jobs`]);
   console.log(`re-ran failed jobs of ${d.runId}: https://github.com/${repo}/actions/runs/${d.runId}`);

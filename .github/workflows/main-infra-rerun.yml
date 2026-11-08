@@ -16,6 +16,9 @@ name: Main infra re-run
 # made with the fallback PAT can, but attempt<3 and the 15-min age bound it
 # to two reruns per sha. The cron stays as a backstop, and in practice it is
 # what retries a rerun that starved again (attempt 2 -> 3).
+# BRO-7102 confirm re-run: a real failure on the newest main run, first attempt,
+# right after a green run, gets its failed jobs re-run once (a flake clears, a
+# real break is confirmed for auto-revert). Kill switch: CONFIRM_RERUN_DISABLED.
 # Decision logic + tests: scripts/lib/main-infra-rerun{,.test}.
 
 on:
@@ -59,6 +62,8 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GH_FALLBACK_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          # BRO-7102 kill switch for the confirm re-run (set the repo variable to 'true').
+          CONFIRM_RERUN_DISABLED: ${{ vars.CONFIRM_RERUN_DISABLED }}
         # --wait on every trigger: a cron/dispatch run can replace a queued
         # workflow_run one in the concurrency group, and it must still wait out
         # the age. waitMsFor is 0 unless the newest run would qualify.
