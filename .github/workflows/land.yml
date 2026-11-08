@@ -404,14 +404,24 @@ jobs:
           echo "fast-fail: red on the branch: $RED — re-checking the failing files on base"
           node scripts/lib/land-gate-delta.js --rerun-scope "$FD/branch" --gates "$RED" --out "$FD/rerun" \
             || { echo "::warning::fast-fail: could not compute the base re-check scope — the full gauntlet decides"; exit 0; }
+          # A red gate with no per-file scope (a crash with nothing parsed) would re-run whole on base
+          # (10-16 min) and could refuse on a crash: leave that to the full gauntlet (BRO-7150 review).
+          for g in ${RED//,/ }; do
+            [ -s "$FD/rerun/$g.files" ] || { echo "::warning::fast-fail: $g went red with no failing file named — the full gauntlet decides"; exit 0; }
+          done
           GAUNTLET_GATES="$RED" GAUNTLET_SCOPE_DIR="$FD/rerun" bash "$RUNNER_TEMP/land-gauntlet.sh" "$FD/base" \
             --checkout "$BASE" --return-to "$REBASED" $([ "$DEPS_CHANGED" = "true" ] && echo --deps-changed) \
             || { echo "::warning::fast-fail: the base re-check errored — the full gauntlet decides"; exit 0; }
           if [ "$(git rev-parse HEAD)" != "$REBASED" ]; then
             echo "::error::fast-fail: the base re-check did not return to the rebased tip"; exit 1
           fi
+          # Judge into a private file: only a recorded NEW failure refuses; a judge crash is not a refusal.
           node scripts/lib/land-gate-delta.js --base-dir "$FD/base" --branch-dir "$FD/branch" --gates "$RED" \
-            --summary-file "$GITHUB_STEP_SUMMARY" --github-output "$GITHUB_OUTPUT" --base-source fast-fail
+            --summary-file "$GITHUB_STEP_SUMMARY" --github-output "$FD/out" --base-source fast-fail || true
+          NEW=$(sed -n 's/^new_failures=//p' "$FD/out" 2>/dev/null | tail -1)
+          case "$NEW" in ''|*[!0-9]*) echo "::warning::fast-fail: the judge recorded no verdict — the full gauntlet decides"; exit 0;; esac
+          cat "$FD/out" >> "$GITHUB_OUTPUT"
+          [ "$NEW" -eq 0 ] || exit 1
 
       # ── Branch gauntlet: the rebased tip ─────────────────────────────────────
       # BRO-6043: core-data digest BEFORE the gauntlet; the seed export refuses

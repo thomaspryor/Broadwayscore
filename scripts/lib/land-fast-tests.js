@@ -41,8 +41,8 @@ const { spawn, spawnSync } = require('child_process');
 const ROOT = path.resolve(__dirname, '..', '..');
 
 // Repo-wide invariant tests behind real land refusals. Keep sorted; the test checks each exists.
-// Refresh from `node scripts/lib/land-timing-report.js --days=7 --json` (.fastSetGaps lists
-// test files that refused 2+ lands and are missing here).
+// Refresh from the ranked causes in `node scripts/lib/land-timing-report.js --days=7 --json`
+// (a test file that refused 2+ lands belongs here).
 const INVARIANT_TESTS = [
   'scripts/V1-V3-dispatch-status.test.mjs',
   'scripts/audit-broadway-category-predicate.test.mjs',
@@ -211,12 +211,30 @@ function writeScopeDir(dir, files) {
 }
 
 /** Run one gate's files with land-gauntlet.sh's runner for that gate -> Promise<{ exit, text, ms }> (exit 124 = timed out). */
+// BRO-7150 review: the pre-push hook kills this CLI on its own timeout (SIGTERM). Without a handler the
+// detached test groups and the throwaway worktree outlive it, so each is registered here and torn down.
+const liveGroups = new Set();
+const liveCleanups = new Set();
+function onTerm(sig) {
+  for (const pid of liveGroups) { try { process.kill(-pid, 'SIGKILL'); } catch { /* gone */ } }
+  for (const fn of liveCleanups) { try { fn(); } catch { /* best effort */ } }
+  process.exit(sig === 'SIGINT' ? 130 : 143);
+}
+let termHooked = false;
+function hookTerm() {
+  if (termHooked) return;
+  termHooked = true;
+  process.once('SIGTERM', () => onTerm('SIGTERM'));
+  process.once('SIGINT', () => onTerm('SIGINT'));
+}
+
 function runGateFiles(root, gate, files, { timeoutMs = 240000, env = process.env } = {}) {
   const common = ['--test', '--test-reporter=tap', '--test-timeout', '300000', ...files];
   const [cmd, args] = gate === GATE_TSX ? ['npx', ['tsx', ...common]] : ['node', common];
   const t0 = Date.now();
   return new Promise((resolve) => {
     const child = spawn(cmd, args, { cwd: root, env: { ...env, BSC_STAGE_LATENCY_MUTE: '1' }, stdio: ['ignore', 'pipe', 'pipe'], detached: true });
+    if (child.pid) liveGroups.add(child.pid);
     const chunks = [];
     child.stdout.on('data', (d) => chunks.push(d));
     child.stderr.on('data', (d) => chunks.push(d));
@@ -227,6 +245,7 @@ function runGateFiles(root, gate, files, { timeoutMs = 240000, env = process.env
       try { process.kill(-child.pid, 'SIGKILL'); } catch { try { child.kill('SIGKILL'); } catch { /* gone */ } }
     }, timeoutMs);
     child.on('close', (code) => {
+      liveGroups.delete(child.pid);
       clearTimeout(timer);
       resolve({ exit: timedOut || code === null ? 124 : code, text: Buffer.concat(chunks).toString('utf8'), ms: Date.now() - t0 });
     });
@@ -255,10 +274,10 @@ async function withWorktree(root, sha, fn) {
   const add = git(root, ['worktree', 'add', '--detach', '-f', dir, sha]);
   if (add.code !== 0) throw new Error(`git worktree add failed: ${add.stderr}`);
   const links = [];
-  try {
-    linkIgnored(root, dir, links);
-    return await fn(dir);
-  } finally {
+  let cleaned = false;
+  const cleanup = () => {
+    if (cleaned) return;
+    cleaned = true;
     // Unlink exactly what was linked first: remove --force must not follow the links into real data.
     for (const p of links) {
       try { if (fs.lstatSync(p).isSymbolicLink()) fs.unlinkSync(p); } catch { /* absent */ }
@@ -266,6 +285,14 @@ async function withWorktree(root, sha, fn) {
     git(root, ['worktree', 'remove', '--force', dir]);
     fs.rmSync(path.dirname(dir), { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
     git(root, ['worktree', 'prune']);
+  };
+  liveCleanups.add(cleanup);
+  try {
+    linkIgnored(root, dir, links);
+    return await fn(dir);
+  } finally {
+    liveCleanups.delete(cleanup);
+    cleanup();
   }
 }
 
@@ -304,7 +331,10 @@ async function runFast({ root, base, selection, withBase = null, timeoutMs = 240
         const r = await runGateFiles(wt, gate, [...files], { timeoutMs });
         // A base run that timed out proves nothing; counting its files as new would refuse a clean branch.
         if (r.exit === 124) throw new Error(`${gate} timed out on base`);
-        for (const f of failuresOf(gate, r.text, wt).values()) onBase.add(`${gate}|${f.file}::${f.name}`);
+        const fails = failuresOf(gate, r.text, wt);
+        // A base crash with nothing parsed proves nothing either: skip rather than refuse (BRO-7150 review).
+        if (r.exit !== 0 && fails.size === 0) throw new Error(`${gate} exited ${r.exit} on base with no parsable failure`);
+        for (const f of fails.values()) onBase.add(`${gate}|${f.file}::${f.name}`);
       }));
     });
   } catch (e) {
@@ -388,4 +418,4 @@ async function main(argv = process.argv.slice(2)) {
 
 module.exports = { LOCAL_SKIP, withWorktree, mirrorLandRegeneration, INVARIANT_TESTS, BROAD_DIRS, SLOW_TESTS, MAX_TARGETED, FAST_GATES, gateFor, matchTier, selectFastTests, universeFor, selectForTree, writeScopeDir, runFast, changedFiles, parseArgs };
 
-if (require.main === module) main().then((code) => { process.exitCode = code; });
+if (require.main === module) { hookTerm(); main().then((code) => { process.exitCode = code; }); }
