@@ -163,11 +163,13 @@ test('Oct 26: a Broadway opening NOT yet announced still leads, with the three O
   assert.ok(!lede.includes('Hospital Hour'));
 });
 
-test('WE opener counts only in-week openings, never grace-window catch-ups (Nov 2-8 2026: said eight, five opened)', () => {
+test('WE opener counts only in-week openings and frames size only when unusual (owner, 2026-11-08)', () => {
   const st = (avg, isCatchUp = false) => ({ agg: { avg }, isCatchUp });
-  const week = [st(66), st(75.7), st(70.9), st(48), st(41), st(65.3, true), st(83.2, true), st(76.1, true)];
-  assert.equal(composeWeOpener(week), 'A busy week for London theatre, with five new openings.');
-  assert.equal(composeWeOpener([st(80), st(76), st(60), st(90, true)]), 'A big week for London theatre: three shows opened, two scoring 75 or higher.');
-  assert.equal(composeWeOpener([st(80), st(76), st(77)]), 'A big week for London theatre: three shows opened, every one scoring 75 or higher.');
-  assert.equal(composeWeOpener([st(80), st(76), st(90, true), st(91, true)]), '');
+  const four = [st(47), st(77), st(76), st(30), st(65, true)];
+  // Nov 2-8 2026: four openings against a typical ~9 is a quiet week, never "big".
+  assert.equal(composeWeOpener(four, { typical: 9 }), 'A quieter week in London, with four openings.');
+  assert.equal(composeWeOpener(four, { typical: 5 }), '');
+  assert.equal(composeWeOpener(Array.from({ length: 14 }, () => st(70)), { typical: 9 }), 'An unusually busy week in London, with 14 openings.');
+  assert.equal(composeWeOpener(four), '', 'no baseline, no framing');
+  assert.ok(!/big week/i.test(composeWeOpener(Array.from({ length: 14 }, () => st(80)), { typical: 9 })));
 });
