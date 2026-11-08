@@ -342,7 +342,7 @@ Workflows without any concurrency block, by class (read-only / alerting / test j
 | Secret | Used by (cross-repo writers) |
 |---|---|
 | `ANTHROPIC_API_KEY` | 42 cross-repo writers (of 70 workflows using it) |
-| `APPROVAL_HMAC_SECRET` | 3 cross-repo writers (of 10 workflows using it): `auto-fix-feedback-bug.yml`, `process-review-submission.yml`, `update-mezzanine.yml` |
+| `APPROVAL_HMAC_SECRET` | 3 cross-repo writers (of 11 workflows using it): `auto-fix-feedback-bug.yml`, `process-review-submission.yml`, `update-mezzanine.yml` |
 | `BLOOMBERG_EMAIL` | 3 cross-repo writers (of 3 workflows using it): `bulk-collect-review-texts.yml`, `collect-hard-paywall.yml`, `collect-review-texts.yml` |
 | `BLOOMBERG_PASSWORD` | 3 cross-repo writers (of 3 workflows using it): `bulk-collect-review-texts.yml`, `collect-hard-paywall.yml`, `collect-review-texts.yml` |
 | `BRIGHTDATA_SERP_ZONE` | 1 cross-repo writers (of 2 workflows using it): `commercial-rss-poll.yml` |
