@@ -37,6 +37,11 @@ test('planBacklogCandidates: fresh report only; single test files only; flake re
 test('commitFinishesCard: a commit that files, defers or splits work off the card does not finish it', () => {
   assert.equal(commitFinishesCard('feat(BRO-9): the fix', 'BRO-9'), true);
   assert.equal(commitFinishesCard('BRO-9: done', 'BRO-9'), true);
+  // only a trailer names the card: too weak for a card nobody claimed
+  assert.equal(commitFinishesCard('fix: tidy\n\nRefs: BRO-9', 'BRO-9'), false);
+  // one step of a larger card
+  for (const m of ['feat(BRO-9) Step 1: handlers', 'BRO-9 part 2: x', 'wip(BRO-9): x', 'BRO-9: scaffold the closer',
+    'test(BRO-9): add failing test', 'BRO-9 (1/3): first piece']) assert.equal(commitFinishesCard(m, 'BRO-9'), false, m);
   for (const m of ['fix: x; files BRO-9 for y', 'chore: defer z to BRO-9', 'feat(BRO-8): a, follow-up in BRO-9',
     'BRO-9: carded the rest', 'BRO-9: split out to a new card', 'BRO-9: part one; moved the rest to BRO-12', 'BRO-9: split off retries', 'BRO-10: unrelated']) {
     assert.equal(commitFinishesCard(m, 'BRO-9'), false, m);
@@ -61,6 +66,8 @@ test('decideBacklogClosure: closes only with every condition met; each missing o
   assert.equal(leave({ comments: [{ body: `${CLOSER_MARKER} earlier`, createdAt: iso(NOW - 10 * DAY) }] }), 'closer-already-tried');
   assert.equal(leave({ comments: [{ body: `${BOUNCE_MARKER}`, createdAt: iso(NOW - 10 * DAY) }] }), 'closer-already-tried');
   assert.equal(leave({ description: 'DECISION NEEDED: owner picks A or B' }), 'owner-marker');
+  assert.equal(leave({ labels: { nodes: [{ name: 'awaiting-owner' }] } }), 'owner-marker');
+  assert.equal(leave({ description: 'Fix it.\nPARKED: needs the owner\'s Stripe key to deploy' }), 'parked');
   assert.equal(leave({ description: 'RECHECK-AFTER: 2026-01-01 (past)' }), 'recheck-stamped');
   assert.equal(leave({ comments: [{ body: 'RECHECK-AFTER: 2027-01-01', createdAt: iso(NOW - 10 * DAY) }] }), 'recheck-stamped');
   assert.equal(leave({ updatedAt: iso(NOW - BACKLOG_IDLE_MS + HOUR) }), 'recent-activity');
@@ -91,10 +98,10 @@ test('CLI: backlog closes go through the Done gate, capped per run, and honour t
   }));
   const linear = {
     listOpenIssues: async () => [],
-    graphql: async (_q, { id }) => ({ issue: {
+    graphql: async (q, { id }) => { assert.match(q, /labels\s*\{\s*nodes\s*\{\s*name/); return { issue: {
       identifier: id, title: `t ${id}`, priority: 3, state: { name: id === 'BRO-299' ? 'In Progress' : 'Backlog', type: 'backlog' },
       createdAt: iso(now - 30 * DAY), updatedAt: iso(now - 10 * DAY), description: 'x', comments: { nodes: [] },
-    } }),
+    } }; },
   };
   const commitsTouching = async (testPath) => {
     const id = testPath.match(/(bro-\d+)/)[1].toUpperCase();
@@ -129,6 +136,11 @@ test('CLI: backlog closes go through the Done gate, capped per run, and honour t
     assert.equal(real.spawned.length, MAX_BACKLOG_CLOSES_PER_RUN + 1);
     assert.equal(real.out.counts['backlog:over-run-cap'], 8 - MAX_BACKLOG_CLOSES_PER_RUN - 1);
     assert.equal(real.out.backlogSweepGeneratedAt, iso(now - HOUR));
+
+    fs.writeFileSync(auditPath, JSON.stringify({ generatedAt: iso(now - 30 * HOUR), results: [] }));
+    const stale = await run([]);
+    assert.match(stale.out.error, /old/);
+    assert.equal(stale.out.counts['backlog:would-close'], 8);
 
     const off = await run(['--apply'], 'true');
     assert.equal(off.spawned.length, 0);

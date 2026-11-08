@@ -400,6 +400,10 @@ const BACKLOG_IDLE_MS = 3 * 24 * HOUR_MS;
 const MAX_BACKLOG_CLOSES_PER_RUN = 5;
 const BACKLOG_CLOSER_NOTE = 'backlog sweep';
 const ANY_RECHECK_RE = /RECHECK-AFTER\s*:/i;
+// A PARKED: line in the body: the card was set aside on purpose (often for a key, money or a device).
+const PARKED_LINE_RE = /^\s*(?:[-*>]\s*)?\**PARKED\**\s*:/im;
+// Subjects of one step of a larger card, not the end of it.
+const PARTIAL_SUBJECT_RE = /\b(?:wip|step\s*\d+|part\s*\d+|phase\s*\d+|\d+\s*\/\s*\d+|scaffold\w*|failing\s+test|first\s+(?:pass|cut)|prep(?:are|aration)?\s+for)\b/i;
 // Subjects that create or push work to the card rather than finish it.
 const FOLLOWUP_SUBJECT_RE = /\b(?:follow[- ]?ups?|defer\w*|fil(?:e|es|ed|ing)\s+(?:a\s+|the\s+)?(?:card|issue|ticket|bro-)|carded|split\s+(?:out|off|to|into)|tracked\s+(?:in|as)|left\s+for|mov(?:e|ed|es|ing)\s+(?:the\s+)?(?:rest|remainder)|remaining\s+work)\b/i;
 
@@ -433,9 +437,10 @@ function planBacklogCandidates(sweep, nowMs) {
 
 /** The commit finishes work for the card: it is for the card and its subject does not file or defer it. */
 function commitFinishesCard(message, identifier) {
-  if (!commitIsForCard(message, identifier)) return false;
   const subject = String(message || '').trim().split('\n')[0];
-  return !FOLLOWUP_SUBJECT_RE.test(subject);
+  // The subject itself must name the card: a Refs:/Linear: trailer is too weak for a card nobody claimed.
+  if (!mentionsCard(subject, identifier)) return false;
+  return !FOLLOWUP_SUBJECT_RE.test(subject) && !PARTIAL_SUBJECT_RE.test(subject);
 }
 
 /**
@@ -454,6 +459,7 @@ function decideBacklogClosure({ candidate, issue, commits, nowMs }) {
     return { close: false, reason: 'closer-already-tried' };
   }
   if (hasOwnerMarker({ ...issue, commentText: bodies.join('\n') })) return { close: false, reason: 'owner-marker' };
+  if (PARKED_LINE_RE.test(String(issue.description || ''))) return { close: false, reason: 'parked' };
   if ([issue.description, ...bodies].some((t) => ANY_RECHECK_RE.test(String(t || '')))) {
     return { close: false, reason: 'recheck-stamped' };
   }
