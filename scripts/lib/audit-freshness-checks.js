@@ -148,6 +148,20 @@ const AUDIT_FRESHNESS_CHECKS = [
     workflow: null, urgency: 'this-week',
     humanAction: 'The rescore progress monitor has stopped persisting observations. Investigate the daily Snapshot progress-watch state step and commit in llm-ensemble-score.yml; no owner action is needed.',
     hint: 'Check llm-ensemble-score.yml daily 04:30 cron, Snapshot progress-watch state step, and persistence of data/audit/progress-watch-state.json.' },
+  // Writer: scripts/close-stuck-verified-cards.js (step "Stuck verified card
+  // closer", committed by "Commit stuck card closer report"), both
+  // continue-on-error in data-health-check.yml, so a stopped closer never turns
+  // the run red; this row is what notices (BRO-7139 cousin of the
+  // board-dispatch freshness alarm). The writer stamps generatedAt on every
+  // run except the kill-switch exit. File first landed 2026-11-07; measured gap 21.2h
+  // (n=2), daily cron; health check runs before the closer, so it reads the
+  // previous night's report. The kill switch STUCK_CARD_CLOSER_KILL_SWITCH
+  // turning this red is intended (see header).
+  { file: 'stuck-card-closer.json', field: 'generatedAt', ...DAILY,
+    missingStatus: 'warn', missingMessage: 'No stuck-card closer report yet (closer not yet run)',
+    workflow: null, urgency: 'this-week',
+    humanAction: 'The nightly step that closes board cards whose fix is already proven has stopped updating its report. Nothing is needed from you; the closer and commit steps in data-health-check.yml are what need a look, and the next board worker will pick that up.',
+    hint: 'Check the "Stuck verified card closer" and "Commit stuck card closer report" steps in data-health-check.yml (both continue-on-error); kill switches: repo vars STUCK_CARD_CLOSER_KILL_SWITCH, BACKLOG_CLOSE_DISABLED (backlog half only).' },
 ];
 
 /** Exact digest row name for a table row (also the AUTO_FIX_PLAYBOOK key). */
