@@ -199,6 +199,16 @@ export default function RatingEditor({
     });
   }, []);
 
+  // Photos upload after the insert, inside onSave: closing the tab mid-save
+  // would drop them, so ask the browser to confirm (BRO-6980).
+  const uploadingStaged = saving && stagePhotos && !reviewId && stagedFiles.length > 0;
+  useEffect(() => {
+    if (!uploadingStaged) return;
+    const warn = (e: BeforeUnloadEvent) => { e.preventDefault(); e.returnValue = ''; };
+    window.addEventListener('beforeunload', warn);
+    return () => window.removeEventListener('beforeunload', warn);
+  }, [uploadingStaged]);
+
   const charsRemaining = MAX_CHARS - reviewText.length;
   const isOverLimit = charsRemaining < 0;
 
@@ -415,7 +425,7 @@ export default function RatingEditor({
           FK). An existing entry uploads straight away; a brand-new rating
           (stagePhotos) holds them here and the caller uploads after its insert. */}
       {reviewId && <ReviewPhotosField reviewId={reviewId} showTitle={showTitle} />}
-      {!reviewId && stagePhotos && <StagedPhotosField files={stagedFiles} onChange={setStagedFiles} showTitle={showTitle} />}
+      {!reviewId && stagePhotos && <StagedPhotosField files={stagedFiles} onChange={setStagedFiles} showTitle={showTitle} disabled={saving} />}
 
       {/* Inline error — save failed, nothing was lost */}
       {error && (
