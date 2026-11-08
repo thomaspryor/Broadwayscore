@@ -15,7 +15,10 @@
 // before the flush callbacks run. The unref'd timer is a backstop for a reader that never
 // drains: after 10s exit anyway rather than hang.
 function exitFlushed(code, { timeoutMs = 10_000 } = {}) {
-  const c = Number.isInteger(code) ? code : (code ? 1 : 0);
+  // Same contract as process.exit(code): no code keeps an exitCode the script already set,
+  // an integer string counts, anything else is a caller bug and throws (process.exit throws on it too).
+  const c = code == null ? (process.exitCode ?? 0) : (typeof code === 'string' && /^-?\d+$/.test(code) ? Number(code) : code);
+  if (!Number.isInteger(c)) throw new TypeError(`exitFlushed: exit code must be an integer, got ${typeof code}`);
   process.exitCode = c;
   let pending = 2;
   const done = () => { if (--pending === 0) process.exit(c); };
