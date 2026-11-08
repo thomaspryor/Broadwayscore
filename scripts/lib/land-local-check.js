@@ -62,6 +62,15 @@ function missingCoreData(root, exists = fs.existsSync) {
   return CORE_DATA_FILES.filter((f) => !exists(path.join(root, f)));
 }
 
+// BRO-7110: a worktree under the main checkout with no node_modules of its own
+// still type-checks, resolving packages from the parent directory, but the /tmp
+// base copy finds none. The two sides then fail with different error text and
+// every error reads as new (639 false tsc failures on a diff with no TypeScript).
+/** -> true when <root> has its own node_modules (a directory or a symlink to one) */
+function hasOwnNodeModules(root, exists = fs.existsSync) {
+  return exists(path.join(root, 'node_modules'));
+}
+
 /** -> { gates, maxWaitMs } or { error } */
 function parseArgs(argv) {
   let gates = DEFAULT_GATES;
@@ -231,6 +240,13 @@ function main(argv = process.argv.slice(2)) {
       + 'node scripts/build-actor-slugs-manifest.js && node scripts/build-cast-manifest.js.');
     return 3;
   }
+  if (!hasOwnNodeModules(ROOT)) {
+    const main = path.resolve(git('rev-parse', '--git-common-dir').stdout, '..');
+    console.error('land-local-check: node_modules missing in this checkout. Packages would resolve from a parent '
+      + 'checkout here but not in the base copy, so every type and lint error would read as new. '
+      + `Link them first: ln -s ${path.join(main, 'node_modules')} node_modules`);
+    return 3;
+  }
   const fetch = git('fetch', '-q', 'origin', 'main');
   if (fetch.code !== 0) console.error(`land-local-check: git fetch failed, judging against the local origin/main (${fetch.stderr.split('\n').pop()})`);
   const head = git('rev-parse', 'HEAD').stdout;
@@ -305,7 +321,7 @@ function main(argv = process.argv.slice(2)) {
   }
 }
 
-module.exports = { main, withBaseWorktree, depsChangedSince, linkIgnored, ignoredPaths, parseArgs, newFailureFiles, missingCoreData, stageGauntletHarness, HARNESS_FILES, CORE_DATA_FILES, DEFAULT_GATES, LOCAL_SKIPPED_GATES };
+module.exports = { main, withBaseWorktree, depsChangedSince, linkIgnored, ignoredPaths, parseArgs, newFailureFiles, missingCoreData, hasOwnNodeModules, stageGauntletHarness, HARNESS_FILES, CORE_DATA_FILES, DEFAULT_GATES, LOCAL_SKIPPED_GATES };
 
 if (require.main === module) {
   // Capture the tip before the ~20 min run: the session may commit meanwhile, and that commit was not tested.

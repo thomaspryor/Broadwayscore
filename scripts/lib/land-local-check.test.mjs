@@ -119,7 +119,7 @@ test('base comparison runs the staged gauntlet in a throwaway worktree, never ch
   t.mock.method(console, 'log', (message) => messages.push(message));
   t.mock.method(R, 'withFileMutex', (_lock, fn) => fn());
   const exists = fs.existsSync;
-  t.mock.method(fs, 'existsSync', (p) => /data\/(shows|reviews|cast-manifest|actor-slugs)\.json$/.test(String(p)) || exists(p));
+  t.mock.method(fs, 'existsSync', (p) => /data\/(shows|reviews|cast-manifest|actor-slugs)\.json$|\/node_modules$/.test(String(p)) || exists(p));
   const checker = checkerWithRunner(t, (cmd, args, opts) => {
     const result = (stdout = '') => ({ status: 0, stdout, stderr: '' });
     if (cmd === 'git') {
@@ -269,6 +269,17 @@ test('main exits 3 (not ready) when core data is missing, before any gate runs',
   const src = require('fs').readFileSync(new URL('./land-local-check.js', import.meta.url), 'utf8');
   const main = src.slice(src.indexOf('function main('));
   assert.ok(main.indexOf('missingCoreData(ROOT)') > 0 && main.indexOf('missingCoreData(ROOT)') < main.indexOf('mkdtempSync'));
+});
+
+test('BRO-7110: a checkout with no node_modules of its own is not ready, checked before any gate runs', () => {
+  const { hasOwnNodeModules } = require('./land-local-check.js');
+  assert.equal(hasOwnNodeModules('/r', (p) => p === '/r/node_modules'), true);
+  assert.equal(hasOwnNodeModules('/r', () => false), false, 'a parent checkout\'s node_modules does not count');
+  const src = require('fs').readFileSync(new URL('./land-local-check.js', import.meta.url), 'utf8');
+  const main = src.slice(src.indexOf('function main('));
+  const at = main.indexOf('hasOwnNodeModules(ROOT)');
+  assert.ok(at > 0 && at < main.indexOf('mkdtempSync'), 'checked before the base copy is built');
+  assert.match(main.slice(at, at + 600), /return 3;/);
 });
 
 // BRO-6152: the base run executes a COPY of land-gauntlet.sh outside the tree it checks out.
