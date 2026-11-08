@@ -810,5 +810,36 @@
       }
     ],
     "queuedAt": "2026-11-08T19:03:08.594Z"
+  },
+  {
+    "conditionKey": "land:land/session-cost-done-claims",
+    "title": "Landing blocked: rebase red on land/session-cost-done-claims",
+    "description": "land.yml did not land land/session-cost-done-claims: the rebase gate went red at 8a7dc308b0. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/42513010019",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/session-cost-done-claims"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "8a7dc308b0b868d5d6d45275ecd75cd73ff3ad3b"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42513010019"
+      }
+    ],
+    "queuedAt": "2026-11-08T19:05:05.347Z"
   }
 ]
