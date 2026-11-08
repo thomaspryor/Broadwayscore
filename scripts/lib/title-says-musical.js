@@ -66,4 +66,8 @@ function knownShowType(title, listingGenre) {
   return null;
 }
 
-module.exports = { titleSaysMusical, showTypeFor, knownShowType };
+// The `type` values shows.json rows carry (validate-market-expansion.js
+// requires one on every non-announced row). One list for every stub builder (BRO-7146).
+const VALID_SHOW_TYPES = new Set(['play', 'musical', 'opera', 'special']);
+
+module.exports = { titleSaysMusical, showTypeFor, knownShowType, VALID_SHOW_TYPES };

@@ -263,4 +263,8 @@ test('buildShowEntry: explicit candidate.type is set at creation; unknown stays 
   assert.equal(buildShowEntry({ ...base, type: 'special' }).type, 'special');
   assert.equal(buildShowEntry({ ...base, listingGenre: 'Musical Theater' }).type, 'musical');
   assert.equal(buildShowEntry({ ...base }).type, null);
+  // explicit type beats a musical genre; an invalid value falls back to the heuristic
+  assert.equal(buildShowEntry({ ...base, type: 'play', listingGenre: 'Musical Theater' }).type, 'play');
+  assert.equal(buildShowEntry({ ...base, type: 'Musical' }).type, null);
+  assert.equal(buildShowEntry({ ...base, type: 'concert', listingGenre: 'Musical Theater' }).type, 'musical');
 });

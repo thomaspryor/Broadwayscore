@@ -134,7 +134,7 @@ const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
 const { loadStaging, updateStaging, mergeCandidates, writeStagingCandidates, STAGING_PATH } = require('./lib/owe-venue-staging');
 const { resolveOutletFromUrl, loadOutletRegistry } = require('./lib/review-normalization');
 const { stripHtml } = require('./lib/article-extractor');
-const { showTypeFor, knownShowType } = require('./lib/title-says-musical');
+const { showTypeFor, knownShowType, VALID_SHOW_TYPES } = require('./lib/title-says-musical');
 const { decideVenueListingPromotion } = require('./lib/ob-cross-validation');
 const { OWE_VENUE_CONFIGS } = require('./lib/venue-listing-discover');
 const { stageOweGuardianCandidates, guardianTombstones, guardianRunEndDate, findCataloguedOweProduction } = require('./lib/owe-guardian-staging');
@@ -186,10 +186,6 @@ const DAY_MS = 24 * 60 * 60 * 1000;
 // naming an announced production. Both are checked the same way.
 const EVIDENCE_KINDS = new Set(['review-url', 'coverage-url']);
 const AUDIT_EVIDENCE_SOURCE = 'audit-review-evidence';
-// The `type` values shows.json rows carry (validate-market-expansion.js
-// requires one on every non-announced row); an explicit candidate.type
-// outside this set falls back to the title heuristic.
-const VALID_SHOW_TYPES = new Set(['play', 'musical', 'opera', 'special']);
 
 /**
  * The usable evidence entries on a staged candidate: `{kind, url}` objects

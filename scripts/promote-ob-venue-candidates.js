@@ -42,7 +42,7 @@
  *   - Promotion log is JSONL append-only for audit trail
  */
 
-const { showTypeFor, knownShowType } = require('./lib/title-says-musical');
+const { showTypeFor, knownShowType, VALID_SHOW_TYPES } = require('./lib/title-says-musical');
 const fs = require('fs');
 const path = require('path');
 const { loadStaging, writeStagingCandidates, updateStaging, candidateHash } = require('./lib/venue-listing-discover');
@@ -342,7 +342,7 @@ function buildShowEntry(candidate) {
     // The venue's own genre label or a title that says "musical"; empty when
     // neither says what the show is (lib/title-says-musical.js).
     // BRO-7146: a hand-staged candidate.type wins, as in the Off-West-End builder.
-    type: ['play', 'musical', 'opera', 'special'].includes(candidate.type)
+    type: VALID_SHOW_TYPES.has(candidate.type)
       ? candidate.type
       : knownShowType(candidate.title, candidate.listingGenre),
     discoverySource: candidate.source,
