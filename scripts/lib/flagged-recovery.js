@@ -318,43 +318,14 @@ function discardWrongPageFill(rec) {
 // "flagged miss" that auto-ingest never touches (BRO-4185 F: 73 current-run
 // rows, e.g. the Chicago Tribune's 2026 Cats: The Jellicle Ball review hidden
 // behind its flagged 2024 review of the earlier production).
-//
-// BRO-7163 F10: a held file with its OWN, different URL is a different article on a multi-critic
-// outlet (Everything Theatre, BroadwayWorld, a blog network with two reviewers). When the caller
-// passes the listed candidate URL, a URL-bearing covered file vouches only if it reads as the same
-// article (same leaf slug, or one contained in the other, or most slug words shared). Otherwise
-// the candidate stays visible as missing instead of vanishing behind its sibling review.
-function slugWordsOfUrl(u) {
-  let seg = '';
-  try { seg = new URL(u).pathname.split('/').filter(Boolean).pop() || ''; } catch { seg = String(u || '').split(/[?#]/)[0].split('/').filter(Boolean).pop() || ''; }
-  if (/\.(?:aspx?|php|cfm|jsp)$/i.test(seg)) return []; // script name: the id in the query is the article, so no slug evidence
-  let dec = seg; try { dec = decodeURIComponent(seg); } catch { /* keep raw */ }
-  return dec.toLowerCase().replace(/\.(html?|php|aspx?)$/i, '').split(/[^a-z0-9]+/).filter(w => w && !/^\d+$/.test(w));
-}
-function urlsReadAsSameArticle(heldUrl, candidateUrl) {
-  const a = slugWordsOfUrl(heldUrl);
-  const b = slugWordsOfUrl(candidateUrl);
-  if (!a.length || !b.length) return false; // opaque ids: no evidence they are the same page
-  const ja = a.join(' '), jb = b.join(' ');
-  if (ja === jb || ja.includes(jb) || jb.includes(ja)) return true;
-  const sa = new Set(a);
-  const shared = b.filter(w => sa.has(w)).length;
-  return shared / Math.max(a.length, b.length) >= 0.7;
-}
-function hostFallbackVouchers(files, isCovered, candidateUrl = null) {
+function hostFallbackVouchers(files, isCovered) {
   if (!Array.isArray(files)) return [];
-  return files.filter(d => {
-    if (!d.url) return true;
-    if (isRecoverableFlaggedFile(d)) return true;
-    if (isCovered(d) !== true) return false;
-    return candidateUrl ? urlsReadAsSameArticle(d.url, candidateUrl) : true;
-  });
+  return files.filter(d => !d.url || isCovered(d) === true || isRecoverableFlaggedFile(d));
 }
 
 module.exports = {
   FLAGGED_RECOVERY_CAP,
   hostFallbackVouchers,
-  urlsReadAsSameArticle,
   filledDateOutsideWindow,
   filledDateOutsideWindowNote,
   filledTextIsOtherArticle,
