@@ -3809,7 +3809,8 @@ showDirs.forEach(showId => {
         if (earlyExclusion.statKey === "skippedCancelledBeforeOpening") logExclusion("skippedCancelledBeforeOpening", showId, file, data);
         else if (earlyExclusion.statKey === "skippedUnverifiableWebSearchRow") logExclusion("skippedUnverifiableWebSearchRow", showId, file, data);
         else if (earlyExclusion.statKey === "skippedPreviewFirstLookPiece") logExclusion("skippedPreviewFirstLookPiece", showId, file, data);
-        else logExclusion("skippedCombinedReviewOfOtherMemberOnly", showId, file, data);
+        else if (earlyExclusion.statKey === "skippedCombinedReviewOfOtherMemberOnly") logExclusion("skippedCombinedReviewOfOtherMemberOnly", showId, file, data);
+        else throw new Error("unknown early-exclusion statKey " + earlyExclusion.statKey);
         stats[earlyExclusion.statKey] = (stats[earlyExclusion.statKey] || 0) + 1;
         return;
       }
