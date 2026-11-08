@@ -368,6 +368,10 @@ function roundupNamesShow(roundupUrls, wholeTitleSlugs, openingDate) {
     if (dm && openingDate) {
       const days = Math.abs(Date.parse(`${dm[1]}-${dm[2]}-${dm[3]}`) - Date.parse(openingDate)) / 86400000;
       if (!(days <= ROUNDUP_DATE_WINDOW_DAYS)) return false;
+    } else if (openingDate) {
+      // Year-only slugs ("Review-Roundup-GREASE-2007") get a one-year window.
+      const ym = slug.match(/-(\d{4})$/);
+      if (ym && Math.abs(Number(ym[1]) - Number(String(openingDate).slice(0, 4))) > 1) return false;
     }
     return wholeTitleSlugs.some(t => {
       if (!/[-\s]/.test(t)) {

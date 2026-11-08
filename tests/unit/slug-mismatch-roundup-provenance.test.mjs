@@ -66,6 +66,10 @@ describe('roundup provenance confirms a URL that cannot name the show', () => {
     assert.strictEqual(check.roundupNamesShow(u, ['red'], '2010-04-01'), false);
     assert.strictEqual(check.roundupNamesShow([`${BWW}Broadway-Blog-RED-Review-Roundup-20100402`], ['red'], '2010-04-01'), true);
   });
+  it('a year-only roundup slug is held to a one-year window', () => {
+    assert.strictEqual(check.roundupNamesShow([`${BWW}Review-Roundup-GREASE-2007`], ['grease'], '2007-08-19'), true);
+    assert.strictEqual(check.roundupNamesShow([`${BWW}Review-Roundup-GREASE-2007`], ['grease'], '1994-05-01'), false);
+  });
   it('a preceding title word defeats the review-roundup form', () => {
     assert.strictEqual(check.roundupNamesShow([`${BWW}Big-Red-Review-Roundup-20100402`], ['red'], '2010-04-01'), false);
   });
