@@ -11,7 +11,7 @@ import { fileURLToPath } from 'node:url';
 const require = createRequire(import.meta.url);
 const here = path.dirname(fileURLToPath(import.meta.url));
 const { envCauseOf, needsTsxRunner } = require('./check-env-cause.js');
-const { recheckVerdict, heldShare, heldShareLine, describeResult } = require('./autonomous-recheck-core.js');
+const { recheckVerdict, heldShare, heldShareLine, describeResult, doneClaimsHeldRow } = require('./autonomous-recheck-core.js');
 const { tokenizeCheckCommand } = require('./autonomous-checks.js');
 
 const rows = fs.readFileSync(path.join(here, 'fixtures', 'recheck-real-fails-2026-11.jsonl'), 'utf8')
@@ -71,4 +71,18 @@ test('heldShare: latest verdict per card, env rows out of the share, null (not N
   assert.deepEqual({ ...h }, { cards: 3, pass: 1, fail: 1, couldNotRun: 1, unverifiable: 0, days: 30, share: 0.5 });
   assert.equal(heldShare([], { now }).share, null);
   assert.match(heldShareLine(h, heldShare([], { now, days: 7 })), /^Done claims that held: 50% \(1 of 2\) over 30 days, nothing testable over 7 days; 1 more could not be checked/);
+});
+
+test('doneClaimsHeldRow: warns when the nightly recheck stopped writing, passes with the share line otherwise', () => {
+  const now = Date.parse('2026-11-09T00:00:00Z');
+  assert.match(doneClaimsHeldRow([], { now }).message, /never written a summary/);
+  assert.equal(doneClaimsHeldRow([], { now }).status, 'warn');
+  const stale = doneClaimsHeldRow([{ event: 'recheck-summary', ts: '2026-11-05T00:00:00Z' }], { now });
+  assert.deepEqual([stale.status, /96h ago/.test(stale.message)], ['warn', true]);
+  const ok = doneClaimsHeldRow([
+    { event: 'recheck-summary', ts: '2026-11-08T07:00:00Z' },
+    { event: 'recheck', cardId: 'A', ts: '2026-11-08T07:00:00Z', status: 'pass', skip: null },
+  ], { now, tsxTests: new Set() });
+  assert.equal(ok.status, 'pass');
+  assert.match(ok.message, /^Done claims that held: 100% \(1 of 1\) over 30 days/);
 });

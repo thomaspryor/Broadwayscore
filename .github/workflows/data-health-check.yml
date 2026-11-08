@@ -732,6 +732,10 @@ jobs:
           # ACCEPTANCE_RECHECK_KILL_SWITCH --body true` disables this step's
           # work without a code change, same pattern as BROWSERBASE_KILL_SWITCH.
           ACCEPTANCE_RECHECK_KILL_SWITCH: ${{ vars.ACCEPTANCE_RECHECK_KILL_SWITCH }}
+          # BRO-7138: routing of failed rechecks into one batched card. Shadow
+          # (ledger only) until RECHECK_ROUTE_FROM; `gh variable set RECHECK_ROUTE --body off` stops it.
+          RECHECK_ROUTE: ${{ vars.RECHECK_ROUTE }}
+          RECHECK_ROUTE_FROM: ${{ vars.RECHECK_ROUTE_FROM }}
         # 3 -> 5 (BRO-3434). Two changes made 3 too tight. The script now
         # starts its deadline BEFORE makeFreshCheckout instead of after, so
         # the checkout's git calls are charged to this budget rather than
@@ -748,6 +752,12 @@ jobs:
           # Inner timeouts sit under the 95/8min step backstops so an overrun
           # lands in the rc check (BRO-6261) rather than failing the job.
           rc=0
+          # BRO-7138: prepareCheckWorkdir copies data/*.json into each card's
+          # check dir, but cast-manifest.json / actor-slugs.json are gitignored
+          # build outputs; without them 6 cards' tsc checks failed every night
+          # (TS2307) whatever the state of their fix. Best effort.
+          node scripts/build-actor-slugs-manifest.js >/dev/null 2>&1 && node scripts/build-cast-manifest.js >/dev/null 2>&1 \
+            || echo "::warning::cast/actor-slug manifests not built; tsc-based rechecks will read as could-not-run"
           if [ "${RECHECK_BACKLOG}" = "true" ]; then
             timeout -k 15 5580 node scripts/autonomous-acceptance-recheck.js --backlog --time-budget-min 90 || rc=$?
           else

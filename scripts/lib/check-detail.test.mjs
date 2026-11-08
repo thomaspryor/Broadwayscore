@@ -103,3 +103,15 @@ test('tapDetail names the NEW-since-main failures, not the pre-existing ones (BR
   assert.match(d, /brand new failure/);
   assert.doesNotMatch(d, /old failure/);
 });
+
+// BRO-7138: a failed `npx tsc --noEmit` printed its TS2307 on stdout and only
+// npm's update notice on stderr; the detail used to be the notice alone.
+test('defaultDetail: npm chatter on stderr does not hide the real error on stdout', () => {
+  const err = {
+    stderr: 'npm notice\nnpm notice New major version of npm available! 10.9.9 -> 12.2.2\nnpm warn exec x\n',
+    stdout: "src/lib/cast.ts(3,22): error TS2307: Cannot find module '../../data/cast-manifest.json'",
+  };
+  assert.match(defaultDetail(err), /^src\/lib\/cast\.ts.*TS2307/);
+  assert.equal(defaultDetail({ stderr: 'real stderr error', stdout: 'out' }), 'real stderr error');
+  assert.equal(defaultDetail({ stderr: 'npm notice only' }), 'npm notice only');
+});
