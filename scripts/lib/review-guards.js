@@ -762,6 +762,9 @@ function hasStrongDifferentProductionSignal(data, show) {
  */
 function cvFlagVetoedInWindow(data, show, kind, ctx = {}) {
   if (!data || !show) return false;
+  // BRO-7155: a person's wrongShow/wrongProduction verdict is never vetoed.
+  if (kind === 'wrongShow' && require('./wrong-production-autoclear').isWrongShowHeld(data)) return false;
+  if (kind === 'wrongProduction' && require('./wrong-production-autoclear').isWrongProductionHeld(data)) return false;
   if (ctx && ctx.urlFiledUnderOtherShow === true) return false;
   // BRO-7050: one automated classifier verdict never hides an aggregator-listed
   // or full-text-scored review (same safety carve-outs as below, no window test).
@@ -1141,6 +1144,7 @@ function cvWrongProductionIsVenueCarveout(cv, show, publishDate, cvLowButStrong 
  */
 function isVenueCarveoutPersistedWrongProduction(data, show) {
   if (!data || data.wrongProduction !== true) return false;
+  if (require('./wrong-production-autoclear').isWrongProductionHeld(data)) return false; // BRO-7155: a held wrongProduction is a person's verdict
   const reason = String(data.wrongProductionReason || '');
   if (reason && !/^CV-promoted:/.test(reason)) return false;
   if (data.wrongProductionNote) return false;
@@ -2066,6 +2070,7 @@ const INDIVIDUAL_REVIEW_URL_PATTERNS = [
 
 function isLikelyStaleRoundupFlag(data) {
   if (!data || data.isRoundupArticle !== true) return false;
+  if (require('./approved-fix-flag').hasApprovedFlag(data, 'isRoundupArticle')) return false; // BRO-7155
   const fullText = (data.fullText || '').trim();
   if (fullText.length < 800) return false;
   const url = data.url || '';
@@ -2492,6 +2497,7 @@ function _wrongShowTitleTokens(s) {
  */
 function isLikelyStaleWrongShow(data, show) {
   if (!data || data.wrongShow !== true) return false;
+  if (require('./wrong-production-autoclear').isWrongShowHeld(data)) return false; // BRO-7155: an approved wrongShow is a person's verdict
   if (!show || !show.title || String(show.title).length < 5) return false;
 
   const fullText = String(data.fullText || '').trim();
@@ -2621,6 +2627,7 @@ function isLikelyStaleWrongShow(data, show) {
  */
 function isLikelyStaleWrongProduction(data, show) {
   if (!data || data.wrongProduction !== true) return false;
+  if (require('./wrong-production-autoclear').isWrongProductionHeld(data)) return false; // BRO-7155: a held wrongProduction is a person's verdict
   if (!show || !show.title || String(show.title).length < 5) return false;
 
   // Already manually cleared — don't double-process; the sweep would be a no-op.
@@ -2776,6 +2783,7 @@ function isLikelyStaleWrongProduction(data, show) {
  */
 function isStaleCvPromotedWrongProduction(data, cvIsStale) {
   if (!data || data.wrongProduction !== true) return false;
+  if (require('./wrong-production-autoclear').isWrongProductionHeld(data)) return false; // BRO-7155: a held wrongProduction is a person's verdict
   if (cvIsStale) return false;
 
   // Provenance gate: only self-heal flags CV itself set (or the contamination
@@ -2993,6 +3001,7 @@ function isStaleCvPromotedWrongShow(data, cvIsStale) {
  */
 function isMisFamilyCvPromotedWrongShow(data, { cvIsStale = false, urlFiledUnderOtherShow = false } = {}) {
   if (!data || data.wrongShow !== true) return false;
+  if (require('./wrong-production-autoclear').isWrongShowHeld(data)) return false; // BRO-7155: an approved wrongShow is a person's verdict
   if (cvIsStale || urlFiledUnderOtherShow) return false;
   if (!/^CV-promoted: /.test(String(data.wrongShowReason || ''))) return false;
   // A person's clear (wrongShowCleared) is NOT a bar here, unlike BRO-168: it
@@ -3027,6 +3036,7 @@ const NON_ARTICLE_URL_RE = /[?&](?:s|preview|preview_id)=|\/(?:search|tag|tags|c
  */
 function isStaleGenericHomepageWrongShow(data, show, { urlFiledUnderOtherShow = false } = {}) {
   if (!data || data.wrongShow !== true || urlFiledUnderOtherShow) return false;
+  if (require('./wrong-production-autoclear').isWrongShowHeld(data)) return false; // BRO-7155: an approved wrongShow is a person's verdict
   if (!/^Generic homepage URL/i.test(String(data.wrongShowReason || ''))) return false;
   if (data.wrongShowNote || data.humanReviewedWrongShow === true) return false;
   let u;
@@ -3127,6 +3137,7 @@ function ensembleScoredSinceCv(data) {
  */
 function isStaleCvNonReviewVerdictOverruled(data) {
   if (!data || data.rejectedAt) return false;
+  if (require('./approved-fix-flag').hasApprovedFlag(data, 'isNonReview')) return false; // BRO-7155
   if (data.manualReviewedBy || data.manualNonReviewSet === true || data.manualNonReviewBy
     || data.nonReviewOverride || data._locked === true || data.manualContentTier
     || /^manual \(not a review\)/i.test(String(data.isNonReviewReason || ''))) return false;
@@ -3196,6 +3207,7 @@ function isStaleCvNonReviewVerdictOverruled(data) {
  */
 function isNonReviewDemotedByFreshCV(data) {
   if (!data || data.isNonReview !== true) return false;
+  if (require('./approved-fix-flag').hasApprovedFlag(data, 'isNonReview')) return false; // BRO-7155
   // A human/monitor-set flag is never demoted: the freshness checks below only
   // make sense for LLM/CV-set flags (BRO-3415, a forum thread stayed scored).
   if (data.manualReviewedBy || data.manualNonReviewSet === true || data.manualNonReviewBy
@@ -3286,6 +3298,7 @@ function isNonReviewDemotedByFreshCV(data) {
  */
 function isLikelyStaleSuspectedMisattribution(data, registry) {
   if (!data || data.suspectedMisattribution !== true) return false;
+  if (require('./approved-fix-flag').hasApprovedFlag(data, 'suspectedMisattribution')) return false; // BRO-7155
   if (!registry || typeof registry !== 'object') return false;
   if (Object.keys(registry).length === 0) return false; // Empty-registry fail-safe.
   const criticName = (data.criticName || '').trim();
