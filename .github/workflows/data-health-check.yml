@@ -359,6 +359,9 @@ jobs:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # BRO-7139: same kill switch the board-dispatch job reads, so a
+          # deliberate off does not raise the ledger freshness row.
+          BOARD_DISPATCH_DISABLED: ${{ vars.BOARD_DISPATCH_DISABLED }}
         run: node scripts/health-check.js
 
       # Daily failure digest removed — workflow failure summary is included
