@@ -18,6 +18,8 @@ const T = (iso) => Date.parse(iso);
 // BRO-6858: Broadway nights also plan preflight events; the kick tests look at kicks only.
 const kicks = (...a) => planKicks(...a).filter((x) => x.kind === 'kick');
 const nextKickOnly = (...a) => kicks(...a)[0] || null;
+// BRO-7160: post-lane sweep slots (sw1/sw2/sw3/swv) are pinned in post-lane-sweep.test.mjs.
+const noSweep = (list) => list.filter((x) => !x.kind.startsWith('sw'));
 
 test('kick is embargo -2h (22:00 ET = 03:00Z after DST ends), earliest first, broadway only by default', () => {
   const k = kicks(SHOWS, T('2026-11-02T12:00:00Z'));
@@ -118,7 +120,7 @@ test('workflow uses the CLI sleep plan, chunked sleeps and a bounded replan loop
 });
 
 test('BRO-6858: a Broadway night plans preflights at -24h and -3h, each with its own key and late bound', () => {
-  const ev = planKicks(SHOWS, T('2026-11-07T12:00:00Z')).filter((x) => x.showId === 'a-nov8');
+  const ev = noSweep(planKicks(SHOWS, T('2026-11-07T12:00:00Z'))).filter((x) => x.showId === 'a-nov8');
   assert.deepEqual(ev.map((x) => [x.kind, new Date(x.kickAtMs).toISOString()]), [
     ['pf24', '2026-11-08T03:00:00.000Z'], ['pf3', '2026-11-09T00:00:00.000Z'], ['kick', '2026-11-09T01:00:00.000Z'],
   ]);
@@ -126,9 +128,9 @@ test('BRO-6858: a Broadway night plans preflights at -24h and -3h, each with its
   const fired = [kickKey('a-nov8', '2026-11-08', 'pf24'), kickKey('a-nov8', '2026-11-08', 'pf3')];
   assert.equal(nextKick(SHOWS.slice(1, 2), T('2026-11-09T00:30:00Z'), { fired }).kind, 'kick');
   // A clock re-seeded at -2h does not run the stale -24h preflight, only the -3h one (still inside its bound).
-  const late = planKicks(SHOWS.slice(1, 2), T('2026-11-09T01:00:00Z')).map((x) => x.kind);
+  const late = noSweep(planKicks(SHOWS.slice(1, 2), T('2026-11-09T01:00:00Z'))).map((x) => x.kind);
   assert.deepEqual(late, ['pf3', 'kick']);
-  assert.deepEqual(planKicks(SHOWS.slice(1, 2), T('2026-11-09T02:30:00Z')).map((x) => x.kind), ['kick']);
+  assert.deepEqual(noSweep(planKicks(SHOWS.slice(1, 2), T('2026-11-09T02:30:00Z'))).map((x) => x.kind), ['kick']);
   // Off-Broadway gets no preflight.
   assert.deepEqual(planKicks([show('ob', '2026-11-04', 'off-broadway')], T('2026-11-03T12:00:00Z'), { categories: ['off-broadway'] }).map((x) => x.kind), ['kick']);
 });
