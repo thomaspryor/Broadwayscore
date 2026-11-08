@@ -1,22 +1,22 @@
 {
-  "generatedAt": "2026-11-08T06:35:10.988Z",
+  "generatedAt": "2026-11-08T07:36:54.780Z",
   "windowDays": 1095,
-  "targets": 785,
-  "auditedThisRun": 26,
-  "carriedForward": 2115,
+  "targets": 790,
+  "auditedThisRun": 27,
+  "carriedForward": 2117,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
     "withGap": 640,
-    "missingCurrentRun": 1158,
+    "missingCurrentRun": 1160,
     "totalCitedNoUrl": 0,
     "totalFlaggedMisses": 894,
     "totalRecoverable": 57,
     "totalRecovered": 91,
     "humanExcluded": 25,
-    "automatedExcluded": 996,
+    "automatedExcluded": 995,
     "automatedExcludedListed": 704,
-    "priorProductionCitations": 6147
+    "priorProductionCitations": 6160
   },
   "results": [
     {
@@ -425,15 +425,17 @@
       "status": "open",
       "category": "off-broadway",
       "previewsStartDate": "2026-10-20",
-      "aggregatorArticles": [],
+      "aggregatorArticles": [
+        "https://www.broadwayworld.com/article/Review-Roundup-222-A-GHOST-STORY-Opens-Off-Broadway-with-Anna-Camp-Jasmine-Cephas-Jones-and-More-20261105"
+      ],
       "aggregatorListedUrls": [
-        "https://culturesauce.com/222-ghost-story-finn-jones-anna-camp-off-broadway-review/",
-        "https://nystagereview.com/2026/11/05/222-a-ghost-story-whos-afraid-of-the-spectral-woolf/",
         "https://1minutecritic.com/222-a-ghost-story-off-broadway-review/",
+        "https://nystagereview.com/2026/11/05/222-a-ghost-story-whos-afraid-of-the-spectral-woolf/",
         "https://www.newyorktheatreguide.com/reviews/2-22-a-ghost-story-off-broadway-review",
-        "https://www.wsj.com/articles/the-unbelievers-and-2-22a-ghost-story-review-off-broadway-stages-turn-unsettling-b758c396",
         "https://www.theatermania.com/news/review-222-a-ghost-story-a-boozy-dinner-party-becomes-a-late-night-vigil_1859012/",
+        "https://culturesauce.com/222-ghost-story-finn-jones-anna-camp-off-broadway-review/",
         "https://mashable.com/entertainment/222-ghost-story-review",
+        "https://www.wsj.com/articles/the-unbelievers-and-2-22a-ghost-story-review-off-broadway-stages-turn-unsettling-b758c396",
         "https://www.timeout.com/newyork/theater/2-22-a-ghost-story",
         "https://concerts.consequence.net/events/222-a-ghost-story-at-lucille-lortel-theatre-on-2026-11-27-19-30--1",
         "https://www.londontheatre.co.uk/reviews/222-a-ghost-story-review-lyric-theatre-cheryl"
@@ -473,12 +475,88 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"2:22 - A Ghost Story\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"2:22 - A Ghost Story\" Off-Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"2:22 - A Ghost Story\" review lucille",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped2",
+            "query": "\"2:22 - A Ghost Story\" Robins review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 9,
+            "accepted": 2,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "2:22 - A Ghost Story Lucille Lortel Theatre review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 9,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "2:22 - A Ghost Story Lucille Lortel Theatre review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "2:22 - A Ghost Story Lucille Lortel Theatre review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 6,
+        "queriesTotal": 6,
+        "resultCount": 2,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 349,
+        "byReason": {
+          "non-review-host": 72,
+          "census-junk-host": 2,
+          "aggregator-internal-nav": 210,
+          "not-http-url": 56,
+          "aggregator-section-root": 5,
+          "roundup-page": 2,
+          "non-review-path": 1,
+          "podcast-episode": 1
+        }
       },
       "dedupedVariants": [],
       "nonReviewCandidates": [
@@ -524,8 +602,8 @@
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://culturesauce.com/222-ghost-story-finn-jones-anna-camp-off-broadway-review/",
-            "outletId": "culturesauce.com",
+            "url": "https://1minutecritic.com/222-a-ghost-story-off-broadway-review/",
+            "outletId": "1minutecritic.com",
             "state": "live",
             "firstSeenAt": "2026-11-06T20:37:44.785Z"
           },
@@ -536,20 +614,8 @@
             "firstSeenAt": "2026-11-06T20:37:44.785Z"
           },
           {
-            "url": "https://1minutecritic.com/222-a-ghost-story-off-broadway-review/",
-            "outletId": "1minutecritic.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-06T20:37:44.785Z"
-          },
-          {
             "url": "https://www.newyorktheatreguide.com/reviews/2-22-a-ghost-story-off-broadway-review",
             "outletId": "newyorktheatreguide.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-06T20:37:44.785Z"
-          },
-          {
-            "url": "https://www.wsj.com/articles/the-unbelievers-and-2-22a-ghost-story-review-off-broadway-stages-turn-unsettling-b758c396",
-            "outletId": "wsj.com",
             "state": "live",
             "firstSeenAt": "2026-11-06T20:37:44.785Z"
           },
@@ -560,8 +626,20 @@
             "firstSeenAt": "2026-11-06T20:37:44.785Z"
           },
           {
+            "url": "https://culturesauce.com/222-ghost-story-finn-jones-anna-camp-off-broadway-review/",
+            "outletId": "culturesauce.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-06T20:37:44.785Z"
+          },
+          {
             "url": "https://mashable.com/entertainment/222-ghost-story-review",
             "outletId": "mashable.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-06T20:37:44.785Z"
+          },
+          {
+            "url": "https://www.wsj.com/articles/the-unbelievers-and-2-22a-ghost-story-review-off-broadway-stages-turn-unsettling-b758c396",
+            "outletId": "wsj.com",
             "state": "live",
             "firstSeenAt": "2026-11-06T20:37:44.785Z"
           },
@@ -596,7 +674,7 @@
         "liveCount": 9,
         "candidateCount": 10
       },
-      "computedAt": "2026-11-08T04:04:58.451Z"
+      "computedAt": "2026-11-08T07:36:54.780Z"
     },
     {
       "showId": "3-summers-of-lincoln-regional-2025",
@@ -11223,12 +11301,71 @@
         "allSourcesFailed": false
       },
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"A Train To Woking\" West End review",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"A Train To Woking\" West End review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 2,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"A Train To Woking\" review waterloo",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 8,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "A Train To Woking Waterloo East Theatre review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "A Train To Woking Waterloo East Theatre review",
+            "page": 1,
+            "geo": "gb",
+            "ok": true,
+            "results": 1,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "A Train To Woking Waterloo East Theatre review",
+            "page": 2,
+            "geo": "gb",
+            "ok": true,
+            "results": 0,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 0,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 19,
+        "byReason": {
+          "non-review-host": 19
+        }
       },
       "dedupedVariants": [],
       "unextractable": [],
@@ -11242,7 +11379,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-11-08T04:04:58.451Z"
+      "computedAt": "2026-11-08T07:36:54.780Z"
     },
     {
       "showId": "a-tupperware-of-ashes-west-end-2024",
@@ -52211,12 +52348,25 @@
       "previewsStartDate": "2026-11-05",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
+        "https://thefrontrowcenter.com/2026/11/broom-play/",
         "https://emmareed.net/review-room-broom/"
       ],
       "dirFiles": 1,
       "dirClean": 0,
       "inReviewsJson": 0,
       "missing": [
+        {
+          "url": "https://thefrontrowcenter.com/2026/11/broom-play/",
+          "host": "thefrontrowcenter.com",
+          "knownOutletId": "front-row-center",
+          "serpCensus": true,
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ]
+        },
         {
           "url": "https://emmareed.net/review-room-broom/",
           "host": "emmareed.net",
@@ -52235,12 +52385,74 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Broom Play\" Off-Broadway review",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Broom Play\" Off-Broadway review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Broom Play\" review players",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Broom Play The Players Theatre review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Broom Play The Players Theatre review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Broom Play The Players Theatre review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 1,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 46,
+        "byReason": {
+          "non-review-host": 43,
+          "venue-production-page": 1,
+          "bare-host": 1,
+          "news-roundup-site": 1
+        }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 0,
@@ -52254,11 +52466,34 @@
           "censusGateOn": true
         }
       ],
-      "ingestResults": [],
+      "ingestResults": [
+        {
+          "url": "https://thefrontrowcenter.com/2026/11/broom-play/",
+          "host": "thefrontrowcenter.com",
+          "outletId": "front-row-center",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        }
+      ],
       "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
+          {
+            "outletId": "front-row-center",
+            "outlet": "front-row-center",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://thefrontrowcenter.com/2026/11/broom-play/"
+          },
           {
             "outletId": "emmareed.net",
             "outlet": "emmareed.net",
@@ -52270,6 +52505,13 @@
         "suppressedMissing": [],
         "candidates": [
           {
+            "url": "https://thefrontrowcenter.com/2026/11/broom-play/",
+            "outletId": "front-row-center",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-11-08T07:36:54.780Z"
+          },
+          {
             "url": "https://emmareed.net/review-room-broom/",
             "outletId": "emmareed.net",
             "state": "IN_FLIGHT",
@@ -52280,9 +52522,9 @@
         "censusSchema": 4,
         "excluded": [],
         "liveCount": 0,
-        "candidateCount": 1
+        "candidateCount": 2
       },
-      "computedAt": "2026-11-08T04:04:58.451Z"
+      "computedAt": "2026-11-08T07:36:54.780Z"
     },
     {
       "showId": "buddy-the-buddy-holly-story-regional-2026",
@@ -61135,6 +61377,44 @@
       "computedAt": "2026-11-01T19:55:41.972Z"
     },
     {
+      "showId": "cats-regional-2025",
+      "title": "Cats",
+      "openingDate": "2025-05-11",
+      "status": "closed",
+      "category": "regional",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "unextractable": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 4,
+        "excluded": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-11-08T07:36:54.780Z"
+    },
+    {
       "showId": "cats-regional-2026",
       "title": "Cats",
       "openingDate": "2026-03-08",
@@ -65088,8 +65368,8 @@
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
         "https://www.chicagotheatrereview.com/2026/10/red-theater-presents-the-world-premiere-of-church-hurt-by-brunne-frauenhoffer/",
-        "https://aroundthetownchicago.com/theatre-reviews/church-hurt/",
         "https://www.newcitystage.com/2026/11/04/church-hurt-reveals-the-remnants-of-an-evangelical-upbringing/",
+        "https://aroundthetownchicago.com/theatre-reviews/church-hurt/",
         "https://chicagoreader.com/performing-arts/theater/theater-review/church-hurt-red-theater/",
         "https://splashmags.com/2026/10/redemption-and-real-life-vie-in-red-theaters-church-hurt/"
       ],
@@ -65130,7 +65410,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 2,
             "error": null
           },
           {
@@ -65140,7 +65420,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 0,
             "error": null
           },
           {
@@ -65176,16 +65456,17 @@
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 3,
+        "resultCount": 2,
         "error": null
       },
       "candidatesRejected": {
-        "count": 44,
+        "count": 47,
         "byReason": {
+          "non-review-host": 40,
+          "census-junk-host": 3,
           "aggregator-internal-nav": 1,
-          "not-http-url": 38,
-          "non-review-host": 4,
-          "census-junk-host": 1
+          "venue-production-page": 1,
+          "bare-host": 2
         }
       },
       "dedupedVariants": [],
@@ -65203,16 +65484,16 @@
             "firstSeenAt": "2026-11-03T00:25:22.653Z"
           },
           {
-            "url": "https://aroundthetownchicago.com/theatre-reviews/church-hurt/",
-            "outletId": "aroundthetownchicago.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-03T00:25:22.653Z"
-          },
-          {
             "url": "https://www.newcitystage.com/2026/11/04/church-hurt-reveals-the-remnants-of-an-evangelical-upbringing/",
             "outletId": "newcitystage.com",
             "state": "live",
             "firstSeenAt": "2026-11-07T18:24:01.554Z"
+          },
+          {
+            "url": "https://aroundthetownchicago.com/theatre-reviews/church-hurt/",
+            "outletId": "aroundthetownchicago.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-03T00:25:22.653Z"
           },
           {
             "url": "https://chicagoreader.com/performing-arts/theater/theater-review/church-hurt-red-theater/",
@@ -65232,7 +65513,7 @@
         "liveCount": 5,
         "candidateCount": 5
       },
-      "computedAt": "2026-11-07T18:24:01.554Z"
+      "computedAt": "2026-11-08T07:36:54.780Z"
     },
     {
       "showId": "churchills-urinal-a-new-comedy-by-and-starring-rosie-holt-with-additional-material-off-west-end-2026",
@@ -72143,12 +72424,73 @@
         "perSource": {}
       },
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Cranford\" West End review",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Cranford\" West End review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 2,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Cranford\" review orange",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 1,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Cranford Orange Tree Theatre review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Cranford Orange Tree Theatre review",
+            "page": 1,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Cranford Orange Tree Theatre review",
+            "page": 2,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 1,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 28,
+        "byReason": {
+          "non-review-host": 25,
+          "tag-index-page": 1,
+          "write-path-blocked": 2
+        }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 0,
@@ -72220,7 +72562,7 @@
         "liveCount": 0,
         "candidateCount": 2
       },
-      "computedAt": "2026-11-08T04:04:58.451Z"
+      "computedAt": "2026-11-08T07:36:54.780Z"
     },
     {
       "showId": "crazy-mama-a-true-story-of-love-and-madness-off-broadway-2026",
@@ -92218,7 +92560,7 @@
         "liveCount": 1,
         "candidateCount": 3
       },
-      "computedAt": "2026-11-08T04:04:58.451Z"
+      "computedAt": "2026-11-08T07:36:54.780Z"
     },
     {
       "showId": "doll-day-afternoon-off-broadway-2026",
@@ -146141,65 +146483,12 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"Heart of a Dog\" Off-Broadway review",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"Heart of a Dog\" Off-Broadway review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 9,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "Heart of a Dog Theater 86 review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "Heart of a Dog Theater 86 review",
-            "page": 1,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "Heart of a Dog Theater 86 review",
-            "page": 2,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          }
-        ],
-        "queriesOk": 4,
-        "queriesTotal": 4,
-        "resultCount": 0,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 38,
-        "byReason": {
-          "non-review-host": 34,
-          "roundup-page": 1,
-          "non-review-path": 1,
-          "event-listing": 1,
-          "venue-production-page": 1
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
       "unextractable": [],
@@ -146213,7 +146502,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-11-08T04:04:58.451Z"
+      "computedAt": "2026-11-08T07:36:54.780Z"
     },
     {
       "showId": "heart-of-rock-and-roll-2024",
@@ -151080,14 +151369,363 @@
       "status": "previews",
       "category": "broadway",
       "previewsStartDate": "2026-11-02",
-      "aggregatorArticles": [],
-      "aggregatorListedUrls": [],
-      "dirFiles": 0,
+      "aggregatorArticles": [
+        "https://playbill.com/article/reviews-were-critics-moved-by-here-there-are-blueberries",
+        "https://playbill.com/article/reviews-what-are-critics-saying-about-here-there-are-blueberries"
+      ],
+      "aggregatorListedUrls": [
+        "https://cititour.com/NYC_Broadway/Here-There-Are-Blueberries/1232",
+        "https://nystagereview.com/2024/05/13/here-there-are-blueberries-a-new-invaluable-holocaust-stage-documentary/",
+        "https://www.nysun.com/article/centered-on-everyday-nazi-life-at-auschwitz-here-there-are-blueberries-plumbs-the-depths-of-the-banality-of-evil",
+        "https://newyorktheater.me/2024/05/07/here-there-are-blueberries-theater-review/",
+        "https://www.newyorktheatreguide.com/reviews/here-there-are-blueberries-off-broadway-review",
+        "https://www.nytimes.com/2024/05/13/theater/here-there-are-blueberries-review.html",
+        "https://observer.com/2024/05/review-here-there-are-blueberries-studies-holiday-photos-from-hell/",
+        "https://www.theatermania.com/news/review-here-there-are-blueberries-depicts-nazis-at-play-in-auschwitz_1740241/",
+        "https://www.thewrap.com/here-there-are-blueberries-off-broadway-review/",
+        "https://www.latimes.com/entertainment-arts/story/2022-08-09/review-moises-kaufman-here-there-are-blueberries-play",
+        "https://sandiegostory.com/here-there-are-blueberries-explores-the-chilling-layers-of-the-perpetrators-of-auschwitz/",
+        "https://www.sandiegouniontribune.com/entertainment/theater/story/2022-08-01/review-la-jolla-playhouses-here-there-are-blueberries-a-chilling-examination-of-the-roots-of-human-cruelty",
+        "https://timesofsandiego.com/arts/2022/08/08/here-there-are-blueberries-chronicles-the-terrifying-banality-of-holocaust-evil/"
+      ],
+      "dirFiles": 9,
       "dirClean": 0,
       "inReviewsJson": 0,
-      "missing": [],
+      "missing": [
+        {
+          "url": "https://www.latimes.com/entertainment-arts/story/2022-08-09/review-moises-kaufman-here-there-are-blueberries-play",
+          "host": "latimes.com",
+          "knownOutletId": "latimes",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-what-are-critics-saying-about-here-there-are-blueberries"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://sandiegostory.com/here-there-are-blueberries-explores-the-chilling-layers-of-the-perpetrators-of-auschwitz/",
+          "host": "sandiegostory.com",
+          "knownOutletId": "san-diego-story",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-what-are-critics-saying-about-here-there-are-blueberries"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.sandiegouniontribune.com/entertainment/theater/story/2022-08-01/review-la-jolla-playhouses-here-there-are-blueberries-a-chilling-examination-of-the-roots-of-human-cruelty",
+          "host": "sandiegouniontribune.com",
+          "knownOutletId": "san-diego-union-tribune",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-what-are-critics-saying-about-here-there-are-blueberries"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://timesofsandiego.com/arts/2022/08/08/here-there-are-blueberries-chronicles-the-terrifying-banality-of-holocaust-evil/",
+          "host": "timesofsandiego.com",
+          "knownOutletId": "timesofsandiego",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-what-are-critics-saying-about-here-there-are-blueberries"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        }
+      ],
       "dirOnly": [],
-      "flaggedMisses": [],
+      "flaggedMisses": [
+        {
+          "url": "https://cititour.com/NYC_Broadway/Here-There-Are-Blueberries/1232",
+          "host": "cititour.com",
+          "knownOutletId": "cititour",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "cititour--brian-scott-lipton.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://cititour.com/NYC_Broadway/Here-There-Are-Blueberries/1232"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-were-critics-moved-by-here-there-are-blueberries"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
+        },
+        {
+          "url": "https://nystagereview.com/2024/05/13/here-there-are-blueberries-a-new-invaluable-holocaust-stage-documentary/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nysr--david-finkle.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://nystagereview.com/2024/05/13/here-there-are-blueberries-a-new-invaluable-holocaust-stage-documentary/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "confirmedNonReview": true,
+          "confirmedBasis": [
+            "non-review"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-were-critics-moved-by-here-there-are-blueberries"
+            }
+          ],
+          "reverify": false
+        },
+        {
+          "url": "https://www.nysun.com/article/centered-on-everyday-nazi-life-at-auschwitz-here-there-are-blueberries-plumbs-the-depths-of-the-banality-of-evil",
+          "host": "nysun.com",
+          "knownOutletId": "new-york-sun",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "new-york-sun--elysa-gardner.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.nysun.com/article/centered-on-everyday-nazi-life-at-auschwitz-here-there-are-blueberries-plumbs-the-depths-of-the-banality-of-evil"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-were-critics-moved-by-here-there-are-blueberries"
+            }
+          ],
+          "reverify": false
+        },
+        {
+          "url": "https://newyorktheater.me/2024/05/07/here-there-are-blueberries-theater-review/",
+          "host": "newyorktheater.me",
+          "knownOutletId": "nyt-theater",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nyt-theater--jonathan-mandell.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://newyorktheater.me/2024/05/07/here-there-are-blueberries-theater-review/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-were-critics-moved-by-here-there-are-blueberries"
+            }
+          ],
+          "reverify": false
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/here-there-are-blueberries-off-broadway-review",
+          "host": "newyorktheatreguide.com",
+          "knownOutletId": "nytg",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nytg--kyle-turner.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.newyorktheatreguide.com/reviews/here-there-are-blueberries-off-broadway-review"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-were-critics-moved-by-here-there-are-blueberries"
+            }
+          ],
+          "reverify": false
+        },
+        {
+          "url": "https://www.nytimes.com/2024/05/13/theater/here-there-are-blueberries-review.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nytimes--jesse-green.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.nytimes.com/2024/05/13/theater/here-there-are-blueberries-review.html"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-were-critics-moved-by-here-there-are-blueberries"
+            }
+          ],
+          "reverify": false
+        },
+        {
+          "url": "https://observer.com/2024/05/review-here-there-are-blueberries-studies-holiday-photos-from-hell/",
+          "host": "observer.com",
+          "knownOutletId": "observer",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "observer--david-cote.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://observer.com/2024/05/review-here-there-are-blueberries-studies-holiday-photos-from-hell/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "confirmedNonReview": true,
+          "confirmedBasis": [
+            "non-review"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-were-critics-moved-by-here-there-are-blueberries"
+            }
+          ],
+          "reverify": false
+        },
+        {
+          "url": "https://www.theatermania.com/news/review-here-there-are-blueberries-depicts-nazis-at-play-in-auschwitz_1740241/",
+          "host": "theatermania.com",
+          "knownOutletId": "theatermania",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theatermania--zachary-stewart.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.theatermania.com/news/review-here-there-are-blueberries-depicts-nazis-at-play-in-auschwitz_1740241/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-were-critics-moved-by-here-there-are-blueberries"
+            }
+          ],
+          "reverify": false
+        },
+        {
+          "url": "https://www.thewrap.com/here-there-are-blueberries-off-broadway-review/",
+          "host": "thewrap.com",
+          "knownOutletId": "thewrap",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "thewrap--robert-hofler.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.thewrap.com/here-there-are-blueberries-off-broadway-review/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-were-critics-moved-by-here-there-are-blueberries"
+            }
+          ],
+          "reverify": false
+        }
+      ],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
@@ -151095,11 +151733,62 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 238,
+        "byReason": {
+          "non-review-host": 41,
+          "aggregator-internal-nav": 106,
+          "not-http-url": 12,
+          "production-database-listing": 21,
+          "aggregator-section-root": 8,
+          "non-stage-review": 2,
+          "roundup-page": 48
+        }
       },
       "dedupedVariants": [],
+      "priorRunArticles": [
+        {
+          "url": "https://playbill.com/article/reviews-were-critics-moved-by-here-there-are-blueberries",
+          "publishDate": "2024-05-14"
+        },
+        {
+          "url": "https://playbill.com/article/reviews-what-are-critics-saying-about-here-there-are-blueberries",
+          "publishDate": "2022-08-03"
+        }
+      ],
+      "automatedExcludedListed": 0,
       "unextractable": [],
+      "weIngestBlocked": [
+        {
+          "url": "https://www.latimes.com/entertainment-arts/story/2022-08-09/review-moises-kaufman-here-there-are-blueberries-play",
+          "host": "latimes.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://sandiegostory.com/here-there-are-blueberries-explores-the-chilling-layers-of-the-perpetrators-of-auschwitz/",
+          "host": "sandiegostory.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.sandiegouniontribune.com/entertainment/theater/story/2022-08-01/review-la-jolla-playhouses-here-there-are-blueberries-a-chilling-examination-of-the-roots-of-human-cruelty",
+          "host": "sandiegouniontribune.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://timesofsandiego.com/arts/2022/08/08/here-there-are-blueberries-chronicles-the-terrifying-banality-of-holocaust-evil/",
+          "host": "timesofsandiego.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        }
+      ],
+      "ingestResults": [],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "no-census-yet",
         "missing": [],
@@ -151110,7 +151799,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-11-08T04:04:58.451Z"
+      "computedAt": "2026-11-08T07:36:54.780Z"
     },
     {
       "showId": "here-there-are-blueberries-theatre-royal-stratford-east-west-end-2026",
@@ -177879,75 +178568,12 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"Kate, Allie and the '86 Mets\" Off-Broadway review",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"Kate, Allie and the '86 Mets\" Off-Broadway review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 4,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"Kate, Allie and the '86 Mets\" review asylum",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "Kate, Allie and the '86 Mets Asylum NYC review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "Kate, Allie and the '86 Mets Asylum NYC review",
-            "page": 1,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "Kate, Allie and the '86 Mets Asylum NYC review",
-            "page": 2,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          }
-        ],
-        "queriesOk": 5,
-        "queriesTotal": 5,
-        "resultCount": 0,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 43,
-        "byReason": {
-          "non-review-host": 39,
-          "census-junk-host": 1,
-          "venue-production-page": 1,
-          "news-article": 1,
-          "no-review-evidence": 1
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
       "unextractable": [],
@@ -177961,7 +178587,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-11-08T04:04:58.451Z"
+      "computedAt": "2026-11-08T07:36:54.780Z"
     },
     {
       "showId": "kathy-and-stella-solve-a-murder-west-end-2024",
@@ -270617,12 +271243,73 @@
         "perSource": {}
       },
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Pulman and Stilgoe: Hooray For Hollywood\" West End review",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Pulman and Stilgoe: Hooray For Hollywood\" West End review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Pulman and Stilgoe: Hooray For Hollywood\" review wilton",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 9,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Pulman and Stilgoe: Hooray For Hollywood Wilton's Music Hall review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Pulman and Stilgoe: Hooray For Hollywood Wilton's Music Hall review",
+            "page": 1,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Pulman and Stilgoe: Hooray For Hollywood Wilton's Music Hall review",
+            "page": 2,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 1,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 44,
+        "byReason": {
+          "non-review-host": 42,
+          "no-review-evidence": 1,
+          "ticketing-reseller": 1
+        }
       },
       "dedupedVariants": [],
       "nonReviewCandidates": [
@@ -270712,7 +271399,7 @@
         "liveCount": 3,
         "candidateCount": 5
       },
-      "computedAt": "2026-11-08T04:04:58.451Z"
+      "computedAt": "2026-11-08T07:36:54.780Z"
     },
     {
       "showId": "pulman-and-stilgoe-hooray-for-hollywood-west-end-2026",
@@ -274732,6 +275419,44 @@
         "candidateCount": 11
       },
       "computedAt": "2026-10-31T17:07:08.919Z"
+    },
+    {
+      "showId": "r-u-r-rossums-universal-robots-regional-2025",
+      "title": "R.U.R. (Rossum's Universal Robots)",
+      "openingDate": "2025-05-12",
+      "status": "closed",
+      "category": "regional",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "unextractable": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 4,
+        "excluded": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-11-08T07:36:54.780Z"
     },
     {
       "showId": "rabbits-in-their-pockets-regional-2025",
@@ -283307,12 +284032,15 @@
       "category": "regional",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
+        "https://stageandcinema.com/2026/10/23/rorschach-skylight-theatre-review/",
         "https://ladramacriticscircle.com/rorschach-skylight-theatre/",
+        "https://stagescenela.com/2026/10/rorschach/",
+        "https://morristheatredc.com/reviews/review-so-late-into-the-night-rorschach",
         "https://larchmontbuzz.com/theater/rorschach-what-might-this-be/",
         "https://www.broadwayworld.com/los-angeles/article/Review-RORSCHACH-at-Skylight-Theater-20261102",
-        "https://www.broadwayworld.com/washington-dc/article/Review-SPARKED-THE-VANISHING-AT-BUZZARD-POINT-at-Rorschach-Theatre-20261026",
         "https://www.latheatrix.com/post/review-immersive-rorschach-at-skylight-theatre-company",
-        "https://stageraw.com/stage-raw-review-rorschach/"
+        "https://stageraw.com/stage-raw-review-rorschach/",
+        "https://www.broadwayworld.com/washington-dc/article/Review-SPARKED-THE-VANISHING-AT-BUZZARD-POINT-at-Rorschach-Theatre-20261026"
       ],
       "dirFiles": 8,
       "dirClean": 6,
@@ -283331,16 +284059,7 @@
           ]
         }
       ],
-      "dirOnly": [
-        {
-          "host": "stageandcinema.com",
-          "count": 1
-        },
-        {
-          "host": "stagescenela.com",
-          "count": 1
-        }
-      ],
+      "dirOnly": [],
       "flaggedMisses": [
         {
           "url": "https://www.broadwayworld.com/washington-dc/article/Review-SPARKED-THE-VANISHING-AT-BUZZARD-POINT-at-Rorschach-Theatre-20261026",
@@ -283385,8 +284104,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 10,
-            "accepted": 0,
+            "results": 6,
+            "accepted": 1,
             "error": null
           },
           {
@@ -283406,7 +284125,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           },
           {
@@ -283416,7 +284135,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 0,
             "error": null
           },
           {
@@ -283426,25 +284145,33 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 2,
+        "resultCount": 4,
         "error": null
       },
       "candidatesRejected": {
-        "count": 43,
+        "count": 39,
         "byReason": {
-          "aggregator-internal-nav": 1,
-          "not-http-url": 34,
-          "non-review-host": 7,
-          "no-review-evidence": 1
+          "non-review-host": 38,
+          "census-junk-host": 1
         }
       },
       "dedupedVariants": [],
+      "nonReviewCandidates": [
+        {
+          "url": "https://morristheatredc.com/reviews/review-so-late-into-the-night-rorschach",
+          "host": "morristheatredc.com",
+          "knownOutletId": "morris-theatre-dc",
+          "serpCensus": true,
+          "nonReviewVerdict": "page-date-before-run",
+          "nonReviewDetail": "2025-10-10"
+        }
+      ],
       "automatedExcludedListed": 1,
       "unextractable": [],
       "weIngestBlocked": [
@@ -283478,6 +284205,24 @@
         ],
         "suppressedMissing": [],
         "candidates": [
+          {
+            "url": "https://stageandcinema.com/2026/10/23/rorschach-skylight-theatre-review/",
+            "outletId": "stageandcinema.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-08T07:36:54.780Z"
+          },
+          {
+            "url": "https://stagescenela.com/2026/10/rorschach/",
+            "outletId": "stagescenela.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-08T07:36:54.780Z"
+          },
+          {
+            "url": "https://morristheatredc.com/reviews/review-so-late-into-the-night-rorschach",
+            "outletId": "morristheatredc.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-08T07:36:54.780Z"
+          },
           {
             "url": "https://larchmontbuzz.com/theater/rorschach-what-might-this-be/",
             "outletId": "larchmontbuzz.com",
@@ -283518,11 +284263,17 @@
           }
         ],
         "censusSchema": 4,
-        "excluded": [],
-        "liveCount": 4,
-        "candidateCount": 6
+        "excluded": [
+          {
+            "url": "https://morristheatredc.com/reviews/review-so-late-into-the-night-rorschach",
+            "host": "morristheatredc.com",
+            "reason": "page-date-before-run"
+          }
+        ],
+        "liveCount": 7,
+        "candidateCount": 9
       },
-      "computedAt": "2026-11-07T18:24:01.554Z"
+      "computedAt": "2026-11-08T07:36:54.780Z"
     },
     {
       "showId": "rosie-odonnell-common-knowledge-off-broadway-2026",
@@ -285163,12 +285914,74 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Sankai Juku: TOTEM—Void and Height\" Off-Broadway review",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Sankai Juku: TOTEM—Void and Height\" Off-Broadway review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 4,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Sankai Juku: TOTEM—Void and Height\" review skirball",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 1,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Sankai Juku: TOTEM—Void and Height NYU Skirball review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Sankai Juku: TOTEM—Void and Height NYU Skirball review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Sankai Juku: TOTEM—Void and Height NYU Skirball review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 0,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 30,
+        "byReason": {
+          "non-review-host": 26,
+          "no-review-evidence": 1,
+          "ticketing-reseller": 2,
+          "institutional-press-release": 1
+        }
       },
       "dedupedVariants": [],
       "unextractable": [],
@@ -285182,7 +285995,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-11-08T04:04:58.451Z"
+      "computedAt": "2026-11-08T07:36:54.780Z"
     },
     {
       "showId": "saturday-church-off-broadway-2025",
@@ -296582,6 +297395,10 @@
             {
               "source": "aggregator-article",
               "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-SLANTED-FLOORS-Opens-With-Kyle-Beltran-and-Adam-Chanler-Berat-20261106"
+            },
+            {
+              "source": "serp-census",
+              "sourceUrl": null
             }
           ],
           "reverify": false
@@ -296590,17 +297407,77 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Slanted Floors\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Slanted Floors\" Off-Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 9,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Slanted Floors\" review astor",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Slanted Floors Astor Place Theatre review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 9,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Slanted Floors Astor Place Theatre review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Slanted Floors Astor Place Theatre review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 9,
+            "accepted": 1,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 2,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 282,
+        "count": 325,
         "byReason": {
-          "non-review-host": 15,
+          "non-review-host": 52,
+          "aggregator-internal-nav": 214,
           "not-http-url": 49,
-          "aggregator-internal-nav": 212,
           "aggregator-section-root": 5,
-          "podcast-episode": 1
+          "no-review-evidence": 1,
+          "non-review-path": 2,
+          "podcast-episode": 1,
+          "venue-production-page": 1
         }
       },
       "dedupedVariants": [],
@@ -296635,7 +297512,7 @@
         "liveCount": 3,
         "candidateCount": 3
       },
-      "computedAt": "2026-11-08T04:04:58.451Z"
+      "computedAt": "2026-11-08T07:36:54.780Z"
     },
     {
       "showId": "slaughterhouse-five-off-west-end-2026",
@@ -322883,12 +323760,74 @@
         }
       },
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Tango After Dark\" West End review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Tango After Dark\" West End review 2026",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 8,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Tango After Dark\" review peacock",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Tango After Dark Peacock Theatre review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Tango After Dark Peacock Theatre review",
+            "page": 1,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Tango After Dark Peacock Theatre review",
+            "page": 2,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 0,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 43,
+        "byReason": {
+          "non-review-host": 40,
+          "no-review-evidence": 1,
+          "non-review-path": 1,
+          "ticket-seller-product-page": 1
+        }
       },
       "dedupedVariants": [],
       "nonReviewCandidates": [
@@ -322970,7 +323909,7 @@
         "liveCount": 4,
         "candidateCount": 4
       },
-      "computedAt": "2026-11-08T04:04:58.451Z"
+      "computedAt": "2026-11-08T07:36:54.780Z"
     },
     {
       "showId": "tango-after-dark-west-end-2026",
@@ -324583,11 +325522,9 @@
       "openingDate": "2025-11-17",
       "status": "closed",
       "category": "off-broadway",
-      "aggregatorArticles": [
-        "https://www.broadwayworld.com/article/Review-Roundup-THE-25TH-ANNUAL-PUTNAM-COUNTY-SPELLING-BEE-Returns-Off-Broadway-20251117"
-      ],
+      "previewsStartDate": "2025-11-07",
+      "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://www.thedailybeast.com/obsessed/25th-annual-putnam-county-spelling-bee-review-a-delightful-adorable-triumph/",
         "https://www.newyorktheatreguide.com/reviews/the-25th-annual-putnam-county-spelling-bee-off-broadway-review-charming",
         "https://exeuntnyc.com/reviews/review-the-25th-annual-putnam-county-spelling-bee-at-new-world-stages/",
         "https://1minutecritic.com/25th-annual-putnam-county-spelling-bee-off-broadway-review/",
@@ -324596,8 +325533,8 @@
         "https://www.nytimes.com/2025/11/18/theater/25th-annual-putnam-county-spelling-bee-review.html"
       ],
       "dirFiles": 21,
-      "dirClean": 14,
-      "inReviewsJson": 14,
+      "dirClean": 15,
+      "inReviewsJson": 15,
       "missing": [],
       "dirOnly": [
         {
@@ -324606,6 +325543,10 @@
         },
         {
           "host": "amny.com",
+          "count": 1
+        },
+        {
+          "host": "thedailybeast.com",
           "count": 1
         },
         {
@@ -324633,34 +325574,7 @@
           "count": 1
         }
       ],
-      "flaggedMisses": [
-        {
-          "url": "https://www.thedailybeast.com/obsessed/25th-annual-putnam-county-spelling-bee-review-a-delightful-adorable-triumph/",
-          "host": "thedailybeast.com",
-          "knownOutletId": "dailybeast",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "dailybeast--tim-teeman.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://www.thedailybeast.com/obsessed/25th-annual-putnam-county-spelling-bee-review-a-delightful-adorable-triumph/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongShow"
-          ],
-          "confirmedNonReview": true,
-          "confirmedBasis": [
-            "non-review"
-          ],
-          "reverify": false
-        }
-      ],
+      "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
@@ -324668,13 +325582,8 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 320,
-        "byReason": {
-          "aggregator-internal-nav": 223,
-          "not-http-url": 74,
-          "aggregator-section-root": 4,
-          "non-review-host": 19
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 0,
@@ -324722,17 +325631,11 @@
           }
         ],
         "censusSchema": 4,
-        "excluded": [
-          {
-            "url": "https://www.thedailybeast.com/obsessed/25th-annual-putnam-county-spelling-bee-review-a-delightful-adorable-triumph/",
-            "host": "thedailybeast.com",
-            "reason": "confirmed-non-review"
-          }
-        ],
+        "excluded": [],
         "liveCount": 6,
         "candidateCount": 6
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-11-08T07:36:54.780Z"
     },
     {
       "showId": "the-39-steps-hull-truck-regional-2026",
@@ -329197,6 +330100,7 @@
       "openingDate": "2026-09-15",
       "status": "closed",
       "category": "off-broadway",
+      "previewsStartDate": "2026-09-08",
       "aggregatorArticles": [
         "https://www.broadwayworld.com/article/Review-Roundup-THE-BODY-OF-MARY-A-PLAY-IN-THREE-ACTS-OF-GOD-20260925"
       ],
@@ -329233,12 +330137,14 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 270,
+        "count": 279,
         "byReason": {
-          "aggregator-internal-nav": 206,
-          "not-http-url": 43,
-          "aggregator-section-root": 6,
-          "non-review-host": 15
+          "non-review-host": 15,
+          "aggregator-internal-nav": 209,
+          "not-http-url": 46,
+          "aggregator-section-root": 5,
+          "roundup-page": 3,
+          "podcast-episode": 1
         }
       },
       "dedupedVariants": [],
@@ -329285,7 +330191,7 @@
         "liveCount": 5,
         "candidateCount": 5
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-11-08T07:36:54.780Z"
     },
     {
       "showId": "the-bodyguard-tour-2026",
@@ -331894,74 +332800,12 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"The Charioteer\" Off-Broadway review",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"The Charioteer\" Off-Broadway review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"The Charioteer\" review cell",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "The Charioteer the cell review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "The Charioteer the cell review",
-            "page": 1,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "The Charioteer the cell review",
-            "page": 2,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          }
-        ],
-        "queriesOk": 5,
-        "queriesTotal": 5,
-        "resultCount": 0,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 46,
-        "byReason": {
-          "non-review-host": 42,
-          "write-path-blocked": 1,
-          "bare-host": 1,
-          "aggregator-internal-nav": 2
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 0,
@@ -332024,7 +332868,7 @@
         "liveCount": 0,
         "candidateCount": 2
       },
-      "computedAt": "2026-11-08T04:04:58.451Z"
+      "computedAt": "2026-11-08T07:36:54.780Z"
     },
     {
       "showId": "the-cherry-orchard-park-avenue-armory-off-broadway-2026",
@@ -338514,22 +339358,23 @@
       "category": "off-broadway",
       "previewsStartDate": "2026-10-08",
       "aggregatorArticles": [
-        "https://playbill.com/article/reviews-what-are-the-critics-saying-about-the-curious-case-of-benjamin-button-at-the-public-theater",
-        "https://www.broadwayworld.com/article/Review-Roundup-THE-CURIOUS-CASE-OF-BENJAMIN-BUTTON-Opens-at-The-Public-Theater-20261021"
+        "https://www.broadwayworld.com/article/Review-Roundup-THE-CURIOUS-CASE-OF-BENJAMIN-BUTTON-Opens-at-The-Public-Theater-20261021",
+        "https://playbill.com/article/reviews-what-are-the-critics-saying-about-the-curious-case-of-benjamin-button-at-the-public-theater"
       ],
       "aggregatorListedUrls": [
-        "https://cititour.com/NYC_Broadway/The-Curious-Case-of-Benjamin-Button/1403",
-        "https://www.newyorktheatreguide.com/reviews/the-curious-case-of-benjamin-button-off-broadway-review",
+        "https://www.wsj.com/articles/the-curious-case-of-benjamin-button-review-a-warmly-imagined-musical-c5224f3a",
         "https://nypost.com/2026/10/21/entertainment/curious-case-of-benjamin-button-review-a-sweet-and-folksy-musical-that-wants-to-go-to-broadway/",
+        "https://www.theatermania.com/news/review-the-curious-case-of-benjamin-button-is-a-musical-fable-that-jigs-to-the-rhythm-of-life_1857723/",
+        "https://www.newyorktheatreguide.com/reviews/the-curious-case-of-benjamin-button-off-broadway-review",
         "https://nystagereview.com/2026/10/21/the-curious-case-of-benjamin-button-a-musical-fable-that-will-make-you-feel-younger/",
         "https://nystagereview.com/2026/10/21/the-curious-case-of-benjamin-button-new-musical-pushes-button/",
-        "https://therecs.co.uk/the-curious-case-of-benjamin-button-the-public-theater/",
-        "https://www.theatermania.com/news/review-the-curious-case-of-benjamin-button-is-a-musical-fable-that-jigs-to-the-rhythm-of-life_1857723/",
-        "https://www.wsj.com/articles/the-curious-case-of-benjamin-button-review-a-warmly-imagined-musical-c5224f3a",
         "https://newyorktheater.me/2026/10/21/the-curious-case-of-benjamin-button-review/",
         "https://culturesauce.com/curious-case-of-benjamin-button-musical-off-broadway-review/",
+        "https://cititour.com/NYC_Broadway/The-Curious-Case-of-Benjamin-Button/1403",
+        "https://therecs.co.uk/the-curious-case-of-benjamin-button-the-public-theater/",
         "https://theaterlife.com/the-curious-case-of-benjamin-button/",
         "https://pagesonstages.com/2026/10/21/the-curious-case-of-benjamin-button/",
+        "https://ie.headtopics.com/news/curious-case-of-benjamin-button-review-a-sweet-and-89063534",
         "https://joshatthemovies.com/2026/10/21/theater-review-the-curious-case-of-benjamin-button/",
         "https://stuonbroadway.blogspot.com/2026/10/the-curious-case-of-benjamin-button-off.html",
         "https://www.nytimes.com/2026/10/25/theater/curious-case-benjamin-button-musical.html",
@@ -338543,6 +339388,18 @@
       "dirClean": 27,
       "inReviewsJson": 27,
       "missing": [
+        {
+          "url": "https://ie.headtopics.com/news/curious-case-of-benjamin-button-review-a-sweet-and-89063534",
+          "host": "headtopics.com",
+          "knownOutletId": "headtopics",
+          "serpCensus": true,
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ]
+        },
         {
           "url": "https://theatregold.com/curious-case-of-benjamin-button-musical-guide/",
           "host": "theatregold.com",
@@ -338633,7 +339490,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 1,
             "error": null
           },
           {
@@ -338653,7 +339510,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 0,
             "error": null
           },
           {
@@ -338673,27 +339530,29 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 0,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 4,
+        "resultCount": 1,
         "error": null
       },
       "candidatesRejected": {
-        "count": 431,
+        "count": 433,
         "byReason": {
-          "aggregator-internal-nav": 248,
-          "not-http-url": 116,
-          "production-database-listing": 9,
+          "non-review-host": 79,
+          "census-junk-host": 2,
+          "aggregator-internal-nav": 247,
+          "not-http-url": 78,
+          "production-database-listing": 10,
           "aggregator-section-root": 10,
-          "non-review-host": 42,
           "non-stage-review": 1,
-          "roundup-page": 3,
-          "ticketing-reseller": 1,
-          "podcast-episode": 1
+          "roundup-page": 2,
+          "podcast-episode": 1,
+          "ticketing-reseller": 2,
+          "write-path-blocked": 1
         }
       },
       "dedupedVariants": [],
@@ -338709,6 +339568,21 @@
         }
       ],
       "ingestResults": [
+        {
+          "url": "https://ie.headtopics.com/news/curious-case-of-benjamin-button-review-a-sweet-and-89063534",
+          "host": "headtopics.com",
+          "outletId": "headtopics",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "⚠️  operator input \"headtopics\" resolved to registered outlet \"headtopics\" but URL host \"ie.headtopics.com\" doesn't match that outlet's registered domain — refusing to borrow its identity. Using host-derived provisional \"headtopics\" instead.\n\n❌ Write-guard refused the write — nothing changed on disk (domain-mismatch: URL domain ie.headtopics.com doesn't match outlet headtopics (expected us.headtopics.com))"
+        },
         {
           "url": "https://www.showsiveseen.com/the-curious-case-of-benjamin-button-musical-review-ambassadors-theatre/",
           "host": "showsiveseen.com",
@@ -338769,20 +339643,26 @@
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://cititour.com/NYC_Broadway/The-Curious-Case-of-Benjamin-Button/1403",
-            "outletId": "cititour.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-22T18:40:22.780Z"
-          },
-          {
-            "url": "https://www.newyorktheatreguide.com/reviews/the-curious-case-of-benjamin-button-off-broadway-review",
-            "outletId": "newyorktheatreguide.com",
+            "url": "https://www.wsj.com/articles/the-curious-case-of-benjamin-button-review-a-warmly-imagined-musical-c5224f3a",
+            "outletId": "wsj.com",
             "state": "live",
             "firstSeenAt": "2026-10-22T18:40:22.780Z"
           },
           {
             "url": "https://nypost.com/2026/10/21/entertainment/curious-case-of-benjamin-button-review-a-sweet-and-folksy-musical-that-wants-to-go-to-broadway/",
             "outletId": "nypost.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-22T18:40:22.780Z"
+          },
+          {
+            "url": "https://www.theatermania.com/news/review-the-curious-case-of-benjamin-button-is-a-musical-fable-that-jigs-to-the-rhythm-of-life_1857723/",
+            "outletId": "theatermania.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-22T18:40:22.780Z"
+          },
+          {
+            "url": "https://www.newyorktheatreguide.com/reviews/the-curious-case-of-benjamin-button-off-broadway-review",
+            "outletId": "newyorktheatreguide.com",
             "state": "live",
             "firstSeenAt": "2026-10-22T18:40:22.780Z"
           },
@@ -338799,24 +339679,6 @@
             "firstSeenAt": "2026-10-22T18:40:22.780Z"
           },
           {
-            "url": "https://therecs.co.uk/the-curious-case-of-benjamin-button-the-public-theater/",
-            "outletId": "therecs.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-10-22T18:40:22.780Z"
-          },
-          {
-            "url": "https://www.theatermania.com/news/review-the-curious-case-of-benjamin-button-is-a-musical-fable-that-jigs-to-the-rhythm-of-life_1857723/",
-            "outletId": "theatermania.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-22T18:40:22.780Z"
-          },
-          {
-            "url": "https://www.wsj.com/articles/the-curious-case-of-benjamin-button-review-a-warmly-imagined-musical-c5224f3a",
-            "outletId": "wsj.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-22T18:40:22.780Z"
-          },
-          {
             "url": "https://newyorktheater.me/2026/10/21/the-curious-case-of-benjamin-button-review/",
             "outletId": "newyorktheater.me",
             "state": "live",
@@ -338825,6 +339687,18 @@
           {
             "url": "https://culturesauce.com/curious-case-of-benjamin-button-musical-off-broadway-review/",
             "outletId": "culturesauce.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-22T18:40:22.780Z"
+          },
+          {
+            "url": "https://cititour.com/NYC_Broadway/The-Curious-Case-of-Benjamin-Button/1403",
+            "outletId": "cititour.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-22T18:40:22.780Z"
+          },
+          {
+            "url": "https://therecs.co.uk/the-curious-case-of-benjamin-button-the-public-theater/",
+            "outletId": "therecs.co.uk",
             "state": "live",
             "firstSeenAt": "2026-10-22T18:40:22.780Z"
           },
@@ -338893,11 +339767,17 @@
           }
         ],
         "censusSchema": 4,
-        "excluded": [],
+        "excluded": [
+          {
+            "url": "https://ie.headtopics.com/news/curious-case-of-benjamin-button-review-a-sweet-and-89063534",
+            "host": "headtopics.com",
+            "reason": "syndication-portal"
+          }
+        ],
         "liveCount": 16,
         "candidateCount": 19
       },
-      "computedAt": "2026-11-07T18:24:01.554Z"
+      "computedAt": "2026-11-08T07:36:54.780Z"
     },
     {
       "showId": "the-cuttlefish-or-the-hyrcanian-worldview-regional-2026",
@@ -355987,6 +356867,143 @@
       "computedAt": "2026-10-31T21:45:18.470Z"
     },
     {
+      "showId": "the-last-bimbo-of-the-apocalypse-off-broadway-2025",
+      "title": "The Last Bimbo of the Apocalypse",
+      "openingDate": "2025-05-13",
+      "status": "closed",
+      "category": "off-broadway",
+      "previewsStartDate": "2025-04-22",
+      "aggregatorArticles": [
+        "https://playbill.com/article/read-the-reviews-for-the-last-bimbo-of-the-apocalypse"
+      ],
+      "aggregatorListedUrls": [
+        "https://1minutecritic.com/last-bimbo-of-the-apocalypse-review/",
+        "https://exeuntnyc.com/reviews/review-the-last-bimbo-of-the-apocalypse-at-the-new-group-at-the-pershing-square-signature-center/",
+        "https://nystagereview.com/2025/05/13/the-last-bimbo-of-the-apocalypse-skanks-for-the-y2k-memories/",
+        "https://www.newyorktheatreguide.com/reviews/the-last-bimbo-of-the-apocalypse-off-broadway-review",
+        "https://www.nytimes.com/2025/05/14/theater/last-bimbo-of-the-apocalypse-review.html",
+        "https://www.theatermania.com/news/review-the-last-bimbo-of-the-apocalypse-a-musical-collision-of-pop-trash-and-true-crime_1778582/",
+        "https://www.theatrely.com/post/lets-hear-it-for-the-bimbo-the-last-bimbo-of-the-apocalypse-review",
+        "https://www.theaterscene.net/musicals/offbway/the-last-bimbo-of-the-apocalypse/victor-gluck/",
+        "https://theaterlife.com/the-last-bimbo-of-the-apocolapse-1-2/",
+        "https://twi-ny.com/2025/05/13/the-last-bimbo-of-the-apocalypse-the-new-group/",
+        "https://www.offoffonline.com/offoffonline/2025/5/7/the-last-bimbo-of-the-apocalypse"
+      ],
+      "dirFiles": 14,
+      "dirClean": 13,
+      "inReviewsJson": 13,
+      "missing": [],
+      "dirOnly": [
+        {
+          "host": "dctheaterarts.org",
+          "count": 1
+        },
+        {
+          "host": "vulture.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 109,
+        "byReason": {
+          "non-review-host": 22,
+          "aggregator-internal-nav": 65,
+          "not-http-url": 6,
+          "production-database-listing": 11,
+          "aggregator-section-root": 4,
+          "non-stage-review": 1
+        }
+      },
+      "dedupedVariants": [],
+      "automatedExcludedListed": 0,
+      "unextractable": [],
+      "censusVerdict": {
+        "verdict": "complete",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "https://1minutecritic.com/last-bimbo-of-the-apocalypse-review/",
+            "outletId": "1minutecritic.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-08T07:36:54.780Z"
+          },
+          {
+            "url": "https://exeuntnyc.com/reviews/review-the-last-bimbo-of-the-apocalypse-at-the-new-group-at-the-pershing-square-signature-center/",
+            "outletId": "exeuntnyc.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-08T07:36:54.780Z"
+          },
+          {
+            "url": "https://nystagereview.com/2025/05/13/the-last-bimbo-of-the-apocalypse-skanks-for-the-y2k-memories/",
+            "outletId": "nystagereview.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-08T07:36:54.780Z"
+          },
+          {
+            "url": "https://www.newyorktheatreguide.com/reviews/the-last-bimbo-of-the-apocalypse-off-broadway-review",
+            "outletId": "newyorktheatreguide.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-08T07:36:54.780Z"
+          },
+          {
+            "url": "https://www.nytimes.com/2025/05/14/theater/last-bimbo-of-the-apocalypse-review.html",
+            "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-08T07:36:54.780Z"
+          },
+          {
+            "url": "https://www.theatermania.com/news/review-the-last-bimbo-of-the-apocalypse-a-musical-collision-of-pop-trash-and-true-crime_1778582/",
+            "outletId": "theatermania.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-08T07:36:54.780Z"
+          },
+          {
+            "url": "https://www.theatrely.com/post/lets-hear-it-for-the-bimbo-the-last-bimbo-of-the-apocalypse-review",
+            "outletId": "theatrely.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-08T07:36:54.780Z"
+          },
+          {
+            "url": "https://www.theaterscene.net/musicals/offbway/the-last-bimbo-of-the-apocalypse/victor-gluck/",
+            "outletId": "theaterscene.net",
+            "state": "live",
+            "firstSeenAt": "2026-11-08T07:36:54.780Z"
+          },
+          {
+            "url": "https://theaterlife.com/the-last-bimbo-of-the-apocolapse-1-2/",
+            "outletId": "theaterlife.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-08T07:36:54.780Z"
+          },
+          {
+            "url": "https://twi-ny.com/2025/05/13/the-last-bimbo-of-the-apocalypse-the-new-group/",
+            "outletId": "twi-ny.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-08T07:36:54.780Z"
+          },
+          {
+            "url": "https://www.offoffonline.com/offoffonline/2025/5/7/the-last-bimbo-of-the-apocalypse",
+            "outletId": "offoffonline.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-08T07:36:54.780Z"
+          }
+        ],
+        "censusSchema": 4,
+        "excluded": [],
+        "liveCount": 11,
+        "candidateCount": 11
+      },
+      "computedAt": "2026-11-08T07:36:54.780Z"
+    },
+    {
       "showId": "the-last-days-of-liz-truss-off-west-end-2026",
       "title": "The Last Days of Liz Truss?",
       "openingDate": "2026-03-03",
@@ -363948,12 +364965,74 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"The Morbs\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"The Morbs\" Off-Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"The Morbs\" review jeffrey",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "The Morbs Jeffrey and Paula Gural Theatre at A.R.T./New York Theatres review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "The Morbs Jeffrey and Paula Gural Theatre at A.R.T./New York Theatres review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "The Morbs Jeffrey and Paula Gural Theatre at A.R.T./New York Theatres review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 1,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 45,
+        "byReason": {
+          "non-review-host": 42,
+          "merch-store": 1,
+          "tag-index-page": 1,
+          "bare-host": 1
+        }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 0,
@@ -363987,7 +365066,7 @@
         "liveCount": 3,
         "candidateCount": 3
       },
-      "computedAt": "2026-11-08T04:04:58.451Z"
+      "computedAt": "2026-11-08T07:36:54.780Z"
     },
     {
       "showId": "the-moth-off-west-end-2026",
@@ -365453,75 +366532,12 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"The Niceties\" Broadway review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"The Niceties\" Broadway review 2026",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"The Niceties\" review noyes",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "The Niceties Noyes Cultural Art Center, Evanston, IL review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "The Niceties Noyes Cultural Art Center, Evanston, IL review",
-            "page": 1,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "The Niceties Noyes Cultural Art Center, Evanston, IL review",
-            "page": 2,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          }
-        ],
-        "queriesOk": 5,
-        "queriesTotal": 5,
-        "resultCount": 0,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 49,
-        "byReason": {
-          "non-review-host": 45,
-          "non-review-path": 1,
-          "event-listing": 1,
-          "review-hub-page": 1,
-          "bare-host": 1
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 1,
@@ -365558,7 +366574,7 @@
         "liveCount": 1,
         "candidateCount": 2
       },
-      "computedAt": "2026-11-08T04:04:58.451Z"
+      "computedAt": "2026-11-08T07:36:54.780Z"
     },
     {
       "showId": "the-night-larry-kramer-kissed-me-hope-mill-regional-2026",
@@ -391065,9 +392081,9 @@
         "https://pagesonstages.com/2026/11/05/the-verge/",
         "https://www.timeout.com/newyork/theater/the-verge"
       ],
-      "dirFiles": 21,
-      "dirClean": 11,
-      "inReviewsJson": 11,
+      "dirFiles": 22,
+      "dirClean": 12,
+      "inReviewsJson": 12,
       "missing": [],
       "dirOnly": [
         {
@@ -391083,6 +392099,10 @@
           "count": 1
         },
         {
+          "host": "theaterscene.net",
+          "count": 1
+        },
+        {
           "host": "vulture.com",
           "count": 1
         }
@@ -391091,17 +392111,90 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"The Verge\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"The Verge\" Off-Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 9,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"The Verge\" review public",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 4,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped2",
+            "query": "\"The Verge\" Glaspell review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 9,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "The Verge The Public Theater/LuEsther Hall review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "The Verge The Public Theater/LuEsther Hall review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "The Verge The Public Theater/LuEsther Hall review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 6,
+        "queriesTotal": 6,
+        "resultCount": 2,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 296,
+        "count": 342,
         "byReason": {
-          "non-review-host": 15,
-          "not-http-url": 63,
+          "non-review-host": 53,
           "aggregator-internal-nav": 212,
+          "not-http-url": 63,
           "aggregator-section-root": 5,
-          "podcast-episode": 1
+          "roundup-page": 1,
+          "podcast-episode": 1,
+          "tag-index-page": 1,
+          "news-roundup-site": 1,
+          "show-listing-page": 1,
+          "ugc-platform": 3,
+          "review-index-page": 1
         }
       },
       "dedupedVariants": [],
@@ -391181,7 +392274,7 @@
         "liveCount": 8,
         "candidateCount": 8
       },
-      "computedAt": "2026-11-08T04:04:58.451Z"
+      "computedAt": "2026-11-08T07:36:54.780Z"
     },
     {
       "showId": "the-very-hungry-caterpillar-interactive-show-off-broadway-2026",
@@ -392169,7 +393262,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-11-08T04:04:58.451Z"
+      "computedAt": "2026-11-08T07:36:54.780Z"
     },
     {
       "showId": "the-wanderers-off-broadway-2023",
@@ -404639,73 +405732,12 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"Traitorz: The Unauthorized Musical Parody\" Off-Broadway review",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"Traitorz: The Unauthorized Musical Parody\" Off-Broadway review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 3,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"Traitorz: The Unauthorized Musical Parody\" review luke",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 3,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "Traitorz: The Unauthorized Musical Parody St. Luke's Theatre review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "Traitorz: The Unauthorized Musical Parody St. Luke's Theatre review",
-            "page": 1,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "Traitorz: The Unauthorized Musical Parody St. Luke's Theatre review",
-            "page": 2,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          }
-        ],
-        "queriesOk": 5,
-        "queriesTotal": 5,
-        "resultCount": 0,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 36,
-        "byReason": {
-          "non-review-host": 32,
-          "aggregator-internal-nav": 1,
-          "census-junk-host": 3
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
       "unextractable": [],
@@ -404719,7 +405751,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-11-08T04:04:58.451Z"
+      "computedAt": "2026-11-08T07:36:54.780Z"
     },
     {
       "showId": "transcendency-rising-short-plays-about-defying-limitations-off-broadway-2026",
@@ -408526,12 +409558,75 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Turn. Turning. TURNT.\" Off-Broadway review",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Turn. Turning. TURNT.\" Off-Broadway review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Turn. Turning. TURNT.\" review fisher",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 4,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Turn. Turning. TURNT. BAM Fisher (Fishman Space) review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Turn. Turning. TURNT. BAM Fisher (Fishman Space) review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Turn. Turning. TURNT. BAM Fisher (Fishman Space) review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 0,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 41,
+        "byReason": {
+          "non-review-host": 36,
+          "aggregator-internal-nav": 2,
+          "ticketing-reseller": 1,
+          "write-path-blocked": 1,
+          "static-asset": 1
+        }
       },
       "dedupedVariants": [],
       "unextractable": [],
@@ -408545,7 +409640,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-11-08T04:04:58.451Z"
+      "computedAt": "2026-11-08T07:36:54.780Z"
     },
     {
       "showId": "twelfth-night-crucible-regional-2026",
@@ -429894,30 +430989,30 @@
     }
   ],
   "staleness": {
-    "at": "2026-11-08T06:35:10.987Z",
+    "at": "2026-11-08T07:36:54.780Z",
     "reserveEvery": 4,
     "reservedAttempted": [
-      "tosca-english-national-opera-west-end-2026",
-      "king-of-the-yees-off-broadway-2026",
-      "the-play-that-goes-wrong-off-broadway-2019",
-      "oh-mary-off-broadway-2024"
+      "rorschach-regional-2026",
+      "the-curious-case-of-benjamin-button-off-broadway-2026",
+      "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025",
+      "the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026"
     ],
     "catalogueReserveEvery": 8,
     "catalogueAttempted": [
-      "sweet-charity-regional-2025",
-      "goodbye-dreamland-bowlarama-oran-mor-regional-2025",
-      "1536-off-west-end-2026"
+      "the-last-bimbo-of-the-apocalypse-off-broadway-2025",
+      "r-u-r-rossums-universal-robots-regional-2025",
+      "cats-regional-2025"
     ],
-    "neverAuditedDueAtStart": 561,
+    "neverAuditedDueAtStart": 549,
     "oldestDueRowAtStart": {
-      "showId": "the-play-that-goes-wrong-off-broadway-2019",
-      "computedAt": "2026-10-11T21:47:22.687Z",
-      "ageHours": 656.5
-    },
-    "oldestDueRowAfterRun": {
       "showId": "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025",
       "computedAt": "2026-10-31T17:07:08.919Z",
-      "ageHours": 181.5
+      "ageHours": 182.2
+    },
+    "oldestDueRowAfterRun": {
+      "showId": "death-of-a-salesman-2026",
+      "computedAt": "2026-10-31T17:07:08.919Z",
+      "ageHours": 182.5
     }
   }
 }

@@ -1867,20 +1867,6 @@
     "queuedAt": "2026-11-08T06:35:11.911Z"
   },
   {
-    "conditionKey": "t1-gaps:needs-manual-recovery",
-    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (Lincoln in the Bardo (washpost)). Checked 2026-11-08.",
-    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-08T06:35:23.294Z"
-  },
-  {
     "conditionKey": "live-data-test:scripts/audit-review-contamination.test.mjs::scripts/audit-review-contamination.test.mjs",
     "title": "Live-data test failing: scripts/audit-review-contamination.test.mjs (scripts/audit-review-contamination.test.mjs)",
     "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"scripts/audit-review-contamination.test.mjs\" in scripts/audit-review-contamination.test.mjs is red against the live corpus.\n\ntest timed out after 300000ms",
@@ -2028,5 +2014,19 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-08T06:47:01.903Z"
+  },
+  {
+    "conditionKey": "t1-gaps:needs-manual-recovery",
+    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (Lincoln in the Bardo (washpost)). Checked 2026-11-08.",
+    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-08T07:37:17.266Z"
   }
 ]
