@@ -220,6 +220,7 @@ const { articleRunIdentity, ingestBlockReason, isUrlYearOutOfWindow, isUrlMonthB
 const { otherProductionSignal } = require('./lib/other-production-signal');
 const { priorRunUrlSignal, phillyFringeUrlSignal } = require('./lib/prior-run-url-signal');
 const { isLikelyTourReview } = require('./lib/review-guards');
+const { censusOtherPlaceSignal } = require('./lib/census-other-place');
 const { ingestRefusalReason } = require('./lib/non-review-url-patterns');
 const { classifyIngestSkip, describeSkip } = require('./lib/ingest-skip-classify');
 // WE reference schema version — bump to invalidate WE checkpoint entries (59 shows
@@ -398,6 +399,38 @@ function getKnownDomainMap() {
   }
   _knownDomainMap = map;
   return map;
+}
+
+// BRO-7129: the registry entry (region, tier, standing coverage) for a URL's host.
+let _registryOutlets = null;
+function registryEntryForUrl(u) {
+  const map = getKnownDomainMap();
+  const id = map.get(registrableHost(hostOf(u))) || map.get(publicationHostOf(u));
+  if (!id) return null;
+  if (!_registryOutlets) {
+    try { const raw = JSON.parse(fs.readFileSync(OUTLET_REGISTRY_PATH, 'utf8')); _registryOutlets = raw.outlets || raw; } catch { _registryOutlets = {}; }
+  }
+  const entry = _registryOutlets[id];
+  if (!entry) return null;
+  return { ...entry, nyReviewCount: nyReviewCountByOutlet().get(id) || 0 };
+}
+// Live reviews per outlet on New York shows: a regional outlet that already covers
+// New York keeps its census rows (censusOtherPlaceSignal NY_COVERAGE_MIN).
+let _nyReviewCounts = null;
+function nyReviewCountByOutlet() {
+  if (_nyReviewCounts) return _nyReviewCounts;
+  _nyReviewCounts = new Map();
+  try {
+    const ny = new Set(loadShows().filter((s) => s && (s.category === 'broadway' || s.category === 'off-broadway')).map((s) => s.id));
+    for (const r of loadReviews()) {
+      if (r && ny.has(r.showId) && r.outletId) _nyReviewCounts.set(r.outletId, (_nyReviewCounts.get(r.outletId) || 0) + 1);
+    }
+  } catch (e) {
+    // Fail open: without the counts no regional outlet is dropped.
+    if (verbose) console.error(`  ny review counts unavailable: ${e.message}`);
+    _nyReviewCounts = { get: () => Infinity };
+  }
+  return _nyReviewCounts;
 }
 
 // Curated show → Show Score page URL map (data/show-score-urls.json), loaded once.
@@ -957,6 +990,13 @@ function acceptSerpCensusResult(sr, { show, showInfo, priorVetted = false }) {
   // Same-title production elsewhere (BRO-4190): the URL or SERP title names
   // another market's edition or a London house on a New York show.
   if (otherProductionUrlSignal(u, show, sr.title, { census: true }) || edinburghFringeUrlSignal(u, show) || phillyFringeUrlSignal(u, show)) return null;
+  // BRO-7129: same title staged in another city or house (King Lear OB counted
+  // Manchester, London, Chicago and New Orleans stagings as "known" reviews).
+  if (censusOtherPlaceSignal(u, sr.title, show, registryEntryForUrl(u))) {
+    candidateRejections.count++;
+    candidateRejections.byReason['other-place'] = (candidateRejections.byReason['other-place'] || 0) + 1;
+    return null;
+  }
   // Weak-specificity gate (ship-check 2026-07-24): isGenericShowTitle's raw
   // word-count test misses titles that are 2+ words on paper but reduce to a
   // SINGLE significant token once titleTokens() strips stopwords/short words
