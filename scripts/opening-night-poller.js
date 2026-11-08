@@ -50,7 +50,7 @@ const { serpDeadlineSec, serpTimeLeft } = require('./lib/poller-serp-deadline');
 const POLLER_START_MS = Date.now();
 const { discoverGoogleNewsReviews } = require('./lib/google-news-rss');
 const { searchOutletSites, selectApplicableSiteSearchOutlets, SITE_SEARCH_ENDPOINTS } = require('./lib/site-search-discovery');
-const { discoverCorrectUrl, OUTLET_DOMAINS } = require('./lib/url-discovery');
+const { discoverCorrectUrl, OUTLET_DOMAINS, hasSerpProvider } = require('./lib/url-discovery');
 // 1 Minute Critic direct-discovery. Its RSS feed isn't in rss-discovery.js's
 // outlet list, and the T3 SERP fallback below is Broadway-only, so without
 // this per-show hook OMC coverage relies entirely on aggregator pickup —
@@ -1453,7 +1453,7 @@ async function runSERPBackup(show, missingOutlets, knownUrls, stats = null) {
   // rotation cursor by that many, not by the budget. Stays 0 when the run stopped before the first one.
   if (stats) stats.consumed = 0;
 
-  if (!process.env.SCRAPINGBEE_API_KEY && !process.env.BRIGHTDATA_TOKEN) {
+  if (!hasSerpProvider()) {
     console.log('  Skipped: no SERP API keys');
     return [];
   }

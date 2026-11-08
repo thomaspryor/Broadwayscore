@@ -27,7 +27,7 @@ const { createOrMergeReviewFile } = require('./lib/review-file-writer');
 const { prefetchDiscoveredArticle, applyPrefetch } = require('./lib/discovery-prefetch');
 const { isUrlYearOutsideWindow } = require('./lib/content-filters');
 const { isSerpUrlWrongProductionForOpeningNight } = require('./lib/opening-night-discovery');
-const { OUTLET_DOMAINS: _OUTLET_DOMAINS, REGISTRY_DOMAIN_ALIASES: _REGISTRY_DOMAIN_ALIASES, serpQuery, serpNewsQuery } = require('./lib/url-discovery');
+const { OUTLET_DOMAINS: _OUTLET_DOMAINS, REGISTRY_DOMAIN_ALIASES: _REGISTRY_DOMAIN_ALIASES, serpQuery, serpNewsQuery, hasSerpProvider } = require('./lib/url-discovery');
 const { isLondonMarket } = require('./lib/venue-classification');
 const { getLondonSupplementalOutlets, reviewSearchKeyword, strategyOneCap, planStrategyOneTargets } = require('./lib/opening-night-discovery-policy');
 const { isSyndicationHost, makeRegisteredOutletPredicate, resolveSyndicatedHit } = require('./lib/syndication-canonical');
@@ -303,8 +303,8 @@ async function prefetchWithSlotGate({ showId, showDir, url, criticName, canonica
 }
 
 async function main() {
-  if (!SCRAPINGBEE_KEY && !BRIGHTDATA_TOKEN) {
-    console.error('Missing SCRAPINGBEE_API_KEY and BRIGHTDATA_TOKEN — need at least one');
+  if (!hasSerpProvider()) {
+    console.error('Missing SERP provider keys (SCRAPINGBEE_API_KEY, BRIGHTDATA_TOKEN or SCRAPINGDOG_API_KEY) — need at least one');
     process.exit(1);
   }
 
