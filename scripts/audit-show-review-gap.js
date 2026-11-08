@@ -1631,6 +1631,7 @@ async function auditShow(show, opts = {}) {
         // February NYT review would hide a new nytimes.com review of the return.
         dirFilesAll.filter(d => !d._exactMatchOnly && (!d.url || classifyReviewUrl(d.url).ok)),
         d => isCoveredFile(d, show),
+        aggUrl, // BRO-7163 F10: a sibling review on the same host must not vouch for this one
       );
     if (dirFiles.length === 0) {
       // Before calling it missing: is this the SAME outlet's review we already
