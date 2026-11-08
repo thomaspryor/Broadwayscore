@@ -791,6 +791,10 @@ jobs:
     # (cached), build ~5-8 min, smoke-first specs ~2 min; doubled when the tip
     # is red and the base is built too. Each run is capped by E2E_LOCAL_TIMEOUT.
     timeout-minutes: 45
+    # Advisory (BRO-7106): a red or timed-out e2e-local must never make the
+    # run's conclusion `failure`, which land-retry-on-cancel.js,
+    # land-stranded-refs.js and cloud-worker-pick.js read. Drop when arming.
+    continue-on-error: true
     steps:
       - name: Checkout the land branch
         uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
@@ -863,9 +867,18 @@ jobs:
           BASE: ${{ steps.rebase.outputs.base }}
           DEPS_CHANGED: ${{ steps.rebase.outputs.deps_changed }}
         run: |
+          # Keep the private core data (checkout-core-data overwrote tracked
+          # data files) so base and tip build from the same data.
+          KEEP="$RUNNER_TEMP/e2e-core-keep"; rm -rf "$KEEP"; mkdir -p "$KEEP"
+          git diff HEAD --name-only -- data/ > "$KEEP.list"
+          while IFS= read -r f; do [ -f "$f" ] && { mkdir -p "$KEEP/$(dirname "$f")"; cp -p "$f" "$KEEP/$f"; }; done < "$KEEP.list"
           git checkout --force --detach "$BASE"
-          [ "$DEPS_CHANGED" = "true" ] && npm ci --prefer-offline --no-audit --no-fund
-          bash "$RUNNER_TEMP/e2e-harness/land-e2e-local.sh" "$RUNNER_TEMP/e2e-local/base"
+          (cd "$KEEP" && find . -type f -print0 | xargs -0 -r cp -p --parents -t "$GITHUB_WORKSPACE")
+          if [ "$DEPS_CHANGED" = "true" ]; then
+            npm ci --prefer-offline --no-audit --no-fund
+            npx --no-install playwright install chromium   # base may pin another Playwright
+          fi
+          E2E_LOCAL_PORT=3458 bash "$RUNNER_TEMP/e2e-harness/land-e2e-local.sh" "$RUNNER_TEMP/e2e-local/base"
 
       - name: E2E verdict — new failures vs base
         if: steps.rebase.outputs.site_diff == 'true' && !cancelled()

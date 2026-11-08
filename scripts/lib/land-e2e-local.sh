@@ -27,7 +27,8 @@
 #   E2E_LOCAL_SPECS     space-separated spec paths (default: smoke-first set
 #                       below; widen once the runtime is measured, BRO-7106)
 #   E2E_LOCAL_PORT      port for next start (default 3457)
-#   E2E_LOCAL_TIMEOUT   seconds for build + tests (default 1200)
+#   E2E_LOCAL_TIMEOUT   seconds for build + tests (default 900; two runs plus
+#                       setup must fit land.yml's 45-min job budget)
 #   E2E_LOCAL_FEATURES  NEXT_PUBLIC_FEATURES for the build
 #   CI                  set: a missing Playwright/browser is a failure, not a skip
 set -uo pipefail
@@ -41,7 +42,7 @@ cd "$ROOT"
 
 SPECS="${E2E_LOCAL_SPECS:-tests/e2e/smoke.spec.ts tests/e2e/user-flows.spec.ts}"
 PORT="${E2E_LOCAL_PORT:-3457}"
-LIMIT="${E2E_LOCAL_TIMEOUT:-1200}"
+LIMIT="${E2E_LOCAL_TIMEOUT:-900}"
 FEATURES="${E2E_LOCAL_FEATURES:-criticPages,castPages,westEnd,offBroadway,tonyPeople,tonyPredictions}"
 START_MS=$(node -e 'console.log(Date.now())')
 
@@ -60,11 +61,31 @@ finish() { # finish <rc>
   exit 0
 }
 
-# Restore tracked files the build regenerates (scripts/prebuild.sh), so a
-# later checkout of the base tree is not refused and the tree is left as found.
-# Only after a build this script started (marker), and the build only starts
-# on a clean tree (run() below), so this never discards someone's edits.
-restore_tree() { [ -f "$OUT/.built" ] && { git checkout -- . 2>/dev/null || true; rm -f "$OUT/.built"; }; return 0; }
+# The build rewrites tracked files (scripts/prebuild.sh). Leave the tree as it
+# was found: files already modified before the build (on CI, the private core
+# data checkout-core-data copies over data/awards.json etc.; locally, someone's
+# edits) are snapshotted and put back; files only the build modified are reset
+# to HEAD. Never a blanket `git checkout -- .` (ship-check review, BRO-7106).
+snapshot_tree() {
+  rm -rf "$OUT/.pre"; mkdir -p "$OUT/.pre"
+  git diff HEAD --name-only > "$OUT/.pre.list"
+  while IFS= read -r f; do
+    [ -f "$f" ] && { mkdir -p "$OUT/.pre/$(dirname "$f")"; cp -p "$f" "$OUT/.pre/$f"; }
+  done < "$OUT/.pre.list"
+  : > "$OUT/.built"
+}
+restore_tree() {
+  [ -f "$OUT/.built" ] || return 0
+  git diff HEAD --name-only | while IFS= read -r f; do
+    if grep -qxF -- "$f" "$OUT/.pre.list"; then
+      [ -f "$OUT/.pre/$f" ] && cp -p "$OUT/.pre/$f" "$f"   # modified before the build: put it back
+    else
+      git checkout HEAD -- "$f" 2>/dev/null || true         # modified by the build: reset
+    fi
+  done
+  rm -rf "$OUT/.pre" "$OUT/.pre.list" "$OUT/.built"
+  return 0
+}
 
 run() {
   # Missing tooling: off CI it is a skip (local runs, no browser); on CI it is
@@ -84,13 +105,7 @@ run() {
     echo "e2e-local: none of the specs exist on this tree"; return 0
   fi
 
-  # The build rewrites tracked files and the cleanup restores them with
-  # `git checkout -- .`, so refuse a dirty tree rather than lose edits.
-  if [ -n "$(git status --porcelain --untracked-files=no)" ]; then
-    if [ -n "${CI:-}" ]; then echo "::error::e2e-local gate failed: tracked files modified before the build (exit 1)"; return 1; fi
-    echo "# SKIP e2e-local: uncommitted tracked changes; commit first (the build rewrites tracked files)"; return 0
-  fi
-  : > "$OUT/.built"
+  snapshot_tree
   echo "::group::e2e-local build"
   NEXT_PUBLIC_FEATURES="$FEATURES" SKIP_HEAVY_PREBUILD=true \
     NEXT_PUBLIC_SANITY_PROJECT_ID="${NEXT_PUBLIC_SANITY_PROJECT_ID:-fp1ft8k8}" \
@@ -100,7 +115,7 @@ run() {
   echo "::endgroup::"
   if [ "$brc" -ne 0 ]; then echo "::error::e2e-local gate failed: next build (exit $brc)"; return 1; fi
 
-  npx next start -p "$PORT" > "$OUT/next-start.log" 2>&1 &
+  node_modules/.bin/next start -p "$PORT" > "$OUT/next-start.log" 2>&1 &
   local srv=$!
   echo "$srv" > "$OUT/next-start.pid"
   # shellcheck disable=SC2064
@@ -131,7 +146,7 @@ export -f run
 export SPECS PORT FEATURES OUT ROOT HERE
 timeout --kill-after=30 "$LIMIT" bash -c run 2>&1 | tee "$OUT/e2e-local.log"
 rc=${PIPESTATUS[0]}
-[ "$rc" -eq 124 ] && echo "::error::e2e-local gate failed: timed out after ${LIMIT}s (exit 124)" | tee -a "$OUT/e2e-local.log"
+{ [ "$rc" -eq 124 ] || [ "$rc" -eq 137 ]; } && echo "::error::e2e-local gate failed: timed out after ${LIMIT}s (exit $rc)" | tee -a "$OUT/e2e-local.log"
 # A timeout kills `bash -c run` but not the server it started.
 if [ -f "$OUT/next-start.pid" ]; then kill "$(cat "$OUT/next-start.pid")" 2>/dev/null || true; rm -f "$OUT/next-start.pid"; fi
 restore_tree
