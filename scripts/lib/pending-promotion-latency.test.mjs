@@ -54,3 +54,35 @@ test('the max-min budget is respected and median handles even/odd/empty', () => 
   assert.equal(median([5, 1, 3]), 3);
   assert.equal(median([1, 2, 3, 10]), 3);
 });
+
+const { hotSpanEvidence, strandedHotSpanStubs } = require('./pending-promotion-latency.js');
+
+test('an untrustworthy discovery clock (firstSeenAt stamped at/after refetch) is neither slow nor evidence', () => {
+  // Real shape: i-became-we theatermania had firstSeenAt 02:56 AFTER pendingRefetchedAt 02:37.
+  const rows = promotionLatencies([
+    rec('the-unbelievers-off-broadway-2026', 'a--x.json', '2026-11-06T03:39:59Z', '2026-11-06T05:40:00Z', { pendingRefetchedAt: '2026-11-06T03:39:59Z' }),
+    rec('the-unbelievers-off-broadway-2026', 'b--y.json', '2026-11-06T03:56:00Z', '2026-11-06T03:37:00Z'),
+  ], shows);
+  assert.ok(rows.every((r) => r.unknownClock));
+  assert.equal(slowHotSpanPromotions(rows).length, 0);
+  assert.equal(hotSpanEvidence(rows).length, 0);
+});
+
+test('duplicates are skipped; the budget compares raw ms (45.4 min is slow at 45)', () => {
+  const rows = promotionLatencies([
+    rec('the-unbelievers-off-broadway-2026', 'dup--x.json', '2026-11-06T03:00:00Z', '2026-11-06T05:00:00Z', { duplicateOf: 'tm--a.json' }),
+    rec('the-unbelievers-off-broadway-2026', 'tm--z.json', '2026-11-06T03:00:00Z', '2026-11-06T03:45:24Z'),
+  ], shows);
+  assert.deepEqual(rows.map((r) => r.file), ['tm--z.json']);
+  assert.equal(slowHotSpanPromotions(rows, 45).length, 1);
+});
+
+test('stranded hot-span stubs are listed once older than the budget', () => {
+  const pending = [
+    { showId: 'the-unbelievers-off-broadway-2026', file: 'theatermania--3bc71485.json', review: { firstSeenAt: '2026-11-06T03:39:59Z' } },
+    { showId: 'the-unbelievers-off-broadway-2026', file: 'blog--q.json', review: { firstSeenAt: '2026-11-07T15:00:00Z' } },
+  ];
+  assert.equal(strandedHotSpanStubs(pending, shows, { now: new Date('2026-11-06T04:00:00Z') }).length, 0);
+  const late = strandedHotSpanStubs(pending, shows, { now: new Date('2026-11-06T04:33:00Z') });
+  assert.deepEqual(late.map((s) => [s.file, s.waitingMin]), [['theatermania--3bc71485.json', 53]]);
+});
