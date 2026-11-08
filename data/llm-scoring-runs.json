@@ -1,43 +1,5 @@
 [
   {
-    "startedAt": "2026-11-06T19:07:35.290Z",
-    "completedAt": "2026-11-06T19:07:41.040Z",
-    "totalReviews": 52,
-    "processed": 1,
-    "skipped": 51,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 4686,
-      "output": 346,
-      "cacheRead": 0,
-      "cacheWrite": 3807,
-      "total": 13203
-    },
-    "costUsd": 0.032698450000000004,
-    "runId": "42275837011",
-    "source": "index",
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-11-06T19:12:37.807Z",
-    "completedAt": "2026-11-06T19:12:37.840Z",
-    "totalReviews": 0,
-    "processed": 0,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "cacheRead": 0,
-      "cacheWrite": 0,
-      "total": 0
-    },
-    "costUsd": 0,
-    "runId": "42275837011",
-    "source": "comparative-rescore",
-    "errorDetails": []
-  },
-  {
     "startedAt": "2026-11-06T19:43:09.804Z",
     "completedAt": "2026-11-06T19:43:20.587Z",
     "totalReviews": 13,
@@ -814287,6 +814249,60 @@
     },
     "costUsd": 0,
     "runId": "42431498977",
+    "source": "comparative-rescore",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-11-08T01:46:02.072Z",
+    "completedAt": "2026-11-08T01:49:11.742Z",
+    "totalReviews": 80755,
+    "processed": 13,
+    "skipped": 80736,
+    "errors": 3,
+    "tokensUsed": {
+      "input": 95685,
+      "output": 4467,
+      "cacheRead": 57105,
+      "cacheWrite": 3807,
+      "total": 240247
+    },
+    "costUsd": 0.184636125,
+    "runId": "42435261104",
+    "source": "index",
+    "errorDetails": [
+      {
+        "showId": "an-enemy-of-the-people-west-end-2024",
+        "outletId": "times-uk",
+        "error": "Review text too short or missing"
+      },
+      {
+        "showId": "alterations-west-end-2025",
+        "outletId": "thestage",
+        "error": "Review text too short or missing"
+      },
+      {
+        "showId": "the-years-west-end-2025",
+        "outletId": "thestage",
+        "error": "Review text too short or missing"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-11-08T01:49:23.416Z",
+    "completedAt": "2026-11-08T01:49:27.733Z",
+    "totalReviews": 0,
+    "processed": 0,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 0,
+      "output": 0,
+      "cacheRead": 0,
+      "cacheWrite": 0,
+      "total": 0
+    },
+    "costUsd": 0,
+    "runId": "42435261104",
     "source": "comparative-rescore",
     "errorDetails": []
   }
