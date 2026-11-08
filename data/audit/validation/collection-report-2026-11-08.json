@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-11-08T23:31:51.850Z",
+  "runDate": "2026-11-08T23:47:18.080Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 300,
@@ -12,7 +12,7 @@
   },
   "summary": {
     "processed": 0,
-    "failed": 55,
+    "failed": 53,
     "skipped": 0,
     "successRate": "0%"
   },
@@ -28,24 +28,24 @@
     "archive": 52
   },
   "statistics": {
-    "tier1Attempts": 2,
-    "tier1Success": 1,
+    "tier1Attempts": 0,
+    "tier1Success": 0,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier1_9Attempts": 1,
+    "tier1_9Attempts": 0,
     "tier1_9Success": 0,
-    "tier2Attempts": 1,
+    "tier2Attempts": 0,
     "tier2Success": 0,
-    "tier3Attempts": 1,
+    "tier3Attempts": 0,
     "tier3Success": 0,
-    "tier3_6Attempts": 1,
+    "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 1,
+    "tier4Attempts": 0,
     "tier4Success": 0,
-    "totalFailed": 55,
-    "scrapingBeePageCredits": 10,
+    "totalFailed": 53,
+    "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
@@ -55,7 +55,7 @@
   },
   "thisRun": {
     "processed": 0,
-    "failed": 55,
+    "failed": 53,
     "shows": [
       "aint-no-mo-2022",
       "all-my-sons-2008",
@@ -72,7 +72,6 @@
       "hedwig-and-the-angry-inch-2014",
       "indecent-2017",
       "inherit-the-wind-2007",
-      "iphigenie-en-tauride-english-national-opera-west-end-2026",
       "is-he-dead-2007",
       "jesus-christ-superstar-2012",
       "kiss-me-kate-2019",
@@ -87,7 +86,6 @@
       "rodgers-hammersteins-cinderella-2013",
       "sea-wall-a-life-2019",
       "shrek-the-musical-2008",
-      "speculations-off-west-end-2026",
       "suffs-2024",
       "tammy-faye-2024",
       "the-collaboration-2022",
@@ -110,7 +108,7 @@
     "outOfScopeShows": [],
     "inheritedFromResume": {
       "processed": 219,
-      "failed": 184
+      "failed": 186
     }
   },
   "processed": [],
@@ -155,8 +153,6 @@
     "yellow-face-2024/nypost--johnny-oleksinski.json",
     "aint-no-mo-2022/usatoday--matthew-j-palm.json",
     "the-whos-tommy-2024/hollywood-reporter--angie-han.json",
-    "iphigenie-en-tauride-english-national-opera-west-end-2026/sunday-times--unknown.json",
-    "speculations-off-west-end-2026/reviewsgate--unknown.json",
     "the-hills-of-california-2024/times-uk--ann-treneman.json",
     "suffs-2024/guardian--adrian-horton.json",
     "the-collaboration-2022/hollywood-reporter--anita-gates.json",
@@ -805,14 +801,6 @@
       "fences-1987/nytimes--jesse-green.json"
     ]
   },
-  "failuresByOutlet": {
-    "The Sunday Times": {
-      "count": 1,
-      "domain": "thetimes.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    }
-  },
+  "failuresByOutlet": {},
   "urlDiscoveries": []
 }
