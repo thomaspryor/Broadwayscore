@@ -1,5 +1,40 @@
 [
   {
+    "startedAt": "2026-11-07T02:13:18.702Z",
+    "completedAt": "2026-11-07T02:19:27.868Z",
+    "totalReviews": 80636,
+    "processed": 20,
+    "skipped": 80610,
+    "errors": 3,
+    "tokensUsed": {
+      "input": 129596,
+      "output": 6343,
+      "cacheRead": 68481,
+      "cacheWrite": 18853,
+      "total": 332905
+    },
+    "costUsd": 0.27599342499999996,
+    "runId": "42327705729",
+    "source": "index",
+    "errorDetails": [
+      {
+        "showId": "an-enemy-of-the-people-west-end-2024",
+        "outletId": "times-uk",
+        "error": "Review text too short or missing"
+      },
+      {
+        "showId": "alterations-west-end-2025",
+        "outletId": "thestage",
+        "error": "Review text too short or missing"
+      },
+      {
+        "showId": "the-years-west-end-2025",
+        "outletId": "thestage",
+        "error": "Review text too short or missing"
+      }
+    ]
+  },
+  {
     "startedAt": "2026-11-07T02:19:38.045Z",
     "completedAt": "2026-11-07T02:20:02.068Z",
     "totalReviews": 10,
@@ -818148,40 +818183,56 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-11-08T16:49:53.971Z",
-    "completedAt": "2026-11-08T16:50:00.031Z",
-    "totalReviews": 25,
-    "processed": 1,
-    "skipped": 24,
-    "errors": 0,
+    "startedAt": "2026-11-08T16:51:30.577Z",
+    "completedAt": "2026-11-08T16:54:43.631Z",
+    "totalReviews": 80833,
+    "processed": 48,
+    "skipped": 80769,
+    "errors": 3,
     "tokensUsed": {
-      "input": 6071,
-      "output": 333,
-      "cacheRead": 0,
-      "cacheWrite": 3807,
-      "total": 15172
+      "input": 313462,
+      "output": 16398,
+      "cacheRead": 216954,
+      "cacheWrite": 15091,
+      "total": 839237
     },
-    "costUsd": 0.03633135,
-    "runId": "42501359181",
+    "costUsd": 0.635830125,
+    "runId": "42501417875",
     "source": "index",
-    "errorDetails": []
+    "errorDetails": [
+      {
+        "showId": "an-enemy-of-the-people-west-end-2024",
+        "outletId": "times-uk",
+        "error": "Review text too short or missing"
+      },
+      {
+        "showId": "alterations-west-end-2025",
+        "outletId": "thestage",
+        "error": "Review text too short or missing"
+      },
+      {
+        "showId": "the-years-west-end-2025",
+        "outletId": "thestage",
+        "error": "Review text too short or missing"
+      }
+    ]
   },
   {
-    "startedAt": "2026-11-08T16:54:55.936Z",
-    "completedAt": "2026-11-08T16:54:55.954Z",
-    "totalReviews": 0,
-    "processed": 0,
+    "startedAt": "2026-11-08T16:56:49.832Z",
+    "completedAt": "2026-11-08T16:57:10.262Z",
+    "totalReviews": 7,
+    "processed": 7,
     "skipped": 0,
     "errors": 0,
     "tokensUsed": {
-      "input": 0,
-      "output": 0,
+      "input": 20918,
+      "output": 1458,
       "cacheRead": 0,
       "cacheWrite": 0,
-      "total": 0
+      "total": 22376
     },
-    "costUsd": 0,
-    "runId": "42501359181",
+    "costUsd": 0.055143000000000005,
+    "runId": "42501417875",
     "source": "comparative-rescore",
     "errorDetails": []
   }
