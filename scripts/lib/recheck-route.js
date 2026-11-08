@@ -27,6 +27,20 @@ const { ExitTrap } = require('./recheck-autoclose.js');
 const DEFAULT_ROUTE_FROM = '2026-11-15';
 const MAX_ROUTED = 10;
 const DEDUP_DAYS = 30;
+// An alert-absent check fails while the alert fired inside the router's quiet
+// window (up to 168h), so it keeps "failing" for days after the alert stopped.
+// Replay of 110 nights: 8 cards failed this way 61-138h after the last fire and
+// none fired again. Hold those; a condition still firing refreshes lastSeen and
+// routes on a night within 48h of a fire (weekly/throttled families: within a
+// week). Daily detectors re-fire inside 48h (fixture fires at 43.5h and 47.2h).
+const QUIET_ALERT_HOLD_H = 48;
+
+/** PURE. Hours since the alert last fired when this fail is a quiet-alert hold, else null. */
+function quietAlertHold(r) {
+  if (!r || !/check-alert-condition-absent\.js/.test(String(r.verifyCmd || ''))) return null;
+  const m = /still firing .*?last fired \S+ \(([\d.]+)h ago, within \d+h\)/.exec(String(r.detail || r.note || ''));
+  return m && Number(m[1]) > QUIET_ALERT_HOLD_H ? Number(m[1]) : null;
+}
 
 /**
  * @returns {{mode:'off'|'shadow'|'live', from:string, why:string}}
@@ -63,12 +77,12 @@ function alreadyRouted(ledgerEntries, { now = Date.now() } = {}) {
  * @param {{rows:object[], handedOff?:string[], ledgerEntries?:object[], now?:number, tsxTests?:Set<string>, sha?:string}} o
  *   rows: this run's results or its ledger 'recheck' rows (same fields)
  *   sha: the fresh-main commit the checks ran on (each entry names it)
- * @returns {{cards:object[], overflow:number, title:string|null, body:string|null, skipped:{env:number, handedOff:number, routed:number}}}
+ * @returns {{cards:object[], overflow:number, title:string|null, body:string|null, skipped:{env:number, handedOff:number, routed:number, quietAlert:number}}}
  */
 function buildRouteBatch({ rows, handedOff = [], ledgerEntries = [], now = Date.now(), tsxTests, sha = null } = {}) {
   const handed = new Set(handedOff);
   const routed = alreadyRouted(ledgerEntries, { now });
-  const skipped = { env: 0, handedOff: 0, routed: 0 };
+  const skipped = { env: 0, handedOff: 0, routed: 0, quietAlert: 0 };
   const seen = new Set();
   const fails = [];
   for (const r of rows || []) {
@@ -78,6 +92,7 @@ function buildRouteBatch({ rows, handedOff = [], ledgerEntries = [], now = Date.
     seen.add(r.cardId);
     if (handed.has(r.cardId)) { skipped.handedOff++; continue; }
     if (routed.has(r.cardId)) { skipped.routed++; continue; }
+    if (quietAlertHold(r) !== null) { skipped.quietAlert++; continue; }
     fails.push(r);
   }
   const cards = fails.slice(0, MAX_ROUTED);
@@ -145,4 +160,4 @@ async function fileRouteBatch({ title, body, linearBrainMain, timeoutMs = 60000 
   }
 }
 
-module.exports = { DEFAULT_ROUTE_FROM, MAX_ROUTED, routeMode, alreadyRouted, buildRouteBatch, fileRouteBatch };
+module.exports = { DEFAULT_ROUTE_FROM, MAX_ROUTED, QUIET_ALERT_HOLD_H, quietAlertHold, routeMode, alreadyRouted, buildRouteBatch, fileRouteBatch };

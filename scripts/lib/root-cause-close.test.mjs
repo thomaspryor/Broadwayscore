@@ -17,10 +17,17 @@ const FULL = [
 
 test('fix cards are told apart from new work by title', () => {
   for (const t of ['P1: main test.yml red: E2E Tests', 'Opening night poller failed', 'BSC Daily: Quality: star-vs-score mismatch',
-    'Critics\' Take overcounts vs the on-site count', 'Dispatch flow is DEAD', 'Root cause: "x" keeps coming back (4 cards in 30 days)']) {
+    'Critics\' Take overcounts vs the on-site count', 'Dispatch flow is DEAD', 'Root cause: "x" keeps coming back (4 cards in 30 days)',
+    // Replay of 3819 closes (2026-11-08): phrasings the first word list missed.
+    'recollect-for-scores times out every weekly run', 'Gate T false-positive blocks on ordinal prose',
+    'Reddit audience data has had no successful write for 206h', 'Live show has ZERO critic reviews on site: Purpose',
+    'CI-side rebuild losses still poison deploy-watermark.json baseline', 'Reattribute misfiled outlet rows',
+    'theatre.reviews scraper truncates leading chars of critic name', 'rebuild-fast push transport hangs']) {
     assert.equal(rcc.isFixCard({ title: t }), true, t);
   }
-  for (const t of ['Add missing Claude skills', 'Make critic byline distinct from pull quote', 'P2: Build the weekly grosses page', 'Backfill broken images']) {
+  for (const t of ['Add missing Claude skills', 'Make critic byline distinct from pull quote', 'P2: Build the weekly grosses page', 'Backfill broken images',
+    // Reviewed false positives kept out (UX audit cards often close as noise; 'refused'/'zero' read as features).
+    'UX audit: browse page spacing', 'Show a refused-close reason in the CLI', 'Zero reviews badge design', 'Fleet cost and waste audit']) {
     assert.equal(rcc.isFixCard({ title: t }), false, t);
   }
 });

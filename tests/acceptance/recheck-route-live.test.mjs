@@ -14,6 +14,7 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const { recheckVerdict } = require('../../scripts/lib/check-env-cause.js');
+const { quietAlertHold } = require('../../scripts/lib/recheck-route.js');
 
 const ARMED = '2026-11-15';
 // Two nights after arming, so the first live night has happened.
@@ -55,7 +56,7 @@ test('BRO-7138: failed done claims are routed back to work by a live batch card'
   const overflowRuns = new Set(routes.filter((e) => Number(e.overflow) > 0).map((e) => e.runId));
   const unrouted = entries.filter((e) => e.event === 'recheck' && e.cardId && !e.skip
     && recheckVerdict(e).status === 'fail' && !handedOff.has(`${e.runId}|${e.cardId}`)
-    && !routedAt.has(e.cardId) && !overflowRuns.has(e.runId));
+    && !routedAt.has(e.cardId) && !overflowRuns.has(e.runId) && quietAlertHold(e) === null);
   assert.deepEqual([...new Set(unrouted.map((e) => e.cardId))], [],
     'real recheck failures since arming that no batch card routed (routing off, threw, or skipped them)');
 });

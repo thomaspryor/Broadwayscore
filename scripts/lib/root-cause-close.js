@@ -40,7 +40,7 @@ const MIN_FIELD_CHARS = 10;
 
 // "red" only as a CI state ("main red: x", "test.yml red", "red again"), never
 // inside a show title like Red Carpet (BRO-7103 review).
-const FIX_RE = /\b(fix(es|ed|ing)?|broken|break(s|ing)?|bug|fail(s|ed|ing|ure|ures)?|wrong|incorrect|missing|errors?|crash(es|ed)?|regress(ion|ed)?|stale|stuck|leak(s|ed)?|not (working|showing|loading|updating|running|firing)|doesn'?t|isn'?t|won'?t|can'?t|never|red(?=\s*[:,)]|\s*$|\s+(?:on|in|since|after|again|for)\b)|404|500|timed? ?out|flak(y|e)|duplicate[sd]?|mismatch|drift|(under|over)counts?|silently|dropped|blank|ignores|hides|dead|skips|misses|loses)\b/i;
+const FIX_RE = /\b(fix(es|ed|ing)?|broken|break(s|ing)?|bug|fail(s|ed|ing|ure|ures)?|wrong|incorrect|missing|errors?|crash(es|ed)?|regress(ion|ed)?|stale|stuck|leak(s|ed)?|not (working|showing|loading|updating|running|firing)|doesn'?t|isn'?t|won'?t|can'?t|never|red(?=\s*[:,)]|\s*$|\s+(?:on|in|since|after|again|for)\b)|404|500|timed? ?out|flak(y|e)|duplicate[sd]?|mismatch|drift|(under|over)counts?|silently|dropped|blank|ignores|hides|dead|skips|misses|loses|times? ?out|false[- ]?(flags?|flagged|positives?|alarms?)|no successful|has zero|poison(ed|s)?|misfiled|misrouted|mis-?attributed|overwrites|truncat(ed|es)|garbled|corrupt(ed|s)?|unreachable|hangs?)\b/i;
 // Titles that start with a build verb are new work even when they name a problem.
 const NOT_FIX_RE = /^(add|build|create|new|design|research|explore|plan|draft|write|publish|post|launch|expand|backfill|migrate|document|improve|retire|remove|refactor|tweak|polish|clean ?up|rename)\b/i;
 
