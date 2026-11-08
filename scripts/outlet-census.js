@@ -372,6 +372,7 @@ async function enumerateSerp(src, since, o) {
 }
 
 /** Fill headline/date/description from each page, cached per URL across runs. */
+const { metaNeedsFetch, errorEntry } = require('./lib/census-meta-cache');
 async function fillMeta(outletId, items, { refresh, concurrency }) {
   const cachePath = path.join(CACHE_DIR, `${outletId}.meta.json`);
   let cache = {};
@@ -380,11 +381,12 @@ async function fillMeta(outletId, items, { refresh, concurrency }) {
   await pool(items, concurrency, async (item) => {
     const k = urlKey(item.url);
     // Entries cached before reviewAuthor existed are re-read once (BRO-6485).
-    if (!cache[k] || (!cache[k].error && !('reviewAuthor' in cache[k]))) {
+    if (metaNeedsFetch(cache[k])) {
+      const prev = cache[k];
       try {
         const { status, body } = await get(item.url);
-        cache[k] = status === 200 ? census.extractPageMeta(body) : { error: `HTTP ${status}` };
-      } catch (e) { cache[k] = { error: e.message }; }
+        cache[k] = status === 200 ? census.extractPageMeta(body) : errorEntry(`HTTP ${status}`, prev);
+      } catch (e) { cache[k] = errorEntry(e.message, prev); }
       fetched++;
       if (cache[k].error) failed++;
       if (fetched % 100 === 0) {
