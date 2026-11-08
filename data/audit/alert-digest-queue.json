@@ -2002,6 +2002,20 @@
     "queuedAt": "2026-11-08T06:37:39.217Z"
   },
   {
+    "conditionKey": "star-band:regressions",
+    "title": "Star-band detector: 5 review(s) flagged for anchored re-score (still open — BRO-6121)",
+    "description": "Still firing after 25 notifications since it was filed. Tracked at BRO-6121.\n\n{\"unanchored\":5} across the whole corpus, by market {\"west-end\":15,\"broadway\":36,\"regional\":3}. Each was flagged needsRescore and the normal drain repairs it, no action needed.\n- [unanchored] sunny-afternoon-west-end-2014/standard--fiona-mountford.json 4/5 band 71-90\n- [unanchored] sunny-afternoon-west-end-2014/financialtimes--ian-shuttleworth.json 5/5 band 91-100\n- [unanchored] american-buffalo-west-end-2015/standard--henry-hitchings.json 4/5 band 71-90\n- [unanchored] dirty-rotten-scoundrels-the-musical-west-end-2014/independent--john-nathan.json 3/5 band 51-70\n- [unanchored] dirty-rotten-scoundrels-the-musical-west-end-2014/financialtimes--ian-shuttleworth.json 2/5 band 31-50",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": "BRO-6121",
+    "fields": [],
+    "queuedAt": "2026-11-08T06:48:23.044Z"
+  },
+  {
     "conditionKey": "opening-night-remediation-exhausted-empty-cast:the-steel-man-off-broadway-2026",
     "title": "Auto-remediation gave up on the-steel-man-off-broadway-2026",
     "description": "empty-cast keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: backfill-cast-web.yml {\"show_filter\":\"the-steel-man-off-broadway-2026\",\"category\":\"off-broadway\",\"force\":\"true\"}",
