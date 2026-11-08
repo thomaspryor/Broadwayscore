@@ -127,6 +127,8 @@ function checksEnv({ env = process.env, build = false, home = null } = {}) {
   const gitconfig = path.join(out.HOME, '.gitconfig');
   if (!fs.existsSync(gitconfig)) fs.writeFileSync(gitconfig, CHECKS_GITCONFIG);
   out.GIT_TERMINAL_PROMPT = '0';
+  // BRO-7138: no npm update notice on stderr in check output.
+  out.npm_config_update_notifier = 'false';
   out.NODE_OPTIONS = `--max-old-space-size=${checkHeapMb()}`;
   if (build) Object.assign(out, BUILD_ENV);
   return out;
@@ -662,7 +664,16 @@ function runSafeChecks(o) {
 // stderr into `#` comment lines on STDOUT, so the head of the output is the
 // TAP header plus any passing test's warning; the failure is a later
 // `not ok` line. Dependency rule (land-branch.js): node built-ins only.
-const defaultDetail = (err) => String((err && (err.stderr || err.stdout || err.message)) || '').slice(0, 400);
+// BRO-7138: npm's own chatter ("npm notice New major version...", "npm warn")
+// goes to stderr, while tsc and most CLIs print their real error on stdout.
+// Preferring raw stderr made a failed `npx tsc --noEmit` read as nothing but
+// the npm notice, hiding the error from the ledger, the owner and envCauseOf.
+const NPM_NOISE_RE = /^npm (?:notice|warn)\b.*$/gim;
+const defaultDetail = (err) => {
+  if (!err) return '';
+  const stderr = String(err.stderr || '').replace(NPM_NOISE_RE, '').trim();
+  return String(stderr || err.stdout || err.stderr || err.message || '').slice(0, 400);
+};
 
 // A file-level `not ok` (syntax error, crash) carries only `error: 'test
 // failed'` in its YAML block; the cause is the stderr `#` lines or an `error:`

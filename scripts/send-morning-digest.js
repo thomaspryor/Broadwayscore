@@ -856,7 +856,8 @@ function buildHtmlParts({ sections = {}, problemsNote = null, changesHtml = null
   if (drainThroughputLine) {
     blocks.push(`<p style="font-size:12px;color:#666;margin:0 0 12px;">${esc(drainThroughputLine)}</p>`);
   }
-  // BRO-7103: root-cause share and repeat-problem count (recurrence detector).
+  // BRO-7103: root-cause share and repeat-problem count (recurrence detector);
+  // BRO-7138 appends the share of Done claims whose own check still passes.
   if (improvementLine) {
     blocks.push(`<p style="font-size:12px;color:#666;margin:0 0 12px;">${esc(improvementLine)}</p>`);
   }
@@ -1606,6 +1607,15 @@ async function main() {
       : `Fixing causes: not measured this morning (the repeat-problem check last ran ${Math.round(ageH)} hours ago).`;
   } catch (err) {
     console.error(`[digest] WARN improvement line skipped: ${String(err.message).slice(0, 120)}`);
+  }
+  // BRO-7138: "done claims that held", on the same internal line. Fail-soft.
+  try {
+    const { entries } = require('./lib/autonomous-ledger.js').readEntries(path.join(REPO, 'data/audit/autonomous-recheck-ledger.jsonl'));
+    const held = require('./lib/autonomous-recheck-core.js').doneClaimsHeldRow(entries);
+    const heldLine = held.status === 'pass' ? held.message : `Done claims that held: not measured this morning (${held.message.toLowerCase()}).`;
+    improvementLine = improvementLine ? `${improvementLine} ${heldLine}` : heldLine;
+  } catch (err) {
+    console.error(`[digest] WARN done-claims-held line skipped: ${String(err.message).slice(0, 120)}`);
   }
 
   const problemsNote = describeProblems(problems);

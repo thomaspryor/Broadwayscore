@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-11-01T18:52:31.733Z",
-  "totalFindings": 59,
+  "generatedAt": "2026-11-08T18:42:59.346Z",
+  "totalFindings": 65,
   "findings": [
     {
       "currentShowId": "a-beautiful-noise-the-neil-diamond-musical-tour-2024",
@@ -181,6 +181,59 @@
       ],
       "reviewFile": "data/review-texts/beetlejuice-tour-2022/syracuse-herald-journal--linda-lowen.json",
       "url": "https://www.syracuse.com/entertainment/2025/05/darkly-snarky-and-rudely-crude-be",
+      "reason": "publish-date"
+    },
+    {
+      "currentShowId": "beetlejuice-tour-2022",
+      "suggestedShowId": "beetlejuice-2025",
+      "confidence": "high",
+      "signals": [
+        "publish-date-mismatch",
+        "days-from-own:1013",
+        "days-from-closer:29",
+        "duplicate-in-suggested-dir"
+      ],
+      "reviewFile": "data/review-texts/beetlejuice-tour-2022/theatermania--david-gordon.json",
+      "url": "https://www.theatermania.com/news/beetlejuice-tour-company-will-come-to-broadway",
+      "reason": "publish-date"
+    },
+    {
+      "currentShowId": "beetlejuice-tour-2022",
+      "suggestedShowId": "beetlejuice-tour-2026",
+      "confidence": "high",
+      "signals": [
+        "publish-date-mismatch",
+        "days-from-own:1013",
+        "days-from-closer:157"
+      ],
+      "reviewFile": "data/review-texts/beetlejuice-tour-2022/theatermania--david-gordon.json",
+      "url": "https://www.theatermania.com/news/beetlejuice-tour-company-will-come-to-broadway",
+      "reason": "publish-date"
+    },
+    {
+      "currentShowId": "beetlejuice-tour-2022",
+      "suggestedShowId": "beetlejuice-2025",
+      "confidence": "high",
+      "signals": [
+        "publish-date-mismatch",
+        "days-from-own:1013",
+        "days-from-closer:29"
+      ],
+      "reviewFile": "data/review-texts/beetlejuice-tour-2022/theatermania--unknown.json",
+      "url": "https://www.theatermania.com/news/beetlejuice-tour-company-will-come-to-broadway",
+      "reason": "publish-date"
+    },
+    {
+      "currentShowId": "beetlejuice-tour-2022",
+      "suggestedShowId": "beetlejuice-tour-2026",
+      "confidence": "high",
+      "signals": [
+        "publish-date-mismatch",
+        "days-from-own:1013",
+        "days-from-closer:157"
+      ],
+      "reviewFile": "data/review-texts/beetlejuice-tour-2022/theatermania--unknown.json",
+      "url": "https://www.theatermania.com/news/beetlejuice-tour-company-will-come-to-broadway",
       "reason": "publish-date"
     },
     {
@@ -446,6 +499,19 @@
       "reason": "publish-date"
     },
     {
+      "currentShowId": "maybe-happy-ending-2024",
+      "suggestedShowId": "maybe-happy-ending-tour-2026",
+      "confidence": "high",
+      "signals": [
+        "publish-date-mismatch",
+        "days-from-own:692",
+        "days-from-closer:22"
+      ],
+      "reviewFile": "data/review-texts/maybe-happy-ending-2024/theatrely--joey-sims.json",
+      "url": "https://www.theatrely.com/post/just-in-time-maybe-happy-ending-review-refreshers",
+      "reason": "publish-date"
+    },
+    {
       "currentShowId": "my-sons-a-queer-but-what-can-you-do-west-end-2026",
       "suggestedShowId": "my-sons-a-queer-but-what-can-you-do-west-end-2023",
       "confidence": "high",
@@ -591,30 +657,29 @@
       "reason": "publish-date"
     },
     {
-      "currentShowId": "oh-mary-2024",
-      "suggestedShowId": "oh-mary-tour-2026",
+      "currentShowId": "operation-mincemeat-west-end-2024",
+      "suggestedShowId": "operation-mincemeat-tour-2026",
       "confidence": "high",
       "signals": [
         "publish-date-mismatch",
-        "days-from-own:754",
-        "days-from-closer:46"
+        "days-from-own:1274",
+        "days-from-closer:44"
       ],
-      "reviewFile": "data/review-texts/oh-mary-2024/washpost--ethan-beck.json",
-      "url": "https://www.washingtonpost.com/entertainment/theater/2026/08/04/bowen-yang-will-",
+      "reviewFile": "data/review-texts/operation-mincemeat-west-end-2024/the-recs--unknown.json",
+      "url": "https://therecs.co.uk/operation-mincemeat-touring/",
       "reason": "publish-date"
     },
     {
-      "currentShowId": "samson-et-dalila-off-broadway-2026",
-      "suggestedShowId": "samson-et-dalila-off-broadway-2018",
+      "currentShowId": "operation-mincemeat-west-end-2024",
+      "suggestedShowId": "operation-mincemeat-tour-2026",
       "confidence": "high",
       "signals": [
         "publish-date-mismatch",
-        "days-from-own:2985",
-        "days-from-closer:1",
-        "duplicate-in-suggested-dir"
+        "days-from-own:1274",
+        "days-from-closer:44"
       ],
-      "reviewFile": "data/review-texts/samson-et-dalila-off-broadway-2026/operawire--david-salazar.json",
-      "url": "https://operawire.com/metropolitan-opera-208-19-season-review-samson-et-dalila/",
+      "reviewFile": "data/review-texts/operation-mincemeat-west-end-2024/thereviewshub--the-reviews-hub-scotland.json",
+      "url": "https://www.thereviewshub.com/operation-mincemeat-kings-theatre-edinburgh/",
       "reason": "publish-date"
     },
     {
@@ -654,6 +719,20 @@
       ],
       "reviewFile": "data/review-texts/the-comedy-about-spies-west-end-2026/broadwayworld--aliya-al-hassan.json",
       "url": "https://www.broadwayworld.com/westend/article/Review-Roundup-THE-COMEDY-ABOUT-SP",
+      "reason": "publish-date"
+    },
+    {
+      "currentShowId": "the-merchant-of-venice-1973",
+      "suggestedShowId": "the-merchant-of-venice-2010",
+      "confidence": "high",
+      "signals": [
+        "publish-date-mismatch",
+        "days-from-own:13637",
+        "days-from-closer:134",
+        "duplicate-in-suggested-dir"
+      ],
+      "reviewFile": "data/review-texts/the-merchant-of-venice-1973/backstage--erik-haagensen.json",
+      "url": "https://www.backstage.com/bso/reviews-ny-theatre-off-broadway/ny-theater-review-",
       "reason": "publish-date"
     },
     {
@@ -735,17 +814,6 @@
       "reason": "url-year"
     },
     {
-      "currentShowId": "burn-this-1987",
-      "suggestedShowId": "burn-this-2019",
-      "confidence": "medium",
-      "signals": [
-        "venue-slug-match"
-      ],
-      "reviewFile": "data/review-texts/burn-this-1987/thestage--unknown.json",
-      "url": "https://www.thestage.co.uk/reviews/burn-this-review-at-hudson-theatre-new-york--",
-      "reason": "venue"
-    },
-    {
       "currentShowId": "cyrano-de-bergerac-2007",
       "suggestedShowId": "cyrano-de-bergerac-west-end-2019",
       "confidence": "medium",
@@ -765,6 +833,17 @@
       ],
       "reviewFile": "data/review-texts/eclipsed-2016/curtainup--elyse-sommer.json",
       "url": "https://www.curtainup.com/eclipsedpublic15.html",
+      "reason": "venue"
+    },
+    {
+      "currentShowId": "much-ado-about-nothing-regional-2026",
+      "suggestedShowId": "much-ado-about-nothing-globe-off-west-end-2026",
+      "confidence": "medium",
+      "signals": [
+        "venue-slug-match"
+      ],
+      "reviewFile": "data/review-texts/much-ado-about-nothing-regional-2026/stage-west--unknown.json",
+      "url": "https://www.davidcoddon.com/theatre-reviews/stage-west-much-ado-about-nothing-at",
       "reason": "venue"
     }
   ]
