@@ -62,7 +62,7 @@ function knownShowType(title, listingGenre) {
   // "Theatre" category sits beside them ("Dance; Theatre").
   if (/\b(?:opera|dance|ballet|comedy|stand.?up|cabaret|music|concert|circus|magic|children|family|cinema|film|talk)\b/i.test(g)) return null;
   // A bare "Theatre" category is not one: venues tag musicals with it too.
-  if (/\b(?:plays?|drama|new writing|revival)\b/i.test(g)) return 'play';
+  if (/\b(?:plays?|drama|new writing)\b/i.test(g)) return 'play';
   return null;
 }
 
