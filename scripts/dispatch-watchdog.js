@@ -45,6 +45,7 @@ const os = require('os');
 const path = require('path');
 const { spawn, spawnSync } = require('child_process');
 const core = require('./lib/dispatch-watchdog-core.js');
+const { recheckVerdict } = require('./lib/check-env-cause.js');
 const dispatchLedger = require('./lib/dispatch-ledger.js');
 const { findUnlandedJobDoneEntries } = require('./lib/headless-unlanded-detection.js');
 const cmuxws = require('./lib/cmux-workspaces.js');
@@ -229,7 +230,8 @@ function recentRecheckFailures(now) {
     latestByCard.set(e.cardId, e);
   }
   for (const e of latestByCard.values()) {
-    if (e.status !== 'fail') continue;
+    // BRO-7138: a check that could not run on the recheck machine is not a failure.
+    if (recheckVerdict(e).status !== 'fail') continue;
     const ts = Date.parse(e.ts || '');
     if (!Number.isFinite(ts) || now - ts > RECHECK_WINDOW_MS) continue;
     out.push({ notionId: e.cardId, taskSubject: e.name || null, ts: e.ts });

@@ -81,7 +81,36 @@ function envCauseOf(detail, { argv = null, tsxTests = null } = {}) {
   return null;
 }
 
+let defaultTsxTests = null;
+function repoTsxTests() {
+  if (!defaultTsxTests) {
+    try { defaultTsxTests = require('./autonomous-checks.js').readTsxRunTests(require('path').join(__dirname, '..', '..')); }
+    catch { defaultTsxTests = new Set(); }
+  }
+  return defaultTsxTests;
+}
+
+/**
+ * The verdict of one recheck ledger row, the same way for old and new rows.
+ * Rows written after runVerify learned envCause carry it (status
+ * 'unverifiable'); older rows say 'fail' and are reclassified from their
+ * detail and verifyCmd. Every ledger reader (heldShare, the board report, the
+ * watchdog, the morning email) goes through this.
+ * @param {object} row  a ledger 'recheck' row
+ * @param {{tsxTests?:Set<string>}} [o]  defaults to this repo's tsx manifests
+ * @returns {{status:string|null, envCause:string|null}}
+ */
+function recheckVerdict(row, { tsxTests } = {}) {
+  if (!row || !row.status) return { status: row ? row.status || null : null, envCause: null };
+  if (row.envCause) return { status: 'unverifiable', envCause: row.envCause };
+  if (row.status !== 'fail') return { status: row.status, envCause: null };
+  let argv = null;
+  try { argv = row.verifyCmd ? require('./autonomous-checks.js').tokenizeCheckCommand(String(row.verifyCmd)) : null; } catch { argv = null; }
+  const cause = envCauseOf(row.detail || row.note, { argv, tsxTests: tsxTests === undefined ? repoTsxTests() : tsxTests });
+  return cause ? { status: 'unverifiable', envCause: cause.key } : { status: 'fail', envCause: null };
+}
+
 const PLAIN_BY_KEY = Object.fromEntries(CAUSES.map((c) => [c.key, c.plain]));
 function plainEnvCause(key) { return PLAIN_BY_KEY[key] || 'its check could not run on the recheck machine'; }
 
-module.exports = { envCauseOf, needsTsxRunner, nodeTestFiles, plainEnvCause, ENV_CAUSE_KEYS: CAUSES.map((c) => c.key) };
+module.exports = { envCauseOf, recheckVerdict, needsTsxRunner, nodeTestFiles, plainEnvCause, ENV_CAUSE_KEYS: CAUSES.map((c) => c.key) };

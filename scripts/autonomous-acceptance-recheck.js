@@ -444,6 +444,9 @@ async function main(argv = process.argv.slice(2)) {
         detail: r.detail ? redactEmails(String(r.detail).slice(0, 300)) : null,
         note: `${r.skip ? `skipped: ${r.skip}` : r.status}${r.detail ? `: ${redactEmails(String(r.detail).slice(0, 300))}` : ''}`,
         verifyCmd: t.verifyCmd || null,
+        // BRO-7138: set when the check failed on something this machine
+        // withholds by design (check-env-cause.js); status is then unverifiable.
+        ...(r.envCause ? { envCause: r.envCause } : {}),
         shadow: true,
       }, RECHECK_LEDGER_PATH);
       console.error(`[recheck] ${describeResult(r)}`);
@@ -481,8 +484,9 @@ async function main(argv = process.argv.slice(2)) {
   }
 
   const counts = summarize(results, { noCriteria: dropped.length });
+  const couldNotRun = results.filter((x) => !x.skip && x.envCause).length;
   const closeNote = autoclose ? `; auto-close: ${closed.length} closed, ${keptOpen.length} passed but stayed open` : '';
-  ledger.appendEntry({ event: 'recheck-summary', runId, counts, autoclose: autoclose ? { closed, keptOpen } : null, handedOff, note: `${counts.pass} still work, ${counts.fail} do not, ${counts.unverifiable} not machine-verifiable, ${counts.skipped} skipped, ${counts.noCriteria} had no criteria to check${closeNote}${handedOff.length ? `; ${handedOff.length} handed to a worker` : ''}` }, RECHECK_LEDGER_PATH);
+  ledger.appendEntry({ event: 'recheck-summary', runId, counts, autoclose: autoclose ? { closed, keptOpen } : null, handedOff, note: `${counts.pass} still work, ${counts.fail} do not, ${counts.unverifiable} not machine-verifiable (${couldNotRun} of them could not run on this machine), ${counts.skipped} skipped, ${counts.noCriteria} had no criteria to check${closeNote}${handedOff.length ? `; ${handedOff.length} handed to a worker` : ''}` }, RECHECK_LEDGER_PATH);
   console.error(`[recheck] done: ${JSON.stringify(counts)}${autoclose ? ` autoclose=${JSON.stringify({ closed, keptOpen })}` : ''}`);
 }
 

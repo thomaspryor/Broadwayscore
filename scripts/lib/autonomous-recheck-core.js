@@ -40,7 +40,7 @@ const { RECHECK_AFTER_RE, parseRecheckAfter, parseRecheckAfterFromCard } = requi
 // are a TRUNCATED PREVIEW" instead of silently judging a card on 1800 chars
 // of it — see needsOverflowHydration below.
 const { cardHasOverflow } = require('./overflow-marker.js');
-const { envCauseOf, plainEnvCause } = require('./check-env-cause.js');
+const { plainEnvCause, recheckVerdict } = require('./check-env-cause.js');
 const { isFilerRefreshComment } = require('./filer-refresh-marker.js');
 
 /**
@@ -419,22 +419,8 @@ function describeResult(r) {
 }
 
 // ── Honest verdicts (BRO-7138) ──────────────────────────────────────────────
-//
-// runVerify now returns 'unverifiable' + envCause when a check fails on
-// something the check machine withholds by design (check-env-cause.js).
-// Ledger rows written before that say 'fail'. recheckVerdict is the ONE
-// reader every consumer of the ledger uses, so old and new rows count the
-// same way. `tsxTests` (autonomous-checks.js readTsxRunTests) lets an old
-// plain-node run of a tsx-manifest test count as the wrong runner.
-function recheckVerdict(row, { tsxTests = null } = {}) {
-  if (!row || !row.status) return { status: row ? row.status : null, envCause: null };
-  if (row.envCause) return { status: 'unverifiable', envCause: row.envCause };
-  if (row.status !== 'fail') return { status: row.status, envCause: null };
-  let argv = null;
-  try { argv = row.verifyCmd ? require('./autonomous-checks.js').tokenizeCheckCommand(String(row.verifyCmd)) : null; } catch { argv = null; }
-  const cause = envCauseOf(row.detail || row.note, { argv, tsxTests });
-  return cause ? { status: 'unverifiable', envCause: cause.key } : { status: 'fail', envCause: null };
-}
+// recheckVerdict (check-env-cause.js) is the ONE reader of a ledger row's
+// verdict: rows written before runVerify learned envCause say 'fail'.
 
 /**
  * "Done claims that held": among Done claims the nightly recheck could
@@ -443,7 +429,7 @@ function recheckVerdict(row, { tsxTests = null } = {}) {
  * of the share (they are counted, not hidden). share is null when nothing
  * was testable, never NaN.
  */
-function heldShare(entries, { now = Date.now(), days = 30, tsxTests = null } = {}) {
+function heldShare(entries, { now = Date.now(), days = 30, tsxTests } = {}) {
   const since = now - days * 86400000;
   const latest = new Map();
   for (const e of entries || []) {
