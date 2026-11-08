@@ -78,7 +78,11 @@ run() {
   [ -z "$missing" ] || echo "::warning::e2e-local: spec(s) not on this tree, skipped:$missing"
   local present=""
   for s in $SPECS; do [ -f "$s" ] && present="$present $s"; done
-  if [ -z "$present" ]; then echo "e2e-local: none of the specs exist on this tree"; return 0; fi
+  if [ -z "$present" ]; then
+    # A renamed/deleted spec set must not read as a pass (ship-check review).
+    if [ -n "${CI:-}" ]; then echo "::error::e2e-local gate failed: none of the specs exist on this tree (exit 1)"; return 1; fi
+    echo "e2e-local: none of the specs exist on this tree"; return 0
+  fi
 
   # The build rewrites tracked files and the cleanup restores them with
   # `git checkout -- .`, so refuse a dirty tree rather than lose edits.
