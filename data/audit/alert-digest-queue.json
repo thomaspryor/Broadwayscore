@@ -736,34 +736,6 @@
     "queuedAt": "2026-11-07T07:49:39.468Z"
   },
   {
-    "conditionKey": "review-gap:opening-window:heartbreak-house-regional-2026",
-    "title": "Review gap — \"Heartbreak House\" missing 1 cited review(s)",
-    "description": "Heartbreak House (heartbreak-house-regional-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=heartbreak-house-regional-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-07T10:04:27.464Z"
-  },
-  {
-    "conditionKey": "review-gap:opening-window:tosca-english-national-opera-west-end-2026",
-    "title": "Review gap — \"Tosca - English National Opera\" missing 1 cited review(s)",
-    "description": "Tosca - English National Opera (tosca-english-national-opera-west-end-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=tosca-english-national-opera-west-end-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-07T10:04:27.654Z"
-  },
-  {
     "conditionKey": "express-retry-still-thin:iphigenie-en-tauride-english-national-opera-west-end-2026",
     "title": "Opening Night Express retry still found thin review coverage for iphigenie-en-tauride-english-national-opera-west-end-2026",
     "description": "The early auto-fire found next to nothing, and the same-night retry (still thin after retry — zero scoreable review records found) still hasn't closed the gap. Full-text upgrade will otherwise wait on the weekly recollect-for-scores.yml cron.",
@@ -1836,20 +1808,6 @@
     "queuedAt": "2026-11-08T04:23:27.903Z"
   },
   {
-    "conditionKey": "t1-gaps:needs-manual-recovery",
-    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (Lincoln in the Bardo (washpost)). Checked 2026-11-08.",
-    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-08T05:22:57.668Z"
-  },
-  {
     "conditionKey": "land:land/job/linear-BRO-7113-mw7dw82a",
     "title": "Landing blocked: rebase red on land/job/linear-BRO-7113-mw7dw82a",
     "description": "land.yml did not land land/job/linear-BRO-7113-mw7dw82a: the rebase gate went red at dd1c83bfad. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/42451873089",
@@ -1881,9 +1839,37 @@
     "queuedAt": "2026-11-08T05:45:34.329Z"
   },
   {
-    "conditionKey": "corpus-drift:monitor-only",
-    "title": "Data-quality monitors drifting from baseline: 18 (backfill-everybodys-talking-about-jamie-show-exists, pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, +12 more). Checked 2026-11-08.",
-    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
+    "conditionKey": "review-gap:opening-window:heartbreak-house-regional-2026",
+    "title": "Review gap — \"Heartbreak House\" missing 1 cited review(s)",
+    "description": "Heartbreak House (heartbreak-house-regional-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=heartbreak-house-regional-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-08T06:35:11.636Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:tosca-english-national-opera-west-end-2026",
+    "title": "Review gap — \"Tosca - English National Opera\" missing 1 cited review(s)",
+    "description": "Tosca - English National Opera (tosca-english-national-opera-west-end-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=tosca-english-national-opera-west-end-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-08T06:35:11.911Z"
+  },
+  {
+    "conditionKey": "t1-gaps:needs-manual-recovery",
+    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (Lincoln in the Bardo (washpost)). Checked 2026-11-08.",
+    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
     "severity": "info",
     "url": null,
     "decision": false,
@@ -1892,7 +1878,7 @@
     "model": null,
     "tracked": null,
     "fields": [],
-    "queuedAt": "2026-11-08T06:27:12.688Z"
+    "queuedAt": "2026-11-08T06:35:23.294Z"
   },
   {
     "conditionKey": "land:land/bro-7102-job-headroom",
