@@ -41,14 +41,26 @@ function isAlertCard(issue) {
 }
 
 /**
+ * Cards filed before the router wrote the anchor line have no [conditionKey:]
+ * in their text, but the ledger still points at them. The key is only used
+ * when exactly one condition names the card.
+ */
+function conditionKeyFromLedger(ledger, identifier) {
+  const e = cardConditionIndex(ledger).get(identifier);
+  if (!e) return null;
+  const all = [...e.open, ...e.resolved];
+  return all.length === 1 ? all[0] : null;
+}
+
+/**
  * Is this open card a recovered-alert candidate, and which health row does it name?
  * @returns {{kind: 'not-alert'|'terminal'|'no-condition-key'|'not-health-row'|'candidate', conditionKey?: string, row?: string}}
  */
-function classifyAlertCard(issue) {
+function classifyAlertCard(issue, ledger) {
   if (!isAlertCard(issue)) return { kind: 'not-alert' };
   const type = issue.state && issue.state.type;
   if (type === 'completed' || type === 'canceled') return { kind: 'terminal' };
-  const conditionKey = conditionKeyOf(issue.description);
+  const conditionKey = conditionKeyOf(issue.description) || (ledger ? conditionKeyFromLedger(ledger, issue.identifier) : null);
   if (!conditionKey) return { kind: 'no-condition-key' };
   const row = healthRowNameFromConditionKey(conditionKey);
   if (!row) return { kind: 'not-health-row', conditionKey };
@@ -142,6 +154,6 @@ function landedComment(branch, sha) {
 }
 
 module.exports = {
-  ALERT_TITLE_PREFIXES, LANDING_SLACK_MS, ledgerSaysRecovered, conditionKeyOf, isAlertCard, classifyAlertCard, decideRecovered,
+  ALERT_TITLE_PREFIXES, LANDING_SLACK_MS, conditionKeyFromLedger, ledgerSaysRecovered, conditionKeyOf, isAlertCard, classifyAlertCard, decideRecovered,
   recoveredComment, landBranchFromComments, landingForBranch, decideLanded, landedComment,
 };

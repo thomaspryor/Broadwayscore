@@ -144,3 +144,11 @@ test('sweep --landed with the REAL landings reader does not throw (regression: r
   const lines = await runSweep(['--landed'], { linear, ledger: LEDGER });
   assert.ok(lines.at(-1).includes('"landed:not-landed":1'));
 });
+
+test('classifyAlertCard falls back to the ledger pointer when the card has no anchor line', () => {
+  const ledger = { conditions: { 'health-check:Old Row': { status: 'resolved', linearIdentifier: 'BRO-3' } } };
+  assert.equal(bc.classifyAlertCard(NOKEY, ledger).conditionKey, 'health-check:Old Row');
+  assert.equal(bc.classifyAlertCard(NOKEY, { conditions: {} }).kind, 'no-condition-key');
+  const two = { conditions: { a: { status: 'resolved', linearIdentifier: 'BRO-3' }, b: { status: 'resolved', linearIdentifier: 'BRO-3' } } };
+  assert.equal(bc.classifyAlertCard(NOKEY, two).kind, 'no-condition-key', 'ambiguous pointer is not used');
+});

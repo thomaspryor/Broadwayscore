@@ -93,7 +93,7 @@ async function main(argv = process.argv.slice(2), deps = {}) {
 
   const candidates = [];
   for (const issue of open) {
-    const c = bc.classifyAlertCard(issue);
+    const c = bc.classifyAlertCard(issue, ledger);
     if (c.kind === 'not-alert' || c.kind === 'terminal') continue;
     if (c.kind !== 'candidate') { bump(c.kind); continue; }
     candidates.push({ issue, ...c });
