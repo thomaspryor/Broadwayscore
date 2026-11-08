@@ -5516,7 +5516,7 @@
       "resolveReason": "review-gap: no uncollected cited reviews on the latest audit"
     },
     "test-yml:data-validation-red": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Data audits failing (non-blocking): Audit review contamination",
       "firstSeen": "2026-09-23T19:33:16.776Z",
@@ -5527,7 +5527,9 @@
       "notifyCount": 40,
       "cardId": null,
       "linearIdentifier": "BRO-5882",
-      "silentRefires": 3
+      "silentRefires": 3,
+      "resolvedAt": "2026-11-08T17:41:33.405Z",
+      "resolveReason": "retired: per-step keys (BRO-7130)"
     },
     "review-gap:opening-window:elf-lyons-the-woman-on-the-edge-off-broadway-2026": {
       "status": "resolved",
@@ -19480,8 +19482,8 @@
       "title": "Roundup gaps: 4 listed review(s) not captured across 2 show(s)",
       "firstSeen": "2026-10-16T17:15:04.341Z",
       "incidentOpenedAt": "2026-10-16T17:15:04.341Z",
-      "lastSeen": "2026-11-08T17:12:00.408Z",
-      "lastNotifiedAt": "2026-11-08T17:12:00.408Z",
+      "lastSeen": "2026-11-08T17:40:40.953Z",
+      "lastNotifiedAt": "2026-11-08T17:40:40.953Z",
       "lastSurfacedAt": null,
       "notifyCount": 42,
       "cardId": null,
@@ -19777,7 +19779,7 @@
       "title": "3 show(s) still have no image after repeated self-heal attempts",
       "firstSeen": "2026-10-16T19:08:17.110Z",
       "incidentOpenedAt": "2026-10-31T10:01:35.466Z",
-      "lastSeen": "2026-11-08T10:51:47.162Z",
+      "lastSeen": "2026-11-08T17:22:00.751Z",
       "lastNotifiedAt": "2026-11-06T23:53:37.838Z",
       "lastSurfacedAt": null,
       "notifyCount": 5,
@@ -19789,7 +19791,7 @@
         "iron-home-regional-2026",
         "the-play-that-goes-wrong-regional-2026"
       ],
-      "silentRefires": 6
+      "silentRefires": 7
     },
     "review-gap:opening-window:jane-eyre-rose-kingston-off-west-end-2026": {
       "status": "resolved",
@@ -21914,10 +21916,10 @@
       "title": "Cron's latest run failed (not yet stale): Fetch All Image Formats",
       "firstSeen": "2026-10-19T18:07:12.430Z",
       "incidentOpenedAt": "2026-11-06T18:45:30.510Z",
-      "lastSeen": "2026-11-07T17:17:52.499Z",
-      "lastNotifiedAt": "2026-11-07T17:17:52.499Z",
-      "lastSurfacedAt": "2026-11-07T17:17:52.499Z",
-      "notifyCount": 6,
+      "lastSeen": "2026-11-08T17:31:33.797Z",
+      "lastNotifiedAt": "2026-11-08T17:31:33.797Z",
+      "lastSurfacedAt": "2026-11-08T17:31:33.797Z",
+      "notifyCount": 7,
       "cardId": null,
       "linearIdentifier": null
     },
@@ -29026,7 +29028,7 @@
       "cardId": null,
       "linearIdentifier": null,
       "silentRefires": 2,
-      "resolvedAt": "2026-11-08T17:12:00.340Z",
+      "resolvedAt": "2026-11-08T17:40:40.827Z",
       "resolveReason": "review-gap: no uncollected cited reviews on the latest audit, only SERP-census gaps, or show id retired"
     },
     "opening-night-placeholder-synopsis-the-greatest-story-ever-off-broadway-2026": {
@@ -38355,7 +38357,7 @@
       "title": "Review gap — \"Othello (Bedlam)\" missing 2 cited review(s)",
       "firstSeen": "2026-11-07T15:26:56.754Z",
       "incidentOpenedAt": "2026-11-07T15:26:56.754Z",
-      "lastSeen": "2026-11-08T17:12:00.365Z",
+      "lastSeen": "2026-11-08T17:40:40.872Z",
       "lastNotifiedAt": "2026-11-08T13:30:30.696Z",
       "lastSurfacedAt": "2026-11-08T13:30:30.696Z",
       "notifyCount": 2,
@@ -38912,7 +38914,7 @@
       "resolvedAt": "2026-11-08T15:30:36.772Z"
     },
     "land:land/bro-2453-inclusion-fn": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Landing blocked: unit-tests-node red on land/bro-2453-inclusion-fn",
       "firstSeen": "2026-11-08T16:45:06.817Z",
@@ -38922,10 +38924,11 @@
       "lastSurfacedAt": "2026-11-08T16:45:06.817Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-11-08T17:27:15.018Z"
     },
     "land:land/bro-7129-census-place": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Landing blocked: unit-tests-node red on land/bro-7129-census-place",
       "firstSeen": "2026-11-08T16:48:29.938Z",
@@ -38935,7 +38938,8 @@
       "lastSurfacedAt": "2026-11-08T16:48:29.938Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-11-08T17:21:23.703Z"
     },
     "dependabot-pr:1182": {
       "status": "open",
@@ -38951,7 +38955,7 @@
       "linearIdentifier": "BRO-7136"
     },
     "land:land/bro-7132-rc-close-fields": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Landing blocked: unit-tests-node red on land/bro-7132-rc-close-fields",
       "firstSeen": "2026-11-08T16:54:07.319Z",
@@ -38959,6 +38963,49 @@
       "lastSeen": "2026-11-08T16:54:07.319Z",
       "lastNotifiedAt": "2026-11-08T16:54:07.319Z",
       "lastSurfacedAt": "2026-11-08T16:54:07.319Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null,
+      "resolvedAt": "2026-11-08T17:39:27.653Z"
+    },
+    "test-yml:data-validation-red:validate-market-expansion": {
+      "status": "resolved",
+      "disposition": "digest",
+      "title": "Data audit failing: Validate market expansion",
+      "firstSeen": "2026-11-08T17:41:33.442Z",
+      "incidentOpenedAt": "2026-11-08T17:41:33.442Z",
+      "deferredAuto": true,
+      "lastSeen": "2026-11-08T17:41:33.442Z",
+      "lastNotifiedAt": "2026-11-08T17:41:33.442Z",
+      "lastSurfacedAt": "2026-11-08T17:41:33.442Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null,
+      "resolvedAt": "2026-11-08T17:49:17.189Z",
+      "resolveReason": "step passed"
+    },
+    "cron-health-failed:Commercial Pending Review": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Cron's latest run failed (not yet stale): Commercial Pending Review",
+      "firstSeen": "2026-11-08T17:31:33.780Z",
+      "incidentOpenedAt": "2026-11-08T17:31:33.780Z",
+      "lastSeen": "2026-11-08T17:31:33.780Z",
+      "lastNotifiedAt": "2026-11-08T17:31:33.780Z",
+      "lastSurfacedAt": "2026-11-08T17:31:33.780Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "land:land/bro-7131-rescue-abandoned": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Landing blocked: unit-tests-node red on land/bro-7131-rescue-abandoned",
+      "firstSeen": "2026-11-08T17:44:20.504Z",
+      "incidentOpenedAt": "2026-11-08T17:44:20.504Z",
+      "lastSeen": "2026-11-08T17:44:20.504Z",
+      "lastNotifiedAt": "2026-11-08T17:44:20.504Z",
+      "lastSurfacedAt": "2026-11-08T17:44:20.504Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null

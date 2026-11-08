@@ -911,20 +911,11 @@ function decideInclusion(review, show, guards, filePath) {
   // skippedUnverifiableWebSearchRow (same predicates, same order as explainExclusion).
   // The row predicate reads review.sources, review.humanReviewScore and
   // review.adjudicatedScore, which is why those are in FLAG_FIELDS.
-  if (typeof guards.isCancelledBeforeOpeningShow === 'function' && guards.isCancelledBeforeOpeningShow(show)) {
-    return { included: false, reason: 'cancelledBeforeOpening' };
-  }
-  if (typeof guards.isUnverifiableWebSearchRow === 'function' && guards.isUnverifiableWebSearchRow(review)) {
-    return { included: false, reason: 'unverifiableWebSearchRow' };
-  }
-  // BRO-3126: preview-period first-look piece (reads contentVerification + the head of fullText).
-  if (typeof guards.isPreviewFirstLookPiece === 'function' && guards.isPreviewFirstLookPiece(review)) {
-    return { included: false, reason: 'previewFirstLookPiece' };
-  }
-  // BRO-2746: combined-review file carrying a co-member show's review.
-  if (typeof guards.isCombinedReviewOfOtherMemberOnly === 'function' && guards.isCombinedReviewOfOtherMemberOnly(review, show)) {
-    return { included: false, reason: 'combinedReviewOfOtherMemberOnly' };
-  }
+  // BRO-2453: shared with the rebuild loop; replayed under the passed (baseline or working) guards.
+  // tolerateMissing: a BASE_REF module may predate a predicate. decideInclusion reads review.sources,
+  // review.humanReviewScore and review.adjudicatedScore through isUnverifiableWebSearchRow (FLAG_FIELDS).
+  const early = (guards.decideEarlyFileExclusion || require('./lib/review-guards').decideEarlyFileExclusion)(review, show, { guards, tolerateMissing: true });
+  if (early) return { included: false, reason: early.reason };
   // 1. Already-flagged top-level exclusions. A static wrongShow/wrongProduction
   // flag on disk does NOT mean rebuild-all-reviews.js excludes the review — the
   // rebuild's auto-clear paths (shouldAutoClearWrongShowUkUrl, shouldAutoClearWrongShow,
@@ -1778,6 +1769,7 @@ function main() {
         && (baseline.isPreviewFirstLookPiece?.toString() || '') === (working.isPreviewFirstLookPiece?.toString() || '')
         // BRO-2746: combined review of another member only (helpers inlined, toString() covers them).
         && (baseline.isCombinedReviewOfOtherMemberOnly?.toString() || '') === (working.isCombinedReviewOfOtherMemberOnly?.toString() || '')
+        && (baseline.decideEarlyFileExclusion?.toString() || '') === (working.decideEarlyFileExclusion?.toString() || '')
         // cvLowButStrong carve-out (BRO-3512): the predicate and its marker regexes.
         && (baseline.hasStrongDifferentShowSignal?.toString() || '') === (working.hasStrongDifferentShowSignal?.toString() || '')
         && JSON.stringify((baseline.STRONG_DIFFERENT_SHOW_MARKERS || []).map(String)) === JSON.stringify((working.STRONG_DIFFERENT_SHOW_MARKERS || []).map(String))

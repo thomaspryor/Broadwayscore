@@ -364,7 +364,7 @@
     "model": null,
     "tracked": null,
     "fields": [],
-    "queuedAt": "2026-11-08T17:12:43.726Z"
+    "queuedAt": "2026-11-08T17:41:05.194Z"
   },
   {
     "conditionKey": "land:land/bro-7132-rc-close-fields",
@@ -396,5 +396,101 @@
       }
     ],
     "queuedAt": "2026-11-08T16:54:07.319Z"
+  },
+  {
+    "conditionKey": "test-yml:data-validation-red:validate-market-expansion",
+    "title": "Data audit failing: Validate market expansion",
+    "description": "The \"Validate market expansion\" step of test.yml's Data Validation job is failing on main. The job is non-blocking (BRO-3425), so main stays green, but the audit is reporting a real data or code problem. This card is scoped to this one step; another failing step gets its own card.",
+    "severity": "warning",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42505023384",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Job",
+        "value": "Data Validation"
+      },
+      {
+        "name": "Step",
+        "value": "Validate market expansion"
+      },
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/42505023384)"
+      }
+    ],
+    "queuedAt": "2026-11-08T17:41:33.443Z"
+  },
+  {
+    "conditionKey": "cron-health-failed:Commercial Pending Review",
+    "title": "Cron's latest run failed (not yet stale): Commercial Pending Review",
+    "description": "Commercial Pending Review: Latest run failed (last success 25h ago). Not stale yet; fix it before it is.",
+    "severity": "warning",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42505033530",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/42505033530)"
+      }
+    ],
+    "queuedAt": "2026-11-08T17:31:33.781Z"
+  },
+  {
+    "conditionKey": "cron-health-failed:Fetch All Image Formats",
+    "title": "Cron's latest run failed (not yet stale): Fetch All Image Formats",
+    "description": "Fetch All Image Formats: Latest run failed (last success 3h ago). Not stale yet; fix it before it is.",
+    "severity": "warning",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42505033530",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/42505033530)"
+      }
+    ],
+    "queuedAt": "2026-11-08T17:31:33.797Z"
+  },
+  {
+    "conditionKey": "land:land/bro-7131-rescue-abandoned",
+    "title": "Landing blocked: unit-tests-node red on land/bro-7131-rescue-abandoned",
+    "description": "land.yml did not land land/bro-7131-rescue-abandoned: the unit-tests-node gate went red at cb80fbf54c. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/42503881426",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-7131-rescue-abandoned"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "cb80fbf54ca28bcab8abf5080f4306470fbce547"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42503881426"
+      }
+    ],
+    "queuedAt": "2026-11-08T17:44:20.505Z"
   }
 ]
