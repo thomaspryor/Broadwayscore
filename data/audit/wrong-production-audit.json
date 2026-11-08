@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-08T07:56:44.036Z",
+  "timestamp": "2026-11-08T10:26:54.401Z",
   "stats": {
-    "totalReviews": 80518,
-    "alreadyFlagged": 22029,
+    "totalReviews": 80519,
+    "alreadyFlagged": 22030,
     "dateGuardCatches": 216,
     "directorMismatch": 3547,
     "tvFilmSignals": 2294,
     "londonSignals": 3626,
-    "offBroadwaySignals": 749,
+    "offBroadwaySignals": 748,
     "yearMismatch": 363,
-    "noPublishDate": 8431
+    "noPublishDate": 8430
   },
   "findings": [
     {
@@ -120159,20 +120159,6 @@
       ]
     },
     {
-      "showId": "rope-off-broadway-2026",
-      "file": "nytimes--helen-shaw.json",
-      "score": 50,
-      "publishDate": "2026-11-05",
-      "url": "https://www.nytimes.com/2026/11/05/theater/rope-the-verge-review-off-broadway-silverman.html",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"public theater\""
-        }
-      ]
-    },
-    {
       "showId": "rose-west-end-2023",
       "file": "telegraph--dominic-cavendish.json",
       "score": 79,
@@ -121042,13 +121028,13 @@
       "showId": "sexual-misconduct-of-the-middle-classes-off-broadway-2026",
       "file": "new-york-sun--elysa-gardner.json",
       "score": 81,
-      "publishDate": "2025-05-09",
+      "publishDate": "2025-05-08",
       "url": "https://www.nysun.com/article/hugh-jackman-proves-the-perfect-choice-to-lead-a-new-off-broadway-offering-sexual-misconduct-of-the-middle-classes",
       "findings": [
         {
           "type": "DATE_GUARD",
           "severity": "MEDIUM",
-          "detail": "Published 312d before show (2025-05-09 vs 2026-03-17)"
+          "detail": "Published 313d before show (2025-05-08 vs 2026-03-17)"
         }
       ]
     },
@@ -136256,7 +136242,7 @@
     },
     {
       "showId": "thelma-and-louise-a-new-musical-off-west-end-2026",
-      "file": "plays-international--unknown.json",
+      "file": "plays-international--franco-milazzo.json",
       "score": 33,
       "publishDate": "2026-09-18",
       "url": "https://playsinternational.org.uk/thelma-and-louise-young-vic/",
