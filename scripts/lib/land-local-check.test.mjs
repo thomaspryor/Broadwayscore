@@ -390,6 +390,7 @@ test('BRO-7110: a tree dirty only with prebuild outputs names them and the resto
   const onlyGenerated = dirtyTreeMessage(' M data/gold-lists-computed.json\n');
   assert.match(onlyGenerated, /commit or discard tracked changes first/);
   assert.match(onlyGenerated, /git checkout -- data\/gold-lists-computed\.json$/);
+  assert.match(dirtyTreeMessage('M data/gold-lists-computed.json'), /git checkout -- data\/gold-lists-computed\.json$/, 'trimmed status, as run() returns it');
   const mixed = dirtyTreeMessage(' M data/gold-lists-computed.json\n M scripts/foo.js\n');
   assert.doesNotMatch(mixed, /git checkout --/, 'a real edit in the mix gets no discard hint');
 });

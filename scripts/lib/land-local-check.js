@@ -82,7 +82,7 @@ function restorePrebuildResidue(root, git = (...a) => run('git', a, { cwd: root 
 /** porcelain status -> the refusal text */
 function dirtyTreeMessage(porcelain) {
   const { PREBUILD_OUTPUTS } = require('./prebuild-outputs.js');
-  const files = porcelain.split('\n').filter(Boolean).map((l) => l.slice(3));
+  const files = porcelain.split('\n').filter(Boolean).map((l) => l.trim().replace(/^\S+\s+/, '').replace(/^.* -> /, '')); // the caller's output may be trimmed
   const base = 'land-local-check: commit or discard tracked changes first:\n' + porcelain;
   if (!files.length || !files.every((f) => PREBUILD_OUTPUTS.some((re) => re.test(f)))) return base;
   return base + (base.endsWith('\n') ? '' : '\n') +
