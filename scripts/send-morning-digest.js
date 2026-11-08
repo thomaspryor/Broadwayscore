@@ -83,7 +83,7 @@ const { fetchPipelineIssues } = require('./lib/autofix-canary.js');
 const { assessCyrusRelay } = require('./lib/cyrus-relay-health.js');
 const { assessRunnerHealth } = require('./lib/cyrus-runner-health.js');
 const { assessSupervisorStatus } = require('./lib/pr-supervisor-core.js');
-const { fetchInflowCounts, assessInflowRatio } = require('./lib/backlog-inflow-ratio.js');
+const { fetchInflowCounts, assessInflowRatio, withBacklogHealth } = require('./lib/backlog-inflow-ratio.js');
 const { doneRatePerDay, fetchUnarmedUrgentHighCount, formatDrainThroughputLine, isHeartbeatFresh } = require('./lib/linear-drain-throughput.js');
 const { readBoardGateFailopen } = require('./lib/summarize-board-gate-failopen.js');
 const { collectCmuxTriage, renderCmuxTriageLine } = require('./lib/cmux-triage-digest.js');
@@ -1778,6 +1778,21 @@ async function main() {
   }
   // BRO-6442: the board category table, fail-soft. DIGEST_BOARD_TABLE_DISABLED=1 drops the block.
   const boardTable = await fetchBoardTable({ now });
+  // BRO-7137: re-judge the backlog line with what the board walks above already
+  // fetched (no new query): same-day session cards out of the ratio, the stuck
+  // pile and the Ready count in. Raw inflowCounts stay as they were for drain throughput.
+  // When the raw count failed or timed out, the board walks alone still carry the verdict;
+  // a result with no message (both sources down) keeps the "could not be measured" line.
+  {
+    try {
+      const d7 = boardNumbersData && boardNumbersData.d7;
+      const base = inflowCounts || { windowDays: 7, canceled: d7 && Number.isFinite(d7.canceled) ? d7.canceled : 0 };
+      const judged = assessInflowRatio(withBacklogHealth(base, { flow: d7, report: boardTable.report, now }));
+      if (judged && judged.message) inflow = judged;
+    } catch (err) {
+      console.error(`[digest] WARN backlog stuck-pile check failed, keeping the flow-only line: ${String(err.message).slice(0, 120)}`);
+    }
+  }
   if (skipMacLocal) {
     const { readMacAlive } = require('./lib/mac-applied-heartbeat.js');
     sections.macLocalSkipped = macLocalSkippedLine(await readMacAlive({ token: process.env.GH_TOKEN || process.env.GITHUB_TOKEN }));

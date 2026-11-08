@@ -21,7 +21,7 @@
 
 const { execFileSync } = require('child_process');
 const { TERMINAL_STATE_TYPES } = require('./linear-state-types.js');
-const { windowStart } = require('./backlog-inflow-ratio.js');
+const { windowStart, STUCK_AGE_DAYS } = require('./backlog-inflow-ratio.js');
 const { landedPerLane, LANDED_LOG_FORMAT } = require('./codex-runner.js');
 const { isAutofixFiledIssue } = require('./autofix-filed-marker.js');
 const { isAwaitingOwner } = require('./owner-approval-channel.js');
@@ -157,9 +157,14 @@ function summarizeBoardFlow(cards, { now = new Date(), windowDays = 7 } = {}) {
   const startMs = Date.parse(since);
   const nowMs = now.getTime();
   const empty = () => ({ canary: 0, routineLog: 0, sessionTracking: 0, duplicate: 0 });
-  const result = { created: 0, completed: 0, canceled: 0, excluded: { created: empty(), completed: empty() }, windowDays, since };
+  // BRO-7137: cards that left the stuck pile this window (closed, created more than
+  // STUCK_AGE_DAYS before the window began), so last week's pile can be rebuilt from today's.
+  const oldBeforeMs = startMs - STUCK_AGE_DAYS * 86400_000;
+  const result = { created: 0, completed: 0, canceled: 0, leftOldPile: 0, excluded: { created: empty(), completed: empty() }, windowDays, since };
   for (const card of cards || []) {
     const kind = ceremonyKind(card, nowMs);
+    const closedMs = Date.parse(card.completedAt || card.canceledAt);
+    if (closedMs >= startMs && closedMs <= nowMs && Date.parse(card.createdAt) < oldBeforeMs) result.leftOldPile++;
     for (const [key, field] of [['created', 'createdAt'], ['completed', 'completedAt'], ['canceled', 'canceledAt']]) {
       const ts = Date.parse(card[field]);
       if (!(ts >= startMs && ts <= nowMs)) continue;

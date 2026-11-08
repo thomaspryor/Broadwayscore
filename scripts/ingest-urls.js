@@ -281,6 +281,10 @@ async function main() {
       fields: ingestCaller ? { ingestSource: ingestCaller } : {},
     };
     if (publishDate) input.publishDate = publishDate;
+    // BRO-7131: a rescue retry exists to replace a bad stored body (a teaser or block page left by the fetch that
+    // was abandoned). Without this the merge only fills blank fields and the retry ends in "Stale merge".
+    // The writer still requires the same article and a better content tier.
+    if (ingestCaller === 'rescue-abandoned-reviews') input.replaceBadBody = true;
 
     if (fullText) {
       input.fields.fullText = fullText;

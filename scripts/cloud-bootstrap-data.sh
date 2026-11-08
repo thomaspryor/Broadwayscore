@@ -134,7 +134,14 @@ if [ "${CLAUDE_CODE_REMOTE:-}" = "true" ] && RT_SRC="$(attached_review_texts)"; 
       # A copy killed by the timeout below leaves its half-built tree (hundreds of MB)
       # under a PID-named path that no later run would remove.
       rm -rf data/.review-texts.new.* data/.review-texts.old.* 2>/dev/null || true
-      log "copying review texts from the session-attached clone $RT_SRC (about a minute; ${RT_DECISION#copy })"
+      # setup-local-data.sh cannot copy from a partial (blobless) clone and falls
+      # through to a network clone, so say which path will actually run (BRO-7130).
+      # shellcheck source=lib/is-partial-clone.sh
+      if . "$SCRIPT_DIR/lib/is-partial-clone.sh" 2>/dev/null && is_partial_clone "$RT_SRC"; then
+        log "the session-attached clone $RT_SRC is partial, so review texts are cloned over the network instead (a few minutes; ${RT_DECISION#copy })"
+      else
+        log "copying review texts from the session-attached clone $RT_SRC (about a minute; ${RT_DECISION#copy })"
+      fi
       REVIEW_TEXTS_SOURCE="$RT_SRC" run_bounded 300 bash "$SCRIPT_DIR/setup-local-data.sh" --all 2>&1 \
         | grep -E 'ERROR|FATAL|Review texts|files copied|Setup complete' | sed 's/^/[setup-local-data] /' || true
       ;;
