@@ -25,8 +25,10 @@ for (const edition of editions) {
   const out = path.join(tmp, edition);
   fs.mkdirSync(out);
   // No RESEND key: the writer can't see or touch drafts; recent subjects come from the ledger.
-  const env = { ...process.env, NEWSLETTER_EDITION: edition, NEWSLETTER_OUT_DIR: out, NEWSLETTER_STATE_PATH: state, RESEND_API_KEY: '' };
-  const r = spawnSync('node', [path.join(repo, 'scripts/newsletter/generate.mjs'), week], { cwd: repo, env, encoding: 'utf8', timeout: 10 * 60 * 1000 });
+  const r = spawnSync('node', [path.join(repo, 'scripts/newsletter/generate.mjs'), week], {
+    cwd: repo, encoding: 'utf8', timeout: 10 * 60 * 1000,
+    env: { ...process.env, NEWSLETTER_EDITION: edition, NEWSLETTER_OUT_DIR: out, NEWSLETTER_STATE_PATH: state, RESEND_API_KEY: '' },
+  });
   console.log(`\n===== ${edition} · week of ${week} =====`);
   for (const l of (r.stderr || '').split('\n')) if (/subject|AI /.test(l)) console.log(l);
   try {
