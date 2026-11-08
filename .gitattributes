@@ -68,6 +68,8 @@ data/audit/landings.jsonl merge=union
 # BRO-4851: one row per West End historical promotion/revert (append-only;
 # promote-historical-we.js --revert reads it back).
 data/audit/we-historical-promotion-log.jsonl merge=union
+# BRO-7164: opening-night lane-switch audit, one append-only row per switch (scripts/lane-switch.js only appends; nothing reads it back programmatically).
+data/audit/lane-switch.jsonl merge=union
 # BRO-6952/BRO-6910: cross-show URL drop ledger, append-only, one row per (showId,url).
 # readCrossShowUrlRows only filters (no sum, no order dependence); every gather shard
 # commits it concurrently, plus mergeCrossShowUrlLedger covers the push-reconcile path.
