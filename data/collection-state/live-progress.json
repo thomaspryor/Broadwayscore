@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-11-08T13:33:29.307Z",
-  "processed": 3,
-  "failed": 1,
-  "successRate": "75.0%",
+  "updatedAt": "2026-11-08T13:33:58.172Z",
+  "processed": 912,
+  "failed": 436,
+  "successRate": "67.7%",
   "tierBreakdown": {
-    "playwright": 2,
+    "playwright": 316,
     "amp": 0,
     "browserbase": 2,
     "directCookies": 0,
-    "scrapingdog": 0,
-    "scrapingbee": 0,
-    "brightdata": 0,
+    "scrapingdog": 51,
+    "scrapingbee": 30,
+    "brightdata": 10,
     "archiveToday": 0,
-    "archive": 0
+    "archive": 380
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 30,
   "recentActivity": [
     {
       "t": "2026-11-08T13:32:43.385Z",
@@ -26,6 +26,28 @@
       "t": "2026-11-08T13:32:44.077Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-11-08T11:59:29.863Z",
+      "event": "bb-session",
+      "session": "ca2a8439",
+      "url": "https://www.nytimes.com/2025/11/25/arts/music/andrea-chenier-met-opera-review.ht"
+    },
+    {
+      "t": "2026-11-08T11:59:30.130Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-08T11:59:46.665Z",
+      "event": "bb-session",
+      "session": "81e718b8",
+      "url": "https://www.nytimes.com/2025/11/25/arts/music/andrea-chenier-met-opera-review.ht"
+    },
+    {
+      "t": "2026-11-08T11:59:46.935Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
