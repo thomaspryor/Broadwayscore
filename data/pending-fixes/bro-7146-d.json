@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7146-d",
   "planId": "d4de6585-6351-4fda-8d6e-f86ef9583766",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-08T21:12:26.919Z",
   "submitter": {
     "name": null,
@@ -24,5 +24,14 @@
         "description": "shows.json: constanze-off-west-end-2026.type"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-08T21:30:06.794Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for constanze-off-west-end-2026"
+    }
+  ],
+  "executedIn": "ci"
 }
