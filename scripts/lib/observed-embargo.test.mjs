@@ -54,3 +54,17 @@ test('lane code never loads this helper (would change the lane hash and disarm t
   assert.ok(files.length > 50);
   assert.equal(files.filter((f) => /observed-embargo|test-bench/.test(f)).length, 0);
 });
+
+test('an outlet whose second critic posted early still counts in the real cluster', () => {
+  const est = Date.parse('2026-10-30T02:00:00Z');
+  const rows = [
+    { outlet: 'Stage Review', publishedTime: '2026-10-29T23:10:00Z' },
+    { outlet: 'Stage Review', publishedTime: '2026-10-30T03:00:30Z' },
+    { outlet: 'Variety', publishedTime: '2026-10-30T03:00:00Z' },
+    { outlet: 'Vulture', publishedTime: '2026-10-30T03:01:00Z' },
+  ];
+  const r = observedEmbargo({ estimateMs: est, publishTimes: rows });
+  assert.equal(r.source, 'observed-cluster');
+  assert.equal(r.at, '2026-10-30T03:00:00.000Z');
+  assert.equal(r.n, 3);
+});
