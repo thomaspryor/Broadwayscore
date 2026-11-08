@@ -37,22 +37,19 @@
  *   --force-exhausted  Override the proven-zero-sweep guard (see below)
  */
 
-const { isolateMultiShowSectionForShowId } = require('./lib/multi-show-section-extract');
 const fs = require('fs');
-const { AGGREGATOR_FIELDS } = require('./lib/rediscovery-candidate');
 const path = require('path');
-const { execSync } = require('child_process');
 
-const { classifyContentTier, isGarbageContent, validateShowMentioned, countWords } = require('./lib/content-quality');
-const { cleanText, stripTrailingJunk } = require('./lib/text-cleaning');
+const { cleanText } = require('./lib/text-cleaning');
 const { extractExplicitScore } = require('./lib/llm-score-extractor');
 const { setExtractedScore } = require('./lib/score-routing');
 const { extractArticleText } = require('./lib/article-extractor');
 const { discoverCorrectUrl, OUTLET_DOMAINS, REGISTRY_DOMAIN_ALIASES } = require('./lib/url-discovery');
 const { evaluateCandidate, buildDomainOutletIds, isProvenZeroSweep } = require('./lib/serp-text-recovery-candidates');
-const { updateFileUrlWithInvariant } = require('./lib/url-change-invariant');
 const { fetchPage, unwrapRedirectUrl, cleanup } = require('./lib/scraper');
-const { markRescoreNeeded } = require('./lib/rescore-flagging');
+// One gate + one locked write for every recovery route (BRO-7171).
+const { recoverReviewText, llmIdentityVerdict } = require('./lib/gap-acceptance');
+const { checkpointReviewTexts: landReviewTexts, retryPendingPushes, createWriteTracker } = require('./lib/review-texts-checkpoint');
 
 const args = process.argv.slice(2);
 const getArg = (name) => {
@@ -97,56 +94,23 @@ if (!args.includes('--force-exhausted') && isProvenZeroSweep({ domain: CONFIG.do
 function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 
 // Commit + push data/review-texts periodically DURING the run, not just at the
-// end. A long local run (30-60 min for 100+ candidates) leaves every recovered
-// file sitting uncommitted the whole time — this machine also runs scheduled
-// local automation (launchd: autonomous-nightly, backfill-gather) against the
-// SAME checkout, and a concurrent write to the same file is a filesystem race
-// git can't protect against (no conflict is ever raised — whoever's write
-// lands last on disk wins, and `git add` only ever sees the current state).
-// 2026-07-19: a ~40min New Yorker run recovered 22 files; only 6 survived to
-// the final commit because most were silently overwritten mid-run before this
-// script ever got to `git add`. Committing every few recoveries shrinks that
-// exposure window from ~40 min to a couple of minutes.
+// end: a long local run left recovered files uncommitted for ~40 min while
+// other local automation wrote the same checkout (2026-07-19: 22 recovered,
+// 6 survived). BRO-7171: every write now happens under the shared
+// review-texts lock, and this commits ONLY the files this run wrote (no
+// `git add -A` sweeping up another writer's half-done edits). A failed push
+// THROWS: the run stops, the commit is recorded as pending, and the next run
+// pushes or restores it before doing anything new.
+const RUN_WRITES = createWriteTracker();
+
 function checkpointReviewTexts(label) {
-  try {
-    execSync('git add -A', { cwd: CONFIG.reviewTextsDir, stdio: 'pipe' });
-    try {
-      execSync('git diff --staged --quiet', { cwd: CONFIG.reviewTextsDir, stdio: 'pipe' });
-      return; // nothing to commit
-    } catch { /* has staged changes */ }
-    execSync(`git commit -m "data: ${label} checkpoint"`, { cwd: CONFIG.reviewTextsDir, stdio: 'pipe' });
-    for (let attempt = 1; attempt <= 3; attempt++) {
-      try {
-        execSync('git pull --rebase -X theirs origin main', { cwd: CONFIG.reviewTextsDir, stdio: 'pipe' });
-        // -X theirs favors the LOCAL (this script's) commits on conflicting hunks
-        // per rebase semantics, but this codebase has documented, incident-backed
-        // evidence that concurrent writes to the same JSON file's fields still get
-        // dropped in practice — restore-protected-fields.js is the established
-        // safety net (same pattern as rediscover-review-urls.js's
-        // pushReviewTextsCheckpoint). Re-applies fullText and other protected
-        // fields from pre-rebase HEAD if the rebase silently lost them.
-        try {
-          const restoreScriptPath = path.resolve(__dirname, 'lib', 'restore-protected-fields.js');
-          const restored = execSync(`node "${restoreScriptPath}" origin/main`, { cwd: CONFIG.reviewTextsDir, encoding: 'utf8', stdio: 'pipe' }).trim();
-          if (parseInt(restored, 10) > 0) {
-            console.log(`  [checkpoint] restored protected fields in ${restored} file(s) after rebase`);
-            execSync('git add -A', { cwd: CONFIG.reviewTextsDir, stdio: 'pipe' });
-            execSync('git commit --amend --no-edit', { cwd: CONFIG.reviewTextsDir, stdio: 'pipe', env: { ...process.env, GIT_EDITOR: 'true' } });
-          }
-        } catch (restoreErr) {
-          console.log(`  [checkpoint] restore-protected-fields failed: ${restoreErr.message.slice(0, 200)}`);
-        }
-        execSync('git push origin main', { cwd: CONFIG.reviewTextsDir, stdio: 'pipe' });
-        console.log(`  [checkpoint] pushed review-texts (attempt ${attempt})`);
-        return;
-      } catch (e) {
-        try { execSync('git rebase --abort', { cwd: CONFIG.reviewTextsDir, stdio: 'pipe' }); } catch {}
-        if (attempt === 3) console.log(`  [checkpoint] WARNING: failed to push after 3 attempts: ${e.message.slice(0, 200)}`);
-      }
-    }
-  } catch (e) {
-    console.log(`  [checkpoint] error: ${e.message.slice(0, 200)}`);
-  }
+  if (!RUN_WRITES.size) return null;
+  const paths = [...RUN_WRITES];
+  const res = landReviewTexts({ repoDir: CONFIG.reviewTextsDir, paths, message: `data: ${label} checkpoint` });
+  for (const p of paths) RUN_WRITES.delete(p);
+  console.log(`  [checkpoint] ${res.pushed ? 'pushed' : 'nothing new to push'}; ${res.landed.length} file(s) confirmed on origin/main`);
+  for (const n of res.notLanded) console.log(`  [checkpoint] NOT on origin/main after push: ${n.rel}`);
+  return res;
 }
 
 function loadExhausted() {
@@ -232,6 +196,7 @@ function loadCandidates() {
 
       const show = shows[data.showId] || {};
       candidates.push({
+        show,
         filePath,
         reviewId: `${showDir}/${file}`,
         showId: data.showId,
@@ -277,104 +242,96 @@ async function fetchAndExtract(url) {
 }
 
 /**
- * Quality-gate + write recovered text into the candidate's file.
- * newUrl === candidate.url means no URL change (in-place text upgrade).
+ * LLM identity verdict for a text found at a NEW url. Only asked when the
+ * cheap proofs (aggregator excerpt overlap) did not settle identity.
+ */
+async function verifyMovedReview(candidate, cleanedText, newUrl) {
+  const { verifyContent, resolveCvMarket } = require('./lib/content-verifier');
+  const { isLongRunningProduction } = require('./lib/long-runner-registry');
+  const review = JSON.parse(fs.readFileSync(candidate.filePath, 'utf8'));
+  const show = candidate.show || {};
+  try {
+    // venue-write-guard-ok: venue is prompt context for verifyContent, never written to data.
+    const v = await verifyContent({
+      scrapedText: cleanedText,
+      excerpt: review.excerpt || null,
+      showTitle: show.title || candidate.showId,
+      criticName: review.criticName || null,
+      outletName: review.outlet || review.outletId || null,
+      url: newUrl,
+      venue: show.venue || null,
+      openingDate: show.openingDate || null,
+      publishDate: review.publishDate || null,
+      market: resolveCvMarket(show),
+      isLongRunningProduction: isLongRunningProduction(show),
+      show,
+    });
+    return llmIdentityVerdict(v);
+  } catch (e) {
+    console.log(`    LLM identity check failed: ${e.message.slice(0, 120)}`);
+    return false;
+  }
+}
+
+/**
+ * Gate + write recovered text into the candidate's file through the shared
+ * acceptRecoveredText gate (BRO-7171). newUrl === candidate.url means no URL
+ * change (in-place text upgrade). Paid calls (LLM identity, score
+ * extraction) run OUTSIDE the review-texts lock, between a decide-only pass
+ * and the locked write, which re-reads the file and re-runs the gate.
  */
 async function processRecovered(candidate, text, html, newUrl, method) {
-  let cleanedText = stripTrailingJunk(text, candidate.outletId);
-  // Multi-show posts: isolate before any length/upgrade guard or URL rewrite.
-  {
-    const iso = isolateMultiShowSectionForShowId(newUrl || candidate.url, cleanedText, candidate.showId);
-    if (iso.action === 'refuse') return { ok: false, reason: 'multi-show post: no unique section for this show' };
-    cleanedText = iso.text;
+  const labels = {
+    fetchMethod: `serp-text-recovery-${method}`,
+    sourceMethod: 'serp-text-recovery',
+    contentTierReasonFallback: 'Recovered via SERP text recovery',
+  };
+  const url = newUrl || candidate.url;
+  const ctxOpts = { reviewTextsDir: CONFIG.reviewTextsDir };
+  let pre = recoverReviewText({ filePath: candidate.filePath, rawText: text, url, labels, dryRun: true, ctxOpts });
+  // identity_unproven is the one refusal an LLM verdict can overturn.
+  if (!pre.ok && pre.code === 'identity_unproven') {
+    const cleaned = require('./lib/gap-acceptance').cleanCandidateText(text, { url, showId: candidate.showId });
+    if (!cleaned.refused && !CONFIG.dryRun) {
+      ctxOpts.llmIdentityVerified = await verifyMovedReview(candidate, cleaned.text, url);
+      pre = recoverReviewText({ filePath: candidate.filePath, rawText: text, url, labels, dryRun: true, ctxOpts });
+    }
   }
-
-  if (cleanedText.length < CONFIG.minTextLength) {
-    console.log(`    Too short after cleaning: ${cleanedText.length} chars`);
-    return { ok: false, reason: 'too_short' };
+  if (!pre.ok) {
+    console.log(`    Refused (${pre.code}): ${pre.reason}`);
+    return { ok: false, reason: pre.code };
   }
-  if (cleanedText.length <= candidate.existingTextLength) {
-    console.log(`    Not longer than existing (${cleanedText.length} <= ${candidate.existingTextLength})`);
-    return { ok: false, reason: 'not_longer' };
-  }
-
-  const garbageCheck = isGarbageContent(cleanedText);
-  if (garbageCheck.isGarbage) {
-    console.log(`    Garbage content: ${garbageCheck.reason}`);
-    return { ok: false, reason: 'garbage' };
-  }
-
-  const showTitle = candidate.showId.replace(/-\d{4}$/, '').replace(/-/g, ' ');
-  const mentionResult = validateShowMentioned(cleanedText, showTitle, candidate.showId);
-  if (!mentionResult.valid) {
-    console.log(`    Show not mentioned: "${showTitle}"`);
-    return { ok: false, reason: 'wrong_show' };
-  }
-
   if (CONFIG.dryRun) {
-    console.log(`    [DRY RUN] Would write ${cleanedText.length} chars (${method})`);
+    console.log(`    [DRY RUN] Would write ${pre.newLen} chars (${method})`);
     return { ok: true, reason: 'dry_run' };
   }
 
-  const metadata = {
-    textFetchedAt: new Date().toISOString(),
-    fetchMethod: `serp-text-recovery-${method}`,
-  };
-
-  let data;
-  if (newUrl !== candidate.url) {
-    // stampOnNoop: a canonical-equivalent rewrite (protocol/tracking-param-only
-    // diff) makes updateFileUrlWithInvariant return null even though it's not a
-    // refusal — without stampOnNoop that silently drops the recovery and
-    // blacklists a perfectly good URL (mirrors rediscover-review-urls.js's
-    // fallback branch, which hits the same ambiguity).
-    const updated = updateFileUrlWithInvariant(candidate.filePath, newUrl, {
-      ...metadata,
-      urlDiscoveredAt: metadata.textFetchedAt,
-      urlDiscoveryMethod: 'google-serp',
-      // Same review at its current address: aggregator excerpts/stars/score
-      // describe the review and survive the move (rediscover-review-urls.js rule;
-      // without this the BRO-4131 score-loss guard refuses the move).
-    }, { stampOnNoop: true, preserveFields: new Set(AGGREGATOR_FIELDS) });
-    if (!updated) {
-      console.log(`    URL-invariant write refused (cross-outlet, aggregator page, other critic's url, or unreadable)`);
-      return { ok: false, reason: 'invariant_refused' };
-    }
-    data = updated;
-  } else {
-    data = JSON.parse(fs.readFileSync(candidate.filePath, 'utf8'));
-  }
-
-  data.fullText = cleanedText;
-  data.isFullReview = cleanedText.length > 1500;
-  data.textWordCount = countWords(cleanedText);
-  data.textFetchedAt = metadata.textFetchedAt;
-  data.fetchMethod = metadata.fetchMethod;
-  data.sourceMethod = 'serp-text-recovery';
-  delete data.incompleteReason;
-  delete data.incompleteDetail;
-
-  const tierResult = classifyContentTier(data);
-  data.contentTier = tierResult.contentTier || tierResult.tier;
-  data.contentTierReason = tierResult.tierReason || tierResult.reason || 'Recovered via SERP text recovery';
-
+  let scoreResult = null;
   try {
-    const scoreResult = await extractExplicitScore({ text: cleanedText, html: html || '', outletId: candidate.outletId, showId: candidate.showId });
-    if (scoreResult) {
+    scoreResult = await extractExplicitScore({ text: pre.decision.cleanedText, html: html || '', outletId: candidate.outletId, showId: candidate.showId });
+  } catch { /* score is optional */ }
+
+  const r = recoverReviewText({
+    filePath: candidate.filePath,
+    rawText: text,
+    url,
+    labels,
+    tracker: RUN_WRITES,
+    ctxOpts,
+    beforeWrite: (data) => {
+      if (!scoreResult) return;
       const { field } = setExtractedScore(data, {
         value: scoreResult.originalScore,
         normalizedValue: scoreResult.normalizedScore,
         source: scoreResult.source,
       });
       console.log(`    Found ${field}: ${scoreResult.originalScore} (${scoreResult.normalizedScore}/100)`);
-    }
-  } catch {}
-
-  if (data.llmScore && data.llmScore.score) {
-    markRescoreNeeded(data, 'fullText recovered via SERP text recovery', undefined, { requeue: true });
+    },
+  });
+  if (!r.ok) {
+    console.log(`    Refused at write (${r.code}): ${r.reason}`);
+    return { ok: false, reason: r.code };
   }
-
-  fs.writeFileSync(candidate.filePath, JSON.stringify(data, null, 2) + '\n');
   return { ok: true, reason: method };
 }
 
@@ -387,6 +344,13 @@ async function main() {
 
   if (!CONFIG.scrapingBeeKey && !CONFIG.brightDataKey) {
     console.log('  Note: no SERP keys configured — will only retry existing URLs, no rediscovery.');
+  }
+
+  if (!CONFIG.dryRun) {
+    // Push/restore what an earlier run committed but could not land
+    // (BRO-7171). Throws on a still-failing push: no new work on a backlog.
+    const pending = retryPendingPushes({ repoDir: CONFIG.reviewTextsDir });
+    if (pending.entries) console.log(`  [pending] ${pending.entries} earlier checkpoint(s): ${pending.landed.length} landed, ${pending.restored.length} restored, ${pending.notLanded.length} not landed`);
   }
 
   const candidates = loadCandidates();

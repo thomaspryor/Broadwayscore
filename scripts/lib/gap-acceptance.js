@@ -326,7 +326,11 @@ function buildAcceptanceContext(filePath, existing, candidateUrl, opts = {}) {
   }
   const { urlCanonicallyChanged, urlChangeRefusal } = require('./url-change-invariant');
   if (candidateUrl && (!existing.url || urlCanonicallyChanged(existing.url, candidateUrl))) {
-    const r = urlChangeRefusal(filePath, existing, candidateUrl, { preserveFields: opts.preserveFields });
+    // Same preserve set recoverReviewText writes with: the review moved, its
+    // aggregator excerpt/stars/score still describe it (rediscover-review-urls
+    // rule), so the score-loss refusal must not count them as lost.
+    const preserveFields = opts.preserveFields || new Set(require('./rediscovery-candidate').AGGREGATOR_FIELDS);
+    const r = urlChangeRefusal(filePath, existing, candidateUrl, { preserveFields });
     ctx.urlChangeRefusal = r ? r.reason : null;
     ctx.outletDomains = outletDomainsFor(outletId);
     const { findCrossShowOwners } = require('./url-ownership');
