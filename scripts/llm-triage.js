@@ -14,7 +14,8 @@
  *     [--model=ID]     default models.js DISPATCH_SONNET
  *
  * Needs LINEAR_API_KEY. --ask needs ANTHROPIC_API_KEY. Commit search uses
- * GITHUB_TOKEN/GH_TOKEN, else the gh CLI.
+ * GITHUB_TOKEN/GH_TOKEN, else the gh CLI. --run-verify fetches origin and makes a
+ * temporary local worktree (no Linear or remote writes).
  */
 const fs = require('fs');
 const path = require('path');
@@ -54,7 +55,13 @@ async function fetchIssues(graphql, ids, { full = true } = {}) {
       // One missing id fails the whole aliased query; fall back to one at a time.
       data = {};
       for (let j = 0; j < chunk.length; j++) {
-        try { const d = await graphql(`query { i0: issue(id: "${chunk[j]}") { ${full ? ISSUE_FIELDS : 'identifier title state { name type }'} } }`, {}); data[`i${j}`] = d && d.i0; } catch { /* unknown id */ }
+        try {
+          const d = await graphql(`query { i0: issue(id: "${chunk[j]}") { ${full ? ISSUE_FIELDS : 'identifier title state { name type }'} } }`, {});
+          data[`i${j}`] = d && d.i0;
+        } catch (e1) {
+          // Only "no such card" is skipped; auth, network or 5xx must not read as "card not found".
+          if (!/not found|could not find|entity/i.test(String(e1 && e1.message))) throw e1;
+        }
       }
     }
     chunk.forEach((id, j) => { const n = data && data[`i${j}`]; if (n) out.set(id, n); });
@@ -62,19 +69,30 @@ async function fetchIssues(graphql, ids, { full = true } = {}) {
   return out;
 }
 
-/** Commits on the default branch naming the card: [{sha, date, subject}]. Empty on any failure. */
+/**
+ * GitHub search/commits JSON -> [{sha, date, subject}], or null when the body is
+ * not a search result (a 403 rate limit or 422 returns {"message": ...}).
+ * null means "unknown", never "no landings".
+ */
+function parseCommitSearch(json) {
+  let body;
+  try { body = JSON.parse(json); } catch { return null; }
+  if (!body || !Array.isArray(body.items)) return null;
+  return body.items.map((it) => ({ sha: it.sha, date: it.commit && it.commit.committer && it.commit.committer.date, subject: String((it.commit && it.commit.message) || '').split('\n')[0] }));
+}
+
+/** Commits on the default branch naming the card: [{sha, date, subject}]. null on any failure. */
 function searchCommits(id, { env = process.env } = {}) {
   const q = `repo:${REPO} "${id}"`;
   try {
     let json;
     const token = env.GITHUB_TOKEN || env.GH_TOKEN;
     if (token) {
-      json = execFileSync('curl', ['-sS', '--max-time', '30', '-G', 'https://api.github.com/search/commits', '--data-urlencode', `q=${q}`, '-H', `Authorization: Bearer ${token}`, '-H', 'Accept: application/vnd.github+json'], { encoding: 'utf8' });
+      json = execFileSync('curl', ['-sS', '--fail-with-body', '--max-time', '30', '-G', 'https://api.github.com/search/commits', '--data-urlencode', `q=${q}`, '-H', `Authorization: Bearer ${token}`, '-H', 'Accept: application/vnd.github+json'], { encoding: 'utf8' });
     } else {
       json = execFileSync('gh', ['api', '-X', 'GET', 'search/commits', '-f', `q=${q}`], { encoding: 'utf8', timeout: 30000 });
     }
-    const items = (JSON.parse(json).items) || [];
-    return items.map((it) => ({ sha: it.sha, date: it.commit && it.commit.committer && it.commit.committer.date, subject: String((it.commit && it.commit.message) || '').split('\n')[0] }));
+    return parseCommitSearch(json);
   } catch (e) {
     return null;
   }
@@ -129,29 +147,35 @@ async function main(argv = process.argv.slice(2), { graphql = null, now = new Da
   for (const id of opts.ids) {
     const issue = issues.get(id);
     if (!issue) { results.push({ id, error: 'card not found' }); log(`${id}: not found`); continue; }
-    const verify = F.verifyCommandOf(issue);
-    const verifyResult = verify.cmd && runVerify ? await runVerify(verify.cmd) : null;
-    const commits = commitSearch(id, { env });
-    const facts = F.buildFacts({
-      issue,
-      category: categoryOf.get(id) || (issue.state && issue.state.type === 'completed' ? 'done' : 'unknown'),
-      verify, verifyResult,
-      commits: commits || [],
-      refStates,
-      overlaps: F.findOverlaps(issue, openBoard, { ledger }),
-      condition: F.conditionFacts(issue, ledger),
-      nowMs,
-    });
-    if (commits === null) facts.LANDINGS = 'unknown (commit search failed)';
-    const prompt = F.renderPrompt(facts, issue);
-    if (opts.promptsDir) fs.writeFileSync(path.join(opts.promptsDir, `${id}.md`), prompt);
-    const row = { id, facts };
-    if (opts.ask) {
-      try {
-        const reply = await ask(prompt, { model: opts.model, apiKey: env.ANTHROPIC_API_KEY });
-        const parsed = F.parseVerdict(reply, { id, facts });
-        if (parsed.ok) row.verdict = parsed.verdict; else row.error = parsed.error;
-      } catch (e) { row.error = e.message; }
+    let row = { id };
+    try {
+      const verify = F.verifyCommandOf(issue);
+      const verifyResult = verify.cmd && runVerify ? await runVerify(verify.cmd) : null;
+      const commits = commitSearch(id, { env });
+      const facts = F.buildFacts({
+        issue,
+        category: categoryOf.get(id) || (issue.state && issue.state.type === 'completed' ? 'done' : 'unknown'),
+        verify, verifyResult,
+        commits: commits || [],
+        refStates,
+        overlaps: F.findOverlaps(issue, openBoard, { ledger }),
+        condition: F.conditionFacts(issue, ledger),
+        nowMs,
+      });
+      if (commits === null) facts.LANDINGS = 'unknown (commit search failed)';
+      const prompt = F.renderPrompt(facts, issue);
+      if (opts.promptsDir) fs.writeFileSync(path.join(opts.promptsDir, `${id}.md`), prompt);
+      row = { id, facts };
+      if (opts.ask) {
+        try {
+          const reply = await ask(prompt, { model: opts.model, apiKey: env.ANTHROPIC_API_KEY });
+          const parsed = F.parseVerdict(reply, { id, facts });
+          if (parsed.ok) row.verdict = parsed.verdict; else row.error = parsed.error;
+        } catch (e) { row.error = e.message; }
+      }
+    } catch (e) {
+      // One bad card (unfilled placeholder, VERIFY runner crash) must not lose the whole report.
+      row.error = `triage failed: ${e.message}`;
     }
     results.push(row);
     log(`${id}: ${row.verdict ? row.verdict.verdict : (row.error || 'prompt rendered')}`);
@@ -166,4 +190,4 @@ if (require.main === module) {
   main().then((code) => exitFlushed(code), (e) => { console.error(e.stack || e.message); exitFlushed(1); });
 }
 
-module.exports = { parseArgs, fetchIssues, searchCommits, main };
+module.exports = { parseArgs, fetchIssues, parseCommitSearch, searchCommits, main };

@@ -156,3 +156,56 @@ test('CLI main is report-only: renders prompts, parses replies, never mutates', 
   assert.match(rep.results[0].facts.LANDINGS, /abc123/);
   assert.equal(await CLI.main(['--ids=BRO-1', '--ask'], { env: {}, log: () => {} }), 2);
 });
+
+// Linear returns comments NEWEST first (linear-client.js). Readers must sort, not trust input order.
+test('comment readers sort by createdAt: a newest-first fixture still picks the newest VERIFY and comment', () => {
+  const nodes = [
+    { body: 'VERIFY: `npm run lint`\nnewest worker note', createdAt: '2026-11-07T00:00:00Z' },
+    { body: 'VERIFY: `node scripts/validate-data.js`\noldest note', createdAt: '2026-11-02T00:00:00Z' },
+  ];
+  const c = card({ comments: { nodes } });
+  assert.equal(F.verifyCommandOf(c).cmd, 'npm run lint');
+  assert.match(F.lastWorkerComment(c, NOW), /newest worker note/);
+  assert.ok(F.renderCard(c).indexOf('oldest note') < F.renderCard(c).indexOf('newest worker note'));
+});
+
+test('parseVerdict: invented duplicate_of / blocked_on ids are refused; trailing prose with } still parses', () => {
+  const facts = { OVERLAPS: 'BRO-7 (similar title)' };
+  assert.equal(F.parseVerdict(JSON.stringify({ id: 'BRO-100', verdict: 'blocked', blocked_on: 'BRO-999' }), { id: 'BRO-100', facts }).ok, false);
+  assert.equal(F.parseVerdict(JSON.stringify({ id: 'BRO-100', verdict: 'close-candidate', close_evidence: 'same work', duplicate_of: 'BRO-999' }), { id: 'BRO-100', facts }).ok, false);
+  assert.equal(F.parseVerdict(JSON.stringify({ id: 'BRO-100', verdict: 'blocked', blocked_on: 'BRO-7' }), { id: 'BRO-100', facts }).ok, true);
+  const r = F.parseVerdict('{"id":"BRO-100","verdict":"keep"}\nNote: see {the card} for more.', { id: 'BRO-100' });
+  assert.equal(r.ok, true);
+});
+
+test('parseCommitSearch: an error body (403/422) is unknown, never "no landings"', () => {
+  assert.equal(CLI.parseCommitSearch('{"message":"API rate limit exceeded"}'), null);
+  assert.equal(CLI.parseCommitSearch('not json'), null);
+  assert.deepEqual(CLI.parseCommitSearch('{"items":[]}'), []);
+  const one = CLI.parseCommitSearch(JSON.stringify({ items: [{ sha: 'abc', commit: { message: 'fix(BRO-1): x\n\nbody', committer: { date: '2026-11-05' } } }] }));
+  assert.deepEqual(one, [{ sha: 'abc', date: '2026-11-05', subject: 'fix(BRO-1): x' }]);
+});
+
+test('CLI main: one card that throws is recorded and the report is still written; outages are not "not found"', async () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'llm-triage-'));
+  const a = card({ identifier: 'BRO-100' });
+  const b = card({ identifier: 'BRO-101', title: 'Second card about grosses' });
+  const graphql = async (q) => {
+    if (/issues\s*\(/.test(q)) return { issues: { nodes: [a, b], pageInfo: { hasNextPage: false } } };
+    return { i0: /BRO-100/.test(q) ? a : b, i1: b };
+  };
+  const out = path.join(dir, 'v.json');
+  const code = await CLI.main(['--ids=BRO-100,BRO-101', `--out=${out}`], {
+    graphql, now: new Date(NOW), log: () => {}, env: {},
+    commitSearch: (id) => { if (id === 'BRO-100') throw new Error('boom'); return null; },
+  });
+  assert.equal(code, 1);
+  const rep = JSON.parse(fs.readFileSync(out, 'utf8'));
+  assert.match(rep.results[0].error, /triage failed: boom/);
+  assert.equal(rep.results[1].facts.LANDINGS, 'unknown (commit search failed)');
+  // A 401 in the one-at-a-time fallback must surface, not become "card not found".
+  const down = async () => { throw new Error('Linear GraphQL error: Authentication required'); };
+  await assert.rejects(CLI.fetchIssues(down, ['BRO-1']), /Authentication/);
+  const missing = async () => { throw new Error('Linear GraphQL error: Entity not found: Issue'); };
+  assert.equal((await CLI.fetchIssues(missing, ['BRO-1'])).size, 0);
+});
