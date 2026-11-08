@@ -928,7 +928,10 @@ jobs:
       # recheck (shadow mode)" above: same 5min internal script deadline
       # inside an 8min step-timeout backstop for the same reason (a hung
       # check command inside the verify loop wouldn't hit the internal
-      # deadline until the NEXT iteration).
+      # deadline until the NEXT iteration). BRO-7139: the sweep itself still
+      # never writes, but "Stuck verified card closer" below reads its report
+      # and closes Backlog/Todo cards on hard evidence (kill switch: repo
+      # variable BACKLOG_CLOSE_DISABLED=true).
       - name: Open backlog acceptance sweep (shadow mode)
         if: always()
         continue-on-error: true
@@ -1079,6 +1082,7 @@ jobs:
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           STUCK_CARD_CLOSER_KILL_SWITCH: ${{ vars.STUCK_CARD_CLOSER_KILL_SWITCH }}
+          BACKLOG_CLOSE_DISABLED: ${{ vars.BACKLOG_CLOSE_DISABLED }}
         run: node scripts/close-stuck-verified-cards.js --apply
 
       - name: Commit stuck card closer report

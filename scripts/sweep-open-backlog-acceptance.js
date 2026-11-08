@@ -21,10 +21,13 @@
  * against a fresh detached checkout of origin/main (the exact same
  * scripts/lib/acceptance-check-core.js runVerify() the nightly recheck and
  * notion-brain.js's close-time check both use — CLAUDE.md §15) and writes a
- * report of which ones already pass. Turning a passing result into an actual
- * Done/close is a deliberate SEPARATE owner decision — a passing command
- * proves the CARD'S OWN bar is cleared, not that the command covers what the
- * card was actually about (ship-check finding on the original proposal).
+ * report of which ones already pass. A passing command alone proves only
+ * that the CARD'S OWN bar is cleared, not that it covers what the card was
+ * about (ship-check finding on the original proposal), so this script still
+ * never closes anything. Since BRO-7139 (owner-approved plan) the separate
+ * close-stuck-verified-cards.js reads this report and closes a Backlog/Todo
+ * card only when the command is a single test file AND a commit that
+ * finishes the card changed that test (rules: lib/stuck-card-closer.js).
  *
  * Selection lives in scripts/lib/autonomous-recheck-core.js's
  * selectOpenBacklogSweepCandidates (unit-tested there and in
