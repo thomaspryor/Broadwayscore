@@ -116,9 +116,10 @@ function waitClauses(closing) {
 // Its completion notice is sometimes never recorded, so without this it would
 // read as live forever (the _live_work "errs live" case in verify-edits.sh).
 const LAUNCHER_RE = /(?:^|[;&|(\n]\s*)(?:nohup|setsid)\b|\bdisown\b|spawn-detached/;
-// Background Bash defaults to a 10 min timeout and caps at 2h; past it the
-// task is dead whether or not its notice was recorded.
-const BG_DEFAULT_MS = 600000;
+// Background Bash defaults to a 30 min timeout and caps at 2h; past it the
+// task is dead whether or not its notice was recorded. (Was 10 min, which made
+// a 25-min watch with no explicit timeout read as dead; BRO-7109.)
+const BG_DEFAULT_MS = 1800000;
 const BG_MAX_MS = 7200000;
 
 function isDetached(cmd) {
@@ -206,7 +207,7 @@ function decideAll(input) {
   return { block: false, code: null, reason: reasons.join('; ') };
 }
 
-module.exports = {
+module.exports = { BG_DEFAULT_MS,
   childWaitDecision, childJobsDecision, parentWatchDecision, decideAll,
   isChildSession, liveBackground, isDetached, CI_WAIT_RE, JOBS_WAIT_RE, CHILD_PROMPT_RE, WATCH_CMD_RE,
 };
