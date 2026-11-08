@@ -11,6 +11,8 @@ const { MARKETS, marketOf, operaHouseTag } = require('./config');
 
 const LIMITS = { twitter: 280, bluesky: 300, threads: 500, instagram: 2196, facebook: 5000 };
 const SHORT_BUDGET = 270; // fits X and Bluesky with margin
+/** Characters a short caption may use on X or Bluesky: the network limit less a small margin (BRO-7154: a 30-character margin cost Bluesky posts their question). */
+const shortBudget = network => LIMITS[network] - 4;
 
 function showPath(show) {
   if (marketOf(show) === 'opera') return `/opera/${String(show.slug || show.id).replace(/-off-broadway/, '')}`; // the site's opera page (getOperaTitleSlug)
@@ -71,8 +73,9 @@ function breakdownLine(b) {
 // Voice (BRO-6417, scripts/social-autopost/VOICE.md): every post informs, then asks
 // an open question. The question is built here from the facts, never written by a
 // session, so it cannot misstate a number or a direction. On X and Bluesky it
-// outranks the caveat and the lead-in: those go first, then the title is shortened,
-// and the question is dropped only if nothing else is left to cut.
+// outranks the caveat and the lead-in: those go first, then the title is shortened
+// while it still names the show (READABLE_CLIPS), then the question is dropped, and only
+// then is the title cut further (BRO-7154: a post once read "Clifford… has a Critic Score").
 
 const cap1 = t => `${t[0].toUpperCase()}${t.slice(1)}`;
 const an = n => (/^8/.test(String(n)) || n === 11 || n === 18 ? 'an' : 'a');
@@ -88,6 +91,8 @@ const clipTitle = (t, max) => {
 const firstFit = (budget, tries) => tries.find(t => [...t].length <= budget) || tries[tries.length - 1];
 /** Title lengths to try when a short caption has to give up title characters. */
 const CLIPS = [60, 48, 38, 30, 24, 18, 14];
+/** Clip lengths that still name the show; below these the question goes before the title shrinks further. */
+const READABLE_CLIPS = CLIPS.filter(n => n >= 24);
 
 /** Critic counts the score question reads: positive side (rave + positive), mixed-or-negative side, and the total. */
 function sides(b) {
@@ -138,13 +143,14 @@ function buildCaptions(p) {
   const alt = `${title} poster with its Critic Score of ${p.score} out of 100, rated ${p.tierLabel}${bd ? `. Critics: ${bd}` : ''}.`;
 
   const withUrl = (text, network) => `${text}\n\n${showUrl(show, network)}`;
-  // Order: drop the lead-in, then shorten the title, then (only if nothing else is left) the question.
+  // Order: drop the lead-in, shorten the title to a readable length, drop the question, then shorten the title further.
   const fitShort = (network) => {
     const url = showUrl(show, network);
-    const budget = Math.min(SHORT_BUDGET, LIMITS[network]) - (network === 'twitter' ? 23 : url.length) - 2;
+    const budget = shortBudget(network) - (network === 'twitter' ? 23 : url.length) - 2;
     const body = (t, lead, ask) => `${sentence(t, lead)}${ask ? `\n\n${ask}` : ''}`;
     const t = firstFit(budget, [body(title, true, q.short), body(title, false, q.short),
-      ...CLIPS.map(n => body(clipTitle(title, n), false, q.short)), body(clipTitle(title, 14), false, null)]);
+      ...READABLE_CLIPS.map(n => body(clipTitle(title, n), false, q.short)), body(title, false, null),
+      ...CLIPS.map(n => body(clipTitle(title, n), false, null))]);
     return `${t}\n\n${url}`;
   };
 
@@ -305,8 +311,9 @@ function buildCompareCaptions(p) {
       body(title, { withHook: true, line: caveat }), body(title, { line: caveat }), body(title, { line: shortCaveat }),
       body(title), body(title, { ask: q.short }),
       body(title, { ask: q.short, bare: true }), body(title, { ask: q.tiny, bare: true }),
-      ...CLIPS.map(n => body(clipTitle(title, n), { ask: q.short, bare: true })),
-      body(clipTitle(title, 14), { ask: null }),
+      ...READABLE_CLIPS.map(n => body(clipTitle(title, n), { ask: q.short, bare: true })),
+      body(title, { ask: null, bare: true }),
+      ...CLIPS.map(n => body(clipTitle(title, n), { ask: null, bare: true })),
     ]);
     return `${t}\n${url}`;
   };
@@ -384,8 +391,9 @@ function buildMovedCaptions(p) {
     const t = firstFit(budget, [
       body(title, { withHook: true }), body(title), body(title, { ask: q.short }),
       body(title, { ask: q.short, bare: true }), body(title, { ask: q.tiny, bare: true }),
-      ...CLIPS.map(n => body(clipTitle(title, n), { ask: q.short, bare: true })),
-      body(clipTitle(title, 14), { ask: null, bare: true }),
+      ...READABLE_CLIPS.map(n => body(clipTitle(title, n), { ask: q.short, bare: true })),
+      body(title, { ask: null, bare: true }),
+      ...CLIPS.map(n => body(clipTitle(title, n), { ask: null, bare: true })),
       ...[30, 22, 16].map(n => body(clipTitle(title, 24), { ask: q.tiny, bare: true, clip: n })),
     ]);
     return `${t}\n${url}`;
@@ -482,7 +490,7 @@ function buildRoundupCaptions(p) {
   // question is kept in its short form before a row goes, and never the numbers.
   const fitShort = network => {
     const url = rootUrl(p.set, network);
-    const budget = Math.min(SHORT_BUDGET, LIMITS[network]) - (network === 'twitter' ? 23 : url.length) - 2;
+    const budget = shortBudget(network) - (network === 'twitter' ? 23 : url.length) - 2;
     const text = (n, ask, clip = Infinity) => {
       const cut = p.rows.length - n + p.more;
       return `${header}\n${p.rows.slice(0, n).map(r => line({ ...r, title: clipTitle(r.title, clip) }, false)).join('\n')}${cut > 0 ? `\nPlus ${cut} more on the site.` : ''}\n\n${ask}`;
@@ -534,10 +542,11 @@ function buildClosingCaptions(p) {
   // Fit order: the long question, the short one, a shorter title, and only then no question.
   const fitShort = network => {
     const url = showUrl(show, network, 'closing');
-    const budget = Math.min(SHORT_BUDGET, LIMITS[network]) - (network === 'twitter' ? 23 : url.length) - 2; // X counts any link as 23
+    const budget = shortBudget(network) - (network === 'twitter' ? 23 : url.length) - 2; // X counts any link as 23
     const body = (t, ask) => `${sentence(t)}${ask ? `\n\n${ask}` : ''}`;
     const t = firstFit(budget, [body(show.title, cq.long), body(show.title, cq.short),
-      ...CLIPS.map(n => body(clipTitle(show.title, n), cq.short)), body(show.title, null), body(clipTitle(show.title, 14), null)]);
+      ...READABLE_CLIPS.map(n => body(clipTitle(show.title, n), cq.short)), body(show.title, null),
+      ...CLIPS.map(n => body(clipTitle(show.title, n), null))]);
     return `${t}\n\n${url}`;
   };
   return {
@@ -558,7 +567,7 @@ function closingAllowedNumbers(p) {
 
 module.exports = {
   scoreQuestion, scoreAllowedNumbers, compareQuestion, roundupQuestion, closingQuestion,
-  buildCaptions, showUrl, showPath, hashtagLine, postMarkers, LIMITS, SHORT_BUDGET,
+  buildCaptions, showUrl, showPath, hashtagLine, postMarkers, LIMITS, SHORT_BUDGET, shortBudget,
   buildCompareCaptions, buildMovedCaptions, theVenue, movedQuestion, movedMarkers, venueOf, MOVED_SENTENCE, compareCaveat, compareMarkers, validateHook, audienceNumber, strayNumbers, productionLabel, pathMarker, CITY, SCORE_SENTENCE, COMPARE_SENTENCE,
   monthDay, ROUNDUP_SENTENCE, CLOSING_SENTENCE, roundupHeader, roundupMarkers, buildRoundupCaptions, roundupAllowedNumbers, closingMarkers, buildClosingCaptions, closingAllowedNumbers, SET_DOMAIN,
 };

@@ -211,3 +211,30 @@ test('class guard: the shared review writer calls the resolver, so every writer 
   assert.match(src, /resolveMissingPublishDate\(/);
   assert.ok(src.indexOf('resolveMissingPublishDate(') < src.indexOf('const laneHolds'), 'runs before the guards');
 });
+
+test('BRO-7157: every wrongProductionManualClear:true writer in backfill-outlet-from-sitemap stamps a script setBy (not a hand step)', async () => {
+  const { handSteps, isScriptClearSetBy } = require('../../scripts/lib/review-provenance.js');
+  const src = (await import('node:fs')).readFileSync(path.join(repoRoot, 'scripts/backfill-outlet-from-sitemap.js'), 'utf8');
+  const writers = src.match(/wrongProductionManualClear: true,\s*\n\s*wrongProductionOverrideSetBy: '([^']+)'/g) || [];
+  const total = (src.match(/wrongProductionManualClear: true,/g) || []).length;
+  assert.equal(total, 2);
+  assert.equal(writers.length, total, 'each writer must stamp wrongProductionOverrideSetBy');
+  const by = 'backfill-outlet-from-sitemap.js';
+  assert.ok(isScriptClearSetBy(by));
+  assert.ok(!(handSteps({ wrongProductionManualClear: true, wrongProductionOverrideSetBy: by }).gating || []).includes('wrongProductionManualClear'));
+});
+
+test('BRO-7157 class guard: every scripts/*.js writer of wrongProductionManualClear=true stamps a setBy or is a known hand-adjudicated writer', async () => {
+  const fs = await import('node:fs');
+  const dir = path.join(repoRoot, 'scripts');
+  // Hand-adjudicated / helper-stamped writers (stamp comes from clearWrongProductionFlags or a person).
+  const allowed = new Set(['clear-contradicted-flag-basis.js', 'clear-contradicted-flag-basis-bro2772.js', 'audit-bro79-ensemble-rejections.js', 'clear-stale-wrong-production-flags.js']);
+  const offenders = [];
+  for (const f of fs.readdirSync(dir).filter((n) => n.endsWith('.js'))) {
+    const src = fs.readFileSync(path.join(dir, f), 'utf8');
+    if (!/(?<!['"])wrongProductionManualClear\s*(?::|(?<![=!<>])=(?!=))\s*true/.test(src.replace(/^\s*(\/\/|\*).*$/gm, ''))) continue;
+    if (allowed.has(f) || /wrongProductionOverrideSetBy/.test(src)) continue;
+    offenders.push(f);
+  }
+  assert.deepEqual(offenders, []);
+});

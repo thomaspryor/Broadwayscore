@@ -19,7 +19,7 @@ const withWestEnd = fn => {
   sets['west-end'] = Object.fromEntries(Object.keys(sets.broadway).map(svc => [svc, `we-${svc}`]));
   try { return fn(); } finally { sets['west-end'] = prev; }
 };
-const { buildCaptions, postMarkers, showUrl, LIMITS } = require('./social-autopost/captions.js');
+const { buildCaptions, postMarkers, showUrl, LIMITS, shortBudget } = require('./social-autopost/captions.js');
 const { isUsablePoster, artVerdict, originalUrl, candidatesFor, sameTitle } = require('./social-autopost/art.js');
 const { buildCardHtml, SITE_CSS } = require('./social-autopost/render.js');
 const { metadataFor } = require('./social-autopost/buffer.js');
@@ -200,7 +200,7 @@ test('captions fit every network, carry the site numbers, link the right site, n
     for (const m of postMarkers(p.show)) assert.ok(m.test(c[net]), `${net} lacks dedupe marker ${m}`);
   }
   for (const net of ['twitter', 'bluesky']) {
-    assert.ok(xLength(net, c[net]) <= 270);
+    assert.ok(xLength(net, c[net]) <= shortBudget(net));
     assert.match(c[net], /has a Critic Score of 86 \(Critical Gold\) from 38 critics' reviews\./);
   }
   assert.match(c.facebook, /25 raves, 11 positive, 1 mixed, 1 negative/);
@@ -216,8 +216,8 @@ test('score captions: X keeps the full title, verdict and split question with a 
   assert.match(c.twitter, /has a Critic Score of 77 \(Recommended\) from 32 critics' reviews\./);
   assert.match(c.twitter, /20 positive, 12 mixed or negative\. What's behind the split\?/);
   assert.ok(c.twitter.length > LIMITS.twitter, 'raw URL length would reject this valid X caption');
-  assert.ok(xLength('twitter', c.twitter) <= 270);
-  assert.ok(xLength('bluesky', c.bluesky) <= 270);
+  assert.ok(xLength('twitter', c.twitter) <= shortBudget('twitter'));
+  assert.ok(xLength('bluesky', c.bluesky) <= shortBudget('bluesky'));
 });
 
 test('dedupe path marker does not match a longer slug', () => {
@@ -1716,4 +1716,18 @@ test('touring: score lane only, routed to the Broadway set, floors stricter than
   assert.equal(ok.ok, true);
   assert.equal(none.ok, false);
   assert.equal(sel.scoreDecision(tour, { ...base(tour), done: new Set(), now: Date.parse('2026-11-06T15:00:00Z') }).why === 'ineligible', false);
+});
+
+test('short captions drop the question before clipping a show name past recognition', () => {
+  const cap = require('./social-autopost/captions.js');
+  const show = { id: 'clifford-odets-waiting-for-lefty-off-broadway', slug: 'clifford-odets-waiting-for-lefty-off-broadway', title: 'Clifford Odets’ Waiting for Lefty', category: 'off-broadway' };
+  const c = cap.buildCaptions({ show, score: 68, tierId: 'worth-seeing', tierLabel: 'Worth Seeing', reviewCount: 10, breakdown: { rave: 2, positive: 4, mixed: 3, negative: 1 } });
+  assert.match(c.twitter, /Clifford Odets’ Waiting for Lefty has a Critic Score of 68/);
+  // Bluesky counts the long link in full: the title may shorten, but it must still name the show.
+  assert.match(c.bluesky, /^Clifford Odets’ Waiting.{0,12} has a Critic Score of 68/);
+  assert.ok([...c.bluesky].length <= LIMITS.bluesky);
+  // With the question too, the old order clipped the title to "Clifford…"; a long question now goes first.
+  const long = cap.buildCaptions({ show: { ...show, title: 'Clifford Odets’ Waiting for Lefty and Other Plays' }, score: 68, tierId: 'worth-seeing', tierLabel: 'Worth Seeing', reviewCount: 10, breakdown: { rave: 2, positive: 4, mixed: 3, negative: 1 } });
+  assert.doesNotMatch(long.bluesky, /^Clifford… /);
+  assert.match(long.bluesky, /^Clifford Odets’ Waiting/);
 });

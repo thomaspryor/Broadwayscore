@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-08T21:40:49.003Z",
+  "timestamp": "2026-11-08T22:15:51.212Z",
   "stats": {
-    "totalReviews": 80613,
+    "totalReviews": 80614,
     "alreadyFlagged": 22080,
     "dateGuardCatches": 219,
     "directorMismatch": 3563,
     "tvFilmSignals": 2295,
-    "londonSignals": 3637,
+    "londonSignals": 3638,
     "offBroadwaySignals": 749,
     "yearMismatch": 368,
-    "noPublishDate": 8397
+    "noPublishDate": 8398
   },
   "findings": [
     {
@@ -124900,7 +124900,7 @@
     {
       "showId": "tango-after-dark-off-west-end-2026",
       "file": "theatreandtonic--emmie-newitt.json",
-      "score": 93,
+      "score": 96,
       "publishDate": "2026-11-07",
       "url": "https://theatreandtonic.co.uk/blog/german-cornejos-tango-after-dark-sadlers-wells-theatre-review",
       "findings": [
@@ -131664,6 +131664,19 @@
       "file": "lovelondonloveculture--unknown.json",
       "publishDate": "2026-11-05",
       "url": "https://lovelondonloveculture.com/2026/11/05/review-round-up-the-lives-of-others-adelphi-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"adelphi theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-lives-of-others-west-end-2026",
+      "file": "partially-obstructed-view--unknown.json",
+      "publishDate": "2026-11-05",
+      "url": "http://partially-obstructed-view.blogspot.com/2026/11/theatre-review-lives-of-others.html",
       "findings": [
         {
           "type": "LONDON_SIGNAL",

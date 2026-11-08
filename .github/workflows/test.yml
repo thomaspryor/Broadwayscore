@@ -202,6 +202,7 @@ on:
       # tests/unit/html-publish-date.test.mjs names this CLI (audit-toplevel-script-test-yml-coverage).
       - 'scripts/backfill-network-tier-dates.js'
       - 'scripts/backfill-roundup-pull-quote-compilation.js'
+      - 'scripts/backfill-outlet-from-sitemap.js'
       - 'scripts/backfill-wrongproduction-legacy-audit.js'
       # tests/unit/enrich-dtli-thumbs.test.mjs names this CLI (audit-toplevel-script-test-yml-coverage).
       - 'scripts/enrich-dtli-thumbs.js'

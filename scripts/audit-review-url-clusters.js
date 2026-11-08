@@ -281,6 +281,7 @@ function applyRecover(clusterCtx, decision) {
     prot.add('manualContentTier');
     if (venueMatch) {
       merged.wrongProductionManualClear = true;
+      merged.wrongProductionOverrideSetBy = 'audit-review-url-clusters.js';
       prot.add('wrongProductionManualClear');
     }
   }
