@@ -29,28 +29,30 @@ const { codexBouncedRecently, codexBounceCapped } = require('./codex-runner.js')
 const { proseDateWait } = require('./prose-date-wait.js');
 
 // Order matters: a card's exclusive category is the first one whose trait it has.
+// BRO-7139: `handlers` names the jobs in board-handlers.js that act on the row (empty = nothing does;
+// board-handlers.test.mjs pins every such gap in KNOWN_GAPS).
 const CATEGORIES = [
-  { key: 'waiting-owner', label: 'Waiting on your answer' },
-  { key: 'being-worked', label: 'Being worked on now' },
-  { key: 'started-idle', label: 'Started, but no update for 2+ days' },
-  { key: 'dated-future', label: 'Waiting for a date in the future' },
+  { key: 'waiting-owner', label: 'Waiting on your answer', handlers: ['owner-decision-emails'] },
+  { key: 'being-worked', label: 'Being worked on now', handlers: ['linear-reclaim-abandoned'] },
+  { key: 'started-idle', label: 'Started, but no update for 2+ days', handlers: ['linear-reclaim-abandoned', 'close-stuck-verified-cards'] },
+  { key: 'dated-future', label: 'Waiting for a date in the future', handlers: ['autonomous-acceptance-recheck'] },
   // BRO-6853: split by the recheck ledger's last verdict. Without a ledger every past-dated card is "waiting".
-  { key: 'dated-past-failed', label: 'Date passed, its check failed' },
-  { key: 'dated-past', label: 'Date passed, waiting for its check' },
-  { key: 'parked-real-block', label: 'Needs a password, money or your devices' },
-  { key: 'parked-automatic', label: 'Automatic alert or estimate' },
-  { key: 'parked-owner-wording', label: 'Says it needs you, but asks nothing' },
-  { key: 'parked-no-reason', label: 'Parked with no reason written' },
-  { key: 'parked-prose-wait', label: 'Waits on a time written in words, so never restarts' },
-  { key: 'parked-other', label: 'Parked for another reason' },
-  { key: 'paused', label: 'Paused' },
-  { key: 'ready', label: 'Ready, a worker will pick it up' },
-  { key: 'cooling-off', label: 'Cooling off after recent activity' },
-  { key: 'codex-bounced', label: 'Second-check reviewer rejected it, short wait' },
-  { key: 'owner-gated-no-question', label: 'Held for you, but no question written yet' },
-  { key: 'app-repo', label: 'iPhone-app card (automatic workers cannot open it)' },
-  { key: 'needs-safe-check', label: 'Needs a way to prove it works (a daily job drafts these)' },
-  { key: 'other', label: 'Other' },
+  { key: 'dated-past-failed', label: 'Date passed, its check failed', handlers: [] }, // the recheck only reports a failure
+  { key: 'dated-past', label: 'Date passed, waiting for its check', handlers: ['autonomous-acceptance-recheck'] },
+  { key: 'parked-real-block', label: 'Needs a password, money or your devices', handlers: [] },
+  { key: 'parked-automatic', label: 'Automatic alert or estimate', handlers: ['sweep-resolved-alert-cards'] },
+  { key: 'parked-owner-wording', label: 'Says it needs you, but asks nothing', handlers: ['owner-hold-sweep'] },
+  { key: 'parked-no-reason', label: 'Parked with no reason written', handlers: ['board-hygiene-sweep'] },
+  { key: 'parked-prose-wait', label: 'Waits on a time written in words, so never restarts', handlers: ['board-hygiene-sweep'] },
+  { key: 'parked-other', label: 'Parked for another reason', handlers: ['llm-triage'] },
+  { key: 'paused', label: 'Paused', handlers: [] },
+  { key: 'ready', label: 'Ready, a worker will pick it up', handlers: ['wake-board-worker', 'close-stuck-verified-cards'] },
+  { key: 'cooling-off', label: 'Cooling off after recent activity', handlers: ['wake-board-worker'] },
+  { key: 'codex-bounced', label: 'Second-check reviewer rejected it, short wait', handlers: ['codex-runner'] },
+  { key: 'owner-gated-no-question', label: 'Held for you, but no question written yet', handlers: ['owner-hold-sweep'] },
+  { key: 'app-repo', label: 'iPhone-app card (automatic workers cannot open it)', handlers: [] },
+  { key: 'needs-safe-check', label: 'Needs a way to prove it works (a daily job drafts these)', handlers: ['enrich-card-acceptance'] },
+  { key: 'other', label: 'Other', handlers: ['llm-triage'] },
 ];
 // BRO-6870: the morning email shows the rows under four plain headings. Every
 // category key sits in exactly one group (tested), so subtotals add to the total.
