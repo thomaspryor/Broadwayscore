@@ -1765,11 +1765,20 @@ async function pollShow(show) {
   // incremental calls are idempotent and the later pre-SERP pass only sees what is still new.
   const processOpts = { allowOffBroadway: isOffBroadway, allowWestEnd: isWestEnd, allowOpera: show.type === 'opera', allowRegional: isRegional };
   const layerTotals = { created: 0, skipped: 0, rejected: 0 };
+  // Review objects already handled at settle; the pre-SERP pass skips them so a rejected or already-existing
+  // result is not written, counted or logged a second time (rejections never enter knownUrls).
+  const settledReviews = new WeakSet();
   const persistLayerOnSettle = (label, promise) => promise.then((results) => {
     if (Array.isArray(results) && results.length > 0) {
-      const r = processDiscoveredReviews(SHOW_ID, results, knownUrls, processOpts);
-      layerTotals.created += r.created; layerTotals.skipped += r.skipped; layerTotals.rejected += r.rejected;
-      console.log(`  [${label}] persisted on completion: ${r.created} created, ${r.skipped} skipped, ${r.rejected} rejected`);
+      try {
+        const r = processDiscoveredReviews(SHOW_ID, results, knownUrls, processOpts);
+        for (const item of results) if (item && typeof item === 'object') settledReviews.add(item);
+        layerTotals.created += r.created; layerTotals.skipped += r.skipped; layerTotals.rejected += r.rejected;
+        console.log(`  [${label}] persisted on completion: ${r.created} created, ${r.skipped} skipped, ${r.rejected} rejected`);
+      } catch (e) {
+        // Keep the layer's results so the pre-SERP pass still gets them (and fails loudly there if it must).
+        console.error(`  [${label}] persist-on-completion failed (${e.message}); results kept for the pre-SERP pass`);
+      }
     }
     return results;
   });
@@ -1967,7 +1976,8 @@ async function pollShow(show) {
   // The workflow kills this process at 600s, and one SERP outlet can run for
   // minutes on provider timeouts. Write what we already found first so a kill
   // during SERP can no longer discard it (Other Desert Cities 2026 lost 36).
-  const preSerpDiscovered = [...aggResults, ...rssResults, ...siteSearchResults, ...omcResults, ...googleNewsResults];
+  const preSerpDiscovered = [...aggResults, ...rssResults, ...siteSearchResults, ...omcResults, ...googleNewsResults]
+    .filter(r => !(r && typeof r === 'object' && settledReviews.has(r)));
   console.log(`\n━━━ Processing ${preSerpDiscovered.length} discovered reviews (before SERP) ━━━`);
   const preSerpPass = processDiscoveredReviews(SHOW_ID, preSerpDiscovered, knownUrls, processOpts);
   // Layers 1-3 were already persisted as they settled; fold those counts in so the summary stays whole.

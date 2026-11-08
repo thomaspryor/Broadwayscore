@@ -56,10 +56,16 @@ function decideBeforePrefetch(showDir, input, norm) {
  * Second-pass decision with the byline the prefetch resolved.
  * @returns {{action:'skip', reason:string, file:string}|{action:'proceed'}|{action:'unresolved-collision', slotFile:string}}
  */
-function decideAfterPrefetch(showDir, input, resolvedCriticName, norm) {
+function decideAfterPrefetch(showDir, input, resolvedCriticName, norm, unknownSlotFile = null) {
   const s = scanShowDir(showDir, { ...input, criticName: resolvedCriticName }, norm);
   if (s.urlOwner) return { action: 'skip', reason: 'url-dupe', file: s.urlOwner };
-  if (!s.slotFile) return { action: 'proceed' };
+  if (!s.slotFile) {
+    // A named byline with no named file yet, but the outlet's "--unknown" slot holds a DIFFERENT url: the writer's
+    // merge matcher lets a named critic claim an unknown-critic file, so proceeding would fold this article into
+    // that one. Surface it instead (ship-check 2026-11-08).
+    if (unknownSlotFile && s.criticSlug !== 'unknown') return { action: 'unresolved-collision', slotFile: unknownSlotFile };
+    return { action: 'proceed' };
+  }
   if (s.criticSlug !== 'unknown') return { action: 'skip', reason: 'slot-dupe', file: s.slotFile };
   // Still no byline and the unknown slot holds a DIFFERENT url: the writer would merge this url into that
   // file. Surface it loudly instead of silently dropping or clobbering.

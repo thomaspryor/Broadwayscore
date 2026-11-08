@@ -52,3 +52,12 @@ test('class guard: discovery script never vetoes on a bare filename existsSync b
   assert.ok(!/if \(fs\.existsSync\(filepath\)\)/.test(src), 'filename-exists veto returned');
   assert.equal((src.match(/await prefetchWithSlotGate\(/g) || []).length, 3, 'all three discovery branches use the gate');
 });
+
+test('named byline + an unknown slot holding another url is a collision, because the writer would merge into it', () => {
+  const d = showDirWith({ 'everything-theatre--unknown.json': { url: 'https://et.com/a' } });
+  const r = decideAfterPrefetch(d, { ...base, url: 'https://et.com/b' }, 'Jane Doe', norm, 'everything-theatre--unknown.json');
+  assert.equal(r.action, 'unresolved-collision');
+  // The premise: the writer's matcher really would pick that unknown file for a named critic at a different url.
+  const hit = norm.findExistingReviewFile(d, 'everything-theatre', 'Jane Doe', 'https://et.com/b');
+  assert.equal(hit && hit.filename, 'everything-theatre--unknown.json');
+});

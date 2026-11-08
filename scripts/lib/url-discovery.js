@@ -1812,6 +1812,19 @@ function validateUrlDomain(url, outletId) {
 }
 
 /**
+ * BRO-7162 F14: is any SERP provider configured? serpQuery's chain starts with ScrapingDog, but the old gate
+ * looked only at ScrapingBee/Bright Data, so a ScrapingDog-only environment was refused before the chain ran.
+ * Callers use this instead of testing SCRAPINGBEE_API_KEY / BRIGHTDATA_TOKEN themselves.
+ */
+function hasSerpProvider(opts = {}) {
+  const sb = opts.scrapingBeeKey ?? process.env.SCRAPINGBEE_API_KEY;
+  const bd = opts.brightDataKey ?? process.env.BRIGHTDATA_TOKEN;
+  const sdKey = opts.scrapingdogKey ?? process.env.SCRAPINGDOG_API_KEY;
+  const sdOn = opts.useScrapingdog ?? (process.env.SCRAPER_USE_SCRAPINGDOG !== '0');
+  return !!(sb || bd || (sdKey && sdOn));
+}
+
+/**
  * General-purpose Google SERP query.
  * Provider chain: Bright Data (cheap) → ScrapingBee (25 credits/query fallback).
  * With preferSpeed=true: ScrapingBee first → Bright Data fallback.
@@ -1828,19 +1841,6 @@ function validateUrlDomain(url, outletId) {
  * @param {number|null} [options.negativeCacheTtlMs] - Opt-in short negative-result cache for emptyAuthoritative:false callers (T11 — see scripts/lib/serp-negative-cache-policy.js). Default null (no negative caching, existing behavior).
  * @returns {Array<{url: string, title: string}>|null} organic results, or null if all providers unavailable
  */
-/**
- * BRO-7162 F14: is any SERP provider configured? serpQuery's chain starts with ScrapingDog, but the old gate
- * looked only at ScrapingBee/Bright Data, so a ScrapingDog-only environment was refused before the chain ran.
- * Callers use this instead of testing SCRAPINGBEE_API_KEY / BRIGHTDATA_TOKEN themselves.
- */
-function hasSerpProvider(opts = {}) {
-  const sb = opts.scrapingBeeKey ?? process.env.SCRAPINGBEE_API_KEY;
-  const bd = opts.brightDataKey ?? process.env.BRIGHTDATA_TOKEN;
-  const sdKey = opts.scrapingdogKey ?? process.env.SCRAPINGDOG_API_KEY;
-  const sdOn = opts.useScrapingdog ?? (process.env.SCRAPER_USE_SCRAPINGDOG !== '0');
-  return !!(sb || bd || (sdKey && sdOn));
-}
-
 async function serpQuery(query, options = {}) {
   const sbKey = options.scrapingBeeKey || process.env.SCRAPINGBEE_API_KEY || '';
   const bdKey = options.brightDataKey || process.env.BRIGHTDATA_TOKEN || '';
