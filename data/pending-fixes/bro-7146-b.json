@@ -1,0 +1,58 @@
+{
+  "issueNumber": "bro-7146-b",
+  "planId": "6308e0a2-e0c6-4df7-b917-998a474a5a02",
+  "status": "pending",
+  "createdAt": "2026-11-08T19:45:18.762Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7146: set type on 29 untyped venue-page stubs, confirmed from venue listing pages (fetchPage) or producer/TDF listings (part 2 of 2)",
+    "steps": [
+      "shows.json: water-walker-off-broadway-2027.type",
+      "shows.json: seven-in-one-blow-or-the-brave-little-kid-off-broadway-2026.type",
+      "shows.json: honor-off-broadway-2027.type",
+      "shows.json: looking-at-you-off-broadway-2027.type"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "water-walker-off-broadway-2027",
+        "field": "type",
+        "oldValue": null,
+        "newValue": "special",
+        "description": "shows.json: water-walker-off-broadway-2027.type"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "seven-in-one-blow-or-the-brave-little-kid-off-broadway-2026",
+        "field": "type",
+        "oldValue": null,
+        "newValue": "special",
+        "description": "shows.json: seven-in-one-blow-or-the-brave-little-kid-off-broadway-2026.type"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "honor-off-broadway-2027",
+        "field": "type",
+        "oldValue": null,
+        "newValue": "special",
+        "description": "shows.json: honor-off-broadway-2027.type"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "looking-at-you-off-broadway-2027",
+        "field": "type",
+        "oldValue": null,
+        "newValue": "opera",
+        "description": "shows.json: looking-at-you-off-broadway-2027.type"
+      }
+    ]
+  }
+}
