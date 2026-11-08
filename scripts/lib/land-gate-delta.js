@@ -348,6 +348,10 @@ function computeRerunScope({ gate, branch, branchFiles, isolated = false }) {
   if (!Array.isArray(branchFiles) || branchFiles.length === 0) return full('the branch run recorded no file list');
   const failures = parseGateFailures(gate, branch.text, branch.root);
   if (failures.size === 0) return full('no failure could be parsed (crash/timeout?)');
+  // BRO-7134: an isolated re-run only judges the files that printed a failure. A batch killed at
+  // its time or output limit (exit not 1, or no final `# tests N` summary) never ran the rest, so
+  // passing those few alone must not clear the gate: keep the batch verdict.
+  if (isolated && (branch.exit !== 1 || !/^# tests \d+\s*$/m.test(branch.text || ''))) return full('the batch did not finish (killed or cut short)');
   // Normalized path -> the entry exactly as the gate listed it, so the
   // gauntlet matches its own spelling.
   const ran = new Map(branchFiles.map((p) => [normalizeTestPath(p), p]));

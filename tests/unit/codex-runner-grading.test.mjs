@@ -103,3 +103,20 @@ test('failures that cannot be scoped keep the batch verdict (no empty or whole-t
   assert.equal(computeRerunScope({ gate: 'lint-workflows', branch: { exit: 1, text: '' }, branchFiles: null, isolated: true }).scoped, false);
   assert.equal(computeRerunScope({ gate: GATE, branch: { exit: 1, text: 'Segmentation fault' }, branchFiles: ['tests/a.test.mjs'], isolated: true }).scoped, false);
 });
+
+test('a batch cut off at its time or output limit is never scoped for an isolated re-run', (t) => {
+  // Reviewer P1: a 40-min kill leaves partial TAP; the few timeouts that printed would pass
+  // alone and drop the gate although most files never ran. Must keep the batch verdict.
+  const branch = tree({ 'slow.test.mjs': SLOW });
+  t.after(() => rmSync(branch, { recursive: true, force: true }));
+  const ran = ['tests/slow.test.mjs'];
+  const done = run(branch, ran, UNDER_LOAD);
+  assert.equal(computeRerunScope({ gate: GATE, branch: done, branchFiles: ran, isolated: true }).scoped, true, 'a finished batch is scoped');
+  // Killed: spawnSync status null -> sandbox code -1; the summary never printed.
+  const cut = done.text.split('\n').filter((l) => !/^# (tests|suites|pass|fail|cancelled|skipped|todo|duration_ms) /.test(l)).join('\n');
+  for (const exit of [-1, 1]) {
+    const s = computeRerunScope({ gate: GATE, branch: { ...done, exit, text: cut }, branchFiles: ran, isolated: true });
+    assert.equal(s.scoped, false, `exit ${exit} without a summary: ${s.reason}`);
+  }
+  assert.equal(computeRerunScope({ gate: GATE, branch: { ...done, exit: -1 }, branchFiles: ran, isolated: true }).scoped, false, 'killed even with a summary');
+});
