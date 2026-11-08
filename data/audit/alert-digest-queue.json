@@ -613,5 +613,36 @@
       }
     ],
     "queuedAt": "2026-11-08T18:22:10.840Z"
+  },
+  {
+    "conditionKey": "land:land/bro-7130-clone-mem",
+    "title": "Landing blocked: scripts-lib-tests red on land/bro-7130-clone-mem",
+    "description": "land.yml did not land land/bro-7130-clone-mem: the scripts-lib-tests gate went red at 75830d406a. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/42508898835",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-7130-clone-mem"
+      },
+      {
+        "name": "gate",
+        "value": "scripts-lib-tests"
+      },
+      {
+        "name": "tip",
+        "value": "75830d406a9e528553796d63f971129d09157d49"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42508898835"
+      }
+    ],
+    "queuedAt": "2026-11-08T18:41:35.577Z"
   }
 ]
