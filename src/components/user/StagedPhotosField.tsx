@@ -13,10 +13,12 @@ import { newPhotoId } from '@/lib/review-photo-model';
  * caller with the save data and the caller uploads them once the review has
  * an id. Existing entries keep using ReviewPhotosField.
  */
-export default function StagedPhotosField({ files, onChange, showTitle }: {
+export default function StagedPhotosField({ files, onChange, showTitle, disabled = false }: {
   files: File[];
   onChange: (files: File[]) => void;
   showTitle: string;
+  /** True while the save is uploading: photos can't be added or removed (BRO-6980). */
+  disabled?: boolean;
 }) {
   const [notice, setNotice] = useState<string | null>(null);
   const previews = useRef(new Map<File, string>());
@@ -78,8 +80,10 @@ export default function StagedPhotosField({ files, onChange, showTitle }: {
         onDelete={removePhoto}
         notice={notice}
         title={showTitle}
+        instantRemove
+        disabled={disabled}
       />
-      <p className="mt-1 text-xs text-fg-muted">Photos upload when you save. Only you can see them.</p>
+      <p className="mt-1 text-xs text-fg-muted" role={disabled ? 'status' : undefined}>{disabled ? 'Uploading photos. Keep this page open.' : 'Photos upload when you save. Only you can see them.'}</p>
     </div>
   );
 }

@@ -88,6 +88,10 @@ interface PhotoThumbRowProps {
   /** For accessible names ("Remove photo 2 from Hamilton"). */
   title: string;
   size?: keyof typeof SIZE;
+  /** Staged previews (nothing saved yet): ✕ removes at once, no Delete confirm (BRO-6980). */
+  instantRemove?: boolean;
+  /** Lock the row (no add, no remove) while a save is uploading (BRO-6980). */
+  disabled?: boolean;
 }
 
 /**
@@ -97,7 +101,7 @@ interface PhotoThumbRowProps {
  * "Discard" sits with the error text below the row.
  */
 export default function PhotoThumbRow({
-  photos = [], pending, canAdd, onAddFiles, onRetry, onDismiss, onDelete, notice, title, size = 'md',
+  photos = [], pending, canAdd, onAddFiles, onRetry, onDismiss, onDelete, notice, title, size = 'md', instantRemove = false, disabled = false,
 }: PhotoThumbRowProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [armed, setArmed] = useState<string | null>(null);
@@ -160,7 +164,8 @@ export default function PhotoThumbRow({
               // 44px tap area in the corner (the mobile minimum), 24px glyph.
               <button
                 type="button"
-                onClick={() => arm(photo.id)}
+                disabled={disabled}
+                onClick={() => (instantRemove ? confirmDelete(photo) : arm(photo.id))}
                 aria-label={`Remove photo ${i + 1} from ${title}`}
                 className="group/rm absolute top-0 right-0 w-11 h-11 flex items-start justify-end p-1 outline-none"
               >
@@ -192,7 +197,7 @@ export default function PhotoThumbRow({
             )}
           </li>
         ))}
-        {canAdd && (
+        {canAdd && !disabled && (
           <li className={box}>
             <button
               type="button"
