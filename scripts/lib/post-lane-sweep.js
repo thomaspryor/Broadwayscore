@@ -95,11 +95,22 @@ function decideVerify({ showId, embargoMs, nowMs, leaseState, runs, disabled }) 
 function claimId(showId, kind) { return `${showId}~pnw-sweep-${kind}`; }
 function claimHolder(showId, night, kind) { return `sweep-${showId}-${night}-${kind}`; }
 
+/**
+ * The claim branch itself is broken (cannot read, commit or push): dispatch anyway, failing toward collecting like
+ * auto-fallback.js does after CLAIM_FAILURES_BEFORE_DISPATCH. The run-title dedupe in decideSweep already ran, so the
+ * cost is at most one extra poller run, absorbed by its per-show concurrency group. A contended or in-flight claim
+ * means another runner is on it: never dispatch then. Pure.
+ */
+const BRANCH_BROKEN = /^not claimed \((state-unreadable|commit-failed|push-failed)\)$/;
+function dispatchDespiteClaim(result) {
+  return !!result && !result.sent && !result.spent && BRANCH_BROKEN.test(String(result.reason || ''));
+}
+
 function dispatchArgs(showId) {
-  return ['workflow', 'run', POLLER_WORKFLOW, '-f', `show_id=${showId}`, '-f', 'fast_path=true', '-f', 'force_serp=true'];
+  return ['workflow', 'run', POLLER_WORKFLOW, '-f', `show_id=${showId}`, '-f', 'fast_path=true', '-f', 'force_serp=true', '-f', 'collect_existing=true'];
 }
 
 module.exports = {
   SWEEP_SLOTS, VERIFY_SLOT, POLLER_WORKFLOW, isSweepKind, slotAtMs, planSlots, isPollerRunFor, pollerRunsSince,
-  decideSweep, decideVerify, claimId, claimHolder, dispatchArgs,
+  decideSweep, decideVerify, claimId, claimHolder, dispatchArgs, dispatchDespiteClaim,
 };

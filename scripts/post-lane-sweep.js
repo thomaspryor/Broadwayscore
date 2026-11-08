@@ -101,6 +101,13 @@ function main() {
   const r = claimAndDispatch(showId, night, kind);
   if (r.sent) { log(`Dispatched a targeted poller run for ${showId} (fast_path, force_serp).`); return 0; }
   if (r.spent) { log(`Slot ${kind} for ${showId} ${night} was already dispatched by another runner.`); return 0; }
+  if (sweep.dispatchDespiteClaim(r)) {
+    log(`::warning::claim branch unwritable (${r.reason}); dispatching unclaimed (fail toward collecting)`);
+    try { dispatchOnce(showId); log(`Dispatched a targeted poller run for ${showId} (unclaimed).`); return 0; } catch (e) {
+      log(`::warning::post-lane sweep ${kind} for ${showId} not sent (${String(e.message).split('\n')[0].slice(0, 120)})`);
+      return 1;
+    }
+  }
   log(`::warning::post-lane sweep ${kind} for ${showId} not sent (${r.reason || 'dispatch failed'})`);
   return r.reason && /in-flight|contended/.test(r.reason) ? 0 : 1;
 }

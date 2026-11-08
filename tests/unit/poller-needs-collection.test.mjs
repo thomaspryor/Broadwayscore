@@ -63,7 +63,12 @@ test('the poller wires needs_collection into every post-collect gate (targeted r
   }
   assert.match(stepIf('Collect full text inline'), /SHOW_FILTER: \$\{\{ steps\.poll\.outputs\.any_new == 'true' && steps\.find\.outputs\.shows \|\| steps\.poll\.outputs\.collect_shows \}\}/);
   assert.match(yml, /COLLECT_ATTEMPTED_RAW: \$\{\{ steps\.poll\.outputs\.any_collect \}\}/);
-  assert.match(yml, /if \[ -n "\$INPUT_SHOW_ID" \]; then\n\s+NEED_COLLECT=\$\(node scripts\/lib\/poller-needs-collection\.js "\$SHOW_ID"/);
+  // Only a run that asks for it (the post-lane sweep), never every targeted run: the orchestrator's press-night loop
+  // dispatches targeted runs too, and an unfetchable excerpt would make each of them collect, rebuild and deploy.
+  assert.match(yml, /if \[ -n "\$INPUT_SHOW_ID" \] && \[ "\$INPUT_COLLECT_EXISTING" = "true" \]; then\n\s+NEED_COLLECT=\$\(node scripts\/lib\/poller-needs-collection\.js "\$SHOW_ID"/);
+  assert.match(yml, /INPUT_COLLECT_EXISTING: \$\{\{ inputs\.collect_existing \}\}/);
+  const orch = fs.readFileSync(new URL('../../.github/workflows/opening-night-orchestrator.yml', import.meta.url), 'utf8');
+  assert.doesNotMatch(orch, /collect_existing/, 'the orchestrator loop must not opt in');
   assert.match(yml, /\|\| \[ "\$NEEDS_COLLECTION" = "true" \]; then ANY_ACTION=true; fi/, 'scoring/rebuild/deploy follow a collection');
   assert.match(yml, /echo "any_collect=\$ANY_COLLECT" >> \$GITHUB_OUTPUT/);
   assert.match(yml, /INPUT_SHOW_ID: \$\{\{ inputs\.show_id \}\}/);

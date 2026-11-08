@@ -43,6 +43,11 @@ on:
         required: false
         type: boolean
         default: false
+      collect_existing:
+        description: 'Also collect full text for reviews already on disk that still lack it (post-lane sweep only; BRO-7160)'
+        required: false
+        type: boolean
+        default: false
       market:
         description: 'Filter to market (empty = all markets)'
         required: false
@@ -352,8 +357,10 @@ jobs:
         if: steps.find.outputs.has_shows == 'true'
         id: poll
         env:
-          # BRO-7160: targeted runs (post-lane sweep, manual) also collect text for reviews already on disk.
+          # BRO-7160: a targeted run that asks for it (the post-lane sweep passes collect_existing=true) also collects
+          # text for reviews already on disk. Never on the orchestrator's press-night loop, which omits the input.
           INPUT_SHOW_ID: ${{ inputs.show_id }}
+          INPUT_COLLECT_EXISTING: ${{ inputs.collect_existing }}
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
@@ -578,7 +585,7 @@ jobs:
               # BRO-7160: on a targeted run, reviews already on disk whose full text was never fetched (excerpt,
               # stub, truncated) are collected even when this poll found nothing new. The post-lane sweep relies on
               # it: after the fast lane releases, the gate below used to skip collection on every no-new-file poll.
-              if [ -n "$INPUT_SHOW_ID" ]; then
+              if [ -n "$INPUT_SHOW_ID" ] && [ "$INPUT_COLLECT_EXISTING" = "true" ]; then
                 NEED_COLLECT=$(node scripts/lib/poller-needs-collection.js "$SHOW_ID" 2>/dev/null || echo 0)
                 case "$NEED_COLLECT" in ''|*[!0-9]*) NEED_COLLECT=0 ;; esac
                 if [ "$NEED_COLLECT" -gt 0 ]; then
