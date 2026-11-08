@@ -276,6 +276,32 @@ function isReviewUrl(url, title) {
 const { serpResultMentionsShow } = require('./lib/serp-show-match');
 const { passesProductionMatch } = require('./lib/production-match-gate');
 
+/**
+ * BRO-7162 F01: URL-first dedupe + byline prefetch. Returns {skip:true} for a duplicate article/named slot,
+ * otherwise {pre} (the prefetch, reused for the write). An unknown-critic slot holding a different URL is
+ * logged and queued in data/audit/discovery-slot-collisions.jsonl instead of silently dropped.
+ */
+async function prefetchWithSlotGate({ showId, showDir, url, criticName, canonicalOutletId }) {
+  const dedupe = require('./lib/discovery-slot-dedupe');
+  const norm = { normalizeOutlet, normalizeCritic };
+  const input = { url, canonicalOutletId, criticName };
+  const first = dedupe.decideBeforePrefetch(showDir, input, norm);
+  if (first.action === 'skip') return { skip: true, reason: first.reason };
+  const pre = await prefetchDiscoveredArticle(url, { criticName, outletId: canonicalOutletId, showId });
+  if (first.action === 'proceed') return { skip: false, pre };
+  const second = dedupe.decideAfterPrefetch(showDir, input, pre && pre.criticName, norm);
+  if (second.action === 'skip') return { skip: true, reason: second.reason };
+  if (second.action === 'unresolved-collision') {
+    console.log(`  [QUEUED] ${url}: byline unresolved and ${second.slotFile} holds a different review; recorded for review, not merged`);
+    try {
+      const f = path.join(__dirname, '..', 'data', 'audit', 'discovery-slot-collisions.jsonl');
+      fs.appendFileSync(f, JSON.stringify({ at: new Date().toISOString(), showId, outletId: canonicalOutletId, url, slotFile: second.slotFile }) + '\n');
+    } catch { /* telemetry only */ }
+    return { skip: true, reason: 'unresolved-collision', queued: true };
+  }
+  return { skip: false, pre };
+}
+
 async function main() {
   if (!SCRAPINGBEE_KEY && !BRIGHTDATA_TOKEN) {
     console.error('Missing SCRAPINGBEE_API_KEY and BRIGHTDATA_TOKEN — need at least one');
@@ -445,42 +471,15 @@ async function main() {
           const filename = generateReviewFilename(discoveredOutletId, criticName);
           const filepath = path.join(showDir, filename);
 
-          // Don't overwrite existing files (scan all variants for canonical match)
-          if (fs.existsSync(filepath)) {
-            skippedDupe++;
-            continue;
-          }
-          if (fs.existsSync(showDir)) {
-            const criticSlug = normalizeCritic(criticName);
-            const existingFiles = fs.readdirSync(showDir);
-            const hasDupe = existingFiles.some(f => {
-              const m = f.match(/^(.+?)--(.+)\.json$/);
-              return m && normalizeOutlet(m[1]) === canonicalOutletId && m[2] === criticSlug;
-            });
-            if (hasDupe) {
-              skippedDupe++;
-              continue;
-            }
-            // URL-based dedup: skip if same URL already exists under a different filename
-            const normalizedUrl = url.toLowerCase().replace(/\/+$/, '');
-            const urlDupe = existingFiles.some(f => {
-              if (!f.endsWith('.json')) return false;
-              try {
-                const existing = JSON.parse(fs.readFileSync(path.join(showDir, f), 'utf8'));
-                return existing.url && existing.url.toLowerCase().replace(/\/+$/, '') === normalizedUrl;
-              } catch { return false; }
-            });
-            if (urlDupe) {
-              skippedDupe++;
-              continue;
-            }
-          }
-
+          // BRO-7162 F01: dedupe by article (URL), then by NAMED-critic slot; an unknown-critic slot never vetoes a
+          // distinct URL before its byline is fetched.
+          const _gate = await prefetchWithSlotGate({ showId, showDir, url, criticName, canonicalOutletId });
+          if (_gate.skip) { skippedDupe++; continue; }
+          const _pre = _gate.pre;
           // Route through createOrMergeReviewFile for Guard E (auto-flag
           // BWW Review-Roundup URLs) and URL-based outletId refinement
           // (resolveOutletFromUrl handles cases like metro.co.uk → metro-uk
           // that the local domainToOutletId fallback misses).
-          const _pre = await prefetchDiscoveredArticle(url, { criticName, outletId: canonicalOutletId, showId });
           const writeResult = createOrMergeReviewFile(showId, applyPrefetch({
             outletId: canonicalOutletId,
             outlet: getOutletDisplayName(canonicalOutletId) || result.title?.split(/[-–—|]/)[0]?.trim() || canonicalOutletId,
@@ -600,29 +599,11 @@ async function main() {
 
       if (!DRY_RUN) {
         const canonicalOutletId = normalizeOutlet(outletId);
-        const filename = generateReviewFilename(outletId, criticName);
-        const filepath = path.join(showDir, filename);
-
-        if (fs.existsSync(filepath)) {
-          skippedDupe++;
-          continue;
-        }
-        if (fs.existsSync(showDir)) {
-          const criticSlug = normalizeCritic(criticName);
-          const existingFiles = fs.readdirSync(showDir);
-          const hasDupe = existingFiles.some(f => {
-            const m = f.match(/^(.+?)--(.+)\.json$/);
-            return m && normalizeOutlet(m[1]) === canonicalOutletId && m[2] === criticSlug;
-          });
-          if (hasDupe) {
-            skippedDupe++;
-            continue;
-          }
-        }
-
+        const _gate = await prefetchWithSlotGate({ showId, showDir, url, criticName, canonicalOutletId });
+        if (_gate.skip) { skippedDupe++; continue; }
         // Route through createOrMergeReviewFile for Guard E (auto-flag
         // BWW Review-Roundup URLs) and URL-based outletId refinement.
-        const _pre = await prefetchDiscoveredArticle(url, { criticName, outletId: canonicalOutletId, showId });
+        const _pre = _gate.pre;
         const writeResult = createOrMergeReviewFile(showId, applyPrefetch({
           outletId: canonicalOutletId,
           outlet: getOutletDisplayName(canonicalOutletId) || canonicalOutletId,
@@ -726,19 +707,9 @@ async function main() {
         console.log(`         Outlet: ${outletId}, Critic: ${criticName}`);
         if (!DRY_RUN) {
           const canonicalOutletId = normalizeOutlet(outletId);
-          const filename = generateReviewFilename(outletId, criticName);
-          const filepath = path.join(showDir, filename);
-          if (fs.existsSync(filepath)) { skippedDupe++; continue; }
-          if (fs.existsSync(showDir)) {
-            const criticSlug = normalizeCritic(criticName);
-            const existingFiles = fs.readdirSync(showDir);
-            const hasDupe = existingFiles.some(f => {
-              const m = f.match(/^(.+?)--(.+)\.json$/);
-              return m && normalizeOutlet(m[1]) === canonicalOutletId && m[2] === criticSlug;
-            });
-            if (hasDupe) { skippedDupe++; continue; }
-          }
-          const _pre = await prefetchDiscoveredArticle(url, { criticName, outletId: canonicalOutletId, showId });
+          const _gate = await prefetchWithSlotGate({ showId, showDir, url, criticName, canonicalOutletId });
+          if (_gate.skip) { skippedDupe++; continue; }
+          const _pre = _gate.pre;
           const writeResult = createOrMergeReviewFile(showId, applyPrefetch({
             outletId: canonicalOutletId,
             outlet: getOutletDisplayName(canonicalOutletId) || canonicalOutletId,
