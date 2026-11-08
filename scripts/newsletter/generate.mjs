@@ -3314,15 +3314,9 @@ function buildSubjectFacts() {
 // generator last wrote: the owner swapped one in by hand. null otherwise.
 async function ownerEditedSubject(prev) {
   if (!prev || !prev.subject || !process.env.RESEND_API_KEY) return null;
-  try {
-    const H = { Authorization: `Bearer ${process.env.RESEND_API_KEY}` };
-    const list = await (await fetch('https://api.resend.com/broadcasts?limit=40', { headers: H, signal: AbortSignal.timeout(15000) })).json();
-    const name = `${IS_WE ? 'West End' : 'Scorecard'} Weekly — ${weekStartStr}`;
-    const b = (list.data || []).find(x => x.name === name && x.status === 'draft');
-    if (!b) return null;
-    const j = await (await fetch(`https://api.resend.com/broadcasts/${b.id}`, { headers: H, signal: AbortSignal.timeout(15000) })).json();
-    return j && j.subject && j.subject !== prev.subject ? j.subject : null;
-  } catch { return null; }
+  const { draftSubject } = await import('./resend-subject-history.mjs');
+  const cur = await draftSubject(process.env.RESEND_API_KEY, `${IS_WE ? 'West End' : 'Scorecard'} Weekly — ${weekStartStr}`);
+  return cur && cur !== prev.subject ? cur : null;
 }
 
 // Last subjects sent or drafted, both editions, newest first. From the issue
@@ -3333,21 +3327,9 @@ async function recentSubjects() {
     .sort((a, b) => String(b.weekStart).localeCompare(String(a.weekStart)))
     .map(i => i.subject);
   if (mine.length >= 6 || !process.env.RESEND_API_KEY) return mine.slice(0, 8);
-  try {
-    const H = { Authorization: `Bearer ${process.env.RESEND_API_KEY}` };
-    const list = await (await fetch('https://api.resend.com/broadcasts?limit=40', { headers: H, signal: AbortSignal.timeout(15000) })).json();
-    const weekly = (list.data || []).filter(b => /Weekly/.test(b.name || '') && !(b.name || '').includes(weekStartStr))
-      .sort((a, b) => String(b.created_at).localeCompare(String(a.created_at))).slice(0, 8);
-    const subs = [];
-    for (const b of weekly) {
-      const j = await (await fetch(`https://api.resend.com/broadcasts/${b.id}`, { headers: H, signal: AbortSignal.timeout(15000) })).json();
-      if (j && j.subject) subs.push(j.subject);
-    }
-    return [...new Set([...mine, ...subs])].slice(0, 8);
-  } catch (e) {
-    process.stderr.write(`[newsletter] recent subjects from Resend unavailable: ${e.message}\n`);
-    return mine.slice(0, 8);
-  }
+  const { recentWeeklySubjects } = await import('./resend-subject-history.mjs');
+  const subs = await recentWeeklySubjects(process.env.RESEND_API_KEY, weekStartStr);
+  return [...new Set([...mine, ...subs])].slice(0, 8);
 }
 
 // Subject is plain text in every inbox — strip any *emphasis* markers an editor

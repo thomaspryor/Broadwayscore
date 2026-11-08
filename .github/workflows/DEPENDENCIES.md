@@ -341,7 +341,7 @@ Workflows without any concurrency block, by class (read-only / alerting / test j
 
 | Secret | Used by (cross-repo writers) |
 |---|---|
-| `ANTHROPIC_API_KEY` | 42 cross-repo writers (of 70 workflows using it) |
+| `ANTHROPIC_API_KEY` | 42 cross-repo writers (of 72 workflows using it) |
 | `APPROVAL_HMAC_SECRET` | 3 cross-repo writers (of 11 workflows using it): `auto-fix-feedback-bug.yml`, `process-review-submission.yml`, `update-mezzanine.yml` |
 | `BLOOMBERG_EMAIL` | 3 cross-repo writers (of 3 workflows using it): `bulk-collect-review-texts.yml`, `collect-hard-paywall.yml`, `collect-review-texts.yml` |
 | `BLOOMBERG_PASSWORD` | 3 cross-repo writers (of 3 workflows using it): `bulk-collect-review-texts.yml`, `collect-hard-paywall.yml`, `collect-review-texts.yml` |
@@ -394,7 +394,7 @@ Workflows without any concurrency block, by class (read-only / alerting / test j
 | `NYT_COOKIES_META` | 1 cross-repo writers (of 1 workflows using it): `opening-night-express.yml` |
 | `NYT_EMAIL` | 8 cross-repo writers (of 9 workflows using it) |
 | `NYT_PASSWORD` | 1 cross-repo writers (of 1 workflows using it): `process-review-submission.yml` |
-| `OPENAI_API_KEY` | 34 cross-repo writers (of 54 workflows using it) |
+| `OPENAI_API_KEY` | 34 cross-repo writers (of 56 workflows using it) |
 | `OPENROUTER_API_KEY` | 12 cross-repo writers (of 16 workflows using it) |
 | `OWNER_EMAIL` | 69 cross-repo writers (of 154 workflows using it) |
 | `REDDIT_CLIENT_ID` | 3 cross-repo writers (of 4 workflows using it): `bulk-reddit-sentiment.yml`, `reddit-engagement-digest.yml`, `update-reddit-sentiment.yml` |
