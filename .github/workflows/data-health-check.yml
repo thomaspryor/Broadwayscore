@@ -263,6 +263,26 @@ jobs:
             { echo "### Actions cache budget"; echo '```'; echo "$out"; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
           fi
 
+      # BRO-7103: continuous-improvement loop. Groups recent Linear cards into
+      # problem classes, files ONE START-NOW root-cause card per recurring class
+      # (cap 3 per run, never a second card for a class), comments new instances
+      # on the existing root card, and writes data/audit/recurrence-classes.json
+      # (read by the done-gate warning, the cloud worker picker and the digest
+      # line in the health check below). Non-blocking: the digest row warns when
+      # the snapshot is >48h old, which is this step's dead-man.
+      # Kill switch: `gh variable set RECURRENCE_DETECTOR_DISABLED --body 1`.
+      - name: Recurrence detector
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          RECURRENCE_DETECTOR_DISABLED: ${{ vars.RECURRENCE_DETECTOR_DISABLED }}
+        run: |
+          rc=0
+          timeout -k 10 240 node scripts/recurrence-detector.js --apply || rc=$?
+          if [ "$rc" -ne 0 ]; then
+            echo "::warning::recurrence-detector.js exited $rc (non-blocking; 124 = timed out)"
+            echo "- WARNING: \`recurrence-detector.js\` exited $rc (non-blocking; 124 = timed out)" >> "$GITHUB_STEP_SUMMARY"
+          fi
+
       - name: Run health check
         env:
           GH_TOKEN: ${{ github.token }}
@@ -360,6 +380,8 @@ jobs:
           git add data/audit/health-check-history.json 2>/dev/null || true
           git add data/audit/workflow-run-coverage.json 2>/dev/null || true
           git add data/audit/affiliate-health.json 2>/dev/null || true
+          # BRO-7103: recurrence detector snapshot (single writer, apiFallbackSafe).
+          git add data/audit/recurrence-classes.json 2>/dev/null || true
           # Nightly CI green-rate reading (scripts/ci-green-rate.js --record,
           # appended by health-check.js's "Main: green rate" row) — the
           # trend/"day D of 14" line in the digest reads this history back.

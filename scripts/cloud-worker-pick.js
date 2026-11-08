@@ -176,7 +176,10 @@ async function main() {
       console.error(`[cloud-worker-pick] comment VERIFY check skipped: ${err && err.message ? err.message.split('\n')[0] : err}`);
     }
   }
-  const tiers = pickCloudCard(issues, { nowMs, codex: process.argv.includes('--codex') });
+  // BRO-7103: the recurrence detector's daily snapshot routes instance cards to their root-cause card. Fails open.
+  let recurrence = null;
+  try { recurrence = JSON.parse(require('fs').readFileSync(require('path').join(__dirname, '../data/audit/recurrence-classes.json'), 'utf8')); } catch { recurrence = null; }
+  const tiers = pickCloudCard(issues, { nowMs, codex: process.argv.includes('--codex'), recurrence });
   const { eligible, skipped, startNowSkipped, eligibleP2, skippedP2, eligibleP3, skippedP3 } = tiers;
   // P2 goes after P0/P1 and P3 after P2: a fallback card (resume or new) is
   // reached only when every entry ahead of it was skipped for its history (or,

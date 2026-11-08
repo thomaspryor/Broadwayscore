@@ -292,6 +292,7 @@ const DEDUPE_OPT_OUTS = Object.freeze({
   'press-night-digest': 'produce-press-night-digest-snapshot.js finds its card per show-night by the press-night-card-key line (any state) and comments new misses on it, so a near-match on another show of the same night must not swallow it',
   'sentry-triage': 'triage-sentry.js dedupes by the sentry-issue line in the card (any state), and two different Sentry errors often share most title words, so a near-match must not swallow a distinct error (BRO-5593)',
   rollup: 'the rollup card itself; running the rules on it would recurse',
+  'recurrence-detector': 'recurrence-detector.js files one root-cause card per recurring class and finds it again by its root-cause-class marker; the flood/rollup rules would fold it into the very instance cards it exists to replace (BRO-7103)',
 });
 
 module.exports = {

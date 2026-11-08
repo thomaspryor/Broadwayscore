@@ -590,7 +590,7 @@ function boardStartedIdle(report) {
   return row && Number.isFinite(row.exclusive) ? row.exclusive : null;
 }
 
-function buildHtmlParts({ sections = {}, problemsNote = null, changesHtml = null, stuckCount = 0, autofixRows = null, overnightLine = null, inflow = null, drainThroughputLine = null, pipelineIssues = null, boardNumbersData = null, boardReport = undefined, boardReportPrev = null, loopDeadMsg: givenLoopDeadMsg, reportOnly = false, skipMacLocal = false, now = new Date() } = {}) {
+function buildHtmlParts({ sections = {}, problemsNote = null, changesHtml = null, stuckCount = 0, autofixRows = null, overnightLine = null, inflow = null, drainThroughputLine = null, improvementLine = null, pipelineIssues = null, boardNumbersData = null, boardReport = undefined, boardReportPrev = null, loopDeadMsg: givenLoopDeadMsg, reportOnly = false, skipMacLocal = false, now = new Date() } = {}) {
   const dateLabel = new Intl.DateTimeFormat('en-US', {
     timeZone: 'America/New_York', weekday: 'long', month: 'long', day: 'numeric',
   }).format(now);
@@ -856,6 +856,10 @@ function buildHtmlParts({ sections = {}, problemsNote = null, changesHtml = null
   if (drainThroughputLine) {
     blocks.push(`<p style="font-size:12px;color:#666;margin:0 0 12px;">${esc(drainThroughputLine)}</p>`);
   }
+  // BRO-7103: root-cause share and repeat-problem count (recurrence detector).
+  if (improvementLine) {
+    blocks.push(`<p style="font-size:12px;color:#666;margin:0 0 12px;">${esc(improvementLine)}</p>`);
+  }
   // "Needs your decision", "Waiting on your approval" and "Review queue"
   // moved to the owner-first top block (2026-09-24 rework) — see
   // decisionBlocksHtml above. The Review queue (BRO-282's residual half,
@@ -974,7 +978,7 @@ ${inner}
 // would not have caught that, which is exactly what happened (renderer unit
 // buttons per the 2026-08-02 owner mandate — autofix runs in main().)
 function composeDigestEmail({
-  sections, problemsNote = null, changesHtml = null, stuckCount = 0, autofixRows = null, overnightLine = null, inflow = null, drainThroughputLine = null, pipelineIssues = null, boardNumbersData = null, boardReport = undefined, boardReportPrev = null, reportOnly = false, skipMacLocal = false, now = new Date(),
+  sections, problemsNote = null, changesHtml = null, stuckCount = 0, autofixRows = null, overnightLine = null, inflow = null, drainThroughputLine = null, improvementLine = null, pipelineIssues = null, boardNumbersData = null, boardReport = undefined, boardReportPrev = null, reportOnly = false, skipMacLocal = false, now = new Date(),
   dispatchSecret = process.env.APPROVAL_HMAC_SECRET, dispatchConfigPath = DISPATCH_CONFIG_PATH,
 } = {}) {
   // Digest v3 (owner mandate 2026-08-02, his FIFTH escalation): no Fix-this
@@ -1008,7 +1012,7 @@ function composeDigestEmail({
 
   const loopDeadMsg = digestLoopDeadMessage({ sections, autofixRows, stuckCount, pipelineIssues, skipMacLocal, now });
   const subject = buildSubject({ health: sections.health, autofixRows, awaitingOwner: sections.awaitingOwner, needsYou: sections.needsYou, inReviewBacklog: sections.inReviewBacklog, loopDead: !!loopDeadMsg, now });
-  const parts = buildHtmlParts({ sections, problemsNote, changesHtml, stuckCount, autofixRows, overnightLine, inflow, drainThroughputLine, pipelineIssues, boardNumbersData, boardReport, boardReportPrev, loopDeadMsg, reportOnly, skipMacLocal, now });
+  const parts = buildHtmlParts({ sections, problemsNote, changesHtml, stuckCount, autofixRows, overnightLine, inflow, drainThroughputLine, improvementLine, pipelineIssues, boardNumbersData, boardReport, boardReportPrev, loopDeadMsg, reportOnly, skipMacLocal, now });
   // html = every section (tests, previews, invariants). bodyHtml is what the owner's inbox shows; reportHtml is the attachment.
   return { subject, html: parts.full, bodyHtml: parts.body, reportHtml: parts.report };
 }
@@ -1593,6 +1597,17 @@ async function main() {
     drainThroughputLine = `Linear drain: could not be measured this morning (${why}).`;
   }
 
+  // BRO-7103: the recurrence detector's improvement line. Fail-soft.
+  let improvementLine = null;
+  try {
+    const snap = JSON.parse(fs.readFileSync(path.join(REPO, 'data/audit/recurrence-classes.json'), 'utf8'));
+    const ageH = (Date.now() - Date.parse(snap.generatedAt)) / 36e5;
+    improvementLine = ageH <= 48 ? require('./lib/recurrence-classes.js').improvementLine(snap)
+      : `Fixing causes: not measured this morning (the repeat-problem check last ran ${Math.round(ageH)} hours ago).`;
+  } catch (err) {
+    console.error(`[digest] WARN improvement line skipped: ${String(err.message).slice(0, 120)}`);
+  }
+
   const problemsNote = describeProblems(problems);
 
   // "What changed while you slept" — fail-soft; a broken collector must
@@ -1768,7 +1783,7 @@ async function main() {
     sections.macLocalSkipped = macLocalSkippedLine(await readMacAlive({ token: process.env.GH_TOKEN || process.env.GITHUB_TOKEN }));
     console.log(`[digest] ${sections.macLocalSkipped.text}`);
   }
-  const { subject, html, bodyHtml, reportHtml } = composeDigestEmail({ sections, problemsNote, changesHtml, stuckCount, autofixRows, overnightLine, inflow, drainThroughputLine, pipelineIssues, boardNumbersData, boardReport: boardTable.report, boardReportPrev: boardTable.prev, reportOnly: noAutofix, skipMacLocal, now });
+  const { subject, html, bodyHtml, reportHtml } = composeDigestEmail({ sections, problemsNote, changesHtml, stuckCount, autofixRows, overnightLine, inflow, drainThroughputLine, improvementLine, pipelineIssues, boardNumbersData, boardReport: boardTable.report, boardReportPrev: boardTable.prev, reportOnly: noAutofix, skipMacLocal, now });
 
   // Card #670/#1641: pre-send content check. Never blocks the SEND itself
   // (the digest must always send — a broken invariant check must not turn

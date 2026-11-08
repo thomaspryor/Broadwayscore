@@ -506,6 +506,7 @@ async function main(argv = process.argv.slice(2), deps = {}) {
             existingComments,
             verifyEvidence,
             verifyCmdEvidence,
+            identifier: issue.identifier, // BRO-7103 recurrence close warning (advisory)
           });
           if (gate.warning) console.error(`⚠️  ${gate.warning}`);
           if (gate.gated && !gate.allowed) {
