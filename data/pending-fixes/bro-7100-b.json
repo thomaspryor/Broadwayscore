@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7100-b",
   "planId": "a774ffdf-1964-4c6e-9810-f2630e07ac02",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-07T23:03:03.885Z",
   "submitter": {
     "name": null,
@@ -123,5 +123,86 @@
         "description": "Photographer surname glued to the byline by the BWW roundup parse (\"Photo Credit: X <Surname> <Critic>\", BRO-7100); no correctly named twin"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-08T01:40:21.453Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted all-male-as-you-like-it-regional-2026/nytimes--brenner-helen-shaw.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted here-we-are-west-end-2025/broadwayworld--brenner-alexander-cohen.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted midnight-at-the-never-get-off-west-end-2026/broadwayworld--persson-clementine-scott.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted midnight-off-broadway-2026/broadwayworld--persson-clementine-scott.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted rent-west-end-2026/broadwayworld--raith-aliya-al-hassan.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted slave-play-2021/broadwayworld--murray-alexander-cohen.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted slave-play-west-end-2024/broadwayworld--murray-alexander-cohen.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted teeth-off-broadway-2024/vulture--terranova-jackson-mchenry.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-oresteia-off-west-end-2026/broadwayworld--persson-alexander-cohen.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted whos-afraid-of-virginia-woolf-west-end-2026/broadwayworld--persson-alexander-cohen.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted why-am-i-so-single-west-end-2024/broadwayworld--kaan-aliya-al-hassan.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted nye-west-end-2024/broadwayworld--gary-naylor.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved nye-west-end-2024/broadwayworld--persson-gary-naylor.json → nye-west-end-2024/broadwayworld--gary-naylor.json",
+      "cleared": []
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "lady-day-at-emersons-bar-and-grill-west-end-2017/broadwayworld--brenner-marianka-swain.json criticName: \"Brenner Marianka Swain\" -> \"Marianka Swain\""
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved lady-day-at-emersons-bar-and-grill-west-end-2017/broadwayworld--brenner-marianka-swain.json → lady-day-at-emersons-bar-and-grill-west-end-2017/broadwayworld--marianka-swain.json",
+      "cleared": []
+    }
+  ],
+  "executedIn": "ci"
 }
