@@ -131,13 +131,15 @@ async function main(argv) {
   if (cmd === 'watch') {
     const session = arg(argv, '--session', '');
     const minutes = Number(arg(argv, '--minutes', SAFE_WATCH_MINUTES));
+    if (minutes >= 30) process.stderr.write(`watch: ${minutes} min outlives the 30-min background default; launch with Bash timeout 7200000\n`);
     if (!session || !(minutes > 0) || minutes > 115) {
       process.stderr.write('watch needs --session <id> and --minutes in 1..115 (background Bash caps at 2h)\n');
       return 2;
     }
     await new Promise((r) => setTimeout(r, minutes * 60000));
     process.stdout.write(`CHILD-IDLE-WATCH WAKE ${session} after ${minutes} min: call get_session ${session}, save the JSON, then run\n`
-      + `  node scripts/lib/child-idle-watch.js check --from-json <file>\n`);
+      + `  node scripts/lib/child-idle-watch.js check --from-json <file>\n`
+      + `  (a rearm runs watch again with Bash run_in_background and timeout 7200000)\n`);
     return 0;
   }
   if (cmd === 'check') {
