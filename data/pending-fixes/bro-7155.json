@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7155",
   "planId": "c7c9c43c-2413-4b6e-b455-db48ed7000f2",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-08T21:41:29.681Z",
   "submitter": {
     "name": null,
@@ -41,5 +41,24 @@
         "description": "hells-kitchen-2024/thewrap--steve-pond.json: duplicateOf"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-08T23:36:39.035Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "waiting-for-godot-2009/backstage--erik-haagensen.json wrongShow: false -> true (retracted wrongShowSelfHealReason, wrongShowSelfHealed)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "she-loves-me-2016/nypost--johnny-oleksinski.json duplicateOf: null -> \"nypost--elisabeth-vincentelli.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "hells-kitchen-2024/thewrap--steve-pond.json duplicateOf: null -> \"thewrap--robert-hofler.json\""
+    }
+  ],
+  "executedIn": "ci"
 }
