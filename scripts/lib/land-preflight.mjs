@@ -931,7 +931,7 @@ export function localCheckWarning({ root, src, base = 'origin/main', seams = {} 
     const text = {
       none: `no land-local-check verdict for this tip (${sha.slice(0, 10)}). ${why} Before pushing, ${run}.`,
       'new-failures': `land-local-check found NEW failures on this tip (${sha.slice(0, 10)}); land.yml will very likely refuse it. Fix them, then ${run}.`,
-      'not-ready': `land-local-check could not run on this tip (exit 3: uncommitted edits, or a worktree without local data; run ./scripts/setup-local-data.sh --link-only). ${why} Fix that, then ${run}.`,
+      'not-ready': `land-local-check could not run on this tip (exit 3: uncommitted edits, a worktree without local data (run ./scripts/setup-local-data.sh --link-only), or no node_modules (run the ln -s it prints)). ${why} Fix that, then ${run}.`,
       skipped: `land-local-check gave up waiting for the container land-check mutex on this tip, so land.yml is the only check. ${why}`,
     }[status];
     return { status, warning: text || null };

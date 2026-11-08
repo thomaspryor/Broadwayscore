@@ -241,7 +241,7 @@ function main(argv = process.argv.slice(2)) {
     return 3;
   }
   if (!hasOwnNodeModules(ROOT)) {
-    const main = path.resolve(git('rev-parse', '--git-common-dir').stdout, '..');
+    const main = path.resolve(ROOT, git('rev-parse', '--git-common-dir').stdout, '..');
     console.error('land-local-check: node_modules missing in this checkout. Packages would resolve from a parent '
       + 'checkout here but not in the base copy, so every type and lint error would read as new. '
       + `Link them first: ln -s ${path.join(main, 'node_modules')} node_modules`);
