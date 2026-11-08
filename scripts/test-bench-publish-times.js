@@ -83,6 +83,11 @@ function pressNightFor(dataDir, show) {
   return recs.length ? pickPressNight(recs, show) : null;
 }
 
+/** A re-run where no page loaded must not overwrite a night collected earlier. Pure. */
+function keepPrevious(prev, rows) {
+  return Boolean(prev && prev.observed) && !rows.some((r) => r.status === 200);
+}
+
 /** The night row for nights.json. Pure apart from its inputs. */
 function nightRow({ show, pressNight, rows, collectedAt }) {
   const recorded = pressNight && Date.parse(pressNight.embargoAt);
@@ -113,7 +118,8 @@ async function main() {
 
   fs.mkdirSync(path.join(outDir, 'publish-times'), { recursive: true });
   const nightsPath = path.join(outDir, 'nights.json');
-  const nights = readJson(nightsPath, { nights: {} });
+  const nights = readJson(nightsPath, {});
+  if (!nights.nights || typeof nights.nights !== 'object') nights.nights = {};
   let anyOk = false;
 
   for (const id of ids) {
@@ -136,6 +142,10 @@ async function main() {
       }
     }
     if (rows.some((r) => r.status === 200)) anyOk = true;
+    if (keepPrevious(nights.nights[id], rows)) {
+      console.error(`${id}: no page fetched this run; kept the previous row (${nights.nights[id].observed.source})`);
+      continue;
+    }
     fs.writeFileSync(path.join(outDir, 'publish-times', `${id}.json`), JSON.stringify({ showId: id, openingDate: show.openingDate, collectedAt, rows }, null, 1) + '\n');
     const row = nightRow({ show, pressNight: pressNightFor(dataDir, show), rows, collectedAt });
     nights.nights[id] = row;
@@ -149,4 +159,4 @@ async function main() {
 
 if (require.main === module) main().catch((e) => { console.error(e); process.exit(1); });
 
-module.exports = { extractPublishTime, precisionOf, nightRow };
+module.exports = { extractPublishTime, precisionOf, nightRow, keepPrevious };
