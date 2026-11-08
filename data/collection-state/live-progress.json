@@ -1,21 +1,43 @@
 {
-  "updatedAt": "2026-11-08T18:03:28.187Z",
-  "processed": 1148,
-  "failed": 509,
-  "successRate": "69.3%",
+  "updatedAt": "2026-11-08T18:13:36.382Z",
+  "processed": 1149,
+  "failed": 518,
+  "successRate": "68.9%",
   "tierBreakdown": {
     "playwright": 381,
     "amp": 0,
     "browserbase": 23,
     "directCookies": 0,
-    "scrapingdog": 59,
+    "scrapingdog": 60,
     "scrapingbee": 35,
     "brightdata": 0,
     "archiveToday": 0,
     "archive": 502
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 3,
   "recentActivity": [
+    {
+      "t": "2026-11-08T11:52:24.394Z",
+      "event": "bb-session",
+      "session": "3e617f14",
+      "url": "https://www.nytimes.com/2026/01/12/theater/ark-ian-mckellen-shed.html"
+    },
+    {
+      "t": "2026-11-08T11:52:24.689Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-08T11:55:20.421Z",
+      "event": "bb-session",
+      "session": "abeda074",
+      "url": "https://www.wsj.com/arts-culture/theater/i-puritani-review-beautifully-sung-bell"
+    },
+    {
+      "t": "2026-11-08T11:55:20.763Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
     {
       "t": "2026-11-08T11:59:29.863Z",
       "event": "bb-session",
@@ -92,43 +114,22 @@
       "url": "https://bachtrack.com/review-nozze-figaro-pountney-conta-bucharest-national-oper"
     },
     {
-      "t": "2026-11-08T17:57:06.207Z",
+      "t": "2026-11-08T18:10:05.973Z",
       "event": "bb-session",
-      "session": "14d4067e",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655534"
+      "session": "8c399a7e",
+      "url": "https://bachtrack.com/review-lorfeo-william-kentridge-greek-national-opera-athen"
     },
     {
-      "t": "2026-11-08T17:57:06.896Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-11-08T17:58:20.640Z",
+      "t": "2026-11-08T18:11:11.600Z",
       "event": "bb-session",
-      "session": "4897ce1f",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655510"
+      "session": "0a891ba6",
+      "url": "https://bachtrack.com/review-shostakovich-cherry-town-ahlbom-dutch-national-oper"
     },
     {
-      "t": "2026-11-08T17:58:21.331Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-11-08T17:58:33.676Z",
+      "t": "2026-11-08T18:12:16.123Z",
       "event": "bb-session",
-      "session": "286abeed",
-      "url": "https://bachtrack.com/review-medea-yoncheva-spyres-met-opera-new-york-october-20"
-    },
-    {
-      "t": "2026-11-08T18:03:04.162Z",
-      "event": "bb-session",
-      "session": "a3bd6ec5",
-      "url": "https://hermes.talkinbroadway.com/allthatchat_new/d.php?id=2655044"
-    },
-    {
-      "t": "2026-11-08T18:03:04.869Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
+      "session": "381974e1",
+      "url": "https://bachtrack.com/review-nozze-figaro-pountney-conta-bucharest-national-oper"
     }
   ]
 }
