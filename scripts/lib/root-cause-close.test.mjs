@@ -258,3 +258,23 @@ test('linear-brain update Done on a fix card repeats the advisory as the last ou
   assert.match(full.stderr, /UPDATE_ISSUE_CALLED/, full.stderr);
   assert.doesNotMatch(full.stderr, /ROOT-CAUSE CHECK/);
 });
+
+// BRO-7132 class guard: every place that teaches sessions or workers the close
+// format must name lines this parser reads. The check read 0 of 7 fix closes
+// because the worker prompt and wrap-up template taught other formats.
+test('every close-format instruction names the fields the check reads', async () => {
+  const fs = await import('node:fs');
+  const { fileURLToPath } = await import('node:url');
+  const root = fileURLToPath(new URL('../..', import.meta.url));
+  const { buildBudgetPreamble } = require('./bsc-runner.js');
+  const sources = {
+    'bsc-runner worker prompt': buildBudgetPreamble(60 * 60 * 1000),
+    'wrap-up Fix template': fs.readFileSync(`${root}.claude/commands/wrap-up.md`, 'utf8').split('\n').find((l) => l.includes('**Fix:**')) || '',
+    'CLAUDE.md rule 21': fs.readFileSync(`${root}CLAUDE.md`, 'utf8').split('### 21.')[1]?.split('\n### ')[0] || '',
+  };
+  for (const [name, text] of Object.entries(sources)) {
+    for (const field of ['ROOT-CAUSE:', 'RED-THEN-GREEN:', 'NO-ROOT-CAUSE:']) assert.ok(text.includes(field), `${name} must name ${field}`);
+    assert.ok(/CLASS-GUARD:|PREVENTION:/.test(text), `${name} must name CLASS-GUARD: or PREVENTION:`);
+    assert.ok(/COUSINS:|cousins:/.test(text), `${name} must name COUSINS: or a ; cousins: tail`);
+  }
+});
