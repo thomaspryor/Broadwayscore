@@ -14,7 +14,7 @@
  * parent feeds the get_session result into when it wakes:
  *
  *   1. Bash run_in_background, timeout 7200000 (one per child):
- *        node scripts/lib/child-idle-watch.js watch --session <id> [--minutes 30]
+ *        node scripts/lib/child-idle-watch.js watch --session <id> [--minutes 25]
  *   2. On wake: get_session <id>, save the JSON, then
  *        node scripts/lib/child-idle-watch.js check --from-json <file> [--reported-at <iso>]
  *      It prints {action, reason, rearmMinutes}: rearm (start step 1 again with
@@ -28,6 +28,12 @@
  */
 
 const DEFAULT_IDLE_MINUTES = 30;
+// A watch must finish before the harness kills it. Claude Code's default
+// background Bash limit is 30 min, and CLOUD.md's step once left the timeout
+// out, so a 30-min watch (the old default, and every WORKING rearm) was killed
+// instead of waking the parent (BRO-7109, two watches lost 2026-11-08).
+// Every timer this script proposes stays under that default.
+const SAFE_WATCH_MINUTES = 25;
 const WORKING = new Set(['WORKING', 'RUNNING', 'ACTIVE', 'IN_PROGRESS', 'STARTING', 'QUEUED']);
 const DONE = new Set(['COMPLETED', 'REVIEW_READY', 'ARCHIVED']);
 const FAILED = new Set(['FAILED', 'ERROR', 'ERRORED', 'CRASHED']);
@@ -80,7 +86,7 @@ function decide({ session, now = Date.now(), idleMinutes = DEFAULT_IDLE_MINUTES,
   const ageMin = updated == null ? null : Math.max(0, (nowMs - updated) / 60000);
   const reported = toMs(reportedAt);
   const out = (action, reason, rearmMinutes = idleMinutes) =>
-    ({ action, reason, idleMinutes: ageMin == null ? null : Math.round(ageMin), rearmMinutes: Math.max(1, Math.ceil(rearmMinutes)) });
+    ({ action, reason, idleMinutes: ageMin == null ? null : Math.round(ageMin), rearmMinutes: Math.min(SAFE_WATCH_MINUTES, Math.max(1, Math.ceil(rearmMinutes))) });
 
   if (DONE.has(bucket) || DONE.has(status) || findField(session, 'archived') === true) {
     return out('done', `child is ${bucket || status || 'archived'}: collect its report`);
@@ -114,7 +120,7 @@ function arg(argv, name, dflt) {
 function usage() {
   return [
     'child-idle-watch.js (BRO-6717): wake a parent session when its child goes idle.',
-    '  watch --session <id> [--minutes 30]   timer; run it with run_in_background (timeout 7200000); its exit wakes you',
+    '  watch --session <id> [--minutes 25]   timer; run it with run_in_background (timeout 7200000); its exit wakes you',
     '  check --from-json <file> [--reported-at <iso>] [--idle-minutes 30] [--now <iso>]',
     '                                        decide from a saved get_session result: rearm | nudge | restart | done',
   ].join('\n');
@@ -124,7 +130,7 @@ async function main(argv) {
   const cmd = argv[0];
   if (cmd === 'watch') {
     const session = arg(argv, '--session', '');
-    const minutes = Number(arg(argv, '--minutes', DEFAULT_IDLE_MINUTES));
+    const minutes = Number(arg(argv, '--minutes', SAFE_WATCH_MINUTES));
     if (!session || !(minutes > 0) || minutes > 115) {
       process.stderr.write('watch needs --session <id> and --minutes in 1..115 (background Bash caps at 2h)\n');
       return 2;
@@ -151,7 +157,7 @@ async function main(argv) {
   return cmd ? 2 : 0;
 }
 
-module.exports = { decide, findField, normBucket, DEFAULT_IDLE_MINUTES };
+module.exports = { decide, findField, normBucket, DEFAULT_IDLE_MINUTES, SAFE_WATCH_MINUTES };
 
 if (require.main === module) {
   main(process.argv.slice(2)).then((c) => { process.exitCode = c; }, (e) => {
