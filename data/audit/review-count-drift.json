@@ -1,15 +1,15 @@
 {
-  "generatedAt": "2026-11-07T15:28:42.173Z",
+  "generatedAt": "2026-11-08T15:50:45.611Z",
   "summary": {
-    "reviewsJsonLastUpdated": "2026-11-07T15:13:21.362Z",
-    "reviewsJsonAgeHours": 0.3,
+    "reviewsJsonLastUpdated": "2026-11-08T15:43:14.946Z",
+    "reviewsJsonAgeHours": 0.1,
     "freshnessBreach": false,
-    "showsScanned": 24,
+    "showsScanned": 25,
     "allShowsScanned": 4768,
-    "filesScanned": 80408,
+    "filesScanned": 80514,
     "showsOverThreshold": 0,
     "newOffenders": 0,
-    "blindShows": 29,
+    "blindShows": 27,
     "orphanReviews": 4
   },
   "thresholds": {
@@ -39,7 +39,7 @@
   "orphanReviews": [
     {
       "showId": "pride-bridge-theatre-off-west-end-2026",
-      "count": 23
+      "count": 24
     },
     {
       "showId": "the-apple-boys-regional-2025",
@@ -58,15 +58,23 @@
     {
       "showDir": "222-a-ghost-story-off-broadway-2026",
       "actual": 10,
-      "scanned": 16,
+      "scanned": 18,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
     },
     {
       "showDir": "adirondack-chair-circle-regional-2026",
-      "actual": 11,
-      "scanned": 11,
+      "actual": 13,
+      "scanned": 13,
+      "suppressedCount": 0,
+      "suppressed": [],
+      "overThreshold": false
+    },
+    {
+      "showDir": "broom-play-off-broadway-2026",
+      "actual": 1,
+      "scanned": 2,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
@@ -81,30 +89,6 @@
     },
     {
       "showDir": "iphigenie-en-tauride-english-national-opera-west-end-2026",
-      "actual": 1,
-      "scanned": 3,
-      "suppressedCount": 1,
-      "suppressed": [
-        {
-          "file": "theatre-weekly--ke-meng.json",
-          "outletId": "theatre-weekly",
-          "criticName": "Ke Meng",
-          "publishDate": "2026-11-06",
-          "url": "https://theatreweekly.com/review-iphigenie-en-tauride-at-london-coliseum/"
-        }
-      ],
-      "overThreshold": false
-    },
-    {
-      "showDir": "nero-off-west-end-2026",
-      "actual": 2,
-      "scanned": 11,
-      "suppressedCount": 0,
-      "suppressed": [],
-      "overThreshold": false
-    },
-    {
-      "showDir": "parcel-from-america-off-broadway-2026",
       "actual": 5,
       "scanned": 6,
       "suppressedCount": 0,
@@ -112,9 +96,25 @@
       "overThreshold": false
     },
     {
+      "showDir": "nero-off-west-end-2026",
+      "actual": 10,
+      "scanned": 19,
+      "suppressedCount": 0,
+      "suppressed": [],
+      "overThreshold": false
+    },
+    {
+      "showDir": "parcel-from-america-off-broadway-2026",
+      "actual": 6,
+      "scanned": 9,
+      "suppressedCount": 0,
+      "suppressed": [],
+      "overThreshold": false
+    },
+    {
       "showDir": "rope-off-broadway-2026",
-      "actual": 12,
-      "scanned": 14,
+      "actual": 13,
+      "scanned": 15,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
@@ -129,32 +129,24 @@
     },
     {
       "showDir": "speculations-off-west-end-2026",
-      "actual": 28,
-      "scanned": 35,
+      "actual": 30,
+      "scanned": 39,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
     },
     {
       "showDir": "tango-after-dark-off-west-end-2026",
-      "actual": 2,
-      "scanned": 2,
-      "suppressedCount": 0,
-      "suppressed": [],
-      "overThreshold": false
-    },
-    {
-      "showDir": "the-blue-violinist-over-west-end-avenue-off-broadway-2026",
-      "actual": 3,
-      "scanned": 5,
+      "actual": 4,
+      "scanned": 6,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
     },
     {
       "showDir": "the-bridge-off-west-end-2026",
-      "actual": 24,
-      "scanned": 40,
+      "actual": 25,
+      "scanned": 41,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
@@ -163,6 +155,14 @@
       "showDir": "the-morbs-off-broadway-2026",
       "actual": 4,
       "scanned": 6,
+      "suppressedCount": 0,
+      "suppressed": [],
+      "overThreshold": false
+    },
+    {
+      "showDir": "the-niceties-regional-2026",
+      "actual": 4,
+      "scanned": 5,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
@@ -177,16 +177,8 @@
     },
     {
       "showDir": "the-verge-off-broadway-2026",
-      "actual": 11,
-      "scanned": 20,
-      "suppressedCount": 0,
-      "suppressed": [],
-      "overThreshold": false
-    },
-    {
-      "showDir": "tosca-off-broadway-2026",
-      "actual": 1,
-      "scanned": 15,
+      "actual": 12,
+      "scanned": 23,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
