@@ -253,3 +253,26 @@ test('hook: a background poll started 3h ago with no notice is not live (start t
   const fresh = { ...stale, ts: new Date(Date.now() - 60000).toISOString() };
   assert.equal(runHook(FX.firstPrompt, [...turnCalls(TURN2), fresh], TURN2.closing).status, 0);
 });
+
+test('BRO-7109: no proposed watch outlives the 30-min default background limit', () => {
+  const watch = require('./child-idle-watch.js');
+  assert.ok(watch.SAFE_WATCH_MINUTES < 30, 'a watch launched without a timeout must finish before the harness kills it');
+  const working = { ccr: { id: 'session_x', status_bucket: 'SESSION_STATUS_BUCKET_WORKING', updated_at: '2026-11-08T01:24:33Z' } };
+  const r = watch.decide({ session: working, now: Date.parse('2026-11-08T01:30:00Z') });
+  assert.equal(r.action, 'rearm');
+  assert.ok(r.rearmMinutes <= watch.SAFE_WATCH_MINUTES, `WORKING rearm proposed ${r.rearmMinutes} min`);
+  // Every action's timer, even with a long idle threshold, stays under the cap.
+  for (const bucket of ['WORKING', 'IDLE', 'BLOCKED', 'FAILED', 'COMPLETED']) {
+    const s = { ccr: { id: 'session_x', status_bucket: `SESSION_STATUS_BUCKET_${bucket}`, updated_at: '2026-11-08T00:00:00Z' } };
+    assert.ok(watch.decide({ session: s, now: Date.parse('2026-11-08T00:05:00Z'), idleMinutes: 110 }).rearmMinutes <= watch.SAFE_WATCH_MINUTES, bucket);
+  }
+  // The CLOUD.md recipe the parent follows carries the long timeout.
+  const cloud = fs.readFileSync(path.join(REPO, '.claude', 'CLOUD.md'), 'utf8');
+  const lines = cloud.split('\n');
+  const step = lines.find((l) => l.includes('child-idle-watch.js watch --session'));
+  assert.match(step || '', /timeout: 7200000/, 'CLOUD.md watch step must pass the Bash timeout');
+  // Cousins: every background-wait recipe in CLOUD.md carries the timeout too.
+  const recipes = lines.filter((l) => /run_in_background|background-run|in the background|background Bash loop/.test(l));
+  assert.ok(recipes.length >= 5, `found ${recipes.length} background recipes`);
+  for (const l of recipes) assert.match(l, /timeout: 7200000/, `background recipe without the 2h timeout: ${l.slice(0, 120)}`);
+});
