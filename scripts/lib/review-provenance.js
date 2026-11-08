@@ -29,9 +29,16 @@ function sanitizeCaller(v) {
   return CALLER_RE.test(s) ? s : null;
 }
 
-/** A wrongProduction clear stamped by a script (".js" name) rather than a person. */
+/**
+ * A wrongProduction clear stamped by a script rather than a person. Delegates to the
+ * write guard's own definition (".js" names plus the bare-name batch scripts, BRO-5239),
+ * lazily because scripts/lib is copied flat into fixtures.
+ */
 function isScriptClearSetBy(by) {
-  return typeof by === 'string' && /\.js\b/.test(by.trim());
+  if (typeof by !== 'string' || !by.trim()) return false;
+  return require('./review-write-guard').isScriptWrongProductionClear({
+    wrongProductionManualClear: true, wrongProductionOverrideSetBy: by,
+  });
 }
 
 /** Steps a person took that a file needed before it could go live. */

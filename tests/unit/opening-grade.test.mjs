@@ -156,3 +156,9 @@ test('approved fixes and hand commits carry a cause', () => {
   assert.equal(og.causeOfSubject('fix: criticName for 2 Culture Sauce reviews'), 'attribution');
   assert.equal(og.causeOfFields(['approvedFix:duplicateOf']), 'duplicate-identity');
 });
+
+test('BRO-7145: bare-name batch script stamps (no .js) are also not hand steps', () => {
+  const { handSteps } = require('../../scripts/lib/review-provenance.js');
+  const r = handSteps({ wrongProductionManualClear: true, wrongProductionOverrideSetBy: 'reverify-era-venue-wrongprod' });
+  assert.ok(!(r.gating || []).includes('wrongProductionManualClear'));
+});
