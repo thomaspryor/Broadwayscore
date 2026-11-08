@@ -29,7 +29,7 @@ const { isUrlYearOutsideWindow } = require('./lib/content-filters');
 const { isSerpUrlWrongProductionForOpeningNight } = require('./lib/opening-night-discovery');
 const { OUTLET_DOMAINS: _OUTLET_DOMAINS, REGISTRY_DOMAIN_ALIASES: _REGISTRY_DOMAIN_ALIASES, serpQuery, serpNewsQuery } = require('./lib/url-discovery');
 const { isLondonMarket } = require('./lib/venue-classification');
-const { getLondonSupplementalOutlets, reviewSearchKeyword } = require('./lib/opening-night-discovery-policy');
+const { getLondonSupplementalOutlets, reviewSearchKeyword, strategyOneCap, planStrategyOneTargets } = require('./lib/opening-night-discovery-policy');
 const { isSyndicationHost, makeRegisteredOutletPredicate, resolveSyndicatedHit } = require('./lib/syndication-canonical');
 const { resolveIntEnv } = require('./lib/resolve-int-env');
 
@@ -374,11 +374,21 @@ async function main() {
   const outletIds = [];
   if (TIERS.includes(1)) outletIds.push(...TIER1_OUTLETS);
   if (TIERS.includes(2)) outletIds.push(...TIER2_OUTLETS);
-  // The opening-night workflow passes --tiers=1,2. Fringe coverage also
-  // needs the poller's specialist sweep; it shares the existing SERP cap.
-  if (show.category === 'off-west-end') {
-    outletIds.push(...getLondonSupplementalOutlets(_reg, new Set(), show).map(o => o.id));
-  }
+  // The opening-night workflow passes --tiers=1,2. Fringe coverage also needs the poller's specialist
+  // sweep. BRO-7162 F07: Strategy 1 keeps calls for the news and broad queries (total cap unchanged),
+  // the list is one entry per domain with covered domains removed first, it rotates by 12h run index so
+  // every domain is reached over successive runs, and specialists sit inside the cap rather than behind
+  // a general list long enough to use the whole budget.
+  const specialistIds = show.category === 'off-west-end'
+    ? getLondonSupplementalOutlets(_reg, new Set(), show).map(o => o.id)
+    : [];
+  const uncovered = id => (outletCounts.get(OUTLET_DOMAINS[id]) || 0) < 2;
+  const plannedIds = planStrategyOneTargets(outletIds.filter(uncovered), specialistIds.filter(uncovered), id => OUTLET_DOMAINS[id], {
+    cap: strategyOneCap(SERP_CALL_BUDGET),
+    runIndex: Math.floor(Date.now() / (12 * 3600000)),
+  });
+  outletIds.length = 0;
+  outletIds.push(...plannedIds);
 
   // Deduplicate outlet domains (some IDs map to same domain)
   const searchedDomains = new Set();
@@ -399,8 +409,8 @@ async function main() {
     // Hard per-run SERP cap — applies to Strategy 1 too, so the budget actually
     // bounds total spend (ship-check: Codex + Claude) rather than only gating 2b
     // after Strategy 1 already overspent.
-    if (!underSerpBudget()) {
-      console.log(`  ⚠ SERP budget ${SERP_CALL_BUDGET} reached — stopping Strategy 1 outlet search (used ${_serpCallsUsed})`);
+    if (!underSerpBudget() || searched >= strategyOneCap(SERP_CALL_BUDGET)) {
+      console.log(`  ⚠ Strategy 1 stopped at ${searched} outlet searches (SERP budget ${SERP_CALL_BUDGET}, used ${_serpCallsUsed}); remaining budget kept for news + broad`);
       break;
     }
 
