@@ -19483,7 +19483,7 @@
       "title": "Roundup gaps: 4 listed review(s) not captured across 2 show(s)",
       "firstSeen": "2026-10-16T17:15:04.341Z",
       "incidentOpenedAt": "2026-10-16T17:15:04.341Z",
-      "lastSeen": "2026-11-08T17:40:40.953Z",
+      "lastSeen": "2026-11-08T18:35:32.742Z",
       "lastNotifiedAt": "2026-11-08T17:40:40.953Z",
       "lastSurfacedAt": null,
       "notifyCount": 42,
@@ -19545,7 +19545,8 @@
         "king-lear-off-broadway-2026",
         "the-unbelievers-off-broadway-2026",
         "speculations-off-west-end-2026"
-      ]
+      ],
+      "silentRefires": 1
     },
     "land:land/bro-5478-land-hold-doc": {
       "status": "resolved",
@@ -36450,7 +36451,7 @@
       "resolvedAt": "2026-11-03T19:35:54.829Z"
     },
     "review-gap:opening-window:a-train-to-woking-off-west-end-2026": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Review gap — \"A Train To Woking\" missing 1 cited review(s)",
       "firstSeen": "2026-11-03T17:21:07.429Z",
@@ -36461,7 +36462,9 @@
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 3
+      "silentRefires": 3,
+      "resolvedAt": "2026-11-08T18:35:32.649Z",
+      "resolveReason": "review-gap: no uncollected cited reviews on the latest audit, only SERP-census gaps, or show id retired"
     },
     "land:land/bro-6734-tour-city-onboarding-lists": {
       "status": "resolved",
@@ -38358,13 +38361,13 @@
       "title": "Review gap — \"Othello (Bedlam)\" missing 2 cited review(s)",
       "firstSeen": "2026-11-07T15:26:56.754Z",
       "incidentOpenedAt": "2026-11-07T15:26:56.754Z",
-      "lastSeen": "2026-11-08T17:40:40.872Z",
+      "lastSeen": "2026-11-08T18:35:32.684Z",
       "lastNotifiedAt": "2026-11-08T13:30:30.696Z",
       "lastSurfacedAt": "2026-11-08T13:30:30.696Z",
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 3
+      "silentRefires": 4
     },
     "land:land/bro-7081-discovery": {
       "status": "resolved",
