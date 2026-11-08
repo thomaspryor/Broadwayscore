@@ -40,7 +40,7 @@ const holes = require('./lib/coverage-holes');
 
 const ROOT = path.join(__dirname, '..');
 const LEDGER = path.join('data', 'audit', 'coverage-holes-decisions.json');
-const CLASSES = ['A', 'B', 'C', 'D', 'E', 'F'];
+const CLASSES = ['A', 'B', 'C', 'D', 'E', 'F', 'G'];
 const arg = (n) => { const a = process.argv.find((x) => x.startsWith(`--${n}=`)); return a ? a.slice(n.length + 3) : null; };
 // reviews.json URLs and review-file URLs differ in scheme, www, query and trailing slash.
 const excludedBy = (d, show, filePath) => require('./lib/review-guards').explainExclusion(d, show, filePath);
@@ -87,18 +87,30 @@ function sweep({ root = ROOT, days = 120, only = null, now = Date.now(), recentD
     if (recent) out.recentShows.push(show.id);
     const dir = path.join(root, 'data', 'review-texts', show.id);
     if (!fs.existsSync(dir)) continue;
+    const entries = [];
     for (const f of fs.readdirSync(dir)) {
       if (!isReviewTextFile(f)) continue; // sidecars (_blocklist.json), not reviews
       const filePath = path.join(dir, f);
       let d;
       try { d = JSON.parse(fs.readFileSync(filePath, 'utf8')); } catch { out.unreadable++; continue; } // counted: corruption must not hide
       out.files++;
+      entries.push({ f, filePath, d });
+    }
+    // G pairs files, so it needs the show's included set before the per-file pass (BRO-7131).
+    const included = entries.filter((e) => !excludedBy(e.d, show, e.filePath))
+      .map((e) => ({ file: e.f, outletId: e.d.outletId || null, criticName: e.d.criticName || null }));
+    const includedFiles = new Set(included.map((e) => e.file));
+    for (const { f, filePath, d } of entries) {
       const row = d.url ? published.get(`${show.id}|${normUrl(d.url)}`) : null;
       // reviews.json rows carry no file name, so the join is by URL. A duplicate or otherwise excluded file shares its
       // URL with the file that IS published: judging F on it compared the published file's score with the excluded
       // copy's stored rating (BRO-4849: 9 of 29 F rows). Only a file the rebuild includes owns the published score.
       const owns = row && typeof row.assignedScore === 'number' && !excludedBy(d, show, filePath);
       const c = holes.classify(d, show, filePath, owns ? row.assignedScore : undefined);
+      if (includedFiles.has(f)) {
+        const g = holes.teaserTwin(d, included.filter((e) => e.file !== f));
+        if (g) c.G = g;
+      }
       if (c.D) c.D = { ...c.D, published: !!row };
       if (c.C) c.C = { ...c.C, scorer: scorerVerdict(d, show, filePath) };
       for (const [k, v] of Object.entries(c)) {
@@ -123,6 +135,7 @@ function needsPerson(out, showId) {
   return [
     ...out.B.filter((r) => r.show === showId && !r.decision).map((r) => ({ cls: 'B', ...r })),
     ...out.F.filter((r) => r.show === showId && !r.queued && !r.decision).map((r) => ({ cls: 'F', ...r })),
+    ...out.G.filter((r) => r.show === showId && !r.decision).map((r) => ({ cls: 'G', ...r })),
   ];
 }
 
@@ -137,6 +150,7 @@ function summary(out) {
     `C neverScored=${out.C.length} (recent ${recent(out.C)}) alreadyQueued=${out.C.filter((r) => r.queued).length} scorer=${JSON.stringify(tally(out.C, 'scorer'))}`,
     `D blockedUrlUnflagged=${out.D.length} ${JSON.stringify(tally(out.D, 'kind'))} publishedOnSite=${out.D.filter((r) => r.published).length} (the harm; the rest is hygiene)`,
     `E uncapturedStar=${out.E.length} (recent ${recent(out.E)})`,
+    `G teaserTwin=${out.G.length} (recent ${recent(out.G)}) explained=${explained(out.G)}`,
     `F scoreOutsideBand=${out.F.length} (recent ${recent(out.F)}) queued=${out.F.filter((r) => r.queued).length} explained=${out.F.filter((r) => !r.queued && r.decision).length} unqueued=${out.F.filter((r) => !r.queued && !r.decision).length}`,
     ...(out.staleDecisions && out.staleDecisions.length ? [`stale decisions (row gone, prune from ${LEDGER}): ${out.staleDecisions.length}`] : []),
   ].join('\n');
@@ -165,11 +179,13 @@ async function alert(out) {
       if (!rows.length) { resolveCondition(key, { reason: 'no rejected-but-verified review and no unqueued out-of-band score' }); continue; }
       const lines = rows.map((r) => (r.cls === 'B'
         ? `- rejected as not-a-review, verification says review: ${r.file}${r.urlOtherShow ? ' (stored URL looks like another show: repair the URL)' : ''}`
-        : `- published ${r.score} outside the critic's band ${r.band} (${r.rating}): ${r.file}`));
+        : r.cls === 'G'
+          ? `- teaser pointing to the same critic's full review, both counted: ${r.file} (full review: ${r.twin})`
+          : `- published ${r.score} outside the critic's band ${r.band} (${r.rating}): ${r.file}`));
       await routeAlert({
         conditionKey: key,
-        title: `${showId}: ${rows.length} review(s) need a decision (rejected real review or score outside the critic's rating)`,
-        description: `${lines.join('\n')}\n\nRead each text. Genuine review: clear isNonReview / rejectionReason (and rejectedAt/rejectedBy from the same verdict) with nonReviewManualClear via data/pending-fixes (model: bro-4838-b.json). Out-of-band score: store the outlet's own rating as originalScore if it is real, else correct the rating.`,
+        title: `${showId}: ${rows.length} review(s) need a decision (rejected real review, score outside the critic's rating, or a teaser double-counting a critic)`,
+        description: `${lines.join('\n')}\n\nRead each text. Genuine review: clear isNonReview / rejectionReason (and rejectedAt/rejectedBy from the same verdict) with nonReviewManualClear via data/pending-fixes (model: bro-4838-b.json). Out-of-band score: store the outlet's own rating as originalScore if it is real, else correct the rating. Teaser: confirm the text only points to the full review, then set isNonReviewReason "manual (not a review): teaser linking to <twin>" and isNonReview true (model: bro-7131c.json).`,
         severity: 'warning',
         disposition: 'digest',
         cooldownHours: 20,
