@@ -455,3 +455,20 @@ test('updateStaging: locked read-modify-write on a scratch path; a non-array mut
   assert.equal(after.length, 1);
   assert.equal(after[0].slug, 'b-refreshed');
 });
+
+// BRO-7146: announced stubs took type null even when the title or listing said what they were.
+test('buildOffWestEndVenueShowEntry: an announced stub takes the type its listing states, null only when nothing does', () => {
+  const vocab = buildVenueVocabulary(LONDON_POOL);
+  const build = (title, extra) => buildOffWestEndVenueShowEntry(candidate(title, 'Orange Tree Theatre', extra), vocab, { now: NOW });
+  const titled = build('Taken The Unofficial Musical: A New Musical Parody');
+  assert.equal(titled.status, 'announced');
+  assert.equal(titled.type, 'musical', 'title says musical');
+  const genre = build('Ayla', { listingGenre: 'Musicals' });
+  assert.equal(genre.status, 'announced');
+  assert.equal(genre.type, 'musical', 'listing genre says musical');
+  const explicit = build('Shakespeare Unplugged', { type: 'special' });
+  assert.equal(explicit.status, 'announced');
+  assert.equal(explicit.type, 'special', 'explicit candidate.type wins');
+  const unknown = build('Mortal Wounds', { listingGenre: 'Concert' });
+  assert.equal(unknown.type, null, 'nothing says what it is: not guessed as a play');
+});

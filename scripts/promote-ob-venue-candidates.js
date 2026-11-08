@@ -341,7 +341,10 @@ function buildShowEntry(candidate) {
     market: marketForCategory(category || 'off-broadway'),
     // The venue's own genre label or a title that says "musical"; empty when
     // neither says what the show is (lib/title-says-musical.js).
-    type: knownShowType(candidate.title, candidate.listingGenre),
+    // BRO-7146: a hand-staged candidate.type wins, as in the Off-West-End builder.
+    type: ['play', 'musical', 'opera', 'special'].includes(candidate.type)
+      ? candidate.type
+      : knownShowType(candidate.title, candidate.listingGenre),
     discoverySource: candidate.source,
     discoveredAt: candidate.discoveredAt,
     // Provisional — opening-night orchestrator + Lortel/IBDB enrichment

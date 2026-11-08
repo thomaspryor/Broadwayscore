@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-11-08T18:36:34.903Z",
+  "generatedAt": "2026-11-08T19:48:50.469Z",
   "date": "2026-11-08",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 268117,
+  "entryCount": 273977,
   "shows": [
     {
       "showId": "ceilidh-the-musical-off-west-end-2026",
@@ -191,7 +191,7 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
+        "collected-to-scored": 534877,
         "scored-to-rebuilt": 274884,
         "rebuilt-to-deployed": null
       },
@@ -341,7 +341,7 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
+        "collected-to-scored": 676341,
         "scored-to-rebuilt": 124644,
         "rebuilt-to-deployed": 316925419
       },
@@ -356,7 +356,7 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
+        "collected-to-scored": 1426520,
         "scored-to-rebuilt": 476957,
         "rebuilt-to-deployed": 239760286
       },
@@ -476,7 +476,7 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": 551407,
+        "collected-to-scored": 469047,
         "scored-to-rebuilt": 281444,
         "rebuilt-to-deployed": 77632615
       },
@@ -1901,7 +1901,7 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
+        "collected-to-scored": 3017140,
         "scored-to-rebuilt": 128373,
         "rebuilt-to-deployed": 116741862
       },
@@ -1916,7 +1916,7 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": 991232,
+        "collected-to-scored": 1049031,
         "scored-to-rebuilt": 289330,
         "rebuilt-to-deployed": 155517127
       },
@@ -6369,13 +6369,13 @@
     },
     {
       "showId": "medea-off-broadway-2026",
-      "reviewCount": 4,
+      "reviewCount": 5,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 1103922,
+        "scored-to-rebuilt": 1132210,
         "rebuilt-to-deployed": 233567344
       },
       "reviews_over_15min": 0,
@@ -7033,7 +7033,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 180868,
+        "scored-to-rebuilt": 474950,
         "rebuilt-to-deployed": 160487776
       },
       "reviews_over_15min": 1,
@@ -7257,7 +7257,7 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
+        "collected-to-scored": 687687,
         "scored-to-rebuilt": 1096721,
         "rebuilt-to-deployed": 149324046
       },
@@ -8557,7 +8557,7 @@
     },
     {
       "showId": "nero-off-west-end-2026",
-      "reviewCount": 10,
+      "reviewCount": 11,
       "median_e2e_ms": 82585129,
       "p90_e2e_ms": 93253878,
       "per_stage_median_ms": {
@@ -8943,7 +8943,7 @@
     },
     {
       "showId": "american-idiot-2010",
-      "reviewCount": 23,
+      "reviewCount": 22,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -10570,21 +10570,6 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": null,
-        "rebuilt-to-deployed": null
-      },
-      "reviews_over_15min": 0,
-      "reviews_over_60min": 0,
-      "slowest_reviews": []
-    },
-    {
-      "showId": "i-puritani-off-broadway-2025",
-      "reviewCount": 5,
-      "median_e2e_ms": null,
-      "p90_e2e_ms": null,
-      "per_stage_median_ms": {
-        "first-seen-to-collected": null,
-        "collected-to-scored": 17948504,
-        "scored-to-rebuilt": 283192,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -14493,13 +14478,13 @@
     },
     {
       "showId": "shucked-tour-2024",
-      "reviewCount": 91,
+      "reviewCount": 90,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": 10014051,
-        "scored-to-rebuilt": 283156,
+        "collected-to-scored": 10106187,
+        "scored-to-rebuilt": 283159,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -15773,8 +15758,53 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
+        "collected-to-scored": 696434,
         "scored-to-rebuilt": 1562326,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "music-for-18-musicians-staged-variations-off-broadway-2026",
+      "reviewCount": 1,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "reverberation-bristol-old-vic-regional-2024",
+      "reviewCount": 3,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "dizzy-sheffield-regional-2024",
+      "reviewCount": 2,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,

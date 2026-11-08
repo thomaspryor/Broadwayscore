@@ -180,3 +180,30 @@ test('BRO-7145: provenance script-clear test agrees with the write guard (except
     assert.equal(isScriptClearSetBy(by), guard.isScriptWrongProductionClear({ wrongProductionManualClear: true, wrongProductionOverrideSetBy: by }), by);
   }
 });
+
+// BRO-7149: undated reviews are what made openings need a person (date-guard class).
+const hpd = require(path.join(repoRoot, 'scripts/lib/html-publish-date.js'));
+test('resolveMissingPublishDate: html first, then strict byline, never prose or run dates', () => {
+  const html = '<html><head><meta property="article:published_time" content="2026-10-30T12:00:00Z"></head><body>' + 'x'.repeat(200) + '</body></html>';
+  assert.deepEqual(hpd.resolveMissingPublishDate({ html, url: 'https://example.com/a' }), { date: '2026-10-30', dateSource: 'html-page' });
+  assert.deepEqual(hpd.resolveMissingPublishDate({ fullText: 'By A. Critic\nOctober 30, 2026\nBody' }), { date: '2026-10-30', dateSource: 'text-regex' });
+  assert.equal(hpd.resolveMissingPublishDate({ fullText: 'No date anywhere' }), null);
+  assert.equal(hpd.resolveMissingPublishDate({ fullText: 'December 1, 2099 Body' }), null, 'future date rejected');
+  assert.equal(hpd.resolveMissingPublishDate({ fullText: 'On March 15, 2018 and again on April 2, 2019 the theatre' }), null, 'two dates: abstain');
+  assert.equal(hpd.resolveMissingPublishDate({ fullText: 'Playing through November 30, 2026 at the Imperial' }), null, 'run date rejected');
+});
+
+test('writer: resolves a missing date on create, never touches an existing file date', async () => {
+  const fs = await import('node:fs'); const os = await import('node:os');
+  const w = require(path.join(repoRoot, 'scripts/lib/review-file-writer.js'));
+  assert.equal(typeof w.createOrMergeReviewFile, 'function');
+  const src = fs.readFileSync(path.join(repoRoot, 'scripts/lib/review-file-writer.js'), 'utf8');
+  assert.match(src, /_publishDateResolved && existing\.publishDate/, 'merge path drops the resolved date when the file already has one');
+});
+
+test('class guard: the shared review writer calls the resolver, so every writer path dates reviews', async () => {
+  const fs = await import('node:fs');
+  const src = fs.readFileSync(path.join(repoRoot, 'scripts/lib/review-file-writer.js'), 'utf8');
+  assert.match(src, /resolveMissingPublishDate\(/);
+  assert.ok(src.indexOf('resolveMissingPublishDate(') < src.indexOf('const laneHolds'), 'runs before the guards');
+});

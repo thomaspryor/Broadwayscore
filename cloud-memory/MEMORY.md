@@ -9,7 +9,6 @@
 
 ## 👤 User profile & session discipline
 - [Cmux close rules](feedback_never_close_unmarked_cmux_workspaces.md) — unmarked never close; close kills claude+nohup ([[feedback_cmux_tab_close_kills_children.md]])
-- [Estimates are the product](feedback_public_sourcing_optional.md) — reasonable estimate or private tip is enough to publish; never ask owner to bless a hedged tip
 - [Terse output default](feedback_terse_output_default.md) — no recap, keep proof ([[feedback_no_human_day_estimates.md]])
 - [Tabs unread](user_tabs_unread_layman_reporting.md) — headless + layman email
 - [User non-technical](feedback_no_review_offers_user_not_technical.md) — never offer "review the diff" ([[feedback_user_device_context.md]])
@@ -32,7 +31,7 @@
 - [Headless resume is cwd-scoped](feedback_headless_resume_cwd_scoped.md) — claude -p --resume fails outside original cwd; deterministic paths fix it
 - [Worktrees mandatory for code edits](feedback_worktree_code_changes.md) — src/, scripts/, .github/, CLAUDE.md; launch bg watchers from MAIN repo cwd ([[feedback_background_watchers_worktree_cwd.md]])
 - [Parallel worktree sessions race](feedback_parallel_worktree_race.md) — re-pull + grep scripts/lib/ before writing; same-name worktree may be another LIVE session, `git worktree list` first ([[feedback_enterworktree_name_collision_live_session.md]])
-- [Dual repo data files](feedback_dual_repo_data_files.md) — private repo authoritative, fix BOTH; review-texts NOT a symlink ([[feedback_review_texts_not_symlink.md]]); NEVER rebuild-all-reviews.js locally ([[feedback_local_rebuild_stale_clone_hazard.md]])
+- [Dual repo data files](feedback_dual_repo_data_files.md) — private repo authoritative, fix BOTH; review-texts IS a symlink in main, absent in worktrees ([[feedback_review_texts_not_symlink.md]]); NEVER rebuild-all-reviews.js locally ([[feedback_local_rebuild_stale_clone_hazard.md]])
 - [Stray symlink crashes pipeline](feedback_stray_symlink_crashes_pipeline.md) — committed abs-path symlink dangles in CI; use listShowDirs()
 - [audit-review-contamination strict CI gate](feedback_audit_contamination_strict_mode.md) — strict A/B/C fail CI; B = false-pos wrongProduction
 - [Commit data repo edits IMMEDIATELY](feedback_data_repos_clobber_uncommitted.md) — rebase clobbers uncommitted; no reset-hard+rsync ([[feedback_reset_rsync_wipes_ci_fields.md]]); gh api PUT /contents/ if git broken ([[feedback_gh_api_emergency_commit.md]])

@@ -480,34 +480,6 @@
     "queuedAt": "2026-11-08T17:44:20.505Z"
   },
   {
-    "conditionKey": "pending-unrecoverable:harry-potter-and-the-cursed-child-one-part-west-end-2026",
-    "title": "1 review(s) for harry-potter-and-the-cursed-child-one-part-west-end-2026 stuck in _pending with no text and no byline",
-    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- thestage--unknown.json (thestage): no byline in page and no recoverable body https://www.thestage.co.uk/reviews/harry-potter-and-the-cursed-child-review-at-palace-theatre-london--new-cast-equals-the-original",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-08T17:52:39.029Z"
-  },
-  {
-    "conditionKey": "pending-unrecoverable:the-pianist-off-west-end-2026",
-    "title": "1 review(s) for the-pianist-off-west-end-2026 stuck in _pending with no text and no byline",
-    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- thestage--5e07c019.json (thestage): no byline in page and no recoverable body https://www.thestage.co.uk/reviews/the-pianist-review-park-theatre-london",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-08T17:52:44.261Z"
-  },
-  {
     "conditionKey": "land:land/bro-7135-board-closer",
     "title": "Landing blocked: unit-tests-node red on land/bro-7135-board-closer",
     "description": "land.yml did not land land/bro-7135-board-closer: the unit-tests-node gate went red at 862aa92fb9. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/42505059973",
@@ -872,5 +844,171 @@
       }
     ],
     "queuedAt": "2026-11-08T19:10:06.733Z"
+  },
+  {
+    "conditionKey": "land:land/bro-7145-audit",
+    "title": "Landing blocked: unit-tests-node red on land/bro-7145-audit",
+    "description": "land.yml did not land land/bro-7145-audit: the unit-tests-node gate went red at 352fd614f0. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/42516362985",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-7145-audit"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "352fd614f0c72ec243b1a0426ad159edf06f5b76"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42516362985"
+      }
+    ],
+    "queuedAt": "2026-11-08T20:02:08.509Z"
+  },
+  {
+    "conditionKey": "pending-unrecoverable:girls-off-west-end-2026",
+    "title": "1 review(s) for girls-off-west-end-2026 stuck in _pending with no text and no byline",
+    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- nbcny--48004f36.json (nbcny): fetch failed: All scraping methods failed https://www.nbcnewyork.com/entertainment/entertainment-news/adam-driver-whether-he-will-reprise-role-girls-revival/6569210/",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-08T20:10:13.650Z"
+  },
+  {
+    "conditionKey": "pending-unrecoverable:harry-potter-and-the-cursed-child-one-part-west-end-2026",
+    "title": "1 review(s) for harry-potter-and-the-cursed-child-one-part-west-end-2026 stuck in _pending with no text and no byline",
+    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- thestage--unknown.json (thestage): no byline in page and no recoverable body https://www.thestage.co.uk/reviews/harry-potter-and-the-cursed-child-review-at-palace-theatre-london--new-cast-equals-the-original",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-08T20:10:29.663Z"
+  },
+  {
+    "conditionKey": "pending-unrecoverable:the-pianist-off-west-end-2026",
+    "title": "1 review(s) for the-pianist-off-west-end-2026 stuck in _pending with no text and no byline",
+    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- thestage--5e07c019.json (thestage): no byline in page and no recoverable body https://www.thestage.co.uk/reviews/the-pianist-review-park-theatre-london",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-08T20:10:34.456Z"
+  },
+  {
+    "conditionKey": "land:land/bro-7131f-approved-fix-restore",
+    "title": "Landing blocked: unit-tests-node red on land/bro-7131f-approved-fix-restore",
+    "description": "land.yml did not land land/bro-7131f-approved-fix-restore: the unit-tests-node gate went red at c6e203b33e. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/42517419720",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-7131f-approved-fix-restore"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "c6e203b33e3c69358f8360c5a3993f7dd25d800a"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42517419720"
+      }
+    ],
+    "queuedAt": "2026-11-08T20:13:36.017Z"
+  },
+  {
+    "conditionKey": "land:land/bro-7139-board-dispatch",
+    "title": "Landing blocked: bash-integration red on land/bro-7139-board-dispatch",
+    "description": "land.yml did not land land/bro-7139-board-dispatch: the bash-integration gate went red at 5353b573d3. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/42517055150",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-7139-board-dispatch"
+      },
+      {
+        "name": "gate",
+        "value": "bash-integration"
+      },
+      {
+        "name": "tip",
+        "value": "5353b573d3f135cf9006502a7cf3db8836a7627c"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42517055150"
+      }
+    ],
+    "queuedAt": "2026-11-08T20:17:51.843Z"
+  },
+  {
+    "conditionKey": "land:land/job/linear-BRO-7146-mw886fzi",
+    "title": "Landing blocked: rebase red on land/job/linear-BRO-7146-mw886fzi",
+    "description": "land.yml did not land land/job/linear-BRO-7146-mw886fzi: the rebase gate went red at c335fb2c5d. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/job/linear-BRO-7146-mw886fzi @ c335fb2c5d (origin/land/job/linear-BRO-7146-mw886fzi) → origin/main @ 08ecdf342d REFUSED: rebase: branch would not rebase cleanly onto origin/main @ 08ecdf342d: Rebasing (1/2) error: could not apply bb486095aa4... BRO-7146: type announced OWE stubs at creation; fix plan types 26 untyped venue-page stubs hint: Resolve all conflicts manually, mark them as r Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/42517740985",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/job/linear-BRO-7146-mw886fzi"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "c335fb2c5decb491aa82c86cda898ded2f2b6b68"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42517740985"
+      }
+    ],
+    "queuedAt": "2026-11-08T20:23:19.732Z"
   }
 ]

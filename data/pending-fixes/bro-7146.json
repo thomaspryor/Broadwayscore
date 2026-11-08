@@ -1,0 +1,400 @@
+{
+  "issueNumber": "bro-7146",
+  "planId": "51405736-8cbe-4dbc-8a51-c9643d482fa3",
+  "status": "applied",
+  "createdAt": "2026-11-08T19:45:18.762Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7146: set type on 29 untyped venue-page stubs, confirmed from venue listing pages (fetchPage) or producer/TDF listings (part 1 of 2)",
+    "steps": [
+      "shows.json: speculations-off-west-end-2026.type",
+      "shows.json: big-man-little-man-off-west-end-2026.type",
+      "shows.json: boys-who-dance-off-west-end-2026.type",
+      "shows.json: jerker-off-west-end-2026.type",
+      "shows.json: wives-maids-off-west-end-2026.type",
+      "shows.json: the-black-monk-off-broadway-2027.type",
+      "shows.json: the-harmnf-off-broadway-2027.type",
+      "shows.json: skin-to-skin-triptych-of-an-american-epidemic-off-broadway-2027.type",
+      "shows.json: the-unraveling-off-broadway-2027.type",
+      "shows.json: an-audience-with-virginia-woolf-off-broadway-2027.type",
+      "shows.json: stories-to-tell-at-the-end-of-the-world-off-broadway-2027.type",
+      "shows.json: stripped-gertrude-or-aspargus-soup-in-august-off-broadway-2027.type",
+      "shows.json: ayla-a-new-musical-off-west-end-2026.type",
+      "shows.json: taken-the-unofficial-musical-off-west-end-2026.type",
+      "shows.json: monsters-a-killer-new-musical-comedy-off-west-end-2026.type",
+      "shows.json: in-pieces-2-off-west-end-2026.type",
+      "shows.json: the-great-soviet-bucket-off-broadway-2027.type",
+      "shows.json: shakespeare-unplugged-off-west-end-2026.type",
+      "shows.json: not-quite-my-type-off-west-end-2026.type",
+      "shows.json: its-unlikely-off-west-end-2026.type",
+      "shows.json: the-graddys-london-semi-finals-off-west-end-2026.type",
+      "shows.json: outrageous-what-the-frock-crystal-carrington-off-west-end-2026.type",
+      "shows.json: constanze-off-west-end-2026.type",
+      "shows.json: mortal-wounds-off-west-end-2026.type",
+      "shows.json: puppetopia-2027-off-broadway-2027.type"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "speculations-off-west-end-2026",
+        "field": "type",
+        "oldValue": null,
+        "newValue": "play",
+        "description": "shows.json: speculations-off-west-end-2026.type"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "big-man-little-man-off-west-end-2026",
+        "field": "type",
+        "oldValue": null,
+        "newValue": "play",
+        "description": "shows.json: big-man-little-man-off-west-end-2026.type"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "boys-who-dance-off-west-end-2026",
+        "field": "type",
+        "oldValue": null,
+        "newValue": "play",
+        "description": "shows.json: boys-who-dance-off-west-end-2026.type"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "jerker-off-west-end-2026",
+        "field": "type",
+        "oldValue": null,
+        "newValue": "play",
+        "description": "shows.json: jerker-off-west-end-2026.type"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "wives-maids-off-west-end-2026",
+        "field": "type",
+        "oldValue": null,
+        "newValue": "play",
+        "description": "shows.json: wives-maids-off-west-end-2026.type"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-black-monk-off-broadway-2027",
+        "field": "type",
+        "oldValue": null,
+        "newValue": "play",
+        "description": "shows.json: the-black-monk-off-broadway-2027.type"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-harmnf-off-broadway-2027",
+        "field": "type",
+        "oldValue": null,
+        "newValue": "play",
+        "description": "shows.json: the-harmnf-off-broadway-2027.type"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "skin-to-skin-triptych-of-an-american-epidemic-off-broadway-2027",
+        "field": "type",
+        "oldValue": null,
+        "newValue": "play",
+        "description": "shows.json: skin-to-skin-triptych-of-an-american-epidemic-off-broadway-2027.type"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-unraveling-off-broadway-2027",
+        "field": "type",
+        "oldValue": null,
+        "newValue": "play",
+        "description": "shows.json: the-unraveling-off-broadway-2027.type"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "an-audience-with-virginia-woolf-off-broadway-2027",
+        "field": "type",
+        "oldValue": null,
+        "newValue": "play",
+        "description": "shows.json: an-audience-with-virginia-woolf-off-broadway-2027.type"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "stories-to-tell-at-the-end-of-the-world-off-broadway-2027",
+        "field": "type",
+        "oldValue": null,
+        "newValue": "play",
+        "description": "shows.json: stories-to-tell-at-the-end-of-the-world-off-broadway-2027.type"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "stripped-gertrude-or-aspargus-soup-in-august-off-broadway-2027",
+        "field": "type",
+        "oldValue": null,
+        "newValue": "play",
+        "description": "shows.json: stripped-gertrude-or-aspargus-soup-in-august-off-broadway-2027.type"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "ayla-a-new-musical-off-west-end-2026",
+        "field": "type",
+        "oldValue": null,
+        "newValue": "musical",
+        "description": "shows.json: ayla-a-new-musical-off-west-end-2026.type"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "taken-the-unofficial-musical-off-west-end-2026",
+        "field": "type",
+        "oldValue": null,
+        "newValue": "musical",
+        "description": "shows.json: taken-the-unofficial-musical-off-west-end-2026.type"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "monsters-a-killer-new-musical-comedy-off-west-end-2026",
+        "field": "type",
+        "oldValue": null,
+        "newValue": "musical",
+        "description": "shows.json: monsters-a-killer-new-musical-comedy-off-west-end-2026.type"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "in-pieces-2-off-west-end-2026",
+        "field": "type",
+        "oldValue": null,
+        "newValue": "musical",
+        "description": "shows.json: in-pieces-2-off-west-end-2026.type"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-great-soviet-bucket-off-broadway-2027",
+        "field": "type",
+        "oldValue": null,
+        "newValue": "musical",
+        "description": "shows.json: the-great-soviet-bucket-off-broadway-2027.type"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "shakespeare-unplugged-off-west-end-2026",
+        "field": "type",
+        "oldValue": null,
+        "newValue": "special",
+        "description": "shows.json: shakespeare-unplugged-off-west-end-2026.type"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "not-quite-my-type-off-west-end-2026",
+        "field": "type",
+        "oldValue": null,
+        "newValue": "special",
+        "description": "shows.json: not-quite-my-type-off-west-end-2026.type"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "its-unlikely-off-west-end-2026",
+        "field": "type",
+        "oldValue": null,
+        "newValue": "special",
+        "description": "shows.json: its-unlikely-off-west-end-2026.type"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-graddys-london-semi-finals-off-west-end-2026",
+        "field": "type",
+        "oldValue": null,
+        "newValue": "special",
+        "description": "shows.json: the-graddys-london-semi-finals-off-west-end-2026.type"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "outrageous-what-the-frock-crystal-carrington-off-west-end-2026",
+        "field": "type",
+        "oldValue": null,
+        "newValue": "special",
+        "description": "shows.json: outrageous-what-the-frock-crystal-carrington-off-west-end-2026.type"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "constanze-off-west-end-2026",
+        "field": "type",
+        "oldValue": null,
+        "newValue": "special",
+        "description": "shows.json: constanze-off-west-end-2026.type"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "mortal-wounds-off-west-end-2026",
+        "field": "type",
+        "oldValue": null,
+        "newValue": "special",
+        "description": "shows.json: mortal-wounds-off-west-end-2026.type"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "puppetopia-2027-off-broadway-2027",
+        "field": "type",
+        "oldValue": null,
+        "newValue": "special",
+        "description": "shows.json: puppetopia-2027-off-broadway-2027.type"
+      }
+    ]
+  },
+  "executedAt": "2026-11-08T20:26:31.684Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type already \"play\", pins refreshed for speculations-off-west-end-2026",
+      "noop": true
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type already \"play\", pins refreshed for big-man-little-man-off-west-end-2026",
+      "noop": true
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for boys-who-dance-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type already \"play\", pins refreshed for jerker-off-west-end-2026",
+      "noop": true
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for wives-maids-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for the-black-monk-off-broadway-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for the-harmnf-off-broadway-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for skin-to-skin-triptych-of-an-american-epidemic-off-broadway-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for the-unraveling-off-broadway-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for an-audience-with-virginia-woolf-off-broadway-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for stories-to-tell-at-the-end-of-the-world-off-broadway-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for stripped-gertrude-or-aspargus-soup-in-august-off-broadway-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for ayla-a-new-musical-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for taken-the-unofficial-musical-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for monsters-a-killer-new-musical-comedy-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for in-pieces-2-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for the-great-soviet-bucket-off-broadway-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for shakespeare-unplugged-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for not-quite-my-type-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for its-unlikely-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for the-graddys-london-semi-finals-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for outrageous-what-the-frock-crystal-carrington-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for constanze-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for mortal-wounds-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for puppetopia-2027-off-broadway-2027"
+    }
+  ],
+  "executedIn": "ci"
+}
