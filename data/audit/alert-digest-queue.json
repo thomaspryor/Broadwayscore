@@ -54,5 +54,36 @@
     "tracked": "BRO-5526",
     "fields": [],
     "queuedAt": "2026-11-08T09:13:12.156Z"
+  },
+  {
+    "conditionKey": "land:land/job/linear-BRO-7116-mw7lvqfo",
+    "title": "Landing blocked: actionlint-install red on land/job/linear-BRO-7116-mw7lvqfo",
+    "description": "land.yml did not land land/job/linear-BRO-7116-mw7lvqfo: the actionlint-install gate went red at fe0ee59b6c. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/42466195713",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/job/linear-BRO-7116-mw7lvqfo"
+      },
+      {
+        "name": "gate",
+        "value": "actionlint-install"
+      },
+      {
+        "name": "tip",
+        "value": "fe0ee59b6c8c408e009bac4db6aece3150d77be1"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42466195713"
+      }
+    ],
+    "queuedAt": "2026-11-08T09:15:00.411Z"
   }
 ]
