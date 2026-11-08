@@ -3095,10 +3095,10 @@ function checkCiGreenRate(isCI, deps = {}) {
 function checkCiMidSetupCancels(deps = {}) {
   const NAME = 'Main: mid-setup cancels';
   if (!process.env.GH_TOKEN && !process.env.GITHUB_TOKEN) {
-    return [{ name: NAME, status: 'warn', message: 'Skipped — no GH_TOKEN available (local run)' }];
+    return [{ name: NAME, status: 'warn', message: 'Skipped — no GH_TOKEN available (local run)' }, headroomNoReading('no GH_TOKEN available (local run)')];
   }
   if (hasLowHeadroom()) {
-    return [{ name: NAME, status: 'warn', message: 'Skipped — low rate-limit headroom (~21 gh calls for a 20-run sample)' }];
+    return [{ name: NAME, status: 'warn', message: 'Skipped — low rate-limit headroom (~21 gh calls for a 20-run sample)' }, headroomNoReading('low rate-limit headroom')];
   }
   const exec = deps.exec || execFileSync;
   const script = path.join(__dirname, 'ci-health-check.sh');
@@ -3115,13 +3115,54 @@ function checkCiMidSetupCancels(deps = {}) {
   const summary = (stdout.match(/Mid-setup cancelled \(never validated\):\s+(\d+) \((\d+)%\)/) || []);
   const total = (stdout.match(/last (\d+) completed runs/) || [])[1];
   if (status === 0) {
-    return [{ name: NAME, status: 'pass', message: `${summary[2] ?? '?'}% of the last ${total ?? '?'} test.yml main runs cancelled mid-setup (threshold 30%)` }];
+    return [{ name: NAME, status: 'pass', message: `${summary[2] ?? '?'}% of the last ${total ?? '?'} test.yml main runs cancelled mid-setup (threshold 30%)` }, jobHeadroomRow(stdout, deps)];
   }
   if (status === 1) {
-    return [{ name: NAME, status: 'warn', message: `${summary[2] ?? '?'}% (${summary[1] ?? '?'} of ${total ?? '?'}) of the last test.yml main runs were cancelled before validating, above the 30% threshold. Check test.yml's per-sha concurrency block and run: node scripts/audit-workflow-concurrency.js` }];
+    return [{ name: NAME, status: 'warn', message: `${summary[2] ?? '?'}% (${summary[1] ?? '?'} of ${total ?? '?'}) of the last test.yml main runs were cancelled before validating, above the 30% threshold. Check test.yml's per-sha concurrency block and run: node scripts/audit-workflow-concurrency.js` }, jobHeadroomRow(stdout, deps)];
   }
   const detail = stderr.trim().split('\n')[0].slice(0, 120);
-  return [{ name: NAME, status: 'warn', message: `ci-health-check.sh failed (exit ${status}) — no reading: ${detail}` }];
+  return [{ name: NAME, status: 'warn', message: `ci-health-check.sh failed (exit ${status}) — no reading: ${detail}` },
+    headroomNoReading(`ci-health-check.sh failed (exit ${status})`)];
+}
+
+// The headroom row is present on EVERY path. A row missing from the snapshot reads as
+// "fixed" to check-health-row-absent.js, so an unmeasured day must be a warn row, never
+// an absent one (BRO-7102 stage 4 review).
+function headroomNoReading(why) {
+  return { name: JOB_HEADROOM_NAME, status: 'warn', message: `Skipped — ${why}; no reading` };
+}
+
+// --- Main: job time headroom (BRO-7102 stage 4) ---
+//
+// The class: a job's normal runtime creeps up to its `timeout-minutes`, runs are
+// killed at the limit and counted red with nothing broken. In the 30 days to
+// 2026-11-07 that was 74 of 79 cancelled main runs (test.yml Unit Tests, ~25 min
+// mean against a 30 min limit). This row reads the job durations ci-health-check.sh
+// already fetched (its JOB-DURATIONS: line, no extra API calls) and warns when any
+// test.yml job's p90 reaches 80% of its limit, while there is still room. ADVISORY
+// (CLAUDE.md §19): warn only. Limits come from this checkout's test.yml, so a local
+// run against an unlanded edit reads the edited limits.
+const JOB_HEADROOM_NAME = 'Main: job time headroom';
+function jobHeadroomRow(stdout, deps = {}) {
+  const NAME = JOB_HEADROOM_NAME;
+  const line = String(stdout || '').split('\n').find((l) => l.startsWith('JOB-DURATIONS: '));
+  let jobs;
+  try { jobs = JSON.parse(line.slice('JOB-DURATIONS: '.length)); } catch {
+    return { name: NAME, status: 'warn', message: 'ci-health-check.sh printed no JOB-DURATIONS line — no reading' };
+  }
+  const { readJobTimeouts, timeoutHeadroom } = require('./lib/cron-health');
+  let timeouts;
+  try { timeouts = deps.timeouts || readJobTimeouts('test.yml'); } catch (err) {
+    return { name: NAME, status: 'warn', message: `could not read test.yml timeouts — no reading: ${String(err && err.message).slice(0, 100)}` };
+  }
+  const rows = timeoutHeadroom(jobs, timeouts);
+  if (!rows.length) return { name: NAME, status: 'warn', message: `no test.yml job had 5+ timed runs in the sample (${jobs.length} jobs read) — no reading` };
+  const fmt = (r) => `${r.name} p90 ${r.p90Min.toFixed(0)} of ${r.timeoutMin} min (${Math.round(r.ratio * 100)}%, n=${r.n})`;
+  const tight = rows.filter((r) => r.tight);
+  if (tight.length) {
+    return { name: NAME, status: 'warn', message: `test.yml job(s) near their time limit: ${tight.map(fmt).join('; ')}. Runs killed at the limit count as red with nothing broken. Make the job faster or add a shard (as BRO-7113 did); do not just raise timeout-minutes.` };
+  }
+  return { name: NAME, status: 'pass', message: `every test.yml job's p90 is under 80% of its time limit (tightest: ${fmt(rows[0])})` };
 }
 
 // --- Auto-fix effectiveness (2026-08-10 incident) ---
@@ -6479,4 +6520,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { checkSync, reviewTextsSkipReason, evaluateOutletFeedHealth, checkScheduledFailureStreak, checkNeverRunWorkflowHealth, checkAPICredits, corpusAuditResults, generateApproveUrl, checkAuditFreshness, checkFreshness, freshnessValue, FRESHNESS_CHECKS, formatResultLine, buildExclusionSummaryHtml, providerSpendLedgerResult, hoursAgo, ghRunsQuery, sortRunsNewestFirst, firstRunCreatedAt, runCacheKey, RUN_CACHE_VERSION, diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, isGateWorkflowBroken, GATE_WORKFLOWS, summarizeRepeatFailures, effectiveUrgencyLevel, feedbackBacklogResults, obClosingBacklogResults, cloudMemoryDriftResults, tourAutomationResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, worktreeGcFreshnessResults, notionScheduleCouplingResults, cardVerifiabilityBacklogResults, coverageHolesResults, starBandDriftResults, earlyPublishDatesResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, isActionableResult, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkMainRedStreak, checkCiGreenRate, checkCiMidSetupCancels, checkSharedCheckoutShallow, computeCoreHealthResults, checkQuality, checkStuckPipelineItems, checkDataFreshnessGaps, dataFreshnessGapsResult, DATA_FRESHNESS_GAPS_CHECK, checkAutofixEffectiveness, checkAutofixCanary, checkAutofixThroughput, checkUntrackedPersistentRows, checkDigestInvariantFail, checkAlertRouterDeadman, checkCommercialModelDrift, checkCommercialPendingQueue, checkExemptCronLiveness, checkUncollectedStrands };
+module.exports = { checkSync, reviewTextsSkipReason, evaluateOutletFeedHealth, checkScheduledFailureStreak, checkNeverRunWorkflowHealth, checkAPICredits, corpusAuditResults, generateApproveUrl, checkAuditFreshness, checkFreshness, freshnessValue, FRESHNESS_CHECKS, formatResultLine, buildExclusionSummaryHtml, providerSpendLedgerResult, hoursAgo, ghRunsQuery, sortRunsNewestFirst, firstRunCreatedAt, runCacheKey, RUN_CACHE_VERSION, diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, isGateWorkflowBroken, GATE_WORKFLOWS, summarizeRepeatFailures, effectiveUrgencyLevel, feedbackBacklogResults, obClosingBacklogResults, cloudMemoryDriftResults, tourAutomationResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, worktreeGcFreshnessResults, notionScheduleCouplingResults, cardVerifiabilityBacklogResults, coverageHolesResults, starBandDriftResults, earlyPublishDatesResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, isActionableResult, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkMainRedStreak, checkCiGreenRate, checkCiMidSetupCancels, jobHeadroomRow, checkSharedCheckoutShallow, computeCoreHealthResults, checkQuality, checkStuckPipelineItems, checkDataFreshnessGaps, dataFreshnessGapsResult, DATA_FRESHNESS_GAPS_CHECK, checkAutofixEffectiveness, checkAutofixCanary, checkAutofixThroughput, checkUntrackedPersistentRows, checkDigestInvariantFail, checkAlertRouterDeadman, checkCommercialModelDrift, checkCommercialPendingQueue, checkExemptCronLiveness, checkUncollectedStrands };

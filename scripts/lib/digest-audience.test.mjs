@@ -93,6 +93,10 @@ test('BRO-3178: suffixed repeat-failure rows reach the internal digest bucket', 
   assert.deepEqual(split.visitors.errors, []);
 });
 
+test('BRO-7102: the "Main: job time headroom" row is internal', () => {
+  assert.equal(classifyHealthCheck('Main: job time headroom'), 'internal');
+});
+
 test('classifyHealthCheck accepts a row object', () => {
   assert.equal(classifyHealthCheck({ name: 'Main: red streak', message: 'x' }), 'internal');
   assert.equal(classifyHealthCheck({ message: 'nameless' }), 'visitors');
