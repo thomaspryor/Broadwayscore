@@ -252,6 +252,11 @@ const AUTO_FIX_PLAYBOOK = [
   { match: /^Improvement: root-cause share$/, urgency: 'this-week',
     ownerText: "The check that spots problems we keep fixing over and over has not run for two days, so repeat problems are not being turned into cause fixes. Nothing is needed from you.",
     workerInstruction: "Run `node scripts/recurrence-detector.js` (dry run) and check the \"Recurrence detector\" step in data-health-check.yml; the snapshot is data/audit/recurrence-classes.json (BRO-7103)." },
+  // BRO-7138: same shape as the root-cause share row above: pass carries the
+  // metric, warn only when the nightly recheck stops writing summaries.
+  { match: /^Improvement: done claims that held$/, urgency: 'this-week',
+    ownerText: "The nightly check that re-tests finished work has not run for two days, so fixes that quietly stopped working are not being caught. Nothing is needed from you.",
+    workerInstruction: "Run `node scripts/autonomous-acceptance-recheck.js --dry-run` and check the \"Acceptance recheck (shadow mode)\" step in data-health-check.yml; the ledger is data/audit/autonomous-recheck-ledger.jsonl (BRO-7138)." },
   { match: /^Headless dispatch: success rate$/, urgency: 'this-week', ledger: DISPATCH_LEDGER_NAME,
     ownerText: "Background work sessions are succeeding less than 80% of the time. Unfinished work is retried, so nothing is lost. Nothing is needed from you.",
     workerInstruction: "Run `node scripts/audit-headless-outcome-rate.js` for the per-task breakdown, then investigate the headless dispatch success rate (card #1714). Judge any fix by this rate over the window, never by one clean dispatch." },
@@ -1669,6 +1674,16 @@ function checkQuality() {
         return { name, status: 'warn', message: `Recurrence detector snapshot is ${formatAge(age)} old (>48h)`, hint: 'Check the "Recurrence detector" step in data-health-check.yml' };
       }
       return { name, status: 'pass', message: require('./lib/recurrence-classes.js').improvementLine(snap) };
+    }),
+
+    // BRO-7138: of the Done claims the nightly recheck could actually test,
+    // the share whose own check still passes (30 and 7 days). Checks that
+    // could not run on the recheck machine are counted apart, not as fails.
+    runCheck('Improvement: done claims that held', () => {
+      const name = 'Improvement: done claims that held';
+      const { entries } = require('./lib/autonomous-ledger.js').readEntries(path.join(AUDIT_DIR, 'autonomous-recheck-ledger.jsonl'));
+      const row = require('./lib/autonomous-recheck-core.js').doneClaimsHeldRow(entries);
+      return row.status === 'pass' ? { name, ...row } : { name, ...row, hint: 'Check the "Acceptance recheck (shadow mode)" step in data-health-check.yml' };
     }),
 
     runCheck('Revenue: affiliate health', () => {

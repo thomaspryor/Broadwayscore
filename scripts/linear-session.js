@@ -47,6 +47,7 @@ const linear = require('./lib/linear-client');
 const { parseArgs: parseCliArgs } = require('./lib/cli-args.js');
 const { createLinearIssue } = require('./lib/linear-issue-create');
 const lsr = require('./lib/linear-session-reporting');
+const chg = require('./lib/claim-holder-guard');
 const { checkHiddenOwnerQuestion } = require('./lib/report-owner-question-guard');
 const { classifyPauseReport, ADVISORY_MARKER: PAUSE_GUARD_MARKER } = require('./lib/pause-report-guard');
 const { checkLinearDoneTransition } = require('./lib/linear-done-gate');
@@ -63,7 +64,9 @@ const { sortedCommentBodies } = require('./lib/linear-dispatch.js');
 const { checkIssueStaleness, newestComments } = require('./lib/linear-staleness-check');
 
 const USAGE = `Usage:
-  node scripts/linear-session.js claim --issue=BRO-123 [--worker-model=sonnet|opus|codex]
+  node scripts/linear-session.js claim --issue=BRO-123 [--worker-model=sonnet|opus|codex] [--force="<reason ≥10 chars>"]
+    (claim on a card another live session holds is REFUSED, exit 8, naming the holder (BRO-7141); a holder idle 48h
+     counts as dead (linear-reclaim-abandoned.js rule) and is claimable; --force overrides when you know it is dead)
   node scripts/linear-session.js claim --title="..." --description="..." [--priority=2] [--project="Name"] [--new-anyway="<reason ≥10 chars>"]
     (a --title claim that repeats an open card is refused with "already open: BRO-N";
      claim that card instead, or pass --new-anyway with why this is different work)
@@ -166,6 +169,8 @@ async function cmdClaim(args) {
   });
 
   let result;
+  let reclaimed = false;
+  let takeoverNote = '';
   if (plan.action === 'create') {
     const projectId = args.project ? await resolveProjectId(args.project) : undefined;
     const priority = args.priority !== undefined ? Number(args.priority) : undefined;
@@ -235,13 +240,30 @@ async function cmdClaim(args) {
     const holder = lsr.latestHolderComment(full);
     const ref = lsr.claimSessionRef();
     const own = !!holder && lsr.isSessionSpecificRef(ref) && String(holder.body).includes(ref);
-    console.error(holder
-      ? `[linear-session] ${issue.identifier} is already "${plan.stateName}". Last holder${own ? ' (this session)' : ''}: [${holder.createdAt}] ${String(holder.body).slice(0, 200)}`
-      : `[linear-session] ${issue.identifier} is already "${plan.stateName}" and no session left a claim comment. If your parent did not claim it for you, another session may hold it: check before working.`);
+    // BRO-7141: another live session holds it -> refuse (exit 8), naming the holder. Nothing is posted.
+    const force = args.force;
+    if (force === true || (typeof force === 'string' && force.trim().length < 10)) {
+      throw new Error('--force needs a reason of at least 10 characters (why the holder is dead).');
+    }
+    const decision = chg.claimHolderDecision({ issue: full, selfRef: ref, force: typeof force === 'string' });
+    if (decision.action === 'refuse') {
+      console.error(`\n❌ ${chg.refusalMessage(issue.identifier, decision)}\n`);
+      process.exit(8);
+    }
+    if (decision.action === 'handoff' || decision.action === 'takeover') {
+      // This session now holds it: post our claim so the next claimer sees us, not the dead or parent claim.
+      takeoverNote = decision.action === 'takeover' && typeof force === 'string' ? `\nForced past ${decision.holder}'s claim: ${force.trim()}` : '';
+      console.error(`[linear-session] ${issue.identifier}: ${decision.action} (${decision.reason}); previous holder ${decision.holder}.`);
+      reclaimed = true;
+    } else {
+      console.error(holder
+        ? `[linear-session] ${issue.identifier} is already "${plan.stateName}". Last holder${own ? ' (this session)' : ''}: [${holder.createdAt}] ${String(holder.body).slice(0, 200)}`
+        : `[linear-session] ${issue.identifier} is already "${plan.stateName}" and no session left a claim comment. If your parent did not claim it for you, another session may hold it: check before working.`);
+    }
   }
   // BRO-5626: leave a trace on the card so the next claimer sees who holds it. Never fails the claim.
-  if (plan.action !== 'noop') try {
-    await linear.createComment(result.id, lsr.buildClaimComment({ sessionRef: lsr.claimSessionRef(), ts: new Date().toISOString(), workerModel }));
+  if (plan.action !== 'noop' || reclaimed) try {
+    await linear.createComment(result.id, lsr.buildClaimComment({ sessionRef: lsr.claimSessionRef(), ts: new Date().toISOString(), workerModel }) + takeoverNote);
   } catch (e) {
     console.error(`[linear-session] WARN could not post the claim comment: ${e.message}`);
   }

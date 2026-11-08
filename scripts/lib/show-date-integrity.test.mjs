@@ -82,3 +82,14 @@ test('suspiciousInheritedYear: a recent-import long-runner CAN warn (acceptable 
   // book-of-mormon-west-end-2024 opened 2013: idY recent + 11y gap + open → warns (noise tolerated).
   assert.equal(suspiciousInheritedYear({ id: 'the-book-of-mormon-west-end-2024', openingDate: '2013-03-21', status: 'open' }, NOW), true);
 });
+
+// BRO-7131: the 120-day warning tier (a moved/postponed run that kept its old previews date).
+import { createRequire as _cr } from 'node:module';
+const { longPreviewGap: _lpg } = _cr(import.meta.url)('./show-date-integrity.js');
+test('longPreviewGap warns on a 2024+ opening with >120 days of previews', () => {
+  assert.equal(_lpg({ previewsStartDate: '2026-04-15', openingDate: '2026-11-06' }), true); // tango shape, 205 days
+  assert.equal(_lpg({ previewsStartDate: '2026-09-01', openingDate: '2026-11-06' }), false); // 66 days, normal
+  assert.equal(_lpg({ previewsStartDate: '2019-01-01', openingDate: '2019-08-01' }), false); // pre-2024: out of scope
+  assert.equal(_lpg({ previewsStartDate: '2026-11-06', openingDate: '2026-11-06' }), false);
+  assert.equal(_lpg({ openingDate: '2026-11-06' }), false);
+});

@@ -704,6 +704,19 @@ const CODEX_PENALTIES = [
   [new RegExp(`\\blive (?:site|page|pages|scrape|fetch)\\b|\\bprivate (?:data|repo)\\b|${CODEX_REVIEW_TEXTS_RE.source}|core-data\\b`, 'i'), 3, 'private-or-live-data'],
   [/\bPhase \d\b|\bmulti-part\b|\bfollow-?ups?\b/i, 2, 'multi-phase'],
 ];
+// BRO-7141. Work that lands in the iOS app repo: an edit verb (or in/to/inside/into/within/for) before the repo name,
+// the repo name followed by a path or an app-source path, or the "app repo" phrases.
+const APP_REPO_NAME = '(?:thomaspryor\\/)?BroadwayScorecard-app';
+const APP_REPO_TARGET_RE = new RegExp(
+  // edit verb right before the repo, or a placement verb then in/into/inside/to the repo
+  `\\b(?:edit|change|update|patch|modify|mirror (?:it )?in|port (?:it )?to|make)\\s+(?:the\\s+)?${APP_REPO_NAME}\\b`
+  + `|\\b(?:put|add|implement|land|ship|build|write|apply|commit)\\b[^.\\n]{0,40}\\b(?:in|into|inside|to)\\s+(?:the\\s+)?${APP_REPO_NAME}\\b`
+  // the repo (or "the iOS app repo") as the subject that needs work
+  + `|\\b(?:${APP_REPO_NAME}|(?:the )?(?:iOS )?app repo)\\s+(?:needs?|must|should|requires?|has to)\\b`
+  // the repo followed by an app source path or file
+  + `|\\b${APP_REPO_NAME}[\\/\\s]+(?:components|screens|src|app|ios|Sources|Views|ViewModels)\\b[\\w\\/.-]*`
+  + `|\\b${APP_REPO_NAME}\\b[^.\\n]{0,60}\\.(?:swift|tsx?)\\b`
+  + `|\\b(?:in|to) the (?:iOS )?app repo\\b`);
 // Work the runner cannot finish however small the card (BRO-5384: 12 of 24 cards rejected on
 // 2026-10-13/15; BRO-3475 needed a workflow step, BRO-4299 land/ pushes, BRO-4427 and BRO-4855
 // hundreds of shipped reviews, BRO-5223 a data repair). The runner never lands
@@ -718,7 +731,9 @@ const CODEX_HARD_SKIPS = [
   ['waits-on-later-event', /^\s*RECHECK-AFTER:?\s*\d{4}-\d\d-\d\d|\bconfirm the next scheduled [\w.-]+ run\b|\bowner (?:presses|(?:must|needs to) (?:decide|approve|press|answer|settle)|settles (?:the|this|which))\b/im],
   // BRO-7133: 12 of 62 bounced cards were blocked outside the code, which Codex found only after two attempts:
   // the work is in another repo or ~/.claude, needs the owner's Mac or login, or waits on telemetry or recordings.
-  ['other-repo', /\bBroadwayScorecard-app\b|\btech-scorecard\b|\bthomaspryor\/(?!Broadwayscore\b|broadway-(?:review-texts|scorecard-data)\b)[\w.-]+|~\/\.claude\/|\bprivate hooks?\b|\b(?:in|to) the (?:iOS )?app repo\b/i],
+  // BRO-7141: the app repo only counts when the card's work is IN it (an edit/target cue), not when it merely names it
+  // ("Fix the API that BroadwayScorecard-app calls" is web work). tech-scorecard and ~/.claude stay plain mentions.
+  ['other-repo', new RegExp(`${APP_REPO_TARGET_RE.source}|\\btech-scorecard\\b|\\bthomaspryor\\/(?!Broadwayscore\\b|BroadwayScorecard-app\\b|broadway-(?:review-texts|scorecard-data)\\b)[\\w.-]+|~\\/\\.claude\\/|\\bprivate hooks?\\b`, 'i')],
   ['owner-device', /\bowner'?s (?:Mac|laptop|browser|device)\b|\bMac[- ]host\b|\bowner (?:must|needs? to|has to|should) (?:[\w']+ ){0,3}(?:enter|type|log ?in|sign in|re-?login|re-?authenticate)\b|\bowner'?s (?:password|2FA|one-time code)\b|\b(?:password|2FA|one-time code)\b[^.\n]{0,40}\bfrom the owner\b/i],
   ['missing-prerequisite', /\b(?:needs?|requires?|waits? (?:on|for)|until|once)\b[^.\n]{0,40}\b(?:telemetry|recordings?)\b[^.\n]{0,30}\b(?:exists?|lands?|landed|arrives?|arrived|captured|collected|accumulat(?:es|ed|e))\b|\bno (?:fleet |structured |real )?(?:telemetry|recordings?) (?:exists?|yet|available)\b|\b(?:telemetry|recordings?) (?:do(?:es)?n[o']?t|do(?:es)? not) exist\b|\bprivate recordings archive\b/i],
   ['corpus-wide-data', /\bcorpus[- ]wide\b|\bbulk[- ](?:edit|fix|update|rewrite|repair|rescore)\b|(?<![\d,])(?!(?:19|20)\d\d\b)\d[\d,]{2,}\s+(?:shipped\s+|existing\s+|affected\s+|scored\s+)?(?:reviews|shows|files|rows|records)\b/i],
@@ -742,6 +757,20 @@ const CODEX_DIRECT_PRIVATE_RE = /\bbroadway-(?:review-texts|scorecard-data)\b/i;
 const CODEX_OK_RE = /^[\s>*_#-]*CODEX-OK\b/m;
 const MONTHS = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
 const DEFER_DATE_RE = /\b(?:not before|no earlier than|until|on or after|after|defer(?:red)? (?:to|until)|wait (?:until|for))\b:?\s+(?:(\d{4}-\d\d-\d\d)(?!\d)|((?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\.? \d{1,2})(?:st|nd|rd|th)?(?:,? (\d{4}))?\b)/ig;
+// BRO-7141. Triggers that are a deferral on their own ("not before", "defer until", "wait for", "on or after",
+// "RECHECK-AFTER:"). A bare "until"/"after" needs a deferring word in the same sentence: "Cache entries are valid
+// until 2026-12-01" is a fact about the code, not a wait.
+const STRONG_DEFER_RE = /^(?:not before|no earlier than|on or after|defer|wait)/i;
+const DEFER_CUE_RE = /\b(?:defer\w*|wait\w*|freeze\w*|frozen|hold(?:s|ing)? off|postpone\w*|paused?|blocked|do not|don'?t|change nothing|no (?:edits?|changes?|work)|not yet|only after|until further|resume|revisit|retry|re-?run|come back|check back)\b/i;
+// A bare "after <date>" also defers when the sentence is an instruction to do something then ("Run the backfill after Nov 20").
+const DO_AFTER_RE = /\b(?:run|start|ship|merge|enable|launch|pull|rescore|rebuild|deploy)\b/i;
+function isDeferringMatch(text, m) {
+  const before = text.slice(Math.max(0, m.index - 12), m.index);
+  if (STRONG_DEFER_RE.test(m[0]) || /(?:on\/|recheck-)$/i.test(before)) return true;
+  const sentenceStart = Math.max(text.lastIndexOf('. ', m.index), text.lastIndexOf('\n', m.index), text.lastIndexOf('; ', m.index));
+  const sentence = text.slice(sentenceStart + 1, m.index + m[0].length);
+  return DEFER_CUE_RE.test(sentence) || (/^after\b/i.test(m[0]) && DO_AFTER_RE.test(sentence));
+}
 const HALF_YEAR_MS = 183 * 24 * 3600_000;
 /**
  * BRO-7133. The first date the text says to wait for ("until 2026-11-09", "not before Nov 13",
@@ -761,7 +790,9 @@ function futureDeferral(text, nowMs = Date.now()) {
       if (!m[3] && ms - nowMs > HALF_YEAR_MS) ms = Date.UTC(year - 1, mi, Number(day));
       else if (!m[3] && nowMs - ms > HALF_YEAR_MS) ms = Date.UTC(year + 1, mi, Number(day));
     }
-    if (Number.isFinite(ms) && ms > nowMs) return { ms, text: m[0], iso: new Date(ms).toISOString().slice(0, 10) };
+    // Feb 30 / Apr 31 roll over in Date.UTC (to Mar 2 / May 1): not a real date, so no wait.
+    if (!m[1] && Number.isFinite(ms) && new Date(ms).getUTCDate() !== Number(m[2].replace('.', '').split(' ')[1])) continue;
+    if (Number.isFinite(ms) && ms > nowMs && isDeferringMatch(text, m)) return { ms, text: m[0], iso: new Date(ms).toISOString().slice(0, 10) };
   }
   return null;
 }

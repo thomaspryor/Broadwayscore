@@ -60,6 +60,7 @@ const { selectRecheckTargets, summarize, decideAutoClose, describeResult, should
 // the frozen Notion mirror's leg (mirror froze 2026-08-20, CLAUDE.md §6).
 const { closeCardAfterPass } = require('./lib/recheck-autoclose.js');
 const { decideHandoff, handoffCard } = require('./lib/recheck-handoff.js');
+const { routeMode, buildRouteBatch, fileRouteBatch } = require('./lib/recheck-route.js');
 const { fetchLinearRecheckCandidates, fetchRecentlyCompletedLinearCandidates } = require('./lib/linear-recheck-source.js');
 
 const REPO = path.join(__dirname, '..');
@@ -103,6 +104,7 @@ Usage:
   node scripts/autonomous-acceptance-recheck.js [--window-hours 24] [--limit 10] [--time-budget-min 20]
   node scripts/autonomous-acceptance-recheck.js --dry-run   plan only — no checks run, no ledger write
   node scripts/autonomous-acceptance-recheck.js --autoclose close open stamped cards whose real test passed (also RECHECK_AUTOCLOSE=true; RECHECK_AUTOCLOSE_DISABLED=true turns it off)
+  node scripts/autonomous-acceptance-recheck.js --route-dry-run  print the batch card the LAST run's real failures route to (BRO-7138); no writes
   node scripts/autonomous-acceptance-recheck.js --backlog   raise the card cap to ${MAX_CARDS_BACKLOG} for a one-off sweep (use a larger --time-budget-min)
   node scripts/autonomous-acceptance-recheck.js --help
 
@@ -187,6 +189,47 @@ function enforcementState(cfg, entries) {
   };
 }
 
+// BRO-7138 part 3: tonight's real failures (not env, not handed off, not
+// routed before) go to ONE worker card. Shadow until RECHECK_ROUTE_FROM: the
+// ledger row says what it would have filed. Never throws: routing is a side
+// channel and must not cost the night's summary row.
+async function routeRealFailures({ runId, results, handedOff, sha = null, env = process.env, now = Date.now(), file = fileRouteBatch } = {}) {
+  try {
+    const mode = routeMode({ env, now });
+    if (mode.mode === 'off') { console.error('[recheck] routing off (RECHECK_ROUTE=off)'); return null; }
+    // Stamp the commit (rows with a sha key keep their write-time env verdict,
+    // check-env-cause.js) and redact emails before any output reaches a card.
+    const rows = (results || []).map((r) => ({ ...r, sha, detail: r.detail ? redactEmails(String(r.detail)) : r.detail, note: r.note ? redactEmails(String(r.note)) : r.note }));
+    const batch = buildRouteBatch({ rows, handedOff, sha, ledgerEntries: ledger.readEntries(RECHECK_LEDGER_PATH).entries || [], now });
+    if (!batch.title) return null;
+    const cardIds = batch.cards.map((c) => c.cardId);
+    let out = { filed: false, identifier: null, error: null };
+    if (mode.mode === 'live') out = await file({ title: batch.title, body: batch.body });
+    ledger.appendEntry({ event: 'recheck-route', runId, mode: mode.mode, filed: out.filed, ...(out.maybeFiled ? { maybeFiled: true } : {}), identifier: out.identifier, cardIds, overflow: batch.overflow, skipped: batch.skipped, note: mode.mode === 'shadow' ? `would file "${batch.title}" (${mode.why})` : out.filed ? `filed ${out.identifier}` : `route refused: ${out.error}` }, RECHECK_LEDGER_PATH);
+    console.error(`[recheck] route (${mode.mode}): ${cardIds.length} card(s)${out.identifier ? ` -> ${out.identifier}` : ''}${out.error ? ` refused: ${out.error}` : ''}`);
+    return { mode: mode.mode, ...out, cardIds };
+  } catch (err) {
+    console.error(`[recheck] route skipped: ${String(err && err.message || err).slice(0, 200)}`);
+    return null;
+  }
+}
+
+function printRouteDryRun() {
+  const entries = ledger.readEntries(RECHECK_LEDGER_PATH).entries || [];
+  const lastRun = [...entries].reverse().find((e) => e && e.event === 'recheck' && e.runId);
+  if (!lastRun) { console.log('No recheck rows in the ledger yet.'); return; }
+  const rows = entries.filter((e) => e && e.event === 'recheck' && e.runId === lastRun.runId);
+  const handedOff = entries.filter((e) => e && e.event === 'recheck-handoff' && e.runId === lastRun.runId && e.handedOff).map((e) => e.cardId);
+  const before = entries.filter((e) => e && e.ts < (rows[0] && rows[0].ts || ''));
+  const mode = routeMode();
+  const sha = (rows.find((r) => r.sha) || {}).sha || null;
+  const batch = buildRouteBatch({ rows, handedOff, sha, ledgerEntries: before });
+  console.log(`Run ${lastRun.runId}: ${rows.length} rechecked; mode tonight: ${mode.mode} (${mode.why})`);
+  console.log(`Not routed: ${batch.skipped.env} could not run here, ${batch.skipped.handedOff} handed off, ${batch.skipped.routed} routed before`);
+  if (!batch.title) { console.log('Nothing to route.'); return; }
+  console.log(`\nTITLE: ${batch.title}\n\n${batch.body}`);
+}
+
 async function main(argv = process.argv.slice(2)) {
   if (hasHelpFlag(argv)) { console.log(USAGE); return; }
   // Kill switch (Codex ship-check finding, task #695): same pattern as
@@ -199,6 +242,7 @@ async function main(argv = process.argv.slice(2)) {
     return;
   }
   const args = parseArgs(argv);
+  if (args['route-dry-run']) { printRouteDryRun(); return; }
   const dryRun = !!args['dry-run'];
   const windowHours = Number(args['window-hours']) || DEFAULT_WINDOW_HOURS;
   // RECHECK_AUTOCLOSE_DISABLED (repo variable) is the off switch, like ACCEPTANCE_RECHECK_KILL_SWITCH:
@@ -444,6 +488,11 @@ async function main(argv = process.argv.slice(2)) {
         detail: r.detail ? redactEmails(String(r.detail).slice(0, 300)) : null,
         note: `${r.skip ? `skipped: ${r.skip}` : r.status}${r.detail ? `: ${redactEmails(String(r.detail).slice(0, 300))}` : ''}`,
         verifyCmd: t.verifyCmd || null,
+        // BRO-7138: the fresh-main commit this ran on, so a routed failure names it.
+        sha: (checkout && checkout.sha) || null,
+        // BRO-7138: set when the check failed on something this machine
+        // withholds by design (check-env-cause.js); status is then unverifiable.
+        ...(r.envCause ? { envCause: r.envCause } : {}),
         shadow: true,
       }, RECHECK_LEDGER_PATH);
       console.error(`[recheck] ${describeResult(r)}`);
@@ -480,12 +529,15 @@ async function main(argv = process.argv.slice(2)) {
     if (checkout) removeCheckout(checkout);
   }
 
+  await routeRealFailures({ runId, results, handedOff, sha: (checkout && checkout.sha) || null });
+
   const counts = summarize(results, { noCriteria: dropped.length });
+  const couldNotRun = results.filter((x) => !x.skip && x.envCause).length;
   const closeNote = autoclose ? `; auto-close: ${closed.length} closed, ${keptOpen.length} passed but stayed open` : '';
-  ledger.appendEntry({ event: 'recheck-summary', runId, counts, autoclose: autoclose ? { closed, keptOpen } : null, handedOff, note: `${counts.pass} still work, ${counts.fail} do not, ${counts.unverifiable} not machine-verifiable, ${counts.skipped} skipped, ${counts.noCriteria} had no criteria to check${closeNote}${handedOff.length ? `; ${handedOff.length} handed to a worker` : ''}` }, RECHECK_LEDGER_PATH);
+  ledger.appendEntry({ event: 'recheck-summary', runId, counts, autoclose: autoclose ? { closed, keptOpen } : null, handedOff, note: `${counts.pass} still work, ${counts.fail} do not, ${counts.unverifiable} not machine-verifiable (${couldNotRun} of them could not run on this machine), ${counts.skipped} skipped, ${counts.noCriteria} had no criteria to check${closeNote}${handedOff.length ? `; ${handedOff.length} handed to a worker` : ''}` }, RECHECK_LEDGER_PATH);
   console.error(`[recheck] done: ${JSON.stringify(counts)}${autoclose ? ` autoclose=${JSON.stringify({ closed, keptOpen })}` : ''}`);
 }
 
 if (require.main === module) main().catch((err) => { console.error(err); process.exitCode = 1; });
 
-module.exports = { main, USAGE, parseArgs, loadSharedTaskState, runVerify, makeFreshCheckout, removeCheckout, enforcementState };
+module.exports = { main, routeRealFailures, USAGE, parseArgs, loadSharedTaskState, runVerify, makeFreshCheckout, removeCheckout, enforcementState };

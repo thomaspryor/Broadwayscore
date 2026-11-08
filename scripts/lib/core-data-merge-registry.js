@@ -471,6 +471,14 @@ const CORE_DATA_MERGE_REGISTRY = [
     verifiedBy: '2026-10-16 (BRO-4861): sole writer scripts/audit-coverage-holes.js --counts, invoked only by data-health-check.yml\'s "Coverage holes on current shows" step and committed by its "Commit provider spend ledger (apiFallbackSafe)" step. Counts only (no file names or text), regenerated each run — nothing to union.',
   },
   {
+    file: 'audit/abandoned-review-rescue.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'data-health-check',
+    verifiedBy: '2026-11-08 (BRO-7131): sole writer scripts/rescue-abandoned-reviews.js --apply, invoked only by data-health-check.yml\'s "Rescue abandoned reviews on recent shows" step and committed by its "Commit provider spend ledger (apiFallbackSafe)" step. Ids, file names and URLs only.',
+  },
+  {
     file: 'audit/star-band-drift.json',
     surface: 'public-repo',
     status: 'single-writer',

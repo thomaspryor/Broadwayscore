@@ -92,6 +92,9 @@ function _shingles(words, n) {
   return out;
 }
 
+// Longest stored body still treated as a teaser (a standfirst or meta description).
+const TEASER_MAX_WORDS = 60;
+
 /**
  * BRO-4431: true when `incomingText` is a longer copy of the SAME article as
  * the file's stored body, and that stored body is not a complete one. The
@@ -128,6 +131,17 @@ function isSameArticleBodyUpgrade(existing, incomingText, opts = {}) {
   if (next.length < before.length + 200 || next.length < before.length * 1.25) return false;
   const oldWords = _words(before);
   const newWords = _words(next);
+  // BRO-7131: a teaser-sized stored body (a fetcher that got only the page
+  // shell keeps the meta description / standfirst, which sits outside the
+  // article body, so neither the lede nor the shingle test below can ever
+  // find it) is replaced by a fetch of the SAME url. Without this, one
+  // shell fetch blocked every later full-text recovery of that review
+  // (Bachtrack Medea: a 35-word standfirst refused the full article).
+  // The caller must have proved the url is the same article (opts.sameUrl);
+  // the writer's tier check still requires the incoming body to classify
+  // better than the stored one.
+  if (opts.sameUrl === true && !splitParent && !multiShowWhole
+      && oldWords.length <= TEASER_MAX_WORDS && newWords.length >= oldWords.length * 4) return true;
   // The stored stub's opening (a lede captured before a paywall/sign-up
   // wall) found in the incoming text is the same article.
   if (oldWords.length >= 15) {
@@ -145,4 +159,4 @@ function isSameArticleBodyUpgrade(existing, incomingText, opts = {}) {
   return shared / oldShingles.size >= (multiShowWhole ? 0.8 : 0.5);
 }
 
-module.exports = { findStaleMergeFields, findStaleFieldsAfterUpdate, isPreExistingContentBad, isSameArticleBodyUpgrade };
+module.exports = { findStaleMergeFields, findStaleFieldsAfterUpdate, isPreExistingContentBad, isSameArticleBodyUpgrade, TEASER_MAX_WORDS };

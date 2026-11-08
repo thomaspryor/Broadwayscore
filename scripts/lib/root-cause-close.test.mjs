@@ -12,6 +12,7 @@ const FULL = [
   'CLASS-GUARD: scripts/lib/fixture-dates.test.mjs (fails on any absolute date in fixtures)',
   'RED-THEN-GREEN: with the fix reverted the guard failed on 3 fixtures; with it, passed',
   'COUSINS: grepped tests/unit for 2026- literals, found 2 more, fixed both',
+  'EFFECT: stale-fixture failures on main went from 3 a week to 0 in the 7 days after landing',
 ].join('\n');
 
 test('fix cards are told apart from new work by title', () => {
@@ -27,7 +28,7 @@ test('fix cards are told apart from new work by title', () => {
 test('the newest value of each field wins; NO-ROOT-CAUSE is a spot fix', () => {
   const p = rcc.parseRootCauseBlock(['ROOT-CAUSE: old reason here', 'ROOT-CAUSE: newer reason here']);
   assert.equal(p.fields['ROOT-CAUSE'], 'newer reason here');
-  const r = rcc.checkRootCauseClose({ title: 'Poller failed', texts: ['NO-ROOT-CAUSE: one-off upstream outage, nothing to guard'] });
+  const r = rcc.checkRootCauseClose({ title: 'Poller failed', texts: ['NO-ROOT-CAUSE: one-off upstream outage, nothing to guard', 'NO-EFFECT-CHECK: the outage ended upstream, nothing of ours to measure'] });
   assert.deepEqual([r.applies, r.ok, r.kind], [true, true, 'spot']);
   const short = rcc.checkRootCauseClose({ title: 'Poller failed', texts: ['NO-ROOT-CAUSE: n/a'] });
   assert.equal(short.ok, false);
@@ -184,7 +185,7 @@ test('PREVENTION aliases CLASS-GUARD and its ; cousins: tail fills COUSINS', () 
   assert.equal(rcc.parseRootCauseBlock(['**ROOT-CAUSE**: the clone was shallow here']).fields['ROOT-CAUSE'], 'the clone was shallow here');
   // A PREVENTION-only close still lacks ROOT-CAUSE and RED-THEN-GREEN.
   const r = rcc.checkRootCauseClose({ title: 'Stale copy bug', texts: ['PREVENTION: scripts/lib/a.test.mjs ; cousins: looked in scripts/lib, none'] });
-  assert.deepEqual(r.missing, ['ROOT-CAUSE', 'RED-THEN-GREEN']);
+  assert.deepEqual(r.missing, ['ROOT-CAUSE', 'RED-THEN-GREEN', 'EFFECT']);
 });
 
 test('a path named only in the cousins tail never counts as the guard', () => {
@@ -195,7 +196,7 @@ test('a path named only in the cousins tail never counts as the guard', () => {
   ];
   const r = rcc.checkRootCauseClose({ title: 'Stale copy bug', texts, landedFiles: ['scripts/setup-local-data.sh'] });
   assert.equal(r.ok, false);
-  assert.deepEqual(r.missing, ['CLASS-GUARD']);
+  assert.deepEqual(r.missing, ['CLASS-GUARD', 'EFFECT']);
   assert.match(r.notes.join(), /names no file path/);
   // Same for an explicit CLASS-GUARD line carrying the tail.
   const g = rcc.parseRootCauseBlock(['CLASS-GUARD: a unit test ; cousins: scripts/x.js']);
@@ -218,6 +219,7 @@ test('an explicit CLASS-GUARD or COUSINS line beats PREVENTION in either order',
     'ROOT-CAUSE: the fixture hardcoded a date that aged past the TTL',
     'PREVENTION: scripts/lib/fixture-dates.test.mjs fails on absolute dates ; cousins: grepped tests/unit, fixed 2',
     'RED-THEN-GREEN: failed with the fix reverted, passed with it',
+    'EFFECT: 0 of 12 fixtures stale on main after landing (12 of 12 before)',
   ] });
   assert.deepEqual([full.ok, full.kind], [true, 'root-cause']);
 });
@@ -274,7 +276,7 @@ test('every close-format instruction names the fields the check reads', async ()
     'recurrence root-card template': fs.readFileSync(`${root}scripts/recurrence-detector.js`, 'utf8').split('## What to do')[1]?.split('RECHECK-AFTER date')[0] || '',
   };
   for (const [name, text] of Object.entries(sources)) {
-    for (const field of ['ROOT-CAUSE:', 'RED-THEN-GREEN:', 'NO-ROOT-CAUSE:']) assert.ok(text.includes(field), `${name} must name ${field}`);
+    for (const field of ['ROOT-CAUSE:', 'RED-THEN-GREEN:', 'NO-ROOT-CAUSE:', 'EFFECT:', 'NO-EFFECT-CHECK:']) assert.ok(text.includes(field), `${name} must name ${field}`);
     assert.ok(/CLASS-GUARD:|PREVENTION:/.test(text), `${name} must name CLASS-GUARD: or PREVENTION:`);
     assert.ok(/COUSINS:|cousins:/.test(text), `${name} must name COUSINS: or a ; cousins: tail`);
   }
@@ -316,4 +318,34 @@ test('linear-session report --status=done also repeats the advisory as the last 
   const full = run(`PR-EVIDENCE: merged deployed checked (https://github.com/o/r/commit/abc1234)\n${FULL}`);
   assert.match(full.stderr, /UPDATE_ISSUE_CALLED/, full.stderr);
   assert.doesNotMatch(full.stderr, /ROOT-CAUSE CHECK/);
+});
+
+// BRO-7138: done claims that never had their effect. A fix close must say what
+// was measured on real data after landing (or NO-EFFECT-CHECK: <reason>).
+test('EFFECT: required on fix closes, spot fixes included; a measurement names a number', () => {
+  const noEffect = FULL.split('\n').filter((l) => !l.startsWith('EFFECT:')).join('\n');
+  const r = rcc.checkRootCauseClose({ title: 'Fixture date bug', texts: [noEffect] });
+  // The root cause WAS fixed: the digest share keeps counting it as root-cause.
+  assert.deepEqual([r.ok, r.kind, r.missing], [false, 'root-cause', ['EFFECT']]);
+  assert.match(rcc.rootCauseCloseMessage('BRO-1', r, false), /does not show the fix had its effect on real data/);
+  assert.match(rcc.rootCauseCloseMessage('BRO-1', r, false), /dry run over real past inputs and hit rate/);
+  const vague = rcc.checkRootCauseClose({ title: 'Fixture date bug', texts: [noEffect, 'EFFECT: works now, checked it'] });
+  assert.deepEqual(vague.missing, ['EFFECT']);
+  assert.match(vague.notes.join(), /before and after \(numbers\)/);
+  const optOut = rcc.checkRootCauseClose({ title: 'Fixture date bug', texts: [noEffect, 'NO-EFFECT-CHECK: the effect shows only at the next opening night'] });
+  assert.equal(optOut.ok, true);
+  const spot = rcc.checkRootCauseClose({ title: 'Poller failed', texts: ['NO-ROOT-CAUSE: one-off upstream outage, nothing to guard'] });
+  assert.deepEqual([spot.ok, spot.kind, spot.missing], [false, 'spot', ['EFFECT']]);
+  assert.equal(rcc.checkRootCauseClose({ title: 'Add a grosses page', texts: [] }).applies, false);
+});
+
+test('EFFECT-only gaps block on their own later date, with their own notice (BRO-7138 review)', () => {
+  const noEffect = FULL.split('\n').filter((l) => !l.startsWith('EFFECT:')).join('\n');
+  const r = rcc.checkRootCauseClose({ title: 'Fixture date bug', texts: [noEffect] });
+  const rootDay = Date.parse('2026-12-23T00:00:00Z');
+  assert.equal(rcc.rootCauseCloseBlocking(rootDay, {}, r), false, 'EFFECT alone must not block on the ROOT-CAUSE date');
+  assert.equal(rcc.rootCauseCloseBlocking(Date.parse(`${rcc.EFFECT_CLOSE_BLOCKING_FROM}T00:00:00Z`), {}, r), true);
+  assert.match(rcc.rootCauseCloseMessage('BRO-1', r, false), new RegExp(`blocking from ${rcc.EFFECT_CLOSE_BLOCKING_FROM}`));
+  const bare = rcc.checkRootCauseClose({ title: 'Fixture date bug', texts: ['nothing'] });
+  assert.equal(rcc.rootCauseCloseBlocking(rootDay, {}, bare), true, 'missing ROOT-CAUSE still blocks on its date');
 });

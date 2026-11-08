@@ -12,9 +12,11 @@
  *
  * --alert (data-health-check.yml, daily): for shows opened within --recent-days, route the rows that need a person
  * (B: a review rejected although its verification says review; F: a published score outside the critic's band that
- * no re-score is queued for) to the owner digest, keyed per show so each show's line clears on its own. A, C, D and
- * E are counted in the step summary only: their remedies are automatic (the hourly gap audit's ingestion, the nightly
- * scorer, the rebuild's runtime block, the enrich-reviews star capture) or need a URL nobody has yet.
+ * no re-score is queued for) to the owner digest, keyed per show so each show's line clears on its own. C, D and E
+ * are counted in the step summary only: their remedies are automatic (the nightly scorer, the rebuild's runtime block,
+ * the enrich-reviews star capture) or need a URL nobody has yet. A rows (fetch abandoned) do NOT heal on their own:
+ * nothing re-fetches an abandoned file. scripts/rescue-abandoned-reviews.js (BRO-7131) retries recent tier 3+ A rows
+ * whose URL names the show and escalates them to a worker card; audit-t1-silent-gaps.js covers tier 1-2.
  *
  * Decisions ledger (BRO-4849): data/audit/coverage-holes-decisions.json records a person's verdict on a row (a B file
  * that really is a round-up, an F rating that was misread and a fix plan is in flight). A row with a live decision is
