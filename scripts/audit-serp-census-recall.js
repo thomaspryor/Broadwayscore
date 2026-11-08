@@ -218,7 +218,10 @@ function pickShows(shows, opts = {}) {
 async function runArm(show, showInfo, { query, dateRange, page, geo }) {
   const urls = new Set();
   try {
-    const results = await serpQuery(query, { dateRange, preferSpeed: false, page, geo }) || [];
+    const results = await serpQuery(query, { dateRange, preferSpeed: false, page, geo });
+    // BRO-7162 F14: null = every provider unavailable, not an honest empty page. Counting it ok:true
+    // made an outage read as zero recall.
+    if (results === null) return { urls, raw: 0, ok: false, error: 'serp-provider-unavailable' };
     for (const sr of results) {
       const accepted = acceptSerpCensusResult(sr, { show, showInfo });
       if (accepted) urls.add(accepted);
