@@ -1359,5 +1359,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-08T23:48:26.311Z"
+  },
+  {
+    "conditionKey": "land:land/flaky-rescue-1108",
+    "title": "Landing blocked: rebase red on land/flaky-rescue-1108",
+    "description": "land.yml did not land land/flaky-rescue-1108: the rebase gate went red at a584c91605. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/42537004151",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/flaky-rescue-1108"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "a584c916058ecc241e2d305d8ed30e37b64426c3"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42537004151"
+      }
+    ],
+    "queuedAt": "2026-11-08T23:52:35.228Z"
   }
 ]
