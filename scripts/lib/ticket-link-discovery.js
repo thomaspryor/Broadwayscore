@@ -123,6 +123,33 @@ const REGIONAL_VENUE_SITES = [
   { host: 'lyceum.org.uk', venue: 'royal lyceum' },
   { host: 'royalexchange.co.uk', venue: 'royal exchange' },
   { host: 'cft.org.uk', venue: 'chichester festival' },
+  // BRO-5455 (2nd pass): the venues behind the remaining high-severity
+  // missing_tickets rows in the freshness report (UK regional + US regional).
+  { host: 'pitlochryfestivaltheatre.com', venue: 'pitlochry festival' },
+  { host: 'theatreroyalbath.org.uk', venue: 'theatre royal bath' },
+  { host: 'oran-mor.co.uk', venue: 'oran mor' },
+  { host: 'citz.co.uk', venue: 'citizens theatre' },
+  { host: 'sheffieldtheatres.co.uk', venue: 'crucible' },
+  { host: 'bristololdvic.org.uk', venue: 'bristol old vic' },
+  { host: 'leedsplayhouse.org.uk', venue: 'leeds playhouse' },
+  { host: 'octagonbolton.co.uk', venue: 'octagon' },
+  { host: 'homemcr.org', venue: 'home' },
+  { host: 'sjt.uk.com', venue: 'stephen joseph' },
+  { host: 'yorktheatreroyal.co.uk', venue: 'york theatre royal' },
+  { host: 'tron.co.uk', venue: 'tron theatre' },
+  { host: 'hulltruck.co.uk', venue: 'hull truck' },
+  { host: 'hopemilltheatre.co.uk', venue: 'hope mill' },
+  { host: 'everymanplayhouse.com', venue: 'liverpool everyman' },
+  { host: 'writerstheatre.org', venue: 'writers theatre' },
+  { host: 'theaterwit.org', venue: 'theater wit' },
+  { host: 'raventheatre.com', venue: 'raven theatre' },
+  { host: 'redtwist.org', venue: 'redtwist' },
+  { host: 'lookingglasstheatre.org', venue: 'lookingglass' },
+  { host: 'studiotheatre.org', venue: 'studio theatre' },
+  { host: 'signature-theatre.org', venue: 'signature theatre' },
+  { host: 'olneytheatre.org', venue: 'olney theatre' },
+  { host: 'keegantheatre.com', venue: 'keegan theatre' },
+  { host: 'odysseytheatre.com', venue: 'odyssey theatre' },
 ];
 
 // Institutional venues that sell first-party from their own domain. Extend as
