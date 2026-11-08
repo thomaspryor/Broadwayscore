@@ -86,3 +86,14 @@ test('doneClaimsHeldRow: warns when the nightly recheck stopped writing, passes 
   assert.equal(ok.status, 'pass');
   assert.match(ok.message, /^Done claims that held: 100% \(1 of 1\) over 30 days/);
 });
+
+test('recheckVerdict: a row classified at write time (has a sha key) is never re-derived (BRO-7138 review)', () => {
+  const { recheckVerdict } = require('./check-env-cause.js');
+  const tsx = new Set(['tests/unit/gate-logic.test.mjs']);
+  const row = { cardId: 'BRO-1', status: 'fail', verifyCmd: 'node --test tests/unit/gate-logic.test.mjs', detail: "Error [ERR_MODULE_NOT_FOUND]: Cannot find module '/w/src/lib/deleted.ts'" };
+  // A legacy row (no sha key) is still re-derived, as before.
+  assert.equal(recheckVerdict(row, { tsxTests: tsx }).status, 'unverifiable');
+  // The same failure on a new row ran under tsx: it is a real failure.
+  assert.deepEqual(recheckVerdict({ ...row, sha: 'abc' }, { tsxTests: tsx }), { status: 'fail', envCause: null });
+  assert.deepEqual(recheckVerdict({ ...row, sha: null }, { tsxTests: tsx }), { status: 'fail', envCause: null });
+});

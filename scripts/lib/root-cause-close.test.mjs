@@ -338,3 +338,14 @@ test('EFFECT: required on fix closes, spot fixes included; a measurement names a
   assert.deepEqual([spot.ok, spot.kind, spot.missing], [false, 'spot', ['EFFECT']]);
   assert.equal(rcc.checkRootCauseClose({ title: 'Add a grosses page', texts: [] }).applies, false);
 });
+
+test('EFFECT-only gaps block on their own later date, with their own notice (BRO-7138 review)', () => {
+  const noEffect = FULL.split('\n').filter((l) => !l.startsWith('EFFECT:')).join('\n');
+  const r = rcc.checkRootCauseClose({ title: 'Fixture date bug', texts: [noEffect] });
+  const rootDay = Date.parse('2026-12-23T00:00:00Z');
+  assert.equal(rcc.rootCauseCloseBlocking(rootDay, {}, r), false, 'EFFECT alone must not block on the ROOT-CAUSE date');
+  assert.equal(rcc.rootCauseCloseBlocking(Date.parse(`${rcc.EFFECT_CLOSE_BLOCKING_FROM}T00:00:00Z`), {}, r), true);
+  assert.match(rcc.rootCauseCloseMessage('BRO-1', r, false), new RegExp(`blocking from ${rcc.EFFECT_CLOSE_BLOCKING_FROM}`));
+  const bare = rcc.checkRootCauseClose({ title: 'Fixture date bug', texts: ['nothing'] });
+  assert.equal(rcc.rootCauseCloseBlocking(rootDay, {}, bare), true, 'missing ROOT-CAUSE still blocks on its date');
+});

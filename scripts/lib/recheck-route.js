@@ -34,7 +34,9 @@ const DEDUP_DAYS = 30;
 function routeMode({ env = process.env, now = Date.now() } = {}) {
   if (String(env.RECHECK_ROUTE || '').toLowerCase() === 'off') return { mode: 'off', from: null, why: 'RECHECK_ROUTE=off' };
   const raw = String(env.RECHECK_ROUTE_FROM || '').trim();
-  const parsed = raw ? Date.parse(`${raw.slice(0, 10)}T00:00:00Z`) : NaN;
+  let parsed = raw ? Date.parse(`${raw.slice(0, 10)}T00:00:00Z`) : NaN;
+  // V8 rolls impossible dates over (2026-02-30 -> March 2): a round trip catches them.
+  if (Number.isFinite(parsed) && new Date(parsed).toISOString().slice(0, 10) !== raw.slice(0, 10)) parsed = NaN;
   // A typo in the variable must not arm routing early: fall back to the default date.
   const from = Number.isFinite(parsed) ? raw.slice(0, 10) : DEFAULT_ROUTE_FROM;
   const fromMs = Date.parse(`${from}T00:00:00Z`);
@@ -47,7 +49,8 @@ function alreadyRouted(ledgerEntries, { now = Date.now() } = {}) {
   const since = now - DEDUP_DAYS * 86400000;
   const ids = new Set();
   for (const e of ledgerEntries || []) {
-    if (!e || e.event !== 'recheck-route' || e.mode !== 'live' || !e.filed) continue;
+    // maybeFiled: the create timed out, so a card may exist; never risk a second one.
+    if (!e || e.event !== 'recheck-route' || e.mode !== 'live' || !(e.filed || e.maybeFiled)) continue;
     const t = Date.parse(e.ts);
     if (Number.isFinite(t) && t < since) continue;
     for (const id of e.cardIds || []) ids.add(id);
@@ -105,9 +108,12 @@ function buildRouteBatch({ rows, handedOff = [], ledgerEntries = [], now = Date.
  * Files the batch as one dispatchable card. --new-anyway: tonight's batch is
  * different work from last night's even though the titles look alike, and the
  * near-duplicate reuse would otherwise fold it into an older card as a comment.
- * @returns {Promise<{filed:boolean, identifier:string|null, error:string|null}>}
+ * @returns {Promise<{filed:boolean, identifier:string|null, error:string|null, maybeFiled?:boolean}>}
+ * On a timeout the create may still finish later: the result says maybeFiled
+ * (dedup counts it) and process.exit stays trapped until main() settles, so a
+ * late failure in it can never kill the recheck process.
  */
-async function fileRouteBatch({ title, body, linearBrainMain } = {}) {
+async function fileRouteBatch({ title, body, linearBrainMain, timeoutMs = 60000 } = {}) {
   const main = linearBrainMain || require('../linear-brain.js').main;
   const realExit = process.exit;
   const realErr = console.error;
@@ -122,18 +128,20 @@ async function fileRouteBatch({ title, body, linearBrainMain } = {}) {
     if (m && !identifier) identifier = m[1] || m[2];
     realErr(...a);
   };
+  const restore = () => { process.exit = realExit; console.error = realErr; };
+  let timedOut = false;
+  const run = Promise.resolve().then(() => main(['create', title, '--dispatch', '--priority', '2', '--source', 'acceptance-recheck', '--new-anyway', 'a nightly recheck batch lists only cards not routed before', '--notes', body]));
   try {
     await Promise.race([
-      main(['create', title, '--dispatch', '--priority', '2', '--source', 'acceptance-recheck', '--new-anyway', 'a nightly recheck batch lists only cards not routed before', '--notes', body]),
-      new Promise((_, rej) => setTimeout(() => rej(new Error('route create timed out after 60s')), 60000).unref()),
+      run,
+      new Promise((_, rej) => setTimeout(() => { timedOut = true; rej(new Error(`route create timed out after ${timeoutMs / 1000}s`)); }, timeoutMs).unref()),
     ]);
     return { filed: !!identifier, identifier, error: identifier ? null : 'linear-brain create printed no card id' };
   } catch (err) {
     if (err instanceof ExitTrap) return { filed: err.exitCode === 0 && !!identifier, identifier, error: err.exitCode === 0 ? null : `linear-brain create exited ${err.exitCode}` };
-    return { filed: false, identifier, error: String((err && err.message) || err).slice(0, 200) };
+    return { filed: false, identifier, error: String((err && err.message) || err).slice(0, 200), ...(timedOut ? { maybeFiled: true } : {}) };
   } finally {
-    process.exit = realExit;
-    console.error = realErr;
+    if (timedOut) run.then(restore, restore); else restore();
   }
 }
 

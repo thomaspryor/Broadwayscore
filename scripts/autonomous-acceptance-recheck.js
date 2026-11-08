@@ -197,12 +197,15 @@ async function routeRealFailures({ runId, results, handedOff, sha = null, env = 
   try {
     const mode = routeMode({ env, now });
     if (mode.mode === 'off') { console.error('[recheck] routing off (RECHECK_ROUTE=off)'); return null; }
-    const batch = buildRouteBatch({ rows: results, handedOff, sha, ledgerEntries: ledger.readEntries(RECHECK_LEDGER_PATH).entries || [], now });
+    // Stamp the commit (rows with a sha key keep their write-time env verdict,
+    // check-env-cause.js) and redact emails before any output reaches a card.
+    const rows = (results || []).map((r) => ({ ...r, sha, detail: r.detail ? redactEmails(String(r.detail)) : r.detail, note: r.note ? redactEmails(String(r.note)) : r.note }));
+    const batch = buildRouteBatch({ rows, handedOff, sha, ledgerEntries: ledger.readEntries(RECHECK_LEDGER_PATH).entries || [], now });
     if (!batch.title) return null;
     const cardIds = batch.cards.map((c) => c.cardId);
     let out = { filed: false, identifier: null, error: null };
     if (mode.mode === 'live') out = await file({ title: batch.title, body: batch.body });
-    ledger.appendEntry({ event: 'recheck-route', runId, mode: mode.mode, filed: out.filed, identifier: out.identifier, cardIds, overflow: batch.overflow, skipped: batch.skipped, note: mode.mode === 'shadow' ? `would file "${batch.title}" (${mode.why})` : out.filed ? `filed ${out.identifier}` : `route refused: ${out.error}` }, RECHECK_LEDGER_PATH);
+    ledger.appendEntry({ event: 'recheck-route', runId, mode: mode.mode, filed: out.filed, ...(out.maybeFiled ? { maybeFiled: true } : {}), identifier: out.identifier, cardIds, overflow: batch.overflow, skipped: batch.skipped, note: mode.mode === 'shadow' ? `would file "${batch.title}" (${mode.why})` : out.filed ? `filed ${out.identifier}` : `route refused: ${out.error}` }, RECHECK_LEDGER_PATH);
     console.error(`[recheck] route (${mode.mode}): ${cardIds.length} card(s)${out.identifier ? ` -> ${out.identifier}` : ''}${out.error ? ` refused: ${out.error}` : ''}`);
     return { mode: mode.mode, ...out, cardIds };
   } catch (err) {

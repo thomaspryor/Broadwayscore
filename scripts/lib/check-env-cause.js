@@ -104,6 +104,11 @@ function recheckVerdict(row, { tsxTests } = {}) {
   if (!row || !row.status) return { status: row ? row.status || null : null, envCause: null };
   if (row.envCause) return { status: 'unverifiable', envCause: row.envCause };
   if (row.status !== 'fail') return { status: row.status, envCause: null };
+  // Rows written since BRO-7138 carry a `sha` key and were classified at write
+  // time with the argv that ACTUALLY ran (tsx-routed tests run under tsx, where a
+  // missing module is a real failure). Re-deriving them from the card's original
+  // verifyCmd would hide that regression; only legacy rows are re-derived.
+  if (Object.prototype.hasOwnProperty.call(row, 'sha')) return { status: 'fail', envCause: null };
   let argv = null;
   try { argv = row.verifyCmd ? require('./autonomous-checks.js').tokenizeCheckCommand(String(row.verifyCmd)) : null; } catch { argv = null; }
   const cause = envCauseOf(row.detail || row.note, { argv, tsxTests: tsxTests === undefined ? repoTsxTests() : tsxTests });

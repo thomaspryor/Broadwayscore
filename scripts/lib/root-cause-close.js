@@ -31,6 +31,11 @@
 'use strict';
 
 const ROOT_CAUSE_CLOSE_BLOCKING_FROM = '2026-12-22';
+// BRO-7138: EFFECT is newer, so a close missing ONLY EFFECT gets its own,
+// later date (four weeks after ROOT-CAUSE) and its own advisory notice.
+const EFFECT_CLOSE_BLOCKING_FROM = '2027-01-19';
+const onlyEffectMissing = (r) => !!(r && Array.isArray(r.missing) && r.missing.length && r.missing.every((m) => m === 'EFFECT'));
+const blockingFromFor = (r) => (onlyEffectMissing(r) ? EFFECT_CLOSE_BLOCKING_FROM : ROOT_CAUSE_CLOSE_BLOCKING_FROM);
 const MIN_FIELD_CHARS = 10;
 
 // "red" only as a CI state ("main red: x", "test.yml red", "red again"), never
@@ -181,9 +186,9 @@ function checkRootCauseClose({ title, texts, landedFiles = null } = {}) {
 }
 
 /** PURE. Blocking from the date unless the rollback switch says advisory. */
-function rootCauseCloseBlocking(nowMs = Date.now(), env = process.env) {
+function rootCauseCloseBlocking(nowMs = Date.now(), env = process.env, result = null) {
   if (String(env.ROOT_CAUSE_CLOSE_GATE || '').toLowerCase() === 'advisory') return false;
-  return nowMs >= Date.parse(`${ROOT_CAUSE_CLOSE_BLOCKING_FROM}T00:00:00Z`);
+  return nowMs >= Date.parse(`${blockingFromFor(result)}T00:00:00Z`);
 }
 
 /** PURE. The message a closer sees. */
@@ -200,10 +205,10 @@ function rootCauseCloseMessage(identifier, result, blocking) {
     '    EFFECT: what you measured on real data after landing, before and after (a new check, gate or rule: its dry run over real past inputs and hit rate)',
     '    (or NO-EFFECT-CHECK: <reason>, BRO-7138)',
     '  (A `PREVENTION: <path> ; cousins: <...>` line counts as CLASS-GUARD + COUSINS.)',
-    '  Or one line: NO-ROOT-CAUSE: <reason> (counts as a spot fix).',
+    '  Or for a spot fix: NO-ROOT-CAUSE: <reason>, plus EFFECT or NO-EFFECT-CHECK.',
     blocking
-      ? `  Blocking since ${ROOT_CAUSE_CLOSE_BLOCKING_FROM}. Rollback: ROOT_CAUSE_CLOSE_GATE=advisory.`
-      : `  Advisory now; blocking from ${ROOT_CAUSE_CLOSE_BLOCKING_FROM}.`,
+      ? `  Blocking since ${blockingFromFor(result)}. Rollback: ROOT_CAUSE_CLOSE_GATE=advisory.`
+      : `  Advisory now; blocking from ${blockingFromFor(result)}.`,
   ].join('\n');
 }
 
@@ -361,6 +366,7 @@ function seededPick(ids, n, seed) {
 }
 
 module.exports = {
+  EFFECT_CLOSE_BLOCKING_FROM,
   ROOT_CAUSE_CLOSE_BLOCKING_FROM,
   FIX_RE,
   isFixCard,

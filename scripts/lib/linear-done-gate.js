@@ -246,7 +246,7 @@ function rootCauseCloseCheck({ identifier, title, description = '', commentText 
     const rcc = require('./root-cause-close.js');
     const texts = [description, ...(Array.isArray(existingComments) ? existingComments : []), commentText];
     const r = rcc.checkRootCauseClose({ title, texts, landedFiles });
-    const blocking = rcc.rootCauseCloseBlocking(nowMs);
+    const blocking = rcc.rootCauseCloseBlocking(nowMs, process.env, r);
     const message = rcc.rootCauseCloseMessage(identifier, r, blocking);
     return message ? { message, blocking, summary: rcc.rootCauseCloseSummary(identifier, r, blocking), missing: r.missing } : null;
   } catch {
