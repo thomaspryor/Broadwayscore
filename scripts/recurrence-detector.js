@@ -133,7 +133,7 @@ function buildSnapshot({ cards, ledger, now, complete, commentsById = {}, prevKn
   const expected = [...classes.values()].filter((c) => c.expected && c.inWindow >= 3)
     .map((c) => ({ key: c.key, inWindow: c.inWindow, reason: c.expected }));
   const ledgerCards = new Set(Object.values((ledger && ledger.conditions) || {}).map((c) => c.linearIdentifier).filter(Boolean));
-  const week = (k) => rc.rootCauseShare(cards, classes, { from: now - (k + 1) * 7 * DAY, to: now - k * 7 * DAY, ledgerCards });
+  const week = (k) => rc.rootCauseShare(cards, classes, { from: now - (k + 1) * 7 * DAY, to: now - k * 7 * DAY, ledgerCards, commentsById });
   return {
     generatedAt: new Date(now).toISOString(),
     complete,
@@ -428,8 +428,11 @@ async function main() {
   if (!input) {
     const pre = rc.detectClasses(cards, ledger, { now, windowDays: WINDOW_DAYS });
     const doneIds = [...pre.values()].filter((c) => c.recurring).flatMap((c) => c.instances.filter(rc.isDone).map((x) => x.identifier));
+    // Plus every card closed in the two share weeks: their close comments
+    // carry the ROOT-CAUSE / NO-ROOT-CAUSE answer the share counts (item 8).
+    for (const c of cards) if (rc.isDone(c) && Date.parse(c.completedAt) >= now - 14 * DAY) doneIds.push(c.identifier);
     try {
-      const m = await require('./lib/linear-client.js').listIssueComments(doneIds, undefined, { includeArchived: true });
+      const m = await require('./lib/linear-client.js').listIssueComments([...new Set(doneIds)], undefined, { includeArchived: true });
       for (const [id, nodes] of m) commentsById[id] = nodes.map((n) => n.body || '');
     } catch (e) {
       console.warn(`[recurrence] comment read failed (${e.message}); prevention stats are partial`);

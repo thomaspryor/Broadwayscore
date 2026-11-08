@@ -231,12 +231,43 @@ function recurrenceWarning({ identifier, description = '', commentText = '', exi
   }
 }
 
-function checkLinearDoneTransition(args = {}) {
-  const result = checkDoneEvidence(args);
-  if (args.targetStateType !== 'completed') return result;
-  const rw = recurrenceWarning(args);
-  if (!rw) return result;
-  return { ...result, warning: result.warning ? `${result.warning}\n${rw}` : rw };
+// BRO-7103 item 8: a fix card's close should name its root cause, the guard
+// in the landed diff that covers the class, red-then-green proof and the
+// cousins searched (lib/root-cause-close.js). Advisory until its blocking
+// date, then it refuses; ROOT_CAUSE_CLOSE_GATE=advisory rolls that back.
+// Needs the card title from the caller; any error fails open.
+function rootCauseCloseCheck({ identifier, title, description = '', commentText = '', existingComments = [], landedFiles = null, nowMs = Date.now() } = {}) {
+  if (!title) return null;
+  try {
+    const rcc = require('./root-cause-close.js');
+    const texts = [description, ...(Array.isArray(existingComments) ? existingComments : []), commentText];
+    const r = rcc.checkRootCauseClose({ title, texts, landedFiles });
+    const blocking = rcc.rootCauseCloseBlocking(nowMs);
+    const message = rcc.rootCauseCloseMessage(identifier, r, blocking);
+    return message ? { message, blocking } : null;
+  } catch {
+    return null;
+  }
 }
 
-module.exports = { checkLinearDoneTransition, applyCmdExecution, recurrenceWarning };
+function addWarning(result, w) {
+  return { ...result, warning: result.warning ? `${result.warning}\n${w}` : w };
+}
+
+function checkLinearDoneTransition(args = {}) {
+  let result = checkDoneEvidence(args);
+  if (args.targetStateType !== 'completed') return result;
+  const rw = recurrenceWarning(args);
+  if (rw) result = addWarning(result, rw);
+  const rcc = rootCauseCloseCheck(args);
+  if (rcc) {
+    if (rcc.blocking && result.allowed !== false) {
+      result = { ...result, gated: true, allowed: false, verdict: 'root-cause-missing', reason: rcc.message };
+    } else {
+      result = addWarning(result, rcc.message);
+    }
+  }
+  return result;
+}
+
+module.exports = { checkLinearDoneTransition, applyCmdExecution, recurrenceWarning, rootCauseCloseCheck };
