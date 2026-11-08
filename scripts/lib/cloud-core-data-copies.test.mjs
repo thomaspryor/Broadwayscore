@@ -42,7 +42,10 @@ function fixture() {
   const proj = path.join(root, 'proj');
   fs.mkdirSync(path.join(proj, 'scripts', 'lib'), { recursive: true });
   fs.mkdirSync(path.join(proj, 'data'));
-  for (const f of ['setup-local-data.sh', 'cloud-bootstrap-data.sh', 'lib/core-data-clone-guard.sh']) {
+  // Every lib/*.sh, so a helper newly sourced by these scripts cannot fail the
+  // fixture with a missing file (BRO-7128).
+  const libSh = fs.readdirSync(path.join(SCRIPTS, 'lib')).filter((f) => f.endsWith('.sh')).map((f) => `lib/${f}`);
+  for (const f of ['setup-local-data.sh', 'cloud-bootstrap-data.sh', ...libSh]) {
     fs.copyFileSync(path.join(SCRIPTS, f), path.join(proj, 'scripts', f));
   }
   return { root, home, clone, proj, data: path.join(proj, 'data') };
