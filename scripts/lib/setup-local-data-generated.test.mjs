@@ -21,6 +21,7 @@ const fn = (SCRIPT.match(/^generator_for\(\) \{[\s\S]*?^\}/m) || [])[0];
 test('setup-local-data.sh declares GENERATED_FILES and a generator_for() build step', () => {
   assert.ok(generated.length > 0, 'GENERATED_FILES parsed');
   assert.ok(fn, 'generator_for() present');
+  assert.match(SCRIPT, /gen="\$\(generator_for "\$f"\)"/, 'the build loop calls generator_for');
 });
 
 test('every land-local-check core file that is not core-repo data is generated and buildable', () => {
@@ -30,7 +31,7 @@ test('every land-local-check core file that is not core-repo data is generated a
     if (coreRepo.has(name)) continue;
     assert.ok(generated.includes(name), `${name} is in GENERATED_FILES`);
     const gen = execFileSync('bash', ['-c', `${fn}\ngenerator_for "$1"`, '_', name], { encoding: 'utf8' }).trim();
-    assert.ok(gen, `${name} has a generator_for() mapping`);
+    assert.equal(gen, `build-${name.replace(/\.json$/, '')}${name === 'cast-manifest.json' ? '' : '-manifest'}.js`, `${name} maps to its own builder`);
     assert.ok(fs.existsSync(path.join(ROOT, 'scripts', gen)), `scripts/${gen} exists`);
   }
 });

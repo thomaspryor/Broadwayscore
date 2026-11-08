@@ -272,21 +272,26 @@ done
 [ "$GEN_COUNT" -gt 0 ] && echo "Generated files: $GEN_COUNT copied from main checkout"
 # BRO-7110 follow-up: a cloud main checkout never has them either, so the copy
 # above finds nothing and land-local-check refuses every fresh worktree. Build
-# whichever is still missing from data/cast/ (a few seconds, no network).
+# any that are missing, unreadable (a killed or disk-full write) or an empty
+# stub (cloud-stub-data.js) from the tracked data/cast/ (seconds, no network).
 generator_for() {
   case "$1" in
     cast-manifest.json) echo build-cast-manifest.js ;;
     actor-slugs.json) echo build-actor-slugs-manifest.js ;;
   esac
 }
+manifest_ok() {
+  node -e 'const e=JSON.parse(require("fs").readFileSync(process.argv[1],"utf8")).entries;process.exit(e&&Object.keys(e).length?0:1)' "$1" 2>/dev/null
+}
 for f in "${GENERATED_FILES[@]}"; do
   gen="$(generator_for "$f")"
-  if [ ! -f "$DATA_DIR/$f" ] && [ -d "$DATA_DIR/cast" ] && [ -n "$gen" ]; then
-    if (cd "$PROJECT_DIR" && node "scripts/$gen" >/dev/null 2>&1) && [ -f "$DATA_DIR/$f" ]; then
-      echo "Generated files: built $f from data/cast/"
-    else
-      echo "WARN: could not build data/$f (run: node scripts/$gen)"
-    fi
+  [ -n "$gen" ] || continue
+  manifest_ok "$DATA_DIR/$f" && continue
+  if (cd "$PROJECT_DIR" && node "scripts/$gen" >/dev/null 2>&1) && manifest_ok "$DATA_DIR/$f"; then
+    echo "Generated files: built $f from data/cast/"
+  else
+    rm -f "$DATA_DIR/$f"
+    echo "WARN: could not build data/$f (run: node scripts/$gen)"
   fi
 done
 
