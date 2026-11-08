@@ -669,7 +669,17 @@
     "the-maids-off-broadway-2026/thewrap--robert-hofler.json",
     "equus-off-west-end-2026/standard--nick-curtis.json",
     "equus-off-west-end-2026/thestage--holly-omahony.json",
-    "purpose-lajolla-regional-2026/san-diego-story--david-dixon.json"
+    "purpose-lajolla-regional-2026/san-diego-story--david-dixon.json",
+    "the-unbelievers-off-broadway-2026/bobs-theater-blog--unknown.json",
+    "medea-off-broadway-2026/bachtrack--susan-stempleski.json",
+    "a-few-good-men-2026/variety--anna-tingley.json",
+    "the-heart-off-broadway-2026/variety--cynthia-littleton.json",
+    "a-few-good-men-2026/goldderby--ethan-alter.json",
+    "i-became-we-off-broadway-2026/timeout--unknown.json",
+    "i-became-we-off-broadway-2026/bobs-theater-blog--unknown.json",
+    "hospital-hour-off-broadway-2026/broadway-baby--unknown.json",
+    "hospital-hour-off-broadway-2026/one-minute-critic--unknown.json",
+    "aftermath-art-new-york-off-broadway-2026/talkinbroadway--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1096,7 +1106,7 @@
     ]
   },
   "startTime": "2026-11-07T21:59:56.711Z",
-  "lastProcessed": "end-of-the-rainbow-off-west-end-2026/north-west-end--zain-russell.json",
+  "lastProcessed": "aftermath-art-new-york-off-broadway-2026/talkinbroadway--unknown.json",
   "log": [
     {
       "t": "2026-11-07T22:12:30.784Z",
@@ -1324,6 +1334,34 @@
     },
     {
       "t": "2026-11-08T03:08:15.143Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-08T04:12:00.938Z",
+      "event": "bb-session",
+      "session": "0e6e74e3",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655510"
+    },
+    {
+      "t": "2026-11-08T04:12:01.779Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-08T04:12:29.164Z",
+      "event": "bb-session",
+      "session": "11310396",
+      "url": "https://bachtrack.com/review-medea-yoncheva-spyres-met-opera-new-york-october-20"
+    },
+    {
+      "t": "2026-11-08T04:17:17.289Z",
+      "event": "bb-session",
+      "session": "2faf9c9c",
+      "url": "https://hermes.talkinbroadway.com/allthatchat_new/d.php?id=2655044"
+    },
+    {
+      "t": "2026-11-08T04:17:18.242Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
     }
