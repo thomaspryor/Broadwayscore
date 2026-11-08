@@ -167,6 +167,7 @@ function checkpoint(stats, commitMessagePrefix, opts = {}) {
     onLanded: opts.onLanded,
     pushScript: opts.pushScript,
     pushEnv: opts.pushEnv,
+    retries: opts.retries,
   });
   for (const p of paths) tracker.delete(p);
   console.log(`  [Checkpoint] ${res.pushed ? 'Pushed' : 'Nothing new to push'} (${stats.recovered} recovered so far; ${res.landed.length} file(s) confirmed on origin/main)`);
