@@ -639,7 +639,7 @@ test('BRO-7150: refreshGeneratedDocsIn leaves HEAD alone when up to date, withou
     assert.match(r.reason, /regeneration failed/);
     assert.ok(!calls.some((c) => c.startsWith('commit')), 'never commits on failure');
     assert.equal(refreshGeneratedDocsIn(dir, { onto: 'h', git, exec: () => { throw new Error('x'); } }).reason, 'nothing rebased');
-  } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+  } finally { fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
 });
 
 test('dry-run: rebases and checks, never pushes, reports the would-be sha', () => {

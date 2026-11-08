@@ -416,10 +416,11 @@ jobs:
             echo "::error::fast-fail: the base re-check did not return to the rebased tip"; exit 1
           fi
           # Judge into a private file: only a recorded NEW failure refuses; a judge crash is not a refusal.
+          # lint-allow-swallow: the judge's exit is not the verdict here; new_failures is read below, and with no verdict the full gauntlet re-judges strictly.
           node scripts/lib/land-gate-delta.js --base-dir "$FD/base" --branch-dir "$FD/branch" --gates "$RED" \
-            --summary-file "$GITHUB_STEP_SUMMARY" --github-output "$FD/out" --base-source fast-fail || true
+            --summary-file "$GITHUB_STEP_SUMMARY" --github-output "$FD/out" --base-source fast-fail || J=$?
           NEW=$(sed -n 's/^new_failures=//p' "$FD/out" 2>/dev/null | tail -1)
-          case "$NEW" in ''|*[!0-9]*) echo "::warning::fast-fail: the judge recorded no verdict — the full gauntlet decides"; exit 0;; esac
+          case "$NEW" in ''|*[!0-9]*) echo "::warning::fast-fail: the judge recorded no verdict (exit ${J:-0}) — the full gauntlet decides"; exit 0;; esac
           cat "$FD/out" >> "$GITHUB_OUTPUT"
           [ "$NEW" -eq 0 ] || exit 1
 

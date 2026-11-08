@@ -64,7 +64,7 @@ test('writeScopeDir writes one <gate>.files per gate used', () => {
     const gates = F.writeScopeDir(dir, sel(['scripts/lib/widget-maker.js']).files);
     assert.deepEqual(gates.sort(), ['scripts-lib-tests', 'unit-tests-node', 'unit-tests-tsx']);
     assert.match(fs.readFileSync(path.join(dir, 'unit-tests-node.files'), 'utf8'), /inv\.test\.mjs/);
-  } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+  } finally { fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
 });
 
 test('every listed invariant and slow test exists in a fast gate of this tree', () => {
@@ -115,7 +115,7 @@ test('mirrorLandRegeneration regenerates a stale doc only when base land-rebase.
     assert.equal(F.mirrorLandRegeneration(dir, 'HEAD'), true);
     assert.equal(fs.readFileSync(path.join(dir, 'doc'), 'utf8'), 'new\n');
     assert.equal(F.mirrorLandRegeneration(dir, 'HEAD'), false, 'already fresh');
-  } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+  } finally { fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
 });
 
 test('a very wide diff skips name matching: invariants plus the changed tests only', () => {
