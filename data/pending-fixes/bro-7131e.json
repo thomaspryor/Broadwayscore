@@ -1,0 +1,36 @@
+{
+  "issueNumber": "bro-7131e",
+  "planId": "c9e3288b-9385-459c-bc86-507690b5b948",
+  "status": "pending",
+  "createdAt": "2026-11-08T19:45:18.922Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Re-apply the Tosca ENO Cheryl Markosky blog teaser exclusion (bro-7131c) that a stale opening-night poller push erased 4 minutes after it applied",
+    "steps": [
+      "tosca-english-national-opera-west-end-2026/cherylmarkosky--cherylmarkosky.json: isNonReviewReason",
+      "tosca-english-national-opera-west-end-2026/cherylmarkosky--cherylmarkosky.json: isNonReview"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "tosca-english-national-opera-west-end-2026/cherylmarkosky--cherylmarkosky.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "manual (not a review): blog teaser linking to the same critic's full review counted as london-theatre--cheryl-markosky.json",
+        "description": "tosca-english-national-opera-west-end-2026/cherylmarkosky--cherylmarkosky.json: isNonReviewReason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "tosca-english-national-opera-west-end-2026/cherylmarkosky--cherylmarkosky.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "tosca-english-national-opera-west-end-2026/cherylmarkosky--cherylmarkosky.json: isNonReview"
+      }
+    ]
+  }
+}

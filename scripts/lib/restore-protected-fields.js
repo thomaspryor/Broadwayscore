@@ -334,7 +334,7 @@ function reconcileProtectedFields(local, remote, ours, opts = {}) {
       for (const e of (src && Array.isArray(src.approvedFixes) ? src.approvedFixes : [])) {
         if (!e || typeof e.field !== 'string' || seen.has(key(e))) continue;
         seen.add(key(e));
-        missing.push(e);
+        missing.push({ ...e });
       }
     }
     missing.sort((a, b) => String(a.at || '').localeCompare(String(b.at || '')));
