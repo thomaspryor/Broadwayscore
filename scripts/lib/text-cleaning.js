@@ -9,6 +9,8 @@
  * @module text-cleaning
  */
 
+const { stripOutletTrailer, stripFourthWalshInfoBlock } = require('./trailer-signatures');
+
 /**
  * Decode ALL HTML entities properly
  * Handles both numeric (&#8220;, &#x201C;) and named (&amp;, &rsquo;) entities.
@@ -377,10 +379,19 @@ function stripSiteChrome(text) {
  *   - High-confidence patterns bypass back-half guard (lower min-remaining threshold)
  *
  * @param {string} text - Review text to clean
+ * @param {string} [outletId] - registry outlet id; enables the outlet-scoped
+ *   page trailers in trailer-signatures.js (one-minute-critic related-post
+ *   headlines). The thefourthwalsh footer is unique to that site, so it goes
+ *   for any outlet.
  * @returns {string} Cleaned text
  */
-function stripTrailingJunk(text) {
+function stripTrailingJunk(text, outletId) {
   if (!text) return text;
+  const cleaned = stripTrailingJunkCore(text);
+  return stripOutletTrailer(stripFourthWalshInfoBlock(cleaned), outletId);
+}
+
+function stripTrailingJunkCore(text) {
   let cleaned = stripLeadingSiteNav(text);
   const originalLength = text.length;
   const minRemaining = Math.max(200, originalLength * 0.15);

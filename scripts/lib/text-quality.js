@@ -8,6 +8,7 @@
 // Excerpt field names — imported from excerpt-fields.js (single source of truth).
 // The objects add display names for use in getBestTextForScoring().
 const { EXCERPT_FIELDS: _EXCERPT_FIELD_NAMES } = require('./excerpt-fields');
+const { stripKnownTrailers } = require('./trailer-signatures');
 // Bot-wall stub patterns (NYT anti-bot JS-loader + verify-access interstitial) —
 // imported from content-quality.js rather than re-declared here (BRO-36). This
 // module's own truncation/cleaning logic is a separate code path from
@@ -160,8 +161,10 @@ function checkTruncation(text) {
   }
 
   // Check for abrupt ending (no sentence-final punctuation in last 20 chars)
-  const ending = text.slice(-20).trim();
-  if (ending && !/[.!?]["']?\s*$/.test(ending)) {
+  // Known page trailers (UK listing bullet, Guardian topics footer) carry no
+  // full stop and are not review prose: judge the ending of what precedes them.
+  const ending = stripKnownTrailers(text).slice(-20).trim();
+  if (ending && !/[.!?]["'\u201d\u2019]?\s*$/.test(ending)) {
     // But not if it ends with a quote attribution or similar
     if (!/["']\s*$/.test(ending) && !/—\s*\w+\s*$/.test(ending)) {
       signals.push('no-final-punctuation');
