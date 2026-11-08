@@ -25,6 +25,8 @@ const path = require('path');
 const { execFileSync } = require('child_process');
 const pm = require('./lib/press-night-manual-actions');
 const og = require('./lib/opening-grade');
+const { citedUncollectedNow } = require('./lib/audit-show-review-gap');
+const { loadBlocklist } = require('./lib/poller-blocklist');
 
 const ROOT = path.join(__dirname, '..');
 const arg = (k) => { const a = process.argv.find((x) => x.startsWith(`--${k}=`)); return a ? a.slice(k.length + 3) : null; };
@@ -106,18 +108,23 @@ function main() {
   const untilMs = Math.min(nowMs, Date.parse(`${toDate}T00:00:00Z`) + (og.AFTER_H + 48) * 3600000);
   const commits = openings.length ? loadCommits(rtDir, new Date(sinceMs).toISOString(), new Date(untilMs).toISOString()) : [];
 
-  const grades = openings.map((show) => og.gradeOpening({
+  const grades = openings.map((show) => { const files = loadFiles(rtDir, show.id); return og.gradeOpening({
     show,
-    files: loadFiles(rtDir, show.id),
+    files,
     commits,
     historyFromMs: hist,
     pressNight: og.pickPressNight(records, show),
     gapResult: gapById.get(show.id) || null,
+    // BRO-7147: aggregator-cited reviews the gap audit still lists as missing,
+    // minus any collected since that audit ran.
+    missingCited: gapById.has(show.id)
+      ? citedUncollectedNow(gapById.get(show.id), { heldFiles: files, blocklist: loadBlocklist(path.join(rtDir, show.id)), show })
+      : null,
     nowMs,
-  })).sort((a, b) => (b.openingDate.localeCompare(a.openingDate)) || a.showId.localeCompare(b.showId));
+  }); }).sort((a, b) => (b.openingDate.localeCompare(a.openingDate)) || a.showId.localeCompare(b.showId));
 
   const doc = {
-    schemaVersion: 1,
+    schemaVersion: 2, // BRO-7147: known = live + cited-missing; verdict incomplete; missing null when unaudited
     generatedAt: new Date(nowMs).toISOString(),
     generator: 'scripts/grade-openings.js (BRO-7082)',
     from: fromDate,

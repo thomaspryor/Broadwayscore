@@ -4,6 +4,10 @@
 const { currentRunOnly, currentRunCount } = require('./prior-production-citations');
 const { classifyGapCandidateUrl } = require('./non-review-url-patterns');
 const { classifyIngestSkip, classifyReason } = require('./ingest-skip-classify');
+const { findBlockedEntry } = require('./poller-blocklist');
+const { syndicatedReprintOf } = require('./syndicated-reprint-match');
+const { isSyndicationHost, isSisterSiteHost } = require('./syndication-canonical');
+const { platformOriginMirrorOf } = require('./outlet-canonicalize');
 
 function defaultCollectable(m) {
   return !m || !m.url || classifyGapCandidateUrl(m.url).ok;
@@ -51,6 +55,46 @@ function currentRunUncollected(r, { isCollectable = defaultCollectable, ignoreCe
   return missing + citedNoUrl;
 }
 
+// BRO-7147: aggregator-cited reviews still missing for a show, judged against
+// the review files held NOW. The gap row is as old as its last audit (a closed
+// show is re-audited only every 14 days), so a review collected since then
+// would otherwise count as both live and missing. Same rules as the per-show
+// alert (BRO-7116, census hits excluded) plus the read-time blocklist and
+// syndicated-reprint checks the CLI's stillCollectable applies.
+// Post-identifying query params are kept (?p=123 and ?page_id=9 address
+// different posts on many small blogs); share and tracking params (?smid=,
+// ?mod=, utm_*) and the fragment are dropped, so a shared link still matches
+// the clean URL already held.
+const POST_ID_PARAM = /^(?:p|page_id|id|post|postid|post_id|article|articleid|article_id|story|storyid|aid|item|itemid)(?:=|$)/;
+function urlKey(u) {
+  const s = String(u || '').trim().toLowerCase().replace(/#.*$/, '');
+  const [base, query = ''] = s.split('?');
+  const kept = query.split('&').filter(p => p && POST_ID_PARAM.test(p)).sort().join('&');
+  const head = base.replace(/^https?:\/\//, '').replace(/^www\./, '').replace(/\/+$/, '');
+  return kept ? `${head}?${kept}` : head;
+}
+
+// venue-write-guard-ok: show.venue is passed read-only to syndicatedReprintOf for matching, never written
+function citedUncollectedNow(r, { heldFiles = [], blocklist = null, show = null } = {}) {
+  if (!r) return null;
+  const held = (heldFiles || []).filter(f => f && f.url);
+  const heldKeys = new Set(held.map(f => urlKey(f.url)));
+  const clean = held.filter(f => !f.wrongProduction && !f.wrongShow && !f.isRoundupArticle && !f.duplicateOf);
+  return currentRunUncollected(r, {
+    ignoreCensusTagged: true,
+    isCollectable: (m) => {
+      if (!defaultCollectable(m)) return false;
+      if (!m || !m.url) return true;
+      if (heldKeys.has(urlKey(m.url))) return false;
+      if (platformOriginMirrorOf({ candidateUrl: m.url, heldUrls: clean.map(f => f.url) }).dup) return false;
+      if (blocklist && findBlockedEntry(blocklist, m.url)) return false;
+      if ((isSyndicationHost(m.url) || isSisterSiteHost(m.url))
+        && syndicatedReprintOf({ candidateUrl: m.url, heldFiles: clean, showTitle: r.title || (show && show.title), venue: show && show.venue }).dup) return false;
+      return true;
+    },
+  });
+}
+
 // BRO-5627: an undated gap ingest skips the date-plausibility guard (it only
 // judges a date it can read), so on a revival a prior production's review can
 // land in the new run's folder and later be scored there (the-ask-off-broadway-2026:
@@ -95,4 +139,4 @@ function gapIngestRequiresPublishDate(row, evidence) {
   return !!evidence || !!(row && row.datelessCitationOnly);
 }
 
-module.exports = { currentRunUncollected, earlierDatedCitation, gapIngestRequiresPublishDate, runWindowStartMs };
+module.exports = { currentRunUncollected, citedUncollectedNow, urlKey, earlierDatedCitation, gapIngestRequiresPublishDate, runWindowStartMs };

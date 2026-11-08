@@ -88,10 +88,14 @@ test('history that does not reach back to the window is not-gradable, never a pa
 
 test('no live reviews, excluded files, open window wording, known count', () => {
   assert.equal(grade({ files: [{ _file: 'test-show-2026/a--b.json', wrongShow: true }] }).verdict, 'no-reviews');
-  const open = grade({ nowMs: Date.parse('2026-11-01T00:00:00Z'), gapResult: { censusVerdict: { candidateCount: 5 } } });
+  // BRO-7147: known = live + aggregator-cited reviews still missing; the census
+  // candidateCount (other productions' URLs included) is reference only.
+  const open = grade({ nowMs: Date.parse('2026-11-01T00:00:00Z'), gapResult: { censusVerdict: { candidateCount: 9 } }, missingCited: 3 });
   assert.equal(open.windowClosed, false);
-  assert.match(og.gradeLine(open), /2 reviews live of 5 known, ran on its own so far\./);
-  assert.doesNotMatch(og.gradeLine(grade({ gapResult: { censusVerdict: { candidateCount: 1 } } })), /known/, 'a lagging census is not shown');
+  assert.equal(open.known, 5);
+  assert.equal(open.censusCandidates, 9);
+  assert.match(og.gradeLine(open), /2 reviews live of 5 cited, ran on its own so far\./);
+  assert.doesNotMatch(og.gradeLine(grade({ gapResult: { censusVerdict: { candidateCount: 9 } }, missingCited: 0 })), /cited/, 'nothing missing, no denominator');
 });
 
 test('West End embargo estimate is 22:00 London', () => {
@@ -122,7 +126,7 @@ test('summary, tally and digest block (missing snapshot says not checked yet)', 
   const nr = (known) => ({ showId: 'x', title: 'X', category: 'broadway', openingDate: '2026-11-02', live: 0, known, verdict: 'no-reviews', signals: [], windowClosed: false });
   const opts = { nowMs: Date.parse('2026-11-03T12:00:00Z') };
   assert.doesNotMatch(og.renderOpeningGradesBlock({ from: '2026-10-20', to: '2026-11-03', grades: [nr(0)] }, opts), /0 reviews live/);
-  assert.match(og.renderOpeningGradesBlock({ from: '2026-10-20', to: '2026-11-03', grades: [nr(5)] }, opts), /0 reviews live of 5 known, reviews are out but none are on the site yet/);
+  assert.match(og.renderOpeningGradesBlock({ from: '2026-10-20', to: '2026-11-03', grades: [nr(5)] }, opts), /0 reviews live of 5 cited, cited reviews are out but none are on the site yet/);
 });
 
 test('ingest dispatches use the same isBotAuthor rule as the press-night record', () => {

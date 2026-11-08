@@ -7,6 +7,7 @@
 // (web.archive.org is not a free-fetch host there) plus the CDX lookup. Bounded: it only runs after a live failure.
 
 const { archiveSnapshotFetchUrl } = require('./archive-snapshot-url');
+const { isNotFoundHtml } = require('./soft-404-body');
 
 const MIN_HTML = 500;
 const usable = (h) => typeof h === 'string' && h.length >= MIN_HTML;
@@ -43,8 +44,9 @@ async function fetchWithArchiveFallback(url, { fetchPageFn, fetchJson } = {}) {
   try {
     const r = await fetchPageFn(url);
     const html = (r && (r.content || r.html || r.body)) || (typeof r === 'string' ? r : null);
-    if (usable(html)) return { html, via: 'live' };
-    liveError = `no usable HTML (${html ? html.length : 0} chars)`;
+    // BRO-7147: a 200 "Page not found" template from an unlocker is a failed fetch.
+    if (usable(html) && !isNotFoundHtml(html)) return { html, via: 'live' };
+    liveError = usable(html) ? 'live page is the site\'s not-found template' : `no usable HTML (${html ? html.length : 0} chars)`;
   } catch (e) { liveError = `fetch failed: ${e.message}`; }
   const ts = await latestCaptureTimestamp(url, { fetchJson });
   const snapUrl = ts ? archiveSnapshotFetchUrl(url, ts) : null;
@@ -52,7 +54,7 @@ async function fetchWithArchiveFallback(url, { fetchPageFn, fetchJson } = {}) {
   try {
     const r = await fetchPageFn(snapUrl);
     const html = (r && (r.content || r.html || r.body)) || (typeof r === 'string' ? r : null);
-    if (usable(html)) return { html, via: 'archive', snapshot: ts };
+    if (usable(html) && !isNotFoundHtml(html)) return { html, via: 'archive', snapshot: ts };
     return { html: null, via: null, error: `${liveError}; archive copy unusable` };
   } catch (e) {
     return { html: null, via: null, error: `${liveError}; archive fetch failed: ${e.message}` };

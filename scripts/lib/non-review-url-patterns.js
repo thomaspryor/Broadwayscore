@@ -49,6 +49,12 @@ const NON_REVIEW_HOST_PATTERNS = [
   /^stagemag\.broadwayworld\.com$/, /^broadwayworldshop\.com$/,
   /^forum\.broadwayworld\.com$/, /^data\.broadwayworld\.com$/,
   /^wisdomdigital\.com$/, /^cur8\.com$/, /^jt-pr-dot-yamm-track\.appspot\.com$/,
+  // BRO-7147: affiliate click-redirect trackers (Commission Junction, Awin,
+  // Partnerize). Show Score's ticket buttons route through them; a Ceilidh
+  // tkqlhce.com/click-... link was counted as a missing review and proposed as a
+  // new outlet. 0 of the reviews.json URLs use these hosts.
+  /(^|\.)(tkqlhce|jdoqocy|kqzyfj|emjcd)\.com$/, /(^|\.)(anrdoezrs|dpbolvw|qksrv)\.net$/,
+  /(^|\.)awin1\.com$/, /^prf\.hn$/,
   // venue & box-office (not reviews)
   /\.org$/, // catches many venue domains; allow-list known critic .orgs below
   /^ci\.ovationtix\.com$/,
