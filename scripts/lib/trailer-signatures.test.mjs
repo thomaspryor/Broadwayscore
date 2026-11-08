@@ -38,6 +38,23 @@ test('bare listing needs a date and an opener; ordinary last sentence is kept', 
   assert.equal(T.stripUkListingBullets(prose), prose);
 });
 
+test('bare listing: a review cut off mid-sentence on a date is NOT stripped (reviewer blocker 1)', () => {
+  const cut = BODY + ' A fine evening. At the interval the cast, who play on until 7 June with';
+  assert.equal(T.stripUkListingBullets(cut), cut);
+  assert.equal(tier(cut, 'guardian').contentTier, 'truncated');
+});
+
+test('kill switch TRAILER_FIXES_DISABLED also covers stripTrailingJunk, whose output is saved (reviewer blocker 2)', () => {
+  const footer = BODY + ' Running Time: 2 hours At Theater Wit Performances are: Fridays at 8pm For more information or tickets For more Chicago theatre information and reviews, please visit Theatre in Chicago Facebook --> Share on:';
+  assert.ok(!stripTrailingJunk(footer).includes('For more Chicago'));
+  process.env.TRAILER_FIXES_DISABLED = 'true';
+  try {
+    assert.ok(stripTrailingJunk(footer).includes('For more Chicago'));
+  } finally {
+    delete process.env.TRAILER_FIXES_DISABLED;
+  }
+});
+
 test('a review cut off mid-sentence before a listing stays truncated', () => {
   const cut = BODY.slice(0, -40) + ' • At the Almeida, London, until 7 June';
   assert.equal(tier(cut, 'guardian').contentTier, 'truncated');

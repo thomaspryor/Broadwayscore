@@ -54,6 +54,11 @@ function isUkTrailerSegment(seg) {
 const UK_BARE_LISTING_START_RE = /^(?:(?:At|Until)\s|[A-Z][\w'’:&-]*(?:\s[\w'’:&-]+){0,8}\s(?:runs|continues|is|are|plays)\s(?:at|until|on|to)\s)/;
 const UK_DATE_RE = /\b(?:until|to|from)\s+\d{1,2}\s+[A-Z][a-z]{2,8}\b|\buntil\s+(?:[A-Z][a-z]+day|[A-Z][a-z]{2,8}\s+\d{1,2})\b/;
 
+// A finished listing ends on its date (or a "Then touring [to X]" tail), never on a
+// dangling word: "At the interval the cast play on until 7 June with" is a review
+// cut off mid-sentence and must stay truncated.
+const UK_BARE_END_RE = /(?:\d{1,2}\s+[A-Z][a-z]{2,8}|\b[A-Z][a-z]+day|[A-Z][a-z]{2,8}\s+\d{1,2}|\b[Tt]ouring(?:\s+(?:to|in)\s+[A-Z][\w'’-]*(?:,?\s+[A-Z][\w'’-]*){0,4})?)\.?$/;
+
 function stripBareUkListing(t) {
   const base = Math.max(0, t.length - 300);
   const tail = t.slice(base);
@@ -65,7 +70,7 @@ function stripBareUkListing(t) {
     const frag = tail.slice(m.index + m[0].length).trim();
     if (frag.length < 8 || frag.length > UK_SEGMENT_MAX) continue;
     if (/[•·]/.test(frag)) continue;
-    if (!UK_BARE_LISTING_START_RE.test(frag) || !UK_DATE_RE.test(frag) || !isUkTrailerSegment(frag)) continue;
+    if (!UK_BARE_LISTING_START_RE.test(frag) || !UK_DATE_RE.test(frag) || !UK_BARE_END_RE.test(frag) || !isUkTrailerSegment(frag)) continue;
     return t.slice(0, base + m.index + m[1].length);
   }
   return t;

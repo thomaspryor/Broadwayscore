@@ -9,7 +9,7 @@
  * @module text-cleaning
  */
 
-const { stripOutletTrailer, stripFourthWalshInfoBlock } = require('./trailer-signatures');
+const { stripOutletTrailer, stripFourthWalshInfoBlock, trailerFixesEnabled } = require('./trailer-signatures');
 
 /**
  * Decode ALL HTML entities properly
@@ -388,6 +388,8 @@ function stripSiteChrome(text) {
 function stripTrailingJunk(text, outletId) {
   if (!text) return text;
   const cleaned = stripTrailingJunkCore(text);
+  // Unlike tiering, this result is SAVED to review files, so the kill switch must cover it.
+  if (!trailerFixesEnabled()) return cleaned;
   return stripOutletTrailer(stripFourthWalshInfoBlock(cleaned), outletId);
 }
 
