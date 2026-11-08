@@ -54,6 +54,7 @@ const path = require('path');
 const { readCrossShowUrlRows } = require('./lib/cross-show-url-ledger'); // BRO-6910
 const { trackedPendingFiles } = require('./lib/pending-coverage'); // BRO-7163 F11
 const { isOpaqueArticleUrl, headlineAsUrl } = require('./lib/opaque-article-url'); // BRO-7163 F02
+const { weUrlIsPriorRun } = require('./lib/we-prior-run'); // BRO-7163 F09
 const { isAggregatorBlind, majorOutletCountFor } = require('./lib/aggregator-blind'); // BRO-6910
 const cheerio = require('cheerio');
 const { execSync, execFileSync } = require('child_process');
@@ -1884,7 +1885,7 @@ async function auditShow(show, opts = {}) {
           m.weRefStarsSource = starRow.source;
         }
       }
-      if (weRefPriorRunUrls.has(m.url)) m.priorRun = true;
+      if (weUrlIsPriorRun(m.url, weRefPriorRunUrls, weRefUrlSources)) m.priorRun = true; // BRO-7163 F09: current-run corroboration wins
       // Broadway-path production identity: cited only by a prior production's
       // dated aggregator article → permanently report-only (TKAM 2018 class).
       if (bwPriorRunUrls.has(m.url)) { m.priorRun = true; m.priorRunSource = 'aggregator-article-date'; }
