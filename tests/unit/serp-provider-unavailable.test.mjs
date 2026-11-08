@@ -28,3 +28,9 @@ test('discovery script and poller gate on hasSerpProvider, not on SB/BD keys alo
   assert.match(read('scripts/opening-night-poller.js'), /if \(!hasSerpProvider\(\)\)/);
   assert.doesNotMatch(read('scripts/opening-night-poller.js'), /!process\.env\.SCRAPINGBEE_API_KEY && !process\.env\.BRIGHTDATA_TOKEN/);
 });
+
+test('recall census arm records a null serpQuery result as a failed arm (source guard)', () => {
+  const src = read('scripts/audit-serp-census-recall.js');
+  assert.match(src, /results === null\) return \{ urls, raw: 0, ok: false, error: 'serp-provider-unavailable'/);
+  assert.doesNotMatch(src, /serpQuery\(query, \{ dateRange, preferSpeed: false, page, geo \}\) \|\| \[\]/);
+});
