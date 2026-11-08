@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7146-b",
   "planId": "6308e0a2-e0c6-4df7-b917-998a474a5a02",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-08T19:45:18.762Z",
   "submitter": {
     "name": null,
@@ -54,5 +54,29 @@
         "description": "shows.json: looking-at-you-off-broadway-2027.type"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-08T20:36:28.532Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for water-walker-off-broadway-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for seven-in-one-blow-or-the-brave-little-kid-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for honor-off-broadway-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for looking-at-you-off-broadway-2027"
+    }
+  ],
+  "executedIn": "ci"
 }
