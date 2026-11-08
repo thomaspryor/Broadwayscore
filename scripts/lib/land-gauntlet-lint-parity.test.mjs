@@ -29,9 +29,7 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '.
 
 // A test.yml lint-workflows script the gauntlet deliberately does not run
 // needs a one-line reason here, not a silent skip.
-const EXEMPT = new Map([
-  ['audit-launchd-plist-path', 'advisory in test.yml (continue-on-error, rule 19: new gates land advisory first); add to the gauntlet when it is armed'],
-]);
+const EXEMPT = new Map([]);
 
 const stripComments = (lines) => lines.filter((l) => !/^\s*#/.test(l));
 const esc = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');

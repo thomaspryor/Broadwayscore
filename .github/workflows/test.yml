@@ -4022,14 +4022,13 @@ jobs:
         # a trailing `# launchd-stale-sync-ok: <reason>` comment.
         run: node scripts/audit-launchd-stale-sync-guard.js
 
-      - name: Audit — launchd plist bare command without PATH (advisory)
+      - name: Audit — launchd plist bare command without PATH
         if: always() && steps.deps.outcome == 'success'
-        # Advisory first (CLAUDE.md rule 19). A plist that runs bare `node`/`gh`
-        # with no EnvironmentVariables.PATH and no `bash -lc` exits 127 under
-        # launchd's PATH=/usr/bin:/bin:/usr/sbin:/sbin: the WSJ monthly cookie
-        # refresh did that and never ran. The repo is clean today (the one
-        # offender is fixed), so this can arm blocking after a clean stretch.
-        continue-on-error: true
+        # A plist that runs bare `node`/`gh` with no EnvironmentVariables.PATH and
+        # no `bash -lc` exits 127 under launchd's PATH=/usr/bin:/bin:/usr/sbin:/sbin:
+        # the WSJ monthly cookie refresh did that and never ran. Blocking from the
+        # start (not advisory): it reads only tracked scripts/launchd/*.plist, so it
+        # cannot flap on bot-driven data, and it is clean on all 26 plists today.
         run: node scripts/audit-launchd-plist-path.js
 
       - name: Audit — gate corpus-guard coverage
