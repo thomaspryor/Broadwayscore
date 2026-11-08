@@ -28,9 +28,9 @@ test('fresh ci row passes, even with a newer local row after it', () => {
   assert.equal(r.status, 'pass');
   assert.equal(r.name, BOARD_DISPATCH_FRESHNESS_ROW);
 });
-test('37h warns, 61h errors', () => {
-  assert.equal(evaluateBoardDispatchFreshness({ ledgerText: row({ ts: at(37), source: 'ci' }), nowMs: NOW }).status, 'warn');
-  assert.equal(evaluateBoardDispatchFreshness({ ledgerText: row({ ts: at(61), source: 'ci' }), nowMs: NOW }).status, 'error');
+test('49h warns, 97h errors', () => {
+  assert.equal(evaluateBoardDispatchFreshness({ ledgerText: row({ ts: at(49), source: 'ci' }), nowMs: NOW }).status, 'warn');
+  assert.equal(evaluateBoardDispatchFreshness({ ledgerText: row({ ts: at(97), source: 'ci' }), nowMs: NOW }).status, 'error');
 });
 test('disabled passes regardless of age', () => {
   assert.equal(evaluateBoardDispatchFreshness({ ledgerText: null, nowMs: NOW, disabled: true }).status, 'pass');
@@ -39,10 +39,16 @@ test('bad JSON lines are skipped', () => {
   const t = row({ ts: at(5), source: 'ci' }) + '\n{not json\n\n';
   assert.equal(lastCiRow(t).ts, at(5));
 });
-test('fresh error row (as board-dispatch.js writes it) warns', () => {
-  const r = evaluateBoardDispatchFreshness({ ledgerText: row({ ts: at(2), source: 'ci', error: 'Linear 500' }), nowMs: NOW });
+test('one fresh error row passes (transient), two in a row warn', () => {
+  const one = evaluateBoardDispatchFreshness({ ledgerText: row({ ts: at(2), source: 'ci', error: 'Linear 500' }), nowMs: NOW });
+  assert.equal(one.status, 'pass');
+  assert.match(one.message, /Linear 500/);
+  const two = row({ ts: at(26), source: 'ci', error: 'Linear 502' }) + '\n' + row({ ts: at(3), source: 'local' }) + '\n' + row({ ts: at(2), source: 'ci', error: 'Linear 500' });
+  const r = evaluateBoardDispatchFreshness({ ledgerText: two, nowMs: NOW });
   assert.equal(r.status, 'warn');
-  assert.match(r.message, /Linear 500/);
+  assert.match(r.message, /Last two .*Linear 500/);
+  const recovered = row({ ts: at(26), source: 'ci', error: 'Linear 502' }) + '\n' + row({ ts: at(2), source: 'ci' });
+  assert.equal(evaluateBoardDispatchFreshness({ ledgerText: recovered, nowMs: NOW }).status, 'pass');
 });
 test('unparseable ts errors', () => {
   assert.equal(evaluateBoardDispatchFreshness({ ledgerText: row({ ts: 'nope', source: 'ci' }), nowMs: NOW }).status, 'error');
@@ -62,7 +68,7 @@ test('playbook routes the row to a this-week human action', () => {
   assert.equal(e.urgency, 'this-week');
   assert.ok(e.humanAction);
 });
-test('messages state hours, so 40h never reads as "2d (threshold 2d)"', () => {
-  const r = evaluateBoardDispatchFreshness({ ledgerText: row({ ts: at(40), source: 'ci' }), nowMs: NOW });
-  assert.match(r.message, /40h old \(warn threshold: 36h\)/);
+test('messages state hours, so 50h never reads as "2d (threshold 2d)"', () => {
+  const r = evaluateBoardDispatchFreshness({ ledgerText: row({ ts: at(50), source: 'ci' }), nowMs: NOW });
+  assert.match(r.message, /50h old \(warn threshold: 48h\)/);
 });
