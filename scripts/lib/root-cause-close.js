@@ -136,49 +136,117 @@ function rootCauseCloseMessage(identifier, result, blocking) {
 }
 
 /**
- * Files changed by the card's OWN commits (subject names the card), across
- * every landing of it (reverts excluded) plus local HEAD and origin/main.
- * Other cards' commits in the same range (rebases, trains) are left out.
- * Returns string[] or null when nothing could be read.
+ * The card's OWN commits (subject names the card), across every landing of
+ * it (reverts excluded) plus local HEAD and origin/main. Other cards' commits
+ * in the same range (rebases, trains) are left out. Returns
+ * { commits: string[], run } or null when git could not be read.
  */
-function landedFilesForCard(identifier, { cwd = process.cwd(), landingsText = null, exec = null } = {}) {
+function ownCommitsForCard(identifier, { cwd = process.cwd(), landingsText = null, exec = null } = {}) {
+  const { execFileSync } = require('child_process');
+  const run = exec || ((args) => execFileSync('git', args, { cwd, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'], timeout: 60000, maxBuffer: 32 * 1024 * 1024 }));
+  const sc = require('./stuck-card-closer.js');
+  let text = landingsText;
+  if (text === null) {
+    try { text = require('fs').readFileSync(require('path').join(cwd, 'data/audit/landings.jsonl'), 'utf8'); } catch { text = ''; }
+  }
+  const shas = sc.parseLandingRows(text)
+    .filter((l) => !/revert/i.test(l.branch) && sc.branchIsForCard(l.branch, identifier))
+    .map((l) => l.sha);
+  const idRe = new RegExp(`(?<![A-Za-z0-9])${identifier.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(?![0-9])`, 'i');
+  for (const sha of shas) {
+    try { run(['cat-file', '-e', `${sha}^{commit}`]); } catch {
+      try { run(['fetch', '-q', '--depth=30', 'origin', sha]); } catch { /* unreachable sha: skip */ }
+    }
+  }
+  const commits = [];
+  for (const tip of [...shas, 'HEAD', 'origin/main']) {
+    let log = '';
+    try { log = run(['log', '-60', '--format=%H%x09%s', tip]); } catch { continue; }
+    for (const line of log.split('\n')) {
+      const [h, subj] = line.split('\t');
+      if (h && subj && idRe.test(subj) && !/^revert/i.test(subj) && !commits.includes(h)) commits.push(h);
+    }
+  }
+  return { commits, run };
+}
+
+/** Files the card's own commits changed: string[], or null when unknown. */
+function landedFilesForCard(identifier, opts = {}) {
   try {
-    const { execFileSync } = require('child_process');
-    const run = exec || ((args) => execFileSync('git', args, { cwd, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'], timeout: 60000 }));
-    const sc = require('./stuck-card-closer.js');
-    let text = landingsText;
-    if (text === null) {
-      try { text = require('fs').readFileSync(require('path').join(cwd, 'data/audit/landings.jsonl'), 'utf8'); } catch { text = ''; }
-    }
-    const shas = sc.parseLandingRows(text)
-      .filter((l) => !/revert/i.test(l.branch) && sc.branchIsForCard(l.branch, identifier))
-      .map((l) => l.sha);
-    const idRe = new RegExp(`(?<![A-Za-z0-9])${identifier.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(?![0-9])`, 'i');
-    const commits = new Set();
-    const tips = [...shas];
-    for (const sha of shas) {
-      try { run(['cat-file', '-e', `${sha}^{commit}`]); } catch {
-        try { run(['fetch', '-q', '--depth=30', 'origin', sha]); } catch { /* unreachable sha: skip */ }
-      }
-    }
-    for (const ref of ['HEAD', 'origin/main']) tips.push(ref);
-    for (const tip of tips) {
-      let log = '';
-      try { log = run(['log', '-60', '--format=%H%x09%s', tip]); } catch { continue; }
-      for (const line of log.split('\n')) {
-        const [h, subj] = line.split('\t');
-        if (h && subj && idRe.test(subj) && !/^revert/i.test(subj)) commits.add(h);
-      }
-    }
-    if (!commits.size) return null;
+    const own = ownCommitsForCard(identifier, opts);
+    if (!own || !own.commits.length) return null;
     const files = new Set();
-    for (const c of commits) {
-      for (const f of run(['show', '--name-only', '--format=', c]).split('\n')) if (f.trim()) files.add(f.trim());
+    for (const c of own.commits) {
+      for (const f of own.run(['show', '--name-only', '--format=', c]).split('\n')) if (f.trim()) files.add(f.trim());
     }
     return [...files].sort();
   } catch {
     return null;
   }
+}
+
+/**
+ * The card's own diff, data files left out (they drown the code), capped at
+ * maxBytes. { diff, files, truncated } or null when no own commit is found.
+ */
+function cardDiff(identifier, { maxBytes = 20000, ...opts } = {}) {
+  try {
+    const own = ownCommitsForCard(identifier, opts);
+    if (!own || !own.commits.length) return null;
+    const exclude = [':(exclude)data/**', ':(exclude)*.json', ':(exclude)*.jsonl', ':(exclude)package-lock.json'];
+    let diff = '';
+    const files = new Set();
+    for (const c of own.commits) {
+      diff += own.run(['show', '--format=commit %h %s', c, '--', '.', ...exclude]);
+      for (const f of own.run(['show', '--name-only', '--format=', c]).split('\n')) if (f.trim()) files.add(f.trim());
+    }
+    // The file list leads, so a cut-off diff still shows the grader that a test or guard landed.
+    const list = [...files].sort();
+    const head = `Files changed (data files included here, left out of the diff below):\n${list.join('\n')}\n\n`;
+    return { diff: head + diff.slice(0, maxBytes), files: list, truncated: diff.length > maxBytes };
+  } catch {
+    return null;
+  }
+}
+
+// ---------- weekly independent sample (item 9) ----------
+
+// The grader sees the diff only, never the card text: the card says what the
+// closer claims, the diff says what landed. Hand-checked 2026-11-08: BRO-7066
+// (fixture date bumped) graded spot-fix 0.97, BRO-7098 (safe-check list
+// tightened) graded root-cause 0.95.
+const GRADER_SYSTEM = 'You grade a software fix by its diff only. root-cause = the change makes the whole class of defect ' +
+  'impossible or caught (a guard, a test that would fail for any case of the class, a type, a lint rule, removing the source ' +
+  'of the bug). spot-fix = it repairs this one case only (changes a value, patches one call site, edits data, bumps a date). ' +
+  'Reply JSON {"grade":"root-cause"|"spot-fix"|"unclear","confidence":0-1,"reason":"one sentence","guard_file":"path or null"}.';
+
+/** PURE. Parse the grader's reply; anything malformed is "unclear". */
+function parseGrade(text) {
+  try {
+    const j = JSON.parse(String(text || '').replace(/^```(?:json)?\s*|\s*```$/g, ''));
+    const grade = ['root-cause', 'spot-fix', 'unclear'].includes(j.grade) ? j.grade : 'unclear';
+    const confidence = Math.max(0, Math.min(1, Number(j.confidence) || 0));
+    return { grade, confidence, reason: String(j.reason || '').slice(0, 300), guardFile: j.guard_file || null };
+  } catch {
+    return { grade: 'unclear', confidence: 0, reason: 'unparseable grader reply', guardFile: null };
+  }
+}
+
+/** PURE. Share of graded cards that fixed the cause (unclear left out). */
+function summarizeSample(items) {
+  const rootCause = items.filter((i) => i.grade === 'root-cause').length;
+  const spot = items.filter((i) => i.grade === 'spot-fix').length;
+  const unclear = items.length - rootCause - spot;
+  const decided = rootCause + spot;
+  return { graded: items.length, rootCause, spot, unclear, share: decided ? Math.round((rootCause / decided) * 1000) / 10 : null };
+}
+
+/** PURE. Deterministic pick for a week: same seed, same cards. */
+function seededPick(ids, n, seed) {
+  let h = 2166136261;
+  for (const ch of String(seed)) { h ^= ch.charCodeAt(0); h = Math.imul(h, 16777619) >>> 0; }
+  const score = (id) => { let x = h; for (const ch of id) { x ^= ch.charCodeAt(0); x = Math.imul(x, 16777619) >>> 0; } return x; };
+  return [...ids].sort((a, b) => score(a) - score(b)).slice(0, n);
 }
 
 module.exports = {
@@ -190,5 +258,11 @@ module.exports = {
   checkRootCauseClose,
   rootCauseCloseBlocking,
   rootCauseCloseMessage,
+  ownCommitsForCard,
   landedFilesForCard,
+  cardDiff,
+  GRADER_SYSTEM,
+  parseGrade,
+  summarizeSample,
+  seededPick,
 };
