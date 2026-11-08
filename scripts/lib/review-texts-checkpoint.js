@@ -262,9 +262,9 @@ function retryPendingPushes({ repoDir, onLanded, pendingPath = pendingPathDefaul
         // the remote still holds the parent blob and the working tree holds
         // either the parent or our committed content.
         const abs = path.join(repo, r.rel);
-        let wt = null;
-        try { wt = fs.readFileSync(abs, 'utf8'); } catch { /* deleted */ }
-        const wtBlob = wt === null ? null : git(repo, ['hash-object', '--stdin'], { input: wt }).trim();
+        // Hash the file by path (same filters `git add` applies); stdin is
+        // closed in git() so `--stdin` would hash an empty blob.
+        const wtBlob = fs.existsSync(abs) ? git(repo, ['hash-object', '--', abs]).trim() : null;
         const remoteUnmoved = r.landedBlob === r.parentBlob;
         const wtUnmoved = wtBlob === r.parentBlob || wtBlob === r.blob;
         const haveBlob = !!r.blob && gitOk(repo, ['cat-file', '-e', `${r.blob}^{blob}`]);
