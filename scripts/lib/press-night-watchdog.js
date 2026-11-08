@@ -195,4 +195,66 @@ function undoUnsent(prev, next, action) {
   return st;
 }
 
-module.exports = { evaluateTick, undoUnsent, foundReviews, runIsForShow, activeFor, STAGES, MOVERS, STALL_MIN, NIGHT_START_H, PIPELINE_WINDOW_MIN };
+/**
+ * BRO-7160: does the fast lane own this night right now? The full lease-aware decision the poller and Express use
+ * (lane-only-markets.js oldPathStandsDown), not the two variables alone: once the lane releases its lease (window end,
+ * fallback, stand-down, crash) the old path and this watchdog come back on even while LANE_ONLY_MARKETS still names the
+ * market. Unread variables, unknown lease state or unreadable markers all answer "no" (fail toward publishing). Pure.
+ * @param {{onlyMarkets:{ok:boolean,value?:string}, standdown:{ok:boolean,value?:string}, show:object,
+ *          leaseState:object|null, markers:object|null, now?:number|string|Date}} input
+ * @returns {{owns:boolean, reason:string}}
+ */
+function laneOwnership(input) {
+  const { oldPathStandsDown } = require('./opening-night-lane/lane-only-markets'); // lane lib: required, never edited
+  const d = oldPathStandsDown(input);
+  return { owns: d.standDown === true, reason: d.reason };
+}
+
+/** Claim results that mean another writer already sent this stage: the once-per-night slot is spent. */
+const SPENT_CLAIM_REASONS = new Set(['already-dispatched']);
+const errText = (e) => String((e && e.message) || e).split('\n')[0].slice(0, 100);
+
+/**
+ * BRO-7160: claim -> dispatch -> mark dispatched (the lane watchdog's order, auto-fallback.js runWatchdogTick). Marking
+ * before the dispatch, as this watchdog used to, left a failed `gh workflow run` recorded as sent, so no tick and no
+ * other watchdog retried it. A failed dispatch hands the claim back (`unclaim`, best effort; a claim left behind is
+ * this holder's own and still retakeable) and reports `spent:false` so the caller undoes its state and retries next
+ * tick. A claim refused for any reason but already-dispatched (in flight elsewhere, branch unreadable, push failed)
+ * is not spent either. Ports may throw. Pure apart from the ports.
+ * @param {{claim:()=>{ok:boolean,reason?:string}, dispatch:()=>any, mark:()=>{ok:boolean,reason?:string},
+ *          unclaim:()=>{ok:boolean,reason?:string}}} ports
+ * @returns {{sent:boolean, spent:boolean, reason:string, marked?:boolean, unclaimed?:boolean}}
+ */
+function claimThenDispatch({ claim, dispatch, mark, unclaim }) {
+  let c;
+  try { c = claim() || { ok: false, reason: 'no claim result' }; } catch (e) { c = { ok: false, reason: `claim threw: ${errText(e)}` }; }
+  if (!c.ok) return { sent: false, spent: SPENT_CLAIM_REASONS.has(c.reason), reason: `not claimed (${c.reason})` };
+  let failed = null;
+  try { if (dispatch() === false) failed = 'dispatch returned false'; } catch (e) { failed = errText(e); }
+  if (failed) {
+    let u;
+    try { u = unclaim() || { ok: false }; } catch (e) { u = { ok: false, reason: errText(e) }; }
+    return { sent: false, spent: false, reason: `dispatch failed (${failed})`, unclaimed: !!u.ok };
+  }
+  let m;
+  try { m = mark() || { ok: false, reason: 'no mark result' }; } catch (e) { m = { ok: false, reason: errText(e) }; }
+  return { sent: true, spent: true, marked: !!m.ok, reason: m.ok ? 'dispatched' : `dispatched; mark failed (${m.reason})` };
+}
+
+/**
+ * Hands back this holder's own undispatched claim on the lane fallback branch (same key shape as auto-fallback.js
+ * claimFallback). Never touches another holder's claim or a dispatched one. Pure.
+ * @returns {{ok:true, state:object} | {ok:false, reason:string}}
+ */
+function releaseClaim(state, { show, night, holder }) {
+  const key = `${show}|${night}`;
+  const leases = { ...((state && state.leases) || {}) };
+  const cur = leases[key];
+  if (!cur) return { ok: false, reason: 'gone' };
+  if (cur.holder !== holder) return { ok: false, reason: 'other-holder' };
+  if (cur.dispatched) return { ok: false, reason: 'dispatched' };
+  delete leases[key];
+  return { ok: true, state: { ...state, leases } };
+}
+
+module.exports = { laneOwnership, claimThenDispatch, releaseClaim, SPENT_CLAIM_REASONS, evaluateTick, undoUnsent, foundReviews, runIsForShow, activeFor, STAGES, MOVERS, STALL_MIN, NIGHT_START_H, PIPELINE_WINDOW_MIN };
