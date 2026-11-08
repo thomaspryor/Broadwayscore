@@ -334,11 +334,12 @@ function redGates({ gates = GATES, dir, read = readGateResult }) {
  * toplevel-regression the failing path is the key's `.name`. Anything else (a
  * non-TAP/non-file-keyed gate, a crash with nothing parsed, an unlocated `?::`
  * key, a location in a helper module, a budget-cut or timed-out script) runs
- * the gate in full.
- * @param {{gate:string, branch:{exit:number|null,text:string,root?:string}|null, branchFiles:string[]|null}} o
+ * the gate in full. `isolated` (BRO-7134, the Codex runner): the scoped files are re-run alone on
+ * the branch AND on base, so timing failures are scoped too instead of forcing a full run.
+ * @param {{gate:string, branch:{exit:number|null,text:string,root?:string}|null, branchFiles:string[]|null, isolated?:boolean}} o
  * @returns {{gate:string, scoped:boolean, files:string[], reason:string}}
  */
-function computeRerunScope({ gate, branch, branchFiles }) {
+function computeRerunScope({ gate, branch, branchFiles, isolated = false }) {
   const full = (reason) => ({ gate, scoped: false, files: [], reason });
   const fileKeyed = FILE_KEYED_GATES.has(gate);
   if (!TAP_GATES.has(gate) && !fileKeyed) return full('not keyed by test file');
@@ -371,7 +372,9 @@ function computeRerunScope({ gate, branch, branchFiles }) {
     if (!f.file || f.file === '?') return full(`unlocated failure "${f.name}"`);
     // A timeout or cancellation can come from full-batch load; alone on base it
     // may pass and turn a pre-existing failure into a refusal.
-    if (/ \[(testTimeoutFailure|cancelledByParent)\]$/.test(f.name)) return full(`timing failure "${f.name}"`);
+    // BRO-7134: with `isolated`, the caller re-runs these files alone on BOTH sides, so a
+    // load-dependent timeout is judged alone vs alone and can be scoped like any failure.
+    if (!isolated && / \[(testTimeoutFailure|cancelledByParent)\]$/.test(f.name)) return full(`timing failure "${f.name}"`);
     const file = normalizeTestPath(f.file);
     if (!ran.has(file)) return full(`failure located in ${file}, not a test file of this gate`);
     files.add(ran.get(file));

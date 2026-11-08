@@ -662,6 +662,29 @@ function newLandFailuresNow() {
     return landFailuresWith(D, gauntlet);
   } finally { fs.rmSync(harnessDir, { recursive: true, force: true }); }
 }
+/**
+ * BRO-7134: re-run each red file-list gate's failing files alone on the branch.
+ * -> Map<gate, {exit,text,root}>, only for gates whose failures all sit in files the batch ran
+ * (D.computeRerunScope, isolated) and whose re-run produced an exit code. Never runs an empty
+ * list: `node --test` with no files would run every test in the tree.
+ */
+function isolatedBranchRuns(D, red, branch) {
+  const plans = red.filter((b) => b.files).map((b) => ({ b, scope: D.computeRerunScope({ gate: b.gate, branch: branch.get(b.gate), branchFiles: b.files, isolated: true }) }))
+    .filter((p) => p.scope.scoped && p.scope.files.length);
+  const out = new Map();
+  if (!plans.length) return out;
+  for (const d of R.DATA_DIRS) R.dropDataDir(path.join(WT, 'data', d), WT); // as for the batch
+  SB.withTrees([WT], () => {
+    for (const { b, scope } of plans) {
+      keepLock();
+      const r = b.run(WT, scope.files);
+      if (typeof r.exit === 'number') out.set(b.gate, r);
+    }
+  });
+  cleanTree(WT);
+  provideData(WT);
+  return out;
+}
 function landFailuresWith(D, gauntlet) {
   requireSandbox();
   for (const d of R.DATA_DIRS) R.dropDataDir(path.join(WT, 'data', d), WT); // the link, or a dir a test made
@@ -698,14 +721,21 @@ function landFailuresWith(D, gauntlet) {
   const onlyMissingActionlint = (b) => b.gate === 'lint-workflows' && sh('actionlint', ['--version'], { timeoutMs: 30_000 }).code !== 0
     && [...D.parseGateFailures(b.gate, branch.get(b.gate).text, WT).values()].every((f) => f.name === 'actionlint')
     && D.parseGateFailures(b.gate, branch.get(b.gate).text, WT).size > 0;
-  const red = batches.filter((b) => branch.get(b.gate).exit !== 0 && !onlyMissingActionlint(b));
+  let red = batches.filter((b) => branch.get(b.gate).exit !== 0 && !onlyMissingActionlint(b));
+  // BRO-7134: the base side runs only the failing files, alone. Judged against the full batch,
+  // a test that fails only under batch load (a 300 s timeout, a race) passed alone on base and
+  // read as "new", rejecting good work. So re-run those files alone on the branch too and judge
+  // alone vs alone; the full batch result stays the verdict when the failures cannot be scoped.
+  const isolated = isolatedBranchRuns(D, red, branch);
+  for (const [gate, r] of isolated) log(`land checks: ${gate} failing file(s) re-run alone on the branch: ${r.exit === 0 ? 'all pass (failed only under batch load, not counted)' : 'still failing, judged alone against base'}`);
+  red = red.filter((b) => (isolated.get(b.gate) || branch.get(b.gate)).exit !== 0);
   const report = [];
   if (red.length) {
     keepLock();
     prepareBase();
     SB.withTrees([BASE_WT], () => { for (const b of red) {
       keepLock();
-      const br = branch.get(b.gate);
+      const br = isolated.get(b.gate) || branch.get(b.gate);
       let base;
       if (b.files) {
         const failing = [...new Set([...D.parseGateFailures(b.gate, br.text, WT).values()].map((f) => f.file))].filter((f) => f && f !== '?');
