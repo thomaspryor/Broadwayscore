@@ -83,7 +83,7 @@ export default function StagedPhotosField({ files, onChange, showTitle, disabled
         instantRemove
         disabled={disabled}
       />
-      <p className="mt-1 text-xs text-fg-muted" role={disabled ? 'status' : undefined}>{disabled ? 'Uploading photos. Keep this page open.' : 'Photos upload when you save. Only you can see them.'}</p>
+      <p className="mt-1 text-xs text-fg-muted" role="status">{disabled && files.length > 0 ? 'Uploading photos. Keep this page open.' : 'Photos upload when you save. Only you can see them.'}</p>
     </div>
   );
 }
