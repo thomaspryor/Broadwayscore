@@ -316,6 +316,12 @@ function censusTitleOnly(item, show, pool) {
   };
   const mine = longForms(show);
   if (!mine.some((f) => hay.includes(f))) return false;
+  // BRO-7163 F12: a title shared by sibling productions (Broadway + West End + tour) cannot be proven by
+  // the title alone. If another show spelling the same title is also in its run window on the item's
+  // date, the slug does not say which production it reviews, so title-only proof is refused and the
+  // cast/creative/venue proof has to decide.
+  if (pool.some((o) => o.id !== show.id && publishedInRunWindow(o, item.publishDate)
+    && longForms(o).some((f) => mine.some((m) => m === f)))) return false;
   return !pool.some((o) => o.id !== show.id && longForms(o).some((f) => hay.includes(f) && !mine.some((m) => m.includes(f) || f.includes(m))));
 }
 
