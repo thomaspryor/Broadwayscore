@@ -36,8 +36,11 @@ const cardDedupe = require('./card-dedupe.js');
 // carrying an older version is still found through its listed instances
 // (rootCardByOverlap) instead of getting a duplicate.
 const KEY_VERSION = 'v1';
-const ROOT_CAUSE_MARKER_RE = /<!--\s*root-cause-class:\s*(?:(v\d+):)?([^>]+?)\s*-->/;
-const STATUS_COMMENT_MARKER = '<!-- recurrence-detector:status -->';
+// Plain text lines: Linear drops HTML comments from descriptions and comments
+// (only 1 card in 200 days kept a "<!--", inside prose; ship-check BRO-7103).
+// The old comment form is still parsed.
+const ROOT_CAUSE_MARKER_RE = /^[ \t]*(?:<!--[ \t]*)?root-cause-class:[ \t]*(?:(v\d+):)?([^\n]+?)[ \t]*(?:-->)?[ \t]*$/m;
+const STATUS_COMMENT_MARKER = 'recurrence-detector-status:';
 
 // Filer prefixes that say WHO filed a card, not WHAT the problem is. Applied
 // repeatedly (a card can be "BSC Daily: Auto-fix: …").
@@ -63,7 +66,7 @@ const EXPECTED_REPEATS = [
 
 // Static root-cause cards that predate the detector, matched against the
 // raw TITLE of the class's instances (majority wins). Keep tiny: the marker
-// (<!-- root-cause-class: v1:KEY -->) is the normal path. BRO-3425 is the
+// (a `root-cause-class: v1:KEY` line) is the normal path. BRO-3425 is the
 // structural "main CI keeps going red" card; every per-job main-red class
 // reuses it so the detector never files a second one (BRO-7103 card text).
 const ROOT_CAUSE_OVERRIDES = [
@@ -115,7 +118,7 @@ function rootCauseMarker(description) {
 }
 
 function markerLine(key) {
-  return `<!-- root-cause-class: ${KEY_VERSION}:${key} -->`;
+  return `root-cause-class: ${KEY_VERSION}:${key}`;
 }
 
 /** BRO ids a root card lists (its description names its instances). */
@@ -321,6 +324,7 @@ function recurrenceCloseWarning(identifier, snapshot, relatedIds = []) {
  * A stale snapshot (>48h) routes nothing.
  */
 const ROUTE_STALE_MS = 48 * 36e5;
+const ROOT_WORK_MAX_MS = 14 * 24 * 36e5;
 function rootCauseRouteReason(issue, snapshot, nowMs = Date.now()) {
   if (!issue || !snapshot || !snapshot.instances || Number(issue.priority) === 1) return null;
   if (!(nowMs - ms(snapshot.generatedAt) <= ROUTE_STALE_MS)) return null;
@@ -328,7 +332,11 @@ function rootCauseRouteReason(issue, snapshot, nowMs = Date.now()) {
   if (!hit || !hit.rootCause || hit.rootCause === issue.identifier) return null;
   const cls = (snapshot.classes || []).find((c) => c.key === hit.classKey && c.rootCause === hit.rootCause);
   if (!cls) return null;
-  const working = cls.rootCauseState === 'started'
+  // A root card left In Progress for weeks is not being worked: stop holding
+  // its cases back (startedAt, not updatedAt: the detector's own comments
+  // bump updatedAt every day).
+  const startedAt = ms(cls.rootCauseStartedAt);
+  const working = (cls.rootCauseState === 'started' && !(nowMs - startedAt > ROOT_WORK_MAX_MS))
     || (cls.rootCauseState === 'unstarted' && cls.rootCauseStartedNow && nowMs - ms(cls.rootCauseCreatedAt) < ROUTE_STALE_MS);
   return working ? 'routed-to-root-cause' : null;
 }

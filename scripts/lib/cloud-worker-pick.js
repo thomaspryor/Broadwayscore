@@ -506,7 +506,11 @@ function pickCloudCard(issues, { nowMs, codex = false, recurrence = null }) {
     // BRO-7103: one more case of a recurring problem whose root-cause card is
     // being worked waits for that card instead of spending a worker on it.
     const routed = recurrence ? require('./recurrence-classes.js').rootCauseRouteReason(iss, recurrence, nowMs) : null;
-    if (routed) { skipped[routed] = (skipped[routed] || 0) + 1; continue; }
+    if (routed) {
+      skipped[routed] = (skipped[routed] || 0) + 1;
+      if (hasStartNowLine(iss) && iss.state && iss.state.type === 'unstarted') startNowSkipped[iss.identifier] = routed;
+      continue;
+    }
     const reason = skipReason(iss, nowMs, { codex });
     if (reason) skipped[reason] = (skipped[reason] || 0) + 1;
     else eligible.push(iss);
