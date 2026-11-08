@@ -1704,5 +1704,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-08T00:30:36.874Z"
+  },
+  {
+    "conditionKey": "land:land/bro-7103-recurrence-loop",
+    "title": "Landing blocked: unit-tests-node red on land/bro-7103-recurrence-loop",
+    "description": "land.yml did not land land/bro-7103-recurrence-loop: the unit-tests-node gate went red at d504b4f543. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/42431228550",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-7103-recurrence-loop"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "d504b4f543ffa3c34680ae8d41d451eabb5b610c"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42431228550"
+      }
+    ],
+    "queuedAt": "2026-11-08T01:06:58.002Z"
   }
 ]
