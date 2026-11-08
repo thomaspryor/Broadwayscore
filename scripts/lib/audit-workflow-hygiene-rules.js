@@ -1538,10 +1538,14 @@ function findEolNodeVersions(raw) {
  * otherwise read as "no offenders").
  */
 const SPARSE_FILE_OK_RE = /hygiene-sparse-file-ok:/;
+const unquote = (v) => v.replace(/^(['"])(.*)\1$/, '$2');
 function sparseCheckoutStepInfo(stepLines) {
   const text = stepLines.join('\n');
   if (!/^\s*(?:-\s+)?uses\s*:\s*['"]?actions\/checkout@/m.test(text)) return null;
-  const pathM = /^\s+path\s*:\s*['"]?([^'"#\s]+)/m.exec(text);
+  // Whole value (a `${{ github.workspace }}/x` path has spaces), unquoted,
+  // with `./` and trailing `/` dropped so `./sub` and `sub` match.
+  const pathM = /^\s+path\s*:\s*(.+)$/m.exec(text);
+  const pathVal = pathM ? unquote(pathM[1].replace(/\s+#.*$/, '').trim()).replace(/^(?:\.\/)+/, '').replace(/\/+$/, '') : '';
   const coneOff = /^\s+sparse-checkout-cone-mode\s*:\s*['"]?false\b/m.test(text);
   const ifM = /^\s*(?:-\s+)?if\s*:\s*(.+)$/m.exec(text);
   const missingGuard = !!ifM && /hashFiles\([^)]*\)\s*==\s*''/.test(ifM[1]);
@@ -1549,19 +1553,20 @@ function sparseCheckoutStepInfo(stepLines) {
   for (let i = 0; i < stepLines.length; i++) {
     const m = /^(\s+)sparse-checkout\s*:\s*(.*)$/.exec(stepLines[i]);
     if (!m) continue;
-    const inline = m[2].replace(/#.*$/, '').trim();
-    if (inline && inline !== '|' && inline !== '>') entries.push(inline);
+    const inline = m[2].replace(/\s+#.*$|^#.*$/, '').trim();
+    // Any block-scalar header: |, >, |-, |+, >-, |2 ...
+    if (inline && !/^[|>][+-]?\d*[+-]?$/.test(inline)) entries.push(unquote(inline));
     else {
       for (let j = i + 1; j < stepLines.length; j++) {
         const l = stepLines[j];
         if (l.trim() === '') continue;
         if (indentOf(l) <= m[1].length) break;
-        if (!l.trimStart().startsWith('#')) entries.push(l.trim());
+        if (!l.trimStart().startsWith('#')) entries.push(unquote(l.trim()));
       }
     }
   }
   const files = entries.filter((e) => !e.endsWith('/') && /[^/.][^/]*\.[A-Za-z0-9]{1,8}$/.test(e.split('/').pop()));
-  return { path: (pathM ? pathM[1] : '.').replace(/\/+$/, '') || '.', coneOff, missingGuard, files, exempt: SPARSE_FILE_OK_RE.test(text) };
+  return { path: pathVal || '.', coneOff, missingGuard, files, exempt: SPARSE_FILE_OK_RE.test(text) };
 }
 
 function findSparseFileRecheckouts(raw) {
