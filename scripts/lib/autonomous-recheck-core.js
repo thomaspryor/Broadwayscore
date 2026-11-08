@@ -451,6 +451,24 @@ function heldShare(entries, { now = Date.now(), days = 30, tsxTests } = {}) {
   return { ...c, days, share: tested ? c.pass / tested : null };
 }
 
+/**
+ * The 'Improvement: done claims that held' health row (BRO-7138). Pass carries
+ * the metric; warn only when the nightly recheck stopped writing summaries
+ * (its own dead-man), so a dead recheck files a card like any monitor.
+ * PURE: entries are the recheck ledger rows.
+ */
+function doneClaimsHeldRow(entries, { now = Date.now(), tsxTests } = {}) {
+  let lastSummary = -Infinity;
+  for (const e of entries || []) {
+    if (e && e.event === 'recheck-summary') { const t = Date.parse(e.ts); if (Number.isFinite(t) && t > lastSummary) lastSummary = t; }
+  }
+  const ageH = (now - lastSummary) / 3600000;
+  if (!(ageH <= 48)) {
+    return { status: 'warn', message: lastSummary === -Infinity ? 'The nightly acceptance recheck has never written a summary' : `The nightly acceptance recheck last wrote a summary ${Math.round(ageH)}h ago (>48h)` };
+  }
+  return { status: 'pass', message: heldShareLine(heldShare(entries, { now, days: 30, tsxTests }), heldShare(entries, { now, days: 7, tsxTests })) };
+}
+
 /** Plain line for the digest's internal section and the health row. */
 function heldShareLine(h30, h7) {
   const pct = (h) => (h.share == null ? 'nothing testable' : `${Math.round(h.share * 100)}% (${h.pass} of ${h.pass + h.fail})`);
@@ -643,6 +661,7 @@ module.exports = {
   recheckVerdict,
   heldShare,
   heldShareLine,
+  doneClaimsHeldRow,
   OPEN_BACKLOG_SWEEP_PRIORITIES,
   OPEN_BACKLOG_SWEEP_STATE_TYPES,
   selectOpenBacklogSweepCandidates,
