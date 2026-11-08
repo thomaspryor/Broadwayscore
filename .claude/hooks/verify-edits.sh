@@ -960,7 +960,7 @@ if os.environ.get('PR_FOLLOWTHROUGH_GATE_DISABLE', '0') != '1':
         # (landed, not live yet), or a later read of its LANDED/REFUSED line.
         # Started-but-unfinished, timed out (2) or bad ref (3) does not count.
         _wfl_run_re = re.compile(r'\bnode\s+\S*wait-for-land\.js\s+(refs/heads/)?land/')
-        _wfl_verdict_re = re.compile(r'\b(?:LANDED|REFUSED): (?:refs/heads/)?land/')
+        _wfl_verdict_re = re.compile(r'\b\d\d:\d\d:\d\dZ (?:LANDED|REFUSED): (?:refs/heads/)?land/')  # the waiter's own stamped line
         _wfl_pending = set()
         for _kind, _payload in events:
             if _kind in ('user_notice', 'user_text'):
