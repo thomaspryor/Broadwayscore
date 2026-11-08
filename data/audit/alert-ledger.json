@@ -5516,7 +5516,7 @@
       "resolveReason": "review-gap: no uncollected cited reviews on the latest audit"
     },
     "test-yml:data-validation-red": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Data audits failing (non-blocking): Audit review contamination",
       "firstSeen": "2026-09-23T19:33:16.776Z",
@@ -5527,7 +5527,9 @@
       "notifyCount": 40,
       "cardId": null,
       "linearIdentifier": "BRO-5882",
-      "silentRefires": 3
+      "silentRefires": 2,
+      "resolvedAt": "2026-11-08T17:29:59.643Z",
+      "resolveReason": "retired: per-step keys (BRO-7130)"
     },
     "review-gap:opening-window:elf-lyons-the-woman-on-the-edge-off-broadway-2026": {
       "status": "resolved",
@@ -38961,6 +38963,20 @@
       "lastSeen": "2026-11-08T16:54:07.319Z",
       "lastNotifiedAt": "2026-11-08T16:54:07.319Z",
       "lastSurfacedAt": "2026-11-08T16:54:07.319Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "test-yml:data-validation-red:validate-market-expansion": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Data audit failing: Validate market expansion",
+      "firstSeen": "2026-11-08T17:29:59.675Z",
+      "incidentOpenedAt": "2026-11-08T17:29:59.675Z",
+      "deferredAuto": true,
+      "lastSeen": "2026-11-08T17:29:59.675Z",
+      "lastNotifiedAt": "2026-11-08T17:29:59.675Z",
+      "lastSurfacedAt": "2026-11-08T17:29:59.675Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null

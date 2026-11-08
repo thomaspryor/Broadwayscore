@@ -396,5 +396,32 @@
       }
     ],
     "queuedAt": "2026-11-08T16:54:07.319Z"
+  },
+  {
+    "conditionKey": "test-yml:data-validation-red:validate-market-expansion",
+    "title": "Data audit failing: Validate market expansion",
+    "description": "The \"Validate market expansion\" step of test.yml's Data Validation job is failing on main. The job is non-blocking (BRO-3425), so main stays green, but the audit is reporting a real data or code problem. This card is scoped to this one step; another failing step gets its own card.",
+    "severity": "warning",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42503878285",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Job",
+        "value": "Data Validation"
+      },
+      {
+        "name": "Step",
+        "value": "Validate market expansion"
+      },
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/42503878285)"
+      }
+    ],
+    "queuedAt": "2026-11-08T17:29:59.676Z"
   }
 ]
