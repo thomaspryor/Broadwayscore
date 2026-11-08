@@ -19,7 +19,7 @@ run_clone() {
   # cause unreported (ship-check finding). fd 3 keeps the command's stdout.
   { err="$("$@" 2>&1 1>&3 3>&-)"; rc=$?; } 3>&1
   if [ "$rc" -ne 0 ]; then
-    if printf '%s\n' "$err" | grep -qi 'No space left on device'; then
+    if [[ "${err,,}" == *'no space left on device'* ]]; then
       echo "ERROR: $what: the disk is full (No space left on device), not an access problem."
       echo "ERROR:   Free space, then rerun: remove old worktrees (git worktree list; git worktree remove .claude/worktrees/<name>) and stale clones or build output (.next, node_modules caches)."
     else
