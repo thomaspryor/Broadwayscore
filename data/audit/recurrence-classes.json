@@ -1,28 +1,29 @@
 {
-  "generatedAt": "2026-11-08T00:08:50.491Z",
+  "generatedAt": "2026-11-08T09:02:59.490Z",
   "complete": true,
   "windowDays": 30,
   "quietDays": 21,
   "closeGateBlockingFrom": "2026-12-15",
   "keyVersion": "v1",
+  "filesSignal": true,
   "share": {
     "thisWeek": {
-      "total": 350,
+      "total": 344,
       "root-cause": 0,
-      "system": 254,
-      "instance": 96,
-      "share": 72.6
+      "system": 163,
+      "instance": 181,
+      "share": 47.4
     },
     "lastWeek": {
-      "total": 511,
+      "total": 508,
       "root-cause": 0,
-      "system": 406,
-      "instance": 105,
-      "share": 79.5
+      "system": 280,
+      "instance": 228,
+      "share": 55.1
     }
   },
   "recurringCount": 31,
-  "withRootCause": 7,
+  "withRootCause": 10,
   "preventions": {
     "claimed": 4,
     "failed": 4,
@@ -42,6 +43,7 @@
       "rootCause": "BRO-3425",
       "rootCauseState": "unstarted",
       "rootCauseStartedNow": false,
+      "rootCauseStartedAt": null,
       "extraRootCauses": [],
       "subtypes": {
         "no-data-dependency": 1
@@ -133,10 +135,11 @@
       ],
       "firstSeen": "2026-10-04T10:25:30.288Z",
       "lastSeen": "2026-11-07T21:27:15.426Z",
-      "rootCause": null,
-      "rootCauseState": null,
-      "rootCauseStartedNow": false,
-      "rootCauseCreatedAt": null,
+      "rootCause": "BRO-7116",
+      "rootCauseState": "unstarted",
+      "rootCauseStartedNow": true,
+      "rootCauseCreatedAt": "2026-11-08T09:03:49.499Z",
+      "rootCauseStartedAt": null,
       "extraRootCauses": [],
       "subtypes": {},
       "example": "Review gap — \"Harry Potter and the Cursed Child\" missing 1 cited review(s)",
@@ -227,6 +230,7 @@
       "rootCause": "BRO-3425",
       "rootCauseState": "unstarted",
       "rootCauseStartedNow": false,
+      "rootCauseStartedAt": null,
       "extraRootCauses": [],
       "subtypes": {
         "visual-qa transcript-scan etc.": 1
@@ -263,10 +267,11 @@
       ],
       "firstSeen": "2026-10-16T15:48:40.282Z",
       "lastSeen": "2026-11-06T14:29:28.232Z",
-      "rootCause": null,
-      "rootCauseState": null,
-      "rootCauseStartedNow": false,
-      "rootCauseCreatedAt": null,
+      "rootCause": "BRO-7117",
+      "rootCauseState": "unstarted",
+      "rootCauseStartedNow": true,
+      "rootCauseCreatedAt": "2026-11-08T09:03:49.858Z",
+      "rootCauseStartedAt": null,
       "extraRootCauses": [],
       "subtypes": {},
       "example": "Auto-fix (second try): Opening Night Poller Failed",
@@ -302,10 +307,11 @@
       ],
       "firstSeen": "2026-10-08T18:00:16.703Z",
       "lastSeen": "2026-10-31T16:19:23.343Z",
-      "rootCause": null,
-      "rootCauseState": null,
-      "rootCauseStartedNow": false,
-      "rootCauseCreatedAt": null,
+      "rootCause": "BRO-7118",
+      "rootCauseState": "unstarted",
+      "rootCauseStartedNow": true,
+      "rootCauseCreatedAt": "2026-11-08T09:03:50.170Z",
+      "rootCauseStartedAt": null,
       "extraRootCauses": [],
       "subtypes": {
         "city-row-unknown-show": 1,
@@ -345,21 +351,21 @@
       "key": "roundup listed review captured",
       "slug": "roundup-listed-review-captured",
       "inWindow": 11,
-      "total": 20,
+      "total": 19,
       "reasons": [
         "11 cards in 30 days"
       ],
-      "firstSeen": "2026-10-02T02:09:00.744Z",
+      "firstSeen": "2026-10-04T03:11:44.347Z",
       "lastSeen": "2026-10-16T01:58:25.730Z",
       "rootCause": null,
       "rootCauseState": null,
       "rootCauseStartedNow": false,
       "rootCauseCreatedAt": null,
+      "rootCauseStartedAt": null,
       "extraRootCauses": [],
       "subtypes": {},
       "example": "Sea Wall: 1 roundup-listed review(s) still not captured",
       "instances": [
-        "BRO-4506",
         "BRO-4572",
         "BRO-4573",
         "BRO-4629",
@@ -396,6 +402,7 @@
       "rootCause": "BRO-3425",
       "rootCauseState": "unstarted",
       "rootCauseStartedNow": false,
+      "rootCauseStartedAt": null,
       "extraRootCauses": [],
       "subtypes": {},
       "example": "main test.yml STILL red — auto-dispatch did not resolve it",
@@ -426,6 +433,7 @@
       "rootCauseState": null,
       "rootCauseStartedNow": false,
       "rootCauseCreatedAt": null,
+      "rootCauseStartedAt": null,
       "extraRootCauses": [],
       "subtypes": {
         "2019/1750 reqs": 1,
@@ -464,6 +472,7 @@
       "rootCause": "BRO-3425",
       "rootCauseState": "unstarted",
       "rootCauseStartedNow": false,
+      "rootCauseStartedAt": null,
       "extraRootCauses": [],
       "subtypes": {},
       "example": "main test.yml red: E2E Tests / Run unit tests — \"returns shows from different markets with same title\"",
@@ -493,6 +502,7 @@
       "rootCause": "BRO-3425",
       "rootCauseState": "unstarted",
       "rootCauseStartedNow": false,
+      "rootCauseStartedAt": null,
       "extraRootCauses": [],
       "subtypes": {},
       "example": "main test.yml red: E2E Tests / Run E2E tests",
@@ -522,6 +532,7 @@
       "rootCauseState": null,
       "rootCauseStartedNow": false,
       "rootCauseCreatedAt": null,
+      "rootCauseStartedAt": null,
       "extraRootCauses": [],
       "subtypes": {},
       "example": "BSC Daily: Stuck pipeline items",
@@ -550,6 +561,7 @@
       "rootCauseState": null,
       "rootCauseStartedNow": false,
       "rootCauseCreatedAt": null,
+      "rootCauseStartedAt": null,
       "extraRootCauses": [],
       "subtypes": {
         "2026-11-07": 1,
@@ -581,6 +593,7 @@
       "rootCauseState": null,
       "rootCauseStartedNow": false,
       "rootCauseCreatedAt": null,
+      "rootCauseStartedAt": null,
       "extraRootCauses": [],
       "subtypes": {},
       "example": "BSC Daily: Data quality: slug-mismatch lifetime sweep",
@@ -607,6 +620,7 @@
       "rootCause": "BRO-3425",
       "rootCauseState": "unstarted",
       "rootCauseStartedNow": false,
+      "rootCauseStartedAt": null,
       "extraRootCauses": [],
       "subtypes": {},
       "example": "main test.yml red: Unit Tests / Ordinal publishDate guard parity (BRO-2836) — \"foo returns the contracted value\"",
@@ -633,6 +647,7 @@
       "rootCauseState": null,
       "rootCauseStartedNow": false,
       "rootCauseCreatedAt": null,
+      "rootCauseStartedAt": null,
       "extraRootCauses": [],
       "subtypes": {
         "tests/unit/duplicate-images-live-data.test.mjs": 3
@@ -660,6 +675,7 @@
       "rootCauseState": null,
       "rootCauseStartedNow": false,
       "rootCauseCreatedAt": null,
+      "rootCauseStartedAt": null,
       "extraRootCauses": [],
       "subtypes": {},
       "example": "BSC Daily: Data quality: cross-outlet attribution drift",
@@ -686,6 +702,7 @@
       "rootCauseState": null,
       "rootCauseStartedNow": false,
       "rootCauseCreatedAt": null,
+      "rootCauseStartedAt": null,
       "extraRootCauses": [],
       "subtypes": {},
       "example": "Scheduled sender delivered MORE THAN ONCE in a day: reddit-post-ready",
@@ -717,6 +734,7 @@
       "rootCauseState": null,
       "rootCauseStartedNow": false,
       "rootCauseCreatedAt": null,
+      "rootCauseStartedAt": null,
       "extraRootCauses": [],
       "subtypes": {
         "tests/unit/venue-complex-live-data.test.mjs": 3
@@ -744,6 +762,7 @@
       "rootCauseState": null,
       "rootCauseStartedNow": false,
       "rootCauseCreatedAt": null,
+      "rootCauseStartedAt": null,
       "extraRootCauses": [],
       "subtypes": {
         "tests/unit/review-pullquotes-live-data.test.mjs": 3
@@ -771,6 +790,7 @@
       "rootCauseState": null,
       "rootCauseStartedNow": false,
       "rootCauseCreatedAt": null,
+      "rootCauseStartedAt": null,
       "extraRootCauses": [],
       "subtypes": {
         "tests/unit/bro3887-cache-fix-acceptance.test.mjs": 3
@@ -798,6 +818,7 @@
       "rootCauseState": null,
       "rootCauseStartedNow": false,
       "rootCauseCreatedAt": null,
+      "rootCauseStartedAt": null,
       "extraRootCauses": [],
       "subtypes": {
         "would score silently; baseline-diff": 3
@@ -825,6 +846,7 @@
       "rootCauseState": null,
       "rootCauseStartedNow": false,
       "rootCauseCreatedAt": null,
+      "rootCauseStartedAt": null,
       "extraRootCauses": [],
       "subtypes": {},
       "example": "BSC Daily: Data quality: stale announced shows",
@@ -850,6 +872,7 @@
       "rootCauseState": null,
       "rootCauseStartedNow": false,
       "rootCauseCreatedAt": null,
+      "rootCauseStartedAt": null,
       "extraRootCauses": [],
       "subtypes": {},
       "example": "BSC Daily: Commercial model drift",
@@ -875,6 +898,7 @@
       "rootCauseState": null,
       "rootCauseStartedNow": false,
       "rootCauseCreatedAt": null,
+      "rootCauseStartedAt": null,
       "extraRootCauses": [],
       "subtypes": {
         "baseline-diff": 3
@@ -902,6 +926,7 @@
       "rootCauseState": null,
       "rootCauseStartedNow": false,
       "rootCauseCreatedAt": null,
+      "rootCauseStartedAt": null,
       "extraRootCauses": [],
       "subtypes": {},
       "example": "LLM scoring daily spend over budget",
@@ -927,6 +952,7 @@
       "rootCauseState": null,
       "rootCauseStartedNow": false,
       "rootCauseCreatedAt": null,
+      "rootCauseStartedAt": null,
       "extraRootCauses": [],
       "subtypes": {},
       "example": "BSC Daily: Data quality: revival-unverified lifetime sweep",
@@ -952,6 +978,7 @@
       "rootCauseState": null,
       "rootCauseStartedNow": false,
       "rootCauseCreatedAt": null,
+      "rootCauseStartedAt": null,
       "extraRootCauses": [],
       "subtypes": {},
       "example": "BSC Daily: Landing blocked: scripts-lib-tests red",
@@ -977,6 +1004,7 @@
       "rootCauseState": null,
       "rootCauseStartedNow": false,
       "rootCauseCreatedAt": null,
+      "rootCauseStartedAt": null,
       "extraRootCauses": [],
       "subtypes": {},
       "example": "BSC Daily: Data quality: cv-wrongproduction lifetime sweep",
@@ -1001,6 +1029,7 @@
       "rootCause": "BRO-3425",
       "rootCauseState": "unstarted",
       "rootCauseStartedNow": false,
+      "rootCauseStartedAt": null,
       "extraRootCauses": [],
       "subtypes": {},
       "example": "main test.yml red: Lint Workflows / Audit — no submitter PII in committed data/audit files",
@@ -1026,6 +1055,7 @@
       "rootCauseState": null,
       "rootCauseStartedNow": false,
       "rootCauseCreatedAt": null,
+      "rootCauseStartedAt": null,
       "extraRootCauses": [],
       "subtypes": {
         "unmeasurable here": 1
@@ -1054,6 +1084,7 @@
       "rootCauseState": null,
       "rootCauseStartedNow": false,
       "rootCauseCreatedAt": null,
+      "rootCauseStartedAt": null,
       "extraRootCauses": [],
       "subtypes": {},
       "example": "Overdue P0/P1 queue: 1 P0 older than 24h, 12 P1 older than 7d",
@@ -1089,7 +1120,7 @@
     },
     {
       "key": "opening night watch",
-      "inWindow": 17,
+      "inWindow": 16,
       "reason": "scheduled per-night opening-night audit/watch log card"
     }
   ],
@@ -1355,235 +1386,235 @@
       "classKey": "unit tests run"
     },
     "BRO-4576": {
-      "rootCause": null,
+      "rootCause": "BRO-7116",
       "classKey": "review gap missing cited"
     },
     "BRO-4577": {
-      "rootCause": null,
+      "rootCause": "BRO-7116",
       "classKey": "review gap missing cited"
     },
     "BRO-4578": {
-      "rootCause": null,
+      "rootCause": "BRO-7116",
       "classKey": "review gap missing cited"
     },
     "BRO-4579": {
-      "rootCause": null,
+      "rootCause": "BRO-7116",
       "classKey": "review gap missing cited"
     },
     "BRO-4580": {
-      "rootCause": null,
+      "rootCause": "BRO-7116",
       "classKey": "review gap missing cited"
     },
     "BRO-4581": {
-      "rootCause": null,
+      "rootCause": "BRO-7116",
       "classKey": "review gap missing cited"
     },
     "BRO-4582": {
-      "rootCause": null,
+      "rootCause": "BRO-7116",
       "classKey": "review gap missing cited"
     },
     "BRO-4583": {
-      "rootCause": null,
+      "rootCause": "BRO-7116",
       "classKey": "review gap missing cited"
     },
     "BRO-4679": {
-      "rootCause": null,
+      "rootCause": "BRO-7116",
       "classKey": "review gap missing cited"
     },
     "BRO-4680": {
-      "rootCause": null,
+      "rootCause": "BRO-7116",
       "classKey": "review gap missing cited"
     },
     "BRO-4789": {
-      "rootCause": null,
+      "rootCause": "BRO-7116",
       "classKey": "review gap missing cited"
     },
     "BRO-4790": {
-      "rootCause": null,
+      "rootCause": "BRO-7116",
       "classKey": "review gap missing cited"
     },
     "BRO-4834": {
-      "rootCause": null,
+      "rootCause": "BRO-7116",
       "classKey": "review gap missing cited"
     },
     "BRO-4915": {
-      "rootCause": null,
+      "rootCause": "BRO-7116",
       "classKey": "review gap missing cited"
     },
     "BRO-4916": {
-      "rootCause": null,
+      "rootCause": "BRO-7116",
       "classKey": "review gap missing cited"
     },
     "BRO-4942": {
-      "rootCause": null,
+      "rootCause": "BRO-7116",
       "classKey": "review gap missing cited"
     },
     "BRO-4968": {
-      "rootCause": null,
+      "rootCause": "BRO-7116",
       "classKey": "review gap missing cited"
     },
     "BRO-4969": {
-      "rootCause": null,
+      "rootCause": "BRO-7116",
       "classKey": "review gap missing cited"
     },
     "BRO-4970": {
-      "rootCause": null,
+      "rootCause": "BRO-7116",
       "classKey": "review gap missing cited"
     },
     "BRO-5051": {
-      "rootCause": null,
+      "rootCause": "BRO-7116",
       "classKey": "review gap missing cited"
     },
     "BRO-5052": {
-      "rootCause": null,
+      "rootCause": "BRO-7116",
       "classKey": "review gap missing cited"
     },
     "BRO-5132": {
-      "rootCause": null,
+      "rootCause": "BRO-7116",
       "classKey": "review gap missing cited"
     },
     "BRO-5133": {
-      "rootCause": null,
+      "rootCause": "BRO-7116",
       "classKey": "review gap missing cited"
     },
     "BRO-5134": {
-      "rootCause": null,
+      "rootCause": "BRO-7116",
       "classKey": "review gap missing cited"
     },
     "BRO-5169": {
-      "rootCause": null,
+      "rootCause": "BRO-7116",
       "classKey": "review gap missing cited"
     },
     "BRO-5219": {
-      "rootCause": null,
+      "rootCause": "BRO-7116",
       "classKey": "review gap missing cited"
     },
     "BRO-5252": {
-      "rootCause": null,
+      "rootCause": "BRO-7116",
       "classKey": "review gap missing cited"
     },
     "BRO-5349": {
-      "rootCause": null,
+      "rootCause": "BRO-7116",
       "classKey": "review gap missing cited"
     },
     "BRO-5376": {
-      "rootCause": null,
+      "rootCause": "BRO-7116",
       "classKey": "review gap missing cited"
     },
     "BRO-5377": {
-      "rootCause": null,
+      "rootCause": "BRO-7116",
       "classKey": "review gap missing cited"
     },
     "BRO-5383": {
-      "rootCause": null,
+      "rootCause": "BRO-7116",
       "classKey": "review gap missing cited"
     },
     "BRO-5462": {
-      "rootCause": null,
+      "rootCause": "BRO-7116",
       "classKey": "review gap missing cited"
     },
     "BRO-5464": {
-      "rootCause": null,
+      "rootCause": "BRO-7116",
       "classKey": "review gap missing cited"
     },
     "BRO-5465": {
-      "rootCause": null,
+      "rootCause": "BRO-7116",
       "classKey": "review gap missing cited"
     },
     "BRO-5466": {
-      "rootCause": null,
+      "rootCause": "BRO-7116",
       "classKey": "review gap missing cited"
     },
     "BRO-5467": {
-      "rootCause": null,
+      "rootCause": "BRO-7116",
       "classKey": "review gap missing cited"
     },
     "BRO-5468": {
-      "rootCause": null,
+      "rootCause": "BRO-7116",
       "classKey": "review gap missing cited"
     },
     "BRO-5469": {
-      "rootCause": null,
+      "rootCause": "BRO-7116",
       "classKey": "review gap missing cited"
     },
     "BRO-5470": {
-      "rootCause": null,
+      "rootCause": "BRO-7116",
       "classKey": "review gap missing cited"
     },
     "BRO-5471": {
-      "rootCause": null,
+      "rootCause": "BRO-7116",
       "classKey": "review gap missing cited"
     },
     "BRO-5472": {
-      "rootCause": null,
+      "rootCause": "BRO-7116",
       "classKey": "review gap missing cited"
     },
     "BRO-5473": {
-      "rootCause": null,
+      "rootCause": "BRO-7116",
       "classKey": "review gap missing cited"
     },
     "BRO-5474": {
-      "rootCause": null,
+      "rootCause": "BRO-7116",
       "classKey": "review gap missing cited"
     },
     "BRO-5475": {
-      "rootCause": null,
+      "rootCause": "BRO-7116",
       "classKey": "review gap missing cited"
     },
     "BRO-5512": {
-      "rootCause": null,
+      "rootCause": "BRO-7116",
       "classKey": "review gap missing cited"
     },
     "BRO-5513": {
-      "rootCause": null,
+      "rootCause": "BRO-7116",
       "classKey": "review gap missing cited"
     },
     "BRO-5514": {
-      "rootCause": null,
+      "rootCause": "BRO-7116",
       "classKey": "review gap missing cited"
     },
     "BRO-5558": {
-      "rootCause": null,
+      "rootCause": "BRO-7116",
       "classKey": "review gap missing cited"
     },
     "BRO-5629": {
-      "rootCause": null,
+      "rootCause": "BRO-7116",
       "classKey": "review gap missing cited"
     },
     "BRO-5704": {
-      "rootCause": null,
+      "rootCause": "BRO-7116",
       "classKey": "review gap missing cited"
     },
     "BRO-5705": {
-      "rootCause": null,
+      "rootCause": "BRO-7116",
       "classKey": "review gap missing cited"
     },
     "BRO-5764": {
-      "rootCause": null,
+      "rootCause": "BRO-7116",
       "classKey": "review gap missing cited"
     },
     "BRO-6042": {
-      "rootCause": null,
+      "rootCause": "BRO-7116",
       "classKey": "review gap missing cited"
     },
     "BRO-6731": {
-      "rootCause": null,
+      "rootCause": "BRO-7116",
       "classKey": "review gap missing cited"
     },
     "BRO-6765": {
-      "rootCause": null,
+      "rootCause": "BRO-7116",
       "classKey": "review gap missing cited"
     },
     "BRO-6896": {
-      "rootCause": null,
+      "rootCause": "BRO-7116",
       "classKey": "review gap missing cited"
     },
     "BRO-6950": {
-      "rootCause": null,
+      "rootCause": "BRO-7116",
       "classKey": "review gap missing cited"
     },
     "BRO-7095": {
-      "rootCause": null,
+      "rootCause": "BRO-7116",
       "classKey": "review gap missing cited"
     },
     "BRO-5550": {
@@ -1651,108 +1682,104 @@
       "classKey": "unit tests run scripts lib"
     },
     "BRO-5494": {
-      "rootCause": null,
+      "rootCause": "BRO-7117",
       "classKey": "opening night poller failed"
     },
     "BRO-5653": {
-      "rootCause": null,
+      "rootCause": "BRO-7117",
       "classKey": "opening night poller failed"
     },
     "BRO-5716": {
-      "rootCause": null,
+      "rootCause": "BRO-7117",
       "classKey": "opening night poller failed"
     },
     "BRO-5861": {
-      "rootCause": null,
+      "rootCause": "BRO-7117",
       "classKey": "opening night poller failed"
     },
     "BRO-6001": {
-      "rootCause": null,
+      "rootCause": "BRO-7117",
       "classKey": "opening night poller failed"
     },
     "BRO-6549": {
-      "rootCause": null,
+      "rootCause": "BRO-7117",
       "classKey": "opening night poller failed"
     },
     "BRO-6594": {
-      "rootCause": null,
+      "rootCause": "BRO-7117",
       "classKey": "opening night poller failed"
     },
     "BRO-6960": {
-      "rootCause": null,
+      "rootCause": "BRO-7117",
       "classKey": "opening night poller failed"
     },
     "BRO-6986": {
-      "rootCause": null,
+      "rootCause": "BRO-7117",
       "classKey": "opening night poller failed"
     },
     "BRO-7029": {
-      "rootCause": null,
+      "rootCause": "BRO-7117",
       "classKey": "opening night poller failed"
     },
     "BRO-7043": {
-      "rootCause": null,
+      "rootCause": "BRO-7117",
       "classKey": "opening night poller failed"
     },
     "BRO-4876": {
-      "rootCause": null,
+      "rootCause": "BRO-7118",
       "classKey": "national tour pages show wrong information page problem"
     },
     "BRO-4877": {
-      "rootCause": null,
+      "rootCause": "BRO-7118",
       "classKey": "national tour pages show wrong information page problem"
     },
     "BRO-4878": {
-      "rootCause": null,
+      "rootCause": "BRO-7118",
       "classKey": "national tour pages show wrong information page problem"
     },
     "BRO-4978": {
-      "rootCause": null,
+      "rootCause": "BRO-7118",
       "classKey": "national tour pages show wrong information page problem"
     },
     "BRO-4979": {
-      "rootCause": null,
+      "rootCause": "BRO-7118",
       "classKey": "national tour pages show wrong information page problem"
     },
     "BRO-4980": {
-      "rootCause": null,
+      "rootCause": "BRO-7118",
       "classKey": "national tour pages show wrong information page problem"
     },
     "BRO-4981": {
-      "rootCause": null,
+      "rootCause": "BRO-7118",
       "classKey": "national tour pages show wrong information page problem"
     },
     "BRO-4982": {
-      "rootCause": null,
+      "rootCause": "BRO-7118",
       "classKey": "national tour pages show wrong information page problem"
     },
     "BRO-4983": {
-      "rootCause": null,
+      "rootCause": "BRO-7118",
       "classKey": "national tour pages show wrong information page problem"
     },
     "BRO-4984": {
-      "rootCause": null,
+      "rootCause": "BRO-7118",
       "classKey": "national tour pages show wrong information page problem"
     },
     "BRO-5066": {
-      "rootCause": null,
+      "rootCause": "BRO-7118",
       "classKey": "national tour pages show wrong information page problem"
     },
     "BRO-5491": {
-      "rootCause": null,
+      "rootCause": "BRO-7118",
       "classKey": "national tour pages show wrong information page problem"
     },
     "BRO-6540": {
-      "rootCause": null,
+      "rootCause": "BRO-7118",
       "classKey": "national tour pages show wrong information page problem"
     },
     "BRO-6728": {
-      "rootCause": null,
+      "rootCause": "BRO-7118",
       "classKey": "national tour pages show wrong information page problem"
-    },
-    "BRO-4506": {
-      "rootCause": null,
-      "classKey": "roundup listed review captured"
     },
     "BRO-4572": {
       "rootCause": null,
@@ -2268,6 +2295,17 @@
     }
   },
   "lastSeenByKey": {
+    "setup local data builds missing cast manifests": "2026-11-08T07:20:56.595Z",
+    "arm auto revert breaking landings": "2026-11-08T05:27:58.103Z",
+    "cut runtime back under min": "2026-11-08T05:19:11.490Z",
+    "arm e2e local land job after measured lands": "2026-11-08T03:39:46.174Z",
+    "process exit drops queued stdout": "2026-11-08T03:20:56.774Z",
+    "worktree node modules reports hundreds false new tsc": "2026-11-08T02:41:07.619Z",
+    "watches get killed min background default": "2026-11-08T02:00:56.304Z",
+    "non live tests use escape hatch": "2026-11-08T01:14:01.836Z",
+    "arm live data lane land check after clean": "2026-11-08T01:13:57.380Z",
+    "e2e smoke land gauntlet src tests diffs": "2026-11-08T01:13:52.915Z",
+    "group files touched root lookup past days local": "2026-11-08T00:46:11.445Z",
     "find similar problems site data root cause continuous": "2026-11-07T23:47:34.750Z",
     "detect recurring problem classes escalate class one root": "2026-11-07T23:40:09.174Z",
     "escalation dispatches auto revert breaking landings per spec": "2026-11-07T23:38:02.539Z",
@@ -4120,18 +4158,48 @@
     "dirty dancing tour bww review roundup reached site": "2026-10-09T11:02:50.900Z",
     "add rsc you like globe cast auto trigger": "2026-10-09T10:59:56.056Z",
     "much ado woolf salesman saigon items": "2026-10-09T10:23:43.602Z",
-    "much ado globe contamination drury lane rehoming woolf": "2026-10-09T10:23:37.537Z",
-    "refetches rescoring calls own domain roundup flags left": "2026-10-09T07:23:15.302Z",
-    "postponed productions stay status open detector official site": "2026-10-09T03:14:59.860Z",
-    "byline dedup fabricated row block openingdate source same": "2026-10-09T02:23:44.622Z",
-    "bylines refetches need live outlet pages": "2026-10-09T02:23:43.998Z",
-    "run lint workflow guards dependencies check when push": "2026-10-09T01:06:16.226Z",
-    "direct ingested reviews sit unscored 45min cron llm": "2026-10-09T00:54:22.332Z",
-    "per outlet justification recency normalized volume analysis": "2026-10-09T00:44:43.007Z",
-    "image fetcher writes unverified google candidates over live": "2026-10-09T00:34:54.672Z",
-    "signal bars counts key": "2026-10-09T00:25:21.622Z",
-    "deleted account ghost session keeps failing saves hour": "2026-10-09T00:17:46.035Z",
-    "after first save sheet signed out shows device": "2026-10-09T00:17:45.404Z"
+    "much ado globe contamination drury lane rehoming woolf": "2026-10-09T10:23:37.537Z"
   },
-  "pendingRootCards": 24
+  "knownKeys": [
+    "bright data daily breaker tripped web unlocker2",
+    "bro repo actions cache stays below size evicts",
+    "commercial model drift",
+    "cross outlet attribution drift",
+    "e2e tests run",
+    "e2e tests run unit",
+    "headless dispatch success rate",
+    "lint workflows audit submitter pii committed data files",
+    "llm scoring daily spend over budget",
+    "main test yml red auto dispatch did resolve",
+    "national tour pages show wrong information page problem",
+    "off broadway venue complex unlinked bare form keyword",
+    "older than 24h",
+    "opening night poller failed",
+    "real data byte identical art across unrelated unlinked",
+    "reddit post ready",
+    "review files wrongproduction provenance but flag dropped",
+    "review gap missing cited",
+    "review missing pullquote recoverable excerpt sitting unused texts",
+    "revival unverified lifetime sweep",
+    "roundup listed review captured",
+    "same title sibling review misrouted wrong production",
+    "scripts lib tests red",
+    "show need review",
+    "slug mismatch lifetime sweep",
+    "stale announced shows",
+    "stuck pipeline items",
+    "unit tests ordinal publishdate guard parity",
+    "unit tests run",
+    "unit tests run scripts lib",
+    "wrongproduction lifetime sweep"
+  ],
+  "pendingRootCards": 21,
+  "sample": {
+    "generatedAt": "2026-11-08T08:58:55.173Z",
+    "graded": 8,
+    "rootCause": 6,
+    "spot": 2,
+    "share": 75,
+    "calibrationOk": true
+  }
 }
