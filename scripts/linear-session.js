@@ -370,6 +370,7 @@ async function cmdReport(args, deps = {}) {
   // without adding a type field to that return shape.
   let stateMoved = false;
   let refusal = null;
+  let rootCauseNote = null; // BRO-7132
   if (completion.stateId) {
     if (args.status === 'done') {
       const bypassReason =
@@ -424,6 +425,7 @@ async function cmdReport(args, deps = {}) {
           landedFiles: deps.landedFiles !== undefined ? deps.landedFiles : landedFilesIfFix(issue),
         });
         if (gate.warning) console.error(`⚠️  ${gate.warning}`);
+        if (gate.rootCauseSummary) rootCauseNote = { summary: gate.rootCauseSummary, missing: gate.rootCauseMissing || [] };
         if (gate.gated && !gate.allowed) refusal = gate;
       }
     }
@@ -444,8 +446,11 @@ async function cmdReport(args, deps = {}) {
       stateName: stateMoved ? completion.stateName : (issue.state && issue.state.name) || null,
       doneGateRefused: !!refusal,
       staleness,
+      ...(rootCauseNote ? { rootCauseMissing: rootCauseNote.missing } : {}),
     })
   );
+  // BRO-7132: the root-cause advisory again as the last line, where a tail sees it.
+  if (rootCauseNote && stateMoved) console.error(`⚠️  ${rootCauseNote.summary}`);
 
   if (refusal) {
     console.error(

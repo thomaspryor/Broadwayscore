@@ -65,7 +65,8 @@ const FIELDS = ['ROOT-CAUSE', 'CLASS-GUARD', 'RED-THEN-GREEN', 'COUSINS'];
 // close format (`PREVENTION: <guard> ; cousins: <where looked>`, BRO-4134) and
 // fills CLASS-GUARD / COUSINS only when no explicit line does (BRO-7132).
 const FIELD_RE = /^[ \t>*_-]*(ROOT-CAUSE|CLASS-GUARD|RED-THEN-GREEN|COUSINS|NO-ROOT-CAUSE|PREVENTION)(?:\*\*|__)?[ \t]*:(?:\*\*|__)?[ \t]*(.*)$/gim;
-const COUSINS_TAIL_RE = /\s*;\s*cousins\s*:\s*/i;
+// `; cousins:`, `, cousins:`, `— cousins checked:` and ` - cousins:` all split.
+const COUSINS_TAIL_RE = /\s*(?:[,;\u2014\u2013]|\s-)\s*cousins\b[^:\n]{0,30}:\s*/i;
 const PATH_RE = /(?:^|[\s`'"(])((?:\.?[\w@-]+\/)+[\w.@-]+\.[a-z0-9]{1,5})\b/gi;
 
 /** PURE. Is this a fix card (a defect repaired), as opposed to new work? */
@@ -92,6 +93,7 @@ function parseRootCauseBlock(texts) {
     for (const m of String(t || '').matchAll(FIELD_RE)) {
       const name = m[1].toUpperCase();
       const val = m[2].replace(/[ \t]*(?:\*\*|__)[ \t]*$/, '').trim();
+      if (!val) continue; // an empty line never erases an earlier value
       if (name === 'NO-ROOT-CAUSE') { noRootCause = val; continue; }
       if (name === 'CLASS-GUARD' || name === 'PREVENTION') {
         const [guard, ...rest] = val.split(COUSINS_TAIL_RE);

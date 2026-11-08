@@ -271,10 +271,49 @@ test('every close-format instruction names the fields the check reads', async ()
     'bsc-runner worker prompt': buildBudgetPreamble(60 * 60 * 1000),
     'wrap-up Fix template': fs.readFileSync(`${root}.claude/commands/wrap-up.md`, 'utf8').split('\n').find((l) => l.includes('**Fix:**')) || '',
     'CLAUDE.md rule 21': fs.readFileSync(`${root}CLAUDE.md`, 'utf8').split('### 21.')[1]?.split('\n### ')[0] || '',
+    'recurrence root-card template': fs.readFileSync(`${root}scripts/recurrence-detector.js`, 'utf8').split('## What to do')[1]?.split('RECHECK-AFTER date')[0] || '',
   };
   for (const [name, text] of Object.entries(sources)) {
     for (const field of ['ROOT-CAUSE:', 'RED-THEN-GREEN:', 'NO-ROOT-CAUSE:']) assert.ok(text.includes(field), `${name} must name ${field}`);
     assert.ok(/CLASS-GUARD:|PREVENTION:/.test(text), `${name} must name CLASS-GUARD: or PREVENTION:`);
     assert.ok(/COUSINS:|cousins:/.test(text), `${name} must name COUSINS: or a ; cousins: tail`);
   }
+});
+
+test('near-miss cousins separators split too, and an empty line never erases a value (BRO-7132 review)', () => {
+  for (const line of ['PREVENTION: a unit test, cousins: scripts/b.js', 'PREVENTION: a unit test — cousins checked: scripts/b.js', 'PREVENTION: a unit test - cousins: scripts/b.js']) {
+    const p = rcc.parseRootCauseBlock([line]);
+    assert.equal(p.fields['CLASS-GUARD'], 'a unit test', line);
+    assert.equal(p.fields.COUSINS, 'scripts/b.js', line);
+  }
+  // A guard path with a hyphen is never cut.
+  assert.equal(rcc.parseRootCauseBlock(['PREVENTION: scripts/lib/cousins-check.test.mjs']).fields['CLASS-GUARD'], 'scripts/lib/cousins-check.test.mjs');
+  const p = rcc.parseRootCauseBlock(['PREVENTION: scripts/a.test.mjs catches it', 'PREVENTION:']);
+  assert.equal(p.fields['CLASS-GUARD'], 'scripts/a.test.mjs catches it');
+});
+
+test('linear-session report --status=done also repeats the advisory as the last line (BRO-7132 review)', async () => {
+  const { spawnSync } = await import('node:child_process');
+  const { fileURLToPath } = await import('node:url');
+  const root = fileURLToPath(new URL('../..', import.meta.url));
+  const run = (summary) => spawnSync(process.execPath, ['-e', `
+    const linear = require('./scripts/lib/linear-client.js');
+    Object.assign(linear, {
+      getIssue: async (id) => ({ id: 'u', identifier: id, title: 'Opening night poller failed', description: '', state: { name: 'In Progress', type: 'started' }, comments: { nodes: [] } }),
+      createComment: async () => {},
+      getTeam: async () => ({ id: 't', states: [{ id: 's-d', name: 'Done', type: 'completed' }, { id: 's-b', name: 'Backlog', type: 'backlog' }] }),
+      updateIssue: async () => { console.error('UPDATE_ISSUE_CALLED'); return {}; },
+    });
+    require('./scripts/linear-session.js').cmdReport({ issue: 'BRO-1', status: 'done', summary: ${JSON.stringify(summary)} }, {
+      verifyEvidence: () => ({ verified: true, reason: 'stub' }),
+      verifyCmdEvidence: () => ({ verified: true, reason: 'stub' }),
+      landedFiles: null,
+    }).catch((e) => { console.error('THREW ' + e.message); process.exit(9); });`], { cwd: root, encoding: 'utf8', timeout: 30000, env: { ...process.env, ROOT_CAUSE_CLOSE_GATE: 'advisory', LINEAR_DONE_GATE_DISABLED: '' } });
+  const bare = run('PR-EVIDENCE: merged deployed checked (https://github.com/o/r/commit/abc1234)\nPREVENTION: scripts/a.test.mjs ; cousins: none');
+  assert.match(bare.stderr, /UPDATE_ISSUE_CALLED/, bare.stderr);
+  assert.match(bare.stderr.trim().split('\n').pop(), /ROOT-CAUSE CHECK: BRO-1 closed without ROOT-CAUSE, RED-THEN-GREEN/, bare.stderr);
+  assert.match(bare.stdout, /"rootCauseMissing"/);
+  const full = run(`PR-EVIDENCE: merged deployed checked (https://github.com/o/r/commit/abc1234)\n${FULL}`);
+  assert.match(full.stderr, /UPDATE_ISSUE_CALLED/, full.stderr);
+  assert.doesNotMatch(full.stderr, /ROOT-CAUSE CHECK/);
 });

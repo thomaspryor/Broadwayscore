@@ -361,11 +361,15 @@ function commentBodiesOldestFirst(nodes) {
     .map((n) => (n && n.body) || '');
 }
 
-/** PREVENTION: lines in a text blob. */
+/**
+ * PREVENTION: or CLASS-GUARD: lines in a text blob. Both name the guard; the
+ * close check (root-cause-close.js) reads both, so the claim count must too
+ * (BRO-7132).
+ */
 function preventionLines(text) {
   const out = [];
   for (const line of String(text || '').split('\n')) {
-    const m = line.match(/^\s*(?:[-*]\s+)?(?:\*\*)?PREVENTION:(?:\*\*)?\s*(.+)$/);
+    const m = line.match(/^\s*(?:[-*]\s+)?(?:\*\*)?(?:PREVENTION|CLASS-GUARD)(?:\*\*)?:(?:\*\*)?\s*(.+)$/);
     if (m) out.push(m[1].trim().slice(0, 300));
   }
   return out;

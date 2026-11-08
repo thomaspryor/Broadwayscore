@@ -482,3 +482,7 @@ test('commentBodiesOldestFirst sorts Linear page order and the detector uses it'
   const src = fs.readFileSync(new URL('../recurrence-detector.js', import.meta.url), 'utf8');
   assert.match(src, /commentsById\[id\] = rc\.commentBodiesOldestFirst\(nodes\)/);
 });
+
+test('preventionLines reads CLASS-GUARD lines too, the format the close check asks for (BRO-7132)', () => {
+  assert.deepEqual(rc.preventionLines('CLASS-GUARD: scripts/a.test.mjs\n**PREVENTION**: b\nNO-PREVENTION: docs only'), ['scripts/a.test.mjs', 'b']);
+});
