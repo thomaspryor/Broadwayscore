@@ -674,15 +674,19 @@ function isolatedBranchRuns(D, red, branch) {
   const out = new Map();
   if (!plans.length) return out;
   for (const d of R.DATA_DIRS) R.dropDataDir(path.join(WT, 'data', d), WT); // as for the batch
-  SB.withTrees([WT], () => {
-    for (const { b, scope } of plans) {
-      keepLock();
-      const r = b.run(WT, scope.files);
-      if (typeof r.exit === 'number') out.set(b.gate, r);
-    }
-  });
-  cleanTree(WT);
-  provideData(WT);
+  try {
+    SB.withTrees([WT], () => {
+      for (const { b, scope } of plans) {
+        keepLock();
+        const r = b.run(WT, scope.files);
+        if (typeof r.exit === 'number') out.set(b.gate, r); // no exit code: keep the batch verdict
+      }
+    });
+  } finally {
+    // A throw here must not leave WT without data or with test-rewritten files for the base run.
+    cleanTree(WT);
+    provideData(WT);
+  }
   return out;
 }
 function landFailuresWith(D, gauntlet) {
@@ -726,6 +730,8 @@ function landFailuresWith(D, gauntlet) {
   // a test that fails only under batch load (a 300 s timeout, a race) passed alone on base and
   // read as "new", rejecting good work. So re-run those files alone on the branch too and judge
   // alone vs alone; the full batch result stays the verdict when the failures cannot be scoped.
+  // A failure that is real only under load is not lost: an accepted branch still lands through
+  // land.yml, which runs the full batch and forces a full base run on timeouts.
   const isolated = isolatedBranchRuns(D, red, branch);
   for (const [gate, r] of isolated) log(`land checks: ${gate} failing file(s) re-run alone on the branch: ${r.exit === 0 ? 'all pass (failed only under batch load, not counted)' : 'still failing, judged alone against base'}`);
   red = red.filter((b) => (isolated.get(b.gate) || branch.get(b.gate)).exit !== 0);
