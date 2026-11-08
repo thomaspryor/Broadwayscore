@@ -21,13 +21,15 @@ test('fix cards are told apart from new work by title', () => {
     // Replay of 3819 closes (2026-11-08): phrasings the first word list missed.
     'recollect-for-scores times out every weekly run', 'Gate T false-positive blocks on ordinal prose',
     'Reddit audience data has had no successful write for 206h', 'Live show has ZERO critic reviews on site: Purpose',
-    'CI-side rebuild losses still poison deploy-watermark.json baseline', 'Reattribute misfiled outlet rows',
+    'deploy-watermark.json baseline poisoned by CI-side rebuild losses', 'Reattribute misfiled outlet rows',
     'theatre.reviews scraper truncates leading chars of critic name', 'rebuild-fast push transport hangs']) {
     assert.equal(rcc.isFixCard({ title: t }), true, t);
   }
   for (const t of ['Add missing Claude skills', 'Make critic byline distinct from pull quote', 'P2: Build the weekly grosses page', 'Backfill broken images',
     // Reviewed false positives kept out (UX audit cards often close as noise; 'refused'/'zero' read as features).
-    'UX audit: browse page spacing', 'Show a refused-close reason in the CLI', 'Zero reviews badge design', 'Fleet cost and waste audit']) {
+    'UX audit: browse page spacing', 'Show a refused-close reason in the CLI', 'Zero reviews badge design', 'Fleet cost and waste audit',
+    // Show titles hold the new words; they must not read as fixes even without shows.json.
+    'Track The Poison Tree reviews', 'Hang: opening night prep']) {
     assert.equal(rcc.isFixCard({ title: t }), false, t);
   }
 });

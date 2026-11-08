@@ -225,7 +225,7 @@ function printRouteDryRun() {
   const sha = (rows.find((r) => r.sha) || {}).sha || null;
   const batch = buildRouteBatch({ rows, handedOff, sha, ledgerEntries: before });
   console.log(`Run ${lastRun.runId}: ${rows.length} rechecked; mode tonight: ${mode.mode} (${mode.why})`);
-  console.log(`Not routed: ${batch.skipped.env} could not run here, ${batch.skipped.handedOff} handed off, ${batch.skipped.routed} routed before, ${batch.skipped.quietAlert || 0} alert quiet >48h (held)`);
+  console.log(`Not routed: ${batch.skipped.env} could not run here, ${batch.skipped.handedOff} handed off, ${batch.skipped.routed} routed before`);
   if (!batch.title) { console.log('Nothing to route.'); return; }
   console.log(`\nTITLE: ${batch.title}\n\n${batch.body}`);
 }

@@ -29,17 +29,17 @@ const MAX_ROUTED = 10;
 const DEDUP_DAYS = 30;
 // An alert-absent check fails while the alert fired inside the router's quiet
 // window (up to 168h), so it keeps "failing" for days after the alert stopped.
-// Replay of 110 nights: 8 cards failed this way 61-138h after the last fire and
-// none fired again. Hold those; a condition still firing refreshes lastSeen and
-// routes on a night within 48h of a fire (weekly/throttled families: within a
-// week). Daily detectors re-fire inside 48h (fixture fires at 43.5h and 47.2h).
-const QUIET_ALERT_HOLD_H = 48;
+// Replay of 110 nights (2026-11-08): 8 cards failed 61-138h after the last fire.
+// They still route (a Done card is rechecked on one night only, so holding one
+// would drop it for good), but the entry says so, so the worker checks the alert
+// ledger before anything else.
+const QUIET_ALERT_NOTE_H = 48;
 
-/** PURE. Hours since the alert last fired when this fail is a quiet-alert hold, else null. */
-function quietAlertHold(r) {
+/** PURE. Hours since the alert last fired when an alert-absent fail is quiet past QUIET_ALERT_NOTE_H, else null. */
+function quietAlertHours(r) {
   if (!r || !/check-alert-condition-absent\.js/.test(String(r.verifyCmd || ''))) return null;
   const m = /still firing .*?last fired \S+ \(([\d.]+)h ago, within \d+h\)/.exec(String(r.detail || r.note || ''));
-  return m && Number(m[1]) > QUIET_ALERT_HOLD_H ? Number(m[1]) : null;
+  return m && Number(m[1]) > QUIET_ALERT_NOTE_H ? Number(m[1]) : null;
 }
 
 /**
@@ -77,12 +77,12 @@ function alreadyRouted(ledgerEntries, { now = Date.now() } = {}) {
  * @param {{rows:object[], handedOff?:string[], ledgerEntries?:object[], now?:number, tsxTests?:Set<string>, sha?:string}} o
  *   rows: this run's results or its ledger 'recheck' rows (same fields)
  *   sha: the fresh-main commit the checks ran on (each entry names it)
- * @returns {{cards:object[], overflow:number, title:string|null, body:string|null, skipped:{env:number, handedOff:number, routed:number, quietAlert:number}}}
+ * @returns {{cards:object[], overflow:number, title:string|null, body:string|null, skipped:{env:number, handedOff:number, routed:number}}}
  */
 function buildRouteBatch({ rows, handedOff = [], ledgerEntries = [], now = Date.now(), tsxTests, sha = null } = {}) {
   const handed = new Set(handedOff);
   const routed = alreadyRouted(ledgerEntries, { now });
-  const skipped = { env: 0, handedOff: 0, routed: 0, quietAlert: 0 };
+  const skipped = { env: 0, handedOff: 0, routed: 0 };
   const seen = new Set();
   const fails = [];
   for (const r of rows || []) {
@@ -92,7 +92,6 @@ function buildRouteBatch({ rows, handedOff = [], ledgerEntries = [], now = Date.
     seen.add(r.cardId);
     if (handed.has(r.cardId)) { skipped.handedOff++; continue; }
     if (routed.has(r.cardId)) { skipped.routed++; continue; }
-    if (quietAlertHold(r) !== null) { skipped.quietAlert++; continue; }
     fails.push(r);
   }
   const cards = fails.slice(0, MAX_ROUTED);
@@ -104,13 +103,17 @@ function buildRouteBatch({ rows, handedOff = [], ledgerEntries = [], now = Date.
   const oneLine = (s) => String(s || '').replace(/\s+/g, ' ').trim().slice(0, 220);
   // The END of the output names the failure (assertion, exit line); the head is often setup noise.
   const tail = (s) => { const t = String(s || '').replace(/\s+/g, ' ').trim(); return t.length > 220 ? `...${t.slice(-220)}` : t; };
+  const quietNote = (c) => {
+    const h = quietAlertHours(c);
+    return h === null ? '' : `\n  - note: the alert last fired ${Math.round(h)}h ago and the check still counts it until its quiet window ends. Look at data/audit/alert-ledger.json first: if it has not fired since the card closed, the fix is likely holding; say so on the original card and close this entry without code changes.`;
+  };
   const commit = sha ? String(sha).slice(0, 12) : 'unknown';
   const body = [
     `The nightly acceptance recheck (BRO-7138) re-ran each card's own VERIFY command on fresh main and it FAILED. These were closed as done; the effect did not hold.`,
     '',
     'For each card below: reproduce on main, then either fix the regression, or (if the VERIFY itself went stale) rewrite it into a real check and say why in a comment on the original card. Do not reopen the original cards; do the work here.',
     '',
-    ...cards.map((c) => `- ${c.cardId} ${oneLine(c.name)}\n  - check: \`${c.verifyCmd}\`\n  - failed on main at ${commit}, output tail: ${tail(c.detail || c.note) || '(no output kept)'}`),
+    ...cards.map((c) => `- ${c.cardId} ${oneLine(c.name)}\n  - check: \`${c.verifyCmd}\`\n  - failed on main at ${commit}, output tail: ${tail(c.detail || c.note) || '(no output kept)'}${quietNote(c)}`),
     ...(overflow > 0 ? ['', `${overflow} more failed tonight and will be routed on a later night once these are cleared (cap ${MAX_ROUTED} per batch).`] : []),
     '',
     '## Acceptance criteria',
@@ -160,4 +163,4 @@ async function fileRouteBatch({ title, body, linearBrainMain, timeoutMs = 60000 
   }
 }
 
-module.exports = { DEFAULT_ROUTE_FROM, MAX_ROUTED, QUIET_ALERT_HOLD_H, quietAlertHold, routeMode, alreadyRouted, buildRouteBatch, fileRouteBatch };
+module.exports = { DEFAULT_ROUTE_FROM, MAX_ROUTED, QUIET_ALERT_NOTE_H, quietAlertHours, routeMode, alreadyRouted, buildRouteBatch, fileRouteBatch };

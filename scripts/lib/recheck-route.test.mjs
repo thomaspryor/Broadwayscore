@@ -28,13 +28,12 @@ test('routeMode: off switch wins, shadow before the arm date, live after, a bad 
   assert.match(bad.why, /unreadable, default used/);
 });
 
-test('real ledger fails: 62 of the 67 real ones are routable (5 quiet-alert holds), capped at one batch', () => {
+test('real ledger fails: only the 67 real ones are routable, capped at one batch', () => {
   const b = buildRouteBatch({ rows: realRows, now: NOW, tsxTests: TSX, sha: 'abc1234def5678' });
   assert.equal(b.skipped.env, 18);
   assert.equal(b.cards.length, MAX_ROUTED);
-  assert.equal(b.overflow, 62 - MAX_ROUTED);
-  assert.equal(b.skipped.quietAlert, 5);
-  assert.match(b.title, /^Recheck 2026-11-16: 62 done claims no longer hold on main$/);
+  assert.equal(b.overflow, 67 - MAX_ROUTED);
+  assert.match(b.title, /^Recheck 2026-11-16: 67 done claims no longer hold on main$/);
   assert.match(b.body, /## Acceptance criteria/);
   assert.match(b.body, /Do not reopen the original cards/);
   // Each entry names the fresh-main commit and the END of the output (where the failure is).
@@ -99,27 +98,28 @@ test('fileRouteBatch timeout: maybeFiled, and a late exit from main stays trappe
 });
 
 // Replay finding (2026-11-08): alert-absent checks kept failing for days after
-// the alert stopped (8 cards, 61-138h quiet, none fired again). Held, not routed.
-test('quiet-alert hold: an alert quiet > 48h is held; a recent fire and other checks still route', () => {
-  const { quietAlertHold, QUIET_ALERT_HOLD_H } = require('./recheck-route.js');
+// the alert stopped (8 cards, 61-138h quiet). They still route (a Done card is
+// rechecked one night only, so holding would drop it) with a note to look first.
+test('quiet alert: still routed, with a note; a recent fire and other checks get none', () => {
+  const { quietAlertHours, QUIET_ALERT_NOTE_H } = require('./recheck-route.js');
   const cmd = 'node scripts/check-alert-condition-absent.js --key-b64 abc';
   const row = (id, h, verifyCmd = cmd) => ({ cardId: id, name: id, status: 'fail', verifyCmd,
     detail: `[check-alert-condition-absent] FAIL: "k" still firing — open, last fired 2026-11-03T21:17:14.529Z (${h}h ago, within 168h)\n` });
-  assert.equal(QUIET_ALERT_HOLD_H, 48);
-  assert.equal(quietAlertHold(row('A', 107.9)), 107.9);
-  assert.equal(quietAlertHold(row('B', 47.2)), null, 'a daily detector fire just under the line still routes');
-  assert.equal(quietAlertHold(row('C', 100, 'node --test x.test.mjs')), null, 'only the alert-absent check is held');
-  assert.equal(quietAlertHold({ cardId: 'D', verifyCmd: cmd, detail: 'CANNOT TELL: x' }), null);
+  assert.equal(QUIET_ALERT_NOTE_H, 48);
+  assert.equal(quietAlertHours(row('A', 107.9)), 107.9);
+  assert.equal(quietAlertHours(row('B', 47.2)), null);
+  assert.equal(quietAlertHours(row('C', 100, 'node --test x.test.mjs')), null, 'only the alert-absent check');
+  assert.equal(quietAlertHours({ cardId: 'D', verifyCmd: cmd, detail: 'CANNOT TELL: x' }), null);
   const b = buildRouteBatch({ rows: [row('BRO-1', 107.9), row('BRO-2', 0.1), row('BRO-3', 47.2)], now: NOW, tsxTests: new Set() });
-  assert.deepEqual(b.cards.map((c) => c.cardId), ['BRO-2', 'BRO-3']);
-  assert.equal(b.skipped.quietAlert, 1);
+  assert.deepEqual(b.cards.map((c) => c.cardId), ['BRO-1', 'BRO-2', 'BRO-3'], 'nothing is dropped');
+  assert.equal((b.body.match(/note: the alert last fired 108h ago/g) || []).length, 1);
 });
 
-// The hold reads the check's own failure prose; this pins that coupling, so a
+// The note reads the check's own failure prose; this pins that coupling, so a
 // rewording in check-alert-condition-absent.js fails here instead of silently
-// routing quiet alerts again (ship-check review, 2026-11-08).
-test('quiet-alert hold recognises the message the real check writes', () => {
-  const { quietAlertHold } = require('./recheck-route.js');
+// dropping the note (ship-check review, 2026-11-08).
+test('quiet-alert note recognises the message the real check writes', () => {
+  const { quietAlertHours: quietAlertHold } = require('./recheck-route.js');
   const { decide } = require('../check-alert-condition-absent.js');
   const now = Date.parse('2026-11-08T09:13:45Z');
   const iso = (h) => new Date(now - h * 36e5).toISOString();
