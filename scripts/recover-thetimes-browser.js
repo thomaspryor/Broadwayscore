@@ -25,7 +25,6 @@
  */
 
 const fs = require('fs');
-const { readReviewForUpdate, persistReviewSnapshot } = require('./lib/persist-review-snapshot');
 const path = require('path');
 
 const args = process.argv.slice(2);
@@ -43,7 +42,7 @@ const showsFilter = args.find(a => a.startsWith('--shows='));
 const showsAllowlist = showsFilter ? new Set(showsFilter.split('=')[1].split(',')) : null;
 
 const { loadCookiesForDomain } = require('./lib/cookie-loader');
-const { loadCandidates, processRecoveredText, checkpoint } = require('./lib/browser-recovery-helpers');
+const { loadCandidates, processRecoveredText, stampDead, startRun, checkpoint } = require('./lib/browser-recovery-helpers');
 const { extractArticleText } = require('./lib/article-extractor');
 
 const CONFIG = {
@@ -132,6 +131,9 @@ async function main() {
 
   let candidates;
   try {
+    // Push/restore anything an earlier run committed but could not land
+    // (BRO-7171). Throws on a still-failing push: no new work on a backlog.
+    if (!dryRun) startRun();
     // The Sunday Times shares the thetimes.com paywall (BRO-5137 split it into its own outlet).
     candidates = loadCandidates({ filePrefix: ['times-uk', 'sunday-times'], showsAllowlist, maxUrls: CONFIG.maxUrls });
   } catch (e) {
@@ -171,9 +173,7 @@ async function main() {
       stats.dead++;
       deadEntries.push({ reviewId: c.reviewId, url: c.url, reason: result.error || 'no text extracted' });
       if (!dryRun) {
-        const data = readReviewForUpdate(c.filePath);
-        data.incompleteReason = `thetimes-browser-recovery: ${result.error || 'no text extracted'} (${new Date().toISOString()})`;
-        persistReviewSnapshot({ filePath: c.filePath, data: data, trailingNewline: true });
+        stampDead(c, { incompleteReason: `thetimes-browser-recovery: ${result.error || 'no text extracted'} (${new Date().toISOString()})` });
       }
       continue;
     }
@@ -202,7 +202,8 @@ async function main() {
     }
   }
 
-  if (stats.recovered > 0 && !dryRun) checkpoint(stats, 'Times UK browser recovery');
+  // Tracker-driven: also lands dead-candidate stamps when nothing was recovered.
+  if (!dryRun) checkpoint(stats, 'Times UK browser recovery');
 
   fs.writeFileSync(CONFIG.reportPath, JSON.stringify({ ...stats, deadEntries, timestamp: new Date().toISOString() }, null, 2) + '\n');
 
