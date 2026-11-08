@@ -97,6 +97,20 @@ const IDENTITY_KEYS = ['showId', 'outletId', 'criticName', 'originalScore', 'ass
 const isEmpty = (v) => v == null || v === '' || v === false || (Array.isArray(v) && v.length === 0);
 const canon = (v) => JSON.stringify(v, (k, x) => (x && typeof x === 'object' && !Array.isArray(x)
   ? Object.fromEntries(Object.keys(x).sort().map((key) => [key, x[key]])) : x));
+// Fetch-STATE reasons (retry bookkeeping a fuller copy clears). Verdict reasons
+// (wrong_content, non_review, scraper_garbage, url_content_mismatch...) are
+// read by scoring (is-scoreable.ts, compute-composite.js) and never waived.
+const FETCH_STATE_REASONS = new Set(['not_attempted', 'paywall', 'bot_blocked', 'scraper_timeout',
+  'partial_text', 'url_dead', 'route_capped', 'no_url', 'no_text', 'code_error']);
+// Retry/fetch bookkeeping a later run rewrites. Used only by the no-text rule.
+const BOOKKEEPING_KEYS = new Set(['fetchRetryAfter', 'fetchDiscoveryAbandoned', 'textRetryAttemptedAt',
+  'fetchMethod', 'fetchAttempts', 'fetchTier', 'archivePath', 'contentVerification',
+  'contentVerificationPromoted', 'criticBackfillAttempt', 'textFetchedAt']);
+const UNKNOWN_CRITIC = /^\s*(unknown|unnamed)?\s*$/i;
+const isFetchStateOnly = (a) => isEmpty(a.incompleteReason) || FETCH_STATE_REASONS.has(a.incompleteReason);
+// An excerpt-tier file keeps its text in *Excerpt fields, not fullText.
+const hasNoTextToLose = (a, b) => isEmpty(a.fullText)
+  && Object.keys(a).every((k) => !/Excerpt$/.test(k) || isEmpty(a[k]) || canon(a[k]) === canon(b[k]));
 function mainSupersedesRescue(rescueText, mainText) {
   let a; let b;
   try { a = JSON.parse(rescueText); b = JSON.parse(mainText); } catch { return false; }
@@ -107,11 +121,25 @@ function mainSupersedesRescue(rescueText, mainText) {
   if (!ua || ua !== normUrl(b.url)) return false;
   const ra = TIER_RANK[a.contentTier];
   const rb = TIER_RANK[b.contentTier];
+  // A placeholder critic on the RESCUE that main later named is not a conflict.
+  const idDiffers = (k) => !isEmpty(a[k]) && !isEmpty(b[k]) && JSON.stringify(a[k]) !== JSON.stringify(b[k])
+    && !(k === 'criticName' && typeof a[k] === 'string' && UNKNOWN_CRITIC.test(a[k]));
+  if (IDENTITY_KEYS.some(idDiffers)) return false;
+  const waivable = (k) => CONTENT_KEYS.has(k)
+    || ((k === 'incompleteReason' || k === 'incompleteDetail') && isFetchStateOnly(a))
+    || (k === 'criticName' && UNKNOWN_CRITIC.test(String(a[k])));
+  // BRO-7139: a rescued copy with no text (no fullText, excerpts equal to
+  // main's) loses nothing to main at an equal or higher tier (or one main
+  // judged invalid), provided every other value it holds matches main or is
+  // retry bookkeeping a later run rewrote.
+  // Only ever widens: when it does not apply, the older rule below decides.
+  if (ra !== undefined && rb !== undefined && hasNoTextToLose(a, b) && (rb >= ra || b.contentTier === 'invalid')
+    && Object.keys(a).every((k) => isEmpty(a[k]) || canon(a[k]) === canon(b[k]) || k === 'url'
+      || BOOKKEEPING_KEYS.has(k) || waivable(k))) return true;
   // Identical text on main, whatever tier the pipeline gave it since, loses nothing.
   const sameText = typeof a.fullText === 'string' && a.fullText !== '' && a.fullText === b.fullText;
   if (!sameText && (ra === undefined || rb === undefined || rb <= ra)) return false;
-  if (IDENTITY_KEYS.some((k) => !isEmpty(a[k]) && !isEmpty(b[k]) && JSON.stringify(a[k]) !== JSON.stringify(b[k]))) return false;
-  return Object.keys(a).every((k) => CONTENT_KEYS.has(k) || isEmpty(a[k]) || !isEmpty(b[k]));
+  return Object.keys(a).every((k) => waivable(k) || isEmpty(a[k]) || !isEmpty(b[k]));
 }
 
 /**
