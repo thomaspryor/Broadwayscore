@@ -225,6 +225,8 @@ function categorizeBoard(issues, { now = new Date(), secret = null, lastRecheckS
       url: issue.url || null,
       priority: Number(issue.priority) || 0,
       state: issue.state && issue.state.name || null,
+      // BRO-7137: the digest's stuck-pile count reads card age from this same report.
+      createdAt: issue.createdAt || null,
       category,
       reason: category === 'other' ? reason : null,
       traits: CATEGORIES.map((c) => c.key).filter((k) => k !== 'other' && traits.has(k)),
