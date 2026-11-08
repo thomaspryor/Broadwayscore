@@ -44,6 +44,6 @@ test('specialists land inside the cap and are not duplicated with main domains',
 test('discovery script Strategy 1 is capped by strategyOneCap and uses the planner (source guard)', () => {
   const src = fs.readFileSync(new URL('../../scripts/discover-opening-night-reviews.js', import.meta.url), 'utf8');
   assert.match(src, /planStrategyOneTargets\(/);
-  assert.match(src, /searched >= strategyOneCap\(SERP_CALL_BUDGET\)/);
+  assert.match(src, /strategyOneCalls >= strategyOneCap\(SERP_CALL_BUDGET\)/);
   assert.doesNotMatch(src, /outletIds\.push\(\.\.\.getLondonSupplementalOutlets/);
 });

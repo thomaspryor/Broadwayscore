@@ -31,3 +31,10 @@ test('F06 source guard: every parallel discovery layer is persisted as it settle
     assert.ok(block.includes(`persistLayerOnSettle('${label}'`), `${label} must be persisted on settle`);
   }
 });
+
+test('F06: pre-SERP pass skips results already persisted at settle, and a persist failure keeps the layer (source guard)', () => {
+  const src = fs.readFileSync(new URL('../../scripts/opening-night-poller.js', import.meta.url), 'utf8');
+  assert.match(src, /settledReviews\.add\(/);
+  assert.match(src, /settledReviews\.has\(r\)/);
+  assert.match(src, /persist-on-completion failed/);
+});

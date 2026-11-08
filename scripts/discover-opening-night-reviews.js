@@ -289,7 +289,7 @@ async function prefetchWithSlotGate({ showId, showDir, url, criticName, canonica
   if (first.action === 'skip') return { skip: true, reason: first.reason };
   const pre = await prefetchDiscoveredArticle(url, { criticName, outletId: canonicalOutletId, showId });
   if (first.action === 'proceed') return { skip: false, pre };
-  const second = dedupe.decideAfterPrefetch(showDir, input, pre && pre.criticName, norm);
+  const second = dedupe.decideAfterPrefetch(showDir, input, pre && pre.criticName, norm, first.slotFile);
   if (second.action === 'skip') return { skip: true, reason: second.reason };
   if (second.action === 'unresolved-collision') {
     console.log(`  [QUEUED] ${url}: byline unresolved and ${second.slotFile} holds a different review; recorded for review, not merged`);
@@ -367,6 +367,7 @@ async function main() {
   let searched = 0;
   let skippedDupe = 0;
   let skippedCovered = 0;
+  let strategyOneCalls = 0; // attempts, so searches that throw still count against the cap
 
   // === Strategy 1: Site-specific SERP for each outlet ===
   const TIER1_OUTLETS = isWestEnd ? TIER1_OUTLETS_WE : TIER1_OUTLETS_BW;
@@ -409,13 +410,14 @@ async function main() {
     // Hard per-run SERP cap — applies to Strategy 1 too, so the budget actually
     // bounds total spend (ship-check: Codex + Claude) rather than only gating 2b
     // after Strategy 1 already overspent.
-    if (!underSerpBudget() || searched >= strategyOneCap(SERP_CALL_BUDGET)) {
+    if (!underSerpBudget() || strategyOneCalls >= strategyOneCap(SERP_CALL_BUDGET)) {
       console.log(`  ⚠ Strategy 1 stopped at ${searched} outlet searches (SERP budget ${SERP_CALL_BUDGET}, used ${_serpCallsUsed}); remaining budget kept for news + broad`);
       break;
     }
 
     const query = `site:${domain} "${showTitle}" ${reviewKeyword}${year ? ` ${year}` : ''}${dateFilter}`;
 
+    strategyOneCalls++;
     try {
       const results = await searchGoogle(query, 3);
       searched++;
