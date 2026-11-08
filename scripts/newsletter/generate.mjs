@@ -87,7 +87,7 @@ const horizon7Str = horizon7Date.toISOString().slice(0, 10);
 // default 'broadway' is the original US edition. The edition flips PRIMARY (the
 // hero markets) and the branding; each section filters on PRIMARY so one
 // generator serves both. West End has no grosses feed, so the WE edition drops
-// Box Office / Recoupment / Season Standing / Opera entirely (see assembly).
+// Box Office / Recoupment / Season Standing entirely; opera gets its own section.
 // Defined up here (not with BRAND rendering) because the cross-issue state key
 // below is edition-scoped.
 const EDITION = resolveNewsletterEdition(process.env.NEWSLETTER_EDITION); // throws on typos — 'westend' must not silently build the Broadway edition
@@ -402,7 +402,7 @@ function showHref(show) { return show && show.slug ? `${SITE}/show/${show.slug}`
 // default 'broadway' is the original US edition. The edition flips PRIMARY (the
 // hero markets) and the branding; each section filters on PRIMARY so one
 // generator serves both. West End has no grosses feed, so the WE edition drops
-// Box Office / Recoupment / Season Standing / Opera entirely (see assembly).
+// Box Office / Recoupment / Season Standing entirely; opera gets its own section.
 // Opera shows (type='opera') are surfaced in their own dedicated Opera
 // Openings section and EXCLUDED from every other section. Opera coverage
 // follows different conventions: T1-flat weighting (per src/lib/engine.ts
@@ -2332,7 +2332,7 @@ function inLondonOpeningWindow(s) {
 
 function weOpeningStories() {
   const ranked = shows
-    .filter(s => (s.category === 'west-end' || s.category === 'off-west-end') && inLondonOpeningWindow(s) && !excludedShowIds.has(s.id))
+    .filter(s => (s.category === 'west-end' || s.category === 'off-west-end') && !isOperaShow(s) && inLondonOpeningWindow(s) && !excludedShowIds.has(s.id))
     .map(s => ({ s, agg: aggregateScore(s.id), isCatchUp: !inWeek(s.openingDate) }))
     .filter(x => x.agg && x.agg.count >= minReviews(x.s.category) && hasFreshRunCoverage(x.s) && (IS_WE || quietBroadwayWeek || x.agg.avg >= 75))
     // Genuine in-week openings always outrank a grace-window catch-up show
@@ -2351,7 +2351,10 @@ function weOpeningStories() {
 }
 
 function londonSection() {
-  const list = shows.filter(s => (s.category === 'west-end' || s.category === 'off-west-end') && inLondonOpeningWindow(s) && !excludedShowIds.has(s.id));
+  // Opera is not West End theatre (owner, 2026-11-08: ENO's Iphigenie en
+  // Tauride led the WE weekly's subject and hero card). It gets its own
+  // Opera Openings section lower down, in both editions.
+  const list = shows.filter(s => (s.category === 'west-end' || s.category === 'off-west-end') && !isOperaShow(s) && inLondonOpeningWindow(s) && !excludedShowIds.has(s.id));
   if (!list.length) return null;
   const withScore = list.map(s => ({ s, agg: aggregateScore(s.id), isCatchUp: !inWeek(s.openingDate) })).filter(x => x.agg && x.agg.count >= minReviews(x.s.category) && hasFreshRunCoverage(x.s));
   if (!withScore.length) return null;
@@ -2487,7 +2490,13 @@ function weBroadwaySection() {
 // differ from theatre. Indigo/violet accent picks a color distinct from
 // gold (NYC) and pink (London) so the three feeds read as siblings.
 function operaOpeningsSection() {
-  const list = shows.filter(s => isOperaShow(s) && inWeek(s.openingDate) && !excludedShowIds.has(s.id));
+  // WE edition: London opera only (ENO, Royal Opera...), using the same
+  // 14-day catch-up window as London Openings so an opera that opened late
+  // last week and was never featured still gets its card. Broadway edition
+  // keeps every in-week opera opening.
+  const isLondon = (s) => s.category === 'west-end' || s.category === 'off-west-end';
+  const list = shows.filter(s => isOperaShow(s) && !excludedShowIds.has(s.id)
+    && (IS_WE ? (isLondon(s) && inLondonOpeningWindow(s)) : inWeek(s.openingDate)));
   if (!list.length) return null;
   // Opera carries the most priorRuns in the corpus (Met revivals:
   // carmen-off-broadway-2025 and don-giovanni-off-broadway-2025 both mix
@@ -2495,7 +2504,10 @@ function operaOpeningsSection() {
   // fresh-run gate at least as much as the others (QA review, 2026-09-20).
   const withScore = list.map(s => ({ s, agg: aggregateScore(s.id) })).filter(x => x.agg && x.agg.count >= 3 && hasFreshRunCoverage(x.s));
   if (!withScore.length) return null;
+  // This week's openings before grace-window catch-ups (same rule as London Openings).
+  withScore.sort((a, b) => Number(!inWeek(a.s.openingDate)) - Number(!inWeek(b.s.openingDate)));
   const marketColor = '#a78bfa'; // indigo/violet — opera's accent
+  if (IS_WE) markFeatured(...withScore.map(x => x.s.id)); // grace window: don't repeat next week
   markOpening('opera-openings', withScore.map(x => x.s));
   // All opening cards are the same large feature size (user 2026-07-11) —
   // mirrors London Openings. showRow renders the OPERA + market pills.
@@ -2747,8 +2759,8 @@ function _slot(name, html) {
 if (_dropSet.size) process.stderr.write(`[newsletter] dropping sections: ${[..._dropSet].join(', ')}\n`);
 if (_includeSet.size) process.stderr.write(`[newsletter] opt-in sections: ${[..._includeSet].join(', ')}\n`);
 // WE edition: a lean, West End-first order. No Box Office (no WE grosses feed),
-// no Off-Broadway openings, no Recoupment / Announced-Closings / Opera / Season
-// Standing. The WE openings (londonSection, relabeled "Opened in the West End")
+// no Off-Broadway openings, no Recoupment / Announced-Closings / Season
+// Standing. London opera gets its own Opera Openings section below Broadway. The WE openings (londonSection, relabeled "Opened in the West End")
 // are the hero; Broadway (weBroadwaySection, "Opened on Broadway") is the
 // secondary cross-market feed, placed right after Closing this Week — the
 // same relative slot londonSection occupies in the Broadway edition's own
@@ -2759,6 +2771,9 @@ const sectionOrder = IS_WE ? [
   _slot('award-score-movers', awardMover),
   _slot('closing-this-week', clo),
   _slot('broadway-we', bwWe),
+  // Opera has its own section, below the West End and Broadway theatre news
+  // (owner, 2026-11-08), mirroring the Broadway edition.
+  _slot('opera-openings', opera),
   _slot('rave-pan-of-the-week', ravepan),
   _slot('casting-updates', cas),
   _slot('upcoming-openings', upcomingTop || upcomingBottom),
@@ -3358,7 +3373,7 @@ sections.writeMeta(`${outDir}/${slug}.meta.json`, {
   // filter to the current edition's section set + honor NEWSLETTER_DROP_SECTIONS.
   openingShows: dedupeShowRefs(_openingShowRefs
     .filter(r => (IS_WE
-      ? ['london-openings', 'also-opened-recently', 'broadway-we']
+      ? ['london-openings', 'also-opened-recently', 'broadway-we', 'opera-openings']
       // NB: also-opened-recently is WE-only — the Broadway sectionOrder has no
       // slot for it, so including it here would gate the BW draft on shows the
       // email never renders (ship-check finding, 2026-08-02).
