@@ -421,7 +421,8 @@ function nyReviewCountByOutlet() {
   if (_nyReviewCounts) return _nyReviewCounts;
   _nyReviewCounts = new Map();
   try {
-    const ny = new Set(loadShows().filter((s) => s && (s.category === 'broadway' || s.category === 'off-broadway')).map((s) => s.id));
+    const { isBroadwayCategory, isOffBroadwayCategory } = require('./lib/venue-classification');
+    const ny = new Set(loadShows().filter((s) => isBroadwayCategory(s) || isOffBroadwayCategory(s)).map((s) => s.id));
     const reviews = cachedReviews();
     // A sample or truncated reviews.json would read every regional outlet as 0 and drop
     // its rows: fail open below a plausible corpus size.
