@@ -1893,5 +1893,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-08T06:27:12.688Z"
+  },
+  {
+    "conditionKey": "land:land/bro-7102-job-headroom",
+    "title": "Landing blocked: rebase red on land/bro-7102-job-headroom",
+    "description": "land.yml did not land land/bro-7102-job-headroom: the rebase gate went red at a89d9abfb9. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-7102-job-headroom @ a89d9abfb9 (origin/land/bro-7102-job-headroom) → origin/main @ 021956f683 REFUSED: rebase: branch would not rebase cleanly onto origin/main @ 021956f683: Rebasing (1/1) error: could not apply a89d9abfb97... BRO-7102 stage 4: Unit Tests limit 30->45 (stopgap) + \"Main: job time headroom\" row hint: Resolve all conflicts manually, mark them as resolved with hint: \"g Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/42453448621",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-7102-job-headroom"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "a89d9abfb97dcbfc63f87d716d5c66f9717198f8"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42453448621"
+      }
+    ],
+    "queuedAt": "2026-11-08T06:37:39.217Z"
   }
 ]
