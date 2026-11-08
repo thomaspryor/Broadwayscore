@@ -120,10 +120,11 @@ function planDispatch(report, handlers = HANDLERS) {
       if (row.sample.length < SAMPLE) row.sample.push(card.identifier);
     }
     if (!cat || gapKeys.has(card.category)) {
-      const g = gapCards.get(card.category) || { category: card.category, count: 0, sample: [] };
+      const key = card.category || 'uncategorized'; // never an undefined key that JSON drops
+      const g = gapCards.get(key) || { category: key, count: 0, sample: [] };
       g.count += 1;
       if (g.sample.length < SAMPLE) g.sample.push(card.identifier);
-      gapCards.set(card.category, g);
+      gapCards.set(key, g);
     }
   }
   const sorted = {};

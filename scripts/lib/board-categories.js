@@ -338,6 +338,11 @@ function readRecheckLedgerStatuses(ledgerPath) {
   return lastRecheckStatuses(entries);
 }
 
+/** PURE. Cards categorizeBoard could not read (counted under Other with a categorize-error reason). */
+function countUncategorizable(report) {
+  return (report.cards || []).filter((c) => /^categorize-error/.test(c.reason || '')).length;
+}
+
 const plural = (n, one, many = `${one}s`) => `${n} ${n === 1 ? one : many}`;
 
 function flowLine(flow) {
@@ -376,7 +381,7 @@ function formatMarkdown(report, { flow = null, maxStuck = 15 } = {}) {
   }
   const gated = ownerGatedNoQuestion(report);
   if (gated) lines.push('', `${plural(gated, 'card')} ${gated === 1 ? 'is' : 'are'} held for you but ${gated === 1 ? 'has' : 'have'} no clear DECISION NEEDED question, so ${gated === 1 ? 'it is' : 'they are'} not in "Waiting on your answer". ${gated === 1 ? 'It needs' : 'They need'} a real question or a release to a worker.`);
-  const broken = report.cards.filter((c) => /^categorize-error/.test(c.reason || '')).length;
+  const broken = countUncategorizable(report);
   if (broken) lines.push('', `${plural(broken, 'card')} could not be read and ${broken === 1 ? 'is' : 'are'} counted under Other.`);
   if (report.answeredCheck !== 'full') {
     lines.push('', '_Answered questions were recognised from the card text only (no answer-link secret in this run)._');
@@ -447,6 +452,6 @@ function parseReportArgs(argv) {
 module.exports = {
   CATEGORIES, GROUPS, groupBoard, REAL_BLOCK_RE, lastRecheckStatuses, readRecheckLedgerStatuses,
   cardTraits, categorizeBoard, importantAndStuck, ownerGatedNoQuestion, flowFromInflow, snapshotOf, compareReports,
-  flowLine, formatMarkdown, formatCompareMarkdown, parseReportArgs,
+  countUncategorizable, flowLine, formatMarkdown, formatCompareMarkdown, parseReportArgs,
   fetchOpenBoard, fetchFlow24h,
 };

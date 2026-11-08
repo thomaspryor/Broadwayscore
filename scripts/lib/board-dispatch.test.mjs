@@ -7,7 +7,8 @@ import path from 'node:path';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const { planDispatch, HANDLERS } = require('./board-handlers.js');
-const { main, parseArgs, ledgerRow } = require('../board-dispatch.js');
+const { main, parseArgs, shouldWrite, ledgerRow } = require('../board-dispatch.js');
+const NO_RECHECK = path.join(os.tmpdir(), 'bd-no-such-recheck-ledger.jsonl');
 
 const report = {
   categories: [
@@ -78,7 +79,7 @@ test('main: appends one row, only reads Linear (every call is a query, no mutati
   const node = { id: 'x', identifier: 'BRO-9', title: 'T', description: '', priority: 3, url: 'u', createdAt: '2026-11-01T00:00:00Z', updatedAt: '2026-11-01T00:00:00Z',
     state: { name: 'Todo', type: 'unstarted' }, labels: { nodes: [] }, comments: { nodes: [] } };
   const graphql = async (q) => { queries.push(q); return { issues: { nodes: [node], pageInfo: { hasNextPage: false } } }; };
-  for (let i = 0; i < 2; i++) assert.equal(await main([`--ledger=${ledger}`], { graphql, env: {}, log: () => {}, now: new Date('2026-11-08T00:00:00Z') }), 0);
+  for (let i = 0; i < 2; i++) assert.equal(await main([`--ledger=${ledger}`], { graphql, env: {}, log: () => {}, now: new Date('2026-11-08T00:00:00Z'), recheckLedger: NO_RECHECK }), 0);
   const rows = fs.readFileSync(ledger, 'utf8').trim().split('\n').map((l) => JSON.parse(l));
   assert.equal(rows.length, 2);
   assert.equal(rows[0].open, 1);
@@ -90,10 +91,29 @@ test('main: a Linear failure exits 1 and leaves an error row', async () => {
   const ledger = path.join(dir, 'l.jsonl');
   const err = console.error; console.error = () => {};
   try {
-    assert.equal(await main([`--ledger=${ledger}`], { graphql: async () => { throw new Error('down'); }, env: { GITHUB_RUN_ID: '42' }, log: () => {} }), 1);
+    assert.equal(await main([`--ledger=${ledger}`], { graphql: async () => { throw new Error('down'); }, env: { GITHUB_RUN_ID: '42' }, log: () => {}, recheckLedger: NO_RECHECK }), 1);
   } finally { console.error = err; }
   const row = JSON.parse(fs.readFileSync(ledger, 'utf8').trim());
   assert.equal(row.error, 'down');
   assert.equal(row.source, 'ci');
   assert.equal(row.runId, '42');
+  assert.equal(row.v, 1);
+});
+
+test('shouldWrite: CI or explicit ledger writes; a bare local run does not; flags win', () => {
+  assert.equal(shouldWrite(parseArgs([]), {}), false);
+  assert.equal(shouldWrite(parseArgs([]), { GITHUB_RUN_ID: '1' }), true);
+  assert.equal(shouldWrite(parseArgs(['--ledger=/x']), {}), true);
+  assert.equal(shouldWrite(parseArgs(['--write']), {}), true);
+  assert.equal(shouldWrite(parseArgs(['--no-write']), { GITHUB_RUN_ID: '1' }), false);
+});
+
+test('planDispatch: a card with no category is a named gap, never an undefined key', () => {
+  const p = planDispatch({ categories: [], cards: [{ identifier: 'BRO-7' }] });
+  assert.deepEqual(p.gaps, [{ category: 'uncategorized', count: 1, sample: ['BRO-7'] }]);
+});
+
+test('ledgerRow carries answeredCheck', () => {
+  const row = ledgerRow({ ...planDispatch(report), answeredCheck: 'answered-line-only' }, { now: new Date(), env: {} });
+  assert.equal(row.answeredCheck, 'answered-line-only');
 });

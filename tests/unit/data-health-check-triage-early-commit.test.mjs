@@ -25,11 +25,20 @@ import { fileURLToPath } from 'node:url';
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 const lines = fs.readFileSync(path.join(REPO, '.github', 'workflows', 'data-health-check.yml'), 'utf8').split('\n');
 
+// Each step records its job (the two-space key under `jobs:`), so the "last push" rule is judged
+// within the triage job: a later job's own commit step (e.g. board-dispatch, BRO-7139) runs in a
+// separate checkout and cannot overwrite this job's parked triage data.
 function parseSteps(allLines) {
   const starts = [];
+  let inJobs = false;
+  let job = null;
   for (let i = 0; i < allLines.length; i++) {
+    if (/^jobs:\s*$/.test(allLines[i])) { inJobs = true; continue; }
+    if (inJobs && /^\S/.test(allLines[i])) inJobs = false;
+    const j = inJobs && allLines[i].match(/^ {2}([A-Za-z0-9_-]+):\s*$/);
+    if (j) job = j[1];
     const m = allLines[i].match(/^ {6}- name:\s*(.+?)\s*$/);
-    if (m) starts.push({ name: m[1].replace(/^['"]|['"]$/g, ''), startLine: i });
+    if (m) starts.push({ name: m[1].replace(/^['"]|['"]$/g, ''), startLine: i, job });
   }
   return starts.map((s, idx) => {
     const end = idx + 1 < starts.length ? starts[idx + 1].startLine : allLines.length;
@@ -64,7 +73,9 @@ test('BRO-4521: both park steps call park-triage.sh and never push', () => {
 
 test('BRO-4521: final "Commit triage data" stays the last push and restores before staging', () => {
   const finalIdx = idx('Commit triage data');
-  const pushers = steps.map((s, i) => (/push-with-retry\.sh/.test(s.bodyText) ? i : -1)).filter((i) => i >= 0);
+  const job = steps[finalIdx].job;
+  assert.ok(job, 'the triage commit step sits in a job');
+  const pushers = steps.map((s, i) => (s.job === job && /push-with-retry\.sh/.test(s.bodyText) ? i : -1)).filter((i) => i >= 0);
   assert.equal(finalIdx, pushers[pushers.length - 1], 'it stays the last push step');
   const body = steps[finalIdx].bodyText;
   const restore = body.indexOf('park-triage.sh restore');

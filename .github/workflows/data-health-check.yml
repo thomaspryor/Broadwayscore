@@ -1900,7 +1900,6 @@ jobs:
       - name: Commit board dispatch ledger
         if: always()
         continue-on-error: true
-        timeout-minutes: 17
         env:
           PUSH_DEADLINE_SEC: '900'
           PUSH_API_FALLBACK_AFTER_ATTEMPTS: '3'
