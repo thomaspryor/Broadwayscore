@@ -157,10 +157,105 @@ function ledgerReopens(ledger) {
 const isDone = (card) => (card.state && card.state.type === 'completed') || (!!card.completedAt && !card.canceledAt);
 const isOpen = (card) => !card.state || !['completed', 'canceled', 'duplicate'].includes(card.state.type);
 
+// ---------- files touched (BRO-7105) ----------
+
+// Files that say nothing about which problem a commit fixed: data, docs,
+// lockfiles and the shared registries nearly every change edits.
+const NOISE_FILE_RE = /^(?:data\/|docs\/|memory\/|cloud-memory\/)|\.(?:json|jsonl|md|lock)$|^(?:CLAUDE\.md|package(?:-lock)?\.json|\.github\/workflows\/test\.yml)$/;
+const FILES_JACCARD = 0.6;
+const FILES_MIN_SHARED = 2;
+const FILES_HUB_SHARE = 0.05; // a file in more than 5% of carded commits is a hub, not a signal
+
+/**
+ * identifier -> sorted code files, from `git log --format=%x00%s --name-only`.
+ * A commit counts for every BRO-N in its subject; reverts are skipped.
+ */
+function filesByCardFromLog(logText) {
+  const out = new Map();
+  for (const chunk of String(logText || '').split('\0').slice(1)) {
+    const [subject, ...rest] = chunk.split('\n');
+    if (/^revert/i.test(subject)) continue;
+    const ids = [...new Set((subject.match(/\bBRO-\d+\b/g) || []))];
+    if (!ids.length) continue;
+    const files = rest.map((f) => f.trim()).filter((f) => f && !NOISE_FILE_RE.test(f));
+    for (const id of ids) {
+      if (!out.has(id)) out.set(id, new Set());
+      for (const f of files) out.get(id).add(f);
+    }
+  }
+  const res = new Map();
+  for (const [id, set] of out) if (set.size) res.set(id, [...set].sort());
+  return res;
+}
+
+/**
+ * Join classes whose cards fixed the same code under different titles.
+ * Each class gets a file profile: the code files touched by at least half of
+ * its carded commits, hub files (in >5% of all carded cards) removed. A
+ * smaller class joins the larger class whose profile it shares best, when
+ * they share 2+ files at Jaccard >= 0.6. No chaining: an absorbed class
+ * cannot pull others in. The larger class keeps its key, so an existing
+ * root-card marker still matches; absorbed keys go in cls.mergedFrom so
+ * their markers and --check-class keys keep working.
+ * First pass (2026-11-08) linked single cards transitively: one class soaked
+ * up 104 unrelated cards. Class profiles plus the 2-file floor stop that.
+ */
+function mergeByFiles(classes, filesById) {
+  const get = (id) => (filesById instanceof Map ? filesById.get(id) : filesById[id]) || null;
+  const perClass = new Map();
+  const freq = new Map();
+  let carded = 0;
+  for (const cls of classes.values()) {
+    const lists = cls.instances.map((c) => get(c.identifier)).filter((f) => f && f.length);
+    if (!lists.length) continue;
+    perClass.set(cls.key, lists);
+    carded += lists.length;
+    for (const l of lists) for (const f of new Set(l)) freq.set(f, (freq.get(f) || 0) + 1);
+  }
+  const hubMax = Math.max(5, Math.floor(carded * FILES_HUB_SHARE));
+  const profile = new Map();
+  for (const [key, lists] of perClass) {
+    const count = new Map();
+    for (const l of lists) for (const f of new Set(l)) if (freq.get(f) <= hubMax) count.set(f, (count.get(f) || 0) + 1);
+    const prof = new Set([...count].filter(([, n]) => n * 2 >= lists.length).map(([f]) => f));
+    if (prof.size >= FILES_MIN_SHARED) profile.set(key, prof);
+  }
+  const keys = [...profile.keys()].sort((x, y) => classes.get(y).instances.length - classes.get(x).instances.length || (x < y ? -1 : 1));
+  const absorbed = new Set();
+  const into = new Map(); // small key -> big key
+  for (let i = keys.length - 1; i >= 0; i--) {
+    const small = keys[i];
+    let best = null; let bestJ = 0;
+    for (let j = 0; j < i; j++) {
+      const big = keys[j];
+      if (absorbed.has(big) || into.has(big)) continue;
+      const A = profile.get(small); const B = profile.get(big);
+      let inter = 0; for (const f of A) if (B.has(f)) inter++;
+      const jac = inter / (A.size + B.size - inter);
+      if (inter >= FILES_MIN_SHARED && jac >= FILES_JACCARD && jac > bestJ) { best = big; bestJ = jac; }
+    }
+    if (best) { into.set(small, best); absorbed.add(small); }
+  }
+  for (const [k, target] of into) {
+    const keep = classes.get(target); const o = classes.get(k);
+    if (!keep || !o) continue;
+    keep.mergedFrom = keep.mergedFrom || [];
+    keep.instances.push(...o.instances);
+    keep.inWindow += o.inWindow;
+    keep.reopens.push(...o.reopens);
+    for (const [st, n] of Object.entries(o.subtypes)) keep.subtypes[st] = (keep.subtypes[st] || 0) + n;
+    if (o.firstSeen && (!keep.firstSeen || o.firstSeen < keep.firstSeen)) keep.firstSeen = o.firstSeen;
+    if (o.lastSeen && (!keep.lastSeen || o.lastSeen > keep.lastSeen)) keep.lastSeen = o.lastSeen;
+    keep.mergedFrom.push(k);
+    classes.delete(k);
+  }
+}
+
 /**
  * detectClasses(cards, ledger, opts) -> Map<key, cls>
  *   cards: [{identifier,title,createdAt,completedAt,canceledAt,state:{type},description,relationIds?:string[]}]
- *   opts.now (ms), opts.windowDays (30), opts.minInstances (3)
+ *   opts.now (ms), opts.windowDays (30), opts.minInstances (3),
+ *   opts.filesById (Map id -> code files; joins classes that fixed the same files)
  * cls: {key, instances, inWindow, firstSeen, lastSeen, reopens, expected,
  *       recurring, reasons, rootCause, subtypes}
  */
@@ -204,6 +299,8 @@ function detectClasses(cards, ledger, opts = {}) {
     if (key && classes.has(key)) classes.get(key).reopens.push(r);
   }
 
+  if (opts.filesById) mergeByFiles(classes, opts.filesById);
+
   for (const cls of classes.values()) {
     cls.instances.sort((a, b) => (a.createdAt < b.createdAt ? -1 : 1));
     // Expected when most of its cards are scheduled repeats (canary etc.).
@@ -218,8 +315,9 @@ function detectClasses(cards, ledger, opts = {}) {
     // listed instances overlap this class by half or more (survives a key
     // change), then the static override.
     const ids = new Set(cls.instances.map((c) => c.identifier));
-    const exact = rootCards.filter((r) => r.marker.key === cls.key);
-    const overlap = rootCards.filter((r) => r.marker.key !== cls.key && r.listed.size
+    const keys = new Set([cls.key, ...(cls.mergedFrom || [])]);
+    const exact = rootCards.filter((r) => keys.has(r.marker.key));
+    const overlap = rootCards.filter((r) => !keys.has(r.marker.key) && r.listed.size
       && [...r.listed].filter((id) => ids.has(id)).length * 2 >= Math.min(r.listed.size, ids.size));
     const marked = [...exact, ...overlap].map((r) => r.card).sort((a, b) => (a.createdAt < b.createdAt ? -1 : 1));
     const live = marked.filter((c) => c.state && c.state.type !== 'canceled' && c.state.type !== 'duplicate');
@@ -407,6 +505,8 @@ function improvementLine(snap) {
 }
 
 module.exports = {
+  filesByCardFromLog,
+  mergeByFiles,
   improvementLine,
   recurredAfterRootClosed,
   rootCauseRouteReason,

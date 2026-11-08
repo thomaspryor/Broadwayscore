@@ -11,7 +11,8 @@
  *
  * Modes:
  *   (default)                dry run: print what --apply would do (writes nothing)
- *   --apply                  file/comment root-cause cards (cap 3 new per run), write the snapshot
+ *   --apply                  file/comment root-cause cards (cap 3 new per run), write the snapshot.
+ *                            CI only (GITHUB_ACTIONS=true); --force-local overrides
  *   --write                  dry run that still writes the snapshot
  *   --backtest [--days 60]   replay day by day, write data/audit/recurrence-backtest.json
  *                            + docs/recurrence-backtest.md (hit list, false positives)
@@ -24,6 +25,7 @@
  *                            data/audit/root-cause-sample.json; self-skips if <6 days old
  *   --input FILE             read cards from a JSON file instead of Linear
  *   --no-write               don't write the snapshot
+ *   --no-files               group by title only (skip the git files-touched pass)
  *
  * Kill switch: RECURRENCE_DETECTOR_DISABLED=1 (exits 0, writes nothing).
  */
@@ -88,10 +90,11 @@ async function fetchCards(days) {
 
 // Root-cause cards can be older than the window; fetch them by marker, and
 // the static override cards by id, so a class never gets a second one.
-async function fetchRootCards(known) {
-  const lc = require('./lib/linear-client.js');
-  const since = new Date(Date.now() - 365 * DAY).toISOString();
-  const byMarker = await lc.listIssuesByProvenance({ since, descriptionMarkers: ['root-cause-class:'] });
+// No date window (BRO-7105): a closed root card nobody touched for a year
+// must still be found, or its class gets a second root card.
+const ROOT_LOOKUP_SINCE = '1970-01-01T00:00:00.000Z';
+async function fetchRootCards(known, lc = require('./lib/linear-client.js')) {
+  const byMarker = await lc.listIssuesByProvenance({ since: ROOT_LOOKUP_SINCE, descriptionMarkers: ['root-cause-class:'] });
   const ids = new Set(known.map((c) => c.identifier));
   const extra = byMarker.filter((c) => !ids.has(c.identifier));
   for (const o of rc.ROOT_CAUSE_OVERRIDES) {
@@ -102,16 +105,57 @@ async function fetchRootCards(known) {
   return extra;
 }
 
+// ---------- files touched (BRO-7105) ----------
+
+// identifier -> code files its commits touched, from one `git log` pass. CI
+// checks out depth 1, so deepen first (trees only, no blobs); any failure
+// just means no files signal this run, never a failed run.
+function loadFilesById(days, { cwd = ROOT, exec = null } = {}) {
+  const { execFileSync } = require('child_process');
+  const run = exec || ((args, timeout = 60000) => execFileSync('git', args, { cwd, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'], timeout, maxBuffer: 256 * 1024 * 1024 }));
+  const since = new Date(Date.now() - days * DAY).toISOString();
+  try {
+    if (run(['rev-parse', '--is-shallow-repository']).trim() === 'true') {
+      try { run(['fetch', '-q', '--filter=blob:none', `--shallow-since=${since}`, 'origin', 'main'], 45000); } catch { /* keep what we have */ }
+    }
+    // Carded commits only, code paths only: the full log (data commits list
+    // thousands of files) took 79s here; this takes about 5s.
+    return rc.filesByCardFromLog(run(['log', `--since=${since}`, '--grep=BRO-[0-9]', '--no-renames', '--format=%x00%s', '--name-only', 'HEAD',
+      '--', 'scripts', 'src', '.github', '.claude', 'supabase'], 30000));
+  } catch (e) {
+    console.warn(`[recurrence] files-touched read failed (${e.message.split('\n')[0]}); grouping by title only`);
+    return null;
+  }
+}
+
+function fixCardFiles(cards, allFiles) {
+  const { isFixCard } = require('./lib/root-cause-close.js');
+  return new Map(cards.filter((c) => allFiles.has(c.identifier) && isFixCard(c)).map((c) => [c.identifier, allFiles.get(c.identifier)]));
+}
+
+// ---------- local --apply lock (BRO-7105) ----------
+
+// CI serializes --apply through the data-health-check concurrency group; a
+// local run is not in that group and can race it into a duplicate root card.
+function applyRefusal(env = process.env, argv = process.argv) {
+  if (!argv.includes('--apply')) return null;
+  if (String(env.GITHUB_ACTIONS || '').toLowerCase() === 'true') return null;
+  if (argv.includes('--force-local')) return null;
+  return '--apply runs in CI only (data-health-check serializes it); a local run can race it into a duplicate root card. Pass --force-local if CI is paused and you mean it.';
+}
+
 // ---------- snapshot ----------
 
-function buildSnapshot({ cards, ledger, now, complete, commentsById = {}, prevKnown = [] }) {
-  const classes = rc.detectClasses(cards, ledger, { now, windowDays: WINDOW_DAYS });
+function buildSnapshot({ cards, ledger, now, complete, commentsById = {}, prevKnown = [], filesById = null }) {
+  const classes = rc.detectClasses(cards, ledger, { now, windowDays: WINDOW_DAYS, filesById });
   const byId = new Map(cards.map((c) => [c.identifier, c]));
   const recurring = [...classes.values()].filter((c) => c.recurring);
   const instances = {};
   const lastSeenByKey = {};
   for (const cls of classes.values()) {
-    if (Date.parse(cls.lastSeen) >= now - WINDOW_DAYS * DAY) lastSeenByKey[cls.key] = cls.lastSeen;
+    // A class absorbed by files touched keeps answering --check-class under
+    // its own key, or its root card's VERIFY would read a false "quiet".
+    if (Date.parse(cls.lastSeen) >= now - WINDOW_DAYS * DAY) for (const k of [cls.key, ...(cls.mergedFrom || [])]) lastSeenByKey[k] = cls.lastSeen;
   }
   const out = [];
   let failed = 0; let claimed = 0; let unclaimed = 0;
@@ -124,6 +168,7 @@ function buildSnapshot({ cards, ledger, now, complete, commentsById = {}, prevKn
     out.push({
       key: cls.key,
       slug: slugOf(cls.key),
+      ...(cls.mergedFrom && cls.mergedFrom.length ? { mergedFrom: cls.mergedFrom } : {}),
       inWindow: cls.inWindow,
       total: cls.instances.length,
       reasons: cls.reasons,
@@ -163,7 +208,7 @@ function buildSnapshot({ cards, ledger, now, complete, commentsById = {}, prevKn
     lastSeenByKey,
     // Every class that was ever recurring, so --check-class can tell a quiet
     // class from a mistyped slug after the class drops out of the window.
-    knownKeys: [...new Set([...((prevKnown) || []), ...out.map((c) => c.key)])].sort(),
+    knownKeys: [...new Set([...((prevKnown) || []), ...out.flatMap((c) => [c.key, ...(c.mergedFrom || [])])])].sort(),
   };
 }
 
@@ -532,6 +577,9 @@ async function main() {
   if (has('--check')) return checkAll();
   if (has('--check-class')) return checkClass(arg('--check-class', ''), has('--quiet'));
 
+  const refusal = applyRefusal();
+  if (refusal) { console.error(`[recurrence] refusing: ${refusal}`); return 2; }
+
   const ledger = readJson(LEDGER, { conditions: {} });
   const input = arg('--input');
   const days = Number(arg('--days', has('--backtest') ? 60 : WINDOW_DAYS));
@@ -573,7 +621,12 @@ async function main() {
     }
   }
   const prev = readJson(SNAPSHOT);
-  const snap = buildSnapshot({ cards, ledger, now, complete, commentsById, prevKnown: (prev && prev.knownKeys) || (prev && prev.classes || []).map((c) => c.key) });
+  // Only fix cards' commits join classes (measured 2026-11-08 on 2,604 live
+  // cards: all cards turned 31 classes into 45, mostly feature work sharing
+  // files; fix cards only gave 33, every join a real repeat).
+  const allFiles = input || has('--no-files') ? null : loadFilesById(WINDOW_DAYS + 7);
+  const filesById = allFiles && fixCardFiles(cards, allFiles);
+  const snap = buildSnapshot({ cards, ledger, now, complete, commentsById, filesById, prevKnown: (prev && prev.knownKeys) || (prev && prev.classes || []).map((c) => c.key) });
   snap.pendingRootCards = snap.classes.filter((c) => !c.rootCause).length;
   // The weekly independent sample rides along so the digest line has it.
   const smp = readJson(SAMPLE_FILE);
@@ -602,4 +655,5 @@ if (require.main === module) {
 }
 
 module.exports = {
+  applyRefusal, fetchCards, fetchRootCards, loadFilesById, fixCardFiles, ROOT_LOOKUP_SINCE,
   sample, alreadyNoted, statusComment, buildSnapshot, backtest, rootCardTitle, rootCardDescription, slugOf, checkClass, checkAll };

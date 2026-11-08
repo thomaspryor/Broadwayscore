@@ -333,3 +333,117 @@ test('done gate refuses an unlinked instance close after the blocking date, fres
   assert.equal(checkLinearDoneTransition({ ...ok, nowMs: at - 2 * DAY }).allowed, true, 'advisory before the date');
   assert.equal(rc.recurrenceCloseBlocking(fresh, at, { RECURRENCE_CLOSE_GATE: 'advisory' }), false);
 });
+
+// ---------- BRO-7105 follow-ups ----------
+
+test('BRO-7105: differently titled cards that fixed the same files join one class', () => {
+  const a = done('Roundup listed review not captured for giant', 20, 19);
+  const b = done('Roundup listed review not captured for cats', 12, 11);
+  const c = done('BWW roundup parser drops critic', 5, 4);
+  const noise = done('Homepage hero spacing', 6, 5);
+  const files = new Map([
+    [a.identifier, ['scripts/gather-reviews.js', 'scripts/lib/roundup-parse.js']],
+    [b.identifier, ['scripts/gather-reviews.js', 'scripts/lib/roundup-parse.js']],
+    [c.identifier, ['scripts/lib/roundup-parse.js', 'scripts/gather-reviews.js', 'scripts/lib/roundup-parse.test.mjs']],
+    [noise.identifier, ['src/app/page.tsx']],
+  ]);
+  const without = rc.detectClasses([a, b, c, noise], null, { now: NOW });
+  assert.ok(![...without.values()].some((x) => x.recurring), 'titles alone: no class reaches 3');
+  const withFiles = rc.detectClasses([a, b, c, noise], null, { now: NOW, filesById: files });
+  const rec = [...withFiles.values()].filter((x) => x.recurring);
+  assert.equal(rec.length, 1);
+  assert.equal(rec[0].inWindow, 3);
+  assert.deepEqual(rec[0].instances.map((x) => x.identifier).sort(), [a, b, c].map((x) => x.identifier).sort());
+  assert.ok(rec[0].mergedFrom.length >= 1);
+  assert.ok([...withFiles.values()].some((x) => x.instances.includes(noise) && !x.recurring), 'unrelated card stays apart');
+});
+
+test('BRO-7105: hub files and data/docs never join classes', () => {
+  const cards = [];
+  const files = new Map();
+  // 30 unrelated cards all touching a hub file plus their own file.
+  for (let i = 0; i < 30; i++) {
+    const x = done(`Unrelated problem number ${['alpha', 'beta', 'gamma', 'delta', 'eps'][i % 5]} ${i}`, 10 + (i % 5), 9);
+    cards.push(x);
+    files.set(x.identifier, ['scripts/lib/linear-client.js', `scripts/own-${i}.js`]);
+  }
+  const m = rc.detectClasses(cards, null, { now: NOW, filesById: files });
+  assert.ok(![...m.values()].some((x) => x.mergedFrom), 'a shared hub file is not a signal');
+  const log = '\0BRO-1: fix x\n\ndata/shows.json\ndocs/a.md\nscripts/a.js\n\0Revert "BRO-2: y"\n\nscripts/b.js\n\0BRO-3 BRO-4: z\n\npackage.json\n';
+  const f = rc.filesByCardFromLog(log);
+  assert.deepEqual(f.get('BRO-1'), ['scripts/a.js']);
+  assert.equal(f.has('BRO-2'), false, 'reverts skipped');
+  assert.equal(f.has('BRO-3'), false, 'noise-only commit gives no files');
+});
+
+test('BRO-7105: an absorbed class keeps its root card and its --check-class key', () => {
+  const root = card('Root cause: roundup parser', 200, { description: rc.markerLine('roundup parser drops critic') + '\n' });
+  const a = done('Roundup listed review not captured', 20, 19);
+  const b = done('Roundup listed review not captured', 12, 11);
+  const c = done('Roundup parser drops critic', 5, 4);
+  const files = new Map([[a.identifier, ['scripts/x.js', 'scripts/y.js']], [b.identifier, ['scripts/x.js', 'scripts/y.js']], [c.identifier, ['scripts/x.js', 'scripts/y.js']]]);
+  const classes = rc.detectClasses([root, a, b, c], null, { now: NOW, filesById: files });
+  const rec = [...classes.values()].find((x) => x.recurring);
+  assert.equal(rec.rootCause, root.identifier, 'marker of the absorbed key still matches, no second root card');
+  const snap = det.buildSnapshot({ cards: [root, a, b, c], ledger: null, now: NOW, complete: true, filesById: files });
+  const keys = Object.keys(snap.lastSeenByKey);
+  assert.ok(keys.includes(rec.key) && rec.mergedFrom.every((k) => keys.includes(k)));
+  assert.ok(rec.mergedFrom.every((k) => snap.knownKeys.includes(k)));
+});
+
+test('BRO-7105: root-card lookup has no date window', async () => {
+  const calls = [];
+  const old = { identifier: 'BRO-1', title: 'old root', updatedAt: '2024-01-01T00:00:00Z', description: rc.markerLine('k') };
+  const lc = {
+    async listIssuesByProvenance(o) { calls.push(o); return [old].filter((c) => c.updatedAt >= o.since); },
+    async getIssue() { return null; },
+  };
+  const got = await det.fetchRootCards([], lc);
+  assert.ok(got.some((c) => c.identifier === 'BRO-1'), 'a root card untouched for two years is still found');
+  assert.equal(calls[0].since, det.ROOT_LOOKUP_SINCE);
+  assert.ok(Date.parse(calls[0].since) <= Date.parse('2000-01-01'));
+});
+
+test('BRO-7105: --apply refuses outside CI unless --force-local', () => {
+  assert.match(det.applyRefusal({}, ['node', 'x', '--apply']), /CI only/);
+  assert.equal(det.applyRefusal({ GITHUB_ACTIONS: 'true' }, ['node', 'x', '--apply']), null);
+  assert.equal(det.applyRefusal({}, ['node', 'x', '--apply', '--force-local']), null);
+  assert.equal(det.applyRefusal({}, ['node', 'x']), null, 'dry run is never refused');
+  const { spawnSync } = require('node:child_process');
+  const env = { ...process.env }; delete env.GITHUB_ACTIONS;
+  const r = spawnSync(process.execPath, [new URL('../recurrence-detector.js', import.meta.url).pathname, '--apply', '--input', '/dev/null'], { env, encoding: 'utf8' });
+  assert.equal(r.status, 2);
+  assert.match(r.stderr, /refusing/);
+});
+
+test('BRO-7105: loadFilesById deepens a shallow clone and survives git failing', () => {
+  const calls = [];
+  const exec = (args) => {
+    calls.push(args[0]);
+    if (args[0] === 'rev-parse') return 'true\n';
+    if (args[0] === 'fetch') return '';
+    return '\0BRO-9: fix\n\nscripts/a.js\n';
+  };
+  assert.deepEqual(det.loadFilesById(30, { exec }).get('BRO-9'), ['scripts/a.js']);
+  assert.deepEqual(calls, ['rev-parse', 'fetch', 'log']);
+  assert.equal(det.loadFilesById(30, { exec: () => { throw new Error('no git'); } }), null);
+});
+
+test('BRO-7105: only fix cards feed the files signal', () => {
+  const fix = done('Fix opening night poller crash', 5, 4);
+  const feat = done('Add opening night poller dashboard', 5, 4);
+  const all = new Map([[fix.identifier, ['scripts/a.js', 'scripts/b.js']], [feat.identifier, ['scripts/a.js', 'scripts/b.js']]]);
+  assert.deepEqual([...det.fixCardFiles([fix, feat], all).keys()], [fix.identifier]);
+});
+
+test('BRO-7105: one shared file is not enough, and joins never chain', () => {
+  const a = done('Alpha problem one', 10, 9); const b = done('Beta problem two', 8, 7); const c = done('Gamma problem three', 6, 5);
+  const one = rc.detectClasses([a, b], null, { now: NOW, filesById: new Map([[a.identifier, ['scripts/x.js']], [b.identifier, ['scripts/x.js']]]) });
+  assert.equal(one.size, 2, 'a single shared file joins nothing');
+  // a~b share {x,y}, b~c share {y,z}: a and c are not alike, so no chain.
+  const m = rc.detectClasses([a, b, c], null, { now: NOW, filesById: new Map([
+    [a.identifier, ['scripts/w.js', 'scripts/x.js', 'scripts/y.js']],
+    [b.identifier, ['scripts/x.js', 'scripts/y.js', 'scripts/z.js']],
+    [c.identifier, ['scripts/y.js', 'scripts/z.js', 'scripts/v.js']]]) });
+  assert.ok(![...m.values()].some((x) => x.instances.length === 3), 'no class of 3 by chaining');
+});
