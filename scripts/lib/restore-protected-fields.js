@@ -319,6 +319,42 @@ function reconcileProtectedFields(local, remote, ours, opts = {}) {
     }
   }
 
+  // Owner-approved fixes (BRO-7131). execute-approved-fix stamps every edit in approvedFixes. A CI
+  // writer working from a checkout older than that fix (opening-night poller, 2026-11-08, Tosca
+  // cherylmarkosky teaser) rebased with -X theirs and replaced the whole hunk, erasing
+  // isNonReview + the stamp 4 minutes after the fix applied. A stamp missing from local means
+  // local never saw that fix, so carry the stamp back and re-apply its value, unless local
+  // holds a newer approved fix for the same field.
+  {
+    const key = (e) => `${e && e.fixId}|${e && e.field}|${e && e.at}`;
+    const localFixes = Array.isArray(local.approvedFixes) ? local.approvedFixes : [];
+    const seen = new Set(localFixes.map(key));
+    const missing = [];
+    for (const src of [remote, ours]) {
+      for (const e of (src && Array.isArray(src.approvedFixes) ? src.approvedFixes : [])) {
+        if (!e || typeof e.field !== 'string' || seen.has(key(e))) continue;
+        seen.add(key(e));
+        missing.push(e);
+      }
+    }
+    missing.sort((a, b) => String(a.at || '').localeCompare(String(b.at || '')));
+    for (const e of missing) {
+      localFixes.push(e);
+      const newer = localFixes.some((o) => o !== e && o.field === e.field && String(o.at || '') > String(e.at || ''));
+      if (!newer && JSON.stringify(local[e.field]) !== JSON.stringify(e.newValue)) {
+        if (e.newValue === undefined || e.newValue === null) delete local[e.field];
+        else local[e.field] = e.newValue;
+        notes.push(`Re-applied approved fix ${e.fixId} (${e.field})`);
+      }
+      modified = true;
+    }
+    if (missing.length) {
+      localFixes.sort((a, b) => String(a.at || '').localeCompare(String(b.at || '')));
+      local.approvedFixes = localFixes;
+      notes.push(`Restored ${missing.length} approvedFixes stamp(s)`);
+    }
+  }
+
   // Restore richer content from OURS (pre-rebase HEAD). Titanique postmortem:
   // a push rebase re-applied old empty fullText over newly collected 5000+ char
   // text. After `-X theirs` the working tree matches the replayed local commit,
