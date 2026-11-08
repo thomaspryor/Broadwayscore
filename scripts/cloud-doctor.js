@@ -78,7 +78,7 @@ function gather({ quick }) {
     const dir = require('./lib/review-texts-dir').resolveReviewTextsDir();
     facts.resolvedReviewTexts = dir && fs.existsSync(dir) && fs.readdirSync(dir).some((e) => !e.startsWith('.')) ? dir : null;
   } catch { facts.resolvedReviewTexts = null; }
-  facts.missingPkgs = require('./lib/declared-packages.js').missingDeclaredPackages(ROOT); // BRO-7110: every declared package, not 3 probes
+  facts.missingPkgs = require('./lib/declared-packages.js').missingDeclaredPackages(ROOT).missing; // BRO-7110: every package the install's owner declares, not 3 probes
   facts.deps = {};
   for (const m of ['next/package.json', 'cheerio', 'typescript/package.json']) {
     try { require.resolve(m, { paths: [ROOT] }); facts.deps[m] = true; } catch { facts.deps[m] = false; }

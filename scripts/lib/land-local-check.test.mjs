@@ -389,17 +389,45 @@ test('BRO-7110: a tree dirty only with prebuild outputs names them and the resto
   const { dirtyTreeMessage } = require('./land-local-check.js');
   const onlyGenerated = dirtyTreeMessage(' M data/gold-lists-computed.json\n');
   assert.match(onlyGenerated, /commit or discard tracked changes first/);
-  assert.match(onlyGenerated, /git checkout -- data\/gold-lists-computed\.json$/);
-  assert.match(dirtyTreeMessage('M data/gold-lists-computed.json'), /git checkout -- data\/gold-lists-computed\.json$/, 'trimmed status, as run() returns it');
+  assert.match(onlyGenerated, /git checkout HEAD -- data\/gold-lists-computed\.json$/, 'HEAD: a staged output goes back too');
+  const many = Array.from({ length: 40 }, (_, i) => ` M public/data/shows/show-${i}.json`).join('\n');
+  assert.match(dirtyTreeMessage(many), /\(40 file\(s\).*git checkout HEAD -- public\/data\/shows$/, 'many files: their directory, one line');
+  assert.match(dirtyTreeMessage('M data/gold-lists-computed.json'), /git checkout HEAD -- data\/gold-lists-computed\.json$/, 'trimmed status, as run() returns it');
   const mixed = dirtyTreeMessage(' M data/gold-lists-computed.json\n M scripts/foo.js\n');
-  assert.doesNotMatch(mixed, /git checkout --/, 'a real edit in the mix gets no discard hint');
+  assert.doesNotMatch(mixed, /git checkout HEAD --/, 'a real edit in the mix gets no discard hint');
 });
 
-test('BRO-7110: declared packages with no package.json are reported before any gate runs', () => {
+test('BRO-7110: declared packages are checked against the install owner (a worktree link resolves to main)', () => {
   const { missingDeclaredPackages } = require('./declared-packages.js');
-  const present = new Set(['/r/node_modules/next/package.json', '/r/node_modules/@types/node/package.json']);
-  const readPkg = () => ({ dependencies: { next: '1' }, devDependencies: { '@types/node': '1', acorn: '8' } });
-  assert.deepEqual(missingDeclaredPackages('/r', (p) => present.has(p), readPkg), ['acorn']);
-  assert.deepEqual(missingDeclaredPackages('/r', () => true, readPkg), []);
-  assert.deepEqual(missingDeclaredPackages('/r', () => false, () => { throw new Error('no package.json'); }), [], 'unreadable package.json: no opinion');
+  const present = new Set(['/main/node_modules/next/package.json', '/main/node_modules/@types/node/package.json']);
+  const reads = [];
+  const readPkg = (dir) => { reads.push(dir); return { dependencies: { next: '1' }, devDependencies: { '@types/node': '1', acorn: '8' } }; };
+  assert.deepEqual(missingDeclaredPackages('/wt', { owner: '/main', exists: (p) => present.has(p), readPkg }), { owner: '/main', missing: ['acorn'] });
+  assert.deepEqual(reads, ['/main'], "the owner's package.json, which its npm ci installs");
+  assert.deepEqual(missingDeclaredPackages('/wt', { owner: '/main', exists: () => true, readPkg }).missing, []);
+  assert.deepEqual(missingDeclaredPackages('/wt', { owner: null, exists: () => false, readPkg }), { owner: null, missing: [] }, 'no node_modules: nothing to judge');
+  assert.deepEqual(missingDeclaredPackages('/wt', { owner: '/main', exists: () => false, readPkg: () => { throw new Error('none'); } }).missing, [], 'unreadable package.json: no opinion');
+});
+
+test('BRO-7110: main() refuses an incomplete install before fetching or running any gate', (t) => {
+  const { missingDeclaredPackages } = require('./declared-packages.js');
+  const real = missingDeclaredPackages(decodeURIComponent(new URL('../..', import.meta.url).pathname));
+  const declared = Object.keys(JSON.parse(fs.readFileSync(join(real.owner, 'package.json'), 'utf8')).devDependencies || {});
+  const gone = declared[0];
+  const errors = [];
+  t.mock.method(console, 'error', (m) => errors.push(String(m)));
+  const exists = fs.existsSync;
+  t.mock.method(fs, 'existsSync', (p) => {
+    const s = String(p);
+    if (s.endsWith(`/node_modules/${gone}/package.json`)) return false;
+    return /data\/(shows|reviews|cast-manifest|actor-slugs)\.json$|\/node_modules$|\/node_modules\/.+\/package\.json$/.test(s) || exists(p);
+  });
+  const gitCalls = [];
+  const checker = checkerWithRunner(t, (cmd, args) => {
+    if (cmd === 'git') { gitCalls.push(args[0]); return { status: 0, stdout: args[0] === 'rev-parse' ? '.git' : '', stderr: '' }; }
+    assert.fail(`no command may run before the install check: ${cmd} ${args.join(' ')}`);
+  });
+  assert.equal(checker.main([]), 3);
+  assert.ok(errors.some((m) => m.includes('node_modules is incomplete') && m.includes(gone) && m.includes('npm ci')), errors.join('\n'));
+  assert.ok(!gitCalls.includes('fetch'), 'refused before git fetch');
 });

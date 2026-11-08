@@ -85,8 +85,11 @@ function dirtyTreeMessage(porcelain) {
   const files = porcelain.split('\n').filter(Boolean).map((l) => l.trim().replace(/^\S+\s+/, '').replace(/^.* -> /, '')); // the caller's output may be trimmed
   const base = 'land-local-check: commit or discard tracked changes first:\n' + porcelain;
   if (!files.length || !files.every((f) => PREBUILD_OUTPUTS.some((re) => re.test(f)))) return base;
+  // HEAD, not the index: a staged output must go back too. Many files (public/data/shows/*.json):
+  // name their directories instead; every dirty file there is a generated output, so only those change.
+  const targets = files.length <= 10 ? files : [...new Set(files.map((f) => path.dirname(f)))];
   return base + (base.endsWith('\n') ? '' : '\n') +
-    `  only generated prebuild outputs changed (often left by a stopped run); if you did not mean to change them: git checkout -- ${files.join(' ')}`;
+    `  only generated prebuild outputs changed (${files.length} file(s), often left by a stopped run); if you did not mean to change them: git checkout HEAD -- ${targets.join(' ')}`;
 }
 
 // BRO-7110: a worktree under the main checkout with no node_modules of its own
@@ -284,10 +287,10 @@ function main(argv = process.argv.slice(2)) {
       + nodeModulesRemedy(ROOT, git('rev-parse', '--git-common-dir').stdout));
     return 3;
   }
-  const missingPkgs = missingDeclaredPackages(ROOT);
-  if (missingPkgs.length) {
-    console.error(`land-local-check: node_modules is incomplete (${missingPkgs.length} declared package(s) have no package.json, e.g. ${missingPkgs.slice(0, 5).join(', ')}). `
-      + 'Both runs would fail the same way and nothing could be judged. Reinstall first: npm ci (in the checkout that owns node_modules).');
+  const pkgs = missingDeclaredPackages(ROOT);
+  if (pkgs.missing.length) {
+    console.error(`land-local-check: node_modules is incomplete (${pkgs.missing.length} package(s) declared in ${pkgs.owner}/package.json are not installed, e.g. ${pkgs.missing.slice(0, 5).join(', ')}). `
+      + `Both runs share this install, so every gate would fail on both sides and nothing could be judged. Reinstall first: (cd ${pkgs.owner} && npm ci)`);
     return 3;
   }
   const fetch = git('fetch', '-q', 'origin', 'main');
@@ -366,7 +369,7 @@ function main(argv = process.argv.slice(2)) {
   }
 }
 
-module.exports = { missingDeclaredPackages, dirtyTreeMessage, nodeModulesRemedy, main, withBaseWorktree, depsChangedSince, linkIgnored, ignoredPaths, parseArgs, newFailureFiles, missingCoreData, hasOwnNodeModules, restorePrebuildResidue, stageGauntletHarness, HARNESS_FILES, CORE_DATA_FILES, DEFAULT_GATES, LOCAL_SKIPPED_GATES };
+module.exports = { dirtyTreeMessage, nodeModulesRemedy, main, withBaseWorktree, depsChangedSince, linkIgnored, ignoredPaths, parseArgs, newFailureFiles, missingCoreData, hasOwnNodeModules, restorePrebuildResidue, stageGauntletHarness, HARNESS_FILES, CORE_DATA_FILES, DEFAULT_GATES, LOCAL_SKIPPED_GATES };
 
 if (require.main === module) {
   // Capture the tip before the ~20 min run: the session may commit meanwhile, and that commit was not tested.
