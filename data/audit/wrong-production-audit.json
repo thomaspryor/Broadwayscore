@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-11-08T02:10:13.048Z",
+  "timestamp": "2026-11-08T02:34:30.577Z",
   "stats": {
-    "totalReviews": 80505,
+    "totalReviews": 80509,
     "alreadyFlagged": 22030,
     "dateGuardCatches": 216,
     "directorMismatch": 3545,
-    "tvFilmSignals": 2292,
+    "tvFilmSignals": 2293,
     "londonSignals": 3628,
     "offBroadwaySignals": 748,
     "yearMismatch": 363,
@@ -4587,6 +4587,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "american-idiot-2010",
+      "file": "nydailynews--joe-dziemianowicz.json",
+      "score": 72,
+      "publishDate": "2010-04-21T08:45:36-04:00",
+      "url": "http://www.nydailynews.com/entertainment/music/2010/04/21/2010-04-21_green_days_american_idiot_more_like_a_breakneck_event_than_a_broadway_musical.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"episode 7\""
         }
       ]
     },
