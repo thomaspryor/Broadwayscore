@@ -1990,7 +1990,9 @@ function _mergeIntoExisting(filepath, existing, ctx) {
     } catch { return false; }
   };
   if (input && input.replaceBadBody === true && typeof fields.fullText === 'string'
-      && (isSameArticleBodyUpgrade(existing, fields.fullText)
+      && (isSameArticleBodyUpgrade(existing, fields.fullText, {
+        sameUrl: !!(existing.url && input.url && require('./review-url-collision').sameArticleUrl(existing.url, input.url)),
+      })
         || (_multiShowWhole() && isSameArticleBodyUpgrade(existing, fields.fullText, { multiShowWhole: true })))
       && _bodyUpgradeTierOk()) {
     console.log(`  ↑ Replacing stored body (${fullTextBefore.length} chars) with a longer copy of the same article (${fields.fullText.length} chars)`);
