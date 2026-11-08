@@ -4,8 +4,17 @@ v1 was scored by hand on 15 real cards on 2026-11-08 (BRO-7139 Step 0): 4/15 ful
 10/15 right verdict type, 0 unsafe closes. Every miss came from the model trusting facts
 quoted in the card. v2 therefore gets a FACTS block the handler gathers by machine, and
 may not rely on any fact that is neither in FACTS nor in the latest comments. The Step 3
-handler fills {{...}}; nothing here runs yet. Re-score v2 on the same 15 cards (>= 90%)
-before the handler leaves report-only.
+handler fills {{...}}. Re-score on the same 15 cards (>= 90%, i.e. 14/15) before the
+handler leaves report-only.
+
+Re-score 2026-11-08 (this prompt, Sonnet DISPATCH_SONNET, FACTS by llm-triage-facts.js):
+9/15 against the Step 0 gold; 12/15 after three gold corrections the card history
+justifies (BRO-6810 owner answered "Approved" 11-08, so release; BRO-7026 blocked on
+BRO-6918 is equivalent to the duplicate close; BRO-7107 recheck accepted). 0 unsafe
+closes. The 3 misses (BRO-4061, 5957, 7028) are all under-closes whose evidence is not in
+FACTS (a measurement reported in a comment, a doc revision, workflow run history). Below
+the gate, so the handler stays report-only; the next improvement is FACTS for workflow
+run history and comment-reported measurements.
 
 ---
 
