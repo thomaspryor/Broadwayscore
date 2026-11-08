@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-08T21:24:22.447Z",
+  "timestamp": "2026-11-08T21:40:49.003Z",
   "stats": {
-    "totalReviews": 80607,
-    "alreadyFlagged": 22078,
+    "totalReviews": 80613,
+    "alreadyFlagged": 22080,
     "dateGuardCatches": 219,
-    "directorMismatch": 3564,
-    "tvFilmSignals": 2294,
+    "directorMismatch": 3563,
+    "tvFilmSignals": 2295,
     "londonSignals": 3637,
     "offBroadwaySignals": 749,
     "yearMismatch": 368,
-    "noPublishDate": 8394
+    "noPublishDate": 8397
   },
   "findings": [
     {
@@ -37336,20 +37336,6 @@
       ]
     },
     {
-      "showId": "king-lear-2004",
-      "file": "wsj--terry-teachout.json",
-      "score": null,
-      "publishDate": null,
-      "url": "https://www.wsj.com/articles/king-lear-review-every-inch-a-king-11554424200",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"sam gold\" from king-lear-2019"
-        }
-      ]
-    },
-    {
       "showId": "king-lear-off-broadway-2026",
       "file": "third-coast-review--unknown.json",
       "publishDate": "2026-10-26",
@@ -48670,6 +48656,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "other-desert-cities-2026",
+      "file": "the-komisar-scoop--lucy-komisar.json",
+      "score": 58,
+      "publishDate": "2026-11-05",
+      "url": "https://www.thekomisarscoop.com/2026/11/other-desert-cities-a-political-soap-opera-that-trips-over-a-red-herring/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
