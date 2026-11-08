@@ -123,7 +123,10 @@
     "paranormal-activity-2026/nytimes--helen-shaw.json",
     "wiping-my-mothers-arse-pitlochry-festival-regional-2026/guardian--mark-fisher.json",
     "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026/one-minute-critic--jerry-portwood.json",
-    "wiping-my-mothers-arse-pitlochry-festival-regional-2026/broadwayworld--natalie-odonoghue.json"
+    "wiping-my-mothers-arse-pitlochry-festival-regional-2026/broadwayworld--natalie-odonoghue.json",
+    "the-moth-off-west-end-2026/creative-reviews-uk--creative-reviews-uk.json",
+    "ceilidh-the-musical-off-west-end-2026/guardian--unknown.json",
+    "the-lives-of-others-west-end-2026/partially-obstructed-view--unknown.json"
   ],
   "failed": [
     "_superseded-misattributed/coal-country-off-broadway-2022--theatermania--hayley-levitt--1793290921151.json",
@@ -154,7 +157,6 @@
     "long-days-journey-into-night-2016/whatsonstage--sarah-crompton.json",
     "msblackforpresident-off-broadway-2026/theatermania--zachary-stewart.json",
     "222-a-ghost-story-off-broadway-2026/theatrely--kobi-kassal.json",
-    "the-moth-off-west-end-2026/creative-reviews-uk--creative-reviews-uk.json",
     "medea-off-broadway-2026/express-uk--neil-norman.json",
     "the-heart-off-broadway-2026/frontmezzjunkies--unknown.json",
     "the-lives-of-others-west-end-2026/whatsonstage--alex-wood.json",
@@ -185,7 +187,19 @@
     "mystic-pizza-tour-2026/talkinbroadway--arthur-dorman.json",
     "la-boheme-off-broadway-2026/parterre-box--unknown.json",
     "delirium-off-broadway-2026/brooklyneagle--brooklyn-eagle-staff.json",
-    "golden-boy-off-west-end-2026/thestage--dave-fargnoli.json"
+    "golden-boy-off-west-end-2026/thestage--dave-fargnoli.json",
+    "speculations-off-west-end-2026/guardian--arifa-akbar.json",
+    "speculations-off-west-end-2026/guardian--unknown.json",
+    "the-bridge-off-west-end-2026/cherylmarkosky--cherylmarkosky.json",
+    "the-bridge-off-west-end-2026/sunday-times--unknown.json",
+    "the-bridge-off-west-end-2026/theatreandtonic--emmie-newitt.json",
+    "tosca-english-national-opera-west-end-2026/bachtrack--anna-bogdanova.json",
+    "tosca-english-national-opera-west-end-2026/bachtrack--clare-varney.json",
+    "tosca-english-national-opera-west-end-2026/bachtrack--peter-quantrill.json",
+    "tosca-english-national-opera-west-end-2026/cherylmarkosky--cherylmarkosky.json",
+    "tosca-english-national-opera-west-end-2026/times-uk--richard-morrison.json",
+    "ceilidh-the-musical-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
+    "ceilidh-the-musical-off-west-end-2026/theatre-south-east--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -254,7 +268,10 @@
       "night-city-off-west-end-2026/londonbornandbred--russell.json",
       "night-city-off-west-end-2026/londonpubtheatres--namoo-chae-lee.json",
       "tartuffe-remixed-off-west-end-2026/londontheatredirect--sue-carvell.json",
-      "1984-citizens-regional-2026/thereviewshub--the-reviews-hub-scotland.json"
+      "1984-citizens-regional-2026/thereviewshub--the-reviews-hub-scotland.json",
+      "the-moth-off-west-end-2026/creative-reviews-uk--creative-reviews-uk.json",
+      "ceilidh-the-musical-off-west-end-2026/guardian--unknown.json",
+      "the-lives-of-others-west-end-2026/partially-obstructed-view--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -317,7 +334,7 @@
     ]
   },
   "startTime": "2026-11-08T19:50:31.589Z",
-  "lastProcessed": "wiping-my-mothers-arse-pitlochry-festival-regional-2026/broadwayworld--natalie-odonoghue.json",
+  "lastProcessed": "ceilidh-the-musical-off-west-end-2026/theatre-south-east--unknown.json",
   "log": [
     {
       "t": "2026-11-08T20:19:26.121Z",
@@ -362,6 +379,27 @@
       "t": "2026-11-08T21:17:08.988Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-08T21:24:14.920Z",
+      "event": "bb-session",
+      "session": "a8170b24",
+      "url": "https://bachtrack.com/review-lorfeo-william-kentridge-greek-national-opera-athen"
+    },
+    {
+      "t": "2026-11-08T21:24:50.521Z",
+      "event": "bb-session",
+      "session": "fb6ae027",
+      "url": "https://bachtrack.com/review-shostakovich-cherry-town-ahlbom-dutch-national-oper"
+    },
+    {
+      "t": "2026-11-08T21:25:25.067Z",
+      "event": "bb-session",
+      "session": "199092ce",
+      "url": "https://bachtrack.com/review-nozze-figaro-pountney-conta-bucharest-national-oper"
     }
+  ],
+  "recoveredAfterFailure": [
+    "the-moth-off-west-end-2026/creative-reviews-uk--creative-reviews-uk.json"
   ]
 }
