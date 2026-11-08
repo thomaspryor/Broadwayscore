@@ -674,3 +674,11 @@ test('BRO-7102: a TAP failure still wins over Playwright lines in the same job',
   ].join('\n');
   assert.equal(firstFailingTestNameInJobLog(log), 'unit thing breaks');
 });
+
+test('stepFailureSignature: a matrix index on the job name does not change the key (BRO-7113)', () => {
+  assert.equal(
+    stepFailureSignature('Unit Test Shard (1)', 'Run unit tests (node batch shard)', 'foo'),
+    stepFailureSignature('Unit Test Shard (3)', 'Run unit tests (node batch shard)', 'foo'),
+  );
+  assert.notEqual(stepFailureSignature('Unit Tests', 's', 'a'), stepFailureSignature('Unit Tests', 's', 'b'));
+});

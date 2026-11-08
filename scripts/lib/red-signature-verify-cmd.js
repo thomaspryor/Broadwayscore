@@ -48,6 +48,8 @@ const JOB_PROXY_COMMANDS = {
   // block runs — see that script's header. The workflow step itself can't be
   // named directly: it's a bash block, not a single command.
   'Unit Tests': 'node scripts/run-unit-tests.js',
+  // BRO-7113: the node batch + scripts/lib glob moved to the sharded job; same batches.
+  'Unit Test Shard': 'node scripts/run-unit-tests.js',
   // audit-workflow-concurrency.js is one of Lint Workflows' own ~50 steps and
   // is on the generic audit-/lint- safe-form allowlist — a real, always-safe
   // representative check for "something in this job broke", when the actual
@@ -195,7 +197,9 @@ function armOrOwnerJudgment(cmd, armedNote, unsafeNote) {
  *   `note` explains the fallback/refusal when `line` isn't a direct hit, and
  *   is null when the step's own command was used as-is.
  */
-function verifyForSignature({ job, step, testFile }, rawYmlText, { isTsxTest = isTsxManifestTest } = {}) {
+function verifyForSignature({ job: rawJob, step, testFile }, rawYmlText, { isTsxTest = isTsxManifestTest } = {}) {
+  // BRO-7113: matrix jobs report as `Unit Test Shard (2)`; the workflow's job `name:` has no suffix.
+  const job = String(rawJob || '').replace(/\s*\(\d+\)$/, '');
   const stepCmd = findStepRunCommandInWorkflow(rawYmlText, job, step);
   // BRO-6262: a failing unit test re-verifies against ITS OWN file, not the whole
   // suite. The whole-suite proxy keeps failing on unrelated reds, so the Done gate

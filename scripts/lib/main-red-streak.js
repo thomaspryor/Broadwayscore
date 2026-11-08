@@ -253,7 +253,9 @@ function sha1Short(s) {
  */
 function stepFailureSignature(jobName, stepName, testName) {
   const hash = sha1Short(`${stepName || ''}::${testName || ''}`);
-  return `${RED_SIGNATURE_PREFIX}${jobName || 'unknown'}:${hash}`;
+  // BRO-7113: drop a matrix index (`Unit Test Shard (2)`) so a test that moves shards keeps its key.
+  const job = String(jobName || '').replace(/\s*\(\d+\)$/, '');
+  return `${RED_SIGNATURE_PREFIX}${job || 'unknown'}:${hash}`;
 }
 
 // node --test's TAP reporter prints `not ok N - <name>` for each failing

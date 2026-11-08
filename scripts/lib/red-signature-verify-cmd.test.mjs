@@ -218,3 +218,9 @@ test('a job with no proxy command never gets a narrowed file command (stays owne
   const v = verifyForSignature({ job: 'Some Unregistered Job', step: 'x', testFile: 'tests/unit/a.test.mjs' }, FIXTURE_YML, { isTsxTest: () => false });
   assert.equal(v.line, 'VERIFY: owner-judgment');
 });
+
+test('a matrix-suffixed Unit Test Shard job resolves like its unsuffixed name (BRO-7113)', () => {
+  const v = verifyForSignature({ job: 'Unit Test Shard (2)', step: 'Run unit tests (node batch shard)', testFile: 'tests/unit/x.test.mjs' }, FIXTURE_YML, { isTsxTest: () => false });
+  assert.ok(v.line.startsWith('VERIFY: '), v.line);
+  assert.notEqual(v.line, 'VERIFY: owner-judgment');
+});
