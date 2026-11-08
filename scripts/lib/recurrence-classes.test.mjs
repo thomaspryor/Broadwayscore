@@ -389,6 +389,9 @@ test('BRO-7105: an absorbed class keeps its root card and its --check-class key'
   const keys = Object.keys(snap.lastSeenByKey);
   assert.ok(keys.includes(rec.key) && rec.mergedFrom.every((k) => keys.includes(k)));
   assert.ok(rec.mergedFrom.every((k) => snap.knownKeys.includes(k)));
+
+  assert.equal(snap.filesSignal, true);
+  assert.equal(det.buildSnapshot({ cards: [root, a, b, c], ledger: null, now: NOW, complete: true }).filesSignal, false, 'a title-only run is visible in the snapshot');
 });
 
 test('BRO-7105: root-card lookup has no date window', async () => {

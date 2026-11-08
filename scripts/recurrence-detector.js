@@ -198,6 +198,8 @@ function buildSnapshot({ cards, ledger, now, complete, commentsById = {}, prevKn
     quietDays: QUIET_DAYS,
     closeGateBlockingFrom: rc.CLOSE_GATE_BLOCKING_FROM,
     keyVersion: rc.KEY_VERSION,
+    // false when git could not be read (or --no-files): classes were grouped by title only.
+    filesSignal: !!filesById,
     share: { thisWeek: week(0), lastWeek: week(1) },
     recurringCount: out.length,
     withRootCause: out.filter((c) => c.rootCause).length,
@@ -546,7 +548,7 @@ function checkAll() {
   if (!snap.complete) { console.log('FAIL: last run read Linear only partly (complete:false)'); return 1; }
   const dup = snap.classes.filter((c) => c.extraRootCauses && c.extraRootCauses.length);
   if (dup.length) { console.log(`FAIL: ${dup.length} class(es) with more than one root card: ${dup.map((c) => `${c.key} (${c.rootCause}, ${c.extraRootCauses.join(', ')})`).join('; ')}`); return 1; }
-  console.log(`OK: ${snap.recurringCount} recurring classes, ${snap.withRootCause} with a root-cause card, ${snap.pendingRootCards || 0} waiting behind the per-run cap; root-cause share this week ${snap.share.thisWeek.share}%`);
+  console.log(`OK: ${snap.recurringCount} recurring classes, ${snap.withRootCause} with a root-cause card, ${snap.pendingRootCards || 0} waiting behind the per-run cap; root-cause share this week ${snap.share.thisWeek.share}%${snap.filesSignal === false ? ' (last run grouped by title only: git history was not readable)' : ''}`);
   return 0;
 }
 
