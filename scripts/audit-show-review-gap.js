@@ -52,6 +52,7 @@ const fs = require('fs');
 const { laneBypasses } = require('./lib/opening-night-lane/trust-model');
 const path = require('path');
 const { readCrossShowUrlRows } = require('./lib/cross-show-url-ledger'); // BRO-6910
+const { trackedPendingFiles } = require('./lib/pending-coverage'); // BRO-7163 F11
 const { isAggregatorBlind, majorOutletCountFor } = require('./lib/aggregator-blind'); // BRO-6910
 const cheerio = require('cheerio');
 const { execSync, execFileSync } = require('child_process');
@@ -1910,7 +1911,13 @@ async function auditShow(show, opts = {}) {
     try {
       const pendingDir = path.join(REVIEW_TEXTS_DIR, '_pending', show.id);
       if (fs.existsSync(pendingDir)) {
-        pendingOutlets = new Set(fs.readdirSync(pendingDir).filter(f => f.endsWith('.json')).map(f => outletKey(normalizeOutletId(f.split('--')[0]))));
+        // BRO-7163 F11: only a strand a recovery path works (no-byline) is "tracked elsewhere"; a
+        // date_implausible / cross_market file can never go live and must not hide the citation.
+        const pendingFiles = fs.readdirSync(pendingDir).filter(f => f.endsWith('.json')).map(f => {
+          let rec = null; try { rec = JSON.parse(fs.readFileSync(path.join(pendingDir, f), 'utf8')); } catch { /* unreadable: not tracked */ }
+          return { name: f, rec };
+        });
+        pendingOutlets = new Set(trackedPendingFiles(pendingFiles).map(f => outletKey(normalizeOutletId(f.name.split('--')[0]))));
       }
     } catch { /* pending scan is best-effort */ }
     const seenOutlets = new Set();
