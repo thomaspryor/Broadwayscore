@@ -14,7 +14,7 @@
 // A source passed as null is "health unknown", never a breach and never a crash.
 // The summary parser and lane attribution come from the protected grading file itself (BRO-6303).
 const { runnerSummaryFacts, parseSummaryHeading, laneOfSummary } = require('./codex-runner-grading.js');
-const { landedPerLane, parseStandDownNote } = require('./codex-runner.js');
+const { landedPerLane, parseStandDownNote, DISK_FULL_RE } = require('./codex-runner.js');
 
 const HOUR = 3600_000;
 
@@ -44,7 +44,8 @@ const FLOORS = Object.freeze({
 // "Stopped early" reasons that mean the lane cannot work (lock, disk, Done gate, REJECT streak, crash, limit).
 // A stop for lack of disk (R.stopReason, R.isDiskFailure): reported by its own class on the first
 // occurrence, because a full disk repeats until someone frees it (BRO-6304).
-const DISK_STOP = /GB of disk left|No space left on device|\bENOSPC\b/i;
+// BRO-7133: the runner's own disk phrasings (R.DISK_FULL_RE) and its 'out of disk:' stop, from one source.
+const DISK_STOP = new RegExp(`GB of disk left|\\bout of disk\\b|\\bENOSPC\\b|${DISK_FULL_RE.source}`, 'i');
 const BLOCKING_STOP = /\block\b|disk|Done gate refused|REJECTs? in a row|Codex exited|usage limit|limit reached|login|did not start/i;
 // Stand-down classes that are not a fault: another run is working (lock-held) or the lane steps
 // aside on purpose while the login may refresh (login-refresh). Every other class blocks the lane.

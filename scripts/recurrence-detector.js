@@ -254,7 +254,7 @@ function rootCardDescription(cls) {
     '## What to do',
     '1. Read the recent cases above and find what they have in common (the code path, the data source, the job).',
     '2. Land a change that stops the class at the source, plus a test, guard or check that would have caught it.',
-    '3. Comment the Outcome with a `PREVENTION:` line naming what now catches this class.',
+    '3. Comment the Outcome with these lines (the close check reads them, BRO-7132): `ROOT-CAUSE:` why the class kept happening, `CLASS-GUARD:` the path of the guard in your diff, `RED-THEN-GREEN:` it failed with the fix reverted and passed with it, `COUSINS:` where else you looked. Or `NO-ROOT-CAUSE: <reason>`.',
     // No "RECHECK-AFTER" + colon here: that marks a card as a deferred wait
     // and the cloud picker would never take it (headless-dispatchability.js).
     `4. Pause this card with a RECHECK-AFTER date ${QUIET_DAYS} days after the land. The check below passes once ${QUIET_DAYS} days go by with no new case.`,
@@ -626,7 +626,7 @@ async function main() {
     for (const c of cards) if (rc.isDone(c) && Date.parse(c.completedAt) >= now - 14 * DAY) doneIds.push(c.identifier);
     try {
       const m = await require('./lib/linear-client.js').listIssueComments([...new Set(doneIds)], undefined, { includeArchived: true });
-      for (const [id, nodes] of m) commentsById[id] = nodes.map((n) => n.body || '');
+      for (const [id, nodes] of m) commentsById[id] = rc.commentBodiesOldestFirst(nodes);
     } catch (e) {
       console.warn(`[recurrence] comment read failed (${e.message}); prevention stats are partial`);
       complete = false;

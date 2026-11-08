@@ -116,6 +116,29 @@ test('a clean excerpt on a file the rebuild excludes is not recoverable', () => 
   assert.equal(recoverableQuote({ ...data }, 'Some Show', 'closed', { show, filePath: 'x/timeout-london--a.json' }), null);
 });
 
+// BRO-6439: the rebuild runs applyScoreRelevantMigrations (garbageFullText -> fullText recovery) before
+// finalizePullQuote. recoverableQuote skipped that step, so it judged a different file than the rebuild did
+// (aladdin-2014/ap: called "recoverable" what the rebuild shipped with no quote). Both directions must agree.
+test('BRO-6439: recoverableQuote sees the same garbageFullText recovery the rebuild applies first', () => {
+  const { applyScoreRelevantMigrations } = require('../../scripts/lib/rebuild-helpers');
+  const body = 'The revival is a thoroughly gripping production that deserves every bit of praise it gets from audiences. '
+    + 'The lead performance is something special, and the director keeps the evening moving at a confident clip. '
+    + 'The design is handsome without ever upstaging the actors, and the second act lands with real force.';
+  const data = { showId: 'some-show-2014', outletId: 'ap', criticName: 'A Critic', fullText: null, garbageFullText: body };
+  const migrated = { ...data };
+  assert.equal(applyScoreRelevantMigrations(migrated).garbageRecovered, true, 'fixture must exercise the recovery');
+  const rebuildShips = finalizePullQuote(migrated, 'Some Show', 'open');
+  assert.ok(rebuildShips, 'fixture: the rebuild ships a quote from the recovered text');
+  assert.equal(finalizePullQuote({ ...data }, 'Some Show', 'open'), null, 'fixture: the un-migrated file has no quote');
+  assert.equal(recoverableQuote({ ...data }, 'Some Show', 'open'), rebuildShips);
+  // Never mutates the caller's file object (the backfill writes reviews.json, never review-texts).
+  const input = { ...data };
+  recoverableQuote(input, 'Some Show', 'open');
+  assert.equal(input.fullText, null);
+  // An error-page garbage body is never recovered, so there is nothing to quote either way.
+  assert.equal(recoverableQuote({ ...data, garbageReason: 'Error/404 page' }, 'Some Show', 'open'), null);
+});
+
 test('BRO-6201: changedSinceRebuildScan separates rebuild lag from a wiring gap', () => {
   const { changedSinceRebuildScan } = require('../../scripts/backfill-missing-pullquotes.js');
   const scan = '2026-10-29T00:29:43.534Z';

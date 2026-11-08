@@ -248,7 +248,7 @@ function rootCauseCloseCheck({ identifier, title, description = '', commentText 
     const r = rcc.checkRootCauseClose({ title, texts, landedFiles });
     const blocking = rcc.rootCauseCloseBlocking(nowMs);
     const message = rcc.rootCauseCloseMessage(identifier, r, blocking);
-    return message ? { message, blocking } : null;
+    return message ? { message, blocking, summary: rcc.rootCauseCloseSummary(identifier, r, blocking), missing: r.missing } : null;
   } catch {
     return null;
   }
@@ -292,7 +292,8 @@ function checkLinearDoneTransition(args = {}) {
     if (rcc.blocking && result.allowed !== false) {
       result = { ...result, gated: true, allowed: false, verdict: 'root-cause-missing', reason: rcc.message };
     } else {
-      result = addWarning(result, rcc.message);
+      // rootCauseSummary: one line the caller repeats last (BRO-7132).
+      result = { ...addWarning(result, rcc.message), rootCauseSummary: rcc.summary, rootCauseMissing: rcc.missing };
     }
   }
   return result;

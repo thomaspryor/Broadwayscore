@@ -73,9 +73,11 @@ function findStaleOpenShows(marketShows, now = new Date(), graceDays = CLOSING_G
 // discovery fix): exempt while status='announced', and while a provisional
 // venue-page stub is 'upcoming' because the venue listed dates but no genre
 // (BRO-4396 gives dated stubs the status their dates imply; knownShowType()
-// leaves type null rather than guess). Nothing fills it automatically: the
-// status flip at previews keeps refusing to guess (announced-promotion.js
-// typeForListedShow), so findUntypedStubsNearPreviews warns ahead of that date.
+// leaves type null rather than guess). shows-write-guard.js fills a type on
+// every write once a row leaves 'announced', but only a confident one
+// (announced-promotion.js typeForListedShow, BRO-7130); a row nothing names
+// stays null, so findUntypedStubsNearPreviews warns ahead of that date and a
+// failure here routes to its own alert (data-validation-routing.js).
 // The exemption names the venue-page source (BRO-5261): other provisional
 // sources (manual requests, tour schedules, roundups) still need a type.
 function typeExempt(s) {
@@ -220,6 +222,7 @@ module.exports = {
   findSlugCollisions,
   findStaleOpenShows,
   findMissingRequiredFields,
+  typeExempt,
   buildOutletDomainMaps,
   urlMatchesOutletDomain,
   scanShowReviews,

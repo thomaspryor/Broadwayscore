@@ -1,13 +1,48 @@
 {
-  "generatedAt": "2026-11-08T15:50:49.970Z",
+  "generatedAt": "2026-11-08T17:41:29.798Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 322,
-  "clean": 322,
-  "defective": 0,
-  "byType": {},
-  "shows": [],
+  "clean": 320,
+  "defective": 2,
+  "byType": {
+    "score-drift": 2
+  },
+  "shows": [
+    {
+      "showId": "tosca-english-national-opera-west-end-2026",
+      "title": "Tosca - English National Opera",
+      "openingDate": "2026-10-30",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 64.54 vs local 64.46 (Δ0.08)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 19,
+      "deployedCount": 20,
+      "firstDefectAt": "2026-11-08T17:41:25.615Z"
+    },
+    {
+      "showId": "stranger-things-the-first-shadow-west-end-2023",
+      "title": "Stranger Things: The First Shadow",
+      "openingDate": "2023-12-14",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 83.31 vs local 84.99 (Δ1.68)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 33,
+      "deployedCount": 34,
+      "firstDefectAt": "2026-11-08T17:41:25.615Z"
+    }
+  ],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }

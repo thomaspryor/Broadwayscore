@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-08T15:50:50.378Z",
+  "generatedAt": "2026-11-08T17:41:30.186Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -132,10 +132,6 @@
   "feedsChecked": 84,
   "feedsFailed": [
     {
-      "outletId": "theater-life",
-      "error": "Timeout fetching https://theaterlife.com/feed"
-    },
-    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
@@ -154,14 +150,10 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
-    },
-    {
-      "outletId": "stagebuddy",
-      "error": "Timeout fetching https://stagebuddy.com/feed"
     }
   ],
-  "itemsScanned": 811,
-  "matchedGaps": 3,
+  "itemsScanned": 820,
+  "matchedGaps": 2,
   "possibleGaps": 3,
   "gaps": [
     {
@@ -181,15 +173,6 @@
       "url": "https://t2conline.com/222-a-ghost-story-the-loudest-thing-in-the-room-isnt-the-ghost/",
       "headline": "2:22 – A Ghost Story: The Loudest Thing in the Room Isn’t the Ghost",
       "publishDate": "2026-11-07"
-    },
-    {
-      "showId": "tango-after-dark-off-west-end-2026",
-      "title": "Tango After Dark",
-      "level": "matched",
-      "outletId": "firstnightmagazine",
-      "url": "https://firstnightmagazine.com/2026/11/08/german-cornejo-talks-tango-after-dark-tango-is-so-much-more-than-just-a-dance/",
-      "headline": "German Cornejo talks &#8216;Tango After Dark&#8217;: &#8220;Tango is so much more than just a dance&#8221;",
-      "publishDate": "2026-11-08"
     },
     {
       "showId": "king-lear-off-broadway-2026",

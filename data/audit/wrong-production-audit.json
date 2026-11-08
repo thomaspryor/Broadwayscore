@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-08T15:29:24.246Z",
+  "timestamp": "2026-11-08T17:42:26.733Z",
   "stats": {
-    "totalReviews": 80555,
-    "alreadyFlagged": 22052,
+    "totalReviews": 80578,
+    "alreadyFlagged": 22056,
     "dateGuardCatches": 217,
     "directorMismatch": 3553,
-    "tvFilmSignals": 2292,
-    "londonSignals": 3632,
+    "tvFilmSignals": 2293,
+    "londonSignals": 3633,
     "offBroadwaySignals": 748,
     "yearMismatch": 363,
-    "noPublishDate": 8421
+    "noPublishDate": 8416
   },
   "findings": [
     {
@@ -4758,7 +4758,7 @@
     {
       "showId": "american-psycho-off-west-end-2026",
       "file": "telegraph--claire-allfree.json",
-      "score": 60,
+      "score": 63,
       "publishDate": "2026-02-02",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/american-psycho-almeida-review/",
       "findings": [
@@ -4791,6 +4791,7 @@
     {
       "showId": "american-psycho-off-west-end-2026",
       "file": "times-uk--clive-davis.json",
+      "score": 54,
       "publishDate": "2026-02-02",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/american-psycho-review-was-this-soulless-show-really-worth-reviving-5708nwb76",
       "findings": [
@@ -48522,6 +48523,19 @@
     },
     {
       "showId": "other-desert-cities-2026",
+      "file": "the-komisar-scoop--unknown.json",
+      "publishDate": "2026-11-05",
+      "url": "https://www.thekomisarscoop.com/2026/11/other-desert-cities-a-political-soap-opera-that-trips-over-a-red-herring/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "other-desert-cities-2026",
       "file": "theater-life--david-sheward.json",
       "score": 74,
       "publishDate": "2026-10-21",
@@ -49433,6 +49447,7 @@
     {
       "showId": "parade-tour-2025",
       "file": "pioneer-press--ross-raihala.json",
+      "score": 90,
       "publishDate": "2025-01-23",
       "url": "https://www.twincities.com/2025/01/23/parade-review-musical-orpheum-minneapolis/",
       "findings": [
@@ -55048,7 +55063,7 @@
       "file": "thestage--tim-bano.json",
       "score": 36,
       "publishDate": "2018-04-05",
-      "url": null,
+      "url": "https://www.thestage.co.uk/reviews/ruthless-the-musical-review-at-arts-theatre-london--nasty-waspish-self-satisfied",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -57884,6 +57899,7 @@
     {
       "showId": "some-like-it-hot-tour-2024",
       "file": "the-detroit-jewish-news--ronelle-grier.json",
+      "score": 88,
       "publishDate": "2024-10-09",
       "url": "https://www.thejewishnews.com/culture/review-some-like-it-hot-sizzles-across-the-fisher-theater-stage/article_d542e1d2-8666-11ef-a3d7-2f3b755781f9.html",
       "findings": [
@@ -67461,6 +67477,7 @@
     {
       "showId": "the-glass-menagerie-dundee-rep-regional-2025",
       "file": "thestage--fergus-morgan.json",
+      "score": 79,
       "publishDate": "2025-10-03",
       "url": "https://www.thestage.co.uk/reviews/the-glass-menagerie-review-dundee-rep-dundee-andrew-panton-tennessee-williams",
       "findings": [
@@ -90147,7 +90164,7 @@
     {
       "showId": "ballet-shoes-west-end-2024",
       "file": "independent--alice-saville.json",
-      "score": 95,
+      "score": 97,
       "publishDate": "2024-12-06",
       "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/ballet-shoes-national-theatre-christmas-b2659983.html",
       "findings": [
@@ -90203,7 +90220,7 @@
     {
       "showId": "ballet-shoes-west-end-2024",
       "file": "standard--nick-curtis.json",
-      "score": 95,
+      "score": 98,
       "publishDate": "2024-12-06",
       "url": "https://www.standard.co.uk/culture/theatre/ballet-shoes-national-theatre-review-b1198466.html",
       "findings": [
@@ -90217,6 +90234,7 @@
     {
       "showId": "ballet-shoes-west-end-2024",
       "file": "telegraph--dominic-cavendish.json",
+      "score": 98,
       "publishDate": "2024-12-06",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/ballet-shoes-national-theatre-review/",
       "findings": [
@@ -124564,6 +124582,20 @@
       ]
     },
     {
+      "showId": "tango-after-dark-off-west-end-2026",
+      "file": "theatreandtonic--emmie-newitt.json",
+      "score": 93,
+      "publishDate": "2026-11-07",
+      "url": "https://theatreandtonic.co.uk/blog/german-cornejos-tango-after-dark-sadlers-wells-theatre-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"adelphi theatre\""
+        }
+      ]
+    },
+    {
       "showId": "tao-of-glass-west-end-2026",
       "file": "thereviewshub--richard-maguire.json",
       "score": 91,
@@ -131316,6 +131348,19 @@
       "file": "lovelondonloveculture--unknown.json",
       "publishDate": "2026-11-05",
       "url": "https://lovelondonloveculture.com/2026/11/05/review-round-up-the-lives-of-others-adelphi-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"adelphi theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-lives-of-others-west-end-2026",
+      "file": "partially-obstructed-view--view-my-complete.json",
+      "publishDate": "2026-11-05",
+      "url": "http://partially-obstructed-view.blogspot.com/2026/11/theatre-review-lives-of-others.html",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -139768,20 +139813,6 @@
       "score": 94,
       "publishDate": "2026-10-01",
       "url": "https://firstnightmagazine.com/2026/10/01/review-of-whos-afraid-of-virginia-woolf-soho-place-2026-billy-crudup-and-gillian-anderson-are-the-hottest-hateful-couple-in-town/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "whos-afraid-of-virginia-woolf-west-end-2026",
-      "file": "ground--unknown.json",
-      "score": null,
-      "publishDate": "2026-09-30",
-      "url": "https://ground.news/article/production-images-released-for-gillian-anderson-and-billy-crudup-in-whos-afraid-of-virginia-woolf-theatre-weekly",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
