@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7100",
   "planId": "7c10b87a-72b7-43bd-9eab-bf06637a2a27",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-07T23:03:03.883Z",
   "submitter": {
     "name": null,
@@ -161,5 +161,114 @@
         "description": "BWW roundup parse of a sentence fragment inside another critic's quote as \"Critic, Outlet:\" (BRO-7100); not a review; already invalid"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-08T01:35:23.595Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted angels-in-america-2018/should-appeal-to-two-audiences--national-theatre.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted angels-in-america-perestroika-1993/should-appeal-to-two-audiences--national-theatre.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted angels-in-america-2018/ew--national-theatre.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-last-five-years-2025/reviews--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted anna-christie-off-broadway-2025/the-showmance-already-happened--in-brooklyn.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted ink-2019/does-something-very-canny--j-friedman-theatre.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted yellow-face-2024/the-lost-and-avatar--dae-kim.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted peter-pan-goes-wrong-2023/david-finkle--stage-review.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted back-to-the-future-2023/and-daryl-tofa-back-to-the-future--gabi-stapula.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted back-to-the-future-2023/whose-title-is-something-of-a-misnomer--the-musical.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted back-to-the-future-2023/back-to-the-future--best-new-musical.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted beautiful-the-carole-king-musical-2014/the-canadian-talent-who-first-rose-to-fame-ondegrassi--jake-epstein.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted forbidden-broadway-merrily-we-stole-a-song-off-broadway-2024/forbidden-broadway--gerry-mcintyre.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted grand-horizons-2020/the-unthinkable-happens--grand-horizons.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted just-for-one-day-the-live-aid-musical-west-end-2025/a-hopeful-antidote-to-trying-times-photo-credit--one-day.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted la-traviata-off-broadway-2026/was-along-for-the-ride--jonathan-loy.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted rocky-2014/are-likely-to-inspire-a-heavy-outpouring-of-adjectives--garden-theatre.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted shuffle-along-or-the-making-of-the-musical-sensation-of-1921-and-all-that-followed-2016/was-the-star-of-the-original-production-photo-credit--audra-mcdonald.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted noises-off-2001/lets-note--brooke-ashton.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted glengarry-glen-ross-west-end-2026/purlie-victorious--wilders-our-town.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted sunset-boulevard-1994/close-gives-a-bravura-performance--like-burnett.json"
+    }
+  ],
+  "executedIn": "ci"
 }
