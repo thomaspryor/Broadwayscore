@@ -16,7 +16,7 @@ const require = createRequire(import.meta.url);
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 const { findGaps } = require(path.join(ROOT, 'scripts', 'audit-workflow-secret-gaps.js'));
 
-const GAP_BUDGET = 162;
+const GAP_BUDGET = 153;
 
 test(`workflow secret gaps stay within budget (${GAP_BUDGET})`, () => {
   const gaps = findGaps(path.join(ROOT, '.github', 'workflows'));
