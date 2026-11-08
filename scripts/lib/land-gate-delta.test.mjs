@@ -719,3 +719,28 @@ test('next-lint keys absolute ESLint stylish paths to the repo-relative file (BR
   assert.deepEqual([...a.keys()], [...b.keys()]);
   assert.ok([...a.keys()][0].startsWith('src/app/x.tsx'));
 });
+
+// BRO-7111: the CLI ended with process.exit(main()). With stdout a pipe the reader drains
+// slower than the writer (land-local-check's spawnSync capture), Node queued the writes and
+// process.exit threw them away: a 960KB verdict arrived as 231KB with no FAIL line, so the
+// report hid the one new failure. This fails if the entry point goes back to process.exit.
+test('BRO-7111: a verdict over 1MB reaches a piped reader whole (FAIL line, NEW line and summary table)', () => {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'land-gate-delta-big-'));
+  try {
+    const msg = 'Cannot find module or its corresponding type declarations. '.repeat(3);
+    const old = Array.from({ length: 8000 }, (_, i) => `src/f${i}.ts(1,1): error TS2307: ${msg}`).join('\n');
+    const base = resultDir(tmp, 'base', { tsc: { exit: 2, text: `${old}\n` } });
+    const branch = resultDir(tmp, 'branch', { tsc: { exit: 2, text: `${old}\nsrc/new.ts(1,1): error TS2322: brand new\n` } });
+    const env = { ...process.env };
+    delete env.NODE_TEST_CONTEXT;
+    const r = spawnSync(process.execPath, [CLI, '--base-dir', base, '--branch-dir', branch, '--gates', 'tsc', '--base-source', 'test'],
+      { encoding: 'utf8', env, maxBuffer: 64 * 1024 * 1024 });
+    assert.equal(r.status, 1);
+    assert.ok(r.stdout.length > 1024 * 1024, `expected >1MB of output, got ${r.stdout.length}`);
+    assert.match(r.stdout, /^FAIL {2}tsc/m);
+    assert.match(r.stdout, /::error::tsc: NEW failure on the branch \(absent on origin\/main\): src\/new\.ts/);
+    assert.match(r.stdout, /\| tsc \| \*\*FAIL\*\* \|/, 'the markdown summary printed last must arrive');
+  } finally {
+    fs.rmSync(tmp, { recursive: true, force: true });
+  }
+});

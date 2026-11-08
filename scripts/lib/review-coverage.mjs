@@ -406,7 +406,7 @@ async function main(argv) {
 
 if (process.argv[1] && fs.realpathSync(process.argv[1]) === fileURLToPath(import.meta.url)) {
   main(process.argv.slice(2)).then(
-    (c) => process.exit(c),
+    (c) => createRequire(import.meta.url)('./exit-flushed.js').exitFlushed(c),
     (e) => {
       process.stderr.write(`review-coverage: internal error: ${e && e.message}\n`);
       process.exit(process.argv.includes('--record') ? 1 : 0);

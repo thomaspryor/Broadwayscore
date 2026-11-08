@@ -332,6 +332,6 @@ function main(argv) {
   return 2;
 }
 
-if (require.main === module) process.exit(main(process.argv.slice(2)));
+if (require.main === module) require('./exit-flushed.js').exitFlushed(main(process.argv.slice(2)));
 
 module.exports = { TSC_INERT_RESIDUE, HOOK_TREE_SKIP_RE, decide, decideHook, hookKey, hookDirtyLines, decideHookSeedExport, computeKey, readStamp, dataDigest, decideSeedExport, decideSeed };

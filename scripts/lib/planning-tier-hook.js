@@ -76,4 +76,4 @@ async function main() {
   return 0;
 }
 
-main().then((c) => process.exit(c), () => process.exit(0));
+main().then((c) => require('./exit-flushed.js').exitFlushed(c), () => process.exit(0));

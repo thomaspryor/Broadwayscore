@@ -313,5 +313,5 @@ if (require.main === module) {
   const code = main();
   // BRO-5730: record the verdict so the land push hook can tell whether this tip was checked.
   if (!parseArgs(process.argv.slice(2)).help) require('./land-local-check-log.js').recordVerdict(ROOT, code, { head: judgedHead });
-  process.exit(code);
+  require('./exit-flushed.js').exitFlushed(code); // BRO-7111: a plain exit truncated the ~1MB verdict above when piped
 }

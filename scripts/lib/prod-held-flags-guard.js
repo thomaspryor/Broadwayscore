@@ -151,7 +151,7 @@ function main(argv = [], env = process.env, rootDir = REPO_ROOT) {
 
 if (require.main === module) {
   try {
-    process.exit(main(process.argv.slice(2)));
+    require('./exit-flushed.js').exitFlushed(main(process.argv.slice(2)));
   } catch (e) {
     console.error(`::error::${e.message}`);
     process.exit(1);

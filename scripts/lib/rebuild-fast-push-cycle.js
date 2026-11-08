@@ -158,5 +158,5 @@ module.exports = {
 };
 
 if (require.main === module) {
-  process.exit(main(process.argv.slice(2)));
+  require('./exit-flushed.js').exitFlushed(main(process.argv.slice(2)));
 }

@@ -413,7 +413,7 @@ async function main(argv) {
 if (require.main === module) {
   // Exit 1 means "refused", so an unexpected crash must not reuse it.
   main(process.argv.slice(2)).then(
-    (code) => process.exit(code),
+    (code) => require('./exit-flushed.js').exitFlushed(code),
     (err) => {
       console.error(`wait-for-land crashed: ${err && err.stack ? err.stack : err}`);
       process.exit(3);
