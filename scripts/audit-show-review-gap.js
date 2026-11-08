@@ -1191,6 +1191,12 @@ function explainFileExclusion(d, show) {
 
 const { lastNewReviewAt, hasRecentReviewActivity } = require('./lib/collection-phase');
 
+// A closed show stays auditable through the window plus a week of grace (BRO-7163 F05).
+const CLOSED_GRACE_DAYS = 7;
+function closedShowStillInWindow(diffDays, windowDays) {
+  return diffDays >= -3 && diffDays <= windowDays + CLOSED_GRACE_DAYS;
+}
+
 function isShowEligible(show) {
   // Recency falls back openingDate → previewsStartDate. This used to be a bare
   // `if (!show.openingDate) return false`, which made this audit — the one whose
@@ -1203,10 +1209,14 @@ function isShowEligible(show) {
   if (recencyDate === NO_DATE_SENTINEL) return false;
   // --include-closed: also audit closed shows (one-time back-catalogue backfill).
   // Without it, only currently open/previews shows are checked (the default cron).
-  if (!includeClosed && !['open', 'previews'].includes(show.status)) return false;
   const opened = new Date(recencyDate);
   const today = new Date();
   const diffDays = (today - opened) / 86400000;
+  // BRO-7163 F05: a short-run show that closed inside (or just after) the opening window is still
+  // owed its late reviews. Without this a 12-day Off-West End run left the audit the day it closed.
+  if (!includeClosed && !['open', 'previews'].includes(show.status)) {
+    return show.status === 'closed' && closedShowStillInWindow(diffDays, windowDays);
+  }
   // Eligible if opened within window OR in pre-opening (<=3 days from now)
   if (diffDays >= -3 && diffDays <= windowDays) return true;
   // BRO-4770: a show past the window stays in scope while it is still collecting
@@ -3880,4 +3890,4 @@ if (require.main === module) {
 // REVIEW_TEXTS_DIR before requiring this module.
 // main + USAGE are exported so scripts/audit-show-review-gap.test.mjs can
 // prove --help never falls through to a real gh call (task #266).
-module.exports = { urlMatchesShowTitle, matchingTitleVariants, auditShow, dropRoundupsOwnedByOtherShows, roundupOwnerMap, planRoundupGapAlerts, openLegacyRoundupGapKeys, buildRoundupGapAlert, syncRollupCard, ROUNDUP_GAP_ROLLUP_KEY, isInVerdictWindow, findAggregatorArticles, urlMatchesShow, namesLongerShowTitle, titleTokens, provisionalOutletIdFromHost, freshnessMsFor, hostOf, registrableHost, getKnownDomainMap, isReviewUrl, normalizeReviewUrl, gapUrlIdentity, classifyShowFile, isCoveredFile, bumpRecoveryCount, acceptSerpCensusResult, otherProductionUrlSignal, computeResidualCounts, currentRunUncollected, alertUncollected, openingWindowClearedKeys, main, USAGE, dispatchGatherFor };
+module.exports = { urlMatchesShowTitle, matchingTitleVariants, auditShow, dropRoundupsOwnedByOtherShows, roundupOwnerMap, planRoundupGapAlerts, openLegacyRoundupGapKeys, buildRoundupGapAlert, syncRollupCard, ROUNDUP_GAP_ROLLUP_KEY, isInVerdictWindow, findAggregatorArticles, urlMatchesShow, namesLongerShowTitle, titleTokens, provisionalOutletIdFromHost, freshnessMsFor, hostOf, registrableHost, getKnownDomainMap, isReviewUrl, normalizeReviewUrl, gapUrlIdentity, classifyShowFile, isCoveredFile, bumpRecoveryCount, acceptSerpCensusResult, isShowEligible, closedShowStillInWindow, otherProductionUrlSignal, computeResidualCounts, currentRunUncollected, alertUncollected, openingWindowClearedKeys, main, USAGE, dispatchGatherFor };
