@@ -1445,7 +1445,10 @@ function applyScoreRelevantMigrations(data) {
   }
   const isErrorPage = data.garbageReason &&
     (/^Error\/404/i.test(data.garbageReason) || /page not found/i.test(data.garbageReason));
-  if (!data.fullText && data.garbageFullText && data.garbageFullText.length > 200 && !isErrorPage) {
+  // BRO-7127: a body quarantined as another show's article ("Cross-show duplicate")
+  // must stay quarantined, or wrong-article text could ship as a pull quote.
+  const isCrossShowDup = /cross-show duplicate/i.test(String(data.garbageFullTextNote || ''));
+  if (!data.fullText && data.garbageFullText && data.garbageFullText.length > 200 && !isErrorPage && !isCrossShowDup) {
     const cleaned = cleanText(data.garbageFullText);
     if (cleaned && cleaned.length > 200) {
       data.fullText = cleaned;

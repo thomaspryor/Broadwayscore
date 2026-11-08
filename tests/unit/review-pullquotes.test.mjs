@@ -152,3 +152,18 @@ test('BRO-6201: changedSinceRebuildScan separates rebuild lag from a wiring gap'
   assert.equal(changedSinceRebuildScan({ firstSeenAt: '2099-01-01T00:00:00Z' }, undefined), false);
   assert.equal(changedSinceRebuildScan({ firstSeenAt: '2099-01-01T00:00:00Z' }, 'not a date'), false);
 });
+
+// BRO-7127: garbageFullText quarantined as another show's article is never recovered into fullText.
+test('BRO-7127: applyScoreRelevantMigrations does not recover a "Cross-show duplicate" garbageFullText', () => {
+  const { applyScoreRelevantMigrations } = require('../../scripts/lib/rebuild-helpers');
+  const body = 'The revival is a thoroughly gripping production that deserves every bit of praise it gets from audiences. '
+    + 'The lead performance is something special, and the director keeps the evening moving at a confident clip. '
+    + 'The design is handsome without ever upstaging the actors, and the second act lands with real force.';
+  const base = { showId: 'some-show-2014', outletId: 'ap', criticName: 'A Critic', fullText: null, garbageFullText: body };
+  const dup = { ...base, garbageFullTextNote: 'Cross-show duplicate: fullText belongs to a different show' };
+  assert.equal(applyScoreRelevantMigrations(dup).garbageRecovered, false);
+  assert.equal(dup.fullText, null);
+  assert.equal(finalizePullQuote(dup, 'Some Show', 'open'), null);
+  const other = { ...base, garbageFullTextNote: 'Truncated by scraper' };
+  assert.equal(applyScoreRelevantMigrations(other).garbageRecovered, true, 'control: other garbage notes still recover');
+});
