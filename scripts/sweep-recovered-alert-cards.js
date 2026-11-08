@@ -10,6 +10,8 @@
  *
  * The landed closer is dry-run unless --landed --apply are BOTH given, so the
  * daily workflow (--apply) only closes recovered alert cards at first.
+ * A recovered alert needs the alert ledger to say resolved AND the health row
+ * absent (row absence alone is not recovery). Kill switch: BOARD_CLOSER_KILL_SWITCH=1.
  * Closes through linear-brain.js, so the Done gate re-runs. Exit 0 on success
  * (including nothing to do), 3 when Linear could not be read.
  */
@@ -17,12 +19,14 @@
 'use strict';
 
 const path = require('path');
-const { execFileSync, spawnSync } = require('child_process');
+const { spawnSync } = require('child_process');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const bc = require('./lib/board-closer.js');
 
+const fs = require('fs');
 const REPO = path.join(__dirname, '..');
 const MAX_PER_RUN = 25;
+const LEDGER = path.join(REPO, 'data/audit/alert-ledger.json');
 const USAGE = 'Usage: node scripts/sweep-recovered-alert-cards.js [--dry-run] [--apply] [--landed]';
 
 const noisy = async (fn) => {
@@ -45,9 +49,10 @@ function prodExit(sha) {
 }
 
 function readLandings() {
-  const { parseLandings, LANDINGS_REL } = require('./lib/landings-ledger.js');
-  const text = execFileSync('git', ['show', `origin/main:${LANDINGS_REL}`], { cwd: REPO, encoding: 'utf8', maxBuffer: 256 << 20, stdio: ['ignore', 'pipe', 'ignore'], timeout: 60000 });
-  return parseLandings(text);
+  // Local checkout file, like close-stuck-verified-cards (no depth-1 origin/main staleness).
+  const r = require('./lib/landings-ledger.js').readLandings(REPO);
+  if (!r.available) throw new Error('data/audit/landings.jsonl not found');
+  return r.rows;
 }
 
 function close(identifier, comment) {
@@ -59,11 +64,21 @@ function close(identifier, comment) {
 
 async function main(argv = process.argv.slice(2), deps = {}) {
   if (hasHelpFlag(argv)) { console.log(USAGE); return 0; }
+  if (process.env.BOARD_CLOSER_KILL_SWITCH === '1') { console.log('[sweep-recovered-alert-cards] kill switch set, nothing to do'); return 0; }
   const apply = argv.includes('--apply') && !argv.includes('--dry-run');
   const landed = argv.includes('--landed');
   const linear = deps.linear || require('./lib/linear-client.js');
   const checkRow = deps.healthRowExit || healthRowExit;
   const counts = {};
+  let ledger;
+  try { ledger = deps.ledger || JSON.parse(fs.readFileSync(LEDGER, 'utf8')); } catch (err) {
+    console.error(`[sweep-recovered-alert-cards] could not read alert ledger: ${err.message}`);
+    return 3;
+  }
+  const releaseTracker = deps.releaseTracker || ((key, id) => {
+    if (!process.env.ALERT_LEDGER_PATH) process.env.ALERT_LEDGER_PATH = LEDGER;
+    return require('./lib/owner-alert-router').releaseSweptTracker(key, id);
+  });
   const bump = (k) => { counts[k] = (counts[k] || 0) + 1; };
   let closed = 0;
 
@@ -83,12 +98,18 @@ async function main(argv = process.argv.slice(2), deps = {}) {
   // One health-row check per distinct row, however many cards name it.
   const exitByRow = new Map();
   for (const c of candidates) {
+    const lg = bc.ledgerSaysRecovered(ledger, c.issue.identifier, c.conditionKey);
+    if (!lg.ok) { bump(lg.reason); continue; }
     if (!exitByRow.has(c.row)) exitByRow.set(c.row, await checkRow(c.row));
     const d = bc.decideRecovered(exitByRow.get(c.row));
     if (d.action !== 'close') { bump(d.reason); continue; }
     if (!apply) { console.log(`would close ${c.issue.identifier} (${c.row})`); bump('recovered'); continue; }
     if (closed >= MAX_PER_RUN) { bump('over-run-cap'); continue; }
-    if (close(c.issue.identifier, bc.recoveredComment(c.row))) { closed++; console.log(`closed ${c.issue.identifier} (${c.row})`); bump('closed'); }
+    if ((deps.close || close)(c.issue.identifier, bc.recoveredComment(c.row))) {
+      closed++; bump('closed');
+      const released = releaseTracker(c.conditionKey, c.issue.identifier);
+      console.log(`closed ${c.issue.identifier} (${c.row})${released ? ' — tracker released' : ''}`);
+    }
     else bump('close-failed');
   }
 
@@ -103,13 +124,14 @@ async function main(argv = process.argv.slice(2), deps = {}) {
     for (const issue of started) {
       const branch = bc.landBranchFromComments(comments.get(issue.identifier));
       if (!branch) continue;
-      const landing = bc.landingForBranch(rows, branch);
+      const newest = (comments.get(issue.identifier) || [])[0];
+      const landing = bc.landingForBranch(rows, branch, Date.parse(newest && newest.createdAt));
       const liveExit = landing ? (deps.prodExit || prodExit)(landing.sha) : null;
       const d = bc.decideLanded(issue, { branch, landing, liveExit });
       if (d.action !== 'close') { bump(`landed:${d.reason}`); continue; }
       if (!apply) { console.log(`would close ${issue.identifier} (${branch} live at ${d.sha.slice(0, 10)})`); bump('landed:eligible'); continue; }
       if (closed >= MAX_PER_RUN) { bump('over-run-cap'); continue; }
-      if (close(issue.identifier, bc.landedComment(branch, d.sha))) { closed++; console.log(`closed ${issue.identifier} (${branch})`); bump('landed:closed'); }
+      if ((deps.close || close)(issue.identifier, bc.landedComment(branch, d.sha))) { closed++; console.log(`closed ${issue.identifier} (${branch})`); bump('landed:closed'); }
       else bump('close-failed');
     }
   }

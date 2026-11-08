@@ -539,6 +539,24 @@ jobs:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
         run: node scripts/sweep-resolved-alert-cards.js --apply
 
+      # BRO-7135 board closer (advisory). Closes Done the "BSC Daily:" cards a
+      # session started or commented on whose condition the alert ledger marks
+      # resolved AND whose health row is absent (the step above only cancels
+      # untouched ones). Releases the ledger tracker like that step does.
+      # The landed-card closer (--landed) runs dry-run only: it lists cards
+      # whose land/<name> branch is live, to be armed once the list looks right.
+      # Kill switch: BOARD_CLOSER_KILL_SWITCH=1. Max 25 closes per run.
+      - name: Board closer (recovered alert cards, advisory)
+        # lint-allow-swallow: advisory board cleanup; a failure leaves cards open for the next run and must not block the health snapshot commit below
+        if: always()
+        continue-on-error: true
+        timeout-minutes: 15
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+        run: |
+          node scripts/sweep-recovered-alert-cards.js --apply
+          node scripts/sweep-recovered-alert-cards.js --landed --dry-run
+
       # BRO-3011 (spend-guards Sprint 3): spend-guard audit over the last 7
       # days — trip days per breaker from data/audit/breaker-transitions.jsonl,
       # rerouted spend on trip days, cap drift vs 14-day demand, DEFECT when a

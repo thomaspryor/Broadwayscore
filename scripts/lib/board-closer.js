@@ -4,10 +4,16 @@
  * board-closer.js — pure decisions for BRO-7135. Two kinds of open card
  * should already be closed and nothing closes them:
  *
- *  1. "BSC Daily:" alert cards whose health row is green again. Filed by
- *     digest-autofix / owner-alert-router with a `[conditionKey:...]` line;
- *     the closer depends on a worker staying connected. We re-run the
- *     existing scripts/check-health-row-absent.js (exit 0 = row absent).
+ *  1. "BSC Daily:" alert cards whose condition recovered. Filed by
+ *     digest-autofix / owner-alert-router with a `[conditionKey:...]` line.
+ *     Row absence alone is NOT recovery (second-opinion 2026-11-08): a
+ *     cooled-down condition drops out of the snapshot while still firing, and
+ *     a skipped or crashed check leaves the row absent too. So BOTH must hold:
+ *     the alert ledger (data/audit/alert-ledger.json, debounced by
+ *     resolveQuietConditions) says the condition is resolved and names this
+ *     card, AND scripts/check-health-row-absent.js exits 0.
+ *     Unlike sweep-resolved-alert-cards (untouched cards only, cancels), this
+ *     closes Done cards a session has started or commented on.
  *  2. Cards whose latest comment names a land/<name> branch that landed on
  *     main (data/audit/landings.jsonl) and is live (check-prod-deploy.js).
  *
@@ -16,6 +22,7 @@
  */
 
 const { healthRowNameFromConditionKey, rowAbsentCheckCmd } = require('./health-row-check-cmd.js');
+const { cardConditionIndex } = require('./resolved-alert-card-sweep.js');
 
 const ALERT_TITLE_PREFIXES = ['BSC Daily:', 'Fix: BSC Daily:'];
 const LAND_BRANCH_RE = /\bland\/[A-Za-z0-9][A-Za-z0-9._\/-]*/g;
@@ -48,6 +55,20 @@ function classifyAlertCard(issue) {
   return { kind: 'candidate', conditionKey, row };
 }
 
+/**
+ * Ledger truth for a card+condition: resolved, names this card, and no OPEN
+ * condition names the same card (a rollup card stays open until all clear).
+ */
+function ledgerSaysRecovered(ledger, identifier, conditionKey) {
+  const c = ledger && ledger.conditions && ledger.conditions[conditionKey];
+  if (!c) return { ok: false, reason: 'not-in-ledger' };
+  if (c.status !== 'resolved') return { ok: false, reason: 'ledger-open' };
+  if (c.linearIdentifier && c.linearIdentifier !== identifier) return { ok: false, reason: 'ledger-other-card' };
+  const e = cardConditionIndex(ledger).get(identifier);
+  if (e && e.open.length > 0) return { ok: false, reason: 'rollup-has-open-condition' };
+  return { ok: true };
+}
+
 /** check-health-row-absent.js exit code -> decision. 0 absent, 1 present, 3 cannot verify. */
 function decideRecovered(exitCode) {
   if (exitCode === 0) return { action: 'close', reason: 'row-absent' };
@@ -59,7 +80,8 @@ function decideRecovered(exitCode) {
 /** Comment that closes a recovered alert card. */
 function recoveredComment(row, evidenceLine) {
   return [
-    `Closed by sweep-recovered-alert-cards (BRO-7135): the health row "${row}" is absent from the latest daily health snapshot.`,
+    `Closed by sweep-recovered-alert-cards (BRO-7135): the alert ledger marks this condition resolved and the health row "${row}" is absent from the latest daily health snapshot.`,
+    'NO-ROOT-CAUSE: auto-close of a recovered alert, no fix was made by this closer',
     `VERIFY: ${rowAbsentCheckCmd(row)}`,
     evidenceLine ? `Evidence: ${evidenceLine}` : null,
   ].filter(Boolean).join('\n');
@@ -79,10 +101,18 @@ function landBranchFromComments(commentsNewestFirst) {
   return found[found.length - 1].replace(/[.,;:)\]]+$/, '');
 }
 
-/** Newest landings.jsonl row for a branch (rows oldest-first as the ledger appends) or null. */
-function landingForBranch(rows, branch) {
+/**
+ * Newest landings.jsonl row for a branch (rows oldest-first as the ledger appends) or null.
+ * With sinceMs, rows older than that are ignored: a reused branch name or a
+ * "land/x refused" comment must not match an earlier landing.
+ */
+function landingForBranch(rows, branch, sinceMs) {
   let hit = null;
-  for (const r of rows || []) if (r && r.branch === branch && r.sha) hit = r;
+  for (const r of rows || []) {
+    if (!r || r.branch !== branch || !r.sha) continue;
+    if (Number.isFinite(sinceMs) && !(Date.parse(r.ts) >= sinceMs)) continue;
+    hit = r;
+  }
   return hit;
 }
 
@@ -107,6 +137,6 @@ function landedComment(branch, sha) {
 }
 
 module.exports = {
-  ALERT_TITLE_PREFIXES, conditionKeyOf, isAlertCard, classifyAlertCard, decideRecovered,
+  ALERT_TITLE_PREFIXES, ledgerSaysRecovered, conditionKeyOf, isAlertCard, classifyAlertCard, decideRecovered,
   recoveredComment, landBranchFromComments, landingForBranch, decideLanded, landedComment,
 };
