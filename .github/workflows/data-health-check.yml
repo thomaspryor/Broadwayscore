@@ -553,6 +553,10 @@ jobs:
         timeout-minutes: 15
         env:
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           node scripts/sweep-recovered-alert-cards.js --apply
           node scripts/sweep-recovered-alert-cards.js --landed --dry-run
