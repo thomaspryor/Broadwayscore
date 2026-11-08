@@ -143,7 +143,7 @@ const SOURCES = {
 const LONDON_SOURCES = {
   // The Content API lists every review the Guardian and Observer ran (section stage, tone/reviews).
   // Web-first pieces carry 'theguardian.com', or 'guardian.co.uk' before July 2013 (BRO-6503).
-  guardian: { kind: 'guardian-api', tier: 1, publication: /^(the guardian|theguardian\.com|guardian\.co\.uk)$/i, sourceSaysReview: true },
+  guardian: { kind: 'guardian-api', tier: 1, pollerReadable: true, publication: /^(the guardian|theguardian\.com|guardian\.co\.uk)$/i, sourceSaysReview: true },
   observer: { kind: 'guardian-api', tier: 2, publication: /observer/i, sourceSaysReview: true },
   whatsonstage: (() => {
     const w = WP_SEARCH_SOURCES.find((x) => x.outletId === 'whatsonstage');

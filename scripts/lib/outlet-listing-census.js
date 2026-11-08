@@ -11,7 +11,7 @@
  * writer. It never ingests census gap lines (census matching is looser than the poller's).
  *
  * Rules:
- *   - free kinds only: wp-json, sitemap, sitemap-years, sitemap-dated. Never 'serp' (paid).
+ *   - free kinds only: wp-json, sitemap, sitemap-years, sitemap-dated, guardian-api (BRO-7148). Never 'serp' (paid).
  *   - every fetch goes through functions the caller injects (the poller's fetchXmlWithProxyRetry /
  *     fetchViaSitemap), so there is no HTTP client of its own.
  *   - no per-page meta fetch: the slug stands in for a missing headline.
@@ -30,9 +30,10 @@ const {
   titleForms,
 } = require('./outlet-listing-helpers');
 
-const FREE_KINDS = new Set(['wp-json', 'sitemap', 'sitemap-years', 'sitemap-dated']);
+const FREE_KINDS = new Set(['wp-json', 'sitemap', 'sitemap-years', 'sitemap-dated', 'guardian-api']);
 const MAX_WP_PAGES = 8;            // 800 posts per outlet per run
 const MAX_SITEMAP_CHILDREN = 40;
+const MAX_GUARDIAN_PAGES = 5;       // 1000 reviews per run, far above a 60 day lookback
 const MAX_DATED_SITEMAPS = 70;     // one per day for a 60 day lookback
 const DAY_MS = 86400000;
 
@@ -52,6 +53,9 @@ function censusSourceFor(outletId, { sources = SOURCES, londonSources = LONDON_S
   if (src.kind === 'sitemap' && urls.some((u) => /\.gz(?:$|\?)/i.test(u))) return null; // gzip sitemaps are not read here
   if (src.kind === 'sitemap' && urls.length === 0) return null;
   if (src.kind === 'wp-json' && !src.apiBase) return null;
+  // London's 'observer' is the Guardian-API Observer, but the NYC id 'observer' is observer.com: only
+  // sources that opt in (pollerReadable) are read, so a shared id never reads the wrong paper.
+  if (src.kind === 'guardian-api' && !src.pollerReadable) return null;
   return src;
 }
 
@@ -124,6 +128,40 @@ async function wpItems(src, cutoff, { fetchText, log }) {
   return items;
 }
 
+const looksLikeGuardianJson = (body) => { try { return !!JSON.parse(String(body || '').trim()).response; } catch { return false; } };
+
+/**
+ * Guardian Content API (section stage, tone/reviews) over the lookback window. Needs GUARDIAN_API_KEY;
+ * without it nothing is read (the shared 'test' key is ~1 call/s and not for a daily job). The key
+ * rides in the URL, so it is scrubbed from any error that leaves this function.
+ */
+async function guardianItems(src, cutoff, { fetchText, log, env = process.env }) {
+  const key = env.GUARDIAN_API_KEY;
+  if (!key) { log('  [census] GUARDIAN_API_KEY is not set: guardian-api source skipped'); return []; }
+  const { guardianItemIsReview } = require('./we-major-recovery');
+  const scrub = (e) => new Error(String((e && e.message) || e).split(key).join('***'));
+  const items = [];
+  for (let page = 1; page <= MAX_GUARDIAN_PAGES; page++) {
+    const q = new URLSearchParams({ section: 'stage', tag: 'tone/reviews', 'from-date': cutoff.toISOString().slice(0, 10), 'page-size': '200', page: String(page),
+      'order-by': 'oldest', 'show-fields': 'headline,publication,starRating', 'api-key': key });
+    let body;
+    try { body = await fetchText(`https://content.guardianapis.com/search?${q}`, 'guardian-api', looksLikeGuardianJson, { proxyRetry: false }); } catch (e) {
+      if (page === 1) throw scrub(e);
+      log(`  [census] guardian page ${page} failed: ${scrub(e).message}`);
+      break;
+    }
+    const resp = JSON.parse(body).response || {};
+    for (const g of resp.results || []) {
+      const f = g.fields || {};
+      if (src.publication && !src.publication.test(f.publication || '')) continue;
+      if (!guardianItemIsReview(g)) continue; // news, blog and readers' pieces carry tone/reviews too
+      items.push({ url: g.webUrl, headline: f.headline || g.webTitle || '', publishDate: String(g.webPublicationDate || '').slice(0, 10) });
+    }
+    if (!resp.pages || page >= resp.pages) break;
+  }
+  return items;
+}
+
 async function sitemapFileItems(url, src, cutoff, { fetchText, log }, depth = 0) {
   const raw = await fetchText(url, 'sitemap', looksLikeSitemap, { proxyRetry: !!src.proxyRetry });
   const xml = raw.replace(/<!\[CDATA\[\s*([^\]]*?)\s*\]\]>/g, '$1').replace(/&amp;/g, '&');
@@ -153,6 +191,7 @@ async function enumerateCensusItems(outletId, cutoff, deps) {
   const d = { log: console.log, ...deps };
   let raw = [];
   if (src.kind === 'wp-json') raw = await wpItems(src, cutoff, d);
+  else if (src.kind === 'guardian-api') raw = await guardianItems(src, cutoff, d);
   else if (src.kind === 'sitemap-years') {
     raw = await d.fetchViaSitemap(outletId, { urlTemplate: src.urlTemplate, urlFilter: src.urlFilter }, cutoff, { proxyRetry: !!src.proxyRetry });
   } else if (src.kind === 'sitemap-dated') {
