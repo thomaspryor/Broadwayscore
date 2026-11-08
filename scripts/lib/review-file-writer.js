@@ -376,19 +376,24 @@ function _createOrMergeReviewFile(showId, input, options = {}) {
   // post is (see wordpressAttachmentParentUrl). Rewrite before every url guard.
   const attachmentParent = input && input.url ? require('./non-review-url-patterns').wordpressAttachmentParentUrl(input.url) : null;
   if (attachmentParent) input = { ...input, url: attachmentParent };
-  const fields = input.fields || {};
+  let fields = input.fields || {};
   // A top-level input.publishDate drives the guards below but was never written:
   // only fields are spread into the file, so every ingest-urls review landed
   // undated (NY Sun on A Few Good Men, BRO-6585). Persist it like fields.publishDate.
   if (input.publishDate && !fields.publishDate) fields.publishDate = input.publishDate;
   // BRO-7149: ingest paths that skipped the extractor landed undated reviews that a person
-  // then had to date. Resolve here once, for every writer (html if the caller passed it, else
-  // the body's own dateline). Never overrides a date; truly dateless pages stay undated.
+  // then had to date. Resolve here once for every writer: page html if the caller passed it,
+  // else the strict body byline (same reader the collector uses). Never overrides a date;
+  // truly dateless pages stay undated. Works on a copy: the caller's `fields` is not mutated.
   if (!fields.publishDate && !input.publishDate) {
     const r = require('./html-publish-date').resolveMissingPublishDate({
       html: input.html || fields.html, fullText: fields.fullText || input.fullText, url: input.url,
     });
-    if (r) { fields.publishDate = r.date; if (!fields.dateSource) fields.dateSource = r.method; }
+    if (r) {
+      input = { ...input, _publishDateResolved: true };
+      fields = { ...fields, publishDate: r.date, ...(fields.dateSource ? {} : { dateSource: r.dateSource }) };
+      input.fields = fields;
+    }
   }
   // BRO-4807: a lane review (provenance + productionVerified:"aggregator") is already production-verified by an
   // aggregator, so the corpus guards below stand down for it, and only for it. laneBypasses is the single predicate.
@@ -1886,7 +1891,14 @@ function _preOpeningNewsRefusal(showId, outletId, input, fields) {
 }
 
 function _mergeIntoExisting(filepath, existing, ctx) {
-  const { showId, input, fields, criticName, dryRun, onMerge } = ctx;
+  const { showId, input, criticName, dryRun, onMerge } = ctx;
+  let { fields } = ctx;
+  // BRO-7149: a date WE resolved never certifies or replaces what the file already carries.
+  if (input._publishDateResolved && existing.publishDate) {
+    fields = { ...fields };
+    delete fields.publishDate;
+    delete fields.dateSource;
+  }
   // BRO-5693: the create-only listing guard cannot protect a repaired slot
   // from being refilled by aggregator refresh or URL discovery. Check both
   // existing-file routes here before merging any candidate body or score.
