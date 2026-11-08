@@ -56,7 +56,7 @@ const { execFileSync } = require('child_process');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const {
   failingStepSignatures, firstFailingTestNameInJobLog, firstFailingTestFileInJobLog, signaturesToResolve, RED_SIGNATURE_PREFIX,
-  trackSignatureAbsence, STALE_ABSENT_RUN_THRESHOLD,
+  trackSignatureAbsence, STALE_ABSENT_RUN_THRESHOLD, normalizeJobName,
 } = require('./lib/main-red-streak.js');
 const { routeAlert, loadLedger, resolveCondition, patchCondition } = require('./lib/owner-alert-router.js');
 // BRO-3907: every card this script files used to carry prose-only acceptance
@@ -207,7 +207,7 @@ async function main() {
   } catch (err) {
     console.error(`[route-main-streak-signatures] could not read ${TEST_YML_PATH} (${err.message}); bash-integration step detection falls back to the step-name heuristic, and (if --dispatch) every signature this run falls back to VERIFY: owner-judgment.`);
   }
-  const resolveStepRunCommand = (jobName, stepName) => findStepRunCommandInWorkflow(testYmlText, jobName, stepName);
+  const resolveStepRunCommand = (jobName, stepName) => findStepRunCommandInWorkflow(testYmlText, normalizeJobName(jobName), stepName);
 
   // Test names matter for --dispatch (sharpening which card gets filed/
   // titled) AND, since BRO-4054, for judging whether an OPEN signature is
@@ -221,9 +221,9 @@ async function main() {
   if (opts.dispatch || openRedKeys.length) {
     for (const job of jobs) {
       if (!job?.conclusion || ['success', 'skipped'].includes(job.conclusion)) continue;
-      if (!job.databaseId) { unreliableJobs.add(job.name || ''); continue; }
+      if (!job.databaseId) { unreliableJobs.add(normalizeJobName(job.name)); continue; }
       const logText = await fetchJobLogText(job.databaseId);
-      if (logText === null) { unreliableJobs.add(job.name || ''); continue; }
+      if (logText === null) { unreliableJobs.add(normalizeJobName(job.name)); continue; }
       const testName = firstFailingTestNameInJobLog(logText);
       if (testName) testNameByJob.set(job.name || '', testName);
       const testFile = firstFailingTestFileInJobLog(logText);

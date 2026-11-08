@@ -682,3 +682,22 @@ test('stepFailureSignature: a matrix index on the job name does not change the k
   );
   assert.notEqual(stepFailureSignature('Unit Tests', 's', 'a'), stepFailureSignature('Unit Tests', 's', 'b'));
 });
+
+test('matrix shard family: resolve + stale tracking use the normalized job name (BRO-7113)', async () => {
+  const mod = await import('./main-red-streak.js');
+  const { normalizeJobName, signaturesToResolve: resolveSigs, trackSignatureAbsence: track, stepFailureSignature: sig } = mod.default ?? mod;
+  assert.equal(normalizeJobName('Unit Test Shard (4)'), 'Unit Test Shard');
+  assert.equal(normalizeJobName('Unit Tests'), 'Unit Tests');
+  const key = sig('Unit Test Shard (2)', 'Run unit tests (node batch shard)', 'foo');
+  const job = (name, conclusion, steps = []) => ({ name, conclusion, steps });
+  // every shard green -> resolves
+  const green = { jobs: [1, 2, 3, 4].map((i) => job(`Unit Test Shard (${i})`, 'success')) };
+  assert.deepEqual(resolveSigs([key], green, []), [key]);
+  // one shard still red -> a green sibling must not resolve the key
+  const mixed = { jobs: [job('Unit Test Shard (1)', 'success'), job('Unit Test Shard (3)', 'failure')] };
+  assert.deepEqual(resolveSigs([key], mixed, []), []);
+  // stale tracking: key from shard 2, shard 3 fails on a different test -> absence counted against the family
+  const run = { jobs: [job('Unit Test Shard (3)', 'failure', [{ name: 'Run unit tests (node batch shard)', conclusion: 'failure' }])] };
+  const out = track({ [key]: { absentRunIds: [] } }, [], run, '99');
+  assert.deepEqual(Object.keys(out.updates), [key]);
+});

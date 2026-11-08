@@ -251,10 +251,18 @@ function sha1Short(s) {
  * identically, so routeAlert's existing cooldown/dedup still collapses
  * re-notifies for it rather than re-filing.
  */
+/**
+ * BRO-7113: matrix jobs report as `Unit Test Shard (2)`. Every place that keys,
+ * resolves or tracks a red signature by job name must use this, so a test that
+ * moves between shards keeps one key and that key can still be resolved.
+ */
+function normalizeJobName(name) {
+  return String(name || '').replace(/\s*\(\d+\)$/, '');
+}
+
 function stepFailureSignature(jobName, stepName, testName) {
   const hash = sha1Short(`${stepName || ''}::${testName || ''}`);
-  // BRO-7113: drop a matrix index (`Unit Test Shard (2)`) so a test that moves shards keeps its key.
-  const job = String(jobName || '').replace(/\s*\(\d+\)$/, '');
+  const job = normalizeJobName(jobName);
   return `${RED_SIGNATURE_PREFIX}${job || 'unknown'}:${hash}`;
 }
 
@@ -478,9 +486,15 @@ function failingStepSignatures(run, testNameByJob, resolveRunCommand) {
  */
 function signaturesToResolve(openConditionKeys, run, currentSignatures) {
   const currentSet = new Set((currentSignatures || []).map((s) => s.conditionKey));
-  const confirmedGreenJobPrefixes = ((run && run.jobs) || [])
-    .filter((j) => j?.conclusion === 'success')
-    .map((j) => `${RED_SIGNATURE_PREFIX}${j.name || ''}:`);
+  // A matrix family (`Shard (1)`..`(4)`) counts as green only when EVERY member
+  // succeeded: one green shard says nothing about a test that failed in another.
+  const byName = new Map();
+  for (const j of ((run && run.jobs) || [])) {
+    const n = normalizeJobName(j?.name);
+    byName.set(n, (byName.get(n) ?? true) && j?.conclusion === 'success');
+  }
+  const confirmedGreenJobPrefixes = [...byName].filter(([, green]) => green)
+    .map(([n]) => `${RED_SIGNATURE_PREFIX}${n}:`);
   return (openConditionKeys || [])
     .filter((k) => typeof k === 'string' && k.startsWith(RED_SIGNATURE_PREFIX))
     .filter((k) => !currentSet.has(k))
@@ -526,7 +540,7 @@ function trackSignatureAbsence(openRedConditions, currentSignatures, run, runId,
   const currentSet = new Set((currentSignatures || []).map((s) => s.conditionKey));
   const failedJobs = new Set(((run && run.jobs) || [])
     .filter((j) => j?.conclusion === 'failure' && !isSetupJobOnlyFailure(j) && hasFailingStep(j))
-    .map((j) => j.name || ''));
+    .map((j) => normalizeJobName(j.name)));
   const toResolve = [];
   const updates = {};
   for (const [key, cond] of Object.entries(openRedConditions || {})) {
@@ -550,6 +564,7 @@ module.exports = {
   NON_BLOCKING_JOB_NAMES,
   STALE_ABSENT_RUN_THRESHOLD,
   jobNameFromRedKey,
+  normalizeJobName,
   trackSignatureAbsence,
   assessMainRedStreak,
   DEFAULT_THRESHOLD_HOURS,
