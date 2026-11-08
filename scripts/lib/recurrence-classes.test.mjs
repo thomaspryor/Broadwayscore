@@ -307,3 +307,21 @@ test('improvementLine adds the independent sample share while it is fresh', () =
   const drifted = rc.improvementLine({ ...base, sample: { generatedAt: new Date().toISOString(), graded: 8, share: 37.5, calibrationOk: false } });
   assert.ok(!/independent/.test(drifted), 'a drifted grader does not publish a share');
 });
+
+test('done gate refuses an unlinked instance close after the blocking date, fresh snapshot only, rollback wins', () => {
+  const at = Date.parse(`${rc.CLOSE_GATE_BLOCKING_FROM}T06:00:00Z`);
+  const fresh = { ...SNAP, generatedAt: new Date(at - 36e5).toISOString() };
+  const base = { targetStateType: 'completed', identifier: 'BRO-1', recurrenceSnapshot: fresh, description: '', commentText: 'PR-EVIDENCE: merged deployed checked (https://x)', nowMs: at };
+  assert.equal(recurrenceWarning({ ...base, nowMs: at - 2 * DAY }).blocking, false);
+  const r = recurrenceWarning(base);
+  assert.equal(r.blocking, true);
+  assert.match(r.message, /rollback: RECURRENCE_CLOSE_GATE=advisory/);
+  assert.equal(recurrenceWarning({ ...base, commentText: 'root fix in BRO-9' }), null);
+  assert.equal(recurrenceWarning({ ...base, recurrenceSnapshot: { ...fresh, generatedAt: new Date(at - 3 * DAY).toISOString() } }).blocking, false, 'a stale snapshot fails open');
+  // Full gate: a refusal that is already in place keeps its own verdict; otherwise ours applies.
+  const ok = { ...base, description: 'PR-EVIDENCE: merged deployed checked (https://github.com/thomaspryor/Broadwayscore/commit/abcdef12345)', commentText: '', verifyEvidence: () => ({ verified: true, reason: 'on main', checked: [] }) };
+  const g = checkLinearDoneTransition(ok);
+  assert.deepEqual([g.allowed, g.verdict], [false, 'root-cause-not-named']);
+  assert.equal(checkLinearDoneTransition({ ...ok, nowMs: at - 2 * DAY }).allowed, true, 'advisory before the date');
+  assert.equal(rc.recurrenceCloseBlocking(fresh, at, { RECURRENCE_CLOSE_GATE: 'advisory' }), false);
+});

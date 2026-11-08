@@ -207,8 +207,9 @@ function checkDoneEvidence({ targetStateType, description = '', commentText = ''
 }
 
 // BRO-7103: closing one more case of a problem that keeps coming back.
-// ADVISORY until recurrence-classes.js CLOSE_GATE_BLOCKING_FROM: it only adds
-// a `warning` and never changes `allowed`. Linked = the root-cause card's id
+// ADVISORY until recurrence-classes.js CLOSE_GATE_BLOCKING_FROM (adds a
+// `warning`), then it refuses while the snapshot is fresh;
+// RECURRENCE_CLOSE_GATE=advisory rolls that back. Linked = the root-cause card's id
 // is named in the description, an earlier comment or the close comment.
 // Reads the detector's committed snapshot; any read error fails open.
 function loadRecurrenceSnapshot() {
@@ -219,13 +220,16 @@ function loadRecurrenceSnapshot() {
   }
 }
 
-function recurrenceWarning({ identifier, description = '', commentText = '', existingComments = [], recurrenceSnapshot }) {
+function recurrenceWarning({ identifier, description = '', commentText = '', existingComments = [], recurrenceSnapshot, nowMs = Date.now() }) {
   if (!identifier) return null;
   try {
+    const rc = require('./recurrence-classes.js');
     const snap = recurrenceSnapshot === undefined ? loadRecurrenceSnapshot() : recurrenceSnapshot;
     const text = [description, ...(Array.isArray(existingComments) ? existingComments : []), commentText].join('\n');
     const named = text.match(/\bBRO-\d+\b/g) || [];
-    return require('./recurrence-classes.js').recurrenceCloseWarning(identifier, snap, named);
+    const blocking = rc.recurrenceCloseBlocking(snap, nowMs);
+    const message = rc.recurrenceCloseWarning(identifier, snap, named, blocking);
+    return message ? { message, blocking } : null;
   } catch {
     return null;
   }
@@ -258,7 +262,13 @@ function checkLinearDoneTransition(args = {}) {
   let result = checkDoneEvidence(args);
   if (args.targetStateType !== 'completed') return result;
   const rw = recurrenceWarning(args);
-  if (rw) result = addWarning(result, rw);
+  if (rw) {
+    if (rw.blocking && result.allowed !== false) {
+      result = { ...result, gated: true, allowed: false, verdict: 'root-cause-not-named', reason: rw.message };
+    } else {
+      result = addWarning(result, rw.message);
+    }
+  }
   const rcc = rootCauseCloseCheck(args);
   if (rcc) {
     if (rcc.blocking && result.allowed !== false) {
