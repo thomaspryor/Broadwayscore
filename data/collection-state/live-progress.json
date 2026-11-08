@@ -1,19 +1,134 @@
 {
-  "updatedAt": "2026-11-08T16:40:34.679Z",
-  "processed": 95,
-  "failed": 55,
-  "successRate": "63.3%",
+  "updatedAt": "2026-11-08T17:11:14.207Z",
+  "processed": 887,
+  "failed": 430,
+  "successRate": "67.4%",
   "tierBreakdown": {
-    "playwright": 55,
+    "playwright": 325,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 23,
     "directCookies": 0,
-    "scrapingdog": 11,
-    "scrapingbee": 1,
+    "scrapingdog": 52,
+    "scrapingbee": 35,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 17
+    "archive": 18
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 3,
+  "recentActivity": [
+    {
+      "t": "2026-11-08T11:34:53.455Z",
+      "event": "bb-session",
+      "session": "a95a9f7c",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/tracee-ellis-ross-broadway-ever"
+    },
+    {
+      "t": "2026-11-08T11:37:45.021Z",
+      "event": "bb-session",
+      "session": "2575f017",
+      "url": "https://www.nytimes.com/2026/03/06/theater/jordan-fein-broken-glass.html"
+    },
+    {
+      "t": "2026-11-08T11:37:45.366Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-08T11:52:24.394Z",
+      "event": "bb-session",
+      "session": "3e617f14",
+      "url": "https://www.nytimes.com/2026/01/12/theater/ark-ian-mckellen-shed.html"
+    },
+    {
+      "t": "2026-11-08T11:52:24.689Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-08T11:55:20.421Z",
+      "event": "bb-session",
+      "session": "abeda074",
+      "url": "https://www.wsj.com/arts-culture/theater/i-puritani-review-beautifully-sung-bell"
+    },
+    {
+      "t": "2026-11-08T11:55:20.763Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-11-08T11:59:29.863Z",
+      "event": "bb-session",
+      "session": "ca2a8439",
+      "url": "https://www.nytimes.com/2025/11/25/arts/music/andrea-chenier-met-opera-review.ht"
+    },
+    {
+      "t": "2026-11-08T11:59:30.130Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-08T11:59:46.665Z",
+      "event": "bb-session",
+      "session": "81e718b8",
+      "url": "https://www.nytimes.com/2025/11/25/arts/music/andrea-chenier-met-opera-review.ht"
+    },
+    {
+      "t": "2026-11-08T11:59:46.935Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-08T14:44:52.602Z",
+      "event": "bb-session",
+      "session": "1bb8872c",
+      "url": "https://bachtrack.com/review-lorfeo-william-kentridge-greek-national-opera-athen"
+    },
+    {
+      "t": "2026-11-08T14:45:57.934Z",
+      "event": "bb-session",
+      "session": "7a4ac835",
+      "url": "https://bachtrack.com/review-shostakovich-cherry-town-ahlbom-dutch-national-oper"
+    },
+    {
+      "t": "2026-11-08T14:47:01.492Z",
+      "event": "bb-session",
+      "session": "7bcffa8e",
+      "url": "https://bachtrack.com/review-tosca-miskimmon-glassberg-fanyo-english-national-op"
+    },
+    {
+      "t": "2026-11-08T14:48:05.754Z",
+      "event": "bb-session",
+      "session": "78311b45",
+      "url": "https://bachtrack.com/review-nozze-figaro-pountney-conta-bucharest-national-oper"
+    },
+    {
+      "t": "2026-11-08T15:48:27.849Z",
+      "event": "bb-session",
+      "session": "88993201",
+      "url": "https://www.nytimes.com/2019/03/21/theater/matt-walker-play-that-goes-wrong.html"
+    },
+    {
+      "t": "2026-11-08T15:48:28.679Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-08T17:05:53.130Z",
+      "event": "bb-session",
+      "session": "fe06364f",
+      "url": "https://bachtrack.com/review-lorfeo-william-kentridge-greek-national-opera-athen"
+    },
+    {
+      "t": "2026-11-08T17:06:28.114Z",
+      "event": "bb-session",
+      "session": "a3e15716",
+      "url": "https://bachtrack.com/review-shostakovich-cherry-town-ahlbom-dutch-national-oper"
+    },
+    {
+      "t": "2026-11-08T17:07:32.423Z",
+      "event": "bb-session",
+      "session": "8740a5d5",
+      "url": "https://bachtrack.com/review-nozze-figaro-pountney-conta-bucharest-national-oper"
+    }
+  ]
 }

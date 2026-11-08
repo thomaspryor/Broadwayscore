@@ -99,17 +99,22 @@ function lastEscalationCommentMs(comments) {
  * PURE. The card description with one fresh START-NOW / START-NOW-SINCE pair at
  * the top (older pairs removed, so the stamp the cloud worker reads is this one).
  */
-function stampStartNow(description, { ageHours, nowIso }) {
+// What the START-NOW line and escalation comment say has been failing. The
+// main-streak runner keeps this default; other conditions (BRO-7130: one
+// failing Data Validation audit) pass their own words.
+const DEFAULT_SUBJECT = 'main has been red on this signature';
+
+function stampStartNow(description, { ageHours, nowIso, subject = DEFAULT_SUBJECT }) {
   const body = String(description || '').replace(START_NOW_LINE_RE, '').replace(START_NOW_SINCE_RE, '').replace(/^\n+/, '');
   const hours = Math.floor(Number(ageHours) || 0);
-  return `START-NOW: main has been red on this signature for ${hours}h (BRO-7102 escalation)\nSTART-NOW-SINCE: ${nowIso}\n\n${body}`;
+  return `START-NOW: ${subject} for ${hours}h (BRO-7102 escalation)\nSTART-NOW-SINCE: ${nowIso}\n\n${body}`;
 }
 
 /**
  * PURE. The Linear issueUpdate input for an escalation, and what it changes.
  * @param {{card: object, ageHours: number, nowIso: string, todoStateId: (string|null), pickable: boolean}} p
  */
-function escalationUpdate({ card, ageHours, nowIso, todoStateId, pickable }) {
+function escalationUpdate({ card, ageHours, nowIso, todoStateId, pickable, subject }) {
   const input = {};
   const changes = [];
   const p = Number(card.priority);
@@ -117,12 +122,12 @@ function escalationUpdate({ card, ageHours, nowIso, todoStateId, pickable }) {
   // Backlog/Paused, or a started card nobody touched for ACTIVE_WORK_HOURS (stuck):
   // the cloud worker only takes unstarted cards, so put it back in Todo.
   if (card.state && (card.state.type === 'backlog' || card.state.type === 'started') && todoStateId) { input.stateId = todoStateId; changes.push(`${card.state.name || 'backlog'} -> Todo`); }
-  if (pickable) { input.description = stampStartNow(card.description, { ageHours, nowIso }); changes.push('START-NOW stamped'); }
+  if (pickable) { input.description = stampStartNow(card.description, { ageHours, nowIso, subject }); changes.push('START-NOW stamped'); }
   return { input, changes };
 }
 
 module.exports = {
-  ESCALATION_HOURS, RESTAMP_HOURS, ACTIVE_WORK_HOURS, HIGH_PRIORITY,
+  ESCALATION_HOURS, RESTAMP_HOURS, ACTIVE_WORK_HOURS, HIGH_PRIORITY, DEFAULT_SUBJECT,
   ESCALATION_COMMENT_PREFIX, HOLD_HISTORY_REASONS, NO_STAMP_HISTORY_REASONS,
   decideRedEscalation, stampStartNow, escalationUpdate, lastEscalationCommentMs,
 };

@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-08T16:43:26.166Z",
+  "timestamp": "2026-11-08T17:22:16.284Z",
   "stats": {
-    "totalReviews": 80555,
-    "alreadyFlagged": 22054,
+    "totalReviews": 80568,
+    "alreadyFlagged": 22055,
     "dateGuardCatches": 217,
     "directorMismatch": 3553,
     "tvFilmSignals": 2292,
-    "londonSignals": 3631,
+    "londonSignals": 3632,
     "offBroadwaySignals": 748,
     "yearMismatch": 363,
-    "noPublishDate": 8416
+    "noPublishDate": 8417
   },
   "findings": [
     {
@@ -4758,7 +4758,7 @@
     {
       "showId": "american-psycho-off-west-end-2026",
       "file": "telegraph--claire-allfree.json",
-      "score": 60,
+      "score": 63,
       "publishDate": "2026-02-02",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/american-psycho-almeida-review/",
       "findings": [
@@ -4791,6 +4791,7 @@
     {
       "showId": "american-psycho-off-west-end-2026",
       "file": "times-uk--clive-davis.json",
+      "score": 54,
       "publishDate": "2026-02-02",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/american-psycho-review-was-this-soulless-show-really-worth-reviving-5708nwb76",
       "findings": [
@@ -49433,6 +49434,7 @@
     {
       "showId": "parade-tour-2025",
       "file": "pioneer-press--ross-raihala.json",
+      "score": 90,
       "publishDate": "2025-01-23",
       "url": "https://www.twincities.com/2025/01/23/parade-review-musical-orpheum-minneapolis/",
       "findings": [
@@ -57884,6 +57886,7 @@
     {
       "showId": "some-like-it-hot-tour-2024",
       "file": "the-detroit-jewish-news--ronelle-grier.json",
+      "score": 88,
       "publishDate": "2024-10-09",
       "url": "https://www.thejewishnews.com/culture/review-some-like-it-hot-sizzles-across-the-fisher-theater-stage/article_d542e1d2-8666-11ef-a3d7-2f3b755781f9.html",
       "findings": [
@@ -67461,6 +67464,7 @@
     {
       "showId": "the-glass-menagerie-dundee-rep-regional-2025",
       "file": "thestage--fergus-morgan.json",
+      "score": 79,
       "publishDate": "2025-10-03",
       "url": "https://www.thestage.co.uk/reviews/the-glass-menagerie-review-dundee-rep-dundee-andrew-panton-tennessee-williams",
       "findings": [
@@ -90147,7 +90151,7 @@
     {
       "showId": "ballet-shoes-west-end-2024",
       "file": "independent--alice-saville.json",
-      "score": 95,
+      "score": 97,
       "publishDate": "2024-12-06",
       "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/ballet-shoes-national-theatre-christmas-b2659983.html",
       "findings": [
@@ -90203,7 +90207,7 @@
     {
       "showId": "ballet-shoes-west-end-2024",
       "file": "standard--nick-curtis.json",
-      "score": 95,
+      "score": 98,
       "publishDate": "2024-12-06",
       "url": "https://www.standard.co.uk/culture/theatre/ballet-shoes-national-theatre-review-b1198466.html",
       "findings": [
@@ -90217,6 +90221,7 @@
     {
       "showId": "ballet-shoes-west-end-2024",
       "file": "telegraph--dominic-cavendish.json",
+      "score": 98,
       "publishDate": "2024-12-06",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/ballet-shoes-national-theatre-review/",
       "findings": [
@@ -124560,6 +124565,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "tango-after-dark-off-west-end-2026",
+      "file": "theatreandtonic--emmie-newitt.json",
+      "score": 93,
+      "publishDate": "2026-11-07",
+      "url": "https://theatreandtonic.co.uk/blog/german-cornejos-tango-after-dark-sadlers-wells-theatre-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"adelphi theatre\""
         }
       ]
     },

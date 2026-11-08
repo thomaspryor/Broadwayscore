@@ -71,10 +71,12 @@ test('a human clear on the content verification wins', () => {
 
 test('rebuild-all-reviews.js enforces the rule in its main loop, ahead of the flag-writing branches', () => {
   const src = fs.readFileSync(path.join(ROOT, 'scripts', 'rebuild-all-reviews.js'), 'utf8');
-  assert.match(src, /if \(isPreviewFirstLookPiece\(data\)\) \{\s*logExclusion\("skippedPreviewFirstLookPiece"/);
+  // BRO-2453: the gate now runs inside decideEarlyFileExclusion (review-guards.js).
+  assert.match(src, /decideEarlyFileExclusion\(data, showById\[showId\]\)/);
+  assert.match(src, /logExclusion\("skippedPreviewFirstLookPiece"/);
   const nonReview = src.indexOf('logExclusion("skippedNonReview"');
   assert.ok(nonReview > 0);
-  assert.ok(src.indexOf('isPreviewFirstLookPiece(data)') < nonReview);
+  assert.ok(src.indexOf('decideEarlyFileExclusion(data') < nonReview);
 });
 
 test('scoring-delta decideInclusion replays the rule, and flips when the predicate is absent', () => {

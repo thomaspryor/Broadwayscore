@@ -31,6 +31,7 @@ const path = require('path');
 
 const { finalizePullQuote } = require('./rebuild-all-reviews.js');
 const { isIncludableForRebuild } = require('./lib/review-guards');
+const { applyScoreRelevantMigrations } = require('./lib/rebuild-helpers');
 const { decodeHtmlEntities } = require('./lib/text-cleaning');
 const { fileForReview, loadShowTexts } = require('./audit-pull-quotes.js');
 
@@ -76,7 +77,13 @@ function recoverableQuote(data, showTitle, showStatus, exclusion) {
   // A file the rebuild leaves out (duplicate, wrong production, non-review) can never ship a quote,
   // so its excerpt is not "recoverable" however clean it looks (BRO-5798, Fiddler / Time Out London).
   if (exclusion && exclusion.show && !isIncludableForRebuild(data, exclusion.show, exclusion.filePath)) return null;
-  const q = finalizePullQuote(data, showTitle, showStatus);
+  // BRO-6439: the rebuild runs applyScoreRelevantMigrations before finalizePullQuote, which can recover
+  // fullText from garbageFullText (aladdin-2014/ap: soccer headlines from a cross-show duplicate). Skipping
+  // that step here judged the pre-migration file, so the backfill and live-data test called a file
+  // "recoverable" that the rebuild then (correctly) ships with no quote. Same migration, on a copy.
+  const migrated = { ...data };
+  applyScoreRelevantMigrations(migrated);
+  const q = finalizePullQuote(migrated, showTitle, showStatus);
   return q ? decodeHtmlEntities(q) : null;
 }
 

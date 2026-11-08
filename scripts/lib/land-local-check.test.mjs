@@ -412,6 +412,8 @@ test('BRO-7110: declared packages are checked against the install owner (a workt
 test('BRO-7110: main() refuses an incomplete install before fetching or running any gate', (t) => {
   const { missingDeclaredPackages } = require('./declared-packages.js');
   const real = missingDeclaredPackages(decodeURIComponent(new URL('../..', import.meta.url).pathname));
+  // A checkout with no node_modules anywhere up the tree (a fresh worktree) has no install to break.
+  if (!real.owner) { t.skip('no node_modules install above this checkout'); return; }
   const declared = Object.keys(JSON.parse(fs.readFileSync(join(real.owner, 'package.json'), 'utf8')).devDependencies || {});
   const gone = declared[0];
   const errors = [];
