@@ -94,7 +94,13 @@
     "the-book-of-mormon-west-end-2024/musical-theatre-review--unknown.json",
     "matilda-the-musical-west-end-2021/guardian--emma-brockes.json",
     "matilda-the-musical-west-end-2021/guardian--lyn-gardner.json",
-    "wicked-west-end-2021/firstnightmagazine--unknown.json"
+    "wicked-west-end-2021/firstnightmagazine--unknown.json",
+    "jest-to-impress-off-broadway-2026/donyc--unknown.json",
+    "the-unbelievers-off-broadway-2026/nytimes--laura-collins-hughes.json",
+    "the-verge-off-broadway-2026/nytimes--helen-shaw.json",
+    "222-a-ghost-story-off-broadway-2026/wsj--charles-isherwood.json",
+    "222-a-ghost-story-off-broadway-2026/consequence--alex-young.json",
+    "kelly-mccaughan-catholic-guilt-off-broadway-2026/broadway-baby--unknown.json"
   ],
   "failed": [
     "pride-west-end-2026/nyt-theater--unknown.json",
@@ -151,7 +157,23 @@
     "stranger-things-the-first-shadow-west-end-2023/financialtimes--sarah-hemming.json",
     "the-play-that-goes-wrong-west-end-2021/telegraph--claire-allfree.json",
     "matilda-the-musical-west-end-2021/ew--unknown.json",
-    "wicked-west-end-2021/frontmezzjunkies--unknown.json"
+    "wicked-west-end-2021/frontmezzjunkies--unknown.json",
+    "msblackforpresident-off-broadway-2026/theatermania--zachary-stewart.json",
+    "jest-to-impress-off-broadway-2026/chelmsfordtheatre--genre.json",
+    "medea-off-broadway-2026/express-uk--neil-norman.json",
+    "222-a-ghost-story-off-broadway-2026/theatrely--kobi-kassal.json",
+    "the-unbelievers-off-broadway-2026/bobs-theater-blog--unknown.json",
+    "the-verge-off-broadway-2026/talkinbroadway--unknown.json",
+    "parcel-from-america-off-broadway-2026/talkinbroadway--unknown.json",
+    "medea-off-broadway-2026/bachtrack--susan-stempleski.json",
+    "a-few-good-men-2026/variety--anna-tingley.json",
+    "the-heart-off-broadway-2026/variety--cynthia-littleton.json",
+    "a-few-good-men-2026/goldderby--ethan-alter.json",
+    "the-heart-off-broadway-2026/frontmezzjunkies--unknown.json",
+    "in-the-heights-off-broadway-2026/nypost--clive-barnes.json",
+    "in-the-heights-off-broadway-2026/bloomberg--john-simon.json",
+    "i-became-we-off-broadway-2026/timeout--unknown.json",
+    "i-became-we-off-broadway-2026/bobs-theater-blog--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -210,10 +232,19 @@
       "witness-for-the-prosecution-off-west-end-2022/london-box-office--stuart-king.json",
       "witness-for-the-prosecution-off-west-end-2022/standard--henry-hitchings.json",
       "witness-for-the-prosecution-off-west-end-2022/west-end-wilma--unknown.json",
-      "wicked-west-end-2021/firstnightmagazine--unknown.json"
+      "wicked-west-end-2021/firstnightmagazine--unknown.json",
+      "jest-to-impress-off-broadway-2026/donyc--unknown.json",
+      "222-a-ghost-story-off-broadway-2026/consequence--alex-young.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/the-unbelievers-off-broadway-2026/nytimes--laura-collins-hughes.json",
+      "the-unbelievers-off-broadway-2026/nytimes--laura-collins-hughes.json",
+      "data/review-texts/the-verge-off-broadway-2026/nytimes--helen-shaw.json",
+      "the-verge-off-broadway-2026/nytimes--helen-shaw.json",
+      "data/review-texts/222-a-ghost-story-off-broadway-2026/wsj--charles-isherwood.json",
+      "222-a-ghost-story-off-broadway-2026/wsj--charles-isherwood.json"
+    ],
     "directCookies": [],
     "scrapingdog": [
       "nero-off-west-end-2026/musical-theatre-review--angela-thomas.json",
@@ -250,10 +281,73 @@
       "oliver-west-end-2024/times-uk--clive-davis.json",
       "stranger-things-the-first-shadow-west-end-2023/times-uk--clive-davis.json",
       "abba-voyage-off-west-end-2026/times-uk--will-hodgkinson.json",
-      "witness-for-the-prosecution-off-west-end-2022/broadwayworld--emma-watkins.json"
+      "witness-for-the-prosecution-off-west-end-2022/broadwayworld--emma-watkins.json",
+      "kelly-mccaughan-catholic-guilt-off-broadway-2026/broadway-baby--unknown.json"
     ]
   },
   "startTime": "2026-11-08T15:58:54.234Z",
-  "lastProcessed": "wicked-west-end-2021/frontmezzjunkies--unknown.json",
-  "log": []
+  "lastProcessed": "i-became-we-off-broadway-2026/bobs-theater-blog--unknown.json",
+  "log": [
+    {
+      "t": "2026-11-08T16:43:53.037Z",
+      "event": "bb-session",
+      "session": "d9a5a9ae",
+      "url": "https://www.nytimes.com/2026/11/06/theater/the-unbelievers-222-a-ghost-story-rev"
+    },
+    {
+      "t": "2026-11-08T16:43:53.324Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-08T16:44:22.174Z",
+      "event": "bb-session",
+      "session": "fa4cabcc",
+      "url": "https://www.nytimes.com/2026/11/05/theater/rope-the-verge-review-off-broadway-si"
+    },
+    {
+      "t": "2026-11-08T16:44:22.486Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-08T16:44:39.682Z",
+      "event": "bb-session",
+      "session": "3bd2edd1",
+      "url": "https://www.wsj.com/articles/the-unbelievers-and-2-22a-ghost-story-review-off-br"
+    },
+    {
+      "t": "2026-11-08T16:44:39.967Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-11-08T16:48:26.671Z",
+      "event": "bb-session",
+      "session": "bb47e967",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655534"
+    },
+    {
+      "t": "2026-11-08T16:48:26.948Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-08T16:49:25.003Z",
+      "event": "bb-session",
+      "session": "c1389f14",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655510"
+    },
+    {
+      "t": "2026-11-08T16:49:25.311Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-08T16:50:25.662Z",
+      "event": "bb-session",
+      "session": "59d56551",
+      "url": "https://bachtrack.com/review-medea-yoncheva-spyres-met-opera-new-york-october-20"
+    }
+  ]
 }
