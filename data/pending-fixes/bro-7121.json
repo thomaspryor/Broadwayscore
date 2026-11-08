@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7121",
   "planId": "9e616f0b-5843-416a-9889-c8f0774fa301",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-08T12:39:42.191Z",
   "submitter": {
     "name": null,
@@ -32,5 +32,19 @@
         "description": "waiting-for-godot-2009/chicagotribune--chris-jones.json: wrongShow"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-08T13:23:31.600Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "waiting-for-godot-2009/backstage--erik-haagensen.json wrongShow: false -> true (retracted wrongShowSelfHealReason, wrongShowSelfHealed)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "waiting-for-godot-2009/chicagotribune--chris-jones.json wrongShow: null -> true"
+    }
+  ],
+  "executedIn": "ci"
 }
