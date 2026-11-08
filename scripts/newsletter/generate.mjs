@@ -3198,9 +3198,160 @@ if (_weekVoice && !process.env.LEDE_OVERRIDE) {
   ledeText = _weekVoice.sentences.concat(_extra.map(c => c.text)).join(' ');
   ledeShowRefs = _weekVoice.showRefs.concat(_extra.map(c => c.showRef));
 }
+// ── AI subject, preview text and opening (subject-writer.mjs) ────────────────
+// Owner, 2026-11-08 (BRO-7168, option A): the template subjects read like a
+// database and opened every issue the same way. Claude writes candidates from
+// a fact sheet of THIS issue, code + GPT-5.5 check every fact, Claude ranks
+// the survivors; runners-up go to meta.subjectAlternates for the owner's
+// [DRAFT] preview. Any failure keeps the template subject/lede above.
+let _ai = null, _aiOff = null;
+// The whole block is best-effort: any error keeps the template subject.
+try {
+  const { writeSubject, aiSubjectDisabledReason, reusable } = await import('./subject-writer.mjs');
+  _aiOff = aiSubjectDisabledReason();
+  // Debug aid: print the fact sheet the writer would get (no API calls).
+  if (process.env.NEWSLETTER_PRINT_SUBJECT_FACTS === '1') {
+    const f = buildSubjectFacts();
+    process.stderr.write(`[newsletter] subject facts:\n${f.lines.map(l => '  - ' + l).join('\n')}\n[newsletter] recent subjects: ${JSON.stringify(await recentSubjects())}\n`);
+  }
+  if (_aiOff) {
+    process.stderr.write(`[newsletter] AI subject off: ${_aiOff}\n`);
+  } else {
+    const _facts = buildSubjectFacts();
+    // Sticky per issue: a later run for the same week and edition (Sunday
+    // refresh, recovery) keeps the subject the owner previewed while it still
+    // checks out against today's facts, and keeps a subject the owner typed
+    // into the Resend draft themselves.
+    const _prev = (_priorState.issues || []).find(i => i && i.weekStart === weekStartStr && _issueEdition(i) === EDITION);
+    const _ownerSubject = await ownerEditedSubject(_prev);
+    _ai = reusable(_prev && _prev.ai, _facts);
+    if (_ai && _ownerSubject) _ai = { ..._ai, subject: _ownerSubject, angle: 'owner edit' };
+    if (_ai) process.stderr.write(`[newsletter] AI subject reused for this issue: ${_ai.subject}\n`);
+    else {
+      _ai = await writeSubject(_facts, { recent: await recentSubjects(), log: (m) => process.stderr.write(m + '\n') });
+      if (_ai && _ownerSubject) _ai = { ..._ai, subject: _ownerSubject, angle: 'owner edit' };
+      if (_ai) process.stderr.write(`[newsletter] AI subject (${_ai.angle}): ${_ai.subject}\n`);
+    }
+  }
+} catch (e) {
+  _ai = null;
+  _aiOff = `subject writer error: ${String(e.message || e).slice(0, 160)}`;
+  process.stderr.write(`[newsletter] ${_aiOff}; keeping the template subject\n`);
+}
+if (_ai) {
+  ledeText = _ai.lede;
+  ledeSecondaryText = '';
+  ledeShowRefs = _ai.showRefs;
+  _subjectResult.showRefs = _ai.showRefs;
+  // Drop strip items the new opening already tells.
+  const _named = new Set(_ai.showRefs.map(r => r.id));
+  ledeBullets = ledeBullets.filter(b => !(b.showRef && _named.has(b.showRef.id)));
+}
+
+// Facts for the subject writer: only what this email renders, as plain true
+// sentences. Includes every well-reviewed primary-market show closing in the
+// closing window, whatever week it opened (owner, 2026-11-08).
+function buildSubjectFacts() {
+  const body = sectionOrder.join('');
+  const inBody = (t) => !!t && (body.includes(t) || body.includes(t.replace(/&/g, '&amp;')));
+  const DAY = (d) => new Date(d + 'T12:00:00Z').toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric', timeZone: 'UTC' });
+  const MKT = { 'broadway': 'Broadway', 'off-broadway': 'Off-Broadway', 'west-end': 'West End', 'off-west-end': 'Off West End' };
+  const lines = [], titles = new Map();
+  const use = (s) => { titles.set(s.id, { id: s.id, slug: s.slug, title: s.title }); };
+  const scoreBit = (s, a) => `Critic Score ${Math.round(a.raw ?? a.avg)} (${scoreTier(a.avg, s.category)?.label || 'scored'}) from ${a.count} reviews`;
+  lines.push(`The email covers the week of ${DAY(weekStartStr)} to ${DAY(weekEndStr)}.`);
+  lines.push(IS_WE
+    ? 'Editorial: this is the London edition. Lead with London theatre (West End and Off West End). Opera and Broadway have their own sections lower down and should not lead.'
+    : 'Editorial: this is the New York edition. Lead with Broadway and Off-Broadway. London and opera have their own sections lower down and should not lead.');
+  const editionSections = IS_WE ? ['london-openings', 'also-opened-recently', 'broadway-we', 'opera-openings']
+    : ['broadway-openings', 'offbroadway-openings', 'out-of-town-openings', 'london-openings', 'opera-openings', 'new-tour-scores'];
+  const seen = new Set();
+  for (const r of _openingShowRefs) {
+    if (!editionSections.includes(r.section) || _dropSet.has(r.section) || seen.has(r.id)) continue;
+    const s = shows.find(x => x.id === r.id); const a = s && aggregateScore(s.id);
+    if (!s || !a || !inBody(s.title)) continue;
+    seen.add(s.id); use(s);
+    const where = isOperaShow(s) ? 'opera (secondary section)' : (IS_WE ? ['west-end', 'off-west-end'] : ['broadway', 'off-broadway']).includes(s.category) ? MKT[s.category] : `${MKT[s.category] || s.category} (secondary section)`;
+    const when = s.openingDate ? `${inWeek(s.openingDate) ? 'opened this week' : 'opened recently'}, on ${DAY(s.openingDate)}` : 'opened recently';
+    lines.push(`Opening: ${s.title}, ${where}${s.type ? `, ${s.type}` : ''}${s.venue ? ` at ${s.venue}` : ''}, ${when}. ${scoreBit(s, a)}.${s.closingDate && s.closingDate <= horizon7Str ? ` Final performance ${DAY(s.closingDate)}.` : ''}`);
+  }
+  const closing = shows.filter(s => isPrimaryMarket(s) && !isOperaShow(s) && s.status === 'open' && s.closingDate && s.closingDate >= weekEndStr && s.closingDate <= horizon7Str && !seen.has(s.id))
+    .map(s => ({ s, a: aggregateScore(s.id) }))
+    .filter(x => x.a && x.a.count >= minReviews(x.s.category) && x.a.avg >= 70 && inBody(x.s.title))
+    .sort((x, y) => y.a.avg - x.a.avg).slice(0, 6);
+  for (const { s, a } of closing) {
+    use(s);
+    lines.push(`Closing soon: ${s.title}, ${MKT[s.category]}${s.venue ? ` at ${s.venue}` : ''}${s.openingDate ? `, opened ${DAY(s.openingDate)}` : ''}. Final performance ${DAY(s.closingDate)}. ${scoreBit(s, a)}.`);
+  }
+  if (ravepan) {
+    const { rave, pan } = findWeekRavePan();
+    for (const [kind, x] of [['Rave of the week', rave], ['Pan of the week', pan]]) {
+      if (!x || !x.show || !inBody(x.show.title)) continue;
+      use(x.show);
+      lines.push(`${kind}: ${x.review.criticName || 'a critic'}${x.review.outlet ? ` (${x.review.outlet})` : ''} gave ${x.show.title} ${x.review.assignedScore} out of 100.`);
+    }
+  }
+  if (upcoming && _upcomingLede && inBody(_upcomingLede.title)) {
+    titles.set(_upcomingLede.id, { id: _upcomingLede.id, slug: _upcomingLede.slug, title: _upcomingLede.title });
+    lines.push(`Coming up: ${_upcomingLede.title} ${_upcomingLede.eventLabel === 'Opens' ? 'opens' : 'starts previews'} ${DAY(_upcomingLede.eventDate)}.`);
+  }
+  const primaryCats = IS_WE ? ['west-end', 'off-west-end'] : ['broadway', 'off-broadway'];
+  const scored = (s) => { const a = aggregateScore(s.id); return a && a.count >= minReviews(s.category); };
+  // Count only the in-week openings this email shows, so the count matches
+  // the cards the reader sees (review, 2026-11-08: sheet said 9, body had 7).
+  const nNow = [...seen].map(id => shows.find(x => x.id === id))
+    .filter(s => s && primaryCats.includes(s.category) && !isOperaShow(s) && inWeek(s.openingDate)).length;
+  const typical = _typicalWeekly(s => primaryCats.includes(s.category) && scored(s));
+  if (typical > 0) lines.push(`Week size: ${nNow} new ${IS_WE ? 'London' : 'New York'} productions opened this week with enough reviews for a Critic Score; a typical recent week has about ${Math.round(typical)}.`);
+  if (!IS_WE && box) { const b = _boxOfficeCtx(); if (b) lines.push(`Box office: ${b.text}`); }
+  const knownTitles = shows.filter(s => ['open', 'previews'].includes(s.status) || (s.openingDate && s.openingDate >= _daysBefore(120)))
+    .map(s => s.title).filter(Boolean);
+  return { edition: EDITION, lines, titles: [...titles.values()], knownTitles };
+}
+
+// The subject on this issue's Resend draft when it differs from the one this
+// generator last wrote: the owner swapped one in by hand. null otherwise.
+async function ownerEditedSubject(prev) {
+  if (!prev || !prev.subject || !process.env.RESEND_API_KEY) return null;
+  try {
+    const H = { Authorization: `Bearer ${process.env.RESEND_API_KEY}` };
+    const list = await (await fetch('https://api.resend.com/broadcasts?limit=40', { headers: H, signal: AbortSignal.timeout(15000) })).json();
+    const name = `${IS_WE ? 'West End' : 'Scorecard'} Weekly — ${weekStartStr}`;
+    const b = (list.data || []).find(x => x.name === name && x.status === 'draft');
+    if (!b) return null;
+    const j = await (await fetch(`https://api.resend.com/broadcasts/${b.id}`, { headers: H, signal: AbortSignal.timeout(15000) })).json();
+    return j && j.subject && j.subject !== prev.subject ? j.subject : null;
+  } catch { return null; }
+}
+
+// Last subjects sent or drafted, both editions, newest first. From the issue
+// ledger; topped up from Resend when the ledger has few (first runs).
+async function recentSubjects() {
+  const mine = (_priorState.issues || [])
+    .filter(i => i && i.subject && !(i.weekStart === weekStartStr && _issueEdition(i) === EDITION))
+    .sort((a, b) => String(b.weekStart).localeCompare(String(a.weekStart)))
+    .map(i => i.subject);
+  if (mine.length >= 6 || !process.env.RESEND_API_KEY) return mine.slice(0, 8);
+  try {
+    const H = { Authorization: `Bearer ${process.env.RESEND_API_KEY}` };
+    const list = await (await fetch('https://api.resend.com/broadcasts?limit=40', { headers: H, signal: AbortSignal.timeout(15000) })).json();
+    const weekly = (list.data || []).filter(b => /Weekly/.test(b.name || '') && !(b.name || '').includes(weekStartStr))
+      .sort((a, b) => String(b.created_at).localeCompare(String(a.created_at))).slice(0, 8);
+    const subs = [];
+    for (const b of weekly) {
+      const j = await (await fetch(`https://api.resend.com/broadcasts/${b.id}`, { headers: H, signal: AbortSignal.timeout(15000) })).json();
+      if (j && j.subject) subs.push(j.subject);
+    }
+    return [...new Set([...mine, ...subs])].slice(0, 8);
+  } catch (e) {
+    process.stderr.write(`[newsletter] recent subjects from Resend unavailable: ${e.message}\n`);
+    return mine.slice(0, 8);
+  }
+}
+
 // Subject is plain text in every inbox — strip any *emphasis* markers an editor
 // (or a future marker-aware scorer) left in, so they never render literally.
-const subjectLine = stripEmphasisMarkers(_subjectRaw);
+const subjectLine = stripEmphasisMarkers(_ai ? _ai.subject : _subjectRaw);
 
 // Show titles to italicize in the editorial lede. Bounded to currently-running
 // or recently-opened shows so a common-word title (Pride, Camping) can't match
@@ -3227,7 +3378,7 @@ const ledeBulletsHtml = ledeBullets.length ? ledeBullets.map(b =>
 const _preheaderSentences = process.env.LEDE_OVERRIDE
   ? (ledeText || '').split(/(?<=[.!?])\s+/)
   : (_weekVoice ? _weekVoice.sentences : _ledeParts.sentences);
-const ledePlain = stripEmphasisMarkers(_preheaderSentences.slice(0, 2).join(' ') || ledeText);
+const ledePlain = _ai ? _ai.preheader : stripEmphasisMarkers(_preheaderSentences.slice(0, 2).join(' ') || ledeText);
 
 const yearForFooter = weekEndDate.getFullYear();
 
@@ -3373,6 +3524,11 @@ sections.reclassify(classifyEntry);
 sections.writeMeta(`${outDir}/${slug}.meta.json`, {
   subject: subjectLine,
   lede: ledeText,
+  // Subject writer outcome (subject-writer.mjs). subjectAlternates are the
+  // runners-up shown in the owner's [DRAFT] preview email.
+  subjectWriter: _ai ? { writer: 'ai', angle: _ai.angle, why: _ai.why, attempts: _ai.attempts, rejected: _ai.rejected }
+    : { writer: 'template', reason: _aiOff || 'no AI candidate passed the checks' },
+  subjectAlternates: _ai ? _ai.alternates : [],
   // The A-<weekStart> slug is edition-agnostic, so the edition stamp is how
   // create-broadcast-draft.mjs detects a WE draft built on Broadway HTML
   // (or vice versa) when both editions share an out dir.
@@ -3407,5 +3563,18 @@ sections.writeMeta(`${outDir}/${slug}.meta.json`, {
     .filter(r => !_dropSet.has(r.section)))
     .map(({ section, ...rest }) => rest),
 });
+
+// Record this issue's subject in the ledger so next week's writer avoids
+// repeating it (subject-writer.mjs recent list). Best-effort.
+try {
+  const _st = JSON.parse(fs.readFileSync(STATE_PATH, 'utf8'));
+  const _e = (_st.issues || []).find(i => i && i.weekStart === weekStartStr && _issueEdition(i) === EDITION);
+  if (_e) {
+    _e.subject = subjectLine;
+    _e.subjectAngle = _ai ? _ai.angle : 'template';
+    if (_ai) _e.ai = { subject: _ai.subject, preheader: _ai.preheader, lede: _ai.lede, angle: _ai.angle, alternates: _ai.alternates || [] };
+    fs.writeFileSync(STATE_PATH, JSON.stringify(_st, null, 2) + '\n');
+  }
+} catch (e) { process.stderr.write('[newsletter] subject ledger write failed: ' + e.message + '\n'); }
 sections.printSummary();
 console.log(`Wrote ${outDir}/${slug}.html (${sectionOrder.length} sections, headerCounts="${headerCounts}")`);
