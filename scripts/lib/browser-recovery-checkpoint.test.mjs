@@ -68,3 +68,25 @@ test('checkpoint throws when the push fails instead of warning and carrying on',
     fs.unlinkSync(hook);
   }
 });
+
+// Class guard: the local review-texts recovery writers share one checkout
+// with other local automation, so none may stage with a bare `git add -A` or
+// push on its own; they go through review-texts-checkpoint.js (BRO-7171).
+// (CI-only writers run in fresh checkouts and are out of this class.)
+test('local review-texts recovery scripts never `git add -A` or push directly', () => {
+  const scriptsDir = path.join(path.dirname(new URL(import.meta.url).pathname), '..');
+  const files = [
+    'lib/browser-recovery-helpers.js',
+    'recover-serp-text.js',
+    ...fs.readdirSync(scriptsDir).filter((f) => /^recover-.*-browser\.js$/.test(f)),
+  ];
+  assert.ok(files.length >= 8, `expected the 6 browser scripts + 2, got ${files.join(', ')}`);
+  const offenders = [];
+  for (const f of files) {
+    const src = fs.readFileSync(path.join(scriptsDir, f), 'utf8')
+      .split('\n').filter((l) => !/^\s*(\/\/|\*)/.test(l)).join('\n');
+    if (/git add -A|['"]add['"],\s*['"]-A['"]/.test(src)) offenders.push(`${f}: git add -A`);
+    if (/git push|push-with-retry\.sh/.test(src)) offenders.push(`${f}: pushes directly`);
+  }
+  assert.deepEqual(offenders, []);
+});
