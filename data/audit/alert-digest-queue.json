@@ -934,5 +934,36 @@
       }
     ],
     "queuedAt": "2026-11-08T20:13:36.017Z"
+  },
+  {
+    "conditionKey": "land:land/bro-7139-board-dispatch",
+    "title": "Landing blocked: bash-integration red on land/bro-7139-board-dispatch",
+    "description": "land.yml did not land land/bro-7139-board-dispatch: the bash-integration gate went red at 5353b573d3. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/42517055150",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-7139-board-dispatch"
+      },
+      {
+        "name": "gate",
+        "value": "bash-integration"
+      },
+      {
+        "name": "tip",
+        "value": "5353b573d3f135cf9006502a7cf3db8836a7627c"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42517055150"
+      }
+    ],
+    "queuedAt": "2026-11-08T20:17:51.843Z"
   }
 ]
