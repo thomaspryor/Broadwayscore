@@ -62,6 +62,16 @@ function rotateMissingOutlets(outlets, offset = 0) {
   return [...outlets.slice(start), ...outlets.slice(0, start)];
 }
 
+/**
+ * BRO-7162 F08: next rotation cursor. Advance by the outlets the SERP pass actually reached, never by the
+ * budget: a pass that stopped at its deadline, had no keys, or crashed before the first outlet used to
+ * move the cursor a full budget and skip those outlets for good. Zero consumed leaves the cursor in place.
+ */
+function advanceSerpOutletOffset(offset, consumed, listLength) {
+  if (!listLength || !Number.isFinite(consumed) || consumed <= 0) return Math.max(0, offset || 0);
+  return (Math.max(0, offset || 0) + consumed) % listLength;
+}
+
 const STALLED_STUB_MAX_HOURS = 72;
 const STUB_EXCLUDED_FLAGS = ['wrongShow', 'wrongProduction', 'isRoundupArticle', 'duplicateOf', 'fabricatedEntry', 'isNonReview'];
 
@@ -99,4 +109,4 @@ function warnStalledReviewStubs(show, showDir, { now = new Date(), log = console
   return stalled;
 }
 
-module.exports = { selectMissingT1T2Outlets, getLondonSupplementalOutlets, reviewSearchKeyword, rotateMissingOutlets, STALLED_STUB_MAX_HOURS, findStalledReviewStubs, warnStalledReviewStubs };
+module.exports = { selectMissingT1T2Outlets, getLondonSupplementalOutlets, reviewSearchKeyword, rotateMissingOutlets, advanceSerpOutletOffset, STALLED_STUB_MAX_HOURS, findStalledReviewStubs, warnStalledReviewStubs };
