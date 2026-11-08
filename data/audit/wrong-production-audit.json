@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-11-08T03:38:49.601Z",
+  "timestamp": "2026-11-08T05:43:13.983Z",
   "stats": {
-    "totalReviews": 80510,
-    "alreadyFlagged": 22032,
+    "totalReviews": 80516,
+    "alreadyFlagged": 22031,
     "dateGuardCatches": 216,
     "directorMismatch": 3545,
-    "tvFilmSignals": 2293,
+    "tvFilmSignals": 2294,
     "londonSignals": 3627,
     "offBroadwaySignals": 748,
     "yearMismatch": 363,
@@ -43119,7 +43119,7 @@
       "file": "standard--henry-hitchings.json",
       "score": 74,
       "publishDate": "2018-05-03",
-      "url": null,
+      "url": "https://www.standard.co.uk/culture/theatre/mood-music-review-ben-chaplin-makes-this-a-show-worth-seeing-a3830001.html",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -67051,6 +67051,19 @@
       "score": 74,
       "publishDate": "2014-02-27",
       "url": "https://www.ft.com/content/5f1791ec-9ed7-11e3-8663-00144feab7de",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "the-full-monty-west-end-2014",
+      "file": "financialtimes--unknown.json",
+      "publishDate": "2014-02-27",
+      "url": null,
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
