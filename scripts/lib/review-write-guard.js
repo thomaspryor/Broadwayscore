@@ -1028,6 +1028,21 @@ function _rejectionSelfHealedMatches(d, committed) {
     && (h.rejectionReasoning || null) === (committed.rejectionReasoning || null);
 }
 
+// BRO-7171: gap-acceptance.js recoverReviewText replaced the text and stamped
+// textRecoveryProvenance {newFullTextHash, at}. Its deletion of the stale
+// incompleteReason/incompleteDetail is honored only while that stamp names
+// the text being written and is newer than the committed copy's stamp.
+function _textRecoveredFresh(d, committed) {
+  const p = d && d.textRecoveryProvenance;
+  if (!p || typeof d.fullText !== 'string' || !p.newFullTextHash) return false;
+  if (require('crypto').createHash('sha256').update(d.fullText).digest('hex') !== p.newFullTextHash) return false;
+  const at = Date.parse(p.at);
+  if (!Number.isFinite(at)) return false;
+  const prior = committed && committed.textRecoveryProvenance;
+  const priorAt = prior ? Date.parse(prior.at) : NaN;
+  return !Number.isFinite(priorAt) || at > priorAt;
+}
+
 const CLEAR_BREADCRUMBS = {
   duplicateOf: (d) => !_isEmptyValue(d.duplicateClearReason),
   // duplicateTextOf (task #1624, found by ship-check codebase review): the
@@ -1088,6 +1103,8 @@ const CLEAR_BREADCRUMBS = {
     'incompleteReason', 'incompleteDetail', 'llmPullQuote', 'wordCount', 'trNoRecordForProduction', 'stuckRescoreCleared', 'stuckRescoreClearedAt', 'wrongShowReason', 'wrongShowNote'].map((k) => [k, _trWrongProductionTextReplaced])),
   ...Object.fromEntries(['rejectedAt', 'rejectedBy', 'rejectionReason', 'rejectionReasoning'].map((k) => [k,
     (d, committed) => _trWrongProductionTextReplaced(d, committed) || _rejectionSelfHealedMatches(d, committed)])),
+  ...Object.fromEntries(['incompleteReason', 'incompleteDetail'].map((k) => [k,
+    (d, committed) => _trWrongProductionTextReplaced(d, committed) || _textRecoveredFresh(d, committed)])),
   crossOutletVerified: _clearBreadcrumbRetracted('crossOutletVerified'),
   // crossOutletVerifiedNote (task #1624, found by ship-check codebase review):
   // shares the SAME field-scope key as crossOutletVerified above — every
@@ -1555,6 +1572,13 @@ function stripDowJonesChromeForWrite(filePath, newData) {
 function writeReviewFileAtomic(filePath, contents) {
   let target = filePath;
   try { target = fs.realpathSync(filePath); } catch (e) { if (e.code !== 'ENOENT') throw e; }
+  if (target === filePath) {
+    // A dangling file symlink: write through it like writeFileSync did,
+    // never replace the link with a plain file.
+    try {
+      if (fs.lstatSync(filePath).isSymbolicLink()) target = path.resolve(path.dirname(filePath), fs.readlinkSync(filePath));
+    } catch { /* not there yet */ }
+  }
   if (target === filePath) {
     // New file: resolve its directory (data/review-texts is a symlink).
     try { target = path.join(fs.realpathSync(path.dirname(filePath)), path.basename(filePath)); } catch { /* dir missing: write fails below */ }

@@ -138,6 +138,23 @@ test('adapter: a paywall page is not written as recovered text', () => {
   assert.equal(JSON.parse(fs.readFileSync(c.filePath, 'utf8')).fullText, 'Short excerpt.');
 });
 
+test('a recovery clears the stale dead-candidate stamp, including on a second recovery', () => {
+  const c = candidateFile({ contentTier: 'truncated', incompleteReason: 'wrong_content', incompleteDetail: 'nyt-browser-recovery: old stamp' });
+  const labels = { fetchMethod: 'test-browser', sourceMethod: 'test-recovery' };
+  const r = gate.recoverReviewText({ filePath: c.filePath, rawText: GOOD, labels });
+  assert.equal(r.ok, true, r.reason);
+  let onDisk = JSON.parse(fs.readFileSync(c.filePath, 'utf8'));
+  assert.equal(onDisk.incompleteReason, undefined, 'merge-mode safeWriteReview must not copy the old stamp back');
+  assert.equal(onDisk.incompleteDetail, undefined);
+  // Re-stamped dead later, then recovered again: the clear must work again.
+  onDisk.incompleteReason = 'bot_blocked';
+  fs.writeFileSync(c.filePath, JSON.stringify(onDisk, null, 2) + '\n');
+  const r2 = gate.recoverReviewText({ filePath: c.filePath, rawText: `${GOOD} A closing line that makes this text longer still.`, labels });
+  assert.equal(r2.ok, true, r2.reason);
+  onDisk = JSON.parse(fs.readFileSync(c.filePath, 'utf8'));
+  assert.equal(onDisk.incompleteReason, undefined);
+});
+
 test('adapter: an accepted recovery records priorFullTextHash for rollback', () => {
   const { processRecoveredText } = require('./browser-recovery-helpers.js');
   const c = candidateFile({});
