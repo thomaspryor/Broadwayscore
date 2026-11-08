@@ -297,3 +297,11 @@ test('declared close answers move the share: full ROOT-CAUSE block counts as roo
   const r = rc.rootCauseShare([a, b], classes, { from: NOW - 7 * DAY, to: NOW + DAY, commentsById: { [a.identifier]: [block], [b.identifier]: ['NO-ROOT-CAUSE: one-off bad upstream file'] } });
   assert.deepEqual([r['root-cause'], r.instance, r.share], [1, 1, 50]);
 });
+
+test('improvementLine adds the independent sample share while it is fresh', () => {
+  const base = { share: { thisWeek: { share: 70, total: 100 }, lastWeek: null }, recurringCount: 3, withRootCause: 1 };
+  const fresh = rc.improvementLine({ ...base, sample: { generatedAt: new Date().toISOString(), graded: 8, share: 37.5 } });
+  assert.match(fresh, /independent check of 8 fixes .* found 38% fixed the cause/);
+  const stale = rc.improvementLine({ ...base, sample: { generatedAt: '2026-01-01T00:00:00Z', graded: 8, share: 37.5 } });
+  assert.ok(!/independent/.test(stale));
+});

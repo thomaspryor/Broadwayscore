@@ -19,6 +19,9 @@
  *                            class with two root cards (BRO-7103's VERIFY)
  *   --check-class KEY|SLUG   exit 0 when the class has had no new card for 21 days
  *                            (a root-cause card's VERIFY); 3 = snapshot stale
+ *   --sample [--force-sample] weekly: grade up to 8 Done fix cards root-cause vs spot fix
+ *                            from their own diffs (gpt-5.4-mini, diff only), write
+ *                            data/audit/root-cause-sample.json; self-skips if <6 days old
  *   --input FILE             read cards from a JSON file instead of Linear
  *   --no-write               don't write the snapshot
  *
@@ -33,6 +36,9 @@ const rc = require('./lib/recurrence-classes.js');
 const ROOT = path.join(__dirname, '..');
 const SNAPSHOT = path.join(ROOT, 'data/audit/recurrence-classes.json');
 const LEDGER = path.join(ROOT, 'data/audit/alert-ledger.json');
+const SAMPLE_FILE = path.join(ROOT, 'data/audit/root-cause-sample.json');
+const SAMPLE_EVERY_DAYS = 6;
+const SAMPLE_MAX = 8;
 const BACKTEST_JSON = path.join(ROOT, 'data/audit/recurrence-backtest.json');
 const BACKTEST_MD = path.join(ROOT, 'docs/recurrence-backtest.md');
 const DAY = 864e5;
@@ -293,6 +299,80 @@ async function apply(snapshot, prevSnapshot) {
   return { filed, commented, pending };
 }
 
+// ---------- weekly independent sample (item 9) ----------
+
+function gradeDiff(diff) {
+  const https = require('https');
+  const rcc = require('./lib/root-cause-close.js');
+  const body = JSON.stringify({
+    model: 'gpt-5.4-mini', temperature: 0, response_format: { type: 'json_object' },
+    messages: [{ role: 'system', content: rcc.GRADER_SYSTEM }, { role: 'user', content: diff }],
+  });
+  return new Promise((resolve, reject) => {
+    const req = https.request('https://api.openai.com/v1/chat/completions', {
+      method: 'POST', timeout: 60000,
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${process.env.OPENAI_API_KEY}` },
+    }, (res) => {
+      let data = '';
+      res.on('data', (c) => { data += c; });
+      res.on('end', () => {
+        if (res.statusCode !== 200) return reject(new Error(`OpenAI ${res.statusCode}: ${data.slice(0, 200)}`));
+        try { resolve(JSON.parse(data).choices[0].message.content); } catch (e) { reject(e); }
+      });
+    });
+    req.on('timeout', () => req.destroy(new Error('OpenAI timeout')));
+    req.on('error', reject);
+    req.end(body);
+  });
+}
+
+/**
+ * Grade up to 8 of the week's Done fix cards root-cause vs spot fix from
+ * their own diffs (never the card text). Self-skips when the last sample is
+ * under 6 days old, so the daily step runs it once a week.
+ */
+async function sample(cards, now, { grade = gradeDiff, diffFor, file = SAMPLE_FILE, landingsText } = {}) {
+  const rcc = require('./lib/root-cause-close.js');
+  const prev = readJson(file);
+  if (prev && prev.generatedAt && now - Date.parse(prev.generatedAt) < SAMPLE_EVERY_DAYS * DAY && !has('--force-sample')) {
+    console.log(`sample: skipped, last one ${prev.generatedAt.slice(0, 10)} (every ${SAMPLE_EVERY_DAYS} days)`);
+    return null;
+  }
+  if (grade === gradeDiff && !process.env.OPENAI_API_KEY) { console.warn('[recurrence] sample: OPENAI_API_KEY not set; no sample this week'); return null; }
+  const week = cards.filter((c) => rc.isDone(c) && c.completedAt && now - Date.parse(c.completedAt) <= 7 * DAY
+    && rcc.isFixCard({ title: c.title }) && !rc.expectedRepeatReason(c.title));
+  const order = rcc.seededPick(week.map((c) => c.identifier), week.length, new Date(now).toISOString().slice(0, 10));
+  const items = [];
+  let noDiff = 0;
+  for (const id of order) {
+    if (items.length >= SAMPLE_MAX) break;
+    const d = diffFor ? diffFor(id) : rcc.cardDiff(id, { cwd: ROOT });
+    if (!d || !d.diff.trim()) { noDiff++; continue; }
+    let g;
+    try { g = rcc.parseGrade(await grade(d.diff)); } catch (e) { console.warn(`[recurrence] sample: ${id} not graded (${e.message})`); continue; }
+    const diffHash = require('crypto').createHash('sha256').update(d.diff).digest('hex').slice(0, 12);
+    items.push({ card: id, ...g, diffHash, truncated: d.truncated, files: d.files.slice(0, 20) });
+  }
+  let landingsWithoutId = 0;
+  try {
+    const rows = require('./lib/stuck-card-closer.js').parseLandingRows(landingsText != null ? landingsText : fs.readFileSync(path.join(ROOT, 'data/audit/landings.jsonl'), 'utf8'));
+    landingsWithoutId = rows.filter((r) => now - Date.parse(r.ts) <= 7 * DAY && !/bro-\d+/i.test(r.branch)).length;
+  } catch { /* ledger missing: count unknown */ }
+  const out = {
+    generatedAt: new Date(now).toISOString(),
+    grader: 'gpt-5.4-mini (diff only)',
+    poolSize: week.length,
+    noDiff,
+    landingsWithoutId,
+    ...rcc.summarizeSample(items),
+    items,
+  };
+  fs.writeFileSync(file, JSON.stringify(out, null, 2) + '\n');
+  console.log(`sample: graded ${out.graded} of ${out.poolSize} fix cards closed this week: ${out.rootCause} root-cause, ${out.spot} spot fix, ${out.unclear} unclear` +
+    ` (share ${out.share == null ? 'n/a' : `${out.share}%`}); ${noDiff} had no findable diff, ${landingsWithoutId} landings this week named no card`);
+  return out;
+}
+
 // ---------- backtest ----------
 
 function backtest(cards, ledger, days) {
@@ -414,6 +494,8 @@ async function main() {
     cards = cards.concat(await fetchRootCards(cards));
   }
 
+  if (has('--sample')) { await sample(cards, Date.now()); return 0; }
+
   if (has('--backtest')) {
     const bt = backtest(cards, ledger, days);
     fs.writeFileSync(BACKTEST_JSON, JSON.stringify(bt, null, 2) + '\n');
@@ -443,6 +525,9 @@ async function main() {
   const prev = readJson(SNAPSHOT);
   const snap = buildSnapshot({ cards, ledger, now, complete, commentsById, prevKnown: (prev && prev.knownKeys) || (prev && prev.classes || []).map((c) => c.key) });
   snap.pendingRootCards = snap.classes.filter((c) => !c.rootCause).length;
+  // The weekly independent sample rides along so the digest line has it.
+  const smp = readJson(SAMPLE_FILE);
+  if (smp && smp.generatedAt) snap.sample = { generatedAt: smp.generatedAt, graded: smp.graded, rootCause: smp.rootCause, spot: smp.spot, share: smp.share };
 
   if (has('--apply')) {
     if (!complete) { console.error('[recurrence] Linear read was partial; refusing to file (would risk a duplicate root card)'); process.exitCode = 1; }
@@ -466,4 +551,5 @@ if (require.main === module) {
   main().then((code) => process.exit(code), (e) => { console.error(`[recurrence] ${e.stack || e.message}`); process.exit(1); });
 }
 
-module.exports = { alreadyNoted, statusComment, buildSnapshot, backtest, rootCardTitle, rootCardDescription, slugOf, checkClass, checkAll };
+module.exports = {
+  sample, alreadyNoted, statusComment, buildSnapshot, backtest, rootCardTitle, rootCardDescription, slugOf, checkClass, checkAll };

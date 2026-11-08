@@ -544,6 +544,14 @@ const CORE_DATA_MERGE_REGISTRY = [
     verifiedBy: '2026-11-07 (BRO-7103): written only by the Recurrence detector step in data-health-check.yml (scripts/recurrence-detector.js --apply), group data-health-check.',
   },
   {
+    file: 'audit/root-cause-sample.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'data-health-check',
+    verifiedBy: '2026-11-08 (BRO-7103): written only by the Recurrence detector step in data-health-check.yml (scripts/recurrence-detector.js --sample, weekly), group data-health-check.',
+  },
+  {
     file: 'audit/outlet-corpus-critics.json',
     surface: 'public-repo',
     status: 'single-writer',
