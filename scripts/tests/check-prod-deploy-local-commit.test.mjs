@@ -33,7 +33,7 @@ function fixture() {
 
 test('a deployed commit pushed after the shallow clone is fetched, then found', (t) => {
   const { dir, origin, clone } = fixture();
-  t.after(() => rmSync(dir, { recursive: true, force: true }));
+  t.after(() => rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
   assert.equal(git(clone, 'rev-parse', '--is-shallow-repository'), 'true');
   const deployed = commit(origin, 'c');
   assert.throws(() => git(clone, 'cat-file', '-e', `${deployed}^{commit}`), 'precondition: not local yet');
@@ -55,7 +55,7 @@ test('a failed fetch returns false instead of throwing', () => {
 
 test('a deploy behind the target reads as behind in a shallow clone; equal, ahead or unknown does not', (t) => {
   const { dir, origin, clone } = fixture();
-  t.after(() => rmSync(dir, { recursive: true, force: true }));
+  t.after(() => rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
   const deployed = git(clone, 'rev-parse', 'HEAD');
   commit(origin, 'c');
   git(clone, 'fetch', '-q', '--depth=2', 'origin', 'main');
@@ -76,7 +76,7 @@ test('isLive: deploy behind reads not-live (false), deploy pushed after the clon
   const { dir, origin, clone } = fixture();
   t.after(() => {
     if (prev === undefined) delete process.env.PUSH_SKIP_UNSHALLOW; else process.env.PUSH_SKIP_UNSHALLOW = prev;
-    rmSync(dir, { recursive: true, force: true });
+    rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   });
   const errs = [];
   const origErr = console.error;
