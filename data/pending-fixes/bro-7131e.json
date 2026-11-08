@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7131e",
   "planId": "c9e3288b-9385-459c-bc86-507690b5b948",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-08T19:45:18.922Z",
   "submitter": {
     "name": null,
@@ -32,5 +32,19 @@
         "description": "tosca-english-national-opera-west-end-2026/cherylmarkosky--cherylmarkosky.json: isNonReview"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-08T20:59:22.803Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "tosca-english-national-opera-west-end-2026/cherylmarkosky--cherylmarkosky.json isNonReviewReason: null -> \"manual (not a review): blog teaser linking to the same critic's full review counted as london-theatre--cheryl-markosky.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "tosca-english-national-opera-west-end-2026/cherylmarkosky--cherylmarkosky.json isNonReview: null -> true"
+    }
+  ],
+  "executedIn": "ci"
 }
