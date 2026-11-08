@@ -64,15 +64,18 @@ function main() {
     const night = nightsDoc.nights[show.id];
     const record = og.pickPressNight(records, show);
     const files = loadFiles(rtDir, show.id);
-    const g = og.gradeOpening({
+    const base = {
       show, files, commits, historyFromMs: hist,
-      pressNight: pressNightWithObserved(record, night),
       gapResult: gapById.get(show.id) || null,
       missingCited: gapById.has(show.id) ? citedUncollectedNow(gapById.get(show.id), { heldFiles: files, blocklist: loadBlocklist(path.join(rtDir, show.id)), show }) : null,
       nowMs,
-    });
+    };
+    const g = og.gradeOpening({ ...base, pressNight: pressNightWithObserved(record, night) });
+    // A spurious cluster must not silently change the grade: keep the grade on the recorded/estimated embargo beside it.
+    const onRecord = night.embargoCorrected ? og.gradeOpening({ ...base, pressNight: record }) : null;
     return { ...g, embargoFrom: night.observed.source === 'observed-cluster' ? 'observed publish cluster' : g.embargoFrom,
-      embargoCorrected: Boolean(night.embargoCorrected), estimateAt: night.estimate.at, shiftMin: night.observed.shiftMin };
+      embargoCorrected: Boolean(night.embargoCorrected), estimateAt: night.estimate.at, shiftMin: night.observed.shiftMin,
+      onRecordEmbargo: onRecord && { verdict: onRecord.verdict, line: og.gradeLine(onRecord) } };
   }).sort((a, b) => b.openingDate.localeCompare(a.openingDate) || a.showId.localeCompare(b.showId));
 
   const doc = {
