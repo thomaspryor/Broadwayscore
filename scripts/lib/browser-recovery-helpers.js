@@ -8,69 +8,19 @@
  * paywall-locked until client-side hydration resolves entitlements. Real
  * browser + real cookies + a DOM read after hydration is the general-purpose
  * fix — this file factors out the parts that don't vary per outlet
- * (candidate discovery, content-quality gating, checkpoint/push) so each
- * outlet script only supplies its login/cookie/selector specifics.
+ * (candidate discovery, the shared gap-acceptance gate, locked writes, scoped
+ * checkpoint/push) so each outlet script only supplies its login/cookie/
+ * selector specifics. The task #915 date-plausibility guard now lives in
+ * gap-acceptance.js's acceptRecoveredText.
  */
 
 const fs = require('fs');
 const { readReviewForUpdate, persistReviewSnapshot } = require('./persist-review-snapshot');
 const path = require('path');
 
-const { evaluateDatePlausibility } = require('./date-plausibility');
 const { recoverReviewText } = require('./gap-acceptance');
 const { withReviewTextsLock } = require('./review-texts-lock');
 const { checkpointReviewTexts, retryPendingPushes, createWriteTracker } = require('./review-texts-checkpoint');
-
-// Same worktree-symlink gap as REVIEW_TEXTS_DIR above — data/shows.json is a
-// gitignored symlink into the private ~/broadway-scorecard-data clone, so a
-// worktree checkout (git tree only) never has it. Fall back to the home-dir
-// clone directly; SHOWS_JSON_PATH overrides both for tests/alternate setups.
-const SHOWS_JSON_PATH = process.env.SHOWS_JSON_PATH
-  || (fs.existsSync(path.join(__dirname, '..', '..', 'data', 'shows.json'))
-    ? path.join(__dirname, '..', '..', 'data', 'shows.json')
-    : path.join(require('os').homedir(), 'broadway-scorecard-data', 'shows.json'));
-
-// Lazy-loaded, memoized once per process.
-let _showsByIdCache = null;
-function getShowById(showId) {
-  if (!_showsByIdCache) {
-    _showsByIdCache = new Map();
-    try {
-      const parsed = JSON.parse(fs.readFileSync(SHOWS_JSON_PATH, 'utf8'));
-      const shows = Array.isArray(parsed) ? parsed : (parsed.shows || []);
-      for (const s of shows) { if (s && s.id) _showsByIdCache.set(s.id, s); }
-    } catch { /* leave cache empty — date-plausibility check below just no-ops */ }
-  }
-  return _showsByIdCache.get(showId) || null;
-}
-
-/**
- * Date-plausibility guard (task #915, follow-up to #895's 7 wrongProduction
- * false positives — e.g. hamlet-2026/nytimes--charles-isherwood.json was a
- * 2015 Classic Stage Company review, 11 years before the 2026 show's opening,
- * admitted because the bare word "hamlet" trivially satisfies
- * validateShowMentioned). safeWriteReview's own date-implausible gate only
- * fires when publishDate is arriving for the FIRST time; these candidate
- * files already carry a publishDate from initial discovery, so that gate
- * never sees this write — check here instead, against the existing date.
- * Exported so every outlet's recovery script shares one implementation
- * (recover-wsj-browser.js predates this shared helper and has its own local
- * processRecoveredText — it calls this directly rather than duplicating the
- * date logic a second time).
- *
- * @param {{showId: string}} candidate
- * @param {{publishDate?: string}} data - the on-disk review record (already
- *   read by the caller) whose publishDate is being checked
- * @returns {string|null} a rejection reason, or null if plausible / unknown
- */
-function checkDatePlausibility(candidate, data) {
-  if (!data.publishDate) return null;
-  const show = getShowById(candidate.showId);
-  if (!show) return null;
-  const verdict = evaluateDatePlausibility({ review: data, show });
-  if (!verdict.implausible) return null;
-  return `date implausible: publishDate ${data.publishDate} is ${verdict.daysBefore}d before earliest show date ${verdict.earliestDate} (likely wrong production — declare priorRuns if this is a legitimate earlier run)`;
-}
 
 // Overridable so a worktree session (which has no gitignored data/review-texts
 // clone of its own — that private repo isn't part of this repo's git tree)
@@ -224,4 +174,4 @@ function checkpoint(stats, commitMessagePrefix, opts = {}) {
   return res;
 }
 
-module.exports = { loadCandidates, processRecoveredText, stampDead, startRun, checkpoint, RUN_WRITES, REVIEW_TEXTS_DIR, checkDatePlausibility, getShowById };
+module.exports = { loadCandidates, processRecoveredText, stampDead, startRun, checkpoint, RUN_WRITES, REVIEW_TEXTS_DIR };

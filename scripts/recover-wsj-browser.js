@@ -28,9 +28,7 @@
  */
 
 const fs = require('fs');
-const { readReviewForUpdate, persistReviewSnapshot } = require('./lib/persist-review-snapshot');
 const path = require('path');
-const { execSync } = require('child_process');
 
 const args = process.argv.slice(2);
 if (args.some(a => a === '--help' || a === '-h' || a.startsWith('--help='))) {
@@ -47,15 +45,14 @@ const dryRun = args.includes('--dry-run') || process.env.DRY_RUN === 'true';
 const showsFilter = args.find(a => a.startsWith('--shows='));
 const showsAllowlist = showsFilter ? new Set(showsFilter.split('=')[1].split(',')) : null;
 
-const { classifyContentTier, isGarbageContent, validateShowMentioned, countWords } = require('./lib/content-quality');
-const { cleanText, stripTrailingJunk } = require('./lib/text-cleaning');
 const { loadCookiesForDomain } = require('./lib/cookie-loader');
-const { checkDatePlausibility } = require('./lib/browser-recovery-helpers');
+// The gate, the locked writes and the scoped commit/push are shared with every
+// other recovery script (BRO-7171); this file keeps only its WSJ specifics.
+const { processRecoveredText, stampDead, startRun, checkpoint: sharedCheckpoint, REVIEW_TEXTS_DIR } = require('./lib/browser-recovery-helpers');
 const { listShowDirs } = require('./lib/list-show-dirs');
-const { markRescoreNeeded } = require('./lib/rescore-flagging');
 
 const CONFIG = {
-  reviewTextsDir: path.join(__dirname, '..', 'data', 'review-texts'),
+  reviewTextsDir: REVIEW_TEXTS_DIR,
   reportPath: path.join(__dirname, '..', 'data', 'audit', 'wsj-browser-recovery-report.json'),
   minTextLength: 300,
   delayMinMs: 6000,
@@ -131,91 +128,14 @@ function loadCandidates() {
   return candidates.slice(0, CONFIG.maxUrls);
 }
 
-function processRecoveredText(candidate, rawText) {
-  let cleanedText = cleanText(rawText);
-  cleanedText = stripTrailingJunk(cleanedText, 'wsj');
-  if (cleanedText.length < CONFIG.minTextLength) {
-    return { ok: false, reason: `too short after cleaning (${cleanedText.length})` };
-  }
-
-  const garbageCheck = isGarbageContent(cleanedText);
-  if (garbageCheck.isGarbage) {
-    return { ok: false, reason: `garbage content: ${garbageCheck.reason}` };
-  }
-
-  const showTitle = candidate.showId.replace(/-\d{4}$/, '').replace(/-(west-end|off-broadway|regional)$/, '').replace(/-/g, ' ');
-  const mentionResult = validateShowMentioned(cleanedText, showTitle, candidate.showId);
-  if (!mentionResult.valid) {
-    return { ok: false, reason: `show not mentioned: "${showTitle}"` };
-  }
-
-  const data = readReviewForUpdate(candidate.filePath);
-  if (data.fullText && data.fullText.length >= cleanedText.length) {
-    return { ok: false, reason: `not longer than existing (${data.fullText.length} >= ${cleanedText.length})` };
-  }
-
-  // Date-plausibility guard (task #915) — see browser-recovery-helpers.js
-  // checkDatePlausibility for rationale. This file predates that shared
-  // helper (WSJ was the original implementation it was generalized from) so
-  // it calls the shared check directly rather than duplicating the logic.
-  const dateRejection = checkDatePlausibility(candidate, data);
-  if (dateRejection) {
-    return { ok: false, reason: dateRejection };
-  }
-
-  data.fullText = cleanedText;
-  data.isFullReview = cleanedText.length > 1500;
-  data.textWordCount = countWords(cleanedText);
-  data.textFetchedAt = new Date().toISOString();
-  data.fetchMethod = 'wsj-subscriber-browser-session';
-  data.sourceMethod = 'wsj-subscriber-recovery-otp-login';
-
-  const tierResult = classifyContentTier(data);
-  data.contentTier = tierResult.contentTier || tierResult.tier;
-  data.contentTierReason = tierResult.tierReason || tierResult.reason || 'Recovered via authenticated WSJ browser session (task #779)';
-
-  if (data.llmScore?.score) {
-    markRescoreNeeded(data, 'fullText recovered via WSJ subscriber browser session (task #779)', undefined, { requeue: true });
-  }
-
-  persistReviewSnapshot({ filePath: candidate.filePath, data: data, trailingNewline: true });
-  return { ok: true, newLen: cleanedText.length };
-}
-
-const PUSH_WITH_RETRY = path.join(__dirname, 'lib', 'push-with-retry.sh');
+const WSJ_LABELS = {
+  fetchMethod: 'wsj-subscriber-browser-session',
+  sourceMethod: 'wsj-subscriber-recovery-otp-login',
+  contentTierReasonFallback: 'Recovered via authenticated WSJ browser session (task #779)',
+};
 
 function checkpoint(stats) {
-  if (dryRun) return;
-  const reviewTextsRepo = CONFIG.reviewTextsDir;
-  try {
-    execSync('git add -A', { stdio: 'pipe', cwd: reviewTextsRepo });
-    try {
-      execSync('git diff --staged --quiet', { stdio: 'pipe', cwd: reviewTextsRepo });
-      return; // nothing staged
-    } catch {} // non-zero = there ARE staged changes
-    const msg = `feat: WSJ browser recovery - ${stats.recovered} reviews recovered (task #779)`;
-    execSync(`git commit -m "${msg}"`, { stdio: 'pipe', cwd: reviewTextsRepo });
-    for (let i = 0; i < 5; i++) {
-      try {
-        // unbounded-fetch-ok: cwd is data/review-texts — the SEPARATE broadway-review-texts
-        // clone, not this repo's shallow checkout, so the #420 2.1GB whole-repo fetch cannot
-        // happen here. Same separate-repo carve-out reconcile-coverage.js encodes in
-        // stepCdIntoSeparateRepo(). This script is also local-only (no workflow invokes it).
-        execSync('git pull --rebase origin main', { stdio: 'pipe', cwd: reviewTextsRepo, timeout: 30000 });
-        execSync('git push origin main', { stdio: 'pipe', cwd: reviewTextsRepo, timeout: 30000 });
-        console.log(`  [Checkpoint] Pushed (${stats.recovered} recovered so far)`);
-        return;
-      } catch {
-        try { execSync('git rebase --abort', { stdio: 'pipe', cwd: reviewTextsRepo }); } catch {}
-        const delay = 3000 + Math.random() * 5000;
-        const start = Date.now();
-        while (Date.now() - start < delay) {}
-      }
-    }
-    console.log('  [Checkpoint] WARNING: could not push after 5 attempts');
-  } catch (e) {
-    console.log(`  [Checkpoint] Error: ${e.message}`);
-  }
+  return sharedCheckpoint({ ...stats, dryRun }, 'WSJ browser recovery');
 }
 
 async function main() {
@@ -280,6 +200,9 @@ async function main() {
     return;
   }
 
+  // Push/restore anything an earlier run committed but could not land
+  // (BRO-7171). Throws on a still-failing push: no new work on a backlog.
+  if (!dryRun) startRun();
   const candidates = loadCandidates();
   console.log(`\n${candidates.length} candidates to process.\n`);
   if (candidates.length === 0) {
@@ -315,15 +238,15 @@ async function main() {
       stats.dead++;
       deadEntries.push({ reviewId: c.reviewId, url: c.url, reason });
       if (!dryRun) {
-        const data = readReviewForUpdate(c.filePath);
         // incompleteReason is a controlled-vocabulary field (see scripts/lib/incomplete-reason.js)
         // that collect-review-texts.js/gather-reviews.js gate SERP re-discovery eligibility on
         // ('wrong_content' -> needsSerpDiscovery). A free-text string here silently disables that
         // downstream auto-recovery until the next rebuild-all-reviews.js recomputes it — use the
         // real enum value instead, with our diagnostic in incompleteDetail.
-        data.incompleteReason = reason === 'DataDome challenge detected' ? 'bot_blocked' : 'wrong_content';
-        data.incompleteDetail = `wsj-browser-recovery: ${reason} (${new Date().toISOString()})`;
-        persistReviewSnapshot({ filePath: c.filePath, data: data, trailingNewline: true });
+        stampDead(c, {
+          incompleteReason: reason === 'DataDome challenge detected' ? 'bot_blocked' : 'wrong_content',
+          incompleteDetail: `wsj-browser-recovery: ${reason} (${new Date().toISOString()})`,
+        });
       }
       continue;
     }
@@ -333,7 +256,7 @@ async function main() {
       continue;
     }
 
-    const outcome = processRecoveredText(c, result.text);
+    const outcome = processRecoveredText(c, result.text, WSJ_LABELS);
     if (outcome.ok) {
       stats.recovered++;
       console.log(`  ✓ RECOVERED (${outcome.newLen} chars)`);
@@ -348,7 +271,8 @@ async function main() {
     }
   }
 
-  if (stats.recovered > 0 && !dryRun) checkpoint(stats);
+  // Tracker-driven: also lands dead-candidate stamps when nothing was recovered.
+  if (!dryRun) checkpoint(stats);
 
   fs.writeFileSync(CONFIG.reportPath, JSON.stringify({ ...stats, deadEntries, timestamp: new Date().toISOString(), dryRun }, null, 2) + '\n');
 
