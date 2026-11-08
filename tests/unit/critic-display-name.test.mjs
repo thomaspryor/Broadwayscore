@@ -196,3 +196,17 @@ test('titleCaseName: alias-table spellings become display forms', () => {
   assert.equal(titleCaseName('nicholas de jongh'), 'Nicholas de Jongh');
   assert.equal(titleCaseName('rob weinert-kendt'), 'Rob Weinert-Kendt');
 });
+
+test('role-word bylines are not critics; a real name with one role word is (2026-11-08 sweep)', () => {
+  for (const [name, outlet] of [
+    ['Reviewer Upload', 'The Reviews Hub'], ['Contributing Writer', 'Kc Studio'], ['Guest User', 'The Rendition'],
+    ['The Newsroom', 'Warwickshire World'], ['The Editorial Unit', 'X'], ['Guest Blogger', 'X'],
+    ['Arts and Culture Blogger', 'X'], ['Book Review', 'X'], ['MAGNET Staff', 'Magnet Magazine'],
+  ]) {
+    assert.equal(displayCriticName(name, outlet), null, name);
+    assert.equal(isPlaceholderCritic(name, outlet), true, name);
+  }
+  for (const [name, outlet] of [['David Guest', 'The Reviews Hub'], ['Jane Newsroom', 'X'], ['Magnet Staff', 'Variety']]) {
+    assert.equal(displayCriticName(name, outlet), name, name);
+  }
+});

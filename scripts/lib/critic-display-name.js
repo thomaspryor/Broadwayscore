@@ -514,10 +514,21 @@ function edgeVariants(key) {
   return out;
 }
 
-/** True when every token is a generic edge word ("editorial team", "the staff"). */
+// Role and site words that are never part of a person's name when EVERY word
+// is generic ("Reviewer Upload", "Guest User", "Contributing Writer", "The
+// Newsroom", "Arts and Culture Blogger"; 2026-11-08 corpus sweep). Only used by
+// isAllGeneric, so "David Guest" (a real name) still shows. Not edge words:
+// peeling "and" or "book" off an outlet comparison would be wrong.
+const ROLE_WORDS = new Set([
+  'upload', 'uploads', 'contributing', 'guest', 'guests', 'user', 'users', 'newsroom',
+  'blogger', 'bloggers', 'unit', 'and', 'of', 'book', 'books', 'admin', 'contributor',
+  'correspondent', 'moderator', 'member', 'magazine', 'blog',
+]);
+
+/** True when every token is a generic word ("editorial team", "the staff", "guest user"). */
 function isAllGeneric(key) {
   const tokens = String(key || '').split(' ').filter(Boolean);
-  return tokens.length > 0 && tokens.every((t) => EDGE_GENERIC.has(t));
+  return tokens.length > 0 && tokens.every((t) => EDGE_GENERIC.has(t) || ROLE_WORDS.has(t));
 }
 
 /**
@@ -532,6 +543,9 @@ function matchesOutletName(key, ctx) {
   if (typeof ctx.outlet === 'string') {
     const n = normalizeForCompare(ctx.outlet);
     if (n) { own.add(n); own.add(stripLeadingThe(n)); }
+    // "MAGNET Staff" at "Magnet Magazine": the outlet minus its kind word.
+    const bare = n.replace(/\s+(?:magazine|newspaper)$/, '');
+    if (bare && bare !== n && bare.length >= 3) own.add(bare);
   }
   if (ctx.entry && !isSelfBrandedOutlet(ctx.id, ctx.entry)) {
     for (const n of ownNamesOf(ctx.id, ctx.entry)) { own.add(n); own.add(stripLeadingThe(n)); }
