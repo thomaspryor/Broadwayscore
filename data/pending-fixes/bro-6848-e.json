@@ -1,0 +1,54 @@
+{
+  "issueNumber": "bro-6848-e",
+  "planId": "3b1cc9b0-e8e1-4cad-b565-22458b9ee6be",
+  "status": "pending",
+  "createdAt": "2026-11-08T11:36:38.092Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6848 residual: four 2016-17 Susannah Clapp pieces on theguardian.com that are Observer reviews, relabel outletId guardian to observer",
+    "steps": [
+      "carousel-west-end-2017/guardian--susannah-clapp.json: outletId",
+      "consent-west-end-2017/guardian--susannah-clapp.json: outletId",
+      "doctor-faustus-west-end-2016/guardian--susannah-clapp.json: outletId",
+      "the-painkiller-west-end-2016/guardian--susannah-clapp.json: outletId"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "carousel-west-end-2017/guardian--susannah-clapp.json",
+        "field": "outletId",
+        "oldValue": "guardian",
+        "newValue": "observer",
+        "description": "carousel-west-end-2017/guardian--susannah-clapp.json: outletId"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "consent-west-end-2017/guardian--susannah-clapp.json",
+        "field": "outletId",
+        "oldValue": "guardian",
+        "newValue": "observer",
+        "description": "consent-west-end-2017/guardian--susannah-clapp.json: outletId"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "doctor-faustus-west-end-2016/guardian--susannah-clapp.json",
+        "field": "outletId",
+        "oldValue": "guardian",
+        "newValue": "observer",
+        "description": "doctor-faustus-west-end-2016/guardian--susannah-clapp.json: outletId"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-painkiller-west-end-2016/guardian--susannah-clapp.json",
+        "field": "outletId",
+        "oldValue": "guardian",
+        "newValue": "observer",
+        "description": "the-painkiller-west-end-2016/guardian--susannah-clapp.json: outletId"
+      }
+    ]
+  }
+}
