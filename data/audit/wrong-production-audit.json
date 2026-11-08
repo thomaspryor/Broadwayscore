@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-08T17:22:16.284Z",
+  "timestamp": "2026-11-08T17:42:26.733Z",
   "stats": {
-    "totalReviews": 80568,
-    "alreadyFlagged": 22055,
+    "totalReviews": 80578,
+    "alreadyFlagged": 22056,
     "dateGuardCatches": 217,
     "directorMismatch": 3553,
-    "tvFilmSignals": 2292,
-    "londonSignals": 3632,
+    "tvFilmSignals": 2293,
+    "londonSignals": 3633,
     "offBroadwaySignals": 748,
     "yearMismatch": 363,
-    "noPublishDate": 8417
+    "noPublishDate": 8416
   },
   "findings": [
     {
@@ -48518,6 +48518,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "other-desert-cities-2026",
+      "file": "the-komisar-scoop--unknown.json",
+      "publishDate": "2026-11-05",
+      "url": "https://www.thekomisarscoop.com/2026/11/other-desert-cities-a-political-soap-opera-that-trips-over-a-red-herring/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
@@ -131335,6 +131348,19 @@
       "file": "lovelondonloveculture--unknown.json",
       "publishDate": "2026-11-05",
       "url": "https://lovelondonloveculture.com/2026/11/05/review-round-up-the-lives-of-others-adelphi-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"adelphi theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-lives-of-others-west-end-2026",
+      "file": "partially-obstructed-view--view-my-complete.json",
+      "publishDate": "2026-11-05",
+      "url": "http://partially-obstructed-view.blogspot.com/2026/11/theatre-review-lives-of-others.html",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
