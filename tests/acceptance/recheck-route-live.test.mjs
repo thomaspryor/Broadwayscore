@@ -3,8 +3,8 @@
  * by the nightly acceptance recheck after RECHECK-AFTER. Routing armed on
  * 2026-11-15 (recheck-route.js DEFAULT_ROUTE_FROM). Done means: the recheck
  * ran since then, every routing row since then is live (not shadow, not
- * refused), and if any night had a real failure that was not handed off, a
- * live batch card was filed for it. Reads the ledger from origin/main
+ * refused unless a later night recovered), at most one batch card a night,
+ * and every real failure not handed off sits in a routed batch. Reads the ledger from origin/main
  * (fetched), so it judges what CI wrote, not this checkout.
  */
 import { test } from 'node:test';
@@ -34,14 +34,28 @@ test('BRO-7138: failed done claims are routed back to work by a live batch card'
   const routes = entries.filter((e) => e.event === 'recheck-route');
   const notLive = routes.filter((e) => e.mode !== 'live');
   assert.deepEqual(notLive.map((e) => `${e.ts} ${e.mode}`), [], 'routing rows since arming that were not live (shadow or off)');
-  const refused = routes.filter((e) => !e.filed && !e.maybeFiled);
-  assert.deepEqual(refused.map((e) => `${e.ts} ${e.note}`), [], 'live routing rows whose card was not filed');
+  // One batch card per night: at most one filed (or maybe-filed) row per run.
+  const landed = routes.filter((e) => e.filed || e.maybeFiled);
+  const perRun = {};
+  for (const e of landed) perRun[e.runId] = (perRun[e.runId] || 0) + 1;
+  assert.deepEqual(Object.entries(perRun).filter(([, n]) => n > 1), [], 'more than one batch card filed in one night');
+  for (const e of routes.filter((r) => r.filed)) assert.match(String(e.identifier || ''), /^BRO-\d+$/, `filed route row ${e.ts} has no card id`);
 
+  // A card counts as routed once any live row filed (or maybe filed) it.
+  // A refused night is fine if a later night routed the same cards.
+  const routedAt = new Map();
+  for (const e of landed) for (const id of e.cardIds || []) if (!routedAt.has(id)) routedAt.set(id, e.ts);
+  const unrecovered = routes.filter((e) => !e.filed && !e.maybeFiled)
+    .filter((e) => (e.cardIds || []).some((id) => !(routedAt.has(id) && routedAt.get(id) > e.ts)));
+  assert.deepEqual(unrecovered.map((e) => `${e.ts} ${e.note}`), [], 'refused routing rows whose cards no later night routed');
+
+  // Every real failure (not env, not handed off) since arming must sit in a
+  // routed batch, unless its night's batch overflowed the per-batch cap.
   const handedOff = new Set(entries.filter((e) => e.event === 'recheck-handoff' && e.handedOff).map((e) => `${e.runId}|${e.cardId}`));
-  const realFails = entries.filter((e) => e.event === 'recheck' && e.cardId && !e.skip
-    && recheckVerdict(e).status === 'fail' && !handedOff.has(`${e.runId}|${e.cardId}`));
-  if (realFails.length) {
-    const filed = routes.filter((e) => e.filed && /^BRO-\d+$/.test(String(e.identifier || '')));
-    assert.ok(filed.length >= 1, `${realFails.length} real recheck failure(s) since ${ARMED} (e.g. ${realFails.slice(0, 3).map((e) => e.cardId).join(', ')}) but no live batch card was filed`);
-  }
+  const overflowRuns = new Set(routes.filter((e) => Number(e.overflow) > 0).map((e) => e.runId));
+  const unrouted = entries.filter((e) => e.event === 'recheck' && e.cardId && !e.skip
+    && recheckVerdict(e).status === 'fail' && !handedOff.has(`${e.runId}|${e.cardId}`)
+    && !routedAt.has(e.cardId) && !overflowRuns.has(e.runId));
+  assert.deepEqual([...new Set(unrouted.map((e) => e.cardId))], [],
+    'real recheck failures since arming that no batch card routed (routing off, threw, or skipped them)');
 });
