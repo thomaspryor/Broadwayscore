@@ -162,7 +162,8 @@ async function main(argv = process.argv.slice(2), { graphql = null, now = new Da
 }
 
 if (require.main === module) {
-  main().then((code) => process.exit(code), (e) => { console.error(e.stack || e.message); process.exit(1); });
+  const { exitFlushed } = require('./lib/exit-flushed.js');
+  main().then((code) => exitFlushed(code), (e) => { console.error(e.stack || e.message); exitFlushed(1); });
 }
 
 module.exports = { parseArgs, fetchIssues, searchCommits, main };
