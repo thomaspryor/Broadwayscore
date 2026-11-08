@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7146-url",
   "planId": "81459861-7692-4a9c-9f6e-c6b86f7cbdb4",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-08T21:37:43.935Z",
   "submitter": {
     "name": null,
@@ -34,5 +34,19 @@
         "description": "shows.json: eric-and-ern-off-west-end-2027.officialUrl"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-08T21:48:47.690Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: officialUrl updated for wives-maids-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: officialUrl updated for eric-and-ern-off-west-end-2027"
+    }
+  ],
+  "executedIn": "ci"
 }
