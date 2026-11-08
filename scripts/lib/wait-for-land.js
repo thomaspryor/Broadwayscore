@@ -267,6 +267,15 @@ function branchSiteFiles(refSha) {
 
 const CHECK_PROD = path.join(__dirname, '..', 'check-prod-deploy.js');
 
+// The line to show for one prod check: its last stdout line, plus, when it
+// could not tell (exit 2+), its stderr reason, which said why (BRO-7110).
+function prodDetail(res, checkExit) {
+  const out = lastLine(res.stdout);
+  const err = lastLine(res.stderr);
+  if (!out) return err;
+  return checkExit !== 0 && checkExit !== 1 && err ? `${out} | ${err}` : out;
+}
+
 async function waitForProd({ siteFiles, prodMin }) {
   const postSha = remoteSha('main');
   const plan = prodPlan({ mainSha: postSha && fetchMain() ? postSha : null, siteFiles });
@@ -288,7 +297,7 @@ async function waitForProd({ siteFiles, prodMin }) {
     const checkExit = res.status === null ? -1 : res.status;
     errors = checkExit === 0 || checkExit === 1 ? 0 : errors + 1;
     const v = prodVerdict({ checkExit, errors, nowMs: Date.now(), deadlineMs });
-    const detail = lastLine(res.stdout) || lastLine(res.stderr);
+    const detail = prodDetail(res, checkExit);
     if (v.verdict === 'live') {
       console.log(`${stamp()} LIVE: ${detail}`);
       return 0;
@@ -430,4 +439,4 @@ if (require.main === module) {
   );
 }
 
-module.exports = { refusedMessage, reportLandedSha, landVerdict, readLatestRun, waitForProd, prodPlan, prodVerdict, parseArgs, sitePathsIn, firstLine, lastLine, RED_CONCLUSIONS };
+module.exports = { refusedMessage, prodDetail, reportLandedSha, landVerdict, readLatestRun, waitForProd, prodPlan, prodVerdict, parseArgs, sitePathsIn, firstLine, lastLine, RED_CONCLUSIONS };

@@ -400,3 +400,12 @@ test('BRO-7110: a refusal says to fix on top without rebasing and re-push the sa
   assert.match(next, /push the same ref land\/x$/);
   assert.equal(refusedMessage('land/y', 'why', null).split('\n')[0], 'REFUSED: land/y why');
 });
+
+test('BRO-7110: an unsure prod check keeps its stderr reason; a sure one shows stdout only', () => {
+  const { prodDetail } = waitForLand;
+  const unsure = { stdout: 'Production READY\n❓ could not check whether abc is live\n', stderr: '⚠️  Could not determine (reason=unshallow-failed)\n' };
+  assert.equal(prodDetail(unsure, 2), '❓ could not check whether abc is live | ⚠️  Could not determine (reason=unshallow-failed)');
+  assert.equal(prodDetail({ stdout: '✅ abc is LIVE\n', stderr: 'noise\n' }, 0), '✅ abc is LIVE');
+  assert.equal(prodDetail({ stdout: '⏳ not live\n', stderr: 'noise\n' }, 1), '⏳ not live');
+  assert.equal(prodDetail({ stdout: '', stderr: 'only stderr\n' }, 2), 'only stderr');
+});

@@ -47,7 +47,7 @@
  */
 
 const { execSync, execFileSync } = require('child_process');
-const { checkLanded } = require('./lib/landing-verify.js');
+const { checkLanded, isAncestor } = require('./lib/landing-verify.js');
 const { pickBlobShaMeta } = require('./lib/core-data-blob-meta.js');
 const { prodProofFromLog, listingLooksStale, DEPLOY_JOB } = require('./lib/deploy-log-proof.js');
 const { firstLine } = require('./lib/log-lines.js');
@@ -156,8 +156,50 @@ async function latestProdDeploy({ json, wait } = {}) {
 // a shallow checkout or a transient git error must not silently read as
 // "not live yet" — checkLanded restores full history first and reports
 // UNKNOWN (logged, never silently swallowed) instead of a false NOT_LANDED.
+// BRO-7110: production usually sits on a main commit newer than this clone's
+// last fetch. In a shallow clone that missing object made checkLanded try an
+// unshallow (which cloud clones cannot do) and report UNKNOWN, so
+// wait-for-land.js --prod read a live landing as "could not tell" three times
+// and gave up (BRO-7111). Fetch main, depth-bounded, when the object is absent.
+function ensureLocalCommit(sha, { exec = execFileSync, cwd = process.cwd() } = {}) {
+  const has = () => {
+    try {
+      exec('git', ['cat-file', '-e', `${sha}^{commit}`], { cwd, stdio: 'ignore' });
+      return true;
+    } catch {
+      return false;
+    }
+  };
+  if (has()) return true;
+  try {
+    const { repoDepthArgs } = require('./lib/shallow-fetch-args');
+    // unbounded-fetch-ok: repoDepthArgs IS the bound; the lint can't evaluate a spread.
+    exec('git', ['fetch', '-q', ...repoDepthArgs({ repoRoot: cwd }), 'origin', 'main'], { cwd, stdio: ['ignore', 'ignore', 'pipe'], timeout: 120_000 });
+  } catch (e) {
+    console.error(`⚠️  could not fetch origin main to find ${sha.slice(0, 10)}: ${firstLine(String(e.stderr || e.message).trimStart())}`);
+    return false;
+  }
+  return has();
+}
+
+// Shallow-safe "not yet": when production's commit is a strict ancestor of
+// the target, the target cannot be in it. A shallow graph can hide ancestry
+// but never invent it, so this needs no unshallow (BRO-7110: the waiter read
+// "deploy still running" as "could not tell" and gave up after 3 polls).
+function deployIsBehind(commit, deployedSha, cwd = process.cwd()) {
+  if (isAncestor(deployedSha, commit, cwd) !== true) return false;
+  try {
+    const rev = (r) => execFileSync('git', ['rev-parse', '--verify', `${r}^{commit}`], { cwd, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim();
+    return rev(commit) !== rev(deployedSha);
+  } catch {
+    return false;
+  }
+}
+
 function isLive(commit, deployedSha) {
   if (!deployedSha) return false;
+  ensureLocalCommit(deployedSha);
+  if (deployIsBehind(commit, deployedSha)) return false;
   const result = checkLanded({ sha: commit, ref: deployedSha, cwd: process.cwd(), log: (m) => console.error(m) });
   if (result.verdict === 'UNKNOWN') {
     console.error(`⚠️  Could not determine whether ${commit} is live (reason=${result.reason}); verify via VERCEL_TOKEN dashboard or 'git ls-remote origin main'.`);
@@ -228,6 +270,6 @@ async function main() {
 // Exported for scripts/lib/e2e-await-deploy.js (BRO-4668), which needs the
 // deployed SHA without the shallow-unsafe local ancestry check above, and
 // must not be killed by the CLI's process.exit on a transient Vercel error.
-module.exports = { fetchLatestProdDeploy };
+module.exports = { fetchLatestProdDeploy, ensureLocalCommit, deployIsBehind };
 
 if (require.main === module) main();
