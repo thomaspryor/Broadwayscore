@@ -53,3 +53,10 @@ test('only capital letters count as a grade', () => {
   assert.equal(formatOriginalRating('a'), null);
   assert.equal(formatOriginalRating('A must-see'), null);
 });
+
+test('the mobile feed carries the same display string as the web (field `or`)', async () => {
+  const { readFileSync } = await import('node:fs');
+  const src = readFileSync(new URL('../../scripts/generate-mobile-show-details.js', import.meta.url), 'utf8');
+  assert.match(src, /require\('\.\/lib\/format-original-rating'\)/);
+  assert.match(src, /entry\.or = /);
+});
