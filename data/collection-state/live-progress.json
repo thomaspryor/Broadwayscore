@@ -1,38 +1,53 @@
 {
-  "updatedAt": "2026-11-08T20:30:22.347Z",
-  "processed": 9,
-  "failed": 10,
-  "successRate": "47.4%",
+  "updatedAt": "2026-11-08T20:45:19.797Z",
+  "processed": 47,
+  "failed": 47,
+  "successRate": "50.0%",
   "tierBreakdown": {
-    "playwright": 8,
+    "playwright": 27,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 6,
     "directCookies": 0,
-    "scrapingdog": 1,
-    "scrapingbee": 0,
+    "scrapingdog": 7,
+    "scrapingbee": 2,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 0
+    "archive": 6
   },
   "browserbaseSessions": 3,
   "recentActivity": [
     {
-      "t": "2026-11-08T20:26:04.448Z",
+      "t": "2026-11-08T20:19:26.121Z",
       "event": "bb-session",
-      "session": "9b8b9b60",
-      "url": "https://bachtrack.com/review-lorfeo-william-kentridge-greek-national-opera-athen"
+      "session": "2672faac",
+      "url": "https://www.nytimes.com/2026/11/06/theater/the-unbelievers-222-a-ghost-story-rev"
     },
     {
-      "t": "2026-11-08T20:26:39.839Z",
-      "event": "bb-session",
-      "session": "a24d79ac",
-      "url": "https://bachtrack.com/review-shostakovich-cherry-town-ahlbom-dutch-national-oper"
+      "t": "2026-11-08T20:19:26.435Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     },
     {
-      "t": "2026-11-08T20:27:44.140Z",
+      "t": "2026-11-08T20:19:56.083Z",
       "event": "bb-session",
-      "session": "4cfad895",
-      "url": "https://bachtrack.com/review-nozze-figaro-pountney-conta-bucharest-national-oper"
+      "session": "86d2aec6",
+      "url": "https://www.nytimes.com/2026/11/05/theater/rope-the-verge-review-off-broadway-si"
+    },
+    {
+      "t": "2026-11-08T20:19:56.463Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-08T20:20:11.901Z",
+      "event": "bb-session",
+      "session": "af21856e",
+      "url": "https://www.wsj.com/articles/the-unbelievers-and-2-22a-ghost-story-review-off-br"
+    },
+    {
+      "t": "2026-11-08T20:20:12.255Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
