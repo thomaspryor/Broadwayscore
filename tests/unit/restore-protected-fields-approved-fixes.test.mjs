@@ -41,3 +41,27 @@ test('no approvedFixes anywhere: no change', () => {
   assert.equal(local.approvedFixes, undefined);
   assert.equal(r.notes.some((n) => /approved/.test(n)), false);
 });
+
+test('a fix the source later cleared (URL change) is not re-applied, only its stamp', () => {
+  const stamp = { fixId: 'f1', field: 'isNonReview', at: '2026-11-01T00:00:00Z', newValue: true, boundTo: { url: 'old', contentHash: 'x' } };
+  const remote = { url: 'new', isNonReview: false, _urlChangedClear: { isNonReview: true }, approvedFixes: [stamp] };
+  const local = { url: 'new', _urlChangedClear: { isNonReview: true } };
+  reconcileProtectedFields(local, remote, null);
+  assert.notEqual(local.isNonReview, true);
+  assert.equal(local.approvedFixes.length, 1);
+});
+
+test('a field with side effects (wrongShow) gets its stamp back but not its value', () => {
+  const remote = { wrongShow: false, contentTier: 'full', approvedFixes: [{ fixId: 'f1', field: 'wrongShow', at: '2026-11-01T00:00:00Z', newValue: false }] };
+  const local = { wrongShow: true, contentTier: 'invalid' };
+  reconcileProtectedFields(local, remote, null);
+  assert.equal(local.wrongShow, true);
+  assert.equal(local.approvedFixes.length, 1);
+});
+
+test('a true flag no longer bound to the body is not re-applied', () => {
+  const remote = { url: 'u', fullText: 'new body', isNonReview: true, approvedFixes: [{ fixId: 'f1', field: 'isNonReview', at: '2026-11-01T00:00:00Z', newValue: true, boundTo: { url: 'u', contentHash: 'deadbeefdeadbeef' } }] };
+  const local = { url: 'u', fullText: 'new body' };
+  reconcileProtectedFields(local, remote, null);
+  assert.notEqual(local.isNonReview, true);
+});

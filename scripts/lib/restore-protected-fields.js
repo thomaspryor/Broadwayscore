@@ -30,6 +30,10 @@ const { execSync } = require('child_process');
 const { isIntentionalClear, CLEARABLE_VERDICT_FLAGS } = require(path.join(__dirname, 'review-write-guard.js'));
 const { carryNewerScoring } = require(path.join(__dirname, 'scoring-recency.js'));
 const { fresherTextWins } = require(path.join(__dirname, 'review-json-three-way-merge.js'));
+const { approvedFixStillBound } = require(path.join(__dirname, 'approved-fix-flag.js'));
+// Approved-fix fields whose review-field-edit writes nothing else, so re-applying the value alone
+// restores the whole fix (BRO-7131). Other stamped fields only get their stamp back.
+const REAPPLY_APPROVED_FIELDS = new Set(['isNonReview', 'isNonReviewReason', 'nonReviewManualClear']);
 
 // Fields that must be preserved across rebases. Two categories:
 //   (a) MANUAL human corrections CI should never touch — see DoaS Apr 9-10
@@ -263,6 +267,48 @@ function reconcileProtectedFields(local, remote, ours, opts = {}) {
   //      at. Since local now equals remote for that file, the remote-vs-local
   //      check above is a no-op even though our own field just got dropped;
   //      ours (ORIG_HEAD) is the only place it still exists.
+  // Owner-approved fixes (BRO-7131). execute-approved-fix stamps every edit in approvedFixes. A CI
+  // writer working from a checkout older than that fix (opening-night poller, 2026-11-08, Tosca
+  // cherylmarkosky teaser) rebased with -X theirs and replaced the whole hunk, erasing
+  // isNonReview + the stamp 4 minutes after the fix applied. A stamp missing from local means
+  // local never saw that fix, so the stamp always comes back. Its VALUE comes back only when
+  // (a) the field is self-contained (review-field-edit has no side effects for it, so
+  // re-applying cannot leave half a fix), (b) the source still holds that value (a later
+  // clear such as a URL change wins), (c) local did not deliberately clear it, (d) a true flag
+  // is still bound to this url + body (BRO-6676), and (e) no newer stamp on the field exists.
+  // Runs before the MANUAL_FIELDS loop so the companion and ours passes below see the result.
+  {
+    const key = (e) => `${e && e.fixId}|${e && e.field}|${e && e.at}`;
+    const same = (a, b) => JSON.stringify(a ?? null) === JSON.stringify(b ?? null);
+    const localFixes = Array.isArray(local.approvedFixes) ? local.approvedFixes : [];
+    const seen = new Set(localFixes.map(key));
+    const missing = [];
+    for (const src of [remote, ours]) {
+      for (const e of (src && Array.isArray(src.approvedFixes) ? src.approvedFixes : [])) {
+        if (!e || typeof e.field !== 'string' || seen.has(key(e))) continue;
+        seen.add(key(e));
+        missing.push({ entry: { ...e }, source: src });
+      }
+    }
+    missing.sort((a, b) => String(a.entry.at || '').localeCompare(String(b.entry.at || '')));
+    for (const { entry: e, source } of missing) localFixes.push(e);
+    for (const { entry: e, source } of missing) {
+      const newer = localFixes.some((o) => o !== e && o.field === e.field && String(o.at || '') > String(e.at || ''));
+      if (!REAPPLY_APPROVED_FIELDS.has(e.field) || newer || same(local[e.field], e.newValue)) continue;
+      if (!same(source[e.field], e.newValue)) continue;
+      if (isIntentionalClear(e.field, local, source)) continue;
+      if (e.newValue === true && !approvedFixStillBound(e, local)) continue;
+      local[e.field] = e.newValue === undefined ? null : e.newValue;
+      notes.push(`Re-applied approved fix ${e.fixId} (${e.field})`);
+    }
+    if (missing.length) {
+      localFixes.sort((a, b) => String(a.at || '').localeCompare(String(b.at || '')));
+      local.approvedFixes = localFixes;
+      modified = true;
+      notes.push(`Restored ${missing.length} approvedFixes stamp(s)`);
+    }
+  }
+
   for (const field of MANUAL_FIELDS) {
     if (local[field] !== undefined && local[field] !== null) continue;
 
@@ -316,42 +362,6 @@ function reconcileProtectedFields(local, remote, ours, opts = {}) {
       if (field.endsWith('Reason') && source[at] != null && local[at] == null) local[at] = source[at];
       modified = true;
       notes.push(`Restored ${field} (companion of ${flag})${source === ours ? ' (from pre-rebase HEAD)' : ''}`);
-    }
-  }
-
-  // Owner-approved fixes (BRO-7131). execute-approved-fix stamps every edit in approvedFixes. A CI
-  // writer working from a checkout older than that fix (opening-night poller, 2026-11-08, Tosca
-  // cherylmarkosky teaser) rebased with -X theirs and replaced the whole hunk, erasing
-  // isNonReview + the stamp 4 minutes after the fix applied. A stamp missing from local means
-  // local never saw that fix, so carry the stamp back and re-apply its value, unless local
-  // holds a newer approved fix for the same field.
-  {
-    const key = (e) => `${e && e.fixId}|${e && e.field}|${e && e.at}`;
-    const localFixes = Array.isArray(local.approvedFixes) ? local.approvedFixes : [];
-    const seen = new Set(localFixes.map(key));
-    const missing = [];
-    for (const src of [remote, ours]) {
-      for (const e of (src && Array.isArray(src.approvedFixes) ? src.approvedFixes : [])) {
-        if (!e || typeof e.field !== 'string' || seen.has(key(e))) continue;
-        seen.add(key(e));
-        missing.push({ ...e });
-      }
-    }
-    missing.sort((a, b) => String(a.at || '').localeCompare(String(b.at || '')));
-    for (const e of missing) {
-      localFixes.push(e);
-      const newer = localFixes.some((o) => o !== e && o.field === e.field && String(o.at || '') > String(e.at || ''));
-      if (!newer && JSON.stringify(local[e.field]) !== JSON.stringify(e.newValue)) {
-        if (e.newValue === undefined || e.newValue === null) delete local[e.field];
-        else local[e.field] = e.newValue;
-        notes.push(`Re-applied approved fix ${e.fixId} (${e.field})`);
-      }
-      modified = true;
-    }
-    if (missing.length) {
-      localFixes.sort((a, b) => String(a.at || '').localeCompare(String(b.at || '')));
-      local.approvedFixes = localFixes;
-      notes.push(`Restored ${missing.length} approvedFixes stamp(s)`);
     }
   }
 

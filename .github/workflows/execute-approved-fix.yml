@@ -208,6 +208,20 @@ jobs:
             bash scripts/lib/push-with-retry.sh
           fi
 
+      # BRO-7131: an applied fix reached the site only on the next rebuild, up to 4h later (the
+      # rebuild-fast safety cron), so an owner-visible fix looked "not done" for hours. Rebuild now.
+      # rebuild-fast's depth-1 concurrency group coalesces bursts; a no-diff run is a cheap no-op.
+      - name: Fast rebuild so the fix reaches the site
+        if: always() && steps.exec.outputs.result == 'fixed' && steps.push_gate.outputs.ok == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ISSUE_NUMBER: ${{ inputs.issue_number }}
+        run: |
+          # shellcheck source=scripts/lib/dispatch-with-retry.sh
+          source scripts/lib/dispatch-with-retry.sh
+          dispatch_with_retry rebuild-fast.yml -f reason="Approved fix ${ISSUE_NUMBER}" \
+            || echo "::warning::rebuild-fast dispatch failed; the 4-hourly safety cron will pick the fix up"
+
       # BRO-6629: an add-show plan never gathered its shows (ten census-added Off-Broadway
       # shows kept only their census reviews). Runs after every push, so gather sees the
       # rows. Shows older than the hourly gap audit's 3-year window have no other retry,
