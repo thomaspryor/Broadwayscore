@@ -65,3 +65,71 @@ test('a true flag no longer bound to the body is not re-applied', () => {
   reconcileProtectedFields(local, remote, null);
   assert.notEqual(local.isNonReview, true);
 });
+
+// Review-panelist P1s (BRO-7131): real bound stamps, stale stub body, half fixes, stale false.
+const { approvedFixBinding } = require('../../scripts/lib/approved-fix-flag.js');
+const BODY = 'Read my full London Theatre review here. '.repeat(3);
+const boundFix = (rec, at = '2026-11-08T19:36:31.543Z') => [
+  { fixId: 'f9', field: 'isNonReviewReason', at: '2026-11-08T19:36:31.392Z', newValue: 'manual (not a review): teaser' },
+  { fixId: 'f9', field: 'isNonReview', at, newValue: true, boundTo: approvedFixBinding(rec) },
+];
+
+test('bound stamp re-applies when local is a stale stub (binding judged on the source body)', () => {
+  const remote = { url: 'u', fullText: BODY, isNonReview: true, isNonReviewReason: 'manual (not a review): teaser' };
+  remote.approvedFixes = boundFix(remote);
+  const local = { url: 'u', fullText: 'stub' };
+  reconcileProtectedFields(local, remote, null, { staleCheckoutGuard: true });
+  assert.equal(local.isNonReview, true);
+  assert.equal(local.isNonReviewReason, 'manual (not a review): teaser');
+});
+
+test('the reason never comes back without its flag (all or none per fix)', () => {
+  const remote = { url: 'u', fullText: BODY, isNonReview: true, isNonReviewReason: 'manual (not a review): teaser' };
+  remote.approvedFixes = boundFix({ url: 'u', fullText: 'a different body entirely' });
+  const local = { url: 'u', fullText: BODY };
+  reconcileProtectedFields(local, remote, null);
+  assert.notEqual(local.isNonReview, true);
+  assert.equal(local.isNonReviewReason ?? null, null);
+});
+
+test('a stale writer holding the classifier false still gets the fix back', () => {
+  const remote = { url: 'u', fullText: BODY, isNonReview: true, isNonReviewReason: 'manual (not a review): teaser' };
+  remote.approvedFixes = boundFix(remote);
+  const local = { url: 'u', fullText: BODY, isNonReview: false, isNonReviewReason: null };
+  reconcileProtectedFields(local, remote, null);
+  assert.equal(local.isNonReview, true);
+});
+
+test('a human clear on local (nonReviewManualClear) wins', () => {
+  const remote = { url: 'u', fullText: BODY, isNonReview: true, isNonReviewReason: 'manual (not a review): teaser' };
+  remote.approvedFixes = boundFix(remote);
+  const local = { url: 'u', fullText: BODY, isNonReview: false, nonReviewManualClear: true };
+  reconcileProtectedFields(local, remote, null);
+  assert.equal(local.isNonReview, false);
+});
+
+test('a local that moved to another url does not inherit the flag', () => {
+  const remote = { url: 'u', fullText: BODY, isNonReview: true, isNonReviewReason: 'manual (not a review): teaser' };
+  remote.approvedFixes = boundFix(remote);
+  const local = { url: 'u2', fullText: BODY };
+  reconcileProtectedFields(local, remote, null);
+  assert.notEqual(local.isNonReview, true);
+});
+
+test('ours-only source works and remote/ours are never mutated', () => {
+  const ours = { url: 'u', fullText: BODY, isNonReview: true, isNonReviewReason: 'manual (not a review): teaser' };
+  ours.approvedFixes = boundFix(ours);
+  const snapshot = JSON.stringify(ours);
+  const local = { url: 'u', fullText: BODY };
+  reconcileProtectedFields(local, { url: 'u', fullText: BODY }, ours);
+  assert.equal(local.isNonReview, true);
+  local.approvedFixes[1].boundTo.url = 'mutated';
+  assert.equal(JSON.stringify(ours), snapshot);
+});
+
+test('stamp order uses real time, not string order (seconds vs milliseconds)', () => {
+  const remote = { isNonReview: true, approvedFixes: [{ fixId: 'a', field: 'isNonReview', at: '2026-11-01T00:00:31Z', newValue: true }] };
+  const local = { approvedFixes: [{ fixId: 'b', field: 'isNonReview', at: '2026-11-01T00:00:31.500Z', newValue: null }] };
+  reconcileProtectedFields(local, remote, null);
+  assert.equal(local.isNonReview, undefined);
+});

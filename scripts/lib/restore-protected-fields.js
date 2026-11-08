@@ -254,6 +254,68 @@ function reconcileProtectedFields(local, remote, ours, opts = {}) {
   let modified = false;
   const notes = [];
 
+  // Owner-approved fixes (BRO-7131). execute-approved-fix stamps every edit in approvedFixes. A CI
+  // writer working from a checkout older than that fix (opening-night poller, 2026-11-08, Tosca
+  // cherylmarkosky teaser) rebased with -X theirs and replaced the whole hunk, erasing
+  // isNonReview + the stamp 4 minutes after the fix applied. A stamp missing from local means
+  // local never saw that fix, so the stamp always comes back. Its VALUES come back per fix, all
+  // or none (a reason without its flag is half a fix), and only when for every re-applied field:
+  // (a) the field is self-contained (review-field-edit has no side effects for it), (b) the
+  // source still holds that value (a later clear such as a URL change wins), (c) no newer stamp
+  // on the field exists, (d) a true flag is still bound to the SOURCE's url + body (BRO-6676;
+  // the stale-checkout guard below may restore that body, so local's stub is the wrong test)
+  // and local has not moved to another url, and (e) local holds no human clear
+  // (nonReviewManualClear). A bare isNonReview:false is NOT a clear here: every stale writer
+  // carries the classifier's false, and local missing the stamp proves it predates the fix.
+  // Runs before the MANUAL_FIELDS loop so the companion and ours passes below see the result.
+  {
+    const key = (e) => `${e && e.fixId}|${e && e.field}|${e && e.at}`;
+    const same = (a, b) => JSON.stringify(a ?? null) === JSON.stringify(b ?? null);
+    const time = (e) => { const t = Date.parse((e && e.at) || ''); return Number.isFinite(t) ? t : 0; };
+    const localFixes = Array.isArray(local.approvedFixes) ? local.approvedFixes : [];
+    const seen = new Set(localFixes.map(key));
+    const missing = [];
+    for (const src of [remote, ours]) {
+      for (const e of (src && Array.isArray(src.approvedFixes) ? src.approvedFixes : [])) {
+        if (!e || typeof e.field !== 'string' || seen.has(key(e))) continue;
+        seen.add(key(e));
+        missing.push({ entry: JSON.parse(JSON.stringify(e)), source: src });
+      }
+    }
+    for (const { entry } of missing) localFixes.push(entry);
+    const byFix = new Map();
+    for (const m of missing) {
+      if (!REAPPLY_APPROVED_FIELDS.has(m.entry.field)) continue;
+      if (!byFix.has(m.entry.fixId)) byFix.set(m.entry.fixId, []);
+      byFix.get(m.entry.fixId).push(m);
+    }
+    for (const [fixId, group] of byFix) {
+      const ok = group.every(({ entry: e, source }) => {
+        if (localFixes.some((o) => o !== e && o.field === e.field && time(o) > time(e))) return false;
+        if (same(local[e.field], e.newValue)) return true;
+        if (!same(source[e.field], e.newValue)) return false;
+        if (e.field === 'isNonReview' && e.newValue === true && local.nonReviewManualClear === true) return false;
+        if (e.newValue === true) {
+          if (local.url && source.url && local.url !== source.url) return false;
+          if (!approvedFixStillBound(e, source)) return false;
+        }
+        return true;
+      });
+      if (!ok) continue;
+      for (const { entry: e } of group) {
+        if (same(local[e.field], e.newValue)) continue;
+        local[e.field] = e.newValue === undefined ? null : e.newValue;
+        notes.push(`Re-applied approved fix ${fixId} (${e.field})`);
+      }
+    }
+    if (missing.length) {
+      localFixes.sort((a, b) => time(a) - time(b));
+      local.approvedFixes = localFixes;
+      modified = true;
+      notes.push(`Restored ${missing.length} approvedFixes stamp(s)`);
+    }
+  }
+
   // Restore top-level manual fields. Two independent sources, checked in
   // order, because either side can be the one that had the field and lost it:
   //   1. remote — the original case (e.g. a `-X theirs` rebase dropped a
@@ -267,48 +329,6 @@ function reconcileProtectedFields(local, remote, ours, opts = {}) {
   //      at. Since local now equals remote for that file, the remote-vs-local
   //      check above is a no-op even though our own field just got dropped;
   //      ours (ORIG_HEAD) is the only place it still exists.
-  // Owner-approved fixes (BRO-7131). execute-approved-fix stamps every edit in approvedFixes. A CI
-  // writer working from a checkout older than that fix (opening-night poller, 2026-11-08, Tosca
-  // cherylmarkosky teaser) rebased with -X theirs and replaced the whole hunk, erasing
-  // isNonReview + the stamp 4 minutes after the fix applied. A stamp missing from local means
-  // local never saw that fix, so the stamp always comes back. Its VALUE comes back only when
-  // (a) the field is self-contained (review-field-edit has no side effects for it, so
-  // re-applying cannot leave half a fix), (b) the source still holds that value (a later
-  // clear such as a URL change wins), (c) local did not deliberately clear it, (d) a true flag
-  // is still bound to this url + body (BRO-6676), and (e) no newer stamp on the field exists.
-  // Runs before the MANUAL_FIELDS loop so the companion and ours passes below see the result.
-  {
-    const key = (e) => `${e && e.fixId}|${e && e.field}|${e && e.at}`;
-    const same = (a, b) => JSON.stringify(a ?? null) === JSON.stringify(b ?? null);
-    const localFixes = Array.isArray(local.approvedFixes) ? local.approvedFixes : [];
-    const seen = new Set(localFixes.map(key));
-    const missing = [];
-    for (const src of [remote, ours]) {
-      for (const e of (src && Array.isArray(src.approvedFixes) ? src.approvedFixes : [])) {
-        if (!e || typeof e.field !== 'string' || seen.has(key(e))) continue;
-        seen.add(key(e));
-        missing.push({ entry: { ...e }, source: src });
-      }
-    }
-    missing.sort((a, b) => String(a.entry.at || '').localeCompare(String(b.entry.at || '')));
-    for (const { entry: e, source } of missing) localFixes.push(e);
-    for (const { entry: e, source } of missing) {
-      const newer = localFixes.some((o) => o !== e && o.field === e.field && String(o.at || '') > String(e.at || ''));
-      if (!REAPPLY_APPROVED_FIELDS.has(e.field) || newer || same(local[e.field], e.newValue)) continue;
-      if (!same(source[e.field], e.newValue)) continue;
-      if (isIntentionalClear(e.field, local, source)) continue;
-      if (e.newValue === true && !approvedFixStillBound(e, local)) continue;
-      local[e.field] = e.newValue === undefined ? null : e.newValue;
-      notes.push(`Re-applied approved fix ${e.fixId} (${e.field})`);
-    }
-    if (missing.length) {
-      localFixes.sort((a, b) => String(a.at || '').localeCompare(String(b.at || '')));
-      local.approvedFixes = localFixes;
-      modified = true;
-      notes.push(`Restored ${missing.length} approvedFixes stamp(s)`);
-    }
-  }
-
   for (const field of MANUAL_FIELDS) {
     if (local[field] !== undefined && local[field] !== null) continue;
 
