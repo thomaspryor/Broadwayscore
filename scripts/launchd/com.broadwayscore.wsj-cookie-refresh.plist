@@ -47,6 +47,14 @@
         <string>-c</string>
         <string>cd /Users/tompryor/Broadwayscore &amp;&amp; set -a &amp;&amp; source .env &amp;&amp; set +a &amp;&amp; exec node scripts/wsj-otp-login.js --push</string>
     </array>
+    <!-- PATH (2026-11-08): launchd's default PATH is /usr/bin:/bin:/usr/sbin:/sbin,
+         so the bare `node` above (and `gh` for --push) was not found: the job
+         exited 127 on its only run. Guarded by scripts/lib/launchd-plist-lint.js. -->
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>PATH</key>
+        <string>/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/Users/tompryor/.local/bin</string>
+    </dict>
     <key>StartCalendarInterval</key>
     <dict>
         <key>Day</key>

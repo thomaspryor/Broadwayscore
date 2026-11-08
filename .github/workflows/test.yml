@@ -3356,6 +3356,9 @@ on:
       # above (scripts/lib/** / scripts/launchd/**) — only these two
       # top-level, un-globbed paths need explicit listing.
       - 'scripts/audit-launchd-stale-sync-guard.js'
+      # launchd plist PATH lint (zero-gap plan G7): lib + test sit under the
+      # scripts/lib/** glob; only the top-level audit needs listing.
+      - 'scripts/audit-launchd-plist-path.js'
       # Linear-issue dispatcher (task #1303): fetches a Linear issue and
       # launches a Claude Code worker on it, reusing bsc-next.js's cmux/
       # headless launch primitives. dispatch-guards.js (task #1303 plan
@@ -4013,6 +4016,16 @@ jobs:
         # separately as BRO-2254. Waive a specific reviewed-safe line with
         # a trailing `# launchd-stale-sync-ok: <reason>` comment.
         run: node scripts/audit-launchd-stale-sync-guard.js
+
+      - name: Audit — launchd plist bare command without PATH (advisory)
+        if: always() && steps.deps.outcome == 'success'
+        # Advisory first (CLAUDE.md rule 19). A plist that runs bare `node`/`gh`
+        # with no EnvironmentVariables.PATH and no `bash -lc` exits 127 under
+        # launchd's PATH=/usr/bin:/bin:/usr/sbin:/sbin: the WSJ monthly cookie
+        # refresh did that and never ran. The repo is clean today (the one
+        # offender is fixed), so this can arm blocking after a clean stretch.
+        continue-on-error: true
+        run: node scripts/audit-launchd-plist-path.js
 
       - name: Audit — gate corpus-guard coverage
         if: always() && steps.deps.outcome == 'success'
