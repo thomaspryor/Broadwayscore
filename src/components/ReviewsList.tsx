@@ -351,8 +351,16 @@ const ReviewCard = memo(function ReviewCard({ review, isLast, category, hideStop
   // Compact layout (owner pick 2026-11-06): the byline runs in at the end of the
   // quote ("... precision." — Name), phones add the date after it, and Full
   // Review shrinks to an arrow beside the date in the header row.
-  const mobileDate = dateLabel && !stop ? (
-    <span className="sm:hidden whitespace-nowrap">, {dateLabel.replace(new RegExp(`,\\s*${new Date().getFullYear()}$`), '')}</span>
+  // The published rating (owner pick 2026-11-08) rides with the date instead of
+  // hanging under the score badge: "4/5 stars · Nov 7, 2026" on the header row
+  // (sm+), and after the byline's date on phones.
+  const rating = review.originalRating || null;
+  const mobileRating = rating ? <span className="whitespace-nowrap" data-testid="review-original-rating-mobile"> &middot; {rating}</span> : null;
+  const mobileDate = !stop && (dateLabel || rating) ? (
+    <span className="sm:hidden">
+      {dateLabel ? <span className="whitespace-nowrap">, {dateLabel.replace(new RegExp(`,\\s*${new Date().getFullYear()}$`), '')}</span> : null}
+      {dateLabel ? mobileRating : rating ? <span className="whitespace-nowrap">, {rating}</span> : null}
+    </span>
   ) : null;
   // With a stop, phones get one full-width line under the quote instead
   // ("Oct 5 · Rochester, NY"), so it never squeezes against the byline. Only
@@ -361,6 +369,7 @@ const ReviewCard = memo(function ReviewCard({ review, isLast, category, hideStop
     <div className="sm:hidden text-xs text-fg-muted mt-0.5">
       {dateLabel && <>{dateLabel.replace(new RegExp(`,\\s*${new Date().getFullYear()}$`), '')}<span aria-hidden="true" className="text-fg-muted"> · </span></>}
       {pin}<span className="sr-only">Reviewed in </span>{stop}
+      {mobileRating}
     </div>
   ) : null;
 
@@ -383,24 +392,8 @@ const ReviewCard = memo(function ReviewCard({ review, isLast, category, hideStop
     </span>
   );
 
-  // Subtle caption under the score badge so readers can see the rating our
-  // score is anchored to (the pull quote only mentions it when the critic
-  // happened to say it there). It hangs in the gutter left of the quote, which
-  // is pl-24 wide, so it stacks on two lines to fit.
-  const ratingNote = review.originalRating ? (
-    <div
-      className="absolute left-0 top-[50px] sm:top-[54px] w-20 text-sm leading-tight text-fg-muted"
-      title="The published rating for this review. It anchors our score."
-      data-testid="review-original-rating"
-    >
-      <span className="block">Rated</span>
-      <span className="block">{review.originalRating}</span>
-    </div>
-  ) : null;
-
   return (
-    // min-h keeps a quote-less review tall enough for the two-line rating caption.
-    <article className={`${isLast ? '' : 'border-b border-white/5 pb-2'} group ${review.originalRating ? 'relative min-h-[100px]' : ''}`} data-testid="review-card" aria-label={`Review from ${review.outlet}`}>
+    <article className={`${isLast ? '' : 'border-b border-white/5 pb-2'} group`} data-testid="review-card" aria-label={`Review from ${review.outlet}`}>
       {/* CRITICAL: Outlet name vertical centering with score badge and logo.
          Broken 15+ times. Root cause: <a> tags (from Next.js Link) render as
          display:block in flex and ALWAYS stretch to cross-axis height (44px),
@@ -440,8 +433,16 @@ const ReviewCard = memo(function ReviewCard({ review, isLast, category, hideStop
             {review.designation.replace('_', ' ')}
           </span>
         )}
-        {formatDate(review.publishDate) && (
-          <span className="hidden sm:inline text-xs text-fg-muted flex-shrink-0">{formatDate(review.publishDate)}</span>
+        {(rating || formatDate(review.publishDate)) && (
+          <span className="hidden sm:inline text-xs text-fg-muted flex-shrink-0 whitespace-nowrap">
+            {rating && (
+              <span title="The published rating for this review. It anchors our score." data-testid="review-original-rating">
+                <span className="sr-only">Rated </span>{rating}
+              </span>
+            )}
+            {rating && formatDate(review.publishDate) && <span aria-hidden="true"> &middot; </span>}
+            {formatDate(review.publishDate)}
+          </span>
         )}
         {review.url && (
           <a
@@ -487,8 +488,6 @@ const ReviewCard = memo(function ReviewCard({ review, isLast, category, hideStop
         )}
         {mobileStopLine}
       </div>
-      {/* After the header and quote in the DOM so screen readers hear the score and outlet first; positioned under the badge. */}
-      {ratingNote}
     </article>
   );
 });
