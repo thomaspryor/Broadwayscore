@@ -2235,10 +2235,20 @@ function censusGapsAlert(state, now = Date.now()) {
   return inOpeningWindow(state, now) && state.status !== 'closed';
 }
 
-function openingWindowClearedKeys(results, now = Date.now(), { liveShowIds, showById } = {}) {
+// BRO-7116: the per-show owner alert (and its Linear card) counts only gaps an
+// aggregator cited. A SERP-census hit is a discovery guess: with the ingest gate on
+// the audit tries it and usually refuses it as another production's review, a
+// collision or a failed fetch, and the same guess re-fired as "missing N cited
+// review(s)" (45 cards in 30 days, 19 of the 20 alerting shows census-only on
+// 2026-11-08). Census gaps stay in the audit row, the checkpoint count behind the
+// newsletter gate and freshness tiers, and the SERP census report.
+function alertUncollected(r) {
+  return currentRunUncollected(r, { ignoreCensusTagged: true });
+}
+
+function openingWindowClearedKeys(results, now = Date.now(), { liveShowIds } = {}) {
   return (results || [])
-    .filter(r => r && r.showId && ((liveShowIds && !liveShowIds.has(r.showId)) || currentRunUncollected(r) <= 0
-      || (!censusGapsAlert(alertShowState(r, showById), now) && currentRunUncollected(r, { ignoreCensusTagged: true }) <= 0)))
+    .filter(r => r && r.showId && ((liveShowIds && !liveShowIds.has(r.showId)) || alertUncollected(r) <= 0))
     .map(r => openingWindowConditionKey(r.showId));
 }
 
@@ -3571,7 +3581,7 @@ async function main(argv = process.argv.slice(2)) {
       // the per-show condition stayed 'open' forever and its card's
       // check-alert-condition-absent VERIFY could never pass.
       try {
-        const cleared = resolveQuietConditions(openingWindowClearedKeys(reportedResults, Date.now(), { liveShowIds, showById }), { reason: 'review-gap: no uncollected cited reviews on the latest audit, show past its opening window (or closed) with only SERP-census gaps, or show id retired' });
+        const cleared = resolveQuietConditions(openingWindowClearedKeys(reportedResults, Date.now(), { liveShowIds }), { reason: 'review-gap: no uncollected cited reviews on the latest audit, show past its opening window (or closed) with only SERP-census gaps, or show id retired' });
         if (cleared.length) console.log(`[Alert Router] resolved ${cleared.length} cleared opening-window gap condition(s): ${cleared.join(', ')}`);
       } catch (e) {
         console.error(`::warning::resolving cleared opening-window gap conditions failed: ${(e.message || '').slice(0, 120)}`);
@@ -3582,7 +3592,7 @@ async function main(argv = process.argv.slice(2)) {
         if (!inOpeningWindow(state)) continue;
         const conditionKey = openingWindowConditionKey(r.showId);
         // BRO-5489: a closed show alerts only on non-census gaps (see alertShowState).
-        const uncollected = currentRunUncollected(r, { ignoreCensusTagged: !censusGapsAlert(state) });
+        const uncollected = alertUncollected(r);
         if (uncollected <= 0) {
           // Trim the not-yet-sent digest queue. The ledger resolve is the
           // debounced resolveQuietConditions call above, never a per-run
@@ -3778,4 +3788,4 @@ if (require.main === module) {
 // REVIEW_TEXTS_DIR before requiring this module.
 // main + USAGE are exported so scripts/audit-show-review-gap.test.mjs can
 // prove --help never falls through to a real gh call (task #266).
-module.exports = { urlMatchesShowTitle, matchingTitleVariants, auditShow, dropRoundupsOwnedByOtherShows, roundupOwnerMap, planRoundupGapAlerts, openLegacyRoundupGapKeys, buildRoundupGapAlert, syncRollupCard, ROUNDUP_GAP_ROLLUP_KEY, isInVerdictWindow, findAggregatorArticles, urlMatchesShow, namesLongerShowTitle, titleTokens, provisionalOutletIdFromHost, freshnessMsFor, hostOf, registrableHost, getKnownDomainMap, isReviewUrl, normalizeReviewUrl, gapUrlIdentity, classifyShowFile, isCoveredFile, bumpRecoveryCount, acceptSerpCensusResult, otherProductionUrlSignal, computeResidualCounts, currentRunUncollected, openingWindowClearedKeys, main, USAGE, dispatchGatherFor };
+module.exports = { urlMatchesShowTitle, matchingTitleVariants, auditShow, dropRoundupsOwnedByOtherShows, roundupOwnerMap, planRoundupGapAlerts, openLegacyRoundupGapKeys, buildRoundupGapAlert, syncRollupCard, ROUNDUP_GAP_ROLLUP_KEY, isInVerdictWindow, findAggregatorArticles, urlMatchesShow, namesLongerShowTitle, titleTokens, provisionalOutletIdFromHost, freshnessMsFor, hostOf, registrableHost, getKnownDomainMap, isReviewUrl, normalizeReviewUrl, gapUrlIdentity, classifyShowFile, isCoveredFile, bumpRecoveryCount, acceptSerpCensusResult, otherProductionUrlSignal, computeResidualCounts, currentRunUncollected, alertUncollected, openingWindowClearedKeys, main, USAGE, dispatchGatherFor };

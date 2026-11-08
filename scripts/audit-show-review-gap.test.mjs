@@ -988,10 +988,13 @@ test('openingWindowClearedKeys: a show past its opening window with only census-
   realGap.missing.push({ url: 'https://b.example/show-score-cited-review', host: 'b.example' });
   const keys = openingWindowClearedKeys([
     gapRow('alice-in-wonderland-off-broadway-2026', '2026-09-26'), // day 22, census-only: quiet
-    gapRow('fresh-show-2026', '2026-10-10'),                       // day 8: still alerting
+    gapRow('fresh-show-2026', '2026-10-10'),                       // day 8, census-only: quiet too (BRO-7116)
     realGap,                                                       // past window but a non-census gap: stays open
   ], now);
-  assert.deepEqual(keys, ['review-gap:opening-window:alice-in-wonderland-off-broadway-2026']);
+  assert.deepEqual(keys, [
+    'review-gap:opening-window:alice-in-wonderland-off-broadway-2026',
+    'review-gap:opening-window:fresh-show-2026',
+  ]);
 });
 
 test('openingWindowClearedKeys: a row for a retired show id counts as cleared even with a live gap (BRO-5349)', () => {
@@ -1021,7 +1024,7 @@ test('openingWindowClearedKeys: window and status come from shows.json, not the 
   const rows = [
     censusRow('measure-for-measure-off-west-end-2026', '2026-10-02'),        // closed after 2 nights, census-only
     censusRow('magic-mike-live-new-york-off-broadway-2026', '2026-10-08'),   // rescheduled to 2027-01-28
-    censusRow('kramerfauci-st-anns-off-broadway-2026', '2026-10-04'),        // open, in window: still alerting
+    censusRow('kramerfauci-st-anns-off-broadway-2026', '2026-10-04'),        // open, in window, census-only: quiet (BRO-7116)
   ];
   const closedReal = censusRow('fences-closed-2026', '2026-10-09');
   closedReal.missing.push({ url: 'https://b.example/cited-review', host: 'b.example' });
@@ -1035,9 +1038,10 @@ test('openingWindowClearedKeys: window and status come from shows.json, not the 
   assert.deepEqual(openingWindowClearedKeys(rows, now, { showById }), [
     'review-gap:opening-window:measure-for-measure-off-west-end-2026',
     'review-gap:opening-window:magic-mike-live-new-york-off-broadway-2026',
+    'review-gap:opening-window:kramerfauci-st-anns-off-broadway-2026',
   ]);
-  // Without shows.json the row's own date decides (old behaviour): all in window, none cleared.
-  assert.deepEqual(openingWindowClearedKeys(rows, now), []);
+  // Census-only rows are quiet whatever the window; only the aggregator-cited closed show stays open.
+  assert.deepEqual(openingWindowClearedKeys(rows, now).length, 3);
 });
 
 test('plausibleLiveShowIds: a stub shows.json yields null so retired-id clearing never mass-resolves (BRO-5349)', () => {
@@ -1435,4 +1439,22 @@ test('BRO-6761: catalogue lane speeds up for a large never-audited backlog and s
   const boosted = reserveStalestSlots([...opening, ...never], new Map(), { catalogueIds, catalogueEvery: every });
   const inFirst20 = (r) => r.targets.slice(0, 30).filter(s => catalogueIds.has(s.id)).length;
   assert.ok(inFirst20(boosted) > inFirst20(base), `${inFirst20(boosted)} > ${inFirst20(base)}`);
+});
+
+// BRO-7116: 45 "Review gap — missing N cited review(s)" cards in 30 days. A SERP-census
+// hit is a discovery guess (often another production's review, refused by the ingest),
+// so it must never raise the per-show alert; an aggregator-cited gap still must.
+test('BRO-7116 alertUncollected ignores census-tagged rows and keeps aggregator-cited gaps', () => {
+  const { alertUncollected } = require('./audit-show-review-gap.js');
+  const census = { url: 'https://perform.ink/review-king-of-the-yees-at-goodman-theatre/', serpCensus: true };
+  const cited = { url: 'https://www.nytimes.com/2026/11/01/theater/x-review.html' };
+  assert.equal(alertUncollected({ showId: 'x-off-broadway-2026', missing: [census] }), 0);
+  assert.equal(alertUncollected({ showId: 'x-off-broadway-2026', missing: [census, cited] }), 1);
+  assert.equal(alertUncollected({ showId: 'x-off-broadway-2026', missing: [], citedNoUrl: [{ outlet: 'x' }] }), 1);
+});
+
+test('BRO-7116 the opening-window alert loop counts through alertUncollected, never the census-aware count', () => {
+  const src = fs.readFileSync(new URL('./audit-show-review-gap.js', import.meta.url), 'utf8');
+  const loop = src.slice(src.indexOf('openingWindowConditionKey(r.showId);\n'));
+  assert.match(loop.slice(0, 600), /const uncollected = alertUncollected\(r\)/);
 });
