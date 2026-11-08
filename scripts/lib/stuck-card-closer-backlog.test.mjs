@@ -26,17 +26,19 @@ test('planBacklogCandidates: fresh report only; single test files only; flake re
     { id: 'BRO-2', verifyCmd: 'node scripts/validate-data.js --strict', detail: 'exit 0' },
     { id: 'BRO-3', verifyCmd: cmd('BRO-3'), detail: 'passed on retry (flaky)' },
     { id: 'BRO-4', verifyCmd: `${cmd('BRO-4')} && rm -rf x`, detail: 'exit 0' },
+    { id: 'BRO-5', verifyCmd: cmd('BRO-SHARED'), detail: 'exit 0' },
+    { id: 'BRO-6', verifyCmd: cmd('BRO-SHARED'), detail: 'exit 0' },
     null,
   ] }, NOW);
   assert.deepEqual(plan.candidates, [{ id: 'BRO-1', cmd: cmd('BRO-1'), testPath: 'scripts/lib/bro-1.test.mjs' }]);
-  assert.deepEqual(plan.skipped, { 'not-a-single-test-file': 2, 'passed-only-on-retry': 1 });
+  assert.deepEqual(plan.skipped, { 'not-a-single-test-file': 2, 'passed-only-on-retry': 1, 'test-shared-with-another-card': 2 });
 });
 
 test('commitFinishesCard: a commit that files, defers or splits work off the card does not finish it', () => {
   assert.equal(commitFinishesCard('feat(BRO-9): the fix', 'BRO-9'), true);
   assert.equal(commitFinishesCard('BRO-9: done', 'BRO-9'), true);
   for (const m of ['fix: x; files BRO-9 for y', 'chore: defer z to BRO-9', 'feat(BRO-8): a, follow-up in BRO-9',
-    'BRO-9: carded the rest', 'BRO-9: split out to a new card', 'BRO-10: unrelated']) {
+    'BRO-9: carded the rest', 'BRO-9: split out to a new card', 'BRO-9: part one; moved the rest to BRO-12', 'BRO-9: split off retries', 'BRO-10: unrelated']) {
     assert.equal(commitFinishesCard(m, 'BRO-9'), false, m);
   }
 });
