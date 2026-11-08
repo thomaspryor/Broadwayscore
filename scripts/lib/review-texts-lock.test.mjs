@@ -1,0 +1,106 @@
+// review-texts-lock.js (BRO-7171): one machine-wide lock for every writer of
+// the local review-texts checkout. Stale = holder pid gone OR pid recycled
+// (start time changed); a live holder past the timeout throws.
+import { test, after } from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+import { spawn, spawnSync } from 'node:child_process';
+import { createRequire } from 'node:module';
+
+const require = createRequire(import.meta.url);
+const TMP = fs.mkdtempSync(path.join(os.tmpdir(), 'rt-lock-'));
+process.env.REVIEW_TEXTS_LOCK_PATH = path.join(TMP, 'locks', 'review-texts.lock');
+const lock = require('./review-texts-lock.js');
+
+const body = (meta) => `${meta.pid} ${JSON.stringify(meta)}\n`;
+const children = [];
+after(() => { for (const c of children) try { c.kill(); } catch { /* gone */ } });
+
+function liveChild() {
+  const c = spawn('sleep', ['60'], { stdio: 'ignore' });
+  children.push(c);
+  return c;
+}
+function deadPid() {
+  const r = spawnSync('true');
+  return r.pid;
+}
+
+test('holderAlive: live pid with the recorded start time is alive', () => {
+  const meta = { pid: 4242, procStart: 'Sun Nov  8 10:00:00 2026', host: os.hostname(), acquiredAt: new Date().toISOString() };
+  assert.equal(lock.holderAlive(body(meta), { alive: () => true, startOf: () => meta.procStart }), true);
+});
+
+test('holderAlive: a recycled pid (same number, different start time) is a dead holder', () => {
+  const meta = { pid: 4242, procStart: 'Sun Nov  8 10:00:00 2026', host: os.hostname(), acquiredAt: new Date().toISOString() };
+  assert.equal(lock.holderAlive(body(meta), { alive: () => true, startOf: () => 'Sun Nov  8 11:30:00 2026' }), false);
+});
+
+test('holderAlive: dead pid is dead; other host is alive for 2h only', () => {
+  const meta = { pid: 4242, procStart: 'x', host: os.hostname(), acquiredAt: new Date().toISOString() };
+  assert.equal(lock.holderAlive(body(meta), { alive: () => false }), false);
+  const now = Date.now();
+  const remote = { ...meta, host: 'other-mac', acquiredAt: new Date(now - 60 * 60 * 1000).toISOString() };
+  assert.equal(lock.holderAlive(body(remote), { now }), true);
+  const old = { ...remote, acquiredAt: new Date(now - 3 * 60 * 60 * 1000).toISOString() };
+  assert.equal(lock.holderAlive(body(old), { now }), false);
+});
+
+test('runs fn under the lock, writes holder metadata, releases afterwards', () => {
+  const out = lock.withReviewTextsLock('test:basic', () => {
+    assert.equal(lock.isHeldByMe(), true);
+    const h = lock.readHolder();
+    assert.equal(h.pid, process.pid);
+    assert.equal(h.label, 'test:basic');
+    assert.ok(h.procStart, 'start time recorded');
+    return 7;
+  });
+  assert.equal(out, 7);
+  assert.equal(lock.isHeldByMe(), false);
+  assert.equal(fs.existsSync(lock.lockPath()), false);
+});
+
+test('re-entrant within one process (no self-deadlock), released even when fn throws', () => {
+  assert.throws(() => lock.withReviewTextsLock('outer', () => {
+    lock.withReviewTextsLock('inner', () => { assert.equal(lock.isHeldByMe(), true); });
+    throw new Error('boom');
+  }), /boom/);
+  assert.equal(lock.isHeldByMe(), false);
+  assert.equal(fs.existsSync(lock.lockPath()), false);
+});
+
+test('a live holder past the timeout THROWS instead of proceeding unlocked', () => {
+  const c = liveChild();
+  const p = lock.lockPath();
+  fs.mkdirSync(path.dirname(p), { recursive: true });
+  fs.writeFileSync(p, body({ pid: c.pid, procStart: lock.processStartTime(c.pid), host: os.hostname(), label: 'other', acquiredAt: new Date().toISOString() }));
+  let ran = false;
+  const t0 = Date.now();
+  assert.throws(() => lock.withReviewTextsLock('waiter', () => { ran = true; }, { timeoutMs: 1200 }), (e) => e.code === 'ELOCKTIMEOUT');
+  assert.equal(ran, false);
+  assert.ok(Date.now() - t0 >= 1000, 'waited for the timeout');
+  fs.unlinkSync(p);
+});
+
+test('a dead holder is taken over', () => {
+  const p = lock.lockPath();
+  fs.writeFileSync(p, body({ pid: deadPid(), procStart: 'gone', host: os.hostname(), label: 'crashed', acquiredAt: new Date().toISOString() }));
+  let ran = false;
+  const t0 = Date.now();
+  lock.withReviewTextsLock('taker', () => { ran = true; }, { timeoutMs: 5000 });
+  assert.equal(ran, true);
+  assert.ok(Date.now() - t0 < 3000, 'taken over as stale, not by waiting out the timeout');
+});
+
+test('a recycled pid holder is taken over (pid alive, start time differs)', () => {
+  const c = liveChild();
+  const p = lock.lockPath();
+  fs.writeFileSync(p, body({ pid: c.pid, procStart: 'Thu Jan  1 00:00:00 1970', host: os.hostname(), label: 'old-run', acquiredAt: new Date().toISOString() }));
+  let ran = false;
+  const t0 = Date.now();
+  lock.withReviewTextsLock('taker', () => { ran = true; }, { timeoutMs: 5000 });
+  assert.equal(ran, true);
+  assert.ok(Date.now() - t0 < 3000, 'taken over as stale, not by waiting out the timeout');
+});
