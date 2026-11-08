@@ -1,19 +1,38 @@
 {
-  "updatedAt": "2026-11-08T19:52:08.599Z",
-  "processed": 4,
-  "failed": 2,
-  "successRate": "66.7%",
+  "updatedAt": "2026-11-08T20:30:22.347Z",
+  "processed": 9,
+  "failed": 10,
+  "successRate": "47.4%",
   "tierBreakdown": {
-    "playwright": 4,
+    "playwright": 8,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingdog": 0,
+    "scrapingdog": 1,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 0,
     "archive": 0
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 3,
+  "recentActivity": [
+    {
+      "t": "2026-11-08T20:26:04.448Z",
+      "event": "bb-session",
+      "session": "9b8b9b60",
+      "url": "https://bachtrack.com/review-lorfeo-william-kentridge-greek-national-opera-athen"
+    },
+    {
+      "t": "2026-11-08T20:26:39.839Z",
+      "event": "bb-session",
+      "session": "a24d79ac",
+      "url": "https://bachtrack.com/review-shostakovich-cherry-town-ahlbom-dutch-national-oper"
+    },
+    {
+      "t": "2026-11-08T20:27:44.140Z",
+      "event": "bb-session",
+      "session": "4cfad895",
+      "url": "https://bachtrack.com/review-nozze-figaro-pountney-conta-bucharest-national-oper"
+    }
+  ]
 }

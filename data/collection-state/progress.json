@@ -3,31 +3,68 @@
     "speculations-off-west-end-2026/adventuresintheatreland--unknown.json",
     "speculations-off-west-end-2026/jonathan-baz--unknown.json",
     "speculations-off-west-end-2026/londonlivinglarge--london-living-large.json",
-    "speculations-off-west-end-2026/theatre-vibe--lizzie-loveridge.json"
+    "speculations-off-west-end-2026/theatre-vibe--lizzie-loveridge.json",
+    "nero-off-west-end-2026/musical-theatre-review--angela-thomas.json",
+    "speculations-off-west-end-2026/adventuresintheatreland--julie-fisher-sheher.json",
+    "the-moth-off-west-end-2026/creative-reviews-uk--creative-reviews-uk.json",
+    "ceilidh-the-musical-off-west-end-2026/guardian--emma-john.json",
+    "ceilidh-the-musical-off-west-end-2026/guardian--unknown.json"
   ],
   "failed": [
     "speculations-off-west-end-2026/guardian--arifa-akbar.json",
-    "speculations-off-west-end-2026/guardian--unknown.json"
+    "speculations-off-west-end-2026/guardian--unknown.json",
+    "the-bridge-off-west-end-2026/cherylmarkosky--cherylmarkosky.json",
+    "the-bridge-off-west-end-2026/sunday-times--unknown.json",
+    "the-bridge-off-west-end-2026/theatreandtonic--emmie-newitt.json",
+    "tosca-english-national-opera-west-end-2026/bachtrack--anna-bogdanova.json",
+    "tosca-english-national-opera-west-end-2026/bachtrack--clare-varney.json",
+    "tosca-english-national-opera-west-end-2026/bachtrack--peter-quantrill.json",
+    "tosca-english-national-opera-west-end-2026/cherylmarkosky--cherylmarkosky.json",
+    "tosca-english-national-opera-west-end-2026/times-uk--richard-morrison.json"
   ],
-  "failed": [],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
       "speculations-off-west-end-2026/adventuresintheatreland--unknown.json",
       "speculations-off-west-end-2026/jonathan-baz--unknown.json",
       "speculations-off-west-end-2026/londonlivinglarge--london-living-large.json",
-      "speculations-off-west-end-2026/theatre-vibe--lizzie-loveridge.json"
+      "speculations-off-west-end-2026/theatre-vibe--lizzie-loveridge.json",
+      "speculations-off-west-end-2026/adventuresintheatreland--julie-fisher-sheher.json",
+      "the-moth-off-west-end-2026/creative-reviews-uk--creative-reviews-uk.json",
+      "ceilidh-the-musical-off-west-end-2026/guardian--emma-john.json",
+      "ceilidh-the-musical-off-west-end-2026/guardian--unknown.json"
     ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
-    "scrapingdog": [],
+    "scrapingdog": [
+      "nero-off-west-end-2026/musical-theatre-review--angela-thomas.json"
+    ],
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [],
     "archive": []
   },
   "startTime": "2026-11-08T19:50:31.589Z",
-  "lastProcessed": "speculations-off-west-end-2026/theatre-vibe--lizzie-loveridge.json",
-  "log": []
+  "lastProcessed": "ceilidh-the-musical-off-west-end-2026/guardian--unknown.json",
+  "log": [
+    {
+      "t": "2026-11-08T20:26:04.448Z",
+      "event": "bb-session",
+      "session": "9b8b9b60",
+      "url": "https://bachtrack.com/review-lorfeo-william-kentridge-greek-national-opera-athen"
+    },
+    {
+      "t": "2026-11-08T20:26:39.839Z",
+      "event": "bb-session",
+      "session": "a24d79ac",
+      "url": "https://bachtrack.com/review-shostakovich-cherry-town-ahlbom-dutch-national-oper"
+    },
+    {
+      "t": "2026-11-08T20:27:44.140Z",
+      "event": "bb-session",
+      "session": "4cfad895",
+      "url": "https://bachtrack.com/review-nozze-figaro-pountney-conta-bucharest-national-oper"
+    }
+  ]
 }
