@@ -10,7 +10,9 @@
  * carries no maxBuffer option.
  */
 
-const SUBCOMMANDS = ['show', 'cat-file', 'ls-tree', 'diff', 'log'];
+// ls-files joined after BRO-7029: a `data/*.json` pathspec crosses `/` and listed data/audit/**
+// (>1MB), killing opening-night-poller's core-data checkout with ENOBUFS.
+const SUBCOMMANDS = ['show', 'cat-file', 'ls-tree', 'diff', 'log', 'ls-files'];
 
 const CALL_RE = new RegExp(
   "\\bexecFileSync\\s*\\(\\s*['\"`]git['\"`]\\s*,\\s*\\[\\s*(?:(?:['\"`]-[^'\"`]*['\"`]|[A-Za-z_$][\\w$.]*)\\s*,\\s*)*['\"`](" +

@@ -162,7 +162,7 @@ if (require.main === module) {
       const shows = JSON.parse(fs.readFileSync(b, 'utf8'));
       const show = (Array.isArray(shows) ? shows : shows.shows).find((s) => s.id === a);
       if (!show) throw new Error(`show ${a} not in ${b}`);
-      const tracked = execFileSync('git', ['-C', c, 'ls-files', '--', a], { encoding: 'utf8' })
+      const tracked = execFileSync('git', ['-C', c, 'ls-files', '--', a], { encoding: 'utf8', maxBuffer: 256 * 1024 * 1024 })
         .split('\n').filter((f) => f.endsWith('.json') && !path.basename(f).startsWith('_'));
       const files = tracked.map((f) => { try { return JSON.parse(fs.readFileSync(path.join(c, f), 'utf8')); } catch (_) { return null; } });
       out = isFirstWave(show, files, new Date(), process.argv[6] === undefined ? 3 : Number(process.argv[6])) ? '1' : '0';

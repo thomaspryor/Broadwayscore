@@ -434,6 +434,7 @@ function gitTrackedGuard(repoRoot, destDir) {
     out = require('child_process').execFileSync('git', ['-C', repoRoot, 'ls-files', '--', rel], {
       encoding: 'utf8',
       stdio: ['ignore', 'pipe', 'ignore'],
+      maxBuffer: 256 * 1024 * 1024,
     });
   } catch {
     return null;

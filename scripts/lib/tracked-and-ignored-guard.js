@@ -35,6 +35,7 @@ function getTrackedAndIgnored({ cwd = process.cwd() } = {}) {
   const out = execFileSync('git', ['ls-files', '-i', '-c', '--exclude-standard', '--', 'data'], {
     cwd,
     encoding: 'utf8',
+    maxBuffer: 256 * 1024 * 1024,
   });
   return out.split('\n').filter((l) => /^data\/[^/]+\.json$/.test(l));
 }

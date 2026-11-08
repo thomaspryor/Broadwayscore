@@ -497,7 +497,7 @@ function listMatching(dir, name, isGlob) {
 
 function gitTracked(root, rel) {
   try {
-    execFileSync('git', ['-C', root, 'ls-files', '--error-unmatch', '--', rel], { stdio: ['ignore', 'pipe', 'pipe'] });
+    execFileSync('git', ['-C', root, 'ls-files', '--error-unmatch', '--', rel], { stdio: ['ignore', 'pipe', 'pipe'], maxBuffer: 256 * 1024 * 1024 });
     return true;
   } catch { return false; }
 }

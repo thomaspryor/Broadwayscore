@@ -209,7 +209,7 @@ function sourcedByNounset(sources) {
 function listShellFiles(repoRoot) {
   let files;
   try {
-    files = execFileSync('git', ['-C', repoRoot, 'ls-files', '*.sh', 'scripts/hooks/*'], { encoding: 'utf8' })
+    files = execFileSync('git', ['-C', repoRoot, 'ls-files', '*.sh', 'scripts/hooks/*'], { encoding: 'utf8', maxBuffer: 256 * 1024 * 1024 })
       .split('\n').filter(Boolean);
   } catch {
     return [];
