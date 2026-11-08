@@ -33,7 +33,7 @@ const {
 const FREE_KINDS = new Set(['wp-json', 'sitemap', 'sitemap-years', 'sitemap-dated', 'guardian-api']);
 const MAX_WP_PAGES = 8;            // 800 posts per outlet per run
 const MAX_SITEMAP_CHILDREN = 40;
-const MAX_GUARDIAN_PAGES = 5;       // 1000 reviews per run, far above a 60 day lookback
+const MAX_GUARDIAN_PAGES = 5;       // newest first, so a cap hit drops the oldest of 1000, never the latest reviews
 const MAX_DATED_SITEMAPS = 70;     // one per day for a 60 day lookback
 const DAY_MS = 86400000;
 
@@ -143,7 +143,7 @@ async function guardianItems(src, cutoff, { fetchText, log, env = process.env })
   const items = [];
   for (let page = 1; page <= MAX_GUARDIAN_PAGES; page++) {
     const q = new URLSearchParams({ section: 'stage', tag: 'tone/reviews', 'from-date': cutoff.toISOString().slice(0, 10), 'page-size': '200', page: String(page),
-      'order-by': 'oldest', 'show-fields': 'headline,publication,starRating', 'api-key': key });
+      'order-by': 'newest', 'show-fields': 'headline,publication,starRating', 'api-key': key });
     let body;
     try { body = await fetchText(`https://content.guardianapis.com/search?${q}`, 'guardian-api', looksLikeGuardianJson, { proxyRetry: false }); } catch (e) {
       if (page === 1) throw scrub(e);
