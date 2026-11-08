@@ -463,6 +463,8 @@ on:
       - 'scripts/sweep-recovered-alert-cards.js'
       # scripts/lib/board-dispatch.test.mjs (BRO-7139 nightly board dispatch report)
       - 'scripts/board-dispatch.js'
+      # scripts/lib/llm-triage-facts.test.mjs (BRO-7139 report-only LLM triage CLI)
+      - 'scripts/llm-triage.js'
       # tests/unit/detect-venue-transfers.test.mjs
       - 'scripts/detect-venue-transfers.js'
       # tests/unit/promote-historical-auto.test.mjs
