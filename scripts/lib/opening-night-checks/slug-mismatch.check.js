@@ -268,9 +268,17 @@ function buildMentionRegex(show, opts) {
  * aggregator excerpts). Read lazily and only when a URL already failed the
  * slug test. A missing directory yields an empty map (nothing confirmed).
  */
+// reviews.json and the review-text files disagree on scheme and "www." for the
+// same article (Red / NY Daily News: http://www. vs https://www.), which made
+// every text lookup miss (BRO-7121). Key both sides by scheme-less, www-less URL.
+function urlKey(url) {
+  return String(url || '').replace(/^https?:\/\//i, '').replace(/^www\./i, '');
+}
+
 function loadSourceTextByUrl(reviewTextsRoot, showId, extraShowIds = []) {
   const byUrl = new Map();
   byUrl.fullTexts = new Map();
+  byUrl.roundupUrls = new Map();
   if (!reviewTextsRoot) return byUrl;
   // extraShowIds: earlier runs whose reviews this show inherits (priorRuns,
   // BRO-4759). Their texts live in the earlier run's folder (BRO-5693).
@@ -287,10 +295,13 @@ function readSourceTextDir(dir, byUrl) {
     if (!d || !d.url) continue;
     const segments = [d.fullText, d.bwwExcerpt, d.dtliExcerpt, d.showScoreExcerpt, d.pullQuote]
       .filter(t => typeof t === 'string' && t);
-    byUrl.set(d.url, (byUrl.get(d.url) || []).concat(segments));
+    byUrl.set(urlKey(d.url), (byUrl.get(urlKey(d.url)) || []).concat(segments));
+    if (typeof d.bwwRoundupUrl === 'string' && d.bwwRoundupUrl) {
+      byUrl.roundupUrls.set(urlKey(d.url), (byUrl.roundupUrls.get(urlKey(d.url)) || []).concat(d.bwwRoundupUrl));
+    }
     if (typeof d.fullText === 'string' && d.fullText
         && !d.isRoundupArticle && !d.wrongShow && !d.wrongProduction) {
-      byUrl.fullTexts.set(d.url, (byUrl.fullTexts.get(d.url) || []).concat(d.fullText));
+      byUrl.fullTexts.set(urlKey(d.url), (byUrl.fullTexts.get(urlKey(d.url)) || []).concat(d.fullText));
     }
   }
   return byUrl;
@@ -326,6 +337,37 @@ function fullTextNamesShowRepeatedly(fullTexts, mentionRe) {
   if (!mentionRe || !fullTexts) return false;
   const global = new RegExp(mentionRe.source, 'gi');
   return fullTexts.some(t => typeof t === 'string' && (t.match(global) || []).length >= REPEAT_MENTIONS);
+}
+
+/**
+ * True when the review was lifted from a BroadwayWorld review roundup written
+ * about THIS show (BRO-7121). Roundup rows carry the critic's own link, often
+ * a columnist index or a dead blog URL that cannot name the show (Red / NY
+ * Daily News /columnists/dziemianowicz/index.html), and an excerpt that
+ * names the play only by its characters. The roundup's own URL names the show
+ * and is the provenance. A multi-show roundup ("Double Review Roundup 9 to 5
+ * and Waiting for Godot", "... and More") names the show too yet vouches for
+ * nothing, so it never confirms. Whole-title slugs only: one common title
+ * word in a roundup URL is no evidence.
+ */
+const MULTI_SHOW_ROUNDUP_RE = /double|triple|and-more/i;
+// A one-word title ("Red", "Company") sits inside other titles' roundup URLs
+// ("Review-Roundup-THE-COMPANY-MEN"), so it must be followed by a date or one
+// of the tails BWW puts after a show name, never by another title word.
+const ROUNDUP_TITLE_TAIL = '(?:\\d{4,}|opens?|updating|live|on|in|at|is|review|roundup|starring|see)';
+function roundupNamesShow(roundupUrls, wholeTitleSlugs) {
+  if (!roundupUrls || roundupUrls.length === 0) return false;
+  return roundupUrls.some(u => {
+    const slug = urlSearchSlug(u);
+    if (MULTI_SHOW_ROUNDUP_RE.test(slug)) return false;
+    return wholeTitleSlugs.some(t => {
+      if (!/[-\s]/.test(t)) {
+        return new RegExp(`(^|[^a-z0-9])roundup-${slugPattern(t)}(-${ROUNDUP_TITLE_TAIL}[^a-z]|-${ROUNDUP_TITLE_TAIL}$|$)`, 'i').test(slug)
+          || new RegExp(`(^|[^a-z0-9])${slugPattern(t)}-review-roundup`, 'i').test(slug);
+      }
+      return urlMentionsAnySlug(slug, [t]);
+    });
+  });
 }
 
 /**
@@ -409,6 +451,7 @@ function run(show, context) {
   // twice in prose never clears a URL (BRO-6524 review finding).
   const repeatRe = buildMentionRegex(show, { titleWords: false, minWords: 2 });
   const venueRe = buildVenueRegex(show);
+  const wholeTitleSlugs = buildAcceptSlugs(show, { titleWords: false });
   // Prior-run folders this show inherits reviews from (BRO-4759 rows carry
   // inheritedFromShowId); the review's text was filed there (BRO-5693).
   const inheritedFrom = [...new Set(reviews.map(r => r.inheritedFromShowId).filter(Boolean))];
@@ -423,11 +466,12 @@ function run(show, context) {
       continue;
     }
     if (!sourceTextByUrl) sourceTextByUrl = loadSourceTextByUrl(context.reviewTextsRoot, show.id, inheritedFrom);
-    const segs = sourceTextByUrl.get(review.url);
-    const fullTexts = sourceTextByUrl.fullTexts.get(review.url);
+    const segs = sourceTextByUrl.get(urlKey(review.url));
+    const fullTexts = sourceTextByUrl.fullTexts.get(urlKey(review.url));
     if (sourceTextNamesShow(segs, mentionRe)
         || fullTextNamesShowRepeatedly(fullTexts, repeatRe)
-        || fullTextNamesVenueAndTitleWords(fullTexts, show, venueRe, mentionRe)) { textConfirmed++; continue; }
+        || fullTextNamesVenueAndTitleWords(fullTexts, show, venueRe, mentionRe)
+        || roundupNamesShow(sourceTextByUrl.roundupUrls.get(urlKey(review.url)), wholeTitleSlugs)) { textConfirmed++; continue; }
     if ((!segs || segs.length === 0) && isIdOnlyCmsUrl(urlSlug)) {
       opaqueSkipped.push({ outletId: review.outletId, url: review.url });
       continue;
@@ -485,5 +529,5 @@ module.exports = {
   name, description, run, urlSearchSlug, buildAcceptSlugs, urlMentionsAnySlug,
   isOpaqueUrlSlug, isIdOnlyCmsUrl, buildMentionRegex, sourceTextNamesShow,
   fullTextNamesShowRepeatedly, buildVenueRegex, fullTextNamesVenueAndTitleWords,
-  loadSourceTextByUrl,
+  loadSourceTextByUrl, roundupNamesShow, urlKey,
 };
