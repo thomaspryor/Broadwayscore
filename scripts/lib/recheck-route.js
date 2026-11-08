@@ -57,11 +57,12 @@ function alreadyRouted(ledgerEntries, { now = Date.now() } = {}) {
 
 /**
  * The night's routable failures, as one card's title and body.
- * @param {{rows:object[], handedOff?:string[], ledgerEntries?:object[], now?:number, tsxTests?:Set<string>}} o
+ * @param {{rows:object[], handedOff?:string[], ledgerEntries?:object[], now?:number, tsxTests?:Set<string>, sha?:string}} o
  *   rows: this run's results or its ledger 'recheck' rows (same fields)
+ *   sha: the fresh-main commit the checks ran on (each entry names it)
  * @returns {{cards:object[], overflow:number, title:string|null, body:string|null, skipped:{env:number, handedOff:number, routed:number}}}
  */
-function buildRouteBatch({ rows, handedOff = [], ledgerEntries = [], now = Date.now(), tsxTests } = {}) {
+function buildRouteBatch({ rows, handedOff = [], ledgerEntries = [], now = Date.now(), tsxTests, sha = null } = {}) {
   const handed = new Set(handedOff);
   const routed = alreadyRouted(ledgerEntries, { now });
   const skipped = { env: 0, handedOff: 0, routed: 0 };
@@ -83,12 +84,15 @@ function buildRouteBatch({ rows, handedOff = [], ledgerEntries = [], now = Date.
   const n = cards.length + overflow;
   const title = `Recheck ${day}: ${n} done ${n === 1 ? 'claim' : 'claims'} no longer hold on main`;
   const oneLine = (s) => String(s || '').replace(/\s+/g, ' ').trim().slice(0, 220);
+  // The END of the output names the failure (assertion, exit line); the head is often setup noise.
+  const tail = (s) => { const t = String(s || '').replace(/\s+/g, ' ').trim(); return t.length > 220 ? `...${t.slice(-220)}` : t; };
+  const commit = sha ? String(sha).slice(0, 12) : 'unknown';
   const body = [
     `The nightly acceptance recheck (BRO-7138) re-ran each card's own VERIFY command on fresh main and it FAILED. These were closed as done; the effect did not hold.`,
     '',
     'For each card below: reproduce on main, then either fix the regression, or (if the VERIFY itself went stale) rewrite it into a real check and say why in a comment on the original card. Do not reopen the original cards; do the work here.',
     '',
-    ...cards.map((c) => `- ${c.cardId} ${oneLine(c.name)}\n  - check: \`${c.verifyCmd}\`\n  - failed with: ${oneLine(c.detail || c.note) || '(no output kept)'}`),
+    ...cards.map((c) => `- ${c.cardId} ${oneLine(c.name)}\n  - check: \`${c.verifyCmd}\`\n  - failed on main at ${commit}, output tail: ${tail(c.detail || c.note) || '(no output kept)'}`),
     ...(overflow > 0 ? ['', `${overflow} more failed tonight and will be routed on a later night once these are cleared (cap ${MAX_ROUTED} per batch).`] : []),
     '',
     '## Acceptance criteria',
@@ -120,7 +124,7 @@ async function fileRouteBatch({ title, body, linearBrainMain } = {}) {
   };
   try {
     await Promise.race([
-      main(['create', title, '--dispatch', '--priority', '3', '--source', 'acceptance-recheck', '--new-anyway', 'a nightly recheck batch lists only cards not routed before', '--notes', body]),
+      main(['create', title, '--dispatch', '--priority', '2', '--source', 'acceptance-recheck', '--new-anyway', 'a nightly recheck batch lists only cards not routed before', '--notes', body]),
       new Promise((_, rej) => setTimeout(() => rej(new Error('route create timed out after 60s')), 60000).unref()),
     ]);
     return { filed: !!identifier, identifier, error: identifier ? null : 'linear-brain create printed no card id' };

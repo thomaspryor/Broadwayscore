@@ -134,7 +134,7 @@ New `--strict`/`--gate` test.yml steps: `continue-on-error: true` (or own baseli
 **Substantial** (new system: 4th new file in a new dir, new workflow/secret) = plan + `/plan-review` + `OWNER-PLAN-APPROVED: <quote>`; a product decision, so "decide technical calls yourself" is off. **Moderate** = `/second-opinion`. **Simple** = go. Warns, blocks from 2026-11-07.
 
 ### 21. Every fix, three parts: cousins, root cause, keep improving (owner 2026-11-07)
-A fix is done when all three hold. (1) **Cousins:** search the site, `data/` and code for the same defect; fix all. (2) **Root cause:** land a guard (test/lint/gate/type) for the whole class that fails with the fix reverted. (3) **Improve the system:** if a check should have caught it, fix that check. Close with lines `ROOT-CAUSE:`, `CLASS-GUARD: <path>` (or `PREVENTION: <path> ; cousins:`), `RED-THEN-GREEN:`, `COUSINS:`, or `NO-ROOT-CAUSE: <reason>` (spot fix). BRO-7103.
+(1) **Cousins:** search site, `data/`, code for the same bug; fix all. (2) **Root cause:** land a class guard that fails with the fix reverted. (3) **Improve the system:** fix the check that missed it. Close with `ROOT-CAUSE:`, `CLASS-GUARD: <path>` (or `PREVENTION: <path>`), `RED-THEN-GREEN:`, `COUSINS:`, or `NO-ROOT-CAUSE: <reason>` (spot), plus `EFFECT:` real before/after numbers (new check: past-input dry-run hit rate) or `NO-EFFECT-CHECK: <reason>`. BRO-7103/7138.
 
 ---
 

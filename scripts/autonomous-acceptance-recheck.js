@@ -193,11 +193,11 @@ function enforcementState(cfg, entries) {
 // routed before) go to ONE worker card. Shadow until RECHECK_ROUTE_FROM: the
 // ledger row says what it would have filed. Never throws: routing is a side
 // channel and must not cost the night's summary row.
-async function routeRealFailures({ runId, results, handedOff, env = process.env, now = Date.now(), file = fileRouteBatch } = {}) {
+async function routeRealFailures({ runId, results, handedOff, sha = null, env = process.env, now = Date.now(), file = fileRouteBatch } = {}) {
   try {
     const mode = routeMode({ env, now });
     if (mode.mode === 'off') { console.error('[recheck] routing off (RECHECK_ROUTE=off)'); return null; }
-    const batch = buildRouteBatch({ rows: results, handedOff, ledgerEntries: ledger.readEntries(RECHECK_LEDGER_PATH).entries || [], now });
+    const batch = buildRouteBatch({ rows: results, handedOff, sha, ledgerEntries: ledger.readEntries(RECHECK_LEDGER_PATH).entries || [], now });
     if (!batch.title) return null;
     const cardIds = batch.cards.map((c) => c.cardId);
     let out = { filed: false, identifier: null, error: null };
@@ -219,7 +219,8 @@ function printRouteDryRun() {
   const handedOff = entries.filter((e) => e && e.event === 'recheck-handoff' && e.runId === lastRun.runId && e.handedOff).map((e) => e.cardId);
   const before = entries.filter((e) => e && e.ts < (rows[0] && rows[0].ts || ''));
   const mode = routeMode();
-  const batch = buildRouteBatch({ rows, handedOff, ledgerEntries: before });
+  const sha = (rows.find((r) => r.sha) || {}).sha || null;
+  const batch = buildRouteBatch({ rows, handedOff, sha, ledgerEntries: before });
   console.log(`Run ${lastRun.runId}: ${rows.length} rechecked; mode tonight: ${mode.mode} (${mode.why})`);
   console.log(`Not routed: ${batch.skipped.env} could not run here, ${batch.skipped.handedOff} handed off, ${batch.skipped.routed} routed before`);
   if (!batch.title) { console.log('Nothing to route.'); return; }
@@ -484,6 +485,8 @@ async function main(argv = process.argv.slice(2)) {
         detail: r.detail ? redactEmails(String(r.detail).slice(0, 300)) : null,
         note: `${r.skip ? `skipped: ${r.skip}` : r.status}${r.detail ? `: ${redactEmails(String(r.detail).slice(0, 300))}` : ''}`,
         verifyCmd: t.verifyCmd || null,
+        // BRO-7138: the fresh-main commit this ran on, so a routed failure names it.
+        sha: (checkout && checkout.sha) || null,
         // BRO-7138: set when the check failed on something this machine
         // withholds by design (check-env-cause.js); status is then unverifiable.
         ...(r.envCause ? { envCause: r.envCause } : {}),
@@ -523,7 +526,7 @@ async function main(argv = process.argv.slice(2)) {
     if (checkout) removeCheckout(checkout);
   }
 
-  await routeRealFailures({ runId, results, handedOff });
+  await routeRealFailures({ runId, results, handedOff, sha: (checkout && checkout.sha) || null });
 
   const counts = summarize(results, { noCriteria: dropped.length });
   const couldNotRun = results.filter((x) => !x.skip && x.envCause).length;

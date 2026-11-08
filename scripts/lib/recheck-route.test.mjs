@@ -28,13 +28,18 @@ test('routeMode: off switch wins, shadow before the arm date, live after, a bad 
 });
 
 test('real ledger fails: only the 67 real ones are routable, capped at one batch', () => {
-  const b = buildRouteBatch({ rows: realRows, now: NOW, tsxTests: TSX });
+  const b = buildRouteBatch({ rows: realRows, now: NOW, tsxTests: TSX, sha: 'abc1234def5678' });
   assert.equal(b.skipped.env, 18);
   assert.equal(b.cards.length, MAX_ROUTED);
   assert.equal(b.overflow, 67 - MAX_ROUTED);
   assert.match(b.title, /^Recheck 2026-11-16: 67 done claims no longer hold on main$/);
   assert.match(b.body, /## Acceptance criteria/);
   assert.match(b.body, /Do not reopen the original cards/);
+  // Each entry names the fresh-main commit and the END of the output (where the failure is).
+  assert.equal((b.body.match(/failed on main at abc1234def56, output tail: /g) || []).length, MAX_ROUTED);
+  const long = buildRouteBatch({ rows: [{ cardId: 'BRO-9', name: 'n', status: 'fail', verifyCmd: 'node --test x.test.mjs', detail: `${'setup noise '.repeat(40)}AssertionError: expected 3 got 0` }], now: NOW, tsxTests: new Set() });
+  assert.match(long.body, /output tail: \.\.\..*AssertionError: expected 3 got 0/);
+  assert.match(long.body, /failed on main at unknown/);
   for (const c of b.cards) assert.ok(b.body.includes(c.cardId) && b.body.includes(c.verifyCmd), c.cardId);
   // No env-cause card ever appears.
   for (const r of realRows.filter((x) => x.expect !== 'real')) assert.ok(!b.cards.some((c) => c.cardId === r.cardId), r.cardId);
@@ -67,6 +72,7 @@ test('fileRouteBatch: one create with --dispatch --new-anyway, card id read from
   assert.deepEqual(ok, { filed: true, identifier: 'BRO-9001', error: null });
   assert.equal(argv[0], 'create');
   for (const f of ['--dispatch', '--new-anyway', '--notes']) assert.ok(argv.includes(f), f);
+  assert.equal(argv[argv.indexOf('--priority') + 1], '2', 'P2 per the card');
   const refused = await fileRouteBatch({ title: 'T', body: 'B', linearBrainMain: async () => { process.exit(2); } });
   assert.deepEqual([refused.filed, refused.error], [false, 'linear-brain create exited 2']);
   const threw = await fileRouteBatch({ title: 'T', body: 'B', linearBrainMain: async () => { throw new Error('linear down'); } });

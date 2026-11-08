@@ -358,7 +358,10 @@ function buildBudgetPreamble(timeoutMs) {
     + `status block and in the card's close comment, one per line: ROOT-CAUSE: <why the defect was possible> / `
     + `PREVENTION: <path of the test/lint/gate/guard in your diff that now catches this class> ; cousins: <where you `
     + `looked, what you found> / RED-THEN-GREEN: <the guard failed with the fix reverted and passed with it> `
-    + `(or NO-ROOT-CAUSE: <reason> for a fix with no possible guard, NO-PREVENTION: <reason> for a feature, docs or revert).\n\n`;
+    + `(or NO-ROOT-CAUSE: <reason> for a fix with no possible guard, NO-PREVENTION: <reason> for a feature, docs or revert). `
+    // BRO-7138: the close check also wants proof the fix had its effect.
+    + `Every fix close also needs EFFECT: <what you measured on real data after landing, before and after, with numbers; `
+    + `for a new check, gate or rule, its dry run over real past inputs and hit rate> (or NO-EFFECT-CHECK: <reason>).\n\n`;
 }
 
 async function runJob(opts) {
