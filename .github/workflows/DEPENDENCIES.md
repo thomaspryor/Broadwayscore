@@ -393,7 +393,7 @@ Workflows without any concurrency block, by class (read-only / alerting / test j
 | `NYT_COOKIES_META` | 1 cross-repo writers (of 1 workflows using it): `opening-night-express.yml` |
 | `NYT_EMAIL` | 8 cross-repo writers (of 9 workflows using it) |
 | `NYT_PASSWORD` | 1 cross-repo writers (of 1 workflows using it): `process-review-submission.yml` |
-| `OPENAI_API_KEY` | 34 cross-repo writers (of 53 workflows using it) |
+| `OPENAI_API_KEY` | 34 cross-repo writers (of 54 workflows using it) |
 | `OPENROUTER_API_KEY` | 12 cross-repo writers (of 16 workflows using it) |
 | `OWNER_EMAIL` | 69 cross-repo writers (of 154 workflows using it) |
 | `REDDIT_CLIENT_ID` | 3 cross-repo writers (of 4 workflows using it): `bulk-reddit-sentiment.yml`, `reddit-engagement-digest.yml`, `update-reddit-sentiment.yml` |
