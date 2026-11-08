@@ -277,8 +277,8 @@ function main(argv = process.argv.slice(2)) {
   if (missing.length) {
     console.error(`land-local-check: ${missing.join(', ')} missing in this checkout (a worktree has no local data). `
       + 'Data-dependent tests would fail on both sides and report false new failures. '
-      + 'Run ./scripts/setup-local-data.sh --link-only for core data. With data/cast/ available, generate the manifests with '
-      + 'node scripts/build-actor-slugs-manifest.js && node scripts/build-cast-manifest.js.');
+      + 'Run ./scripts/setup-local-data.sh --link-only: it links core data and builds the cast manifests from data/cast/ '
+      + '(by hand: node scripts/build-actor-slugs-manifest.js && node scripts/build-cast-manifest.js).');
     return 3;
   }
   if (!hasOwnNodeModules(ROOT)) {
