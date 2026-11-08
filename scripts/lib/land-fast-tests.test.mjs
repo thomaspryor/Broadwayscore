@@ -117,3 +117,10 @@ test('mirrorLandRegeneration regenerates a stale doc only when base land-rebase.
     assert.equal(F.mirrorLandRegeneration(dir, 'HEAD'), false, 'already fresh');
   } finally { fs.rmSync(dir, { recursive: true, force: true }); }
 });
+
+test('a very wide diff skips name matching: invariants plus the changed tests only', () => {
+  const r = sel(['scripts/lib/widget-maker.js', 'tests/unit/c.test.mjs'], { maxChanged: 1 });
+  assert.deepEqual(r.files.map((f) => f.file).sort(), ['tests/unit/c.test.mjs', 'tests/unit/inv.test.mjs']);
+  assert.equal(r.skipped.wideDiff, 2);
+  assert.equal(sel(['scripts/lib/widget-maker.js']).skipped.wideDiff, 0);
+});

@@ -129,7 +129,12 @@ function matchTier(changedFile, testFile, text) {
  * -> { files: [{ file, gate, why }], skipped: { slow, overCap } }
  * changed: repo paths the branch changes; universe: { nodeSet, tsxSet, libFiles }; readText(file) -> source.
  */
-function selectFastTests({ changed, universe, readText, invariants = INVARIANT_TESTS, maxTargeted = MAX_TARGETED, slow = SLOW_TESTS, skip = new Set() }) {
+// A diff wider than this makes targeted matching cost minutes (2,957 files took 139 s) for a set the
+// cap would cut anyway: such a branch runs the invariants plus its own changed tests (BRO-7150).
+const MAX_CHANGED_FOR_TARGETING = 300;
+
+function selectFastTests({ changed, universe, readText, invariants = INVARIANT_TESTS, maxTargeted = MAX_TARGETED, slow = SLOW_TESTS, skip = new Set(), maxChanged = MAX_CHANGED_FOR_TARGETING }) {
+  const wide = changed.length > maxChanged;
   const all = [...new Set([...universe.nodeSet, ...universe.tsxSet, ...universe.libFiles])].sort();
   const picked = new Map();
   for (const f of invariants) {
@@ -140,6 +145,7 @@ function selectFastTests({ changed, universe, readText, invariants = INVARIANT_T
   const targeted = [];
   for (const f of all) {
     if (picked.has(f)) continue;
+    if (wide) { if (changed.includes(f)) targeted.push({ file: f, gate: gateFor(f, universe), tier: 0, why: 'changed test' }); continue; }
     let text;
     try { text = readText(f); } catch { continue; }
     let best = null;
@@ -159,7 +165,7 @@ function selectFastTests({ changed, universe, readText, invariants = INVARIANT_T
     if ([...picked.values()].filter((p) => p.tier >= 0).length >= maxTargeted) { overCap++; continue; }
     picked.set(t.file, t);
   }
-  return { files: [...picked.values()].map(({ file, gate, why }) => ({ file, gate, why })), skipped: { slow: slowSkipped, overCap } };
+  return { files: [...picked.values()].map(({ file, gate, why }) => ({ file, gate, why })), skipped: { slow: slowSkipped, overCap, wideDiff: wide ? changed.length : 0 } };
 }
 
 /** The tree's own test universe (the collector it ships, its tsx manifest, scripts/lib/*.test.mjs). */
@@ -416,6 +422,6 @@ async function main(argv = process.argv.slice(2)) {
   return res.status === 'fail' ? 1 : res.status === 'skip' ? 3 : 0;
 }
 
-module.exports = { LOCAL_SKIP, withWorktree, mirrorLandRegeneration, INVARIANT_TESTS, BROAD_DIRS, SLOW_TESTS, MAX_TARGETED, FAST_GATES, gateFor, matchTier, selectFastTests, universeFor, selectForTree, writeScopeDir, runFast, changedFiles, parseArgs };
+module.exports = { MAX_CHANGED_FOR_TARGETING, LOCAL_SKIP, withWorktree, mirrorLandRegeneration, INVARIANT_TESTS, BROAD_DIRS, SLOW_TESTS, MAX_TARGETED, FAST_GATES, gateFor, matchTier, selectFastTests, universeFor, selectForTree, writeScopeDir, runFast, changedFiles, parseArgs };
 
 if (require.main === module) { hookTerm(); main().then((code) => { process.exitCode = code; }); }
