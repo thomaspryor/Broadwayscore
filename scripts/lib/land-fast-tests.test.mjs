@@ -95,3 +95,25 @@ test('a skipped invariant stays out when only named, and runs when the test itse
   const changed = sel(['tests/unit/inv.test.mjs'], { skip }).files.map((f) => f.file);
   assert.ok(changed.includes('tests/unit/inv.test.mjs'));
 });
+
+test('mirrorLandRegeneration regenerates a stale doc only when base land-rebase.sh does', async () => {
+  const { execFileSync } = await import('node:child_process');
+  const dir = fs.mkdtempSync(path.join(fs.realpathSync(process.env.TMPDIR || '/tmp'), 'lft-mirror-'));
+  const g = (...a) => execFileSync('git', ['-C', dir, ...a], { encoding: 'utf8' }).trim();
+  try {
+    g('init', '-q'); g('config', 'user.email', 't@t'); g('config', 'user.name', 't');
+    fs.mkdirSync(path.join(dir, 'scripts/lib'), { recursive: true });
+    fs.writeFileSync(path.join(dir, 'scripts/generate-workflow-dependencies.js'),
+      "const fs=require('fs');if(process.argv.includes('--check'))process.exit(fs.readFileSync('doc','utf8')==='new\\n'?0:1);fs.writeFileSync('doc','new\\n');\n");
+    fs.writeFileSync(path.join(dir, 'doc'), 'old\n');
+    fs.writeFileSync(path.join(dir, 'scripts/lib/land-rebase.sh'), '# no refresh here\n');
+    g('add', '-A'); g('commit', '-qm', 'old base');
+    assert.equal(F.mirrorLandRegeneration(dir, 'HEAD'), false, 'base cannot regenerate: leave the doc stale, as land.yml would');
+    assert.equal(fs.readFileSync(path.join(dir, 'doc'), 'utf8'), 'old\n');
+    fs.writeFileSync(path.join(dir, 'scripts/lib/land-rebase.sh'), 'refresh_generated_docs() { :; }\n');
+    g('commit', '-qam', 'new base');
+    assert.equal(F.mirrorLandRegeneration(dir, 'HEAD'), true);
+    assert.equal(fs.readFileSync(path.join(dir, 'doc'), 'utf8'), 'new\n');
+    assert.equal(F.mirrorLandRegeneration(dir, 'HEAD'), false, 'already fresh');
+  } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+});

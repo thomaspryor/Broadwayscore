@@ -118,6 +118,31 @@ const PREFETCH_MAX_PATHS = 2000;
 
 // BRO-6035: generated docs a rebase conflict may be repaired by regenerating (never hand-merged).
 const GENERATED_DOC_PATHS = ['.github/workflows/DEPENDENCIES.md'];
+/**
+ * BRO-7150: after a clean rebase, regenerate GENERATED_DOC_PATHS when the generator says they are stale and
+ * amend the result into HEAD (never into `onto`, i.e. never into main's own commit). Pure over its seams:
+ * git(args) -> stdout (throws on failure), exec(args) runs `node args` (throws on non-zero).
+ * -> { refreshed: bool, reason }
+ */
+function refreshGeneratedDocsIn(workdir, { onto, git, exec }) {
+  const gen = 'scripts/generate-workflow-dependencies.js';
+  if (!fs.existsSync(path.join(workdir, gen))) return { refreshed: false, reason: 'no generator in this tree' };
+  try {
+    if (onto && git(['rev-parse', 'HEAD']).trim() === git(['rev-parse', `${onto}^{commit}`]).trim()) return { refreshed: false, reason: 'nothing rebased' };
+  } catch { return { refreshed: false, reason: 'cannot resolve HEAD' }; }
+  try { exec([gen, '--check']); return { refreshed: false, reason: 'up to date' }; } catch { /* stale, or a generator error: regenerate decides */ }
+  try {
+    exec([gen]);
+    if (!git(['status', '--porcelain', '--', ...GENERATED_DOC_PATHS]).trim()) return { refreshed: false, reason: 'generator changed nothing' };
+    git(['add', '--', ...GENERATED_DOC_PATHS]);
+    git(['commit', '--amend', '--no-edit', '--no-verify']);
+    return { refreshed: true, reason: 'regenerated' };
+  } catch (e) {
+    try { git(['checkout', '--', ...GENERATED_DOC_PATHS]); } catch { /* leave it */ }
+    return { refreshed: false, reason: `regeneration failed: ${String(e.message || e).slice(0, 200)}` };
+  }
+}
+
 /** True when every conflicted path is a generated doc (and at least one is). */
 function isGeneratedDocConflict(files) {
   return Array.isArray(files) && files.length > 0 && files.every((f) => GENERATED_DOC_PATHS.includes(f));
@@ -809,6 +834,15 @@ function landBranch(o) {
       }
       return { done: false, lastErr };
     };
+    // BRO-7150: a rebase that applied cleanly can still leave DEPENDENCIES.md stale (the branch changed a
+    // workflow edge without regenerating, or main moved the graph). land.yml refused that after ~25 min;
+    // regenerate it and fold it into the branch's last commit instead (same tree as the Checks job's
+    // land-rebase.sh refresh). Fails open: no generator, a generator error or nothing to fix leaves HEAD alone.
+    const refreshGeneratedDocs = (onto) => {
+      const r = refreshGeneratedDocsIn(workdir, { onto, git: (args) => git(args, workdir), exec: (args) => execFileSync('node', args, { cwd: workdir, stdio: 'pipe', timeout: 120000 }) });
+      if (r.refreshed) log(`[land] ${GENERATED_DOC_PATHS.join(', ')} was stale on the rebased tree: regenerated and folded into the last commit (BRO-7150)`);
+      return r;
+    };
     // rangeFrom/tip: rebase `rangeFrom..tip` onto `onto` instead of HEAD's own
     // commits (a train rider; HEAD becomes the rebased rider).
     const rebaseOnto = (onto, { rangeFrom = null, tip = null } = {}) => {
@@ -816,12 +850,13 @@ function landBranch(o) {
       for (let retry = 0; ; retry++) {
         try {
           git(rangeFrom ? ['rebase', '--onto', onto, rangeFrom, tip] : ['rebase', onto], workdir);
+          if (!rangeFrom) refreshGeneratedDocs(onto);
           return;
         } catch (caught) {
           let err = caught;
           // BRO-6035: a conflict in nothing but the generated DEPENDENCIES.md is regenerated, not refused.
           const fixed = resolveGeneratedDocConflicts();
-          if (fixed.done) return;
+          if (fixed.done) { if (!rangeFrom) refreshGeneratedDocs(onto); return; }
           // After a resolved stop the failure that matters is the LAST one (a later real conflict, a lazy-fetch failure).
           if (fixed.lastErr) { err = fixed.lastErr; }
           const errText2 = String(err.stderr || err.message || '');
@@ -1130,7 +1165,7 @@ module.exports = {
   DEFAULT_LAND_DEADLINE_MS, landDeadlineMs, deadlineRefusal,
   checkTimings,
   isPromisorFetchFailure,
-  isGeneratedDocConflict, GENERATED_DOC_PATHS,
+  isGeneratedDocConflict, GENERATED_DOC_PATHS, refreshGeneratedDocsIn,
   PROMISOR_REBASE_RETRIES,
   MAX_ATTEMPTS,
   MAX_CHURN_SKIPS,

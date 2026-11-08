@@ -216,12 +216,16 @@ function runGateFiles(root, gate, files, { timeoutMs = 240000, env = process.env
   const [cmd, args] = gate === GATE_TSX ? ['npx', ['tsx', ...common]] : ['node', common];
   const t0 = Date.now();
   return new Promise((resolve) => {
-    const child = spawn(cmd, args, { cwd: root, env: { ...env, BSC_STAGE_LATENCY_MUTE: '1' }, stdio: ['ignore', 'pipe', 'pipe'] });
+    const child = spawn(cmd, args, { cwd: root, env: { ...env, BSC_STAGE_LATENCY_MUTE: '1' }, stdio: ['ignore', 'pipe', 'pipe'], detached: true });
     const chunks = [];
     child.stdout.on('data', (d) => chunks.push(d));
     child.stderr.on('data', (d) => chunks.push(d));
     let timedOut = false;
-    const timer = setTimeout(() => { timedOut = true; child.kill('SIGKILL'); }, timeoutMs);
+    // Kill the whole group: node --test's per-file children would otherwise keep the pipes (and 'close') open.
+    const timer = setTimeout(() => {
+      timedOut = true;
+      try { process.kill(-child.pid, 'SIGKILL'); } catch { try { child.kill('SIGKILL'); } catch { /* gone */ } }
+    }, timeoutMs);
     child.on('close', (code) => {
       clearTimeout(timer);
       resolve({ exit: timedOut || code === null ? 124 : code, text: Buffer.concat(chunks).toString('utf8'), ms: Date.now() - t0 });
@@ -298,6 +302,8 @@ async function runFast({ root, base, selection, withBase = null, timeoutMs = 240
       }
       await Promise.all([...gates].map(async ([gate, files]) => {
         const r = await runGateFiles(wt, gate, [...files], { timeoutMs });
+        // A base run that timed out proves nothing; counting its files as new would refuse a clean branch.
+        if (r.exit === 124) throw new Error(`${gate} timed out on base`);
         for (const f of failuresOf(gate, r.text, wt).values()) onBase.add(`${gate}|${f.file}::${f.name}`);
       }));
     });
@@ -309,19 +315,35 @@ async function runFast({ root, base, selection, withBase = null, timeoutMs = 240
 }
 
 function parseArgs(argv) {
-  const o = { cmd: argv[0], base: null, tip: 'HEAD', scopeDir: null, json: false, profile: argv[0] === 'run' ? 'local' : 'ci' };
+  const o = { cmd: argv[0], base: null, tip: 'HEAD', scopeDir: null, json: false, profile: argv[0] === 'run' ? 'local' : 'ci', timeoutMs: 240000, worktree: false };
   for (let i = 1; i < argv.length; i++) {
     const a = argv[i];
     if (a === '--base') o.base = argv[++i];
     else if (a === '--tip') o.tip = argv[++i];
     else if (a === '--scope-dir') o.scopeDir = argv[++i];
     else if (a === '--json') o.json = true;
+    else if (a === '--worktree') o.worktree = true; // always judge in a throwaway worktree (the pre-push hook)
+    else if (a === '--timeout-ms') { o.timeoutMs = Number(argv[++i]); if (!(o.timeoutMs > 0)) return { error: '--timeout-ms must be positive' }; }
     else if (a === '--profile') { o.profile = argv[++i]; if (!['ci', 'local'].includes(o.profile)) return { error: '--profile must be ci or local' }; }
     else return { error: `unknown argument: ${a}` };
   }
   if (!['select', 'run'].includes(o.cmd)) return { error: 'first argument must be select or run' };
   if (!o.base) return { error: '--base is required' };
   return o;
+}
+
+/**
+ * BRO-7150: land.yml's rebase (base's scripts/lib/land-rebase.sh, refresh_generated_docs) regenerates a stale
+ * .github/workflows/DEPENDENCIES.md before the tests run, so a throwaway worktree judged here does the same;
+ * otherwise its freshness test would refuse a push the land accepts. Working tree only, never committed.
+ */
+function mirrorLandRegeneration(root, base) {
+  const helper = git(root, ['show', `${base}:scripts/lib/land-rebase.sh`]);
+  if (helper.code !== 0 || !helper.stdout.includes('refresh_generated_docs')) return false;
+  const gen = path.join(root, 'scripts', 'generate-workflow-dependencies.js');
+  if (!fs.existsSync(gen)) return false;
+  if (spawnSync(process.execPath, [gen, '--check'], { cwd: root, stdio: 'ignore', timeout: 60000 }).status === 0) return false;
+  return spawnSync(process.execPath, [gen], { cwd: root, stdio: 'ignore', timeout: 60000 }).status === 0;
 }
 
 async function main(argv = process.argv.slice(2)) {
@@ -343,14 +365,15 @@ async function main(argv = process.argv.slice(2)) {
   if (!tip) { console.error(`land-fast-tests: unknown --tip ${o.tip}`); return 3; }
   const clean = !git(ROOT, ['status', '--porcelain', '--untracked-files=no']).stdout;
   const judge = async (root) => {
+    if (root !== ROOT) mirrorLandRegeneration(root, o.base);
     const sel = selectForTree(root, o.base, tip, { profile: o.profile });
     if (!sel) return { status: 'skip', reason: `git diff ${o.base}...${tip} failed`, newFailures: [], ran: 0, ms: 0 };
-    return runFast({ root, base: o.base, selection: sel });
+    return runFast({ root, base: o.base, selection: sel, timeoutMs: o.timeoutMs });
   };
   let res;
   try {
     // This checkout when it is the tip as committed; else (a replay, uncommitted edits) a throwaway worktree.
-    res = head === tip && clean ? await judge(ROOT) : await withWorktree(ROOT, tip, judge);
+    res = head === tip && clean && !o.worktree ? await judge(ROOT) : await withWorktree(ROOT, tip, judge);
   } catch (e) {
     res = { status: 'skip', reason: e.message, newFailures: [], ran: 0, ms: 0 };
   }
@@ -363,6 +386,6 @@ async function main(argv = process.argv.slice(2)) {
   return res.status === 'fail' ? 1 : res.status === 'skip' ? 3 : 0;
 }
 
-module.exports = { LOCAL_SKIP, withWorktree, INVARIANT_TESTS, BROAD_DIRS, SLOW_TESTS, MAX_TARGETED, FAST_GATES, gateFor, matchTier, selectFastTests, universeFor, selectForTree, writeScopeDir, runFast, changedFiles, parseArgs };
+module.exports = { LOCAL_SKIP, withWorktree, mirrorLandRegeneration, INVARIANT_TESTS, BROAD_DIRS, SLOW_TESTS, MAX_TARGETED, FAST_GATES, gateFor, matchTier, selectFastTests, universeFor, selectForTree, writeScopeDir, runFast, changedFiles, parseArgs };
 
 if (require.main === module) main().then((code) => { process.exitCode = code; });

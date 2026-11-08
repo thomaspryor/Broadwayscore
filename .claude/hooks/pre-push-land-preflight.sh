@@ -5,7 +5,8 @@
 # land rebase onto origin/main conflicts (a conflict resolved inside a merge
 # of main comes back once the rebase drops the merge), or a test file the
 # branch added/deleted is not (un)registered in the test manifests. Each such
-# refusal costs a ~30-minute land cycle; this check takes about a second.
+# refusal costs a ~30-minute land cycle; this check takes about a second, plus
+# 1-3 minutes for the land.yml unit tests the diff touches (BRO-7150).
 #
 # All logic lives in scripts/lib/land-preflight.mjs (tested by
 # tests/unit/land-preflight.test.mjs). This wrapper only feeds it the hook
@@ -29,9 +30,10 @@ case "$input" in
 esac
 
 # Stock macOS has no `timeout`; fall back to gtimeout, then to no wrapper
-# (the settings.json hook timeout of 120s still bounds it).
-if command -v timeout >/dev/null 2>&1; then TO=(timeout 90)
-elif command -v gtimeout >/dev/null 2>&1; then TO=(gtimeout 90)
+# (the settings.json hook timeout of 280s still bounds it). 260s: the BRO-7150 fast
+# land tests (two <=80s phases plus worktree setup) run after the ~1-30s checks.
+if command -v timeout >/dev/null 2>&1; then TO=(timeout 260)
+elif command -v gtimeout >/dev/null 2>&1; then TO=(gtimeout 260)
 else TO=()
 fi
 # stderr: block message (exit 2). stdout: advisory warnings as additionalContext

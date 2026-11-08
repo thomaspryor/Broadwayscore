@@ -71,4 +71,25 @@ echo "case 5: promisor text alongside CONFLICT stays a conflict"
 mkrepo r5; run 1 "$PROM"$'\nCONFLICT (content): Merge conflict in a.txt'
 [ $RC -eq 1 ] && grep -q 'resolve the conflict' <<<"$OUT" && ok "conflict wins" || bad "rc=$RC $OUT"
 
+echo "case 6: a stale DEPENDENCIES.md is regenerated into the last branch commit (BRO-7150)"
+mkrepo r6
+mkdir -p scripts .github/workflows
+# Stand-in generator: doc = the sorted workflow names; --check exits 1 when stale (the real contract).
+cat > scripts/generate-workflow-dependencies.js <<'GEN'
+const fs = require('fs'); const d = '.github/workflows';
+const want = fs.readdirSync(d).filter((f) => f.endsWith('.yml')).sort().join(',') + '\n';
+const p = d + '/DEPENDENCIES.md'; const have = fs.existsSync(p) ? fs.readFileSync(p, 'utf8') : '';
+if (process.argv.includes('--check')) process.exit(have === want ? 0 : 1);
+fs.writeFileSync(p, want);
+GEN
+echo wf > .github/workflows/b.yml && echo 'old' > .github/workflows/DEPENDENCIES.md
+git add . && git commit -qm "b2 adds a workflow"
+run 0 ""
+[ $RC -eq 0 ] && [ "$(cat .github/workflows/DEPENDENCIES.md)" = "b.yml" ] && [ -z "$(git status --porcelain)" ] \
+  && [ "$(git log -1 --format=%s)" = "b2 adds a workflow" ] && [ "$(git rev-parse HEAD~2)" = "$BASE" ] \
+  && grep -q 'regenerated it' <<<"$OUT" && ok "regenerated and amended, no extra commit" || bad "rc=$RC $OUT $(git log --oneline -3)"
+echo "case 7: an up-to-date doc leaves HEAD as rebased"
+before="$(git rev-parse HEAD)"; run 0 ""
+[ $RC -eq 0 ] && [ "$(git rev-parse HEAD)" = "$before" ] && ! grep -q 'regenerated it' <<<"$OUT" && ok "untouched" || bad "rc=$RC $OUT"
+
 [ $fail -eq 0 ] && echo "land-rebase test: OK" || { echo "land-rebase test: FAILED"; exit 1; }
