@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-08T18:59:09.323Z",
+  "timestamp": "2026-11-08T20:06:51.013Z",
   "stats": {
-    "totalReviews": 80578,
-    "alreadyFlagged": 22064,
+    "totalReviews": 80581,
+    "alreadyFlagged": 22065,
     "dateGuardCatches": 219,
-    "directorMismatch": 3562,
-    "tvFilmSignals": 2293,
-    "londonSignals": 3635,
-    "offBroadwaySignals": 749,
-    "yearMismatch": 367,
-    "noPublishDate": 8410
+    "directorMismatch": 3565,
+    "tvFilmSignals": 2296,
+    "londonSignals": 3637,
+    "offBroadwaySignals": 750,
+    "yearMismatch": 370,
+    "noPublishDate": 8411
   },
   "findings": [
     {
@@ -14837,6 +14837,20 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"jamie lloyd\" from cyrano-de-bergerac-2012"
+        }
+      ]
+    },
+    {
+      "showId": "cyrano-de-bergerac-2007",
+      "file": "wsj--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.wsj.com/articles/a-view-from-the-bridge-and-cyrano-de-bergerac-reviews-better-than-broadway-1504205829",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2026 (3x) more than 2007 (1x). 2026 matches production: cyrano-de-bergerac-west-end-2026"
         }
       ]
     },
@@ -29943,6 +29957,20 @@
       ]
     },
     {
+      "showId": "heartbreak-house-2006",
+      "file": "wsj--terry-teachout.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.wsj.com/articles/heartbreak-house-review-reviving-shaws-useless-futile-creatures-1536696745",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2026 (3x) more than 2006 (1x). 2026 matches production: heartbreak-house-regional-2026"
+        }
+      ]
+    },
+    {
       "showId": "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026",
       "file": "deadline--nellie-andreeva.json",
       "score": null,
@@ -37307,6 +37335,20 @@
       ]
     },
     {
+      "showId": "king-lear-2004",
+      "file": "wsj--terry-teachout.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.wsj.com/articles/king-lear-review-every-inch-a-king-11554424200",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sam gold\" from king-lear-2019"
+        }
+      ]
+    },
+    {
       "showId": "king-lear-off-broadway-2026",
       "file": "third-coast-review--unknown.json",
       "publishDate": "2026-10-26",
@@ -40909,6 +40951,25 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "mamma-mia-2001",
+      "file": "wsj--ellen-gamerman.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.wsj.com/articles/one-mamma-mia-was-never-going-to-be-enough-1529502470",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        },
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2026 (3x) more than 2001 (1x). 2026 matches production: mamma-mia-tour-2026"
         }
       ]
     },
@@ -48975,6 +49036,20 @@
       ]
     },
     {
+      "showId": "pacific-overtures-1976",
+      "file": "wsj--terry-teachout.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.wsj.com/articles/pacific-overtures-review-shortening-sondheim-1493944200",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"amon miyamoto\" from pacific-overtures-2004"
+        }
+      ]
+    },
+    {
       "showId": "pacific-overtures-2004",
       "file": "nytimes--ben-brantley.json",
       "score": 51,
@@ -54315,6 +54390,25 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "rent-regional-2026",
+      "file": "nytimes--elisabeth-vincentelli.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.nytimes.com/2026/10/15/theater/rent-macbeth-billy-crystal-streaming-theater.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael greif\" from rent-1996"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"hbo max\""
         }
       ]
     },
@@ -67279,6 +67373,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "the-full-monty-2000",
+      "file": "wsj--john-anderson.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.wsj.com/arts-culture/the-full-monty-review-tv-tedium-in-sheffield-337add5d?eafs_enabled=false",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"hulu\""
         }
       ]
     },
@@ -113149,6 +113257,19 @@
       ]
     },
     {
+      "showId": "mexodus-off-broadway-2026",
+      "file": "nytimes--unknown.json",
+      "publishDate": "2026-04-15",
+      "url": "https://www.nytimes.com/2026/04/15/theater/julio-torres-mexodus-theater-streaming.html",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"minetta lane\""
+        }
+      ]
+    },
+    {
       "showId": "middle-west-end-2022",
       "file": "britishtheatrecom--paul-t-davies.json",
       "score": 91,
@@ -121930,6 +122051,20 @@
       ]
     },
     {
+      "showId": "sisters-regional-2026",
+      "file": "nytimes--elisabeth-vincentelli.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.nytimes.com/2026/09/26/theater/jake-shears-scissor-sisters-rocky-horror-broadway.html?eafs_enabled=false",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "six-2021",
       "file": "telegraph--susannah-goldsbrough.json",
       "score": 77,
@@ -124805,6 +124940,19 @@
       "score": 24,
       "publishDate": "December 6th, 2024",
       "url": "https://twi-ny.com/2024/12/06/the-wrong-kind-of-faith-tammy-faye-on-broadway/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "tango-after-dark-off-west-end-2026",
+      "file": "firstnightmagazine--unknown.json",
+      "publishDate": "2026-11-08",
+      "url": "https://firstnightmagazine.com/2026/11/08/german-cornejo-talks-tango-after-dark-tango-is-so-much-more-than-just-a-dance/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",

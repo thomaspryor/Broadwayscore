@@ -1,12 +1,12 @@
 {
   "_meta": {
-    "generatedAt": "2026-11-08T18:47:06.999Z",
+    "generatedAt": "2026-11-08T19:55:57.501Z",
     "description": "Pre-2005 wrong-production audit results",
-    "totalFlagged": 155,
+    "totalFlagged": 161,
     "highConfidence": 9,
-    "mediumConfidence": 146,
+    "mediumConfidence": 152,
     "lowConfidence": 0,
-    "reassignable": 53
+    "reassignable": 58
   },
   "results": [
     {
@@ -1326,6 +1326,23 @@
       "textSnippet": "They’re not dancing in the aisles at “Mamma Mia!” anymore. When this jukebox musical, about a wedding weekend on a Greek island, opened at the Winter Garden Theater back in the fall of 2001 (five week"
     },
     {
+      "showId": "mamma-mia-2001",
+      "showTitle": "Mamma Mia!",
+      "showYear": 2001,
+      "file": "wsj--ellen-gamerman.json",
+      "outlet": "The Wall Street Journal",
+      "criticName": "Ellen Gamerman",
+      "publishDate": null,
+      "confidence": "medium",
+      "suggestedShowId": "mamma-mia-west-end-2021",
+      "signals": [
+        "year 1999 in text matches revival mamma-mia-west-end-2021",
+        "year 2026 in text matches revival mamma-mia-2025",
+        "year 2026 in text matches revival mamma-mia-tour-2026"
+      ],
+      "textSnippet": "By \n\nEllen Gamerman\n\nJune 20, 2018 9:47 am ET\n\n20\nGift unlocked article\nLily James and Josh Dylan star in ‘Mamma Mia! Here We Go Again.’ UNIVERSAL PICTURES\n\nA “Mamma Mia!” sequel seemed inevitable. Th"
+    },
+    {
       "showId": "thou-shalt-not-2001",
       "showTitle": "Thou Shalt Not",
       "showYear": 2001,
@@ -1584,6 +1601,21 @@
       "textSnippet": "FALSETTOS Send This Review to a Friend\n\nThe musical gets off to a rousing start with the singing of the catchy “Four Jews in a Room Bitching,” a number that sets the tone for the work’s irreverence th"
     },
     {
+      "showId": "city-of-angels-1989",
+      "showTitle": "City of Angels",
+      "showYear": 1989,
+      "file": "wsj--will-friedwald.json",
+      "outlet": "The Wall Street Journal",
+      "criticName": "Will Friedwald",
+      "publishDate": null,
+      "confidence": "medium",
+      "suggestedShowId": null,
+      "signals": [
+        "modern references: pandemic, covid"
+      ],
+      "textSnippet": "By \n\nWill Friedwald\n\nFeb. 22, 2022 6:04 pm ET\n\n3\nGift unlocked article\n\nListen\n\n(5 min)\n\nWhen most of us think of film noir, the soundtrack we hear in our heads is sultry torch singers and forlorn sax"
+    },
+    {
       "showId": "macbeth-1981",
       "showTitle": "Macbeth",
       "showYear": 1981,
@@ -1644,6 +1676,24 @@
         "modern references: hamilton"
       ],
       "textSnippet": "ASTAGE representation of Dracula is a challenge not so much to modern performers as to the modern audience. It comes to us with a stake through its heart, beyond real revival although capable of usefu"
+    },
+    {
+      "showId": "pacific-overtures-1976",
+      "showTitle": "Pacific Overtures",
+      "showYear": 1976,
+      "file": "wsj--terry-teachout.json",
+      "outlet": "The Wall Street Journal",
+      "criticName": "Terry Teachout",
+      "publishDate": null,
+      "confidence": "medium",
+      "suggestedShowId": "pacific-overtures-off-broadway-2017",
+      "signals": [
+        "revival text signals: revival, this production",
+        "year 2017 in text matches revival pacific-overtures-off-broadway-2017",
+        "year 2004 in text matches revival pacific-overtures-2004",
+        "no publishDate + revival signals + revivals exist"
+      ],
+      "textSnippet": "By \n\nTerry Teachout\n\nMay 4, 2017 8:30 pm ET\n\n1\nGift unlocked article\nKelvin Moon Loh, Austin Ku, George Takei, Marc Oka and Thom Sesma in ‘Pacific Overtures.’ JOAN MARCUS\n\nNew York\n\nWhenever John Doyl"
     },
     {
       "showId": "the-merchant-of-venice-1973",
@@ -1994,6 +2044,24 @@
       "textSnippet": "THE most animated presence in the prim, pretty new production of ''Fiddler on the Roof,'' which opened last night at the Minskoff Theater, may well be its title character. No, not the fiddler. The roo"
     },
     {
+      "showId": "king-lear-2004",
+      "showTitle": "King Lear",
+      "showYear": 2004,
+      "file": "wsj--terry-teachout.json",
+      "outlet": "The Wall Street Journal",
+      "criticName": "Terry Teachout",
+      "publishDate": null,
+      "confidence": "medium",
+      "suggestedShowId": "king-lear-west-end-2018",
+      "signals": [
+        "revival text signals: revival, this production",
+        "year 2019 in text matches revival king-lear-west-end-2018",
+        "year 2019 in text matches revival king-lear-2019",
+        "no publishDate + revival signals + revivals exist"
+      ],
+      "textSnippet": "By \n\nTerry Teachout\n\nApril 4, 2019 8:30 pm ET\n\nGift unlocked article\nJayne Houdyshell and Glenda Jackson in ‘King Lear’ BRIGITTE LACOMBE\n\nNew York\n\nNot so long ago, Glenda Jackson’s “King Lear” would "
+    },
+    {
       "showId": "match-2004",
       "showTitle": "Match",
       "showYear": 2004,
@@ -2071,6 +2139,22 @@
         "revival text signals: revival, current production"
       ],
       "textSnippet": "The directors Michael DeFilippis, Dmitry Krymov and Aleksandr Molochnikov all infuse their current productions with a burning, modern rage.\n\nIn “Burnout Paradise,” four performers try ambitious tasks "
+    },
+    {
+      "showId": "the-full-monty-2000",
+      "showTitle": "The Full Monty",
+      "showYear": 2000,
+      "file": "wsj--john-anderson.json",
+      "outlet": "The Wall Street Journal",
+      "criticName": "John Anderson",
+      "publishDate": null,
+      "confidence": "medium",
+      "suggestedShowId": "the-full-monty-regional-2024",
+      "signals": [
+        "year 2023 in text matches revival the-full-monty-regional-2024",
+        "year 2013 in text matches revival the-full-monty-west-end-2014"
+      ],
+      "textSnippet": "By \n\nJohn Anderson\n\nJune 13, 2023 9:19 pm ET\n\nGift unlocked article\n\nListen\n\n(4 min)\n\nRobert Carlyle HULU\n\nA stark, revealing look into the marketing psychology behind so much current TV, Hulu’s “The "
     },
     {
       "showId": "a-class-act-2001",
@@ -2380,6 +2464,23 @@
         "no publishDate + revival signals + revivals exist"
       ],
       "textSnippet": "If Jesus Christ Superstar is one of the musicals with the most predictable endings, why have audiences remained in its thrall for so many years? Why, in fact, do audiences continue to hunger so for a "
+    },
+    {
+      "showId": "jesus-christ-superstar-1971",
+      "showTitle": "Jesus Christ Superstar",
+      "showYear": 1971,
+      "file": "wsj--john-jurgensen.json",
+      "outlet": "The Wall Street Journal",
+      "criticName": "John Jurgensen",
+      "publishDate": null,
+      "confidence": "medium",
+      "suggestedShowId": "jesus-christ-superstar-2012",
+      "signals": [
+        "year 2013 in text matches revival jesus-christ-superstar-2012",
+        "year 2012 in text matches revival jesus-christ-superstar-2012",
+        "modern references: twitter, social media, hamilton"
+      ],
+      "textSnippet": "By \n\nJohn Jurgensen\n\nMarch 28, 2018 11:00 am ET\n\nSince its birth in 1970 as a rock-opera album, “Jesus Christ Superstar” has taken form on Broadway, in a feature film, thousands of community productio"
     },
     {
       "showId": "on-the-town-1971",
