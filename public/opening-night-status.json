@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-08T11:20:54.289Z",
+  "generatedAt": "2026-11-08T13:58:13.217Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -1341,19 +1341,19 @@
       "status": "open",
       "slug": "nero-off-west-end",
       "thumbnail": "/images/shows/nero-off-west-end-2026/thumbnail.jpg",
-      "siteScore": 44,
-      "liveScore": 44,
-      "scoreDrift": 0,
+      "siteScore": 41.04,
+      "liveScore": 41,
+      "scoreDrift": -0.03999999999999915,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 8,
+      "total": 10,
       "t1": 0,
-      "t2": 3,
-      "t3": 5,
+      "t2": 4,
+      "t3": 6,
       "positive": 2,
-      "mixed": 1,
-      "negative": 5,
+      "mixed": 2,
+      "negative": 6,
       "readiness": {
         "ready": false,
         "reasons": [
@@ -1456,10 +1456,6 @@
         },
         {
           "name": "The Spectator (UK)",
-          "isDualMarket": false
-        },
-        {
-          "name": "The Reviews Hub",
           "isDualMarket": false
         },
         {
@@ -1574,6 +1570,18 @@
           "p": 2,
           "m": 1,
           "n": 5,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-11-08T13:58:13.217Z",
+          "rc": 10,
+          "s": 41.04,
+          "t1": 0,
+          "t2": 4,
+          "t3": 6,
+          "p": 2,
+          "m": 2,
+          "n": 6,
           "bc": "waiting"
         }
       ]
@@ -2417,23 +2425,23 @@
       "status": "open",
       "slug": "tango-after-dark-west-end",
       "thumbnail": "/images/shows/tango-after-dark-off-west-end-2026/thumbnail.webp",
-      "siteScore": 69.26,
-      "liveScore": 69,
-      "scoreDrift": -0.2600000000000051,
+      "siteScore": 70.85,
+      "liveScore": 71,
+      "scoreDrift": 0.15000000000000568,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 3,
+      "total": 4,
       "t1": 0,
       "t2": 1,
-      "t3": 2,
-      "positive": 1,
+      "t3": 3,
+      "positive": 2,
       "mixed": 1,
       "negative": 1,
       "readiness": {
         "ready": false,
         "reasons": [
-          "3/8 total",
+          "4/8 total",
           "T1:0/3",
           "T2:1/2",
           "hi-conf:2/6"
@@ -2611,6 +2619,18 @@
           "t2": 1,
           "t3": 2,
           "p": 1,
+          "m": 1,
+          "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-11-08T13:58:13.217Z",
+          "rc": 4,
+          "s": 70.85,
+          "t1": 0,
+          "t2": 1,
+          "t3": 3,
+          "p": 2,
           "m": 1,
           "n": 1,
           "bc": "waiting"
@@ -4301,10 +4321,6 @@
         },
         {
           "name": "The Times (UK)",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Sunday Times",
           "isDualMarket": true
         },
         {
