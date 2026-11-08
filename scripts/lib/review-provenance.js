@@ -30,12 +30,21 @@ function sanitizeCaller(v) {
 }
 
 /**
+ * One-off scripts that only APPLY a person's verdict (hand-adjudicated lists). Their clears
+ * are hands even though a script stamped them (BRO-7145 review).
+ */
+const HAND_ADJUDICATED_CLEAR_SCRIPTS = new Set([
+  'clear-contradicted-flag-basis', 'clear-contradicted-flag-basis-bro2772', 'fix-wrong-reviews',
+]);
+
+/**
  * A wrongProduction clear stamped by a script rather than a person. Delegates to the
  * write guard's own definition (".js" names plus the bare-name batch scripts, BRO-5239),
  * lazily because scripts/lib is copied flat into fixtures.
  */
 function isScriptClearSetBy(by) {
   if (typeof by !== 'string' || !by.trim()) return false;
+  if (HAND_ADJUDICATED_CLEAR_SCRIPTS.has(by.trim().replace(/\.js\b.*$/, ''))) return false;
   return require('./review-write-guard').isScriptWrongProductionClear({
     wrongProductionManualClear: true, wrongProductionOverrideSetBy: by,
   });

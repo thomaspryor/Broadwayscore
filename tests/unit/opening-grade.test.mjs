@@ -162,3 +162,13 @@ test('BRO-7145: bare-name batch script stamps (no .js) are also not hand steps',
   const r = handSteps({ wrongProductionManualClear: true, wrongProductionOverrideSetBy: 'reverify-era-venue-wrongprod' });
   assert.ok(!(r.gating || []).includes('wrongProductionManualClear'));
 });
+
+test('BRO-7145: a person-stamped or hand-adjudicated .js clear still needs hands; redirect and wrongProd recover are classified right', () => {
+  const { handSteps } = require('../../scripts/lib/review-provenance.js');
+  for (const by of ['owner', 'clear-contradicted-flag-basis.js', 'fix-wrong-reviews.js:unflag']) {
+    const r = handSteps({ wrongProductionManualClear: true, wrongProductionOverrideSetBy: by });
+    assert.ok(r.gating.includes('wrongProductionManualClear'), by);
+  }
+  assert.equal(og.causeOfSubject('recover wrongProduction flag on X'), 'wrong-label');
+  assert.equal(og.causeOfSubject('fix redirect duplicate'), 'duplicate-identity');
+});

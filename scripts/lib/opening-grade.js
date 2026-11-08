@@ -110,7 +110,8 @@ function causeOfFields(fields) {
 /** Cause class of a hand commit or log line, from its subject. */
 function causeOfSubject(subject) {
   const t = String(subject || '').toLowerCase();
-  if (/ingest|missed|discovery|on-monitor|opening.night monitor|direct|recover|full.?text|pull quote|\badd(ed)?\b.*review|\bfeat: .*review/.test(t)) return 'discovery-gap';
+  if (/wrongprod|wrongshow|wrong.show/.test(t)) return 'wrong-label';
+  if (/ingest|missed|discovery|on-monitor|opening.night monitor|\bdirect\b|recover|full.?text|pull quote|\badd(ed)?\b.*review|\bfeat: .*review/.test(t)) return 'discovery-gap';
   if (/byline|criticname|re-credit|attribut|outletid/.test(t)) return 'attribution';
   if (/publishdate|date guard/.test(t)) return 'date-guard';
   if (/duplic|syndicat/.test(t)) return 'duplicate-identity';
