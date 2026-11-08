@@ -32,11 +32,22 @@ function parseArgs(argv) {
   return opts;
 }
 
+/** PURE. Where the run came from, so the freshness alarm counts only nightly CI rows. */
+function runSource(env) {
+  return env.GITHUB_RUN_ID ? { source: 'ci', runId: env.GITHUB_RUN_ID } : { source: 'local' };
+}
+
+function appendRow(file, row) {
+  fs.mkdirSync(path.dirname(file), { recursive: true });
+  fs.appendFileSync(file, `${JSON.stringify(row)}\n`);
+}
+
 /** PURE. The ledger row for one run. */
-function ledgerRow(plan, { now, broken = 0 } = {}) {
+function ledgerRow(plan, { now, broken = 0, env = process.env } = {}) {
   return {
     ts: now.toISOString(),
     mode: 'report-only',
+    ...runSource(env),
     open: plan.open,
     uncategorized: broken,
     handlers: Object.fromEntries(Object.entries(plan.handlers).map(([id, h]) => [id, { mode: h.mode, count: h.count, sample: h.sample }])),
@@ -56,16 +67,15 @@ async function main(argv = process.argv.slice(2), { graphql = null, now = new Da
     report = bc.categorizeBoard(issues, { now, secret: env.APPROVAL_HMAC_SECRET || null, lastRecheckStatusById: bc.readRecheckLedgerStatuses() });
   } catch (err) {
     console.error(`[board-dispatch] FAILED: ${err.message}`);
+    // A failed night still leaves a row, so "ran but failing" differs from "never ran".
+    if (opts.write) appendRow(opts.ledger, { ts: now.toISOString(), mode: 'report-only', ...runSource(env), error: String(err.message).slice(0, 300) });
     return 1;
   }
   const broken = report.cards.filter((c) => /^categorize-error/.test(c.reason || '')).length;
   if (broken) console.error(`[board-dispatch] WARN ${broken} card(s) could not be categorized (counted under Other)`);
   const plan = planDispatch(report);
-  const row = ledgerRow(plan, { now, broken });
-  if (opts.write) {
-    fs.mkdirSync(path.dirname(opts.ledger), { recursive: true });
-    fs.appendFileSync(opts.ledger, `${JSON.stringify(row)}\n`);
-  }
+  const row = ledgerRow(plan, { now, broken, env });
+  if (opts.write) appendRow(opts.ledger, row);
   if (opts.json) log(JSON.stringify(row, null, 2));
   else {
     log(`[board-dispatch] report-only: ${plan.open} open card(s)`);
@@ -78,4 +88,4 @@ async function main(argv = process.argv.slice(2), { graphql = null, now = new Da
 
 if (require.main === module) main().then((code) => { process.exitCode = code; });
 
-module.exports = { main, parseArgs, ledgerRow };
+module.exports = { main, parseArgs, ledgerRow, runSource };

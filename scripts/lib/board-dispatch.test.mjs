@@ -56,6 +56,7 @@ test('parseArgs and ledgerRow', () => {
   assert.equal(row.ts, '2026-11-08T00:00:00.000Z');
   assert.equal(row.uncategorized, 1);
   assert.equal(row.handlers['owner-decision-emails'].count, 1);
+  assert.equal(ledgerRow(planDispatch(report), { now: new Date(), env: {} }).source, 'local');
 });
 
 test('main: kill switch writes nothing and makes no Linear call', async () => {
@@ -82,12 +83,15 @@ test('main: appends one row, only reads Linear (every call is a query, no mutati
   assert.ok(queries.every((q) => !/\bmutation\b/.test(q)));
 });
 
-test('main: a Linear failure exits 1 and writes nothing', async () => {
+test('main: a Linear failure exits 1 and leaves an error row', async () => {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bd-'));
   const ledger = path.join(dir, 'l.jsonl');
   const err = console.error; console.error = () => {};
   try {
-    assert.equal(await main([`--ledger=${ledger}`], { graphql: async () => { throw new Error('down'); }, env: {}, log: () => {} }), 1);
+    assert.equal(await main([`--ledger=${ledger}`], { graphql: async () => { throw new Error('down'); }, env: { GITHUB_RUN_ID: '42' }, log: () => {} }), 1);
   } finally { console.error = err; }
-  assert.equal(fs.existsSync(ledger), false);
+  const row = JSON.parse(fs.readFileSync(ledger, 'utf8').trim());
+  assert.equal(row.error, 'down');
+  assert.equal(row.source, 'ci');
+  assert.equal(row.runId, '42');
 });
