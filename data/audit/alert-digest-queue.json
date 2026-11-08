@@ -903,5 +903,36 @@
       }
     ],
     "queuedAt": "2026-11-08T20:02:08.509Z"
+  },
+  {
+    "conditionKey": "land:land/bro-7131f-approved-fix-restore",
+    "title": "Landing blocked: unit-tests-node red on land/bro-7131f-approved-fix-restore",
+    "description": "land.yml did not land land/bro-7131f-approved-fix-restore: the unit-tests-node gate went red at c6e203b33e. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/42517419720",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-7131f-approved-fix-restore"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "c6e203b33e3c69358f8360c5a3993f7dd25d800a"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42517419720"
+      }
+    ],
+    "queuedAt": "2026-11-08T20:13:36.017Z"
   }
 ]
