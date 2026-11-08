@@ -1069,5 +1069,50 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-08T21:47:39.934Z"
+  },
+  {
+    "conditionKey": "live-data-test:tests/unit/critic-spelling-duplicates-live-data.test.mjs::reviews.json: no NEW critic page split by a byline spelling variant",
+    "title": "Live-data test failing: reviews.json: no NEW critic page split by a byline spelling variant (tests/unit/critic-spelling-duplicates-live-data.test.mjs)",
+    "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"reviews.json: no NEW critic page split by a byline spelling variant\" in tests/unit/critic-spelling-duplicates-live-data.test.mjs is red against the live corpus.\n\nExpected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   'review: Robert Levin (1) -> Robert Levine (3) [typo, no shared outlet and both pages sizeable]'\n+ ]\n- []\n",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "testId": "tests/unit/critic-spelling-duplicates-live-data.test.mjs::reviews.json: no NEW critic page split by a byline spelling variant",
+    "fields": [],
+    "queuedAt": "2026-11-08T22:05:06.150Z"
+  },
+  {
+    "conditionKey": "live-data-test:tests/unit/review-file-creation-same-url-check.test.mjs::correction refuses to clobber a pre-existing file already at the target filename",
+    "title": "Live-data test failing: correction refuses to clobber a pre-existing file already at the target filename (tests/unit/review-file-creation-same-url-check.test.mjs)",
+    "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"correction refuses to clobber a pre-existing file already at the target filename\" in tests/unit/review-file-creation-same-url-check.test.mjs is red against the live corpus.\n\nthe global URL index already knows brent-lang.json owns this url — no write is attempted at all\n+ actual - expected\n\n+ 'crossShow'\n- 'duplicate'\n",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "testId": "tests/unit/review-file-creation-same-url-check.test.mjs::correction refuses to clobber a pre-existing file already at the target filename",
+    "fields": [],
+    "queuedAt": "2026-11-08T22:05:06.167Z"
+  },
+  {
+    "conditionKey": "live-data-test:tests/unit/venue-complex-live-data.test.mjs::no West End venue-complex has an unlinked bare-form/keyword-overlap sub-venue slug",
+    "title": "Live-data test failing: no West End venue-complex has an unlinked bare-form/keyword-overlap sub-venue slug (tests/unit/venue-complex-live-data.test.mjs)",
+    "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"no West End venue-complex has an unlinked bare-form/keyword-overlap sub-venue slug\" in tests/unit/venue-complex-live-data.test.mjs is red against the live corpus.\n\nunlinked West End candidate sub-venue slugs: {\n\"sadler-s-wells\": [\n{\n\"slug\": \"sadler-s-wells-theatre\",\n\"rawStrings\": [\n\"Sadler's Wells Theatre\"\n],\n\"showCount\": 1\n}\n]\n}\n+ actual - expected\n\n+ {\n+   'sadler-s-wells': [\n+     {\n+       rawStrings: [\n+         \"Sadler's Wells Theatre\"\n+       ],\n+       showCount: 1,\n+       slug: 'sadler-s-wells-theatre'\n+     }\n+   ]\n+ }\n- {}\n",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "testId": "tests/unit/venue-complex-live-data.test.mjs::no West End venue-complex has an unlinked bare-form/keyword-overlap sub-venue slug",
+    "fields": [],
+    "queuedAt": "2026-11-08T22:05:06.585Z"
   }
 ]
