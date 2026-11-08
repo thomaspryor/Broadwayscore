@@ -32,18 +32,25 @@ test('a reader that closes early (| head) does not turn the code into an EPIPE c
   assert.equal(r.stdout.trim(), '3');
 });
 
-test('exit 0 and a falsy/undefined result exit 0; a non-integer truthy result exits 1', () => {
-  for (const [arg, want] of [['0', 0], ['undefined', 0], ['true', 1]]) {
-    const r = spawnSync(process.execPath, ['-e', `require(${JSON.stringify(HELPER)}).exitFlushed(${arg})`], { encoding: 'utf8' });
-    assert.equal(r.status, want, `exitFlushed(${arg})`);
+test('same code contract as process.exit: no code keeps an exitCode already set, non-integers throw', () => {
+  const run = (src) => spawnSync(process.execPath, ['-e', `const { exitFlushed } = require(${JSON.stringify(HELPER)}); ${src}`], { encoding: 'utf8' });
+  assert.equal(run('exitFlushed(0)').status, 0);
+  assert.equal(run('exitFlushed(undefined)').status, 0);
+  assert.equal(run('process.exitCode = 4; exitFlushed()').status, 4);
+  assert.equal(run("exitFlushed('2')").status, 2);
+  for (const bad of ['true', 'Promise.resolve(0)', "'x'"]) {
+    const r = run(`try { exitFlushed(${bad}); } catch (e) { console.error(e.name); process.exit(9); }`);
+    assert.equal(r.status, 9, `exitFlushed(${bad}) must throw`);
+    assert.match(r.stderr, /TypeError/);
   }
 });
 
 // The bare forms that drop queued output: process.exit(main(...)), .then(c => process.exit(c)),
 // and const c = main(...); ... process.exit(c). scripts/lib/ (land and CI verdicts) has none;
-// the rest of scripts/ may not grow (exact baseline, so a conversion must lower it).
+// the rest of scripts/ may not grow past its baseline (<=, so parallel conversions never conflict).
 const SITE_RES = [
-  /process\.exit\(\s*main\(/g,
+  /process\.exit\(\s*(?:await\s+)?main\(/g,
+  /\.then\(\s*process\.exit\s*[,)]/g,
   /\.then\(\s*\(?\s*(\w+)\s*\)?\s*=>\s*process\.exit\(\s*\1\s*\)/g,
   /(?:const|let)\s+(\w+)\s*=\s*(?:await\s+)?main\([^;]*\);[\s\S]{0,400}?process\.exit\(\s*\1\s*\)/g,
 ];
@@ -67,6 +74,8 @@ test('the site patterns match every bare form and not the flushed one', () => {
   assert.equal(countSites('process.exit(main(process.argv.slice(2)));'), 1);
   assert.equal(countSites('main().then((code) => process.exit(code), () => process.exit(1));'), 1);
   assert.equal(countSites('const code = main();\nrecord(code);\nprocess.exit(code);'), 1);
+  assert.equal(countSites('process.exit(await main());'), 1);
+  assert.equal(countSites('main().then(process.exit);'), 1);
   assert.equal(countSites("require('./exit-flushed.js').exitFlushed(main());"), 0);
 });
 
@@ -82,5 +91,5 @@ test('no bare main-exit in scripts/lib; the rest of scripts/ does not grow past 
   }
   assert.deepEqual(lib, [], 'use require(\'./exit-flushed.js\').exitFlushed(code) so piped output is not truncated (BRO-7111)');
   assert.ok(outside <= BASELINE_OUTSIDE_LIB, `${outside} bare main-exit sites outside scripts/lib (baseline ${BASELINE_OUTSIDE_LIB}): new scripts use exitFlushed from scripts/lib/exit-flushed.js`);
-  assert.equal(outside, BASELINE_OUTSIDE_LIB, `converted some (${outside} < ${BASELINE_OUTSIDE_LIB}): lower BASELINE_OUTSIDE_LIB to ${outside}`);
+  if (outside < BASELINE_OUTSIDE_LIB) console.log(`# ${outside} < baseline ${BASELINE_OUTSIDE_LIB}: lower BASELINE_OUTSIDE_LIB when convenient`);
 });
