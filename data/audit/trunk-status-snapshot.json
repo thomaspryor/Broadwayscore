@@ -1,57 +1,30 @@
 {
-  "generatedAt": "2026-11-07T09:10:36.671Z",
+  "generatedAt": "2026-11-08T09:29:56.462Z",
   "workflow": "test.yml",
   "branch": "main",
-  "latestRunHeadSha": "2bf5ac93ce419d7ba2725f27ba52c22bf384a82d",
-  "state": "RED",
-  "consecutiveFailures": 28,
-  "consecutiveSuccesses": 0,
-  "greenSince": null,
-  "greenForHours": null,
+  "latestRunHeadSha": "4dd62dc0d6749aae9ccc0a429a0470598f6681a4",
+  "state": "GREEN",
+  "consecutiveFailures": 0,
+  "consecutiveSuccesses": 20,
+  "greenSince": "2026-11-07T23:09:26Z",
+  "greenForHours": 10.341795,
   "greenDurationIsFloor": false,
-  "redSince": "2026-11-06T14:30:16Z",
-  "redForHours": 18.672408611111113,
+  "redSince": null,
+  "redForHours": null,
   "redDurationIsFloor": false,
-  "lastSuccessAt": "2026-11-06T13:13:24Z",
-  "latestFailedRunId": "42355617837",
-  "latestFailedRunUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42355617837",
-  "decidedRuns": 72,
+  "lastSuccessAt": "2026-11-08T07:52:33Z",
+  "latestFailedRunId": null,
+  "latestFailedRunUrl": null,
+  "decidedRuns": 83,
   "verdictLag": {
-    "verdictSha": "2bf5ac93ce419d7ba2725f27ba52c22bf384a82d",
-    "verdictAt": "2026-11-07T08:28:16Z",
-    "verdictAgeHours": 0.7057419444444445,
+    "verdictSha": "4dd62dc0d6749aae9ccc0a429a0470598f6681a4",
+    "verdictAt": "2026-11-08T07:52:33Z",
+    "verdictAgeHours": 1.623183888888889,
     "newerHeads": 0,
     "runsInFlight": 0,
     "lagging": false
   },
-  "failingJobs": [
-    {
-      "name": "Data Validation",
-      "steps": [
-        "Validate market expansion",
-        "Audit outlet-registry gaps"
-      ]
-    },
-    {
-      "name": "E2E Tests",
-      "steps": [
-        "Run E2E tests"
-      ]
-    },
-    {
-      "name": "Test Summary",
-      "steps": [
-        "Check results"
-      ]
-    }
-  ],
-  "failingPaths": [
-    {
-      "path": "tests/e2e/visual-regression.spec.ts",
-      "job": "E2E Tests",
-      "step": "Run E2E tests",
-      "evidence": "##[error]  1) [chromium] › tests/e2e/visual-regression.spec.ts:49:7 › Visual Regression › review card alignment"
-    }
-  ],
-  "topFailingJob": "E2E Tests"
+  "failingJobs": [],
+  "failingPaths": [],
+  "topFailingJob": null
 }
