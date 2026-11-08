@@ -7,7 +7,7 @@
  *   node scripts/rescue-abandoned-reviews.js                  # report only: what it would retry or escalate
  *   node scripts/rescue-abandoned-reviews.js --apply --alert  # CI (data-health-check.yml, daily)
  *     --recent-days=45  shows opened within this many days (default 45)
- *     --max-dispatch=5  ingest-urls.yml runs per invocation (default 5)
+ *     --max-dispatch=4  ingest-urls.yml runs per invocation (default 4, the workflow's in-flight cap)
  *     --show=ID         one show
  *
  * --apply dispatches ingest-urls.yml per show (capped-workflow-dispatch.js, caller=rescue-abandoned-reviews) and
@@ -31,15 +31,17 @@ const arg = (k, d) => { const a = process.argv.find((x) => x.startsWith(`--${k}=
 const APPLY = process.argv.includes('--apply');
 const ALERT = process.argv.includes('--alert');
 const RECENT_DAYS = Number(arg('recent-days', '45'));
-const MAX_DISPATCH = Number(arg('max-dispatch', '5'));
+const MAX_DISPATCH = Number(arg('max-dispatch', '4')); // ingest-urls.yml's in-flight cap (workflow-queue-cap.js)
 
 function readJson(p, fallback) { try { return JSON.parse(fs.readFileSync(p, 'utf8')); } catch { return fallback; } }
 
 function collect(now) {
   const { sweep } = require('./audit-coverage-holes');
-  const out = sweep({ days: Math.max(RECENT_DAYS, 120), only: arg('show', null), now, recentDays: RECENT_DAYS });
+  const days = Math.max(RECENT_DAYS, 120);
+  const out = sweep({ days, only: arg('show', null), now, recentDays: RECENT_DAYS });
   const showsRaw = readJson(path.join(ROOT, 'data', 'shows.json'), []);
   const shows = new Map((Array.isArray(showsRaw) ? showsRaw : showsRaw.shows || []).map((s) => [s.id, s]));
+  const { isCurrentShow } = require('./lib/coverage-holes');
   const counted = new Map();
   for (const r of (readJson(path.join(ROOT, 'data', 'reviews.json'), {}).reviews || [])) {
     if (!r || !r.showId) continue;
@@ -50,6 +52,7 @@ function collect(now) {
   const rows = [];
   rows.allA = new Set(out.A.map((r) => r.file));
   rows.sweptFiles = out.files;
+  rows.sweptShows = new Set([...shows.values()].filter((s) => isCurrentShow(s, now, days)).map((s) => s.id));
   for (const row of out.A) {
     const show = shows.get(row.show);
     const data = readJson(path.join(ROOT, 'data', 'review-texts', row.file), null);
@@ -86,14 +89,19 @@ async function main() {
   // A file whose A row is gone from the full sweep recovered: prune it, and clear its show's card once none are
   // left. Rows that only left the candidate list (show aged out, outlet now counted) keep their entry and card.
   // Never prune on a partial view: --show, or a sweep that read no files (review-texts checkout failed).
-  const resolvedShows = new Set();
+  const prunedEscalated = new Set();
   if (!arg('show', null) && rows.sweptFiles > 0) {
     for (const [file, e] of Object.entries(ledger)) {
-      if (rows.allA.has(file)) continue;
-      if (e.escalatedAt) resolvedShows.add(e.show);
+      const showId = e.show || file.split('/')[0];
+      // A show that left the sweep (closed, past the window) says nothing about its files: keep the entry.
+      if (!rows.sweptShows.has(showId) || rows.allA.has(file)) continue;
+      if (e.escalatedAt) prunedEscalated.add(showId);
       delete ledger[file];
     }
   }
+  // A show's card clears only when none of its escalated files is left in the ledger.
+  const stillEscalated = new Set(Object.values(ledger).filter((e) => e.escalatedAt).map((e) => e.show));
+  const resolvedShows = new Set([...prunedEscalated].filter((id) => !stillEscalated.has(id) && !escalate.has(id)));
 
   let dispatched = 0;
   let failed = 0;
@@ -112,7 +120,7 @@ async function main() {
 
   if (ALERT) {
     const { routeAlert, resolveCondition } = require('./lib/owner-alert-router.js');
-    for (const showId of resolvedShows) if (!escalate.has(showId)) resolveCondition(`abandoned-review-rescue:${showId}`, { reason: 'every abandoned review recovered' });
+    for (const showId of resolvedShows) resolveCondition(`abandoned-review-rescue:${showId}`, { reason: 'every abandoned review recovered' });
     for (const [showId, list] of escalate) {
       try {
         await routeAlert({
