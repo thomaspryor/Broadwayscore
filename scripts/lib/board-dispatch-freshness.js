@@ -17,7 +17,8 @@
  * dispatcher off on purpose does not page.
  */
 
-const { hoursAgo, formatAge } = require('./hours-ago');
+const { hoursAgo } = require('./hours-ago');
+const h = (n) => `${Math.round(n)}h`;
 
 const BOARD_DISPATCH_FRESHNESS_ROW = 'Freshness: board-dispatch ledger';
 const WARN_H = 36;
@@ -63,10 +64,10 @@ function evaluateBoardDispatchFreshness({ ledgerText, nowMs, disabled = false })
   if (!row) return noRow(name, nowMs, 'Board-dispatch ledger has no scheduled (source "ci") row yet');
   const age = hoursAgo(row.ts, nowMs);
   if (age === Infinity) return { name, status: 'error', message: `Last scheduled row has an unparseable ts: ${String(row.ts).slice(0, 40)}`, hint: HINT };
-  if (age > ERROR_H) return { name, status: 'error', message: `Last scheduled board-dispatch row is ${formatAge(age)} old (error threshold: ${formatAge(ERROR_H)})`, hint: HINT };
-  if (age > WARN_H) return { name, status: 'warn', message: `Last scheduled board-dispatch row is ${formatAge(age)} old (warn threshold: ${formatAge(WARN_H)})`, hint: HINT };
+  if (age > ERROR_H) return { name, status: 'error', message: `Last scheduled board-dispatch row is ${h(age)} old (error threshold: ${h(ERROR_H)})`, hint: HINT };
+  if (age > WARN_H) return { name, status: 'warn', message: `Last scheduled board-dispatch row is ${h(age)} old (warn threshold: ${h(WARN_H)})`, hint: HINT };
   if (row.error) return { name, status: 'warn', message: `Last scheduled board-dispatch run failed: ${String(row.error || 'no detail').slice(0, 120)}`, hint: HINT };
-  return { name, status: 'pass', message: `${formatAge(age)} old` };
+  return { name, status: 'pass', message: `last scheduled row ${h(age)} old` };
 }
 
 module.exports = { BOARD_DISPATCH_FRESHNESS_ROW, WARN_H, ERROR_H, FIRST_ROW_DUE, lastCiRow, evaluateBoardDispatchFreshness };
