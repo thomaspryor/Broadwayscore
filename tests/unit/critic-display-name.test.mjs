@@ -206,6 +206,8 @@ test('role-word bylines are not critics; a real name with one role word is (2026
     assert.equal(displayCriticName(name, outlet), null, name);
     assert.equal(isPlaceholderCritic(name, outlet), true, name);
   }
+  assert.equal(displayCriticName('MAGNET Staff', undefined, entry('magnetmagazine')), null, 'registry entry alone');
+  assert.equal(displayCriticName('MAGNET Staff', 'magnetmagazine'), null, 'outlet id alone');
   for (const [name, outlet] of [['David Guest', 'The Reviews Hub'], ['Jane Newsroom', 'X'], ['Magnet Staff', 'Variety']]) {
     assert.equal(displayCriticName(name, outlet), name, name);
   }
