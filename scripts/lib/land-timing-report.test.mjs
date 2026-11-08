@@ -76,3 +76,22 @@ test('parseArgs validates input', () => {
   assert.ok(R.parseArgs(['--bogus']).error);
   assert.ok(R.parseArgs(['--split=not-a-date']).error);
 });
+
+test('percentile, refusal rate and the target check', () => {
+  assert.equal(R.percentile([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 90), 9);
+  assert.equal(R.percentile([], 90), null);
+  const recs = [
+    ...Array.from({ length: 18 }, (_, i) => ({ outcome: 'landed', minutes: 20 + i, causes: [], fast: true, started: 'x' })),
+    { outcome: 'refused', minutes: 3, causes: ['a'], fast: true, started: 'x' },
+    { outcome: 'refused', minutes: 5, causes: ['a'], fast: true, started: 'x' },
+  ];
+  const agg = R.aggregate(recs);
+  assert.equal(agg.refusalRate, 0.1);
+  assert.deepEqual(R.checkTargets(agg), []);
+  assert.match(R.checkTargets(R.aggregate(recs.slice(0, 5))).join(), /decided runs/);
+  const slow = R.aggregate([...recs, ...Array.from({ length: 5 }, () => ({ outcome: 'refused', minutes: 25, causes: ['b'], fast: false, started: 'x' }))]);
+  const miss = R.checkTargets(slow).join(' | ');
+  assert.match(miss, /refusal rate/);
+  assert.match(miss, /time-to-refusal/);
+  assert.equal(R.parseArgs(['--check-targets']).check, true);
+});

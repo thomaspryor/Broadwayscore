@@ -16,9 +16,10 @@
  * Runs are split into "before" and "after" the fast-fail stage: a run whose Checks job has a
  * step named "Fast-fail ..." (land.yml, BRO-7150) is "after". --split=<ISO time> overrides.
  *
- * Usage: node scripts/lib/land-timing-report.js [--days=7] [--json] [--split=<ISO>] [--repo=owner/name]
+ * Usage: node scripts/lib/land-timing-report.js [--days=7] [--json] [--split=<ISO>] [--repo=owner/name] [--check-targets]
+ * --check-targets: exit 1 unless the trailing window meets TARGETS (the BRO-7150 acceptance check).
  * Needs GH_TOKEN or GITHUB_TOKEN (read-only API calls; about 1 + runs + failed runs).
- * Exit: 0 report printed | 1 API failure | 2 usage
+ * Exit: 0 report printed (targets met with --check-targets) | 1 API failure or targets missed | 2 usage
  */
 'use strict';
 
@@ -31,6 +32,31 @@ function median(xs) {
   if (!v.length) return null;
   const m = Math.floor(v.length / 2);
   return v.length % 2 ? v[m] : (v[m - 1] + v[m]) / 2;
+}
+
+/** Nearest-rank percentile (p in 0..100) of a numeric array (null when empty). */
+function percentile(xs, p) {
+  const v = xs.filter((x) => Number.isFinite(x)).sort((a, b) => a - b);
+  if (!v.length) return null;
+  return v[Math.min(v.length - 1, Math.max(0, Math.ceil((p / 100) * v.length) - 1))];
+}
+
+/**
+ * Targets for the trailing window (BRO-7150, chosen from the 2026-11-08 baseline:
+ * refusal rate 21.8%, median refusal 24.3 min, median land 27.9 min). The fast-fail
+ * step moves time-to-refusal; the pre-push fast tests move the refusal rate; time-to-land
+ * of a clean change must not regress (the step costs ~2-3 min on a green branch).
+ */
+const TARGETS = { maxRefusalRate: 0.12, maxMedianMinutesToRefusal: 8, maxMedianMinutesToLand: 30 };
+
+/** Aggregate -> list of missed targets (empty = met). Too few runs is itself a miss. */
+function checkTargets(agg, targets = TARGETS, { minRuns = 20 } = {}) {
+  const miss = [];
+  if (agg.landed + agg.refused < minRuns) miss.push(`only ${agg.landed + agg.refused} decided runs (< ${minRuns})`);
+  if (agg.refusalRate !== null && agg.refusalRate > targets.maxRefusalRate) miss.push(`refusal rate ${(agg.refusalRate * 100).toFixed(1)}% > ${targets.maxRefusalRate * 100}%`);
+  if (agg.medianMinutesToRefusal !== null && agg.medianMinutesToRefusal > targets.maxMedianMinutesToRefusal) miss.push(`median time-to-refusal ${agg.medianMinutesToRefusal} min > ${targets.maxMedianMinutesToRefusal}`);
+  if (agg.medianMinutesToLand === null || agg.medianMinutesToLand > targets.maxMedianMinutesToLand) miss.push(`median time-to-land ${agg.medianMinutesToLand} min > ${targets.maxMedianMinutesToLand}`);
+  return miss;
 }
 
 const minutes = (a, b) => (Date.parse(b) - Date.parse(a)) / 60000;
@@ -113,6 +139,8 @@ function aggregate(records) {
     landed: landed.length,
     refused: refused.length,
     medianMinutesToLand: round1(median(landed.map((r) => r.minutes))),
+    p90MinutesToLand: round1(percentile(landed.map((r) => r.minutes), 90)),
+    refusalRate: landed.length + refused.length ? Math.round((refused.length / (landed.length + refused.length)) * 1000) / 1000 : null,
     medianMinutesToRefusal: round1(median(refused.map((r) => r.minutes))),
     refusalsOver10Min: refused.filter((r) => r.minutes > 10).length,
     causes,
@@ -130,11 +158,12 @@ function report(records, { split = null } = {}) {
 }
 
 function parseArgs(argv) {
-  const o = { days: 7, json: false, split: null, repo: process.env.GITHUB_REPOSITORY || DEFAULT_REPO };
+  const o = { days: 7, json: false, split: null, check: false, repo: process.env.GITHUB_REPOSITORY || DEFAULT_REPO };
   for (const a of argv) {
     let m;
     if ((m = a.match(/^--days=(\d+(?:\.\d+)?)$/))) o.days = Number(m[1]);
     else if (a === '--json') o.json = true;
+    else if (a === '--check-targets') o.check = true;
     else if ((m = a.match(/^--split=(.+)$/)) && Number.isFinite(Date.parse(m[1]))) o.split = m[1];
     else if ((m = a.match(/^--repo=([\w.-]+\/[\w.-]+)$/))) o.repo = m[1];
     else if (a === '-h' || a === '--help') o.help = true;
@@ -177,7 +206,7 @@ async function collect({ days, repo, api }) {
 }
 
 function printText(rep, { days, split }) {
-  const line = (label, a) => `${label.padEnd(7)} runs ${String(a.runs).padStart(4)}  landed ${String(a.landed).padStart(3)} (median ${a.medianMinutesToLand ?? '-'} min)  refused ${String(a.refused).padStart(3)} (median ${a.medianMinutesToRefusal ?? '-'} min, ${a.refusalsOver10Min} after >10 min)`;
+  const line = (label, a) => `${label.padEnd(7)} runs ${String(a.runs).padStart(4)}  landed ${String(a.landed).padStart(3)} (median ${a.medianMinutesToLand ?? '-'} min, p90 ${a.p90MinutesToLand ?? '-'})  refusal rate ${a.refusalRate === null ? '-' : (a.refusalRate * 100).toFixed(1) + '%'}  refused ${String(a.refused).padStart(3)} (median ${a.medianMinutesToRefusal ?? '-'} min, ${a.refusalsOver10Min} after >10 min)`;
   console.log(`land.yml, last ${days} day(s); before/after split: ${split || 'runs with the Fast-fail step'}`);
   console.log(line('all', rep.all));
   console.log(line('before', rep.before));
@@ -200,11 +229,17 @@ async function main(argv = process.argv.slice(2)) {
     return 1;
   }
   const rep = report(records, { split: o.split });
-  if (o.json) console.log(JSON.stringify({ days: o.days, split: o.split || 'fast-fail step', ...rep, records }, null, 2));
+  if (o.json) console.log(JSON.stringify({ days: o.days, split: o.split || 'fast-fail step', targets: TARGETS, ...rep, records }, null, 2));
   else printText(rep, o);
+  if (o.check) {
+    // Judged on the whole trailing window: by the recheck date every run in it has the fast-fail step.
+    const miss = checkTargets(rep.all);
+    console.error(miss.length ? `TARGETS MISSED: ${miss.join('; ')}` : `TARGETS MET (${JSON.stringify(TARGETS)})`);
+    return miss.length ? 1 : 0;
+  }
   return 0;
 }
 
-module.exports = { median, causeFromMessage, causesFromAnnotations, summarizeRun, aggregate, report, parseArgs, FAST_STEP_RE };
+module.exports = { median, percentile, TARGETS, checkTargets, causeFromMessage, causesFromAnnotations, summarizeRun, aggregate, report, parseArgs, FAST_STEP_RE };
 
 if (require.main === module) main().then((code) => { process.exitCode = code; });

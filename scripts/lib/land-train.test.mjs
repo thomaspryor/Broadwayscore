@@ -200,6 +200,37 @@ test('train: holder + 2 riders land in ONE push after ONE combined check; per-br
   } finally { w.cleanup(); }
 });
 
+// BRO-7150 review: a rider's workflow edit stales the generated doc after the holder's own refresh.
+// The train refreshes once on the combined tree, so main never carries a stale DEPENDENCIES.md.
+test('BRO-7150 train: a rider that adds a workflow lands with DEPENDENCIES.md regenerated in its own commit', () => {
+  const w = makeWorld();
+  try {
+    const seed = path.join(w.root, 'seed');
+    const gen = "const fs=require('fs');const d='.github/workflows';fs.mkdirSync(d,{recursive:true});" +
+      "const want=fs.readdirSync(d).filter((f)=>f.endsWith('.yml')).sort().join(',')+'\\n';" +
+      "const p=d+'/DEPENDENCIES.md';const have=fs.existsSync(p)?fs.readFileSync(p,'utf8'):'';" +
+      "if(process.argv.includes('--check'))process.exit(have===want?0:1);fs.writeFileSync(p,want);\n";
+    fs.mkdirSync(path.join(seed, 'scripts'), { recursive: true });
+    fs.mkdirSync(path.join(seed, '.github/workflows'), { recursive: true });
+    fs.writeFileSync(path.join(seed, 'scripts/generate-workflow-dependencies.js'), gen);
+    fs.writeFileSync(path.join(seed, '.github/workflows/a.yml'), 'a\n');
+    fs.writeFileSync(path.join(seed, '.github/workflows/DEPENDENCIES.md'), 'a.yml\n');
+    sh(seed, ['add', '-A']); sh(seed, ['commit', '-qm', 'generator']); sh(seed, ['push', '-q', 'origin', 'HEAD:main']);
+    w.pushBranch('land/h', { 'h.txt': 'h\n' });
+    const tipR = w.pushBranch('land/r', { '.github/workflows/b.yml': 'b\n' });
+    const repo = w.clone('runner');
+    const r = landBranch({
+      branch: 'land/h', source: 'origin', repoDir: repo,
+      riders: [{ branch: 'land/r', tip: tipR }],
+      checks: green, trainChecks: green, pushMain: plainPush,
+    });
+    assert.equal(r.landed, true, JSON.stringify(r));
+    assert.equal(r.riders.length, 1, 'the rider rode');
+    assert.equal(w.onMain('.github/workflows/DEPENDENCIES.md'), 'a.yml,b.yml');
+    assert.equal(sh(w.origin, ['show', '-s', '--format=%s', r.pushedSha]), 'feat land/r', 'folded into the rider commit');
+  } finally { w.cleanup(); }
+});
+
 test('BRO-6276 train scope: verified, disjoint members get the small re-check; a member without a verified base makes it full', () => {
   const w = makeWorld();
   try {

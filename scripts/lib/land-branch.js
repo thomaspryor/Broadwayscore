@@ -980,6 +980,13 @@ function landBranch(o) {
       if (attempt === 1 && riders.length && !beforePush && !dryRun) {
         train = assembleTrain(riders, baseSha);
         if (!train.length) log('[land] train: no rider could be added — landing this branch alone');
+        // BRO-7150 review: riders are replayed from their pre-refresh tips (rangeFrom skips the per-rebase
+        // refresh), and a rider's workflow edit can stale a doc the holder refreshed. Refresh once on the
+        // combined tree; the amend lands in the last rider's commit, so its file list carries the doc.
+        else if (refreshGeneratedDocs(baseSha).refreshed) {
+          const last = train[train.length - 1];
+          if (Array.isArray(last.files)) for (const d of GENERATED_DOC_PATHS) if (!last.files.includes(d)) last.files.push(d);
+        }
       }
       let files = git(['diff', '--name-only', `${baseSha}...HEAD`], workdir).split('\n').filter(Boolean);
       log(`[land] attempt ${attempt}/${maxAttempts}: rebased onto ${baseSha.slice(0, 10)}, ${files.length} file(s) changed${train.length ? ` (train: ${branch} + ${train.map((r) => r.branch).join(', ')})` : ''} — running checks`);
