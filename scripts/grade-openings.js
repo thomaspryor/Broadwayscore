@@ -108,20 +108,20 @@ function main() {
   const untilMs = Math.min(nowMs, Date.parse(`${toDate}T00:00:00Z`) + (og.AFTER_H + 48) * 3600000);
   const commits = openings.length ? loadCommits(rtDir, new Date(sinceMs).toISOString(), new Date(untilMs).toISOString()) : [];
 
-  const grades = openings.map((show) => { const files = loadFiles(rtDir, show.id); return og.gradeOpening({
+  const grades = openings.map((show) => { const files = loadFiles(rtDir, show.id); const pn = og.pickPressNight(records, show); const hi = og.openingWindow(show, pn).hi; return og.gradeOpening({
     show,
     files,
     rtDir,
     commits,
     historyFromMs: hist,
-    pressNight: og.pickPressNight(records, show),
+    pressNight: pn,
     gapResult: gapById.get(show.id) || null,
     // BRO-7147: aggregator-cited reviews the gap audit still lists as missing,
     // minus any collected since that audit ran.
     missingCited: gapById.has(show.id)
       // BRO-7161 F20: only files first seen by the end of opening week count as
       // held, so a later rescue cannot erase a gap that existed at the deadline.
-      ? citedUncollectedNow(gapById.get(show.id), { heldFiles: files.filter((f) => !(Date.parse(f.firstSeenAt) > og.openingWindow(show, og.pickPressNight(records, show)).hi)), blocklist: loadBlocklist(path.join(rtDir, show.id)), show })
+      ? citedUncollectedNow(gapById.get(show.id), { heldFiles: files.filter((f) => !(Date.parse(f.firstSeenAt) > hi)), blocklist: loadBlocklist(path.join(rtDir, show.id)), show })
       : null,
     nowMs,
   }); }).sort((a, b) => (b.openingDate.localeCompare(a.openingDate)) || a.showId.localeCompare(b.showId));

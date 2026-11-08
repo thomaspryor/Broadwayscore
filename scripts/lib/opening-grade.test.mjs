@@ -98,6 +98,7 @@ test('F18: no audit row, or a stale one, never grades on-its-own; closed empty w
   const g = og.gradeOpening({ show, files: [good(1)], gapResult: stale, missingCited: 0, nowMs: closed });
   assert.equal(g.verdict, 'coverage-unknown');
   assert.equal(og.gradeOpening({ show, files: [good(1)], gapResult: { ...gapResult, computedAt: undefined }, missingCited: 0, nowMs: closed }).verdict, 'coverage-unknown', 'row without a timestamp cannot vouch');
+  assert.equal(og.gradeOpening({ show, files: [], gapResult: null, missingCited: null, nowMs: closed }).verdict, 'no-reviews', 'closed empty week with no audit row stays visible');
   const empty = og.gradeOpening({ show, files: [], gapResult, missingCited: 0, nowMs: closed });
   assert.equal(empty.verdict, 'no-reviews');
   const sum = og.summarize([empty, g]);
@@ -114,6 +115,9 @@ test('F19: a person fixing four shows in one commit is hand work; a named mainte
   const run = (c) => og.gradeOpening({ show, files: [good(1)], commits: [c], gapResult, missingCited: 0, nowMs: closed });
   assert.equal(run(mk('add missed reviews for four shows', 4)).verdict, 'needed-hands');
   assert.equal(run(mk('BRO-6745 reverify', 4)).verdict, 'on-its-own');
+  for (const subj of ['fix: refresh reviews for hamlet, cats, x, y', 'Fix Hamlet, Cats, Evita, Annie reviews: stamp dates', 'Restore 4 shows reviews after migration bug', 'cleanup']) {
+    assert.equal(run(mk(subj, 4)).verdict, 'needed-hands', subj);
+  }
   assert.equal(run(mk('add missed reviews', og.SWEEP_CEILING + 1)).verdict, 'on-its-own');
 });
 
@@ -125,4 +129,8 @@ test('F20: files first seen after opening week are late rescues, not part of the
   assert.equal(g.lateLive, 2);
   assert.equal(g.verdict, 'incomplete', 'the week ended with cited reviews missing, whatever was rescued later');
   assert.match(og.gradeLine(g), /2 more added after opening week/);
+  // Audit re-run after the rescue shows nothing missing: still not on-its-own.
+  const rerun = og.gradeOpening({ show, files: files2, gapResult, missingCited: 0, nowMs: closed + 5 * 86400000 });
+  assert.equal(rerun.verdict, 'incomplete');
+  assert.match(og.gradeLine(rerun), /ended before 2 reviews were found/);
 });

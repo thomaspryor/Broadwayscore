@@ -39,7 +39,8 @@ const SWEEP_SHOWS = 3;
 // shows is ignored only when its subject names a maintenance operation, or it
 // touches more than SWEEP_CEILING shows (no human fixes that many at once).
 const SWEEP_CEILING = 12;
-const MAINTENANCE_SUBJECT = /re-?verif|\bsweep|backfill|re-?build|migrat|normali[sz]e|\bbulk\b|checkpoint|re-?score|refresh|clean-?up|\bpurge|\bprune|dedup|reindex|retrofit|\bstamp\b/i;
+// Anchored to the start of the subject (after an optional BRO-N): "fix: refresh reviews for X, Y" is a person's fix, "BRO-6745 reverify" is maintenance.
+const MAINTENANCE_SUBJECT = /^\s*(?:BRO-\d+[:\s-]*)?(?:chore[:(\s]|maintenance|sweep|backfill|re-?verif|re-?score|re-?build|bulk\b|checkpoint|dedup|reindex|retrofit|migrat|normali[sz]e|prune|purge|stamp\b)/i;
 // BRO-7161 F18: a gap-audit row older than this no longer vouches that nothing is missing.
 const STALE_AUDIT_H = 72;
 
@@ -277,8 +278,11 @@ function gradeOpening({ show, files = [], commits = [], historyFromMs = null, pr
   // on its own, whether or not anyone touched it, and with none live at all it
   // is the worst case, so it outranks no-reviews.
   else if (windowClosed && missing > 0) verdict = 'incomplete';
-  else if (coverageUnknown) verdict = 'coverage-unknown';
+  // A closed week with reviews first seen only after it ended did not run on its own (F20).
+  else if (windowClosed && lateLive > 0) verdict = 'incomplete';
+  // Nothing live stays visible as no-reviews even without an audit row (F18).
   else if (live === 0) verdict = 'no-reviews';
+  else if (coverageUnknown) verdict = 'coverage-unknown';
   else verdict = 'on-its-own';
 
   return {
@@ -333,8 +337,9 @@ function gradeLine(g) {
     tail = `needed a person or a Claude session${sofar} (${n} fix${n === 1 ? '' : 'es'} by hand${why ? `: ${why}` : ''})`;
   } else if (g.verdict === 'on-its-own') tail = `ran on its own${sofar}`;
   else if (g.verdict === 'incomplete') {
-    const m = g.missing || Math.max(0, (g.known || 0) - g.live);
-    tail = `opening week ended with ${m} cited review${m === 1 ? '' : 's'} still missing`;
+    const m = g.missing || Math.max(0, (g.known || 0) - g.live) || g.lateLive || 0;
+    tail = g.missing > 0 || (g.known || 0) > g.live ? `opening week ended with ${m} cited review${m === 1 ? '' : 's'} still missing`
+      : `opening week ended before ${m} review${m === 1 ? ' was' : 's were'} found`;
   }
   else if (g.verdict === 'coverage-unknown') tail = 'not graded clean: the missing-review check has no fresh result for it';
   else if (g.verdict === 'no-reviews') tail = (g.known || 0) > 0 ? 'cited reviews are out but none are on the site yet' : g.windowClosed ? 'opening week ended and no reviews were found' : 'no reviews live yet';
@@ -394,7 +399,8 @@ function renderOpeningGradesBlock(snapshot, { esc = defaultEsc, nowMs = Date.now
   const recent = snapshot.grades.filter((g) => g.openingDate >= cutoff
     // No reviews live is only news when reviews are known to exist (a miss) or
     // opening week already ended (BRO-7161 F18: a closed week with nothing found is a finding).
-    && (g.verdict !== 'no-reviews' || (g.known || 0) > 0 || g.windowClosed));
+    && (g.verdict !== 'no-reviews' || (g.known || 0) > 0 || g.windowClosed)
+    && (g.verdict !== 'coverage-unknown' || g.windowClosed));
   const rows = recent.map((g) => `<div style="margin:0 0 6px;font-size:14px;"><span style="color:${DOT[g.verdict] || '#999'};">&#9679;</span> ${esc(gradeLine(g))}</div>`).join('\n    ');
   const rawDays = Math.round((Date.parse(`${snapshot.to}T00:00:00Z`) - Date.parse(`${snapshot.from}T00:00:00Z`)) / 86400000);
   const days = Number.isFinite(rawDays) && rawDays >= 1 ? rawDays : 14;
