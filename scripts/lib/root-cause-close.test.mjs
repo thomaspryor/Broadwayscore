@@ -108,6 +108,10 @@ test('grader replies parse safely and the share leaves unclear out', () => {
   assert.deepEqual(rcc.summarizeSample([{ grade: 'root-cause' }, { grade: 'spot-fix' }, { grade: 'spot-fix' }, { grade: 'unclear' }]),
     { graded: 4, rootCause: 1, spot: 2, unclear: 1, share: 33.3 });
   assert.equal(rcc.summarizeSample([]).share, null);
+  const g = (grade, confidence = 0.9) => ({ grade, confidence, reason: grade, guardFile: null });
+  assert.deepEqual(rcc.majorityGrade([g('spot-fix', 0.98), g('root-cause'), g('spot-fix', 0.9)]).grade, 'spot-fix');
+  assert.equal(rcc.majorityGrade([g('spot-fix', 0.98), g('root-cause'), g('spot-fix', 0.9)]).confidence, 0.94);
+  assert.equal(rcc.majorityGrade([g('spot-fix'), g('root-cause'), g('unclear')]).grade, 'unclear', 'a three-way split is unclear');
   const ids = ['BRO-1', 'BRO-2', 'BRO-3', 'BRO-4', 'BRO-5'];
   assert.deepEqual(rcc.seededPick(ids, 3, 'w1'), rcc.seededPick(ids, 3, 'w1'));
   assert.equal(new Set(rcc.seededPick(ids, 5, 'w1')).size, 5);
@@ -130,7 +134,11 @@ test('the weekly sample grades only this week\'s fix cards from their diffs and 
     diffFor: (id) => (id === 'BRO-5' ? null : { diff: `diff for ${id}`, files: ['a.js'], truncated: false }),
     grade: async (diff) => { graded.push(diff); return diff.includes('BRO-1') ? '{"grade":"root-cause","confidence":0.9}' : '{"grade":"spot-fix","confidence":0.9}'; },
   });
-  assert.deepEqual(graded.sort(), ['diff for BRO-1', 'diff for BRO-4']);
+  const own = graded.filter((d) => !/BRO-70(66|98)/.test(d)).sort();
+  assert.deepEqual(own, ['diff for BRO-1', 'diff for BRO-1', 'diff for BRO-1', 'diff for BRO-4', 'diff for BRO-4', 'diff for BRO-4'], 'each diff is graded 3 times');
+  // Anchors: BRO-7066 and BRO-7098 are re-graded every week; this fake grader calls both spot-fix, so BRO-7098 misses.
+  assert.equal(out.calibrationOk, false);
+  assert.deepEqual(out.calibration.map((c) => c.got), ['spot-fix', 'spot-fix']);
   assert.deepEqual([out.poolSize, out.graded, out.rootCause, out.spot, out.share, out.noDiff, out.landingsWithoutId], [3, 2, 1, 1, 50, 1, 1]);
   assert.equal(JSON.parse(fs.readFileSync(file, 'utf8')).share, 50);
   const again = await sample(cards, now + 864e5, { file, grade: async () => { throw new Error('should not grade'); } });
