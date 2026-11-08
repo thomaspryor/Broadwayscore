@@ -3359,6 +3359,11 @@ on:
       # launchd plist PATH lint (zero-gap plan G7): lib + test sit under the
       # scripts/lib/** glob; only the top-level audit needs listing.
       - 'scripts/audit-launchd-plist-path.js'
+      # Text-gap metric + false-truncation dry-run (zero-gap plan 1B/1C): libs,
+      # trailer-signatures and their tests sit under scripts/lib/**; only the two
+      # top-level read-only CLIs need listing.
+      - 'scripts/audit-text-gaps.js'
+      - 'scripts/audit-false-truncation-dryrun.js'
       # Linear-issue dispatcher (task #1303): fetches a Linear issue and
       # launches a Claude Code worker on it, reusing bsc-next.js's cmux/
       # headless launch primitives. dispatch-guards.js (task #1303 plan
