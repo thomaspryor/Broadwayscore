@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-08T06:01:37.436Z",
+  "timestamp": "2026-11-08T06:28:39.463Z",
   "stats": {
-    "totalReviews": 80516,
+    "totalReviews": 80517,
     "alreadyFlagged": 22031,
     "dateGuardCatches": 216,
     "directorMismatch": 3545,
     "tvFilmSignals": 2294,
     "londonSignals": 3627,
-    "offBroadwaySignals": 748,
+    "offBroadwaySignals": 749,
     "yearMismatch": 363,
-    "noPublishDate": 8431
+    "noPublishDate": 8430
   },
   "findings": [
     {
@@ -120138,6 +120138,20 @@
       "score": 38,
       "publishDate": "2026-11-04",
       "url": "https://culturesauce.com/rope-hitchcock-play-adaptation-off-broadway-review/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
+      "showId": "rope-off-broadway-2026",
+      "file": "nytimes--helen-shaw.json",
+      "score": 50,
+      "publishDate": "2026-11-05",
+      "url": "https://www.nytimes.com/2026/11/05/theater/rope-the-verge-review-off-broadway-silverman.html",
       "findings": [
         {
           "type": "OFF_BROADWAY_SIGNAL",
