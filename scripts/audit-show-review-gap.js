@@ -1411,8 +1411,17 @@ async function auditShow(show, opts = {}) {
               page: step.page,
               geo: step.geo,
             });
+            // BRO-7162 F14: serpQuery returns null when every provider is unavailable. That is a failed
+            // query, not an empty answer; recording it ok:true let a dead provider stamp the cooldown.
+            if (serpResults === null) {
+              queryStatus.push({
+                arm: step.arm, query: step.query, page: step.page, geo: step.geo,
+                ok: false, results: 0, accepted: 0, error: 'serp-provider-unavailable',
+              });
+              continue;
+            }
             let accepted = 0;
-            for (const sr of (serpResults || [])) {
+            for (const sr of serpResults) {
               const url = acceptSerpCensusResult(sr, { show, showInfo });
               if (url && !serpCensusUrls.has(url)) accepted++;
               if (url) serpCensusUrls.add(url);
