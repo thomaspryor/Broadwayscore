@@ -75,12 +75,12 @@ test('west-end edition for weekStart 2026-08-03 renders an openings section incl
     // The section heading must actually be in the rendered body, not just
     // computed in meta — the reported bug had a correct subject/lede with an
     // entirely absent body section.
-    assert.ok(html.includes('Opened in the West End'), 'expected the west-end openings section heading in the rendered HTML');
+    assert.ok(/Opened (in the West End|in London|Off West End)/.test(html), 'expected the west-end openings section heading in the rendered HTML');
     assert.ok(html.includes("I'm Every Woman"), "expected \"I'm Every Woman\" to render in the HTML body");
 
     // The show must render AFTER the openings heading, not merely somewhere
     // earlier in the lede — same "lede ⊆ body is not section ⊆ body" gap.
-    const headingIdx = html.indexOf('Opened in the West End');
+    const headingIdx = html.search(/Opened (in the West End|in London|Off West End)/);
     const showIdx = html.indexOf("I'm Every Woman", headingIdx);
     assert.ok(showIdx > headingIdx, "expected \"I'm Every Woman\" to appear inside the openings section, after its heading");
   } finally {

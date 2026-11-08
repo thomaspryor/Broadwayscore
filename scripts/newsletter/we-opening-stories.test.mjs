@@ -78,7 +78,7 @@ test('west-end edition for weekStart 2026-07-27 agrees on the lead West End stor
     );
 
     // The rendered card order in the body also leads with the same show.
-    const headingIdx = html.indexOf('Opened in the West End');
+    const headingIdx = html.search(/Opened (in the West End|in London|Off West End)/);
     assert.ok(headingIdx >= 0, 'expected the west-end openings section heading in the rendered HTML');
     const leadIdx = html.indexOf(LEAD_SHOW.title, headingIdx);
     assert.ok(leadIdx > headingIdx, `expected ${LEAD_SHOW.title} to render inside the openings section`);

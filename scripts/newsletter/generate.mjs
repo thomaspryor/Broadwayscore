@@ -2415,7 +2415,11 @@ function londonSection() {
   const cards = withScore.map(x => showRow(x.s, { showMarket: true })).join('');
   const seeAll = seeAllLink(`${SITE}/west-end`, 'Explore the full West End Scorecard', { color: '#f472b6' });
   const seeAllCard = `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#1a1a24" style="background:#1a1a24;border-radius:16px;border:1px solid rgba(244,114,182,0.18);">${seeAll}</table>`;
-  return sectionWrap(sectionHeading(IS_WE ? 'Opened in the West End' : 'London Openings', null, { href: `${SITE}/west-end` }), cards + seeAllCard);
+  // Heading must match the cards (owner, 2026-11-08: "Opened in the West End"
+  // over a list of only Off West End shows read as an error).
+  const _cats = new Set(withScore.map(x => x.s.category));
+  const weHeading = _cats.size > 1 ? 'Opened in London' : _cats.has('off-west-end') ? 'Opened Off West End' : 'Opened in the West End';
+  return sectionWrap(sectionHeading(IS_WE ? weHeading : 'London Openings', null, { href: `${SITE}/west-end` }), cards + seeAllCard);
 }
 
 // Grace window for the WE edition's Broadway section — mirrors
@@ -2966,6 +2970,19 @@ const _NYC_OPENING_KINDS = new Set(['bw-opening', 'bw-reopening', 'ob-opening', 
 // and so does any section NEWSLETTER_DROP_SECTIONS removed from the body.
 // counts are calendar counts (incl. openings too thinly reviewed to name) so
 // "just two openings" is never said of a week that had three.
+// Median openings per week over the 8 weeks before this issue, so the lede
+// only calls a week busy or quiet when it is (week-voice.mjs weekSize()).
+function _typicalWeekly(pred) {
+  const counts = [];
+  for (let k = 1; k <= 8; k++) {
+    const a = new Date(weekStartStr + 'T12:00:00'); a.setDate(a.getDate() - 7 * k);
+    const b = new Date(a); b.setDate(b.getDate() + 6);
+    const from = a.toISOString().slice(0, 10), to = b.toISOString().slice(0, 10);
+    counts.push(shows.filter(s => !isOperaShow(s) && s.openingDate && s.openingDate >= from && s.openingDate <= to && pred(s)).length);
+  }
+  counts.sort((x, y) => x - y);
+  return (counts[3] + counts[4]) / 2;
+}
 const _calendarOpenings = (cat) => openingEventsForWeek(cat).filter(e => !excludedShowIds.has(e.show.id)).length;
 // Broadway openings that already had their own opening-night email: the
 // voice leads with Off Broadway instead of repeating them (owner, 2026-11-02).
@@ -2978,6 +2995,10 @@ const _weekVoice = (!IS_WE && process.env.NEWSLETTER_VOICE !== 'legacy' && _NYC_
     bw: _dropSet.has('broadway-openings') ? [] : bwEvents.map(e => ({ show: e.show, agg: aggregateScore(e.show.id), isReopening: !!e.isReopening })),
     ob: _dropSet.has('offbroadway-openings') ? [] : obEvents.filter(e => inWeek(e.show.openingDate)).map(e => ({ show: e.show, agg: aggregateScore(e.show.id) })),
     counts: { bw: _calendarOpenings('broadway'), ob: _calendarOpenings('off-broadway') },
+    typical: {
+      total: _typicalWeekly(s => s.category === 'broadway' || s.category === 'off-broadway'),
+      ob: _typicalWeekly(s => s.category === 'off-broadway'),
+    },
   })
   : null;
 // SUBJECT_OVERRIDE / LEDE_OVERRIDE let an editor hand-set the subject and lede
@@ -3076,7 +3097,11 @@ const _ledeParts = buildLedeSentences(newsworthyCandidates, _maxLedeSentences) |
 // sentence to make room (second-opinion review, 2026-08-02).
 let _weOpener = '';
 if (IS_WE && !process.env.LEDE_OVERRIDE) {
-  _weOpener = composeWeOpener(weOpeningStories());
+  // Typical = scored London openings per week (matches weOpeningStories()'s gate).
+  const _weTypical = _typicalWeekly(s => (s.category === 'west-end' || s.category === 'off-west-end')
+    && (() => { const a = aggregateScore(s.id); return a && a.count >= minReviews(s.category); })());
+  _weOpener = composeWeOpener(weOpeningStories(), { typical: _weTypical });
+  process.stderr.write(`[newsletter] WE week size: ${weOpeningStories().filter(x => !x.isCatchUp).length} openings vs typical ${_weTypical}\n`);
 }
 // US-edition counterpart: on a quiet Broadway week (see quietBroadwayWeek
 // above) the lede can now be built entirely from secondary London

@@ -87,7 +87,7 @@ test('West End opening takes priority over award movement for the same show', (t
   const { generate } = fixture(t, undefined, true);
   const { html, meta } = generate('west-end');
   assert.equal(meta.sections.find((s) => s.name === 'london-openings').fired, true);
-  assert.match(html, /Opened in the West End/);
+  assert.match(html, /Opened (in the West End|in London|Off West End)/);
   assert.match(html, /London Award Fixture/);
   assert.equal(meta.sections.find((s) => s.name === 'award-score-movers').fired, false);
   assert.doesNotMatch(html, /Award Score Movers/);
