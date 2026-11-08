@@ -103,11 +103,13 @@ const canon = (v) => JSON.stringify(v, (k, x) => (x && typeof x === 'object' && 
 const FETCH_STATE_REASONS = new Set(['not_attempted', 'paywall', 'bot_blocked', 'scraper_timeout',
   'partial_text', 'url_dead', 'route_capped', 'no_url', 'no_text', 'code_error']);
 // Retry/fetch bookkeeping a later run rewrites. Used only by the no-text rule.
+// Not here: contentVerification(+Promoted) hold the verifier's wrongArticle
+// verdict (rebuild-helpers.js reads it) and archivePath points at saved HTML.
 const BOOKKEEPING_KEYS = new Set(['fetchRetryAfter', 'fetchDiscoveryAbandoned', 'textRetryAttemptedAt',
-  'fetchMethod', 'fetchAttempts', 'fetchTier', 'archivePath', 'contentVerification',
-  'contentVerificationPromoted', 'criticBackfillAttempt', 'textFetchedAt']);
+  'fetchMethod', 'fetchAttempts', 'fetchTier', 'criticBackfillAttempt', 'textFetchedAt']);
 const UNKNOWN_CRITIC = /^\s*(unknown|unnamed)?\s*$/i;
-const isFetchStateOnly = (a) => isEmpty(a.incompleteReason) || FETCH_STATE_REASONS.has(a.incompleteReason);
+// A detail with no reason may be verdict text, so only a known fetch-state reason waives it.
+const isFetchStateOnly = (a) => FETCH_STATE_REASONS.has(a.incompleteReason);
 // An excerpt-tier file keeps its text in *Excerpt fields, not fullText.
 const hasNoTextToLose = (a, b) => isEmpty(a.fullText)
   && Object.keys(a).every((k) => !/Excerpt$/.test(k) || isEmpty(a[k]) || canon(a[k]) === canon(b[k]));
@@ -133,9 +135,14 @@ function mainSupersedesRescue(rescueText, mainText) {
   // judged invalid), provided every other value it holds matches main or is
   // retry bookkeeping a later run rewrote.
   // Only ever widens: when it does not apply, the older rule below decides.
+  // Of the content keys only the tier itself (and its reason) may differ, and
+  // only when main's is higher or invalid; sources/dateSource must match.
+  const mainAhead = rb > ra || b.contentTier === 'invalid';
+  const noTextWaivable = (k) => k === 'url' || BOOKKEEPING_KEYS.has(k)
+    || ((k === 'contentTier' || k === 'contentTierReason') && mainAhead)
+    || (k !== 'contentTier' && k !== 'contentTierReason' && !CONTENT_KEYS.has(k) && waivable(k));
   if (ra !== undefined && rb !== undefined && hasNoTextToLose(a, b) && (rb >= ra || b.contentTier === 'invalid')
-    && Object.keys(a).every((k) => isEmpty(a[k]) || canon(a[k]) === canon(b[k]) || k === 'url'
-      || BOOKKEEPING_KEYS.has(k) || waivable(k))) return true;
+    && Object.keys(a).every((k) => isEmpty(a[k]) || canon(a[k]) === canon(b[k]) || noTextWaivable(k))) return true;
   // Identical text on main, whatever tier the pipeline gave it since, loses nothing.
   const sameText = typeof a.fullText === 'string' && a.fullText !== '' && a.fullText === b.fullText;
   if (!sameText && (ra === undefined || rb === undefined || rb <= ra)) return false;

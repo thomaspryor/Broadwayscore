@@ -82,3 +82,12 @@ test('the 2026-11-08 judgment cases stay conflicts', () => {
   assert.equal(mainSupersedesRescue(j({ ...t, duplicateClearReason: 'healed' }), j({ ...t, duplicateOf: 'x.json' })), false, 'duplicate pointer judgment');
   assert.equal(mainSupersedesRescue(j({ ...t, assignedScore: 93 }), j({ ...t, assignedScore: 96 })), false, 'score differs');
 });
+test('verifier verdicts, archive pointers, sources and bare details are never waived (review findings)', () => {
+  const m = { ...stub, fetchRetryAfter: 'b' };
+  assert.equal(mainSupersedesRescue(j({ ...m, contentVerification: { wrongArticle: true } }), j(m)), false, 'wrongArticle verdict');
+  assert.equal(mainSupersedesRescue(j({ ...m, contentVerification: { wrongArticle: true } }), j({ ...m, contentTier: 'invalid' })), false, 'verdict vs main invalid');
+  assert.equal(mainSupersedesRescue(j({ ...m, contentVerificationPromoted: true }), j(m)), false);
+  assert.equal(mainSupersedesRescue(j({ ...m, archivePath: 'archive/x.html' }), j(m)), false, 'saved HTML pointer');
+  assert.equal(mainSupersedesRescue(j({ ...m, sources: ['bww'] }), j(m)), false, 'aggregator attribution at an equal tier');
+  assert.equal(mainSupersedesRescue(j({ ...m, incompleteDetail: 'author mismatch: wrong critic' }), j(m)), false, 'detail with no reason');
+});
