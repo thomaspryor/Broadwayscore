@@ -311,7 +311,7 @@ async function waitForProd({ siteFiles, prodMin }) {
 // re-lands under new names. land.yml rebases onto main itself.
 function refusedMessage(ref, why, url) {
   return `REFUSED: ${ref} ${why}${url ? ` ${url}` : ''}\n` +
-    `  next: fix on top of the refused commit (do not rebase: land.yml rebases, and a rebased re-push is refused as non-fast-forward), then push the same ref ${ref}`;
+    `  next: fix on top of the refused commit (do not rebase, squash or reset: land.yml rebases, and a rewritten re-push is refused as non-fast-forward), then push the same ref ${ref}`;
 }
 
 const sleep = (ms) => new Promise((res) => setTimeout(res, ms));

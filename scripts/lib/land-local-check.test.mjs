@@ -377,3 +377,10 @@ test('BRO-7110: restorePrebuildResidue puts back regenerated prebuild outputs on
   const main = src.slice(src.indexOf('function main('));
   assert.ok(main.indexOf('restorePrebuildResidue(ROOT)') > main.indexOf("'scripts/lib/land-gauntlet.sh', branchDir"), 'restored right after the branch run');
 });
+
+test('BRO-7110: the node_modules remedy links a worktree to the main checkout, and installs in the main checkout itself', () => {
+  const { nodeModulesRemedy } = require('./land-local-check.js');
+  assert.equal(nodeModulesRemedy('/repo/.claude/worktrees/x', '/repo/.git'), 'Link them first: ln -sfn /repo/node_modules node_modules');
+  assert.equal(nodeModulesRemedy('/repo', '.git'), 'Install them first: npm ci');
+  assert.equal(nodeModulesRemedy('/repo', ''), 'Install them first: npm ci');
+});

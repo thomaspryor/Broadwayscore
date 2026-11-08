@@ -85,6 +85,15 @@ function hasOwnNodeModules(root, exists = fs.existsSync) {
   return exists(path.join(root, 'node_modules'));
 }
 
+// The main checkout links nothing (its git-common-dir is its own .git): install there.
+// -sfn replaces a dangling link, which existsSync also reports as missing.
+/** -> the one-line fix for a checkout with no node_modules */
+function nodeModulesRemedy(root, commonDir) {
+  const main = commonDir ? path.resolve(root, commonDir, '..') : root;
+  if (main === path.resolve(root)) return 'Install them first: npm ci';
+  return `Link them first: ln -sfn ${path.join(main, 'node_modules')} node_modules`;
+}
+
 /** -> { gates, maxWaitMs } or { error } */
 function parseArgs(argv) {
   let gates = DEFAULT_GATES;
@@ -255,10 +264,9 @@ function main(argv = process.argv.slice(2)) {
     return 3;
   }
   if (!hasOwnNodeModules(ROOT)) {
-    const main = path.resolve(ROOT, git('rev-parse', '--git-common-dir').stdout, '..');
     console.error('land-local-check: node_modules missing in this checkout. Packages would resolve from a parent '
       + 'checkout here but not in the base copy, so every type and lint error would read as new. '
-      + `Link them first: ln -s ${path.join(main, 'node_modules')} node_modules`);
+      + nodeModulesRemedy(ROOT, git('rev-parse', '--git-common-dir').stdout));
     return 3;
   }
   const fetch = git('fetch', '-q', 'origin', 'main');
@@ -337,7 +345,7 @@ function main(argv = process.argv.slice(2)) {
   }
 }
 
-module.exports = { main, withBaseWorktree, depsChangedSince, linkIgnored, ignoredPaths, parseArgs, newFailureFiles, missingCoreData, hasOwnNodeModules, restorePrebuildResidue, stageGauntletHarness, HARNESS_FILES, CORE_DATA_FILES, DEFAULT_GATES, LOCAL_SKIPPED_GATES };
+module.exports = { nodeModulesRemedy, main, withBaseWorktree, depsChangedSince, linkIgnored, ignoredPaths, parseArgs, newFailureFiles, missingCoreData, hasOwnNodeModules, restorePrebuildResidue, stageGauntletHarness, HARNESS_FILES, CORE_DATA_FILES, DEFAULT_GATES, LOCAL_SKIPPED_GATES };
 
 if (require.main === module) {
   // Capture the tip before the ~20 min run: the session may commit meanwhile, and that commit was not tested.

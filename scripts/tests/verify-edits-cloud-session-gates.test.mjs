@@ -879,6 +879,35 @@ test('LANDUNCHECKED: land/** push then SAFE TO ARCHIVE without checking the run 
   fs.rmSync(dir, { recursive: true, force: true });
 });
 
+// BRO-7110: the documented land step is the waiter, so a waiter that FINISHED counts.
+const WFL_CMD = 'node scripts/lib/wait-for-land.js land/fix-x 60 --prod';
+const WFL_FG_LANDED = toolUse('Bash', { command: WFL_CMD }, '03:41:07Z LANDED: land/fix-x is gone from origin (land.yml deletes it after the fast-forward)\n03:54:00Z LIVE: abc is LIVE on production.');
+const WFL_FG_REFUSED = { ...toolUse('Bash', { command: WFL_CMD }, '03:41:07Z REFUSED: land/fix-x run 1 failure\n  next: fix on top of the refused commit'), _isError: true };
+const WFL_BG = toolUse('Bash', { command: WFL_CMD, run_in_background: true }, 'Command running in background with ID: bwfl1234. Output is being written to: /tmp/x/bwfl1234.output.');
+const wflDone = (code) => notice(`<task-notification>\n<task-id>bwfl1234</task-id>\n<status>completed</status>\n<summary>Background command "Wait for land" completed (exit code ${code})</summary>\n</task-notification>`);
+const WFL_LANDUNCHECKED_CASES = [
+  ['foreground waiter printed LANDED', [LAND_PUSH, WFL_FG_LANDED], true],
+  ['foreground waiter printed REFUSED (exit 1, an error result)', [LAND_PUSH, WFL_FG_REFUSED], true],
+  ['background waiter finished, exit 0', [LAND_PUSH, WFL_BG, wflDone(0)], true],
+  ['background waiter finished, exit 1 (refused)', [LAND_PUSH, WFL_BG, wflDone(1)], true],
+  ['background waiter, its LANDED line read later', [LAND_PUSH, WFL_BG, toolUse('Read', { file_path: '/tmp/x/bwfl1234.output' }, '03:41:07Z LANDED: land/fix-x is gone from origin')], true],
+  ['push and waiter in one command', [toolUse('Bash', { command: `git push origin HEAD:refs/heads/land/fix-x && ${WFL_CMD}` }, '03:41:07Z LANDED: land/fix-x is gone from origin')], true],
+  ['background waiter started, never finished', [LAND_PUSH, WFL_BG], false],
+  ['background waiter timed out (exit 2)', [LAND_PUSH, WFL_BG, wflDone(2)], false],
+  ['waiter run before the push', [toolUse('Bash', { command: WFL_CMD }, '03:41:07Z LANDED: land/fix-x is gone from origin'), LAND_PUSH], false],
+  ['reading the waiter script is not running it', [LAND_PUSH, toolUse('Bash', { command: 'cat scripts/lib/wait-for-land.js' }, 'console.log(`LANDED: land/x`)')], false],
+];
+for (const [label, calls, allowed] of WFL_LANDUNCHECKED_CASES) {
+  test(`BRO-7110 LANDUNCHECKED: ${label} → ${allowed ? 'ALLOWED' : 'BLOCKED'}`, skipNoRepoHook, () => {
+    const dir = makeTmpDir('land-wfl');
+    const transcript = writeTranscript(dir, [CREATE_PR, ...calls, LINEAR_CLOSEOUT_DONE]);
+    const r = runHook(transcript, 'Landed via land.yml.\n\nSAFE TO ARCHIVE — landed and verified.');
+    if (allowed) assertAllowed(r, label);
+    else { assertBlocked(r, label); assert.match(r.stderr, /wait-for-land\.js/, `got: ${r.stderr.slice(0, 300)}`); }
+    fs.rmSync(dir, { recursive: true, force: true });
+  });
+}
+
 test('land/** match is anchored: a branch named foo-land/x is not a landing', skipNoRepoHook, () => {
   const dir = makeTmpDir('land-anchor');
   const transcript = writeTranscript(dir, [CREATE_PR, toolUse('Bash', { command: 'git push origin HEAD:foo-land/x' }), BOARD_CLOSEOUT_DONE]);
