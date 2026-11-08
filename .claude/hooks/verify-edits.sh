@@ -953,12 +953,8 @@ if os.environ.get('PR_FOLLOWTHROUGH_GATE_DISABLE', '0') != '1':
                 and not re.search(r'(-X|--method|--request)[\s=]*GET\b', g, re.I)
                 and re.search(r'(-X|--method|--request)[\s=]*POST\b|\s(-f|-F|-d|--field|--raw-field|--input|--data[a-z-]*|--json)[\s=]', g, re.I)
                 for g in re.split(r'&&|\|\||[;|\n]', cmd))
-        # BRO-7110: CLOUD.md's land step is the waiter (wait-for-land.js), not an
-        # actions_list call, so a waiter that FINISHED with a verdict counts too:
-        # a foreground run whose result has LANDED:/REFUSED:, a background run
-        # whose task-notification ended with exit 0 (landed), 1 (refused) or 4
-        # (landed, not live yet), or a later read of its LANDED/REFUSED line.
-        # Started-but-unfinished, timed out (2) or bad ref (3) does not count.
+        # BRO-7110: a FINISHED wait-for-land.js run also counts (CLOUD.md's land step): foreground verdict line,
+        # background task-notification exit 0/1/4, or a later read of its stamped line. Exit 2/3 or unfinished: no.
         _wfl_run_re = re.compile(r'\bnode\s+\S*wait-for-land\.js\s+(refs/heads/)?land/')
         _wfl_verdict_re = re.compile(r'\b\d\d:\d\d:\d\dZ (?:LANDED|REFUSED): (?:refs/heads/)?land/')  # the waiter's own stamped line
         _wfl_pending = set()
