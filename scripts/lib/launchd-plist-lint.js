@@ -29,10 +29,10 @@ const WAIVER_RE = /plist-path-ok:/;
 
 // `node` as a command word: not part of a path (`/bin/node`, `./node`), a name
 // (`check-node-x`, `node_modules`) or a flag.
-const BARE_COMMAND_RE = new RegExp(`(?<![\\w./-])(${BARE_COMMANDS.join('|')})(?=\\s|$)`);
+const BARE_COMMAND_RE = new RegExp(`(?<![\\w./-])(${BARE_COMMANDS.join('|')})(?=['"]?(?:\\s|$))`);
 
 function decodeXml(s) {
-  return s.replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>');
+  return s.replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&apos;/g, "'");
 }
 
 function stripXmlComments(text) {
@@ -58,11 +58,25 @@ function environmentPath(text) {
   return m ? decodeXml(m[1]).trim() : null;
 }
 
-/** `bash -lc` / `zsh -l -c` / `bash -cl`: the shell reads the login profile. */
+/** Index of the shell's command string (the arg after the option cluster that holds `c`), or -1. */
+function shellCommandIndex(args) {
+  const shellIdx = args.findIndex((a) => /(?:^|\/)(?:ba|z)?sh$/.test(a));
+  if (shellIdx < 0) return -1;
+  for (let i = shellIdx + 1; i < args.length; i++) {
+    if (!/^-[a-zA-Z]+$/.test(args[i])) return -1;
+    if (/c/.test(args[i]) && args[i + 1] !== undefined) return i + 1;
+  }
+  return -1;
+}
+
+/** `bash -lc` / `zsh -l -c` / `bash -cl`: the shell reads the login profile. Only options
+ *  BEFORE the command string count; later args are $0, $1, ... */
 function usesLoginShell(args) {
   const shellIdx = args.findIndex((a) => /(?:^|\/)(?:ba|z)?sh$/.test(a));
   if (shellIdx < 0) return false;
-  return args.slice(shellIdx + 1).some((a) => /^-[a-zA-Z]*l[a-zA-Z]*$/.test(a));
+  const cmdIdx = shellCommandIndex(args);
+  const opts = args.slice(shellIdx + 1, cmdIdx < 0 ? undefined : cmdIdx);
+  return opts.some((a) => /^-[a-zA-Z]*l[a-zA-Z]*$/.test(a));
 }
 
 /**
@@ -80,20 +94,25 @@ function findBareCommandsWithoutPath(plistText) {
   if (usesLoginShell(args)) return [];
 
   const findings = [];
+  const cmdIdx = shellCommandIndex(args);
+  // `/usr/bin/env [-flags] [VAR=x] node ...`: the first non-flag, non-assignment word is the command.
+  let envCmdIdx = -1;
+  if (args[0] === '/usr/bin/env') {
+    envCmdIdx = args.findIndex((a, i) => i > 0 && !/^-/.test(a) && !/^\w+=/.test(a));
+  }
   args.forEach((arg, i) => {
     if (WAIVER_RE.test(arg)) return;
-    // argv[0] itself: `<string>node</string>` or `/usr/bin/env node ...`
+    // argv[0] itself: `<string>node</string>`
     if (i === 0 && BARE_COMMANDS.includes(arg)) {
       findings.push({ command: arg, text: arg });
       return;
     }
-    if (i === 0 && arg === '/usr/bin/env') return; // handled via the next arg below
-    if (i === 1 && args[0] === '/usr/bin/env' && BARE_COMMANDS.includes(arg)) {
+    if (i === envCmdIdx && BARE_COMMANDS.includes(arg)) {
       findings.push({ command: arg, text: `/usr/bin/env ${arg}` });
       return;
     }
-    // Shell script strings only: the arg after -c / -lc, or any arg with a space.
-    if (!/\s/.test(arg)) return;
+    // Shell script strings: the arg after -c, or any other arg with a space.
+    if (i !== cmdIdx && !/\s/.test(arg)) return;
     const m = BARE_COMMAND_RE.exec(arg);
     if (m) findings.push({ command: m[1], text: arg.trim() });
   });

@@ -76,6 +76,15 @@ test('does not flag node inside a path, a name or node_modules', () => {
   assert.deepEqual(findBareCommandsWithoutPath(p), []);
 });
 
+test('catches the shapes the first version missed (codex finding)', () => {
+  const wrap = (...a) => `<key>ProgramArguments</key><array>${a.map((x) => `<string>${x}</string>`).join('')}</array>`;
+  assert.equal(findBareCommandsWithoutPath(wrap('/bin/bash', '-c', 'node')).length, 1, 'lone command string');
+  assert.equal(findBareCommandsWithoutPath(wrap('/usr/bin/env', '-i', 'node', 'x.js')).length, 1, 'env flags');
+  assert.equal(findBareCommandsWithoutPath(wrap('/bin/bash', '-c', '&quot;node&quot; x.js')).length, 1, 'quoted command');
+  assert.equal(findBareCommandsWithoutPath(wrap('/bin/bash', '-c', 'exec node x.js', '-l')).length, 1, '-l after the command string is $0, not a login shell');
+  assert.deepEqual(findBareCommandsWithoutPath(wrap('/bin/bash', '-lc', 'exec node x.js')), [], 'a real login shell still passes');
+});
+
 test('honours the plist-path-ok waiver', () => {
   const p = `<key>ProgramArguments</key><array><string>/bin/bash</string><string>-c</string><string>cd /x &amp;&amp; node a.js # plist-path-ok: wrapper sets PATH</string></array>`;
   assert.deepEqual(findBareCommandsWithoutPath(p), []);

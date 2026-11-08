@@ -44,6 +44,43 @@ test('bare listing: a review cut off mid-sentence on a date is NOT stripped (rev
   assert.equal(tier(cut, 'guardian').contentTier, 'truncated');
 });
 
+test('bulleted listing: a review cut off inside a bullet is NOT stripped (ship-check finding)', () => {
+  for (const tail of [' • At the interval the cast continues to sing and', ' • Until the moment when she']) {
+    const cut = BODY + ' Lovely show indeed.' + tail;
+    assert.equal(T.stripUkListingBullets(cut), cut);
+  }
+  assert.equal(T.stripUkListingBullets(BODY + ' • Until 12 October'), BODY);
+});
+
+test('listing opener: review prose containing "until 7 June" is not a listing (codex finding)', () => {
+  const prose = BODY + ' At the interval the actor, whose contract runs until 7 June';
+  assert.equal(T.stripUkListingBullets(prose), prose);
+  const bulletProse = BODY + ' • At the climax, the actor falters and';
+  assert.equal(T.stripUkListingBullets(bulletProse), bulletProse);
+  assert.equal(T.stripUkListingBullets(BODY + ' • At Òran Mór, Glasgow, until 10 October'), BODY);
+  assert.equal(T.stripUkListingBullets(BODY + " • 1984 continues at Her Majesty's Theatre until 27 May"), BODY);
+});
+
+test('one-minute-critic: a cut-off final paragraph is not a headline (codex finding)', () => {
+  const cut = BODY + '\n\nThe final act\n\nThe lead actor finally begins to';
+  assert.equal(T.stripRelatedPostHeadlines(cut), cut);
+  const real = BODY + "\n\nBooks - In 'X,' falling apart is just the beginning\n\nTheater: 'Y' gives three chances to win";
+  assert.equal(T.stripRelatedPostHeadlines(real), BODY);
+});
+
+test('text-quality checkTruncation judges what precedes a trailer and honours the kill switch (codex findings)', () => {
+  const withTrailer = BODY + ' • At the Almeida, London, until 7 June';
+  assert.equal(checkTruncation(withTrailer).isTruncated, false);
+  const curly = BODY + ' “It works.”';
+  assert.equal(checkTruncation(curly).isTruncated, false);
+  process.env.TRAILER_FIXES_DISABLED = 'true';
+  try {
+    assert.equal(checkTruncation(curly).isTruncated, true);
+  } finally {
+    delete process.env.TRAILER_FIXES_DISABLED;
+  }
+});
+
 test('kill switch TRAILER_FIXES_DISABLED also covers stripTrailingJunk, whose output is saved (reviewer blocker 2)', () => {
   const footer = BODY + ' Running Time: 2 hours At Theater Wit Performances are: Fridays at 8pm For more information or tickets For more Chicago theatre information and reviews, please visit Theatre in Chicago Facebook --> Share on:';
   assert.ok(!stripTrailingJunk(footer).includes('For more Chicago'));

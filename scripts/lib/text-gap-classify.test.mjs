@@ -34,6 +34,23 @@ test('EXCLUDED: duplicate, live wrongShow, wrongProduction, roundup, non-review'
   }
 });
 
+test('a human-cleared wrongProduction is not an exclusion (ship-check finding)', () => {
+  for (const f of ['wrongProductionManualClear', 'wrongProductionOverride']) {
+    const r = classify(base({ wrongProduction: true, [f]: true }));
+    assert.notEqual(r.gapClass, 'EXCLUDED', f);
+    assert.equal(r.open, true);
+  }
+  assert.notEqual(classify(base({ wrongProduction: true, humanReviewedWrongProduction: false })).gapClass, 'EXCLUDED');
+  expectClass(classify(base({ wrongProduction: true })), 'EXCLUDED', 'wrongProduction');
+});
+
+test('COMPLETE with a leftover failed-fetches row is closed but flagged', () => {
+  const r = classify(base({ contentTier: 'complete' }), ff('url_content_mismatch'));
+  assert.equal(r.gapClass, 'COMPLETE');
+  assert.equal(r.subclass, 'with_failed_fetch_row');
+  assert.equal(r.open, false);
+});
+
 test('COMPLETE is not a gap', () => {
   const r = classify(base({ contentTier: 'complete' }));
   expectClass(r, 'COMPLETE');

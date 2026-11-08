@@ -91,7 +91,8 @@ console.log(`files read: ${num(out.filesRead)}   excludedSidecars: ${out.exclude
 console.log(`excluded (duplicate/wrong show/production/roundup): ${num(out.excluded)}   complete: ${num(out.complete)}   terminal: ${num(out.terminal)}`);
 console.log(`OPEN${scope}: ${num(out.open)}   of which recent (opened within 730 days): ${num(out.openRecent)}   (recent shows with no date: ${num(out.recentDateUnknown)} files)`);
 console.log(`incomplete files flagged isNonReview (excluded above; the plan's 8,365 baseline counted them): ${num(out.nonReviewIncomplete)}, recent ${num(out.nonReviewIncompleteRecent)}   => open on the plan-baseline definition: ${num(out.open + out.nonReviewIncomplete)}, recent ${num(out.openRecent + out.nonReviewIncompleteRecent)}`);
-console.log(`pollutedReasonCount (incompleteReason outside the enum): ${num(out.pollutedReasonCount)}\n`);
+console.log(`pollutedReasonCount (incompleteReason outside the enum): ${num(out.pollutedReasonCount)}`);
+console.log(`complete files that still have a failed-fetches row (counted closed, worth a look): ${num(out.completeWithFailedFetchRow)}\n`);
 
 console.log('class'.padEnd(26) + 'open'.padStart(8) + 'recent'.padStart(8));
 for (const c of GAP_CLASSES) {
@@ -119,7 +120,9 @@ let target = outPath;
 if (!target && !filtered && !flag('no-write')) target = path.join(ROOT, 'data', 'audit', 'text-gap-metric.json');
 if (flag('no-write')) target = null;
 if (target) {
-  const rel = path.relative(path.resolve(dir), path.resolve(target));
+  // realpath both sides: in the main checkout data/review-texts is a symlink to the private repo.
+  const real = (p) => { try { return fs.realpathSync(p); } catch { return path.resolve(p); } };
+  const rel = path.relative(real(dir), path.join(real(path.dirname(path.resolve(target))), path.basename(target)));
   if (!rel.startsWith('..') && !path.isAbsolute(rel)) {
     console.error('refusing to write inside the review-texts corpus');
     process.exit(2);

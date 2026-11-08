@@ -123,6 +123,7 @@ function buildMetric(rows, { recentOnly = false } = {}) {
   let nonReviewIncompleteRecent = 0;
   let pollutedReasonCount = 0;
   let recentDateUnknown = 0;
+  let completeWithFailedFetchRow = 0;
   for (const r of scope) {
     if (r.polluted) pollutedReasonCount++;
     if (r.gapClass === 'EXCLUDED') {
@@ -133,7 +134,7 @@ function buildMetric(rows, { recentOnly = false } = {}) {
       }
       continue;
     }
-    if (r.gapClass === 'COMPLETE') { complete++; continue; }
+    if (r.gapClass === 'COMPLETE') { complete++; if (r.subclass === 'with_failed_fetch_row') completeWithFailedFetchRow++; continue; }
     if (r.gapClass === 'TERMINAL') { terminal++; continue; }
     open++;
     bump(byClass, r.gapClass);
@@ -153,6 +154,7 @@ function buildMetric(rows, { recentOnly = false } = {}) {
     files: scope.length,
     excluded,
     complete,
+    completeWithFailedFetchRow,
     terminal,
     open,
     openRecent,

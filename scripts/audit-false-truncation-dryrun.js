@@ -44,7 +44,9 @@ const onlyOutlet = arg('outlet', null);
 const jsonOut = arg('json', null);
 
 if (jsonOut) {
-  const rel = path.relative(path.resolve(dir), path.resolve(jsonOut));
+  // realpath both sides: in the main checkout data/review-texts is a symlink to the private repo.
+  const real = (p) => { try { return fs.realpathSync(p); } catch { return path.resolve(p); } };
+  const rel = path.relative(real(dir), path.join(real(path.dirname(path.resolve(jsonOut))), path.basename(jsonOut)));
   if (!rel.startsWith('..') && !path.isAbsolute(rel)) {
     console.error('--json must point outside the review-texts corpus (this tool never writes there)');
     process.exit(2);

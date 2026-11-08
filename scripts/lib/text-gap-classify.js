@@ -138,10 +138,14 @@ function classifyTextGap(review, ffEntry = null, ctx = {}) {
   const wrongShowLive = review.wrongShow && !require('./review-guards').wrongShowExplicitlyCleared(review);
   if (review.duplicateOf) return done('EXCLUDED', 'duplicate');
   if (wrongShowLive) return done('EXCLUDED', 'wrongShow');
-  if (review.wrongProduction) return done('EXCLUDED', 'wrongProduction');
+  // A human-cleared flag is not an exclusion (same carve-outs as review-guards' includability checks).
+  const wrongProductionLive = review.wrongProduction
+    && !(review.wrongProductionManualClear === true || review.wrongProductionOverride === true || review.humanReviewedWrongProduction === false);
+  if (wrongProductionLive) return done('EXCLUDED', 'wrongProduction');
   if (review.isRoundupArticle) return done('EXCLUDED', 'roundup');
   if (review.isNonReview) return done('EXCLUDED', 'nonReview');
-  if (review.contentTier === 'complete') return done('COMPLETE');
+  // Complete is closed, but a leftover failed-fetches row is surfaced (metric.completeWithFailedFetchRow).
+  if (review.contentTier === 'complete') return done('COMPLETE', ffEntry ? 'with_failed_fetch_row' : null);
   if (hasTerminalRecord(review)) return done('TERMINAL', review.textUnrecoverable.reason);
 
   if (isFalseTruncationSuspect(review)) return done('FALSE_TRUNCATION_SUSPECT');

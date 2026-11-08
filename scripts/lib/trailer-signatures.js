@@ -36,6 +36,8 @@ const UK_SEGMENT_MAX = 260;
 const UK_LISTING_CUE_RE = /^(?:At|Until|Touring|On tour)\b|\b(?:until|touring|continues|is at|is on|are at|are on|runs at|runs until|runs to|to \d{1,2} [A-Z][a-z]+|from \d{1,2} [A-Z][a-z]+)\b/;
 const UK_AMENDED_NOTE_RE = /^This (?:article|review|piece) was (?:amended|corrected|updated)\b/;
 
+const UK_LISTING_OPENER_RE = /^(?:At\s+(?:the\s+)?[\p{Lu}\d]|Until\s+[\p{Lu}\d]|Touring\b|On tour\b|Then touring\b|[\p{Lu}\d][^,.]{0,80}?\s(?:continues|runs|is|are|plays)\s(?:at|until|on|to)\b)/u;
+
 function isUkTrailerSegment(seg) {
   if (!seg || seg.length > UK_SEGMENT_MAX) return false;
   if (UK_AMENDED_NOTE_RE.test(seg)) return true; // a correction note is prose, but never review prose
@@ -43,7 +45,9 @@ function isUkTrailerSegment(seg) {
   // "At Crucible, Sheffield, until 7 February. Then touring" is one listing.
   const body = seg.replace(/\.$/, '').replace(/\.\s+(?=Then\b)/g, ', ');
   if (/[.!?]/.test(body.replace(/\b(?:St|Mr|Mrs|Dr)\./g, ''))) return false;
-  return UK_LISTING_CUE_RE.test(body);
+  // A listing opens like one ("At <Venue>", "Until <date>", "<Title> continues at ..."),
+  // not like review prose that happens to contain "until 7 June" ("At the interval the actor ...").
+  return UK_LISTING_OPENER_RE.test(body) && UK_LISTING_CUE_RE.test(body);
 }
 
 // The same listing with the bullet lost in extraction: "... the end. At Theatre
@@ -92,7 +96,12 @@ function stripUkListingBullets(text) {
     // Whitespace must separate the sentence end from the bullet.
     if (before.length === idx || !SENTENCE_END_RE.test(before)) continue;
     const segs = t.slice(idx).split(BULLET_RE).map((s) => s.trim()).filter(Boolean);
-    if (segs.length && segs.every(isUkTrailerSegment)) return before;
+    // The last segment must be finished (ends on a date, a touring tail, a sentence
+    // end or is a correction note): "• At the interval the cast continues to sing and"
+    // is a review cut off inside a bullet, not a listing.
+    const last = segs[segs.length - 1] || '';
+    const finished = UK_BARE_END_RE.test(last) || UK_AMENDED_NOTE_RE.test(last) || /[.!?]["'”’)]?$/.test(last);
+    if (segs.length && finished && segs.every(isUkTrailerSegment)) return before;
   }
 }
 
@@ -139,6 +148,8 @@ function stripRelatedPostHeadlines(text) {
   }
   const headlines = paras.length - k;
   if (headlines < 2 || k < 1) return text;
+  // A final paragraph that stops on a function word is a cut-off review, not a headline.
+  if (/\b(?:to|and|or|but|the|a|an|of|in|on|with|for|that|which|as|at|by|from|is|was)$/i.test(paras[paras.length - 1].trim())) return text;
   const body = paras.slice(0, k).join('\n\n').replace(/\s+$/, '');
   if (!SENTENCE_END_RE.test(body) || body.length < RELATED_MIN_REMAINING) return text;
   return body;
