@@ -28,6 +28,7 @@
  * Kill switch: RECURRENCE_DETECTOR_DISABLED=1 (exits 0, writes nothing).
  */
 'use strict';
+require('./lib/cli-help').exitOnHelp(module);
 
 const fs = require('fs');
 const path = require('path');
@@ -57,7 +58,8 @@ function arg(name, fallback = null) {
 }
 const has = (name) => process.argv.includes(name);
 
-const slugOf = (key) => String(key).trim().replace(/[^a-z0-9]+/gi, '-').replace(/^-|-$/g, '').toLowerCase();
+const { foldDiacritics } = require('./lib/title-match');
+const slugOf = (key) => foldDiacritics(String(key).trim()).replace(/[^a-z0-9]+/gi, '-').replace(/^-|-$/g, '').toLowerCase();
 
 function readJson(p, fallback = null) {
   try { return JSON.parse(fs.readFileSync(p, 'utf8')); } catch { return fallback; }

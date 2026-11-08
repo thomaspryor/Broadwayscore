@@ -25,6 +25,10 @@ const { hasHelpFlag } = require('./lib/cli-help.js');
 // workflow for each exemption. Retained gaps and evidence are documented in
 // scripts/orphaned-audit-writes-triage.md. Do not exempt an unstaged durable write.
 const EXEMPT = {
+  "scripts/recurrence-detector.js|data/audit/landings.jsonl":
+    "read-only: ownCommitsForCard/sample read the land.yml landing ledger; the detector writes only recurrence-classes.json (staged by data-health-check.yml)",
+  "scripts/recurrence-detector.js|data/audit/recurrence-backtest.json":
+    "manual: only the local --backtest mode writes it, never a workflow; the BRO-7103 session commits it by hand as the backtest record",
   "scripts/draft-reddit-opening-posts.js|data/audit/show-review-gap.json":
     "read-only: gapByShow loads the gap audit for the aggregator-gap hold; the script writes only reddit-post-drafts.json",
   "scripts/produce-press-night-digest-snapshot.js|data/audit/reddit-post-drafts.json":

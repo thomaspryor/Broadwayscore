@@ -34,6 +34,8 @@ on:
       # impossible and removes the merge-conflict-magnet property of a single
       # shared list every parallel worktree session had to edit.
       - 'scripts/lib/**'
+      # BRO-7103: scripts/lib/recurrence-classes.test.mjs and root-cause-close.test.mjs require it.
+      - 'scripts/recurrence-detector.js'
       - 'scripts/route-dependabot-pr-cards.js'
       - 'scripts/read-theater-newsletters.js'
       # BRO-3497: scripts/re_extract_talkin_broadway_reviews.test.mjs covers this script.
