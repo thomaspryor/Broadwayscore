@@ -11,6 +11,9 @@
  * step or a dropped --apply therefore fails CI instead of leaving cards to rot,
  * and closing a gap forces the list to shrink.
  *
+ * Limits: the test reads the workflow text, so it cannot see a job-level `if:`, a
+ * shell conditional or a kill-switch variable; `does` says when coverage is partial.
+ *
  * Modes: 'apply' writes to Linear on its own; 'report-only' only reports;
  * 'planned' is not built yet (no script, no workflow).
  */
@@ -29,7 +32,7 @@ const HANDLERS = {
   'close-stuck-verified-cards': {
     script: 'scripts/close-stuck-verified-cards.js', workflow: '.github/workflows/data-health-check.yml',
     invocation: 'node scripts/close-stuck-verified-cards.js --apply', mode: 'apply',
-    does: 'closes idle In Review/In Progress (and proven Backlog/Todo) cards on hard evidence, bounces failing In Review ones',
+    does: 'closes idle audited In Review/In Progress cards and proven Backlog/Todo cards on hard evidence (single-test checks), bounces failing In Review ones; partial coverage of the rows that name it',
   },
   'autonomous-acceptance-recheck': {
     script: 'scripts/autonomous-acceptance-recheck.js', workflow: '.github/workflows/data-health-check.yml',
@@ -50,7 +53,7 @@ const HANDLERS = {
   'wake-board-worker': {
     script: 'scripts/wake-board-worker.js', workflow: '.github/workflows/board-worker-wake.yml',
     invocation: 'node scripts/wake-board-worker.js "$REASON"', mode: 'apply',
-    does: 'wakes a cloud worker that takes the next ready card',
+    does: 'the 2-hourly board worker routine (a scheduled cloud session) takes the next ready card; this workflow only starts it early',
   },
   'codex-runner': {
     script: 'scripts/codex/daily-runner.js', workflow: '.github/workflows/codex-runner.yml',
