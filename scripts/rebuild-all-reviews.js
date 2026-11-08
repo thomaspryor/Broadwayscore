@@ -75,7 +75,7 @@ const { inheritUrlFromDuplicateLosers } = require('./lib/duplicate-fold-url');
 const { siblingRatingForClamp } = require('./lib/sibling-rating-inherit');
 const { detectBandFromReviewFile } = require('./lib/star-reliability');
 const { displayedOriginalRating } = require('./lib/displayed-original-rating');
-const { isRoundupUrl, isLikelyStaleRoundupFlag, isLikelyStaleSuspectedMisattribution, getCriticRegistry, isVenueMismatch, shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag, multiShowSplitGroup, isMultiShowSplitSibling, shouldSkipRoundupAudit, isRoundupPageAsReview, isQuotingRoundupHostUrl, cvBlocksUkWrongProductionAutoClear, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild, hasIncludableSyndicationPrimary, isRejectedByReasonExclusion, isFullTextWrongAuthorActive, isRejectedAtExclusion, isRegistrationWallStubExclusion, duplicateOfInheritedFlag, duplicateOfRefIsCopy, hasStrongDifferentShowSignal, hasHighConfidenceLlmScore, canonicalizeUrlForDedup, areSameCriticFuzzy, isStaleCvPromotedWrongProduction, isStaleCvPromotedWrongShow, isMisFamilyCvPromotedWrongShow, isStaleGenericHomepageWrongShow, isStaleBulkTitleWrongShow, computeCvIsStale, applyVenueClassificationCarveout, cvWrongProductionIsVenueCarveout, isVenueCarveoutPersistedWrongProduction, isOwnCastEvidencePersistedWrongProduction, isEnsembleCategoryQuibbleRejection, isReviewWithinOwnProductionWindow, isPrematureReviewForUnopenedShow, isNonReviewDemotedByFreshCV, isReviewContentTrustworthy, cvFlagVetoedInWindow, soloVerdictHeld, isNamedNonReviewUrlRecord, isCancelledBeforeOpeningShow, isUnverifiableWebSearchRow, isPreviewFirstLookPiece, isCombinedReviewOfOtherMemberOnly, isBodylessAggregatorScoreUncorroborated, cvNonReviewHumanCleared, cvWrongArticleFamily, cvArticleTypeNonReview, cvArticleTypeVerdictIsPartialWindow, cvWrongArticlePromotion, wrongShowCleared, wrongShowExplicitlyCleared, evaluateLateDateGuard, evaluateUrlYearGuard, evaluateDirectorGuard } = require('./lib/review-guards');
+const { decideEarlyFileExclusion, isRoundupUrl, isLikelyStaleRoundupFlag, isLikelyStaleSuspectedMisattribution, getCriticRegistry, isVenueMismatch, shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag, multiShowSplitGroup, isMultiShowSplitSibling, shouldSkipRoundupAudit, isRoundupPageAsReview, isQuotingRoundupHostUrl, cvBlocksUkWrongProductionAutoClear, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild, hasIncludableSyndicationPrimary, isRejectedByReasonExclusion, isFullTextWrongAuthorActive, isRejectedAtExclusion, isRegistrationWallStubExclusion, duplicateOfInheritedFlag, duplicateOfRefIsCopy, hasStrongDifferentShowSignal, hasHighConfidenceLlmScore, canonicalizeUrlForDedup, areSameCriticFuzzy, isStaleCvPromotedWrongProduction, isStaleCvPromotedWrongShow, isMisFamilyCvPromotedWrongShow, isStaleGenericHomepageWrongShow, isStaleBulkTitleWrongShow, computeCvIsStale, applyVenueClassificationCarveout, cvWrongProductionIsVenueCarveout, isVenueCarveoutPersistedWrongProduction, isOwnCastEvidencePersistedWrongProduction, isEnsembleCategoryQuibbleRejection, isReviewWithinOwnProductionWindow, isPrematureReviewForUnopenedShow, isNonReviewDemotedByFreshCV, isReviewContentTrustworthy, cvFlagVetoedInWindow, soloVerdictHeld, isNamedNonReviewUrlRecord, isCancelledBeforeOpeningShow, isUnverifiableWebSearchRow, isPreviewFirstLookPiece, isCombinedReviewOfOtherMemberOnly, isBodylessAggregatorScoreUncorroborated, cvNonReviewHumanCleared, cvWrongArticleFamily, cvArticleTypeNonReview, cvArticleTypeVerdictIsPartialWindow, cvWrongArticlePromotion, wrongShowCleared, wrongShowExplicitlyCleared, evaluateLateDateGuard, evaluateUrlYearGuard, evaluateDirectorGuard } = require('./lib/review-guards');
 const { ownShowTextEvidence } = require('./lib/own-show-text-evidence');
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
 const { isSoft404Body } = require('./lib/soft-404-body');
@@ -3802,31 +3802,15 @@ showDirs.forEach(showId => {
       // (whos-afraid-of-virginia-woolf-2020 carried a counted 2005 review), and a
       // row known only from a search hit with no url and no stored text has
       // nothing to check. Same predicates as explainExclusion(); runs after the wrongProduction auto-clear branches above, so only the reason label differs, never the include decision. Rows added after this loop (inheritPriorRunReviews, lease carry-over, manualEntry) skip it (BRO-4890 known limit).
-      if (isCancelledBeforeOpeningShow(showById[showId])) {
-        logExclusion("skippedCancelledBeforeOpening", showId, file, data);
-        stats.skippedCancelledBeforeOpening = (stats.skippedCancelledBeforeOpening || 0) + 1;
-        return;
-      }
-      if (isUnverifiableWebSearchRow(data)) {
-        logExclusion("skippedUnverifiableWebSearchRow", showId, file, data);
-        stats.skippedUnverifiableWebSearchRow = (stats.skippedUnverifiableWebSearchRow || 0) + 1;
-        return;
-      }
-
-      // BRO-3126: a preview-period "first look" the verifier already called a preview and that
-      // says so itself (jane-eyre-off-west-end-2026 scored 79 and shipped). Same predicate as
-      // explainExclusion().
-      if (isPreviewFirstLookPiece(data)) {
-        logExclusion("skippedPreviewFirstLookPiece", showId, file, data);
-        stats.skippedPreviewFirstLookPiece = (stats.skippedPreviewFirstLookPiece || 0) + 1;
-        return;
-      }
-
-      // BRO-2746: a combined-review file holding a co-member show's review (url names
-      // only the other show, text never names this one). Same predicate as explainExclusion().
-      if (isCombinedReviewOfOtherMemberOnly(data, showById[showId])) {
-        logExclusion("skippedCombinedReviewOfOtherMemberOnly", showId, file, data);
-        stats.skippedCombinedReviewOfOtherMemberOnly = (stats.skippedCombinedReviewOfOtherMemberOnly || 0) + 1;
+      // BRO-2453: one shared decision (review-guards decideEarlyFileExclusion) for the four
+      // early gates above; literal logExclusion keys kept so scoring-delta's site detector sees them.
+      const earlyExclusion = decideEarlyFileExclusion(data, showById[showId]);
+      if (earlyExclusion) {
+        if (earlyExclusion.statKey === "skippedCancelledBeforeOpening") logExclusion("skippedCancelledBeforeOpening", showId, file, data);
+        else if (earlyExclusion.statKey === "skippedUnverifiableWebSearchRow") logExclusion("skippedUnverifiableWebSearchRow", showId, file, data);
+        else if (earlyExclusion.statKey === "skippedPreviewFirstLookPiece") logExclusion("skippedPreviewFirstLookPiece", showId, file, data);
+        else logExclusion("skippedCombinedReviewOfOtherMemberOnly", showId, file, data);
+        stats[earlyExclusion.statKey] = (stats[earlyExclusion.statKey] || 0) + 1;
         return;
       }
 

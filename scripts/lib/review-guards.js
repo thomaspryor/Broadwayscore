@@ -5566,6 +5566,38 @@ function rebuildOnlyPassExclusion(filePath, rebuildExclusions) {
 }
 
 /**
+ * BRO-2453: the four consecutive early per-file gates (BRO-4890, BRO-3126, BRO-2746), in the order
+ * the rebuild loop applies them. One shared decision for rebuild-all-reviews.js, explainExclusion
+ * and scoring-delta.js decideInclusion, replacing three hand-kept copies.
+ * @param {object} data - review-text file
+ * @param {object} show - shows.json entry
+ * @param {{opts?: object, tolerateMissing?: boolean, guards?: object}} [cfg] - opts goes ONLY to
+ *   isUnverifiableWebSearchRow (it alone reads opts.forScoring). guards lets scoring-delta replay
+ *   a baseline module; tolerateMissing skips a predicate the module lacks (older BASE_REF), never
+ *   set it from rebuild or explainExclusion.
+ * @returns {{statKey: string, reason: string}|null}
+ */
+function decideEarlyFileExclusion(data, show, cfg = {}) {
+  const g = cfg.guards || module.exports;
+  const call = (name, ...args) => {
+    if (typeof g[name] !== 'function') {
+      if (cfg.tolerateMissing) return false;
+      throw new Error('decideEarlyFileExclusion: missing predicate ' + name);
+    }
+    return g[name](...args);
+  };
+  for (const [name, statKey, reason, args] of [
+    ['isCancelledBeforeOpeningShow', 'skippedCancelledBeforeOpening', 'cancelledBeforeOpening', [show]],
+    ['isUnverifiableWebSearchRow', 'skippedUnverifiableWebSearchRow', 'unverifiableWebSearchRow', [data, cfg.opts]],
+    ['isPreviewFirstLookPiece', 'skippedPreviewFirstLookPiece', 'previewFirstLookPiece', [data]],
+    ['isCombinedReviewOfOtherMemberOnly', 'skippedCombinedReviewOfOtherMemberOnly', 'combinedReviewOfOtherMemberOnly', [data, show]],
+  ]) {
+    if (call(name, ...args)) return { statKey, reason };
+  }
+  return null;
+}
+
+/**
  * Show-level skips the rebuild applies before it reads any review file: an 'upcoming' show, or a
  * Broadway-category show still in 'previews'. explainExclusion is per-review and returns null for
  * these, so a file could read "includable" yet be absent from reviews.json (BRO-5795: zeal-nyc on
@@ -5603,10 +5635,8 @@ function explainExclusion(data, show, filePath, opts) {
   if (!data) return 'no-data';
   // BRO-4890: show-level and unverifiable-row exclusions run first; the rebuild loop and
   // scoring-delta.js decideInclusion mirror them in the same order.
-  if (isCancelledBeforeOpeningShow(show)) return 'cancelledBeforeOpening';
-  if (isUnverifiableWebSearchRow(data, opts)) return 'unverifiableWebSearchRow';
-  if (isPreviewFirstLookPiece(data)) return 'previewFirstLookPiece';
-  if (isCombinedReviewOfOtherMemberOnly(data, show)) return 'combinedReviewOfOtherMemberOnly';
+  const early = decideEarlyFileExclusion(data, show, { opts });
+  if (early) return early.reason;
   // BRO-4806: opening-night lane reviews (provenance + productionVerified:"aggregator") are exempt from the guards in
   // trust-model LANE_BYPASSED_GUARDS and from nothing else. One predicate, called per guard; rebuild-all-reviews.js's
   // inline gates call the same one.
@@ -7079,6 +7109,7 @@ module.exports = {
   isLegacyWebSearchOnly,
   isPreviewFirstLookPiece,
   isCombinedReviewOfOtherMemberOnly,
+  decideEarlyFileExclusion,
   bodylessScoreProvenance,
   isBodylessAggregatorScoreUncorroborated,
   bodylessCorroboratedByProduction,
