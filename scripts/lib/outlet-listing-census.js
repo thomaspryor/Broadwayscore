@@ -65,13 +65,15 @@ function censusSourceFor(outletId, { sources = SOURCES, londonSources = LONDON_S
  *   feed-error   the feed fetch threw
  *   stale        the feed's newest matching item is old while the outlet still publishes
  *   short-span   the feed's oldest item is newer than the lookback, so older days are unseen
- *   none         feed is fine, no census source, or kill switch set
+ *   reconcile    feed looks fine; rotating full-listing pass (every RECONCILE_EVERY_DAYS days per outlet)
+ *   disabled     kill switch set (CENSUS_LISTING_DISABLED)
+ *   none         feed is fine and no reconcile is due, or no census source
  */
 function shouldUseCensus({ outletId, hasFeed, health = null, latestReviewDate = null, lookbackDays, now = Date.now(), env = process.env, sources, londonSources }) {
-  if (isDisabled(env)) return { use: false, reason: 'none' };
+  if (isDisabled(env)) return { use: false, reason: 'disabled' }; // coverage switched off, not "not needed"
   if (!censusSourceFor(outletId, { sources, londonSources })) return { use: false, reason: 'none' };
   if (!hasFeed) return { use: true, reason: 'no-feed' };
-  if (!health) return { use: false, reason: 'none' };
+  if (!health) return reconcileDue(outletId, now) ? { use: true, reason: 'reconcile' } : { use: false, reason: 'none' };
   if (health.error) return { use: true, reason: 'feed-error' };
   if (isFeedStale({ newestFiltered: health.newestFiltered, filteredCount: health.filteredCount, newestAny: health.newestAny, oldestAny: health.oldestAny, latestReviewDate, now })) {
     return { use: true, reason: 'stale' };
@@ -80,7 +82,18 @@ function shouldUseCensus({ outletId, hasFeed, health = null, latestReviewDate = 
     const oldestMs = Date.parse(health.oldestAny);
     if (!isNaN(oldestMs) && now - oldestMs < lookbackDays * DAY_MS) return { use: true, reason: 'short-span' };
   }
+  // A fresh, long-enough feed is not proof that it lists everything (category omissions, filtered or
+  // malformed entries). Read the listing on a rotating schedule anyway: each outlet once every
+  // RECONCILE_EVERY_DAYS days, deterministic from the date so no state is needed (BRO-7163 F03).
+  if (reconcileDue(outletId, now)) return { use: true, reason: 'reconcile' };
   return { use: false, reason: 'none' };
+}
+
+const RECONCILE_EVERY_DAYS = 3;
+function reconcileDue(outletId, now = Date.now()) {
+  let h = 0;
+  for (const ch of String(outletId)) h = (h * 31 + ch.charCodeAt(0)) >>> 0;
+  return Math.floor(now / DAY_MS) % RECONCILE_EVERY_DAYS === h % RECONCILE_EVERY_DAYS;
 }
 
 /** Outlets that have a readable census source but no poller feed or API entry. */
@@ -105,7 +118,7 @@ function datedSitemapUrls(template, step, since, until) {
 
 const looksLikePostList = (body) => { try { return Array.isArray(JSON.parse(String(body || '').trim())); } catch { return false; } };
 
-async function wpItems(src, cutoff, { fetchText, log }) {
+async function wpItems(src, cutoff, { fetchText, log, status }) {
   const items = [];
   for (let page = 1; page <= MAX_WP_PAGES; page++) {
     const q = new URLSearchParams({ per_page: '100', page: String(page), after: cutoff.toISOString().slice(0, 19), orderby: 'date', order: 'desc', _fields: 'link,date,title,excerpt' });
@@ -115,6 +128,7 @@ async function wpItems(src, cutoff, { fetchText, log }) {
     try { body = await fetchText(`${src.apiBase}?${q}`, 'wp-api', looksLikePostList, { proxyRetry: !!src.proxyRetry }); } catch (e) {
       if (page === 1) throw e;
       log(`  [census] wp page ${page} failed: ${e.message}`);
+      noteIncomplete(status, 'failed', `wp page ${page}: ${e.message}`);
       break;
     }
     const posts = JSON.parse(body);
@@ -124,6 +138,7 @@ async function wpItems(src, cutoff, { fetchText, log }) {
       items.push(it);
     }
     if (posts.length < 100) break;
+    if (page === MAX_WP_PAGES) noteIncomplete(status, 'capped', `wp enumeration stopped at ${MAX_WP_PAGES} full pages (older posts in the window unread)`);
   }
   return items;
 }
@@ -135,9 +150,9 @@ const looksLikeGuardianJson = (body) => { try { return !!JSON.parse(String(body 
  * without it nothing is read (the shared 'test' key is ~1 call/s and not for a daily job). The key
  * rides in the URL, so it is scrubbed from any error that leaves this function.
  */
-async function guardianItems(src, cutoff, { fetchText, log, env = process.env }) {
+async function guardianItems(src, cutoff, { fetchText, log, status, env = process.env }) {
   const key = env.GUARDIAN_API_KEY;
-  if (!key) { log('  [census] GUARDIAN_API_KEY is not set: guardian-api source skipped'); return []; }
+  if (!key) { log('  [census] GUARDIAN_API_KEY is not set: guardian-api source skipped'); noteIncomplete(status, 'skipped', 'GUARDIAN_API_KEY is not set'); return []; }
   const { guardianItemIsReview } = require('./we-major-recovery');
   const scrub = (e) => new Error(String((e && e.message) || e).split(key).join('***'));
   const items = [];
@@ -148,6 +163,7 @@ async function guardianItems(src, cutoff, { fetchText, log, env = process.env })
     try { body = await fetchText(`https://content.guardianapis.com/search?${q}`, 'guardian-api', looksLikeGuardianJson, { proxyRetry: false }); } catch (e) {
       if (page === 1) throw scrub(e);
       log(`  [census] guardian page ${page} failed: ${scrub(e).message}`);
+      noteIncomplete(status, 'failed', `guardian page ${page}: ${scrub(e).message}`);
       break;
     }
     const resp = JSON.parse(body).response || {};
@@ -158,11 +174,12 @@ async function guardianItems(src, cutoff, { fetchText, log, env = process.env })
       items.push({ url: g.webUrl, headline: f.headline || g.webTitle || '', publishDate: String(g.webPublicationDate || '').slice(0, 10) });
     }
     if (!resp.pages || page >= resp.pages) break;
+    if (page === MAX_GUARDIAN_PAGES) noteIncomplete(status, 'capped', `guardian enumeration stopped at ${MAX_GUARDIAN_PAGES} pages of ${resp.pages}`);
   }
   return items;
 }
 
-async function sitemapFileItems(url, src, cutoff, { fetchText, log }, depth = 0) {
+async function sitemapFileItems(url, src, cutoff, { fetchText, log, status }, depth = 0) {
   const raw = await fetchText(url, 'sitemap', looksLikeSitemap, { proxyRetry: !!src.proxyRetry });
   const xml = raw.replace(/<!\[CDATA\[\s*([^\]]*?)\s*\]\]>/g, '$1').replace(/&amp;/g, '&');
   if (/<sitemapindex/i.test(xml) && depth < 2) {
@@ -171,10 +188,16 @@ async function sitemapFileItems(url, src, cutoff, { fetchText, log }, depth = 0)
       .filter((c) => !cf || (typeof cf === 'function' ? cf(c, cutoff.toISOString().slice(0, 10)) : cf.test(c)));
     // Prefer children that name reviews when the index has any; then cap.
     const reviewKids = children.filter((c) => /review/i.test(c));
-    if (reviewKids.length) children = reviewKids;
+    if (reviewKids.length) {
+      // The preference is only safe when the urlFilter itself targets reviews; a generic filter (or none)
+      // would lose this week's reviews that sit in post-sitemap*.xml (BRO-7163 F13). Say so.
+      if (reviewKids.length < children.length && !src.sourceSaysReview) noteIncomplete(status, 'partial', `${children.length - reviewKids.length} non-review sitemap child(ren) skipped under ${url}`);
+      children = reviewKids;
+    }
+    if (children.length > MAX_SITEMAP_CHILDREN) noteIncomplete(status, 'capped', `${children.length - MAX_SITEMAP_CHILDREN} of ${children.length} sitemap children beyond the first ${MAX_SITEMAP_CHILDREN} unread under ${url}`);
     const out = [];
     for (const c of children.slice(0, MAX_SITEMAP_CHILDREN)) {
-      try { out.push(...await sitemapFileItems(c, src, cutoff, { fetchText, log }, depth + 1)); } catch (e) { log(`  [census] child ${c}: ${e.message}`); }
+      try { out.push(...await sitemapFileItems(c, src, cutoff, { fetchText, log, status }, depth + 1)); } catch (e) { log(`  [census] child ${c}: ${e.message}`); noteIncomplete(status, 'failed', `child ${c}: ${e.message}`); }
     }
     return out;
   }
@@ -186,9 +209,22 @@ async function sitemapFileItems(url, src, cutoff, { fetchText, log }, depth = 0)
  * deps: { fetchText(url, label, isExpected, {proxyRetry}), fetchViaSitemap(outletId, cfg, cutoff, opts), log }.
  */
 async function enumerateCensusItems(outletId, cutoff, deps) {
+  return (await enumerateCensusItemsDetailed(outletId, cutoff, deps)).items;
+}
+
+/** Records that an enumeration did not cover everything. kinds: failed | capped | partial | skipped. */
+function noteIncomplete(status, kind, detail) {
+  if (!status) return;
+  status.complete = false;
+  (status[kind] = status[kind] || []).push(detail);
+}
+
+/** Like enumerateCensusItems but also says whether the read was complete: { items, complete, failed?, capped?, partial?, skipped? }. */
+async function enumerateCensusItemsDetailed(outletId, cutoff, deps) {
   const src = censusSourceFor(outletId, deps.sourceOverrides);
-  if (!src) return [];
-  const d = { log: console.log, ...deps };
+  const status = { complete: true };
+  if (!src) return { items: [], ...status };
+  const d = { log: console.log, ...deps, status };
   let raw = [];
   if (src.kind === 'wp-json') raw = await wpItems(src, cutoff, d);
   else if (src.kind === 'guardian-api') raw = await guardianItems(src, cutoff, d);
@@ -197,18 +233,27 @@ async function enumerateCensusItems(outletId, cutoff, deps) {
   } else if (src.kind === 'sitemap-dated') {
     const from = src.start && src.start > cutoff.toISOString().slice(0, 10) ? src.start : cutoff.toISOString().slice(0, 10);
     for (const u of datedSitemapUrls(src.template, src.step || 'month', from, src.until)) {
-      try { raw.push(...await sitemapFileItems(u, src, cutoff, d, 1)); } catch (e) { d.log(`  [census] ${u}: ${e.message}`); }
+      try { raw.push(...await sitemapFileItems(u, src, cutoff, d, 1)); } catch (e) { d.log(`  [census] ${u}: ${e.message}`); noteIncomplete(status, 'failed', `${u}: ${e.message}`); }
     }
   } else {
     for (const u of [].concat(src.url)) raw.push(...await sitemapFileItems(u, src, cutoff, d));
   }
   const seen = new Set();
-  return raw.filter((i) => i && i.url && !seen.has(i.url) && seen.add(i.url)).map((i) => ({
+  if (src.kind === 'sitemap-dated' && datedSitemapUrlsCapped(src, cutoff)) noteIncomplete(status, 'capped', `dated sitemaps beyond ${MAX_DATED_SITEMAPS} unread`);
+  const items = raw.filter((i) => i && i.url && !seen.has(i.url) && seen.add(i.url)).map((i) => ({
     url: i.url,
     headline: i.headline || headlineFromUrl(i.url),
     publishDate: i.publishDate || null,
     viaCensus: true,
   }));
+  return { items, ...status };
+}
+
+function datedSitemapUrlsCapped(src, cutoff) {
+  try {
+    const from = src.start && src.start > cutoff.toISOString().slice(0, 10) ? src.start : cutoff.toISOString().slice(0, 10);
+    return require('../outlet-census').datedSitemapUrls(src.template, src.step || 'month', from, src.until).length > MAX_DATED_SITEMAPS;
+  } catch { return false; }
 }
 
 /**
@@ -346,6 +391,6 @@ function makeCensusFetcher({ plain, paid, maxPaid = 0 }) {
 module.exports = {
   censusItemMode, makeCensusFetcher, censusMarketOk, outletMarketCounts,
   censusTitleOnly,
-  FREE_KINDS, ROUNDUP_RE, isDisabled, censusSourceFor, shouldUseCensus, censusOnlyCandidates,
-  headlineFromUrl, datedSitemapUrls, enumerateCensusItems, censusItemAccepted,
+  FREE_KINDS, ROUNDUP_RE, RECONCILE_EVERY_DAYS, reconcileDue, isDisabled, censusSourceFor, shouldUseCensus, censusOnlyCandidates,
+  headlineFromUrl, datedSitemapUrls, enumerateCensusItems, enumerateCensusItemsDetailed, noteIncomplete, censusItemAccepted,
 };
