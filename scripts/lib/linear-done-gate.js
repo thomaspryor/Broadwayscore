@@ -143,7 +143,7 @@ function applyCmdExecution(result, verifyCmdEvidence) {
  *   `verification` (the verifier's own result) when PR evidence was checked,
  *   and/or `cmdExecution` when a recorded command was actually run.
  */
-function checkLinearDoneTransition({ targetStateType, description = '', commentText = '', existingComments = [], verifyEvidence, verifyCmdEvidence } = {}) {
+function checkDoneEvidence({ targetStateType, description = '', commentText = '', existingComments = [], verifyEvidence, verifyCmdEvidence } = {}) {
   if (targetStateType !== 'completed') return { gated: false };
 
   const comments = [...(Array.isArray(existingComments) ? existingComments : []), commentText].filter(Boolean);
@@ -206,4 +206,37 @@ function checkLinearDoneTransition({ targetStateType, description = '', commentT
   return { gated: true, ...result };
 }
 
-module.exports = { checkLinearDoneTransition, applyCmdExecution };
+// BRO-7103: closing one more case of a problem that keeps coming back.
+// ADVISORY until recurrence-classes.js CLOSE_GATE_BLOCKING_FROM: it only adds
+// a `warning` and never changes `allowed`. Linked = the root-cause card's id
+// is named in the description, an earlier comment or the close comment.
+// Reads the detector's committed snapshot; any read error fails open.
+function loadRecurrenceSnapshot() {
+  try {
+    return JSON.parse(require('fs').readFileSync(require('path').join(__dirname, '../../data/audit/recurrence-classes.json'), 'utf8'));
+  } catch {
+    return null;
+  }
+}
+
+function recurrenceWarning({ identifier, description = '', commentText = '', existingComments = [], recurrenceSnapshot }) {
+  if (!identifier) return null;
+  try {
+    const snap = recurrenceSnapshot === undefined ? loadRecurrenceSnapshot() : recurrenceSnapshot;
+    const text = [description, ...(Array.isArray(existingComments) ? existingComments : []), commentText].join('\n');
+    const named = text.match(/\bBRO-\d+\b/g) || [];
+    return require('./recurrence-classes.js').recurrenceCloseWarning(identifier, snap, named);
+  } catch {
+    return null;
+  }
+}
+
+function checkLinearDoneTransition(args = {}) {
+  const result = checkDoneEvidence(args);
+  if (args.targetStateType !== 'completed') return result;
+  const rw = recurrenceWarning(args);
+  if (!rw) return result;
+  return { ...result, warning: result.warning ? `${result.warning}\n${rw}` : rw };
+}
+
+module.exports = { checkLinearDoneTransition, applyCmdExecution, recurrenceWarning };

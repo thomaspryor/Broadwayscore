@@ -246,6 +246,12 @@ const AUTO_FIX_PLAYBOOK = [
   // means nothing is silently lost.
   // `ledger`: same BRO-2603 note as the dead-launch-rate entry above — also
   // sourced from dispatch-ledger.jsonl.
+  // BRO-7103: the recurrence detector's own dead-man. Pass carries the metric
+  // (root-cause share, recurring classes); warn only when the detector stops
+  // writing its snapshot, so a broken detector files a card like any monitor.
+  { match: /^Improvement: root-cause share$/, urgency: 'this-week',
+    ownerText: "The check that spots problems we keep fixing over and over has not run for two days, so repeat problems are not being turned into cause fixes. Nothing is needed from you.",
+    workerInstruction: "Run `node scripts/recurrence-detector.js` (dry run) and check the \"Recurrence detector\" step in data-health-check.yml; the snapshot is data/audit/recurrence-classes.json (BRO-7103)." },
   { match: /^Headless dispatch: success rate$/, urgency: 'this-week', ledger: DISPATCH_LEDGER_NAME,
     ownerText: "Background work sessions are succeeding less than 80% of the time. Unfinished work is retried, so nothing is lost. Nothing is needed from you.",
     workerInstruction: "Run `node scripts/audit-headless-outcome-rate.js` for the per-task breakdown, then investigate the headless dispatch success rate (card #1714). Judge any fix by this rate over the window, never by one clean dispatch." },
@@ -1649,6 +1655,22 @@ function checkQuality() {
     // that only reads the last row (the arm-yield 'unobserved' lesson). This
     // is the site's ONLY revenue stream: a stale/broken monitor is an error,
     // not a warn.
+    // BRO-7103: how much finished work fixed causes vs one more case of a
+    // repeat problem. recurrence-detector.js runs earlier in the same job.
+    runCheck('Improvement: root-cause share', () => {
+      const name = 'Improvement: root-cause share';
+      const snapFile = path.join(AUDIT_DIR, 'recurrence-classes.json');
+      if (!fs.existsSync(snapFile)) {
+        return { name, status: 'pass', message: 'Recurrence detector has not run yet' };
+      }
+      const snap = readJSON(snapFile);
+      const age = snap?.generatedAt ? hoursAgo(snap.generatedAt) : Infinity;
+      if (age > 48) {
+        return { name, status: 'warn', message: `Recurrence detector snapshot is ${formatAge(age)} old (>48h)`, hint: 'Check the "Recurrence detector" step in data-health-check.yml' };
+      }
+      return { name, status: 'pass', message: require('./lib/recurrence-classes.js').improvementLine(snap) };
+    }),
+
     runCheck('Revenue: affiliate health', () => {
       const snapFile = path.join(AUDIT_DIR, 'affiliate-health.json');
       if (!fs.existsSync(snapFile)) {

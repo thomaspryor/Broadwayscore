@@ -1,0 +1,1571 @@
+{
+  "generatedAt": "2026-11-07T23:54:02.327Z",
+  "days": 60,
+  "cards": 7103,
+  "windowDays": 30,
+  "hits": [
+    {
+      "key": "review gap missing cited",
+      "firstFlagged": "2026-09-22",
+      "flaggedBecause": [
+        "21 cards in 30 days"
+      ],
+      "total": 90,
+      "filedAfterFlag": 69,
+      "done": 29,
+      "rootCause": null,
+      "example": "Review gap — \"Harry Potter and the Cursed Child\" missing 1 cited review(s)",
+      "ids": [
+        "BRO-4008",
+        "BRO-4009",
+        "BRO-4010",
+        "BRO-4011",
+        "BRO-4012",
+        "BRO-4013",
+        "BRO-4014",
+        "BRO-4015",
+        "BRO-4016",
+        "BRO-4017",
+        "BRO-4018",
+        "BRO-4019",
+        "BRO-4020",
+        "BRO-4021",
+        "BRO-4022",
+        "BRO-4023",
+        "BRO-4024",
+        "BRO-4025",
+        "BRO-4026",
+        "BRO-4027",
+        "BRO-4028",
+        "BRO-4087",
+        "BRO-4088",
+        "BRO-4089",
+        "BRO-4090",
+        "BRO-4105",
+        "BRO-4107",
+        "BRO-4108",
+        "BRO-4109",
+        "BRO-4112",
+        "BRO-4113",
+        "BRO-4114",
+        "BRO-4576",
+        "BRO-4577",
+        "BRO-4578",
+        "BRO-4579",
+        "BRO-4580",
+        "BRO-4581",
+        "BRO-4582",
+        "BRO-4583",
+        "BRO-4679",
+        "BRO-4680",
+        "BRO-4789",
+        "BRO-4790",
+        "BRO-4834",
+        "BRO-4915",
+        "BRO-4916",
+        "BRO-4942",
+        "BRO-4968",
+        "BRO-4969",
+        "BRO-4970",
+        "BRO-5051",
+        "BRO-5052",
+        "BRO-5132",
+        "BRO-5133",
+        "BRO-5134",
+        "BRO-5169",
+        "BRO-5219",
+        "BRO-5252",
+        "BRO-5349",
+        "BRO-5376",
+        "BRO-5377",
+        "BRO-5383",
+        "BRO-5462",
+        "BRO-5464",
+        "BRO-5465",
+        "BRO-5466",
+        "BRO-5467",
+        "BRO-5468",
+        "BRO-5469",
+        "BRO-5470",
+        "BRO-5471",
+        "BRO-5472",
+        "BRO-5473",
+        "BRO-5474",
+        "BRO-5475",
+        "BRO-5512",
+        "BRO-5513",
+        "BRO-5514",
+        "BRO-5558",
+        "BRO-5629",
+        "BRO-5704",
+        "BRO-5705",
+        "BRO-5764",
+        "BRO-6042",
+        "BRO-6731",
+        "BRO-6765",
+        "BRO-6896",
+        "BRO-6950",
+        "BRO-7095"
+      ],
+      "suspect": null
+    },
+    {
+      "key": "unit tests run",
+      "firstFlagged": "2026-09-21",
+      "flaggedBecause": [
+        "7 cards in 30 days"
+      ],
+      "total": 81,
+      "filedAfterFlag": 74,
+      "done": 63,
+      "rootCause": "BRO-3425",
+      "example": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"reconcileAnswered: a replayed visual approval wri",
+      "ids": [
+        "BRO-3882",
+        "BRO-3894",
+        "BRO-3935",
+        "BRO-3950",
+        "BRO-3952",
+        "BRO-3955",
+        "BRO-3959",
+        "BRO-4059",
+        "BRO-4063",
+        "BRO-4146",
+        "BRO-4196",
+        "BRO-4248",
+        "BRO-4253",
+        "BRO-4265",
+        "BRO-4362",
+        "BRO-4410",
+        "BRO-4549",
+        "BRO-4644",
+        "BRO-4647",
+        "BRO-4716",
+        "BRO-4748",
+        "BRO-4811",
+        "BRO-4827",
+        "BRO-4844",
+        "BRO-4883",
+        "BRO-4940",
+        "BRO-5025",
+        "BRO-5035",
+        "BRO-5060",
+        "BRO-5067",
+        "BRO-5105",
+        "BRO-5121",
+        "BRO-5124",
+        "BRO-5185",
+        "BRO-5236",
+        "BRO-5281",
+        "BRO-5434",
+        "BRO-5594",
+        "BRO-5606",
+        "BRO-5609",
+        "BRO-5642",
+        "BRO-5792",
+        "BRO-6032",
+        "BRO-6041",
+        "BRO-6044",
+        "BRO-6068",
+        "BRO-6071",
+        "BRO-6102",
+        "BRO-6124",
+        "BRO-6125",
+        "BRO-6189",
+        "BRO-6198",
+        "BRO-6297",
+        "BRO-6307",
+        "BRO-6328",
+        "BRO-6334",
+        "BRO-6344",
+        "BRO-6466",
+        "BRO-6472",
+        "BRO-6505",
+        "BRO-6557",
+        "BRO-6587",
+        "BRO-6598",
+        "BRO-6600",
+        "BRO-6627",
+        "BRO-6660",
+        "BRO-6683",
+        "BRO-6740",
+        "BRO-6748",
+        "BRO-6776",
+        "BRO-6777",
+        "BRO-6780",
+        "BRO-6784",
+        "BRO-6821",
+        "BRO-6875",
+        "BRO-6967",
+        "BRO-6975",
+        "BRO-6979",
+        "BRO-7045",
+        "BRO-7056",
+        "BRO-7066"
+      ],
+      "suspect": null
+    },
+    {
+      "key": "watchdog parked redispatch produced launch",
+      "firstFlagged": "2026-09-18",
+      "flaggedBecause": [
+        "31 cards in 30 days"
+      ],
+      "total": 31,
+      "filedAfterFlag": 0,
+      "done": 0,
+      "rootCause": null,
+      "example": "BSC Daily: Watchdog parked #102 — redispatch never produced a launch",
+      "ids": [
+        "BRO-3726",
+        "BRO-3727",
+        "BRO-3728",
+        "BRO-3729",
+        "BRO-3730",
+        "BRO-3731",
+        "BRO-3732",
+        "BRO-3733",
+        "BRO-3734",
+        "BRO-3735",
+        "BRO-3736",
+        "BRO-3737",
+        "BRO-3738",
+        "BRO-3739",
+        "BRO-3740",
+        "BRO-3741",
+        "BRO-3745",
+        "BRO-3753",
+        "BRO-3754",
+        "BRO-3755",
+        "BRO-3756",
+        "BRO-3757",
+        "BRO-3758",
+        "BRO-3759",
+        "BRO-3760",
+        "BRO-3761",
+        "BRO-3762",
+        "BRO-3767",
+        "BRO-3768",
+        "BRO-3769",
+        "BRO-3770"
+      ],
+      "suspect": "every card was canceled or a duplicate"
+    },
+    {
+      "key": "roundup listed review captured",
+      "firstFlagged": "2026-09-29",
+      "flaggedBecause": [
+        "4 cards in 30 days"
+      ],
+      "total": 26,
+      "filedAfterFlag": 22,
+      "done": 6,
+      "rootCause": null,
+      "example": "Sea Wall: 1 roundup-listed review(s) still not captured",
+      "ids": [
+        "BRO-4345",
+        "BRO-4346",
+        "BRO-4388",
+        "BRO-4389",
+        "BRO-4455",
+        "BRO-4456",
+        "BRO-4506",
+        "BRO-4572",
+        "BRO-4573",
+        "BRO-4629",
+        "BRO-4630",
+        "BRO-4658",
+        "BRO-4746",
+        "BRO-4747",
+        "BRO-4862",
+        "BRO-4917",
+        "BRO-4918",
+        "BRO-4943",
+        "BRO-5023",
+        "BRO-5135",
+        "BRO-5225",
+        "BRO-5355",
+        "BRO-5379",
+        "BRO-5380",
+        "BRO-5391",
+        "BRO-5421"
+      ],
+      "suspect": null
+    },
+    {
+      "key": "unit tests run scripts lib",
+      "firstFlagged": "2026-10-17",
+      "flaggedBecause": [
+        "3 cards in 30 days"
+      ],
+      "total": 18,
+      "filedAfterFlag": 15,
+      "done": 14,
+      "rootCause": "BRO-3425",
+      "example": "main test.yml red: Unit Tests / Run scripts/lib tests (visual-qa transcript-scan etc.) — \"REGRESSION: every real tracked",
+      "ids": [
+        "BRO-3991",
+        "BRO-4397",
+        "BRO-5550",
+        "BRO-5658",
+        "BRO-6174",
+        "BRO-6345",
+        "BRO-6350",
+        "BRO-6353",
+        "BRO-6418",
+        "BRO-6421",
+        "BRO-6483",
+        "BRO-6522",
+        "BRO-6601",
+        "BRO-6603",
+        "BRO-6679",
+        "BRO-6798",
+        "BRO-6952",
+        "BRO-6955"
+      ],
+      "suspect": null
+    },
+    {
+      "key": "national tour pages show wrong information page problem",
+      "firstFlagged": "2026-10-08",
+      "flaggedBecause": [
+        "3 cards in 30 days"
+      ],
+      "total": 14,
+      "filedAfterFlag": 11,
+      "done": 13,
+      "rootCause": null,
+      "example": "National tour pages show wrong information: 31 page problem(s) (city-row-unknown-show)",
+      "ids": [
+        "BRO-4876",
+        "BRO-4877",
+        "BRO-4878",
+        "BRO-4978",
+        "BRO-4979",
+        "BRO-4980",
+        "BRO-4981",
+        "BRO-4982",
+        "BRO-4983",
+        "BRO-4984",
+        "BRO-5066",
+        "BRO-5491",
+        "BRO-6540",
+        "BRO-6728"
+      ],
+      "suspect": null
+    },
+    {
+      "key": "bright data daily breaker tripped web unlocker2",
+      "firstFlagged": "2026-09-09",
+      "flaggedBecause": [
+        "3 cards in 30 days"
+      ],
+      "total": 13,
+      "filedAfterFlag": 10,
+      "done": 4,
+      "rootCause": null,
+      "example": "Bright Data daily breaker TRIPPED: web_unlocker2 (2019/1750 reqs)",
+      "ids": [
+        "BRO-319",
+        "BRO-361",
+        "BRO-402",
+        "BRO-3295",
+        "BRO-4091",
+        "BRO-5544",
+        "BRO-5695",
+        "BRO-5757",
+        "BRO-5827",
+        "BRO-6059",
+        "BRO-6318",
+        "BRO-6829",
+        "BRO-6885"
+      ],
+      "suspect": null
+    },
+    {
+      "key": "e2e tests run unit",
+      "firstFlagged": "2026-09-21",
+      "flaggedBecause": [
+        "3 cards in 30 days"
+      ],
+      "total": 13,
+      "filedAfterFlag": 10,
+      "done": 7,
+      "rootCause": "BRO-3425",
+      "example": "main test.yml red: E2E Tests / Run unit tests — \"returns shows from different markets with same title\"",
+      "ids": [
+        "BRO-3883",
+        "BRO-3893",
+        "BRO-3977",
+        "BRO-4247",
+        "BRO-4264",
+        "BRO-4569",
+        "BRO-4957",
+        "BRO-5054",
+        "BRO-5160",
+        "BRO-5698",
+        "BRO-6094",
+        "BRO-6558",
+        "BRO-6563"
+      ],
+      "suspect": null
+    },
+    {
+      "key": "opening night poller failed",
+      "firstFlagged": "2026-10-19",
+      "flaggedBecause": [
+        "3 cards in 30 days"
+      ],
+      "total": 11,
+      "filedAfterFlag": 8,
+      "done": 7,
+      "rootCause": null,
+      "example": "Auto-fix (second try): Opening Night Poller Failed",
+      "ids": [
+        "BRO-5494",
+        "BRO-5653",
+        "BRO-5716",
+        "BRO-5861",
+        "BRO-6001",
+        "BRO-6549",
+        "BRO-6594",
+        "BRO-6960",
+        "BRO-6986",
+        "BRO-7029",
+        "BRO-7043"
+      ],
+      "suspect": null
+    },
+    {
+      "key": "reddit post ready",
+      "firstFlagged": "2026-10-03",
+      "flaggedBecause": [
+        "3 cards in 30 days"
+      ],
+      "total": 10,
+      "filedAfterFlag": 7,
+      "done": 1,
+      "rootCause": null,
+      "example": "Scheduled sender delivered MORE THAN ONCE in a day: reddit-post-ready",
+      "ids": [
+        "BRO-4483",
+        "BRO-4526",
+        "BRO-4557",
+        "BRO-4605",
+        "BRO-4755",
+        "BRO-4848",
+        "BRO-4880",
+        "BRO-4948",
+        "BRO-4997",
+        "BRO-7026"
+      ],
+      "suspect": null
+    },
+    {
+      "key": "main test yml red auto dispatch did resolve",
+      "firstFlagged": "2026-10-22",
+      "flaggedBecause": [
+        "3 cards in 30 days"
+      ],
+      "total": 10,
+      "filedAfterFlag": 5,
+      "done": 3,
+      "rootCause": "BRO-3425",
+      "example": "main test.yml STILL red — auto-dispatch did not resolve it",
+      "ids": [
+        "BRO-318",
+        "BRO-3724",
+        "BRO-5554",
+        "BRO-5828",
+        "BRO-6024",
+        "BRO-6323",
+        "BRO-6422",
+        "BRO-6656",
+        "BRO-6890",
+        "BRO-7048"
+      ],
+      "suspect": null
+    },
+    {
+      "key": "review gap audit refused write shows changed coverage",
+      "firstFlagged": "2026-09-14",
+      "flaggedBecause": [
+        "3 cards in 30 days"
+      ],
+      "total": 9,
+      "filedAfterFlag": 6,
+      "done": 2,
+      "rootCause": null,
+      "example": "Review-gap audit refused to write — 61.9% of shows changed coverage state",
+      "ids": [
+        "BRO-405",
+        "BRO-513",
+        "BRO-3279",
+        "BRO-3742",
+        "BRO-3801",
+        "BRO-3855",
+        "BRO-4030",
+        "BRO-4084",
+        "BRO-5516"
+      ],
+      "suspect": null
+    },
+    {
+      "key": "e2e tests run",
+      "firstFlagged": "2026-10-08",
+      "flaggedBecause": [
+        "3 cards in 30 days"
+      ],
+      "total": 9,
+      "filedAfterFlag": 6,
+      "done": 5,
+      "rootCause": "BRO-3425",
+      "example": "main test.yml red: E2E Tests / Run E2E tests",
+      "ids": [
+        "BRO-4255",
+        "BRO-4407",
+        "BRO-4873",
+        "BRO-5197",
+        "BRO-5213",
+        "BRO-5418",
+        "BRO-6023",
+        "BRO-6281",
+        "BRO-6452"
+      ],
+      "suspect": null
+    },
+    {
+      "key": "watchdog parked linear bro redispatch produced launch",
+      "firstFlagged": "2026-09-18",
+      "flaggedBecause": [
+        "8 cards in 30 days"
+      ],
+      "total": 8,
+      "filedAfterFlag": 0,
+      "done": 0,
+      "rootCause": null,
+      "example": "BSC Daily: Watchdog parked #linear:BRO-2960 — redispatch never produced a launch",
+      "ids": [
+        "BRO-3744",
+        "BRO-3746",
+        "BRO-3747",
+        "BRO-3748",
+        "BRO-3749",
+        "BRO-3750",
+        "BRO-3751",
+        "BRO-3752"
+      ],
+      "suspect": "every card was canceled or a duplicate"
+    },
+    {
+      "key": "stuck pipeline items",
+      "firstFlagged": "2026-10-16",
+      "flaggedBecause": [
+        "3 cards in 30 days"
+      ],
+      "total": 8,
+      "filedAfterFlag": 4,
+      "done": 5,
+      "rootCause": null,
+      "example": "BSC Daily: Stuck pipeline items",
+      "ids": [
+        "BRO-445",
+        "BRO-3828",
+        "BRO-4713",
+        "BRO-5458",
+        "BRO-6432",
+        "BRO-6461",
+        "BRO-6888",
+        "BRO-7069"
+      ],
+      "suspect": null
+    },
+    {
+      "key": "quality corpus drift",
+      "firstFlagged": "2026-09-09",
+      "flaggedBecause": [
+        "3 cards in 30 days"
+      ],
+      "total": 6,
+      "filedAfterFlag": 3,
+      "done": 1,
+      "rootCause": null,
+      "example": "BSC Daily: Quality: corpus drift",
+      "ids": [
+        "BRO-306",
+        "BRO-365",
+        "BRO-3081",
+        "BRO-4691",
+        "BRO-5175",
+        "BRO-5249"
+      ],
+      "suspect": null
+    },
+    {
+      "key": "opening night checklist",
+      "firstFlagged": "2026-09-09",
+      "flaggedBecause": [
+        "4 cards in 30 days"
+      ],
+      "total": 6,
+      "filedAfterFlag": 2,
+      "done": 2,
+      "rootCause": null,
+      "example": "Cron stale 3+ consecutive days: Opening Night Checklist",
+      "ids": [
+        "BRO-369",
+        "BRO-397",
+        "BRO-2530",
+        "BRO-2865",
+        "BRO-3163",
+        "BRO-4522"
+      ],
+      "suspect": null
+    },
+    {
+      "key": "morning digest did arrive",
+      "firstFlagged": "2026-09-28",
+      "flaggedBecause": [
+        "3 cards in 30 days"
+      ],
+      "total": 6,
+      "filedAfterFlag": 2,
+      "done": 0,
+      "rootCause": null,
+      "example": "Morning digest did not arrive on 2026-09-29",
+      "ids": [
+        "BRO-1915",
+        "BRO-4176",
+        "BRO-4194",
+        "BRO-4256",
+        "BRO-4378",
+        "BRO-4445"
+      ],
+      "suspect": "every card was canceled or a duplicate"
+    },
+    {
+      "key": "slug mismatch lifetime sweep",
+      "firstFlagged": "2026-10-17",
+      "flaggedBecause": [
+        "3 cards in 30 days"
+      ],
+      "total": 6,
+      "filedAfterFlag": 2,
+      "done": 5,
+      "rootCause": null,
+      "example": "BSC Daily: Data quality: slug-mismatch lifetime sweep",
+      "ids": [
+        "BRO-473",
+        "BRO-4697",
+        "BRO-5438",
+        "BRO-5536",
+        "BRO-5693",
+        "BRO-6524"
+      ],
+      "suspect": null
+    },
+    {
+      "key": "show need review",
+      "firstFlagged": "2026-11-01",
+      "flaggedBecause": [
+        "3 cards in 30 days"
+      ],
+      "total": 6,
+      "filedAfterFlag": 1,
+      "done": 4,
+      "rootCause": null,
+      "example": "Opening-date audit: 1 show need review (2026-11-07)",
+      "ids": [
+        "BRO-3463",
+        "BRO-3792",
+        "BRO-5556",
+        "BRO-5855",
+        "BRO-6792",
+        "BRO-7093"
+      ],
+      "suspect": null
+    },
+    {
+      "key": "bright data daily breaker tripped serp api1",
+      "firstFlagged": "2026-09-09",
+      "flaggedBecause": [
+        "3 cards in 30 days"
+      ],
+      "total": 5,
+      "filedAfterFlag": 2,
+      "done": 1,
+      "rootCause": null,
+      "example": "Bright Data daily breaker TRIPPED: serp_api1 (2916/1750 reqs)",
+      "ids": [
+        "BRO-320",
+        "BRO-360",
+        "BRO-401",
+        "BRO-3296",
+        "BRO-7022"
+      ],
+      "suspect": null
+    },
+    {
+      "key": "weekly video reviews",
+      "firstFlagged": "2026-09-18",
+      "flaggedBecause": [
+        "3 cards in 30 days"
+      ],
+      "total": 5,
+      "filedAfterFlag": 2,
+      "done": 2,
+      "rootCause": null,
+      "example": "BSC Daily: Weekly Video Reviews",
+      "ids": [
+        "BRO-2534",
+        "BRO-3701",
+        "BRO-3718",
+        "BRO-5495",
+        "BRO-5537"
+      ],
+      "suspect": null
+    },
+    {
+      "key": "quality dmarc deliverability",
+      "firstFlagged": "2026-09-23",
+      "flaggedBecause": [
+        "3 cards in 30 days"
+      ],
+      "total": 5,
+      "filedAfterFlag": 2,
+      "done": 1,
+      "rootCause": null,
+      "example": "BSC Daily: Quality: DMARC deliverability",
+      "ids": [
+        "BRO-2600",
+        "BRO-3795",
+        "BRO-4093",
+        "BRO-4692",
+        "BRO-5176"
+      ],
+      "suspect": null
+    },
+    {
+      "key": "lint workflows audit submitter pii committed data files",
+      "firstFlagged": "2026-10-19",
+      "flaggedBecause": [
+        "3 cards in 30 days"
+      ],
+      "total": 5,
+      "filedAfterFlag": 2,
+      "done": 3,
+      "rootCause": "BRO-3425",
+      "example": "main test.yml red: Lint Workflows / Audit — no submitter PII in committed data/audit files",
+      "ids": [
+        "BRO-3879",
+        "BRO-4147",
+        "BRO-5691",
+        "BRO-6423",
+        "BRO-6520"
+      ],
+      "suspect": null
+    },
+    {
+      "key": "headless dispatch success rate",
+      "firstFlagged": "2026-10-26",
+      "flaggedBecause": [
+        "3 cards in 30 days"
+      ],
+      "total": 5,
+      "filedAfterFlag": 1,
+      "done": 1,
+      "rootCause": null,
+      "example": "BSC Daily: Headless dispatch: success rate",
+      "ids": [
+        "BRO-487",
+        "BRO-4707",
+        "BRO-5446",
+        "BRO-6313",
+        "BRO-6430"
+      ],
+      "suspect": null
+    },
+    {
+      "key": "cross outlet attribution drift",
+      "firstFlagged": "2026-11-06",
+      "flaggedBecause": [
+        "3 cards in 30 days"
+      ],
+      "total": 5,
+      "filedAfterFlag": 0,
+      "done": 3,
+      "rootCause": null,
+      "example": "BSC Daily: Data quality: cross-outlet attribution drift",
+      "ids": [
+        "BRO-352",
+        "BRO-4695",
+        "BRO-6860",
+        "BRO-6976",
+        "BRO-7038"
+      ],
+      "suspect": null
+    },
+    {
+      "key": "process feedback submissions",
+      "firstFlagged": "2026-09-09",
+      "flaggedBecause": [
+        "4 cards in 30 days"
+      ],
+      "total": 4,
+      "filedAfterFlag": 0,
+      "done": 2,
+      "rootCause": null,
+      "example": "BSC Daily: Workflow repeat-failure: Process Feedback Submissions",
+      "ids": [
+        "BRO-345",
+        "BRO-356",
+        "BRO-2657",
+        "BRO-3080"
+      ],
+      "suspect": null
+    },
+    {
+      "key": "tests unit session start disk check test mjs",
+      "firstFlagged": "2026-09-09",
+      "flaggedBecause": [
+        "4 cards in 30 days"
+      ],
+      "total": 4,
+      "filedAfterFlag": 0,
+      "done": 4,
+      "rootCause": null,
+      "example": "Time-bomb test armed: tests/unit/session-start-disk-check.test.mjs — pruneJobLogsIfDue: bounded age retention actually r",
+      "ids": [
+        "BRO-2677",
+        "BRO-2678",
+        "BRO-2679",
+        "BRO-2680"
+      ],
+      "suspect": "all cards filed within 24 hours (one incident, not a repeat)"
+    },
+    {
+      "key": "scrapingdog daily breaker tripped credits",
+      "firstFlagged": "2026-09-09",
+      "flaggedBecause": [
+        "3 cards in 30 days"
+      ],
+      "total": 4,
+      "filedAfterFlag": 1,
+      "done": 0,
+      "rootCause": null,
+      "example": "BSC Daily: Scrapingdog daily breaker TRIPPED: 35560/21000 credits",
+      "ids": [
+        "BRO-317",
+        "BRO-359",
+        "BRO-404",
+        "BRO-3269"
+      ],
+      "suspect": "every card was canceled or a duplicate"
+    },
+    {
+      "key": "audit aggregator review gap",
+      "firstFlagged": "2026-09-10",
+      "flaggedBecause": [
+        "3 cards in 30 days"
+      ],
+      "total": 4,
+      "filedAfterFlag": 1,
+      "done": 1,
+      "rootCause": null,
+      "example": "BSC Daily: Cron's latest run failed (not yet stale): Audit Aggregator Review Gap",
+      "ids": [
+        "BRO-355",
+        "BRO-392",
+        "BRO-3150",
+        "BRO-6828"
+      ],
+      "suspect": null
+    },
+    {
+      "key": "sync baseline drift",
+      "firstFlagged": "2026-09-11",
+      "flaggedBecause": [
+        "3 cards in 30 days"
+      ],
+      "total": 4,
+      "filedAfterFlag": 1,
+      "done": 1,
+      "rootCause": null,
+      "example": "BSC Daily: Sync: baseline drift",
+      "ids": [
+        "BRO-304",
+        "BRO-428",
+        "BRO-3164",
+        "BRO-6105"
+      ],
+      "suspect": null
+    },
+    {
+      "key": "fetch guardian reviews via api",
+      "firstFlagged": "2026-09-12",
+      "flaggedBecause": [
+        "3 cards in 30 days"
+      ],
+      "total": 4,
+      "filedAfterFlag": 1,
+      "done": 2,
+      "rootCause": null,
+      "example": "BSC Daily: Fetch Guardian Reviews via API",
+      "ids": [
+        "BRO-357",
+        "BRO-440",
+        "BRO-3185",
+        "BRO-5535"
+      ],
+      "suspect": null
+    },
+    {
+      "key": "after helen troy",
+      "firstFlagged": "2026-09-16",
+      "flaggedBecause": [
+        "4 cards in 30 days"
+      ],
+      "total": 4,
+      "filedAfterFlag": 0,
+      "done": 1,
+      "rootCause": null,
+      "example": "BSC Daily: Stale 'upcoming' tag on BLOODSPORT: After Helen of Troy",
+      "ids": [
+        "BRO-3638",
+        "BRO-3639",
+        "BRO-3640",
+        "BRO-3641"
+      ],
+      "suspect": "all cards filed within 24 hours (one incident, not a repeat)"
+    },
+    {
+      "key": "ledger explains only billed",
+      "firstFlagged": "2026-09-30",
+      "flaggedBecause": [
+        "3 cards in 30 days"
+      ],
+      "total": 4,
+      "filedAfterFlag": 1,
+      "done": 3,
+      "rootCause": null,
+      "example": "Untracked brightdata spend: ledger explains only 79%, 75% of billed",
+      "ids": [
+        "BRO-4354",
+        "BRO-4355",
+        "BRO-4423",
+        "BRO-4936"
+      ],
+      "suspect": null
+    },
+    {
+      "key": "shows missing poster synopsis tickets",
+      "firstFlagged": "2026-10-05",
+      "flaggedBecause": [
+        "3 cards in 30 days"
+      ],
+      "total": 4,
+      "filedAfterFlag": 1,
+      "done": 1,
+      "rootCause": null,
+      "example": "BSC Daily: Data freshness: shows missing poster/synopsis/tickets",
+      "ids": [
+        "BRO-3636",
+        "BRO-3826",
+        "BRO-4712",
+        "BRO-5455"
+      ],
+      "suspect": null
+    },
+    {
+      "key": "unit tests ordinal publishdate guard parity",
+      "firstFlagged": "2026-10-12",
+      "flaggedBecause": [
+        "4 cards in 30 days"
+      ],
+      "total": 4,
+      "filedAfterFlag": 0,
+      "done": 1,
+      "rootCause": "BRO-3425",
+      "example": "main test.yml red: Unit Tests / Ordinal publishDate guard parity (BRO-2836) — \"foo returns the contracted value\"",
+      "ids": [
+        "BRO-4938",
+        "BRO-5102",
+        "BRO-5116",
+        "BRO-5139"
+      ],
+      "suspect": null
+    },
+    {
+      "key": "opening digest did arrive",
+      "firstFlagged": "2026-10-24",
+      "flaggedBecause": [
+        "3 cards in 30 days"
+      ],
+      "total": 4,
+      "filedAfterFlag": 0,
+      "done": 2,
+      "rootCause": null,
+      "example": "Opening digest did not arrive on 2026-10-23",
+      "ids": [
+        "BRO-2531",
+        "BRO-4446",
+        "BRO-4810",
+        "BRO-6157"
+      ],
+      "suspect": null
+    },
+    {
+      "key": "scripts lib tests red",
+      "firstFlagged": "2026-10-29",
+      "flaggedBecause": [
+        "3 cards in 30 days"
+      ],
+      "total": 4,
+      "filedAfterFlag": 0,
+      "done": 1,
+      "rootCause": null,
+      "example": "BSC Daily: Landing blocked: scripts-lib-tests red",
+      "ids": [
+        "BRO-4111",
+        "BRO-5753",
+        "BRO-6319",
+        "BRO-6527"
+      ],
+      "suspect": null
+    },
+    {
+      "key": "wrongproduction lifetime sweep",
+      "firstFlagged": "2026-10-29",
+      "flaggedBecause": [
+        "3 cards in 30 days"
+      ],
+      "total": 4,
+      "filedAfterFlag": 0,
+      "done": 2,
+      "rootCause": null,
+      "example": "BSC Daily: Data quality: cv-wrongproduction lifetime sweep",
+      "ids": [
+        "BRO-471",
+        "BRO-5437",
+        "BRO-6459",
+        "BRO-6523"
+      ],
+      "suspect": null
+    },
+    {
+      "key": "revival unverified lifetime sweep",
+      "firstFlagged": "2026-10-31",
+      "flaggedBecause": [
+        "3 cards in 30 days"
+      ],
+      "total": 4,
+      "filedAfterFlag": 0,
+      "done": 3,
+      "rootCause": null,
+      "example": "BSC Daily: Data quality: revival-unverified lifetime sweep",
+      "ids": [
+        "BRO-475",
+        "BRO-5439",
+        "BRO-6509",
+        "BRO-6706"
+      ],
+      "suspect": null
+    },
+    {
+      "key": "commercial model drift",
+      "firstFlagged": "2026-11-01",
+      "flaggedBecause": [
+        "3 cards in 30 days"
+      ],
+      "total": 4,
+      "filedAfterFlag": 0,
+      "done": 2,
+      "rootCause": null,
+      "example": "BSC Daily: Commercial model drift",
+      "ids": [
+        "BRO-3842",
+        "BRO-5453",
+        "BRO-5749",
+        "BRO-6755"
+      ],
+      "suspect": null
+    },
+    {
+      "key": "stale announced shows",
+      "firstFlagged": "2026-11-02",
+      "flaggedBecause": [
+        "3 cards in 30 days"
+      ],
+      "total": 4,
+      "filedAfterFlag": 0,
+      "done": 3,
+      "rootCause": null,
+      "example": "BSC Daily: Data quality: stale announced shows",
+      "ids": [
+        "BRO-3253",
+        "BRO-5448",
+        "BRO-5522",
+        "BRO-6815"
+      ],
+      "suspect": null
+    },
+    {
+      "key": "rebuild reviews data",
+      "firstFlagged": "2026-09-09",
+      "flaggedBecause": [
+        "3 cards in 30 days"
+      ],
+      "total": 3,
+      "filedAfterFlag": 0,
+      "done": 1,
+      "rootCause": null,
+      "example": "BSC Daily: Workflow repeat-failure: Rebuild Reviews Data",
+      "ids": [
+        "BRO-346",
+        "BRO-396",
+        "BRO-3079"
+      ],
+      "suspect": null
+    },
+    {
+      "key": "main test yml red consecutive pushes",
+      "firstFlagged": "2026-09-09",
+      "flaggedBecause": [
+        "3 cards in 30 days"
+      ],
+      "total": 3,
+      "filedAfterFlag": 0,
+      "done": 1,
+      "rootCause": "BRO-3425",
+      "example": "main test.yml red on 2+ consecutive pushes",
+      "ids": [
+        "BRO-296",
+        "BRO-2866",
+        "BRO-2867"
+      ],
+      "suspect": null
+    },
+    {
+      "key": "scripts lib bww archive category guard test mjs",
+      "firstFlagged": "2026-09-09",
+      "flaggedBecause": [
+        "3 cards in 30 days"
+      ],
+      "total": 3,
+      "filedAfterFlag": 0,
+      "done": 3,
+      "rootCause": null,
+      "example": "Time-bomb test armed: scripts/lib/bww-archive-category-guard.test.mjs — BRO-2549: a valid cache entry under 14 days old ",
+      "ids": [
+        "BRO-2673",
+        "BRO-2674",
+        "BRO-2675"
+      ],
+      "suspect": "all cards filed within 24 hours (one incident, not a repeat)"
+    },
+    {
+      "key": "commercial rss poll",
+      "firstFlagged": "2026-09-09",
+      "flaggedBecause": [
+        "3 cards in 30 days"
+      ],
+      "total": 3,
+      "filedAfterFlag": 0,
+      "done": 1,
+      "rootCause": null,
+      "example": "Cron stale 3+ consecutive days: Commercial RSS Poll",
+      "ids": [
+        "BRO-335",
+        "BRO-350",
+        "BRO-2524"
+      ],
+      "suspect": null
+    },
+    {
+      "key": "west end historical scoring backfill",
+      "firstFlagged": "2026-09-09",
+      "flaggedBecause": [
+        "3 cards in 30 days"
+      ],
+      "total": 3,
+      "filedAfterFlag": 0,
+      "done": 0,
+      "rootCause": null,
+      "example": "Plan: West End historical scoring backfill (1 season pilot, later ~20 years)",
+      "ids": [
+        "BRO-1942",
+        "BRO-1943",
+        "BRO-1944"
+      ],
+      "suspect": "every card was canceled or a duplicate"
+    },
+    {
+      "key": "extend batch discount pattern enrich reviews yml classify",
+      "firstFlagged": "2026-09-09",
+      "flaggedBecause": [
+        "3 cards in 30 days"
+      ],
+      "total": 3,
+      "filedAfterFlag": 0,
+      "done": 0,
+      "rootCause": null,
+      "example": "Extend batch-discount pattern to enrich-reviews.yml's 4 classify-*.js scripts",
+      "ids": [
+        "BRO-1663",
+        "BRO-1719",
+        "BRO-1728"
+      ],
+      "suspect": "every card was canceled or a duplicate"
+    },
+    {
+      "key": "christmas carol recoverable reviews",
+      "firstFlagged": "2026-09-09",
+      "flaggedBecause": [
+        "3 cards in 30 days"
+      ],
+      "total": 3,
+      "filedAfterFlag": 0,
+      "done": 0,
+      "rootCause": null,
+      "example": "priorRuns candidate: A Christmas Carol (1991) → A Christmas Carol (1994) — 0 recoverable reviews",
+      "ids": [
+        "BRO-1143",
+        "BRO-1144",
+        "BRO-1150"
+      ],
+      "suspect": "every card was canceled or a duplicate"
+    },
+    {
+      "key": "pivot reddit distribution creator partners",
+      "firstFlagged": "2026-09-09",
+      "flaggedBecause": [
+        "3 cards in 30 days"
+      ],
+      "total": 3,
+      "filedAfterFlag": 0,
+      "done": 1,
+      "rootCause": null,
+      "example": "Pivot Reddit distribution to creator partners",
+      "ids": [
+        "BRO-59",
+        "BRO-990",
+        "BRO-991"
+      ],
+      "suspect": null
+    },
+    {
+      "key": "integrate contamination audit into rebuild pre pass",
+      "firstFlagged": "2026-09-09",
+      "flaggedBecause": [
+        "3 cards in 30 days"
+      ],
+      "total": 3,
+      "filedAfterFlag": 0,
+      "done": 0,
+      "rootCause": null,
+      "example": "Integrate contamination audit into rebuild pre-pass",
+      "ids": [
+        "BRO-816",
+        "BRO-854",
+        "BRO-858"
+      ],
+      "suspect": "every card was canceled or a duplicate"
+    },
+    {
+      "key": "new flag contradictions",
+      "firstFlagged": "2026-09-15",
+      "flaggedBecause": [
+        "3 cards in 30 days"
+      ],
+      "total": 3,
+      "filedAfterFlag": 0,
+      "done": 2,
+      "rootCause": null,
+      "example": "Data Validation red on main: 3 new flag-vs-CV contradictions (2 long wrongProduction texts look like FPs)",
+      "ids": [
+        "BRO-2385",
+        "BRO-2405",
+        "BRO-3406"
+      ],
+      "suspect": null
+    },
+    {
+      "key": "rage clicks best value page",
+      "firstFlagged": "2026-09-16",
+      "flaggedBecause": [
+        "3 cards in 30 days"
+      ],
+      "total": 3,
+      "filedAfterFlag": 0,
+      "done": 0,
+      "rootCause": null,
+      "example": "Rage clicks on /best-value page (3 occurrences)",
+      "ids": [
+        "BRO-3648",
+        "BRO-3649",
+        "BRO-3673"
+      ],
+      "suspect": "every card was canceled or a duplicate"
+    },
+    {
+      "key": "record carrying live duplicateof pointer stale duplicateofcleared breadcrumb",
+      "firstFlagged": "2026-10-16",
+      "flaggedBecause": [
+        "3 cards in 30 days"
+      ],
+      "total": 3,
+      "filedAfterFlag": 0,
+      "done": 1,
+      "rootCause": null,
+      "example": "Corpus drift: a record carrying a live duplicateOf pointer AND a stale _duplicateOfCleared breadcrumb for the same url (",
+      "ids": [
+        "BRO-3780",
+        "BRO-4501",
+        "BRO-5503"
+      ],
+      "suspect": null
+    },
+    {
+      "key": "exclusion flag contradicted own content verification pass",
+      "firstFlagged": "2026-10-17",
+      "flaggedBecause": [
+        "3 cards in 30 days"
+      ],
+      "total": 3,
+      "filedAfterFlag": 0,
+      "done": 1,
+      "rootCause": null,
+      "example": "Corpus drift: exclusion flag contradicted by its own content-verification pass (baseline-diff)",
+      "ids": [
+        "BRO-4029",
+        "BRO-4932",
+        "BRO-5563"
+      ],
+      "suspect": null
+    },
+    {
+      "key": "older than 24h",
+      "firstFlagged": "2026-10-18",
+      "flaggedBecause": [
+        "3 cards in 30 days"
+      ],
+      "total": 3,
+      "filedAfterFlag": 0,
+      "done": 2,
+      "rootCause": null,
+      "example": "Overdue P0/P1 queue: 1 P0 older than 24h, 12 P1 older than 7d",
+      "ids": [
+        "BRO-5459",
+        "BRO-5539",
+        "BRO-5613"
+      ],
+      "suspect": null
+    },
+    {
+      "key": "e2e tests setup playwright",
+      "firstFlagged": "2026-10-22",
+      "flaggedBecause": [
+        "3 cards in 30 days"
+      ],
+      "total": 3,
+      "filedAfterFlag": 0,
+      "done": 2,
+      "rootCause": "BRO-3425",
+      "example": "main test.yml red: E2E Tests / Setup Playwright",
+      "ids": [
+        "BRO-4477",
+        "BRO-5964",
+        "BRO-6022"
+      ],
+      "suspect": null
+    },
+    {
+      "key": "tests unit opening night orchestrator cron test mjs",
+      "firstFlagged": "2026-10-26",
+      "flaggedBecause": [
+        "3 cards in 30 days"
+      ],
+      "total": 3,
+      "filedAfterFlag": 0,
+      "done": 3,
+      "rootCause": null,
+      "example": "Time-bomb test armed: tests/unit/opening-night-orchestrator-cron.test.mjs — Redundancy guard ignores earlier runs near t",
+      "ids": [
+        "BRO-6386",
+        "BRO-6387",
+        "BRO-6388"
+      ],
+      "suspect": "all cards filed within 24 hours (one incident, not a repeat)"
+    },
+    {
+      "key": "llm scoring daily spend over budget",
+      "firstFlagged": "2026-10-31",
+      "flaggedBecause": [
+        "3 cards in 30 days"
+      ],
+      "total": 3,
+      "filedAfterFlag": 0,
+      "done": 2,
+      "rootCause": null,
+      "example": "LLM scoring daily spend over budget",
+      "ids": [
+        "BRO-6062",
+        "BRO-6317",
+        "BRO-6732"
+      ],
+      "suspect": null
+    },
+    {
+      "key": "same title sibling review misrouted wrong production",
+      "firstFlagged": "2026-11-01",
+      "flaggedBecause": [
+        "3 cards in 30 days"
+      ],
+      "total": 3,
+      "filedAfterFlag": 0,
+      "done": 2,
+      "rootCause": null,
+      "example": "Corpus drift: same-title-sibling review misrouted to the wrong production (baseline-diff)",
+      "ids": [
+        "BRO-5484",
+        "BRO-6113",
+        "BRO-6754"
+      ],
+      "suspect": null
+    },
+    {
+      "key": "off broadway venue complex unlinked bare form keyword",
+      "firstFlagged": "2026-11-05",
+      "flaggedBecause": [
+        "3 cards in 30 days"
+      ],
+      "total": 3,
+      "filedAfterFlag": 0,
+      "done": 1,
+      "rootCause": null,
+      "example": "Live-data test failing: no off-Broadway venue-complex has an unlinked bare-form/keyword-overlap sub-venue slug (tests/un",
+      "ids": [
+        "BRO-6708",
+        "BRO-7008",
+        "BRO-7013"
+      ],
+      "suspect": null
+    },
+    {
+      "key": "review missing pullquote recoverable excerpt sitting unused texts",
+      "firstFlagged": "2026-11-05",
+      "flaggedBecause": [
+        "3 cards in 30 days"
+      ],
+      "total": 3,
+      "filedAfterFlag": 0,
+      "done": 1,
+      "rootCause": null,
+      "example": "Live-data test failing: no review missing a pullQuote has a recoverable excerpt sitting unused in review-texts (tests/un",
+      "ids": [
+        "BRO-6117",
+        "BRO-6439",
+        "BRO-7012"
+      ],
+      "suspect": null
+    },
+    {
+      "key": "bro repo actions cache stays below size evicts",
+      "firstFlagged": "2026-11-05",
+      "flaggedBecause": [
+        "3 cards in 30 days"
+      ],
+      "total": 3,
+      "filedAfterFlag": 0,
+      "done": 1,
+      "rootCause": null,
+      "example": "Live-data test failing: BRO-3887: repo Actions cache stays below the size that evicts the SERP cache (tests/unit/bro3887",
+      "ids": [
+        "BRO-6322",
+        "BRO-6826",
+        "BRO-6993"
+      ],
+      "suspect": null
+    },
+    {
+      "key": "review files wrongproduction provenance but flag dropped",
+      "firstFlagged": "2026-11-05",
+      "flaggedBecause": [
+        "3 cards in 30 days"
+      ],
+      "total": 3,
+      "filedAfterFlag": 0,
+      "done": 2,
+      "rootCause": null,
+      "example": "Corpus drift: review files with wrongProduction provenance but the flag dropped (would score silently; baseline-diff)",
+      "ids": [
+        "BRO-5618",
+        "BRO-6063",
+        "BRO-6992"
+      ],
+      "suspect": null
+    },
+    {
+      "key": "real data byte identical art across unrelated unlinked",
+      "firstFlagged": "2026-11-07",
+      "flaggedBecause": [
+        "3 cards in 30 days"
+      ],
+      "total": 3,
+      "filedAfterFlag": 0,
+      "done": 1,
+      "rootCause": null,
+      "example": "BSC Daily: Live-data test failing: real data: no byte-identical art across unrelated, unlinked shows (tests/unit/duplica",
+      "ids": [
+        "BRO-6892",
+        "BRO-7020",
+        "BRO-7070"
+      ],
+      "suspect": null
+    }
+  ],
+  "expected": [
+    {
+      "key": "touch data audit canary marker",
+      "firstFlagged": "2026-09-09",
+      "reason": "canary: filed on purpose to prove the alert chain works",
+      "total": 47
+    },
+    {
+      "key": "opening night audit",
+      "firstFlagged": "2026-10-01",
+      "reason": "scheduled per-night opening-night audit/watch log card",
+      "total": 36
+    },
+    {
+      "key": "opening night watch",
+      "firstFlagged": "2026-10-02",
+      "reason": "scheduled per-night opening-night audit/watch log card",
+      "total": 27
+    },
+    {
+      "key": "commercial data pending review",
+      "firstFlagged": "2026-09-18",
+      "reason": "owner review queue, one card per batch",
+      "total": 22
+    },
+    {
+      "key": "week review",
+      "firstFlagged": "2026-10-11",
+      "reason": "weekly report",
+      "total": 4
+    },
+    {
+      "key": "commercial scorecard corrections part",
+      "firstFlagged": "2026-10-04",
+      "reason": "numbered work batches of one project",
+      "total": 3
+    },
+    {
+      "key": "chore bump all updates group across directory",
+      "firstFlagged": "2026-11-01",
+      "reason": "dependabot landing, one per bump",
+      "total": 3
+    }
+  ]
+}

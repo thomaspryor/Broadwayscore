@@ -490,7 +490,7 @@ function needsComments(issue, nowMs) {
  *   'not-p0-p1' there); `orderedP2`/`eligibleP2`/`skippedP2` are the P2 fallback tier and
  *   `orderedP3`/`eligibleP3`/`skippedP3` the P3 (Low) fallback tier.
  */
-function pickCloudCard(issues, { nowMs, codex = false }) {
+function pickCloudCard(issues, { nowMs, codex = false, recurrence = null }) {
   const { priorityRank } = require('./linear-dispatch.js');
   const { issueNumber } = require('./linear-drain-parked.js');
   const skipped = {};
@@ -503,6 +503,10 @@ function pickCloudCard(issues, { nowMs, codex = false }) {
   // too old), by id: a filer told the owner they were queued, so say why not.
   const startNowSkipped = {};
   for (const iss of Array.isArray(issues) ? issues : []) {
+    // BRO-7103: one more case of a recurring problem whose root-cause card is
+    // being worked waits for that card instead of spending a worker on it.
+    const routed = recurrence ? require('./recurrence-classes.js').rootCauseRouteReason(iss, recurrence, nowMs) : null;
+    if (routed) { skipped[routed] = (skipped[routed] || 0) + 1; continue; }
     const reason = skipReason(iss, nowMs, { codex });
     if (reason) skipped[reason] = (skipped[reason] || 0) + 1;
     else eligible.push(iss);
