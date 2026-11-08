@@ -468,6 +468,7 @@ jobs:
       # a worker outside GitHub. Writes data/audit/abandoned-review-rescue.json (ids, file names, URLs; no text),
       # committed by "Commit provider spend ledger". Advisory (CLAUDE.md rule 19).
       - name: Rescue abandoned reviews on recent shows
+        # lint-allow-swallow: advisory retry/escalation (CLAUDE.md rule 19); a failure exits 1 and shows red on the step, the ledger only records successful dispatches, and the next daily run retries
         if: always()
         continue-on-error: true
         timeout-minutes: 5
