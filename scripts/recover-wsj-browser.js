@@ -202,7 +202,9 @@ async function main() {
 
   // Push/restore anything an earlier run committed but could not land
   // (BRO-7171). Throws on a still-failing push: no new work on a backlog.
-  if (!dryRun) startRun();
+  if (!dryRun) {
+    try { startRun(); } catch (e) { await context.close(); throw e; }
+  }
   const candidates = loadCandidates();
   console.log(`\n${candidates.length} candidates to process.\n`);
   if (candidates.length === 0) {
@@ -214,67 +216,74 @@ async function main() {
   const deadEntries = [];
   const startTime = Date.now();
 
-  for (let i = 0; i < candidates.length; i++) {
-    if (Date.now() - startTime > CONFIG.timeBudgetMs) {
-      console.log(`\nTime budget reached (${CONFIG.timeBudgetMin || CONFIG.timeBudgetMs / 60000}min) — stopping cleanly.`);
-      break;
-    }
-
-    const c = candidates[i];
-    console.log(`[${i + 1}/${candidates.length}] ${c.showId} (${c.contentTier}, ${c.existingChars} chars existing)`);
-
-    if (i > 0) await page.waitForTimeout(jitterDelay());
-
-    let result;
-    try {
-      result = await extractArticle(page, c.url);
-    } catch (e) {
-      result = { error: e.message };
-    }
-
-    if (result.error || !result.text) {
-      const reason = result.error || 'no text extracted';
-      console.log(`  ✗ ${reason}`);
-      stats.dead++;
-      deadEntries.push({ reviewId: c.reviewId, url: c.url, reason });
-      if (!dryRun) {
-        // incompleteReason is a controlled-vocabulary field (see scripts/lib/incomplete-reason.js)
-        // that collect-review-texts.js/gather-reviews.js gate SERP re-discovery eligibility on
-        // ('wrong_content' -> needsSerpDiscovery). A free-text string here silently disables that
-        // downstream auto-recovery until the next rebuild-all-reviews.js recomputes it — use the
-        // real enum value instead, with our diagnostic in incompleteDetail.
-        stampDead(c, {
-          incompleteReason: reason === 'DataDome challenge detected' ? 'bot_blocked' : 'wrong_content',
-          incompleteDetail: `wsj-browser-recovery: ${reason} (${new Date().toISOString()})`,
-        });
+  // A failed push (ReviewTextsPushError) or lock timeout stops the run, but
+  // the report is still written and the browser still closed (BRO-7171).
+  let runError = null;
+  try {
+    for (let i = 0; i < candidates.length; i++) {
+      if (Date.now() - startTime > CONFIG.timeBudgetMs) {
+        console.log(`\nTime budget reached (${CONFIG.timeBudgetMin || CONFIG.timeBudgetMs / 60000}min) — stopping cleanly.`);
+        break;
       }
-      continue;
+
+      const c = candidates[i];
+      console.log(`[${i + 1}/${candidates.length}] ${c.showId} (${c.contentTier}, ${c.existingChars} chars existing)`);
+
+      if (i > 0) await page.waitForTimeout(jitterDelay());
+
+      let result;
+      try {
+        result = await extractArticle(page, c.url);
+      } catch (e) {
+        result = { error: e.message };
+      }
+
+      if (result.error || !result.text) {
+        const reason = result.error || 'no text extracted';
+        console.log(`  ✗ ${reason}`);
+        stats.dead++;
+        deadEntries.push({ reviewId: c.reviewId, url: c.url, reason });
+        if (!dryRun) {
+          // incompleteReason is a controlled-vocabulary field (see scripts/lib/incomplete-reason.js)
+          // that collect-review-texts.js/gather-reviews.js gate SERP re-discovery eligibility on
+          // ('wrong_content' -> needsSerpDiscovery). A free-text string here silently disables that
+          // downstream auto-recovery until the next rebuild-all-reviews.js recomputes it — use the
+          // real enum value instead, with our diagnostic in incompleteDetail.
+          stampDead(c, {
+            incompleteReason: reason === 'DataDome challenge detected' ? 'bot_blocked' : 'wrong_content',
+            incompleteDetail: `wsj-browser-recovery: ${reason} (${new Date().toISOString()})`,
+          });
+        }
+        continue;
+      }
+
+      if (dryRun) {
+        console.log(`  [DRY RUN] would process ${result.len} chars`);
+        continue;
+      }
+
+      const outcome = processRecoveredText(c, result.text, WSJ_LABELS);
+      if (outcome.ok) {
+        stats.recovered++;
+        console.log(`  ✓ RECOVERED (${outcome.newLen} chars)`);
+        if (stats.recovered % CONFIG.checkpointInterval === 0) checkpoint(stats);
+      } else {
+        console.log(`  ✗ ${outcome.reason}`);
+        if (outcome.reason.includes('too short')) stats.tooShort++;
+        else if (outcome.reason.includes('garbage')) stats.garbage++;
+        else if (outcome.reason.includes('not mentioned')) stats.notMentioned++;
+        else if (outcome.reason.includes('not longer')) stats.notLonger++;
+        else stats.blocked++;
+      }
     }
 
-    if (dryRun) {
-      console.log(`  [DRY RUN] would process ${result.len} chars`);
-      continue;
-    }
-
-    const outcome = processRecoveredText(c, result.text, WSJ_LABELS);
-    if (outcome.ok) {
-      stats.recovered++;
-      console.log(`  ✓ RECOVERED (${outcome.newLen} chars)`);
-      if (stats.recovered % CONFIG.checkpointInterval === 0) checkpoint(stats);
-    } else {
-      console.log(`  ✗ ${outcome.reason}`);
-      if (outcome.reason.includes('too short')) stats.tooShort++;
-      else if (outcome.reason.includes('garbage')) stats.garbage++;
-      else if (outcome.reason.includes('not mentioned')) stats.notMentioned++;
-      else if (outcome.reason.includes('not longer')) stats.notLonger++;
-      else stats.blocked++;
-    }
+    // Tracker-driven: also lands dead-candidate stamps when nothing was recovered.
+    if (!dryRun) checkpoint(stats);
+  } catch (e) {
+    runError = e;
   }
 
-  // Tracker-driven: also lands dead-candidate stamps when nothing was recovered.
-  if (!dryRun) checkpoint(stats);
-
-  fs.writeFileSync(CONFIG.reportPath, JSON.stringify({ ...stats, deadEntries, timestamp: new Date().toISOString(), dryRun }, null, 2) + '\n');
+  fs.writeFileSync(CONFIG.reportPath, JSON.stringify({ ...stats, deadEntries, timestamp: new Date().toISOString(), error: runError ? runError.message : null, dryRun }, null, 2) + '\n');
 
   console.log(`\n${'='.repeat(60)}`);
   console.log('Summary');
@@ -285,6 +294,7 @@ async function main() {
   console.log(`  Too short: ${stats.tooShort}  Garbage: ${stats.garbage}  Not mentioned: ${stats.notMentioned}  Not longer: ${stats.notLonger}`);
 
   await context.close();
+  if (runError) throw runError;
 }
 
 main().catch(err => {
