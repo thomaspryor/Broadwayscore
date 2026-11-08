@@ -979,5 +979,36 @@
       }
     ],
     "queuedAt": "2026-11-08T20:17:51.843Z"
+  },
+  {
+    "conditionKey": "land:land/job/linear-BRO-7146-mw886fzi",
+    "title": "Landing blocked: rebase red on land/job/linear-BRO-7146-mw886fzi",
+    "description": "land.yml did not land land/job/linear-BRO-7146-mw886fzi: the rebase gate went red at c335fb2c5d. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/job/linear-BRO-7146-mw886fzi @ c335fb2c5d (origin/land/job/linear-BRO-7146-mw886fzi) → origin/main @ 08ecdf342d REFUSED: rebase: branch would not rebase cleanly onto origin/main @ 08ecdf342d: Rebasing (1/2) error: could not apply bb486095aa4... BRO-7146: type announced OWE stubs at creation; fix plan types 26 untyped venue-page stubs hint: Resolve all conflicts manually, mark them as r Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/42517740985",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/job/linear-BRO-7146-mw886fzi"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "c335fb2c5decb491aa82c86cda898ded2f2b6b68"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42517740985"
+      }
+    ],
+    "queuedAt": "2026-11-08T20:23:19.732Z"
   }
 ]
