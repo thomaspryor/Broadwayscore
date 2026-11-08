@@ -25,7 +25,16 @@ const path = require('path');
 
 const { manualActionsFromCommits, isBotAuthor } = require('./press-night-manual-actions');
 const { handSteps, GATING_FIX_FIELDS } = require('./review-provenance');
-const { isIncludableForRebuild } = require('./review-guards');
+// review-guards pulls scraper/axios/playwright in transitively. The morning digest
+// requires this module for its render helpers only and runs without npm ci
+// (tests/unit/morning-digest-action.test.mjs walks literal require()s), so the
+// rule loads at first grade, which only grade-openings.js does.
+const INCLUSION_RULE_MODULE = './review-guards';
+let _includable = null;
+function isIncludableForRebuild(f, show, filePath) {
+  if (!_includable) _includable = require(INCLUSION_RULE_MODULE).isIncludableForRebuild;
+  return _includable(f, show, filePath);
+}
 
 const HOUR = 3600000;
 const MARKETS = ['broadway', 'off-broadway', 'west-end', 'off-west-end'];
