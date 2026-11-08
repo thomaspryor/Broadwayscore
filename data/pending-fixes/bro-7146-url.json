@@ -1,0 +1,38 @@
+{
+  "issueNumber": "bro-7146-url",
+  "planId": "81459861-7692-4a9c-9f6e-c6b86f7cbdb4",
+  "status": "pending",
+  "createdAt": "2026-11-08T21:37:43.935Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7146 follow-up: correct officialUrl on 2 venue-page stubs (wives-maids: unrelated ladiesmaids.com to the Orange Tree page; eric-and-ern: Duke of Yorks page to the Wilton's page), both confirmed via fetchPage",
+    "steps": [
+      "shows.json: wives-maids-off-west-end-2026.officialUrl",
+      "shows.json: eric-and-ern-off-west-end-2027.officialUrl"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "wives-maids-off-west-end-2026",
+        "field": "officialUrl",
+        "oldValue": "https://ladiesmaids.com/",
+        "newValue": "https://orangetreetheatre.co.uk/whats-on/wives-maids/",
+        "description": "shows.json: wives-maids-off-west-end-2026.officialUrl"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "eric-and-ern-off-west-end-2027",
+        "field": "officialUrl",
+        "oldValue": "https://www.thedukeofyorks.com/eric-and-ern",
+        "newValue": "https://wiltons.org.uk/whats-on/eric-and-ern/",
+        "description": "shows.json: eric-and-ern-off-west-end-2027.officialUrl"
+      }
+    ]
+  }
+}
