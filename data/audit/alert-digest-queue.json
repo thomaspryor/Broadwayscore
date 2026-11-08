@@ -1207,5 +1207,36 @@
       }
     ],
     "queuedAt": "2026-11-08T22:41:53.653Z"
+  },
+  {
+    "conditionKey": "land:land/bro-7168-week-size-framing",
+    "title": "Landing blocked: unit-tests-node red on land/bro-7168-week-size-framing",
+    "description": "land.yml did not land land/bro-7168-week-size-framing: the unit-tests-node gate went red at 2eddb7f5a1. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/42530488319",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-7168-week-size-framing"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "2eddb7f5a1df735b70b76e50c6ec0e7f811b1b3c"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42530488319"
+      }
+    ],
+    "queuedAt": "2026-11-08T22:55:38.731Z"
   }
 ]
