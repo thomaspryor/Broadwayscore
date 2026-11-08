@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-11-08T02:34:30.577Z",
+  "timestamp": "2026-11-08T03:23:15.344Z",
   "stats": {
-    "totalReviews": 80509,
-    "alreadyFlagged": 22030,
+    "totalReviews": 80510,
+    "alreadyFlagged": 22032,
     "dateGuardCatches": 216,
     "directorMismatch": 3545,
     "tvFilmSignals": 2293,
-    "londonSignals": 3628,
+    "londonSignals": 3627,
     "offBroadwaySignals": 748,
     "yearMismatch": 363,
     "noPublishDate": 8432
@@ -114133,7 +114133,7 @@
     {
       "showId": "nero-off-west-end-2026",
       "file": "theatreandtonic--emmie-newitt.json",
-      "score": 79,
+      "score": 78,
       "publishDate": "2026-11-07",
       "url": "https://theatreandtonic.co.uk/blog/nero-at-southwark-playhouse-elephant-review",
       "findings": [
@@ -124413,20 +124413,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "tango-after-dark-off-west-end-2026",
-      "file": "theatreandtonic--emmie-newitt.json",
-      "score": 93,
-      "publishDate": "2026-11-07",
-      "url": "https://theatreandtonic.co.uk/blog/german-cornejos-tango-after-dark-sadlers-wells-theatre-review",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"adelphi theatre\""
         }
       ]
     },
