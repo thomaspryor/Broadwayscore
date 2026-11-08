@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-08T13:57:52.034Z",
+  "timestamp": "2026-11-08T14:11:22.754Z",
   "stats": {
     "totalReviews": 80526,
-    "alreadyFlagged": 22047,
+    "alreadyFlagged": 22048,
     "dateGuardCatches": 216,
     "directorMismatch": 3550,
     "tvFilmSignals": 2293,
-    "londonSignals": 3630,
+    "londonSignals": 3631,
     "offBroadwaySignals": 748,
-    "yearMismatch": 365,
-    "noPublishDate": 8412
+    "yearMismatch": 363,
+    "noPublishDate": 8410
   },
   "findings": [
     {
@@ -1797,19 +1797,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"matthew warchus\" from a-christmas-carol-2019"
-        }
-      ]
-    },
-    {
-      "showId": "a-christmas-carol-a-ghost-story-birmingham-rep-regional-2024",
-      "file": "london-box-office--emmie-newitt.json",
-      "publishDate": "2024-12-16",
-      "url": "https://www.londonboxoffice.co.uk/news/post/a-christmas-carol-a-ghost-story-alexandra-palace-2025",
-      "findings": [
-        {
-          "type": "YEAR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions year 2026 (6x) more than 2024 (1x). 2026 matches production: a-christmas-carol-west-end-2026"
         }
       ]
     },
@@ -75586,20 +75573,6 @@
       ]
     },
     {
-      "showId": "the-secret-garden-regional-2024",
-      "file": "chicago-reader--catey-sullivan.json",
-      "score": 77,
-      "publishDate": "2024-11-19",
-      "url": "https://chicagoreader.com/performing-arts/theater/theater-review/secret-garden-theo/",
-      "findings": [
-        {
-          "type": "YEAR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions year 2026 (2x) more than 2024 (0x). 2026 matches production: the-secret-garden-royal-bath-regional-2026"
-        }
-      ]
-    },
-    {
       "showId": "the-seven-year-disappear-off-broadway-2024",
       "file": "nysr--melissa-rose-bernardo.json",
       "score": 57,
@@ -90213,6 +90186,19 @@
       "score": 95,
       "publishDate": "2024-12-06",
       "url": "https://www.standard.co.uk/culture/theatre/ballet-shoes-national-theatre-review-b1198466.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "ballet-shoes-west-end-2024",
+      "file": "telegraph--dominic-cavendish.json",
+      "publishDate": "2024-12-06",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/ballet-shoes-national-theatre-review/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",

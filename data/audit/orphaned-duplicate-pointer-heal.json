@@ -1,7 +1,7 @@
 {
-  "generated": "2026-11-08T13:44:47.198Z",
+  "generated": "2026-11-08T14:03:02.763Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 47,
+  "count": 43,
   "orphans": [
     {
       "showId": "33-variations-2009",
@@ -284,20 +284,6 @@
       "field": "duplicateOf"
     },
     {
-      "showId": "the-music-man-2022",
-      "loserFile": "independent--unknown.json",
-      "targetFile": "independent--isobel-lewis.json",
-      "reason": "orphaned-duplicate-heal: independent--isobel-lewis.json was flagged invalid after independent--unknown.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "the-music-man-2022",
-      "loserFile": "latimes--unknown.json",
-      "targetFile": "latimes--christie-dzurilla.json",
-      "reason": "orphaned-duplicate-heal: latimes--christie-dzurilla.json was flagged invalid after latimes--unknown.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
       "showId": "the-price-off-west-end-2026",
       "loserFile": "whatsonstage--tanyel-gumushan.json",
       "targetFile": "whatsonstage--alun-hood.json",
@@ -317,20 +303,6 @@
       "targetFile": "providence-journal--katie-landeck.json",
       "reason": "orphaned-duplicate-heal: providence-journal--katie-landeck.json was flagged invalid after providence-journal--unknown.json was pointed at it",
       "field": "duplicateOf"
-    },
-    {
-      "showId": "the-music-man-2022",
-      "loserFile": "independent--unknown.json",
-      "targetFile": "independent--isobel-lewis.json",
-      "reason": "orphaned-duplicate-heal: independent--isobel-lewis.json was flagged invalid after independent--unknown.json was pointed at it (duplicateTextOf)",
-      "field": "duplicateTextOf"
-    },
-    {
-      "showId": "the-music-man-2022",
-      "loserFile": "latimes--unknown.json",
-      "targetFile": "latimes--christie-dzurilla.json",
-      "reason": "orphaned-duplicate-heal: latimes--christie-dzurilla.json was flagged invalid after latimes--unknown.json was pointed at it (duplicateTextOf)",
-      "field": "duplicateTextOf"
     }
   ]
 }
