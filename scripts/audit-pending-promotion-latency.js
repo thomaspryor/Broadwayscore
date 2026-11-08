@@ -19,6 +19,7 @@
 const fs = require('fs');
 const path = require('path');
 const { resolveReviewTextsDir } = require('./lib/review-texts-dir');
+const { listShowDirs } = require('./lib/list-show-dirs');
 const {
   promotionLatencies, slowHotSpanPromotions, hotSpanEvidence, strandedHotSpanStubs, median, DEFAULT_MAX_MIN,
 } = require('./lib/pending-promotion-latency');
@@ -56,7 +57,7 @@ const showsById = new Map((Array.isArray(showsRaw) ? showsRaw : showsRaw.shows).
 
 function readShowDir(dir, showId, keep) {
   let names;
-  try { if (!fs.statSync(dir).isDirectory()) return []; names = fs.readdirSync(dir); } catch { return []; }
+  try { names = fs.readdirSync(dir); } catch { return []; }
   const out = [];
   for (const file of names) {
     if (!file.endsWith('.json')) continue;
@@ -68,14 +69,14 @@ function readShowDir(dir, showId, keep) {
 }
 
 const records = [];
-for (const showId of fs.readdirSync(root)) {
-  if (showId.startsWith('_') || showId.startsWith('.')) continue;
+for (const showId of listShowDirs(root, { silent: true, skipHolding: true })) {
+  if (showId.startsWith('.')) continue;
   records.push(...readShowDir(path.join(root, showId), showId, (r) => r && r.bylineSource === 'replay-pending-bylines'));
 }
 const pendingRoot = path.join(root, '_pending');
 const pendingRecords = [];
 if (fs.existsSync(pendingRoot)) {
-  for (const showId of fs.readdirSync(pendingRoot)) pendingRecords.push(...readShowDir(path.join(pendingRoot, showId), showId, (r) => Boolean(r)));
+  for (const showId of listShowDirs(pendingRoot, { silent: true })) pendingRecords.push(...readShowDir(path.join(pendingRoot, showId), showId, (r) => Boolean(r)));
 }
 
 const rows = promotionLatencies(records, showsById, { since });
