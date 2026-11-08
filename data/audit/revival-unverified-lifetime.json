@@ -1,11 +1,11 @@
 {
-  "updatedAt": "2026-11-07T09:10:26.672Z",
-  "scanned": 4765,
-  "showsWithViolations": 11,
-  "totalViolations": 11,
+  "updatedAt": "2026-11-08T09:29:41.633Z",
+  "scanned": 4770,
+  "showsWithViolations": 12,
+  "totalViolations": 12,
   "newSinceLastRun": 1,
   "newViolationKeys": [
-    "tosca-english-national-opera-west-end-2026"
+    "the-royale-regional-2026"
   ],
   "violationKeys": [
     "six-2021",
@@ -18,6 +18,7 @@
     "the-revlon-girl-off-west-end-2026",
     "frida-a-self-portrait-regional-2026",
     "wish-you-were-here-regional-2026",
+    "the-royale-regional-2026",
     "topdog-underdog-old-regional-2026"
   ],
   "hits": [
@@ -107,6 +108,15 @@
       "title": "Wish You Were Here",
       "openingDate": "2026-09-29",
       "message": "wish-you-were-here-regional-2026 shares canonical title with another show in the same market but isRevival is not true — verify and set isRevival if this is a revival",
+      "violations": [
+        {}
+      ]
+    },
+    {
+      "showId": "the-royale-regional-2026",
+      "title": "The Royale",
+      "openingDate": "2026-10-30",
+      "message": "the-royale-regional-2026 review text mentions \"revival\" 5x but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
         {}
       ]
