@@ -1,0 +1,58 @@
+{
+  "issueNumber": "bro-7251-b",
+  "planId": "87291ecb-4491-40ed-a18c-c606b625f9b2",
+  "status": "pending",
+  "createdAt": "2026-11-09T23:37:49.034Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7251 cousins: Schmigadoon closes 2027-01-03 (Broadway News extension, IBDB), clear Oh Mary (no closing announced; stored date was a schedule horizon)",
+    "steps": [
+      "shows.json: schmigadoon-2026.closingDate",
+      "shows.json: schmigadoon-2026.closingDateSource",
+      "shows.json: oh-mary-2024.closingDate",
+      "shows.json: oh-mary-2024.closingDateSource"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "schmigadoon-2026",
+        "field": "closingDate",
+        "oldValue": "2027-04-04",
+        "newValue": "2027-01-03",
+        "description": "shows.json: schmigadoon-2026.closingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "schmigadoon-2026",
+        "field": "closingDateSource",
+        "oldValue": "TodayTix (NYC (Broadway/OB))",
+        "newValue": "Broadway News extension announcement (BRO-7251)",
+        "description": "shows.json: schmigadoon-2026.closingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "oh-mary-2024",
+        "field": "closingDate",
+        "oldValue": "2027-07-10",
+        "newValue": null,
+        "description": "shows.json: oh-mary-2024.closingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "oh-mary-2024",
+        "field": "closingDateSource",
+        "oldValue": "broadway.com schedule (audit 2026-10-04)",
+        "newValue": null,
+        "description": "shows.json: oh-mary-2024.closingDateSource"
+      }
+    ]
+  }
+}
