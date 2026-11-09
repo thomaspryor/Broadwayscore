@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7174",
   "planId": "1912b8a1-8a7e-40ca-815c-89cb20b2ea1b",
-  "status": "pending",
+  "status": "partial",
   "createdAt": "2026-11-09T07:00:21.957Z",
   "submitter": {
     "name": null,
@@ -32,5 +32,19 @@
         "description": "she-loves-me-2016/nypost--johnny-oleksinski.json: duplicateOf"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-09T08:57:01.914Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "duplicateOf: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "duplicateOf: current value doesn't match expected (data changed since plan was created)"
+    }
+  ],
+  "executedIn": "ci"
 }
