@@ -91,7 +91,6 @@ import type { UserReview, PendingAction } from '@/types/user';
 import type { ShowRanks } from '@/lib/data-show-ranks';
 import HeroRankLine from '@/components/show-page/HeroRankLine';
 import LimitedRunBadge from '@/components/show-page/LimitedRunBadge';
-import CiteScoreControl from '@/components/show-page/CiteScoreControl';
 import ShowPageAddToListButton from '@/components/user/ShowPageAddToListButton';
 import { CURATED_HISTORICAL_SHOWS } from '@/config/scoring';
 import { shouldShowReviewsSyncing } from '../../../scripts/lib/show-page-provisional-state';
@@ -661,7 +660,6 @@ function Inner({
               )}
             </div>
           )}
-          {hasEnoughCriticReviews && <CiteScoreControl show={show} className="hidden lg:block pt-1" />}
         </div>
       </div>
 
@@ -728,7 +726,6 @@ function Inner({
         </p>
       )}
 
-      {hasEnoughCriticReviews && <CiteScoreControl show={show} className="lg:hidden -mt-1" />}
 
       {/* Distribution bar — both modes; spans full width under the header. */}
       {hasEnoughCriticReviews && criticReviewsForBar.length > 0 && (
