@@ -72,7 +72,11 @@ function gradeReviews(rec, nowMs = Date.now()) {
     verdict = gates.some((g) => g.required && g.status === 'unknown') ? 'UNKNOWN' : 'PASS';
   }
   let why = null;
-  if (verdict === 'UNKNOWN') {
+  // BRO-7230: a probe that stopped short of +6h cannot vouch for the night; never a clean PASS.
+  if (verdict === 'PASS' && rec.probe.incompleteReason) {
+    verdict = 'UNKNOWN';
+    why = `the overnight check stopped early (${rec.probe.incompleteReason})`;
+  } else if (verdict === 'UNKNOWN') {
     const noPublish = firstGate && firstGate.status === 'unknown' && /no census or lane discovery shows any outlet published/.test(firstGate.detail);
     why = noPublish ? 'no reviews were published overnight'
       : `could not check ${gates.filter((g) => g.required && g.status === 'unknown').map((g) => GATE_WORDS[g.name] || g.name).join(' or ')}`;

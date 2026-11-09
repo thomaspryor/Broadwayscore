@@ -433,3 +433,15 @@ test('manual action log: dedupes, sorts, refuses a bad time or no source; a new 
   assert.throws(() => R.addManualAction(rec, { at: 'soon', source: 'x' }), /ISO time/);
   assert.throws(() => R.addManualAction(rec, { at: '2026-10-30T04:00:00Z' }), /--source/);
 });
+
+// BRO-7230 class guard: the late job finalizes under always(), so a probe that never ran its +6h window must
+// not grade as a clean PASS. Reverting the incompleteReason branch in gradeReviews turns this red.
+test('BRO-7230: a finalized record whose probe stopped early grades UNKNOWN with a reason, never PASS', () => {
+  const clean = afgmOnTime();
+  assert.equal(D.gradeReviews(clean, AFTER_DEADLINE).verdict, 'PASS');
+  const early = afgmOnTime();
+  early.probe.incompleteReason = 'probe stopped at +2.0h of 6h';
+  const g = D.gradeReviews(early, AFTER_DEADLINE);
+  assert.equal(g.verdict, 'UNKNOWN');
+  assert.match(g.why, /stopped early.*\+2\.0h/);
+});

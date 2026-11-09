@@ -397,7 +397,11 @@ function numbersMoved(d) {
 /** The numbers a fresh draft would show differ from the last email for this stored draft (BRO-7230). */
 function numbersMovedSince(prev, facts) {
   if (!prev || !prev.emailedAt) return false;
-  return numbersMoved({ ...prev, score: facts.score, reviewCount: facts.reviewCount });
+  // Baseline first: emailedNumbers() falls back to the draft's own score, so overwriting it with the new
+  // facts before the lookup would compare the draft with itself on unstamped drafts.
+  const was = emailedNumbers(prev);
+  if (![was.score, was.reviewCount, facts.score, facts.reviewCount].every(Number.isFinite)) return false;
+  return facts.score !== was.score || facts.reviewCount !== was.reviewCount;
 }
 
 /**

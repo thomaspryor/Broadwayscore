@@ -676,6 +676,22 @@ jobs:
             -f deploy_run_id='${{ github.run_id }}' \
             || echo "::warning::Watermark dispatch failed (non-critical)"
 
+      - name: Dispatch Reddit draft due check (after prod deploy)
+        if: success() && steps.deploy.outputs.superseded != 'true'
+        # lint-allow-swallow: best-effort nudge after a deploy that already reached READY; the hourly cron and the poller's own dispatch are the fallbacks
+        continue-on-error: true
+        timeout-minutes: 2
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # BRO-7230: every prod deploy goes through this workflow, so this is the one place that
+          # covers all rebuild paths (the poller only dispatches after its own verified deploys, and
+          # GitHub drops many hourly cron runs). 2026-11-09: a number-moved draft sat until a later
+          # hourly run because the deploy came from another path. The drafter's own rule decides
+          # whether to redraft; extra dispatches collapse into its one pending 'hourly' slot.
+          gh workflow run reddit-engagement-digest.yml -f due_check=true \
+            || echo "::warning::Reddit due-check dispatch failed; the hourly cron is the fallback"
+
       - name: Notify search engines of updated sitemap
         if: success() && steps.deploy.outputs.superseded != 'true'
         # lint-allow-swallow: optional SEO ping after a deploy that already reached READY; failing here would mark a good deploy failed and fire the failure alert and investigation steps below

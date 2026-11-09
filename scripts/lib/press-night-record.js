@@ -1020,7 +1020,25 @@ function observedCoverage2h(rec, obsMs) {
   };
 }
 
+/**
+ * BRO-7230: why a record that is being finalized did not get its full +6h probe window, else null.
+ * The late job finalizes under always(), so a skipped or failed probe step (a failed checkout, a hung
+ * step) used to stamp endedAt and grade clean. The samples say it: the last one ends well short of +6h.
+ */
+const PROBE_FULL_WINDOW_SLACK_MIN = 20;
+function probeIncompleteReason(rec) {
+  const p = rec && rec.probe;
+  const embargo = Date.parse((rec && rec.embargoAt) || '');
+  if (!p || !Number.isFinite(embargo)) return null;
+  const last = Date.parse(p.lastSampleAt || '');
+  const full = embargo + 6 * 3600000 - PROBE_FULL_WINDOW_SLACK_MIN * 60000;
+  if (!Number.isFinite(last)) return 'probe took no samples';
+  if (last < full) return `probe stopped at +${((last - embargo) / 3600000).toFixed(1)}h of 6h`;
+  return null;
+}
+
 module.exports = {
+  probeIncompleteReason, PROBE_FULL_WINDOW_SLACK_MIN,
   SCHEMA_VERSION, OFFSET_HOURS, DEFAULT_GATES, EMBARGO_HOUR_LOCAL, PROBE_LEAD_MIN, LATE_RELEASE_MIN,
   defaultEmbargoAt, marketEmbargoAt, embargoInfo, embargoOverrideProblem, embargoOverrideReachWarning, classifyEmbargo,
   observedRelease, releaseSourceLabel, observedRecord, observedCoverage2h, probeDue, recordPath, emptyRecord, reviewKey, applySample, firstOutletPublish,
