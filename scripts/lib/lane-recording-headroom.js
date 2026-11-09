@@ -26,8 +26,9 @@ function preImportTotalBytes({ maxTotalBytes, maxNightBytes }, incoming) {
  * @param {string[]} archivedNights nights currently in the archive (any show)
  */
 function isBeyondRetention(night, archivedNights) {
-  const kept = (archivedNights || []).filter(Boolean).sort();
-  return kept.length > 0 && String(night) < kept[0];
+  const isNight = (n) => /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/.test(String(n));
+  const kept = (archivedNights || []).filter(isNight).sort(); // a stray directory name never decides what is old
+  return isNight(night) && kept.length > 0 && String(night) < kept[0];
 }
 
 module.exports = { preImportTotalBytes, isBeyondRetention, MAX_INCOMING_NIGHTS };

@@ -342,3 +342,10 @@ test('BRO-7167: an over-budget night older than every retained night is beyond r
   assert.equal(isBeyondRetention('2026-11-08', ['2026-10-30', '2026-11-08']), false, 'a night inside the kept range still fails loudly');
   assert.equal(isBeyondRetention('2026-09-28', []), false, 'an empty archive cannot call anything old');
 });
+
+test('BRO-7167: malformed night names never downgrade a failure to a warning', async () => {
+  const { isBeyondRetention } = require('../../scripts/lib/lane-recording-headroom');
+  assert.equal(isBeyondRetention('2026-09-28', ['tmp', '2026-99-99']), false, 'stray directories are ignored, leaving no kept night');
+  assert.equal(isBeyondRetention('tmp', ['2026-10-30']), false);
+  assert.equal(isBeyondRetention('2026-09-28', ['tmp', '2026-10-30']), true);
+});
