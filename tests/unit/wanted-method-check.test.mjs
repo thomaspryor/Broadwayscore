@@ -52,3 +52,17 @@ test('a recording whose rows have no wall-clock time still replays (no NaN dates
   const r = await replayDiscovery(rec(entries, { a: '<html></html>' }), { show: SHOWS['wanted-2022'], night: '2026-11-08', stepMin: 2 });
   assert.ok(r.passes >= 2);
 });
+
+test('profileRecording reports window, hosts and stored bodies', async () => {
+  const { profileRecording } = await import('../../scripts/wanted-method-check.js');
+  const p = profileRecording({ entries: [
+    { url: 'https://a.com/x', at: '2026-11-09T02:00:00Z', sha: 'h1' },
+    { url: 'https://a.com/y', at: '2026-11-09T03:00:00Z' },
+    { url: 'https://b.com/', at: '2026-11-09T02:30:00Z', status: 'error' },
+  ] });
+  assert.equal(p.firstAt, '2026-11-09T02:00:00.000Z');
+  assert.equal(p.lastAt, '2026-11-09T03:00:00.000Z');
+  assert.equal(p.noBody, 2);
+  assert.equal(p.errors, 1);
+  assert.deepEqual(p.hosts['a.com'], { fetches: 2, withBody: 1, errors: 0 });
+});

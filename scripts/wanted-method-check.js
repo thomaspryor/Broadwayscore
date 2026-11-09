@@ -82,6 +82,30 @@ async function replayDiscovery(recording, { show, night, stepMin = 2, adapters =
   return { passes, spanMin: Math.round(recording.spanMs / MIN), found: [...foundAt.values()], unrecorded: [...unrecorded], errors };
 }
 
+/** What the recording itself holds: window, per-host fetch counts and how many bodies were stored. Urls/hosts/counts only. */
+function profileRecording(recording) {
+  const hosts = {};
+  let noBody = 0;
+  let errors = 0;
+  const ats = [];
+  for (const e of recording.entries) {
+    let h = 'unknown';
+    try { h = new URL(e.url).host; } catch { /* keep unknown */ }
+    const r = hosts[h] || (hosts[h] = { fetches: 0, withBody: 0, errors: 0 });
+    r.fetches++;
+    if (e.sha) r.withBody++; else noBody++;
+    if (e.status === 'error') { r.errors++; errors++; }
+    const t = Date.parse(e.at);
+    if (Number.isFinite(t)) ats.push(t);
+  }
+  return {
+    firstAt: ats.length ? new Date(Math.min(...ats)).toISOString() : null,
+    lastAt: ats.length ? new Date(Math.max(...ats)).toISOString() : null,
+    fetches: recording.entries.length, noBody, errors,
+    hosts: Object.fromEntries(Object.entries(hosts).sort((a, b) => b[1].fetches - a[1].fetches).slice(0, 40)),
+  };
+}
+
 /** Card completeness and the coverage rule over what was found. */
 function summarize(found, { market = 'broadway' } = {}) {
   const { getMarketMinReviews } = require('./lib/min-reviews');
@@ -121,14 +145,14 @@ async function main() {
   const dir = path.join(archive, showId, night, 'recording');
   const rec = loadRecording(dir, { key: process.env.LANE_RECORDING_KEY || null });
   const r = await replayDiscovery(rec, { show, night, stepMin: Number(arg('step-min', 2)) });
-  const out = { show: showId, night, recordingFetches: rec.entries.length, ...r, summary: summarize(r.found, { market: show.market }) };
+  const out = { show: showId, night, recordingFetches: rec.entries.length, profile: profileRecording(rec), ...r, summary: summarize(r.found, { market: show.market }) };
   const file = arg('out');
   if (file) fs.writeFileSync(file, `${JSON.stringify(out, null, 2)}\n`);
   console.log(JSON.stringify({ ...out, found: out.found.map((f) => ({ ...f, pullQuote: f.pullQuote ? String(f.pullQuote).slice(0, 80) : null })) }, null, 1));
   return 0;
 }
 
-module.exports = { replayDiscovery, summarize, SHOWS };
+module.exports = { replayDiscovery, summarize, profileRecording, SHOWS };
 
 if (require.main === module) {
   Promise.resolve().then(main).then((c) => { process.exitCode = c; }, (e) => { console.error(`::error::${String((e && e.message) || e).slice(0, 300)}`); process.exitCode = 1; });
