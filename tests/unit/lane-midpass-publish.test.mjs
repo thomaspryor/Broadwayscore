@@ -44,7 +44,8 @@ test('candidate 2\'s score hangs: candidate 1 reaches the deploy port anyway, an
   let release;
   const hung = new Promise((r) => { release = r; });
   const { run, deployed, order } = night({ midPassPublishAfterMs: 20, scoreTwo: () => hung.then(() => 75) });
-  for (let i = 0; i < 100 && !deployed.length; i++) await tick();
+  // Wait for both: under a loaded full-suite run the mid-pass deploy can land before candidate 2 starts scoring.
+  for (let i = 0; i < 400 && !(deployed.length && order.length === 2); i++) await tick();
   assert.equal(order.length, 2, 'candidate 2 is being scored (and hangs)');
   assert.deepEqual(deployed, [order[0]], 'candidate 1 deployed while candidate 2 is still being scored');
   release();
