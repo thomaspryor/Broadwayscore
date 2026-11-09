@@ -66,5 +66,20 @@ test('profileRecording reports window, hosts and stored bodies', async () => {
   assert.equal(p.lastAt, '2026-11-09T03:00:00.000Z');
   assert.equal(p.noBody, 2);
   assert.equal(p.errors, 1);
+  assert.deepEqual(p.notes, {});
+  assert.equal(p.firstCappedAt, null);
   assert.deepEqual(p.hosts['a.com'], { fetches: 2, withBody: 1, errors: 0 });
+});
+
+test('profileRecording finds when the recorder hit its byte cap and how many bodies it kept after', async () => {
+  const { profileRecording } = await import('../../scripts/wanted-method-check.js');
+  const p = profileRecording({ entries: [
+    { url: 'https://a.com/1', t: 0, at: '2026-11-09T02:40:00Z', sha: 'h1' },
+    { url: 'https://a.com/2', t: 60000, at: '2026-11-09T02:41:00Z', sha: 'h2', note: 'capped' },
+    { url: 'https://a.com/3', t: 120000, at: '2026-11-09T02:42:00Z', sha: 'h3', note: 'capped' },
+    { url: 'https://a.com/4', t: 180000, at: '2026-11-09T02:43:00Z', sha: 'h4' },
+  ] });
+  assert.equal(p.firstCappedAt, '2026-11-09T02:41:00Z');
+  assert.deepEqual(p.notes, { capped: 2 });
+  assert.equal(p.bodiesAfterCap, 1);
 });
