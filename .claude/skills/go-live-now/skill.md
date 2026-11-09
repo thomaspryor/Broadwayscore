@@ -38,16 +38,18 @@ During a Broadway press night (embargo -1h to +6h) you can get the plan from it:
 save the run list to a file, then
 `node scripts/press-night-priority.js --runs-file=<file>` (dry run, cancels nothing).
 
-Safe to cancel (each reruns on its own schedule or loses nothing):
+Safe to cancel (each reruns on its own schedule; side effects named):
 - `demo-alias-watchdog.yml`
 - `vercel-demo.yml` while still queued (a running demo build left half done
   leaves the demo alias on stale content)
 - `llm-ensemble-score.yml` and `press-night-watchdog.yml` for shows not
-  opening tonight (the 6-hourly batch scores whatever is left)
+  opening tonight, while still queued (the 6-hourly batch scores whatever is
+  left). A running one still pushes when cancelled and keeps its runner up to
+  ~10 more minutes, so leave it unless nothing else frees a machine
 - `test.yml` and `check-direct-push-to-main.yml` on main pushes (each cancel
   re-queues a follow-up job, so recheck the queue)
 - `mirror-data-to-gitlab.yml`, `fetch-all-image-formats.yml` (each raises a
-  cancelled alert; expected)
+  cancelled alert; expected; prefer queued ones)
 - `gather-reviews.yml`, `press-night-probe.yml`,
   `opening-night-lane-watchdog.yml`, and `opening-night-lane-live.yml` shadow
   runs, only for shows not opening tonight
@@ -68,24 +70,33 @@ Never cancel:
 - `opening-night-lane-switch.yml`, `execute-approved-fix.yml`,
   `rebuild-reviews.yml`, `rebuild-fast.yml`, `extract-pull-quotes.yml`,
   `opening-night-poller.yml`, `opening-night-orchestrator.yml`
-- `morning-digest-action.yml` and email workflows (they reach real people)
+- `morning-digest-action.yml`, `opening-night-broadcast.yml` and other email
+  workflows (they reach real people)
+- `autonomous-merge.yml` (holds the same landing mutex as Land) and
+  `update-deploy-watermark.yml`
 
 ## 3. Clear the line in front of you
 The landing mutex is a FIFO of refs: `git ls-remote origin 'refs/land-mutex/*'`.
 Landings waiting there also ride your merge train and get re-checked with
 you. Cancelling other queued land runs (step 2) lets your Land job take the
-lock alone. Then wait for main:
+lock alone. Land self-parks when the line is 4+ deep: if your Land job ends
+cancelled at "Admit to the landing queue", rerun it yourself at once
+(`rerun_workflow_run`); do not wait for the retry cron. Then wait for main:
 `until git fetch -q origin main && git merge-base --is-ancestor <sha> origin/main; do sleep 15; done`
 (Bash run_in_background, timeout longer than the wait).
 
 ## 4. Deploy yourself and stop stale deploys from overwriting you
 The Land job requests a deploy, but start one too the moment your commit is
 on main: `actions_run_trigger` / `run_workflow`, `workflow_id: vercel-deploy.yml`,
-`ref: main`. Deploy runs run side by side (per-run concurrency group), so an
+`ref: main`. Your ASAP is the emergency that dispatching this workflow by
+hand is reserved for. Deploy runs run side by side (per-run concurrency group), so an
 older deploy that finishes last can put pre-fix content back. For each
 queued `Deploy to Vercel` run, check
 `git merge-base --is-ancestor <your sha> <its head_sha>`; cancel the ones
-that do not contain your commit. Then confirm a deploy containing your
+that do not contain your commit. For a private core-data fix (landed through
+execute-approved-fix, so no sha of yours is on main), the deploy must have
+started after the data commit landed; judge by its start time, not its sha.
+Then confirm a deploy containing your
 commit has a runner (its `deploy` job is in_progress). If it is queued,
 go back to step 2.
 

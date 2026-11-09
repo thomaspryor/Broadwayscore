@@ -61,8 +61,10 @@ const RUNS = [
   run(37, 'press-night-watchdog.yml', 'Press night watchdog the-steel-man-off-broadway-2026 2026-10-01'),
 ];
 // Auto: no alert, no follow-up job, no lost work. Manual: on the skill's list, but a cancel pages, re-queues or loses work.
-const EXPECTED_CANCEL = [16, 21, 23, 37];
-const EXPECTED_MANUAL = [8, 11, 17, 18, 19, 22, 34, 35];
+const EXPECTED_CANCEL = [16, 21];
+// 23 and 37 are running scoring/watchdog runs for other shows: their pushes run under if: always(), so by hand only.
+// 18 and 34 (Critics' Take) are never cancelled: a cancel pushes a partial file.
+const EXPECTED_MANUAL = [8, 11, 17, 19, 22, 23, 35, 37];
 
 const ids = (list) => list.map((x) => x.run.id).sort((a, b) => a - b);
 
@@ -99,7 +101,8 @@ test('BRO-7198: next night protects Blueberries and The Visitors', () => {
     run(1, 'opening-night-lane-live.yml', 'Opening-night lane shadow here-there-are-blueberries-2026 2026-11-09'),
     run(2, 'gather-reviews.yml', 'Gather Review Data — the-visitors-off-broadway-2026'),
     run(3, 'llm-ensemble-score.yml', 'LLM Ensemble Score Reviews — here-there-are-blueberries-2026'),
-    run(4, 'llm-ensemble-score.yml', 'LLM Ensemble Score Reviews — the-steel-man-off-broadway-2026'),
+    run(4, 'llm-ensemble-score.yml', 'LLM Ensemble Score Reviews — the-steel-man-off-broadway-2026', { status: 'queued' }),
+    run(5, 'llm-ensemble-score.yml', 'LLM Ensemble Score Reviews — the-steel-man-off-broadway-2026'),
   ];
   const plan = P.planPriority({ shows: SHOWS, runs, nowMs });
   assert.deepEqual(plan.tonight.map((t) => t.id), ['here-there-are-blueberries-2026']);
@@ -126,8 +129,8 @@ test('BRO-7198: tests on main and alerting workflows are never cancelled automat
 test('BRO-7198: Critics\' Take, land retry and a running demo build are never cancelled automatically', () => {
   const plan = P.planPriority({ shows: SHOWS, runs: RUNS, nowMs: Date.parse('2026-11-09T03:30:00Z') });
   const action = (id) => ['cancel', 'manual', 'keep'].find((k) => plan[k].some((x) => x.run.id === id));
-  assert.equal(action(18), 'manual');
-  assert.equal(action(34), 'manual');
+  assert.equal(action(18), 'keep');
+  assert.equal(action(34), 'keep');
   assert.equal(action(20), 'keep');
   assert.equal(action(35), 'manual');
   assert.equal(action(16), 'cancel');

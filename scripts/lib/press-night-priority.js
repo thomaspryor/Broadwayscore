@@ -41,8 +41,11 @@ const AUTO_QUEUED_ONLY = {
 };
 
 /**
- * Auto-cancelled only when the title names another show (none tonight). A cancelled scoring run loses nothing: the
- * 6-hourly batch runs (04:30, 10:30, 16:30, 22:30 UTC) score whatever is still unscored.
+ * Auto-cancelled only while still queued and only when the title names another show (none tonight). A queued scoring
+ * run loses nothing: the 6-hourly batch (04:30, 10:30, 16:30, 22:30 UTC) scores whatever is still unscored. A running
+ * one is reported for a person instead: its push steps run under if: always(), so a cancel still publishes partial
+ * scores, moves main under a landing and holds the runner for up to ~10 more minutes (llm-ensemble-score.yml
+ * PUSH_DEADLINE_SEC; press-night-watchdog.yml's ledger push is the same).
  */
 const AUTO_OTHER_SHOW = {
   '.github/workflows/llm-ensemble-score.yml': 'scoring',
@@ -56,9 +59,6 @@ const MANUAL_MAIN_PUSH = {
 };
 
 const MANUAL_SAFE = {
-  // Critics' Take: its run title never names the show (no run-name), the poller dispatches it for tonight's shows, and
-  // its push and deploy steps are if: always(), so a cancel pushes a partial file. Never automatic.
-  '.github/workflows/update-critic-consensus.yml': "Critics' Take",
   '.github/workflows/mirror-data-to-gitlab.yml': 'core data mirror',
   '.github/workflows/fetch-all-image-formats.yml': 'show images',
 };
@@ -89,6 +89,12 @@ const NEVER = new Set([
   '.github/workflows/opening-night-poller.yml',
   '.github/workflows/opening-night-orchestrator.yml',
   '.github/workflows/morning-digest-action.yml',
+  // Critics' Take: its run title never names the show (no run-name), the poller dispatches it for tonight's shows, and
+  // its push and deploy steps are if: always(), so a cancel pushes a partial file. Not even by hand.
+  '.github/workflows/update-critic-consensus.yml',
+  '.github/workflows/opening-night-broadcast.yml', // real subscribers
+  '.github/workflows/autonomous-merge.yml', // shares the landing mutex (land-retry-cancelled.yml header)
+  '.github/workflows/update-deploy-watermark.yml',
 ]);
 
 function embargoMs(show) {
@@ -169,7 +175,7 @@ function classifyRun(run, ctx) {
   // gather-reviews can carry several shows; every one must be another show (none tonight, checked above).
   const named = showIdsInTitle(title, ctx.knownIds || []);
   const forOther = (label, act) => (named.length ? act(`${label} for ${named.join(', ')}`) : keep('show not named in the title'));
-  if (AUTO_OTHER_SHOW[wf]) return forOther(AUTO_OTHER_SHOW[wf], cancel);
+  if (AUTO_OTHER_SHOW[wf]) return forOther(run.status === 'queued' ? AUTO_OTHER_SHOW[wf] : `${AUTO_OTHER_SHOW[wf]} (already running; its pushes run even when cancelled)`, run.status === 'queued' ? cancel : manual);
   if (MANUAL_OTHER_SHOW[wf]) return forOther(MANUAL_OTHER_SHOW[wf], manual);
   if (wf === LANE_LIVE) {
     if (!/^Opening-night lane shadow\b/.test(title)) return keep('lane run that is not a shadow');

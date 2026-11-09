@@ -48,3 +48,15 @@ test("the skill's never list covers the planner's never list, Critics' Take incl
   assert.ok(!safe.has(CRITICS_TAKE));
   assert.ok(!safe.has('.github/workflows/land-retry-cancelled.yml'));
 });
+
+test('no workflow is on both of the skill lists', () => {
+  // land.yml is on both with opposite conditions (queued vs past the landing mutex).
+  const both = [...safe].filter((wf) => never.has(wf) && wf !== '.github/workflows/land.yml');
+  assert.deepEqual(both, []);
+});
+
+test('scoring and watchdog are called safe only while queued, matching the planner', () => {
+  const block = section('Safe to cancel', 'Never cancel');
+  const line = block.slice(block.indexOf('`llm-ensemble-score.yml`'), block.indexOf('`test.yml`'));
+  assert.match(line, /queued/);
+});
