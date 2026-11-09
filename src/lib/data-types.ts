@@ -602,6 +602,27 @@ export interface AtRiskShow {
   closingDate: string | null;
 }
 
+/** BRO-7246: a running show with no announced closing whose grosses trail break-even. */
+export interface ClosingWatchShow {
+  slug: string;
+  title: string;
+  season: string;
+  /** Trailing 4-week average gross. */
+  avgWeeklyGross: number;
+  /** getBreakEven(), as the At Risk list uses. */
+  breakEven: number;
+  /** avgWeeklyGross / breakEven, under 1. */
+  breakEvenRatio: number;
+  /** Consecutive latest weeks under break-even. */
+  weeksBelowBreakEven: number;
+  trend: import('@/config/commercial').RecoupmentTrend;
+  recouped: boolean;
+  /** Our estimated closing window (YYYY-MM-DD), null when the band has too few past shows. */
+  likelyClosing: { early: string; median: string; late: string } | null;
+  /** Past Broadway shows behind the estimate, and their median weeks left. */
+  basis: { sample: number; medianWeeks: number; p25Weeks: number; p75Weeks: number } | null;
+}
+
 export interface RecentRecoupmentShow {
   slug: string;
   title: string;

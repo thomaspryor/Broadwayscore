@@ -11,7 +11,7 @@ import RowLinkArrow from '@/components/biz/RowLinkArrow';
 
 export interface DevelopmentItem {
   date: string; // Format: "MMM YYYY" e.g., "Jan 2025" or "MMM DD" for current year
-  type: 'recouped' | 'estimate' | 'closing' | 'closing-announced' | 'at-risk';
+  type: 'recouped' | 'estimate' | 'closing' | 'closing-announced' | 'at-risk' | 'closing-watch';
   showTitle: string;
   showSlug?: string;
   description: string;
@@ -34,6 +34,8 @@ function getTypeStyles(type: DevelopmentItem['type']): { dotClass: string; label
       return { dotClass: 'text-orange-400', label: 'Closing announced' };
     case 'at-risk':
       return { dotClass: 'text-red-400', label: 'At risk' };
+    case 'closing-watch':
+      return { dotClass: 'text-score-tepid', label: 'Closing Watch' };
     default:
       return { dotClass: 'text-gray-400', label: 'Update' };
   }

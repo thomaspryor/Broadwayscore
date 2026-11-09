@@ -13,6 +13,7 @@ import type {
   SeasonStats,
   ApproachingRecoupmentShow,
   AtRiskShow,
+  ClosingWatchShow,
   RecentRecoupmentShow,
   RecentClosing,
   UpcomingClosing,
@@ -64,6 +65,7 @@ import { buildSeasonProfiles, buildRecoupFindings, compareSeason, hasKnownOutcom
 import fs from 'fs';
 import path from 'path';
 import { getMarketDate } from './date-utils';
+import { calibrateClosingWatch, closingBandFor, isOnClosingWatch, addWeeks, weeksBelowBreakEven as countWeeksBelowBreakEven, type ClosingBandStats } from './closing-watch';
 import { isLossDesignation } from '../../scripts/lib/commercial-designations';
 import { conversionOf, isConvertedToCommercial, commercialRunWeeks, recoupClockStart } from '../../scripts/lib/commercial-conversion';
 import {
@@ -763,6 +765,88 @@ export function getShowsAtRisk(): AtRiskShow[] {
     const deficitB = b.breakEven - b.avgWeeklyGross;
     return deficitB - deficitA;
   });
+}
+
+let closingCalibration: ClosingBandStats[] | null = null;
+
+/**
+ * BRO-7246: how long past Broadway shows kept running after their grosses
+ * fell into each band under break-even. Closed, box-office-driven runs with a
+ * break-even, from the full weekly grosses history. Computed once per build.
+ */
+export function getClosingWatchCalibration(): ClosingBandStats[] {
+  if (closingCalibration) return closingCalibration;
+  const weeksOldestFirst = [...WEEK_KEYS_NEWEST_FIRST].reverse();
+  const samples = [];
+  for (const [slug, data] of Object.entries(commercial.shows)) {
+    if (data.designation === 'Nonprofit' || data.designation === 'Tour Stop') continue;
+    const show = rawShows.find((s) => s.slug === slug);
+    if (!show || show.status !== 'closed') continue;
+    const breakEven = getBreakEven(data);
+    if (!breakEven) continue;
+    const grossesOldestFirst: number[] = [];
+    for (const key of weeksOldestFirst) {
+      const gross = grossesHistory.weeks[key]?.[slug]?.gross;
+      if (gross) grossesOldestFirst.push(gross);
+    }
+    samples.push({ grossesOldestFirst, breakEven });
+  }
+  closingCalibration = calibrateClosingWatch(samples);
+  return closingCalibration;
+}
+
+/**
+ * BRO-7246 Closing Watch: running shows with no closing date ahead whose
+ * 4-week average gross is under break-even, deepest shortfall first, each with
+ * our estimated closing window from getClosingWatchCalibration().
+ */
+export function getClosingWatch(): ClosingWatchShow[] {
+  const calibration = getClosingWatchCalibration();
+  const today = new Date().toISOString().slice(0, 10);
+  const latestWeek = WEEK_KEYS_NEWEST_FIRST[0];
+  const results: ClosingWatchShow[] = [];
+
+  for (const [slug, data] of Object.entries(commercial.shows)) {
+    const show = rawShows.find((s) => s.slug === slug);
+    if (!show) continue;
+    const recent = getRecentGrosses(slug, 8);
+    const avgGross = trailingAverageGross(recent.slice(0, 4));
+    const breakEven = getBreakEven(data);
+    const reportedWeeks = WEEK_KEYS_NEWEST_FIRST.reduce(
+      (n, key) => n + (grossesHistory.weeks[key]?.[slug]?.gross ? 1 : 0), 0,
+    );
+    if (!isOnClosingWatch({
+      status: show.status,
+      designation: data.designation,
+      closingDate: show.closingDate,
+      today,
+      avgGross,
+      breakEven,
+      reportedWeeks,
+    })) continue;
+
+    const ratio = (avgGross as number) / (breakEven as number);
+    const band = closingBandFor(ratio, calibration);
+    results.push({
+      slug,
+      title: show.title,
+      season: getSeason(show.openingDate) || 'Unknown',
+      avgWeeklyGross: avgGross as number,
+      breakEven: breakEven as number,
+      breakEvenRatio: ratio,
+      weeksBelowBreakEven: countWeeksBelowBreakEven(recent, breakEven as number),
+      trend: getRecoupmentTrend(slug),
+      recouped: data.recouped === true,
+      likelyClosing: band && latestWeek ? {
+        early: addWeeks(latestWeek, band.p25),
+        median: addWeeks(latestWeek, band.median),
+        late: addWeeks(latestWeek, band.p75),
+      } : null,
+      basis: band ? { sample: band.sample, medianWeeks: band.median, p25Weeks: band.p25, p75Weeks: band.p75 } : null,
+    });
+  }
+
+  return results.sort((a, b) => a.breakEvenRatio - b.breakEvenRatio);
 }
 
 /**

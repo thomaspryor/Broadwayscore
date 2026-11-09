@@ -64,6 +64,14 @@ export function formatCapitalSummary(summary: CapitalSummary): CapitalSummaryDis
 
 const MONTH_ABBR = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
+/** "2027-01-24" → "Jan 2027", for estimates that should not read as exact days (BRO-7246). Unparseable → null. */
+export function formatMonthYear(date: string | null | undefined): string | null {
+  const m = /^(\d{4})-(\d{2})/.exec(date ?? '');
+  if (!m) return null;
+  const month = parseInt(m[2], 10);
+  return month >= 1 && month <= 12 ? `${MONTH_ABBR[month - 1]} ${m[1]}` : null;
+}
+
 /**
  * "9/13/2026" (grosses week ending), "2026-09-26" or an ISO timestamp
  * ("2026-10-03T12:00:00Z") → "Sep 13, 2026". Parsed by hand so the server's

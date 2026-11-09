@@ -2,20 +2,20 @@
  * Recent Developments on /biz (a short list) and /biz/developments (every
  * item). One builder so both pages say the same thing about a show.
  *
- * Order: shows at risk now, then announced closings (soonest first), then
+ * Order: Closing Watch (our estimate, BRO-7246), shows at risk now, then announced closings (soonest first), then
  * past recoupments and closings (newest first). Announced closings used to
  * trail the past events, so a November closing sat under May recoupments.
  */
 
 import type { DevelopmentItem } from '@/components/biz/RecentDevelopmentsList';
-import { getRecentRecoupments, getRecentClosings, getUpcomingClosings, getShowsAtRisk } from '@/lib/data-commercial';
-import { formatDevelopmentDate, sortNewestFirst } from '@/lib/biz-format';
+import { getRecentRecoupments, getRecentClosings, getUpcomingClosings, getShowsAtRisk, getClosingWatch } from '@/lib/data-commercial';
+import { formatDevelopmentDate, formatMonthYear, sortNewestFirst } from '@/lib/biz-format';
 import { lossOutcomePhrase } from '@/lib/commercial-display';
 
 /** Windows and caps for each list; `full` is the dedicated page. */
 const LIMITS = {
-  short: { recoupMonths: 12, recoups: 4, closingMonths: 3, closings: 3, upcoming: 2, atRisk: 2 },
-  full: { recoupMonths: 24, recoups: Infinity, closingMonths: 24, closings: Infinity, upcoming: Infinity, atRisk: Infinity },
+  short: { recoupMonths: 12, recoups: 4, closingMonths: 3, closings: 3, upcoming: 2, atRisk: 2, watch: 2 },
+  full: { recoupMonths: 24, recoups: Infinity, closingMonths: 24, closings: Infinity, upcoming: Infinity, atRisk: Infinity, watch: Infinity },
 } as const;
 
 export function buildDevelopments(scope: keyof typeof LIMITS = 'short'): DevelopmentItem[] {
@@ -59,6 +59,19 @@ export function buildDevelopments(scope: keyof typeof LIMITS = 'short'): Develop
     description: '4-week average gross below estimated break-even',
   }));
 
+  const watch: DevelopmentItem[] = getClosingWatch().slice(0, lim.watch).map((show) => {
+    const month = formatMonthYear(show.likelyClosing?.median);
+    return {
+      date: 'Now',
+      type: 'closing-watch',
+      showTitle: show.title,
+      showSlug: show.slug,
+      description: month
+        ? `no closing announced, grosses under break-even; our estimate: likely closes around ${month}`
+        : 'no closing announced, grosses under break-even',
+    };
+  });
+
   const upcoming: DevelopmentItem[] = [...getUpcomingClosings()]
     .sort((a, b) => a.closingDate.localeCompare(b.closingDate))
     .slice(0, lim.upcoming)
@@ -70,5 +83,5 @@ export function buildDevelopments(scope: keyof typeof LIMITS = 'short'): Develop
       description: 'closing announced',
     }));
 
-  return [...atRisk, ...upcoming, ...sortNewestFirst(past, (p) => p.isoDate).map((p) => p.item)];
+  return [...watch, ...atRisk, ...upcoming, ...sortNewestFirst(past, (p) => p.isoDate).map((p) => p.item)];
 }
