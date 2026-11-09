@@ -268,3 +268,45 @@ test('e2e: owner question, third-person description, and a done report are not p
   assert.doesNotMatch(promiseRun('The board worker will continue with the next card on its own schedule.').stderr, PROMISE_MSG);
   assert.doesNotMatch(promiseRun('Fixed the Boston page and verified it live.').stderr, PROMISE_MSG);
 });
+
+// OPENCLAIM (BRO-7183 phase 2): a no-human routine leaving a card it claimed this firing open.
+const OC_MSG = /claimed a card this firing that is still open/;
+const ROUTINE = 'Read docs/cloud-routines/board-workers.md and follow it.';
+const claimT = (id = 'BRO-7074', min = 30) => [
+  toolUse('c1', 'Bash', { command: `node scripts/linear-session.js claim --issue=${id}` }, min),
+  toolRes('c1', `claimed ${id}`, min)];
+function ocRun(extra, env = {}, prompt = ROUTINE) {
+  return runHook([userStr(prompt), ...extra], { CLAUDE_CODE_REMOTE: '', OPENCLAIM_GATE_MODE: 'block', ...env },
+    'Board worker firing done: worked one card.');
+}
+test('OPENCLAIM unit: claim then close passes; claim alone blocks; a human session is out of scope', () => {
+  const G = createRequire(import.meta.url)('./child-session-wait-guard.js');
+  const bash = (idx, command, result = '') => ({ idx, name: 'Bash', ok: true, input: { command }, result });
+  const claim = bash(1, 'node scripts/linear-session.js claim --issue=BRO-7074');
+  assert.equal(G.openClaimDecision({ firstPrompt: ROUTINE, tools: [claim] }).block, true);
+  assert.deepEqual(G.openClaimDecision({ firstPrompt: ROUTINE, tools: [claim] }).cards, ['BRO-7074']);
+  assert.equal(G.openClaimDecision({ firstPrompt: ROUTINE, tools: [claim, bash(2, 'node scripts/linear-brain.js update BRO-7074 --state Done')] }).block, false);
+  assert.equal(G.openClaimDecision({ firstPrompt: ROUTINE, tools: [claim, bash(2, 'node scripts/linear-session.js report --issue=BRO-7074 --status=paused --summary=x')] }).block, false);
+  assert.equal(G.openClaimDecision({ firstPrompt: ROUTINE, tools: [claim, { idx: 2, name: 'mcp__x__save_issue', ok: true, input: { id: 'BRO-7074', state: 'Paused' } }] }).block, false);
+  assert.equal(G.openClaimDecision({ firstPrompt: ROUTINE, tools: [claim, { idx: 2, name: 'mcp__claude-code-remote__create_session', ok: true, input: {} }] }).block, false);
+  assert.equal(G.openClaimDecision({ firstPrompt: 'Fix the Boston page.', tools: [claim] }).block, false);
+  // a --self create: the id comes from the command's output
+  assert.deepEqual(G.openClaimDecision({ firstPrompt: ROUTINE, tools: [bash(1, 'node scripts/linear-brain.js create "x" --self', 'Created BRO-7200 https://linear.app/x')] }).cards, ['BRO-7200']);
+  // scoped to the latest firing: a claim before the anchor does not count
+  assert.equal(G.openClaimDecision({ firstPrompt: ROUTINE, tools: [claim], ocAnchor: 5 }).block, false);
+});
+test('e2e: BRO-7074 shape (routine claims, ends with the card open) blocks in block mode, logs by default', () => {
+  const r = ocRun(claimT());
+  assert.equal(r.status, 2, r.stderr);
+  assert.match(r.stderr, OC_MSG);
+  const home = fs.mkdtempSync(path.join(os.tmpdir(), 'oc-home-'));
+  const r2 = ocRun(claimT(), { OPENCLAIM_GATE_MODE: '', HOME: home });
+  assert.doesNotMatch(r2.stderr, OC_MSG);
+  const rows = fs.readFileSync(path.join(home, '.claude', 'state', 'open-claim-advisory.jsonl'), 'utf8').trim().split('\n');
+  assert.deepEqual(JSON.parse(rows[0]).cards, ['BRO-7074']);
+});
+test('e2e: routine that moved its card to Paused, or has a live poller, passes', () => {
+  assert.doesNotMatch(ocRun([...claimT(), toolUse('c2', 'Bash', { command: 'node scripts/linear-brain.js update BRO-7074 --state Paused' }, 20), toolRes('c2', 'ok', 20)]).stderr, OC_MSG);
+  assert.doesNotMatch(ocRun([...claimT(), toolUse('c3', 'Bash', { command: 'node scripts/lib/wait-for-land.js land/x 60', run_in_background: true, timeout: 7200000 }, 5),
+    toolRes('c3', 'Command running in background with ID: boc1. Output is being written to: /tmp/y', 5)]).stderr, OC_MSG);
+});

@@ -236,6 +236,41 @@ function childStallDecision(input) {
       + (wrongTool ? ' (SendMessage was used; it does not reach the parent)' : '') };
 }
 
+// OPENCLAIM (BRO-7183 phase 2): a session with no human (a routine reading
+// docs/cloud-routines/, or a prompt saying no human is watching) that claimed
+// a card in this firing must close, report or hand it off before it stops.
+// Nothing else ever comes back for it (BRO-7074 sat In Progress 34h).
+const NO_HUMAN_RE = /docs\/cloud-routines\/|\bno human is (?:watching|in the session)\b/i;
+const CLAIM_RE = /linear-session\.js\s+claim\b[^\n]*?--issue[= ](BRO-\d+)|linear-brain\.js\s+create\b[^\n]*--self\b/;
+const CREATED_RE = /\b(BRO-\d+)\b/;
+const CLOSE_RE = /linear-brain\.js\s+update\s+(BRO-\d+)\b[^\n]*--state[= ]["']?(?:Done|In Review|Paused|Duplicate|Todo|Backlog|Canceled|Cancelled)|linear-session\.js\s+(?:report|release)\b[^\n]*?--issue[= ](BRO-\d+)/gi;
+
+/** @returns {{block: boolean, reason: string, cards?: string[]}} */
+function openClaimDecision(input) {
+  const { firstPrompt = '', tools = [], done = [], now = null, anchor = -1, ocAnchor = null, noVerify = false, otherLive = false } = input || {};
+  const no = (reason) => ({ block: false, reason });
+  if (noVerify) return no('NO-VERIFY bypass');
+  if (!NO_HUMAN_RE.test(String(firstPrompt))) return no('a human may be in the session');
+  const after = tools.filter((t) => t && t.idx > (ocAnchor == null ? anchor : ocAnchor) && t.ok);
+  const claimed = new Set();
+  const closed = new Set();
+  for (const t of after) {
+    if (t.name === 'Bash') {
+      const cmd = String((t.input || {}).command || '');
+      const m = cmd.match(CLAIM_RE);
+      if (m) { const id = m[1] || (String(t.result || '').match(CREATED_RE) || [])[1]; if (id) claimed.add(id.toUpperCase()); }
+      for (const c of cmd.matchAll(CLOSE_RE)) closed.add(String(c[1] || c[2]).toUpperCase());
+    } else if (/save_issue$/.test(String(t.name || '')) && (t.input || {}).state) {
+      closed.add(String((t.input || {}).id || '').toUpperCase());
+    }
+  }
+  const open = [...claimed].filter((id) => !closed.has(id));
+  if (!open.length) return no('no card claimed in this firing is left open');
+  if (after.some((t) => /create_session$/.test(String(t.name || '')))) return no('a child session took the work');
+  if (liveBackground(tools, done, { now }).length || otherLive) return no('a background task, Monitor or trigger will wake it');
+  return { block: true, cards: open, reason: `no-human session stops with ${open.join(', ')} claimed and still open` };
+}
+
 /**
  * The child gates, first block wins. CHILDSTALL runs when `stall` is set;
  * the three KEEP OPEN gates run unless `keepOpen` is false. `skip` lists
@@ -253,17 +288,18 @@ function decideAll(input) {
     gates.push(['CHILDWAIT', childWaitDecision], ['CHILDJOBS', childJobsDecision], ['CHILDWATCH', parentWatchDecision]);
   }
   if (input && input.stall) gates.push(['CHILDSTALL', childStallDecision]);
+  if (input && input.openClaim) gates.push(['OPENCLAIM', openClaimDecision]);
   for (const [code, fn] of gates) {
     if (skip.has(code)) continue;
     const r = fn(input);
-    if (r.block) return { block: true, code, reason: r.reason, wrongTool: !!r.wrongTool };
+    if (r.block) return { block: true, code, reason: r.reason, wrongTool: !!r.wrongTool, cards: r.cards };
     reasons.push(code + ': ' + r.reason);
   }
   return { block: false, code: null, reason: reasons.join('; ') };
 }
 
 module.exports = { BG_DEFAULT_MS,
-  childWaitDecision, childJobsDecision, parentWatchDecision, childStallDecision, decideAll,
+  childWaitDecision, childJobsDecision, parentWatchDecision, childStallDecision, openClaimDecision, decideAll, NO_HUMAN_RE,
   isChildSession, liveBackground, isDetached, CI_WAIT_RE, JOBS_WAIT_RE, CHILD_PROMPT_RE, WATCH_CMD_RE,
 };
 

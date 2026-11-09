@@ -1464,7 +1464,7 @@ if os.environ.get('WAKELESS_GATE_DISABLE', '0') != '1' and not _cs_on:
 # CHILDJOBS_GATE_DISABLE=1, CHILDWATCH_GATE_DISABLE=1.
 # CHILDSTALL (BRO-7183): a REPORT-BACK child ending ANY turn with nothing live
 # and no report or question sent to @parent since the parent's last message.
-_CW_ALL = ('CHILDSTALL', 'CHILDWAIT', 'CHILDJOBS', 'CHILDWATCH')
+_CW_ALL = ('CHILDSTALL', 'CHILDWAIT', 'CHILDJOBS', 'CHILDWATCH', 'OPENCLAIM')
 _CW_CODES = [c for c in _CW_ALL if os.environ.get(c + '_GATE_DISABLE', '0') != '1' and not _ve_seen(c)]
 if _CW_CODES:
     try:
@@ -1472,7 +1472,9 @@ if _CW_CODES:
         _cw_js = os.path.join(os.environ.get('VE_REPO_ROOT', ''), 'scripts', 'lib', 'child-session-wait-guard.js')
         _cw_keep = bool(_KEEP_RE.match(_cw_last)) and not _owner_must_act(_cw_text)
         _cw_stall = _cs_on and 'CHILDSTALL' in _CW_CODES
-        if 'NO-VERIFY:' not in (_last_msg or '') and os.path.isfile(_cw_js) and (_cw_keep or _cw_stall):
+        # OPENCLAIM (BRO-7183 phase 2): a no-human routine leaving a claimed card open.
+        _oc_on = 'OPENCLAIM' in _CW_CODES and bool(re.search(r'docs/cloud-routines/|no human is (?:watching|in the session)', '\n'.join(_user_prompts), re.I))
+        if 'NO-VERIFY:' not in (_last_msg or '') and os.path.isfile(_cw_js) and (_cw_keep or _cw_stall or _oc_on):
             import subprocess, time
             from datetime import datetime
             _cw_done = {m for k, p in events if k in ('user_notice', 'user_text')
@@ -1510,11 +1512,17 @@ if _CW_CODES:
                 'done': sorted(_cw_done), 'env': {k: v for k, v in os.environ.items() if k.endswith('PARENT_SESSION_ID')},
                 'all': True, 'now': time.time() * 1000, 'skip': [c for c in _CW_ALL if c not in _CW_CODES],
                 'liveChildren': _live_work()['children'] if _cw_keep else [], 'keepOpen': _cw_keep, 'stall': _cw_stall,
-                'reportBack': True, 'anchor': _cw_anchor, 'parentIds': _cw_pids,
-                'otherLive': bool(_cw_stall and (lambda w: w['agents'] or w['pr_watch'] or w['triggers'])(_live_work()))}))
+                'reportBack': True, 'anchor': _cw_anchor, 'parentIds': _cw_pids, 'openClaim': _oc_on,
+                'ocAnchor': max([_j for _j, (_k, _p) in enumerate(events) if _k == 'user_human'] or [-1]),
+                'otherLive': bool((_cw_stall or _oc_on) and (lambda w: w['agents'] or w['pr_watch'] or w['triggers'])(_live_work()))}))
             sys.stderr.write(('⚠️  CHILDWAIT: ' + _cw.stderr.strip()[:200] + '\n') if _cw.stderr.strip() else '')
             _cw_res = json.loads(_cw.stdout or '{}')
-            if _cw_res.get('block') and (_cw_res.get('code') or 'CHILDWAIT') in _CW_CODES:
+            if _cw_res.get('code') == 'OPENCLAIM' and os.environ.get('OPENCLAIM_GATE_MODE') != 'block':
+                _pd = os.path.join(os.path.expanduser('~'), '.claude', 'state')
+                os.makedirs(_pd, exist_ok=True)
+                with open(os.path.join(_pd, 'open-claim-advisory.jsonl'), 'a') as _pf:
+                    _pf.write(json.dumps({'at': time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime()), 'session': os.environ.get('CLAUDE_CODE_SESSION_ID', ''), 'cards': _cw_res.get('cards')}) + '\n')
+            elif _cw_res.get('block') and (_cw_res.get('code') or 'CHILDWAIT') in _CW_CODES:
                 if _cw_res.get('wrongTool'):
                     sys.stderr.write('   SendMessage was used for the report: it is the in-process teammate transport and never reaches the parent session.\n')
                 _ve_block(_cw_res.get('code') or 'CHILDWAIT')  # an older guard returns no code
@@ -2522,6 +2530,10 @@ if [[ "$result" == "WAKEPROMISE" ]]; then
   exit 2
 fi
 
+if [[ "$result" == "OPENCLAIM" ]]; then
+  echo "🛑 BLOCKED: no human is in this session (a routine) and it claimed a card this firing that is still open. Nothing comes back for it: the card sits In Progress until the reclaim sweep (BRO-7183: BRO-7074 sat 34h). Before stopping, close it (node scripts/linear-brain.js update BRO-N --state Done), report it (node scripts/linear-session.js report --issue=BRO-N --status=paused|in-review ...), or start what you wait on as a background Bash or Monitor. Bypass: NO-VERIFY: <reason>. Mode switch OPENCLAIM_GATE_MODE (unset = log only)." >&2
+  exit 2
+fi
 if [[ "$result" == "CHILDSTALL" ]]; then
   echo "🛑 BLOCKED: this is a child session with no human (its prompt has a REPORT-BACK: line). Ending a turn with nothing running and nothing sent to your parent stops the work for good (BRO-7183: BRO-6854 wrote 'I'm continuing with the Boston pipeline', ended the turn and sat idle 6 days). Pick one: keep working in this turn; or start what you wait on as a Bash with run_in_background: true (timeout up to 7200000) or a Monitor, whose exit wakes you; or, if the card is finished, send the report: mcp__claude-code-remote__send_message with session_id \"@parent\" and a message starting \"REPORT-BACK BRO-N:\"; or, if you need an answer, send the question the same way (your parent's reply wakes you). SendMessage does NOT reach the parent, and text in your final message reaches nobody. Bypass: NO-VERIFY: <reason>. Kill switch CHILDSTALL_GATE_DISABLE=1." >&2
   exit 2
