@@ -13,8 +13,8 @@ test('every launched hub resolves to itself with a short pill label', () => {
   }
 });
 
-test('non-hub paths return null (Broadway, West End, staged cities, near-miss slugs)', () => {
-  for (const p of ['/', '/west-end', '/tours', '/tours/san-diego-ca', '/tours/chicago', '/tours/chicago-ilx', '/show/wicked']) {
+test('non-hub paths return null (Broadway, West End, unlaunched cities, near-miss slugs)', () => {
+  for (const p of ['/', '/west-end', '/tours', '/tours/seattle-wa', '/tours/chicago', '/tours/chicago-ilx', '/show/wicked']) {
     assert.equal(hubForPath(p), null, p);
   }
 });
