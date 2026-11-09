@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-09T01:46:41.239Z",
+  "timestamp": "2026-11-09T02:00:03.527Z",
   "stats": {
-    "totalReviews": 80635,
-    "alreadyFlagged": 22093,
-    "dateGuardCatches": 219,
+    "totalReviews": 80637,
+    "alreadyFlagged": 22095,
+    "dateGuardCatches": 218,
     "directorMismatch": 3571,
     "tvFilmSignals": 2303,
     "londonSignals": 3650,
     "offBroadwaySignals": 752,
     "yearMismatch": 368,
-    "noPublishDate": 8387
+    "noPublishDate": 8386
   },
   "findings": [
     {
@@ -107992,20 +107992,6 @@
           "type": "DATE_GUARD",
           "severity": "MEDIUM",
           "detail": "Published 100d before show (2026-07-08 vs 2026-10-16)"
-        }
-      ]
-    },
-    {
-      "showId": "jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026",
-      "file": "theatre-weekly--greg-stewart.json",
-      "score": 69,
-      "publishDate": "2026-07-07",
-      "url": "https://theatreweekly.com/review-jesus-christ-superstar-at-the-london-palladium/",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 101d before show (2026-07-07 vs 2026-10-16)"
         }
       ]
     },
