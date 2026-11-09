@@ -539,6 +539,15 @@ const NAMED_NON_REVIEW_URL_PATTERNS = [
   // /<slug>-review/; britishtheatre /review-...; didtheylikeit /shows/<show>/<review>/).
   { host: /(^|\.)stagebuddy\.com$/, path: /^\/event\//i, reason: 'event-listing' },
   { host: /(^|\.)chiswickcalendar\.co\.uk$/, path: /^\/event\//i, reason: 'event-listing' },
+  // BRO-7080 replay of BRO-4527 (The Secret Circus): what's-on / family
+  // listing hosts whose /event(s)/ pages passed both URL gates and were held
+  // out only by a paid LLM not_a_review verdict the refetch kept clearing.
+  // Host-scoped: newyorker /arts/events/theatre/ and dailymail /home/event/
+  // are real reviews (28 published rows have an /event(s)/ path).
+  { host: /(^|\.)donyc\.com$/, path: /^\/events\//i, reason: 'event-listing' },
+  { host: /(^|\.)flopbox\.(?:net|org|com)$/, path: /\/event\//i, reason: 'event-listing' },
+  { host: /(^|\.)mommypoppins\.com$/, path: /\/event\/events\//i, reason: 'event-listing' },
+  { host: /^events\.newyorkfamily\.com$/, path: /^\/event\//i, reason: 'event-listing' },
   // BRO-5489: the same hub is served under a locale prefix (/pl/shows/, /de/shows/);
   // the census cited four of them as Buffy Revamped's missing reviews. Locale
   // reviews live at /<lang>/posts/ (22 in reviews.json), which this never matches.
