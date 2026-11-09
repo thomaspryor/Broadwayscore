@@ -53,9 +53,10 @@ function buildMobileCriticScore(show, showReviews, outletRegistry, floorOpts = {
   // which reads ComputedShow.status: shows.json's status corrected for today.
   const today = getMarketDate(show.category, floorOpts.now != null ? new Date(floorOpts.now) : new Date());
   const status = effectiveShowStatus(show, today);
+  // BRO-7197: the coverage hold's ceiling reads the scored count and opening date (same as data-core.ts on the website).
   const pageTBD = applyCoverageFloor(
     !enough || status === 'previews' || status === 'upcoming',
-    floorOpts,
+    { ...floorOpts, scoredReviewCount: result.rc, openingDate: show.openingDate },
   );
   return {
     ...result,

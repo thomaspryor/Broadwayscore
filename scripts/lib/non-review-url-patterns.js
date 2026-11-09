@@ -299,6 +299,15 @@ const NAMED_NON_REVIEW_URL_PATTERNS = [
   // held The Body of Mary's TheaterMania slot and blocked the real review
   // (BRO-4430).
   { host: /(^|\.)theatermania\.com$/, path: /^\/news\/(?:cast-announced|casting-announced|full-cast-announced)-/i, reason: 'cast-announcement' },
+  // BRO-7197: TheaterMania video features ("Watch: Inside Wanted on Broadway...") sit under /news/ beside the real
+  // reviews (/news/review-...). On Wanted's opening night (2026-11-08) one held a census slot pre-embargo and the gap
+  // audit ingested it as Seth Walters' "review". 0 of 634 reviews.json theatermania /news/ rows use either prefix
+  // (checked 2026-11-09). The 7-digit id keeps pre-2020 reviews of "Watch on the Rhine" (/news/watch-on-the-rhine_80029/) out. allSources: a video page is not a review whoever cited it.
+  { host: /(^|\.)theatermania\.com$/, path: /^\/news\/(?:watch|video)-[^/]*_\d{7,}\/?$/i, reason: 'video-feature', allSources: true },
+  // BRO-7197: Stage and Street's /<section>/shows/<slug>/ and /broadway/(off-broadway|theaters|resources)/<slug>/ pages are show/venue guides ("WANTED Broadway Musical: Tickets, Cast
+  // & Reviews"), never one critic's review. The SERP census listed Wanted's on its opening night. 0 reviews.json rows
+  // carry this host (2026-11-09).
+  { host: /(^|\.)stageandstreetnyc\.com$/, path: /^\/(?:(?:[^/]+\/)?shows|broadway\/(?:off-broadway|theaters|resources))\/[^/]+\/?$/i, reason: 'venue-production-page', allSources: true },
   // Sixth wave (task #1073, 2026-08-05 — Pass/Disruption/Vessel coverage audit):
   // BWW /shows/{id}/... (cast/synopsis/videos) pages are listing pages, never
   // reviews — the-vessel had one ingested via SERP as a "review" whose 920-char
@@ -1124,7 +1133,7 @@ const INGEST_REFUSED_URL_REASONS = new Set([
   'ticketing-reseller', 'ticketing-listing', 'venue-production-page',
   'production-database-listing', 'access-listings-page', 'talent-agency-credit-page',
   'institutional-press-release', 'pr-firm-press-release', 'ugc-platform',
-  'non-stage-review', 'podcast-episode',
+  'non-stage-review', 'podcast-episode', 'video-feature',
 ]);
 
 /** The refusal reason ingest-review-from-url.js would give this URL, or null. */

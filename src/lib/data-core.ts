@@ -36,6 +36,7 @@ import { broadwayTheaterNames, stubTheaterName, foldVenueName, HIDDEN_LONDON_IDS
 import { partitionShowRows } from '../../scripts/lib/show-row-guard';
 import { belongsOnOffBroadwayListing } from '../../scripts/lib/off-broadway-listing';
 import { readCoverageFloorInputs, coverageFloorOptsForShow } from '../../scripts/lib/coverage-floor-inputs';
+import { coverageHoldReleased } from '../../scripts/lib/coverage-floor';
 import { resolveNameRedirect, type SlugRedirectMap } from './slug-redirects';
 // Import raw data (loaded at build time for static generation)
 import showsData from '../../data/shows.json';
@@ -134,7 +135,12 @@ export function getAllShows(): ComputedShow[] {
       // A stamp from before the show opened is dropped there (stale wrong-production blip).
       const floorOpts = coverageFloorOptsForShow(coverageFloorInputs, show);
       if (floorOpts.scorePublicSince) computed.scorePublicSince = floorOpts.scorePublicSince;
-      if (floorOpts.coverageAcked) computed.coverageAcked = true;
+      // BRO-7197: the coverage hold has a ceiling (8+ scored reviews, or 72h after opening). Folded in here, once per
+      // show, so every applyCoverageFloor caller that reads show.coverageAcked gets it without passing the count.
+      if (floorOpts.coverageAcked || coverageHoldReleased({
+        scoredReviewCount: computed.criticScore?.reviewCount ?? 0,
+        openingDate: show.openingDate,
+      })) computed.coverageAcked = true;
       return computed;
     });
 
