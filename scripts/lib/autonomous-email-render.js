@@ -245,6 +245,7 @@ const PLAIN_HEALTH = [
   [/^Secrets/, () => 'An API key or login may be expiring'],
   [/^Data freshness/, () => 'Some open shows are missing a poster, synopsis, or ticket link'],
   [/^Stuck pipeline/, () => 'A data pipeline looks stalled'],
+  [/^Data: approved-fix drift/, () => 'Some review fixes you approved were silently undone by a later data update'],
   // Visitor-facing rows the owner-first top block names (2026-09-24 digest
   // rework). Each regex is SPECIFIC to one check: renderAutofixBlock dedups
   // on this function's output, so a broad family regex would collapse
