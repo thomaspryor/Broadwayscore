@@ -98,6 +98,7 @@ async function listChannels() {
  */
 function planLimitStatus(channels) {
   const ours = channels.filter(c => c.set);
+  // channelCount includes locked channels: live during the 2026-11-08 lapse it read 7 with limit 3 and 4 locked.
   const over = c => !!c.orgPlan && c.orgPlan.limit !== null && c.orgPlan.limit !== undefined && c.orgPlan.channelCount > c.orgPlan.limit;
   // A readable org over its limit pages even when another org's plan could not be read.
   const locked = ours.filter(c => c.isLocked && over(c));
