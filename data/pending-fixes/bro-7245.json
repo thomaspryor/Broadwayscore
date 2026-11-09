@@ -1,0 +1,36 @@
+{
+  "issueNumber": "bro-7245",
+  "planId": "437d0167-0c31-4cc2-aecb-2fd4eea54a96",
+  "status": "pending",
+  "submitter": { "name": null, "email": null },
+  "plan": {
+    "summary": "BRO-7245: add a commercial entry for Legally Blonde (2007, Palace Theatre), which had none.",
+    "steps": [
+      "Capitalization $12.8M from lead producer Hal Luftig in Wealth Manager (Sept 2006): 'With Blonde, my total budget is $12.8 million'.",
+      "Did not recoup on Broadway: Daily Herald (May 6, 2009): 'The show closed in October 2008, failing to fully recoup its original investment of $13 million.'",
+      "No source reports how much of the capitalization came back, so the label is Did Not Recoup. The '75% returned by closing' claim traces only to a Jan 2008 BroadwayWorld forum projection and the $600-650K weekly nut is forum-only; neither is used."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "add-commercial-entry",
+        "slug": "legally-blonde-2007",
+        "entry": {
+          "designation": "Did Not Recoup",
+          "recouped": false,
+          "recoupedSource": "Daily Herald (May 6, 2009): \"The show closed in October 2008, failing to fully recoup its original investment of $13 million.\" https://www.dailyherald.com/20090506/lifestyle/creative-marketing-saved-chicago-bound-legally-blonde/",
+          "capitalization": 12800000,
+          "capitalizationSource": "Wealth Manager (Sep 1, 2006), lead producer Hal Luftig: \"With 'Blonde,' my total budget is $12.8 million.\" https://jrliebermancpa.com/wp-content/uploads/2011/07/BROADWAY-BUSINESS-WEALTH-MANAGER-2006.pdf",
+          "capitalizationBasis": "reported",
+          "designationBasis": "reported-loss",
+          "notes": "Commercial musical at the Palace Theatre (opened Apr 29, 2007; closed Oct 19, 2008 after 595 performances). Lead producer Hal Luftig put the total budget at $12.8M, including about $1.5M for a San Francisco tryout. Grossed about $56M on Broadway and closed without recouping, after grosses fell in fall 2008. No published source says how much of the capitalization came back; a '75% by closing' figure that circulates online traces only to a January 2008 forum projection. The national tour, the West End production and licensing pay royalties to the Broadway company, but no source reports the investors being made whole.",
+          "sources": [
+            { "type": "trade", "url": "https://jrliebermancpa.com/wp-content/uploads/2011/07/BROADWAY-BUSINESS-WEALTH-MANAGER-2006.pdf", "date": "2006-09-01" },
+            { "type": "trade", "url": "https://www.dailyherald.com/20090506/lifestyle/creative-marketing-saved-chicago-bound-legally-blonde/", "date": "2009-05-06" }
+          ]
+        },
+        "description": "legally-blonde-2007: add commercial entry (Did Not Recoup, $12.8M capitalization)"
+      }
+    ]
+  }
+}
