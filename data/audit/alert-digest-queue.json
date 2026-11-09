@@ -1649,5 +1649,36 @@
       }
     ],
     "queuedAt": "2026-11-09T04:28:26.284Z"
+  },
+  {
+    "conditionKey": "land:land/bro-7194",
+    "title": "Landing blocked: actionlint-install red on land/bro-7194",
+    "description": "land.yml did not land land/bro-7194: the actionlint-install gate went red at 9a1350a551. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/42566237852",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-7194"
+      },
+      {
+        "name": "gate",
+        "value": "actionlint-install"
+      },
+      {
+        "name": "tip",
+        "value": "9a1350a5519466e41cb2d7a6150e58cd6dab5b68"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42566237852"
+      }
+    ],
+    "queuedAt": "2026-11-09T05:18:36.187Z"
   }
 ]
