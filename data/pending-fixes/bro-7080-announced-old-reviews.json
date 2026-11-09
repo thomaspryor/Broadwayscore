@@ -1,0 +1,72 @@
+{
+  "issueNumber": "bro-7080-announced-old-reviews",
+  "planId": "79010fed-d548-4c52-9ed6-ba9e49573aaa",
+  "status": "pending",
+  "createdAt": "2026-11-09T10:59:40.288Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Announced rows held reviews of earlier productions: private-lives-2025 (announced, no dates) had 5 unflagged 2011 Broadway (Cattrall) / 2012 Huntington / 2012 LA reviews next to 25 already flagged wrongProduction; the-apology-west-end-2027 (Royal Court 2027) held a 2022 London Box Office review of Kyo Choi's The Apology (Arcola, 2022), a different play. Flags make the stale-announced audit acceptance test (BRO-93) green again.",
+    "steps": [
+      "private-lives-2025/huffpost--michael-giltz.json: wrongProduction",
+      "private-lives-2025/boston-globe--don-aucoin.json: wrongProduction",
+      "private-lives-2025/latimes--philip-brandes.json: wrongProduction",
+      "private-lives-2025/nytimes--unknown.json: wrongProduction",
+      "private-lives-2025/talkinbroadway--unknown.json: wrongProduction",
+      "the-apology-west-end-2027/london-box-office--stuart-king.json: wrongShow"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "private-lives-2025/huffpost--michael-giltz.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "private-lives-2025/huffpost--michael-giltz.json: wrongProduction"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "private-lives-2025/boston-globe--don-aucoin.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "private-lives-2025/boston-globe--don-aucoin.json: wrongProduction"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "private-lives-2025/latimes--philip-brandes.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "private-lives-2025/latimes--philip-brandes.json: wrongProduction"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "private-lives-2025/nytimes--unknown.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "private-lives-2025/nytimes--unknown.json: wrongProduction"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "private-lives-2025/talkinbroadway--unknown.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "private-lives-2025/talkinbroadway--unknown.json: wrongProduction"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-apology-west-end-2027/london-box-office--stuart-king.json",
+        "field": "wrongShow",
+        "oldValue": null,
+        "newValue": true,
+        "description": "the-apology-west-end-2027/london-box-office--stuart-king.json: wrongShow"
+      }
+    ]
+  }
+}
