@@ -190,20 +190,6 @@
     "queuedAt": "2026-11-08T13:30:30.697Z"
   },
   {
-    "conditionKey": "pending-unrecoverable:in-the-heights-off-broadway-2026",
-    "title": "1 review(s) for in-the-heights-off-broadway-2026 stuck in _pending with no text and no byline",
-    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- nycitycenter-org--7d6014eb.json (nycitycenter-org): fetch failed: All scraping methods failed https://www.nycitycenter.org/pdps/2026-2027/in-the-heights34/",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-08T14:53:36.334Z"
-  },
-  {
     "conditionKey": "land:land/job/linear-BRO-7126-mw7xdyzq",
     "title": "Landing blocked: rebase red on land/job/linear-BRO-7126-mw7xdyzq",
     "description": "land.yml did not land land/job/linear-BRO-7126-mw7xdyzq: the rebase gate went red at 455dd07209. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/job/linear-BRO-7126-mw7xdyzq @ 455dd07209 (origin/land/job/linear-BRO-7126-mw7xdyzq) → origin/main @ 9db0f8cc82 REFUSED: rebase: branch would not rebase cleanly onto origin/main @ 9db0f8cc82: Rebasing (1/3) Rebasing (2/3) Rebasing (3/3) error: could not apply 455dd072095... newsletter: exclude catch-ups from WE opener count (BRO-7126) hint: Resolve all conflicts manually, mark them as  Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/42490203961",
@@ -495,20 +481,6 @@
       }
     ],
     "queuedAt": "2026-11-08T17:53:22.862Z"
-  },
-  {
-    "conditionKey": "pending-unrecoverable:tristan-and-yseult-off-broadway-2026",
-    "title": "1 review(s) for tristan-and-yseult-off-broadway-2026 stuck in _pending with no text and no byline",
-    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- nydailynews--39951290.json (nydailynews): fetch failed: All scraping methods failed http://www.nydailynews.com/entertainment/theater-arts/tristan-yseult-shines-brooklyn-article-1.2022234",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-08T17:42:05.149Z"
   },
   {
     "conditionKey": "land:land/job/linear-BRO-7137-mw8323fw",
@@ -1410,9 +1382,9 @@
     "queuedAt": "2026-11-09T01:34:18.121Z"
   },
   {
-    "conditionKey": "pending-unrecoverable:harry-potter-and-the-cursed-child-one-part-west-end-2026",
-    "title": "1 review(s) for harry-potter-and-the-cursed-child-one-part-west-end-2026 stuck in _pending with no text and no byline",
-    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- thestage--unknown.json (thestage): no byline in page and no recoverable body https://www.thestage.co.uk/reviews/harry-potter-and-the-cursed-child-review-at-palace-theatre-london--new-cast-equals-the-original",
+    "conditionKey": "pending-unrecoverable:in-the-heights-off-broadway-2026",
+    "title": "1 review(s) for in-the-heights-off-broadway-2026 stuck in _pending with no text and no byline",
+    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- nycitycenter-org--7d6014eb.json (nycitycenter-org): fetch failed: All scraping methods failed https://www.nycitycenter.org/pdps/2026-2027/in-the-heights34/",
     "severity": "warning",
     "url": null,
     "decision": false,
@@ -1421,12 +1393,12 @@
     "model": null,
     "tracked": null,
     "fields": [],
-    "queuedAt": "2026-11-09T01:56:13.360Z"
+    "queuedAt": "2026-11-09T02:10:07.623Z"
   },
   {
-    "conditionKey": "pending-unrecoverable:the-pianist-off-west-end-2026",
-    "title": "1 review(s) for the-pianist-off-west-end-2026 stuck in _pending with no text and no byline",
-    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- thestage--5e07c019.json (thestage): no byline in page and no recoverable body https://www.thestage.co.uk/reviews/the-pianist-review-park-theatre-london",
+    "conditionKey": "pending-unrecoverable:parcel-from-america-off-broadway-2026",
+    "title": "1 review(s) for parcel-from-america-off-broadway-2026 stuck in _pending with no text and no byline",
+    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- irish-central--2f81a7ad.json (irish-central): fetch failed: All scraping methods failed https://www.irishcentral.com/opinion/others/parcel-from-america-theater-row.amp",
     "severity": "warning",
     "url": null,
     "decision": false,
@@ -1435,7 +1407,21 @@
     "model": null,
     "tracked": null,
     "fields": [],
-    "queuedAt": "2026-11-09T01:56:17.960Z"
+    "queuedAt": "2026-11-09T02:10:27.548Z"
+  },
+  {
+    "conditionKey": "pending-unrecoverable:tristan-and-yseult-off-broadway-2026",
+    "title": "1 review(s) for tristan-and-yseult-off-broadway-2026 stuck in _pending with no text and no byline",
+    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- nydailynews--39951290.json (nydailynews): fetch failed: All scraping methods failed http://www.nydailynews.com/entertainment/theater-arts/tristan-yseult-shines-brooklyn-article-1.2022234",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-09T02:11:04.710Z"
   },
   {
     "conditionKey": "llm-scoring:daily-cost-breach",
