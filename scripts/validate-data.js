@@ -1698,6 +1698,15 @@ function validateShowTypes(shows) {
       issues++;
     }
 
+    // Mirror of the check above (BRO-7080): engine.ts reads isRevival:true as a
+    // revival, so a "new" tag on the same row shows a revival labelled new
+    // (Arias with a Twist 2026: isRevival:true, tags:["new"]).
+    if (show.isRevival === true && Array.isArray(show.tags) && show.tags.includes('new')) {
+      // Advisory first (CLAUDE.md §19): the bro-7080-return-engagement plan
+      // clears the 6 live rows; promote to error() once it has applied.
+      warn(`Show "${show.title}" (${show.id}) has isRevival:true but a "new" tag — self-contradictory. Remove the tag or set isRevival:false.`);
+    }
+
     // A show tagged both "new" and "revival" is self-contradictory — a later
     // automated revival check (e.g. detect-revivals-ibdb.js) flipped isRevival
     // and pushed "revival" without removing the "new" tag set at creation

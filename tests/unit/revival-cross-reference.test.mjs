@@ -15,8 +15,11 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const {
   normalizeRevivalTitle, buildExistingTitleMap, detectRevivalByTitleCrossReference,
-  writersConflict, describesNewWork, shouldAcceptIbdbRevival,
+  writersConflict, describesNewWork, shouldAcceptIbdbRevival, isReturnEngagement,
 } = require('../../scripts/lib/revival-cross-reference.js');
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 test('normalizeRevivalTitle strips leading article + punctuation, case-folds', () => {
   assert.equal(normalizeRevivalTitle('The Seagull'), 'seagull');
@@ -216,4 +219,68 @@ test('transliteration variants of one author are not a conflict (Dürrenmatt / D
 
 test('describesNewWork ignores "new play-by-play" style copy', () => {
   assert.equal(describesNewWork({ description: 'a new play-by-play retelling' }), false);
+});
+
+// BRO-7080 (class of BRO-4436): a return run of the same production at the
+// same house is not a revival of it. The real rows come from data/shows.json
+// (gitignored private data) when present; the frozen copy below is the same
+// rows' relevant fields as of 2026-11-09, for CI checkouts without the data.
+const FROZEN_DEGENERATES = {
+  'degenerates-off-broadway-2026': {
+    id: 'degenerates-off-broadway-2026', title: 'Degenerates', type: 'play', isRevival: false, tags: [],
+    category: 'off-broadway', venue: 'Playwrights Horizons/Peter Jay Sharp Theater',
+    previewsStartDate: '2026-09-16', openingDate: '2026-09-29', closingDate: '2026-11-08',
+  },
+  'degenerates-dec-jan-off-broadway-2026': {
+    id: 'degenerates-dec-jan-off-broadway-2026', title: 'Degenerates (Dec-Jan)', type: 'play',
+    category: 'off-broadway', market: 'broadway', venue: 'Playwrights Horizons',
+    previewsStartDate: '2026-12-22', openingDate: null, closingDate: '2027-01-24',
+  },
+};
+function degeneratesRows() {
+  const file = path.join(path.dirname(fileURLToPath(import.meta.url)), '../../data/shows.json');
+  let live = [];
+  try { live = JSON.parse(fs.readFileSync(file, 'utf8')).shows || []; } catch { /* no private data in this checkout */ }
+  return Object.keys(FROZEN_DEGENERATES).map(id => live.find(s => s.id === id) || FROZEN_DEGENERATES[id]);
+}
+
+test('BRO-7080: Degenerates Dec-Jan return run at Playwrights Horizons is NOT a revival (real rows)', () => {
+  const [first, ret] = degeneratesRows();
+  // Classify the return run as discovery would: without its own stored flag.
+  const { isRevival, tags, revivalSource, ...incoming } = ret;
+  const r = detectRevivalByTitleCrossReference(incoming, buildExistingTitleMap([first]));
+  assert.equal(r.isRevival, false);
+  assert.equal(r.returnEngagement, true);
+  assert.equal(r.match.id, 'degenerates-off-broadway-2026');
+  assert.equal(isReturnEngagement(incoming, { ...first, isRevival: false }), true);
+});
+
+test('BRO-7080 control: same title, different house is still a revival', () => {
+  const [first, ret] = degeneratesRows();
+  const r = detectRevivalByTitleCrossReference({ ...ret, venue: 'Vineyard Theatre' }, buildExistingTitleMap([first]));
+  assert.equal(r.isRevival, true);
+  assert.notEqual(r.returnEngagement, true);
+});
+
+test('BRO-7080 control: same house but years apart is still a revival', () => {
+  const [first, ret] = degeneratesRows();
+  const r = detectRevivalByTitleCrossReference(
+    { ...ret, previewsStartDate: '2030-01-10', closingDate: '2030-03-01' }, buildExistingTitleMap([first]));
+  assert.equal(r.isRevival, true);
+});
+
+test('BRO-7080: a return run of a revival stays a revival (Met La Boheme, season to season)', () => {
+  const map = buildExistingTitleMap([{ id: 'la-boheme-2025', title: 'La Bohème', type: 'opera', category: 'off-broadway',
+    venue: 'Metropolitan Opera House', openingDate: '2025-10-21', isRevival: true, tags: ['revival'] }]);
+  const r = detectRevivalByTitleCrossReference({ id: 'la-boheme-2026', title: 'La Bohème', category: 'off-broadway',
+    venue: 'Metropolitan Opera House', openingDate: '2026-09-25' }, map);
+  assert.equal(r.isRevival, true);
+  assert.equal(r.returnEngagement, true);
+});
+
+test('BRO-7080: a cross-market same-house-name run is not a return engagement', () => {
+  const [first, ret] = degeneratesRows();
+  const r = detectRevivalByTitleCrossReference({ ...ret, category: 'west-end' }, buildExistingTitleMap([first]));
+  assert.equal(r.returnEngagement, undefined);
+  assert.equal(r.isTransfer, true);
 });
