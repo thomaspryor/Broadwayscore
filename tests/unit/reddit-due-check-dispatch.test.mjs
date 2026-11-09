@@ -51,3 +51,15 @@ test('poller dispatches the due check only after a verified deploy, without fail
   assert.match(step.env.GH_TOKEN, /secrets\.GITHUB_TOKEN/);
   assert.equal(poller.permissions.actions, 'write', 'GITHUB_TOKEN may dispatch');
 });
+
+// BRO-7230 class guard: a prod deploy from ANY path (not only the poller's) leads to the due check.
+test('vercel-deploy dispatches the due check after a non-superseded prod deploy, without failing it', () => {
+  const vd = load('vercel-deploy.yml');
+  const steps = Object.values(vd.jobs).flatMap(j => j.steps || []);
+  const step = steps.find(s => typeof s.run === 'string' && s.run.includes('reddit-engagement-digest.yml -f due_check=true'));
+  assert.ok(step, 'vercel-deploy has the due-check dispatch step');
+  assert.match(step.if, /success\(\)/);
+  assert.match(step.if, /superseded != 'true'/);
+  assert.equal(step['continue-on-error'], true);
+  assert.equal(vd.permissions.actions, 'write', 'GITHUB_TOKEN may dispatch');
+});

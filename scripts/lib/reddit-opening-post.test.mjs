@@ -773,3 +773,11 @@ test('a refresh whose numbers moved is never starved by lint-only refreshes unde
   assert.ok(picked.some(c => c.show.id === 'moved'), 'moved refresh picked despite lower notability');
   assert.equal(picked[0].show.id, 'moved', 'moved refresh ranks first');
 });
+
+test('numbersMovedSince compares against the emailed numbers even for unstamped drafts (BRO-7230)', () => {
+  const sent = { emailedAt: '2026-09-28T06:00:00Z', score: 68, reviewCount: 6 };
+  assert.equal(lib.numbersMovedSince(sent, { score: 71, reviewCount: 9 }), true, 'unstamped, un-reminded');
+  assert.equal(lib.numbersMovedSince({ ...sent, reminderAt: '2026-09-29T06:00:00Z' }, { score: 71, reviewCount: 9 }), true, 'unstamped, reminded');
+  assert.equal(lib.numbersMovedSince(sent, { score: 68, reviewCount: 6 }), false);
+  assert.equal(lib.numbersMovedSince(undefined, { score: 1, reviewCount: 1 }), false);
+});
