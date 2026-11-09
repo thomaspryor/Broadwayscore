@@ -265,6 +265,12 @@ test('headline identity: The Stage page headline names the show -> accepted; oth
     const mtmRec = rec({ showId: mtm.id, url: 'https://www.thestage.co.uk/reviews/x' });
     assert.equal(acceptRecoveredText(mtmRec, { rawText: body, headline: 'Mansfield to Manchester review' }, { showId: mtm.id, show: mtm }).code, 'show_not_mentioned');
     assert.equal(acceptRecoveredText(mtmRec, { rawText: body, headline: 'Man to Man review at Wyndham’s Theatre' }, { showId: mtm.id, show: mtm }).accept, true);
+    // The Stage brackets part of a title ("Tartuffe (Remixed)"); normalizeTitle drops bracketed
+    // text, so the headline is also read with the brackets unwrapped (2b pilot false refusal).
+    const tr = { ...mtm, id: 'tartuffe-remixed-off-west-end-2026', title: 'Tartuffe Remixed' };
+    const trRec = rec({ showId: tr.id, url: 'https://www.thestage.co.uk/reviews/y' });
+    assert.equal(acceptRecoveredText(trRec, { rawText: body, headline: 'Tartuffe (Remixed) at Marylebone Theatre: The cast radiates' }, { showId: tr.id, show: tr }).accept, true);
+    assert.equal(acceptRecoveredText(trRec, { rawText: body, headline: 'Tartuffe at the National Theatre (review)' }, { showId: tr.id, show: tr }).code, 'show_not_mentioned', 'plain Tartuffe is another show');
   } finally { gt._resetCachesForTest(null); }
 });
 

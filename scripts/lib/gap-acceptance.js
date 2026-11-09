@@ -154,8 +154,10 @@ function headlineIdentity({ outletId, headline, show, showTitle }) {
   if (!headline) return { ok: false, why: 'none on page' };
   const { normalizeTitle } = require('./title-match');
   const titles = [...new Set([showTitle, show && show.title].filter(Boolean))];
-  const h = ` ${normalizeTitle(headline)} `;
-  const named = titles.some((t) => { const n = normalizeTitle(t); return n.length >= 3 && h.includes(` ${n} `); });
+  // normalizeTitle drops bracketed text, and The Stage brackets part of some
+  // titles ("Tartuffe (Remixed)"), so also read the headline with brackets unwrapped.
+  const forms = [...new Set([headline, String(headline).replace(/[()[\]]/g, ' ')].map((x) => ` ${normalizeTitle(x)} `))];
+  const named = titles.some((t) => { const n = normalizeTitle(t); return n.length >= 3 && forms.some((h) => h.includes(` ${n} `)); });
   if (!named) return { ok: false, why: `"${String(headline).slice(0, 80)}" does not name the show` };
   if (show) {
     const g = require('./generic-title-matching').checkGenericTitleCandidate({ show, candidate: { title: headline } });
