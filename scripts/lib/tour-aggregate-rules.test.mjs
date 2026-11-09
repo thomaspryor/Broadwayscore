@@ -77,6 +77,12 @@ test('planUnlink drops only copies, moves the transfer, and leaves every review 
   assert.deepEqual(tourAggregateProblems(shows), []);
 });
 
+test('planUnlink refuses a URL-less aggregate row and directorsOf ignores co-directors', () => {
+  const blank = planUnlink({ shows: structuredClone([gpAgg, gpSig, gpMill, wanted]), reviews: [row(gpSig.id, 'variety', ''), row(gpAgg.id, 'variety', '')], aggregateId: gpAgg.id, transferLegId: gpMill.id });
+  assert.equal(blank.ok, false);
+  assert.deepEqual(directorsOf({ creativeTeam: [{ name: 'A B', role: 'Director' }, { name: 'C D', role: 'Co-Director' }] }), ['a b']);
+});
+
 test('planUnlink refuses a real tour, an orphan review row, and a bad transfer leg', () => {
   const real = planUnlink({ shows: structuredClone(paranormal), reviews: [], aggregateId: paAgg.id, transferLegId: 'pa-chicago' });
   assert.equal(real.ok, false);

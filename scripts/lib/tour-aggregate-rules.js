@@ -37,7 +37,7 @@ function directorsOf(show) {
   const out = [];
   for (const c of (show && show.creativeTeam) || []) {
     if (!c || typeof c.name !== 'string' || typeof c.role !== 'string') continue;
-    if (/^(co-)?director$|^direction$|^directed by$/i.test(c.role.trim())) {
+    if (/^director$|^direction$|^directed by$/i.test(c.role.trim())) {
       out.push(c.name.normalize('NFKD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim());
     }
   }

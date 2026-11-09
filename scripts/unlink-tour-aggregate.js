@@ -57,7 +57,8 @@ function planUnlink({ shows, reviews, aggregateId, transferLegId }) {
     if (legs.some((l) => l.id === r.showId)) legKeys.add(`${r.outletId}|${urlKey(r.url)}`);
   }
   const dropRows = reviews.filter((r) => r.showId === aggregateId);
-  const orphans = dropRows.filter((r) => !legKeys.has(`${r.outletId}|${urlKey(r.url)}`));
+  // A row with no URL cannot be shown to be a copy: it would match any URL-less leg row of its outlet.
+  const orphans = dropRows.filter((r) => !urlKey(r.url) || !legKeys.has(`${r.outletId}|${urlKey(r.url)}`));
   if (orphans.length) {
     return { ok: false, reason: `${orphans.length} aggregate review row(s) have no twin on a leg, dropping them would delete reviews: ${orphans.map((r) => `${r.outletId} ${r.publishDate}`).join(', ')}` };
   }
@@ -120,8 +121,12 @@ function main() {
   }
   reviewsData.reviews = applyUnlink(input, plan);
   if (reviewsData._meta && reviewsData._meta.stats) reviewsData._meta.stats.totalReviews = reviewsData.reviews.length;
+  // reviews.json first, via temp + rename, so a failed write changes nothing; the shows.json
+  // save is then the last step.
+  const tmp = `${reviewsPath}.tmp-${process.pid}`;
+  fs.writeFileSync(tmp, JSON.stringify(reviewsData, null, 2) + '\n');
+  fs.renameSync(tmp, reviewsPath);
   saveShows(showsData);
-  fs.writeFileSync(reviewsPath, JSON.stringify(reviewsData, null, 2) + '\n');
   console.log(`done: dropped ${plan.dropRows.length} rows, unlinked ${plan.legIds.length} legs`);
 }
 
