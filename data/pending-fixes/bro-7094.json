@@ -1,0 +1,27 @@
+{
+  "issueNumber": "bro-7094",
+  "planId": "d141eb9a-31ee-4fdf-ab6c-3337f6b4333a",
+  "status": "pending",
+  "createdAt": "2026-11-09T21:39:17.553Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7094: retry the remaining BRO-5090-06 publishDate correction after checking current sibling records; change only publishDate and preserve duplicate fields.",
+    "steps": [
+      "the-price-2017/nytimes--ben-brantley.json: publishDate"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "the-price-2017/nytimes--ben-brantley.json",
+        "field": "publishDate",
+        "oldValue": "February 16, 2017",
+        "newValue": "2017-03-17",
+        "description": "the-price-2017/nytimes--ben-brantley.json: publishDate"
+      }
+    ]
+  }
+}

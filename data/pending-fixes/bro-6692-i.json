@@ -320,14 +320,14 @@
   ],
   "executedIn": "ci",
   "triage": {
-    "card": "BRO-7092",
-    "at": "2026-11-07T20:58:07.982Z",
+    "card": "BRO-7094",
+    "at": "2026-11-09T21:40:12.459Z",
     "verdict": "still-needed",
     "counts": {
       "resolved": 9,
       "still-needed": 1
     },
-    "stillNeededReason": "op 12: re-ingested via ingest-urls on 2026-11-07 (success) but the CI fetch of this paywalled page still yields no text or a stub; it needs a browser html handoff (ingest-html-handoff) to recover (BRO-7092 hand check)",
+    "stillNeededReason": "op 12: BRO-7094: not a paywall stub now. thereviewshub--ron-simpson.json has 3810 characters but contentTier=invalid and wrongProduction=true, reason contamination-adjudicated: national-tour; no matching reviews.json row. Needs a fetched-page production check against the York regional record before overriding the adjudication. Scraping is outside this worker scope; no flags cleared.",
     "ops": [
       {
         "i": 0,
@@ -352,7 +352,7 @@
       {
         "i": 12,
         "verdict": "still-needed",
-        "reason": "re-ingested via ingest-urls on 2026-11-07 (success) but the CI fetch of this paywalled page still yields no text or a stub; it needs a browser html handoff (ingest-html-handoff) to recover (BRO-7092 hand check)"
+        "reason": "BRO-7094: not a paywall stub now. thereviewshub--ron-simpson.json has 3810 characters but contentTier=invalid and wrongProduction=true, reason contamination-adjudicated: national-tour; no matching reviews.json row. Needs a fetched-page production check against the York regional record before overriding the adjudication. Scraping is outside this worker scope; no flags cleared."
       },
       {
         "i": 14,
