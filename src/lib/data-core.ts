@@ -1500,7 +1500,10 @@ export function getOtherProductions(show: ComputedShow): ComputedShow[] {
   // Flag-gated categories are skipped while their flag is off: their detail pages
   // aren't built, so a card here would be a dead link (BRO-4211 flag-off build).
   return getAllShows()
-    .filter(s => s.id !== show.id && normalize(s.title) === baseTitle && isCategoryEnabled(s.category))
+    // Linked productions count even when the title differs (a tryout's title can
+    // differ from the Broadway one): the show page no longer repeats the tryout
+    // in the top card, so this list is where it is found.
+    .filter(s => s.id !== show.id && isCategoryEnabled(s.category) && (normalize(s.title) === baseTitle || s.id === show.transferOf || s.transferOf === show.id))
     .sort((a, b) => {
       const catA = marketOrder[(a.category || 'broadway')] ?? 3;
       const catB = marketOrder[(b.category || 'broadway')] ?? 3;

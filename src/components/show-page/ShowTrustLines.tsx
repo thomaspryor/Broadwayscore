@@ -186,40 +186,6 @@ export default function ShowTrustLines({ show }: { show: ComputedShow }) {
           </p>
         );
       })()}
-
-      {/* Broadway side of a regional→Broadway transfer pair: surface the
-          tryout's critic score (often the only pre-Broadway signal). */}
-      {!isRegional && featureFlags.regional && show.transferOf && (() => {
-        const tryout = getShowById(show.transferOf);
-        // transferOf can also name a Broadway <-> West End transfer (BRO-6400);
-        // that is not a tryout, so this line is for regional sources only.
-        if (!tryout || tryout.category !== 'regional') return null;
-        // A tryout can itself be an aggregate rolling up several
-        // per-city legs (a national tour) — venue is a summary phrase
-        // in that case, not a single theater, so don't truncate it
-        // at the first comma the way a single-venue tryout's is.
-        const tourStopCount = getTourStops(tryout.id).length;
-        const tryoutVenue = tourStopCount > 0
-          ? `its ${tourStopCount}-city national tour`
-          : (tryout.venue || '').split(',')[0];
-        // Same TBD gate as everywhere else — never broadcast a score the
-        // tryout's own page would show as TBD. (ship-check P2)
-        const tCount = tryout.criticScore?.reviewCount || 0;
-        const tT12 = (tryout.criticScore?.tier1Count || 0) + (tryout.criticScore?.tier2Count || 0);
-        const tryoutScore = (tryout.criticScore?.score && hasEnoughReviews(tCount, tryout.category, tT12, false))
-          ? Math.round(tryout.criticScore.score) : null;
-        return (
-          <p className="text-xs sm:text-sm mb-1 leading-relaxed text-emerald-300/90" data-testid="tryout-link-line">
-            <span className="font-semibold">Pre-Broadway tryout</span>
-            <span className="text-gray-400">
-              {': '}critics first reviewed this show at {tryoutVenue}{tryoutScore ? <> (scored <span className="text-emerald-300 font-semibold">{tryoutScore}/100</span>)</> : null}.{' '}
-              <Link href={`/show/${tryout.slug}`} className="text-emerald-300 underline decoration-emerald-300/40 underline-offset-2 hover:text-emerald-200" data-testid="transfer-link">
-                See the tryout reviews →
-              </Link>
-            </span>
-          </p>
-        );
-      })()}
     </>
   );
 }
