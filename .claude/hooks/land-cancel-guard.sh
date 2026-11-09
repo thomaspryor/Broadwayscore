@@ -54,6 +54,10 @@ case "$tool_name" in
         id=$(printf '%s' "$seg" | grep -Eo 'actions/runs/[0-9]+/(force-)?cancel' | grep -Eo '[0-9]+' | head -1)
       fi
       [ -n "$id" ] && run_ids="$run_ids $id"
+      # Run id from a substitution (gh run cancel $(gh run list -w press-night-clock.yml ...)): cannot be resolved here.
+      if [ -z "$id" ] && printf '%s' "$seg" | grep -Eq '^ *(xargs +(-[^ ]+ +)*)?gh +run +cancel' && printf '%s' "$cmd" | grep -q 'press-night-clock'; then
+        echo "🛑 BLOCKED: this cancel command names press-night-clock.yml, a never-cancel workflow (BRO-7232). Leave it running, or create \$HOME/.claude/LAND_CANCEL_GUARD_OFF." >&2; exit 2
+      fi
     done < <(printf '%s\n' "$cmd" | sed -E 's/(&&|\|\||;|\|)/\n/g') ;;
   mcp__github__actions_run_trigger)
     method=$(printf '%s' "$input" | jq -r '.tool_input.method // empty' 2>/dev/null)

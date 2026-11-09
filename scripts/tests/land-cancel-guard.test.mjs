@@ -123,3 +123,8 @@ test('a run path carrying an @ref is still matched', () => {
 test('an unreadable run still fails open for a never-cancel workflow (pinned behaviour)', () => {
   assert.equal(hook(bash('gh run cancel 42533347172'), 'not json').code, 0);
 });
+test('refuses a cancel whose run id comes from a substitution but names press-night-clock', () => {
+  const c = "gh run cancel $(gh run list --workflow=press-night-clock.yml --limit 1 --json databaseId -q '.[0].databaseId')";
+  assert.equal(hook(bash(c), run('01SomeoneElse', '.github/workflows/test.yml'), { CLAUDE_CODE_REMOTE_SESSION_ID: '' }).code, 2);
+  assert.equal(hook(bash('gh run list --workflow=press-night-clock.yml --limit 1'), run('x'), {}).code, 0, 'listing is fine');
+});

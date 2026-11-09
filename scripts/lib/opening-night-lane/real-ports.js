@@ -146,13 +146,14 @@ function createRealPublishPorts({
       let gated = null;
       try { gated = await autoFixGate({ key: conditionKey, alertTitle: title, alertDescription: description }); } catch { gated = null; }
       if (gated && gated.email === false) return;
-      await pageAlert({
+      const sent = await pageAlert({
         disposition: 'human',
         conditionKey,
         title,
         description: gated && gated.preamble ? `${gated.preamble}\n\n${description}` : description,
       });
-      if (gated && typeof gated.markEscalated === 'function') { try { await gated.markEscalated(); } catch { /* the email already went */ } }
+      // Mark the card escalated only when the email was delivered (an undelivered one must stay retryable).
+      if (gated && typeof gated.markEscalated === 'function' && sent && sent.delivered) { try { await gated.markEscalated(); } catch { /* the email already went */ } }
     },
   };
 }

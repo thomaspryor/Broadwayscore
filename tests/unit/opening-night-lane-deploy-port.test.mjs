@@ -168,11 +168,16 @@ test('real ports: dispatch is off unless the env switch is set; with it on, fetc
   await on.fetchLiveShow(SHOW); // shows U(1) only
   assert.equal(dispatched.length, 1, 'U(2) is still missing: the open dispatch stays open, no second one');
   const timeoutPages = []; let marked = 0;
-  const emailNow = real.createRealPublishPorts({ ...base, env: {}, page: async (o) => { timeoutPages.push(o); }, autoFixFirstGate: async () => ({ email: true, preamble: 'Fix did not hold.', markEscalated: async () => { marked += 1; } }) });
+  const emailNow = real.createRealPublishPorts({ ...base, env: {}, page: async (o) => { timeoutPages.push(o); return { delivered: true }; }, autoFixFirstGate: async () => ({ email: true, preamble: 'Fix did not hold.', markEscalated: async () => { marked += 1; } }) });
   await emailNow.pageLiveTimeout({ show: SHOW, night: '2026-10-30', missing: [U(2)], ms: 1_800_000 });
   assert.equal(timeoutPages[0].disposition, 'human');
   assert.match(timeoutPages[0].description, /^Fix did not hold\./);
   assert.equal(marked, 1, 'the escalation is marked on the card after the email');
+  // An email that was not delivered must leave the card unmarked so the next timeout retries it.
+  let marked2 = 0;
+  const undelivered = real.createRealPublishPorts({ ...base, env: {}, page: async () => ({ delivered: false }), autoFixFirstGate: async () => ({ email: true, preamble: 'p', markEscalated: async () => { marked2 += 1; } }) });
+  await undelivered.pageLiveTimeout({ show: SHOW, night: '2026-10-30', missing: [U(2)], ms: 1_800_000 });
+  assert.equal(marked2, 0, 'undelivered email: card not marked escalated');
   // BRO-7232: while a fix card is open (email:false) nobody is paged; a gate crash pages like notify-failure does.
   const held = real.createRealPublishPorts({ ...base, env: {}, page: async (o) => { timeoutPages.push(o); }, autoFixFirstGate: async () => ({ email: false, action: 'file' }) });
   await held.pageLiveTimeout({ show: SHOW, night: '2026-10-30', missing: [U(2)], ms: 1_800_000 });
