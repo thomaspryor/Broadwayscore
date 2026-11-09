@@ -142,12 +142,15 @@ async function runLaneNight({
         // and make isHighReliabilityStar read the aggregator label as the rating's source.
         if (fetched.rating && row.assignedScore == null) Object.assign(row, fetched.rating);
         // BRO-7196: a card needs outlet name, critic and date before any score is spent on it. The date may come from the
-        // URL or the text (the rebuild's backfill); never from the opening date. A row still missing one is held: retried
-        // on the next passes (a byline can be late to the page), then left to the regular pipeline with a reason.
+        // URL or the text (the rebuild's backfill); never from the opening date. A row with page text still missing one is
+        // held: retried on the next passes (a byline can be late to the page), then left to the regular pipeline with a
+        // reason. A row with no text at all (a hard paywall: NYT, WSJ, scored from the aggregators) has no evidence to find
+        // a byline or date in; holding it would drop the night's biggest reviews, so only its outlet name is required and
+        // the gaps are reported on the summary page.
         if (!row.publishDate) { const d = card.cardPublishDate(row); if (d) row.publishDate = d; }
         // The byline from the text when the page markup gave none (Talkin' Broadway's was null on Wanted).
         if (card.missingCardFields(row, { quote: false }).includes('criticName')) { const c = card.cardCriticName(row); if (c) row.criticName = c; }
-        const gaps = card.missingCardFields(row, { quote: false });
+        const gaps = card.missingCardFields(row, { quote: false }).filter((f) => f === 'outlet' || card.hasQuotableText(row));
         if (gaps.length) {
           const tries = (incomplete.get(a.key) || 0) + 1;
           incomplete.set(a.key, tries);
@@ -176,14 +179,13 @@ async function runLaneNight({
           // The guarded writer can preserve a human correction. Publish precisely what survived on disk.
           row = persistReview(row).row;
         }
-        // BRO-7196: publish the card row (outlet display name, the rebuild's pull quote), not the bare file row; the
-        // quote stays off the file, where pullQuote means a human editor's pick. A scored row with text but no usable
-        // quote is kept on disk for the regular pipeline and not published by the lane. A row with no text at all (a
-        // paywall scored from the aggregator's thumb alone) has nothing to quote: holding it would drop the score from
-        // the night, so it publishes and is reported as quoteless for the summary page.
+        // BRO-7196: publish the card row (outlet display name, display byline, the rebuild's pull quote), not the bare
+        // file row; the quote stays off the file, where pullQuote means a human editor's pick. A row the rebuild would
+        // also ship without a quote (no text, or no sentence its quote rules accept) publishes and is reported on the
+        // summary page with what it lacks. Only an outlet with no display name is held after scoring (kept on disk).
         row = card.toCardRow(row, show);
         const cardGaps = card.missingCardFields(row);
-        if (cardGaps.length === 1 && cardGaps[0] === 'pullQuote' && !card.hasQuotableText(row)) quoteless.push(a.key);
+        if (cardGaps.length && !cardGaps.includes('outlet')) quoteless.push({ key: a.key, missing: cardGaps });
         else if (cardGaps.length) {
           ledger.appendEvent(ledgerDir, { show: show.id, night, reviewKey: a.key, stage: 'scored', at: now() });
           throw Object.assign(new Error(`incomplete card after scoring (no ${cardGaps.join(', ')}); held from publish, left to the regular pipeline`), { permanent: true });

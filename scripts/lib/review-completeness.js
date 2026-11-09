@@ -35,6 +35,27 @@ function outletDisplayName(outletId) {
 
 const str = (v) => (typeof v === 'string' ? v.trim() : '');
 
+let registryCache = null;
+const outletRegistry = () => (registryCache = registryCache || require('../../data/outlet-registry.json'));
+
+/**
+ * The byline the site will show for this row: the rebuild's own rule (critic-display-name.js displayCriticName, which
+ * drops "Staff Writer", an outlet name such as "Talkin' Broadway", a URL), so a lane card never shows a byline the next
+ * rebuild erases. null when the row names nobody.
+ */
+function displayCritic(row) {
+  const r = row || {};
+  const raw = str(r.criticName);
+  if (!raw || PLACEHOLDER_CRITIC.test(raw) || /^https?:\/\//i.test(raw)) return null;
+  try {
+    const { displayCriticName } = require('./critic-display-name');
+    const entry = r.outletId && (outletRegistry().outlets || {})[r.outletId];
+    return displayCriticName(raw, outletDisplayName(r.outletId) || r.outlet || null, entry ? { id: r.outletId, ...entry } : undefined) || null;
+  } catch {
+    return raw;
+  }
+}
+
 /**
  * The card fields a row is missing. Pure apart from the outlet registry read.
  * @param {object} row a review row (reviews.json shape; a review file works for the first three)
@@ -46,8 +67,7 @@ function missingCardFields(row, { quote = true } = {}) {
   const missing = [];
   const outlet = str(r.outlet);
   if (!outlet || OUTLET_ID_SHAPE.test(outlet) || (r.outletId && outlet === r.outletId)) missing.push('outlet');
-  const critic = str(r.criticName);
-  if (!critic || PLACEHOLDER_CRITIC.test(critic) || /^https?:\/\//i.test(critic)) missing.push('criticName');
+  if (!displayCritic(r)) missing.push('criticName');
   if (!DATE_SHAPE.test(str(r.publishDate))) missing.push('publishDate');
   if (quote && str(r.pullQuote).length < 20) missing.push('pullQuote');
   return missing;
@@ -66,7 +86,12 @@ function hasQuotableText(row) {
 let rebuildLib = null;
 function loadRebuild() {
   // Computed path: see the header (keeps the rebuild out of the lane arm hash).
-  if (!rebuildLib) rebuildLib = require(path.join(__dirname, '..', ['rebuild-all-reviews', 'js'].join('.')));
+  // Its top level reads process.argv (exits on --help or a bare --show=), so it loads with a clean argv.
+  if (!rebuildLib) {
+    const argv = process.argv;
+    process.argv = argv.slice(0, 2);
+    try { rebuildLib = require(path.join(__dirname, '..', ['rebuild-all-reviews', 'js'].join('.'))); } finally { process.argv = argv; }
+  }
   return rebuildLib;
 }
 
@@ -96,18 +121,16 @@ const OPENING_CHARS = 120;
  */
 function cardCriticName(row) {
   const r = row || {};
-  const own = str(r.criticName);
-  if (own && !PLACEHOLDER_CRITIC.test(own) && !/^https?:\/\//i.test(own)) return own;
+  const own = displayCritic(r);
+  if (own) return own;
   const text = str(r.fullText);
   if (text.length < 50) return null;
   try {
     const pb = require('./printed-byline-conflict');
-    const registry = require('../../data/outlet-registry.json');
-    const knownCritics = pb.knownCriticsForOutlet(pb.buildKnownCriticsIndex(registry), r.outletId);
+    const knownCritics = pb.knownCriticsForOutlet(pb.buildKnownCriticsIndex(outletRegistry()), r.outletId);
     const hit = pb.decidePrintedByline({ criticName: null, outletId: r.outletId, fullText: text, knownCritics });
-    if (hit && hit.printedName) return hit.printedName;
-    const head = text.slice(0, OPENING_CHARS);
-    if (OPENING_BYLINE.test(head)) return pb.extractHeaderByline(head) || null;
+    const found = (hit && hit.printedName) || (OPENING_BYLINE.test(text.slice(0, OPENING_CHARS)) && pb.extractHeaderByline(text.slice(0, OPENING_CHARS)));
+    if (found) return displayCritic({ ...r, criticName: found });
   } catch { /* no byline is a hold, never a crash */ }
   return null;
 }
@@ -136,6 +159,7 @@ function toCardRow(data, show = {}) {
   const row = { ...data };
   const name = outletDisplayName(row.outletId);
   if (name && (!str(row.outlet) || OUTLET_ID_SHAPE.test(str(row.outlet)) || row.outlet === row.outletId)) row.outlet = name;
+  if (row.criticName) row.criticName = displayCritic(row);
   if (!row.publishDate) { const d = cardPublishDate(row); if (d) row.publishDate = d; }
   if (!str(row.pullQuote)) { const q = cardPullQuote(data, show); if (q) row.pullQuote = q; }
   return row;

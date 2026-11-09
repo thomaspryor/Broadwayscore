@@ -119,7 +119,8 @@ test('a review with no critic anywhere is held, retried, then reported failed; i
   assert.equal(fetches, 3, 'retried on later passes (a byline can be late), then left to the regular pipeline');
 });
 
-test('a review with text but no usable quote is held; a text-less paywall row publishes and is reported quoteless', async (t) => {
+test('a hard-paywall row as the lane really fetches it (no critic, no date, no text) publishes with its gaps reported', async (t) => {
+  // inline-score.js fallback: { criticName: null, publishDate: null, fullText: '' }. Holding it would drop the NYT.
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro7196-'));
   t.after(() => fs.rmSync(dir, { recursive: true, force: true }));
   const junk = 'https://www.theguardian.com/stage/2026/oct/20/test-show-review';
@@ -130,13 +131,24 @@ test('a review with text but no usable quote is held; a text-less paywall row pu
   ];
   const pages = {
     [junk]: { outletId: 'guardian', criticName: 'A Critic', publishDate: NIGHT, fullText: 'x '.repeat(200) },
-    [paywall]: { outletId: 'nytimes', criticName: 'A Critic', publishDate: NIGHT, fullText: '' },
+    [paywall]: { outletId: 'nytimes', criticName: null, publishDate: null, fullText: '' },
   };
   const { res, rows } = await laneNight(dir, candidates, pages);
-  assert.deepEqual(rows.map((r) => r.url), [paywall]);
-  assert.deepEqual(res.quoteless, ['https://nytimes.com/2026/10/20/theater/test-show-review.html']);
-  assert.equal(res.failed.length, 1);
-  assert.match(res.failed[0].reason, /no pullQuote/);
+  assert.deepEqual(res.failed, []);
+  assert.deepEqual(rows.map((r) => r.url).sort(), [junk, paywall].sort(), 'both go live, as the rebuild would ship them');
+  const nyt = rows.find((r) => r.url === paywall);
+  assert.equal(nyt.outlet, 'The New York Times');
+  assert.equal(nyt.publishDate, '2026-10-20', 'date from the URL, never the opening date');
+  const byKey = Object.fromEntries(res.quoteless.map((q) => [q.key, q.missing]));
+  assert.deepEqual(byKey['https://nytimes.com/2026/10/20/theater/test-show-review.html'], ['criticName', 'pullQuote']);
+  assert.deepEqual(byKey['https://theguardian.com/stage/2026/oct/20/test-show-review'], ['pullQuote'], 'junk text gives no quote: reported, not hidden');
+});
+
+test('a byline the rebuild would erase (outlet name, staff) counts as no critic', () => {
+  for (const c of ["Talkin' Broadway", 'Staff Writer', 'Editorial Staff']) {
+    assert.ok(card.missingCardFields({ outletId: 'talkinbroadway', outlet: "Talkin' Broadway", criticName: c, publishDate: NIGHT }, { quote: false }).includes('criticName'), c);
+  }
+  assert.deepEqual(card.missingCardFields({ outletId: 'talkinbroadway', outlet: "Talkin' Broadway", criticName: 'Howard Miller', publishDate: NIGHT }, { quote: false }), []);
 });
 
 test('opening-night check: a live card with an outlet id for a name or no quote alerts; unsigned or undated is listed only', () => {
