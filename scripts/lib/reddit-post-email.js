@@ -113,8 +113,12 @@ async function defaultFetchJson(url) {
   return res.json();
 }
 
+// The subject lead per email kind. scripts/lib/reddit-email-archive.js parses these
+// subjects to archive superseded emails, so it reads this table, not its own copy.
+const SUBJECT_LEADS = { new: 'Reddit post ready', update: 'Updated Reddit post', reminder: 'Still ready to post' };
+
 function buildSubject(d, kind) {
-  const lead = kind === 'reminder' ? 'Still ready to post' : kind === 'update' ? 'Updated Reddit post' : 'Reddit post ready';
+  const lead = SUBJECT_LEADS[kind] || SUBJECT_LEADS.new;
   return `${lead}: ${d.showTitle} (${d.score}/100) for r/${d.subreddit}`;
 }
 
@@ -188,4 +192,4 @@ function buildHtml(d, kind, images = [], { siteBehind = false } = {}) {
 </body></html>`;
 }
 
-module.exports = { liveMatchesDraft, stampsFor, afterSend, resendEmails, dueEmails, buildSubject, buildHtml, REMIND_AFTER_HOURS };
+module.exports = { SUBJECT_LEADS, liveMatchesDraft, stampsFor, afterSend, resendEmails, dueEmails, buildSubject, buildHtml, REMIND_AFTER_HOURS };

@@ -153,6 +153,8 @@ async function main() {
       // Stamp right away: a run killed later in the loop must not re-send this one.
       fs.writeFileSync(DRAFTS_PATH, JSON.stringify(drafts, null, 2) + '\n');
       console.log(`Sent: ${subject} (id ${res && res.id || '?'})`);
+      // The archive step waits for these to reach the inbox before it archives their predecessors.
+      if (process.env.SENT_SUBJECTS_FILE) fs.appendFileSync(process.env.SENT_SUBJECTS_FILE, subject + '\n');
     } catch (e) {
       failed++;
       console.error(`Send failed for ${draft.showId}: ${e.message}`);

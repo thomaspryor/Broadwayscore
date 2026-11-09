@@ -8,7 +8,9 @@
  *
  *   1. GET /api/admin/gmail-reauth?e=<exp>&s=<sig>   (src/app/api/admin/gmail-reauth/route.ts)
  *      checks the signed link, sets a short-lived state + PKCE cookie and
- *      302s to Google's consent screen (gmail.readonly only).
+ *      302s to Google's consent screen (gmail.modify: Google offers nothing narrower that
+ *      can archive mail; the receipts and DMARC jobs only read, and the Reddit draft
+ *      archive step only ever removes the Inbox label).
  *   2. GET /api/admin/gmail-reauth/callback          (…/callback/route.ts)
  *      checks state against the cookie, seals {code, verifier} with
  *      APPROVAL_HMAC_SECRET and dispatches gmail-reauth.yml (mode=complete).
@@ -30,7 +32,9 @@ const crypto = require('crypto');
 const { seal, open } = require('./hkdf-seal');
 const { createSignedLink } = require('./owner-signed-link');
 
-const SCOPE = 'https://www.googleapis.com/auth/gmail.readonly';
+// Widened from gmail.readonly (2026-11-09) so scripts/archive-superseded-reddit-emails.js can
+// archive superseded Reddit draft emails. gmail.modify includes everything readonly allowed.
+const SCOPE = 'https://www.googleapis.com/auth/gmail.modify';
 // The mailbox finance-ingest.yml reads (receipts + DMARC rua). A grant for any
 // other account is refused, so the public-facing start link can never swap in
 // someone else's mailbox.
@@ -98,7 +102,7 @@ function buildConsentUrl({ clientId, state, challenge }) {
   return `${GOOGLE_AUTH_URL}?${p.toString()}`;
 }
 
-/** True when Google's space-separated `scope` grant includes Gmail read access. */
+/** True when Google's space-separated `scope` grant includes SCOPE (read and archive). A read-only grant is refused: it would not let the archive step work. */
 function grantedScopeOk(scope) {
   return String(scope || '').split(/\s+/).includes(SCOPE);
 }
@@ -183,7 +187,7 @@ function decisionBlock({ url, exp, problem, setup = false }) {
     : `Tap ${url} and press Allow to reconnect Gmail.`;
   return [
     `DECISION NEEDED: ${ask}${problem ? ` (${problem})` : ''}`,
-    `(Gmail renewal link, valid until ${until}. Sign in as ${OWNER_ACCOUNT} if Google asks. After Allow, the new key is saved and the receipts and email-report job reruns by itself. Nothing else is needed.)`,
+    `(Gmail renewal link, valid until ${until}. Sign in as ${OWNER_ACCOUNT} if Google asks. Google will say it lets the site read and organize your Gmail: that is what lets it archive old Reddit draft emails for you, and it only ever removes the Inbox label. After Allow, the new key is saved and the receipts and email-report job reruns by itself. Nothing else is needed.)`,
   ].join('\n');
 }
 

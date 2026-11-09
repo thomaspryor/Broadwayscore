@@ -98,16 +98,18 @@ test('isOurSender accepts bare and display-name forms only', () => {
 
 // ---- sweep against a fake Gmail ----
 
-function fakeGmail({ messages, patchStatus = 200, patchBody = {} }) {
+function fakeGmail({ messages, patchStatus = 200, patchBody = {}, scope = 'https://www.googleapis.com/auth/gmail.modify', messagesAt = null }) {
   const calls = [];
+  let listCalls = 0;
+  const current = () => (messagesAt ? messagesAt(listCalls) : messages);
   const fetchImpl = async (url, init = {}) => {
     const u = new URL(url);
     calls.push({ path: u.pathname, method: init.method || 'GET', body: init.body });
     const json = (status, body) => ({ ok: status < 400, status, json: async () => body });
-    if (u.hostname === 'oauth2.googleapis.com') return json(200, { access_token: 'tok', scope: 'https://www.googleapis.com/auth/gmail.modify' });
+    if (u.hostname === 'oauth2.googleapis.com') return json(200, { access_token: 'tok', scope });
     if (u.pathname.endsWith('/messages/batchModify')) return json(patchStatus, patchBody);
-    if (u.pathname.endsWith('/messages')) return json(200, { messages: messages.map((m) => ({ id: m.id })) });
-    const m = messages.find((x) => u.pathname.endsWith(`/messages/${x.id}`));
+    if (u.pathname.endsWith('/messages')) { listCalls++; return json(200, { messages: current().map((m) => ({ id: m.id })) }); }
+    const m = current().find((x) => u.pathname.endsWith(`/messages/${x.id}`));
     return json(200, { id: m.id, internalDate: m.internalDate, payload: { headers: [{ name: 'Subject', value: m.subject }, { name: 'From', value: m.from }] } });
   };
   return { fetchImpl, calls };
@@ -156,4 +158,54 @@ test('missing credentials fail with a plain message and no network call', async 
 test('a refused token refresh surfaces the Google error code only', async () => {
   const fetchImpl = async () => ({ ok: false, status: 400, json: async () => ({ error: 'invalid_grant', error_description: 'secret-ish detail' }) });
   await assert.rejects(() => a.sweep({ env: ENV, fetchImpl, log: () => {} }), (e) => /invalid_grant/.test(e.message) && !/secret-ish/.test(e.message));
+});
+
+const READONLY = 'https://www.googleapis.com/auth/gmail.readonly';
+
+test('a read-only key is caught from its granted scope before any write is attempted', async () => {
+  const { fetchImpl, calls } = fakeGmail({ messages: INBOX, scope: READONLY });
+  await assert.rejects(() => a.sweep({ env: ENV, fetchImpl, log: () => {} }), a.GmailScopeError);
+  assert.equal(calls.filter((c) => c.path.endsWith('/batchModify')).length, 0);
+});
+
+test('a read-only key can still do a dry run, so the plan can be checked before the renewal', async () => {
+  const { fetchImpl } = fakeGmail({ messages: INBOX, scope: READONLY });
+  const r = await a.sweep({ env: ENV, fetchImpl, dryRun: true, log: () => {} });
+  assert.equal(r.wouldArchive, 1);
+});
+
+test('a 403 rate limit is not mistaken for a read-only key', async () => {
+  const body = { error: { status: 'PERMISSION_DENIED', message: 'Rate Limit Exceeded', errors: [{ reason: 'userRateLimitExceeded' }] } };
+  const { fetchImpl } = fakeGmail({ messages: INBOX, patchStatus: 403, patchBody: body });
+  await assert.rejects(() => a.sweep({ env: ENV, fetchImpl, log: () => {} }), (e) => !(e instanceof a.GmailScopeError) && /403/.test(e.message));
+});
+
+test('the sweep waits for the just-sent email, then archives its predecessor', async () => {
+  const newest = 'Updated Reddit post: Nero (42/100) for r/TheWestEnd';
+  const withNew = [...INBOX, msg('n42', newest, 5000)];
+  const { fetchImpl, calls } = fakeGmail({ messages: INBOX, messagesAt: (n) => (n >= 3 ? withNew : INBOX) });
+  let slept = 0;
+  const r = await a.sweep({ env: ENV, fetchImpl, expectSubjects: [newest], sleep: async () => { slept++; }, log: () => {} });
+  assert.equal(slept, 2);
+  assert.deepEqual(r.missing, []);
+  const patch = JSON.parse(calls.find((c) => c.path.endsWith('/batchModify')).body);
+  assert.deepEqual(new Set(patch.ids), new Set(['n40', 'n41']));
+});
+
+test('if the just-sent email never shows, the sweep gives up waiting without failing or over-archiving', async () => {
+  const { fetchImpl, calls } = fakeGmail({ messages: INBOX });
+  const logs = [];
+  const r = await a.sweep({ env: ENV, fetchImpl, expectSubjects: ['Updated Reddit post: Nero (99/100) for r/TheWestEnd'], waitMs: 30000, sleep: async () => {}, log: (m) => logs.push(m) });
+  assert.equal(r.missing.length, 1);
+  assert.ok(logs.some((l) => /not in the inbox/.test(l)));
+  assert.deepEqual(JSON.parse(calls.find((c) => c.path.endsWith('/batchModify')).body).ids, ['n41']);
+});
+
+test('class guard: the archiver reads the sender\'s own subject table, so a new email kind cannot drift out of the sweep', () => {
+  assert.deepEqual(a.LEADS, Object.values(mail.SUBJECT_LEADS));
+  for (const [kind, lead] of Object.entries(mail.SUBJECT_LEADS)) {
+    const subject = mail.buildSubject({ showTitle: 'X', score: 50, subreddit: 'Broadway' }, kind);
+    assert.ok(subject.startsWith(`${lead}: `), kind);
+    assert.ok(a.parseDraftSubject(subject), `${kind} subject must parse`);
+  }
 });

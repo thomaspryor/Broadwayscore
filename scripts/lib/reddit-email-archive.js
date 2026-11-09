@@ -24,8 +24,11 @@
 
 'use strict';
 
+const { SUBJECT_LEADS } = require('./reddit-post-email');
+
 const SENDER = 'updates@broadwayscorecard.com';
-const LEADS = ['Reddit post ready', 'Updated Reddit post', 'Still ready to post'];
+const LEADS = Object.values(SUBJECT_LEADS);
+const MODIFY_SCOPE = 'https://www.googleapis.com/auth/gmail.modify';
 // Mirrors buildSubject(): `${lead}: ${showTitle} (${score}/100) for r/${subreddit}`.
 const SUBJECT_RE = new RegExp(`^(${LEADS.join('|')}): (.+) \\((\\d{1,3})/100\\) for r/([A-Za-z0-9_]+)$`);
 
@@ -35,6 +38,10 @@ const GMAIL = 'https://gmail.googleapis.com/gmail/v1/users/me';
 const LIST_QUERY = `in:inbox from:${SENDER} (subject:"Reddit post" OR subject:"Still ready to post")`;
 const MAX_MESSAGES = 500;
 const FETCH_CONCURRENCY = 8;
+// The sweep runs seconds after Resend accepted the last email, and Gmail may not
+// have it yet. Wait up to this long for the emails the caller just sent.
+const DEFAULT_WAIT_MS = 120000;
+const POLL_MS = 10000;
 
 /** { lead, showTitle, score, subreddit } for one of our draft subjects, else null. */
 function parseDraftSubject(subject) {
@@ -104,8 +111,11 @@ async function gmailJson(fetchImpl, token, path, init = {}) {
   let body = {};
   try { body = await res.json(); } catch { /* empty body */ }
   if (!res.ok) {
-    const reason = body && body.error && (body.error.status || (body.error.errors && body.error.errors[0] && body.error.errors[0].reason)) || '';
-    if (res.status === 403 && /insufficient|PERMISSION_DENIED/i.test(String(reason) + JSON.stringify((body && body.error && body.error.message) || ''))) {
+    const err = (body && body.error) || {};
+    const reason = (err.errors && err.errors[0] && err.errors[0].reason) || err.status || '';
+    // A rate limit is also a 403 with status PERMISSION_DENIED, so the status alone
+    // proves nothing: only Google's own "insufficient scopes" reason counts.
+    if (res.status === 403 && (reason === 'insufficientPermissions' || /insufficient authentication scopes/i.test(String(err.message || '')))) {
       throw new GmailScopeError('The Gmail key is read-only. Archiving needs the renewed key (gmail-reauth.yml, mode=link).');
     }
     throw new Error(`Gmail ${init.method || 'GET'} ${path.split('?')[0]} failed: HTTP ${res.status} ${String(reason).slice(0, 60)}`);
@@ -143,14 +153,35 @@ async function listCandidates(fetchImpl, token) {
 
 /**
  * Archive every superseded Reddit draft email in the inbox.
- * @param {{ env?: object, fetchImpl?: Function, dryRun?: boolean, log?: Function }} opts
- * @returns {Promise<{ candidates:number, groups:number, archived:number, dryRun:boolean }>}
+ * @param {object} opts
+ * @param {object} [opts.env]
+ * @param {Function} [opts.fetchImpl]
+ * @param {boolean} [opts.dryRun] list and plan only; the read-only key is enough for this
+ * @param {string[]} [opts.expectSubjects] subjects just sent; wait for them to reach the inbox first
+ * @param {number} [opts.waitMs]
+ * @param {Function} [opts.sleep]
+ * @param {Function} [opts.log]
+ * @returns {Promise<{ candidates:number, groups:number, archived:number, wouldArchive:number, dryRun:boolean, missing:string[] }>}
  */
-async function sweep({ env = process.env, fetchImpl = fetch, dryRun = false, log = console.log } = {}) {
-  const { token } = await accessToken(env, fetchImpl);
-  const messages = await listCandidates(fetchImpl, token);
+async function sweep({ env = process.env, fetchImpl = fetch, dryRun = false, expectSubjects = [], waitMs = DEFAULT_WAIT_MS, sleep = (ms) => new Promise((r) => setTimeout(r, ms)), log = console.log } = {}) {
+  const { token, scope } = await accessToken(env, fetchImpl);
+  let messages = await listCandidates(fetchImpl, token);
+  const missingNow = () => expectSubjects.filter((subj) => !messages.some((m) => m.subject === subj));
+  for (let waited = 0; missingNow().length && waited < waitMs; waited += POLL_MS) {
+    await sleep(POLL_MS);
+    messages = await listCandidates(fetchImpl, token);
+  }
+  const missing = missingNow();
+  // Not fatal: the older emails stay one more round and the next sweep archives them.
+  if (missing.length) log(`::warning::${missing.length} just-sent email(s) not in the inbox after ${Math.round(waitMs / 1000)}s; their predecessors are archived on the next sweep`);
+
   const plan = planArchive(messages);
   log(`${messages.length} Reddit draft email(s) in the inbox across ${plan.groups} draft(s); ${plan.archive.length} superseded`);
+  // The refresh response names the granted scopes. A key without gmail.modify cannot
+  // write, so say so before trying instead of after a 403.
+  if (plan.archive.length && !dryRun && scope && !scope.split(/\s+/).includes(MODIFY_SCOPE)) {
+    throw new GmailScopeError('The Gmail key is read-only. Archiving needs the renewed key (gmail-reauth.yml, mode=link).');
+  }
   if (plan.archive.length && !dryRun) {
     for (let i = 0; i < plan.archive.length; i += 1000) {
       // batchModify takes at most 1000 ids. Removing a label twice is a no-op, so a retry is safe.
@@ -160,7 +191,7 @@ async function sweep({ env = process.env, fetchImpl = fetch, dryRun = false, log
       });
     }
   }
-  return { candidates: messages.length, groups: plan.groups, archived: dryRun ? 0 : plan.archive.length, wouldArchive: plan.archive.length, dryRun };
+  return { candidates: messages.length, groups: plan.groups, archived: dryRun ? 0 : plan.archive.length, wouldArchive: plan.archive.length, dryRun, missing };
 }
 
-module.exports = { SENDER, LEADS, LIST_QUERY, parseDraftSubject, isOurSender, planArchive, sweep, listCandidates, GmailScopeError };
+module.exports = { SENDER, LEADS, MODIFY_SCOPE, LIST_QUERY, parseDraftSubject, isOurSender, planArchive, sweep, listCandidates, GmailScopeError };
