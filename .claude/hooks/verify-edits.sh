@@ -117,8 +117,46 @@ def _ve_key(code):
 def _ve_seen(code):
     return _ve_key(code) in _VE_SKIP
 
+# BRO-7194: VE_ONLY_CODES=A|B restricts the verdict to those gates (app-repo cloud
+# sessions run only the stall gates; the rest of this chain judges Broadwayscore work).
+_VE_ONLY = set(c for c in os.environ.get('VE_ONLY_CODES', '').split('|') if c)
+
+def _ve_allowed(code):
+    return not _VE_ONLY or _ve_key(code) in _VE_ONLY
+
+# BRO-7194 auto-arm: WAKEPROMISE / OPENCLAIM landed advisory on 2026-11-09 (BRO-7183, §19)
+# and block from _STALL_ARM_AFTER unless the env var says 'advisory' or 'off' (kill switch).
+# 'block' arms early. STALL_GATE_NOW is the test clock.
+_STALL_ARM_AFTER = '2026-11-16T00:00:00Z'
+
+def _stall_gate_blocks(envvar):
+    v = os.environ.get(envvar, '')
+    if v in ('block', 'advisory', 'off'):
+        return v == 'block'
+    import time
+    return (os.environ.get('STALL_GATE_NOW') or time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime())) >= _STALL_ARM_AFTER
+
+def _stall_advisory_post(kind, detail):
+    # Cloud: ~/.claude/state dies with the container (BRO-7190), so the hit also goes to a
+    # card comment, once per session and kind, detached and bounded. Failure is silent.
+    if os.environ.get('CLAUDE_CODE_REMOTE') != 'true' or not os.environ.get('LINEAR_API_KEY'):
+        return
+    try:
+        import subprocess, tempfile
+        sid = os.environ.get('CLAUDE_CODE_SESSION_ID', '') or 'nosession'
+        mark = os.path.join(tempfile.gettempdir(), 'stall-advisory-%s-%s' % (kind, sid))
+        if os.path.exists(mark):
+            return
+        open(mark, 'w').close()
+        root = os.environ.get('CLAUDE_PROJECT_DIR') or os.getcwd()
+        subprocess.Popen(['timeout', '10', 'node', os.path.join(root, 'scripts', 'linear-brain.js'), 'update', 'BRO-7190', '--comment',
+                          '%s-ADVISORY: session %s %s' % (kind, sid, str(detail)[:300])],
+                         cwd=root, stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, start_new_session=True)
+    except Exception:
+        pass
+
 def _ve_block(code):
-    if _ve_seen(code):
+    if _ve_seen(code) or not _ve_allowed(code):
         return
     print(code)
     sys.exit(0)
@@ -126,6 +164,8 @@ def _ve_block(code):
 def _ve_final(code):
     if _ve_seen(code):
         code = _chain_or_ok()
+    if not _ve_allowed(code):
+        code = 'OK'
     print(code)
     sys.exit(0)
 
@@ -1437,9 +1477,10 @@ if os.environ.get('WAKELESS_GATE_DISABLE', '0') != '1' and not _cs_on:
                 and not _owner_must_act(_wk_text)):
             _lw = _live_work()
             if not (_lw['triggers'] or _lw['agents'] or _lw['children'] or _lw['waits'] or _lw['pr_watch']):
-                if os.environ.get('PROMISE_GATE_MODE') == 'block':
+                if _stall_gate_blocks('PROMISE_GATE_MODE'):
                     _ve_block("WAKEPROMISE")
-                else:
+                elif os.environ.get('PROMISE_GATE_MODE') != 'off':
+                    _stall_advisory_post('WAKEPROMISE', _PROMISE_RE.search(_wk_text).group(0))
                     try:
                         import time
                         _pd = os.path.join(os.path.expanduser('~'), '.claude', 'state')
@@ -1518,7 +1559,11 @@ if _CW_CODES:
                 'otherLive': bool((_cw_stall or _oc_on) and (lambda w: w['agents'] or w['pr_watch'] or w['triggers'])(_live_work()))}))
             sys.stderr.write(('⚠️  CHILDWAIT: ' + _cw.stderr.strip()[:200] + '\n') if _cw.stderr.strip() else '')
             _cw_res = json.loads(_cw.stdout or '{}')
-            if _cw_res.get('code') == 'OPENCLAIM' and os.environ.get('OPENCLAIM_GATE_MODE') != 'block':
+            if _cw_res.get('code') == 'OPENCLAIM' and _stall_gate_blocks('OPENCLAIM_GATE_MODE'):
+                _ve_block('OPENCLAIM')
+            elif _cw_res.get('code') == 'OPENCLAIM':
+              if os.environ.get('OPENCLAIM_GATE_MODE') != 'off':
+                _stall_advisory_post('OPENCLAIM', _cw_res.get('cards'))
                 _pd = os.path.join(os.path.expanduser('~'), '.claude', 'state')
                 os.makedirs(_pd, exist_ok=True)
                 with open(os.path.join(_pd, 'open-claim-advisory.jsonl'), 'a') as _pf:
@@ -1750,7 +1795,7 @@ def _chain_or_ok():
     # Runs at each OK exit below, so the chain never takes the Stop hook's one
     # block ahead of UNVERIFIED / UNSHIPCHECKED / scoring / visual-QA (the
     # stop_hook_active guard lets the second Stop through).
-    if os.environ.get('CLOUD_CHAIN_GATE_DISABLE', '0') == '1':
+    if os.environ.get('CLOUD_CHAIN_GATE_DISABLE', '0') == '1' or _VE_ONLY:
         return 'OK'
     try:
         r = _chain_result() or 'OK'
@@ -2352,6 +2397,10 @@ if generic_verified:
 _ve_final(f"UNVERIFIED:{basename}")
 PYEOF
 )
+# BRO-7194: stall-only mode (app-repo cloud sessions): any verdict outside the list passes.
+if [ -n "${VE_ONLY_CODES:-}" ]; then
+  case "|$VE_ONLY_CODES|" in *"|${result%%:*}|"*) ;; *) result=OK ;; esac
+fi
 
 # Per-gate loop guard (see LOOP GUARD above). The ledger key mirrors python's
 # _ve_key(): the code, or for the finish chain NOCHAIN:<missing steps>.

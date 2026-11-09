@@ -253,7 +253,7 @@ test('e2e: BRO-7074 shape ("I\'ll check back", nothing live, no verdict) is bloc
   assert.match(r.stderr, PROMISE_MSG);
 });
 test('e2e: WAKEPROMISE is log-only by default', () => {
-  const r = promiseRun("Kicked off the scoring run. I'll check back once it finishes.", [], { PROMISE_GATE_MODE: '' });
+  const r = promiseRun("Kicked off the scoring run. I'll check back once it finishes.", [], { PROMISE_GATE_MODE: 'advisory' });
   assert.doesNotMatch(r.stderr, PROMISE_MSG);
 });
 test('e2e: a promise with a live background poller passes', () => {
@@ -300,7 +300,7 @@ test('e2e: BRO-7074 shape (routine claims, ends with the card open) blocks in bl
   assert.equal(r.status, 2, r.stderr);
   assert.match(r.stderr, OC_MSG);
   const home = fs.mkdtempSync(path.join(os.tmpdir(), 'oc-home-'));
-  const r2 = ocRun(claimT(), { OPENCLAIM_GATE_MODE: '', HOME: home });
+  const r2 = ocRun(claimT(), { OPENCLAIM_GATE_MODE: 'advisory', HOME: home });
   assert.doesNotMatch(r2.stderr, OC_MSG);
   const rows = fs.readFileSync(path.join(home, '.claude', 'state', 'open-claim-advisory.jsonl'), 'utf8').trim().split('\n');
   assert.deepEqual(JSON.parse(rows[0]).cards, ['BRO-7074']);
