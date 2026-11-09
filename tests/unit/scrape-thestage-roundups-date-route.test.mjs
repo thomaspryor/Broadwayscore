@@ -133,3 +133,13 @@ test('targetsTitle: --shows naming an earlier production keeps the title in play
   assert.ok(targetsTitle([ADO_2026.id], ADO_2026, SHOWS));
   assert.ok(!targetsTitle(['hamlet-west-end-2025'], ADO_2026, SHOWS));
 });
+
+test('a related article\'s earlier datePublished (first in @graph) never reroutes the page', () => {
+  const html = page(URL_2026, '2026-05-09').replace('<script type="application/ld+json">',
+    '<meta property="article:published_time" content="2026-05-09T09:00:00+00:00"><script type="application/ld+json">{"@graph":[{"@type":"NewsArticle","headline":"Related","datePublished":"2025-02-21T09:00:00+00:00"}]}</script><script type="application/ld+json">');
+  const r = resolveProductionByPageDate({ html, show: ADO_2025, rematch: (d) => (d >= '2026-01-01' ? ADO_2026 : ADO_2025) });
+  // own date 2026-05-09 is outside the 2025 run, so it reroutes to 2026 (own date), not by the related 2025 date
+  assert.equal(r.show.id, ADO_2026.id);
+  const stay = resolveProductionByPageDate({ html, show: ADO_2026, rematch: () => { throw new Error('must not rematch: own date is inside the 2026 run'); } });
+  assert.equal(stay.rerouted, false);
+});

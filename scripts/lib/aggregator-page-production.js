@@ -126,8 +126,11 @@ function checkAggregatorPageProduction({ html, show, pageDate } = {}) {
  * @returns {{ show: object, prod: object, rerouted: boolean, from?: string }}
  */
 function resolveProductionByPageDate({ html, show, rematch } = {}) {
-  const prod = checkAggregatorPageProduction({ html, show });
-  if (!prod.outOfRun || !prod.pageDate || typeof rematch !== 'function') return { show, prod, rerouted: false };
+  // Reroute only on the page's OWN publish date (og/JSON-LD scoped to the page),
+  // never the first datePublished in the HTML, which can be a related article's.
+  const ownDate = require('./article-extractor').extractPublishDate(html, '') || null;
+  const prod = checkAggregatorPageProduction({ html, show, pageDate: ownDate });
+  if (!ownDate || !prod.outOfRun || !prod.pageDate || typeof rematch !== 'function') return { show, prod, rerouted: false };
   const alt = rematch(prod.pageDate);
   if (!alt || !show || alt.id === show.id) return { show, prod, rerouted: false };
   const altProd = checkAggregatorPageProduction({ html, show: alt, pageDate: prod.pageDate });
